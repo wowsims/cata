@@ -41,7 +41,7 @@ func NewWowheadSpellTooltipManager(filePath string) *WowheadTooltipManager {
 	}
 }
 
-type Stats [36]float64
+type Stats [34]float64
 
 type ItemResponse interface {
 	GetName() string

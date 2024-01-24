@@ -99,7 +99,7 @@ enum Profession {
 }
 
 // Keep in sync with sim/core/stats/stats.go.
-// NextIndex: 33;
+// NextIndex: 34;
 enum Stat {
 	StatStrength = 0;
 	StatAgility = 1;
@@ -723,6 +723,12 @@ message PresetTarget {
 message PresetEncounter {
 	string path = 1;
 	repeated PresetTarget targets = 2;
+}
+
+message ItemRandomSuffix {
+	int32 id = 1;
+	string name = 2;
+	repeated double stats = 3;
 }
 
 message ItemSpec {
