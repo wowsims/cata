@@ -204,8 +204,13 @@ export class Database {
 		}
 
 		const gems = itemSpec.gems.map(gemId => this.lookupGem(gemId));
+		
+		let randomSuffix: ItemRandomSuffix | null = null;
+		if (itemSpec.randomSuffix && !!this.getRandomSuffixById(itemSpec.randomSuffix)) {
+			randomSuffix = this.getRandomSuffixById(itemSpec.randomSuffix);
+		}
 
-		return new EquippedItem(item, enchant, gems);
+		return new EquippedItem(item, enchant, gems, randomSuffix);
 	}
 
 	lookupEquipmentSpec(equipSpec: EquipmentSpec): Gear {
