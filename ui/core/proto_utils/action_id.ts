@@ -1,7 +1,7 @@
 import { getWowheadLanguagePrefix } from '../constants/lang.js';
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { ResourceType } from '../proto/api.js';
-import { ActionID as ActionIdProto, OtherAction } from '../proto/common.js';
+import { ActionID as ActionIdProto, OtherAction, ItemRandomSuffix } from '../proto/common.js';
 import { IconData, UIItem as Item } from '../proto/ui.js';
 import { Database } from './database.js';
 
@@ -11,6 +11,7 @@ export const USE_WOTLK_DB = false;
 // Uniquely identifies a specific item / spell / thing in WoW. This object is immutable.
 export class ActionId {
 	readonly itemId: number;
+	readonly randomSuffixId: number;
 	readonly spellId: number;
 	readonly otherId: OtherAction;
 	readonly tag: number;
@@ -19,8 +20,9 @@ export class ActionId {
 	readonly name: string;
 	readonly iconUrl: string;
 
-	private constructor(itemId: number, spellId: number, otherId: OtherAction, tag: number, baseName: string, name: string, iconUrl: string) {
+	private constructor(itemId: number, spellId: number, otherId: OtherAction, tag: number, baseName: string, name: string, iconUrl: string, randomSuffixId?: number) {
 		this.itemId = itemId;
+		this.randomSuffixId = randomSuffixId || 0;
 		this.spellId = spellId;
 		this.otherId = otherId;
 		this.tag = tag;
@@ -119,7 +121,11 @@ export class ActionId {
 	}
 
 	equalsIgnoringTag(other: ActionId): boolean {
-		return this.itemId == other.itemId && this.spellId == other.spellId && this.otherId == other.otherId;
+		return (
+			this.itemId == other.itemId
+			&& this.randomSuffixId == other.randomSuffixId
+			&& this.spellId == other.spellId
+			&& this.otherId == other.otherId);
 	}
 
 	setBackground(elem: HTMLElement) {
@@ -128,13 +134,9 @@ export class ActionId {
 		}
 	}
 
-	static makeItemUrl(id: number): string {
+	static makeItemUrl(id: number, randomSuffixId?: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		if (USE_WOTLK_DB) {
-			return 'https://wotlkdb.com/?item=' + id;
-		} else {
-			return `https://wowhead.com/cata/${langPrefix}item=${id}?lvl=${CHARACTER_LEVEL}`;
-		}
+		return `https://wowhead.com/cata/${langPrefix}item=${id}?lvl=${CHARACTER_LEVEL}?rand=${randomSuffixId || 0}`;
 	}
 	static makeSpellUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
@@ -171,7 +173,7 @@ export class ActionId {
 
 	setWowheadHref(elem: HTMLAnchorElement) {
 		if (this.itemId) {
-			elem.href = ActionId.makeItemUrl(this.itemId);
+			elem.href = ActionId.makeItemUrl(this.itemId, this.randomSuffixId);
 		} else if (this.spellId) {
 			elem.href = ActionId.makeSpellUrl(this.spellId);
 		}
@@ -454,7 +456,7 @@ export class ActionId {
 			iconUrl = ActionId.makeIconUrl(overrideTooltipData['icon']);
 		}
 
-		return new ActionId(this.itemId, this.spellId, this.otherId, this.tag, baseName, name, iconUrl);
+		return new ActionId(this.itemId, this.spellId, this.otherId, this.tag, baseName, name, iconUrl, this.randomSuffixId);
 	}
 
 	toString(): string {
@@ -503,15 +505,15 @@ export class ActionId {
 	}
 
 	withoutTag(): ActionId {
-		return new ActionId(this.itemId, this.spellId, this.otherId, 0, this.baseName, this.baseName, this.iconUrl);
+		return new ActionId(this.itemId, this.spellId, this.otherId, 0, this.baseName, this.baseName, this.iconUrl, this.randomSuffixId);
 	}
 
 	static fromEmpty(): ActionId {
 		return new ActionId(0, 0, OtherAction.OtherActionNone, 0, '', '', '');
 	}
 
-	static fromItemId(itemId: number, tag?: number): ActionId {
-		return new ActionId(itemId, 0, OtherAction.OtherActionNone, tag || 0, '', '', '');
+	static fromItemId(itemId: number, tag?: number, randomSuffixId?: number): ActionId {
+		return new ActionId(itemId, 0, OtherAction.OtherActionNone, tag || 0, '', '', '', randomSuffixId || 0);
 	}
 
 	static fromSpellId(spellId: number, tag?: number): ActionId {
@@ -528,6 +530,10 @@ export class ActionId {
 
 	static fromItem(item: Item): ActionId {
 		return ActionId.fromItemId(item.id);
+	}
+
+	static fromRandomSuffix(item: Item, randomSuffix: ItemRandomSuffix): ActionId {
+		return ActionId.fromItemId(item.id, 0, randomSuffix.id);
 	}
 
 	static fromProto(protoId: ActionIdProto): ActionId {

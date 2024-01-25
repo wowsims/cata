@@ -152,6 +152,11 @@ export class ItemRenderer extends Component {
 
 	update(newItem: EquippedItem) {
 		this.nameElem.textContent = newItem.item.name;
+
+		if (newItem.randomSuffix) {
+			this.nameElem.textContent += ' ' + newItem.randomSuffix.name
+		}
+
 		if (newItem.item.heroic) {
 			this.nameElem.insertAdjacentElement('beforeend', createHeroicLabel());
 		} else {
@@ -477,6 +482,7 @@ export class SelectorModal extends BaseModal {
 			eventID => {
 				gearData.equipItem(eventID, null);
 				this.removeTabs('Gem');
+				this.removeTabs('Random Suffixes');
 			},
 		);
 
@@ -508,6 +514,7 @@ export class SelectorModal extends BaseModal {
 			},
 		);
 
+		this.addRandomSuffixTab(equippedItem, gearData);
 		this.addGemTabs(slot, equippedItem, gearData);
 	}
 
@@ -593,6 +600,44 @@ export class SelectorModal extends BaseModal {
 			);
 		});
 	}
+	
+	private addRandomSuffixTab(equippedItem: EquippedItem | null, gearData: GearData) {
+		if ((equippedItem == undefined) || (equippedItem.item.randomSuffixOptions.length == 0)) {
+			return;
+		}
+
+		const itemProto = equippedItem.item;
+
+		this.addTab<ItemRandomSuffix>(
+			'Random Suffixes',
+			this.player.getRandomSuffixes(itemProto).map((randomSuffix: ItemRandomSuffix) => {
+				return {
+					item: randomSuffix,
+					id: randomSuffix.id,
+					actionId: ActionId.fromRandomSuffix(itemProto, randomSuffix),
+					name: randomSuffix.name,
+					quality: itemProto.quality,
+					phase: itemProto.phase,
+					heroic: false,
+					baseEP: this.player.computeRandomSuffixEP(randomSuffix),
+					ignoreEPFilter: true,
+					onEquip: (eventID, randomSuffix: ItemRandomSuffix) => {
+						const equippedItem = gearData.getEquippedItem();
+
+						if (equippedItem)
+							gearData.equipItem(eventID, equippedItem.withRandomSuffix(randomSuffix));
+					},
+				};
+			}),
+			randomSuffix => this.player.computeRandomSuffixEP(randomSuffix),
+			equippedItem => equippedItem?.randomSuffix,
+			eventID => {
+				const equippedItem = gearData.getEquippedItem();
+				if (equippedItem)
+					gearData.equipItem(eventID, equippedItem.withRandomSuffix(null));
+			},
+		);
+	}
 
 	/**
 	 * Adds one of the tabs for the item selector menu.
@@ -663,8 +708,10 @@ export class SelectorModal extends BaseModal {
 				const item = itemData.item;
 				itemData.onEquip(TypedEvent.nextEventID(), item);
 
-				// If the item changes, the gem slots might change, so remove and recreate the gem tabs
+				// If the item changes, then gem slots and random suffix options will also change, so remove and recreate these tabs.
 				if (Item.is(item)) {
+					this.removeTabs('Random Suffixes');
+					this.addRandomSuffixTab(gearData.getEquippedItem(), gearData);
 					this.removeTabs('Gem');
 					this.addGemTabs(slot, gearData.getEquippedItem(), gearData);
 				}
