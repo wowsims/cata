@@ -13,6 +13,7 @@ var WITH_DB = false
 
 var ItemsByID = map[int32]Item{}
 var GemsByID = map[int32]Gem{}
+var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
 var ReforgeStatsByID = map[int32]ReforgeStat{}
 
@@ -20,6 +21,12 @@ func addToDatabase(newDB *proto.SimDatabase) {
 	for _, v := range newDB.Items {
 		if _, ok := ItemsByID[v.Id]; !ok {
 			ItemsByID[v.Id] = ItemFromProto(v)
+		}
+	}
+
+	for _, v := range newDB.RandomSuffixes {
+		if _, ok := RandomSuffixesByID[v.Id]; !ok {
+			RandomSuffixesByID[v.Id] = RandomSuffixFromProto(v)
 		}
 	}
 
@@ -90,9 +97,10 @@ type Item struct {
 	SocketBonus stats.Stats
 
 	// Modified for each instance of the item.
-	Gems      []Gem
-	Enchant   Enchant
-	Reforging *ReforgeStat
+	RandomSuffix RandomSuffix
+	Gems         []Gem
+	Enchant      Enchant
+	Reforging    *ReforgeStat
 
 	//Internal use
 	TempEnchant int32
@@ -119,9 +127,10 @@ func ItemFromProto(pData *proto.SimItem) Item {
 
 func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 	itemSpec := &proto.ItemSpec{
-		Id:      item.ID,
-		Enchant: item.Enchant.EffectID,
-		Gems:    MapSlice(item.Gems, func(gem Gem) int32 { return gem.ID }),
+		Id:           item.ID,
+		RandomSuffix: item.RandomSuffix.ID,
+		Enchant:      item.Enchant.EffectID,
+		Gems:         MapSlice(item.Gems, func(gem Gem) int32 { return gem.ID }),
 	}
 
 	// Check if Reforging is not nil before accessing ID
@@ -133,6 +142,20 @@ func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 	}
 
 	return itemSpec
+}
+
+type RandomSuffix struct {
+	ID    int32
+	Name  string
+	Stats stats.Stats
+}
+
+func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
+	return RandomSuffix{
+		ID:    pData.Id,
+		Name:  pData.Name,
+		Stats: stats.FromFloatArray(pData.Stats),
+	}
 }
 
 type Enchant struct {
@@ -164,10 +187,11 @@ func GemFromProto(pData *proto.SimGem) Gem {
 }
 
 type ItemSpec struct {
-	ID        int32
-	Enchant   int32
-	Gems      []int32
-	Reforging int32
+	ID           int32
+	RandomSuffix int32
+	Enchant      int32
+	Gems         []int32
+	Reforging    int32
 }
 
 type Equipment [proto.ItemSlot_ItemSlotRanged + 1]Item
@@ -259,10 +283,11 @@ func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 	var coreEquip EquipmentSpec
 	for i, item := range es.Items {
 		coreEquip[i] = ItemSpec{
-			ID:        item.Id,
-			Enchant:   item.Enchant,
-			Gems:      item.Gems,
-			Reforging: item.Reforging,
+			ID:           item.Id,
+			RandomSuffix: item.RandomSuffix,
+			Enchant:      item.Enchant,
+			Gems:         item.Gems,
+			Reforging:    item.Reforging,
 		}
 	}
 	return coreEquip
@@ -274,6 +299,14 @@ func NewItem(itemSpec ItemSpec) Item {
 		item = foundItem
 	} else {
 		panic(fmt.Sprintf("No item with id: %d", itemSpec.ID))
+	}
+
+	if itemSpec.RandomSuffix != 0 {
+		if randomSuffix, ok := RandomSuffixesByID[itemSpec.RandomSuffix]; ok {
+			item.RandomSuffix = randomSuffix
+		} else {
+			panic(fmt.Sprintf("No random suffix with id: %d", itemSpec.RandomSuffix))
+		}
 	}
 
 	if itemSpec.Enchant != 0 {
@@ -396,6 +429,8 @@ func (equipment *Equipment) Stats() stats.Stats {
 			equipStats = equipStats.Add(reforgingChanges)
 		}
 
+		// TODO: Check whether random suffix stats can be re-forged (current implementation assumes no)
+		equipStats = equipStats.Add(item.RandomSuffix.Stats)
 		equipStats = equipStats.Add(item.Enchant.Stats)
 
 		for _, gem := range item.Gems {
