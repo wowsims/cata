@@ -57,6 +57,7 @@ const (
 	FrostRune
 	UnholyRune
 	DeathRune
+	Mastery
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 
@@ -177,6 +178,8 @@ func (s Stat) StatName() string {
 		return "Unholy Rune"
 	case DeathRune:
 		return "Death Rune"
+	case Mastery:
+		return "Mastery"
 	}
 
 	return "none"

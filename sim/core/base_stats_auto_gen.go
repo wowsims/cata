@@ -19,6 +19,7 @@ const DodgeRatingPerDodgeChance = 176.718900
 const ParryRatingPerParryChance = 176.718900
 const BlockRatingPerBlockChance = 88.359444
 const ResilienceRatingPerCritReductionChance = 0.000000
+const MasterRatingPerMasterPecent = 179.280040
 
 var CritPerAgiMaxLevel = map[proto.Class]float64{
 	proto.Class_ClassUnknown:     0.0,

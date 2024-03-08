@@ -118,6 +118,7 @@ enum Stat {
 	StatFrostRune = 37; // Placeholder: not used yet.
 	StatUnholyRune = 38; // Placeholder: not used yet.
 	StatDeathRune = 39; // Placeholder: not used yet.
+	StatMastery = 40;
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 }
