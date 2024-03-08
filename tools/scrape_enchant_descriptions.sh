@@ -6,7 +6,7 @@
 set -e
 
 spell_url_from_item_id() {
-	safe_curl "https://www.wowhead.com/wotlk/item=$1" |
+	safe_curl "https://www.wowhead.com/cata/item=$1" |
 		grep -o '\/wotlk\/spell=[0-9]\+' |
 		head -n 1
 }

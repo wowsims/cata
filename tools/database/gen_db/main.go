@@ -58,7 +58,7 @@ func main() {
 		database.NewCataItemTooltipManager(fmt.Sprintf("%s/cata_items_tooltips.csv", inputsDir)).Fetch(int32(*minId), int32(*maxId), []string{})
 		return
 	} else if *genAsset == "wago-db2-items" {
-		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=3.4.2.49311"))
+		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=4.4.0.53627"))
 		return
 	} else if *genAsset == "reforge-stats" {
 		//Todo: fill this when we have information from wowhead @ Neteyes - Gehennas
