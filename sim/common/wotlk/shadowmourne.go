@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-// https://www.wowhead.com/wotlk/item=49623/shadowmourne
+// https://www.wowhead.com/cata/item=49623/shadowmourne
 
 // Your melee attacks have a chance to drain a Soul Fragment granting you 30 Strength.
 // When you have acquired 10 Soul Fragments you will unleash Chaos Bane,

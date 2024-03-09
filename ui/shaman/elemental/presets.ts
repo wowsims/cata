@@ -1,10 +1,10 @@
 import {
-	Consumes,
-	Faction,
-	Flask,
-	Food,
-	Glyphs,
-	Potions,
+  Consumes,
+  Faction,
+  Flask,
+  Food,
+  Glyphs,
+  Potions,
   Profession,
 } from '../../core/proto/common.js';
 import { SavedTalents } from '../../core/proto/ui.js';
@@ -46,7 +46,7 @@ import AdvancedApl from './apls/advanced.apl.json';
 export const ROTATION_PRESET_ADVANCED = PresetUtils.makePresetAPLRotation('Advanced', AdvancedApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
+// https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const StandardTalents = {
   name: 'Standard',
   data: SavedTalents.create({
@@ -74,10 +74,10 @@ export const DefaultOptions = ElementalShamanOptions.create({
 });
 
 export const OtherDefaults = {
-    distanceFromTarget: 20,
-    profession1: Profession.Engineering,
-    profession2: Profession.Tailoring,
-    nibelungAverageCasts: 11,
+  distanceFromTarget: 20,
+  profession1: Profession.Engineering,
+  profession2: Profession.Tailoring,
+  nibelungAverageCasts: 11,
 }
 
 export const DefaultConsumes = Consumes.create({

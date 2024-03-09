@@ -9,11 +9,11 @@ character_stats_results: {
   final_stats: 500
   final_stats: 109
   final_stats: 386.15997
-  final_stats: 950.52994
+  final_stats: 936.98767
   final_stats: 264
   final_stats: 0
-  final_stats: 5996.3904
-  final_stats: 418.94994
+  final_stats: 6007.8304
+  final_stats: 408.77377
   final_stats: 2218.9399
   final_stats: 264
   final_stats: 94
@@ -41,2165 +41,2166 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
+  final_stats: 0
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Althor'sAbacus-50359"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Althor'sAbacus-50366"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-AshtongueTalismanofLethality-32492"
  value: {
-  dps: 6264.63724
-  tps: 4447.89244
+  dps: 6489.02812
+  tps: 4607.20996
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-AustereEarthsiegeDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Bandit'sInsignia-40371"
  value: {
-  dps: 6437.97827
-  tps: 4570.96457
+  dps: 6662.60251
+  tps: 4730.44779
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BaubleofTrueBlood-50354"
  value: {
-  dps: 6244.81324
-  tps: 4433.8174
-  hps: 88.93771
+  dps: 6464.7341
+  tps: 4589.96121
+  hps: 88.85729
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BaubleofTrueBlood-50726"
  value: {
-  dps: 6244.81324
-  tps: 4433.8174
-  hps: 88.93771
+  dps: 6464.7341
+  tps: 4589.96121
+  hps: 88.85729
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BeamingEarthsiegeDiamond"
  value: {
-  dps: 6392.18235
-  tps: 4538.44947
+  dps: 6618.85338
+  tps: 4699.3859
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BlackBruise-50035"
  value: {
-  dps: 6641.63291
-  tps: 4715.55937
+  dps: 6898.95327
+  tps: 4898.25682
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BlackBruise-50692"
  value: {
-  dps: 6755.2917
-  tps: 4796.25711
+  dps: 7016.11634
+  tps: 4981.4426
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BlessedRegaliaofUndeadCleansing"
  value: {
-  dps: 4820.75148
-  tps: 3422.73355
+  dps: 5004.14962
+  tps: 3552.94623
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BonescytheBattlegear"
  value: {
-  dps: 5839.67563
-  tps: 4146.1697
+  dps: 6044.72976
+  tps: 4291.75813
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-BracingEarthsiegeDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4433.65218
+  dps: 6598.4717
+  tps: 4591.21661
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Bryntroll,theBoneArbiter-50415"
  value: {
-  dps: 6518.25861
-  tps: 4627.96361
+  dps: 6753.10864
+  tps: 4794.70713
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Bryntroll,theBoneArbiter-50709"
  value: {
-  dps: 6518.25861
-  tps: 4627.96361
+  dps: 6753.10864
+  tps: 4794.70713
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ChaoticSkyflareDiamond"
  value: {
-  dps: 6512.62886
-  tps: 4623.96649
+  dps: 6744.42626
+  tps: 4788.54265
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CorpseTongueCoin-50349"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CorpseTongueCoin-50352"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-CorrodedSkeletonKey-50356"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
   hps: 64
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DarkmoonCard:Berserker!-42989"
  value: {
-  dps: 6365.98903
-  tps: 4519.85221
+  dps: 6589.97372
+  tps: 4678.88134
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DarkmoonCard:Death-42990"
  value: {
-  dps: 6398.31647
-  tps: 4542.8047
+  dps: 6623.45902
+  tps: 4702.6559
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DarkmoonCard:Greatness-44255"
  value: {
-  dps: 6393.13951
-  tps: 4539.12905
+  dps: 6622.39021
+  tps: 4701.89705
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Death'sChoice-47464"
  value: {
-  dps: 6718.15601
-  tps: 4769.89077
+  dps: 6955.23874
+  tps: 4938.21951
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DeathKnight'sAnguish-38212"
  value: {
-  dps: 6345.97669
-  tps: 4505.64345
+  dps: 6570.21193
+  tps: 4664.85047
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Deathbringer'sWill-50362"
  value: {
-  dps: 6682.375
-  tps: 4744.48625
+  dps: 6912.02699
+  tps: 4907.53916
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Deathbringer'sWill-50363"
  value: {
-  dps: 6751.04665
-  tps: 4793.24312
+  dps: 6986.01604
+  tps: 4960.07139
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Defender'sCode-40257"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DestructiveSkyflareDiamond"
  value: {
-  dps: 6396.40932
-  tps: 4541.45062
+  dps: 6622.82697
+  tps: 4702.20715
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DislodgedForeignObject-50348"
  value: {
-  dps: 6429.66119
-  tps: 4565.05944
+  dps: 6670.1349
+  tps: 4735.79578
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-DislodgedForeignObject-50353"
  value: {
-  dps: 6432.84166
-  tps: 4567.31758
+  dps: 6643.52803
+  tps: 4716.9049
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EffulgentSkyflareDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EmberSkyflareDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EnigmaticSkyflareDiamond"
  value: {
-  dps: 6392.18235
-  tps: 4538.44947
+  dps: 6618.85338
+  tps: 4699.3859
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EnigmaticStarflareDiamond"
  value: {
-  dps: 6388.22031
-  tps: 4535.63642
+  dps: 6615.32964
+  tps: 4696.88405
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EphemeralSnowflake-50260"
  value: {
-  dps: 6347.35395
-  tps: 4506.62131
+  dps: 6560.27237
+  tps: 4657.79338
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EssenceofGossamer-37220"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EternalEarthsiegeDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ExtractofNecromanticPower-40373"
  value: {
-  dps: 6392.31771
-  tps: 4538.54557
+  dps: 6617.40016
+  tps: 4698.35411
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-EyeoftheBroodmother-45308"
  value: {
-  dps: 6349.92539
-  tps: 4508.44703
+  dps: 6575.37706
+  tps: 4668.51771
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Figurine-SapphireOwl-42413"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ForethoughtTalisman-40258"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ForgeEmber-37660"
  value: {
-  dps: 6328.96174
-  tps: 4493.56284
+  dps: 6553.35586
+  tps: 4652.88266
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ForlornSkyflareDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ForlornStarflareDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-FuryoftheFiveFlights-40431"
  value: {
-  dps: 6478.46446
-  tps: 4599.70977
+  dps: 6706.38688
+  tps: 4761.53468
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-FuturesightRune-38763"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Gladiator'sVestments"
  value: {
-  dps: 6134.93082
-  tps: 4355.80088
+  dps: 6360.49011
+  tps: 4515.94798
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-GlowingTwilightScale-54573"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-GlowingTwilightScale-54589"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-GnomishLightningGenerator-41121"
  value: {
-  dps: 6376.393
-  tps: 4527.23903
+  dps: 6599.18449
+  tps: 4685.42099
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Heartpierce-49982"
  value: {
-  dps: 6518.25861
-  tps: 4627.96361
+  dps: 6753.10864
+  tps: 4794.70713
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Heartpierce-50641"
  value: {
-  dps: 6518.25861
-  tps: 4627.96361
+  dps: 6753.10864
+  tps: 4794.70713
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-IllustrationoftheDragonSoul-40432"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ImpassiveSkyflareDiamond"
  value: {
-  dps: 6392.18235
-  tps: 4538.44947
+  dps: 6618.85338
+  tps: 4699.3859
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ImpassiveStarflareDiamond"
  value: {
-  dps: 6388.22031
-  tps: 4535.63642
+  dps: 6615.32964
+  tps: 4696.88405
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-IncisorFragment-37723"
  value: {
-  dps: 6428.0169
-  tps: 4563.892
+  dps: 6651.40927
+  tps: 4722.50058
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-InsightfulEarthsiegeDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-InvigoratingEarthsiegeDiamond"
  value: {
-  dps: 6402.32253
-  tps: 4545.64899
+  dps: 6628.95818
+  tps: 4706.56031
   hps: 11.25035
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-LastWord-50179"
  value: {
-  dps: 6518.25861
-  tps: 4627.96361
+  dps: 6753.10864
+  tps: 4794.70713
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-LastWord-50708"
  value: {
-  dps: 6518.25861
-  tps: 4627.96361
+  dps: 6753.10864
+  tps: 4794.70713
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Lavanthor'sTalisman-37872"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MajesticDragonFigurine-40430"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-MeteoriteWhetstone-37390"
  value: {
-  dps: 6416.78402
-  tps: 4555.91665
+  dps: 6648.2056
+  tps: 4720.22597
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-NevermeltingIceCrystal-50259"
  value: {
-  dps: 6311.30028
-  tps: 4481.0232
+  dps: 6535.48238
+  tps: 4640.19249
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Nibelung-49992"
  value: {
-  dps: 6518.25861
-  tps: 4627.96361
+  dps: 6753.10864
+  tps: 4794.70713
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Nibelung-50648"
  value: {
-  dps: 6518.25861
-  tps: 4627.96361
+  dps: 6753.10864
+  tps: 4794.70713
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-OfferingofSacrifice-37638"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PersistentEarthshatterDiamond"
  value: {
-  dps: 6397.09531
-  tps: 4541.93767
+  dps: 6624.42497
+  tps: 4703.34173
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PersistentEarthsiegeDiamond"
  value: {
-  dps: 6402.99516
-  tps: 4546.12657
+  dps: 6630.53162
+  tps: 4707.67745
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PetrifiedScarab-21685"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PetrifiedTwilightScale-54571"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PetrifiedTwilightScale-54591"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PowerfulEarthshatterDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PowerfulEarthsiegeDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-PurifiedShardoftheGods"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ReignoftheDead-47316"
  value: {
-  dps: 6364.24309
-  tps: 4518.61259
+  dps: 6583.22346
+  tps: 4674.08866
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ReignoftheDead-47477"
  value: {
-  dps: 6379.40533
-  tps: 4529.37778
+  dps: 6598.42863
+  tps: 4684.88433
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RelentlessEarthsiegeDiamond"
  value: {
-  dps: 6518.25861
-  tps: 4627.96361
+  dps: 6753.10864
+  tps: 4794.70713
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RevitalizingSkyflareDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-RuneofRepulsion-40372"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SealofthePantheon-36993"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Shadowblade'sBattlegear"
  value: {
-  dps: 7239.99449
-  tps: 5140.39609
+  dps: 7477.74357
+  tps: 5309.19793
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Shadowmourne-49623"
  value: {
-  dps: 6518.25861
-  tps: 4627.96361
+  dps: 6753.10864
+  tps: 4794.70713
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ShinyShardoftheGods"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Sindragosa'sFlawlessFang-50361"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Slayer'sArmor"
  value: {
-  dps: 4808.85451
-  tps: 3414.2867
+  dps: 4954.12828
+  tps: 3517.43108
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SliverofPureIce-50339"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SliverofPureIce-50346"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SoulPreserver-37111"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SouloftheDead-40382"
  value: {
-  dps: 6352.83632
-  tps: 4510.51379
+  dps: 6578.68891
+  tps: 4670.86913
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SparkofLife-37657"
  value: {
-  dps: 6327.17948
-  tps: 4492.29743
+  dps: 6554.88969
+  tps: 4653.97168
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SphereofRedDragon'sBlood-37166"
  value: {
-  dps: 6415.97197
-  tps: 4555.3401
+  dps: 6641.22972
+  tps: 4715.2731
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-StormshroudArmor"
  value: {
-  dps: 4971.3071
-  tps: 3529.62804
+  dps: 5119.6025
+  tps: 3634.91778
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SwiftSkyflareDiamond"
  value: {
-  dps: 6402.99516
-  tps: 4546.12657
+  dps: 6630.53162
+  tps: 4707.67745
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SwiftStarflareDiamond"
  value: {
-  dps: 6397.09531
-  tps: 4541.93767
+  dps: 6624.42497
+  tps: 4703.34173
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-SwiftWindfireDiamond"
  value: {
-  dps: 6386.77058
-  tps: 4534.60711
+  dps: 6613.73833
+  tps: 4695.75421
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TalismanofTrollDivinity-37734"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TearsoftheVanquished-47215"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TerrorbladeBattlegear"
  value: {
-  dps: 6213.22164
-  tps: 4411.38736
+  dps: 6448.3782
+  tps: 4578.34852
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TheFistsofFury"
  value: {
-  dps: 5565.96469
-  tps: 3951.83493
+  dps: 5762.43363
+  tps: 4091.32788
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TheGeneral'sHeart-45507"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TheTwinBladesofAzzinoth"
  value: {
-  dps: 5716.16491
-  tps: 4058.47709
+  dps: 5890.79427
+  tps: 4182.46393
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-ThunderingSkyflareDiamond"
  value: {
-  dps: 6445.79829
-  tps: 4576.51679
+  dps: 6659.22613
+  tps: 4728.05055
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TinyAbominationinaJar-50351"
  value: {
-  dps: 6552.12895
-  tps: 4652.01156
+  dps: 6764.02118
+  tps: 4802.45504
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TinyAbominationinaJar-50706"
  value: {
-  dps: 6577.31993
-  tps: 4669.89715
+  dps: 6788.52719
+  tps: 4819.85431
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TirelessSkyflareDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TirelessStarflareDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TomeofArcanePhenomena-36972"
  value: {
-  dps: 6302.38026
-  tps: 4474.68999
+  dps: 6516.05227
+  tps: 4626.39711
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TrenchantEarthshatterDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-TrenchantEarthsiegeDiamond"
  value: {
-  dps: 6372.02095
-  tps: 4524.13488
+  dps: 6598.4717
+  tps: 4684.91491
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-UndeadSlayer'sBlessedArmor"
  value: {
-  dps: 5126.93834
-  tps: 3640.12622
+  dps: 5297.82952
+  tps: 3761.45896
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 6055.68499
-  tps: 4299.53634
+  dps: 6243.69028
+  tps: 4433.0201
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-VanCleef'sBattlegear"
  value: {
-  dps: 6069.06835
-  tps: 4309.03853
+  dps: 6280.65355
+  tps: 4459.26402
  }
 }
 dps_results: {
  key: "TestCombat-AllItems-WingedTalisman-37844"
  value: {
-  dps: 6244.19758
-  tps: 4433.38028
+  dps: 6464.04358
+  tps: 4589.47094
  }
 }
 dps_results: {
  key: "TestCombat-Average-Default"
  value: {
-  dps: 6518.32572
-  tps: 4628.01126
+  dps: 6742.43998
+  tps: 4787.13239
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-FullBuffs-LongMultiTarget"
  value: {
-  dps: 20234.57804
-  tps: 14366.55041
+  dps: 20886.87076
+  tps: 14829.67824
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-FullBuffs-LongSingleTarget"
  value: {
-  dps: 4350.79389
-  tps: 3089.06366
+  dps: 4549.01977
+  tps: 3229.80404
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 5302.40594
-  tps: 3764.70822
+  dps: 5559.32096
+  tps: 3947.11788
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-NoBuffs-LongMultiTarget"
  value: {
-  dps: 11970.59374
-  tps: 8499.12156
+  dps: 12357.47325
+  tps: 8773.80601
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2142.24422
-  tps: 1520.99339
+  dps: 2265.10056
+  tps: 1608.2214
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2267.96351
-  tps: 1610.25409
+  dps: 2399.09043
+  tps: 1703.35421
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 12490.57456
-  tps: 8868.30794
+  dps: 12965.83688
+  tps: 9205.74419
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 4182.84288
-  tps: 2969.81844
+  dps: 4364.57663
+  tps: 3098.84941
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 5094.39471
-  tps: 3617.02025
+  dps: 5352.40014
+  tps: 3800.2041
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 6612.97249
-  tps: 4695.21047
+  dps: 6889.79096
+  tps: 4891.75158
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2202.0621
-  tps: 1563.46409
+  dps: 2306.36945
+  tps: 1637.52231
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2353.96596
-  tps: 1671.31583
+  dps: 2467.9611
+  tps: 1752.25238
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 6037.68113
-  tps: 4286.7536
+  dps: 6310.64847
+  tps: 4480.56041
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5200.11018
-  tps: 3692.07823
+  dps: 5431.18744
+  tps: 3856.14308
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 6172.48827
-  tps: 4382.46667
+  dps: 6442.70514
+  tps: 4574.32065
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 3054.53426
-  tps: 2168.71932
+  dps: 3187.86898
+  tps: 2263.38698
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2666.6879
-  tps: 1893.34841
+  dps: 2780.94436
+  tps: 1974.4705
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-combat_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2809.27254
-  tps: 1994.5835
+  dps: 2941.57828
+  tps: 2088.52058
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-fan_aoe-FullBuffs-LongMultiTarget"
  value: {
-  dps: 21132.20952
-  tps: 15003.86876
+  dps: 21799.79313
+  tps: 15477.85312
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-fan_aoe-FullBuffs-LongSingleTarget"
  value: {
-  dps: 3516.89637
-  tps: 2496.99642
+  dps: 3672.35361
+  tps: 2607.37107
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-fan_aoe-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 4109.75712
-  tps: 2917.92755
+  dps: 4302.97795
+  tps: 3055.11435
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-fan_aoe-NoBuffs-LongMultiTarget"
  value: {
-  dps: 13003.58802
-  tps: 9232.54749
+  dps: 13372.63571
+  tps: 9494.57136
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-fan_aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 1778.52693
-  tps: 1262.75412
+  dps: 1871.67133
+  tps: 1328.88665
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Deadly-fan_aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 1863.43428
-  tps: 1323.03834
+  dps: 1964.04605
+  tps: 1394.4727
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd-FullBuffs-LongMultiTarget"
  value: {
-  dps: 20795.95056
-  tps: 14765.1249
+  dps: 21450.66687
+  tps: 15229.97347
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5704.94916
-  tps: 4050.5139
+  dps: 5901.58151
+  tps: 4190.12287
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 6879.06271
-  tps: 4884.13452
+  dps: 7140.81138
+  tps: 5069.97608
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd-NoBuffs-LongMultiTarget"
  value: {
-  dps: 11638.58237
-  tps: 8263.39348
+  dps: 12024.76327
+  tps: 8537.58192
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2794.37743
-  tps: 1984.00797
+  dps: 2919.69753
+  tps: 2072.98525
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2910.22216
-  tps: 2066.25774
+  dps: 3043.12126
+  tps: 2160.6161
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 12593.50921
-  tps: 8941.39154
+  dps: 12996.11228
+  tps: 9227.23972
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5520.81684
-  tps: 3919.77996
+  dps: 5711.65189
+  tps: 4055.27284
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 6627.52518
-  tps: 4705.54288
+  dps: 6906.70181
+  tps: 4903.75829
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 6502.17508
-  tps: 4616.5443
+  dps: 6809.75732
+  tps: 4834.9277
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2854.87556
-  tps: 2026.96164
+  dps: 2962.82524
+  tps: 2103.60592
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2979.69451
-  tps: 2115.5831
+  dps: 3096.59112
+  tps: 2198.5797
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 7256.25609
-  tps: 5151.94183
+  dps: 7543.61818
+  tps: 5355.96891
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 6518.25861
-  tps: 4627.96361
+  dps: 6753.10864
+  tps: 4794.70713
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 7699.5738
-  tps: 5466.6974
+  dps: 7975.97246
+  tps: 5662.94045
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 3635.8965
-  tps: 2581.48652
+  dps: 3766.96082
+  tps: 2674.54218
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 3302.91759
-  tps: 2345.07149
+  dps: 3418.11343
+  tps: 2426.86054
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-combat_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 3405.31611
-  tps: 2417.77443
+  dps: 3540.11311
+  tps: 2513.48031
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-fan_aoe-FullBuffs-LongMultiTarget"
  value: {
-  dps: 22695.82072
-  tps: 16114.03271
+  dps: 23448.95983
+  tps: 16648.76148
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-fan_aoe-FullBuffs-LongSingleTarget"
  value: {
-  dps: 4601.62498
-  tps: 3267.15373
+  dps: 4759.7061
+  tps: 3379.39133
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-fan_aoe-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 5306.8537
-  tps: 3767.86612
+  dps: 5497.82683
+  tps: 3903.45705
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-fan_aoe-NoBuffs-LongMultiTarget"
  value: {
-  dps: 13260.84412
-  tps: 9415.19933
+  dps: 13678.89021
+  tps: 9712.01205
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-fan_aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2301.87343
-  tps: 1634.33013
+  dps: 2396.33177
+  tps: 1701.39556
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Deadly OH Instant-fan_aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2337.44435
-  tps: 1659.58549
+  dps: 2441.53784
+  tps: 1733.49187
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd-FullBuffs-LongMultiTarget"
  value: {
-  dps: 23060.4016
-  tps: 16372.88514
+  dps: 23708.93355
+  tps: 16833.34282
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd-FullBuffs-LongSingleTarget"
  value: {
-  dps: 6217.73432
-  tps: 4414.59137
+  dps: 6414.10967
+  tps: 4554.01786
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 7505.87143
-  tps: 5329.16872
+  dps: 7775.10948
+  tps: 5520.32773
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd-NoBuffs-LongMultiTarget"
  value: {
-  dps: 12894.22483
-  tps: 9154.89963
+  dps: 13287.32215
+  tps: 9433.99873
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd-NoBuffs-LongSingleTarget"
  value: {
-  dps: 3043.6482
-  tps: 2160.99022
+  dps: 3169.11749
+  tps: 2250.07342
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 3156.49984
-  tps: 2241.11489
+  dps: 3293.0851
+  tps: 2338.09042
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 13912.40594
-  tps: 9877.80822
+  dps: 14375.54636
+  tps: 10206.63792
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 6006.10674
-  tps: 4264.33578
+  dps: 6194.11693
+  tps: 4397.82302
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 7249.68498
-  tps: 5147.27634
+  dps: 7520.39777
+  tps: 5339.48242
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 7189.40934
-  tps: 5104.48063
+  dps: 7502.43187
+  tps: 5326.72663
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 3088.566
-  tps: 2192.88186
+  dps: 3197.59904
+  tps: 2270.29532
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 3221.66893
-  tps: 2287.38494
+  dps: 3339.93776
+  tps: 2371.35581
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 7722.16594
-  tps: 5482.73782
+  dps: 8010.17983
+  tps: 5687.22768
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 6972.90353
-  tps: 4950.76151
+  dps: 7214.41751
+  tps: 5122.23644
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 8270.01686
-  tps: 5871.71197
+  dps: 8547.32477
+  tps: 6068.60059
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 3856.20329
-  tps: 2737.90434
+  dps: 3988.95398
+  tps: 2832.15732
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 3519.0204
-  tps: 2498.50449
+  dps: 3633.6283
+  tps: 2579.87609
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-combat_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 3632.15346
-  tps: 2578.82895
+  dps: 3771.79919
+  tps: 2677.97743
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-fan_aoe-FullBuffs-LongMultiTarget"
  value: {
-  dps: 25256.98021
-  tps: 17932.45595
+  dps: 25933.14951
+  tps: 18412.53615
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-fan_aoe-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5018.34623
-  tps: 3563.02583
+  dps: 5179.15564
+  tps: 3677.2005
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-fan_aoe-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 5809.23206
-  tps: 4124.55476
+  dps: 6006.04904
+  tps: 4264.29482
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-fan_aoe-NoBuffs-LongMultiTarget"
  value: {
-  dps: 14807.07114
-  tps: 10513.02051
+  dps: 15164.02567
+  tps: 10766.45822
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-fan_aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2519.14739
-  tps: 1788.59464
+  dps: 2614.46353
+  tps: 1856.26911
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Deadly-fan_aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2588.00612
-  tps: 1837.48434
+  dps: 2690.36687
+  tps: 1910.16048
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd-FullBuffs-LongMultiTarget"
  value: {
-  dps: 18028.59731
-  tps: 12800.30409
+  dps: 18632.83254
+  tps: 13229.3111
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5301.56711
-  tps: 3764.11265
+  dps: 5490.6072
+  tps: 3898.33111
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 6599.99315
-  tps: 4685.99514
+  dps: 6848.54549
+  tps: 4862.4673
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd-NoBuffs-LongMultiTarget"
  value: {
-  dps: 9924.43393
-  tps: 7046.34809
+  dps: 10293.7556
+  tps: 7308.56647
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2453.10627
-  tps: 1741.70545
+  dps: 2573.87041
+  tps: 1827.44799
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2627.59652
-  tps: 1865.59353
+  dps: 2760.32145
+  tps: 1959.82823
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 11942.5239
-  tps: 8479.19197
+  dps: 12323.65275
+  tps: 8749.79345
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5102.4251
-  tps: 3622.72182
+  dps: 5305.12865
+  tps: 3766.64134
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 6317.77058
-  tps: 4485.61711
+  dps: 6597.04373
+  tps: 4683.90105
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 6036.05575
-  tps: 4285.59958
+  dps: 6297.53368
+  tps: 4471.24891
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2514.32595
-  tps: 1785.17142
+  dps: 2616.17064
+  tps: 1857.48115
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2724.64954
-  tps: 1934.50118
+  dps: 2841.8275
+  tps: 2017.69752
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 6852.30128
-  tps: 4865.13391
+  dps: 7148.94743
+  tps: 5075.75268
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 6097.14701
-  tps: 4328.97437
+  dps: 6341.91762
+  tps: 4502.76151
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 7396.68192
-  tps: 5251.64417
+  dps: 7665.92751
+  tps: 5442.80853
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 3284.44081
-  tps: 2331.95298
+  dps: 3407.73362
+  tps: 2419.49087
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2954.25141
-  tps: 2097.5185
+  dps: 3059.33161
+  tps: 2172.12544
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-combat_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 3137.61614
-  tps: 2227.70746
+  dps: 3263.34296
+  tps: 2316.9735
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-fan_aoe-FullBuffs-LongMultiTarget"
  value: {
-  dps: 18824.30249
-  tps: 13365.25477
+  dps: 19439.25386
+  tps: 13801.87024
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-fan_aoe-FullBuffs-LongSingleTarget"
  value: {
-  dps: 4189.47287
-  tps: 2974.52573
+  dps: 4342.91611
+  tps: 3083.47044
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-fan_aoe-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 5004.60982
-  tps: 3553.27297
+  dps: 5229.09713
+  tps: 3712.65896
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-fan_aoe-NoBuffs-LongMultiTarget"
  value: {
-  dps: 10831.81586
-  tps: 7690.58926
+  dps: 11191.43356
+  tps: 7945.91783
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-fan_aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 1983.7099
-  tps: 1408.43403
+  dps: 2074.3179
+  tps: 1472.76571
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Human-p1_combat-MH Instant OH Instant-fan_aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2101.37058
-  tps: 1491.97311
+  dps: 2200.08496
+  tps: 1562.06032
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-FullBuffs-LongMultiTarget"
  value: {
-  dps: 20420.09133
-  tps: 14498.26484
+  dps: 21082.56709
+  tps: 14968.62263
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-FullBuffs-LongSingleTarget"
  value: {
-  dps: 4389.79035
-  tps: 3116.75115
+  dps: 4592.82551
+  tps: 3260.90611
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 5383.33602
-  tps: 3822.16857
+  dps: 5643.95817
+  tps: 4007.2103
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-NoBuffs-LongMultiTarget"
  value: {
-  dps: 12056.42079
-  tps: 8560.05876
+  dps: 12464.92497
+  tps: 8850.09673
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2164.91591
-  tps: 1537.0903
+  dps: 2286.26272
+  tps: 1623.24653
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2312.99094
-  tps: 1642.22356
+  dps: 2439.71908
+  tps: 1732.20055
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 12600.08815
-  tps: 8946.06259
+  dps: 13090.22878
+  tps: 9294.06244
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 4210.66211
-  tps: 2989.5701
+  dps: 4391.45054
+  tps: 3117.92988
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 5182.50339
-  tps: 3679.57741
+  dps: 5441.35078
+  tps: 3863.35905
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 6701.23605
-  tps: 4757.87759
+  dps: 6978.02919
+  tps: 4954.40072
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2219.99673
-  tps: 1576.19768
+  dps: 2322.67602
+  tps: 1649.09998
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_cleave_snd_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2392.28024
-  tps: 1698.51897
+  dps: 2508.14445
+  tps: 1780.78256
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 6097.10114
-  tps: 4328.94181
+  dps: 6384.07286
+  tps: 4532.69173
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5242.3421
-  tps: 3722.06289
+  dps: 5471.85258
+  tps: 3885.01533
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 6249.98
-  tps: 4437.4858
+  dps: 6520.26602
+  tps: 4629.38887
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 3084.8708
-  tps: 2190.25827
+  dps: 3222.82884
+  tps: 2288.20848
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2686.88105
-  tps: 1907.68554
+  dps: 2801.49737
+  tps: 1989.06314
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-combat_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2850.1627
-  tps: 2023.61551
+  dps: 2981.1301
+  tps: 2116.60237
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-fan_aoe-FullBuffs-LongMultiTarget"
  value: {
-  dps: 21290.63515
-  tps: 15116.35096
+  dps: 22005.57175
+  tps: 15623.95594
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-fan_aoe-FullBuffs-LongSingleTarget"
  value: {
-  dps: 3540.60866
-  tps: 2513.83215
+  dps: 3701.9067
+  tps: 2628.35376
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-fan_aoe-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 4172.47671
-  tps: 2962.45847
+  dps: 4368.58207
+  tps: 3101.69327
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-fan_aoe-NoBuffs-LongMultiTarget"
  value: {
-  dps: 13113.07646
-  tps: 9310.28429
+  dps: 13517.46127
+  tps: 9597.3975
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-fan_aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 1793.27032
-  tps: 1273.22193
+  dps: 1887.88529
+  tps: 1340.39856
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Deadly-fan_aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 1900.39941
-  tps: 1349.28358
+  dps: 2000.47932
+  tps: 1420.34032
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd-FullBuffs-LongMultiTarget"
  value: {
-  dps: 20922.37191
-  tps: 14854.88405
+  dps: 21648.09134
+  tps: 15370.14485
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5753.08831
-  tps: 4084.6927
+  dps: 5959.34402
+  tps: 4231.13425
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 6977.68343
-  tps: 4954.15524
+  dps: 7243.24162
+  tps: 5142.70155
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd-NoBuffs-LongMultiTarget"
  value: {
-  dps: 11751.20145
-  tps: 8343.35303
+  dps: 12140.48016
+  tps: 8619.74091
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2821.57259
-  tps: 2003.31654
+  dps: 2947.08768
+  tps: 2092.43225
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2963.18727
-  tps: 2103.86296
+  dps: 3092.32027
+  tps: 2195.54739
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 12705.1952
-  tps: 9020.68859
+  dps: 13123.33483
+  tps: 9317.56773
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5556.94997
-  tps: 3945.43448
+  dps: 5751.09497
+  tps: 4083.27743
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 6736.27974
-  tps: 4782.75862
+  dps: 7016.05139
+  tps: 4981.39649
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 6562.81249
-  tps: 4659.59687
+  dps: 6874.50216
+  tps: 4880.89653
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2877.69565
-  tps: 2043.16391
+  dps: 2984.73477
+  tps: 2119.16169
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_cleave_snd_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 3025.85724
-  tps: 2148.35864
+  dps: 3144.28209
+  tps: 2232.44028
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 7330.9479
-  tps: 5204.97301
+  dps: 7621.73879
+  tps: 5411.43454
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 6570.08894
-  tps: 4664.76314
+  dps: 6806.59722
+  tps: 4832.68403
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 7795.70698
-  tps: 5534.95196
+  dps: 8070.95045
+  tps: 5730.37482
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 3669.8199
-  tps: 2605.57213
+  dps: 3806.46105
+  tps: 2702.58734
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 3327.61222
-  tps: 2362.60468
+  dps: 3442.44403
+  tps: 2444.13526
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-combat_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 3452.79805
-  tps: 2451.48662
+  dps: 3585.68445
+  tps: 2545.83596
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-fan_aoe-FullBuffs-LongMultiTarget"
  value: {
-  dps: 22855.23185
-  tps: 16227.21462
+  dps: 23587.32353
+  tps: 16746.9997
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-fan_aoe-FullBuffs-LongSingleTarget"
  value: {
-  dps: 4631.68558
-  tps: 3288.49676
+  dps: 4796.75498
+  tps: 3405.69603
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-fan_aoe-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 5384.15189
-  tps: 3822.74784
+  dps: 5577.98526
+  tps: 3960.36954
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-fan_aoe-NoBuffs-LongMultiTarget"
  value: {
-  dps: 13404.07154
-  tps: 9516.8908
+  dps: 13805.26974
+  tps: 9801.74152
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-fan_aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2322.07483
-  tps: 1648.67313
+  dps: 2418.08817
+  tps: 1716.8426
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Deadly OH Instant-fan_aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2383.73941
-  tps: 1692.45498
+  dps: 2487.53719
+  tps: 1766.1514
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd-FullBuffs-LongMultiTarget"
  value: {
-  dps: 23245.24243
-  tps: 16504.12213
+  dps: 23908.26035
+  tps: 16974.86485
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd-FullBuffs-LongSingleTarget"
  value: {
-  dps: 6270.21461
-  tps: 4451.85237
+  dps: 6475.91978
+  tps: 4597.90304
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 7612.46879
-  tps: 5404.85284
+  dps: 7887.84214
+  tps: 5600.36792
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd-NoBuffs-LongMultiTarget"
  value: {
-  dps: 12999.59044
-  tps: 9229.70921
+  dps: 13427.47583
+  tps: 9533.50784
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd-NoBuffs-LongSingleTarget"
  value: {
-  dps: 3071.974
-  tps: 2181.10154
+  dps: 3198.42756
+  tps: 2270.88357
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 3214.18984
-  tps: 2282.07479
+  dps: 3346.12481
+  tps: 2375.74862
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 14013.6001
-  tps: 9949.65607
+  dps: 14505.22352
+  tps: 10298.7087
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 6049.24515
-  tps: 4294.96406
+  dps: 6236.44314
+  tps: 4427.87463
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 7366.77263
-  tps: 5230.40857
+  dps: 7639.75101
+  tps: 5424.22322
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 7276.14478
-  tps: 5166.06279
+  dps: 7583.46381
+  tps: 5384.2593
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 3110.3369
-  tps: 2208.3392
+  dps: 3221.14492
+  tps: 2287.01289
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_cleave_snd_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 3270.99909
-  tps: 2322.40936
+  dps: 3390.23017
+  tps: 2407.06342
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 7798.06254
-  tps: 5536.6244
+  dps: 8090.15032
+  tps: 5744.00672
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 7024.8201
-  tps: 4987.62227
+  dps: 7271.99765
+  tps: 5163.11833
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 8376.53265
-  tps: 5947.33818
+  dps: 8648.06039
+  tps: 6140.12287
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 3893.63395
-  tps: 2764.4801
+  dps: 4031.00248
+  tps: 2862.01176
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 3546.0517
-  tps: 2517.6967
+  dps: 3661.2901
+  tps: 2599.51597
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-combat_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 3682.60996
-  tps: 2614.65307
+  dps: 3820.93658
+  tps: 2712.86497
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-fan_aoe-FullBuffs-LongMultiTarget"
  value: {
-  dps: 25439.18557
-  tps: 18061.82176
+  dps: 26152.59627
+  tps: 18568.34335
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-fan_aoe-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5052.03546
-  tps: 3586.94518
+  dps: 5220.54155
+  tps: 3706.5845
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-fan_aoe-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 5894.33138
-  tps: 4184.97528
+  dps: 6093.46775
+  tps: 4326.3621
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-fan_aoe-NoBuffs-LongMultiTarget"
  value: {
-  dps: 14939.32565
-  tps: 10606.92121
+  dps: 15333.80945
+  tps: 10887.00471
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-fan_aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2539.17634
-  tps: 1802.8152
+  dps: 2636.39741
+  tps: 1871.84216
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Deadly-fan_aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2635.71107
-  tps: 1871.35486
+  dps: 2737.42119
+  tps: 1943.56904
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd-FullBuffs-LongMultiTarget"
  value: {
-  dps: 18199.26345
-  tps: 12921.47705
+  dps: 18816.70347
+  tps: 13359.85946
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5352.99122
-  tps: 3800.62377
+  dps: 5553.5983
+  tps: 3943.05479
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 6693.8515
-  tps: 4752.63456
+  dps: 6941.16157
+  tps: 4928.22472
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd-NoBuffs-LongMultiTarget"
  value: {
-  dps: 10001.21696
-  tps: 7100.86404
+  dps: 10389.84058
+  tps: 7376.78681
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2476.31724
-  tps: 1758.18524
+  dps: 2597.5482
+  tps: 1844.25922
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2678.41202
-  tps: 1901.67253
+  dps: 2807.8737
+  tps: 1993.59033
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 12039.60685
-  tps: 8548.12086
+  dps: 12444.78413
+  tps: 8835.79673
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 5135.80547
-  tps: 3646.42189
+  dps: 5335.55158
+  tps: 3788.24162
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 6426.37796
-  tps: 4562.72835
+  dps: 6707.34722
+  tps: 4762.21652
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 6105.96527
-  tps: 4335.23534
+  dps: 6381.24388
+  tps: 4530.68315
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2534.66792
-  tps: 1799.61422
+  dps: 2639.8961
+  tps: 1874.32623
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_cleave_snd_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2770.65215
-  tps: 1967.16302
+  dps: 2888.85564
+  tps: 2051.0875
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_expose-FullBuffs-LongMultiTarget"
  value: {
-  dps: 6926.98622
-  tps: 4918.16022
+  dps: 7220.88725
+  tps: 5126.82995
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_expose-FullBuffs-LongSingleTarget"
  value: {
-  dps: 6146.22204
-  tps: 4363.81765
+  dps: 6386.05106
+  tps: 4534.09626
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_expose-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 7490.74191
-  tps: 5318.42675
+  dps: 7761.21266
+  tps: 5510.46099
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_expose-NoBuffs-LongMultiTarget"
  value: {
-  dps: 3320.35762
-  tps: 2357.45391
+  dps: 3446.62766
+  tps: 2447.10564
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_expose-NoBuffs-LongSingleTarget"
  value: {
-  dps: 2980.70963
-  tps: 2116.30384
+  dps: 3085.04254
+  tps: 2190.3802
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-combat_expose-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 3188.92577
-  tps: 2264.13729
+  dps: 3308.71844
+  tps: 2349.19009
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-fan_aoe-FullBuffs-LongMultiTarget"
  value: {
-  dps: 18971.67938
-  tps: 13469.89236
+  dps: 19632.79628
+  tps: 13939.28536
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-fan_aoe-FullBuffs-LongSingleTarget"
  value: {
-  dps: 4220.37505
-  tps: 2996.46629
+  dps: 4384.42815
+  tps: 3112.94398
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-fan_aoe-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 5084.05186
-  tps: 3609.67682
+  dps: 5317.82502
+  tps: 3775.65576
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-fan_aoe-NoBuffs-LongMultiTarget"
  value: {
-  dps: 10943.42878
-  tps: 7769.83444
+  dps: 11319.20692
+  tps: 8036.63691
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-fan_aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 1997.50981
-  tps: 1418.23196
+  dps: 2090.48219
+  tps: 1484.24235
  }
 }
 dps_results: {
  key: "TestCombat-Settings-Orc-p1_combat-MH Instant OH Instant-fan_aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 2147.90528
-  tps: 1525.01275
+  dps: 2241.29025
+  tps: 1591.31608
  }
 }
 dps_results: {
  key: "TestCombat-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 6153.71453
-  tps: 4369.13732
+  dps: 6325.85926
+  tps: 4491.36008
  }
 }

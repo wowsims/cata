@@ -10,7 +10,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-// Example db input file: https://nether.wowhead.com/wotlk/data/gear-planner?dv=100
+// Example db input file: https://nether.wowhead.com/cata/data/gear-planner?dv=100
 
 func ParseWowheadDB(dbContents string) WowheadDatabase {
 	var wowheadDB WowheadDatabase
@@ -38,7 +38,7 @@ func ParseWowheadDB(dbContents string) WowheadDatabase {
 
 		commaIdx := strings.Index(dbPart, ",")
 		dbContents := dbPart[commaIdx+1:]
-		if dbName == "wow.gearPlanner.wrath.item" {
+		if dbName == "wow.gearPlanner.cata.item" {
 			standardized, err := hujson.Standardize([]byte(dbContents)) // Removes invalid JSON, such as trailing commas
 			if err != nil {
 				log.Fatalf("Failed to standardize json %s\n\n%s\n\n%s", err, dbContents[0:30], dbContents[len(dbContents)-30:])

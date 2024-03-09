@@ -12,7 +12,7 @@ func (rogue *Rogue) registerGarrote() {
 	var glyphMultiplier float64
 	if rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfGarrote) {
 		numTicks = 5
-		glyphMultiplier = 0.44 // cp. https://www.wowhead.com/wotlk/spell=56812/glyph-of-garrote
+		glyphMultiplier = 0.44 // cp. https://www.wowhead.com/cata/spell=56812/glyph-of-garrote
 	}
 
 	rogue.Garrote = rogue.GetOrRegisterSpell(core.SpellConfig{

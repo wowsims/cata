@@ -51,7 +51,7 @@ import P4StarfireAplJson from './apls/p4_starfire_glyph.apl.json';
 export const ROTATION_PRESET_P4_STARFIRE_APL = PresetUtils.makePresetAPLRotation('P4 Starfire Glyph', P4StarfireAplJson);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
+// https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const Phase1Talents = {
 	name: 'Phase 1',
 	data: SavedTalents.create({

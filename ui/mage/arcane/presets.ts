@@ -104,7 +104,7 @@ import FrostAoeApl from './apls/frost_aoe.apl.json';
 export const FROST_ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Frost AOE', FrostAoeApl, { talentTree: 2 });
 
 // Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
+// https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const ArcaneTalents = {
 	name: 'Arcane',
 	data: SavedTalents.create({

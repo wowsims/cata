@@ -148,7 +148,7 @@ export class IndividualLinkImporter {
 		return map;
 	})();
 
-	static tryParseUrlLocation(location: Location): UrlParseData|null {
+	static tryParseUrlLocation(location: Location): UrlParseData | null {
 		let hash = location.hash;
 		if (hash.length <= 1) {
 			return null;
@@ -171,7 +171,7 @@ export class IndividualLinkImporter {
 			const categoryChars = urlParams.get(IndividualLinkImporter.CATEGORY_PARAM)!.split('');
 			exportCategories = categoryChars
 				.map(char => [...IndividualLinkImporter.CATEGORY_KEYS.entries()]
-				.find(e => e[1] == char))
+					.find(e => e[1] == char))
 				.filter(e => e)
 				.map(e => e![0]);
 		}

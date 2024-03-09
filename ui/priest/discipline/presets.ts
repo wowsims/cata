@@ -44,7 +44,7 @@ import AOE4PlusApl from './apls/aoe_4_plus.apl.json'
 export const ROTATION_PRESET_AOE4PLUS = PresetUtils.makePresetAPLRotation('AOE (4+ targets)', AOE4PlusApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
+// https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({

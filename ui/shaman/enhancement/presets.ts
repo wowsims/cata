@@ -55,7 +55,7 @@ import Phase3Apl from './apls/phase_3.apl.json';
 export const ROTATION_PHASE_3 = PresetUtils.makePresetAPLRotation('Phase 3', Phase3Apl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
+// https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
@@ -88,10 +88,10 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 	imbueOh: ShamanImbue.FlametongueWeapon,
 	syncType: ShamanSyncType.Auto,
 	totems: ShamanTotems.create({
-		earth: 	EarthTotem.StrengthOfEarthTotem,
-		fire: 	FireTotem.MagmaTotem,
-		water: 	WaterTotem.ManaSpringTotem,
-		air: 	AirTotem.WindfuryTotem,
+		earth: EarthTotem.StrengthOfEarthTotem,
+		fire: FireTotem.MagmaTotem,
+		water: WaterTotem.ManaSpringTotem,
+		air: AirTotem.WindfuryTotem,
 	})
 });
 

@@ -37,7 +37,7 @@ import P4Gear from './gear_sets/p4.gear.json';
 export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
+// https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const CelestialFocusTalents = {
 	name: 'Celestial Focus',
 	data: SavedTalents.create({
