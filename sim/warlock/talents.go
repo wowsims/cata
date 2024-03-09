@@ -80,10 +80,10 @@ func (warlock *Warlock) applyDeathsEmbrace() {
 }
 
 func (warlock *Warlock) applyWeaponImbue() {
-	if warlock.Options.WeaponImbue == proto.Warlock_Options_GrandFirestone {
+	if warlock.Options.WeaponImbue == proto.WarlockOptions_GrandFirestone {
 		warlock.AddStat(stats.SpellCrit, 49*(1+1.5*float64(warlock.Talents.MasterConjuror)))
 	}
-	if warlock.Options.WeaponImbue == proto.Warlock_Options_GrandSpellstone {
+	if warlock.Options.WeaponImbue == proto.WarlockOptions_GrandSpellstone {
 		warlock.AddStat(stats.SpellHaste, 60*(1+1.5*float64(warlock.Talents.MasterConjuror)))
 	}
 }
@@ -108,7 +108,7 @@ func (warlock *Warlock) setupGlyphOfLifeTapAura() {
 }
 
 func (warlock *Warlock) setupEmpoweredImp() {
-	if warlock.Talents.EmpoweredImp <= 0 || warlock.Options.Summon != proto.Warlock_Options_Imp {
+	if warlock.Talents.EmpoweredImp <= 0 || warlock.Options.Summon != proto.WarlockOptions_Imp {
 		return
 	}
 
@@ -546,7 +546,7 @@ func (warlock *Warlock) setupDemonicPact() {
 	warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1. + dpMult
 	warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1. + dpMult
 
-	if warlock.Options.Summon == proto.Warlock_Options_NoSummon {
+	if warlock.Options.Summon == proto.WarlockOptions_NoSummon {
 		return
 	}
 

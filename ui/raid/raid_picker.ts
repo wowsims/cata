@@ -1,33 +1,23 @@
+import { Tooltip } from 'bootstrap';
+
+import { BaseModal } from '../core/components/base_modal.js';
 import { Component } from '../core/components/component.js';
 import { EnumPicker } from '../core/components/enum_picker.js';
-import { Raid } from '../core/raid.js';
-import { MAX_PARTY_SIZE } from '../core/party.js';
-import { Party } from '../core/party.js';
+import { MAX_PARTY_SIZE , Party } from '../core/party.js';
 import { Player } from '../core/player.js';
 import { Player as PlayerProto } from '../core/proto/api.js';
-import { Class } from '../core/proto/common.js';
-import { Profession } from '../core/proto/common.js';
-import { Spec } from '../core/proto/common.js';
-import { Faction } from '../core/proto/common.js';
-import { Glyphs } from '../core/proto/common.js';
-import { cssClassForClass, playerToSpec } from '../core/proto_utils/utils.js';
-import { isTankSpec } from '../core/proto_utils/utils.js';
-import { specToClass } from '../core/proto_utils/utils.js';
-import { newUnitReference } from '../core/proto_utils/utils.js';
-import { EventID, TypedEvent } from '../core/typed_event.js';
-import { formatDeltaTextElem } from '../core/utils.js';
-import { getEnumValues } from '../core/utils.js';
-
-import { RaidSimUI } from './raid_sim_ui.js';
-import { playerPresets, specSimFactories } from './presets.js';
-
+import { Class , Faction , Glyphs,Profession , Spec  } from '../core/proto/common.js';
 import { BalanceDruid_Options as BalanceDruidOptions } from '../core/proto/druid.js';
 import { Mage_Options as MageOptions } from '../core/proto/mage.js';
 import { SmitePriest_Options as SmitePriestOptions } from '../core/proto/priest.js';
-import { BaseModal } from '../core/components/base_modal.js';
-import { Tooltip } from 'bootstrap';
+import { cssClassForClass, newUnitReference,playerToSpec , specToClass  } from '../core/proto_utils/utils.js';
+import { Raid } from '../core/raid.js';
+import { EventID, TypedEvent } from '../core/typed_event.js';
+import { formatDeltaTextElem , getEnumValues } from '../core/utils.js';
+import { playerPresets, specSimFactories } from './presets.js';
+import { RaidSimUI } from './raid_sim_ui.js';
 
-const NEW_PLAYER: number = -1;
+const NEW_PLAYER = -1;
 
 const LATEST_PHASE_WITH_ALL_PRESETS = Math.min(...playerPresets.map(preset => Math.max(...Object.keys(preset.defaultGear[Faction.Alliance]).map(k => parseInt(k)))));
 
@@ -386,7 +376,7 @@ export class PlayerPicker extends Component {
 			if (this.raidPicker.currentDragParty) {
 				return;
 			}
-			var dropData = event.dataTransfer!.getData("text/plain");
+			const dropData = event.dataTransfer!.getData("text/plain");
 
 			event.preventDefault();
 			dragEnterCounter = 0;
@@ -421,7 +411,7 @@ export class PlayerPicker extends Component {
 					}
 					const playerProto = PlayerProto.fromBinary(bytes);
 
-					var localPlayer = new Player(playerToSpec(playerProto), this.raidPicker.raidSimUI.sim);
+					const localPlayer = new Player(playerToSpec(playerProto), this.raidPicker.raidSimUI.sim);
 					localPlayer.fromProto(eventID, playerProto);
 					this.raidPicker.currentDragPlayer = localPlayer;
 				}
@@ -567,7 +557,7 @@ export class PlayerPicker extends Component {
 			event.dataTransfer!.effectAllowed = 'all';
 
 			if (this.player) {
-				var playerDataProto = this.player.toProto(true);
+				const playerDataProto = this.player.toProto(true);
 				event.dataTransfer!.setData("text/plain", btoa(String.fromCharCode(...PlayerProto.toBinary(playerDataProto))));
 			}
 
@@ -694,7 +684,7 @@ class NewPlayerPicker extends Component {
 }
 
 function applyNewPlayerAssignments(eventID: EventID, newPlayer: Player<any>, raid: Raid) {
-	if (isTankSpec(newPlayer.spec)) {
+	if (newPlayer.spec.isTankSpec) {
 		const tanks = raid.getTanks();
 		const emptyIdx = tanks.findIndex(tank => raid.getPlayerFromUnitReference(tank) == null);
 		if (emptyIdx == -1) {

@@ -1,33 +1,29 @@
+import * as PresetUtils from '../../core/preset_utils.js';
 import {
 	Consumes,
 	Debuffs,
 	Explosive,
+	Faction,
 	Flask,
 	Food,
 	Glyphs,
 	IndividualBuffs,
 	PartyBuffs,
 	Potions,
-	RaidBuffs,
-	UnitReference,
-	TristateEffect,
-	Faction,
 	Profession,
+	RaidBuffs,
+	TristateEffect,
+	UnitReference,
 } from '../../core/proto/common.js';
-import { SavedTalents } from '../../core/proto/ui.js';
-
 import {
 	BalanceDruid_Options as BalanceDruidOptions,
 	DruidMajorGlyph,
 	DruidMinorGlyph,
 } from '../../core/proto/druid.js';
-
-import * as PresetUtils from '../../core/preset_utils.js';
-
+import { SavedTalents } from '../../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
 import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
 import P1Gear from './gear_sets/p1.gear.json';
@@ -166,5 +162,4 @@ export const OtherDefaults = {
 	distanceFromTarget: 18,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
-	nibelungAverageCasts: 11,
 };

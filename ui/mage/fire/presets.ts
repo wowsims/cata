@@ -1,3 +1,5 @@
+import { Player } from '../core/player.js';
+import * as PresetUtils from '../core/preset_utils.js';
 import {
 	Conjured,
 	Consumes,
@@ -10,24 +12,18 @@ import {
 	Spec,
 	UnitReference,
 } from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-import { Player } from '../core/player.js';
-
 import {
-	Mage_Rotation as MageRotation,
-	Mage_Rotation_PrimaryFireSpell as PrimaryFireSpell,
 	Mage_Options as MageOptions,
 	Mage_Options_ArmorType as ArmorType,
+	Mage_Rotation as MageRotation,
+	Mage_Rotation_PrimaryFireSpell as PrimaryFireSpell,
 	MageMajorGlyph,
 	MageMinorGlyph,
 } from '../core/proto/mage.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
-
+import { SavedTalents } from '../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
 import PreraidArcaneGear from './gear_sets/preraid_arcane.gear.json';
 export const ARCANE_PRERAID_PRESET = PresetUtils.makePresetGear('Arcane Preraid Preset', PreraidArcaneGear, { talentTree: 0 });
 import P1ArcaneGear from './gear_sets/p1_arcane.gear.json';
@@ -225,5 +221,4 @@ export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
-	nibelungAverageCasts: 11,
 };

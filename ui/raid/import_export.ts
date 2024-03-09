@@ -1,7 +1,8 @@
 import { Exporter } from '../core/components/exporters';
 import { Importer } from '../core/components/importers';
-import { RaidSimSettings } from '../core/proto/ui';
-import { EventID, TypedEvent } from '../core/typed_event';
+import { Encounter } from '../core/encounter';
+import { RaidSimPreset } from '../core/individual_sim_ui';
+import { Player } from '../core/player';
 import { Party as PartyProto, Player as PlayerProto, Raid as RaidProto } from '../core/proto/api';
 import {
 	Class,
@@ -11,30 +12,28 @@ import {
 	ItemSpec,
 	Profession,
 	Race,
-	UnitReference,
 	Spec,
 	Target as TargetProto,
+	UnitReference,
 	UnitReference_Type,
 } from '../core/proto/common';
+import { RaidSimSettings } from '../core/proto/ui';
 import { professionNames, raceNames } from '../core/proto_utils/names';
 import {
-	DruidSpecs,
 	DeathknightSpecs,
+	DruidSpecs,
+	getTalentTreePoints,
+	isTankSpec,
+	makeDefaultBlessings,
+	playerToSpec,
 	PriestSpecs,
+	raceToFaction,
 	RogueSpecs,
 	SpecOptions,
-	getTalentTreePoints,
-	makeDefaultBlessings,
-	raceToFaction,
-	isTankSpec,
-	playerToSpec,
 } from '../core/proto_utils/utils';
 import { MAX_NUM_PARTIES } from '../core/raid';
-import { RaidSimPreset } from '../core/individual_sim_ui';
-import { Player } from '../core/player';
-import { Encounter } from '../core/encounter';
+import { EventID, TypedEvent } from '../core/typed_event';
 import { bucket, distinct } from '../core/utils';
-
 import { playerPresets } from './presets';
 import { RaidSimUI } from './raid_sim_ui';
 
@@ -77,7 +76,7 @@ export class RaidJsonExporter extends Exporter {
 
 export class RaidWCLImporter extends Importer {
 
-	private queryCounter: number = 0;
+	private queryCounter = 0;
 
 	private readonly simUI: RaidSimUI;
 	constructor(parent: HTMLElement, simUI: RaidSimUI) {
@@ -121,7 +120,7 @@ export class RaidWCLImporter extends Importer {
 		`;
 	}
 
-	private token: string = '';
+	private token = '';
 	private async getWCLBearerToken(): Promise<string> {
 		if (this.token == '') {
 			const response = await fetch('https://classic.warcraftlogs.com/oauth/token', {
@@ -474,7 +473,7 @@ export class RaidWCLImporter extends Importer {
 		});
 
 		// Use the preset encounter if it exists.
-		let closestEncounterPreset = this.simUI.sim.db.getAllPresetEncounters().find(enc => enc.path.includes(fight.name));
+		const closestEncounterPreset = this.simUI.sim.db.getAllPresetEncounters().find(enc => enc.path.includes(fight.name));
 		if (closestEncounterPreset && closestEncounterPreset.targets.length) {
 			closestEncounterPreset.targets
 				.map(mob => mob.target as TargetProto)
@@ -504,7 +503,7 @@ export class RaidWCLImporter extends Importer {
 				const playerProto = player.player.toProto();
 				raid.parties[partyIdx].players[positionInParty] = playerProto;
 
-				if (isTankSpec(playerToSpec(playerProto))) {
+				if (playerToSpec(playerProto).isTankSpec) {
 					raid.tanks.push(player.toUnitReference());
 				}
 			});
@@ -518,7 +517,7 @@ class WCLSimPlayer {
 	public readonly id: number;
 	public readonly name: string;
 	public readonly type: string;
-	public raidIndex: number = -1;
+	public raidIndex = -1;
 
 	private readonly simUI: RaidSimUI;
 	private readonly fullType: string;
@@ -579,7 +578,7 @@ class WCLSimPlayer {
 	}
 
 	private static getMatchingPreset(spec: Spec, talents: wclTalents[]): RaidSimPreset<Spec> {
-		const matchingPresets = playerPresets.filter((preset) => preset.spec == spec);
+		const matchingPresets = playerPresets.filter(preset => preset.spec == spec);
 		let presetIdx = 0;
 
 		if (matchingPresets && matchingPresets.length > 1) {
@@ -617,45 +616,43 @@ class WCLSimPlayer {
 }
 
 const fullTypeToSpec: Record<string, Spec> = {
-	'DeathKnightBlood': Spec.SpecTankDeathknight,
-	'DeathKnightLichborne': Spec.SpecTankDeathknight,
-	'DeathKnightRuneblade': Spec.SpecDeathknight,
-	'DeathKnightBloodDPS': Spec.SpecDeathknight,
-	'DeathKnightFrost': Spec.SpecDeathknight,
-	'DeathKnightUnholy': Spec.SpecDeathknight,
+	'DeathKnightBlood': Spec.SpecBloodDeathKnight,
+	'DeathKnightFrost': Spec.SpecFrostDeathKnight,
+	'DeathKnightUnholy': Spec.SpecUnholyDeathKnight,
 	'DruidBalance': Spec.SpecBalanceDruid,
 	'DruidFeral': Spec.SpecFeralDruid,
-	'DruidWarden': Spec.SpecFeralTankDruid,
-	'DruidGuardian': Spec.SpecFeralTankDruid,
+	// TOCO: Cata - Verify tank druid
+	// 'DruidWarden': Spec.SpecFeralDruid,
+	// 'DruidGuardian': Spec.SpecFeralDruid,
 	'DruidRestoration': Spec.SpecRestorationDruid,
-	'HunterBeastMastery': Spec.SpecHunter,
-	'HunterSurvival': Spec.SpecHunter,
-	'HunterMarksmanship': Spec.SpecHunter,
-	'MageArcane': Spec.SpecMage,
-	'MageFire': Spec.SpecMage,
-	'MageFrost': Spec.SpecMage,
+	'HunterBeastMastery': Spec.SpecBeastMasteryHunter,
+	'HunterMarksmanship': Spec.SpecMarksmanshipHunter,
+	'HunterSurvival': Spec.SpecSurvivalHunter,
+	'MageArcane': Spec.SpecArcaneMage,
+	'MageFire': Spec.SpecFireMage,
+	'MageFrost': Spec.SpecFrostMage,
 	'PaladinHoly': Spec.SpecHolyPaladin,
 	'PaladinJusticar': Spec.SpecProtectionPaladin,
 	'PaladinProtection': Spec.SpecProtectionPaladin,
 	'PaladinRetribution': Spec.SpecRetributionPaladin,
-	'PriestHoly': Spec.SpecHealingPriest,
-	'PriestDiscipline': Spec.SpecHealingPriest,
+	'PriestHoly': Spec.SpecHolyPriest,
+	'PriestDiscipline': Spec.SpecDisciplinePriest,
 	'PriestShadow': Spec.SpecShadowPriest,
-	'PriestSmite': Spec.SpecSmitePriest,
-	'RogueAssassination': Spec.SpecRogue,
-	'RogueCombat': Spec.SpecRogue,
-	'RogueSubtlety': Spec.SpecRogue,
+	// 'PriestSmite': Spec.SpecSmitePriest,
+	'RogueAssassination': Spec.SpecAssassinationRogue,
+	'RogueCombat': Spec.SpecCombatRogue,
+	'RogueSubtlety': Spec.SpecSubtletyRogue,
 	'ShamanElemental': Spec.SpecElementalShaman,
 	'ShamanEnhancement': Spec.SpecEnhancementShaman,
 	'ShamanRestoration': Spec.SpecRestorationShaman,
-	'WarlockDestruction': Spec.SpecWarlock,
-	'WarlockAffliction': Spec.SpecWarlock,
-	'WarlockDemonology': Spec.SpecWarlock,
-	'WarriorArms': Spec.SpecWarrior,
-	'WarriorFury': Spec.SpecWarrior,
-	'WarriorChampion': Spec.SpecWarrior,
-	'WarriorWarrior': Spec.SpecWarrior,
-	'WarriorGladiator': Spec.SpecWarrior,
+	'WarlockDestruction': Spec.SpecDestructionWarlock,
+	'WarlockAffliction': Spec.SpecAfflictionWarlock,
+	'WarlockDemonology': Spec.SpecDemonologyWarlock,
+	'WarriorArms': Spec.SpecArmsWarrior,
+	'WarriorFury': Spec.SpecFuryWarrior,
+	// 'WarriorChampion': Spec.SpecWarrior,
+	// 'WarriorWarrior': Spec.SpecWarrior,
+	// 'WarriorGladiator': Spec.SpecWarrior,
 	'WarriorProtection': Spec.SpecProtectionWarrior,
 };
 

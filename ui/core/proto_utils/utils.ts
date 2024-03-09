@@ -82,7 +82,7 @@ import {
 import { Warlock, Warlock_Options as WarlockOptions,Warlock_Rotation as WarlockRotation, WarlockTalents } from '../proto/warlock.js';
 import { ProtectionWarrior, ProtectionWarrior_Options as ProtectionWarriorOptions,ProtectionWarrior_Rotation as ProtectionWarriorRotation,Warrior, Warrior_Options as WarriorOptions,Warrior_Rotation as WarriorRotation, WarriorTalents  } from '../proto/warrior.js';
 import * as Gems from '../proto_utils/gems.js';
-import { Spec } from '../spec.js';
+import { Spec, specFromProto } from '../spec.js';
 import { getEnumValues , intersection , maxIndex , sum } from '../utils.js';
 import { Stats } from './stats.js';
 
@@ -594,88 +594,21 @@ export const specTypeFunctions: Record<SpecProto, SpecTypeFunctions<any>> = {
 
 export const raceToFaction: Record<Race, Faction> = {
 	[Race.RaceUnknown]: Faction.Unknown,
-	[Race.RaceBloodElf]: Faction.Horde,
+
 	[Race.RaceDraenei]: Faction.Alliance,
 	[Race.RaceDwarf]: Faction.Alliance,
 	[Race.RaceGnome]: Faction.Alliance,
 	[Race.RaceHuman]: Faction.Alliance,
 	[Race.RaceNightElf]: Faction.Alliance,
+	[Race.RaceWorgen]: Faction.Alliance,
+
+	[Race.RaceBloodElf]: Faction.Horde,
+	[Race.RaceGoblin]: Faction.Horde,
 	[Race.RaceOrc]: Faction.Horde,
 	[Race.RaceTauren]: Faction.Horde,
 	[Race.RaceTroll]: Faction.Horde,
 	[Race.RaceUndead]: Faction.Horde,
 };
-
-export const specToClass: Record<SpecProto, Class> = {
-	[SpecProto.SpecBalanceDruid]: ClassProto.ClassDruid,
-	[SpecProto.SpecFeralDruid]: ClassProto.ClassDruid,
-	[SpecProto.SpecFeralTankDruid]: ClassProto.ClassDruid,
-	[SpecProto.SpecRestorationDruid]: ClassProto.ClassDruid,
-	[SpecProto.SpecHunter]: ClassProto.ClassHunter,
-	[SpecProto.SpecMage]: ClassProto.ClassMage,
-	[SpecProto.SpecRogue]: ClassProto.ClassRogue,
-	[SpecProto.SpecHolyPaladin]: ClassProto.ClassPaladin,
-	[SpecProto.SpecProtectionPaladin]: ClassProto.ClassPaladin,
-	[SpecProto.SpecRetributionPaladin]: ClassProto.ClassPaladin,
-	[SpecProto.SpecHealingPriest]: ClassProto.ClassPriest,
-	[SpecProto.SpecShadowPriest]: ClassProto.ClassPriest,
-	[SpecProto.SpecSmitePriest]: ClassProto.ClassPriest,
-	[SpecProto.SpecElementalShaman]: ClassProto.ClassShaman,
-	[SpecProto.SpecEnhancementShaman]: ClassProto.ClassShaman,
-	[SpecProto.SpecRestorationShaman]: ClassProto.ClassShaman,
-	[SpecProto.SpecWarlock]: ClassProto.ClassWarlock,
-	[SpecProto.SpecWarrior]: ClassProto.ClassWarrior,
-	[SpecProto.SpecProtectionWarrior]: ClassProto.ClassWarrior,
-	[SpecProto.SpecDeathknight]: ClassProto.ClassDeathknight,
-	[SpecProto.SpecTankDeathknight]: ClassProto.ClassDeathknight,
-};
-
-// Specs that can dual wield. This could be based on class, except that
-// Enhancement Shaman learn dual wield from a talent.
-const dualWieldSpecs: Array<Spec> = [
-	Spec.SpecEnhancementShaman,
-	Spec.SpecHunter,
-	Spec.SpecRogue,
-	Spec.SpecWarrior,
-	Spec.SpecProtectionWarrior,
-	Spec.SpecDeathknight,
-	Spec.SpecTankDeathknight,
-];
-export function isDualWieldSpec(spec: Spec): boolean {
-	return dualWieldSpecs.includes(spec);
-}
-
-// TODO: Cata - Update list
-const tankSpecs: Array<SpecProto> = [
-	SpecProto.SpecProtectionPaladin,
-	SpecProto.SpecProtectionWarrior,
-];
-export function isTankSpec(spec: SpecProto): boolean {
-	return tankSpecs.includes(spec);
-}
-
-// TODO: Cata - Update list
-const healingSpecs: Array<SpecProto> = [
-	SpecProto.SpecRestorationDruid,
-	SpecProto.SpecHolyPaladin,
-	SpecProto.SpecRestorationShaman,
-];
-export function isHealingSpec(spec: SpecProto): boolean {
-	return healingSpecs.includes(spec);
-}
-
-// TODO: Cata - Update list
-const rangedDpsSpecs: Array<SpecProto> = [
-	SpecProto.SpecBalanceDruid,
-	SpecProto.SpecShadowPriest,
-	SpecProto.SpecElementalShaman,
-];
-export function isRangedDpsSpec(spec: SpecProto): boolean {
-	return rangedDpsSpecs.includes(spec);
-}
-export function isMeleeDpsSpec(spec: SpecProto): boolean {
-	return !isTankSpec(spec) && !isHealingSpec(spec) && !isRangedDpsSpec(spec);
-}
 
 // Prefixes used for storing browser data for each site. Even if a Spec is
 // renamed, DO NOT change these values or people will lose their saved data.
@@ -699,238 +632,119 @@ export const specToLocalStorageKey: Record<SpecProto, string> = {
 export function withSpecProto<SpecType extends SpecProto>(
 	spec: SpecProto,
 	player: Player,
-	specOptions: SpecOptions<SpecType>): Player {
+	specOptions: SpecOptions<SpecType>
+): Player {
 	const copy = Player.clone(player);
 
 	switch (spec) {
-		case SpecProto.SpecBalanceDruid:
-			copy.spec = {
-				oneofKind: 'balanceDruid',
-				balanceDruid: BalanceDruid.create({
-					options: specOptions as BalanceDruidOptions,
-				}),
-			};
-			return copy;
-		case SpecProto.SpecFeralDruid:
-			copy.spec = {
-				oneofKind: 'feralDruid',
-				feralDruid: FeralDruid.create({
-					options: specOptions as FeralDruidOptions,
-				}),
-			};
-			return copy;
-		case SpecProto.SpecRestorationDruid:
-			copy.spec = {
-				oneofKind: 'restorationDruid',
-				restorationDruid: RestorationDruid.create({
-					options: specOptions as RestorationDruidOptions,
-				}),
-			};
-			return copy;
-		case SpecProto.SpecElementalShaman:
-			copy.spec = {
-				oneofKind: 'elementalShaman',
-				elementalShaman: ElementalShaman.create({
-					options: specOptions as ElementalShamanOptions,
-				}),
-			};
-			return copy;
-		case SpecProto.SpecEnhancementShaman:
-			copy.spec = {
-				oneofKind: 'enhancementShaman',
-				enhancementShaman: EnhancementShaman.create({
-					options: specOptions as ElementalShamanOptions,
-				}),
-			};
-			return copy;
-		case SpecProto.SpecRestorationShaman:
-			copy.spec = {
-				oneofKind: 'restorationShaman',
-				restorationShaman: RestorationShaman.create({
-					options: specOptions as RestorationShamanOptions,
-				}),
-			};
-			return copy;
-		case SpecProto.SpecHolyPaladin:
-			copy.spec = {
-				oneofKind: 'holyPaladin',
-				holyPaladin: HolyPaladin.create({
-					options: specOptions as HolyPaladinOptions,
-				}),
-			};
-			return copy;
-		case SpecProto.SpecProtectionPaladin:
-			copy.spec = {
-				oneofKind: 'protectionPaladin',
-				protectionPaladin: ProtectionPaladin.create({
-					options: specOptions as ProtectionPaladinOptions,
-				}),
-			};
-			return copy;
-		case SpecProto.SpecRetributionPaladin:
-			copy.spec = {
-				oneofKind: 'retributionPaladin',
-				retributionPaladin: RetributionPaladin.create({
-					options: specOptions as RetributionPaladinOptions,
-				}),
-			};
-			return copy;
-		case SpecProto.SpecShadowPriest:
-			copy.spec = {
-				oneofKind: 'shadowPriest',
-				shadowPriest: ShadowPriest.create({
-					options: specOptions as ShadowPriestOptions,
-				}),
-			};
-			return copy;
-		case SpecProto.SpecProtectionWarrior:
-			copy.spec = {
-				oneofKind: 'protectionWarrior',
-				protectionWarrior: ProtectionWarrior.create({
-					options: specOptions as ProtectionWarriorOptions,
-				}),
-			};
-			return copy;
+	case SpecProto.SpecBalanceDruid:
+		copy.spec = {
+			oneofKind: 'balanceDruid',
+			balanceDruid: BalanceDruid.create({
+				options: specOptions as BalanceDruidOptions,
+			}),
+		};
+		return copy;
+	case SpecProto.SpecFeralDruid:
+		copy.spec = {
+			oneofKind: 'feralDruid',
+			feralDruid: FeralDruid.create({
+				options: specOptions as FeralDruidOptions,
+			}),
+		};
+		return copy;
+	case SpecProto.SpecRestorationDruid:
+		copy.spec = {
+			oneofKind: 'restorationDruid',
+			restorationDruid: RestorationDruid.create({
+				options: specOptions as RestorationDruidOptions,
+			}),
+		};
+		return copy;
+	case SpecProto.SpecElementalShaman:
+		copy.spec = {
+			oneofKind: 'elementalShaman',
+			elementalShaman: ElementalShaman.create({
+				options: specOptions as ElementalShamanOptions,
+			}),
+		};
+		return copy;
+	case SpecProto.SpecEnhancementShaman:
+		copy.spec = {
+			oneofKind: 'enhancementShaman',
+			enhancementShaman: EnhancementShaman.create({
+				options: specOptions as ElementalShamanOptions,
+			}),
+		};
+		return copy;
+	case SpecProto.SpecRestorationShaman:
+		copy.spec = {
+			oneofKind: 'restorationShaman',
+			restorationShaman: RestorationShaman.create({
+				options: specOptions as RestorationShamanOptions,
+			}),
+		};
+		return copy;
+	case SpecProto.SpecHolyPaladin:
+		copy.spec = {
+			oneofKind: 'holyPaladin',
+			holyPaladin: HolyPaladin.create({
+				options: specOptions as HolyPaladinOptions,
+			}),
+		};
+		return copy;
+	case SpecProto.SpecProtectionPaladin:
+		copy.spec = {
+			oneofKind: 'protectionPaladin',
+			protectionPaladin: ProtectionPaladin.create({
+				options: specOptions as ProtectionPaladinOptions,
+			}),
+		};
+		return copy;
+	case SpecProto.SpecRetributionPaladin:
+		copy.spec = {
+			oneofKind: 'retributionPaladin',
+			retributionPaladin: RetributionPaladin.create({
+				options: specOptions as RetributionPaladinOptions,
+			}),
+		};
+		return copy;
+	case SpecProto.SpecShadowPriest:
+		copy.spec = {
+			oneofKind: 'shadowPriest',
+			shadowPriest: ShadowPriest.create({
+				options: specOptions as ShadowPriestOptions,
+			}),
+		};
+		return copy;
+	case SpecProto.SpecProtectionWarrior:
+		copy.spec = {
+			oneofKind: 'protectionWarrior',
+			protectionWarrior: ProtectionWarrior.create({
+				options: specOptions as ProtectionWarriorOptions,
+			}),
+		};
+		return copy;
+	default:
+		return copy;
 	}
 }
 
 export function playerToSpec(player: Player): Spec {
-	const specValues = getEnumValues(Spec);
+	const specValues = getEnumValues(SpecProto);
 	for (let i = 0; i < specValues.length; i++) {
-		const spec = specValues[i] as Spec;
-		let specString = Spec[spec]; // Returns 'SpecBalanceDruid' for BalanceDruid.
+		const spec = specValues[i] as SpecProto;
+		let specString = SpecProto[spec]; // Returns 'SpecBalanceDruid' for BalanceDruid.
 		specString = specString.substring('Spec'.length); // 'BalanceDruid'
 		specString = specString.charAt(0).toLowerCase() + specString.slice(1); // 'balanceDruid'
 
 		if (player.spec.oneofKind == specString) {
-			return spec;
+			return specFromProto(spec);
 		}
 	}
 
 	throw new Error('Unable to parse spec from player proto: ' + JSON.stringify(Player.toJson(player), null, 2));
 }
-
-export const classToMaxArmorType: Record<Class, ArmorType> = {
-	[Class.ClassUnknown]: ArmorType.ArmorTypeUnknown,
-	[Class.ClassDruid]: ArmorType.ArmorTypeLeather,
-	[Class.ClassHunter]: ArmorType.ArmorTypeMail,
-	[Class.ClassMage]: ArmorType.ArmorTypeCloth,
-	[Class.ClassPaladin]: ArmorType.ArmorTypePlate,
-	[Class.ClassPriest]: ArmorType.ArmorTypeCloth,
-	[Class.ClassRogue]: ArmorType.ArmorTypeLeather,
-	[Class.ClassShaman]: ArmorType.ArmorTypeMail,
-	[Class.ClassWarlock]: ArmorType.ArmorTypeCloth,
-	[Class.ClassWarrior]: ArmorType.ArmorTypePlate,
-	[Class.ClassDeathknight]: ArmorType.ArmorTypePlate,
-};
-
-export const classToEligibleRangedWeaponTypes: Record<Class, Array<RangedWeaponType>> = {
-	[Class.ClassUnknown]: [],
-	[Class.ClassDruid]: [RangedWeaponType.RangedWeaponTypeIdol],
-	[Class.ClassHunter]: [
-		RangedWeaponType.RangedWeaponTypeBow,
-		RangedWeaponType.RangedWeaponTypeCrossbow,
-		RangedWeaponType.RangedWeaponTypeGun,
-	],
-	[Class.ClassMage]: [RangedWeaponType.RangedWeaponTypeWand],
-	[Class.ClassPaladin]: [RangedWeaponType.RangedWeaponTypeLibram],
-	[Class.ClassPriest]: [RangedWeaponType.RangedWeaponTypeWand],
-	[Class.ClassRogue]: [
-		RangedWeaponType.RangedWeaponTypeBow,
-		RangedWeaponType.RangedWeaponTypeCrossbow,
-		RangedWeaponType.RangedWeaponTypeGun,
-		RangedWeaponType.RangedWeaponTypeThrown,
-	],
-	[Class.ClassShaman]: [RangedWeaponType.RangedWeaponTypeTotem],
-	[Class.ClassWarlock]: [RangedWeaponType.RangedWeaponTypeWand],
-	[Class.ClassWarrior]: [
-		RangedWeaponType.RangedWeaponTypeBow,
-		RangedWeaponType.RangedWeaponTypeCrossbow,
-		RangedWeaponType.RangedWeaponTypeGun,
-		RangedWeaponType.RangedWeaponTypeThrown,
-	],
-	[Class.ClassDeathknight]: [
-		RangedWeaponType.RangedWeaponTypeSigil,
-	],
-};
-
-interface EligibleWeaponType {
-	weaponType: WeaponType,
-	canUseTwoHand?: boolean,
-}
-
-export const classToEligibleWeaponTypes: Record<Class, Array<EligibleWeaponType>> = {
-	[Class.ClassUnknown]: [],
-	[Class.ClassDruid]: [
-		{ weaponType: WeaponType.WeaponTypeDagger },
-		{ weaponType: WeaponType.WeaponTypeFist },
-		{ weaponType: WeaponType.WeaponTypeMace, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeOffHand },
-		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypePolearm, canUseTwoHand: true },
-	],
-	[Class.ClassHunter]: [
-		{ weaponType: WeaponType.WeaponTypeAxe, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeDagger },
-		{ weaponType: WeaponType.WeaponTypeFist },
-		{ weaponType: WeaponType.WeaponTypeOffHand },
-		{ weaponType: WeaponType.WeaponTypePolearm, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeSword, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
-	],
-	[Class.ClassMage]: [
-		{ weaponType: WeaponType.WeaponTypeDagger },
-		{ weaponType: WeaponType.WeaponTypeOffHand },
-		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeSword },
-	],
-	[Class.ClassPaladin]: [
-		{ weaponType: WeaponType.WeaponTypeAxe, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeMace, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeOffHand },
-		{ weaponType: WeaponType.WeaponTypePolearm, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeShield },
-		{ weaponType: WeaponType.WeaponTypeSword, canUseTwoHand: true },
-	],
-	[Class.ClassPriest]: [
-		{ weaponType: WeaponType.WeaponTypeDagger },
-		{ weaponType: WeaponType.WeaponTypeMace },
-		{ weaponType: WeaponType.WeaponTypeOffHand },
-		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
-	],
-	[Class.ClassRogue]: [
-		{ weaponType: WeaponType.WeaponTypeAxe, canUseTwoHand: false },
-		{ weaponType: WeaponType.WeaponTypeDagger },
-		{ weaponType: WeaponType.WeaponTypeFist },
-		{ weaponType: WeaponType.WeaponTypeMace },
-		{ weaponType: WeaponType.WeaponTypeOffHand },
-		{ weaponType: WeaponType.WeaponTypeSword },
-	],
-	[Class.ClassWarlock]: [
-		{ weaponType: WeaponType.WeaponTypeDagger },
-		{ weaponType: WeaponType.WeaponTypeOffHand },
-		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeSword },
-	],
-	[Class.ClassWarrior]: [
-		{ weaponType: WeaponType.WeaponTypeAxe, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeDagger },
-		{ weaponType: WeaponType.WeaponTypeFist },
-		{ weaponType: WeaponType.WeaponTypeMace, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeOffHand },
-		{ weaponType: WeaponType.WeaponTypePolearm, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeShield },
-		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeSword, canUseTwoHand: true },
-	],
-	[Class.ClassDeathknight]: [
-		{ weaponType: WeaponType.WeaponTypeAxe, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeMace, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypePolearm, canUseTwoHand: true },
-		{ weaponType: WeaponType.WeaponTypeSword, canUseTwoHand: true },
-		// TODO: validate proficiencies
-	],
-};
 
 export function isSharpWeaponType(weaponType: WeaponType): boolean {
 	return [
@@ -951,45 +765,7 @@ export function isBluntWeaponType(weaponType: WeaponType): boolean {
 
 // Custom functions for determining the EP value of meta gem effects.
 // Default meta effect EP value is 0, so just handle the ones relevant to your spec.
-const metaGemEffectEPs: Partial<Record<Spec, (gem: Gem, playerStats: Stats) => number>> = {
-	[Spec.SpecBalanceDruid]: (gem, _) => {
-		if (gem.id == Gems.CHAOTIC_SKYFIRE_DIAMOND.id) {
-			// TODO: Fix this
-			return (12 * 0.65) + (3 * 45);
-		}
-		if (gem.id == Gems.CHAOTIC_SKYFLARE_DIAMOND.id) {
-			return (21 * 0.65) + (3 * 45);
-		}
-		return 0;
-	},
-	[Spec.SpecElementalShaman]: (gem, _) => {
-		if (gem.id == Gems.CHAOTIC_SKYFLARE_DIAMOND.id) {
-			return 84;
-		}
-		if (gem.id == Gems.CHAOTIC_SKYFIRE_DIAMOND.id) {
-			return 80;
-		}
-
-		return 0;
-	},
-	[Spec.SpecWarlock]: (gem, _) => {
-		// TODO: make it gear dependant
-		if (gem.id == Gems.CHAOTIC_SKYFLARE_DIAMOND.id) {
-			return 84;
-		}
-		if (gem.id == Gems.CHAOTIC_SKYFIRE_DIAMOND.id) {
-			return 80;
-		}
-
-		return 0;
-	},
-	[Spec.SpecFeralDruid]: (gem, _) => {
-		// Unknown actual EP, but this is the only effect that matters
-		if (gem.id == Gems.RELENTLESS_EARTHSIEGE_DIAMOND.id || gem.id == Gems.CHAOTIC_SKYFLARE_DIAMOND.id || gem.id == Gems.CHAOTIC_SKYFIRE_DIAMOND.id) {
-			return 80;
-		}
-		return 0;
-	}
+const metaGemEffectEPs: Partial<Record<SpecProto, (gem: Gem, playerStats: Stats) => number>> = {
 };
 
 export function getMetaGemEffectEP(spec: Spec, gem: Gem, playerStats: Stats) {
@@ -1002,8 +778,8 @@ export function getMetaGemEffectEP(spec: Spec, gem: Gem, playerStats: Stats) {
 
 // Returns true if this item may be equipped in at least 1 slot for the given Spec.
 export function canEquipItem(item: Item, spec: Spec, slot: ItemSlot | undefined): boolean {
-	const playerClass = specToClass[spec];
-	if (item.classAllowlist.length > 0 && !item.classAllowlist.includes(playerClass)) {
+	const playerClass = spec.class;
+	if (item.classAllowlist.length > 0 && !item.classAllowlist.includes(playerClass.protoID)) {
 		return false;
 	}
 
@@ -1012,14 +788,14 @@ export function canEquipItem(item: Item, spec: Spec, slot: ItemSlot | undefined)
 	}
 
 	if (item.type == ItemType.ItemTypeWeapon) {
-		const eligibleWeaponType = classToEligibleWeaponTypes[playerClass].find(wt => wt.weaponType == item.weaponType);
+		const eligibleWeaponType = playerClass.weaponTypes.find(wt => wt.weaponType == item.weaponType);
 		if (!eligibleWeaponType) {
 			return false;
 		}
 
 		if ((item.handType == HandType.HandTypeOffHand || (item.handType == HandType.HandTypeOneHand && slot == ItemSlot.ItemSlotOffHand))
 			&& ![WeaponType.WeaponTypeShield, WeaponType.WeaponTypeOffHand].includes(item.weaponType)
-			&& !dualWieldSpecs.includes(spec)) {
+			&& !spec.canDualWield) {
 			return false;
 		}
 
@@ -1034,11 +810,11 @@ export function canEquipItem(item: Item, spec: Spec, slot: ItemSlot | undefined)
 	}
 
 	if (item.type == ItemType.ItemTypeRanged) {
-		return classToEligibleRangedWeaponTypes[playerClass].includes(item.rangedWeaponType);
+		return playerClass.rangedWeaponTypes.includes(item.rangedWeaponType);
 	}
 
 	// At this point, we know the item is an armor piece (feet, chest, legs, etc).
-	return classToMaxArmorType[playerClass] >= item.armorType;
+	return playerClass.armorTypes[0] >= item.armorType;
 }
 
 const itemTypeToSlotsMap: Partial<Record<ItemType, Array<ItemSlot>>> = {
@@ -1152,8 +928,8 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 };
 
 export function canEquipEnchant(enchant: Enchant, spec: Spec): boolean {
-	const playerClass = specToClass[spec];
-	if (enchant.classAllowlist.length > 0 && !enchant.classAllowlist.includes(playerClass)) {
+	const playerClass = spec.class;
+	if (enchant.classAllowlist.length > 0 && !enchant.classAllowlist.includes(playerClass.protoID)) {
 		return false;
 	}
 

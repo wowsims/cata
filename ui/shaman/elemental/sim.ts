@@ -140,7 +140,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		inputs: [
 			ShamanInputs.InThunderstormRange,
 			OtherInputs.TankAssignment,
-			OtherInputs.nibelungAverageCasts,
 		],
 	},
 	customSections: [

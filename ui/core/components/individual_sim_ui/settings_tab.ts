@@ -14,7 +14,6 @@ import {
 } from "../../proto/common";
 import { SavedEncounter, SavedSettings } from "../../proto/ui";
 import { professionNames, raceNames } from "../../proto_utils/names";
-import { specToEligibleRaces } from "../../proto_utils/utils";
 import { EventID, TypedEvent } from "../../typed_event";
 import { getEnumValues } from "../../utils";
 import { BooleanPicker } from "../boolean_picker";
@@ -278,7 +277,6 @@ export class SettingsTab extends SimTab {
 					inFrontOfTarget: player.getInFrontOfTarget(),
 					distanceFromTarget: player.getDistanceFromTarget(),
 					healingModel: player.getHealingModel(),
-					nibelungAverageCasts: player.getNibelungAverageCasts(),
 				});
 			},
 			setData: (eventID: EventID, simUI: IndividualSimUI<any>, newSettings: SavedSettings) => {
@@ -300,7 +298,6 @@ export class SettingsTab extends SimTab {
 					simUI.player.setInFrontOfTarget(eventID, newSettings.inFrontOfTarget);
 					simUI.player.setDistanceFromTarget(eventID, newSettings.distanceFromTarget);
 					simUI.player.setHealingModel(eventID, newSettings.healingModel || HealingModel.create());
-					simUI.player.setNibelungAverageCasts(eventID, newSettings.nibelungAverageCasts)
 				});
 			},
 			changeEmitters: [

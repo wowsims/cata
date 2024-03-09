@@ -202,7 +202,7 @@ var ItemSetGladiatorsFelshroud = core.NewItemSet(core.ItemSet{
 // black book is only ever used pre fight, after which we switch to a real trinket. For this reason we implement it as a
 // cooldown and only allow it being cast before combat starts during prepull actions.
 func (warlock *Warlock) registerBlackBook() {
-	if warlock.Options.Summon == proto.Warlock_Options_NoSummon {
+	if warlock.Options.Summon == proto.WarlockOptions_NoSummon {
 		return
 	}
 

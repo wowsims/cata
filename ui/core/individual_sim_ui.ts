@@ -42,14 +42,7 @@ import { IndividualSimSettings, SavedTalents } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { professionNames } from './proto_utils/names';
 import { Stats } from './proto_utils/stats';
-import {
-	getTalentPoints,
-	isHealingSpec,
-	isTankSpec,
-	SpecOptions,
-	specToEligibleRaces,
-	specToLocalStorageKey,
-} from './proto_utils/utils';
+import { getTalentPoints, SpecOptions } from './proto_utils/utils';
 import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
 import { EventID, TypedEvent } from './typed_event';
@@ -75,7 +68,6 @@ export interface OtherDefaults {
 	profession2?: Profession,
 	distanceFromTarget?: number,
 	channelClipDelay?: number,
-	nibelungAverageCasts?: number,
 }
 
 export interface RaidSimPreset<SpecType extends Spec> {
@@ -271,7 +263,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.sim.waitForInit().then(() => {
 				this.loadSettings();
 
-				if (isHealingSpec(this.player.spec)) {
+				if (this.player.spec.isHealingSpec) {
 					alert(Tooltips.HEALING_SIM_DISCLAIMER);
 				}
 			});
@@ -390,8 +382,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	applyDefaults(eventID: EventID) {
 		TypedEvent.freezeAllAndDo(() => {
-			const tankSpec = isTankSpec(this.player.spec);
-			const healingSpec = isHealingSpec(this.player.spec);
+			const tankSpec = this.player.spec.isTankSpec;
+			const healingSpec = this.player.spec.isHealingSpec;
 
 			//Special case for Totem of Wrath keeps buff and debuff sync'd
 			const towEnabled = this.individualConfig.defaults.raidBuffs.totemOfWrath || this.individualConfig.defaults.debuffs.totemOfWrath
@@ -415,7 +407,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.setProfession2(eventID, this.individualConfig.defaults.other?.profession2 || Profession.Jewelcrafting);
 			this.player.setDistanceFromTarget(eventID, this.individualConfig.defaults.other?.distanceFromTarget || 0);
 			this.player.setChannelClipDelay(eventID, this.individualConfig.defaults.other?.channelClipDelay || 0);
-			this.player.setNibelungAverageCasts(eventID, this.individualConfig.defaults.other?.nibelungAverageCasts || 11);
 
 			if (this.isWithinRaidSim) {
 				this.sim.raid.setTargetDummies(eventID, 0);
@@ -454,7 +445,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	getStorageKey(keyPart: string): string {
 		// Local storage is shared by all sites under the same domain, so we need to use
 		// different keys for each spec site.
-		return specToLocalStorageKey[this.player.spec] + keyPart;
+		return getLocalStorageKey(this.player.spec) + keyPart;
 	}
 
 	toProto(exportCategories?: Array<SimSettingCategories>): IndividualSimSettings {
@@ -509,8 +500,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				|| includeCategories.length == 0
 				|| includeCategories.includes(cat);
 
-		const tankSpec = isTankSpec(this.player.spec);
-		const healingSpec = isHealingSpec(this.player.spec);
+		const tankSpec = this.player.spec.isTankSpec;
+		const healingSpec = this.player.spec.isHealingSpec;
 
 		TypedEvent.freezeAllAndDo(() => {
 			if (!settings.player) {

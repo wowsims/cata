@@ -1,4 +1,4 @@
-import { ArmorType, Class as ClassProto, Race, WeaponType } from './proto/common.js';
+import { ArmorType, Class as ClassProto, Race, RangedWeaponType, WeaponType } from './proto/common.js';
 import { Spec } from './spec.js';
 
 export type IconSize = 'small' | 'medium' | 'large'
@@ -16,6 +16,7 @@ export abstract class Class {
 	abstract readonly races: Race[];
 	abstract readonly armorTypes: ArmorType[];
 	abstract readonly weaponTypes: EligibleWeaponType[];
+	abstract readonly rangedWeaponTypes: RangedWeaponType[];
 
 	abstract getIcon(size: IconSize): string;
 }

@@ -1,47 +1,38 @@
+import { itemSwapEnabledSpecs } from '../../individual_sim_ui.js';
+import { Player } from '../../player.js';
+import {
+	APLAction,
+	APLActionActivateAura,
+	APLActionAutocastOtherCooldowns,
+	APLActionCancelAura,
+	APLActionCastSpell,
+	APLActionCatOptimalRotationAction,
+	APLActionChangeTarget,
+	APLActionChannelSpell,
+	APLActionCustomRotation,
+	APLActionItemSwap,
+	APLActionItemSwap_SwapSet as ItemSwapSet,
+	APLActionMultidot,
+	APLActionMultishield,
+	APLActionResetSequence,
+	APLActionSchedule,
+	APLActionSequence,
+	APLActionStrictSequence,
+	APLActionTriggerICD,
+	APLActionWait,
+	APLActionWaitUntil,
+	APLValue,
+} from '../../proto/apl.js';
 import {
 	Class,
 	Spec,
 } from '../../proto/common.js';
-
-import {
-	APLAction,
-
-	APLActionCastSpell,
-	APLActionChannelSpell,
-	APLActionMultidot,
-	APLActionMultishield,
-	APLActionAutocastOtherCooldowns,
-
-	APLActionWait,
-	APLActionWaitUntil,
-	APLActionSchedule,
-
-	APLActionSequence,
-	APLActionResetSequence,
-	APLActionStrictSequence,
-
-	APLActionChangeTarget,
-	APLActionActivateAura,
-	APLActionCancelAura,
-	APLActionTriggerICD,
-	APLActionItemSwap,
-	APLActionItemSwap_SwapSet as ItemSwapSet,
-
-	APLActionCustomRotation,
-	APLActionCatOptimalRotationAction,
-
-	APLValue,
-} from '../../proto/apl.js';
-
+import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
 import { isHealingSpec } from '../../proto_utils/utils.js';
 import { EventID } from '../../typed_event.js';
-import { itemSwapEnabledSpecs } from '../../individual_sim_ui.js';
-import { Input, InputConfig } from '../input.js';
-import { Player } from '../../player.js';
 import { TextDropdownPicker } from '../dropdown_picker.js';
+import { Input, InputConfig } from '../input.js';
 import { ListItemPickerConfig, ListPicker } from '../list_picker.js';
-import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
-
 import * as AplHelpers from './apl_helpers.js';
 import * as AplValues from './apl_values.js';
 
@@ -361,7 +352,7 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		label: 'Multi Shield',
 		submenu: ['Casting'],
 		shortDescription: 'Keeps a Shield active on multiple targets by casting the specified spell.',
-		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull && isHealingSpec(player.spec),
+		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull && player.spec.isHealingSpec,
 		newValue: () => APLActionMultishield.create({
 			maxShields: 3,
 			maxOverlap: {

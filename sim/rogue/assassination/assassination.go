@@ -16,7 +16,7 @@ func RegisterAssassinationRogue() {
 		func(player *proto.Player, spec interface{}) {
 			playerSpec, ok := spec.(*proto.Player_AssassinationRogue)
 			if !ok {
-				panic("Invalid spec value for Elemental Shaman!")
+				panic("Invalid spec value for Assassination Rogue!")
 			}
 			player.Spec = playerSpec
 		},
@@ -25,7 +25,7 @@ func RegisterAssassinationRogue() {
 
 func NewAssassinationRogue(character *core.Character, options *proto.Player) *AssassinationRogue {
 	sinRogue := &AssassinationRogue{
-		Rogue: rogue.NewRogue(character, options),
+		Rogue: rogue.NewRogue(character, options.TalentsString),
 	}
 
 	return sinRogue

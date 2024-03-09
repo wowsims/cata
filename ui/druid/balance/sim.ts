@@ -98,7 +98,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 			OtherInputs.TankAssignment,
 			OtherInputs.ReactionTime,
 			OtherInputs.DistanceFromTarget,
-			OtherInputs.nibelungAverageCasts,
 		],
 	},
 	encounterPicker: {

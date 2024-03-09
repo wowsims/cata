@@ -112,7 +112,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		inputs: [
 			OtherInputs.TankAssignment,
 			OtherInputs.ChannelClipDelay,
-			OtherInputs.nibelungAverageCasts,
 		],
 	},
 	encounterPicker: {

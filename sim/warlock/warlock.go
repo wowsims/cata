@@ -3,8 +3,6 @@ package warlock
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/wotlk"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -15,7 +13,7 @@ var TalentTreeSizes = [3]int{28, 27, 26}
 type Warlock struct {
 	core.Character
 	Talents *proto.WarlockTalents
-	Options *proto.Warlock_Options
+	Options *proto.WarlockOptions
 
 	Pet *WarlockPet
 
@@ -83,10 +81,10 @@ func (warlock *Warlock) GetWarlock() *Warlock {
 }
 
 func (warlock *Warlock) GrandSpellstoneBonus() float64 {
-	return core.TernaryFloat64(warlock.Options.WeaponImbue == proto.Warlock_Options_GrandSpellstone, 0.01, 0)
+	return core.TernaryFloat64(warlock.Options.WeaponImbue == proto.WarlockOptions_GrandSpellstone, 0.01, 0)
 }
 func (warlock *Warlock) GrandFirestoneBonus() float64 {
-	return core.TernaryFloat64(warlock.Options.WeaponImbue == proto.Warlock_Options_GrandFirestone, 0.01, 0)
+	return core.TernaryFloat64(warlock.Options.WeaponImbue == proto.WarlockOptions_GrandFirestone, 0.01, 0)
 }
 
 func (warlock *Warlock) Initialize() {
@@ -127,7 +125,7 @@ func (warlock *Warlock) Initialize() {
 			warlock.MultiplyCastSpeed(1.0)
 		}
 
-		if warlock.Options.Summon != proto.Warlock_Options_NoSummon && warlock.Talents.DemonicKnowledge > 0 {
+		if warlock.Options.Summon != proto.WarlockOptions_NoSummon && warlock.Talents.DemonicKnowledge > 0 {
 			warlock.RegisterPrepullAction(-999*time.Second, func(sim *core.Simulation) {
 				// TODO: investigate a better way of handling this like a "reverse inheritance" for pets.
 				// TODO: this will break if we ever get stamina/intellect from procs, but there aren't
@@ -145,12 +143,12 @@ func (warlock *Warlock) Initialize() {
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.BloodPact = max(raidBuffs.BloodPact, core.MakeTristateValue(
-		warlock.Options.Summon == proto.Warlock_Options_Imp,
+		warlock.Options.Summon == proto.WarlockOptions_Imp,
 		warlock.Talents.ImprovedImp == 2,
 	))
 
 	raidBuffs.FelIntelligence = max(raidBuffs.FelIntelligence, core.MakeTristateValue(
-		warlock.Options.Summon == proto.Warlock_Options_Felhunter,
+		warlock.Options.Summon == proto.WarlockOptions_Felhunter,
 		warlock.Talents.ImprovedFelhunter == 2,
 	))
 }
@@ -161,53 +159,33 @@ func (warlock *Warlock) Reset(sim *core.Simulation) {
 	}
 }
 
-func NewWarlock(character *core.Character, options *proto.Player) *Warlock {
-	warlockOptions := options.GetWarlock()
-
+func NewWarlock(character *core.Character, options *proto.Player, warlockOptions *proto.WarlockOptions) *Warlock {
 	warlock := &Warlock{
 		Character: *character,
 		Talents:   &proto.WarlockTalents{},
-		Options:   warlockOptions.Options,
+		Options:   warlockOptions,
 	}
 	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 	warlock.EnableManaBar()
 
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 
-	if warlock.Options.Armor == proto.Warlock_Options_FelArmor {
+	if warlock.Options.Armor == proto.WarlockOptions_FelArmor {
 		demonicAegisMultiplier := 1 + float64(warlock.Talents.DemonicAegis)*0.1
 		amount := 180.0 * demonicAegisMultiplier
 		warlock.AddStat(stats.SpellPower, amount)
 		warlock.AddStatDependency(stats.Spirit, stats.SpellPower, 0.3*demonicAegisMultiplier)
 	}
 
-	if warlock.Options.Summon != proto.Warlock_Options_NoSummon {
+	if warlock.Options.Summon != proto.WarlockOptions_NoSummon {
 		warlock.Pet = warlock.NewWarlockPet()
 	}
 
 	warlock.Infernal = warlock.NewInfernal()
 
 	warlock.applyWeaponImbue()
-	wotlk.ConstructValkyrPets(&warlock.Character)
 
 	return warlock
-}
-
-func RegisterWarlock() {
-	core.RegisterAgentFactory(
-		proto.Player_Warlock{},
-		proto.Spec_SpecWarlock,
-		func(character *core.Character, options *proto.Player) core.Agent {
-			return NewWarlock(character, options)
-		},
-		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_Warlock)
-			if !ok {
-				panic("Invalid spec value for Warlock!")
-			}
-			player.Spec = playerSpec
-		},
-	)
 }
 
 // Agent is a generic way to access underlying warlock on any of the agents.

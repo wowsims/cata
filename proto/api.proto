@@ -16,9 +16,10 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
+// NextIndex: 52
 message Player {
 	// Label used for logging.
-	string name = 16;
+	string name = 51;
 
 	Race race = 1;
 	Class class = 2;
@@ -57,7 +58,7 @@ message Player {
 		HolyPriest holy_priest = 25;
 		ShadowPriest shadow_priest = 26;
 
-		AssassinationRogue assassination_orgue = 27;
+		AssassinationRogue assassination_rogue = 27;
 		CombatRogue combat_rogue = 28;
 		SubtletyRogue subtlety_rogue = 29;
 
@@ -81,7 +82,7 @@ message Player {
 	Profession profession2 = 42;
 	Cooldowns cooldowns = 43;
 
-	APLRotation rotation = 4;
+	APLRotation rotation = 44;
 
 	// TODO: Move most of the remaining fields into a 'MiscellaneousPlayerOptions' message.
 	// This will remove a lot of the boilerplate code in the UI for each new field.

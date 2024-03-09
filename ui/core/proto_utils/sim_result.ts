@@ -1,29 +1,25 @@
-import { ActionMetrics as ActionMetricsProto } from '../proto/api.js';
-import { AuraMetrics as AuraMetricsProto } from '../proto/api.js';
-import { DistributionMetrics as DistributionMetricsProto } from '../proto/api.js';
-import { Encounter as EncounterProto } from '../proto/common.js';
-import { EncounterMetrics as EncounterMetricsProto } from '../proto/api.js';
-import { Party as PartyProto } from '../proto/api.js';
-import { PartyMetrics as PartyMetricsProto } from '../proto/api.js';
-import { Player as PlayerProto } from '../proto/api.js';
-import { UnitMetrics as UnitMetricsProto } from '../proto/api.js';
-import { Raid as RaidProto } from '../proto/api.js';
-import { RaidMetrics as RaidMetricsProto } from '../proto/api.js';
-import { ResourceMetrics as ResourceMetricsProto, ResourceType } from '../proto/api.js';
-import { Target as TargetProto } from '../proto/common.js';
-import { TargetedActionMetrics as TargetedActionMetricsProto } from '../proto/api.js';
-import { RaidSimRequest, RaidSimResult } from '../proto/api.js';
-import { Class } from '../proto/common.js';
-import { Spec } from '../proto/common.js';
+import {
+	ActionMetrics as ActionMetricsProto,
+	AuraMetrics as AuraMetricsProto,
+	DistributionMetrics as DistributionMetricsProto,
+	EncounterMetrics as EncounterMetricsProto,
+	Party as PartyProto,
+	PartyMetrics as PartyMetricsProto,
+	Player as PlayerProto,
+	Raid as RaidProto,
+	RaidMetrics as RaidMetricsProto,
+	RaidSimRequest,
+	RaidSimResult,ResourceMetrics as ResourceMetricsProto,
+	ResourceType,
+	TargetedActionMetrics as TargetedActionMetricsProto,
+	UnitMetrics as UnitMetricsProto
+} from '../proto/api.js';
+import { Class, Encounter as EncounterProto, Target as TargetProto  } from '../proto/common.js';
 import { SimRun } from '../proto/ui.js';
 import { ActionId, defaultTargetIcon } from '../proto_utils/action_id.js';
-import { classColors, cssClassForClass } from '../proto_utils/utils.js';
-import { getTalentTreeIcon } from '../proto_utils/utils.js';
 import { playerToSpec } from '../proto_utils/utils.js';
-import { specToClass } from '../proto_utils/utils.js';
-import { bucket } from '../utils.js';
-import { sum } from '../utils.js';
-
+import { Spec } from '../spec.js';
+import { bucket, sum } from '../utils.js';
 import {
 	AuraUptimeLog,
 	CastLog,
@@ -275,7 +271,7 @@ export class UnitMetrics {
 	readonly index: number;
 	readonly unitIndex: number;
 	readonly name: string;
-	readonly spec: Spec;
+	readonly spec: Spec | null;
 	readonly petActionId: ActionId | null;
 	readonly iconUrl: string;
 	readonly classColor: string;
@@ -325,11 +321,11 @@ export class UnitMetrics {
 		this.index = index;
 		this.unitIndex = metrics.unitIndex;
 		this.name = metrics.name;
-		this.spec = player ? playerToSpec(player) : 0;
+		this.spec = this.player ? playerToSpec(this.player) : null;
 		this.petActionId = petActionId;
-		this.iconUrl = this.isPlayer ? getTalentTreeIcon(this.spec, player!.talentsString) :
+		this.iconUrl = this.isPlayer ? this.spec?.getIcon('medium') ?? '' :
 			(this.isTarget ? defaultTargetIcon : '');
-		this.classColor = this.isTarget ? '' : cssClassForClass(specToClass[this.spec]);
+		this.classColor = this.isTarget ? '' : this.spec?.class.hexColor ?? '';
 		this.dps = this.metrics.dps!;
 		this.dpasp = this.metrics.dpasp!;
 		this.hps = this.metrics.hps!;

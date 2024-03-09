@@ -1,3 +1,4 @@
+import * as PresetUtils from '../../core/preset_utils.js';
 import {
 	Consumes,
 	Debuffs,
@@ -10,21 +11,16 @@ import {
 	RaidBuffs,
 	TristateEffect,
 } from '../../core/proto/common.js';
-import { SavedTalents } from '../../core/proto/ui.js';
-
 import {
-	ShadowPriest_Options_Armor as Armor,
-	ShadowPriest_Options as Options,
 	PriestMajorGlyph as MajorGlyph,
 	PriestMinorGlyph as MinorGlyph,
+	ShadowPriest_Options as Options,
+	ShadowPriest_Options_Armor as Armor,
 } from '../../core/proto/priest.js';
-
-import * as PresetUtils from '../../core/preset_utils.js';
-
+import { SavedTalents } from '../../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
 import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Preraid Preset', PreraidGear);
 import P1Gear from './gear_sets/p1.gear.json';
@@ -124,5 +120,4 @@ export const OtherDefaults = {
 	channelClipDelay: 100,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
-	nibelungAverageCasts: 11,
 };

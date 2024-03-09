@@ -5,7 +5,7 @@ option go_package = "./proto";
 
 import "common.proto";
 
-message DeathknightTalents {
+message DeathKnightTalents {
 	// Blood
 	int32 butchery = 1;
 	int32 subversion = 2;
@@ -101,7 +101,7 @@ message DeathknightTalents {
 	bool summon_gargoyle = 88;
 }
 
-enum DeathknightMajorGlyph {
+enum DeathKnightMajorGlyph {
 	DeathknightMajorGlyphNone = 0;
 	GlyphOfAntiMagicShell = 43533;
 	GlyphOfBloodStrike = 43826;
@@ -131,7 +131,7 @@ enum DeathknightMajorGlyph {
 	GlyphOfUnholyBlight = 45803;
 	GlyphOfVampiricBlood = 43554;
 }
-enum DeathknightMinorGlyph {
+enum DeathKnightMinorGlyph {
 	DeathknightMinorGlyphNone = 0;
 	GlyphOfBloodTap = 43535;
 	GlyphOfCorpseExplosion = 43671;

@@ -1,29 +1,27 @@
+import * as PresetUtils from '../core/preset_utils.js';
 import {
 	Consumes,
+	Debuffs,
+	Faction,
 	Flask,
 	Food,
-	PetFood,
 	Glyphs,
-	Potions,
-	RaidBuffs,
 	IndividualBuffs,
-	Debuffs,
-	TristateEffect,
-	Faction,
+	PetFood,
+	Potions,
 	Profession,
+	RaidBuffs,
+	TristateEffect,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
-
 import {
 	Warlock_Options as WarlockOptions,
-	Warlock_Options_WeaponImbue as WeaponImbue,
 	Warlock_Options_Armor as Armor,
 	Warlock_Options_Summon as Summon,
+	Warlock_Options_WeaponImbue as WeaponImbue,
 	WarlockMajorGlyph as MajorGlyph,
 	WarlockMinorGlyph as MinorGlyph,
 } from '../core/proto/warlock.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
 
 export const BIS_TOOLTIP = 'This gear preset is inspired from Zephan\'s Affliction guide: https://www.warcrafttavern.com/wotlk/guides/pve-affliction-warlock/';
 
@@ -198,5 +196,4 @@ export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
 	channelClipDelay: 150,
-	nibelungAverageCasts: 11,
 };

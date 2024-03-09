@@ -1,30 +1,27 @@
+import { BooleanPicker } from '../components/boolean_picker.js';
+import { EnumPicker } from '../components/enum_picker.js';
+import { ListItemPickerConfig, ListPicker } from '../components/list_picker.js';
+import { NumberPicker } from '../components/number_picker.js';
+import * as Mechanics from '../constants/mechanics.js';
+import { Encounter } from '../encounter.js';
+import { IndividualSimUI } from '../individual_sim_ui.js';
 import {
 	InputType,
 	MobType,
 	SpellSchool,
 	Stat,
+	Target,
 	Target as TargetProto,
 	TargetInput,
-	Target,
 } from '../proto/common.js';
-import { Encounter } from '../encounter.js';
-import { Raid } from '../raid.js';
-import { EventID, TypedEvent } from '../typed_event.js';
-import { BooleanPicker } from '../components/boolean_picker.js';
-import { EnumPicker } from '../components/enum_picker.js';
-import { ListItemPickerConfig, ListPicker } from '../components/list_picker.js';
-import { NumberPicker } from '../components/number_picker.js';
-import { Stats } from '../proto_utils/stats.js';
-import { isHealingSpec, isTankSpec } from '../proto_utils/utils.js';
 import { statNames } from '../proto_utils/names.js';
-
-import { Component } from './component.js';
-
-import * as Mechanics from '../constants/mechanics.js';
-import { IndividualSimUI } from '../individual_sim_ui.js';
+import { Stats } from '../proto_utils/stats.js';
+import { Raid } from '../raid.js';
 import { SimUI } from '../sim_ui.js';
-import { Input } from './input.js';
+import { EventID, TypedEvent } from '../typed_event.js';
 import { BaseModal } from './base_modal.js';
+import { Component } from './component.js';
+import { Input } from './input.js';
 
 export interface EncounterPickerConfig {
 	showExecuteProportion: boolean,
@@ -101,7 +98,7 @@ export class EncounterPicker extends Component {
 			//	});
 			//}
 
-			if (simUI.isIndividualSim() && isHealingSpec((simUI as IndividualSimUI<any>).player.spec)) {
+			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.spec.isHealingSpec) {
 				new NumberPicker(this.rootElem, simUI.sim.raid, {
 					label: 'Num Allies',
 					labelTooltip: 'Number of allied players in the raid.',
@@ -113,7 +110,7 @@ export class EncounterPicker extends Component {
 				});
 			}
 
-			if (simUI.isIndividualSim() && isTankSpec((simUI as IndividualSimUI<any>).player.spec)) {
+			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.spec.isTankSpec) {
 				new NumberPicker(this.rootElem, modEncounter, {
 					label: 'Min Base Damage',
 					labelTooltip: 'Base damage for auto attacks, i.e. lowest roll with 0 AP against a 0-armor Player.',
@@ -127,8 +124,8 @@ export class EncounterPicker extends Component {
 			}
 
 			// Transfer Target Inputs from target Id if they dont match (possible when custom AI is selected)
-			let targetIndex = presetTargets.findIndex(pe => modEncounter.primaryTarget.id == pe.target?.id);
-			let targetInputs = presetTargets[targetIndex]?.target?.targetInputs || [];
+			const targetIndex = presetTargets.findIndex(pe => modEncounter.primaryTarget.id == pe.target?.id);
+			const targetInputs = presetTargets[targetIndex]?.target?.targetInputs || [];
 
 			if (targetInputs.length != modEncounter.primaryTarget.targetInputs.length
 				|| modEncounter.primaryTarget.targetInputs.some((ti, i) => ti.label != targetInputs[i].label)) {
@@ -585,7 +582,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 }
 
 function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, showExecuteProportion: boolean) {
-	let durationGroup = Input.newGroupContainer();
+	const durationGroup = Input.newGroupContainer();
 	rootElem.appendChild(durationGroup);
 
 	new NumberPicker(durationGroup, encounter, {
@@ -596,7 +593,7 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 		setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 			encounter.setDuration(eventID, newValue);
 		},
-		enableWhen: (obj) => { return !encounter.getUseHealth() },
+		enableWhen: _obj => { return !encounter.getUseHealth() },
 	});
 	new NumberPicker(durationGroup, encounter, {
 		label: 'Duration +/-',
@@ -606,11 +603,11 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 		setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 			encounter.setDurationVariation(eventID, newValue);
 		},
-		enableWhen: (obj) => { return !encounter.getUseHealth() },
+		enableWhen: _obj => { return !encounter.getUseHealth() },
 	});
 
 	if (showExecuteProportion) {
-		let executeGroup = Input.newGroupContainer();
+		const executeGroup = Input.newGroupContainer();
 		executeGroup.classList.add('execute-group');
 		rootElem.appendChild(executeGroup);
 
@@ -622,7 +619,7 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 				encounter.setExecuteProportion20(eventID, newValue / 100);
 			},
-			enableWhen: (obj) => { return !encounter.getUseHealth() },
+			enableWhen: _obj => { return !encounter.getUseHealth() },
 		});
 		new NumberPicker(executeGroup, encounter, {
 			label: 'Execute Duration 25 (%)',
@@ -632,7 +629,7 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 				encounter.setExecuteProportion25(eventID, newValue / 100);
 			},
-			enableWhen: (obj) => { return !encounter.getUseHealth() },
+			enableWhen: _obj => { return !encounter.getUseHealth() },
 		});
 		new NumberPicker(executeGroup, encounter, {
 			label: 'Execute Duration 35 (%)',
@@ -642,7 +639,7 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 				encounter.setExecuteProportion35(eventID, newValue / 100);
 			},
-			enableWhen: (obj) => { return !encounter.getUseHealth() },
+			enableWhen: _obj => { return !encounter.getUseHealth() },
 		});
 	}
 }

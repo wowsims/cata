@@ -167,19 +167,19 @@ message AfflictionWarlock {
 	message Rotation {
 	}
 
-	Options options = 3;
+	WarlockOptions options = 1;
 }
 
 message DemonologyWarlock {
 	message Rotation {
 	}
 
-	Options options = 3;
+	WarlockOptions options = 1;
 }
 
 message DestructionWarlock {
 	message Rotation {
 	}
 
-	Options options = 3;
+	WarlockOptions options = 1;
 }

@@ -54,21 +54,17 @@ import {
 	AL_CATEGORY_HARD_MODE,
 	canEquipEnchant,
 	canEquipItem,
-	classColors,
 	ClassSpecs,
 	emptyUnitReference,
 	enchantAppliesToItem,
 	getMetaGemEffectEP,
 	getTalentTree,
 	getTalentTreePoints,
-	isTankSpec,
 	newUnitReference,
 	raceToFaction,
 	SpecOptions,
 	SpecRotation,
 	SpecTalents,
-	specToClass,
-	specToEligibleRaces,
 	SpecTypeFunctions,
 	specTypeFunctions,
 	withSpecProto,
@@ -243,8 +239,6 @@ export class Player<SpecType extends SpecProto> {
 	private channelClipDelay = 0;
 	private inFrontOfTarget = false;
 	private distanceFromTarget = 0;
-	private nibelungAverageCasts = 11;
-	private nibelungAverageCastsSet = false;
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
 
@@ -836,7 +830,7 @@ export class Player<SpecType extends SpecProto> {
 	}
 
 	getTalentTreeIcon(): string {
-		return getTalentTreeIcon(this.spec, this.getTalentsString());
+		return this.spec.getIcon('medium');
 	}
 
 	getGlyphs(): Glyphs {
@@ -931,25 +925,6 @@ export class Player<SpecType extends SpecProto> {
 
 		this.distanceFromTarget = newDistanceFromTarget;
 		this.distanceFromTargetChangeEmitter.emit(eventID);
-	}
-
-	getNibelungAverageCasts(): number {
-		return this.nibelungAverageCasts;
-	}
-
-	setNibelungAverageCastsSet(eventID: EventID, newnibelungAverageCastsSet: boolean) {
-		if (newnibelungAverageCastsSet == this.nibelungAverageCastsSet)
-			return;
-
-		this.nibelungAverageCastsSet = newnibelungAverageCastsSet;
-	}
-
-	setNibelungAverageCasts(eventID: EventID, newnibelungAverageCasts: number) {
-		if (newnibelungAverageCasts == this.nibelungAverageCasts)
-			return;
-
-		this.nibelungAverageCasts = Math.min(newnibelungAverageCasts, 16);
-		this.miscOptionsChangeEmitter.emit(eventID);
 	}
 
 	setDefaultHealingParams(hm: HealingModel) {
@@ -1311,7 +1286,7 @@ export class Player<SpecType extends SpecProto> {
 		const aplRotation = forSimming ? this.getResolvedAplRotation() : this.aplRotation;
 
 		let player = PlayerProto.create({
-			class: this.getClass(),
+			class: this.getClass().protoID,
 			database: forExport ? undefined : this.toDatabase(),
 		});
 		if (exportCategory(SimSettingCategories.Gear)) {
@@ -1350,10 +1325,8 @@ export class Player<SpecType extends SpecProto> {
 				inFrontOfTarget: this.getInFrontOfTarget(),
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
-				nibelungAverageCasts: this.getNibelungAverageCasts(),
-				nibelungAverageCastsSet: this.nibelungAverageCastsSet,
 			});
-			player = withSpecProto(this.spec, player, this.getSpecOptions());
+			player = withSpecProto(this.spec.protoID, player, this.getSpecOptions());
 		}
 		if (exportCategory(SimSettingCategories.External)) {
 			PlayerProto.mergePartial(player, {
@@ -1408,10 +1381,6 @@ export class Player<SpecType extends SpecProto> {
 				this.setChannelClipDelay(eventID, proto.channelClipDelayMs);
 				this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
 				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
-				this.setNibelungAverageCastsSet(eventID, proto.nibelungAverageCastsSet);
-				if (this.nibelungAverageCastsSet) {
-					this.setNibelungAverageCasts(eventID, proto.nibelungAverageCasts);
-				}
 				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
 			}
 			if (loadCategory(SimSettingCategories.External)) {
@@ -1431,12 +1400,12 @@ export class Player<SpecType extends SpecProto> {
 			this.setEnableItemSwap(eventID, false);
 			this.setItemSwapGear(eventID, new ItemSwapGear({}));
 			this.setReactionTime(eventID, 200);
-			this.setInFrontOfTarget(eventID, isTankSpec(this.spec));
+			this.setInFrontOfTarget(eventID, this.spec.isTankSpec);
 			this.setHealingModel(eventID, HealingModel.create({
-				burstWindow: isTankSpec(this.spec) ? 6 : 0,
+				burstWindow: this.spec.isTankSpec ? 6 : 0,
 			}));
 			this.setSimpleCooldowns(eventID, Cooldowns.create({
-				hpPercentForDefensives: isTankSpec(this.spec) ? 0.35 : 0,
+				hpPercentForDefensives: this.spec.isTankSpec ? 0.35 : 0,
 			}));
 			this.setBonusStats(eventID, new Stats());
 
