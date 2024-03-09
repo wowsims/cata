@@ -328,9 +328,11 @@ func (item WowheadItemResponse) GetPhase() int {
 	if ilvl <= 284 { // TBC items
 		return 0
 	}
-
-	// default to 1
-	return 1
+	if ilvl >= 284 {
+		return 1 // Wotlk items phase 1 = prepatch
+	} else {
+		return 2
+	}
 }
 
 var uniqueRegex = regexp.MustCompile(`Unique`)
