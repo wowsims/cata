@@ -38,7 +38,7 @@ func ParseWowheadDB(dbContents string) WowheadDatabase {
 
 		commaIdx := strings.Index(dbPart, ",")
 		dbContents := dbPart[commaIdx+1:]
-		if dbName == "wow.gearPlanner.wrath.item" {
+		if dbName == "wow.gearPlanner.cata.item" {
 			standardized, err := hujson.Standardize([]byte(dbContents)) // Removes invalid JSON, such as trailing commas
 			if err != nil {
 				log.Fatalf("Failed to standardize json %s\n\n%s\n\n%s", err, dbContents[0:30], dbContents[len(dbContents)-30:])
