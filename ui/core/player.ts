@@ -318,7 +318,7 @@ export class Player<SpecType extends Spec> {
 			this.simpleRotationGenerator = null;
 		}
 
-		for(let i = 0; i < ItemSlot.ItemSlotRanged+1; ++i) {
+		for (let i = 0; i < ItemSlot.ItemSlotRanged + 1; ++i) {
 			this.itemEPCache[i] = new Map();
 		}
 
@@ -434,7 +434,7 @@ export class Player<SpecType extends Spec> {
 
 		this.gemEPCache = new Map();
 		this.enchantEPCache = new Map();
-		for(let i = 0; i < ItemSlot.ItemSlotRanged+1; ++i) {
+		for (let i = 0; i < ItemSlot.ItemSlotRanged + 1; ++i) {
 			this.itemEPCache[i] = new Map();
 		}
 	}
@@ -694,7 +694,7 @@ export class Player<SpecType extends Spec> {
 
 		let specSpecificOffset = 0.0;
 
-		if(this.spec === Spec.SpecEnhancementShaman) {
+		if (this.spec === Spec.SpecEnhancementShaman) {
 			// Elemental Devastation uptime is near 100%
 			const ranks = (this as Player<Spec.SpecEnhancementShaman>).getTalents().elementalDevastation;
 			specSpecificOffset = 3.0 * ranks;
@@ -1109,7 +1109,7 @@ export class Player<SpecType extends Spec> {
 		if (equippedItem.hasExtraSocket(isBlacksmithing)) {
 			parts.push('sock');
 		}
-
+		parts.push("dataEnv=11");
 		elem.dataset.wowhead = parts.join('&');
 		elem.dataset.whtticon = 'false';
 	}
@@ -1310,9 +1310,9 @@ export class Player<SpecType extends Spec> {
 
 	toProto(forExport?: boolean, forSimming?: boolean, exportCategories?: Array<SimSettingCategories>): PlayerProto {
 		const exportCategory = (cat: SimSettingCategories) =>
-				!exportCategories
-				|| exportCategories.length == 0
-				|| exportCategories.includes(cat);
+			!exportCategories
+			|| exportCategories.length == 0
+			|| exportCategories.includes(cat);
 
 		const gear = this.getGear();
 		const aplRotation = forSimming ? this.getResolvedAplRotation() : this.aplRotation;
@@ -1372,9 +1372,9 @@ export class Player<SpecType extends Spec> {
 
 	fromProto(eventID: EventID, proto: PlayerProto, includeCategories?: Array<SimSettingCategories>) {
 		const loadCategory = (cat: SimSettingCategories) =>
-				!includeCategories
-				|| includeCategories.length == 0
-				|| includeCategories.includes(cat);
+			!includeCategories
+			|| includeCategories.length == 0
+			|| includeCategories.includes(cat);
 
 		// For backwards compatibility with legacy rotations (removed on 2024/01/15).
 		if (proto.rotation?.type == APLRotationType.TypeLegacy) {

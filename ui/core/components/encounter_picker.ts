@@ -308,10 +308,11 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		this.levelPicker = new EnumPicker<null>(section1, null, {
 			label: 'Level',
 			values: [
+				{ name: '88', value: 88 },
+				{ name: '87', value: 87 },
+				{ name: '86', value: 86 },
+				{ name: '85', value: 85 },
 				{ name: '83', value: 83 },
-				{ name: '82', value: 82 },
-				{ name: '81', value: 81 },
-				{ name: '80', value: 80 },
 			],
 			changedEvent: () => encounter.targetsChangeEmitter,
 			getValue: () => this.getTarget().level,

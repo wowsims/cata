@@ -47,6 +47,9 @@ func (hunter *Hunter) registerRapidFireCD() {
 			BaseCost: 0.03,
 		},
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: 1,
+			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
 				Duration: time.Minute*5 - time.Minute*time.Duration(hunter.Talents.RapidKilling),

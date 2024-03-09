@@ -58,7 +58,7 @@ def get_glyphs_data(glyph_button):
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver.implicitly_wait(2)
 
-driver.get('https://wowhead.com/wotlk/talent-calc/' + class_name)
+driver.get('https://wowhead.com/cata/talent-calc/' + class_name)
 glyph_slots = driver.find_elements(By.CLASS_NAME, "ctc-glyphs-group-slot")
 major_glyph_slot = next(gs for gs in glyph_slots if int(gs.get_attribute("data-glyph-slot")) == 0)
 minor_glyph_slot = next(gs for gs in glyph_slots if int(gs.get_attribute("data-glyph-slot")) == 3)

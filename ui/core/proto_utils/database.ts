@@ -148,7 +148,7 @@ export class Database {
 			return Array.from(this.gems.values());
 
 		let ret = new Array();
-		for (let g of this.gems.values()){
+		for (let g of this.gems.values()) {
 			if (gemEligibleForSocket(g, socketColor))
 				ret.push(g);
 		}
@@ -164,7 +164,7 @@ export class Database {
 
 	getMatchingGems(socketColor: GemColor): Array<Gem> {
 		let ret = new Array();
-		for (let g of this.gems.values()){
+		for (let g of this.gems.values()) {
 			if (gemMatchesSocket(g, socketColor))
 				ret.push(g);
 		}
@@ -221,9 +221,9 @@ export class Database {
 
 	lookupItemSwap(itemSwap: ItemSwap): ItemSwapGear {
 		return new ItemSwapGear({
-			[ItemSlot.ItemSlotMainHand]: itemSwap.mhItem ? this.lookupItemSpec(itemSwap.mhItem): null,
-			[ItemSlot.ItemSlotOffHand]: itemSwap.ohItem ? this.lookupItemSpec(itemSwap.ohItem): null,
-			[ItemSlot.ItemSlotRanged]: itemSwap.rangedItem ? this.lookupItemSpec(itemSwap.rangedItem): null,
+			[ItemSlot.ItemSlotMainHand]: itemSwap.mhItem ? this.lookupItemSpec(itemSwap.mhItem) : null,
+			[ItemSlot.ItemSlotOffHand]: itemSwap.ohItem ? this.lookupItemSpec(itemSwap.ohItem) : null,
+			[ItemSlot.ItemSlotRanged]: itemSwap.rangedItem ? this.lookupItemSpec(itemSwap.rangedItem) : null,
 		});
 	}
 
@@ -275,7 +275,7 @@ export class Database {
 		return Database.getWowheadTooltipData(id, 'spell');
 	}
 	private static async getWowheadTooltipData(id: number, tooltipPostfix: string): Promise<IconData> {
-		const url = `https://nether.wowhead.com/cata/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}`;
+		const url = `https://nether.wowhead.com/cata/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}&dataEnv=11`;
 		try {
 			const response = await fetch(url);
 			const json = await response.json();

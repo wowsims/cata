@@ -52,6 +52,7 @@ const (
 	NatureResistance
 	ShadowResistance
 	BonusArmor
+	Mastery
 	RunicPower
 	BloodRune
 	FrostRune
@@ -177,6 +178,8 @@ func (s Stat) StatName() string {
 		return "Unholy Rune"
 	case DeathRune:
 		return "Death Rune"
+	case Mastery:
+		return "Mastery"
 	}
 
 	return "none"

@@ -23,12 +23,11 @@ import (
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-items
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-spells -maxid=75000
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-gearplannerdb
-// go run ./tools/database/gen_db -outDir=assets -gen=cata-items
 // go run ./tools/database/gen_db -outDir=assets -gen=wago-db2-items
 // go run ./tools/database/gen_db -outDir=assets -gen=db
 
-var minId = flag.Int("minid", 1, "Minimum ID to scan for")
-var maxId = flag.Int("maxid", 57000, "Maximum ID to scan for")
+var minId = flag.Int("minid", 0, "Minimum ID to scan for")
+var maxId = flag.Int("maxid", 82000, "Maximum ID to scan for")
 var outDir = flag.String("outDir", "assets", "Path to output directory for writing generated .go files.")
 var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'cata-items', and 'wago-db2-items'")
 
@@ -54,11 +53,8 @@ func main() {
 	} else if *genAsset == "wowhead-gearplannerdb" {
 		tools.WriteFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir), tools.ReadWebRequired("https://nether.wowhead.com/cata/data/gear-planner?dv=100"))
 		return
-	} else if *genAsset == "cata-items" {
-		database.NewCataItemTooltipManager(fmt.Sprintf("%s/cata_items_tooltips.csv", inputsDir)).Fetch(int32(*minId), int32(*maxId), []string{})
-		return
 	} else if *genAsset == "wago-db2-items" {
-		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=3.4.2.49311"))
+		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=4.4.0.53627"))
 		return
 	} else if *genAsset == "reforge-stats" {
 		//Todo: fill this when we have information from wowhead @ Neteyes - Gehennas
@@ -166,7 +162,9 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if _, ok := database.ItemDenyList[item.Id]; ok {
 			return false
 		}
-
+		if item.Ilvl > 416 {
+			return false
+		}
 		for _, pattern := range database.DenyListNameRegexes {
 			if pattern.MatchString(item.Name) {
 				return false
@@ -175,7 +173,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of every naxx set, e.g. https://www.wowhead.com/wotlk/item=43728/bonescythe-gauntlets
+	// There is an 'unavailable' version of every naxx set, e.g. https://www.wowhead.com/cata/item=43728/bonescythe-gauntlets
 	heroesItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasPrefix(item.Name, "Heroes' ")
 	})
@@ -189,7 +187,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of many t8 set pieces, e.g. https://www.wowhead.com/wotlk/item=46235/darkruned-gauntlets
+	// There is an 'unavailable' version of many t8 set pieces, e.g. https://www.wowhead.com/cata/item=46235/darkruned-gauntlets
 	valorousItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasPrefix(item.Name, "Valorous ")
 	})
@@ -203,7 +201,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of many t9 set pieces, e.g. https://www.wowhead.com/wotlk/item=48842/thralls-hauberk
+	// There is an 'unavailable' version of many t9 set pieces, e.g. https://www.wowhead.com/cata/item=48842/thralls-hauberk
 	triumphItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasSuffix(item.Name, "of Triumph")
 	})
