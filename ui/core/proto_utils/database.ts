@@ -275,7 +275,7 @@ export class Database {
 		return Database.getWowheadTooltipData(id, 'spell');
 	}
 	private static async getWowheadTooltipData(id: number, tooltipPostfix: string): Promise<IconData> {
-		const url = `https://nether.wowhead.com/cata/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}`;
+		const url = `https://nether.wowhead.com/cata/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}&dataEnv=11`;
 		try {
 			const response = await fetch(url);
 			const json = await response.json();
