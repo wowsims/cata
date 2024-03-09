@@ -40,19 +40,19 @@ export const P4_ARMS_PRESET_ALLIANCE = PresetUtils.makePresetGear('P4 Arms [A]',
 import P4ArmsHordeGear from './gear_sets/p4_arms_horde.gear.json';
 export const P4_ARMS_PRESET_HORDE = PresetUtils.makePresetGear('P4 Arms [H]', P4ArmsHordeGear, { talentTree: 0, faction: Faction.Horde });
 import PreraidFuryGear from './gear_sets/preraid_fury.gear.json';
-export const PRERAID_FURY_PRESET = PresetUtils.makePresetGear('Preraid Fury', PreraidFuryGear, { talentTrees: [1,2] });
+export const PRERAID_FURY_PRESET = PresetUtils.makePresetGear('Preraid Fury', PreraidFuryGear, { talentTrees: [1, 2] });
 import P1FuryGear from './gear_sets/p1_fury.gear.json';
-export const P1_FURY_PRESET = PresetUtils.makePresetGear('P1 Fury', P1FuryGear, { talentTrees: [1,2] });
+export const P1_FURY_PRESET = PresetUtils.makePresetGear('P1 Fury', P1FuryGear, { talentTrees: [1, 2] });
 import P2FuryGear from './gear_sets/p2_fury.gear.json';
-export const P2_FURY_PRESET = PresetUtils.makePresetGear('P2 Fury', P2FuryGear, { talentTrees: [1,2] });
+export const P2_FURY_PRESET = PresetUtils.makePresetGear('P2 Fury', P2FuryGear, { talentTrees: [1, 2] });
 import P3FuryAllianceGear from './gear_sets/p3_fury_alliance.gear.json';
-export const P3_FURY_PRESET_ALLIANCE = PresetUtils.makePresetGear('P3 Fury [A]', P3FuryAllianceGear, { talentTrees: [1,2], faction: Faction.Alliance });
+export const P3_FURY_PRESET_ALLIANCE = PresetUtils.makePresetGear('P3 Fury [A]', P3FuryAllianceGear, { talentTrees: [1, 2], faction: Faction.Alliance });
 import P3FuryHordeGear from './gear_sets/p3_fury_horde.gear.json';
-export const P3_FURY_PRESET_HORDE = PresetUtils.makePresetGear('P3 Fury [H]', P3FuryHordeGear, { talentTrees: [1,2], faction: Faction.Horde });
+export const P3_FURY_PRESET_HORDE = PresetUtils.makePresetGear('P3 Fury [H]', P3FuryHordeGear, { talentTrees: [1, 2], faction: Faction.Horde });
 import P4FuryAllianceGear from './gear_sets/p4_fury_alliance.gear.json';
-export const P4_FURY_PRESET_ALLIANCE = PresetUtils.makePresetGear('P4 Fury [A]', P4FuryAllianceGear, { talentTrees: [1,2], faction: Faction.Alliance });
+export const P4_FURY_PRESET_ALLIANCE = PresetUtils.makePresetGear('P4 Fury [A]', P4FuryAllianceGear, { talentTrees: [1, 2], faction: Faction.Alliance });
 import P4FuryHordeGear from './gear_sets/p4_fury_horde.gear.json';
-export const P4_FURY_PRESET_HORDE = PresetUtils.makePresetGear('P4 Fury [H]', P4FuryHordeGear, { talentTrees: [1,2], faction: Faction.Horde });
+export const P4_FURY_PRESET_HORDE = PresetUtils.makePresetGear('P4 Fury [H]', P4FuryHordeGear, { talentTrees: [1, 2], faction: Faction.Horde });
 
 import FuryApl from './apls/fury.apl.json';
 export const ROTATION_FURY = PresetUtils.makePresetAPLRotation('Fury', FuryApl, { talentTree: 1 });
@@ -64,7 +64,7 @@ import ArmsSunderApl from './apls/arms_sunder.apl.json';
 export const ROTATION_ARMS_SUNDER = PresetUtils.makePresetAPLRotation('Arms + Sunder', ArmsSunderApl, { talentTree: 0 });
 
 // Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
+// https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const ArmsTalents = {
 	name: 'Arms',
 	data: SavedTalents.create({

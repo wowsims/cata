@@ -42,11 +42,11 @@ export const P3_AFFLICTION_HORDE_PRESET = PresetUtils.makePresetGear('P3 Afflict
 import P4AfflictionGear from './gear_sets/p4_affliction.gear.json';
 export const P4_AFFLICTION_PRESET = PresetUtils.makePresetGear('P4 Affliction', P4AfflictionGear, { tooltip: BIS_TOOLTIP, talentTree: 0 });
 import PreraidDemoDestroGear from './gear_sets/preraid_demodestro.gear.json';
-export const PRERAID_DEMODESTRO_PRESET = PresetUtils.makePresetGear('Preraid Demo/Destro', PreraidDemoDestroGear, { tooltip: BIS_TOOLTIP, talentTrees: [1,2] });
+export const PRERAID_DEMODESTRO_PRESET = PresetUtils.makePresetGear('Preraid Demo/Destro', PreraidDemoDestroGear, { tooltip: BIS_TOOLTIP, talentTrees: [1, 2] });
 import P1DemoDestroGear from './gear_sets/p1_demodestro.gear.json';
-export const P1_DEMODESTRO_PRESET = PresetUtils.makePresetGear('P1 Demo/Destro', P1DemoDestroGear, { tooltip: BIS_TOOLTIP, talentTrees: [1,2] });
+export const P1_DEMODESTRO_PRESET = PresetUtils.makePresetGear('P1 Demo/Destro', P1DemoDestroGear, { tooltip: BIS_TOOLTIP, talentTrees: [1, 2] });
 import P2DemoDestroGear from './gear_sets/p2_demodestro.gear.json';
-export const P2_DEMODESTRO_PRESET = PresetUtils.makePresetGear('P2 Demo/Destro', P2DemoDestroGear, { tooltip: BIS_TOOLTIP, talentTrees: [1,2] });
+export const P2_DEMODESTRO_PRESET = PresetUtils.makePresetGear('P2 Demo/Destro', P2DemoDestroGear, { tooltip: BIS_TOOLTIP, talentTrees: [1, 2] });
 import P3DemoAllianceGear from './gear_sets/p3_demo_alliance.gear.json';
 export const P3_DEMO_ALLIANCE_PRESET = PresetUtils.makePresetGear('P3 Demo [A]', P3DemoAllianceGear, { tooltip: BIS_TOOLTIP, talentTree: 1, faction: Faction.Alliance });
 import P3DemoHordeGear from './gear_sets/p3_demo_horde.gear.json';
@@ -68,7 +68,7 @@ import DestroApl from './apls/destro.apl.json';
 export const APL_Destro_Default = PresetUtils.makePresetAPLRotation('Destro', DestroApl, { talentTree: 2 });
 
 // Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
+// https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 
 export const AfflictionTalents = {
 	name: 'Affliction',

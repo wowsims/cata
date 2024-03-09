@@ -73,7 +73,7 @@ import FanAoeApl from './apls/fan_aoe.apl.json'
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Fan AOE', FanAoeApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
+// https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const CombatHackTalents = {
 	name: 'Combat Axes/Swords',
 	data: SavedTalents.create({

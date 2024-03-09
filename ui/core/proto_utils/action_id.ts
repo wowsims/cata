@@ -636,7 +636,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Valkyr': ActionId.fromSpellId(71844),
 };
 
-// https://wowhead.com/wotlk/hunter-pets
+// https://wowhead.com/cata/hunter-pets
 const petNameToIcon: Record<string, string> = {
 	'Bat': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_bat.jpg',
 	'Bear': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_bear.jpg',
@@ -679,7 +679,7 @@ const petNameToIcon: Record<string, string> = {
 	'Worm': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_worm.jpg',
 };
 
-export function getPetIconFromName(name: string): string|ActionId|undefined {
+export function getPetIconFromName(name: string): string | ActionId | undefined {
 	return petNameToActionId[name] || petNameToIcon[name];
 }
 

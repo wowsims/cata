@@ -492,7 +492,7 @@ func init() {
 	core.NewItemEffect(32489, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
 
-		// The spell effect is https://www.wowhead.com/wotlk/spell=40472/enduring-judgement, most likely
+		// The spell effect is https://www.wowhead.com/cata/spell=40472/enduring-judgement, most likely
 		dotSpell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{ItemID: 32489},
 			SpellSchool:      core.SpellSchoolHoly,

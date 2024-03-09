@@ -183,7 +183,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of every naxx set, e.g. https://www.wowhead.com/wotlk/item=43728/bonescythe-gauntlets
+	// There is an 'unavailable' version of every naxx set, e.g. https://www.wowhead.com/cata/item=43728/bonescythe-gauntlets
 	heroesItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasPrefix(item.Name, "Heroes' ")
 	})
@@ -197,7 +197,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of many t8 set pieces, e.g. https://www.wowhead.com/wotlk/item=46235/darkruned-gauntlets
+	// There is an 'unavailable' version of many t8 set pieces, e.g. https://www.wowhead.com/cata/item=46235/darkruned-gauntlets
 	valorousItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasPrefix(item.Name, "Valorous ")
 	})
@@ -211,7 +211,7 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		return true
 	})
 
-	// There is an 'unavailable' version of many t9 set pieces, e.g. https://www.wowhead.com/wotlk/item=48842/thralls-hauberk
+	// There is an 'unavailable' version of many t9 set pieces, e.g. https://www.wowhead.com/cata/item=48842/thralls-hauberk
 	triumphItems := core.FilterMap(db.Items, func(_ int32, item *proto.UIItem) bool {
 		return strings.HasSuffix(item.Name, "of Triumph")
 	})
