@@ -1,4 +1,4 @@
-import { DruidTalents, DruidMajorGlyph, DruidMinorGlyph } from '../proto/druid.js';
+import { DruidTalents, DruidMajorGlyph, DruidMinorGlyph, DruidPrimeGlyph } from '../proto/druid.js';
 
 import { GlyphsConfig, } from './glyphs_picker.js';
 import { TalentsConfig, newTalentsConfig } from './talents_picker.js';

@@ -1,4 +1,4 @@
-import { MageTalents, MageMajorGlyph, MageMinorGlyph } from '../proto/mage.js';
+import { MageTalents, MageMajorGlyph, MageMinorGlyph, MagePrimeGlyph } from '../proto/mage.js';
 
 import { GlyphsConfig } from './glyphs_picker.js';
 import { TalentsConfig, newTalentsConfig } from './talents_picker.js';

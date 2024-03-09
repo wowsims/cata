@@ -1,4 +1,4 @@
-import { RogueTalents, RogueMajorGlyph, RogueMinorGlyph } from '../proto/rogue.js';
+import { RogueTalents, RogueMajorGlyph, RogueMinorGlyph, RoguePrimeGlyph } from '../proto/rogue.js';
 
 import { GlyphsConfig } from './glyphs_picker.js';
 import { TalentsConfig, newTalentsConfig } from './talents_picker.js';

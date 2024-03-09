@@ -1,4 +1,4 @@
-import { WarlockTalents, WarlockMajorGlyph, WarlockMinorGlyph } from '../proto/warlock.js';
+import { WarlockTalents, WarlockMajorGlyph, WarlockMinorGlyph, WarlockPrimeGlyph } from '../proto/warlock.js';
 
 import { GlyphsConfig } from './glyphs_picker.js';
 import { TalentsConfig, newTalentsConfig } from './talents_picker.js';
@@ -77,7 +77,7 @@ export const warlockGlyphsConfig: GlyphsConfig = {
 		},
 	},
 	majorGlyphs: {
-		[WarlockMajorGlyph.GlyphOfDeathCoil]: {
+		[WarlockMajorGlyph.GlyphOfDeathCoilWl]: {
 			name: 'Glyph of Death Coil',
 			description: 'Increases the duration of your Death Coil by 0.5 sec.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_deathcoil.jpg',

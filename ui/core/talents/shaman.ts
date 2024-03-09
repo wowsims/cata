@@ -1,4 +1,4 @@
-import { ShamanTalents, ShamanMajorGlyph, ShamanMinorGlyph } from '../proto/shaman.js';
+import { ShamanTalents, ShamanMajorGlyph, ShamanMinorGlyph, ShamanPrimeGlyph } from '../proto/shaman.js';
 
 import { GlyphsConfig } from './glyphs_picker.js';
 import { TalentsConfig, newTalentsConfig } from './talents_picker.js';

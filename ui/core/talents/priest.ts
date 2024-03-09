@@ -1,4 +1,4 @@
-import { PriestTalents, PriestMajorGlyph, PriestMinorGlyph } from '../proto/priest.js';
+import { PriestTalents, PriestMajorGlyph, PriestMinorGlyph, PriestPrimeGlyph } from '../proto/priest.js';
 
 import { GlyphsConfig } from './glyphs_picker.js';
 import { TalentsConfig, newTalentsConfig } from './talents_picker.js';

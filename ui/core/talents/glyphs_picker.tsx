@@ -44,7 +44,7 @@ const emptyGlyphData: GlyphData = {
 
 export class GlyphsPicker extends Component {
 	private readonly glyphsConfig: GlyphsConfig;
-
+	primeGlyphPickers: Array<GlyphPicker> = [];
 	majorGlyphPickers: Array<GlyphPicker> = [];
 	minorGlyphPickers: Array<GlyphPicker> = [];
 
@@ -55,15 +55,21 @@ export class GlyphsPicker extends Component {
 		this.rootElem.appendChild(
 			<h6 className="mt-2 fw-bold d-xl-block d-none">Glyphs</h6>
 		)
-
+		const primeGlyphs = Object.keys(glyphsConfig.primeGlyphs).map(idStr => Number(idStr));
 		const majorGlyphs = Object.keys(glyphsConfig.majorGlyphs).map(idStr => Number(idStr));
 		const minorGlyphs = Object.keys(glyphsConfig.minorGlyphs).map(idStr => Number(idStr));
 
+		const primeGlyphsData = primeGlyphs.map(glyph => this.getGlyphData(glyph));
 		const majorGlyphsData = majorGlyphs.map(glyph => this.getGlyphData(glyph));
 		const minorGlyphsData = minorGlyphs.map(glyph => this.getGlyphData(glyph));
 
+		primeGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
 		majorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
 		minorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
+
+		const primeGlyphsBlock = new ContentBlock(this.rootElem, 'major-glyphs', {
+			header: { title: 'Major', extraCssClasses: ['border-0', 'mb-1'] }
+		});
 
 		const majorGlyphsBlock = new ContentBlock(this.rootElem, 'major-glyphs', {
 			header: { title: 'Major', extraCssClasses: ['border-0', 'mb-1'] }
@@ -72,6 +78,9 @@ export class GlyphsPicker extends Component {
 			header: { title: 'Minor', extraCssClasses: ['border-0', 'mb-1'] }
 		});
 
+		this.primeGlyphPickers = (['prime1', 'prime2', 'prime3'] as Array<keyof Glyphs>).map(glyphField => {
+			return new GlyphPicker(primeGlyphsBlock.bodyElement, player, primeGlyphsData, glyphField, true)
+		});
 		this.majorGlyphPickers = (['major1', 'major2', 'major3'] as Array<keyof Glyphs>).map(glyphField => {
 			return new GlyphPicker(majorGlyphsBlock.bodyElement, player, majorGlyphsData, glyphField, true)
 		});

@@ -1,5 +1,5 @@
 import { Spec } from '../proto/common.js';
-import { DeathknightTalents, DeathknightMajorGlyph, DeathknightMinorGlyph } from '../proto/deathknight.js';
+import { DeathKnightTalents, DeathKnightPrimeGlyph, DeathKnightMajorGlyph, DeathKnightMinorGlyph } from '../proto/deathknight.js';
 import { Player } from '../player.js';
 
 import { GlyphsConfig } from './glyphs_picker.js';
@@ -7,7 +7,7 @@ import { TalentsConfig, newTalentsConfig } from './talents_picker.js';
 
 import DkTalentsJson from './trees/deathknight.json';
 
-export const deathknightTalentsConfig: TalentsConfig<DeathknightTalents> = newTalentsConfig(DkTalentsJson);
+export const deathknightTalentsConfig: TalentsConfig<DeathKnightTalents> = newTalentsConfig(DkTalentsJson);
 
 export const deathKnightGlyphsConfig: GlyphsConfig = {
 	primeGlyphs: {

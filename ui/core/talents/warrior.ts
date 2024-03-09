@@ -1,4 +1,4 @@
-import { WarriorTalents, WarriorMajorGlyph, WarriorMinorGlyph } from '../proto/warrior.js';
+import { WarriorTalents, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph } from '../proto/warrior.js';
 
 import { GlyphsConfig } from './glyphs_picker.js';
 import { TalentsConfig, newTalentsConfig } from './talents_picker.js';
