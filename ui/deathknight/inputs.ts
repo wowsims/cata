@@ -2,7 +2,7 @@ import { Spec } from '../core/proto/common.js';
 import { UnitReference, UnitReference_Type as UnitType } from '../core/proto/common.js';
 
 import {
-	DeathknightMajorGlyph,
+	DeathKnightMajorGlyph,
 } from '../core/proto/deathknight.js';
 
 import * as InputHelpers from '../core/components/input_helpers.js';
@@ -50,7 +50,7 @@ export const DrwPestiApply = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecD
 	fieldName: 'drwPestiApply',
 	label: 'DRW Pestilence Add',
 	labelTooltip: 'There is currently an interaction with DRW and pestilence where you can use pestilence to force DRW to apply diseases if they are already applied by the DK. It only works with Glyph of Disease and if there is an off target. This toggle forces the sim to assume there is an off target.',
-	showWhen: (player: Player<Spec.SpecDeathknight>) => player.getTalentTree() == 0 && (player.getGlyphs().major1 == DeathknightMajorGlyph.GlyphOfDisease || player.getGlyphs().major2 == DeathknightMajorGlyph.GlyphOfDisease || player.getGlyphs().major3 == DeathknightMajorGlyph.GlyphOfDisease),
+	showWhen: (player: Player<Spec.SpecDeathknight>) => player.getTalentTree() == 0 && (player.getGlyphs().major1 == DeathKnightMajorGlyph.GlyphOfDisease || player.getGlyphs().major2 == DeathKnightMajorGlyph.GlyphOfDisease || player.getGlyphs().major3 == DeathKnightMajorGlyph.GlyphOfDisease),
 	changeEmitter: (player: Player<Spec.SpecDeathknight>) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.rotationChangeEmitter, player.talentsChangeEmitter]),
 });
 

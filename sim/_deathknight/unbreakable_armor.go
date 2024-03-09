@@ -18,7 +18,7 @@ func (dk *Deathknight) registerUnbreakableArmorSpell() {
 	cd := time.Minute*1 - dk.thassariansPlateCooldownReduction(dk.UnbreakableArmor)
 
 	strDep := dk.NewDynamicMultiplyStat(stats.Strength, 1.2)
-	armorDep := dk.NewDynamicMultiplyStat(stats.Armor, core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfUnbreakableArmor), 1.3, 1.25))
+	armorDep := dk.NewDynamicMultiplyStat(stats.Armor, core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfUnbreakableArmor), 1.3, 1.25))
 
 	dk.UnbreakableArmorAura = dk.RegisterAura(core.Aura{
 		Label:    "Unbreakable Armor",

@@ -23,7 +23,7 @@ func (dk *Deathknight) registerVampiricBloodSpell() {
 	dk.VampiricBloodAura = dk.RegisterAura(core.Aura{
 		Label:    "Vampiric Blood",
 		ActionID: actionID,
-		Duration: time.Second*10 + core.TernaryDuration(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfVampiricBlood), 5*time.Second, 0),
+		Duration: time.Second*10 + core.TernaryDuration(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfVampiricBlood), 5*time.Second, 0),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			bonusHealth = dk.MaxHealth() * 0.15
 			dk.AddStatsDynamic(sim, stats.Stats{stats.Health: bonusHealth})

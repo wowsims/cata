@@ -345,10 +345,10 @@ func (dk *Deathknight) IsFuStrike(spell *core.Spell) bool {
 	return spell == dk.Obliterate || spell == dk.ScourgeStrike || spell == dk.DeathStrike
 }
 
-func (dk *Deathknight) HasMajorGlyph(glyph proto.DeathknightMajorGlyph) bool {
+func (dk *Deathknight) HasMajorGlyph(glyph proto.DeathKnightMajorGlyph) bool {
 	return dk.HasGlyph(int32(glyph))
 }
-func (dk *Deathknight) HasMinorGlyph(glyph proto.DeathknightMinorGlyph) bool {
+func (dk *Deathknight) HasMinorGlyph(glyph proto.DeathKnightMinorGlyph) bool {
 	return dk.HasGlyph(int32(glyph))
 }
 

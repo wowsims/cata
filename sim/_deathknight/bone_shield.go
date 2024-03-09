@@ -21,7 +21,7 @@ func (dk *Deathknight) registerBoneShieldSpell() {
 		Label:     "Bone Shield",
 		ActionID:  actionID,
 		Duration:  time.Minute * 5,
-		MaxStacks: 3 + core.TernaryInt32(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfBoneShield), 1, 0),
+		MaxStacks: 3 + core.TernaryInt32(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfBoneShield), 1, 0),
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			dk.BoneShieldAura.Activate(sim)
 			dk.BoneShieldAura.UpdateExpires(sim.CurrentTime + time.Minute*5)

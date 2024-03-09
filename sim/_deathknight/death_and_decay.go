@@ -8,7 +8,7 @@ import (
 )
 
 func (dk *Deathknight) registerDeathAndDecaySpell() {
-	glyphBonus := core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfDeathAndDecay), 1.2, 1.0)
+	glyphBonus := core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfDeathAndDecay), 1.2, 1.0)
 
 	dk.DeathAndDecay = dk.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 49938},

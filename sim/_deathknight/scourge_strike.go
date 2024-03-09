@@ -41,7 +41,7 @@ func (dk *Deathknight) registerScourgeStrikeSpell() {
 
 	shadowDamageSpell := dk.registerScourgeStrikeShadowDamageSpell()
 	bonusBaseDamage := dk.sigilOfAwarenessBonus() + dk.sigilOfArthriticBindingBonus()
-	hasGlyph := dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfScourgeStrike)
+	hasGlyph := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfScourgeStrike)
 
 	dk.ScourgeStrike = dk.RegisterSpell(core.SpellConfig{
 		ActionID:    ScourgeStrikeActionID.WithTag(1),

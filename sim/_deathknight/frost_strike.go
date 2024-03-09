@@ -24,7 +24,7 @@ func (dk *Deathknight) newFrostStrikeHitSpell(isMH bool) *core.Spell {
 		Flags:       core.SpellFlagMeleeMetrics,
 
 		RuneCost: core.RuneCostOptions{
-			RunicPowerCost: core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfFrostStrike), 32, 40),
+			RunicPowerCost: core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfFrostStrike), 32, 40),
 			Refundable:     true,
 		},
 		Cast: core.CastConfig{

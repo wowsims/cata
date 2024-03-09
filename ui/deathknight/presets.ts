@@ -12,8 +12,8 @@ import { SavedTalents } from '../core/proto/ui.js';
 
 import {
 	Deathknight_Options as DeathKnightOptions,
-	DeathknightMajorGlyph,
-	DeathknightMinorGlyph,
+	DeathKnightMajorGlyph,
+	DeathKnightMinorGlyph,
 } from '../core/proto/deathknight.js';
 
 import * as PresetUtils from '../core/preset_utils.js';
@@ -81,12 +81,12 @@ export const FrostTalents = {
 	data: SavedTalents.create({
 		talentsString: '23050005-32005350352203012300033101351',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfObliterate,
-			major2: DeathknightMajorGlyph.GlyphOfFrostStrike,
-			major3: DeathknightMajorGlyph.GlyphOfDisease,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfObliterate,
+			major2: DeathKnightMajorGlyph.GlyphOfFrostStrike,
+			major3: DeathKnightMajorGlyph.GlyphOfDisease,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };
@@ -96,12 +96,12 @@ export const FrostUnholyTalents = {
 	data: SavedTalents.create({
 		talentsString: '01-32002350342203012300033101351-230200305003',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfObliterate,
-			major2: DeathknightMajorGlyph.GlyphOfFrostStrike,
-			major3: DeathknightMajorGlyph.GlyphOfDisease,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfObliterate,
+			major2: DeathKnightMajorGlyph.GlyphOfFrostStrike,
+			major3: DeathKnightMajorGlyph.GlyphOfDisease,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };
@@ -111,12 +111,12 @@ export const UnholyDualWieldTalents = {
 	data: SavedTalents.create({
 		talentsString: '-320043500002-2300303050032152000150013133051',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfTheGhoul,
-			major2: DeathknightMajorGlyph.GlyphOfIcyTouch,
-			major3: DeathknightMajorGlyph.GlyphOfDeathAndDecay,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
+			major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
+			major3: DeathKnightMajorGlyph.GlyphOfDeathAndDecay,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };
@@ -126,12 +126,12 @@ export const UnholyDualWieldSSTalents = {
 	data: SavedTalents.create({
 		talentsString: '-320033500002-2301303050032151000150013133151',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfTheGhoul,
-			major2: DeathknightMajorGlyph.GlyphOfIcyTouch,
-			major3: DeathknightMajorGlyph.GlyphOfDeathAndDecay,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
+			major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
+			major3: DeathKnightMajorGlyph.GlyphOfDeathAndDecay,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };
@@ -141,12 +141,12 @@ export const Unholy2HTalents = {
 	data: SavedTalents.create({
 		talentsString: '-320050500002-2302003350032052000150013133151',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfTheGhoul,
-			major2: DeathknightMajorGlyph.GlyphOfIcyTouch,
-			major3: DeathknightMajorGlyph.GlyphOfDarkDeath,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
+			major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
+			major3: DeathKnightMajorGlyph.GlyphOfDarkDeath,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };
@@ -156,12 +156,12 @@ export const UnholyAoeTalents = {
 	data: SavedTalents.create({
 		talentsString: '-320050500002-2302303050032052000150013133151',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfTheGhoul,
-			major2: DeathknightMajorGlyph.GlyphOfIcyTouch,
-			major3: DeathknightMajorGlyph.GlyphOfDeathAndDecay,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
+			major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
+			major3: DeathKnightMajorGlyph.GlyphOfDeathAndDecay,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };
@@ -171,12 +171,12 @@ export const BloodTalents = {
 	data: SavedTalents.create({
 		talentsString: '2305120530003303231023001351--2302003050032',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfDancingRuneWeapon,
-			major2: DeathknightMajorGlyph.GlyphOfDeathStrike,
-			major3: DeathknightMajorGlyph.GlyphOfDisease,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfDancingRuneWeapon,
+			major2: DeathKnightMajorGlyph.GlyphOfDeathStrike,
+			major3: DeathKnightMajorGlyph.GlyphOfDisease,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };

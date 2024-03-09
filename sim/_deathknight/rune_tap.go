@@ -23,7 +23,7 @@ func (dk *Deathknight) registerRuneTapSpell() {
 	healthMetrics := dk.NewHealthMetrics(actionID)
 
 	dk.bonusCoeffs.runeTapHealing = []float64{1.0, 1.33, 1.66, 2.0}[dk.Talents.ImprovedRuneTap] *
-		core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfRuneTap), 0.11, 0.10)
+		core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfRuneTap), 0.11, 0.10)
 
 	dk.RuneTap = dk.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,

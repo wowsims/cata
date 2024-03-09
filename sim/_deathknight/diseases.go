@@ -77,7 +77,7 @@ func (dk *Deathknight) registerFrostFever() {
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagDisease,
 
-		DamageMultiplier: core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfIcyTouch), 1.2, 1.0),
+		DamageMultiplier: core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfIcyTouch), 1.2, 1.0),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -198,7 +198,7 @@ func (dk *Deathknight) registerDrwFrostFever() {
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagDisease,
 
-		DamageMultiplier: core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfIcyTouch), 1.2, 1.0),
+		DamageMultiplier: core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfIcyTouch), 1.2, 1.0),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

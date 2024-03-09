@@ -10,7 +10,7 @@ var DeathStrikeActionID = core.ActionID{SpellID: 49924}
 
 func (dk *Deathknight) newDeathStrikeSpell(isMH bool) *core.Spell {
 	bonusBaseDamage := dk.sigilOfAwarenessBonus()
-	hasGlyph := dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfDeathStrike)
+	hasGlyph := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfDeathStrike)
 	deathConvertChance := float64(dk.Talents.DeathRuneMastery) / 3
 
 	var healthMetrics *core.ResourceMetrics
@@ -98,7 +98,7 @@ func (dk *Deathknight) registerDeathStrikeSpell() {
 
 func (dk *Deathknight) registerDrwDeathStrikeSpell() {
 	bonusBaseDamage := dk.sigilOfAwarenessBonus()
-	hasGlyph := dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfDeathStrike)
+	hasGlyph := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfDeathStrike)
 
 	dk.RuneWeapon.DeathStrike = dk.RuneWeapon.RegisterSpell(core.SpellConfig{
 		ActionID:    DeathStrikeActionID.WithTag(1),

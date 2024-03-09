@@ -252,7 +252,7 @@ func (dk *Deathknight) applyUnholyBlight() {
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 
-		DamageMultiplier: core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfUnholyBlight), 1.4, 1),
+		DamageMultiplier: core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfUnholyBlight), 1.4, 1),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

@@ -13,7 +13,7 @@ func (dk *Deathknight) registerIceboundFortitudeSpell() {
 	cdTimer := dk.NewTimer()
 	cd := time.Minute * 2
 
-	hasGlyph := dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfIceboundFortitude)
+	hasGlyph := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfIceboundFortitude)
 
 	dmgTakenMult := 1.0
 	dk.IceboundFortitudeAura = dk.RegisterAura(core.Aura{

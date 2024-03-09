@@ -45,9 +45,9 @@ func TestBloodTank(t *testing.T) {
 
 var BloodTankTalents = "005510153330330220102013-3050505100023101-002"
 var Glyphs = &proto.Glyphs{
-	Major1: int32(proto.DeathknightMajorGlyph_GlyphOfDarkCommand),
-	Major2: int32(proto.DeathknightMajorGlyph_GlyphOfObliterate),
-	Major3: int32(proto.DeathknightMajorGlyph_GlyphOfVampiricBlood),
+	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfDarkCommand),
+	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfObliterate),
+	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfVampiricBlood),
 }
 
 var PlayerOptionsBloodTank = &proto.Player_TankDeathknight{

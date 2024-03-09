@@ -40,7 +40,7 @@ func (dk *Deathknight) registerAntiMagicShellSpell() {
 	dk.AntiMagicShellAura = dk.RegisterAura(core.Aura{
 		Label:    "Anti-Magic Shell",
 		ActionID: actionID,
-		Duration: time.Second*5 + core.TernaryDuration(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfAntiMagicShell), 2*time.Second, 0),
+		Duration: time.Second*5 + core.TernaryDuration(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfAntiMagicShell), 2*time.Second, 0),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if dk.Inputs.IsDps {
 				target := aura.Unit.CurrentTarget

@@ -14,7 +14,7 @@ func (dk *Deathknight) registerDancingRuneWeaponCD() {
 	}
 
 	duration := time.Second * 12
-	if dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfDancingRuneWeapon) {
+	if dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfDancingRuneWeapon) {
 		duration += time.Second * 5
 	}
 

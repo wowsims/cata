@@ -30,7 +30,7 @@ func (dk *Deathknight) newPlagueStrikeSpell(isMH bool) *core.Spell {
 		DamageMultiplier: .5 *
 			core.TernaryFloat64(isMH, 1, dk.nervesOfColdSteelBonus()) *
 			(1.0 + 0.1*float64(dk.Talents.Outbreak)) *
-			core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfPlagueStrike), 1.2, 1.0),
+			core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfPlagueStrike), 1.2, 1.0),
 		CritMultiplier:   dk.bonusCritMultiplier(dk.Talents.ViciousStrikes),
 		ThreatMultiplier: 1,
 

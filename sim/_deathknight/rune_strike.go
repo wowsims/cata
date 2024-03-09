@@ -18,7 +18,7 @@ func (dk *Deathknight) threatOfThassarianRuneStrikeProcMask(isMH bool) core.Proc
 }
 
 func (dk *Deathknight) newRuneStrikeSpell(isMH bool) *core.Spell {
-	runeStrikeGlyphCritBonus := core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfRuneStrike), 10.0, 0.0)
+	runeStrikeGlyphCritBonus := core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfRuneStrike), 10.0, 0.0)
 
 	conf := core.SpellConfig{
 		ActionID:    RuneStrikeActionID.WithTag(core.TernaryInt32(isMH, 1, 2)),
@@ -118,7 +118,7 @@ func (dk *Deathknight) registerRuneStrikeSpell() {
 }
 
 func (dk *Deathknight) registerDrwRuneStrikeSpell() {
-	runeStrikeGlyphCritBonus := core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfRuneStrike), 10.0, 0.0)
+	runeStrikeGlyphCritBonus := core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfRuneStrike), 10.0, 0.0)
 
 	dk.RuneWeapon.RuneStrike = dk.RuneWeapon.RegisterSpell(core.SpellConfig{
 		ActionID:    RuneStrikeActionID.WithTag(1),

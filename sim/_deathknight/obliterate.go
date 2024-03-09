@@ -36,7 +36,7 @@ func (dk *Deathknight) newObliterateHitSpell(isMH bool) *core.Spell {
 		BonusCritRating: (dk.rimeCritBonus() + dk.subversionCritBonus() + dk.annihilationCritBonus() + dk.scourgeborneBattlegearCritBonus()) * core.CritRatingPerCritChance,
 		DamageMultiplier: .8 *
 			core.TernaryFloat64(isMH, 1, dk.nervesOfColdSteelBonus()) *
-			core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfObliterate), 1.25, 1.0) *
+			core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfObliterate), 1.25, 1.0) *
 			dk.scourgelordsBattlegearDamageBonus(ScourgelordBonusSpellOB),
 		CritMultiplier:   dk.bonusCritMultiplier(dk.Talents.GuileOfGorefiend),
 		ThreatMultiplier: 1,

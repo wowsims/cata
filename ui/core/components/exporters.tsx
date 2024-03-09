@@ -265,12 +265,15 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 			glyphStr += d[(spellId >> 5) & 0b00011111];
 			glyphStr += d[(spellId >> 0) & 0b00011111];
 		};
-		addGlyph(glyphs.major1, 0);
-		addGlyph(glyphs.major2, 1);
-		addGlyph(glyphs.major3, 2);
-		addGlyph(glyphs.minor1, 3);
-		addGlyph(glyphs.minor2, 4);
-		addGlyph(glyphs.minor3, 5);
+		addGlyph(glyphs.prime1, 0);
+		addGlyph(glyphs.prime1, 1);
+		addGlyph(glyphs.prime1, 2);
+		addGlyph(glyphs.major1, 3);
+		addGlyph(glyphs.major2, 4);
+		addGlyph(glyphs.major3, 5);
+		addGlyph(glyphs.minor1, 6);
+		addGlyph(glyphs.minor2, 7);
+		addGlyph(glyphs.minor3, 8);
 		if (glyphStr) {
 			glyphBytes.push(0x30);
 			for (let i = 0; i < glyphStr.length; i++) {

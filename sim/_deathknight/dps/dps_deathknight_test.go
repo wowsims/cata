@@ -94,33 +94,33 @@ func TestFrostUH(t *testing.T) {
 
 var BloodTalents = "2305120530003303231023001351--230220305003"
 var BloodDefaultGlyphs = &proto.Glyphs{
-	Major1: int32(proto.DeathknightMajorGlyph_GlyphOfDancingRuneWeapon),
-	Major2: int32(proto.DeathknightMajorGlyph_GlyphOfDeathStrike),
-	Major3: int32(proto.DeathknightMajorGlyph_GlyphOfDisease),
+	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfDancingRuneWeapon),
+	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfDeathStrike),
+	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfDisease),
 	// No interesting minor glyphs.
 }
 
 var FrostTalents = "23050005-32005350352203012300033101351"
 var FrostDefaultGlyphs = &proto.Glyphs{
-	Major1: int32(proto.DeathknightMajorGlyph_GlyphOfFrostStrike),
-	Major2: int32(proto.DeathknightMajorGlyph_GlyphOfObliterate),
-	Major3: int32(proto.DeathknightMajorGlyph_GlyphOfDisease),
+	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfFrostStrike),
+	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfObliterate),
+	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfDisease),
 	// No interesting minor glyphs.
 }
 
 var FrostUHTalents = "01-32002350342203012300033101351-230200305003"
 var FrostUHDefaultGlyphs = &proto.Glyphs{
-	Major1: int32(proto.DeathknightMajorGlyph_GlyphOfFrostStrike),
-	Major2: int32(proto.DeathknightMajorGlyph_GlyphOfObliterate),
-	Major3: int32(proto.DeathknightMajorGlyph_GlyphOfDisease),
+	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfFrostStrike),
+	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfObliterate),
+	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfDisease),
 	// No interesting minor glyphs.
 }
 
 var UnholyTalents = "-320043500002-2300303050032152000150013133051"
 var UnholyDefaultGlyphs = &proto.Glyphs{
-	Major1: int32(proto.DeathknightMajorGlyph_GlyphOfTheGhoul),
-	Major2: int32(proto.DeathknightMajorGlyph_GlyphOfDarkDeath),
-	Major3: int32(proto.DeathknightMajorGlyph_GlyphOfDeathAndDecay),
+	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfTheGhoul),
+	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfDarkDeath),
+	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfDeathAndDecay),
 	// No interesting minor glyphs.
 }
 

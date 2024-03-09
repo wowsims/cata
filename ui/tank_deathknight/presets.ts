@@ -9,8 +9,8 @@ import { SavedTalents } from '../core/proto/ui.js';
 
 import {
 	TankDeathknight_Options as TankDeathKnightOptions,
-	DeathknightMajorGlyph,
-	DeathknightMinorGlyph,
+	DeathKnightMajorGlyph,
+	DeathKnightMinorGlyph,
 } from '../core/proto/deathknight.js';
 
 import * as PresetUtils from '../core/preset_utils.js';
@@ -38,12 +38,12 @@ export const BloodTalents = {
 	data: SavedTalents.create({
 		talentsString: '005512153330030320102013-3050505000023-005',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfDisease,
-			major2: DeathknightMajorGlyph.GlyphOfRuneStrike,
-			major3: DeathknightMajorGlyph.GlyphOfDarkCommand,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfBloodTap,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfDisease,
+			major2: DeathKnightMajorGlyph.GlyphOfRuneStrike,
+			major3: DeathKnightMajorGlyph.GlyphOfDarkCommand,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfBloodTap,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };
@@ -53,12 +53,12 @@ export const BloodAggroTalents = {
 	data: SavedTalents.create({
 		talentsString: '0355220530303303201020131301--0052003050032',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfDancingRuneWeapon,
-			major2: DeathknightMajorGlyph.GlyphOfRuneStrike,
-			major3: DeathknightMajorGlyph.GlyphOfDarkCommand,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfBloodTap,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfDancingRuneWeapon,
+			major2: DeathKnightMajorGlyph.GlyphOfRuneStrike,
+			major3: DeathKnightMajorGlyph.GlyphOfDarkCommand,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfBloodTap,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };
@@ -68,12 +68,12 @@ export const DoubleBuffBloodTalents = {
 	data: SavedTalents.create({
 		talentsString: '005512153330030320102013-3050505000023201-002',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfDisease,
-			major2: DeathknightMajorGlyph.GlyphOfRuneStrike,
-			major3: DeathknightMajorGlyph.GlyphOfDarkCommand,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfBloodTap,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfDisease,
+			major2: DeathKnightMajorGlyph.GlyphOfRuneStrike,
+			major3: DeathKnightMajorGlyph.GlyphOfDarkCommand,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfBloodTap,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };
@@ -83,12 +83,12 @@ export const FrostTalents = {
 	data: SavedTalents.create({
 		talentsString: '005510003-3050535000223301030023310035-005',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfDisease,
-			major2: DeathknightMajorGlyph.GlyphOfRuneStrike,
-			major3: DeathknightMajorGlyph.GlyphOfDarkCommand,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfBloodTap,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfDisease,
+			major2: DeathKnightMajorGlyph.GlyphOfRuneStrike,
+			major3: DeathKnightMajorGlyph.GlyphOfDarkCommand,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfBloodTap,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };
@@ -98,12 +98,12 @@ export const DoubleBuffFrostTalents = {
 	data: SavedTalents.create({
 		talentsString: '00551005303003002-305053510022330100002301-005',
 		glyphs: Glyphs.create({
-			major1: DeathknightMajorGlyph.GlyphOfDisease,
-			major2: DeathknightMajorGlyph.GlyphOfRuneStrike,
-			major3: DeathknightMajorGlyph.GlyphOfDarkCommand,
-			minor1: DeathknightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathknightMinorGlyph.GlyphOfBloodTap,
-			minor3: DeathknightMinorGlyph.GlyphOfRaiseDead,
+			major1: DeathKnightMajorGlyph.GlyphOfDisease,
+			major2: DeathKnightMajorGlyph.GlyphOfRuneStrike,
+			major3: DeathKnightMajorGlyph.GlyphOfDarkCommand,
+			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+			minor2: DeathKnightMinorGlyph.GlyphOfBloodTap,
+			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
 		}),
 	}),
 };

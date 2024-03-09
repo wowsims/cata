@@ -188,7 +188,7 @@ func (ghoulPet *GhoulPet) enable(sim *core.Simulation) {
 func (dk *Deathknight) ghoulStatInheritance() core.PetStatInheritance {
 	ravenousDead := 1.0 + 0.2*float64(dk.Talents.RavenousDead)
 	glyphBonus := 0.0
-	if dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfTheGhoul) {
+	if dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfTheGhoul) {
 		glyphBonus = 0.4
 	}
 

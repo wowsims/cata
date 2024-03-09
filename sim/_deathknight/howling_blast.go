@@ -15,7 +15,7 @@ func (dk *Deathknight) registerHowlingBlastSpell() {
 	}
 
 	rpBonus := 2.5 * float64(dk.Talents.ChillOfTheGrave)
-	hasGlyph := dk.HasMajorGlyph(proto.DeathknightMajorGlyph_GlyphOfHowlingBlast)
+	hasGlyph := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfHowlingBlast)
 
 	dk.HowlingBlast = dk.RegisterSpell(core.SpellConfig{
 		ActionID:    HowlingBlastActionID,
