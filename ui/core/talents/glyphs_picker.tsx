@@ -21,6 +21,7 @@ export type GlyphConfig = {
 };
 
 export type GlyphsConfig = {
+	primeGlyphs: Record<number, GlyphConfig>,
 	majorGlyphs: Record<number, GlyphConfig>,
 	minorGlyphs: Record<number, GlyphConfig>,
 };

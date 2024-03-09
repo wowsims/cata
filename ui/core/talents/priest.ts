@@ -8,21 +8,103 @@ import PriestTalentJson from './trees/priest.json';
 export const priestTalentsConfig: TalentsConfig<PriestTalents> = newTalentsConfig(PriestTalentJson);
 
 export const priestGlyphsConfig: GlyphsConfig = {
+	primeGlyphs: {
+		[PriestPrimeGlyph.GlyphOfCircleOfHealing]: {
+			name: 'Glyph of Circle of Healing',
+			description: 'Your Circle of Healing spell heals 1 additional target, but its mana cost is increased by 20%.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_circleofrenewal.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfDesperation]: {
+			name: 'Glyph of Desperation',
+			description: 'Allows Pain Suppression and Guardian Spirit to be cast while stunned.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_painsupression.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfDispelMagic]: {
+			name: 'Glyph of Dispel Magic',
+			description: 'Your Dispel Magic spell also heals your target for 3% of maximum health when you successfully dispel a magical effect.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_dispelmagic.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfDivineAccuracy]: {
+			name: 'Glyph of Divine Accuracy',
+			description: 'Increases your chance to hit with your Smite and Holy Fire spells by 18%.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_holyprotection.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfFade]: {
+			name: 'Glyph of Fade',
+			description: 'Reduces the cooldown of your Fade spell by 9 sec.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_magic_lesserinvisibilty.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfFearWard]: {
+			name: 'Glyph of Fear Ward',
+			description: 'Reduces the cooldown and duration of Fear Ward by 60 sec.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_excorcism.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfHolyNova]: {
+			name: 'Glyph of Holy Nova',
+			description: 'Reduces the global cooldown of your Holy Nova by .5 sec.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_holynova.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfInnerFire]: {
+			name: 'Glyph of Inner Fire',
+			description: 'Increases the armor gained from your Inner Fire spell by 50%.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_innerfire.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfMassDispel]: {
+			name: 'Glyph of Mass Dispel',
+			description: 'Reduces the cast time of Mass Dispel by 1 sec.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_arcane_massdispel.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfPrayerOfMending]: {
+			name: 'Glyph of Prayer of Mending',
+			description: 'The first charge of your Prayer of Mending heals for an additional 60%.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_prayerofmendingtga.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfPsychicHorror]: {
+			name: 'Glyph of Psychic Horror',
+			description: 'Reduces the cooldown of your Psychic Horror by 30 sec.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_psychichorrors.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfPsychicScream]: {
+			name: 'Glyph of Psychic Scream',
+			description: 'Targets of your Psychic Scream spell now tremble in place instead of fleeing in fear, but the cooldown of Psychic Scream is increased by 3 sec.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_psychicscream.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfScourgeImprisonment]: {
+			name: 'Glyph of Scourge Imprisonment',
+			description: 'Reduces the cast time of your Shackle Undead by 1.0 sec.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_crusade.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfSmite]: {
+			name: 'Glyph of Smite',
+			description: 'Your Smite spell inflicts an additional 20% damage against targets afflicted by Holy Fire.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_holysmite.jpg',
+		},
+		[PriestPrimeGlyph.GlyphOfSpiritTap]: {
+			name: 'Glyph of Spirit Tap',
+			description: 'When you kill a target with your Shadow Word: Death that yields experience or honor, you receive 12% of your total mana over 12 sec.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_requiem.jpg',
+		},
+	},
 	majorGlyphs: {
 		[PriestMajorGlyph.GlyphOfCircleOfHealing]: {
 			name: 'Glyph of Circle of Healing',
-			description: 'Your Circle of Healing spell heals 1 additional target.',
+			description: 'Your Circle of Healing spell heals 1 additional target, but its mana cost is increased by 20%.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_circleofrenewal.jpg',
+		},
+		[PriestMajorGlyph.GlyphOfDesperation]: {
+			name: 'Glyph of Desperation',
+			description: 'Allows Pain Suppression and Guardian Spirit to be cast while stunned.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_painsupression.jpg',
 		},
 		[PriestMajorGlyph.GlyphOfDispelMagic]: {
 			name: 'Glyph of Dispel Magic',
-			description: 'Your Dispel Magic spell also heals your target for 3% of maximum health.',
+			description: 'Your Dispel Magic spell also heals your target for 3% of maximum health when you successfully dispel a magical effect.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_dispelmagic.jpg',
 		},
-		[PriestMajorGlyph.GlyphOfDispersion]: {
-			name: 'Glyph of Dispersion',
-			description: 'Reduces the cooldown on Dispersion by 45 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_dispersion.jpg',
+		[PriestMajorGlyph.GlyphOfDivineAccuracy]: {
+			name: 'Glyph of Divine Accuracy',
+			description: 'Increases your chance to hit with your Smite and Holy Fire spells by 18%.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_holyprotection.jpg',
 		},
 		[PriestMajorGlyph.GlyphOfFade]: {
 			name: 'Glyph of Fade',
@@ -31,129 +113,64 @@ export const priestGlyphsConfig: GlyphsConfig = {
 		},
 		[PriestMajorGlyph.GlyphOfFearWard]: {
 			name: 'Glyph of Fear Ward',
-			description: 'Reduces cooldown and duration of Fear Ward by 60 sec.',
+			description: 'Reduces the cooldown and duration of Fear Ward by 60 sec.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_excorcism.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfFlashHeal]: {
-			name: 'Glyph of Flash Heal',
-			description: 'Reduces the mana cost of your Flash Heal by 10%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_flashheal.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfGuardianSpirit]: {
-			name: 'Glyph of Guardian Spirit',
-			description: 'If your Guardian Spirit lasts its entire duration without being triggered, the cooldown is reset to 1 min.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_guardianspirit.jpg',
 		},
 		[PriestMajorGlyph.GlyphOfHolyNova]: {
 			name: 'Glyph of Holy Nova',
-			description: 'Increases the damage and healing of your Holy Nova spell by an additional 20%.',
+			description: 'Reduces the global cooldown of your Holy Nova by .5 sec.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_holynova.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfHymnOfHope]: {
-			name: 'Glyph of Hymn of Hope',
-			description: 'Your Hymn of Hope lasts an additional 2 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_symbolofhope.jpg',
 		},
 		[PriestMajorGlyph.GlyphOfInnerFire]: {
 			name: 'Glyph of Inner Fire',
-			description: 'Increases the armor from your Inner Fire spell by 50%.',
+			description: 'Increases the armor gained from your Inner Fire spell by 50%.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_innerfire.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfLightwell]: {
-			name: 'Glyph of Lightwell',
-			description: 'Increases the amount healed by your Lightwell by 20%',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_summonlightwell.jpg',
 		},
 		[PriestMajorGlyph.GlyphOfMassDispel]: {
 			name: 'Glyph of Mass Dispel',
-			description: 'Reduces the mana cost of Mass Dispel by 35%.',
+			description: 'Reduces the cast time of Mass Dispel by 1 sec.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_arcane_massdispel.jpg',
 		},
-		[PriestMajorGlyph.GlyphOfMindControl]: {
-			name: 'Glyph of Mind Control',
-			description: 'Reduces the chance targets will resist or break your Mind Control spell by an additional 17%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_shadowworddominate.jpg',
+		[PriestMajorGlyph.GlyphOfPrayerOfMending]: {
+			name: 'Glyph of Prayer of Mending',
+			description: 'The first charge of your Prayer of Mending heals for an additional 60%.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_prayerofmendingtga.jpg',
 		},
-		[PriestMajorGlyph.GlyphOfMindFlay]: {
-			name: 'Glyph of Mind Flay',
-			description: 'Increases the damage done by your Mind Flay spell by 10% when your target is afflicted with Shadow Word: Pain.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_siphonmana.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfMindSear]: {
-			name: 'Glyph of Mind Sear',
-			description: 'Increases the radius of effect on Mind Sear by 5 yards.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_mindshear.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfPainSuppression]: {
-			name: 'Glyph of Pain Suppression',
-			description: 'Allows Pain Suppression to be cast while stunned.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_painsupression.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfPenance]: {
-			name: 'Glyph of Penance',
-			description: 'Reduces the cooldown of Penance by 2 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_penance.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfPowerWordShield]: {
-			name: 'Glyph of Power Word: Shield',
-			description: 'Your Power Word: Shield also heals the target for 20% of the absorption amount.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_powerwordshield.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfPrayerOfHealing]: {
-			name: 'Glyph of Prayer of Healing',
-			description: 'Your Prayer of Healing spell also heals an additional 20% of its initial heal over 6 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_prayerofhealing02.jpg',
+		[PriestMajorGlyph.GlyphOfPsychicHorror]: {
+			name: 'Glyph of Psychic Horror',
+			description: 'Reduces the cooldown of your Psychic Horror by 30 sec.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_psychichorrors.jpg',
 		},
 		[PriestMajorGlyph.GlyphOfPsychicScream]: {
 			name: 'Glyph of Psychic Scream',
-			description: 'Increases the duration of your Psychic Scream by 2 sec. and increases its cooldown by 8 sec.',
+			description: 'Targets of your Psychic Scream spell now tremble in place instead of fleeing in fear, but the cooldown of Psychic Scream is increased by 3 sec.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_psychicscream.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfRenew]: {
-			name: 'Glyph of Renew',
-			description: 'Reduces the duration of your Renew by 3 sec. but increases the amount healed each tick by 25%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_renew.jpg',
 		},
 		[PriestMajorGlyph.GlyphOfScourgeImprisonment]: {
 			name: 'Glyph of Scourge Imprisonment',
 			description: 'Reduces the cast time of your Shackle Undead by 1.0 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_slow.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfShadow]: {
-			name: 'Glyph of Shadow',
-			description: 'While in Shadowform, your non-periodic spell critical strikes increase your spell power by 30% of your Spirit for 10 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_mindsooth.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfShadowWordDeath]: {
-			name: 'Glyph of Shadow Word: Death',
-			description: 'Targets below 35% health take an additional 10% damage from your Shadow Word: Death spell.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_demonicfortitude.jpg',
-		},
-		[PriestMajorGlyph.GlyphOfShadowWordPain]: {
-			name: 'Glyph of Shadow Word: Pain',
-			description: 'The periodic damage ticks of your Shadow Word: Pain spell restore 1% of your base mana.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_shadowwordpain.jpg',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_crusade.jpg',
 		},
 		[PriestMajorGlyph.GlyphOfSmite]: {
 			name: 'Glyph of Smite',
 			description: 'Your Smite spell inflicts an additional 20% damage against targets afflicted by Holy Fire.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_holysmite.jpg',
 		},
-		[PriestMajorGlyph.GlyphOfSpiritOfRedemption]: {
-			name: 'Glyph of Spirit of Redemption',
-			description: 'Increases the duration of Spirit of Redemption by 6 sec.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_enchant_essenceeternallarge.jpg',
+		[PriestMajorGlyph.GlyphOfSpiritTap]: {
+			name: 'Glyph of Spirit Tap',
+			description: 'When you kill a target with your Shadow Word: Death that yields experience or honor, you receive 12% of your total mana over 12 sec.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_requiem.jpg',
 		},
 	},
 	minorGlyphs: {
 		[PriestMinorGlyph.GlyphOfFading]: {
 			name: 'Glyph of Fading',
 			description: 'Reduces the mana cost of your Fade spell by 30%.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_magic_lesserinvisibilty.jpg',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_mage_invisibility.jpg',
 		},
 		[PriestMinorGlyph.GlyphOfFortitude]: {
 			name: 'Glyph of Fortitude',
-			description: 'Reduces the mana cost of your Power Word: Fortitude and Prayer of Fortitude spells by 50%.',
+			description: 'Reduces the mana cost of your Power Word: Fortitude spell by 50%.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_wordfortitude.jpg',
 		},
 		[PriestMinorGlyph.GlyphOfLevitate]: {
@@ -166,10 +183,15 @@ export const priestGlyphsConfig: GlyphsConfig = {
 			description: 'Increases the range of your Shackle Undead spell by 5 yards.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_slow.jpg',
 		},
+		[PriestMinorGlyph.GlyphOfShadow]: {
+			name: 'Glyph of Shadow',
+			description: 'Alters the appearance of your Shadowform.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_questionmark.jpg',
+		},
 		[PriestMinorGlyph.GlyphOfShadowProtection]: {
 			name: 'Glyph of Shadow Protection',
-			description: 'Increases the duration of your Shadow Protection and Prayer of Shadow Protection spells by 10 min.',
-			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_antishadow.jpg',
+			description: 'Increases the duration of your Shadow Protection spell by 10 min.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_prayerofshadowprotection.jpg',
 		},
 		[PriestMinorGlyph.GlyphOfShadowfiend]: {
 			name: 'Glyph of Shadowfiend',

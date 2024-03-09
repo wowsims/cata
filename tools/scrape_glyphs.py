@@ -9,10 +9,25 @@ import re
 import sys
 
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=chrome_options)
+if len(sys.argv) < 3:
+	raise Exception("Missing arguments, expected class_name and output_file_path")
+class_name = sys.argv[1]
+output_file_path = sys.argv[2]
+
+driver.implicitly_wait(2)
 
 if len(sys.argv) < 3:
 	raise Exception("Missing arguments, expected class_name and output_file_path")
@@ -55,14 +70,24 @@ def get_glyphs_data(glyph_button):
 
 	return glyphs_data
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver.implicitly_wait(2)
 
 driver.get('https://wowhead.com/cata/talent-calc/' + class_name)
+try:
+    wait = WebDriverWait(driver, 10)
+    accept_button = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler")))
+    accept_button.click()
+    print("Clicked the 'I Accept' button.")
+except Exception as e:
+    print("No 'I Accept' button to click or error clicking it:", e)
+driver.implicitly_wait(2)
 glyph_slots = driver.find_elements(By.CLASS_NAME, "ctc-glyphs-group-slot")
-major_glyph_slot = next(gs for gs in glyph_slots if int(gs.get_attribute("data-glyph-slot")) == 0)
-minor_glyph_slot = next(gs for gs in glyph_slots if int(gs.get_attribute("data-glyph-slot")) == 3)
+prime_glyph_slot = next(gs for gs in glyph_slots if int(gs.get_attribute("data-glyph-slot")) == 0)
+major_glyph_slot = next(gs for gs in glyph_slots if int(gs.get_attribute("data-glyph-slot")) == 3)
+minor_glyph_slot = next(gs for gs in glyph_slots if int(gs.get_attribute("data-glyph-slot")) == 6)
 
+prime_glyphs_data = get_glyphs_data(prime_glyph_slot)
+webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 major_glyphs_data = get_glyphs_data(major_glyph_slot)
 webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 minor_glyphs_data = get_glyphs_data(minor_glyph_slot)
@@ -94,11 +119,13 @@ def write_glyphs_config(outfile, glyphs_data, glyph_type):
 
 
 with open(output_file_path, "w") as outfile:
+	write_glyphs_proto(outfile, major_glyphs_data, "Prime")
 	write_glyphs_proto(outfile, major_glyphs_data, "Major")
 	write_glyphs_proto(outfile, minor_glyphs_data, "Minor")
 
 	outfile.write("\n")
 	outfile.write("export const {}GlyphsConfig: GlyphsConfig = {{\n".format(lower_class_name))
+	write_glyphs_config(outfile, major_glyphs_data, "Prime")
 	write_glyphs_config(outfile, major_glyphs_data, "Major")
 	write_glyphs_config(outfile, minor_glyphs_data, "Minor")
 	outfile.write("};")

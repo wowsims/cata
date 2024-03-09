@@ -8,9 +8,19 @@ import sys
 from typing import List
 
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=chrome_options)
 
 if len(sys.argv) < 3:
 	raise Exception("Missing arguments, expected className and outputFilePath")
@@ -21,21 +31,45 @@ def _between(s, start, end):
 	return s[(i := s.find(start) + len(start)): i + s[i:].find(end)]
 
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver.implicitly_wait(2)
 
 
 def _get_spell_id_from_link(link):
-	return int(link.split("/")[-2].split("=")[-1])
+    parts = link.split("/")
+    for part in parts:
+        if "spell=" in part:
+            return int(part.split("=")[-1])
+    raise ValueError("No spell ID found in the link")
 
 
-def get_other_spell_ranks(spell_id: int) -> List[int]:
-	driver.get(f"https://wowhead.com/cata/spell={spell_id}#see-also-ability")
 
-	see_also = driver.find_element(By.ID, "tab-see-also-ability")  # ordered by rank
-	rows = see_also.find_elements(By.CLASS_NAME, "listview-row")
-	return [_get_spell_id_from_link(row.find_element(By.CLASS_NAME, "listview-cleartext").get_attribute("href"))
-		for row in rows]
+def get_other_spell_ranks(spell_name: str, ignore_int: int) -> List[int]:
+	overrides = {
+		"T N T": "t.n.t",
+	}
+	
+	formatted_spell_name = overrides.get(spell_name, spell_name.replace(' ', '+'))
+	driver.get(f"https://www.wowhead.com/cata/spells/talents/{className}/name:{formatted_spell_name}")
+	driver.implicitly_wait(2)
+
+	spell_ids = []
+	table = driver.find_element(By.CLASS_NAME, "listview-mode-default")
+	rows = table.find_elements(By.CLASS_NAME, "listview-row")
+	print(f"Found {len(rows)} for {spell_name}")
+	for row in rows:
+		questionable_elements = row.find_elements(By.XPATH, ".//*[contains(@style, 'inv_misc_questionmark.jpg')]")
+        
+		if questionable_elements:
+            # If any questionable elements found, skip this row
+			print("Skipping row")
+			continue
+		a_element = row.find_element(By.CLASS_NAME, "listview-cleartext")
+		href = a_element.get_attribute("href")
+		spell_id = _get_spell_id_from_link(href)
+		if spell_id != ignore_int:
+			spell_ids.append(spell_id)
+
+	return spell_ids
 
 def rowcol(v):
 	return v["location"]["rowIdx"] + v["location"]["colIdx"]/10
@@ -44,6 +78,14 @@ def rowcol(v):
 to_export = []
 
 driver.get('https://wowhead.com/cata/talent-calc/' + className)
+try:
+    wait = WebDriverWait(driver, 10)
+    accept_button = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler")))
+    accept_button.click()
+    print("Clicked the 'I Accept' button.")
+except Exception as e:
+    print("No 'I Accept' button to click or error clicking it:", e)
+driver.implicitly_wait(2)
 trees = driver.find_elements(By.CLASS_NAME, "ctc-tree")
 for tree in trees:
 	_working_talents = {}
@@ -55,8 +97,12 @@ for tree in trees:
 		max_points = int(talent.get_attribute("data-max-points"))
 		link = talent.find_element(By.XPATH, "./div/a").get_attribute("href")
 		name = "".join(word if i == 0 else word.title() for i, word in enumerate(link.split("/")[-1].split("-")))
+		fancyName = " ".join(word.title() for i, word in enumerate(link.split("/")[-1].split("-")))
+		print(link)
+		print(_get_spell_id_from_link(link))
 		_working_talents[(row, col)] = {
 			"fieldName": name,
+			"fancyName": fancyName,
 			"location": {
 				"rowIdx": row,
 				"colIdx": col,
@@ -84,7 +130,7 @@ for tree in trees:
 			"colIdx": prereq_col,
 		}
 
-	title = tree.find_element(By.XPATH, "./div/b").text
+	title = tree.find_element(By.XPATH, ".//b").text
 	background = tree.find_element(By.CLASS_NAME, "ctc-tree-talents-background").get_attribute("style")
 	values = list(_working_talents.values())
 	values.sort(key=rowcol)
@@ -97,7 +143,7 @@ for tree in trees:
 for subtree in to_export:
 	for talent in subtree["talents"]:
 		if talent["maxPoints"] > 1:
-			talent["spellIds"] += get_other_spell_ranks(talent["spellIds"][0])
+			talent["spellIds"] += get_other_spell_ranks(talent["fancyName"], talent["spellIds"][0])
 
 json_data = json.dumps(to_export, indent=2)
 with open(outputFilePath, "w") as outfile:

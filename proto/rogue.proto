@@ -1,131 +1,109 @@
-syntax = "proto3";
-package proto;
-
-option go_package = "./proto";
-
-import "common.proto";
-
 message RogueTalents {
 	// Assassination
-	int32 improved_eviscerate = 1;
-	int32 remorseless_attacks = 2;
-	int32 malice = 3;
+	int32 deadly_momentum = 1;
+	int32 coup_de_grace = 2;
+	int32 lethality = 3;
 	int32 ruthlessness = 4;
-	int32 blood_spatter = 5;
+	int32 quickening = 5;
 	int32 puncturing_wounds = 6;
-	bool vigor = 7;
-	int32 improved_expose_armor = 8;
-	int32 lethality = 9;
+	int32 blackjack = 7;
+	int32 deadly_brew = 8;
+	bool cold_blood = 9;
 	int32 vile_poisons = 10;
-	int32 improved_poisons = 11;
-	int32 fleet_footed = 12;
-	bool cold_blood = 13;
-	int32 improved_kidney_shot = 14;
-	int32 quick_recovery = 15;
-	int32 seal_fate = 16;
-	int32 murder = 17;
-	int32 deadly_brew = 18;
-	bool overkill = 19;
-	int32 deadened_nerves = 20;
-	int32 focused_attacks = 21;
-	int32 find_weakness = 22;
-	int32 master_poisoner = 23;
-	bool mutilate = 24;
-	int32 turn_the_tables = 25;
-	int32 cut_to_the_chase = 26;
-	bool hunger_for_blood = 27;
+	int32 deadened_nerves = 11;
+	int32 seal_fate = 12;
+	int32 murderous_intent = 13;
+	bool overkill = 14;
+	bool master_poisoner = 15;
+	int32 improved_expose_armor = 16;
+	int32 cut_to_the_chase = 17;
+	int32 venomous_wounds = 18;
+	bool vendetta = 19;
 
 	// Combat
-	int32 improved_gouge = 28;
-	int32 improved_sinister_strike = 29;
-	int32 dual_wield_specialization = 30;
-	int32 improved_slice_and_dice = 31;
-	int32 deflection = 32;
-	int32 precision = 33;
-	int32 endurance = 34;
-	bool riposte = 35;
-	int32 close_quarters_combat = 36;
-	int32 improved_kick = 37;
-	int32 improved_sprint = 38;
-	int32 lightning_reflexes = 39;
-	int32 aggression = 40;
-	int32 mace_specialization = 41;
-	bool blade_flurry = 42;
-	int32 hack_and_slash = 43;
-	int32 weapon_expertise = 44;
-	int32 blade_twisting = 45;
-	int32 vitality = 46;
-	bool adrenaline_rush = 47;
-	int32 nerves_of_steel = 48;
-	int32 throwing_specialization = 49;
-	int32 combat_potency = 50;
-	int32 unfair_advantage = 51;
-	bool surprise_attacks = 52;
-	int32 savage_combat = 53;
-	int32 prey_on_the_weak = 54;
-	bool killing_spree = 55;
+	int32 improved_recuperate = 20;
+	int32 improved_sinister_strike = 21;
+	int32 precision = 22;
+	int32 improved_slice_and_dice = 23;
+	int32 improved_sprint = 24;
+	int32 aggression = 25;
+	int32 improved_kick = 26;
+	int32 lightning_reflexes = 27;
+	bool revealing_strike = 28;
+	int32 reinforced_leather = 29;
+	int32 improved_gouge = 30;
+	int32 combat_potency = 31;
+	int32 blade_twisting = 32;
+	int32 throwing_specialization = 33;
+	bool adrenaline_rush = 34;
+	int32 savage_combat = 35;
+	int32 bandits_guile = 36;
+	int32 restless_blades = 37;
+	bool killing_spree = 38;
 
 	// Subtlety
-	int32 relentless_strikes = 56;
-	int32 master_of_deception = 57;
-	int32 opportunity = 58;
-	int32 sleight_of_hand = 59;
-	int32 dirty_tricks = 60;
-	int32 camouflage = 61;
-	int32 elusiveness = 62;
-	bool ghostly_strike = 63;
-	int32 serrated_blades = 64;
-	int32 setup = 65;
-	int32 initiative = 66;
-	int32 improved_ambush = 67;
-	int32 heightened_senses = 68;
-	bool preparation = 69;
-	int32 dirty_deeds = 70;
-	bool hemorrhage = 71;
-	int32 master_of_subtlety = 72;
-	int32 deadliness = 73;
-	int32 enveloping_shadows = 74;
-	bool premeditation = 75;
-	int32 cheat_death = 76;
-	int32 sinister_calling = 77;
-	int32 waylay = 78;
-	int32 honor_among_thieves = 79;
-	bool shadowstep = 80;
-	int32 filthy_tricks = 81;
-	int32 slaughter_from_the_shadows = 82;
-	bool shadow_dance = 83;
+	int32 nightstalker = 39;
+	int32 improved_ambush = 40;
+	int32 relentless_strikes = 41;
+	int32 elusiveness = 42;
+	int32 waylay = 43;
+	int32 opportunity = 44;
+	int32 initiative = 45;
+	int32 energetic_recovery = 46;
+	int32 find_weakness = 47;
+	bool hemorrhage = 48;
+	int32 honor_among_thieves = 49;
+	bool premeditation = 50;
+	int32 enveloping_shadows = 51;
+	int32 cheat_death = 52;
+	bool preparation = 53;
+	int32 sanguinary_vein = 54;
+	int32 slaughter_from_the_shadows = 55;
+	int32 serrated_blades = 56;
+	bool shadow_dance = 57;
 }
 
-enum RogueMajorGlyph {
-	RogueMajorGlyphNone = 0;
-	GlyphOfAdrenalineRush = 42954;
+enum RoguePrimeGlyph {
+	RoguePrimeGlyphNone = 0;
 	GlyphOfAmbush = 42955;
-	GlyphOfBackstab = 42956;
 	GlyphOfBladeFlurry = 42957;
+	GlyphOfBlind = 64493;
 	GlyphOfCloakOfShadows = 45769;
 	GlyphOfCripplingPoison = 42958;
 	GlyphOfDeadlyThrow = 42959;
 	GlyphOfEvasion = 42960;
-	GlyphOfEviscerate = 42961;
 	GlyphOfExposeArmor = 42962;
 	GlyphOfFanOfKnives = 45766;
 	GlyphOfFeint = 42963;
 	GlyphOfGarrote = 42964;
-	GlyphOfGhostlyStrike = 42965;
 	GlyphOfGouge = 42966;
-	GlyphOfHemorrhage = 42967;
-	GlyphOfHungerForBlood = 45761;
-	GlyphOfKillingSpree = 45762;
-	GlyphOfMutilate = 45768;
+	GlyphOfKick = 42971;
 	GlyphOfPreparation = 42968;
-	GlyphOfRupture = 42969;
 	GlyphOfSap = 42970;
-	GlyphOfShadowDance = 45764;
-	GlyphOfSinisterStrike = 42972;
-	GlyphOfSliceAndDice = 42973;
 	GlyphOfSprint = 42974;
 	GlyphOfTricksOfTheTrade = 45767;
-	GlyphOfVigor = 42971;
+	GlyphOfVanish = 63420;
+}
+enum RogueMajorGlyph {
+	RogueMajorGlyphNone = 0;
+	GlyphOfAmbush = 42955;
+	GlyphOfBladeFlurry = 42957;
+	GlyphOfBlind = 64493;
+	GlyphOfCloakOfShadows = 45769;
+	GlyphOfCripplingPoison = 42958;
+	GlyphOfDeadlyThrow = 42959;
+	GlyphOfEvasion = 42960;
+	GlyphOfExposeArmor = 42962;
+	GlyphOfFanOfKnives = 45766;
+	GlyphOfFeint = 42963;
+	GlyphOfGarrote = 42964;
+	GlyphOfGouge = 42966;
+	GlyphOfKick = 42971;
+	GlyphOfPreparation = 42968;
+	GlyphOfSap = 42970;
+	GlyphOfSprint = 42974;
+	GlyphOfTricksOfTheTrade = 45767;
+	GlyphOfVanish = 63420;
 }
 enum RogueMinorGlyph {
 	RogueMinorGlyphNone = 0;
@@ -133,30 +111,6 @@ enum RogueMinorGlyph {
 	GlyphOfDistract = 43376;
 	GlyphOfPickLock = 43377;
 	GlyphOfPickPocket = 43343;
+	GlyphOfPoisons = 43380;
 	GlyphOfSafeFall = 43378;
-	GlyphOfVanish = 43380;
-}
-
-
-message Rogue {
-	message Rotation {
-	}
-	
-	message Options {
-		UnitReference tricks_of_the_trade_target = 1;
-		enum PoisonImbue {
-			NoPoison = 0;
-			InstantPoison = 1;
-			DeadlyPoison = 2;
-			WoundPoison = 3;
-		}
-		PoisonImbue mh_imbue = 2;
-		PoisonImbue oh_imbue = 3;
-		int32 starting_overkill_duration = 4;
-		bool apply_poisons_manually = 5;
-		int32 honor_of_thieves_crit_rate = 6;
-		bool assume_bleed_active = 7;
-		float vanish_break_time = 8;
-	}
-	Options options = 3;
 }
