@@ -26,7 +26,7 @@ import (
 // go run ./tools/database/gen_db -outDir=assets -gen=wago-db2-items
 // go run ./tools/database/gen_db -outDir=assets -gen=db
 
-var minId = flag.Int("minid", 57000, "Minimum ID to scan for")
+var minId = flag.Int("minid", 0, "Minimum ID to scan for")
 var maxId = flag.Int("maxid", 82000, "Maximum ID to scan for")
 var outDir = flag.String("outDir", "assets", "Path to output directory for writing generated .go files.")
 var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'cata-items', and 'wago-db2-items'")
