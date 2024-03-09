@@ -1,5 +1,18 @@
+import { Class } from './class.js';
+import { getLanguageCode } from './constants/lang.js';
+import * as Mechanics from './constants/mechanics.js';
+import { MAX_PARTY_SIZE,Party } from './party.js';
 import {
-	Class,
+	AuraStats as AuraStatsProto,
+Player as PlayerProto ,  PlayerStats , 	SpellStats as SpellStatsProto,
+StatWeightsResult,	UnitMetadata as UnitMetadataProto } from './proto/api.js';
+import {
+	APLRotation,
+	APLRotation_Type as APLRotationType,
+	SimpleRotation,
+} from './proto/apl.js';
+import {
+	Class as ClassProto,
 	Consumes,
 	Cooldowns,
 	Faction,
@@ -12,22 +25,12 @@ import {
 	Profession,
 	PseudoStat,
 	Race,
-	UnitReference,
 	SimDatabase,
-	Spec,
+	Spec as SpecProto,
 	Stat,
+	UnitReference,
 	UnitStats,
 } from './proto/common.js';
-import {
-	AuraStats as AuraStatsProto,
-	SpellStats as SpellStatsProto,
-	UnitMetadata as UnitMetadataProto,
-} from './proto/api.js';
-import {
-	APLRotation,
-	APLRotation_Type as APLRotationType,
-	SimpleRotation,
-} from './proto/apl.js';
 import {
 	DungeonDifficulty,
 	Expansion,
@@ -38,54 +41,44 @@ import {
 	UIItem as Item,
 	UIItem_FactionRestriction,
 } from './proto/ui.js';
-
-import { PlayerStats } from './proto/api.js';
-import { Player as PlayerProto } from './proto/api.js';
-import { StatWeightsResult } from './proto/api.js';
 import { ActionId } from './proto_utils/action_id.js';
+import { Database } from './proto_utils/database.js';
 import { EquippedItem, getWeaponDPS } from './proto_utils/equipped_item.js';
-
-import { playerTalentStringToProto } from './talents/factory.js';
 import { Gear, ItemSwapGear } from './proto_utils/gear.js';
 import {
-	isUnrestrictedGem,
 	gemMatchesSocket,
+	isUnrestrictedGem,
 } from './proto_utils/gems.js';
 import { Stats } from './proto_utils/stats.js';
-
 import {
 	AL_CATEGORY_HARD_MODE,
-	ClassSpecs,
-	SpecRotation,
-	SpecTalents,
-	SpecTypeFunctions,
-	SpecOptions,
 	canEquipEnchant,
 	canEquipItem,
 	classColors,
+	ClassSpecs,
 	emptyUnitReference,
 	enchantAppliesToItem,
-	getTalentTree,
-	getTalentTreeIcon,
-	getTalentTreePoints,
 	getMetaGemEffectEP,
+	getTalentTree,
+	getTalentTreePoints,
 	isTankSpec,
 	newUnitReference,
 	raceToFaction,
+	SpecOptions,
+	SpecRotation,
+	SpecTalents,
 	specToClass,
 	specToEligibleRaces,
+	SpecTypeFunctions,
 	specTypeFunctions,
 	withSpecProto,
 } from './proto_utils/utils.js';
-
-import * as Mechanics from './constants/mechanics.js';
-import { getLanguageCode } from './constants/lang.js';
-import { EventID, TypedEvent } from './typed_event.js';
-import { Party, MAX_PARTY_SIZE } from './party.js';
 import { Raid } from './raid.js';
 import { Sim, SimSettingCategories } from './sim.js';
+import { Spec } from './spec.js';
+import { playerTalentStringToProto } from './talents/factory.js';
+import { EventID, TypedEvent } from './typed_event.js';
 import { stringComparator, sum } from './utils.js';
-import { Database } from './proto_utils/database.js';
 
 export interface AuraStats {
 	data: AuraStatsProto,
@@ -202,21 +195,21 @@ export interface MeleeCritCapInfo {
 	playerCritCapDelta: number
 }
 
-export type AutoRotationGenerator<SpecType extends Spec> = (player: Player<SpecType>) => APLRotation;
-export type SimpleRotationGenerator<SpecType extends Spec> = (player: Player<SpecType>, simpleRotation: SpecRotation<SpecType>, cooldowns: Cooldowns) => APLRotation;
+export type AutoRotationGenerator<SpecType extends SpecProto> = (player: Player<SpecType>) => APLRotation;
+export type SimpleRotationGenerator<SpecType extends SpecProto> = (player: Player<SpecType>, simpleRotation: SpecRotation<SpecType>, cooldowns: Cooldowns) => APLRotation;
 
-export interface PlayerConfig<SpecType extends Spec> {
+export interface PlayerConfig<SpecType extends SpecProto> {
 	autoRotation: AutoRotationGenerator<SpecType>,
 	simpleRotation?: SimpleRotationGenerator<SpecType>,
 }
 
-const SPEC_CONFIGS: Partial<Record<Spec, PlayerConfig<any>>> = {};
+const SPEC_CONFIGS: Partial<Record<SpecProto, PlayerConfig<any>>> = {};
 
-export function registerSpecConfig(spec: Spec, config: PlayerConfig<any>) {
+export function registerSpecConfig(spec: SpecProto, config: PlayerConfig<any>) {
 	SPEC_CONFIGS[spec] = config;
 }
 
-export function getSpecConfig<SpecType extends Spec>(spec: SpecType): PlayerConfig<SpecType> {
+export function getSpecConfig<SpecType extends SpecProto>(spec: SpecType): PlayerConfig<SpecType> {
 	const config = SPEC_CONFIGS[spec] as PlayerConfig<SpecType>;
 	if (!config) {
 		throw new Error('No config registered for Spec: ' + spec);
@@ -225,35 +218,35 @@ export function getSpecConfig<SpecType extends Spec>(spec: SpecType): PlayerConf
 }
 
 // Manages all the gear / consumes / other settings for a single Player.
-export class Player<SpecType extends Spec> {
+export class Player<SpecType extends SpecProto> {
 	readonly sim: Sim;
 	private party: Party | null;
 	private raid: Raid | null;
 
 	readonly spec: Spec;
-	private name: string = '';
+	private name = '';
 	private buffs: IndividualBuffs = IndividualBuffs.create();
 	private consumes: Consumes = Consumes.create();
 	private bonusStats: Stats = new Stats();
 	private gear: Gear = new Gear({});
 	//private bulkEquipmentSpec: BulkEquipmentSpec = BulkEquipmentSpec.create();
-	private enableItemSwap: boolean = false;
+	private enableItemSwap = false;
 	private itemSwapGear: ItemSwapGear = new ItemSwapGear({});
 	private race: Race;
 	private profession1: Profession = 0;
 	private profession2: Profession = 0;
 	aplRotation: APLRotation = APLRotation.create();
-	private talentsString: string = '';
+	private talentsString = '';
 	private glyphs: Glyphs = Glyphs.create();
 	private specOptions: SpecOptions<SpecType>;
-	private reactionTime: number = 0;
-	private channelClipDelay: number = 0;
-	private inFrontOfTarget: boolean = false;
-	private distanceFromTarget: number = 0;
-	private nibelungAverageCasts: number = 11;
-	private nibelungAverageCastsSet: boolean = false;
+	private reactionTime = 0;
+	private channelClipDelay = 0;
+	private inFrontOfTarget = false;
+	private distanceFromTarget = 0;
+	private nibelungAverageCasts = 11;
+	private nibelungAverageCastsSet = false;
 	private healingModel: HealingModel = HealingModel.create();
-	private healingEnabled: boolean = false;
+	private healingEnabled = false;
 
 	private readonly autoRotationGenerator: AutoRotationGenerator<SpecType> | null = null;
 	private readonly simpleRotationGenerator: SimpleRotationGenerator<SpecType> | null = null;
@@ -303,11 +296,11 @@ export class Player<SpecType extends Spec> {
 		this.raid = null;
 
 		this.spec = spec;
-		this.race = specToEligibleRaces[this.spec][0];
-		this.specTypeFunctions = specTypeFunctions[this.spec] as SpecTypeFunctions<SpecType>;
+		this.race = this.spec.class.races[0];
+		this.specTypeFunctions = specTypeFunctions[this.spec.protoID] as SpecTypeFunctions<SpecType>;
 		this.specOptions = this.specTypeFunctions.optionsCreate();
 
-		const specConfig = SPEC_CONFIGS[this.spec] as PlayerConfig<SpecType>;
+		const specConfig = SPEC_CONFIGS[this.spec.protoID] as PlayerConfig<SpecType>;
 		if (!specConfig) {
 			throw new Error('Could not find spec config for spec: ' + this.spec);
 		}
@@ -346,15 +339,15 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getSpecIcon(): string {
-		return getTalentTreeIcon(this.spec, this.getTalentsString());
+		return this.spec.getIcon('medium');
 	}
 
 	getClass(): Class {
-		return specToClass[this.spec];
+		return this.spec.class;
 	}
 
 	getClassColor(): string {
-		return classColors[this.getClass()];
+		return this.spec.class.hexColor;
 	}
 
 	isSpec<T extends Spec>(spec: T): this is Player<T> {
@@ -960,8 +953,8 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setDefaultHealingParams(hm: HealingModel) {
-		var boss = this.sim.encounter.primaryTarget;
-		var dualWield = boss.dualWield;
+		const boss = this.sim.encounter.primaryTarget;
+		const dualWield = boss.dualWield;
 		if (hm.cadenceSeconds == 0) {
 			hm.cadenceSeconds = 1.5 * boss.swingSpeed;
 			if (dualWield) {
@@ -978,7 +971,7 @@ export class Player<SpecType extends Spec> {
 
 	enableHealing() {
 		this.healingEnabled = true;
-		var hm = this.getHealingModel();
+		const hm = this.getHealingModel();
 		if (hm.cadenceSeconds == 0 || hm.hps == 0) {
 			this.setDefaultHealingParams(hm)
 			this.setHealingModel(0, hm)
@@ -1023,7 +1016,7 @@ export class Player<SpecType extends Spec> {
 			bonusEP -= 0.01;
 		}
 
-		let ep = epFromStats + epFromEffect + bonusEP;
+		const ep = epFromStats + epFromEffect + bonusEP;
 		this.gemEPCache.set(gem.id, ep);
 		return ep;
 	}
@@ -1033,7 +1026,7 @@ export class Player<SpecType extends Spec> {
 			return this.enchantEPCache.get(enchant.effectId)!;
 		}
 
-		let ep = this.computeStatsEP(new Stats(enchant.stats));
+		const ep = this.computeStatsEP(new Stats(enchant.stats));
 		this.enchantEPCache.set(enchant.effectId, ep);
 		return ep
 	}
@@ -1042,7 +1035,7 @@ export class Player<SpecType extends Spec> {
 		if (item == null)
 			return 0;
 
-		let cached = this.itemEPCache[slot].get(item.id);
+		const cached = this.itemEPCache[slot].get(item.id);
 		if (cached !== undefined)
 			return cached;
 

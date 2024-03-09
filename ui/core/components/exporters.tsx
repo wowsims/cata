@@ -1,8 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, ref } from 'tsx-vanilla';
 
+import * as Mechanics from '../constants/mechanics';
 import { IndividualSimUI } from '../individual_sim_ui';
-import { SimUI } from '../sim_ui';
+import { RaidSimRequest } from '../proto/api';
 import {
 	PseudoStat,
 	Spec,
@@ -11,20 +12,16 @@ import {
 import { IndividualSimSettings } from '../proto/ui';
 import { classNames, raceNames } from '../proto_utils/names';
 import { UnitStat } from '../proto_utils/stats';
-import { specNames } from '../proto_utils/utils';
+import { SimSettingCategories } from '../sim';
+import { SimUI } from '../sim_ui';
+import { EventID, TypedEvent } from '../typed_event';
 import { arrayEquals, downloadString, getEnumValues, jsonStringifyWithFlattenedPaths } from '../utils';
 import { BaseModal } from './base_modal';
-import { IndividualLinkImporter, IndividualWowheadGearPlannerImporter } from './importers';
-import { RaidSimRequest } from '../proto/api';
-import { SimSettingCategories } from '../sim';
-import { EventID, TypedEvent } from '../typed_event';
-
 import { BooleanPicker } from './boolean_picker';
 import { CopyButton } from './copy_button';
+import { IndividualLinkImporter, IndividualWowheadGearPlannerImporter } from './importers';
 
-import * as Mechanics from '../constants/mechanics';
-
-declare var pako: any;
+declare let pako: any;
 
 interface ExporterOptions {
 	title: string,
@@ -232,7 +229,7 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 
 		const classStr = classNames.get(player.getClass())!.replaceAll(' ', '-').toLowerCase();
 		const raceStr = raceNames.get(player.getRace())!.replaceAll(' ', '-').toLowerCase();
-		let url = `https://www.wowhead.com/cata/gear-planner/${classStr}/${raceStr}/`;
+		const url = `https://www.wowhead.com/cata/gear-planner/${classStr}/${raceStr}/`;
 
 		// See comments on the importer for how the binary formatting is structured.
 		let bytes: Array<number> = [];
@@ -250,7 +247,7 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 			bytes.push(parseInt(talentsStr.substring(i, i + 2), 16));
 		}
 
-		let glyphBytes: Array<number> = [];
+		const glyphBytes: Array<number> = [];
 		let glyphStr = '';
 		const glyphs = player.getGlyphs();
 		const d = "0123456789abcdefghjkmnpqrstvwxyz";

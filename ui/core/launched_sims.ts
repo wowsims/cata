@@ -38,11 +38,6 @@ export const simLaunchStatuses: Record<Spec, LaunchStatus> = {
 	[Spec.SpecTankDeathknight]: LaunchStatus.Launched,
 };
 
-// Meme specs are excluded from title drop-down menu.
-export const memeSpecs: Array<Spec> = [
-	Spec.SpecSmitePriest,
-];
-
 export function getLaunchedSims(): Array<Spec> {
 	return Object.keys(simLaunchStatuses)
 		.map(specStr => parseInt(specStr) as Spec)

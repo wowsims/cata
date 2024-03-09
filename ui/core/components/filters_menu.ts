@@ -1,3 +1,4 @@
+import { Player } from '../player.js';
 import {
 	ArmorType,
 	ItemSlot,
@@ -20,15 +21,13 @@ import {
 	classToMaxArmorType,
 	isDualWieldSpec,
 } from '../proto_utils/utils.js';
-import { Player } from '../player.js';
 import { Sim } from '../sim.js';
 import { EventID } from '../typed_event.js';
 import { getEnumValues } from '../utils.js';
-
-import { BooleanPicker } from './boolean_picker.js';
-import { NumberPicker } from './number_picker.js';
 import { BaseModal } from './base_modal.js';
+import { BooleanPicker } from './boolean_picker.js';
 import { EnumPicker } from './enum_picker.js';
+import { NumberPicker } from './number_picker.js';
 
 const factionRestrictionsToLabels: Record<UIItem_FactionRestriction, string> = {
 	[UIItem_FactionRestriction.UNSPECIFIED]: 'None',
@@ -48,7 +47,7 @@ export class FiltersMenu extends BaseModal {
 				UIItem_FactionRestriction.UNSPECIFIED,
 				UIItem_FactionRestriction.ALLIANCE_ONLY,
 				UIItem_FactionRestriction.HORDE_ONLY
-			].map((restriction) => {
+			].map(restriction => {
 				return {
 					name: factionRestrictionsToLabels[restriction],
 					value: restriction,
@@ -106,13 +105,11 @@ export class FiltersMenu extends BaseModal {
 		});
 
 		if (Player.ARMOR_SLOTS.includes(slot)) {
-			const maxArmorType = classToMaxArmorType[player.getClass()];
-			if (maxArmorType >= ArmorType.ArmorTypeLeather) {
+			const armorTypes = player.getClass().armorTypes;
+
+			if (armorTypes.length > 1) {
 				const section = this.newSection('Armor Type');
 				section.classList.add('filters-menu-section-bool-list');
-				const armorTypes = (getEnumValues(ArmorType) as Array<ArmorType>)
-					.filter(at => at != ArmorType.ArmorTypeUnknown)
-					.filter(at => at <= maxArmorType);
 
 				armorTypes.forEach(armorType => {
 					new BooleanPicker<Sim>(section, player.sim, {
