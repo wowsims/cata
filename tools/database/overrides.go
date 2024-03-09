@@ -613,6 +613,7 @@ var SharedSpellsIcons = []int32{
 // If any of these match the item name, don't include it.
 var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`30 Epic`),
+	regexp.MustCompile(`130 Epic`),
 	regexp.MustCompile(`63 Blue`),
 	regexp.MustCompile(`63 Green`),
 	regexp.MustCompile(`66 Epic`),
@@ -635,6 +636,8 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`TEST`),
 	regexp.MustCompile(`Test`),
 	regexp.MustCompile(`zOLD`),
+	regexp.MustCompile(`Archaic Spell`),
+	regexp.MustCompile(`Well Repaired`),
 }
 
 // Allows manual overriding for Gem fields in case WowHead is wrong.

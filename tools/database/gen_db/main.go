@@ -23,12 +23,15 @@ import (
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-items
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-spells -maxid=75000
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-gearplannerdb
+<<<<<<< HEAD
 // go run ./tools/database/gen_db -outDir=assets -gen=cata-items
+=======
+>>>>>>> 80a198d90 (Try to update item dbs)
 // go run ./tools/database/gen_db -outDir=assets -gen=wago-db2-items
 // go run ./tools/database/gen_db -outDir=assets -gen=db
 
-var minId = flag.Int("minid", 1, "Minimum ID to scan for")
-var maxId = flag.Int("maxid", 57000, "Maximum ID to scan for")
+var minId = flag.Int("minid", 57000, "Minimum ID to scan for")
+var maxId = flag.Int("maxid", 82000, "Maximum ID to scan for")
 var outDir = flag.String("outDir", "assets", "Path to output directory for writing generated .go files.")
 var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'cata-items', and 'wago-db2-items'")
 
@@ -54,9 +57,12 @@ func main() {
 	} else if *genAsset == "wowhead-gearplannerdb" {
 		tools.WriteFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir), tools.ReadWebRequired("https://nether.wowhead.com/cata/data/gear-planner?dv=100"))
 		return
+<<<<<<< HEAD
 	} else if *genAsset == "cata-items" {
 		database.NewCataItemTooltipManager(fmt.Sprintf("%s/cata_items_tooltips.csv", inputsDir)).Fetch(int32(*minId), int32(*maxId), []string{})
 		return
+=======
+>>>>>>> 80a198d90 (Try to update item dbs)
 	} else if *genAsset == "wago-db2-items" {
 		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=4.4.0.53627"))
 		return
@@ -166,7 +172,9 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 		if _, ok := database.ItemDenyList[item.Id]; ok {
 			return false
 		}
-
+		if item.Ilvl > 416 {
+			return false
+		}
 		for _, pattern := range database.DenyListNameRegexes {
 			if pattern.MatchString(item.Name) {
 				return false
@@ -461,6 +469,7 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Equipment:     &proto.EquipmentSpec{},
 			TalentsString: "-503202132322010053120230310511-205503012",
 		}, &proto.Player_FeralDruid{FeralDruid: &proto.FeralDruid{Options: &proto.FeralDruid_Options{}, Rotation: &proto.FeralDruid_Rotation{}}}), nil, nil, nil)},
+<<<<<<< HEAD
 		{Name: "balance", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassDruid,
 			Equipment:     &proto.EquipmentSpec{},
@@ -557,6 +566,9 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Equipment:     &proto.EquipmentSpec{},
 			TalentsString: "-320043500002-2300303050032152000150013133051",
 		}, &proto.Player_Deathknight{Deathknight: &proto.Deathknight{Options: &proto.Deathknight_Options{}}}), nil, nil, nil)},
+=======
+
+>>>>>>> 80a198d90 (Try to update item dbs)
 		{Name: "tankdk", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassDeathknight,
 			Equipment:     &proto.EquipmentSpec{},

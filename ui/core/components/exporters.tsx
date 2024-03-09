@@ -412,6 +412,7 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatFrostRune]: 'frostRune',
 		[Stat.StatUnholyRune]: 'unholyRune',
 		[Stat.StatDeathRune]: 'deathRune',
+		[Stat.StatMastery]: 'mastery',
 	}
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
 		[PseudoStat.PseudoStatMainHandDps]: 'dps',
@@ -505,6 +506,7 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatFrostRune]: 'FrostRune',
 		[Stat.StatUnholyRune]: 'UnholyRune',
 		[Stat.StatDeathRune]: 'DeathRune',
+		[Stat.StatMastery]: 'mastery',
 	}
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
 		[PseudoStat.PseudoStatMainHandDps]: 'MeleeDps',
