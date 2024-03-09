@@ -12,15 +12,15 @@ ui/*/index.html
 dist
 binary_dist
 sim/web/__debug_bin
-/wowsimwotlkcli*
-/wowsimwotlk*
+/wowsimcatacli*
+/wowsimcata*
 
 # temporary files
 *.results.tmp
 .dockerignore
-/wotlk/
+/cata/
 *.code-workspace
-wowsimwotlk
+wowsimcata
 
 # old result file
 TestAPL.results
@@ -32,6 +32,6 @@ TestAPL.results
 tmp/
 
 # lib
-wowsimwotlk*.so
-wowsimwotlk*.dll
-wowsimwotlk*.h
+wowsimcata*.so
+wowsimcata*.dll
+wowsimcata*.h

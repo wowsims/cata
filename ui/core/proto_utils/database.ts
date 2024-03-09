@@ -29,10 +29,10 @@ import { Gear, ItemSwapGear } from './gear.js';
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { distinct } from '../utils.js';
 
-const dbUrlJson = '/wotlk/assets/database/db.json';
-const dbUrlBin = '/wotlk/assets/database/db.bin';
-const leftoversUrlJson = '/wotlk/assets/database/leftover_db.json';
-const leftoversUrlBin = '/wotlk/assets/database/leftover_db.bin';
+const dbUrlJson = '/cata/assets/database/db.json';
+const dbUrlBin = '/cata/assets/database/db.bin';
+const leftoversUrlJson = '/cata/assets/database/leftover_db.json';
+const leftoversUrlBin = '/cata/assets/database/leftover_db.bin';
 // When changing this value, don't forget to change the html <link> for preloading!
 const READ_JSON = true;
 
@@ -144,7 +144,7 @@ export class Database {
 	}
 
 	getGems(socketColor?: GemColor): Array<Gem> {
-		if (!socketColor) 
+		if (!socketColor)
 			return Array.from(this.gems.values());
 
 		let ret = new Array();
@@ -275,7 +275,7 @@ export class Database {
 		return Database.getWowheadTooltipData(id, 'spell');
 	}
 	private static async getWowheadTooltipData(id: number, tooltipPostfix: string): Promise<IconData> {
-		const url = `https://nether.wowhead.com/wotlk/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}`;
+		const url = `https://nether.wowhead.com/cata/tooltip/${tooltipPostfix}/${id}?lvl=${CHARACTER_LEVEL}`;
 		try {
 			const response = await fetch(url);
 			const json = await response.json();

@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/wowsims/wotlk/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/proto"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 

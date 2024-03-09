@@ -3,7 +3,7 @@ package hunter
 import (
 	"time"
 
-	"github.com/wowsims/wotlk/sim/core"
+	"github.com/wowsims/cata/sim/core"
 )
 
 func (hunter *Hunter) registerSteadyShotSpell() {

@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/wowsims/wotlk/sim/core"
-	"github.com/wowsims/wotlk/sim/core/proto"
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 type WowheadTooltipManager struct {
@@ -27,7 +27,7 @@ func NewWowheadItemTooltipManager(filePath string) *WowheadTooltipManager {
 	return &WowheadTooltipManager{
 		TooltipManager{
 			FilePath:   filePath,
-			UrlPattern: "https://nether.wowhead.com/wotlk/tooltip/item/%s?lvl=80",
+			UrlPattern: "https://nether.wowhead.com/cata/tooltip/item/%s?lvl=80",
 		},
 	}
 }
@@ -36,7 +36,7 @@ func NewWowheadSpellTooltipManager(filePath string) *WowheadTooltipManager {
 	return &WowheadTooltipManager{
 		TooltipManager{
 			FilePath:   filePath,
-			UrlPattern: "https://nether.wowhead.com/wotlk/tooltip/spell/%s",
+			UrlPattern: "https://nether.wowhead.com/cata/tooltip/spell/%s",
 		},
 	}
 }
@@ -255,16 +255,16 @@ type classPattern struct {
 
 // Detects class-locked items, e.g. tier sets and pvp gear.
 var classPatternsWowhead = []classPattern{
-	{class: proto.Class_ClassWarrior, pattern: regexp.MustCompile(`<a href="/wotlk/class=1/warrior" class="c1">Warrior</a>`)},
-	{class: proto.Class_ClassPaladin, pattern: regexp.MustCompile(`<a href="/wotlk/class=2/paladin" class="c2">Paladin</a>`)},
-	{class: proto.Class_ClassHunter, pattern: regexp.MustCompile(`<a href="/wotlk/class=3/hunter" class="c3">Hunter</a>`)},
-	{class: proto.Class_ClassRogue, pattern: regexp.MustCompile(`<a href="/wotlk/class=4/rogue" class="c4">Rogue</a>`)},
-	{class: proto.Class_ClassPriest, pattern: regexp.MustCompile(`<a href="/wotlk/class=5/priest" class="c5">Priest</a>`)},
-	{class: proto.Class_ClassDeathknight, pattern: regexp.MustCompile(`<a href="/wotlk/class=6/death-knight" class="c6">Death Knight</a>`)},
-	{class: proto.Class_ClassShaman, pattern: regexp.MustCompile(`<a href="/wotlk/class=7/shaman" class="c7">Shaman</a>`)},
-	{class: proto.Class_ClassMage, pattern: regexp.MustCompile(`<a href="/wotlk/class=8/mage" class="c8">Mage</a>`)},
-	{class: proto.Class_ClassWarlock, pattern: regexp.MustCompile(`<a href="/wotlk/class=9/warlock" class="c9">Warlock</a>`)},
-	{class: proto.Class_ClassDruid, pattern: regexp.MustCompile(`<a href="/wotlk/class=11/druid" class="c11">Druid</a>`)},
+	{class: proto.Class_ClassWarrior, pattern: regexp.MustCompile(`<a href="/cata/class=1/warrior" class="c1">Warrior</a>`)},
+	{class: proto.Class_ClassPaladin, pattern: regexp.MustCompile(`<a href="/cata/class=2/paladin" class="c2">Paladin</a>`)},
+	{class: proto.Class_ClassHunter, pattern: regexp.MustCompile(`<a href="/cata/class=3/hunter" class="c3">Hunter</a>`)},
+	{class: proto.Class_ClassRogue, pattern: regexp.MustCompile(`<a href="/cata/class=4/rogue" class="c4">Rogue</a>`)},
+	{class: proto.Class_ClassPriest, pattern: regexp.MustCompile(`<a href="/cata/class=5/priest" class="c5">Priest</a>`)},
+	{class: proto.Class_ClassDeathknight, pattern: regexp.MustCompile(`<a href="/cata/class=6/death-knight" class="c6">Death Knight</a>`)},
+	{class: proto.Class_ClassShaman, pattern: regexp.MustCompile(`<a href="/cata/class=7/shaman" class="c7">Shaman</a>`)},
+	{class: proto.Class_ClassMage, pattern: regexp.MustCompile(`<a href="/cata/class=8/mage" class="c8">Mage</a>`)},
+	{class: proto.Class_ClassWarlock, pattern: regexp.MustCompile(`<a href="/cata/class=9/warlock" class="c9">Warlock</a>`)},
+	{class: proto.Class_ClassDruid, pattern: regexp.MustCompile(`<a href="/cata/class=11/druid" class="c11">Druid</a>`)},
 }
 
 func (item WowheadItemResponse) GetClassAllowlist() []proto.Class {
@@ -734,7 +734,7 @@ func (item WowheadItemResponse) GetGemStats() Stats {
 	return stats
 }
 
-var itemSetNameRegex = regexp.MustCompile(`<a href="/wotlk/item-set=-?([0-9]+)/(.*)" class="q">([^<]+)<`)
+var itemSetNameRegex = regexp.MustCompile(`<a href="/cata/item-set=-?([0-9]+)/(.*)" class="q">([^<]+)<`)
 
 func (item WowheadItemResponse) GetItemSetName() string {
 	original := item.GetTooltipRegexString(itemSetNameRegex, 3)

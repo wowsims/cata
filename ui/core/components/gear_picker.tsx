@@ -187,10 +187,10 @@ export class ItemRenderer extends Component {
 			// Make enchant text hover have a tooltip.
 			if (newItem.enchant.spellId) {
 				this.enchantElem.href = ActionId.makeSpellUrl(newItem.enchant.spellId);
-				this.enchantElem.dataset.wowhead = `domain=wotlk&spell=${newItem.enchant.spellId}`;
+				this.enchantElem.dataset.wowhead = `domain=cata&spell=${newItem.enchant.spellId}`;
 			} else {
 				this.enchantElem.href = ActionId.makeItemUrl(newItem.enchant.itemId);
-				this.enchantElem.dataset.wowhead = `domain=wotlk&item=${newItem.enchant.itemId}`;
+				this.enchantElem.dataset.wowhead = `domain=cata&item=${newItem.enchant.itemId}`;
 			}
 			this.enchantElem.dataset.whtticon = 'false';
 		}
@@ -740,23 +740,23 @@ interface ItemDataWithIdx<T> {
 }
 
 const emptySlotIcons: Record<ItemSlot, string> = {
-	[ItemSlot.ItemSlotHead]: '/wotlk/assets/item_slots/head.jpg',
-	[ItemSlot.ItemSlotNeck]: '/wotlk/assets/item_slots/neck.jpg',
-	[ItemSlot.ItemSlotShoulder]: '/wotlk/assets/item_slots/shoulders.jpg',
-	[ItemSlot.ItemSlotBack]: '/wotlk/assets/item_slots/shirt.jpg',
-	[ItemSlot.ItemSlotChest]: '/wotlk/assets/item_slots/chest.jpg',
-	[ItemSlot.ItemSlotWrist]: '/wotlk/assets/item_slots/wrists.jpg',
-	[ItemSlot.ItemSlotHands]: '/wotlk/assets/item_slots/hands.jpg',
-	[ItemSlot.ItemSlotWaist]: '/wotlk/assets/item_slots/waist.jpg',
-	[ItemSlot.ItemSlotLegs]: '/wotlk/assets/item_slots/legs.jpg',
-	[ItemSlot.ItemSlotFeet]: '/wotlk/assets/item_slots/feet.jpg',
-	[ItemSlot.ItemSlotFinger1]: '/wotlk/assets/item_slots/finger.jpg',
-	[ItemSlot.ItemSlotFinger2]: '/wotlk/assets/item_slots/finger.jpg',
-	[ItemSlot.ItemSlotTrinket1]: '/wotlk/assets/item_slots/trinket.jpg',
-	[ItemSlot.ItemSlotTrinket2]: '/wotlk/assets/item_slots/trinket.jpg',
-	[ItemSlot.ItemSlotMainHand]: '/wotlk/assets/item_slots/mainhand.jpg',
-	[ItemSlot.ItemSlotOffHand]: '/wotlk/assets/item_slots/offhand.jpg',
-	[ItemSlot.ItemSlotRanged]: '/wotlk/assets/item_slots/ranged.jpg',
+	[ItemSlot.ItemSlotHead]: '/cata/assets/item_slots/head.jpg',
+	[ItemSlot.ItemSlotNeck]: '/cata/assets/item_slots/neck.jpg',
+	[ItemSlot.ItemSlotShoulder]: '/cata/assets/item_slots/shoulders.jpg',
+	[ItemSlot.ItemSlotBack]: '/cata/assets/item_slots/shirt.jpg',
+	[ItemSlot.ItemSlotChest]: '/cata/assets/item_slots/chest.jpg',
+	[ItemSlot.ItemSlotWrist]: '/cata/assets/item_slots/wrists.jpg',
+	[ItemSlot.ItemSlotHands]: '/cata/assets/item_slots/hands.jpg',
+	[ItemSlot.ItemSlotWaist]: '/cata/assets/item_slots/waist.jpg',
+	[ItemSlot.ItemSlotLegs]: '/cata/assets/item_slots/legs.jpg',
+	[ItemSlot.ItemSlotFeet]: '/cata/assets/item_slots/feet.jpg',
+	[ItemSlot.ItemSlotFinger1]: '/cata/assets/item_slots/finger.jpg',
+	[ItemSlot.ItemSlotFinger2]: '/cata/assets/item_slots/finger.jpg',
+	[ItemSlot.ItemSlotTrinket1]: '/cata/assets/item_slots/trinket.jpg',
+	[ItemSlot.ItemSlotTrinket2]: '/cata/assets/item_slots/trinket.jpg',
+	[ItemSlot.ItemSlotMainHand]: '/cata/assets/item_slots/mainhand.jpg',
+	[ItemSlot.ItemSlotOffHand]: '/cata/assets/item_slots/offhand.jpg',
+	[ItemSlot.ItemSlotRanged]: '/cata/assets/item_slots/ranged.jpg',
 };
 export function getEmptySlotIconUrl(slot: ItemSlot): string {
 	return emptySlotIcons[slot];

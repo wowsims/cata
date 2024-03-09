@@ -9,7 +9,7 @@
             "ES2021",
             "DOM.Iterable"
         ],
-        "outDir": "dist/wotlk",
+        "outDir": "dist/cata",
         "pretty": false,
         "allowJs": true,
         "resolveJsonModule": true,

@@ -1,8 +1,8 @@
 package warlock
 
 import (
-	"github.com/wowsims/wotlk/sim/core"
-	"github.com/wowsims/wotlk/sim/core/stats"
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (warlock *Warlock) registerLifeTapSpell() {

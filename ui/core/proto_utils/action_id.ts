@@ -141,7 +141,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return 'https://wotlkdb.com/?item=' + id;
 		} else {
-			return `https://wowhead.com/wotlk/${langPrefix}item=${id}?lvl=${CHARACTER_LEVEL}`;
+			return `https://wowhead.com/cata/${langPrefix}item=${id}?lvl=${CHARACTER_LEVEL}`;
 		}
 	}
 	static makeSpellUrl(id: number): string {
@@ -149,7 +149,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return 'https://wotlkdb.com/?spell=' + id;
 		} else {
-			return `https://wowhead.com/wotlk/${langPrefix}spell=${id}`;
+			return `https://wowhead.com/cata/${langPrefix}spell=${id}`;
 		}
 	}
 	static makeQuestUrl(id: number): string {
@@ -157,7 +157,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return 'https://wotlkdb.com/?quest=' + id;
 		} else {
-			return `https://wowhead.com/wotlk/${langPrefix}quest=${id}`;
+			return `https://wowhead.com/cata/${langPrefix}quest=${id}`;
 		}
 	}
 	static makeNpcUrl(id: number): string {
@@ -165,7 +165,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return 'https://wotlkdb.com/?npc=' + id;
 		} else {
-			return `https://wowhead.com/wotlk/${langPrefix}npc=${id}`;
+			return `https://wowhead.com/cata/${langPrefix}npc=${id}`;
 		}
 	}
 	static makeZoneUrl(id: number): string {
@@ -173,7 +173,7 @@ export class ActionId {
 		if (USE_WOTLK_DB) {
 			return 'https://wotlkdb.com/?zone=' + id;
 		} else {
-			return `https://wowhead.com/wotlk/${langPrefix}zone=${id}`;
+			return `https://wowhead.com/cata/${langPrefix}zone=${id}`;
 		}
 	}
 
@@ -692,8 +692,8 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeComboPoints]: 'https://wow.zamimg.com/images/wow/icons/medium/inv_mace_2h_pvp410_c_01.jpg',
 	[ResourceType.ResourceTypeFocus]: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_focusfire.jpg',
 	[ResourceType.ResourceTypeRunicPower]: 'https://wow.zamimg.com/images/wow/icons/medium/inv_sword_62.jpg',
-	[ResourceType.ResourceTypeBloodRune]: '/wotlk/assets/img/blood_rune.png',
-	[ResourceType.ResourceTypeFrostRune]: '/wotlk/assets/img/frost_rune.png',
-	[ResourceType.ResourceTypeUnholyRune]: '/wotlk/assets/img/unholy_rune.png',
-	[ResourceType.ResourceTypeDeathRune]: '/wotlk/assets/img/death_rune.png',
+	[ResourceType.ResourceTypeBloodRune]: '/cata/assets/img/blood_rune.png',
+	[ResourceType.ResourceTypeFrostRune]: '/cata/assets/img/frost_rune.png',
+	[ResourceType.ResourceTypeUnholyRune]: '/cata/assets/img/unholy_rune.png',
+	[ResourceType.ResourceTypeDeathRune]: '/cata/assets/img/death_rune.png',
 };

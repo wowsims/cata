@@ -1,10 +1,10 @@
 package shadow
 
 import (
-	"github.com/wowsims/wotlk/sim/common/wotlk"
-	"github.com/wowsims/wotlk/sim/core"
-	"github.com/wowsims/wotlk/sim/core/proto"
-	"github.com/wowsims/wotlk/sim/priest"
+	"github.com/wowsims/cata/sim/common/wotlk"
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/priest"
 )
 
 func RegisterShadowPriest() {

@@ -3,7 +3,7 @@ package deathknight
 import (
 	"time"
 
-	"github.com/wowsims/wotlk/sim/core"
+	"github.com/wowsims/cata/sim/core"
 )
 
 func (dk *Deathknight) registerUnholyFrenzyCD() {

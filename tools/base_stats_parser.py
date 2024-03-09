@@ -73,8 +73,8 @@ package core
 // **************************************
 
 import (
-	"github.com/wowsims/wotlk/sim/core/proto"
-	"github.com/wowsims/wotlk/sim/core/stats"
+	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 '''
@@ -95,7 +95,7 @@ proto.Class_ClassUnknown: 0.0,'''
     for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Druid"]:
         cName = c.split()
         if len(cName) > 1:
-            cName[1] = cName[1].lower() 
+            cName[1] = cName[1].lower()
         cName = ''.join(cName)
         mc = float(cs.MCrit[str(BASE_LEVEL)][Offs[c]])*100
         output += f"\nproto.Class_Class{cName}: {mc:.4f},"
@@ -106,7 +106,7 @@ proto.Class_ClassUnknown: {},'''
     for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Druid"]:
         cName = c.split()
         if len(cName) > 1:
-            cName[1] = cName[1].lower() 
+            cName[1] = cName[1].lower()
         cName = ''.join(cName)
         output += f"\nproto.Class_Class{cName}: {{"
         mp = float(cs.BaseMp[str(BASE_LEVEL)][Offs[c]])
@@ -118,7 +118,7 @@ proto.Class_ClassUnknown: {},'''
         output += "\n},"
     output += "\n}\n"
     return output
-    
+
 
 if __name__ == "__main__":
     args = ClassStats()

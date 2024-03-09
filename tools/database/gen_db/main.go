@@ -10,12 +10,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/wowsims/wotlk/sim"
-	"github.com/wowsims/wotlk/sim/core"
-	"github.com/wowsims/wotlk/sim/core/proto"
-	_ "github.com/wowsims/wotlk/sim/encounters" // Needed for preset encounters.
-	"github.com/wowsims/wotlk/tools"
-	"github.com/wowsims/wotlk/tools/database"
+	"github.com/wowsims/cata/sim"
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
+	_ "github.com/wowsims/cata/sim/encounters" // Needed for preset encounters.
+	"github.com/wowsims/cata/tools"
+	"github.com/wowsims/cata/tools/database"
 )
 
 // To do a full re-scrape, delete the previous output file first.
@@ -23,14 +23,14 @@ import (
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-items
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-spells -maxid=75000
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-gearplannerdb
-// go run ./tools/database/gen_db -outDir=assets -gen=wotlk-items
+// go run ./tools/database/gen_db -outDir=assets -gen=cata-items
 // go run ./tools/database/gen_db -outDir=assets -gen=wago-db2-items
 // go run ./tools/database/gen_db -outDir=assets -gen=db
 
 var minId = flag.Int("minid", 1, "Minimum ID to scan for")
 var maxId = flag.Int("maxid", 57000, "Maximum ID to scan for")
 var outDir = flag.String("outDir", "assets", "Path to output directory for writing generated .go files.")
-var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'wotlk-items', and 'wago-db2-items'")
+var genAsset = flag.String("gen", "", "Asset to generate. Valid values are 'db', 'atlasloot', 'wowhead-items', 'wowhead-spells', 'wowhead-itemdb', 'cata-items', and 'wago-db2-items'")
 
 func main() {
 	flag.Parse()
@@ -52,10 +52,10 @@ func main() {
 		database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Fetch(int32(*minId), int32(*maxId), []string{})
 		return
 	} else if *genAsset == "wowhead-gearplannerdb" {
-		tools.WriteFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir), tools.ReadWebRequired("https://nether.wowhead.com/wotlk/data/gear-planner?dv=100"))
+		tools.WriteFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir), tools.ReadWebRequired("https://nether.wowhead.com/cata/data/gear-planner?dv=100"))
 		return
-	} else if *genAsset == "wotlk-items" {
-		database.NewWotlkItemTooltipManager(fmt.Sprintf("%s/wotlk_items_tooltips.csv", inputsDir)).Fetch(int32(*minId), int32(*maxId), []string{})
+	} else if *genAsset == "cata-items" {
+		database.NewCataItemTooltipManager(fmt.Sprintf("%s/cata_items_tooltips.csv", inputsDir)).Fetch(int32(*minId), int32(*maxId), []string{})
 		return
 	} else if *genAsset == "wago-db2-items" {
 		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=3.4.2.49311"))

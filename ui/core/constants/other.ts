@@ -1,7 +1,7 @@
 export const CURRENT_PHASE = 5;
 
-// Github pages serves our site under the /wotlk directory (because the repo name is wotlk)
-export const REPO_NAME = 'wotlk';
+// Github pages serves our site under the /cata directory (because the repo name is cata)
+export const REPO_NAME = 'cata';
 
 // Get 'elemental_shaman', the pathname part after the repo name
 const pathnameParts = window.location.pathname.split('/');

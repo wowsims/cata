@@ -18,7 +18,7 @@ BEGIN
 
 
     DECLARE @url varchar(max)
-	
+
 	SET @URL = ''
 
     DECLARE @authHeader NVARCHAR(64);
@@ -26,12 +26,12 @@ BEGIN
 	DECLARE @ret INT;
 	DECLARE @status NVARCHAR(32);
 	DECLARE @token INT;
-	DECLARE @JSONTABLE TABLE (JSONCOL text) 
+	DECLARE @JSONTABLE TABLE (JSONCOL text)
 
 	SET @authHeader = 'No Auth';
 	SET @contentType = 'application/json';
 
-	SET @url = CONCAT('https://wotlk.wowhead.com/tooltip/item/', @UID,'&json')
+	SET @url = CONCAT('https://cata.wowhead.com/tooltip/item/', @UID,'&json')
 
 	-- Open the connection.
 	EXEC @ret = sp_OACreate 'MSXML2.ServerXMLHTTP', @token OUT;
@@ -86,7 +86,7 @@ BEGIN
 
 
     DECLARE @url varchar(max)
-	
+
 	SET @URL = ''
 
     DECLARE @authHeader NVARCHAR(64);
@@ -94,12 +94,12 @@ BEGIN
 	DECLARE @ret INT;
 	DECLARE @status NVARCHAR(32);
 	DECLARE @token INT;
-	DECLARE @JSONTABLE TABLE (JSONCOL text) 
+	DECLARE @JSONTABLE TABLE (JSONCOL text)
 
 	SET @authHeader = 'No Auth';
 	SET @contentType = 'application/json';
 
-	SET @url = CONCAT('https://wotlk.wowhead.com/tooltip/item/', @UID,'&json')
+	SET @url = CONCAT('https://cata.wowhead.com/tooltip/item/', @UID,'&json')
 
 	-- Open the connection.
 	EXEC @ret = sp_OACreate 'MSXML2.ServerXMLHTTP', @token OUT;

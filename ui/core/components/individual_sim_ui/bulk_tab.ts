@@ -214,7 +214,7 @@ export class BulkItemPicker extends Component {
 			this.item = newItem;
 		} else {
 			this.itemElem.rootElem.style.opacity = '30%';
-			this.itemElem.iconElem.style.backgroundImage = `url('/wotlk/assets/item_slots/empty.jpg')`;
+			this.itemElem.iconElem.style.backgroundImage = `url('/cata/assets/item_slots/empty.jpg')`;
 			this.itemElem.nameElem.textContent = 'Add new item (not implemented)';
 			this.itemElem.rootElem.style.alignItems = 'center';
 		}
@@ -903,7 +903,7 @@ class GemSelectorModal extends BaseModal {
 	}
 
 	show() {
-		// construct item list the first time its opened. 
+		// construct item list the first time its opened.
 		// This makes startup faster and also means we are sure to have item database loaded.
 		if (this.ilist == null) {
 			this.ilist = new ItemList<UIGem>(

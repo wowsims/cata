@@ -2,12 +2,12 @@
 
 @font-face {
 	font-family: SimDefaultFont;
-	src: url(/wotlk/assets/fonts/PlusJakartaSans-Regular.woff2);
+	src: url(/cata/assets/fonts/PlusJakartaSans-Regular.woff2);
 }
 
 @font-face {
 	font-family: SimDefaultFont;
-	src: url(/wotlk/assets/fonts/PlusJakartaSans-Bold.woff2);
+	src: url(/cata/assets/fonts/PlusJakartaSans-Bold.woff2);
 	font-weight: bold;
 }
 
@@ -180,7 +180,7 @@
       padding: 1rem;
       background: rgba(0,0,0,.9);
       z-index: 1000;
-  
+
       .navbar-nav {
         position: relative;
         align-items: flex-start;

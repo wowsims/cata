@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/tailscale/hujson"
-	"github.com/wowsims/wotlk/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 // Example db input file: https://nether.wowhead.com/wotlk/data/gear-planner?dv=100

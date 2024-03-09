@@ -270,30 +270,30 @@ export const talentTreeIcons: Record<Class, Array<string>> = {
 };
 
 export const titleIcons: Record<Class | Spec, string> = {
-	[Spec.SpecBalanceDruid]: '/wotlk/assets/img/balance_druid_icon.png',
-	[Spec.SpecFeralDruid]: '/wotlk/assets/img/feral_druid_icon.png',
-	[Spec.SpecFeralTankDruid]: '/wotlk/assets/img/feral_druid_tank_icon.png',
-	[Spec.SpecRestorationDruid]: '/wotlk/assets/img/resto_druid_icon.png',
-	[Spec.SpecElementalShaman]: '/wotlk/assets/img/elemental_shaman_icon.png',
-	[Spec.SpecEnhancementShaman]: '/wotlk/assets/img/enhancement_shaman_icon.png',
-	[Spec.SpecRestorationShaman]: '/wotlk/assets/img/resto_shaman_icon.png',
-	[Spec.SpecHunter]: '/wotlk/assets/img/hunter_icon.png',
-	[Spec.SpecMage]: '/wotlk/assets/img/mage_icon.png',
-	[Spec.SpecRogue]: '/wotlk/assets/img/rogue_icon.png',
-	[Spec.SpecHolyPaladin]: '/wotlk/assets/img/holy_paladin_icon.png',
-	[Spec.SpecProtectionPaladin]: '/wotlk/assets/img/protection_paladin_icon.png',
-	[Spec.SpecRetributionPaladin]: '/wotlk/assets/img/retribution_icon.png',
-	[Spec.SpecHealingPriest]: '/wotlk/assets/img/priest_icon.png',
-	[Spec.SpecShadowPriest]: '/wotlk/assets/img/shadow_priest_icon.png',
-	[Spec.SpecSmitePriest]: '/wotlk/assets/img/smite_priest_icon.png',
-	[Spec.SpecWarlock]: '/wotlk/assets/img/warlock_icon.png',
-	[Spec.SpecWarrior]: '/wotlk/assets/img/warrior_icon.png',
-	[Spec.SpecProtectionWarrior]: '/wotlk/assets/img/protection_warrior_icon.png',
-	[Spec.SpecDeathknight]: '/wotlk/assets/img/death_knight_icon.png',
-	[Spec.SpecTankDeathknight]: '/wotlk/assets/img/death_knight_icon.png',
+	[Spec.SpecBalanceDruid]: '/cata/assets/img/balance_druid_icon.png',
+	[Spec.SpecFeralDruid]: '/cata/assets/img/feral_druid_icon.png',
+	[Spec.SpecFeralTankDruid]: '/cata/assets/img/feral_druid_tank_icon.png',
+	[Spec.SpecRestorationDruid]: '/cata/assets/img/resto_druid_icon.png',
+	[Spec.SpecElementalShaman]: '/cata/assets/img/elemental_shaman_icon.png',
+	[Spec.SpecEnhancementShaman]: '/cata/assets/img/enhancement_shaman_icon.png',
+	[Spec.SpecRestorationShaman]: '/cata/assets/img/resto_shaman_icon.png',
+	[Spec.SpecHunter]: '/cata/assets/img/hunter_icon.png',
+	[Spec.SpecMage]: '/cata/assets/img/mage_icon.png',
+	[Spec.SpecRogue]: '/cata/assets/img/rogue_icon.png',
+	[Spec.SpecHolyPaladin]: '/cata/assets/img/holy_paladin_icon.png',
+	[Spec.SpecProtectionPaladin]: '/cata/assets/img/protection_paladin_icon.png',
+	[Spec.SpecRetributionPaladin]: '/cata/assets/img/retribution_icon.png',
+	[Spec.SpecHealingPriest]: '/cata/assets/img/priest_icon.png',
+	[Spec.SpecShadowPriest]: '/cata/assets/img/shadow_priest_icon.png',
+	[Spec.SpecSmitePriest]: '/cata/assets/img/smite_priest_icon.png',
+	[Spec.SpecWarlock]: '/cata/assets/img/warlock_icon.png',
+	[Spec.SpecWarrior]: '/cata/assets/img/warrior_icon.png',
+	[Spec.SpecProtectionWarrior]: '/cata/assets/img/protection_warrior_icon.png',
+	[Spec.SpecDeathknight]: '/cata/assets/img/death_knight_icon.png',
+	[Spec.SpecTankDeathknight]: '/cata/assets/img/death_knight_icon.png',
 };
 
-export const raidSimIcon: string = '/wotlk/assets/img/raid_icon.png';
+export const raidSimIcon: string = '/cata/assets/img/raid_icon.png';
 export const raidSimLabel: string = 'Full Raid Sim';
 
 // Converts '1231321-12313123-0' to [40, 21, 0].
@@ -1227,27 +1227,27 @@ export function isMeleeDpsSpec(spec: Spec): boolean {
 // Prefixes used for storing browser data for each site. Even if a Spec is
 // renamed, DO NOT change these values or people will lose their saved data.
 export const specToLocalStorageKey: Record<Spec, string> = {
-	[Spec.SpecBalanceDruid]: '__wotlk_balance_druid',
-	[Spec.SpecFeralDruid]: '__wotlk_feral_druid',
-	[Spec.SpecFeralTankDruid]: '__wotlk_feral_tank_druid',
-	[Spec.SpecRestorationDruid]: '__wotlk_restoration_druid',
-	[Spec.SpecElementalShaman]: '__wotlk_elemental_shaman',
-	[Spec.SpecEnhancementShaman]: '__wotlk_enhacement_shaman',
-	[Spec.SpecRestorationShaman]: '__wotlk_restoration_shaman',
-	[Spec.SpecHunter]: '__wotlk_hunter',
-	[Spec.SpecMage]: '__wotlk_mage',
-	[Spec.SpecHolyPaladin]: '__wotlk_holy_paladin',
-	[Spec.SpecProtectionPaladin]: '__wotlk_protection_paladin',
-	[Spec.SpecRetributionPaladin]: '__wotlk_retribution_paladin',
-	[Spec.SpecRogue]: '__wotlk_rogue',
-	[Spec.SpecHealingPriest]: '__wotlk_healing_priest',
-	[Spec.SpecShadowPriest]: '__wotlk_shadow_priest',
-	[Spec.SpecSmitePriest]: '__wotlk_smite_priest',
-	[Spec.SpecWarlock]: '__wotlk_warlock',
-	[Spec.SpecWarrior]: '__wotlk_warrior',
-	[Spec.SpecProtectionWarrior]: '__wotlk_protection_warrior',
-	[Spec.SpecDeathknight]: '__wotlk_deathknight',
-	[Spec.SpecTankDeathknight]: '__wotlk_tank_deathknight',
+	[Spec.SpecBalanceDruid]: '__cata_balance_druid',
+	[Spec.SpecFeralDruid]: '__cata_feral_druid',
+	[Spec.SpecFeralTankDruid]: '__cata_feral_tank_druid',
+	[Spec.SpecRestorationDruid]: '__cata_restoration_druid',
+	[Spec.SpecElementalShaman]: '__cata_elemental_shaman',
+	[Spec.SpecEnhancementShaman]: '__cata_enhacement_shaman',
+	[Spec.SpecRestorationShaman]: '__cata_restoration_shaman',
+	[Spec.SpecHunter]: '__cata_hunter',
+	[Spec.SpecMage]: '__cata_mage',
+	[Spec.SpecHolyPaladin]: '__cata_holy_paladin',
+	[Spec.SpecProtectionPaladin]: '__cata_protection_paladin',
+	[Spec.SpecRetributionPaladin]: '__cata_retribution_paladin',
+	[Spec.SpecRogue]: '__cata_rogue',
+	[Spec.SpecHealingPriest]: '__cata_healing_priest',
+	[Spec.SpecShadowPriest]: '__cata_shadow_priest',
+	[Spec.SpecSmitePriest]: '__cata_smite_priest',
+	[Spec.SpecWarlock]: '__cata_warlock',
+	[Spec.SpecWarrior]: '__cata_warrior',
+	[Spec.SpecProtectionWarrior]: '__cata_protection_warrior',
+	[Spec.SpecDeathknight]: '__cata_deathknight',
+	[Spec.SpecTankDeathknight]: '__cata_tank_deathknight',
 };
 
 // Returns a copy of playerOptions, with the class field set.
@@ -1712,7 +1712,7 @@ export function getEligibleItemSlots(item: Item): Array<ItemSlot> {
 			return [ItemSlot.ItemSlotMainHand];
 		} else if (item.handType == HandType.HandTypeOffHand) {
 			return [ItemSlot.ItemSlotOffHand];
-			// Missing HandTypeTwoHand 
+			// Missing HandTypeTwoHand
 			// We allow 2H weapons to be wielded in mainhand and offhand for Fury Warriors
 		} else {
 			return [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand];
@@ -1748,7 +1748,7 @@ export function validWeaponCombo(mainHand: Item | null | undefined, offHand: Ite
 }
 
 // Returns all item slots to which the enchant might be applied.
-// 
+//
 // Note that this alone is not enough; some items have further restrictions,
 // e.g. some weapon enchants may only be applied to 2H weapons.
 export function getEligibleEnchantSlots(enchant: Enchant): Array<ItemSlot> {

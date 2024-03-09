@@ -1,4 +1,4 @@
-module github.com/wowsims/wotlk
+module github.com/wowsims/cata
 
 go 1.21
 

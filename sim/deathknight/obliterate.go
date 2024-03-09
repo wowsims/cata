@@ -1,8 +1,8 @@
 package deathknight
 
 import (
-	"github.com/wowsims/wotlk/sim/core"
-	"github.com/wowsims/wotlk/sim/core/proto"
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 // TODO: Cleanup obliterate the same way we did for plague strike

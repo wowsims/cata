@@ -4,7 +4,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/wowsims/wotlk/sim/core"
+	"github.com/wowsims/cata/sim/core"
 )
 
 func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration) {
