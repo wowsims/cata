@@ -327,11 +327,8 @@ func (item WowheadItemResponse) GetPhase() int {
 	ilvl := item.GetItemLevel()
 	if ilvl <= 284 { // TBC items
 		return 0
-	}
-	if ilvl >= 284 {
-		return 1 // Wotlk items phase 1 = prepatch
 	} else {
-		return 2
+		return 1
 	}
 }
 
