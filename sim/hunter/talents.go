@@ -446,6 +446,9 @@ func (hunter *Hunter) registerBestialWrathCD() {
 			BaseCost: 0.1,
 		},
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: 1,
+			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
 				Duration: hunter.applyLongevity(time.Minute*2 - core.TernaryDuration(hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfBestialWrath), time.Second*20, 0)),

@@ -263,6 +263,8 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	var emptyCast Cast
 
 	if spell.DefaultCast == emptyCast && spell.Cost != nil {
+		println(spell.DefaultCast.Cost)
+
 		panic("Empty DefaultCast with a cost for spell " + config.ActionID.String())
 	}
 

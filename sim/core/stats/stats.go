@@ -52,12 +52,12 @@ const (
 	NatureResistance
 	ShadowResistance
 	BonusArmor
+	Mastery
 	RunicPower
 	BloodRune
 	FrostRune
 	UnholyRune
 	DeathRune
-	Mastery
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 
