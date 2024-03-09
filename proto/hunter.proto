@@ -1,3 +1,8 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "./proto";
+
 message HunterTalents {
 	// Beast Mastery
 	int32 improved_kill_command = 1;
@@ -63,25 +68,18 @@ message HunterTalents {
 	int32 serpent_spread = 57;
 	bool black_arrow = 58;
 }
-
 enum HunterPrimeGlyph {
 	HunterPrimeGlyphNone = 0;
-	GlyphOfBestialWrath = 42902;
-	GlyphOfConcussiveShot = 42901;
-	GlyphOfDeterrence = 42903;
-	GlyphOfDisengage = 42904;
-	GlyphOfFreezingTrap = 42905;
-	GlyphOfIceTrap = 42906;
-	GlyphOfImmolationTrap = 42908;
-	GlyphOfMasterSCall = 45733;
-	GlyphOfMending = 42900;
-	GlyphOfMisdirection = 42907;
-	GlyphOfRaptorStrike = 45735;
-	GlyphOfScatterShot = 45734;
-	GlyphOfSilencingShot = 42910;
-	GlyphOfSnakeTrap = 42913;
-	GlyphOfTrapLauncher = 42899;
-	GlyphOfWyvernSting = 42917;
+	GlyphOfAimedShot = 42897;
+	GlyphOfArcaneShot = 42898;
+	GlyphOfChimeraShot = 45625;
+	GlyphOfDazzledPrey = 42909;
+	GlyphOfExplosiveShot = 45731;
+	GlyphOfKillCommand = 42915;
+	GlyphOfKillShot = 45732;
+	GlyphOfRapidFire = 42911;
+	GlyphOfSerpentSting = 42912;
+	GlyphOfSteadyShot = 42914;
 }
 enum HunterMajorGlyph {
 	HunterMajorGlyphNone = 0;
@@ -109,4 +107,140 @@ enum HunterMinorGlyph {
 	GlyphOfLesserProportion = 43350;
 	GlyphOfRevivePet = 43338;
 	GlyphOfScareBeast = 43356;
+}
+
+message HunterPetTalents {
+	// Cunning
+	int32 cobra_reflexes = 1;
+	bool dive = 2;
+	int32 great_stamina = 3;
+	int32 natural_armor = 4;
+	bool boars_speed = 5;
+	int32 mobility = 6;
+	int32 owls_focus = 7;
+	int32 spiked_collar = 8;
+	int32 culling_the_herd = 9;
+	int32 lionhearted = 10;
+	bool carrion_feeder = 11;
+	int32 great_resistance = 12;
+	int32 cornered = 13;
+	int32 feeding_frenzy = 14;
+	bool wolverine_bite = 15;
+	bool roar_of_recovery = 16;
+	bool bullheaded = 17;
+	int32 grace_of_the_mantis = 18;
+	int32 wild_hunt = 19;
+	bool roar_of_sacrifice = 20;
+
+	// Ferocity
+	int32 improved_cower = 21;
+	int32 bloodthirsty = 22;
+	bool heart_of_the_pheonix = 23;
+	int32 spiders_bite = 24;
+	bool rabid = 25;
+	bool lick_your_wounds = 26;
+	bool call_of_the_wild = 27;
+	int32 shark_attack = 28;
+
+	// Tenacity
+	bool charge = 29;
+	int32 blood_of_the_rhino = 30;
+	int32 pet_barding = 31;
+	int32 guard_dog = 32;
+	bool thunderstomp = 33;
+	bool last_stand = 34;
+	bool taunt = 35;
+	bool intervene = 36;
+	int32 silverback = 37;
+}
+
+message Hunter {
+	message Rotation {
+		enum RotationType {
+			UnknownType = 0;
+			SingleTarget = 1;
+			Aoe = 3;
+			Custom = 2;
+		}
+		RotationType type = 9;
+
+		enum StingType {
+			NoSting = 0;
+			ScorpidSting = 1;
+			SerpentSting = 2;
+		}
+		StingType sting = 5;
+
+		bool trap_weave = 1;
+
+		// Switch to Aspect of the Viper when mana goes below this percent.
+		double viper_start_mana_percent = 6;
+		// Switch back to Aspect of the Hawk when mana goes above this percent.
+		double viper_stop_mana_percent = 7;
+
+		// Allow use of Explosive Shot Rank 3 during LNL procs.
+		bool allow_explosive_shot_downrank = 10;
+
+		bool multi_dot_serpent_sting = 11;
+	}
+	
+	message Options {
+		enum Ammo {
+			AmmoNone = 0;
+			IcebladeArrow = 1;
+			SaroniteRazorheads = 2;
+			TerrorshaftArrow = 3;
+			TimelessArrow = 4;
+			MysteriousArrow = 5;
+			AdamantiteStinger = 6;
+			BlackflightArrow = 7;
+		}
+		Ammo ammo = 1;
+
+		enum PetType {
+			PetNone = 0;
+			Bat = 1;
+			Bear = 2;
+			BirdOfPrey = 3;
+			Boar = 4;
+			CarrionBird = 5;
+			Cat = 6;
+			Chimaera = 7;
+			CoreHound = 8;
+			Crab = 9;
+			Crocolisk = 10;
+			Devilsaur = 11;
+			Dragonhawk = 12;
+			Gorilla = 13;
+			Hyena = 14;
+			Moth = 15;
+			NetherRay = 16;
+			Raptor = 17;
+			Ravager = 18;
+			Rhino = 19;
+			Scorpid = 20;
+			Serpent = 21;
+			Silithid = 22;
+			Spider = 23;
+			SpiritBeast = 24;
+			SporeBat = 25;
+			Tallstrider = 26;
+			Turtle = 27;
+			WarpStalker = 28;
+			Wasp = 29;
+			WindSerpent = 30;
+			Wolf = 31;
+			Worm = 32;
+		}
+
+		PetType pet_type = 2;
+		HunterPetTalents pet_talents = 3;
+		double pet_uptime = 4;
+
+		double sniper_training_uptime = 7;
+		double time_to_trap_weave_ms = 8;
+
+		bool use_hunters_mark = 5;
+	}
+	Options options = 3;
 }

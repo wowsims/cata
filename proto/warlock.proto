@@ -1,3 +1,8 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "./proto";
+
 message WarlockTalents {
 	// Affliction
 	int32 doom_and_gloom = 1;
@@ -64,24 +69,23 @@ message WarlockTalents {
 
 enum WarlockPrimeGlyph {
 	WarlockPrimeGlyphNone = 0;
-	GlyphOfDeathCoil = 42457;
-	GlyphOfDemonicCircle = 45782;
-	GlyphOfFear = 42458;
-	GlyphOfFelhunter = 42460;
-	GlyphOfHealthstone = 42462;
-	GlyphOfHowlOfTerror = 42463;
-	GlyphOfLifeTap = 45785;
-	GlyphOfSeduction = 42471;
-	GlyphOfShadowBolt = 42467;
-	GlyphOfShadowflame = 45783;
-	GlyphOfSoulLink = 45789;
-	GlyphOfSoulSwap = 42466;
-	GlyphOfSoulstone = 42470;
-	GlyphOfVoidwalker = 42473;
+	GlyphOfBaneOfAgony = 42456;
+	GlyphOfChaosBolt = 45781;
+	GlyphOfConflagrate = 42454;
+	GlyphOfCorruption = 42455;
+	GlyphOfFelguard = 42459;
+	GlyphOfHaunt = 45779;
+	GlyphOfImmolate = 42464;
+	GlyphOfImp = 42465;
+	GlyphOfIncinerate = 42453;
+	GlyphOfLashOfPain = 50077;
+	GlyphOfMetamorphosis = 45780;
+	GlyphOfShadowburn = 42468;
+	GlyphOfUnstableAffliction = 42472;
 }
 enum WarlockMajorGlyph {
 	WarlockMajorGlyphNone = 0;
-	GlyphOfDeathCoil = 42457;
+	GlyphOfDeathCoilWl = 42457;
 	GlyphOfDemonicCircle = 45782;
 	GlyphOfFear = 42458;
 	GlyphOfFelhunter = 42460;
@@ -105,4 +109,39 @@ enum WarlockMinorGlyph {
 	GlyphOfRitualOfSouls = 43394;
 	GlyphOfSubjugateDemon = 43393;
 	GlyphOfUnendingBreath = 43389;
+}
+
+message Warlock {
+	message Rotation {
+	}
+	
+	message Options {
+		enum Summon {
+			NoSummon = 0;
+			Imp = 1;
+			Voidwalker = 2;
+			Succubus = 3;
+			Felhunter = 4;
+			Felguard = 5;
+		}
+
+		enum Armor {
+			NoArmor = 0;
+			FelArmor = 1;
+			DemonArmor = 2;
+		}
+
+		enum WeaponImbue {
+			NoWeaponImbue = 0;
+			GrandSpellstone = 1;
+			GrandFirestone = 2;
+		}
+
+		Armor armor = 1;
+		Summon summon = 2;
+		WeaponImbue weaponImbue = 3;
+		bool _oldDPBehaviourOption = 4;
+		bool detonate_seed = 5;
+	}
+	Options options = 3;
 }

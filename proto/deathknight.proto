@@ -1,3 +1,9 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "./proto";
+import "common.proto";
+
 message DeathKnightTalents {
 	// Blood
 	int32 butchery = 1;
@@ -68,19 +74,17 @@ message DeathKnightTalents {
 
 enum DeathKnightPrimeGlyph {
 	DeathKnightPrimeGlyphNone = 0;
-	GlyphOfAntiMagicShell = 43533;
-	GlyphOfBloodBoil = 43826;
-	GlyphOfBoneShield = 43536;
-	GlyphOfChainsOfIce = 43537;
-	GlyphOfDancingRuneWeapon = 45799;
-	GlyphOfDarkSuccor = 68793;
-	GlyphOfDeathGrip = 43541;
-	GlyphOfHungeringCold = 45800;
-	GlyphOfPestilence = 43548;
-	GlyphOfPillarOfFrost = 43553;
-	GlyphOfRuneTap = 43825;
-	GlyphOfStrangulate = 43552;
-	GlyphOfVampiricBlood = 43554;
+	GlyphOfDeathAndDecay = 43542;
+	GlyphOfDeathCoil = 45804;
+	GlyphOfDeathStrike = 43827;
+	GlyphOfFrostStrike = 43543;
+	GlyphOfHeartStrike = 43534;
+	GlyphOfHowlingBlast = 45806;
+	GlyphOfIcyTouch = 43546;
+	GlyphOfObliterate = 43547;
+	GlyphOfRaiseDead = 43549;
+	GlyphOfRuneStrike = 43550;
+	GlyphOfScourgeStrike = 43551;
 }
 enum DeathKnightMajorGlyph {
 	DeathKnightMajorGlyphNone = 0;
@@ -106,4 +110,70 @@ enum DeathKnightMinorGlyph {
 	GlyphOfHornOfWinter = 43544;
 	GlyphOfPathOfFrost = 43671;
 	GlyphOfResilientGrip = 43672;
+}
+
+
+message Deathknight {
+	message Rotation {
+	}
+	
+	message Options {
+		double starting_runic_power = 1;
+		double pet_uptime = 2;
+
+		UnitReference unholy_frenzy_target = 5;
+
+		bool drw_pesti_apply = 6;
+
+		bool use_ams = 9;
+		double avg_ams_success_rate = 10;
+		double avg_ams_hit = 11;
+	}
+	Options options = 3;
+}
+
+
+message TankDeathknight {
+	message Rotation {
+		enum Opener {
+			Regular = 0;
+			Threat = 1;
+		}
+
+		enum OptimizationSetting {
+			Hps = 0;
+			Tps = 1;
+		}
+
+		enum BloodSpell {
+			BloodStrike = 0;
+			BloodBoil = 1;
+			HeartStrike = 2;
+		}
+
+		enum BloodTapPrio {
+			Defensive = 0;
+			Offensive = 1;
+		}
+
+		enum Presence {
+			Blood = 0;
+			Frost = 1;
+			Unholy = 2;
+		}
+
+		Opener opener = 1;
+		OptimizationSetting optimization_setting = 2;
+		BloodSpell blood_spell = 3;
+		Presence presence = 4;
+		BloodTapPrio blood_tap_prio = 5;
+	}
+	Rotation rotation = 1;
+	
+	message Options {
+		double starting_runic_power = 1;
+		UnitReference unholy_frenzy_target = 2;
+		double defensive_delay = 3;
+	}
+	Options options = 3;
 }

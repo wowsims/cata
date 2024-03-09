@@ -1,3 +1,9 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "./proto";
+import "common.proto";
+
 message RogueTalents {
 	// Assassination
 	int32 deadly_momentum = 1;
@@ -65,24 +71,18 @@ message RogueTalents {
 
 enum RoguePrimeGlyph {
 	RoguePrimeGlyphNone = 0;
-	GlyphOfAmbush = 42955;
-	GlyphOfBladeFlurry = 42957;
-	GlyphOfBlind = 64493;
-	GlyphOfCloakOfShadows = 45769;
-	GlyphOfCripplingPoison = 42958;
-	GlyphOfDeadlyThrow = 42959;
-	GlyphOfEvasion = 42960;
-	GlyphOfExposeArmor = 42962;
-	GlyphOfFanOfKnives = 45766;
-	GlyphOfFeint = 42963;
-	GlyphOfGarrote = 42964;
-	GlyphOfGouge = 42966;
-	GlyphOfKick = 42971;
-	GlyphOfPreparation = 42968;
-	GlyphOfSap = 42970;
-	GlyphOfSprint = 42974;
-	GlyphOfTricksOfTheTrade = 45767;
-	GlyphOfVanish = 63420;
+	GlyphOfAdrenalineRush = 42954;
+	GlyphOfBackstab = 42956;
+	GlyphOfEviscerate = 42961;
+	GlyphOfHemorrhage = 42967;
+	GlyphOfKillingSpree = 45762;
+	GlyphOfMutilate = 45768;
+	GlyphOfRevealingStrike = 42965;
+	GlyphOfRupture = 42969;
+	GlyphOfShadowDance = 45764;
+	GlyphOfSinisterStrike = 42972;
+	GlyphOfSliceAndDice = 42973;
+	GlyphOfVendetta = 45761;
 }
 enum RogueMajorGlyph {
 	RogueMajorGlyphNone = 0;
@@ -113,4 +113,27 @@ enum RogueMinorGlyph {
 	GlyphOfPickPocket = 43343;
 	GlyphOfPoisons = 43380;
 	GlyphOfSafeFall = 43378;
+}
+
+message Rogue {
+	message Rotation {
+	}
+	
+	message Options {
+		UnitReference tricks_of_the_trade_target = 1;
+		enum PoisonImbue {
+			NoPoison = 0;
+			InstantPoison = 1;
+			DeadlyPoison = 2;
+			WoundPoison = 3;
+		}
+		PoisonImbue mh_imbue = 2;
+		PoisonImbue oh_imbue = 3;
+		int32 starting_overkill_duration = 4;
+		bool apply_poisons_manually = 5;
+		int32 honor_of_thieves_crit_rate = 6;
+		bool assume_bleed_active = 7;
+		float vanish_break_time = 8;
+	}
+	Options options = 3;
 }

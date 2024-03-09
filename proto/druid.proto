@@ -1,3 +1,9 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "./proto";
+import "common.proto";
+
 message DruidTalents {
 	// Balance
 	int32 natures_grace = 1;
@@ -71,25 +77,22 @@ message DruidTalents {
 
 enum DruidPrimeGlyph {
 	DruidPrimeGlyphNone = 0;
-	GlyphOfBarkskin = 45623;
-	GlyphOfEntanglingRoots = 40924;
-	GlyphOfFaerieFire = 67485;
-	GlyphOfFeralCharge = 67486;
-	GlyphOfFerociousBite = 48720;
-	GlyphOfFocus = 44928;
-	GlyphOfFrenziedRegeneration = 40896;
-	GlyphOfHealingTouch = 40914;
-	GlyphOfHurricane = 40920;
-	GlyphOfInnervate = 40908;
-	GlyphOfMaul = 40897;
-	GlyphOfMonsoon = 45622;
-	GlyphOfOmenOfClarity = 206580;
-	GlyphOfPounce = 40903;
-	GlyphOfRebirth = 40909;
-	GlyphOfSolarBeam = 40899;
-	GlyphOfStarfall = 40921;
-	GlyphOfThorns = 43332;
-	GlyphOfWildGrowth = 45602;
+	GlyphOfBerserk = 45601;
+	GlyphOfBloodletting = 40901;
+	GlyphOfInsectSwarm = 40919;
+	GlyphOfLacerate = 67484;
+	GlyphOfLifebloom = 40915;
+	GlyphOfMangle = 40900;
+	GlyphOfMoonfire = 40923;
+	GlyphOfRegrowth = 40912;
+	GlyphOfRejuvenation = 40913;
+	GlyphOfRip = 40902;
+	GlyphOfSavageRoar = 45604;
+	GlyphOfStarfire = 40916;
+	GlyphOfStarsurge = 45603;
+	GlyphOfSwiftmend = 40906;
+	GlyphOfTigerSFury = 67487;
+	GlyphOfWrath = 40922;
 }
 enum DruidMajorGlyph {
 	DruidMajorGlyphNone = 0;
@@ -122,4 +125,90 @@ enum DruidMinorGlyph {
 	GlyphOfTheTreant = 68039;
 	GlyphOfTyphoon = 44922;
 	GlyphOfUnburdenedRebirth = 43331;
+}
+
+message BalanceDruid {
+  message Rotation {
+  }
+
+  message Options {
+    UnitReference innervate_target = 1;
+	float okf_uptime = 2;
+  }
+  Options options = 3;
+}
+
+message FeralDruid {
+  message Rotation {
+	enum AplType {
+		SingleTarget = 0;
+		Aoe = 1;
+	}
+    enum BearweaveType {
+      None = 0;
+      Mangle = 1;
+      Lacerate = 2;
+    }
+    enum BiteModeType {
+      Emperical = 0;
+      Analytical = 1;
+    }
+
+    BearweaveType bear_weave_type = 1;
+	bool maintain_faerie_fire = 2;
+	int32 min_combos_for_rip = 3;
+	bool use_rake = 4;
+	bool use_bite = 5;
+	bool mangle_spam = 6;
+	float bite_time = 7;
+	int32 min_combos_for_bite = 8;
+	int32 berserk_bite_thresh = 9;
+	int32 berserk_ff_thresh = 18;
+	int32 rip_leeway = 19;
+	bool powerbear = 10;
+	float min_roar_offset = 11;
+	BiteModeType bite_mode_type = 12;
+	float hot_uptime = 13;
+	bool snek_weave = 14;
+	bool flower_weave = 15;
+	int32 raid_targets = 16;
+	bool manual_params = 17;
+	float max_ff_delay = 20;
+	AplType rotation_type = 21;
+	bool pre_pop_berserk = 22;
+	bool pre_pop_ooc = 23;
+  }
+  Rotation rotation = 1;
+
+  message Options {
+    UnitReference innervate_target = 1;
+    int32 latency_ms = 2;
+    bool assume_bleed_active = 4;
+  }
+  Options options = 3;
+}
+
+message FeralTankDruid {
+  message Rotation {
+		// Minimum rage to queue HS or Cleave.
+		int32 maul_rage_threshold = 1;
+		bool maintain_demoralizing_roar = 2;
+		double lacerate_time = 3;
+  }
+
+  message Options {
+    UnitReference innervate_target = 1;
+	double starting_rage = 2;
+  }
+  Options options = 3;
+}
+
+message RestorationDruid {
+  message Rotation {
+  }
+
+  message Options {
+    UnitReference innervate_target = 1;
+  }
+  Options options = 3;
 }

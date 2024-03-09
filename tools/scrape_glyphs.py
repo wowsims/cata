@@ -119,13 +119,13 @@ def write_glyphs_config(outfile, glyphs_data, glyph_type):
 
 
 with open(output_file_path, "w") as outfile:
-	write_glyphs_proto(outfile, major_glyphs_data, "Prime")
+	write_glyphs_proto(outfile, prime_glyphs_data, "Prime")
 	write_glyphs_proto(outfile, major_glyphs_data, "Major")
 	write_glyphs_proto(outfile, minor_glyphs_data, "Minor")
 
 	outfile.write("\n")
 	outfile.write("export const {}GlyphsConfig: GlyphsConfig = {{\n".format(lower_class_name))
-	write_glyphs_config(outfile, major_glyphs_data, "Prime")
+	write_glyphs_config(outfile, prime_glyphs_data, "Prime")
 	write_glyphs_config(outfile, major_glyphs_data, "Major")
 	write_glyphs_config(outfile, minor_glyphs_data, "Minor")
 	outfile.write("};")

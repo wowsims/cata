@@ -1,3 +1,8 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "./proto";
+
 message ShamanTalents {
 	// Elemental
 	int32 acuity = 1;
@@ -65,21 +70,21 @@ message ShamanTalents {
 }
 enum ShamanPrimeGlyph {
 	ShamanPrimeGlyphNone = 0;
-	GlyphOfChainHeal = 41517;
-	GlyphOfChainLightning = 41518;
-	GlyphOfElementalMastery = 41552;
-	GlyphOfFireNova = 41530;
-	GlyphOfFrostShock = 41547;
-	GlyphOfGhostWolf = 43725;
-	GlyphOfGroundingTotem = 41538;
-	GlyphOfHealingStreamTotem = 41533;
-	GlyphOfHealingWave = 41534;
-	GlyphOfHex = 45777;
-	GlyphOfLightningShield = 41537;
-	GlyphOfShamanisticRage = 45776;
-	GlyphOfStoneclawTotem = 45778;
-	GlyphOfThunder = 45770;
-	GlyphOfTotemicRecall = 41535;
+	GlyphOfEarthShield = 45775;
+	GlyphOfEarthlivingWeapon = 41527;
+	GlyphOfFeralSpirit = 45771;
+	GlyphOfFireElementalTotem = 41529;
+	GlyphOfFlameShock = 41531;
+	GlyphOfFlametongueWeapon = 41532;
+	GlyphOfLavaBurst = 41524;
+	GlyphOfLavaLash = 41540;
+	GlyphOfLightningBolt = 41536;
+	GlyphOfRiptide = 45772;
+	GlyphOfShocking = 41526;
+	GlyphOfStormstrike = 41539;
+	GlyphOfUnleashedLightning = 71155;
+	GlyphOfWaterShield = 41541;
+	GlyphOfWindfuryWeapon = 41542;
 }
 enum ShamanMajorGlyph {
 	ShamanMajorGlyphNone = 0;
@@ -109,3 +114,131 @@ enum ShamanMinorGlyph {
 	GlyphOfWaterWalking = 43388;
 }
 
+enum EarthTotem {
+	NoEarthTotem = 0;
+	StrengthOfEarthTotem = 1;
+	TremorTotem = 2;
+	StoneskinTotem = 3;
+}
+
+enum AirTotem {
+	NoAirTotem = 0;
+	WindfuryTotem = 2;
+	WrathOfAirTotem = 3;
+}
+
+enum FireTotem {
+	NoFireTotem = 0;
+	MagmaTotem = 1;
+	SearingTotem = 2;
+	TotemOfWrath = 3;
+	FlametongueTotem = 4;
+}
+
+enum WaterTotem {
+	NoWaterTotem = 0;
+	ManaSpringTotem = 1;
+	HealingStreamTotem = 2;
+}
+
+message ShamanTotems {
+	// Not used here, but used by APL
+	enum TotemType {
+		TypeUnknown = 0;
+		Earth = 1;
+		Air = 2;
+		Fire = 3;
+		Water = 4;
+	}
+
+	EarthTotem earth = 1;
+	AirTotem air = 2;
+	FireTotem fire = 3;
+	WaterTotem water = 4;
+
+	// If set, will use fire elemental totem at the start and revert to regular
+	// fire totems when it expires.
+	bool use_fire_elemental = 6;
+
+	// Bonus spell power for fire elemental snapshotting.
+	int32 bonus_spellpower = 10;
+
+	// Snapshot fire elemental using Tier 10 4 set bonus.
+	bool enh_tier_ten_bonus = 11;
+}
+
+enum ShamanShield {
+	NoShield = 0;
+	WaterShield = 1;
+	LightningShield = 2;
+}
+
+enum ShamanImbue {
+    NoImbue = 0;
+    WindfuryWeapon = 1;
+    FlametongueWeapon = 2;
+    FlametongueWeaponDownrank = 3;
+    FrostbrandWeapon = 4;
+}
+
+enum ShamanSyncType {
+  NoSync = 0;
+  SyncMainhandOffhandSwings = 1;
+  DelayOffhandSwings = 2;
+	Auto = 3;
+}
+
+message ElementalShaman {
+	message Rotation {
+	}
+
+	message Options {
+		ShamanShield shield = 1;
+		ShamanTotems totems = 3;
+		
+		enum ThunderstormRange {
+			UnsetTSRange = 0;
+			TSInRange = 1;
+			TSOutofRange = 2;
+		}
+		ThunderstormRange thunderstormRange = 4;
+	}
+
+	Options options = 3;
+}
+
+message EnhancementShaman {
+	message Rotation {
+	}
+
+	message Options {
+		ShamanShield shield = 1;
+		ShamanSyncType sync_type = 3;
+		ShamanImbue imbue_mh = 4;
+		ShamanImbue imbue_oh = 5;
+		ShamanTotems totems = 6;
+	}
+
+	Options options = 3;
+}
+
+enum ShamanHealSpell {
+	AutoHeal = 0;
+	HealingWave = 1;
+	LesserHealingWave = 2;
+	ChainHeal = 3;
+}
+
+message RestorationShaman {
+	message Rotation {
+	}
+
+	message Options {
+		ShamanShield shield = 1;
+		ShamanImbue imbue_mh = 4;
+		int32 earth_shield_p_p_m = 5;
+		ShamanTotems totems = 6;
+	}
+
+	Options options = 3;
+}

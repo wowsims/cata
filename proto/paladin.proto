@@ -1,3 +1,8 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "./proto";
+
 message PaladinTalents {
 	// Holy
 	int32 arbiter_of_the_light = 1;
@@ -65,28 +70,19 @@ message PaladinTalents {
 	int32 acts_of_sacrifice = 59;
 	bool zealotry = 60;
 }
-
 enum PaladinPrimeGlyph {
 	PaladinPrimeGlyphNone = 0;
-	GlyphOfBeaconOfLight = 45741;
-	GlyphOfCleansing = 41104;
-	GlyphOfConsecration = 41099;
-	GlyphOfDazingShield = 43868;
-	GlyphOfDivinePlea = 45745;
-	GlyphOfDivineProtection = 41096;
-	GlyphOfDivinity = 41108;
-	GlyphOfFocusedShield = 41101;
-	GlyphOfHammerOfJustice = 41095;
-	GlyphOfHammerOfWrath = 41097;
-	GlyphOfHolyWrath = 43867;
-	GlyphOfLayOnHands = 43367;
-	GlyphOfLightOfDawn = 41109;
-	GlyphOfRebuke = 41094;
-	GlyphOfReckoning = 204385;
-	GlyphOfSalvation = 45747;
-	GlyphOfTheAsceticCrusader = 41107;
-	GlyphOfTheLongWord = 66918;
-	GlyphOfTurnEvil = 41102;
+	GlyphOfCrusaderStrike = 41098;
+	GlyphOfDivineFavor = 41106;
+	GlyphOfExorcism = 41103;
+	GlyphOfHammerOfTheRighteous = 45742;
+	GlyphOfHolyShock = 45746;
+	GlyphOfJudgement = 41092;
+	GlyphOfSealOfInsight = 41110;
+	GlyphOfSealOfTruth = 43869;
+	GlyphOfShieldOfTheRighteous = 45744;
+	GlyphOfTemplarSVerdict = 45743;
+	GlyphOfWordOfGlory = 41105;
 }
 enum PaladinMajorGlyph {
 	PaladinMajorGlyphNone = 0;
@@ -118,4 +114,70 @@ enum PaladinMinorGlyph {
 	GlyphOfJustice = 43369;
 	GlyphOfRighteousness = 41100;
 	GlyphOfTruth = 43368;
+}
+
+
+enum Blessings {
+	BlessingUnknown = 0;
+	BlessingOfKings = 1;
+	BlessingOfMight = 2;
+	BlessingOfSalvation = 3;
+	BlessingOfWisdom = 4;
+	BlessingOfSanctuary = 5;
+	BlessingOfLight = 6;
+}
+
+enum PaladinAura {
+	NoPaladinAura = 0;
+	DevotionAura = 2;
+	RetributionAura = 3;
+}
+
+enum PaladinSeal {
+	Vengeance = 0;
+	Command = 1;
+	Righteousness = 2;
+}
+
+enum PaladinJudgement {
+	JudgementOfWisdom = 0;
+	JudgementOfLight = 1;
+	NoJudgement = 2;
+}
+
+message RetributionPaladin {
+	message Rotation {
+	}
+	
+	message Options {
+		PaladinJudgement judgement = 1;
+		PaladinSeal seal = 2;
+		PaladinAura aura = 3;
+		bool use_avenging_wrath = 5;
+	}
+	Options options = 3;
+}
+
+message ProtectionPaladin {
+	message Rotation {
+	}
+
+	message Options {
+		PaladinJudgement judgement = 1;
+		PaladinSeal seal = 2;
+		PaladinAura aura = 3;
+		bool use_avenging_wrath = 5;
+	}
+	Options options = 3;
+}
+
+message HolyPaladin {
+	message Rotation {
+	}
+
+	message Options {
+		PaladinJudgement judgement = 1;
+		PaladinAura aura = 2;
+	}
+	Options options = 3;
 }
