@@ -110,48 +110,70 @@ enum HunterMinorGlyph {
 }
 
 message HunterPetTalents {
-	// Cunning
-	int32 cobra_reflexes = 1;
-	bool dive = 2;
+	// Ferocity
+	int32 serpent_swiftness = 1;
+	bool dash = 2;
 	int32 great_stamina = 3;
 	int32 natural_armor = 4;
-	bool boars_speed = 5;
-	int32 mobility = 6;
-	int32 owls_focus = 7;
-	int32 spiked_collar = 8;
+	int32 improved_cower = 5;
+	int32 bloodthirsty = 6;
+	int32 spiked_collar = 7;
+	bool boars_speed = 8;
 	int32 culling_the_herd = 9;
 	int32 lionhearted = 10;
-	bool carrion_feeder = 11;
-	int32 great_resistance = 12;
-	int32 cornered = 13;
-	int32 feeding_frenzy = 14;
-	bool wolverine_bite = 15;
-	bool roar_of_recovery = 16;
-	bool bullheaded = 17;
-	int32 grace_of_the_mantis = 18;
+	bool charge = 11;
+	bool heart_of_the_phoenix = 12;
+	int32 spiders_bite = 13;
+	int32 great_resistance = 14;
+	bool rabid = 15;
+	bool lick_your_wounds = 16;
+	bool call_of_the_wild = 17;
+	int32 shark_attack = 18;
 	int32 wild_hunt = 19;
-	bool roar_of_sacrifice = 20;
-
-	// Ferocity
-	int32 improved_cower = 21;
-	int32 bloodthirsty = 22;
-	bool heart_of_the_pheonix = 23;
-	int32 spiders_bite = 24;
-	bool rabid = 25;
-	bool lick_your_wounds = 26;
-	bool call_of_the_wild = 27;
-	int32 shark_attack = 28;
 
 	// Tenacity
-	bool charge = 29;
-	int32 blood_of_the_rhino = 30;
-	int32 pet_barding = 31;
-	int32 guard_dog = 32;
-	bool thunderstomp = 33;
+	int32 serpent_swiftness = 20;
+	bool charge = 21;
+	int32 great_stamina = 22;
+	int32 natural_armor = 23;
+	int32 spiked_collar = 24;
+	bool boars_speed = 25;
+	int32 blood_of_the_rhino = 26;
+	int32 pet_barding = 27;
+	int32 culling_the_herd = 28;
+	int32 guard_dog = 29;
+	int32 lionhearted = 30;
+	bool thunderstomp = 31;
+	int32 grace_of_the_mantis = 32;
+	int32 great_resistance = 33;
 	bool last_stand = 34;
 	bool taunt = 35;
-	bool intervene = 36;
-	int32 silverback = 37;
+	bool roar_of_sacrifice = 36;
+	bool intervene = 37;
+	int32 silverback = 38;
+	int32 wild_hunt = 39;
+
+	// Cunning
+	int32 serpent_swiftness = 40;
+	bool dive = 41;
+	int32 great_stamina = 42;
+	int32 natural_armor = 43;
+	bool boars_speed = 44;
+	int32 mobility = 45;
+	int32 owls_focus = 46;
+	int32 spiked_collar = 47;
+	int32 culling_the_herd = 48;
+	int32 lionhearted = 49;
+	bool carrion_feeder = 50;
+	int32 great_resistance = 51;
+	int32 cornered = 52;
+	int32 feeding_frenzy = 53;
+	bool wolverine_bite = 54;
+	bool roar_of_recovery = 55;
+	bool bullheaded = 56;
+	int32 grace_of_the_mantis = 57;
+	int32 wild_hunt = 58;
+	bool roar_of_sacrifice = 59;
 }
 
 message Hunter {
