@@ -130,7 +130,16 @@ export const naturalSpecOrder: Array<SpecProto> = [
 ];
 
 export const naturalClassOrder: Array<Class> = [
+	// DeathKnight,
+	// Druid,
+	// Hunter,
+	// Mage,
+	// Paladin,
+	// Priest,
+	// Rogue,
 	Shaman,
+	// Warlock,
+	// Warrior,
 ];
 
 export const raidSimIcon = '/cata/assets/img/raid_icon.png';

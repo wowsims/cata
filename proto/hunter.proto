@@ -177,93 +177,76 @@ message HunterPetTalents {
 	int32 silverback = 37;
 }
 
-message Hunter {
-	message Rotation {
-		enum RotationType {
-			UnknownType = 0;
-			SingleTarget = 1;
-			Aoe = 3;
-			Custom = 2;
-		}
-		RotationType type = 9;
-
-		enum StingType {
-			NoSting = 0;
-			ScorpidSting = 1;
-			SerpentSting = 2;
-		}
-		StingType sting = 5;
-
-		bool trap_weave = 1;
-
-		// Switch to Aspect of the Viper when mana goes below this percent.
-		double viper_start_mana_percent = 6;
-		// Switch back to Aspect of the Hawk when mana goes above this percent.
-		double viper_stop_mana_percent = 7;
-
-		// Allow use of Explosive Shot Rank 3 during LNL procs.
-		bool allow_explosive_shot_downrank = 10;
-
-		bool multi_dot_serpent_sting = 11;
+message HunterOptions {
+	enum Ammo {
+		AmmoNone = 0;
+		IcebladeArrow = 1;
+		SaroniteRazorheads = 2;
+		TerrorshaftArrow = 3;
+		TimelessArrow = 4;
+		MysteriousArrow = 5;
+		AdamantiteStinger = 6;
+		BlackflightArrow = 7;
 	}
-	
-	message Options {
-		enum Ammo {
-			AmmoNone = 0;
-			IcebladeArrow = 1;
-			SaroniteRazorheads = 2;
-			TerrorshaftArrow = 3;
-			TimelessArrow = 4;
-			MysteriousArrow = 5;
-			AdamantiteStinger = 6;
-			BlackflightArrow = 7;
-		}
-		Ammo ammo = 1;
+	Ammo ammo = 1;
 
-		enum PetType {
-			PetNone = 0;
-			Bat = 1;
-			Bear = 2;
-			BirdOfPrey = 3;
-			Boar = 4;
-			CarrionBird = 5;
-			Cat = 6;
-			Chimaera = 7;
-			CoreHound = 8;
-			Crab = 9;
-			Crocolisk = 10;
-			Devilsaur = 11;
-			Dragonhawk = 12;
-			Gorilla = 13;
-			Hyena = 14;
-			Moth = 15;
-			NetherRay = 16;
-			Raptor = 17;
-			Ravager = 18;
-			Rhino = 19;
-			Scorpid = 20;
-			Serpent = 21;
-			Silithid = 22;
-			Spider = 23;
-			SpiritBeast = 24;
-			SporeBat = 25;
-			Tallstrider = 26;
-			Turtle = 27;
-			WarpStalker = 28;
-			Wasp = 29;
-			WindSerpent = 30;
-			Wolf = 31;
-			Worm = 32;
-		}
-
-		PetType pet_type = 2;
-		HunterPetTalents pet_talents = 3;
-		double pet_uptime = 4;
-
-		double sniper_training_uptime = 7;
-		double time_to_trap_weave_ms = 8;
-
-		bool use_hunters_mark = 5;
+	enum PetType {
+		PetNone = 0;
+		Bat = 1;
+		Bear = 2;
+		BirdOfPrey = 3;
+		Boar = 4;
+		CarrionBird = 5;
+		Cat = 6;
+		Chimaera = 7;
+		CoreHound = 8;
+		Crab = 9;
+		Crocolisk = 10;
+		Devilsaur = 11;
+		Dragonhawk = 12;
+		Gorilla = 13;
+		Hyena = 14;
+		Moth = 15;
+		NetherRay = 16;
+		Raptor = 17;
+		Ravager = 18;
+		Rhino = 19;
+		Scorpid = 20;
+		Serpent = 21;
+		Silithid = 22;
+		Spider = 23;
+		SpiritBeast = 24;
+		SporeBat = 25;
+		Tallstrider = 26;
+		Turtle = 27;
+		WarpStalker = 28;
+		Wasp = 29;
+		WindSerpent = 30;
+		Wolf = 31;
+		Worm = 32;
 	}
-	Options options = 3;
+
+	PetType pet_type = 2;
+	HunterPetTalents pet_talents = 3;
+	double pet_uptime = 4;
+
+	double sniper_training_uptime = 7;
+	double time_to_trap_weave_ms = 8;
+
+	bool use_hunters_mark = 5;
+}
+
+message BeastMasteryHunter {
+	message Rotation {}
+	HunterOptions options = 1;
+}
+
+message MarksmanshipHunter {
+	message Rotation {}
+	HunterOptions options = 1;
+}
+
+message SurvivalHunter {
+	message Rotation {}
+	HunterOptions options = 1;
 }

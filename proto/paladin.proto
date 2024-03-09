@@ -160,9 +160,8 @@ enum PaladinJudgement {
 }
 
 message RetributionPaladin {
-	message Rotation {
-	}
-	
+	message Rotation {}
+
 	message Options {
 		PaladinJudgement judgement = 1;
 		PaladinSeal seal = 2;
@@ -173,8 +172,7 @@ message RetributionPaladin {
 }
 
 message ProtectionPaladin {
-	message Rotation {
-	}
+	message Rotation {}
 
 	message Options {
 		PaladinJudgement judgement = 1;
@@ -186,8 +184,7 @@ message ProtectionPaladin {
 }
 
 message HolyPaladin {
-	message Rotation {
-	}
+	message Rotation {}
 
 	message Options {
 		PaladinJudgement judgement = 1;

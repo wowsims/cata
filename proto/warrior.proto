@@ -144,9 +144,22 @@ enum WarriorShout {
 	WarriorShoutCommanding = 2;
 }
 
-message Warrior {
-	message Rotation {
+message ArmsWarrior {
+	message Rotation {}
+
+	message Options {
+		double starting_rage = 1;
+		bool use_recklessness = 2;
+		bool use_shattering_throw = 4;
+		WarriorShout shout = 3;
+		bool stance_snapshot = 6;
+		bool disable_expertise_gemming = 7;
 	}
+	Options options = 3;
+}
+
+message FuryWarrior {
+	message Rotation {}
 
 	message Options {
 		double starting_rage = 1;
@@ -160,8 +173,7 @@ message Warrior {
 }
 
 message ProtectionWarrior {
-	message Rotation {
-	}
+	message Rotation {}
 
 	message Options {
 		double starting_rage = 1;

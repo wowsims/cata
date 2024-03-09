@@ -135,37 +135,51 @@ enum WarlockMinorGlyph {
 	GlyphOfUnendingBreath = 43389;
 }
 
-message Warlock {
+message WarlockOptions {
+	enum Summon {
+		NoSummon = 0;
+		Imp = 1;
+		Voidwalker = 2;
+		Succubus = 3;
+		Felhunter = 4;
+		Felguard = 5;
+	}
+
+	enum Armor {
+		NoArmor = 0;
+		FelArmor = 1;
+		DemonArmor = 2;
+	}
+
+	enum WeaponImbue {
+		NoWeaponImbue = 0;
+		GrandSpellstone = 1;
+		GrandFirestone = 2;
+	}
+
+	Armor armor = 1;
+	Summon summon = 2;
+	WeaponImbue weaponImbue = 3;
+	bool detonate_seed = 5;
+}
+
+message AfflictionWarlock {
 	message Rotation {
 	}
-	
-	message Options {
-		enum Summon {
-			NoSummon = 0;
-			Imp = 1;
-			Voidwalker = 2;
-			Succubus = 3;
-			Felhunter = 4;
-			Felguard = 5;
-		}
 
-		enum Armor {
-			NoArmor = 0;
-			FelArmor = 1;
-			DemonArmor = 2;
-		}
+	Options options = 3;
+}
 
-		enum WeaponImbue {
-			NoWeaponImbue = 0;
-			GrandSpellstone = 1;
-			GrandFirestone = 2;
-		}
-
-		Armor armor = 1;
-		Summon summon = 2;
-		WeaponImbue weaponImbue = 3;
-		bool _oldDPBehaviourOption = 4;
-		bool detonate_seed = 5;
+message DemonologyWarlock {
+	message Rotation {
 	}
+
+	Options options = 3;
+}
+
+message DestructionWarlock {
+	message Rotation {
+	}
+
 	Options options = 3;
 }

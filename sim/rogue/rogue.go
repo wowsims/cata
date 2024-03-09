@@ -8,23 +8,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func RegisterRogue() {
-	core.RegisterAgentFactory(
-		proto.Player_Rogue{},
-		proto.Spec_SpecRogue,
-		func(character *core.Character, options *proto.Player) core.Agent {
-			return NewRogue(character, options)
-		},
-		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_Rogue)
-			if !ok {
-				panic("Invalid spec value for Rogue!")
-			}
-			player.Spec = playerSpec
-		},
-	)
-}
-
 const (
 	SpellFlagBuilder     = core.SpellFlagAgentReserved2
 	SpellFlagFinisher    = core.SpellFlagAgentReserved3

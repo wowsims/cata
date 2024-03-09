@@ -145,8 +145,7 @@ enum DruidMinorGlyph {
 }
 
 message BalanceDruid {
-  message Rotation {
-  }
+  message Rotation {}
 
   message Options {
     UnitReference innervate_target = 1;
@@ -221,8 +220,7 @@ message FeralTankDruid {
 }
 
 message RestorationDruid {
-  message Rotation {
-  }
+  message Rotation {}
 
   message Options {
     UnitReference innervate_target = 1;
