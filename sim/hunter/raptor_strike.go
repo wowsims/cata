@@ -18,7 +18,9 @@ func (hunter *Hunter) registerRaptorStrikeSpell() {
 			Multiplier: 1 - 0.2*float64(hunter.Talents.Resourcefulness),
 		},
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{},
+			DefaultCast: core.Cast{
+				GCD: 1,
+			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 6,

@@ -47,6 +47,9 @@ func (hunter *Hunter) registerKillCommandCD() {
 			BaseCost: 0.03,
 		},
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: 1,
+			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
 				Duration: time.Minute - time.Second*10*time.Duration(hunter.Talents.CatlikeReflexes),

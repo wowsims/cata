@@ -41,7 +41,7 @@ func NewWowheadSpellTooltipManager(filePath string) *WowheadTooltipManager {
 	}
 }
 
-type Stats [41]float64
+type Stats [36]float64
 
 type ItemResponse interface {
 	GetName() string
@@ -160,7 +160,7 @@ var spiritRegex = regexp.MustCompile(`<!--stat6-->\+([0-9]+) Spirit`)
 var staminaRegex = regexp.MustCompile(`<!--stat7-->\+([0-9]+) Stamina`)
 var spellPowerRegex = regexp.MustCompile(`Increases spell power by ([0-9]+)\.`)
 var spellPowerRegex2 = regexp.MustCompile(`Increases spell power by <!--rtg45-->([0-9]+)\.`)
-var masteryRegex = regexp.MustCompile(`<!--rtg49-->([0-9]+)\.`)
+var masteryRegex = regexp.MustCompile(`<!--rtg49-->\+([0-9]+) Mastery`)
 
 /*
 // Not sure these exist anymore?
