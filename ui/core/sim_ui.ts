@@ -1,17 +1,15 @@
+import { BaseModal } from './components/base_modal.js';
 import { Component } from './components/component.js';
 import { NumberPicker } from './components/number_picker.js';
 import { ResultsViewer } from './components/results_viewer.js';
-import { SimTitleDropdown } from './components/sim_title_dropdown.js';
 import { SimHeader } from './components/sim_header';
-import { Spec } from './proto/common.js';
-import { ActionId } from './proto_utils/action_id.js';
-import { LaunchStatus } from './launched_sims.js';
-
-import { Sim, SimError } from './sim.js';
-import { EventID, TypedEvent } from './typed_event.js';
-
 import { SimTab } from './components/sim_tab.js';
-import { BaseModal } from './components/base_modal.js';
+import { SimTitleDropdown } from './components/sim_title_dropdown.js';
+import { LaunchStatus, SimStatus } from './launched_sims.js';
+import { ActionId } from './proto_utils/action_id.js';
+import { Sim, SimError } from './sim.js';
+import { Spec } from './spec.js';
+import { EventID, TypedEvent } from './typed_event.js';
 
 const URLMAXLEN = 2048;
 const globalKnownIssues: Array<string> = [
@@ -30,7 +28,7 @@ export interface SimUIConfig {
 	cssScheme: string;
 	// The spec, if an individual sim, or null if the raid sim.
 	spec: Spec | null,
-	launchStatus: LaunchStatus,
+	simStatus: SimStatus,
 	knownIssues?: Array<string>,
 	noticeText?: string,
 }
@@ -219,11 +217,11 @@ export abstract class SimUI extends Component {
 
 	private addKnownIssues(config: SimUIConfig) {
 		let statusStr = '';
-		if (config.launchStatus == LaunchStatus.Unlaunched) {
+		if (config.simStatus.status == LaunchStatus.Unlaunched) {
 			statusStr = 'This sim is a WORK IN PROGRESS. It is not fully developed and should not be used for general purposes.';
-		} else if (config.launchStatus == LaunchStatus.Alpha) {
+		} else if (config.simStatus.status == LaunchStatus.Alpha) {
 			statusStr = 'This sim is in ALPHA. Bugs are expected; please let us know if you find one!';
-		} else if (config.launchStatus == LaunchStatus.Beta) {
+		} else if (config.simStatus.status == LaunchStatus.Beta) {
 			statusStr = 'This sim is in BETA. There may still be a few bugs; please let us know if you find one!';
 		}
 		if (statusStr) {
@@ -252,7 +250,7 @@ export abstract class SimUI extends Component {
 		return this.rootElem.classList.contains('individual-sim-ui');
 	}
 
-	async runSim(onProgress: Function) {
+	async runSim(onProgress: () => void) {
 		this.resultsViewer.setPending();
 		try {
 			await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
@@ -292,7 +290,7 @@ export abstract class SimUI extends Component {
 			const link = this.toLink();
 			const rngSeed = this.sim.getLastUsedRngSeed();
 			fetch('https://api.github.com/search/issues?q=is:issue+is:open+repo:wowsims/cata+' + hash).then(resp => {
-				resp.json().then((issues) => {
+				resp.json().then(issues => {
 					if (issues.total_count > 0) {
 						window.open(issues.items[0].html_url, '_blank');
 					} else {
@@ -327,7 +325,7 @@ export abstract class SimUI extends Component {
 	hashCode(str: string): number {
 		let hash = 0;
 		for (let i = 0, len = str.length; i < len; i++) {
-			let chr = str.charCodeAt(i);
+			const chr = str.charCodeAt(i);
 			hash = (hash << 5) - hash + chr;
 			hash |= 0; // Convert to 32bit integer
 		}
@@ -347,7 +345,7 @@ class CrashModal extends BaseModal {
 				<textarea class="sim-crash-report-text form-control"></textarea>
 			</div>
 		`;
-		let text = document.createTextNode(link);
+		const text = document.createTextNode(link);
 		this.body.querySelector('textarea')?.appendChild(text);
 	}
 }

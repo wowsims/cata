@@ -18,6 +18,13 @@ export abstract class Spec {
 	abstract getIcon(size: IconSize): string;
 }
 
+// TODO: Cata - Update list / maybe use Spec objects
+export const naturalSpecOrder: Array<Spec> = [
+	ElementalShaman,
+	EnhancementShaman,
+	RestorationShaman,
+];
+
 const protoToSpec: Record<SpecProto, Spec | undefined> = {
 	[SpecProto.SpecUnknown]: undefined,
 

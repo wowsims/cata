@@ -141,7 +141,7 @@ var ClassBaseStats = map[proto.Class]stats.Stats{
 		stats.Spirit:    181,
 		stats.Stamina:   67,
 	},
-	proto.Class_ClassDeathknight: {
+	proto.Class_ClassDeathKnight: {
 		stats.Health:      8121,
 		stats.Agility:     112,
 		stats.Strength:    175,
@@ -195,16 +195,16 @@ func init() {
 	AddBaseStatsCombo(proto.Race_RaceTauren, proto.Class_ClassDruid)
 	AddBaseStatsCombo(proto.Race_RaceNightElf, proto.Class_ClassDruid)
 
-	AddBaseStatsCombo(proto.Race_RaceDraenei, proto.Class_ClassDeathknight)
-	AddBaseStatsCombo(proto.Race_RaceDwarf, proto.Class_ClassDeathknight)
-	AddBaseStatsCombo(proto.Race_RaceGnome, proto.Class_ClassDeathknight)
-	AddBaseStatsCombo(proto.Race_RaceHuman, proto.Class_ClassDeathknight)
-	AddBaseStatsCombo(proto.Race_RaceNightElf, proto.Class_ClassDeathknight)
-	AddBaseStatsCombo(proto.Race_RaceOrc, proto.Class_ClassDeathknight)
-	AddBaseStatsCombo(proto.Race_RaceTauren, proto.Class_ClassDeathknight)
-	AddBaseStatsCombo(proto.Race_RaceTroll, proto.Class_ClassDeathknight)
-	AddBaseStatsCombo(proto.Race_RaceUndead, proto.Class_ClassDeathknight)
-	AddBaseStatsCombo(proto.Race_RaceBloodElf, proto.Class_ClassDeathknight)
+	AddBaseStatsCombo(proto.Race_RaceDraenei, proto.Class_ClassDeathKnight)
+	AddBaseStatsCombo(proto.Race_RaceDwarf, proto.Class_ClassDeathKnight)
+	AddBaseStatsCombo(proto.Race_RaceGnome, proto.Class_ClassDeathKnight)
+	AddBaseStatsCombo(proto.Race_RaceHuman, proto.Class_ClassDeathKnight)
+	AddBaseStatsCombo(proto.Race_RaceNightElf, proto.Class_ClassDeathKnight)
+	AddBaseStatsCombo(proto.Race_RaceOrc, proto.Class_ClassDeathKnight)
+	AddBaseStatsCombo(proto.Race_RaceTauren, proto.Class_ClassDeathKnight)
+	AddBaseStatsCombo(proto.Race_RaceTroll, proto.Class_ClassDeathKnight)
+	AddBaseStatsCombo(proto.Race_RaceUndead, proto.Class_ClassDeathKnight)
+	AddBaseStatsCombo(proto.Race_RaceBloodElf, proto.Class_ClassDeathKnight)
 
 	AddBaseStatsCombo(proto.Race_RaceBloodElf, proto.Class_ClassHunter)
 	AddBaseStatsCombo(proto.Race_RaceDraenei, proto.Class_ClassHunter)

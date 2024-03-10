@@ -1,14 +1,14 @@
-import { IconSize } from "../class";
-import { Shaman } from "../classes/shaman";
-import { Spec as SpecProto } from '../proto/common.js';
-import { getSpecSiteUrl } from "../proto_utils/utils";
-import { Spec } from "../spec";
+import { IconSize } from '../class';
+import { Shaman } from '../classes';
+import { Spec as SpecProto } from '../proto/common';
+import { getSpecSiteUrl } from '../proto_utils/utils';
+import { Spec } from '../spec';
 
 export class ElementalShaman extends Spec {
 	static protoID = SpecProto.SpecElementalShaman;
 	static class = Shaman;
 	static friendlyName = 'Elemental';
-	static simLink = getSpecSiteUrl('elemental_shaman');
+	static simLink = getSpecSiteUrl('shaman', 'elemental');
 
 	static isTankSpec = false;
 	static isHealingSpec = false;
@@ -34,7 +34,7 @@ export class ElementalShaman extends Spec {
 	}
 
 	getIcon = (size: IconSize): string => {
-		return Shaman.getIcon(size)
+		return ElementalShaman.getIcon(size)
 	}
 }
 
@@ -42,7 +42,7 @@ export class EnhancementShaman extends Spec {
 	static protoID = SpecProto.SpecEnhancementShaman;
 	static class = Shaman;
 	static friendlyName = 'Enhancement';
-	static simLink = getSpecSiteUrl('enhancement_shaman');
+	static simLink = getSpecSiteUrl('shaman', 'enhancement');
 
 	static isTankSpec = false;
 	static isHealingSpec = false;
@@ -68,7 +68,7 @@ export class EnhancementShaman extends Spec {
 	}
 
 	getIcon = (size: IconSize): string => {
-		return Shaman.getIcon(size)
+		return EnhancementShaman.getIcon(size)
 	}
 }
 
@@ -76,7 +76,7 @@ export class RestorationShaman extends Spec {
 	static protoID = SpecProto.SpecRestorationShaman;
 	static class = Shaman;
 	static friendlyName = 'Restoration';
-	static simLink = getSpecSiteUrl('restoration_shaman');
+	static simLink = getSpecSiteUrl('shaman', 'restoration');
 
 	static isTankSpec = false;
 	static isHealingSpec = true;
@@ -102,6 +102,6 @@ export class RestorationShaman extends Spec {
 	}
 
 	getIcon = (size: IconSize): string => {
-		return Shaman.getIcon(size)
+		return RestorationShaman.getIcon(size)
 	}
 }

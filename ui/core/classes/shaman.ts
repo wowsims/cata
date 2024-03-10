@@ -1,7 +1,7 @@
-import { Class, EligibleWeaponType, IconSize } from "../class";
-import { ArmorType, Class as ClassProto, Race, RangedWeaponType, WeaponType} from '../proto/common.js';
-import { Spec } from "../spec";
-import { ElementalShaman, EnhancementShaman, RestorationShaman } from "../specs/shaman";
+import { Class, EligibleWeaponType, IconSize } from '../class';
+import { ArmorType, Class as ClassProto, Race, RangedWeaponType, WeaponType} from '../proto/common';
+import { Spec } from '../spec';
+import { ElementalShaman, EnhancementShaman, RestorationShaman } from '../specs';
 
 export class Shaman extends Class {
 	static protoID = ClassProto.ClassShaman;
@@ -13,12 +13,14 @@ export class Shaman extends Class {
 		[RestorationShaman.name]: RestorationShaman,
 	};
 	static races: Race[] = [
-		Race.RaceDraenei,
+		// [A]
 		Race.RaceDwarf,
-		Race.RaceGoblin,
+		Race.RaceDraenei,
+		// [H]
 		Race.RaceOrc,
 		Race.RaceTauren,
 		Race.RaceTroll,
+		Race.RaceGoblin,
 	];
 	static armorTypes: ArmorType[] = [
 		ArmorType.ArmorTypeMail,

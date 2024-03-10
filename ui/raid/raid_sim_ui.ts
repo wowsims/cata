@@ -1,28 +1,23 @@
 import { EmbeddedDetailedResults } from "../core/components/detailed_results.js";
-import { LogRunner } from "../core/components/detailed_results/log_runner.js";
 import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from "../core/components/raid_sim_action.js";
-
+import { raidSimStatus } from '../core/launched_sims.js';
 import { Player } from "../core/player.js";
 import { Raid as RaidProto } from "../core/proto/api.js";
-import { Class, Encounter as EncounterProto, RaidBuffs, TristateEffect } from "../core/proto/common.js";
+import { Class, Encounter as EncounterProto, TristateEffect } from "../core/proto/common.js";
 import { Blessings } from "../core/proto/paladin.js";
-import { BlessingsAssignments, RaidSimSettings, SavedEncounter } from "../core/proto/ui.js";
+import { BlessingsAssignments, RaidSimSettings } from "../core/proto/ui.js";
 import { playerToSpec } from "../core/proto_utils/utils.js";
 import { Sim } from "../core/sim.js";
 import { SimUI } from "../core/sim_ui.js";
-import { raidSimStatus } from '../core/launched_sims.js';
 import { EventID, TypedEvent } from "../core/typed_event.js";
-
+import { BlessingsPicker } from "./blessings_picker.js";
+import * as ImportExport from "./import_export.js";
+import { implementedSpecs } from "./presets.js";
+import { RaidPicker } from "./raid_picker.js";
 import { RaidTab } from "./raid_tab.js";
 import { SettingsTab } from "./settings_tab.js";
 
-import { BlessingsPicker } from "./blessings_picker.js";
-import { implementedSpecs } from "./presets.js";
-import { RaidPicker } from "./raid_picker.js";
-
-import * as ImportExport from "./import_export.js";
-
-declare var pako: any;
+declare let pako: any;
 
 export interface RaidSimConfig {
 	knownIssues?: Array<string>,
@@ -49,7 +44,7 @@ export class RaidSimUI extends SimUI {
 			cssClass: 'raid-sim-ui',
 			cssScheme: 'raid',
 			spec: null,
-			launchStatus: raidSimStatus,
+			simStatus: raidSimStatus,
 			knownIssues: (config.knownIssues || []).concat(extraKnownIssues),
 		});
 
@@ -93,7 +88,7 @@ export class RaidSimUI extends SimUI {
 			}
 
 			// This needs to go last so it doesn't re-store things as they are initialized.
-			this.changeEmitter.on(eventID => {
+			this.changeEmitter.on(_eventID => {
 				const jsonStr = RaidSimSettings.toJsonString(this.toProto());
 				window.localStorage.setItem(this.getSettingsStorageKey(), jsonStr);
 			});
@@ -106,10 +101,10 @@ export class RaidSimUI extends SimUI {
 	}
 
 	private addTopbarComponents() {
-		this.simHeader.addImportLink('JSON', (parent) => new ImportExport.RaidJsonImporter(this.rootElem, this));
-		this.simHeader.addImportLink('WCL', (parent) => new ImportExport.RaidWCLImporter(this.rootElem, this));
+		this.simHeader.addImportLink('JSON', _parent => new ImportExport.RaidJsonImporter(this.rootElem, this));
+		this.simHeader.addImportLink('WCL', _parent => new ImportExport.RaidWCLImporter(this.rootElem, this));
 
-		this.simHeader.addExportLink('JSON', (parent) => new ImportExport.RaidJsonExporter(this.rootElem, this));
+		this.simHeader.addExportLink('JSON', _parent => new ImportExport.RaidJsonExporter(this.rootElem, this));
 	}
 
 	private addRaidTab() {
@@ -126,7 +121,7 @@ export class RaidSimUI extends SimUI {
 			</div>
 		`);
 
-		const detailedResults = new EmbeddedDetailedResults(this.rootElem.getElementsByClassName('detailed-results')[0] as HTMLElement, this, this.raidSimResultsManager!);
+		new EmbeddedDetailedResults(this.rootElem.getElementsByClassName('detailed-results')[0] as HTMLElement, this, this.raidSimResultsManager!);
 	}
 
 	private recomputeSettingsLayout() {

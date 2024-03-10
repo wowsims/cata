@@ -10,7 +10,7 @@ import {
 	Stat
 } from '../proto/common';
 import { IndividualSimSettings } from '../proto/ui';
-import { classNames, raceNames } from '../proto_utils/names';
+import { raceNames } from '../proto_utils/names';
 import { UnitStat } from '../proto_utils/stats';
 import { SimSettingCategories } from '../sim';
 import { SimUI } from '../sim_ui';
@@ -227,8 +227,8 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 	getData(): string {
 		const player = this.simUI.player;
 
-		const classStr = classNames.get(player.getClass())!.replaceAll(' ', '-').toLowerCase();
-		const raceStr = raceNames.get(player.getRace())!.replaceAll(' ', '-').toLowerCase();
+		const classStr = player.getClass().friendlyName.replaceAll(/\s/, '-').toLowerCase();
+		const raceStr = raceNames.get(player.getRace())!.replaceAll(/\s/, '-').toLowerCase();
 		const url = `https://www.wowhead.com/cata/gear-planner/${classStr}/${raceStr}/`;
 
 		// See comments on the importer for how the binary formatting is structured.
@@ -355,7 +355,7 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 				}
 			});
 
-		return `https://eightyupgrades.com/ep/import?name=${encodeURIComponent(`${specNames[player.spec]} WoWSims Weights`)}` +
+		return `https://eightyupgrades.com/ep/import?name=${encodeURIComponent(`${player.spec.friendlyName} WoWSims Weights`)}` +
 			Object.keys(namesToWeights)
 				.map(statName => `&${statName}=${namesToWeights[statName].toFixed(3)}`).join('');
 	}
@@ -448,7 +448,7 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 				}
 			});
 
-		return `( Pawn: v1: "${specNames[player.spec]} WoWSims Weights": Class=${classNames.get(player.getClass())},` +
+		return `( Pawn: v1: "${player.spec.friendlyName} WoWSims Weights": Class=${player.getClass().friendlyName},` +
 			Object.keys(namesToWeights)
 				.map(statName => `${statName}=${namesToWeights[statName].toFixed(3)}`).join(',') +
 			' )';

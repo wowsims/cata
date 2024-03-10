@@ -35,7 +35,7 @@ import {
 	PseudoStat,
 	Race,
 	RaidBuffs,
-	Spec,
+	Spec as SpecProto,
 	Stat,
 } from './proto/common';
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
@@ -45,6 +45,7 @@ import { Stats } from './proto_utils/stats';
 import { getTalentPoints, SpecOptions } from './proto_utils/utils';
 import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
+import { getLocalStorageKey } from './spec';
 import { EventID, TypedEvent } from './typed_event';
 
 const SAVED_GEAR_STORAGE_KEY = '__savedGear__';
@@ -70,8 +71,8 @@ export interface OtherDefaults {
 	channelClipDelay?: number,
 }
 
-export interface RaidSimPreset<SpecType extends Spec> {
-	spec: Spec,
+export interface RaidSimPreset<SpecType extends SpecProto> {
+	spec: SpecProto,
 	talents: SavedTalents,
 	specOptions: SpecOptions<SpecType>,
 	consumes: Consumes,
@@ -85,7 +86,7 @@ export interface RaidSimPreset<SpecType extends Spec> {
 	iconUrl: string,
 }
 
-export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConfig<SpecType> {
+export interface IndividualSimUIConfig<SpecType extends SpecProto> extends PlayerConfig<SpecType> {
 	// Additional css class to add to the root element.
 	cssClass: string,
 	// Used to generate schemed components. E.g. 'shaman', 'druid', 'raid'
@@ -142,12 +143,12 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	raidSimPresets: Array<RaidSimPreset<SpecType>>,
 }
 
-export function registerSpecConfig<SpecType extends Spec>(spec: SpecType, config: IndividualSimUIConfig<SpecType>): IndividualSimUIConfig<SpecType> {
+export function registerSpecConfig<SpecType extends SpecProto>(spec: SpecType, config: IndividualSimUIConfig<SpecType>): IndividualSimUIConfig<SpecType> {
 	registerPlayerConfig(spec, config);
 	return config;
 }
 
-export const itemSwapEnabledSpecs: Array<Spec> = [];
+export const itemSwapEnabledSpecs: Array<SpecProto> = [];
 
 export interface Settings {
 	raidBuffs: RaidBuffs,
@@ -159,7 +160,7 @@ export interface Settings {
 }
 
 // Extended shared UI for all individual player sims.
-export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
+export abstract class IndividualSimUI<SpecType extends SpecProto> extends SimUI {
 	readonly player: Player<SpecType>;
 	readonly individualConfig: IndividualSimUIConfig<SpecType>;
 
@@ -179,7 +180,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			cssScheme: config.cssScheme,
 			spec: player.spec,
 			knownIssues: config.knownIssues,
-			launchStatus: simLaunchStatuses[player.spec],
+			simStatus: simLaunchStatuses[player.spec.protoID],
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;
@@ -188,8 +189,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.prevEpIterations = 0;
 		this.prevEpSimResult = null;
 
-		if ((config.itemSwapSlots || []).length > 0 && !itemSwapEnabledSpecs.includes(player.spec)) {
-			itemSwapEnabledSpecs.push(player.spec);
+		if ((config.itemSwapSlots || []).length > 0 && !itemSwapEnabledSpecs.includes(player.spec.protoID)) {
+			itemSwapEnabledSpecs.push(player.spec.protoID);
 		}
 
 		this.addWarning({

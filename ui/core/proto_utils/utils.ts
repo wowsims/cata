@@ -81,7 +81,6 @@ import {
 } from '../proto/ui.js';
 import { Warlock, Warlock_Options as WarlockOptions,Warlock_Rotation as WarlockRotation, WarlockTalents } from '../proto/warlock.js';
 import { ProtectionWarrior, ProtectionWarrior_Options as ProtectionWarriorOptions,ProtectionWarrior_Rotation as ProtectionWarriorRotation,Warrior, Warrior_Options as WarriorOptions,Warrior_Rotation as WarriorRotation, WarriorTalents  } from '../proto/warrior.js';
-import * as Gems from '../proto_utils/gems.js';
 import { Spec, specFromProto } from '../spec.js';
 import { getEnumValues , intersection , maxIndex , sum } from '../utils.js';
 import { Stats } from './stats.js';
@@ -113,35 +112,6 @@ export type ClassSpecs<T extends ClassProto> =
 
 export const NUM_SPECS = getEnumValues(Spec).length;
 
-// The order in which specs should be presented, when it matters.
-// TODO: Cata - Update list / maybe use Spec objects
-export const naturalSpecOrder: Array<SpecProto> = [
-	SpecProto.SpecBalanceDruid,
-	SpecProto.SpecFeralDruid,
-	SpecProto.SpecRestorationDruid,
-	SpecProto.SpecHolyPaladin,
-	SpecProto.SpecProtectionPaladin,
-	SpecProto.SpecRetributionPaladin,
-	SpecProto.SpecShadowPriest,
-	SpecProto.SpecElementalShaman,
-	SpecProto.SpecEnhancementShaman,
-	SpecProto.SpecRestorationShaman,
-	SpecProto.SpecProtectionWarrior,
-];
-
-export const naturalClassOrder: Array<Class> = [
-	// DeathKnight,
-	// Druid,
-	// Hunter,
-	// Mage,
-	// Paladin,
-	// Priest,
-	// Rogue,
-	Shaman,
-	// Warlock,
-	// Warrior,
-];
-
 export const raidSimIcon = '/cata/assets/img/raid_icon.png';
 export const raidSimLabel = 'Full Raid Sim';
 
@@ -171,9 +141,9 @@ enum IconSizes {
 }
 
 // Gets the URL for the individual sim corresponding to the given spec.
-const specSiteUrlTemplate = new URL(`${window.location.protocol}//${window.location.host}/${REPO_NAME}/SPEC/`).toString();
-export function getSpecSiteUrl(specString: string): string {
-	return specSiteUrlTemplate.replace('SPEC', specString);
+const specSiteUrlTemplate = new URL(`${window.location.protocol}//${window.location.host}/${REPO_NAME}/CLASS/SPEC/`).toString();
+export function getSpecSiteUrl(classString: string, specString: string): string {
+	return specSiteUrlTemplate.replace('CLASS', classString).replace('SPEC', specString);
 }
 export const raidSimSiteUrl = new URL(`${window.location.protocol}//${window.location.host}/${REPO_NAME}/raid/`).toString();
 

@@ -1,4 +1,12 @@
-export const CURRENT_PHASE = 5;
+export enum Phase {
+	Phase1 = 1,
+	Phase2,
+	Phase3,
+	Phase4,
+	Phase5,
+  };
+
+export const CURRENT_PHASE = Phase.Phase1;
 
 // Github pages serves our site under the /cata directory (because the repo name is cata)
 export const REPO_NAME = 'cata';

@@ -23,12 +23,8 @@ import {
 	APLActionWaitUntil,
 	APLValue,
 } from '../../proto/apl.js';
-import {
-	Class,
-	Spec,
-} from '../../proto/common.js';
+import { Spec } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
-import { isHealingSpec } from '../../proto_utils/utils.js';
 import { EventID } from '../../typed_event.js';
 import { TextDropdownPicker } from '../dropdown_picker.js';
 import { Input, InputConfig } from '../input.js';
@@ -62,7 +58,7 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 		this.conditionPicker = new AplValues.APLValuePicker(this.rootElem, this.modObject, {
 			label: 'If:',
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
-			getValue: (player: Player<any>) => this.getSourceValue()?.condition,
+			getValue: (_player: Player<any>) => this.getSourceValue()?.condition,
 			setValue: (eventID: EventID, player: Player<any>, newValue: APLValue | undefined) => {
 				const srcVal = this.getSourceValue();
 				if (srcVal) {
@@ -100,7 +96,7 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 				}),
 			equals: (a, b) => a == b,
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
-			getValue: (player: Player<any>) => this.getSourceValue()?.action.oneofKind,
+			getValue: (_player: Player<any>) => this.getSourceValue()?.action.oneofKind,
 			setValue: (eventID: EventID, player: Player<any>, newKind: APLActionKind) => {
 				const sourceValue = this.getSourceValue();
 				const oldKind = sourceValue?.action.oneofKind;
@@ -555,7 +551,7 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		label: 'Item Swap',
 		submenu: ['Misc'],
 		shortDescription: 'Swaps items, using the swap set specified in Settings.',
-		includeIf: (player: Player<any>, isPrepull: boolean) => itemSwapEnabledSpecs.includes(player.spec),
+		includeIf: (player: Player<any>, _isPrepull: boolean) => itemSwapEnabledSpecs.includes(player.spec.protoID),
 		newValue: () => APLActionItemSwap.create(),
 		fields: [
 			itemSwapSetFieldConfig('swapSet'),
@@ -566,7 +562,7 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		label: 'Custom Rotation',
 		//submenu: ['Misc'],
 		shortDescription: 'INTERNAL ONLY',
-		includeIf: (player: Player<any>, isPrepull: boolean) => false, // Never show this, because its internal only.
+		includeIf: (_player: Player<any>, _isPrepull: boolean) => false, // Never show this, because its internal only.
 		newValue: () => APLActionCustomRotation.create(),
 		fields: [
 		],
@@ -577,7 +573,7 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		label: 'Optimal Rotation Action',
 		submenu: ['Feral Druid'],
 		shortDescription: 'Executes optimized Feral DPS rotation using hardcoded legacy algorithm.',
-		includeIf: (player: Player<any>, isPrepull: boolean) => player.spec == Spec.SpecFeralDruid,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec.protoID == Spec.SpecFeralDruid,
 		newValue: () => APLActionCatOptimalRotationAction.create({
 			rotationType: FeralDruid_Rotation_AplType.SingleTarget,
 			manualParams: true,

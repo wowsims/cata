@@ -1,11 +1,11 @@
+import { JsonObject } from '@protobuf-ts/runtime';
+
 import { IndividualSimUI } from '../individual_sim_ui';
-import { SimUI } from '../sim_ui';
-import { TypedEvent } from '../typed_event';
 import {
 	Class,
 	EquipmentSpec,
-	ItemSlot,
 	Glyphs,
+	ItemSlot,
 	ItemSpec,
 	Profession,
 	Race,
@@ -13,15 +13,16 @@ import {
 } from '../proto/common';
 import { IndividualSimSettings } from '../proto/ui';
 import { Database } from '../proto_utils/database';
-import { classNames, nameToClass, nameToRace, nameToProfession } from '../proto_utils/names';
+import { classNames, nameToClass, nameToProfession,nameToRace } from '../proto_utils/names';
+import { SimSettingCategories } from '../sim';
+import { SimUI } from '../sim_ui';
 import { classGlyphsConfig, talentSpellIdsToTalentString } from '../talents/factory';
 import { GlyphConfig } from '../talents/glyphs_picker';
-import { BaseModal } from './base_modal';
+import { TypedEvent } from '../typed_event';
 import { buf2hex, getEnumValues } from '../utils';
-import { JsonObject } from '@protobuf-ts/runtime';
-import { SimSettingCategories } from '../sim';
+import { BaseModal } from './base_modal';
 
-declare var pako: any;
+declare let pako: any;
 
 export abstract class Importer extends BaseModal {
 	protected readonly textElem: HTMLTextAreaElement;
@@ -79,7 +80,7 @@ export abstract class Importer extends BaseModal {
 	protected async finishIndividualImport<SpecType extends Spec>(simUI: IndividualSimUI<SpecType>, charClass: Class, race: Race, equipmentSpec: EquipmentSpec, talentsStr: string, glyphs: Glyphs | null, professions: Array<Profession>): Promise<void> {
 		const playerClass = simUI.player.getClass();
 		if (charClass != playerClass) {
-			throw new Error(`Wrong Class! Expected ${classNames.get(playerClass)} but found ${classNames.get(charClass)}!`);
+			throw new Error(`Wrong Class! Expected ${playerClass.friendlyName} but found ${classNames.get(charClass)}!`);
 		}
 
 		await Database.loadLeftoversIfNecessary(equipmentSpec);
@@ -250,9 +251,9 @@ export class Individual80UImporter<SpecType extends Spec> extends Importer {
 			talentsStr = talentSpellIdsToTalentString(charClass, talentIds);
 		}
 
-		let equipmentSpec = EquipmentSpec.create();
+		const equipmentSpec = EquipmentSpec.create();
 		(importJson.items as Array<any>).forEach(itemJson => {
-			let itemSpec = ItemSpec.create();
+			const itemSpec = ItemSpec.create();
 			itemSpec.id = itemJson.id;
 			if (itemJson.enchant?.id) {
 				itemSpec.enchant = itemJson.enchant.id;
@@ -529,7 +530,7 @@ function glyphNameToID(glyphName: string, glyphsConfig: Record<number, GlyphConf
 		return 0;
 	}
 
-	for (let glyphIDStr in glyphsConfig) {
+	for (const glyphIDStr in glyphsConfig) {
 		if (glyphsConfig[glyphIDStr].name == glyphName) {
 			return parseInt(glyphIDStr);
 		}

@@ -80,7 +80,7 @@ enum Class {
 	ClassShaman = 7;
 	ClassWarlock = 8;
 	ClassWarrior = 9;
-	ClassDeathknight = 10;
+	ClassDeathKnight = 10;
 }
 
 enum Profession {
@@ -141,7 +141,7 @@ enum Stat {
 	StatFrostRune = 38; // Placeholder: not used yet.
 	StatUnholyRune = 39; // Placeholder: not used yet.
 	StatDeathRune = 40; // Placeholder: not used yet.
-	
+
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 }

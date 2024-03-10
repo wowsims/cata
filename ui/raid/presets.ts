@@ -1,18 +1,16 @@
+import { naturalSpecOrder } from 'ui/core/spec.js';
+
 import { IndividualSimUI, IndividualSimUIConfig, RaidSimPreset } from '../core/individual_sim_ui.js';
 import { getSpecConfig,Player } from '../core/player.js';
 import {
 	Spec
 } from '../core/proto/common.js';
-import {
-	naturalSpecOrder,
-} from '../core/proto_utils/utils.js';
 import { TankDeathknightSimUI } from '../death_knight/blood/sim.js';
 import { DeathknightSimUI } from '../death_knight/sim.js';
 import { FeralTankDruidSimUI } from '../druid/_feral_tank/sim.js';
 import { BalanceDruidSimUI } from '../druid/balance/sim.js';
 import { FeralDruidSimUI } from '../druid/feral/sim.js';
 import { RestorationDruidSimUI } from '../druid/restoration_druid/sim.js';
-import { HealingPriestSimUI } from '../healing_priest/sim.js';
 import { HunterSimUI } from '../hunter/sim.js';
 import { MageSimUI } from '../mage/sim.js';
 import { HolyPaladinSimUI } from '../paladin/holy/sim.js';
@@ -23,7 +21,6 @@ import { RogueSimUI } from '../rogue/sim.js';
 import { ElementalShamanSimUI } from '../shaman/elemental/sim.js';
 import { EnhancementShamanSimUI } from '../shaman/enhancement/sim.js';
 import { RestorationShamanSimUI } from '../shaman/restoration/sim.js';
-import { SmitePriestSimUI } from '../smite_priest/sim.js';
 import { WarlockSimUI } from '../warlock/sim.js';
 import { ProtectionWarriorSimUI } from '../warrior/protection/sim.js';
 import { WarriorSimUI } from '../warrior/sim.js';
@@ -44,16 +41,14 @@ export const specSimFactories: Record<Spec, (parentElem: HTMLElement, player: Pl
 	[Spec.SpecHolyPaladin]: (parentElem: HTMLElement, player: Player<any>) => new HolyPaladinSimUI(parentElem, player),
 	[Spec.SpecProtectionPaladin]: (parentElem: HTMLElement, player: Player<any>) => new ProtectionPaladinSimUI(parentElem, player),
 	[Spec.SpecRetributionPaladin]: (parentElem: HTMLElement, player: Player<any>) => new RetributionPaladinSimUI(parentElem, player),
-	[Spec.SpecHealingPriest]: (parentElem: HTMLElement, player: Player<any>) => new HealingPriestSimUI(parentElem, player),
 	[Spec.SpecShadowPriest]: (parentElem: HTMLElement, player: Player<any>) => new ShadowPriestSimUI(parentElem, player),
-	[Spec.SpecSmitePriest]: (parentElem: HTMLElement, player: Player<any>) => new SmitePriestSimUI(parentElem, player),
 	[Spec.SpecWarrior]: (parentElem: HTMLElement, player: Player<any>) => new WarriorSimUI(parentElem, player),
 	[Spec.SpecProtectionWarrior]: (parentElem: HTMLElement, player: Player<any>) => new ProtectionWarriorSimUI(parentElem, player),
 	[Spec.SpecWarlock]: (parentElem: HTMLElement, player: Player<any>) => new WarlockSimUI(parentElem, player),
 };
 
 export const playerPresets: Array<RaidSimPreset<any>> = naturalSpecOrder
-	.map(getSpecConfig)
+	.map(spec => getSpecConfig(spec.protoID))
 	.map(config => {
 		const indSimUiConfig = config as IndividualSimUIConfig<any>;
 		return indSimUiConfig.raidSimPresets;

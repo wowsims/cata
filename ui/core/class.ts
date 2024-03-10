@@ -1,3 +1,4 @@
+import { DeathKnight, Druid, Hunter, Mage, Paladin, Priest, Rogue, Shaman, Warlock, Warrior } from './classes/';
 import { ArmorType, Class as ClassProto, Race, RangedWeaponType, WeaponType } from './proto/common.js';
 import { Spec } from './spec.js';
 
@@ -20,3 +21,16 @@ export abstract class Class {
 
 	abstract getIcon(size: IconSize): string;
 }
+
+export const naturalClassOrder: Array<Class> = [
+	DeathKnight,
+	Druid,
+	Hunter,
+	Mage,
+	Paladin,
+	Priest,
+	Rogue,
+	Shaman,
+	Warlock,
+	Warrior,
+];
