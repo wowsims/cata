@@ -37,6 +37,21 @@ output_file_path = sys.argv[2]
 # Convert "death-knight" to DeathKnight
 pretty_class_name = "".join(word.title() for i, word in enumerate(class_name.split("-")))
 lower_class_name = "".join(word if i == 0 else word.title() for i, word in enumerate(class_name.split("-")))
+def get_glyphs_ids():
+	glyphs_ids = []
+	driver.get("https://www.wowhead.com/cata/spells/glyphs/"+class_name)
+	glyphs_list = driver.find_element(By.CLASS_NAME, "listview-mode-default")
+	rows = glyphs_list.find_elements(By.CLASS_NAME, "listview-row")
+	for row in rows:
+		cells = row.find_elements(By.TAG_NAME, "td")
+		label_elem = cells[1].find_element(By.TAG_NAME, "a")
+		glyph_name = label_elem.text
+		link = label_elem.get_attribute("href")
+		id_match = re.search(r"spell=(\d+)", link)
+		spell_id = int(id_match.group(1))
+		glyphs_ids.append([glyph_name, spell_id])
+	return glyphs_ids
+
 
 def get_glyphs_data(glyph_button):
 	glyph_button.click()
@@ -79,7 +94,7 @@ try:
     accept_button.click()
     print("Clicked the 'I Accept' button.")
 except Exception as e:
-    print("No 'I Accept' button to click or error clicking it:", e)
+	print("Error")
 driver.implicitly_wait(2)
 glyph_slots = driver.find_elements(By.CLASS_NAME, "ctc-glyphs-group-slot")
 prime_glyph_slot = next(gs for gs in glyph_slots if int(gs.get_attribute("data-glyph-slot")) == 0)
@@ -91,6 +106,8 @@ webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 major_glyphs_data = get_glyphs_data(major_glyph_slot)
 webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
 minor_glyphs_data = get_glyphs_data(minor_glyph_slot)
+        
+glyph_ids = get_glyphs_ids()
 driver.quit()
 
 def write_glyphs_proto(outfile, glyphs_data, glyph_type):
@@ -116,13 +133,24 @@ def write_glyphs_config(outfile, glyphs_data, glyph_type):
 		outfile.write("\t\t},\n")
 
 	outfile.write("\t},\n")
-
+def write_glyphs_ids(outfile, glyphs_data, glyphs_ids):
+    # First, update glyph_data with the correct spell ID from glyphs_ids
+    for name, spell_id in glyphs_ids:
+        for glyph_data in glyphs_data:
+            if glyph_data["name"] == name:
+                outfile.write('{{"itemId": {},"spellId": {}}},\n'.format(glyph_data["id"], spell_id))
 
 with open(output_file_path, "w") as outfile:
 	write_glyphs_proto(outfile, prime_glyphs_data, "Prime")
 	write_glyphs_proto(outfile, major_glyphs_data, "Major")
 	write_glyphs_proto(outfile, minor_glyphs_data, "Minor")
-
+	outfile.write("\n")
+	outfile.write("\n")
+	outfile.write("\n")
+	write_glyphs_ids(outfile, prime_glyphs_data, glyph_ids)
+	write_glyphs_ids(outfile, major_glyphs_data, glyph_ids)
+	write_glyphs_ids(outfile, minor_glyphs_data, glyph_ids)
+	outfile.write("\n")
 	outfile.write("\n")
 	outfile.write("export const {}GlyphsConfig: GlyphsConfig = {{\n".format(lower_class_name))
 	write_glyphs_config(outfile, prime_glyphs_data, "Prime")

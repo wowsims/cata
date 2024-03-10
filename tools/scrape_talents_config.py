@@ -98,8 +98,6 @@ for tree in trees:
 		link = talent.find_element(By.XPATH, "./div/a").get_attribute("href")
 		name = "".join(word if i == 0 else word.title() for i, word in enumerate(link.split("/")[-1].split("-")))
 		fancyName = " ".join(word.title() for i, word in enumerate(link.split("/")[-1].split("-")))
-		print(link)
-		print(_get_spell_id_from_link(link))
 		_working_talents[(row, col)] = {
 			"fieldName": name,
 			"fancyName": fancyName,
