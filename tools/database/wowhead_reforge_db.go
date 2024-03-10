@@ -33,8 +33,7 @@ var statStringToEnum = map[string][]proto.Stat{
 	"critstrkrtng": {proto.Stat_StatMeleeCrit, proto.Stat_StatSpellCrit},
 	"hastertng":    {proto.Stat_StatMeleeHaste, proto.Stat_StatSpellHaste},
 	"exprtng":      {proto.Stat_StatExpertise},
-	// "mastrtng" mapping needs to be defined when the appropriate proto.Stat value for mastery is available.
-	// "mastrtng":  {proto.Stat_StatMastery},
+	"mastrtng":     {proto.Stat_StatMastery},
 }
 
 func mapStringToStat(statString string) []proto.Stat {
