@@ -3,7 +3,6 @@ import * as OtherInputs from '../../core/components/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { PlayerSpecs } from '../../core/player_specs';
 import { APLRotation } from '../../core/proto/apl';
 import {
 	Debuffs,
@@ -199,10 +198,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFrostDeathKnight,
-			tooltip: PlayerSpecs.FrostDeathKnight.fullName,
-			defaultName: PlayerSpecs.FrostDeathKnight.friendlyName,
-			iconUrl: PlayerClasses.DeathKnight.getIcon('medium'),
-
 			talents: Presets.FrostTalents.data,
 			specOptions: Presets.DefaultFrostOptions,
 			consumes: Presets.DefaultConsumes,

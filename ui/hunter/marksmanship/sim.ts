@@ -1,10 +1,8 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as ConsumablesInputs from '../../core/components/inputs/consumables';
 import * as OtherInputs from '../../core/components/other_inputs';
 import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
-import { PlayerSpecs } from '../../core/player_specs';
 import { APLListItem, APLRotation } from '../../core/proto/apl';
 import {
 	Cooldowns,
@@ -28,7 +26,7 @@ import * as HunterInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
-	cssClass: 'hunter-sim-ui',
+	cssClass: 'marksmanship-hunter-sim-ui',
 	cssScheme: 'hunter',
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
@@ -142,7 +140,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	playerIconInputs: [HunterInputs.PetTypeInput, HunterInputs.WeaponAmmo, HunterInputs.UseHuntersMark],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: HunterInputs.HunterRotationConfig,
-	petConsumeInputs: [ConsumablesInputs.SpicedMammothTreats],
+	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff, BuffDebuffInputs.SpellDamageDebuff],
 	excludeBuffDebuffInputs: [],
@@ -221,10 +219,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecMarksmanshipHunter,
-			tooltip: PlayerSpecs.MarksmanshipHunter.fullName,
-			defaultName: PlayerSpecs.MarksmanshipHunter.friendlyName,
-			iconUrl: PlayerSpecs.MarksmanshipHunter.getIcon('medium'),
-
 			talents: Presets.MarksmanTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,

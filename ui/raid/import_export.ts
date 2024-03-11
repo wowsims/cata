@@ -3,6 +3,7 @@ import { Importer } from '../core/components/importers';
 import { Encounter } from '../core/encounter';
 import { RaidSimPreset } from '../core/individual_sim_ui';
 import { Player } from '../core/player';
+import { PlayerSpecs } from '../core/player_specs';
 import { Party as PartyProto, Player as PlayerProto, Raid as RaidProto } from '../core/proto/api';
 import {
 	Class,
@@ -20,13 +21,10 @@ import {
 import { RaidSimSettings } from '../core/proto/ui';
 import { professionNames, raceNames } from '../core/proto_utils/names';
 import {
-	DeathknightSpecs,
 	DruidSpecs,
+	getPlayerSpecFromPlayer,
 	getTalentTreePoints,
-	isTankSpec,
 	makeDefaultBlessings,
-	playerToSpec,
-	PriestSpecs,
 	raceToFaction,
 	RogueSpecs,
 	SpecOptions,
@@ -64,7 +62,7 @@ export class RaidJsonExporter extends Exporter {
 	private readonly simUI: RaidSimUI;
 
 	constructor(parent: HTMLElement, simUI: RaidSimUI) {
-		super(parent, simUI, {title: 'JSON Export', allowDownload: true});
+		super(parent, simUI, { title: 'JSON Export', allowDownload: true });
 		this.simUI = simUI;
 		this.init();
 	}
@@ -75,7 +73,6 @@ export class RaidJsonExporter extends Exporter {
 }
 
 export class RaidWCLImporter extends Importer {
-
 	private queryCounter = 0;
 
 	private readonly simUI: RaidSimUI;
@@ -124,14 +121,14 @@ export class RaidWCLImporter extends Importer {
 	private async getWCLBearerToken(): Promise<string> {
 		if (this.token == '') {
 			const response = await fetch('https://classic.warcraftlogs.com/oauth/token', {
-				'method': 'POST',
-				'headers': {
-					'Authorization': 'Basic ' + btoa('963d31c8-7efa-4dde-87cf-1b254a8a2f8c:lRJVhujEEnF96xfUoxVHSpnqKN9v8bTqGEjutsO3'),
+				method: 'POST',
+				headers: {
+					Authorization: 'Basic ' + btoa('963d31c8-7efa-4dde-87cf-1b254a8a2f8c:lRJVhujEEnF96xfUoxVHSpnqKN9v8bTqGEjutsO3'),
 				},
 				body: new URLSearchParams({
-					'grant_type': 'client_credentials',
+					grant_type: 'client_credentials',
 				}),
-			})
+			});
 			const json = await response.json();
 			this.token = json.access_token;
 		}
@@ -142,8 +139,8 @@ export class RaidWCLImporter extends Importer {
 		const token = await this.getWCLBearerToken();
 		const headers = {
 			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`,
-			'Accept': 'application/json',
+			Authorization: `Bearer ${token}`,
+			Accept: 'application/json',
 		};
 
 		const queryURL = `https://classic.warcraftlogs.com/api/v2/client?query=${query}`;
@@ -151,8 +148,8 @@ export class RaidWCLImporter extends Importer {
 
 		// Query WCL
 		const res = await fetch(encodeURI(queryURL), {
-			'method': 'GET',
-			'headers': headers,
+			method: 'GET',
+			headers: headers,
 		});
 
 		const result = await res.json();
@@ -174,7 +171,7 @@ export class RaidWCLImporter extends Importer {
 		const urlData = {
 			reportID: match[1],
 			fightID: '',
-		}
+		};
 
 		// If the URL has a Fight ID in it, use it
 		if (match[2] && match[3] && match[3] != 'last') {
@@ -195,7 +192,7 @@ export class RaidWCLImporter extends Importer {
 			const fights = fightData.data.reportData.report.fights;
 
 			if (match[3] == 'last') {
-				urlData.fightID = String(fights[fights.length - 1].id)
+				urlData.fightID = String(fights[fights.length - 1].id);
 			} else {
 				// Default to using the first Fight
 				urlData.fightID = String(fights[0].id);
@@ -226,7 +223,7 @@ export class RaidWCLImporter extends Importer {
 			console.error(error);
 			alert('Failed import from WCL: ' + error);
 		}
-		this.importButton.disabled = false
+		this.importButton.disabled = false;
 		this.rootElem.style.removeProperty('cursor');
 	}
 
@@ -254,14 +251,23 @@ export class RaidWCLImporter extends Importer {
 						startTime, endTime, id, name
 					}
 
-					reportCastEvents: events(dataType:Casts, endTime: 99999999, filterExpression: "${[racialSpells, professionSpells].flat().map(spell => spell.id).map(id => `ability.id = ${id}`).join(' OR ')
-			}", limit: 10000) { data }
+					reportCastEvents: events(dataType:Casts, endTime: 99999999, filterExpression: "${[racialSpells, professionSpells]
+						.flat()
+						.map(spell => spell.id)
+						.map(id => `ability.id = ${id}`)
+						.join(' OR ')}", limit: 10000) { data }
 
-					fightCastEvents: events(fightIDs: [${urlData.fightID}], dataType:Casts, filterExpression: "${[externalCDSpells].flat().map(spell => spell.id).map(id => `ability.id = ${id}`).join(' OR ')
-			}", limit: 10000) { data }
+					fightCastEvents: events(fightIDs: [${urlData.fightID}], dataType:Casts, filterExpression: "${[externalCDSpells]
+						.flat()
+						.map(spell => spell.id)
+						.map(id => `ability.id = ${id}`)
+						.join(' OR ')}", limit: 10000) { data }
 
-					fightHealEvents: events(fightIDs: [${urlData.fightID}], dataType:Healing, filterExpression: "${[samePartyHealingSpells, otherPartyHealingSpells].flat().map(spell => spell.id).map(id => `ability.id = ${id}`).join(' OR ')
-			}", limit: 10000) { data }
+					fightHealEvents: events(fightIDs: [${urlData.fightID}], dataType:Healing, filterExpression: "${[samePartyHealingSpells, otherPartyHealingSpells]
+						.flat()
+						.map(spell => spell.id)
+						.map(id => `ability.id = ${id}`)
+						.join(' OR ')}", limit: 10000) { data }
 
 					manaTideTotem: events(fightIDs: [${urlData.fightID}], dataType:Resources, filterExpression: "ability.id = 39609", limit: 100) { data }
 				}
@@ -465,7 +471,7 @@ export class RaidWCLImporter extends Importer {
 	}
 
 	private getEncounterProto(wclData: any): EncounterProto {
-		const fight: { startTime: number, endTime: number, id: number, name: string } = wclData.fights[0];
+		const fight: { startTime: number; endTime: number; id: number; name: string } = wclData.fights[0];
 
 		const encounter = EncounterProto.create({
 			duration: (fight.endTime - fight.startTime) / 1000,
@@ -491,22 +497,23 @@ export class RaidWCLImporter extends Importer {
 
 	private getRaidProto(wclPlayers: WCLSimPlayer[]): RaidProto {
 		const raid = RaidProto.create({
-			parties: [...new Array(MAX_NUM_PARTIES).keys()].map(_party => PartyProto.create({
-				players: [...new Array(5).keys()].map(_player => PlayerProto.create()),
-			})),
+			parties: [...new Array(MAX_NUM_PARTIES).keys()].map(_party =>
+				PartyProto.create({
+					players: [...new Array(5).keys()].map(_player => PlayerProto.create()),
+				}),
+			),
 		});
 
-		wclPlayers
-			.forEach(player => {
-				const positionInParty = player.raidIndex % 5;
-				const partyIdx = (player.raidIndex - positionInParty) / 5;
-				const playerProto = player.player.toProto();
-				raid.parties[partyIdx].players[positionInParty] = playerProto;
+		wclPlayers.forEach(player => {
+			const positionInParty = player.raidIndex % 5;
+			const partyIdx = (player.raidIndex - positionInParty) / 5;
+			const playerProto = player.player.toProto();
+			raid.parties[partyIdx].players[positionInParty] = playerProto;
 
-				if (playerToSpec(playerProto).isTankSpec) {
-					raid.tanks.push(player.toUnitReference());
-				}
-			});
+			if (getPlayerSpecFromPlayer(playerProto).isTankSpec) {
+				raid.tanks.push(player.toUnitReference());
+			}
+		});
 
 		return raid;
 	}
@@ -547,15 +554,18 @@ class WCLSimPlayer {
 			throw new Error('Player type not implemented: ' + this.fullType);
 		}
 		this.spec = foundSpec;
-		this.player = new Player(this.spec, simUI.sim);
+		this.player = new Player(PlayerSpecs.fromProto(this.spec), simUI.sim);
 
 		this.preset = WCLSimPlayer.getMatchingPreset(foundSpec, data.talents);
 		if (this.preset === undefined) {
-			throw new Error('Could not find matching preset: ' + JSON.stringify({
-				'name': this.name,
-				'type': this.fullType,
-				'talents': data.talents,
-			}).toString());
+			throw new Error(
+				'Could not find matching preset: ' +
+					JSON.stringify({
+						name: this.name,
+						type: this.fullType,
+						talents: data.talents,
+					}).toString(),
+			);
 		}
 
 		// Apply preset defaults.
@@ -568,13 +578,20 @@ class WCLSimPlayer {
 
 		// Apply settings from report data.
 		this.player.setName(eventID, data.name);
-		this.player.setGear(eventID, simUI.sim.db.lookupEquipmentSpec(EquipmentSpec.create({
-			items: data.gear.map(gear => ItemSpec.create({
-				id: gear.id,
-				enchant: gear.permanentEnchant,
-				gems: gear.gems ? gear.gems.map(gemInfo => gemInfo.id) : [],
-			})),
-		})));
+		this.player.setGear(
+			eventID,
+			simUI.sim.db.lookupEquipmentSpec(
+				EquipmentSpec.create({
+					items: data.gear.map(gear =>
+						ItemSpec.create({
+							id: gear.id,
+							enchant: gear.permanentEnchant,
+							gems: gear.gems ? gear.gems.map(gemInfo => gemInfo.id) : [],
+						}),
+					),
+				}),
+			),
+		);
 	}
 
 	private static getMatchingPreset(spec: Spec, talents: wclTalents[]): RaidSimPreset<Spec> {
@@ -587,7 +604,7 @@ class WCLSimPlayer {
 			matchingPresets.forEach((preset, i) => {
 				const presetTalents = getTalentTreePoints(preset.talents.talentsString);
 				// Diff the distance to the preset.
-				const newDistance = presetTalents.reduce((acc, v, i) => acc += Math.abs(talents[i]?.guid - presetTalents[i]), 0);
+				const newDistance = presetTalents.reduce((acc, v, i) => (acc += Math.abs(talents[i]?.guid - presetTalents[i])), 0);
 
 				// If this is the best distance, assign this preset.
 				if (newDistance < distance) {
@@ -616,48 +633,48 @@ class WCLSimPlayer {
 }
 
 const fullTypeToSpec: Record<string, Spec> = {
-	'DeathKnightBlood': Spec.SpecBloodDeathKnight,
-	'DeathKnightFrost': Spec.SpecFrostDeathKnight,
-	'DeathKnightUnholy': Spec.SpecUnholyDeathKnight,
-	'DruidBalance': Spec.SpecBalanceDruid,
-	'DruidFeral': Spec.SpecFeralDruid,
+	DeathKnightBlood: Spec.SpecBloodDeathKnight,
+	DeathKnightFrost: Spec.SpecFrostDeathKnight,
+	DeathKnightUnholy: Spec.SpecUnholyDeathKnight,
+	DruidBalance: Spec.SpecBalanceDruid,
+	DruidFeral: Spec.SpecFeralDruid,
 	// TOCO: Cata - Verify tank druid
 	// 'DruidWarden': Spec.SpecFeralDruid,
 	// 'DruidGuardian': Spec.SpecFeralDruid,
-	'DruidRestoration': Spec.SpecRestorationDruid,
-	'HunterBeastMastery': Spec.SpecBeastMasteryHunter,
-	'HunterMarksmanship': Spec.SpecMarksmanshipHunter,
-	'HunterSurvival': Spec.SpecSurvivalHunter,
-	'MageArcane': Spec.SpecArcaneMage,
-	'MageFire': Spec.SpecFireMage,
-	'MageFrost': Spec.SpecFrostMage,
-	'PaladinHoly': Spec.SpecHolyPaladin,
-	'PaladinJusticar': Spec.SpecProtectionPaladin,
-	'PaladinProtection': Spec.SpecProtectionPaladin,
-	'PaladinRetribution': Spec.SpecRetributionPaladin,
-	'PriestHoly': Spec.SpecHolyPriest,
-	'PriestDiscipline': Spec.SpecDisciplinePriest,
-	'PriestShadow': Spec.SpecShadowPriest,
+	DruidRestoration: Spec.SpecRestorationDruid,
+	HunterBeastMastery: Spec.SpecBeastMasteryHunter,
+	HunterMarksmanship: Spec.SpecMarksmanshipHunter,
+	HunterSurvival: Spec.SpecSurvivalHunter,
+	MageArcane: Spec.SpecArcaneMage,
+	MageFire: Spec.SpecFireMage,
+	MageFrost: Spec.SpecFrostMage,
+	PaladinHoly: Spec.SpecHolyPaladin,
+	PaladinJusticar: Spec.SpecProtectionPaladin,
+	PaladinProtection: Spec.SpecProtectionPaladin,
+	PaladinRetribution: Spec.SpecRetributionPaladin,
+	PriestHoly: Spec.SpecHolyPriest,
+	PriestDiscipline: Spec.SpecDisciplinePriest,
+	PriestShadow: Spec.SpecShadowPriest,
 	// 'PriestSmite': Spec.SpecSmitePriest,
-	'RogueAssassination': Spec.SpecAssassinationRogue,
-	'RogueCombat': Spec.SpecCombatRogue,
-	'RogueSubtlety': Spec.SpecSubtletyRogue,
-	'ShamanElemental': Spec.SpecElementalShaman,
-	'ShamanEnhancement': Spec.SpecEnhancementShaman,
-	'ShamanRestoration': Spec.SpecRestorationShaman,
-	'WarlockDestruction': Spec.SpecDestructionWarlock,
-	'WarlockAffliction': Spec.SpecAfflictionWarlock,
-	'WarlockDemonology': Spec.SpecDemonologyWarlock,
-	'WarriorArms': Spec.SpecArmsWarrior,
-	'WarriorFury': Spec.SpecFuryWarrior,
+	RogueAssassination: Spec.SpecAssassinationRogue,
+	RogueCombat: Spec.SpecCombatRogue,
+	RogueSubtlety: Spec.SpecSubtletyRogue,
+	ShamanElemental: Spec.SpecElementalShaman,
+	ShamanEnhancement: Spec.SpecEnhancementShaman,
+	ShamanRestoration: Spec.SpecRestorationShaman,
+	WarlockDestruction: Spec.SpecDestructionWarlock,
+	WarlockAffliction: Spec.SpecAfflictionWarlock,
+	WarlockDemonology: Spec.SpecDemonologyWarlock,
+	WarriorArms: Spec.SpecArmsWarrior,
+	WarriorFury: Spec.SpecFuryWarrior,
 	// 'WarriorChampion': Spec.SpecWarrior,
 	// 'WarriorWarrior': Spec.SpecWarrior,
 	// 'WarriorGladiator': Spec.SpecWarrior,
-	'WarriorProtection': Spec.SpecProtectionWarrior,
+	WarriorProtection: Spec.SpecProtectionWarrior,
 };
 
 // Spells which imply a specific Race.
-const racialSpells: Array<{ id: number, name: string, race: Race }> = [
+const racialSpells: Array<{ id: number; name: string; race: Race }> = [
 	{ id: 25046, name: 'Arcane Torrent (Energy)', race: Race.RaceBloodElf },
 	{ id: 28730, name: 'Arcane Torrent (Mana)', race: Race.RaceBloodElf },
 	{ id: 50613, name: 'Arcane Torrent (Runic Power)', race: Race.RaceBloodElf },
@@ -673,44 +690,56 @@ const racialSpells: Array<{ id: number, name: string, race: Race }> = [
 ];
 
 // Spells which imply a specific Profession.
-const professionSpells: Array<{ id: number, name: string, profession: Profession }> = [
+const professionSpells: Array<{ id: number; name: string; profession: Profession }> = [
 	{ id: 55503, name: 'Lifeblood', profession: Profession.Herbalism },
 	{ id: 50305, name: 'Skinning', profession: Profession.Skinning },
 ];
 
-const externalCDSpells: Array<{ id: number, name: string, class: Class, applyFunc: (player: Player<any>, raidTarget: UnitReference) => SpecOptions<any> }> = [
+const externalCDSpells: Array<{ id: number; name: string; class: Class; applyFunc: (player: Player<any>, raidTarget: UnitReference) => SpecOptions<any> }> = [
 	{
-		id: 29166, name: 'Innervate', class: Class.ClassDruid, applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
+		id: 29166,
+		name: 'Innervate',
+		class: Class.ClassDruid,
+		applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
 			const options = player.getSpecOptions() as SpecOptions<DruidSpecs>;
 			options.innervateTarget = raidTarget;
 			return options;
-		}
+		},
 	},
 	{
-		id: 10060, name: 'Power Infusion', class: Class.ClassPriest, applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
-			const options = player.getSpecOptions() as SpecOptions<PriestSpecs>;
+		id: 10060,
+		name: 'Power Infusion',
+		class: Class.ClassPriest,
+		applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
+			const options = player.getSpecOptions() as SpecOptions<Spec.SpecDisciplinePriest>;
 			options.powerInfusionTarget = raidTarget;
 			return options;
-		}
+		},
 	},
 	{
-		id: 57933, name: 'Tricks of the Trade', class: Class.ClassRogue, applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
+		id: 57933,
+		name: 'Tricks of the Trade',
+		class: Class.ClassRogue,
+		applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
 			const options = player.getSpecOptions() as SpecOptions<RogueSpecs>;
-			options.tricksOfTheTradeTarget = raidTarget;
+			options.rogueOptions!.tricksOfTheTradeTarget = raidTarget;
 			return options;
-		}
+		},
 	},
 	{
-		id: 49016, name: 'Unholy Frenzy', class: Class.ClassDeathknight, applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
-			const options = player.getSpecOptions() as SpecOptions<DeathknightSpecs>;
+		id: 49016,
+		name: 'Unholy Frenzy',
+		class: Class.ClassDeathKnight,
+		applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
+			const options = player.getSpecOptions() as SpecOptions<Spec.SpecUnholyDeathKnight>;
 			options.unholyFrenzyTarget = raidTarget;
 			return options;
-		}
+		},
 	},
 ];
 
 // Healing spells which only affect the caster's party.
-const samePartyHealingSpells: Array<{ id: number, name: string }> = [
+const samePartyHealingSpells: Array<{ id: number; name: string }> = [
 	{ id: 52042, name: 'Healing Stream Totem' },
 	{ id: 48076, name: 'Holy Nova' },
 	{ id: 48445, name: 'Tranquility' },
@@ -718,17 +747,15 @@ const samePartyHealingSpells: Array<{ id: number, name: string }> = [
 ];
 
 // Healing spells which only affect a single party, but not necessarily the caster's party.
-const otherPartyHealingSpells: Array<{ id: number, name: string }> = [
-	{ id: 48072, name: 'Prayer of Healing' },
-];
+const otherPartyHealingSpells: Array<{ id: number; name: string }> = [{ id: 48072, name: 'Prayer of Healing' }];
 
 interface wclUrlData {
-	reportID: string,
-	fightID: string,
+	reportID: string;
+	fightID: string;
 }
 
 interface wclCastEvent {
-	type: 'cast',
+	type: 'cast';
 	timestamp: number;
 	sourceID: number;
 	targetID: number;
@@ -737,7 +764,7 @@ interface wclCastEvent {
 }
 
 interface wclHealEvent {
-	type: 'heal',
+	type: 'heal';
 	timestamp: number;
 	sourceID: number;
 	targetID: number;
@@ -757,9 +784,9 @@ interface wclCombatantInfoEvent {
 }
 
 interface wclRateLimitData {
-	limitPerHour: number,
-	pointsSpentThisHour: number,
-	pointsResetIn: number
+	limitPerHour: number;
+	pointsSpentThisHour: number;
+	pointsResetIn: number;
 }
 
 // Typed interface for WCL talents
@@ -818,7 +845,7 @@ interface _wclAura {
 	totalUptime: number;
 	totalUses: number;
 	bands: {
-		startTime: number,
-		endTime: number,
+		startTime: number;
+		endTime: number;
 	}[];
 }

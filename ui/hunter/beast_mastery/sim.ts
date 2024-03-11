@@ -1,10 +1,8 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as ConsumablesInputs from '../../core/components/inputs/consumables';
 import * as OtherInputs from '../../core/components/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { PlayerSpecs } from '../../core/player_specs';
 import { APLListItem, APLRotation } from '../../core/proto/apl';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
 import { BeastMasteryHunter_Rotation } from '../../core/proto/hunter';
@@ -14,7 +12,7 @@ import * as HunterInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
-	cssClass: 'hunter-sim-ui',
+	cssClass: 'beast-mastery-hunter-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Hunter),
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
@@ -109,7 +107,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	playerIconInputs: [HunterInputs.PetTypeInput, HunterInputs.WeaponAmmo, HunterInputs.UseHuntersMark],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: HunterInputs.HunterRotationConfig,
-	petConsumeInputs: [ConsumablesInputs.SpicedMammothTreats],
+	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff, BuffDebuffInputs.SpellDamageDebuff],
 	excludeBuffDebuffInputs: [],
@@ -188,10 +186,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecBeastMasteryHunter,
-			tooltip: PlayerSpecs.BeastMasteryHunter.fullName,
-			defaultName: PlayerSpecs.BeastMasteryHunter.friendlyName,
-			iconUrl: PlayerSpecs.BeastMasteryHunter.getIcon('medium'),
-
 			talents: Presets.BeastMasteryTalents.data,
 			specOptions: Presets.BMDefaultOptions,
 			consumes: Presets.DefaultConsumes,

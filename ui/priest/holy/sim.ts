@@ -3,39 +3,20 @@ import * as OtherInputs from '../../core/components/other_inputs.js';
 import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
-import {
-	APLRotation,
-} from '../../core/proto/apl.js';
-import {
-	Class,
-	Faction,
-	PartyBuffs,
-	Race,
-	Spec,
-	Stat,
-} from '../../core/proto/common.js';
+import { PlayerClasses } from '../../core/player_classes';
+import { APLRotation } from '../../core/proto/apl.js';
+import { Faction, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import { getSpecIcon, specNames } from '../../core/proto_utils/utils.js';
-import * as ShadowPriestInputs from './inputs.js';
 import * as Presets from './presets.js';
 
-const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
-	cssClass: 'shadow-priest-sim-ui',
-	cssScheme: 'priest',
+const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPriest, {
+	cssClass: 'holy-priest-sim-ui',
+	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Priest),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMP5,
-	],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -51,7 +32,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecShadowPriest>) => {
+	modifyDisplayStats: (player: Player<Spec.SpecHolyPriest>) => {
 		let stats = new Stats();
 		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().shadowFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
 
@@ -71,7 +52,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			[Stat.StatSpellHit]: 0.87,
 			[Stat.StatSpellCrit]: 0.74,
 			[Stat.StatSpellHaste]: 1.65,
-			[Stat.StatMP5]: 0.00,
+			[Stat.StatMP5]: 0.0,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -92,9 +73,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		ShadowPriestInputs.ArmorInput,
-	],
+	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.ReplenishmentBuff,
@@ -105,14 +84,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		BuffDebuffInputs.AttackPowerBuff,
 		BuffDebuffInputs.StaminaBuff,
 	],
-	excludeBuffDebuffInputs: [
-	],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			OtherInputs.TankAssignment,
-			OtherInputs.ChannelClipDelay,
-		],
+		inputs: [OtherInputs.TankAssignment, OtherInputs.ChannelClipDelay],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -121,26 +96,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.StandardTalents,
-			Presets.EnlightenmentTalents,
-		],
-		rotations: [
-			Presets.ROTATION_PRESET_DEFAULT,
-			Presets.ROTATION_PRESET_AOE24,
-			Presets.ROTATION_PRESET_AOE4PLUS,
-		],
+		talents: [Presets.StandardTalents, Presets.EnlightenmentTalents],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_AOE24, Presets.ROTATION_PRESET_AOE4PLUS],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_PRESET,
-			Presets.P1_PRESET,
-			Presets.P2_PRESET,
-			Presets.P3_PRESET,
-			Presets.P4_PRESET,
-		],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
 	},
 
-	autoRotation: (player: Player<Spec.SpecShadowPriest>): APLRotation => {
+	autoRotation: (player: Player<Spec.SpecHolyPriest>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 4) {
 			return Presets.ROTATION_PRESET_AOE4PLUS.rotation.rotation!;
@@ -153,11 +115,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	raidSimPresets: [
 		{
-			spec: Spec.SpecShadowPriest,
-			tooltip: specNames[Spec.SpecShadowPriest],
-			defaultName: 'Shadow',
-			iconUrl: getSpecIcon(Class.ClassPriest, 2),
-
+			spec: Spec.SpecHolyPriest,
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
@@ -185,8 +143,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	],
 });
 
-export class ShadowPriestSimUI extends IndividualSimUI<Spec.SpecShadowPriest> {
-	constructor(parentElem: HTMLElement, player: Player<Spec.SpecShadowPriest>) {
+export class HolyPriestSimUI extends IndividualSimUI<Spec.SpecHolyPriest> {
+	constructor(parentElem: HTMLElement, player: Player<Spec.SpecHolyPriest>) {
 		super(parentElem, player, SPEC_CONFIG);
 	}
 }

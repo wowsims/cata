@@ -2,7 +2,6 @@ import * as OtherInputs from '../../core/components/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
-import { PlayerSpecs } from '../../core/player_specs';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Faction, Race, Spec, Stat } from '../../core/proto/common.js';
 import { Stats } from '../../core/proto_utils/stats.js';
@@ -91,10 +90,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationDruid, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecRestorationDruid,
-			tooltip: PlayerSpecs.RestorationDruid.fullName,
-			defaultName: PlayerSpecs.RestorationDruid.friendlyName,
-			iconUrl: PlayerSpecs.RestorationDruid.getIcon('medium'),
-
 			talents: Presets.CelestialFocusTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,

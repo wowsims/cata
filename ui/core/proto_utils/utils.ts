@@ -196,7 +196,6 @@ class UnknownOptions {
 	constructor() {}
 }
 
-// TODO: Cata - Re-evaluate whether or not these are needed
 export type DeathKnightSpecs = Spec.SpecBloodDeathKnight | Spec.SpecFrostDeathKnight | Spec.SpecUnholyDeathKnight;
 export type DruidSpecs = Spec.SpecBalanceDruid | Spec.SpecFeralDruid | Spec.SpecRestorationDruid;
 export type HunterSpecs = Spec.SpecBeastMasteryHunter | Spec.SpecMarksmanshipHunter | Spec.SpecSurvivalHunter;

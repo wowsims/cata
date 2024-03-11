@@ -3,7 +3,6 @@ import * as OtherInputs from '../../core/components/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { PlayerSpecs } from '../../core/player_specs';
 import { APLRotation } from '../../core/proto/apl';
 import {
 	Debuffs,
@@ -236,10 +235,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecUnholyDeathKnight,
-			tooltip: PlayerSpecs.UnholyDeathKnight.fullName,
-			defaultName: PlayerSpecs.UnholyDeathKnight.friendlyName,
-			iconUrl: PlayerClasses.DeathKnight.getIcon('medium'),
-
 			talents: Presets.UnholyDualWieldTalents.data,
 			specOptions: Presets.DefaultUnholyOptions,
 			consumes: Presets.DefaultConsumes,

@@ -3,8 +3,6 @@ import * as OtherInputs from '../../core/components/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { DeathKnight } from '../../core/player_classes/death_knight';
-import { PlayerSpecs } from '../../core/player_specs';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
@@ -189,10 +187,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecBloodDeathKnight,
-			tooltip: PlayerSpecs.BloodDeathKnight.fullName,
-			defaultName: PlayerSpecs.BloodDeathKnight.friendlyName,
-			iconUrl: DeathKnight.getIcon('medium'),
-
 			talents: Presets.BloodTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,

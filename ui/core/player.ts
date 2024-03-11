@@ -293,10 +293,10 @@ export class Player<SpecType extends Spec> {
 
 		this.spec = spec;
 		this.race = this.spec.playerClass.races[0];
-		this.specTypeFunctions = specTypeFunctions[this.spec.protoID] as SpecTypeFunctions<SpecType>;
+		this.specTypeFunctions = specTypeFunctions[this.getSpec()] as SpecTypeFunctions<SpecType>;
 		this.specOptions = this.specTypeFunctions.optionsCreate();
 
-		const specConfig = SPEC_CONFIGS[this.spec.protoID] as PlayerConfig<SpecType>;
+		const specConfig = SPEC_CONFIGS[this.getSpec()] as PlayerConfig<SpecType>;
 		if (!specConfig) {
 			throw new Error('Could not find spec config for spec: ' + this.spec);
 		}
@@ -341,6 +341,14 @@ export class Player<SpecType extends Spec> {
 		return this.spec.getIcon('medium');
 	}
 
+	getPlayerSpec(): PlayerSpec<SpecType> {
+		return this.spec;
+	}
+
+	getSpec(): SpecType {
+		return this.getPlayerSpec().protoID;
+	}
+
 	getPlayerClass(): PlayerClass<SpecClasses<SpecType>> {
 		return this.spec.playerClass;
 	}
@@ -355,7 +363,7 @@ export class Player<SpecType extends Spec> {
 
 	// TODO: Cata - Check this
 	isSpec<T extends Spec>(specId: T): this is Player<T> {
-		return (this.spec.protoID as unknown) == specId;
+		return (this.getSpec() as unknown) == specId;
 	}
 
 	isClass<T extends Class>(classId: T): this is Player<ClassSpecs<T>> {
@@ -591,7 +599,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	canDualWield2H(): boolean {
-		return this.spec.protoID == Spec.SpecFuryWarrior && (this.getTalents() as SpecTalents<Spec.SpecFuryWarrior>).titansGrip;
+		return this.getSpec() == Spec.SpecFuryWarrior && (this.getTalents() as SpecTalents<Spec.SpecFuryWarrior>).titansGrip;
 	}
 
 	equipItem(eventID: EventID, slot: ItemSlot, newItem: EquippedItem | null) {
@@ -692,7 +700,7 @@ export class Player<SpecType extends Spec> {
 
 		let specSpecificOffset = 0.0;
 
-		if (this.spec.protoID === Spec.SpecEnhancementShaman) {
+		if (this.getSpec() === Spec.SpecEnhancementShaman) {
 			// Elemental Devastation uptime is near 100%
 			// TODO: Cata - Check this
 			const ranks = (this as unknown as Player<Spec.SpecEnhancementShaman>).getTalents().elementalDevastation;
@@ -1345,7 +1353,7 @@ export class Player<SpecType extends Spec> {
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
 			});
-			player = withSpec(this.spec.protoID, player, this.getSpecOptions());
+			player = withSpec(this.getSpec(), player, this.getSpecOptions());
 		}
 		if (exportCategory(SimSettingCategories.External)) {
 			PlayerProto.mergePartial(player, {

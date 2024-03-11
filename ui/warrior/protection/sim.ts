@@ -2,39 +2,20 @@ import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js
 import * as OtherInputs from '../../core/components/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
-import {
-	APLAction,
-	APLListItem,
-	APLPrepullAction,
-	APLRotation,
-} from '../../core/proto/apl.js';
-import {
-	Class,
-	Cooldowns,
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat,
-	TristateEffect
-} from '../../core/proto/common.js';
+import { PlayerClasses } from '../../core/player_classes';
+import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl.js';
+import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { ProtectionWarrior_Rotation as ProtectionWarriorRotation } from '../../core/proto/warrior.js';
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import { getSpecIcon } from '../../core/proto_utils/utils.js';
 import * as ProtectionWarriorInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 	cssClass: 'protection-warrior-sim-ui',
-	cssScheme: 'warrior',
+	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Warrior),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -59,9 +40,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -93,26 +72,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		// Default equipped gear.
 		gear: Presets.P3_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatArmor]: 0.174,
-			[Stat.StatBonusArmor]: 0.155,
-			[Stat.StatStamina]: 2.336,
-			[Stat.StatStrength]: 1.555,
-			[Stat.StatAgility]: 2.771,
-			[Stat.StatAttackPower]: 0.32,
-			[Stat.StatExpertise]: 1.44,
-			[Stat.StatMeleeHit]: 1.432,
-			[Stat.StatMeleeCrit]: 0.925,
-			[Stat.StatMeleeHaste]: 0.431,
-			[Stat.StatArmorPenetration]: 1.055,
-			[Stat.StatBlock]: 1.320,
-			[Stat.StatBlockValue]: 1.373,
-			[Stat.StatDodge]: 2.606,
-			[Stat.StatParry]: 2.649,
-			[Stat.StatDefense]: 3.305,
-		}, {
-			[PseudoStat.PseudoStatMainHandDps]: 6.081,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatArmor]: 0.174,
+				[Stat.StatBonusArmor]: 0.155,
+				[Stat.StatStamina]: 2.336,
+				[Stat.StatStrength]: 1.555,
+				[Stat.StatAgility]: 2.771,
+				[Stat.StatAttackPower]: 0.32,
+				[Stat.StatExpertise]: 1.44,
+				[Stat.StatMeleeHit]: 1.432,
+				[Stat.StatMeleeCrit]: 0.925,
+				[Stat.StatMeleeHaste]: 0.431,
+				[Stat.StatArmorPenetration]: 1.055,
+				[Stat.StatBlock]: 1.32,
+				[Stat.StatBlockValue]: 1.373,
+				[Stat.StatDodge]: 2.606,
+				[Stat.StatParry]: 2.649,
+				[Stat.StatDefense]: 3.305,
+			},
+			{
+				[PseudoStat.PseudoStatMainHandDps]: 6.081,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -136,8 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			thorns: TristateEffect.TristateEffectImproved,
 			shadowProtection: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 			blessingOfKings: true,
 			blessingOfMight: TristateEffect.TristateEffectImproved,
@@ -157,16 +138,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		ProtectionWarriorInputs.ShoutPicker,
-		ProtectionWarriorInputs.ShatteringThrow,
-	],
+	playerIconInputs: [ProtectionWarriorInputs.ShoutPicker, ProtectionWarriorInputs.ShatteringThrow],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.HealthBuff,
-	],
-	excludeBuffDebuffInputs: [
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.HealthBuff],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -188,15 +163,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.StandardTalents,
-			Presets.UATalents,
-		],
+		talents: [Presets.StandardTalents, Presets.UATalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_DEFAULT,
-			Presets.ROTATION_PRESET_SIMPLE,
-		],
+		rotations: [Presets.ROTATION_DEFAULT, Presets.ROTATION_PRESET_SIMPLE],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.PRERAID_BALANCED_PRESET,
@@ -217,41 +186,39 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 
 		const preShout = APLPrepullAction.fromJsonString(`{"action":{"castSpell":{"spellId":{"spellId":47440}}},"doAtValue":{"const":{"val":"-10s"}}}`);
 
-		const heroicStrike = APLAction.fromJsonString(`{"condition":{"cmp":{"op":"OpGe","lhs":{"currentRage":{}},"rhs":{"const":{"val":"30"}}}},"castSpell":{"spellId":{"tag":1,"spellId":47450}}}`);
+		const heroicStrike = APLAction.fromJsonString(
+			`{"condition":{"cmp":{"op":"OpGe","lhs":{"currentRage":{}},"rhs":{"const":{"val":"30"}}}},"castSpell":{"spellId":{"tag":1,"spellId":47450}}}`,
+		);
 		const shieldSlam = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":47488}}}`);
 		const revenge = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":57823}}}`);
-		const refreshShout = APLAction.fromJsonString(`{"condition":{"auraShouldRefresh":{"sourceUnit":{"type":"Self"},"auraId":{"spellId":47440},"maxOverlap":{"const":{"val":"3s"}}}},"castSpell":{"spellId":{"spellId":47440}}}`);
-		const refreshTclap = APLAction.fromJsonString(`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":47502},"maxOverlap":{"const":{"val":"2s"}}}},"castSpell":{"spellId":{"spellId":47502}}}`);
-		const refreshDemo = APLAction.fromJsonString(`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":47437},"maxOverlap":{"const":{"val":"2s"}}}},"castSpell":{"spellId":{"spellId":25203}}}`);
+		const refreshShout = APLAction.fromJsonString(
+			`{"condition":{"auraShouldRefresh":{"sourceUnit":{"type":"Self"},"auraId":{"spellId":47440},"maxOverlap":{"const":{"val":"3s"}}}},"castSpell":{"spellId":{"spellId":47440}}}`,
+		);
+		const refreshTclap = APLAction.fromJsonString(
+			`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":47502},"maxOverlap":{"const":{"val":"2s"}}}},"castSpell":{"spellId":{"spellId":47502}}}`,
+		);
+		const refreshDemo = APLAction.fromJsonString(
+			`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":47437},"maxOverlap":{"const":{"val":"2s"}}}},"castSpell":{"spellId":{"spellId":25203}}}`,
+		);
 		const devastate = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":47498}}}`);
 
 		prepullActions.push(preShout);
 
-		actions.push(...[
-			heroicStrike,
-			shieldSlam,
-			revenge,
-			refreshShout,
-			refreshTclap,
-			refreshDemo,
-			devastate,
-			].filter(a => a) as Array<APLAction>)
+		actions.push(...([heroicStrike, shieldSlam, revenge, refreshShout, refreshTclap, refreshDemo, devastate].filter(a => a) as Array<APLAction>));
 
 		return APLRotation.create({
 			prepullActions: prepullActions,
-			priorityList: actions.map(action => APLListItem.create({
-				action: action,
-			}))
+			priorityList: actions.map(action =>
+				APLListItem.create({
+					action: action,
+				}),
+			),
 		});
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecProtectionWarrior,
-			tooltip: 'Protection Warrior',
-			defaultName: 'Protection',
-			iconUrl: getSpecIcon(Class.ClassWarrior, 2),
-
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,

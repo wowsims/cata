@@ -4,7 +4,6 @@ import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { PlayerSpecs } from '../../core/player_specs';
 import { APLListItem, APLRotation } from '../../core/proto/apl';
 import {
 	Cooldowns,
@@ -28,7 +27,7 @@ import * as HunterInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
-	cssClass: 'hunter-sim-ui',
+	cssClass: 'survival-hunter-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Hunter),
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
@@ -221,10 +220,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecSurvivalHunter,
-			tooltip: PlayerSpecs.SurvivalHunter.fullName,
-			defaultName: PlayerSpecs.SurvivalHunter.friendlyName,
-			iconUrl: PlayerSpecs.SurvivalHunter.getIcon('medium'),
-
 			talents: Presets.SurvivalTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,

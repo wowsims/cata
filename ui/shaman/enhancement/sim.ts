@@ -4,33 +4,19 @@ import * as OtherInputs from '../../core/components/other_inputs.js';
 import { TotemsSection } from '../../core/components/totem_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
-import {
-	APLRotation,
-} from '../../core/proto/apl.js';
-import {
-	Class,
-	Faction,
-	IndividualBuffs,
-	ItemSlot,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	Spec,
-	Stat,
-	TristateEffect,
-} from '../../core/proto/common.js';
+import { PlayerClasses } from '../../core/player_classes';
+import { APLRotation } from '../../core/proto/apl.js';
+import { Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { ShamanImbue } from '../../core/proto/shaman.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import { getSpecIcon, specNames } from '../../core/proto_utils/utils.js';
 import * as ShamanInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	cssClass: 'enhancement-shaman-sim-ui',
-	cssScheme: 'shaman',
+	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Shaman),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -48,10 +34,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellHit,
 		Stat.StatSpellHaste,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -77,24 +60,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Default equipped gear.
 		gear: Presets.P4_PRESET_WF.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 1.48,
-			[Stat.StatAgility]: 1.59,
-			[Stat.StatStrength]: 1.1,
-			[Stat.StatSpellPower]: 1.13,
-			[Stat.StatSpellHit]: 0, //default EP assumes cap
-			[Stat.StatSpellCrit]: 0.91,
-			[Stat.StatSpellHaste]: 0.37,
-			[Stat.StatAttackPower]: 1.0,
-			[Stat.StatMeleeHit]: 1.38,
-			[Stat.StatMeleeCrit]: 0.81,
-			[Stat.StatMeleeHaste]: 1.61, //haste is complicated
-			[Stat.StatArmorPenetration]: 0.48,
-			[Stat.StatExpertise]: 0, //default EP assumes cap
-		}, {
-			[PseudoStat.PseudoStatMainHandDps]: 5.21,
-			[PseudoStat.PseudoStatOffHandDps]: 2.21,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatIntellect]: 1.48,
+				[Stat.StatAgility]: 1.59,
+				[Stat.StatStrength]: 1.1,
+				[Stat.StatSpellPower]: 1.13,
+				[Stat.StatSpellHit]: 0, //default EP assumes cap
+				[Stat.StatSpellCrit]: 0.91,
+				[Stat.StatSpellHaste]: 0.37,
+				[Stat.StatAttackPower]: 1.0,
+				[Stat.StatMeleeHit]: 1.38,
+				[Stat.StatMeleeCrit]: 0.81,
+				[Stat.StatMeleeHaste]: 1.61, //haste is complicated
+				[Stat.StatArmorPenetration]: 0.48,
+				[Stat.StatExpertise]: 0, //default EP assumes cap
+			},
+			{
+				[PseudoStat.PseudoStatMainHandDps]: 5.21,
+				[PseudoStat.PseudoStatOffHandDps]: 2.21,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -103,8 +89,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: Presets.DefaultRaidBuffs,
-		partyBuffs: PartyBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 			blessingOfKings: true,
 			blessingOfWisdom: TristateEffect.TristateEffectImproved,
@@ -115,34 +100,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		ShamanInputs.ShamanShieldInput,
-		ShamanInputs.ShamanImbueMH,
-		ShamanInputs.ShamanImbueOH,
-	],
+	playerIconInputs: [ShamanInputs.ShamanShieldInput, ShamanInputs.ShamanImbueMH, ShamanInputs.ShamanImbueOH],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.ReplenishmentBuff,
-		BuffDebuffInputs.MP5Buff,
-		BuffDebuffInputs.SpellHasteBuff,
-		BuffDebuffInputs.SpiritBuff,
-	],
-	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.BleedDebuff,
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.ReplenishmentBuff, BuffDebuffInputs.MP5Buff, BuffDebuffInputs.SpellHasteBuff, BuffDebuffInputs.SpiritBuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			ShamanInputs.SyncTypeInput,
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
-		],
+		inputs: [ShamanInputs.SyncTypeInput, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
-	customSections: [
-		TotemsSection,
-		FireElementalSection
-	],
+	customSections: [TotemsSection, FireElementalSection],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -150,16 +117,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.StandardTalents,
-			Presets.Phase3Talents,
-		],
+		talents: [Presets.StandardTalents, Presets.Phase3Talents],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_FT_DEFAULT,
-			Presets.ROTATION_WF_DEFAULT,
-			Presets.ROTATION_PHASE_3,
-		],
+		rotations: [Presets.ROTATION_FT_DEFAULT, Presets.ROTATION_WF_DEFAULT, Presets.ROTATION_PHASE_3],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.PRERAID_PRESET,
@@ -174,14 +134,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
-		const hasT94P = player.getCurrentStats().sets.includes('Triumphant Nobundo\'s Battlegear (4pc)')
-			|| player.getCurrentStats().sets.includes('Nobundo\'s Battlegear (4pc)')
-			|| player.getCurrentStats().sets.includes('Triumphant Thrall\'s Battlegear (4pc)')
-			|| player.getCurrentStats().sets.includes('Thrall\'s Battlegear (4pc)');
+		const hasT94P =
+			player.getCurrentStats().sets.includes("Triumphant Nobundo's Battlegear (4pc)") ||
+			player.getCurrentStats().sets.includes("Nobundo's Battlegear (4pc)") ||
+			player.getCurrentStats().sets.includes("Triumphant Thrall's Battlegear (4pc)") ||
+			player.getCurrentStats().sets.includes("Thrall's Battlegear (4pc)");
 		const options = player.getSpecOptions();
 
 		if (hasT94P) {
-			console.log("has set");
+			console.log('has set');
 			return Presets.ROTATION_PHASE_3.rotation.rotation!;
 		} else if (options.imbueMh == ShamanImbue.FlametongueWeapon) {
 			return Presets.ROTATION_FT_DEFAULT.rotation.rotation!;
@@ -193,10 +154,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecEnhancementShaman,
-			tooltip: specNames[Spec.SpecEnhancementShaman],
-			defaultName: 'Enhancement',
-			iconUrl: getSpecIcon(Class.ClassShaman, 1),
-
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,

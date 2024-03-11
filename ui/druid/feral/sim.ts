@@ -4,7 +4,6 @@ import { PhysicalDPSGemOptimizer } from '../../core/components/suggest_gems_acti
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
-import { PlayerSpecs } from '../../core/player_specs';
 import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl.js';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { FeralDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
@@ -165,10 +164,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFeralDruid,
-			tooltip: PlayerSpecs.FeralDruid.fullName,
-			defaultName: PlayerSpecs.FeralDruid.friendlyName,
-			iconUrl: PlayerSpecs.FeralDruid.getIcon('medium'),
-
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,

@@ -1,22 +1,6 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import {
-	Consumes,
-	Debuffs,
-	Flask,
-	Food,
-	Glyphs,
-	IndividualBuffs,
-	Potions,
-	Profession,
-	RaidBuffs,
-	TristateEffect,
-} from '../../core/proto/common.js';
-import {
-	PriestMajorGlyph as MajorGlyph,
-	PriestMinorGlyph as MinorGlyph,
-	ShadowPriest_Options as Options,
-	ShadowPriest_Options_Armor as Armor,
-} from '../../core/proto/priest.js';
+import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profession, RaidBuffs, TristateEffect } from '../../core/proto/common.js';
+import { HolyPriest_Options as Options, PriestMajorGlyph as MajorGlyph, PriestMinorGlyph as MinorGlyph } from '../../core/proto/priest.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -32,11 +16,11 @@ export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
 import P4Gear from './gear_sets/p4.gear.json';
 export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 
-import DefaultApl from './apls/default.apl.json'
+import DefaultApl from './apls/default.apl.json';
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
-import AOE24Apl from './apls/aoe_2_4.apl.json'
+import AOE24Apl from './apls/aoe_2_4.apl.json';
 export const ROTATION_PRESET_AOE24 = PresetUtils.makePresetAPLRotation('AOE (2 to 4 targets)', AOE24Apl);
-import AOE4PlusApl from './apls/aoe_4_plus.apl.json'
+import AOE4PlusApl from './apls/aoe_4_plus.apl.json';
 export const ROTATION_PRESET_AOE4PLUS = PresetUtils.makePresetAPLRotation('AOE (4+ targets)', AOE4PlusApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
@@ -71,9 +55,7 @@ export const EnlightenmentTalents = {
 	}),
 };
 
-export const DefaultOptions = Options.create({
-	armor: Armor.InnerFire,
-});
+export const DefaultOptions = Options.create({});
 
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheFrostWyrm,

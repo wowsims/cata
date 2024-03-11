@@ -3,34 +3,20 @@ import * as OtherInputs from '../../core/components/other_inputs.js';
 import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
-import {
-	APLRotation,
-} from '../../core/proto/apl.js';
-import {
-	Class,
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	PartyBuffs,
-PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat, 	TristateEffect,
-} from '../../core/proto/common.js';
+import { PlayerClasses } from '../../core/player_classes';
+import { APLRotation } from '../../core/proto/apl.js';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { PaladinMajorGlyph, PaladinSeal } from '../../core/proto/paladin.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import { getSpecIcon } from '../../core/proto_utils/utils.js';
 import { TypedEvent } from '../../core/typed_event.js';
 import * as RetributionPaladinInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssClass: 'retribution-paladin-sim-ui',
-	cssScheme: 'paladin',
+	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Paladin),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -49,9 +35,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatSpellHit,
 		Stat.StatSpellHaste,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -77,10 +61,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		let stats = new Stats();
 
 		TypedEvent.freezeAllAndDo(() => {
-			if (player.getMajorGlyphs().includes(PaladinMajorGlyph.GlyphOfSealOfVengeance) && (player.getSpecOptions().seal == PaladinSeal.Vengeance)) {
+			if (player.getMajorGlyphs().includes(PaladinMajorGlyph.GlyphOfSealOfVengeance) && player.getSpecOptions().seal == PaladinSeal.Vengeance) {
 				stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			}
-		})
+		});
 
 		return {
 			talents: stats,
@@ -91,24 +75,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Default equipped gear.
 		gear: Presets.P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatStrength]: 2.53,
-			[Stat.StatAgility]: 1.13,
-			[Stat.StatIntellect]: 0.15,
-			[Stat.StatSpellPower]: 0.32,
-			[Stat.StatSpellHit]: 0.41,
-			[Stat.StatSpellCrit]: 0.01,
-			[Stat.StatSpellHaste]: 0.12,
-			[Stat.StatMP5]: 0.05,
-			[Stat.StatAttackPower]: 1,
-			[Stat.StatMeleeHit]: 1.96,
-			[Stat.StatMeleeCrit]: 1.16,
-			[Stat.StatMeleeHaste]: 1.44,
-			[Stat.StatArmorPenetration]: 0.76,
-			[Stat.StatExpertise]: 1.80,
-		}, {
-			[PseudoStat.PseudoStatMainHandDps]: 7.33,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatStrength]: 2.53,
+				[Stat.StatAgility]: 1.13,
+				[Stat.StatIntellect]: 0.15,
+				[Stat.StatSpellPower]: 0.32,
+				[Stat.StatSpellHit]: 0.41,
+				[Stat.StatSpellCrit]: 0.01,
+				[Stat.StatSpellHaste]: 0.12,
+				[Stat.StatMP5]: 0.05,
+				[Stat.StatAttackPower]: 1,
+				[Stat.StatMeleeHit]: 1.96,
+				[Stat.StatMeleeCrit]: 1.16,
+				[Stat.StatMeleeHaste]: 1.44,
+				[Stat.StatArmorPenetration]: 0.76,
+				[Stat.StatExpertise]: 1.8,
+			},
+			{
+				[PseudoStat.PseudoStatMainHandDps]: 7.33,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -134,8 +121,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			wrathOfAirTotem: true,
 			demonicPactSp: 500,
 		}),
-		partyBuffs: PartyBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 			judgementsOfTheWise: true,
 			blessingOfKings: true,
@@ -157,23 +143,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		RetributionPaladinInputs.AuraSelection,
-		RetributionPaladinInputs.JudgementSelection,
-		RetributionPaladinInputs.StartingSealSelection,
-	],
+	playerIconInputs: [RetributionPaladinInputs.AuraSelection, RetributionPaladinInputs.JudgementSelection, RetributionPaladinInputs.StartingSealSelection],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.ReplenishmentBuff,
-	],
-	excludeBuffDebuffInputs: [
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.ReplenishmentBuff],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
-		],
+		inputs: [OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -181,23 +157,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	presets: {
-		rotations: [
-			Presets.ROTATION_PRESET_DEFAULT,
-		],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.AuraMasteryTalents,
-			Presets.DivineSacTalents,
-		],
+		talents: [Presets.AuraMasteryTalents, Presets.DivineSacTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_PRESET,
-			Presets.P1_PRESET,
-			Presets.P2_PRESET,
-			Presets.P3_PRESET,
-			Presets.P4_PRESET,
-			Presets.P5_PRESET,
-		],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET, Presets.P5_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
@@ -207,10 +171,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecRetributionPaladin,
-			tooltip: 'Retribution Paladin',
-			defaultName: 'Retribution',
-			iconUrl: getSpecIcon(Class.ClassPaladin, 2),
-
 			talents: Presets.AuraMasteryTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,

@@ -1,6 +1,6 @@
 import { LOCAL_STORAGE_PREFIX } from '../constants/other';
 import { PlayerSpec } from '../player_spec';
-import { Class, Spec } from '../proto/common';
+import { Spec } from '../proto/common';
 import * as DeathKnightSpecs from './death_knight';
 import * as DruidSpecs from './druid';
 import * as HunterSpecs from './hunter';
@@ -12,7 +12,7 @@ import * as ShamanSpecs from './shaman';
 import * as WarlockSpecs from './warlock';
 import * as WarriorSpecs from './warrior';
 
-const protoToPlayerSpec: Record<Spec, PlayerSpec<Class, Spec> | undefined> = {
+const protoToPlayerSpec: Record<Spec, PlayerSpec<Spec> | undefined> = {
 	[Spec.SpecUnknown]: undefined,
 	// Death Knight
 	[Spec.SpecBloodDeathKnight]: DeathKnightSpecs.BloodDeathKnight,
@@ -69,14 +69,16 @@ export const PlayerSpecs = {
 	...WarriorSpecs,
 	// Prefixes used for storing browser data for each site. Even if a Spec is
 	// renamed, DO NOT change these values or people will lose their saved data.
-	getLocalStorageKey: <ClassType extends Class, SpecType extends Spec>(spec: PlayerSpec<ClassType, SpecType>): string => {
-		return `${LOCAL_STORAGE_PREFIX}_${spec.friendlyName.toLowerCase().replace(/\s/, '_')}_${spec.class.friendlyName.toLowerCase().replace(/\s/, '_')}`;
+	getLocalStorageKey: <SpecType extends Spec>(spec: PlayerSpec<SpecType>): string => {
+		return `${LOCAL_STORAGE_PREFIX}_${spec.friendlyName.toLowerCase().replace(/\s/, '_')}_${spec.playerClass.friendlyName
+			.toLowerCase()
+			.replace(/\s/, '_')}`;
 	},
-	fromProto: <ClassType extends Class, SpecType extends Spec>(protoId: SpecType): PlayerSpec<ClassType, SpecType> => {
+	fromProto: <SpecType extends Spec>(protoId: SpecType): PlayerSpec<SpecType> => {
 		if (protoId == Spec.SpecUnknown) {
 			throw new Error('Invalid Spec');
 		}
 
-		return protoToPlayerSpec[protoId] as PlayerSpec<ClassType, SpecType>;
+		return protoToPlayerSpec[protoId] as PlayerSpec<SpecType>;
 	},
 };

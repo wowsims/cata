@@ -76,13 +76,13 @@ export interface RaidSimPreset<SpecType extends Spec> {
 	specOptions: SpecOptions<SpecType>;
 	consumes: Consumes;
 
-	defaultName: string;
+	defaultName?: string;
 	defaultFactionRaces: Record<Faction, Race>;
 	defaultGear: Record<Faction, Record<number, EquipmentSpec>>;
 	otherDefaults?: OtherDefaults;
 
-	tooltip: string;
-	iconUrl: string;
+	tooltip?: string;
+	iconUrl?: string;
 }
 
 export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConfig<SpecType> {
@@ -179,7 +179,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			cssScheme: config.cssScheme,
 			spec: player.spec,
 			knownIssues: config.knownIssues,
-			simStatus: simLaunchStatuses[player.spec.protoID],
+			simStatus: simLaunchStatuses[player.getSpec()],
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;
@@ -188,8 +188,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.prevEpIterations = 0;
 		this.prevEpSimResult = null;
 
-		if ((config.itemSwapSlots || []).length > 0 && !itemSwapEnabledSpecs.includes(player.spec.protoID)) {
-			itemSwapEnabledSpecs.push(player.spec.protoID);
+		if ((config.itemSwapSlots || []).length > 0 && !itemSwapEnabledSpecs.includes(player.getSpec())) {
+			itemSwapEnabledSpecs.push(player.getSpec());
 		}
 
 		this.addWarning({

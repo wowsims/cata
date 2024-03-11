@@ -3,44 +3,22 @@ import { TotemsSection } from '../../core/components/totem_inputs.js';
 import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
-import {
-	APLRotation,
-} from '../../core/proto/apl.js';
-import {
-	Class,
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	PartyBuffs,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat,
-	TristateEffect,
-} from '../../core/proto/common.js';
+import { PlayerClasses } from '../../core/player_classes';
+import { APLRotation } from '../../core/proto/apl.js';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import { getSpecIcon, specNames } from '../../core/proto_utils/utils.js';
 import * as ShamanInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	cssClass: 'restoration-shaman-sim-ui',
-	cssScheme: 'shaman',
+	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Shaman),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-	],
-	warnings: [
-	],
+	knownIssues: [],
+	warnings: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMP5,
-	],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -89,8 +67,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 			moonkinAura: TristateEffect.TristateEffectImproved,
 			sanctifiedRetribution: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 			blessingOfKings: true,
 			blessingOfWisdom: 2,
@@ -105,24 +82,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		}),
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		ShamanInputs.ShamanShieldInput,
-	],
+	playerIconInputs: [ShamanInputs.ShamanShieldInput],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-	],
-	excludeBuffDebuffInputs: [
-	],
+	includeBuffDebuffInputs: [],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			ShamanInputs.TriggerEarthShield,
-			OtherInputs.TankAssignment
-		],
+		inputs: [ShamanInputs.TriggerEarthShield, OtherInputs.TankAssignment],
 	},
-	customSections: [
-		TotemsSection,
-	],
+	customSections: [TotemsSection],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -130,20 +98,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.RaidHealingTalents,
-			Presets.TankHealingTalents,
-		],
-		rotations: [
-		],
+		talents: [Presets.RaidHealingTalents, Presets.TankHealingTalents],
+		rotations: [],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_PRESET,
-			Presets.P1_PRESET,
-			Presets.P2_PRESET,
-			Presets.P3_PRESET,
-			Presets.P4_PRESET,
-		],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecRestorationShaman>): APLRotation => {
@@ -153,10 +111,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecRestorationShaman,
-			tooltip: specNames[Spec.SpecRestorationShaman],
-			defaultName: 'Restoration',
-			iconUrl: getSpecIcon(Class.ClassShaman, 2),
-
 			talents: Presets.RaidHealingTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,

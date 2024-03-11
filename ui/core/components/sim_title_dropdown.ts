@@ -12,7 +12,7 @@ interface ClassOptions {
 
 interface SpecOptions {
 	type: 'Spec';
-	spec: PlayerSpec<Class, Spec>;
+	spec: PlayerSpec<Spec>;
 }
 
 interface RaidOptions {
@@ -27,7 +27,7 @@ type SimTitleDropdownConfig = {
 export class SimTitleDropdown extends Component {
 	private readonly dropdownMenu: HTMLElement | undefined;
 
-	constructor(parent: HTMLElement, currentSpec: PlayerSpec<Class, Spec> | null, config: SimTitleDropdownConfig = {}) {
+	constructor(parent: HTMLElement, currentSpec: PlayerSpec<Spec> | null, config: SimTitleDropdownConfig = {}) {
 		super(parent, 'sim-title-dropdown-root');
 
 		const rootLinkArgs: SpecOptions | RaidOptions = currentSpec === null ? { type: 'Raid' } : { type: 'Spec', spec: currentSpec };
@@ -172,7 +172,7 @@ export class SimTitleDropdown extends Component {
 		return fragment.children[0] as HTMLElement;
 	}
 
-	private buildSpecLink(spec: PlayerSpec<any, any>): HTMLElement {
+	private buildSpecLink(spec: PlayerSpec<any>): HTMLElement {
 		const textKlass = this.getContextualKlass({ type: 'Spec', spec: spec });
 		const iconPath = this.getSimIconPath({ type: 'Spec', spec: spec });
 

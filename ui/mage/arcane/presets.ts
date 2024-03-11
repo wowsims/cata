@@ -1,17 +1,6 @@
-import { Player } from '../core/player.js';
-import * as PresetUtils from '../core/preset_utils.js';
-import {
-	Conjured,
-	Consumes,
-	Faction,
-	Flask,
-	Food,
-	Glyphs,
-	Potions,
-	Profession,
-	Spec,
-	UnitReference,
-} from '../core/proto/common.js';
+import { Player } from '../../core/player';
+import * as PresetUtils from '../../core/preset_utils';
+import { Conjured, Consumes, Faction, Flask, Food, Glyphs, Potions, Profession, Spec, UnitReference } from '../../core/proto/common';
 import {
 	Mage_Options as MageOptions,
 	Mage_Options_ArmorType as ArmorType,
@@ -19,12 +8,12 @@ import {
 	Mage_Rotation_PrimaryFireSpell as PrimaryFireSpell,
 	MageMajorGlyph,
 	MageMinorGlyph,
-} from '../core/proto/mage.js';
-import { SavedTalents } from '../core/proto/ui.js';
+} from '../../core/proto/mage';
+import { SavedTalents } from '../../core/proto/ui';
+import PreraidArcaneGear from './gear_sets/preraid_arcane.gear.json';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-import PreraidArcaneGear from './gear_sets/preraid_arcane.gear.json';
 export const ARCANE_PRERAID_PRESET = PresetUtils.makePresetGear('Arcane Preraid Preset', PreraidArcaneGear, { talentTree: 0 });
 import P1ArcaneGear from './gear_sets/p1_arcane.gear.json';
 export const ARCANE_P1_PRESET = PresetUtils.makePresetGear('Arcane P1 Preset', P1ArcaneGear, { talentTree: 0 });
@@ -43,25 +32,59 @@ export const FIRE_PRERAID_PRESET = PresetUtils.makePresetGear('Fire Preraid Pres
 import P1FireGear from './gear_sets/p1_fire.gear.json';
 export const FIRE_P1_PRESET = PresetUtils.makePresetGear('Fire P1 Preset', P1FireGear, { talentTree: 1 });
 import P2FireGear from './gear_sets/p2_fire.gear.json';
-export const FIRE_P2_PRESET = PresetUtils.makePresetGear('Fire P2 Preset', P2FireGear, { talentTree: 1, customCondition: (player: Player<Spec.SpecMage>) => !player.getTalents().icyVeins });
+export const FIRE_P2_PRESET = PresetUtils.makePresetGear('Fire P2 Preset', P2FireGear, {
+	talentTree: 1,
+	customCondition: (player: Player<Spec.SpecMage>) => !player.getTalents().icyVeins,
+});
 import P3FireAllianceGear from './gear_sets/p3_fire_alliance.gear.json';
-export const FIRE_P3_PRESET_ALLIANCE = PresetUtils.makePresetGear('Fire P3 Preset [A]', P3FireAllianceGear, { talentTree: 1, faction: Faction.Alliance, customCondition: (player: Player<Spec.SpecMage>) => !player.getTalents().icyVeins });
+export const FIRE_P3_PRESET_ALLIANCE = PresetUtils.makePresetGear('Fire P3 Preset [A]', P3FireAllianceGear, {
+	talentTree: 1,
+	faction: Faction.Alliance,
+	customCondition: (player: Player<Spec.SpecMage>) => !player.getTalents().icyVeins,
+});
 import P3FireHordeGear from './gear_sets/p3_fire_horde.gear.json';
-export const FIRE_P3_PRESET_HORDE = PresetUtils.makePresetGear('Fire P3 Preset [H]', P3FireHordeGear, { talentTree: 1, faction: Faction.Horde, customCondition: (player: Player<Spec.SpecMage>) => !player.getTalents().icyVeins });
+export const FIRE_P3_PRESET_HORDE = PresetUtils.makePresetGear('Fire P3 Preset [H]', P3FireHordeGear, {
+	talentTree: 1,
+	faction: Faction.Horde,
+	customCondition: (player: Player<Spec.SpecMage>) => !player.getTalents().icyVeins,
+});
 import P4FireAllianceGear from './gear_sets/p4_fire_alliance.gear.json';
-export const FIRE_P4_PRESET_ALLIANCE = PresetUtils.makePresetGear('Fire P4 Preset [A]', P4FireAllianceGear, { talentTree: 1, faction: Faction.Alliance, customCondition: (player: Player<Spec.SpecMage>) => !player.getTalents().icyVeins });
+export const FIRE_P4_PRESET_ALLIANCE = PresetUtils.makePresetGear('Fire P4 Preset [A]', P4FireAllianceGear, {
+	talentTree: 1,
+	faction: Faction.Alliance,
+	customCondition: (player: Player<Spec.SpecMage>) => !player.getTalents().icyVeins,
+});
 import P4FireHordeGear from './gear_sets/p4_fire_horde.gear.json';
-export const FIRE_P4_PRESET_HORDE = PresetUtils.makePresetGear('Fire P4 Preset [H]', P4FireHordeGear, { talentTree: 1, faction: Faction.Horde, customCondition: (player: Player<Spec.SpecMage>) => !player.getTalents().icyVeins });
+export const FIRE_P4_PRESET_HORDE = PresetUtils.makePresetGear('Fire P4 Preset [H]', P4FireHordeGear, {
+	talentTree: 1,
+	faction: Faction.Horde,
+	customCondition: (player: Player<Spec.SpecMage>) => !player.getTalents().icyVeins,
+});
 import P2FfbGear from './gear_sets/p2_ffb.gear.json';
-export const FFB_P2_PRESET = PresetUtils.makePresetGear('FFB P2 Preset', P2FfbGear, { talentTree: 1, customCondition: (player: Player<Spec.SpecMage>) => player.getTalents().icyVeins });
+export const FFB_P2_PRESET = PresetUtils.makePresetGear('FFB P2 Preset', P2FfbGear, {
+	talentTree: 1,
+	customCondition: (player: Player<Spec.SpecMage>) => player.getTalents().icyVeins,
+});
 import P3FfbAllianceGear from './gear_sets/p3_ffb_alliance.gear.json';
-export const FFB_P3_PRESET_ALLIANCE = PresetUtils.makePresetGear('FFB P3 Preset [A]', P3FfbAllianceGear, { talentTree: 1, customCondition: (player: Player<Spec.SpecMage>) => player.getTalents().icyVeins });
+export const FFB_P3_PRESET_ALLIANCE = PresetUtils.makePresetGear('FFB P3 Preset [A]', P3FfbAllianceGear, {
+	talentTree: 1,
+	customCondition: (player: Player<Spec.SpecMage>) => player.getTalents().icyVeins,
+});
 import P3FfbHordeGear from './gear_sets/p3_ffb_horde.gear.json';
-export const FFB_P3_PRESET_HORDE = PresetUtils.makePresetGear('FFB P3 Preset [H]', P3FfbHordeGear, { talentTree: 1, customCondition: (player: Player<Spec.SpecMage>) => player.getTalents().icyVeins });
+export const FFB_P3_PRESET_HORDE = PresetUtils.makePresetGear('FFB P3 Preset [H]', P3FfbHordeGear, {
+	talentTree: 1,
+	customCondition: (player: Player<Spec.SpecMage>) => player.getTalents().icyVeins,
+});
 import P4FfbAllianceGear from './gear_sets/p4_ffb_alliance.gear.json';
-export const FFB_P4_PRESET_ALLIANCE = PresetUtils.makePresetGear('FFB P4 Preset [A]', P4FfbAllianceGear, { talentTree: 1, customCondition: (player: Player<Spec.SpecMage>) => player.getTalents().icyVeins });
+export const FFB_P4_PRESET_ALLIANCE = PresetUtils.makePresetGear('FFB P4 Preset [A]', P4FfbAllianceGear, {
+	talentTree: 1,
+	customCondition: (player: Player<Spec.SpecMage>) => player.getTalents().icyVeins,
+});
 import P4FfbHordeGear from './gear_sets/p4_ffb_horde.gear.json';
-export const FFB_P4_PRESET_HORDE = PresetUtils.makePresetGear('FFB P4 Preset [H]', P4FfbHordeGear, { talentTree: 1, customCondition: (player: Player<Spec.SpecMage>) => player.getTalents().icyVeins });
+export const FFB_P4_PRESET_HORDE = PresetUtils.makePresetGear('FFB P4 Preset [H]', P4FfbHordeGear, {
+	talentTree: 1,
+	customCondition: (player: Player<Spec.SpecMage>) => player.getTalents().icyVeins,
+});
 import P1FrostGear from './gear_sets/p1_frost.gear.json';
 export const FROST_P1_PRESET = PresetUtils.makePresetGear('Frost P1 Preset', P1FrostGear, { talentTree: 2 });
 import P2FrostGear from './gear_sets/p2_frost.gear.json';
@@ -157,7 +180,7 @@ export const FrostfireTalents = {
 			minor3: MageMinorGlyph.GlyphOfBlastWave,
 		}),
 	}),
-}
+};
 export const FrostTalents = {
 	name: 'Frost',
 	data: SavedTalents.create({
