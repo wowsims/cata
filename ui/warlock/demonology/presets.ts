@@ -65,7 +65,7 @@ export const DemonologyTalents = {
 };
 
 export const DemonologyOptions = WarlockOptions.create({
-	warlockOptions: {
+	classOptions: {
 		armor: Armor.FelArmor,
 		summon: Summon.Felguard,
 		weaponImbue: WeaponImbue.GrandSpellstone,

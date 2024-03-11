@@ -1,6 +1,6 @@
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
-import { Class, EquipmentSpec, Spec, UnitStats } from '../../proto/common';
+import { EquipmentSpec, UnitStats } from '../../proto/common';
 import { SavedGearSet } from '../../proto/ui';
 import { Stats } from '../../proto_utils/stats';
 import { EventID, TypedEvent } from '../../typed_event';
@@ -9,13 +9,13 @@ import { SavedDataManager } from '../saved_data_manager';
 import { SimTab } from '../sim_tab';
 import { GemSummary } from './gem_summary';
 
-export class GearTab<ClassType extends Class, SpecType extends Spec> extends SimTab {
-	protected simUI: IndividualSimUI<ClassType, SpecType>;
+export class GearTab extends SimTab {
+	protected simUI: IndividualSimUI<any>;
 
 	readonly leftPanel: HTMLElement;
 	readonly rightPanel: HTMLElement;
 
-	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<ClassType, SpecType>) {
+	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<any>) {
 		super(parentElem, simUI, { identifier: 'gear-tab', title: 'Gear' });
 		this.simUI = simUI;
 
@@ -46,17 +46,17 @@ export class GearTab<ClassType extends Class, SpecType extends Spec> extends Sim
 	}
 
 	private buildSavedGearsetPicker() {
-		const savedGearManager = new SavedDataManager<Player<ClassType, SpecType>, SavedGearSet>(this.rightPanel, this.simUI.player, {
+		const savedGearManager = new SavedDataManager<Player<any>, SavedGearSet>(this.rightPanel, this.simUI.player, {
 			header: { title: 'Gear Sets' },
 			label: 'Gear Set',
 			storageKey: this.simUI.getSavedGearStorageKey(),
-			getData: (player: Player<ClassType, SpecType>) => {
+			getData: (player: Player<any>) => {
 				return SavedGearSet.create({
 					gear: player.getGear().asSpec(),
 					bonusStatsStats: player.getBonusStats().toProto(),
 				});
 			},
-			setData: (eventID: EventID, player: Player<ClassType, SpecType>, newSavedGear: SavedGearSet) => {
+			setData: (eventID: EventID, player: Player<any>, newSavedGear: SavedGearSet) => {
 				TypedEvent.freezeAllAndDo(() => {
 					player.setGear(eventID, this.simUI.sim.db.lookupEquipmentSpec(newSavedGear.gear || EquipmentSpec.create()));
 					player.setBonusStats(eventID, Stats.fromProto(newSavedGear.bonusStatsStats || UnitStats.create()));

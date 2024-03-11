@@ -72,7 +72,7 @@ export const DestructionTalents = {
 };
 
 export const DestructionOptions = WarlockOptions.create({
-	warlockOptions: {
+	classOptions: {
 		armor: Armor.FelArmor,
 		summon: Summon.Imp,
 		weaponImbue: WeaponImbue.GrandFirestone,

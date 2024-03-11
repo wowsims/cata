@@ -15,11 +15,7 @@ import {
 	TristateEffect,
 	UnitReference,
 } from '../../core/proto/common.js';
-import {
-	BalanceDruid_Options as BalanceDruidOptions,
-	DruidMajorGlyph,
-	DruidMinorGlyph,
-} from '../../core/proto/druid.js';
+import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph, DruidMinorGlyph } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -109,7 +105,9 @@ export const Phase4Talents = {
 };
 
 export const DefaultOptions = BalanceDruidOptions.create({
-	innervateTarget: UnitReference.create(),
+	classOptions: {
+		innervateTarget: UnitReference.create(),
+	},
 });
 
 export const DefaultConsumes = Consumes.create({

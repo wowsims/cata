@@ -60,7 +60,9 @@ export const ThiccRestoTalents = {
 };
 
 export const DefaultOptions = RestorationDruidOptions.create({
-	innervateTarget: UnitReference.create(),
+	classOptions: {
+		innervateTarget: UnitReference.create(),
+	},
 });
 
 export const DefaultConsumes = Consumes.create({

@@ -236,7 +236,7 @@ export abstract class SimUI extends Component {
 		return this.rootElem.classList.contains('individual-sim-ui');
 	}
 
-	async runSim(onProgress: () => void) {
+	async runSim(onProgress: (_?: any) => void) {
 		this.resultsViewer.setPending();
 		try {
 			await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);

@@ -1,17 +1,7 @@
 import { Player } from '../player.js';
 import { ItemSlot } from '../proto/common.js';
-import {
-	RaidFilterOption,
-	SourceFilterOption,
-	UIItem_FactionRestriction,
-} from '../proto/ui.js';
-import {
-	armorTypeNames,
-	raidNames,
-	rangedWeaponTypeNames,
-	sourceNames,
-	weaponTypeNames,
-} from '../proto_utils/names.js';
+import { RaidFilterOption, SourceFilterOption, UIItem_FactionRestriction } from '../proto/ui.js';
+import { armorTypeNames, raidNames, rangedWeaponTypeNames, sourceNames, weaponTypeNames } from '../proto_utils/names.js';
 import { Sim } from '../sim.js';
 import { EventID } from '../typed_event.js';
 import { BaseModal } from './base_modal.js';
@@ -33,11 +23,7 @@ export class FiltersMenu extends BaseModal {
 
 		new EnumPicker(section, player.sim, {
 			label: 'Faction Restrictions',
-			values: [
-				UIItem_FactionRestriction.UNSPECIFIED,
-				UIItem_FactionRestriction.ALLIANCE_ONLY,
-				UIItem_FactionRestriction.HORDE_ONLY
-			].map(restriction => {
+			values: [UIItem_FactionRestriction.UNSPECIFIED, UIItem_FactionRestriction.ALLIANCE_ONLY, UIItem_FactionRestriction.HORDE_ONLY].map(restriction => {
 				return {
 					name: factionRestrictionsToLabels[restriction],
 					value: restriction,
@@ -95,7 +81,7 @@ export class FiltersMenu extends BaseModal {
 		});
 
 		if (Player.ARMOR_SLOTS.includes(slot)) {
-			const armorTypes = player.getClass().armorTypes;
+			const armorTypes = player.getPlayerClass().armorTypes;
 
 			if (armorTypes.length > 1) {
 				const section = this.newSection('Armor Type');
@@ -122,7 +108,7 @@ export class FiltersMenu extends BaseModal {
 		} else if (Player.WEAPON_SLOTS.includes(slot)) {
 			const weaponTypeSection = this.newSection('Weapon Type');
 			weaponTypeSection.classList.add('filters-menu-section-bool-list');
-			const weaponTypes = player.getClass().weaponTypes.map(ewt => ewt.weaponType);
+			const weaponTypes = player.getPlayerClass().weaponTypes.map(ewt => ewt.weaponType);
 
 			weaponTypes.forEach(weaponType => {
 				new BooleanPicker<Sim>(weaponTypeSection, player.sim, {
@@ -199,7 +185,7 @@ export class FiltersMenu extends BaseModal {
 				});
 			}
 		} else if (slot == ItemSlot.ItemSlotRanged) {
-			const rangedweapontypes = player.getClass().rangedWeaponTypes
+			const rangedweapontypes = player.getPlayerClass().rangedWeaponTypes;
 			if (rangedweapontypes.length <= 1) {
 				return;
 			}

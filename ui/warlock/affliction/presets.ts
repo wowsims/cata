@@ -70,7 +70,7 @@ export const AfflictionTalents = {
 };
 
 export const AfflictionOptions = WarlockOptions.create({
-	warlockOptions: {
+	classOptions: {
 		armor: Armor.FelArmor,
 		summon: Summon.Felhunter,
 		weaponImbue: WeaponImbue.GrandSpellstone,

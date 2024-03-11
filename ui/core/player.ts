@@ -476,7 +476,7 @@ export class Player<SpecType extends Spec> {
 		epStats: Array<Stat>,
 		epPseudoStats: Array<PseudoStat>,
 		epReferenceStat: Stat,
-		onProgress: () => void,
+		onProgress: (_: any) => void,
 	): Promise<StatWeightsResult> {
 		const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
 		return result;

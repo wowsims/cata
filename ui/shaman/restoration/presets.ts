@@ -50,7 +50,9 @@ export const RaidHealingTalents = {
 };
 
 export const DefaultOptions = RestorationShamanOptions.create({
-	shield: ShamanShield.WaterShield,
+	classOptions: {
+		shield: ShamanShield.WaterShield,
+	},
 	earthShieldPPM: 0,
 });
 

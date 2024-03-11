@@ -50,11 +50,13 @@ export const ArmsTalents = {
 };
 
 export const DefaultOptions = WarriorOptions.create({
-	startingRage: 0,
+	classOptions: {
+		startingRage: 0,
+		useShatteringThrow: true,
+		shout: WarriorShout.WarriorShoutCommanding,
+	},
 	useRecklessness: true,
-	useShatteringThrow: true,
 	disableExpertiseGemming: false,
-	shout: WarriorShout.WarriorShoutCommanding,
 });
 
 export const DefaultConsumes = Consumes.create({

@@ -121,12 +121,12 @@ class InnervatesPicker extends AssignedBuffPicker {
 	}
 
 	getPlayerValue(player: Player<any>): UnitReference {
-		return (player as Player<Spec.SpecBalanceDruid>).getSpecOptions().innervateTarget || emptyUnitReference();
+		return (player as Player<Spec.SpecBalanceDruid>).getSpecOptions().classOptions?.innervateTarget || emptyUnitReference();
 	}
 
 	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
 		const newOptions = (player as Player<Spec.SpecBalanceDruid>).getSpecOptions();
-		newOptions.innervateTarget = newValue;
+		newOptions.classOptions!.innervateTarget = newValue;
 		player.setSpecOptions(eventID, newOptions);
 	}
 }

@@ -63,9 +63,11 @@ export const UATalents = {
 };
 
 export const DefaultOptions = ProtectionWarriorOptions.create({
-	shout: WarriorShout.WarriorShoutCommanding,
-	useShatteringThrow: false,
-	startingRage: 0,
+	classOptions: {
+		shout: WarriorShout.WarriorShoutCommanding,
+		useShatteringThrow: false,
+		startingRage: 0,
+	},
 });
 
 export const DefaultConsumes = Consumes.create({

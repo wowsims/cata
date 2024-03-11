@@ -1,7 +1,8 @@
-import { Spec } from '../../proto/common.js';
-
-import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 import { RaidSimResultsManager } from '../../components/raid_sim_action.js';
+import { DeathKnight } from '../../player_classes/death_knight';
+import { Rogue } from '../../player_classes/rogue';
+import { Warrior } from '../../player_classes/warrior';
+import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 
 export class ToplineResults extends ResultComponent {
 	constructor(config: ResultComponentConfig) {
@@ -14,19 +15,14 @@ export class ToplineResults extends ResultComponent {
 	onSimResult(resultData: SimResultData) {
 		let content = RaidSimResultsManager.makeToplineResultsContent(resultData.result, resultData.filter);
 
-		const noManaSpecs = [
-			Spec.SpecFeralTankDruid,
-			Spec.SpecRogue,
-			Spec.SpecWarrior,
-			Spec.SpecProtectionWarrior,
-		];
+		const noManaClasses = [DeathKnight, Rogue, Warrior];
 
 		const players = resultData.result.getPlayers(resultData.filter);
-		if (players.length == 1 && !noManaSpecs.includes(players[0].spec)) {
+		if (players.length == 1 && !noManaClasses.some(klass => players[0].spec?.playerClass == klass)) {
 			const player = players[0];
 			const secondsOOM = player.secondsOomAvg;
 			const percentOOM = secondsOOM / resultData.result.encounterMetrics.durationSeconds;
-			const dangerLevel = percentOOM < 0.01 ? 'safe' : (percentOOM < 0.05 ? 'warning' : 'danger');
+			const dangerLevel = percentOOM < 0.01 ? 'safe' : percentOOM < 0.05 ? 'warning' : 'danger';
 
 			content += `
 				<div class="results-sim-percent-oom ${dangerLevel} damage-metrics">

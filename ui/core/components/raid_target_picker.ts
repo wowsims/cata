@@ -121,7 +121,7 @@ export class UnitReferencePicker<ModObject> extends Input<ModObject, UnitReferen
 	}
 
 	static makeOptionElem(data: OptionElemOptions): HTMLElement {
-		const classCssClass = data.player ? PlayerClasses.getCssClass(data.player.getClass()) : '';
+		const classCssClass = data.player ? PlayerClasses.getCssClass(data.player.getPlayerClass()) : '';
 		const playerFragment = document.createElement('fragment');
 
 		playerFragment.innerHTML = `

@@ -1,6 +1,6 @@
 import { PlayerClasses } from './player_classes';
 import { PlayerSpec } from './player_spec';
-import { ArmorType, Class, Race, RangedWeaponType, Spec, WeaponType } from './proto/common.js';
+import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from './proto/common.js';
 export type IconSize = 'small' | 'medium' | 'large';
 
 export interface EligibleWeaponType {

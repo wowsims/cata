@@ -709,7 +709,7 @@ function applyNewPlayerAssignments(eventID: EventID, newPlayer: Player<any>, rai
 	// Spec-specific assignments. For most cases, default to buffing self.
 	if (newPlayer.getSpec() == Spec.SpecBalanceDruid) {
 		const newOptions = newPlayer.getSpecOptions() as BalanceDruidOptions;
-		newOptions.innervateTarget = newUnitReference(newPlayer.getRaidIndex());
+		newOptions.classOptions!.innervateTarget = newUnitReference(newPlayer.getRaidIndex());
 		newPlayer.setSpecOptions(eventID, newOptions);
 	} else if (newPlayer.getSpec() == Spec.SpecArcaneMage) {
 		const newOptions = newPlayer.getSpecOptions() as ArcaneMage_Options;
