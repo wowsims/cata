@@ -507,7 +507,7 @@ export function makeTristateIconInput<SpecType extends Spec, Message, ModObject>
 	impId: ActionId,
 	fieldName: keyof Message,
 ): TypedIconPickerConfig<Player<SpecType>, number> {
-	const input = makeNumberIconInput(config, id, fieldName);
+	const input = makeNumberIconInput<SpecType, Message, ModObject>(config, id, fieldName);
 	input.states = 3;
 	input.improvedId = impId;
 	return input;
@@ -519,7 +519,7 @@ export function makeQuadstateIconInput<SpecType extends Spec, Message, ModObject
 	impId2: ActionId,
 	fieldName: keyof Message,
 ): TypedIconPickerConfig<Player<SpecType>, number> {
-	const input = makeNumberIconInput(config, id, fieldName);
+	const input = makeNumberIconInput<SpecType, Message, ModObject>(config, id, fieldName);
 	input.states = 4;
 	input.improvedId = impId;
 	input.improvedId2 = impId2;
@@ -532,7 +532,7 @@ export function makeMultistateIconInput<SpecType extends Spec, Message, ModObjec
 	fieldName: keyof Message,
 	multiplier?: number,
 ): TypedIconPickerConfig<Player<SpecType>, number> {
-	const input = makeNumberIconInput(config, id, fieldName, multiplier);
+	const input = makeNumberIconInput<SpecType, Message, ModObject>(config, id, fieldName, multiplier);
 	input.states = numStates;
 	return input;
 }
