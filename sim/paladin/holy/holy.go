@@ -31,7 +31,7 @@ func NewHolyPaladin(character *core.Character, options *proto.Player) *HolyPalad
 		Options: holyOptions.Options,
 	}
 
-	holy.PaladinAura = holyOptions.Options.Aura
+	holy.PaladinAura = holyOptions.Options.ClassOptions.Aura
 
 	return holy
 }

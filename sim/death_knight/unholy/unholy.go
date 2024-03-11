@@ -32,9 +32,8 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 
 	uhdk := &UnholyDeathKnight{
 		DeathKnight: death_knight.NewDeathKnight(character, death_knight.DeathKnightInputs{
-			StartingRunicPower: unholyOptions.StartingRunicPower,
-			PetUptime:          unholyOptions.PetUptime,
-			DrwPestiApply:      unholyOptions.DrwPestiApply,
+			StartingRunicPower: unholyOptions.ClassOptions.StartingRunicPower,
+			PetUptime:          unholyOptions.ClassOptions.PetUptime,
 			IsDps:              true,
 
 			UseAMS:            unholyOptions.UseAms,

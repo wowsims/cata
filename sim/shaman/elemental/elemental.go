@@ -24,18 +24,18 @@ func RegisterElementalShaman() {
 }
 
 func NewElementalShaman(character *core.Character, options *proto.Player) *ElementalShaman {
-	eleShamOptions := options.GetElementalShaman()
+	eleOptions := options.GetElementalShaman().Options
 
 	selfBuffs := shaman.SelfBuffs{
-		Shield: eleShamOptions.Options.Shield,
+		Shield: eleOptions.ClassOptions.Shield,
 	}
 
 	totems := &proto.ShamanTotems{}
-	if eleShamOptions.Options.Totems != nil {
-		totems = eleShamOptions.Options.Totems
+	if eleOptions.ClassOptions.Totems != nil {
+		totems = eleOptions.ClassOptions.Totems
 	}
 
-	inRange := eleShamOptions.Options.ThunderstormRange == proto.ElementalShaman_Options_TSInRange
+	inRange := eleOptions.ThunderstormRange == proto.ElementalShaman_Options_TSInRange
 	ele := &ElementalShaman{
 		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, inRange),
 	}

@@ -32,8 +32,8 @@ func NewRestorationDruid(character *core.Character, options *proto.Player) *Rest
 	}
 
 	resto.SelfBuffs.InnervateTarget = &proto.UnitReference{}
-	if restoOptions.Options.InnervateTarget != nil {
-		resto.SelfBuffs.InnervateTarget = restoOptions.Options.InnervateTarget
+	if restoOptions.Options.ClassOptions.InnervateTarget != nil {
+		resto.SelfBuffs.InnervateTarget = restoOptions.Options.ClassOptions.InnervateTarget
 	}
 
 	return resto

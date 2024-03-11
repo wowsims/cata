@@ -33,8 +33,8 @@ func newDisciplinePriest(character *core.Character, options *proto.Player) *Disc
 	discOptions := options.GetDisciplinePriest()
 
 	selfBuffs := priest.SelfBuffs{
-		UseInnerFire:   discOptions.Options.UseInnerFire,
-		UseShadowfiend: discOptions.Options.UseShadowfiend,
+		UseInnerFire:   discOptions.Options.ClassOptions.Armor == proto.PriestOptions_InnerFire,
+		UseShadowfiend: discOptions.Options.ClassOptions.UseShadowfiend,
 	}
 
 	basePriest := priest.New(character, selfBuffs, options.TalentsString)

@@ -33,7 +33,7 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 	bdk := &BloodDeathKnight{
 		DeathKnight: death_knight.NewDeathKnight(character, death_knight.DeathKnightInputs{
 			IsDps:              false,
-			StartingRunicPower: dkOptions.Options.StartingRunicPower,
+			StartingRunicPower: dkOptions.Options.ClassOptions.StartingRunicPower,
 		}, options.TalentsString),
 	}
 

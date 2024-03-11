@@ -30,17 +30,17 @@ type ArmsWarrior struct {
 }
 
 func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarrior {
-	warOptions := options.GetArmsWarrior().Options
+	armsOptions := options.GetArmsWarrior().Options
 
 	war := &ArmsWarrior{
 		Warrior: warrior.NewWarrior(character, options.TalentsString, warrior.WarriorInputs{
-			StanceSnapshot: warOptions.StanceSnapshot,
+			StanceSnapshot: armsOptions.StanceSnapshot,
 		}),
-		Options: warOptions,
+		Options: armsOptions,
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage:   warOptions.StartingRage,
+		StartingRage:   armsOptions.ClassOptions.StartingRage,
 		RageMultiplier: core.TernaryFloat64(war.Talents.EndlessRage, 1.25, 1),
 	}
 	if mh := war.GetMHWeapon(); mh != nil {
@@ -72,25 +72,15 @@ func (war *ArmsWarrior) Initialize() {
 		war.RegisterRecklessnessCD()
 	}
 
-	if war.Options.UseShatteringThrow {
+	if war.Options.ClassOptions.UseShatteringThrow {
 		war.RegisterShatteringThrowCD()
 	}
 
-	if war.PrimaryTalentTree == warrior.FuryTree {
-		war.BerserkerStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
-	} else if war.PrimaryTalentTree == warrior.ArmsTree {
-		war.BattleStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
-	}
+	war.BattleStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
 }
 
 func (war *ArmsWarrior) Reset(sim *core.Simulation) {
-	if war.PrimaryTalentTree == warrior.FuryTree {
-		war.Warrior.Reset(sim)
-		war.BerserkerStanceAura.Activate(sim)
-		war.Stance = warrior.BerserkerStance
-	} else if war.PrimaryTalentTree == warrior.ArmsTree {
-		war.Warrior.Reset(sim)
-		war.BattleStanceAura.Activate(sim)
-		war.Stance = warrior.BattleStance
-	}
+	war.Warrior.Reset(sim)
+	war.BattleStanceAura.Activate(sim)
+	war.Stance = warrior.BattleStance
 }

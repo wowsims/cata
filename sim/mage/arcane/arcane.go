@@ -24,15 +24,20 @@ func RegisterArcaneMage() {
 }
 
 func NewArcaneMage(character *core.Character, options *proto.Player) *ArcaneMage {
+	arcaneOptions := options.GetArcaneMage().Options
+
 	arcaneMage := &ArcaneMage{
-		Mage: mage.NewMage(character, options, options.GetArcaneMage().Options.MageOptions),
+		Mage: mage.NewMage(character, options, arcaneOptions.ClassOptions),
 	}
+	arcaneMage.ArcaneOptions = arcaneOptions
 
 	return arcaneMage
 }
 
 type ArcaneMage struct {
 	*mage.Mage
+
+	Options *proto.ArcaneMage_Options
 }
 
 func (arcaneMage *ArcaneMage) GetMage() *mage.Mage {

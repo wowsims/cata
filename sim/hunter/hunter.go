@@ -15,8 +15,11 @@ const ThoridalTheStarsFuryItemID = 34334
 type Hunter struct {
 	core.Character
 
-	Talents *proto.HunterTalents
-	Options *proto.HunterOptions
+	Talents             *proto.HunterTalents
+	Options             *proto.HunterOptions
+	BeastMasteryOptions *proto.BeastMasteryHunter_Options
+	MarksmanshipOptions *proto.MarksmanshipHunter_Options
+	SurvivalOptions     *proto.SurvivalHunter_Options
 
 	pet *HunterPet
 

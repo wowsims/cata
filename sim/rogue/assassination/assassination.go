@@ -24,9 +24,12 @@ func RegisterAssassinationRogue() {
 }
 
 func NewAssassinationRogue(character *core.Character, options *proto.Player) *AssassinationRogue {
+	sinOptions := options.GetAssassinationRogue().Options
+
 	sinRogue := &AssassinationRogue{
 		Rogue: rogue.NewRogue(character, options.TalentsString),
 	}
+	sinRogue.AssassinationOptions = sinOptions
 
 	return sinRogue
 }

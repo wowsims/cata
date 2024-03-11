@@ -24,9 +24,12 @@ func RegisterFrostMage() {
 }
 
 func NewFrostMage(character *core.Character, options *proto.Player) *FrostMage {
+	frostOptions := options.GetFrostMage().Options
+
 	frostMage := &FrostMage{
-		Mage: mage.NewMage(character, options, options.GetFrostMage().Options.MageOptions),
+		Mage: mage.NewMage(character, options, frostOptions.ClassOptions),
 	}
+	frostMage.FrostOptions = frostOptions
 
 	return frostMage
 }

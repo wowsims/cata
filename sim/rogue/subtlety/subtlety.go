@@ -24,9 +24,12 @@ func RegisterSubtletyRogue() {
 }
 
 func NewSubtletyRogue(character *core.Character, options *proto.Player) *SubtletyRogue {
+	subOptions := options.GetSubtletyRogue().Options
+
 	subRogue := &SubtletyRogue{
 		Rogue: rogue.NewRogue(character, options.TalentsString),
 	}
+	subRogue.SubtletyOptions = subOptions
 
 	return subRogue
 }

@@ -32,9 +32,8 @@ func NewFrostDeathKnight(character *core.Character, player *proto.Player) *Frost
 
 	fdk := &FrostDeathKnight{
 		DeathKnight: death_knight.NewDeathKnight(character, death_knight.DeathKnightInputs{
-			StartingRunicPower: frostOptions.StartingRunicPower,
-			PetUptime:          frostOptions.PetUptime,
-			DrwPestiApply:      frostOptions.DrwPestiApply,
+			StartingRunicPower: frostOptions.ClassOptions.StartingRunicPower,
+			PetUptime:          frostOptions.ClassOptions.PetUptime,
 			IsDps:              true,
 
 			UseAMS:            frostOptions.UseAms,

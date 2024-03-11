@@ -141,7 +141,8 @@ message PriestOptions {
 		NoArmor = 0;
 		InnerFire = 1;
 	}
-	Armor armor = 2;
+	Armor armor = 1;
+	bool use_shadowfiend = 2;
 }
 
 message DisciplinePriest {
@@ -149,8 +150,7 @@ message DisciplinePriest {
 
 	message Options {
 		PriestOptions class_options = 1;
-		bool use_shadowfiend = 2;
-		UnitReference power_infusion_target = 3;
+		UnitReference power_infusion_target = 2;
 	}
 	Options options = 3;
 }
@@ -160,7 +160,6 @@ message HolyPriest {
 
 	message Options {
 		PriestOptions class_options = 1;
-		bool use_shadowfiend = 2;
 	}
 	Options options = 3;
 }

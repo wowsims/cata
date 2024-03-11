@@ -24,8 +24,10 @@ func RegisterDemonologyWarlock() {
 }
 
 func NewDemonologyWarlock(character *core.Character, options *proto.Player) *DemonologyWarlock {
+	demoOptions := options.GetDemonologyWarlock().Options
+
 	demoLock := &DemonologyWarlock{
-		Warlock: warlock.NewWarlock(character, options, options.GetDemonologyWarlock().Options.WarlockOptions),
+		Warlock: warlock.NewWarlock(character, options, demoOptions.ClassOptions),
 	}
 
 	return demoLock

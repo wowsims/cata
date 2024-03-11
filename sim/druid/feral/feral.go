@@ -35,8 +35,8 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	}
 
 	cat.SelfBuffs.InnervateTarget = &proto.UnitReference{}
-	if feralOptions.Options.InnervateTarget != nil {
-		cat.SelfBuffs.InnervateTarget = feralOptions.Options.InnervateTarget
+	if feralOptions.Options.ClassOptions.InnervateTarget != nil {
+		cat.SelfBuffs.InnervateTarget = feralOptions.Options.ClassOptions.InnervateTarget
 	}
 
 	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive

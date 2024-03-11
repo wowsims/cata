@@ -27,8 +27,8 @@ func NewHolyPriest(character *core.Character, options *proto.Player) *HolyPriest
 	smiteOptions := options.GetHolyPriest()
 
 	selfBuffs := priest.SelfBuffs{
-		UseInnerFire:   smiteOptions.Options.UseInnerFire,
-		UseShadowfiend: smiteOptions.Options.UseShadowfiend,
+		UseInnerFire:   smiteOptions.Options.ClassOptions.Armor == proto.PriestOptions_InnerFire,
+		UseShadowfiend: smiteOptions.Options.ClassOptions.UseShadowfiend,
 	}
 
 	basePriest := priest.New(character, selfBuffs, options.TalentsString)

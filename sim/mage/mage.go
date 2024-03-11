@@ -17,8 +17,11 @@ var TalentTreeSizes = [3]int{30, 28, 28}
 type Mage struct {
 	core.Character
 
-	Talents *proto.MageTalents
-	Options *proto.MageOptions
+	Talents       *proto.MageTalents
+	Options       *proto.MageOptions
+	ArcaneOptions *proto.ArcaneMage_Options
+	FireOptions   *proto.FireMage_Options
+	FrostOptions  *proto.FrostMage_Options
 
 	waterElemental *WaterElemental
 	mirrorImage    *MirrorImage
@@ -112,6 +115,7 @@ func (mage *Mage) Initialize() {
 	mage.registerMirrorImageCD()
 	mage.registerBlastWaveSpell()
 	mage.registerDragonsBreathSpell()
+	mage.registerSummonWaterElementalCD()
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
@@ -149,10 +153,6 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	}
 
 	mage.mirrorImage = mage.NewMirrorImage()
-
-	if mage.Talents.SummonWaterElemental {
-		mage.waterElemental = mage.NewWaterElemental(mage.Options.WaterElementalDisobeyChance)
-	}
 
 	return mage
 }

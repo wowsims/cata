@@ -30,15 +30,15 @@ type ProtectionWarrior struct {
 }
 
 func NewProtectionWarrior(character *core.Character, options *proto.Player) *ProtectionWarrior {
-	warOptions := options.GetProtectionWarrior()
+	protOptions := options.GetProtectionWarrior().Options
 
 	war := &ProtectionWarrior{
 		Warrior: warrior.NewWarrior(character, options.TalentsString, warrior.WarriorInputs{}),
-		Options: warOptions.Options,
+		Options: protOptions,
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage:   warOptions.Options.StartingRage,
+		StartingRage:   protOptions.ClassOptions.StartingRage,
 		RageMultiplier: core.TernaryFloat64(war.Talents.EndlessRage, 1.25, 1),
 	}
 	if mh := war.GetMHWeapon(); mh != nil {
@@ -77,7 +77,7 @@ func (war *ProtectionWarrior) Initialize() {
 	war.RegisterShieldBlockCD()
 	war.DefensiveStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
 
-	if war.Options.UseShatteringThrow {
+	if war.Options.ClassOptions.UseShatteringThrow {
 		war.RegisterShatteringThrowCD()
 	}
 }

@@ -24,9 +24,12 @@ func RegisterCombatRogue() {
 }
 
 func NewCombatRogue(character *core.Character, options *proto.Player) *CombatRogue {
+	combatOptions := options.GetCombatRogue().Options
+
 	combatRogue := &CombatRogue{
 		Rogue: rogue.NewRogue(character, options.TalentsString),
 	}
+	combatRogue.CombatOptions = combatOptions
 
 	return combatRogue
 }

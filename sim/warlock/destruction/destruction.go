@@ -24,8 +24,9 @@ func RegisterDestructionWarlock() {
 }
 
 func NewDestructionWarlock(character *core.Character, options *proto.Player) *DestructionWarlock {
+	destroOptions := options.GetDestructionWarlock().Options
 	destroLock := &DestructionWarlock{
-		Warlock: warlock.NewWarlock(character, options, options.GetDestructionWarlock().Options.WarlockOptions),
+		Warlock: warlock.NewWarlock(character, options, destroOptions.ClassOptions),
 	}
 
 	return destroLock

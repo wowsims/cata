@@ -21,8 +21,11 @@ const RogueBleedTag = "RogueBleed"
 type Rogue struct {
 	core.Character
 
-	Talents *proto.RogueTalents
-	Options *proto.RogueOptions
+	Talents              *proto.RogueTalents
+	Options              *proto.RogueOptions
+	AssassinationOptions *proto.AssassinationRogue_Options
+	CombatOptions        *proto.CombatRogue_Options
+	SubtletyOptions      *proto.SubtletyRogue_Options
 
 	bleedCategory *core.ExclusiveCategory
 

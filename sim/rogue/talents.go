@@ -616,15 +616,15 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 		OnGain: func(_ *core.Aura, sim *core.Simulation) {
 			// In an ideal party, you'd probably get up to 6 ability crits/s (Rate = 600).
 			//  Survival Hunters, Enhancement Shamans, and Assassination Rogues are particularly good.
-			if rogue.Options.HonorOfThievesCritRate <= 0 {
+			if rogue.SubtletyOptions.HonorAmongThievesCritRate <= 0 {
 				return
 			}
 
-			if rogue.Options.HonorOfThievesCritRate > 2000 {
-				rogue.Options.HonorOfThievesCritRate = 2000 // limited, so performance doesn't suffer
+			if rogue.SubtletyOptions.HonorAmongThievesCritRate > 2000 {
+				rogue.SubtletyOptions.HonorAmongThievesCritRate = 2000 // limited, so performance doesn't suffer
 			}
 
-			rateToDuration := float64(time.Second) * 100 / float64(rogue.Options.HonorOfThievesCritRate)
+			rateToDuration := float64(time.Second) * 100 / float64(rogue.SubtletyOptions.HonorAmongThievesCritRate)
 
 			pa := &core.PendingAction{}
 			pa.OnAction = func(sim *core.Simulation) {
