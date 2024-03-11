@@ -1,27 +1,10 @@
-import {
-	Consumes,
-	Explosive,
-	Flask,
-	Food,
-	Glyphs,
-	PetFood,
-	Potions,
-	UnitReference,
-} from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-
-import {
-	Deathknight_Options as DeathKnightOptions,
-	DeathknightMajorGlyph,
-	DeathknightMinorGlyph,
-} from '../core/proto/deathknight.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
-
+import * as PresetUtils from '../../core/preset_utils';
+import { Consumes, Explosive, Flask, Food, Glyphs, PetFood, Potions, UnitReference } from '../../core/proto/common';
+import { Deathknight_Options as DeathKnightOptions, DeathknightMajorGlyph, DeathknightMinorGlyph } from '../../core/proto/deathknight';
+import { SavedTalents } from '../../core/proto/ui';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
 import P1BloodGear from './gear_sets/p1_blood.gear.json';
 export const P1_BLOOD_PRESET = PresetUtils.makePresetGear('P1 Blood', P1BloodGear, { talentTree: 0 });
 import P2BloodGear from './gear_sets/p2_blood.gear.json';
@@ -202,8 +185,7 @@ export const DefaultBloodOptions = DeathKnightOptions.create({
 	drwPestiApply: true,
 });
 
-export const OtherDefaults = {
-};
+export const OtherDefaults = {};
 
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfEndlessRage,

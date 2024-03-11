@@ -149,12 +149,6 @@ message MageOptions {
 		MoltenArmor = 2;
 	}
 	ArmorType armor = 1;
-
-	int32 focus_magic_percent_uptime = 3;
-	UnitReference focus_magic_target = 4;
-
-	// Chance for water elemental to disobey, doing nothing rather than cast.
-	double water_elemental_disobey_chance = 7;
 }
 
 message ArcaneMage {
@@ -167,6 +161,8 @@ message ArcaneMage {
 
 	message Options {
 		MageOptions mage_options = 1;
+		int32 focus_magic_percent_uptime = 2;
+		UnitReference focus_magic_target = 3;
 	}
 	Options options = 1;
 }
@@ -195,6 +191,8 @@ message FrostMage {
 
 	message Options {
 		MageOptions mage_options = 1;
+		// Chance for water elemental to disobey, doing nothing rather than cast.
+		double water_elemental_disobey_chance = 2;
 	}
 	Options options = 1;
 }

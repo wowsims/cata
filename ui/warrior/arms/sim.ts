@@ -58,7 +58,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_FURY_PRESET_ALLIANCE.gear,
+		gear: Presets.P4_ARMS_PRESET_HORDE.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -80,7 +80,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.FuryTalents.data,
+		talents: Presets.ArmsTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -140,18 +140,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.ArmsTalents, Presets.FuryTalents],
+		talents: [Presets.ArmsTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_FURY, Presets.ROTATION_FURY_SUNDER, Presets.ROTATION_ARMS, Presets.ROTATION_ARMS_SUNDER],
+		rotations: [Presets.ROTATION_ARMS, Presets.ROTATION_ARMS_SUNDER],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.PRERAID_FURY_PRESET,
-			Presets.P1_FURY_PRESET,
-			Presets.P2_FURY_PRESET,
-			Presets.P3_FURY_PRESET_ALLIANCE,
-			Presets.P3_FURY_PRESET_HORDE,
-			Presets.P4_FURY_PRESET_ALLIANCE,
-			Presets.P4_FURY_PRESET_HORDE,
 			Presets.PRERAID_ARMS_PRESET,
 			Presets.P1_ARMS_PRESET,
 			Presets.P2_ARMS_PRESET,
@@ -164,13 +157,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		],
 	},
 
-	autoRotation: (player: Player<Spec.SpecArmsWarrior>): APLRotation => {
-		const talentTree = player.getTalentTree();
-		if (talentTree == 0) {
-			return Presets.ROTATION_ARMS_SUNDER.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_FURY_SUNDER.rotation.rotation!;
-		}
+	autoRotation: (_player: Player<Spec.SpecArmsWarrior>): APLRotation => {
+		return Presets.ROTATION_ARMS_SUNDER.rotation.rotation!;
 	},
 
 	raidSimPresets: [

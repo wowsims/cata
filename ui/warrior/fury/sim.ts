@@ -140,9 +140,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.ArmsTalents, Presets.FuryTalents],
+		talents: [Presets.FuryTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_FURY, Presets.ROTATION_FURY_SUNDER, Presets.ROTATION_ARMS, Presets.ROTATION_ARMS_SUNDER],
+		rotations: [Presets.ROTATION_FURY, Presets.ROTATION_FURY_SUNDER],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.PRERAID_FURY_PRESET,
@@ -152,25 +152,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			Presets.P3_FURY_PRESET_HORDE,
 			Presets.P4_FURY_PRESET_ALLIANCE,
 			Presets.P4_FURY_PRESET_HORDE,
-			Presets.PRERAID_ARMS_PRESET,
-			Presets.P1_ARMS_PRESET,
-			Presets.P2_ARMS_PRESET,
-			Presets.P3_ARMS_2P_PRESET_ALLIANCE,
-			Presets.P3_ARMS_4P_PRESET_ALLIANCE,
-			Presets.P3_ARMS_2P_PRESET_HORDE,
-			Presets.P3_ARMS_4P_PRESET_HORDE,
-			Presets.P4_ARMS_PRESET_ALLIANCE,
-			Presets.P4_ARMS_PRESET_HORDE,
 		],
 	},
 
-	autoRotation: (player: Player<Spec.SpecFuryWarrior>): APLRotation => {
-		const talentTree = player.getTalentTree();
-		if (talentTree == 0) {
-			return Presets.ROTATION_ARMS_SUNDER.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_FURY_SUNDER.rotation.rotation!;
-		}
+	autoRotation: (_player: Player<Spec.SpecFuryWarrior>): APLRotation => {
+		return Presets.ROTATION_FURY.rotation.rotation!;
 	},
 
 	raidSimPresets: [

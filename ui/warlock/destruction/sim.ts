@@ -34,7 +34,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_AFFLICTION_HORDE_PRESET.gear,
+		gear: Presets.P4_DESTRO_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
@@ -50,9 +50,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		consumes: Presets.DefaultConsumes,
 
 		// Default talents.
-		talents: Presets.AfflictionTalents.data,
+		talents: Presets.DestructionTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.AfflictionOptions,
+		specOptions: Presets.DestructionOptions,
 
 		// Default buffs and debuffs settings.
 		raidBuffs: Presets.DefaultRaidBuffs,
@@ -97,40 +97,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.AfflictionTalents, Presets.DemonologyTalents, Presets.DestructionTalents],
+		talents: [Presets.DestructionTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.APL_Affliction_Default, Presets.APL_Demo_Default, Presets.APL_Destro_Default],
+		rotations: [Presets.APL_Destro_Default],
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.SWP_BIS,
-			Presets.PRERAID_AFFLICTION_PRESET,
-			Presets.P1_AFFLICTION_PRESET,
-			Presets.P2_AFFLICTION_PRESET,
-			Presets.P3_AFFLICTION_ALLIANCE_PRESET,
-			Presets.P3_AFFLICTION_HORDE_PRESET,
-			Presets.P4_AFFLICTION_PRESET,
 			Presets.PRERAID_DEMODESTRO_PRESET,
 			Presets.P1_DEMODESTRO_PRESET,
 			Presets.P2_DEMODESTRO_PRESET,
-			Presets.P3_DEMO_ALLIANCE_PRESET,
-			Presets.P3_DEMO_HORDE_PRESET,
-			Presets.P4_DEMO_PRESET,
 			Presets.P3_DESTRO_ALLIANCE_PRESET,
 			Presets.P3_DESTRO_HORDE_PRESET,
 			Presets.P4_DESTRO_PRESET,
 		],
 	},
 
-	autoRotation: (player: Player<Spec.SpecDestructionWarlock>): APLRotation => {
-		const talentTree = player.getTalentTree();
-		if (talentTree == 0) {
-			return Presets.APL_Affliction_Default.rotation.rotation!;
-		} else if (talentTree == 1) {
-			return Presets.APL_Demo_Default.rotation.rotation!;
-		} else {
-			return Presets.APL_Destro_Default.rotation.rotation!;
-		}
+	autoRotation: (_player: Player<Spec.SpecDestructionWarlock>): APLRotation => {
+		return Presets.APL_Destro_Default.rotation.rotation!;
 	},
 
 	raidSimPresets: [

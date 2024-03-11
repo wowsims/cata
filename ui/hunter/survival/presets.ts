@@ -1,32 +1,20 @@
+import * as PresetUtils from '../../core/preset_utils';
+import { Consumes, Flask, Food, Glyphs, PetFood, Potions, Spec } from '../../core/proto/common';
 import {
-	Consumes,
-	Flask,
-	Food,
-	Glyphs,
-	PetFood,
-	Potions,
-	Spec,
-} from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-import { ferocityDefault, ferocityBMDefault } from '../core/talents/hunter_pet.js';
-
-import {
-	Hunter_Rotation as HunterRotation,
-	Hunter_Rotation_RotationType as RotationType,
-	Hunter_Rotation_StingType as StingType,
-	Hunter_Options as HunterOptions,
-	Hunter_Options_Ammo as Ammo,
-	Hunter_Options_PetType as PetType,
 	HunterMajorGlyph as MajorGlyph,
 	HunterMinorGlyph as MinorGlyph,
-} from '../core/proto/hunter.js';
-
-import * as PresetUtils from '../core/preset_utils.js';
-
+	HunterOptions_Ammo as Ammo,
+	HunterOptions_PetType as PetType,
+	HunterRotation_RotationType as RotationType,
+	HunterRotation_StingType as StingType,
+	SurvivalHunter_Options as HunterOptions,
+	SurvivalHunter_Rotation as HunterRotation,
+} from '../../core/proto/hunter';
+import { SavedTalents } from '../../core/proto/ui';
+import { ferocityBMDefault, ferocityDefault } from '../../core/talents/hunter_pet';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
 import PreraidMMGear from './gear_sets/preraid_mm.gear.json';
 export const MM_PRERAID_PRESET = PresetUtils.makePresetGear('MM PreRaid Preset', PreraidMMGear, { talentTrees: [0, 1] });
 import P1MMGear from './gear_sets/p1_mm.gear.json';
@@ -53,16 +41,18 @@ import P5SVGear from './gear_sets/p5_sv.gear.json';
 export const SV_P5_PRESET = PresetUtils.makePresetGear('SV P5 Preset', P5SVGear, { talentTree: 2 });
 
 export const DefaultSimpleRotation = HunterRotation.create({
-	type: RotationType.SingleTarget,
-	sting: StingType.SerpentSting,
-	trapWeave: true,
-	viperStartManaPercent: 0.1,
-	viperStopManaPercent: 0.3,
-	multiDotSerpentSting: true,
-	allowExplosiveShotDownrank: true,
+	hunterRotation: {
+		type: RotationType.SingleTarget,
+		sting: StingType.SerpentSting,
+		trapWeave: true,
+		viperStartManaPercent: 0.1,
+		viperStopManaPercent: 0.3,
+		multiDotSerpentSting: true,
+		allowExplosiveShotDownrank: true,
+	},
 });
 
-export const ROTATION_PRESET_SIMPLE_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecHunter, DefaultSimpleRotation);
+export const ROTATION_PRESET_SIMPLE_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecSurvivalHunter, DefaultSimpleRotation);
 import BmApl from './apls/bm.apl.json';
 export const ROTATION_PRESET_BM = PresetUtils.makePresetAPLRotation('BM', BmApl, { talentTree: 0 });
 import MmApl from './apls/mm.apl.json';
@@ -124,23 +114,27 @@ export const SurvivalTalents = {
 };
 
 export const DefaultOptions = HunterOptions.create({
-	ammo: Ammo.SaroniteRazorheads,
-	useHuntersMark: true,
-	petType: PetType.Wolf,
-	petTalents: ferocityDefault,
-	petUptime: 1,
-	sniperTrainingUptime: 0.9,
-	timeToTrapWeaveMs: 2000,
+	hunterOptions: {
+		ammo: Ammo.SaroniteRazorheads,
+		useHuntersMark: true,
+		petType: PetType.Wolf,
+		petTalents: ferocityDefault,
+		petUptime: 1,
+		sniperTrainingUptime: 0.9,
+		timeToTrapWeaveMs: 2000,
+	},
 });
 
 export const BMDefaultOptions = HunterOptions.create({
-	ammo: Ammo.SaroniteRazorheads,
-	useHuntersMark: true,
-	petType: PetType.Wolf,
-	petTalents: ferocityBMDefault,
-	petUptime: 1,
-	sniperTrainingUptime: 0.9,
-	timeToTrapWeaveMs: 2000,
+	hunterOptions: {
+		ammo: Ammo.SaroniteRazorheads,
+		useHuntersMark: true,
+		petType: PetType.Wolf,
+		petTalents: ferocityBMDefault,
+		petUptime: 1,
+		sniperTrainingUptime: 0.9,
+		timeToTrapWeaveMs: 2000,
+	},
 });
 
 export const DefaultConsumes = Consumes.create({

@@ -1,29 +1,18 @@
+import * as PresetUtils from '../../core/preset_utils';
+import { Consumes, Flask, Food, Glyphs, Potions, Spec } from '../../core/proto/common';
 import {
-	Consumes,
-	Food,
-	Potions,
-	Flask,
-	Glyphs,
-	Spec,
-} from '../../core/proto/common.js';
-import { SavedTalents } from '../../core/proto/ui.js';
-
-import {
-	FeralDruid_Rotation as FeralDruidRotation,
-	FeralDruid_Options as FeralDruidOptions,
 	DruidMajorGlyph,
 	DruidMinorGlyph,
+	FeralDruid_Options as FeralDruidOptions,
+	FeralDruid_Rotation as FeralDruidRotation,
+	FeralDruid_Rotation_AplType,
 	FeralDruid_Rotation_BearweaveType,
 	FeralDruid_Rotation_BiteModeType,
-	FeralDruid_Rotation_AplType,
-} from '../../core/proto/druid.js';
-
-import * as PresetUtils from '../../core/preset_utils.js';
-
+} from '../../core/proto/druid';
+import { SavedTalents } from '../../core/proto/ui';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
 import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Preraid Preset', PreraidGear);
 import P1Gear from './gear_sets/p1.gear.json';

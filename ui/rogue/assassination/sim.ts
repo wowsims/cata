@@ -271,59 +271,31 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.AssassinationTalents137,
-			Presets.AssassinationTalents182,
-			Presets.AssassinationTalentsBF,
-			Presets.CombatHackTalents,
-			Presets.CombatCQCTalents,
-			Presets.SubtletyTalents,
-			Presets.HemoSubtletyTalents,
-		],
+		talents: [Presets.AssassinationTalents137, Presets.AssassinationTalents182, Presets.AssassinationTalentsBF],
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			Presets.ROTATION_PRESET_MUTILATE,
 			Presets.ROTATION_PRESET_MUTILATE_EXPOSE,
 			Presets.ROTATION_PRESET_RUPTURE_MUTILATE,
 			Presets.ROTATION_PRESET_RUPTURE_MUTILATE_EXPOSE,
-			Presets.ROTATION_PRESET_COMBAT,
-			Presets.ROTATION_PRESET_COMBAT_EXPOSE,
-			Presets.ROTATION_PRESET_COMBAT_CLEAVE_SND,
-			Presets.ROTATION_PRESET_COMBAT_CLEAVE_SND_EXPOSE,
 			Presets.ROTATION_PRESET_AOE,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.PRERAID_PRESET_ASSASSINATION,
-			Presets.PRERAID_PRESET_COMBAT,
 			Presets.P1_PRESET_ASSASSINATION,
-			Presets.P1_PRESET_COMBAT,
-			Presets.P1_PRESET_HEMO_SUB,
 			Presets.P2_PRESET_ASSASSINATION,
-			Presets.P2_PRESET_COMBAT,
 			Presets.P3_PRESET_ASSASSINATION,
-			Presets.P3_PRESET_COMBAT,
 			Presets.P4_PRESET_ASSASSINATION,
-			Presets.P4_PRESET_COMBAT,
 			Presets.P5_PRESET_ASSASSINATION,
-			Presets.P5_PRESET_COMBAT,
-			Presets.P2_PRESET_HEMO_SUB,
-			Presets.P3_PRESET_HEMO_SUB,
-			Presets.P3_PRESET_DANCE_SUB,
 		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecAssassinationRogue>): APLRotation => {
-		const talentTree = player.getTalentTree();
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets >= 5) {
 			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		} else if (talentTree == 0) {
-			return Presets.ROTATION_PRESET_MUTILATE_EXPOSE.rotation.rotation!;
-		} else if (talentTree == 1) {
-			return Presets.ROTATION_PRESET_COMBAT_EXPOSE.rotation.rotation!;
 		} else {
-			// TODO: Need a sub rotation here
 			return Presets.ROTATION_PRESET_MUTILATE_EXPOSE.rotation.rotation!;
 		}
 	},

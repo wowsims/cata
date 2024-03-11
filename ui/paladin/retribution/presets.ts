@@ -1,27 +1,16 @@
-import {
-	Conjured,
-	Consumes,
-	Flask,
-	Food,
-	Glyphs,
-	Potions,
-} from '../../core/proto/common.js';
-import { SavedTalents } from '../../core/proto/ui.js';
-
+import * as PresetUtils from '../../core/preset_utils.js';
+import { Conjured, Consumes, Flask, Food, Glyphs, Potions } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
 	PaladinJudgement as PaladinJudgement,
-	RetributionPaladin_Options as RetributionPaladinOptions,
 	PaladinMajorGlyph,
 	PaladinMinorGlyph,
+	RetributionPaladin_Options as RetributionPaladinOptions,
 } from '../../core/proto/paladin.js';
-
-import * as PresetUtils from '../../core/preset_utils.js';
-
+import { SavedTalents } from '../../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-
 import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('PreRaid', PreraidGear);
 import P1Gear from './gear_sets/p1.gear.json';
@@ -50,11 +39,10 @@ export const AuraMasteryTalents = {
 			major3: PaladinMajorGlyph.GlyphOfReckoning,
 			minor1: PaladinMinorGlyph.GlyphOfSenseUndead,
 			minor2: PaladinMinorGlyph.GlyphOfLayOnHands,
-			minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings
-		})
+			minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings,
+		}),
 	}),
 };
-
 
 export const DivineSacTalents = {
 	name: 'Divine Sacrifice & Guardian',
@@ -66,8 +54,8 @@ export const DivineSacTalents = {
 			major3: PaladinMajorGlyph.GlyphOfReckoning,
 			minor1: PaladinMinorGlyph.GlyphOfSenseUndead,
 			minor2: PaladinMinorGlyph.GlyphOfLayOnHands,
-			minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings
-		})
+			minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings,
+		}),
 	}),
 };
 

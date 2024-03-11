@@ -48,7 +48,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.FIRE_P3_PRESET_HORDE.gear,
+		gear: Presets.FROST_P3_PRESET_HORDE.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.48,
@@ -60,11 +60,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 			[Stat.StatMP5]: 0.09,
 		}),
 		// Default consumes settings.
-		consumes: Presets.DefaultFireConsumes,
+		consumes: Presets.DefaultFrostConsumes,
 		// Default talents.
-		talents: Presets.Phase3FireTalents.data,
+		talents: Presets.FrostTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultFireOptions,
+		specOptions: Presets.DefaultFrostOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
@@ -124,64 +124,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 
 	presets: {
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_PRESET_SIMPLE,
-			Presets.ARCANE_ROTATION_PRESET_DEFAULT,
-			Presets.FIRE_ROTATION_PRESET_DEFAULT,
-			Presets.FROSTFIRE_ROTATION_PRESET_DEFAULT,
-			Presets.FROST_ROTATION_PRESET_DEFAULT,
-			Presets.ARCANE_ROTATION_PRESET_AOE,
-			Presets.FIRE_ROTATION_PRESET_AOE,
-			Presets.FROST_ROTATION_PRESET_AOE,
-		],
+		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.FROST_ROTATION_PRESET_DEFAULT, Presets.FROST_ROTATION_PRESET_AOE],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.ArcaneTalents, Presets.FireTalents, Presets.FrostfireTalents, Presets.FrostTalents, Presets.Phase3FireTalents],
+		talents: [Presets.FrostTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.ARCANE_PRERAID_PRESET,
-			Presets.FIRE_PRERAID_PRESET,
-			Presets.ARCANE_P1_PRESET,
-			Presets.FIRE_P1_PRESET,
-			Presets.FROST_P1_PRESET,
-			Presets.ARCANE_P2_PRESET,
-			Presets.FIRE_P2_PRESET,
-			Presets.FROST_P2_PRESET,
-			Presets.FFB_P2_PRESET,
-			Presets.ARCANE_P3_PRESET_ALLIANCE,
-			Presets.ARCANE_P3_PRESET_HORDE,
-			Presets.FROST_P3_PRESET_ALLIANCE,
-			Presets.FROST_P3_PRESET_HORDE,
-			Presets.FIRE_P3_PRESET_ALLIANCE,
-			Presets.FIRE_P3_PRESET_HORDE,
-			Presets.FFB_P3_PRESET_ALLIANCE,
-			Presets.FFB_P3_PRESET_HORDE,
-			Presets.FIRE_P4_PRESET_HORDE,
-			Presets.FIRE_P4_PRESET_ALLIANCE,
-			Presets.FFB_P4_PRESET_HORDE,
-			Presets.FFB_P4_PRESET_ALLIANCE,
-			Presets.ARCANE_P4_PRESET_HORDE,
-			Presets.ARCANE_P4_PRESET_ALLIANCE,
-		],
+		gear: [Presets.FROST_P1_PRESET, Presets.FROST_P2_PRESET, Presets.FROST_P3_PRESET_ALLIANCE, Presets.FROST_P3_PRESET_HORDE],
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostMage>): APLRotation => {
-		const talentTree = player.getTalentTree();
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 3) {
-			if (talentTree == 0) {
-				return Presets.ARCANE_ROTATION_PRESET_AOE.rotation.rotation!;
-			} else if (talentTree == 1) {
-				return Presets.FIRE_ROTATION_PRESET_AOE.rotation.rotation!;
-			} else {
-				return Presets.FROST_ROTATION_PRESET_AOE.rotation.rotation!;
-			}
-		} else if (talentTree == 0) {
-			return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		} else if (talentTree == 1) {
-			if (player.getTalents().iceShards > 0) {
-				return Presets.FROSTFIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-			}
-			return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.FROST_ROTATION_PRESET_AOE.rotation.rotation!;
 		} else {
 			return Presets.FROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
@@ -244,9 +197,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFrostMage,
-			talents: Presets.FrostfireTalents.data,
-			specOptions: Presets.DefaultFFBOptions,
-			consumes: Presets.DefaultFireConsumes,
+			talents: Presets.FrostTalents.data,
+			specOptions: Presets.DefaultFrostOptions,
+			consumes: Presets.DefaultFrostConsumes,
 			otherDefaults: Presets.OtherDefaults,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
@@ -256,16 +209,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.FIRE_P1_PRESET.gear,
-					2: Presets.FFB_P2_PRESET.gear,
-					3: Presets.FFB_P3_PRESET_ALLIANCE.gear,
-					4: Presets.FFB_P4_PRESET_ALLIANCE.gear,
+					1: Presets.FROST_P1_PRESET.gear,
+					2: Presets.FROST_P2_PRESET.gear,
+					3: Presets.FROST_P3_PRESET_ALLIANCE.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.FIRE_P1_PRESET.gear,
-					2: Presets.FFB_P2_PRESET.gear,
-					3: Presets.FFB_P3_PRESET_HORDE.gear,
-					4: Presets.FFB_P4_PRESET_HORDE.gear,
+					1: Presets.FROST_P1_PRESET.gear,
+					2: Presets.FROST_P2_PRESET.gear,
+					3: Presets.FROST_P3_PRESET_HORDE.gear,
 				},
 			},
 		},

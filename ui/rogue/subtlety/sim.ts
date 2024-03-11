@@ -186,7 +186,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PRERAID_PRESET_ASSASSINATION.gear,
+		gear: Presets.P3_PRESET_HEMO_SUB.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -209,7 +209,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.AssassinationTalents137.data,
+		talents: Presets.HemoSubtletyTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -271,67 +271,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.AssassinationTalents137,
-			Presets.AssassinationTalents182,
-			Presets.AssassinationTalentsBF,
-			Presets.CombatHackTalents,
-			Presets.CombatCQCTalents,
-			Presets.SubtletyTalents,
-			Presets.HemoSubtletyTalents,
-		],
+		talents: [Presets.SubtletyTalents, Presets.HemoSubtletyTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_PRESET_MUTILATE,
-			Presets.ROTATION_PRESET_MUTILATE_EXPOSE,
-			Presets.ROTATION_PRESET_RUPTURE_MUTILATE,
-			Presets.ROTATION_PRESET_RUPTURE_MUTILATE_EXPOSE,
-			Presets.ROTATION_PRESET_COMBAT,
-			Presets.ROTATION_PRESET_COMBAT_EXPOSE,
-			Presets.ROTATION_PRESET_COMBAT_CLEAVE_SND,
-			Presets.ROTATION_PRESET_COMBAT_CLEAVE_SND_EXPOSE,
-			Presets.ROTATION_PRESET_AOE,
-		],
+		rotations: [Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_PRESET_ASSASSINATION,
-			Presets.PRERAID_PRESET_COMBAT,
-			Presets.P1_PRESET_ASSASSINATION,
-			Presets.P1_PRESET_COMBAT,
-			Presets.P1_PRESET_HEMO_SUB,
-			Presets.P2_PRESET_ASSASSINATION,
-			Presets.P2_PRESET_COMBAT,
-			Presets.P3_PRESET_ASSASSINATION,
-			Presets.P3_PRESET_COMBAT,
-			Presets.P4_PRESET_ASSASSINATION,
-			Presets.P4_PRESET_COMBAT,
-			Presets.P5_PRESET_ASSASSINATION,
-			Presets.P5_PRESET_COMBAT,
-			Presets.P2_PRESET_HEMO_SUB,
-			Presets.P3_PRESET_HEMO_SUB,
-			Presets.P3_PRESET_DANCE_SUB,
-		],
+		gear: [Presets.P1_PRESET_HEMO_SUB, Presets.P2_PRESET_HEMO_SUB, Presets.P3_PRESET_HEMO_SUB, Presets.P3_PRESET_DANCE_SUB],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSubtletyRogue>): APLRotation => {
-		const talentTree = player.getTalentTree();
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets >= 5) {
 			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		} else if (talentTree == 0) {
-			return Presets.ROTATION_PRESET_MUTILATE_EXPOSE.rotation.rotation!;
-		} else if (talentTree == 1) {
-			return Presets.ROTATION_PRESET_COMBAT_EXPOSE.rotation.rotation!;
 		} else {
 			// TODO: Need a sub rotation here
-			return Presets.ROTATION_PRESET_MUTILATE_EXPOSE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
 		}
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecSubtletyRogue,
-			talents: Presets.AssassinationTalents137.data,
+			talents: Presets.HemoSubtletyTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -342,16 +302,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PRESET_ASSASSINATION.gear,
-					2: Presets.P2_PRESET_ASSASSINATION.gear,
-					3: Presets.P3_PRESET_ASSASSINATION.gear,
-					4: Presets.P4_PRESET_ASSASSINATION.gear,
+					1: Presets.P1_PRESET_HEMO_SUB.gear,
+					2: Presets.P2_PRESET_HEMO_SUB.gear,
+					3: Presets.P3_PRESET_DANCE_SUB.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PRESET_ASSASSINATION.gear,
-					2: Presets.P2_PRESET_ASSASSINATION.gear,
-					3: Presets.P3_PRESET_ASSASSINATION.gear,
-					4: Presets.P4_PRESET_ASSASSINATION.gear,
+					1: Presets.P1_PRESET_HEMO_SUB.gear,
+					2: Presets.P2_PRESET_HEMO_SUB.gear,
+					3: Presets.P3_PRESET_DANCE_SUB.gear,
 				},
 			},
 		},

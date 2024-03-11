@@ -49,7 +49,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.FIRE_P3_PRESET_HORDE.gear,
+		gear: Presets.ARCANE_P4_PRESET_HORDE.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.48,
@@ -61,11 +61,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			[Stat.StatMP5]: 0.09,
 		}),
 		// Default consumes settings.
-		consumes: Presets.DefaultFireConsumes,
+		consumes: Presets.DefaultArcaneConsumes,
 		// Default talents.
-		talents: Presets.Phase3FireTalents.data,
+		talents: Presets.ArcaneTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultFireOptions,
+		specOptions: Presets.DefaultArcaneOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
@@ -125,66 +125,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 
 	presets: {
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_PRESET_SIMPLE,
-			Presets.ARCANE_ROTATION_PRESET_DEFAULT,
-			Presets.FIRE_ROTATION_PRESET_DEFAULT,
-			Presets.FROSTFIRE_ROTATION_PRESET_DEFAULT,
-			Presets.FROST_ROTATION_PRESET_DEFAULT,
-			Presets.ARCANE_ROTATION_PRESET_AOE,
-			Presets.FIRE_ROTATION_PRESET_AOE,
-			Presets.FROST_ROTATION_PRESET_AOE,
-		],
+		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.ARCANE_ROTATION_PRESET_DEFAULT, Presets.ARCANE_ROTATION_PRESET_AOE],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.ArcaneTalents, Presets.FireTalents, Presets.FrostfireTalents, Presets.FrostTalents, Presets.Phase3FireTalents],
+		talents: [Presets.ArcaneTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.ARCANE_PRERAID_PRESET,
-			Presets.FIRE_PRERAID_PRESET,
 			Presets.ARCANE_P1_PRESET,
-			Presets.FIRE_P1_PRESET,
-			Presets.FROST_P1_PRESET,
 			Presets.ARCANE_P2_PRESET,
-			Presets.FIRE_P2_PRESET,
-			Presets.FROST_P2_PRESET,
-			Presets.FFB_P2_PRESET,
 			Presets.ARCANE_P3_PRESET_ALLIANCE,
 			Presets.ARCANE_P3_PRESET_HORDE,
-			Presets.FROST_P3_PRESET_ALLIANCE,
-			Presets.FROST_P3_PRESET_HORDE,
-			Presets.FIRE_P3_PRESET_ALLIANCE,
-			Presets.FIRE_P3_PRESET_HORDE,
-			Presets.FFB_P3_PRESET_ALLIANCE,
-			Presets.FFB_P3_PRESET_HORDE,
-			Presets.FIRE_P4_PRESET_HORDE,
-			Presets.FIRE_P4_PRESET_ALLIANCE,
-			Presets.FFB_P4_PRESET_HORDE,
-			Presets.FFB_P4_PRESET_ALLIANCE,
 			Presets.ARCANE_P4_PRESET_HORDE,
 			Presets.ARCANE_P4_PRESET_ALLIANCE,
 		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecArcaneMage>): APLRotation => {
-		const talentTree = player.getTalentTree();
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 3) {
-			if (talentTree == 0) {
-				return Presets.ARCANE_ROTATION_PRESET_AOE.rotation.rotation!;
-			} else if (talentTree == 1) {
-				return Presets.FIRE_ROTATION_PRESET_AOE.rotation.rotation!;
-			} else {
-				return Presets.FROST_ROTATION_PRESET_AOE.rotation.rotation!;
-			}
-		} else if (talentTree == 0) {
-			return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		} else if (talentTree == 1) {
-			if (player.getTalents().iceShards > 0) {
-				return Presets.FROSTFIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-			}
-			return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.ARCANE_ROTATION_PRESET_AOE.rotation.rotation!;
 		} else {
-			return Presets.FROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 

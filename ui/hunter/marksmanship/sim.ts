@@ -3,7 +3,7 @@ import * as OtherInputs from '../../core/components/other_inputs';
 import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
-import { APLListItem, APLRotation } from '../../core/proto/apl';
+import { APLAction, APLListItem, APLRotation } from '../../core/proto/apl';
 import {
 	Cooldowns,
 	Debuffs,
@@ -19,7 +19,7 @@ import {
 	Stat,
 	TristateEffect,
 } from '../../core/proto/common';
-import { MarksmanshipHunter_Rotation } from '../../core/proto/hunter';
+import { HunterRotation_RotationType, HunterRotation_StingType, MarksmanshipHunter_Rotation } from '../../core/proto/hunter';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats } from '../../core/proto_utils/stats';
 import * as HunterInputs from './inputs';
@@ -205,6 +205,78 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 
 	simpleRotation: (player: Player<Spec.SpecMarksmanshipHunter>, simple: MarksmanshipHunter_Rotation, cooldowns: Cooldowns): APLRotation => {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
+
+		const combatPot = APLAction.fromJsonString(
+			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}}`,
+		);
+
+		const serpentSting = APLAction.fromJsonString(
+			`{"condition":{"cmp":{"op":"OpGt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":49001},"maxDots":${
+				simple.hunterRotation!.multiDotSerpentSting ? 3 : 1
+			},"maxOverlap":{"const":{"val":"0ms"}}}}`,
+		);
+		const scorpidSting = APLAction.fromJsonString(
+			`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":3043},"maxOverlap":{"const":{"val":"0ms"}}}},"castSpell":{"spellId":{"spellId":3043}}}`,
+		);
+		const trapWeave = APLAction.fromJsonString(
+			`{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":49067}}}}},"castSpell":{"spellId":{"tag":1,"spellId":49067}}}`,
+		);
+		const volley = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":58434}}}`);
+		const killShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":61006}}}`);
+		const aimedShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49050}}}`);
+		const multiShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49048}}}`);
+		const steadyShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49052}}}`);
+		const silencingShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":34490}}}`);
+		const chimeraShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":53209}}}`);
+		//const arcaneShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49045}}}`);
+
+		if (simple.hunterRotation!.viperStartManaPercent != 0) {
+			actions.push(
+				APLAction.fromJsonString(
+					`{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":34074}}}}},{"cmp":{"op":"OpLt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"${(
+						simple.hunterRotation!.viperStartManaPercent * 100
+					).toFixed(0)}%"}}}}]}},"castSpell":{"spellId":{"spellId":34074}}}`,
+				),
+			);
+		}
+		if (simple.hunterRotation!.viperStopManaPercent != 0) {
+			actions.push(
+				APLAction.fromJsonString(
+					`{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":61847}}}}},{"cmp":{"op":"OpGt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"${(
+						simple.hunterRotation!.viperStopManaPercent * 100
+					).toFixed(0)}%"}}}}]}},"castSpell":{"spellId":{"spellId":61847}}}`,
+				),
+			);
+		}
+
+		const talentTree = player.getTalentTree();
+		if (simple.hunterRotation!.type == HunterRotation_RotationType.Aoe) {
+			actions.push(
+				...([
+					combatPot,
+					simple.hunterRotation!.sting == HunterRotation_StingType.ScorpidSting ? scorpidSting : null,
+					simple.hunterRotation!.sting == HunterRotation_StingType.SerpentSting ? serpentSting : null,
+					simple.hunterRotation!.trapWeave ? trapWeave : null,
+					volley,
+				].filter(a => a) as Array<APLAction>),
+			);
+		} else if (talentTree == 1) {
+			// MM
+			actions.push(
+				...([
+					combatPot,
+					silencingShot,
+					killShot,
+					simple.hunterRotation!.sting == HunterRotation_StingType.ScorpidSting ? scorpidSting : null,
+					simple.hunterRotation!.sting == HunterRotation_StingType.SerpentSting ? serpentSting : null,
+					simple.hunterRotation!.trapWeave ? trapWeave : null,
+					chimeraShot,
+					aimedShot,
+					multiShot,
+					steadyShot,
+				].filter(a => a) as Array<APLAction>),
+			);
+		}
 
 		return APLRotation.create({
 			prepullActions: prepullActions,

@@ -62,7 +62,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
 		// Default talents.
-		talents: Presets.Phase3FireTalents.data,
+		talents: Presets.FireTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultFireOptions,
 		other: Presets.OtherDefaults,
@@ -124,66 +124,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 
 	presets: {
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_PRESET_SIMPLE,
-			Presets.ARCANE_ROTATION_PRESET_DEFAULT,
-			Presets.FIRE_ROTATION_PRESET_DEFAULT,
-			Presets.FROSTFIRE_ROTATION_PRESET_DEFAULT,
-			Presets.FROST_ROTATION_PRESET_DEFAULT,
-			Presets.ARCANE_ROTATION_PRESET_AOE,
-			Presets.FIRE_ROTATION_PRESET_AOE,
-			Presets.FROST_ROTATION_PRESET_AOE,
-		],
+		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.FIRE_ROTATION_PRESET_DEFAULT, Presets.FIRE_ROTATION_PRESET_AOE],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.ArcaneTalents, Presets.FireTalents, Presets.FrostfireTalents, Presets.FrostTalents, Presets.Phase3FireTalents],
+		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.ARCANE_PRERAID_PRESET,
 			Presets.FIRE_PRERAID_PRESET,
-			Presets.ARCANE_P1_PRESET,
 			Presets.FIRE_P1_PRESET,
-			Presets.FROST_P1_PRESET,
-			Presets.ARCANE_P2_PRESET,
 			Presets.FIRE_P2_PRESET,
-			Presets.FROST_P2_PRESET,
-			Presets.FFB_P2_PRESET,
-			Presets.ARCANE_P3_PRESET_ALLIANCE,
-			Presets.ARCANE_P3_PRESET_HORDE,
-			Presets.FROST_P3_PRESET_ALLIANCE,
-			Presets.FROST_P3_PRESET_HORDE,
 			Presets.FIRE_P3_PRESET_ALLIANCE,
 			Presets.FIRE_P3_PRESET_HORDE,
-			Presets.FFB_P3_PRESET_ALLIANCE,
-			Presets.FFB_P3_PRESET_HORDE,
 			Presets.FIRE_P4_PRESET_HORDE,
 			Presets.FIRE_P4_PRESET_ALLIANCE,
-			Presets.FFB_P4_PRESET_HORDE,
-			Presets.FFB_P4_PRESET_ALLIANCE,
-			Presets.ARCANE_P4_PRESET_HORDE,
-			Presets.ARCANE_P4_PRESET_ALLIANCE,
 		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecFireMage>): APLRotation => {
-		const talentTree = player.getTalentTree();
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 3) {
-			if (talentTree == 0) {
-				return Presets.ARCANE_ROTATION_PRESET_AOE.rotation.rotation!;
-			} else if (talentTree == 1) {
-				return Presets.FIRE_ROTATION_PRESET_AOE.rotation.rotation!;
-			} else {
-				return Presets.FROST_ROTATION_PRESET_AOE.rotation.rotation!;
-			}
-		} else if (talentTree == 0) {
-			return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		} else if (talentTree == 1) {
-			if (player.getTalents().iceShards > 0) {
-				return Presets.FROSTFIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-			}
-			return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.FIRE_ROTATION_PRESET_AOE.rotation.rotation!;
 		} else {
-			return Presets.FROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 
@@ -193,7 +154,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		const prepullMirrorImage = APLPrepullAction.fromJsonString(
 			`{"action":{"castSpell":{"spellId":{"spellId":55342}}},"doAtValue":{"const":{"val":"-2s"}}}`,
 		);
-
 		const berserking = APLAction.fromJsonString(
 			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":26297}}}`,
 		);
