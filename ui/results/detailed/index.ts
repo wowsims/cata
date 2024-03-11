@@ -1,5 +1,5 @@
-import { Database } from '../core/proto_utils/database.js';
-import { WindowedDetailedResults } from '../core/components/detailed_results.js';
+import { WindowedDetailedResults } from '../../core/components/detailed_results.js';
+import { Database } from '../../core/proto_utils/database.js';
 
 Database.get();
 
@@ -16,4 +16,4 @@ if (isIndividualSim) {
 
 document.body.classList.add('new-tab');
 
-const detailedResults = new WindowedDetailedResults(document.body)
+new WindowedDetailedResults(document.body);
