@@ -147,7 +147,7 @@ export function registerSpecConfig<SpecType extends Spec>(spec: SpecType, config
 	return config;
 }
 
-export const itemSwapEnabledSpecs: Array<Spec> = [];
+export const itemSwapEnabledSpecs: Array<any> = [];
 
 export interface Settings {
 	raidBuffs: RaidBuffs;
@@ -171,7 +171,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	healRefStat?: Stat;
 	tankRefStat?: Stat;
 
-	readonly bt: BulkTab<SpecType>;
+	readonly bt: BulkTab;
 
 	constructor(parentElem: HTMLElement, player: Player<SpecType>, config: IndividualSimUIConfig<SpecType>) {
 		super(parentElem, player.sim, {
@@ -339,7 +339,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		gearTab.rootElem.classList.add('active', 'show');
 	}
 
-	private addBulkTab(): BulkTab<SpecType> {
+	private addBulkTab(): BulkTab {
 		const bulkTab = new BulkTab(this.simTabContentsContainer, this);
 		bulkTab.navLink.hidden = !this.sim.getShowExperimental();
 		this.sim.showExperimentalChangeEmitter.on(() => {

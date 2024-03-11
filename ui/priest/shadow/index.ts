@@ -1,12 +1,12 @@
-import { Spec } from '../../core/proto/common.js';
-import { Sim } from '../../core/sim.js';
-import { Player } from '../../core/player.js';
-import { TypedEvent } from '../../core/typed_event.js';
-
-import { ShadowPriestSimUI } from './sim.js';
+import { Player } from '../../core/player';
+import { PlayerSpecs } from '../../core/player_specs';
+import { Spec } from '../../core/proto/common';
+import { Sim } from '../../core/sim';
+import { TypedEvent } from '../../core/typed_event';
+import { ShadowPriestSimUI } from './sim';
 
 const sim = new Sim();
-const player = new Player<Spec.SpecShadowPriest>(Spec.SpecShadowPriest, sim);
+const player = new Player<Spec.SpecShadowPriest>(PlayerSpecs.ShadowPriest, sim);
 sim.raid.setPlayer(TypedEvent.nextEventID(), 0, player);
 
-const simUI = new ShadowPriestSimUI(document.body, player);
+new ShadowPriestSimUI(document.body, player);

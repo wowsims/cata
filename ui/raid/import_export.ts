@@ -594,7 +594,7 @@ class WCLSimPlayer {
 		);
 	}
 
-	private static getMatchingPreset(spec: Spec, talents: wclTalents[]): RaidSimPreset<Spec> {
+	private static getMatchingPreset<SpecType extends Spec>(spec: SpecType, talents: wclTalents[]): RaidSimPreset<SpecType> {
 		const matchingPresets = playerPresets.filter(preset => preset.spec == spec);
 		let presetIdx = 0;
 

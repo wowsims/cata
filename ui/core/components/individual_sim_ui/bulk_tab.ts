@@ -1,22 +1,6 @@
 import { IndividualSimUI } from '../../individual_sim_ui';
-import {
-	BulkComboResult,
-	BulkSettings,
-	ItemSpecWithSlot,
-	ProgressMetrics,
-	TalentLoadout,
-} from '../../proto/api';
-import {
-	EquipmentSpec,
-	GemColor,
-	ItemSlot,
-	ItemSpec,
-	SimDatabase,
-	SimEnchant,
-	SimGem,
-	SimItem,
-	Spec,
-} from '../../proto/common';
+import { BulkComboResult, BulkSettings, ItemSpecWithSlot, ProgressMetrics, TalentLoadout } from '../../proto/api';
+import { EquipmentSpec, GemColor, ItemSlot, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIGem, UIItem, UIItem_FactionRestriction } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { Database } from '../../proto_utils/database';
@@ -34,10 +18,10 @@ import { Importer } from '../importers';
 import { ResultsViewer } from '../results_viewer';
 import { SimTab } from '../sim_tab';
 
-export class BulkGearJsonImporter<SpecType extends Spec> extends Importer {
-	private readonly simUI: IndividualSimUI<SpecType>;
+export class BulkGearJsonImporter extends Importer {
+	private readonly simUI: IndividualSimUI<any>;
 	private readonly bulkUI: BulkTab;
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>, bulkUI: BulkTab) {
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab) {
 		super(parent, simUI, 'Bag Item Import', true);
 		this.simUI = simUI;
 		this.bulkUI = bulkUI;
@@ -52,9 +36,7 @@ export class BulkGearJsonImporter<SpecType extends Spec> extends Importer {
 			const equipment = EquipmentSpec.fromJsonString(data, { ignoreUnknownFields: true });
 			if (equipment?.items?.length > 0) {
 				const db = await Database.loadLeftoversIfNecessary(equipment);
-				const items = equipment.items.filter(
-					spec => spec.id > 0 && db.lookupItemSpec(spec),
-				);
+				const items = equipment.items.filter(spec => spec.id > 0 && db.lookupItemSpec(spec));
 				if (items.length > 0) {
 					this.bulkUI.addItems(items);
 				}
@@ -68,35 +50,23 @@ export class BulkGearJsonImporter<SpecType extends Spec> extends Importer {
 }
 
 class BulkSimResultRenderer {
-	constructor(
-		parent: ContentBlock,
-		simUI: IndividualSimUI<Spec>,
-		result: BulkComboResult,
-		baseResult: BulkComboResult,
-	) {
+	constructor(parent: ContentBlock, simUI: IndividualSimUI<any>, result: BulkComboResult, baseResult: BulkComboResult) {
 		const dpsDivParent = document.createElement('div');
 		dpsDivParent.classList.add('results-sim');
 
 		const dpsDiv = document.createElement('div');
-		dpsDiv.classList.add(
-			'bulk-result-body-dps',
-			'bulk-items-text-line',
-			'results-sim-dps',
-			'damage-metrics',
-		);
+		dpsDiv.classList.add('bulk-result-body-dps', 'bulk-items-text-line', 'results-sim-dps', 'damage-metrics');
 		dpsDivParent.appendChild(dpsDiv);
 
 		const dpsNumber = document.createElement('span');
-		dpsNumber.textContent = this.formatDps(result.unitMetrics?.dps?.avg!);
+		dpsNumber.textContent = this.formatDps(result.unitMetrics!.dps!.avg);
 		dpsNumber.classList.add('topline-result-avg');
 		dpsDiv.appendChild(dpsNumber);
 
-		const dpsDelta = result.unitMetrics?.dps?.avg! - baseResult.unitMetrics?.dps?.avg!;
+		const dpsDelta = result.unitMetrics!.dps!.avg! - baseResult.unitMetrics!.dps!.avg;
 		const dpsDeltaSpan = document.createElement('span');
 		dpsDeltaSpan.textContent = `${this.formatDpsDelta(dpsDelta)}`;
-		dpsDeltaSpan.classList.add(
-			dpsDelta >= 0 ? 'bulk-result-header-positive' : 'bulk-result-header-negative',
-		);
+		dpsDeltaSpan.classList.add(dpsDelta >= 0 ? 'bulk-result-header-positive' : 'bulk-result-header-negative');
 		dpsDiv.appendChild(dpsDeltaSpan);
 
 		const itemsContainer = document.createElement('div');
@@ -156,27 +126,19 @@ class BulkSimResultRenderer {
 	}
 
 	private itemSlotName(is: ItemSpecWithSlot): string {
-		return JSON.parse(ItemSpecWithSlot.toJsonString(is, { emitDefaultValues: true }))[
-			'slot'
-		].replace('ItemSlot', '');
+		return JSON.parse(ItemSpecWithSlot.toJsonString(is, { emitDefaultValues: true }))['slot'].replace('ItemSlot', '');
 	}
 }
 
-export class BulkItemPicker<SpecType extends Spec> extends Component {
+export class BulkItemPicker extends Component {
 	private readonly itemElem: ItemRenderer;
-	readonly simUI: IndividualSimUI<SpecType>;
+	readonly simUI: IndividualSimUI<any>;
 	readonly bulkUI: BulkTab;
 	readonly index: number;
 
 	protected item: EquippedItem;
 
-	constructor(
-		parent: HTMLElement,
-		simUI: IndividualSimUI<SpecType>,
-		bulkUI: BulkTab,
-		item: EquippedItem,
-		index: number,
-	) {
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab, item: EquippedItem, index: number) {
 		super(parent, 'bulk-item-picker');
 		this.simUI = simUI;
 		this.bulkUI = bulkUI;
@@ -191,31 +153,26 @@ export class BulkItemPicker<SpecType extends Spec> extends Component {
 			const openEnchantGemSelector = (event: Event) => {
 				event.preventDefault();
 				const changeEvent = new TypedEvent<void>();
-				const modal = new SelectorModal(
-					this.bulkUI.rootElem,
-					this.simUI,
-					this.simUI.player,
-					{
-						selectedTab: SelectorModalTabs.Enchants,
-						slot: slot,
-						equippedItem: this.item,
-						eligibleItems: new Array<UIItem>(),
-						eligibleEnchants: eligibleEnchants,
-						gearData: {
-							equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
-								if (equippedItem) {
-									const allItems = this.bulkUI.getItems();
-									allItems[this.index] = equippedItem.asSpec();
-									this.item = equippedItem;
-									this.bulkUI.setItems(allItems);
-									changeEvent.emit(TypedEvent.nextEventID());
-								}
-							},
-							getEquippedItem: () => this.item,
-							changeEvent: changeEvent,
+				const modal = new SelectorModal(this.bulkUI.rootElem, this.simUI, this.simUI.player, {
+					selectedTab: SelectorModalTabs.Enchants,
+					slot: slot,
+					equippedItem: this.item,
+					eligibleItems: new Array<UIItem>(),
+					eligibleEnchants: eligibleEnchants,
+					gearData: {
+						equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
+							if (equippedItem) {
+								const allItems = this.bulkUI.getItems();
+								allItems[this.index] = equippedItem.asSpec();
+								this.item = equippedItem;
+								this.bulkUI.setItems(allItems);
+								changeEvent.emit(TypedEvent.nextEventID());
+							}
 						},
+						getEquippedItem: () => this.item,
+						changeEvent: changeEvent,
 					},
-				);
+				});
 
 				if (eligibleEnchants.length > 0) {
 					modal.openTabName('Enchants');
@@ -260,8 +217,8 @@ export class BulkItemPicker<SpecType extends Spec> extends Component {
 	}
 }
 
-export class BulkTab<SpecType extends Spec> extends SimTab {
-	readonly simUI: IndividualSimUI<SpecType>;
+export class BulkTab extends SimTab {
+	readonly simUI: IndividualSimUI<any>;
 
 	readonly itemsChangedEmitter = new TypedEvent<void>();
 
@@ -285,7 +242,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 	private savedTalents: TalentLoadout[];
 	private gemIconElements: HTMLImageElement[];
 
-	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<SpecType>) {
+	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<any>) {
 		super(parentElem, simUI, { identifier: 'bulk-tab', title: 'Batch' });
 		this.simUI = simUI;
 
@@ -386,9 +343,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 			if (!item) {
 				throw new Error(`item with ID ${is.id} not found in database`);
 			}
-			itemsDb.items.push(
-				SimItem.fromJson(UIItem.toJson(item.item), { ignoreUnknownFields: true }),
-			);
+			itemsDb.items.push(SimItem.fromJson(UIItem.toJson(item.item), { ignoreUnknownFields: true }));
 			if (item.enchant) {
 				itemsDb.enchants.push(
 					SimEnchant.fromJson(UIEnchant.toJson(item.enchant), {
@@ -398,9 +353,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 			}
 			for (const gem of item.gems) {
 				if (gem) {
-					itemsDb.gems.push(
-						SimGem.fromJson(UIGem.toJson(gem), { ignoreUnknownFields: true }),
-					);
+					itemsDb.gems.push(SimGem.fromJson(UIGem.toJson(gem), { ignoreUnknownFields: true }));
 				}
 			}
 		}
@@ -449,15 +402,11 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
-	protected async runBulkSim(onProgress: () => void) {
+	protected async runBulkSim(onProgress: (_?: any) => void) {
 		this.pendingResults.setPending();
 
 		try {
-			await this.simUI.sim.runBulkSim(
-				this.createBulkSettings(),
-				this.createBulkItemsDatabase(),
-				onProgress,
-			);
+			await this.simUI.sim.runBulkSim(this.createBulkSettings(), this.createBulkItemsDatabase(), onProgress);
 		} catch (e) {
 			this.simUI.handleCrash(e);
 		}
@@ -488,8 +437,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 		this.itemsChangedEmitter.on(() => {
 			itemList.innerHTML = '';
 			if (this.items.length > 0) {
-				itemTextIntro.textContent =
-					'The following items will be simmed together with your equipped gear.';
+				itemTextIntro.textContent = 'The following items will be simmed together with your equipped gear.';
 				for (let i = 0; i < this.items.length; ++i) {
 					const spec = this.items[i];
 					const item = this.simUI.sim.db.lookupItemSpec(spec);
@@ -523,12 +471,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 					header: { title: '' },
 					bodyClasses: ['bulk-results-body'],
 				});
-				new BulkSimResultRenderer(
-					resultBlock,
-					this.simUI,
-					r,
-					bulkSimResult.equippedGearResult!,
-				);
+				new BulkSimResultRenderer(resultBlock, this.simUI, r, bulkSimResult.equippedGearResult!);
 			}
 		});
 
@@ -566,8 +509,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 				}
 				if (this.fastMode) {
 					if (rounds == 0 && progressMetrics.totalSims > 0) {
-						rounds =
-							Math.ceil(Math.log(progressMetrics.totalSims / 20) / Math.log(2)) + 1;
+						rounds = Math.ceil(Math.log(progressMetrics.totalSims / 20) / Math.log(2)) + 1;
 						currentRound = 1;
 					}
 					if (progressMetrics.totalSims < lastTotal) {
@@ -576,13 +518,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 					}
 				}
 
-				this.setSimProgress(
-					progressMetrics,
-					iterPerSecond,
-					currentRound,
-					rounds,
-					combinations,
-				);
+				this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
 				lastTotal = progressMetrics.totalSims;
 
 				if (progressMetrics.finalBulkResult != null) {
@@ -604,10 +540,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 		const importButton = document.createElement('button');
 		importButton.classList.add('btn', 'btn-secondary', 'w-100', 'bulk-settings-button');
 		importButton.innerHTML = '<i class="fa fa-download"></i> Import From Bags';
-		importButton.addEventListener(
-			'click',
-			() => new BulkGearJsonImporter(this.simUI.rootElem, this.simUI, this),
-		);
+		importButton.addEventListener('click', () => new BulkGearJsonImporter(this.simUI.rootElem, this.simUI, this));
 		settingsBlock.bodyElement.appendChild(importButton);
 
 		const importFavsButton = document.createElement('button');
@@ -646,7 +579,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 			}
 		});
 
-		searchText.addEventListener('input', e => {
+		searchText.addEventListener('input', _event => {
 			const searchString = searchText.value;
 			searchResults.innerHTML = '';
 			if (searchString.length == 0) {
@@ -767,9 +700,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 
 			if (exists) {
 				// If the object exists, find its index and remove it
-				const indexToRemove = this.savedTalents.findIndex(
-					talent => talent.name === load.name,
-				);
+				const indexToRemove = this.savedTalents.findIndex(talent => talent.name === load.name);
 				this.savedTalents.splice(indexToRemove, 1);
 				chipDiv?.classList.remove('active');
 			} else {
@@ -790,9 +721,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 					name: name,
 				};
 
-				const index = this.savedTalents.findIndex(
-					talent => JSON.stringify(talent) === JSON.stringify(loadout),
-				);
+				const index = this.savedTalents.findIndex(talent => JSON.stringify(talent) === JSON.stringify(loadout));
 				const talentFragment = document.createElement('fragment');
 				talentFragment.innerHTML = `
 					<div class="saved-data-set-chip badge rounded-pill ${index !== -1 ? 'active' : ''}">
@@ -802,9 +731,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 				console.log('Adding event for loadout', loadout);
 				// Wrap the event listener addition in an IIFE
 				(function (talentFragment, loadout) {
-					talentFragment.addEventListener('click', () =>
-						handleToggle(talentFragment, loadout),
-					);
+					talentFragment.addEventListener('click', () => handleToggle(talentFragment, loadout));
 				})(talentFragment, loadout);
 
 				talentsContainerDiv.appendChild(talentFragment);
@@ -834,12 +761,7 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 		const gemSocketsDiv = document.createElement('div');
 		gemSocketsDiv.classList.add('sockets-container');
 
-		Array<GemColor>(
-			GemColor.GemColorRed,
-			GemColor.GemColorYellow,
-			GemColor.GemColorBlue,
-			GemColor.GemColorMeta,
-		).forEach((socketColor, socketIndex) => {
+		Array<GemColor>(GemColor.GemColorRed, GemColor.GemColorYellow, GemColor.GemColorBlue, GemColor.GemColorMeta).forEach((socketColor, socketIndex) => {
 			const gemFragment = document.createElement('fragment');
 			gemFragment.innerHTML = `
           <div class="gem-socket-container">
@@ -866,24 +788,16 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 				selector.close();
 			};
 
-			const openGemSelector = (color: GemColor, socketIndex: number) => {
-				return (event: Event) => {
+			const openGemSelector = (_color: GemColor, _socketIndex: number) => {
+				return (_event: Event) => {
 					if (selector == null) {
-						selector = new GemSelectorModal(
-							this.simUI.rootElem,
-							this.simUI,
-							socketColor,
-							handleChoose,
-						);
+						selector = new GemSelectorModal(this.simUI.rootElem, this.simUI, socketColor, handleChoose);
 					}
 					selector.show();
 				};
 			};
 
-			this.gemIconElements[socketIndex].addEventListener(
-				'click',
-				openGemSelector(socketColor, socketIndex),
-			);
+			this.gemIconElements[socketIndex].addEventListener('click', openGemSelector(socketColor, socketIndex));
 			gemContainer.addEventListener('click', openGemSelector(socketColor, socketIndex));
 			gemSocketsDiv.appendChild(gemContainer);
 		});
@@ -892,8 +806,8 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
 			label: 'Fast Mode',
 			labelTooltip: 'Fast mode reduces accuracy but will run faster.',
-			changedEvent: (obj: BulkTab) => this.itemsChangedEmitter,
-			getValue: obj => this.fastMode,
+			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
+			getValue: _obj => this.fastMode,
 			setValue: (id: EventID, obj: BulkTab, value: boolean) => {
 				obj.fastMode = value;
 			},
@@ -902,18 +816,17 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 			label: 'Combinations',
 			labelTooltip:
 				'When checked bulk simulator will create all possible combinations of the items. When disabled trinkets and rings will still run all combinations becausee they have two slots to fill each.',
-			changedEvent: (obj: BulkTab) => this.itemsChangedEmitter,
-			getValue: obj => this.doCombos,
+			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
+			getValue: _obj => this.doCombos,
 			setValue: (id: EventID, obj: BulkTab, value: boolean) => {
 				obj.doCombos = value;
 			},
 		});
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
 			label: 'Auto Enchant',
-			labelTooltip:
-				'When checked bulk simulator apply the current enchant for a slot to each replacement item it can.',
-			changedEvent: (obj: BulkTab) => this.itemsChangedEmitter,
-			getValue: obj => this.autoEnchant,
+			labelTooltip: 'When checked bulk simulator apply the current enchant for a slot to each replacement item it can.',
+			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
+			getValue: _obj => this.autoEnchant,
 			setValue: (id: EventID, obj: BulkTab, value: boolean) => {
 				obj.autoEnchant = value;
 				if (value) {
@@ -925,10 +838,9 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 		});
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
 			label: 'Auto Gem',
-			labelTooltip:
-				'When checked bulk simulator will fill any un-filled gem sockets with default gems.',
-			changedEvent: (obj: BulkTab) => this.itemsChangedEmitter,
-			getValue: obj => this.autoGem,
+			labelTooltip: 'When checked bulk simulator will fill any un-filled gem sockets with default gems.',
+			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
+			getValue: _obj => this.autoGem,
 			setValue: (id: EventID, obj: BulkTab, value: boolean) => {
 				obj.autoGem = value;
 				if (value) {
@@ -941,10 +853,9 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
 			label: 'Sim Talents',
-			labelTooltip:
-				'When checked bulk simulator will sim chosen talent setups. Warning, it might cause the bulk sim to run for a lot longer',
-			changedEvent: (obj: BulkTab) => this.itemsChangedEmitter,
-			getValue: obj => this.simTalents,
+			labelTooltip: 'When checked bulk simulator will sim chosen talent setups. Warning, it might cause the bulk sim to run for a lot longer',
+			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
+			getValue: _obj => this.simTalents,
 			setValue: (id: EventID, obj: BulkTab, value: boolean) => {
 				obj.simTalents = value;
 				if (value) {
@@ -959,17 +870,8 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 		settingsBlock.bodyElement.appendChild(talentsToSimDiv);
 	}
 
-	private setSimProgress(
-		progress: ProgressMetrics,
-		iterPerSecond: number,
-		currentRound: number,
-		rounds: number,
-		combinations: number,
-	) {
-		const secondsRemain = (
-			(progress.totalIterations - progress.completedIterations) /
-			iterPerSecond
-		).toFixed();
+	private setSimProgress(progress: ProgressMetrics, iterPerSecond: number, currentRound: number, rounds: number, combinations: number) {
+		const secondsRemain = ((progress.totalIterations - progress.completedIterations) / iterPerSecond).toFixed();
 
 		let roundsText = '';
 		if (rounds > 0) {
@@ -993,19 +895,14 @@ export class BulkTab<SpecType extends Spec> extends SimTab {
 }
 
 class GemSelectorModal extends BaseModal {
-	private readonly simUI: IndividualSimUI<Spec>;
+	private readonly simUI: IndividualSimUI<any>;
 
 	private readonly contentElem: HTMLElement;
 	private ilist: ItemList<UIGem> | null;
 	private socketColor: GemColor;
 	private onSelect: (itemData: ItemData<UIGem>) => void;
 
-	constructor(
-		parent: HTMLElement,
-		simUI: IndividualSimUI<Spec>,
-		socketColor: GemColor,
-		onSelect: (itemData: ItemData<UIGem>) => void,
-	) {
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, socketColor: GemColor, onSelect: (itemData: ItemData<UIGem>) => void) {
 		super(parent, 'selector-modal');
 
 		this.simUI = simUI;
@@ -1017,9 +914,7 @@ class GemSelectorModal extends BaseModal {
 
 		this.header!.insertAdjacentHTML('afterbegin', `<span>Choose Default Gem</span>`);
 		this.body.innerHTML = `<div class="tab-content selector-modal-tab-content"></div>`;
-		this.contentElem = this.rootElem.querySelector(
-			'.selector-modal-tab-content',
-		) as HTMLElement;
+		this.contentElem = this.rootElem.querySelector('.selector-modal-tab-content') as HTMLElement;
 	}
 
 	show() {
@@ -1036,7 +931,9 @@ class GemSelectorModal extends BaseModal {
 					eligibleItems: new Array<UIItem>(),
 					eligibleEnchants: new Array<UIEnchant>(),
 					gearData: {
-						equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {},
+						equipItem: (_eventID: EventID, _equippedItem: EquippedItem | null) => {
+							return;
+						},
 						getEquippedItem: () => null,
 						changeEvent: new TypedEvent(), // FIXME
 					},
@@ -1054,7 +951,9 @@ class GemSelectorModal extends BaseModal {
 						heroic: false,
 						baseEP: 0,
 						ignoreEPFilter: true,
-						onEquip: (eventID, gem: UIGem) => {},
+						onEquip: (_eventID, _gem: UIGem) => {
+							return;
+						},
 					};
 				}),
 				gem => {
@@ -1064,7 +963,9 @@ class GemSelectorModal extends BaseModal {
 					return null;
 				},
 				this.socketColor,
-				() => {},
+				() => {
+					return;
+				},
 				this.onSelect,
 			);
 

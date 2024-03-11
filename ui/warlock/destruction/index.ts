@@ -1,12 +1,12 @@
-import { Spec } from '../core/proto/common.js';
-import { Sim } from '../core/sim.js';
-import { Player } from '../core/player.js';
-import { TypedEvent } from '../core/typed_event.js';
-
-import { WarlockSimUI } from './sim.js';
+import { Player } from '../../core/player';
+import { PlayerSpecs } from '../../core/player_specs';
+import { Spec } from '../../core/proto/common';
+import { Sim } from '../../core/sim';
+import { TypedEvent } from '../../core/typed_event';
+import { DestructionWarlockSimUI } from './sim';
 
 const sim = new Sim();
-const player = new Player<Spec.SpecWarlock>(Spec.SpecWarlock, sim);
+const player = new Player<Spec.SpecDestructionWarlock>(PlayerSpecs.DestructionWarlock, sim);
 sim.raid.setPlayer(TypedEvent.nextEventID(), 0, player);
 
-new WarlockSimUI(document.body, player);
+new DestructionWarlockSimUI(document.body, player);

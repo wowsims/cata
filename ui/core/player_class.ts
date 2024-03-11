@@ -12,7 +12,7 @@ export abstract class PlayerClass<ClassType extends Class> {
 	abstract readonly protoID: ClassType;
 	abstract readonly friendlyName: string;
 	abstract readonly hexColor: string;
-	abstract readonly specs: Record<string, PlayerSpec<Spec>>;
+	abstract readonly specs: Record<string, PlayerSpec<any>>;
 	abstract readonly races: Race[];
 	abstract readonly armorTypes: ArmorType[];
 	abstract readonly weaponTypes: EligibleWeaponType[];

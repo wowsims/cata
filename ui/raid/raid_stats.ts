@@ -65,7 +65,7 @@ export class RaidStats extends Component {
 		});
 		this.categories = categories;
 
-		raidSimUI.changeEmitter.on(eventID => this.categories.forEach(c => c.update()));
+		raidSimUI.changeEmitter.on(_eventID => this.categories.forEach(c => c.update()));
 	}
 }
 
@@ -810,17 +810,17 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Hunting Party',
 							actionId: ActionId.fromSpellId(53292),
-							playerData: playerSpecAndTalent(Spec.SpecHunter, 'huntingParty'),
+							playerData: playerSpecAndTalent(Spec.SpecSurvivalHunter, 'huntingParty'),
 						},
 						{
 							label: 'Improved Soul Leech',
 							actionId: ActionId.fromSpellId(54118),
-							playerData: playerSpecAndTalent(Spec.SpecWarlock, 'improvedSoulLeech'),
+							playerData: playerSpecAndTalent(Spec.SpecDestructionWarlock, 'improvedSoulLeech'),
 						},
 						{
 							label: 'Enduring Winter',
 							actionId: ActionId.fromSpellId(44561),
-							playerData: playerSpecAndTalent(Spec.SpecMage, 'enduringWinter'),
+							playerData: playerSpecAndTalent(Spec.SpecFrostMage, 'enduringWinter'),
 						},
 					],
 				},
@@ -920,7 +920,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Acid Spit',
 							actionId: ActionId.fromSpellId(55754),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().petType == HunterPetType.Worm),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().hunterOptions!.petType == HunterPetType.Worm),
 						},
 					],
 				},
@@ -930,7 +930,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Faerie Fire',
 							actionId: ActionId.fromSpellId(770),
-							playerData: playerClass(Class.ClassDruid, player => player.spec != Spec.SpecRestorationDruid),
+							playerData: playerClass(Class.ClassDruid, player => player.getSpec() != Spec.SpecRestorationDruid),
 						},
 						{
 							label: 'Curse of Weakness',
@@ -940,12 +940,12 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Sting',
 							actionId: ActionId.fromSpellId(56631),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().petType == HunterPetType.Wasp),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().hunterOptions!.petType == HunterPetType.Wasp),
 						},
 						{
 							label: 'Spore Cloud',
 							actionId: ActionId.fromSpellId(53598),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().petType == HunterPetType.Bat),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().hunterOptions!.petType == HunterPetType.Bat),
 						},
 					],
 				},
@@ -970,7 +970,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Mangle',
 							actionId: ActionId.fromSpellId(16862),
-							playerData: playerClass(Class.ClassDruid, player => [Spec.SpecFeralDruid, Spec.SpecFeralTankDruid].includes(player.spec)),
+							playerData: playerClass(Class.ClassDruid, player => [Spec.SpecFeralDruid].includes(player.getSpec())),
 						},
 						{
 							label: 'Trauma',
@@ -980,7 +980,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Stampede',
 							actionId: ActionId.fromSpellId(57393),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().petType == HunterPetType.Rhino),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().hunterOptions!.petType == HunterPetType.Rhino),
 						},
 					],
 				},
@@ -1000,7 +1000,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							label: 'Heart of the Crusader',
 							actionId: ActionId.fromSpellId(20337),
 							playerData: playerClassAndTalent(Class.ClassPaladin, 'heartOfTheCrusader', player =>
-								[Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.spec),
+								[Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.getSpec()),
 							),
 						},
 						{
@@ -1077,7 +1077,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							label: 'Vindication',
 							actionId: ActionId.fromSpellId(26016),
 							playerData: playerClassAndTalent(Class.ClassPaladin, 'vindication', player =>
-								[Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.spec),
+								[Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.getSpec()),
 							),
 						},
 						{
@@ -1093,12 +1093,12 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Demoralizing Roar',
 							actionId: ActionId.fromSpellId(16862),
-							playerData: playerSpecAndTalent(Spec.SpecFeralTankDruid, 'feralAggression'),
+							playerData: playerSpecAndTalent(Spec.SpecFeralDruid, 'feralAggression'),
 						},
 						{
 							label: 'Demoralizing Roar',
 							actionId: ActionId.fromSpellId(48560),
-							playerData: playerSpecAndMissingTalent(Spec.SpecFeralTankDruid, 'feralAggression'),
+							playerData: playerSpecAndMissingTalent(Spec.SpecFeralDruid, 'feralAggression'),
 						},
 						{
 							label: 'Improved Curse of Weakness',
@@ -1113,7 +1113,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Demoralizing Screech',
 							actionId: ActionId.fromSpellId(55487),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().petType == HunterPetType.CarrionBird),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().hunterOptions!.petType == HunterPetType.CarrionBird),
 						},
 					],
 				},
@@ -1149,7 +1149,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							label: 'Infected Wounds',
 							actionId: ActionId.fromSpellId(48485),
 							playerData: playerClassAndTalent(Class.ClassDruid, 'infectedWounds', player =>
-								[Spec.SpecFeralDruid, Spec.SpecFeralTankDruid].includes(player.spec),
+								[Spec.SpecFeralDruid, Spec.SpecFeralDruid].includes(player.getSpec()),
 							),
 						},
 					],

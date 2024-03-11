@@ -12,7 +12,7 @@ import * as ShamanSpecs from './shaman';
 import * as WarlockSpecs from './warlock';
 import * as WarriorSpecs from './warrior';
 
-const protoToPlayerSpec: Record<Spec, PlayerSpec<Spec> | undefined> = {
+const protoToPlayerSpec: Record<Spec, PlayerSpec<any> | undefined> = {
 	[Spec.SpecUnknown]: undefined,
 	// Death Knight
 	[Spec.SpecBloodDeathKnight]: DeathKnightSpecs.BloodDeathKnight,

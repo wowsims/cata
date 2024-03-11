@@ -12,7 +12,7 @@ interface ClassOptions {
 
 interface SpecOptions {
 	type: 'Spec';
-	spec: PlayerSpec<Spec>;
+	spec: PlayerSpec<any>;
 }
 
 interface RaidOptions {
@@ -27,7 +27,7 @@ type SimTitleDropdownConfig = {
 export class SimTitleDropdown extends Component {
 	private readonly dropdownMenu: HTMLElement | undefined;
 
-	constructor(parent: HTMLElement, currentSpec: PlayerSpec<Spec> | null, config: SimTitleDropdownConfig = {}) {
+	constructor(parent: HTMLElement, currentSpec: PlayerSpec<any> | null, config: SimTitleDropdownConfig = {}) {
 		super(parent, 'sim-title-dropdown-root');
 
 		const rootLinkArgs: SpecOptions | RaidOptions = currentSpec === null ? { type: 'Raid' } : { type: 'Spec', spec: currentSpec };

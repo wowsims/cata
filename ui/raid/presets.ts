@@ -4,7 +4,7 @@ import { naturalPlayerClassOrder } from '../core/player_class.js';
 import { Spec } from '../core/proto/common.js';
 import { BloodDeathknightSimUI } from '../death_knight/blood/sim.js';
 import { FrostDeathKnightSimUI } from '../death_knight/frost/sim';
-import { UnholyDeathknightSimUI } from '../death_knight/unholy/sim';
+import { UnholyDeathKnightSimUI } from '../death_knight/unholy/sim';
 import { BalanceDruidSimUI } from '../druid/balance/sim.js';
 import { FeralDruidSimUI } from '../druid/feral/sim.js';
 import { RestorationDruidSimUI } from '../druid/restoration/sim.js';
@@ -37,7 +37,7 @@ export const specSimFactories: Partial<Record<Spec, (parentElem: HTMLElement, pl
 	// Death Knight
 	[Spec.SpecBloodDeathKnight]: (parentElem: HTMLElement, player: Player<any>) => new BloodDeathknightSimUI(parentElem, player),
 	[Spec.SpecFrostDeathKnight]: (parentElem: HTMLElement, player: Player<any>) => new FrostDeathKnightSimUI(parentElem, player),
-	[Spec.SpecUnholyDeathKnight]: (parentElem: HTMLElement, player: Player<any>) => new UnholyDeathknightSimUI(parentElem, player),
+	[Spec.SpecUnholyDeathKnight]: (parentElem: HTMLElement, player: Player<any>) => new UnholyDeathKnightSimUI(parentElem, player),
 	// Druid
 	[Spec.SpecBalanceDruid]: (parentElem: HTMLElement, player: Player<any>) => new BalanceDruidSimUI(parentElem, player),
 	[Spec.SpecFeralDruid]: (parentElem: HTMLElement, player: Player<any>) => new FeralDruidSimUI(parentElem, player),
@@ -86,4 +86,4 @@ export const playerPresets: Array<RaidSimPreset<any>> = naturalPlayerClassOrder
 	})
 	.flat();
 
-export const implementedSpecs: Array<Spec> = [...new Set(playerPresets.map(preset => preset.spec))];
+export const implementedSpecs: Array<any> = [...new Set(playerPresets.map(preset => preset.spec))];

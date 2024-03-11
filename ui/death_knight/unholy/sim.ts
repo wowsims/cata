@@ -263,7 +263,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	],
 });
 
-export class UnholyDeathknightSimUI extends IndividualSimUI<Spec.SpecUnholyDeathKnight> {
+export class UnholyDeathKnightSimUI extends IndividualSimUI<Spec.SpecUnholyDeathKnight> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecUnholyDeathKnight>) {
 		super(parentElem, player, SPEC_CONFIG);
 	}
