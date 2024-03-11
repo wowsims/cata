@@ -15,7 +15,6 @@ message APLRotation {
         TypeAuto = 1;
         TypeSimple = 2;
         TypeAPL = 3;
-        TypeLegacy = 4;
     }
     Type type = 3;
 

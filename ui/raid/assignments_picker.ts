@@ -1,13 +1,12 @@
-import { DeathknightTalents } from 'ui/core/proto/deathknight.js';
-import { PriestTalents } from 'ui/core/proto/priest.js';
-
-import { Component } from '../core/components/component.js';
-import { UnitReferencePicker } from '../core/components/raid_target_picker.js';
-import { Player } from '../core/player.js';
-import { Class, Spec, UnitReference } from '../core/proto/common.js';
-import { emptyUnitReference, RogueSpecs } from '../core/proto_utils/utils.js';
-import { EventID, TypedEvent } from '../core/typed_event.js';
-import { RaidSimUI } from './raid_sim_ui.js';
+import { Component } from '../core/components/component';
+import { UnitReferencePicker } from '../core/components/raid_target_picker';
+import { Player } from '../core/player';
+import { Class, Spec, UnitReference } from '../core/proto/common';
+import { DeathKnightTalents } from '../core/proto/death_knight';
+import { PriestTalents } from '../core/proto/priest';
+import { emptyUnitReference, RogueSpecs } from '../core/proto_utils/utils';
+import { EventID, TypedEvent } from '../core/typed_event';
+import { RaidSimUI } from './raid_sim_ui';
 
 export class AssignmentsPicker extends Component {
 	readonly raidSimUI: RaidSimUI;
@@ -164,12 +163,12 @@ class TricksOfTheTradesPicker extends AssignedBuffPicker {
 	}
 
 	getPlayerValue(player: Player<any>): UnitReference {
-		return (player as Player<RogueSpecs>).getSpecOptions().rogueOptions!.tricksOfTheTradeTarget || emptyUnitReference();
+		return (player as Player<RogueSpecs>).getSpecOptions().classOptions!.tricksOfTheTradeTarget || emptyUnitReference();
 	}
 
 	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
 		const newOptions = (player as Player<RogueSpecs>).getSpecOptions();
-		newOptions.rogueOptions!.tricksOfTheTradeTarget = newValue;
+		newOptions.classOptions!.tricksOfTheTradeTarget = newValue;
 		player.setSpecOptions(eventID, newOptions);
 	}
 }
@@ -182,7 +181,7 @@ class UnholyFrenzyPicker extends AssignedBuffPicker {
 	getSourcePlayers(): Array<Player<any>> {
 		return this.raidSimUI
 			.getActivePlayers()
-			.filter(player => player.isSpec(Spec.SpecUnholyDeathKnight) && (player.getTalents() as DeathknightTalents).hysteria);
+			.filter(player => player.isSpec(Spec.SpecUnholyDeathKnight) && (player.getTalents() as DeathKnightTalents).hysteria);
 	}
 
 	getPlayerValue(player: Player<any>): UnitReference {
@@ -206,12 +205,12 @@ class FocusMagicsPicker extends AssignedBuffPicker {
 	}
 
 	getPlayerValue(player: Player<any>): UnitReference {
-		return (player as Player<Spec.SpecArcaneMage>).getSpecOptions().mageOptions!.focusMagicTarget || emptyUnitReference();
+		return (player as Player<Spec.SpecArcaneMage>).getSpecOptions().focusMagicTarget || emptyUnitReference();
 	}
 
 	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
 		const newOptions = (player as Player<Spec.SpecArcaneMage>).getSpecOptions();
-		newOptions.mageOptions!.focusMagicTarget = newValue;
+		newOptions.focusMagicTarget = newValue;
 		player.setSpecOptions(eventID, newOptions);
 	}
 }

@@ -5,7 +5,8 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Faction, Race, Spec, Stat } from '../../core/proto/common.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import * as DruidInputs from './inputs.js';
+// import * as DruidInputs from './inputs.js';
+import * as DruidInputs from '../inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationDruid, {
@@ -62,7 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationDruid, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [DruidInputs.SelfInnervate],
+	playerIconInputs: [DruidInputs.SelfInnervate()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],

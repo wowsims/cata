@@ -63,8 +63,6 @@ export class RotationTab extends SimTab {
 			this.rootElem.classList.add('rotation-type-simple');
 		} else if (rotType == APLRotationType.TypeAPL) {
 			this.rootElem.classList.add('rotation-type-apl');
-		} else if (rotType == APLRotationType.TypeLegacy) {
-			this.rootElem.classList.add('rotation-type-legacy');
 		}
 	}
 

@@ -1,36 +1,12 @@
-import { UnitReference, UnitReference_Type as UnitType } from '../../core/proto/common.js';
-import { Spec } from '../../core/proto/common.js';
-import { APLRotation_Type } from '../../core/proto/apl.js';
-import { ActionId } from '../../core/proto_utils/action_id.js';
-import { Player } from '../../core/player.js';
-import { EventID, TypedEvent } from '../../core/typed_event.js';
-
 import * as InputHelpers from '../../core/components/input_helpers.js';
-
-import {
-	FeralDruid_Rotation_AplType as AplType,
-	FeralDruid_Rotation_BiteModeType as BiteModeType,
-} from '../../core/proto/druid.js';
+import { Player } from '../../core/player.js';
+import { APLRotation_Type } from '../../core/proto/apl.js';
+import { Spec } from '../../core/proto/common.js';
+import { FeralDruid_Rotation_AplType as AplType, FeralDruid_Rotation_BiteModeType as BiteModeType } from '../../core/proto/druid.js';
+import { TypedEvent } from '../../core/typed_event.js';
 
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
-
-export const SelfInnervate = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecFeralDruid>({
-	fieldName: 'innervateTarget',
-	id: ActionId.fromSpellId(29166),
-	extraCssClasses: [
-		'within-raid-sim-hide',
-	],
-	getValue: (player: Player<Spec.SpecFeralDruid>) => player.getSpecOptions().innervateTarget?.type == UnitType.Player,
-	setValue: (eventID: EventID, player: Player<Spec.SpecFeralDruid>, newValue: boolean) => {
-		const newOptions = player.getSpecOptions();
-		newOptions.innervateTarget = UnitReference.create({
-			type: newValue ? UnitType.Player : UnitType.Unknown,
-			index: 0,
-		});
-		player.setSpecOptions(eventID, newOptions);
-	},
-});
 
 export const LatencyMs = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecFeralDruid>({
 	fieldName: 'latencyMs',
@@ -41,17 +17,17 @@ export const LatencyMs = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecFeralD
 export const AssumeBleedActive = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecFeralDruid>({
 	fieldName: 'assumeBleedActive',
 	label: 'Assume Bleed Always Active',
-	labelTooltip: 'Assume bleed always exists for \'Rend and Tear\' calculations. Otherwise will only calculate based on own rip/rake/lacerate.',
+	labelTooltip: "Assume bleed always exists for 'Rend and Tear' calculations. Otherwise will only calculate based on own rip/rake/lacerate.",
 	extraCssClasses: ['within-raid-sim-hide'],
-})
+});
 
 function ShouldShowAdvParamST(player: Player<Spec.SpecFeralDruid>): boolean {
-	let rot = player.getSimpleRotation();
+	const rot = player.getSimpleRotation();
 	return rot.manualParams && rot.rotationType == AplType.SingleTarget;
 }
 
 function ShouldShowAdvParamAoe(player: Player<Spec.SpecFeralDruid>): boolean {
-	let rot = player.getSimpleRotation();
+	const rot = player.getSimpleRotation();
 	return rot.manualParams && rot.rotationType == AplType.Aoe;
 }
 
@@ -134,7 +110,8 @@ export const FeralDruidRotationConfig = {
 			fieldName: 'raidTargets',
 			label: 'GotW Raid Targets',
 			labelTooltip: 'Raid size to assume for clearcast proc chance (can include pets as well, so 25 man raid potentically can be ~30)',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) => player.aplRotation.type != APLRotation_Type.TypeSimple || (ShouldShowAdvParamAoe(player) && player.getSimpleRotation().flowerWeave == true),
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				player.aplRotation.type != APLRotation_Type.TypeSimple || (ShouldShowAdvParamAoe(player) && player.getSimpleRotation().flowerWeave == true),
 		}),
 		// Can be uncommented if/when analytical bite mode is added
 		//InputHelpers.makeRotationEnumInput<Spec.SpecFeralDruid, BiteModeType>({
@@ -151,7 +128,8 @@ export const FeralDruidRotationConfig = {
 			label: 'Revitalize Hot Uptime',
 			labelTooltip: 'Hot uptime percentage to assume when theorizing energy gains',
 			percent: true,
-			showWhen: (player: Player<Spec.SpecFeralDruid>) => player.getSimpleRotation().useBite == true && player.getSimpleRotation().biteModeType == BiteModeType.Analytical,
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				player.getSimpleRotation().useBite == true && player.getSimpleRotation().biteModeType == BiteModeType.Analytical,
 		}),
 	],
 };

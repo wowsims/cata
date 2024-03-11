@@ -149,16 +149,15 @@ message RogueOptions {
 	PoisonImbue oh_imbue = 3;
 	int32 starting_overkill_duration = 4;
 	bool apply_poisons_manually = 5;
-	int32 honor_of_thieves_crit_rate = 6;
-	bool assume_bleed_active = 7;
-	float vanish_break_time = 8;
+	bool assume_bleed_active = 6;
+	float vanish_break_time = 7;
 }
 
 message AssassinationRogue {
 	message Rotation {}
 
 	message Options {
-		RogueOptions rogue_options = 1;
+		RogueOptions class_options = 1;
 	}
 	Options options = 1;
 }
@@ -167,7 +166,7 @@ message CombatRogue {
 	message Rotation {}
 
 	message Options {
-		RogueOptions rogue_options = 1;
+		RogueOptions class_options = 1;
 	}
 	Options options = 1;
 }
@@ -176,7 +175,8 @@ message SubtletyRogue {
 	message Rotation {}
 
 	message Options {
-		RogueOptions rogue_options = 1;
+		RogueOptions class_options = 1;
+		int32 honor_among_thieves_crit_rate = 6;
 	}
 	Options options = 1;
 }

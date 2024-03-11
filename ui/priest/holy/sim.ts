@@ -7,6 +7,7 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Faction, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common.js';
 import { Stats } from '../../core/proto_utils/stats.js';
+import * as PriestInputs from '../inputs';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPriest, {
@@ -73,7 +74,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPriest, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [],
+	playerIconInputs: [PriestInputs.ArmorInput()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.ReplenishmentBuff,

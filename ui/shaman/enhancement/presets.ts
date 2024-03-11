@@ -71,16 +71,18 @@ export const Phase3Talents = {
 };
 
 export const DefaultOptions = EnhancementShamanOptions.create({
-	shield: ShamanShield.LightningShield,
-	imbueMh: ShamanImbue.WindfuryWeapon,
+	classOptions: {
+		shield: ShamanShield.LightningShield,
+		totems: ShamanTotems.create({
+			earth: EarthTotem.StrengthOfEarthTotem,
+			fire: FireTotem.MagmaTotem,
+			water: WaterTotem.ManaSpringTotem,
+			air: AirTotem.WindfuryTotem,
+		}),
+		imbueMh: ShamanImbue.WindfuryWeapon,
+	},
 	imbueOh: ShamanImbue.FlametongueWeapon,
 	syncType: ShamanSyncType.Auto,
-	totems: ShamanTotems.create({
-		earth: EarthTotem.StrengthOfEarthTotem,
-		fire: FireTotem.MagmaTotem,
-		water: WaterTotem.ManaSpringTotem,
-		air: AirTotem.WindfuryTotem,
-	}),
 });
 
 export const DefaultConsumes = Consumes.create({

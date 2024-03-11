@@ -1,15 +1,40 @@
-import { IconEnumPicker } from '../components/icon_enum_picker.js';
-import { IconPicker } from '../components/icon_picker.js';
-import * as InputHelpers from '../components/input_helpers.js';
-import { IndividualSimUI } from '../individual_sim_ui.js';
-import { Player } from '../player.js';
-import { Spec } from '../proto/common.js';
-import { AirTotem, EarthTotem, FireTotem, ShamanTotems, WaterTotem } from '../proto/shaman.js';
-import { ActionId } from '../proto_utils/action_id.js';
-import { ShamanSpecs } from '../proto_utils/utils.js';
-import { EventID } from '../typed_event.js';
-import { ContentBlock } from './content_block.js';
-import { Input } from './input.js';
+import { ContentBlock } from '../core/components/content_block';
+import { IconEnumPicker } from '../core/components/icon_enum_picker';
+import { IconPicker } from '../core/components/icon_picker';
+import { Input } from '../core/components/input';
+import * as InputHelpers from '../core/components/input_helpers';
+import { IndividualSimUI } from '../core/individual_sim_ui';
+import { Player } from '../core/player';
+import { Spec } from '../core/proto/common';
+import { AirTotem, EarthTotem, FireTotem, ShamanImbue, ShamanShield, ShamanTotems, WaterTotem } from '../core/proto/shaman';
+import { ActionId } from '../core/proto_utils/action_id';
+import { ShamanSpecs } from '../core/proto_utils/utils';
+import { EventID } from '../core/typed_event';
+
+// Configuration for class-specific UI elements on the settings tab.
+// These don't need to be in a separate file but it keeps things cleaner.
+
+export const ShamanShieldInput = <SpecType extends ShamanSpecs>() =>
+	InputHelpers.makeClassOptionsEnumIconInput<SpecType, ShamanShield>({
+		fieldName: 'shield',
+		values: [
+			{ value: ShamanShield.NoShield, tooltip: 'No Shield' },
+			{ actionId: ActionId.fromSpellId(57960), value: ShamanShield.WaterShield },
+			{ actionId: ActionId.fromSpellId(49281), value: ShamanShield.LightningShield },
+		],
+	});
+
+export const ShamanImbueMH = <SpecType extends ShamanSpecs>() =>
+	InputHelpers.makeClassOptionsEnumIconInput<SpecType, ShamanImbue>({
+		fieldName: 'imbueMh',
+		values: [
+			{ value: ShamanImbue.NoImbue, tooltip: 'No Main Hand Enchant' },
+			{ actionId: ActionId.fromSpellId(58804), value: ShamanImbue.WindfuryWeapon },
+			{ actionId: ActionId.fromSpellId(58790), value: ShamanImbue.FlametongueWeapon, text: 'R10' },
+			{ actionId: ActionId.fromSpellId(58789), value: ShamanImbue.FlametongueWeaponDownrank, text: 'R9' },
+			{ actionId: ActionId.fromSpellId(58796), value: ShamanImbue.FrostbrandWeapon },
+		],
+	});
 
 export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<any>): ContentBlock {
 	const contentBlock = new ContentBlock(parentElem, 'totems-settings', {
@@ -37,11 +62,11 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		equals: (a: EarthTotem, b: EarthTotem) => a == b,
 		zeroValue: EarthTotem.NoEarthTotem,
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
-		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().totems?.earth || EarthTotem.NoEarthTotem,
+		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().classOptions?.totems?.earth || EarthTotem.NoEarthTotem,
 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
 			const newOptions = player.getSpecOptions();
-			if (!newOptions.totems) newOptions.totems = ShamanTotems.create();
-			newOptions.totems!.earth = newValue;
+			if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
+			newOptions.classOptions!.totems.earth = newValue;
 			player.setSpecOptions(eventID, newOptions);
 		},
 	});
@@ -57,11 +82,11 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		equals: (a: WaterTotem, b: WaterTotem) => a == b,
 		zeroValue: WaterTotem.NoWaterTotem,
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
-		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().totems?.water || WaterTotem.NoWaterTotem,
+		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().classOptions?.totems?.water || WaterTotem.NoWaterTotem,
 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
 			const newOptions = player.getSpecOptions();
-			if (!newOptions.totems) newOptions.totems = ShamanTotems.create();
-			newOptions.totems!.water = newValue;
+			if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
+			newOptions.classOptions!.totems.water = newValue;
 			player.setSpecOptions(eventID, newOptions);
 		},
 	});
@@ -83,11 +108,11 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		equals: (a: FireTotem, b: FireTotem) => a == b,
 		zeroValue: FireTotem.NoFireTotem,
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
-		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().totems?.fire || FireTotem.NoFireTotem,
+		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().classOptions?.totems?.fire || FireTotem.NoFireTotem,
 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
 			const newOptions = player.getSpecOptions();
-			if (!newOptions.totems) newOptions.totems = ShamanTotems.create();
-			newOptions.totems!.fire = newValue;
+			if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
+			newOptions.classOptions!.totems.fire = newValue;
 			player.setSpecOptions(eventID, newOptions);
 		},
 	});
@@ -103,11 +128,11 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		equals: (a: AirTotem, b: AirTotem) => a == b,
 		zeroValue: AirTotem.NoAirTotem,
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
-		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().totems?.air || AirTotem.NoAirTotem,
+		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().classOptions?.totems?.air || AirTotem.NoAirTotem,
 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
 			const newOptions = player.getSpecOptions();
-			if (!newOptions.totems) newOptions.totems = ShamanTotems.create();
-			newOptions.totems!.air = newValue;
+			if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
+			newOptions.classOptions!.totems.air = newValue;
 			player.setSpecOptions(eventID, newOptions);
 		},
 	});
@@ -117,10 +142,10 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		const fireElementalBooleanIconInput = InputHelpers.makeBooleanIconInput<ShamanSpecs, ShamanTotems, Player<ShamanSpecs>>(
 			{
 				getModObject: (player: Player<ShamanSpecs>) => player,
-				getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().totems || ShamanTotems.create(),
+				getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().classOptions?.totems || ShamanTotems.create(),
 				setValue: (eventID: EventID, player: Player<ShamanSpecs>, newVal: ShamanTotems) => {
 					const newOptions = player.getSpecOptions();
-					newOptions.totems = newVal;
+					newOptions.classOptions!.totems = newVal;
 					player.setSpecOptions(eventID, newOptions);
 				},
 				changeEmitter: (player: Player<any>) => player.specOptionsChangeEmitter,

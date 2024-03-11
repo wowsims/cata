@@ -159,14 +159,18 @@ enum PaladinJudgement {
 	NoJudgement = 2;
 }
 
+message PaladinOptions {
+	PaladinJudgement judgement = 1;
+	PaladinSeal seal = 2;
+	PaladinAura aura = 3;
+	bool use_avenging_wrath = 4;
+}
+
 message RetributionPaladin {
 	message Rotation {}
 
 	message Options {
-		PaladinJudgement judgement = 1;
-		PaladinSeal seal = 2;
-		PaladinAura aura = 3;
-		bool use_avenging_wrath = 5;
+		PaladinOptions class_options = 1;
 	}
 	Options options = 3;
 }
@@ -175,10 +179,7 @@ message ProtectionPaladin {
 	message Rotation {}
 
 	message Options {
-		PaladinJudgement judgement = 1;
-		PaladinSeal seal = 2;
-		PaladinAura aura = 3;
-		bool use_avenging_wrath = 5;
+		PaladinOptions class_options = 1;
 	}
 	Options options = 3;
 }
@@ -187,8 +188,7 @@ message HolyPaladin {
 	message Rotation {}
 
 	message Options {
-		PaladinJudgement judgement = 1;
-		PaladinAura aura = 2;
+		PaladinOptions class_options = 2;
 	}
 	Options options = 3;
 }

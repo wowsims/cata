@@ -52,6 +52,7 @@ import {
 	AL_CATEGORY_HARD_MODE,
 	canEquipEnchant,
 	canEquipItem,
+	ClassOptions,
 	ClassSpecs,
 	emptyUnitReference,
 	enchantAppliesToItem,
@@ -874,6 +875,19 @@ export class Player<SpecType extends Spec> {
 		return this.getMajorGlyphs().concat(this.getMinorGlyphs());
 	}
 
+	getClassOptions(): ClassOptions<SpecType> {
+		return this.getSpecOptions().classOptions as ClassOptions<SpecType>;
+	}
+
+	setClassOptions(eventID: EventID, newClassOptions: ClassOptions<SpecType>) {
+		const newSpecOptions = this.getSpecOptions();
+		newSpecOptions.classOptions = newClassOptions;
+		if (this.specTypeFunctions.optionsEquals(newSpecOptions, this.specOptions)) return;
+
+		this.specOptions = this.specTypeFunctions.optionsCopy(newSpecOptions);
+		this.specOptionsChangeEmitter.emit(eventID);
+	}
+
 	getSpecOptions(): SpecOptions<SpecType> {
 		return this.specTypeFunctions.optionsCopy(this.specOptions);
 	}
@@ -1366,11 +1380,6 @@ export class Player<SpecType extends Spec> {
 	fromProto(eventID: EventID, proto: PlayerProto, includeCategories?: Array<SimSettingCategories>) {
 		const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
 
-		// For backwards compatibility with legacy rotations (removed on 2024/01/15).
-		if (proto.rotation?.type == APLRotationType.TypeLegacy) {
-			proto.rotation.type = APLRotationType.TypeAuto;
-		}
-
 		TypedEvent.freezeAllAndDo(() => {
 			if (loadCategory(SimSettingCategories.Gear)) {
 				this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
@@ -1384,7 +1393,7 @@ export class Player<SpecType extends Spec> {
 				this.setGlyphs(eventID, proto.glyphs || Glyphs.create());
 			}
 			if (loadCategory(SimSettingCategories.Rotation)) {
-				if (proto.rotation?.type == APLRotationType.TypeUnknown || proto.rotation?.type == APLRotationType.TypeLegacy) {
+				if (proto.rotation?.type == APLRotationType.TypeUnknown) {
 					if (!proto.rotation) {
 						proto.rotation = APLRotation.create();
 					}

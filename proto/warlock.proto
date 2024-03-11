@@ -168,7 +168,7 @@ message AfflictionWarlock {
 	}
 
 	message Options {
-		WarlockOptions warlock_options = 1;
+		WarlockOptions class_options = 1;
 	}
 	Options options = 1;
 }
@@ -178,7 +178,7 @@ message DemonologyWarlock {
 	}
 
 	message Options {
-		WarlockOptions warlock_options = 1;
+		WarlockOptions class_options = 1;
 	}
 	Options options = 1;
 }
@@ -188,7 +188,7 @@ message DestructionWarlock {
 	}
 
 	message Options {
-		WarlockOptions warlock_options = 1;
+		WarlockOptions class_options = 1;
 	}
 	Options options = 1;
 }

@@ -136,13 +136,21 @@ enum PriestMinorGlyph {
 	GlyphOfShadowfiend = 43374;
 }
 
+message PriestOptions {
+	enum Armor {
+		NoArmor = 0;
+		InnerFire = 1;
+	}
+	Armor armor = 2;
+}
+
 message DisciplinePriest {
 	message Rotation {}
 
 	message Options {
-		bool use_inner_fire = 3;
-		bool use_shadowfiend = 1;
-		UnitReference power_infusion_target = 2;
+		PriestOptions class_options = 1;
+		bool use_shadowfiend = 2;
+		UnitReference power_infusion_target = 3;
 	}
 	Options options = 3;
 }
@@ -151,8 +159,8 @@ message HolyPriest {
 	message Rotation {}
 
 	message Options {
-		bool use_inner_fire = 3;
-		bool use_shadowfiend = 1;
+		PriestOptions class_options = 1;
+		bool use_shadowfiend = 2;
 	}
 	Options options = 3;
 }
@@ -161,13 +169,8 @@ message ShadowPriest {
 	message Rotation {}
 
 	message Options {
-		enum Armor {
-			NoArmor = 0;
-			InnerFire = 1;
-		}
-
-		Armor armor = 2;
-		UnitReference power_infusion_target = 6;
+		PriestOptions class_options = 1;
+		UnitReference power_infusion_target = 2;
 	}
 	Options options = 3;
 }

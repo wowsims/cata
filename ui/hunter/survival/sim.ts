@@ -16,14 +16,16 @@ import {
 	Race,
 	RaidBuffs,
 	RangedWeaponType,
+	RotationType,
 	Spec,
 	Stat,
 	TristateEffect,
 } from '../../core/proto/common';
-import { HunterRotation_RotationType, HunterRotation_StingType, SurvivalHunter_Rotation } from '../../core/proto/hunter';
+import { HunterStingType, SurvivalHunter_Rotation } from '../../core/proto/hunter';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats } from '../../core/proto_utils/stats';
-import * as HunterInputs from './inputs';
+import * as HunterInputs from '../inputs';
+import * as SVInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
@@ -105,7 +107,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		// Default talents.
 		talents: Presets.SurvivalTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultOptions,
+		specOptions: Presets.SVDefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
@@ -138,9 +140,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [HunterInputs.PetTypeInput, HunterInputs.WeaponAmmo, HunterInputs.UseHuntersMark],
+	playerIconInputs: [HunterInputs.PetTypeInput(), HunterInputs.WeaponAmmo(), HunterInputs.UseHuntersMark()],
 	// Inputs to include in the 'Rotation' section on the settings tab.
-	rotationInputs: HunterInputs.HunterRotationConfig,
+	rotationInputs: SVInputs.SVRotationConfig,
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff, BuffDebuffInputs.SpellDamageDebuff],
@@ -148,9 +150,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			HunterInputs.PetUptime,
-			HunterInputs.TimeToTrapWeaveMs,
-			HunterInputs.SniperTrainingUptime,
+			HunterInputs.PetUptime(),
+			HunterInputs.TimeToTrapWeaveMs(),
+			SVInputs.SniperTrainingUptime,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 		],
@@ -162,43 +164,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.BeastMasteryTalents, Presets.MarksmanTalents, Presets.SurvivalTalents],
+		talents: [Presets.SurvivalTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_PRESET_SIMPLE_DEFAULT,
-			Presets.ROTATION_PRESET_BM,
-			Presets.ROTATION_PRESET_MM,
-			Presets.ROTATION_PRESET_MM_ADVANCED,
-			Presets.ROTATION_PRESET_SV,
-			Presets.ROTATION_PRESET_SV_ADVANCED,
-			Presets.ROTATION_PRESET_AOE,
-		],
+		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_SV, Presets.ROTATION_PRESET_SV_ADVANCED, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.MM_PRERAID_PRESET,
-			Presets.MM_P1_PRESET,
-			Presets.MM_P2_PRESET,
-			Presets.MM_P3_PRESET,
-			Presets.MM_P4_PRESET,
-			Presets.MM_P5_PRESET,
-			Presets.SV_PRERAID_PRESET,
-			Presets.SV_P1_PRESET,
-			Presets.SV_P2_PRESET,
-			Presets.SV_P3_PRESET,
-			Presets.SV_P4_PRESET,
-			Presets.SV_P5_PRESET,
-		],
+		gear: [Presets.SV_PRERAID_PRESET, Presets.SV_P1_PRESET, Presets.SV_P2_PRESET, Presets.SV_P3_PRESET, Presets.SV_P4_PRESET, Presets.SV_P5_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSurvivalHunter>): APLRotation => {
-		const talentTree = player.getTalentTree();
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets >= 4) {
 			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		} else if (talentTree == 0) {
-			return Presets.ROTATION_PRESET_BM.rotation.rotation!;
-		} else if (talentTree == 1) {
-			return Presets.ROTATION_PRESET_MM.rotation.rotation!;
 		} else {
 			return Presets.ROTATION_PRESET_SV.rotation.rotation!;
 		}
@@ -209,7 +185,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 
 		const serpentSting = APLAction.fromJsonString(
 			`{"condition":{"cmp":{"op":"OpGt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":49001},"maxDots":${
-				simple.hunterRotation!.multiDotSerpentSting ? 3 : 1
+				simple.multiDotSerpentSting ? 3 : 1
 			},"maxOverlap":{"const":{"val":"0ms"}}}}`,
 		);
 		const scorpidSting = APLAction.fromJsonString(
@@ -223,8 +199,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		const aimedShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49050}}}`);
 		const multiShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49048}}}`);
 		const steadyShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49052}}}`);
-		const silencingShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":34490}}}`);
-		const chimeraShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":53209}}}`);
 		const blackArrow = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":63672}}}`);
 		const explosiveShot4 = APLAction.fromJsonString(
 			`{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":60053}}}}},"castSpell":{"spellId":{"spellId":60053}}}`,
@@ -234,73 +208,44 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		);
 		//const arcaneShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49045}}}`);
 
-		if (simple.hunterRotation!.viperStartManaPercent != 0) {
+		if (simple.viperStartManaPercent != 0) {
 			actions.push(
 				APLAction.fromJsonString(
 					`{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":34074}}}}},{"cmp":{"op":"OpLt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"${(
-						simple.hunterRotation!.viperStartManaPercent * 100
+						simple.viperStartManaPercent * 100
 					).toFixed(0)}%"}}}}]}},"castSpell":{"spellId":{"spellId":34074}}}`,
 				),
 			);
 		}
-		if (simple.hunterRotation!.viperStopManaPercent != 0) {
+		if (simple.viperStopManaPercent != 0) {
 			actions.push(
 				APLAction.fromJsonString(
 					`{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":61847}}}}},{"cmp":{"op":"OpGt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"${(
-						simple.hunterRotation!.viperStopManaPercent * 100
+						simple.viperStopManaPercent * 100
 					).toFixed(0)}%"}}}}]}},"castSpell":{"spellId":{"spellId":61847}}}`,
 				),
 			);
 		}
 
-		const talentTree = player.getTalentTree();
-		if (simple.hunterRotation!.type == HunterRotation_RotationType.Aoe) {
+		if (simple.type == RotationType.Aoe) {
 			actions.push(
 				...([
-					simple.hunterRotation!.sting == HunterRotation_StingType.ScorpidSting ? scorpidSting : null,
-					simple.hunterRotation!.sting == HunterRotation_StingType.SerpentSting ? serpentSting : null,
-					simple.hunterRotation!.trapWeave ? trapWeave : null,
+					simple.sting == HunterStingType.ScorpidSting ? scorpidSting : null,
+					simple.sting == HunterStingType.SerpentSting ? serpentSting : null,
+					simple.trapWeave ? trapWeave : null,
 					volley,
 				].filter(a => a) as Array<APLAction>),
 			);
-		} else if (talentTree == 0) {
-			// BM
-			actions.push(
-				...([
-					killShot,
-					simple.hunterRotation!.trapWeave ? trapWeave : null,
-					simple.hunterRotation!.sting == HunterRotation_StingType.ScorpidSting ? scorpidSting : null,
-					simple.hunterRotation!.sting == HunterRotation_StingType.SerpentSting ? serpentSting : null,
-					aimedShot,
-					multiShot,
-					steadyShot,
-				].filter(a => a) as Array<APLAction>),
-			);
-		} else if (talentTree == 1) {
-			// MM
-			actions.push(
-				...([
-					silencingShot,
-					killShot,
-					simple.hunterRotation!.sting == HunterRotation_StingType.ScorpidSting ? scorpidSting : null,
-					simple.hunterRotation!.sting == HunterRotation_StingType.SerpentSting ? serpentSting : null,
-					simple.hunterRotation!.trapWeave ? trapWeave : null,
-					chimeraShot,
-					aimedShot,
-					multiShot,
-					steadyShot,
-				].filter(a => a) as Array<APLAction>),
-			);
-		} else if (talentTree == 2) {
+		} else {
 			// SV
 			actions.push(
 				...([
 					killShot,
 					explosiveShot4,
-					simple.hunterRotation!.allowExplosiveShotDownrank ? explosiveShot3 : null,
-					simple.hunterRotation!.trapWeave ? trapWeave : null,
-					simple.hunterRotation!.sting == HunterRotation_StingType.ScorpidSting ? scorpidSting : null,
-					simple.hunterRotation!.sting == HunterRotation_StingType.SerpentSting ? serpentSting : null,
+					simple.allowExplosiveShotDownrank ? explosiveShot3 : null,
+					simple.trapWeave ? trapWeave : null,
+					simple.sting == HunterStingType.ScorpidSting ? scorpidSting : null,
+					simple.sting == HunterStingType.SerpentSting ? serpentSting : null,
 					blackArrow,
 					aimedShot,
 					multiShot,
@@ -323,7 +268,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		{
 			spec: Spec.SpecSurvivalHunter,
 			talents: Presets.SurvivalTalents.data,
-			specOptions: Presets.DefaultOptions,
+			specOptions: Presets.SVDefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,

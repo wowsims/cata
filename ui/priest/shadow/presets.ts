@@ -3,8 +3,8 @@ import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profe
 import {
 	PriestMajorGlyph as MajorGlyph,
 	PriestMinorGlyph as MinorGlyph,
+	PriestOptions_Armor,
 	ShadowPriest_Options as Options,
-	ShadowPriest_Options_Armor as Armor,
 } from '../../core/proto/priest.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import AOE24Apl from './apls/aoe_2_4.apl.json';
@@ -63,7 +63,9 @@ export const EnlightenmentTalents = {
 };
 
 export const DefaultOptions = Options.create({
-	armor: Armor.InnerFire,
+	classOptions: {
+		armor: PriestOptions_Armor.InnerFire,
+	},
 });
 
 export const DefaultConsumes = Consumes.create({

@@ -57,7 +57,7 @@ export const ArcaneTalents = {
 };
 
 export const DefaultArcaneOptions = MageOptions.create({
-	mageOptions: {
+	classOptions: {
 		armor: ArmorType.MoltenArmor,
 	},
 	focusMagicPercentUptime: 99,

@@ -53,14 +53,16 @@ export const StandardTalents = {
 };
 
 export const DefaultOptions = ElementalShamanOptions.create({
-	shield: ShamanShield.WaterShield,
-	totems: ShamanTotems.create({
-		earth: EarthTotem.StrengthOfEarthTotem,
-		air: AirTotem.WrathOfAirTotem,
-		fire: FireTotem.TotemOfWrath,
-		water: WaterTotem.ManaSpringTotem,
-		useFireElemental: true,
-	}),
+	classOptions: {
+		shield: ShamanShield.WaterShield,
+		totems: ShamanTotems.create({
+			earth: EarthTotem.StrengthOfEarthTotem,
+			air: AirTotem.WrathOfAirTotem,
+			fire: FireTotem.TotemOfWrath,
+			water: WaterTotem.ManaSpringTotem,
+			useFireElemental: true,
+		}),
+	},
 });
 
 export const OtherDefaults = {

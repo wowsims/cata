@@ -71,13 +71,12 @@ export const AssassinationTalentsBF = {
 };
 
 export const DefaultOptions = RogueOptions.create({
-	rogueOptions: {
+	classOptions: {
 		mhImbue: RogueOptions_PoisonImbue.DeadlyPoison,
 		ohImbue: RogueOptions_PoisonImbue.InstantPoison,
 		applyPoisonsManually: false,
 		startingOverkillDuration: 20,
 		vanishBreakTime: 0.1,
-		honorOfThievesCritRate: 400,
 	},
 });
 

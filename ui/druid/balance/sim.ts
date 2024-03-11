@@ -6,7 +6,8 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Faction, Race, Spec, Stat } from '../../core/proto/common.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import * as DruidInputs from './inputs.js';
+import * as DruidInputs from '../inputs.js';
+import * as BalanceInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
@@ -59,7 +60,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [DruidInputs.SelfInnervate],
+	playerIconInputs: [DruidInputs.SelfInnervate()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.MeleeHasteBuff,
@@ -73,7 +74,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [DruidInputs.OkfUptime, OtherInputs.TankAssignment, OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget],
+		inputs: [BalanceInputs.OkfUptime, OtherInputs.TankAssignment, OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

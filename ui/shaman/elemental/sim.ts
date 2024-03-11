@@ -1,5 +1,4 @@
 import * as OtherInputs from '../../core/components/other_inputs.js';
-import { TotemsSection } from '../../core/components/totem_inputs.js';
 import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
@@ -8,7 +7,8 @@ import { APLRotation } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { Stats } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
-import * as ShamanInputs from './inputs.js';
+import * as ShamanInputs from '../inputs.js';
+import * as ElementalInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
@@ -23,7 +23,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 				updateOn: TypedEvent.onAny([simUI.player.rotationChangeEmitter, simUI.player.currentStatsEmitter]),
 				getContent: () => {
 					const hasT62P = simUI.player.getCurrentStats().sets.includes('Skyshatter Regalia (2pc)');
-					const totems = simUI.player.getSpecOptions().totems!;
+					const totems = simUI.player.getSpecOptions().classOptions?.totems;
 					const hasAll4Totems = totems && totems.earth && totems.air && totems.fire && totems.water;
 					if (hasT62P && !hasAll4Totems) {
 						return 'T6 2pc bonus is equipped, but inactive because not all 4 totem types are being used.';
@@ -104,15 +104,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		}),
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [ShamanInputs.ShamanShieldInput],
+	playerIconInputs: [ShamanInputs.ShamanShieldInput()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [ShamanInputs.InThunderstormRange, OtherInputs.TankAssignment],
+		inputs: [ElementalInputs.InThunderstormRange, OtherInputs.TankAssignment],
 	},
-	customSections: [TotemsSection],
+	customSections: [ShamanInputs.TotemsSection],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

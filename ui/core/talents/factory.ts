@@ -1,7 +1,7 @@
 import { PlayerSpec } from '../player_spec.js';
 import { Class, Spec } from '../proto/common.js';
 import { SpecTalents, specTypeFunctions } from '../proto_utils/utils.js';
-import { deathknightGlyphsConfig, deathknightTalentsConfig } from './deathknight.js';
+import { deathknightGlyphsConfig, deathknightTalentsConfig } from './death_knight.js';
 import { druidGlyphsConfig, druidTalentsConfig } from './druid.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { hunterGlyphsConfig, hunterTalentsConfig } from './hunter.js';

@@ -359,7 +359,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassPaladin,
 								'improvedDevotionAura',
-								player => player.getSpecOptions().aura == PaladinAura.DevotionAura,
+								player => player.getSpecOptions().classOptions?.aura == PaladinAura.DevotionAura,
 							),
 						},
 						{
@@ -368,7 +368,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndMissingTalent(
 								Class.ClassPaladin,
 								'improvedDevotionAura',
-								player => player.getSpecOptions().aura == PaladinAura.DevotionAura,
+								player => player.getSpecOptions().classOptions?.aura == PaladinAura.DevotionAura,
 							),
 						},
 						{
@@ -377,7 +377,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassShaman,
 								'guardianTotems',
-								player => player.getSpecOptions().totems?.earth == EarthTotem.StoneskinTotem,
+								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StoneskinTotem,
 							),
 						},
 						{
@@ -386,7 +386,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndMissingTalent(
 								Class.ClassShaman,
 								'guardianTotems',
-								player => player.getSpecOptions().totems?.earth == EarthTotem.StoneskinTotem,
+								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StoneskinTotem,
 							),
 						},
 						{
@@ -425,7 +425,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassShaman,
 								'enhancingTotems',
-								player => player.getSpecOptions().totems?.earth == EarthTotem.StrengthOfEarthTotem,
+								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StrengthOfEarthTotem,
 							),
 						},
 						{
@@ -434,7 +434,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndMissingTalent(
 								Class.ClassShaman,
 								'enhancingTotems',
-								player => player.getSpecOptions().totems?.earth == EarthTotem.StrengthOfEarthTotem,
+								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StrengthOfEarthTotem,
 							),
 						},
 						{
@@ -468,7 +468,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassWarlock,
 								'improvedFelhunter',
-								player => player.getSpecOptions().warlockOptions!.summon == WarlockSummon.Felhunter,
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Felhunter,
 							),
 						},
 						{
@@ -477,7 +477,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndMissingTalent(
 								Class.ClassWarlock,
 								'improvedFelhunter',
-								player => player.getSpecOptions().warlockOptions!.summon == WarlockSummon.Felhunter,
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Felhunter,
 							),
 						},
 						{
@@ -501,7 +501,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassWarlock,
 								'improvedFelhunter',
-								player => player.getSpecOptions().warlockOptions!.summon == WarlockSummon.Felhunter,
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Felhunter,
 							),
 						},
 						{
@@ -510,7 +510,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndMissingTalent(
 								Class.ClassWarlock,
 								'improvedFelhunter',
-								player => player.getSpecOptions().warlockOptions!.summon == WarlockSummon.Felhunter,
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Felhunter,
 							),
 						},
 						{
@@ -539,7 +539,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassWarrior,
 								'commandingPresence',
-								player => player.getSpecOptions().shout == WarriorShout.WarriorShoutBattle,
+								player => player.getSpecOptions().classOptions?.shout == WarriorShout.WarriorShoutBattle,
 							),
 						},
 						{
@@ -548,7 +548,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndMissingTalent(
 								Class.ClassWarrior,
 								'commandingPresence',
-								player => player.getSpecOptions().shout == WarriorShout.WarriorShoutBattle,
+								player => player.getSpecOptions().classOptions?.shout == WarriorShout.WarriorShoutBattle,
 							),
 						},
 					],
@@ -647,7 +647,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassShaman,
 								'restorativeTotems',
-								player => player.getSpecOptions().totems?.water == WaterTotem.ManaSpringTotem,
+								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ManaSpringTotem,
 							),
 						},
 						{
@@ -656,7 +656,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndMissingTalent(
 								Class.ClassShaman,
 								'restorativeTotems',
-								player => player.getSpecOptions().totems?.water == WaterTotem.ManaSpringTotem,
+								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ManaSpringTotem,
 							),
 						},
 					],
@@ -690,7 +690,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassShaman,
 								'improvedWindfuryTotem',
-								player => player.getSpecOptions().totems?.air == AirTotem.WindfuryTotem,
+								player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WindfuryTotem,
 							),
 						},
 						{
@@ -699,7 +699,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndMissingTalent(
 								Class.ClassShaman,
 								'improvedWindfuryTotem',
-								player => player.getSpecOptions().totems?.air == AirTotem.WindfuryTotem,
+								player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WindfuryTotem,
 							),
 						},
 					],
@@ -718,13 +718,16 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassShaman,
 								'totemOfWrath',
-								player => player.getSpecOptions().totems?.fire == FireTotem.TotemOfWrath,
+								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.TotemOfWrath,
 							),
 						},
 						{
 							label: 'Flametongue Totem',
 							actionId: ActionId.fromSpellId(58656),
-							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().totems?.fire == FireTotem.FlametongueTotem),
+							playerData: playerClass(
+								Class.ClassShaman,
+								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.FlametongueTotem,
+							),
 						},
 					],
 				},
@@ -749,7 +752,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Wrath of Air Totem',
 							actionId: ActionId.fromSpellId(3738),
-							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().totems?.air == AirTotem.WrathOfAirTotem),
+							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WrathOfAirTotem),
 						},
 					],
 				},
@@ -762,7 +765,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassWarrior,
 								'commandingPresence',
-								player => player.getSpecOptions().shout == WarriorShout.WarriorShoutCommanding,
+								player => player.getSpecOptions().classOptions?.shout == WarriorShout.WarriorShoutCommanding,
 							),
 						},
 						{
@@ -771,7 +774,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndMissingTalent(
 								Class.ClassWarrior,
 								'commandingPresence',
-								player => player.getSpecOptions().shout == WarriorShout.WarriorShoutCommanding,
+								player => player.getSpecOptions().classOptions?.shout == WarriorShout.WarriorShoutCommanding,
 							),
 						},
 						{
@@ -780,7 +783,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassWarlock,
 								'improvedImp',
-								player => player.getSpecOptions().warlockOptions!.summon == WarlockSummon.Imp,
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Imp,
 							),
 						},
 						{
@@ -789,7 +792,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndMissingTalent(
 								Class.ClassWarlock,
 								'improvedImp',
-								player => player.getSpecOptions().warlockOptions!.summon == WarlockSummon.Imp,
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Imp,
 							),
 						},
 					],
@@ -920,7 +923,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Acid Spit',
 							actionId: ActionId.fromSpellId(55754),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().hunterOptions!.petType == HunterPetType.Worm),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().classOptions?.petType == HunterPetType.Worm),
 						},
 					],
 				},
@@ -940,12 +943,12 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Sting',
 							actionId: ActionId.fromSpellId(56631),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().hunterOptions!.petType == HunterPetType.Wasp),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().classOptions?.petType == HunterPetType.Wasp),
 						},
 						{
 							label: 'Spore Cloud',
 							actionId: ActionId.fromSpellId(53598),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().hunterOptions!.petType == HunterPetType.Bat),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().classOptions?.petType == HunterPetType.Bat),
 						},
 					],
 				},
@@ -980,7 +983,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Stampede',
 							actionId: ActionId.fromSpellId(57393),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().hunterOptions!.petType == HunterPetType.Rhino),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().classOptions?.petType == HunterPetType.Rhino),
 						},
 					],
 				},
@@ -993,7 +996,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(
 								Class.ClassShaman,
 								'totemOfWrath',
-								player => player.getSpecOptions().totems?.fire == FireTotem.TotemOfWrath,
+								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.TotemOfWrath,
 							),
 						},
 						{
@@ -1113,7 +1116,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Demoralizing Screech',
 							actionId: ActionId.fromSpellId(55487),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().hunterOptions!.petType == HunterPetType.CarrionBird),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().classOptions?.petType == HunterPetType.CarrionBird),
 						},
 					],
 				},

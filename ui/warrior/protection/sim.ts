@@ -8,7 +8,7 @@ import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, R
 import { ProtectionWarrior_Rotation as ProtectionWarriorRotation } from '../../core/proto/warrior.js';
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import * as ProtectionWarriorInputs from './inputs.js';
+import * as ProtectionWarriorInputs from '../inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
@@ -138,7 +138,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [ProtectionWarriorInputs.ShoutPicker, ProtectionWarriorInputs.ShatteringThrow],
+	playerIconInputs: [ProtectionWarriorInputs.ShoutPicker(), ProtectionWarriorInputs.ShatteringThrow()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.HealthBuff],
 	excludeBuffDebuffInputs: [],
@@ -152,7 +152,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			OtherInputs.BurstWindow,
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
-			ProtectionWarriorInputs.StartingRage,
+			ProtectionWarriorInputs.StartingRage(),
 			OtherInputs.InFrontOfTarget,
 		],
 	},

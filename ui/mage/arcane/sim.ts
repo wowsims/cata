@@ -9,7 +9,8 @@ import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuf
 import { ArcaneMage_Rotation } from '../../core/proto/mage';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats } from '../../core/proto_utils/stats';
-import * as MageInputs from './inputs';
+import * as MageInputs from '../inputs';
+import * as ArcaneInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
@@ -100,9 +101,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [MageInputs.Armor],
+	playerIconInputs: [MageInputs.ArmorInput()],
 	// Inputs to include in the 'Rotation' section on the settings tab.
-	rotationInputs: MageInputs.MageRotationConfig,
+	rotationInputs: ArcaneInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		//Should add hymn of hope, revitalize, and
@@ -110,13 +111,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			MageInputs.FocusMagicUptime,
-			MageInputs.WaterElementalDisobeyChance,
-			OtherInputs.ReactionTime,
-			OtherInputs.DistanceFromTarget,
-			OtherInputs.TankAssignment,
-		],
+		inputs: [ArcaneInputs.FocusMagicUptime, OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

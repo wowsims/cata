@@ -50,7 +50,7 @@ export const FrostTalents = {
 };
 
 export const DefaultFrostOptions = MageOptions.create({
-	mageOptions: {
+	classOptions: {
 		armor: ArmorType.MoltenArmor,
 	},
 	waterElementalDisobeyChance: 0.1,

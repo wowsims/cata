@@ -7,7 +7,7 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
-import * as WarriorInputs from './inputs';
+import * as WarriorInputs from '../inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
@@ -115,7 +115,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [WarriorInputs.ShoutPicker, WarriorInputs.Recklessness, WarriorInputs.ShatteringThrow],
+	playerIconInputs: [WarriorInputs.ShoutPicker(), WarriorInputs.Recklessness(), WarriorInputs.ShatteringThrow()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		// just for Bryntroll
@@ -126,9 +126,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			WarriorInputs.StartingRage,
-			WarriorInputs.StanceSnapshot,
-			WarriorInputs.DisableExpertiseGemming,
+			WarriorInputs.StartingRage(),
+			WarriorInputs.StanceSnapshot(),
+			WarriorInputs.DisableExpertiseGemming(),
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 		],

@@ -10,7 +10,8 @@ import { PaladinMajorGlyph, PaladinSeal, ProtectionPaladin_Rotation as Protectio
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
 import { Stats } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
-import * as ProtectionPaladinInputs from './inputs.js';
+import * as PaladinInputs from '../inputs.js';
+// import * as ProtInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
@@ -77,7 +78,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		let stats = new Stats();
 
 		TypedEvent.freezeAllAndDo(() => {
-			if (player.getMajorGlyphs().includes(PaladinMajorGlyph.GlyphOfSealOfVengeance) && player.getSpecOptions().seal == PaladinSeal.Vengeance) {
+			if (
+				player.getMajorGlyphs().includes(PaladinMajorGlyph.GlyphOfSealOfVengeance) &&
+				player.getSpecOptions().classOptions?.seal == PaladinSeal.Vengeance
+			) {
 				stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			}
 		});
@@ -166,7 +170,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [],
+	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.JudgementSelection(), PaladinInputs.StartingSealSelection()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.HealthBuff],
 	excludeBuffDebuffInputs: [],
@@ -180,10 +184,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			OtherInputs.BurstWindow,
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
-			ProtectionPaladinInputs.AuraSelection,
-			ProtectionPaladinInputs.UseAvengingWrath,
-			ProtectionPaladinInputs.JudgementSelection,
-			ProtectionPaladinInputs.StartingSealSelection,
+			PaladinInputs.UseAvengingWrath(),
 			OtherInputs.InFrontOfTarget,
 		],
 	},

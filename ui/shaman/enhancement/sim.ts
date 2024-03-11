@@ -1,7 +1,6 @@
 import { FireElementalSection } from '../../core/components/fire_elemental_inputs.js';
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
 import * as OtherInputs from '../../core/components/other_inputs.js';
-import { TotemsSection } from '../../core/components/totem_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
@@ -9,7 +8,8 @@ import { APLRotation } from '../../core/proto/apl.js';
 import { Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { ShamanImbue } from '../../core/proto/shaman.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import * as ShamanInputs from './inputs.js';
+import * as ShamanInputs from '../inputs.js';
+import * as EnhancementInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
@@ -100,16 +100,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [ShamanInputs.ShamanShieldInput, ShamanInputs.ShamanImbueMH, ShamanInputs.ShamanImbueOH],
+	playerIconInputs: [ShamanInputs.ShamanShieldInput(), ShamanInputs.ShamanImbueMH(), EnhancementInputs.ShamanImbueOH],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.ReplenishmentBuff, BuffDebuffInputs.MP5Buff, BuffDebuffInputs.SpellHasteBuff, BuffDebuffInputs.SpiritBuff],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [ShamanInputs.SyncTypeInput, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [EnhancementInputs.SyncTypeInput, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
-	customSections: [TotemsSection, FireElementalSection],
+	customSections: [ShamanInputs.TotemsSection, FireElementalSection],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -144,7 +144,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		if (hasT94P) {
 			console.log('has set');
 			return Presets.ROTATION_PHASE_3.rotation.rotation!;
-		} else if (options.imbueMh == ShamanImbue.FlametongueWeapon) {
+		} else if (options.classOptions?.imbueMh == ShamanImbue.FlametongueWeapon) {
 			return Presets.ROTATION_FT_DEFAULT.rotation.rotation!;
 		} else {
 			return Presets.ROTATION_WF_DEFAULT.rotation.rotation!;

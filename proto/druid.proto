@@ -144,11 +144,15 @@ enum DruidMinorGlyph {
 	GlyphOfUnburdenedRebirth = 43331;
 }
 
+message DruidOptions {
+	UnitReference innervate_target = 1;
+}
+
 message BalanceDruid {
   message Rotation {}
 
   message Options {
-    UnitReference innervate_target = 1;
+    DruidOptions class_options = 1;
 	float okf_uptime = 2;
   }
   Options options = 3;
@@ -197,7 +201,7 @@ message FeralDruid {
   Rotation rotation = 1;
 
   message Options {
-    UnitReference innervate_target = 1;
+    DruidOptions class_options = 1;
     int32 latency_ms = 2;
     bool assume_bleed_active = 4;
   }
@@ -213,7 +217,7 @@ message FeralTankDruid {
   }
 
   message Options {
-    UnitReference innervate_target = 1;
+    DruidOptions class_options = 1;
 	double starting_rage = 2;
   }
   Options options = 3;
@@ -223,7 +227,7 @@ message RestorationDruid {
   message Rotation {}
 
   message Options {
-    UnitReference innervate_target = 1;
+    DruidOptions class_options = 1;
   }
   Options options = 3;
 }

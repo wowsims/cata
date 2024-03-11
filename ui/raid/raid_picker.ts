@@ -713,7 +713,7 @@ function applyNewPlayerAssignments(eventID: EventID, newPlayer: Player<any>, rai
 		newPlayer.setSpecOptions(eventID, newOptions);
 	} else if (newPlayer.getSpec() == Spec.SpecArcaneMage) {
 		const newOptions = newPlayer.getSpecOptions() as ArcaneMage_Options;
-		newOptions.mageOptions!.focusMagicTarget = newUnitReference(newPlayer.getRaidIndex());
+		newOptions.focusMagicTarget = newUnitReference(newPlayer.getRaidIndex());
 		newPlayer.setSpecOptions(eventID, newOptions);
 	}
 }

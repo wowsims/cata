@@ -20,7 +20,8 @@ import {
 } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { Stats } from '../../core/proto_utils/stats';
-import * as RogueInputs from './inputs';
+import * as RogueInputs from '../inputs';
+// import * as CombatInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
@@ -131,12 +132,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 				getContent: () => {
 					const mhWeaponSpeed = simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
 					const ohWeaponSpeed = simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-					const mhImbue = simUI.player.getSpecOptions().rogueOptions!.mhImbue;
-					const ohImbue = simUI.player.getSpecOptions().rogueOptions!.ohImbue;
+					const mhImbue = simUI.player.getSpecOptions().classOptions!.mhImbue;
+					const ohImbue = simUI.player.getSpecOptions().classOptions!.ohImbue;
 					if (
 						typeof mhWeaponSpeed == 'undefined' ||
 						typeof ohWeaponSpeed == 'undefined' ||
-						!simUI.player.getSpecOptions().rogueOptions!.applyPoisonsManually
+						!simUI.player.getSpecOptions().classOptions!.applyPoisonsManually
 					) {
 						return '';
 					}
@@ -241,10 +242,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	playerInputs: {
-		inputs: [RogueInputs.ApplyPoisonsManually],
+		inputs: [RogueInputs.ApplyPoisonsManually()],
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [RogueInputs.MainHandImbue, RogueInputs.OffHandImbue],
+	playerIconInputs: [RogueInputs.MainHandImbue(), RogueInputs.OffHandImbue()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.SpellCritBuff,
@@ -256,10 +257,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			RogueInputs.StartingOverkillDuration,
-			RogueInputs.VanishBreakTime,
-			RogueInputs.AssumeBleedActive,
-			RogueInputs.HonorOfThievesCritRate,
+			RogueInputs.StartingOverkillDuration(),
+			RogueInputs.VanishBreakTime(),
+			RogueInputs.AssumeBleedActive(),
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 		],
@@ -336,22 +336,22 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 		this.player.changeEmitter.on(c => {
 			const options = this.player.getSpecOptions();
 			const encounter = this.sim.encounter;
-			if (!options.rogueOptions!.applyPoisonsManually) {
+			if (!options.classOptions!.applyPoisonsManually) {
 				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
 				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
 				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
 					return;
 				}
 				if (encounter.targets.length > 3) {
-					options.rogueOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
-					options.rogueOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
+					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
+					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
 				} else {
 					if (mhWeaponSpeed <= ohWeaponSpeed) {
-						options.rogueOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-						options.rogueOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
+						options.classOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
+						options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
 					} else {
-						options.rogueOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
-						options.rogueOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
+						options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
+						options.classOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
 					}
 				}
 			}
@@ -360,22 +360,22 @@ export class CombatRogueSimUI extends IndividualSimUI<Spec.SpecCombatRogue> {
 		this.sim.encounter.changeEmitter.on(c => {
 			const options = this.player.getSpecOptions();
 			const encounter = this.sim.encounter;
-			if (!options.rogueOptions!.applyPoisonsManually) {
+			if (!options.classOptions!.applyPoisonsManually) {
 				const mhWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
 				const ohWeaponSpeed = this.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
 				if (typeof mhWeaponSpeed == 'undefined' || typeof ohWeaponSpeed == 'undefined') {
 					return;
 				}
 				if (encounter.targets.length > 3) {
-					options.rogueOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
-					options.rogueOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
+					options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
+					options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
 				} else {
 					if (mhWeaponSpeed <= ohWeaponSpeed) {
-						options.rogueOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
-						options.rogueOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
+						options.classOptions!.mhImbue = RogueOptions_PoisonImbue.DeadlyPoison;
+						options.classOptions!.ohImbue = RogueOptions_PoisonImbue.InstantPoison;
 					} else {
-						options.rogueOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
-						options.rogueOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
+						options.classOptions!.mhImbue = RogueOptions_PoisonImbue.InstantPoison;
+						options.classOptions!.ohImbue = RogueOptions_PoisonImbue.DeadlyPoison;
 					}
 				}
 			}

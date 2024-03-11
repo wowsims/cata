@@ -702,7 +702,7 @@ const externalCDSpells: Array<{ id: number; name: string; class: Class; applyFun
 		class: Class.ClassDruid,
 		applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
 			const options = player.getSpecOptions() as SpecOptions<DruidSpecs>;
-			options.innervateTarget = raidTarget;
+			options.classOptions!.innervateTarget = raidTarget;
 			return options;
 		},
 	},
@@ -722,7 +722,7 @@ const externalCDSpells: Array<{ id: number; name: string; class: Class; applyFun
 		class: Class.ClassRogue,
 		applyFunc: (player: Player<any>, raidTarget: UnitReference) => {
 			const options = player.getSpecOptions() as SpecOptions<RogueSpecs>;
-			options.rogueOptions!.tricksOfTheTradeTarget = raidTarget;
+			options.classOptions!.tricksOfTheTradeTarget = raidTarget;
 			return options;
 		},
 	},

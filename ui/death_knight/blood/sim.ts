@@ -6,7 +6,8 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
-import * as DeathKnightInputs from './inputs';
+import * as DeathKnightInputs from '../inputs';
+import * as BloodInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
@@ -141,7 +142,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.
-	rotationInputs: DeathKnightInputs.TankDeathKnightRotationConfig,
+	rotationInputs: BloodInputs.BloodDeathKnightRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
 	excludeBuffDebuffInputs: [],
@@ -156,7 +157,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			OtherInputs.BurstWindow,
 			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
-			DeathKnightInputs.StartingRunicPower,
+			DeathKnightInputs.StartingRunicPower(),
 		],
 	},
 	encounterPicker: {
@@ -168,16 +169,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.BLOOD_IT_SPAM_ROTATION_PRESET_DEFAULT, Presets.BLOOD_AGGRO_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.BloodTalents, Presets.BloodAggroTalents, Presets.DoubleBuffBloodTalents, Presets.FrostTalents, Presets.DoubleBuffFrostTalents],
+		talents: [Presets.BloodTalents, Presets.BloodAggroTalents, Presets.DoubleBuffBloodTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.P1_BLOOD_PRESET,
-			Presets.P1_FROST_PRESET,
-			Presets.P2_BLOOD_PRESET,
-			Presets.P2_FROST_PRESET,
-			Presets.P3_BLOOD_PRESET,
-			Presets.P4_BLOOD_PRESET,
-		],
+		gear: [Presets.P1_BLOOD_PRESET, Presets.P2_BLOOD_PRESET, Presets.P3_BLOOD_PRESET, Presets.P4_BLOOD_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBloodDeathKnight>): APLRotation => {
@@ -214,7 +208,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	],
 });
 
-export class BloodDeathknightSimUI extends IndividualSimUI<Spec.SpecBloodDeathKnight> {
+export class BloodDeathKnightSimUI extends IndividualSimUI<Spec.SpecBloodDeathKnight> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBloodDeathKnight>) {
 		super(parentElem, player, SPEC_CONFIG);
 	}

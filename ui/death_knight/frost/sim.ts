@@ -4,22 +4,10 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import {
-	Debuffs,
-	Faction,
-	HandType,
-	IndividualBuffs,
-	ItemSlot,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat,
-	TristateEffect,
-} from '../../core/proto/common';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
-import * as DeathKnightInputs from './inputs';
+import * as DeathKnightInputs from '../inputs';
+import * as FrostInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
@@ -63,7 +51,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P2_UNHOLY_DW_PRESET.gear,
+		gear: Presets.P4_FROST_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -87,9 +75,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.UnholyDualWieldTalents.data,
+		talents: Presets.FrostTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultUnholyOptions,
+		specOptions: Presets.DefaultFrostOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			giftOfTheWild: TristateEffect.TristateEffectImproved,
@@ -125,37 +113,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
-		const talentTree = player.getTalentTree();
-		const numTargets = player.sim.encounter.targets.length;
-		switch (talentTree) {
-			case 0:
-				if (player.getSpecOptions().drwPestiApply || numTargets > 1) {
-					if (numTargets > 5) {
-						return Presets.BLOOD_PESTI_AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-					} else {
-						return Presets.BLOOD_DPS_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-					}
-				} else {
-					return Presets.BLOOD_DPS_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-				}
-			case 1:
-				const talentPoints = player.getTalentTreePoints();
-				// TODO: Add Frost AOE rotation
-				if (talentPoints[0] > talentPoints[2]) {
-					return Presets.FROST_BL_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-				} else {
-					return Presets.FROST_UH_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-				}
-			default:
-				if (numTargets > 1) {
-					return Presets.UNHOLY_DND_AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-				} else {
-					if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)!.item.handType == HandType.HandTypeTwoHand) {
-						return Presets.UNHOLY_2H_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-					} else {
-						return Presets.UNHOLY_DW_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-					}
-				}
+		const talentPoints = player.getTalentTreePoints();
+		// TODO: Add Frost AOE rotation
+		if (talentPoints[0] > talentPoints[2]) {
+			return Presets.FROST_BL_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		} else {
+			return Presets.FROST_UH_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 
@@ -168,13 +131,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			DeathKnightInputs.SelfUnholyFrenzy,
-			DeathKnightInputs.StartingRunicPower,
-			DeathKnightInputs.PetUptime,
-			DeathKnightInputs.DrwPestiApply,
-			DeathKnightInputs.UseAMSInput,
-			DeathKnightInputs.AvgAMSSuccessRateInput,
-			DeathKnightInputs.AvgAMSHitInput,
+			DeathKnightInputs.StartingRunicPower(),
+			DeathKnightInputs.PetUptime(),
+			FrostInputs.UseAMSInput,
+			FrostInputs.AvgAMSSuccessRateInput,
+			FrostInputs.AvgAMSHitInput,
 
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,

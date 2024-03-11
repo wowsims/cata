@@ -19,7 +19,8 @@ import {
 	TristateEffect,
 } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
-import * as DeathKnightInputs from './inputs';
+import * as DeathKnightInputs from '../inputs';
+import * as UnholyInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
@@ -125,37 +126,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecUnholyDeathKnight>): APLRotation => {
-		const talentTree = player.getTalentTree();
 		const numTargets = player.sim.encounter.targets.length;
-		switch (talentTree) {
-			case 0:
-				if (player.getSpecOptions().drwPestiApply || numTargets > 1) {
-					if (numTargets > 5) {
-						return Presets.BLOOD_PESTI_AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-					} else {
-						return Presets.BLOOD_DPS_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-					}
-				} else {
-					return Presets.BLOOD_DPS_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-				}
-			case 1:
-				const talentPoints = player.getTalentTreePoints();
-				// TODO: Add Frost AOE rotation
-				if (talentPoints[0] > talentPoints[2]) {
-					return Presets.FROST_BL_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-				} else {
-					return Presets.FROST_UH_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-				}
-			default:
-				if (numTargets > 1) {
-					return Presets.UNHOLY_DND_AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-				} else {
-					if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)!.item.handType == HandType.HandTypeTwoHand) {
-						return Presets.UNHOLY_2H_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-					} else {
-						return Presets.UNHOLY_DW_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-					}
-				}
+		if (numTargets > 1) {
+			return Presets.UNHOLY_DND_AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		} else {
+			if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)!.item.handType == HandType.HandTypeTwoHand) {
+				return Presets.UNHOLY_2H_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			} else {
+				return Presets.UNHOLY_DW_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			}
 		}
 	},
 
@@ -168,13 +147,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			DeathKnightInputs.SelfUnholyFrenzy,
-			DeathKnightInputs.StartingRunicPower,
-			DeathKnightInputs.PetUptime,
-			DeathKnightInputs.DrwPestiApply,
-			DeathKnightInputs.UseAMSInput,
-			DeathKnightInputs.AvgAMSSuccessRateInput,
-			DeathKnightInputs.AvgAMSHitInput,
+			DeathKnightInputs.StartingRunicPower(),
+			DeathKnightInputs.PetUptime(),
+			UnholyInputs.SelfUnholyFrenzy,
+			UnholyInputs.UseAMSInput,
+			UnholyInputs.AvgAMSSuccessRateInput,
+			UnholyInputs.AvgAMSHitInput,
 
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
@@ -188,35 +166,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.BloodTalents,
-			Presets.FrostTalents,
-			Presets.FrostUnholyTalents,
-			Presets.UnholyDualWieldTalents,
-			Presets.UnholyDualWieldSSTalents,
-			Presets.Unholy2HTalents,
-			Presets.UnholyAoeTalents,
-		],
+		talents: [Presets.UnholyDualWieldTalents, Presets.UnholyDualWieldSSTalents, Presets.Unholy2HTalents, Presets.UnholyAoeTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.BLOOD_DPS_ROTATION_PRESET_DEFAULT,
-			Presets.BLOOD_PESTI_AOE_ROTATION_PRESET_DEFAULT,
-			Presets.FROST_BL_PESTI_ROTATION_PRESET_DEFAULT,
-			Presets.FROST_UH_PESTI_ROTATION_PRESET_DEFAULT,
-			Presets.UNHOLY_DW_ROTATION_PRESET_DEFAULT,
-			Presets.UNHOLY_2H_ROTATION_PRESET_DEFAULT,
-			Presets.UNHOLY_DND_AOE_ROTATION_PRESET_DEFAULT,
-		],
+		rotations: [Presets.UNHOLY_DW_ROTATION_PRESET_DEFAULT, Presets.UNHOLY_2H_ROTATION_PRESET_DEFAULT, Presets.UNHOLY_DND_AOE_ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.P1_BLOOD_PRESET,
-			Presets.P2_BLOOD_PRESET,
-			Presets.P3_BLOOD_PRESET,
-			Presets.P4_BLOOD_PRESET,
-			Presets.P1_FROST_PRESET,
-			Presets.P2_FROST_PRESET,
-			Presets.P3_FROST_PRESET,
-			Presets.P4_FROST_PRESET,
 			Presets.P1_UNHOLY_DW_PRESET,
 			Presets.P2_UNHOLY_DW_PRESET,
 			Presets.P3_UNHOLY_DW_PRESET,

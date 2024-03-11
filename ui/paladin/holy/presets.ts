@@ -2,18 +2,20 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import { Consumes, Flask, Food, Potions } from '../../core/proto/common.js';
 import { HolyPaladin_Options as HolyPaladinOptions, PaladinAura, PaladinJudgement, PaladinMajorGlyph, PaladinMinorGlyph } from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
+import P1Gear from './gear_sets/p1.gear.json';
+import P2Gear from './gear_sets/p2.gear.json';
+import P3Gear from './gear_sets/p3.gear.json';
+import P4Gear from './gear_sets/p4.gear.json';
+import PreraidGear from './gear_sets/preraid.gear.json';
+
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
-import PreraidGear from './gear_sets/preraid.gear.json';
+
 export const PRERAID_PRESET = PresetUtils.makePresetGear('PreRaid', PreraidGear);
-import P1Gear from './gear_sets/p1.gear.json';
 export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
-import P2Gear from './gear_sets/p2.gear.json';
 export const P2_PRESET = PresetUtils.makePresetGear('P2 Preset', P2Gear);
-import P3Gear from './gear_sets/p3.gear.json';
 export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
-import P4Gear from './gear_sets/p4.gear.json';
 export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
@@ -35,8 +37,10 @@ export const StandardTalents = {
 };
 
 export const DefaultOptions = HolyPaladinOptions.create({
-	aura: PaladinAura.DevotionAura,
-	judgement: PaladinJudgement.NoJudgement,
+	classOptions: {
+		aura: PaladinAura.DevotionAura,
+		judgement: PaladinJudgement.NoJudgement,
+	},
 });
 
 export const DefaultConsumes = Consumes.create({

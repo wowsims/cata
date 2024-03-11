@@ -131,6 +131,7 @@ enum DeathKnightMajorGlyph {
 	GlyphOfUnholyBlight = 45803;
 	GlyphOfVampiricBlood = 43554;
 }
+
 enum DeathKnightMinorGlyph {
 	DeathknightMinorGlyphNone = 0;
 	GlyphOfBloodTap = 43535;
@@ -139,6 +140,11 @@ enum DeathKnightMinorGlyph {
 	GlyphOfHornOfWinter = 43544;
 	GlyphOfPestilence = 43672;
 	GlyphOfRaiseDead = 43673;
+}
+
+message DeathKnightOptions {
+	double starting_runic_power = 1;
+	double pet_uptime = 2;
 }
 
 message BloodDeathKnight {
@@ -179,8 +185,9 @@ message BloodDeathKnight {
 	Rotation rotation = 1;
 
 	message Options {
-		double starting_runic_power = 1;
+		DeathKnightOptions class_options = 1;
 		double defensive_delay = 2;
+		bool drw_pesti_apply = 6;
 	}
 	Options options = 3;
 }
@@ -190,16 +197,10 @@ message FrostDeathKnight {
 	}
 
 	message Options {
-		double starting_runic_power = 1;
-		double pet_uptime = 2;
-
-		UnitReference unholy_frenzy_target = 5;
-
-		bool drw_pesti_apply = 6;
-
-		bool use_ams = 9;
-		double avg_ams_success_rate = 10;
-		double avg_ams_hit = 11;
+		DeathKnightOptions class_options = 1;
+		bool use_ams = 2;
+		double avg_ams_success_rate = 3;
+		double avg_ams_hit = 4;
 	}
 	Options options = 3;
 }
@@ -209,16 +210,11 @@ message UnholyDeathKnight {
 	}
 
 	message Options {
-		double starting_runic_power = 1;
-		double pet_uptime = 2;
-
-		UnitReference unholy_frenzy_target = 5;
-
-		bool drw_pesti_apply = 6;
-
-		bool use_ams = 9;
-		double avg_ams_success_rate = 10;
-		double avg_ams_hit = 11;
+		DeathKnightOptions class_options = 1;
+		UnitReference unholy_frenzy_target = 2;
+		bool use_ams = 3;
+		double avg_ams_success_rate = 4;
+		double avg_ams_hit = 5;
 	}
 	Options options = 3;
 }

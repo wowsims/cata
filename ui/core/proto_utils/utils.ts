@@ -22,6 +22,7 @@ import {
 	BloodDeathKnight,
 	BloodDeathKnight_Options,
 	BloodDeathKnight_Rotation,
+	DeathKnightOptions,
 	DeathKnightTalents,
 	FrostDeathKnight,
 	FrostDeathKnight_Options,
@@ -34,6 +35,7 @@ import {
 	BalanceDruid,
 	BalanceDruid_Options,
 	BalanceDruid_Rotation,
+	DruidOptions,
 	DruidTalents,
 	FeralDruid,
 	FeralDruid_Options,
@@ -46,6 +48,7 @@ import {
 	BeastMasteryHunter,
 	BeastMasteryHunter_Options,
 	BeastMasteryHunter_Rotation,
+	HunterOptions,
 	HunterTalents,
 	MarksmanshipHunter,
 	MarksmanshipHunter_Options,
@@ -64,6 +67,7 @@ import {
 	FrostMage,
 	FrostMage_Options,
 	FrostMage_Rotation,
+	MageOptions,
 	MageTalents,
 } from '../proto/mage.js';
 import {
@@ -71,6 +75,7 @@ import {
 	HolyPaladin,
 	HolyPaladin_Options,
 	HolyPaladin_Rotation,
+	PaladinOptions,
 	PaladinTalents,
 	ProtectionPaladin,
 	ProtectionPaladin_Options,
@@ -86,6 +91,7 @@ import {
 	HolyPriest,
 	HolyPriest_Options,
 	HolyPriest_Rotation,
+	PriestOptions,
 	PriestTalents,
 	ShadowPriest,
 	ShadowPriest_Options,
@@ -98,6 +104,7 @@ import {
 	CombatRogue,
 	CombatRogue_Options,
 	CombatRogue_Rotation,
+	RogueOptions,
 	RogueTalents,
 	SubtletyRogue,
 	SubtletyRogue_Options,
@@ -113,6 +120,7 @@ import {
 	RestorationShaman,
 	RestorationShaman_Options,
 	RestorationShaman_Rotation,
+	ShamanOptions,
 	ShamanTalents,
 } from '../proto/shaman.js';
 import { BlessingsAssignment, BlessingsAssignments, UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
@@ -126,6 +134,7 @@ import {
 	DestructionWarlock,
 	DestructionWarlock_Options,
 	DestructionWarlock_Rotation,
+	WarlockOptions,
 	WarlockTalents,
 } from '../proto/warlock.js';
 import {
@@ -138,6 +147,7 @@ import {
 	ProtectionWarrior,
 	ProtectionWarrior_Options,
 	ProtectionWarrior_Rotation,
+	WarriorOptions,
 	WarriorTalents,
 } from '../proto/warrior.js';
 import { getEnumValues, intersection, maxIndex, sum } from '../utils.js';
@@ -191,9 +201,16 @@ class UnknownTalents {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	constructor() {}
 }
-class UnknownOptions {
+class UnknownClassOptions {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	constructor() {}
+}
+class UnknownSpecOptions {
+	classOptions: UnknownClassOptions;
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	constructor() {
+		this.classOptions = new UnknownClassOptions();
+	}
 }
 
 export type DeathKnightSpecs = Spec.SpecBloodDeathKnight | Spec.SpecFrostDeathKnight | Spec.SpecUnholyDeathKnight;
@@ -230,74 +247,34 @@ export type ClassSpecs<T extends Class> = T extends Class.ClassDeathKnight
 	: // Should never reach this case
 	  UnknownSpecs;
 
-export type SpecClasses<T extends Spec> = T extends Spec.SpecBloodDeathKnight
-	? Class.ClassDeathKnight
-	: T extends Spec.SpecFrostDeathKnight
-	? Class.ClassDeathKnight
-	: T extends Spec.SpecUnholyDeathKnight
+export type SpecClasses<T extends Spec> = T extends DeathKnightSpecs
 	? Class.ClassDeathKnight
 	: // Druid
-	T extends Spec.SpecBalanceDruid
-	? Class.ClassDruid
-	: T extends Spec.SpecFeralDruid
-	? Class.ClassDruid
-	: T extends Spec.SpecRestorationDruid
+	T extends DruidSpecs
 	? Class.ClassDruid
 	: // Hunter
-	T extends Spec.SpecBeastMasteryHunter
-	? Class.ClassHunter
-	: T extends Spec.SpecMarksmanshipHunter
-	? Class.ClassHunter
-	: T extends Spec.SpecSurvivalHunter
+	T extends HunterSpecs
 	? Class.ClassHunter
 	: // Mage
-	T extends Spec.SpecArcaneMage
-	? Class.ClassMage
-	: T extends Spec.SpecFireMage
-	? Class.ClassMage
-	: T extends Spec.SpecFrostMage
+	T extends MageSpecs
 	? Class.ClassMage
 	: // Paladin
-	T extends Spec.SpecHolyPaladin
-	? Class.ClassPaladin
-	: T extends Spec.SpecProtectionPaladin
-	? Class.ClassPaladin
-	: T extends Spec.SpecRetributionPaladin
+	T extends PaladinSpecs
 	? Class.ClassPaladin
 	: // Priest
-	T extends Spec.SpecDisciplinePriest
-	? Class.ClassPriest
-	: T extends Spec.SpecHolyPriest
-	? Class.ClassPriest
-	: T extends Spec.SpecShadowPriest
+	T extends PriestSpecs
 	? Class.ClassPriest
 	: // Rogue
-	T extends Spec.SpecAssassinationRogue
-	? Class.ClassRogue
-	: T extends Spec.SpecCombatRogue
-	? Class.ClassRogue
-	: T extends Spec.SpecSubtletyRogue
+	T extends RogueSpecs
 	? Class.ClassRogue
 	: // Shaman
-	T extends Spec.SpecElementalShaman
-	? Class.ClassShaman
-	: T extends Spec.SpecEnhancementShaman
-	? Class.ClassShaman
-	: T extends Spec.SpecRestorationShaman
+	T extends ShamanSpecs
 	? Class.ClassShaman
 	: // Warlock
-	T extends Spec.SpecAfflictionWarlock
-	? Class.ClassWarlock
-	: T extends Spec.SpecDemonologyWarlock
-	? Class.ClassWarlock
-	: T extends Spec.SpecDestructionWarlock
+	T extends WarlockSpecs
 	? Class.ClassWarlock
 	: // Warrior
-	T extends Spec.SpecArmsWarrior
-	? Class.ClassWarrior
-	: T extends Spec.SpecFuryWarrior
-	? Class.ClassWarrior
-	: T extends Spec.SpecProtectionWarrior
+	T extends WarriorSpecs
 	? Class.ClassWarrior
 	: // Should never reach this case
 	  Class.ClassUnknown;
@@ -378,77 +355,71 @@ export type SpecRotation<T extends Spec> =
 
 export type SpecTalents<T extends Spec> =
 	// Death Knight
-	T extends Spec.SpecBloodDeathKnight
-		? DeathKnightTalents
-		: T extends Spec.SpecFrostDeathKnight
-		? DeathKnightTalents
-		: T extends Spec.SpecUnholyDeathKnight
+	T extends DeathKnightSpecs
 		? DeathKnightTalents
 		: // Druid
-		T extends Spec.SpecBalanceDruid
-		? DruidTalents
-		: T extends Spec.SpecFeralDruid
-		? DruidTalents
-		: T extends Spec.SpecRestorationDruid
+		T extends DruidSpecs
 		? DruidTalents
 		: // Hunter
-		T extends Spec.SpecBeastMasteryHunter
-		? HunterTalents
-		: T extends Spec.SpecMarksmanshipHunter
-		? HunterTalents
-		: T extends Spec.SpecSurvivalHunter
+		T extends HunterSpecs
 		? HunterTalents
 		: // Mage
-		T extends Spec.SpecArcaneMage
-		? MageTalents
-		: T extends Spec.SpecFireMage
-		? MageTalents
-		: T extends Spec.SpecFrostMage
+		T extends MageSpecs
 		? MageTalents
 		: // Paladin
-		T extends Spec.SpecHolyPaladin
-		? PaladinTalents
-		: T extends Spec.SpecProtectionPaladin
-		? PaladinTalents
-		: T extends Spec.SpecRetributionPaladin
+		T extends PaladinSpecs
 		? PaladinTalents
 		: // Priest
-		T extends Spec.SpecDisciplinePriest
-		? PriestTalents
-		: T extends Spec.SpecHolyPriest
-		? PriestTalents
-		: T extends Spec.SpecShadowPriest
+		T extends PriestSpecs
 		? PriestTalents
 		: // Rogue
-		T extends Spec.SpecAssassinationRogue
-		? RogueTalents
-		: T extends Spec.SpecCombatRogue
-		? RogueTalents
-		: T extends Spec.SpecSubtletyRogue
+		T extends RogueSpecs
 		? RogueTalents
 		: // Shaman
-		T extends Spec.SpecElementalShaman
-		? ShamanTalents
-		: T extends Spec.SpecEnhancementShaman
-		? ShamanTalents
-		: T extends Spec.SpecRestorationShaman
+		T extends ShamanSpecs
 		? ShamanTalents
 		: // Warlock
-		T extends Spec.SpecAfflictionWarlock
-		? WarlockTalents
-		: T extends Spec.SpecDemonologyWarlock
-		? WarlockTalents
-		: T extends Spec.SpecDestructionWarlock
+		T extends WarlockSpecs
 		? WarlockTalents
 		: // Warrior
-		T extends Spec.SpecArmsWarrior
-		? WarriorTalents
-		: T extends Spec.SpecFuryWarrior
-		? WarriorTalents
-		: T extends Spec.SpecProtectionWarrior
+		T extends WarriorSpecs
 		? WarriorTalents
 		: // Should never reach this case
 		  UnknownTalents;
+
+export type ClassOptions<T extends Spec> =
+	// Death Knight
+	T extends DeathKnightSpecs
+		? DeathKnightOptions
+		: // Druid
+		T extends DruidSpecs
+		? DruidOptions
+		: // Hunter
+		T extends HunterSpecs
+		? HunterOptions
+		: // Mage
+		T extends MageSpecs
+		? MageOptions
+		: // Paladin
+		T extends PaladinSpecs
+		? PaladinOptions
+		: // Priest
+		T extends PriestSpecs
+		? PriestOptions
+		: // Rogue
+		T extends RogueSpecs
+		? RogueOptions
+		: // Shaman
+		T extends ShamanSpecs
+		? ShamanOptions
+		: // Warlock
+		T extends WarlockSpecs
+		? WarlockOptions
+		: // Warrior
+		T extends WarriorSpecs
+		? WarriorOptions
+		: // Should never reach this case
+		  UnknownClassOptions;
 
 export type SpecOptions<T extends Spec> =
 	// Death Knight
@@ -522,7 +493,7 @@ export type SpecOptions<T extends Spec> =
 		: T extends Spec.SpecProtectionWarrior
 		? ProtectionWarrior_Options
 		: // Should never reach this case
-		  UnknownOptions;
+		  UnknownSpecOptions;
 
 export type SpecType<T extends Spec> =
 	// Death Knight
@@ -633,12 +604,12 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: _a => undefined,
 		talentsFromJson: _obj => new UnknownTalents(),
 
-		optionsCreate: () => new UnknownOptions(),
+		optionsCreate: () => new UnknownSpecOptions(),
 		optionsEquals: (_a, _b) => true,
-		optionsCopy: _a => new UnknownOptions(),
+		optionsCopy: _a => new UnknownSpecOptions(),
 		optionsToJson: _a => undefined,
-		optionsFromJson: _obj => new UnknownOptions(),
-		optionsFromPlayer: _player => new UnknownOptions(),
+		optionsFromJson: _obj => new UnknownSpecOptions(),
+		optionsFromPlayer: _player => new UnknownSpecOptions(),
 	},
 
 	// Death Knight

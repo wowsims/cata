@@ -72,7 +72,7 @@ export const FireTalents = {
 };
 
 export const DefaultFireOptions = MageOptions.create({
-	mageOptions: {
+	classOptions: {
 		armor: ArmorType.MoltenArmor,
 	},
 });

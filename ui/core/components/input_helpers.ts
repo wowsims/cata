@@ -1,7 +1,7 @@
 import { Player } from '../player.js';
 import { Spec } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
-import { SpecOptions, SpecRotation } from '../proto_utils/utils.js';
+import { ClassOptions, SpecOptions, SpecRotation } from '../proto_utils/utils.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { BooleanPickerConfig } from './boolean_picker.js';
 import { EnumPickerConfig, EnumValueConfig } from './enum_picker.js';
@@ -64,6 +64,27 @@ export interface PlayerBooleanInputConfig<SpecType extends Spec, Message> extend
 	labelTooltip?: string;
 	enableWhen?: (player: Player<SpecType>) => boolean;
 	showWhen?: (player: Player<SpecType>) => boolean;
+}
+export function makeClassOptionsBooleanInput<SpecType extends Spec>(
+	config: PlayerBooleanInputConfig<SpecType, ClassOptions<SpecType>>,
+): TypedBooleanPickerConfig<Player<SpecType>> {
+	return makeWrappedBooleanInput<SpecType, Player<SpecType>>({
+		label: config.label,
+		labelTooltip: config.labelTooltip,
+		getModObject: (player: Player<SpecType>) => player,
+		getValue: config.getValue || ((player: Player<SpecType>) => player.getClassOptions()[config.fieldName] as unknown as boolean),
+		setValue:
+			config.setValue ||
+			((eventID: EventID, player: Player<SpecType>, newVal: boolean) => {
+				const newMessage = player.getClassOptions();
+				(newMessage[config.fieldName] as unknown as boolean) = newVal;
+				player.setClassOptions(eventID, newMessage);
+			}),
+		changedEvent: config.changeEmitter || ((player: Player<SpecType>) => player.specOptionsChangeEmitter),
+		enableWhen: config.enableWhen,
+		showWhen: config.showWhen,
+		extraCssClasses: config.extraCssClasses,
+	});
 }
 export function makeSpecOptionsBooleanInput<SpecType extends Spec>(
 	config: PlayerBooleanInputConfig<SpecType, SpecOptions<SpecType>>,
@@ -146,6 +167,36 @@ export interface PlayerNumberInputConfig<SpecType extends Spec, Message> extends
 	enableWhen?: (player: Player<SpecType>) => boolean;
 	showWhen?: (player: Player<SpecType>) => boolean;
 	changeEmitter?: (player: Player<SpecType>) => TypedEvent<any>;
+}
+export function makeClassOptionsNumberInput<SpecType extends Spec>(
+	config: PlayerNumberInputConfig<SpecType, ClassOptions<SpecType>>,
+): TypedNumberPickerConfig<Player<SpecType>> {
+	const internalConfig = {
+		label: config.label,
+		labelTooltip: config.labelTooltip,
+		float: config.float,
+		positive: config.positive,
+		getModObject: (player: Player<SpecType>) => player,
+		getValue: config.getValue || ((player: Player<SpecType>) => player.getClassOptions()[config.fieldName] as unknown as number),
+		setValue:
+			config.setValue ||
+			((eventID: EventID, player: Player<SpecType>, newVal: number) => {
+				const newMessage = player.getClassOptions();
+				(newMessage[config.fieldName] as unknown as number) = newVal;
+				player.setClassOptions(eventID, newMessage);
+			}),
+		changedEvent: config.changeEmitter || ((player: Player<SpecType>) => player.specOptionsChangeEmitter),
+		enableWhen: config.enableWhen,
+		showWhen: config.showWhen,
+		extraCssClasses: config.extraCssClasses,
+	};
+	if (config.percent) {
+		const getValue = internalConfig.getValue;
+		internalConfig.getValue = (player: Player<SpecType>) => getValue(player) * 100;
+		const setValue = internalConfig.setValue;
+		internalConfig.setValue = (eventID: EventID, player: Player<SpecType>, newVal: number) => setValue(eventID, player, newVal / 100);
+	}
+	return makeWrappedNumberInput<SpecType, Player<SpecType>>(internalConfig);
 }
 export function makeSpecOptionsNumberInput<SpecType extends Spec>(
 	config: PlayerNumberInputConfig<SpecType, SpecOptions<SpecType>>,
@@ -243,6 +294,28 @@ export interface PlayerEnumInputConfig<SpecType extends Spec, Message> {
 	enableWhen?: (player: Player<SpecType>) => boolean;
 	showWhen?: (player: Player<SpecType>) => boolean;
 	changeEmitter?: (player: Player<SpecType>) => TypedEvent<any>;
+}
+// T is unused, but kept to have the same interface as the icon enum inputs.
+export function makeClassOptionsEnumInput<SpecType extends Spec, _T>(
+	config: PlayerEnumInputConfig<SpecType, ClassOptions<SpecType>>,
+): TypedEnumPickerConfig<Player<SpecType>> {
+	return makeWrappedEnumInput<SpecType, Player<SpecType>>({
+		label: config.label,
+		labelTooltip: config.labelTooltip,
+		values: config.values,
+		getModObject: (player: Player<SpecType>) => player,
+		getValue: config.getValue || ((player: Player<SpecType>) => player.getClassOptions()[config.fieldName] as unknown as number),
+		setValue:
+			config.setValue ||
+			((eventID: EventID, player: Player<SpecType>, newVal: number) => {
+				const newMessage = player.getClassOptions();
+				(newMessage[config.fieldName] as unknown as number) = newVal;
+				player.setClassOptions(eventID, newMessage);
+			}),
+		changedEvent: config.changeEmitter || ((player: Player<SpecType>) => player.specOptionsChangeEmitter),
+		enableWhen: config.enableWhen,
+		showWhen: config.showWhen,
+	});
 }
 // T is unused, but kept to have the same interface as the icon enum inputs.
 export function makeSpecOptionsEnumInput<SpecType extends Spec, _T>(
@@ -365,6 +438,24 @@ export interface PlayerBooleanIconInputConfig<SpecType extends Spec, Message, T>
 	id: ActionId;
 	value?: number;
 }
+export function makeClassOptionsBooleanIconInput<SpecType extends Spec>(
+	config: PlayerBooleanIconInputConfig<SpecType, ClassOptions<SpecType>, boolean>,
+): TypedIconPickerConfig<Player<SpecType>, boolean> {
+	return makeBooleanIconInput<SpecType, ClassOptions<SpecType>, Player<SpecType>>(
+		{
+			getModObject: (player: Player<SpecType>) => player,
+			getValue: (player: Player<SpecType>) => player.getClassOptions(),
+			setValue: (eventID: EventID, player: Player<SpecType>, newVal: ClassOptions<SpecType>) => player.setClassOptions(eventID, newVal),
+			changeEmitter: config.changeEmitter || ((player: Player<SpecType>) => player.specOptionsChangeEmitter),
+			extraCssClasses: config.extraCssClasses,
+			getFieldValue: config.getValue,
+			setFieldValue: config.setValue,
+		},
+		config.id,
+		config.fieldName,
+		config.value,
+	);
+}
 export function makeSpecOptionsBooleanIconInput<SpecType extends Spec>(
 	config: PlayerBooleanIconInputConfig<SpecType, SpecOptions<SpecType>, boolean>,
 ): TypedIconPickerConfig<Player<SpecType>, boolean> {
@@ -481,6 +572,28 @@ export interface PlayerEnumIconInputConfig<SpecType extends Spec, Message, T> ex
 	fieldName: keyof Message;
 	values: Array<IconEnumValueConfig<Player<SpecType>, T>>;
 	numColumns?: number;
+}
+export function makeClassOptionsEnumIconInput<SpecType extends Spec, T>(
+	config: PlayerEnumIconInputConfig<SpecType, ClassOptions<SpecType>, T>,
+): TypedIconEnumPickerConfig<Player<SpecType>, T> {
+	return makeWrappedEnumIconInput<SpecType, Player<SpecType>, T>({
+		numColumns: config.numColumns || 1,
+		values: config.values,
+		equals: (a: T, b: T) => a == b,
+		showWhen: config.showWhen,
+		zeroValue: 0 as unknown as T,
+		getModObject: (player: Player<SpecType>) => player,
+		getValue: config.getValue || ((player: Player<SpecType>) => player.getClassOptions()[config.fieldName] as unknown as T),
+		setValue:
+			config.setValue ||
+			((eventID: EventID, player: Player<SpecType>, newVal: T) => {
+				const newMessage = player.getClassOptions();
+				(newMessage[config.fieldName] as unknown as T) = newVal;
+				player.setClassOptions(eventID, newMessage);
+			}),
+		changedEvent: config.changeEmitter || ((player: Player<SpecType>) => player.specOptionsChangeEmitter),
+		extraCssClasses: config.extraCssClasses,
+	});
 }
 export function makeSpecOptionsEnumIconInput<SpecType extends Spec, T>(
 	config: PlayerEnumIconInputConfig<SpecType, SpecOptions<SpecType>, T>,

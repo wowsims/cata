@@ -1,14 +1,15 @@
-import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
-import * as Mechanics from '../../core/constants/mechanics.js';
-import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
-import { Player } from '../../core/player.js';
+import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
+import * as OtherInputs from '../../core/components/other_inputs';
+import * as Mechanics from '../../core/constants/mechanics';
+import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
+import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLRotation } from '../../core/proto/apl.js';
-import { Faction, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common.js';
-import { Stats } from '../../core/proto_utils/stats.js';
-import * as ShadowPriestInputs from './inputs.js';
-import * as Presets from './presets.js';
+import { APLRotation } from '../../core/proto/apl';
+import { Faction, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
+import { Stats } from '../../core/proto_utils/stats';
+import * as PriestInputs from '../inputs';
+// import * as ShadowPriestInputs from './inputs';
+import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	cssClass: 'shadow-priest-sim-ui',
@@ -74,7 +75,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [ShadowPriestInputs.ArmorInput],
+	playerIconInputs: [PriestInputs.ArmorInput()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.ReplenishmentBuff,

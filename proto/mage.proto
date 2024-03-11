@@ -160,7 +160,7 @@ message ArcaneMage {
 	}
 
 	message Options {
-		MageOptions mage_options = 1;
+		MageOptions class_options = 1;
 		int32 focus_magic_percent_uptime = 2;
 		UnitReference focus_magic_target = 3;
 	}
@@ -179,7 +179,7 @@ message FireMage {
 	}
 
 	message Options {
-		MageOptions mage_options = 1;
+		MageOptions class_options = 1;
 	}
 	Options options = 1;
 }
@@ -190,7 +190,7 @@ message FrostMage {
 	}
 
 	message Options {
-		MageOptions mage_options = 1;
+		MageOptions class_options = 1;
 		// Chance for water elemental to disobey, doing nothing rather than cast.
 		double water_elemental_disobey_chance = 2;
 	}

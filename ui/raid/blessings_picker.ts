@@ -1,10 +1,10 @@
 import { Tooltip } from 'bootstrap';
-import { Paladin } from 'ui/core/player_classes/paladin';
-import { naturalPlayerClassOrder } from 'ui/core/player_class';
-import { PlayerSpec } from 'ui/core/player_spec';
 
 import { Component } from '../core/components/component';
 import { IconEnumPicker } from '../core/components/icon_enum_picker';
+import { naturalPlayerClassOrder } from '../core/player_class';
+import { Paladin } from '../core/player_classes/paladin';
+import { PlayerSpec } from '../core/player_spec';
 import { Class as ClassProto } from '../core/proto/common';
 import { Blessings } from '../core/proto/paladin';
 import { BlessingsAssignments } from '../core/proto/ui';
@@ -68,22 +68,15 @@ export class BlessingsPicker extends Component {
 					equals: (a: Blessings, b: Blessings) => a == b,
 					zeroValue: Blessings.BlessingUnknown,
 					enableWhen: (_picker: BlessingsPicker) => {
-						const numPaladins = Math.min(
-							this.simUI.getClassCount(ClassProto.ClassPaladin),
-							MAX_PALADINS,
-						);
+						const numPaladins = Math.min(this.simUI.getClassCount(ClassProto.ClassPaladin), MAX_PALADINS);
 						return paladinIdx < numPaladins;
 					},
 					changedEvent: (picker: BlessingsPicker) => picker.changeEmitter,
-					getValue: (picker: BlessingsPicker) =>
-						picker.assignments.paladins[paladinIdx]?.blessings[spec.protoID] ||
-						Blessings.BlessingUnknown,
+					getValue: (picker: BlessingsPicker) => picker.assignments.paladins[paladinIdx]?.blessings[spec.protoID] || Blessings.BlessingUnknown,
 					setValue: (eventID: EventID, picker: BlessingsPicker, newValue: number) => {
-						const currentValue =
-							picker.assignments.paladins[paladinIdx].blessings[spec.protoID];
+						const currentValue = picker.assignments.paladins[paladinIdx].blessings[spec.protoID];
 						if (currentValue != newValue) {
-							picker.assignments.paladins[paladinIdx].blessings[spec.protoID] =
-								newValue;
+							picker.assignments.paladins[paladinIdx].blessings[spec.protoID] = newValue;
 							this.changeEmitter.emit(eventID);
 						}
 					},
@@ -105,7 +98,7 @@ export class BlessingsPicker extends Component {
 		}
 	}
 
-	private buildSpecIcon(spec: PlayerSpec): HTMLElement {
+	private buildSpecIcon(spec: PlayerSpec<any>): HTMLElement {
 		const fragment = document.createElement('fragment');
 		fragment.innerHTML = `
 			<div class="blessings-picker-spec">

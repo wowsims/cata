@@ -1,6 +1,11 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profession, RaidBuffs, TristateEffect } from '../../core/proto/common.js';
-import { DisciplinePriest_Options as Options, PriestMajorGlyph as MajorGlyph, PriestMinorGlyph as MinorGlyph } from '../../core/proto/priest.js';
+import {
+	DisciplinePriest_Options as Options,
+	PriestMajorGlyph as MajorGlyph,
+	PriestMinorGlyph as MinorGlyph,
+	PriestOptions_Armor,
+} from '../../core/proto/priest.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import AOE24Apl from './apls/aoe_2_4.apl.json';
 import AOE4PlusApl from './apls/aoe_4_plus.apl.json';
@@ -55,7 +60,11 @@ export const EnlightenmentTalents = {
 	}),
 };
 
-export const DefaultOptions = Options.create({});
+export const DefaultOptions = Options.create({
+	classOptions: {
+		armor: PriestOptions_Armor.InnerFire,
+	},
+});
 
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheFrostWyrm,

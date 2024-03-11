@@ -10,7 +10,7 @@ import { FeralDruid_Rotation as DruidRotation } from '../../core/proto/druid.js'
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
 import { Gear } from '../../core/proto_utils/gear.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import * as DruidInputs from './inputs.js';
+import * as FeralInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
@@ -108,13 +108,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.
-	rotationInputs: DruidInputs.FeralDruidRotationConfig,
+	rotationInputs: FeralInputs.FeralDruidRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.IntellectBuff, BuffDebuffInputs.MP5Buff, BuffDebuffInputs.JudgementOfWisdom],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [DruidInputs.LatencyMs, DruidInputs.AssumeBleedActive, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [FeralInputs.LatencyMs, FeralInputs.AssumeBleedActive, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

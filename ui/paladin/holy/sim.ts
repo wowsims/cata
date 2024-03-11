@@ -5,7 +5,8 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import * as HolyPaladinInputs from './inputs.js';
+import * as PaladinInputs from '../inputs.js';
+// import * as HolyInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
@@ -94,13 +95,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [],
+	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.JudgementSelection()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.TankAssignment, OtherInputs.InspirationUptime, HolyPaladinInputs.AuraSelection, HolyPaladinInputs.JudgementSelection],
+		inputs: [OtherInputs.TankAssignment, OtherInputs.InspirationUptime],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

@@ -4,11 +4,25 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLAction, APLListItem, APLRotation } from '../../core/proto/apl';
-import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
-import { BeastMasteryHunter_Rotation, HunterRotation_RotationType, HunterRotation_StingType as StingType } from '../../core/proto/hunter';
+import {
+	Cooldowns,
+	Debuffs,
+	Faction,
+	IndividualBuffs,
+	PartyBuffs,
+	PseudoStat,
+	Race,
+	RaidBuffs,
+	RotationType,
+	Spec,
+	Stat,
+	TristateEffect,
+} from '../../core/proto/common';
+import { BeastMasteryHunter_Rotation, HunterStingType } from '../../core/proto/hunter';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats } from '../../core/proto_utils/stats';
-import * as HunterInputs from './inputs';
+import * as HunterInputs from '../inputs';
+import * as BMInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
@@ -49,7 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.SV_P1_PRESET.gear,
+		gear: Presets.BM_P4_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -69,9 +83,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.SurvivalTalents.data,
+		talents: Presets.BeastMasteryTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultOptions,
+		specOptions: Presets.BMDefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
@@ -104,22 +118,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [HunterInputs.PetTypeInput, HunterInputs.WeaponAmmo, HunterInputs.UseHuntersMark],
+	playerIconInputs: [HunterInputs.PetTypeInput(), HunterInputs.WeaponAmmo(), HunterInputs.UseHuntersMark()],
 	// Inputs to include in the 'Rotation' section on the settings tab.
-	rotationInputs: HunterInputs.HunterRotationConfig,
+	rotationInputs: BMInputs.BMRotationConfig,
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff, BuffDebuffInputs.SpellDamageDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			HunterInputs.PetUptime,
-			HunterInputs.TimeToTrapWeaveMs,
-			HunterInputs.SniperTrainingUptime,
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
-		],
+		inputs: [HunterInputs.PetUptime(), HunterInputs.TimeToTrapWeaveMs(), OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -128,45 +136,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.BeastMasteryTalents, Presets.MarksmanTalents, Presets.SurvivalTalents],
+		talents: [Presets.BeastMasteryTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_PRESET_SIMPLE_DEFAULT,
-			Presets.ROTATION_PRESET_BM,
-			Presets.ROTATION_PRESET_MM,
-			Presets.ROTATION_PRESET_MM_ADVANCED,
-			Presets.ROTATION_PRESET_SV,
-			Presets.ROTATION_PRESET_SV_ADVANCED,
-			Presets.ROTATION_PRESET_AOE,
-		],
+		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_BM, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.MM_PRERAID_PRESET,
-			Presets.MM_P1_PRESET,
-			Presets.MM_P2_PRESET,
-			Presets.MM_P3_PRESET,
-			Presets.MM_P4_PRESET,
-			Presets.MM_P5_PRESET,
-			Presets.SV_PRERAID_PRESET,
-			Presets.SV_P1_PRESET,
-			Presets.SV_P2_PRESET,
-			Presets.SV_P3_PRESET,
-			Presets.SV_P4_PRESET,
-			Presets.SV_P5_PRESET,
-		],
+		gear: [Presets.BM_PRERAID_PRESET, Presets.BM_P1_PRESET, Presets.BM_P2_PRESET, Presets.BM_P3_PRESET, Presets.BM_P4_PRESET, Presets.BM_P5_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecBeastMasteryHunter>): APLRotation => {
-		const talentTree = player.getTalentTree();
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets >= 4) {
 			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
-		} else if (talentTree == 0) {
-			return Presets.ROTATION_PRESET_BM.rotation.rotation!;
-		} else if (talentTree == 1) {
-			return Presets.ROTATION_PRESET_MM.rotation.rotation!;
 		} else {
-			return Presets.ROTATION_PRESET_SV.rotation.rotation!;
+			return Presets.ROTATION_PRESET_BM.rotation.rotation!;
 		}
 	},
 
@@ -179,7 +161,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 
 		const serpentSting = APLAction.fromJsonString(
 			`{"condition":{"cmp":{"op":"OpGt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},"multidot":{"spellId":{"spellId":49001},"maxDots":${
-				simple.hunterRotation!.multiDotSerpentSting ? 3 : 1
+				simple.multiDotSerpentSting ? 3 : 1
 			},"maxOverlap":{"const":{"val":"0ms"}}}}`,
 		);
 		const scorpidSting = APLAction.fromJsonString(
@@ -194,32 +176,32 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 		const multiShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49048}}}`);
 		const steadyShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49052}}}`);
 
-		if (simple.hunterRotation!.viperStartManaPercent != 0) {
+		if (simple.viperStartManaPercent != 0) {
 			actions.push(
 				APLAction.fromJsonString(
 					`{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":34074}}}}},{"cmp":{"op":"OpLt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"${(
-						simple.hunterRotation!.viperStartManaPercent * 100
+						simple.viperStartManaPercent * 100
 					).toFixed(0)}%"}}}}]}},"castSpell":{"spellId":{"spellId":34074}}}`,
 				),
 			);
 		}
-		if (simple.hunterRotation!.viperStopManaPercent != 0) {
+		if (simple.viperStopManaPercent != 0) {
 			actions.push(
 				APLAction.fromJsonString(
 					`{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":61847}}}}},{"cmp":{"op":"OpGt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"${(
-						simple.hunterRotation!.viperStopManaPercent * 100
+						simple.viperStopManaPercent * 100
 					).toFixed(0)}%"}}}}]}},"castSpell":{"spellId":{"spellId":61847}}}`,
 				),
 			);
 		}
 
-		if (simple.hunterRotation!.type == HunterRotation_RotationType.Aoe) {
+		if (simple.type == RotationType.Aoe) {
 			actions.push(
 				...([
 					combatPot,
-					simple.hunterRotation!.sting == StingType.ScorpidSting ? scorpidSting : null,
-					simple.hunterRotation!.sting == StingType.SerpentSting ? serpentSting : null,
-					simple.hunterRotation!.trapWeave ? trapWeave : null,
+					simple.sting == HunterStingType.ScorpidSting ? scorpidSting : null,
+					simple.sting == HunterStingType.SerpentSting ? serpentSting : null,
+					simple.trapWeave ? trapWeave : null,
 					volley,
 				].filter(a => a) as Array<APLAction>),
 			);
@@ -228,9 +210,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 				...([
 					combatPot,
 					killShot,
-					simple.hunterRotation!.trapWeave ? trapWeave : null,
-					simple.hunterRotation!.sting == StingType.ScorpidSting ? scorpidSting : null,
-					simple.hunterRotation!.sting == StingType.SerpentSting ? serpentSting : null,
+					simple.trapWeave ? trapWeave : null,
+					simple.sting == HunterStingType.ScorpidSting ? scorpidSting : null,
+					simple.sting == HunterStingType.SerpentSting ? serpentSting : null,
 					aimedShot,
 					multiShot,
 					steadyShot,
@@ -262,16 +244,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.MM_P1_PRESET.gear,
-					2: Presets.MM_P2_PRESET.gear,
-					3: Presets.MM_P3_PRESET.gear,
-					4: Presets.MM_P4_PRESET.gear,
+					1: Presets.BM_P1_PRESET.gear,
+					2: Presets.BM_P2_PRESET.gear,
+					3: Presets.BM_P3_PRESET.gear,
+					4: Presets.BM_P4_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.MM_P1_PRESET.gear,
-					2: Presets.MM_P2_PRESET.gear,
-					3: Presets.MM_P3_PRESET.gear,
-					4: Presets.MM_P4_PRESET.gear,
+					1: Presets.BM_P1_PRESET.gear,
+					2: Presets.BM_P2_PRESET.gear,
+					3: Presets.BM_P3_PRESET.gear,
+					4: Presets.BM_P4_PRESET.gear,
 				},
 			},
 		},

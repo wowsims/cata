@@ -916,3 +916,10 @@ message ItemSwap {
 message Duration {
 	double ms = 1;
 }
+
+enum RotationType {
+	UnknownType = 0;
+	SingleTarget = 1;
+	Aoe = 3;
+	Custom = 2;
+}

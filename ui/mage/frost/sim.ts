@@ -1,15 +1,16 @@
-import * as OtherInputs from '../../core/components/other_inputs.js';
-import * as Mechanics from '../../core/constants/mechanics.js';
-import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
-import { Player } from '../../core/player.js';
+import * as OtherInputs from '../../core/components/other_inputs';
+import * as Mechanics from '../../core/constants/mechanics';
+import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
+import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl.js';
-import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
+import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl';
+import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
 import { FrostMage_Rotation } from '../../core/proto/mage';
-import * as AplUtils from '../../core/proto_utils/apl_utils.js';
-import { Stats } from '../../core/proto_utils/stats.js';
-import * as MageInputs from './inputs.js';
-import * as Presets from './presets.js';
+import * as AplUtils from '../../core/proto_utils/apl_utils';
+import { Stats } from '../../core/proto_utils/stats';
+import * as MageInputs from '../inputs';
+import * as FrostInputs from './inputs';
+import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	cssClass: 'frost-mage-sim-ui',
@@ -99,9 +100,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [MageInputs.Armor],
+	playerIconInputs: [MageInputs.ArmorInput()],
 	// Inputs to include in the 'Rotation' section on the settings tab.
-	rotationInputs: MageInputs.MageRotationConfig,
+	rotationInputs: FrostInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		//Should add hymn of hope, revitalize, and
@@ -109,13 +110,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			MageInputs.FocusMagicUptime,
-			MageInputs.WaterElementalDisobeyChance,
-			OtherInputs.ReactionTime,
-			OtherInputs.DistanceFromTarget,
-			OtherInputs.TankAssignment,
-		],
+		inputs: [FrostInputs.WaterElementalDisobeyChance, OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
