@@ -157,17 +157,26 @@ message RogueOptions {
 message AssassinationRogue {
 	message Rotation {}
 
-	RogueOptions options = 1;
+	message Options {
+		RogueOptions rogue_options = 1;
+	}
+	Options options = 1;
 }
 
 message CombatRogue {
 	message Rotation {}
 
-	RogueOptions options = 1;
+	message Options {
+		RogueOptions rogue_options = 1;
+	}
+	Options options = 1;
 }
 
 message SubtletyRogue {
 	message Rotation {}
 
-	RogueOptions options = 1;
+	message Options {
+		RogueOptions rogue_options = 1;
+	}
+	Options options = 1;
 }

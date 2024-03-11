@@ -1,0 +1,8 @@
+// Set color variables which control the site theme.
+.frost-mage-sim-ui {
+	@include theme-color(
+		$mage,
+		.95,
+		'/cata/assets/img/mage_background.jpg'
+	);
+}

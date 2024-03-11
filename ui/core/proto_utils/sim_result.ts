@@ -1,3 +1,4 @@
+import { PlayerSpec } from '../player_spec.js';
 import {
 	ActionMetrics as ActionMetricsProto,
 	AuraMetrics as AuraMetricsProto,
@@ -17,8 +18,7 @@ import {
 import { Class, Encounter as EncounterProto, Target as TargetProto  } from '../proto/common.js';
 import { SimRun } from '../proto/ui.js';
 import { ActionId, defaultTargetIcon } from '../proto_utils/action_id.js';
-import { playerToSpec } from '../proto_utils/utils.js';
-import { Spec } from '../spec.js';
+import { getPlayerSpecFromPlayer } from '../proto_utils/utils.js';
 import { bucket, sum } from '../utils.js';
 import {
 	AuraUptimeLog,
@@ -271,7 +271,7 @@ export class UnitMetrics {
 	readonly index: number;
 	readonly unitIndex: number;
 	readonly name: string;
-	readonly spec: Spec | null;
+	readonly spec: PlayerSpec<any> | null;
 	readonly petActionId: ActionId | null;
 	readonly iconUrl: string;
 	readonly classColor: string;
@@ -321,7 +321,7 @@ export class UnitMetrics {
 		this.index = index;
 		this.unitIndex = metrics.unitIndex;
 		this.name = metrics.name;
-		this.spec = this.player ? playerToSpec(this.player) : null;
+		this.spec = this.player ? getPlayerSpecFromPlayer(this.player) : null;
 		this.petActionId = petActionId;
 		this.iconUrl = this.isPlayer ? this.spec?.getIcon('medium') ?? '' :
 			(this.isTarget ? defaultTargetIcon : '');

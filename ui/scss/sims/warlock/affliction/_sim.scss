@@ -1,0 +1,8 @@
+// Set color variables which control the site theme.
+.affliction-warlock-sim-ui {
+	@include theme-color(
+		$warlock,
+		.95,
+		'/cata/assets/img/warlock_background.jpg'
+	);
+}

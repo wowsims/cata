@@ -1,8 +1,0 @@
-// Set color variables which control the site theme.
-.hunter-sim-ui {
-	@include theme-color(
-		$hunter,
-		.9,
-		'/cata/assets/img/hunter_background.jpg'
-	);
-}

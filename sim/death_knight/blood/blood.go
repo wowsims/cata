@@ -27,48 +27,50 @@ type BloodDeathKnight struct {
 	*death_knight.DeathKnight
 }
 
-func NewBloodDeathKnight(character *core.Character, player *proto.Player) *BloodDeathKnight {
-	bloodOptions := player.GetBloodDeathKnight().Options
+func NewBloodDeathKnight(character *core.Character, options *proto.Player) *BloodDeathKnight {
+	dkOptions := options.GetBloodDeathKnight()
 
 	bdk := &BloodDeathKnight{
 		DeathKnight: death_knight.NewDeathKnight(character, death_knight.DeathKnightInputs{
-			StartingRunicPower: bloodOptions.StartingRunicPower,
-			PetUptime:          bloodOptions.PetUptime,
-			DrwPestiApply:      bloodOptions.DrwPestiApply,
-			IsDps:              true,
-
-			UseAMS:            bloodOptions.UseAms,
-			AvgAMSSuccessRate: bloodOptions.AvgAmsSuccessRate,
-			AvgAMSHit:         bloodOptions.AvgAmsHit,
-		}, player.TalentsString),
+			IsDps:              false,
+			StartingRunicPower: dkOptions.Options.StartingRunicPower,
+		}, options.TalentsString),
 	}
 
 	bdk.EnableAutoAttacks(bdk, core.AutoAttackOptions{
 		MainHand:       bdk.WeaponFromMainHand(bdk.DefaultMeleeCritMultiplier()),
 		OffHand:        bdk.WeaponFromOffHand(bdk.DefaultMeleeCritMultiplier()),
 		AutoSwingMelee: true,
+		ReplaceMHSwing: func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
+			if bdk.RuneStrikeQueued && bdk.RuneStrike.CanCast(sim, nil) {
+				return bdk.RuneStrike
+			} else {
+				return mhSwingSpell
+			}
+		},
 	})
+
+	healingModel := options.HealingModel
+	if healingModel != nil {
+		if healingModel.InspirationUptime > 0.0 {
+			core.ApplyInspiration(bdk.GetCharacter(), healingModel.InspirationUptime)
+		}
+	}
 
 	return bdk
 }
 
-func (bdk *BloodDeathKnight) FrostPointsInBlood() int32 {
-	return bdk.Talents.Butchery + bdk.Talents.Subversion + bdk.Talents.BladeBarrier + bdk.Talents.DarkConviction
+func (dk *BloodDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
+	return dk.DeathKnight
 }
 
-func (bdk *BloodDeathKnight) FrostPointsInFrost() int32 {
-	return bdk.Talents.ViciousStrikes + bdk.Talents.Virulence + bdk.Talents.Epidemic + bdk.Talents.RavenousDead + bdk.Talents.Necrosis + bdk.Talents.BloodCakedBlade
+func (dk *BloodDeathKnight) Initialize() {
+	dk.DeathKnight.Initialize()
 }
 
-func (bdk *BloodDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
-	return bdk.DeathKnight
-}
+func (dk *BloodDeathKnight) Reset(sim *core.Simulation) {
+	dk.DeathKnight.Reset(sim)
 
-func (bdk *BloodDeathKnight) Initialize() {
-	bdk.DeathKnight.Initialize()
-}
-
-func (bdk *BloodDeathKnight) Reset(sim *core.Simulation) {
-	bdk.DeathKnight.Reset(sim)
-	bdk.Presence = death_knight.UnsetPresence
+	dk.Presence = death_knight.UnsetPresence
+	dk.DeathKnight.PseudoStats.Stunned = false
 }

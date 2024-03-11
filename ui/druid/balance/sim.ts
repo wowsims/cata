@@ -2,38 +2,22 @@ import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js
 import * as OtherInputs from '../../core/components/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
-import {
-	APLRotation,
-} from '../../core/proto/apl.js';
-import {
-	Class,
-	Faction,
-	Race,
-	Spec,
-	Stat,
-} from '../../core/proto/common.js';
+import { PlayerClasses } from '../../core/player_classes';
+import { PlayerSpecs } from '../../core/player_specs';
+import { APLRotation } from '../../core/proto/apl.js';
+import { Faction, Race, Spec, Stat } from '../../core/proto/common.js';
 import { Stats } from '../../core/proto_utils/stats.js';
-import { getSpecIcon, specNames } from '../../core/proto_utils/utils.js';
 import * as DruidInputs from './inputs.js';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	cssClass: 'balance-druid-sim-ui',
-	cssScheme: 'druid',
+	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Druid),
 	// List any known bugs / issues here, and they'll be shown on the site.
-	knownIssues: [
-	],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMP5,
-	],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -58,8 +42,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 			[Stat.StatSpirit]: 0.34,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.82,
-			[Stat.StatSpellHaste]: 0.80,
-			[Stat.StatMP5]: 0.00,
+			[Stat.StatSpellHaste]: 0.8,
+			[Stat.StatMP5]: 0.0,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -76,9 +60,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		DruidInputs.SelfInnervate,
-	],
+	playerIconInputs: [DruidInputs.SelfInnervate],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.MeleeHasteBuff,
@@ -89,16 +71,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		BuffDebuffInputs.MinorArmorDebuff,
 		BuffDebuffInputs.PhysicalDamageDebuff,
 	],
-	excludeBuffDebuffInputs: [
-	],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [
-			DruidInputs.OkfUptime,
-			OtherInputs.TankAssignment,
-			OtherInputs.ReactionTime,
-			OtherInputs.DistanceFromTarget,
-		],
+		inputs: [DruidInputs.OkfUptime, OtherInputs.TankAssignment, OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -107,17 +83,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.Phase1Talents,
-			Presets.Phase2Talents,
-			Presets.Phase3Talents,
-			Presets.Phase4Talents,
-		],
-		rotations: [
-			Presets.ROTATION_PRESET_P3_APL,
-			Presets.ROTATION_PRESET_P4_FOCUS_APL,
-			Presets.ROTATION_PRESET_P4_STARFIRE_APL,
-		],
+		talents: [Presets.Phase1Talents, Presets.Phase2Talents, Presets.Phase3Talents, Presets.Phase4Talents],
+		rotations: [Presets.ROTATION_PRESET_P3_APL, Presets.ROTATION_PRESET_P4_FOCUS_APL, Presets.ROTATION_PRESET_P4_STARFIRE_APL],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.PRERAID_PRESET,
@@ -137,9 +104,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecBalanceDruid,
-			tooltip: specNames[Spec.SpecBalanceDruid],
-			defaultName: 'Balance',
-			iconUrl: getSpecIcon(Class.ClassDruid, 0),
+			tooltip: PlayerSpecs.BalanceDruid.fullName,
+			defaultName: PlayerSpecs.BalanceDruid.friendlyName,
+			iconUrl: PlayerClasses.Druid.getIcon('medium'),
 
 			talents: Presets.Phase2Talents.data,
 			specOptions: Presets.DefaultOptions,

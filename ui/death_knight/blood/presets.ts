@@ -1,3 +1,4 @@
+import * as PresetUtils from '../../core/preset_utils.js';
 import {
 	Consumes,
 	Flask,
@@ -5,16 +6,12 @@ import {
 	Glyphs,
 	Potions,
 } from '../../core/proto/common.js';
-import { SavedTalents } from '../../core/proto/ui.js';
-
 import {
-	TankDeathknight_Options as TankDeathKnightOptions,
 	DeathknightMajorGlyph,
 	DeathknightMinorGlyph,
+	TankDeathknight_Options as TankDeathKnightOptions,
 } from '../../core/proto/deathknight.js';
-
-import * as PresetUtils from '../../core/preset_utils.js';
-
+import { SavedTalents } from '../../core/proto/ui.js';
 import P1BloodGear from './gear_sets/p1_blood.gear.json';
 export const P1_BLOOD_PRESET = PresetUtils.makePresetGear('P1 Blood', P1BloodGear);
 import P2BloodGear from './gear_sets/p2_blood.gear.json';

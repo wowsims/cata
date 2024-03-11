@@ -25,7 +25,7 @@ func RegisterSurvivalHunter() {
 
 func NewSurvivalHunter(character *core.Character, options *proto.Player) *SurvivalHunter {
 	svHunter := &SurvivalHunter{
-		Hunter: hunter.NewHunter(character, options, options.GetSurvivalHunter().Options),
+		Hunter: hunter.NewHunter(character, options, options.GetSurvivalHunter().Options.HunterOptions),
 	}
 
 	return svHunter

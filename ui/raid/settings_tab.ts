@@ -1,23 +1,19 @@
-import { ContentBlock } from "../core/components/content_block";
-import { EncounterPicker } from "../core/components/encounter_picker";
-import { IconPicker } from "../core/components/icon_picker";
-import { SavedDataManager } from "../core/components/saved_data_manager";
-import { SimTab } from "../core/components/sim_tab";
-
-import { Encounter } from "../core/encounter";
-import { Raid } from "../core/raid";
-import { EventID } from "../core/typed_event";
-
-import { RaidBuffs } from "../core/proto/common";
-import { SavedEncounter } from "../core/proto/ui";
-import { ActionId } from "../core/proto_utils/action_id";
-
-import { AssignmentsPicker } from "./assignments_picker";
-import { BlessingsPicker } from "./blessings_picker";
-import { RaidSimUI } from "./raid_sim_ui";
-import { TanksPicker } from "./tanks_picker";
-
-import * as Tooltips from "../core/constants/tooltips.js";
+import { ContentBlock } from '../core/components/content_block';
+import { EncounterPicker } from '../core/components/encounter_picker';
+import { IconPicker } from '../core/components/icon_picker';
+import { SavedDataManager } from '../core/components/saved_data_manager';
+import { SimTab } from '../core/components/sim_tab';
+import * as Tooltips from '../core/constants/tooltips.js';
+import { Encounter } from '../core/encounter';
+import { RaidBuffs } from '../core/proto/common';
+import { SavedEncounter } from '../core/proto/ui';
+import { ActionId } from '../core/proto_utils/action_id';
+import { Raid } from '../core/raid';
+import { EventID } from '../core/typed_event';
+import { AssignmentsPicker } from './assignments_picker';
+import { BlessingsPicker } from './blessings_picker';
+import { RaidSimUI } from './raid_sim_ui';
+import { TanksPicker } from './tanks_picker';
 
 export class SettingsTab extends SimTab {
 	protected simUI: RaidSimUI;
@@ -63,7 +59,7 @@ export class SettingsTab extends SimTab {
 
 	private buildEncounterSettings() {
 		const contentBlock = new ContentBlock(this.column1, 'encounter-settings', {
-			header: { title: 'Encounter' }
+			header: { title: 'Encounter' },
 		});
 
 		new EncounterPicker(contentBlock.bodyElement, this.simUI.sim.encounter, { showExecuteProportion: true }, this.simUI);
@@ -71,10 +67,10 @@ export class SettingsTab extends SimTab {
 
 	private buildConsumesSettings() {
 		const contentBlock = new ContentBlock(this.column1, 'consumes-settings', {
-			header: { title: 'Consumables' }
+			header: { title: 'Consumables' },
 		});
 
-		let container = document.createElement('div');
+		const container = document.createElement('div');
 		container.classList.add('consumes-container');
 
 		contentBlock.bodyElement.appendChild(container);
@@ -91,7 +87,7 @@ export class SettingsTab extends SimTab {
 
 	private buildOtherSettings() {
 		const contentBlock = new ContentBlock(this.column2, 'other-settings', {
-		  header: {title: 'Other'}
+			header: { title: 'Other' },
 		});
 
 		this.makeBooleanRaidIconBuffInput(contentBlock.bodyElement, ActionId.fromSpellId(73828), 'strengthOfWrynn');
@@ -109,7 +105,7 @@ export class SettingsTab extends SimTab {
 
 	private buildTankSettings() {
 		const contentBlock = new ContentBlock(this.column2, 'tanks-settings', {
-			header: { title: 'Tanks' }
+			header: { title: 'Tanks' },
 		});
 
 		new TanksPicker(contentBlock.bodyElement, this.simUI);
@@ -117,7 +113,7 @@ export class SettingsTab extends SimTab {
 
 	private buildAssignmentSettings() {
 		const contentBlock = new ContentBlock(this.column2, 'assignments-settings', {
-			header: { title: 'External Buffs' }
+			header: { title: 'External Buffs' },
 		});
 
 		new AssignmentsPicker(contentBlock.bodyElement, this.simUI);
@@ -125,7 +121,7 @@ export class SettingsTab extends SimTab {
 
 	private buildBlessingsPicker() {
 		const contentBlock = new ContentBlock(this.column3, 'blessings-settings', {
-			header: { title: 'Blessings', tooltip: Tooltips.BLESSINGS_SECTION }
+			header: { title: 'Blessings', tooltip: Tooltips.BLESSINGS_SECTION },
 		});
 
 		this.simUI.blessingsPicker = new BlessingsPicker(contentBlock.bodyElement, this.simUI);

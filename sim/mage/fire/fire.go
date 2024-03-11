@@ -25,7 +25,7 @@ func RegisterFireMage() {
 
 func NewFireMage(character *core.Character, options *proto.Player) *FireMage {
 	fireMage := &FireMage{
-		Mage: mage.NewMage(character, options, options.GetFireMage().Options),
+		Mage: mage.NewMage(character, options, options.GetFireMage().Options.MageOptions),
 	}
 
 	return fireMage

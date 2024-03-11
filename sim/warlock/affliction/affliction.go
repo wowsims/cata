@@ -25,7 +25,7 @@ func RegisterAfflictionWarlock() {
 
 func NewAfflictionWarlock(character *core.Character, options *proto.Player) *AfflictionWarlock {
 	affLock := &AfflictionWarlock{
-		Warlock: warlock.NewWarlock(character, options, options.GetAfflictionWarlock().Options),
+		Warlock: warlock.NewWarlock(character, options, options.GetAfflictionWarlock().Options.WarlockOptions),
 	}
 
 	return affLock

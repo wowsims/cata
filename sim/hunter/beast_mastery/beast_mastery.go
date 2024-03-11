@@ -25,7 +25,7 @@ func RegisterBeastMasteryHunter() {
 
 func NewBeastMasteryHunter(character *core.Character, options *proto.Player) *BeastMasteryHunter {
 	bmHunter := &BeastMasteryHunter{
-		Hunter: hunter.NewHunter(character, options, options.GetBeastMasteryHunter().Options),
+		Hunter: hunter.NewHunter(character, options, options.GetBeastMasteryHunter().Options.HunterOptions),
 	}
 
 	return bmHunter

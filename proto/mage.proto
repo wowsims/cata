@@ -159,15 +159,27 @@ message MageOptions {
 
 message ArcaneMage {
 	message Rotation {}
-	MageOptions options = 1;
+
+	message Options {
+		MageOptions mage_options = 1;
+	}
+	Options options = 1;
 }
 
 message FireMage {
 	message Rotation {}
-	MageOptions options = 1;
+
+	message Options {
+		MageOptions mage_options = 1;
+	}
+	Options options = 1;
 }
 
 message FrostMage {
 	message Rotation {}
-	MageOptions options = 1;
+
+	message Options {
+		MageOptions mage_options = 1;
+	}
+	Options options = 1;
 }

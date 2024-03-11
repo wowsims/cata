@@ -1,6 +1,7 @@
 import { Tooltip } from 'bootstrap';
-import { Paladin } from 'ui/core/classes/paladin';
-import { naturalSpecOrder,Spec } from 'ui/core/spec';
+import { Paladin } from 'ui/core/player_classes/paladin';
+import { naturalPlayerClassOrder } from 'ui/core/player_class';
+import { PlayerSpec } from 'ui/core/player_spec';
 
 import { Component } from '../core/components/component';
 import { IconEnumPicker } from '../core/components/icon_enum_picker';
@@ -28,7 +29,10 @@ export class BlessingsPicker extends Component {
 		this.simUI = raidSimUI;
 		this.assignments = BlessingsAssignments.clone(makeDefaultBlessings(4));
 
-		const specs = naturalSpecOrder.filter(spec => implementedSpecs.includes(spec.protoID))
+		const specs = naturalPlayerClassOrder
+			.map(playerClass => Object.values(playerClass.specs))
+			.flat()
+			.filter(spec => implementedSpecs.includes(spec.protoID));
 		const paladinIndexes = [...Array(MAX_PALADINS).keys()];
 
 		specs.map(spec => {
@@ -43,8 +47,7 @@ export class BlessingsPicker extends Component {
 			row.appendChild(container);
 
 			paladinIndexes.forEach(paladinIdx => {
-				if (!this.pickers[paladinIdx])
-					this.pickers.push([]);
+				if (!this.pickers[paladinIdx]) this.pickers.push([]);
 
 				const blessingPicker = new IconEnumPicker(container, this, {
 					extraCssClasses: ['blessing-picker'],
@@ -53,21 +56,34 @@ export class BlessingsPicker extends Component {
 						{ color: Paladin.hexColor, value: Blessings.BlessingUnknown },
 						{ actionId: ActionId.fromSpellId(25898), value: Blessings.BlessingOfKings },
 						{ actionId: ActionId.fromSpellId(48934), value: Blessings.BlessingOfMight },
-						{ actionId: ActionId.fromSpellId(48938), value: Blessings.BlessingOfWisdom },
-						{ actionId: ActionId.fromSpellId(25899), value: Blessings.BlessingOfSanctuary },
+						{
+							actionId: ActionId.fromSpellId(48938),
+							value: Blessings.BlessingOfWisdom,
+						},
+						{
+							actionId: ActionId.fromSpellId(25899),
+							value: Blessings.BlessingOfSanctuary,
+						},
 					],
 					equals: (a: Blessings, b: Blessings) => a == b,
 					zeroValue: Blessings.BlessingUnknown,
 					enableWhen: (_picker: BlessingsPicker) => {
-						const numPaladins = Math.min(this.simUI.getClassCount(ClassProto.ClassPaladin), MAX_PALADINS);
+						const numPaladins = Math.min(
+							this.simUI.getClassCount(ClassProto.ClassPaladin),
+							MAX_PALADINS,
+						);
 						return paladinIdx < numPaladins;
 					},
 					changedEvent: (picker: BlessingsPicker) => picker.changeEmitter,
-					getValue: (picker: BlessingsPicker) => picker.assignments.paladins[paladinIdx]?.blessings[spec.protoID] || Blessings.BlessingUnknown,
+					getValue: (picker: BlessingsPicker) =>
+						picker.assignments.paladins[paladinIdx]?.blessings[spec.protoID] ||
+						Blessings.BlessingUnknown,
 					setValue: (eventID: EventID, picker: BlessingsPicker, newValue: number) => {
-						const currentValue = picker.assignments.paladins[paladinIdx].blessings[spec.protoID];
+						const currentValue =
+							picker.assignments.paladins[paladinIdx].blessings[spec.protoID];
 						if (currentValue != newValue) {
-							picker.assignments.paladins[paladinIdx].blessings[spec.protoID] = newValue;
+							picker.assignments.paladins[paladinIdx].blessings[spec.protoID] =
+								newValue;
 							this.changeEmitter.emit(eventID);
 						}
 					},
@@ -79,7 +95,7 @@ export class BlessingsPicker extends Component {
 			return row;
 		});
 
-		this.updatePickers()
+		this.updatePickers();
 		this.simUI.compChangeEmitter.on(_eventID => this.updatePickers());
 	}
 
@@ -89,7 +105,7 @@ export class BlessingsPicker extends Component {
 		}
 	}
 
-	private buildSpecIcon(spec: Spec): HTMLElement {
+	private buildSpecIcon(spec: PlayerSpec): HTMLElement {
 		const fragment = document.createElement('fragment');
 		fragment.innerHTML = `
 			<div class="blessings-picker-spec">
@@ -101,7 +117,7 @@ export class BlessingsPicker extends Component {
 		`;
 
 		const icon = fragment.querySelector('.blessings-spec-icon') as HTMLElement;
-		Tooltip.getOrCreateInstance(icon, { title: spec.friendlyName});
+		Tooltip.getOrCreateInstance(icon, { title: spec.friendlyName });
 
 		return fragment.children[0] as HTMLElement;
 	}

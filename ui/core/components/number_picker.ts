@@ -1,13 +1,12 @@
 import { EventID, TypedEvent } from '../typed_event.js';
-
 import { Input, InputConfig } from './input.js';
 
 /**
  * Data for creating a number picker.
  */
 export interface NumberPickerConfig<ModObject> extends InputConfig<ModObject, number> {
-	float?: boolean,
-	positive?: boolean,
+	float?: boolean;
+	positive?: boolean;
 }
 
 // UI element for picking an arbitrary number field.
@@ -32,7 +31,7 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 				} else {
 					this.inputElem.value = Math.abs(parseInt(this.inputElem.value)).toString();
 				}
-			}
+			};
 		}
 
 		this.rootElem.appendChild(this.inputElem);
@@ -61,15 +60,12 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 	}
 
 	setInputValue(newValue: number) {
-		if (this.float)
-			this.inputElem.value = newValue.toFixed(2);
-		else
-			this.inputElem.value = String(newValue);
+		if (this.float) this.inputElem.value = newValue.toFixed(2);
+		else this.inputElem.value = String(newValue);
 	}
 
 	private updateSize() {
 		const newSize = Math.max(3, this.inputElem.value.length);
-		if (this.inputElem.size != newSize)
-			this.inputElem.size = newSize;
+		if (this.inputElem.size != newSize) this.inputElem.size = newSize;
 	}
 }

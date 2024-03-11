@@ -1,35 +1,21 @@
-import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
-import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
-import { Player } from '../../core/player.js';
-import {
-	APLRotation,
-} from '../../core/proto/apl.js';
-import {
-	Class,
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat,
-	TristateEffect,
-} from '../../core/proto/common.js';
-import { Stats } from '../../core/proto_utils/stats.js';
-import { getSpecIcon } from '../../core/proto_utils/utils.js';
-import * as DeathKnightInputs from './inputs.js';
-import * as Presets from './presets.js';
+import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
+import * as OtherInputs from '../../core/components/other_inputs';
+import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
+import { Player } from '../../core/player';
+import { PlayerClasses } from '../../core/player_classes';
+import { DeathKnight } from '../../core/player_classes/death_knight';
+import { PlayerSpecs } from '../../core/player_specs';
+import { APLRotation } from '../../core/proto/apl';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
+import { Stats } from '../../core/proto_utils/stats';
+import * as DeathKnightInputs from './inputs';
+import * as Presets from './presets';
 
-const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankDeathknight, {
-	cssClass: 'tank-deathknight-sim-ui',
-	cssScheme: 'death-knight',
+const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
+	cssClass: 'blood-death-knight-sim-ui',
+	cssScheme: PlayerClasses.getCssClass(PlayerClasses.DeathKnight),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-		"<p>Defensive CDs use is very basic and wip.</p>"
-	],
+	knownIssues: ['<p>Defensive CDs use is very basic and wip.</p>'],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -57,10 +43,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankDeathknight, {
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -91,27 +74,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankDeathknight, {
 		// Default equipped gear.
 		gear: Presets.P2_BLOOD_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatArmor]: 0.05,
-			[Stat.StatBonusArmor]: 0.03,
-			[Stat.StatStamina]: 1,
-			[Stat.StatStrength]: 0.33,
-			[Stat.StatAgility]: 0.6,
-			[Stat.StatAttackPower]: 0.06,
-			[Stat.StatExpertise]: 0.67,
-			[Stat.StatMeleeHit]: 0.67,
-			[Stat.StatMeleeCrit]: 0.28,
-			[Stat.StatMeleeHaste]: 0.21,
-			[Stat.StatArmorPenetration]: 0.19,
-			[Stat.StatBlock]: 0.35,
-			[Stat.StatBlockValue]: 0.59,
-			[Stat.StatDodge]: 0.7,
-			[Stat.StatParry]: 0.58,
-			[Stat.StatDefense]: 0.8,
-		}, {
-			[PseudoStat.PseudoStatMainHandDps]: 3.10,
-			[PseudoStat.PseudoStatOffHandDps]: 0.0,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatArmor]: 0.05,
+				[Stat.StatBonusArmor]: 0.03,
+				[Stat.StatStamina]: 1,
+				[Stat.StatStrength]: 0.33,
+				[Stat.StatAgility]: 0.6,
+				[Stat.StatAttackPower]: 0.06,
+				[Stat.StatExpertise]: 0.67,
+				[Stat.StatMeleeHit]: 0.67,
+				[Stat.StatMeleeCrit]: 0.28,
+				[Stat.StatMeleeHaste]: 0.21,
+				[Stat.StatArmorPenetration]: 0.19,
+				[Stat.StatBlock]: 0.35,
+				[Stat.StatBlockValue]: 0.59,
+				[Stat.StatDodge]: 0.7,
+				[Stat.StatParry]: 0.58,
+				[Stat.StatDefense]: 0.8,
+			},
+			{
+				[PseudoStat.PseudoStatMainHandDps]: 3.1,
+				[PseudoStat.PseudoStatOffHandDps]: 0.0,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -133,8 +119,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankDeathknight, {
 			devotionAura: TristateEffect.TristateEffectImproved,
 			stoneskinTotem: TristateEffect.TristateEffectImproved,
 		}),
-		partyBuffs: PartyBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 			blessingOfKings: true,
 			blessingOfMight: TristateEffect.TristateEffectImproved,
@@ -156,16 +141,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankDeathknight, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-	],
+	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: DeathKnightInputs.TankDeathKnightRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellDamageDebuff,
-	],
-	excludeBuffDebuffInputs: [
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -187,18 +168,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankDeathknight, {
 
 	presets: {
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.BLOOD_IT_SPAM_ROTATION_PRESET_DEFAULT,
-			Presets.BLOOD_AGGRO_ROTATION_PRESET_DEFAULT,
-		],
+		rotations: [Presets.BLOOD_IT_SPAM_ROTATION_PRESET_DEFAULT, Presets.BLOOD_AGGRO_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.BloodTalents,
-			Presets.BloodAggroTalents,
-			Presets.DoubleBuffBloodTalents,
-			Presets.FrostTalents,
-			Presets.DoubleBuffFrostTalents,
-		],
+		talents: [Presets.BloodTalents, Presets.BloodAggroTalents, Presets.DoubleBuffBloodTalents, Presets.FrostTalents, Presets.DoubleBuffFrostTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.P1_BLOOD_PRESET,
@@ -210,16 +182,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankDeathknight, {
 		],
 	},
 
-	autoRotation: (_player: Player<Spec.SpecTankDeathknight>): APLRotation => {
+	autoRotation: (_player: Player<Spec.SpecBloodDeathKnight>): APLRotation => {
 		return Presets.BLOOD_IT_SPAM_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	raidSimPresets: [
 		{
-			spec: Spec.SpecTankDeathknight,
-			tooltip: 'Blood Tank Death Knight',
-			defaultName: 'Blood Tank',
-			iconUrl: getSpecIcon(Class.ClassDeathknight, 0),
+			spec: Spec.SpecBloodDeathKnight,
+			tooltip: PlayerSpecs.BloodDeathKnight.fullName,
+			defaultName: PlayerSpecs.BloodDeathKnight.friendlyName,
+			iconUrl: DeathKnight.getIcon('medium'),
 
 			talents: Presets.BloodTalents.data,
 			specOptions: Presets.DefaultOptions,
@@ -248,8 +220,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankDeathknight, {
 	],
 });
 
-export class TankDeathknightSimUI extends IndividualSimUI<Spec.SpecTankDeathknight> {
-	constructor(parentElem: HTMLElement, player: Player<Spec.SpecTankDeathknight>) {
+export class BloodDeathknightSimUI extends IndividualSimUI<Spec.SpecBloodDeathKnight> {
+	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBloodDeathKnight>) {
 		super(parentElem, player, SPEC_CONFIG);
 	}
 }

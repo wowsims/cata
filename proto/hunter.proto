@@ -238,15 +238,24 @@ message HunterOptions {
 
 message BeastMasteryHunter {
 	message Rotation {}
-	HunterOptions options = 1;
+	message Options {
+		HunterOptions hunter_options = 1;
+	}
+	Options options = 1;
 }
 
 message MarksmanshipHunter {
 	message Rotation {}
-	HunterOptions options = 1;
+	message Options {
+		HunterOptions hunter_options = 1;
+	}
+	Options options = 1;
 }
 
 message SurvivalHunter {
 	message Rotation {}
-	HunterOptions options = 1;
+	message Options {
+		HunterOptions hunter_options = 1;
+	}
+	Options options = 1;
 }

@@ -25,7 +25,7 @@ func RegisterMarksmanshipHunter() {
 
 func NewMarksmanshipHunter(character *core.Character, options *proto.Player) *MarksmanshipHunter {
 	mmHunter := &MarksmanshipHunter{
-		Hunter: hunter.NewHunter(character, options, options.GetMarksmanshipHunter().Options),
+		Hunter: hunter.NewHunter(character, options, options.GetMarksmanshipHunter().Options.HunterOptions),
 	}
 
 	return mmHunter

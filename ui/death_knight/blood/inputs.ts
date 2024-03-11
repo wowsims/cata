@@ -1,28 +1,25 @@
-import { Spec } from '../../core/proto/common.js';
-
+import * as InputHelpers from '../../core/components/input_helpers';
+import { Player } from '../../core/player';
+import { Spec } from '../../core/proto/common';
 import {
-	TankDeathknight_Rotation_OptimizationSetting as OptimizationSetting,
-	TankDeathknight_Rotation_Opener as Opener,
-	TankDeathknight_Rotation_BloodSpell as BloodSpell,
-	TankDeathknight_Rotation_Presence as Presence,
-	TankDeathknight_Rotation_BloodTapPrio as BloodTapPrio,
-} from '../../core/proto/deathknight.js';
-
-
-import * as InputHelpers from '../../core/components/input_helpers.js';
-import { Player } from '../../core/player.js';
-import { TypedEvent } from '../../core/typed_event.js';
+	BloodDeathKnight_Rotation_BloodSpell as BloodSpell,
+	BloodDeathKnight_Rotation_BloodTapPrio as BloodTapPrio,
+	BloodDeathKnight_Rotation_Opener as Opener,
+	BloodDeathKnight_Rotation_OptimizationSetting as OptimizationSetting,
+	BloodDeathKnight_Rotation_Presence as Presence,
+} from '../../core/proto/death_knight';
+import { TypedEvent } from '../../core/typed_event';
 
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 
-export const StartingRunicPower = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecTankDeathknight>({
+export const StartingRunicPower = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecBloodDeathKnight>({
 	fieldName: 'startingRunicPower',
 	label: 'Starting Runic Power',
 	labelTooltip: 'Initial RP at the start of each iteration.',
 })
 
-export const DefensiveCdDelay = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecTankDeathknight>({
+export const DefensiveCdDelay = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecBloodDeathKnight>({
 	fieldName: 'defensiveDelay',
 	label: 'Defensives Delay',
 	labelTooltip: 'Minimum delay between using more defensive cooldowns.',
@@ -30,7 +27,7 @@ export const DefensiveCdDelay = InputHelpers.makeSpecOptionsNumberInput<Spec.Spe
 
 export const TankDeathKnightRotationConfig = {
 	inputs: [
-		InputHelpers.makeRotationEnumInput<Spec.SpecTankDeathknight, Presence>({
+		InputHelpers.makeRotationEnumInput<Spec.SpecBloodDeathKnight, Presence>({
 			fieldName: 'presence',
 			label: 'Presence',
 			labelTooltip: 'Presence to be in during the encounter.',
@@ -39,9 +36,9 @@ export const TankDeathKnightRotationConfig = {
 				{ name: 'Frost', value: Presence.Frost },
 				{ name: 'Unholy', value: Presence.Unholy },
 			],
-			changeEmitter: (player: Player<Spec.SpecTankDeathknight>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+			changeEmitter: (player: Player<Spec.SpecBloodDeathKnight>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
 		}),
-		InputHelpers.makeRotationEnumInput<Spec.SpecTankDeathknight, Opener>({
+		InputHelpers.makeRotationEnumInput<Spec.SpecBloodDeathKnight, Opener>({
 			fieldName: 'opener',
 			label: 'Opener',
 			labelTooltip: 'Chose what opener to perform:<br>\
@@ -51,9 +48,9 @@ export const TankDeathKnightRotationConfig = {
 				{ name: 'Regular', value: Opener.Regular },
 				{ name: 'Threat', value: Opener.Threat },
 			],
-			changeEmitter: (player: Player<Spec.SpecTankDeathknight>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+			changeEmitter: (player: Player<Spec.SpecBloodDeathKnight>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
 		}),
-		InputHelpers.makeRotationEnumInput<Spec.SpecTankDeathknight, OptimizationSetting>({
+		InputHelpers.makeRotationEnumInput<Spec.SpecBloodDeathKnight, OptimizationSetting>({
 			fieldName: 'optimizationSetting',
 			label: 'Optimization Setting',
 			labelTooltip: 'Chose what metric to optimize:<br>\
@@ -63,9 +60,9 @@ export const TankDeathKnightRotationConfig = {
 				{ name: 'Hps', value: OptimizationSetting.Hps },
 				{ name: 'Tps', value: OptimizationSetting.Tps },
 			],
-			changeEmitter: (player: Player<Spec.SpecTankDeathknight>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+			changeEmitter: (player: Player<Spec.SpecBloodDeathKnight>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
 		}),
-		InputHelpers.makeRotationEnumInput<Spec.SpecTankDeathknight, BloodSpell>({
+		InputHelpers.makeRotationEnumInput<Spec.SpecBloodDeathKnight, BloodSpell>({
 			fieldName: 'bloodSpell',
 			label: 'Blood Spell',
 			labelTooltip: 'Chose what blood rune spender to use.',
@@ -74,9 +71,9 @@ export const TankDeathKnightRotationConfig = {
 				{ name: 'Blood Boil', value: BloodSpell.BloodBoil },
 				{ name: 'Heart Strike', value: BloodSpell.HeartStrike },
 			],
-			changeEmitter: (player: Player<Spec.SpecTankDeathknight>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+			changeEmitter: (player: Player<Spec.SpecBloodDeathKnight>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
 		}),
-		InputHelpers.makeRotationEnumInput<Spec.SpecTankDeathknight, BloodTapPrio>({
+		InputHelpers.makeRotationEnumInput<Spec.SpecBloodDeathKnight, BloodTapPrio>({
 			fieldName: 'bloodTapPrio',
 			label: 'Blood Tap',
 			labelTooltip: 'Chose how to use Blood Tap:<br>\
@@ -86,7 +83,7 @@ export const TankDeathKnightRotationConfig = {
 				{ name: 'Use as Defensive Cooldown', value: BloodTapPrio.Defensive },
 				{ name: 'Offensive', value: BloodTapPrio.Offensive },
 			],
-			changeEmitter: (player: Player<Spec.SpecTankDeathknight>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+			changeEmitter: (player: Player<Spec.SpecBloodDeathKnight>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
 		}),
 	],
 };

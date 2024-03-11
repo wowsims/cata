@@ -25,7 +25,7 @@ func RegisterArcaneMage() {
 
 func NewArcaneMage(character *core.Character, options *proto.Player) *ArcaneMage {
 	arcaneMage := &ArcaneMage{
-		Mage: mage.NewMage(character, options, options.GetArcaneMage().Options),
+		Mage: mage.NewMage(character, options, options.GetArcaneMage().Options.MageOptions),
 	}
 
 	return arcaneMage
