@@ -1,4 +1,3 @@
-import { PlayerClasses } from './player_classes';
 import { PlayerSpec } from './player_spec';
 import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from './proto/common.js';
 export type IconSize = 'small' | 'medium' | 'large';
@@ -20,16 +19,3 @@ export abstract class PlayerClass<ClassType extends Class> {
 
 	abstract getIcon(size: IconSize): string;
 }
-
-export const naturalPlayerClassOrder: Array<PlayerClass<Class>> = [
-	PlayerClasses.DeathKnight,
-	PlayerClasses.Druid,
-	PlayerClasses.Hunter,
-	PlayerClasses.Mage,
-	PlayerClasses.Paladin,
-	PlayerClasses.Priest,
-	PlayerClasses.Rogue,
-	PlayerClasses.Shaman,
-	PlayerClasses.Warlock,
-	PlayerClasses.Warrior,
-];

@@ -1,14 +1,14 @@
 import { IconSize } from '../player_class';
-import { PlayerClasses } from '../player_classes';
+import { Shaman } from '../player_classes/shaman';
 import { PlayerSpec } from '../player_spec';
 import { Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class ElementalShaman extends PlayerSpec<Spec.SpecElementalShaman> {
 	static protoID = Spec.SpecElementalShaman as Spec.SpecElementalShaman;
-	static playerClass = PlayerClasses.Shaman;
+	static playerClass = Shaman;
 	static friendlyName = 'Elemental';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Shaman.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Shaman.friendlyName}`;
 	static simLink = getSpecSiteUrl('shaman', 'elemental');
 
 	static isTankSpec = false;
@@ -42,9 +42,9 @@ export class ElementalShaman extends PlayerSpec<Spec.SpecElementalShaman> {
 
 export class EnhancementShaman extends PlayerSpec<Spec.SpecEnhancementShaman> {
 	static protoID = Spec.SpecEnhancementShaman as Spec.SpecEnhancementShaman;
-	static playerClass = PlayerClasses.Shaman;
+	static playerClass = Shaman;
 	static friendlyName = 'Enhancement';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Shaman.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Shaman.friendlyName}`;
 	static simLink = getSpecSiteUrl('shaman', 'enhancement');
 
 	static isTankSpec = false;
@@ -78,9 +78,9 @@ export class EnhancementShaman extends PlayerSpec<Spec.SpecEnhancementShaman> {
 
 export class RestorationShaman extends PlayerSpec<Spec.SpecRestorationShaman> {
 	static protoID = Spec.SpecRestorationShaman as Spec.SpecRestorationShaman;
-	static playerClass = PlayerClasses.Shaman;
+	static playerClass = Shaman;
 	static friendlyName = 'Restoration';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Shaman.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Shaman.friendlyName}`;
 	static simLink = getSpecSiteUrl('shaman', 'restoration');
 
 	static isTankSpec = false;

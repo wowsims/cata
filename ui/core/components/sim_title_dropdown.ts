@@ -1,5 +1,6 @@
 import { LaunchStatus, raidSimStatus, simLaunchStatuses } from '../launched_sims.js';
-import { naturalPlayerClassOrder, PlayerClass } from '../player_class';
+import { PlayerClass } from '../player_class';
+import { PlayerClasses } from '../player_classes';
 import { PlayerSpec } from '../player_spec';
 import { Class, Spec } from '../proto/common';
 import { raidSimIcon, raidSimLabel, raidSimSiteUrl, textCssClassForClass, textCssClassForSpec } from '../proto_utils/utils.js';
@@ -68,7 +69,7 @@ export class SimTitleDropdown extends Component {
 			this.dropdownMenu?.appendChild(raidListItem);
 		}
 
-		naturalPlayerClassOrder.forEach(klass => {
+		PlayerClasses.naturalOrder.forEach(klass => {
 			const listItem = document.createElement('li');
 			// Add the class to the dropdown with an additional spec dropdown
 			listItem.appendChild(this.buildClassDropdown(klass));

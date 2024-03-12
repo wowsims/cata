@@ -96,7 +96,7 @@ ui/core/proto/api.ts: proto/*.proto node_modules
 	npx protoc --ts_out ui/core/proto --proto_path proto proto/ui.proto
 
 ui/%/index.html: ui/index_template.html
-	cat ui/index_template.html | sed -e 's/@@CLASS@@/$(shell dirname $(@D) | xargs basename | sed 's/.*/\u&/')/g' -e 's/@@SPEC@@/$(shell basename $(@D) | sed 's/.*/\u&/')/g' > $@
+	cat ui/index_template.html | sed -e 's/@@CLASS@@/$(shell dirname $(@D) | xargs basename)/g' -e 's/@@SPEC@@/$(shell basename $(@D))/g' > $@
 
 package-lock.json:
 	npm install

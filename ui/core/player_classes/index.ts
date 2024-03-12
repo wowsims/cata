@@ -46,4 +46,5 @@ export const PlayerClasses = {
 
 		return protoToPlayerClass[protoId] as PlayerClass<ClassType>;
 	},
+	naturalOrder: [DeathKnight, Druid, Hunter, Mage, Paladin, Priest, Rogue, Shaman, Warlock, Warrior],
 };

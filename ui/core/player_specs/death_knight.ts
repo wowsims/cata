@@ -1,14 +1,14 @@
 import { IconSize } from '../player_class';
-import { PlayerClasses } from '../player_classes';
+import { DeathKnight } from '../player_classes/death_knight';
 import { PlayerSpec } from '../player_spec';
 import { Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class BloodDeathKnight extends PlayerSpec<Spec.SpecBloodDeathKnight> {
 	static protoID = Spec.SpecBloodDeathKnight as Spec.SpecBloodDeathKnight;
-	static playerClass = PlayerClasses.DeathKnight;
+	static playerClass = DeathKnight;
 	static friendlyName = 'Blood';
-	static fullName = `${this.friendlyName} ${PlayerClasses.DeathKnight.friendlyName}`;
+	static fullName = `${this.friendlyName} ${DeathKnight.friendlyName}`;
 	static simLink = getSpecSiteUrl('death_knight', 'blood');
 
 	static isTankSpec = true;
@@ -42,9 +42,9 @@ export class BloodDeathKnight extends PlayerSpec<Spec.SpecBloodDeathKnight> {
 
 export class FrostDeathKnight extends PlayerSpec<Spec.SpecFrostDeathKnight> {
 	static protoID = Spec.SpecFrostDeathKnight as Spec.SpecFrostDeathKnight;
-	static playerClass = PlayerClasses.DeathKnight;
+	static playerClass = DeathKnight;
 	static friendlyName = 'Frost';
-	static fullName = `${this.friendlyName} ${PlayerClasses.DeathKnight.friendlyName}`;
+	static fullName = `${this.friendlyName} ${DeathKnight.friendlyName}`;
 	static simLink = getSpecSiteUrl('death_knight', 'frost');
 
 	static isTankSpec = false;
@@ -78,9 +78,9 @@ export class FrostDeathKnight extends PlayerSpec<Spec.SpecFrostDeathKnight> {
 
 export class UnholyDeathKnight extends PlayerSpec<Spec.SpecUnholyDeathKnight> {
 	static protoID = Spec.SpecUnholyDeathKnight as Spec.SpecUnholyDeathKnight;
-	static playerClass = PlayerClasses.DeathKnight;
+	static playerClass = DeathKnight;
 	static friendlyName = 'Unholy';
-	static fullName = `${this.friendlyName} ${PlayerClasses.DeathKnight.friendlyName}`;
+	static fullName = `${this.friendlyName} ${DeathKnight.friendlyName}`;
 	static simLink = getSpecSiteUrl('death_knight', 'unholy');
 
 	static isTankSpec = false;

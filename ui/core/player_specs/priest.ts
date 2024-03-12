@@ -1,14 +1,14 @@
 import { IconSize } from '../player_class';
-import { PlayerClasses } from '../player_classes';
+import { Priest } from '../player_classes/priest';
 import { PlayerSpec } from '../player_spec';
 import { Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class DisciplinePriest extends PlayerSpec<Spec.SpecDisciplinePriest> {
 	static protoID = Spec.SpecDisciplinePriest as Spec.SpecDisciplinePriest;
-	static playerClass = PlayerClasses.Priest;
+	static playerClass = Priest;
 	static friendlyName = 'Discipline';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Priest.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Priest.friendlyName}`;
 	static simLink = getSpecSiteUrl('priest', 'discipline');
 
 	static isTankSpec = false;
@@ -42,9 +42,9 @@ export class DisciplinePriest extends PlayerSpec<Spec.SpecDisciplinePriest> {
 
 export class HolyPriest extends PlayerSpec<Spec.SpecHolyPriest> {
 	static protoID = Spec.SpecHolyPriest as Spec.SpecHolyPriest;
-	static playerClass = PlayerClasses.Priest;
+	static playerClass = Priest;
 	static friendlyName = 'Holy';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Priest.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Priest.friendlyName}`;
 	static simLink = getSpecSiteUrl('priest', 'holy');
 
 	static isTankSpec = false;
@@ -78,9 +78,9 @@ export class HolyPriest extends PlayerSpec<Spec.SpecHolyPriest> {
 
 export class ShadowPriest extends PlayerSpec<Spec.SpecShadowPriest> {
 	static protoID = Spec.SpecShadowPriest as Spec.SpecShadowPriest;
-	static playerClass = PlayerClasses.Priest;
+	static playerClass = Priest;
 	static friendlyName = 'Shadow';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Priest.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Priest.friendlyName}`;
 	static simLink = getSpecSiteUrl('priest', 'shadow');
 
 	static isTankSpec = false;

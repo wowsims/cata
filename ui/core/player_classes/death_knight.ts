@@ -1,6 +1,6 @@
 import { EligibleWeaponType, IconSize, PlayerClass } from '../player_class';
 import { PlayerSpec } from '../player_spec';
-import { PlayerSpecs } from '../player_specs';
+import { BloodDeathKnight, FrostDeathKnight, UnholyDeathKnight } from '../player_specs/death_knight';
 import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/common';
 import { DeathKnightSpecs } from '../proto_utils/utils';
 
@@ -9,9 +9,9 @@ export class DeathKnight extends PlayerClass<Class.ClassDeathKnight> {
 	static friendlyName = 'Death Knight';
 	static hexColor = '#c41e3a';
 	static specs: Record<string, PlayerSpec<DeathKnightSpecs>> = {
-		[PlayerSpecs.BloodDeathKnight.name]: PlayerSpecs.BloodDeathKnight,
-		[PlayerSpecs.FrostDeathKnight.name]: PlayerSpecs.FrostDeathKnight,
-		[PlayerSpecs.UnholyDeathKnight.name]: PlayerSpecs.UnholyDeathKnight,
+		[BloodDeathKnight.name]: BloodDeathKnight,
+		[FrostDeathKnight.name]: FrostDeathKnight,
+		[UnholyDeathKnight.name]: UnholyDeathKnight,
 	};
 	static races: Race[] = [
 		Race.RaceBloodElf,

@@ -1,14 +1,14 @@
 import { IconSize } from '../player_class';
-import { PlayerClasses } from '../player_classes';
+import { Warlock } from '../player_classes/warlock';
 import { PlayerSpec } from '../player_spec';
 import { Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class AfflictionWarlock extends PlayerSpec<Spec.SpecAfflictionWarlock> {
 	static protoID = Spec.SpecAfflictionWarlock as Spec.SpecAfflictionWarlock;
-	static playerClass = PlayerClasses.Warlock;
+	static playerClass = Warlock;
 	static friendlyName = 'Affliction';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Warlock.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Warlock.friendlyName}`;
 	static simLink = getSpecSiteUrl('warlock', 'affliction');
 
 	static isTankSpec = false;
@@ -42,9 +42,9 @@ export class AfflictionWarlock extends PlayerSpec<Spec.SpecAfflictionWarlock> {
 
 export class DemonologyWarlock extends PlayerSpec<Spec.SpecDemonologyWarlock> {
 	static protoID = Spec.SpecDemonologyWarlock as Spec.SpecDemonologyWarlock;
-	static playerClass = PlayerClasses.Warlock;
+	static playerClass = Warlock;
 	static friendlyName = 'Demonology';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Warlock.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Warlock.friendlyName}`;
 	static simLink = getSpecSiteUrl('warlock', 'demonology');
 
 	static isTankSpec = false;
@@ -78,9 +78,9 @@ export class DemonologyWarlock extends PlayerSpec<Spec.SpecDemonologyWarlock> {
 
 export class DestructionWarlock extends PlayerSpec<Spec.SpecDestructionWarlock> {
 	static protoID = Spec.SpecDestructionWarlock as Spec.SpecDestructionWarlock;
-	static playerClass = PlayerClasses.Warlock;
+	static playerClass = Warlock;
 	static friendlyName = 'Destruction';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Warlock.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Warlock.friendlyName}`;
 	static simLink = getSpecSiteUrl('warlock', 'destruction');
 
 	static isTankSpec = false;

@@ -1,14 +1,14 @@
 import { IconSize } from '../player_class';
-import { PlayerClasses } from '../player_classes';
+import { Mage } from '../player_classes/mage';
 import { PlayerSpec } from '../player_spec';
 import { Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class ArcaneMage extends PlayerSpec<Spec.SpecArcaneMage> {
 	static protoID = Spec.SpecArcaneMage as Spec.SpecArcaneMage;
-	static playerClass = PlayerClasses.Mage;
+	static playerClass = Mage;
 	static friendlyName = 'Arcane';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Mage.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Mage.friendlyName}`;
 	static simLink = getSpecSiteUrl('mage', 'arcane');
 
 	static isTankSpec = false;
@@ -42,9 +42,9 @@ export class ArcaneMage extends PlayerSpec<Spec.SpecArcaneMage> {
 
 export class FireMage extends PlayerSpec<Spec.SpecFireMage> {
 	static protoID = Spec.SpecFireMage as Spec.SpecFireMage;
-	static playerClass = PlayerClasses.Mage;
+	static playerClass = Mage;
 	static friendlyName = 'Fire';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Mage.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Mage.friendlyName}`;
 	static simLink = getSpecSiteUrl('mage', 'fire');
 
 	static isTankSpec = false;
@@ -78,9 +78,9 @@ export class FireMage extends PlayerSpec<Spec.SpecFireMage> {
 
 export class FrostMage extends PlayerSpec<Spec.SpecFrostMage> {
 	static protoID = Spec.SpecFrostMage as Spec.SpecFrostMage;
-	static playerClass = PlayerClasses.Mage;
+	static playerClass = Mage;
 	static friendlyName = 'Frost';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Mage.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Mage.friendlyName}`;
 	static simLink = getSpecSiteUrl('mage', 'frost');
 
 	static isTankSpec = false;

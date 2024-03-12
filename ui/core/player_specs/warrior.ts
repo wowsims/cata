@@ -1,14 +1,14 @@
 import { IconSize } from '../player_class';
-import { PlayerClasses } from '../player_classes';
+import { Warrior } from '../player_classes/warrior';
 import { PlayerSpec } from '../player_spec';
 import { Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class ArmsWarrior extends PlayerSpec<Spec.SpecArmsWarrior> {
 	static protoID = Spec.SpecArmsWarrior as Spec.SpecArmsWarrior;
-	static playerClass = PlayerClasses.Warrior;
+	static playerClass = Warrior;
 	static friendlyName = 'Arms';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Warrior.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Warrior.friendlyName}`;
 	static simLink = getSpecSiteUrl('warrior', 'arms');
 
 	static isTankSpec = false;
@@ -42,9 +42,9 @@ export class ArmsWarrior extends PlayerSpec<Spec.SpecArmsWarrior> {
 
 export class FuryWarrior extends PlayerSpec<Spec.SpecFuryWarrior> {
 	static protoID = Spec.SpecFuryWarrior as Spec.SpecFuryWarrior;
-	static playerClass = PlayerClasses.Warrior;
+	static playerClass = Warrior;
 	static friendlyName = 'Fury';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Warrior.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Warrior.friendlyName}`;
 	static simLink = getSpecSiteUrl('warrior', 'fury');
 
 	static isTankSpec = false;
@@ -78,9 +78,9 @@ export class FuryWarrior extends PlayerSpec<Spec.SpecFuryWarrior> {
 
 export class ProtectionWarrior extends PlayerSpec<Spec.SpecProtectionWarrior> {
 	static protoID = Spec.SpecProtectionWarrior as Spec.SpecProtectionWarrior;
-	static playerClass = PlayerClasses.Warrior;
+	static playerClass = Warrior;
 	static friendlyName = 'Protection';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Warrior.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Warrior.friendlyName}`;
 	static simLink = getSpecSiteUrl('warrior', 'protection');
 
 	static isTankSpec = true;

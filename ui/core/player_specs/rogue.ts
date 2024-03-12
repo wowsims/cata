@@ -1,14 +1,14 @@
 import { IconSize } from '../player_class';
-import { PlayerClasses } from '../player_classes';
+import { Rogue } from '../player_classes/rogue';
 import { PlayerSpec } from '../player_spec';
 import { Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class AssassinationRogue extends PlayerSpec<Spec.SpecAssassinationRogue> {
 	static protoID = Spec.SpecAssassinationRogue as Spec.SpecAssassinationRogue;
-	static playerClass = PlayerClasses.Rogue;
+	static playerClass = Rogue;
 	static friendlyName = 'Assassination';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Rogue.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Rogue.friendlyName}`;
 	static simLink = getSpecSiteUrl('rogue', 'assassination');
 
 	static isTankSpec = false;
@@ -42,9 +42,9 @@ export class AssassinationRogue extends PlayerSpec<Spec.SpecAssassinationRogue> 
 
 export class CombatRogue extends PlayerSpec<Spec.SpecCombatRogue> {
 	static protoID = Spec.SpecCombatRogue as Spec.SpecCombatRogue;
-	static playerClass = PlayerClasses.Rogue;
+	static playerClass = Rogue;
 	static friendlyName = 'Combat';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Rogue.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Rogue.friendlyName}`;
 	static simLink = getSpecSiteUrl('rogue', 'combat');
 
 	static isTankSpec = false;
@@ -78,9 +78,9 @@ export class CombatRogue extends PlayerSpec<Spec.SpecCombatRogue> {
 
 export class SubtletyRogue extends PlayerSpec<Spec.SpecSubtletyRogue> {
 	static protoID = Spec.SpecSubtletyRogue as Spec.SpecSubtletyRogue;
-	static playerClass = PlayerClasses.Rogue;
+	static playerClass = Rogue;
 	static friendlyName = 'Subtlety';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Rogue.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Rogue.friendlyName}`;
 	static simLink = getSpecSiteUrl('rogue', 'subtlety');
 
 	static isTankSpec = false;

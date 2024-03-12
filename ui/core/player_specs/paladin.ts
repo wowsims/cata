@@ -1,14 +1,14 @@
 import { IconSize } from '../player_class';
-import { PlayerClasses } from '../player_classes';
+import { Paladin } from '../player_classes/paladin';
 import { PlayerSpec } from '../player_spec';
 import { Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class HolyPaladin extends PlayerSpec<Spec.SpecHolyPaladin> {
 	static protoID = Spec.SpecHolyPaladin as Spec.SpecHolyPaladin;
-	static playerClass = PlayerClasses.Paladin;
+	static playerClass = Paladin;
 	static friendlyName = 'Holy';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Paladin.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Paladin.friendlyName}`;
 	static simLink = getSpecSiteUrl('paladin', 'protection');
 
 	static isTankSpec = false;
@@ -42,9 +42,9 @@ export class HolyPaladin extends PlayerSpec<Spec.SpecHolyPaladin> {
 
 export class ProtectionPaladin extends PlayerSpec<Spec.SpecProtectionPaladin> {
 	static protoID = Spec.SpecProtectionPaladin as Spec.SpecProtectionPaladin;
-	static playerClass = PlayerClasses.Paladin;
+	static playerClass = Paladin;
 	static friendlyName = 'Protection';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Paladin.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Paladin.friendlyName}`;
 	static simLink = getSpecSiteUrl('paladin', 'protection');
 
 	static isTankSpec = true;
@@ -78,9 +78,9 @@ export class ProtectionPaladin extends PlayerSpec<Spec.SpecProtectionPaladin> {
 
 export class RetributionPaladin extends PlayerSpec<Spec.SpecRetributionPaladin> {
 	static protoID = Spec.SpecRetributionPaladin as Spec.SpecRetributionPaladin;
-	static playerClass = PlayerClasses.Paladin;
+	static playerClass = Paladin;
 	static friendlyName = 'Retribution';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Paladin.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Paladin.friendlyName}`;
 	static simLink = getSpecSiteUrl('paladin', 'retribution');
 
 	static isTankSpec = false;

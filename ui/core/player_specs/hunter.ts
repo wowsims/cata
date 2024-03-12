@@ -1,14 +1,14 @@
 import { IconSize } from '../player_class';
-import { PlayerClasses } from '../player_classes';
+import { Hunter } from '../player_classes/hunter';
 import { PlayerSpec } from '../player_spec';
 import { Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class BeastMasteryHunter extends PlayerSpec<Spec.SpecBeastMasteryHunter> {
 	static protoID = Spec.SpecBeastMasteryHunter as Spec.SpecBeastMasteryHunter;
-	static playerClass = PlayerClasses.Hunter;
+	static playerClass = Hunter;
 	static friendlyName = 'Beast Mastery';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Hunter.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Hunter.friendlyName}`;
 	static simLink = getSpecSiteUrl('hunter', 'beast_mastery');
 
 	static isTankSpec = false;
@@ -42,9 +42,9 @@ export class BeastMasteryHunter extends PlayerSpec<Spec.SpecBeastMasteryHunter> 
 
 export class MarksmanshipHunter extends PlayerSpec<Spec.SpecMarksmanshipHunter> {
 	static protoID = Spec.SpecMarksmanshipHunter as Spec.SpecMarksmanshipHunter;
-	static playerClass = PlayerClasses.Hunter;
+	static playerClass = Hunter;
 	static friendlyName = 'Marksmanship';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Hunter.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Hunter.friendlyName}`;
 	static simLink = getSpecSiteUrl('hunter', 'marksmanship');
 
 	static isTankSpec = false;
@@ -78,9 +78,9 @@ export class MarksmanshipHunter extends PlayerSpec<Spec.SpecMarksmanshipHunter> 
 
 export class SurvivalHunter extends PlayerSpec<Spec.SpecSurvivalHunter> {
 	static protoID = Spec.SpecSurvivalHunter as Spec.SpecSurvivalHunter;
-	static playerClass = PlayerClasses.Hunter;
+	static playerClass = Hunter;
 	static friendlyName = 'Survival';
-	static fullName = `${this.friendlyName} ${PlayerClasses.Hunter.friendlyName}`;
+	static fullName = `${this.friendlyName} ${Hunter.friendlyName}`;
 	static simLink = getSpecSiteUrl('hunter', 'survival');
 
 	static isTankSpec = false;

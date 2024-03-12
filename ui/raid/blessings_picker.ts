@@ -2,7 +2,7 @@ import { Tooltip } from 'bootstrap';
 
 import { Component } from '../core/components/component';
 import { IconEnumPicker } from '../core/components/icon_enum_picker';
-import { naturalPlayerClassOrder } from '../core/player_class';
+import { PlayerClasses } from '../core/player_classes';
 import { Paladin } from '../core/player_classes/paladin';
 import { PlayerSpec } from '../core/player_spec';
 import { Class as ClassProto } from '../core/proto/common';
@@ -29,7 +29,7 @@ export class BlessingsPicker extends Component {
 		this.simUI = raidSimUI;
 		this.assignments = BlessingsAssignments.clone(makeDefaultBlessings(4));
 
-		const specs = naturalPlayerClassOrder
+		const specs = PlayerClasses.naturalOrder
 			.map(playerClass => Object.values(playerClass.specs))
 			.flat()
 			.filter(spec => implementedSpecs.includes(spec.protoID));

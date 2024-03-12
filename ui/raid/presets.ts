@@ -1,6 +1,6 @@
 import { IndividualSimUI, IndividualSimUIConfig, RaidSimPreset } from '../core/individual_sim_ui.js';
 import { getSpecConfig, Player } from '../core/player.js';
-import { naturalPlayerClassOrder } from '../core/player_class.js';
+import { PlayerClasses } from '../core/player_classes';
 import { Spec } from '../core/proto/common.js';
 import { BloodDeathKnightSimUI } from '../death_knight/blood/sim';
 import { FrostDeathKnightSimUI } from '../death_knight/frost/sim';
@@ -76,7 +76,7 @@ export const specSimFactories: Partial<Record<Spec, (parentElem: HTMLElement, pl
 	[Spec.SpecProtectionWarrior]: (parentElem: HTMLElement, player: Player<any>) => new ProtectionWarriorSimUI(parentElem, player),
 };
 
-export const playerPresets: Array<RaidSimPreset<any>> = naturalPlayerClassOrder
+export const playerPresets: Array<RaidSimPreset<any>> = PlayerClasses.naturalOrder
 	.map(playerClass => Object.values(playerClass.specs))
 	.flat()
 	.map(spec => getSpecConfig(spec.protoID))
