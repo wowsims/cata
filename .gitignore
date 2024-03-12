@@ -2,7 +2,7 @@
 node_modules
 
 ui/core/index.ts
-ui/**/index.html
+ui/*/*/index.html
 .dirstamp
 
 # IDE folders
