@@ -734,7 +734,6 @@ export class ResourceChangedLog extends SimLog {
 		const match = params.raw.match(
 			/((Gained)|(Spent)) \d+\.?\d* ((health)|(mana)|(energy)|(focus)|(rage)|(combo points)|(runic power)|(blood rune)|(frost rune)|(unholy rune)|(death rune)) from (.*) \((\d+\.?\d*) --> (\d+\.?\d*)\)/,
 		);
-		console.log(match);
 		if (match) {
 			const resourceType = stringToResourceType(match[4]);
 			return ActionId.fromLogString(match[16])
