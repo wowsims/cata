@@ -1,15 +1,12 @@
-import { Component } from '../core/components/component.js';
-import { UnitReferencePicker } from '../core/components/raid_target_picker.js';
-
-import { Player } from '../core/player.js';
-import { EventID, TypedEvent } from '../core/typed_event.js';
-
-import { Class, UnitReference, Spec } from '../core/proto/common.js';
-import { emptyUnitReference } from '../core/proto_utils/utils.js';
-
-import { RaidSimUI } from './raid_sim_ui.js';
-import { PriestTalents } from 'ui/core/proto/priest.js';
-import { DeathknightTalents } from 'ui/core/proto/deathknight.js';
+import { Component } from '../core/components/component';
+import { UnitReferencePicker } from '../core/components/raid_target_picker';
+import { Player } from '../core/player';
+import { Class, Spec, UnitReference } from '../core/proto/common';
+import { DeathKnightTalents } from '../core/proto/death_knight';
+import { PriestTalents } from '../core/proto/priest';
+import { emptyUnitReference, RogueSpecs } from '../core/proto_utils/utils';
+import { EventID, TypedEvent } from '../core/typed_event';
+import { RaidSimUI } from './raid_sim_ui';
 
 export class AssignmentsPicker extends Component {
 	readonly raidSimUI: RaidSimUI;
@@ -34,10 +31,10 @@ export class AssignmentsPicker extends Component {
 }
 
 interface AssignmentTargetPicker {
-	player: Player<any>,
-	targetPicker: UnitReferencePicker<Player<any>>,
+	player: Player<any>;
+	targetPicker: UnitReferencePicker<Player<any>>;
 	targetPlayer: Player<any> | null;
-};
+}
 
 abstract class AssignedBuffPicker extends Component {
 	readonly raidSimUI: RaidSimUI;
@@ -56,31 +53,27 @@ abstract class AssignedBuffPicker extends Component {
 		this.playersContainer.classList.add('assigned-buff-container');
 		this.rootElem.appendChild(this.playersContainer);
 
-		this.raidSimUI.changeEmitter.on(eventID => this.update());
+		this.raidSimUI.changeEmitter.on(_eventID => this.update());
 		this.update();
 	}
 
 	private update() {
 		this.playersContainer.innerHTML = `
 			<label class="assignmented-buff-label form-label">${this.getTitle()}</label>
-		`
+		`;
 
 		const sourcePlayers = this.getSourcePlayers();
-		if (sourcePlayers.length == 0)
-			this.rootElem.classList.add('hide');
-		else
-			this.rootElem.classList.remove('hide');
+		if (sourcePlayers.length == 0) this.rootElem.classList.add('hide');
+		else this.rootElem.classList.remove('hide');
 
-		this.targetPickers = sourcePlayers.map((sourcePlayer, sourcePlayerIndex) => {
+		this.targetPickers = sourcePlayers.map((sourcePlayer, _sourcePlayerIndex) => {
 			const row = document.createElement('div');
 			row.classList.add('assigned-buff-player', 'input-inline');
 			this.playersContainer.appendChild(row);
 
-			let sourceElem = document.createElement('div');
+			const sourceElem = document.createElement('div');
 			sourceElem.classList.add('raid-target-picker-root');
-			sourceElem.appendChild(
-				UnitReferencePicker.makeOptionElem({ player: sourcePlayer, isDropdown: false })
-			);
+			sourceElem.appendChild(UnitReferencePicker.makeOptionElem({ player: sourcePlayer, isDropdown: false }));
 			row.appendChild(sourceElem);
 
 			const arrow = document.createElement('i');
@@ -103,7 +96,7 @@ abstract class AssignedBuffPicker extends Component {
 				targetPlayer: this.raidSimUI.sim.raid.getPlayerFromUnitReference(raidTargetPicker!.getInputValue()),
 			};
 
-			raidTargetPicker!.changeEmitter.on(eventID => {
+			raidTargetPicker!.changeEmitter.on(_eventID => {
 				targetPickerData.targetPlayer = this.raidSimUI.sim.raid.getPlayerFromUnitReference(raidTargetPicker!.getInputValue());
 			});
 
@@ -128,12 +121,12 @@ class InnervatesPicker extends AssignedBuffPicker {
 	}
 
 	getPlayerValue(player: Player<any>): UnitReference {
-		return (player as Player<Spec.SpecBalanceDruid>).getSpecOptions().innervateTarget || emptyUnitReference();
+		return (player as Player<Spec.SpecBalanceDruid>).getSpecOptions().classOptions?.innervateTarget || emptyUnitReference();
 	}
 
 	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
 		const newOptions = (player as Player<Spec.SpecBalanceDruid>).getSpecOptions();
-		newOptions.innervateTarget = newValue;
+		newOptions.classOptions!.innervateTarget = newValue;
 		player.setSpecOptions(eventID, newOptions);
 	}
 }
@@ -144,15 +137,17 @@ class PowerInfusionsPicker extends AssignedBuffPicker {
 	}
 
 	getSourcePlayers(): Array<Player<any>> {
-		return this.raidSimUI.getActivePlayers().filter(player => player.isClass(Class.ClassPriest) && (player.getTalents() as PriestTalents).powerInfusion);
+		return this.raidSimUI
+			.getActivePlayers()
+			.filter(player => player.isSpec(Spec.SpecDisciplinePriest) && (player.getTalents() as PriestTalents).powerInfusion);
 	}
 
 	getPlayerValue(player: Player<any>): UnitReference {
-		return (player as Player<Spec.SpecSmitePriest>).getSpecOptions().powerInfusionTarget || emptyUnitReference();
+		return (player as Player<Spec.SpecDisciplinePriest>).getSpecOptions().powerInfusionTarget || emptyUnitReference();
 	}
 
 	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
-		const newOptions = (player as Player<Spec.SpecSmitePriest>).getSpecOptions();
+		const newOptions = (player as Player<Spec.SpecDisciplinePriest>).getSpecOptions();
 		newOptions.powerInfusionTarget = newValue;
 		player.setSpecOptions(eventID, newOptions);
 	}
@@ -168,12 +163,12 @@ class TricksOfTheTradesPicker extends AssignedBuffPicker {
 	}
 
 	getPlayerValue(player: Player<any>): UnitReference {
-		return (player as Player<Spec.SpecRogue>).getSpecOptions().tricksOfTheTradeTarget || emptyUnitReference();
+		return (player as Player<RogueSpecs>).getSpecOptions().classOptions!.tricksOfTheTradeTarget || emptyUnitReference();
 	}
 
 	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
-		const newOptions = (player as Player<Spec.SpecRogue>).getSpecOptions();
-		newOptions.tricksOfTheTradeTarget = newValue;
+		const newOptions = (player as Player<RogueSpecs>).getSpecOptions();
+		newOptions.classOptions!.tricksOfTheTradeTarget = newValue;
 		player.setSpecOptions(eventID, newOptions);
 	}
 }
@@ -184,15 +179,17 @@ class UnholyFrenzyPicker extends AssignedBuffPicker {
 	}
 
 	getSourcePlayers(): Array<Player<any>> {
-		return this.raidSimUI.getActivePlayers().filter(player => player.isClass(Class.ClassDeathknight) && (player.getTalents() as DeathknightTalents).hysteria);
+		return this.raidSimUI
+			.getActivePlayers()
+			.filter(player => player.isSpec(Spec.SpecUnholyDeathKnight) && (player.getTalents() as DeathKnightTalents).hysteria);
 	}
 
 	getPlayerValue(player: Player<any>): UnitReference {
-		return (player as Player<Spec.SpecDeathknight>).getSpecOptions().unholyFrenzyTarget || emptyUnitReference();
+		return (player as Player<Spec.SpecUnholyDeathKnight>).getSpecOptions().unholyFrenzyTarget || emptyUnitReference();
 	}
 
 	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
-		const newOptions = (player as Player<Spec.SpecDeathknight>).getSpecOptions();
+		const newOptions = (player as Player<Spec.SpecUnholyDeathKnight>).getSpecOptions();
 		newOptions.unholyFrenzyTarget = newValue;
 		player.setSpecOptions(eventID, newOptions);
 	}
@@ -204,15 +201,15 @@ class FocusMagicsPicker extends AssignedBuffPicker {
 	}
 
 	getSourcePlayers(): Array<Player<any>> {
-		return this.raidSimUI.getActivePlayers().filter(player => player.isClass(Class.ClassMage));
+		return this.raidSimUI.getActivePlayers().filter(player => player.isSpec(Spec.SpecArcaneMage));
 	}
 
 	getPlayerValue(player: Player<any>): UnitReference {
-		return (player as Player<Spec.SpecMage>).getSpecOptions().focusMagicTarget || emptyUnitReference();
+		return (player as Player<Spec.SpecArcaneMage>).getSpecOptions().focusMagicTarget || emptyUnitReference();
 	}
 
 	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
-		const newOptions = (player as Player<Spec.SpecMage>).getSpecOptions();
+		const newOptions = (player as Player<Spec.SpecArcaneMage>).getSpecOptions();
 		newOptions.focusMagicTarget = newValue;
 		player.setSpecOptions(eventID, newOptions);
 	}

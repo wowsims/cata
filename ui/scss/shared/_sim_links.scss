@@ -16,6 +16,9 @@
       width: 3rem;
       height: 3rem;
       margin-right: map-get($spacers, 2);
+	  border-width: 2px;
+	  border-style: solid;
+	  border-radius: 100%;
     }
 
     .sim-link-label, .launch-status-label {

@@ -1,0 +1,8 @@
+// Set color variables which control the site theme.
+.discipline-priest-sim-ui {
+	@include theme-color(
+		$priest,
+		.95,
+		'/cata/assets/img/smite_priest_background.jpg'
+	);
+}

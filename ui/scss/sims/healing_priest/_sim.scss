@@ -1,8 +1,0 @@
-// Set color variables which control the site theme.
-.healing-priest-sim-ui {
-	@include theme-color(
-		$priest,
-		.9,
-		'/cata/assets/img/healing_priest_background.jpg'
-	);
-}

@@ -1,66 +1,89 @@
 import { IndividualSimUI, IndividualSimUIConfig, RaidSimPreset } from '../core/individual_sim_ui.js';
+import { getSpecConfig, Player } from '../core/player.js';
+import { PlayerClasses } from '../core/player_classes';
+import { Spec } from '../core/proto/common.js';
+import { BloodDeathKnightSimUI } from '../death_knight/blood/sim';
+import { FrostDeathKnightSimUI } from '../death_knight/frost/sim';
+import { UnholyDeathKnightSimUI } from '../death_knight/unholy/sim';
+import { BalanceDruidSimUI } from '../druid/balance/sim.js';
+import { FeralDruidSimUI } from '../druid/feral/sim.js';
+import { RestorationDruidSimUI } from '../druid/restoration/sim.js';
+import { BeastMasteryHunterSimUI } from '../hunter/beast_mastery/sim';
+import { MarksmanshipHunterSimUI } from '../hunter/marksmanship/sim';
+import { SurvivalHunterSimUI } from '../hunter/survival/sim';
+import { ArcaneMageSimUI } from '../mage/arcane/sim';
+import { FireMageSimUI } from '../mage/fire/sim';
+import { FrostMageSimUI } from '../mage/frost/sim';
+import { HolyPaladinSimUI } from '../paladin/holy/sim.js';
+import { ProtectionPaladinSimUI } from '../paladin/protection/sim.js';
+import { RetributionPaladinSimUI } from '../paladin/retribution/sim.js';
+import { DisciplinePriestSimUI } from '../priest/discipline/sim';
+import { HolyPriestSimUI } from '../priest/holy/sim';
+import { ShadowPriestSimUI } from '../priest/shadow/sim.js';
+import { AssassinationRogueSimUI } from '../rogue/assassination/sim';
+import { CombatRogueSimUI } from '../rogue/combat/sim';
+import { SubtletyRogueSimUI } from '../rogue/subtlety/sim';
+import { ElementalShamanSimUI } from '../shaman/elemental/sim.js';
+import { EnhancementShamanSimUI } from '../shaman/enhancement/sim.js';
+import { RestorationShamanSimUI } from '../shaman/restoration/sim.js';
+import { AfflictionWarlockSimUI } from '../warlock/affliction/sim';
+import { DemonologyWarlockSimUI } from '../warlock/demonology/sim';
+import { DestructionWarlockSimUI } from '../warlock/destruction/sim';
+import { ArmsWarriorSimUI } from '../warrior/arms/sim';
+import { FuryWarriorSimUI } from '../warrior/fury/sim';
+import { ProtectionWarriorSimUI } from '../warrior/protection/sim';
 
-import {
-	Spec
-} from '../core/proto/common.js';
-import {
-	naturalSpecOrder,
-} from '../core/proto_utils/utils.js';
-
-import { Player, getSpecConfig } from '../core/player.js';
-
-import { TankDeathknightSimUI } from '../tank_deathknight/sim.js';
-import { DeathknightSimUI } from '../deathknight/sim.js';
-import { BalanceDruidSimUI } from '../balance_druid/sim.js';
-import { FeralDruidSimUI } from '../feral_druid/sim.js';
-import { FeralTankDruidSimUI } from '../feral_tank_druid/sim.js';
-import { RestorationDruidSimUI } from '../restoration_druid/sim.js';
-import { ElementalShamanSimUI } from '../elemental_shaman/sim.js';
-import { EnhancementShamanSimUI } from '../enhancement_shaman/sim.js';
-import { RestorationShamanSimUI } from '../restoration_shaman/sim.js';
-import { HunterSimUI } from '../hunter/sim.js';
-import { MageSimUI } from '../mage/sim.js';
-import { RogueSimUI } from '../rogue/sim.js';
-import { HolyPaladinSimUI } from '../holy_paladin/sim.js';
-import { ProtectionPaladinSimUI } from '../protection_paladin/sim.js';
-import { RetributionPaladinSimUI } from '../retribution_paladin/sim.js';
-import { HealingPriestSimUI } from '../healing_priest/sim.js';
-import { ShadowPriestSimUI } from '../shadow_priest/sim.js';
-import { SmitePriestSimUI } from '../smite_priest/sim.js';
-import { WarriorSimUI } from '../warrior/sim.js';
-import { ProtectionWarriorSimUI } from '../protection_warrior/sim.js';
-import { WarlockSimUI } from '../warlock/sim.js';
-
-export const specSimFactories: Record<Spec, (parentElem: HTMLElement, player: Player<any>) => IndividualSimUI<any>> = {
-	[Spec.SpecTankDeathknight]: (parentElem: HTMLElement, player: Player<any>) => new TankDeathknightSimUI(parentElem, player),
-	[Spec.SpecDeathknight]: (parentElem: HTMLElement, player: Player<any>) => new DeathknightSimUI(parentElem, player),
+export const specSimFactories: Partial<Record<Spec, (parentElem: HTMLElement, player: Player<any>) => IndividualSimUI<any>>> = {
+	// Death Knight
+	[Spec.SpecBloodDeathKnight]: (parentElem: HTMLElement, player: Player<any>) => new BloodDeathKnightSimUI(parentElem, player),
+	[Spec.SpecFrostDeathKnight]: (parentElem: HTMLElement, player: Player<any>) => new FrostDeathKnightSimUI(parentElem, player),
+	[Spec.SpecUnholyDeathKnight]: (parentElem: HTMLElement, player: Player<any>) => new UnholyDeathKnightSimUI(parentElem, player),
+	// Druid
 	[Spec.SpecBalanceDruid]: (parentElem: HTMLElement, player: Player<any>) => new BalanceDruidSimUI(parentElem, player),
 	[Spec.SpecFeralDruid]: (parentElem: HTMLElement, player: Player<any>) => new FeralDruidSimUI(parentElem, player),
-	[Spec.SpecFeralTankDruid]: (parentElem: HTMLElement, player: Player<any>) => new FeralTankDruidSimUI(parentElem, player),
 	[Spec.SpecRestorationDruid]: (parentElem: HTMLElement, player: Player<any>) => new RestorationDruidSimUI(parentElem, player),
-	[Spec.SpecElementalShaman]: (parentElem: HTMLElement, player: Player<any>) => new ElementalShamanSimUI(parentElem, player),
-	[Spec.SpecEnhancementShaman]: (parentElem: HTMLElement, player: Player<any>) => new EnhancementShamanSimUI(parentElem, player),
-	[Spec.SpecRestorationShaman]: (parentElem: HTMLElement, player: Player<any>) => new RestorationShamanSimUI(parentElem, player),
-	[Spec.SpecHunter]: (parentElem: HTMLElement, player: Player<any>) => new HunterSimUI(parentElem, player),
-	[Spec.SpecMage]: (parentElem: HTMLElement, player: Player<any>) => new MageSimUI(parentElem, player),
-	[Spec.SpecRogue]: (parentElem: HTMLElement, player: Player<any>) => new RogueSimUI(parentElem, player),
+	// Hunter
+	[Spec.SpecBeastMasteryHunter]: (parentElem: HTMLElement, player: Player<any>) => new BeastMasteryHunterSimUI(parentElem, player),
+	[Spec.SpecMarksmanshipHunter]: (parentElem: HTMLElement, player: Player<any>) => new MarksmanshipHunterSimUI(parentElem, player),
+	[Spec.SpecSurvivalHunter]: (parentElem: HTMLElement, player: Player<any>) => new SurvivalHunterSimUI(parentElem, player),
+	// Mage
+	[Spec.SpecArcaneMage]: (parentElem: HTMLElement, player: Player<any>) => new ArcaneMageSimUI(parentElem, player),
+	[Spec.SpecFireMage]: (parentElem: HTMLElement, player: Player<any>) => new FireMageSimUI(parentElem, player),
+	[Spec.SpecFrostMage]: (parentElem: HTMLElement, player: Player<any>) => new FrostMageSimUI(parentElem, player),
+	// Paladin
 	[Spec.SpecHolyPaladin]: (parentElem: HTMLElement, player: Player<any>) => new HolyPaladinSimUI(parentElem, player),
 	[Spec.SpecProtectionPaladin]: (parentElem: HTMLElement, player: Player<any>) => new ProtectionPaladinSimUI(parentElem, player),
 	[Spec.SpecRetributionPaladin]: (parentElem: HTMLElement, player: Player<any>) => new RetributionPaladinSimUI(parentElem, player),
-	[Spec.SpecHealingPriest]: (parentElem: HTMLElement, player: Player<any>) => new HealingPriestSimUI(parentElem, player),
+	// Priest
+	[Spec.SpecDisciplinePriest]: (parentElem: HTMLElement, player: Player<any>) => new DisciplinePriestSimUI(parentElem, player),
+	[Spec.SpecHolyPriest]: (parentElem: HTMLElement, player: Player<any>) => new HolyPriestSimUI(parentElem, player),
 	[Spec.SpecShadowPriest]: (parentElem: HTMLElement, player: Player<any>) => new ShadowPriestSimUI(parentElem, player),
-	[Spec.SpecSmitePriest]: (parentElem: HTMLElement, player: Player<any>) => new SmitePriestSimUI(parentElem, player),
-	[Spec.SpecWarrior]: (parentElem: HTMLElement, player: Player<any>) => new WarriorSimUI(parentElem, player),
+	// Rogue
+	[Spec.SpecAssassinationRogue]: (parentElem: HTMLElement, player: Player<any>) => new AssassinationRogueSimUI(parentElem, player),
+	[Spec.SpecCombatRogue]: (parentElem: HTMLElement, player: Player<any>) => new CombatRogueSimUI(parentElem, player),
+	[Spec.SpecSubtletyRogue]: (parentElem: HTMLElement, player: Player<any>) => new SubtletyRogueSimUI(parentElem, player),
+	// Shaman
+	[Spec.SpecElementalShaman]: (parentElem: HTMLElement, player: Player<any>) => new ElementalShamanSimUI(parentElem, player),
+	[Spec.SpecEnhancementShaman]: (parentElem: HTMLElement, player: Player<any>) => new EnhancementShamanSimUI(parentElem, player),
+	[Spec.SpecRestorationShaman]: (parentElem: HTMLElement, player: Player<any>) => new RestorationShamanSimUI(parentElem, player),
+	// Warlock
+	[Spec.SpecAfflictionWarlock]: (parentElem: HTMLElement, player: Player<any>) => new AfflictionWarlockSimUI(parentElem, player),
+	[Spec.SpecDemonologyWarlock]: (parentElem: HTMLElement, player: Player<any>) => new DemonologyWarlockSimUI(parentElem, player),
+	[Spec.SpecDestructionWarlock]: (parentElem: HTMLElement, player: Player<any>) => new DestructionWarlockSimUI(parentElem, player),
+	// Warrior
+	[Spec.SpecArmsWarrior]: (parentElem: HTMLElement, player: Player<any>) => new ArmsWarriorSimUI(parentElem, player),
+	[Spec.SpecFuryWarrior]: (parentElem: HTMLElement, player: Player<any>) => new FuryWarriorSimUI(parentElem, player),
 	[Spec.SpecProtectionWarrior]: (parentElem: HTMLElement, player: Player<any>) => new ProtectionWarriorSimUI(parentElem, player),
-	[Spec.SpecWarlock]: (parentElem: HTMLElement, player: Player<any>) => new WarlockSimUI(parentElem, player),
 };
 
-export const playerPresets: Array<RaidSimPreset<any>> = naturalSpecOrder
-	.map(getSpecConfig)
+export const playerPresets: Array<RaidSimPreset<any>> = PlayerClasses.naturalOrder
+	.map(playerClass => Object.values(playerClass.specs))
+	.flat()
+	.map(playerSpec => getSpecConfig(playerSpec.specID))
 	.map(config => {
 		const indSimUiConfig = config as IndividualSimUIConfig<any>;
 		return indSimUiConfig.raidSimPresets;
 	})
 	.flat();
 
-export const implementedSpecs: Array<Spec> = [...new Set(playerPresets.map(preset => preset.spec))];
+export const implementedSpecs: Array<any> = [...new Set(playerPresets.map(preset => preset.spec))];

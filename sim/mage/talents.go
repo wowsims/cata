@@ -27,7 +27,6 @@ func (mage *Mage) ApplyTalents() {
 	mage.registerCombustionCD()
 	mage.registerIcyVeinsCD()
 	mage.registerColdSnapCD()
-	mage.registerSummonWaterElementalCD()
 
 	mage.PseudoStats.SpiritRegenRateCasting += float64(mage.Talents.ArcaneMeditation) / 6
 

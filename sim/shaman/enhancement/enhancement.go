@@ -26,17 +26,17 @@ func RegisterEnhancementShaman() {
 }
 
 func NewEnhancementShaman(character *core.Character, options *proto.Player) *EnhancementShaman {
-	enhOptions := options.GetEnhancementShaman()
+	enhOptions := options.GetEnhancementShaman().Options
 
 	selfBuffs := shaman.SelfBuffs{
-		Shield:  enhOptions.Options.Shield,
-		ImbueMH: enhOptions.Options.ImbueMh,
-		ImbueOH: enhOptions.Options.ImbueOh,
+		Shield:  enhOptions.ClassOptions.Shield,
+		ImbueMH: enhOptions.ClassOptions.ImbueMh,
+		ImbueOH: enhOptions.ImbueOh,
 	}
 
 	totems := &proto.ShamanTotems{}
-	if enhOptions.Options.Totems != nil {
-		totems = enhOptions.Options.Totems
+	if enhOptions.ClassOptions.Totems != nil {
+		totems = enhOptions.ClassOptions.Totems
 	}
 
 	enh := &EnhancementShaman{
@@ -50,7 +50,7 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 		AutoSwingMelee: true,
 	})
 
-	enh.ApplySyncType(enhOptions.Options.SyncType)
+	enh.ApplySyncType(enhOptions.SyncType)
 	enh.ApplyFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon), false)
 	enh.ApplyFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeaponDownrank), true)
 

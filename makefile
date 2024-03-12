@@ -6,29 +6,38 @@ ASSETS := $(patsubst assets/%,$(OUT_DIR)/assets/%,$(ASSETS_INPUT))
 rwildcard = $(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 GOROOT := $(shell go env GOROOT)
 UI_SRC := $(shell find ui -name '*.ts' -o -name '*.tsx' -o -name '*.scss' -o -name '*.html')
-HTML_INDECIES := ui/balance_druid/index.html \
-				 ui/feral_druid/index.html \
-				 ui/feral_tank_druid/index.html \
-				 ui/restoration_druid/index.html \
-				 ui/elemental_shaman/index.html \
-				 ui/enhancement_shaman/index.html \
-				 ui/restoration_shaman/index.html \
-				 ui/hunter/index.html \
-				 ui/mage/index.html \
-				 ui/rogue/index.html \
-				 ui/holy_paladin/index.html \
-				 ui/protection_paladin/index.html \
-				 ui/retribution_paladin/index.html \
-				 ui/healing_priest/index.html \
-				 ui/shadow_priest/index.html \
-				 ui/smite_priest/index.html \
-				 ui/warlock/index.html \
-				 ui/warrior/index.html \
-				 ui/protection_warrior/index.html \
-				 ui/deathknight/index.html \
-				 ui/tank_deathknight/index.html \
-				 ui/raid/index.html \
-				 ui/detailed_results/index.html
+PAGE_INDECES := ui/death_knight/blood/index.html \
+				ui/death_knight/frost/index.html \
+				ui/death_knight/unholy/index.html \
+				ui/druid/balance/index.html \
+				ui/druid/feral/index.html \
+				ui/druid/restoration/index.html \
+				ui/hunter/beast_mastery/index.html \
+				ui/hunter/marksmanship/index.html \
+				ui/hunter/survival/index.html \
+				ui/mage/arcane/index.html \
+				ui/mage/fire/index.html \
+				ui/mage/frost/index.html \
+				ui/paladin/holy/index.html \
+				ui/paladin/protection/index.html \
+				ui/paladin/retribution/index.html \
+				ui/priest/discipline/index.html \
+				ui/priest/holy/index.html \
+				ui/priest/shadow/index.html \
+				ui/rogue/assassination/index.html \
+				ui/rogue/combat/index.html \
+				ui/rogue/subtlety/index.html \
+				ui/shaman/elemental/index.html \
+				ui/shaman/enhancement/index.html \
+				ui/shaman/restoration/index.html \
+				ui/warlock/affliction/index.html \
+				ui/warlock/demonology/index.html \
+				ui/warlock/destruction/index.html \
+				ui/warrior/arms/index.html \
+				ui/warrior/fury/index.html \
+				ui/warrior/protection/index.html \
+				ui/raid/full/index.html \
+				ui/results/detailed/index.html
 
 $(OUT_DIR)/.dirstamp: \
   $(OUT_DIR)/lib.wasm \
@@ -39,7 +48,7 @@ $(OUT_DIR)/.dirstamp: \
 
 $(OUT_DIR)/bundle/.dirstamp: \
   $(UI_SRC) \
-  $(HTML_INDECIES) \
+  $(PAGE_INDECES) \
   vite.config.js \
   node_modules \
   tsconfig.json \
@@ -78,7 +87,7 @@ clean:
 	  ui/core/index.ts \
 	  ui/core/proto/*.ts \
 	  node_modules \
-	  $(HTML_INDECIES)
+	  $(PAGE_INDECES)
 	find . -name "*.results.tmp" -type f -delete
 
 ui/core/proto/api.ts: proto/*.proto node_modules
@@ -87,8 +96,7 @@ ui/core/proto/api.ts: proto/*.proto node_modules
 	npx protoc --ts_out ui/core/proto --proto_path proto proto/ui.proto
 
 ui/%/index.html: ui/index_template.html
-	$(eval title := $(shell echo $(shell basename $(@D)) | sed -r 's/(^|_)([a-z])/\U \2/g' | cut -c 2-))
-	cat ui/index_template.html | sed -e 's/@@TITLE@@/cata $(title) Simulator/g' -e 's/@@SPEC@@/$(shell basename $(@D))/g' > $@
+	cat ui/index_template.html | sed -e 's/@@CLASS@@/$(shell dirname $(@D) | xargs basename)/g' -e 's/@@SPEC@@/$(shell basename $(@D))/g' > $@
 
 package-lock.json:
 	npm install
@@ -106,7 +114,7 @@ $(OUT_DIR)/%/index.html: ui/index_template.html $(OUT_DIR)/assets
 	$(eval title := $(shell echo $(shell basename $(@D)) | sed -r 's/(^|_)([a-z])/\U \2/g' | cut -c 2-))
 	echo $(title)
 	mkdir -p $(@D)
-	cat ui/index_template.html | sed -e 's/@@TITLE@@/cata $(title) Simulator/g' -e 's/@@SPEC@@/$(shell basename $(@D))/g' > $@
+	cat ui/index_template.html | sed -e 's/@@CLASS@@/$(shell dirname $((@D)) | xargs basename)/g' -e 's/@@SPEC@@/$(shell basename $(@D))/g' > $@
 
 .PHONY: wasm
 wasm: $(OUT_DIR)/lib.wasm

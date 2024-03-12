@@ -1,32 +1,32 @@
 import { IndividualSimUI } from '../individual_sim_ui.js';
 import { Player } from '../player.js';
-import { Sim } from '../sim.js';
-import { Gear } from '../proto_utils/gear.js';
+import { GemColor, ItemSlot, Profession, Spec, Stat } from '../proto/common.js';
 import { EquippedItem } from '../proto_utils/equipped_item.js';
-import { TypedEvent } from '../typed_event.js';
+import { Gear } from '../proto_utils/gear.js';
 import { Stats } from '../proto_utils/stats.js';
-import { GemColor, Stat, Profession, ItemSlot, Spec } from '../proto/common.js';
+import { Sim } from '../sim.js';
+import { TypedEvent } from '../typed_event.js';
 
 interface GemCapsData {
-	gemId: number
-	statCaps: Stats
+	gemId: number;
+	statCaps: Stats;
 }
 
 interface SocketData {
-	itemSlot: ItemSlot
-	socketIdx: number
+	itemSlot: ItemSlot;
+	socketIdx: number;
 }
 
 interface SocketBonusData {
-	itemSlot: ItemSlot | null
-	socketBonus: number
+	itemSlot: ItemSlot | null;
+	socketBonus: number;
 }
 
 abstract class GemOptimizer {
-	protected readonly player: Player<Spec>;
+	protected readonly player: Player<any>;
 	protected readonly sim: Sim;
-	protected readonly gemPriorityByColor: Record<GemColor, Array<GemCapsData>>; 
-	abstract metaGemID: number;	
+	protected readonly gemPriorityByColor: Record<GemColor, Array<GemCapsData>>;
+	abstract metaGemID: number;
 	static allGemColors: Array<GemColor> = [GemColor.GemColorRed, GemColor.GemColorYellow, GemColor.GemColorBlue];
 	epWeights!: Stats;
 	useJcGems!: boolean;
@@ -48,12 +48,12 @@ abstract class GemOptimizer {
 
 		// Initialize empty arrays of gem priorities for each socket color
 		this.gemPriorityByColor = {} as Record<GemColor, Array<GemCapsData>>;
-		
-		for (var gemColor of GemOptimizer.allGemColors) {
+
+		for (const gemColor of GemOptimizer.allGemColors) {
 			this.gemPriorityByColor[gemColor] = new Array<GemCapsData>();
 		}
 
-		this.jcUpgradePriority = new Array<GemCapsData>();	
+		this.jcUpgradePriority = new Array<GemCapsData>();
 
 		simUI.addAction('Suggest Gems', 'suggest-gems-action', async () => {
 			this.optimizeGems();
@@ -83,7 +83,7 @@ abstract class GemOptimizer {
 		await this.updateGear(optimizedGear);
 
 		// Now loop through all gem colors where a priority list has been defined
-		for (var gemColor of GemOptimizer.allGemColors) {
+		for (const gemColor of GemOptimizer.allGemColors) {
 			if (this.gemPriorityByColor[gemColor].length > 0) {
 				optimizedGear = await this.fillGemsByColor(optimizedGear, gemColor);
 
@@ -94,7 +94,7 @@ abstract class GemOptimizer {
 			}
 		}
 	}
-	
+
 	async updateGear(gear: Gear): Promise<Stats> {
 		this.player.setGear(TypedEvent.nextEventID(), gear);
 		await this.sim.updateCharacterStats(TypedEvent.nextEventID());
@@ -107,7 +107,7 @@ abstract class GemOptimizer {
 	 * @remarks
 	 * Based on the ansatz that most specs are forced to use a suboptimal gem color in
 	 * order to statisfy their meta requirements. As a result, it is helpful to
-	 * compute the item slot in a gear set that provides the strongest socket bonus 
+	 * compute the item slot in a gear set that provides the strongest socket bonus
 	 * for that color, since this should minimize the "cost" of activation.
 	 *
 	 * @param gear - Ungemmed gear set
@@ -115,12 +115,12 @@ abstract class GemOptimizer {
 	 * @param singleOnly - If true, exclude items containing more than one socket of the specified color. If false, instead normalize the socket bonus by the number of such sockets.
 	 * @param blacklistedColor - If non-null, exclude items containing any sockets of this color (assumed to be different from the color used for activation).
 	 * @returns Optimal item slot for activation under the specified constraints, or null if not found.
-	 */	
+	 */
 	findStrongestSocketBonus(gear: Gear, color: GemColor, singleOnly: boolean, blacklistedColor: GemColor | null): SocketBonusData {
 		let optimalSlot: ItemSlot | null = null;
-		let maxSocketBonusEP: number = 1e-8;
+		let maxSocketBonusEP = 1e-8;
 
-		for (var slot of gear.getItemSlots()) {
+		for (const slot of gear.getItemSlots()) {
 			const item = gear.getEquippedItem(slot);
 
 			if (!item) {
@@ -133,7 +133,7 @@ abstract class GemOptimizer {
 
 			const numSockets = item.numSocketsOfColor(color);
 
-			if ((numSockets == 0) || (singleOnly && (numSockets != 1))) {
+			if (numSockets == 0 || (singleOnly && numSockets != 1)) {
 				continue;
 			}
 
@@ -148,7 +148,7 @@ abstract class GemOptimizer {
 
 		return { itemSlot: optimalSlot, socketBonus: maxSocketBonusEP };
 	}
-	
+
 	socketGemInFirstMatchingSocket(gear: Gear, itemSlot: ItemSlot | null, colorToMatch: GemColor, gemId: number): Gear {
 		if (itemSlot != null) {
 			const item = gear.getEquippedItem(itemSlot);
@@ -171,7 +171,7 @@ abstract class GemOptimizer {
 		const socketList = this.findSocketsByColor(gear, color);
 		return await this.fillGemsToCaps(gear, socketList, this.gemPriorityByColor[color], 0, 0);
 	}
-	
+
 	/**
 	 * Shared wrapper for compiling eligible sockets for each gem priority list.
 	 *
@@ -182,11 +182,11 @@ abstract class GemOptimizer {
 	 * @param gear - Partially gemmed gear set
 	 * @param color - Color associated with a single gem priority list
 	 * @returns Array of sockets that will be filled using the priority list associated with the specified color.
-	 */	
+	 */
 	findSocketsByColor(gear: Gear, color: GemColor): Array<SocketData> {
 		const socketList = new Array<SocketData>();
 
-		for (var slot of gear.getItemSlots()) {
+		for (const slot of gear.getItemSlots()) {
 			const item = gear.getEquippedItem(slot);
 
 			if (!item) {
@@ -211,7 +211,7 @@ abstract class GemOptimizer {
 		let updatedGear: Gear = gear;
 		let gemIdx = 0;
 
-		while ((this.numSocketedJcGems < 3) && (gemIdx < this.jcUpgradePriority.length)) {
+		while (this.numSocketedJcGems < 3 && gemIdx < this.jcUpgradePriority.length) {
 			const gemData = this.jcUpgradePriority[gemIdx];
 			const baseGem = this.sim.db.lookupGem(gemData.gemId);
 
@@ -230,19 +230,19 @@ abstract class GemOptimizer {
 			} else {
 				await this.updateGear(updatedGear);
 				gemIdx += 1;
-			}	
+			}
 		}
 
 		return updatedGear;
 	}
-	
+
 	async fillGemsToCaps(gear: Gear, socketList: Array<SocketData>, gemCaps: Array<GemCapsData>, numPasses: number, firstIdx: number): Promise<Gear> {
 		let updatedGear: Gear = gear;
 		const currentGem = this.sim.db.lookupGem(gemCaps[numPasses].gemId);
 
 		// On the first pass, we simply fill all sockets with the highest priority gem
 		if (numPasses == 0) {
-			for (var socketData of socketList.slice(firstIdx)) {
+			for (const socketData of socketList.slice(firstIdx)) {
 				updatedGear = updatedGear.withGem(socketData.itemSlot, socketData.socketIdx, currentGem);
 			}
 		}
@@ -251,7 +251,7 @@ abstract class GemOptimizer {
 		let newStats = await this.updateGear(updatedGear);
 		const currentCap = gemCaps[numPasses].statCaps;
 
-		if (newStats.belowCaps(currentCap) || (numPasses == gemCaps.length - 1)) {
+		if (newStats.belowCaps(currentCap) || numPasses == gemCaps.length - 1) {
 			return updatedGear;
 		}
 
@@ -264,7 +264,8 @@ abstract class GemOptimizer {
 			capForReplacement = currentCap;
 		}
 
-		for (var idx = socketList.length - 1; idx >= firstIdx; idx--) {
+		let idx = socketList.length - 1;
+		for (idx; idx >= firstIdx; idx--) {
 			if (newStats.belowCaps(capForReplacement)) {
 				break;
 			}
@@ -291,11 +292,11 @@ abstract class GemOptimizer {
 }
 
 export class PhysicalDPSGemOptimizer extends GemOptimizer {
-	metaGemID: number = 41398; // Relentless Earthsiege Diamond
-	arpSlop: number = 11;
-	expSlop: number = 4;
-	hitTarget: number = 8. * 32.79;
-	hitSlop: number = 4;
+	metaGemID = 41398; // Relentless Earthsiege Diamond
+	arpSlop = 11;
+	expSlop = 4;
+	hitTarget: number = 8 * 32.79;
+	hitSlop = 4;
 	useArpGems: boolean;
 	useExpGems: boolean;
 	useAgiGems: boolean;
@@ -324,7 +325,7 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 
 		// Reset optimal Tear slot from prior calculations
 		this.tearSlot = null;
-		
+
 		/*
 		 * For specs that gem ArP, determine whether the current gear
 		 * configuration will optimally hard stack Fractured gems or not.
@@ -379,7 +380,7 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 		if (this.arpStackDetected) {
 			yellowGemCaps.push({ gemId: 40117, statCaps: arpCap });
 		}
-		
+
 		// Accurate Ametrine (needed to add twice to catch some edge cases)
 		if (this.useExpGems) {
 			yellowGemCaps.push({ gemId: 40162, statCaps: hitCap.add(expCap) });
@@ -409,16 +410,16 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 		if (this.useStrGems) {
 			yellowGemCaps.push({ gemId: 40146, statCaps: new Stats() });
 		}
-		
+
 		this.gemPriorityByColor[GemColor.GemColorYellow] = yellowGemCaps;
 
 		// Update JC upgrade priority
 		this.jcUpgradePriority = new Array<GemCapsData>();
-		
+
 		if (this.useExpGems) {
 			this.jcUpgradePriority.push({ gemId: 40118, statCaps: expCap });
 		}
-		
+
 		if (this.useAgiGems) {
 			this.jcUpgradePriority.push({ gemId: 40112, statCaps: critCap });
 		}
@@ -447,7 +448,7 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 			projectedArp += 42;
 		}
 
-		return (this.arpTarget > 1000) && (projectedArp > 648) && (projectedArp + 20 < this.arpTarget + 4);
+		return this.arpTarget > 1000 && projectedArp > 648 && projectedArp + 20 < this.arpTarget + 4;
 	}
 
 	activateMetaGem(gear: Gear): Gear {
@@ -461,18 +462,18 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 		let tearColor = GemColor.GemColorBlue;
 		this.tearSlot = blueSlotCandidate.itemSlot;
 
-		if ((this.tearSlot == null) || (this.arpStackDetected && (yellowSlotCandidate.socketBonus > blueSlotCandidate.socketBonus))) {
+		if (this.tearSlot == null || (this.arpStackDetected && yellowSlotCandidate.socketBonus > blueSlotCandidate.socketBonus)) {
 			tearColor = GemColor.GemColorYellow;
 			this.tearSlot = yellowSlotCandidate.itemSlot;
 		}
 
 		return this.socketTear(gear, tearColor);
 	}
-	
+
 	socketTear(gear: Gear, tearColor: GemColor): Gear {
 		return this.socketGemInFirstMatchingSocket(gear, this.tearSlot, tearColor, 49110);
 	}
-	
+
 	findBlueTearSlot(gear: Gear): SocketBonusData {
 		// Eligible Tear slots have only one blue socket max.
 		const singleOnly = true;
@@ -491,30 +492,30 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 	findYellowTearSlot(gear: Gear): SocketBonusData {
 		return this.findStrongestSocketBonus(gear, GemColor.GemColorYellow, false, GemColor.GemColorBlue);
 	}
-	
+
 	allowGemInSocket(gemColor: GemColor, socketColor: GemColor, itemSlot: ItemSlot, item: EquippedItem): boolean {
-		const ignoreYellowSockets = ((item!.numSocketsOfColor(GemColor.GemColorBlue) > 0) && (itemSlot != this.tearSlot));
+		const ignoreYellowSockets = item!.numSocketsOfColor(GemColor.GemColorBlue) > 0 && itemSlot != this.tearSlot;
 		let matchYellowSocket = false;
-		
-		if ((socketColor == GemColor.GemColorYellow) && !ignoreYellowSockets) {
+
+		if (socketColor == GemColor.GemColorYellow && !ignoreYellowSockets) {
 			matchYellowSocket = new Stats(item.item.socketBonus).computeEP(this.epWeights) > 1e-8;
 		}
 
-		return ((gemColor == GemColor.GemColorYellow) && matchYellowSocket) || ((gemColor == GemColor.GemColorRed) && !matchYellowSocket);
+		return (gemColor == GemColor.GemColorYellow && matchYellowSocket) || (gemColor == GemColor.GemColorRed && !matchYellowSocket);
 	}
-	
+
 	findSocketsByColor(gear: Gear, color: GemColor): Array<SocketData> {
 		const socketList = super.findSocketsByColor(gear, color);
 
-		if (this.arpStackDetected && (color == GemColor.GemColorYellow)) {
+		if (this.arpStackDetected && color == GemColor.GemColorYellow) {
 			this.sortYellowSockets(gear, socketList);
 		}
 
 		return socketList;
 	}
-	
+
 	sortYellowSockets(gear: Gear, yellowSocketList: Array<SocketData>) {
-		yellowSocketList.sort((a,b) => {
+		yellowSocketList.sort((a, b) => {
 			// If both yellow sockets belong to the same item, then treat them equally.
 			const slot1 = a.itemSlot;
 			const slot2 = b.itemSlot;
@@ -540,7 +541,7 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 			return bonus2 / item2!.numSocketsOfColor(GemColor.GemColorYellow) - bonus1 / item1!.numSocketsOfColor(GemColor.GemColorYellow);
 		});
 	}
-	
+
 	calcArpTarget(gear: Gear): number {
 		let arpTarget = 1399;
 
@@ -570,7 +571,7 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 	calcExpTarget(): number {
 		return 6.5 * 32.79;
 	}
-	
+
 	calcCritCap(gear: Gear): Stats {
 		/*
 		 * Only some specs incorporate Crit soft caps into their gemming logic, so
@@ -580,7 +581,7 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 		 */
 		return new Stats();
 	}
-	
+
 	async fillGemsByColor(gear: Gear, color: GemColor): Promise<Gear> {
 		/*
 		 * Parent logic substitutes JC gems after filling normal gems first, but
@@ -589,12 +590,12 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 		 */
 		let updatedGear: Gear = gear;
 
-		if ((color == GemColor.GemColorRed) && this.useArpGems && this.useJcGems) {
+		if (color == GemColor.GemColorRed && this.useArpGems && this.useJcGems) {
 			updatedGear = this.optimizeJcArpGems(updatedGear);
 		}
 
 		// Likewise, if we still have JC gems available after finishing the red gems, then force utilization of JC Hit gems if possible.
-		if ((color == GemColor.GemColorYellow) && this.useJcGems && (this.numSocketedJcGems < 3)) {
+		if (color == GemColor.GemColorYellow && this.useJcGems && this.numSocketedJcGems < 3) {
 			updatedGear = this.fillJcHitGems(updatedGear);
 		}
 
@@ -602,7 +603,10 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 	}
 
 	calcDistanceToArpTarget(numJcArpGems: number, numRedSockets: number): number {
-		const numNormalArpGems = Math.max(0, Math.min(numRedSockets - 3, Math.floor((this.arpTarget + this.arpSlop - this.passiveArp - 34 * numJcArpGems) / 20)));
+		const numNormalArpGems = Math.max(
+			0,
+			Math.min(numRedSockets - 3, Math.floor((this.arpTarget + this.arpSlop - this.passiveArp - 34 * numJcArpGems) / 20)),
+		);
 		const projectedArp = this.passiveArp + 34 * numJcArpGems + 20 * numNormalArpGems;
 		return Math.abs(projectedArp - this.arpTarget);
 	}
@@ -611,7 +615,9 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 		// First determine how many of the JC gems should be 34 ArP gems
 		const redSocketList = this.findSocketsByColor(gear, GemColor.GemColorRed);
 		const numRedSockets = redSocketList.length;
-		let optimalJcArpGems = [0,1,2,3].reduce((m,x)=> this.calcDistanceToArpTarget(m, numRedSockets)<this.calcDistanceToArpTarget(x, numRedSockets) ? m:x);
+		let optimalJcArpGems = [0, 1, 2, 3].reduce((m, x) =>
+			this.calcDistanceToArpTarget(m, numRedSockets) < this.calcDistanceToArpTarget(x, numRedSockets) ? m : x,
+		);
 		optimalJcArpGems = Math.min(optimalJcArpGems, numRedSockets);
 
 		// Now socket just those gems, saving other JC substitutions for later
@@ -643,8 +649,8 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 }
 
 export class TankGemOptimizer extends GemOptimizer {
-	metaGemID: number = 41380; // Austere Earthsiege Diamond
-	
+	metaGemID = 41380; // Austere Earthsiege Diamond
+
 	updateGemPriority(ungemmedGear: Gear, passiveStats: Stats) {
 		// Base class just stuffs pure Stamina gems everywhere
 		const blueGemCaps = new Array<GemCapsData>();
@@ -652,15 +658,20 @@ export class TankGemOptimizer extends GemOptimizer {
 		this.gemPriorityByColor[GemColor.GemColorBlue] = blueGemCaps;
 		this.jcUpgradePriority = blueGemCaps;
 	}
-	
+
 	activateMetaGem(gear: Gear): Gear {
 		/*
 		 * Use a single Shifting Dreadstone gem for meta activation, in the slot
 		 * with the strongest bonus for a single red socket.
 		 */
-		return this.socketGemInFirstMatchingSocket(gear, this.findStrongestSocketBonus(gear, GemColor.GemColorRed, true, GemColor.GemColorYellow).itemSlot, GemColor.GemColorRed, 40130);
+		return this.socketGemInFirstMatchingSocket(
+			gear,
+			this.findStrongestSocketBonus(gear, GemColor.GemColorRed, true, GemColor.GemColorYellow).itemSlot,
+			GemColor.GemColorRed,
+			40130,
+		);
 	}
-	
+
 	allowGemInSocket(gemColor: GemColor, socketColor: GemColor, itemSlot: ItemSlot, item: EquippedItem): boolean {
 		return gemColor == GemColor.GemColorBlue;
 	}

@@ -381,7 +381,7 @@ func getSpellIdsFromTalentJson(infile *string) []int32 {
 func GetAllTalentSpellIds(inputsDir *string) map[string][]int32 {
 	talentsDir := fmt.Sprintf("%s/../../ui/core/talents/trees", *inputsDir)
 	specFiles := []string{
-		"deathknight.json",
+		"death_knight.json",
 		"druid.json",
 		"hunter.json",
 		"hunter_cunning.json",
@@ -453,6 +453,7 @@ type RotContainer struct {
 func GetAllRotationSpellIds() map[string][]int32 {
 	sim.RegisterAll()
 
+	// TODO: Cata - Update spellbook mappings
 	rotMapping := []RotContainer{
 		{Name: "feral", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassDruid,
@@ -464,11 +465,11 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Equipment:     &proto.EquipmentSpec{},
 			TalentsString: "5102233115331303213305311031--205003002",
 		}, &proto.Player_BalanceDruid{BalanceDruid: &proto.BalanceDruid{Options: &proto.BalanceDruid_Options{}}}), nil, nil, nil)},
-		{Name: "guardian", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-			Class:         proto.Class_ClassDruid,
-			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-503232132322010353120300313511-20350001",
-		}, &proto.Player_FeralTankDruid{FeralTankDruid: &proto.FeralTankDruid{Options: &proto.FeralTankDruid_Options{}}}), nil, nil, nil)},
+		// {Name: "guardian", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:         proto.Class_ClassDruid,
+		// 	Equipment:     &proto.EquipmentSpec{},
+		// 	TalentsString: "-503232132322010353120300313511-20350001",
+		// }, &proto.Player_FeralTankDruid{FeralTankDruid: &proto.FeralTankDruid{Options: &proto.FeralTankDruid_Options{}}}), nil, nil, nil)},
 		{Name: "restodruid", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassDruid,
 			Equipment:     &proto.EquipmentSpec{},
@@ -492,38 +493,38 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Equipment:     &proto.EquipmentSpec{},
 			TalentsString: "-3020503-50005331335310501122331251",
 		}, &proto.Player_RestorationShaman{RestorationShaman: &proto.RestorationShaman{Options: &proto.RestorationShaman_Options{}}}), nil, nil, nil)},
-		{Name: "hunter", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-			Class:         proto.Class_ClassHunter,
-			Race:          proto.Race_RaceTroll,
-			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-015305101-5000032500033330532135301311",
-		}, &proto.Player_Hunter{Hunter: &proto.Hunter{Options: &proto.Hunter_Options{}}}), nil, nil, nil)},
-		{Name: "mage", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-			Class:         proto.Class_ClassMage,
-			Race:          proto.Race_RaceTroll,
-			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "23000513310033015032310250532-03-023303001",
-		}, &proto.Player_Mage{Mage: &proto.Mage{Options: &proto.Mage_Options{}}}), nil, nil, nil)},
-		{Name: "healingpriest", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-			Class:         proto.Class_ClassPriest,
-			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "0503203130300512301313231251-2351010303",
-		}, &proto.Player_HealingPriest{HealingPriest: &proto.HealingPriest{Options: &proto.HealingPriest_Options{}}}), nil, nil, nil)},
-		{Name: "shadow", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-			Class:         proto.Class_ClassPriest,
-			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "05032031--325023051223010323151301351",
-		}, &proto.Player_ShadowPriest{ShadowPriest: &proto.ShadowPriest{Options: &proto.ShadowPriest_Options{}}}), nil, nil, nil)},
-		{Name: "rogue", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-			Class:         proto.Class_ClassRogue,
-			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "00532000523-0252051050035010223100501251",
-		}, &proto.Player_Rogue{Rogue: &proto.Rogue{Options: &proto.Rogue_Options{}}}), nil, nil, nil)},
-		{Name: "warrior", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-			Class:         proto.Class_ClassWarrior,
-			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "302023102331-305053000520310053120500351",
-		}, &proto.Player_Warrior{Warrior: &proto.Warrior{Options: &proto.Warrior_Options{}}}), nil, nil, nil)},
+		// {Name: "hunter", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:         proto.Class_ClassHunter,
+		// 	Race:          proto.Race_RaceTroll,
+		// 	Equipment:     &proto.EquipmentSpec{},
+		// 	TalentsString: "-015305101-5000032500033330532135301311",
+		// }, &proto.Player_Hunter{Hunter: &proto.Hunter{Options: &proto.Hunter_Options{}}}), nil, nil, nil)},
+		// {Name: "mage", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:         proto.Class_ClassMage,
+		// 	Race:          proto.Race_RaceTroll,
+		// 	Equipment:     &proto.EquipmentSpec{},
+		// 	TalentsString: "23000513310033015032310250532-03-023303001",
+		// }, &proto.Player_Mage{Mage: &proto.Mage{Options: &proto.Mage_Options{}}}), nil, nil, nil)},
+		// {Name: "healingpriest", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:         proto.Class_ClassPriest,
+		// 	Equipment:     &proto.EquipmentSpec{},
+		// 	TalentsString: "0503203130300512301313231251-2351010303",
+		// }, &proto.Player_HealingPriest{HealingPriest: &proto.HealingPriest{Options: &proto.HealingPriest_Options{}}}), nil, nil, nil)},
+		// {Name: "shadow", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:         proto.Class_ClassPriest,
+		// 	Equipment:     &proto.EquipmentSpec{},
+		// 	TalentsString: "05032031--325023051223010323151301351",
+		// }, &proto.Player_ShadowPriest{ShadowPriest: &proto.ShadowPriest{Options: &proto.ShadowPriest_Options{}}}), nil, nil, nil)},
+		// {Name: "rogue", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:         proto.Class_ClassRogue,
+		// 	Equipment:     &proto.EquipmentSpec{},
+		// 	TalentsString: "00532000523-0252051050035010223100501251",
+		// }, &proto.Player_Rogue{Rogue: &proto.Rogue{Options: &proto.Rogue_Options{}}}), nil, nil, nil)},
+		// {Name: "warrior", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:         proto.Class_ClassWarrior,
+		// 	Equipment:     &proto.EquipmentSpec{},
+		// 	TalentsString: "302023102331-305053000520310053120500351",
+		// }, &proto.Player_Warrior{Warrior: &proto.Warrior{Options: &proto.Warrior_Options{}}}), nil, nil, nil)},
 		{Name: "protwarrior", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:         proto.Class_ClassWarrior,
 			Equipment:     &proto.EquipmentSpec{},
@@ -545,21 +546,21 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Equipment:     &proto.EquipmentSpec{},
 			TalentsString: "050501-05-05232051203331302133231331",
 		}, &proto.Player_RetributionPaladin{RetributionPaladin: &proto.RetributionPaladin{Options: &proto.RetributionPaladin_Options{}}}), nil, nil, nil)},
-		{Name: "warlock", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-			Class:         proto.Class_ClassWarlock,
-			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "2350002030023510253500331151--550000051",
-		}, &proto.Player_Warlock{Warlock: &proto.Warlock{Options: &proto.Warlock_Options{}}}), nil, nil, nil)},
-		{Name: "dk", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-			Class:         proto.Class_ClassDeathknight,
-			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "-320043500002-2300303050032152000150013133051",
-		}, &proto.Player_Deathknight{Deathknight: &proto.Deathknight{Options: &proto.Deathknight_Options{}}}), nil, nil, nil)},
-		{Name: "tankdk", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-			Class:         proto.Class_ClassDeathknight,
-			Equipment:     &proto.EquipmentSpec{},
-			TalentsString: "005510153330330220102013-3050505100023101-002",
-		}, &proto.Player_TankDeathknight{TankDeathknight: &proto.TankDeathknight{Options: &proto.TankDeathknight_Options{}, Rotation: &proto.TankDeathknight_Rotation{}}}), nil, nil, nil)},
+		// {Name: "warlock", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:         proto.Class_ClassWarlock,
+		// 	Equipment:     &proto.EquipmentSpec{},
+		// 	TalentsString: "2350002030023510253500331151--550000051",
+		// }, &proto.Player_Warlock{Warlock: &proto.Warlock{Options: &proto.Warlock_Options{}}}), nil, nil, nil)},
+		// {Name: "dk", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:         proto.Class_ClassDeathknight,
+		// 	Equipment:     &proto.EquipmentSpec{},
+		// 	TalentsString: "-320043500002-2300303050032152000150013133051",
+		// }, &proto.Player_Deathknight{Deathknight: &proto.Deathknight{Options: &proto.Deathknight_Options{}}}), nil, nil, nil)},
+		// {Name: "tankdk", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+		// 	Class:         proto.Class_ClassDeathknight,
+		// 	Equipment:     &proto.EquipmentSpec{},
+		// 	TalentsString: "005510153330330220102013-3050505100023101-002",
+		// }, &proto.Player_TankDeathknight{TankDeathknight: &proto.TankDeathknight{Options: &proto.TankDeathknight_Options{}, Rotation: &proto.TankDeathknight_Rotation{}}}), nil, nil, nil)},
 	}
 
 	ret_db := make(map[string][]int32, 0)

@@ -1,33 +1,22 @@
-import {
-	InputType,
-	MobType,
-	SpellSchool,
-	Stat,
-	Target as TargetProto,
-	TargetInput,
-	Target,
-} from '../proto/common.js';
-import { Encounter } from '../encounter.js';
-import { Raid } from '../raid.js';
-import { EventID, TypedEvent } from '../typed_event.js';
 import { BooleanPicker } from '../components/boolean_picker.js';
 import { EnumPicker } from '../components/enum_picker.js';
 import { ListItemPickerConfig, ListPicker } from '../components/list_picker.js';
 import { NumberPicker } from '../components/number_picker.js';
-import { Stats } from '../proto_utils/stats.js';
-import { isHealingSpec, isTankSpec } from '../proto_utils/utils.js';
-import { statNames } from '../proto_utils/names.js';
-
-import { Component } from './component.js';
-
 import * as Mechanics from '../constants/mechanics.js';
+import { Encounter } from '../encounter.js';
 import { IndividualSimUI } from '../individual_sim_ui.js';
+import { InputType, MobType, SpellSchool, Stat, Target, Target as TargetProto, TargetInput } from '../proto/common.js';
+import { statNames } from '../proto_utils/names.js';
+import { Stats } from '../proto_utils/stats.js';
+import { Raid } from '../raid.js';
 import { SimUI } from '../sim_ui.js';
-import { Input } from './input.js';
+import { EventID, TypedEvent } from '../typed_event.js';
 import { BaseModal } from './base_modal.js';
+import { Component } from './component.js';
+import { Input } from './input.js';
 
 export interface EncounterPickerConfig {
-	showExecuteProportion: boolean,
+	showExecuteProportion: boolean;
 }
 
 export class EncounterPicker extends Component {
@@ -44,14 +33,14 @@ export class EncounterPicker extends Component {
 				extraCssClasses: ['damage-metrics', 'npc-picker'],
 				label: 'NPC',
 				labelTooltip: 'Selects a preset NPC configuration.',
-				values: [
-					{ name: 'Custom', value: -1 },
-				].concat(presetTargets.map((pe, i) => {
-					return {
-						name: pe.path,
-						value: i,
-					};
-				})),
+				values: [{ name: 'Custom', value: -1 }].concat(
+					presetTargets.map((pe, i) => {
+						return {
+							name: pe.path,
+							value: i,
+						};
+					}),
+				),
 				changedEvent: (encounter: Encounter) => encounter.changeEmitter,
 				getValue: (encounter: Encounter) => presetTargets.findIndex(pe => equalTargetsIgnoreInputs(encounter.primaryTarget, pe.target)),
 				setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
@@ -101,7 +90,7 @@ export class EncounterPicker extends Component {
 			//	});
 			//}
 
-			if (simUI.isIndividualSim() && isHealingSpec((simUI as IndividualSimUI<any>).player.spec)) {
+			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.getSpec().isHealingSpec) {
 				new NumberPicker(this.rootElem, simUI.sim.raid, {
 					label: 'Num Allies',
 					labelTooltip: 'Number of allied players in the raid.',
@@ -113,7 +102,7 @@ export class EncounterPicker extends Component {
 				});
 			}
 
-			if (simUI.isIndividualSim() && isTankSpec((simUI as IndividualSimUI<any>).player.spec)) {
+			if (simUI.isIndividualSim() && (simUI as IndividualSimUI<any>).player.getSpec().isTankSpec) {
 				new NumberPicker(this.rootElem, modEncounter, {
 					label: 'Min Base Damage',
 					labelTooltip: 'Base damage for auto attacks, i.e. lowest roll with 0 AP against a 0-armor Player.',
@@ -127,11 +116,13 @@ export class EncounterPicker extends Component {
 			}
 
 			// Transfer Target Inputs from target Id if they dont match (possible when custom AI is selected)
-			let targetIndex = presetTargets.findIndex(pe => modEncounter.primaryTarget.id == pe.target?.id);
-			let targetInputs = presetTargets[targetIndex]?.target?.targetInputs || [];
+			const targetIndex = presetTargets.findIndex(pe => modEncounter.primaryTarget.id == pe.target?.id);
+			const targetInputs = presetTargets[targetIndex]?.target?.targetInputs || [];
 
-			if (targetInputs.length != modEncounter.primaryTarget.targetInputs.length
-				|| modEncounter.primaryTarget.targetInputs.some((ti, i) => ti.label != targetInputs[i].label)) {
+			if (
+				targetInputs.length != modEncounter.primaryTarget.targetInputs.length ||
+				modEncounter.primaryTarget.targetInputs.some((ti, i) => ti.label != targetInputs[i].label)
+			) {
 				modEncounter.primaryTarget.targetInputs = targetInputs;
 				modEncounter.targetsChangeEmitter.emit(TypedEvent.nextEventID());
 			}
@@ -187,7 +178,12 @@ class AdvancedEncounterModal extends BaseModal {
 			},
 			newItem: () => Encounter.defaultTargetProto(),
 			copyItem: (oldItem: TargetProto) => TargetProto.clone(oldItem),
-			newItemPicker: (parent: HTMLElement, listPicker: ListPicker<Encounter, TargetProto>, index: number, config: ListItemPickerConfig<Encounter, TargetProto>) => new TargetPicker(parent, encounter, index, config),
+			newItemPicker: (
+				parent: HTMLElement,
+				listPicker: ListPicker<Encounter, TargetProto>,
+				index: number,
+				config: ListItemPickerConfig<Encounter, TargetProto>,
+			) => new TargetPicker(parent, encounter, index, config),
 		});
 	}
 
@@ -197,14 +193,14 @@ class AdvancedEncounterModal extends BaseModal {
 		new EnumPicker<Encounter>(this.header as HTMLElement, this.encounter, {
 			label: 'Encounter',
 			extraCssClasses: ['encounter-picker', 'mb-0', 'pe-2'],
-			values: [
-				{ name: 'Custom', value: -1 },
-			].concat(presetEncounters.map((pe, i) => {
-				return {
-					name: pe.path,
-					value: i,
-				};
-			})),
+			values: [{ name: 'Custom', value: -1 }].concat(
+				presetEncounters.map((pe, i) => {
+					return {
+						name: pe.path,
+						value: i,
+					};
+				}),
+			),
 			changedEvent: (encounter: Encounter) => encounter.changeEmitter,
 			getValue: (encounter: Encounter) => presetEncounters.findIndex(pe => encounter.matchesPreset(pe)),
 			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
@@ -240,7 +236,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 	}
 
 	constructor(parent: HTMLElement, encounter: Encounter, targetIndex: number, config: ListItemPickerConfig<Encounter, TargetProto>) {
-		super(parent, 'target-picker-root', encounter, config)
+		super(parent, 'target-picker-root', encounter, config);
 		this.encounter = encounter;
 		this.targetIndex = targetIndex;
 
@@ -259,14 +255,14 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			extraCssClasses: ['npc-picker'],
 			label: 'NPC',
 			labelTooltip: 'Selects a preset NPC configuration.',
-			values: [
-				{ name: 'Custom', value: -1 },
-			].concat(presetTargets.map((pe, i) => {
-				return {
-					name: pe.path,
-					value: i,
-				};
-			})),
+			values: [{ name: 'Custom', value: -1 }].concat(
+				presetTargets.map((pe, i) => {
+					return {
+						name: pe.path,
+						value: i,
+					};
+				}),
+			),
 			changedEvent: () => encounter.targetsChangeEmitter,
 			getValue: () => presetTargets.findIndex(pe => equalTargetsIgnoreInputs(this.getTarget(), pe.target)),
 			setValue: (eventID: EventID, _: null, newValue: number) => {
@@ -284,14 +280,14 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 				<p>Determines the target\'s ability rotation.</p>
 				<p>Note that most rotations are not yet implemented.</p>
 			`,
-			values: [
-				{ name: 'None', value: 0 },
-			].concat(presetTargets.map(pe => {
-				return {
-					name: pe.path,
-					value: pe.target!.id,
-				};
-			})),
+			values: [{ name: 'None', value: 0 }].concat(
+				presetTargets.map(pe => {
+					return {
+						name: pe.path,
+						value: pe.target!.id,
+					};
+				}),
+			),
 			changedEvent: () => encounter.targetsChangeEmitter,
 			getValue: () => this.getTarget().id,
 			setValue: (eventID: EventID, _: null, newValue: number) => {
@@ -334,7 +330,8 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		this.tankIndexPicker = new EnumPicker<null>(section1, null, {
 			extraCssClasses: ['threat-metrics'],
 			label: 'Tanked By',
-			labelTooltip: 'Determines which player in the raid this enemy will attack. If no player is assigned to the specified tank slot, this enemy will not attack.',
+			labelTooltip:
+				'Determines which player in the raid this enemy will attack. If no player is assigned to the specified tank slot, this enemy will not attack.',
 			values: [
 				{ name: 'None', value: -1 },
 				{ name: 'Main Tank', value: 0 },
@@ -413,7 +410,8 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		});
 		this.dwMissPenaltyPicker = new BooleanPicker(section3, null, {
 			label: 'DW Miss Penalty',
-			labelTooltip: 'Enables the Dual Wield Miss Penalty (+19% chance to miss) if dual wielding. Bosses in Hyjal/BT/SWP usually have this disabled to stop tanks from avoidance stacking.',
+			labelTooltip:
+				'Enables the Dual Wield Miss Penalty (+19% chance to miss) if dual wielding. Bosses in Hyjal/BT/SWP usually have this disabled to stop tanks from avoidance stacking.',
 			inline: true,
 			changedEvent: () => encounter.targetsChangeEmitter,
 			getValue: () => this.getTarget().dualWieldPenalty,
@@ -455,7 +453,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		});
 		this.suppressDodgePicker = new BooleanPicker(section3, null, {
 			label: 'Chill of the Throne',
-			labelTooltip: 'Reduces the chance for this enemy\'s attacks to be dodged by 20%. Active in Icecrown Citadel.',
+			labelTooltip: "Reduces the chance for this enemy's attacks to be dodged by 20%. Active in Icecrown Citadel.",
 			inline: true,
 			changedEvent: () => encounter.targetsChangeEmitter,
 			getValue: () => this.getTarget().suppressDodge,
@@ -489,7 +487,8 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			stats: this.statPickers
 				.map(picker => picker.getInputValue())
 				.map((statValue, i) => new Stats().withStat(ALL_TARGET_STATS[i].stat, statValue))
-				.reduce((totalStats, curStats) => totalStats.add(curStats)).asArray(),
+				.reduce((totalStats, curStats) => totalStats.add(curStats))
+				.asArray(),
 			targetInputs: this.targetInputPickers.getInputValue(),
 		});
 	}
@@ -526,8 +525,14 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 		return this.encounter.targets[this.targetIndex].targetInputs[this.targetInputIndex] || TargetInput.create();
 	}
 
-	constructor(parent: HTMLElement, encounter: Encounter, targetIndex: number, targetInputIndex: number, config: ListItemPickerConfig<Encounter, TargetInput>) {
-		super(parent, 'target-input-picker-root', encounter, config)
+	constructor(
+		parent: HTMLElement,
+		encounter: Encounter,
+		targetIndex: number,
+		targetInputIndex: number,
+		config: ListItemPickerConfig<Encounter, TargetInput>,
+	) {
+		super(parent, 'target-input-picker-root', encounter, config);
 		this.encounter = encounter;
 		this.targetIndex = targetIndex;
 		this.targetInputIndex = targetInputIndex;
@@ -585,7 +590,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 }
 
 function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, showExecuteProportion: boolean) {
-	let durationGroup = Input.newGroupContainer();
+	const durationGroup = Input.newGroupContainer();
 	rootElem.appendChild(durationGroup);
 
 	new NumberPicker(durationGroup, encounter, {
@@ -596,53 +601,67 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 		setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 			encounter.setDuration(eventID, newValue);
 		},
-		enableWhen: (obj) => { return !encounter.getUseHealth() },
+		enableWhen: _obj => {
+			return !encounter.getUseHealth();
+		},
 	});
 	new NumberPicker(durationGroup, encounter, {
 		label: 'Duration +/-',
-		labelTooltip: 'Adds a random amount of time, in seconds, between [value, -1 * value] to each sim iteration. For example, setting Duration to 180 and Duration +/- to 10 will result in random durations between 170s and 190s.',
+		labelTooltip:
+			'Adds a random amount of time, in seconds, between [value, -1 * value] to each sim iteration. For example, setting Duration to 180 and Duration +/- to 10 will result in random durations between 170s and 190s.',
 		changedEvent: (encounter: Encounter) => encounter.changeEmitter,
 		getValue: (encounter: Encounter) => encounter.getDurationVariation(),
 		setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 			encounter.setDurationVariation(eventID, newValue);
 		},
-		enableWhen: (obj) => { return !encounter.getUseHealth() },
+		enableWhen: _obj => {
+			return !encounter.getUseHealth();
+		},
 	});
 
 	if (showExecuteProportion) {
-		let executeGroup = Input.newGroupContainer();
+		const executeGroup = Input.newGroupContainer();
 		executeGroup.classList.add('execute-group');
 		rootElem.appendChild(executeGroup);
 
 		new NumberPicker(executeGroup, encounter, {
 			label: 'Execute Duration 20 (%)',
-			labelTooltip: 'Percentage of the total encounter duration, for which the targets will be considered to be in execute range (< 20% HP) for the purpose of effects like Warrior Execute or Mage Molten Fury.',
+			labelTooltip:
+				'Percentage of the total encounter duration, for which the targets will be considered to be in execute range (< 20% HP) for the purpose of effects like Warrior Execute or Mage Molten Fury.',
 			changedEvent: (encounter: Encounter) => encounter.changeEmitter,
 			getValue: (encounter: Encounter) => encounter.getExecuteProportion20() * 100,
 			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 				encounter.setExecuteProportion20(eventID, newValue / 100);
 			},
-			enableWhen: (obj) => { return !encounter.getUseHealth() },
+			enableWhen: _obj => {
+				return !encounter.getUseHealth();
+			},
 		});
 		new NumberPicker(executeGroup, encounter, {
 			label: 'Execute Duration 25 (%)',
-			labelTooltip: 'Percentage of the total encounter duration, for which the targets will be considered to be in execute range (< 25% HP) for the purpose of effects like Warlock\'s Drain Soul.',
+			labelTooltip:
+				"Percentage of the total encounter duration, for which the targets will be considered to be in execute range (< 25% HP) for the purpose of effects like Warlock's Drain Soul.",
 			changedEvent: (encounter: Encounter) => encounter.changeEmitter,
 			getValue: (encounter: Encounter) => encounter.getExecuteProportion25() * 100,
 			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 				encounter.setExecuteProportion25(eventID, newValue / 100);
 			},
-			enableWhen: (obj) => { return !encounter.getUseHealth() },
+			enableWhen: _obj => {
+				return !encounter.getUseHealth();
+			},
 		});
 		new NumberPicker(executeGroup, encounter, {
 			label: 'Execute Duration 35 (%)',
-			labelTooltip: 'Percentage of the total encounter duration, for which the targets will be considered to be in execute range (< 35% HP) for the purpose of effects like Warrior Execute or Mage Molten Fury.',
+			labelTooltip:
+				'Percentage of the total encounter duration, for which the targets will be considered to be in execute range (< 35% HP) for the purpose of effects like Warrior Execute or Mage Molten Fury.',
 			changedEvent: (encounter: Encounter) => encounter.changeEmitter,
 			getValue: (encounter: Encounter) => encounter.getExecuteProportion35() * 100,
 			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 				encounter.setExecuteProportion35(eventID, newValue / 100);
 			},
-			enableWhen: (obj) => { return !encounter.getUseHealth() },
+			enableWhen: _obj => {
+				return !encounter.getUseHealth();
+			},
 		});
 	}
 }
@@ -658,7 +677,12 @@ function makeTargetInputsPicker(parent: HTMLElement, encounter: Encounter, targe
 		},
 		newItem: () => TargetInput.create(),
 		copyItem: (oldItem: TargetInput) => TargetInput.clone(oldItem),
-		newItemPicker: (parent: HTMLElement, listPicker: ListPicker<Encounter, TargetInput>, index: number, config: ListItemPickerConfig<Encounter, TargetInput>) => new TargetInputPicker(parent, encounter, targetIndex, index, config),
+		newItemPicker: (
+			parent: HTMLElement,
+			listPicker: ListPicker<Encounter, TargetInput>,
+			index: number,
+			config: ListItemPickerConfig<Encounter, TargetInput>,
+		) => new TargetInputPicker(parent, encounter, targetIndex, index, config),
 		hideUi: true,
 	});
 }
@@ -675,7 +699,7 @@ function equalTargetsIgnoreInputs(target1: TargetProto | undefined, target2: Tar
 	return TargetProto.equals(target1, modTarget2);
 }
 
-const ALL_TARGET_STATS: Array<{ stat: Stat, tooltip: string, extraCssClasses: Array<string> }> = [
+const ALL_TARGET_STATS: Array<{ stat: Stat; tooltip: string; extraCssClasses: Array<string> }> = [
 	{ stat: Stat.StatHealth, tooltip: '', extraCssClasses: [] },
 	{ stat: Stat.StatArmor, tooltip: '', extraCssClasses: [] },
 	{ stat: Stat.StatArcaneResistance, tooltip: '', extraCssClasses: [] },

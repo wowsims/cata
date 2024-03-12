@@ -1,29 +1,27 @@
-import { ActionMetrics as ActionMetricsProto } from '../proto/api.js';
-import { AuraMetrics as AuraMetricsProto } from '../proto/api.js';
-import { DistributionMetrics as DistributionMetricsProto } from '../proto/api.js';
-import { Encounter as EncounterProto } from '../proto/common.js';
-import { EncounterMetrics as EncounterMetricsProto } from '../proto/api.js';
-import { Party as PartyProto } from '../proto/api.js';
-import { PartyMetrics as PartyMetricsProto } from '../proto/api.js';
-import { Player as PlayerProto } from '../proto/api.js';
-import { UnitMetrics as UnitMetricsProto } from '../proto/api.js';
-import { Raid as RaidProto } from '../proto/api.js';
-import { RaidMetrics as RaidMetricsProto } from '../proto/api.js';
-import { ResourceMetrics as ResourceMetricsProto, ResourceType } from '../proto/api.js';
-import { Target as TargetProto } from '../proto/common.js';
-import { TargetedActionMetrics as TargetedActionMetricsProto } from '../proto/api.js';
-import { RaidSimRequest, RaidSimResult } from '../proto/api.js';
-import { Class } from '../proto/common.js';
-import { Spec } from '../proto/common.js';
+import { PlayerSpec } from '../player_spec.js';
+import { PlayerSpecs } from '../player_specs';
+import {
+	ActionMetrics as ActionMetricsProto,
+	AuraMetrics as AuraMetricsProto,
+	DistributionMetrics as DistributionMetricsProto,
+	EncounterMetrics as EncounterMetricsProto,
+	Party as PartyProto,
+	PartyMetrics as PartyMetricsProto,
+	Player as PlayerProto,
+	Raid as RaidProto,
+	RaidMetrics as RaidMetricsProto,
+	RaidSimRequest,
+	RaidSimResult,
+	ResourceMetrics as ResourceMetricsProto,
+	ResourceType,
+	TargetedActionMetrics as TargetedActionMetricsProto,
+	UnitMetrics as UnitMetricsProto,
+} from '../proto/api.js';
+import { Class, Encounter as EncounterProto, Target as TargetProto } from '../proto/common.js';
 import { SimRun } from '../proto/ui.js';
 import { ActionId, defaultTargetIcon } from '../proto_utils/action_id.js';
-import { classColors, cssClassForClass } from '../proto_utils/utils.js';
-import { getTalentTreeIcon } from '../proto_utils/utils.js';
-import { playerToSpec } from '../proto_utils/utils.js';
-import { specToClass } from '../proto_utils/utils.js';
-import { bucket } from '../utils.js';
-import { sum } from '../utils.js';
-
+import { getPlayerSpecFromPlayer } from '../proto_utils/utils.js';
+import { bucket, sum } from '../utils.js';
 import {
 	AuraUptimeLog,
 	CastLog,
@@ -151,7 +149,11 @@ export class SimResult {
 	}
 
 	getActionMetrics(filter?: SimResultFilter): Array<ActionMetrics> {
-		return ActionMetrics.joinById(this.getPlayers(filter).map(player => player.getPlayerAndPetActions().map(action => action.forTarget(filter))).flat());
+		return ActionMetrics.joinById(
+			this.getPlayers(filter)
+				.map(player => player.getPlayerAndPetActions().map(action => action.forTarget(filter)))
+				.flat(),
+		);
 	}
 
 	getSpellMetrics(filter?: SimResultFilter): Array<ActionMetrics> {
@@ -163,15 +165,27 @@ export class SimResult {
 	}
 
 	getResourceMetrics(resourceType: ResourceType, filter?: SimResultFilter): Array<ResourceMetrics> {
-		return ResourceMetrics.joinById(this.getPlayers(filter).map(player => player.resources.filter(resource => resource.type == resourceType)).flat());
+		return ResourceMetrics.joinById(
+			this.getPlayers(filter)
+				.map(player => player.resources.filter(resource => resource.type == resourceType))
+				.flat(),
+		);
 	}
 
 	getBuffMetrics(filter?: SimResultFilter): Array<AuraMetrics> {
-		return AuraMetrics.joinById(this.getPlayers(filter).map(player => player.auras).flat());
+		return AuraMetrics.joinById(
+			this.getPlayers(filter)
+				.map(player => player.auras)
+				.flat(),
+		);
 	}
 
 	getDebuffMetrics(filter?: SimResultFilter): Array<AuraMetrics> {
-		return AuraMetrics.joinById(this.getTargets(filter).map(target => target.auras).flat()).filter(aura => aura.uptimePercent != 0);
+		return AuraMetrics.joinById(
+			this.getTargets(filter)
+				.map(target => target.auras)
+				.flat(),
+		).filter(aura => aura.uptimePercent != 0);
 	}
 
 	toProto(): SimRun {
@@ -219,13 +233,8 @@ export class RaidMetrics {
 		const numParties = Math.min(raid.parties.length, metrics.parties.length);
 
 		const parties = await Promise.all(
-			[...new Array(numParties).keys()]
-				.map(i => PartyMetrics.makeNew(
-					resultData,
-					raid.parties[i],
-					metrics.parties[i],
-					i,
-					logs)));
+			[...new Array(numParties).keys()].map(i => PartyMetrics.makeNew(resultData, raid.parties[i], metrics.parties[i], i, logs)),
+		);
 
 		return new RaidMetrics(raid, metrics, parties);
 	}
@@ -249,18 +258,19 @@ export class PartyMetrics {
 		this.players = players;
 	}
 
-	static async makeNew(resultData: SimResultData, party: PartyProto, metrics: PartyMetricsProto, partyIndex: number, logs: Array<SimLog>): Promise<PartyMetrics> {
+	static async makeNew(
+		resultData: SimResultData,
+		party: PartyProto,
+		metrics: PartyMetricsProto,
+		partyIndex: number,
+		logs: Array<SimLog>,
+	): Promise<PartyMetrics> {
 		const numPlayers = Math.min(party.players.length, metrics.players.length);
 		const players = await Promise.all(
 			[...new Array(numPlayers).keys()]
 				.filter(i => party.players[i].class != Class.ClassUnknown)
-				.map(i => UnitMetrics.makeNewPlayer(
-					resultData,
-					party.players[i],
-					metrics.players[i],
-					partyIndex * 5 + i,
-					false,
-					logs)));
+				.map(i => UnitMetrics.makeNewPlayer(resultData, party.players[i], metrics.players[i], partyIndex * 5 + i, false, logs)),
+		);
 
 		return new PartyMetrics(party, metrics, partyIndex, players);
 	}
@@ -275,7 +285,7 @@ export class UnitMetrics {
 	readonly index: number;
 	readonly unitIndex: number;
 	readonly name: string;
-	readonly spec: Spec;
+	readonly spec: PlayerSpec<any> | null;
 	readonly petActionId: ActionId | null;
 	readonly iconUrl: string;
 	readonly classColor: string;
@@ -317,7 +327,8 @@ export class UnitMetrics {
 		resources: Array<ResourceMetrics>,
 		pets: Array<UnitMetrics>,
 		logs: Array<SimLog>,
-		resultData: SimResultData) {
+		resultData: SimResultData,
+	) {
 		this.player = player;
 		this.target = target;
 		this.metrics = metrics;
@@ -325,11 +336,10 @@ export class UnitMetrics {
 		this.index = index;
 		this.unitIndex = metrics.unitIndex;
 		this.name = metrics.name;
-		this.spec = player ? playerToSpec(player) : 0;
+		this.spec = this.player ? getPlayerSpecFromPlayer(this.player) : null;
 		this.petActionId = petActionId;
-		this.iconUrl = this.isPlayer ? getTalentTreeIcon(this.spec, player!.talentsString) :
-			(this.isTarget ? defaultTargetIcon : '');
-		this.classColor = this.isTarget ? '' : cssClassForClass(specToClass[this.spec]);
+		this.iconUrl = this.isPlayer ? this.spec?.getIcon('medium') ?? '' : this.isTarget ? defaultTargetIcon : '';
+		this.classColor = this.isTarget ? '' : PlayerSpecs.getPlayerClass(this.spec as PlayerSpec<any>).hexColor ?? '';
 		this.dps = this.metrics.dps!;
 		this.dpasp = this.metrics.dpasp!;
 		this.hps = this.metrics.hps!;
@@ -350,14 +360,20 @@ export class UnitMetrics {
 		this.castLogs = CastLog.fromLogs(this.logs);
 		this.threatLogs = ThreatLogGroup.fromLogs(this.logs);
 
-		this.auraUptimeLogs = AuraUptimeLog.fromLogs(this.logs, new Entity(this.name, '', this.index, this.target != null, this.isPet), resultData.firstIterationDuration);
+		this.auraUptimeLogs = AuraUptimeLog.fromLogs(
+			this.logs,
+			new Entity(this.name, '', this.index, this.target != null, this.isPet),
+			resultData.firstIterationDuration,
+		);
 		this.majorCooldownLogs = this.logs.filter((log): log is MajorCooldownUsedLog => log.isMajorCooldownUsed());
 
 		this.groupedResourceLogs = ResourceChangedLogGroup.fromLogs(this.logs);
 		AuraUptimeLog.populateActiveAuras(this.dpsLogs, this.auraUptimeLogs);
 		AuraUptimeLog.populateActiveAuras(this.groupedResourceLogs[ResourceType.ResourceTypeMana], this.auraUptimeLogs);
 
-		this.majorCooldownAuraUptimeLogs = this.auraUptimeLogs.filter(auraLog => this.majorCooldownLogs.find(mcdLog => mcdLog.actionId!.equals(auraLog.actionId!)));
+		this.majorCooldownAuraUptimeLogs = this.auraUptimeLogs.filter(auraLog =>
+			this.majorCooldownLogs.find(mcdLog => mcdLog.actionId!.equals(auraLog.actionId!)),
+		);
 	}
 
 	get label() {
@@ -413,7 +429,7 @@ export class UnitMetrics {
 	}
 
 	get secondsOomAvg() {
-		return this.metrics.secondsOomAvg
+		return this.metrics.secondsOomAvg;
 	}
 
 	get totalDamage() {
@@ -444,8 +460,17 @@ export class UnitMetrics {
 		return this.resources.filter(resource => resource.type == resourceType);
 	}
 
-	static async makeNewPlayer(resultData: SimResultData, player: PlayerProto, metrics: UnitMetricsProto, raidIndex: number, isPet: boolean, logs: Array<SimLog>): Promise<UnitMetrics> {
-		const playerLogs = logs.filter(log => log.source && (!log.source.isTarget && (isPet == log.source.isPet) && (isPet ? log.source.name == metrics.name : log.source.index == raidIndex)));
+	static async makeNewPlayer(
+		resultData: SimResultData,
+		player: PlayerProto,
+		metrics: UnitMetricsProto,
+		raidIndex: number,
+		isPet: boolean,
+		logs: Array<SimLog>,
+	): Promise<UnitMetrics> {
+		const playerLogs = logs.filter(
+			log => log.source && !log.source.isTarget && isPet == log.source.isPet && (isPet ? log.source.name == metrics.name : log.source.index == raidIndex),
+		);
 		const petLogs = logs.filter(log => log.source && !log.source.isTarget && log.source.isPet && log.source.index == raidIndex);
 
 		const actionsPromise = Promise.all(metrics.actions.map(actionMetrics => ActionMetrics.makeNew(null, resultData, actionMetrics, raidIndex)));
@@ -469,13 +494,19 @@ export class UnitMetrics {
 			action.unit = playerMetrics;
 			action.resources = resources.filter(resourceMetrics => resourceMetrics.actionId.equals(action.actionId));
 		});
-		auras.forEach(aura => aura.unit = playerMetrics);
-		resources.forEach(resource => resource.unit = playerMetrics);
+		auras.forEach(aura => (aura.unit = playerMetrics));
+		resources.forEach(resource => (resource.unit = playerMetrics));
 		return playerMetrics;
 	}
 
-	static async makeNewTarget(resultData: SimResultData, target: TargetProto, metrics: UnitMetricsProto, index: number, logs: Array<SimLog>): Promise<UnitMetrics> {
-		const targetLogs = logs.filter(log => log.source && (log.source.isTarget && log.source.index == index));
+	static async makeNewTarget(
+		resultData: SimResultData,
+		target: TargetProto,
+		metrics: UnitMetricsProto,
+		index: number,
+		logs: Array<SimLog>,
+	): Promise<UnitMetrics> {
+		const targetLogs = logs.filter(log => log.source && log.source.isTarget && log.source.index == index);
 
 		const actionsPromise = Promise.all(metrics.actions.map(actionMetrics => ActionMetrics.makeNew(null, resultData, actionMetrics, index)));
 		const aurasPromise = Promise.all(metrics.auras.map(auraMetrics => AuraMetrics.makeNew(null, resultData, auraMetrics)));
@@ -484,8 +515,8 @@ export class UnitMetrics {
 		const auras = await aurasPromise;
 
 		const targetMetrics = new UnitMetrics(null, target, null, metrics, index, actions, auras, [], [], targetLogs, resultData);
-		actions.forEach(action => action.unit = targetMetrics);
-		auras.forEach(aura => aura.unit = targetMetrics);
+		actions.forEach(action => (action.unit = targetMetrics));
+		auras.forEach(aura => (aura.unit = targetMetrics));
 		return targetMetrics;
 	}
 }
@@ -505,13 +536,8 @@ export class EncounterMetrics {
 	static async makeNew(resultData: SimResultData, encounter: EncounterProto, metrics: EncounterMetricsProto, logs: Array<SimLog>): Promise<EncounterMetrics> {
 		const numTargets = Math.min(encounter.targets.length, metrics.targets.length);
 		const targets = await Promise.all(
-			[...new Array(numTargets).keys()]
-				.map(i => UnitMetrics.makeNewTarget(
-					resultData,
-					encounter.targets[i],
-					metrics.targets[i],
-					i,
-					logs)));
+			[...new Array(numTargets).keys()].map(i => UnitMetrics.makeNewTarget(resultData, encounter.targets[i], metrics.targets[i], i, logs)),
+		);
 
 		return new EncounterMetrics(encounter, metrics, targets);
 	}
@@ -543,11 +569,11 @@ export class AuraMetrics {
 	}
 
 	get uptimePercent() {
-		return this.data.uptimeSecondsAvg / this.duration * 100;
+		return (this.data.uptimeSecondsAvg / this.duration) * 100;
 	}
 
 	get averageProcs() {
-		return this.data.procsAvg
+		return this.data.procsAvg;
 	}
 
 	get ppm() {
@@ -573,7 +599,8 @@ export class AuraMetrics {
 			AuraMetricsProto.create({
 				uptimeSecondsAvg: Math.max(...auras.map(a => a.data.uptimeSecondsAvg)),
 			}),
-			firstAura.resultData);
+			firstAura.resultData,
+		);
 	}
 
 	// Groups similar metrics, i.e. metrics with the same item/spell/other ID but
@@ -590,7 +617,7 @@ export class AuraMetrics {
 	static joinById(auras: Array<AuraMetrics>, useTag?: boolean): Array<AuraMetrics> {
 		return AuraMetrics.groupById(auras, useTag).map(aurasToJoin => AuraMetrics.merge(aurasToJoin));
 	}
-};
+}
 
 export class ResourceMetrics {
 	unit: UnitMetrics | null;
@@ -635,7 +662,12 @@ export class ResourceMetrics {
 		return (this.data.gain - this.data.actualGain) / this.iterations;
 	}
 
-	static async makeNew(unit: UnitMetrics | null, resultData: SimResultData, resourceMetrics: ResourceMetricsProto, playerIndex?: number): Promise<ResourceMetrics> {
+	static async makeNew(
+		unit: UnitMetrics | null,
+		resultData: SimResultData,
+		resourceMetrics: ResourceMetricsProto,
+		playerIndex?: number,
+	): Promise<ResourceMetrics> {
 		const actionId = await ActionId.fromProto(resourceMetrics.id!).fill(playerIndex);
 		return new ResourceMetrics(unit, actionId, resourceMetrics, resultData);
 	}
@@ -656,7 +688,8 @@ export class ResourceMetrics {
 				gain: sum(resources.map(a => a.data.gain)),
 				actualGain: sum(resources.map(a => a.data.actualGain)),
 			}),
-			firstResource.resultData);
+			firstResource.resultData,
+		);
 	}
 
 	// Groups similar metrics, i.e. metrics with the same item/spell/other ID but
@@ -673,7 +706,7 @@ export class ResourceMetrics {
 	static joinById(resources: Array<ResourceMetrics>, useTag?: boolean): Array<ResourceMetrics> {
 		return ResourceMetrics.groupById(resources, useTag).map(resourcesToJoin => ResourceMetrics.merge(resourcesToJoin));
 	}
-};
+}
 
 // Manages the metrics for a single unit action (e.g. Lightning Bolt).
 export class ActionMetrics {
@@ -845,7 +878,7 @@ export class ActionMetrics {
 	// Merges an array of metrics into a single metric.
 	static merge(actions: Array<ActionMetrics>, removeTag?: boolean, actionIdOverride?: ActionId): ActionMetrics {
 		const firstAction = actions[0];
-		const unit = firstAction.unit
+		const unit = firstAction.unit;
 		let actionId = actionIdOverride || firstAction.actionId;
 		if (removeTag) {
 			actionId = actionId.withoutTag();
@@ -861,7 +894,8 @@ export class ActionMetrics {
 				isMelee: firstAction.isMeleeAction,
 				targets: mergedTargets.map(t => t.data),
 			}),
-			firstAction.resultData);
+			firstAction.resultData,
+		);
 	}
 
 	// Groups similar metrics, i.e. metrics with the same item/spell/other ID but
@@ -896,13 +930,7 @@ export class TargetedActionMetrics {
 
 		this.landedHitsRaw = this.data.hits + this.data.crits + this.data.blocks + this.data.glances;
 
-		this.hitAttempts = this.data.misses
-			+ this.data.dodges
-			+ this.data.parries
-			+ this.data.blocks
-			+ this.data.glances
-			+ this.data.crits
-			+ this.data.hits;
+		this.hitAttempts = this.data.misses + this.data.dodges + this.data.parries + this.data.blocks + this.data.glances + this.data.crits + this.data.hits;
 	}
 
 	get damage() {
@@ -946,15 +974,15 @@ export class TargetedActionMetrics {
 	}
 
 	get avgCast() {
-		return (this.data.damage / this.iterations) / (this.casts || 1);
+		return this.data.damage / this.iterations / (this.casts || 1);
 	}
 
 	get avgCastHealing() {
-		return ((this.data.healing + this.data.shielding) / this.iterations) / (this.casts || 1);
+		return (this.data.healing + this.data.shielding) / this.iterations / (this.casts || 1);
 	}
 
 	get avgCastThreat() {
-		return (this.data.threat / this.iterations) / (this.casts || 1);
+		return this.data.threat / this.iterations / (this.casts || 1);
 	}
 
 	get landedHits() {
@@ -1034,6 +1062,7 @@ export class TargetedActionMetrics {
 				healing: sum(actions.map(a => a.data.healing)),
 				shielding: sum(actions.map(a => a.data.shielding)),
 				castTimeMs: sum(actions.map(a => a.data.castTimeMs)),
-			}));
+			}),
+		);
 	}
 }

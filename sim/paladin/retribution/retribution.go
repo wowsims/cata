@@ -30,10 +30,10 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 
 	ret := &RetributionPaladin{
 		Paladin: pal,
-		Seal:    retOptions.Options.Seal,
+		Seal:    retOptions.Options.ClassOptions.Seal,
 	}
 
-	ret.PaladinAura = retOptions.Options.Aura
+	ret.PaladinAura = retOptions.Options.ClassOptions.Aura
 
 	ret.EnableAutoAttacks(ret, core.AutoAttackOptions{
 		MainHand:       ret.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.

@@ -143,7 +143,7 @@ message UIEnchant {
 	int32 item_id = 2;   // ID of the enchant "item". Might be 0 if not available.
 	int32 spell_id = 3;  // ID of the enchant "spell". Might be 0 if not available.
 
-	string name = 4;     
+	string name = 4;
 	string icon = 5;
 
 	ItemType type = 6;                  // Which type of item this enchant can be applied to.
@@ -296,9 +296,6 @@ message SavedSettings {
 	bool in_front_of_target = 11;
 	double distance_from_target = 12;
 	HealingModel healing_model = 13;
-	double nibelung_average_casts = 15;
-	// hack to set a proper default value
-	bool nibelung_average_casts_set = 16;
 }
 
 message SavedTalents {

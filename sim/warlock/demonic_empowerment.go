@@ -9,13 +9,13 @@ import (
 )
 
 func (warlock *Warlock) registerDemonicEmpowermentSpell() {
-	if !warlock.Talents.DemonicEmpowerment || warlock.Options.Summon == proto.Warlock_Options_NoSummon {
+	if !warlock.Talents.DemonicEmpowerment || warlock.Options.Summon == proto.WarlockOptions_NoSummon {
 		return
 	}
 
 	var petAura core.Aura
 	switch warlock.Options.Summon {
-	case proto.Warlock_Options_Imp:
+	case proto.WarlockOptions_Imp:
 		petAura = core.Aura{
 			Label:    "Demonic Empowerment Aura",
 			ActionID: core.ActionID{SpellID: 47193},
@@ -31,7 +31,7 @@ func (warlock *Warlock) registerDemonicEmpowermentSpell() {
 				})
 			},
 		}
-	case proto.Warlock_Options_Felguard:
+	case proto.WarlockOptions_Felguard:
 		petAura = core.Aura{
 			Label:    "Demonic Empowerment Aura",
 			ActionID: core.ActionID{SpellID: 47193},

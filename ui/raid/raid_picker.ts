@@ -1,35 +1,28 @@
-import { Component } from '../core/components/component.js';
-import { EnumPicker } from '../core/components/enum_picker.js';
-import { Raid } from '../core/raid.js';
-import { MAX_PARTY_SIZE } from '../core/party.js';
-import { Party } from '../core/party.js';
-import { Player } from '../core/player.js';
-import { Player as PlayerProto } from '../core/proto/api.js';
-import { Class } from '../core/proto/common.js';
-import { Profession } from '../core/proto/common.js';
-import { Spec } from '../core/proto/common.js';
-import { Faction } from '../core/proto/common.js';
-import { Glyphs } from '../core/proto/common.js';
-import { cssClassForClass, playerToSpec } from '../core/proto_utils/utils.js';
-import { isTankSpec } from '../core/proto_utils/utils.js';
-import { specToClass } from '../core/proto_utils/utils.js';
-import { newUnitReference } from '../core/proto_utils/utils.js';
-import { EventID, TypedEvent } from '../core/typed_event.js';
-import { formatDeltaTextElem } from '../core/utils.js';
-import { getEnumValues } from '../core/utils.js';
-
-import { RaidSimUI } from './raid_sim_ui.js';
-import { playerPresets, specSimFactories } from './presets.js';
-
-import { BalanceDruid_Options as BalanceDruidOptions } from '../core/proto/druid.js';
-import { Mage_Options as MageOptions } from '../core/proto/mage.js';
-import { SmitePriest_Options as SmitePriestOptions } from '../core/proto/priest.js';
-import { BaseModal } from '../core/components/base_modal.js';
 import { Tooltip } from 'bootstrap';
 
-const NEW_PLAYER: number = -1;
+import { BaseModal } from '../core/components/base_modal.js';
+import { Component } from '../core/components/component.js';
+import { EnumPicker } from '../core/components/enum_picker.js';
+import { MAX_PARTY_SIZE, Party } from '../core/party.js';
+import { Player } from '../core/player.js';
+import { PlayerClasses } from '../core/player_classes';
+import { PlayerSpecs } from '../core/player_specs';
+import { Player as PlayerProto } from '../core/proto/api.js';
+import { Class, Faction, Glyphs, Profession, Spec } from '../core/proto/common.js';
+import { BalanceDruid_Options as BalanceDruidOptions } from '../core/proto/druid.js';
+import { ArcaneMage_Options } from '../core/proto/mage';
+import { getPlayerSpecFromPlayer, newUnitReference } from '../core/proto_utils/utils.js';
+import { Raid } from '../core/raid.js';
+import { EventID, TypedEvent } from '../core/typed_event.js';
+import { formatDeltaTextElem, getEnumValues } from '../core/utils.js';
+import { playerPresets, specSimFactories } from './presets.js';
+import { RaidSimUI } from './raid_sim_ui.js';
 
-const LATEST_PHASE_WITH_ALL_PRESETS = Math.min(...playerPresets.map(preset => Math.max(...Object.keys(preset.defaultGear[Faction.Alliance]).map(k => parseInt(k)))));
+const NEW_PLAYER = -1;
+
+const LATEST_PHASE_WITH_ALL_PRESETS = Math.min(
+	...playerPresets.map(preset => Math.max(...Object.keys(preset.defaultGear[Faction.Alliance]).map(k => parseInt(k)))),
+);
 
 enum DragType {
 	None,
@@ -342,8 +335,7 @@ export class PlayerPicker extends Component {
 
 		this.partyPicker.party.compChangeEmitter.on(eventID => {
 			const newPlayer = this.partyPicker.party.getPlayer(this.index);
-			if (newPlayer != this.player)
-				this.setPlayer(eventID, newPlayer, DragType.None);
+			if (newPlayer != this.player) this.setPlayer(eventID, newPlayer, DragType.None);
 		});
 
 		this.raidPicker.raidSimUI.referenceChangeEmitter.on(() => {
@@ -357,8 +349,7 @@ export class PlayerPicker extends Component {
 				this.resultsElem?.classList.remove('hide');
 				(this.dpsResultElem as HTMLElement).textContent = `${playerDps.toFixed(1)} DPS`;
 
-				if (referenceData)
-					formatDeltaTextElem(this.referenceDeltaElem as HTMLElement, referenceDps, playerDps, 1);
+				if (referenceData) formatDeltaTextElem(this.referenceDeltaElem as HTMLElement, referenceDps, playerDps, 1);
 			}
 		});
 
@@ -386,7 +377,7 @@ export class PlayerPicker extends Component {
 			if (this.raidPicker.currentDragParty) {
 				return;
 			}
-			var dropData = event.dataTransfer!.getData("text/plain");
+			const dropData = event.dataTransfer!.getData('text/plain');
 
 			event.preventDefault();
 			dragEnterCounter = 0;
@@ -421,7 +412,7 @@ export class PlayerPicker extends Component {
 					}
 					const playerProto = PlayerProto.fromBinary(bytes);
 
-					var localPlayer = new Player(playerToSpec(playerProto), this.raidPicker.raidSimUI.sim);
+					const localPlayer = new Player(getPlayerSpecFromPlayer(playerProto), this.raidPicker.raidSimUI.sim);
 					localPlayer.fromProto(eventID, playerProto);
 					this.raidPicker.currentDragPlayer = localPlayer;
 				}
@@ -473,7 +464,7 @@ export class PlayerPicker extends Component {
 			this.dpsResultElem = null;
 			this.referenceDeltaElem = null;
 		} else {
-			const classCssClass = cssClassForClass(this.player.getClass());
+			const classCssClass = PlayerClasses.getCssClass(this.player.getPlayerClass());
 
 			this.rootElem.className = `player-picker-root player bg-${classCssClass}-dampened`;
 			this.rootElem.innerHTML = `
@@ -542,12 +533,12 @@ export class PlayerPicker extends Component {
 		});
 
 		this.nameElem?.addEventListener('mousedown', _event => {
-			this.partyPicker.rootElem.setAttribute('draggable', 'false')
-		})
+			this.partyPicker.rootElem.setAttribute('draggable', 'false');
+		});
 
 		this.nameElem?.addEventListener('mouseup', _event => {
-			this.partyPicker.rootElem.setAttribute('draggable', 'true')
-		})
+			this.partyPicker.rootElem.setAttribute('draggable', 'true');
+		});
 
 		const emptyName = 'Unnamed';
 		this.nameElem?.addEventListener('focusout', _event => {
@@ -567,8 +558,8 @@ export class PlayerPicker extends Component {
 			event.dataTransfer!.effectAllowed = 'all';
 
 			if (this.player) {
-				var playerDataProto = this.player.toProto(true);
-				event.dataTransfer!.setData("text/plain", btoa(String.fromCharCode(...PlayerProto.toBinary(playerDataProto))));
+				const playerDataProto = this.player.toProto(true);
+				event.dataTransfer!.setData('text/plain', btoa(String.fromCharCode(...PlayerProto.toBinary(playerDataProto))));
 			}
 
 			this.raidPicker.setDragPlayer(this.player, this.raidIndex, type);
@@ -584,36 +575,39 @@ export class PlayerPicker extends Component {
 
 		(this.iconElem as HTMLElement).ondragstart = event => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
-			dragStart(event, DragType.Swap)
-		}
+			dragStart(event, DragType.Swap);
+		};
 		editElem.onclick = _event => {
 			new PlayerEditorModal(this.player as Player<any>);
 		};
 		copyElem.ondragstart = event => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
 			dragStart(event, DragType.Copy);
-		}
+		};
 		deleteElem.onclick = _event => {
 			deleteTooltip.hide();
 			this.setPlayer(TypedEvent.nextEventID(), null, DragType.None);
-		}
+		};
 	}
 }
 
-class PlayerEditorModal extends BaseModal {
-	constructor(player: Player<any>) {
+class PlayerEditorModal<SpecType extends Spec> extends BaseModal {
+	constructor(player: Player<SpecType>) {
 		super(document.body, 'player-editor-modal', {
 			closeButton: { fixed: true },
-			header: false
+			header: false,
 		});
 
 		this.rootElem.id = 'playerEditorModal';
-		this.body.insertAdjacentHTML('beforeend', `
+		this.body.insertAdjacentHTML(
+			'beforeend',
+			`
 			<div class="player-editor within-raid-sim"></div>
-		`);
+		`,
+		);
 
 		const editorRoot = this.rootElem.getElementsByClassName('player-editor')[0] as HTMLElement;
-		const _individualSim = specSimFactories[player.spec]!(editorRoot, player);
+		const _individualSim = specSimFactories[player.getSpec()]!(editorRoot, player);
 	}
 }
 
@@ -629,16 +623,20 @@ class NewPlayerPicker extends Component {
 				return;
 			}
 
-			const matchingPresets = playerPresets.filter(preset => specToClass[preset.spec] == wowClass);
+			const matchingPresets = playerPresets.filter(preset => PlayerSpecs.fromProto(preset.spec).classID == wowClass);
 			if (matchingPresets.length == 0) {
 				return;
 			}
 
 			const classPresetsContainer = document.createElement('div');
-			classPresetsContainer.classList.add('class-presets-container', `bg-${cssClassForClass(wowClass as Class)}-dampened`);
+			classPresetsContainer.classList.add(
+				'class-presets-container',
+				`bg-${PlayerClasses.getCssClass(PlayerClasses.fromProto(wowClass as Class))}-dampened`,
+			);
 			this.rootElem.appendChild(classPresetsContainer);
 
 			matchingPresets.forEach(matchingPreset => {
+				const playerSpec = PlayerSpecs.fromProto(matchingPreset.spec);
 				const presetElemFragment = document.createElement('fragment');
 				presetElemFragment.innerHTML = `
 					<a
@@ -646,12 +644,12 @@ class NewPlayerPicker extends Component {
 						role="button"
 						draggable="true"
 						data-bs-toggle="tooltip"
-						data-bs-title="${matchingPreset.tooltip}"
+						data-bs-title="${matchingPreset.tooltip ?? PlayerSpecs.getFullSpecName(playerSpec)}"
 						data-bs-html="true"
 					>
-						<img class="preset-picker-icon player-icon" src="${matchingPreset.iconUrl}"/>
+						<img class="preset-picker-icon player-icon" src="${matchingPreset ?? playerSpec.getIcon('medium')}"/>
 					</a>
-				`
+				`;
 				const presetElem = presetElemFragment.children[0] as HTMLElement;
 				classPresetsContainer.appendChild(presetElem);
 
@@ -661,19 +659,20 @@ class NewPlayerPicker extends Component {
 					const eventID = TypedEvent.nextEventID();
 					TypedEvent.freezeAllAndDo(() => {
 						const dragImage = new Image();
-						dragImage.src = matchingPreset.iconUrl;
+						dragImage.src = matchingPreset.iconUrl ?? playerSpec.getIcon('medium');
 						event.dataTransfer!.setDragImage(dragImage, 30, 30);
-						event.dataTransfer!.setData("text/plain", "");
+						event.dataTransfer!.setData('text/plain', '');
 						event.dataTransfer!.dropEffect = 'copy';
 
-						const newPlayer = new Player(matchingPreset.spec, this.raidPicker.raid.sim);
+						const newPlayer = new Player(playerSpec, this.raidPicker.raid.sim);
+
 						newPlayer.applySharedDefaults(eventID);
 						newPlayer.setRace(eventID, matchingPreset.defaultFactionRaces[this.raidPicker.getCurrentFaction()]);
 						newPlayer.setTalentsString(eventID, matchingPreset.talents.talentsString);
 						newPlayer.setGlyphs(eventID, matchingPreset.talents.glyphs || Glyphs.create());
 						newPlayer.setSpecOptions(eventID, matchingPreset.specOptions);
 						newPlayer.setConsumes(eventID, matchingPreset.consumes);
-						newPlayer.setName(eventID, matchingPreset.defaultName);
+						newPlayer.setName(eventID, matchingPreset.defaultName ?? playerSpec.friendlyName);
 						newPlayer.setProfession1(eventID, matchingPreset.otherDefaults?.profession1 || Profession.Engineering);
 						newPlayer.setProfession2(eventID, matchingPreset.otherDefaults?.profession2 || Profession.Jewelcrafting);
 						newPlayer.setDistanceFromTarget(eventID, matchingPreset.otherDefaults?.distanceFromTarget || 0);
@@ -694,7 +693,7 @@ class NewPlayerPicker extends Component {
 }
 
 function applyNewPlayerAssignments(eventID: EventID, newPlayer: Player<any>, raid: Raid) {
-	if (isTankSpec(newPlayer.spec)) {
+	if (newPlayer.getPlayerSpec().isTankSpec) {
 		const tanks = raid.getTanks();
 		const emptyIdx = tanks.findIndex(tank => raid.getPlayerFromUnitReference(tank) == null);
 		if (emptyIdx == -1) {
@@ -708,16 +707,12 @@ function applyNewPlayerAssignments(eventID: EventID, newPlayer: Player<any>, rai
 	}
 
 	// Spec-specific assignments. For most cases, default to buffing self.
-	if (newPlayer.spec == Spec.SpecBalanceDruid) {
+	if (newPlayer.getSpec() == Spec.SpecBalanceDruid) {
 		const newOptions = newPlayer.getSpecOptions() as BalanceDruidOptions;
-		newOptions.innervateTarget = newUnitReference(newPlayer.getRaidIndex());
+		newOptions.classOptions!.innervateTarget = newUnitReference(newPlayer.getRaidIndex());
 		newPlayer.setSpecOptions(eventID, newOptions);
-	} else if (newPlayer.spec == Spec.SpecSmitePriest) {
-		const newOptions = newPlayer.getSpecOptions() as SmitePriestOptions;
-		newOptions.powerInfusionTarget = newUnitReference(newPlayer.getRaidIndex());
-		newPlayer.setSpecOptions(eventID, newOptions);
-	} else if (newPlayer.spec == Spec.SpecMage) {
-		const newOptions = newPlayer.getSpecOptions() as MageOptions;
+	} else if (newPlayer.getSpec() == Spec.SpecArcaneMage) {
+		const newOptions = newPlayer.getSpecOptions() as ArcaneMage_Options;
 		newOptions.focusMagicTarget = newUnitReference(newPlayer.getRaidIndex());
 		newPlayer.setSpecOptions(eventID, newOptions);
 	}

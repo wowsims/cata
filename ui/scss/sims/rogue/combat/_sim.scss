@@ -1,0 +1,8 @@
+// Set color variables which control the site theme.
+.combat-rogue-sim-ui {
+	@include theme-color(
+		$rogue,
+		.95,
+		'/cata/assets/img/rogue_background.jpg'
+	);
+}

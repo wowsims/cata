@@ -107,17 +107,17 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 
 			if rogue.lastDeadlyPoisonProcMask.Matches(core.ProcMaskMeleeMH) {
 				switch rogue.Options.OhImbue {
-				case proto.Rogue_Options_InstantPoison:
+				case proto.RogueOptions_InstantPoison:
 					rogue.InstantPoison[DeadlyProc].Cast(sim, target)
-				case proto.Rogue_Options_WoundPoison:
+				case proto.RogueOptions_WoundPoison:
 					rogue.WoundPoison[DeadlyProc].Cast(sim, target)
 				}
 			}
 			if rogue.lastDeadlyPoisonProcMask.Matches(core.ProcMaskMeleeOH) {
 				switch rogue.Options.MhImbue {
-				case proto.Rogue_Options_InstantPoison:
+				case proto.RogueOptions_InstantPoison:
 					rogue.InstantPoison[DeadlyProc].Cast(sim, target)
-				case proto.Rogue_Options_WoundPoison:
+				case proto.RogueOptions_WoundPoison:
 					rogue.WoundPoison[DeadlyProc].Cast(sim, target)
 				}
 			}
@@ -132,7 +132,7 @@ func (rogue *Rogue) procDeadlyPoison(sim *core.Simulation, spell *core.Spell, re
 	rogue.DeadlyPoison.Cast(sim, result.Target)
 }
 
-func (rogue *Rogue) getPoisonProcMask(imbue proto.Rogue_Options_PoisonImbue) core.ProcMask {
+func (rogue *Rogue) getPoisonProcMask(imbue proto.RogueOptions_PoisonImbue) core.ProcMask {
 	var mask core.ProcMask
 	if rogue.Options.MhImbue == imbue {
 		mask |= core.ProcMaskMeleeMH
@@ -144,7 +144,7 @@ func (rogue *Rogue) getPoisonProcMask(imbue proto.Rogue_Options_PoisonImbue) cor
 }
 
 func (rogue *Rogue) applyDeadlyPoison() {
-	procMask := rogue.getPoisonProcMask(proto.Rogue_Options_DeadlyPoison)
+	procMask := rogue.getPoisonProcMask(proto.RogueOptions_DeadlyPoison)
 	if procMask == core.ProcMaskUnknown {
 		return
 	}
@@ -167,7 +167,7 @@ func (rogue *Rogue) applyDeadlyPoison() {
 }
 
 func (rogue *Rogue) applyWoundPoison() {
-	procMask := rogue.getPoisonProcMask(proto.Rogue_Options_WoundPoison)
+	procMask := rogue.getPoisonProcMask(proto.RogueOptions_WoundPoison)
 	if procMask == core.ProcMaskUnknown {
 		return
 	}
@@ -301,7 +301,7 @@ func (rogue *Rogue) GetDeadlyPoisonProcChance() float64 {
 }
 
 func (rogue *Rogue) UpdateInstantPoisonPPM(bonusChance float64) {
-	procMask := rogue.getPoisonProcMask(proto.Rogue_Options_InstantPoison)
+	procMask := rogue.getPoisonProcMask(proto.RogueOptions_InstantPoison)
 	if procMask == core.ProcMaskUnknown {
 		return
 	}
@@ -313,7 +313,7 @@ func (rogue *Rogue) UpdateInstantPoisonPPM(bonusChance float64) {
 }
 
 func (rogue *Rogue) applyInstantPoison() {
-	procMask := rogue.getPoisonProcMask(proto.Rogue_Options_InstantPoison)
+	procMask := rogue.getPoisonProcMask(proto.RogueOptions_InstantPoison)
 	if procMask == core.ProcMaskUnknown {
 		return
 	}

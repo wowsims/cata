@@ -1,39 +1,28 @@
 import * as Tooltips from '../../constants/tooltips.js';
 import { Encounter } from '../../encounter';
-import { IndividualSimUI, InputSection } from "../../individual_sim_ui";
-import {
-	Consumes,
-	Debuffs,
-	HealingModel,
-	IndividualBuffs,
-	ItemSwap,
-	PartyBuffs,
-	Profession,
-	RaidBuffs,
-	Spec,
-} from "../../proto/common";
-import { SavedEncounter, SavedSettings } from "../../proto/ui";
-import { professionNames, raceNames } from "../../proto_utils/names";
-import { specToEligibleRaces } from "../../proto_utils/utils";
-import { EventID, TypedEvent } from "../../typed_event";
-import { getEnumValues } from "../../utils";
-import { BooleanPicker } from "../boolean_picker";
-import { ContentBlock } from "../content_block";
+import { IndividualSimUI, InputSection } from '../../individual_sim_ui';
+import { Consumes, Debuffs, HealingModel, IndividualBuffs, ItemSwap, PartyBuffs, Profession, RaidBuffs } from '../../proto/common';
+import { SavedEncounter, SavedSettings } from '../../proto/ui';
+import { professionNames, raceNames } from '../../proto_utils/names';
+import { EventID, TypedEvent } from '../../typed_event';
+import { getEnumValues } from '../../utils';
+import { BooleanPicker } from '../boolean_picker';
+import { ContentBlock } from '../content_block';
 import { EncounterPicker } from '../encounter_picker.js';
-import { EnumPicker } from "../enum_picker";
+import { EnumPicker } from '../enum_picker';
 import * as IconInputs from '../icon_inputs.js';
-import { Input } from "../input";
+import { Input } from '../input';
 import * as BuffDebuffInputs from '../inputs/buffs_debuffs';
-import { relevantStatOptions } from "../inputs/stat_options";
-import { ItemSwapPicker } from "../item_swap_picker";
-import { MultiIconPicker } from "../multi_icon_picker";
-import { NumberPicker } from "../number_picker";
-import { SavedDataManager } from "../saved_data_manager";
-import { SimTab } from "../sim_tab";
-import { ConsumesPicker } from "./consumes_picker";
+import { relevantStatOptions } from '../inputs/stat_options';
+import { ItemSwapPicker } from '../item_swap_picker';
+import { MultiIconPicker } from '../multi_icon_picker';
+import { NumberPicker } from '../number_picker';
+import { SavedDataManager } from '../saved_data_manager';
+import { SimTab } from '../sim_tab';
+import { ConsumesPicker } from './consumes_picker';
 
 export class SettingsTab extends SimTab {
-	protected simUI: IndividualSimUI<Spec>;
+	protected simUI: IndividualSimUI<any>;
 
 	readonly leftPanel: HTMLElement;
 	readonly rightPanel: HTMLElement;
@@ -43,7 +32,7 @@ export class SettingsTab extends SimTab {
 	readonly column3: HTMLElement = this.buildColumn(3, 'settings-left-col');
 	readonly column4?: HTMLElement;
 
-	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<Spec>) {
+	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<any>) {
 		super(parentElem, simUI, { identifier: 'settings-tab', title: 'Settings' });
 		this.simUI = simUI;
 
@@ -91,7 +80,7 @@ export class SettingsTab extends SimTab {
 
 	private buildEncounterSettings() {
 		const contentBlock = new ContentBlock(this.column1, 'encounter-settings', {
-			header: { title: 'Encounter' }
+			header: { title: 'Encounter' },
 		});
 
 		new EncounterPicker(contentBlock.bodyElement, this.simUI.sim.encounter, this.simUI.individualConfig.encounterPicker, this.simUI);
@@ -100,7 +89,7 @@ export class SettingsTab extends SimTab {
 	private buildPlayerSettings() {
 		const column = this.column1;
 		const contentBlock = new ContentBlock(column, 'player-settings', {
-			header: { title: 'Player' }
+			header: { title: 'Player' },
 		});
 
 		const playerIconGroup = Input.newGroupContainer();
@@ -110,10 +99,10 @@ export class SettingsTab extends SimTab {
 		this.configureIconSection(
 			playerIconGroup,
 			this.simUI.individualConfig.playerIconInputs.map(iconInput => IconInputs.buildIconInput(playerIconGroup, this.simUI.player, iconInput)),
-			true
+			true,
 		);
 
-		const races = specToEligibleRaces[this.simUI.player.spec];
+		const races = this.simUI.player.getPlayerClass().races;
 		const _racePicker = new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
 			label: 'Race',
 			values: races.map(race => {
@@ -172,28 +161,26 @@ export class SettingsTab extends SimTab {
 	private buildConsumesSection() {
 		const column = this.simUI.isWithinRaidSim ? this.column3 : this.column2;
 		const contentBlock = new ContentBlock(column, 'consumes-settings', {
-			header: { title: 'Consumables' }
+			header: { title: 'Consumables' },
 		});
 
 		new ConsumesPicker(contentBlock.bodyElement, this, this.simUI);
 	}
 
 	private buildOtherSettings() {
-		const settings = this.simUI.individualConfig.otherInputs?.inputs.filter(inputs =>
-			!inputs.extraCssClasses?.includes('within-raid-sim-hide') || true
-		)
+		const settings = this.simUI.individualConfig.otherInputs?.inputs.filter(inputs => !inputs.extraCssClasses?.includes('within-raid-sim-hide') || true);
 
 		const swapSlots = this.simUI.individualConfig.itemSwapSlots || [];
 		if (settings.length > 0 || swapSlots.length > 0) {
 			const contentBlock = new ContentBlock(this.column2, 'other-settings', {
-				header: { title: 'Other' }
+				header: { title: 'Other' },
 			});
 
 			if (settings.length > 0) {
 				this.configureInputSection(contentBlock.bodyElement, this.simUI.individualConfig.otherInputs);
 				contentBlock.bodyElement.querySelectorAll('.input-root').forEach(elem => {
 					elem.classList.add('input-inline');
-				})
+				});
 			}
 
 			if (swapSlots.length > 0) {
@@ -206,7 +193,7 @@ export class SettingsTab extends SimTab {
 
 	private buildBuffsSettings() {
 		const contentBlock = new ContentBlock(this.column3, 'buffs-settings', {
-			header: { title: 'Raid Buffs', tooltip: Tooltips.BUFFS_SECTION }
+			header: { title: 'Raid Buffs', tooltip: Tooltips.BUFFS_SECTION },
 		});
 
 		const buffOptions = relevantStatOptions(BuffDebuffInputs.RAID_BUFFS_CONFIG, this.simUI);
@@ -217,30 +204,40 @@ export class SettingsTab extends SimTab {
 
 		const miscBuffOptions = relevantStatOptions(BuffDebuffInputs.RAID_BUFFS_MISC_CONFIG, this.simUI);
 		if (miscBuffOptions.length > 0) {
-			new MultiIconPicker(contentBlock.bodyElement, this.simUI.player, {
-				inputs: miscBuffOptions.map(option => option.config),
-				label: 'Misc',
-			}, this.simUI);
+			new MultiIconPicker(
+				contentBlock.bodyElement,
+				this.simUI.player,
+				{
+					inputs: miscBuffOptions.map(option => option.config),
+					label: 'Misc',
+				},
+				this.simUI,
+			);
 		}
 	}
 
 	private buildDebuffsSettings() {
 		const contentBlock = new ContentBlock(this.column3, 'debuffs-settings', {
-			header: { title: 'Debuffs', tooltip: Tooltips.DEBUFFS_SECTION }
+			header: { title: 'Debuffs', tooltip: Tooltips.DEBUFFS_SECTION },
 		});
 
 		const debuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_CONFIG, this.simUI);
 		this.configureIconSection(
 			contentBlock.bodyElement,
-			debuffOptions.map(options => options.picker && new options.picker(contentBlock.bodyElement, this.simUI.player, options.config as any, this.simUI))
+			debuffOptions.map(options => options.picker && new options.picker(contentBlock.bodyElement, this.simUI.player, options.config as any, this.simUI)),
 		);
 
-		const miscDebuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_MISC_CONFIG, this.simUI)
+		const miscDebuffOptions = relevantStatOptions(BuffDebuffInputs.DEBUFFS_MISC_CONFIG, this.simUI);
 		if (miscDebuffOptions.length) {
-			new MultiIconPicker(contentBlock.bodyElement, this.simUI.player, {
-				inputs: miscDebuffOptions.map(options => options.config),
-				label: 'Misc',
-			}, this.simUI);
+			new MultiIconPicker(
+				contentBlock.bodyElement,
+				this.simUI.player,
+				{
+					inputs: miscDebuffOptions.map(options => options.config),
+					label: 'Misc',
+				},
+				this.simUI,
+			);
 		}
 	}
 
@@ -278,7 +275,6 @@ export class SettingsTab extends SimTab {
 					inFrontOfTarget: player.getInFrontOfTarget(),
 					distanceFromTarget: player.getDistanceFromTarget(),
 					healingModel: player.getHealingModel(),
-					nibelungAverageCasts: player.getNibelungAverageCasts(),
 				});
 			},
 			setData: (eventID: EventID, simUI: IndividualSimUI<any>, newSettings: SavedSettings) => {
@@ -300,7 +296,6 @@ export class SettingsTab extends SimTab {
 					simUI.player.setInFrontOfTarget(eventID, newSettings.inFrontOfTarget);
 					simUI.player.setDistanceFromTarget(eventID, newSettings.distanceFromTarget);
 					simUI.player.setHealingModel(eventID, newSettings.healingModel || HealingModel.create());
-					simUI.player.setNibelungAverageCasts(eventID, newSettings.nibelungAverageCasts)
 				});
 			},
 			changeEmitters: [
@@ -338,7 +333,7 @@ export class SettingsTab extends SimTab {
 				new EnumPicker(sectionElem, this.simUI.player, inputConfig);
 			}
 		});
-	};
+	}
 
 	private configureIconSection(sectionElem: HTMLElement, iconPickers: Array<any>, adjustColumns?: boolean) {
 		if (iconPickers.length == 0) {
@@ -350,5 +345,5 @@ export class SettingsTab extends SimTab {
 				sectionElem.style.gridTemplateColumns = `repeat(${Math.ceil(iconPickers.length / 2)}, 1fr)`;
 			}
 		}
-	};
+	}
 }

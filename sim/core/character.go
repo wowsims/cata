@@ -102,10 +102,9 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 			StatDependencyManager: stats.NewStatDependencyManager(),
 
-			ReactionTime:         max(0, time.Duration(player.ReactionTimeMs)*time.Millisecond),
-			ChannelClipDelay:     max(0, time.Duration(player.ChannelClipDelayMs)*time.Millisecond),
-			DistanceFromTarget:   player.DistanceFromTarget,
-			NibelungAverageCasts: player.NibelungAverageCasts,
+			ReactionTime:       max(0, time.Duration(player.ReactionTimeMs)*time.Millisecond),
+			ChannelClipDelay:   max(0, time.Duration(player.ChannelClipDelayMs)*time.Millisecond),
+			DistanceFromTarget: player.DistanceFromTarget,
 		},
 
 		Name:  player.Name,

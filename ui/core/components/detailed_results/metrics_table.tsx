@@ -1,12 +1,13 @@
-import { ActionMetrics, UnitMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
+import tippy from 'tippy.js';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { element, fragment, ref } from 'tsx-vanilla';
+
 import { ActionId } from '../../proto_utils/action_id.js';
-import { EventID, TypedEvent } from '../../typed_event.js';
-
+import { UnitMetrics } from '../../proto_utils/sim_result.js';
+import { TypedEvent } from '../../typed_event.js';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
-import tippy from 'tippy.js'
-import { element, fragment, ref } from 'tsx-vanilla'
 
-declare var $: any;
+declare let $: any;
 
 export enum ColumnSortType {
 	None,
@@ -15,18 +16,18 @@ export enum ColumnSortType {
 }
 
 export interface MetricsColumnConfig<T> {
-	name: string,
-	tooltip?: string,
-	headerCellClass?: string,
-	columnClass?: string,
-	sort?: ColumnSortType,
+	name: string;
+	tooltip?: string;
+	headerCellClass?: string;
+	columnClass?: string;
+	sort?: ColumnSortType;
 
-	getValue?: (metric: T) => number,
+	getValue?: (metric: T) => number;
 
 	// Either getDisplayString or fillCell must be specified.
-	getDisplayString?: (metric: T) => string,
-	fillCell?: (metric: T, cellElem: HTMLElement, rowElem: HTMLElement) => void,
-};
+	getDisplayString?: (metric: T) => string;
+	fillCell?: (metric: T, cellElem: HTMLElement, rowElem: HTMLElement) => void;
+}
 
 export abstract class MetricsTable<T> extends ResultComponent {
 	private readonly columnConfigs: Array<MetricsColumnConfig<T>>;
@@ -45,9 +46,8 @@ export abstract class MetricsTable<T> extends ResultComponent {
 				<thead className="metrics-table-header">
 					<tr className="metrics-table-header-row"></tr>
 				</thead>
-				<tbody className="metrics-table-body">
-				</tbody>
-			</table>
+				<tbody className="metrics-table-body"></tbody>
+			</table>,
 		);
 
 		this.tableElem = this.rootElem.getElementsByClassName('metrics-table')[0] as HTMLTableSectionElement;
@@ -83,16 +83,18 @@ export abstract class MetricsTable<T> extends ResultComponent {
 	}
 
 	protected sortMetrics(metrics: Array<T>) {
-		this.columnConfigs.filter(config => config.sort).forEach(config => {
-			if (!config.getValue) {
-				throw new Error('Can\' apply group sorting without getValue');
-			}
-			if (config.sort == ColumnSortType.Ascending) {
-				metrics.sort((a, b) => config.getValue!(a) - config.getValue!(b));
-			} else {
-				metrics.sort((a, b) => config.getValue!(b) - config.getValue!(a));
-			}
-		});
+		this.columnConfigs
+			.filter(config => config.sort)
+			.forEach(config => {
+				if (!config.getValue) {
+					throw new Error("Can' apply group sorting without getValue");
+				}
+				if (config.sort == ColumnSortType.Ascending) {
+					metrics.sort((a, b) => config.getValue!(a) - config.getValue!(b));
+				} else {
+					metrics.sort((a, b) => config.getValue!(b) - config.getValue!(a));
+				}
+			});
 	}
 
 	private addRow(metric: T): HTMLElement {
@@ -173,7 +175,9 @@ export abstract class MetricsTable<T> extends ResultComponent {
 	}
 
 	// Override this to customize rowElem after it has been populated.
-	protected customizeRowElem(metric: T, rowElem: HTMLElement) { }
+	protected customizeRowElem(metric: T, rowElem: HTMLElement) {
+		return;
+	}
 
 	// Override this to provide custom merge behavior.
 	protected mergeMetrics(metrics: Array<T>): T {
@@ -183,7 +187,7 @@ export abstract class MetricsTable<T> extends ResultComponent {
 	// Returns grouped metrics to display.
 	abstract getGroupedMetrics(resultData: SimResultData): Array<Array<T>>;
 
-	static nameCellConfig<T>(getData: (metric: T) => { name: string, actionId: ActionId }): MetricsColumnConfig<T> {
+	static nameCellConfig<T>(getData: (metric: T) => { name: string; actionId: ActionId }): MetricsColumnConfig<T> {
 		return {
 			name: 'Name',
 			fillCell: (metric: T, cellElem: HTMLElement, rowElem: HTMLElement) => {
@@ -195,7 +199,7 @@ export abstract class MetricsTable<T> extends ResultComponent {
 						<span className="metrics-action-name">{data.name}</span>
 						<span className="expand-toggle fa fa-caret-down"></span>
 						<span className="expand-toggle fa fa-caret-right"></span>
-					</>
+					</>,
 				);
 				data.actionId.setBackgroundAndHref(iconElem.value!);
 			},
@@ -210,7 +214,7 @@ export abstract class MetricsTable<T> extends ResultComponent {
 					<>
 						<img className="metrics-action-icon" src={player.iconUrl}></img>
 						<span className={`metrics-action-name text-${player.classColor}`}>{player.label}</span>
-					</>
+					</>,
 				);
 			},
 		};

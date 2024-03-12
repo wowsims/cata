@@ -1,19 +1,20 @@
+import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
+
+import { DistributionMetrics as DistributionMetricsProto, ProgressMetrics, Raid as RaidProto } from '../proto/api.js';
 import { Encounter as EncounterProto } from '../proto/common.js';
-import { DistributionMetrics as DistributionMetricsProto } from '../proto/api.js';
-import { Raid as RaidProto } from '../proto/api.js';
-import { RaidSimRequest, RaidSimResult, ProgressMetrics } from '../proto/api.js';
 import { SimRunData } from '../proto/ui.js';
 import { ActionMetrics, SimResult, SimResultFilter } from '../proto_utils/sim_result.js';
 import { SimUI } from '../sim_ui.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { formatDeltaTextElem } from '../utils.js';
-import { Tooltip } from 'bootstrap';
-import tippy from 'tippy.js';
 
 export function addRaidSimAction(simUI: SimUI): RaidSimResultsManager {
-	simUI.addAction('Simulate', 'dps-action', async () => simUI.runSim((progress: ProgressMetrics) => {
-		resultsManager.setSimProgress(progress);
-	}));
+	simUI.addAction('Simulate', 'dps-action', async () =>
+		simUI.runSim((progress: ProgressMetrics) => {
+			resultsManager.setSimProgress(progress);
+		}),
+	);
 
 	const resultsManager = new RaidSimResultsManager(simUI);
 	simUI.sim.simResultEmitter.on((eventID, simResult) => {
@@ -23,35 +24,35 @@ export function addRaidSimAction(simUI: SimUI): RaidSimResultsManager {
 }
 
 export type ReferenceData = {
-	simResult: SimResult,
-	settings: any,
-	raidProto: RaidProto,
-	encounterProto: EncounterProto,
+	simResult: SimResult;
+	settings: any;
+	raidProto: RaidProto;
+	encounterProto: EncounterProto;
 };
 
 export interface ResultMetrics {
-	cod: string,
-	dps: string,
-	dpasp: string,
-	dtps: string,
-	tmi: string,
-	dur: string,
-	hps: string,
-	tps: string,
-	tto: string,
+	cod: string;
+	dps: string;
+	dpasp: string;
+	dtps: string;
+	tmi: string;
+	dur: string;
+	hps: string;
+	tps: string;
+	tto: string;
 }
 
 export interface ResultMetricCategories {
-	damage: string,
-	demo: string,
-	healing: string,
-	threat: string,
+	damage: string;
+	demo: string;
+	healing: string;
+	threat: string;
 }
 
 export interface ResultsLineArgs {
-	average: Number,
-	stdev?: Number,
-	classes?: string
+	average: number;
+	stdev?: number;
+	classes?: string;
 }
 
 export class RaidSimResultsManager {
@@ -64,7 +65,7 @@ export class RaidSimResultsManager {
 		cod: 'threat',
 		tto: 'healing',
 		hps: 'healing',
-	}
+	};
 
 	static resultMetricClasses: { [ResultMetrics: string]: string } = {
 		cod: 'results-sim-cod',
@@ -76,14 +77,14 @@ export class RaidSimResultsManager {
 		hps: 'results-sim-hps',
 		tps: 'results-sim-tps',
 		tto: 'results-sim-tto',
-	}
+	};
 
 	static metricsClasses: { [ResultMetricCategories: string]: string } = {
 		damage: 'damage-metrics',
 		demo: 'demo-metrics',
 		healing: 'healing-metrics',
 		threat: 'threat-metrics',
-	}
+	};
 
 	readonly currentChangeEmitter: TypedEvent<void> = new TypedEvent<void>();
 	readonly referenceChangeEmitter: TypedEvent<void> = new TypedEvent<void>();
@@ -98,10 +99,7 @@ export class RaidSimResultsManager {
 	constructor(simUI: SimUI) {
 		this.simUI = simUI;
 
-		[
-			this.currentChangeEmitter,
-			this.referenceChangeEmitter,
-		].forEach(emitter => emitter.on(eventID => this.changeEmitter.emit(eventID)));
+		[this.currentChangeEmitter, this.referenceChangeEmitter].forEach(emitter => emitter.on(eventID => this.changeEmitter.emit(eventID)));
 	}
 
 	setSimProgress(progress: ProgressMetrics) {
@@ -110,9 +108,13 @@ export class RaidSimResultsManager {
 				<div class="results-sim-dps damage-metrics">
 					<span class="topline-result-avg">${progress.dps.toFixed(2)}</span>
 				</div>
-				${!this.simUI.isIndividualSim() ? '' : `<div class="results-sim-hps healing-metrics">
+				${
+					!this.simUI.isIndividualSim()
+						? ''
+						: `<div class="results-sim-hps healing-metrics">
 					<span class="topline-result-avg">${progress.hps.toFixed(2)}</span>
-				</div>`}
+				</div>`
+				}
 				<div class="">
 					${progress.presimRunning ? 'presimulations running' : `${progress.completedIterations} / ${progress.totalIterations}<br>iterations complete`}
 				</div>
@@ -124,8 +126,8 @@ export class RaidSimResultsManager {
 		this.currentData = {
 			simResult: simResult,
 			settings: {
-				'raid': RaidProto.toJson(this.simUI.sim.raid.toProto()),
-				'encounter': EncounterProto.toJson(this.simUI.sim.encounter.toProto()),
+				raid: RaidProto.toJson(this.simUI.sim.raid.toProto()),
+				encounter: EncounterProto.toJson(this.simUI.sim.encounter.toProto()),
 			},
 			raidProto: RaidProto.clone(simResult.request.raid || RaidProto.create()),
 			encounterProto: EncounterProto.clone(simResult.request.encounter || EncounterProto.create()),
@@ -159,7 +161,7 @@ export class RaidSimResultsManager {
 		const setResultTooltip = (cssClass: string, tooltip: string) => {
 			const resultDivElem = this.simUI.resultsViewer.contentElem.getElementsByClassName(cssClass)[0] as HTMLElement | undefined;
 			if (resultDivElem) {
-				Tooltip.getOrCreateInstance(resultDivElem, {title: tooltip, html: true, placement: 'right'});
+				Tooltip.getOrCreateInstance(resultDivElem, { title: tooltip, html: true, placement: 'right' });
 			}
 		};
 		setResultTooltip('results-sim-dps', 'Damage Per Second');
@@ -168,16 +170,22 @@ export class RaidSimResultsManager {
 		setResultTooltip('results-sim-hps', 'Healing+Shielding Per Second, including overhealing.');
 		setResultTooltip('results-sim-tps', 'Threat Per Second');
 		setResultTooltip('results-sim-dtps', 'Damage Taken Per Second');
-		setResultTooltip('results-sim-tmi', `
+		setResultTooltip(
+			'results-sim-tmi',
+			`
 			<p>Theck-Meloree Index (TMI)</p>
 			<p>A measure of incoming damage smoothness which combines the benefits of avoidance with effective health.</p>
 			<p><b>Lower is better.</b> This represents the % of your HP to expect in a 6-second burst window based on the encounter settings.</p>
-		`);
-		setResultTooltip('results-sim-cod', `
+		`,
+		);
+		setResultTooltip(
+			'results-sim-cod',
+			`
 			<p>Chance of Death</p>
 			<p>The percentage of iterations in which the player died, based on incoming damage from the enemies and incoming healing (see the <b>Incoming HPS</b> and <b>Healing Cadence</b> options).</p>
 			<p>DTPS alone is not a good measure of tankiness because it is not affected by health and ignores damage spikes. Chance of Death attempts to capture overall tankiness.</p>
-		`);
+		`,
+		);
 
 		if (!this.simUI.isIndividualSim()) {
 			Array.from(this.simUI.resultsViewer.contentElem.getElementsByClassName('results-sim-reference-diff-separator')).forEach(e => e.remove());
@@ -199,7 +207,7 @@ export class RaidSimResultsManager {
 			this.referenceChangeEmitter.emit(TypedEvent.nextEventID());
 			this.updateReference();
 		});
-		Tooltip.getOrCreateInstance(simReferenceSetButton, {title: "Use as reference"});
+		Tooltip.getOrCreateInstance(simReferenceSetButton, { title: 'Use as reference' });
 
 		const simReferenceSwapButton = this.simUI.resultsViewer.contentElem.getElementsByClassName('results-sim-reference-swap')[0] as HTMLSpanElement;
 		simReferenceSwapButton.addEventListener('click', event => {
@@ -220,7 +228,7 @@ export class RaidSimResultsManager {
 			});
 		});
 		tippy(simReferenceSwapButton, {
-			'content': 'Swap reference with current',
+			content: 'Swap reference with current',
 			ignoreAttributes: true,
 		});
 
@@ -231,7 +239,7 @@ export class RaidSimResultsManager {
 			this.updateReference();
 		});
 		tippy(simReferenceDeleteButton, {
-			'content': 'Remove reference',
+			content: 'Remove reference',
 			ignoreAttributes: true,
 		});
 
@@ -242,12 +250,12 @@ export class RaidSimResultsManager {
 		if (!this.referenceData || !this.currentData) {
 			// Remove references
 			this.simUI.resultsViewer.contentElem.querySelector('.results-sim-reference')?.classList.remove('has-reference');
-			this.simUI.resultsViewer.contentElem.querySelectorAll('.results-reference').forEach((e) => e.classList.add('hide'));
+			this.simUI.resultsViewer.contentElem.querySelectorAll('.results-reference').forEach(e => e.classList.add('hide'));
 			return;
 		} else {
 			// Add references references
 			this.simUI.resultsViewer.contentElem.querySelector('.results-sim-reference')?.classList.add('has-reference');
-			this.simUI.resultsViewer.contentElem.querySelectorAll('.results-reference').forEach((e) => e.classList.remove('hide'));
+			this.simUI.resultsViewer.contentElem.querySelectorAll('.results-reference').forEach(e => e.classList.remove('hide'));
 		}
 
 		this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['dps']} .results-reference-diff`, res => res.raidMetrics.dps, 2);
@@ -256,13 +264,28 @@ export class RaidSimResultsManager {
 			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['dpasp']} .results-reference-diff`, res => res.getPlayers()[0]!.dpasp, 2);
 			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['tto']} .results-reference-diff`, res => res.getPlayers()[0]!.tto, 2);
 			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['tps']} .results-reference-diff`, res => res.getPlayers()[0]!.tps, 2);
-			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['dtps']} .results-reference-diff`, res => res.getPlayers()[0]!.dtps, 2, true);
+			this.formatToplineResult(
+				`.${RaidSimResultsManager.resultMetricClasses['dtps']} .results-reference-diff`,
+				res => res.getPlayers()[0]!.dtps,
+				2,
+				true,
+			);
 			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['tmi']} .results-reference-diff`, res => res.getPlayers()[0]!.tmi, 2, true);
-			this.formatToplineResult(`.${RaidSimResultsManager.resultMetricClasses['cod']} .results-reference-diff`, res => res.getPlayers()[0]!.chanceOfDeath, 1, true);
+			this.formatToplineResult(
+				`.${RaidSimResultsManager.resultMetricClasses['cod']} .results-reference-diff`,
+				res => res.getPlayers()[0]!.chanceOfDeath,
+				1,
+				true,
+			);
 		}
 	}
 
-	private formatToplineResult(querySelector: string, getMetrics: (result: SimResult) => DistributionMetricsProto | number, precision: number, lowerIsBetter?: boolean) {
+	private formatToplineResult(
+		querySelector: string,
+		getMetrics: (result: SimResult) => DistributionMetricsProto | number,
+		precision: number,
+		lowerIsBetter?: boolean,
+	) {
 		const elem = this.simUI.resultsViewer.contentElem.querySelector(querySelector) as HTMLSpanElement;
 		if (!elem) {
 			return;
@@ -299,7 +322,7 @@ export class RaidSimResultsManager {
 			significance_str = `Difference is not significantly different (Z = ${z.toFixed(3)}).`;
 		}
 		tippy(elem, {
-			'content': significance_str,
+			content: significance_str,
 			ignoreAttributes: true,
 		});
 
@@ -364,7 +387,7 @@ export class RaidSimResultsManager {
 				}).outerHTML;
 
 				// Hide dpasp if it's zero.
-				let dpaspContent = this.buildResultsLine({
+				const dpaspContent = this.buildResultsLine({
 					average: dpaspMetrics.avg,
 					stdev: dpaspMetrics.stdev,
 					classes: this.getResultsLineClasses('dpasp'),
@@ -453,23 +476,25 @@ export class RaidSimResultsManager {
 	}
 
 	private static getResultsLineClasses(metric: keyof ResultMetrics): string {
-		let classes = [this.resultMetricClasses[metric]];
-		if (this.resultMetricCategories[metric])
-			classes.push(this.metricsClasses[this.resultMetricCategories[metric]]);
+		const classes = [this.resultMetricClasses[metric]];
+		if (this.resultMetricCategories[metric]) classes.push(this.metricsClasses[this.resultMetricCategories[metric]]);
 
 		return classes.join(' ');
 	}
 
 	private static buildResultsLine(args: ResultsLineArgs): HTMLElement {
-		let resultsFragment = document.createElement('fragment');
+		const resultsFragment = document.createElement('fragment');
 		resultsFragment.innerHTML = `
 			<div class="results-metric ${args.classes}">
 				<span class="topline-result-avg">${args.average.toFixed(2)}</span>
-				${args.stdev ? `
+				${
+					args.stdev
+						? `
 					<span class="topline-result-stdev">
 						(<i class="fas fa-plus-minus fa-xs"></i>${args.stdev.toFixed()})
-					</span>` : ''
-			}
+					</span>`
+						: ''
+				}
 				<div class="results-reference hide">
 					<span class="results-reference-diff"></span> vs reference
 				</div>
@@ -478,5 +503,4 @@ export class RaidSimResultsManager {
 
 		return resultsFragment.children[0] as HTMLElement;
 	}
-
 }

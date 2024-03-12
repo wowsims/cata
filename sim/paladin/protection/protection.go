@@ -29,10 +29,10 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 	prot := &ProtectionPaladin{
 		Paladin: paladin.NewPaladin(character, options.TalentsString),
 		Options: protOptions.Options,
-		Seal:    protOptions.Options.Seal,
+		Seal:    protOptions.Options.ClassOptions.Seal,
 	}
 
-	prot.PaladinAura = protOptions.Options.Aura
+	prot.PaladinAura = protOptions.Options.ClassOptions.Aura
 
 	prot.HasGlyphAS = prot.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfAvengerSShield)
 
@@ -71,7 +71,7 @@ func (prot *ProtectionPaladin) Initialize() {
 	prot.Paladin.Initialize()
 	prot.ActivateRighteousFury()
 
-	if prot.Options.UseAvengingWrath {
+	if prot.Options.ClassOptions.UseAvengingWrath {
 		prot.RegisterAvengingWrathCD()
 	}
 }

@@ -1,3 +1,4 @@
+import { ResourceType } from '../proto/api.js';
 import {
 	ArmorType,
 	Class,
@@ -14,7 +15,6 @@ import {
 	RaidFilterOption,
 	SourceFilterOption,
 } from '../proto/ui.js';
-import { ResourceType } from '../proto/api.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
 	[ArmorType.ArmorTypeUnknown, 'Unknown'],
@@ -85,7 +85,7 @@ export const classNames: Map<Class, string> = new Map([
 	[Class.ClassShaman, 'Shaman'],
 	[Class.ClassWarlock, 'Warlock'],
 	[Class.ClassWarrior, 'Warrior'],
-	[Class.ClassDeathknight, 'Death Knight'],
+	[Class.ClassDeathKnight, 'Death Knight'],
 ]);
 
 export function nameToClass(name: string): Class {

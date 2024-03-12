@@ -1,121 +1,122 @@
 @mixin theme-color($base-color, $opacity, $background-image-url) {
-  $background-color-hex: mix(black, $base-color, 90%);
-  $hover-color: shade-color($base-color, $btn-hover-bg-shade-amount);
-  $interact-color: shade-color($base-color, $btn-active-bg-shade-amount);
-  $text-color: color-contrast($base-color);
+	$background-color-hex: mix(black, $base-color, 90%);
+	$hover-color: shade-color($base-color, $btn-hover-bg-shade-amount);
+	$interact-color: shade-color($base-color, $btn-active-bg-shade-amount);
+	$text-color: color-contrast($base-color);
 
-  // Used to style the SimUI background
-  --theme-background-color:   #{red($background-color-hex), green($background-color-hex), blue($background-color-hex)};
-  --theme-background-image:   url(#{$background-image-url});
-  --theme-background-opacity: #{$opacity};
+	// Used to style the SimUI background
+	--theme-background-color: #{red($background-color-hex), green($background-color-hex), blue($background-color-hex)};
+	--theme-background-image: url(#{$background-image-url});
+	--theme-background-opacity: #{$opacity};
 
-  // Defines the text color of components using the primary color as a background
-  --theme-component-text-color: #{color-contrast($base-color)};
+	// Defines the text color of components using the primary color as a background
+	--theme-component-text-color: #{color-contrast($base-color)};
 
-  // Override Bootstrap primary variables
-  --bs-primary: #{$base-color};
-  --bs-primary-rgb: #{to-rgb($base-color)};
+	// Override Bootstrap primary variables
+	--bs-primary: #{$base-color};
+	--bs-primary-rgb: #{to-rgb($base-color)};
 
-  // Custom variants we use for styling some components
-  --bs-primary-dampened: #{mix(black, $base-color, 75%)};
+	// Custom variants we use for styling some components
+	--bs-primary-dampened: #{mix(black, $base-color, 75%)};
 
-  .btn-primary {
-    --bs-btn-bg:                    #{$base-color};
-    --bs-btn-border-color:          #{$base-color};
-    --bs-btn-color:                 #{$text-color};
+	.btn-primary {
+		--bs-btn-bg: #{$base-color};
+		--bs-btn-border-color: #{$base-color};
+		--bs-btn-color: #{$text-color};
 
-    --bs-btn-hover-bg:              #{$hover-color};
-    --bs-btn-hover-border-color:    #{$hover-color};
-    --bs-btn-hover-color:           #{$text-color};
+		--bs-btn-hover-bg: #{$hover-color};
+		--bs-btn-hover-border-color: #{$hover-color};
+		--bs-btn-hover-color: #{$text-color};
 
-    --bs-btn-active-bg:             #{$interact-color};
-    --bs-btn-active-border-color:   #{$interact-color};
-    --bs-btn-active-color:          #{$text-color};
+		--bs-btn-active-bg: #{$interact-color};
+		--bs-btn-active-border-color: #{$interact-color};
+		--bs-btn-active-color: #{$text-color};
 
-    --bs-btn-disabled-bg:           #{mix(gray, $base-color, 50%)};
-    --bs-btn-disabled-border-color: #{mix(gray, $base-color, 50%)};
-    --bs-btn-disabled-color:        #{$text-color};
-  }
+		--bs-btn-disabled-bg: #{mix(gray, $base-color, 50%)};
+		--bs-btn-disabled-border-color: #{mix(gray, $base-color, 50%)};
+		--bs-btn-disabled-color: #{$text-color};
+	}
 
-  .btn-outline-primary {
-    --bs-btn-border-color:          #{$base-color};
-    --bs-btn-color:                 #{$base-color};
+	.btn-outline-primary {
+		--bs-btn-border-color: #{$base-color};
+		--bs-btn-color: #{$base-color};
 
-    --bs-btn-hover-bg:              #{$hover-color};
-    --bs-btn-hover-border-color:    #{$hover-color};
-    --bs-btn-hover-color:           #{$text-color};
+		--bs-btn-hover-bg: #{$hover-color};
+		--bs-btn-hover-border-color: #{$hover-color};
+		--bs-btn-hover-color: #{$text-color};
 
-    --bs-btn-active-bg:             #{$interact-color};
-    --bs-btn-active-border-color:   #{$interact-color};
-    --bs-btn-active-color:          #{$text-color};
+		--bs-btn-active-bg: #{$interact-color};
+		--bs-btn-active-border-color: #{$interact-color};
+		--bs-btn-active-color: #{$text-color};
 
-    --bs-btn-disabled-bg:           #{mix(gray, $base-color, 50%)};
-    --bs-btn-disabled-border-color: #{mix(gray, $base-color, 50%)};
-    --bs-btn-disabled-color:        #{$text-color};
-  }
+		--bs-btn-disabled-bg: #{mix(gray, $base-color, 50%)};
+		--bs-btn-disabled-border-color: #{mix(gray, $base-color, 50%)};
+		--bs-btn-disabled-color: #{$text-color};
+	}
 
-  .modal {
-    --bs-modal-border-color: #{$base-color};
-  }
+	.modal {
+		--bs-modal-border-color: #{$base-color};
+	}
 
-  // These are custom variables but parsed SVGs can't use CSS vars so we need to assign them with Sass
-  --bs-form-check-box-bg-image: #{escape-svg(
-    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{$text-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>")
-  )};
-  --bs-form-check-radio-bg-image: #{escape-svg(
-    url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#{$text-color}'/></svg>")
-  )};
+	// These are custom variables but parsed SVGs can't use CSS vars so we need to assign them with Sass
+	--bs-form-check-box-bg-image: #{escape-svg(
+			url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{$text-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>")
+		)};
+	--bs-form-check-radio-bg-image: #{escape-svg(
+			url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='2' fill='#{$text-color}'/></svg>")
+		)};
 }
 
 @mixin vertical-center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 @mixin horizontal-center {
-  margin: 0;
-  position: absolute;
-  left: auto;
+	margin: 0;
+	position: absolute;
+	left: auto;
 	right: auto;
 }
 
 @mixin vertical-horizontal-center {
-  margin: 0 !important;
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
+	margin: 0 !important;
+	position: absolute !important;
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
 }
 
 @mixin vertical-bottom {
-  position: absolute;
-  bottom: 0;
+	position: absolute;
+	bottom: 0;
 }
 
 @mixin horizontal-left {
-  position: absolute;
-  left: 0;
+	position: absolute;
+	left: 0;
 }
 
 @mixin horizontal-right {
-  position: absolute;
-  right: 0;
+	position: absolute;
+	right: 0;
 }
 
 @mixin screen-vertical-horizontal-center {
-  margin: 0;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) !important;
+	margin: 0;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) !important;
 }
 
 @mixin wowhead-background-icon {
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-  cursor: pointer;
-  display: inline-block;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center !important;
+	position: relative;
+	cursor: pointer;
+	display: inline-block;
 }

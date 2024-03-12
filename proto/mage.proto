@@ -142,41 +142,57 @@ enum MageMinorGlyph {
 	GlyphOfThePenguin = 43361;
 }
 
-message Mage {
-	message Rotation {
-		// Arcane Options.
-		double missile_barrage_below_mana_percent = 15;
-		double blast_without_missile_barrage_above_mana_percent = 16;
-		double only_3_arcane_blast_stacks_below_mana_percent = 17;
-		bool use_arcane_barrage = 20;
+message MageOptions {
+	enum ArmorType {
+		NoArmor = 0;
+		MageArmor = 1;
+		MoltenArmor = 2;
+	}
+	ArmorType armor = 1;
+}
 
-		// Fire Options.
+message ArcaneMage {
+	message Rotation {
+		double missile_barrage_below_mana_percent = 1;
+		double blast_without_missile_barrage_above_mana_percent = 2;
+		double only_3_arcane_blast_stacks_below_mana_percent = 3;
+		bool use_arcane_barrage = 4;
+	}
+
+	message Options {
+		MageOptions class_options = 1;
+		int32 focus_magic_percent_uptime = 2;
+		UnitReference focus_magic_target = 3;
+	}
+	Options options = 1;
+}
+
+message FireMage {
+	message Rotation {
 		enum PrimaryFireSpell {
 			Fireball = 0;
 			FrostfireBolt = 1;
 			Scorch = 2;
 		}
-		PrimaryFireSpell primary_fire_spell = 3;
-		
-		bool maintain_improved_scorch = 4;
-
-		// Frost Options.
-		bool use_ice_lance = 18;
+		PrimaryFireSpell primary_fire_spell = 1;
+		bool maintain_improved_scorch = 2;
 	}
-	
+
 	message Options {
-		enum ArmorType {
-			NoArmor = 0;
-			MageArmor = 1;
-			MoltenArmor = 2;
-		}
-		ArmorType armor = 1;
-
-		int32 focus_magic_percent_uptime = 3;
-		UnitReference focus_magic_target = 4;
-
-		// Chance for water elemental to disobey, doing nothing rather than cast.
-		double water_elemental_disobey_chance = 7;
+		MageOptions class_options = 1;
 	}
-	Options options = 3;
+	Options options = 1;
+}
+
+message FrostMage {
+	message Rotation {
+		bool use_ice_lance = 1;
+	}
+
+	message Options {
+		MageOptions class_options = 1;
+		// Chance for water elemental to disobey, doing nothing rather than cast.
+		double water_elemental_disobey_chance = 2;
+	}
+	Options options = 1;
 }

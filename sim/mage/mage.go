@@ -1,8 +1,6 @@
 package mage
 
 import (
-	"github.com/wowsims/cata/sim/common/wotlk"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -16,28 +14,14 @@ const (
 
 var TalentTreeSizes = [3]int{30, 28, 28}
 
-func RegisterMage() {
-	core.RegisterAgentFactory(
-		proto.Player_Mage{},
-		proto.Spec_SpecMage,
-		func(character *core.Character, options *proto.Player) core.Agent {
-			return NewMage(character, options)
-		},
-		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_Mage)
-			if !ok {
-				panic("Invalid spec value for Mage!")
-			}
-			player.Spec = playerSpec
-		},
-	)
-}
-
 type Mage struct {
 	core.Character
 
-	Talents *proto.MageTalents
-	Options *proto.Mage_Options
+	Talents       *proto.MageTalents
+	Options       *proto.MageOptions
+	ArcaneOptions *proto.ArcaneMage_Options
+	FireOptions   *proto.FireMage_Options
+	FrostOptions  *proto.FrostMage_Options
 
 	waterElemental *WaterElemental
 	mirrorImage    *MirrorImage
@@ -131,25 +115,24 @@ func (mage *Mage) Initialize() {
 	mage.registerMirrorImageCD()
 	mage.registerBlastWaveSpell()
 	mage.registerDragonsBreathSpell()
+	mage.registerSummonWaterElementalCD()
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
 }
 
-func NewMage(character *core.Character, options *proto.Player) *Mage {
-	mageOptions := options.GetMage()
-
+func NewMage(character *core.Character, options *proto.Player, mageOptions *proto.MageOptions) *Mage {
 	mage := &Mage{
 		Character: *character,
 		Talents:   &proto.MageTalents{},
-		Options:   mageOptions.Options,
+		Options:   mageOptions,
 	}
 	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
 	mage.bonusCritDamage = .25*float64(mage.Talents.SpellPower) + .1*float64(mage.Talents.Burnout)
 	mage.EnableManaBar()
 
-	if mage.Options.Armor == proto.Mage_Options_MageArmor {
+	if mage.Options.Armor == proto.MageOptions_MageArmor {
 		mage.PseudoStats.SpiritRegenRateCasting += .5
 		if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfMageArmor) {
 			mage.PseudoStats.SpiritRegenRateCasting += .2
@@ -157,7 +140,7 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 		if mage.HasSetBonus(ItemSetKhadgarsRegalia, 2) {
 			mage.PseudoStats.SpiritRegenRateCasting += .1
 		}
-	} else if mage.Options.Armor == proto.Mage_Options_MoltenArmor {
+	} else if mage.Options.Armor == proto.MageOptions_MoltenArmor {
 		//Need to switch to spirit crit calc
 		multi := 0.35
 		if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfMoltenArmor) {
@@ -171,11 +154,6 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 
 	mage.mirrorImage = mage.NewMirrorImage()
 
-	if mage.Talents.SummonWaterElemental {
-		mage.waterElemental = mage.NewWaterElemental(mage.Options.WaterElementalDisobeyChance)
-	}
-
-	wotlk.ConstructValkyrPets(&mage.Character)
 	return mage
 }
 

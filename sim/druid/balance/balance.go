@@ -3,7 +3,6 @@ package balance
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/common/wotlk"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -37,11 +36,10 @@ func NewBalanceDruid(character *core.Character, options *proto.Player) *BalanceD
 	}
 
 	moonkin.SelfBuffs.InnervateTarget = &proto.UnitReference{}
-	if balanceOptions.Options.InnervateTarget != nil {
-		moonkin.SelfBuffs.InnervateTarget = balanceOptions.Options.InnervateTarget
+	if balanceOptions.Options.ClassOptions.InnervateTarget != nil {
+		moonkin.SelfBuffs.InnervateTarget = balanceOptions.Options.ClassOptions.InnervateTarget
 	}
 
-	wotlk.ConstructValkyrPets(&moonkin.Character)
 	return moonkin
 }
 

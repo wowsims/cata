@@ -8,23 +8,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func RegisterRogue() {
-	core.RegisterAgentFactory(
-		proto.Player_Rogue{},
-		proto.Spec_SpecRogue,
-		func(character *core.Character, options *proto.Player) core.Agent {
-			return NewRogue(character, options)
-		},
-		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_Rogue)
-			if !ok {
-				panic("Invalid spec value for Rogue!")
-			}
-			player.Spec = playerSpec
-		},
-	)
-}
-
 const (
 	SpellFlagBuilder     = core.SpellFlagAgentReserved2
 	SpellFlagFinisher    = core.SpellFlagAgentReserved3
@@ -38,8 +21,11 @@ const RogueBleedTag = "RogueBleed"
 type Rogue struct {
 	core.Character
 
-	Talents *proto.RogueTalents
-	Options *proto.Rogue_Options
+	Talents              *proto.RogueTalents
+	Options              *proto.RogueOptions
+	AssassinationOptions *proto.AssassinationRogue_Options
+	CombatOptions        *proto.CombatRogue_Options
+	SubtletyOptions      *proto.SubtletyRogue_Options
 
 	bleedCategory *core.ExclusiveCategory
 
@@ -202,15 +188,12 @@ func (rogue *Rogue) SpellCritMultiplier() float64 {
 	return rogue.Character.SpellCritMultiplier(primaryModifier, 0)
 }
 
-func NewRogue(character *core.Character, options *proto.Player) *Rogue {
-	rogueOptions := options.GetRogue()
-
+func NewRogue(character *core.Character, talents string) *Rogue {
 	rogue := &Rogue{
 		Character: *character,
 		Talents:   &proto.RogueTalents{},
-		Options:   rogueOptions.Options,
 	}
-	core.FillTalentsProto(rogue.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
 	// Passive rogue threat reduction: https://wotlk.wowhead.com/spell=21184/rogue-passive-dnd
 	rogue.PseudoStats.ThreatMultiplier *= 0.71

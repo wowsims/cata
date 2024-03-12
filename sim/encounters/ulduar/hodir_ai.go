@@ -469,7 +469,7 @@ func (ai *HodirAI) ExecuteCustomRotation(sim *core.Simulation) {
 						if character.PrimaryTalentTree == 2 {
 							spriests = append(spriests, raidIndex)
 						}
-					case proto.Class_ClassDeathknight:
+					case proto.Class_ClassDeathKnight:
 						dks = append(dks, raidIndex)
 					}
 				}

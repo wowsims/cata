@@ -1,17 +1,16 @@
-import { OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
-import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
 import { Player, UnitMetadata } from '../../player.js';
+import { APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
+import { ActionID,OtherAction, UnitReference, UnitReference_Type as UnitType  } from '../../proto/common.js';
+import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
+import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
 import { bucket } from '../../utils.js';
-import { AdaptiveStringPicker } from '../string_picker.js';
-import { NumberPicker, NumberPickerConfig } from '../number_picker.js';
-import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../dropdown_picker.js';
-import { UnitPicker, UnitPickerConfig, UnitValue } from '../unit_picker.js';
-import { Input, InputConfig } from '../input.js';
-import { ActionID } from '../../proto/common.js';
 import { BooleanPicker } from '../boolean_picker.js';
-import { APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
-import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
+import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../dropdown_picker.js';
+import { Input, InputConfig } from '../input.js';
+import { NumberPicker, NumberPickerConfig } from '../number_picker.js';
+import { AdaptiveStringPicker } from '../string_picker.js';
+import { UnitPicker, UnitPickerConfig, UnitValue } from '../unit_picker.js';
 
 export type ACTION_ID_SET = 'auras' | 'stackable_auras' | 'icd_auras' | 'exclusive_effect_auras' | 'spells' | 'castable_spells' | 'channel_spells' | 'dot_spells' | 'shield_spells' | 'non_instant_spells';
 
@@ -21,7 +20,7 @@ const actionIdSets: Record<ACTION_ID_SET, {
 }> = {
 	'auras': {
 		defaultLabel: 'Aura',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getAuras().map(actionId => {
 				return {
 					value: actionId.id,
@@ -31,7 +30,7 @@ const actionIdSets: Record<ACTION_ID_SET, {
 	},
 	'stackable_auras': {
 		defaultLabel: 'Aura',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getAuras().filter(aura => aura.data.maxStacks > 0).map(actionId => {
 				return {
 					value: actionId.id,
@@ -41,7 +40,7 @@ const actionIdSets: Record<ACTION_ID_SET, {
 	},
 	'icd_auras': {
 		defaultLabel: 'Aura',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getAuras().filter(aura => aura.data.hasIcd).map(actionId => {
 				return {
 					value: actionId.id,
@@ -51,7 +50,7 @@ const actionIdSets: Record<ACTION_ID_SET, {
 	},
 	'exclusive_effect_auras': {
 		defaultLabel: 'Aura',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getAuras().filter(aura => aura.data.hasExclusiveEffect).map(actionId => {
 				return {
 					value: actionId.id,
@@ -62,7 +61,7 @@ const actionIdSets: Record<ACTION_ID_SET, {
 	// Used for non categorized lists
 	'spells': {
 		defaultLabel: 'Spell',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getSpells().filter(spell => spell.data.isCastable).map(actionId => {
 				return {
 					value: actionId.id,
@@ -72,7 +71,7 @@ const actionIdSets: Record<ACTION_ID_SET, {
 	},
 	'castable_spells': {
 		defaultLabel: 'Spell',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			const castableSpells = metadata.getSpells().filter(spell => spell.data.isCastable);
 
 			// Split up non-cooldowns and cooldowns into separate sections for easier browsing.
@@ -132,7 +131,7 @@ const actionIdSets: Record<ACTION_ID_SET, {
 	},
 	'non_instant_spells': {
 		defaultLabel: 'Non-instant Spell',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getSpells().filter(spell => spell.data.isCastable && spell.data.hasCastTime).map(actionId => {
 				return {
 					value: actionId.id,
@@ -142,7 +141,7 @@ const actionIdSets: Record<ACTION_ID_SET, {
 	},
 	'channel_spells': {
 		defaultLabel: 'Channeled Spell',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getSpells().filter(spell => spell.data.isCastable && spell.data.isChanneled).map(actionId => {
 				return {
 					value: actionId.id,
@@ -152,7 +151,7 @@ const actionIdSets: Record<ACTION_ID_SET, {
 	},
 	'dot_spells': {
 		defaultLabel: 'DoT Spell',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getSpells().filter(spell => spell.data.hasDot).map(actionId => {
 				return {
 					value: actionId.id,
@@ -162,7 +161,7 @@ const actionIdSets: Record<ACTION_ID_SET, {
 	},
 	'shield_spells': {
 		defaultLabel: 'Shield Spell',
-		getActionIDs: async (metadata) => {
+		getActionIDs: async metadata => {
 			return metadata.getSpells().filter(spell => spell.data.hasShield).map(actionId => {
 				return {
 					value: actionId.id,
@@ -234,7 +233,7 @@ const unitSets: Record<UNIT_SET, {
 	getUnits: (player: Player<any>) => Array<UnitReference|undefined>,
 }> = {
 	'aura_sources': {
-		getUnits: (player) => {
+		getUnits: player => {
 			return [
 				undefined,
 				player.getPetMetadatas().asList().map((petMetadata, i) => UnitReference.create({type: UnitType.Pet, index: i, owner: UnitReference.create({type: UnitType.Self})})),
@@ -245,7 +244,7 @@ const unitSets: Record<UNIT_SET, {
 	},
 	'aura_sources_targets_first': {
 		targetUI: true,
-		getUnits: (player) => {
+		getUnits: player => {
 			return [
 				undefined,
 				player.sim.encounter.targetsMetadata.asList().map((targetMetadata, i) => UnitReference.create({type: UnitType.Target, index: i})),
@@ -256,7 +255,7 @@ const unitSets: Record<UNIT_SET, {
 	},
 	'targets': {
 		targetUI: true,
-		getUnits: (player) => {
+		getUnits: player => {
 			return [
 				undefined,
 				player.sim.encounter.targetsMetadata.asList().map((targetMetadata, i) => UnitReference.create({type: UnitType.Target, index: i})),
@@ -312,7 +311,6 @@ export class APLUnitPicker extends UnitPicker<Player<any>> {
 			if (player) {
 				return {
 					value: ref,
-					//color: player.getClassColor(),
 					iconUrl: player.getSpecIcon(),
 					text: `Player ${ref.index + 1}`,
 				};
@@ -517,7 +515,7 @@ export function stringFieldConfig(field: string, options?: Partial<APLPickerBuil
 }
 
 export function runeTypeFieldConfig(field: string, includeDeath: boolean): APLPickerBuilderFieldConfig<any, any> {
-	let values = [
+	const values = [
 		{ value: APLValueRuneType.RuneBlood, label: 'Blood' },
 		{ value: APLValueRuneType.RuneFrost, label: 'Frost' },
 		{ value: APLValueRuneType.RuneUnholy, label: 'Unholy' },
@@ -560,7 +558,7 @@ export function runeSlotFieldConfig(field: string): APLPickerBuilderFieldConfig<
 }
 
 export function rotationTypeFieldConfig(field: string): APLPickerBuilderFieldConfig<any, any> {
-	let values = [
+	const values = [
 		{ value: FeralDruid_Rotation_AplType.SingleTarget, label: 'Single Target' },
 		{ value: FeralDruid_Rotation_AplType.Aoe, label: 'AOE' },
 	]

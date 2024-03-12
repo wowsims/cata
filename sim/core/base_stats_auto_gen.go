@@ -28,7 +28,7 @@ var CritPerAgiMaxLevel = map[proto.Class]float64{
 	proto.Class_ClassHunter:      0.0120,
 	proto.Class_ClassRogue:       0.0120,
 	proto.Class_ClassPriest:      0.0192,
-	proto.Class_ClassDeathknight: 0.0160,
+	proto.Class_ClassDeathKnight: 0.0160,
 	proto.Class_ClassShaman:      0.0120,
 	proto.Class_ClassMage:        0.0196,
 	proto.Class_ClassWarlock:     0.0198,
@@ -61,7 +61,7 @@ var ExtraClassBaseStats = map[proto.Class]stats.Stats{
 		stats.SpellCrit: 3.1765 * CritRatingPerCritChance,
 		stats.MeleeCrit: 3.1765 * CritRatingPerCritChance,
 	},
-	proto.Class_ClassDeathknight: {
+	proto.Class_ClassDeathKnight: {
 		stats.Mana:      0.0000,
 		stats.SpellCrit: 0.0000 * CritRatingPerCritChance,
 		stats.MeleeCrit: 0.0000 * CritRatingPerCritChance,

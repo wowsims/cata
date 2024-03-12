@@ -1,24 +1,18 @@
+import { Tooltip } from 'bootstrap';
+
 import { Component } from '../core/components/component';
 import { IconEnumPicker } from '../core/components/icon_enum_picker';
-
-import { memeSpecs } from '../core/launched_sims';
-import { EventID, TypedEvent } from '../core/typed_event';
-
-import { Class, Spec } from '../core/proto/common';
+import { PlayerClasses } from '../core/player_classes';
+import { Paladin } from '../core/player_classes/paladin';
+import { PlayerSpec } from '../core/player_spec';
+import { Class as ClassProto } from '../core/proto/common';
 import { Blessings } from '../core/proto/paladin';
 import { BlessingsAssignments } from '../core/proto/ui';
 import { ActionId } from '../core/proto_utils/action_id';
-import {
-	makeDefaultBlessings,
-	classColors,
-	naturalSpecOrder,
-	specNames,
-	titleIcons,
-} from '../core/proto_utils/utils';
-
-import { RaidSimUI } from './raid_sim_ui';
+import { makeDefaultBlessings } from '../core/proto_utils/utils';
+import { EventID, TypedEvent } from '../core/typed_event';
 import { implementedSpecs } from './presets';
-import { Tooltip } from 'bootstrap';
+import { RaidSimUI } from './raid_sim_ui';
 
 const MAX_PALADINS = 4;
 
@@ -35,48 +29,54 @@ export class BlessingsPicker extends Component {
 		this.simUI = raidSimUI;
 		this.assignments = BlessingsAssignments.clone(makeDefaultBlessings(4));
 
-		const specs = naturalSpecOrder
-			.filter(spec => implementedSpecs.includes(spec))
-			.filter(spec => !memeSpecs.includes(spec));
+		const playerSpecs = PlayerClasses.naturalOrder
+			.map(playerClass => Object.values(playerClass.specs))
+			.flat()
+			.filter(spec => implementedSpecs.includes(spec.specID));
 		const paladinIndexes = [...Array(MAX_PALADINS).keys()];
 
-		specs.map(spec => {
+		playerSpecs.map(playerSpec => {
 			const row = document.createElement('div');
 			row.classList.add('blessings-picker-row');
 			this.rootElem.appendChild(row);
 
-			row.append(this.buildSpecIcon(spec));
+			row.append(this.buildSpecIcon(playerSpec));
 
 			const container = document.createElement('div');
 			container.classList.add('blessings-picker-container');
 			row.appendChild(container);
 
 			paladinIndexes.forEach(paladinIdx => {
-				if (!this.pickers[paladinIdx])
-					this.pickers.push([]);
+				if (!this.pickers[paladinIdx]) this.pickers.push([]);
 
 				const blessingPicker = new IconEnumPicker(container, this, {
 					extraCssClasses: ['blessing-picker'],
 					numColumns: 1,
 					values: [
-						{ color: classColors[Class.ClassPaladin], value: Blessings.BlessingUnknown },
+						{ color: Paladin.hexColor, value: Blessings.BlessingUnknown },
 						{ actionId: ActionId.fromSpellId(25898), value: Blessings.BlessingOfKings },
 						{ actionId: ActionId.fromSpellId(48934), value: Blessings.BlessingOfMight },
-						{ actionId: ActionId.fromSpellId(48938), value: Blessings.BlessingOfWisdom },
-						{ actionId: ActionId.fromSpellId(25899), value: Blessings.BlessingOfSanctuary },
+						{
+							actionId: ActionId.fromSpellId(48938),
+							value: Blessings.BlessingOfWisdom,
+						},
+						{
+							actionId: ActionId.fromSpellId(25899),
+							value: Blessings.BlessingOfSanctuary,
+						},
 					],
 					equals: (a: Blessings, b: Blessings) => a == b,
 					zeroValue: Blessings.BlessingUnknown,
 					enableWhen: (_picker: BlessingsPicker) => {
-						const numPaladins = Math.min(this.simUI.getClassCount(Class.ClassPaladin), MAX_PALADINS);
+						const numPaladins = Math.min(this.simUI.getClassCount(ClassProto.ClassPaladin), MAX_PALADINS);
 						return paladinIdx < numPaladins;
 					},
 					changedEvent: (picker: BlessingsPicker) => picker.changeEmitter,
-					getValue: (picker: BlessingsPicker) => picker.assignments.paladins[paladinIdx]?.blessings[spec] || Blessings.BlessingUnknown,
+					getValue: (picker: BlessingsPicker) => picker.assignments.paladins[paladinIdx]?.blessings[playerSpec.specID] || Blessings.BlessingUnknown,
 					setValue: (eventID: EventID, picker: BlessingsPicker, newValue: number) => {
-						const currentValue = picker.assignments.paladins[paladinIdx].blessings[spec];
+						const currentValue = picker.assignments.paladins[paladinIdx].blessings[playerSpec.specID];
 						if (currentValue != newValue) {
-							picker.assignments.paladins[paladinIdx].blessings[spec] = newValue;
+							picker.assignments.paladins[paladinIdx].blessings[playerSpec.specID] = newValue;
 							this.changeEmitter.emit(eventID);
 						}
 					},
@@ -88,7 +88,7 @@ export class BlessingsPicker extends Component {
 			return row;
 		});
 
-		this.updatePickers()
+		this.updatePickers();
 		this.simUI.compChangeEmitter.on(_eventID => this.updatePickers());
 	}
 
@@ -98,19 +98,19 @@ export class BlessingsPicker extends Component {
 		}
 	}
 
-	private buildSpecIcon(spec: Spec): HTMLElement {
-		let fragment = document.createElement('fragment');
+	private buildSpecIcon(spec: PlayerSpec<any>): HTMLElement {
+		const fragment = document.createElement('fragment');
 		fragment.innerHTML = `
 			<div class="blessings-picker-spec">
 				<img
-					src="${titleIcons[spec]}"
+					src="${spec.getIcon('medium')}"
 					class="blessings-spec-icon"
 				/>
 			</div>
 		`;
 
 		const icon = fragment.querySelector('.blessings-spec-icon') as HTMLElement;
-		Tooltip.getOrCreateInstance(icon, { title: specNames[spec]});
+		Tooltip.getOrCreateInstance(icon, { title: spec.friendlyName });
 
 		return fragment.children[0] as HTMLElement;
 	}

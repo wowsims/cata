@@ -1,34 +1,13 @@
-import {
-	ArmorType,
-	ItemSlot,
-} from '../proto/common.js';
-import {
-	RaidFilterOption,
-	SourceFilterOption,
-	UIItem_FactionRestriction,
-} from '../proto/ui.js';
-import {
-	armorTypeNames,
-	raidNames,
-	rangedWeaponTypeNames,
-	sourceNames,
-	weaponTypeNames,
-} from '../proto_utils/names.js';
-import {
-	classToEligibleRangedWeaponTypes,
-	classToEligibleWeaponTypes,
-	classToMaxArmorType,
-	isDualWieldSpec,
-} from '../proto_utils/utils.js';
 import { Player } from '../player.js';
+import { ItemSlot } from '../proto/common.js';
+import { RaidFilterOption, SourceFilterOption, UIItem_FactionRestriction } from '../proto/ui.js';
+import { armorTypeNames, raidNames, rangedWeaponTypeNames, sourceNames, weaponTypeNames } from '../proto_utils/names.js';
 import { Sim } from '../sim.js';
 import { EventID } from '../typed_event.js';
-import { getEnumValues } from '../utils.js';
-
-import { BooleanPicker } from './boolean_picker.js';
-import { NumberPicker } from './number_picker.js';
 import { BaseModal } from './base_modal.js';
+import { BooleanPicker } from './boolean_picker.js';
 import { EnumPicker } from './enum_picker.js';
+import { NumberPicker } from './number_picker.js';
 
 const factionRestrictionsToLabels: Record<UIItem_FactionRestriction, string> = {
 	[UIItem_FactionRestriction.UNSPECIFIED]: 'None',
@@ -44,11 +23,7 @@ export class FiltersMenu extends BaseModal {
 
 		new EnumPicker(section, player.sim, {
 			label: 'Faction Restrictions',
-			values: [
-				UIItem_FactionRestriction.UNSPECIFIED,
-				UIItem_FactionRestriction.ALLIANCE_ONLY,
-				UIItem_FactionRestriction.HORDE_ONLY
-			].map((restriction) => {
+			values: [UIItem_FactionRestriction.UNSPECIFIED, UIItem_FactionRestriction.ALLIANCE_ONLY, UIItem_FactionRestriction.HORDE_ONLY].map(restriction => {
 				return {
 					name: factionRestrictionsToLabels[restriction],
 					value: restriction,
@@ -106,13 +81,11 @@ export class FiltersMenu extends BaseModal {
 		});
 
 		if (Player.ARMOR_SLOTS.includes(slot)) {
-			const maxArmorType = classToMaxArmorType[player.getClass()];
-			if (maxArmorType >= ArmorType.ArmorTypeLeather) {
+			const armorTypes = player.getPlayerClass().armorTypes;
+
+			if (armorTypes.length > 1) {
 				const section = this.newSection('Armor Type');
 				section.classList.add('filters-menu-section-bool-list');
-				const armorTypes = (getEnumValues(ArmorType) as Array<ArmorType>)
-					.filter(at => at != ArmorType.ArmorTypeUnknown)
-					.filter(at => at <= maxArmorType);
 
 				armorTypes.forEach(armorType => {
 					new BooleanPicker<Sim>(section, player.sim, {
@@ -135,7 +108,7 @@ export class FiltersMenu extends BaseModal {
 		} else if (Player.WEAPON_SLOTS.includes(slot)) {
 			const weaponTypeSection = this.newSection('Weapon Type');
 			weaponTypeSection.classList.add('filters-menu-section-bool-list');
-			const weaponTypes = classToEligibleWeaponTypes[player.getClass()].map(ewt => ewt.weaponType);
+			const weaponTypes = player.getPlayerClass().weaponTypes.map(ewt => ewt.weaponType);
 
 			weaponTypes.forEach(weaponType => {
 				new BooleanPicker<Sim>(weaponTypeSection, player.sim, {
@@ -183,7 +156,7 @@ export class FiltersMenu extends BaseModal {
 					sim.setFilters(eventID, filters);
 				},
 			});
-			if (isDualWieldSpec(player.spec)) {
+			if (player.getSpec().canDualWield) {
 				new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
 					label: 'Min OH Speed',
 					//labelTooltip: 'Minimum speed for the offhand weapon. If 0, no minimum value is applied.',
@@ -212,14 +185,14 @@ export class FiltersMenu extends BaseModal {
 				});
 			}
 		} else if (slot == ItemSlot.ItemSlotRanged) {
-			const rangedWeaponTypes = classToEligibleRangedWeaponTypes[player.getClass()];
-			if (rangedWeaponTypes.length <= 1) {
+			const rangedweapontypes = player.getPlayerClass().rangedWeaponTypes;
+			if (rangedweapontypes.length <= 1) {
 				return;
 			}
 			const rangedWeaponTypeSection = this.newSection('Ranged Weapon Type');
 			rangedWeaponTypeSection.classList.add('filters-menu-section-bool-list');
 
-			rangedWeaponTypes.forEach(rangedWeaponType => {
+			rangedweapontypes.forEach(rangedWeaponType => {
 				new BooleanPicker<Sim>(rangedWeaponTypeSection, player.sim, {
 					label: rangedWeaponTypeNames.get(rangedWeaponType),
 					inline: true,

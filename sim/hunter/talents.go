@@ -732,7 +732,7 @@ func (hunter *Hunter) applySniperTraining() {
 		return
 	}
 
-	uptime := hunter.Options.SniperTrainingUptime
+	uptime := hunter.SurvivalOptions.SniperTrainingUptime
 	if uptime <= 0 {
 		return
 	}

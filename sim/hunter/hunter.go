@@ -12,28 +12,14 @@ var TalentTreeSizes = [3]int{26, 27, 28}
 
 const ThoridalTheStarsFuryItemID = 34334
 
-func RegisterHunter() {
-	core.RegisterAgentFactory(
-		proto.Player_Hunter{},
-		proto.Spec_SpecHunter,
-		func(character *core.Character, options *proto.Player) core.Agent {
-			return NewHunter(character, options)
-		},
-		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_Hunter)
-			if !ok {
-				panic("Invalid spec value for Hunter!")
-			}
-			player.Spec = playerSpec
-		},
-	)
-}
-
 type Hunter struct {
 	core.Character
 
-	Talents *proto.HunterTalents
-	Options *proto.Hunter_Options
+	Talents             *proto.HunterTalents
+	Options             *proto.HunterOptions
+	BeastMasteryOptions *proto.BeastMasteryHunter_Options
+	MarksmanshipOptions *proto.MarksmanshipHunter_Options
+	SurvivalOptions     *proto.SurvivalHunter_Options
 
 	pet *HunterPet
 
@@ -146,13 +132,11 @@ func (hunter *Hunter) Reset(_ *core.Simulation) {
 	hunter.mayMoveAt = 0
 }
 
-func NewHunter(character *core.Character, options *proto.Player) *Hunter {
-	hunterOptions := options.GetHunter()
-
+func NewHunter(character *core.Character, options *proto.Player, hunterOptions *proto.HunterOptions) *Hunter {
 	hunter := &Hunter{
 		Character: *character,
 		Talents:   &proto.HunterTalents{},
-		Options:   hunterOptions.Options,
+		Options:   hunterOptions,
 	}
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 	hunter.EnableManaBar()
@@ -166,19 +150,19 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 
 	if hunter.HasRangedWeapon() && hunter.GetRangedWeapon().ID != ThoridalTheStarsFuryItemID {
 		switch hunter.Options.Ammo {
-		case proto.Hunter_Options_IcebladeArrow:
+		case proto.HunterOptions_IcebladeArrow:
 			hunter.AmmoDPS = 91.5
-		case proto.Hunter_Options_SaroniteRazorheads:
+		case proto.HunterOptions_SaroniteRazorheads:
 			hunter.AmmoDPS = 67.5
-		case proto.Hunter_Options_TerrorshaftArrow:
+		case proto.HunterOptions_TerrorshaftArrow:
 			hunter.AmmoDPS = 46.5
-		case proto.Hunter_Options_TimelessArrow:
+		case proto.HunterOptions_TimelessArrow:
 			hunter.AmmoDPS = 53
-		case proto.Hunter_Options_MysteriousArrow:
+		case proto.HunterOptions_MysteriousArrow:
 			hunter.AmmoDPS = 46.5
-		case proto.Hunter_Options_AdamantiteStinger:
+		case proto.HunterOptions_AdamantiteStinger:
 			hunter.AmmoDPS = 43
-		case proto.Hunter_Options_BlackflightArrow:
+		case proto.HunterOptions_BlackflightArrow:
 			hunter.AmmoDPS = 32
 		}
 		hunter.AmmoDamageBonus = hunter.AmmoDPS * rangedWeapon.SwingSpeed

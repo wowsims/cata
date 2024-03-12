@@ -1,23 +1,21 @@
-import { IndividualSimUI } from "../../individual_sim_ui";
-import { Player } from "../../player";
-import { EventID, TypedEvent } from "../../typed_event";
-
-import { EquipmentSpec, Spec, UnitStats } from "../../proto/common";
-import { SavedGearSet } from "../../proto/ui";
-import { Stats } from "../../proto_utils/stats";
-
-import { GearPicker } from "../gear_picker";
-import { SavedDataManager } from "../saved_data_manager";
-import { SimTab } from "../sim_tab";
-import { GemSummary } from "./gem_summary";
+import { IndividualSimUI } from '../../individual_sim_ui';
+import { Player } from '../../player';
+import { EquipmentSpec, UnitStats } from '../../proto/common';
+import { SavedGearSet } from '../../proto/ui';
+import { Stats } from '../../proto_utils/stats';
+import { EventID, TypedEvent } from '../../typed_event';
+import { GearPicker } from '../gear_picker';
+import { SavedDataManager } from '../saved_data_manager';
+import { SimTab } from '../sim_tab';
+import { GemSummary } from './gem_summary';
 
 export class GearTab extends SimTab {
-	protected simUI: IndividualSimUI<Spec>;
+	protected simUI: IndividualSimUI<any>;
 
 	readonly leftPanel: HTMLElement;
 	readonly rightPanel: HTMLElement;
 
-	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<Spec>) {
+	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<any>) {
 		super(parentElem, simUI, { identifier: 'gear-tab', title: 'Gear' });
 		this.simUI = simUI;
 
@@ -49,7 +47,7 @@ export class GearTab extends SimTab {
 
 	private buildSavedGearsetPicker() {
 		const savedGearManager = new SavedDataManager<Player<any>, SavedGearSet>(this.rightPanel, this.simUI.player, {
-			header: { title: "Gear Sets" },
+			header: { title: 'Gear Sets' },
 			label: 'Gear Set',
 			storageKey: this.simUI.getSavedGearStorageKey(),
 			getData: (player: Player<any>) => {

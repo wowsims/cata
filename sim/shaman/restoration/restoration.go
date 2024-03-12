@@ -24,15 +24,15 @@ func RegisterRestorationShaman() {
 }
 
 func NewRestorationShaman(character *core.Character, options *proto.Player) *RestorationShaman {
-	restoShamOptions := options.GetRestorationShaman()
+	restoOptions := options.GetRestorationShaman().Options
 
 	selfBuffs := shaman.SelfBuffs{
-		Shield: restoShamOptions.Options.Shield,
+		Shield: restoOptions.ClassOptions.Shield,
 	}
 
 	totems := &proto.ShamanTotems{}
-	if restoShamOptions.Options.Totems != nil {
-		totems = restoShamOptions.Options.Totems
+	if restoOptions.ClassOptions.Totems != nil {
+		totems = restoOptions.ClassOptions.Totems
 	}
 
 	resto := &RestorationShaman{

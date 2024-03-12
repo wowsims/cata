@@ -1,8 +1,0 @@
-// Set color variables which control the site theme.
-.mage-sim-ui {
-	@include theme-color(
-		$mage,
-		.95,
-		'/cata/assets/img/mage_background.jpg'
-	);
-}

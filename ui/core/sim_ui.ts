@@ -1,26 +1,23 @@
+import { BaseModal } from './components/base_modal.js';
 import { Component } from './components/component.js';
 import { NumberPicker } from './components/number_picker.js';
 import { ResultsViewer } from './components/results_viewer.js';
-import { SimTitleDropdown } from './components/sim_title_dropdown.js';
 import { SimHeader } from './components/sim_header';
-import { Spec } from './proto/common.js';
+import { SimTab } from './components/sim_tab.js';
+import { SimTitleDropdown } from './components/sim_title_dropdown.js';
+import { LaunchStatus, SimStatus } from './launched_sims.js';
+import { PlayerSpec } from './player_spec';
 import { ActionId } from './proto_utils/action_id.js';
-import { LaunchStatus } from './launched_sims.js';
-
 import { Sim, SimError } from './sim.js';
 import { EventID, TypedEvent } from './typed_event.js';
 
-import { SimTab } from './components/sim_tab.js';
-import { BaseModal } from './components/base_modal.js';
-
 const URLMAXLEN = 2048;
-const globalKnownIssues: Array<string> = [
-];
+const globalKnownIssues: Array<string> = [];
 
 // Config for displaying a warning to the user whenever a condition is met.
 export interface SimWarning {
-	updateOn: TypedEvent<any>,
-	getContent: () => string | Array<string>,
+	updateOn: TypedEvent<any>;
+	getContent: () => string | Array<string>;
 }
 
 export interface SimUIConfig {
@@ -29,10 +26,10 @@ export interface SimUIConfig {
 	// Scheme used for themeing on a per-class Basis or for other sims
 	cssScheme: string;
 	// The spec, if an individual sim, or null if the raid sim.
-	spec: Spec | null,
-	launchStatus: LaunchStatus,
-	knownIssues?: Array<string>,
-	noticeText?: string,
+	spec: PlayerSpec<any> | null;
+	simStatus: SimStatus;
+	knownIssues?: Array<string>;
+	noticeText?: string;
 }
 
 // Shared UI for all individual sims and the raid sim.
@@ -45,7 +42,7 @@ export abstract class SimUI extends Component {
 	// Emits when anything from the sim, raid, or encounter changes.
 	readonly changeEmitter;
 
-	readonly resultsViewer: ResultsViewer
+	readonly resultsViewer: ResultsViewer;
 	readonly simHeader: SimHeader;
 
 	readonly simContentContainer: HTMLElement;
@@ -89,35 +86,27 @@ export abstract class SimUI extends Component {
 			this.rootElem.classList.add('not-within-raid-sim');
 		}
 
-		this.changeEmitter = TypedEvent.onAny([
-			this.sim.changeEmitter,
-		], 'SimUIChange');
+		this.changeEmitter = TypedEvent.onAny([this.sim.changeEmitter], 'SimUIChange');
 
 		this.sim.crashEmitter.on((eventID: EventID, error: SimError) => this.handleCrash(error));
 
 		const updateShowDamageMetrics = () => {
-			if (this.sim.getShowDamageMetrics())
-				this.rootElem.classList.remove('hide-damage-metrics');
-			else
-				this.rootElem.classList.add('hide-damage-metrics');
+			if (this.sim.getShowDamageMetrics()) this.rootElem.classList.remove('hide-damage-metrics');
+			else this.rootElem.classList.add('hide-damage-metrics');
 		};
 		updateShowDamageMetrics();
 		this.sim.showDamageMetricsChangeEmitter.on(updateShowDamageMetrics);
 
 		const updateShowThreatMetrics = () => {
-			if (this.sim.getShowThreatMetrics())
-				this.rootElem.classList.remove('hide-threat-metrics');
-			else
-				this.rootElem.classList.add('hide-threat-metrics');
+			if (this.sim.getShowThreatMetrics()) this.rootElem.classList.remove('hide-threat-metrics');
+			else this.rootElem.classList.add('hide-threat-metrics');
 		};
 		updateShowThreatMetrics();
 		this.sim.showThreatMetricsChangeEmitter.on(updateShowThreatMetrics);
 
 		const updateShowHealingMetrics = () => {
-			if (this.sim.getShowHealingMetrics())
-				this.rootElem.classList.remove('hide-healing-metrics');
-			else
-				this.rootElem.classList.add('hide-healing-metrics');
+			if (this.sim.getShowHealingMetrics()) this.rootElem.classList.remove('hide-healing-metrics');
+			else this.rootElem.classList.add('hide-healing-metrics');
 		};
 		updateShowHealingMetrics();
 		this.sim.showHealingMetricsChangeEmitter.on(updateShowHealingMetrics);
@@ -142,10 +131,8 @@ export abstract class SimUI extends Component {
 		this.sim.showThreatMetricsChangeEmitter.on(updateShowEpRatios);
 
 		const updateShowExperimental = () => {
-			if (this.sim.getShowExperimental())
-				this.rootElem.classList.remove('hide-experimental');
-			else
-				this.rootElem.classList.add('hide-experimental');
+			if (this.sim.getShowExperimental()) this.rootElem.classList.remove('hide-experimental');
+			else this.rootElem.classList.add('hide-experimental');
 		};
 		updateShowExperimental();
 		this.sim.showExperimentalChangeEmitter.on(updateShowExperimental);
@@ -162,10 +149,7 @@ export abstract class SimUI extends Component {
 
 		new NumberPicker(this.simActionsContainer, this.sim, {
 			label: 'Iterations',
-			extraCssClasses: [
-				'iterations-picker',
-				'within-raid-sim-hide',
-			],
+			extraCssClasses: ['iterations-picker', 'within-raid-sim-hide'],
 			changedEvent: (sim: Sim) => sim.iterationsChangeEmitter,
 			getValue: (sim: Sim) => sim.getIterations(),
 			setValue: (eventID: EventID, sim: Sim, newValue: number) => {
@@ -219,11 +203,11 @@ export abstract class SimUI extends Component {
 
 	private addKnownIssues(config: SimUIConfig) {
 		let statusStr = '';
-		if (config.launchStatus == LaunchStatus.Unlaunched) {
+		if (config.simStatus.status == LaunchStatus.Unlaunched) {
 			statusStr = 'This sim is a WORK IN PROGRESS. It is not fully developed and should not be used for general purposes.';
-		} else if (config.launchStatus == LaunchStatus.Alpha) {
+		} else if (config.simStatus.status == LaunchStatus.Alpha) {
 			statusStr = 'This sim is in ALPHA. Bugs are expected; please let us know if you find one!';
-		} else if (config.launchStatus == LaunchStatus.Beta) {
+		} else if (config.simStatus.status == LaunchStatus.Beta) {
 			statusStr = 'This sim is in BETA. There may still be a few bugs; please let us know if you find one!';
 		}
 		if (statusStr) {
@@ -252,7 +236,7 @@ export abstract class SimUI extends Component {
 		return this.rootElem.classList.contains('individual-sim-ui');
 	}
 
-	async runSim(onProgress: Function) {
+	async runSim(onProgress: (_?: any) => void) {
 		this.resultsViewer.setPending();
 		try {
 			await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
@@ -291,43 +275,45 @@ export abstract class SimUI extends Component {
 			const hash = this.hashCode(errorStr);
 			const link = this.toLink();
 			const rngSeed = this.sim.getLastUsedRngSeed();
-			fetch('https://api.github.com/search/issues?q=is:issue+is:open+repo:wowsims/cata+' + hash).then(resp => {
-				resp.json().then((issues) => {
-					if (issues.total_count > 0) {
-						window.open(issues.items[0].html_url, '_blank');
-					} else {
-						const base_url = 'https://github.com/wowsims/cata/issues/new?assignees=&labels=&title=Crash%20Report%20'
-						const base = `${base_url}${hash}&body=`;
-						const maxBodyLength = URLMAXLEN - base.length;
-						let issueBody = encodeURIComponent(`Link:\n${link}\n\nRNG Seed: ${rngSeed}\n\n${errorStr}`);
-						if (link.includes('/raid/')) {
-							// Move the actual error before the link, as it will likely get truncated.
-							issueBody = encodeURIComponent(`${errorStr}\nRNG Seed: ${rngSeed}\nLink:\n${link}`);
+			fetch('https://api.github.com/search/issues?q=is:issue+is:open+repo:wowsims/cata+' + hash)
+				.then(resp => {
+					resp.json().then(issues => {
+						if (issues.total_count > 0) {
+							window.open(issues.items[0].html_url, '_blank');
+						} else {
+							const base_url = 'https://github.com/wowsims/cata/issues/new?assignees=&labels=&title=Crash%20Report%20';
+							const base = `${base_url}${hash}&body=`;
+							const maxBodyLength = URLMAXLEN - base.length;
+							let issueBody = encodeURIComponent(`Link:\n${link}\n\nRNG Seed: ${rngSeed}\n\n${errorStr}`);
+							if (link.includes('/raid/')) {
+								// Move the actual error before the link, as it will likely get truncated.
+								issueBody = encodeURIComponent(`${errorStr}\nRNG Seed: ${rngSeed}\nLink:\n${link}`);
+							}
+							let truncated = false;
+							while (issueBody.length > maxBodyLength - (truncated ? 3 : 0)) {
+								issueBody = issueBody.slice(0, issueBody.lastIndexOf('%')); // Avoid truncating in the middle of a URLencoded segment.
+								truncated = true;
+							}
+							if (truncated) {
+								issueBody += '...';
+								// The raid links are too large and will always cause truncation.
+								// Prompt the user to add more information to the issue.
+								new CrashModal(this.rootElem, link);
+							}
+							window.open(base + issueBody, '_blank');
 						}
-						let truncated = false;
-						while (issueBody.length > maxBodyLength - (truncated ? 3 : 0)) {
-							issueBody = issueBody.slice(0, issueBody.lastIndexOf('%')) // Avoid truncating in the middle of a URLencoded segment.
-							truncated = true;
-						}
-						if (truncated) {
-							issueBody += "...";
-							// The raid links are too large and will always cause truncation.
-							// Prompt the user to add more information to the issue.
-							new CrashModal(this.rootElem, link);
-						}
-						window.open(base + issueBody, '_blank');
-					}
+					});
+				})
+				.catch(fetchErr => {
+					alert('Failed to file report... try again another time:' + fetchErr);
 				});
-			}).catch(fetchErr => {
-				alert('Failed to file report... try again another time:' + fetchErr);
-			});
 		}
 	}
 
 	hashCode(str: string): number {
 		let hash = 0;
 		for (let i = 0, len = str.length; i < len; i++) {
-			let chr = str.charCodeAt(i);
+			const chr = str.charCodeAt(i);
 			hash = (hash << 5) - hash + chr;
 			hash |= 0; // Convert to 32bit integer
 		}
@@ -347,7 +333,7 @@ class CrashModal extends BaseModal {
 				<textarea class="sim-crash-report-text form-control"></textarea>
 			</div>
 		`;
-		let text = document.createTextNode(link);
+		const text = document.createTextNode(link);
 		this.body.querySelector('textarea')?.appendChild(text);
 	}
 }

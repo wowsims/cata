@@ -1,29 +1,22 @@
-import { Player } from '../player.js';
-import { Class } from '../proto/common.js';
-import { Spec } from '../proto/common.js';
-import {
-	SpecTalents,
-	specToClass,
-	specTypeFunctions,
-} from '../proto_utils/utils.js';
-import { EventID, TypedEvent } from '../typed_event.js';
-
-import { druidTalentsConfig, druidGlyphsConfig } from './druid.js';
-import { hunterTalentsConfig, hunterGlyphsConfig } from './hunter.js';
-import { mageTalentsConfig, mageGlyphsConfig } from './mage.js';
-import { paladinTalentsConfig, paladinGlyphsConfig } from './paladin.js';
-import { priestTalentsConfig, priestGlyphsConfig } from './priest.js';
-import { rogueTalentsConfig, rogueGlyphsConfig } from './rogue.js';
-import { shamanTalentsConfig, shamanGlyphsConfig } from './shaman.js';
-import { warlockTalentsConfig, warlockGlyphsConfig } from './warlock.js';
-import { warriorTalentsConfig, warriorGlyphsConfig } from './warrior.js';
-import { deathknightTalentsConfig, deathknightGlyphsConfig } from './deathknight.js';
-import { TalentsConfig } from './talents_picker.js';
+import { PlayerSpec } from '../player_spec.js';
+import { Class, Spec } from '../proto/common.js';
+import { SpecTalents, specTypeFunctions } from '../proto_utils/utils.js';
+import { deathknightGlyphsConfig, deathknightTalentsConfig } from './death_knight.js';
+import { druidGlyphsConfig, druidTalentsConfig } from './druid.js';
 import { GlyphsConfig } from './glyphs_picker.js';
+import { hunterGlyphsConfig, hunterTalentsConfig } from './hunter.js';
+import { mageGlyphsConfig, mageTalentsConfig } from './mage.js';
+import { paladinGlyphsConfig, paladinTalentsConfig } from './paladin.js';
+import { priestGlyphsConfig, priestTalentsConfig } from './priest.js';
+import { rogueGlyphsConfig, rogueTalentsConfig } from './rogue.js';
+import { shamanGlyphsConfig, shamanTalentsConfig } from './shaman.js';
+import { TalentsConfig } from './talents_picker.js';
+import { warlockGlyphsConfig, warlockTalentsConfig } from './warlock.js';
+import { warriorGlyphsConfig, warriorTalentsConfig } from './warrior.js';
 
 export const classTalentsConfig: Record<Class, TalentsConfig<any>> = {
 	[Class.ClassUnknown]: [],
-	[Class.ClassDeathknight]: deathknightTalentsConfig,
+	[Class.ClassDeathKnight]: deathknightTalentsConfig,
 	[Class.ClassDruid]: druidTalentsConfig,
 	[Class.ClassShaman]: shamanTalentsConfig,
 	[Class.ClassHunter]: hunterTalentsConfig,
@@ -37,7 +30,7 @@ export const classTalentsConfig: Record<Class, TalentsConfig<any>> = {
 
 export const classGlyphsConfig: Record<Class, GlyphsConfig> = {
 	[Class.ClassUnknown]: { majorGlyphs: [], minorGlyphs: [] },
-	[Class.ClassDeathknight]: deathknightGlyphsConfig,
+	[Class.ClassDeathKnight]: deathknightGlyphsConfig,
 	[Class.ClassDruid]: druidGlyphsConfig,
 	[Class.ClassShaman]: shamanGlyphsConfig,
 	[Class.ClassHunter]: hunterGlyphsConfig,
@@ -52,26 +45,32 @@ export const classGlyphsConfig: Record<Class, GlyphsConfig> = {
 export function talentSpellIdsToTalentString(playerClass: Class, talentIds: Array<number>): string {
 	const talentsConfig = classTalentsConfig[playerClass];
 
-	const talentsStr = talentsConfig.map(treeConfig => {
-		const treeStr = treeConfig.talents.map(talentConfig => {
-			const spellIdIndex = talentConfig.spellIds.findIndex(spellId => talentIds.includes(spellId));
-			if (spellIdIndex == -1) {
-				return '0';
-			} else {
-				return String(spellIdIndex + 1);
-			}
-		}).join('').replace(/0+$/g, '');
+	const talentsStr = talentsConfig
+		.map(treeConfig => {
+			const treeStr = treeConfig.talents
+				.map(talentConfig => {
+					const spellIdIndex = talentConfig.spellIds.findIndex(spellId => talentIds.includes(spellId));
+					if (spellIdIndex == -1) {
+						return '0';
+					} else {
+						return String(spellIdIndex + 1);
+					}
+				})
+				.join('')
+				.replace(/0+$/g, '');
 
-		return treeStr;
-	}).join('-').replace(/-+$/g, '');
+			return treeStr;
+		})
+		.join('-')
+		.replace(/-+$/g, '');
 
-	return talentsStr
+	return talentsStr;
 }
 
-export function playerTalentStringToProto<SpecType extends Spec>(spec: Spec, talentString: string): SpecTalents<SpecType> {
-	const specFunctions = specTypeFunctions[spec];
+export function playerTalentStringToProto<SpecType extends Spec>(playerSpec: PlayerSpec<SpecType>, talentString: string): SpecTalents<SpecType> {
+	const specFunctions = specTypeFunctions[playerSpec.specID];
 	const proto = specFunctions.talentsCreate() as SpecTalents<SpecType>;
-	const talentsConfig = classTalentsConfig[specToClass[spec]] as TalentsConfig<SpecTalents<SpecType>>;
+	const talentsConfig = classTalentsConfig[playerSpec.classID] as TalentsConfig<SpecTalents<SpecType>>;
 
 	return talentStringToProto(proto, talentString, talentsConfig);
 }
@@ -98,9 +97,13 @@ export function talentStringToProto<TalentsProto>(proto: TalentsProto, talentStr
 // Note that this function will fail if any of the talent names are not defined. TODO: Remove that condition
 // once all talents are migrated to wrath and use all fields.
 export function protoToTalentString<TalentsProto>(proto: TalentsProto, talentsConfig: TalentsConfig<TalentsProto>): string {
-	return talentsConfig.map(treeConfig => {
-		return treeConfig.talents
-			.map(talentConfig => String(Number(proto[(talentConfig.fieldName as keyof TalentsProto)!])))
-			.join('').replace(/0+$/g, '');
-	}).join('-').replace(/-+$/g, '');
+	return talentsConfig
+		.map(treeConfig => {
+			return treeConfig.talents
+				.map(talentConfig => String(Number(proto[(talentConfig.fieldName as keyof TalentsProto)!])))
+				.join('')
+				.replace(/0+$/g, '');
+		})
+		.join('-')
+		.replace(/-+$/g, '');
 }

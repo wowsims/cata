@@ -159,7 +159,7 @@ func init() {
 
 			var auras [3]*core.Aura
 			switch character.Class {
-			case proto.Class_ClassDeathknight:
+			case proto.Class_ClassDeathKnight:
 				auras = [3]*core.Aura{strAura, critAura, hasteAura}
 			case proto.Class_ClassDruid:
 				auras = [3]*core.Aura{strAura, agiAura, hasteAura}
@@ -1079,17 +1079,6 @@ func init() {
 		character.AddMajorCooldown(core.MajorCooldown{
 			Spell: petrifiedScarabActivation,
 			Type:  core.CooldownTypeSurvival,
-		})
-	})
-
-	NewItemEffectWithHeroic(func(isHeroic bool) {
-		itemId := int32(49992)
-		if isHeroic {
-			itemId = 50648
-		}
-
-		core.NewItemEffect(itemId, func(agent core.Agent) {
-			MakeNibelungTriggerAura(agent, isHeroic)
 		})
 	})
 

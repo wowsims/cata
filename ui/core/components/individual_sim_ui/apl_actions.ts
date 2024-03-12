@@ -1,62 +1,47 @@
-import {
-	Class,
-	Spec,
-} from '../../proto/common.js';
-
+import { itemSwapEnabledSpecs } from '../../individual_sim_ui.js';
+import { Player } from '../../player.js';
 import {
 	APLAction,
-
-	APLActionCastSpell,
-	APLActionChannelSpell,
-	APLActionMultidot,
-	APLActionMultishield,
-	APLActionAutocastOtherCooldowns,
-
-	APLActionWait,
-	APLActionWaitUntil,
-	APLActionSchedule,
-
-	APLActionSequence,
-	APLActionResetSequence,
-	APLActionStrictSequence,
-
-	APLActionChangeTarget,
 	APLActionActivateAura,
+	APLActionAutocastOtherCooldowns,
 	APLActionCancelAura,
-	APLActionTriggerICD,
+	APLActionCastSpell,
+	APLActionCatOptimalRotationAction,
+	APLActionChangeTarget,
+	APLActionChannelSpell,
+	APLActionCustomRotation,
 	APLActionItemSwap,
 	APLActionItemSwap_SwapSet as ItemSwapSet,
-
-	APLActionCustomRotation,
-	APLActionCatOptimalRotationAction,
-
+	APLActionMultidot,
+	APLActionMultishield,
+	APLActionResetSequence,
+	APLActionSchedule,
+	APLActionSequence,
+	APLActionStrictSequence,
+	APLActionTriggerICD,
+	APLActionWait,
+	APLActionWaitUntil,
 	APLValue,
 } from '../../proto/apl.js';
-
-import { isHealingSpec } from '../../proto_utils/utils.js';
-import { EventID } from '../../typed_event.js';
-import { itemSwapEnabledSpecs } from '../../individual_sim_ui.js';
-import { Input, InputConfig } from '../input.js';
-import { Player } from '../../player.js';
-import { TextDropdownPicker } from '../dropdown_picker.js';
-import { ListItemPickerConfig, ListPicker } from '../list_picker.js';
+import { Spec } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
-
+import { EventID } from '../../typed_event.js';
+import { TextDropdownPicker } from '../dropdown_picker.js';
+import { Input, InputConfig } from '../input.js';
+import { ListItemPickerConfig, ListPicker } from '../list_picker.js';
 import * as AplHelpers from './apl_helpers.js';
 import * as AplValues from './apl_values.js';
 
-export interface APLActionPickerConfig extends InputConfig<Player<any>, APLAction> {
-}
+export interface APLActionPickerConfig extends InputConfig<Player<any>, APLAction> {}
 
 export type APLActionKind = APLAction['action']['oneofKind'];
-type APLActionImplStruct<F extends APLActionKind> = Extract<APLAction['action'], {oneofKind: F}>;
+type APLActionImplStruct<F extends APLActionKind> = Extract<APLAction['action'], { oneofKind: F }>;
 type APLActionImplTypesUnion = {
 	[f in NonNullable<APLActionKind>]: f extends keyof APLActionImplStruct<f> ? APLActionImplStruct<f>[f] : never;
 };
-export type APLActionImplType = APLActionImplTypesUnion[NonNullable<APLActionKind>]|undefined;
+export type APLActionImplType = APLActionImplTypesUnion[NonNullable<APLActionKind>] | undefined;
 
 export class APLActionPicker extends Input<Player<any>, APLAction> {
-
 	private kindPicker: TextDropdownPicker<Player<any>, APLActionKind>;
 
 	private readonly actionDiv: HTMLElement;
@@ -71,16 +56,19 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 		this.conditionPicker = new AplValues.APLValuePicker(this.rootElem, this.modObject, {
 			label: 'If:',
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
-			getValue: (player: Player<any>) => this.getSourceValue()?.condition,
+			getValue: (_player: Player<any>) => this.getSourceValue()?.condition,
 			setValue: (eventID: EventID, player: Player<any>, newValue: APLValue | undefined) => {
 				const srcVal = this.getSourceValue();
 				if (srcVal) {
 					srcVal.condition = newValue;
 					player.rotationChangeEmitter.emit(eventID);
 				} else {
-					this.setSourceValue(eventID, APLAction.create({
-						condition: newValue,
-					}));
+					this.setSourceValue(
+						eventID,
+						APLAction.create({
+							condition: newValue,
+						}),
+					);
 				}
 			},
 		});
@@ -92,24 +80,24 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 
 		const isPrepull = this.rootElem.closest('.apl-prepull-action-picker') != null;
 
-		const allActionKinds = (Object.keys(actionKindFactories) as Array<NonNullable<APLActionKind>>)
-			.filter(actionKind => actionKindFactories[actionKind].includeIf?.(player, isPrepull) ?? true);
+		const allActionKinds = (Object.keys(actionKindFactories) as Array<NonNullable<APLActionKind>>).filter(
+			actionKind => actionKindFactories[actionKind].includeIf?.(player, isPrepull) ?? true,
+		);
 
 		this.kindPicker = new TextDropdownPicker(this.actionDiv, player, {
 			defaultLabel: 'Action',
-			values: allActionKinds
-				.map(actionKind => {
-					const factory = actionKindFactories[actionKind];
-					return {
-						value: actionKind,
-						label: factory.label,
-						submenu: factory.submenu,
-						tooltip: factory.fullDescription ? `<p>${factory.shortDescription}</p> ${factory.fullDescription}` : factory.shortDescription,
-					};
-				}),
+			values: allActionKinds.map(actionKind => {
+				const factory = actionKindFactories[actionKind];
+				return {
+					value: actionKind,
+					label: factory.label,
+					submenu: factory.submenu,
+					tooltip: factory.fullDescription ? `<p>${factory.shortDescription}</p> ${factory.fullDescription}` : factory.shortDescription,
+				};
+			}),
 			equals: (a, b) => a == b,
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
-			getValue: (player: Player<any>) => this.getSourceValue()?.action.oneofKind,
+			getValue: (_player: Player<any>) => this.getSourceValue()?.action.oneofKind,
 			setValue: (eventID: EventID, player: Player<any>, newKind: APLActionKind) => {
 				const sourceValue = this.getSourceValue();
 				const oldKind = sourceValue?.action.oneofKind;
@@ -127,17 +115,25 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 								if (sourceValue.action.oneofKind == 'strictSequence') {
 									(newSourceValue.action as APLActionImplStruct<'sequence'>).sequence.actions = sourceValue.action.strictSequence.actions;
 								} else {
-									(newSourceValue.action as APLActionImplStruct<'sequence'>).sequence.actions = [this.makeAPLAction(oldKind, this.actionPicker.getInputValue())];
+									(newSourceValue.action as APLActionImplStruct<'sequence'>).sequence.actions = [
+										this.makeAPLAction(oldKind, this.actionPicker.getInputValue()),
+									];
 								}
 							} else if (newKind == 'strictSequence') {
 								if (sourceValue.action.oneofKind == 'sequence') {
-									(newSourceValue.action as APLActionImplStruct<'strictSequence'>).strictSequence.actions = sourceValue.action.sequence.actions;
+									(newSourceValue.action as APLActionImplStruct<'strictSequence'>).strictSequence.actions =
+										sourceValue.action.sequence.actions;
 								} else {
-									(newSourceValue.action as APLActionImplStruct<'strictSequence'>).strictSequence.actions = [this.makeAPLAction(oldKind, this.actionPicker.getInputValue())];
+									(newSourceValue.action as APLActionImplStruct<'strictSequence'>).strictSequence.actions = [
+										this.makeAPLAction(oldKind, this.actionPicker.getInputValue()),
+									];
 								}
 							} else if (sourceValue.action.oneofKind == 'sequence' && sourceValue.action.sequence.actions?.[0]?.action.oneofKind == newKind) {
 								newSourceValue = sourceValue.action.sequence.actions[0];
-							} else if (sourceValue.action.oneofKind == 'strictSequence' && sourceValue.action.strictSequence.actions?.[0]?.action.oneofKind == newKind) {
+							} else if (
+								sourceValue.action.oneofKind == 'strictSequence' &&
+								sourceValue.action.strictSequence.actions?.[0]?.action.oneofKind == newKind
+							) {
 								newSourceValue = sourceValue.action.strictSequence.actions[0];
 							}
 						}
@@ -172,15 +168,15 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 			condition: this.conditionPicker.getInputValue(),
 			action: {
 				oneofKind: actionKind,
-				...((() => {
+				...(() => {
 					const val: any = {};
 					if (actionKind && this.actionPicker) {
 						val[actionKind] = this.actionPicker.getInputValue();
 					}
 					return val;
-				})()),
+				})(),
 			},
-		})
+		});
 	}
 
 	setInputValue(newValue: APLAction) {
@@ -204,7 +200,7 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 		}
 		const obj: any = { oneofKind: kind };
 		obj[kind] = implVal;
-		return APLAction.create({action: obj});
+		return APLAction.create({ action: obj });
 	}
 
 	private updateActionPicker(newActionKind: APLActionKind) {
@@ -242,28 +238,29 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 }
 
 type ActionKindConfig<T> = {
-	label: string,
-	submenu?: Array<string>,
-	shortDescription: string,
-	fullDescription?: string,
-	includeIf?: (player: Player<any>, isPrepull: boolean) => boolean,
-	newValue: () => T,
-	factory: (parent: HTMLElement, player: Player<any>, config: InputConfig<Player<any>, T>) => Input<Player<any>, T>,
+	label: string;
+	submenu?: Array<string>;
+	shortDescription: string;
+	fullDescription?: string;
+	includeIf?: (player: Player<any>, isPrepull: boolean) => boolean;
+	newValue: () => T;
+	factory: (parent: HTMLElement, player: Player<any>, config: InputConfig<Player<any>, T>) => Input<Player<any>, T>;
 };
 
 function itemSwapSetFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
 	return {
 		field: field,
 		newValue: () => ItemSwapSet.Swap1,
-		factory: (parent, player, config) => new TextDropdownPicker(parent, player, {
-			...config,
-			defaultLabel: 'None',
-			equals: (a, b) => a == b,
-			values: [
-				{ value: ItemSwapSet.Main, label: 'Main' },
-				{ value: ItemSwapSet.Swap1, label: 'Swapped' },
-			],
-		}),
+		factory: (parent, player, config) =>
+			new TextDropdownPicker(parent, player, {
+				...config,
+				defaultLabel: 'None',
+				equals: (a, b) => a == b,
+				values: [
+					{ value: ItemSwapSet.Main, label: 'Main' },
+					{ value: ItemSwapSet.Swap1, label: 'Swapped' },
+				],
+			}),
 	};
 }
 
@@ -279,34 +276,44 @@ function actionListFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldC
 	return {
 		field: field,
 		newValue: () => [],
-		factory: (parent, player, config) => new ListPicker<Player<any>, APLAction>(parent, player, {
-			...config,
-			// Override setValue to replace undefined elements with default messages.
-			setValue: (eventID: EventID, player: Player<any>, newValue: Array<APLAction>) => {
-				config.setValue(eventID, player, newValue.map(val => val || APLAction.create()));
-			},
-			itemLabel: 'Action',
-			newItem: APLAction.create,
-			copyItem: (oldValue: APLAction) => oldValue ? APLAction.clone(oldValue) : oldValue,
-			newItemPicker: (parent: HTMLElement, listPicker: ListPicker<Player<any>, APLAction>, index: number, config: ListItemPickerConfig<Player<any>, APLAction>) => new APLActionPicker(parent, player, config),
-			allowedActions: ['create', 'delete', 'move'],
-			actions: {
-				create: {
-					useIcon: true,
-				}
-			}
-		}),
+		factory: (parent, player, config) =>
+			new ListPicker<Player<any>, APLAction>(parent, player, {
+				...config,
+				// Override setValue to replace undefined elements with default messages.
+				setValue: (eventID: EventID, player: Player<any>, newValue: Array<APLAction>) => {
+					config.setValue(
+						eventID,
+						player,
+						newValue.map(val => val || APLAction.create()),
+					);
+				},
+				itemLabel: 'Action',
+				newItem: APLAction.create,
+				copyItem: (oldValue: APLAction) => (oldValue ? APLAction.clone(oldValue) : oldValue),
+				newItemPicker: (
+					parent: HTMLElement,
+					listPicker: ListPicker<Player<any>, APLAction>,
+					index: number,
+					config: ListItemPickerConfig<Player<any>, APLAction>,
+				) => new APLActionPicker(parent, player, config),
+				allowedActions: ['create', 'delete', 'move'],
+				actions: {
+					create: {
+						useIcon: true,
+					},
+				},
+			}),
 	};
 }
 
 function inputBuilder<T>(config: {
-	label: string,
-	submenu?: Array<string>,
-	shortDescription: string,
-	fullDescription?: string,
-	includeIf?: (player: Player<any>, isPrepull: boolean) => boolean,
-	newValue: () => T,
-	fields: Array<AplHelpers.APLPickerBuilderFieldConfig<T, any>>,
+	label: string;
+	submenu?: Array<string>;
+	shortDescription: string;
+	fullDescription?: string;
+	includeIf?: (player: Player<any>, isPrepull: boolean) => boolean;
+	newValue: () => T;
+	fields: Array<AplHelpers.APLPickerBuilderFieldConfig<T, any>>;
 }): ActionKindConfig<T> {
 	return {
 		label: config.label,
@@ -319,32 +326,30 @@ function inputBuilder<T>(config: {
 	};
 }
 
-const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<APLActionImplTypesUnion[f]>} = {
+const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig<APLActionImplTypesUnion[f]> } = {
 	['castSpell']: inputBuilder({
 		label: 'Cast',
 		shortDescription: 'Casts the spell if possible, i.e. resource/cooldown/GCD/etc requirements are all met.',
 		newValue: APLActionCastSpell.create,
-		fields: [
-			AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', ''),
-			AplHelpers.unitFieldConfig('target', 'targets'),
-		],
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', ''), AplHelpers.unitFieldConfig('target', 'targets')],
 	}),
 	['multidot']: inputBuilder({
 		label: 'Multi Dot',
 		submenu: ['Casting'],
 		shortDescription: 'Keeps a DoT active on multiple targets by casting the specified spell.',
 		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
-		newValue: () => APLActionMultidot.create({
-			maxDots: 3,
-			maxOverlap: {
-				value: {
-					oneofKind: 'const',
-					const: {
-						val: '0ms',
+		newValue: () =>
+			APLActionMultidot.create({
+				maxDots: 3,
+				maxOverlap: {
+					value: {
+						oneofKind: 'const',
+						const: {
+							val: '0ms',
+						},
 					},
 				},
-			},
-		}),
+			}),
 		fields: [
 			AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', ''),
 			AplHelpers.numberFieldConfig('maxDots', false, {
@@ -361,18 +366,19 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		label: 'Multi Shield',
 		submenu: ['Casting'],
 		shortDescription: 'Keeps a Shield active on multiple targets by casting the specified spell.',
-		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull && isHealingSpec(player.spec),
-		newValue: () => APLActionMultishield.create({
-			maxShields: 3,
-			maxOverlap: {
-				value: {
-					oneofKind: 'const',
-					const: {
-						val: '0ms',
+		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull && player.getSpec().isHealingSpec,
+		newValue: () =>
+			APLActionMultishield.create({
+				maxShields: 3,
+				maxOverlap: {
+					value: {
+						oneofKind: 'const',
+						const: {
+							val: '0ms',
+						},
 					},
 				},
-			},
-		}),
+			}),
 		fields: [
 			AplHelpers.actionIdFieldConfig('spellId', 'shield_spells', ''),
 			AplHelpers.numberFieldConfig('maxShields', false, {
@@ -399,14 +405,15 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 			</ul>
 			<p>Note that if you simply want to allow other actions to interrupt the channel, set <b>Interrupt If</b> to <b>True</b>.</p>
 		`,
-		newValue: () => APLActionChannelSpell.create({
-			interruptIf: {
-				value: {
-					oneofKind: 'gcdIsReady',
-					gcdIsReady: {},
-				}
-			},
-		}),
+		newValue: () =>
+			APLActionChannelSpell.create({
+				interruptIf: {
+					value: {
+						oneofKind: 'gcdIsReady',
+						gcdIsReady: {},
+					},
+				},
+			}),
 		fields: [
 			AplHelpers.actionIdFieldConfig('spellId', 'channel_spells', ''),
 			AplHelpers.unitFieldConfig('target', 'targets'),
@@ -438,19 +445,18 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		submenu: ['Timing'],
 		shortDescription: 'Pauses all APL actions for a specified amount of time.',
 		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
-		newValue: () => APLActionWait.create({
-			duration: {
-				value: {
-					oneofKind: 'const',
-					const: {
-						val: '1000ms',
+		newValue: () =>
+			APLActionWait.create({
+				duration: {
+					value: {
+						oneofKind: 'const',
+						const: {
+							val: '1000ms',
+						},
 					},
 				},
-			},
-		}),
-		fields: [
-			AplValues.valueFieldConfig('duration'),
-		],
+			}),
+		fields: [AplValues.valueFieldConfig('duration')],
 	}),
 	['waitUntil']: inputBuilder({
 		label: 'Wait Until',
@@ -458,21 +464,20 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		shortDescription: 'Pauses all APL actions until the specified condition is <b>True</b>.',
 		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
 		newValue: () => APLActionWaitUntil.create(),
-		fields: [
-			AplValues.valueFieldConfig('condition'),
-		],
+		fields: [AplValues.valueFieldConfig('condition')],
 	}),
 	['schedule']: inputBuilder({
 		label: 'Scheduled Action',
 		submenu: ['Timing'],
 		shortDescription: 'Executes the inner action once at each specified timing.',
 		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
-		newValue: () => APLActionSchedule.create({
-			schedule: '0s, 60s',
-			innerAction: {
-				action: {oneofKind: 'castSpell', castSpell: {}},
-			},
-		}),
+		newValue: () =>
+			APLActionSchedule.create({
+				schedule: '0s, 60s',
+				innerAction: {
+					action: { oneofKind: 'castSpell', castSpell: {} },
+				},
+			}),
 		fields: [
 			AplHelpers.stringFieldConfig('schedule', {
 				label: 'Do At',
@@ -491,10 +496,7 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		`,
 		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
 		newValue: APLActionSequence.create,
-		fields: [
-			AplHelpers.stringFieldConfig('name'),
-			actionListFieldConfig('actions'),
-		],
+		fields: [AplHelpers.stringFieldConfig('name'), actionListFieldConfig('actions')],
 	}),
 	['resetSequence']: inputBuilder({
 		label: 'Reset Sequence',
@@ -505,31 +507,26 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		`,
 		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
 		newValue: APLActionResetSequence.create,
-		fields: [
-			AplHelpers.stringFieldConfig('sequenceName'),
-		],
+		fields: [AplHelpers.stringFieldConfig('sequenceName')],
 	}),
 	['strictSequence']: inputBuilder({
 		label: 'Strict Sequence',
 		submenu: ['Sequences'],
-		shortDescription: 'Like a regular <b>Sequence</b>, except all sub-actions are executed immediately after each other and the sequence resets automatically upon completion.',
+		shortDescription:
+			'Like a regular <b>Sequence</b>, except all sub-actions are executed immediately after each other and the sequence resets automatically upon completion.',
 		fullDescription: `
 			<p>Strict Sequences do not begin unless ALL sub-actions are ready.</p>
 		`,
 		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
 		newValue: APLActionStrictSequence.create,
-		fields: [
-			actionListFieldConfig('actions'),
-		],
+		fields: [actionListFieldConfig('actions')],
 	}),
 	['changeTarget']: inputBuilder({
 		label: 'Change Target',
 		submenu: ['Misc'],
 		shortDescription: 'Sets the current target, which is the target of auto attacks and most casts by default.',
 		newValue: () => APLActionChangeTarget.create(),
-		fields: [
-			AplHelpers.unitFieldConfig('newTarget', 'targets'),
-		],
+		fields: [AplHelpers.unitFieldConfig('newTarget', 'targets')],
 	}),
 	['activateAura']: inputBuilder({
 		label: 'Activate Aura',
@@ -537,48 +534,39 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		shortDescription: 'Activates an aura',
 		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
 		newValue: () => APLActionActivateAura.create(),
-		fields: [
-			AplHelpers.actionIdFieldConfig('auraId', 'auras'),
-		],
+		fields: [AplHelpers.actionIdFieldConfig('auraId', 'auras')],
 	}),
 	['cancelAura']: inputBuilder({
 		label: 'Cancel Aura',
 		submenu: ['Misc'],
 		shortDescription: 'Deactivates an aura, equivalent to /cancelaura.',
 		newValue: () => APLActionCancelAura.create(),
-		fields: [
-			AplHelpers.actionIdFieldConfig('auraId', 'auras'),
-		],
+		fields: [AplHelpers.actionIdFieldConfig('auraId', 'auras')],
 	}),
 	['triggerIcd']: inputBuilder({
 		label: 'Trigger ICD',
 		submenu: ['Misc'],
-		shortDescription: 'Triggers an aura\'s ICD, putting it on cooldown. Example usage would be to desync an ICD cooldown before combat starts.',
+		shortDescription: "Triggers an aura's ICD, putting it on cooldown. Example usage would be to desync an ICD cooldown before combat starts.",
 		includeIf: (player: Player<any>, isPrepull: boolean) => isPrepull,
 		newValue: () => APLActionTriggerICD.create(),
-		fields: [
-			AplHelpers.actionIdFieldConfig('auraId', 'icd_auras'),
-		],
+		fields: [AplHelpers.actionIdFieldConfig('auraId', 'icd_auras')],
 	}),
 	['itemSwap']: inputBuilder({
 		label: 'Item Swap',
 		submenu: ['Misc'],
 		shortDescription: 'Swaps items, using the swap set specified in Settings.',
-		includeIf: (player: Player<any>, isPrepull: boolean) => itemSwapEnabledSpecs.includes(player.spec),
+		includeIf: (player: Player<any>, _isPrepull: boolean) => itemSwapEnabledSpecs.includes(player.getSpec()),
 		newValue: () => APLActionItemSwap.create(),
-		fields: [
-			itemSwapSetFieldConfig('swapSet'),
-		],
+		fields: [itemSwapSetFieldConfig('swapSet')],
 	}),
 
 	['customRotation']: inputBuilder({
 		label: 'Custom Rotation',
 		//submenu: ['Misc'],
 		shortDescription: 'INTERNAL ONLY',
-		includeIf: (player: Player<any>, isPrepull: boolean) => false, // Never show this, because its internal only.
+		includeIf: (_player: Player<any>, _isPrepull: boolean) => false, // Never show this, because its internal only.
 		newValue: () => APLActionCustomRotation.create(),
-		fields: [
-		],
+		fields: [],
 	}),
 
 	// Class/spec specific actions
@@ -586,47 +574,50 @@ const actionKindFactories: {[f in NonNullable<APLActionKind>]: ActionKindConfig<
 		label: 'Optimal Rotation Action',
 		submenu: ['Feral Druid'],
 		shortDescription: 'Executes optimized Feral DPS rotation using hardcoded legacy algorithm.',
-		includeIf: (player: Player<any>, isPrepull: boolean) => player.spec == Spec.SpecFeralDruid,
-		newValue: () => APLActionCatOptimalRotationAction.create({
-			rotationType: FeralDruid_Rotation_AplType.SingleTarget,
-			manualParams: true,
-			maxFfDelay: 0.1,
-			minRoarOffset: 25.0,
-			ripLeeway: 4,
-			useRake: true,
-			useBite: true,
-			biteTime: 4.0,
-			flowerWeave: false,
-		}),
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecFeralDruid,
+		newValue: () =>
+			APLActionCatOptimalRotationAction.create({
+				rotationType: FeralDruid_Rotation_AplType.SingleTarget,
+				manualParams: true,
+				maxFfDelay: 0.1,
+				minRoarOffset: 25.0,
+				ripLeeway: 4,
+				useRake: true,
+				useBite: true,
+				biteTime: 4.0,
+				flowerWeave: false,
+			}),
 		fields: [
 			AplHelpers.rotationTypeFieldConfig('rotationType'),
 			AplHelpers.booleanFieldConfig('manualParams', 'Manual Advanced Parameters', {
-				'labelTooltip': 'Manually specify advanced parameters, otherwise will use preset defaults.',
+				labelTooltip: 'Manually specify advanced parameters, otherwise will use preset defaults.',
 			}),
 			AplHelpers.numberFieldConfig('maxFfDelay', true, {
-				'label': 'Max FF Delay',
-				'labelTooltip': 'Max allowed FF delay to fit in damage casts. Ignored if not using manual advanced parameters.',
+				label: 'Max FF Delay',
+				labelTooltip: 'Max allowed FF delay to fit in damage casts. Ignored if not using manual advanced parameters.',
 			}),
 			AplHelpers.numberFieldConfig('minRoarOffset', true, {
-				'label': 'Roar Offset',
-				'labelTooltip': 'Targeted offset in Rip/Roar timings. Ignored for AOE rotation or if not using manual advanced parameters.',
+				label: 'Roar Offset',
+				labelTooltip: 'Targeted offset in Rip/Roar timings. Ignored for AOE rotation or if not using manual advanced parameters.',
 			}),
 			AplHelpers.numberFieldConfig('ripLeeway', false, {
-				'label': 'Rip Leeway',
-				'labelTooltip': 'Rip leeway when optimizing Roar clips. Ignored for AOE rotation or if not using manual advanced parameters.',
+				label: 'Rip Leeway',
+				labelTooltip: 'Rip leeway when optimizing Roar clips. Ignored for AOE rotation or if not using manual advanced parameters.',
 			}),
 			AplHelpers.booleanFieldConfig('useRake', 'Use Rake', {
-				'labelTooltip': 'Use Rake during rotation. Ignored for AOE rotation or if not using manual advanced parameters.',
+				labelTooltip: 'Use Rake during rotation. Ignored for AOE rotation or if not using manual advanced parameters.',
 			}),
 			AplHelpers.booleanFieldConfig('useBite', 'Bite during rotation', {
-				'labelTooltip': 'Use Bite during rotation rather than exclusively at end of fight. Ignored for AOE rotation or if not using manual advanced parameters.',
+				labelTooltip:
+					'Use Bite during rotation rather than exclusively at end of fight. Ignored for AOE rotation or if not using manual advanced parameters.',
 			}),
 			AplHelpers.numberFieldConfig('biteTime', true, {
-				'label': 'Bite Time',
-				'labelTooltip': 'Min seconds remaining on Rip/Roar to allow a Bite. Ignored if not Biting during rotation.',
+				label: 'Bite Time',
+				labelTooltip: 'Min seconds remaining on Rip/Roar to allow a Bite. Ignored if not Biting during rotation.',
 			}),
 			AplHelpers.booleanFieldConfig('flowerWeave', 'Flower Weave', {
-				'labelTooltip': 'Fish for Clearcasting procs during AOE rotation with GotW. Ignored for Single Target rotation or if not using manual advanced parameters.',
+				labelTooltip:
+					'Fish for Clearcasting procs during AOE rotation with GotW. Ignored for Single Target rotation or if not using manual advanced parameters.',
 			}),
 		],
 	}),

@@ -207,22 +207,26 @@ enum ShamanSyncType {
 	Auto = 3;
 }
 
+message ShamanOptions {
+	ShamanShield shield = 1;
+	ShamanTotems totems = 2;
+	ShamanImbue imbue_mh = 3;
+}
+
 message ElementalShaman {
 	message Rotation {
 	}
 
 	message Options {
-		ShamanShield shield = 1;
-		ShamanTotems totems = 3;
-		
+		ShamanOptions class_options = 1;
+
 		enum ThunderstormRange {
 			UnsetTSRange = 0;
 			TSInRange = 1;
 			TSOutofRange = 2;
 		}
-		ThunderstormRange thunderstormRange = 4;
+		ThunderstormRange thunderstormRange = 2;
 	}
-
 	Options options = 3;
 }
 
@@ -231,11 +235,9 @@ message EnhancementShaman {
 	}
 
 	message Options {
-		ShamanShield shield = 1;
-		ShamanSyncType sync_type = 3;
-		ShamanImbue imbue_mh = 4;
-		ShamanImbue imbue_oh = 5;
-		ShamanTotems totems = 6;
+		ShamanOptions class_options = 1;
+		ShamanSyncType sync_type = 2;
+		ShamanImbue imbue_oh = 3;
 	}
 
 	Options options = 3;
@@ -253,10 +255,8 @@ message RestorationShaman {
 	}
 
 	message Options {
-		ShamanShield shield = 1;
-		ShamanImbue imbue_mh = 4;
-		int32 earth_shield_p_p_m = 5;
-		ShamanTotems totems = 6;
+		ShamanOptions class_options = 1;
+		int32 earth_shield_p_p_m = 2;
 	}
 
 	Options options = 3;

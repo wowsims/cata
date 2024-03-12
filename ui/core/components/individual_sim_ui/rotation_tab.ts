@@ -1,35 +1,27 @@
 import * as Tooltips from '../../constants/tooltips.js';
-import { IndividualSimUI, InputSection } from "../../individual_sim_ui";
-import { Player } from "../../player";
-import {
-	APLRotation,
-	APLRotation_Type as APLRotationType,
-} from "../../proto/apl";
-import {
-	Spec,
-} from "../../proto/common";
-import {
-	SavedRotation,
-} from "../../proto/ui";
-import { EventID, TypedEvent } from "../../typed_event";
-import { BooleanPicker } from "../boolean_picker";
-import { ContentBlock } from "../content_block";
-import { EnumPicker } from "../enum_picker";
+import { IndividualSimUI, InputSection } from '../../individual_sim_ui';
+import { Player } from '../../player';
+import { APLRotation, APLRotation_Type as APLRotationType } from '../../proto/apl';
+import { SavedRotation } from '../../proto/ui';
+import { EventID, TypedEvent } from '../../typed_event';
+import { BooleanPicker } from '../boolean_picker';
+import { ContentBlock } from '../content_block';
+import { EnumPicker } from '../enum_picker';
 import * as IconInputs from '../icon_inputs.js';
-import { Input } from "../input";
-import { NumberPicker } from "../number_picker";
-import { SavedDataManager } from "../saved_data_manager";
-import { SimTab } from "../sim_tab";
-import { APLRotationPicker } from "./apl_rotation_picker";
-import { CooldownsPicker } from "./cooldowns_picker";
+import { Input } from '../input';
+import { NumberPicker } from '../number_picker';
+import { SavedDataManager } from '../saved_data_manager';
+import { SimTab } from '../sim_tab';
+import { APLRotationPicker } from './apl_rotation_picker';
+import { CooldownsPicker } from './cooldowns_picker';
 
 export class RotationTab extends SimTab {
-	protected simUI: IndividualSimUI<Spec>;
+	protected simUI: IndividualSimUI<any>;
 
 	readonly leftPanel: HTMLElement;
 	readonly rightPanel: HTMLElement;
 
-	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<Spec>) {
+	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<any>) {
 		super(parentElem, simUI, { identifier: 'rotation-tab', title: 'Rotation' });
 		this.simUI = simUI;
 
@@ -71,8 +63,6 @@ export class RotationTab extends SimTab {
 			this.rootElem.classList.add('rotation-type-simple');
 		} else if (rotType == APLRotationType.TypeAPL) {
 			this.rootElem.classList.add('rotation-type-apl');
-		} else if (rotType == APLRotationType.TypeLegacy) {
-			this.rootElem.classList.add('rotation-type-legacy');
 		}
 	}
 
@@ -85,14 +75,16 @@ export class RotationTab extends SimTab {
 			label: 'Rotation Type',
 			labelTooltip: 'Which set of options to use for specifying the rotation.',
 			inline: true,
-			values: this.simUI.player.hasSimpleRotationGenerator() ? [
-				{ value: APLRotationType.TypeAuto, name: 'Auto' },
-				{ value: APLRotationType.TypeSimple, name: 'Simple' },
-				{ value: APLRotationType.TypeAPL, name: 'APL' },
-			] : [
-				{ value: APLRotationType.TypeAuto, name: 'Auto' },
-				{ value: APLRotationType.TypeAPL, name: 'APL' },
-			],
+			values: this.simUI.player.hasSimpleRotationGenerator()
+				? [
+						{ value: APLRotationType.TypeAuto, name: 'Auto' },
+						{ value: APLRotationType.TypeSimple, name: 'Simple' },
+						{ value: APLRotationType.TypeAPL, name: 'APL' },
+				  ]
+				: [
+						{ value: APLRotationType.TypeAuto, name: 'Auto' },
+						{ value: APLRotationType.TypeAPL, name: 'APL' },
+				  ],
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
 			getValue: (player: Player<any>) => player.getRotationType(),
 			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
@@ -123,7 +115,7 @@ export class RotationTab extends SimTab {
 		const cssClass = 'rotation-tab-simple';
 
 		const contentBlock = new ContentBlock(this.leftPanel, 'rotation-settings', {
-			header: { title: 'Rotation' }
+			header: { title: 'Rotation' },
 		});
 		contentBlock.rootElem.classList.add(cssClass);
 
@@ -135,7 +127,7 @@ export class RotationTab extends SimTab {
 			this.configureIconSection(
 				rotationIconGroup,
 				this.simUI.individualConfig.rotationIconInputs.map(iconInput => IconInputs.buildIconInput(rotationIconGroup, this.simUI.player, iconInput)),
-				true
+				true,
 			);
 		}
 
@@ -143,10 +135,10 @@ export class RotationTab extends SimTab {
 
 		contentBlock.bodyElement.querySelectorAll('.input-root').forEach(elem => {
 			elem.classList.add('input-inline');
-		})
+		});
 
 		const cooldownsContentBlock = new ContentBlock(this.leftPanel, 'cooldown-settings', {
-			header: { title: 'Cooldowns', tooltip: Tooltips.COOLDOWNS_SECTION }
+			header: { title: 'Cooldowns', tooltip: Tooltips.COOLDOWNS_SECTION },
 		});
 		cooldownsContentBlock.rootElem.classList.add(cssClass);
 
@@ -182,9 +174,10 @@ export class RotationTab extends SimTab {
 			label: 'Rotation',
 			header: { title: 'Saved Rotations' },
 			storageKey: this.simUI.getSavedRotationStorageKey(),
-			getData: (player: Player<any>) => SavedRotation.create({
-				rotation: APLRotation.clone(player.aplRotation),
-			}),
+			getData: (player: Player<any>) =>
+				SavedRotation.create({
+					rotation: APLRotation.clone(player.aplRotation),
+				}),
 			setData: (eventID: EventID, player: Player<any>, newRotation: SavedRotation) => {
 				TypedEvent.freezeAllAndDo(() => {
 					player.setAplRotation(eventID, newRotation.rotation || APLRotation.create());

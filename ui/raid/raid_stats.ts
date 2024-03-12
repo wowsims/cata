@@ -1,55 +1,43 @@
-import {
-	Class,
-	RaidBuffs,
-	Spec,
-} from '../core/proto/common.js';
-import { Component } from '../core/components/component.js';
-import { Player } from "../core/player.js";
-import { Raid } from "../core/raid.js";
-import { ActionId } from '../core/proto_utils/action_id.js';
-import {
-	ClassSpecs,
-	SpecTalents,
-	specToClass,
-	isTankSpec,
-	isHealingSpec,
-	isMeleeDpsSpec,
-	isRangedDpsSpec,
-	textCssClassForClass,
-} from '../core/proto_utils/utils.js';
-import { sum } from '../core/utils.js';
-
-import { Hunter_Options_PetType as HunterPetType } from '../core/proto/hunter.js';
-import { PaladinAura } from '../core/proto/paladin.js';
-import { AirTotem, EarthTotem, FireTotem, WaterTotem } from '../core/proto/shaman.js';
-import { Warlock_Options_Summon as WarlockSummon } from '../core/proto/warlock.js';
-import { WarriorShout } from '../core/proto/warrior.js';
-
-import { RaidSimUI } from './raid_sim_ui.js';
 import { Tooltip } from 'bootstrap';
 
+import { Component } from '../core/components/component.js';
+import { Player } from '../core/player.js';
+import { PlayerClasses } from '../core/player_classes';
+import { PlayerSpecs } from '../core/player_specs';
+import { Class, RaidBuffs, Spec } from '../core/proto/common.js';
+import { HunterOptions_PetType as HunterPetType } from '../core/proto/hunter.js';
+import { PaladinAura } from '../core/proto/paladin.js';
+import { AirTotem, EarthTotem, FireTotem, WaterTotem } from '../core/proto/shaman.js';
+import { WarlockOptions_Summon as WarlockSummon } from '../core/proto/warlock.js';
+import { WarriorShout } from '../core/proto/warrior.js';
+import { ActionId } from '../core/proto_utils/action_id.js';
+import { ClassSpecs, SpecTalents, textCssClassForClass } from '../core/proto_utils/utils.js';
+import { Raid } from '../core/raid.js';
+import { sum } from '../core/utils.js';
+import { RaidSimUI } from './raid_sim_ui.js';
+
 interface RaidStatsOptions {
-	sections: Array<RaidStatsSectionOptions>,
+	sections: Array<RaidStatsSectionOptions>;
 }
 
 interface RaidStatsSectionOptions {
-	label: string,
-	categories: Array<RaidStatsCategoryOptions>,
+	label: string;
+	categories: Array<RaidStatsCategoryOptions>;
 }
 
 interface RaidStatsCategoryOptions {
-	label: string,
-	effects: Array<RaidStatsEffectOptions>,
+	label: string;
+	effects: Array<RaidStatsEffectOptions>;
 }
 
-type PlayerProvider = { class?: Class, condition: (player: Player<any>) => boolean };
+type PlayerProvider = { class?: Class; condition: (player: Player<any>) => boolean };
 type RaidProvider = (raid: Raid) => boolean;
 
 interface RaidStatsEffectOptions {
-	label: string,
-	actionId?: ActionId,
-	playerData?: PlayerProvider,
-	raidData?: RaidProvider,
+	label: string;
+	actionId?: ActionId;
+	playerData?: PlayerProvider;
+	raidData?: RaidProvider;
 }
 
 export class RaidStats extends Component {
@@ -58,7 +46,7 @@ export class RaidStats extends Component {
 	constructor(parent: HTMLElement, raidSimUI: RaidSimUI) {
 		super(parent, 'raid-stats');
 
-		let categories: Array<RaidStatsCategory> = [];
+		const categories: Array<RaidStatsCategory> = [];
 		RAID_STATS_OPTIONS.sections.forEach(section => {
 			const sectionElem = document.createElement('div');
 			sectionElem.classList.add('raid-stats-section');
@@ -77,7 +65,7 @@ export class RaidStats extends Component {
 		});
 		this.categories = categories;
 
-		raidSimUI.changeEmitter.on(eventID => this.categories.forEach(c => c.update()));
+		raidSimUI.changeEmitter.on(_eventID => this.categories.forEach(c => c.update()));
 	}
 }
 
@@ -104,7 +92,7 @@ class RaidStatsCategory extends Component {
 		this.tooltipElem = document.createElement('div');
 		this.tooltipElem.innerHTML = `
 			<label class="raid-stats-category-label">${options.label}</label>
-		`
+		`;
 
 		this.effects = options.effects.map(opt => new RaidStatsEffect(this.tooltipElem, raidSimUI, opt));
 
@@ -117,7 +105,7 @@ class RaidStatsCategory extends Component {
 				html: true,
 				placement: 'right',
 				title: this.tooltipElem,
-			})
+			});
 		}
 	}
 
@@ -162,13 +150,13 @@ class RaidStatsEffect extends Component {
 
 		if (this.options.playerData?.class) {
 			const labelElem = this.rootElem.querySelector('.raid-stats-effect-label') as HTMLElement;
-			const playerCssClass = textCssClassForClass(this.options.playerData.class);
+			const playerCssClass = textCssClassForClass(PlayerClasses.fromProto(this.options.playerData.class));
 			labelElem.classList.add(playerCssClass);
 		}
 
 		const iconElem = this.rootElem.querySelector('.raid-stats-effect-icon') as HTMLImageElement;
 		if (options.actionId) {
-			options.actionId.fill().then(actionId => iconElem.src = actionId.iconUrl);
+			options.actionId.fill().then(actionId => (iconElem.src = actionId.iconUrl));
 		} else {
 			iconElem.remove();
 		}
@@ -199,41 +187,64 @@ function playerClass<T extends Class>(clazz: T, extraCondition?: (player: Player
 	return {
 		class: clazz,
 		condition: (player: Player<any>): boolean => {
-			return player.isClass(clazz)
-				&& (!extraCondition || extraCondition(player));
+			return player.isClass(clazz) && (!extraCondition || extraCondition(player));
 		},
 	};
 }
-function playerClassAndTalentInternal<T extends Class>(clazz: T, talentName: keyof SpecTalents<ClassSpecs<T>>, negateTalent: boolean, extraCondition?: (player: Player<ClassSpecs<T>>) => boolean): PlayerProvider {
+function playerClassAndTalentInternal<T extends Class>(
+	clazz: T,
+	talentName: keyof SpecTalents<ClassSpecs<T>>,
+	negateTalent: boolean,
+	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
+): PlayerProvider {
 	return {
 		class: clazz,
 		condition: (player: Player<any>): boolean => {
-			return player.isClass(clazz)
-				&& negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent)
-				&& (!extraCondition || extraCondition(player));
+			return (
+				player.isClass(clazz) &&
+				negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent) &&
+				(!extraCondition || extraCondition(player))
+			);
 		},
 	};
 }
-function playerClassAndTalent<T extends Class>(clazz: T, talentName: keyof SpecTalents<ClassSpecs<T>>, extraCondition?: (player: Player<ClassSpecs<T>>) => boolean): PlayerProvider {
+function playerClassAndTalent<T extends Class>(
+	clazz: T,
+	talentName: keyof SpecTalents<ClassSpecs<T>>,
+	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
+): PlayerProvider {
 	return playerClassAndTalentInternal(clazz, talentName, false, extraCondition);
 }
-function playerClassAndMissingTalent<T extends Class>(clazz: T, talentName: keyof SpecTalents<ClassSpecs<T>>, extraCondition?: (player: Player<ClassSpecs<T>>) => boolean): PlayerProvider {
+function playerClassAndMissingTalent<T extends Class>(
+	clazz: T,
+	talentName: keyof SpecTalents<ClassSpecs<T>>,
+	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
+): PlayerProvider {
 	return playerClassAndTalentInternal(clazz, talentName, true, extraCondition);
 }
-function playerSpecAndTalentInternal<T extends Spec>(spec: T, talentName: keyof SpecTalents<T>, negateTalent: boolean, extraCondition?: (player: Player<T>) => boolean): PlayerProvider {
+function playerSpecAndTalentInternal<T extends Spec>(
+	spec: T,
+	talentName: keyof SpecTalents<T>,
+	negateTalent: boolean,
+	extraCondition?: (player: Player<T>) => boolean,
+): PlayerProvider {
 	return {
-		class: specToClass[spec],
+		class: PlayerSpecs.fromProto(spec).classID,
 		condition: (player: Player<any>): boolean => {
-			return player.isSpec(spec)
-				&& negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent)
-				&& (!extraCondition || extraCondition(player));
+			return (
+				player.isSpec(spec) && negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent) && (!extraCondition || extraCondition(player))
+			);
 		},
 	};
 }
 function playerSpecAndTalent<T extends Spec>(spec: T, talentName: keyof SpecTalents<T>, extraCondition?: (player: Player<T>) => boolean): PlayerProvider {
 	return playerSpecAndTalentInternal(spec, talentName, false, extraCondition);
 }
-function playerSpecAndMissingTalent<T extends Spec>(spec: T, talentName: keyof SpecTalents<T>, extraCondition?: (player: Player<T>) => boolean): PlayerProvider {
+function playerSpecAndMissingTalent<T extends Spec>(
+	spec: T,
+	talentName: keyof SpecTalents<T>,
+	extraCondition?: (player: Player<T>) => boolean,
+): PlayerProvider {
 	return playerSpecAndTalentInternal(spec, talentName, true, extraCondition);
 }
 
@@ -253,7 +264,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Tanks',
-							playerData: { condition: player => isTankSpec(player.spec) },
+							playerData: { condition: player => player.getSpec().isTankSpec },
 						},
 					],
 				},
@@ -262,7 +273,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Healers',
-							playerData: { condition: player => isHealingSpec(player.spec) },
+							playerData: { condition: player => player.getSpec().isHealingSpec },
 						},
 					],
 				},
@@ -271,7 +282,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Melee',
-							playerData: { condition: player => isMeleeDpsSpec(player.spec) },
+							playerData: { condition: player => player.getSpec().isMeleeDpsSpec },
 						},
 					],
 				},
@@ -280,7 +291,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Ranged',
-							playerData: { condition: player => isRangedDpsSpec(player.spec) },
+							playerData: { condition: player => player.getSpec().isRangedDpsSpec },
 						},
 					],
 				},
@@ -345,22 +356,38 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Devotion Aura',
 							actionId: ActionId.fromSpellId(20140),
-							playerData: playerClassAndTalent(Class.ClassPaladin, 'improvedDevotionAura', player => player.getSpecOptions().aura == PaladinAura.DevotionAura),
+							playerData: playerClassAndTalent(
+								Class.ClassPaladin,
+								'improvedDevotionAura',
+								player => player.getSpecOptions().classOptions?.aura == PaladinAura.DevotionAura,
+							),
 						},
 						{
 							label: 'Devotion Aura',
 							actionId: ActionId.fromSpellId(48942),
-							playerData: playerClassAndMissingTalent(Class.ClassPaladin, 'improvedDevotionAura', player => player.getSpecOptions().aura == PaladinAura.DevotionAura),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassPaladin,
+								'improvedDevotionAura',
+								player => player.getSpecOptions().classOptions?.aura == PaladinAura.DevotionAura,
+							),
 						},
 						{
 							label: 'Improved Stoneskin Totem',
 							actionId: ActionId.fromSpellId(16293),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'guardianTotems', player => player.getSpecOptions().totems?.earth == EarthTotem.StoneskinTotem),
+							playerData: playerClassAndTalent(
+								Class.ClassShaman,
+								'guardianTotems',
+								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StoneskinTotem,
+							),
 						},
 						{
 							label: 'Stoneskin Totem',
 							actionId: ActionId.fromSpellId(58753),
-							playerData: playerClassAndMissingTalent(Class.ClassShaman, 'guardianTotems', player => player.getSpecOptions().totems?.earth == EarthTotem.StoneskinTotem),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassShaman,
+								'guardianTotems',
+								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StoneskinTotem,
+							),
 						},
 						{
 							label: 'Scroll of Protection',
@@ -395,17 +422,25 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Strength of Earth Totem',
 							actionId: ActionId.fromSpellId(52456),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'enhancingTotems', player => player.getSpecOptions().totems?.earth == EarthTotem.StrengthOfEarthTotem),
+							playerData: playerClassAndTalent(
+								Class.ClassShaman,
+								'enhancingTotems',
+								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StrengthOfEarthTotem,
+							),
 						},
 						{
 							label: 'Strength of Earth Totem',
 							actionId: ActionId.fromSpellId(58643),
-							playerData: playerClassAndMissingTalent(Class.ClassShaman, 'enhancingTotems', player => player.getSpecOptions().totems?.earth == EarthTotem.StrengthOfEarthTotem),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassShaman,
+								'enhancingTotems',
+								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StrengthOfEarthTotem,
+							),
 						},
 						{
 							label: 'Horn of Winter',
 							actionId: ActionId.fromSpellId(57623),
-							playerData: playerClass(Class.ClassDeathknight),
+							playerData: playerClass(Class.ClassDeathKnight),
 						},
 						{
 							label: 'Scroll of Strength',
@@ -430,12 +465,20 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Fel Intelligence',
 							actionId: ActionId.fromSpellId(54038),
-							playerData: playerClassAndTalent(Class.ClassWarlock, 'improvedFelhunter', player => player.getSpecOptions().summon == WarlockSummon.Felhunter),
+							playerData: playerClassAndTalent(
+								Class.ClassWarlock,
+								'improvedFelhunter',
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Felhunter,
+							),
 						},
 						{
 							label: 'Fel Intelligence',
 							actionId: ActionId.fromSpellId(57567),
-							playerData: playerClassAndMissingTalent(Class.ClassWarlock, 'improvedFelhunter', player => player.getSpecOptions().summon == WarlockSummon.Felhunter),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassWarlock,
+								'improvedFelhunter',
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Felhunter,
+							),
 						},
 						{
 							label: 'Scroll of Intellect',
@@ -455,12 +498,20 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Fel Intelligence',
 							actionId: ActionId.fromSpellId(54038),
-							playerData: playerClassAndTalent(Class.ClassWarlock, 'improvedFelhunter', player => player.getSpecOptions().summon == WarlockSummon.Felhunter),
+							playerData: playerClassAndTalent(
+								Class.ClassWarlock,
+								'improvedFelhunter',
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Felhunter,
+							),
 						},
 						{
 							label: 'Fel Intelligence',
 							actionId: ActionId.fromSpellId(57567),
-							playerData: playerClassAndMissingTalent(Class.ClassWarlock, 'improvedFelhunter', player => player.getSpecOptions().summon == WarlockSummon.Felhunter),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassWarlock,
+								'improvedFelhunter',
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Felhunter,
+							),
 						},
 						{
 							label: 'Scroll of Spirit',
@@ -485,12 +536,20 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Battle Shout',
 							actionId: ActionId.fromSpellId(12861),
-							playerData: playerClassAndTalent(Class.ClassWarrior, 'commandingPresence', player => player.getSpecOptions().shout == WarriorShout.WarriorShoutBattle),
+							playerData: playerClassAndTalent(
+								Class.ClassWarrior,
+								'commandingPresence',
+								player => player.getSpecOptions().classOptions?.shout == WarriorShout.WarriorShoutBattle,
+							),
 						},
 						{
 							label: 'Battle Shout',
 							actionId: ActionId.fromSpellId(47436),
-							playerData: playerClassAndMissingTalent(Class.ClassWarrior, 'commandingPresence', player => player.getSpecOptions().shout == WarriorShout.WarriorShoutBattle),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassWarrior,
+								'commandingPresence',
+								player => player.getSpecOptions().classOptions?.shout == WarriorShout.WarriorShoutBattle,
+							),
 						},
 					],
 				},
@@ -498,9 +557,9 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					label: 'Atk Pwr %',
 					effects: [
 						{
-							label: 'Abomination\'s Might',
+							label: "Abomination's Might",
 							actionId: ActionId.fromSpellId(53138),
-							playerData: playerClassAndTalent(Class.ClassDeathknight, 'abominationsMight'),
+							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'abominationsMight'),
 						},
 						{
 							label: 'Unleashed Rage',
@@ -585,12 +644,20 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Mana Spring Totem',
 							actionId: ActionId.fromSpellId(16206),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'restorativeTotems', player => player.getSpecOptions().totems?.water == WaterTotem.ManaSpringTotem),
+							playerData: playerClassAndTalent(
+								Class.ClassShaman,
+								'restorativeTotems',
+								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ManaSpringTotem,
+							),
 						},
 						{
 							label: 'Mana Spring Totem',
 							actionId: ActionId.fromSpellId(58774),
-							playerData: playerClassAndMissingTalent(Class.ClassShaman, 'restorativeTotems', player => player.getSpecOptions().totems?.water == WaterTotem.ManaSpringTotem),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassShaman,
+								'restorativeTotems',
+								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ManaSpringTotem,
+							),
 						},
 					],
 				},
@@ -615,17 +682,25 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Icy Talons',
 							actionId: ActionId.fromSpellId(55610),
-							playerData: playerClassAndTalent(Class.ClassDeathknight, 'improvedIcyTalons'),
+							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'improvedIcyTalons'),
 						},
 						{
 							label: 'Improved Windfury Totem',
 							actionId: ActionId.fromSpellId(29193),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'improvedWindfuryTotem', player => player.getSpecOptions().totems?.air == AirTotem.WindfuryTotem),
+							playerData: playerClassAndTalent(
+								Class.ClassShaman,
+								'improvedWindfuryTotem',
+								player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WindfuryTotem,
+							),
 						},
 						{
 							label: 'Windfury Totem',
 							actionId: ActionId.fromSpellId(65990),
-							playerData: playerClassAndMissingTalent(Class.ClassShaman, 'improvedWindfuryTotem', player => player.getSpecOptions().totems?.air == AirTotem.WindfuryTotem),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassShaman,
+								'improvedWindfuryTotem',
+								player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WindfuryTotem,
+							),
 						},
 					],
 				},
@@ -640,12 +715,19 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Totem of Wrath',
 							actionId: ActionId.fromSpellId(57722),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'totemOfWrath', player => player.getSpecOptions().totems?.fire == FireTotem.TotemOfWrath),
+							playerData: playerClassAndTalent(
+								Class.ClassShaman,
+								'totemOfWrath',
+								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.TotemOfWrath,
+							),
 						},
 						{
 							label: 'Flametongue Totem',
 							actionId: ActionId.fromSpellId(58656),
-							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().totems?.fire == FireTotem.FlametongueTotem),
+							playerData: playerClass(
+								Class.ClassShaman,
+								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.FlametongueTotem,
+							),
 						},
 					],
 				},
@@ -670,7 +752,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Wrath of Air Totem',
 							actionId: ActionId.fromSpellId(3738),
-							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().totems?.air == AirTotem.WrathOfAirTotem),
+							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WrathOfAirTotem),
 						},
 					],
 				},
@@ -680,22 +762,38 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Commanding Shout',
 							actionId: ActionId.fromSpellId(12861),
-							playerData: playerClassAndTalent(Class.ClassWarrior, 'commandingPresence', player => player.getSpecOptions().shout == WarriorShout.WarriorShoutCommanding),
+							playerData: playerClassAndTalent(
+								Class.ClassWarrior,
+								'commandingPresence',
+								player => player.getSpecOptions().classOptions?.shout == WarriorShout.WarriorShoutCommanding,
+							),
 						},
 						{
 							label: 'Commanding Shout',
 							actionId: ActionId.fromSpellId(47440),
-							playerData: playerClassAndMissingTalent(Class.ClassWarrior, 'commandingPresence', player => player.getSpecOptions().shout == WarriorShout.WarriorShoutCommanding),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassWarrior,
+								'commandingPresence',
+								player => player.getSpecOptions().classOptions?.shout == WarriorShout.WarriorShoutCommanding,
+							),
 						},
 						{
 							label: 'Improved Imp',
 							actionId: ActionId.fromSpellId(18696),
-							playerData: playerClassAndTalent(Class.ClassWarlock, 'improvedImp', player => player.getSpecOptions().summon == WarlockSummon.Imp),
+							playerData: playerClassAndTalent(
+								Class.ClassWarlock,
+								'improvedImp',
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Imp,
+							),
 						},
 						{
 							label: 'Blood Pact',
 							actionId: ActionId.fromSpellId(47982),
-							playerData: playerClassAndMissingTalent(Class.ClassWarlock, 'improvedImp', player => player.getSpecOptions().summon == WarlockSummon.Imp),
+							playerData: playerClassAndMissingTalent(
+								Class.ClassWarlock,
+								'improvedImp',
+								player => player.getSpecOptions().classOptions?.summon == WarlockSummon.Imp,
+							),
 						},
 					],
 				},
@@ -715,17 +813,17 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Hunting Party',
 							actionId: ActionId.fromSpellId(53292),
-							playerData: playerSpecAndTalent(Spec.SpecHunter, 'huntingParty'),
+							playerData: playerSpecAndTalent(Spec.SpecSurvivalHunter, 'huntingParty'),
 						},
 						{
 							label: 'Improved Soul Leech',
 							actionId: ActionId.fromSpellId(54118),
-							playerData: playerSpecAndTalent(Spec.SpecWarlock, 'improvedSoulLeech'),
+							playerData: playerSpecAndTalent(Spec.SpecDestructionWarlock, 'improvedSoulLeech'),
 						},
 						{
 							label: 'Enduring Winter',
 							actionId: ActionId.fromSpellId(44561),
-							playerData: playerSpecAndTalent(Spec.SpecMage, 'enduringWinter'),
+							playerData: playerSpecAndTalent(Spec.SpecFrostMage, 'enduringWinter'),
 						},
 					],
 				},
@@ -780,7 +878,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Unholy Frenzy',
 							actionId: ActionId.fromSpellId(49016),
-							playerData: playerClassAndTalent(Class.ClassDeathknight, 'hysteria'),
+							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'hysteria'),
 						},
 					],
 				},
@@ -825,7 +923,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Acid Spit',
 							actionId: ActionId.fromSpellId(55754),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().petType == HunterPetType.Worm),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().classOptions?.petType == HunterPetType.Worm),
 						},
 					],
 				},
@@ -835,7 +933,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Faerie Fire',
 							actionId: ActionId.fromSpellId(770),
-							playerData: playerClass(Class.ClassDruid, player => player.spec != Spec.SpecRestorationDruid),
+							playerData: playerClass(Class.ClassDruid, player => player.getSpec() != Spec.SpecRestorationDruid),
 						},
 						{
 							label: 'Curse of Weakness',
@@ -845,12 +943,12 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Sting',
 							actionId: ActionId.fromSpellId(56631),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().petType == HunterPetType.Wasp),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().classOptions?.petType == HunterPetType.Wasp),
 						},
 						{
 							label: 'Spore Cloud',
 							actionId: ActionId.fromSpellId(53598),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().petType == HunterPetType.Bat),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().classOptions?.petType == HunterPetType.Bat),
 						},
 					],
 				},
@@ -875,7 +973,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Mangle',
 							actionId: ActionId.fromSpellId(16862),
-							playerData: playerClass(Class.ClassDruid, player => [Spec.SpecFeralDruid, Spec.SpecFeralTankDruid].includes(player.spec)),
+							playerData: playerClass(Class.ClassDruid, player => [Spec.SpecFeralDruid].includes(player.getSpec())),
 						},
 						{
 							label: 'Trauma',
@@ -885,7 +983,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Stampede',
 							actionId: ActionId.fromSpellId(57393),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().petType == HunterPetType.Rhino),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().classOptions?.petType == HunterPetType.Rhino),
 						},
 					],
 				},
@@ -895,12 +993,18 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Totem of Wrath',
 							actionId: ActionId.fromSpellId(30706),
-							playerData: playerClassAndTalent(Class.ClassShaman, 'totemOfWrath', player => player.getSpecOptions().totems?.fire == FireTotem.TotemOfWrath),
+							playerData: playerClassAndTalent(
+								Class.ClassShaman,
+								'totemOfWrath',
+								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.TotemOfWrath,
+							),
 						},
 						{
 							label: 'Heart of the Crusader',
 							actionId: ActionId.fromSpellId(20337),
-							playerData: playerClassAndTalent(Class.ClassPaladin, 'heartOfTheCrusader', player => [Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.spec)),
+							playerData: playerClassAndTalent(Class.ClassPaladin, 'heartOfTheCrusader', player =>
+								[Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.getSpec()),
+							),
 						},
 						{
 							label: 'Master Poisoner',
@@ -923,7 +1027,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 							playerData: playerClassAndTalent(Class.ClassMage, 'improvedScorch'),
 						},
 						{
-							label: 'Winter\'s Chill',
+							label: "Winter's Chill",
 							actionId: ActionId.fromSpellId(28593),
 							playerData: playerClassAndTalent(Class.ClassMage, 'wintersChill'),
 						},
@@ -950,7 +1054,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Ebon Plaguebringer',
 							actionId: ActionId.fromSpellId(51161),
-							playerData: playerClassAndTalent(Class.ClassDeathknight, 'ebonPlaguebringer'),
+							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'ebonPlaguebringer'),
 						},
 						{
 							label: 'Earth and Moon',
@@ -975,7 +1079,9 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Vindication',
 							actionId: ActionId.fromSpellId(26016),
-							playerData: playerClassAndTalent(Class.ClassPaladin, 'vindication', player => [Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.spec)),
+							playerData: playerClassAndTalent(Class.ClassPaladin, 'vindication', player =>
+								[Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.getSpec()),
+							),
 						},
 						{
 							label: 'Improved Demoralizing Shout',
@@ -990,12 +1096,12 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Demoralizing Roar',
 							actionId: ActionId.fromSpellId(16862),
-							playerData: playerSpecAndTalent(Spec.SpecFeralTankDruid, 'feralAggression'),
+							playerData: playerSpecAndTalent(Spec.SpecFeralDruid, 'feralAggression'),
 						},
 						{
 							label: 'Demoralizing Roar',
 							actionId: ActionId.fromSpellId(48560),
-							playerData: playerSpecAndMissingTalent(Spec.SpecFeralTankDruid, 'feralAggression'),
+							playerData: playerSpecAndMissingTalent(Spec.SpecFeralDruid, 'feralAggression'),
 						},
 						{
 							label: 'Improved Curse of Weakness',
@@ -1010,7 +1116,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Demoralizing Screech',
 							actionId: ActionId.fromSpellId(55487),
-							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().petType == HunterPetType.CarrionBird),
+							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().classOptions?.petType == HunterPetType.CarrionBird),
 						},
 					],
 				},
@@ -1030,12 +1136,12 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Improved Frost Fever',
 							actionId: ActionId.fromSpellId(51456),
-							playerData: playerClassAndTalent(Class.ClassDeathknight, 'improvedIcyTouch'),
+							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'improvedIcyTouch'),
 						},
 						{
 							label: 'Frost Fever',
 							actionId: ActionId.fromSpellId(51456),
-							playerData: playerClassAndMissingTalent(Class.ClassDeathknight, 'improvedIcyTouch'),
+							playerData: playerClassAndMissingTalent(Class.ClassDeathKnight, 'improvedIcyTouch'),
 						},
 						{
 							label: 'Judgements of the Just',
@@ -1045,7 +1151,9 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Infected Wounds',
 							actionId: ActionId.fromSpellId(48485),
-							playerData: playerClassAndTalent(Class.ClassDruid, 'infectedWounds', player => [Spec.SpecFeralDruid, Spec.SpecFeralTankDruid].includes(player.spec)),
+							playerData: playerClassAndTalent(Class.ClassDruid, 'infectedWounds', player =>
+								[Spec.SpecFeralDruid, Spec.SpecFeralDruid].includes(player.getSpec()),
+							),
 						},
 					],
 				},
@@ -1066,5 +1174,5 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 				},
 			],
 		},
-	]
+	],
 };

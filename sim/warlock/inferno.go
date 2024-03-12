@@ -131,7 +131,7 @@ func (infernal *InfernalPet) GetPet() *core.Pet {
 }
 
 func (infernal *InfernalPet) Initialize() {
-	felarmor_coef := core.TernaryFloat64(infernal.owner.Options.Armor == proto.Warlock_Options_FelArmor,
+	felarmor_coef := core.TernaryFloat64(infernal.owner.Options.Armor == proto.WarlockOptions_FelArmor,
 		0.3*(1+float64(infernal.owner.Talents.DemonicAegis)*0.1), 0)
 
 	infernal.immolationAura = infernal.RegisterSpell(core.SpellConfig{

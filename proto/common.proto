@@ -4,27 +4,47 @@ package proto;
 option go_package = "./proto";
 
 enum Spec {
-	SpecBalanceDruid = 0;
-	SpecFeralDruid = 12;
-	SpecFeralTankDruid = 14;
-	SpecRestorationDruid = 18;
-	SpecElementalShaman = 1;
-	SpecEnhancementShaman = 9;
-	SpecRestorationShaman = 19;
-	SpecHunter = 8;
-	SpecMage = 2;
-	SpecHolyPaladin = 20;
-	SpecProtectionPaladin = 13;
-	SpecRetributionPaladin = 3;
-	SpecRogue = 7;
-	SpecHealingPriest = 17;
-	SpecShadowPriest = 4;
-	SpecSmitePriest = 10;
-	SpecWarlock = 5;
-	SpecWarrior = 6;
-	SpecProtectionWarrior = 11;
-	SpecDeathknight = 15;
-	SpecTankDeathknight = 16;
+	SpecUnknown = 0;
+
+	SpecBloodDeathKnight = 1;
+	SpecFrostDeathKnight = 2;
+	SpecUnholyDeathKnight = 3;
+
+	SpecBalanceDruid = 4;
+	SpecFeralDruid = 5;
+	SpecRestorationDruid = 6;
+
+	SpecBeastMasteryHunter = 7;
+	SpecMarksmanshipHunter = 8;
+	SpecSurvivalHunter = 9;
+
+	SpecArcaneMage = 10;
+	SpecFireMage = 11;
+	SpecFrostMage = 12;
+
+	SpecHolyPaladin = 13;
+	SpecProtectionPaladin = 14;
+	SpecRetributionPaladin = 15;
+
+	SpecDisciplinePriest = 16;
+	SpecHolyPriest = 17;
+	SpecShadowPriest = 18;
+
+	SpecAssassinationRogue = 19;
+	SpecCombatRogue = 20;
+	SpecSubtletyRogue = 21;
+
+	SpecElementalShaman = 22;
+	SpecEnhancementShaman = 23;
+	SpecRestorationShaman = 24;
+
+	SpecAfflictionWarlock = 25;
+	SpecDemonologyWarlock = 26;
+	SpecDestructionWarlock = 27;
+
+	SpecArmsWarrior = 28;
+	SpecFuryWarrior = 29;
+	SpecProtectionWarrior = 30;
 }
 
 enum Race {
@@ -39,6 +59,8 @@ enum Race {
 	RaceTauren = 8;
 	RaceTroll = 9;
 	RaceUndead = 10;
+	RaceWorgen = 11;
+	RaceGoblin = 12;
 }
 
 enum Faction {
@@ -58,7 +80,7 @@ enum Class {
 	ClassShaman = 7;
 	ClassWarlock = 8;
 	ClassWarrior = 9;
-	ClassDeathknight = 10;
+	ClassDeathKnight = 10;
 }
 
 enum Profession {
@@ -119,7 +141,7 @@ enum Stat {
 	StatFrostRune = 38; // Placeholder: not used yet.
 	StatUnholyRune = 39; // Placeholder: not used yet.
 	StatDeathRune = 40; // Placeholder: not used yet.
-	
+
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 }
@@ -410,12 +432,12 @@ message RaidBuffs {
 
 	// +Health
 	TristateEffect commanding_shout = 3;
-	TristateEffect blood_pact = 4;	
+	TristateEffect blood_pact = 4;
 
 	// + Agi and Str
 	bool horn_of_winter = 5;
 	TristateEffect strength_of_earth_totem = 6; // none, normal, 15% improved
-	
+
 	// +Intell and/or Spi
 	bool arcane_brilliance = 7;
 	TristateEffect fel_intelligence = 8;
@@ -423,7 +445,7 @@ message RaidBuffs {
 
 	// +AP
 	TristateEffect battle_shout = 10;
-	
+
 	// 10% AP
 	bool trueshot_aura = 11;
 	bool unleashed_rage = 12;
@@ -464,7 +486,7 @@ message RaidBuffs {
 	bool aspect_of_the_wild = 46;
 	bool frost_resistance_aura = 47;
 	bool frost_resistance_totem = 48;
-	
+
 	// Miscellaneous
 	bool bloodlust = 29;
 	TristateEffect thorns = 30;
@@ -495,7 +517,7 @@ message PartyBuffs {
 	bool braided_eternium_chain = 3;
 	bool eye_of_the_night = 4;
 	bool chain_of_the_twilight_owl = 5;
-	
+
 	// Group buffs
 	int32 mana_tide_totems = 6;
 	bool heroic_presence = 7;
@@ -510,7 +532,7 @@ message IndividualBuffs {
 	bool blessing_of_sanctuary = 4;
 	bool vigilance = 5;
 	bool renewed_hope = 6;
-	// Only used in individual sims 
+	// Only used in individual sims
 	//   as the class that provides these would cast them in raid sim
 
 	// How many of each of these buffs the player will be receiving.
@@ -572,7 +594,7 @@ message Debuffs {
 	bool curse_of_elements = 5;
 	bool ebon_plaguebringer = 6;
 	bool earth_and_moon = 7;
-	
+
 	// +3% to crit against target
 	bool heart_of_the_crusader = 8;
 	bool master_poisoner = 9;
@@ -588,7 +610,7 @@ message Debuffs {
 
 	// TODO: validate these
 	bool gift_of_arthas = 16;
-	
+
 	// Bleed %
 	bool mangle = 17;
 	bool trauma = 18;
@@ -644,7 +666,7 @@ message TargetInput {
 	InputType input_type = 1;
 	string label = 2;
 	string tooltip = 5;
-	
+
 	bool bool_value = 3;
 	double number_value = 4;
 }
@@ -747,7 +769,7 @@ message SimItem {
 	double weapon_speed = 13;
 
 	string set_name = 14;
-	
+
 }
 
 // Extra enum for describing which items are eligible for an enchant, when
@@ -893,4 +915,11 @@ message ItemSwap {
 
 message Duration {
 	double ms = 1;
+}
+
+enum RotationType {
+	UnknownType = 0;
+	SingleTarget = 1;
+	Aoe = 3;
+	Custom = 2;
 }

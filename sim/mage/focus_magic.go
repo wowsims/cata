@@ -13,14 +13,14 @@ func (mage *Mage) applyFocusMagic() {
 
 	// This is used only for the individual sim.
 	if mage.Party.Raid.Size() == 1 {
-		if mage.Options.FocusMagicPercentUptime > 0 {
+		if mage.ArcaneOptions.FocusMagicPercentUptime > 0 {
 			selfAura, _ := core.FocusMagicAura(&mage.Unit, nil)
-			core.ApplyFixedUptimeAura(selfAura, float64(mage.Options.FocusMagicPercentUptime)/100, time.Second*10, 1)
+			core.ApplyFixedUptimeAura(selfAura, float64(mage.ArcaneOptions.FocusMagicPercentUptime)/100, time.Second*10, 1)
 		}
 		return
 	}
 
-	focusMagicTarget := mage.GetUnit(mage.Options.FocusMagicTarget)
+	focusMagicTarget := mage.GetUnit(mage.ArcaneOptions.FocusMagicTarget)
 	if focusMagicTarget == nil {
 		return
 	} else if focusMagicTarget == &mage.Unit {

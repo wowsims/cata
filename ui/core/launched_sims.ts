@@ -1,5 +1,5 @@
-import { Class, Spec } from './proto/common';
-import { specToClass } from './proto_utils/utils';
+import { Phase } from './constants/other';
+import { Spec } from './proto/common';
 
 // This file is for anything related to launching a new sim. DO NOT touch this
 // file until your sim is ready to launch!
@@ -9,52 +9,152 @@ export enum LaunchStatus {
 	Alpha,
 	Beta,
 	Launched,
-}
-
-export const raidSimStatus: LaunchStatus = LaunchStatus.Launched;
-
-// This list controls which links are shown in the top-left dropdown menu.
-export const simLaunchStatuses: Record<Spec, LaunchStatus> = {
-	[Spec.SpecBalanceDruid]: LaunchStatus.Launched,
-	[Spec.SpecFeralDruid]: LaunchStatus.Launched,
-	[Spec.SpecFeralTankDruid]: LaunchStatus.Launched,
-	[Spec.SpecRestorationDruid]: LaunchStatus.Unlaunched,
-	[Spec.SpecElementalShaman]: LaunchStatus.Launched,
-	[Spec.SpecEnhancementShaman]: LaunchStatus.Launched,
-	[Spec.SpecRestorationShaman]: LaunchStatus.Unlaunched,
-	[Spec.SpecHunter]: LaunchStatus.Launched,
-	[Spec.SpecMage]: LaunchStatus.Launched,
-	[Spec.SpecRogue]: LaunchStatus.Launched,
-	[Spec.SpecHolyPaladin]: LaunchStatus.Unlaunched,
-	[Spec.SpecProtectionPaladin]: LaunchStatus.Launched,
-	[Spec.SpecRetributionPaladin]: LaunchStatus.Launched,
-	[Spec.SpecHealingPriest]: LaunchStatus.Alpha,
-	[Spec.SpecShadowPriest]: LaunchStatus.Launched,
-	[Spec.SpecSmitePriest]: LaunchStatus.Launched,
-	[Spec.SpecWarlock]: LaunchStatus.Launched,
-	[Spec.SpecWarrior]: LaunchStatus.Launched,
-	[Spec.SpecProtectionWarrior]: LaunchStatus.Launched,
-	[Spec.SpecDeathknight]: LaunchStatus.Launched,
-	[Spec.SpecTankDeathknight]: LaunchStatus.Launched,
 };
 
-// Meme specs are excluded from title drop-down menu.
-export const memeSpecs: Array<Spec> = [
-	Spec.SpecSmitePriest,
-];
-
-export function getLaunchedSims(): Array<Spec> {
-	return Object.keys(simLaunchStatuses)
-		.map(specStr => parseInt(specStr) as Spec)
-		.filter(spec => simLaunchStatuses[spec] > LaunchStatus.Unlaunched);
+export type SimStatus = {
+	phase: Phase,
+	status: LaunchStatus
 }
 
-export function getLaunchedSimsForClass(klass: Class): Array<Spec> {
-	return Object.keys(specToClass)
-		.map(specStr => parseInt(specStr) as Spec)
-		.filter(spec => specToClass[spec] == klass && isSimLaunched(spec));
+export const raidSimStatus: SimStatus = {
+	phase: Phase.Phase1,
+	status: LaunchStatus.Unlaunched,
 }
 
-export function isSimLaunched(specIndex: Spec): boolean {
-	return simLaunchStatuses[specIndex] > LaunchStatus.Unlaunched;
-}
+// This list controls which links are shown in the top-left dropdown menu.
+export const simLaunchStatuses: Record<Spec, SimStatus> = {
+	[Spec.SpecUnknown]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	// Death Knight
+	[Spec.SpecBloodDeathKnight]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecFrostDeathKnight]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecUnholyDeathKnight]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	// Druid
+	[Spec.SpecBalanceDruid]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecFeralDruid]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecRestorationDruid]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	// Hunter
+	[Spec.SpecBeastMasteryHunter]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecMarksmanshipHunter]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecSurvivalHunter]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	// Mage
+	[Spec.SpecArcaneMage]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecFireMage]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecFrostMage]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	// Paladin
+	[Spec.SpecHolyPaladin]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecProtectionPaladin]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecRetributionPaladin]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	// Priest
+	[Spec.SpecDisciplinePriest]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecHolyPriest]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecShadowPriest]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	// Rogue
+	[Spec.SpecAssassinationRogue]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecCombatRogue]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecSubtletyRogue]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	// Shaman
+	[Spec.SpecElementalShaman]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Beta,
+	},
+	[Spec.SpecEnhancementShaman]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Beta,
+	},
+	[Spec.SpecRestorationShaman]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	// Warlock
+	[Spec.SpecAfflictionWarlock]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecDemonologyWarlock]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecDestructionWarlock]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	// Warrior
+	[Spec.SpecArmsWarrior]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecFuryWarrior]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+	[Spec.SpecProtectionWarrior]: {
+		phase: Phase.Phase1,
+		status: LaunchStatus.Unlaunched,
+	},
+};

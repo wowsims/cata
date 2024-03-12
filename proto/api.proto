@@ -5,7 +5,7 @@ option go_package = "./proto";
 
 import "common.proto";
 import "apl.proto";
-import "deathknight.proto";
+import "death_knight.proto";
 import "druid.proto";
 import "hunter.proto";
 import "mage.proto";
@@ -16,71 +16,86 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
+// NextIndex: 52
 message Player {
 	// Label used for logging.
-	string name = 16;
+	string name = 51;
 
 	Race race = 1;
 	Class class = 2;
 
 	EquipmentSpec equipment = 3;
 	Consumes consumes = 4;
-	UnitStats bonus_stats = 36;
+	UnitStats bonus_stats = 5;
 
-	bool enable_item_swap = 46;
-	ItemSwap item_swap = 45;
+	bool enable_item_swap = 6;
+	ItemSwap item_swap = 7;
 
-	IndividualBuffs buffs = 15;
+	IndividualBuffs buffs = 8;
 
 	oneof spec {
-		BalanceDruid balance_druid = 6;
-		FeralDruid feral_druid = 22;
-		FeralTankDruid feral_tank_druid = 26;
-		RestorationDruid restoration_druid = 37;
-		Hunter hunter = 7;
-		Mage mage = 8;
-		RetributionPaladin retribution_paladin = 9;
-		ProtectionPaladin protection_paladin = 25;
-		HolyPaladin holy_paladin = 38;
-		HealingPriest healing_priest = 34;
-		ShadowPriest shadow_priest = 10;
-		SmitePriest smite_priest = 20;
-		Rogue rogue = 11;
-		ElementalShaman elemental_shaman = 12;
-		EnhancementShaman enhancement_shaman = 18;
-		RestorationShaman restoration_shaman = 39;
-		Warlock warlock = 13;
-		Warrior warrior = 14;
-		ProtectionWarrior protection_warrior = 21;
-		Deathknight deathknight = 31;
-		TankDeathknight tank_deathknight = 32;
+		BloodDeathKnight blood_death_knight = 9;
+		FrostDeathKnight frost_death_knight = 10;
+		UnholyDeathKnight unholy_death_knight = 11;
+
+		BalanceDruid balance_druid = 12;
+		FeralDruid feral_druid = 13;
+		RestorationDruid restoration_druid = 14;
+
+		BeastMasteryHunter beast_mastery_hunter = 15;
+		MarksmanshipHunter marksmanship_hunter = 16;
+		SurvivalHunter survival_hunter = 17;
+
+		ArcaneMage arcane_mage = 18;
+		FireMage fire_mage = 19;
+		FrostMage frost_mage = 20;
+
+		HolyPaladin holy_paladin = 21;
+		ProtectionPaladin protection_paladin = 22;
+		RetributionPaladin retribution_paladin = 23;
+
+		DisciplinePriest discipline_priest = 24;
+		HolyPriest holy_priest = 25;
+		ShadowPriest shadow_priest = 26;
+
+		AssassinationRogue assassination_rogue = 27;
+		CombatRogue combat_rogue = 28;
+		SubtletyRogue subtlety_rogue = 29;
+
+		ElementalShaman elemental_shaman = 30;
+		EnhancementShaman enhancement_shaman = 31;
+		RestorationShaman restoration_shaman = 32;
+
+		AfflictionWarlock affliction_warlock = 33;
+		DemonologyWarlock demonology_warlock = 34;
+		DestructionWarlock destruction_warlock = 35;
+
+		ArmsWarrior arms_warrior = 36;
+		FuryWarrior fury_warrior = 37;
+		ProtectionWarrior protection_warrior = 38;
 	}
 
 	// Talents in wowhead format, e.g. '01102123133-12312312-'
-	string talents_string = 17;
-	Glyphs glyphs = 28;
-	Profession profession1 = 29;
-	Profession profession2 = 30;
-	Cooldowns cooldowns = 19;
+	string talents_string = 39;
+	Glyphs glyphs = 40;
+	Profession profession1 = 41;
+	Profession profession2 = 42;
+	Cooldowns cooldowns = 43;
 
-	APLRotation rotation = 40;
+	APLRotation rotation = 44;
 
 	// TODO: Move most of the remaining fields into a 'MiscellaneousPlayerOptions' message.
 	// This will remove a lot of the boilerplate code in the UI for each new field.
 
-	int32 reaction_time_ms = 41;
-	int32 channel_clip_delay_ms = 42;
-	bool in_front_of_target = 23;
-	double distance_from_target = 33;
+	int32 reaction_time_ms = 45;
+	int32 channel_clip_delay_ms = 46;
+	bool in_front_of_target = 47;
+	double distance_from_target = 48;
 
-	HealingModel healing_model = 27;
+	HealingModel healing_model = 49;
 
 	// Items/enchants/gems/etc to include in the database.
-	SimDatabase database = 35;
-
-	double nibelung_average_casts = 43;
-	// hack to set a proper default value
-	bool nibelung_average_casts_set = 44;
+	SimDatabase database = 50;
 }
 
 message Party {
@@ -90,7 +105,7 @@ message Party {
 }
 
 message Raid {
-	repeated Party parties = 1; 
+	repeated Party parties = 1;
 
 	// The number of parties in the raid who participate in the sim, e.g.
 	// 10-man vs 25-man raids. The remaining parties are unused but can hold
@@ -247,7 +262,7 @@ message UnitMetrics {
 	DistributionMetrics tto = 15; // Time To OOM, in seconds.
 
 	// average seconds spent oom per iteration
-	double seconds_oom_avg = 3; 
+	double seconds_oom_avg = 3;
 
 	// Chance (0-1) representing probability of death. Used for tank sims.
 	double chance_of_death = 12;
@@ -405,7 +420,7 @@ message StatWeightValues {
 
 message AsyncAPIResult {
   string progress_id = 1;
-} 
+}
 
 // ProgressMetrics are used by all async APIs
 message ProgressMetrics {
@@ -415,7 +430,7 @@ message ProgressMetrics {
 	int32 total_sims = 4;
 	bool presim_running = 8;
 
-	// Partial Results 
+	// Partial Results
 	double dps = 5;
 	double hps = 9;
 
