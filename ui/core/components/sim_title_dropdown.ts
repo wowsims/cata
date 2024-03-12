@@ -118,7 +118,7 @@ export class SimTitleDropdown extends Component {
 
 		const fragment = document.createElement('fragment');
 		fragment.innerHTML = `
-			<a href="javascript:void(0)" class="sim-link ${textKlass}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+			<a href="javascript:void(0)" class="sim-link ${textKlass}" role="button" data-bs-toggle="dropdown" data-bs-trigger="click" aria-expanded="false">
 				<div class="sim-link-content">
 				<img src="${iconPath}" class="sim-link-icon">
 				<div class="d-flex flex-column">
