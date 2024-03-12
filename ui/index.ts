@@ -32,6 +32,6 @@ function docReady(fn: any) {
 	}
 }
 
-docReady(async function () {
+docReady(function () {
 	document.body.classList.add('ready');
 });
