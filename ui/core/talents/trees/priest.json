@@ -1,1104 +1,881 @@
 [
-    {
-       "name":"Discipline",
-       "backgroundUrl":"https://wow.zamimg.com/images/wow/talents/backgrounds/wrath/201.jpg",
-       "talents":[
-          {
-             "fieldName":"unbreakableWill",
-             "location":{
-                "rowIdx":0,
-                "colIdx":1
-             },
-             "spellIds":[
-                14522,
-                14788,
-                14789,
-                14790,
-                14791
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"twinDisciplines",
-             "location":{
-                "rowIdx":0,
-                "colIdx":2
-             },
-             "spellIds":[
-                47586,
-                47587,
-                47588,
-                52802,
-                52803
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"silentResolve",
-             "location":{
-                "rowIdx":1,
-                "colIdx":0
-             },
-             "spellIds":[
-                14523,
-                14784,
-                14785
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"improvedInnerFire",
-             "location":{
-                "rowIdx":1,
-                "colIdx":1
-             },
-             "spellIds":[
-                14747,
-                14770,
-                14771
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"improvedPowerWordFortitude",
-             "location":{
-                "rowIdx":1,
-                "colIdx":2
-             },
-             "spellIds":[
-                14749,
-                14767
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"martyrdom",
-             "location":{
-                "rowIdx":1,
-                "colIdx":3
-             },
-             "spellIds":[
-                14531,
-                14774
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"meditation",
-             "location":{
-                "rowIdx":2,
-                "colIdx":0
-             },
-             "spellIds":[
-                14521,
-                14776,
-                14777
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"innerFocus",
-             "location":{
-                "rowIdx":2,
-                "colIdx":1
-             },
-             "spellIds":[
-                14751
-             ],
-             "maxPoints":1
-          },
-          {
-             "fieldName":"improvedPowerWordShield",
-             "location":{
-                "rowIdx":2,
-                "colIdx":2
-             },
-             "spellIds":[
-                14748,
-                14768,
-                14769
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"absolution",
-             "location":{
-                "rowIdx":3,
-                "colIdx":0
-             },
-             "spellIds":[
-                33167,
-                33171,
-                33172
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"mentalAgility",
-             "location":{
-                "rowIdx":3,
-                "colIdx":1
-             },
-             "spellIds":[
-                14520,
-                14780,
-                14781
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"improvedManaBurn",
-             "location":{
-                "rowIdx":3,
-                "colIdx":3
-             },
-             "spellIds":[
-                14750,
-                14772
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"reflectiveShield",
-             "location":{
-                "rowIdx":4,
-                "colIdx":0
-             },
-             "spellIds":[
-                33201,
-                33202
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"mentalStrength",
-             "location":{
-                "rowIdx":4,
-                "colIdx":1
-             },
-             "spellIds":[
-                18551,
-                18552,
-                18553,
-                18554,
-                18555
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"soulWarding",
-             "location":{
-                "rowIdx":4,
-                "colIdx":2
-             },
-             "spellIds":[
-                63574
-             ],
-             "maxPoints":1,
-             "prereqLocation":{
-                "rowIdx":2,
-                "colIdx":2
-             }
-          },
-          {
-             "fieldName":"focusedPower",
-             "location":{
-                "rowIdx":5,
-                "colIdx":0
-             },
-             "spellIds":[
-                33186,
-                33190
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"enlightenment",
-             "location":{
-                "rowIdx":5,
-                "colIdx":2
-             },
-             "spellIds":[
-                34908,
-                34909,
-                34910
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"focusedWill",
-             "location":{
-                "rowIdx":6,
-                "colIdx":0
-             },
-             "spellIds":[
-                45234,
-                45243,
-                45244
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"powerInfusion",
-             "location":{
-                "rowIdx":6,
-                "colIdx":1
-             },
-             "spellIds":[
-                10060
-             ],
-             "maxPoints":1,
-             "prereqLocation":{
-                "rowIdx":4,
-                "colIdx":1
-             }
-          },
-          {
-             "fieldName":"improvedFlashHeal",
-             "location":{
-                "rowIdx":6,
-                "colIdx":2
-             },
-             "spellIds":[
-                63504,
-                63505,
-                63506
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"renewedHope",
-             "location":{
-                "rowIdx":7,
-                "colIdx":0
-             },
-             "spellIds":[
-                57470,
-                57472
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"rapture",
-             "location":{
-                "rowIdx":7,
-                "colIdx":1
-             },
-             "spellIds":[
-                47535,
-                47536,
-                47537
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"aspiration",
-             "location":{
-                "rowIdx":7,
-                "colIdx":2
-             },
-             "spellIds":[
-                47507,
-                47508
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"divineAegis",
-             "location":{
-                "rowIdx":8,
-                "colIdx":0
-             },
-             "spellIds":[
-                47509,
-                47511,
-                47515
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"painSuppression",
-             "location":{
-                "rowIdx":8,
-                "colIdx":1
-             },
-             "spellIds":[
-                33206
-             ],
-             "maxPoints":1
-          },
-          {
-             "fieldName":"grace",
-             "location":{
-                "rowIdx":8,
-                "colIdx":2
-             },
-             "spellIds":[
-                47516,
-                47517
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"borrowedTime",
-             "location":{
-                "rowIdx":9,
-                "colIdx":1
-             },
-             "spellIds":[
-                52795,
-                52797,
-                52798,
-                52799,
-                52800
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"penance",
-             "location":{
-                "rowIdx":10,
-                "colIdx":1
-             },
-             "spellIds":[
-                47540
-             ],
-             "maxPoints":1
-          }
-       ]
-    },
-    {
-       "name":"Holy",
-       "backgroundUrl":"https://wow.zamimg.com/images/wow/talents/backgrounds/wrath/202.jpg",
-       "talents":[
-          {
-             "fieldName":"healingFocus",
-             "location":{
-                "rowIdx":0,
-                "colIdx":0
-             },
-             "spellIds":[
-                14913,
-                15012
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"improvedRenew",
-             "location":{
-                "rowIdx":0,
-                "colIdx":1
-             },
-             "spellIds":[
-                14908,
-                15020,
-                17191
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"holySpecialization",
-             "location":{
-                "rowIdx":0,
-                "colIdx":2
-             },
-             "spellIds":[
-                14889,
-                15008,
-                15009,
-                15010,
-                15011
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"spellWarding",
-             "location":{
-                "rowIdx":1,
-                "colIdx":1
-             },
-             "spellIds":[
-                27900,
-                27901,
-                27902,
-                27903,
-                27904
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"divineFury",
-             "location":{
-                "rowIdx":1,
-                "colIdx":2
-             },
-             "spellIds":[
-                18530,
-                18531,
-                18533,
-                18534,
-                18535
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"desperatePrayer",
-             "location":{
-                "rowIdx":2,
-                "colIdx":0
-             },
-             "spellIds":[
-                19236
-             ],
-             "maxPoints":1
-          },
-          {
-             "fieldName":"blessedRecovery",
-             "location":{
-                "rowIdx":2,
-                "colIdx":1
-             },
-             "spellIds":[
-                27811,
-                27815,
-                27816
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"inspiration",
-             "location":{
-                "rowIdx":2,
-                "colIdx":3
-             },
-             "spellIds":[
-                14892,
-                15362,
-                15363
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"holyReach",
-             "location":{
-                "rowIdx":3,
-                "colIdx":0
-             },
-             "spellIds":[
-                27789,
-                27790
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"improvedHealing",
-             "location":{
-                "rowIdx":3,
-                "colIdx":1
-             },
-             "spellIds":[
-                14912,
-                15013,
-                15014
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"searingLight",
-             "location":{
-                "rowIdx":3,
-                "colIdx":2
-             },
-             "spellIds":[
-                14909,
-                15017
-             ],
-             "maxPoints":2,
-             "prereqLocation":{
-                "rowIdx":1,
-                "colIdx":2
-             }
-          },
-          {
-             "fieldName":"healingPrayers",
-             "location":{
-                "rowIdx":4,
-                "colIdx":0
-             },
-             "spellIds":[
-                14911,
-                15018
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"spiritOfRedemption",
-             "location":{
-                "rowIdx":4,
-                "colIdx":1
-             },
-             "spellIds":[
-                20711
-             ],
-             "maxPoints":1
-          },
-          {
-             "fieldName":"spiritualGuidance",
-             "location":{
-                "rowIdx":4,
-                "colIdx":2
-             },
-             "spellIds":[
-                14901,
-                15028,
-                15029,
-                15030,
-                15031
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"surgeOfLight",
-             "location":{
-                "rowIdx":5,
-                "colIdx":0
-             },
-             "spellIds":[
-                33150,
-                33154
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"spiritualHealing",
-             "location":{
-                "rowIdx":5,
-                "colIdx":2
-             },
-             "spellIds":[
-                14898,
-                15349,
-                15354,
-                15355,
-                15356
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"holyConcentration",
-             "location":{
-                "rowIdx":6,
-                "colIdx":0
-             },
-             "spellIds":[
-                34753,
-                34859,
-                34860
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"lightwell",
-             "location":{
-                "rowIdx":6,
-                "colIdx":1
-             },
-             "spellIds":[
-                724
-             ],
-             "maxPoints":1,
-             "prereqLocation":{
-                "rowIdx":4,
-                "colIdx":1
-             }
-          },
-          {
-             "fieldName":"blessedResilience",
-             "location":{
-                "rowIdx":6,
-                "colIdx":2
-             },
-             "spellIds":[
-                33142,
-                33145,
-                33146
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"bodyAndSoul",
-             "location":{
-                "rowIdx":7,
-                "colIdx":0
-             },
-             "spellIds":[
-                64127,
-                64129
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"empoweredHealing",
-             "location":{
-                "rowIdx":7,
-                "colIdx":1
-             },
-             "spellIds":[
-                33158,
-                33159,
-                33160,
-                33161,
-                33162
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"serendipity",
-             "location":{
-                "rowIdx":7,
-                "colIdx":2
-             },
-             "spellIds":[
-                63730,
-                63733,
-                63737
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"empoweredRenew",
-             "location":{
-                "rowIdx":8,
-                "colIdx":0
-             },
-             "spellIds":[
-                63534,
-                63542,
-                63543
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"circleOfHealing",
-             "location":{
-                "rowIdx":8,
-                "colIdx":1
-             },
-             "spellIds":[
-                34861
-             ],
-             "maxPoints":1
-          },
-          {
-             "fieldName":"testOfFaith",
-             "location":{
-                "rowIdx":8,
-                "colIdx":2
-             },
-             "spellIds":[
-                47558,
-                47559,
-                47560
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"divineProvidence",
-             "location":{
-                "rowIdx":9,
-                "colIdx":1
-             },
-             "spellIds":[
-                47562,
-                47564,
-                47565,
-                47566,
-                47567
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"guardianSpirit",
-             "location":{
-                "rowIdx":10,
-                "colIdx":1
-             },
-             "spellIds":[
-                47788
-             ],
-             "maxPoints":1
-          }
-       ]
-    },
-    {
-       "name":"Shadow",
-       "backgroundUrl":"https://wow.zamimg.com/images/wow/talents/backgrounds/wrath/203.jpg",
-       "talents":[
-          {
-             "fieldName":"spiritTap",
-             "location":{
-                "rowIdx":0,
-                "colIdx":0
-             },
-             "spellIds":[
-                15270,
-                15335,
-                15336
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"improvedSpiritTap",
-             "location":{
-                "rowIdx":0,
-                "colIdx":1
-             },
-             "spellIds":[
-                15337,
-                15338
-             ],
-             "maxPoints":2,
-             "prereqLocation":{
-                "rowIdx":0,
-                "colIdx":0
-             }
-          },
-          {
-             "fieldName":"darkness",
-             "location":{
-                "rowIdx":0,
-                "colIdx":2
-             },
-             "spellIds":[
-                15259,
-                15307,
-                15308,
-                15309,
-                15310
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"shadowAffinity",
-             "location":{
-                "rowIdx":1,
-                "colIdx":0
-             },
-             "spellIds":[
-                15318,
-                15272,
-                15320
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"improvedShadowWordPain",
-             "location":{
-                "rowIdx":1,
-                "colIdx":1
-             },
-             "spellIds":[
-                15275,
-                15317
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"shadowFocus",
-             "location":{
-                "rowIdx":1,
-                "colIdx":2
-             },
-             "spellIds":[
-                15260,
-                15327,
-                15328
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"improvedPsychicScream",
-             "location":{
-                "rowIdx":2,
-                "colIdx":0
-             },
-             "spellIds":[
-                15392,
-                15448
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"improvedMindBlast",
-             "location":{
-                "rowIdx":2,
-                "colIdx":1
-             },
-             "spellIds":[
-                15273,
-                15312,
-                15313,
-                15314,
-                15316
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"mindFlay",
-             "location":{
-                "rowIdx":2,
-                "colIdx":2
-             },
-             "spellIds":[
-                15407
-             ],
-             "maxPoints":1
-          },
-          {
-             "fieldName":"veiledShadows",
-             "location":{
-                "rowIdx":3,
-                "colIdx":1
-             },
-             "spellIds":[
-                15274,
-                15311
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"shadowReach",
-             "location":{
-                "rowIdx":3,
-                "colIdx":2
-             },
-             "spellIds":[
-                17322,
-                17323
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"shadowWeaving",
-             "location":{
-                "rowIdx":3,
-                "colIdx":3
-             },
-             "spellIds":[
-                15257,
-                15331,
-                15332
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"silence",
-             "location":{
-                "rowIdx":4,
-                "colIdx":0
-             },
-             "spellIds":[
-                15487
-             ],
-             "maxPoints":1,
-             "prereqLocation":{
-                "rowIdx":2,
-                "colIdx":0
-             }
-          },
-          {
-             "fieldName":"vampiricEmbrace",
-             "location":{
-                "rowIdx":4,
-                "colIdx":1
-             },
-             "spellIds":[
-                15286
-             ],
-             "maxPoints":1
-          },
-          {
-             "fieldName":"improvedVampiricEmbrace",
-             "location":{
-                "rowIdx":4,
-                "colIdx":2
-             },
-             "spellIds":[
-                27839,
-                27840
-             ],
-             "maxPoints":2,
-             "prereqLocation":{
-                "rowIdx":4,
-                "colIdx":1
-             }
-          },
-          {
-             "fieldName":"focusedMind",
-             "location":{
-                "rowIdx":4,
-                "colIdx":3
-             },
-             "spellIds":[
-                33213,
-                33214,
-                33215
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"mindMelt",
-             "location":{
-                "rowIdx":5,
-                "colIdx":0
-             },
-             "spellIds":[
-                14910,
-                33371
-             ],
-             "maxPoints":2
-          },
-          {
-             "fieldName":"improvedDevouringPlague",
-             "location":{
-                "rowIdx":5,
-                "colIdx":2
-             },
-             "spellIds":[
-                63625,
-                63626,
-                63627
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"shadowform",
-             "location":{
-                "rowIdx":6,
-                "colIdx":1
-             },
-             "spellIds":[
-                15473
-             ],
-             "maxPoints":1,
-             "prereqLocation":{
-                "rowIdx":4,
-                "colIdx":1
-             }
-          },
-          {
-             "fieldName":"shadowPower",
-             "location":{
-                "rowIdx":6,
-                "colIdx":2
-             },
-             "spellIds":[
-                33221,
-                33222,
-                33223,
-                33224,
-                33225
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"improvedShadowform",
-             "location":{
-                "rowIdx":7,
-                "colIdx":0
-             },
-             "spellIds":[
-                47569,
-                47570
-             ],
-             "maxPoints":2,
-             "prereqLocation":{
-                "rowIdx":6,
-                "colIdx":1
-             }
-          },
-          {
-             "fieldName":"misery",
-             "location":{
-                "rowIdx":7,
-                "colIdx":2
-             },
-             "spellIds":[
-                33191,
-                33192,
-                33193
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"psychicHorror",
-             "location":{
-                "rowIdx":8,
-                "colIdx":0
-             },
-             "spellIds":[
-                64044
-             ],
-             "maxPoints":1
-          },
-          {
-             "fieldName":"vampiricTouch",
-             "location":{
-                "rowIdx":8,
-                "colIdx":1
-             },
-             "spellIds":[
-                34914
-             ],
-             "maxPoints":1,
-             "prereqLocation":{
-                "rowIdx":6,
-                "colIdx":1
-             }
-          },
-          {
-             "fieldName":"painAndSuffering",
-             "location":{
-                "rowIdx":8,
-                "colIdx":2
-             },
-             "spellIds":[
-                47580,
-                47581,
-                47582
-             ],
-             "maxPoints":3
-          },
-          {
-             "fieldName":"twistedFaith",
-             "location":{
-                "rowIdx":9,
-                "colIdx":2
-             },
-             "spellIds":[
-                47573,
-                47577,
-                47578,
-                51166,
-                51167
-             ],
-             "maxPoints":5
-          },
-          {
-             "fieldName":"dispersion",
-             "location":{
-                "rowIdx":10,
-                "colIdx":1
-             },
-             "spellIds":[
-                47585
-             ],
-             "maxPoints":1,
-             "prereqLocation":{
-                "rowIdx":8,
-                "colIdx":1
-             }
-          }
-       ]
-    }
+   {
+     "name": "Discipline",
+     "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/760.jpg",
+     "talents": [
+       {
+         "fieldName": "improvedPowerWordShield",
+         "fancyName": "Improved Power Word Shield",
+         "location": {
+           "rowIdx": 0,
+           "colIdx": 0
+         },
+         "spellIds": [
+           14748,
+           14768
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "twinDisciplines",
+         "fancyName": "Twin Disciplines",
+         "location": {
+           "rowIdx": 0,
+           "colIdx": 1
+         },
+         "spellIds": [
+           47586,
+           47587,
+           47588
+         ],
+         "maxPoints": 3
+       },
+       {
+         "fieldName": "mentalAgility",
+         "fancyName": "Mental Agility",
+         "location": {
+           "rowIdx": 0,
+           "colIdx": 2
+         },
+         "spellIds": [
+           14520,
+           14781,
+           14780
+         ],
+         "maxPoints": 3
+       },
+       {
+         "fieldName": "evangelism",
+         "fancyName": "Evangelism",
+         "location": {
+           "rowIdx": 1,
+           "colIdx": 0
+         },
+         "spellIds": [
+           81659,
+           81662
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "archangel",
+         "fancyName": "Archangel",
+         "location": {
+           "rowIdx": 1,
+           "colIdx": 1
+         },
+         "spellIds": [
+           87151
+         ],
+         "maxPoints": 1,
+         "prereqLocation": {
+           "rowIdx": 1,
+           "colIdx": 0
+         }
+       },
+       {
+         "fieldName": "innerSanctum",
+         "fancyName": "Inner Sanctum",
+         "location": {
+           "rowIdx": 1,
+           "colIdx": 2
+         },
+         "spellIds": [
+           14747,
+           14770,
+           14771
+         ],
+         "maxPoints": 3
+       },
+       {
+         "fieldName": "soulWarding",
+         "fancyName": "Soul Warding",
+         "location": {
+           "rowIdx": 1,
+           "colIdx": 3
+         },
+         "spellIds": [
+           63574,
+           78500,
+           78501
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "renewedHope",
+         "fancyName": "Renewed Hope",
+         "location": {
+           "rowIdx": 2,
+           "colIdx": 0
+         },
+         "spellIds": [
+           57470,
+           57472
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "powerInfusion",
+         "fancyName": "Power Infusion",
+         "location": {
+           "rowIdx": 2,
+           "colIdx": 1
+         },
+         "spellIds": [
+           10060
+         ],
+         "maxPoints": 1
+       },
+       {
+         "fieldName": "atonement",
+         "fancyName": "Atonement",
+         "location": {
+           "rowIdx": 2,
+           "colIdx": 2
+         },
+         "spellIds": [
+           14523,
+           81749
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "innerFocus",
+         "fancyName": "Inner Focus",
+         "location": {
+           "rowIdx": 2,
+           "colIdx": 3
+         },
+         "spellIds": [
+           89485
+         ],
+         "maxPoints": 1
+       },
+       {
+         "fieldName": "rapture",
+         "fancyName": "Rapture",
+         "location": {
+           "rowIdx": 3,
+           "colIdx": 1
+         },
+         "spellIds": [
+           47535,
+           47536,
+           47537
+         ],
+         "maxPoints": 3
+       },
+       {
+         "fieldName": "borrowedTime",
+         "fancyName": "Borrowed Time",
+         "location": {
+           "rowIdx": 3,
+           "colIdx": 2
+         },
+         "spellIds": [
+           52795,
+           52797,
+           52798
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "reflectiveShield",
+         "fancyName": "Reflective Shield",
+         "location": {
+           "rowIdx": 3,
+           "colIdx": 3
+         },
+         "spellIds": [
+           33201,
+           33202
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "strengthOfSoul",
+         "fancyName": "Strength Of Soul",
+         "location": {
+           "rowIdx": 4,
+           "colIdx": 0
+         },
+         "spellIds": [
+           89488,
+           89489
+         ],
+         "maxPoints": 2,
+         "prereqLocation": {
+           "rowIdx": 2,
+           "colIdx": 0
+         }
+       },
+       {
+         "fieldName": "divineAegis",
+         "fancyName": "Divine Aegis",
+         "location": {
+           "rowIdx": 4,
+           "colIdx": 1
+         },
+         "spellIds": [
+           47509,
+           47511,
+           47515
+         ],
+         "maxPoints": 3
+       },
+       {
+         "fieldName": "painSuppression",
+         "fancyName": "Pain Suppression",
+         "location": {
+           "rowIdx": 4,
+           "colIdx": 2
+         },
+         "spellIds": [
+           33206
+         ],
+         "maxPoints": 1
+       },
+       {
+         "fieldName": "trainOfThought",
+         "fancyName": "Train Of Thought",
+         "location": {
+           "rowIdx": 4,
+           "colIdx": 3
+         },
+         "spellIds": [
+           92295,
+           92297
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "focusedWill",
+         "fancyName": "Focused Will",
+         "location": {
+           "rowIdx": 5,
+           "colIdx": 0
+         },
+         "spellIds": [
+           45234,
+           45243
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "grace",
+         "fancyName": "Grace",
+         "location": {
+           "rowIdx": 5,
+           "colIdx": 2
+         },
+         "spellIds": [
+           47516,
+           47517
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "powerWordBarrier",
+         "fancyName": "Power Word Barrier",
+         "location": {
+           "rowIdx": 6,
+           "colIdx": 1
+         },
+         "spellIds": [
+           62618
+         ],
+         "maxPoints": 1,
+         "prereqLocation": {
+           "rowIdx": 4,
+           "colIdx": 1
+         }
+       }
+     ]
+   },
+   {
+     "name": "Holy",
+     "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/813.jpg",
+     "talents": [
+       {
+         "fieldName": "improvedRenew",
+         "fancyName": "Improved Renew",
+         "location": {
+           "rowIdx": 0,
+           "colIdx": 0
+         },
+         "spellIds": [
+           14908,
+           15020
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "empoweredHealing",
+         "fancyName": "Empowered Healing",
+         "location": {
+           "rowIdx": 0,
+           "colIdx": 1
+         },
+         "spellIds": [
+           33158,
+           33159,
+           33160
+         ],
+         "maxPoints": 3
+       },
+       {
+         "fieldName": "divineFury",
+         "fancyName": "Divine Fury",
+         "location": {
+           "rowIdx": 0,
+           "colIdx": 2
+         },
+         "spellIds": [
+           18530,
+           18531,
+           18533
+         ],
+         "maxPoints": 3
+       },
+       {
+         "fieldName": "desperatePrayer",
+         "fancyName": "Desperate Prayer",
+         "location": {
+           "rowIdx": 1,
+           "colIdx": 1
+         },
+         "spellIds": [
+           19236
+         ],
+         "maxPoints": 1
+       },
+       {
+         "fieldName": "surgeOfLight",
+         "fancyName": "Surge Of Light",
+         "location": {
+           "rowIdx": 1,
+           "colIdx": 2
+         },
+         "spellIds": [
+           88687,
+           88690
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "inspiration",
+         "fancyName": "Inspiration",
+         "location": {
+           "rowIdx": 1,
+           "colIdx": 3
+         },
+         "spellIds": [
+           14892,
+           15362
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "divineTouch",
+         "fancyName": "Divine Touch",
+         "location": {
+           "rowIdx": 2,
+           "colIdx": 0
+         },
+         "spellIds": [
+           63534,
+           63542
+         ],
+         "maxPoints": 2,
+         "prereqLocation": {
+           "rowIdx": 0,
+           "colIdx": 0
+         }
+       },
+       {
+         "fieldName": "holyConcentration",
+         "fancyName": "Holy Concentration",
+         "location": {
+           "rowIdx": 2,
+           "colIdx": 1
+         },
+         "spellIds": [
+           34753,
+           34859
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "lightwell?spellModifier=47586%2C47587%2C47588",
+         "fancyName": "Lightwell?Spellmodifier=47586%2C47587%2C47588",
+         "location": {
+           "rowIdx": 2,
+           "colIdx": 2
+         },
+         "spellIds": [
+           724
+         ],
+         "maxPoints": 1
+       },
+       {
+         "fieldName": "tomeOfLight",
+         "fancyName": "Tome Of Light",
+         "location": {
+           "rowIdx": 2,
+           "colIdx": 3
+         },
+         "spellIds": [
+           14898,
+           81625
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "rapidRenewal",
+         "fancyName": "Rapid Renewal",
+         "location": {
+           "rowIdx": 3,
+           "colIdx": 0
+         },
+         "spellIds": [
+           95649
+         ],
+         "maxPoints": 1,
+         "prereqLocation": {
+           "rowIdx": 2,
+           "colIdx": 0
+         }
+       },
+       {
+         "fieldName": "spiritOfRedemption",
+         "fancyName": "Spirit Of Redemption",
+         "location": {
+           "rowIdx": 3,
+           "colIdx": 2
+         },
+         "spellIds": [
+           20711
+         ],
+         "maxPoints": 1
+       },
+       {
+         "fieldName": "serendipity",
+         "fancyName": "Serendipity",
+         "location": {
+           "rowIdx": 3,
+           "colIdx": 3
+         },
+         "spellIds": [
+           63730,
+           63733
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "bodyAndSoul",
+         "fancyName": "Body And Soul",
+         "location": {
+           "rowIdx": 4,
+           "colIdx": 0
+         },
+         "spellIds": [
+           64127,
+           64129
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "chakra",
+         "fancyName": "Chakra",
+         "location": {
+           "rowIdx": 4,
+           "colIdx": 1
+         },
+         "spellIds": [
+           14751
+         ],
+         "maxPoints": 1,
+         "prereqLocation": {
+           "rowIdx": 2,
+           "colIdx": 1
+         }
+       },
+       {
+         "fieldName": "revelations",
+         "fancyName": "Revelations",
+         "location": {
+           "rowIdx": 4,
+           "colIdx": 2
+         },
+         "spellIds": [
+           88627
+         ],
+         "maxPoints": 1,
+         "prereqLocation": {
+           "rowIdx": 4,
+           "colIdx": 1
+         }
+       },
+       {
+         "fieldName": "blessedResilience",
+         "fancyName": "Blessed Resilience",
+         "location": {
+           "rowIdx": 4,
+           "colIdx": 3
+         },
+         "spellIds": [
+           33142,
+           33145
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "testOfFaith",
+         "fancyName": "Test Of Faith",
+         "location": {
+           "rowIdx": 5,
+           "colIdx": 0
+         },
+         "spellIds": [
+           47558,
+           47559,
+           47560
+         ],
+         "maxPoints": 3
+       },
+       {
+         "fieldName": "heavenlyVoice",
+         "fancyName": "Heavenly Voice",
+         "location": {
+           "rowIdx": 5,
+           "colIdx": 1
+         },
+         "spellIds": [
+           87430,
+           87431
+         ],
+         "maxPoints": 2,
+         "prereqLocation": {
+           "rowIdx": 4,
+           "colIdx": 1
+         }
+       },
+       {
+         "fieldName": "circleOfHealing",
+         "fancyName": "Circle Of Healing",
+         "location": {
+           "rowIdx": 5,
+           "colIdx": 2
+         },
+         "spellIds": [
+           34861
+         ],
+         "maxPoints": 1
+       },
+       {
+         "fieldName": "guardianSpirit",
+         "fancyName": "Guardian Spirit",
+         "location": {
+           "rowIdx": 6,
+           "colIdx": 1
+         },
+         "spellIds": [
+           47788
+         ],
+         "maxPoints": 1
+       }
+     ]
+   },
+   {
+     "name": "Shadow",
+     "backgroundUrl": "https://wow.zamimg.com/images/wow/talents/backgrounds/cata/795.jpg",
+     "talents": [
+       {
+         "fieldName": "darkness",
+         "fancyName": "Darkness",
+         "location": {
+           "rowIdx": 0,
+           "colIdx": 0
+         },
+         "spellIds": [
+           15259,
+           15307,
+           15308
+         ],
+         "maxPoints": 3
+       },
+       {
+         "fieldName": "improvedShadowWordPain",
+         "fancyName": "Improved Shadow Word Pain",
+         "location": {
+           "rowIdx": 0,
+           "colIdx": 1
+         },
+         "spellIds": [
+           15275,
+           15317
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "veiledShadows",
+         "fancyName": "Veiled Shadows",
+         "location": {
+           "rowIdx": 0,
+           "colIdx": 2
+         },
+         "spellIds": [
+           15274,
+           15311
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "improvedPsychicScream",
+         "fancyName": "Improved Psychic Scream",
+         "location": {
+           "rowIdx": 1,
+           "colIdx": 0
+         },
+         "spellIds": [
+           15392,
+           15448
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "improvedMindBlast",
+         "fancyName": "Improved Mind Blast",
+         "location": {
+           "rowIdx": 1,
+           "colIdx": 1
+         },
+         "spellIds": [
+           15273,
+           15312,
+           15313
+         ],
+         "maxPoints": 3
+       },
+       {
+         "fieldName": "improvedDevouringPlague",
+         "fancyName": "Improved Devouring Plague",
+         "location": {
+           "rowIdx": 1,
+           "colIdx": 2
+         },
+         "spellIds": [
+           63625,
+           63626
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "twistedFaith",
+         "fancyName": "Twisted Faith",
+         "location": {
+           "rowIdx": 1,
+           "colIdx": 3
+         },
+         "spellIds": [
+           47573,
+           47577
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "shadowform",
+         "fancyName": "Shadowform",
+         "location": {
+           "rowIdx": 2,
+           "colIdx": 1
+         },
+         "spellIds": [
+           15473
+         ],
+         "maxPoints": 1
+       },
+       {
+         "fieldName": "phantasm",
+         "fancyName": "Phantasm",
+         "location": {
+           "rowIdx": 2,
+           "colIdx": 2
+         },
+         "spellIds": [
+           47569,
+           47570
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "harnessedShadows",
+         "fancyName": "Harnessed Shadows",
+         "location": {
+           "rowIdx": 2,
+           "colIdx": 3
+         },
+         "spellIds": [
+           33191,
+           78228
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "silence",
+         "fancyName": "Silence",
+         "location": {
+           "rowIdx": 3,
+           "colIdx": 0
+         },
+         "spellIds": [
+           15487
+         ],
+         "maxPoints": 1,
+         "prereqLocation": {
+           "rowIdx": 1,
+           "colIdx": 0
+         }
+       },
+       {
+         "fieldName": "vampiricEmbrace",
+         "fancyName": "Vampiric Embrace",
+         "location": {
+           "rowIdx": 3,
+           "colIdx": 1
+         },
+         "spellIds": [
+           15286
+         ],
+         "maxPoints": 1
+       },
+       {
+         "fieldName": "masochism",
+         "fancyName": "Masochism",
+         "location": {
+           "rowIdx": 3,
+           "colIdx": 2
+         },
+         "spellIds": [
+           88994,
+           88995
+         ],
+         "maxPoints": 2,
+         "prereqLocation": {
+           "rowIdx": 3,
+           "colIdx": 1
+         }
+       },
+       {
+         "fieldName": "mindMelt",
+         "fancyName": "Mind Melt",
+         "location": {
+           "rowIdx": 3,
+           "colIdx": 3
+         },
+         "spellIds": [
+           14910,
+           33371
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "painAndSuffering",
+         "fancyName": "Pain And Suffering",
+         "location": {
+           "rowIdx": 4,
+           "colIdx": 0
+         },
+         "spellIds": [
+           47580,
+           47581
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "vampiricTouch",
+         "fancyName": "Vampiric Touch",
+         "location": {
+           "rowIdx": 4,
+           "colIdx": 1
+         },
+         "spellIds": [
+           34914
+         ],
+         "maxPoints": 1,
+         "prereqLocation": {
+           "rowIdx": 3,
+           "colIdx": 1
+         }
+       },
+       {
+         "fieldName": "paralysis",
+         "fancyName": "Paralysis",
+         "location": {
+           "rowIdx": 4,
+           "colIdx": 2
+         },
+         "spellIds": [
+           87192,
+           87195
+         ],
+         "maxPoints": 2
+       },
+       {
+         "fieldName": "psychicHorror",
+         "fancyName": "Psychic Horror",
+         "location": {
+           "rowIdx": 5,
+           "colIdx": 0
+         },
+         "spellIds": [
+           64044
+         ],
+         "maxPoints": 1
+       },
+       {
+         "fieldName": "sinAndPunishment",
+         "fancyName": "Sin And Punishment",
+         "location": {
+           "rowIdx": 5,
+           "colIdx": 1
+         },
+         "spellIds": [
+           87099,
+           87100
+         ],
+         "maxPoints": 2,
+         "prereqLocation": {
+           "rowIdx": 4,
+           "colIdx": 1
+         }
+       },
+       {
+         "fieldName": "shadowyApparition",
+         "fancyName": "Shadowy Apparition",
+         "location": {
+           "rowIdx": 5,
+           "colIdx": 2
+         },
+         "spellIds": [
+           78202,
+           78203,
+           78204
+         ],
+         "maxPoints": 3
+       },
+       {
+         "fieldName": "dispersion",
+         "fancyName": "Dispersion",
+         "location": {
+           "rowIdx": 6,
+           "colIdx": 1
+         },
+         "spellIds": [
+           47585
+         ],
+         "maxPoints": 1
+       }
+     ]
+   }
  ]
