@@ -5,7 +5,7 @@ import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/c
 import { WarlockSpecs } from '../proto_utils/utils';
 
 export class Warlock extends PlayerClass<Class.ClassWarlock> {
-	static protoID = Class.ClassWarlock as Class.ClassWarlock;
+	static classID = Class.ClassWarlock as Class.ClassWarlock;
 	static friendlyName = 'Warlock';
 	static hexColor = '#9482c9';
 	static specs: Record<string, PlayerSpec<WarlockSpecs>> = {
@@ -35,7 +35,7 @@ export class Warlock extends PlayerClass<Class.ClassWarlock> {
 	];
 	static rangedWeaponTypes: RangedWeaponType[] = [RangedWeaponType.RangedWeaponTypeWand];
 
-	readonly protoID = Warlock.protoID;
+	readonly classID = Warlock.classID;
 	readonly friendlyName = Warlock.name;
 	readonly hexColor = Warlock.hexColor;
 	readonly specs = Warlock.specs;

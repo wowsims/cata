@@ -102,7 +102,7 @@ export class SettingsTab extends SimTab {
 			true,
 		);
 
-		const races = this.simUI.player.spec.playerClass.races;
+		const races = this.simUI.player.getPlayerClass().races;
 		const _racePicker = new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
 			label: 'Race',
 			values: races.map(race => {

@@ -2,6 +2,7 @@ import { LaunchStatus, raidSimStatus, simLaunchStatuses } from '../launched_sims
 import { PlayerClass } from '../player_class';
 import { PlayerClasses } from '../player_classes';
 import { PlayerSpec } from '../player_spec';
+import { PlayerSpecs } from '../player_specs';
 import { Class, Spec } from '../proto/common';
 import { raidSimIcon, raidSimLabel, raidSimSiteUrl, textCssClassForClass, textCssClassForSpec } from '../proto_utils/utils.js';
 import { Component } from './component.js';
@@ -31,7 +32,7 @@ export class SimTitleDropdown extends Component {
 	constructor(parent: HTMLElement, currentSpec: PlayerSpec<any> | null, config: SimTitleDropdownConfig = {}) {
 		super(parent, 'sim-title-dropdown-root');
 
-		const rootLinkArgs: SpecOptions | RaidOptions = currentSpec === null ? { type: 'Raid' } : { type: 'Spec', spec: currentSpec };
+		const rootLinkArgs: SpecOptions | RaidOptions = !!currentSpec ? { type: 'Spec', spec: currentSpec } : { type: 'Raid' };
 		const rootLink = this.buildRootSimLink(rootLinkArgs);
 
 		if (config.noDropdown) {
@@ -183,7 +184,7 @@ export class SimTitleDropdown extends Component {
 				<div class="sim-link-content">
 				<img src="${iconPath}" class="sim-link-icon">
 				<div class="d-flex flex-column">
-					<span class="sim-link-label">${spec.playerClass.friendlyName}</span>
+					<span class="sim-link-label">${PlayerSpecs.getPlayerClass(spec).friendlyName}</span>
 					<span class="sim-link-title">${spec.friendlyName}</span>
 					${this.launchStatusLabel({ type: 'Spec', spec: spec })}
 				</div>
@@ -197,12 +198,12 @@ export class SimTitleDropdown extends Component {
 	private launchStatusLabel(data: SpecOptions | RaidOptions): string {
 		if (
 			(data.type == 'Raid' && raidSimStatus.status == LaunchStatus.Launched) ||
-			(data.type == 'Spec' && simLaunchStatuses[data.spec.protoID as Spec].status == LaunchStatus.Launched)
+			(data.type == 'Spec' && simLaunchStatuses[data.spec.specID as Spec].status == LaunchStatus.Launched)
 		)
 			return '';
 
-		const status = data.type == 'Raid' ? raidSimStatus.status : simLaunchStatuses[data.spec.protoID as Spec].status;
-		const phase = data.type == 'Raid' ? raidSimStatus.phase : simLaunchStatuses[data.spec.protoID as Spec].phase;
+		const status = data.type == 'Raid' ? raidSimStatus.status : simLaunchStatuses[data.spec.specID as Spec].status;
+		const phase = data.type == 'Raid' ? raidSimStatus.phase : simLaunchStatuses[data.spec.specID as Spec].phase;
 
 		const elem = document.createElement('span');
 		elem.classList.add('launch-status-label', 'text-brand');

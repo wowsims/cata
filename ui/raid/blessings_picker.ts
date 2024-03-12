@@ -29,18 +29,18 @@ export class BlessingsPicker extends Component {
 		this.simUI = raidSimUI;
 		this.assignments = BlessingsAssignments.clone(makeDefaultBlessings(4));
 
-		const specs = PlayerClasses.naturalOrder
+		const playerSpecs = PlayerClasses.naturalOrder
 			.map(playerClass => Object.values(playerClass.specs))
 			.flat()
-			.filter(spec => implementedSpecs.includes(spec.protoID));
+			.filter(spec => implementedSpecs.includes(spec.specID));
 		const paladinIndexes = [...Array(MAX_PALADINS).keys()];
 
-		specs.map(spec => {
+		playerSpecs.map(playerSpec => {
 			const row = document.createElement('div');
 			row.classList.add('blessings-picker-row');
 			this.rootElem.appendChild(row);
 
-			row.append(this.buildSpecIcon(spec));
+			row.append(this.buildSpecIcon(playerSpec));
 
 			const container = document.createElement('div');
 			container.classList.add('blessings-picker-container');
@@ -72,11 +72,11 @@ export class BlessingsPicker extends Component {
 						return paladinIdx < numPaladins;
 					},
 					changedEvent: (picker: BlessingsPicker) => picker.changeEmitter,
-					getValue: (picker: BlessingsPicker) => picker.assignments.paladins[paladinIdx]?.blessings[spec.protoID] || Blessings.BlessingUnknown,
+					getValue: (picker: BlessingsPicker) => picker.assignments.paladins[paladinIdx]?.blessings[playerSpec.specID] || Blessings.BlessingUnknown,
 					setValue: (eventID: EventID, picker: BlessingsPicker, newValue: number) => {
-						const currentValue = picker.assignments.paladins[paladinIdx].blessings[spec.protoID];
+						const currentValue = picker.assignments.paladins[paladinIdx].blessings[playerSpec.specID];
 						if (currentValue != newValue) {
-							picker.assignments.paladins[paladinIdx].blessings[spec.protoID] = newValue;
+							picker.assignments.paladins[paladinIdx].blessings[playerSpec.specID] = newValue;
 							this.changeEmitter.emit(eventID);
 						}
 					},

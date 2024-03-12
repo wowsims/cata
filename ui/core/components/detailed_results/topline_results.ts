@@ -2,6 +2,8 @@ import { RaidSimResultsManager } from '../../components/raid_sim_action.js';
 import { DeathKnight } from '../../player_classes/death_knight';
 import { Rogue } from '../../player_classes/rogue';
 import { Warrior } from '../../player_classes/warrior';
+import { PlayerSpec } from '../../player_spec';
+import { PlayerSpecs } from '../../player_specs';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 
 export class ToplineResults extends ResultComponent {
@@ -18,7 +20,7 @@ export class ToplineResults extends ResultComponent {
 		const noManaClasses = [DeathKnight, Rogue, Warrior];
 
 		const players = resultData.result.getPlayers(resultData.filter);
-		if (players.length == 1 && !noManaClasses.some(klass => players[0].spec?.playerClass == klass)) {
+		if (players.length == 1 && !!players[0].spec && !noManaClasses.some(klass => PlayerSpecs.getPlayerClass(players[0].spec as PlayerSpec<any>) == klass)) {
 			const player = players[0];
 			const secondsOOM = player.secondsOomAvg;
 			const percentOOM = secondsOOM / resultData.result.encounterMetrics.durationSeconds;

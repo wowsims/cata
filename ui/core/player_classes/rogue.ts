@@ -5,7 +5,7 @@ import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/c
 import { RogueSpecs } from '../proto_utils/utils';
 
 export class Rogue extends PlayerClass<Class.ClassRogue> {
-	static protoID = Class.ClassRogue as Class.ClassRogue;
+	static classID = Class.ClassRogue as Class.ClassRogue;
 	static friendlyName = 'Rogue';
 	static hexColor = '#fff569';
 	static specs: Record<string, PlayerSpec<RogueSpecs>> = {
@@ -43,7 +43,7 @@ export class Rogue extends PlayerClass<Class.ClassRogue> {
 		RangedWeaponType.RangedWeaponTypeThrown,
 	];
 
-	readonly protoID = Rogue.protoID;
+	readonly classID = Rogue.classID;
 	readonly friendlyName = Rogue.name;
 	readonly hexColor = Rogue.hexColor;
 	readonly specs = Rogue.specs;

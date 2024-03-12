@@ -177,7 +177,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		super(parentElem, player.sim, {
 			cssClass: config.cssClass,
 			cssScheme: config.cssScheme,
-			spec: player.spec,
+			spec: player.getPlayerSpec(),
 			knownIssues: config.knownIssues,
 			simStatus: simLaunchStatuses[player.getSpec()],
 		});
@@ -265,7 +265,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.sim.waitForInit().then(() => {
 				this.loadSettings();
 
-				if (this.player.spec.isHealingSpec) {
+				if (this.player.getPlayerSpec().isHealingSpec) {
 					alert(Tooltips.HEALING_SIM_DISCLAIMER);
 				}
 			});
@@ -393,8 +393,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	applyDefaults(eventID: EventID) {
 		TypedEvent.freezeAllAndDo(() => {
-			const tankSpec = this.player.spec.isTankSpec;
-			const healingSpec = this.player.spec.isHealingSpec;
+			const tankSpec = this.player.getPlayerSpec().isTankSpec;
+			const healingSpec = this.player.getPlayerSpec().isHealingSpec;
 
 			//Special case for Totem of Wrath keeps buff and debuff sync'd
 			const towEnabled = this.individualConfig.defaults.raidBuffs.totemOfWrath || this.individualConfig.defaults.debuffs.totemOfWrath;
@@ -402,7 +402,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.individualConfig.defaults.debuffs.totemOfWrath = towEnabled;
 
 			this.player.applySharedDefaults(eventID);
-			this.player.setRace(eventID, this.player.spec.playerClass.races[0]);
+			this.player.setRace(eventID, this.player.getPlayerClass().races[0]);
 			this.player.setGear(eventID, this.sim.db.lookupEquipmentSpec(this.individualConfig.defaults.gear));
 			this.player.setConsumes(eventID, this.individualConfig.defaults.consumes);
 			this.player.setTalentsString(eventID, this.individualConfig.defaults.talents.talentsString);
@@ -456,7 +456,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	getStorageKey(keyPart: string): string {
 		// Local storage is shared by all sites under the same domain, so we need to use
 		// different keys for each spec site.
-		return PlayerSpecs.getLocalStorageKey(this.player.spec) + keyPart;
+		return PlayerSpecs.getLocalStorageKey(this.player.getPlayerSpec()) + keyPart;
 	}
 
 	toProto(exportCategories?: Array<SimSettingCategories>): IndividualSimSettings {
@@ -505,8 +505,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	fromProto(eventID: EventID, settings: IndividualSimSettings, includeCategories?: Array<SimSettingCategories>) {
 		const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
 
-		const tankSpec = this.player.spec.isTankSpec;
-		const healingSpec = this.player.spec.isHealingSpec;
+		const tankSpec = this.player.getPlayerSpec().isTankSpec;
+		const healingSpec = this.player.getPlayerSpec().isHealingSpec;
 
 		TypedEvent.freezeAllAndDo(() => {
 			if (!settings.player) {

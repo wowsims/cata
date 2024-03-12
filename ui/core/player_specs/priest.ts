@@ -1,14 +1,12 @@
 import { IconSize } from '../player_class';
-import { Priest } from '../player_classes/priest';
 import { PlayerSpec } from '../player_spec';
-import { Spec } from '../proto/common';
+import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class DisciplinePriest extends PlayerSpec<Spec.SpecDisciplinePriest> {
-	static protoID = Spec.SpecDisciplinePriest as Spec.SpecDisciplinePriest;
-	static playerClass = Priest;
+	static specID = Spec.SpecDisciplinePriest as Spec.SpecDisciplinePriest;
+	static classID = Class.ClassPriest as Class.ClassPriest;
 	static friendlyName = 'Discipline';
-	static fullName = `${this.friendlyName} ${Priest.friendlyName}`;
 	static simLink = getSpecSiteUrl('priest', 'discipline');
 
 	static isTankSpec = false;
@@ -18,10 +16,9 @@ export class DisciplinePriest extends PlayerSpec<Spec.SpecDisciplinePriest> {
 
 	static canDualWield = false;
 
-	readonly protoID = DisciplinePriest.protoID;
-	readonly playerClass = DisciplinePriest.playerClass;
+	readonly specID = DisciplinePriest.specID;
+	readonly classID = DisciplinePriest.classID;
 	readonly friendlyName = DisciplinePriest.friendlyName;
-	readonly fullName = DisciplinePriest.fullName;
 	readonly simLink = DisciplinePriest.simLink;
 
 	readonly isTankSpec = DisciplinePriest.isTankSpec;
@@ -41,10 +38,9 @@ export class DisciplinePriest extends PlayerSpec<Spec.SpecDisciplinePriest> {
 }
 
 export class HolyPriest extends PlayerSpec<Spec.SpecHolyPriest> {
-	static protoID = Spec.SpecHolyPriest as Spec.SpecHolyPriest;
-	static playerClass = Priest;
+	static specID = Spec.SpecHolyPriest as Spec.SpecHolyPriest;
+	static classID = Class.ClassPriest as Class.ClassPriest;
 	static friendlyName = 'Holy';
-	static fullName = `${this.friendlyName} ${Priest.friendlyName}`;
 	static simLink = getSpecSiteUrl('priest', 'holy');
 
 	static isTankSpec = false;
@@ -54,10 +50,9 @@ export class HolyPriest extends PlayerSpec<Spec.SpecHolyPriest> {
 
 	static canDualWield = false;
 
-	readonly protoID = HolyPriest.protoID;
-	readonly playerClass = HolyPriest.playerClass;
+	readonly specID = HolyPriest.specID;
+	readonly classID = HolyPriest.classID;
 	readonly friendlyName = HolyPriest.friendlyName;
-	readonly fullName = HolyPriest.fullName;
 	readonly simLink = HolyPriest.simLink;
 
 	readonly isTankSpec = HolyPriest.isTankSpec;
@@ -77,10 +72,9 @@ export class HolyPriest extends PlayerSpec<Spec.SpecHolyPriest> {
 }
 
 export class ShadowPriest extends PlayerSpec<Spec.SpecShadowPriest> {
-	static protoID = Spec.SpecShadowPriest as Spec.SpecShadowPriest;
-	static playerClass = Priest;
+	static specID = Spec.SpecShadowPriest as Spec.SpecShadowPriest;
+	static classID = Class.ClassPriest as Class.ClassPriest;
 	static friendlyName = 'Shadow';
-	static fullName = `${this.friendlyName} ${Priest.friendlyName}`;
 	static simLink = getSpecSiteUrl('priest', 'shadow');
 
 	static isTankSpec = false;
@@ -90,10 +84,9 @@ export class ShadowPriest extends PlayerSpec<Spec.SpecShadowPriest> {
 
 	static canDualWield = false;
 
-	readonly protoID = ShadowPriest.protoID;
-	readonly playerClass = ShadowPriest.playerClass;
+	readonly specID = ShadowPriest.specID;
+	readonly classID = ShadowPriest.classID;
 	readonly friendlyName = ShadowPriest.friendlyName;
-	readonly fullName = ShadowPriest.fullName;
 	readonly simLink = ShadowPriest.simLink;
 
 	readonly isTankSpec = ShadowPriest.isTankSpec;

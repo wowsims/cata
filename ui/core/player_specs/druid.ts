@@ -1,14 +1,12 @@
 import { IconSize } from '../player_class';
-import { Druid } from '../player_classes/druid';
 import { PlayerSpec } from '../player_spec';
-import { Spec } from '../proto/common';
+import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class BalanceDruid extends PlayerSpec<Spec.SpecBalanceDruid> {
-	static protoID = Spec.SpecBalanceDruid as Spec.SpecBalanceDruid;
-	static playerClass = Druid;
+	static specID = Spec.SpecBalanceDruid as Spec.SpecBalanceDruid;
+	static classID = Class.ClassDruid as Class.ClassDruid;
 	static friendlyName = 'Balance';
-	static fullName = `${this.friendlyName} ${Druid.friendlyName}`;
 	static simLink = getSpecSiteUrl('druid', 'balance');
 
 	static isTankSpec = false;
@@ -18,10 +16,9 @@ export class BalanceDruid extends PlayerSpec<Spec.SpecBalanceDruid> {
 
 	static canDualWield = false;
 
-	readonly protoID = BalanceDruid.protoID;
-	readonly playerClass = BalanceDruid.playerClass;
+	readonly specID = BalanceDruid.specID;
+	readonly classID = BalanceDruid.classID;
 	readonly friendlyName = BalanceDruid.friendlyName;
-	readonly fullName = BalanceDruid.fullName;
 	readonly simLink = BalanceDruid.simLink;
 
 	readonly isTankSpec = BalanceDruid.isTankSpec;
@@ -41,10 +38,9 @@ export class BalanceDruid extends PlayerSpec<Spec.SpecBalanceDruid> {
 }
 
 export class FeralDruid extends PlayerSpec<Spec.SpecFeralDruid> {
-	static protoID = Spec.SpecFeralDruid as Spec.SpecFeralDruid;
-	static playerClass = Druid;
+	static specID = Spec.SpecFeralDruid as Spec.SpecFeralDruid;
+	static classID = Class.ClassDruid as Class.ClassDruid;
 	static friendlyName = 'Feral';
-	static fullName = `${this.friendlyName} ${Druid.friendlyName}`;
 	static simLink = getSpecSiteUrl('druid', 'feral');
 
 	static isTankSpec = true;
@@ -54,10 +50,9 @@ export class FeralDruid extends PlayerSpec<Spec.SpecFeralDruid> {
 
 	static canDualWield = false;
 
-	readonly protoID = FeralDruid.protoID;
-	readonly playerClass = FeralDruid.playerClass;
+	readonly specID = FeralDruid.specID;
+	readonly classID = FeralDruid.classID;
 	readonly friendlyName = FeralDruid.friendlyName;
-	readonly fullName = FeralDruid.fullName;
 	readonly simLink = FeralDruid.simLink;
 
 	readonly isTankSpec = FeralDruid.isTankSpec;
@@ -77,10 +72,9 @@ export class FeralDruid extends PlayerSpec<Spec.SpecFeralDruid> {
 }
 
 export class RestorationDruid extends PlayerSpec<Spec.SpecRestorationDruid> {
-	static protoID = Spec.SpecRestorationDruid as Spec.SpecRestorationDruid;
-	static playerClass = Druid;
+	static specID = Spec.SpecRestorationDruid as Spec.SpecRestorationDruid;
+	static classID = Class.ClassDruid as Class.ClassDruid;
 	static friendlyName = 'Restoration';
-	static fullName = `${this.friendlyName} ${Druid.friendlyName}`;
 	static simLink = getSpecSiteUrl('druid', 'Restoration');
 
 	static isTankSpec = false;
@@ -90,10 +84,9 @@ export class RestorationDruid extends PlayerSpec<Spec.SpecRestorationDruid> {
 
 	static canDualWield = false;
 
-	readonly protoID = RestorationDruid.protoID;
-	readonly playerClass = RestorationDruid.playerClass;
+	readonly specID = RestorationDruid.specID;
+	readonly classID = RestorationDruid.classID;
 	readonly friendlyName = RestorationDruid.friendlyName;
-	readonly fullName = RestorationDruid.fullName;
 	readonly simLink = RestorationDruid.simLink;
 
 	readonly isTankSpec = RestorationDruid.isTankSpec;

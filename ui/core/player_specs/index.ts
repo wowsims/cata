@@ -1,6 +1,9 @@
 import { LOCAL_STORAGE_PREFIX } from '../constants/other';
+import { PlayerClass } from '../player_class';
+import { PlayerClasses } from '../player_classes';
 import { PlayerSpec } from '../player_spec';
 import { Spec } from '../proto/common';
+import { SpecClasses } from '../proto_utils/utils';
 import * as DeathKnightSpecs from './death_knight';
 import * as DruidSpecs from './druid';
 import * as HunterSpecs from './hunter';
@@ -12,7 +15,7 @@ import * as ShamanSpecs from './shaman';
 import * as WarlockSpecs from './warlock';
 import * as WarriorSpecs from './warrior';
 
-const protoToPlayerSpec: Record<Spec, PlayerSpec<any> | undefined> = {
+const specToPlayerSpec: Record<Spec, PlayerSpec<any> | undefined> = {
 	[Spec.SpecUnknown]: undefined,
 	// Death Knight
 	[Spec.SpecBloodDeathKnight]: DeathKnightSpecs.BloodDeathKnight,
@@ -56,6 +59,14 @@ const protoToPlayerSpec: Record<Spec, PlayerSpec<any> | undefined> = {
 	[Spec.SpecProtectionWarrior]: WarriorSpecs.ProtectionWarrior,
 };
 
+const getPlayerClass = <SpecType extends Spec>(playerSpec: PlayerSpec<SpecType>): PlayerClass<SpecClasses<SpecType>> => {
+	if (playerSpec.specID == Spec.SpecUnknown) {
+		throw new Error('Invalid Spec');
+	}
+
+	return PlayerClasses.fromProto(playerSpec.classID);
+};
+
 export const PlayerSpecs = {
 	...DeathKnightSpecs,
 	...DruidSpecs,
@@ -67,18 +78,22 @@ export const PlayerSpecs = {
 	...ShamanSpecs,
 	...WarlockSpecs,
 	...WarriorSpecs,
+	getPlayerClass,
+	getFullSpecName: <SpecType extends Spec>(playerSpec: PlayerSpec<SpecType>): string => {
+		return `${playerSpec.friendlyName} ${getPlayerClass(playerSpec).friendlyName}`;
+	},
 	// Prefixes used for storing browser data for each site. Even if a Spec is
 	// renamed, DO NOT change these values or people will lose their saved data.
-	getLocalStorageKey: <SpecType extends Spec>(spec: PlayerSpec<SpecType>): string => {
-		return `${LOCAL_STORAGE_PREFIX}_${spec.friendlyName.toLowerCase().replace(/\s/, '_')}_${spec.playerClass.friendlyName
-			.toLowerCase()
+	getLocalStorageKey: <SpecType extends Spec>(playerSpec: PlayerSpec<SpecType>): string => {
+		return `${LOCAL_STORAGE_PREFIX}_${playerSpec.friendlyName.toLowerCase().replace(/\s/, '_')}_${getPlayerClass(playerSpec)
+			.friendlyName.toLowerCase()
 			.replace(/\s/, '_')}`;
 	},
-	fromProto: <SpecType extends Spec>(protoId: SpecType): PlayerSpec<SpecType> => {
-		if (protoId == Spec.SpecUnknown) {
+	fromProto: <SpecType extends Spec>(spec: SpecType): PlayerSpec<SpecType> => {
+		if (spec == Spec.SpecUnknown) {
 			throw new Error('Invalid Spec');
 		}
 
-		return protoToPlayerSpec[protoId] as PlayerSpec<SpecType>;
+		return specToPlayerSpec[spec] as PlayerSpec<SpecType>;
 	},
 };

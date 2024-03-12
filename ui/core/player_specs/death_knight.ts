@@ -1,14 +1,12 @@
 import { IconSize } from '../player_class';
-import { DeathKnight } from '../player_classes/death_knight';
 import { PlayerSpec } from '../player_spec';
-import { Spec } from '../proto/common';
+import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class BloodDeathKnight extends PlayerSpec<Spec.SpecBloodDeathKnight> {
-	static protoID = Spec.SpecBloodDeathKnight as Spec.SpecBloodDeathKnight;
-	static playerClass = DeathKnight;
+	static specID = Spec.SpecBloodDeathKnight as Spec.SpecBloodDeathKnight;
+	static classID = Class.ClassDeathKnight as Class.ClassDeathKnight;
 	static friendlyName = 'Blood';
-	static fullName = `${this.friendlyName} ${DeathKnight.friendlyName}`;
 	static simLink = getSpecSiteUrl('death_knight', 'blood');
 
 	static isTankSpec = true;
@@ -18,10 +16,9 @@ export class BloodDeathKnight extends PlayerSpec<Spec.SpecBloodDeathKnight> {
 
 	static canDualWield = true;
 
-	readonly protoID = BloodDeathKnight.protoID;
-	readonly playerClass = BloodDeathKnight.playerClass;
+	readonly specID = BloodDeathKnight.specID;
+	readonly classID = BloodDeathKnight.classID;
 	readonly friendlyName = BloodDeathKnight.friendlyName;
-	readonly fullName = BloodDeathKnight.fullName;
 	readonly simLink = BloodDeathKnight.simLink;
 
 	readonly isTankSpec = BloodDeathKnight.isTankSpec;
@@ -41,10 +38,9 @@ export class BloodDeathKnight extends PlayerSpec<Spec.SpecBloodDeathKnight> {
 }
 
 export class FrostDeathKnight extends PlayerSpec<Spec.SpecFrostDeathKnight> {
-	static protoID = Spec.SpecFrostDeathKnight as Spec.SpecFrostDeathKnight;
-	static playerClass = DeathKnight;
+	static specID = Spec.SpecFrostDeathKnight as Spec.SpecFrostDeathKnight;
+	static classID = Class.ClassDeathKnight as Class.ClassDeathKnight;
 	static friendlyName = 'Frost';
-	static fullName = `${this.friendlyName} ${DeathKnight.friendlyName}`;
 	static simLink = getSpecSiteUrl('death_knight', 'frost');
 
 	static isTankSpec = false;
@@ -54,10 +50,9 @@ export class FrostDeathKnight extends PlayerSpec<Spec.SpecFrostDeathKnight> {
 
 	static canDualWield = true;
 
-	readonly protoID = FrostDeathKnight.protoID;
-	readonly playerClass = FrostDeathKnight.playerClass;
+	readonly specID = FrostDeathKnight.specID;
+	readonly classID = FrostDeathKnight.classID;
 	readonly friendlyName = FrostDeathKnight.friendlyName;
-	readonly fullName = FrostDeathKnight.fullName;
 	readonly simLink = FrostDeathKnight.simLink;
 
 	readonly isTankSpec = FrostDeathKnight.isTankSpec;
@@ -77,10 +72,9 @@ export class FrostDeathKnight extends PlayerSpec<Spec.SpecFrostDeathKnight> {
 }
 
 export class UnholyDeathKnight extends PlayerSpec<Spec.SpecUnholyDeathKnight> {
-	static protoID = Spec.SpecUnholyDeathKnight as Spec.SpecUnholyDeathKnight;
-	static playerClass = DeathKnight;
+	static specID = Spec.SpecUnholyDeathKnight as Spec.SpecUnholyDeathKnight;
+	static classID = Class.ClassDeathKnight as Class.ClassDeathKnight;
 	static friendlyName = 'Unholy';
-	static fullName = `${this.friendlyName} ${DeathKnight.friendlyName}`;
 	static simLink = getSpecSiteUrl('death_knight', 'unholy');
 
 	static isTankSpec = false;
@@ -90,10 +84,9 @@ export class UnholyDeathKnight extends PlayerSpec<Spec.SpecUnholyDeathKnight> {
 
 	static canDualWield = true;
 
-	readonly protoID = UnholyDeathKnight.protoID;
-	readonly playerClass = UnholyDeathKnight.playerClass;
+	readonly specID = UnholyDeathKnight.specID;
+	readonly classID = UnholyDeathKnight.classID;
 	readonly friendlyName = UnholyDeathKnight.friendlyName;
-	readonly fullName = UnholyDeathKnight.fullName;
 	readonly simLink = UnholyDeathKnight.simLink;
 
 	readonly isTankSpec = UnholyDeathKnight.isTankSpec;

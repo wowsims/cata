@@ -1,6 +1,6 @@
 import { Player } from './player.js';
 import { Party as PartyProto, Player as PlayerProto } from './proto/api.js';
-import { Class , PartyBuffs } from './proto/common.js';
+import { Class, PartyBuffs } from './proto/common.js';
 import { getPlayerSpecFromPlayer } from './proto_utils/utils.js';
 import { Raid } from './raid.js';
 import { Sim } from './sim.js';
@@ -34,10 +34,7 @@ export class Party {
 		this.players = [...Array(MAX_PARTY_SIZE).keys()].map(_i => null);
 		this.playerChangeListener = eventID => this.changeEmitter.emit(eventID);
 
-		this.changeEmitter = TypedEvent.onAny([
-			this.compChangeEmitter,
-			this.buffsChangeEmitter,
-		], 'PartyChange');
+		this.changeEmitter = TypedEvent.onAny([this.compChangeEmitter, this.buffsChangeEmitter], 'PartyChange');
 	}
 
 	size(): number {
@@ -106,8 +103,7 @@ export class Party {
 	}
 
 	setBuffs(eventID: EventID, newBuffs: PartyBuffs) {
-		if (PartyBuffs.equals(this.buffs, newBuffs))
-			return;
+		if (PartyBuffs.equals(this.buffs, newBuffs)) return;
 
 		// Make a defensive copy
 		this.buffs = PartyBuffs.clone(newBuffs);
@@ -116,7 +112,7 @@ export class Party {
 
 	toProto(forExport?: boolean, forSimming?: boolean): PartyProto {
 		return PartyProto.create({
-			players: this.players.map(player => player == null ? PlayerProto.create() : player.toProto(forExport, forSimming)),
+			players: this.players.map(player => (player == null ? PlayerProto.create() : player.toProto(forExport, forSimming))),
 			buffs: this.buffs,
 		});
 	}
@@ -136,7 +132,7 @@ export class Party {
 				const currentPlayer = this.players[i];
 
 				// Reuse the current player if possible, so that event handlers are preserved.
-				if (currentPlayer && spec == currentPlayer.spec) {
+				if (currentPlayer && spec == currentPlayer.getSpec()) {
 					currentPlayer.fromProto(eventID, playerProto);
 				} else {
 					const newPlayer = new Player(spec, this.sim);

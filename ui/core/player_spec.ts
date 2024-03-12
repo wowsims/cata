@@ -1,22 +1,20 @@
-import { EligibleWeaponType, IconSize, PlayerClass } from './player_class.js';
+import { EligibleWeaponType, IconSize } from './player_class.js';
 import { ArmorType, Class, Race, RangedWeaponType, Spec } from './proto/common.js';
 import { SpecClasses } from './proto_utils/utils';
 
 export abstract class PlayerSpec<SpecType extends Spec> {
-	static protoID: Spec;
-	static playerClass: PlayerClass<Class>;
+	static specID: Spec;
+	static classID: Class;
 	static friendlyName: string;
-	static fullName: string;
 	static hexColor: string;
 	static races: Race[] = [];
 	static armorTypes: ArmorType[] = [];
 	static weaponTypes: EligibleWeaponType[];
 	static rangedWeaponTypes: RangedWeaponType[];
 
-	abstract readonly protoID: SpecType;
-	abstract readonly playerClass: PlayerClass<SpecClasses<SpecType>>;
+	abstract readonly specID: SpecType;
+	abstract readonly classID: SpecClasses<SpecType>;
 	abstract readonly friendlyName: string;
-	abstract readonly fullName: string;
 	abstract readonly simLink: string;
 
 	abstract readonly isTankSpec: boolean;

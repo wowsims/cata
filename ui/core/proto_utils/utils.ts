@@ -178,8 +178,8 @@ export function getTalentTree(talentsString: string): number {
 }
 
 // Gets the URL for the individual sim corresponding to the given spec.
-const specSiteUrlTemplate = new URL(`${window.location.protocol}//${window.location.host}/${REPO_NAME}/CLASS/SPEC/`).toString();
 export function getSpecSiteUrl(classString: string, specString: string): string {
+	const specSiteUrlTemplate = new URL(`${window.location.protocol}//${window.location.host}/${REPO_NAME}/CLASS/SPEC/`).toString();
 	return specSiteUrlTemplate.replace('CLASS', classString).replace('SPEC', specString);
 }
 export const raidSimSiteUrl = new URL(`${window.location.protocol}//${window.location.host}/${REPO_NAME}/raid/`).toString();
@@ -188,7 +188,7 @@ export function textCssClassForClass<ClassType extends Class>(playerClass: Playe
 	return `text-${PlayerClasses.getCssClass(playerClass)}`;
 }
 export function textCssClassForSpec<SpecType extends Spec>(playerSpec: PlayerSpec<SpecType>): string {
-	return textCssClassForClass(playerSpec.playerClass);
+	return textCssClassForClass(PlayerSpecs.getPlayerClass(playerSpec));
 }
 
 // Placeholder classes to fill the Unknown Spec Type Functions entry below
@@ -626,7 +626,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => BloodDeathKnight_Options.create(),
+		optionsCreate: () => BloodDeathKnight_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => BloodDeathKnight_Options.equals(a as BloodDeathKnight_Options, b as BloodDeathKnight_Options),
 		optionsCopy: a => BloodDeathKnight_Options.clone(a as BloodDeathKnight_Options),
 		optionsToJson: a => BloodDeathKnight_Options.toJson(a as BloodDeathKnight_Options),
@@ -634,7 +634,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'bloodDeathKnight'
 				? player.spec.bloodDeathKnight.options || BloodDeathKnight_Options.create()
-				: BloodDeathKnight_Options.create(),
+				: BloodDeathKnight_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecFrostDeathKnight]: {
 		rotationCreate: () => FrostDeathKnight_Rotation.create(),
@@ -649,7 +649,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => FrostDeathKnight_Options.create(),
+		optionsCreate: () => FrostDeathKnight_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => FrostDeathKnight_Options.equals(a as FrostDeathKnight_Options, b as FrostDeathKnight_Options),
 		optionsCopy: a => FrostDeathKnight_Options.clone(a as FrostDeathKnight_Options),
 		optionsToJson: a => FrostDeathKnight_Options.toJson(a as FrostDeathKnight_Options),
@@ -657,7 +657,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'frostDeathKnight'
 				? player.spec.frostDeathKnight.options || FrostDeathKnight_Options.create()
-				: FrostDeathKnight_Options.create(),
+				: FrostDeathKnight_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecUnholyDeathKnight]: {
 		rotationCreate: () => UnholyDeathKnight_Rotation.create(),
@@ -672,7 +672,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => UnholyDeathKnight_Options.create(),
+		optionsCreate: () => UnholyDeathKnight_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => UnholyDeathKnight_Options.equals(a as UnholyDeathKnight_Options, b as UnholyDeathKnight_Options),
 		optionsCopy: a => UnholyDeathKnight_Options.clone(a as UnholyDeathKnight_Options),
 		optionsToJson: a => UnholyDeathKnight_Options.toJson(a as UnholyDeathKnight_Options),
@@ -680,7 +680,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'unholyDeathKnight'
 				? player.spec.unholyDeathKnight.options || UnholyDeathKnight_Options.create()
-				: UnholyDeathKnight_Options.create(),
+				: UnholyDeathKnight_Options.create({ classOptions: {} }),
 	},
 	// Druid
 	[Spec.SpecBalanceDruid]: {
@@ -696,13 +696,15 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => BalanceDruid_Options.create(),
+		optionsCreate: () => BalanceDruid_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => BalanceDruid_Options.equals(a as BalanceDruid_Options, b as BalanceDruid_Options),
 		optionsCopy: a => BalanceDruid_Options.clone(a as BalanceDruid_Options),
 		optionsToJson: a => BalanceDruid_Options.toJson(a as BalanceDruid_Options),
 		optionsFromJson: obj => BalanceDruid_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'balanceDruid' ? player.spec.balanceDruid.options || BalanceDruid_Options.create() : BalanceDruid_Options.create(),
+			player.spec.oneofKind == 'balanceDruid'
+				? player.spec.balanceDruid.options || BalanceDruid_Options.create()
+				: BalanceDruid_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecFeralDruid]: {
 		rotationCreate: () => FeralDruid_Rotation.create(),
@@ -717,13 +719,15 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => FeralDruid_Options.create(),
+		optionsCreate: () => FeralDruid_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => FeralDruid_Options.equals(a as FeralDruid_Options, b as FeralDruid_Options),
 		optionsCopy: a => FeralDruid_Options.clone(a as FeralDruid_Options),
 		optionsToJson: a => FeralDruid_Options.toJson(a as FeralDruid_Options),
 		optionsFromJson: obj => FeralDruid_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'feralDruid' ? player.spec.feralDruid.options || FeralDruid_Options.create() : FeralDruid_Options.create(),
+			player.spec.oneofKind == 'feralDruid'
+				? player.spec.feralDruid.options || FeralDruid_Options.create()
+				: FeralDruid_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecRestorationDruid]: {
 		rotationCreate: () => RestorationDruid_Rotation.create(),
@@ -738,7 +742,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => RestorationDruid_Options.create(),
+		optionsCreate: () => RestorationDruid_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => RestorationDruid_Options.equals(a as RestorationDruid_Options, b as RestorationDruid_Options),
 		optionsCopy: a => RestorationDruid_Options.clone(a as RestorationDruid_Options),
 		optionsToJson: a => RestorationDruid_Options.toJson(a as RestorationDruid_Options),
@@ -746,7 +750,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'restorationDruid'
 				? player.spec.restorationDruid.options || RestorationDruid_Options.create()
-				: RestorationDruid_Options.create(),
+				: RestorationDruid_Options.create({ classOptions: {} }),
 	},
 	// Hunter
 	[Spec.SpecBeastMasteryHunter]: {
@@ -762,7 +766,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => BeastMasteryHunter_Options.create(),
+		optionsCreate: () => BeastMasteryHunter_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => BeastMasteryHunter_Options.equals(a as BeastMasteryHunter_Options, b as BeastMasteryHunter_Options),
 		optionsCopy: a => BeastMasteryHunter_Options.clone(a as BeastMasteryHunter_Options),
 		optionsToJson: a => BeastMasteryHunter_Options.toJson(a as BeastMasteryHunter_Options),
@@ -770,7 +774,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'beastMasteryHunter'
 				? player.spec.beastMasteryHunter.options || BeastMasteryHunter_Options.create()
-				: BeastMasteryHunter_Options.create(),
+				: BeastMasteryHunter_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecMarksmanshipHunter]: {
 		rotationCreate: () => MarksmanshipHunter_Rotation.create(),
@@ -785,7 +789,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => MarksmanshipHunter_Options.create(),
+		optionsCreate: () => MarksmanshipHunter_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => MarksmanshipHunter_Options.equals(a as MarksmanshipHunter_Options, b as MarksmanshipHunter_Options),
 		optionsCopy: a => MarksmanshipHunter_Options.clone(a as MarksmanshipHunter_Options),
 		optionsToJson: a => MarksmanshipHunter_Options.toJson(a as MarksmanshipHunter_Options),
@@ -793,7 +797,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'marksmanshipHunter'
 				? player.spec.marksmanshipHunter.options || MarksmanshipHunter_Options.create()
-				: MarksmanshipHunter_Options.create(),
+				: MarksmanshipHunter_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecSurvivalHunter]: {
 		rotationCreate: () => SurvivalHunter_Rotation.create(),
@@ -808,13 +812,15 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => SurvivalHunter_Options.create(),
+		optionsCreate: () => SurvivalHunter_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => SurvivalHunter_Options.equals(a as SurvivalHunter_Options, b as SurvivalHunter_Options),
 		optionsCopy: a => SurvivalHunter_Options.clone(a as SurvivalHunter_Options),
 		optionsToJson: a => SurvivalHunter_Options.toJson(a as SurvivalHunter_Options),
 		optionsFromJson: obj => SurvivalHunter_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'survivalHunter' ? player.spec.survivalHunter.options || SurvivalHunter_Options.create() : SurvivalHunter_Options.create(),
+			player.spec.oneofKind == 'survivalHunter'
+				? player.spec.survivalHunter.options || SurvivalHunter_Options.create()
+				: SurvivalHunter_Options.create({ classOptions: {} }),
 	},
 	// Mage
 	[Spec.SpecArcaneMage]: {
@@ -830,13 +836,15 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => ArcaneMage_Options.create(),
+		optionsCreate: () => ArcaneMage_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => ArcaneMage_Options.equals(a as ArcaneMage_Options, b as ArcaneMage_Options),
 		optionsCopy: a => ArcaneMage_Options.clone(a as ArcaneMage_Options),
 		optionsToJson: a => ArcaneMage_Options.toJson(a as ArcaneMage_Options),
 		optionsFromJson: obj => ArcaneMage_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'arcaneMage' ? player.spec.arcaneMage.options || ArcaneMage_Options.create() : ArcaneMage_Options.create(),
+			player.spec.oneofKind == 'arcaneMage'
+				? player.spec.arcaneMage.options || ArcaneMage_Options.create()
+				: ArcaneMage_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecFireMage]: {
 		rotationCreate: () => FireMage_Rotation.create(),
@@ -851,13 +859,13 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => FireMage_Options.create(),
+		optionsCreate: () => FireMage_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => FireMage_Options.equals(a as FireMage_Options, b as FireMage_Options),
 		optionsCopy: a => FireMage_Options.clone(a as FireMage_Options),
 		optionsToJson: a => FireMage_Options.toJson(a as FireMage_Options),
 		optionsFromJson: obj => FireMage_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'fireMage' ? player.spec.fireMage.options || FireMage_Options.create() : FireMage_Options.create(),
+			player.spec.oneofKind == 'fireMage' ? player.spec.fireMage.options || FireMage_Options.create() : FireMage_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecFrostMage]: {
 		rotationCreate: () => FrostMage_Rotation.create(),
@@ -872,13 +880,13 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
 		talentsFromJson: obj => DruidTalents.fromJson(obj),
 
-		optionsCreate: () => FrostMage_Options.create(),
+		optionsCreate: () => FrostMage_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => FrostMage_Options.equals(a as FrostMage_Options, b as FrostMage_Options),
 		optionsCopy: a => FrostMage_Options.clone(a as FrostMage_Options),
 		optionsToJson: a => FrostMage_Options.toJson(a as FrostMage_Options),
 		optionsFromJson: obj => FrostMage_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'frostMage' ? player.spec.frostMage.options || FrostMage_Options.create() : FrostMage_Options.create(),
+			player.spec.oneofKind == 'frostMage' ? player.spec.frostMage.options || FrostMage_Options.create() : FrostMage_Options.create({ classOptions: {} }),
 	},
 	// Paladin
 	[Spec.SpecHolyPaladin]: {
@@ -894,13 +902,15 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => HolyPaladin_Options.create(),
+		optionsCreate: () => HolyPaladin_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => HolyPaladin_Options.equals(a as HolyPaladin_Options, b as HolyPaladin_Options),
 		optionsCopy: a => HolyPaladin_Options.clone(a as HolyPaladin_Options),
 		optionsToJson: a => HolyPaladin_Options.toJson(a as HolyPaladin_Options),
 		optionsFromJson: obj => HolyPaladin_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'holyPaladin' ? player.spec.holyPaladin.options || HolyPaladin_Options.create() : HolyPaladin_Options.create(),
+			player.spec.oneofKind == 'holyPaladin'
+				? player.spec.holyPaladin.options || HolyPaladin_Options.create()
+				: HolyPaladin_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecProtectionPaladin]: {
 		rotationCreate: () => ProtectionPaladin_Rotation.create(),
@@ -915,7 +925,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => ProtectionPaladin_Options.create(),
+		optionsCreate: () => ProtectionPaladin_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => ProtectionPaladin_Options.equals(a as ProtectionPaladin_Options, b as ProtectionPaladin_Options),
 		optionsCopy: a => ProtectionPaladin_Options.clone(a as ProtectionPaladin_Options),
 		optionsToJson: a => ProtectionPaladin_Options.toJson(a as ProtectionPaladin_Options),
@@ -923,7 +933,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'protectionPaladin'
 				? player.spec.protectionPaladin.options || ProtectionPaladin_Options.create()
-				: ProtectionPaladin_Options.create(),
+				: ProtectionPaladin_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecRetributionPaladin]: {
 		rotationCreate: () => RetributionPaladin_Rotation.create(),
@@ -938,7 +948,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => RetributionPaladin_Options.create(),
+		optionsCreate: () => RetributionPaladin_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => RetributionPaladin_Options.equals(a as RetributionPaladin_Options, b as RetributionPaladin_Options),
 		optionsCopy: a => RetributionPaladin_Options.clone(a as RetributionPaladin_Options),
 		optionsToJson: a => RetributionPaladin_Options.toJson(a as RetributionPaladin_Options),
@@ -946,7 +956,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'retributionPaladin'
 				? player.spec.retributionPaladin.options || RetributionPaladin_Options.create()
-				: RetributionPaladin_Options.create(),
+				: RetributionPaladin_Options.create({ classOptions: {} }),
 	},
 	// Priest
 	[Spec.SpecDisciplinePriest]: {
@@ -962,7 +972,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => DisciplinePriest_Options.create(),
+		optionsCreate: () => DisciplinePriest_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => DisciplinePriest_Options.equals(a as DisciplinePriest_Options, b as DisciplinePriest_Options),
 		optionsCopy: a => DisciplinePriest_Options.clone(a as DisciplinePriest_Options),
 		optionsToJson: a => DisciplinePriest_Options.toJson(a as DisciplinePriest_Options),
@@ -970,7 +980,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'disciplinePriest'
 				? player.spec.disciplinePriest.options || DisciplinePriest_Options.create()
-				: DisciplinePriest_Options.create(),
+				: DisciplinePriest_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecHolyPriest]: {
 		rotationCreate: () => HolyPriest_Rotation.create(),
@@ -985,13 +995,15 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => HolyPriest_Options.create(),
+		optionsCreate: () => HolyPriest_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => HolyPriest_Options.equals(a as HolyPriest_Options, b as HolyPriest_Options),
 		optionsCopy: a => HolyPriest_Options.clone(a as HolyPriest_Options),
 		optionsToJson: a => HolyPriest_Options.toJson(a as HolyPriest_Options),
 		optionsFromJson: obj => HolyPriest_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'holyPriest' ? player.spec.holyPriest.options || HolyPriest_Options.create() : HolyPriest_Options.create(),
+			player.spec.oneofKind == 'holyPriest'
+				? player.spec.holyPriest.options || HolyPriest_Options.create()
+				: HolyPriest_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecShadowPriest]: {
 		rotationCreate: () => ShadowPriest_Rotation.create(),
@@ -1006,13 +1018,15 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => ShadowPriest_Options.create(),
+		optionsCreate: () => ShadowPriest_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => ShadowPriest_Options.equals(a as ShadowPriest_Options, b as ShadowPriest_Options),
 		optionsCopy: a => ShadowPriest_Options.clone(a as ShadowPriest_Options),
 		optionsToJson: a => ShadowPriest_Options.toJson(a as ShadowPriest_Options),
 		optionsFromJson: obj => ShadowPriest_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'shadowPriest' ? player.spec.shadowPriest.options || ShadowPriest_Options.create() : ShadowPriest_Options.create(),
+			player.spec.oneofKind == 'shadowPriest'
+				? player.spec.shadowPriest.options || ShadowPriest_Options.create()
+				: ShadowPriest_Options.create({ classOptions: {} }),
 	},
 	// Rogue
 	[Spec.SpecAssassinationRogue]: {
@@ -1028,7 +1042,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => AssassinationRogue_Options.create(),
+		optionsCreate: () => AssassinationRogue_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => AssassinationRogue_Options.equals(a as AssassinationRogue_Options, b as AssassinationRogue_Options),
 		optionsCopy: a => AssassinationRogue_Options.clone(a as AssassinationRogue_Options),
 		optionsToJson: a => AssassinationRogue_Options.toJson(a as AssassinationRogue_Options),
@@ -1036,7 +1050,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'assassinationRogue'
 				? player.spec.assassinationRogue.options || AssassinationRogue_Options.create()
-				: AssassinationRogue_Options.create(),
+				: AssassinationRogue_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecCombatRogue]: {
 		rotationCreate: () => CombatRogue_Rotation.create(),
@@ -1051,13 +1065,15 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => CombatRogue_Options.create(),
+		optionsCreate: () => CombatRogue_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => CombatRogue_Options.equals(a as CombatRogue_Options, b as CombatRogue_Options),
 		optionsCopy: a => CombatRogue_Options.clone(a as CombatRogue_Options),
 		optionsToJson: a => CombatRogue_Options.toJson(a as CombatRogue_Options),
 		optionsFromJson: obj => CombatRogue_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'combatRogue' ? player.spec.combatRogue.options || CombatRogue_Options.create() : CombatRogue_Options.create(),
+			player.spec.oneofKind == 'combatRogue'
+				? player.spec.combatRogue.options || CombatRogue_Options.create()
+				: CombatRogue_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecSubtletyRogue]: {
 		rotationCreate: () => SubtletyRogue_Rotation.create(),
@@ -1072,13 +1088,15 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => SubtletyRogue_Options.create(),
+		optionsCreate: () => SubtletyRogue_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => SubtletyRogue_Options.equals(a as SubtletyRogue_Options, b as SubtletyRogue_Options),
 		optionsCopy: a => SubtletyRogue_Options.clone(a as SubtletyRogue_Options),
 		optionsToJson: a => SubtletyRogue_Options.toJson(a as SubtletyRogue_Options),
 		optionsFromJson: obj => SubtletyRogue_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'subtletyRogue' ? player.spec.subtletyRogue.options || SubtletyRogue_Options.create() : SubtletyRogue_Options.create(),
+			player.spec.oneofKind == 'subtletyRogue'
+				? player.spec.subtletyRogue.options || SubtletyRogue_Options.create()
+				: SubtletyRogue_Options.create({ classOptions: {} }),
 	},
 	// Shaman
 	[Spec.SpecElementalShaman]: {
@@ -1094,7 +1112,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => ShamanTalents.toJson(a as ShamanTalents),
 		talentsFromJson: obj => ShamanTalents.fromJson(obj),
 
-		optionsCreate: () => ElementalShaman_Options.create(),
+		optionsCreate: () => ElementalShaman_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => ElementalShaman_Options.equals(a as ElementalShaman_Options, b as ElementalShaman_Options),
 		optionsCopy: a => ElementalShaman_Options.clone(a as ElementalShaman_Options),
 		optionsToJson: a => ElementalShaman_Options.toJson(a as ElementalShaman_Options),
@@ -1102,7 +1120,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'elementalShaman'
 				? player.spec.elementalShaman.options || ElementalShaman_Options.create()
-				: ElementalShaman_Options.create(),
+				: ElementalShaman_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecEnhancementShaman]: {
 		rotationCreate: () => EnhancementShaman_Rotation.create(),
@@ -1117,7 +1135,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => ShamanTalents.toJson(a as ShamanTalents),
 		talentsFromJson: obj => ShamanTalents.fromJson(obj),
 
-		optionsCreate: () => EnhancementShaman_Options.create(),
+		optionsCreate: () => EnhancementShaman_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => EnhancementShaman_Options.equals(a as EnhancementShaman_Options, b as EnhancementShaman_Options),
 		optionsCopy: a => EnhancementShaman_Options.clone(a as EnhancementShaman_Options),
 		optionsToJson: a => EnhancementShaman_Options.toJson(a as EnhancementShaman_Options),
@@ -1125,7 +1143,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'enhancementShaman'
 				? player.spec.enhancementShaman.options || EnhancementShaman_Options.create()
-				: EnhancementShaman_Options.create(),
+				: EnhancementShaman_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecRestorationShaman]: {
 		rotationCreate: () => RestorationShaman_Rotation.create(),
@@ -1140,7 +1158,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => ShamanTalents.toJson(a as ShamanTalents),
 		talentsFromJson: obj => ShamanTalents.fromJson(obj),
 
-		optionsCreate: () => RestorationShaman_Options.create(),
+		optionsCreate: () => RestorationShaman_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => RestorationShaman_Options.equals(a as RestorationShaman_Options, b as RestorationShaman_Options),
 		optionsCopy: a => RestorationShaman_Options.clone(a as RestorationShaman_Options),
 		optionsToJson: a => RestorationShaman_Options.toJson(a as RestorationShaman_Options),
@@ -1148,7 +1166,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'restorationShaman'
 				? player.spec.restorationShaman.options || RestorationShaman_Options.create()
-				: RestorationShaman_Options.create(),
+				: RestorationShaman_Options.create({ classOptions: {} }),
 	},
 	// Warlock
 	[Spec.SpecAfflictionWarlock]: {
@@ -1164,7 +1182,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => AfflictionWarlock_Options.create(),
+		optionsCreate: () => AfflictionWarlock_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => AfflictionWarlock_Options.equals(a as AfflictionWarlock_Options, b as AfflictionWarlock_Options),
 		optionsCopy: a => AfflictionWarlock_Options.clone(a as AfflictionWarlock_Options),
 		optionsToJson: a => AfflictionWarlock_Options.toJson(a as AfflictionWarlock_Options),
@@ -1172,7 +1190,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'afflictionWarlock'
 				? player.spec.afflictionWarlock.options || AfflictionWarlock_Options.create()
-				: AfflictionWarlock_Options.create(),
+				: AfflictionWarlock_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecDemonologyWarlock]: {
 		rotationCreate: () => DemonologyWarlock_Rotation.create(),
@@ -1187,7 +1205,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => DemonologyWarlock_Options.create(),
+		optionsCreate: () => DemonologyWarlock_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => DemonologyWarlock_Options.equals(a as DemonologyWarlock_Options, b as DemonologyWarlock_Options),
 		optionsCopy: a => DemonologyWarlock_Options.clone(a as DemonologyWarlock_Options),
 		optionsToJson: a => DemonologyWarlock_Options.toJson(a as DemonologyWarlock_Options),
@@ -1195,7 +1213,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'demonologyWarlock'
 				? player.spec.demonologyWarlock.options || DemonologyWarlock_Options.create()
-				: DemonologyWarlock_Options.create(),
+				: DemonologyWarlock_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecDestructionWarlock]: {
 		rotationCreate: () => DestructionWarlock_Rotation.create(),
@@ -1210,7 +1228,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => DestructionWarlock_Options.create(),
+		optionsCreate: () => DestructionWarlock_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => DestructionWarlock_Options.equals(a as DestructionWarlock_Options, b as DestructionWarlock_Options),
 		optionsCopy: a => DestructionWarlock_Options.clone(a as DestructionWarlock_Options),
 		optionsToJson: a => DestructionWarlock_Options.toJson(a as DestructionWarlock_Options),
@@ -1218,7 +1236,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'destructionWarlock'
 				? player.spec.destructionWarlock.options || DestructionWarlock_Options.create()
-				: DestructionWarlock_Options.create(),
+				: DestructionWarlock_Options.create({ classOptions: {} }),
 	},
 	// Warrior
 	[Spec.SpecArmsWarrior]: {
@@ -1234,13 +1252,15 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => ArmsWarrior_Options.create(),
+		optionsCreate: () => ArmsWarrior_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => ArmsWarrior_Options.equals(a as ArmsWarrior_Options, b as ArmsWarrior_Options),
 		optionsCopy: a => ArmsWarrior_Options.clone(a as ArmsWarrior_Options),
 		optionsToJson: a => ArmsWarrior_Options.toJson(a as ArmsWarrior_Options),
 		optionsFromJson: obj => ArmsWarrior_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'armsWarrior' ? player.spec.armsWarrior.options || ArmsWarrior_Options.create() : ArmsWarrior_Options.create(),
+			player.spec.oneofKind == 'armsWarrior'
+				? player.spec.armsWarrior.options || ArmsWarrior_Options.create()
+				: ArmsWarrior_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecFuryWarrior]: {
 		rotationCreate: () => FuryWarrior_Rotation.create(),
@@ -1255,13 +1275,15 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => FuryWarrior_Options.create(),
+		optionsCreate: () => FuryWarrior_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => FuryWarrior_Options.equals(a as FuryWarrior_Options, b as FuryWarrior_Options),
 		optionsCopy: a => FuryWarrior_Options.clone(a as FuryWarrior_Options),
 		optionsToJson: a => FuryWarrior_Options.toJson(a as FuryWarrior_Options),
 		optionsFromJson: obj => FuryWarrior_Options.fromJson(obj),
 		optionsFromPlayer: player =>
-			player.spec.oneofKind == 'furyWarrior' ? player.spec.furyWarrior.options || FuryWarrior_Options.create() : FuryWarrior_Options.create(),
+			player.spec.oneofKind == 'furyWarrior'
+				? player.spec.furyWarrior.options || FuryWarrior_Options.create()
+				: FuryWarrior_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecProtectionWarrior]: {
 		rotationCreate: () => ProtectionWarrior_Rotation.create(),
@@ -1276,7 +1298,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		talentsToJson: a => PaladinTalents.toJson(a as PaladinTalents),
 		talentsFromJson: obj => PaladinTalents.fromJson(obj),
 
-		optionsCreate: () => ProtectionWarrior_Options.create(),
+		optionsCreate: () => ProtectionWarrior_Options.create({ classOptions: {} }),
 		optionsEquals: (a, b) => ProtectionWarrior_Options.equals(a as ProtectionWarrior_Options, b as ProtectionWarrior_Options),
 		optionsCopy: a => ProtectionWarrior_Options.clone(a as ProtectionWarrior_Options),
 		optionsToJson: a => ProtectionWarrior_Options.toJson(a as ProtectionWarrior_Options),
@@ -1284,7 +1306,7 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 		optionsFromPlayer: player =>
 			player.spec.oneofKind == 'retributionPaladin'
 				? player.spec.retributionPaladin.options || ProtectionWarrior_Options.create()
-				: ProtectionWarrior_Options.create(),
+				: ProtectionWarrior_Options.create({ classOptions: {} }),
 	},
 };
 
@@ -1595,8 +1617,8 @@ export function isBluntWeaponType(weaponType: WeaponType): boolean {
 const metaGemEffectEPs: Partial<Record<Spec, (gem: Gem, playerStats: Stats) => number>> = {};
 
 export function getMetaGemEffectEP<SpecType extends Spec>(playerSpec: PlayerSpec<SpecType>, gem: Gem, playerStats: Stats) {
-	if (metaGemEffectEPs[playerSpec.protoID]) {
-		return metaGemEffectEPs[playerSpec.protoID]!(gem, playerStats);
+	if (metaGemEffectEPs[playerSpec.specID]) {
+		return metaGemEffectEPs[playerSpec.specID]!(gem, playerStats);
 	} else {
 		return 0;
 	}
@@ -1604,8 +1626,8 @@ export function getMetaGemEffectEP<SpecType extends Spec>(playerSpec: PlayerSpec
 
 // Returns true if this item may be equipped in at least 1 slot for the given Spec.
 export function canEquipItem<SpecType extends Spec>(item: Item, playerSpec: PlayerSpec<SpecType>, slot: ItemSlot | undefined): boolean {
-	const playerClass = playerSpec.playerClass;
-	if (item.classAllowlist.length > 0 && !item.classAllowlist.includes(playerClass.protoID)) {
+	const playerClass = PlayerSpecs.getPlayerClass(playerSpec);
+	if (item.classAllowlist.length > 0 && !item.classAllowlist.includes(playerClass.classID)) {
 		return false;
 	}
 
@@ -1630,7 +1652,7 @@ export function canEquipItem<SpecType extends Spec>(item: Item, playerSpec: Play
 		if (item.handType == HandType.HandTypeTwoHand && !eligibleWeaponType.canUseTwoHand) {
 			return false;
 		}
-		if (item.handType == HandType.HandTypeTwoHand && slot == ItemSlot.ItemSlotOffHand && playerSpec.protoID != Spec.SpecFuryWarrior) {
+		if (item.handType == HandType.HandTypeTwoHand && slot == ItemSlot.ItemSlotOffHand && playerSpec.specID != Spec.SpecFuryWarrior) {
 			return false;
 		}
 
@@ -1758,8 +1780,7 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 }
 
 export function canEquipEnchant<SpecType extends Spec>(enchant: Enchant, playerSpec: PlayerSpec<SpecType>): boolean {
-	const playerClass = playerSpec.playerClass;
-	if (enchant.classAllowlist.length > 0 && !enchant.classAllowlist.includes(playerClass.protoID)) {
+	if (enchant.classAllowlist.length > 0 && !enchant.classAllowlist.includes(playerSpec.classID)) {
 		return false;
 	}
 

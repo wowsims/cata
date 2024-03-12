@@ -3,6 +3,7 @@ import * as Mechanics from './constants/mechanics';
 import { MAX_PARTY_SIZE, Party } from './party';
 import { PlayerClass } from './player_class';
 import { PlayerSpec } from './player_spec';
+import { PlayerSpecs } from './player_specs';
 import {
 	AuraStats as AuraStatsProto,
 	Player as PlayerProto,
@@ -222,7 +223,9 @@ export class Player<SpecType extends Spec> {
 	private party: Party | null;
 	private raid: Raid | null;
 
-	readonly spec: PlayerSpec<SpecType>;
+	readonly playerSpec: PlayerSpec<SpecType>;
+	readonly playerClass: PlayerClass<SpecClasses<SpecType>>;
+
 	private name = '';
 	private buffs: IndividualBuffs = IndividualBuffs.create();
 	private consumes: Consumes = Consumes.create();
@@ -292,14 +295,16 @@ export class Player<SpecType extends Spec> {
 		this.party = null;
 		this.raid = null;
 
-		this.spec = spec;
-		this.race = this.spec.playerClass.races[0];
+		this.playerSpec = spec;
+		this.playerClass = PlayerSpecs.getPlayerClass(spec);
+
+		this.race = this.playerClass.races[0];
 		this.specTypeFunctions = specTypeFunctions[this.getSpec()] as SpecTypeFunctions<SpecType>;
 		this.specOptions = this.specTypeFunctions.optionsCreate();
 
 		const specConfig = SPEC_CONFIGS[this.getSpec()] as PlayerConfig<SpecType>;
 		if (!specConfig) {
-			throw new Error('Could not find spec config for spec: ' + this.spec);
+			throw new Error(`Could not find spec config for spec: ${spec.friendlyName}`);
 		}
 		this.autoRotationGenerator = specConfig.autoRotation;
 		if (specConfig.simpleRotation) {
@@ -339,27 +344,27 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getSpecIcon(): string {
-		return this.spec.getIcon('medium');
+		return this.playerSpec.getIcon('medium');
 	}
 
 	getPlayerSpec(): PlayerSpec<SpecType> {
-		return this.spec;
+		return this.playerSpec;
 	}
 
 	getSpec(): SpecType {
-		return this.getPlayerSpec().protoID;
+		return this.getPlayerSpec().specID;
 	}
 
 	getPlayerClass(): PlayerClass<SpecClasses<SpecType>> {
-		return this.spec.playerClass;
+		return this.playerClass;
 	}
 
 	getClass(): SpecClasses<SpecType> {
-		return this.getPlayerClass().protoID;
+		return this.playerSpec.classID;
 	}
 
 	getClassColor(): string {
-		return this.spec.playerClass.hexColor;
+		return this.playerClass.hexColor;
 	}
 
 	// TODO: Cata - Check this
@@ -418,12 +423,12 @@ export class Player<SpecType extends Spec> {
 
 	// Returns all items that this player can wear in the given slot.
 	getItems(slot: ItemSlot): Array<Item> {
-		return this.sim.db.getItems(slot).filter(item => canEquipItem(item, this.spec, slot));
+		return this.sim.db.getItems(slot).filter(item => canEquipItem(item, this.playerSpec, slot));
 	}
 
 	// Returns all enchants that this player can wear in the given slot.
 	getEnchants(slot: ItemSlot): Array<Enchant> {
-		return this.sim.db.getEnchants(slot).filter(enchant => canEquipEnchant(enchant, this.spec));
+		return this.sim.db.getEnchants(slot).filter(enchant => canEquipEnchant(enchant, this.playerSpec));
 	}
 
 	// Returns all gems that this player can wear of the given color.
@@ -821,7 +826,7 @@ export class Player<SpecType extends Spec> {
 
 	getTalents(): SpecTalents<SpecType> {
 		if (this.talents == null) {
-			this.talents = playerTalentStringToProto(this.spec, this.talentsString) as SpecTalents<SpecType>;
+			this.talents = playerTalentStringToProto(this.playerSpec, this.talentsString) as SpecTalents<SpecType>;
 		}
 		return this.talents!;
 	}
@@ -847,7 +852,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getTalentTreeIcon(): string {
-		return this.spec.getIcon('medium');
+		return this.playerSpec.getIcon('medium');
 	}
 
 	getGlyphs(): Glyphs {
@@ -999,7 +1004,7 @@ export class Player<SpecType extends Spec> {
 		}
 
 		const epFromStats = this.computeStatsEP(new Stats(gem.stats));
-		const epFromEffect = getMetaGemEffectEP(this.spec, gem, Stats.fromProto(this.currentStats.finalStats));
+		const epFromEffect = getMetaGemEffectEP(this.playerSpec, gem, Stats.fromProto(this.currentStats.finalStats));
 		let bonusEP = 0;
 		// unique items are slightly worse than non-unique because you can have only one.
 		if (gem.unique) {
@@ -1423,7 +1428,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	clone(eventID: EventID): Player<SpecType> {
-		const newPlayer = new Player<SpecType>(this.spec, this.sim);
+		const newPlayer = new Player<SpecType>(this.playerSpec, this.sim);
 		newPlayer.fromProto(eventID, this.toProto());
 		return newPlayer;
 	}
@@ -1433,17 +1438,17 @@ export class Player<SpecType extends Spec> {
 			this.setEnableItemSwap(eventID, false);
 			this.setItemSwapGear(eventID, new ItemSwapGear({}));
 			this.setReactionTime(eventID, 200);
-			this.setInFrontOfTarget(eventID, this.spec.isTankSpec);
+			this.setInFrontOfTarget(eventID, this.playerSpec.isTankSpec);
 			this.setHealingModel(
 				eventID,
 				HealingModel.create({
-					burstWindow: this.spec.isTankSpec ? 6 : 0,
+					burstWindow: this.playerSpec.isTankSpec ? 6 : 0,
 				}),
 			);
 			this.setSimpleCooldowns(
 				eventID,
 				Cooldowns.create({
-					hpPercentForDefensives: this.spec.isTankSpec ? 0.35 : 0,
+					hpPercentForDefensives: this.playerSpec.isTankSpec ? 0.35 : 0,
 				}),
 			);
 			this.setBonusStats(eventID, new Stats());

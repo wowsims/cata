@@ -5,7 +5,7 @@ import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/c
 import { MageSpecs } from '../proto_utils/utils';
 
 export class Mage extends PlayerClass<Class.ClassMage> {
-	static protoID = Class.ClassMage as Class.ClassMage;
+	static classID = Class.ClassMage as Class.ClassMage;
 	static friendlyName = 'Mage';
 	static hexColor = '#69ccf0';
 	static specs: Record<string, PlayerSpec<MageSpecs>> = {
@@ -37,7 +37,7 @@ export class Mage extends PlayerClass<Class.ClassMage> {
 	];
 	static rangedWeaponTypes: RangedWeaponType[] = [RangedWeaponType.RangedWeaponTypeWand];
 
-	readonly protoID = Mage.protoID;
+	readonly classID = Mage.classID;
 	readonly friendlyName = Mage.name;
 	readonly hexColor = Mage.hexColor;
 	readonly specs = Mage.specs;

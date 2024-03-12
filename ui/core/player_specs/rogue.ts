@@ -1,14 +1,12 @@
 import { IconSize } from '../player_class';
-import { Rogue } from '../player_classes/rogue';
 import { PlayerSpec } from '../player_spec';
-import { Spec } from '../proto/common';
+import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class AssassinationRogue extends PlayerSpec<Spec.SpecAssassinationRogue> {
-	static protoID = Spec.SpecAssassinationRogue as Spec.SpecAssassinationRogue;
-	static playerClass = Rogue;
+	static specID = Spec.SpecAssassinationRogue as Spec.SpecAssassinationRogue;
+	static classID = Class.ClassRogue as Class.ClassRogue;
 	static friendlyName = 'Assassination';
-	static fullName = `${this.friendlyName} ${Rogue.friendlyName}`;
 	static simLink = getSpecSiteUrl('rogue', 'assassination');
 
 	static isTankSpec = false;
@@ -18,10 +16,9 @@ export class AssassinationRogue extends PlayerSpec<Spec.SpecAssassinationRogue> 
 
 	static canDualWield = true;
 
-	readonly protoID = AssassinationRogue.protoID;
-	readonly playerClass = AssassinationRogue.playerClass;
+	readonly specID = AssassinationRogue.specID;
+	readonly classID = AssassinationRogue.classID;
 	readonly friendlyName = AssassinationRogue.friendlyName;
-	readonly fullName = AssassinationRogue.fullName;
 	readonly simLink = AssassinationRogue.simLink;
 
 	readonly isTankSpec = AssassinationRogue.isTankSpec;
@@ -41,10 +38,9 @@ export class AssassinationRogue extends PlayerSpec<Spec.SpecAssassinationRogue> 
 }
 
 export class CombatRogue extends PlayerSpec<Spec.SpecCombatRogue> {
-	static protoID = Spec.SpecCombatRogue as Spec.SpecCombatRogue;
-	static playerClass = Rogue;
+	static specID = Spec.SpecCombatRogue as Spec.SpecCombatRogue;
+	static classID = Class.ClassRogue as Class.ClassRogue;
 	static friendlyName = 'Combat';
-	static fullName = `${this.friendlyName} ${Rogue.friendlyName}`;
 	static simLink = getSpecSiteUrl('rogue', 'combat');
 
 	static isTankSpec = false;
@@ -54,10 +50,9 @@ export class CombatRogue extends PlayerSpec<Spec.SpecCombatRogue> {
 
 	static canDualWield = true;
 
-	readonly protoID = CombatRogue.protoID;
-	readonly playerClass = CombatRogue.playerClass;
+	readonly specID = CombatRogue.specID;
+	readonly classID = CombatRogue.classID;
 	readonly friendlyName = CombatRogue.friendlyName;
-	readonly fullName = CombatRogue.fullName;
 	readonly simLink = CombatRogue.simLink;
 
 	readonly isTankSpec = CombatRogue.isTankSpec;
@@ -77,10 +72,9 @@ export class CombatRogue extends PlayerSpec<Spec.SpecCombatRogue> {
 }
 
 export class SubtletyRogue extends PlayerSpec<Spec.SpecSubtletyRogue> {
-	static protoID = Spec.SpecSubtletyRogue as Spec.SpecSubtletyRogue;
-	static playerClass = Rogue;
+	static specID = Spec.SpecSubtletyRogue as Spec.SpecSubtletyRogue;
+	static classID = Class.ClassRogue as Class.ClassRogue;
 	static friendlyName = 'Subtlety';
-	static fullName = `${this.friendlyName} ${Rogue.friendlyName}`;
 	static simLink = getSpecSiteUrl('rogue', 'subtlety');
 
 	static isTankSpec = false;
@@ -90,10 +84,9 @@ export class SubtletyRogue extends PlayerSpec<Spec.SpecSubtletyRogue> {
 
 	static canDualWield = true;
 
-	readonly protoID = SubtletyRogue.protoID;
-	readonly playerClass = SubtletyRogue.playerClass;
+	readonly specID = SubtletyRogue.specID;
+	readonly classID = SubtletyRogue.classID;
 	readonly friendlyName = SubtletyRogue.friendlyName;
-	readonly fullName = SubtletyRogue.fullName;
 	readonly simLink = SubtletyRogue.simLink;
 
 	readonly isTankSpec = SubtletyRogue.isTankSpec;

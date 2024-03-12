@@ -1,4 +1,5 @@
 import { PlayerSpec } from '../player_spec.js';
+import { PlayerSpecs } from '../player_specs';
 import {
 	ActionMetrics as ActionMetricsProto,
 	AuraMetrics as AuraMetricsProto,
@@ -338,7 +339,7 @@ export class UnitMetrics {
 		this.spec = this.player ? getPlayerSpecFromPlayer(this.player) : null;
 		this.petActionId = petActionId;
 		this.iconUrl = this.isPlayer ? this.spec?.getIcon('medium') ?? '' : this.isTarget ? defaultTargetIcon : '';
-		this.classColor = this.isTarget ? '' : this.spec?.playerClass.hexColor ?? '';
+		this.classColor = this.isTarget ? '' : PlayerSpecs.getPlayerClass(this.spec as PlayerSpec<any>).hexColor ?? '';
 		this.dps = this.metrics.dps!;
 		this.dpasp = this.metrics.dpasp!;
 		this.hps = this.metrics.hps!;

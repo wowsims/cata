@@ -229,7 +229,7 @@ function playerSpecAndTalentInternal<T extends Spec>(
 	extraCondition?: (player: Player<T>) => boolean,
 ): PlayerProvider {
 	return {
-		class: PlayerSpecs.fromProto(spec).playerClass.protoID,
+		class: PlayerSpecs.fromProto(spec).classID,
 		condition: (player: Player<any>): boolean => {
 			return (
 				player.isSpec(spec) && negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent) && (!extraCondition || extraCondition(player))
@@ -264,7 +264,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Tanks',
-							playerData: { condition: player => player.spec.isTankSpec },
+							playerData: { condition: player => player.getSpec().isTankSpec },
 						},
 					],
 				},
@@ -273,7 +273,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Healers',
-							playerData: { condition: player => player.spec.isHealingSpec },
+							playerData: { condition: player => player.getSpec().isHealingSpec },
 						},
 					],
 				},
@@ -282,7 +282,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Melee',
-							playerData: { condition: player => player.spec.isMeleeDpsSpec },
+							playerData: { condition: player => player.getSpec().isMeleeDpsSpec },
 						},
 					],
 				},
@@ -291,7 +291,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Ranged',
-							playerData: { condition: player => player.spec.isRangedDpsSpec },
+							playerData: { condition: player => player.getSpec().isRangedDpsSpec },
 						},
 					],
 				},

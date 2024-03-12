@@ -8,7 +8,16 @@ export interface EligibleWeaponType {
 }
 
 export abstract class PlayerClass<ClassType extends Class> {
-	abstract readonly protoID: ClassType;
+	static classID: Class;
+	static friendlyName: string;
+	static hexColor: string;
+	static specs: Record<string, PlayerSpec<any>>;
+	static races: Race[];
+	static armorTypes: ArmorType[];
+	static weaponTypes: EligibleWeaponType[];
+	static rangedWeaponTypes: RangedWeaponType[];
+
+	abstract readonly classID: ClassType;
 	abstract readonly friendlyName: string;
 	abstract readonly hexColor: string;
 	abstract readonly specs: Record<string, PlayerSpec<any>>;

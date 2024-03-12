@@ -623,7 +623,7 @@ class NewPlayerPicker extends Component {
 				return;
 			}
 
-			const matchingPresets = playerPresets.filter(preset => PlayerSpecs.fromProto(preset.spec).playerClass.protoID == wowClass);
+			const matchingPresets = playerPresets.filter(preset => PlayerSpecs.fromProto(preset.spec).classID == wowClass);
 			if (matchingPresets.length == 0) {
 				return;
 			}
@@ -644,7 +644,7 @@ class NewPlayerPicker extends Component {
 						role="button"
 						draggable="true"
 						data-bs-toggle="tooltip"
-						data-bs-title="${matchingPreset.tooltip ?? playerSpec.fullName}"
+						data-bs-title="${matchingPreset.tooltip ?? PlayerSpecs.getFullSpecName(playerSpec)}"
 						data-bs-html="true"
 					>
 						<img class="preset-picker-icon player-icon" src="${matchingPreset ?? playerSpec.getIcon('medium')}"/>
@@ -693,7 +693,7 @@ class NewPlayerPicker extends Component {
 }
 
 function applyNewPlayerAssignments(eventID: EventID, newPlayer: Player<any>, raid: Raid) {
-	if (newPlayer.spec.isTankSpec) {
+	if (newPlayer.getPlayerSpec().isTankSpec) {
 		const tanks = raid.getTanks();
 		const emptyIdx = tanks.findIndex(tank => raid.getPlayerFromUnitReference(tank) == null);
 		if (emptyIdx == -1) {

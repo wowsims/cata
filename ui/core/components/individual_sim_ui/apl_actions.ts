@@ -366,7 +366,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		label: 'Multi Shield',
 		submenu: ['Casting'],
 		shortDescription: 'Keeps a Shield active on multiple targets by casting the specified spell.',
-		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull && player.spec.isHealingSpec,
+		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull && player.getSpec().isHealingSpec,
 		newValue: () =>
 			APLActionMultishield.create({
 				maxShields: 3,

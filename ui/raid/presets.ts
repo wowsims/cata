@@ -79,7 +79,7 @@ export const specSimFactories: Partial<Record<Spec, (parentElem: HTMLElement, pl
 export const playerPresets: Array<RaidSimPreset<any>> = PlayerClasses.naturalOrder
 	.map(playerClass => Object.values(playerClass.specs))
 	.flat()
-	.map(spec => getSpecConfig(spec.protoID))
+	.map(playerSpec => getSpecConfig(playerSpec.specID))
 	.map(config => {
 		const indSimUiConfig = config as IndividualSimUIConfig<any>;
 		return indSimUiConfig.raidSimPresets;

@@ -1,14 +1,12 @@
 import { IconSize } from '../player_class';
-import { Warrior } from '../player_classes/warrior';
 import { PlayerSpec } from '../player_spec';
-import { Spec } from '../proto/common';
+import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class ArmsWarrior extends PlayerSpec<Spec.SpecArmsWarrior> {
-	static protoID = Spec.SpecArmsWarrior as Spec.SpecArmsWarrior;
-	static playerClass = Warrior;
+	static specID = Spec.SpecArmsWarrior as Spec.SpecArmsWarrior;
+	static classID = Class.ClassWarrior as Class.ClassWarrior;
 	static friendlyName = 'Arms';
-	static fullName = `${this.friendlyName} ${Warrior.friendlyName}`;
 	static simLink = getSpecSiteUrl('warrior', 'arms');
 
 	static isTankSpec = false;
@@ -18,10 +16,9 @@ export class ArmsWarrior extends PlayerSpec<Spec.SpecArmsWarrior> {
 
 	static canDualWield = true;
 
-	readonly protoID = ArmsWarrior.protoID;
-	readonly playerClass = ArmsWarrior.playerClass;
+	readonly specID = ArmsWarrior.specID;
+	readonly classID = ArmsWarrior.classID;
 	readonly friendlyName = ArmsWarrior.friendlyName;
-	readonly fullName = ArmsWarrior.fullName;
 	readonly simLink = ArmsWarrior.simLink;
 
 	readonly isTankSpec = ArmsWarrior.isTankSpec;
@@ -41,10 +38,9 @@ export class ArmsWarrior extends PlayerSpec<Spec.SpecArmsWarrior> {
 }
 
 export class FuryWarrior extends PlayerSpec<Spec.SpecFuryWarrior> {
-	static protoID = Spec.SpecFuryWarrior as Spec.SpecFuryWarrior;
-	static playerClass = Warrior;
+	static specID = Spec.SpecFuryWarrior as Spec.SpecFuryWarrior;
+	static classID = Class.ClassWarrior as Class.ClassWarrior;
 	static friendlyName = 'Fury';
-	static fullName = `${this.friendlyName} ${Warrior.friendlyName}`;
 	static simLink = getSpecSiteUrl('warrior', 'fury');
 
 	static isTankSpec = false;
@@ -54,10 +50,9 @@ export class FuryWarrior extends PlayerSpec<Spec.SpecFuryWarrior> {
 
 	static canDualWield = true;
 
-	readonly protoID = FuryWarrior.protoID;
-	readonly playerClass = FuryWarrior.playerClass;
+	readonly specID = FuryWarrior.specID;
+	readonly classID = FuryWarrior.classID;
 	readonly friendlyName = FuryWarrior.friendlyName;
-	readonly fullName = FuryWarrior.fullName;
 	readonly simLink = FuryWarrior.simLink;
 
 	readonly isTankSpec = FuryWarrior.isTankSpec;
@@ -77,10 +72,9 @@ export class FuryWarrior extends PlayerSpec<Spec.SpecFuryWarrior> {
 }
 
 export class ProtectionWarrior extends PlayerSpec<Spec.SpecProtectionWarrior> {
-	static protoID = Spec.SpecProtectionWarrior as Spec.SpecProtectionWarrior;
-	static playerClass = Warrior;
+	static specID = Spec.SpecProtectionWarrior as Spec.SpecProtectionWarrior;
+	static classID = Class.ClassWarrior as Class.ClassWarrior;
 	static friendlyName = 'Protection';
-	static fullName = `${this.friendlyName} ${Warrior.friendlyName}`;
 	static simLink = getSpecSiteUrl('warrior', 'protection');
 
 	static isTankSpec = true;
@@ -90,10 +84,9 @@ export class ProtectionWarrior extends PlayerSpec<Spec.SpecProtectionWarrior> {
 
 	static canDualWield = true;
 
-	readonly protoID = ProtectionWarrior.protoID;
-	readonly playerClass = ProtectionWarrior.playerClass;
+	readonly specID = ProtectionWarrior.specID;
+	readonly classID = ProtectionWarrior.classID;
 	readonly friendlyName = ProtectionWarrior.friendlyName;
-	readonly fullName = ProtectionWarrior.fullName;
 	readonly simLink = ProtectionWarrior.simLink;
 
 	readonly isTankSpec = ProtectionWarrior.isTankSpec;

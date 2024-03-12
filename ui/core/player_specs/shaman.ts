@@ -1,14 +1,12 @@
 import { IconSize } from '../player_class';
-import { Shaman } from '../player_classes/shaman';
 import { PlayerSpec } from '../player_spec';
-import { Spec } from '../proto/common';
+import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class ElementalShaman extends PlayerSpec<Spec.SpecElementalShaman> {
-	static protoID = Spec.SpecElementalShaman as Spec.SpecElementalShaman;
-	static playerClass = Shaman;
+	static specID = Spec.SpecElementalShaman as Spec.SpecElementalShaman;
+	static classID = Class.ClassShaman as Class.ClassShaman;
 	static friendlyName = 'Elemental';
-	static fullName = `${this.friendlyName} ${Shaman.friendlyName}`;
 	static simLink = getSpecSiteUrl('shaman', 'elemental');
 
 	static isTankSpec = false;
@@ -18,10 +16,9 @@ export class ElementalShaman extends PlayerSpec<Spec.SpecElementalShaman> {
 
 	static canDualWield = false;
 
-	readonly protoID = ElementalShaman.protoID;
-	readonly playerClass = ElementalShaman.playerClass;
+	readonly specID = ElementalShaman.specID;
+	readonly classID = ElementalShaman.classID;
 	readonly friendlyName = ElementalShaman.friendlyName;
-	readonly fullName = ElementalShaman.fullName;
 	readonly simLink = ElementalShaman.simLink;
 
 	readonly isTankSpec = ElementalShaman.isTankSpec;
@@ -41,10 +38,9 @@ export class ElementalShaman extends PlayerSpec<Spec.SpecElementalShaman> {
 }
 
 export class EnhancementShaman extends PlayerSpec<Spec.SpecEnhancementShaman> {
-	static protoID = Spec.SpecEnhancementShaman as Spec.SpecEnhancementShaman;
-	static playerClass = Shaman;
+	static specID = Spec.SpecEnhancementShaman as Spec.SpecEnhancementShaman;
+	static classID = Class.ClassShaman as Class.ClassShaman;
 	static friendlyName = 'Enhancement';
-	static fullName = `${this.friendlyName} ${Shaman.friendlyName}`;
 	static simLink = getSpecSiteUrl('shaman', 'enhancement');
 
 	static isTankSpec = false;
@@ -54,10 +50,9 @@ export class EnhancementShaman extends PlayerSpec<Spec.SpecEnhancementShaman> {
 
 	static canDualWield = true;
 
-	readonly protoID = EnhancementShaman.protoID;
-	readonly playerClass = EnhancementShaman.playerClass;
+	readonly specID = EnhancementShaman.specID;
+	readonly classID = EnhancementShaman.classID;
 	readonly friendlyName = EnhancementShaman.friendlyName;
-	readonly fullName = EnhancementShaman.fullName;
 	readonly simLink = EnhancementShaman.simLink;
 
 	readonly isTankSpec = EnhancementShaman.isTankSpec;
@@ -77,10 +72,9 @@ export class EnhancementShaman extends PlayerSpec<Spec.SpecEnhancementShaman> {
 }
 
 export class RestorationShaman extends PlayerSpec<Spec.SpecRestorationShaman> {
-	static protoID = Spec.SpecRestorationShaman as Spec.SpecRestorationShaman;
-	static playerClass = Shaman;
+	static specID = Spec.SpecRestorationShaman as Spec.SpecRestorationShaman;
+	static classID = Class.ClassShaman as Class.ClassShaman;
 	static friendlyName = 'Restoration';
-	static fullName = `${this.friendlyName} ${Shaman.friendlyName}`;
 	static simLink = getSpecSiteUrl('shaman', 'restoration');
 
 	static isTankSpec = false;
@@ -90,10 +84,9 @@ export class RestorationShaman extends PlayerSpec<Spec.SpecRestorationShaman> {
 
 	static canDualWield = false;
 
-	readonly protoID = RestorationShaman.protoID;
-	readonly playerClass = RestorationShaman.playerClass;
+	readonly specID = RestorationShaman.specID;
+	readonly classID = RestorationShaman.classID;
 	readonly friendlyName = RestorationShaman.friendlyName;
-	readonly fullName = RestorationShaman.fullName;
 	readonly simLink = RestorationShaman.simLink;
 
 	readonly isTankSpec = RestorationShaman.isTankSpec;

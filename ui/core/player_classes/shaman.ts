@@ -5,7 +5,7 @@ import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/c
 import { ShamanSpecs } from '../proto_utils/utils';
 
 export class Shaman extends PlayerClass<Class.ClassShaman> {
-	static protoID = Class.ClassShaman as Class.ClassShaman;
+	static classID = Class.ClassShaman as Class.ClassShaman;
 	static friendlyName = 'Shaman';
 	static hexColor = '#2459ff';
 	static specs: Record<string, PlayerSpec<ShamanSpecs>> = {
@@ -35,7 +35,7 @@ export class Shaman extends PlayerClass<Class.ClassShaman> {
 	];
 	static rangedWeaponTypes: RangedWeaponType[] = [RangedWeaponType.RangedWeaponTypeTotem];
 
-	readonly protoID = Shaman.protoID;
+	readonly classID = Shaman.classID;
 	readonly friendlyName = Shaman.name;
 	readonly hexColor = Shaman.hexColor;
 	readonly specs = Shaman.specs;

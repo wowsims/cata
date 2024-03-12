@@ -5,7 +5,7 @@ import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/c
 import { DeathKnightSpecs } from '../proto_utils/utils';
 
 export class DeathKnight extends PlayerClass<Class.ClassDeathKnight> {
-	static protoID = Class.ClassDeathKnight as Class.ClassDeathKnight;
+	static classID = Class.ClassDeathKnight as Class.ClassDeathKnight;
 	static friendlyName = 'Death Knight';
 	static hexColor = '#c41e3a';
 	static specs: Record<string, PlayerSpec<DeathKnightSpecs>> = {
@@ -37,7 +37,7 @@ export class DeathKnight extends PlayerClass<Class.ClassDeathKnight> {
 	];
 	static rangedWeaponTypes: RangedWeaponType[] = [RangedWeaponType.RangedWeaponTypeSigil];
 
-	readonly protoID = DeathKnight.protoID;
+	readonly classID = DeathKnight.classID;
 	readonly friendlyName = DeathKnight.name;
 	readonly hexColor = DeathKnight.hexColor;
 	readonly specs = DeathKnight.specs;

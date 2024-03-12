@@ -5,7 +5,7 @@ import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/c
 import { PaladinSpecs } from '../proto_utils/utils';
 
 export class Paladin extends PlayerClass<Class.ClassPaladin> {
-	static protoID = Class.ClassPaladin as Class.ClassPaladin;
+	static classID = Class.ClassPaladin as Class.ClassPaladin;
 	static friendlyName = 'Paladin';
 	static cssClass = 'paladin';
 	static hexColor = '#f58cba';
@@ -34,7 +34,7 @@ export class Paladin extends PlayerClass<Class.ClassPaladin> {
 	];
 	static rangedWeaponTypes: RangedWeaponType[] = [RangedWeaponType.RangedWeaponTypeLibram];
 
-	readonly protoID = Paladin.protoID;
+	readonly classID = Paladin.classID;
 	readonly friendlyName = Paladin.name;
 	readonly cssClass = Paladin.cssClass;
 	readonly hexColor = Paladin.hexColor;

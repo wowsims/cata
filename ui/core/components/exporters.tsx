@@ -349,7 +349,7 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 		});
 
 		return (
-			`https://eightyupgrades.com/ep/import?name=${encodeURIComponent(`${player.spec.friendlyName} WoWSims Weights`)}` +
+			`https://eightyupgrades.com/ep/import?name=${encodeURIComponent(`${player.getPlayerSpec().friendlyName} WoWSims Weights`)}` +
 			Object.keys(namesToWeights)
 				.map(statName => `&${statName}=${namesToWeights[statName].toFixed(3)}`)
 				.join('')
@@ -444,7 +444,7 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		});
 
 		return (
-			`( Pawn: v1: "${player.spec.friendlyName} WoWSims Weights": Class=${player.getPlayerClass().friendlyName},` +
+			`( Pawn: v1: "${player.getPlayerSpec().friendlyName} WoWSims Weights": Class=${player.getPlayerClass().friendlyName},` +
 			Object.keys(namesToWeights)
 				.map(statName => `${statName}=${namesToWeights[statName].toFixed(3)}`)
 				.join(',') +

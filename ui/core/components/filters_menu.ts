@@ -156,7 +156,7 @@ export class FiltersMenu extends BaseModal {
 					sim.setFilters(eventID, filters);
 				},
 			});
-			if (player.spec.canDualWield) {
+			if (player.getSpec().canDualWield) {
 				new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
 					label: 'Min OH Speed',
 					//labelTooltip: 'Minimum speed for the offhand weapon. If 0, no minimum value is applied.',

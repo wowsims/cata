@@ -1,14 +1,12 @@
 import { IconSize } from '../player_class';
-import { Hunter } from '../player_classes/hunter';
 import { PlayerSpec } from '../player_spec';
-import { Spec } from '../proto/common';
+import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class BeastMasteryHunter extends PlayerSpec<Spec.SpecBeastMasteryHunter> {
-	static protoID = Spec.SpecBeastMasteryHunter as Spec.SpecBeastMasteryHunter;
-	static playerClass = Hunter;
+	static specID = Spec.SpecBeastMasteryHunter as Spec.SpecBeastMasteryHunter;
+	static classID = Class.ClassHunter as Class.ClassHunter;
 	static friendlyName = 'Beast Mastery';
-	static fullName = `${this.friendlyName} ${Hunter.friendlyName}`;
 	static simLink = getSpecSiteUrl('hunter', 'beast_mastery');
 
 	static isTankSpec = false;
@@ -18,10 +16,9 @@ export class BeastMasteryHunter extends PlayerSpec<Spec.SpecBeastMasteryHunter> 
 
 	static canDualWield = true;
 
-	readonly protoID = BeastMasteryHunter.protoID;
-	readonly playerClass = BeastMasteryHunter.playerClass;
+	readonly specID = BeastMasteryHunter.specID;
+	readonly classID = BeastMasteryHunter.classID;
 	readonly friendlyName = BeastMasteryHunter.friendlyName;
-	readonly fullName = BeastMasteryHunter.fullName;
 	readonly simLink = BeastMasteryHunter.simLink;
 
 	readonly isTankSpec = BeastMasteryHunter.isTankSpec;
@@ -41,10 +38,9 @@ export class BeastMasteryHunter extends PlayerSpec<Spec.SpecBeastMasteryHunter> 
 }
 
 export class MarksmanshipHunter extends PlayerSpec<Spec.SpecMarksmanshipHunter> {
-	static protoID = Spec.SpecMarksmanshipHunter as Spec.SpecMarksmanshipHunter;
-	static playerClass = Hunter;
+	static specID = Spec.SpecMarksmanshipHunter as Spec.SpecMarksmanshipHunter;
+	static classID = Class.ClassHunter as Class.ClassHunter;
 	static friendlyName = 'Marksmanship';
-	static fullName = `${this.friendlyName} ${Hunter.friendlyName}`;
 	static simLink = getSpecSiteUrl('hunter', 'marksmanship');
 
 	static isTankSpec = false;
@@ -54,10 +50,9 @@ export class MarksmanshipHunter extends PlayerSpec<Spec.SpecMarksmanshipHunter> 
 
 	static canDualWield = true;
 
-	readonly protoID = MarksmanshipHunter.protoID;
-	readonly playerClass = MarksmanshipHunter.playerClass;
+	readonly specID = MarksmanshipHunter.specID;
+	readonly classID = MarksmanshipHunter.classID;
 	readonly friendlyName = MarksmanshipHunter.friendlyName;
-	readonly fullName = MarksmanshipHunter.fullName;
 	readonly simLink = MarksmanshipHunter.simLink;
 
 	readonly isTankSpec = MarksmanshipHunter.isTankSpec;
@@ -77,10 +72,9 @@ export class MarksmanshipHunter extends PlayerSpec<Spec.SpecMarksmanshipHunter> 
 }
 
 export class SurvivalHunter extends PlayerSpec<Spec.SpecSurvivalHunter> {
-	static protoID = Spec.SpecSurvivalHunter as Spec.SpecSurvivalHunter;
-	static playerClass = Hunter;
+	static specID = Spec.SpecSurvivalHunter as Spec.SpecSurvivalHunter;
+	static classID = Class.ClassHunter as Class.ClassHunter;
 	static friendlyName = 'Survival';
-	static fullName = `${this.friendlyName} ${Hunter.friendlyName}`;
 	static simLink = getSpecSiteUrl('hunter', 'survival');
 
 	static isTankSpec = false;
@@ -90,10 +84,9 @@ export class SurvivalHunter extends PlayerSpec<Spec.SpecSurvivalHunter> {
 
 	static canDualWield = true;
 
-	readonly protoID = SurvivalHunter.protoID;
-	readonly playerClass = SurvivalHunter.playerClass;
+	readonly specID = SurvivalHunter.specID;
+	readonly classID = SurvivalHunter.classID;
 	readonly friendlyName = SurvivalHunter.friendlyName;
-	readonly fullName = SurvivalHunter.fullName;
 	readonly simLink = SurvivalHunter.simLink;
 
 	readonly isTankSpec = SurvivalHunter.isTankSpec;

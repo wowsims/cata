@@ -1,14 +1,12 @@
 import { IconSize } from '../player_class';
-import { Mage } from '../player_classes/mage';
 import { PlayerSpec } from '../player_spec';
-import { Spec } from '../proto/common';
+import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class ArcaneMage extends PlayerSpec<Spec.SpecArcaneMage> {
-	static protoID = Spec.SpecArcaneMage as Spec.SpecArcaneMage;
-	static playerClass = Mage;
+	static specID = Spec.SpecArcaneMage as Spec.SpecArcaneMage;
+	static classID = Class.ClassMage as Class.ClassMage;
 	static friendlyName = 'Arcane';
-	static fullName = `${this.friendlyName} ${Mage.friendlyName}`;
 	static simLink = getSpecSiteUrl('mage', 'arcane');
 
 	static isTankSpec = false;
@@ -18,10 +16,9 @@ export class ArcaneMage extends PlayerSpec<Spec.SpecArcaneMage> {
 
 	static canDualWield = false;
 
-	readonly protoID = ArcaneMage.protoID;
-	readonly playerClass = ArcaneMage.playerClass;
+	readonly specID = ArcaneMage.specID;
+	readonly classID = ArcaneMage.classID;
 	readonly friendlyName = ArcaneMage.friendlyName;
-	readonly fullName = ArcaneMage.fullName;
 	readonly simLink = ArcaneMage.simLink;
 
 	readonly isTankSpec = ArcaneMage.isTankSpec;
@@ -41,10 +38,9 @@ export class ArcaneMage extends PlayerSpec<Spec.SpecArcaneMage> {
 }
 
 export class FireMage extends PlayerSpec<Spec.SpecFireMage> {
-	static protoID = Spec.SpecFireMage as Spec.SpecFireMage;
-	static playerClass = Mage;
+	static specID = Spec.SpecFireMage as Spec.SpecFireMage;
+	static classID = Class.ClassMage as Class.ClassMage;
 	static friendlyName = 'Fire';
-	static fullName = `${this.friendlyName} ${Mage.friendlyName}`;
 	static simLink = getSpecSiteUrl('mage', 'fire');
 
 	static isTankSpec = false;
@@ -54,10 +50,9 @@ export class FireMage extends PlayerSpec<Spec.SpecFireMage> {
 
 	static canDualWield = false;
 
-	readonly protoID = FireMage.protoID;
-	readonly playerClass = FireMage.playerClass;
+	readonly specID = FireMage.specID;
+	readonly classID = FireMage.classID;
 	readonly friendlyName = FireMage.friendlyName;
-	readonly fullName = FireMage.fullName;
 	readonly simLink = FireMage.simLink;
 
 	readonly isTankSpec = FireMage.isTankSpec;
@@ -77,10 +72,9 @@ export class FireMage extends PlayerSpec<Spec.SpecFireMage> {
 }
 
 export class FrostMage extends PlayerSpec<Spec.SpecFrostMage> {
-	static protoID = Spec.SpecFrostMage as Spec.SpecFrostMage;
-	static playerClass = Mage;
+	static specID = Spec.SpecFrostMage as Spec.SpecFrostMage;
+	static classID = Class.ClassMage as Class.ClassMage;
 	static friendlyName = 'Frost';
-	static fullName = `${this.friendlyName} ${Mage.friendlyName}`;
 	static simLink = getSpecSiteUrl('mage', 'frost');
 
 	static isTankSpec = false;
@@ -90,10 +84,9 @@ export class FrostMage extends PlayerSpec<Spec.SpecFrostMage> {
 
 	static canDualWield = false;
 
-	readonly protoID = FrostMage.protoID;
-	readonly playerClass = FrostMage.playerClass;
+	readonly specID = FrostMage.specID;
+	readonly classID = FrostMage.classID;
 	readonly friendlyName = FrostMage.friendlyName;
-	readonly fullName = FrostMage.fullName;
 	readonly simLink = FrostMage.simLink;
 
 	readonly isTankSpec = FrostMage.isTankSpec;

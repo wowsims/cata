@@ -1,14 +1,12 @@
 import { IconSize } from '../player_class';
-import { Warlock } from '../player_classes/warlock';
 import { PlayerSpec } from '../player_spec';
-import { Spec } from '../proto/common';
+import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class AfflictionWarlock extends PlayerSpec<Spec.SpecAfflictionWarlock> {
-	static protoID = Spec.SpecAfflictionWarlock as Spec.SpecAfflictionWarlock;
-	static playerClass = Warlock;
+	static specID = Spec.SpecAfflictionWarlock as Spec.SpecAfflictionWarlock;
+	static classID = Class.ClassWarlock as Class.ClassWarlock;
 	static friendlyName = 'Affliction';
-	static fullName = `${this.friendlyName} ${Warlock.friendlyName}`;
 	static simLink = getSpecSiteUrl('warlock', 'affliction');
 
 	static isTankSpec = false;
@@ -18,10 +16,9 @@ export class AfflictionWarlock extends PlayerSpec<Spec.SpecAfflictionWarlock> {
 
 	static canDualWield = false;
 
-	readonly protoID = AfflictionWarlock.protoID;
-	readonly playerClass = AfflictionWarlock.playerClass;
+	readonly specID = AfflictionWarlock.specID;
+	readonly classID = AfflictionWarlock.classID;
 	readonly friendlyName = AfflictionWarlock.friendlyName;
-	readonly fullName = AfflictionWarlock.fullName;
 	readonly simLink = AfflictionWarlock.simLink;
 
 	readonly isTankSpec = AfflictionWarlock.isTankSpec;
@@ -41,10 +38,9 @@ export class AfflictionWarlock extends PlayerSpec<Spec.SpecAfflictionWarlock> {
 }
 
 export class DemonologyWarlock extends PlayerSpec<Spec.SpecDemonologyWarlock> {
-	static protoID = Spec.SpecDemonologyWarlock as Spec.SpecDemonologyWarlock;
-	static playerClass = Warlock;
+	static specID = Spec.SpecDemonologyWarlock as Spec.SpecDemonologyWarlock;
+	static classID = Class.ClassWarlock as Class.ClassWarlock;
 	static friendlyName = 'Demonology';
-	static fullName = `${this.friendlyName} ${Warlock.friendlyName}`;
 	static simLink = getSpecSiteUrl('warlock', 'demonology');
 
 	static isTankSpec = false;
@@ -54,10 +50,9 @@ export class DemonologyWarlock extends PlayerSpec<Spec.SpecDemonologyWarlock> {
 
 	static canDualWield = false;
 
-	readonly protoID = DemonologyWarlock.protoID;
-	readonly playerClass = DemonologyWarlock.playerClass;
+	readonly specID = DemonologyWarlock.specID;
+	readonly classID = DemonologyWarlock.classID;
 	readonly friendlyName = DemonologyWarlock.friendlyName;
-	readonly fullName = DemonologyWarlock.fullName;
 	readonly simLink = DemonologyWarlock.simLink;
 
 	readonly isTankSpec = DemonologyWarlock.isTankSpec;
@@ -77,10 +72,9 @@ export class DemonologyWarlock extends PlayerSpec<Spec.SpecDemonologyWarlock> {
 }
 
 export class DestructionWarlock extends PlayerSpec<Spec.SpecDestructionWarlock> {
-	static protoID = Spec.SpecDestructionWarlock as Spec.SpecDestructionWarlock;
-	static playerClass = Warlock;
+	static specID = Spec.SpecDestructionWarlock as Spec.SpecDestructionWarlock;
+	static classID = Class.ClassWarlock as Class.ClassWarlock;
 	static friendlyName = 'Destruction';
-	static fullName = `${this.friendlyName} ${Warlock.friendlyName}`;
 	static simLink = getSpecSiteUrl('warlock', 'destruction');
 
 	static isTankSpec = false;
@@ -90,10 +84,9 @@ export class DestructionWarlock extends PlayerSpec<Spec.SpecDestructionWarlock> 
 
 	static canDualWield = false;
 
-	readonly protoID = DestructionWarlock.protoID;
-	readonly playerClass = DestructionWarlock.playerClass;
+	readonly specID = DestructionWarlock.specID;
+	readonly classID = DestructionWarlock.classID;
 	readonly friendlyName = DestructionWarlock.friendlyName;
-	readonly fullName = DestructionWarlock.fullName;
 	readonly simLink = DestructionWarlock.simLink;
 
 	readonly isTankSpec = DestructionWarlock.isTankSpec;

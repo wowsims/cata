@@ -67,10 +67,10 @@ export function talentSpellIdsToTalentString(playerClass: Class, talentIds: Arra
 	return talentsStr;
 }
 
-export function playerTalentStringToProto<SpecType extends Spec>(spec: PlayerSpec<SpecType>, talentString: string): SpecTalents<SpecType> {
-	const specFunctions = specTypeFunctions[spec.protoID];
+export function playerTalentStringToProto<SpecType extends Spec>(playerSpec: PlayerSpec<SpecType>, talentString: string): SpecTalents<SpecType> {
+	const specFunctions = specTypeFunctions[playerSpec.specID];
 	const proto = specFunctions.talentsCreate() as SpecTalents<SpecType>;
-	const talentsConfig = classTalentsConfig[spec.playerClass.protoID] as TalentsConfig<SpecTalents<SpecType>>;
+	const talentsConfig = classTalentsConfig[playerSpec.classID] as TalentsConfig<SpecTalents<SpecType>>;
 
 	return talentStringToProto(proto, talentString, talentsConfig);
 }
