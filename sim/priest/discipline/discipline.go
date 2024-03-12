@@ -67,12 +67,12 @@ func (discPriest *DisciplinePriest) GetMainTarget() *core.Unit {
 func (discPriest *DisciplinePriest) Initialize() {
 	discPriest.CurrentTarget = discPriest.GetMainTarget()
 	discPriest.Priest.Initialize()
-	discPriest.Priest.RegisterHealingSpells()
+	// discPriest.Priest.RegisterHealingSpells()
 
-	// discPriest.ApplyRapture(discPriest.Options.RapturesPerMinute)
-	discPriest.RegisterHymnOfHopeCD()
+	// // discPriest.ApplyRapture(discPriest.Options.RapturesPerMinute)
+	// discPriest.RegisterHymnOfHopeCD()
 }
 
 func (discPriest *DisciplinePriest) Reset(sim *core.Simulation) {
-	discPriest.Priest.Reset(sim)
+	//discPriest.Priest.Reset(sim)
 }

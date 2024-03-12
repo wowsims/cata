@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 const (
@@ -105,13 +104,13 @@ func (rogue *Rogue) GetRogue() *Rogue {
 func (rogue *Rogue) AddRaidBuffs(_ *proto.RaidBuffs)   {}
 func (rogue *Rogue) AddPartyBuffs(_ *proto.PartyBuffs) {}
 
-func (rogue *Rogue) finisherFlags() core.SpellFlag {
-	flags := SpellFlagFinisher
-	if rogue.Talents.SurpriseAttacks {
-		flags |= core.SpellFlagCannotBeDodged
-	}
-	return flags
-}
+// func (rogue *Rogue) finisherFlags() core.SpellFlag {
+// 	flags := SpellFlagFinisher
+// 	if rogue.Talents.SurpriseAttacks {
+// 		flags |= core.SpellFlagCannotBeDodged
+// 	}
+// 	return flags
+// }
 
 // Apply the effect of successfully casting a finisher to combo points
 func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
@@ -129,40 +128,40 @@ func (rogue *Rogue) HasMinorGlyph(glyph proto.RogueMinorGlyph) bool {
 }
 
 func (rogue *Rogue) Initialize() {
-	// Update auto crit multipliers now that we have the targets.
-	rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
-	rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
+	// // Update auto crit multipliers now that we have the targets.
+	// rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
+	// rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
 
-	if rogue.Talents.QuickRecovery > 0 {
-		rogue.QuickRecoveryMetrics = rogue.NewEnergyMetrics(core.ActionID{SpellID: 31245})
-	}
+	// if rogue.Talents.QuickRecovery > 0 {
+	// 	rogue.QuickRecoveryMetrics = rogue.NewEnergyMetrics(core.ActionID{SpellID: 31245})
+	// }
 
-	rogue.costModifier = rogue.makeCostModifier()
+	// rogue.costModifier = rogue.makeCostModifier()
 
-	rogue.registerStealthAura()
-	rogue.registerBackstabSpell()
-	rogue.registerDeadlyPoisonSpell()
-	rogue.registerPoisonAuras()
-	rogue.registerEviscerate()
-	rogue.registerExposeArmorSpell()
-	rogue.registerFanOfKnives()
-	rogue.registerFeintSpell()
-	rogue.registerGarrote()
-	rogue.registerHemorrhageSpell()
-	rogue.registerInstantPoisonSpell()
-	rogue.registerWoundPoisonSpell()
-	rogue.registerMutilateSpell()
-	rogue.registerRupture()
-	rogue.registerShivSpell()
-	rogue.registerSinisterStrikeSpell()
-	rogue.registerSliceAndDice()
-	rogue.registerThistleTeaCD()
-	rogue.registerTricksOfTheTradeSpell()
-	rogue.registerAmbushSpell()
-	rogue.registerEnvenom()
-	rogue.registerVanishSpell()
+	// rogue.registerStealthAura()
+	// rogue.registerBackstabSpell()
+	// rogue.registerDeadlyPoisonSpell()
+	// rogue.registerPoisonAuras()
+	// rogue.registerEviscerate()
+	// rogue.registerExposeArmorSpell()
+	// rogue.registerFanOfKnives()
+	// rogue.registerFeintSpell()
+	// rogue.registerGarrote()
+	// rogue.registerHemorrhageSpell()
+	// rogue.registerInstantPoisonSpell()
+	// rogue.registerWoundPoisonSpell()
+	// rogue.registerMutilateSpell()
+	// rogue.registerRupture()
+	// rogue.registerShivSpell()
+	// rogue.registerSinisterStrikeSpell()
+	// rogue.registerSliceAndDice()
+	// rogue.registerThistleTeaCD()
+	// rogue.registerTricksOfTheTradeSpell()
+	// rogue.registerAmbushSpell()
+	// rogue.registerEnvenom()
+	// rogue.registerVanishSpell()
 
-	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
+	// rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
 }
 
 func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {
@@ -175,53 +174,53 @@ func (rogue *Rogue) Reset(sim *core.Simulation) {
 	}
 }
 
-func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {
-	primaryModifier := rogue.preyOnTheWeakMultiplier(rogue.CurrentTarget)
-	var secondaryModifier float64
-	if applyLethality {
-		secondaryModifier += 0.06 * float64(rogue.Talents.Lethality)
-	}
-	return rogue.Character.MeleeCritMultiplier(primaryModifier, secondaryModifier)
-}
-func (rogue *Rogue) SpellCritMultiplier() float64 {
-	primaryModifier := rogue.preyOnTheWeakMultiplier(rogue.CurrentTarget)
-	return rogue.Character.SpellCritMultiplier(primaryModifier, 0)
-}
+// func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {
+// 	primaryModifier := rogue.preyOnTheWeakMultiplier(rogue.CurrentTarget)
+// 	var secondaryModifier float64
+// 	if applyLethality {
+// 		secondaryModifier += 0.06 * float64(rogue.Talents.Lethality)
+// 	}
+// 	return rogue.Character.MeleeCritMultiplier(primaryModifier, secondaryModifier)
+// }
+// func (rogue *Rogue) SpellCritMultiplier() float64 {
+// 	primaryModifier := rogue.preyOnTheWeakMultiplier(rogue.CurrentTarget)
+// 	return rogue.Character.SpellCritMultiplier(primaryModifier, 0)
+// }
 
 func NewRogue(character *core.Character, talents string) *Rogue {
 	rogue := &Rogue{
 		Character: *character,
 		Talents:   &proto.RogueTalents{},
 	}
-	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	// core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
-	// Passive rogue threat reduction: https://wotlk.wowhead.com/spell=21184/rogue-passive-dnd
-	rogue.PseudoStats.ThreatMultiplier *= 0.71
-	rogue.PseudoStats.CanParry = true
+	// // Passive rogue threat reduction: https://wotlk.wowhead.com/spell=21184/rogue-passive-dnd
+	// rogue.PseudoStats.ThreatMultiplier *= 0.71
+	// rogue.PseudoStats.CanParry = true
 
-	maxEnergy := 100.0
-	if rogue.Talents.Vigor {
-		maxEnergy += 10
-	}
-	if rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfVigor) {
-		maxEnergy += 10
-	}
-	if rogue.HasSetBonus(Arena, 4) {
-		maxEnergy += 10
-	}
-	rogue.EnableEnergyBar(maxEnergy)
-	rogue.ApplyEnergyTickMultiplier([]float64{0, 0.08, 0.16, 0.25}[rogue.Talents.Vitality])
+	// maxEnergy := 100.0
+	// if rogue.Talents.Vigor {
+	// 	maxEnergy += 10
+	// }
+	// if rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfVigor) {
+	// 	maxEnergy += 10
+	// }
+	// if rogue.HasSetBonus(Arena, 4) {
+	// 	maxEnergy += 10
+	// }
+	// rogue.EnableEnergyBar(maxEnergy)
+	// rogue.ApplyEnergyTickMultiplier([]float64{0, 0.08, 0.16, 0.25}[rogue.Talents.Vitality])
 
-	rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{
-		MainHand:       rogue.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
-		OffHand:        rogue.WeaponFromOffHand(0),  // Set crit multiplier later when we have targets.
-		AutoSwingMelee: true,
-	})
-	rogue.applyPoisons()
+	// rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{
+	// 	MainHand:       rogue.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
+	// 	OffHand:        rogue.WeaponFromOffHand(0),  // Set crit multiplier later when we have targets.
+	// 	AutoSwingMelee: true,
+	// })
+	// rogue.applyPoisons()
 
-	rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
-	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 1)
-	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+	// rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	// rogue.AddStatDependency(stats.Agility, stats.AttackPower, 1)
+	// rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
 
 	return rogue
 }

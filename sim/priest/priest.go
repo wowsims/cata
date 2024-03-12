@@ -1,11 +1,8 @@
 package priest
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 var TalentTreeSizes = [3]int{28, 27, 27}
@@ -19,8 +16,8 @@ type Priest struct {
 
 	Latency float64
 
-	ShadowfiendAura *core.Aura
-	ShadowfiendPet  *Shadowfiend
+	//ShadowfiendAura *core.Aura
+	//ShadowfiendPet  *Shadowfiend
 
 	// cached cast stuff
 	// TODO: aoe multi-target situations will need multiple spells ticking for each target.
@@ -96,91 +93,91 @@ func (priest *Priest) GetCharacter() *core.Character {
 	return &priest.Character
 }
 
-func (priest *Priest) HasMajorGlyph(glyph proto.PriestMajorGlyph) bool {
-	return priest.HasGlyph(int32(glyph))
-}
-func (priest *Priest) HasMinorGlyph(glyph proto.PriestMinorGlyph) bool {
-	return priest.HasGlyph(int32(glyph))
-}
+// func (priest *Priest) HasMajorGlyph(glyph proto.PriestMajorGlyph) bool {
+// 	return priest.HasGlyph(int32(glyph))
+// }
+// func (priest *Priest) HasMinorGlyph(glyph proto.PriestMinorGlyph) bool {
+// 	return priest.HasGlyph(int32(glyph))
+// }
 
-func (priest *Priest) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	raidBuffs.ShadowProtection = true
-	raidBuffs.DivineSpirit = true
+// func (priest *Priest) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+// 	raidBuffs.ShadowProtection = true
+// 	raidBuffs.DivineSpirit = true
 
-	raidBuffs.PowerWordFortitude = max(raidBuffs.PowerWordFortitude, core.MakeTristateValue(
-		true,
-		priest.Talents.ImprovedPowerWordFortitude == 2))
-}
+// 	raidBuffs.PowerWordFortitude = max(raidBuffs.PowerWordFortitude, core.MakeTristateValue(
+// 		true,
+// 		priest.Talents.ImprovedPowerWordFortitude == 2))
+// }
 
 func (priest *Priest) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (priest *Priest) Initialize() {
-	statDep := priest.NewDynamicStatDependency(stats.Spirit, stats.SpellPower, 0.3)
-	priest.ShadowyInsightAura = priest.GetOrRegisterAura(core.Aura{
-		Label:    "Shadowy Insight",
-		Duration: time.Second * 10,
-		ActionID: core.ActionID{SpellID: 61792},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			priest.EnableDynamicStatDep(sim, statDep)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			priest.DisableDynamicStatDep(sim, statDep)
-		},
-	})
+	// statDep := priest.NewDynamicStatDependency(stats.Spirit, stats.SpellPower, 0.3)
+	// priest.ShadowyInsightAura = priest.GetOrRegisterAura(core.Aura{
+	// 	Label:    "Shadowy Insight",
+	// 	Duration: time.Second * 10,
+	// 	ActionID: core.ActionID{SpellID: 61792},
+	// 	OnGain: func(aura *core.Aura, sim *core.Simulation) {
+	// 		priest.EnableDynamicStatDep(sim, statDep)
+	// 	},
+	// 	OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+	// 		priest.DisableDynamicStatDep(sim, statDep)
+	// 	},
+	// })
 
-	priest.registerSetBonuses()
-	priest.registerDevouringPlagueSpell()
-	priest.registerShadowWordPainSpell()
-	priest.registerMindBlastSpell()
-	priest.registerShadowWordDeathSpell()
-	priest.registerShadowfiendSpell()
-	priest.registerVampiricTouchSpell()
-	priest.registerDispersionSpell()
+	// priest.registerSetBonuses()
+	// priest.registerDevouringPlagueSpell()
+	// priest.registerShadowWordPainSpell()
+	// priest.registerMindBlastSpell()
+	// priest.registerShadowWordDeathSpell()
+	// priest.registerShadowfiendSpell()
+	// priest.registerVampiricTouchSpell()
+	// priest.registerDispersionSpell()
 
-	priest.registerPowerInfusionCD()
+	// priest.registerPowerInfusionCD()
 
-	priest.MindFlayAPL = priest.newMindFlaySpell(0)
-	priest.MindSearAPL = priest.newMindSearSpell(0)
+	// priest.MindFlayAPL = priest.newMindFlaySpell(0)
+	// priest.MindSearAPL = priest.newMindSearSpell(0)
 
-	priest.MindFlay = []*core.Spell{
-		nil, // So we can use # of ticks as the index
-		priest.newMindFlaySpell(1),
-		priest.newMindFlaySpell(2),
-		priest.newMindFlaySpell(3),
-	}
-	priest.MindSear = []*core.Spell{
-		nil, // So we can use # of ticks as the index
-		priest.newMindSearSpell(1),
-		priest.newMindSearSpell(2),
-		priest.newMindSearSpell(3),
-		priest.newMindSearSpell(4),
-		priest.newMindSearSpell(5),
-	}
+	// priest.MindFlay = []*core.Spell{
+	// 	nil, // So we can use # of ticks as the index
+	// 	priest.newMindFlaySpell(1),
+	// 	priest.newMindFlaySpell(2),
+	// 	priest.newMindFlaySpell(3),
+	// }
+	// priest.MindSear = []*core.Spell{
+	// 	nil, // So we can use # of ticks as the index
+	// 	priest.newMindSearSpell(1),
+	// 	priest.newMindSearSpell(2),
+	// 	priest.newMindSearSpell(3),
+	// 	priest.newMindSearSpell(4),
+	// 	priest.newMindSearSpell(5),
+	// }
 }
 
-func (priest *Priest) RegisterHealingSpells() {
-	priest.registerPenanceHealSpell()
-	priest.registerBindingHealSpell()
-	priest.registerCircleOfHealingSpell()
-	priest.registerFlashHealSpell()
-	priest.registerGreaterHealSpell()
-	priest.registerPowerWordShieldSpell()
-	priest.registerPrayerOfHealingSpell()
-	priest.registerPrayerOfMendingSpell()
-	priest.registerRenewSpell()
-}
+// func (priest *Priest) RegisterHealingSpells() {
+// 	priest.registerPenanceHealSpell()
+// 	priest.registerBindingHealSpell()
+// 	priest.registerCircleOfHealingSpell()
+// 	priest.registerFlashHealSpell()
+// 	priest.registerGreaterHealSpell()
+// 	priest.registerPowerWordShieldSpell()
+// 	priest.registerPrayerOfHealingSpell()
+// 	priest.registerPrayerOfMendingSpell()
+// 	priest.registerRenewSpell()
+// }
 
-func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation) {
-	if priest.ShadowWeavingAura != nil {
-		priest.ShadowWeavingAura.Activate(sim)
-		priest.ShadowWeavingAura.AddStack(sim)
-	}
-}
+// func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation) {
+// 	if priest.ShadowWeavingAura != nil {
+// 		priest.ShadowWeavingAura.Activate(sim)
+// 		priest.ShadowWeavingAura.AddStack(sim)
+// 	}
+// }
 
 func (priest *Priest) Reset(_ *core.Simulation) {
-	priest.MindFlayModifier = 1
-	priest.MindBlastModifier = 1
+// 	priest.MindFlayModifier = 1
+// 	priest.MindBlastModifier = 1
 }
 
 func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
@@ -189,21 +186,21 @@ func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 		SelfBuffs: selfBuffs,
 		Talents:   &proto.PriestTalents{},
 	}
-	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	// core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
-	priest.EnableManaBar()
-	priest.ShadowfiendPet = priest.NewShadowfiend()
+	// priest.EnableManaBar()
+	// //priest.ShadowfiendPet = priest.NewShadowfiend()
 
-	if selfBuffs.UseInnerFire {
-		multi := 1 + float64(priest.Talents.ImprovedInnerFire)*0.15
-		sp := 120.0 * multi
-		armor := 2440 * multi * core.TernaryFloat64(priest.HasMajorGlyph(proto.PriestMajorGlyph_GlyphOfInnerFire), 1.5, 1)
-		priest.AddStat(stats.SpellPower, sp)
-		priest.AddStat(stats.Armor, armor)
-	}
+	// if selfBuffs.UseInnerFire {
+	// 	multi := 1 + float64(priest.Talents.ImprovedInnerFire)*0.15
+	// 	sp := 120.0 * multi
+	// 	armor := 2440 * multi * core.TernaryFloat64(priest.HasMajorGlyph(proto.PriestMajorGlyph_GlyphOfInnerFire), 1.5, 1)
+	// 	priest.AddStat(stats.SpellPower, sp)
+	// 	priest.AddStat(stats.Armor, armor)
+	// }
 
-	return priest
-}
+ 	return priest
+ }
 
 // Agent is a generic way to access underlying priest on any of the agents.
 type PriestAgent interface {

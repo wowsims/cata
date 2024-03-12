@@ -35,15 +35,15 @@ export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('Default (969)
 export const GenericAoeTalents = {
 	name: 'Baseline Example',
 	data: SavedTalents.create({
-		talentsString: '-05005135200132311333312321-511302012003',
-		glyphs: {
-			major1: PaladinMajorGlyph.GlyphOfSealOfVengeance,
-			major2: PaladinMajorGlyph.GlyphOfRighteousDefense,
-			major3: PaladinMajorGlyph.GlyphOfDivinePlea,
-			minor1: PaladinMinorGlyph.GlyphOfSenseUndead,
-			minor2: PaladinMinorGlyph.GlyphOfLayOnHands,
-			minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings,
-		},
+		// talentsString: '-05005135200132311333312321-511302012003',
+		// glyphs: {
+		// 	major1: PaladinMajorGlyph.GlyphOfSealOfVengeance,
+		// 	major2: PaladinMajorGlyph.GlyphOfRighteousDefense,
+		// 	major3: PaladinMajorGlyph.GlyphOfDivinePlea,
+		// 	minor1: PaladinMinorGlyph.GlyphOfSenseUndead,
+		// 	minor2: PaladinMinorGlyph.GlyphOfLayOnHands,
+		// 	minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings,
+		// },
 	}),
 };
 

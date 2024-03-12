@@ -34,26 +34,26 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 		latency: time.Duration(max(feralOptions.Options.LatencyMs, 1)) * time.Millisecond,
 	}
 
-	cat.SelfBuffs.InnervateTarget = &proto.UnitReference{}
-	if feralOptions.Options.ClassOptions.InnervateTarget != nil {
-		cat.SelfBuffs.InnervateTarget = feralOptions.Options.ClassOptions.InnervateTarget
-	}
+	// cat.SelfBuffs.InnervateTarget = &proto.UnitReference{}
+	// if feralOptions.Options.ClassOptions.InnervateTarget != nil {
+	// 	cat.SelfBuffs.InnervateTarget = feralOptions.Options.ClassOptions.InnervateTarget
+	// }
 
-	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
-	cat.maxRipTicks = cat.MaxRipTicks()
+	// cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
+	// //cat.maxRipTicks = cat.MaxRipTicks()
 
-	cat.EnableEnergyBar(100.0)
+	// cat.EnableEnergyBar(100.0)
 
-	cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1, MHSwingSpeed: 2.5})
+	// cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1, MHSwingSpeed: 2.5})
 
-	cat.EnableAutoAttacks(cat, core.AutoAttackOptions{
-		// Base paw weapon.
-		MainHand:       cat.GetCatWeapon(),
-		AutoSwingMelee: true,
-	})
-	cat.ReplaceBearMHFunc = func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-		return cat.checkReplaceMaul(sim, mhSwingSpell)
-	}
+	// cat.EnableAutoAttacks(cat, core.AutoAttackOptions{
+	// 	// Base paw weapon.
+	// 	//MainHand:       cat.GetCatWeapon(),
+	// 	AutoSwingMelee: true,
+	// })
+	// cat.ReplaceBearMHFunc = func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
+	// 	return cat.checkReplaceMaul(sim, mhSwingSpell)
+	// }
 
 	return cat
 }
@@ -92,15 +92,15 @@ func (cat *FeralDruid) MissChance() float64 {
 
 func (cat *FeralDruid) Initialize() {
 	cat.Druid.Initialize()
-	cat.RegisterFeralCatSpells()
+	//cat.RegisterFeralCatSpells()
 }
 
 func (cat *FeralDruid) Reset(sim *core.Simulation) {
 	cat.Druid.Reset(sim)
-	cat.Druid.ClearForm(sim)
-	cat.CatFormAura.Activate(sim)
-	cat.readyToShift = false
-	cat.waitingForTick = false
-	cat.berserkUsed = false
-	cat.rotationAction = nil
+	// cat.Druid.ClearForm(sim)
+	// cat.CatFormAura.Activate(sim)
+	// cat.readyToShift = false
+	// cat.waitingForTick = false
+	// cat.berserkUsed = false
+	// cat.rotationAction = nil
 }

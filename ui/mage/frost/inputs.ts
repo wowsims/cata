@@ -6,14 +6,14 @@ import { TypedEvent } from '../../core/typed_event';
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 
-export const WaterElementalDisobeyChance = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecFrostMage>({
-	fieldName: 'waterElementalDisobeyChance',
-	percent: true,
-	label: 'Water Ele Disobey %',
-	labelTooltip: 'Percent of Water Elemental actions which will fail. This represents the Water Elemental moving around or standing still instead of casting.',
-	changeEmitter: (player: Player<Spec.SpecFrostMage>) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.talentsChangeEmitter]),
-	showWhen: (player: Player<Spec.SpecFrostMage>) => player.getTalents().summonWaterElemental,
-});
+// export const WaterElementalDisobeyChance = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecFrostMage>({
+// 	fieldName: 'waterElementalDisobeyChance',
+// 	percent: true,
+// 	label: 'Water Ele Disobey %',
+// 	labelTooltip: 'Percent of Water Elemental actions which will fail. This represents the Water Elemental moving around or standing still instead of casting.',
+// 	changeEmitter: (player: Player<Spec.SpecFrostMage>) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.talentsChangeEmitter]),
+// 	showWhen: (player: Player<Spec.SpecFrostMage>) => player.getTalents().summonWaterElemental,
+// });
 
 export const MageRotationConfig = {
 	inputs: [

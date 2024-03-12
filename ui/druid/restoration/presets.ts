@@ -33,29 +33,29 @@ export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 export const CelestialFocusTalents = {
 	name: 'Celestial Focus',
 	data: SavedTalents.create({
-		talentsString: '05320031103--230023312131502331050313051',
-		glyphs: Glyphs.create({
-			major1: DruidMajorGlyph.GlyphOfWildGrowth,
-			major2: DruidMajorGlyph.GlyphOfSwiftmend,
-			major3: DruidMajorGlyph.GlyphOfNourish,
-			minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-			minor3: DruidMinorGlyph.GlyphOfTheWild,
-			minor1: DruidMinorGlyph.GlyphOfDash,
-		}),
+		// talentsString: '05320031103--230023312131502331050313051',
+		// glyphs: Glyphs.create({
+		// 	major1: DruidMajorGlyph.GlyphOfWildGrowth,
+		// 	major2: DruidMajorGlyph.GlyphOfSwiftmend,
+		// 	major3: DruidMajorGlyph.GlyphOfNourish,
+		// 	minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		// 	minor3: DruidMinorGlyph.GlyphOfTheWild,
+		// 	minor1: DruidMinorGlyph.GlyphOfDash,
+		// }),
 	}),
 };
 export const ThiccRestoTalents = {
 	name: 'Thicc Resto',
 	data: SavedTalents.create({
-		talentsString: '05320001--230023312331502531053313051',
-		glyphs: Glyphs.create({
-			major1: DruidMajorGlyph.GlyphOfWildGrowth,
-			major2: DruidMajorGlyph.GlyphOfSwiftmend,
-			major3: DruidMajorGlyph.GlyphOfNourish,
-			minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-			minor3: DruidMinorGlyph.GlyphOfTheWild,
-			minor1: DruidMinorGlyph.GlyphOfDash,
-		}),
+		// talentsString: '05320001--230023312331502531053313051',
+		// glyphs: Glyphs.create({
+		// 	major1: DruidMajorGlyph.GlyphOfWildGrowth,
+		// 	major2: DruidMajorGlyph.GlyphOfSwiftmend,
+		// 	major3: DruidMajorGlyph.GlyphOfNourish,
+		// 	minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		// 	minor3: DruidMinorGlyph.GlyphOfTheWild,
+		// 	minor1: DruidMinorGlyph.GlyphOfDash,
+		// }),
 	}),
 };
 

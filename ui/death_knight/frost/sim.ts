@@ -131,14 +131,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			DeathKnightInputs.StartingRunicPower(),
-			DeathKnightInputs.PetUptime(),
-			FrostInputs.UseAMSInput,
-			FrostInputs.AvgAMSSuccessRateInput,
-			FrostInputs.AvgAMSHitInput,
+			// DeathKnightInputs.StartingRunicPower(),
+			// DeathKnightInputs.PetUptime(),
+			// FrostInputs.UseAMSInput,
+			// FrostInputs.AvgAMSSuccessRateInput,
+			// FrostInputs.AvgAMSHitInput,
 
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
+			// OtherInputs.TankAssignment,
+			// OtherInputs.InFrontOfTarget,
 		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],

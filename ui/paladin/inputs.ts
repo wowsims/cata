@@ -16,20 +16,20 @@ export const AuraSelection = <SpecType extends PaladinSpecs>() =>
 		],
 	});
 
-export const StartingSealSelection = <SpecType extends PaladinSpecs>() =>
-	InputHelpers.makeClassOptionsEnumIconInput<SpecType, PaladinSeal>({
-		fieldName: 'seal',
-		values: [
-			{ actionId: ActionId.fromSpellId(42463), value: PaladinSeal.Vengeance },
-			{ actionId: ActionId.fromSpellId(20154), value: PaladinSeal.Righteousness },
-			{
-				actionId: ActionId.fromSpellId(20424),
-				value: PaladinSeal.Command,
-				showWhen: (player: Player<SpecType>) => player.getTalents().sealOfCommand,
-			},
-		],
-		changeEmitter: (player: Player<SpecType>) => player.changeEmitter,
-	});
+// export const StartingSealSelection = <SpecType extends PaladinSpecs>() =>
+// 	InputHelpers.makeClassOptionsEnumIconInput<SpecType, PaladinSeal>({
+// 		fieldName: 'seal',
+// 		values: [
+// 			{ actionId: ActionId.fromSpellId(42463), value: PaladinSeal.Vengeance },
+// 			{ actionId: ActionId.fromSpellId(20154), value: PaladinSeal.Righteousness },
+// 			{
+// 				actionId: ActionId.fromSpellId(20424),
+// 				value: PaladinSeal.Command,
+// 				showWhen: (player: Player<SpecType>) => player.getTalents().sealOfCommand,
+// 			},
+// 		],
+// 		changeEmitter: (player: Player<SpecType>) => player.changeEmitter,
+// 	});
 
 export const JudgementSelection = <SpecType extends PaladinSpecs>() =>
 	InputHelpers.makeClassOptionsEnumIconInput<SpecType, PaladinJudgement>({

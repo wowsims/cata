@@ -45,16 +45,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		Stat.StatArmorPenetration,
 		Stat.StatArmor,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecFuryWarrior>) => {
-		let stats = new Stats();
-		if (!player.getInFrontOfTarget()) {
-			// When behind target, dodge is the only outcome affected by Expertise.
-			stats = stats.addStat(Stat.StatExpertise, player.getTalents().weaponMastery * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-		}
-		return {
-			talents: stats,
-		};
-	},
+	// modifyDisplayStats: (player: Player<Spec.SpecFuryWarrior>) => {
+	// 	//let stats = new Stats();
+	// 	if (!player.getInFrontOfTarget()) {
+	// 		// When behind target, dodge is the only outcome affected by Expertise.
+	// 		//stats = stats.addStat(Stat.StatExpertise, player.getTalents().weaponMastery * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+	// 	}
+	// 	return {
+	// 	//	talents: stats,
+	// 	};
+	// },
 
 	defaults: {
 		// Default equipped gear.

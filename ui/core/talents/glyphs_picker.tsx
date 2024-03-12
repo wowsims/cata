@@ -95,7 +95,7 @@ export class GlyphsPicker extends Component {
 	// In case we ever want to parse description from tooltip HTML.
 	//static descriptionRegex = /<a href=\\"\/wotlk.*>(.*)<\/a>/g;
 	getGlyphData(glyph: number): GlyphData {
-		const glyphConfig = this.glyphsConfig.majorGlyphs[glyph] || this.glyphsConfig.minorGlyphs[glyph];
+		const glyphConfig = this.glyphsConfig.primeGlyphs[glyph] || this.glyphsConfig.majorGlyphs[glyph] || this.glyphsConfig.minorGlyphs[glyph];
 
 		return {
 			id: glyph,

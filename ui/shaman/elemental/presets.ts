@@ -40,15 +40,15 @@ export const ROTATION_PRESET_ADVANCED = PresetUtils.makePresetAPLRotation('Advan
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '0533001523213351322301351-005050031',
-		glyphs: Glyphs.create({
-			major1: ShamanMajorGlyph.GlyphOfFlametongueWeapon,
-			major2: ShamanMajorGlyph.GlyphOfTotemOfWrath,
-			major3: ShamanMajorGlyph.GlyphOfLightningBolt,
-			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
-			minor2: ShamanMinorGlyph.GlyphOfWaterShield,
-			minor3: ShamanMinorGlyph.GlyphOfGhostWolf,
-		}),
+		// talentsString: '0533001523213351322301351-005050031',
+		// glyphs: Glyphs.create({
+		// 	major1: ShamanMajorGlyph.GlyphOfFlametongueWeapon,
+		// 	major2: ShamanMajorGlyph.GlyphOfTotemOfWrath,
+		// 	major3: ShamanMajorGlyph.GlyphOfLightningBolt,
+		// 	minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
+		// 	minor2: ShamanMinorGlyph.GlyphOfWaterShield,
+		// 	minor3: ShamanMinorGlyph.GlyphOfGhostWolf,
+		// }),
 	}),
 };
 

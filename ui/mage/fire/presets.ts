@@ -59,15 +59,15 @@ export const FIRE_ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Fire 
 export const FireTalents = {
 	name: 'Fire',
 	data: SavedTalents.create({
-		talentsString: '23000503110003-0055030012303331053120301351',
-		glyphs: Glyphs.create({
-			major1: MageMajorGlyph.GlyphOfFireball,
-			major2: MageMajorGlyph.GlyphOfMoltenArmor,
-			major3: MageMajorGlyph.GlyphOfLivingBomb,
-			minor1: MageMinorGlyph.GlyphOfSlowFall,
-			minor2: MageMinorGlyph.GlyphOfFrostWard,
-			minor3: MageMinorGlyph.GlyphOfBlastWave,
-		}),
+		// talentsString: '23000503110003-0055030012303331053120301351',
+		// glyphs: Glyphs.create({
+		// 	major1: MageMajorGlyph.GlyphOfFireball,
+		// 	major2: MageMajorGlyph.GlyphOfMoltenArmor,
+		// 	major3: MageMajorGlyph.GlyphOfLivingBomb,
+		// 	minor1: MageMinorGlyph.GlyphOfSlowFall,
+		// 	minor2: MageMinorGlyph.GlyphOfFrostWard,
+		// 	minor3: MageMinorGlyph.GlyphOfBlastWave,
+		// }),
 	}),
 };
 

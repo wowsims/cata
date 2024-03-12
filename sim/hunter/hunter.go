@@ -21,7 +21,7 @@ type Hunter struct {
 	MarksmanshipOptions *proto.MarksmanshipHunter_Options
 	SurvivalOptions     *proto.SurvivalHunter_Options
 
-	pet *HunterPet
+	//pet *HunterPet
 
 	AmmoDPS                   float64
 	AmmoDamageBonus           float64
@@ -79,53 +79,53 @@ func (hunter *Hunter) GetHunter() *Hunter {
 }
 
 func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if hunter.Talents.TrueshotAura {
-		raidBuffs.TrueshotAura = true
-	}
-	if hunter.Talents.FerociousInspiration == 3 && hunter.pet != nil {
-		raidBuffs.FerociousInspiration = true
-	}
+	// if hunter.Talents.TrueshotAura {
+	// 	raidBuffs.TrueshotAura = true
+	// }
+	// if hunter.Talents.FerociousInspiration == 3 && hunter.pet != nil {
+	// 	raidBuffs.FerociousInspiration = true
+	// }
 }
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (hunter *Hunter) Initialize() {
 	// Update auto crit multipliers now that we have the targets.
-	hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
-	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
-	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
+	// hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
+	// hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
+	// hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
 
-	hunter.registerAspectOfTheDragonhawkSpell()
-	hunter.registerAspectOfTheViperSpell()
+	// hunter.registerAspectOfTheDragonhawkSpell()
+	// hunter.registerAspectOfTheViperSpell()
 
-	multiShotTimer := hunter.NewTimer()
-	arcaneShotTimer := hunter.NewTimer()
-	fireTrapTimer := hunter.NewTimer()
+	// multiShotTimer := hunter.NewTimer()
+	// arcaneShotTimer := hunter.NewTimer()
+	// fireTrapTimer := hunter.NewTimer()
 
-	hunter.registerAimedShotSpell(multiShotTimer)
-	hunter.registerArcaneShotSpell(arcaneShotTimer)
-	hunter.registerBlackArrowSpell(fireTrapTimer)
-	hunter.registerChimeraShotSpell()
-	hunter.registerExplosiveShotSpell(arcaneShotTimer)
-	hunter.registerExplosiveTrapSpell(fireTrapTimer)
-	hunter.registerKillShotSpell()
-	hunter.registerMultiShotSpell(multiShotTimer)
-	hunter.registerRaptorStrikeSpell()
-	hunter.registerScorpidStingSpell()
-	hunter.registerSerpentStingSpell()
-	hunter.registerSilencingShotSpell()
-	hunter.registerSteadyShotSpell()
-	hunter.registerVolleySpell()
+	// hunter.registerAimedShotSpell(multiShotTimer)
+	// hunter.registerArcaneShotSpell(arcaneShotTimer)
+	// hunter.registerBlackArrowSpell(fireTrapTimer)
+	// hunter.registerChimeraShotSpell()
+	// hunter.registerExplosiveShotSpell(arcaneShotTimer)
+	// hunter.registerExplosiveTrapSpell(fireTrapTimer)
+	// hunter.registerKillShotSpell()
+	// hunter.registerMultiShotSpell(multiShotTimer)
+	// hunter.registerRaptorStrikeSpell()
+	// hunter.registerScorpidStingSpell()
+	// hunter.registerSerpentStingSpell()
+	// hunter.registerSilencingShotSpell()
+	// hunter.registerSteadyShotSpell()
+	// hunter.registerVolleySpell()
 
-	hunter.registerKillCommandCD()
-	hunter.registerRapidFireCD()
+	// hunter.registerKillCommandCD()
+	// hunter.registerRapidFireCD()
 
-	if hunter.Options.UseHuntersMark {
-		hunter.RegisterPrepullAction(0, func(sim *core.Simulation) {
-			huntersMarkAura := core.HuntersMarkAura(hunter.CurrentTarget, hunter.Talents.ImprovedHuntersMark, hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfHuntersMark))
-			huntersMarkAura.Activate(sim)
-		})
-	}
+	// if hunter.Options.UseHuntersMark {
+	// 	hunter.RegisterPrepullAction(0, func(sim *core.Simulation) {
+	// 		huntersMarkAura := core.HuntersMarkAura(hunter.CurrentTarget, hunter.Talents.ImprovedHuntersMark, hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfHuntersMark))
+	// 		huntersMarkAura.Activate(sim)
+	// 	})
+	// }
 }
 
 func (hunter *Hunter) Reset(_ *core.Simulation) {
@@ -169,23 +169,23 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		hunter.NormalizedAmmoDamageBonus = hunter.AmmoDPS * 2.8
 	}
 
-	hunter.EnableAutoAttacks(hunter, core.AutoAttackOptions{
-		// We don't know crit multiplier until later when we see the target so just
-		// use 0 for now.
-		MainHand:        hunter.WeaponFromMainHand(0),
-		OffHand:         hunter.WeaponFromOffHand(0),
-		Ranged:          rangedWeapon,
-		ReplaceMHSwing:  hunter.TryRaptorStrike,
-		AutoSwingRanged: true,
-	})
-	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
-			hunter.AmmoDamageBonus +
-			spell.BonusWeaponDamage()
-		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-	}
+	// hunter.EnableAutoAttacks(hunter, core.AutoAttackOptions{
+	// 	// We don't know crit multiplier until later when we see the target so just
+	// 	// use 0 for now.
+	// 	MainHand:        hunter.WeaponFromMainHand(0),
+	// 	OffHand:         hunter.WeaponFromOffHand(0),
+	// 	Ranged:          rangedWeapon,
+	// 	ReplaceMHSwing:  hunter.TryRaptorStrike,
+	// 	AutoSwingRanged: true,
+	// })
+	// hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	// 	baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+	// 		hunter.AmmoDamageBonus +
+	// 		spell.BonusWeaponDamage()
+	// 	spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+	// }
 
-	hunter.pet = hunter.NewHunterPet()
+	// hunter.pet = hunter.NewHunterPet()
 
 	hunter.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 1)

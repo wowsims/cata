@@ -33,14 +33,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPriest, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecHolyPriest>) => {
-		let stats = new Stats();
-		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().shadowFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+	// modifyDisplayStats: (player: Player<Spec.SpecHolyPriest>) => {
+	// 	let stats = new Stats();
+	// 	stats = stats.addStat(Stat.StatSpellHit, player.getTalents().shadowFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
 
-		return {
-			talents: stats,
-		};
-	},
+	// 	return {
+	// 		talents: stats,
+	// 	};
+	// },
 
 	defaults: {
 		// Default equipped gear.

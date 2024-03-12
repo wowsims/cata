@@ -1,8 +1,6 @@
 package balance
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -60,16 +58,16 @@ func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
 
 func (moonkin *BalanceDruid) Initialize() {
 	moonkin.Druid.Initialize()
-	moonkin.RegisterBalanceSpells()
+	//moonkin.RegisterBalanceSpells()
 
-	if moonkin.OwlkinFrenzyAura != nil && moonkin.Options.OkfUptime > 0 {
-		moonkin.Env.RegisterPreFinalizeEffect(func() {
-			core.ApplyFixedUptimeAura(moonkin.OwlkinFrenzyAura, float64(moonkin.Options.OkfUptime), time.Second*5, 0)
-		})
-	}
+	// if moonkin.OwlkinFrenzyAura != nil && moonkin.Options.OkfUptime > 0 {
+	// 	moonkin.Env.RegisterPreFinalizeEffect(func() {
+	// 		core.ApplyFixedUptimeAura(moonkin.OwlkinFrenzyAura, float64(moonkin.Options.OkfUptime), time.Second*5, 0)
+	// 	})
+	// }
 }
 
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
 	moonkin.Druid.Reset(sim)
-	moonkin.RebirthTiming = moonkin.Env.BaseDuration.Seconds() * sim.RandomFloat("Rebirth Timing")
+	//moonkin.RebirthTiming = moonkin.Env.BaseDuration.Seconds() * sim.RandomFloat("Rebirth Timing")
 }

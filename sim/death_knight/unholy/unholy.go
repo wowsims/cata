@@ -53,13 +53,13 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 	return uhdk
 }
 
-func (uhdk *UnholyDeathKnight) FrostPointsInBlood() int32 {
-	return uhdk.Talents.Butchery + uhdk.Talents.Subversion + uhdk.Talents.BladeBarrier + uhdk.Talents.DarkConviction
-}
+// func (uhdk *UnholyDeathKnight) FrostPointsInBlood() int32 {
+// 	return uhdk.Talents.Butchery + uhdk.Talents.Subversion + uhdk.Talents.BladeBarrier + uhdk.Talents.DarkConviction
+// }
 
-func (uhdk *UnholyDeathKnight) FrostPointsInUnholy() int32 {
-	return uhdk.Talents.ViciousStrikes + uhdk.Talents.Virulence + uhdk.Talents.Epidemic + uhdk.Talents.RavenousDead + uhdk.Talents.Necrosis + uhdk.Talents.BloodCakedBlade
-}
+// func (uhdk *UnholyDeathKnight) FrostPointsInUnholy() int32 {
+// 	return uhdk.Talents.ViciousStrikes + uhdk.Talents.Virulence + uhdk.Talents.Epidemic + uhdk.Talents.RavenousDead + uhdk.Talents.Necrosis + uhdk.Talents.BloodCakedBlade
+// }
 
 func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 	return uhdk.DeathKnight
@@ -71,5 +71,5 @@ func (uhdk *UnholyDeathKnight) Initialize() {
 
 func (uhdk *UnholyDeathKnight) Reset(sim *core.Simulation) {
 	uhdk.DeathKnight.Reset(sim)
-	uhdk.Presence = death_knight.UnsetPresence
+	//uhdk.Presence = death_knight.UnsetPresence
 }

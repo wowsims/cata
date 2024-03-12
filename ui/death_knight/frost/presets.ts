@@ -31,30 +31,30 @@ export const FROST_UH_PESTI_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLR
 export const FrostTalents = {
 	name: 'Frost BL',
 	data: SavedTalents.create({
-		talentsString: '23050005-32005350352203012300033101351',
-		glyphs: Glyphs.create({
-			major1: DeathKnightMajorGlyph.GlyphOfObliterate,
-			major2: DeathKnightMajorGlyph.GlyphOfFrostStrike,
-			major3: DeathKnightMajorGlyph.GlyphOfDisease,
-			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
-		}),
+		// talentsString: '23050005-32005350352203012300033101351',
+		// glyphs: Glyphs.create({
+		// 	major1: DeathKnightMajorGlyph.GlyphOfObliterate,
+		// 	major2: DeathKnightMajorGlyph.GlyphOfFrostStrike,
+		// 	major3: DeathKnightMajorGlyph.GlyphOfDisease,
+		// 	minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+		// 	minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+		// 	minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
+		// }),
 	}),
 };
 
 export const FrostUnholyTalents = {
 	name: 'Frost UH',
 	data: SavedTalents.create({
-		talentsString: '01-32002350342203012300033101351-230200305003',
-		glyphs: Glyphs.create({
-			major1: DeathKnightMajorGlyph.GlyphOfObliterate,
-			major2: DeathKnightMajorGlyph.GlyphOfFrostStrike,
-			major3: DeathKnightMajorGlyph.GlyphOfDisease,
-			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
-		}),
+		// talentsString: '01-32002350342203012300033101351-230200305003',
+		// glyphs: Glyphs.create({
+		// 	major1: DeathKnightMajorGlyph.GlyphOfObliterate,
+		// 	major2: DeathKnightMajorGlyph.GlyphOfFrostStrike,
+		// 	major3: DeathKnightMajorGlyph.GlyphOfDisease,
+		// 	minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+		// 	minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+		// 	minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
+		// }),
 	}),
 };
 

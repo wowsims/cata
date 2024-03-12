@@ -37,15 +37,15 @@ export const ROTATION_ARMS_SUNDER = PresetUtils.makePresetAPLRotation('Arms + Su
 export const ArmsTalents = {
 	name: 'Arms',
 	data: SavedTalents.create({
-		talentsString: '3022032023335100102012213231251-305-2033',
-		glyphs: Glyphs.create({
-			major1: WarriorMajorGlyph.GlyphOfRending,
-			major2: WarriorMajorGlyph.GlyphOfMortalStrike,
-			major3: WarriorMajorGlyph.GlyphOfExecution,
-			minor1: WarriorMinorGlyph.GlyphOfThunderClap,
-			minor2: WarriorMinorGlyph.GlyphOfCommand,
-			minor3: WarriorMinorGlyph.GlyphOfShatteringThrow,
-		}),
+		// talentsString: '3022032023335100102012213231251-305-2033',
+		// glyphs: Glyphs.create({
+		// 	major1: WarriorMajorGlyph.GlyphOfRending,
+		// 	major2: WarriorMajorGlyph.GlyphOfMortalStrike,
+		// 	major3: WarriorMajorGlyph.GlyphOfExecution,
+		// 	minor1: WarriorMinorGlyph.GlyphOfThunderClap,
+		// 	minor2: WarriorMinorGlyph.GlyphOfCommand,
+		// 	minor3: WarriorMinorGlyph.GlyphOfShatteringThrow,
+		// }),
 	}),
 };
 

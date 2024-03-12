@@ -51,15 +51,15 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeA
 export const BeastMasteryTalents = {
 	name: 'Beast Mastery',
 	data: SavedTalents.create({
-		talentsString: '51200201505112243120531251-025305101',
-		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfBestialWrath,
-			major2: MajorGlyph.GlyphOfSteadyShot,
-			major3: MajorGlyph.GlyphOfSerpentSting,
-			minor1: MinorGlyph.GlyphOfFeignDeath,
-			minor2: MinorGlyph.GlyphOfRevivePet,
-			minor3: MinorGlyph.GlyphOfMendPet,
-		}),
+		// talentsString: '51200201505112243120531251-025305101',
+		// glyphs: Glyphs.create({
+		// 	major1: MajorGlyph.GlyphOfBestialWrath,
+		// 	major2: MajorGlyph.GlyphOfSteadyShot,
+		// 	major3: MajorGlyph.GlyphOfSerpentSting,
+		// 	minor1: MinorGlyph.GlyphOfFeignDeath,
+		// 	minor2: MinorGlyph.GlyphOfRevivePet,
+		// 	minor3: MinorGlyph.GlyphOfMendPet,
+		// }),
 	}),
 };
 

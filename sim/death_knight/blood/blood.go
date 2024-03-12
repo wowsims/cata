@@ -71,6 +71,6 @@ func (dk *BloodDeathKnight) Initialize() {
 func (dk *BloodDeathKnight) Reset(sim *core.Simulation) {
 	dk.DeathKnight.Reset(sim)
 
-	dk.Presence = death_knight.UnsetPresence
-	dk.DeathKnight.PseudoStats.Stunned = false
+	//dk.Presence = death_knight.UnsetPresence
+	//dk.DeathKnight.PseudoStats.Stunned = false
 }

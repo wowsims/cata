@@ -33,30 +33,30 @@ export const ROTATION_PRESET_AOE4PLUS = PresetUtils.makePresetAPLRotation('AOE (
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '05032031--325023051223010323151301351',
-		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfShadow,
-			major2: MajorGlyph.GlyphOfMindFlay,
-			major3: MajorGlyph.GlyphOfDispersion,
-			minor1: MinorGlyph.GlyphOfFortitude,
-			minor2: MinorGlyph.GlyphOfShadowProtection,
-			minor3: MinorGlyph.GlyphOfShadowfiend,
-		}),
+		// talentsString: '05032031--325023051223010323151301351',
+		// glyphs: Glyphs.create({
+		// 	major1: MajorGlyph.GlyphOfShadow,
+		// 	major2: MajorGlyph.GlyphOfMindFlay,
+		// 	major3: MajorGlyph.GlyphOfDispersion,
+		// 	minor1: MinorGlyph.GlyphOfFortitude,
+		// 	minor2: MinorGlyph.GlyphOfShadowProtection,
+		// 	minor3: MinorGlyph.GlyphOfShadowfiend,
+		// }),
 	}),
 };
 
 export const EnlightenmentTalents = {
 	name: 'Enlightenment',
 	data: SavedTalents.create({
-		talentsString: '05032031303005022--3250230012230101231513011',
-		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfShadow,
-			major2: MajorGlyph.GlyphOfMindFlay,
-			major3: MajorGlyph.GlyphOfShadowWordDeath,
-			minor1: MinorGlyph.GlyphOfFortitude,
-			minor2: MinorGlyph.GlyphOfShadowProtection,
-			minor3: MinorGlyph.GlyphOfShadowfiend,
-		}),
+		// talentsString: '05032031303005022--3250230012230101231513011',
+		// glyphs: Glyphs.create({
+		// 	major1: MajorGlyph.GlyphOfShadow,
+		// 	major2: MajorGlyph.GlyphOfMindFlay,
+		// 	major3: MajorGlyph.GlyphOfShadowWordDeath,
+		// 	minor1: MinorGlyph.GlyphOfFortitude,
+		// 	minor2: MinorGlyph.GlyphOfShadowProtection,
+		// 	minor3: MinorGlyph.GlyphOfShadowfiend,
+		// }),
 	}),
 };
 

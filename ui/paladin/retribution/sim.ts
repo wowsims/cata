@@ -58,22 +58,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatMana,
 		Stat.StatHealth,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecRetributionPaladin>) => {
-		let stats = new Stats();
+	// modifyDisplayStats: (player: Player<Spec.SpecRetributionPaladin>) => {
+	// 	let stats = new Stats();
 
-		TypedEvent.freezeAllAndDo(() => {
-			if (
-				player.getMajorGlyphs().includes(PaladinMajorGlyph.GlyphOfSealOfVengeance) &&
-				player.getSpecOptions().classOptions?.seal == PaladinSeal.Vengeance
-			) {
-				stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			}
-		});
+	// 	TypedEvent.freezeAllAndDo(() => {
+	// 		if (
+	// 			player.getMajorGlyphs().includes(PaladinMajorGlyph.GlyphOfSealOfVengeance) &&
+	// 			player.getSpecOptions().classOptions?.seal == PaladinSeal.Vengeance
+	// 		) {
+	// 			stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+	// 		}
+	// 	});
 
-		return {
-			talents: stats,
-		};
-	},
+	// 	return {
+	// 		talents: stats,
+	// 	};
+	// },
 
 	defaults: {
 		// Default equipped gear.
@@ -147,7 +147,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.JudgementSelection(), PaladinInputs.StartingSealSelection()],
+	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.JudgementSelection(), 
+		//PaladinInputs.StartingSealSelection()
+	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.ReplenishmentBuff],
 	excludeBuffDebuffInputs: [],

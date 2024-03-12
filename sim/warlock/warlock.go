@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 var TalentTreeSizes = [3]int{28, 27, 26}
@@ -15,7 +14,7 @@ type Warlock struct {
 	Talents *proto.WarlockTalents
 	Options *proto.WarlockOptions
 
-	Pet *WarlockPet
+	//Pet *WarlockPet
 
 	ShadowBolt         *core.Spell
 	Incinerate         *core.Spell
@@ -62,7 +61,7 @@ type Warlock struct {
 	GlyphOfLifeTapAura     *core.Aura
 	SpiritsoftheDamnedAura *core.Aura
 
-	Infernal *InfernalPet
+	//Infernal *InfernalPet
 	Inferno  *core.Spell
 
 	// The sum total of demonic pact spell power * seconds.
@@ -88,69 +87,69 @@ func (warlock *Warlock) GrandFirestoneBonus() float64 {
 }
 
 func (warlock *Warlock) Initialize() {
-	warlock.registerIncinerateSpell()
-	warlock.registerShadowBoltSpell()
-	warlock.registerImmolateSpell()
-	warlock.registerCorruptionSpell()
-	warlock.registerCurseOfElementsSpell()
-	warlock.registerCurseOfWeaknessSpell()
-	warlock.registerCurseOfTonguesSpell()
-	warlock.registerCurseOfAgonySpell()
-	warlock.registerCurseOfDoomSpell()
-	warlock.registerLifeTapSpell()
-	warlock.registerSeedSpell()
-	warlock.registerSoulFireSpell()
-	warlock.registerUnstableAfflictionSpell()
-	warlock.registerDrainSoulSpell()
-	warlock.registerConflagrateSpell()
-	warlock.registerHauntSpell()
-	warlock.registerChaosBoltSpell()
-	warlock.registerDemonicEmpowermentSpell()
-	warlock.registerMetamorphosisSpell()
-	warlock.registerDarkPactSpell()
-	warlock.registerShadowBurnSpell()
-	warlock.registerSearingPainSpell()
-	warlock.registerInfernoSpell()
-	warlock.registerBlackBook()
+	// warlock.registerIncinerateSpell()
+	// warlock.registerShadowBoltSpell()
+	// warlock.registerImmolateSpell()
+	// warlock.registerCorruptionSpell()
+	// warlock.registerCurseOfElementsSpell()
+	// warlock.registerCurseOfWeaknessSpell()
+	// warlock.registerCurseOfTonguesSpell()
+	// warlock.registerCurseOfAgonySpell()
+	// warlock.registerCurseOfDoomSpell()
+	// warlock.registerLifeTapSpell()
+	// warlock.registerSeedSpell()
+	// warlock.registerSoulFireSpell()
+	// warlock.registerUnstableAfflictionSpell()
+	// warlock.registerDrainSoulSpell()
+	// warlock.registerConflagrateSpell()
+	// warlock.registerHauntSpell()
+	// warlock.registerChaosBoltSpell()
+	// warlock.registerDemonicEmpowermentSpell()
+	// warlock.registerMetamorphosisSpell()
+	// warlock.registerDarkPactSpell()
+	// warlock.registerShadowBurnSpell()
+	// warlock.registerSearingPainSpell()
+	// warlock.registerInfernoSpell()
+	// warlock.registerBlackBook()
 
-	// Do this post-finalize so cast speed is updated with new stats
-	warlock.Env.RegisterPostFinalizeEffect(func() {
-		// if itemswap is enabled, correct for any possible haste changes
-		var correction stats.Stats
-		if warlock.ItemSwap.IsEnabled() {
-			correction = warlock.ItemSwap.CalcStatChanges([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand,
-				proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged})
+	// // Do this post-finalize so cast speed is updated with new stats
+	// warlock.Env.RegisterPostFinalizeEffect(func() {
+	// 	// if itemswap is enabled, correct for any possible haste changes
+	// 	var correction stats.Stats
+	// 	if warlock.ItemSwap.IsEnabled() {
+	// 		correction = warlock.ItemSwap.CalcStatChanges([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand,
+	// 			proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged})
 
-			warlock.AddStats(correction)
-			warlock.MultiplyCastSpeed(1.0)
-		}
+	// 		warlock.AddStats(correction)
+	// 		warlock.MultiplyCastSpeed(1.0)
+	// 	}
 
-		if warlock.Options.Summon != proto.WarlockOptions_NoSummon && warlock.Talents.DemonicKnowledge > 0 {
-			warlock.RegisterPrepullAction(-999*time.Second, func(sim *core.Simulation) {
-				// TODO: investigate a better way of handling this like a "reverse inheritance" for pets.
-				// TODO: this will break if we ever get stamina/intellect from procs, but there aren't
-				// many such effects and none that we care about
-				bonus := (warlock.Pet.GetStat(stats.Stamina) + warlock.Pet.GetStat(stats.Intellect)) *
-					(0.04 * float64(warlock.Talents.DemonicKnowledge))
-				if bonus != warlock.petStmBonusSP {
-					warlock.AddStatDynamic(sim, stats.SpellPower, bonus-warlock.petStmBonusSP)
-					warlock.petStmBonusSP = bonus
-				}
-			})
-		}
-	})
+	// 	if warlock.Options.Summon != proto.WarlockOptions_NoSummon && warlock.Talents.DemonicKnowledge > 0 {
+	// 		warlock.RegisterPrepullAction(-999*time.Second, func(sim *core.Simulation) {
+	// 			// TODO: investigate a better way of handling this like a "reverse inheritance" for pets.
+	// 			// TODO: this will break if we ever get stamina/intellect from procs, but there aren't
+	// 			// many such effects and none that we care about
+	// 			bonus := (warlock.Pet.GetStat(stats.Stamina) + warlock.Pet.GetStat(stats.Intellect)) *
+	// 				(0.04 * float64(warlock.Talents.DemonicKnowledge))
+	// 			if bonus != warlock.petStmBonusSP {
+	// 				warlock.AddStatDynamic(sim, stats.SpellPower, bonus-warlock.petStmBonusSP)
+	// 				warlock.petStmBonusSP = bonus
+	// 			}
+	// 		})
+	// 	}
+	// })
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	raidBuffs.BloodPact = max(raidBuffs.BloodPact, core.MakeTristateValue(
-		warlock.Options.Summon == proto.WarlockOptions_Imp,
-		warlock.Talents.ImprovedImp == 2,
-	))
+	// raidBuffs.BloodPact = max(raidBuffs.BloodPact, core.MakeTristateValue(
+	// 	warlock.Options.Summon == proto.WarlockOptions_Imp,
+	// 	warlock.Talents.ImprovedImp == 2,
+	// ))
 
-	raidBuffs.FelIntelligence = max(raidBuffs.FelIntelligence, core.MakeTristateValue(
-		warlock.Options.Summon == proto.WarlockOptions_Felhunter,
-		warlock.Talents.ImprovedFelhunter == 2,
-	))
+	// raidBuffs.FelIntelligence = max(raidBuffs.FelIntelligence, core.MakeTristateValue(
+	// 	warlock.Options.Summon == proto.WarlockOptions_Felhunter,
+	// 	warlock.Talents.ImprovedFelhunter == 2,
+	// ))
 }
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
@@ -165,25 +164,25 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 		Talents:   &proto.WarlockTalents{},
 		Options:   warlockOptions,
 	}
-	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
-	warlock.EnableManaBar()
+	// core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	// warlock.EnableManaBar()
 
-	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	// warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 
-	if warlock.Options.Armor == proto.WarlockOptions_FelArmor {
-		demonicAegisMultiplier := 1 + float64(warlock.Talents.DemonicAegis)*0.1
-		amount := 180.0 * demonicAegisMultiplier
-		warlock.AddStat(stats.SpellPower, amount)
-		warlock.AddStatDependency(stats.Spirit, stats.SpellPower, 0.3*demonicAegisMultiplier)
-	}
+	// if warlock.Options.Armor == proto.WarlockOptions_FelArmor {
+	// 	demonicAegisMultiplier := 1 + float64(warlock.Talents.DemonicAegis)*0.1
+	// 	amount := 180.0 * demonicAegisMultiplier
+	// 	warlock.AddStat(stats.SpellPower, amount)
+	// 	warlock.AddStatDependency(stats.Spirit, stats.SpellPower, 0.3*demonicAegisMultiplier)
+	// }
 
-	if warlock.Options.Summon != proto.WarlockOptions_NoSummon {
-		warlock.Pet = warlock.NewWarlockPet()
-	}
+	// if warlock.Options.Summon != proto.WarlockOptions_NoSummon {
+	// 	warlock.Pet = warlock.NewWarlockPet()
+	// }
 
-	warlock.Infernal = warlock.NewInfernal()
+	// warlock.Infernal = warlock.NewInfernal()
 
-	warlock.applyWeaponImbue()
+	// warlock.applyWeaponImbue()
 
 	return warlock
 }

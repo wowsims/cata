@@ -55,7 +55,7 @@ func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
 
 func (ret *RetributionPaladin) Initialize() {
 	ret.Paladin.Initialize()
-	ret.RegisterAvengingWrathCD()
+	//ret.RegisterAvengingWrathCD()
 }
 
 func (ret *RetributionPaladin) Reset(sim *core.Simulation) {

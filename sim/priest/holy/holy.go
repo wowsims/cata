@@ -55,12 +55,12 @@ func (holyPriest *HolyPriest) GetPriest() *priest.Priest {
 func (holyPriest *HolyPriest) Initialize() {
 	holyPriest.Priest.Initialize()
 
-	holyPriest.RegisterHolyFireSpell()
-	holyPriest.RegisterSmiteSpell()
-	holyPriest.RegisterPenanceSpell()
-	holyPriest.RegisterHymnOfHopeCD()
+	// holyPriest.RegisterHolyFireSpell()
+	// holyPriest.RegisterSmiteSpell()
+	// holyPriest.RegisterPenanceSpell()
+	// holyPriest.RegisterHymnOfHopeCD()
 }
 
 func (holyPriest *HolyPriest) Reset(sim *core.Simulation) {
-	holyPriest.Priest.Reset(sim)
+	//holyPriest.Priest.Reset(sim)
 }

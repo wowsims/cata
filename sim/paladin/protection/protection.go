@@ -32,21 +32,21 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 		Seal:    protOptions.Options.ClassOptions.Seal,
 	}
 
-	prot.PaladinAura = protOptions.Options.ClassOptions.Aura
+	// prot.PaladinAura = protOptions.Options.ClassOptions.Aura
 
-	prot.HasGlyphAS = prot.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfAvengerSShield)
+	// //prot.HasGlyphAS = prot.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfAvengerSShield)
 
-	prot.EnableAutoAttacks(prot, core.AutoAttackOptions{
-		MainHand:       prot.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
-		AutoSwingMelee: true,
-	})
+	// prot.EnableAutoAttacks(prot, core.AutoAttackOptions{
+	// 	MainHand:       prot.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
+	// 	AutoSwingMelee: true,
+	// })
 
-	healingModel := options.HealingModel
-	if healingModel != nil {
-		if healingModel.InspirationUptime > 0.0 {
-			core.ApplyInspiration(prot.GetCharacter(), healingModel.InspirationUptime)
-		}
-	}
+	// healingModel := options.HealingModel
+	// if healingModel != nil {
+	// 	if healingModel.InspirationUptime > 0.0 {
+	// 		core.ApplyInspiration(prot.GetCharacter(), healingModel.InspirationUptime)
+	// 	}
+	// }
 
 	return prot
 }
@@ -69,11 +69,11 @@ func (prot *ProtectionPaladin) GetPaladin() *paladin.Paladin {
 
 func (prot *ProtectionPaladin) Initialize() {
 	prot.Paladin.Initialize()
-	prot.ActivateRighteousFury()
+	// prot.ActivateRighteousFury()
 
-	if prot.Options.ClassOptions.UseAvengingWrath {
-		prot.RegisterAvengingWrathCD()
-	}
+	// if prot.Options.ClassOptions.UseAvengingWrath {
+	// 	prot.RegisterAvengingWrathCD()
+	// }
 }
 
 func (prot *ProtectionPaladin) Reset(sim *core.Simulation) {

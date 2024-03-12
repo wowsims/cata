@@ -30,7 +30,7 @@ type Warrior struct {
 	WarriorInputs
 
 	// Current state
-	Stance               Stance
+	//Stance               Stance
 	RendValidUntil       time.Duration
 	BloodsurgeValidUntil time.Duration
 	revengeProcAura      *core.Aura
@@ -105,39 +105,39 @@ func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) Initialize() {
-	warrior.AutoAttacks.MHConfig().CritMultiplier = warrior.autoCritMultiplier(mh)
-	warrior.AutoAttacks.OHConfig().CritMultiplier = warrior.autoCritMultiplier(oh)
+	// warrior.AutoAttacks.MHConfig().CritMultiplier = warrior.autoCritMultiplier(mh)
+	// warrior.AutoAttacks.OHConfig().CritMultiplier = warrior.autoCritMultiplier(oh)
 
-	primaryTimer := warrior.NewTimer()
-	overpowerRevengeTimer := warrior.NewTimer()
+	// primaryTimer := warrior.NewTimer()
+	// overpowerRevengeTimer := warrior.NewTimer()
 
-	warrior.reactionTime = time.Millisecond * 500
+	// warrior.reactionTime = time.Millisecond * 500
 
-	warrior.registerShouts()
-	warrior.registerStances()
-	warrior.registerBerserkerRageSpell()
-	warrior.registerBloodthirstSpell(primaryTimer)
-	warrior.registerCleaveSpell()
-	warrior.registerDemoralizingShoutSpell()
-	warrior.registerDevastateSpell()
-	warrior.registerExecuteSpell()
-	warrior.registerHeroicStrikeSpell()
-	warrior.registerMortalStrikeSpell(primaryTimer)
-	warrior.registerOverpowerSpell(overpowerRevengeTimer)
-	warrior.registerRevengeSpell(overpowerRevengeTimer)
-	warrior.registerShieldSlamSpell()
-	warrior.registerSlamSpell()
-	warrior.registerThunderClapSpell()
-	warrior.registerWhirlwindSpell()
-	warrior.registerShockwaveSpell()
-	warrior.registerConcussionBlowSpell()
-	warrior.RegisterHeroicThrow()
-	warrior.RegisterRendSpell()
+	// warrior.registerShouts()
+	// warrior.registerStances()
+	// warrior.registerBerserkerRageSpell()
+	// warrior.registerBloodthirstSpell(primaryTimer)
+	// warrior.registerCleaveSpell()
+	// warrior.registerDemoralizingShoutSpell()
+	// warrior.registerDevastateSpell()
+	// warrior.registerExecuteSpell()
+	// warrior.registerHeroicStrikeSpell()
+	// warrior.registerMortalStrikeSpell(primaryTimer)
+	// warrior.registerOverpowerSpell(overpowerRevengeTimer)
+	// warrior.registerRevengeSpell(overpowerRevengeTimer)
+	// warrior.registerShieldSlamSpell()
+	// warrior.registerSlamSpell()
+	// warrior.registerThunderClapSpell()
+	// warrior.registerWhirlwindSpell()
+	// warrior.registerShockwaveSpell()
+	// warrior.registerConcussionBlowSpell()
+	// warrior.RegisterHeroicThrow()
+	// warrior.RegisterRendSpell()
 
-	warrior.SunderArmor = warrior.newSunderArmorSpell(false)
-	warrior.SunderArmorDevastate = warrior.newSunderArmorSpell(true)
+	// warrior.SunderArmor = warrior.newSunderArmorSpell(false)
+	// warrior.SunderArmorDevastate = warrior.newSunderArmorSpell(true)
 
-	warrior.registerBloodrageCD()
+	// warrior.registerBloodrageCD()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {
@@ -182,11 +182,11 @@ func (warrior *Warrior) autoCritMultiplier(hand hand) float64 {
 }
 
 func primary(warrior *Warrior, hand hand) float64 {
-	if warrior.Talents.PoleaxeSpecialization > 0 {
-		if (hand == mh && isPoleaxe(warrior.MainHand())) || (hand == oh && isPoleaxe(warrior.OffHand())) {
-			return 1 + 0.01*float64(warrior.Talents.PoleaxeSpecialization)
-		}
-	}
+	// if warrior.Talents.PoleaxeSpecialization > 0 {
+	// 	if (hand == mh && isPoleaxe(warrior.MainHand())) || (hand == oh && isPoleaxe(warrior.OffHand())) {
+	// 		return 1 + 0.01*float64(warrior.Talents.PoleaxeSpecialization)
+	// 	}
+	// }
 	return 1
 }
 

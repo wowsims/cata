@@ -52,15 +52,15 @@ export const APL_Demo_Default = PresetUtils.makePresetAPLRotation('Demo', DemoAp
 export const DemonologyTalents = {
 	name: 'Demonology',
 	data: SavedTalents.create({
-		talentsString: '-203203301035012530135201351-550000052',
-		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfLifeTap,
-			major2: MajorGlyph.GlyphOfQuickDecay,
-			major3: MajorGlyph.GlyphOfFelguard,
-			minor1: MinorGlyph.GlyphOfSouls,
-			minor2: MinorGlyph.GlyphOfDrainSoul,
-			minor3: MinorGlyph.GlyphOfSubjugateDemon,
-		}),
+		// talentsString: '-203203301035012530135201351-550000052',
+		// glyphs: Glyphs.create({
+		// 	major1: MajorGlyph.GlyphOfLifeTap,
+		// 	major2: MajorGlyph.GlyphOfQuickDecay,
+		// 	major3: MajorGlyph.GlyphOfFelguard,
+		// 	minor1: MinorGlyph.GlyphOfSouls,
+		// 	minor2: MinorGlyph.GlyphOfDrainSoul,
+		// 	minor3: MinorGlyph.GlyphOfSubjugateDemon,
+		// }),
 	}),
 };
 

@@ -39,12 +39,12 @@ func NewRestorationShaman(character *core.Character, options *proto.Player) *Res
 		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, false),
 	}
 
-	if resto.HasMHWeapon() {
-		resto.ApplyEarthlivingImbueToItem(resto.GetMHWeapon())
-	}
-	if resto.HasOHWeapon() {
-		resto.ApplyEarthlivingImbueToItem(resto.GetOHWeapon())
-	}
+	// if resto.HasMHWeapon() {
+	// 	resto.ApplyEarthlivingImbueToItem(resto.GetMHWeapon())
+	// }
+	// if resto.HasOHWeapon() {
+	// 	resto.ApplyEarthlivingImbueToItem(resto.GetOHWeapon())
+	// }
 
 	return resto
 }
@@ -71,17 +71,17 @@ func (resto *RestorationShaman) GetMainTarget() *core.Unit {
 }
 
 func (resto *RestorationShaman) Initialize() {
-	resto.CurrentTarget = resto.GetMainTarget()
+	// resto.CurrentTarget = resto.GetMainTarget()
 
-	// Has to be here because earthliving can cast hots and needs Env to be set to create the hots.
-	procMask := core.ProcMaskUnknown
-	if resto.HasMHWeapon() {
-		procMask |= core.ProcMaskMeleeMH
-	}
-	if resto.HasOHWeapon() {
-		procMask |= core.ProcMaskMeleeOH
-	}
-	resto.RegisterEarthlivingImbue(procMask)
+	// // Has to be here because earthliving can cast hots and needs Env to be set to create the hots.
+	// procMask := core.ProcMaskUnknown
+	// if resto.HasMHWeapon() {
+	// 	procMask |= core.ProcMaskMeleeMH
+	// }
+	// if resto.HasOHWeapon() {
+	// 	procMask |= core.ProcMaskMeleeOH
+	// }
+	// resto.RegisterEarthlivingImbue(procMask)
 
 	resto.Shaman.Initialize()
 	resto.Shaman.RegisterHealingSpells()

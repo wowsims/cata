@@ -37,60 +37,60 @@ export const UNHOLY_DND_AOE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLR
 export const UnholyDualWieldTalents = {
 	name: 'Unholy DW',
 	data: SavedTalents.create({
-		talentsString: '-320043500002-2300303050032152000150013133051',
-		glyphs: Glyphs.create({
-			major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
-			major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
-			major3: DeathKnightMajorGlyph.GlyphOfDeathAndDecay,
-			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
-		}),
+		// talentsString: '-320043500002-2300303050032152000150013133051',
+		// glyphs: Glyphs.create({
+		// 	major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
+		// 	major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
+		// 	major3: DeathKnightMajorGlyph.GlyphOfDeathAndDecay,
+		// 	minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+		// 	minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+		// 	minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
+		// }),
 	}),
 };
 
 export const UnholyDualWieldSSTalents = {
 	name: 'Unholy DW SS',
 	data: SavedTalents.create({
-		talentsString: '-320033500002-2301303050032151000150013133151',
-		glyphs: Glyphs.create({
-			major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
-			major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
-			major3: DeathKnightMajorGlyph.GlyphOfDeathAndDecay,
-			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
-		}),
+		// talentsString: '-320033500002-2301303050032151000150013133151',
+		// glyphs: Glyphs.create({
+		// 	major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
+		// 	major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
+		// 	major3: DeathKnightMajorGlyph.GlyphOfDeathAndDecay,
+		// 	minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+		// 	minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+		// 	minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
+		// }),
 	}),
 };
 
 export const Unholy2HTalents = {
 	name: 'Unholy 2H',
 	data: SavedTalents.create({
-		talentsString: '-320050500002-2302003350032052000150013133151',
-		glyphs: Glyphs.create({
-			major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
-			major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
-			major3: DeathKnightMajorGlyph.GlyphOfDarkDeath,
-			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
-		}),
+		// talentsString: '-320050500002-2302003350032052000150013133151',
+		// glyphs: Glyphs.create({
+		// 	major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
+		// 	major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
+		// 	major3: DeathKnightMajorGlyph.GlyphOfDarkDeath,
+		// 	minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+		// 	minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+		// 	minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
+		// }),
 	}),
 };
 
 export const UnholyAoeTalents = {
 	name: 'Unholy AOE',
 	data: SavedTalents.create({
-		talentsString: '-320050500002-2302303050032052000150013133151',
-		glyphs: Glyphs.create({
-			major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
-			major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
-			major3: DeathKnightMajorGlyph.GlyphOfDeathAndDecay,
-			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
-			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
-		}),
+		// talentsString: '-320050500002-2302303050032052000150013133151',
+		// glyphs: Glyphs.create({
+		// 	major1: DeathKnightMajorGlyph.GlyphOfTheGhoul,
+		// 	major2: DeathKnightMajorGlyph.GlyphOfIcyTouch,
+		// 	major3: DeathKnightMajorGlyph.GlyphOfDeathAndDecay,
+		// 	minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+		// 	minor2: DeathKnightMinorGlyph.GlyphOfPestilence,
+		// 	minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
+		// }),
 	}),
 };
 
