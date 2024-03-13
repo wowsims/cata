@@ -388,13 +388,24 @@ func (s *server) runServer(useFS bool, host string, launchBrowser bool, simName 
 	}
 }
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*") // Allow any domain. Adjust as necessary.
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE") // Adjust the methods based on your requirements.
+	(*w).Header().Set("Access-Control-Allow-Headers", "*") // Allow any headers. Adjust as necessary.
+
+}
+
 // handleAPI is generic handler for any api function using protos.
 func handleAPI(w http.ResponseWriter, r *http.Request) {
 	endpoint := r.URL.Path
-
+	enableCors(&w)
+	// Handle preflight requests
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-
 		return
 	}
 	handler, ok := handlers[endpoint]
@@ -410,6 +421,13 @@ func handleAPI(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	
+	if googleProto.Equal(msg, msg.ProtoReflect().New().Interface()) {
+		log.Printf("Request is empty")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	
 	result := handler.handle(msg)
 
 	outbytes, err := googleProto.Marshal(result)

@@ -2,13 +2,14 @@ import path from "path";
 import glob from "glob";
 import { defineConfig } from 'vite'
 import fs from 'fs';
+
 function serveExternalAssets() {
   return {
     name: 'serve-external-assets',
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         const workerMappings = {
-          '/cata/sim_worker.js': '/cata/sim_worker.js',
+          '/cata/sim_worker.js': '/cata/local_worker.js',
           '/cata/net_worker.js': '/cata/net_worker.js',
 		  '/cata/lib.wasm': '/cata/lib.wasm',
         };
@@ -35,6 +36,7 @@ function serveExternalAssets() {
     },
   };
 }
+
 function serveFile(res, filePath) {
   if (fs.existsSync(filePath)) {
 	const contentType = determineContentType(filePath);
@@ -46,6 +48,7 @@ function serveFile(res, filePath) {
     res.end('Not Found');
   }
 }
+
 function determineContentType(filePath) {
   const extension = path.extname(filePath).toLowerCase();
   switch (extension) {
@@ -72,6 +75,7 @@ function determineContentType(filePath) {
       return 'application/octet-stream';
   }
 }
+
 export default defineConfig(({ command, mode }) => ({
 	plugins: [serveExternalAssets()],
 	base: "/cata/",
