@@ -43,7 +43,7 @@ export const PlayerClasses = {
 		if (protoId == Class.ClassUnknown) {
 			throw new Error('Invalid Class');
 		}
-
+		
 		return protoToPlayerClass[protoId] as PlayerClass<ClassType>;
 	},
 	naturalOrder: [DeathKnight, Druid, Hunter, Mage, Paladin, Priest, Rogue, Shaman, Warlock, Warrior],

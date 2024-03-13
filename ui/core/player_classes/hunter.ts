@@ -9,9 +9,9 @@ export class Hunter extends PlayerClass<Class.ClassHunter> {
 	static friendlyName = 'Hunter';
 	static hexColor = '#abd473';
 	static specs: Record<string, PlayerSpec<HunterSpecs>> = {
-		[PlayerSpecs.BeastMasteryHunter.name]: PlayerSpecs.BeastMasteryHunter,
-		[PlayerSpecs.MarksmanshipHunter.name]: PlayerSpecs.MarksmanshipHunter,
-		[PlayerSpecs.SurvivalHunter.name]: PlayerSpecs.SurvivalHunter,
+		[PlayerSpecs.BeastMasteryHunter.friendlyName]: PlayerSpecs.BeastMasteryHunter,
+		[PlayerSpecs.MarksmanshipHunter.friendlyName]: PlayerSpecs.MarksmanshipHunter,
+		[PlayerSpecs.SurvivalHunter.friendlyName]: PlayerSpecs.SurvivalHunter,
 	};
 	static races: Race[] = [
 		// [A]

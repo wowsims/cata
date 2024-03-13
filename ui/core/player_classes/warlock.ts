@@ -9,9 +9,9 @@ export class Warlock extends PlayerClass<Class.ClassWarlock> {
 	static friendlyName = 'Warlock';
 	static hexColor = '#9482c9';
 	static specs: Record<string, PlayerSpec<WarlockSpecs>> = {
-		[PlayerSpecs.AfflictionWarlock.name]: PlayerSpecs.AfflictionWarlock,
-		[PlayerSpecs.DemonologyWarlock.name]: PlayerSpecs.DemonologyWarlock,
-		[PlayerSpecs.DestructionWarlock.name]: PlayerSpecs.DestructionWarlock,
+		[PlayerSpecs.AfflictionWarlock.friendlyName]: PlayerSpecs.AfflictionWarlock,
+		[PlayerSpecs.DemonologyWarlock.friendlyName]: PlayerSpecs.DemonologyWarlock,
+		[PlayerSpecs.DestructionWarlock.friendlyName]: PlayerSpecs.DestructionWarlock,
 	};
 	static races: Race[] = [
 		// [A]
