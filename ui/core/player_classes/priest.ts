@@ -9,9 +9,9 @@ export class Priest extends PlayerClass<Class.ClassPriest> {
 	static friendlyName = 'Priest';
 	static hexColor = '#fff';
 	static specs: Record<string, PlayerSpec<PriestSpecs>> = {
-		[PlayerSpecs.DisciplinePriest.name]: PlayerSpecs.DisciplinePriest,
-		[PlayerSpecs.HolyPriest.name]: PlayerSpecs.HolyPriest,
-		[PlayerSpecs.ShadowPriest.name]: PlayerSpecs.ShadowPriest,
+		[PlayerSpecs.DisciplinePriest.friendlyName]: PlayerSpecs.DisciplinePriest,
+		[PlayerSpecs.HolyPriest.friendlyName]: PlayerSpecs.HolyPriest,
+		[PlayerSpecs.ShadowPriest.friendlyName]: PlayerSpecs.ShadowPriest,
 	};
 	static races: Race[] = [
 		// [A]

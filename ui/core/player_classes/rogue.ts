@@ -9,9 +9,9 @@ export class Rogue extends PlayerClass<Class.ClassRogue> {
 	static friendlyName = 'Rogue';
 	static hexColor = '#fff569';
 	static specs: Record<string, PlayerSpec<RogueSpecs>> = {
-		[PlayerSpecs.AssassinationRogue.name]: PlayerSpecs.AssassinationRogue,
-		[PlayerSpecs.CombatRogue.name]: PlayerSpecs.CombatRogue,
-		[PlayerSpecs.SubtletyRogue.name]: PlayerSpecs.SubtletyRogue,
+		[PlayerSpecs.AssassinationRogue.friendlyName]: PlayerSpecs.AssassinationRogue,
+		[PlayerSpecs.CombatRogue.friendlyName]: PlayerSpecs.CombatRogue,
+		[PlayerSpecs.SubtletyRogue.friendlyName]: PlayerSpecs.SubtletyRogue,
 	};
 	static races: Race[] = [
 		// [A]

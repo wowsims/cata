@@ -9,10 +9,11 @@ export class Druid extends PlayerClass<Class.ClassDruid> {
 	static friendlyName = 'Druid';
 	static hexColor = '#ff7d0a';
 	static specs: Record<string, PlayerSpec<DruidSpecs>> = {
-		[PlayerSpecs.BalanceDruid.name]: PlayerSpecs.BalanceDruid,
-		[PlayerSpecs.FeralDruid.name]: PlayerSpecs.FeralDruid,
-		[PlayerSpecs.RestorationDruid.name]: PlayerSpecs.RestorationDruid,
+		[PlayerSpecs.BalanceDruid.friendlyName]: PlayerSpecs.BalanceDruid,
+		[PlayerSpecs.FeralDruid.friendlyName]: PlayerSpecs.FeralDruid,
+		[PlayerSpecs.RestorationDruid.friendlyName]: PlayerSpecs.RestorationDruid,
 	};
+	
 	static races: Race[] = [
 		// [A]
 		Race.RaceNightElf,

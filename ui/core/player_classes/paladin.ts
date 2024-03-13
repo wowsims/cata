@@ -10,9 +10,9 @@ export class Paladin extends PlayerClass<Class.ClassPaladin> {
 	static cssClass = 'paladin';
 	static hexColor = '#f58cba';
 	static specs: Record<string, PlayerSpec<PaladinSpecs>> = {
-		[PlayerSpecs.HolyPaladin.name]: PlayerSpecs.HolyPaladin,
-		[PlayerSpecs.ProtectionPaladin.name]: PlayerSpecs.ProtectionPaladin,
-		[PlayerSpecs.RetributionPaladin.name]: PlayerSpecs.RetributionPaladin,
+		[PlayerSpecs.HolyPaladin.friendlyName]: PlayerSpecs.HolyPaladin,
+		[PlayerSpecs.ProtectionPaladin.friendlyName]: PlayerSpecs.ProtectionPaladin,
+		[PlayerSpecs.RetributionPaladin.friendlyName]: PlayerSpecs.RetributionPaladin,
 	};
 	static races: Race[] = [
 		// [A]

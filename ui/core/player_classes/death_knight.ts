@@ -9,9 +9,9 @@ export class DeathKnight extends PlayerClass<Class.ClassDeathKnight> {
 	static friendlyName = 'Death Knight';
 	static hexColor = '#c41e3a';
 	static specs: Record<string, PlayerSpec<DeathKnightSpecs>> = {
-		[BloodDeathKnight.name]: BloodDeathKnight,
-		[FrostDeathKnight.name]: FrostDeathKnight,
-		[UnholyDeathKnight.name]: UnholyDeathKnight,
+		[BloodDeathKnight.friendlyName]: BloodDeathKnight,
+		[FrostDeathKnight.friendlyName]: FrostDeathKnight,
+		[UnholyDeathKnight.friendlyName]: UnholyDeathKnight,
 	};
 	static races: Race[] = [
 		Race.RaceBloodElf,

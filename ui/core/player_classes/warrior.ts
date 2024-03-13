@@ -9,9 +9,9 @@ export class Warrior extends PlayerClass<Class.ClassWarrior> {
 	static friendlyName = 'Warrior';
 	static hexColor = '#c79c6e';
 	static specs: Record<string, PlayerSpec<WarriorSpecs>> = {
-		[PlayerSpecs.ArmsWarrior.name]: PlayerSpecs.ArmsWarrior,
-		[PlayerSpecs.FuryWarrior.name]: PlayerSpecs.FuryWarrior,
-		[PlayerSpecs.ProtectionWarrior.name]: PlayerSpecs.ProtectionWarrior,
+		[PlayerSpecs.ArmsWarrior.friendlyName]: PlayerSpecs.ArmsWarrior,
+		[PlayerSpecs.FuryWarrior.friendlyName]: PlayerSpecs.FuryWarrior,
+		[PlayerSpecs.ProtectionWarrior.friendlyName]: PlayerSpecs.ProtectionWarrior,
 	};
 	static races: Race[] = [
 		// [A]

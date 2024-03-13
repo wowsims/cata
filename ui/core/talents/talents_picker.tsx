@@ -105,7 +105,7 @@ export class TalentsPicker<TalentsProto> extends Input<Player<any>, string> {
 			if (treeConfig.name === 'Ferocity') i += 3;
 			if (treeConfig.name === 'Tenacity') i += 4;
 			if (treeConfig.name === 'Cunning') i += 5;
-
+			console.log(carouselItem, treeConfig, this, config.klass, i);
 			return new TalentTreePicker(carouselItem, treeConfig, this, config.klass, i);
 		});
 		this.trees.forEach(tree => tree.talents.forEach(talent => talent.setPoints(0, false)));
@@ -145,6 +145,7 @@ export class TalentsPicker<TalentsProto> extends Input<Player<any>, string> {
 
 	setInputValue(newValue: string) {
 		const parts = newValue.split('-');
+		console.log(this.trees);
 		this.trees.forEach((tree, idx) => tree.setTalentsString(parts[idx] || ''));
 		this.updateTrees();
 	}

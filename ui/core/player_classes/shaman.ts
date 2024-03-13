@@ -9,9 +9,9 @@ export class Shaman extends PlayerClass<Class.ClassShaman> {
 	static friendlyName = 'Shaman';
 	static hexColor = '#2459ff';
 	static specs: Record<string, PlayerSpec<ShamanSpecs>> = {
-		[PlayerSpecs.ElementalShaman.name]: PlayerSpecs.ElementalShaman,
-		[PlayerSpecs.EnhancementShaman.name]: PlayerSpecs.EnhancementShaman,
-		[PlayerSpecs.RestorationShaman.name]: PlayerSpecs.RestorationShaman,
+		[PlayerSpecs.ElementalShaman.friendlyName]: PlayerSpecs.ElementalShaman,
+		[PlayerSpecs.EnhancementShaman.friendlyName]: PlayerSpecs.EnhancementShaman,
+		[PlayerSpecs.RestorationShaman.friendlyName]: PlayerSpecs.RestorationShaman,
 	};
 	static races: Race[] = [
 		// [A]
