@@ -57,15 +57,15 @@ export const APL_Affliction_Default = PresetUtils.makePresetAPLRotation('Afflict
 export const AfflictionTalents = {
 	name: 'Affliction',
 	data: SavedTalents.create({
-		talentsString: '2350002030023510253500331151--550000051',
-		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfQuickDecay,
-			major2: MajorGlyph.GlyphOfLifeTap,
-			major3: MajorGlyph.GlyphOfHaunt,
-			minor1: MinorGlyph.GlyphOfSouls,
-			minor2: MinorGlyph.GlyphOfDrainSoul,
-			minor3: MinorGlyph.GlyphOfSubjugateDemon,
-		}),
+		// talentsString: '2350002030023510253500331151--550000051',
+		// glyphs: Glyphs.create({
+		// 	major1: MajorGlyph.GlyphOfQuickDecay,
+		// 	major2: MajorGlyph.GlyphOfLifeTap,
+		// 	major3: MajorGlyph.GlyphOfHaunt,
+		// 	minor1: MinorGlyph.GlyphOfSouls,
+		// 	minor2: MinorGlyph.GlyphOfDrainSoul,
+		// 	minor3: MinorGlyph.GlyphOfSubjugateDemon,
+		// }),
 	}),
 };
 

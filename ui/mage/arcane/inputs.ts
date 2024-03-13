@@ -42,13 +42,13 @@ export const MageRotationConfig = {
 			showWhen: (player: Player<Spec.SpecArcaneMage>) => player.getTalentTree() == 0,
 			changeEmitter: (player: Player<Spec.SpecArcaneMage>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
 		}),
-		InputHelpers.makeRotationBooleanInput<Spec.SpecArcaneMage>({
-			fieldName: 'useArcaneBarrage',
-			label: 'Use Arcane Barrage',
-			labelTooltip: 'Includes Arcane Barrage in the rotation.',
-			enableWhen: (player: Player<Spec.SpecArcaneMage>) => player.getTalents().arcaneBarrage,
-			showWhen: (player: Player<Spec.SpecArcaneMage>) => player.getTalentTree() == 0,
-			changeEmitter: (player: Player<Spec.SpecArcaneMage>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
+	// 	InputHelpers.makeRotationBooleanInput<Spec.SpecArcaneMage>({
+	// 		fieldName: 'useArcaneBarrage',
+	// 		label: 'Use Arcane Barrage',
+	// 		labelTooltip: 'Includes Arcane Barrage in the rotation.',
+	// 		enableWhen: (player: Player<Spec.SpecArcaneMage>) => player.getTalents().arcaneBarrage,
+	// 		showWhen: (player: Player<Spec.SpecArcaneMage>) => player.getTalentTree() == 0,
+	// 		changeEmitter: (player: Player<Spec.SpecArcaneMage>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+	// 	}),
 	],
 };

@@ -37,31 +37,31 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 		Options: protOptions,
 	}
 
-	rbo := core.RageBarOptions{
-		StartingRage:   protOptions.ClassOptions.StartingRage,
-		RageMultiplier: core.TernaryFloat64(war.Talents.EndlessRage, 1.25, 1),
-	}
-	if mh := war.GetMHWeapon(); mh != nil {
-		rbo.MHSwingSpeed = mh.SwingSpeed
-	}
-	if oh := war.GetOHWeapon(); oh != nil {
-		rbo.OHSwingSpeed = oh.SwingSpeed
-	}
+	// rbo := core.RageBarOptions{
+	// 	StartingRage:   protOptions.ClassOptions.StartingRage,
+	// 	RageMultiplier: core.TernaryFloat64(war.Talents.EndlessRage, 1.25, 1),
+	// }
+	// if mh := war.GetMHWeapon(); mh != nil {
+	// 	rbo.MHSwingSpeed = mh.SwingSpeed
+	// }
+	// if oh := war.GetOHWeapon(); oh != nil {
+	// 	rbo.OHSwingSpeed = oh.SwingSpeed
+	// }
 
-	war.EnableRageBar(rbo)
-	war.EnableAutoAttacks(war, core.AutoAttackOptions{
-		MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
-		OffHand:        war.WeaponFromOffHand(war.DefaultMeleeCritMultiplier()),
-		AutoSwingMelee: true,
-		ReplaceMHSwing: war.TryHSOrCleave,
-	})
+	// war.EnableRageBar(rbo)
+	// war.EnableAutoAttacks(war, core.AutoAttackOptions{
+	// 	MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
+	// 	OffHand:        war.WeaponFromOffHand(war.DefaultMeleeCritMultiplier()),
+	// 	AutoSwingMelee: true,
+	// 	ReplaceMHSwing: war.TryHSOrCleave,
+	// })
 
-	healingModel := options.HealingModel
-	if healingModel != nil {
-		if healingModel.InspirationUptime > 0.0 {
-			core.ApplyInspiration(war.GetCharacter(), healingModel.InspirationUptime)
-		}
-	}
+	// healingModel := options.HealingModel
+	// if healingModel != nil {
+	// 	if healingModel.InspirationUptime > 0.0 {
+	// 		core.ApplyInspiration(war.GetCharacter(), healingModel.InspirationUptime)
+	// 	}
+	// }
 
 	return war
 }
@@ -73,18 +73,18 @@ func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
 func (war *ProtectionWarrior) Initialize() {
 	war.Warrior.Initialize()
 
-	war.RegisterShieldWallCD()
-	war.RegisterShieldBlockCD()
-	war.DefensiveStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
+	// war.RegisterShieldWallCD()
+	// war.RegisterShieldBlockCD()
+	// war.DefensiveStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
 
-	if war.Options.ClassOptions.UseShatteringThrow {
-		war.RegisterShatteringThrowCD()
-	}
+	// if war.Options.ClassOptions.UseShatteringThrow {
+	// 	war.RegisterShatteringThrowCD()
+	// }
 }
 
 func (war *ProtectionWarrior) Reset(sim *core.Simulation) {
-	war.Warrior.Reset(sim)
-	war.DefensiveStanceAura.Activate(sim)
-	war.Stance = warrior.DefensiveStance
-	war.Warrior.PseudoStats.Stunned = false
+	// war.Warrior.Reset(sim)
+	// war.DefensiveStanceAura.Activate(sim)
+	// war.Stance = warrior.DefensiveStance
+	// war.Warrior.PseudoStats.Stunned = false
 }

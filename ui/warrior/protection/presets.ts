@@ -35,30 +35,30 @@ export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simp
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '2500030023-302-053351225000012521030113321',
-		glyphs: Glyphs.create({
-			major1: WarriorMajorGlyph.GlyphOfBlocking,
-			major2: WarriorMajorGlyph.GlyphOfVigilance,
-			major3: WarriorMajorGlyph.GlyphOfDevastate,
-			minor1: WarriorMinorGlyph.GlyphOfCharge,
-			minor2: WarriorMinorGlyph.GlyphOfThunderClap,
-			minor3: WarriorMinorGlyph.GlyphOfCommand,
-		}),
+		// talentsString: '2500030023-302-053351225000012521030113321',
+		// glyphs: Glyphs.create({
+		// 	major1: WarriorMajorGlyph.GlyphOfBlocking,
+		// 	major2: WarriorMajorGlyph.GlyphOfVigilance,
+		// 	major3: WarriorMajorGlyph.GlyphOfDevastate,
+		// 	minor1: WarriorMinorGlyph.GlyphOfCharge,
+		// 	minor2: WarriorMinorGlyph.GlyphOfThunderClap,
+		// 	minor3: WarriorMinorGlyph.GlyphOfCommand,
+		// }),
 	}),
 };
 
 export const UATalents = {
 	name: 'UA',
 	data: SavedTalents.create({
-		talentsString: '35023301230051002020120002-2-05035122500000252',
-		glyphs: Glyphs.create({
-			major1: WarriorMajorGlyph.GlyphOfRevenge,
-			major2: WarriorMajorGlyph.GlyphOfHeroicStrike,
-			major3: WarriorMajorGlyph.GlyphOfSweepingStrikes,
-			minor1: WarriorMinorGlyph.GlyphOfCharge,
-			minor2: WarriorMinorGlyph.GlyphOfThunderClap,
-			minor3: WarriorMinorGlyph.GlyphOfCommand,
-		}),
+		// talentsString: '35023301230051002020120002-2-05035122500000252',
+		// glyphs: Glyphs.create({
+		// 	major1: WarriorMajorGlyph.GlyphOfRevenge,
+		// 	major2: WarriorMajorGlyph.GlyphOfHeroicStrike,
+		// 	major3: WarriorMajorGlyph.GlyphOfSweepingStrikes,
+		// 	minor1: WarriorMinorGlyph.GlyphOfCharge,
+		// 	minor2: WarriorMinorGlyph.GlyphOfThunderClap,
+		// 	minor3: WarriorMinorGlyph.GlyphOfCommand,
+		// }),
 	}),
 };
 

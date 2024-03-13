@@ -27,22 +27,22 @@ export const WeaponImbueInput = <SpecType extends WarlockSpecs>() =>
 		],
 	});
 
-export const PetInput = <SpecType extends WarlockSpecs>() =>
-	InputHelpers.makeClassOptionsEnumIconInput<SpecType, Summon>({
-		fieldName: 'summon',
-		values: [
-			{ value: Summon.NoSummon, tooltip: 'No Pet' },
-			{ actionId: ActionId.fromSpellId(688), value: Summon.Imp },
-			{ actionId: ActionId.fromSpellId(712), value: Summon.Succubus },
-			{ actionId: ActionId.fromSpellId(691), value: Summon.Felhunter },
-			{
-				actionId: ActionId.fromSpellId(30146),
-				value: Summon.Felguard,
-				showWhen: (player: Player<SpecType>) => player.getTalents().summonFelguard,
-			},
-		],
-		changeEmitter: (player: Player<SpecType>) => player.changeEmitter,
-	});
+// export const PetInput = <SpecType extends WarlockSpecs>() =>
+// 	InputHelpers.makeClassOptionsEnumIconInput<SpecType, Summon>({
+// 		fieldName: 'summon',
+// 		values: [
+// 			{ value: Summon.NoSummon, tooltip: 'No Pet' },
+// 			{ actionId: ActionId.fromSpellId(688), value: Summon.Imp },
+// 			{ actionId: ActionId.fromSpellId(712), value: Summon.Succubus },
+// 			{ actionId: ActionId.fromSpellId(691), value: Summon.Felhunter },
+// 			{
+// 				actionId: ActionId.fromSpellId(30146),
+// 				value: Summon.Felguard,
+// 				showWhen: (player: Player<SpecType>) => player.getTalents().summonFelguard,
+// 			},
+// 		],
+// 		changeEmitter: (player: Player<SpecType>) => player.changeEmitter,
+// 	});
 
 export const DetonateSeed = <SpecType extends WarlockSpecs>() =>
 	InputHelpers.makeClassOptionsBooleanInput<SpecType>({

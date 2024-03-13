@@ -33,15 +33,15 @@ export const ROTATION_FURY_SUNDER = PresetUtils.makePresetAPLRotation('Fury + Su
 export const FuryTalents = {
 	name: 'Fury',
 	data: SavedTalents.create({
-		talentsString: '32002301233-305053000520310053120500351',
-		glyphs: Glyphs.create({
-			major1: WarriorMajorGlyph.GlyphOfWhirlwind,
-			major2: WarriorMajorGlyph.GlyphOfHeroicStrike,
-			major3: WarriorMajorGlyph.GlyphOfExecution,
-			minor1: WarriorMinorGlyph.GlyphOfCommand,
-			minor2: WarriorMinorGlyph.GlyphOfShatteringThrow,
-			minor3: WarriorMinorGlyph.GlyphOfCharge,
-		}),
+		// talentsString: '32002301233-305053000520310053120500351',
+		// glyphs: Glyphs.create({
+		// 	major1: WarriorMajorGlyph.GlyphOfWhirlwind,
+		// 	major2: WarriorMajorGlyph.GlyphOfHeroicStrike,
+		// 	major3: WarriorMajorGlyph.GlyphOfExecution,
+		// 	minor1: WarriorMinorGlyph.GlyphOfCommand,
+		// 	minor2: WarriorMinorGlyph.GlyphOfShatteringThrow,
+		// 	minor3: WarriorMinorGlyph.GlyphOfCharge,
+		// }),
 	}),
 };
 

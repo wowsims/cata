@@ -44,15 +44,15 @@ export const ARCANE_ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Arc
 export const ArcaneTalents = {
 	name: 'Arcane',
 	data: SavedTalents.create({
-		talentsString: '23000513310033015032310250532-03-023303001',
-		glyphs: Glyphs.create({
-			major1: MageMajorGlyph.GlyphOfArcaneBlast,
-			major2: MageMajorGlyph.GlyphOfArcaneMissiles,
-			major3: MageMajorGlyph.GlyphOfMoltenArmor,
-			minor1: MageMinorGlyph.GlyphOfSlowFall,
-			minor2: MageMinorGlyph.GlyphOfFrostWard,
-			minor3: MageMinorGlyph.GlyphOfBlastWave,
-		}),
+		// talentsString: '23000513310033015032310250532-03-023303001',
+		// glyphs: Glyphs.create({
+		// 	major1: MageMajorGlyph.GlyphOfArcaneBlast,
+		// 	major2: MageMajorGlyph.GlyphOfArcaneMissiles,
+		// 	major3: MageMajorGlyph.GlyphOfMoltenArmor,
+		// 	minor1: MageMinorGlyph.GlyphOfSlowFall,
+		// 	minor2: MageMinorGlyph.GlyphOfFrostWard,
+		// 	minor3: MageMinorGlyph.GlyphOfBlastWave,
+		// }),
 	}),
 };
 

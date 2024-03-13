@@ -14,19 +14,19 @@ import { TypedEvent } from '../../core/typed_event';
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 
-export const DrwPestiApply = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecBloodDeathKnight>({
-	fieldName: 'drwPestiApply',
-	label: 'DRW Pestilence Add',
-	labelTooltip:
-		'There is currently an interaction with DRW and pestilence where you can use pestilence to force DRW to apply diseases if they are already applied by the DK. It only works with Glyph of Disease and if there is an off target. This toggle forces the sim to assume there is an off target.',
-	showWhen: (player: Player<Spec.SpecBloodDeathKnight>) =>
-		player.getTalentTree() == 0 &&
-		(player.getGlyphs().major1 == DeathKnightMajorGlyph.GlyphOfDisease ||
-			player.getGlyphs().major2 == DeathKnightMajorGlyph.GlyphOfDisease ||
-			player.getGlyphs().major3 == DeathKnightMajorGlyph.GlyphOfDisease),
-	changeEmitter: (player: Player<Spec.SpecBloodDeathKnight>) =>
-		TypedEvent.onAny([player.specOptionsChangeEmitter, player.rotationChangeEmitter, player.talentsChangeEmitter]),
-});
+// export const DrwPestiApply = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecBloodDeathKnight>({
+// 	fieldName: 'drwPestiApply',
+// 	label: 'DRW Pestilence Add',
+// 	labelTooltip:
+// 		'There is currently an interaction with DRW and pestilence where you can use pestilence to force DRW to apply diseases if they are already applied by the DK. It only works with Glyph of Disease and if there is an off target. This toggle forces the sim to assume there is an off target.',
+// 	showWhen: (player: Player<Spec.SpecBloodDeathKnight>) =>
+// 		player.getTalentTree() == 0 &&
+// 		(player.getGlyphs().major1 == DeathKnightMajorGlyph.GlyphOfDisease ||
+// 			player.getGlyphs().major2 == DeathKnightMajorGlyph.GlyphOfDisease ||
+// 			player.getGlyphs().major3 == DeathKnightMajorGlyph.GlyphOfDisease),
+// 	changeEmitter: (player: Player<Spec.SpecBloodDeathKnight>) =>
+// 		TypedEvent.onAny([player.specOptionsChangeEmitter, player.rotationChangeEmitter, player.talentsChangeEmitter]),
+// });
 
 export const DefensiveCdDelay = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecBloodDeathKnight>({
 	fieldName: 'defensiveDelay',

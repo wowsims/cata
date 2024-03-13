@@ -64,7 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecMarksmanshipHunter>) => {
 		let stats = new Stats();
-		stats = stats.addStat(Stat.StatMeleeCrit, player.getTalents().lethalShots * 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
+		//stats = stats.addStat(Stat.StatMeleeCrit, player.getTalents().lethalShots * 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
 
 		const rangedWeapon = player.getEquippedItem(ItemSlot.ItemSlotRanged);
 		if (rangedWeapon?.enchant?.effectId == 3608) {

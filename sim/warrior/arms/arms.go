@@ -39,24 +39,24 @@ func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarri
 		Options: armsOptions,
 	}
 
-	rbo := core.RageBarOptions{
-		StartingRage:   armsOptions.ClassOptions.StartingRage,
-		RageMultiplier: core.TernaryFloat64(war.Talents.EndlessRage, 1.25, 1),
-	}
-	if mh := war.GetMHWeapon(); mh != nil {
-		rbo.MHSwingSpeed = mh.SwingSpeed
-	}
-	if oh := war.GetOHWeapon(); oh != nil {
-		rbo.OHSwingSpeed = oh.SwingSpeed
-	}
+	// rbo := core.RageBarOptions{
+	// 	StartingRage:   armsOptions.ClassOptions.StartingRage,
+	// 	RageMultiplier: core.TernaryFloat64(war.Talents.EndlessRage, 1.25, 1),
+	// }
+	// if mh := war.GetMHWeapon(); mh != nil {
+	// 	rbo.MHSwingSpeed = mh.SwingSpeed
+	// }
+	// if oh := war.GetOHWeapon(); oh != nil {
+	// 	rbo.OHSwingSpeed = oh.SwingSpeed
+	// }
 
-	war.EnableRageBar(rbo)
-	war.EnableAutoAttacks(war, core.AutoAttackOptions{
-		MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
-		OffHand:        war.WeaponFromOffHand(war.DefaultMeleeCritMultiplier()),
-		AutoSwingMelee: true,
-		ReplaceMHSwing: war.TryHSOrCleave,
-	})
+	// war.EnableRageBar(rbo)
+	// war.EnableAutoAttacks(war, core.AutoAttackOptions{
+	// 	MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
+	// 	OffHand:        war.WeaponFromOffHand(war.DefaultMeleeCritMultiplier()),
+	// 	AutoSwingMelee: true,
+	// 	ReplaceMHSwing: war.TryHSOrCleave,
+	// })
 
 	return war
 }
@@ -68,19 +68,19 @@ func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {
 func (war *ArmsWarrior) Initialize() {
 	war.Warrior.Initialize()
 
-	if war.Options.UseRecklessness {
-		war.RegisterRecklessnessCD()
-	}
+	// if war.Options.UseRecklessness {
+	// 	war.RegisterRecklessnessCD()
+	// }
 
-	if war.Options.ClassOptions.UseShatteringThrow {
-		war.RegisterShatteringThrowCD()
-	}
+	// if war.Options.ClassOptions.UseShatteringThrow {
+	// 	war.RegisterShatteringThrowCD()
+	// }
 
-	war.BattleStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
+	// war.BattleStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
 }
 
-func (war *ArmsWarrior) Reset(sim *core.Simulation) {
-	war.Warrior.Reset(sim)
-	war.BattleStanceAura.Activate(sim)
-	war.Stance = warrior.BattleStance
-}
+// func (war *ArmsWarrior) Reset(sim *core.Simulation) {
+// 	war.Warrior.Reset(sim)
+// 	war.BattleStanceAura.Activate(sim)
+// 	war.Stance = warrior.BattleStance
+// }

@@ -231,7 +231,7 @@ export function getPetTalentsConfig(petType: PetType): TalentsConfig<HunterPetTa
 }
 
 export const cunningDefault: HunterPetTalents = HunterPetTalents.create({
-	cobraReflexes: 2,
+	serpentSwiftness: 2,
 	dive: true,
 	boarsSpeed: true,
 	mobility: 2,
@@ -243,7 +243,7 @@ export const cunningDefault: HunterPetTalents = HunterPetTalents.create({
 	wildHunt: 1,
 });
 export const ferocityDefault: HunterPetTalents = HunterPetTalents.create({
-	cobraReflexes: 2,
+	serpentSwiftness: 2,
 	dive: true,
 	spikedCollar: 3,
 	boarsSpeed: true,
@@ -254,7 +254,7 @@ export const ferocityDefault: HunterPetTalents = HunterPetTalents.create({
 	wildHunt: 1,
 });
 export const tenacityDefault: HunterPetTalents = HunterPetTalents.create({
-	cobraReflexes: 2,
+	serpentSwiftness: 2,
 	charge: true,
 	greatStamina: 3,
 	bloodOfTheRhino: 2,
@@ -268,7 +268,7 @@ export const tenacityDefault: HunterPetTalents = HunterPetTalents.create({
 const defaultTalents = [cunningDefault, ferocityDefault, tenacityDefault];
 
 export const cunningBMDefault: HunterPetTalents = HunterPetTalents.create({
-	cobraReflexes: 2,
+	serpentSwiftness: 2,
 	dive: true,
 	boarsSpeed: true,
 	mobility: 2,
@@ -282,7 +282,7 @@ export const cunningBMDefault: HunterPetTalents = HunterPetTalents.create({
 	roarOfSacrifice: true,
 });
 export const ferocityBMDefault: HunterPetTalents = HunterPetTalents.create({
-	cobraReflexes: 2,
+	serpentSwiftness: 2,
 	dive: true,
 	bloodthirsty: 1,
 	spikedCollar: 3,
@@ -295,7 +295,7 @@ export const ferocityBMDefault: HunterPetTalents = HunterPetTalents.create({
 	wildHunt: 2,
 });
 export const tenacityBMDefault: HunterPetTalents = HunterPetTalents.create({
-	cobraReflexes: 2,
+	serpentSwiftness: 2,
 	charge: true,
 	greatStamina: 3,
 	spikedCollar: 3,

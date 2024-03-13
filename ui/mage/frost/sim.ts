@@ -35,17 +35,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecFrostMage>) => {
-		let stats = new Stats();
+	// modifyDisplayStats: (player: Player<Spec.SpecFrostMage>) => {
+	// 	let stats = new Stats();
 
-		if (player.getTalentTree() === 0) {
-			stats = stats.addStat(Stat.StatSpellHit, player.getTalents().arcaneFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-		}
+	// 	if (player.getTalentTree() === 0) {
+	// 		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().arcaneFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+	// 	}
 
-		return {
-			talents: stats,
-		};
-	},
+	// 	return {
+	// 		talents: stats,
+	// 	};
+	// },
 
 	defaults: {
 		// Default equipped gear.
@@ -110,7 +110,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [FrostInputs.WaterElementalDisobeyChance, OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
+		inputs: [
+			//FrostInputs.WaterElementalDisobeyChance, 
+			OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

@@ -34,30 +34,30 @@ export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Defaul
 export const AuraMasteryTalents = {
 	name: 'Aura Mastery',
 	data: SavedTalents.create({
-		talentsString: '050501-05-05232051203331302133231331',
-		glyphs: Glyphs.create({
-			major1: PaladinMajorGlyph.GlyphOfSealOfVengeance,
-			major2: PaladinMajorGlyph.GlyphOfJudgement,
-			major3: PaladinMajorGlyph.GlyphOfReckoning,
-			minor1: PaladinMinorGlyph.GlyphOfSenseUndead,
-			minor2: PaladinMinorGlyph.GlyphOfLayOnHands,
-			minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings,
-		}),
+		// talentsString: '050501-05-05232051203331302133231331',
+		// glyphs: Glyphs.create({
+		// 	major1: PaladinMajorGlyph.GlyphOfSealOfVengeance,
+		// 	major2: PaladinMajorGlyph.GlyphOfJudgement,
+		// 	major3: PaladinMajorGlyph.GlyphOfReckoning,
+		// 	minor1: PaladinMinorGlyph.GlyphOfSenseUndead,
+		// 	minor2: PaladinMinorGlyph.GlyphOfLayOnHands,
+		// 	minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings,
+		// }),
 	}),
 };
 
 export const DivineSacTalents = {
 	name: 'Divine Sacrifice & Guardian',
 	data: SavedTalents.create({
-		talentsString: '03-453201002-05222051203331302133201331',
-		glyphs: Glyphs.create({
-			major1: PaladinMajorGlyph.GlyphOfSealOfVengeance,
-			major2: PaladinMajorGlyph.GlyphOfJudgement,
-			major3: PaladinMajorGlyph.GlyphOfReckoning,
-			minor1: PaladinMinorGlyph.GlyphOfSenseUndead,
-			minor2: PaladinMinorGlyph.GlyphOfLayOnHands,
-			minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings,
-		}),
+		// talentsString: '03-453201002-05222051203331302133201331',
+		// glyphs: Glyphs.create({
+		// 	major1: PaladinMajorGlyph.GlyphOfSealOfVengeance,
+		// 	major2: PaladinMajorGlyph.GlyphOfJudgement,
+		// 	major3: PaladinMajorGlyph.GlyphOfReckoning,
+		// 	minor1: PaladinMinorGlyph.GlyphOfSenseUndead,
+		// 	minor2: PaladinMinorGlyph.GlyphOfLayOnHands,
+		// 	minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings,
+		// }),
 	}),
 };
 

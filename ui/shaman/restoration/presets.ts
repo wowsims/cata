@@ -23,29 +23,29 @@ export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 export const TankHealingTalents = {
 	name: 'Tank Healing',
 	data: SavedTalents.create({
-		talentsString: '-30205033-05005331335010501122331251',
-		glyphs: Glyphs.create({
-			major1: ShamanMajorGlyph.GlyphOfEarthlivingWeapon,
-			major2: ShamanMajorGlyph.GlyphOfEarthShield,
-			major3: ShamanMajorGlyph.GlyphOfLesserHealingWave,
-			minor2: ShamanMinorGlyph.GlyphOfWaterShield,
-			minor1: ShamanMinorGlyph.GlyphOfRenewedLife,
-			minor3: ShamanMinorGlyph.GlyphOfGhostWolf,
-		}),
+		// talentsString: '-30205033-05005331335010501122331251',
+		// glyphs: Glyphs.create({
+		// 	major1: ShamanMajorGlyph.GlyphOfEarthlivingWeapon,
+		// 	major2: ShamanMajorGlyph.GlyphOfEarthShield,
+		// 	major3: ShamanMajorGlyph.GlyphOfLesserHealingWave,
+		// 	minor2: ShamanMinorGlyph.GlyphOfWaterShield,
+		// 	minor1: ShamanMinorGlyph.GlyphOfRenewedLife,
+		// 	minor3: ShamanMinorGlyph.GlyphOfGhostWolf,
+		// }),
 	}),
 };
 export const RaidHealingTalents = {
 	name: 'Raid Healing',
 	data: SavedTalents.create({
-		talentsString: '-3020503-50005331335310501122331251',
-		glyphs: Glyphs.create({
-			major1: ShamanMajorGlyph.GlyphOfChainHeal,
-			major2: ShamanMajorGlyph.GlyphOfEarthShield,
-			major3: ShamanMajorGlyph.GlyphOfEarthlivingWeapon,
-			minor2: ShamanMinorGlyph.GlyphOfWaterShield,
-			minor1: ShamanMinorGlyph.GlyphOfRenewedLife,
-			minor3: ShamanMinorGlyph.GlyphOfGhostWolf,
-		}),
+		// talentsString: '-3020503-50005331335310501122331251',
+		// glyphs: Glyphs.create({
+		// 	major1: ShamanMajorGlyph.GlyphOfChainHeal,
+		// 	major2: ShamanMajorGlyph.GlyphOfEarthShield,
+		// 	major3: ShamanMajorGlyph.GlyphOfEarthlivingWeapon,
+		// 	minor2: ShamanMinorGlyph.GlyphOfWaterShield,
+		// 	minor1: ShamanMinorGlyph.GlyphOfRenewedLife,
+		// 	minor3: ShamanMinorGlyph.GlyphOfGhostWolf,
+		// }),
 	}),
 };
 

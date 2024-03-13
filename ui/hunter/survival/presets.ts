@@ -53,15 +53,15 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeA
 export const SurvivalTalents = {
 	name: 'Survival',
 	data: SavedTalents.create({
-		talentsString: '-005305101-5000032500033330531135301331',
-		glyphs: Glyphs.create({
-			major1: MajorGlyph.GlyphOfSerpentSting,
-			major2: MajorGlyph.GlyphOfExplosiveTrap,
-			major3: MajorGlyph.GlyphOfKillShot,
-			minor1: MinorGlyph.GlyphOfFeignDeath,
-			minor2: MinorGlyph.GlyphOfRevivePet,
-			minor3: MinorGlyph.GlyphOfMendPet,
-		}),
+		// talentsString: '-005305101-5000032500033330531135301331',
+		// glyphs: Glyphs.create({
+		// 	major1: MajorGlyph.GlyphOfSerpentSting,
+		// 	major2: MajorGlyph.GlyphOfExplosiveTrap,
+		// 	major3: MajorGlyph.GlyphOfKillShot,
+		// 	minor1: MinorGlyph.GlyphOfFeignDeath,
+		// 	minor2: MinorGlyph.GlyphOfRevivePet,
+		// 	minor3: MinorGlyph.GlyphOfMendPet,
+		// }),
 	}),
 };
 

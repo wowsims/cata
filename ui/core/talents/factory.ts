@@ -1,7 +1,7 @@
 import { PlayerSpec } from '../player_spec.js';
 import { Class, Spec } from '../proto/common.js';
 import { SpecTalents, specTypeFunctions } from '../proto_utils/utils.js';
-import { deathknightGlyphsConfig, deathknightTalentsConfig } from './death_knight.js';
+import { deathKnightGlyphsConfig, deathKnightTalentsConfig } from './death_knight.js';
 import { druidGlyphsConfig, druidTalentsConfig } from './druid.js';
 import { GlyphsConfig } from './glyphs_picker.js';
 import { hunterGlyphsConfig, hunterTalentsConfig } from './hunter.js';
@@ -16,7 +16,7 @@ import { warriorGlyphsConfig, warriorTalentsConfig } from './warrior.js';
 
 export const classTalentsConfig: Record<Class, TalentsConfig<any>> = {
 	[Class.ClassUnknown]: [],
-	[Class.ClassDeathKnight]: deathknightTalentsConfig,
+	[Class.ClassDeathKnight]: deathKnightTalentsConfig,
 	[Class.ClassDruid]: druidTalentsConfig,
 	[Class.ClassShaman]: shamanTalentsConfig,
 	[Class.ClassHunter]: hunterTalentsConfig,
@@ -29,8 +29,8 @@ export const classTalentsConfig: Record<Class, TalentsConfig<any>> = {
 };
 
 export const classGlyphsConfig: Record<Class, GlyphsConfig> = {
-	[Class.ClassUnknown]: { majorGlyphs: [], minorGlyphs: [] },
-	[Class.ClassDeathKnight]: deathknightGlyphsConfig,
+	[Class.ClassUnknown]: { primeGlyphs: [], majorGlyphs: [], minorGlyphs: [] },
+	[Class.ClassDeathKnight]: deathKnightGlyphsConfig,
 	[Class.ClassDruid]: druidGlyphsConfig,
 	[Class.ClassShaman]: shamanGlyphsConfig,
 	[Class.ClassHunter]: hunterGlyphsConfig,

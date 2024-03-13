@@ -1,13 +1,10 @@
 package death_knight
 
 import (
-	"math"
 	"time"
 
-	"github.com/wowsims/cata/sim/common/wotlk"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 const (
@@ -57,26 +54,26 @@ type DeathKnight struct {
 
 	Inputs DeathKnightInputs
 
-	Ghoul     *GhoulPet
+	//Ghoul     *GhoulPet
 	RaiseDead *core.Spell
 
-	Gargoyle                 *GargoylePet
+	//Gargoyle                 *GargoylePet
 	SummonGargoyle           *core.Spell
 	SummonGargoyleAura       *core.Aura
 	GargoyleSummonDelay      time.Duration
 	OnGargoyleStartFirstCast func()
 
-	RuneWeapon        *RuneWeaponPet
+	//RuneWeapon        *RuneWeaponPet
 	DancingRuneWeapon *core.Spell
 	drwDmgSnapshot    float64
 	drwPhysSnapshot   float64
 
 	ArmyOfTheDead *core.Spell
-	ArmyGhoul     []*GhoulPet
+	//ArmyGhoul     []*GhoulPet
 
-	Bloodworm []*BloodwormPet
+	//Bloodworm []*BloodwormPet
 
-	Presence Presence
+	//Presence Presence
 
 	IcyTouch   *core.Spell
 	BloodBoil  *core.Spell
@@ -241,56 +238,56 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (dk *DeathKnight) ApplyTalents() {
-	dk.ResetBonusCoeffs()
+	// dk.ResetBonusCoeffs()
 
-	dk.ApplyBloodTalents()
-	dk.ApplyFrostTalents()
-	dk.ApplyUnholyTalents()
+	// dk.ApplyBloodTalents()
+	// dk.ApplyFrostTalents()
+	// dk.ApplyUnholyTalents()
 }
 
 func (dk *DeathKnight) Initialize() {
-	dk.registerPresences()
-	dk.registerIcyTouchSpell()
-	dk.registerPlagueStrikeSpell()
-	dk.registerObliterateSpell()
-	dk.registerBloodStrikeSpell()
-	dk.registerBloodTapSpell()
-	dk.registerHowlingBlastSpell()
-	dk.registerScourgeStrikeSpell()
-	dk.registerDeathCoilSpell()
-	dk.registerFrostStrikeSpell()
-	dk.registerDeathAndDecaySpell()
-	dk.registerDiseaseDots()
-	dk.registerGhoulFrenzySpell()
-	dk.registerBoneShieldSpell()
-	dk.registerUnbreakableArmorSpell()
-	dk.registerBloodBoilSpell()
-	dk.registerHornOfWinterSpell()
-	dk.registerPestilenceSpell()
-	dk.registerEmpowerRuneWeaponSpell()
-	dk.registerRuneTapSpell()
-	dk.registerIceboundFortitudeSpell()
-	dk.registerDeathStrikeSpell()
-	dk.registerHeartStrikeSpell()
-	dk.registerMarkOfBloodSpell()
-	dk.registerVampiricBloodSpell()
-	dk.registerAntiMagicShellSpell()
-	dk.registerRuneStrikeSpell()
-	dk.registerMindFreeze()
+	// dk.registerPresences()
+	// dk.registerIcyTouchSpell()
+	// dk.registerPlagueStrikeSpell()
+	// dk.registerObliterateSpell()
+	// dk.registerBloodStrikeSpell()
+	// dk.registerBloodTapSpell()
+	// dk.registerHowlingBlastSpell()
+	// dk.registerScourgeStrikeSpell()
+	// dk.registerDeathCoilSpell()
+	// dk.registerFrostStrikeSpell()
+	// dk.registerDeathAndDecaySpell()
+	// dk.registerDiseaseDots()
+	// dk.registerGhoulFrenzySpell()
+	// dk.registerBoneShieldSpell()
+	// dk.registerUnbreakableArmorSpell()
+	// dk.registerBloodBoilSpell()
+	// dk.registerHornOfWinterSpell()
+	// dk.registerPestilenceSpell()
+	// dk.registerEmpowerRuneWeaponSpell()
+	// dk.registerRuneTapSpell()
+	// dk.registerIceboundFortitudeSpell()
+	// dk.registerDeathStrikeSpell()
+	// dk.registerHeartStrikeSpell()
+	// dk.registerMarkOfBloodSpell()
+	// dk.registerVampiricBloodSpell()
+	// dk.registerAntiMagicShellSpell()
+	// dk.registerRuneStrikeSpell()
+	// dk.registerMindFreeze()
 
-	dk.registerRaiseDeadCD()
-	dk.registerSummonGargoyleCD()
-	dk.registerArmyOfTheDeadCD()
-	dk.registerDancingRuneWeaponCD()
-	dk.registerDeathPactSpell()
-	dk.registerUnholyFrenzyCD()
+	// dk.registerRaiseDeadCD()
+	// dk.registerSummonGargoyleCD()
+	// dk.registerArmyOfTheDeadCD()
+	// dk.registerDancingRuneWeaponCD()
+	// dk.registerDeathPactSpell()
+	// dk.registerUnholyFrenzyCD()
 
-	// allows us to use these auras in the APL pre-pull actions
-	wotlk.CreateBlackMagicProcAura(&dk.Character)
-	CreateVirulenceProcAura(&dk.Character)
+	// // allows us to use these auras in the APL pre-pull actions
+	// wotlk.CreateBlackMagicProcAura(&dk.Character)
+	// CreateVirulenceProcAura(&dk.Character)
 
-	// for some reason re-using the same label as DMC:G proc causes tests to fail
-	dk.NewTemporaryStatsAura("DMC Greatness Pre-Pull Strength Proc", core.ActionID{SpellID: 60229}, stats.Stats{stats.Strength: 300}, time.Second*15)
+	// // for some reason re-using the same label as DMC:G proc causes tests to fail
+	// dk.NewTemporaryStatsAura("DMC Greatness Pre-Pull Strength Proc", core.ActionID{SpellID: 60229}, stats.Stats{stats.Strength: 300}, time.Second*15)
 }
 
 func (dk *DeathKnight) registerMindFreeze() {
@@ -321,19 +318,19 @@ func (dk *DeathKnight) registerMindFreeze() {
 	}
 }
 
-func (dk *DeathKnight) ResetBonusCoeffs() {
-	dk.bonusCoeffs = DeathKnightCoeffs{
-		runeTapHealing: 0,
+// func (dk *DeathKnight) ResetBonusCoeffs() {
+// 	dk.bonusCoeffs = DeathKnightCoeffs{
+// 		runeTapHealing: 0,
 
-		glacierRotBonusCoeff:      1,
-		mercilessCombatBonusCoeff: 1,
-		impurityBonusCoeff:        1,
-		threatOfThassarianChance:  0,
+// 		glacierRotBonusCoeff:      1,
+// 		mercilessCombatBonusCoeff: 1,
+// 		impurityBonusCoeff:        1,
+// 		threatOfThassarianChance:  0,
 
-		wanderingPlagueMultiplier:     1,
-		scourgeStrikeShadowMultiplier: 1,
-	}
-}
+// 		wanderingPlagueMultiplier:     1,
+// 		scourgeStrikeShadowMultiplier: 1,
+// 	}
+// }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
 	dk.LastTickTime = -1
@@ -341,103 +338,103 @@ func (dk *DeathKnight) Reset(sim *core.Simulation) {
 	dk.MakeTSRoRAssumptions = sim.Raid.Size() <= 1
 }
 
-func (dk *DeathKnight) IsFuStrike(spell *core.Spell) bool {
-	return spell == dk.Obliterate || spell == dk.ScourgeStrike || spell == dk.DeathStrike
-}
+// func (dk *DeathKnight) IsFuStrike(spell *core.Spell) bool {
+// 	return spell == dk.Obliterate || spell == dk.ScourgeStrike || spell == dk.DeathStrike
+// }
 
-func (dk *DeathKnight) HasMajorGlyph(glyph proto.DeathKnightMajorGlyph) bool {
-	return dk.HasGlyph(int32(glyph))
-}
-func (dk *DeathKnight) HasMinorGlyph(glyph proto.DeathKnightMinorGlyph) bool {
-	return dk.HasGlyph(int32(glyph))
-}
+// func (dk *DeathKnight) HasMajorGlyph(glyph proto.DeathKnightMajorGlyph) bool {
+// 	return dk.HasGlyph(int32(glyph))
+// }
+// func (dk *DeathKnight) HasMinorGlyph(glyph proto.DeathKnightMinorGlyph) bool {
+// 	return dk.HasGlyph(int32(glyph))
+// }
 
-func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents string) *DeathKnight {
-	dk := &DeathKnight{
-		Character:  *character,
-		Talents:    &proto.DeathKnightTalents{},
-		Inputs:     inputs,
-		RoRTSBonus: func(u *core.Unit) float64 { return 1.0 }, // default to no bonus for RoR/TS
-	}
-	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
+ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents string) *DeathKnight {
+ 	dk := &DeathKnight{
+ 		Character:  *character,
+ 		Talents:    &proto.DeathKnightTalents{},
+ 		Inputs:     inputs,
+ 		RoRTSBonus: func(u *core.Unit) float64 { return 1.0 }, // default to no bonus for RoR/TS
+ 	}
+ 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
-	maxRunicPower := 100.0 + 15.0*float64(dk.Talents.RunicPowerMastery)
-	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)
+// 	maxRunicPower := 100.0 + 15.0*float64(dk.Talents.RunicPowerMastery)
+// 	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)
 
-	dk.EnableRunicPowerBar(
-		currentRunicPower,
-		maxRunicPower,
-		10*time.Second,
-		func(sim *core.Simulation, changeType core.RuneChangeType) {
-			if dk.onRuneSpendT10 != nil {
-				dk.onRuneSpendT10(sim, changeType)
-			}
-			if dk.onRuneSpendBladeBarrier != nil {
-				dk.onRuneSpendBladeBarrier(sim, changeType)
-			}
-		},
-		nil,
-	)
+// 	dk.EnableRunicPowerBar(
+// 		currentRunicPower,
+// 		maxRunicPower,
+// 		10*time.Second,
+// 		func(sim *core.Simulation, changeType core.RuneChangeType) {
+// 			if dk.onRuneSpendT10 != nil {
+// 				dk.onRuneSpendT10(sim, changeType)
+// 			}
+// 			if dk.onRuneSpendBladeBarrier != nil {
+// 				dk.onRuneSpendBladeBarrier(sim, changeType)
+// 			}
+// 		},
+// 		nil,
+// 	)
 
-	dk.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
-	dk.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/84.74576271)
-	dk.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	dk.AddStatDependency(stats.Strength, stats.Parry, 0.25)
-	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
+// 	dk.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+// 	dk.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/84.74576271)
+// 	dk.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+// 	dk.AddStatDependency(stats.Strength, stats.Parry, 0.25)
+// 	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
-	dk.PseudoStats.CanParry = true
+// 	dk.PseudoStats.CanParry = true
 
-	// Base dodge unaffected by Diminishing Returns
-	dk.PseudoStats.BaseDodge += 0.03664
-	dk.PseudoStats.BaseParry += 0.05
+// 	// Base dodge unaffected by Diminishing Returns
+// 	dk.PseudoStats.BaseDodge += 0.03664
+// 	dk.PseudoStats.BaseParry += 0.05
 
-	dk.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
+// 	dk.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-	if dk.Talents.SummonGargoyle {
-		dk.Gargoyle = dk.NewGargoyle()
-	}
+// 	if dk.Talents.SummonGargoyle {
+// 		dk.Gargoyle = dk.NewGargoyle()
+// 	}
 
-	dk.Ghoul = dk.NewGhoulPet(dk.Talents.MasterOfGhouls)
-	dk.OnGargoyleStartFirstCast = func() {}
-	dk.GargoyleSummonDelay = time.Millisecond * 2500
+// 	dk.Ghoul = dk.NewGhoulPet(dk.Talents.MasterOfGhouls)
+// 	dk.OnGargoyleStartFirstCast = func() {}
+// 	dk.GargoyleSummonDelay = time.Millisecond * 2500
 
-	dk.ArmyGhoul = make([]*GhoulPet, 8)
-	for i := 0; i < 8; i++ {
-		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
-	}
+// 	dk.ArmyGhoul = make([]*GhoulPet, 8)
+// 	for i := 0; i < 8; i++ {
+// 		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
+// 	}
 
-	if dk.Talents.Bloodworms > 0 {
-		dk.Bloodworm = make([]*BloodwormPet, 4)
-		for i := 0; i < 4; i++ {
-			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
-		}
-	}
+// 	if dk.Talents.Bloodworms > 0 {
+// 		dk.Bloodworm = make([]*BloodwormPet, 4)
+// 		for i := 0; i < 4; i++ {
+// 			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
+// 		}
+// 	}
 
-	if dk.Talents.DancingRuneWeapon {
-		dk.RuneWeapon = dk.NewRuneWeapon()
-	}
+// 	if dk.Talents.DancingRuneWeapon {
+// 		dk.RuneWeapon = dk.NewRuneWeapon()
+// 	}
 
-	// done here so enchants that modify stats are applied before stats are calculated
-	dk.registerItems()
+// 	// done here so enchants that modify stats are applied before stats are calculated
+// 	dk.registerItems()
 
-	return dk
-}
+ 	return dk
+ }
 
-func (dk *DeathKnight) AllDiseasesAreActive(target *core.Unit) bool {
-	return dk.FrostFeverSpell.Dot(target).IsActive() && dk.BloodPlagueSpell.Dot(target).IsActive()
-}
+// func (dk *DeathKnight) AllDiseasesAreActive(target *core.Unit) bool {
+// 	return dk.FrostFeverSpell.Dot(target).IsActive() && dk.BloodPlagueSpell.Dot(target).IsActive()
+// }
 
-func (dk *DeathKnight) DiseasesAreActive(target *core.Unit) bool {
-	return dk.FrostFeverSpell.Dot(target).IsActive() || dk.BloodPlagueSpell.Dot(target).IsActive()
-}
+// func (dk *DeathKnight) DiseasesAreActive(target *core.Unit) bool {
+// 	return dk.FrostFeverSpell.Dot(target).IsActive() || dk.BloodPlagueSpell.Dot(target).IsActive()
+// }
 
-func (dk *DeathKnight) DrwDiseasesAreActive(target *core.Unit) bool {
-	return dk.Talents.DancingRuneWeapon && dk.RuneWeapon.FrostFeverSpell.Dot(target).IsActive() || dk.RuneWeapon.BloodPlagueSpell.Dot(target).IsActive()
-}
+// func (dk *DeathKnight) DrwDiseasesAreActive(target *core.Unit) bool {
+// 	return dk.Talents.DancingRuneWeapon && dk.RuneWeapon.FrostFeverSpell.Dot(target).IsActive() || dk.RuneWeapon.BloodPlagueSpell.Dot(target).IsActive()
+// }
 
-func (dk *DeathKnight) bonusCritMultiplier(bonusTalentPoints int32) float64 {
-	return dk.MeleeCritMultiplier(1, 0.15*float64(bonusTalentPoints))
-}
+// func (dk *DeathKnight) bonusCritMultiplier(bonusTalentPoints int32) float64 {
+// 	return dk.MeleeCritMultiplier(1, 0.15*float64(bonusTalentPoints))
+// }
 
 // Agent is a generic way to access underlying warrior on any of the agents.
 

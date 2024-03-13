@@ -868,6 +868,14 @@ export class Player<SpecType extends Spec> {
 		this.glyphsChangeEmitter.emit(eventID);
 	}
 
+	getPrimeGlyps(): Array<number> {
+		return [
+			this.glyphs.prime1,
+			this.glyphs.prime2,
+			this.glyphs.prime3,
+		].filter(glyph => glyph != 0)
+	}
+
 	getMajorGlyphs(): Array<number> {
 		return [this.glyphs.major1, this.glyphs.major2, this.glyphs.major3].filter(glyph => glyph != 0);
 	}
@@ -877,7 +885,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getAllGlyphs(): Array<number> {
-		return this.getMajorGlyphs().concat(this.getMinorGlyphs());
+		return this.getPrimeGlyps().concat(this.getMajorGlyphs().concat(this.getMinorGlyphs()));
 	}
 
 	getClassOptions(): ClassOptions<SpecType> {

@@ -43,29 +43,29 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, true),
 	}
 
-	// Enable Auto Attacks for this spec
-	enh.EnableAutoAttacks(enh, core.AutoAttackOptions{
-		MainHand:       enh.WeaponFromMainHand(enh.DefaultMeleeCritMultiplier()),
-		OffHand:        enh.WeaponFromOffHand(enh.DefaultMeleeCritMultiplier()),
-		AutoSwingMelee: true,
-	})
+	// // Enable Auto Attacks for this spec
+	// enh.EnableAutoAttacks(enh, core.AutoAttackOptions{
+	// 	MainHand:       enh.WeaponFromMainHand(enh.DefaultMeleeCritMultiplier()),
+	// 	OffHand:        enh.WeaponFromOffHand(enh.DefaultMeleeCritMultiplier()),
+	// 	AutoSwingMelee: true,
+	// })
 
-	enh.ApplySyncType(enhOptions.SyncType)
-	enh.ApplyFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon), false)
-	enh.ApplyFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeaponDownrank), true)
+	// enh.ApplySyncType(enhOptions.SyncType)
+	// enh.ApplyFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon), false)
+	// enh.ApplyFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeaponDownrank), true)
 
-	if !enh.HasMHWeapon() {
-		enh.SelfBuffs.ImbueMH = proto.ShamanImbue_NoImbue
-	}
+	// if !enh.HasMHWeapon() {
+	// 	enh.SelfBuffs.ImbueMH = proto.ShamanImbue_NoImbue
+	// }
 
-	if !enh.HasOHWeapon() {
-		enh.SelfBuffs.ImbueOH = proto.ShamanImbue_NoImbue
-	}
+	// if !enh.HasOHWeapon() {
+	// 	enh.SelfBuffs.ImbueOH = proto.ShamanImbue_NoImbue
+	// }
 
-	enh.SpiritWolves = &shaman.SpiritWolves{
-		SpiritWolf1: enh.NewSpiritWolf(1),
-		SpiritWolf2: enh.NewSpiritWolf(2),
-	}
+	// enh.SpiritWolves = &shaman.SpiritWolves{
+	// 	SpiritWolf1: enh.NewSpiritWolf(1),
+	// 	SpiritWolf2: enh.NewSpiritWolf(2),
+	// }
 
 	return enh
 }
@@ -91,21 +91,21 @@ func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
 
 func (enh *EnhancementShaman) Initialize() {
 	enh.Shaman.Initialize()
-	// In the Initialize due to frost brand adding the aura to the enemy
-	enh.RegisterFrostbrandImbue(enh.getImbueProcMask(proto.ShamanImbue_FrostbrandWeapon))
-	enh.RegisterFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon), false)
-	enh.RegisterFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeaponDownrank), true)
-	enh.RegisterWindfuryImbue(enh.getImbueProcMask(proto.ShamanImbue_WindfuryWeapon))
+	// // In the Initialize due to frost brand adding the aura to the enemy
+	// enh.RegisterFrostbrandImbue(enh.getImbueProcMask(proto.ShamanImbue_FrostbrandWeapon))
+	// enh.RegisterFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon), false)
+	// enh.RegisterFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeaponDownrank), true)
+	// enh.RegisterWindfuryImbue(enh.getImbueProcMask(proto.ShamanImbue_WindfuryWeapon))
 
-	if enh.ItemSwap.IsEnabled() {
-		mh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
-		enh.ApplyFlametongueImbueToItem(mh, true)
-		oh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
-		enh.ApplyFlametongueImbueToItem(oh, false)
-		enh.RegisterOnItemSwap(func(_ *core.Simulation) {
-			enh.ApplySyncType(proto.ShamanSyncType_Auto)
-		})
-	}
+	// if enh.ItemSwap.IsEnabled() {
+	// 	mh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
+	// 	enh.ApplyFlametongueImbueToItem(mh, true)
+	// 	oh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
+	// 	enh.ApplyFlametongueImbueToItem(oh, false)
+	// 	enh.RegisterOnItemSwap(func(_ *core.Simulation) {
+	// 		enh.ApplySyncType(proto.ShamanSyncType_Auto)
+	// 	})
+	// }
 }
 
 func (enh *EnhancementShaman) Reset(sim *core.Simulation) {

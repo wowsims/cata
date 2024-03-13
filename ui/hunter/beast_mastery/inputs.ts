@@ -34,14 +34,6 @@ export const BMRotationConfig = {
 			labelTooltip: 'Uses Explosive Trap at appropriate times. Note that selecting this will disable Black Arrow because they share a CD.',
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecBeastMasteryHunter>({
-			fieldName: 'allowExplosiveShotDownrank',
-			label: 'Allow ES Downrank',
-			labelTooltip: 'Weaves Explosive Shot Rank 3 during LNL procs. This works because the rank 3 and rank 4 dots can stack.',
-			showWhen: (player: Player<Spec.SpecBeastMasteryHunter>) =>
-				player.getSimpleRotation().type != RotationType.Custom && player.getTalents().explosiveShot && player.getTalents().lockAndLoad > 0,
-			changeEmitter: (player: Player<Spec.SpecBeastMasteryHunter>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
-		InputHelpers.makeRotationBooleanInput<Spec.SpecBeastMasteryHunter>({
 			fieldName: 'multiDotSerpentSting',
 			label: 'Multi-Dot Serpent Sting',
 			labelTooltip: 'Casts Serpent Sting on multiple targets',

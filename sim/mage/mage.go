@@ -3,7 +3,6 @@ package mage
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 const (
@@ -23,8 +22,8 @@ type Mage struct {
 	FireOptions   *proto.FireMage_Options
 	FrostOptions  *proto.FrostMage_Options
 
-	waterElemental *WaterElemental
-	mirrorImage    *MirrorImage
+	//waterElemental *WaterElemental
+	//mirrorImage    *MirrorImage
 
 	// Cached values for a few mechanics.
 	bonusCritDamage float64
@@ -87,35 +86,35 @@ func (mage *Mage) HasMinorGlyph(glyph proto.MageMinorGlyph) bool {
 func (mage *Mage) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.ArcaneBrilliance = true
 
-	if mage.Talents.ArcaneEmpowerment == 3 {
-		raidBuffs.ArcaneEmpowerment = true
-	}
+	// if mage.Talents.ArcaneEmpowerment == 3 {
+	// 	raidBuffs.ArcaneEmpowerment = true
+	// }
 }
 func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
 func (mage *Mage) Initialize() {
-	mage.registerArcaneBarrageSpell()
-	mage.registerArcaneBlastSpell()
-	mage.registerArcaneExplosionSpell()
-	mage.registerArcaneMissilesSpell()
-	mage.registerBlizzardSpell()
-	mage.registerDeepFreezeSpell()
-	mage.registerFireballSpell()
-	mage.registerFireBlastSpell()
-	mage.registerFlamestrikeSpells()
-	mage.registerFrostboltSpell()
-	mage.registerIceLanceSpell()
-	mage.registerPyroblastSpell()
-	mage.registerScorchSpell()
-	mage.registerLivingBombSpell()
-	mage.registerFrostfireBoltSpell()
-	mage.registerEvocation()
-	mage.registerManaGemsCD()
-	mage.registerMirrorImageCD()
-	mage.registerBlastWaveSpell()
-	mage.registerDragonsBreathSpell()
-	mage.registerSummonWaterElementalCD()
+	// mage.registerArcaneBarrageSpell()
+	// mage.registerArcaneBlastSpell()
+	// mage.registerArcaneExplosionSpell()
+	// mage.registerArcaneMissilesSpell()
+	// mage.registerBlizzardSpell()
+	// mage.registerDeepFreezeSpell()
+	// mage.registerFireballSpell()
+	// mage.registerFireBlastSpell()
+	// mage.registerFlamestrikeSpells()
+	// mage.registerFrostboltSpell()
+	// mage.registerIceLanceSpell()
+	// mage.registerPyroblastSpell()
+	// mage.registerScorchSpell()
+	// mage.registerLivingBombSpell()
+	// mage.registerFrostfireBoltSpell()
+	// mage.registerEvocation()
+	// mage.registerManaGemsCD()
+	// mage.registerMirrorImageCD()
+	// mage.registerBlastWaveSpell()
+	// mage.registerDragonsBreathSpell()
+	// mage.registerSummonWaterElementalCD()
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
@@ -127,32 +126,32 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 		Talents:   &proto.MageTalents{},
 		Options:   mageOptions,
 	}
-	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	// core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
-	mage.bonusCritDamage = .25*float64(mage.Talents.SpellPower) + .1*float64(mage.Talents.Burnout)
-	mage.EnableManaBar()
+	// mage.bonusCritDamage = .25*float64(mage.Talents.SpellPower) + .1*float64(mage.Talents.Burnout)
+	// mage.EnableManaBar()
 
-	if mage.Options.Armor == proto.MageOptions_MageArmor {
-		mage.PseudoStats.SpiritRegenRateCasting += .5
-		if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfMageArmor) {
-			mage.PseudoStats.SpiritRegenRateCasting += .2
-		}
-		if mage.HasSetBonus(ItemSetKhadgarsRegalia, 2) {
-			mage.PseudoStats.SpiritRegenRateCasting += .1
-		}
-	} else if mage.Options.Armor == proto.MageOptions_MoltenArmor {
-		//Need to switch to spirit crit calc
-		multi := 0.35
-		if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfMoltenArmor) {
-			multi += .2
-		}
-		if mage.HasSetBonus(ItemSetKhadgarsRegalia, 2) {
-			multi += .15
-		}
-		mage.Character.AddStatDependency(stats.Spirit, stats.SpellCrit, multi)
-	}
+	// if mage.Options.Armor == proto.MageOptions_MageArmor {
+	// 	mage.PseudoStats.SpiritRegenRateCasting += .5
+	// 	if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfMageArmor) {
+	// 		mage.PseudoStats.SpiritRegenRateCasting += .2
+	// 	}
+	// 	if mage.HasSetBonus(ItemSetKhadgarsRegalia, 2) {
+	// 		mage.PseudoStats.SpiritRegenRateCasting += .1
+	// 	}
+	// } else if mage.Options.Armor == proto.MageOptions_MoltenArmor {
+	// 	//Need to switch to spirit crit calc
+	// 	multi := 0.35
+	// 	if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfMoltenArmor) {
+	// 		multi += .2
+	// 	}
+	// 	if mage.HasSetBonus(ItemSetKhadgarsRegalia, 2) {
+	// 		multi += .15
+	// 	}
+	// 	mage.Character.AddStatDependency(stats.Spirit, stats.SpellCrit, multi)
+	// }
 
-	mage.mirrorImage = mage.NewMirrorImage()
+	// mage.mirrorImage = mage.NewMirrorImage()
 
 	return mage
 }

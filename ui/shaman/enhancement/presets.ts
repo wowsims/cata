@@ -47,26 +47,26 @@ export const ROTATION_PHASE_3 = PresetUtils.makePresetAPLRotation('Phase 3', Pha
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '053030152-30405003105021333031131031051',
-		glyphs: Glyphs.create({
-			major1: ShamanMajorGlyph.GlyphOfFireNova,
-			major2: ShamanMajorGlyph.GlyphOfFlametongueWeapon,
-			major3: ShamanMajorGlyph.GlyphOfFeralSpirit,
-			//minor glyphs dont affect damage done, all convenience/QoL
-		}),
+		// talentsString: '053030152-30405003105021333031131031051',
+		// glyphs: Glyphs.create({
+		// 	major1: ShamanMajorGlyph.GlyphOfFireNova,
+		// 	major2: ShamanMajorGlyph.GlyphOfFlametongueWeapon,
+		// 	major3: ShamanMajorGlyph.GlyphOfFeralSpirit,
+		// 	//minor glyphs dont affect damage done, all convenience/QoL
+		// }),
 	}),
 };
 
 export const Phase3Talents = {
 	name: 'Phase 3',
 	data: SavedTalents.create({
-		talentsString: '053030152-30505003105001333031131131051',
-		glyphs: Glyphs.create({
-			major1: ShamanMajorGlyph.GlyphOfFireNova,
-			major2: ShamanMajorGlyph.GlyphOfFlametongueWeapon,
-			major3: ShamanMajorGlyph.GlyphOfFeralSpirit,
-			//minor glyphs dont affect damage done, all convenience/QoL
-		}),
+		// talentsString: '053030152-30505003105001333031131131051',
+		// glyphs: Glyphs.create({
+		// 	major1: ShamanMajorGlyph.GlyphOfFireNova,
+		// 	major2: ShamanMajorGlyph.GlyphOfFlametongueWeapon,
+		// 	major3: ShamanMajorGlyph.GlyphOfFeralSpirit,
+		// 	//minor glyphs dont affect damage done, all convenience/QoL
+		// }),
 	}),
 };
 

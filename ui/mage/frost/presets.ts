@@ -37,15 +37,15 @@ export const FROST_ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Fros
 export const FrostTalents = {
 	name: 'Frost',
 	data: SavedTalents.create({
-		talentsString: '23000503110003--0533030310233100030152231351',
-		glyphs: Glyphs.create({
-			major1: MageMajorGlyph.GlyphOfFrostbolt,
-			major2: MageMajorGlyph.GlyphOfEternalWater,
-			major3: MageMajorGlyph.GlyphOfMoltenArmor,
-			minor1: MageMinorGlyph.GlyphOfSlowFall,
-			minor2: MageMinorGlyph.GlyphOfFrostWard,
-			minor3: MageMinorGlyph.GlyphOfBlastWave,
-		}),
+		// talentsString: '23000503110003--0533030310233100030152231351',
+		// glyphs: Glyphs.create({
+		// 	major1: MageMajorGlyph.GlyphOfFrostbolt,
+		// 	major2: MageMajorGlyph.GlyphOfEternalWater,
+		// 	major3: MageMajorGlyph.GlyphOfMoltenArmor,
+		// 	minor1: MageMinorGlyph.GlyphOfSlowFall,
+		// 	minor2: MageMinorGlyph.GlyphOfFrostWard,
+		// 	minor3: MageMinorGlyph.GlyphOfBlastWave,
+		// }),
 	}),
 };
 

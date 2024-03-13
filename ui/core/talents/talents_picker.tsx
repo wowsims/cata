@@ -12,9 +12,9 @@ import { ActionId } from '../proto_utils/action_id.js';
 import { TypedEvent } from '../typed_event.js';
 import { isRightClick, sum } from '../utils.js';
 
-const MAX_POINTS_PLAYER = 71;
-const MAX_POINTS_HUNTER_PET = 16;
-const MAX_POINTS_HUNTER_PET_BM = 20;
+const MAX_POINTS_PLAYER = 41;
+const MAX_POINTS_HUNTER_PET = 17;
+const MAX_POINTS_HUNTER_PET_BM = 21;
 
 export interface TalentsPickerConfig<TalentsProto> extends InputConfig<Player<any>, string> {
 	klass: Class;

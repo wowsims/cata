@@ -12,11 +12,11 @@ export const StartingRunicPower = <SpecType extends DeathKnightSpecs>() =>
 		labelTooltip: 'Initial RP at the start of each iteration.',
 	});
 
-export const PetUptime = <SpecType extends DeathKnightSpecs>() =>
-	InputHelpers.makeClassOptionsNumberInput<SpecType>({
-		fieldName: 'petUptime',
-		label: 'Ghoul Uptime (%)',
-		labelTooltip: 'Percent of the fight duration for which your ghoul will be on target.',
-		percent: true,
-		showWhen: (player: Player<SpecType>) => player.getTalents().masterOfGhouls,
-	});
+// export const PetUptime = <SpecType extends DeathKnightSpecs>() =>
+// 	InputHelpers.makeClassOptionsNumberInput<SpecType>({
+// 		fieldName: 'petUptime',
+// 		label: 'Ghoul Uptime (%)',
+// 		labelTooltip: 'Percent of the fight duration for which your ghoul will be on target.',
+// 		percent: true,
+// 		showWhen: (player: Player<SpecType>) => player.getTalents().masterOfGhouls,
+// 	});

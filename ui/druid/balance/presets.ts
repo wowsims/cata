@@ -47,60 +47,60 @@ export const ROTATION_PRESET_P4_STARFIRE_APL = PresetUtils.makePresetAPLRotation
 export const Phase1Talents = {
 	name: 'Phase 1',
 	data: SavedTalents.create({
-		talentsString: '5032003115331303213305311231--205003012',
-		glyphs: Glyphs.create({
-			major1: DruidMajorGlyph.GlyphOfFocus,
-			major2: DruidMajorGlyph.GlyphOfInsectSwarm,
-			major3: DruidMajorGlyph.GlyphOfStarfall,
-			minor1: DruidMinorGlyph.GlyphOfTyphoon,
-			minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-			minor3: DruidMinorGlyph.GlyphOfTheWild,
-		}),
+		// talentsString: '5032003115331303213305311231--205003012',
+		// glyphs: Glyphs.create({
+		// 	major1: DruidMajorGlyph.GlyphOfFocus,
+		// 	major2: DruidMajorGlyph.GlyphOfInsectSwarm,
+		// 	major3: DruidMajorGlyph.GlyphOfStarfall,
+		// 	minor1: DruidMinorGlyph.GlyphOfTyphoon,
+		// 	minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		// 	minor3: DruidMinorGlyph.GlyphOfTheWild,
+		// }),
 	}),
 };
 
 export const Phase2Talents = {
 	name: 'Phase 2',
 	data: SavedTalents.create({
-		talentsString: '5012203115331303213305311231--205003012',
-		glyphs: Glyphs.create({
-			major1: DruidMajorGlyph.GlyphOfStarfire,
-			major2: DruidMajorGlyph.GlyphOfInsectSwarm,
-			major3: DruidMajorGlyph.GlyphOfStarfall,
-			minor1: DruidMinorGlyph.GlyphOfTyphoon,
-			minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-			minor3: DruidMinorGlyph.GlyphOfTheWild,
-		}),
+		// talentsString: '5012203115331303213305311231--205003012',
+		// glyphs: Glyphs.create({
+		// 	major1: DruidMajorGlyph.GlyphOfStarfire,
+		// 	major2: DruidMajorGlyph.GlyphOfInsectSwarm,
+		// 	major3: DruidMajorGlyph.GlyphOfStarfall,
+		// 	minor1: DruidMinorGlyph.GlyphOfTyphoon,
+		// 	minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		// 	minor3: DruidMinorGlyph.GlyphOfTheWild,
+		// }),
 	}),
 };
 
 export const Phase3Talents = {
 	name: 'Phase 3',
 	data: SavedTalents.create({
-		talentsString: '5102223115331303213305311031--205003012',
-		glyphs: Glyphs.create({
-			major1: DruidMajorGlyph.GlyphOfStarfire,
-			major2: DruidMajorGlyph.GlyphOfMoonfire,
-			major3: DruidMajorGlyph.GlyphOfStarfall,
-			minor1: DruidMinorGlyph.GlyphOfTyphoon,
-			minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-			minor3: DruidMinorGlyph.GlyphOfTheWild,
-		}),
+		// talentsString: '5102223115331303213305311031--205003012',
+		// glyphs: Glyphs.create({
+		// 	major1: DruidMajorGlyph.GlyphOfStarfire,
+		// 	major2: DruidMajorGlyph.GlyphOfMoonfire,
+		// 	major3: DruidMajorGlyph.GlyphOfStarfall,
+		// 	minor1: DruidMinorGlyph.GlyphOfTyphoon,
+		// 	minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		// 	minor3: DruidMinorGlyph.GlyphOfTheWild,
+		// }),
 	}),
 };
 
 export const Phase4Talents = {
 	name: 'Phase 4',
 	data: SavedTalents.create({
-		talentsString: '5102223115331303213305311031--205003012',
-		glyphs: Glyphs.create({
-			major1: DruidMajorGlyph.GlyphOfFocus,
-			major2: DruidMajorGlyph.GlyphOfInsectSwarm,
-			major3: DruidMajorGlyph.GlyphOfStarfall,
-			minor1: DruidMinorGlyph.GlyphOfTyphoon,
-			minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-			minor3: DruidMinorGlyph.GlyphOfTheWild,
-		}),
+		// talentsString: '5102223115331303213305311031--205003012',
+		// glyphs: Glyphs.create({
+		// 	major1: DruidMajorGlyph.GlyphOfFocus,
+		// 	major2: DruidMajorGlyph.GlyphOfInsectSwarm,
+		// 	major3: DruidMajorGlyph.GlyphOfStarfall,
+		// 	minor1: DruidMinorGlyph.GlyphOfTyphoon,
+		// 	minor2: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		// 	minor3: DruidMinorGlyph.GlyphOfTheWild,
+		// }),
 	}),
 };
 

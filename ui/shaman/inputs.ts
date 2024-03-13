@@ -91,31 +91,31 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		},
 	});
 
-	const _fireTotemPicker = new IconEnumPicker(totemDropdownGroup, simUI.player, {
-		extraCssClasses: ['fire-totem-picker'],
-		numColumns: 1,
-		values: [
-			{ color: '#ffb3ba', value: FireTotem.NoFireTotem },
-			{ actionId: ActionId.fromSpellId(58734), value: FireTotem.MagmaTotem },
-			{ actionId: ActionId.fromSpellId(58704), value: FireTotem.SearingTotem },
-			{
-				actionId: ActionId.fromSpellId(57722),
-				value: FireTotem.TotemOfWrath,
-				showWhen: (player: Player<ShamanSpecs>) => player.getTalents().totemOfWrath,
-			},
-			{ actionId: ActionId.fromSpellId(58656), value: FireTotem.FlametongueTotem },
-		],
-		equals: (a: FireTotem, b: FireTotem) => a == b,
-		zeroValue: FireTotem.NoFireTotem,
-		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
-		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().classOptions?.totems?.fire || FireTotem.NoFireTotem,
-		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
-			const newOptions = player.getSpecOptions();
-			if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
-			newOptions.classOptions!.totems.fire = newValue;
-			player.setSpecOptions(eventID, newOptions);
-		},
-	});
+	// const _fireTotemPicker = new IconEnumPicker(totemDropdownGroup, simUI.player, {
+	// 	extraCssClasses: ['fire-totem-picker'],
+	// 	numColumns: 1,
+	// 	values: [
+	// 		{ color: '#ffb3ba', value: FireTotem.NoFireTotem },
+	// 		{ actionId: ActionId.fromSpellId(58734), value: FireTotem.MagmaTotem },
+	// 		{ actionId: ActionId.fromSpellId(58704), value: FireTotem.SearingTotem },
+	// 		{
+	// 			actionId: ActionId.fromSpellId(57722),
+	// 			value: FireTotem.TotemOfWrath,
+	// 			showWhen: (player: Player<ShamanSpecs>) => player.getTalents().totemOfWrath,
+	// 		},
+	// 		{ actionId: ActionId.fromSpellId(58656), value: FireTotem.FlametongueTotem },
+	// 	],
+	// 	equals: (a: FireTotem, b: FireTotem) => a == b,
+	// 	zeroValue: FireTotem.NoFireTotem,
+	// 	changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
+	// 	getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().classOptions?.totems?.fire || FireTotem.NoFireTotem,
+	// 	setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
+	// 		const newOptions = player.getSpecOptions();
+	// 		if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
+	// 		newOptions.classOptions!.totems.fire = newValue;
+	// 		player.setSpecOptions(eventID, newOptions);
+	// 	},
+	// });
 
 	const _airTotemPicker = new IconEnumPicker(totemDropdownGroup, simUI.player, {
 		extraCssClasses: ['air-totem-picker'],

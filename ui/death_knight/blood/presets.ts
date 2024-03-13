@@ -20,45 +20,45 @@ export const BLOOD_AGGRO_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRota
 export const BloodTalents = {
 	name: 'Blood',
 	data: SavedTalents.create({
-		talentsString: '005512153330030320102013-3050505000023-005',
-		glyphs: Glyphs.create({
-			major1: DeathKnightMajorGlyph.GlyphOfDisease,
-			major2: DeathKnightMajorGlyph.GlyphOfRuneStrike,
-			major3: DeathKnightMajorGlyph.GlyphOfDarkCommand,
-			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathKnightMinorGlyph.GlyphOfBloodTap,
-			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
-		}),
+		// talentsString: '005512153330030320102013-3050505000023-005',
+		// glyphs: Glyphs.create({
+		// 	major1: DeathKnightMajorGlyph.GlyphOfDisease,
+		// 	major2: DeathKnightMajorGlyph.GlyphOfRuneStrike,
+		// 	major3: DeathKnightMajorGlyph.GlyphOfDarkCommand,
+		// 	minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+		// 	minor2: DeathKnightMinorGlyph.GlyphOfBloodTap,
+		// 	minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
+		// }),
 	}),
 };
 
 export const BloodAggroTalents = {
 	name: 'Blood Aggro',
 	data: SavedTalents.create({
-		talentsString: '0355220530303303201020131301--0052003050032',
-		glyphs: Glyphs.create({
-			major1: DeathKnightMajorGlyph.GlyphOfDancingRuneWeapon,
-			major2: DeathKnightMajorGlyph.GlyphOfRuneStrike,
-			major3: DeathKnightMajorGlyph.GlyphOfDarkCommand,
-			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathKnightMinorGlyph.GlyphOfBloodTap,
-			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
-		}),
+		// talentsString: '0355220530303303201020131301--0052003050032',
+		// glyphs: Glyphs.create({
+		// 	major1: DeathKnightMajorGlyph.GlyphOfDancingRuneWeapon,
+		// 	major2: DeathKnightMajorGlyph.GlyphOfRuneStrike,
+		// 	major3: DeathKnightMajorGlyph.GlyphOfDarkCommand,
+		// 	minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+		// 	minor2: DeathKnightMinorGlyph.GlyphOfBloodTap,
+		// 	minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
+		// }),
 	}),
 };
 
 export const DoubleBuffBloodTalents = {
 	name: '2B Blood',
 	data: SavedTalents.create({
-		talentsString: '005512153330030320102013-3050505000023201-002',
-		glyphs: Glyphs.create({
-			major1: DeathKnightMajorGlyph.GlyphOfDisease,
-			major2: DeathKnightMajorGlyph.GlyphOfRuneStrike,
-			major3: DeathKnightMajorGlyph.GlyphOfDarkCommand,
-			minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
-			minor2: DeathKnightMinorGlyph.GlyphOfBloodTap,
-			minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
-		}),
+		// talentsString: '005512153330030320102013-3050505000023201-002',
+		// glyphs: Glyphs.create({
+		// 	major1: DeathKnightMajorGlyph.GlyphOfDisease,
+		// 	major2: DeathKnightMajorGlyph.GlyphOfRuneStrike,
+		// 	major3: DeathKnightMajorGlyph.GlyphOfDarkCommand,
+		// 	minor1: DeathKnightMinorGlyph.GlyphOfHornOfWinter,
+		// 	minor2: DeathKnightMinorGlyph.GlyphOfBloodTap,
+		// 	minor3: DeathKnightMinorGlyph.GlyphOfRaiseDead,
+		// }),
 	}),
 };
 

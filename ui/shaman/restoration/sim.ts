@@ -33,13 +33,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecRestorationShaman>) => {
-		let stats = new Stats();
-		stats = stats.addStat(Stat.StatSpellCrit, player.getTalents().tidalMastery * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
-		return {
-			talents: stats,
-		};
-	},
+	// modifyDisplayStats: (player: Player<Spec.SpecRestorationShaman>) => {
+	// 	let stats = new Stats();
+	// 	stats = stats.addStat(Stat.StatSpellCrit, player.getTalents().tidalMastery * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
+	// 	return {
+	// 		talents: stats,
+	// 	};
+	// },
 
 	defaults: {
 		// Default equipped gear.
@@ -88,7 +88,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [RestorationInputs.TriggerEarthShield, OtherInputs.TankAssignment],
+		inputs: [
+			// RestorationInputs.TriggerEarthShield, 
+			// OtherInputs.TankAssignment
+		],
 	},
 	customSections: [ShamanInputs.TotemsSection],
 	encounterPicker: {

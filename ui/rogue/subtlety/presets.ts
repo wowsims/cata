@@ -25,24 +25,24 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Fan AOE', 
 export const SubtletyTalents = {
 	name: 'Subtlety',
 	data: SavedTalents.create({
-		talentsString: '30532010114--5022012030321121350115031151',
-		glyphs: Glyphs.create({
-			major1: RogueMajorGlyph.GlyphOfEviscerate,
-			major2: RogueMajorGlyph.GlyphOfRupture,
-			major3: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
-		}),
+		// talentsString: '30532010114--5022012030321121350115031151',
+		// glyphs: Glyphs.create({
+		// 	major1: RogueMajorGlyph.GlyphOfEviscerate,
+		// 	major2: RogueMajorGlyph.GlyphOfRupture,
+		// 	major3: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
+		// }),
 	}),
 };
 
 export const HemoSubtletyTalents = {
 	name: 'Hemo Sub',
 	data: SavedTalents.create({
-		talentsString: '30532010135--502201203032112135011503122',
-		glyphs: Glyphs.create({
-			major1: RogueMajorGlyph.GlyphOfEviscerate,
-			major2: RogueMajorGlyph.GlyphOfRupture,
-			major3: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
-		}),
+		// talentsString: '30532010135--502201203032112135011503122',
+		// glyphs: Glyphs.create({
+		// 	major1: RogueMajorGlyph.GlyphOfEviscerate,
+		// 	major2: RogueMajorGlyph.GlyphOfRupture,
+		// 	major3: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
+		// }),
 	}),
 };
 

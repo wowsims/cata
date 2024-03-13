@@ -1,18 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element } from 'tsx-vanilla';
 
-import { Glyphs } from '../proto/common.js';
-import { ItemQuality } from '../proto/common.js';
-import { ActionId } from '../proto_utils/action_id.js';
+import { BaseModal } from '../components/base_modal.js';
+import { Component } from '../components/component.js';
+import { ContentBlock } from '../components/content_block.js';
+import { Input } from '../components/input.js';
 import { setItemQualityCssClass } from '../css_utils.js';
 import { Player } from '../player.js';
+import { Glyphs , ItemQuality } from '../proto/common.js';
+import { ActionId } from '../proto_utils/action_id.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { stringComparator } from '../utils.js';
-
-import { Component } from '../components/component.js';
-import { Input } from '../components/input.js';
-import { BaseModal } from '../components/base_modal.js';
-import { ContentBlock } from '../components/content_block.js';
 
 export type GlyphConfig = {
 	name: string,
@@ -21,6 +19,7 @@ export type GlyphConfig = {
 };
 
 export type GlyphsConfig = {
+	primeGlyphs: Record<number, GlyphConfig>,
 	majorGlyphs: Record<number, GlyphConfig>,
 	minorGlyphs: Record<number, GlyphConfig>,
 };
@@ -44,6 +43,7 @@ const emptyGlyphData: GlyphData = {
 export class GlyphsPicker extends Component {
 	private readonly glyphsConfig: GlyphsConfig;
 
+	primeGlyphPickers: Array<GlyphPicker> = [];
 	majorGlyphPickers: Array<GlyphPicker> = [];
 	minorGlyphPickers: Array<GlyphPicker> = [];
 
@@ -55,25 +55,38 @@ export class GlyphsPicker extends Component {
 			<h6 className="mt-2 fw-bold d-xl-block d-none">Glyphs</h6>
 		)
 
+		const primeGlyphs = Object.keys(glyphsConfig.primeGlyphs).map(idStr => Number(idStr));
 		const majorGlyphs = Object.keys(glyphsConfig.majorGlyphs).map(idStr => Number(idStr));
 		const minorGlyphs = Object.keys(glyphsConfig.minorGlyphs).map(idStr => Number(idStr));
 
+		const primeGlyphsData = primeGlyphs.map(glyph => this.getGlyphData(glyph));
 		const majorGlyphsData = majorGlyphs.map(glyph => this.getGlyphData(glyph));
 		const minorGlyphsData = minorGlyphs.map(glyph => this.getGlyphData(glyph));
 
+		primeGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
 		majorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
 		minorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
+
+		const primeGlyphsBlock = new ContentBlock(this.rootElem, 'major-glyphs', {
+			header: { title: 'Major', extraCssClasses: ['border-0', 'mb-1'] }
+		});
 
 		const majorGlyphsBlock = new ContentBlock(this.rootElem, 'major-glyphs', {
 			header: { title: 'Major', extraCssClasses: ['border-0', 'mb-1'] }
 		});
+		
 		const minorGlyphsBlock = new ContentBlock(this.rootElem, 'minor-glyphs', {
 			header: { title: 'Minor', extraCssClasses: ['border-0', 'mb-1'] }
+		});
+
+		this.primeGlyphPickers = (['prime1', 'prime2', 'prime3'] as Array<keyof Glyphs>).map(glyphField => {
+			return new GlyphPicker(primeGlyphsBlock.bodyElement, player, primeGlyphsData, glyphField, true)
 		});
 
 		this.majorGlyphPickers = (['major1', 'major2', 'major3'] as Array<keyof Glyphs>).map(glyphField => {
 			return new GlyphPicker(majorGlyphsBlock.bodyElement, player, majorGlyphsData, glyphField, true)
 		});
+
 		this.minorGlyphPickers = (['minor1', 'minor2', 'minor3'] as Array<keyof Glyphs>).map(glyphField => {
 			return new GlyphPicker(minorGlyphsBlock.bodyElement, player, minorGlyphsData, glyphField, false)
 		});
@@ -82,7 +95,7 @@ export class GlyphsPicker extends Component {
 	// In case we ever want to parse description from tooltip HTML.
 	//static descriptionRegex = /<a href=\\"\/wotlk.*>(.*)<\/a>/g;
 	getGlyphData(glyph: number): GlyphData {
-		const glyphConfig = this.glyphsConfig.majorGlyphs[glyph] || this.glyphsConfig.minorGlyphs[glyph];
+		const glyphConfig = this.glyphsConfig.primeGlyphs[glyph] || this.glyphsConfig.majorGlyphs[glyph] || this.glyphsConfig.minorGlyphs[glyph];
 
 		return {
 			id: glyph,
@@ -215,7 +228,7 @@ class GlyphSelectorModal extends BaseModal {
 					const searchQuery = searchInput.value.toLowerCase().split(" ");
 					const name = listItemData.name.toLowerCase();
 
-					var include = true;
+					let include = true;
 					searchQuery.forEach(v => {
 						if (!name.includes(v))
 							include = false;

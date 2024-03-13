@@ -147,15 +147,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			DeathKnightInputs.StartingRunicPower(),
-			DeathKnightInputs.PetUptime(),
-			UnholyInputs.SelfUnholyFrenzy,
-			UnholyInputs.UseAMSInput,
-			UnholyInputs.AvgAMSSuccessRateInput,
-			UnholyInputs.AvgAMSHitInput,
+			// DeathKnightInputs.StartingRunicPower(),
+			// DeathKnightInputs.PetUptime(),
+			// UnholyInputs.SelfUnholyFrenzy,
+			// UnholyInputs.UseAMSInput,
+			// UnholyInputs.AvgAMSSuccessRateInput,
+			// UnholyInputs.AvgAMSHitInput,
 
-			OtherInputs.TankAssignment,
-			OtherInputs.InFrontOfTarget,
+			// OtherInputs.TankAssignment,
+			// OtherInputs.InFrontOfTarget,
 		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],

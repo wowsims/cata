@@ -35,17 +35,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
-		let stats = new Stats();
+	// modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
+	// 	let stats = new Stats();
 
-		if (player.getTalentTree() === 0) {
-			stats = stats.addStat(Stat.StatSpellHit, player.getTalents().arcaneFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-		}
+	// 	if (player.getTalentTree() === 0) {
+	// 		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().arcaneFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+	// 	}
 
-		return {
-			talents: stats,
-		};
-	},
+	// 	return {
+	// 		talents: stats,
+	// 	};
+	// },
 
 	defaults: {
 		// Default equipped gear.

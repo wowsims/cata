@@ -63,15 +63,15 @@ export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Sim
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '-543202132322010053120030310511-203503012',
-		glyphs: Glyphs.create({
-			major1: DruidMajorGlyph.GlyphOfOmenOfClarity,
-			major2: DruidMajorGlyph.GlyphOfSavageRoar,
-			major3: DruidMajorGlyph.GlyphOfShred,
-			minor1: DruidMinorGlyph.GlyphOfDash,
-			minor2: DruidMinorGlyph.GlyphOfTheWild,
-			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-		}),
+		// talentsString: '-543202132322010053120030310511-203503012',
+		// glyphs: Glyphs.create({
+		// 	major1: DruidMajorGlyph.GlyphOfOmenOfClarity,
+		// 	major2: DruidMajorGlyph.GlyphOfSavageRoar,
+		// 	major3: DruidMajorGlyph.GlyphOfShred,
+		// 	minor1: DruidMinorGlyph.GlyphOfDash,
+		// 	minor2: DruidMinorGlyph.GlyphOfTheWild,
+		// 	minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		// }),
 	}),
 };
 

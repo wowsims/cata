@@ -51,14 +51,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
-		let stats = new Stats();
-		stats = stats.addStat(Stat.StatSpellHit, player.getTalents().elementalPrecision * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-		stats = stats.addStat(Stat.StatSpellCrit, player.getTalents().tidalMastery * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
-		return {
-			talents: stats,
-		};
-	},
+	// modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
+	// 	let stats = new Stats();
+	// 	stats = stats.addStat(Stat.StatSpellHit, player.getTalents().elementalPrecision * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+	// 	stats = stats.addStat(Stat.StatSpellCrit, player.getTalents().tidalMastery * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
+	// 	return {
+	// 		talents: stats,
+	// 	};
+	// },
 
 	defaults: {
 		// Default equipped gear.

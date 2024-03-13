@@ -49,7 +49,7 @@ def get_other_spell_ranks(spell_name: str, ignore_int: int) -> List[int]:
 	}
 	
 	formatted_spell_name = overrides.get(spell_name, spell_name.replace(' ', '+'))
-	driver.get(f"https://www.wowhead.com/cata/spells/talents/{className}/name:{formatted_spell_name}")
+	driver.get(f"https://www.wowhead.com/cata/spells/pet-abilities/{className}/name:{formatted_spell_name}")
 	driver.implicitly_wait(2)
 
 	spell_ids = []
@@ -77,7 +77,7 @@ def rowcol(v):
 
 to_export = []
 
-driver.get('https://wowhead.com/cata/talent-calc/' + className)
+driver.get('https://wowhead.com/cata/pet-talent-calc/')
 try:
     wait = WebDriverWait(driver, 10)
     accept_button = wait.until(EC.element_to_be_clickable((By.ID, "onetrust-accept-btn-handler")))
@@ -98,6 +98,8 @@ for tree in trees:
 		link = talent.find_element(By.XPATH, "./div/a").get_attribute("href")
 		name = "".join(word if i == 0 else word.title() for i, word in enumerate(link.split("/")[-1].split("-")))
 		fancyName = " ".join(word.title() for i, word in enumerate(link.split("/")[-1].split("-")))
+		print(link)
+		print(_get_spell_id_from_link(link))
 		_working_talents[(row, col)] = {
 			"fieldName": name,
 			"fancyName": fancyName,
