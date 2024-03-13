@@ -9,7 +9,6 @@ addEventListener('message', async (e) => {
 		postMessage({ msg: "idconfirm" })
 		return;
 	}
-    console.log(msg, e.data.inputData)
 	var url = "http://localhost:3333/" + msg;
 	let response = await fetch(url, {
 		method: 'POST',
