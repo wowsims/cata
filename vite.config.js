@@ -11,7 +11,14 @@ export default defineConfig(({ command, mode }) => ({
 		sourcemap: command === "serve" ? "inline" : "false",
 		target: ["es2020"],
 		rollupOptions: {
-			input: glob.sync(path.resolve(__dirname, "ui", "**/index.html").replace(/\\/g, "/")),
+			input: {
+					...glob.sync(path.resolve(__dirname, "ui", "**/index.html").replace(/\\/g, "/")).reduce((acc, cur) => {
+						const name = path.relative(__dirname, cur);
+						acc[name] = cur;
+						return acc;
+					}, {}),
+					// Add shared.scss as a separate entry if needed or handle it separately
+				},
 			output: {
 				assetFileNames: () => "bundle/[name]-[hash].style.css",
 				entryFileNames: () => "bundle/[name]-[hash].entry.js",
