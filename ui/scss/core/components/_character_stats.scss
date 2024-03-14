@@ -1,57 +1,56 @@
-@use "sass:map";
+@use 'sass:map';
 
 .character-stats-root {
-  width: 100%;
-  padding-bottom: .8rem;
-  
-  .character-stats-label {
-    margin-bottom: map-get($spacers, 2);
-  }
+	width: 100%;
 
-  .character-stats-table {
-    width: 100%;
+	.character-stats-label {
+		margin-bottom: map-get($spacers, 2);
+	}
 
-    .character-stats-table-row {
-      border-top: $border-default;
-      font-size: $content-font-size;
+	.character-stats-table {
+		width: 100%;
 
-      .character-stats-table-label,
-      .character-stats-table-value {
-        padding-top: map-get($spacers, 2);
-        padding-bottom: map-get($spacers, 2);
-      }
+		.character-stats-table-row {
+			border-top: $border-default;
+			font-size: $content-font-size;
 
-      .character-stats-table-label {
-        padding-right: map-get($spacers, 2);
-        text-align: left;
-      }
+			.character-stats-table-label,
+			.character-stats-table-value {
+				padding-top: map-get($spacers, 2);
+				padding-bottom: map-get($spacers, 2);
+			}
 
-      .character-stats-table-value {
-        padding-left: map-get($spacers, 2);
-        font-weight: bold;
-        text-align: right;
-      }
-    }
-  }
+			.character-stats-table-label {
+				padding-right: map-get($spacers, 2);
+				text-align: left;
+			}
+
+			.character-stats-table-value {
+				padding-left: map-get($spacers, 2);
+				font-weight: bold;
+				text-align: right;
+			}
+		}
+	}
 }
 
 .bonus-stats-popover {
-  .number-picker-root {
-    flex-direction: column;
+	.number-picker-root {
+		flex-direction: column;
 
-    .number-picker-input {
-      width: 8rem;
-      margin: 0 !important;
-      flex: 1;
-    }
-  }
+		.number-picker-input {
+			width: 8rem;
+			margin: 0 !important;
+			flex: 1;
+		}
+	}
 }
 
 .character-stats-tooltip-row {
 	display: flex;
 	justify-content: space-between;
 
-  span:first-child {
-    margin-right: map-get($spacers, 2);
-  }
+	span:first-child {
+		margin-right: map-get($spacers, 2);
+	}
 }
