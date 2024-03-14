@@ -327,7 +327,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		addStatWeightsAction(this, this.individualConfig.epStats, this.individualConfig.epPseudoStats, this.individualConfig.epReferenceStat);
 
 		const _characterStats = new CharacterStats(
-			this.rootElem.getElementsByClassName('sim-sidebar-footer')[0] as HTMLElement,
+			this.rootElem.querySelector('.sim-sidebar-stats') as HTMLElement,
 			this.player,
 			this.individualConfig.displayStats,
 			this.individualConfig.modifyDisplayStats,
