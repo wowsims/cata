@@ -1,7 +1,7 @@
-import path from "path";
-import glob from "glob";
-import { defineConfig } from 'vite'
 import fs from 'fs';
+import glob from "glob";
+import path from "path";
+import { defineConfig } from 'vite'
 
 function serveExternalAssets() {
   return {
@@ -11,7 +11,7 @@ function serveExternalAssets() {
         const workerMappings = {
           '/cata/sim_worker.js': '/cata/local_worker.js',
           '/cata/net_worker.js': '/cata/net_worker.js',
-		  '/cata/lib.wasm': '/cata/lib.wasm',
+		      '/cata/lib.wasm': '/cata/lib.wasm',
         };
 
         if (Object.keys(workerMappings).includes(req.url)) {
@@ -43,7 +43,7 @@ function serveFile(res, filePath) {
     res.writeHead(200, { 'Content-Type': contentType });
     fs.createReadStream(filePath).pipe(res);
   } else {
-	console.log(filePath)
+	  console.log("Not found on filesystem: ", filePath)
     res.writeHead(404, { 'Content-Type': 'text/plain' });
     res.end('Not Found');
   }

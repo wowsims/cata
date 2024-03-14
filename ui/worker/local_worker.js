@@ -1,6 +1,6 @@
 var workerID = "";
 
-addEventListener('message', async (e) => {
+addEventListener('message', async e => {
 	const msg = e.data.msg;
 	const id = e.data.id;
 
@@ -22,7 +22,7 @@ addEventListener('message', async (e) => {
 	var outputData;
 	if (msg == "raidSimAsync" || msg == "statWeightsAsync" || msg == "bulkSimAsync") {
 		while (true) {
-			let progressResponse = await fetch("/asyncProgress", {
+			let progressResponse = await fetch("http://localhost:3333/asyncProgress", {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/x-protobuf'
