@@ -5,6 +5,7 @@ import { ResultsViewer } from './components/results_viewer.js';
 import { SimHeader } from './components/sim_header';
 import { SimTab } from './components/sim_tab.js';
 import { SimTitleDropdown } from './components/sim_title_dropdown.js';
+import { SocialLinks } from './components/social_links';
 import { LaunchStatus, SimStatus } from './launched_sims.js';
 import { PlayerSpec } from './player_spec';
 import { ActionId } from './proto_utils/action_id.js';
@@ -64,10 +65,11 @@ export abstract class SimUI extends Component {
 				<div class="sim-container">
 					<aside class="sim-sidebar">
 						<div class="sim-title"></div>
-						<div class="sim-sidebar-content ${config.noticeText ? 'smaller' : ''}">
+						<div class="sim-sidebar-content">
 							<div class="sim-sidebar-actions within-raid-sim-hide"></div>
 							<div class="sim-sidebar-results within-raid-sim-hide"></div>
-							<div class="sim-sidebar-footer"></div>
+							<div class="sim-sidebar-stats"></div>
+							<div class="sim-sidebar-socials"></div>
 						</div>
 					</aside>
 					<div class="sim-content container-fluid"></div>
@@ -139,15 +141,13 @@ export abstract class SimUI extends Component {
 
 		this.addKnownIssues(config);
 
+		// Sidebar Contents
+
 		const titleElem = this.rootElem.querySelector('.sim-title') as HTMLElement;
 		new SimTitleDropdown(titleElem, config.spec, { noDropdown: this.isWithinRaidSim });
 
-		const resultsViewerElem = this.rootElem.getElementsByClassName('sim-sidebar-results')[0] as HTMLElement;
-		this.resultsViewer = new ResultsViewer(resultsViewerElem);
-
-		this.simActionsContainer = this.rootElem.getElementsByClassName('sim-sidebar-actions')[0] as HTMLElement;
-
-		new NumberPicker(this.simActionsContainer, this.sim, {
+		this.simActionsContainer = this.rootElem.querySelector('.sim-sidebar-actions') as HTMLElement;
+		this.iterationsPicker = new NumberPicker(this.simActionsContainer, this.sim, {
 			label: 'Iterations',
 			extraCssClasses: ['iterations-picker', 'within-raid-sim-hide'],
 			changedEvent: (sim: Sim) => sim.iterationsChangeEmitter,
@@ -155,9 +155,16 @@ export abstract class SimUI extends Component {
 			setValue: (eventID: EventID, sim: Sim, newValue: number) => {
 				sim.setIterations(eventID, newValue);
 			},
-		});
+		}).rootElem;
 
-		this.iterationsPicker = this.rootElem.getElementsByClassName('iterations-picker')[0] as HTMLElement;
+		const resultsViewerElem = this.rootElem.querySelector('.sim-sidebar-results') as HTMLElement;
+		this.resultsViewer = new ResultsViewer(resultsViewerElem);
+
+		const socialsContainer = this.rootElem.querySelector('.sim-sidebar-socials') as HTMLElement;
+		socialsContainer.appendChild(SocialLinks.buildDiscordLink());
+		socialsContainer.appendChild(SocialLinks.buildGitHubLink());
+		socialsContainer.appendChild(SocialLinks.buildPatreonLink());
+
 		this.simTabContentsContainer = this.rootElem.querySelector('.sim-main.tab-content') as HTMLElement;
 
 		if (!this.isWithinRaidSim) {
