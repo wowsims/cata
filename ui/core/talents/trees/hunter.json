@@ -470,11 +470,7 @@
 			34486,
 			34487
 		  ],
-		  "maxPoints": 3,
-		  "prereqLocation": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  }
+		  "maxPoints": 3
 		},
 		{
 		  "fieldName": "readiness",
@@ -512,7 +508,11 @@
 			53241,
 			53243
 		  ],
-		  "maxPoints": 2
+		  "maxPoints": 2,
+		  "prereqLocation": {
+		    "rowIdx": 4,
+			"colIdx": 1
+		  }
 		},
 		{
 		  "fieldName": "chimeraShot",

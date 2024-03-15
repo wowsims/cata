@@ -214,11 +214,7 @@
 		  "spellIds": [
 			64976
 		  ],
-		  "maxPoints": 1,
-		  "prereqLocation": {
-			"rowIdx": 4,
-			"colIdx": 1
-		  }
+		  "maxPoints": 1
 		},
 		{
 		  "fieldName": "suddenDeath",
@@ -257,7 +253,11 @@
 		  "spellIds": [
 			85388
 		  ],
-		  "maxPoints": 1
+		  "maxPoints": 1,
+		    "prereqLocation": {
+			  "rowIdx": 4,
+			  "colIdx": 1
+		  }
 		},
 		{
 		  "fieldName": "bladestorm",
