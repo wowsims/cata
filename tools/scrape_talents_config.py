@@ -117,8 +117,15 @@ for tree in trees:
 		if dsstr:
 			length = int(dsstr)
 
-		direction = arrow.get_attribute("class").split()[-1].split("-")[-1]
-		offset_row, offset_col = {"left": (0, -1), "right": (0, 1), "down": (1, 0)}[direction]
+		# Splitting the direction to handle combined directions
+		directions = arrow.get_attribute("class").split()[-1].split("-")[-1:]
+		offset_row, offset_col = 0, 0
+		for direction in directions:
+			# Update offset for each direction
+			print()
+			dir_offset_row, dir_offset_col = {"left": (0, -1), "right": (0, 1), "down": (1, 0), "up": (-1, 0)}.get(direction, (0, 0))
+			offset_row += dir_offset_row
+			offset_col += dir_offset_col
 
 		end_row = prereq_row + offset_row * length
 		end_col = prereq_col + offset_col * length
