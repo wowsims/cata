@@ -219,13 +219,11 @@ func (s *server) handleAsyncAPI(w http.ResponseWriter, r *http.Request) {
 func (s *server) setupAsyncServer() {
 	// All async handlers here will call the addNewSim, generating a new UUID and cached progress state.
 	for route := range asyncAPIHandlers {
-		http.HandleFunc(route, func(w http.ResponseWriter, r *http.Request) {
-			s.handleAsyncAPI(w, r)
-		})
+		http.Handle(route, corsMiddleware(http.HandlerFunc(s.handleAsyncAPI)))
 	}
 
 	// asyncProgress will fetch the current progress of a simulation by its UUID.
-	http.HandleFunc("/asyncProgress", func(w http.ResponseWriter, r *http.Request) {
+	http.Handle("/asyncProgress", corsMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			return
@@ -261,9 +259,20 @@ func (s *server) setupAsyncServer() {
 		}
 		w.Header().Add("Content-Type", "application/x-protobuf")
 		w.Write(outbytes)
+	})))
+}
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		next.ServeHTTP(w, r)
 	})
 }
-
 func (s *server) runServer(useFS bool, host string, launchBrowser bool, simName string, wasm bool, inputReader *bufio.Reader) {
 	s.setupAsyncServer()
 
@@ -277,7 +286,7 @@ func (s *server) runServer(useFS bool, host string, launchBrowser bool, simName 
 	}
 
 	for route := range handlers {
-		http.HandleFunc(route, handleAPI)
+		http.Handle(route, corsMiddleware(http.HandlerFunc(handleAPI)))
 	}
 
 	http.HandleFunc("/version", func(resp http.ResponseWriter, req *http.Request) {
@@ -394,7 +403,6 @@ func handleAPI(w http.ResponseWriter, r *http.Request) {
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-
 		return
 	}
 	handler, ok := handlers[endpoint]
@@ -410,6 +418,13 @@ func handleAPI(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
+	if googleProto.Equal(msg, msg.ProtoReflect().New().Interface()) {
+		log.Printf("Request is empty")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	result := handler.handle(msg)
 
 	outbytes, err := googleProto.Marshal(result)
