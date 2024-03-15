@@ -95,8 +95,6 @@ import (
 proto.Class_ClassUnknown: 0.0,'''
     for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Druid"]:
         cName = c.split()
-        if len(cName) > 1:
-            cName[1] = cName[1].lower()
         cName = ''.join(cName)
         mc = float(cs.MCrit[str(BASE_LEVEL)][Offs[c]])*100
         output += f"\nproto.Class_Class{cName}: {mc:.4f},"
@@ -106,8 +104,6 @@ proto.Class_ClassUnknown: 0.0,'''
 proto.Class_ClassUnknown: {},'''
     for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Druid"]:
         cName = c.split()
-        if len(cName) > 1:
-            cName[1] = cName[1].lower()
         cName = ''.join(cName)
         output += f"\nproto.Class_Class{cName}: {{"
         mp = float(cs.BaseMp[str(BASE_LEVEL)][Offs[c]])
