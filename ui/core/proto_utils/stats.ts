@@ -1,4 +1,4 @@
-import { Class, Stat, PseudoStat, UnitStats } from '../proto/common.js';
+import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { getEnumValues } from '../utils.js';
 import { getClassStatName, pseudoStatNames } from './names.js';
 
@@ -70,12 +70,9 @@ export class UnitStat {
 	}
 
 	static getAll(): Array<UnitStat> {
-		const allStats = (getEnumValues(Stat) as Array<Stat>).filter(stat => ![Stat.StatEnergy, Stat.StatRage].includes(stat));
+		const allStats = getEnumValues(Stat) as Array<Stat>;
 		const allPseudoStats = getEnumValues(PseudoStat) as Array<PseudoStat>;
-		return [
-			allStats.map(stat => UnitStat.fromStat(stat)),
-			allPseudoStats.map(stat => UnitStat.fromPseudoStat(stat)),
-		].flat();
+		return [allStats.map(stat => UnitStat.fromStat(stat)), allPseudoStats.map(stat => UnitStat.fromPseudoStat(stat))].flat();
 	}
 }
 
@@ -101,15 +98,16 @@ export class Stats {
 		}
 
 		for (let i = 0; i < expectedLen; i++) {
-			if (stats[i] == null)
-				stats[i] = 0;
+			if (stats[i] == null) stats[i] = 0;
 		}
 		return stats;
 	}
 
 	equals(other: Stats): boolean {
-		return this.stats.every((newStat, statIdx) => newStat == other.getStat(statIdx)) &&
+		return (
+			this.stats.every((newStat, statIdx) => newStat == other.getStat(statIdx)) &&
 			this.pseudoStats.every((newStat, statIdx) => newStat == other.getPseudoStat(statIdx))
+		);
 	}
 
 	getStat(stat: Stat): number {
@@ -151,19 +149,22 @@ export class Stats {
 	add(other: Stats): Stats {
 		return new Stats(
 			this.stats.map((value, stat) => value + other.stats[stat]),
-			this.pseudoStats.map((value, stat) => value + other.pseudoStats[stat]));
+			this.pseudoStats.map((value, stat) => value + other.pseudoStats[stat]),
+		);
 	}
 
 	subtract(other: Stats): Stats {
 		return new Stats(
 			this.stats.map((value, stat) => value - other.stats[stat]),
-			this.pseudoStats.map((value, stat) => value - other.pseudoStats[stat]));
+			this.pseudoStats.map((value, stat) => value - other.pseudoStats[stat]),
+		);
 	}
 
 	scale(scalar: number): Stats {
 		return new Stats(
-			this.stats.map((value, stat) => value * scalar),
-			this.pseudoStats.map((value, stat) => value * scalar));
+			this.stats.map((value, _stat) => value * scalar),
+			this.pseudoStats.map((value, _stat) => value * scalar),
+		);
 	}
 
 	computeEP(epWeights: Stats): number {
@@ -179,7 +180,7 @@ export class Stats {
 
 	belowCaps(statCaps: Stats): boolean {
 		for (const [idx, stat] of this.stats.entries()) {
-			if ((statCaps.stats[idx] > 0) && (stat > statCaps.stats[idx])) {
+			if (statCaps.stats[idx] > 0 && stat > statCaps.stats[idx]) {
 				return false;
 			}
 		}
@@ -191,8 +192,8 @@ export class Stats {
 		return this.stats.slice();
 	}
 
-	toJson(): Object {
-		return UnitStats.toJson(this.toProto()) as Object;
+	toJson(): object {
+		return UnitStats.toJson(this.toProto()) as object;
 	}
 
 	toProto(): UnitStats {
