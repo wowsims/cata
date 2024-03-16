@@ -26,7 +26,7 @@ type Hunter struct {
 	// The most recent time at which moving could have started, for trap weaving.
 	mayMoveAt time.Duration
 
-	AspectOfTheDragonhawk *core.Spell
+	AspectOfTheHawk *core.Spell
 	AspectOfTheFox      *core.Spell
 
 	FireTrapTimer *core.Timer
@@ -59,7 +59,7 @@ type Hunter struct {
 	// Fake spells to encapsulate weaving logic.
 	TrapWeaveSpell *core.Spell
 
-	AspectOfTheDragonhawkAura *core.Aura
+	AspectOfTheHawkAura *core.Aura
 	ImprovedSteadyShotAura    *core.Aura
 	LockAndLoadAura           *core.Aura
 	RapidFireAura             *core.Aura
@@ -117,6 +117,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerSteadyShotSpell() // Todo: Probably add a counter so we can check for imp ss?
 	hunter.registerArcaneShotSpell()
 	hunter.registerKillShotSpell()
+	hunter.registerAspectOfTheHawkSpell()
 	hunter.registerSerpentStingSpell()
 }
 
