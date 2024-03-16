@@ -10,7 +10,7 @@ func (hunter *Hunter) registerMultiShotSpell(timer *core.Timer) {
 	numHits := hunter.Env.GetNumTargets() // Multi is uncapped in Cata
 
 	hunter.MultiShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 49048},
+		ActionID:    core.ActionID{SpellID: 2643},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
@@ -22,7 +22,6 @@ func (hunter *Hunter) registerMultiShotSpell(timer *core.Timer) {
 			DefaultCast: core.Cast{
 				GCD:      time.Second,
 			},
-			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 		},
 
 		BonusCritRating: 0, //+4*core.CritRatingPerCritChance*float64(hunter.Talents.ImprovedBarrage),

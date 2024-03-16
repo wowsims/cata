@@ -118,7 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [HunterInputs.PetTypeInput(), HunterInputs.WeaponAmmo(), HunterInputs.UseHuntersMark()],
+	playerIconInputs: [HunterInputs.PetTypeInput(), HunterInputs.UseHuntersMark()],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: BMInputs.BMRotationConfig,
 	petConsumeInputs: [],

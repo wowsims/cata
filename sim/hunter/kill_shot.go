@@ -30,17 +30,18 @@ func (hunter *Hunter) registerKillShotSpell() {
 			return sim.IsExecutePhase20()
 		},
 
-		BonusCritRating: 0 +
-			5*core.CritRatingPerCritChance*float64(hunter.Talents.SniperTraining),
+		BonusCritRating: 0 + 5 * core.CritRatingPerCritChance*float64(hunter.Talents.SniperTraining),
 		DamageMultiplier: 1, //
 		CritMultiplier: 1,//  hunter.critMultiplier(true, true, false),
 		ThreatMultiplier: 1,
 		// https://web.archive.org/web/20120207222124/http://elitistjerks.com/f74/t110306-hunter_faq_cataclysm_edition_read_before_asking_questions/
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// (100% weapon dmg + 45% RAP + 543) * 150%
-			baseDamage := 0.45*spell.RangedAttackPower(target) +
-				hunter.AutoAttacks.Ranged().BaseDamage(sim) + 543
-			baseDamage *= 1.5
+			normalizedWeaponDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
+			rapBonusDamage := spell.RangedAttackPower(target) * 0.45
+			flatBonus := 543.0
+
+			baseDamage := (normalizedWeaponDamage + rapBonusDamage + flatBonus) * 1.5
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	})

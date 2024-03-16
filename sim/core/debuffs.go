@@ -696,7 +696,7 @@ func HuntersMarkAura(target *Unit, points int32, glyphed bool) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "HuntersMark-" + strconv.Itoa(int(bonus)),
 		Tag:      HuntersMarkAuraTag,
-		ActionID: ActionID{SpellID: 53338},
+		ActionID: ActionID{SpellID: 1130},
 		Duration: NeverExpires,
 	})
 

@@ -22,12 +22,9 @@ func (hunter *SurvivalHunter) registerCobraShotSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      time.Second,
-				CastTime: time.Second * 2,
+				CastTime: time.Millisecond * 2000,
 			},
-			IgnoreHaste: true,
-			CastTime: func(spell *core.Spell) time.Duration {
-				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
-			},
+			IgnoreHaste: false,
 		},
 
 		// BonusCritRating: 0 +

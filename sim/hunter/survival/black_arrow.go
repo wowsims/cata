@@ -57,7 +57,12 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 				// https://web.archive.org/web/20120207222124/http://elitistjerks.com/f74/t110306-hunter_faq_cataclysm_edition_read_before_asking_questions/
 				//  66.5% RAP + 2849 (total damage) - changed 6/28 in 4.2 (based off spell crit multiplier, modified by toxicology)
 				// https://wago.tools/db2/SpellEffect?build=4.4.0.53750&filter[SpellID]=exact%3A3674&page=1
-				dot.SnapshotBaseDamage = (2849/10) + (0.665 * (dot.Spell.Unit.GetStat(stats.RangedAttackPower)+dot.Spell.Unit.PseudoStats.MobTypeAttackPower))
+				baseDamage := 2849.0
+				rap := dot.Spell.Unit.GetStat(stats.RangedAttackPower) + dot.Spell.Unit.PseudoStats.MobTypeAttackPower
+				percentageOfRAP := 0.665
+
+				// SnapshotBaseDamage calculation for the DoT, divided by 10 to spread across all ticks
+				dot.SnapshotBaseDamage = (baseDamage / 10) + (percentageOfRAP * rap)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
