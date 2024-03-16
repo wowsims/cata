@@ -118,8 +118,6 @@ enum Stat {
 	StatArmorPenetration = 15;
 	StatExpertise = 16;
 	StatMana = 17;
-	StatEnergy = 18;
-	StatRage = 19;
 	StatArmor = 20;
 	StatRangedAttackPower = 21;
 	StatDefense = 22;
@@ -136,11 +134,6 @@ enum Stat {
 	StatShadowResistance = 33;
 	StatBonusArmor = 34;
 	StatMastery = 35;
-	StatRunicPower = 36; // Placeholder: not used yet.
-	StatBloodRune = 37; // Placeholder: not used yet.
-	StatFrostRune = 38; // Placeholder: not used yet.
-	StatUnholyRune = 39; // Placeholder: not used yet.
-	StatDeathRune = 40; // Placeholder: not used yet.
 
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
