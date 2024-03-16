@@ -2,8 +2,10 @@ package rogue
 
 import (
 	"math"
+	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (rogue *Rogue) ApplyTalents() {
@@ -651,15 +653,48 @@ func (rogue *Rogue) registerSanguinaryVein() {
 		return
 	}
 
+	svBonus := 1 + 0.08*float64(rogue.Talents.SanguinaryVein)
+	svSpellID := core.TernaryInt32(rogue.Talents.SanguinaryVein == 1, 79146, 79147)
+
+	svDebuffArray := rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return target.GetOrRegisterAura(core.Aura{
+			Label:    "Sanguinary Vein Debuff",
+			ActionID: core.ActionID{SpellID: svSpellID},
+			Duration: core.NeverExpires,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				rogue.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= svBonus
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				rogue.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= svBonus
+			},
+		})
+	})
+
+	rogue.Env.RegisterPreFinalizeEffect(func() {
+		if rogue.Rupture != nil {
+			rogue.Rupture.RelatedAuras = append(rogue.Rupture.RelatedAuras, svDebuffArray)
+		}
+		if rogue.Hemorrhage != nil && rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfHemorrhage) {
+			rogue.Hemorrhage.RelatedAuras = append(rogue.Hemorrhage.RelatedAuras, svDebuffArray)
+		}
+	})
+
 	rogue.RegisterAura(core.Aura{
-		Label:    "Sanguinary Vein",
+		Label:    "Sanguinary Vein Talent",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if rogue.CurrentTarget.HasActiveAuraWithTag(RogueBleedTag) { // TheBackstabi - Strictly speaking this works on any bleed, but this is fine
-				spell.DamageMultiplier += 0.08 * float64(rogue.Talents.SanguinaryVein)
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			if spell == rogue.Rupture || (spell == rogue.Hemorrhage && rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfHemorrhage)) {
+				aura := svDebuffArray.Get(result.Target)
+				dot := spell.Dot(result.Target)
+				aura.Duration = dot.TickLength * time.Duration(dot.NumberOfTicks)
+				aura.Activate(sim)
 			}
 		},
 	})
