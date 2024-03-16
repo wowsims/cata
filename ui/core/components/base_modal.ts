@@ -1,33 +1,30 @@
-import { CloseButton, CloseButtonConfig } from './close_button';
-import { Component } from './component';
-
 import { Modal } from 'bootstrap';
+
+import { Component } from './component';
 
 type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
 
 type BaseModalConfig = {
-	closeButton?: CloseButtonConfig,
 	// Whether or not to add a modal-footer element
-	footer?: boolean,
+	footer?: boolean;
 	// Whether or not to add a modal-header element
-	header?: boolean,
+	header?: boolean;
 	// Whether or not to allow modal contents to extend past the screen height.
 	// When true, the modal is fixed to the screen height and body contents will scroll.
-	scrollContents?: boolean,
+	scrollContents?: boolean;
 	// Specify the size of the modal
-	size?: ModalSize,
+	size?: ModalSize;
 	// A title for the modal
-	title?: string | null,
+	title?: string | null;
 };
 
 const DEFAULT_CONFIG = {
-	closeButton: {},
 	footer: false,
 	header: true,
 	scrollContents: false,
 	size: 'lg' as ModalSize,
 	title: null,
-}
+};
 
 export class BaseModal extends Component {
 	readonly modalConfig: BaseModalConfig;
@@ -73,65 +70,67 @@ export class BaseModal extends Component {
 		this.body.classList.add('modal-body');
 		container.appendChild(this.body);
 
-		this.addCloseButton();
-
 		if (this.modalConfig.footer) {
 			this.footer = document.createElement('div');
 			this.footer.classList.add('modal-footer');
 			container.appendChild(this.footer);
 		}
 
-		this.modal = new Modal(this.rootElem);
+		this.modal = new Modal(this.rootElem, { keyboard: true });
 		this.open();
 
-		this.rootElem.addEventListener('hidden.bs.modal', (event) => {
+		this.rootElem.addEventListener('hidden.bs.modal', event => {
 			this.rootElem.remove();
 			this.dispose();
-		})
+		});
 	}
 
-	private addCloseButton() {
-		new CloseButton(this.header ? this.header : this.body, () => this.close(), this.modalConfig.closeButton);
+	protected onShow(_e: Event) {
+		return;
 	}
-
-	protected onShow(e: Event) {}
 
 	open() {
-		// Hacks for better looking multi modals
-		this.rootElem.addEventListener('show.bs.modal', async event => {
-			// Prevent the event from bubbling up to parent modals
-			event.stopImmediatePropagation();
-
-			// Wait for the backdrop to be injected into the DOM
-			const backdrop = await new Promise((resolve) => {
-				setTimeout(() => {
-					// @ts-ignore
-					if (this.modal._backdrop._element)
-						// @ts-ignore
-						resolve(this.modal._backdrop._element)
-				}, 100);
-			}) as HTMLElement;
-			// Then move it from <body> to the parent element
-			this.rootElem.insertAdjacentElement('afterend', backdrop);
-			this.onShow(event);
-		});
-
-		this.rootElem.addEventListener('hide.bs.modal', (event) => {
-			// Prevent the event from bubbling up to parent modals
-			event.stopImmediatePropagation();
-		});
-
-		this.rootElem.addEventListener('hidden.bs.modal', (event) => {
-			// Prevent the event from bubbling up to parent modals
-			// Do not use stopImmediatePropagation here. It prevents Bootstrap from removing the modal,
-			// leading to other issues
-			event.stopPropagation();
-		})
-
+		this.rootElem.addEventListener('show.bs.modal', this.showBSFn.bind(this));
+		this.rootElem.addEventListener('hide.bs.modal', this.hideBSFn.bind(this));
+		this.rootElem.addEventListener('hidden.bs.modal', this.hiddenBSFn.bind(this));
 		this.modal.show();
 	}
 
 	close() {
 		this.modal.hide();
+		this.rootElem.removeEventListener('show.bs.modal', this.showBSFn.bind(this));
+		this.rootElem.removeEventListener('hide.bs.modal', this.hideBSFn.bind(this));
+		this.rootElem.removeEventListener('hidden.bs.modal', this.hiddenBSFn.bind(this));
+	}
+
+	// Hacks for better looking multi modals
+	private async showBSFn(event: Event) {
+		// Prevent the event from bubbling up to parent modals
+		event.stopImmediatePropagation();
+
+		// Wait for the backdrop to be injected into the DOM
+		const backdrop = (await new Promise(resolve => {
+			setTimeout(() => {
+				// @ts-ignore
+				if (this.modal._backdrop._element)
+					// @ts-ignore
+					resolve(this.modal._backdrop._element);
+			}, 100);
+		})) as HTMLElement;
+		// Then move it from <body> to the parent element
+		this.rootElem.insertAdjacentElement('afterend', backdrop);
+		this.onShow(event);
+	}
+
+	private hideBSFn(event: Event) {
+		// Prevent the event from bubbling up to parent modals
+		event.stopImmediatePropagation();
+	}
+
+	private hiddenBSFn(event: Event) {
+		// Prevent the event from bubbling up to parent modals
+		// Do not use stopImmediatePropagation here. It prevents Bootstrap from removing the modal,
+		// leading to other issues
+		event.stopPropagation();
 	}
 }

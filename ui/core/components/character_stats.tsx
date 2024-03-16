@@ -312,6 +312,8 @@ export class CharacterStats extends Component {
 			</a>
 		);
 
+		Tooltip.getOrCreateInstance(link.children[0], { title: `Bonus ${statName}` });
+
 		let popover: Popover | null = null;
 
 		const picker = new NumberPicker(null, this.player, {
@@ -326,7 +328,7 @@ export class CharacterStats extends Component {
 			},
 		});
 
-		popover = new Popover(link, {
+		popover = Popover.getOrCreateInstance(link, {
 			customClass: 'bonus-stats-popover',
 			placement: 'right',
 			fallbackPlacement: ['left'],
