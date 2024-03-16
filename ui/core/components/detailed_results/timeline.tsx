@@ -738,7 +738,7 @@ export class Timeline extends ResultComponent {
 			if (percentageResources.includes(resourceType)) {
 				resourceElem.textContent = ((resourceLogGroup.valueAfter / startValue) * 100).toFixed(0) + '%';
 			} else {
-				if (resourceType == ResourceType.ResourceTypeEnergy) {
+				if (resourceType == ResourceType.ResourceTypeEnergy || resourceType == ResourceType.ResourceTypeFocus) {
 					const bgElem = document.createElement('div');
 					bgElem.classList.add('rotation-timeline-resource-fill');
 					bgElem.style.height = ((resourceLogGroup.valueAfter / startValue) * 100).toFixed(0) + '%';

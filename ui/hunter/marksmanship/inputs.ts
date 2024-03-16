@@ -39,17 +39,5 @@ export const MMRotationConfig = {
 			labelTooltip: 'Casts Serpent Sting on multiple targets',
 			changeEmitter: (player: Player<Spec.SpecMarksmanshipHunter>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
 		}),
-		InputHelpers.makeRotationNumberInput<Spec.SpecMarksmanshipHunter>({
-			fieldName: 'viperStartManaPercent',
-			label: 'Viper Start Mana %',
-			labelTooltip: 'Switch to Aspect of the Viper when mana goes below this amount.',
-			percent: true,
-		}),
-		InputHelpers.makeRotationNumberInput<Spec.SpecMarksmanshipHunter>({
-			fieldName: 'viperStopManaPercent',
-			label: 'Viper Stop Mana %',
-			labelTooltip: 'Switch back to Aspect of the Hawk when mana goes above this amount.',
-			percent: true,
-		}),
 	],
 };

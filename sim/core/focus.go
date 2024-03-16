@@ -167,8 +167,11 @@ func (fb *focusBar) addFocusInternal(sim *Simulation, amount float64, metrics *R
 
     // Check if within the first 100ms of a new second
     if remainderMilliseconds < 100 {
+        if sim.Log != nil {
+            fb.unit.Log(sim, "Gained %0.3f focus from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, fb.currentFocus, newFocus)
+        }
         // Add metrics event here as needed
-		//metrics.AddEvent(amount, newFocus-fb.currentFocus)
+		metrics.AddEvent(amount, newFocus-fb.currentFocus)
     }
 	crossedThreshold := fb.cumulativeFocusDecisionThresholds == nil || fb.cumulativeFocusDecisionThresholds[int(fb.currentFocus)] != fb.cumulativeFocusDecisionThresholds[int(newFocus)]
 	fb.currentFocus = newFocus

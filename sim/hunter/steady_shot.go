@@ -7,6 +7,8 @@ import (
 )
 
 func (hunter *Hunter) registerSteadyShotSpell() {
+	
+	ssMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 49052})
 	if hunter.Talents.ImprovedSteadyShot > 0 {
 		hunter.ImprovedSteadyShotAura = hunter.RegisterAura(core.Aura{
 			Label:    "Improved Steady Shot",
@@ -54,7 +56,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.21 * spell.RangedAttackPower(target) +
 				hunter.AutoAttacks.Ranged().BaseDamage(sim)*2.8/hunter.AutoAttacks.Ranged().SwingSpeed + 280
-			hunter.AddFocus(sim, 6, hunter.NewFocusMetrics(spell.ActionID))
+			hunter.AddFocus(sim, 6, ssMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			spell.DealDamage(sim, result)
 		},

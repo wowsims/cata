@@ -25,7 +25,7 @@ func RegisterSurvivalHunter() {
 
 func (hunter *SurvivalHunter) Initialize() {
 	// Initialize global Hunter spells
-	hunter.RegisterClass()
+	hunter.Hunter.Initialize()
 
 	// Spec specific spells
 	hunter.registerExplosiveShotSpell()

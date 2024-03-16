@@ -34,8 +34,6 @@ type Hunter struct {
 
 	AimedShot       *core.Spell
 	ArcaneShot      *core.Spell
-	BlackArrow      *core.Spell
-	ChimeraShot     *core.Spell
 	//ExplosiveShotR *core.Spell
 	// ExplosiveShotR3 *core.Spell
 	ExplosiveTrap   *core.Spell
@@ -53,7 +51,6 @@ type Hunter struct {
 	TrapWeaveSpell *core.Spell
 
 	AspectOfTheDragonhawkAura *core.Aura
-	AspectOfTheViperAura      *core.Aura
 	ImprovedSteadyShotAura    *core.Aura
 	LockAndLoadAura           *core.Aura
 	RapidFireAura             *core.Aura
@@ -90,49 +87,11 @@ func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (hunter *Hunter) Initialize() {
-	// Update auto crit multipliers now that we have the targets.
-	hunter.AutoAttacks.MHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
-	hunter.AutoAttacks.OHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
-	hunter.AutoAttacks.RangedConfig().CritMultiplier = 1// hunter.critMultiplier(false, false, false)
-
-	// hunter.registerAspectOfTheDragonhawkSpell()
-	// hunter.registerAspectOfTheViperSpell()
-
-	// multiShotTimer := hunter.NewTimer()
-	// arcaneShotTimer := hunter.NewTimer()
-	// fireTrapTimer := hunter.NewTimer()
-
-	hunter.fireTrapTimer = hunter.NewTimer()
-	// hunter.registerAimedShotSpell(multiShotTimer)
-	// hunter.registerArcaneShotSpell(arcaneShotTimer)
-	// hunter.registerBlackArrowSpell(fireTrapTimer)
-	// hunter.registerChimeraShotSpell()
-	// hunter.registerExplosiveShotSpell(arcaneShotTimer)
-	// hunter.registerExplosiveTrapSpell(fireTrapTimer)
-	// hunter.registerKillShotSpell()
-	// hunter.registerMultiShotSpell(multiShotTimer)
-	// hunter.registerRaptorStrikeSpell()
-	// hunter.registerScorpidStingSpell()
-	// hunter.registerSerpentStingSpell()
-	// hunter.registerSilencingShotSpell()
-	// hunter.registerSteadyShotSpell()
-	// hunter.registerVolleySpell()
-
-	// hunter.registerKillCommandCD()
-	// hunter.registerRapidFireCD()
-
-	// if hunter.Options.UseHuntersMark {
-	//  	hunter.RegisterPrepullAction(0, func(sim *core.Simulation) {
-	//  		//huntersMarkAura := core.HuntersMarkAura(hunter.CurrentTarget, 0, false)
-	//  		//huntersMarkAura.Activate(sim)
-	//  	})
-	//  }
-}
-func (hunter *Hunter) RegisterClass() {
 	hunter.AutoAttacks.MHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
 	hunter.AutoAttacks.OHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
 	hunter.AutoAttacks.RangedConfig().CritMultiplier = 1// hunter.critMultiplier(false, false, false)
 	hunter.registerSteadyShotSpell() // Todo: Probably add a counter so we can check for imp ss?
+	hunter.registerArcaneShotSpell()
 }
 
 func (hunter *Hunter) Reset(_ *core.Simulation) {
