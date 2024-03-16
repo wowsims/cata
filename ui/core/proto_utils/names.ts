@@ -132,8 +132,6 @@ export const statOrder: Array<Stat> = [
 	Stat.StatMeleeHaste,
 	Stat.StatArmorPenetration,
 	Stat.StatExpertise,
-	Stat.StatEnergy,
-	Stat.StatRage,
 	Stat.StatDefense,
 	Stat.StatBlock,
 	Stat.StatBlockValue,
@@ -145,11 +143,6 @@ export const statOrder: Array<Stat> = [
 	Stat.StatFrostResistance,
 	Stat.StatNatureResistance,
 	Stat.StatShadowResistance,
-	Stat.StatRunicPower,
-	Stat.StatBloodRune,
-	Stat.StatFrostRune,
-	Stat.StatUnholyRune,
-	Stat.StatDeathRune,
 ];
 
 export const statNames: Map<Stat, string> = new Map([
@@ -171,8 +164,6 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatArmorPenetration, 'Armor Pen'],
 	[Stat.StatExpertise, 'Expertise'],
 	[Stat.StatMana, 'Mana'],
-	[Stat.StatEnergy, 'Energy'],
-	[Stat.StatRage, 'Rage'],
 	[Stat.StatArmor, 'Armor'],
 	[Stat.StatRangedAttackPower, 'Ranged AP'],
 	[Stat.StatDefense, 'Defense'],
@@ -188,11 +179,6 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatNatureResistance, 'Nature Resistance'],
 	[Stat.StatShadowResistance, 'Shadow Resistance'],
 	[Stat.StatBonusArmor, 'Bonus Armor'],
-	[Stat.StatRunicPower, 'Runic Power'],
-	[Stat.StatBloodRune, 'Blood Rune'],
-	[Stat.StatFrostRune, 'Frost Rune'],
-	[Stat.StatUnholyRune, 'Unholy Rune'],
-	[Stat.StatDeathRune, 'Death Rune'],
 ]);
 
 export const pseudoStatOrder: Array<PseudoStat> = [
