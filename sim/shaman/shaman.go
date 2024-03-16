@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-var TalentTreeSizes = [3]int{25, 29, 26}
+var TalentTreeSizes = [3]int{19, 19, 20}
 
 // Start looking to refresh 5 minute totems at 4:55.
 const TotemRefreshTime5M = time.Second * 295
@@ -107,7 +107,7 @@ type Shaman struct {
 	FlameShock *core.Spell
 	FrostShock *core.Spell
 
-	FeralSpirit  *core.Spell
+	FeralSpirit *core.Spell
 	//SpiritWolves *SpiritWolves
 
 	//FireElemental      *FireElemental
