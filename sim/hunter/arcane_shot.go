@@ -17,7 +17,7 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
-			Cost: 25,
+			Cost: 25 - float64(hunter.Talents.Efficiency),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

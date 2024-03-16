@@ -95,7 +95,7 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
-func (hunter *Hunter) critMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS bool) float64 {
+func (hunter *Hunter) CritMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS bool) float64 {
 	primaryModifier := 1.0
 	secondaryModifier := 0.0
 
@@ -119,6 +119,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerKillShotSpell()
 	hunter.registerAspectOfTheHawkSpell()
 	hunter.registerSerpentStingSpell()
+	hunter.registerMultiShotSpell(hunter.NewTimer())
 }
 
 func (hunter *Hunter) Reset(_ *core.Simulation) {

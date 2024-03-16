@@ -33,9 +33,18 @@ func NewMarksmanshipHunter(character *core.Character, options *proto.Player) *Ma
 
 	return mmHunter
 }
+func (mmHunter *MarksmanshipHunter) Initialize() {
+	mmHunter.Hunter.Initialize()
+
+	mmHunter.aimedShotTimer = mmHunter.NewTimer()
+	mmHunter.registerAimedShotSpell(mmHunter.aimedShotTimer)
+	mmHunter.registerChimeraShotSpell()
+}
 
 type MarksmanshipHunter struct {
 	*hunter.Hunter
+
+	aimedShotTimer *core.Timer
 }
 
 func (mmHunter *MarksmanshipHunter) GetHunter() *hunter.Hunter {
