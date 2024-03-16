@@ -1,20 +1,6 @@
 import { ResourceType } from '../proto/api.js';
-import {
-	ArmorType,
-	Class,
-	ItemSlot,
-	Profession,
-	PseudoStat,
-	Race,
-	RangedWeaponType,
-	Stat,
-	WeaponType,
-} from '../proto/common.js';
-import {
-	DungeonDifficulty,
-	RaidFilterOption,
-	SourceFilterOption,
-} from '../proto/ui.js';
+import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Stat, WeaponType } from '../proto/common.js';
+import { DungeonDifficulty, RaidFilterOption, SourceFilterOption } from '../proto/ui.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
 	[ArmorType.ArmorTypeUnknown, 'Unknown'],
@@ -117,7 +103,7 @@ export function nameToProfession(name: string): Profession {
 	const lower = name.toLowerCase();
 	for (const [key, value] of professionNames) {
 		if (value.toLowerCase() == lower) {
-			return key
+			return key;
 		}
 	}
 	return Profession.ProfessionUnknown;
@@ -172,7 +158,7 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatStamina, 'Stamina'],
 	[Stat.StatIntellect, 'Intellect'],
 	[Stat.StatSpirit, 'Spirit'],
-	[Stat.StatSpellPower, 'Spell Dmg'],
+	[Stat.StatSpellPower, 'Spell Power'],
 	[Stat.StatMP5, 'MP5'],
 	[Stat.StatSpellHit, 'Spell Hit'],
 	[Stat.StatSpellCrit, 'Spell Crit'],
@@ -226,8 +212,7 @@ export const pseudoStatNames: Map<PseudoStat, string> = new Map([
 
 export function getClassStatName(stat: Stat, playerClass: Class): string {
 	const statName = statNames.get(stat);
-	if (!statName)
-		return 'UnknownStat';
+	if (!statName) return 'UnknownStat';
 	if (playerClass == Class.ClassHunter) {
 		return statName.replace('Melee', 'Ranged');
 	} else {
@@ -317,7 +302,7 @@ export const raidNames: Map<RaidFilterOption, string> = new Map([
 	[RaidFilterOption.RaidVaultOfArchavon, 'Vault of Archavon'],
 	[RaidFilterOption.RaidUlduar, 'Ulduar'],
 	[RaidFilterOption.RaidTrialOfTheCrusader, 'Trial of the Crusader'],
-	[RaidFilterOption.RaidOnyxiasLair, 'Onyxia\'s Lair'],
+	[RaidFilterOption.RaidOnyxiasLair, "Onyxia's Lair"],
 	[RaidFilterOption.RaidIcecrownCitadel, 'Icecrown Citadel'],
 	[RaidFilterOption.RaidRubySanctum, 'Ruby Sanctum'],
 ]);

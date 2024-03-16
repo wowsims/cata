@@ -1,26 +1,26 @@
-@use "sass:math";
+@use 'sass:math';
 
 .modal {
-  .modal-dialog {
-    &.modal-overflow-scroll {
-      .modal-content {
-        max-height: calc(100vh - (2 * var(--bs-modal-margin)));
-      }
+	.modal-dialog {
+		&.modal-overflow-scroll {
+			.modal-content {
+				max-height: calc(100vh - (2 * var(--bs-modal-margin)));
+			}
 
-      .modal-body {
-        overflow: auto;
-      }
-    }
-  }
+			.modal-body {
+				overflow: auto;
+			}
+		}
+	}
 
-  .modal-scroll-table {
-    flex: 1;
+	.modal-scroll-table {
+		flex: 1;
 		overflow-y: auto;
 
-    th {
-      position: sticky;
-      top: 0;
-      background: $body-bg;
-    }
-  }
+		th {
+			position: sticky;
+			top: 0;
+			background: $body-bg;
+		}
+	}
 }
