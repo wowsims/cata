@@ -43,6 +43,9 @@ func (hunter *SurvivalHunter) registerCobraShotSpell() {
 				hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) * 0.246 + 277.21
 			hunter.AddFocus(sim, 9, csMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+			if(hunter.SerpentSting.Dot(target).IsActive()) {
+				hunter.SerpentSting.Dot(target).Rollover(sim)
+			}
 			spell.DealDamage(sim, result)
 		},
 	})

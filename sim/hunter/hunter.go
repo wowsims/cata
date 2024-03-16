@@ -117,6 +117,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerSteadyShotSpell() // Todo: Probably add a counter so we can check for imp ss?
 	hunter.registerArcaneShotSpell()
 	hunter.registerKillShotSpell()
+	hunter.registerSerpentStingSpell()
 }
 
 func (hunter *Hunter) Reset(_ *core.Simulation) {
