@@ -1,4 +1,24 @@
 .log-runner-root {
+	#log-runner-logs-scroll {
+  /* Set a fixed height (adjust as needed for your layout) */
+  max-height: 500px; /* Example height, adjust based on your UI requirements */
+  
+  /* Enable vertical scrolling */
+  overflow-y: auto;
+  
+  /* Optional: Enable horizontal scrolling if your content may exceed the width */
+  overflow-x: auto;
+  
+  /* Additional styling for the scroll container (optional) */
+  border: 1px solid #ccc; /* Example border */
+  margin: 0 auto; /* Center the container if desired */
+  position: relative; /* Position context for absolute positioning inside */
+  width: 100%; /* Full width or adjust as needed */
+  box-sizing: border-box; /* Include padding and border in the element's size */
+  
+  /* Performance improvements for large lists (optional) */
+  will-change: scroll-position;
+}
 	.log-runner-table {
 		th {
 			padding: map-get($spacers, 2);
@@ -8,7 +28,6 @@
 				padding-left: 0;
 			}
 		}
-
 		.log-runner-logs {
 			tr {
 				&:not(:last-child) {
