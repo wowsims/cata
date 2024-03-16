@@ -32,15 +32,14 @@ func (hunter *SurvivalHunter) registerCobraShotSpell() {
 
 		// BonusCritRating: 0 +
 		// 	2*core.CritRatingPerCritChance*float64(hunter.Talents.SurvivalInstincts),
-		DamageMultiplierAdditive: 1,
-		// DamageMultiplier: 1 *
+		//DamageMultiplierAdditive: 1,
+		DamageMultiplier: 1,
 		// 	hunter.markedForDeathMultiplier(),
 		CritMultiplier:1,//   hunter.critMultiplier(true, true, false), // what is this
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 
-				hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) * 0.246 + 277.21
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (1 + spell.RangedAttackPower(target) * 0.26) + 277.21
 			hunter.AddFocus(sim, 9, csMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			if(hunter.SerpentSting.Dot(target).IsActive()) {

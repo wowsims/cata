@@ -36,8 +36,7 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 
 		DamageMultiplierAdditive: 1 +
 			.10*float64(hunter.Talents.TrapMastery),
-		DamageMultiplier: 1 *
-			(1.0 / 1.06), // Black Arrow is not affected by its own 1.06 aura.
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		CritMultiplier: (0.5) * ( 1 + float64(hunter.Talents.Toxicology) * 0.5), //Todo: SimC, is this crit damage multiplier?
 		
@@ -55,8 +54,10 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			NumberOfTicks: 10,
 			TickLength:    time.Second * 2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				// scales slightly better (11.5%) than the tooltip implies (10%), but isn't affected by Hunter's Mark
-				dot.SnapshotBaseDamage = 2849 + 0.665 * (dot.Spell.Unit.GetStat(stats.RangedAttackPower)+dot.Spell.Unit.PseudoStats.MobTypeAttackPower)
+				// https://web.archive.org/web/20120207222124/http://elitistjerks.com/f74/t110306-hunter_faq_cataclysm_edition_read_before_asking_questions/
+				//  66.5% RAP + 2849 (total damage) - changed 6/28 in 4.2 (based off spell crit multiplier, modified by toxicology)
+				// https://wago.tools/db2/SpellEffect?build=4.4.0.53750&filter[SpellID]=exact%3A3674&page=1
+				dot.SnapshotBaseDamage = (2849/10) + (0.665 * (dot.Spell.Unit.GetStat(stats.RangedAttackPower)+dot.Spell.Unit.PseudoStats.MobTypeAttackPower))
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
