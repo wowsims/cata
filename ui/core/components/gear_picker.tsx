@@ -109,7 +109,7 @@ export class ItemRenderer extends Component {
 	readonly socketsContainerElem: HTMLElement;
 
 	constructor(parent: HTMLElement, root: HTMLElement, player: Player<any>) {
-		super(parent, 'item-renderer-root', root);
+		super(parent, 'item-picker-root', root);
 		this.player = player;
 
 		const iconElem = ref<HTMLAnchorElement>();
