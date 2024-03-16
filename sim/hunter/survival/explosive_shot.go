@@ -59,9 +59,14 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
-				dot := spell.Dot(target)
-				dot.Apply(sim)
-				dot.TickOnce(sim)
+					if(spell.Dot(target).IsActive()) { // Todo: Implement rollover of last tick in sim.go
+						spell.Dot(target).Rollover(sim)
+						spell.Dot(target).TickOnce(sim)
+					} else {
+						dot := spell.Dot(target)
+						dot.Apply(sim)
+						dot.TickOnce(sim)
+					}
 			}
 		},
 	})
