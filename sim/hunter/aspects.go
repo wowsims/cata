@@ -6,13 +6,12 @@ import (
 )
 
 func (hunter *Hunter) registerAspectOfTheHawkSpell() {
-	const improvedHawkProcChance = 0.1
-	actionID := core.ActionID{SpellID: 61847}
+	actionID := core.ActionID{SpellID: 13165}
 	hunter.AspectOfTheHawkAura = hunter.NewTemporaryStatsAuraWrapped(
 		"Aspect of the Hawk",
 		actionID,
 		stats.Stats{
-			stats.RangedAttackPower: 300,
+			stats.RangedAttackPower: 300, // Base value 20 with coeff 6.0952501297 on RAP https://wago.tools/db2/SpellEffect?build=4.4.0.53750&filter[SpellID]=exact%3A13165&page=1
 		},
 		core.NeverExpires,
 		func(aura *core.Aura) {

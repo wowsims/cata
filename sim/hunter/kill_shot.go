@@ -23,7 +23,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Second*15,
+				Duration: time.Second*10,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
