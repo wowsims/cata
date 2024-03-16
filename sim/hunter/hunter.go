@@ -21,11 +21,7 @@ type Hunter struct {
 	MarksmanshipOptions *proto.MarksmanshipHunter_Options
 	SurvivalOptions     *proto.SurvivalHunter_Options
 
-	//pet *HunterPet
-
-	AmmoDPS                   float64
-	AmmoDamageBonus           float64
-	NormalizedAmmoDamageBonus float64
+	pet *HunterPet
 
 	// The most recent time at which moving could have started, for trap weaving.
 	mayMoveAt time.Duration
@@ -33,23 +29,23 @@ type Hunter struct {
 	AspectOfTheDragonhawk *core.Spell
 	AspectOfTheViper      *core.Spell
 
-	AimedShot       *core.Spell
-	ArcaneShot      *core.Spell
-	BlackArrow      *core.Spell
-	ChimeraShot     *core.Spell
-	ExplosiveShotR4 *core.Spell
-	ExplosiveShotR3 *core.Spell
-	ExplosiveTrap   *core.Spell
-	KillCommand     *core.Spell
-	KillShot        *core.Spell
-	MultiShot       *core.Spell
-	RapidFire       *core.Spell
-	RaptorStrike    *core.Spell
-	ScorpidSting    *core.Spell
-	SerpentSting    *core.Spell
-	SilencingShot   *core.Spell
+	// AimedShot       *core.Spell
+	// ArcaneShot      *core.Spell
+	// BlackArrow      *core.Spell
+	// ChimeraShot     *core.Spell
+	// ExplosiveShotR4 *core.Spell
+	// ExplosiveShotR3 *core.Spell
+	// ExplosiveTrap   *core.Spell
+	// KillCommand     *core.Spell
+	// KillShot        *core.Spell
+	// MultiShot       *core.Spell
+	// RapidFire       *core.Spell
+	// RaptorStrike    *core.Spell
+	// ScorpidSting    *core.Spell
+	// SerpentSting    *core.Spell
+	// SilencingShot   *core.Spell
 	SteadyShot      *core.Spell
-	Volley          *core.Spell
+	// Volley          *core.Spell
 
 	// Fake spells to encapsulate weaving logic.
 	TrapWeaveSpell *core.Spell
@@ -66,7 +62,9 @@ type Hunter struct {
 func (hunter *Hunter) GetCharacter() *core.Character {
 	return &hunter.Character
 }
-
+func (hunter *Hunter) HasPrimeGlyph(glyph proto.HunterPrimeGlyph) bool {
+	return hunter.HasGlyph(int32(glyph))
+}
 func (hunter *Hunter) HasMajorGlyph(glyph proto.HunterMajorGlyph) bool {
 	return hunter.HasGlyph(int32(glyph))
 }
@@ -91,7 +89,7 @@ func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 
 func (hunter *Hunter) Initialize() {
 	// Update auto crit multipliers now that we have the targets.
-	// hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
+	//hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
 	// hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
 	// hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
 
@@ -119,13 +117,14 @@ func (hunter *Hunter) Initialize() {
 
 	// hunter.registerKillCommandCD()
 	// hunter.registerRapidFireCD()
+	hunter.registerSteadyShotSpell() // Todo: Probably add a counter so we can check for imp ss?
 
 	// if hunter.Options.UseHuntersMark {
-	// 	hunter.RegisterPrepullAction(0, func(sim *core.Simulation) {
-	// 		huntersMarkAura := core.HuntersMarkAura(hunter.CurrentTarget, hunter.Talents.ImprovedHuntersMark, hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfHuntersMark))
-	// 		huntersMarkAura.Activate(sim)
-	// 	})
-	// }
+	//  	hunter.RegisterPrepullAction(0, func(sim *core.Simulation) {
+	//  		//huntersMarkAura := core.HuntersMarkAura(hunter.CurrentTarget, 0, false)
+	//  		//huntersMarkAura.Activate(sim)
+	//  	})
+	//  }
 }
 
 func (hunter *Hunter) Reset(_ *core.Simulation) {
@@ -139,53 +138,34 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		Options:   hunterOptions,
 	}
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
-	hunter.EnableManaBar()
+
+	// Todo: Verify that is is actually 4 focus per second
+	hunter.EnableFocusBar(100 + (float64(hunter.Talents.KindredSpirits) * 5), 4.0)
 
 	hunter.PseudoStats.CanParry = true
 
-	rangedWeapon := hunter.WeaponFromRanged(0)
 
 	// Passive bonus (used to be from quiver).
 	hunter.PseudoStats.RangedSpeedMultiplier *= 1.15
+	rangedWeapon := hunter.WeaponFromRanged(0)
 
-	if hunter.HasRangedWeapon() && hunter.GetRangedWeapon().ID != ThoridalTheStarsFuryItemID {
-		switch hunter.Options.Ammo {
-		case proto.HunterOptions_IcebladeArrow:
-			hunter.AmmoDPS = 91.5
-		case proto.HunterOptions_SaroniteRazorheads:
-			hunter.AmmoDPS = 67.5
-		case proto.HunterOptions_TerrorshaftArrow:
-			hunter.AmmoDPS = 46.5
-		case proto.HunterOptions_TimelessArrow:
-			hunter.AmmoDPS = 53
-		case proto.HunterOptions_MysteriousArrow:
-			hunter.AmmoDPS = 46.5
-		case proto.HunterOptions_AdamantiteStinger:
-			hunter.AmmoDPS = 43
-		case proto.HunterOptions_BlackflightArrow:
-			hunter.AmmoDPS = 32
-		}
-		hunter.AmmoDamageBonus = hunter.AmmoDPS * rangedWeapon.SwingSpeed
-		hunter.NormalizedAmmoDamageBonus = hunter.AmmoDPS * 2.8
+	hunter.EnableAutoAttacks(hunter, core.AutoAttackOptions{
+		// We don't know crit multiplier until later when we see the target so just
+		// use 0 for now.
+		MainHand:        hunter.WeaponFromMainHand(0),
+		OffHand:         hunter.WeaponFromOffHand(0),
+		Ranged:          rangedWeapon,
+		//ReplaceMHSwing:  hunter.TryRaptorStrike, //Todo: Might be weaving
+		AutoSwingRanged: true,
+	})
+
+	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+			spell.BonusWeaponDamage()
+		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 	}
 
-	// hunter.EnableAutoAttacks(hunter, core.AutoAttackOptions{
-	// 	// We don't know crit multiplier until later when we see the target so just
-	// 	// use 0 for now.
-	// 	MainHand:        hunter.WeaponFromMainHand(0),
-	// 	OffHand:         hunter.WeaponFromOffHand(0),
-	// 	Ranged:          rangedWeapon,
-	// 	ReplaceMHSwing:  hunter.TryRaptorStrike,
-	// 	AutoSwingRanged: true,
-	// })
-	// hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 	baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
-	// 		hunter.AmmoDamageBonus +
-	// 		spell.BonusWeaponDamage()
-	// 	spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-	// }
-
-	// hunter.pet = hunter.NewHunterPet()
+	hunter.pet = hunter.NewHunterPet()
 
 	hunter.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 1)

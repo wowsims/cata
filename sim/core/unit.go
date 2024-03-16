@@ -23,6 +23,7 @@ const (
 	EnergyBar
 	RageBar
 	RunicPower
+	FocusBar
 )
 
 type DynamicDamageTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult)

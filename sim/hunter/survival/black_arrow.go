@@ -1,4 +1,4 @@
-package hunter
+package survival
 
 import (
 	"time"
@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (hunter *Hunter) registerBlackArrowSpell(timer *core.Timer) {
+func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 	if !hunter.Talents.BlackArrow {
 		return
 	}
@@ -19,16 +19,12 @@ func (hunter *Hunter) registerBlackArrowSpell(timer *core.Timer) {
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagAPL,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.06,
-			Multiplier: 1 -
-				0.03*float64(hunter.Talents.Efficiency) -
-				0.2*float64(hunter.Talents.Resourcefulness),
+		FocusCost: core.FocusCostOptions{
+			Cost: 35,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: time.Second,
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CD: core.Cooldown{
@@ -38,27 +34,22 @@ func (hunter *Hunter) registerBlackArrowSpell(timer *core.Timer) {
 		},
 
 		DamageMultiplierAdditive: 1 +
-			.10*float64(hunter.Talents.TrapMastery) +
-			.02*float64(hunter.Talents.TNT),
+			.10*float64(hunter.Talents.TrapMastery),
 		DamageMultiplier: 1 *
 			(1.0 / 1.06), // Black Arrow is not affected by its own 1.06 aura.
 		ThreatMultiplier: 1,
+		CritMultiplier: (0.5) * ( 1 + float64(hunter.Talents.Toxicology) * 0.5), //Todo: SimC, is this crit damage multiplier?
+		
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "BlackArrow",
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= 1.06
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= 1.06
-				},
 			},
-			NumberOfTicks: 5,
-			TickLength:    time.Second * 3,
+			NumberOfTicks: 10,
+			TickLength:    time.Second * 2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				// scales slightly better (11.5%) than the tooltip implies (10%), but isn't affected by Hunter's Mark
-				dot.SnapshotBaseDamage = 553 + 0.023*(dot.Spell.Unit.GetStat(stats.RangedAttackPower)+dot.Spell.Unit.PseudoStats.MobTypeAttackPower)
+				dot.SnapshotBaseDamage = 2849 + 0.665*(dot.Spell.Unit.GetStat(stats.RangedAttackPower)+dot.Spell.Unit.PseudoStats.MobTypeAttackPower)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

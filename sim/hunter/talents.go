@@ -1,5 +1,7 @@
 package hunter
 
+import "time"
+
 func (hunter *Hunter) ApplyTalents() {
 	// if hunter.pet != nil {
 	// 	hunter.applyFocusedFire()
@@ -390,9 +392,9 @@ func (hunter *Hunter) ApplyTalents() {
 // 	})
 // }
 
-// func (hunter *Hunter) applyLongevity(dur time.Duration) time.Duration {
-// 	return time.Duration(float64(dur) * (1.0 - 0.1*float64(hunter.Talents.Longevity)))
-// }
+ func (hunter *Hunter) applyLongevity(dur time.Duration) time.Duration {
+ 	return time.Duration(float64(dur) * (1.0 - 0.1*float64(hunter.Talents.Longevity)))
+ }
 
 // func (hunter *Hunter) registerBestialWrathCD() {
 // 	if !hunter.Talents.BestialWrath {

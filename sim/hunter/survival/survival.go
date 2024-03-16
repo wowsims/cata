@@ -29,13 +29,26 @@ func NewSurvivalHunter(character *core.Character, options *proto.Player) *Surviv
 	svHunter := &SurvivalHunter{
 		Hunter: hunter.NewHunter(character, options, survivalOptions.ClassOptions),
 	}
+
 	svHunter.SurvivalOptions = survivalOptions
+	
+	fireTrapTimer := svHunter.NewTimer()
+	//explosiveShotTimer := svHunter.NewTimer()
+
+	svHunter.Initialize() // Initialize base
+
+	// Register Survival Spells
+	svHunter.registerBlackArrowSpell(fireTrapTimer)
+	//svHunter.registerExplosiveShotSpell(explosiveShotTimer)
 
 	return svHunter
 }
 
 type SurvivalHunter struct {
 	*hunter.Hunter
+
+	BlackArrow      *core.Spell
+	ExplosiveShot   *core.Spell
 }
 
 func (svHunter *SurvivalHunter) GetHunter() *hunter.Hunter {

@@ -37,16 +37,19 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		config:      petConfig,
 		hunterOwner: hunter,
 
-		hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl || petConfig.SpecialAbility == SavageRend,
+		//hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl || petConfig.SpecialAbility == SavageRend,
 	}
 
-	hp.EnableFocusBar(1.0+0.5*float64(hunter.Talents.BestialDiscipline), func(sim *core.Simulation) {
-		if hp.GCD.IsReady(sim) {
-			hp.OnGCDReady(sim)
-		}
-	})
+	//Todo: Verify this
+	// base_focus_regen_per_second  = ( 24.5 / 4.0 );
+    // base_focus_regen_per_second *= 1.0 + o -> talents.bestial_discipline -> effect1().percent();
+    baseFocusPerSecond  := ( 24.5 / 4.0 );
+    baseFocusPerSecond *= 1.0 + (0.10 * float64(hunter.Talents.BestialDiscipline));
+	hp.EnableFocusBar(100 + (float64(hunter.Talents.KindredSpirits) *5), baseFocusPerSecond)
 
-	atkSpd := 2 / (1 + 0.15*float64(hp.Talents().CobraReflexes))
+
+	atkSpd := 2 / (1 + 0.5*float64(hp.Talents().SerpentSwiftness))
+	// Todo: Change for Cataclysm
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  50,
@@ -58,13 +61,15 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	})
 
 	// Happiness
-	hp.PseudoStats.DamageDealtMultiplier *= 1.25
+	// Todo: 
+	//hp.PseudoStats.DamageDealtMultiplier *= 1.25
 
 	// Pet family bonus is now the same for all pets.
+	//Todo: Should this stay?
 	hp.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
 
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/62.77)
+	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/(0.01/243.6))
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
 
 	hunter.AddPet(hp)
@@ -127,13 +132,9 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	}
 }
 
-func (hp *HunterPet) killCommandMult() float64 {
-	return 1 + 0.2*float64(hp.KillCommandAura.GetStacks())
-}
-
 var hunterPetBaseStats = stats.Stats{
-	stats.Agility:     113,
-	stats.Strength:    331,
+	stats.Agility:     438,
+	stats.Strength:    476,
 	stats.AttackPower: -20, // Apparently pets and warriors have a AP penalty.
 
 	// Add 1.8% because pets aren't affected by that component of crit suppression.
@@ -145,12 +146,6 @@ const PetExpertiseScale = 3.25
 func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 	hvw := hunter.Talents.HunterVsWild
 
-	petTalents := hunter.Options.PetTalents
-	var wildHunt int32
-	if petTalents != nil {
-		wildHunt = petTalents.WildHunt
-	}
-
 	return func(ownerStats stats.Stats) stats.Stats {
 		// EJ posts claim this value is passed through math.Floor, but in-game testing
 		// shows pets benefit from each point of owner hit rating in WotLK Classic.
@@ -159,9 +154,9 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 		hitRatingFromOwner := ownerHitChance * core.MeleeHitRatingPerHitChance
 
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.3 * (1 + 0.2*float64(wildHunt)),
+			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.RangedAttackPower]*0.22*(1+0.15*float64(wildHunt)) + ownerStats[stats.Stamina]*0.1*float64(hvw),
+			stats.AttackPower: ownerStats[stats.RangedAttackPower]*0.22 + ownerStats[stats.Stamina]*0.1*float64(hvw),
 
 			stats.MeleeHit:  hitRatingFromOwner,
 			stats.SpellHit:  hitRatingFromOwner * 2,

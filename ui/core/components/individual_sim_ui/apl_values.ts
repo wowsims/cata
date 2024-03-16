@@ -68,6 +68,7 @@ import {
 	APLValueTotemRemainingTime,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
+	APLValueCurrentFocus,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
@@ -604,6 +605,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Resources'],
 		shortDescription: 'Amount of currently available Rage.',
 		newValue: APLValueCurrentRage.create,
+		fields: [],
+	}),
+	currentFocus: inputBuilder({
+		label: 'Focus',
+		submenu: ['Resources'],
+		shortDescription: 'Amoiunt of currently available Focus.',
+		newValue: APLValueCurrentFocus.create,
 		fields: [],
 	}),
 	currentEnergy: inputBuilder({

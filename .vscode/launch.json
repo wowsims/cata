@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Connect to server",
+            "type": "go",
+            "request": "attach",
+            "mode": "remote",
+            "remotePath": "${workspaceFolder}",
+            "port": 2345,
+            "host": "localhost"
+        },
+        {
+            "type": "go",
+            "name": "debug apl_values_resources.go",
+            "request": "launch",
+            "mode": "auto",
+            "args": [],
+            "program": "/home/kevve/cata/sim/core/apl_values_resources.go"
+        }
+    ]
+}

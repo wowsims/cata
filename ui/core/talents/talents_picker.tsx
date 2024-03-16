@@ -194,7 +194,7 @@ class TalentTreePicker<TalentsProto> extends Component {
 		this.config = config;
 		this.numPoints = 0;
 		this.picker = picker;
-
+		console.log(Object.values(PlayerClasses.fromProto(klass).specs));
 		this.rootElem.appendChild(
 			<>
 				<div className="talent-tree-header">

@@ -12,7 +12,9 @@ type PetAbilityType int
 
 // Pet AI doesn't use abilities immediately, so model this with a 1.6s GCD.
 const PetGCD = time.Millisecond * 1600
-
+// Todo: Pet not done
+// Apply Wild Hunt
+// 
 const (
 	Unknown PetAbilityType = iota
 	AcidSpit
@@ -132,13 +134,13 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		//DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(118, 168) + 0.07*spell.MeleeAttackPower()
-			baseDamage *= hp.killCommandMult()
+			//baseDamage *= hp.killCommandMult() //Todo: kill command doesnt work lik ethis anymore
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
@@ -180,7 +182,7 @@ func (hp *HunterPet) newSpecialAbility(config PetSpecialAbilityConfig) *core.Spe
 		procMask = core.ProcMaskSpellDamage
 		applyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(config.MinDmg, config.MaxDmg) + config.APRatio*spell.MeleeAttackPower()
-			baseDamage *= hp.killCommandMult()
+			
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			if onSpellHitDealt != nil {
 				onSpellHitDealt(sim, spell, result)
@@ -204,7 +206,7 @@ func (hp *HunterPet) newSpecialAbility(config PetSpecialAbilityConfig) *core.Spe
 		ProcMask:    procMask,
 		Flags:       flags,
 
-		DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		DamageMultiplier: 1, //* hp.hunterOwner.markedForDeathMultiplier(),
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
@@ -292,7 +294,7 @@ func (hp *HunterPet) newFireBreath() *core.Spell {
 			NumberOfTicks: 2,
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = sim.Roll(44/2, 56/2) * hp.killCommandMult()
+				dot.SnapshotBaseDamage = sim.Roll(44/2, 56/2) //* hp.killCommandMult()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -471,7 +473,7 @@ func (hp *HunterPet) newPin() *core.Spell {
 			},
 		},
 
-		DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		// /DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -482,7 +484,7 @@ func (hp *HunterPet) newPin() *core.Spell {
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = sim.Roll(112/4, 144/4) + 0.07*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage *= hp.killCommandMult()
+				//dot.SnapshotBaseDamage *= hp.killCommandMult()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -519,7 +521,7 @@ func (hp *HunterPet) newPoisonSpit() *core.Spell {
 			},
 		},
 
-		DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		//DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -530,7 +532,7 @@ func (hp *HunterPet) newPoisonSpit() *core.Spell {
 			TickLength:    time.Second * 2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = sim.Roll(104/4, 136/4) + (0.049/4)*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage *= hp.killCommandMult()
+				//dot.SnapshotBaseDamage *= hp.killCommandMult()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -566,7 +568,7 @@ func (hp *HunterPet) newRake() *core.Spell {
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = sim.Roll(19, 25) + 0.0175*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage *= hp.killCommandMult()
+				//dot.SnapshotBaseDamage *= hp.killCommandMult()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -628,7 +630,7 @@ func (hp *HunterPet) newSavageRend() *core.Spell {
 			return hp.IsEnabled()
 		},
 
-		DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		//DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
@@ -640,7 +642,7 @@ func (hp *HunterPet) newSavageRend() *core.Spell {
 			TickLength:    time.Second * 5,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = sim.Roll(21, 27) + 0.07*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage *= hp.killCommandMult()
+				//dot.SnapshotBaseDamage *= hp.killCommandMult()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -650,7 +652,7 @@ func (hp *HunterPet) newSavageRend() *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(59, 83) + 0.07*spell.MeleeAttackPower()
-			baseDamage *= hp.killCommandMult()
+			//baseDamage *= hp.killCommandMult()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
@@ -690,7 +692,7 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 			},
 		},
 
-		DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		// /DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -701,7 +703,7 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 			TickLength:    time.Second * 2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = sim.Roll(100/5, 130/5) + (0.07/5)*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage *= hp.killCommandMult()
+				//dot.SnapshotBaseDamage *= hp.killCommandMult()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -764,7 +766,7 @@ func (hp *HunterPet) newSpiritStrike() *core.Spell {
 			TickLength:    time.Second * 6,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = sim.Roll(49, 65) + 0.04*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage *= hp.killCommandMult()
+				//dot.SnapshotBaseDamage *= hp.killCommandMult()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -800,7 +802,7 @@ func (hp *HunterPet) newSporeCloud() *core.Spell {
 			},
 		},
 
-		DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		// /DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -812,7 +814,7 @@ func (hp *HunterPet) newSporeCloud() *core.Spell {
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = sim.Roll(22, 28) + (0.049/3)*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage *= hp.killCommandMult()
+				//dot.SnapshotBaseDamage *= hp.killCommandMult()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -913,7 +915,7 @@ func (hp *HunterPet) newVenomWebSpray() *core.Spell {
 			},
 		},
 
-		DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		// /DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -924,7 +926,7 @@ func (hp *HunterPet) newVenomWebSpray() *core.Spell {
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = 46 + 0.07*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage *= hp.killCommandMult()
+				//dot.SnapshotBaseDamage *= hp.killCommandMult()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
