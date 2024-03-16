@@ -470,13 +470,11 @@ func (hunter *Hunter) applyTNT() {
 		Duration:  time.Second * 12,
 		MaxStacks: 2,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.ArcaneShot.CostMultiplier -= 1
 			if hunter.ExplosiveShot != nil {
 				hunter.ExplosiveShot.CostMultiplier -= 1
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.ArcaneShot.CostMultiplier += 1
 			if hunter.ExplosiveShot != nil {
 				hunter.ExplosiveShot.CostMultiplier += 1
 			}
@@ -533,7 +531,7 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 			}
 
 			if sim.Proc(procChance, "ThrillOfTheHunt") {
-				hunter.AddFocus(sim, spell.CurCast.Cost*0.4, focusMetrics)
+				hunter.AddFocus(sim, spell.CurCast.Cost * 0.4, focusMetrics)
 			}
 		},
 	})
@@ -624,7 +622,6 @@ func (hunter *Hunter) registerReadinessCD() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			hunter.RapidFire.CD.Reset()
 			hunter.MultiShot.CD.Reset()
-			hunter.ArcaneShot.CD.Reset()
 			hunter.KillShot.CD.Reset()
 			hunter.RaptorStrike.CD.Reset()
 			hunter.ExplosiveTrap.CD.Reset()
