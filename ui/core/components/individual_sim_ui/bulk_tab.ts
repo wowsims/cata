@@ -50,7 +50,7 @@ export class BulkGearJsonImporter extends Importer {
 }
 
 class BulkSimResultRenderer {
-	constructor(parent: ContentBlock, simUI: IndividualSimUI<any>, result: BulkComboResult, baseResult: BulkComboResult) {
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, result: BulkComboResult, baseResult: BulkComboResult) {
 		const dpsDivParent = document.createElement('div');
 		dpsDivParent.classList.add('results-sim');
 
@@ -71,8 +71,8 @@ class BulkSimResultRenderer {
 
 		const itemsContainer = document.createElement('div');
 		itemsContainer.classList.add('bulk-gear-combo');
-		parent.bodyElement.appendChild(itemsContainer);
-		parent.bodyElement.appendChild(dpsDivParent);
+		parent.appendChild(itemsContainer);
+		parent.appendChild(dpsDivParent);
 
 		const talentText = document.createElement('p');
 		talentText.classList.add('talent-loadout-text');
@@ -97,11 +97,11 @@ class BulkSimResultRenderer {
 				});
 			};
 
-			parent.bodyElement.appendChild(equipBtn);
+			parent.appendChild(equipBtn);
 
 			for (const is of result.itemsAdded) {
 				const item = simUI.sim.db.lookupItemSpec(is.item!);
-				const renderer = new ItemRenderer(itemsContainer, simUI.player);
+				const renderer = new ItemRenderer(parent, itemsContainer, simUI.player);
 				renderer.update(item!);
 
 				const p = document.createElement('a');
@@ -112,7 +112,7 @@ class BulkSimResultRenderer {
 		} else if (!result.talentLoadout || typeof result.talentLoadout !== 'object') {
 			const p = document.createElement('p');
 			p.textContent = 'No changes - this is your currently equipped gear!';
-			parent.bodyElement.appendChild(p);
+			parent.appendChild(p);
 			dpsDeltaSpan.textContent = '';
 		}
 	}
@@ -144,7 +144,7 @@ export class BulkItemPicker extends Component {
 		this.bulkUI = bulkUI;
 		this.index = index;
 		this.item = item;
-		this.itemElem = new ItemRenderer(this.rootElem, simUI.player);
+		this.itemElem = new ItemRenderer(parent, this.rootElem, simUI.player);
 
 		this.simUI.sim.waitForInit().then(() => {
 			this.setItem(item);
@@ -471,7 +471,7 @@ export class BulkTab extends SimTab {
 					header: { title: '' },
 					bodyClasses: ['bulk-results-body'],
 				});
-				new BulkSimResultRenderer(resultBlock, this.simUI, r, bulkSimResult.equippedGearResult!);
+				new BulkSimResultRenderer(resultBlock.bodyElement, this.simUI, r, bulkSimResult.equippedGearResult!);
 			}
 		});
 
