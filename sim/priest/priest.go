@@ -5,7 +5,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-var TalentTreeSizes = [3]int{28, 27, 27}
+var TalentTreeSizes = [3]int{21, 21, 21}
 
 type Priest struct {
 	core.Character
@@ -176,8 +176,8 @@ func (priest *Priest) Initialize() {
 // }
 
 func (priest *Priest) Reset(_ *core.Simulation) {
-// 	priest.MindFlayModifier = 1
-// 	priest.MindBlastModifier = 1
+	// priest.MindFlayModifier = 1
+	// priest.MindBlastModifier = 1
 }
 
 func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
@@ -199,8 +199,8 @@ func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 	// 	priest.AddStat(stats.Armor, armor)
 	// }
 
- 	return priest
- }
+	return priest
+}
 
 // Agent is a generic way to access underlying priest on any of the agents.
 type PriestAgent interface {

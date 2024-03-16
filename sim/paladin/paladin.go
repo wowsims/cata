@@ -10,7 +10,7 @@ const (
 	SpellFlagPrimaryJudgement   = core.SpellFlagAgentReserved2
 )
 
-var TalentTreeSizes = [3]int{26, 26, 26}
+var TalentTreeSizes = [3]int{20, 20, 20}
 
 type Paladin struct {
 	core.Character

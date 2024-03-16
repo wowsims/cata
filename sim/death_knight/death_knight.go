@@ -13,7 +13,7 @@ const (
 	PetSpellHasteScale = 1.3
 )
 
-var TalentTreeSizes = [3]int{28, 29, 31}
+var TalentTreeSizes = [3]int{20, 20, 20}
 
 type DeathKnightInputs struct {
 	// Option Vars
@@ -349,76 +349,76 @@ func (dk *DeathKnight) Reset(sim *core.Simulation) {
 // 	return dk.HasGlyph(int32(glyph))
 // }
 
- func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents string) *DeathKnight {
- 	dk := &DeathKnight{
- 		Character:  *character,
- 		Talents:    &proto.DeathKnightTalents{},
- 		Inputs:     inputs,
- 		RoRTSBonus: func(u *core.Unit) float64 { return 1.0 }, // default to no bonus for RoR/TS
- 	}
- 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
+func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents string) *DeathKnight {
+	dk := &DeathKnight{
+		Character:  *character,
+		Talents:    &proto.DeathKnightTalents{},
+		Inputs:     inputs,
+		RoRTSBonus: func(u *core.Unit) float64 { return 1.0 }, // default to no bonus for RoR/TS
+	}
+	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
-// 	maxRunicPower := 100.0 + 15.0*float64(dk.Talents.RunicPowerMastery)
-// 	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)
+	// 	maxRunicPower := 100.0 + 15.0*float64(dk.Talents.RunicPowerMastery)
+	// 	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)
 
-// 	dk.EnableRunicPowerBar(
-// 		currentRunicPower,
-// 		maxRunicPower,
-// 		10*time.Second,
-// 		func(sim *core.Simulation, changeType core.RuneChangeType) {
-// 			if dk.onRuneSpendT10 != nil {
-// 				dk.onRuneSpendT10(sim, changeType)
-// 			}
-// 			if dk.onRuneSpendBladeBarrier != nil {
-// 				dk.onRuneSpendBladeBarrier(sim, changeType)
-// 			}
-// 		},
-// 		nil,
-// 	)
+	// 	dk.EnableRunicPowerBar(
+	// 		currentRunicPower,
+	// 		maxRunicPower,
+	// 		10*time.Second,
+	// 		func(sim *core.Simulation, changeType core.RuneChangeType) {
+	// 			if dk.onRuneSpendT10 != nil {
+	// 				dk.onRuneSpendT10(sim, changeType)
+	// 			}
+	// 			if dk.onRuneSpendBladeBarrier != nil {
+	// 				dk.onRuneSpendBladeBarrier(sim, changeType)
+	// 			}
+	// 		},
+	// 		nil,
+	// 	)
 
-// 	dk.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
-// 	dk.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/84.74576271)
-// 	dk.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-// 	dk.AddStatDependency(stats.Strength, stats.Parry, 0.25)
-// 	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
+	// 	dk.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+	// 	dk.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/84.74576271)
+	// 	dk.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	// 	dk.AddStatDependency(stats.Strength, stats.Parry, 0.25)
+	// 	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
-// 	dk.PseudoStats.CanParry = true
+	// 	dk.PseudoStats.CanParry = true
 
-// 	// Base dodge unaffected by Diminishing Returns
-// 	dk.PseudoStats.BaseDodge += 0.03664
-// 	dk.PseudoStats.BaseParry += 0.05
+	// 	// Base dodge unaffected by Diminishing Returns
+	// 	dk.PseudoStats.BaseDodge += 0.03664
+	// 	dk.PseudoStats.BaseParry += 0.05
 
-// 	dk.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
+	// 	dk.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-// 	if dk.Talents.SummonGargoyle {
-// 		dk.Gargoyle = dk.NewGargoyle()
-// 	}
+	// 	if dk.Talents.SummonGargoyle {
+	// 		dk.Gargoyle = dk.NewGargoyle()
+	// 	}
 
-// 	dk.Ghoul = dk.NewGhoulPet(dk.Talents.MasterOfGhouls)
-// 	dk.OnGargoyleStartFirstCast = func() {}
-// 	dk.GargoyleSummonDelay = time.Millisecond * 2500
+	// 	dk.Ghoul = dk.NewGhoulPet(dk.Talents.MasterOfGhouls)
+	// 	dk.OnGargoyleStartFirstCast = func() {}
+	// 	dk.GargoyleSummonDelay = time.Millisecond * 2500
 
-// 	dk.ArmyGhoul = make([]*GhoulPet, 8)
-// 	for i := 0; i < 8; i++ {
-// 		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
-// 	}
+	// 	dk.ArmyGhoul = make([]*GhoulPet, 8)
+	// 	for i := 0; i < 8; i++ {
+	// 		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
+	// 	}
 
-// 	if dk.Talents.Bloodworms > 0 {
-// 		dk.Bloodworm = make([]*BloodwormPet, 4)
-// 		for i := 0; i < 4; i++ {
-// 			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
-// 		}
-// 	}
+	// 	if dk.Talents.Bloodworms > 0 {
+	// 		dk.Bloodworm = make([]*BloodwormPet, 4)
+	// 		for i := 0; i < 4; i++ {
+	// 			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
+	// 		}
+	// 	}
 
-// 	if dk.Talents.DancingRuneWeapon {
-// 		dk.RuneWeapon = dk.NewRuneWeapon()
-// 	}
+	// 	if dk.Talents.DancingRuneWeapon {
+	// 		dk.RuneWeapon = dk.NewRuneWeapon()
+	// 	}
 
-// 	// done here so enchants that modify stats are applied before stats are calculated
-// 	dk.registerItems()
+	// 	// done here so enchants that modify stats are applied before stats are calculated
+	// 	dk.registerItems()
 
- 	return dk
- }
+	return dk
+}
 
 // func (dk *DeathKnight) AllDiseasesAreActive(target *core.Unit) bool {
 // 	return dk.FrostFeverSpell.Dot(target).IsActive() && dk.BloodPlagueSpell.Dot(target).IsActive()

@@ -152,6 +152,8 @@ func (item WowheadItemResponse) GetIntValue(pattern *regexp.Regexp) int {
 	return item.GetTooltipRegexValue(pattern, 1)
 }
 
+var expansionRegex = regexp.MustCompile(`(tbc|wotlk|cata)`)
+
 var armorRegex = regexp.MustCompile(`<!--amr-->([0-9]+) Armor`)
 var agilityRegex = regexp.MustCompile(`<!--stat3-->\+([0-9]+) Agility`)
 var strengthRegex = regexp.MustCompile(`<!--stat4-->\+([0-9]+) Strength`)
@@ -257,16 +259,16 @@ type classPattern struct {
 
 // Detects class-locked items, e.g. tier sets and pvp gear.
 var classPatternsWowhead = []classPattern{
-	{class: proto.Class_ClassWarrior, pattern: regexp.MustCompile(`<a href="/cata/class=1/warrior" class="c1">Warrior</a>`)},
-	{class: proto.Class_ClassPaladin, pattern: regexp.MustCompile(`<a href="/cata/class=2/paladin" class="c2">Paladin</a>`)},
-	{class: proto.Class_ClassHunter, pattern: regexp.MustCompile(`<a href="/cata/class=3/hunter" class="c3">Hunter</a>`)},
-	{class: proto.Class_ClassRogue, pattern: regexp.MustCompile(`<a href="/cata/class=4/rogue" class="c4">Rogue</a>`)},
-	{class: proto.Class_ClassPriest, pattern: regexp.MustCompile(`<a href="/cata/class=5/priest" class="c5">Priest</a>`)},
-	{class: proto.Class_ClassDeathKnight, pattern: regexp.MustCompile(`<a href="/cata/class=6/death-knight" class="c6">Death Knight</a>`)},
-	{class: proto.Class_ClassShaman, pattern: regexp.MustCompile(`<a href="/cata/class=7/shaman" class="c7">Shaman</a>`)},
-	{class: proto.Class_ClassMage, pattern: regexp.MustCompile(`<a href="/cata/class=8/mage" class="c8">Mage</a>`)},
-	{class: proto.Class_ClassWarlock, pattern: regexp.MustCompile(`<a href="/cata/class=9/warlock" class="c9">Warlock</a>`)},
-	{class: proto.Class_ClassDruid, pattern: regexp.MustCompile(`<a href="/cata/class=11/druid" class="c11">Druid</a>`)},
+	{class: proto.Class_ClassWarrior, pattern: regexp.MustCompile(fmt.Sprintf(`<a href="/%s/class=1/warrior" class="c1">Warrior</a>`, expansionRegex))},
+	{class: proto.Class_ClassPaladin, pattern: regexp.MustCompile(fmt.Sprintf(`<a href="/%s/class=2/paladin" class="c2">Paladin</a>`, expansionRegex))},
+	{class: proto.Class_ClassHunter, pattern: regexp.MustCompile(fmt.Sprintf(`<a href="/%s/class=3/hunter" class="c3">Hunter</a>`, expansionRegex))},
+	{class: proto.Class_ClassRogue, pattern: regexp.MustCompile(fmt.Sprintf(`<a href="/%s/class=4/rogue" class="c4">Rogue</a>`, expansionRegex))},
+	{class: proto.Class_ClassPriest, pattern: regexp.MustCompile(fmt.Sprintf(`<a href="/%s/class=5/priest" class="c5">Priest</a>`, expansionRegex))},
+	{class: proto.Class_ClassDeathKnight, pattern: regexp.MustCompile(fmt.Sprintf(`<a href="/%s/class=6/death-knight" class="c6">Death Knight</a>`, expansionRegex))},
+	{class: proto.Class_ClassShaman, pattern: regexp.MustCompile(fmt.Sprintf(`<a href="/%s/class=7/shaman" class="c7">Shaman</a>`, expansionRegex))},
+	{class: proto.Class_ClassMage, pattern: regexp.MustCompile(fmt.Sprintf(`<a href="/%s/class=8/mage" class="c8">Mage</a>`, expansionRegex))},
+	{class: proto.Class_ClassWarlock, pattern: regexp.MustCompile(fmt.Sprintf(`<a href="/%s/class=9/warlock" class="c9">Warlock</a>`, expansionRegex))},
+	{class: proto.Class_ClassDruid, pattern: regexp.MustCompile(fmt.Sprintf(`<a href="/%s/class=11/druid" class="c11">Druid</a>`, expansionRegex))},
 }
 
 func (item WowheadItemResponse) GetClassAllowlist() []proto.Class {
@@ -727,10 +729,10 @@ func (item WowheadItemResponse) GetGemStats() Stats {
 	return stats
 }
 
-var itemSetNameRegex = regexp.MustCompile(`<a href="/cata/item-set=-?([0-9]+)/(.*)" class="q">([^<]+)<`)
+var itemSetNameRegex = regexp.MustCompile(fmt.Sprintf(`<a href="\/%s\/item-set=-?([0-9]+)\/(.*)" class="q">([^<]+)<`, expansionRegex))
 
 func (item WowheadItemResponse) GetItemSetName() string {
-	original := item.GetTooltipRegexString(itemSetNameRegex, 3)
+	original := item.GetTooltipRegexString(itemSetNameRegex, 4)
 
 	// Strip out the 10/25 man prefixes from set names
 	withoutTier := strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(original, "Heroes' "), "Valorous "), "Conqueror's "), "Triumphant "), "Sanctified ")

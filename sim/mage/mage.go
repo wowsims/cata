@@ -11,7 +11,7 @@ const (
 	HotStreakSpells = core.SpellFlagAgentReserved3
 )
 
-var TalentTreeSizes = [3]int{30, 28, 28}
+var TalentTreeSizes = [3]int{21, 21, 19}
 
 type Mage struct {
 	core.Character

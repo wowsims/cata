@@ -35,8 +35,6 @@ const (
 	ArmorPenetration
 	Expertise
 	Mana
-	Energy
-	Rage
 	Armor
 	RangedAttackPower
 	Defense
@@ -53,11 +51,6 @@ const (
 	ShadowResistance
 	BonusArmor
 	Mastery
-	RunicPower
-	BloodRune
-	FrostRune
-	UnholyRune
-	DeathRune
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 
@@ -134,10 +127,6 @@ func (s Stat) StatName() string {
 		return "ArmorPenetration"
 	case Mana:
 		return "Mana"
-	case Energy:
-		return "Energy"
-	case Rage:
-		return "Rage"
 	case Armor:
 		return "Armor"
 	case BonusArmor:
@@ -168,16 +157,6 @@ func (s Stat) StatName() string {
 		return "ShadowResistance"
 	case ArcaneResistance:
 		return "ArcaneResistance"
-	case RunicPower:
-		return "Runic Power"
-	case BloodRune:
-		return "Blood Rune"
-	case FrostRune:
-		return "Frost Rune"
-	case UnholyRune:
-		return "Unholy Rune"
-	case DeathRune:
-		return "Death Rune"
 	case Mastery:
 		return "Mastery"
 	}

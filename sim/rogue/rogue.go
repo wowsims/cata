@@ -13,7 +13,7 @@ const (
 	SpellFlagColdBlooded = core.SpellFlagAgentReserved4
 )
 
-var TalentTreeSizes = [3]int{27, 28, 28}
+var TalentTreeSizes = [3]int{19, 19, 19}
 
 const RogueBleedTag = "RogueBleed"
 
