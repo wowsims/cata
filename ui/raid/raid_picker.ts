@@ -593,10 +593,7 @@ export class PlayerPicker extends Component {
 
 class PlayerEditorModal<SpecType extends Spec> extends BaseModal {
 	constructor(player: Player<SpecType>) {
-		super(document.body, 'player-editor-modal', {
-			closeButton: { fixed: true },
-			header: false,
-		});
+		super(document.body, 'player-editor-modal', { header: false });
 
 		this.rootElem.id = 'playerEditorModal';
 		this.body.insertAdjacentHTML(
