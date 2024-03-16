@@ -7,7 +7,6 @@ import (
 )
 
 func (hunter *Hunter) registerSteadyShotSpell() {
-	impSSProcChance := 0.05 * float64(hunter.Talents.ImprovedSteadyShot)
 	if hunter.Talents.ImprovedSteadyShot > 0 {
 		hunter.ImprovedSteadyShotAura = hunter.RegisterAura(core.Aura{
 			Label:    "Improved Steady Shot",
@@ -31,7 +30,6 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
-			Refund: 6, // Todo: implement Termination
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -50,18 +48,14 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		DamageMultiplierAdditive: 1,
 		// DamageMultiplier: 1 *
 		// 	hunter.markedForDeathMultiplier(),
-		//CritMultiplier:   hunter.critMultiplier(true, true, false), // what is this
+		CritMultiplier:1,//   hunter.critMultiplier(true, true, false), // what is this
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.21*spell.RangedAttackPower(target) +
-				hunter.AutoAttacks.Ranged().BaseDamage(sim)*2.8/hunter.AutoAttacks.Ranged().SwingSpeed +
-				280
-
+			baseDamage := 0.21 * spell.RangedAttackPower(target) +
+				hunter.AutoAttacks.Ranged().BaseDamage(sim)*2.8/hunter.AutoAttacks.Ranged().SwingSpeed + 280
+			hunter.AddFocus(sim, 6, hunter.NewFocusMetrics(spell.ActionID))
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-			if result.Landed() && impSSProcChance > 0 && sim.RandomFloat("Imp Steady Shot") < impSSProcChance {
-				hunter.ImprovedSteadyShotAura.Activate(sim) // Todo: Implement imp steady
-			}
 			spell.DealDamage(sim, result)
 		},
 	})

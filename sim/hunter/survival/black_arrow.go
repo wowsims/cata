@@ -12,13 +12,14 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 63672}
+	actionID := core.ActionID{SpellID: 3674}
 
-	hunter.BlackArrow = hunter.RegisterSpell(core.SpellConfig{
+	hunter.Hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagAPL,
+		
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
 			Cost: 35,
 		},
@@ -43,13 +44,19 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "BlackArrow",
+				Label: "BlackArrow-3674",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= 1.06
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= 1.06
+				},
 			},
 			NumberOfTicks: 10,
 			TickLength:    time.Second * 2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				// scales slightly better (11.5%) than the tooltip implies (10%), but isn't affected by Hunter's Mark
-				dot.SnapshotBaseDamage = 2849 + 0.665*(dot.Spell.Unit.GetStat(stats.RangedAttackPower)+dot.Spell.Unit.PseudoStats.MobTypeAttackPower)
+				dot.SnapshotBaseDamage = 553 + 0.023*(dot.Spell.Unit.GetStat(stats.RangedAttackPower)+dot.Spell.Unit.PseudoStats.MobTypeAttackPower)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

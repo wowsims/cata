@@ -157,14 +157,19 @@ func (fb *focusBar) addFocusInternal(sim *Simulation, amount float64, metrics *R
 	if amount < 0 {
 		panic("Trying to add negative focus!")
 	}
-
 	newFocus := min(fb.currentFocus+amount, fb.maxFocus)
-	metrics.AddEvent(amount, newFocus-fb.currentFocus)
+	//metrics.AddEvent(amount, newFocus-fb.currentFocus)
+    // Convert sim.CurrentTime (nanoseconds) to milliseconds
+    currentTimeMilliseconds := sim.CurrentTime.Nanoseconds() / 1e6
+    // Find the remainder of milliseconds within the current second
+    remainderMilliseconds := currentTimeMilliseconds % 1000
 
-	if sim.Log != nil {
-		fb.unit.Log(sim, "Gained %0.3f focus from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, fb.currentFocus, newFocus)
-	}
 
+    // Check if within the first 100ms of a new second
+    if remainderMilliseconds < 100 {
+        // Add metrics event here as needed
+		//metrics.AddEvent(amount, newFocus-fb.currentFocus)
+    }
 	crossedThreshold := fb.cumulativeFocusDecisionThresholds == nil || fb.cumulativeFocusDecisionThresholds[int(fb.currentFocus)] != fb.cumulativeFocusDecisionThresholds[int(newFocus)]
 	fb.currentFocus = newFocus
 
@@ -181,10 +186,10 @@ func (fb *focusBar) SpendFocus(sim *Simulation, amount float64, metrics *Resourc
 	}
 
 	newFocus := fb.currentFocus - amount
-	metrics.AddEvent(-amount, -amount)
+	//metrics.AddEvent(-amount, -amount)
 
 	if sim.Log != nil {
-		fb.unit.Log(sim, "Spent %0.3f focus from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, fb.currentFocus, newFocus)
+		//fb.unit.Log(sim, "Spent %0.3f focus from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, fb.currentFocus, newFocus)
 	}
 
 	fb.currentFocus = newFocus

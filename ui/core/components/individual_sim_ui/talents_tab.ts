@@ -108,7 +108,7 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 		this.buildGlyphsPicker(playerTab);
 
 		if (this.simUI.player.getClass() == Class.ClassHunter) {
-			this.buildHunterPetPicker(petTab);
+			//this.buildHunterPetPicker(petTab);
 		}
 	}
 

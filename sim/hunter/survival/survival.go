@@ -23,23 +23,22 @@ func RegisterSurvivalHunter() {
 	)
 }
 
+func (hunter *SurvivalHunter) Initialize() {
+	// Initialize global Hunter spells
+	hunter.RegisterClass()
+
+	// Spec specific spells
+	hunter.registerExplosiveShotSpell()
+	hunter.registerBlackArrowSpell(hunter.NewTimer())
+}
+
 func NewSurvivalHunter(character *core.Character, options *proto.Player) *SurvivalHunter {
 	survivalOptions := options.GetSurvivalHunter().Options
 
 	svHunter := &SurvivalHunter{
 		Hunter: hunter.NewHunter(character, options, survivalOptions.ClassOptions),
 	}
-
 	svHunter.SurvivalOptions = survivalOptions
-	
-	fireTrapTimer := svHunter.NewTimer()
-	//explosiveShotTimer := svHunter.NewTimer()
-
-	svHunter.Initialize() // Initialize base
-
-	// Register Survival Spells
-	svHunter.registerBlackArrowSpell(fireTrapTimer)
-	//svHunter.registerExplosiveShotSpell(explosiveShotTimer)
 
 	return svHunter
 }
@@ -47,8 +46,7 @@ func NewSurvivalHunter(character *core.Character, options *proto.Player) *Surviv
 type SurvivalHunter struct {
 	*hunter.Hunter
 
-	BlackArrow      *core.Spell
-	ExplosiveShot   *core.Spell
+	ExplosiveShot *core.Spell
 }
 
 func (svHunter *SurvivalHunter) GetHunter() *hunter.Hunter {

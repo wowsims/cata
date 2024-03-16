@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-var TalentTreeSizes = [3]int{26, 27, 28}
+var TalentTreeSizes = [3]int{19, 19, 20}
 
 const ThoridalTheStarsFuryItemID = 34334
 
@@ -27,25 +27,27 @@ type Hunter struct {
 	mayMoveAt time.Duration
 
 	AspectOfTheDragonhawk *core.Spell
-	AspectOfTheViper      *core.Spell
+	AspectOfTheFox      *core.Spell
 
-	// AimedShot       *core.Spell
-	// ArcaneShot      *core.Spell
-	// BlackArrow      *core.Spell
-	// ChimeraShot     *core.Spell
-	// ExplosiveShotR4 *core.Spell
+	fireTrapTimer *core.Timer
+
+
+	AimedShot       *core.Spell
+	ArcaneShot      *core.Spell
+	BlackArrow      *core.Spell
+	ChimeraShot     *core.Spell
+	//ExplosiveShotR *core.Spell
 	// ExplosiveShotR3 *core.Spell
-	// ExplosiveTrap   *core.Spell
-	// KillCommand     *core.Spell
-	// KillShot        *core.Spell
-	// MultiShot       *core.Spell
-	// RapidFire       *core.Spell
-	// RaptorStrike    *core.Spell
-	// ScorpidSting    *core.Spell
-	// SerpentSting    *core.Spell
-	// SilencingShot   *core.Spell
+	ExplosiveTrap   *core.Spell
+	KillCommand     *core.Spell
+	KillShot        *core.Spell
+	MultiShot       *core.Spell
+	RapidFire       *core.Spell
+	RaptorStrike    *core.Spell
+	ScorpidSting    *core.Spell
+	SerpentSting    *core.Spell
+	SilencingShot   *core.Spell
 	SteadyShot      *core.Spell
-	// Volley          *core.Spell
 
 	// Fake spells to encapsulate weaving logic.
 	TrapWeaveSpell *core.Spell
@@ -89,9 +91,9 @@ func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 
 func (hunter *Hunter) Initialize() {
 	// Update auto crit multipliers now that we have the targets.
-	//hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
-	// hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
-	// hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.critMultiplier(false, false, false)
+	hunter.AutoAttacks.MHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
+	hunter.AutoAttacks.OHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
+	hunter.AutoAttacks.RangedConfig().CritMultiplier = 1// hunter.critMultiplier(false, false, false)
 
 	// hunter.registerAspectOfTheDragonhawkSpell()
 	// hunter.registerAspectOfTheViperSpell()
@@ -100,6 +102,7 @@ func (hunter *Hunter) Initialize() {
 	// arcaneShotTimer := hunter.NewTimer()
 	// fireTrapTimer := hunter.NewTimer()
 
+	hunter.fireTrapTimer = hunter.NewTimer()
 	// hunter.registerAimedShotSpell(multiShotTimer)
 	// hunter.registerArcaneShotSpell(arcaneShotTimer)
 	// hunter.registerBlackArrowSpell(fireTrapTimer)
@@ -117,7 +120,6 @@ func (hunter *Hunter) Initialize() {
 
 	// hunter.registerKillCommandCD()
 	// hunter.registerRapidFireCD()
-	hunter.registerSteadyShotSpell() // Todo: Probably add a counter so we can check for imp ss?
 
 	// if hunter.Options.UseHuntersMark {
 	//  	hunter.RegisterPrepullAction(0, func(sim *core.Simulation) {
@@ -125,6 +127,12 @@ func (hunter *Hunter) Initialize() {
 	//  		//huntersMarkAura.Activate(sim)
 	//  	})
 	//  }
+}
+func (hunter *Hunter) RegisterClass() {
+	hunter.AutoAttacks.MHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
+	hunter.AutoAttacks.OHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
+	hunter.AutoAttacks.RangedConfig().CritMultiplier = 1// hunter.critMultiplier(false, false, false)
+	hunter.registerSteadyShotSpell() // Todo: Probably add a counter so we can check for imp ss?
 }
 
 func (hunter *Hunter) Reset(_ *core.Simulation) {

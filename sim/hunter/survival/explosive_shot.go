@@ -7,12 +7,12 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (hunter *SurvivalHunter) registerExplosiveShotSpell(timer *core.Timer) *core.Spell {
+func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 	actionID := core.ActionID{SpellID: 53301}
 	minFlatDamage := 386.0
 	maxFlatDamage := 464.0
 
-	return hunter.RegisterSpell(core.SpellConfig{
+	hunter.Hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskRangedSpecial,
@@ -27,13 +27,12 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell(timer *core.Timer) *cor
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    timer,
 				Duration: time.Second * 6,
 			},
 		},
 
 		BonusCritRating: 0 +
-			core.TernaryFloat64(hunter.Hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfExplosiveShot), 6*core.CritRatingPerCritChance, 0),
+			core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfExplosiveShot), 6*core.CritRatingPerCritChance, 0),
 		DamageMultiplier: 1,
 		CritMultiplier: 1,//   hunter.critMultiplier(true, false, false),
 		ThreatMultiplier: 1,
@@ -43,7 +42,7 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell(timer *core.Timer) *cor
 				Label: "Explosive Shot - Dot",
 			},
 			NumberOfTicks: 2,
-			TickLength:    time.Second,
+			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = sim.Roll(minFlatDamage, maxFlatDamage) + 0.273*dot.Spell.RangedAttackPower(target)
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
