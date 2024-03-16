@@ -7,6 +7,8 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+const RuptureSpellID = 48672
+
 var Arena = core.NewItemSet(core.ItemSet{
 	Name: "Gladiator's Vestments",
 	Bonuses: map[int32]core.ApplyEffect{

@@ -9,7 +9,7 @@ import (
 
 func (rogue *Rogue) registerFeintSpell() {
 	rogue.Feint = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48659},
+		ActionID:    core.ActionID{SpellID: 1966},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,

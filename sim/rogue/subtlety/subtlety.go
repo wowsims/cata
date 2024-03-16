@@ -23,6 +23,12 @@ func RegisterSubtletyRogue() {
 	)
 }
 
+func (subRogue *SubtletyRogue) Initialize() {
+	subRogue.Rogue.Initialize()
+
+	subRogue.registerHemorrhageSpell()
+}
+
 func NewSubtletyRogue(character *core.Character, options *proto.Player) *SubtletyRogue {
 	subOptions := options.GetSubtletyRogue().Options
 

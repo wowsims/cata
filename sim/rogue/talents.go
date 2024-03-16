@@ -1,51 +1,58 @@
 package rogue
 
- func (rogue *Rogue) ApplyTalents() {
-// 	rogue.applyMurder()
-// 	rogue.applySlaughterFromTheShadows()
-// 	rogue.applySealFate()
-// 	rogue.applyWeaponSpecializations()
-// 	rogue.applyCombatPotency()
-// 	rogue.applyFocusedAttacks()
-// 	rogue.applyInitiative()
+import (
+	"math"
 
-// 	rogue.AddStat(stats.Dodge, core.DodgeRatingPerDodgeChance*2*float64(rogue.Talents.LightningReflexes))
-// 	rogue.PseudoStats.MeleeSpeedMultiplier *= []float64{1, 1.03, 1.06, 1.10}[rogue.Talents.LightningReflexes]
-// 	rogue.AddStat(stats.Parry, core.ParryRatingPerParryChance*2*float64(rogue.Talents.Deflection))
-// 	rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(rogue.Talents.Malice))
-// 	rogue.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
-// 	rogue.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
-// 	rogue.AddStat(stats.Expertise, core.ExpertisePerQuarterPercentReduction*5*float64(rogue.Talents.WeaponExpertise))
-// 	rogue.AddStat(stats.ArmorPenetration, core.ArmorPenPerPercentArmor*3*float64(rogue.Talents.SerratedBlades))
-// 	rogue.AutoAttacks.OHConfig().DamageMultiplier *= rogue.dwsMultiplier()
+	"github.com/wowsims/cata/sim/core"
+)
 
-// 	if rogue.Talents.Deadliness > 0 {
-// 		rogue.MultiplyStat(stats.AttackPower, 1.0+0.02*float64(rogue.Talents.Deadliness))
-// 	}
+func (rogue *Rogue) ApplyTalents() {
+	// 	rogue.applyMurder()
+	// 	rogue.applySlaughterFromTheShadows()
+	// 	rogue.applySealFate()
+	// 	rogue.applyWeaponSpecializations()
+	// 	rogue.applyCombatPotency()
+	// 	rogue.applyFocusedAttacks()
+	// 	rogue.applyInitiative()
 
-// 	if rogue.Talents.SavageCombat > 0 {
-// 		rogue.MultiplyStat(stats.AttackPower, 1.0+0.02*float64(rogue.Talents.SavageCombat))
-// 	}
+	// 	rogue.AddStat(stats.Dodge, core.DodgeRatingPerDodgeChance*2*float64(rogue.Talents.LightningReflexes))
+	// 	rogue.PseudoStats.MeleeSpeedMultiplier *= []float64{1, 1.03, 1.06, 1.10}[rogue.Talents.LightningReflexes]
+	// 	rogue.AddStat(stats.Parry, core.ParryRatingPerParryChance*2*float64(rogue.Talents.Deflection))
+	// 	rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(rogue.Talents.Malice))
+	// 	rogue.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
+	// 	rogue.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*1*float64(rogue.Talents.Precision))
+	// 	rogue.AddStat(stats.Expertise, core.ExpertisePerQuarterPercentReduction*5*float64(rogue.Talents.WeaponExpertise))
+	// 	rogue.AddStat(stats.ArmorPenetration, core.ArmorPenPerPercentArmor*3*float64(rogue.Talents.SerratedBlades))
+	// 	rogue.AutoAttacks.OHConfig().DamageMultiplier *= rogue.dwsMultiplier()
 
-// 	if rogue.Talents.SinisterCalling > 0 {
-// 		rogue.MultiplyStat(stats.Agility, 1.0+0.03*float64(rogue.Talents.SinisterCalling))
-// 	}
+	// 	if rogue.Talents.Deadliness > 0 {
+	// 		rogue.MultiplyStat(stats.AttackPower, 1.0+0.02*float64(rogue.Talents.Deadliness))
+	// 	}
 
-// 	rogue.registerOverkill()
-// 	rogue.registerHungerForBlood()
-// 	rogue.registerColdBloodCD()
-// 	rogue.registerBladeFlurryCD()
-// 	rogue.registerAdrenalineRushCD()
-// 	rogue.registerKillingSpreeCD()
-// 	rogue.registerShadowstepCD()
-// 	rogue.registerShadowDanceCD()
-// 	rogue.registerMasterOfSubtletyCD()
-// 	rogue.registerPreparationCD()
-// 	rogue.registerPremeditation()
-// 	rogue.registerGhostlyStrikeSpell()
-// 	rogue.registerDirtyDeeds()
-// 	rogue.registerHonorAmongThieves()
- }
+	// 	if rogue.Talents.SavageCombat > 0 {
+	// 		rogue.MultiplyStat(stats.AttackPower, 1.0+0.02*float64(rogue.Talents.SavageCombat))
+	// 	}
+
+	// 	if rogue.Talents.SinisterCalling > 0 {
+	// 		rogue.MultiplyStat(stats.Agility, 1.0+0.03*float64(rogue.Talents.SinisterCalling))
+	// 	}
+
+	rogue.registerSanguinaryVein()
+	// 	rogue.registerOverkill()
+	// 	rogue.registerHungerForBlood()
+	// 	rogue.registerColdBloodCD()
+	// 	rogue.registerBladeFlurryCD()
+	// 	rogue.registerAdrenalineRushCD()
+	// 	rogue.registerKillingSpreeCD()
+	// 	rogue.registerShadowstepCD()
+	// 	rogue.registerShadowDanceCD()
+	// 	rogue.registerMasterOfSubtletyCD()
+	// 	rogue.registerPreparationCD()
+	// 	rogue.registerPremeditation()
+	// 	rogue.registerGhostlyStrikeSpell()
+	// 	rogue.registerDirtyDeeds()
+	// 	rogue.registerHonorAmongThieves()
+}
 
 // // dwsMultiplier returns the offhand damage multiplier
 // func (rogue *Rogue) dwsMultiplier() float64 {
@@ -86,16 +93,16 @@ package rogue
 // 	}
 // }
 
-// func (rogue *Rogue) makeCostModifier() func(baseCost float64) float64 {
-// 	if rogue.HasSetBonus(Tier7, 4) {
-// 		return func(baseCost float64) float64 {
-// 			return math.RoundToEven(0.95 * baseCost)
-// 		}
-// 	}
-// 	return func(baseCost float64) float64 {
-// 		return baseCost
-// 	}
-// }
+func (rogue *Rogue) makeGeneratorCostModifier() func(baseCost float64) float64 {
+	if rogue.HasSetBonus(Tier7, 4) {
+		return func(baseCost float64) float64 {
+			return math.RoundToEven(0.95 * baseCost)
+		}
+	}
+	return func(baseCost float64) float64 {
+		return baseCost
+	}
+}
 
 // func (rogue *Rogue) applyMurder() {
 // 	rogue.PseudoStats.DamageDealtMultiplier *= rogue.murderMultiplier()
@@ -638,3 +645,22 @@ package rogue
 // 		},
 // 	})
 // }
+
+func (rogue *Rogue) registerSanguinaryVein() {
+	if rogue.Talents.SanguinaryVein == 0 {
+		return
+	}
+
+	rogue.RegisterAura(core.Aura{
+		Label:    "Sanguinary Vein",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if rogue.CurrentTarget.HasActiveAuraWithTag(RogueBleedTag) { // TheBackstabi - Strictly speaking this works on any bleed, but this is fine
+				spell.DamageMultiplier += 0.08 * float64(rogue.Talents.SanguinaryVein)
+			}
+		},
+	})
+}

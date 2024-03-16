@@ -427,6 +427,14 @@ func TraumaAura(target *Unit, points int) *Aura {
 	}, 1+0.15*float64(points))
 }
 
+func HemorrhageAura(target *Unit) *Aura {
+	return bleedDamageAura(target, Aura{
+		Label:    "Hemorrhage",
+		ActionID: ActionID{SpellID: 16511},
+		Duration: time.Minute,
+	}, 1.3)
+}
+
 func StampedeAura(target *Unit) *Aura {
 	return bleedDamageAura(target, Aura{
 		Label:    "Stampede",
