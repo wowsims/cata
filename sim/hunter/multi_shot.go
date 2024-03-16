@@ -27,14 +27,13 @@ func (hunter *Hunter) registerMultiShotSpell(timer *core.Timer) {
 
 		BonusCritRating: 0, //+4*core.CritRatingPerCritChance*float64(hunter.Talents.ImprovedBarrage),
 		DamageMultiplierAdditive: 1,//.04*float64(hunter.Talents.Barrage),
-		DamageMultiplier: 1,
+		DamageMultiplier: 1.2,
 		CritMultiplier:   hunter.CritMultiplier(true, false, false),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			sharedDmg := hunter.AutoAttacks.Ranged().BaseDamage(sim) +
-				spell.BonusWeaponDamage() +
-				408
+				spell.BonusWeaponDamage()
 
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {

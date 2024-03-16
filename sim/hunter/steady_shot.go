@@ -48,14 +48,13 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		// BonusCritRating: 0 +
 		// 	2*core.CritRatingPerCritChance*float64(hunter.Talents.SurvivalInstincts),
 		DamageMultiplierAdditive: 1,
-		// DamageMultiplier: 1 *
+		DamageMultiplier: 0.62,
 		// 	hunter.markedForDeathMultiplier(),
 		CritMultiplier:1,//   hunter.critMultiplier(true, true, false), // what is this
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.21 * spell.RangedAttackPower(target) +
-				hunter.AutoAttacks.Ranged().BaseDamage(sim)*2.8/hunter.AutoAttacks.Ranged().SwingSpeed + 280
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280 + spell.RangedAttackPower(target) * 0.021) 
 			hunter.AddFocus(sim, 9, ssMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			spell.DealDamage(sim, result)
