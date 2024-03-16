@@ -24,8 +24,7 @@ func (hunter *SurvivalHunter) registerCobraShotSpell() {
 				GCD:      time.Second,
 				CastTime: time.Second * 2,
 			},
-			IgnoreHaste: false, // Hunter GCD is locked at 1.5s //Todo: no longer in Cata, its 1sec // should probably be affected by haste now
-
+			IgnoreHaste: true,
 			CastTime: func(spell *core.Spell) time.Duration {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
 			},

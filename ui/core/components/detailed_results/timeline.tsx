@@ -741,6 +741,7 @@ export class Timeline extends ResultComponent {
 				if (resourceType == ResourceType.ResourceTypeEnergy || resourceType == ResourceType.ResourceTypeFocus) {
 					const bgElem = document.createElement('div');
 					bgElem.classList.add('rotation-timeline-resource-fill');
+					bgElem.classList.add(cNames);
 					bgElem.style.height = ((resourceLogGroup.valueAfter / startValue) * 100).toFixed(0) + '%';
 					resourceElem.appendChild(bgElem);
 				} else {

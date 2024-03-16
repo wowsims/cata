@@ -163,7 +163,7 @@ func (value *APLValueCurrentFocus) Type() proto.APLValueType {
 }
 
 func (value *APLValueCurrentFocus) GetFloat(sim *Simulation) float64 {
-	return value.unit.CurrentEnergy()
+	return value.unit.CurrentFocus()
 }
 
 func (value *APLValueCurrentFocus) String() string {
