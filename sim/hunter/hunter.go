@@ -95,6 +95,20 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
+func (hunter *Hunter) critMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS bool) float64 {
+	primaryModifier := 1.0
+	secondaryModifier := 0.0
+
+	if isRanged {
+		//secondaryModifier += mortalShotsFactor * float64(hunter.Talents.MortalShots)
+		if isMFDSpell {
+			//secondaryModifier += 0.02 * float64(hunter.Talents.MarkedForDeath)
+		}
+	}
+
+	return hunter.MeleeCritMultiplier(primaryModifier, secondaryModifier)
+}
+
 func (hunter *Hunter) Initialize() {
 	hunter.AutoAttacks.MHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
 	hunter.AutoAttacks.OHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)

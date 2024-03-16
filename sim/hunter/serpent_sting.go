@@ -4,23 +4,19 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (hunter *Hunter) registerSerpentStingSpell() {
-	canCrit := hunter.HasSetBonus(ItemSetWindrunnersPursuit, 2)
 	noxiousStingsMultiplier := 1 + 0.01*float64(hunter.Talents.NoxiousStings)
-	huntersWithGlyphOfSteadyShot := hunter.GetAllHuntersWithGlyphOfSteadyShot()
 
 	hunter.SerpentSting = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 49001},
+		ActionID:    core.ActionID{SpellID: 1978},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagAPL,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.09,
-			Multiplier: 1 - 0.03*float64(hunter.Talents.Efficiency),
+		FocusCost: core.FocusCostOptions{
+			Cost: 25,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -30,14 +26,14 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 		},
 
 		// Need to specially apply LethalShots here, because this spell uses an empty proc mask
-		BonusCritRating: 1 * core.CritRatingPerCritChance * float64(hunter.Talents.LethalShots),
+		//TOdo: add glyph of serpent sting modifier *6percent crit chance
+		BonusCritRating: 1 * core.CritRatingPerCritChance * (float64(hunter.Talents.ImprovedSerpentSting)),
 
 		DamageMultiplierAdditive: 1 +
-			0.1*float64(hunter.Talents.ImprovedStings) +
-			core.TernaryFloat64(hunter.HasSetBonus(ItemSetScourgestalkerBattlegear, 2), .1, 0),
+			0.15*float64(hunter.Talents.ImprovedSerpentSting),
 		// according to in-game testing (which happens to match the wowhead 60% mortal shots flag on wowhead)
 		// serpent-sting gets 60% crit modifier instead of 30% crit modifier from mortal shots
-		CritMultiplier:   hunter.critMultiplier(true, false, true),
+		CritMultiplier:   hunter.MeleeCritMultiplier(1, 1 + (float64(hunter.Talents.Toxicology)*0.5)),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -46,23 +42,13 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 				Tag:   "SerpentSting",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= noxiousStingsMultiplier
-					// Check for 1 because this aura will always be active inside OnGain.
-					if aura.Unit.NumActiveAurasWithTag("SerpentSting") == 1 {
-						for _, otherHunter := range huntersWithGlyphOfSteadyShot {
-							otherHunter.SteadyShot.DamageMultiplierAdditive += .1
-						}
-					}
+					
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= noxiousStingsMultiplier
-					if !aura.Unit.HasActiveAuraWithTag("SerpentSting") {
-						for _, otherHunter := range huntersWithGlyphOfSteadyShot {
-							otherHunter.SteadyShot.DamageMultiplierAdditive -= .1
-						}
-					}
 				},
 			},
-			NumberOfTicks: 5 + core.TernaryInt32(hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfSerpentSting), 2, 0),
+			NumberOfTicks: 5,
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -74,11 +60,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if canCrit {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-				}
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
@@ -91,17 +73,4 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			spell.DealOutcome(sim, result)
 		},
 	})
-}
-
-func (hunter *Hunter) GetAllHuntersWithGlyphOfSteadyShot() []*Hunter {
-	allHunterAgents := hunter.Env.Raid.GetPlayersOfClass(proto.Class_ClassHunter)
-
-	hunters := []*Hunter{}
-	for _, agent := range allHunterAgents {
-		h := agent.(HunterAgent).GetHunter()
-		if h.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfSteadyShot) {
-			hunters = append(hunters, h)
-		}
-	}
-	return hunters
 }
