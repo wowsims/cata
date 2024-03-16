@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-var TalentTreeSizes = [3]int{26, 27, 28}
+var TalentTreeSizes = [3]int{19, 19, 20}
 
 const ThoridalTheStarsFuryItemID = 34334
 

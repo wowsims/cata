@@ -7,7 +7,7 @@ export class HolyPaladin extends PlayerSpec<Spec.SpecHolyPaladin> {
 	static specID = Spec.SpecHolyPaladin as Spec.SpecHolyPaladin;
 	static classID = Class.ClassPaladin as Class.ClassPaladin;
 	static friendlyName = 'Holy';
-	static simLink = getSpecSiteUrl('paladin', 'protection');
+	static simLink = getSpecSiteUrl('paladin', 'holy');
 
 	static isTankSpec = false;
 	static isHealingSpec = true;

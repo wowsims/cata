@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-var TalentTreeSizes = [3]int{28, 27, 26}
+var TalentTreeSizes = [3]int{18, 19, 19}
 
 type Warlock struct {
 	core.Character
@@ -62,7 +62,7 @@ type Warlock struct {
 	SpiritsoftheDamnedAura *core.Aura
 
 	//Infernal *InfernalPet
-	Inferno  *core.Spell
+	Inferno *core.Spell
 
 	// The sum total of demonic pact spell power * seconds.
 	DPSPAggregate float64

@@ -7,9 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/death_knight/unholy"
 	"github.com/wowsims/cata/sim/druid/balance"
 
-	// Todo: Feral has too tight rotation
-	// Needs work even without presets etc
-	//"github.com/wowsims/cata/sim/druid/feral"
+	"github.com/wowsims/cata/sim/druid/feral"
 	restoDruid "github.com/wowsims/cata/sim/druid/restoration"
 	_ "github.com/wowsims/cata/sim/encounters"
 	"github.com/wowsims/cata/sim/hunter/beast_mastery"
@@ -51,7 +49,7 @@ func RegisterAll() {
 	unholy.RegisterUnholyDeathKnight()
 
 	balance.RegisterBalanceDruid()
-	// feral.RegisterFeralDruid()
+	feral.RegisterFeralDruid()
 	// feralTank.RegisterFeralTankDruid()
 	restoDruid.RegisterRestorationDruid()
 
