@@ -56,7 +56,7 @@ export class LogRunner extends ResultComponent {
 		this.virtualScroll = new CustomVirtualScroll({
 			scrollContainer: scrollElem,
 			contentContainer: contentElem,
-			itemHeight: 30 s
+			itemHeight: 30,
 		});
     }
 
