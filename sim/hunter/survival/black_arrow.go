@@ -14,7 +14,7 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 
 	actionID := core.ActionID{SpellID: 3674}
 
-	hunter.Hunter.RegisterSpell(core.SpellConfig{
+	hunter.Hunter.BlackArrow = hunter.Hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskRangedSpecial,

@@ -1,25 +1,26 @@
 package hunter
 
-import "time"
+import (
+	"time"
+
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
+)
 
 func (hunter *Hunter) ApplyTalents() {
-	// if hunter.pet != nil {
-	// 	hunter.applyFocusedFire()
-	// 	hunter.applyFrenzy()
-	// 	hunter.registerBestialWrathCD()
+	if hunter.pet != nil {
+		hunter.applyFrenzy()
+		hunter.registerBestialWrathCD()
+		// Todo: BM stuff
+		// hunter.pet.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*2*float64(hunter.Talents.Ferocity))
+		// hunter.pet.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*2*float64(hunter.Talents.Ferocity))
+		// hunter.pet.AddStat(stats.Dodge, 3*core.DodgeRatingPerDodgeChance*float64(hunter.Talents.CatlikeReflexes))
+		// hunter.pet.PseudoStats.DamageDealtMultiplier *= 1 + 0.03*float64(hunter.Talents.UnleashedFury)
+		// hunter.pet.PseudoStats.MeleeSpeedMultiplier *= 1 + 0.04*float64(hunter.Talents.SerpentsSwiftness)
 
-	// 	hunter.pet.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*2*float64(hunter.Talents.Ferocity))
-	// 	hunter.pet.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*2*float64(hunter.Talents.Ferocity))
-	// 	hunter.pet.AddStat(stats.Dodge, 3*core.DodgeRatingPerDodgeChance*float64(hunter.Talents.CatlikeReflexes))
-	// 	hunter.pet.PseudoStats.DamageDealtMultiplier *= 1 + 0.03*float64(hunter.Talents.UnleashedFury)
-	// 	hunter.pet.PseudoStats.DamageDealtMultiplier *= 1 + 0.04*float64(hunter.Talents.KindredSpirits)
-	// 	hunter.pet.PseudoStats.MeleeSpeedMultiplier *= 1 + 0.04*float64(hunter.Talents.SerpentsSwiftness)
-
-	// 	if hunter.Talents.AnimalHandler != 0 {
-	// 		hunter.pet.MultiplyStat(stats.AttackPower, 1+(0.05*float64(hunter.Talents.AnimalHandler)))
-	// 	}
-	// 	hunter.pet.ApplyTalents()
-	// }
+		hunter.pet.ApplyTalents()
+	}
 
 	// hunter.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*1*float64(hunter.Talents.FocusedAim))
 	// hunter.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(hunter.Talents.KillerInstinct))
@@ -42,57 +43,20 @@ func (hunter *Hunter) ApplyTalents() {
 	// 	})
 	// }
 
-	// if hunter.Talents.EnduranceTraining > 0 {
-	// 	healthBonus := 0.01 * float64(hunter.Talents.EnduranceTraining)
-	// 	hunter.MultiplyStat(stats.Health, 1.0+healthBonus)
-	// 	if hunter.pet != nil {
-	// 		hunter.pet.MultiplyStat(stats.Health, 1.0+2*healthBonus)
-	// 	}
-	// }
+	if hunter.Talents.Pathing > 0 {
+		bonus := 0.1*float64(hunter.Talents.Pathing)
+		hunter.MultiplyCastSpeed(bonus) //Todo: Should this be attackspeed?
+	}
 
-	// if hunter.Talents.ThickHide > 0 {
-	// 	var hunterBonus, petBonus float64
-	// 	if hunter.Talents.ThickHide == 1 {
-	// 		hunterBonus = 0.04
-	// 		petBonus = 0.07
-	// 	} else if hunter.Talents.ThickHide == 2 {
-	// 		hunterBonus = 0.07
-	// 		petBonus = 0.14
-	// 	} else if hunter.Talents.ThickHide == 3 {
-	// 		hunterBonus = 0.1
-	// 		petBonus = 0.2
-	// 	}
-	// 	hunter.ApplyEquipScaling(stats.Armor, 1.0+hunterBonus)
-	// 	if hunter.pet != nil {
-	// 		hunter.pet.MultiplyStat(stats.Armor, 1.0+petBonus)
-	// 	}
-	// }
+	if hunter.Talents.HunterVsWild > 0 {
+		bonus := 0.5 * float64(hunter.Talents.HunterVsWild)
+		hunter.MultiplyStat(stats.Stamina, 1+bonus)
+	}
 
-	// if hunter.Talents.Survivalist > 0 {
-	// 	hunter.MultiplyStat(stats.Stamina, 1.0+0.02*float64(hunter.Talents.Survivalist))
-	// }
-
-	// if hunter.Talents.CombatExperience > 0 {
-	// 	bonus := 1.0 + (0.02 * float64(hunter.Talents.CombatExperience))
-	// 	hunter.MultiplyStat(stats.Agility, bonus)
-	// 	hunter.MultiplyStat(stats.Intellect, bonus)
-	// }
-	// if hunter.Talents.CarefulAim > 0 {
-	// 	hunter.AddStatDependency(stats.Intellect, stats.RangedAttackPower, (1.0/3.0)*float64(hunter.Talents.CarefulAim))
-	// }
-	// if hunter.Talents.HunterVsWild > 0 {
-	// 	bonus := 0.1 * float64(hunter.Talents.HunterVsWild)
-	// 	hunter.AddStatDependency(stats.Stamina, stats.AttackPower, bonus)
-	// 	hunter.AddStatDependency(stats.Stamina, stats.RangedAttackPower, bonus)
-	// }
-	// if hunter.Talents.LightningReflexes > 0 {
-	// 	agiBonus := 0.03 * float64(hunter.Talents.LightningReflexes)
-	// 	hunter.MultiplyStat(stats.Agility, 1.0+agiBonus)
-	// }
-	// if hunter.Talents.HuntingParty > 0 {
-	// 	agiBonus := 0.01 * float64(hunter.Talents.HuntingParty)
-	// 	hunter.MultiplyStat(stats.Agility, 1.0+agiBonus)
-	// }
+	if hunter.Talents.HuntingParty {
+		agiBonus := 0.01
+		hunter.MultiplyStat(stats.Agility, 1.0+agiBonus)
+	}
 
 	// hunter.applySpiritBond()
 	// hunter.applyInvigoration()
@@ -100,13 +64,11 @@ func (hunter *Hunter) ApplyTalents() {
 	// hunter.applyGoForTheThroat()
 	// hunter.applyPiercingShots()
 	// hunter.applyWildQuiver()
-	// hunter.applyImprovedTracking()
-	// hunter.applyThrillOfTheHunt()
-	// hunter.applyLockAndLoad()
-	// hunter.applyExposeWeakness()
-	// hunter.applyMasterTactician()
-	// hunter.applySniperTraining()
-	// hunter.applyHuntingParty()
+	
+	hunter.applyThrillOfTheHunt()
+	hunter.applyTNT()
+	hunter.applySniperTraining()
+	hunter.applyHuntingParty()
 
 	// hunter.registerReadinessCD()
 }
@@ -348,525 +310,360 @@ func (hunter *Hunter) ApplyTalents() {
 // 	})
 // }
 
-// func (hunter *Hunter) applyFocusedFire() {
-// 	if hunter.Talents.FocusedFire == 0 || hunter.pet == nil {
-// 		return
-// 	}
+func (hunter *Hunter) applyFrenzy() {
+	if hunter.Talents.Frenzy == 0 {
+		return
+	}
 
-// 	hunter.PseudoStats.DamageDealtMultiplier *= 1.0 + 0.01*float64(hunter.Talents.FocusedFire)
-// }
+	procChance := 0.2 * float64(hunter.Talents.Frenzy)
 
-// func (hunter *Hunter) applyFrenzy() {
-// 	if hunter.Talents.Frenzy == 0 {
-// 		return
-// 	}
+	procAura := hunter.pet.RegisterAura(core.Aura{
+		Label:    "Frenzy Proc",
+		ActionID: core.ActionID{SpellID: 19625},
+		Duration: time.Second * 8,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.MultiplyMeleeSpeed(sim, 1.3)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.MultiplyMeleeSpeed(sim, 1/1.3)
+		},
+	})
 
-// 	procChance := 0.2 * float64(hunter.Talents.Frenzy)
-
-// 	procAura := hunter.pet.RegisterAura(core.Aura{
-// 		Label:    "Frenzy Proc",
-// 		ActionID: core.ActionID{SpellID: 19625},
-// 		Duration: time.Second * 8,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.MultiplyMeleeSpeed(sim, 1.3)
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.MultiplyMeleeSpeed(sim, 1/1.3)
-// 		},
-// 	})
-
-// 	hunter.pet.RegisterAura(core.Aura{
-// 		Label:    "Frenzy",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.DidCrit() {
-// 				return
-// 			}
-// 			if sim.Proc(procChance, "Frenzy") {
-// 				procAura.Activate(sim)
-// 			}
-// 		},
-// 	})
-// }
+	hunter.pet.RegisterAura(core.Aura{
+		Label:    "Frenzy",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.DidCrit() {
+				return
+			}
+			if sim.Proc(procChance, "Frenzy") {
+				procAura.Activate(sim)
+			}
+		},
+	})
+}
 
  func (hunter *Hunter) applyLongevity(dur time.Duration) time.Duration {
  	return time.Duration(float64(dur) * (1.0 - 0.1*float64(hunter.Talents.Longevity)))
  }
 
-// func (hunter *Hunter) registerBestialWrathCD() {
-// 	if !hunter.Talents.BestialWrath {
-// 		return
-// 	}
-// 	if hunter.Talents.TheBeastWithin {
-// 		hunter.PseudoStats.DamageDealtMultiplier *= 1.1
-// 	}
+func (hunter *Hunter) registerBestialWrathCD() {
+	if !hunter.Talents.BestialWrath {
+		return
+	}
+	if hunter.Talents.TheBeastWithin {
+		hunter.PseudoStats.DamageDealtMultiplier *= 1.1
+	}
 
-// 	actionID := core.ActionID{SpellID: 19574}
+	actionID := core.ActionID{SpellID: 19574}
 
-// 	bestialWrathPetAura := hunter.pet.RegisterAura(core.Aura{
-// 		Label:    "Bestial Wrath Pet",
-// 		ActionID: actionID,
-// 		Duration: time.Second * 10,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.5
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.5
-// 		},
-// 	})
+	bestialWrathPetAura := hunter.pet.RegisterAura(core.Aura{
+		Label:    "Bestial Wrath Pet",
+		ActionID: actionID,
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.5
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.5
+		},
+	})
 
-// 	bestialWrathAura := hunter.RegisterAura(core.Aura{
-// 		Label:    "Bestial Wrath",
-// 		ActionID: actionID,
-// 		Duration: time.Second * 10,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.1
-// 			aura.Unit.PseudoStats.CostMultiplier -= 0.5
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.1
-// 			aura.Unit.PseudoStats.CostMultiplier += 0.5
-// 		},
-// 	})
-// 	core.RegisterPercentDamageModifierEffect(bestialWrathAura, 1.1)
+	bestialWrathAura := hunter.RegisterAura(core.Aura{
+		Label:    "Bestial Wrath",
+		ActionID: actionID,
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.1
+			aura.Unit.PseudoStats.CostMultiplier -= 0.5
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.1
+			aura.Unit.PseudoStats.CostMultiplier += 0.5
+		},
+	})
+	core.RegisterPercentDamageModifierEffect(bestialWrathAura, 1.1)
 
-// 	bwSpell := hunter.RegisterSpell(core.SpellConfig{
-// 		ActionID: actionID,
+	bwSpell := hunter.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
 
-// 		ManaCost: core.ManaCostOptions{
-// 			BaseCost: 0.1,
-// 		},
-// 		Cast: core.CastConfig{
-// 			DefaultCast: core.Cast{
-// 				GCD: 1,
-// 			},
-// 			CD: core.Cooldown{
-// 				Timer:    hunter.NewTimer(),
-// 				Duration: hunter.applyLongevity(time.Minute*2 - core.TernaryDuration(hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfBestialWrath), time.Second*20, 0)),
-// 			},
-// 		},
+		ManaCost: core.ManaCostOptions{
+			BaseCost: 0.1,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: 1,
+			},
+			CD: core.Cooldown{
+				Timer:    hunter.NewTimer(),
+				Duration: hunter.applyLongevity(time.Minute*2 - core.TernaryDuration(hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfBestialWrath), time.Second*20, 0)),
+			},
+		},
 
-// 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-// 			bestialWrathPetAura.Activate(sim)
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			bestialWrathPetAura.Activate(sim)
 
-// 			if hunter.Talents.TheBeastWithin {
-// 				bestialWrathAura.Activate(sim)
-// 			}
-// 		},
-// 	})
+			if hunter.Talents.TheBeastWithin {
+				bestialWrathAura.Activate(sim)
+			}
+		},
+	})
 
-// 	hunter.AddMajorCooldown(core.MajorCooldown{
-// 		Spell: bwSpell,
-// 		Type:  core.CooldownTypeDPS,
-// 	})
-// }
+	hunter.AddMajorCooldown(core.MajorCooldown{
+		Spell: bwSpell,
+		Type:  core.CooldownTypeDPS,
+	})
+}
 
-// func (hunter *Hunter) applyGoForTheThroat() {
-// 	if hunter.Talents.GoForTheThroat == 0 {
-// 		return
-// 	}
-// 	if hunter.pet == nil {
-// 		return
-// 	}
+func (hunter *Hunter) applyGoForTheThroat() {
+	if hunter.Talents.GoForTheThroat == 0 {
+		return
+	}
+	if hunter.pet == nil {
+		return
+	}
 
-// 	spellID := []int32{0, 34953, 34953}[hunter.Talents.GoForTheThroat]
-// 	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: spellID})
+	spellID := []int32{0, 34950, 34950}[hunter.Talents.GoForTheThroat]
+	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: spellID})
 
-// 	amount := 25.0 * float64(hunter.Talents.GoForTheThroat)
+	amount := 5 * float64(hunter.Talents.GoForTheThroat)
 
-// 	hunter.RegisterAura(core.Aura{
-// 		Label:    "Go for the Throat",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !spell.ProcMask.Matches(core.ProcMaskRanged) || !result.DidCrit() {
-// 				return
-// 			}
-// 			if !hunter.pet.IsEnabled() {
-// 				return
-// 			}
-// 			hunter.pet.AddFocus(sim, amount, focusMetrics)
-// 		},
-// 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.DidCrit() {
-// 				return
-// 			}
-// 			if !hunter.pet.IsEnabled() {
-// 				return
-// 			}
-// 			hunter.pet.AddFocus(sim, amount, focusMetrics)
-// 		},
-// 	})
-// }
+	hunter.RegisterAura(core.Aura{
+		Label:    "Go for the Throat",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskRangedAuto) || !result.DidCrit() {
+				return
+			}
+			if !hunter.pet.IsEnabled() {
+				return
+			}
+			hunter.pet.AddFocus(sim, amount, focusMetrics)
+		},
+	})
+}
 
-// func (hunter *Hunter) applyImprovedTracking() {
-// 	if hunter.Talents.ImprovedTracking == 0 {
-// 		return
-// 	}
+//Todo: Should we support precasting freezing/ice trap?
+func (hunter *Hunter) applyTNT() {
+	if hunter.Talents.TNT == 0 {
+		return
+	}
 
-// 	var applied bool
+	actionID := core.ActionID{SpellID: 56343}
+	procChance := []float64{0, 0.10, 0.20}[hunter.Talents.TNT]
 
-// 	hunter.RegisterResetEffect(
-// 		func(s *core.Simulation) {
-// 			if applied {
-// 				return
-// 			}
-// 			applied = true
+	icd := core.Cooldown{
+		Timer:    hunter.NewTimer(),
+		Duration: time.Second * 10,
+	}
 
-// 			for _, target := range hunter.Env.Encounter.TargetUnits {
-// 				switch target.MobType {
-// 				case proto.MobType_MobTypeBeast, proto.MobType_MobTypeDemon,
-// 					proto.MobType_MobTypeDragonkin, proto.MobType_MobTypeElemental,
-// 					proto.MobType_MobTypeGiant, proto.MobType_MobTypeHumanoid,
-// 					proto.MobType_MobTypeUndead:
+	hunter.LockAndLoadAura = hunter.RegisterAura(core.Aura{
+		Icd:       &icd,
+		Label:     "Lock and Load Proc",
+		ActionID:  actionID,
+		Duration:  time.Second * 12,
+		MaxStacks: 2,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.ArcaneShot.CostMultiplier -= 1
+			if hunter.ExplosiveShot != nil {
+				hunter.ExplosiveShot.CostMultiplier -= 1
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.ArcaneShot.CostMultiplier += 1
+			if hunter.ExplosiveShot != nil {
+				hunter.ExplosiveShot.CostMultiplier += 1
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == hunter.ExplosiveShot {
+				aura.RemoveStack(sim)
+			}
+		},
+	})
 
-// 					hunter.AttackTables[target.UnitIndex].DamageDealtMultiplier *= 1.0 + 0.01*float64(hunter.Talents.ImprovedTracking)
-// 				}
-// 			}
-// 		},
-// 	)
-// }
+	hunter.RegisterAura(core.Aura{
+		Label:    "TNT Talent",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell != hunter.BlackArrow && spell != hunter.ExplosiveTrap {
+				return
+			}
 
-// func (hunter *Hunter) applyLockAndLoad() {
-// 	if hunter.Talents.LockAndLoad == 0 {
-// 		return
-// 	}
+			if !icd.IsReady(sim) {
+				return
+			}
 
-// 	actionID := core.ActionID{SpellID: 56344}
-// 	procChance := []float64{0, 0.02, 0.04, 0.20}[hunter.Talents.LockAndLoad]
+			if sim.RandomFloat("Lock and Load") < procChance {
+				icd.Use(sim)
+				hunter.LockAndLoadAura.Activate(sim)
+				hunter.LockAndLoadAura.SetStacks(sim, 2)
+			}
+		},
+	})
+}
 
-// 	icd := core.Cooldown{
-// 		Timer:    hunter.NewTimer(),
-// 		Duration: time.Second * 22,
-// 	}
+func (hunter *Hunter) applyThrillOfTheHunt() {
+	if hunter.Talents.ThrillOfTheHunt == 0 {
+		return
+	}
 
-// 	hunter.LockAndLoadAura = hunter.RegisterAura(core.Aura{
-// 		Icd:       &icd,
-// 		Label:     "Lock and Load Proc",
-// 		ActionID:  actionID,
-// 		Duration:  time.Second * 12,
-// 		MaxStacks: 2,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			hunter.ArcaneShot.CostMultiplier -= 1
-// 			if hunter.ExplosiveShotR4 != nil {
-// 				hunter.ExplosiveShotR4.CostMultiplier -= 1
-// 				hunter.ExplosiveShotR3.CostMultiplier -= 1
-// 			}
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			hunter.ArcaneShot.CostMultiplier += 1
-// 			if hunter.ExplosiveShotR4 != nil {
-// 				hunter.ExplosiveShotR4.CostMultiplier += 1
-// 				hunter.ExplosiveShotR3.CostMultiplier += 1
-// 			}
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if spell == hunter.ArcaneShot || spell == hunter.ExplosiveShotR4 || spell == hunter.ExplosiveShotR3 {
-// 				aura.RemoveStack(sim)
-// 				hunter.ArcaneShot.CD.Reset() // Shares the CD with explosive shot.
-// 			}
-// 		},
-// 	})
+	procChance := float64(hunter.Talents.ThrillOfTheHunt) * 5
+	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 34499})
 
-// 	hunter.RegisterAura(core.Aura{
-// 		Label:    "Lock and Load Talent",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if spell != hunter.BlackArrow && spell != hunter.ExplosiveTrap {
-// 				return
-// 			}
+	hunter.RegisterAura(core.Aura{
+		Label:    "Thrill of the Hunt",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// mask 256
+			if !spell.ProcMask.Matches(core.ProcMaskRangedSpecial) {
+				return
+			}
 
-// 			if !icd.IsReady(sim) {
-// 				return
-// 			}
+			if sim.Proc(procChance, "ThrillOfTheHunt") {
+				hunter.AddFocus(sim, spell.CurCast.Cost*0.4, focusMetrics)
+			}
+		},
+	})
+}
 
-// 			if sim.RandomFloat("Lock and Load") < procChance {
-// 				icd.Use(sim)
-// 				hunter.LockAndLoadAura.Activate(sim)
-// 				hunter.LockAndLoadAura.SetStacks(sim, 2)
-// 			}
-// 		},
-// 	})
-// }
 
-// func (hunter *Hunter) applyThrillOfTheHunt() {
-// 	if hunter.Talents.ThrillOfTheHunt == 0 {
-// 		return
-// 	}
+func (hunter *Hunter) applySniperTraining() {
+	if hunter.Talents.SniperTraining == 0 {
+		return
+	}
 
-// 	procChance := float64(hunter.Talents.ThrillOfTheHunt) / 3
-// 	manaMetrics := hunter.NewManaMetrics(core.ActionID{SpellID: 34499})
+	uptime := hunter.SurvivalOptions.SniperTrainingUptime
+	if uptime <= 0 {
+		return
+	}
+	uptime = min(1, uptime)
 
-// 	hunter.RegisterAura(core.Aura{
-// 		Label:    "Thrill of the Hunt",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			// mask 256
-// 			if !spell.ProcMask.Matches(core.ProcMaskRangedSpecial) {
-// 				return
-// 			}
+	dmgMod := .02 * float64(hunter.Talents.SniperTraining)
 
-// 			if !result.DidCrit() {
-// 				return
-// 			}
+	stAura := hunter.RegisterAura(core.Aura{
+		Label:    "Sniper Training",
+		ActionID: core.ActionID{SpellID: 53304},
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if hunter.SteadyShot != nil {
+				hunter.SteadyShot.DamageMultiplierAdditive += dmgMod
+			}
+			if hunter.CobraShot != nil {
+				hunter.CobraShot.DamageMultiplierAdditive += dmgMod
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if hunter.SteadyShot != nil {
+				hunter.SteadyShot.DamageMultiplierAdditive -= dmgMod
+			}
+			if hunter.CobraShot != nil {
+				hunter.CobraShot.DamageMultiplierAdditive -= dmgMod
+			}
+		},
+	})
 
-// 			if sim.Proc(procChance, "ThrillOfTheHunt") {
-// 				hunter.AddMana(sim, spell.CurCast.Cost*0.4, manaMetrics)
-// 			}
-// 		},
-// 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.DidCrit() && (spell == hunter.ExplosiveShotR4 || spell == hunter.ExplosiveShotR3) {
-// 				// Explosive shot ticks can proc TotH but with 1/3 the bonus.
-// 				if sim.Proc(procChance, "ThrillOfTheHunt") {
-// 					hunter.AddMana(sim, spell.CurCast.Cost*0.4/3, manaMetrics)
-// 				}
-// 			}
-// 		},
-// 	})
-// }
+	core.ApplyFixedUptimeAura(stAura, uptime, time.Second*15, 1)
+}
 
-// func (hunter *Hunter) applyExposeWeakness() {
-// 	if hunter.Talents.ExposeWeakness == 0 {
-// 		return
-// 	}
+func (hunter *Hunter) applyHuntingParty() {
+	if !hunter.Talents.HuntingParty {
+		return
+	}
 
-// 	actionID := core.ActionID{SpellID: 34503}
-// 	procChance := float64(hunter.Talents.ExposeWeakness) / 3
 
-// 	apDep := hunter.NewDynamicStatDependency(stats.Agility, stats.AttackPower, .25)
-// 	rapDep := hunter.NewDynamicStatDependency(stats.Agility, stats.RangedAttackPower, .25)
-// 	procAura := hunter.RegisterAura(core.Aura{
-// 		Label:    "Expose Weakness Proc",
-// 		ActionID: actionID,
-// 		Duration: time.Second * 7,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.EnableDynamicStatDep(sim, apDep)
-// 			aura.Unit.EnableDynamicStatDep(sim, rapDep)
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Unit.DisableDynamicStatDep(sim, apDep)
-// 			aura.Unit.DisableDynamicStatDep(sim, rapDep)
-// 		},
-// 	})
+	hunter.RegisterAura(core.Aura{
+		Label:    "Hunting Party",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.MultiplyAttackSpeed(sim, 1.10)
+		},
+	})
+}
 
-// 	hunter.RegisterAura(core.Aura{
-// 		Label:    "Expose Weakness Talent",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !spell.ProcMask.Matches(core.ProcMaskRanged) && spell != hunter.ExplosiveTrap {
-// 				return
-// 			}
+func (hunter *Hunter) registerReadinessCD() {
+	if !hunter.Talents.Readiness {
+		return
+	}
 
-// 			if !result.DidCrit() {
-// 				return
-// 			}
+	actionID := core.ActionID{SpellID: 23989}
 
-// 			if sim.Proc(procChance, "ExposeWeakness") {
-// 				procAura.Activate(sim)
-// 			}
-// 		},
-// 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.DidCrit() {
-// 				return
-// 			}
+	readinessSpell := hunter.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
 
-// 			if sim.Proc(procChance, "ExposeWeakness") {
-// 				procAura.Activate(sim)
-// 			}
-// 		},
-// 	})
-// }
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: time.Second * 1,
+			},
+			IgnoreHaste: true, // Hunter GCD is locked
+			CD: core.Cooldown{
+				Timer:    hunter.NewTimer(),
+				Duration: time.Minute * 3,
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			// Don't use if there are no cooldowns to reset.
+			return !hunter.RapidFire.IsReady(sim)
+		},
 
-// func (hunter *Hunter) applyMasterTactician() {
-// 	if hunter.Talents.MasterTactician == 0 {
-// 		return
-// 	}
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			hunter.RapidFire.CD.Reset()
+			hunter.MultiShot.CD.Reset()
+			hunter.ArcaneShot.CD.Reset()
+			hunter.KillShot.CD.Reset()
+			hunter.RaptorStrike.CD.Reset()
+			hunter.ExplosiveTrap.CD.Reset()
+			if hunter.KillCommand != nil {
+				hunter.KillCommand.CD.Reset()
+			}
+			if hunter.AimedShot != nil {
+				hunter.AimedShot.CD.Reset()
+			}
+			if hunter.SilencingShot != nil {
+				hunter.SilencingShot.CD.Reset()
+			}
+			if hunter.ChimeraShot != nil {
+				hunter.ChimeraShot.CD.Reset()
+			}
+			if hunter.BlackArrow != nil {
+				hunter.BlackArrow.CD.Reset()
+			}
 
-// 	procChance := 0.1
-// 	critBonus := 2 * core.CritRatingPerCritChance * float64(hunter.Talents.MasterTactician)
+			// TODO: This is needed because there are edge cases where core doesn't re-use Rapid Fire.
+			// Fix core so this isn't necessary.
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt: sim.CurrentTime + 1,
+				OnAction: func(_ *core.Simulation) {
+					hunter.UpdateMajorCooldowns()
+				},
+			})
+		},
+	})
 
-// 	procAura := hunter.NewTemporaryStatsAura("Master Tactician Proc", core.ActionID{SpellID: 34839}, stats.Stats{stats.MeleeCrit: critBonus}, time.Second*8)
-
-// 	hunter.RegisterAura(core.Aura{
-// 		Label:    "Master Tactician",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !spell.ProcMask.Matches(core.ProcMaskRanged) || !result.Landed() {
-// 				return
-// 			}
-
-// 			if sim.RandomFloat("Master Tactician") > procChance {
-// 				return
-// 			}
-
-// 			procAura.Activate(sim)
-// 		},
-// 	})
-// }
-
-// func (hunter *Hunter) applySniperTraining() {
-// 	if hunter.Talents.SniperTraining == 0 {
-// 		return
-// 	}
-
-// 	uptime := hunter.SurvivalOptions.SniperTrainingUptime
-// 	if uptime <= 0 {
-// 		return
-// 	}
-// 	uptime = min(1, uptime)
-
-// 	dmgMod := .02 * float64(hunter.Talents.SniperTraining)
-
-// 	stAura := hunter.RegisterAura(core.Aura{
-// 		Label:    "Sniper Training",
-// 		ActionID: core.ActionID{SpellID: 53304},
-// 		Duration: time.Second * 15,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			hunter.SteadyShot.DamageMultiplierAdditive += dmgMod
-// 			if hunter.AimedShot != nil {
-// 				hunter.AimedShot.DamageMultiplierAdditive += dmgMod
-// 			}
-// 			if hunter.BlackArrow != nil {
-// 				hunter.BlackArrow.DamageMultiplierAdditive += dmgMod
-// 			}
-// 			if hunter.ExplosiveShotR4 != nil {
-// 				hunter.ExplosiveShotR4.DamageMultiplierAdditive += dmgMod
-// 				hunter.ExplosiveShotR3.DamageMultiplierAdditive += dmgMod
-// 			}
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			hunter.SteadyShot.DamageMultiplierAdditive -= dmgMod
-// 			if hunter.AimedShot != nil {
-// 				hunter.AimedShot.DamageMultiplierAdditive -= dmgMod
-// 			}
-// 			if hunter.BlackArrow != nil {
-// 				hunter.BlackArrow.DamageMultiplierAdditive -= dmgMod
-// 			}
-// 			if hunter.ExplosiveShotR4 != nil {
-// 				hunter.ExplosiveShotR4.DamageMultiplierAdditive -= dmgMod
-// 				hunter.ExplosiveShotR3.DamageMultiplierAdditive -= dmgMod
-// 			}
-// 		},
-// 	})
-
-// 	core.ApplyFixedUptimeAura(stAura, uptime, time.Second*15, 1)
-// }
-
-// func (hunter *Hunter) applyHuntingParty() {
-// 	if hunter.Talents.HuntingParty == 0 {
-// 		return
-// 	}
-
-// 	procChance := float64(hunter.Talents.HuntingParty) / 3
-// 	replSrc := hunter.Env.Raid.NewReplenishmentSource(core.ActionID{SpellID: 53292})
-
-// 	hunter.RegisterAura(core.Aura{
-// 		Label:    "Hunting Party",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.DidCrit() {
-// 				return
-// 			}
-
-// 			if spell != hunter.SteadyShot && spell != hunter.ArcaneShot && spell != hunter.ExplosiveShotR4 && spell != hunter.ExplosiveShotR3 {
-// 				return
-// 			}
-
-// 			if procChance == 1 || sim.RandomFloat("Hunting Party") < procChance {
-// 				hunter.Env.Raid.ProcReplenishment(sim, replSrc)
-// 			}
-// 		},
-// 	})
-// }
-
-// func (hunter *Hunter) registerReadinessCD() {
-// 	if !hunter.Talents.Readiness {
-// 		return
-// 	}
-
-// 	actionID := core.ActionID{SpellID: 23989}
-
-// 	readinessSpell := hunter.RegisterSpell(core.SpellConfig{
-// 		ActionID: actionID,
-
-// 		Cast: core.CastConfig{
-// 			DefaultCast: core.Cast{
-// 				GCD: time.Second * 1,
-// 			},
-// 			IgnoreHaste: true, // Hunter GCD is locked
-// 			CD: core.Cooldown{
-// 				Timer:    hunter.NewTimer(),
-// 				Duration: time.Minute * 3,
-// 			},
-// 		},
-// 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-// 			// Don't use if there are no cooldowns to reset.
-// 			return !hunter.RapidFire.IsReady(sim)
-// 		},
-
-// 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-// 			hunter.RapidFire.CD.Reset()
-// 			hunter.MultiShot.CD.Reset()
-// 			hunter.ArcaneShot.CD.Reset()
-// 			hunter.KillShot.CD.Reset()
-// 			hunter.RaptorStrike.CD.Reset()
-// 			hunter.ExplosiveTrap.CD.Reset()
-// 			if hunter.KillCommand != nil {
-// 				hunter.KillCommand.CD.Reset()
-// 			}
-// 			if hunter.AimedShot != nil {
-// 				hunter.AimedShot.CD.Reset()
-// 			}
-// 			if hunter.SilencingShot != nil {
-// 				hunter.SilencingShot.CD.Reset()
-// 			}
-// 			if hunter.ChimeraShot != nil {
-// 				hunter.ChimeraShot.CD.Reset()
-// 			}
-// 			if hunter.BlackArrow != nil {
-// 				hunter.BlackArrow.CD.Reset()
-// 			}
-
-// 			// TODO: This is needed because there are edge cases where core doesn't re-use Rapid Fire.
-// 			// Fix core so this isn't necessary.
-// 			core.StartDelayedAction(sim, core.DelayedActionOptions{
-// 				DoAt: sim.CurrentTime + 1,
-// 				OnAction: func(_ *core.Simulation) {
-// 					hunter.UpdateMajorCooldowns()
-// 				},
-// 			})
-// 		},
-// 	})
-
-// 	hunter.AddMajorCooldown(core.MajorCooldown{
-// 		Spell: readinessSpell,
-// 		Type:  core.CooldownTypeDPS,
-// 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-// 			// If RF is about to become ready naturally, wait so we can get 2x usages.
-// 			if !hunter.RapidFire.IsReady(sim) && hunter.RapidFire.TimeToReady(sim) < time.Second*10 {
-// 				return false
-// 			}
-// 			return !hunter.RapidFireAura.IsActive() || hunter.RapidFireAura.RemainingDuration(sim) < time.Second*10
-// 		},
-// 	})
-// }
+	hunter.AddMajorCooldown(core.MajorCooldown{
+		Spell: readinessSpell,
+		Type:  core.CooldownTypeDPS,
+		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+			// If RF is about to become ready naturally, wait so we can get 2x usages.
+			if !hunter.RapidFire.IsReady(sim) && hunter.RapidFire.TimeToReady(sim) < time.Second*10 {
+				return false
+			}
+			return !hunter.RapidFireAura.IsActive() || hunter.RapidFireAura.RemainingDuration(sim) < time.Second*10
+		},
+	})
+}

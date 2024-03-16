@@ -1,4 +1,4 @@
-package hunter
+package survival
 
 import (
 	"time"
@@ -6,28 +6,13 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (hunter *Hunter) registerSteadyShotSpell() {
+func (hunter *SurvivalHunter) registerCobraShotSpell() {
 	
-	ssMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 56641})
-	if hunter.Talents.ImprovedSteadyShot > 0 {
-		hunter.ImprovedSteadyShotAura = hunter.RegisterAura(core.Aura{
-			Label:    "Improved Steady Shot",
-			ActionID: core.ActionID{SpellID: 53220},
-			Duration: time.Second * 8,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				// Todo Apply 20% ranged attack speed per point when ss is used two times in a row
-				
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	csMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 77767})
 
-			},
-		})
-	}
-	hunter.SteadyShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 56641},
-		SpellSchool: core.SpellSchoolPhysical,
+	hunter.Hunter.CobraShot = hunter.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 77767},
+		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
@@ -55,12 +40,11 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.21 * spell.RangedAttackPower(target) +
-				hunter.AutoAttacks.Ranged().BaseDamage(sim)*2.8/hunter.AutoAttacks.Ranged().SwingSpeed + 280
-			hunter.AddFocus(sim, 9, ssMetrics)
+			baseDamage := 
+				hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) * 0.246 + 277.21
+			hunter.AddFocus(sim, 9, csMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			spell.DealDamage(sim, result)
-			
 		},
 	})
 }

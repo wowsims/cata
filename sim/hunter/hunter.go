@@ -29,23 +29,32 @@ type Hunter struct {
 	AspectOfTheDragonhawk *core.Spell
 	AspectOfTheFox      *core.Spell
 
-	fireTrapTimer *core.Timer
+	FireTrapTimer *core.Timer
 
-
-	AimedShot       *core.Spell
-	ArcaneShot      *core.Spell
-	//ExplosiveShotR *core.Spell
-	// ExplosiveShotR3 *core.Spell
-	ExplosiveTrap   *core.Spell
+	// Hunter spells
 	KillCommand     *core.Spell
+	ArcaneShot      *core.Spell	
+	ExplosiveTrap   *core.Spell
 	KillShot        *core.Spell
-	MultiShot       *core.Spell
 	RapidFire       *core.Spell
+	MultiShot       *core.Spell
 	RaptorStrike    *core.Spell
-	ScorpidSting    *core.Spell
 	SerpentSting    *core.Spell
-	SilencingShot   *core.Spell
 	SteadyShot      *core.Spell
+	ScorpidSting    *core.Spell
+	SilencingShot   *core.Spell
+	// BM only spells
+
+	// MM only spells
+	AimedShot       *core.Spell
+	ChimeraShot *core.Spell
+
+	// Survival only spells
+	ExplosiveShot *core.Spell
+	BlackArrow *core.Spell
+	CobraShot *core.Spell
+	
+	
 
 	// Fake spells to encapsulate weaving logic.
 	TrapWeaveSpell *core.Spell
@@ -90,8 +99,10 @@ func (hunter *Hunter) Initialize() {
 	hunter.AutoAttacks.MHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
 	hunter.AutoAttacks.OHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
 	hunter.AutoAttacks.RangedConfig().CritMultiplier = 1// hunter.critMultiplier(false, false, false)
+	hunter.FireTrapTimer = hunter.NewTimer()
 	hunter.registerSteadyShotSpell() // Todo: Probably add a counter so we can check for imp ss?
 	hunter.registerArcaneShotSpell()
+	hunter.registerKillShotSpell()
 }
 
 func (hunter *Hunter) Reset(_ *core.Simulation) {
@@ -107,7 +118,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
 	// Todo: Verify that is is actually 4 focus per second
-	hunter.EnableFocusBar(100 + (float64(hunter.Talents.KindredSpirits) * 5), 4.0)
+	hunter.EnableFocusBar(100 + (float64(hunter.Talents.KindredSpirits) * 5), 4.0, true)
 
 	hunter.PseudoStats.CanParry = true
 

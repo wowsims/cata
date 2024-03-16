@@ -11,7 +11,7 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 	//var manaMetrics *core.ResourceMetrics
 
 	hunter.ArcaneShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 49045},
+		ActionID:    core.ActionID{SpellID: 3044},
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,

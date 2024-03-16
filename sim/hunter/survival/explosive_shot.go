@@ -12,7 +12,7 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 	minFlatDamage := 386.0
 	maxFlatDamage := 464.0
 
-	hunter.Hunter.RegisterSpell(core.SpellConfig{
+	hunter.Hunter.ExplosiveShot = hunter.Hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskRangedSpecial,

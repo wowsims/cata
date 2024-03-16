@@ -11,7 +11,7 @@ import (
 )
 
 // Time between focus ticks.
-const FocusTickDuration = time.Millisecond * 100
+const FocusTickDuration = time.Millisecond * 200
 
 type focusBar struct {
 	unit *Unit
@@ -30,6 +30,7 @@ type focusBar struct {
 	cumulativeFocusDecisionThresholds []int
 
 	nextFocusTick time.Duration
+	isPlayer bool
 
 	// Multiplies focus regen from ticks.
 	FocusTickMultiplier float64
@@ -38,13 +39,14 @@ type focusBar struct {
 	FocusRefundMetrics *ResourceMetrics
 }
 
-func (unit *Unit) EnableFocusBar(maxFocus float64, baseFocusPerSecond float64) {
+func (unit *Unit) EnableFocusBar(maxFocus float64, baseFocusPerSecond float64, isPlayer bool) {
 	unit.SetCurrentPowerBar(FocusBar)
 
 	unit.focusBar = focusBar{
 		unit:                 unit,
 		maxFocus:            max(100, maxFocus),
 		FocusTickMultiplier: 1,
+		isPlayer: isPlayer,
 		baseFocusPerSecond: baseFocusPerSecond,
 		regenMetrics:         unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionFocusRegen}),
 		FocusRefundMetrics:  unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
@@ -160,19 +162,20 @@ func (fb *focusBar) addFocusInternal(sim *Simulation, amount float64, metrics *R
 	newFocus := min(fb.currentFocus+amount, fb.maxFocus)
 	//metrics.AddEvent(amount, newFocus-fb.currentFocus)
     // Convert sim.CurrentTime (nanoseconds) to milliseconds
-    currentTimeMilliseconds := sim.CurrentTime.Nanoseconds() / 1e6
+    //currentTimeMilliseconds := sim.CurrentTime.Nanoseconds() / 1e6
     // Find the remainder of milliseconds within the current second
-    remainderMilliseconds := currentTimeMilliseconds % 1000
+    //remainderMilliseconds := currentTimeMilliseconds % 1000
 
 
     // Check if within the first 100ms of a new second
-    if remainderMilliseconds < 100 {
-        if sim.Log != nil {
-            fb.unit.Log(sim, "Gained %0.3f focus from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, fb.currentFocus, newFocus)
+    //if remainderMilliseconds < 100 {
+	
+        if sim.Log != nil && fb.isPlayer {
+           fb.unit.Log(sim, "Gained %0.3f focus from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, fb.currentFocus, newFocus)
         }
         // Add metrics event here as needed
 		metrics.AddEvent(amount, newFocus-fb.currentFocus)
-    }
+    //}
 	crossedThreshold := fb.cumulativeFocusDecisionThresholds == nil || fb.cumulativeFocusDecisionThresholds[int(fb.currentFocus)] != fb.cumulativeFocusDecisionThresholds[int(newFocus)]
 	fb.currentFocus = newFocus
 
