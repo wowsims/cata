@@ -1,35 +1,36 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element } from 'tsx-vanilla';
+import { element, fragment, ref } from 'tsx-vanilla';
 
 import { BaseModal } from '../components/base_modal.js';
 import { Component } from '../components/component.js';
 import { ContentBlock } from '../components/content_block.js';
 import { Input } from '../components/input.js';
+import { getLanguageCode } from '../constants/lang';
 import { setItemQualityCssClass } from '../css_utils.js';
 import { Player } from '../player.js';
-import { Glyphs , ItemQuality } from '../proto/common.js';
+import { Glyphs, ItemQuality } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { stringComparator } from '../utils.js';
 
 export type GlyphConfig = {
-	name: string,
-	description: string,
-	iconUrl: string,
+	name: string;
+	description: string;
+	iconUrl: string;
 };
 
 export type GlyphsConfig = {
-	primeGlyphs: Record<number, GlyphConfig>,
-	majorGlyphs: Record<number, GlyphConfig>,
-	minorGlyphs: Record<number, GlyphConfig>,
+	primeGlyphs: Record<number, GlyphConfig>;
+	majorGlyphs: Record<number, GlyphConfig>;
+	minorGlyphs: Record<number, GlyphConfig>;
 };
 
 interface GlyphData {
-	id: number,
-	name: string,
-	description: string,
-	iconUrl: string,
-	quality: ItemQuality | null,
+	id: number;
+	name: string;
+	description: string;
+	iconUrl: string;
+	quality: ItemQuality | null;
 }
 
 const emptyGlyphData: GlyphData = {
@@ -51,10 +52,6 @@ export class GlyphsPicker extends Component {
 		super(parent, 'glyphs-picker-root');
 		this.glyphsConfig = glyphsConfig;
 
-		this.rootElem.appendChild(
-			<h6 className="mt-2 fw-bold d-xl-block d-none">Glyphs</h6>
-		)
-
 		const primeGlyphs = Object.keys(glyphsConfig.primeGlyphs).map(idStr => Number(idStr));
 		const majorGlyphs = Object.keys(glyphsConfig.majorGlyphs).map(idStr => Number(idStr));
 		const minorGlyphs = Object.keys(glyphsConfig.minorGlyphs).map(idStr => Number(idStr));
@@ -67,28 +64,28 @@ export class GlyphsPicker extends Component {
 		majorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
 		minorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
 
-		const primeGlyphsBlock = new ContentBlock(this.rootElem, 'major-glyphs', {
-			header: { title: 'Major', extraCssClasses: ['border-0', 'mb-1'] }
+		const primeGlyphsBlock = new ContentBlock(this.rootElem, 'prime-glyphs', {
+			header: { title: 'Prime Glyphs', extraCssClasses: ['border-0', 'mb-1'] },
 		});
 
 		const majorGlyphsBlock = new ContentBlock(this.rootElem, 'major-glyphs', {
-			header: { title: 'Major', extraCssClasses: ['border-0', 'mb-1'] }
+			header: { title: 'Major Glyphs', extraCssClasses: ['border-0', 'mb-1'] },
 		});
-		
+
 		const minorGlyphsBlock = new ContentBlock(this.rootElem, 'minor-glyphs', {
-			header: { title: 'Minor', extraCssClasses: ['border-0', 'mb-1'] }
+			header: { title: 'Minor Glyphs', extraCssClasses: ['border-0', 'mb-1'] },
 		});
 
 		this.primeGlyphPickers = (['prime1', 'prime2', 'prime3'] as Array<keyof Glyphs>).map(glyphField => {
-			return new GlyphPicker(primeGlyphsBlock.bodyElement, player, primeGlyphsData, glyphField, true)
+			return new GlyphPicker(primeGlyphsBlock.bodyElement, player, primeGlyphsData, glyphField);
 		});
 
 		this.majorGlyphPickers = (['major1', 'major2', 'major3'] as Array<keyof Glyphs>).map(glyphField => {
-			return new GlyphPicker(majorGlyphsBlock.bodyElement, player, majorGlyphsData, glyphField, true)
+			return new GlyphPicker(majorGlyphsBlock.bodyElement, player, majorGlyphsData, glyphField);
 		});
 
 		this.minorGlyphPickers = (['minor1', 'minor2', 'minor3'] as Array<keyof Glyphs>).map(glyphField => {
-			return new GlyphPicker(minorGlyphsBlock.bodyElement, player, minorGlyphsData, glyphField, false)
+			return new GlyphPicker(minorGlyphsBlock.bodyElement, player, minorGlyphsData, glyphField);
 		});
 	}
 
@@ -109,13 +106,18 @@ export class GlyphsPicker extends Component {
 
 class GlyphPicker extends Input<Player<any>, number> {
 	readonly player: Player<any>;
-	private readonly iconElem: HTMLAnchorElement;
+
+	selectedGlyph: GlyphData | undefined;
 
 	private readonly glyphOptions: Array<GlyphData>;
-	selectedGlyph: GlyphData;
 
-	constructor(parent: HTMLElement, player: Player<any>, glyphOptions: Array<GlyphData>, glyphField: keyof Glyphs, isMajor: boolean) {
+	private readonly anchorElem: HTMLAnchorElement;
+	private readonly iconElem: HTMLImageElement;
+	private readonly nameElem: HTMLSpanElement;
+
+	constructor(parent: HTMLElement, player: Player<any>, glyphOptions: Array<GlyphData>, glyphField: keyof Glyphs) {
 		super(parent, 'glyph-picker-root', player, {
+			inline: true,
 			changedEvent: (player: Player<any>) => player.glyphsChangeEmitter,
 			getValue: (player: Player<any>) => player.getGlyphs()[glyphField] as number,
 			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
@@ -124,20 +126,36 @@ class GlyphPicker extends Input<Player<any>, number> {
 				player.setGlyphs(eventID, glyphs);
 			},
 		});
-		if (!isMajor) {
-			this.rootElem.classList.add('minor');
-		}
+		this.rootElem.classList.add('item-picker-root');
+
 		this.player = player;
 		this.glyphOptions = glyphOptions;
 		this.selectedGlyph = emptyGlyphData;
 
-		this.rootElem.innerHTML = `<a class="glyph-picker-icon" data-whtticon='false'></a>`;
+		const anchorElemRef = ref<HTMLAnchorElement>();
+		const iconElemRef = ref<HTMLImageElement>();
+		const nameElemRef = ref<HTMLSpanElement>();
 
-		this.iconElem = this.rootElem.getElementsByClassName('glyph-picker-icon')[0] as HTMLAnchorElement;
-		this.iconElem.addEventListener('click', event => {
+		this.rootElem.appendChild(
+			<a ref={anchorElemRef} attributes={{ role: 'button' }} className="d-flex w-100">
+				<img ref={iconElemRef} className="item-picker-icon" />
+				<div className="item-picker-labels-container">
+					<span ref={nameElemRef} className="item-picker-name" />
+				</div>
+			</a>,
+		);
+
+		this.anchorElem = anchorElemRef.value!;
+		this.iconElem = iconElemRef.value!;
+		this.nameElem = nameElemRef.value!;
+
+		const openGlyphSelectorModal = (event: Event) => {
 			event.preventDefault();
 			new GlyphSelectorModal(this.rootElem.closest('.individual-sim-ui')!, this, this.glyphOptions);
-		});
+		};
+
+		this.iconElem.addEventListener('click', openGlyphSelectorModal);
+		this.nameElem.addEventListener('click', openGlyphSelectorModal);
 
 		this.init();
 	}
@@ -147,14 +165,34 @@ class GlyphPicker extends Input<Player<any>, number> {
 	}
 
 	getInputValue(): number {
-		return this.selectedGlyph.id;
+		return this.selectedGlyph?.id ?? 0;
 	}
 
 	setInputValue(newValue: number) {
-		this.selectedGlyph = this.glyphOptions.find(glyphData => glyphData.id == newValue) || emptyGlyphData;
+		this.selectedGlyph = this.glyphOptions.find(glyphData => glyphData.id == newValue);
 
-		this.iconElem.style.backgroundImage = `url('${this.selectedGlyph.iconUrl}')`;
-		this.iconElem.href = this.selectedGlyph.id == 0 ? '' : ActionId.makeItemUrl(this.selectedGlyph.id);
+		if (this.selectedGlyph) {
+			const lang = getLanguageCode();
+			const langPrefix = lang ? `${lang}.` : '';
+
+			this.anchorElem.href = ActionId.makeItemUrl(this.selectedGlyph.id);
+			this.anchorElem.dataset.wowhead = `domain=${langPrefix}cata&dataEnv=11`;
+			this.anchorElem.dataset.whtticon = 'false';
+
+			this.iconElem.src = this.selectedGlyph.iconUrl;
+
+			this.nameElem.textContent = this.selectedGlyph.name;
+		} else {
+			this.clear();
+		}
+	}
+
+	private clear() {
+		this.anchorElem.removeAttribute('data-wowhead');
+		this.anchorElem.removeAttribute('href');
+
+		this.iconElem.src = emptyGlyphData.iconUrl;
+		this.nameElem.textContent = emptyGlyphData.name;
 	}
 }
 
@@ -187,7 +225,7 @@ class GlyphSelectorModal extends BaseModal {
 				</a>
       `;
 
-			const anchorElem = listItemElem.children[0] as HTMLAnchorElement
+			const anchorElem = listItemElem.children[0] as HTMLAnchorElement;
 			const iconElem = listItemElem.querySelector('.selector-modal-list-item-icon') as HTMLImageElement;
 			const nameElem = listItemElem.querySelector('.selector-modal-list-item-name') as HTMLElement;
 
@@ -203,7 +241,7 @@ class GlyphSelectorModal extends BaseModal {
 		});
 
 		const updateSelected = () => {
-			const selectedGlyphId = glyphPicker.selectedGlyph.id;
+			const selectedGlyphId = glyphPicker.selectedGlyph?.id ?? 0;
 
 			listItemElems.forEach(elem => {
 				const listItemIdx = parseInt(elem.dataset.idx!);
@@ -225,13 +263,12 @@ class GlyphSelectorModal extends BaseModal {
 				const listItemData = glyphOptions[listItemIdx];
 
 				if (searchInput.value.length > 0) {
-					const searchQuery = searchInput.value.toLowerCase().split(" ");
+					const searchQuery = searchInput.value.toLowerCase().split(' ');
 					const name = listItemData.name.toLowerCase();
 
 					let include = true;
 					searchQuery.forEach(v => {
-						if (!name.includes(v))
-							include = false;
+						if (!name.includes(v)) include = false;
 					});
 					if (!include) {
 						return false;
@@ -241,16 +278,16 @@ class GlyphSelectorModal extends BaseModal {
 				return true;
 			});
 
-			listElem.innerHTML = ``
+			listElem.innerHTML = ``;
 			listElem.append(...validItemElems);
 		};
 
 		const searchInput = this.rootElem.getElementsByClassName('selector-modal-search')[0] as HTMLInputElement;
 		searchInput.addEventListener('input', applyFilters);
-		searchInput.addEventListener("keyup", ev => {
-			if (ev.key == "Enter") {
+		searchInput.addEventListener('keyup', ev => {
+			if (ev.key == 'Enter') {
 				listItemElems.find(ele => {
-					if (ele.classList.contains("hidden")) {
+					if (ele.classList.contains('hidden')) {
 						return false;
 					}
 					const nameElem = ele.getElementsByClassName('selector-modal-list-item-name')[0] as HTMLElement;

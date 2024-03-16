@@ -16,21 +16,6 @@ $favorite-cell-width: 2rem;
 		width: 50%;
 	}
 
-	.item-picker-root {
-		display: flex;
-
-		&:not(:last-child) {
-			margin-bottom: $block-spacer;
-		}
-
-		.item-picker-icon {
-			@include wowhead-background-icon;
-			width: 4rem;
-			height: 4rem;
-			border: $border-default;
-		}
-	}
-
 	.gear-picker-left {
 		.item-picker-root {
 			flex-direction: row;
@@ -38,7 +23,7 @@ $favorite-cell-width: 2rem;
 
 			// Add space to separate weapon categories
 			&:nth-child(6) {
-				margin-bottom: map.get($spacers, 5);
+				margin-bottom: 2 * map.get($spacers, 3);
 			}
 		}
 	}
@@ -49,14 +34,6 @@ $favorite-cell-width: 2rem;
 			text-align: right;
 		}
 	}
-}
-
-.item-picker-sockets-container {
-	@include vertical-bottom;
-	@include horizontal-center;
-	width: 100%;
-	display: flex;
-	justify-content: center;
 }
 
 .selector-modal {
@@ -90,6 +67,46 @@ $favorite-cell-width: 2rem;
 	}
 }
 
+.item-picker-root {
+	display: flex;
+
+	&:not(:last-child) {
+		margin-bottom: $block-spacer;
+	}
+
+	.item-picker-icon {
+		@include wowhead-background-icon;
+		width: 4rem;
+		height: 4rem;
+		border: $border-default;
+
+		.item-picker-sockets-container {
+			@include vertical-bottom;
+			@include horizontal-center;
+			width: 100%;
+			display: flex;
+			justify-content: center;
+		}
+	}
+
+	.item-picker-labels-container {
+		padding: map-get($spacers, 2);
+		flex: 1;
+
+		.item-picker-name {
+			color: white;
+			font-size: map-get($font-sizes, 6);
+			letter-spacing: normal;
+		}
+
+		.item-picker-enchant {
+			color: $item-quality-uncommon;
+			font-size: $content-font-size;
+			letter-spacing: normal;
+		}
+	}
+}
+
 @include media-breakpoint-down(md) {
 	.gear-picker-root {
 		flex-direction: column;
@@ -109,30 +126,13 @@ $favorite-cell-width: 2rem;
 	}
 }
 
-.item-picker-labels-container {
-	padding: map-get($spacers, 2);
-	flex: 1;
-
-	.item-picker-name {
-		color: white;
-		font-size: map-get($font-sizes, 6);
-		letter-spacing: normal;
-	}
-
-	.item-picker-enchant {
-		color: $item-quality-uncommon;
-		font-size: $content-font-size;
-		letter-spacing: normal;
-	}
-}
-
 @include media-breakpoint-down(xl) {
 	.gear-picker-root {
 		.gear-picker-left {
 			.item-picker-root {
 				// Increase the spacing to help separate the weapons/bonus item slots
 				&:nth-child(6) {
-					margin-bottom: calc(var(--container-padding) * 2);
+					margin-bottom: calc($container-padding * 2);
 				}
 			}
 		}
@@ -145,27 +145,10 @@ $favorite-cell-width: 2rem;
 			.item-picker-root {
 				// Increase the spacing to help separate the weapons/bonus item slots
 				&:last-child {
-					margin-bottom: calc(var(--container-padding) * 2);
+					margin-bottom: calc($container-padding * 2);
 				}
 			}
 		}
-	}
-}
-
-.item-picker-labels-container {
-	padding: map-get($spacers, 2);
-	flex: 1;
-
-	.item-picker-name {
-		color: white;
-		font-size: map-get($font-sizes, 6);
-		letter-spacing: normal;
-	}
-
-	.item-picker-enchant {
-		color: $item-quality-uncommon;
-		font-size: $content-font-size;
-		letter-spacing: normal;
 	}
 }
 

@@ -7,14 +7,20 @@ import { CopyButton } from '../components/copy_button.js';
 import { Input, InputConfig } from '../components/input.js';
 import { Player } from '../player.js';
 import { PlayerClasses } from '../player_classes';
+import { PlayerSpecs } from '../player_specs';
 import { Class, Spec } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
+import { getTalentTreePoints } from '../proto_utils/utils';
 import { TypedEvent } from '../typed_event.js';
 import { isRightClick, sum } from '../utils.js';
+import { classGlyphsConfig } from './factory';
+import { GlyphsPicker } from './glyphs_picker';
 
 const MAX_POINTS_PLAYER = 41;
 const MAX_POINTS_HUNTER_PET = 17;
 const MAX_POINTS_HUNTER_PET_BM = 21;
+
+const PLAYER_TREES_UNLOCK_POINT_THRESHOLD = 31;
 
 export interface TalentsPickerConfig<TalentsProto> extends InputConfig<Player<any>, string> {
 	klass: Class;
@@ -24,57 +30,54 @@ export interface TalentsPickerConfig<TalentsProto> extends InputConfig<Player<an
 }
 
 export class TalentsPicker<TalentsProto> extends Input<Player<any>, string> {
+	private readonly player: Player<any>;
 	private readonly config: TalentsPickerConfig<TalentsProto>;
 
 	readonly numRows: number;
 	readonly numCols: number;
 	readonly pointsPerRow: number;
+
 	maxPoints: number;
 
 	readonly trees: Array<TalentTreePicker<TalentsProto>>;
 
 	constructor(parent: HTMLElement, player: Player<any>, config: TalentsPickerConfig<TalentsProto>) {
-		super(parent, 'talents-picker-root', player, { ...config, inline: true });
+		super(parent, 'talents-picker-root', player, { ...config });
+		this.player = player;
 		this.config = config;
 		this.pointsPerRow = config.pointsPerRow;
 		this.numRows = Math.max(...config.trees.map(treeConfig => treeConfig.talents.map(talentConfig => talentConfig.location.rowIdx).flat()).flat()) + 1;
 		this.numCols = Math.max(...config.trees.map(treeConfig => treeConfig.talents.map(talentConfig => talentConfig.location.colIdx).flat()).flat()) + 1;
 		this.maxPoints = config.maxPoints;
 
-		const pointsRemainingElemRef = ref<HTMLSpanElement>();
 		const getPointsRemaining = () => this.maxPoints - player.getTalentTreePoints().reduce((sum, points) => sum + points, 0);
 
-		const PointsRemainingElem = () => {
-			const pointsRemaining = getPointsRemaining();
-			return (
-				<span className="talent-tree-points" ref={pointsRemainingElemRef}>
-					{pointsRemaining}
-				</span>
-			);
-		};
-
-		TypedEvent.onAny([player.talentsChangeEmitter]).on(() => {
-			pointsRemainingElemRef.value!.replaceWith(PointsRemainingElem());
-		});
-
+		const containerElemRef = ref<HTMLDivElement>();
+		const pointsRemainingElemRef = ref<HTMLSpanElement>();
 		const actionsContainerRef = ref<HTMLDivElement>();
+
+		const carouselContainerRef = ref<HTMLDivElement>();
+		const carouselPrevBtnRef = ref<HTMLButtonElement>();
+		const carouselNextBtnRef = ref<HTMLButtonElement>();
+
 		this.rootElem.appendChild(
-			<div id="talents-carousel" className="carousel slide">
+			<div className="talents-picker-inner" ref={containerElemRef}>
 				<div className="talents-picker-header">
 					<div>
 						<label>Points Remaining:</label>
-						{PointsRemainingElem()}
+						<span className="talent-tree-points" ref={pointsRemainingElemRef}>
+							{getPointsRemaining()}
+						</span>
 					</div>
 					<div className="talents-picker-actions" ref={actionsContainerRef}></div>
 				</div>
-				<div className="carousel-inner"></div>
 				<div id="talents-carousel" className="carousel slide">
-					<div className="carousel-inner"></div>
-					<button className="carousel-control-prev" type="button">
+					<div className="carousel-inner" ref={carouselContainerRef}></div>
+					<button className="carousel-control-prev" type="button" ref={carouselPrevBtnRef}>
 						<span className="carousel-control-prev-icon" attributes={{ 'aria-hidden': true }}></span>
 						<span className="visually-hidden">Previous</span>
 					</button>
-					<button className="carousel-control-next" type="button">
+					<button className="carousel-control-next" type="button" ref={carouselNextBtnRef}>
 						<span className="carousel-control-next-icon" attributes={{ 'aria-hidden': true }}></span>
 						<span className="visually-hidden">Next</span>
 					</button>
@@ -82,16 +85,19 @@ export class TalentsPicker<TalentsProto> extends Input<Player<any>, string> {
 			</div>,
 		);
 
+		const containerElem = containerElemRef.value!;
+		const carouselContainer = carouselContainerRef.value!;
+		const carouselPrevBtn = carouselPrevBtnRef.value!;
+		const carouselNextBtn = carouselNextBtnRef.value!;
+
+		player.talentsChangeEmitter.on(() => (pointsRemainingElemRef.value!.textContent = `${getPointsRemaining()}`));
+
 		new CopyButton(actionsContainerRef.value!, {
 			extraCssClasses: ['btn-sm', 'btn-outline-primary', 'copy-talents'],
 			getContent: () => player.getTalentsString(),
 			text: 'Copy',
 			tooltip: 'Copy talent string',
 		});
-
-		const carouselContainer = this.rootElem.querySelector('.carousel-inner') as HTMLElement;
-		const carouselPrevBtn = this.rootElem.querySelector('.carousel-control-prev') as HTMLButtonElement;
-		const carouselNextBtn = this.rootElem.querySelector('.carousel-control-next') as HTMLButtonElement;
 
 		this.trees = config.trees.map((treeConfig, i) => {
 			const carouselItem = document.createElement('div');
@@ -109,6 +115,8 @@ export class TalentsPicker<TalentsProto> extends Input<Player<any>, string> {
 			return new TalentTreePicker(carouselItem, treeConfig, this, config.klass, i);
 		});
 		this.trees.forEach(tree => tree.talents.forEach(talent => talent.setPoints(0, false)));
+
+		this.disableSecondaryPlayerTrees();
 
 		let carouselitemIdx = 0;
 		const slidePrev = () => {
@@ -129,6 +137,8 @@ export class TalentsPicker<TalentsProto> extends Input<Player<any>, string> {
 		carouselPrevBtn.addEventListener('click', slidePrev);
 		carouselNextBtn.addEventListener('click', slideNext);
 
+		new GlyphsPicker(containerElem, player, classGlyphsConfig[player.getClass()]);
+
 		this.init();
 	}
 
@@ -147,6 +157,19 @@ export class TalentsPicker<TalentsProto> extends Input<Player<any>, string> {
 		const parts = newValue.split('-');
 		this.trees.forEach((tree, idx) => tree.setTalentsString(parts[idx] || ''));
 		this.updateTrees();
+
+		// Disable other player trees if the first tree is not filled to 31 points
+		if (!this.isHunterPet()) {
+			const specNumber = PlayerSpecs.getSpecNumber(this.player.getPlayerSpec());
+			const pointsSpent = getTalentTreePoints(newValue)[specNumber];
+
+			// trying to use the bare minimum number of updates. 0 covers resetting the tree, -1 removing the 31st point
+			if (pointsSpent == 0 || pointsSpent == PLAYER_TREES_UNLOCK_POINT_THRESHOLD - 1) {
+				this.disableSecondaryPlayerTrees();
+			} else if (pointsSpent == PLAYER_TREES_UNLOCK_POINT_THRESHOLD) {
+				this.enableSecondaryPlayerTrees();
+			}
+		}
 	}
 
 	updateTrees() {
@@ -175,6 +198,22 @@ export class TalentsPicker<TalentsProto> extends Input<Player<any>, string> {
 
 	isHunterPet(): boolean {
 		return ['Cunning', 'Ferocity', 'Tenacity'].includes(this.config.trees[0].name);
+	}
+
+	private disableSecondaryPlayerTrees() {
+		const specNumber = PlayerSpecs.getSpecNumber(this.player.getPlayerSpec());
+		[0, 1, 2]
+			.filter(i => ![specNumber].includes(i))
+			.forEach(i => {
+				this.trees[i].rootElem.classList.add('disabled');
+				this.trees[i].resetPoints();
+			});
+
+		this.trees;
+	}
+
+	private enableSecondaryPlayerTrees() {
+		this.trees.forEach(tree => tree.rootElem.classList.remove('disabled'));
 	}
 }
 
@@ -254,10 +293,7 @@ class TalentTreePicker<TalentsProto> extends Component {
 		new Tooltip(resetBtn, {
 			title: 'Reset talent points',
 		});
-		resetBtn.addEventListener('click', _event => {
-			this.talents.forEach(talent => talent.setPoints(0, false));
-			this.picker.inputChanged(TypedEvent.nextEventID());
-		});
+		resetBtn.addEventListener('click', _event => this.resetPoints());
 	}
 
 	update() {
@@ -287,6 +323,11 @@ class TalentTreePicker<TalentsProto> extends Component {
 		if (!this.picker.isHunterPet()) return MAX_POINTS_PLAYER;
 		if ((this.picker.modObject as unknown as Player<Spec.SpecBeastMasteryHunter>).getTalents().beastMastery) return MAX_POINTS_HUNTER_PET_BM;
 		return MAX_POINTS_HUNTER_PET;
+	}
+
+	resetPoints() {
+		this.talents.forEach(talent => talent.setPoints(0, false));
+		this.picker.inputChanged(TypedEvent.nextEventID());
 	}
 }
 

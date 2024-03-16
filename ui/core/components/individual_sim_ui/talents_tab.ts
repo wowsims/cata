@@ -4,8 +4,7 @@ import { Player } from '../../player';
 import { Class, Glyphs, Spec } from '../../proto/common';
 import { SavedTalents } from '../../proto/ui';
 import { HunterSpecs } from '../../proto_utils/utils';
-import { classGlyphsConfig, classTalentsConfig } from '../../talents/factory';
-import { GlyphsPicker } from '../../talents/glyphs_picker';
+import { classTalentsConfig } from '../../talents/factory';
 import { HunterPetTalentsPicker, makePetTypeInputConfig } from '../../talents/hunter_pet';
 import { TalentsPicker } from '../../talents/talents_picker';
 import { EventID, TypedEvent } from '../../typed_event';
@@ -39,7 +38,6 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 			this.buildHunterPickers();
 		} else {
 			this.buildTalentsPicker(this.leftPanel);
-			this.buildGlyphsPicker(this.leftPanel);
 		}
 
 		this.buildSavedTalentsPicker();
@@ -57,10 +55,6 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 			pointsPerRow: 5,
 			maxPoints: Mechanics.MAX_TALENT_POINTS,
 		});
-	}
-
-	private buildGlyphsPicker(parentElem: HTMLElement) {
-		new GlyphsPicker(parentElem, this.simUI.player, classGlyphsConfig[this.simUI.player.getClass()]);
 	}
 
 	private buildHunterPickers() {
@@ -105,7 +99,6 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 		const petTab = this.leftPanel.querySelector('#pet-talents-tab') as HTMLElement;
 
 		this.buildTalentsPicker(playerTab);
-		this.buildGlyphsPicker(playerTab);
 
 		if (this.simUI.player.getClass() == Class.ClassHunter) {
 			this.buildHunterPetPicker(petTab);

@@ -1,37 +1,28 @@
 .talents-tab {
-  .tab-pane-content-container {
-    .tab-panel-left {
-      flex: 4;
-    }
-  }
+	.tab-pane-content-container {
+		.tab-panel-left {
+			flex: 4;
+			flex-direction: column;
+		}
+	}
 
-  .hunter-talents-pickers-container {
-    width: 100%;
-    margin-top: -1.4rem;
-    display: flex;
-    flex-direction: column;
+	.hunter-talents-pickers-container {
+		width: 100%;
+		margin-top: -1.4rem;
+		display: flex;
+		flex-direction: column;
 
-    &> * {
-      width: 100%;
-    }
+		& > * {
+			width: 100%;
+		}
 
-    .tab-pane {
-      @extend .tab-panel-left;
+		.tab-pane {
+			@extend .tab-panel-left;
 
-      &.active {
-        display: flex;
-        align-items: flex-start;
-      }
-    }
-  }
-}
-
-@include media-breakpoint-down(xxl) {
-  .talents-tab {
-    .tab-pane-content-container {
-      .tab-panel-left {
-        flex-direction: column;
-      }
-    }
-  }
+			&.active {
+				display: flex;
+				align-items: flex-start;
+			}
+		}
+	}
 }

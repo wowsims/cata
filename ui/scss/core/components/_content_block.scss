@@ -1,25 +1,25 @@
-@use "sass:map";
+@use 'sass:map';
 
 .content-block {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 
-  &:not(:last-child) {
-    margin-bottom: 2 * map-get($spacers, 3);
-  }
+	&:not(:last-child) {
+		margin-bottom: $section-spacer;
+	}
 
-  .content-block-header {
-    border-bottom: $border-default;
-    margin-bottom: $block-spacer;
-    display: flex;
+	.content-block-header {
+		border-bottom: $border-default;
+		margin-bottom: $block-spacer;
+		display: flex;
 
-    .content-block-title {
-      font-weight: bold;
-    }
-  }
+		.content-block-title {
+			font-weight: bold;
+		}
+	}
 
-  .content-block-body {
-    display: flex;
-    flex-direction: column;
-  }
+	.content-block-body {
+		display: flex;
+		flex-direction: column;
+	}
 }
