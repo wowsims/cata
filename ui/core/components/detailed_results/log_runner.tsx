@@ -50,22 +50,18 @@ export class LogRunner extends ResultComponent {
 	}
 
     private initializeClusterize(): void {
-    // Ensure clusterize uses elements within this.rootElem
 		const scrollElem = this.rootElem.querySelector('#log-runner-logs-scroll') as HTMLElement;
 		const contentElem = this.rootElem.querySelector('#log-runner-logs') as HTMLElement;
 
 		this.virtualScroll = new CustomVirtualScroll({
 			scrollContainer: scrollElem,
 			contentContainer: contentElem,
-			itemHeight: 30 // Estimate the height of your log items
+			itemHeight: 30 s
 		});
     }
 
     onSimResult(resultData: SimResultData): void {
         let logs = resultData.result.logs.filter(log => !log.isCastCompleted()).map(log => `<tr><td class="log-timestamp">${log.formattedTimestamp()}</td><td class="log-event">${log.toString(false).trim()}</td></tr>`);
-    	//const logs = ['<tr><td class="log-timestamp">Test 1</td><td>Log 1</td></tr>', '<tr><td class="log-event">Test 2</td><td>Log 2</td></tr>'];
-
-        // Update clusterize with the new logs
        	this.virtualScroll?.setItems(logs);
     }
 }
@@ -73,7 +69,7 @@ export class LogRunner extends ResultComponent {
 class CustomVirtualScroll {
   private scrollContainer: HTMLElement;
   private contentContainer: HTMLElement;
-  private items: string[]; // Assuming items are strings; adjust the type as needed
+  private items: string[]; 
   private itemHeight: number;
   private visibleItemsCount: number;
   private startIndex: number;
