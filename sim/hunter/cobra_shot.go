@@ -1,4 +1,4 @@
-package survival
+package hunter
 
 import (
 	"time"
@@ -6,17 +6,17 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (hunter *SurvivalHunter) registerCobraShotSpell() {
-	
+func (hunter *Hunter) registerCobraShotSpell() {
+
 	csMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 77767})
 
-	hunter.Hunter.CobraShot = hunter.RegisterSpell(core.SpellConfig{
+	hunter.CobraShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 77767},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
-			
+
 			Cost: 0,
 		},
 		Cast: core.CastConfig{
@@ -36,10 +36,10 @@ func (hunter *SurvivalHunter) registerCobraShotSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (277.21 + spell.RangedAttackPower(target) * 0.017) 
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (277.21 + spell.RangedAttackPower(target) * 0.017)
 			hunter.AddFocus(sim, 9, csMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-			if(hunter.SerpentSting.Dot(target).IsActive()) {
+			if hunter.SerpentSting.Dot(target).IsActive() {
 				hunter.SerpentSting.Dot(target).Rollover(sim)
 			}
 			spell.DealDamage(sim, result)

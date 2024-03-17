@@ -30,7 +30,6 @@ func (hunter *SurvivalHunter) Initialize() {
 	// Spec specific spells
 	hunter.registerExplosiveShotSpell()
 	hunter.registerBlackArrowSpell(hunter.FireTrapTimer)
-	hunter.registerCobraShotSpell()
 }
 
 func NewSurvivalHunter(character *core.Character, options *proto.Player) *SurvivalHunter {

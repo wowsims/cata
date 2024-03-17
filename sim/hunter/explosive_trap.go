@@ -10,7 +10,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 	bonusPeriodicDamageMultiplier := .10 * float64(hunter.Talents.TrapMastery)
 
 	hunter.ExplosiveTrap = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 49067},
+		ActionID:    core.ActionID{SpellID: 13812},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,

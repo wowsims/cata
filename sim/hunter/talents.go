@@ -65,10 +65,10 @@ func (hunter *Hunter) ApplyTalents() {
 	// hunter.applySpiritBond()
 	// hunter.applyInvigoration()
 	// hunter.applyCobraStrikes()
-	// hunter.applyGoForTheThroat()
 	// hunter.applyPiercingShots()
 	// hunter.applyWildQuiver()
 
+	hunter.applyGoForTheThroat()
 	hunter.applyThrillOfTheHunt()
 	hunter.applyTNT()
 	hunter.applySniperTraining()
@@ -314,9 +314,38 @@ func (hunter *Hunter) ApplyTalents() {
 // 	})
 // }
 func (hunter *Hunter) applyKillingStreak() {
+
+	hunter.KillingStreakAura = hunter.RegisterAura(core.Aura{
+		Label:     "Killing Streak",
+		ActionID:  core.ActionID{SpellID: 82748},
+		Duration:  core.NeverExpires,
+		MaxStacks: 1,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.KillCommand.DamageMultiplier /= 1 + (float64(hunter.Talents.KillingStreak) * 0.1)
+			if hunter.Talents.KillingStreak == 1 {
+				hunter.KillCommand.CostMultiplier *= 35.0 / 40.0
+			} else if hunter.Talents.KillingStreak == 2 {
+				hunter.KillCommand.CostMultiplier *= 30.0 / 40.0
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.KillCommand.DamageMultiplier /= 1 + (float64(hunter.Talents.KillingStreak) * 0.1)
+			if hunter.Talents.KillingStreak == 1 { //Todo: ??? Static cost reduction?
+				hunter.KillCommand.CostMultiplier *= 40.0 / 35.0
+			} else if hunter.Talents.KillingStreak == 2 {
+				hunter.KillCommand.CostMultiplier *= 40.0 / 30.0
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if hunter.Talents.KillingStreak > 0 {
+				if spell == hunter.KillCommand {
+					aura.SetStacks(sim, 0)
+				}
+			}
+		},
+	})
 	hunter.KillingStreakCounterAura = hunter.RegisterAura(core.Aura{
 		Label:     "Killing Streak (KC Crit)",
-		ActionID:  core.ActionID{SpellID: 34026},
 		Duration:  core.NeverExpires,
 		MaxStacks: 2,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -328,31 +357,12 @@ func (hunter *Hunter) applyKillingStreak() {
 						return
 					}
 					if result.DidCrit() {
+						aura.Activate(sim)
 						aura.AddStack(sim)
-					} else {
-						aura.RemoveStack(sim)
+					} else if aura.IsActive() {
+						aura.SetStacks(sim, 0)
 					}
 				}
-			}
-		},
-	})
-	hunter.KillingStreakAura = hunter.RegisterAura(core.Aura{
-		Label:     "Killing Streak (KC Crit)",
-		ActionID:  core.ActionID{SpellID: 34026},
-		Duration:  time.Second * 30,
-		MaxStacks: 2,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if hunter.Talents.KillingStreak > 0 {
-				if spell == hunter.KillCommand {
-					if result.DidCrit() {
-						aura.AddStack(sim)
-					} else {
-						aura.RemoveStack(sim)
-					}
-				}
-			}
-			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
-				aura.RemoveStack(sim)
 			}
 		},
 	})

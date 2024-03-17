@@ -18,7 +18,8 @@ func (hunter *Hunter) registerKillCommandSpell() {
 	hunter.KillCommand = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagNoOnCastComplete,
+		ProcMask: core.ProcMaskMelee,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 40, // Todo: Check if changed by other stuff
@@ -33,8 +34,11 @@ func (hunter *Hunter) registerKillCommandSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.pet.IsEnabled()
+			return true
 		},
+		DamageMultiplierAdditive: 1 + (float64(hunter.Talents.ImprovedKillCommand) * 0.05),
+		CritMultiplier:   hunter.CritMultiplier(false, false, false),
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if hunter.Talents.KillingStreak > 0 {
 				if !hunter.KillingStreakCounterAura.IsActive() {
@@ -44,10 +48,5 @@ func (hunter *Hunter) registerKillCommandSpell() {
 			baseDamage := 0.516*spell.RangedAttackPower(target) + 918 //Todo: fix calc
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
-	})
-
-	hunter.AddMajorCooldown(core.MajorCooldown{
-		Spell: hunter.KillCommand,
-		Type:  core.CooldownTypeDPS,
 	})
 }
