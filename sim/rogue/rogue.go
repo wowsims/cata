@@ -131,6 +131,7 @@ func (rogue *Rogue) Initialize() {
 	// Update auto crit multipliers now that we have the targets.
 	rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
 	rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
+	rogue.AutoAttacks.RangedConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
 
 	rogue.generatorCostModifier = rogue.makeGeneratorCostModifier()
 
@@ -199,6 +200,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 	rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{
 		MainHand:       rogue.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
 		OffHand:        rogue.WeaponFromOffHand(0),  // Set crit multiplier later when we have targets.
+		Ranged:         rogue.WeaponFromRanged(0),
 		AutoSwingMelee: true,
 	})
 	rogue.applyPoisons()

@@ -11,7 +11,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 	fokSpell := rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 51723},
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskRangedSpecial,
+		ProcMask:    core.ProcMaskMeleeOrRangedSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagColdBlooded,
 
 		DamageMultiplier: 0.8 * (1 +
@@ -42,11 +42,14 @@ func (rogue *Rogue) registerFanOfKnives() {
 
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			// Calc and apply all OH hits first, because MH hits can benefit from an OH felstriker proc.
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := fokSpell.Unit.RangedWeaponDamage(sim, fokSpell.RangedAttackPower(aoeTarget)) //ohSpell.Unit.OHWeaponDamage(sim, ohSpell.MeleeAttackPower())
+				baseDamage := fokSpell.Unit.RangedWeaponDamage(sim, fokSpell.RangedAttackPower(aoeTarget))
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				// TODO (TheBackstabi 3/16/2024) - Proc Thrown poison + Vile Poisons proc MH/OH poison
+				if rogue.Talents.VilePoisons > 0 {
+					//poisonProcModifier := 0.33 * float64(rogue.Talents.VilePoisons)
+
+				}
 
 				results[i] = fokSpell.CalcDamage(sim, aoeTarget, baseDamage, fokSpell.OutcomeRangedHitAndCrit)
 			}

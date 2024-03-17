@@ -122,6 +122,16 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 					rogue.WoundPoison[DeadlyProc].Cast(sim, target)
 				}
 			}
+			// TODO: Thebackstabi 3/17/2024 - Verify Thrown Weapon + Deadly Poison behavior
+			// Currently expecting that it behaves as the Offhand Weapon does.
+			if rogue.lastDeadlyPoisonProcMask.Matches(core.ProcMaskRanged) {
+				switch rogue.Options.MhImbue {
+				case proto.RogueOptions_InstantPoison:
+					rogue.InstantPoison[DeadlyProc].Cast(sim, target)
+				case proto.RogueOptions_WoundPoison:
+					rogue.WoundPoison[DeadlyProc].Cast(sim, target)
+				}
+			}
 			dot.Refresh(sim)
 			dot.TakeSnapshot(sim, false)
 		},
@@ -140,6 +150,9 @@ func (rogue *Rogue) getPoisonProcMask(imbue proto.RogueOptions_PoisonImbue) core
 	}
 	if rogue.Options.OhImbue == imbue {
 		mask |= core.ProcMaskMeleeOH
+	}
+	if rogue.Options.ThImbue == imbue {
+		mask |= core.ProcMaskRanged
 	}
 	return mask
 }
