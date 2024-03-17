@@ -20,7 +20,7 @@ func (hunter *MarksmanshipHunter) registerAimedShotSpell(timer *core.Timer) {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: time.Second,
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{

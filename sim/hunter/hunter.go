@@ -33,7 +33,7 @@ type Hunter struct {
 
 	// Hunter spells
 	KillCommand     *core.Spell
-	ArcaneShot      *core.Spell	
+	ArcaneShot      *core.Spell
 	ExplosiveTrap   *core.Spell
 	KillShot        *core.Spell
 	RapidFire       *core.Spell
@@ -53,8 +53,8 @@ type Hunter struct {
 	ExplosiveShot *core.Spell
 	BlackArrow *core.Spell
 	CobraShot *core.Spell
-	
-	
+
+
 
 	// Fake spells to encapsulate weaving logic.
 	TrapWeaveSpell *core.Spell
@@ -64,7 +64,8 @@ type Hunter struct {
 	LockAndLoadAura           *core.Aura
 	RapidFireAura             *core.Aura
 	ScorpidStingAuras         core.AuraArray
-	TalonOfAlarAura           *core.Aura
+	KillingStreakCounterAura 	*core.Aura
+	KillingStreakAura 	*core.Aura
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {
@@ -120,6 +121,8 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerAspectOfTheHawkSpell()
 	hunter.registerSerpentStingSpell()
 	hunter.registerMultiShotSpell(hunter.NewTimer())
+	hunter.registerKillCommandSpell()
+	hunter.registerExplosiveTrapSpell(hunter.FireTrapTimer)
 }
 
 func (hunter *Hunter) Reset(_ *core.Simulation) {

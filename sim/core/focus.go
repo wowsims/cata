@@ -169,7 +169,7 @@ func (fb *focusBar) addFocusInternal(sim *Simulation, amount float64, metrics *R
 
     // Check if within the first 100ms of a new second
     //if remainderMilliseconds < 100 {
-	
+
         if sim.Log != nil && fb.isPlayer {
            fb.unit.Log(sim, "Gained %0.3f focus from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, fb.currentFocus, newFocus)
         }
