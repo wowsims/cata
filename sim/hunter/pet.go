@@ -15,6 +15,8 @@ type HunterPet struct {
 
 	CobraStrikesAura *core.Aura
 	KillCommandAura  *core.Aura
+	FrenzyStacksSnapshot float64
+	FrenzyAura      *core.Aura
 
 	specialAbility *core.Spell
 	focusDump      *core.Spell
@@ -61,7 +63,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	})
 
 	// Happiness
-	// Todo: 
+	// Todo:
 	//hp.PseudoStats.DamageDealtMultiplier *= 1.25
 
 	// Pet family bonus is now the same for all pets.
