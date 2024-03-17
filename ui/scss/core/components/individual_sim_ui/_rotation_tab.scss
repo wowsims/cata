@@ -1,6 +1,6 @@
-@use "sass:map";
+@use 'sass:map';
 
-@import "./apl_rotation_picker";
+@import './apl_rotation_picker';
 
 #rotation-tab {
 	&.rotation-type-auto {
@@ -49,7 +49,7 @@
 		.rotation-tab-apl {
 			display: none;
 		}
-	
+
 		.enum-picker-selector,
 		.number-picker-input {
 			width: 8rem;
@@ -74,7 +74,7 @@
 
 	.rotation-settings {
 		flex: 1;
-		margin-right: 2 * map-get($spacers, 3);
+		margin-right: $section-spacer;
 	}
 
 	.cooldown-settings {
@@ -87,5 +87,5 @@
 		.rotation-settings {
 			margin-right: 0;
 		}
-	}	
+	}
 }

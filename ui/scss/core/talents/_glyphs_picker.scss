@@ -1,63 +1,57 @@
 @import '../components/icon_picker';
 
 .glyphs-picker-root {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+	display: flex;
+	flex-direction: column;
+
+	.content-block {
+		margin-bottom: $section-spacer;
+
+		.content-block-body {
+			padding: map-get($spacers, 3);
+			border: $border-default;
+			flex-direction: row;
+			background-color: $body-bg;
+		}
+	}
 }
 
 .glyph-picker-root {
-  &.minor {
-    .glyph-picker-icon {
-      width: $icon-size-md;
-      height: $icon-size-md;
-    }
-  }
+	margin-bottom: 0 !important;
+	flex-direction: row;
+	flex: 1;
 
-  .glyph-picker-icon {
-    @include wowhead-background-icon;
-    width: 3rem;
-    height: 3rem;
-    border: $border-default;
-  }  
+	.item-picker-icon {
+		@include wowhead-background-icon;
+		width: 3rem;
+		height: 3rem;
+		border: $border-default;
+	}
+
+	.item-picker-labels-container {
+		padding: 0 map-get($spacers, 3) 0 map-get($spacers, 2);
+		display: flex;
+		align-items: center;
+
+		.item-picker-name {
+			white-space: normal;
+		}
+	}
 }
 
 .glyph-modal {
-  .selector-modal-list-item-link {
-    flex: 1;
-  }
+	.selector-modal-list-item-link {
+		flex: 1;
+	}
 
-  .selector-modal-list-item-name {
-    flex: 2;
-  }
+	.selector-modal-list-item-name {
+		flex: 2;
+	}
 
-  .selector-modal-list-item-description {
-    margin-left: 1rem;
-    letter-spacing: normal;
-    color: $item-quality-junk;
-    flex: 3;
-  }
-}
-
-@include media-breakpoint-down(xl) {
-  .glyphs-picker-root {
-    width: 100%;
-    flex-direction: row;
-
-    .content-block {
-      flex: 1;
-
-      .content-block-body {
-        flex-direction: row;
-      }
-    }
-  }
-
-  .glyph-picker-root {
-    width: unset;
-
-    &:not(:last-child) {
-      margin-right: $block-spacer;
-    }
-  }
+	.selector-modal-list-item-description {
+		margin-left: 1rem;
+		letter-spacing: normal;
+		color: $item-quality-junk;
+		flex: 3;
+	}
 }

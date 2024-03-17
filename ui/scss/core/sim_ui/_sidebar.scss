@@ -22,8 +22,8 @@
 		}
 
 		.sim-sidebar-actions {
-			padding-left: var(--container-padding);
-			padding-right: var(--container-padding);
+			padding-left: $container-padding;
+			padding-right: $container-padding;
 			margin-left: $gap-width * -1;
 			margin-right: $gap-width * -1;
 			display: flex;

@@ -1,57 +1,57 @@
-@use "sass:map";
+@use 'sass:map';
 
 .sim-tab {
-  .tab-pane-content-container {
-    display: flex;
+	.tab-pane-content-container {
+		display: flex;
 
-    .tab-panel-left {
-      display: flex;
-      flex: 4;
-    }
+		.tab-panel-left {
+			display: flex;
+			flex: 4;
+		}
 
-    .tab-panel-right {
-      margin-left: var(--container-padding);
-      display: flex;
-      flex-direction: column;
-      flex: 1.25;
-    }
+		.tab-panel-right {
+			margin-left: $container-padding;
+			display: flex;
+			flex-direction: column;
+			flex: 1.25;
+		}
 
-    .tab-panel-col {
-      flex: 1;
+		.tab-panel-col {
+			flex: 1;
 
-      &:not(:last-child) {
-        margin-right: 2 * map-get($spacers, 3);
-      }
-    }
+			&:not(:last-child) {
+				margin-right: $section-spacer;
+			}
+		}
 
-    .tab-panel-col {
-      flex: 1;
+		.tab-panel-col {
+			flex: 1;
 
-      &:not(:last-child) {
-        margin-right: 2 * map-get($spacers, 3);
-      }
-    }
-  }
+			&:not(:last-child) {
+				margin-right: $section-spacer;
+			}
+		}
+	}
 }
 
 @include media-breakpoint-down(xl) {
-  .sim-tab {
-    .tab-pane-content-container {
-      flex-direction: column;
+	.sim-tab {
+		.tab-pane-content-container {
+			flex-direction: column;
 
-      .tab-panel-right {
-        margin-left: 0;
-      }
-    }
-  }
+			.tab-panel-right {
+				margin-left: 0;
+			}
+		}
+	}
 }
 
 @include media-breakpoint-down(md) {
-  .sim-tab {
-    .tab-pane-content-container {
-      .tab-panel-left {
-        flex-direction: column;
-      }
-    }
-  }
+	.sim-tab {
+		.tab-pane-content-container {
+			.tab-panel-left {
+				flex-direction: column;
+			}
+		}
+	}
 }

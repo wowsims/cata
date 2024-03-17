@@ -46,6 +46,7 @@ import { Stats } from './proto_utils/stats';
 import { getTalentPoints, SpecOptions } from './proto_utils/utils';
 import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
+import { MAX_POINTS_PLAYER } from './talents/talents_picker';
 import { EventID, TypedEvent } from './typed_event';
 
 const SAVED_GEAR_STORAGE_KEY = '__savedGear__';
@@ -233,9 +234,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				if (talentPoints == 0) {
 					// Just return here, so we don't show a warning during page load.
 					return '';
-				} else if (talentPoints < Mechanics.MAX_TALENT_POINTS) {
+				} else if (talentPoints < MAX_POINTS_PLAYER) {
 					return 'Unspent talent points.';
-				} else if (talentPoints > Mechanics.MAX_TALENT_POINTS) {
+				} else if (talentPoints > MAX_POINTS_PLAYER) {
 					return 'More than maximum talent points spent.';
 				} else {
 					return '';

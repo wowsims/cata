@@ -45,6 +45,7 @@ export class FiltersMenu extends BaseModal {
 			new BooleanPicker<Sim>(section, player.sim, {
 				label: sourceNames.get(source),
 				inline: true,
+				reverse: true,
 				changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
 				getValue: (sim: Sim) => sim.getFilters().sources.includes(source),
 				setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {
@@ -66,6 +67,7 @@ export class FiltersMenu extends BaseModal {
 			new BooleanPicker<Sim>(section, player.sim, {
 				label: raidNames.get(raid),
 				inline: true,
+				reverse: true,
 				changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
 				getValue: (sim: Sim) => sim.getFilters().raids.includes(raid),
 				setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {
@@ -91,6 +93,7 @@ export class FiltersMenu extends BaseModal {
 					new BooleanPicker<Sim>(section, player.sim, {
 						label: armorTypeNames.get(armorType),
 						inline: true,
+						reverse: true,
 						changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
 						getValue: (sim: Sim) => sim.getFilters().armorTypes.includes(armorType),
 						setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {
@@ -114,6 +117,7 @@ export class FiltersMenu extends BaseModal {
 				new BooleanPicker<Sim>(weaponTypeSection, player.sim, {
 					label: weaponTypeNames.get(weaponType),
 					inline: true,
+					reverse: true,
 					changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
 					getValue: (sim: Sim) => sim.getFilters().weaponTypes.includes(weaponType),
 					setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {
@@ -196,6 +200,7 @@ export class FiltersMenu extends BaseModal {
 				new BooleanPicker<Sim>(rangedWeaponTypeSection, player.sim, {
 					label: rangedWeaponTypeNames.get(rangedWeaponType),
 					inline: true,
+					reverse: true,
 					changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
 					getValue: (sim: Sim) => sim.getFilters().rangedWeaponTypes.includes(rangedWeaponType),
 					setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {

@@ -869,11 +869,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getPrimeGlyps(): Array<number> {
-		return [
-			this.glyphs.prime1,
-			this.glyphs.prime2,
-			this.glyphs.prime3,
-		].filter(glyph => glyph != 0)
+		return [this.glyphs.prime1, this.glyphs.prime2, this.glyphs.prime3].filter(glyph => glyph != 0);
 	}
 
 	getMajorGlyphs(): Array<number> {

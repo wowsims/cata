@@ -5,327 +5,335 @@ $talent-tree-header-size: calc($talent-tree-header-icon-size + 2 * $talent-tree-
 
 $talent-icon-size: 2.5rem;
 
-$talent-partial-color: #40BF40;
+$talent-partial-color: #40bf40;
 $talent-full-color: #ffd100;
 
 .talents-picker-root {
-  width: unset;
-  margin-right: $block-spacer;
-  display: flex;
-  flex-direction: column;
+	width: unset;
+	margin-right: $block-spacer;
+	display: flex;
+	flex-direction: column;
 
-  .talents-picker-header {
-    width: 100%;
-    margin-bottom: map-get($spacers, 1);
-    display: flex;
-    align-items: center;
+	.talents-picker-header {
+		width: 100%;
+		margin-bottom: map-get($spacers, 1);
+		display: flex;
+		align-items: center;
 
-    .talents-picker-actions {
-      margin-left: auto;
+		.talents-picker-actions {
+			margin-left: auto;
 
-      button.copy-talents {
-        width: 6rem;
-      }
-    }
-  }
+			button.copy-talents {
+				width: 6rem;
+			}
+		}
+	}
 
-  #talents-carousel {
-    flex: 1;
+	#talents-carousel {
+		flex: 1;
+		margin-bottom: $section-spacer;
 
-    .carousel-inner {
-      display: flex;
-      overflow: unset;
-      transform: unset;
-    }
+		.carousel-inner {
+			display: flex;
+			overflow: unset;
+			transform: unset;
+		}
 
-    .carousel-item {
-      display: block;
-      width: unset;
-      margin-right: unset;
-      float: unset;
+		.carousel-item {
+			display: block;
+			width: unset;
+			margin-right: unset;
+			float: unset;
 
-      // Offset to keep the border sizes consistent
-      &:not(:first-child) {
-        margin-left: -1px;
-      }
-    }
-  }
+			// Offset to keep the border sizes consistent
+			&:not(:first-child) {
+				margin-left: -1px;
+			}
+		}
+	}
 }
 
 .talent-tree-points {
-  font-weight: bold;
-  white-space: nowrap;
+	font-weight: bold;
+	white-space: nowrap;
 }
 
 .talent-tree-picker-root {
-  position: relative;
-  border: $border-default;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+	position: relative;
+	border: $border-default;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
 
-  &:not(:first-child) {
-    margin-left: -1px;
-  }
+	&.disabled {
+		filter: grayscale(1);
+	}
 
-  .talent-tree-header {
-    padding: $talent-tree-header-padding-y $talent-tree-header-padding-x;
-    display: flex;
-    align-items: center;
-    color: white;
-    background: black;
-    font-size: 1rem;
-    z-index: 1;
+	&:not(:first-child) {
+		margin-left: -1px;
+	}
 
-    .talent-tree-icon {
-      width: $talent-tree-header-icon-size;
-      height: $talent-tree-header-icon-size;
-      margin-right: $talent-tree-header-padding-x;
-      border-radius: 100%;
-    }
+	.talent-tree-header {
+		padding: $talent-tree-header-padding-y $talent-tree-header-padding-x;
+		display: flex;
+		align-items: center;
+		color: white;
+		background: black;
+		font-size: 1rem;
+		z-index: 1;
 
-    .talent-tree-title {
-      margin-right: $talent-tree-header-padding-x;
-      flex: 1;
-      font-weight: bold;
-      white-space: nowrap;
-    }
+		.talent-tree-icon {
+			width: $talent-tree-header-icon-size;
+			height: $talent-tree-header-icon-size;
+			margin-right: $talent-tree-header-padding-x;
+			border-radius: 100%;
+		}
 
-    .talent-tree-reset {
-      line-height: 1;
-      margin-right: calc(-1 * $btn-padding-x);
-    }
-  }
+		.talent-tree-title {
+			margin-right: $talent-tree-header-padding-x;
+			flex: 1;
+			font-weight: bold;
+			white-space: nowrap;
+		}
 
-  .talent-tree-background {
-    position: absolute;
-    inset: $talent-tree-header-size 0 0 0;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    box-shadow: inset 0 0 $talent-tree-header-size 1rem #000;
-    z-index: 0;
-  }
+		.talent-tree-reset {
+			line-height: 1;
+			margin-right: calc(-1 * $btn-padding-x);
+		}
+	}
 
-  .talent-tree-main {
-    display: grid;
-    margin: $block-spacer 2vw;
-    z-index: 1;
-  }
+	.talent-tree-background {
+		position: absolute;
+		inset: $talent-tree-header-size 0 0 0;
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+		box-shadow: inset 0 0 $talent-tree-header-size 1rem #000;
+		z-index: 0;
+	}
+
+	.talent-tree-main {
+		display: grid;
+		margin: $block-spacer 2vw;
+		z-index: 1;
+	}
 }
 
 .talent-picker-root {
-  @include wowhead-background-icon;
-  width: $talent-icon-size;
-  height: $talent-icon-size;
-  margin: calc($talent-icon-size / 5);
-  border: 1px solid $talent-partial-color;
-  border-radius: 4px;
+	@include wowhead-background-icon;
+	width: $talent-icon-size;
+	height: $talent-icon-size;
+	margin: calc($talent-icon-size / 5);
+	border: 1px solid $talent-partial-color;
+	border-radius: 4px;
 }
 
-.talent-picker-root[data-points="0"]:not(.talent-picker-can-add) {
-  filter: grayscale(100%);
+.talent-picker-root[data-points='0']:not(.talent-picker-can-add) {
+	filter: grayscale(100%);
 }
 .talent-picker-root.talent-full {
-  border-color: $talent-full-color;
+	border-color: $talent-full-color;
 }
 
 .talent-picker-points {
-  margin: 0;
-  color: $talent-partial-color;
-  background-color: black;
-  position: absolute;
-  bottom: -8px;
-  right: -8px;
-  padding: 0px 2px;
-  border-radius: 2px;
-  font-size: 11px;
+	margin: 0;
+	color: $talent-partial-color;
+	background-color: black;
+	position: absolute;
+	bottom: -8px;
+	right: -8px;
+	padding: 0px 2px;
+	border-radius: 2px;
+	font-size: 11px;
 }
 
-.talent-picker-root[data-points="0"]:not(.talent-picker-can-add) .talent-picker-points {
-  filter: grayscale(100%);
+.talent-picker-root[data-points='0']:not(.talent-picker-can-add) .talent-picker-points {
+	filter: grayscale(100%);
 }
 
 .talent-picker-root.talent-full .talent-picker-points {
-  color: $talent-full-color;
+	color: $talent-full-color;
 }
 
-.talents-picker-root.talents-full .talent-picker-root[data-points="0"] .talent-picker-points {
-  display: none;
+.talents-picker-root.talents-full .talent-picker-root[data-points='0'] .talent-picker-points {
+	display: none;
 }
 
-.icon-input:not(.active), .icon-input-improved:not(.active), .icon-input-counter:not(.active) {
-  border-color: dimgray;
+.icon-input:not(.active),
+.icon-input-improved:not(.active),
+.icon-input-counter:not(.active) {
+	border-color: dimgray;
 }
 
 .talent-picker-req-arrow {
-  background-repeat: no-repeat;
-  position: relative;
-  pointer-events: none;
+	background-repeat: no-repeat;
+	position: relative;
+	pointer-events: none;
 }
 
 .talent-picker-req-arrow-down {
-  background-image:url('/cata/assets/talent_calc/down.png');
-  background-position: bottom center;
-  top: 3rem;
-  height: 1.3rem;
+	background-image: url('/cata/assets/talent_calc/down.png');
+	background-position: bottom center;
+	top: 3rem;
+	height: 1.3rem;
 
-  &[data-req-arrow-row-size="2"] {
-    height: 4.8rem;
-  }
+	&[data-req-arrow-row-size='2'] {
+		height: 4.8rem;
+	}
 
-  &[data-req-arrow-row-size="3"] {
-    height: 8.3rem;
-  }
+	&[data-req-arrow-row-size='3'] {
+		height: 8.3rem;
+	}
 
-  &[data-req-active] {
-    background-image:url('/cata/assets/talent_calc/down2.png');
-  }
+	&[data-req-active] {
+		background-image: url('/cata/assets/talent_calc/down2.png');
+	}
 }
 
 .talent-picker-req-arrow-rightdown {
-  background-image:url('/cata/assets/talent_calc/rightdown.png');
-  background-position: right top;
-  left: 3rem;
-  top: 1.4rem;
-  width: 2.7rem;
+	background-image: url('/cata/assets/talent_calc/rightdown.png');
+	background-position: right top;
+	left: 3rem;
+	top: 1.4rem;
+	width: 2.7rem;
 
-  div:first-child {
-    background-image:url('/cata/assets/talent_calc/down.png');
-    background-repeat: no-repeat;
-    background-position: bottom right;
-    position: relative;
-    height: 2rem;
-    top: .9rem;
-  }
+	div:first-child {
+		background-image: url('/cata/assets/talent_calc/down.png');
+		background-repeat: no-repeat;
+		background-position: bottom right;
+		position: relative;
+		height: 2rem;
+		top: 0.9rem;
+	}
 
-  &[data-req-arrow-row-size="2"] {
-    div:first-child {
-      height: 5.5rem;
-    }
-  }
+	&[data-req-arrow-row-size='2'] {
+		div:first-child {
+			height: 5.5rem;
+		}
+	}
 
-  &[data-req-active] {
-    background-image:url('/cata/assets/talent_calc/rightdown2.png');
-    div:first-child {
-      background-image:url('/cata/assets/talent_calc/down2.png');
-    }
-  }
+	&[data-req-active] {
+		background-image: url('/cata/assets/talent_calc/rightdown2.png');
+		div:first-child {
+			background-image: url('/cata/assets/talent_calc/down2.png');
+		}
+	}
 }
 
 .talent-picker-req-arrow-leftdown {
-  background-image:url('/cata/assets/talent_calc/leftdown.png');
-  background-position: left top;
-  top: 1.4rem;
-  left: 1.3rem;
-  width: 3rem;
+	background-image: url('/cata/assets/talent_calc/leftdown.png');
+	background-position: left top;
+	top: 1.4rem;
+	left: 1.3rem;
+	width: 3rem;
 
-  div:first-child {
-    background-image:url('/cata/assets/talent_calc/down.png');
-    background-repeat: no-repeat;
-    background-position: bottom left;
-    position: relative;
-    height: 2rem;
-    top: .9rem;
-  }
+	div:first-child {
+		background-image: url('/cata/assets/talent_calc/down.png');
+		background-repeat: no-repeat;
+		background-position: bottom left;
+		position: relative;
+		height: 2rem;
+		top: 0.9rem;
+	}
 
-  &[data-req-arrow-row-size="2"] {
-    div:first-child {
-      height: 5.5rem;
-    }
-  }
+	&[data-req-arrow-row-size='2'] {
+		div:first-child {
+			height: 5.5rem;
+		}
+	}
 
-  &[data-req-active] {
-    background-image:url('/cata/assets/talent_calc/leftdown2.png');
-    div:first-child {
-      background-image:url('/cata/assets/talent_calc/down2.png');
-    }
-  }
+	&[data-req-active] {
+		background-image: url('/cata/assets/talent_calc/leftdown2.png');
+		div:first-child {
+			background-image: url('/cata/assets/talent_calc/down2.png');
+		}
+	}
 }
 
 .talent-picker-req-arrow-left {
-  background-image:url('/cata/assets/talent_calc/left.png');
-  background-position: left center;
-  right: 0.9rem;
-  width: 2rem;
+	background-image: url('/cata/assets/talent_calc/left.png');
+	background-position: left center;
+	right: 0.9rem;
+	width: 2rem;
 
-  &[data-req-active] {
-    background-image:url('/cata/assets/talent_calc/left2.png');
-  }
+	&[data-req-active] {
+		background-image: url('/cata/assets/talent_calc/left2.png');
+	}
 }
 
 .talent-picker-req-arrow-right {
-  background-image:url('/cata/assets/talent_calc/right.png');
-  background-position: right center;
-  left: 3rem;
-  width: 1.3rem;
+	background-image: url('/cata/assets/talent_calc/right.png');
+	background-position: right center;
+	left: 3rem;
+	width: 1.3rem;
 
-  &[data-req-active] {
-    background-image:url('/cata/assets/talent_calc/right2.png');
-  }
+	&[data-req-active] {
+		background-image: url('/cata/assets/talent_calc/right2.png');
+	}
 }
 
 @include media-breakpoint-up(lg) {
-  .talents-picker-root {
-    #talents-carousel {
-      .carousel-control-prev, .carousel-control-next {
-        display: none;
-      }
-    }
-  }
+	.talents-picker-root {
+		#talents-carousel {
+			.carousel-control-prev,
+			.carousel-control-next {
+				display: none;
+			}
+		}
+	}
 }
 
 @include media-breakpoint-down(xxxl) {
-  .talents-picker-root {
-    width: 100%;
+	.talents-picker-root {
+		width: 100%;
 
-    #talents-carousel {
-      .carousel-item {
-        flex: 1;
-      }
-    }
-  }
+		#talents-carousel {
+			.carousel-item {
+				flex: 1;
+			}
+		}
+	}
 
-  .talent-tree-picker-root {
-    .talent-tree-main {
-      margin: $block-spacer auto;
-    }
-  }
+	.talent-tree-picker-root {
+		.talent-tree-main {
+			margin: $block-spacer auto;
+		}
+	}
 }
 
 @include media-breakpoint-down(xxl) {
-  .talents-picker-root {
-    margin-right: 0;
-  }
+	.talents-picker-root {
+		margin-right: 0;
+	}
 }
 
 @include media-breakpoint-down(lg) {
-  .talents-picker-root {
-    #talents-carousel {
-      width: calc(100vw - 2 * var(--container-padding));
-      display: flex;
-      justify-content: center;
-      overflow-x: hidden;
+	.talents-picker-root {
+		#talents-carousel {
+			width: calc(100vw - 2 * $container-padding);
+			display: flex;
+			justify-content: center;
+			overflow-x: hidden;
 
-      .carousel-inner {
-        width: unset;
-        min-width: unset;
-        transition: transform .15s ease-in-out;
-      }
+			.carousel-inner {
+				width: unset;
+				min-width: unset;
+				transition: transform 0.15s ease-in-out;
+			}
 
-      .carousel-item {
-        opacity: 0.5;
-        transition: opacity .15s ease-in-out;
+			.carousel-item {
+				opacity: 0.5;
+				transition: opacity 0.15s ease-in-out;
 
-        &.active {
-          opacity: 1;
-        }
-      }
-    }
-  }
+				&.active {
+					opacity: 1;
+				}
+			}
+		}
+	}
 
-  .talent-tree-picker-root {
-    .talent-tree-main {
-      margin: $block-spacer $talent-icon-size;
-    }
-  }
+	.talent-tree-picker-root {
+		.talent-tree-main {
+			margin: $block-spacer $talent-icon-size;
+		}
+	}
 }
