@@ -62,11 +62,11 @@ func (hunter *Hunter) ApplyTalents() {
 		hunter.applyKillingStreak()
 	}
 
-	// hunter.applySpiritBond()
 	// hunter.applyCobraStrikes()
 	// hunter.applyPiercingShots()
 	// hunter.applyWildQuiver()
 
+	hunter.applySpiritBond()
 	hunter.applyInvigoration()
 	hunter.applyGoForTheThroat()
 	hunter.applyThrillOfTheHunt()
@@ -80,56 +80,30 @@ func (hunter *Hunter) ApplyTalents() {
 	// hunter.registerReadinessCD()
 }
 
-// func (hunter *Hunter) critMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS bool) float64 {
-// 	primaryModifier := 1.0
-// 	secondaryModifier := 0.0
-// 	mortalShotsFactor := 0.06
 
-// 	if doubleDipMS {
-// 		mortalShotsFactor = 0.12
-// 	}
+func (hunter *Hunter) applySpiritBond() {
+	if hunter.Talents.SpiritBond == 0 || hunter.pet == nil {
+		return
+	}
 
-// 	if isRanged {
-// 		secondaryModifier += mortalShotsFactor * float64(hunter.Talents.MortalShots)
-// 		if isMFDSpell {
-// 			secondaryModifier += 0.02 * float64(hunter.Talents.MarkedForDeath)
-// 		}
-// 	}
+	hunter.PseudoStats.HealingTakenMultiplier *= 1 + 0.05*float64(hunter.Talents.SpiritBond)
+	hunter.pet.PseudoStats.HealingTakenMultiplier *= 1 + 0.05*float64(hunter.Talents.SpiritBond)
 
-// 	return hunter.MeleeCritMultiplier(primaryModifier, secondaryModifier)
-// }
+	actionID := core.ActionID{SpellID: 20895}
+	healthMultiplier := 0.01 * float64(hunter.Talents.SpiritBond)
+	healthMetrics := hunter.NewHealthMetrics(actionID)
+	petHealthMetrics := hunter.pet.NewHealthMetrics(actionID)
 
-// func (hunter *Hunter) markedForDeathMultiplier() float64 {
-// 	if hunter.Options.UseHuntersMark || hunter.Env.GetTarget(0).HasAuraWithTag(core.HuntersMarkAuraTag) {
-// 		return 1 + .01*float64(hunter.Talents.MarkedForDeath)
-// 	} else {
-// 		return 1
-// 	}
-// }
-
-// func (hunter *Hunter) applySpiritBond() {
-// 	if hunter.Talents.SpiritBond == 0 || hunter.pet == nil {
-// 		return
-// 	}
-
-// 	hunter.PseudoStats.HealingTakenMultiplier *= 1 + 0.05*float64(hunter.Talents.SpiritBond)
-// 	hunter.pet.PseudoStats.HealingTakenMultiplier *= 1 + 0.05*float64(hunter.Talents.SpiritBond)
-
-// 	actionID := core.ActionID{SpellID: 20895}
-// 	healthMultiplier := 0.01 * float64(hunter.Talents.SpiritBond)
-// 	healthMetrics := hunter.NewHealthMetrics(actionID)
-// 	petHealthMetrics := hunter.pet.NewHealthMetrics(actionID)
-
-// 	hunter.RegisterResetEffect(func(sim *core.Simulation) {
-// 		core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-// 			Period: time.Second * 10,
-// 			OnAction: func(sim *core.Simulation) {
-// 				hunter.GainHealth(sim, hunter.MaxHealth()*healthMultiplier, healthMetrics)
-// 				hunter.pet.GainHealth(sim, hunter.pet.MaxHealth()*healthMultiplier, petHealthMetrics)
-// 			},
-// 		})
-// 	})
-// }
+	hunter.RegisterResetEffect(func(sim *core.Simulation) {
+		core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+			Period: time.Second * 10,
+			OnAction: func(sim *core.Simulation) {
+				hunter.GainHealth(sim, hunter.MaxHealth()*healthMultiplier, healthMetrics)
+				hunter.pet.GainHealth(sim, hunter.pet.MaxHealth()*healthMultiplier, petHealthMetrics)
+			},
+		})
+	})
+}
 
 func (hunter *Hunter) applyInvigoration() {
 	if hunter.Talents.Invigoration == 0 || hunter.pet == nil {
