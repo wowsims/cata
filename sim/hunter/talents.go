@@ -62,10 +62,8 @@ func (hunter *Hunter) ApplyTalents() {
 		hunter.applyKillingStreak()
 	}
 
-	// hunter.applyCobraStrikes()
-	// hunter.applyPiercingShots()
-	// hunter.applyWildQuiver()
-
+	hunter.applyCobraStrikes()
+	hunter.applyPiercingShots()
 	hunter.applySpiritBond()
 	hunter.applyInvigoration()
 	hunter.applyGoForTheThroat()
@@ -76,8 +74,7 @@ func (hunter *Hunter) ApplyTalents() {
 	hunter.applyImprovedSteadyShot()
 	hunter.applyFocusFireCD()
 	hunter.applyFervorCD()
-
-	// hunter.registerReadinessCD()
+	hunter.registerReadinessCD()
 }
 
 
@@ -132,161 +129,115 @@ func (hunter *Hunter) applyInvigoration() {
 	})
 }
 
-// func (hunter *Hunter) applyCobraStrikes() {
-// 	if hunter.Talents.CobraStrikes == 0 || hunter.pet == nil {
-// 		return
-// 	}
+func (hunter *Hunter) applyCobraStrikes() {
+	if hunter.Talents.CobraStrikes == 0 || hunter.pet == nil {
+		return
+	}
 
-// 	actionID := core.ActionID{SpellID: 53260}
-// 	procChance := 0.2 * float64(hunter.Talents.CobraStrikes)
+	actionID := core.ActionID{SpellID: 53260}
+	procChance := 0.05 * float64(hunter.Talents.CobraStrikes)
 
-// 	hunter.pet.CobraStrikesAura = hunter.pet.RegisterAura(core.Aura{
-// 		Label:     "Cobra Strikes",
-// 		ActionID:  actionID,
-// 		Duration:  time.Second * 10,
-// 		MaxStacks: 2,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			hunter.pet.focusDump.BonusCritRating += 100 * core.CritRatingPerCritChance
-// 			if hunter.pet.specialAbility != nil {
-// 				hunter.pet.specialAbility.BonusCritRating += 100 * core.CritRatingPerCritChance
-// 			}
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			hunter.pet.focusDump.BonusCritRating -= 100 * core.CritRatingPerCritChance
-// 			if hunter.pet.specialAbility != nil {
-// 				hunter.pet.specialAbility.BonusCritRating -= 100 * core.CritRatingPerCritChance
-// 			}
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
-// 				aura.RemoveStack(sim)
-// 			}
-// 		},
-// 	})
+	hunter.pet.CobraStrikesAura = hunter.pet.RegisterAura(core.Aura{
+		Label:     "Cobra Strikes",
+		ActionID:  actionID,
+		Duration:  time.Second * 10,
+		MaxStacks: 2,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.pet.focusDump.BonusCritRating += 100 * core.CritRatingPerCritChance
+			if hunter.pet.specialAbility != nil {
+				hunter.pet.specialAbility.BonusCritRating += 100 * core.CritRatingPerCritChance
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.pet.focusDump.BonusCritRating -= 100 * core.CritRatingPerCritChance
+			if hunter.pet.specialAbility != nil {
+				hunter.pet.specialAbility.BonusCritRating -= 100 * core.CritRatingPerCritChance
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
+				aura.RemoveStack(sim)
+			}
+		},
+	})
 
-// 	hunter.RegisterAura(core.Aura{
-// 		Label:    "Cobra Strikes",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.DidCrit() {
-// 				return
-// 			}
+	hunter.RegisterAura(core.Aura{
+		Label:    "Cobra Strikes",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell != hunter.ArcaneShot { // Only arcane shot, but also can proc on non crits
+				return
+			}
 
-// 			if spell != hunter.ArcaneShot && spell != hunter.SteadyShot && spell != hunter.KillShot {
-// 				return
-// 			}
+			if sim.RandomFloat("Cobra Strikes") < procChance {
+				hunter.pet.CobraStrikesAura.Activate(sim)
+				hunter.pet.CobraStrikesAura.SetStacks(sim, 2)
+			}
+		},
+	})
+}
 
-// 			if sim.RandomFloat("Cobra Strikes") < procChance {
-// 				hunter.pet.CobraStrikesAura.Activate(sim)
-// 				hunter.pet.CobraStrikesAura.SetStacks(sim, 2)
-// 			}
-// 		},
-// 	})
-// }
+func (hunter *Hunter) applyPiercingShots() {
+	if hunter.Talents.PiercingShots == 0 {
+		return
+	}
 
-// func (hunter *Hunter) applyPiercingShots() {
-// 	if hunter.Talents.PiercingShots == 0 {
-// 		return
-// 	}
+	psSpell := hunter.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 53238},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers,
 
-// 	psSpell := hunter.RegisterSpell(core.SpellConfig{
-// 		ActionID:    core.ActionID{SpellID: 53238},
-// 		SpellSchool: core.SpellSchoolPhysical,
-// 		ProcMask:    core.ProcMaskEmpty,
-// 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
-// 		DamageMultiplier: 1,
-// 		ThreatMultiplier: 1,
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label:    "PiercingShots",
+				Duration: time.Second * 8,
+			},
+			NumberOfTicks: 8,
+			TickLength:    time.Second * 1,
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				// Specifically account for bleed modifiers, since it still affects the spell, but we're ignoring all modifiers.
+				dot.SnapshotAttackerMultiplier = target.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+			},
+		},
 
-// 		Dot: core.DotConfig{
-// 			Aura: core.Aura{
-// 				Label:    "PiercingShots",
-// 				Duration: time.Second * 8,
-// 			},
-// 			NumberOfTicks: 8,
-// 			TickLength:    time.Second * 1,
-// 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-// 				// Specifically account for bleed modifiers, since it still affects the spell, but we're ignoring all modifiers.
-// 				dot.SnapshotAttackerMultiplier = target.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
-// 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-// 			},
-// 		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.Dot(target).ApplyOrReset(sim)
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+		},
+	})
 
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			spell.Dot(target).ApplyOrReset(sim)
-// 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
-// 		},
-// 	})
+	hunter.RegisterAura(core.Aura{
+		Label:    "Piercing Shots Talent",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.DidCrit() {
+				return
+			}
+			if spell != hunter.AimedShot && spell != hunter.SteadyShot && spell != hunter.ChimeraShot {
+				return
+			}
 
-// 	hunter.RegisterAura(core.Aura{
-// 		Label:    "Piercing Shots Talent",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.DidCrit() {
-// 				return
-// 			}
-// 			if spell != hunter.AimedShot && spell != hunter.SteadyShot && spell != hunter.ChimeraShot {
-// 				return
-// 			}
+			dot := psSpell.Dot(result.Target)
+			outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
+			newDamage := result.Damage * 0.1 * float64(hunter.Talents.PiercingShots)
 
-// 			dot := psSpell.Dot(result.Target)
-// 			outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
-// 			newDamage := result.Damage * 0.1 * float64(hunter.Talents.PiercingShots)
+			dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(dot.NumberOfTicks)
+			psSpell.Cast(sim, result.Target)
+		},
+	})
+}
 
-// 			dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(dot.NumberOfTicks)
-// 			psSpell.Cast(sim, result.Target)
-// 		},
-// 	})
-// }
-
-// func (hunter *Hunter) applyWildQuiver() {
-// 	if hunter.Talents.WildQuiver == 0 {
-// 		return
-// 	}
-
-// 	actionID := core.ActionID{SpellID: 53217}
-// 	procChance := 0.04 * float64(hunter.Talents.WildQuiver)
-
-// 	wqSpell := hunter.RegisterSpell(core.SpellConfig{
-// 		ActionID:    actionID,
-// 		SpellSchool: core.SpellSchoolNature,
-// 		ProcMask:    core.ProcMaskRangedAuto,
-// 		Flags:       core.SpellFlagNoOnCastComplete,
-
-// 		DamageMultiplier: 0.8,
-// 		CritMultiplier:   hunter.critMultiplier(false, false, false),
-// 		ThreatMultiplier: 1,
-
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
-// 				spell.BonusWeaponDamage()
-// 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-// 		},
-// 	})
-
-// 	hunter.RegisterAura(core.Aura{
-// 		Label:    "Wild Quiver Talent",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if spell != hunter.AutoAttacks.RangedAuto() {
-// 				return
-// 			}
-
-// 			if sim.RandomFloat("Wild Quiver") < procChance {
-// 				wqSpell.Cast(sim, result.Target)
-// 			}
-// 		},
-// 	})
-// }
 func (hunter *Hunter) applyImprovedSteadyShot() {
 	if hunter.Talents.ImprovedSteadyShot == 0 {
 		return
@@ -424,28 +375,7 @@ func (hunter *Hunter) applyFrenzy() {
  func (hunter *Hunter) applyLongevity(dur time.Duration) time.Duration {
  	return time.Duration(float64(dur) * (1.0 - 0.1*float64(hunter.Talents.Longevity)))
  }
-		// aura = target.GetOrRegisterAura(Aura{
-		// 	Label:      "Focus Magic" + strconv.Itoa(casterIndex),
-		// 	ActionID:   actionID.WithTag(int32(casterIndex)),
-		// 	Duration:   NeverExpires,
-		// 	BuildPhase: CharacterBuildPhaseBuffs,
-		// 	OnReset: func(aura *Aura, sim *Simulation) {
-		// 		aura.Activate(sim)
-		// 	},
-		// 	OnSpellHitDealt: onHitCallback,
-		// })
-		// aura.NewExclusiveEffect("FocusMagic", true, ExclusiveEffect{
-		// 	OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-		// 		ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-		// 			stats.SpellCrit: 3 * CritRatingPerCritChance,
-		// 		})
-		// 	},
-		// 	OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-		// 		ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-		// 			stats.SpellCrit: -3 * CritRatingPerCritChance,
-		// 		})
-		// 	},
-		// })
+
 func (hunter *Hunter) applyFocusFireCD(){
 	if !hunter.Talents.FocusFire {
 		return

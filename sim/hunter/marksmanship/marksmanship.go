@@ -3,6 +3,7 @@ package marksmanship
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/hunter"
 )
 
@@ -22,7 +23,44 @@ func RegisterMarksmanshipHunter() {
 		},
 	)
 }
+func (hunter *MarksmanshipHunter) applyMastery() {
+	actionID := core.ActionID{SpellID: 76659}
 
+	wqSpell := hunter.RegisterSpell(core.SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolNature,
+		ProcMask:    core.ProcMaskRangedAuto,
+		Flags:       core.SpellFlagNoOnCastComplete,
+
+		DamageMultiplier: 0.8, // Wowwiki says it remains 80%
+		CritMultiplier:   hunter.CritMultiplier(false, false, false),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+				spell.BonusWeaponDamage()
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+		},
+	})
+
+	hunter.RegisterAura(core.Aura{
+		Label:    "Wild Quiver Mastery",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell != hunter.AutoAttacks.RangedAuto() {
+				return
+			}
+
+			procChance := 0.168 + ((hunter.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPercent) * 0.021) // Todo: Is this right scaling?
+			if sim.RandomFloat("Wild Quiver") < procChance {
+				wqSpell.Cast(sim, result.Target)
+			}
+		},
+	})
+}
 func NewMarksmanshipHunter(character *core.Character, options *proto.Player) *MarksmanshipHunter {
 	mmOptions := options.GetMarksmanshipHunter().Options
 
@@ -30,7 +68,6 @@ func NewMarksmanshipHunter(character *core.Character, options *proto.Player) *Ma
 		Hunter: hunter.NewHunter(character, options, mmOptions.ClassOptions),
 	}
 	mmHunter.MarksmanshipOptions = mmOptions
-
 	return mmHunter
 }
 func (mmHunter *MarksmanshipHunter) Initialize() {
@@ -39,6 +76,7 @@ func (mmHunter *MarksmanshipHunter) Initialize() {
 	mmHunter.aimedShotTimer = mmHunter.NewTimer()
 	mmHunter.registerAimedShotSpell(mmHunter.aimedShotTimer)
 	mmHunter.registerChimeraShotSpell()
+	mmHunter.applyMastery()
 }
 
 type MarksmanshipHunter struct {
