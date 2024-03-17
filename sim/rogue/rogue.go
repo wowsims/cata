@@ -154,6 +154,7 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerWoundPoisonSpell()
 	rogue.registerPoisonAuras()
 	rogue.registerShivSpell()
+	rogue.registerThistleTeaCD()
 
 	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
 }
