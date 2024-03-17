@@ -27,7 +27,7 @@ func NewAssassinationRogue(character *core.Character, options *proto.Player) *As
 	sinOptions := options.GetAssassinationRogue().Options
 
 	sinRogue := &AssassinationRogue{
-		Rogue: rogue.NewRogue(character, options.TalentsString),
+		Rogue: rogue.NewRogue(character, sinOptions.ClassOptions, options.TalentsString),
 	}
 	sinRogue.AssassinationOptions = sinOptions
 

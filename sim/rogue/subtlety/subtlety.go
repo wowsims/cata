@@ -33,7 +33,7 @@ func NewSubtletyRogue(character *core.Character, options *proto.Player) *Subtlet
 	subOptions := options.GetSubtletyRogue().Options
 
 	subRogue := &SubtletyRogue{
-		Rogue: rogue.NewRogue(character, options.TalentsString),
+		Rogue: rogue.NewRogue(character, subOptions.ClassOptions, options.TalentsString),
 	}
 	subRogue.SubtletyOptions = subOptions
 

@@ -9,7 +9,7 @@ import (
 
 func (rogue *Rogue) registerVanishSpell() {
 	rogue.Vanish = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 26889},
+		ActionID:    core.ActionID{SpellID: 1856},
 		SpellSchool: core.SpellSchoolPhysical,
 		Flags:       core.SpellFlagAPL,
 

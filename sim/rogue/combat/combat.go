@@ -27,7 +27,7 @@ func NewCombatRogue(character *core.Character, options *proto.Player) *CombatRog
 	combatOptions := options.GetCombatRogue().Options
 
 	combatRogue := &CombatRogue{
-		Rogue: rogue.NewRogue(character, options.TalentsString),
+		Rogue: rogue.NewRogue(character, combatOptions.ClassOptions, options.TalentsString),
 	}
 	combatRogue.CombatOptions = combatOptions
 

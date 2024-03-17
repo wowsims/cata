@@ -178,10 +178,11 @@ func (rogue *Rogue) SpellCritMultiplier() float64 {
 	return rogue.Character.SpellCritMultiplier(1, 0)
 }
 
-func NewRogue(character *core.Character, talents string) *Rogue {
+func NewRogue(character *core.Character, options *proto.RogueOptions, talents string) *Rogue {
 	rogue := &Rogue{
 		Character: *character,
 		Talents:   &proto.RogueTalents{},
+		Options:   options,
 	}
 	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
