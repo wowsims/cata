@@ -1,6 +1,7 @@
 package hunter
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -73,6 +74,7 @@ func (hunter *Hunter) ApplyTalents() {
 	hunter.applyTNT()
 	hunter.applySniperTraining()
 	hunter.applyHuntingParty()
+	hunter.applyImprovedSteadyShot()
 
 	// hunter.registerReadinessCD()
 }
@@ -313,8 +315,51 @@ func (hunter *Hunter) ApplyTalents() {
 // 		},
 // 	})
 // }
+func (hunter *Hunter) applyImprovedSteadyShot() {
+	if hunter.Talents.ImprovedSteadyShot == 0 {
+		return
+	}
+		hunter.ImprovedSteadyShotAura = hunter.RegisterAura(core.Aura{
+		Label:     "Improved Steady Shot",
+		ActionID:  core.ActionID{SpellID: 53221},
+		Duration:  time.Second * 8,
+		MaxStacks: 1,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			attackspeedMultiplier := 1 + (float64(hunter.Talents.ImprovedSteadyShot) * 0.5)
+			aura.Unit.MultiplyRangedSpeed(sim, attackspeedMultiplier)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			attackspeedMultiplier := 1 + (float64(hunter.Talents.ImprovedSteadyShot) * 0.5)
+			aura.Unit.MultiplyRangedSpeed(sim, 1 / attackspeedMultiplier)
+		},
+	})
+	hunter.ImprovedSteadyShotAuraCounter = hunter.RegisterAura(core.Aura{
+		Label:     "Imp SS Counter",
+		Duration:  core.NeverExpires,
+		MaxStacks: 1,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ActionID.SpellID == 0 { // Todo: Better way to stop auto attacks from counting?
+				return
+			}
+			if spell != hunter.SteadyShot {
+				fmt.Println("SETTING STACKS TO 0")
+				fmt.Println(spell.ActionID)
+				aura.SetStacks(sim, 0)
+			} else {
+				if aura.GetStacks() == 1 {
+					hunter.ImprovedSteadyShotAura.Activate(sim)
+					aura.SetStacks(sim, 0)
+				} else {
+					aura.SetStacks(sim, 1)
+				}
+			}
+		},
+	})
+}
 func (hunter *Hunter) applyKillingStreak() {
-
+	if hunter.Talents.KillingStreak == 0 {
+		return
+	}
 	hunter.KillingStreakAura = hunter.RegisterAura(core.Aura{
 		Label:     "Killing Streak",
 		ActionID:  core.ActionID{SpellID: 82748},

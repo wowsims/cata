@@ -26,7 +26,7 @@ func (hunter *Hunter) registerKillCommandSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: 1,
+				GCD: time.Second,
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),

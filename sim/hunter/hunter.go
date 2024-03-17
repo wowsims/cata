@@ -61,6 +61,7 @@ type Hunter struct {
 
 	AspectOfTheHawkAura *core.Aura
 	ImprovedSteadyShotAura    *core.Aura
+	ImprovedSteadyShotAuraCounter    *core.Aura
 	LockAndLoadAura           *core.Aura
 	RapidFireAura             *core.Aura
 	ScorpidStingAuras         core.AuraArray
@@ -89,9 +90,9 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	// if hunter.Talents.TrueshotAura {
 	// 	raidBuffs.TrueshotAura = true
 	// }
-	// if hunter.Talents.FerociousInspiration == 3 && hunter.pet != nil {
-	// 	raidBuffs.FerociousInspiration = true
-	// }
+	if hunter.Talents.FerociousInspiration && hunter.pet != nil {
+		raidBuffs.FerociousInspiration = true
+	}
 }
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }

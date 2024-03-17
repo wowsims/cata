@@ -7,31 +7,16 @@ import (
 )
 
 func (hunter *Hunter) registerSteadyShotSpell() {
-	
-	ssMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 56641})
-	if hunter.Talents.ImprovedSteadyShot > 0 {
-		hunter.ImprovedSteadyShotAura = hunter.RegisterAura(core.Aura{
-			Label:    "Improved Steady Shot",
-			ActionID: core.ActionID{SpellID: 53220},
-			Duration: time.Second * 8,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				// Todo Apply 20% ranged attack speed per point when ss is used two times in a row
-				
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 
-			},
-		})
-	}
+	ssMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 56641})
+
 	hunter.SteadyShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 56641},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
-			
+
 			Cost: 0,
 		},
 		Cast: core.CastConfig{
@@ -54,11 +39,17 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280 + spell.RangedAttackPower(target) * 0.021) 
+			if hunter.Talents.ImprovedSteadyShot > 0 {
+				if !hunter.ImprovedSteadyShotAuraCounter.IsActive() {
+					hunter.ImprovedSteadyShotAuraCounter.Activate(sim)
+				}
+			}
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280 + spell.RangedAttackPower(target) * 0.021)
 			hunter.AddFocus(sim, 9, ssMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			spell.DealDamage(sim, result)
-			
+
+
 		},
 	})
 }
