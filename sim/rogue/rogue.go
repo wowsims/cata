@@ -239,6 +239,11 @@ func (rogue *Rogue) HasDagger(hand core.Hand) bool {
 	return rogue.OffHand().WeaponType == proto.WeaponType_WeaponTypeDagger
 }
 
+// Does the rogue have a thrown weapon equipped in the ranged slot?
+func (rogue *Rogue) HasThrown() bool {
+	return rogue.Ranged().RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeThrown
+}
+
 // Check if the rogue is considered in "stealth" for the purpose of casting abilities
 func (rogue *Rogue) IsStealthed() bool {
 	if rogue.StealthAura.IsActive() {

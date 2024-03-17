@@ -7,7 +7,7 @@ import (
 )
 
 func (rogue *Rogue) registerAmbushSpell() {
-	baseDamage := RogueBaseScalar * 0.327 + 28
+	baseDamage := RogueBaseScalar*0.327 + 28
 
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 8676},
@@ -26,10 +26,10 @@ func (rogue *Rogue) registerAmbushSpell() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !rogue.PseudoStats.InFrontOfTarget && rogue.HasDagger(core.MainHand) && rogue.IsStealthed()
+			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()
 		},
 
-		BonusCritRating: 20*core.CritRatingPerCritChance*float64(rogue.Talents.ImprovedAmbush),
+		BonusCritRating: 20 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),
 		// All of these use "Apply Aura: Modifies Damage/Healing Done", and stack additively.
 		DamageMultiplier: core.TernaryFloat64(rogue.HasDagger(core.MainHand), 2.85, 1.97) * (1 +
 			0.05*float64(rogue.Talents.ImprovedAmbush) +
