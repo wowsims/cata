@@ -100,13 +100,16 @@ $table-row-odd-bg: #2d2f35;
 $cata-orange: #f94119;
 
 // Spacers
+$container-padding: var(--container-padding);
+$section-spacer: calc(var(--container-padding) / 2);
+
 $block-spacer: 0.75rem;
 $table-cell-padding: 0.5rem;
-$content-font-size: 0.75rem;
 $gap-width: 1.5rem;
 $gap-width-sm: 0.5rem;
 
 // Sizing
+$content-font-size: 0.75rem;
 $icon-size-sm: 1rem;
 $icon-size-md: 2.5rem;
 
@@ -186,7 +189,7 @@ $input-focus-border-color: lighten($body-bg, 20);
 $input-focus-box-shadow: 0 0 0.25rem lighten($body-bg, 20);
 $input-focus-color: white;
 $input-font-size: $content-font-size;
-$input-placeholder-color: dimgrey;
+$input-placeholder-color: $link-color;
 
 $modal-content-bg: $body-bg;
 $modal-content-border-color: $link-color;

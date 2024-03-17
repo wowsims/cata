@@ -1,11 +1,11 @@
-@use "sass:map";
+@use 'sass:map';
 
 .list-picker-root {
 	flex-direction: column;
 	align-items: center;
 
 	&:not(:last-child) {
-		margin-bottom: 2 * map-get($spacers, 3);
+		margin-bottom: $section-spacer;
 	}
 
 	.list-picker-title {
@@ -22,9 +22,9 @@
 
 		.list-picker-item-container {
 			margin-bottom: map-get($spacers, 3);
+			border: $border-default;
 
 			&.inline {
-				border: 0;
 				display: flex;
 
 				.list-picker-item-header {
@@ -37,7 +37,6 @@
 
 			&:not(.inline) {
 				padding: map-get($spacers, 3) map-get($spacers, 3) 0 map-get($spacers, 3);
-				border: 1px solid $link-color;
 
 				.list-picker-item-header {
 					.list-picker-item-action:first-of-type {
@@ -53,11 +52,11 @@
 				display: flex;
 				align-items: center;
 				flex: 1;
-		
+
 				.list-picker-item-title {
 					margin-bottom: 0;
 				}
-		
+
 				.list-picker-item-action {
 					margin-left: map-get($spacers, 2);
 				}

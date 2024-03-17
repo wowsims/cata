@@ -17,12 +17,12 @@
 	flex-direction: column;
 
 	.homepage-header-container {
-		padding-top: calc(var(--container-padding) / 2);
+		padding-top: $section-spacer;
 	}
 
 	.homepage-content-container {
-		padding-top: var(--container-padding);
-		padding-bottom: var(--container-padding);
+		padding-top: $container-padding;
+		padding-bottom: $container-padding;
 	}
 
 	.homepage-header {
@@ -64,7 +64,7 @@
 		flex-direction: column;
 
 		.info-container {
-			margin-bottom: var(--container-padding);
+			margin-bottom: $container-padding;
 			display: flex;
 			flex-direction: column;
 
