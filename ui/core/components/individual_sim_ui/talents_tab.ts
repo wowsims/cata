@@ -1,14 +1,11 @@
-import * as Mechanics from '../../constants/mechanics';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
 import { Class, Glyphs, Spec } from '../../proto/common';
 import { SavedTalents } from '../../proto/ui';
-import { HunterSpecs } from '../../proto_utils/utils';
 import { classTalentsConfig } from '../../talents/factory';
-import { HunterPetTalentsPicker, makePetTypeInputConfig } from '../../talents/hunter_pet';
+import { HunterPetTalentsPicker } from '../../talents/hunter_pet';
 import { TalentsPicker } from '../../talents/talents_picker';
 import { EventID, TypedEvent } from '../../typed_event';
-import { IconEnumPicker } from '../icon_enum_picker';
 import { SavedDataManager } from '../saved_data_manager';
 import { SimTab } from '../sim_tab';
 
@@ -53,7 +50,6 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 				player.setTalentsString(eventID, newValue);
 			},
 			pointsPerRow: 5,
-			maxPoints: Mechanics.MAX_TALENT_POINTS,
 		});
 	}
 
@@ -99,15 +95,13 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 		const petTab = this.leftPanel.querySelector('#pet-talents-tab') as HTMLElement;
 
 		this.buildTalentsPicker(playerTab);
-
-		if (this.simUI.player.getClass() == Class.ClassHunter) {
-			this.buildHunterPetPicker(petTab);
-		}
+		this.buildHunterPetPicker(petTab);
 	}
 
-	private buildHunterPetPicker<T extends HunterSpecs>(parentElem: HTMLElement) {
-		new HunterPetTalentsPicker(parentElem, this.simUI, this.simUI.player as unknown as Player<T>);
-		new IconEnumPicker(parentElem, this.simUI.player as unknown as Player<T>, makePetTypeInputConfig());
+	private buildHunterPetPicker(parentElem: HTMLElement) {
+		if (this.simUI.player.isClass(Class.ClassHunter)) {
+			new HunterPetTalentsPicker(parentElem, this.simUI, this.simUI.player);
+		}
 	}
 
 	private buildSavedTalentsPicker() {
