@@ -135,7 +135,6 @@ func (rogue *Rogue) procDeadlyPoison(sim *core.Simulation, spell *core.Spell, re
 
 func (rogue *Rogue) getPoisonProcMask(imbue proto.RogueOptions_PoisonImbue) core.ProcMask {
 	var mask core.ProcMask
-	println("----------", rogue.Options == nil)
 	if rogue.Options.MhImbue == imbue {
 		mask |= core.ProcMaskMeleeMH
 	}
