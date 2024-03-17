@@ -7,14 +7,16 @@ import (
 )
 
 func (rogue *Rogue) registerAmbushSpell() {
+	baseDamage := RogueBaseScalar * 0.327 + 28
+
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48691},
+		ActionID:    core.ActionID{SpellID: 8676},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.costModifier(60 - 4*float64(rogue.Talents.SlaughterFromTheShadows)),
+			Cost:   rogue.GetGeneratorCostModifier(60 - []float64{0, 7, 14, 20}[rogue.Talents.SlaughterFromTheShadows]),
 			Refund: 0,
 		},
 		Cast: core.CastConfig{
@@ -27,18 +29,17 @@ func (rogue *Rogue) registerAmbushSpell() {
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.HasDagger(core.MainHand) && rogue.IsStealthed()
 		},
 
-		BonusCritRating: []float64{0, 2, 4, 6}[rogue.Talents.TurnTheTables]*core.CritRatingPerCritChance +
-			25*core.CritRatingPerCritChance*float64(rogue.Talents.ImprovedAmbush),
+		BonusCritRating: 20*core.CritRatingPerCritChance*float64(rogue.Talents.ImprovedAmbush),
 		// All of these use "Apply Aura: Modifies Damage/Healing Done", and stack additively.
-		DamageMultiplier: 2.75 * (1 +
-			0.02*float64(rogue.Talents.FindWeakness) +
+		DamageMultiplier: core.TernaryFloat64(rogue.HasDagger(core.MainHand), 2.85, 1.97) * (1 +
+			0.05*float64(rogue.Talents.ImprovedAmbush) +
 			0.1*float64(rogue.Talents.Opportunity)),
-		CritMultiplier:   rogue.MeleeCritMultiplier(true),
+		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := 330 +
+			baseDamage := baseDamage +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
 				spell.BonusWeaponDamage()
 

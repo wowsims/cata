@@ -8,13 +8,14 @@ import (
 )
 
 func (rogue *Rogue) registerTricksOfTheTradeSpell() {
+	hasGlyph := rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfTricksOfTheTrade)
+
 	actionID := core.ActionID{SpellID: 57934}
 	energyMetrics := rogue.NewEnergyMetrics(actionID)
 	hasShadowblades := rogue.HasSetBonus(Tier10, 2)
-	energyCost := 15 - 5*float64(rogue.Talents.FilthyTricks)
+	energyCost := core.TernaryFloat64(hasGlyph || hasShadowblades, 0, 15)
 
 	var targetUnit *core.Unit
-	hasGlyph := rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfTricksOfTheTrade)
 	if rogue.Options.TricksOfTheTradeTarget != nil {
 		targetUnit = rogue.GetUnit(rogue.Options.TricksOfTheTradeTarget)
 	}
@@ -43,7 +44,7 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 			rogue.UpdateMajorCooldowns()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.TricksOfTheTrade.CD.Set(sim.CurrentTime + time.Second*time.Duration(30-5*rogue.Talents.FilthyTricks))
+			rogue.TricksOfTheTrade.CD.Set(sim.CurrentTime + time.Second*time.Duration(30))
 			rogue.UpdateMajorCooldowns()
 		},
 	})
@@ -53,7 +54,7 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 		Flags:    core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: core.TernaryFloat64(hasShadowblades, 0, energyCost),
+			Cost: energyCost,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -62,7 +63,7 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second * time.Duration(30-5*rogue.Talents.FilthyTricks), // CD is handled by application aura
+				Duration: time.Second*time.Duration(30), // CD is handled by application aura
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {

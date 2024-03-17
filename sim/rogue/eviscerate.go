@@ -9,16 +9,16 @@ import (
 
 func (rogue *Rogue) registerEviscerate() {
 	rogue.Eviscerate = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 48668},
+		ActionID:     core.ActionID{SpellID: 2098},
 		SpellSchool:  core.SpellSchoolPhysical,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagFinisher | SpellFlagColdBlooded | core.SpellFlagAPL,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:          35,
-			Refund:        0.4 * float64(rogue.Talents.QuickRecovery),
-			RefundMetrics: rogue.QuickRecoveryMetrics,
+			Refund:        0.8,
+			RefundMetrics: rogue.EnergyRefundMetrics,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -34,11 +34,10 @@ func (rogue *Rogue) registerEviscerate() {
 		},
 
 		BonusCritRating: core.TernaryFloat64(
-			rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfEviscerate), 10*core.CritRatingPerCritChance, 0.0),
+			rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfEviscerate), 10*core.CritRatingPerCritChance, 0.0),
 		DamageMultiplier: 1 +
-			[]float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.ImprovedEviscerate] +
-			0.02*float64(rogue.Talents.FindWeakness) +
-			0.03*float64(rogue.Talents.Aggression),
+			[]float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.CoupDeGrace] +
+			[]float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.Aggression],
 		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 

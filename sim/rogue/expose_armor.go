@@ -25,13 +25,13 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 		ActionID:     core.ActionID{SpellID: 8647},
 		SpellSchool:  core.SpellSchoolPhysical,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | SpellFlagFinisher | core.SpellFlagAPL,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:          25.0 - 5*float64(rogue.Talents.ImprovedExposeArmor),
-			Refund:        0.4 * float64(rogue.Talents.QuickRecovery),
-			RefundMetrics: rogue.QuickRecoveryMetrics,
+			Cost:          25.0,
+			Refund:        0.8,
+			RefundMetrics: rogue.EnergyRefundMetrics,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -56,6 +56,12 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 				debuffAura.Duration = rogue.exposeArmorDurations[rogue.ComboPoints()]
 				debuffAura.Activate(sim)
 				rogue.ApplyFinisher(sim, spell)
+				if rogue.Talents.ImprovedExposeArmor > 0 {
+					procChance := 0.5*float64(rogue.Talents.ImprovedExposeArmor)
+					if sim.Proc(procChance, "Improved Expose Armor") {
+						rogue.AddComboPoints(sim, 5, spell.ComboPointMetrics())
+					}
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}

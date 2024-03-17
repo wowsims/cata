@@ -10,7 +10,7 @@ import (
 func (rogue *Rogue) registerShivSpell() {
 	baseCost := 20.0
 	if ohWeapon := rogue.GetOHWeapon(); ohWeapon != nil {
-		baseCost = rogue.costModifier(20 + 10*ohWeapon.SwingSpeed)
+		baseCost = rogue.GetGeneratorCostModifier(20 + 10*ohWeapon.SwingSpeed)
 	}
 
 	rogue.Shiv = rogue.RegisterSpell(core.SpellConfig{
@@ -29,9 +29,7 @@ func (rogue *Rogue) registerShivSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: (1 +
-			0.02*float64(rogue.Talents.FindWeakness) +
-			core.TernaryFloat64(rogue.Talents.SurpriseAttacks, 0.1, 0)) * rogue.dwsMultiplier(),
+		DamageMultiplier: 1 * rogue.dwsMultiplier(),
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
@@ -47,9 +45,9 @@ func (rogue *Rogue) registerShivSpell() {
 				case proto.RogueOptions_DeadlyPoison:
 					rogue.DeadlyPoison.Cast(sim, target)
 				case proto.RogueOptions_InstantPoison:
-					rogue.InstantPoison[ShivProc].Cast(sim, target)
+					//rogue.InstantPoison[ShivProc].Cast(sim, target)
 				case proto.RogueOptions_WoundPoison:
-					rogue.WoundPoison[ShivProc].Cast(sim, target)
+					//rogue.WoundPoison[ShivProc].Cast(sim, target)
 				}
 			}
 		},

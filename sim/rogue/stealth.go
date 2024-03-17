@@ -2,6 +2,7 @@ package rogue
 
 import (
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (rogue *Rogue) registerStealthAura() {
@@ -15,7 +16,7 @@ func (rogue *Rogue) registerStealthAura() {
 			if rogue.Talents.Overkill {
 				rogue.OverkillAura.Activate(sim)
 			}
-			if rogue.Talents.MasterOfSubtlety > 0 {
+			if rogue.Spec == proto.Spec_SpecSubtletyRogue {
 				rogue.MasterOfSubtletyAura.Activate(sim)
 			}
 		},
@@ -24,7 +25,7 @@ func (rogue *Rogue) registerStealthAura() {
 				rogue.OverkillAura.Deactivate(sim)
 				rogue.OverkillAura.Activate(sim)
 			}
-			if rogue.Talents.MasterOfSubtlety > 0 {
+			if rogue.Spec == proto.Spec_SpecSubtletyRogue {
 				rogue.MasterOfSubtletyAura.Deactivate(sim)
 				rogue.MasterOfSubtletyAura.Activate(sim)
 			}

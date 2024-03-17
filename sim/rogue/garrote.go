@@ -4,25 +4,19 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (rogue *Rogue) registerGarrote() {
 	numTicks := int32(6)
-	var glyphMultiplier float64
-	if rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfGarrote) {
-		numTicks = 5
-		glyphMultiplier = 0.44 // cp. https://www.wowhead.com/cata/spell=56812/glyph-of-garrote
-	}
 
 	rogue.Garrote = rogue.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48676},
+		ActionID:    core.ActionID{SpellID: 703},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagBuilder | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.costModifier(50 - 10*float64(rogue.Talents.DirtyDeeds)),
+			Cost:   rogue.GetGeneratorCostModifier(45),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -36,10 +30,7 @@ func (rogue *Rogue) registerGarrote() {
 		},
 
 		DamageMultiplier: 1 +
-			glyphMultiplier +
-			0.15*float64(rogue.Talents.BloodSpatter) +
-			0.10*float64(rogue.Talents.Opportunity) +
-			0.02*float64(rogue.Talents.FindWeakness),
+			0.10*float64(rogue.Talents.Opportunity),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

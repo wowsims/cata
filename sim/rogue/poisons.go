@@ -20,12 +20,13 @@ func (rogue *Rogue) registerPoisonAuras() {
 			return core.SavageCombatAura(target, rogue.Talents.SavageCombat)
 		})
 	}
-	if rogue.Talents.MasterPoisoner > 0 {
-		rogue.masterPoisonerDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-			aura := core.MasterPoisonerDebuff(target, rogue.Talents.MasterPoisoner)
-			aura.Duration = core.NeverExpires
-			return aura
-		})
+	if rogue.Talents.MasterPoisoner {
+		// TODO (TheBackstabi, 3/16/2024) - Revisit when debuffs.go has had a pass
+		// rogue.masterPoisonerDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		// 	aura := core.MasterPoisonerDebuff(target, rogue.Talents.MasterPoisoner)
+		// 	aura.Duration = core.NeverExpires
+		// 	return aura
+		// })
 	}
 }
 
@@ -36,23 +37,23 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	}
 
 	rogue.DeadlyPoison = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 57970},
+		ActionID:    core.ActionID{SpellID: 2818},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		DamageMultiplier: []float64{1, 1.07, 1.14, 1.20}[rogue.Talents.VilePoisons],
+		DamageMultiplier: 1.12 * float64(rogue.Talents.VilePoisons),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label:     "DeadlyPoison",
+				Label:     "Deadly Poison",
 				MaxStacks: 5,
 				Duration:  time.Second * 12,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					if rogue.Talents.SavageCombat > 0 {
 						rogue.savageCombatDebuffAuras.Get(aura.Unit).Activate(sim)
 					}
-					if rogue.Talents.MasterPoisoner > 0 {
+					if rogue.Talents.MasterPoisoner {
 						rogue.masterPoisonerDebuffAuras.Get(aura.Unit).Activate(sim)
 					}
 				},
@@ -60,7 +61,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 					if rogue.Talents.SavageCombat > 0 {
 						rogue.savageCombatDebuffAuras.Get(aura.Unit).Deactivate(sim)
 					}
-					if rogue.Talents.MasterPoisoner > 0 {
+					if rogue.Talents.MasterPoisoner {
 						rogue.masterPoisonerDebuffAuras.Get(aura.Unit).Deactivate(sim)
 					}
 				},
@@ -264,7 +265,7 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 			if rogue.Talents.SavageCombat > 0 {
 				rogue.savageCombatDebuffAuras.Get(aura.Unit).Activate(sim)
 			}
-			if rogue.Talents.MasterPoisoner > 0 {
+			if rogue.Talents.MasterPoisoner {
 				rogue.masterPoisonerDebuffAuras.Get(aura.Unit).Activate(sim)
 			}
 		},
@@ -272,7 +273,7 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 			if rogue.Talents.SavageCombat > 0 {
 				rogue.savageCombatDebuffAuras.Get(aura.Unit).Deactivate(sim)
 			}
-			if rogue.Talents.MasterPoisoner > 0 {
+			if rogue.Talents.MasterPoisoner {
 				rogue.masterPoisonerDebuffAuras.Get(aura.Unit).Deactivate(sim)
 			}
 		},
@@ -297,7 +298,7 @@ func (rogue *Rogue) registerInstantPoisonSpell() {
 }
 
 func (rogue *Rogue) GetDeadlyPoisonProcChance() float64 {
-	return 0.3 + 0.04*float64(rogue.Talents.ImprovedPoisons) + rogue.deadlyPoisonProcChanceBonus
+	return 0.3 + core.TernaryFloat64(rogue.Spec == proto.Spec_SpecAssassinationRogue, 0.2, 0) + rogue.deadlyPoisonProcChanceBonus
 }
 
 func (rogue *Rogue) UpdateInstantPoisonPPM(bonusChance float64) {
@@ -308,7 +309,7 @@ func (rogue *Rogue) UpdateInstantPoisonPPM(bonusChance float64) {
 
 	const basePPM = 0.2 / (1.4 / 60) // ~8.57, the former 20% normalized to a 1.4 speed weapon
 
-	ppm := basePPM * (1 + float64(rogue.Talents.ImprovedPoisons)*0.1 + bonusChance)
+	ppm := basePPM * (1 + core.TernaryFloat64(rogue.Spec == proto.Spec_SpecAssassinationRogue, 0.5, 0) + bonusChance)
 	rogue.instantPoisonPPMM = rogue.AutoAttacks.NewPPMManager(ppm, procMask)
 }
 

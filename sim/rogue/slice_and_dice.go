@@ -12,8 +12,8 @@ func (rogue *Rogue) registerSliceAndDice() {
 
 	durationMultiplier := 1.0 + 0.25*float64(rogue.Talents.ImprovedSliceAndDice)
 	durationBonus := time.Duration(0)
-	if rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfSliceAndDice) {
-		durationBonus += time.Second * 3
+	if rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfSliceAndDice) {
+		durationBonus += time.Second * 6
 	}
 	rogue.sliceAndDiceDurations = [6]time.Duration{
 		0,

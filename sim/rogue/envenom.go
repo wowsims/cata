@@ -9,7 +9,7 @@ import (
 func (rogue *Rogue) registerEnvenom() {
 	rogue.EnvenomAura = rogue.RegisterAura(core.Aura{
 		Label:    "Envenom",
-		ActionID: core.ActionID{SpellID: 57993},
+		ActionID: core.ActionID{SpellID: 32645},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.deadlyPoisonProcChanceBonus += 0.15
 			rogue.UpdateInstantPoisonPPM(0.75)
@@ -20,19 +20,19 @@ func (rogue *Rogue) registerEnvenom() {
 		},
 	})
 
-	chanceToRetainStacks := []float64{0, 0.33, 0.66, 1}[rogue.Talents.MasterPoisoner]
+	chanceToRetainStacks := core.TernaryFloat64(rogue.Talents.MasterPoisoner, 1, 0)
 
 	rogue.Envenom = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 57993},
 		SpellSchool:  core.SpellSchoolNature,
 		ProcMask:     core.ProcMaskMeleeMHSpecial, // not core.ProcMaskSpellDamage
-		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | SpellFlagFinisher | SpellFlagColdBlooded | core.SpellFlagAPL,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:          35,
-			Refund:        0.4 * float64(rogue.Talents.QuickRecovery),
-			RefundMetrics: rogue.QuickRecoveryMetrics,
+			Refund:        0.8,
+			RefundMetrics: rogue.EnergyRefundMetrics,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -48,8 +48,7 @@ func (rogue *Rogue) registerEnvenom() {
 		},
 
 		DamageMultiplier: 1 +
-			0.02*float64(rogue.Talents.FindWeakness) +
-			[]float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.VilePoisons],
+			0.12*float64(rogue.Talents.VilePoisons), // TODO (TheBackstabi, 3/16/2024) - Verify Vile Poisons boosts Envenom
 		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 

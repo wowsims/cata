@@ -8,16 +8,17 @@ import (
 )
 
 func (rogue *Rogue) registerSinisterStrikeSpell() {
-	hasGlyphOfSinisterStrike := rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfSinisterStrike)
+	hasGlyphOfSinisterStrike := rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfSinisterStrike)
+	baseDamage := RogueBaseScalar * .178 + 3
 
 	rogue.SinisterStrike = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48638},
+		ActionID:    core.ActionID{SpellID: 1752},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.costModifier([]float64{45, 42, 40}[rogue.Talents.ImprovedSinisterStrike]),
+			Cost:   rogue.GetGeneratorCostModifier(45 - 2*float64(rogue.Talents.ImprovedSinisterStrike)),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -27,20 +28,17 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 			IgnoreHaste: true,
 		},
 
-		BonusCritRating: core.TernaryFloat64(rogue.HasSetBonus(Tier9, 4), 5*core.CritRatingPerCritChance, 0) +
-			[]float64{0, 2, 4, 6}[rogue.Talents.TurnTheTables]*core.CritRatingPerCritChance,
-		DamageMultiplier: 1 +
-			0.02*float64(rogue.Talents.FindWeakness) +
-			0.03*float64(rogue.Talents.Aggression) +
-			0.05*float64(rogue.Talents.BladeTwisting) +
-			core.TernaryFloat64(rogue.Talents.SurpriseAttacks, 0.1, 0) +
+		BonusCritRating: core.TernaryFloat64(rogue.HasSetBonus(Tier9, 4), 5*core.CritRatingPerCritChance, 0),
+		DamageMultiplier: 1.03 +
+			[]float64{0.0, .07, .14, .20}[rogue.Talents.Aggression] +
+			0.01*float64(rogue.Talents.ImprovedSinisterStrike) +
 			core.TernaryFloat64(rogue.HasSetBonus(Tier6, 4), 0.06, 0),
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			baseDamage := 180 +
+			baseDamage := baseDamage +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
 				spell.BonusWeaponDamage()
 

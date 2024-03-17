@@ -10,20 +10,21 @@ import (
 const RuptureEnergyCost = 25.0
 const RuptureSpellID = 48672
 
+
 func (rogue *Rogue) registerRupture() {
-	glyphTicks := core.TernaryInt32(rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfRupture), 2, 0)
+	glyphTicks := core.TernaryInt32(rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfRupture), 2, 0)
 
 	rogue.Rupture = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: RuptureSpellID},
 		SpellSchool:  core.SpellSchoolPhysical,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | rogue.finisherFlags() | core.SpellFlagAPL,
+		Flags:        core.SpellFlagMeleeMetrics | SpellFlagFinisher | core.SpellFlagAPL,
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:          RuptureEnergyCost,
-			Refund:        0.4 * float64(rogue.Talents.QuickRecovery),
-			RefundMetrics: rogue.QuickRecoveryMetrics,
+			Refund:        0.8,
+			RefundMetrics: rogue.EnergyRefundMetrics,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -39,11 +40,8 @@ func (rogue *Rogue) registerRupture() {
 		},
 
 		DamageMultiplier: 1 +
-			0.15*float64(rogue.Talents.BloodSpatter) +
-			0.02*float64(rogue.Talents.FindWeakness) +
 			core.TernaryFloat64(rogue.HasSetBonus(Tier7, 2), 0.1, 0) +
-			core.TernaryFloat64(rogue.HasSetBonus(Tier8, 4), 0.2, 0) +
-			0.1*float64(rogue.Talents.SerratedBlades),
+			core.TernaryFloat64(rogue.HasSetBonus(Tier8, 4), 0.2, 0),
 		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 
@@ -92,7 +90,7 @@ func (rogue *Rogue) RuptureDamage(comboPoints int32) float64 {
 }
 
 func (rogue *Rogue) RuptureTicks(comboPoints int32) int32 {
-	return 3 + comboPoints + core.TernaryInt32(rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfRupture), 2, 0)
+	return 3 + comboPoints + core.TernaryInt32(rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfRupture), 2, 0)
 }
 
 func (rogue *Rogue) RuptureDuration(comboPoints int32) time.Duration {

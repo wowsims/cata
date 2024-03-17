@@ -16,6 +16,7 @@ const (
 
 var TalentTreeSizes = [3]int{19, 19, 19}
 
+const RogueBaseScalar = 1125.23
 const RogueBleedTag = "RogueBleed"
 
 type Rogue struct {
@@ -27,7 +28,7 @@ type Rogue struct {
 	CombatOptions        *proto.CombatRogue_Options
 	SubtletyOptions      *proto.SubtletyRogue_Options
 
-	bleedCategory *core.ExclusiveCategory
+	// bleedCategory *core.ExclusiveCategory
 
 	sliceAndDiceDurations [6]time.Duration
 	exposeArmorDurations  [6]time.Duration
@@ -88,8 +89,6 @@ type Rogue struct {
 	savageCombatDebuffAuras   core.AuraArray
 	woundPoisonDebuffAuras    core.AuraArray
 
-	QuickRecoveryMetrics *core.ResourceMetrics
-
 	generatorCostModifier      func(float64) float64
 	finishingMoveEffectApplier func(sim *core.Simulation, numPoints int32)
 }
@@ -104,14 +103,6 @@ func (rogue *Rogue) GetRogue() *Rogue {
 
 func (rogue *Rogue) AddRaidBuffs(_ *proto.RaidBuffs)   {}
 func (rogue *Rogue) AddPartyBuffs(_ *proto.PartyBuffs) {}
-
-// func (rogue *Rogue) finisherFlags() core.SpellFlag {
-// 	flags := SpellFlagFinisher
-// 	if rogue.Talents.SurpriseAttacks {
-// 		flags |= core.SpellFlagCannotBeDodged
-// 	}
-// 	return flags
-// }
 
 // Apply the effect of successfully casting a finisher to combo points
 func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
@@ -143,31 +134,27 @@ func (rogue *Rogue) Initialize() {
 
 	rogue.generatorCostModifier = rogue.makeGeneratorCostModifier()
 
-	// rogue.registerStealthAura()
-	// rogue.registerBackstabSpell()
-	// rogue.registerDeadlyPoisonSpell()
-	// rogue.registerPoisonAuras()
-	// rogue.registerEviscerate()
-	// rogue.registerExposeArmorSpell()
-	// rogue.registerFanOfKnives()
-	// rogue.registerFeintSpell()
-	// rogue.registerGarrote()
-	// rogue.registerHemorrhageSpell()
-	// rogue.registerInstantPoisonSpell()
-	// rogue.registerWoundPoisonSpell()
-	// rogue.registerMutilateSpell()
-	// rogue.registerRupture()
-	// rogue.registerShivSpell()
-	// rogue.registerSinisterStrikeSpell()
-	// rogue.registerSliceAndDice()
-	// rogue.registerThistleTeaCD()
-	// rogue.registerTricksOfTheTradeSpell()
-	// rogue.registerAmbushSpell()
-	// rogue.registerEnvenom()
-	// rogue.registerVanishSpell()
+	rogue.registerStealthAura()
+	rogue.registerVanishSpell()
 	rogue.registerFeintSpell()
+	rogue.registerAmbushSpell()
+	rogue.registerGarrote()
+	rogue.registerSinisterStrikeSpell()
+	rogue.registerBackstabSpell()
+	rogue.registerRupture()
+	rogue.registerSliceAndDice()
+	rogue.registerEviscerate()
+	rogue.registerEnvenom()
+	rogue.registerExposeArmorSpell()
+	rogue.registerFanOfKnives()
+	rogue.registerTricksOfTheTradeSpell()
+	rogue.registerDeadlyPoisonSpell()
+	rogue.registerInstantPoisonSpell()
+	rogue.registerWoundPoisonSpell()
+	rogue.registerPoisonAuras()
+	rogue.registerShivSpell()
 
-	// rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
+	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
 }
 
 func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {
@@ -213,7 +200,7 @@ func NewRogue(character *core.Character, talents string) *Rogue {
 		OffHand:        rogue.WeaponFromOffHand(0),  // Set crit multiplier later when we have targets.
 		AutoSwingMelee: true,
 	})
-	// rogue.applyPoisons()
+	rogue.applyPoisons()
 
 	rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 2)

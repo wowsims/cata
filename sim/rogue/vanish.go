@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (rogue *Rogue) registerVanishSpell() {
@@ -39,7 +40,7 @@ func (rogue *Rogue) registerVanishSpell() {
 			if rogue.Talents.Overkill {
 				return !(rogue.StealthAura.IsActive() || rogue.OverkillAura.IsActive()) && rogue.CurrentEnergy() > 50
 			}
-			if rogue.Talents.MasterOfSubtlety > 0 {
+			if rogue.Spec == proto.Spec_SpecSubtletyRogue { // Master of Subtlety is now a Subtlety rogue passive
 				// Chained cast checks
 				// heuristically, 3 Garrote ticks are better DPE than regular builders
 				const garroteMinDuration = time.Second * 9
