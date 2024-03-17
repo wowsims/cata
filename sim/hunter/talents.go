@@ -63,11 +63,11 @@ func (hunter *Hunter) ApplyTalents() {
 	}
 
 	// hunter.applySpiritBond()
-	// hunter.applyInvigoration()
 	// hunter.applyCobraStrikes()
 	// hunter.applyPiercingShots()
 	// hunter.applyWildQuiver()
 
+	hunter.applyInvigoration()
 	hunter.applyGoForTheThroat()
 	hunter.applyThrillOfTheHunt()
 	hunter.applyTNT()
@@ -131,35 +131,35 @@ func (hunter *Hunter) ApplyTalents() {
 // 	})
 // }
 
-// func (hunter *Hunter) applyInvigoration() {
-// 	if hunter.Talents.Invigoration == 0 || hunter.pet == nil {
-// 		return
-// 	}
+func (hunter *Hunter) applyInvigoration() {
+	if hunter.Talents.Invigoration == 0 || hunter.pet == nil {
+		return
+	}
 
-// 	procChance := 0.5 * float64(hunter.Talents.Invigoration)
-// 	manaMetrics := hunter.NewManaMetrics(core.ActionID{SpellID: 53253})
+	procChance := 0.5 * float64(hunter.Talents.Invigoration)
+	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 53253})
 
-// 	hunter.pet.RegisterAura(core.Aura{
-// 		Label:    "Invigoration",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
-// 				return
-// 			}
+	hunter.pet.RegisterAura(core.Aura{
+		Label:    "Invigoration",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
+				return
+			}
 
-// 			if !result.DidCrit() {
-// 				return
-// 			}
+			if !result.DidCrit() {
+				return
+			}
 
-// 			if sim.Proc(procChance, "Invigoration") {
-// 				hunter.AddMana(sim, 0.01*hunter.MaxMana(), manaMetrics)
-// 			}
-// 		},
-// 	})
-// }
+			if sim.Proc(procChance, "Invigoration") {
+				hunter.AddFocus(sim, 3*float64(hunter.Talents.Invigoration), focusMetrics)
+			}
+		},
+	})
+}
 
 // func (hunter *Hunter) applyCobraStrikes() {
 // 	if hunter.Talents.CobraStrikes == 0 || hunter.pet == nil {
@@ -326,11 +326,11 @@ func (hunter *Hunter) applyImprovedSteadyShot() {
 		Duration:  time.Second * 8,
 		MaxStacks: 1,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			attackspeedMultiplier := 1 + (float64(hunter.Talents.ImprovedSteadyShot) * 0.5)
+			attackspeedMultiplier := 1 + (float64(hunter.Talents.ImprovedSteadyShot) * 0.05)
 			aura.Unit.MultiplyRangedSpeed(sim, attackspeedMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			attackspeedMultiplier := 1 + (float64(hunter.Talents.ImprovedSteadyShot) * 0.5)
+			attackspeedMultiplier := 1 + (float64(hunter.Talents.ImprovedSteadyShot) * 0.05)
 			aura.Unit.MultiplyRangedSpeed(sim, 1 / attackspeedMultiplier)
 		},
 	})

@@ -14,7 +14,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 		ActionID:    core.ActionID{SpellID: 77767},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:       core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
 
 			Cost: 0,
@@ -24,7 +24,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 				GCD:      time.Second,
 				CastTime: time.Millisecond * 2000,
 			},
-			IgnoreHaste: false,
+			IgnoreHaste: true,
 		},
 
 		// BonusCritRating: 0 +

@@ -48,8 +48,6 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			hunter.AddFocus(sim, 9, ssMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			spell.DealDamage(sim, result)
-
-
 		},
 	})
 }
