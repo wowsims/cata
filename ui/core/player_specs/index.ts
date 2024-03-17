@@ -82,6 +82,9 @@ export const PlayerSpecs = {
 	getFullSpecName: <SpecType extends Spec>(playerSpec: PlayerSpec<SpecType>): string => {
 		return `${playerSpec.friendlyName} ${getPlayerClass(playerSpec).friendlyName}`;
 	},
+	getSpecNumber: <SpecType extends Spec>(playerSpec: PlayerSpec<SpecType>): number => {
+		return Object.values(getPlayerClass(playerSpec).specs).findIndex(spec => spec == playerSpec) ?? 0;
+	},
 	// Prefixes used for storing browser data for each site. Even if a Spec is
 	// renamed, DO NOT change these values or people will lose their saved data.
 	getLocalStorageKey: <SpecType extends Spec>(playerSpec: PlayerSpec<SpecType>): string => {

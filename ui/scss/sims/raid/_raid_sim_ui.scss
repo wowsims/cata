@@ -1,37 +1,37 @@
-@use "sass:map";
+@use 'sass:map';
 
-@import "./assignments_picker";
-@import "./blessings_picker";
+@import './assignments_picker';
+@import './blessings_picker';
 @import './player';
 @import './player_editor';
-@import "./raid_picker";
-@import "./raid_stats";
-@import "./tanks_picker";
+@import './raid_picker';
+@import './raid_stats';
+@import './tanks_picker';
 
-@import "./raid_tab";
-@import "./settings_tab";
+@import './raid_tab';
+@import './settings_tab';
 
 .raid-settings-tab {
 	overflow-y: auto;
 }
 
 .raid-settings-sections {
-  position: relative;
+	position: relative;
 
-  .settings-section-container {
-    position: absolute;
-    margin-bottom: 2 * map-get($spacers, 3);
-    margin-right: 2 * map-get($spacers, 3);
+	.settings-section-container {
+		position: absolute;
+		margin-bottom: $section-spacer;
+		margin-right: $section-spacer;
 
-    .raid-encounter-section {
-      .encounter-picker-root {
-        flex-direction: column;
+		.raid-encounter-section {
+			.encounter-picker-root {
+				flex-direction: column;
 
-        .picker-group {
-          flex-direction: column;
-        }
-      }
-    }
+				.picker-group {
+					flex-direction: column;
+				}
+			}
+		}
 
 		.consumes-section {
 			display: grid;
@@ -41,5 +41,5 @@
 				margin: 3px;
 			}
 		}
-  }
+	}
 }

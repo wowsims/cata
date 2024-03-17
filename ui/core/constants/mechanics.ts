@@ -1,5 +1,4 @@
 export const CHARACTER_LEVEL = 85;
-export const MAX_TALENT_POINTS = 41;
 export const BOSS_LEVEL = CHARACTER_LEVEL + 3;
 
 export const EXPERTISE_PER_QUARTER_PERCENT_REDUCTION = 32.79 / 4;

@@ -1,6 +1,6 @@
 .gem-summary-root {
 	width: 50%;
-	margin-top: map-get($spacers, 5);
+	margin-top: $section-spacer;
 
 	.gem-summary-link {
 		--gem-width: 2rem;
@@ -23,7 +23,7 @@
 
 @include media-breakpoint-down(xl) {
 	.gem-summary-root {
-		margin-bottom: var(--container-padding);
+		margin-bottom: $container-padding;
 	}
 }
 

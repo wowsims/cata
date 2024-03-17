@@ -1,9 +1,10 @@
-@use "sass:map";
+@use 'sass:map';
 
 $sim-header-height: 4.5rem;
 
-td, th {
-  padding: auto;
+td,
+th {
+	padding: auto;
 }
 
 .sim-ui {
@@ -14,11 +15,11 @@ td, th {
 	scrollbar-width: thin;
 
 	&::-webkit-scrollbar {
-		width: .2rem;
+		width: 0.2rem;
 	}
 
-	&::-webkit-scrollbar-track  {
-    background-color: $body-bg;
+	&::-webkit-scrollbar-track {
+		background-color: $body-bg;
 	}
 
 	&::-webkit-scrollbar-thumb {
@@ -35,15 +36,15 @@ td, th {
 			display: flex;
 			flex: 1;
 		}
-	
+
 		.notices-banner {
 			width: 100%;
 			background: lighten($body-bg, 5);
 		}
 
 		.sim-content {
-			padding-left: var(--container-padding);
-			padding-right: var(--container-padding);
+			padding-left: $container-padding;
+			padding-right: $container-padding;
 			flex: 4;
 			z-index: 1;
 		}
@@ -57,8 +58,7 @@ td, th {
 	left: 0;
 	width: 100vw;
 	height: 100vh;
-	background-image:
-		linear-gradient(
+	background-image: linear-gradient(
 			rgba(var(--theme-background-color), var(--theme-background-opacity)),
 			rgba(var(--theme-background-color), var(--theme-background-opacity))
 		),
@@ -107,7 +107,8 @@ td, th {
 				flex-direction: column;
 			}
 
-			.sim-sidebar, .sim-content {
+			.sim-sidebar,
+			.sim-content {
 				width: 100%;
 				min-height: unset;
 			}

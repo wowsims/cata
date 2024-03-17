@@ -11,7 +11,7 @@ body {
 
 body.new-tab {
 	.dr-root {
-		padding: $gap-width var(--container-padding);
+		padding: $gap-width $container-padding;
 
 		.dr-toolbar {
 			top: -1px;
