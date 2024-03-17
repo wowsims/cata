@@ -110,7 +110,6 @@ func (hunter *Hunter) applyInvigoration() {
 		return
 	}
 
-	procChance := 0.5 * float64(hunter.Talents.Invigoration)
 	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 53253})
 
 	hunter.pet.RegisterAura(core.Aura{
@@ -128,9 +127,7 @@ func (hunter *Hunter) applyInvigoration() {
 				return
 			}
 
-			if sim.Proc(procChance, "Invigoration") {
-				hunter.AddFocus(sim, 3*float64(hunter.Talents.Invigoration), focusMetrics)
-			}
+			hunter.AddFocus(sim, 3*float64(hunter.Talents.Invigoration), focusMetrics)
 		},
 	})
 }
@@ -408,6 +405,9 @@ func (hunter *Hunter) applyFrenzy() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
+				return
+			}
 			if hunter.pet.FrenzyAura.IsActive() {
 				if hunter.pet.FrenzyAura.GetStacks() != 5 {
 					hunter.pet.FrenzyAura.AddStack(sim)
