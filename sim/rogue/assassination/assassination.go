@@ -226,18 +226,21 @@ func (sinRogue *AssassinationRogue) applyMastery() {
 			}
 			sinRogue.DeadlyPoison.DamageMultiplier += masteryEffect
 			sinRogue.Envenom.DamageMultiplier += masteryEffect
+			sinRogue.VenomousWounds.DamageMultiplier += masteryEffect
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			masteryPercent := sinRogue.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPercent
-			masteryEffect := baseEffect + masteryPercent*damagePerPercent
+		OnStatsChange: func(aura *core.Aura, sim *core.Simulation, oldStats, newStats stats.Stats) {
+			masteryPercentOld := oldStats[stats.Mastery] / core.MasteryRatingPerMasteryPercent
+			masteryPercentNew := newStats[stats.Mastery] / core.MasteryRatingPerMasteryPercent
+			masteryEffectChange := baseEffect + (masteryPercentNew-masteryPercentOld)*damagePerPercent
 			for _, spell := range sinRogue.InstantPoison {
-				spell.DamageMultiplier -= masteryEffect
+				spell.DamageMultiplier += masteryEffectChange
 			}
 			for _, spell := range sinRogue.WoundPoison {
-				spell.DamageMultiplier -= masteryEffect
+				spell.DamageMultiplier += masteryEffectChange
 			}
-			sinRogue.DeadlyPoison.DamageMultiplier -= masteryEffect
-			sinRogue.Envenom.DamageMultiplier -= masteryEffect
+			sinRogue.DeadlyPoison.DamageMultiplier += masteryEffectChange
+			sinRogue.Envenom.DamageMultiplier += masteryEffectChange
+			sinRogue.VenomousWounds.DamageMultiplier += masteryEffectChange
 		},
 	})
 }
