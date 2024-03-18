@@ -288,19 +288,11 @@ func (hunter *Hunter) applyKillingStreak() {
 		MaxStacks: 1,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			hunter.KillCommand.DamageMultiplier /= 1 + (float64(hunter.Talents.KillingStreak) * 0.1)
-			if hunter.Talents.KillingStreak == 1 {
-				hunter.KillCommand.CostMultiplier *= 35.0 / 40.0
-			} else if hunter.Talents.KillingStreak == 2 {
-				hunter.KillCommand.CostMultiplier *= 30.0 / 40.0
-			}
+			hunter.KillCommand.ApplyCostModifiers(hunter.KillCommand.CurCast.Cost - (float64(hunter.Talents.KillingStreak) * 5))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			hunter.KillCommand.DamageMultiplier /= 1 + (float64(hunter.Talents.KillingStreak) * 0.1)
-			if hunter.Talents.KillingStreak == 1 { //Todo: ??? Static cost reduction?
-				hunter.KillCommand.CostMultiplier *= 40.0 / 35.0
-			} else if hunter.Talents.KillingStreak == 2 {
-				hunter.KillCommand.CostMultiplier *= 40.0 / 30.0
-			}
+			hunter.KillCommand.ApplyCostModifiers(hunter.KillCommand.CurCast.Cost + (float64(hunter.Talents.KillingStreak) * 5))
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if hunter.Talents.KillingStreak > 0 {
