@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-// Todo: Introduce weaving again? With the glyph, might be interesting
+// Todo: Introduce weaving again? With the glyph, might be interesting, but its on GCD
 func (hunter *Hunter) registerRaptorStrikeSpell() {
 	hunter.RaptorStrike = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48996},
