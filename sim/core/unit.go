@@ -9,6 +9,7 @@ import (
 
 type UnitType int
 type SpellRegisteredHandler func(spell *Spell)
+type OnMasteryStatChanged func(sim *Simulation, oldMastery float64, newMastery float64)
 
 const (
 	PlayerUnit UnitType = iota
@@ -153,6 +154,9 @@ type Unit struct {
 
 	// The currently-channeled DOT spell, otherwise nil.
 	ChanneledDot *Dot
+
+	// Used for reacting to mastery stat changes if a spec needs it
+	OnMasteryStatChanged []OnMasteryStatChanged
 }
 
 // Units can be disabled for several reasons:
@@ -217,6 +221,13 @@ func (unit *Unit) AddDynamicDamageTakenModifier(ddtm DynamicDamageTakenModifier)
 	unit.DynamicDamageTakenModifiers = append(unit.DynamicDamageTakenModifiers, ddtm)
 }
 
+func (unit *Unit) AddOnMasteryStatChanged(omsc OnMasteryStatChanged) {
+	if unit.Env != nil && unit.Env.IsFinalized() {
+		panic("Already finalized, cannot add on mastery stat changed callback!")
+	}
+	unit.OnMasteryStatChanged = append(unit.OnMasteryStatChanged, omsc)
+}
+
 func (unit *Unit) AddStatsDynamic(sim *Simulation, bonus stats.Stats) {
 	if unit.Env == nil {
 		panic("Environment not constructed.")
@@ -251,6 +262,14 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 	}
 	if bonus[stats.SpellHaste] != 0 {
 		unit.updateCastSpeed()
+	}
+	if bonus[stats.Mastery] != 0 {
+		newMastery := unit.stats[stats.Mastery]
+		oldMastery := newMastery - bonus[stats.Mastery]
+
+		for i := range unit.OnMasteryStatChanged {
+			unit.OnMasteryStatChanged[i](sim, oldMastery, newMastery)
+		}
 	}
 
 	for _, pet := range unit.DynamicStatsPets {

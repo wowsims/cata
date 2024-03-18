@@ -9,7 +9,6 @@ import (
 	"golang.org/x/exp/constraints"
 
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 const NeverExpires = time.Duration(math.MaxInt64)
@@ -20,7 +19,6 @@ type OnDoneIteration func(aura *Aura, sim *Simulation)
 type OnGain func(aura *Aura, sim *Simulation)
 type OnExpire func(aura *Aura, sim *Simulation)
 type OnStacksChange func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32)
-type OnStatsChange func(aura *Aura, sim *Simulation, oldStats stats.Stats, newStats stats.Stats)
 
 // Callback for after a spell hits the target and after damage is calculated. Use it for proc effects
 // or anything that comes from the final result of the spell.
@@ -85,7 +83,6 @@ type Aura struct {
 	OnGain          OnGain
 	OnExpire        OnExpire
 	OnStacksChange  OnStacksChange // Invoked when the number of stacks of this aura changes.
-	OnStatsChange   OnStatsChange  // Invoked when the stats of this aura owner changes.
 
 	OnCastComplete        OnCastComplete   // Invoked when a spell cast completes casting, before results are calculated.
 	OnSpellHitDealt       OnSpellHit       // Invoked when a spell hits and this unit is the caster.
