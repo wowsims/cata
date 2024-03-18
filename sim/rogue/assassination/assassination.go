@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/rogue"
 )
 
@@ -33,6 +34,8 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	sinRogue.registerColdBloodCD()
 	sinRogue.applySealFate()
 	sinRogue.registerVenomousWounds()
+
+	sinRogue.applyMastery()
 }
 
 func NewAssassinationRogue(character *core.Character, options *proto.Player) *AssassinationRogue {
@@ -48,6 +51,8 @@ func NewAssassinationRogue(character *core.Character, options *proto.Player) *As
 
 type AssassinationRogue struct {
 	*rogue.Rogue
+
+	masteryAura *core.Aura
 }
 
 func (sinRogue *AssassinationRogue) GetRogue() *rogue.Rogue {
@@ -197,6 +202,42 @@ func (sinRogue *AssassinationRogue) registerVenomousWounds() {
 			vwDamage := vwBaseTickDamage + 0.176*spell.MeleeAttackPower()
 			spell.CalcAndDealDamage(sim, target, vwDamage, spell.OutcomeAlwaysHit)
 			sinRogue.AddEnergy(sim, 10, vwMetrics)
+		},
+	})
+}
+
+func (sinRogue *AssassinationRogue) applyMastery() {
+	const damagePerPercent = .035
+	const baseEffect = .28
+	sinRogue.masteryAura = sinRogue.RegisterAura(core.Aura{
+		Label:    "Mastery: Potent Poisons",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryPercent := sinRogue.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPercent
+			masteryEffect := baseEffect + masteryPercent*damagePerPercent
+			for _, spell := range sinRogue.InstantPoison {
+				spell.DamageMultiplier += masteryEffect
+			}
+			for _, spell := range sinRogue.WoundPoison {
+				spell.DamageMultiplier += masteryEffect
+			}
+			sinRogue.DeadlyPoison.DamageMultiplier += masteryEffect
+			sinRogue.Envenom.DamageMultiplier += masteryEffect
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			masteryPercent := sinRogue.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPercent
+			masteryEffect := baseEffect + masteryPercent*damagePerPercent
+			for _, spell := range sinRogue.InstantPoison {
+				spell.DamageMultiplier -= masteryEffect
+			}
+			for _, spell := range sinRogue.WoundPoison {
+				spell.DamageMultiplier -= masteryEffect
+			}
+			sinRogue.DeadlyPoison.DamageMultiplier -= masteryEffect
+			sinRogue.Envenom.DamageMultiplier -= masteryEffect
 		},
 	})
 }
