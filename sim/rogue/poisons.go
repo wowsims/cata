@@ -16,7 +16,7 @@ func (rogue *Rogue) applyPoisons() {
 
 func (rogue *Rogue) registerPoisonAuras() {
 	if rogue.Talents.SavageCombat > 0 {
-		rogue.savageCombatDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		rogue.SavageCombatDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 			return core.SavageCombatAura(target, rogue.Talents.SavageCombat)
 		})
 	}
@@ -51,19 +51,19 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 				Duration:  time.Second * 12,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					if rogue.Talents.SavageCombat > 0 {
-						rogue.savageCombatDebuffAuras.Get(aura.Unit).Activate(sim)
+						rogue.SavageCombatDebuffAuras.Get(aura.Unit).Activate(sim)
 					}
-					if rogue.Talents.MasterPoisoner {
-						rogue.masterPoisonerDebuffAuras.Get(aura.Unit).Activate(sim)
-					}
+					// if rogue.Talents.MasterPoisoner {
+					// 	rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Activate(sim)
+					// }
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					if rogue.Talents.SavageCombat > 0 {
-						rogue.savageCombatDebuffAuras.Get(aura.Unit).Deactivate(sim)
+						rogue.SavageCombatDebuffAuras.Get(aura.Unit).Deactivate(sim)
 					}
-					if rogue.Talents.MasterPoisoner {
-						rogue.masterPoisonerDebuffAuras.Get(aura.Unit).Deactivate(sim)
-					}
+					// if rogue.Talents.MasterPoisoner {
+					// 	rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Deactivate(sim)
+					// }
 				},
 			},
 			NumberOfTicks: 4,
@@ -262,7 +262,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 			}
 
 			if result.Landed() {
-				rogue.woundPoisonDebuffAuras.Get(target).Activate(sim)
+				rogue.WoundPoisonDebuffAuras.Get(target).Activate(sim)
 			}
 		},
 	})
@@ -277,23 +277,23 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if rogue.Talents.SavageCombat > 0 {
-				rogue.savageCombatDebuffAuras.Get(aura.Unit).Activate(sim)
+				rogue.SavageCombatDebuffAuras.Get(aura.Unit).Activate(sim)
 			}
-			if rogue.Talents.MasterPoisoner {
-				rogue.masterPoisonerDebuffAuras.Get(aura.Unit).Activate(sim)
-			}
+			// if rogue.Talents.MasterPoisoner {
+			// 	rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Activate(sim)
+			// }
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if rogue.Talents.SavageCombat > 0 {
-				rogue.savageCombatDebuffAuras.Get(aura.Unit).Deactivate(sim)
+				rogue.SavageCombatDebuffAuras.Get(aura.Unit).Deactivate(sim)
 			}
-			if rogue.Talents.MasterPoisoner {
-				rogue.masterPoisonerDebuffAuras.Get(aura.Unit).Deactivate(sim)
-			}
+			// if rogue.Talents.MasterPoisoner {
+			// 	rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Deactivate(sim)
+			// }
 		},
 	}
 
-	rogue.woundPoisonDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+	rogue.WoundPoisonDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.RegisterAura(woundPoisonDebuffAura)
 	})
 	rogue.WoundPoison = [4]*core.Spell{

@@ -60,6 +60,12 @@ func (rogue *Rogue) registerRupture() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				if rogue.Talents.VenomousWounds > 0 {
+					vwProcChance := 0.3 * float64(rogue.Talents.VenomousWounds)
+					if sim.Proc(vwProcChance, "Venomous Wounds") {
+						rogue.VenomousWounds.Cast(sim, target)
+					}
+				}
 			},
 		},
 

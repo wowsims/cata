@@ -57,6 +57,7 @@ type Rogue struct {
 	ShadowDance      *core.Spell
 	ColdBlood        *core.Spell
 	Vanish           *core.Spell
+	VenomousWounds   *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
@@ -85,9 +86,9 @@ type Rogue struct {
 	HonorAmongThieves    *core.Aura
 	StealthAura          *core.Aura
 
-	masterPoisonerDebuffAuras core.AuraArray
-	savageCombatDebuffAuras   core.AuraArray
-	woundPoisonDebuffAuras    core.AuraArray
+	MasterPoisonerDebuffAuras core.AuraArray
+	SavageCombatDebuffAuras   core.AuraArray
+	WoundPoisonDebuffAuras    core.AuraArray
 
 	generatorCostModifier      func(float64) float64
 	finishingMoveEffectApplier func(sim *core.Simulation, numPoints int32)

@@ -10,6 +10,8 @@ import (
 func (rogue *Rogue) registerBackstabSpell() {
 	hasGlyph := rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfBackstab)
 	baseDamage := RogueBaseDamageScalar*.307 + 10
+	murderousIntentMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 79132})
+	glyphOfBackstabMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 56800})
 
 	rogue.Backstab = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 53},
@@ -52,8 +54,12 @@ func (rogue *Rogue) registerBackstabSpell() {
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
-				if hasGlyph && result.DidCrit() {
-					rogue.AddEnergy(sim, 5, rogue.EnergyRefundMetrics)
+				if result.DidCrit() && hasGlyph {
+					rogue.AddEnergy(sim, 5, glyphOfBackstabMetrics)
+				}
+				if result.DidCrit() && sim.IsExecutePhase35() && rogue.Talents.MurderousIntent > 0 {
+					totalRecovery := 15 * rogue.Talents.MurderousIntent
+					rogue.AddEnergy(sim, float64(totalRecovery), murderousIntentMetrics)
 				}
 			} else {
 				spell.IssueRefund(sim)
