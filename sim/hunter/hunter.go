@@ -127,6 +127,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerKillCommandSpell()
 	hunter.registerExplosiveTrapSpell(hunter.FireTrapTimer)
 	hunter.registerCobraShotSpell()
+	hunter.registerRapidFireCD()
 }
 
 func (hunter *Hunter) Reset(_ *core.Simulation) {

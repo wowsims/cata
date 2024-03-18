@@ -10,12 +10,12 @@ import (
 func (hunter *Hunter) registerRapidFireCD() {
 	actionID := core.ActionID{SpellID: 3045}
 
-	var manaMetrics *core.ResourceMetrics
+	var focusMetrics *core.ResourceMetrics
 	if hunter.Talents.RapidRecuperation > 0 {
-		manaMetrics = hunter.NewManaMetrics(core.ActionID{SpellID: 53232})
+		focusMetrics = hunter.NewFocusMetrics(core.ActionID{SpellID: 53232})
 	}
 
-	hasteMultiplier := 1.4 + core.TernaryFloat64(hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfRapidFire), 0.08, 0)
+	hasteMultiplier := 1.4 + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfRapidFire), 0.1, 0)
 
 	hunter.RapidFireAura = hunter.RegisterAura(core.Aura{
 		Label:    "Rapid Fire",
@@ -24,13 +24,12 @@ func (hunter *Hunter) registerRapidFireCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.MultiplyRangedSpeed(sim, hasteMultiplier)
 
-			if manaMetrics != nil {
-				manaPerTick := 0.02 * float64(hunter.Talents.RapidRecuperation) * hunter.MaxMana()
+			if focusMetrics != nil {
 				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 					Period:   time.Second * 3,
 					NumTicks: 5,
 					OnAction: func(sim *core.Simulation) {
-						hunter.AddMana(sim, manaPerTick, manaMetrics)
+						hunter.AddFocus(sim, 6 * float64(hunter.Talents.RapidRecuperation), focusMetrics)
 					},
 				})
 			}
@@ -52,7 +51,7 @@ func (hunter *Hunter) registerRapidFireCD() {
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Minute*5 - time.Minute*time.Duration(hunter.Talents.RapidKilling),
+				Duration: time.Minute*5 - time.Minute*time.Duration(hunter.Talents.Posthaste),
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
