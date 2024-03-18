@@ -3,7 +3,6 @@ package marksmanship
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/hunter"
 )
 
@@ -54,7 +53,7 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 				return
 			}
 
-			procChance := 0.168 + ((hunter.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPercent) * 0.021) // Todo: Is this right scaling?
+			procChance := 0.168 + (hunter.CalculateMasteryPoints() * 0.021) // Todo: Is this right scaling?
 			if sim.RandomFloat("Wild Quiver") < procChance {
 				wqSpell.Cast(sim, result.Target)
 			}
