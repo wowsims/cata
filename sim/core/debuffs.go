@@ -161,9 +161,6 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.InsectSwarm && targetIdx == 0 {
 		MakePermanent(InsectSwarmAura(target))
 	}
-	if debuffs.ScorpidSting && targetIdx == 0 {
-		MakePermanent(ScorpidStingAura(target))
-	}
 
 	if debuffs.TotemOfWrath {
 		MakePermanent(TotemOfWrathDebuff(target))
@@ -881,16 +878,6 @@ func InsectSwarmAura(target *Unit) *Aura {
 		Label:    "InsectSwarmMiss",
 		ActionID: ActionID{SpellID: 27013},
 		Duration: time.Second * 12,
-	})
-	increasedMissEffect(aura, 0.03)
-	return aura
-}
-
-func ScorpidStingAura(target *Unit) *Aura {
-	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Scorpid Sting",
-		ActionID: ActionID{SpellID: 3043},
-		Duration: time.Second * 20,
 	})
 	increasedMissEffect(aura, 0.03)
 	return aura

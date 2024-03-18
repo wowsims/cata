@@ -23,7 +23,6 @@ export const BMRotationConfig = {
 			labelTooltip: 'Maintains the selected Sting on the primary target.',
 			values: [
 				{ name: 'None', value: StingType.NoSting },
-				{ name: 'Scorpid Sting', value: StingType.ScorpidSting },
 				{ name: 'Serpent Sting', value: StingType.SerpentSting },
 			],
 			showWhen: (player: Player<Spec.SpecBeastMasteryHunter>) => player.getSimpleRotation().type == RotationType.SingleTarget,

@@ -32,7 +32,6 @@ export const SVRotationConfig = {
 			labelTooltip: 'Maintains the selected Sting on the primary target.',
 			values: [
 				{ name: 'None', value: HunterStingType.NoSting },
-				{ name: 'Scorpid Sting', value: HunterStingType.ScorpidSting },
 				{ name: 'Serpent Sting', value: HunterStingType.SerpentSting },
 			],
 			showWhen: (player: Player<Spec.SpecSurvivalHunter>) => player.getSimpleRotation().type == RotationType.SingleTarget,
