@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (hunter *Hunter) registerSilencingShotSpell() {
@@ -23,36 +24,21 @@ func (hunter *Hunter) registerSilencingShotSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: 1,
+				GCD: time.Second,
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 20,
 			},
 		},
-
-		DamageMultiplier: 0.5 *
-			hunter.markedForDeathMultiplier(),
-		CritMultiplier:   hunter.critMultiplier(true, false, false),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
-				hunter.AmmoDamageBonus +
-				spell.BonusWeaponDamage()
-
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-
-			// Add a check for later so we use ASAP when it comes off CD.
-			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + hunter.SilencingShot.CD.Duration,
-				OnAction: func(sim *core.Simulation) {
-					// Need to check in case Readiness caused a shift in timing.
-					if hunter.SilencingShot.IsReady(sim) && hunter.Hardcast.Expires <= sim.CurrentTime {
-						hunter.SilencingShot.Cast(sim, target)
-					}
-				},
-			})
+			// Silencing Shot does nothing in wotlk for damage except maybe restore 10 focus
+			if hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfSilencingShot) {
+				focusMetics := hunter.NewFocusMetrics(core.ActionID{SpellID: 34490})
+				hunter.AddFocus(sim, 10, focusMetics);
+			}
 		},
 	})
 }
