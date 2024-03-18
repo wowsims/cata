@@ -24,7 +24,11 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 				GCD:      time.Second,
 				CastTime: time.Second * 2,
 			},
-			IgnoreHaste: true,
+			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
+			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				cast.CastTime = spell.CastTime()
+			},
+
 			CastTime: func(spell *core.Spell) time.Duration {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
 			},

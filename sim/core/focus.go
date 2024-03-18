@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 // Time between focus ticks.
@@ -141,8 +140,9 @@ func (fb *focusBar) NextFocusTickAt() time.Duration {
 // }
 func (fb *focusBar) FocusRegenPerTick() float64 {
     ticksPerSecond := float64(time.Second) / float64(FocusTickDuration)
-    hastePercent := fb.unit.stats[stats.MeleeHaste] / HasteRatingPerHastePercent
-    return fb.baseFocusPerSecond * (1 + hastePercent / 100) / ticksPerSecond
+    hastePercent := fb.unit.RangedSwingSpeed()
+	tick := fb.baseFocusPerSecond * hastePercent / ticksPerSecond
+    return tick
 }
 
 func (fb *focusBar) onFocusGain(sim *Simulation, crossedThreshold bool) {
@@ -197,7 +197,6 @@ func (fb *focusBar) RunTask(sim *Simulation) time.Duration {
 	if sim.CurrentTime < fb.nextFocusTick {
 		return fb.nextFocusTick
 	}
-
 	crossedThreshold := fb.addFocusInternal(sim, fb.FocusRegenPerTick(), fb.regenMetrics)
 	fb.onFocusGain(sim, crossedThreshold)
 

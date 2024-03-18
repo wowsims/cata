@@ -3,6 +3,7 @@ package survival
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/hunter"
 )
 
@@ -23,11 +24,27 @@ func RegisterSurvivalHunter() {
 	)
 }
 
+func (hunter *SurvivalHunter) applyMastery() {
+	hunter.RegisterAura(core.Aura{
+		Label:    "Essence of the Viper",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		//Todo: Change to OnMasteryChanged when available
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			multiplier := 1.08 + (hunter.Hunter.CalculateMasteryPoints() * 0.01)
+			hunter.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] = multiplier
+			hunter.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] = multiplier
+		},
+	})
+}
 func (hunter *SurvivalHunter) Initialize() {
 	// Initialize global Hunter spells
 	hunter.Hunter.Initialize()
 
 	// Spec specific spells
+	hunter.applyMastery()
 	hunter.registerExplosiveShotSpell()
 	hunter.registerBlackArrowSpell(hunter.FireTrapTimer)
 }

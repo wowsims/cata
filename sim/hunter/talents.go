@@ -44,7 +44,7 @@ func (hunter *Hunter) ApplyTalents() {
 	// }
 
 	if hunter.Talents.Pathing > 0 {
-		bonus := 0.1*float64(hunter.Talents.Pathing)
+		bonus := 0.01*float64(hunter.Talents.Pathing)
 		hunter.MultiplyCastSpeed(bonus) //Todo: Should this be attackspeed?
 	}
 

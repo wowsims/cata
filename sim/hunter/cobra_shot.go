@@ -16,7 +16,6 @@ func (hunter *Hunter) registerCobraShotSpell() {
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
-
 			Cost: 0,
 		},
 		Cast: core.CastConfig{
@@ -24,7 +23,14 @@ func (hunter *Hunter) registerCobraShotSpell() {
 				GCD:      time.Second,
 				CastTime: time.Millisecond * 2000,
 			},
-			IgnoreHaste: true,
+			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
+			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				cast.CastTime = spell.CastTime()
+			},
+			CastTime: func(spell *core.Spell) time.Duration {
+				ss := hunter.RangedSwingSpeed()
+				return time.Duration(float64(spell.DefaultCast.CastTime) / ss)
+			},
 		},
 
 		// BonusCritRating: 0 +

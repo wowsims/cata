@@ -96,7 +96,9 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
-
+func (hunter *Hunter) CalculateMasteryPoints() float64 {
+	return hunter.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPercent
+}
 func (hunter *Hunter) CritMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS bool) float64 {
 	primaryModifier := 1.0
 	secondaryModifier := 0.0
@@ -146,7 +148,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 
 
 	// Passive bonus (used to be from quiver).
-	hunter.PseudoStats.RangedSpeedMultiplier *= 1.15
+	//hunter.PseudoStats.RangedSpeedMultiplier *= 1.15
 	rangedWeapon := hunter.WeaponFromRanged(0)
 
 	hunter.EnableAutoAttacks(hunter, core.AutoAttackOptions{
