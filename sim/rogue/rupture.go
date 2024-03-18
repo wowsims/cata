@@ -89,8 +89,8 @@ func (rogue *Rogue) registerRupture() {
 }
 
 func (rogue *Rogue) RuptureDamage(comboPoints int32) float64 {
-	return 127 +
-		18*float64(comboPoints) +
+	return 142 +
+		20*float64(comboPoints) +
 		[]float64{0, 0.06 / 4, 0.12 / 5, 0.18 / 6, 0.24 / 7, 0.30 / 8}[comboPoints]*rogue.Rupture.MeleeAttackPower()
 }
 

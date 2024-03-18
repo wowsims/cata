@@ -44,12 +44,12 @@ func (rogue *Rogue) registerEviscerate() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			comboPoints := rogue.ComboPoints()
-			flatBaseDamage := 127 + 370*float64(comboPoints)
+			flatBaseDamage := 354 + 517*float64(comboPoints)
 			// tooltip implies 3..7% AP scaling, but testing shows it's fixed at 7% (3.4.0.46158)
-			apRatio := 0.07 * float64(comboPoints)
+			apRatio := 0.091 * float64(comboPoints)
 
 			baseDamage := flatBaseDamage +
-				254.0*sim.RandomFloat("Eviscerate") +
+				// 254.0*sim.RandomFloat("Eviscerate") + TODO: Thebackstabi 3/18/2024 - Cataclysm has no spell variance ATM, unsure on damage range
 				apRatio*spell.MeleeAttackPower() +
 				spell.BonusWeaponDamage()
 

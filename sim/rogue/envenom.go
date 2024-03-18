@@ -48,7 +48,8 @@ func (rogue *Rogue) registerEnvenom() {
 		},
 
 		DamageMultiplier: 1 +
-			0.12*float64(rogue.Talents.VilePoisons), // TODO (TheBackstabi, 3/16/2024) - Verify Vile Poisons boosts Envenom
+			0.12*float64(rogue.Talents.VilePoisons) +
+			[]float64{0, 0.07, .14, .20}[rogue.Talents.CoupDeGrace],
 		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 
@@ -65,7 +66,7 @@ func (rogue *Rogue) registerEnvenom() {
 			// - 215 base is scaled by consumed doses (<= comboPoints)
 			// - apRatio is independent of consumed doses (== comboPoints)
 			consumed := min(dp.GetStacks(), comboPoints)
-			baseDamage := 215*float64(consumed) + 0.09*float64(comboPoints)*spell.MeleeAttackPower()
+			baseDamage := 241*float64(consumed) + 0.09*float64(comboPoints)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
