@@ -37,7 +37,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	}
 
 	rogue.DeadlyPoison = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 2823},
+		ActionID:    core.ActionID{SpellID: 96648},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
@@ -71,7 +71,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 
 			OnSnapshot: func(_ *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				if stacks := dot.GetStacks(); stacks > 0 {
-					dot.SnapshotBaseDamage = (74 + 0.027*dot.Spell.MeleeAttackPower()) * float64(stacks)
+					dot.SnapshotBaseDamage = (135 + 0.035*dot.Spell.MeleeAttackPower()) * float64(stacks)
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				}
@@ -218,9 +218,9 @@ const (
 
 func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 	isShivProc := procSource == ShivProc
-
+	ipBaseDamage := 0.31299999356 * RogueBaseDamageScalar
 	return rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 8679, Tag: int32(procSource)},
+		ActionID:    core.ActionID{SpellID: 8680, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
@@ -229,7 +229,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(300, 400) + 0.09*spell.MeleeAttackPower()
+			baseDamage := ipBaseDamage + 0.09*spell.MeleeAttackPower()
 			if isShivProc {
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
 			} else {
@@ -241,9 +241,9 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 
 func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 	isShivProc := procSource == ShivProc
-
+	wpBaseDamage := 0.24500000477 * RogueBaseDamageScalar
 	return rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 13219, Tag: int32(procSource)},
+		ActionID:    core.ActionID{SpellID: 13218, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
@@ -252,7 +252,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 231 + 0.036*spell.MeleeAttackPower()
+			baseDamage := wpBaseDamage + 0.04*spell.MeleeAttackPower()
 
 			var result *core.SpellResult
 			if isShivProc {
