@@ -16,7 +16,7 @@ const (
 
 var TalentTreeSizes = [3]int{19, 19, 19}
 
-const RogueBaseScalar = 1125.23
+const RogueBaseDamageScalar = 1125.23
 const RogueBleedTag = "RogueBleed"
 
 type Rogue struct {
@@ -43,8 +43,8 @@ type Rogue struct {
 	Hemorrhage       *core.Spell
 	GhostlyStrike    *core.Spell
 	HungerForBlood   *core.Spell
-	InstantPoison    [3]*core.Spell
-	WoundPoison      [3]*core.Spell
+	InstantPoison    [4]*core.Spell
+	WoundPoison      [4]*core.Spell
 	Mutilate         *core.Spell
 	MutilateMH       *core.Spell
 	MutilateOH       *core.Spell

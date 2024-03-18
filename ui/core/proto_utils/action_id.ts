@@ -290,12 +290,14 @@ export class ActionId {
 			case 'Slice and Dice':
 				if (this.tag) name += ` (${this.tag} CP)`;
 				break;
-			case 'Instant Poison IX':
-			case 'Wound Poison VII':
+			case 'Instant Poison':
+			case 'Wound Poison':
 				if (this.tag == 1) {
 					name += ' (Deadly)';
 				} else if (this.tag == 2) {
 					name += ' (Shiv)';
+				} else if (this.tag == 3) {
+					name += ' (Fan of Knives)'
 				}
 				break;
 			case 'Fan of Knives':

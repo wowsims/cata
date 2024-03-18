@@ -37,7 +37,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	}
 
 	rogue.DeadlyPoison = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 2818},
+		ActionID:    core.ActionID{SpellID: 2823},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
@@ -213,17 +213,18 @@ const (
 	NormalProc PoisonProcSource = iota
 	DeadlyProc
 	ShivProc
+	VilePoisonsProc
 )
 
 func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 	isShivProc := procSource == ShivProc
 
 	return rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 57965, Tag: int32(procSource)},
+		ActionID:    core.ActionID{SpellID: 8679, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		DamageMultiplier: []float64{1, 1.07, 1.14, 1.20}[rogue.Talents.VilePoisons],
+		DamageMultiplier: 1.12 * float64(rogue.Talents.VilePoisons),
 		CritMultiplier:   rogue.SpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
@@ -242,11 +243,11 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 	isShivProc := procSource == ShivProc
 
 	return rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 57975, Tag: int32(procSource)},
+		ActionID:    core.ActionID{SpellID: 13219, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		DamageMultiplier: []float64{1, 1.07, 1.14, 1.20}[rogue.Talents.VilePoisons],
+		DamageMultiplier: 1.12 * float64(rogue.Talents.VilePoisons),
 		CritMultiplier:   rogue.SpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
@@ -267,7 +268,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 	})
 }
 
-var WoundPoisonActionID = core.ActionID{SpellID: 57975}
+var WoundPoisonActionID = core.ActionID{SpellID: 13219}
 
 func (rogue *Rogue) registerWoundPoisonSpell() {
 	woundPoisonDebuffAura := core.Aura{
@@ -295,18 +296,20 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 	rogue.woundPoisonDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.RegisterAura(woundPoisonDebuffAura)
 	})
-	rogue.WoundPoison = [3]*core.Spell{
+	rogue.WoundPoison = [4]*core.Spell{
 		rogue.makeWoundPoison(NormalProc),
 		rogue.makeWoundPoison(DeadlyProc),
 		rogue.makeWoundPoison(ShivProc),
+		rogue.makeWoundPoison(VilePoisonsProc),
 	}
 }
 
 func (rogue *Rogue) registerInstantPoisonSpell() {
-	rogue.InstantPoison = [3]*core.Spell{
+	rogue.InstantPoison = [4]*core.Spell{
 		rogue.makeInstantPoison(NormalProc),
 		rogue.makeInstantPoison(DeadlyProc),
 		rogue.makeInstantPoison(ShivProc),
+		rogue.makeInstantPoison(VilePoisonsProc),
 	}
 }
 

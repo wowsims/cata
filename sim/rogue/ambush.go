@@ -7,7 +7,7 @@ import (
 )
 
 func (rogue *Rogue) registerAmbushSpell() {
-	baseDamage := RogueBaseScalar*0.327 + 28
+	baseDamage := RogueBaseDamageScalar*0.327 + 28
 
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 8676},

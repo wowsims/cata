@@ -45,17 +45,51 @@ func (rogue *Rogue) registerFanOfKnives() {
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := fokSpell.Unit.RangedWeaponDamage(sim, fokSpell.RangedAttackPower(aoeTarget))
 				baseDamage *= sim.Encounter.AOECapMultiplier()
-				// TODO (TheBackstabi 3/16/2024) - Proc Thrown poison + Vile Poisons proc MH/OH poison
-				if rogue.Talents.VilePoisons > 0 {
-					//poisonProcModifier := 0.33 * float64(rogue.Talents.VilePoisons)
-
-				}
 
 				results[i] = fokSpell.CalcDamage(sim, aoeTarget, baseDamage, fokSpell.OutcomeRangedHitAndCrit)
 			}
-			for i := range sim.Encounter.TargetUnits {
+			for i, aoeTarget := range sim.Encounter.TargetUnits {
 				fokSpell.DealDamage(sim, results[i])
+
+				if rogue.Talents.VilePoisons > 0 {
+					poisonProcModifier := 0.33 * float64(rogue.Talents.VilePoisons)
+					mhProcChance := poisonProcModifier * getPoisonsProcChance(core.ProcMaskMeleeMH, rogue.Options.MhImbue, rogue)
+					ohProcChance := poisonProcModifier * getPoisonsProcChance(core.ProcMaskMeleeOH, rogue.Options.OhImbue, rogue)
+
+					if sim.Proc(mhProcChance, "Vile Poisons FoK MH") {
+						switch rogue.Options.MhImbue {
+						case proto.RogueOptions_InstantPoison:
+							rogue.InstantPoison[VilePoisonsProc].Cast(sim, aoeTarget)
+						case proto.RogueOptions_WoundPoison:
+							rogue.WoundPoison[VilePoisonsProc].Cast(sim, aoeTarget)
+						case proto.RogueOptions_DeadlyPoison:
+							rogue.DeadlyPoison.Cast(sim, aoeTarget)
+						}
+					}
+					if sim.Proc(ohProcChance, "Vile Poisons FoK OH") {
+						switch rogue.Options.OhImbue {
+						case proto.RogueOptions_InstantPoison:
+							rogue.InstantPoison[VilePoisonsProc].Cast(sim, aoeTarget)
+						case proto.RogueOptions_WoundPoison:
+							rogue.WoundPoison[VilePoisonsProc].Cast(sim, aoeTarget)
+						case proto.RogueOptions_DeadlyPoison:
+							rogue.DeadlyPoison.Cast(sim, aoeTarget)
+						}
+					}
+				}
 			}
 		},
 	})
+}
+
+func getPoisonsProcChance(procMask core.ProcMask, imbue proto.RogueOptions_PoisonImbue, rogue *Rogue) float64 {
+	switch imbue {
+	case proto.RogueOptions_InstantPoison:
+		return rogue.instantPoisonPPMM.Chance(procMask)
+	case proto.RogueOptions_WoundPoison:
+		return rogue.woundPoisonPPMM.Chance(procMask)
+	case proto.RogueOptions_DeadlyPoison:
+		return rogue.GetDeadlyPoisonProcChance()
+	}
+	return 0.0
 }
