@@ -3,6 +3,7 @@ package survival
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/hunter"
 )
 
@@ -23,29 +24,15 @@ func RegisterSurvivalHunter() {
 	)
 }
 
-func (hunter *SurvivalHunter) applyMastery() {
-	// hunter.RegisterAura(core.Aura{
-	// 	Label:    "Essence of the Viper",
-	// 	Duration: core.NeverExpires,
-	// 	OnReset: func(aura *core.Aura, sim *core.Simulation) {
-	// 		aura.Activate(sim)
-	// 	},
-	// 	//Todo: Change to OnMasteryChanged when available
-	// 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 		multiplier := 1.08 + (hunter.Hunter.CalculateMasteryPoints() * 0.01)
-	// 		hunter.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] = multiplier
-	// 		hunter.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] = multiplier
-	// 	},
-	// })
-}
 func (hunter *SurvivalHunter) Initialize() {
 	// Initialize global Hunter spells
 	hunter.Hunter.Initialize()
 
-	// Spec specific spells
-	hunter.applyMastery()
 	hunter.registerExplosiveShotSpell()
 	hunter.registerBlackArrowSpell(hunter.FireTrapTimer)
+}
+func (hunter *SurvivalHunter) getMasteryBonus(mastery float64) float64 {
+	return 1.08 + (mastery * 0.01)
 }
 
 func NewSurvivalHunter(character *core.Character, options *proto.Player) *SurvivalHunter {
@@ -54,8 +41,25 @@ func NewSurvivalHunter(character *core.Character, options *proto.Player) *Surviv
 	svHunter := &SurvivalHunter{
 		Hunter: hunter.NewHunter(character, options, survivalOptions.ClassOptions),
 	}
+	schoolsAffectedBySurvivalMastery := []stats.SchoolIndex{
+		stats.SchoolIndexNature,
+		stats.SchoolIndexFire,
+		stats.SchoolIndexArcane,
+		stats.SchoolIndexFrost,
+	}
 	svHunter.SurvivalOptions = survivalOptions
+	// Todo: Is there a better way to do this?
+	baseMastery := svHunter.GetStat(stats.Mastery)
+	for _, school := range schoolsAffectedBySurvivalMastery {
+		svHunter.PseudoStats.SchoolDamageDealtMultiplier[school] *= svHunter.getMasteryBonus(baseMastery)
+	}
 
+	svHunter.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		for _, school := range schoolsAffectedBySurvivalMastery {
+			svHunter.PseudoStats.SchoolDamageDealtMultiplier[school] /= svHunter.getMasteryBonus(oldMastery)
+			svHunter.PseudoStats.SchoolDamageDealtMultiplier[school] *= svHunter.getMasteryBonus(newMastery)
+		}
+	})
 	return svHunter
 }
 
