@@ -5,7 +5,7 @@ import { element, fragment, ref } from 'tsx-vanilla';
 import { setItemQualityCssClass } from '../css_utils';
 import { IndividualSimUI } from '../individual_sim_ui.js';
 import { Player } from '../player';
-import { Class, GemColor, ItemQuality, ItemSlot, ItemSpec, ItemType } from '../proto/common';
+import { Class, GemColor, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec, ItemType } from '../proto/common';
 import { DatabaseFilters, UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getEnchantDescription, getUniqueEnchantString } from '../proto_utils/enchants';
@@ -631,6 +631,7 @@ export class SelectorModal extends BaseModal {
 			}),
 			randomSuffix => this.player.computeRandomSuffixEP(randomSuffix),
 			equippedItem => equippedItem?.randomSuffix,
+			GemColor.GemColorUnknown,
 			eventID => {
 				const equippedItem = gearData.getEquippedItem();
 				if (equippedItem)
