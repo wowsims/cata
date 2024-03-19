@@ -89,7 +89,7 @@ import (
     output += f"const ParryRatingPerParryChance = {cs.CombatRatings['parry'][BASE_LEVEL-1]}\n"
     output += f"const BlockRatingPerBlockChance = {cs.CombatRatings['block'][BASE_LEVEL-1]}\n"
     output += f"const ResilienceRatingPerCritReductionChance = {cs.CombatRatings['crit taken melee'][BASE_LEVEL-1]}\n"
-    output += f"const MasteryRatingPerMasteryPercent = {cs.CombatRatings['mastery'][BASE_LEVEL-1]}\n"
+    output += f"const MasteryRatingPerMasteryPoint = {cs.CombatRatings['mastery'][BASE_LEVEL-1]}\n"
 
     output += '''var CritPerAgiMaxLevel = map[proto.Class]float64{
 proto.Class_ClassUnknown: 0.0,'''

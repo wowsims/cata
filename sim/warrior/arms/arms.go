@@ -1,8 +1,11 @@
 package arms
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/warrior"
 )
 
@@ -39,26 +42,43 @@ func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarri
 		Options: armsOptions,
 	}
 
-	// rbo := core.RageBarOptions{
-	// 	StartingRage:   armsOptions.ClassOptions.StartingRage,
-	// 	RageMultiplier: core.TernaryFloat64(war.Talents.EndlessRage, 1.25, 1),
-	// }
-	// if mh := war.GetMHWeapon(); mh != nil {
-	// 	rbo.MHSwingSpeed = mh.SwingSpeed
-	// }
-	// if oh := war.GetOHWeapon(); oh != nil {
-	// 	rbo.OHSwingSpeed = oh.SwingSpeed
-	// }
+	rbo := core.RageBarOptions{
+		StartingRage:   armsOptions.ClassOptions.StartingRage,
+		RageMultiplier: 1.25, // Endless Rage is now part of Anger Management, now an Arms specialization ability
+	}
+	if mh := war.GetMHWeapon(); mh != nil {
+		rbo.MHSwingSpeed = mh.SwingSpeed
+	}
+	war.EnableRageBar(rbo)
 
-	// war.EnableRageBar(rbo)
-	// war.EnableAutoAttacks(war, core.AutoAttackOptions{
-	// 	MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
-	// 	OffHand:        war.WeaponFromOffHand(war.DefaultMeleeCritMultiplier()),
-	// 	AutoSwingMelee: true,
-	// 	ReplaceMHSwing: war.TryHSOrCleave,
-	// })
+	war.EnableAutoAttacks(war, core.AutoAttackOptions{
+		MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
+		AutoSwingMelee: true,
+	})
+
+	war.RegisterSpecializationEffects()
 
 	return war
+}
+
+func (war *ArmsWarrior) RegisterSpecializationEffects() {
+	// Strikes of Opportunity
+	war.RegisterMastery()
+
+	// Anger Management (flat rage multiplier is set in the RageBarOptions above) (12296)
+	rageMetrics := war.NewRageMetrics(core.ActionID{SpellID: 12296})
+	war.RegisterResetEffect(func(sim *core.Simulation) {
+		core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+			Period: time.Second * 3,
+			OnAction: func(sim *core.Simulation) {
+				war.AddRage(sim, 1, rageMetrics)
+				war.LastAMTick = sim.CurrentTime
+			},
+		})
+	})
+
+	// Two-Handed Weapon Specialization (12712)
+	war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.12
 }
 
 func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {

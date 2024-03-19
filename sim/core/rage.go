@@ -44,13 +44,13 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 				return
 			}
 
-			var hitFactor float64
+			hitFactor := 6.5
 			var speed float64
 			if spell.ProcMask == ProcMaskMeleeMHAuto {
-				hitFactor = 3.5
 				speed = options.MHSwingSpeed
 			} else if spell.ProcMask == ProcMaskMeleeOHAuto {
-				hitFactor = 1.75
+				// OH hits generate 50% of the rage they would if they were MH hits
+				hitFactor /= 2
 				speed = options.OHSwingSpeed
 			} else {
 				return
@@ -60,14 +60,15 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 				hitFactor *= 2
 			}
 
-			damage := result.Damage
-			if result.Outcome.Matches(OutcomeDodge | OutcomeParry) {
-				// Rage is still generated for dodges/parries, based on the damage it WOULD have done.
-				damage = result.PreOutcomeDamage
-			}
+			// TODO: Cataclysm dodge/parry behavior
+			// damage := result.Damage
+			// if result.Outcome.Matches(OutcomeDodge | OutcomeParry) {
+			// 	// Rage is still generated for dodges/parries, based on the damage it WOULD have done.
+			// 	damage = result.PreOutcomeDamage
+			// }
 
-			// generatedRage is capped for very low damage swings
-			generatedRage := min((damage*7.5/RageFactor+hitFactor*speed)/2, damage*15/RageFactor)
+			// generatedRage in cata is normalized so it only depends on weapon swing speed and some multipliers
+			generatedRage := hitFactor * speed
 
 			generatedRage *= options.RageMultiplier
 
