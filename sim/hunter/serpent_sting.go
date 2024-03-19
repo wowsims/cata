@@ -52,7 +52,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 280 + 0.40*dot.Spell.RangedAttackPower(target)
+				dot.SnapshotBaseDamage = (460 + 0.40*dot.Spell.RangedAttackPower(target)) / 5
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
