@@ -46,7 +46,7 @@ func (rogue *Rogue) registerGarrote() {
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalCrit)
 				if rogue.Talents.VenomousWounds > 0 {
 					vwProcChance := 0.3 * float64(rogue.Talents.VenomousWounds)
 					if sim.Proc(vwProcChance, "Venomous Wounds") {
