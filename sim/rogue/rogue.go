@@ -198,6 +198,11 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 	if rogue.HasSetBonus(Arena, 4) {
 		maxEnergy += 10
 	}
+	if rogue.Spec == proto.Spec_SpecAssassinationRogue &&
+		rogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger &&
+		rogue.GetOHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
+		maxEnergy += 20
+	}
 	rogue.EnableEnergyBar(maxEnergy)
 
 	rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{

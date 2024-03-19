@@ -68,6 +68,19 @@ func (sinRogue *AssassinationRogue) Initialize() {
 			sinRogue.VenomousWounds.DamageMultiplier += masteryEffectChange
 		}
 	})
+
+	// Assassin's Resolve: 20% melee damage
+	// +20 Energy handled in base rogue
+	if sinRogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger &&
+		sinRogue.GetOHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
+		for _, spell := range sinRogue.Spellbook {
+			if spell.Flags.Matches(rogue.SpellFlagBuilder | rogue.SpellFlagFinisher) {
+				spell.DamageMultiplierAdditive += 0.2
+			}
+		}
+		sinRogue.AutoAttacks.MHConfig().DamageMultiplierAdditive += 0.2
+		sinRogue.AutoAttacks.OHConfig().DamageMultiplierAdditive += 0.2
+	}
 }
 
 func NewAssassinationRogue(character *core.Character, options *proto.Player) *AssassinationRogue {
