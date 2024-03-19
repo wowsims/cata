@@ -21,7 +21,7 @@ type Hunter struct {
 	MarksmanshipOptions *proto.MarksmanshipHunter_Options
 	SurvivalOptions     *proto.SurvivalHunter_Options
 
-	pet *HunterPet
+	Pet *HunterPet
 
 	// The most recent time at which moving could have started, for trap weaving.
 	mayMoveAt time.Duration
@@ -95,14 +95,14 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if hunter.Talents.TrueshotAura {
 		raidBuffs.TrueshotAura = true
 	}
-	if hunter.Talents.FerociousInspiration && hunter.pet != nil {
+	if hunter.Talents.FerociousInspiration && hunter.Pet != nil {
 		raidBuffs.FerociousInspiration = true
 	}
 }
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 func (hunter *Hunter) CalculateMasteryPoints() float64 {
-	return hunter.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPercent
+	return hunter.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPoint
 }
 func (hunter *Hunter) CritMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS bool) float64 {
 	primaryModifier := 1.0
@@ -176,7 +176,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 	}
 
-	hunter.pet = hunter.NewHunterPet()
+	hunter.Pet = hunter.NewHunterPet()
 
 	hunter.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 1)

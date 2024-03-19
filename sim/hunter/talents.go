@@ -9,11 +9,11 @@ import (
 )
 
 func (hunter *Hunter) ApplyTalents() {
-	if hunter.pet != nil {
+	if hunter.Pet != nil {
 		hunter.applyFrenzy()
 		hunter.registerBestialWrathCD()
 		// Todo: BM stuff
-		hunter.pet.ApplyTalents()
+		hunter.Pet.ApplyTalents()
 	}
 
 	if hunter.Talents.Pathing > 0 {
@@ -101,37 +101,37 @@ func (hunter *Hunter) applyMasterMarksman() {
 }
 
 func (hunter *Hunter) applySpiritBond() {
-	if hunter.Talents.SpiritBond == 0 || hunter.pet == nil {
+	if hunter.Talents.SpiritBond == 0 || hunter.Pet == nil {
 		return
 	}
 
 	hunter.PseudoStats.HealingTakenMultiplier *= 1 + 0.05*float64(hunter.Talents.SpiritBond)
-	hunter.pet.PseudoStats.HealingTakenMultiplier *= 1 + 0.05*float64(hunter.Talents.SpiritBond)
+	hunter.Pet.PseudoStats.HealingTakenMultiplier *= 1 + 0.05*float64(hunter.Talents.SpiritBond)
 
 	actionID := core.ActionID{SpellID: 20895}
 	healthMultiplier := 0.01 * float64(hunter.Talents.SpiritBond)
 	healthMetrics := hunter.NewHealthMetrics(actionID)
-	petHealthMetrics := hunter.pet.NewHealthMetrics(actionID)
+	petHealthMetrics := hunter.Pet.NewHealthMetrics(actionID)
 
 	hunter.RegisterResetEffect(func(sim *core.Simulation) {
 		core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 			Period: time.Second * 10,
 			OnAction: func(sim *core.Simulation) {
 				hunter.GainHealth(sim, hunter.MaxHealth()*healthMultiplier, healthMetrics)
-				hunter.pet.GainHealth(sim, hunter.pet.MaxHealth()*healthMultiplier, petHealthMetrics)
+				hunter.Pet.GainHealth(sim, hunter.Pet.MaxHealth()*healthMultiplier, petHealthMetrics)
 			},
 		})
 	})
 }
 
 func (hunter *Hunter) applyInvigoration() {
-	if hunter.Talents.Invigoration == 0 || hunter.pet == nil {
+	if hunter.Talents.Invigoration == 0 || hunter.Pet == nil {
 		return
 	}
 
 	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 53253})
 
-	hunter.pet.RegisterAura(core.Aura{
+	hunter.Pet.RegisterAura(core.Aura{
 		Label:    "Invigoration",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -152,28 +152,28 @@ func (hunter *Hunter) applyInvigoration() {
 }
 
 func (hunter *Hunter) applyCobraStrikes() {
-	if hunter.Talents.CobraStrikes == 0 || hunter.pet == nil {
+	if hunter.Talents.CobraStrikes == 0 || hunter.Pet == nil {
 		return
 	}
 
 	actionID := core.ActionID{SpellID: 53260}
 	procChance := 0.05 * float64(hunter.Talents.CobraStrikes)
 
-	hunter.pet.CobraStrikesAura = hunter.pet.RegisterAura(core.Aura{
+	hunter.Pet.CobraStrikesAura = hunter.Pet.RegisterAura(core.Aura{
 		Label:     "Cobra Strikes",
 		ActionID:  actionID,
 		Duration:  time.Second * 10,
 		MaxStacks: 2,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.pet.focusDump.BonusCritRating += 100 * core.CritRatingPerCritChance
-			if hunter.pet.specialAbility != nil {
-				hunter.pet.specialAbility.BonusCritRating += 100 * core.CritRatingPerCritChance
+			hunter.Pet.focusDump.BonusCritRating += 100 * core.CritRatingPerCritChance
+			if hunter.Pet.specialAbility != nil {
+				hunter.Pet.specialAbility.BonusCritRating += 100 * core.CritRatingPerCritChance
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.pet.focusDump.BonusCritRating -= 100 * core.CritRatingPerCritChance
-			if hunter.pet.specialAbility != nil {
-				hunter.pet.specialAbility.BonusCritRating -= 100 * core.CritRatingPerCritChance
+			hunter.Pet.focusDump.BonusCritRating -= 100 * core.CritRatingPerCritChance
+			if hunter.Pet.specialAbility != nil {
+				hunter.Pet.specialAbility.BonusCritRating -= 100 * core.CritRatingPerCritChance
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -195,8 +195,8 @@ func (hunter *Hunter) applyCobraStrikes() {
 			}
 
 			if sim.RandomFloat("Cobra Strikes") < procChance {
-				hunter.pet.CobraStrikesAura.Activate(sim)
-				hunter.pet.CobraStrikesAura.SetStacks(sim, 2)
+				hunter.Pet.CobraStrikesAura.Activate(sim)
+				hunter.Pet.CobraStrikesAura.SetStacks(sim, 2)
 			}
 		},
 	})
@@ -369,7 +369,7 @@ func (hunter *Hunter) applyFrenzy() {
 		return
 	}
 
-	hunter.pet.FrenzyAura = hunter.pet.RegisterAura(core.Aura{
+	hunter.Pet.FrenzyAura = hunter.Pet.RegisterAura(core.Aura{
 		Label:    "Frenzy",
 		Duration: time.Second * 10,
 		MaxStacks: 5,
@@ -380,7 +380,7 @@ func (hunter *Hunter) applyFrenzy() {
 			aura.Unit.MultiplyMeleeSpeed(sim, 1/1.02)
 		},
 	})
-	hunter.pet.RegisterAura(core.Aura{
+	hunter.Pet.RegisterAura(core.Aura{
 		Label: "FrenzyHandler",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -390,14 +390,14 @@ func (hunter *Hunter) applyFrenzy() {
 			if !spell.ProcMask.Matches(core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage) {
 				return
 			}
-			if hunter.pet.FrenzyAura.IsActive() {
-				if hunter.pet.FrenzyAura.GetStacks() != 5 {
-					hunter.pet.FrenzyAura.AddStack(sim)
-					hunter.pet.FrenzyAura.Refresh(sim)
+			if hunter.Pet.FrenzyAura.IsActive() {
+				if hunter.Pet.FrenzyAura.GetStacks() != 5 {
+					hunter.Pet.FrenzyAura.AddStack(sim)
+					hunter.Pet.FrenzyAura.Refresh(sim)
 				}
 			} else {
-				hunter.pet.FrenzyAura.Activate(sim)
-				hunter.pet.FrenzyAura.SetStacks(sim, 1)
+				hunter.Pet.FrenzyAura.Activate(sim)
+				hunter.Pet.FrenzyAura.SetStacks(sim, 1)
 			}
 		},
 	})
@@ -421,19 +421,19 @@ func (hunter *Hunter) applyFocusFireCD(){
 			aura.Activate(sim)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.pet.FrenzyStacksSnapshot = float64(hunter.pet.FrenzyAura.GetStacks())
-			if hunter.pet.FrenzyStacksSnapshot >= 1 {
-				hunter.pet.FrenzyAura.Deactivate(sim)
-				hunter.pet.AddFocus(sim, 4, nil)
-				aura.Unit.MultiplyRangedSpeed(sim, 1 + (float64(hunter.pet.FrenzyStacksSnapshot) * 0.03))
+			hunter.Pet.FrenzyStacksSnapshot = float64(hunter.Pet.FrenzyAura.GetStacks())
+			if hunter.Pet.FrenzyStacksSnapshot >= 1 {
+				hunter.Pet.FrenzyAura.Deactivate(sim)
+				hunter.Pet.AddFocus(sim, 4, nil)
+				aura.Unit.MultiplyRangedSpeed(sim, 1 + (float64(hunter.Pet.FrenzyStacksSnapshot) * 0.03))
 				if sim.Log != nil {
-					hunter.pet.Log(sim, "Consumed %0f stacks of Frenzy for Focus Fire.", hunter.pet.FrenzyStacksSnapshot)
+					hunter.Pet.Log(sim, "Consumed %0f stacks of Frenzy for Focus Fire.", hunter.Pet.FrenzyStacksSnapshot)
 				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.pet.FrenzyStacksSnapshot > 0 {
-				aura.Unit.MultiplyRangedSpeed(sim, 1 / (1 + (float64(hunter.pet.FrenzyStacksSnapshot) * 0.03)))
+			if hunter.Pet.FrenzyStacksSnapshot > 0 {
+				aura.Unit.MultiplyRangedSpeed(sim, 1 / (1 + (float64(hunter.Pet.FrenzyStacksSnapshot) * 0.03)))
 			}
 		},
 	})
@@ -494,7 +494,7 @@ func (hunter *Hunter) applyFervorCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			hunter.AddFocus(sim, 50, focusMetrics)
-			hunter.pet.AddFocus(sim, 50, focusMetrics)
+			hunter.Pet.AddFocus(sim, 50, focusMetrics)
 		},
 	})
 
@@ -513,7 +513,7 @@ func (hunter *Hunter) registerBestialWrathCD() {
 
 	actionID := core.ActionID{SpellID: 19574}
 
-	bestialWrathPetAura := hunter.pet.RegisterAura(core.Aura{
+	bestialWrathPetAura := hunter.Pet.RegisterAura(core.Aura{
 		Label:    "Bestial Wrath Pet",
 		ActionID: actionID,
 		Duration: time.Second * 10,
@@ -575,7 +575,7 @@ func (hunter *Hunter) applyGoForTheThroat() {
 	if hunter.Talents.GoForTheThroat == 0 {
 		return
 	}
-	if hunter.pet == nil {
+	if hunter.Pet == nil {
 		return
 	}
 
@@ -594,10 +594,10 @@ func (hunter *Hunter) applyGoForTheThroat() {
 			if !spell.ProcMask.Matches(core.ProcMaskRangedAuto) || !result.DidCrit() {
 				return
 			}
-			if !hunter.pet.IsEnabled() {
+			if !hunter.Pet.IsEnabled() {
 				return
 			}
-			hunter.pet.AddFocus(sim, amount, focusMetrics)
+			hunter.Pet.AddFocus(sim, amount, focusMetrics)
 		},
 	})
 }

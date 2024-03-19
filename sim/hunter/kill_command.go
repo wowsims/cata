@@ -8,7 +8,7 @@ import (
 )
 
 func (hunter *Hunter) registerKillCommandSpell() {
-	if hunter.pet == nil {
+	if hunter.Pet == nil {
 		return
 	}
 

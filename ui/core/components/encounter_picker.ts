@@ -2,7 +2,6 @@ import { BooleanPicker } from '../components/boolean_picker.js';
 import { EnumPicker } from '../components/enum_picker.js';
 import { ListItemPickerConfig, ListPicker } from '../components/list_picker.js';
 import { NumberPicker } from '../components/number_picker.js';
-import * as Mechanics from '../constants/mechanics.js';
 import { Encounter } from '../encounter.js';
 import { IndividualSimUI } from '../individual_sim_ui.js';
 import { InputType, MobType, SpellSchool, Stat, Target, Target as TargetProto, TargetInput } from '../proto/common.js';
@@ -160,6 +159,7 @@ class AdvancedEncounterModal extends BaseModal {
 			new BooleanPicker<Encounter>(header, encounter, {
 				label: 'Use Health',
 				labelTooltip: 'Uses a damage limit in place of a duration limit. Damage limit is equal to sum of all targets health.',
+				inline: true,
 				changedEvent: (encounter: Encounter) => encounter.changeEmitter,
 				getValue: (encounter: Encounter) => encounter.getUseHealth(),
 				setValue: (eventID: EventID, encounter: Encounter, newValue: boolean) => {
@@ -227,7 +227,6 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 	private readonly dwMissPenaltyPicker: Input<null, boolean>;
 	private readonly parryHastePicker: Input<null, boolean>;
 	private readonly spellSchoolPicker: Input<null, number>;
-	private readonly suppressDodgePicker: Input<null, boolean>;
 	private readonly damageSpreadPicker: Input<null, number>;
 	private readonly targetInputPickers: ListPicker<Encounter, TargetInput>;
 
@@ -401,6 +400,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			label: 'Dual Wield',
 			labelTooltip: 'Uses 2 separate weapons to attack.',
 			inline: true,
+			reverse: true,
 			changedEvent: () => encounter.targetsChangeEmitter,
 			getValue: () => this.getTarget().dualWield,
 			setValue: (eventID: EventID, _: null, newValue: boolean) => {
@@ -413,6 +413,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			labelTooltip:
 				'Enables the Dual Wield Miss Penalty (+19% chance to miss) if dual wielding. Bosses in Hyjal/BT/SWP usually have this disabled to stop tanks from avoidance stacking.',
 			inline: true,
+			reverse: true,
 			changedEvent: () => encounter.targetsChangeEmitter,
 			getValue: () => this.getTarget().dualWieldPenalty,
 			setValue: (eventID: EventID, _: null, newValue: boolean) => {
@@ -425,6 +426,7 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			label: 'Parry Haste',
 			labelTooltip: 'Whether this enemy will gain parry haste when parrying attacks.',
 			inline: true,
+			reverse: true,
 			changedEvent: () => encounter.targetsChangeEmitter,
 			getValue: () => this.getTarget().parryHaste,
 			setValue: (eventID: EventID, _: null, newValue: boolean) => {
@@ -451,18 +453,6 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 				encounter.targetsChangeEmitter.emit(eventID);
 			},
 		});
-		this.suppressDodgePicker = new BooleanPicker(section3, null, {
-			label: 'Chill of the Throne',
-			labelTooltip: "Reduces the chance for this enemy's attacks to be dodged by 20%. Active in Icecrown Citadel.",
-			inline: true,
-			changedEvent: () => encounter.targetsChangeEmitter,
-			getValue: () => this.getTarget().suppressDodge,
-			setValue: (eventID: EventID, _: null, newValue: boolean) => {
-				this.getTarget().suppressDodge = newValue;
-				encounter.targetsChangeEmitter.emit(eventID);
-			},
-			enableWhen: () => this.getTarget().level == Mechanics.BOSS_LEVEL,
-		});
 
 		this.init();
 	}
@@ -478,7 +468,6 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			tankIndex: this.tankIndexPicker.getInputValue(),
 			swingSpeed: this.swingSpeedPicker.getInputValue(),
 			minBaseDamage: this.minBaseDamagePicker.getInputValue(),
-			suppressDodge: this.suppressDodgePicker.getInputValue(),
 			dualWield: this.dualWieldPicker.getInputValue(),
 			dualWieldPenalty: this.dwMissPenaltyPicker.getInputValue(),
 			parryHaste: this.parryHastePicker.getInputValue(),
@@ -502,7 +491,6 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		this.tankIndexPicker.setInputValue(newValue.tankIndex);
 		this.swingSpeedPicker.setInputValue(newValue.swingSpeed);
 		this.minBaseDamagePicker.setInputValue(newValue.minBaseDamage);
-		this.suppressDodgePicker.setInputValue(newValue.suppressDodge);
 		this.dualWieldPicker.setInputValue(newValue.dualWield);
 		this.dwMissPenaltyPicker.setInputValue(newValue.dualWieldPenalty);
 		this.parryHastePicker.setInputValue(newValue.parryHaste);
