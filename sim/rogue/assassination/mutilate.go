@@ -11,13 +11,14 @@ import (
 var MutilateSpellID int32 = 1329
 
 func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
-	actionID := core.ActionID{SpellID: 5374}
+	actionID := core.ActionID{SpellID: MutilateSpellID, Tag: 1}
 	procMask := core.ProcMaskMeleeMHSpecial
 	if !isMH {
-		actionID = core.ActionID{SpellID: 27576}
+		actionID = core.ActionID{SpellID: MutilateSpellID, Tag: 2}
 		procMask = core.ProcMaskMeleeOHSpecial
 	}
-	mutBaseDamage := rogue.RogueBaseDamageScalar*0.17900000513 + 44
+	mutDamageMultiplier := 1.86                                                        // (84 * 1.3220000267 + 75) / 100
+	mutBaseDamage := rogue.RogueBaseDamageScalar * 0.17900000513 * mutDamageMultiplier // This gives a value that matches in-game tooltip... unsure on this logic
 
 	return sinRogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
@@ -31,7 +32,7 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		DamageMultiplierAdditive: 1 +
 			0.1*float64(sinRogue.Talents.Opportunity) +
 			core.TernaryFloat64(sinRogue.HasSetBonus(rogue.Tier6, 4), 0.06, 0),
-		DamageMultiplier: 1.74,
+		DamageMultiplier: mutDamageMultiplier,
 		CritMultiplier:   sinRogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
@@ -43,9 +44,9 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 				baseDamage = mutBaseDamage + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			}
 			// TODO: Add support for all poison effects
-			if sinRogue.DeadlyPoison.Dot(target).IsActive() || sinRogue.WoundPoisonDebuffAuras.Get(target).IsActive() {
-				baseDamage *= 1.2
-			}
+			// if sinRogue.DeadlyPoison.Dot(target).IsActive() || sinRogue.WoundPoisonDebuffAuras.Get(target).IsActive() {
+			// 	baseDamage *= 1.2
+			// }
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
@@ -57,7 +58,7 @@ func (sinRogue *AssassinationRogue) registerMutilateSpell() {
 	sinRogue.MutilateOH = sinRogue.newMutilateHitSpell(false)
 
 	sinRogue.Mutilate = sinRogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: MutilateSpellID},
+		ActionID:    core.ActionID{SpellID: MutilateSpellID, Tag: 0},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,

@@ -313,6 +313,15 @@ export class ActionId {
 					name += ' (Not Self)';
 				}
 				break;
+			case 'Mutilate':
+				if (this.tag == 0) {
+					name += " (Cast)";
+				} else if (this.tag == 1) {
+					name += " (Main Hand)";
+				} else if (this.tag == 2) {
+					name += ' (Off Hand)';
+				}
+				break;
 			case 'Chain Lightning':
 			case 'Lightning Bolt':
 				if (this.tag == 6) {
