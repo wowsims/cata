@@ -43,7 +43,11 @@ func (hunter *Hunter) registerCobraShotSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target)) + (277.21 + spell.RangedAttackPower(target) * 0.017)
-			hunter.AddFocus(sim, 9, csMetrics)
+			focus := 9.0
+			if hunter.Talents.Termination != 0 && target.isi {
+				focus = float64(hunter.Talents.Termination) * 3
+			}
+			hunter.AddFocus(sim, focus, csMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			if hunter.SerpentSting.Dot(target).IsActive() {
 				hunter.SerpentSting.Dot(target).Rollover(sim)

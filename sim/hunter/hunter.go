@@ -92,9 +92,9 @@ func (hunter *Hunter) GetHunter() *Hunter {
 }
 
 func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// if hunter.Talents.TrueshotAura {
-	// 	raidBuffs.TrueshotAura = true
-	// }
+	if hunter.Talents.TrueshotAura {
+		raidBuffs.TrueshotAura = true
+	}
 	if hunter.Talents.FerociousInspiration && hunter.pet != nil {
 		raidBuffs.FerociousInspiration = true
 	}
@@ -119,11 +119,11 @@ func (hunter *Hunter) CritMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS
 }
 
 func (hunter *Hunter) Initialize() {
-	hunter.AutoAttacks.MHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
-	hunter.AutoAttacks.OHConfig().CritMultiplier = 1 //hunter.critMultiplier(false, false, false)
-	hunter.AutoAttacks.RangedConfig().CritMultiplier = 1// hunter.critMultiplier(false, false, false)
+	hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
+	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
+	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
 	hunter.FireTrapTimer = hunter.NewTimer()
-	hunter.registerSteadyShotSpell() // Todo: Probably add a counter so we can check for imp ss?
+	hunter.registerSteadyShotSpell()
 	hunter.registerArcaneShotSpell()
 	hunter.registerKillShotSpell()
 	hunter.registerAspectOfTheHawkSpell()

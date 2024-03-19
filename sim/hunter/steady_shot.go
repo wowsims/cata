@@ -50,7 +50,11 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 				}
 			}
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target)) + (280 + spell.RangedAttackPower(target) * 0.021)
-			hunter.AddFocus(sim, 9, ssMetrics)
+			focus := 9.0
+			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
+				focus = float64(hunter.Talents.Termination) * 3
+			}
+			hunter.AddFocus(sim, focus, ssMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			spell.DealDamage(sim, result)
 		},

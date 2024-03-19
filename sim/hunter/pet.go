@@ -45,7 +45,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	//Todo: Verify this
 	// base_focus_regen_per_second  = ( 24.5 / 4.0 );
     // base_focus_regen_per_second *= 1.0 + o -> talents.bestial_discipline -> effect1().percent();
-    baseFocusPerSecond  := ( 24.5 / 4.0 );
+    baseFocusPerSecond  := 24.5 / 4.0;
     baseFocusPerSecond *= 1.0 + (0.10 * float64(hunter.Talents.BestialDiscipline));
 	hp.EnableFocusBar(100 + (float64(hunter.Talents.KindredSpirits) *5), baseFocusPerSecond, false)
 
