@@ -32,13 +32,8 @@ func (hunter *Hunter) registerCobraShotSpell() {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / ss)
 			},
 		},
-
-		// BonusCritRating: 0 +
-		// 	2*core.CritRatingPerCritChance*float64(hunter.Talents.SurvivalInstincts),
-		//DamageMultiplierAdditive: 1,
 		DamageMultiplier: 1,
-		// 	hunter.markedForDeathMultiplier(),
-		CritMultiplier: hunter.CritMultiplier(true, true, false), // what is this
+		CritMultiplier: hunter.CritMultiplier(true, true, false),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
