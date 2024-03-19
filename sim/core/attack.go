@@ -376,9 +376,10 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ProcMask:    ProcMaskMeleeOHAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: 1,
-		CritMultiplier:   options.OffHand.CritMultiplier,
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           options.OffHand.CritMultiplier,
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) +
@@ -394,9 +395,10 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ProcMask:    ProcMaskRangedAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
 
-		DamageMultiplier: 1,
-		CritMultiplier:   options.Ranged.CritMultiplier,
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           options.Ranged.CritMultiplier,
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +

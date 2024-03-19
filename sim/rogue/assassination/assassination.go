@@ -80,6 +80,7 @@ func (sinRogue *AssassinationRogue) Initialize() {
 		}
 		sinRogue.AutoAttacks.MHConfig().DamageMultiplierAdditive += 0.2
 		sinRogue.AutoAttacks.OHConfig().DamageMultiplierAdditive += 0.2
+		sinRogue.AutoAttacks.RangedConfig().DamageMultiplierAdditive += 0.2
 	}
 }
 
