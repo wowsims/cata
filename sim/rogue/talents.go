@@ -61,13 +61,6 @@ func (rogue *Rogue) dwsMultiplier() float64 {
 	return core.TernaryFloat64(rogue.Spec == proto.Spec_SpecCombatRogue, 1.75, 1)
 }
 
-func getRelentlessStrikesSpellID(talentPoints int32) int32 {
-	if talentPoints == 1 {
-		return 14179
-	}
-	return 58420 + talentPoints
-}
-
 func (rogue *Rogue) makeFinishingMoveEffectApplier() func(sim *core.Simulation, numPoints int32) {
 	ruthlessnessMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 14161})
 	relentlessStrikesMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 14179})

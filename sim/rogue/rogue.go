@@ -174,7 +174,7 @@ func (rogue *Rogue) Reset(sim *core.Simulation) {
 func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {
 	var secondaryModifier float64
 	if applyLethality {
-		secondaryModifier += 0.06 * float64(rogue.Talents.Lethality)
+		secondaryModifier += 0.1 * float64(rogue.Talents.Lethality)
 	}
 	return rogue.Character.MeleeCritMultiplier(1.0, secondaryModifier)
 }

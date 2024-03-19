@@ -42,6 +42,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		ProcMask:    core.ProcMaskWeaponProc,
 
 		DamageMultiplier: 1 + 0.12*float64(rogue.Talents.VilePoisons),
+		CritMultiplier:   1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -73,12 +74,13 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 				if stacks := dot.GetStacks(); stacks > 0 {
 					dot.SnapshotBaseDamage = (135 + 0.035*dot.Spell.MeleeAttackPower()) * float64(stacks)
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+					dot.SnapshotCritChance = dot.Spell.SpellCritChance(attackTable.Defender)
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				}
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				if energyMetrics != nil && result.Landed() {
 					rogue.AddEnergy(sim, 1, energyMetrics)
 				}
@@ -86,7 +88,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHitAndCrit)
 			if !result.Landed() {
 				return
 			}
