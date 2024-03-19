@@ -58,6 +58,7 @@ type Rogue struct {
 	ColdBlood        *core.Spell
 	Vanish           *core.Spell
 	VenomousWounds   *core.Spell
+	Vendetta         *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
