@@ -28,18 +28,19 @@
 }
 
 .form-check {
-	padding: 0;
+	justify-content: flex-start !important;
 
 	&.form-check-reverse {
-		justify-content: flex-start;
-
-		.form-check-input {
-			margin: 0;
-		}
+		justify-content: space-between !important;
 
 		.form-label {
-			margin-left: map-get($spacers, 1);
+			margin-left: 0;
+			text-align: left;
 		}
+	}
+
+	.form-label {
+		margin-left: map-get($spacers, 2);
 	}
 }
 
