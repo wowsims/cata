@@ -670,6 +670,7 @@ func (hunter *Hunter) applySniperTraining() {
 		ActionID: core.ActionID{SpellID: 53304},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.AddStatDynamic(sim, stats.Mastery, 1000)
 			if hunter.SteadyShot != nil {
 				hunter.SteadyShot.DamageMultiplierAdditive += dmgMod
 			}
