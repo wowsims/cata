@@ -18,7 +18,7 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskRangedSpecial,
-		
+
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
 			Cost: 35,
@@ -34,22 +34,15 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 +
-			.10*float64(hunter.Talents.TrapMastery),
-		DamageMultiplier: 1,
+		DamageMultiplierAdditive: 1,
+		DamageMultiplier: 1 + .10 * float64(hunter.Talents.TrapMastery),
 		ThreatMultiplier: 1,
-		CritMultiplier: (0.5) * ( 1 + float64(hunter.Talents.Toxicology) * 0.5), //Todo: SimC, is this crit damage multiplier?
-		
+		CritMultiplier:  hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology) * 0.5) , //Todo: SimC, is this crit damage multiplier?
+
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "BlackArrow-3674",
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= 1.06
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= 1.06
-				},
+				Label: "Black Arrow Dot",
 			},
 			NumberOfTicks: 10,
 			TickLength:    time.Second * 2,
@@ -58,15 +51,16 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 				//  66.5% RAP + 2849 (total damage) - changed 6/28 in 4.2 (based off spell crit multiplier, modified by toxicology)
 				// https://wago.tools/db2/SpellEffect?build=4.4.0.53750&filter[SpellID]=exact%3A3674&page=1
 				baseDamage := 2849.0
-				rap := dot.Spell.Unit.GetStat(stats.RangedAttackPower) + dot.Spell.Unit.PseudoStats.MobTypeAttackPower
+				rap := dot.Spell.Unit.GetStat(stats.RangedAttackPower)
 				percentageOfRAP := 0.665
 
 				// SnapshotBaseDamage calculation for the DoT, divided by 10 to spread across all ticks
-				dot.SnapshotBaseDamage = (baseDamage / 10) + (percentageOfRAP * rap)
+				dot.SnapshotBaseDamage = baseDamage + (percentageOfRAP * rap) / 10
+
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeMagicHitAndSnapshotCrit)
 			},
 		},
 

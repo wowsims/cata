@@ -33,7 +33,8 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (0.61 * hunter.GetRangedWeapon().WeaponDamageMax) + 0.0483 * spell.RangedAttackPower(target)
+			wepDmg := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target))
+			baseDamage := wepDmg + (0.0483 * spell.RangedAttackPower(target))
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.DealDamage(sim, result)

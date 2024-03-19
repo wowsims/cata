@@ -37,10 +37,9 @@ func (hunter *MarksmanshipHunter) registerAimedShotSpell(timer *core.Timer) {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.2*spell.RangedAttackPower(target) +
-				hunter.AutoAttacks.Ranged().BaseDamage(sim) +
-				spell.BonusWeaponDamage() +
-				408
+			wepDmg := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target))
+			rap := spell.RangedAttackPower(target) * 0.724 + 766
+			baseDamage := ((wepDmg + rap) * 1.6) + 100
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	})

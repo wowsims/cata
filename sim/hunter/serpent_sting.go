@@ -33,7 +33,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			0.15*float64(hunter.Talents.ImprovedSerpentSting),
 		// according to in-game testing (which happens to match the wowhead 60% mortal shots flag on wowhead)
 		// serpent-sting gets 60% crit modifier instead of 30% crit modifier from mortal shots
-		CritMultiplier:   hunter.MeleeCritMultiplier(1, 1 + (float64(hunter.Talents.Toxicology)*0.5)),
+		CritMultiplier:   hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology) * 0.5),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -42,7 +42,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 				Tag:   "SerpentSting",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= noxiousStingsMultiplier
-					
+
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= noxiousStingsMultiplier
@@ -52,7 +52,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 242 + 0.04*dot.Spell.RangedAttackPower(target)
+				dot.SnapshotBaseDamage = 280 + 0.40*dot.Spell.RangedAttackPower(target)
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)

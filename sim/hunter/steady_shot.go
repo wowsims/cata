@@ -48,7 +48,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 					hunter.ImprovedSteadyShotAuraCounter.Activate(sim)
 				}
 			}
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280 + spell.RangedAttackPower(target) * 0.021)
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target)) + (280 + spell.RangedAttackPower(target) * 0.021)
 			hunter.AddFocus(sim, 9, ssMetrics)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			spell.DealDamage(sim, result)

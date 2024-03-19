@@ -36,6 +36,7 @@ func (hunter *SurvivalHunter) Initialize() {
 		stats.SchoolIndexFire,
 		stats.SchoolIndexArcane,
 		stats.SchoolIndexFrost,
+		stats.SchoolIndexShadow,
 	}
 
 	baseMastery := hunter.GetStat(stats.Mastery)
@@ -51,7 +52,7 @@ func (hunter *SurvivalHunter) Initialize() {
 	})
 }
 func (hunter *SurvivalHunter) getMasteryBonus(mastery float64) float64 {
-	return 1.08 + (mastery * 0.01)
+	return 1.08 + ((mastery / core.MasteryRatingPerMasteryPercent) * 0.01)
 }
 
 func NewSurvivalHunter(character *core.Character, options *proto.Player) *SurvivalHunter {
