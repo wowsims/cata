@@ -4,12 +4,16 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (hunter *Hunter) registerArcaneShotSpell() {
 
 	//var manaMetrics *core.ResourceMetrics
-
+	dmgMultiplier := 1.0
+	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfArcaneShot) {
+		dmgMultiplier = 1.12
+	}
 	hunter.ArcaneShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 3044},
 		SpellSchool: core.SpellSchoolArcane,
@@ -28,7 +32,7 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 
 		BonusCritRating: 0, //2*core.CritRatingPerCritChance*float64(hunter.Talents.SurvivalInstincts),
 		DamageMultiplierAdditive: 1,
-		DamageMultiplier: 1,
+		DamageMultiplier: dmgMultiplier,
 		CritMultiplier:  1,// hunter.critMultiplier(true, true, false),
 		ThreatMultiplier: 1,
 

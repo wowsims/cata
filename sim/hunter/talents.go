@@ -77,21 +77,6 @@ func (hunter *Hunter) ApplyTalents() {
 	hunter.registerReadinessCD()
 	hunter.applyMasterMarksman()
 }
-		// OnGain: func(aura *core.Aura, sim *core.Simulation) {
-		// 	if hunter.ExplosiveShot != nil {
-		// 		hunter.ExplosiveShot.CostMultiplier -= 1
-		// 	}
-		// },
-		// OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-		// 	if hunter.ExplosiveShot != nil {
-		// 		hunter.ExplosiveShot.CostMultiplier += 1
-		// 	}
-		// },
-		// OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		// 	if spell == hunter.ExplosiveShot {
-		// 		aura.RemoveStack(sim)
-		// 	}
-		// },
 func (hunter *Hunter) applyMasterMarksman() {
 	if hunter.Talents.MasterMarksman == 0 {
 		return

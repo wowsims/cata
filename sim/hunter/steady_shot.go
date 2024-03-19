@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (hunter *Hunter) registerSteadyShotSpell() {
@@ -36,7 +37,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 
 		// BonusCritRating: 0 +
 		// 	2*core.CritRatingPerCritChance*float64(hunter.Talents.SurvivalInstincts),
-		DamageMultiplierAdditive: 1,
+		DamageMultiplierAdditive: 1 + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSteadyShot), 0.1, 0),
 		DamageMultiplier: 0.62,
 		// 	hunter.markedForDeathMultiplier(),
 		CritMultiplier:1,//   hunter.critMultiplier(true, true, false), // what is this

@@ -4,9 +4,33 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (hunter *Hunter) registerKillShotSpell() {
+	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfKillShot) {
+		icd := core.Cooldown{
+			Timer:    hunter.NewTimer(),
+			Duration: time.Second * 6,
+		}
+		ksReset := hunter.RegisterAura(core.Aura{
+			Icd: &icd,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.KillShot.CD.Reset()
+			},
+		})
+		hunter.RegisterAura(core.Aura{
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell == hunter.KillShot {
+					ksReset.Activate(sim)
+				}
+			},
+		})
+	}
+
 	hunter.KillShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 53351},
 		SpellSchool: core.SpellSchoolPhysical,

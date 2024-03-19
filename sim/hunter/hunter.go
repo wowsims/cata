@@ -43,6 +43,8 @@ type Hunter struct {
 	SteadyShot      *core.Spell
 	ScorpidSting    *core.Spell
 	SilencingShot   *core.Spell
+	TrapLauncher 	*core.Spell
+
 	// BM only spells
 
 	// MM only spells
@@ -69,6 +71,7 @@ type Hunter struct {
 	KillingStreakAura 	*core.Aura
 	MasterMarksmanAura *core.Aura
 	MasterMarksmanCounterAura *core.Aura
+	TrapLauncherAura 	*core.Aura
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {
@@ -132,6 +135,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerRapidFireCD()
 	hunter.registerSilencingShotSpell()
 	hunter.registerRaptorStrikeSpell()
+	hunter.registerTrapLauncher()
 }
 
 func (hunter *Hunter) Reset(_ *core.Simulation) {

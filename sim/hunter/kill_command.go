@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (hunter *Hunter) registerKillCommandSpell() {
@@ -22,7 +23,7 @@ func (hunter *Hunter) registerKillCommandSpell() {
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
-			Cost: 40, // Todo: Check if changed by other stuff
+			Cost: 40 - core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfKillCommand), 3, 0), // Todo: Check if changed by other stuff
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

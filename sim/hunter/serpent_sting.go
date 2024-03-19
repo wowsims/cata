@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (hunter *Hunter) registerSerpentStingSpell() {
@@ -27,7 +28,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 
 		// Need to specially apply LethalShots here, because this spell uses an empty proc mask
 		//TOdo: add glyph of serpent sting modifier *6percent crit chance
-		BonusCritRating: 1 * core.CritRatingPerCritChance * float64(hunter.Talents.ImprovedSerpentSting),
+		BonusCritRating: 1 * (core.CritRatingPerCritChance * float64(hunter.Talents.ImprovedSerpentSting)) + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSerpentSting), 0.06, 0),
 
 		DamageMultiplierAdditive: 1 + 0.15*float64(hunter.Talents.ImprovedSerpentSting),
 		// according to in-game testing (which happens to match the wowhead 60% mortal shots flag on wowhead)
