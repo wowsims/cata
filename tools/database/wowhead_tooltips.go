@@ -162,7 +162,7 @@ var spiritRegex = regexp.MustCompile(`<!--stat6-->\+([0-9]+) Spirit`)
 var staminaRegex = regexp.MustCompile(`<!--stat7-->\+([0-9]+) Stamina`)
 var spellPowerRegex = regexp.MustCompile(`Increases spell power by ([0-9]+)\.`)
 var spellPowerRegex2 = regexp.MustCompile(`Increases spell power by <!--rtg45-->([0-9]+)\.`)
-var masteryRegex = regexp.MustCompile(`<!--rtg49-->\+([0-9]+) Mastery`)
+var masteryRegex = regexp.MustCompile(`<!--rtg49-->([0-9]+)\s*Mastery`)
 
 /*
 // Not sure these exist anymore?
