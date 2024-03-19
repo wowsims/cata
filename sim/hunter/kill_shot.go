@@ -13,25 +13,17 @@ func (hunter *Hunter) registerKillShotSpell() {
 			Timer:    hunter.NewTimer(),
 			Duration: time.Second * 6,
 		}
-		ksReset := hunter.RegisterAura(core.Aura{
-			Label: "Kill Shot Glyph",
-			Icd: &icd,
-			Duration: time.Second,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.KillShot.CD.Reset()
-			},
-		})
 		hunter.RegisterAura(core.Aura{
-			Label: "Kill Shot Glyph Activator",
+			Label:    "Kill Shot Glyph",
 			Duration: core.NeverExpires,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell == hunter.KillShot {
-					if ksReset.Icd.IsReady(sim) {
-						ksReset.Icd.Use(sim)
-						ksReset.Activate(sim)
+					if icd.IsReady(sim) {
+						icd.Use(sim)
+						hunter.KillShot.CD.Reset()
 					}
 				}
 			},
@@ -54,16 +46,16 @@ func (hunter *Hunter) registerKillShotSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Second*10,
+				Duration: time.Second * 10,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return sim.IsExecutePhase20()
 		},
 
-		BonusCritRating: 0 + 5 * core.CritRatingPerCritChance*float64(hunter.Talents.SniperTraining),
-		DamageMultiplier: 1, //
-		CritMultiplier: 1,//  hunter.critMultiplier(true, true, false),
+		BonusCritRating:  0 + 5*core.CritRatingPerCritChance*float64(hunter.Talents.SniperTraining),
+		DamageMultiplier: 1.5, //
+		CritMultiplier:   1,   //  hunter.critMultiplier(true, true, false),
 		ThreatMultiplier: 1,
 		// https://web.archive.org/web/20120207222124/http://elitistjerks.com/f74/t110306-hunter_faq_cataclysm_edition_read_before_asking_questions/
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -72,7 +64,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 			rapBonusDamage := spell.RangedAttackPower(target) * 0.45
 			flatBonus := 543.0
 
-			baseDamage := (normalizedWeaponDamage + rapBonusDamage + flatBonus) * 1.5
+			baseDamage := normalizedWeaponDamage + rapBonusDamage + flatBonus
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	})

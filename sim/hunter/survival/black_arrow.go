@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
@@ -19,7 +18,7 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskRangedSpecial,
 
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags: core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
 			Cost: 35,
 		},
@@ -34,10 +33,9 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 + .10 * float64(hunter.Talents.TrapMastery),
-		ThreatMultiplier: 1,
-		CritMultiplier:  hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology) * 0.5) , //Todo: SimC, is this crit damage multiplier?
-
+		DamageMultiplierAdditive: 1 + .10*float64(hunter.Talents.TrapMastery),
+		ThreatMultiplier:         1,
+		CritMultiplier:           hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology)*0.5),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -50,11 +48,11 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 				//  66.5% RAP + 2849 (total damage) - changed 6/28 in 4.2 (based off spell crit multiplier, modified by toxicology)
 				// https://wago.tools/db2/SpellEffect?build=4.4.0.53750&filter[SpellID]=exact%3A3674&page=1
 				baseDamage := 2849.0
-				rap := dot.Spell.Unit.GetStat(stats.RangedAttackPower)
+				rap := dot.Spell.RangedAttackPower(target)
 				percentageOfRAP := 0.665
 
 				// SnapshotBaseDamage calculation for the DoT, divided by 10 to spread across all ticks
-				dot.SnapshotBaseDamage = baseDamage + (percentageOfRAP * rap) / 10
+				dot.SnapshotBaseDamage = baseDamage + (percentageOfRAP*rap)/10
 
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},

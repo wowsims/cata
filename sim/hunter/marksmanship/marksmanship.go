@@ -72,8 +72,7 @@ func NewMarksmanshipHunter(character *core.Character, options *proto.Player) *Ma
 func (mmHunter *MarksmanshipHunter) Initialize() {
 	mmHunter.Hunter.Initialize()
 
-	mmHunter.aimedShotTimer = mmHunter.NewTimer()
-	mmHunter.registerAimedShotSpell(mmHunter.aimedShotTimer)
+	mmHunter.registerAimedShotSpell()
 	mmHunter.registerChimeraShotSpell()
 	mmHunter.applyMastery()
 }

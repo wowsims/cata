@@ -15,8 +15,8 @@ const FocusTickDuration = time.Millisecond * 200
 type focusBar struct {
 	unit *Unit
 
-	maxFocus     float64
-	currentFocus float64
+	maxFocus           float64
+	currentFocus       float64
 	baseFocusPerSecond float64
 
 	// List of focus levels that might affect APL decisions. E.g:
@@ -29,26 +29,26 @@ type focusBar struct {
 	cumulativeFocusDecisionThresholds []int
 
 	nextFocusTick time.Duration
-	isPlayer bool
+	isPlayer      bool
 
 	// Multiplies focus regen from ticks.
 	FocusTickMultiplier float64
 
-	regenMetrics        *ResourceMetrics
-	FocusRefundMetrics *ResourceMetrics
+	regenMetrics       *ResourceMetrics
+	focusRefundMetrics *ResourceMetrics
 }
 
 func (unit *Unit) EnableFocusBar(maxFocus float64, baseFocusPerSecond float64, isPlayer bool) {
 	unit.SetCurrentPowerBar(FocusBar)
 
 	unit.focusBar = focusBar{
-		unit:                 unit,
+		unit:                unit,
 		maxFocus:            max(100, maxFocus),
 		FocusTickMultiplier: 1,
-		isPlayer: isPlayer,
-		baseFocusPerSecond: baseFocusPerSecond,
-		regenMetrics:         unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionFocusRegen}),
-		FocusRefundMetrics:  unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
+		isPlayer:            isPlayer,
+		baseFocusPerSecond:  baseFocusPerSecond,
+		regenMetrics:        unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionFocusRegen}),
+		focusRefundMetrics:  unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
 	}
 }
 
@@ -130,19 +130,21 @@ func (fb *focusBar) CurrentFocus() float64 {
 func (fb *focusBar) NextFocusTickAt() time.Duration {
 	return fb.nextFocusTick
 }
+
 // Returns the rate of focus regen per second from melee haste.
 // Todo: Verify that this is actually how it works. Check simc code below
 // player_t::focus_regen_per_second =========================================
 // double player_t::focus_regen_per_second() const
-// {
-//   double r = base_focus_regen_per_second * ( 1.0 / composite_attack_haste() );
-//   return r;
-// }
+//
+//	{
+//	  double r = base_focus_regen_per_second * ( 1.0 / composite_attack_haste() );
+//	  return r;
+//	}
 func (fb *focusBar) FocusRegenPerTick() float64 {
-    ticksPerSecond := float64(time.Second) / float64(FocusTickDuration)
-    hastePercent := fb.unit.RangedSwingSpeed()
+	ticksPerSecond := float64(time.Second) / float64(FocusTickDuration)
+	hastePercent := fb.unit.RangedSwingSpeed()
 	tick := fb.baseFocusPerSecond * hastePercent / ticksPerSecond
-    return tick
+	return tick
 }
 
 func (fb *focusBar) onFocusGain(sim *Simulation, crossedThreshold bool) {
@@ -184,10 +186,10 @@ func (fb *focusBar) SpendFocus(sim *Simulation, amount float64, metrics *Resourc
 	}
 
 	newFocus := fb.currentFocus - amount
-	//metrics.AddEvent(-amount, -amount)
+	metrics.AddEvent(-amount, -amount)
 
 	if sim.Log != nil {
-		//fb.unit.Log(sim, "Spent %0.3f focus from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, fb.currentFocus, newFocus)
+		fb.unit.Log(sim, "Spent %0.3f focus from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, fb.currentFocus, newFocus)
 	}
 
 	fb.currentFocus = newFocus
@@ -238,21 +240,21 @@ type FocusCostOptions struct {
 }
 
 type FocusCost struct {
-	Refund            float64
-	RefundMetrics     *ResourceMetrics
-	ResourceMetrics   *ResourceMetrics
+	Refund          float64
+	RefundMetrics   *ResourceMetrics
+	ResourceMetrics *ResourceMetrics
 }
 
 func newFocusCost(spell *Spell, options FocusCostOptions) *FocusCost {
 	spell.DefaultCast.Cost = options.Cost
 	if options.Refund > 0 && options.RefundMetrics == nil {
-		options.RefundMetrics = spell.Unit.FocusRefundMetrics
+		options.RefundMetrics = spell.Unit.focusRefundMetrics
 	}
 
 	return &FocusCost{
-		Refund:            options.Refund,
-		RefundMetrics:     options.RefundMetrics,
-		ResourceMetrics:   spell.Unit.NewFocusMetrics(spell.ActionID),
+		Refund:          options.Refund,
+		RefundMetrics:   options.RefundMetrics,
+		ResourceMetrics: spell.Unit.NewFocusMetrics(spell.ActionID),
 	}
 }
 

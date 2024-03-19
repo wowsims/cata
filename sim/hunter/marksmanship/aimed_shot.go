@@ -7,15 +7,16 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (hunter *MarksmanshipHunter) registerAimedShotSpell(timer *core.Timer) {
+func (hunter *MarksmanshipHunter) registerAimedShotSpell() {
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfAimedShot) {
 		focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 42897})
 		hunter.RegisterAura(core.Aura{
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == hunter.AimedShot && result.DidCrit() {
-				hunter.AddFocus(sim, 5, focusMetrics)
-			}
-		},
+			Label: "Glyph of Aimed Shot",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell == hunter.AimedShot && result.DidCrit() {
+					hunter.AddFocus(sim, 5, focusMetrics)
+				}
+			},
 		})
 	}
 	hunter.AimedShot = hunter.RegisterSpell(core.SpellConfig{
@@ -41,16 +42,14 @@ func (hunter *MarksmanshipHunter) registerAimedShotSpell(timer *core.Timer) {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
 			},
 		},
-		BonusCritRating: 0 +
-			core.TernaryFloat64(hunter.Talents.TrueshotAura, 10*core.CritRatingPerCritChance, 0),
 		DamageMultiplierAdditive: 1,
-		DamageMultiplier: 1,
-		CritMultiplier:   hunter.CritMultiplier(true, true, false),
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		CritMultiplier:           hunter.CritMultiplier(true, true, false),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			wepDmg := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target))
-			rap := spell.RangedAttackPower(target) * 0.724 + 766
+			rap := spell.RangedAttackPower(target)*0.724 + 766
 			baseDamage := ((wepDmg + rap) * 1.6) + 100
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},

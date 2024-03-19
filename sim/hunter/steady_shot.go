@@ -23,7 +23,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      time.Second,
-				CastTime: time.Second * 2,
+				CastTime: time.Millisecond*2000 - core.TernaryDuration(hunter.HasSetBonus(ItemSetLightningChargedBattleGear, 4), time.Millisecond*200, 0),
 			},
 			IgnoreHaste: true,
 			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
@@ -36,9 +36,9 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		},
 
 		DamageMultiplierAdditive: 1 + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSteadyShot), 0.1, 0),
-		DamageMultiplier: 0.62,
-		CritMultiplier: hunter.CritMultiplier(true, false, false),
-		ThreatMultiplier: 1,
+		DamageMultiplier:         0.62,
+		CritMultiplier:           hunter.CritMultiplier(true, false, false),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if hunter.Talents.ImprovedSteadyShot > 0 {
@@ -46,14 +46,13 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 					hunter.ImprovedSteadyShotAuraCounter.Activate(sim)
 				}
 			}
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target)) + (280 + spell.RangedAttackPower(target) * 0.021)
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target)) + (280 + spell.RangedAttackPower(target)*0.021)
 			focus := 9.0
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
 				focus = float64(hunter.Talents.Termination) * 3
 			}
 			hunter.AddFocus(sim, focus, ssMetrics)
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-			spell.DealDamage(sim, result)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	})
 }

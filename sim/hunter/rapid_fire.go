@@ -10,10 +10,8 @@ import (
 func (hunter *Hunter) registerRapidFireCD() {
 	actionID := core.ActionID{SpellID: 3045}
 
-	var focusMetrics *core.ResourceMetrics
-	if hunter.Talents.RapidRecuperation > 0 {
-		focusMetrics = hunter.NewFocusMetrics(core.ActionID{SpellID: 53232})
-	}
+	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 53232})
+	var focusPA *core.PendingAction
 
 	hasteMultiplier := 1.4 + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfRapidFire), 0.1, 0)
 
@@ -24,17 +22,17 @@ func (hunter *Hunter) registerRapidFireCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.MultiplyRangedSpeed(sim, hasteMultiplier)
 
-			if focusMetrics != nil {
-				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-					Period:   time.Second * 3,
-					NumTicks: 5,
-					OnAction: func(sim *core.Simulation) {
-						hunter.AddFocus(sim, 6 * float64(hunter.Talents.RapidRecuperation), focusMetrics)
-					},
-				})
-			}
+			focusPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period:   time.Second * 3,
+				NumTicks: 5,
+				OnAction: func(sim *core.Simulation) {
+					hunter.AddFocus(sim, 6*float64(hunter.Talents.RapidRecuperation), focusMetrics)
+				},
+			})
+
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			focusPA.Cancel(sim)
 			aura.Unit.MultiplyRangedSpeed(sim, 1/hasteMultiplier)
 		},
 	})

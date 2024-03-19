@@ -20,15 +20,15 @@ func (hunter *Hunter) registerMultiShotSpell(timer *core.Timer) {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD:      time.Second,
+				GCD: time.Second,
 			},
 		},
 
-		BonusCritRating: 0,
+		BonusCritRating:          0,
 		DamageMultiplierAdditive: 1,
-		DamageMultiplier: 1.2,
-		CritMultiplier:   hunter.CritMultiplier(true, false, false),
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1.2,
+		CritMultiplier:           hunter.CritMultiplier(true, false, false),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			sharedDmg := hunter.AutoAttacks.Ranged().BaseDamage(sim) +

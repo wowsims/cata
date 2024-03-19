@@ -10,6 +10,9 @@ import (
 func (hunter *Hunter) registerSerpentStingSpell() {
 	noxiousStingsMultiplier := 1 + 0.05*float64(hunter.Talents.NoxiousStings)
 
+	impSSCritChance := float64(hunter.Talents.ImprovedSerpentSting) * 5
+	impSSCritChance += core.TernaryFloat64(hunter.HasSetBonus(ItemSetLightningChargedBattleGear, 2), 5, 0)
+
 	hunter.SerpentSting = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1978},
 		SpellSchool: core.SpellSchoolNature,
@@ -25,15 +28,12 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 		},
-
-		// Need to specially apply LethalShots here, because this spell uses an empty proc mask
-		//TOdo: add glyph of serpent sting modifier *6percent crit chance
-		BonusCritRating: 1 * (core.CritRatingPerCritChance * float64(hunter.Talents.ImprovedSerpentSting)) + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSerpentSting), 0.06, 0),
+		BonusCritRating: impSSCritChance + impSSCritChance + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSerpentSting), 6, 0)*core.CritRatingPerCritChance,
 
 		DamageMultiplierAdditive: 1 + 0.15*float64(hunter.Talents.ImprovedSerpentSting),
 		// according to in-game testing (which happens to match the wowhead 60% mortal shots flag on wowhead)
 		// serpent-sting gets 60% crit modifier instead of 30% crit modifier from mortal shots
-		CritMultiplier:   hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology) * 0.5),
+		CritMultiplier:   hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology)*0.5),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

@@ -19,7 +19,7 @@ func (hunter *Hunter) registerSilencingShotSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
-			Cost:   0,
+			Cost: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -36,7 +36,7 @@ func (hunter *Hunter) registerSilencingShotSpell() {
 			// Silencing Shot does nothing in wotlk for damage except maybe restore 10 focus
 			if hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfSilencingShot) {
 				focusMetics := hunter.NewFocusMetrics(core.ActionID{SpellID: 34490})
-				hunter.AddFocus(sim, 10, focusMetics);
+				hunter.AddFocus(sim, 10, focusMetics)
 			}
 		},
 	})

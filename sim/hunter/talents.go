@@ -17,7 +17,7 @@ func (hunter *Hunter) ApplyTalents() {
 	}
 
 	if hunter.Talents.Pathing > 0 {
-		bonus := 0.01*float64(hunter.Talents.Pathing)
+		bonus := 0.01 * float64(hunter.Talents.Pathing)
 		hunter.MultiplyCastSpeed(bonus) //Todo: Should this be attackspeed?
 	}
 
@@ -205,7 +205,7 @@ func (hunter *Hunter) applyTermination() {
 	if hunter.Talents.Termination == 0 {
 		return
 	}
-		hunter.RegisterAura(core.Aura{
+	hunter.RegisterAura(core.Aura{
 		Label:    "Termination",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -281,7 +281,7 @@ func (hunter *Hunter) applyImprovedSteadyShot() {
 	if hunter.Talents.ImprovedSteadyShot == 0 {
 		return
 	}
-		hunter.ImprovedSteadyShotAura = hunter.RegisterAura(core.Aura{
+	hunter.ImprovedSteadyShotAura = hunter.RegisterAura(core.Aura{
 		Label:     "Improved Steady Shot",
 		ActionID:  core.ActionID{SpellID: 53221},
 		Duration:  time.Second * 8,
@@ -292,7 +292,7 @@ func (hunter *Hunter) applyImprovedSteadyShot() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			attackspeedMultiplier := 1 + (float64(hunter.Talents.ImprovedSteadyShot) * 0.05)
-			aura.Unit.MultiplyRangedSpeed(sim, 1 / attackspeedMultiplier)
+			aura.Unit.MultiplyRangedSpeed(sim, 1/attackspeedMultiplier)
 		},
 	})
 	hunter.ImprovedSteadyShotAuraCounter = hunter.RegisterAura(core.Aura{
@@ -370,8 +370,8 @@ func (hunter *Hunter) applyFrenzy() {
 	}
 
 	hunter.Pet.FrenzyAura = hunter.Pet.RegisterAura(core.Aura{
-		Label:    "Frenzy",
-		Duration: time.Second * 10,
+		Label:     "Frenzy",
+		Duration:  time.Second * 10,
 		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.MultiplyMeleeSpeed(sim, 1.02)
@@ -381,7 +381,7 @@ func (hunter *Hunter) applyFrenzy() {
 		},
 	})
 	hunter.Pet.RegisterAura(core.Aura{
-		Label: "FrenzyHandler",
+		Label:    "FrenzyHandler",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -403,11 +403,11 @@ func (hunter *Hunter) applyFrenzy() {
 	})
 }
 
- func (hunter *Hunter) applyLongevity(dur time.Duration) time.Duration {
- 	return time.Duration(float64(dur) * (1.0 - 0.1*float64(hunter.Talents.Longevity)))
- }
+func (hunter *Hunter) applyLongevity(dur time.Duration) time.Duration {
+	return time.Duration(float64(dur) * (1.0 - 0.1*float64(hunter.Talents.Longevity)))
+}
 
-func (hunter *Hunter) applyFocusFireCD(){
+func (hunter *Hunter) applyFocusFireCD() {
 	if !hunter.Talents.FocusFire {
 		return
 	}
@@ -425,7 +425,7 @@ func (hunter *Hunter) applyFocusFireCD(){
 			if hunter.Pet.FrenzyStacksSnapshot >= 1 {
 				hunter.Pet.FrenzyAura.Deactivate(sim)
 				hunter.Pet.AddFocus(sim, 4, nil)
-				aura.Unit.MultiplyRangedSpeed(sim, 1 + (float64(hunter.Pet.FrenzyStacksSnapshot) * 0.03))
+				aura.Unit.MultiplyRangedSpeed(sim, 1+(float64(hunter.Pet.FrenzyStacksSnapshot)*0.03))
 				if sim.Log != nil {
 					hunter.Pet.Log(sim, "Consumed %0f stacks of Frenzy for Focus Fire.", hunter.Pet.FrenzyStacksSnapshot)
 				}
@@ -433,7 +433,7 @@ func (hunter *Hunter) applyFocusFireCD(){
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.Pet.FrenzyStacksSnapshot > 0 {
-				aura.Unit.MultiplyRangedSpeed(sim, 1 / (1 + (float64(hunter.Pet.FrenzyStacksSnapshot) * 0.03)))
+				aura.Unit.MultiplyRangedSpeed(sim, 1/(1+(float64(hunter.Pet.FrenzyStacksSnapshot)*0.03)))
 			}
 		},
 	})
@@ -602,7 +602,7 @@ func (hunter *Hunter) applyGoForTheThroat() {
 	})
 }
 
-//Todo: Should we support precasting freezing/ice trap?
+// Todo: Should we support precasting freezing/ice trap?
 func (hunter *Hunter) applyTNT() {
 	if hunter.Talents.TNT == 0 {
 		return
@@ -684,12 +684,11 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 			}
 
 			if sim.Proc(procChance, "ThrillOfTheHunt") {
-				hunter.AddFocus(sim, spell.CurCast.Cost * 0.4, focusMetrics)
+				hunter.AddFocus(sim, spell.CurCast.Cost*0.4, focusMetrics)
 			}
 		},
 	})
 }
-
 
 func (hunter *Hunter) applySniperTraining() {
 	if hunter.Talents.SniperTraining == 0 {
@@ -733,7 +732,6 @@ func (hunter *Hunter) applyHuntingParty() {
 	if !hunter.Talents.HuntingParty {
 		return
 	}
-
 
 	hunter.RegisterAura(core.Aura{
 		Label:    "Hunting Party",

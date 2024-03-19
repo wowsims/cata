@@ -16,7 +16,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 		Flags:       core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
-			Cost:   0, // Todo: Verify focus cost https://warcraft.wiki.gg/index.php?title=Explosive_Trap&oldid=2963725
+			Cost: 0, // Todo: Verify focus cost https://warcraft.wiki.gg/index.php?title=Explosive_Trap&oldid=2963725
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -29,8 +29,8 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:   hunter.CritMultiplier(false, false, false),
-		ThreatMultiplier: 1,
+		CritMultiplier:           hunter.CritMultiplier(false, false, false),
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -41,7 +41,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			TickLength:    time.Second * 2,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 90 + 0.1*dot.Spell.RangedAttackPower(target)  // Todo: Change this to use Cata calculations
+				baseDamage := 90 + 0.1*dot.Spell.RangedAttackPower(target) // Todo: Change this to use Cata calculations
 				dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeRangedHitAndCritNoBlock)

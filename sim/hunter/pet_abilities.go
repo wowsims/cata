@@ -12,9 +12,9 @@ type PetAbilityType int
 
 // Pet AI doesn't use abilities immediately, so model this with a 1.6s GCD.
 const PetGCD = time.Millisecond * 1600
+
 // Todo: Pet not done
 // Apply Wild Hunt
-// 
 const (
 	Unknown PetAbilityType = iota
 	AcidSpit
@@ -182,7 +182,7 @@ func (hp *HunterPet) newSpecialAbility(config PetSpecialAbilityConfig) *core.Spe
 		procMask = core.ProcMaskSpellDamage
 		applyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(config.MinDmg, config.MaxDmg) + config.APRatio*spell.MeleeAttackPower()
-			
+
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			if onSpellHitDealt != nil {
 				onSpellHitDealt(sim, spell, result)

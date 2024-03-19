@@ -9,9 +9,9 @@ import (
 
 func (hunter *Hunter) registerArcaneShotSpell() {
 
-	dmgMultiplier := 1.0
+	dmgMultiplier := 0.61
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfArcaneShot) {
-		dmgMultiplier = 1.12
+		dmgMultiplier *= 0.12
 	}
 	hunter.ArcaneShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 3044},
@@ -29,11 +29,11 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 			IgnoreHaste: true,
 		},
 
-		BonusCritRating: 0,
+		BonusCritRating:          0,
 		DamageMultiplierAdditive: 1,
-		DamageMultiplier: dmgMultiplier,
-		CritMultiplier: hunter.CritMultiplier(true, true, false),
-		ThreatMultiplier: 1,
+		DamageMultiplier:         dmgMultiplier,
+		CritMultiplier:           hunter.CritMultiplier(true, true, false),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			wepDmg := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target))

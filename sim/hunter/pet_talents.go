@@ -52,7 +52,8 @@ func (hp *HunterPet) ApplyTalents() {
 	hp.registerCallOfTheWildCD()
 	hp.registerWolverineBite()
 }
-	//Cata verified
+
+// Cata verified
 func (hp *HunterPet) applyOwlsFocus() {
 	if hp.Talents().OwlsFocus == 0 {
 		return
@@ -90,7 +91,8 @@ func (hp *HunterPet) applyOwlsFocus() {
 		},
 	})
 }
-	//Cata verified
+
+// Cata verified
 func (hp *HunterPet) applyCullingTheHerd() {
 	if hp.Talents().CullingTheHerd == 0 {
 		return
@@ -128,7 +130,8 @@ func (hp *HunterPet) applyCullingTheHerd() {
 		},
 	})
 }
-	//Cata verified
+
+// Cata verified
 func (hp *HunterPet) applyFeedingFrenzy() {
 	if hp.Talents().FeedingFrenzy == 0 {
 		return
@@ -187,7 +190,8 @@ func (hp *HunterPet) registerRoarOfRecoveryCD() {
 		Type:  core.CooldownTypeDPS,
 	})
 }
-	//Cata verified
+
+// Cata verified
 func (hp *HunterPet) registerRabidCD() {
 	if !hp.Talents().Rabid {
 		return
@@ -263,7 +267,8 @@ func (hp *HunterPet) registerRabidCD() {
 		Type:  core.CooldownTypeDPS,
 	})
 }
-	//Cata verified
+
+// Cata verified
 func (hp *HunterPet) registerCallOfTheWildCD() {
 	// This CD is enabled even if not talented, for prepull. See below.
 	hunter := hp.hunterOwner
@@ -374,7 +379,7 @@ func (hp *HunterPet) registerWolverineBite() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1 + (spell.MeleeAttackPower() * 0.40) * 0.10 // https://www.wowhead.com/cata/spell=53508/wolverine-bite ? Reading this right?
+			baseDamage := 1 + (spell.MeleeAttackPower()*0.40)*0.10 // https://www.wowhead.com/cata/spell=53508/wolverine-bite ? Reading this right?
 			//baseDamage *= hp.killCommandMult()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)

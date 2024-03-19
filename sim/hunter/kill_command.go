@@ -14,11 +14,10 @@ func (hunter *Hunter) registerKillCommandSpell() {
 
 	actionID := core.ActionID{SpellID: 34026}
 
-
 	hunter.KillCommand = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask: core.ProcMaskMelee,
+		ProcMask:    core.ProcMaskMelee,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
@@ -33,12 +32,9 @@ func (hunter *Hunter) registerKillCommandSpell() {
 				Duration: time.Second * 6,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return true
-		},
 		DamageMultiplierAdditive: 1 + (float64(hunter.Talents.ImprovedKillCommand) * 0.05),
-		CritMultiplier:   hunter.CritMultiplier(false, false, false),
-		ThreatMultiplier: 1,
+		CritMultiplier:           hunter.CritMultiplier(false, false, false),
+		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if hunter.Talents.KillingStreak > 0 {
 				if !hunter.KillingStreakCounterAura.IsActive() {

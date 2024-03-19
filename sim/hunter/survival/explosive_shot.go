@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
@@ -33,7 +32,7 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 		BonusCritRating: 0 +
 			core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfExplosiveShot), 6*core.CritRatingPerCritChance, 0),
 		DamageMultiplier: 1,
-		CritMultiplier: hunter.CritMultiplier(true, false, false),
+		CritMultiplier:   hunter.CritMultiplier(true, false, false),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -43,7 +42,7 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 			NumberOfTicks: 2,
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				rap := dot.Spell.Unit.GetStat(stats.RangedAttackPower) + dot.Spell.Unit.PseudoStats.MobTypeAttackPower
+				rap := dot.Spell.RangedAttackPower(target)
 				dot.SnapshotBaseDamage = 448 + (0.273 * rap)
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
@@ -60,14 +59,9 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
-				if spell.Dot(target).IsActive() { // Todo: Implement rollover of last tick in sim.go
-					spell.Dot(target).Rollover(sim)
-					spell.Dot(target).TickOnce(sim)
-				} else {
-					dot := spell.Dot(target)
-					dot.Apply(sim)
-					dot.TickOnce(sim)
-				}
+				dot := spell.Dot(target)
+				dot.Apply(sim)
+				dot.TickOnce(sim)
 			}
 		},
 	})

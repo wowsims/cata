@@ -35,7 +35,6 @@ func NewBeastMasteryHunter(character *core.Character, options *proto.Player) *Be
 	return bmHunter
 }
 
-
 func (hunter *BeastMasteryHunter) Initialize() {
 	// Initialize global Hunter spells
 	hunter.Hunter.Initialize()
@@ -46,13 +45,14 @@ func (hunter *BeastMasteryHunter) Initialize() {
 	hunter.Pet.PseudoStats.DamageDealtMultiplier *= hunter.getMasteryBonus(baseMastery)
 
 	hunter.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-			hunter.Pet.PseudoStats.DamageDealtMultiplier /= hunter.getMasteryBonus(oldMastery)
-			hunter.Pet.PseudoStats.DamageDealtMultiplier *= hunter.getMasteryBonus(newMastery)
+		hunter.Pet.PseudoStats.DamageDealtMultiplier /= hunter.getMasteryBonus(oldMastery)
+		hunter.Pet.PseudoStats.DamageDealtMultiplier *= hunter.getMasteryBonus(newMastery)
 	})
 }
 func (hunter *BeastMasteryHunter) getMasteryBonus(mastery float64) float64 {
 	return 1.134 + ((mastery / core.MasteryRatingPerMasteryPoint) * 0.0167)
 }
+
 type BeastMasteryHunter struct {
 	*hunter.Hunter
 }
