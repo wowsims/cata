@@ -34,9 +34,8 @@ var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-
-					hunter.SteadyShot.DefaultCast.CastTime = time.Second + (time.Millisecond + 800)
-					hunter.CobraShot.DefaultCast.CastTime = time.Second + (time.Millisecond + 800)
+					hunter.SteadyShot.DefaultCast.CastTime = time.Millisecond * 1800
+					hunter.CobraShot.DefaultCast.CastTime = time.Millisecond * 1800
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 						hunter.SteadyShot.DefaultCast.CastTime = time.Second * 2
