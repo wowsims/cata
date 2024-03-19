@@ -668,7 +668,7 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 		return
 	}
 
-	procChance := float64(hunter.Talents.ThrillOfTheHunt) * 0.5
+	procChance := float64(hunter.Talents.ThrillOfTheHunt) * 0.05
 	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 34499})
 
 	hunter.RegisterAura(core.Aura{
@@ -679,7 +679,7 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// mask 256
-			if !spell.ProcMask.Matches(core.ProcMaskRangedSpecial) {
+			if spell != hunter.ArcaneShot || spell != hunter.ExplosiveShot || spell != hunter.BlackArrow {
 				return
 			}
 
