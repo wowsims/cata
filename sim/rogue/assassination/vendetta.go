@@ -7,6 +7,10 @@ import (
 )
 
 func (sinRogue *AssassinationRogue) registerVendetta() {
+	if !sinRogue.Talents.Vendetta {
+		return
+	}
+
 	actionID := core.ActionID{SpellID: 79140}
 
 	vendettaAura := sinRogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {

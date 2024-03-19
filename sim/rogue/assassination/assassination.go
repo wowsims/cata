@@ -48,7 +48,9 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	}
 	sinRogue.DeadlyPoison.DamageMultiplier += masteryEffect
 	sinRogue.Envenom.DamageMultiplier += masteryEffect
-	sinRogue.VenomousWounds.DamageMultiplier += masteryEffect
+	if sinRogue.Talents.VenomousWounds > 0 {
+		sinRogue.VenomousWounds.DamageMultiplier += masteryEffect
+	}
 
 	sinRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
 		masteryPercentOld := oldMastery / core.MasteryRatingPerMasteryPercent
@@ -62,7 +64,9 @@ func (sinRogue *AssassinationRogue) Initialize() {
 		}
 		sinRogue.DeadlyPoison.DamageMultiplier += masteryEffectChange
 		sinRogue.Envenom.DamageMultiplier += masteryEffectChange
-		sinRogue.VenomousWounds.DamageMultiplier += masteryEffectChange
+		if sinRogue.Talents.VenomousWounds > 0 {
+			sinRogue.VenomousWounds.DamageMultiplier += masteryEffectChange
+		}
 	})
 }
 

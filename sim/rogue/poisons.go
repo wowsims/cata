@@ -41,7 +41,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		DamageMultiplier: 1.12 * float64(rogue.Talents.VilePoisons),
+		DamageMultiplier: 1 + 0.12*float64(rogue.Talents.VilePoisons),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -224,7 +224,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		DamageMultiplier: 1.12 * float64(rogue.Talents.VilePoisons),
+		DamageMultiplier: 1 + 0.12*float64(rogue.Talents.VilePoisons),
 		CritMultiplier:   rogue.SpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
@@ -247,7 +247,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		DamageMultiplier: 1.12 * float64(rogue.Talents.VilePoisons),
+		DamageMultiplier: 1 + 0.12*float64(rogue.Talents.VilePoisons),
 		CritMultiplier:   rogue.SpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
