@@ -38,7 +38,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 		//DamageMultiplierAdditive: 1,
 		DamageMultiplier: 1,
 		// 	hunter.markedForDeathMultiplier(),
-		CritMultiplier:1,//   hunter.critMultiplier(true, true, false), // what is this
+		CritMultiplier: hunter.CritMultiplier(true, true, false), // what is this
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
