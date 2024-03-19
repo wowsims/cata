@@ -75,8 +75,72 @@ func (hunter *Hunter) ApplyTalents() {
 	hunter.applyFocusFireCD()
 	hunter.applyFervorCD()
 	hunter.registerReadinessCD()
+	hunter.applyMasterMarksman()
 }
+		// OnGain: func(aura *core.Aura, sim *core.Simulation) {
+		// 	if hunter.ExplosiveShot != nil {
+		// 		hunter.ExplosiveShot.CostMultiplier -= 1
+		// 	}
+		// },
+		// OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+		// 	if hunter.ExplosiveShot != nil {
+		// 		hunter.ExplosiveShot.CostMultiplier += 1
+		// 	}
+		// },
+		// OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		// 	if spell == hunter.ExplosiveShot {
+		// 		aura.RemoveStack(sim)
+		// 	}
+		// },
+func (hunter *Hunter) applyMasterMarksman() {
+	if hunter.Talents.MasterMarksman == 0 {
+		return
+	}
 
+	procChance := float64(hunter.Talents.MasterMarksman) * 0.2
+	hunter.MasterMarksmanAura = hunter.RegisterAura(core.Aura{
+		Label:     "Master Marksman",
+		ActionID:  core.ActionID{SpellID: 34485},
+		Duration:  time.Second * 8,
+		MaxStacks: 1,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if hunter.AimedShot != nil {
+				hunter.AimedShot.DefaultCast.CastTime = 0
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if hunter.AimedShot != nil {
+				hunter.AimedShot.DefaultCast.CastTime = time.Second * 3
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == hunter.AimedShot && aura.GetStacks() > 0 {
+				aura.RemoveStack(sim)
+			}
+		},
+	})
+	hunter.MasterMarksmanCounterAura = hunter.RegisterAura(core.Aura{
+		Label:     "Master Marksman Counter",
+		Duration:  core.NeverExpires,
+		MaxStacks: 4,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell != hunter.SteadyShot {
+				return
+			}
+			if sim.Proc(procChance, "Master Marksman Proc") {
+				if aura.GetStacks() == 4 {
+					hunter.MasterMarksmanAura.Activate(sim)
+					aura.SetStacks(sim, 0)
+				} else {
+					aura.AddStack(sim)
+				}
+			}
+		},
+	})
+}
 
 func (hunter *Hunter) applySpiritBond() {
 	if hunter.Talents.SpiritBond == 0 || hunter.pet == nil {
@@ -629,7 +693,7 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 		return
 	}
 
-	procChance := float64(hunter.Talents.ThrillOfTheHunt) * 5
+	procChance := float64(hunter.Talents.ThrillOfTheHunt) * 0.5
 	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 34499})
 
 	hunter.RegisterAura(core.Aura{

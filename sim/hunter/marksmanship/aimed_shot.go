@@ -4,13 +4,12 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (hunter *MarksmanshipHunter) registerAimedShotSpell(timer *core.Timer) {
 
 	hunter.AimedShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 49050},
+		ActionID:    core.ActionID{SpellID: 19434},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
@@ -20,15 +19,18 @@ func (hunter *MarksmanshipHunter) registerAimedShotSpell(timer *core.Timer) {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: time.Second,
+				GCD:      time.Second,
+				CastTime: time.Second * 3,
 			},
 			IgnoreHaste: true,
-			CD: core.Cooldown{
-				Timer:    timer,
-				Duration: time.Second*10 - core.TernaryDuration(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfAimedShot), time.Second*2, 0),
+			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				cast.CastTime = spell.CastTime()
+			},
+
+			CastTime: func(spell *core.Spell) time.Duration {
+				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
 			},
 		},
-
 		BonusCritRating: 0 +
 			core.TernaryFloat64(hunter.Talents.TrueshotAura, 10*core.CritRatingPerCritChance, 0),
 		DamageMultiplierAdditive: 1,

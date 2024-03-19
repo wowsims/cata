@@ -67,6 +67,8 @@ type Hunter struct {
 	ScorpidStingAuras         core.AuraArray
 	KillingStreakCounterAura 	*core.Aura
 	KillingStreakAura 	*core.Aura
+	MasterMarksmanAura *core.Aura
+	MasterMarksmanCounterAura *core.Aura
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {

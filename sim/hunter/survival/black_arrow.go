@@ -34,8 +34,7 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier: 1 + .10 * float64(hunter.Talents.TrapMastery),
+		DamageMultiplierAdditive: 1 + .10 * float64(hunter.Talents.TrapMastery),
 		ThreatMultiplier: 1,
 		CritMultiplier:  hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology) * 0.5) , //Todo: SimC, is this crit damage multiplier?
 
