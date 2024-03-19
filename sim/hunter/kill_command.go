@@ -13,7 +13,6 @@ func (hunter *Hunter) registerKillCommandSpell() {
 	}
 
 	actionID := core.ActionID{SpellID: 34026}
-	//bonusPetSpecialCrit := 10 * core.CritRatingPerCritChance * float64(hunter.Talents.FocusedFire)
 
 
 	hunter.KillCommand = hunter.RegisterSpell(core.SpellConfig{

@@ -25,7 +25,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 				GCD:      time.Second,
 				CastTime: time.Second * 2,
 			},
-			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
+			IgnoreHaste: true,
 			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				cast.CastTime = spell.CastTime()
 			},
@@ -35,12 +35,9 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			},
 		},
 
-		// BonusCritRating: 0 +
-		// 	2*core.CritRatingPerCritChance*float64(hunter.Talents.SurvivalInstincts),
 		DamageMultiplierAdditive: 1 + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSteadyShot), 0.1, 0),
 		DamageMultiplier: 0.62,
-		// 	hunter.markedForDeathMultiplier(),
-		CritMultiplier:1,//   hunter.critMultiplier(true, true, false), // what is this
+		CritMultiplier: hunter.CritMultiplier(true, false, false),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

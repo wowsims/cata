@@ -42,12 +42,12 @@ func (hunter *Hunter) registerRapidFireCD() {
 	hunter.RapidFire = hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.03,
+		FocusCost: core.FocusCostOptions{
+			Cost: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: 1,
+				GCD: 0,
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),

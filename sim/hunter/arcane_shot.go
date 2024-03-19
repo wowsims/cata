@@ -9,7 +9,6 @@ import (
 
 func (hunter *Hunter) registerArcaneShotSpell() {
 
-	//var manaMetrics *core.ResourceMetrics
 	dmgMultiplier := 1.0
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfArcaneShot) {
 		dmgMultiplier = 1.12
@@ -30,10 +29,10 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 			IgnoreHaste: true,
 		},
 
-		BonusCritRating: 0, //2*core.CritRatingPerCritChance*float64(hunter.Talents.SurvivalInstincts),
+		BonusCritRating: 0,
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier: dmgMultiplier,
-		CritMultiplier:  1,// hunter.critMultiplier(true, true, false),
+		CritMultiplier: hunter.CritMultiplier(true, true, false),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

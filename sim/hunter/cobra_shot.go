@@ -44,7 +44,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target)) + (277.21 + spell.RangedAttackPower(target) * 0.017)
 			focus := 9.0
-			if hunter.Talents.Termination != 0 && target.isi {
+			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
 				focus = float64(hunter.Talents.Termination) * 3
 			}
 			hunter.AddFocus(sim, focus, csMetrics)

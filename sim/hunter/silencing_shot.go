@@ -18,9 +18,8 @@ func (hunter *Hunter) registerSilencingShotSpell() {
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.06,
-			Multiplier: 1 - 0.03*float64(hunter.Talents.Efficiency),
+		FocusCost: core.FocusCostOptions{
+			Cost:   0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

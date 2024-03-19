@@ -13,35 +13,8 @@ func (hunter *Hunter) ApplyTalents() {
 		hunter.applyFrenzy()
 		hunter.registerBestialWrathCD()
 		// Todo: BM stuff
-		// hunter.pet.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*2*float64(hunter.Talents.Ferocity))
-		// hunter.pet.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*2*float64(hunter.Talents.Ferocity))
-		// hunter.pet.AddStat(stats.Dodge, 3*core.DodgeRatingPerDodgeChance*float64(hunter.Talents.CatlikeReflexes))
-		// hunter.pet.PseudoStats.DamageDealtMultiplier *= 1 + 0.03*float64(hunter.Talents.UnleashedFury)
-		// hunter.pet.PseudoStats.MeleeSpeedMultiplier *= 1 + 0.04*float64(hunter.Talents.SerpentsSwiftness)
-
 		hunter.pet.ApplyTalents()
 	}
-
-	// hunter.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*1*float64(hunter.Talents.FocusedAim))
-	// hunter.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(hunter.Talents.KillerInstinct))
-	// hunter.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(hunter.Talents.MasterMarksman))
-	// hunter.AddStat(stats.Parry, core.ParryRatingPerParryChance*1*float64(hunter.Talents.Deflection))
-	// hunter.AddStat(stats.Dodge, 1*core.DodgeRatingPerDodgeChance*float64(hunter.Talents.CatlikeReflexes))
-	// hunter.PseudoStats.RangedSpeedMultiplier *= 1 + 0.04*float64(hunter.Talents.SerpentsSwiftness)
-	// hunter.PseudoStats.DamageTakenMultiplier *= 1 - 0.02*float64(hunter.Talents.SurvivalInstincts)
-	// hunter.AutoAttacks.RangedConfig().DamageMultiplier *= hunter.markedForDeathMultiplier()
-
-	// if hunter.Talents.LethalShots > 0 {
-	// 	hunter.AddBonusRangedCritRating(1 * float64(hunter.Talents.LethalShots) * core.CritRatingPerCritChance)
-	// }
-	// if hunter.Talents.RangedWeaponSpecialization > 0 {
-	// 	mult := 1 + []float64{0, .01, .03, .05}[hunter.Talents.RangedWeaponSpecialization]
-	// 	hunter.OnSpellRegistered(func(spell *core.Spell) {
-	// 		if spell.ProcMask.Matches(core.ProcMaskRanged) {
-	// 			spell.DamageMultiplier *= mult
-	// 		}
-	// 	})
-	// }
 
 	if hunter.Talents.Pathing > 0 {
 		bonus := 0.01*float64(hunter.Talents.Pathing)
@@ -224,6 +197,23 @@ func (hunter *Hunter) applyCobraStrikes() {
 			if sim.RandomFloat("Cobra Strikes") < procChance {
 				hunter.pet.CobraStrikesAura.Activate(sim)
 				hunter.pet.CobraStrikesAura.SetStacks(sim, 2)
+			}
+		},
+	})
+}
+func (hunter *Hunter) applyTermination() {
+	if hunter.Talents.Termination == 0 {
+		return
+	}
+		hunter.RegisterAura(core.Aura{
+		Label:    "Termination",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Target.CurrentHealthPercent() <= 25 {
+				return
 			}
 		},
 	})

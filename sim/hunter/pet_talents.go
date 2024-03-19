@@ -149,7 +149,7 @@ func (hp *HunterPet) registerRoarOfRecoveryCD() {
 	// This CD is enabled even if not talented, for prepull. See below.
 	hunter := hp.hunterOwner
 	actionID := core.ActionID{SpellID: 53517}
-	manaMetrics := hunter.NewManaMetrics(actionID)
+	focusMetrics := hunter.NewFocusMetrics(actionID)
 
 	rorSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -169,7 +169,7 @@ func (hp *HunterPet) registerRoarOfRecoveryCD() {
 				Period:   time.Second * 9,
 				NumTicks: 9,
 				OnAction: func(sim *core.Simulation) {
-					hunter.AddFocus(sim, 30/9, manaMetrics) // Todo: assume per second
+					hunter.AddFocus(sim, 30/9, focusMetrics) // Todo: assume per second
 				},
 			})
 		},
@@ -184,7 +184,7 @@ func (hp *HunterPet) registerRoarOfRecoveryCD() {
 
 	hunter.AddMajorCooldown(core.MajorCooldown{
 		Spell: rorSpell,
-		Type:  core.CooldownTypeMana,
+		Type:  core.CooldownTypeDPS,
 	})
 }
 	//Cata verified

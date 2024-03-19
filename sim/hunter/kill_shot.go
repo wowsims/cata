@@ -14,18 +14,25 @@ func (hunter *Hunter) registerKillShotSpell() {
 			Duration: time.Second * 6,
 		}
 		ksReset := hunter.RegisterAura(core.Aura{
+			Label: "Kill Shot Glyph",
 			Icd: &icd,
+			Duration: time.Second,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				hunter.KillShot.CD.Reset()
 			},
 		})
 		hunter.RegisterAura(core.Aura{
+			Label: "Kill Shot Glyph Activator",
+			Duration: core.NeverExpires,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell == hunter.KillShot {
-					ksReset.Activate(sim)
+					if ksReset.Icd.IsReady(sim) {
+						ksReset.Icd.Use(sim)
+						ksReset.Activate(sim)
+					}
 				}
 			},
 		})
