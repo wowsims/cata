@@ -16,8 +16,8 @@ type VengeanceTracker struct {
 }
 
 const (
-	VengeanceAPDecayRate     = 0.1                                         // AP bonus decays by 10% every 2 seconds, or 5% if the character has been hit in that time
-	OutcomeVengeanceTriggers = OutcomeLanded | OutcomeDodge | OutcomeParry // TODO: does this include misses?
+	VengeanceAPDecayRate     = 0.1 // AP bonus decays by 10% every 2 seconds, or 5% if the character has been hit in that time
+	OutcomeVengeanceTriggers = OutcomeLanded
 )
 
 func Clamp(val float64, min float64, max float64) float64 {
@@ -82,7 +82,10 @@ func ApplyVengeanceEffect(character *Character, tracker *VengeanceTracker, spell
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if result.Outcome.Matches(OutcomeVengeanceTriggers) {
 				// Vengeance is based on the taken damage amount after mitigation
-				// Dodges and parries count as hits for the purposes of decay, but contribute no additional damage
+				// TODO: check how this treats dodge/parry/miss
+				// https://worldofwarcraft.blizzard.com/en-us/news/1293873/tanking-with-a-vengeance seems to suggest a string of dodges will let it fall off
+				// but simc's implementation retriggers vengeance on _any_ attack, even dodge/parry/miss.
+				// I can't find any patch notes or other resources that support one or the other though
 				tracker.lastAttackedTime = sim.CurrentTime
 				tracker.eligibleDamage += result.Damage
 			}
