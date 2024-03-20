@@ -53,11 +53,15 @@ func (unit *Unit) EnableFocusBar(maxFocus float64, baseFocusPerSecond float64, i
 }
 
 // Computes the focus thresholds.
-func (unit *Unit) SetupFocusThresholds() {
+// Computes the focus thresholds.
+func (fb *focusBar) setupFocusThresholds() {
+	if fb.unit == nil {
+		return
+	}
 	var focusThresholds []int
 
 	// Focus thresholds from spell costs.
-	for _, action := range unit.Rotation.allAPLActions() {
+	for _, action := range fb.unit.Rotation.allAPLActions() {
 		for _, spell := range action.GetAllSpells() {
 			if _, ok := spell.Cost.(*FocusCost); ok {
 				focusThresholds = append(focusThresholds, int(math.Ceil(spell.DefaultCast.Cost)))
@@ -66,7 +70,7 @@ func (unit *Unit) SetupFocusThresholds() {
 	}
 
 	// Focus thresholds from conditional comparisons.
-	for _, action := range unit.Rotation.allAPLActions() {
+	for _, action := range fb.unit.Rotation.allAPLActions() {
 		for _, value := range action.GetAllAPLValues() {
 			if cmpValue, ok := value.(*APLValueCompare); ok {
 				_, lhsIsFocus := cmpValue.lhs.(*APLValueCurrentFocus)
@@ -95,23 +99,23 @@ func (unit *Unit) SetupFocusThresholds() {
 	curVal := 0
 	for _, threshold := range focusThresholds {
 		if threshold > curVal {
-			unit.focusBar.focusDecisionThresholds = append(unit.focusBar.focusDecisionThresholds, threshold)
+			fb.focusDecisionThresholds = append(fb.focusDecisionThresholds, threshold)
 			curVal = threshold
 		}
 	}
 
 	curFocus := 0
 	cumulativeVal := 0
-	unit.focusBar.cumulativeFocusDecisionThresholds = make([]int, int(unit.focusBar.maxFocus)+1)
-	for _, threshold := range unit.focusBar.focusDecisionThresholds {
+	fb.cumulativeFocusDecisionThresholds = make([]int, int(fb.maxFocus)+1)
+	for _, threshold := range fb.focusDecisionThresholds {
 		for curFocus < threshold {
-			unit.focusBar.cumulativeFocusDecisionThresholds[curFocus] = cumulativeVal
+			fb.cumulativeFocusDecisionThresholds[curFocus] = cumulativeVal
 			curFocus++
 		}
 		cumulativeVal++
 	}
-	for curFocus < len(unit.focusBar.cumulativeFocusDecisionThresholds) {
-		unit.focusBar.cumulativeFocusDecisionThresholds[curFocus] = cumulativeVal
+	for curFocus < len(fb.cumulativeFocusDecisionThresholds) {
+		fb.cumulativeFocusDecisionThresholds[curFocus] = cumulativeVal
 		curFocus++
 	}
 }

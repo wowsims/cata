@@ -135,10 +135,6 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerTrapLauncher()
 	hunter.registerHuntersMarkSpell()
-
-	hunter.Env.RegisterPostFinalizeEffect(func() {
-		hunter.SetupFocusThresholds()
-	})
 }
 
 func (hunter *Hunter) Reset(_ *core.Simulation) {

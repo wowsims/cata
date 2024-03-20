@@ -24,15 +24,14 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: time.Second,
 			},
-			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
+			IgnoreHaste: true,
 		},
 		BonusCritRating: impSSCritChance + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSerpentSting), 6, 0)*core.CritRatingPerCritChance,
 
 		DamageMultiplierAdditive: 1 + 0.15*float64(hunter.Talents.ImprovedSerpentSting),
-		// according to in-game testing (which happens to match the wowhead 60% mortal shots flag on wowhead)
-		// serpent-sting gets 60% crit modifier instead of 30% crit modifier from mortal shots
+		// SS uses Spell Crit which is multiplied by toxicology
 		CritMultiplier:   hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology)*0.5),
 		ThreatMultiplier: 1,
 
@@ -53,11 +52,10 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = (460 + 0.40*dot.Spell.RangedAttackPower(target)) / 5
-				if !isRollover {
-					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
-				}
+				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
