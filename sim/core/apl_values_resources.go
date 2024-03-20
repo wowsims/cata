@@ -142,6 +142,33 @@ func (value *APLValueCurrentRage) GetFloat(sim *Simulation) float64 {
 func (value *APLValueCurrentRage) String() string {
 	return "Current Rage"
 }
+type APLValueCurrentFocus struct {
+	DefaultAPLValueImpl
+	unit *Unit
+}
+
+func (rot *APLRotation) newValueCurrentFocus(config *proto.APLValueCurrentFocus) APLValue {
+	unit := rot.unit
+	if !unit.HasFocusBar() {
+		rot.ValidationWarning("%s does not use Focus", unit.Label)
+		return nil
+	}
+	return &APLValueCurrentFocus{
+		unit: unit,
+	}
+}
+
+func (value *APLValueCurrentFocus) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+
+func (value *APLValueCurrentFocus) GetFloat(sim *Simulation) float64 {
+	return value.unit.CurrentFocus()
+}
+
+func (value *APLValueCurrentFocus) String() string {
+	return "Current Focus"
+}
 
 type APLValueCurrentEnergy struct {
 	DefaultAPLValueImpl

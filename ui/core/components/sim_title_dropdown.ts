@@ -113,7 +113,7 @@ export class SimTitleDropdown extends Component {
 		if (data.type == 'Raid') {
 			label = raidSimLabel;
 		} else if (data.type == 'Spec') {
-			label = data.spec.friendlyName;
+			label = PlayerSpecs.getFullSpecName(data.spec);
 		}
 
 		const fragment = document.createElement('fragment');

@@ -146,8 +146,6 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	var replenishmentActionID ActionID
 	if individualBuffs.VampiricTouch {
 		replenishmentActionID.SpellID = 48160
-	} else if individualBuffs.HuntingParty {
-		replenishmentActionID.SpellID = 53292
 	} else if individualBuffs.JudgementsOfTheWise {
 		replenishmentActionID.SpellID = 31878
 	} else if individualBuffs.ImprovedSoulLeech {
@@ -1019,12 +1017,13 @@ func registerRevitalizeHotCD(agent Agent, label string, hotID ActionID, ticks in
 	totalDuration := time.Duration(ticks) * tickPeriod
 	uptimePercent := float64(uptimeCount) / 100.0
 
+	var pa *PendingAction
 	aura := character.GetOrRegisterAura(Aura{
 		Label:    "Revitalize-" + label,
 		ActionID: hotID,
 		Duration: totalDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			pa := NewPeriodicAction(sim, PeriodicActionOptions{
+			pa = NewPeriodicAction(sim, PeriodicActionOptions{
 				Period:   tickPeriod,
 				NumTicks: ticks,
 				OnAction: func(s *Simulation) {
@@ -1043,6 +1042,9 @@ func registerRevitalizeHotCD(agent Agent, label string, hotID ActionID, ticks in
 				},
 			})
 			sim.AddPendingAction(pa)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			pa.Cancel(sim)
 		},
 	})
 

@@ -1,15 +1,29 @@
 .log-runner-root {
+	.log-search-input {
+		width: 20%;
+		flex-grow: 1; /* Allows the search input to take up space */
+		margin-right: 20px; /* Adds some space between the search input and the button */
+	}
+	.controls-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10px;
+	}
+	#scroll-to-top-btn {
+		/* Adjust button styling if needed */
+	}
 	#log-runner-logs-scroll {
-  
-  overflow-y: auto;
-  overflow-x: auto;
+		overflow-y: auto;
+		overflow-x: auto;
 
-  margin: 0 auto; 
-  position: relative;
-  width: 100%;
-  box-sizing: border-box; 
-  will-change: scroll-position;
-}
+		margin: 0 auto;
+		position: relative;
+		width: 100%;
+		box-sizing: border-box;
+		will-change: scroll-position;
+		height: 80vh;
+	}
 	.log-runner-table {
 		th {
 			padding: map-get($spacers, 2);

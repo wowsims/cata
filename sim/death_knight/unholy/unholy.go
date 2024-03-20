@@ -3,6 +3,7 @@ package unholy
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/death_knight"
 )
 
@@ -50,16 +51,19 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 		AutoSwingMelee: true,
 	})
 
+	uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= uhdk.getMasteryShadowBonus(uhdk.GetStat(stats.Mastery))
+
+	uhdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= uhdk.getMasteryShadowBonus(oldMastery)
+		uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= uhdk.getMasteryShadowBonus(newMastery)
+	})
+
 	return uhdk
 }
 
-// func (uhdk *UnholyDeathKnight) FrostPointsInBlood() int32 {
-// 	return uhdk.Talents.Butchery + uhdk.Talents.Subversion + uhdk.Talents.BladeBarrier + uhdk.Talents.DarkConviction
-// }
-
-// func (uhdk *UnholyDeathKnight) FrostPointsInUnholy() int32 {
-// 	return uhdk.Talents.ViciousStrikes + uhdk.Talents.Virulence + uhdk.Talents.Epidemic + uhdk.Talents.RavenousDead + uhdk.Talents.Necrosis + uhdk.Talents.BloodCakedBlade
-// }
+func (uhdk UnholyDeathKnight) getMasteryShadowBonus(mastery float64) float64 {
+	return 1.2 + 0.025*(mastery/core.MasteryRatingPerMasteryPoint)
+}
 
 func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 	return uhdk.DeathKnight
@@ -71,5 +75,4 @@ func (uhdk *UnholyDeathKnight) Initialize() {
 
 func (uhdk *UnholyDeathKnight) Reset(sim *core.Simulation) {
 	uhdk.DeathKnight.Reset(sim)
-	//uhdk.Presence = death_knight.UnsetPresence
 }

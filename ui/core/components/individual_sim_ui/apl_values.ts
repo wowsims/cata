@@ -20,6 +20,7 @@ import {
 	APLValueConst,
 	APLValueCurrentComboPoints,
 	APLValueCurrentEnergy,
+	APLValueCurrentFocus,
 	APLValueCurrentHealth,
 	APLValueCurrentHealthPercent,
 	APLValueCurrentMana,
@@ -604,6 +605,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Resources'],
 		shortDescription: 'Amount of currently available Rage.',
 		newValue: APLValueCurrentRage.create,
+		fields: [],
+	}),
+	currentFocus: inputBuilder({
+		label: 'Focus',
+		submenu: ['Resources'],
+		shortDescription: 'Amount of currently available Focus.',
+		newValue: APLValueCurrentFocus.create,
 		fields: [],
 	}),
 	currentEnergy: inputBuilder({

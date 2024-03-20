@@ -1,20 +1,26 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { element } from 'tsx-vanilla';
+
 import { Component } from '../components/component.js';
+import { IconEnumPicker } from '../components/icon_enum_picker';
 import * as InputHelpers from '../components/input_helpers.js';
 import { SavedDataManager } from '../components/saved_data_manager.js';
 import { Player } from '../player.js';
+import { Spec } from '../proto/common';
 import { HunterOptions_PetType as PetType, HunterPetTalents } from '../proto/hunter.js';
 import { ActionId } from '../proto_utils/action_id.js';
-import { HunterSpecs } from '../proto_utils/utils';
+import { getTalentTree, getTalentTreePoints, HunterSpecs } from '../proto_utils/utils.js';
 import { SimUI } from '../sim_ui.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { protoToTalentString, talentStringToProto } from './factory.js';
-import { newTalentsConfig, TalentsConfig, TalentsPicker } from './talents_picker.js';
+import { newTalentsConfig, TalentsConfig, TalentsPicker } from './talents_picker.jsx';
 import HunterPetCunningJson from './trees/hunter_cunning.json';
 import HunterPetFerocityJson from './trees/hunter_ferocity.json';
 import HunterPetTenacityJson from './trees/hunter_tenacity.json';
 
 export function makePetTypeInputConfig<SpecType extends HunterSpecs>(): InputHelpers.TypedIconEnumPickerConfig<Player<SpecType>, PetType> {
 	return InputHelpers.makeClassOptionsEnumIconInput<SpecType, PetType>({
+		extraCssClasses: ['pet-type-picker'],
 		fieldName: 'petType',
 		numColumns: 5,
 		values: [
@@ -99,130 +105,6 @@ const petCategories: Record<PetType, PetCategory> = {
 
 const categoryOrder = [PetCategory.Cunning, PetCategory.Ferocity, PetCategory.Tenacity];
 const categoryClasses = ['cunning', 'ferocity', 'tenacity'];
-
-export class HunterPetTalentsPicker<SpecType extends HunterSpecs> extends Component {
-	private readonly simUI: SimUI;
-	private readonly player: Player<SpecType>;
-	private curCategory: PetCategory | null;
-	private curTalents: HunterPetTalents;
-
-	// Not saved to storage, just holds last-used values for this session.
-	private savedSets: Array<HunterPetTalents>;
-
-	constructor(parent: HTMLElement, simUI: SimUI, player: Player<SpecType>) {
-		super(parent, 'hunter-pet-talents-picker');
-		this.simUI = simUI;
-		this.player = player;
-
-		this.rootElem.innerHTML = `
-			<div class="pet-talents-container"></div>
-		`;
-
-		this.curCategory = this.getCategoryFromPlayer();
-		this.curTalents = this.getPetTalentsFromPlayer();
-		this.savedSets = defaultTalents.slice();
-		this.savedSets[this.curCategory] = this.curTalents;
-		this.rootElem.classList.add(categoryClasses[this.curCategory]);
-
-		const talentsContainer = this.rootElem.getElementsByClassName('pet-talents-container')[0] as HTMLElement;
-
-		const pickers = categoryOrder.map((category, i) => {
-			const talentsConfig = petTalentsConfig[i];
-
-			const pickerContainer = document.createElement('div');
-			pickerContainer.classList.add('hunter-pet-talents-' + categoryClasses[i]);
-			talentsContainer.appendChild(pickerContainer);
-
-			const picker = new TalentsPicker(pickerContainer, player, {
-				klass: player.getClass(),
-				trees: talentsConfig,
-				changedEvent: (player: Player<SpecType>) => player.specOptionsChangeEmitter,
-				getValue: (_player: Player<SpecType>) => protoToTalentString(this.getPetTalentsFromPlayer(), talentsConfig),
-				setValue: (eventID: EventID, player: Player<SpecType>, newValue: string) => {
-					const options = player.getClassOptions();
-					options.petTalents = talentStringToProto(HunterPetTalents.create(), newValue, talentsConfig);
-					player.setClassOptions(eventID, options);
-
-					this.savedSets[i] = options.petTalents;
-					this.curTalents = options.petTalents;
-				},
-				pointsPerRow: 3,
-				maxPoints: 16,
-			});
-
-			const savedTalentsManager = new SavedDataManager<Player<SpecType>, string>(pickerContainer, this.player, {
-				presetsOnly: true,
-				label: 'Pet Talents',
-				storageKey: '__NEVER_USED__',
-				getData: (_player: Player<SpecType>) => protoToTalentString(this.getPetTalentsFromPlayer(), talentsConfig),
-				setData: (eventID: EventID, player: Player<SpecType>, newValue: string) => {
-					const options = player.getClassOptions();
-					options.petTalents = talentStringToProto(HunterPetTalents.create(), newValue, talentsConfig);
-					player.setClassOptions(eventID, options);
-
-					this.savedSets[i] = options.petTalents;
-					this.curTalents = options.petTalents;
-				},
-				changeEmitters: [this.player.specOptionsChangeEmitter],
-				equals: (a: string, b: string) => a == b,
-				toJson: (a: string) => a,
-				fromJson: (_obj: any) => '',
-			});
-			savedTalentsManager.addSavedData({
-				name: 'Default',
-				isPreset: true,
-				data: protoToTalentString(defaultTalents[i], talentsConfig),
-			});
-			savedTalentsManager.addSavedData({
-				name: 'Beast Mastery',
-				isPreset: true,
-				data: protoToTalentString(defaultBMTalents[i], talentsConfig),
-			});
-
-			return picker;
-		});
-
-		player.specOptionsChangeEmitter.on(() => {
-			const petCategory = this.getCategoryFromPlayer();
-			const categoryIdx = categoryOrder.indexOf(petCategory);
-
-			if (petCategory != this.curCategory) {
-				this.curCategory = petCategory;
-				this.rootElem.classList.remove(...categoryClasses);
-				this.rootElem.classList.add(categoryClasses[categoryIdx]);
-
-				const curTalents = this.getPetTalentsFromPlayer();
-				if (!HunterPetTalents.equals(curTalents, this.curTalents)) {
-					// If the current talents have also changed, this was probably a load so we shouldn't switch sets.
-					this.curTalents = curTalents;
-					this.savedSets[this.curCategory] = this.curTalents;
-				} else {
-					// Revert to the talents from last time the user was editing this category.
-					const options = this.player.getClassOptions();
-					options.petTalents = this.savedSets[this.curCategory];
-					this.player.setClassOptions(TypedEvent.nextEventID(), options);
-					this.curTalents = options.petTalents;
-				}
-			}
-		});
-
-		const updateIsBM = () => {
-			const maxPoints = this.player.getTalents().beastMastery ? 20 : 16;
-			pickers.forEach(picker => picker.setMaxPoints(maxPoints));
-		};
-		player.talentsChangeEmitter.on(updateIsBM);
-		updateIsBM();
-	}
-
-	getPetTalentsFromPlayer(): HunterPetTalents {
-		return this.player.getClassOptions().petTalents || HunterPetTalents.create();
-	}
-
-	getCategoryFromPlayer(): PetCategory {
-		const petType = this.player.getClassOptions().petType;
-		return petCategories[petType];
-	}
-}
 
 export function getPetTalentsConfig(petType: PetType): TalentsConfig<HunterPetTalents> {
 	const petCategory = petCategories[petType];
@@ -309,8 +191,139 @@ export const tenacityBMDefault: HunterPetTalents = HunterPetTalents.create({
 });
 const defaultBMTalents = [cunningBMDefault, ferocityBMDefault, tenacityBMDefault];
 
-const cunningPetTalentsConfig: TalentsConfig<HunterPetTalents> = newTalentsConfig(HunterPetCunningJson);
-const ferocityPetTalentsConfig: TalentsConfig<HunterPetTalents> = newTalentsConfig(HunterPetFerocityJson);
-const tenacityPetTalentsConfig: TalentsConfig<HunterPetTalents> = newTalentsConfig(HunterPetTenacityJson);
+export const cunningPetTalentsConfig: TalentsConfig<HunterPetTalents> = newTalentsConfig(HunterPetCunningJson);
+export const ferocityPetTalentsConfig: TalentsConfig<HunterPetTalents> = newTalentsConfig(HunterPetFerocityJson);
+export const tenacityPetTalentsConfig: TalentsConfig<HunterPetTalents> = newTalentsConfig(HunterPetTenacityJson);
 
-const petTalentsConfig = [cunningPetTalentsConfig, ferocityPetTalentsConfig, tenacityPetTalentsConfig];
+export const petTalentsConfig = [cunningPetTalentsConfig, ferocityPetTalentsConfig, tenacityPetTalentsConfig];
+
+export class HunterPet<SpecType extends HunterSpecs> {
+	readonly player: Player<SpecType>;
+
+	private talents: HunterPetTalents;
+	private talentsConfig: TalentsConfig<HunterPetTalents>;
+	private talentsString: string;
+
+	readonly talentsChangeEmitter: TypedEvent<void>;
+
+	constructor(player: Player<SpecType>) {
+		this.player = player;
+		this.talents = player.getClassOptions().petTalents ?? HunterPetTalents.create();
+		this.talentsConfig = getPetTalentsConfig(player.getClassOptions().petType);
+		this.talentsString = protoToTalentString(this.talents, this.talentsConfig);
+		this.talentsChangeEmitter = this.player.specOptionsChangeEmitter;
+	}
+
+	getTalents(): HunterPetTalents {
+		return this.talents;
+	}
+
+	getTalentsString(): string {
+		return protoToTalentString(this.talents, this.talentsConfig);
+	}
+
+	setTalentsString(eventID: EventID, newTalentsString: string) {
+		if (newTalentsString == this.talentsString) return;
+
+		const options = this.player.getClassOptions();
+		options.petTalents = talentStringToProto(HunterPetTalents.create(), newTalentsString, this.talentsConfig);
+
+		this.talents = options.petTalents;
+		this.talentsString = newTalentsString;
+		this.player.setClassOptions(eventID, options);
+	}
+
+	getTalentTree(): number {
+		return getTalentTree(this.getTalentsString());
+	}
+
+	getTalentTreePoints(): Array<number> {
+		return getTalentTreePoints(this.getTalentsString());
+	}
+}
+
+export class HunterPetTalentsPicker<SpecType extends HunterSpecs> extends Component {
+	private readonly simUI: SimUI;
+	private readonly player: Player<SpecType>;
+	private curCategory: PetCategory | null;
+	private curTalents: HunterPetTalents;
+
+	// Not saved to storage, just holds last-used values for this session.
+	private savedSets: Array<HunterPetTalents>;
+
+	constructor(parent: HTMLElement, simUI: SimUI, player: Player<SpecType>) {
+		super(parent, 'hunter-pet-talents-picker');
+		this.simUI = simUI;
+		this.player = player;
+
+		this.curCategory = this.getCategoryFromPlayer();
+		this.curTalents = this.getPetTalentsFromPlayer();
+		this.savedSets = defaultTalents.slice();
+		this.savedSets[this.curCategory] = this.curTalents;
+
+		this.rootElem.classList.add(categoryClasses[this.curCategory]);
+
+		const talentsContainer = <div className="pet-talents-container" />;
+		this.rootElem.appendChild(talentsContainer);
+
+		simUI.sim.waitForInit().then(() => {
+			const pet = new HunterPet(player);
+			categoryOrder.map((_category, i) => {
+				const pickerContainer = document.createElement('div');
+				pickerContainer.classList.add('hunter-pet-talents-' + categoryClasses[i]);
+				talentsContainer.appendChild(pickerContainer);
+
+				const talentsConfig = petTalentsConfig[i];
+				const picker = new TalentsPicker(pickerContainer, pet, {
+					klass: player.getClass(),
+					trees: talentsConfig,
+					changedEvent: (pet: HunterPet<SpecType>) => pet.player.specOptionsChangeEmitter,
+					getValue: (pet: HunterPet<SpecType>) => pet.getTalentsString(),
+					setValue: (eventID: EventID, pet: HunterPet<SpecType>, newValue: string) => {
+						pet.setTalentsString(eventID, newValue);
+						this.savedSets[i] = pet.getTalents();
+						this.curTalents = pet.getTalents();
+					},
+					pointsPerRow: 3,
+				});
+
+				return picker;
+			});
+		});
+
+		new IconEnumPicker(this.rootElem, this.player, makePetTypeInputConfig());
+
+		player.specOptionsChangeEmitter.on(() => {
+			const petCategory = this.getCategoryFromPlayer();
+			const categoryIdx = categoryOrder.indexOf(petCategory);
+
+			if (petCategory != this.curCategory) {
+				this.curCategory = petCategory;
+				this.rootElem.classList.remove(...categoryClasses);
+				this.rootElem.classList.add(categoryClasses[categoryIdx]);
+
+				const curTalents = this.getPetTalentsFromPlayer();
+				if (!HunterPetTalents.equals(curTalents, this.curTalents)) {
+					// If the current talents have also changed, this was probably a load so we shouldn't switch sets.
+					this.curTalents = curTalents;
+					this.savedSets[this.curCategory] = this.curTalents;
+				} else {
+					// Revert to the talents from last time the user was editing this category.
+					const options = this.player.getClassOptions();
+					options.petTalents = this.savedSets[this.curCategory];
+					this.player.setClassOptions(TypedEvent.nextEventID(), options);
+					this.curTalents = options.petTalents;
+				}
+			}
+		});
+	}
+
+	getPetTalentsFromPlayer(): HunterPetTalents {
+		return this.player.getClassOptions().petTalents || HunterPetTalents.create();
+	}
+
+	getCategoryFromPlayer(): PetCategory {
+		const petType = this.player.getClassOptions().petType;
+		return petCategories[petType];
+	}
+}

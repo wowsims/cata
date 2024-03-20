@@ -1,0 +1,44 @@
+package hunter
+
+import (
+	"time"
+
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
+)
+
+func (hunter *Hunter) registerTrapLauncher() {
+	actionID := core.ActionID{SpellID: 42899}
+
+	hunter.TrapLauncherAura = hunter.RegisterAura(core.Aura{
+		Label:    "Trap Launcher",
+		ActionID: actionID,
+		Duration: time.Second * 15,
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell == hunter.ExplosiveTrap {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	hunter.TrapLauncher = hunter.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+
+		FocusCost: core.FocusCostOptions{
+			Cost: 20 - core.TernaryFloat64(hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfTrapLauncher), 10, 0),
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: 0,
+			},
+			CD: core.Cooldown{
+				Timer:    hunter.NewTimer(),
+				Duration: time.Millisecond * 1500,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			hunter.RapidFireAura.Activate(sim)
+		},
+	})
+}

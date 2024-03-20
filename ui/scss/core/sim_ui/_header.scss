@@ -1,31 +1,31 @@
-@use "sass:map";
-@use "sass:math";
+@use 'sass:map';
+@use 'sass:math';
 
 .sim-header {
 	position: sticky;
 	top: -1px;
 	height: $sim-header-height;
 	padding-top: $gap-width;
-	padding-left: var(--container-padding);
-	padding-right: var(--container-padding);
-	margin-left: calc(-1 * var(--container-padding));
-	margin-right: calc(-1 * var(--container-padding));
+	padding-left: $container-padding;
+	padding-right: $container-padding;
+	margin-left: calc(-1 * $container-padding);
+	margin-right: calc(-1 * $container-padding);
 	white-space: nowrap;
-	transition: background-color .15s ease-in-out; 
+	transition: background-color 0.15s ease-in-out;
 	z-index: $header-z-index;
-	
+
 	&::after {
 		content: ' ';
 		position: absolute;
 		bottom: -1px;
 		left: 0;
 		right: 0;
-		width: calc(100% - 2 * var(--container-padding));
+		width: calc(100% - 2 * $container-padding);
 		height: 1px;
 		margin-left: auto;
 		margin-right: auto;
 		background-color: $border-color;
-		transition: width .15s ease-in-out;
+		transition: width 0.15s ease-in-out;
 	}
 
 	&.stuck {
@@ -44,15 +44,17 @@
 		// Horizontal scroll for smaller screens
 		// TODO: This is not a good solution
 		overflow-x: scroll;
-		-ms-overflow-style: none;  /* IE and Edge */
-		scrollbar-width: none;  /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
 
 		&::-webkit-scrollbar {
 			display: none;
 		}
 	}
 
-	.sim-tabs, .import-export, .sim-toolbar {
+	.sim-tabs,
+	.import-export,
+	.sim-toolbar {
 		display: flex;
 		flex-wrap: nowrap;
 		align-items: flex-end;
@@ -64,7 +66,8 @@
 	}
 
 	.import-export {
-		.import-link, .export-link {
+		.import-link,
+		.export-link {
 			padding: $nav-link-padding-y $nav-link-padding-x;
 			font-size: $nav-link-font-size;
 			transition: $nav-link-transition;
@@ -79,7 +82,8 @@
 		margin-left: auto;
 		font-size: $content-font-size;
 
-		.sim-toolbar-item, .sim-toolbar-socials {
+		.sim-toolbar-item,
+		.sim-toolbar-socials {
 			margin-left: map-get($spacers, 3);
 			display: flex;
 
@@ -123,5 +127,5 @@
 @include media-breakpoint-down(lg) {
 	.sim-header {
 		padding-top: $gap-width-sm;
-	}	
+	}
 }

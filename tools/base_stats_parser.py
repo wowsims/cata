@@ -17,7 +17,7 @@ SPELL_CRIT_BASE = "chancetospellcritbase.txt"
 COMBAT_RATINGS = "combatratings.txt"
 RATING_SCALAR = "octclasscombatratingscalar.txt"
 
-BASE_LEVEL = 80
+BASE_LEVEL = 85
 
 Offs = {
     "Warrior": 0,
@@ -89,7 +89,7 @@ import (
     output += f"const ParryRatingPerParryChance = {cs.CombatRatings['parry'][BASE_LEVEL-1]}\n"
     output += f"const BlockRatingPerBlockChance = {cs.CombatRatings['block'][BASE_LEVEL-1]}\n"
     output += f"const ResilienceRatingPerCritReductionChance = {cs.CombatRatings['crit taken melee'][BASE_LEVEL-1]}\n"
-    output += f"const MasteryRatingPerMasteryPercent = {cs.CombatRatings['mastery'][BASE_LEVEL-1]}\n"
+    output += f"const MasteryRatingPerMasteryPoint = {cs.CombatRatings['mastery'][BASE_LEVEL-1]}\n"
 
     output += '''var CritPerAgiMaxLevel = map[proto.Class]float64{
 proto.Class_ClassUnknown: 0.0,'''

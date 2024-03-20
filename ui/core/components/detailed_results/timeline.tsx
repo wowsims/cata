@@ -738,9 +738,10 @@ export class Timeline extends ResultComponent {
 			if (percentageResources.includes(resourceType)) {
 				resourceElem.textContent = ((resourceLogGroup.valueAfter / startValue) * 100).toFixed(0) + '%';
 			} else {
-				if (resourceType == ResourceType.ResourceTypeEnergy) {
+				if (resourceType == ResourceType.ResourceTypeEnergy || resourceType == ResourceType.ResourceTypeFocus) {
 					const bgElem = document.createElement('div');
 					bgElem.classList.add('rotation-timeline-resource-fill');
+					bgElem.classList.add(cNames);
 					bgElem.style.height = ((resourceLogGroup.valueAfter / startValue) * 100).toFixed(0) + '%';
 					resourceElem.appendChild(bgElem);
 				} else {
@@ -1146,16 +1147,15 @@ const idToCategoryMap: Record<number, number> = {
 	[60053]: MELEE_ACTION_CATEGORY + 0.1, // Explosive Shot
 	[49050]: MELEE_ACTION_CATEGORY + 0.2, // Aimed Shot
 	[49048]: MELEE_ACTION_CATEGORY + 0.21, // Multi Shot
-	[49045]: MELEE_ACTION_CATEGORY + 0.22, // Arcane Shot
-	[49052]: MELEE_ACTION_CATEGORY + 0.27, // Steady Shot
-	[61006]: MELEE_ACTION_CATEGORY + 0.28, // Kill Shot
+	[3044]: MELEE_ACTION_CATEGORY + 0.22, // Arcane Shot
+	[56641]: MELEE_ACTION_CATEGORY + 0.27, // Steady Shot
+	[53351]: MELEE_ACTION_CATEGORY + 0.28, // Kill Shot
 	[34490]: MELEE_ACTION_CATEGORY + 0.29, // Silencing Shot
 	[49001]: MELEE_ACTION_CATEGORY + 0.3, // Serpent Sting
-	[3043]: MELEE_ACTION_CATEGORY + 0.3, // Scorpid Sting
 	[53238]: MELEE_ACTION_CATEGORY + 0.31, // Piercing Shots
 	[63672]: MELEE_ACTION_CATEGORY + 0.32, // Black Arrow
 	[49067]: MELEE_ACTION_CATEGORY + 0.33, // Explosive Trap
-	[58434]: MELEE_ACTION_CATEGORY + 0.34, // Volley
+	[77767]: MELEE_ACTION_CATEGORY + 0.34, // Cobra Shot
 
 	// Paladin
 	[35395]: MELEE_ACTION_CATEGORY + 0.1, // Crusader Strike
