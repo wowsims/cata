@@ -754,7 +754,7 @@ func registerUnholyFrenzyCD(agent Agent, numUnholyFrenzy int32) {
 		return
 	}
 
-	ufAura := UnholyFrenzyAura(&agent.GetCharacter().Unit, -1)
+	ufAura := UnholyFrenzyAura(agent, -1)
 
 	registerExternalConsecutiveCDApproximation(
 		agent,
@@ -774,8 +774,14 @@ func registerUnholyFrenzyCD(agent Agent, numUnholyFrenzy int32) {
 		numUnholyFrenzy)
 }
 
-func UnholyFrenzyAura(character *Unit, actionTag int32) *Aura {
+func UnholyFrenzyAura(agent Agent, actionTag int32) *Aura {
 	actionID := ActionID{SpellID: 49016, Tag: actionTag}
+
+	character := agent.GetCharacter()
+
+	// If this character has an effect that multiplies enrage effects, incorporate it
+	// Mainly for Fury Warrior's Unshackled Rage mastery
+	effect := 1.0 + (0.2 * character.PseudoStats.EnragedEffectMultiplier)
 
 	aura := character.GetOrRegisterAura(Aura{
 		Label:    "UnholyFrenzy-" + actionID.String(),
@@ -783,14 +789,14 @@ func UnholyFrenzyAura(character *Unit, actionTag int32) *Aura {
 		ActionID: actionID,
 		Duration: UnholyFrenzyDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= effect
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.2
+			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= effect
 		},
 	})
 
-	RegisterPercentDamageModifierEffect(aura, 1.2)
+	RegisterPercentDamageModifierEffect(aura, effect)
 	return aura
 }
 
