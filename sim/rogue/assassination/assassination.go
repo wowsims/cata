@@ -38,7 +38,7 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	sinRogue.registerVendetta()
 
 	// Apply Mastery
-	masteryPercent := sinRogue.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPercent
+	masteryPercent := sinRogue.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPoint
 	masteryEffect := masteryBaseEffect + masteryPercent*masteryDamagePerPercent
 	for _, spell := range sinRogue.InstantPoison {
 		spell.DamageMultiplier += masteryEffect
@@ -53,8 +53,8 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	}
 
 	sinRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		masteryPercentOld := oldMastery / core.MasteryRatingPerMasteryPercent
-		masteryPercentNew := newMastery / core.MasteryRatingPerMasteryPercent
+		masteryPercentOld := oldMastery / core.MasteryRatingPerMasteryPoint
+		masteryPercentNew := newMastery / core.MasteryRatingPerMasteryPoint
 		masteryEffectChange := masteryBaseEffect + (masteryPercentNew-masteryPercentOld)*masteryDamagePerPercent
 		for _, spell := range sinRogue.InstantPoison {
 			spell.DamageMultiplier += masteryEffectChange
@@ -69,7 +69,7 @@ func (sinRogue *AssassinationRogue) Initialize() {
 		}
 	})
 
-	// Assassin's Resolve: 20% melee damage
+	// Assassin's Resolve: 20% additive melee damage
 	// +20 Energy handled in base rogue
 	if sinRogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger &&
 		sinRogue.GetOHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
