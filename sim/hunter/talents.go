@@ -299,6 +299,9 @@ func (hunter *Hunter) applyImprovedSteadyShot() {
 		Label:     "Imp SS Counter",
 		Duration:  core.NeverExpires,
 		MaxStacks: 1,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ActionID.SpellID == 0 { // Todo: Better way to stop auto attacks from counting?
 				return

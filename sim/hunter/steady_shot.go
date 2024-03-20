@@ -41,11 +41,6 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if hunter.Talents.ImprovedSteadyShot > 0 {
-				if !hunter.ImprovedSteadyShotAuraCounter.IsActive() {
-					hunter.ImprovedSteadyShotAuraCounter.Activate(sim)
-				}
-			}
 			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280 + spell.RangedAttackPower(target)*0.021)
 			focus := 9.0
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
