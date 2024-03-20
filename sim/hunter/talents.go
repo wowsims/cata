@@ -49,6 +49,7 @@ func (hunter *Hunter) ApplyTalents() {
 	hunter.applyFervorCD()
 	hunter.registerReadinessCD()
 	hunter.applyMasterMarksman()
+	hunter.applyTermination()
 }
 func (hunter *Hunter) applyMasterMarksman() {
 	if hunter.Talents.MasterMarksman == 0 {
@@ -206,18 +207,20 @@ func (hunter *Hunter) applyTermination() {
 	if hunter.Talents.Termination == 0 {
 		return
 	}
-	hunter.RegisterAura(core.Aura{
-		Label:    "Termination",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+
+	actionID := core.ActionID{SpellID: 83490}
+
+	focusMetrics := hunter.NewFocusMetrics(actionID)
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Termination",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Target.CurrentHealthPercent() <= 25 {
-				return
+			if sim.IsExecutePhase25() &&
+				spell == hunter.SteadyShot ||
+				spell == hunter.CobraShot {
+				hunter.AddFocus(sim, 6, focusMetrics)
 			}
 		},
-	})
+	}))
 }
 
 func (hunter *Hunter) applyPiercingShots() {
