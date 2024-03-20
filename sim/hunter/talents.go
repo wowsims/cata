@@ -287,7 +287,7 @@ func (hunter *Hunter) applyImprovedSteadyShot() {
 	}
 	hunter.ImprovedSteadyShotAura = hunter.RegisterAura(core.Aura{
 		Label:     "Improved Steady Shot",
-		ActionID:  core.ActionID{SpellID: 53221},
+		ActionID:  core.ActionID{SpellID: 53221, Tag: 1},
 		Duration:  time.Second * 8,
 		MaxStacks: 1,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -299,29 +299,26 @@ func (hunter *Hunter) applyImprovedSteadyShot() {
 			aura.Unit.MultiplyRangedSpeed(sim, 1/attackspeedMultiplier)
 		},
 	})
-	hunter.ImprovedSteadyShotAuraCounter = hunter.RegisterAura(core.Aura{
+	hunter.ImprovedSteadyShotAuraCounter = core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label:     "Imp SS Counter",
-		Duration:  core.NeverExpires,
-		MaxStacks: 1,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+		ActionID:  core.ActionID{SpellID: 53221, Tag: 2},
+		MaxStacks: 2,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ActionID.SpellID == 0 { // Todo: Better way to stop auto attacks from counting?
+			if spell.ProcMask.Matches(core.ProcMaskRangedAuto) && spell.ActionID.SpellID == 0 && !spell.Flags.Matches(core.SpellFlagAPL) {
 				return
 			}
 			if spell != hunter.SteadyShot {
-				aura.SetStacks(sim, 0)
+				aura.SetStacks(sim, 1)
 			} else {
-				if aura.GetStacks() == 1 {
+				if aura.GetStacks() == 2 {
 					hunter.ImprovedSteadyShotAura.Activate(sim)
-					aura.SetStacks(sim, 0)
-				} else {
 					aura.SetStacks(sim, 1)
+				} else {
+					aura.SetStacks(sim, 2)
 				}
 			}
 		},
-	})
+	}))
 }
 func (hunter *Hunter) applyKillingStreak() {
 	if hunter.Talents.KillingStreak == 0 {
