@@ -29,7 +29,7 @@ func (rogue *Rogue) registerShivSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1 * rogue.dwsMultiplier(),
+		DamageMultiplier: 1 * rogue.DWSMultiplier(),
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 

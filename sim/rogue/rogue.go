@@ -59,6 +59,8 @@ type Rogue struct {
 	Vanish           *core.Spell
 	VenomousWounds   *core.Spell
 	Vendetta         *core.Spell
+	RevealingStrike  *core.Spell
+	KillingSpree     *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
@@ -86,6 +88,7 @@ type Rogue struct {
 	DirtyDeedsAura       *core.Aura
 	HonorAmongThieves    *core.Aura
 	StealthAura          *core.Aura
+	BanditsGuileAura     *core.Aura
 
 	MasterPoisonerDebuffAuras core.AuraArray
 	SavageCombatDebuffAuras   core.AuraArray
@@ -216,6 +219,8 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 	rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 2)
 	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+	// Make an assumption we're wearing leather for Leather Armor Spec
+	rogue.MultiplyStat(stats.Agility, 1.05)
 
 	return rogue
 }
@@ -225,7 +230,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 // TODO (TheBackstabi, 3/16/2024) - Assassination only talent, to be moved?
 func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
 	if rogue.Talents.CutToTheChase > 0 && rogue.SliceAndDiceAura.IsActive() {
-		procChance := float64(rogue.Talents.CutToTheChase) * 0.2
+		procChance := []float64{0.0, 0.33, 0.67, 1.0}[rogue.Talents.CutToTheChase]
 		if sim.Proc(procChance, "Cut to the Chase") {
 			rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[5]
 			rogue.SliceAndDiceAura.Activate(sim)

@@ -29,7 +29,8 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 		},
 
 		BonusCritRating: core.TernaryFloat64(rogue.HasSetBonus(Tier9, 4), 5*core.CritRatingPerCritChance, 0),
-		DamageMultiplierAdditive: []float64{0.0, .07, .14, .20}[rogue.Talents.Aggression] +
+		DamageMultiplierAdditive: 1 +
+			[]float64{0.0, .07, .14, .20}[rogue.Talents.Aggression] +
 			0.01*float64(rogue.Talents.ImprovedSinisterStrike) +
 			core.TernaryFloat64(rogue.HasSetBonus(Tier6, 4), 0.06, 0),
 		DamageMultiplier: 1.04,

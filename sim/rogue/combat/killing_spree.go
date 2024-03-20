@@ -1,4 +1,4 @@
-package rogue
+package combat
 
 import (
 	"math"
@@ -8,14 +8,14 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (rogue *Rogue) registerKillingSpreeSpell() {
-	mhWeaponSwing := rogue.GetOrRegisterSpell(core.SpellConfig{
+func (comRogue *CombatRogue) registerKillingSpreeSpell() {
+	mhWeaponSwing := comRogue.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 51690, Tag: 1}, // actual spellID is 57841
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskMeleeMHSpecial,
 		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
-		DamageMultiplier: 1 + 0.02*float64(rogue.Talents.FindWeakness),
-		CritMultiplier:   rogue.MeleeCritMultiplier(false),
+		DamageMultiplier: 1,
+		CritMultiplier:   comRogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0 +
@@ -25,13 +25,13 @@ func (rogue *Rogue) registerKillingSpreeSpell() {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
 	})
-	ohWeaponSwing := rogue.GetOrRegisterSpell(core.SpellConfig{
+	ohWeaponSwing := comRogue.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 51690, Tag: 2}, // actual spellID is 57842
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskMeleeOHSpecial,
 		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
-		DamageMultiplier: (1 + 0.02*float64(rogue.Talents.FindWeakness)) * rogue.dwsMultiplier(),
-		CritMultiplier:   rogue.MeleeCritMultiplier(false),
+		DamageMultiplier: 1 * comRogue.DWSMultiplier(),
+		CritMultiplier:   comRogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0 +
@@ -41,20 +41,20 @@ func (rogue *Rogue) registerKillingSpreeSpell() {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
 	})
-	rogue.KillingSpreeAura = rogue.RegisterAura(core.Aura{
+	comRogue.KillingSpreeAura = comRogue.RegisterAura(core.Aura{
 		Label:    "Killing Spree",
 		ActionID: core.ActionID{SpellID: 51690},
 		Duration: time.Second*2 + 1,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.SetGCDTimer(sim, core.NeverExpires)
-			rogue.PseudoStats.DamageDealtMultiplier *= 1.2
+			comRogue.SetGCDTimer(sim, core.NeverExpires)
+			comRogue.PseudoStats.DamageDealtMultiplier *= core.TernaryFloat64(comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfKillingSpree), 1.3, 1.2)
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:          time.Millisecond * 500,
 				NumTicks:        5,
 				TickImmediately: true,
 				OnAction: func(s *core.Simulation) {
 					targetCount := sim.GetNumTargets()
-					target := rogue.CurrentTarget
+					target := comRogue.CurrentTarget
 					if targetCount > 1 {
 						newUnitIndex := int32(math.Ceil(float64(targetCount)*sim.RandomFloat("Killing Spree"))) - 1
 						target = sim.GetTargetUnit(newUnitIndex)
@@ -65,11 +65,11 @@ func (rogue *Rogue) registerKillingSpreeSpell() {
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.SetGCDTimer(sim, sim.CurrentTime)
-			rogue.PseudoStats.DamageDealtMultiplier /= 1.2
+			comRogue.SetGCDTimer(sim, sim.CurrentTime)
+			comRogue.PseudoStats.DamageDealtMultiplier /= core.TernaryFloat64(comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfKillingSpree), 1.3, 1.2)
 		},
 	})
-	killingSpreeSpell := rogue.RegisterSpell(core.SpellConfig{
+	comRogue.KillingSpree = comRogue.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 51690},
 		Flags:    core.SpellFlagAPL,
 
@@ -79,29 +79,33 @@ func (rogue *Rogue) registerKillingSpreeSpell() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    rogue.NewTimer(),
-				Duration: time.Minute*2 - core.TernaryDuration(rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfKillingSpree), time.Second*45, 0),
+				Timer:    comRogue.NewTimer(),
+				Duration: time.Minute*2,
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, u *core.Unit, s2 *core.Spell) {
-			rogue.BreakStealth(sim)
-			rogue.KillingSpreeAura.Activate(sim)
+			comRogue.BreakStealth(sim)
+			comRogue.KillingSpreeAura.Activate(sim)
 		},
 	})
 
-	rogue.AddMajorCooldown(core.MajorCooldown{
-		Spell:    killingSpreeSpell,
+	comRogue.AddMajorCooldown(core.MajorCooldown{
+		Spell:    comRogue.KillingSpree,
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityLow,
 		ShouldActivate: func(sim *core.Simulation, c *core.Character) bool {
-			if bf := rogue.GetMajorCooldown(BladeFlurryActionID); bf != nil && bf.IsReady(sim) {
-				return false
-			}
-			if rogue.CurrentEnergy() > 60 || (rogue.CurrentEnergy() > 30 && rogue.AdrenalineRushAura.IsActive()) {
+			if comRogue.CurrentEnergy() > 25 || comRogue.AdrenalineRushAura.IsActive() {
 				return false
 			}
 			return true
 		},
 	})
+}
+
+func (comRogue *CombatRogue) registerKillingSpreeCD() {
+	if !comRogue.Talents.KillingSpree {
+		return
+	}
+	comRogue.registerKillingSpreeSpell()
 }
