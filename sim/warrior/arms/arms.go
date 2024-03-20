@@ -44,7 +44,7 @@ func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarri
 
 	rbo := core.RageBarOptions{
 		StartingRage:   armsOptions.ClassOptions.StartingRage,
-		RageMultiplier: 1.25, // Endless Rage is now part of Anger Management, now an Arms specialization ability
+		RageMultiplier: 1.25, // Endless Rage is now part of Anger Management, now an Arms specialization passive
 	}
 	if mh := war.GetMHWeapon(); mh != nil {
 		rbo.MHSwingSpeed = mh.SwingSpeed
@@ -79,6 +79,53 @@ func (war *ArmsWarrior) RegisterSpecializationEffects() {
 
 	// Two-Handed Weapon Specialization (12712)
 	war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.12
+}
+
+const (
+	StrikesOfOpportunityHitID int32 = 76858
+)
+
+func (war *ArmsWarrior) GetMasteryProcChance() float64 {
+	return (17.6 + 2.2*war.GetMasteryPoints()) / 100
+}
+
+func (war *ArmsWarrior) RegisterMastery() {
+	// TODO:
+	//	test what things the extra attack can proc
+	//	does the extra attack use the same hit table
+	//
+	// 4.3.3 simcraft implements SoO as a standard autoattack
+	procAttackConfig := *war.AutoAttacks.MHConfig()
+	procAttackConfig.ActionID = core.ActionID{SpellID: StrikesOfOpportunityHitID, Tag: procAttackConfig.ActionID.Tag}
+	procAttack := war.RegisterSpell(procAttackConfig)
+
+	icd := core.Cooldown{
+		Timer:    war.NewTimer(),
+		Duration: time.Millisecond * 500, // From 4.3.3 simcraft, needs to be tested
+	}
+
+	war.RegisterAura(core.Aura{
+		Label:    "Strikes of Opportunity",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() || !spell.ActionID.IsOtherAction(proto.OtherAction_OtherActionAttack) {
+				return
+			}
+
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			proc := war.GetMasteryProcChance()
+			if sim.RandomFloat(aura.Label) < proc {
+				icd.Use(sim)
+				procAttack.Cast(sim, result.Target)
+			}
+		},
+	})
 }
 
 func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {
