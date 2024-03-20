@@ -28,6 +28,10 @@ type OnSpellHit func(aura *Aura, sim *Simulation, spell *Spell, result *SpellRes
 // or anything that comes from the final result of a tick.
 type OnPeriodicDamage func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult)
 
+// Called when the aura is refreshed. Use to resnapshot aura effects on refresh based on
+// current stats without removing and reapplying the aura
+type OnRefresh func(aura *Aura, sim *Simulation)
+
 const Inactive = -1
 
 // Aura lifecycle:
@@ -83,6 +87,7 @@ type Aura struct {
 	OnGain          OnGain
 	OnExpire        OnExpire
 	OnStacksChange  OnStacksChange // Invoked when the number of stacks of this aura changes.
+	OnRefresh       OnRefresh      // Invoked when the aura is refreshed
 
 	OnCastComplete        OnCastComplete   // Invoked when a spell cast completes casting, before results are calculated.
 	OnSpellHitDealt       OnSpellHit       // Invoked when a spell hits and this unit is the caster.
@@ -163,6 +168,10 @@ func (aura *Aura) Refresh(sim *Simulation) {
 			aura.Unit.minExpires = aura.expires
 			sim.rescheduleTracker(aura.expires)
 		}
+	}
+
+	if aura.OnRefresh != nil {
+		aura.OnRefresh(aura, sim)
 	}
 }
 
