@@ -49,9 +49,10 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 	}
 
 	comRogue.BanditsGuileAura = comRogue.RegisterAura(core.Aura{
-		Label:    "Bandit's Guile Tracker",
-		ActionID: core.ActionID{SpellID: 84654},
-		Duration: core.NeverExpires,
+		Label:     "Bandit's Guile Tracker",
+		ActionID:  core.ActionID{SpellID: 84654},
+		Duration:  core.NeverExpires,
+		MaxStacks: 4,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if currentInsightIndex < 2 && result.Landed() && (spell == comRogue.SinisterStrike || spell == comRogue.RevealingStrike) {
 				if sim.Proc(chanceToProc, "Bandit's Guile") {
@@ -66,8 +67,10 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 					lastAttacked = result.Target
 
 					attackCounter += 1
+					comRogue.BanditsGuileAura.AddStack(sim)
 					if attackCounter == 4 {
 						attackCounter = 0
+						comRogue.BanditsGuileAura.SetStacks(sim, 1)
 						// Deactivate previous aura
 						if currentInsightIndex >= 0 {
 							bgDamageAuras[currentInsightIndex].Deactivate(sim)
