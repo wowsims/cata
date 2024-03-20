@@ -14,7 +14,7 @@ func (hunter *Hunter) registerTrapLauncher() {
 		Label:    "Trap Launcher",
 		ActionID: actionID,
 		Duration: time.Second * 15,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell == hunter.ExplosiveTrap {
 				aura.Deactivate(sim)
 			}

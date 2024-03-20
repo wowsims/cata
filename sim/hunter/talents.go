@@ -214,9 +214,7 @@ func (hunter *Hunter) applyTermination() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: "Termination",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if sim.IsExecutePhase25() &&
-				spell == hunter.SteadyShot ||
-				spell == hunter.CobraShot {
+			if sim.IsExecutePhase25() && spell == hunter.SteadyShot || spell == hunter.CobraShot {
 				hunter.AddFocus(sim, float64(hunter.Talents.Termination)*3, focusMetrics)
 			}
 		},
@@ -285,17 +283,17 @@ func (hunter *Hunter) applyImprovedSteadyShot() {
 	if hunter.Talents.ImprovedSteadyShot == 0 {
 		return
 	}
+
+	attackspeedMultiplier := 1 + (float64(hunter.Talents.ImprovedSteadyShot) * 0.05)
 	hunter.ImprovedSteadyShotAura = hunter.RegisterAura(core.Aura{
 		Label:     "Improved Steady Shot",
 		ActionID:  core.ActionID{SpellID: 53221, Tag: 1},
 		Duration:  time.Second * 8,
 		MaxStacks: 1,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			attackspeedMultiplier := 1 + (float64(hunter.Talents.ImprovedSteadyShot) * 0.05)
 			aura.Unit.MultiplyRangedSpeed(sim, attackspeedMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			attackspeedMultiplier := 1 + (float64(hunter.Talents.ImprovedSteadyShot) * 0.05)
 			aura.Unit.MultiplyRangedSpeed(sim, 1/attackspeedMultiplier)
 		},
 	})
@@ -329,7 +327,7 @@ func (hunter *Hunter) applyKillingStreak() {
 		ActionID: core.ActionID{SpellID: 82748},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.KillCommand.DamageMultiplier /= 1 + (float64(hunter.Talents.KillingStreak) * 0.1)
+			hunter.KillCommand.DamageMultiplier *= 1 + (float64(hunter.Talents.KillingStreak) * 0.1)
 			hunter.KillCommand.ApplyCostModifiers(hunter.KillCommand.CurCast.Cost - (float64(hunter.Talents.KillingStreak) * 5))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -337,10 +335,8 @@ func (hunter *Hunter) applyKillingStreak() {
 			hunter.KillCommand.ApplyCostModifiers(hunter.KillCommand.CurCast.Cost + (float64(hunter.Talents.KillingStreak) * 5))
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if hunter.Talents.KillingStreak > 0 {
-				if spell == hunter.KillCommand {
-					aura.Deactivate(sim)
-				}
+			if spell == hunter.KillCommand {
+				aura.Deactivate(sim)
 			}
 		},
 	})
@@ -352,16 +348,14 @@ func (hunter *Hunter) applyKillingStreak() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if hunter.Talents.KillingStreak > 0 {
-				if spell == hunter.KillCommand {
-					if aura.GetStacks() == 2 && result.DidCrit() {
-						hunter.KillingStreakAura.Activate(sim)
-						aura.SetStacks(sim, 1)
-						return
-					}
-					if result.DidCrit() {
-						aura.AddStack(sim)
-					}
+			if spell == hunter.KillCommand {
+				if aura.GetStacks() == 2 && result.DidCrit() {
+					hunter.KillingStreakAura.Activate(sim)
+					aura.SetStacks(sim, 1)
+					return
+				}
+				if result.DidCrit() {
+					aura.AddStack(sim)
 				}
 			}
 		},
@@ -416,18 +410,16 @@ func (hunter *Hunter) applyFocusFireCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 82692}
+	petFocusMetrics := hunter.Pet.NewFocusMetrics(actionID)
 	focusFireAura := hunter.RegisterAura(core.Aura{
 		Label:    "Focus Fire",
 		ActionID: actionID,
 		Duration: time.Second * 20,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			hunter.Pet.FrenzyStacksSnapshot = float64(hunter.Pet.FrenzyAura.GetStacks())
 			if hunter.Pet.FrenzyStacksSnapshot >= 1 {
 				hunter.Pet.FrenzyAura.Deactivate(sim)
-				hunter.Pet.AddFocus(sim, 4, nil)
+				hunter.Pet.AddFocus(sim, 4, petFocusMetrics)
 				aura.Unit.MultiplyRangedSpeed(sim, 1+(float64(hunter.Pet.FrenzyStacksSnapshot)*0.03))
 				if sim.Log != nil {
 					hunter.Pet.Log(sim, "Consumed %0f stacks of Frenzy for Focus Fire.", hunter.Pet.FrenzyStacksSnapshot)
@@ -582,8 +574,7 @@ func (hunter *Hunter) applyGoForTheThroat() {
 		return
 	}
 
-	spellID := []int32{0, 34950, 34950}[hunter.Talents.GoForTheThroat]
-	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: spellID})
+	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 34950})
 
 	amount := 5 * float64(hunter.Talents.GoForTheThroat)
 
@@ -680,7 +671,7 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// mask 256
 			if spell != hunter.ArcaneShot || spell != hunter.ExplosiveShot || spell != hunter.BlackArrow {
 				return
@@ -745,6 +736,9 @@ func (hunter *Hunter) applyHuntingParty() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.MultiplyAttackSpeed(sim, 1.10)
 		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.MultiplyAttackSpeed(sim, 1/1.10)
+		},
 	})
 }
 
@@ -794,15 +788,6 @@ func (hunter *Hunter) registerReadinessCD() {
 			if hunter.BlackArrow != nil {
 				hunter.BlackArrow.CD.Reset()
 			}
-
-			// TODO: This is needed because there are edge cases where core doesn't re-use Rapid Fire.
-			// Fix core so this isn't necessary.
-			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + 1,
-				OnAction: func(_ *core.Simulation) {
-					hunter.UpdateMajorCooldowns()
-				},
-			})
 		},
 	})
 

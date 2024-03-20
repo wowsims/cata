@@ -52,11 +52,6 @@ func (hunter *Hunter) registerRapidFireCD() {
 				Duration: time.Minute*5 - time.Minute*time.Duration(hunter.Talents.Posthaste),
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			// Make sure we don't reuse after a Readiness cast.
-			return !hunter.RapidFireAura.IsActive()
-		},
-
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			hunter.RapidFireAura.Activate(sim)
 		},
