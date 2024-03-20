@@ -10,7 +10,7 @@ const MaxRage = 100.0
 const RageFactor = 453.3
 const ThreatPerRageGained = 5
 
-type RageBarConditionalMultiplierCB func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) float64
+type OnRageGainCB func(sim *Simulation, spell *Spell, result *SpellResult, rage float64) float64
 
 type rageBar struct {
 	unit *Unit
@@ -22,11 +22,18 @@ type rageBar struct {
 }
 
 type RageBarOptions struct {
-	StartingRage            float64
-	RageMultiplier          float64
-	MHSwingSpeed            float64
-	OHSwingSpeed            float64
-	ConditionalMultiplierCB RageBarConditionalMultiplierCB
+	StartingRage   float64
+	RageMultiplier float64
+	MHSwingSpeed   float64
+	OHSwingSpeed   float64
+
+	// Called when rage is calculated from an OnSpellHitDealt event
+	// but before it has been applied to the unit
+	OnHitDealtRageGain OnRageGainCB
+
+	// Called when rage is calculated from an OnSpellHitTaken event
+	// but before it has been applied to the unit
+	OnHitTakenRageGain OnRageGainCB
 }
 
 func (unit *Unit) EnableRageBar(options RageBarOptions) {
@@ -70,13 +77,13 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			// 	damage = result.PreOutcomeDamage
 			// }
 
-			// generatedRage in cata is normalized so it only depends on weapon swing speed and some multipliers
+			// rage in cata is normalized so it only depends on weapon swing speed and some multipliers
 			generatedRage := hitFactor * speed
 
 			generatedRage *= options.RageMultiplier
 
-			if options.ConditionalMultiplierCB != nil {
-				generatedRage *= options.ConditionalMultiplierCB(aura, sim, spell, result)
+			if options.OnHitDealtRageGain != nil {
+				generatedRage = options.OnHitDealtRageGain(sim, spell, result, generatedRage)
 			}
 
 			var metrics *ResourceMetrics
@@ -94,7 +101,14 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			if unit.GetCurrentPowerBar() != RageBar {
 				return
 			}
+
+			// TODO: Figure out the new health-based damage taken rage formula
 			generatedRage := result.Damage * 2.5 / RageFactor
+
+			if options.OnHitTakenRageGain != nil {
+				generatedRage = options.OnHitTakenRageGain(sim, spell, result, generatedRage)
+			}
+
 			unit.AddRage(sim, generatedRage, rageFromDamageTakenMetrics)
 		},
 	})
