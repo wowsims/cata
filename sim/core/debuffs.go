@@ -680,7 +680,7 @@ func ShatteringThrowAura(target *Unit) *Aura {
 const HuntersMarkAuraTag = "HuntersMark"
 
 func HuntersMarkAura(target *Unit) *Aura {
-	bonus := 2700.0
+	bonus := 1772.0 // 443.000000 * 4 @ VoraciousGhost - Hunters Mark and Hawk uses the Unknown class in the SpellScaling
 	//Todo: Validate calculation
 
 	aura := target.GetOrRegisterAura(Aura{
