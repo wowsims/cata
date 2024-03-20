@@ -1,7 +1,6 @@
 package hunter
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -58,47 +57,46 @@ func (hunter *Hunter) applyMasterMarksman() {
 
 	procChance := float64(hunter.Talents.MasterMarksman) * 0.2
 	hunter.MasterMarksmanAura = hunter.RegisterAura(core.Aura{
-		Label:     "Master Marksman",
-		ActionID:  core.ActionID{SpellID: 34485},
-		Duration:  time.Second * 8,
-		MaxStacks: 5,
+		Label:    "Ready, Set, Aim...",
+		ActionID: core.ActionID{SpellID: 82925},
+		Duration: time.Second * 8,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.AimedShot != nil && aura.GetStacks() == 5 {
-				fmt.Println("Activated Master Marksman")
+			if hunter.AimedShot != nil {
+				hunter.AimedShot.CostMultiplier = 0
 				hunter.AimedShot.DefaultCast.CastTime = 0
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.AimedShot != nil {
+				hunter.AimedShot.CostMultiplier = 1
 				hunter.AimedShot.DefaultCast.CastTime = time.Second * 3
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == hunter.AimedShot && aura.GetStacks() == 5 {
-				aura.SetStacks(sim, 0)
+			if spell == hunter.AimedShot {
+				hunter.MasterMarksmanCounterAura.SetStacks(sim, 0)
+				hunter.MasterMarksmanCounterAura.Activate(sim)
+				aura.Deactivate(sim) // Consume effect
 			}
+
+		},
+	})
+	hunter.MasterMarksmanCounterAura = hunter.RegisterAura(core.Aura{
+		Label:     "Master Marksman",
+		Duration:  time.Second * 30,
+		ActionID:  core.ActionID{SpellID: 34486},
+		MaxStacks: 4,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell != hunter.SteadyShot {
 				return
 			}
 			if sim.Proc(procChance, "Master Marksman Proc") {
 				if aura.GetStacks() == 4 {
 					hunter.MasterMarksmanAura.Activate(sim)
-					aura.SetStacks(sim, 0)
 				} else {
 					aura.AddStack(sim)
 				}
 			}
-		},
-	})
-	hunter.MasterMarksmanCounterAura = hunter.RegisterAura(core.Aura{
-		Label:     "Master Marksman Counter",
-		Duration:  core.NeverExpires,
-		MaxStacks: 4,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-
 		},
 	})
 }

@@ -139,7 +139,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [HunterInputs.PetTypeInput(), HunterInputs.UseHuntersMark()],
+	playerIconInputs: [HunterInputs.PetTypeInput()],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: MMInputs.MMRotationConfig,
 	petConsumeInputs: [],
@@ -199,7 +199,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		const silencingShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":34490}}}`);
 		const chimeraShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":53209}}}`);
 		//const arcaneShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49045}}}`);
-
 
 		if (simple.type == RotationType.Aoe) {
 			actions.push(

@@ -7,7 +7,6 @@ import { makePetTypeInputConfig } from '../core/talents/hunter_pet';
 // Configuration for class-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 
-
 export const PetTypeInput = <SpecType extends HunterSpecs>() => makePetTypeInputConfig<SpecType>();
 
 export const PetUptime = <SpecType extends HunterSpecs>() =>
@@ -16,12 +15,6 @@ export const PetUptime = <SpecType extends HunterSpecs>() =>
 		label: 'Pet Uptime (%)',
 		labelTooltip: 'Percent of the fight duration for which your pet will be alive.',
 		percent: true,
-	});
-
-export const UseHuntersMark = <SpecType extends HunterSpecs>() =>
-	InputHelpers.makeClassOptionsBooleanIconInput<SpecType>({
-		fieldName: 'useHuntersMark',
-		id: ActionId.fromSpellId(1130),
 	});
 
 export const TimeToTrapWeaveMs = <SpecType extends HunterSpecs>() =>

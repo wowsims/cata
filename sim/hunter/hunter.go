@@ -134,6 +134,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerSilencingShotSpell()
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerTrapLauncher()
+	hunter.registerHuntersMarkSpell()
 
 	hunter.Env.RegisterPostFinalizeEffect(func() {
 		hunter.SetupFocusThresholds()

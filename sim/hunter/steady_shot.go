@@ -46,6 +46,14 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
 				focus = float64(hunter.Talents.Termination) * 3
 			}
+
+			if hunter.Talents.MasterMarksman != 0 {
+				procChance := float64(hunter.Talents.MasterMarksman) * 0.2
+				if sim.Proc(procChance, "Master Marksman Proc") && !hunter.MasterMarksmanCounterAura.IsActive() {
+					hunter.MasterMarksmanCounterAura.Activate(sim)
+				}
+			}
+
 			hunter.AddFocus(sim, focus, ssMetrics)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
