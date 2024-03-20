@@ -5,6 +5,9 @@ import (
 )
 
 func (hunter *Hunter) registerHuntersMarkSpell() {
+	//core.Aura.Unit.NewEnemyAuraArray()
+	enemyHuntersMarks := hunter.NewEnemyAuraArray(core.HuntersMarkAura)
+
 	hunter.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 1130},
 		ProcMask: core.ProcMaskEmpty,
@@ -21,8 +24,13 @@ func (hunter *Hunter) registerHuntersMarkSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			hm := core.HuntersMarkAura(target)
-			hm.Activate(sim)
+			for _, aura := range enemyHuntersMarks {
+				if aura.IsActive() {
+					aura.Deactivate(sim)
+				}
+			}
+			// Activating Hunters Mark for the new target
+			enemyHuntersMarks.Get(target).Activate(sim)
 		},
 	})
 }

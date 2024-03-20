@@ -17,8 +17,8 @@ func (hunter *Hunter) ApplyTalents() {
 	}
 
 	if hunter.Talents.Pathing > 0 {
-		bonus := 0.03 * float64(hunter.Talents.Pathing)
-		hunter.MultiplyCastSpeed(bonus)
+		bonus := 0.01 * float64(hunter.Talents.Pathing)
+		hunter.PseudoStats.RangedSpeedMultiplier *= bonus
 	}
 
 	if hunter.Talents.HunterVsWild > 0 {
@@ -73,7 +73,7 @@ func (hunter *Hunter) applyMasterMarksman() {
 				hunter.AimedShot.DefaultCast.CastTime = time.Second * 3
 			}
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell == hunter.AimedShot {
 				hunter.MasterMarksmanCounterAura.SetStacks(sim, 0)
 				hunter.MasterMarksmanCounterAura.Activate(sim)
@@ -87,7 +87,7 @@ func (hunter *Hunter) applyMasterMarksman() {
 		Duration:  time.Second * 30,
 		ActionID:  core.ActionID{SpellID: 34486},
 		MaxStacks: 4,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell != hunter.SteadyShot {
 				return
 			}

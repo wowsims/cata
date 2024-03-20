@@ -51,6 +51,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 				procChance := float64(hunter.Talents.MasterMarksman) * 0.2
 				if sim.Proc(procChance, "Master Marksman Proc") && !hunter.MasterMarksmanCounterAura.IsActive() {
 					hunter.MasterMarksmanCounterAura.Activate(sim)
+					//hunter.MasterMarksmanCounterAura.AddStack(sim)
 				}
 			}
 

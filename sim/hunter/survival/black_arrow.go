@@ -54,6 +54,8 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 				// SnapshotBaseDamage calculation for the DoT, divided by 10 to spread across all ticks
 				dot.SnapshotBaseDamage = baseDamage + (percentageOfRAP*rap)/10
 
+				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
