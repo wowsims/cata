@@ -1,7 +1,6 @@
 package core
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -201,9 +200,7 @@ func (unit *Unit) GetStat(stat stats.Stat) float64 {
 	return unit.stats[stat]
 }
 func (unit *Unit) GetMasteryPoints() float64 {
-	// TODO: check mastery point rounding behavior
-	// simc seems to suggest rounding half up (floor(points * 100 + 0.5) / 100)
-	return math.Floor(unit.GetStat(stats.Mastery) / MasteryRatingPerMasteryPoint)
+	return MasteryRatingToMasteryPoints(unit.GetStat(stats.Mastery))
 }
 
 func (unit *Unit) AddStats(stat stats.Stats) {
