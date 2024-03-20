@@ -304,6 +304,9 @@ func (character *Character) clearBuildPhaseAuras(phase CharacterBuildPhase) {
 	}
 	character.Env.MeasuringStats = false
 }
+func (character *Character) CalculateMasteryPoints() float64 {
+	return character.GetStat(stats.Mastery) / MasteryRatingPerMasteryPoint
+}
 
 // Apply effects from all equipped core.
 func (character *Character) applyItemEffects(agent Agent) {

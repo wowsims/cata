@@ -18,7 +18,7 @@ func (hunter *Hunter) ApplyTalents() {
 
 	if hunter.Talents.Pathing > 0 {
 		bonus := 0.01 * float64(hunter.Talents.Pathing)
-		hunter.PseudoStats.RangedSpeedMultiplier *= bonus
+		hunter.PseudoStats.RangedSpeedMultiplier *= 1 + bonus
 	}
 
 	if hunter.Talents.HunterVsWild > 0 {
@@ -91,7 +91,7 @@ func (hunter *Hunter) applyMasterMarksman() {
 			if spell != hunter.SteadyShot {
 				return
 			}
-			if sim.Proc(procChance, "Master Marksman Proc") {
+			if procChance == 1 || sim.Proc(procChance, "Master Marksman Proc") {
 				if aura.GetStacks() == 4 {
 					hunter.MasterMarksmanAura.Activate(sim)
 				} else {
