@@ -217,7 +217,7 @@ func (hunter *Hunter) applyTermination() {
 			if sim.IsExecutePhase25() &&
 				spell == hunter.SteadyShot ||
 				spell == hunter.CobraShot {
-				hunter.AddFocus(sim, 6, focusMetrics)
+				hunter.AddFocus(sim, float64(hunter.Talents.Termination)*3, focusMetrics)
 			}
 		},
 	}))
