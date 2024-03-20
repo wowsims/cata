@@ -55,17 +55,17 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 		MaxStacks: 4,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if currentInsightIndex < 2 && result.Landed() && (spell == comRogue.SinisterStrike || spell == comRogue.RevealingStrike) {
-				if sim.Proc(chanceToProc, "Bandit's Guile") {
-					if lastAttacked != result.Target {
-						// Reset back to no insight, no casts
-						attackCounter = 0
-						if currentInsightIndex >= 0 {
-							bgDamageAuras[currentInsightIndex].Deactivate(sim)
-						}
-						currentInsightIndex = -1
+				if lastAttacked != result.Target {
+					// Reset back to no insight, no casts
+					attackCounter = 0
+					if currentInsightIndex >= 0 {
+						bgDamageAuras[currentInsightIndex].Deactivate(sim)
 					}
-					lastAttacked = result.Target
+					currentInsightIndex = -1
+				}
+				lastAttacked = result.Target
 
+				if sim.Proc(chanceToProc, "Bandit's Guile") {
 					attackCounter += 1
 					comRogue.BanditsGuileAura.AddStack(sim)
 					if attackCounter == 4 {
