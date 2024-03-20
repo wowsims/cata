@@ -61,6 +61,7 @@ type Rogue struct {
 	Vendetta         *core.Spell
 	RevealingStrike  *core.Spell
 	KillingSpree     *core.Spell
+	AdrenalineRush   *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
@@ -89,6 +90,7 @@ type Rogue struct {
 	HonorAmongThieves    *core.Aura
 	StealthAura          *core.Aura
 	BanditsGuileAura     *core.Aura
+	RestlessBladesAura   *core.Aura
 
 	MasterPoisonerDebuffAuras core.AuraArray
 	SavageCombatDebuffAuras   core.AuraArray

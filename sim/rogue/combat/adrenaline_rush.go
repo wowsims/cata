@@ -33,7 +33,7 @@ func (comRogue *CombatRogue) registerAdrenalineRushCD() {
 		},
 	})
 
-	adrenalineRushSpell := comRogue.RegisterSpell(core.SpellConfig{
+	comRogue.AdrenalineRush = comRogue.RegisterSpell(core.SpellConfig{
 		ActionID: AdrenalineRushActionID,
 
 		Cast: core.CastConfig{
@@ -54,9 +54,9 @@ func (comRogue *CombatRogue) registerAdrenalineRushCD() {
 	})
 
 	comRogue.AddMajorCooldown(core.MajorCooldown{
-		Spell:    adrenalineRushSpell,
+		Spell:    comRogue.AdrenalineRush,
 		Type:     core.CooldownTypeDPS,
-		Priority: core.CooldownPriorityBloodlust,
+		Priority: core.CooldownPriorityDefault,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
 			thresh := 40.0
 			return comRogue.CurrentEnergy() <= thresh && !comRogue.KillingSpree.IsReady(sim)

@@ -41,15 +41,23 @@ func (combatRogue *CombatRogue) Initialize() {
 
 	combatRogue.registerRevealingStrike()
 	combatRogue.registerBladeFlurry()
-	combatRogue.applyCombatPotency()
 	combatRogue.registerBanditsGuile()
+
+	combatRogue.applyCombatPotency()
 
 	combatRogue.registerKillingSpreeCD()
 	combatRogue.registerAdrenalineRushCD()
+	combatRogue.applyRestlessBlades()
+
+	combatRogue.applyMastery()
 }
 
 type CombatRogue struct {
 	*rogue.Rogue
+
+	mainGauche *core.Spell
+
+	mainGaucheAura *core.Aura
 }
 
 func (combatRogue *CombatRogue) GetRogue() *rogue.Rogue {
@@ -59,5 +67,14 @@ func (combatRogue *CombatRogue) GetRogue() *rogue.Rogue {
 func (combatRogue *CombatRogue) Reset(sim *core.Simulation) {
 	combatRogue.Rogue.Reset(sim)
 
-	combatRogue.BanditsGuileAura.Activate(sim)
+	combatRogue.mainGaucheAura.Activate(sim)
+
+	if combatRogue.Talents.RestlessBlades > 0 {
+		combatRogue.RestlessBladesAura.Activate(sim)
+	}
+
+	if combatRogue.Talents.BanditsGuile > 0 {
+		combatRogue.BanditsGuileAura.Activate(sim)
+	}
+
 }

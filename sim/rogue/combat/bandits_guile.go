@@ -8,7 +8,7 @@ import (
 
 func (comRogue *CombatRogue) registerBanditsGuile() {
 	chanceToProc := []float64{0.0, 0.33, 0.67, 1.0}[comRogue.Talents.BanditsGuile]
-	attackCounter := 0
+	attackCounter := int32(0)
 	var lastAttacked *core.Unit
 	var bgDamageAuras [3]*core.Aura
 	currentInsightIndex := -1
@@ -43,6 +43,9 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 				if currentInsightIndex == 2 {
 					currentInsightIndex = -1
 					attackCounter = 0
+				} else if currentInsightIndex == index {
+					// This Insight faded without advancing, reset to no Insight
+					currentInsightIndex = -1
 				}
 			},
 		})
@@ -67,10 +70,10 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 
 				if sim.Proc(chanceToProc, "Bandit's Guile") {
 					attackCounter += 1
-					comRogue.BanditsGuileAura.AddStack(sim)
+					comRogue.BanditsGuileAura.SetStacks(sim, attackCounter+1)
 					if attackCounter == 4 {
 						attackCounter = 0
-						comRogue.BanditsGuileAura.SetStacks(sim, 1)
+						comRogue.BanditsGuileAura.SetStacks(sim, attackCounter+1)
 						// Deactivate previous aura
 						if currentInsightIndex >= 0 {
 							bgDamageAuras[currentInsightIndex].Deactivate(sim)

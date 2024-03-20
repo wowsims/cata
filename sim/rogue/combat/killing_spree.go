@@ -80,7 +80,7 @@ func (comRogue *CombatRogue) registerKillingSpreeSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    comRogue.NewTimer(),
-				Duration: time.Minute*2,
+				Duration: time.Minute * 2,
 			},
 		},
 
@@ -93,9 +93,9 @@ func (comRogue *CombatRogue) registerKillingSpreeSpell() {
 	comRogue.AddMajorCooldown(core.MajorCooldown{
 		Spell:    comRogue.KillingSpree,
 		Type:     core.CooldownTypeDPS,
-		Priority: core.CooldownPriorityLow,
+		Priority: core.CooldownPriorityDefault,
 		ShouldActivate: func(sim *core.Simulation, c *core.Character) bool {
-			if comRogue.CurrentEnergy() > 25 || comRogue.AdrenalineRushAura.IsActive() {
+			if comRogue.CurrentEnergy() > 40 || comRogue.AdrenalineRushAura.IsActive() {
 				return false
 			}
 			return true
