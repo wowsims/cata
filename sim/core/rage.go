@@ -10,6 +10,8 @@ const MaxRage = 100.0
 const RageFactor = 453.3
 const ThreatPerRageGained = 5
 
+type RageBarConditionalMultiplierCB func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) float64
+
 type rageBar struct {
 	unit *Unit
 
@@ -20,10 +22,11 @@ type rageBar struct {
 }
 
 type RageBarOptions struct {
-	StartingRage   float64
-	RageMultiplier float64
-	MHSwingSpeed   float64
-	OHSwingSpeed   float64
+	StartingRage            float64
+	RageMultiplier          float64
+	MHSwingSpeed            float64
+	OHSwingSpeed            float64
+	ConditionalMultiplierCB RageBarConditionalMultiplierCB
 }
 
 func (unit *Unit) EnableRageBar(options RageBarOptions) {
@@ -71,6 +74,10 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			generatedRage := hitFactor * speed
 
 			generatedRage *= options.RageMultiplier
+
+			if options.ConditionalMultiplierCB != nil {
+				generatedRage *= options.ConditionalMultiplierCB(aura, sim, spell, result)
+			}
 
 			var metrics *ResourceMetrics
 			if spell.Cost != nil {
