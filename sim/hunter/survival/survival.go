@@ -3,6 +3,7 @@ package survival
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/hunter"
 )
 
@@ -23,13 +24,46 @@ func RegisterSurvivalHunter() {
 	)
 }
 
+func (hunter *SurvivalHunter) Initialize() {
+	// Initialize global Hunter spells
+	hunter.Hunter.Initialize()
+
+	hunter.registerExplosiveShotSpell()
+	hunter.registerBlackArrowSpell(hunter.FireTrapTimer)
+	// Apply SV Hunter mastery
+	schoolsAffectedBySurvivalMastery := []stats.SchoolIndex{
+		stats.SchoolIndexNature,
+		stats.SchoolIndexFire,
+		stats.SchoolIndexArcane,
+		stats.SchoolIndexFrost,
+		stats.SchoolIndexShadow,
+	}
+
+	baseMastery := hunter.GetStat(stats.Mastery)
+	for _, school := range schoolsAffectedBySurvivalMastery {
+		hunter.PseudoStats.SchoolDamageDealtMultiplier[school] *= hunter.getMasteryBonus(baseMastery)
+	}
+
+	hunter.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		for _, school := range schoolsAffectedBySurvivalMastery {
+			hunter.PseudoStats.SchoolDamageDealtMultiplier[school] /= hunter.getMasteryBonus(oldMastery)
+			hunter.PseudoStats.SchoolDamageDealtMultiplier[school] *= hunter.getMasteryBonus(newMastery)
+		}
+	})
+}
+func (hunter *SurvivalHunter) getMasteryBonus(mastery float64) float64 {
+	return 1.08 + ((mastery / core.MasteryRatingPerMasteryPoint) * 0.01)
+}
+
 func NewSurvivalHunter(character *core.Character, options *proto.Player) *SurvivalHunter {
 	survivalOptions := options.GetSurvivalHunter().Options
 
 	svHunter := &SurvivalHunter{
 		Hunter: hunter.NewHunter(character, options, survivalOptions.ClassOptions),
 	}
+
 	svHunter.SurvivalOptions = survivalOptions
+	// Todo: Is there a better way to do this?
 
 	return svHunter
 }

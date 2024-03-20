@@ -140,7 +140,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [HunterInputs.PetTypeInput(), HunterInputs.WeaponAmmo(), HunterInputs.UseHuntersMark()],
+	playerIconInputs: [HunterInputs.PetTypeInput()],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: SVInputs.SVRotationConfig,
 	petConsumeInputs: [],
@@ -207,25 +207,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			`{"condition":{"dotIsActive":{"spellId":{"spellId":60053}}},"castSpell":{"spellId":{"spellId":60052}}}`,
 		);
 		//const arcaneShot = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":49045}}}`);
-
-		if (simple.viperStartManaPercent != 0) {
-			actions.push(
-				APLAction.fromJsonString(
-					`{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":34074}}}}},{"cmp":{"op":"OpLt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"${(
-						simple.viperStartManaPercent * 100
-					).toFixed(0)}%"}}}}]}},"castSpell":{"spellId":{"spellId":34074}}}`,
-				),
-			);
-		}
-		if (simple.viperStopManaPercent != 0) {
-			actions.push(
-				APLAction.fromJsonString(
-					`{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":61847}}}}},{"cmp":{"op":"OpGt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"${(
-						simple.viperStopManaPercent * 100
-					).toFixed(0)}%"}}}}]}},"castSpell":{"spellId":{"spellId":61847}}}`,
-				),
-			);
-		}
 
 		if (simple.type == RotationType.Aoe) {
 			actions.push(

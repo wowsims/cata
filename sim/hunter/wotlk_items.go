@@ -35,8 +35,8 @@ var ItemSetCryptstalkerBattlegear = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			if hunter.pet != nil {
-				hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.05
+			if hunter.Pet != nil {
+				hunter.Pet.PseudoStats.DamageDealtMultiplier *= 1.05
 			}
 		},
 		4: func(agent core.Agent) {
@@ -94,11 +94,11 @@ var ItemSetWindrunnersPursuit = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			if hunter.pet == nil {
+			if hunter.Pet == nil {
 				return
 			}
 
-			procAura := hunter.pet.NewTemporaryStatsAura("Windrunner 4pc Proc", core.ActionID{SpellID: 68130}, stats.Stats{stats.AttackPower: 600}, time.Second*15)
+			procAura := hunter.Pet.NewTemporaryStatsAura("Windrunner 4pc Proc", core.ActionID{SpellID: 68130}, stats.Stats{stats.AttackPower: 600}, time.Second*15)
 			const procChance = 0.35
 
 			icd := core.Cooldown{
@@ -236,9 +236,8 @@ func init() {
 					ThreatMultiplier: 1,
 
 					ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
-							hunter.AmmoDamageBonus +
-							spell.BonusWeaponDamage()
+						baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
+						spell.BonusWeaponDamage()
 
 						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 					},

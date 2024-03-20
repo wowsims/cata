@@ -36,8 +36,6 @@ export const DefaultSimpleRotation = HunterRotation.create({
 	type: RotationType.SingleTarget,
 	sting: HunterStingType.SerpentSting,
 	trapWeave: true,
-	viperStartManaPercent: 0.1,
-	viperStopManaPercent: 0.3,
 	multiDotSerpentSting: true,
 	allowExplosiveShotDownrank: true,
 });

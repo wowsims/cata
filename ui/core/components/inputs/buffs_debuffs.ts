@@ -252,7 +252,7 @@ export const SpellDamageDebuff = InputHelpers.makeMultiIconInput([
 ], 'Spell Dmg');
 
 export const HuntersMark = withLabel(
-  makeQuadstateDebuffInput({actionId: ActionId.fromSpellId(53338), impId: ActionId.fromSpellId(19423), impId2: ActionId.fromItemId(42907), fieldName: 'huntersMark'}),
+  makeQuadstateDebuffInput({actionId: ActionId.fromSpellId(1130), impId: ActionId.fromSpellId(19423), impId2: ActionId.fromItemId(42907), fieldName: 'huntersMark'}),
   'Mark',
 );
 export const JudgementOfWisdom = withLabel(makeBooleanDebuffInput({actionId: ActionId.fromSpellId(53408), fieldName: 'judgementOfWisdom'}), 'JoW');

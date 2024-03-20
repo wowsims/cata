@@ -172,7 +172,7 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	sim.addTracker(&pet.auraTracker)
 
 	if pet.HasFocusBar() {
-		pet.focusBar.enable(sim)
+		pet.focusBar.enable(sim, sim.CurrentTime)
 	}
 }
 

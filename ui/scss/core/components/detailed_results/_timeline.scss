@@ -166,7 +166,13 @@ $threat-color: #b56d07;
 	bottom: 0;
 	left: 0;
 	width: 10px;
-	background-color: yellow;
+	&.focus {
+		background-color: #FF8040;
+	}
+
+	&.energy {
+		background-color: yellow;
+	}
 }
 .rotation-timeline-cast {
 	position: absolute;

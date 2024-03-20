@@ -99,4 +99,7 @@
 		"tinsert",
 		"UIParent"
 	],
+	"[go]": {
+		"editor.defaultFormatter": "golang.go"
+	}
 }

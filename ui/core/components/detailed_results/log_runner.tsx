@@ -15,7 +15,7 @@ export class LogRunner extends ResultComponent {
 
 	constructor(config: ResultComponentConfig) {
 		config.rootCssClass = 'log-runner-root';
-		super(config)
+		super(config);
 
 		this.rootElem.appendChild(
 			<>
@@ -31,8 +31,8 @@ export class LogRunner extends ResultComponent {
 					</thead>
 					<tbody className="log-runner-logs"></tbody>
 				</table>
-			</>
-		)
+			</>,
+		);
 		this.logsContainer = this.rootElem.querySelector('.log-runner-logs')!;
 
 		new BooleanPicker<LogRunner>(this.rootElem.querySelector('.show-debug-container')!, this, {
@@ -45,29 +45,26 @@ export class LogRunner extends ResultComponent {
 			setValue: (eventID, _logRunner, newValue) => {
 				this.showDebug = newValue;
 				this.showDebugChangeEmitter.emit(eventID);
-			}
+			},
 		});
-
 		this.showDebugChangeEmitter.on(() => this.onSimResult(this.getLastSimResult()));
 	}
 
 	onSimResult(resultData: SimResultData): void {
-		const logs = resultData.result.logs
+		const logs = resultData.result.logs;
 		this.logsContainer.innerHTML = '';
-		logs.
-			filter(log => !log.isCastCompleted()).
-			forEach(log => {
-				const lineElem = document.createElement('span');
-				lineElem.textContent = log.toString();
-				if (log.raw.length > 0 && (this.showDebug || !log.raw.match(/.*\[DEBUG\].*/))) {
-					this.logsContainer.appendChild(
-						<tr>
-							<td className="log-timestamp">{log.formattedTimestamp()}</td>
-							<td className="log-event">{this.newEventFrom(log)}</td>
-						</tr>
-					);
-				}
-			});
+		logs.filter(log => !log.isCastCompleted()).forEach(log => {
+			const lineElem = document.createElement('span');
+			lineElem.textContent = log.toString();
+			if (log.raw.length > 0 && (this.showDebug || !log.raw.match(/.*\[DEBUG\].*/))) {
+				this.logsContainer.appendChild(
+					<tr>
+						<td className="log-timestamp">{log.formattedTimestamp()}</td>
+						<td className="log-event">{this.newEventFrom(log)}</td>
+					</tr>,
+				);
+			}
+		});
 	}
 
 	private newEventFrom(log: SimLog): Element {
