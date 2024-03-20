@@ -43,11 +43,10 @@ func (hunter *Hunter) registerCobraShotSpell() {
 				focus = float64(hunter.Talents.Termination) * 3
 			}
 			hunter.AddFocus(sim, focus, csMetrics)
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			if hunter.SerpentSting.Dot(target).IsActive() {
 				hunter.SerpentSting.Dot(target).Rollover(sim)
 			}
-			spell.DealDamage(sim, result)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	})
 }
