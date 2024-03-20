@@ -1,5 +1,6 @@
 import { RaidSimResultsManager } from '../../components/raid_sim_action.js';
 import { DeathKnight } from '../../player_classes/death_knight';
+import { Hunter } from '../../player_classes/hunter';
 import { Rogue } from '../../player_classes/rogue';
 import { Warrior } from '../../player_classes/warrior';
 import { PlayerSpec } from '../../player_spec';
@@ -17,7 +18,7 @@ export class ToplineResults extends ResultComponent {
 	onSimResult(resultData: SimResultData) {
 		let content = RaidSimResultsManager.makeToplineResultsContent(resultData.result, resultData.filter);
 
-		const noManaClasses = [DeathKnight, Rogue, Warrior];
+		const noManaClasses = [DeathKnight, Rogue, Warrior, Hunter];
 
 		const players = resultData.result.getPlayers(resultData.filter);
 		if (players.length == 1 && !!players[0].spec && !noManaClasses.some(klass => PlayerSpecs.getPlayerClass(players[0].spec as PlayerSpec<any>) == klass)) {

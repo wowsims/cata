@@ -113,6 +113,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueCurrentRage(config.GetCurrentRage())
 	case *proto.APLValue_CurrentEnergy:
 		return rot.newValueCurrentEnergy(config.GetCurrentEnergy())
+		case *proto.APLValue_CurrentFocus:
+		return rot.newValueCurrentFocus(config.GetCurrentFocus())
 	case *proto.APLValue_CurrentComboPoints:
 		return rot.newValueCurrentComboPoints(config.GetCurrentComboPoints())
 	case *proto.APLValue_CurrentRunicPower:

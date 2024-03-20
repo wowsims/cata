@@ -32,7 +32,6 @@ export const SVRotationConfig = {
 			labelTooltip: 'Maintains the selected Sting on the primary target.',
 			values: [
 				{ name: 'None', value: HunterStingType.NoSting },
-				{ name: 'Scorpid Sting', value: HunterStingType.ScorpidSting },
 				{ name: 'Serpent Sting', value: HunterStingType.SerpentSting },
 			],
 			showWhen: (player: Player<Spec.SpecSurvivalHunter>) => player.getSimpleRotation().type == RotationType.SingleTarget,
@@ -55,18 +54,6 @@ export const SVRotationConfig = {
 			label: 'Multi-Dot Serpent Sting',
 			labelTooltip: 'Casts Serpent Sting on multiple targets',
 			changeEmitter: (player: Player<Spec.SpecSurvivalHunter>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
-		InputHelpers.makeRotationNumberInput<Spec.SpecSurvivalHunter>({
-			fieldName: 'viperStartManaPercent',
-			label: 'Viper Start Mana %',
-			labelTooltip: 'Switch to Aspect of the Viper when mana goes below this amount.',
-			percent: true,
-		}),
-		InputHelpers.makeRotationNumberInput<Spec.SpecSurvivalHunter>({
-			fieldName: 'viperStopManaPercent',
-			label: 'Viper Stop Mana %',
-			labelTooltip: 'Switch back to Aspect of the Hawk when mana goes above this amount.',
-			percent: true,
 		}),
 	],
 };

@@ -4,26 +4,23 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
-	hasGlyph := hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfExplosiveTrap)
 	bonusPeriodicDamageMultiplier := .10 * float64(hunter.Talents.TrapMastery)
 
 	hunter.ExplosiveTrap = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 49067},
+		ActionID:    core.ActionID{SpellID: 13812},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.19,
-			Multiplier: 1 - 0.2*float64(hunter.Talents.Resourcefulness),
+		FocusCost: core.FocusCostOptions{
+			Cost: 0, // Todo: Verify focus cost https://warcraft.wiki.gg/index.php?title=Explosive_Trap&oldid=2963725
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: time.Second,
 			},
 			CD: core.Cooldown{
 				Timer:    timer,
@@ -31,10 +28,9 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 +
-			.02*float64(hunter.Talents.TNT),
-		CritMultiplier:   hunter.critMultiplier(false, false, false),
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           hunter.CritMultiplier(false, false, false),
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -45,14 +41,10 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			TickLength:    time.Second * 2,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 90 + 0.1*dot.Spell.RangedAttackPower(target)
+				baseDamage := 90 + 0.1*dot.Spell.RangedAttackPower(target) // Todo: Change this to use Cata calculations
 				dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					if hasGlyph {
-						dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeRangedHitAndCritNoBlock)
-					} else {
-						dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeRangedHit)
-					}
+					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeRangedHitAndCritNoBlock)
 				}
 				dot.Spell.DamageMultiplierAdditive -= bonusPeriodicDamageMultiplier
 			},
@@ -60,8 +52,8 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if sim.CurrentTime < 0 {
-				// Traps only last 30s.
-				if sim.CurrentTime < -time.Second*30 {
+				// Traps only last 60s.
+				if sim.CurrentTime < -time.Second*60 {
 					return
 				}
 
@@ -71,7 +63,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 					DoAt: 0,
 					OnAction: func(sim *core.Simulation) {
 						for _, aoeTarget := range sim.Encounter.TargetUnits {
-							baseDamage := sim.Roll(523, 671) + 0.1*spell.RangedAttackPower(aoeTarget)
+							baseDamage := sim.Roll(523, 671) + 0.1*spell.RangedAttackPower(aoeTarget) // Todo: Change this to use Cata calculations
 							baseDamage *= sim.Encounter.AOECapMultiplier()
 							spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
 						}
@@ -80,7 +72,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 				})
 			} else {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					baseDamage := sim.Roll(523, 671) + 0.1*spell.RangedAttackPower(aoeTarget)
+					baseDamage := sim.Roll(523, 671) + 0.1*spell.RangedAttackPower(aoeTarget) // Todo: Change this to use Cata calculations
 					baseDamage *= sim.Encounter.AOECapMultiplier()
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
 				}
@@ -88,7 +80,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			}
 		},
 	})
-
+	// Todo: Gonna leave the trap weave code for now since we have trap launcher, but it incurrs a Focus cost, so we might wanna sim in AOE situations what's better.
 	timeToTrapWeave := time.Millisecond * time.Duration(hunter.Options.TimeToTrapWeaveMs)
 	halfWeaveTime := timeToTrapWeave / 2
 	hunter.TrapWeaveSpell = hunter.RegisterSpell(core.SpellConfig{

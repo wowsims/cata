@@ -161,9 +161,6 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.InsectSwarm && targetIdx == 0 {
 		MakePermanent(InsectSwarmAura(target))
 	}
-	if debuffs.ScorpidSting && targetIdx == 0 {
-		MakePermanent(ScorpidStingAura(target))
-	}
 
 	if debuffs.TotemOfWrath {
 		MakePermanent(TotemOfWrathDebuff(target))
@@ -178,15 +175,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 
 	if debuffs.HuntersMark > 0 && targetIdx == 0 {
-		points := int32(0)
-		glyphed := false
-		if debuffs.HuntersMark > 1 {
-			points = 3
-			if debuffs.HuntersMark > 2 {
-				glyphed = true
-			}
-		}
-		MakePermanent(HuntersMarkAura(target, points, glyphed))
+		MakePermanent(HuntersMarkAura(target))
 	}
 }
 
@@ -698,13 +687,14 @@ func ShatteringThrowAura(target *Unit) *Aura {
 
 const HuntersMarkAuraTag = "HuntersMark"
 
-func HuntersMarkAura(target *Unit, points int32, glyphed bool) *Aura {
-	bonus := 500.0 * (1 + 0.1*float64(points) + TernaryFloat64(glyphed, 0.2, 0))
+func HuntersMarkAura(target *Unit) *Aura {
+	bonus := 1772.0 // 443.000000 * 4 @ VoraciousGhost - Hunters Mark and Hawk uses the Unknown class in the SpellScaling
+	//Todo: Validate calculation
 
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "HuntersMark-" + strconv.Itoa(int(bonus)),
+		Label:    "HuntersMark",
 		Tag:      HuntersMarkAuraTag,
-		ActionID: ActionID{SpellID: 53338},
+		ActionID: ActionID{SpellID: 1130},
 		Duration: NeverExpires,
 	})
 
@@ -889,16 +879,6 @@ func InsectSwarmAura(target *Unit) *Aura {
 		Label:    "InsectSwarmMiss",
 		ActionID: ActionID{SpellID: 27013},
 		Duration: time.Second * 12,
-	})
-	increasedMissEffect(aura, 0.03)
-	return aura
-}
-
-func ScorpidStingAura(target *Unit) *Aura {
-	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Scorpid Sting",
-		ActionID: ActionID{SpellID: 3043},
-		Duration: time.Second * 20,
 	})
 	increasedMissEffect(aura, 0.03)
 	return aura

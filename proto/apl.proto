@@ -78,7 +78,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 66
+// NextIndex: 67
 message APLValue {
     oneof value {
         // Operators
@@ -110,6 +110,7 @@ message APLValue {
         APLValueCurrentManaPercent current_mana_percent = 12;
         APLValueCurrentRage current_rage = 14;
         APLValueCurrentEnergy current_energy = 15;
+        APLValueCurrentFocus current_focus = 66;
         APLValueCurrentComboPoints current_combo_points = 16;
         APLValueCurrentRunicPower current_runic_power = 25;
 
@@ -376,6 +377,7 @@ message APLValueCurrentManaPercent {
 }
 message APLValueCurrentRage {}
 message APLValueCurrentEnergy {}
+message APLValueCurrentFocus {}
 message APLValueCurrentComboPoints {}
 message APLValueCurrentRunicPower {}
 

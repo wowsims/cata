@@ -35,8 +35,6 @@ export const DefaultSimpleRotation = BeastMasteryRotation.create({
 	type: RotationType.SingleTarget,
 	sting: StingType.SerpentSting,
 	trapWeave: true,
-	viperStartManaPercent: 0.1,
-	viperStopManaPercent: 0.3,
 	multiDotSerpentSting: true,
 	allowExplosiveShotDownrank: true,
 });

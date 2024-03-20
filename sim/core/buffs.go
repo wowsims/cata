@@ -146,8 +146,6 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	var replenishmentActionID ActionID
 	if individualBuffs.VampiricTouch {
 		replenishmentActionID.SpellID = 48160
-	} else if individualBuffs.HuntingParty {
-		replenishmentActionID.SpellID = 53292
 	} else if individualBuffs.JudgementsOfTheWise {
 		replenishmentActionID.SpellID = 31878
 	} else if individualBuffs.ImprovedSoulLeech {

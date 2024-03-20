@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
+// Todo: Introduce weaving again? With the glyph, might be interesting, but its on GCD
 func (hunter *Hunter) registerRaptorStrikeSpell() {
 	hunter.RaptorStrike = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48996},
@@ -13,23 +14,20 @@ func (hunter *Hunter) registerRaptorStrikeSpell() {
 		ProcMask:    core.ProcMaskMeleeMHAuto | core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.04,
-			Multiplier: 1 - 0.2*float64(hunter.Talents.Resourcefulness),
+		FocusCost: core.FocusCostOptions{
+			Cost: 0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: 1,
+				GCD: time.Second,
 			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 6,
 			},
 		},
-
-		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
-		CritMultiplier:   hunter.critMultiplier(false, false, false),
+		CritMultiplier:   hunter.CritMultiplier(false, false, false),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

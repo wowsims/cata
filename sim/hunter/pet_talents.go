@@ -23,14 +23,15 @@ func (hp *HunterPet) ApplyTalents() {
 	hp.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 1 - 0.05*float64(talents.GreatResistance)
 	hp.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 1 - 0.05*float64(talents.GreatResistance)
 
+	//Cata verified
 	if talents.GreatStamina != 0 {
 		hp.MultiplyStat(stats.Stamina, 1.0+0.04*float64(talents.GreatStamina))
 	}
-
+	//Cata verified
 	if talents.NaturalArmor != 0 {
 		hp.MultiplyStat(stats.Armor, 1.0+0.05*float64(talents.NaturalArmor))
 	}
-
+	//Cata verified
 	if talents.BloodOfTheRhino != 0 {
 		hp.PseudoStats.HealingTakenMultiplier *= 1 + 0.2*float64(talents.BloodOfTheRhino)
 
@@ -52,6 +53,7 @@ func (hp *HunterPet) ApplyTalents() {
 	hp.registerWolverineBite()
 }
 
+// Cata verified
 func (hp *HunterPet) applyOwlsFocus() {
 	if hp.Talents().OwlsFocus == 0 {
 		return
@@ -90,6 +92,7 @@ func (hp *HunterPet) applyOwlsFocus() {
 	})
 }
 
+// Cata verified
 func (hp *HunterPet) applyCullingTheHerd() {
 	if hp.Talents().CullingTheHerd == 0 {
 		return
@@ -128,6 +131,7 @@ func (hp *HunterPet) applyCullingTheHerd() {
 	})
 }
 
+// Cata verified
 func (hp *HunterPet) applyFeedingFrenzy() {
 	if hp.Talents().FeedingFrenzy == 0 {
 		return
@@ -148,7 +152,7 @@ func (hp *HunterPet) registerRoarOfRecoveryCD() {
 	// This CD is enabled even if not talented, for prepull. See below.
 	hunter := hp.hunterOwner
 	actionID := core.ActionID{SpellID: 53517}
-	manaMetrics := hunter.NewManaMetrics(actionID)
+	focusMetrics := hunter.NewFocusMetrics(actionID)
 
 	rorSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -160,15 +164,15 @@ func (hp *HunterPet) registerRoarOfRecoveryCD() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return sim.CurrentTime < 0 || (hp.IsEnabled() && hunter.CurrentManaPercent() < 0.6)
+			return sim.CurrentTime < 0 || (hp.IsEnabled() && hunter.CurrentFocus() < 60)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period:   time.Second * 3,
-				NumTicks: 3,
+				Period:   time.Second * 9,
+				NumTicks: 9,
 				OnAction: func(sim *core.Simulation) {
-					hunter.AddMana(sim, 0.1*hunter.MaxMana(), manaMetrics)
+					hunter.AddFocus(sim, 30/9, focusMetrics) // Todo: assume per second
 				},
 			})
 		},
@@ -183,10 +187,11 @@ func (hp *HunterPet) registerRoarOfRecoveryCD() {
 
 	hunter.AddMajorCooldown(core.MajorCooldown{
 		Spell: rorSpell,
-		Type:  core.CooldownTypeMana,
+		Type:  core.CooldownTypeDPS,
 	})
 }
 
+// Cata verified
 func (hp *HunterPet) registerRabidCD() {
 	if !hp.Talents().Rabid {
 		return
@@ -263,6 +268,7 @@ func (hp *HunterPet) registerRabidCD() {
 	})
 }
 
+// Cata verified
 func (hp *HunterPet) registerCallOfTheWildCD() {
 	// This CD is enabled even if not talented, for prepull. See below.
 	hunter := hp.hunterOwner
@@ -368,13 +374,13 @@ func (hp *HunterPet) registerWolverineBite() {
 			return hp.IsEnabled() && wbValidUntil > sim.CurrentTime
 		},
 
-		DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		//DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 5*80 + 0.07*spell.MeleeAttackPower()
-			baseDamage *= hp.killCommandMult()
+			baseDamage := 1 + (spell.MeleeAttackPower()*0.40)*0.10 // https://www.wowhead.com/cata/spell=53508/wolverine-bite ? Reading this right?
+			//baseDamage *= hp.killCommandMult()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			wbValidUntil = 0
