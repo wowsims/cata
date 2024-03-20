@@ -36,11 +36,6 @@ func (hunter *Hunter) registerKillCommandSpell() {
 		CritMultiplier:           hunter.CritMultiplier(false, false, false),
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if hunter.Talents.KillingStreak > 0 {
-				if !hunter.KillingStreakCounterAura.IsActive() {
-					hunter.KillingStreakCounterAura.Activate(sim)
-				}
-			}
 			baseDamage := 0.516*spell.RangedAttackPower(target) + 918 //Todo: fix calc
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
