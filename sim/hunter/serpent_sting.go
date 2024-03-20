@@ -28,7 +28,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 		},
-		BonusCritRating: impSSCritChance + impSSCritChance + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSerpentSting), 6, 0)*core.CritRatingPerCritChance,
+		BonusCritRating: impSSCritChance + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSerpentSting), 6, 0)*core.CritRatingPerCritChance,
 
 		DamageMultiplierAdditive: 1 + 0.15*float64(hunter.Talents.ImprovedSerpentSting),
 		// according to in-game testing (which happens to match the wowhead 60% mortal shots flag on wowhead)
