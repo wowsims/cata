@@ -5,7 +5,6 @@ ui/core/index.ts
 ui/*/*/index.html
 .dirstamp
 .vscode/launch.json
-.vscode/settings.json
 # IDE folders
 .idea
 .history
