@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (hunter *Hunter) registerMultiShotSpell(timer *core.Timer) {
+func (hunter *Hunter) registerMultiShotSpell() {
 	numHits := hunter.Env.GetNumTargets() // Multi is uncapped in Cata
 
 	hunter.MultiShot = hunter.RegisterSpell(core.SpellConfig{

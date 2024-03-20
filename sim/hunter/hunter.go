@@ -126,7 +126,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerKillShotSpell()
 	hunter.registerAspectOfTheHawkSpell()
 	hunter.registerSerpentStingSpell()
-	hunter.registerMultiShotSpell(hunter.NewTimer())
+	hunter.registerMultiShotSpell()
 	hunter.registerKillCommandSpell()
 	hunter.registerExplosiveTrapSpell(hunter.FireTrapTimer)
 	hunter.registerCobraShotSpell()
