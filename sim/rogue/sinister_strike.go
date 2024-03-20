@@ -29,10 +29,10 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 		},
 
 		BonusCritRating: core.TernaryFloat64(rogue.HasSetBonus(Tier9, 4), 5*core.CritRatingPerCritChance, 0),
-		DamageMultiplier: 1.03 +
-			[]float64{0.0, .07, .14, .20}[rogue.Talents.Aggression] +
+		DamageMultiplierAdditive: []float64{0.0, .07, .14, .20}[rogue.Talents.Aggression] +
 			0.01*float64(rogue.Talents.ImprovedSinisterStrike) +
 			core.TernaryFloat64(rogue.HasSetBonus(Tier6, 4), 0.06, 0),
+		DamageMultiplier: 1.04,
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
@@ -46,8 +46,8 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 
 			if result.Landed() {
 				points := int32(1)
-				if hasGlyphOfSinisterStrike && result.DidCrit() {
-					if sim.RandomFloat("Glyph of Sinister Strike") < 0.5 {
+				if hasGlyphOfSinisterStrike {
+					if sim.RandomFloat("Glyph of Sinister Strike") < 0.2 {
 						points += 1
 					}
 				}

@@ -17,8 +17,8 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		actionID = core.ActionID{SpellID: MutilateSpellID, Tag: 2}
 		procMask = core.ProcMaskMeleeOHSpecial
 	}
-	mutDamageMultiplier := 1.86                                                        // (84 * 1.3220000267 + 75) / 100
-	mutBaseDamage := rogue.RogueBaseDamageScalar * 0.17900000513 * mutDamageMultiplier // This gives a value that matches in-game tooltip... unsure on this logic
+	mutDamageMultiplier := 1.86 // (84 * 1.3220000267 + 75) / 100
+	mutBaseDamage := rogue.RogueBaseDamageScalar * 0.17900000513
 
 	return sinRogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
