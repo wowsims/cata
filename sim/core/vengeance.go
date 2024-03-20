@@ -34,7 +34,7 @@ func UpdateVengeance(sim *Simulation, character *Character, tracker *VengeanceTr
 
 		// Decay existing bonus by half of the rate
 		decay := VengeanceAPDecayRate / 2
-		tracker.apBonus *= (1 - decay)
+		tracker.apBonus -= (decay * tracker.apBonus)
 
 		// Add 5% of damage taken in the last 2 seconds
 		tracker.apBonus += 0.05 * tracker.eligibleDamage
@@ -45,7 +45,7 @@ func UpdateVengeance(sim *Simulation, character *Character, tracker *VengeanceTr
 		tracker.apBonus = math.Max(tracker.apBonus, baseAPBonus)
 	} else {
 		// No hits in the last 2 seconds - apply full decay
-		tracker.apBonus -= (1.0 - VengeanceAPDecayRate) * tracker.recentMaxAPBonus
+		tracker.apBonus -= (VengeanceAPDecayRate * tracker.recentMaxAPBonus)
 	}
 
 	// TODO: verify that stam actually shows up in this formula, currently implemented as simcraft has it
