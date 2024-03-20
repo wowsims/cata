@@ -331,7 +331,7 @@ export class CharacterStats extends Component {
 		popover = Popover.getOrCreateInstance(link, {
 			customClass: 'bonus-stats-popover',
 			placement: 'right',
-			fallbackPlacement: ['left'],
+			fallbackPlacements: ['left'],
 			sanitize: false,
 			html: true,
 			content: picker.rootElem,

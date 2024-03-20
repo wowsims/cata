@@ -62,7 +62,7 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 }
 
 func (uhdk UnholyDeathKnight) getMasteryShadowBonus(mastery float64) float64 {
-	return 1.2 + 0.025 * (mastery / core.MasteryRatingPerMasteryPercent)
+	return 1.2 + 0.025*(mastery/core.MasteryRatingPerMasteryPoint)
 }
 
 func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
