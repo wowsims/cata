@@ -1,4 +1,4 @@
-package rogue
+package subtlety
 
 import (
 	"time"
@@ -6,14 +6,14 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (rogue *Rogue) registerPremeditation() {
-	if !rogue.Talents.Premeditation {
+func (subRogue *SubtletyRogue) registerPremeditation() {
+	if !subRogue.Talents.Premeditation {
 		return
 	}
 
-	comboMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 14183})
+	comboMetrics := subRogue.NewComboPointMetrics(core.ActionID{SpellID: 14183})
 
-	rogue.Premeditation = rogue.RegisterSpell(core.SpellConfig{
+	subRogue.Premeditation = subRogue.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 14183},
 		Flags:    core.SpellFlagAPL,
 
@@ -24,25 +24,25 @@ func (rogue *Rogue) registerPremeditation() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    rogue.NewTimer(),
+				Timer:    subRogue.NewTimer(),
 				Duration: time.Second * 20,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.IsStealthed()
+			return subRogue.IsStealthed()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			rogue.AddComboPoints(sim, 2, comboMetrics)
+			subRogue.AddComboPoints(sim, 2, comboMetrics)
 		},
 	})
 
-	rogue.AddMajorCooldown(core.MajorCooldown{
-		Spell:    rogue.Premeditation,
+	subRogue.AddMajorCooldown(core.MajorCooldown{
+		Spell:    subRogue.Premeditation,
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityLow,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			return rogue.ComboPoints() <= 2 && rogue.ShadowDanceAura.IsActive()
+			return subRogue.ComboPoints() <= 2 && subRogue.ShadowDanceAura.IsActive()
 		},
 	})
 }

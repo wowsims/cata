@@ -1,4 +1,4 @@
-package rogue
+package subtlety
 
 import (
 	"time"
@@ -8,19 +8,19 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (rogue *Rogue) registerShadowDanceCD() {
-	if !rogue.Talents.ShadowDance {
+func (subRogue *SubtletyRogue) registerShadowDanceCD() {
+	if !subRogue.Talents.ShadowDance {
 		return
 	}
 
 	duration := time.Second * 6
-	if rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfShadowDance) {
+	if subRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfShadowDance) {
 		duration = time.Second * 8
 	}
 
 	actionID := core.ActionID{SpellID: 51713}
 
-	rogue.ShadowDanceAura = rogue.RegisterAura(core.Aura{
+	subRogue.ShadowDanceAura = subRogue.RegisterAura(core.Aura{
 		Label:    "Shadow Dance",
 		ActionID: actionID,
 		Duration: duration,
@@ -28,29 +28,29 @@ func (rogue *Rogue) registerShadowDanceCD() {
 		// Covered in rogue.go by IsStealthed()
 	})
 
-	rogue.ShadowDance = rogue.RegisterSpell(core.SpellConfig{
+	subRogue.ShadowDance = subRogue.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    rogue.NewTimer(),
+				Timer:    subRogue.NewTimer(),
 				Duration: time.Minute,
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			rogue.BreakStealth(sim)
-			rogue.ShadowDanceAura.Activate(sim)
+			subRogue.BreakStealth(sim)
+			subRogue.ShadowDanceAura.Activate(sim)
 		},
 	})
 
-	rogue.AddMajorCooldown(core.MajorCooldown{
-		Spell:    rogue.ShadowDance,
+	subRogue.AddMajorCooldown(core.MajorCooldown{
+		Spell:    subRogue.ShadowDance,
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityDefault,
 		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
-			return rogue.GCD.IsReady(s) && rogue.ComboPoints() <= 2 && rogue.CurrentEnergy() >= 60
+			return subRogue.GCD.IsReady(s) && subRogue.CurrentEnergy() >= 80 && subRogue.SliceAndDiceAura.IsActive() && subRogue.RecuperateAura.IsActive()
 		},
 	})
 }

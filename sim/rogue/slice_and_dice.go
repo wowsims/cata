@@ -24,22 +24,16 @@ func (rogue *Rogue) registerSliceAndDice() {
 		time.Duration(float64(time.Second*21+durationBonus) * durationMultiplier),
 	}
 
-	hasteBonus := 1.4
-	if rogue.HasSetBonus(Tier6, 2) {
-		hasteBonus += 0.05
-	}
-	inverseHasteBonus := 1.0 / hasteBonus
-
 	rogue.SliceAndDiceAura = rogue.RegisterAura(core.Aura{
 		Label:    "Slice and Dice",
 		ActionID: actionID,
 		// This will be overridden on cast, but set a non-zero default so it doesn't crash when used in APL prepull
 		Duration: rogue.sliceAndDiceDurations[5],
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, hasteBonus)
+			rogue.MultiplyMeleeSpeed(sim, rogue.SliceAndDiceBonus)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, inverseHasteBonus)
+			rogue.MultiplyMeleeSpeed(sim, 1/rogue.SliceAndDiceBonus)
 		},
 	})
 

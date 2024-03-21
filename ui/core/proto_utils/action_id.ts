@@ -288,6 +288,7 @@ export class ActionId {
 			case 'Expose Armor':
 			case 'Rupture':
 			case 'Slice and Dice':
+			case 'Recuperate':
 				if (this.tag) name += ` (${this.tag} CP)`;
 				break;
 			case 'Instant Poison':

@@ -28,9 +28,10 @@ type Rogue struct {
 	CombatOptions        *proto.CombatRogue_Options
 	SubtletyOptions      *proto.SubtletyRogue_Options
 
-	// bleedCategory *core.ExclusiveCategory
+	SliceAndDiceBonus float64
 
 	sliceAndDiceDurations [6]time.Duration
+	recuperateDurations   [6]time.Duration
 	exposeArmorDurations  [6]time.Duration
 
 	Backstab         *core.Spell
@@ -68,6 +69,7 @@ type Rogue struct {
 	ExposeArmor  *core.Spell
 	Rupture      *core.Spell
 	SliceAndDice *core.Spell
+	Recuperate   *core.Spell
 
 	lastDeadlyPoisonProcMask core.ProcMask
 
@@ -83,6 +85,7 @@ type Rogue struct {
 	KillingSpreeAura     *core.Aura
 	OverkillAura         *core.Aura
 	SliceAndDiceAura     *core.Aura
+	RecuperateAura       *core.Aura
 	MasterOfSubtletyAura *core.Aura
 	ShadowstepAura       *core.Aura
 	ShadowDanceAura      *core.Aura
@@ -154,6 +157,7 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerEviscerate()
 	rogue.registerEnvenom()
 	rogue.registerExposeArmorSpell()
+	rogue.registerRecuperate()
 	rogue.registerFanOfKnives()
 	rogue.registerTricksOfTheTradeSpell()
 	rogue.registerDeadlyPoisonSpell()
@@ -164,6 +168,11 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerThistleTeaCD()
 
 	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
+
+	rogue.SliceAndDiceBonus = 1.4
+	if rogue.HasSetBonus(Tier6, 2) {
+		rogue.SliceAndDiceBonus += 0.05
+	}
 }
 
 func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {

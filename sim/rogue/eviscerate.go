@@ -53,7 +53,7 @@ func (rogue *Rogue) registerEviscerate() {
 				apRatio*spell.MeleeAttackPower() +
 				spell.BonusWeaponDamage()
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
 				rogue.ApplyFinisher(sim, spell)
@@ -62,7 +62,7 @@ func (rogue *Rogue) registerEviscerate() {
 				spell.IssueRefund(sim)
 			}
 
-			spell.DealDamage(sim, result)
+			//spell.DealDamage(sim, result)
 		},
 	})
 }
