@@ -42,7 +42,7 @@ func (subRogue *SubtletyRogue) registerPremeditation() {
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityLow,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			return subRogue.ComboPoints() <= 2 && subRogue.ShadowDanceAura.IsActive()
+			return subRogue.ComboPoints() <= 2 && subRogue.ShadowDanceAura.IsActive() //|| subRogue.StealthAura.IsActive())
 		},
 	})
 }

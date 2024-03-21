@@ -36,60 +36,30 @@ func (rogue *Rogue) registerVanishSpell() {
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityDrums,
 
-		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+		ShouldActivate: func(sim *core.Simulation, unit *core.Character) bool {
 			if rogue.Talents.Overkill {
 				return !(rogue.StealthAura.IsActive() || rogue.OverkillAura.IsActive()) && rogue.CurrentEnergy() > 50
 			}
 			if rogue.Spec == proto.Spec_SpecSubtletyRogue { // Master of Subtlety is now a Subtlety rogue passive
-				// Chained cast checks
-				// heuristically, 3 Garrote ticks are better DPE than regular builders
-				const garroteMinDuration = time.Second * 9
-
 				if rogue.MasterOfSubtletyAura.IsActive() {
 					return false // possible after preparation
 				}
 
-				if s.GetRemainingDuration() < garroteMinDuration {
-					return true // getting the buff up under non-ideal circumstances is fine at end of combat
-				}
-
-				wantPremed, premedCPs := checkPremediation(s, rogue)
+				wantPremed, premedCPs := checkPremediation(sim, rogue)
 				if wantPremed && premedCPs == 0 {
 					return false // essentially sync with premed if possible
 				}
 
-				wantGarrote, garroteCPs := checkGarrote(s, rogue)
-				if wantGarrote && garroteCPs == 0 {
+				if rogue.CurrentEnergy() < rogue.Ambush.DefaultCast.Cost {
 					return false
 				}
 
-				return rogue.ComboPoints()+garroteCPs+premedCPs <= 5+1 // heuristically, "<= 5" is too strict (since omitting premed is fine)
+				return rogue.ComboPoints()+premedCPs <= 5 // heuristically, "<= 5" is too strict (since omitting premed is fine)
 			}
 
 			return false
 		},
 	})
-}
-
-const garroteMinDuration = time.Second * 9 // heuristically, 3 Garrote ticks are better DPE than regular builders
-
-func checkGarrote(sim *core.Simulation, rogue *Rogue) (bool, int32) {
-	initiative := core.Ternary[int32](rogue.Talents.Initiative == 0, 0, 1)
-	// Garrote cannot be cast in front of the target
-	if rogue.PseudoStats.InFrontOfTarget {
-		return false, 0
-	}
-
-	if !rogue.GCD.IsReady(sim) || rogue.CurrentEnergy() < rogue.Garrote.DefaultCast.Cost {
-		return false, 0
-	}
-
-	// Garrote Clip logic
-	if rogue.GCD.IsReady(sim) && rogue.Garrote.CurDot().IsActive() && sim.GetRemainingDuration() <= garroteMinDuration {
-		return true, 1 + initiative
-	}
-
-	return true, 1 + initiative
 }
 
 func checkPremediation(sim *core.Simulation, rogue *Rogue) (bool, int32) {

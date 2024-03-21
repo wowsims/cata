@@ -3,6 +3,7 @@ package combat
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/rogue"
 )
 
@@ -37,7 +38,10 @@ func NewCombatRogue(character *core.Character, options *proto.Player) *CombatRog
 func (combatRogue *CombatRogue) Initialize() {
 	combatRogue.Rogue.Initialize()
 
+	// Vitality Passive
 	combatRogue.AutoAttacks.OHConfig().DamageMultiplier *= 1.75
+	combatRogue.EnergyTickMultiplier *= 1.25
+	combatRogue.MultiplyStat(stats.AttackPower, 1.3)
 
 	combatRogue.registerRevealingStrike()
 	combatRogue.registerBladeFlurry()

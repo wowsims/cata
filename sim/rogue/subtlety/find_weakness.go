@@ -20,9 +20,6 @@ func (subRogue *SubtletyRogue) applyFindWeakness() {
 			ActionID: core.ActionID{SpellID: 91023},
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				// for _, spell := range subRogue.Spellbook {
-				//
-				// }
 				// TODO Thebackstabi 3/20/2024 -- Update to AttackTables once completed
 				aura.Unit.PseudoStats.ArmorMultiplier -= debuffPower
 			},
