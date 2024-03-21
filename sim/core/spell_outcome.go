@@ -93,21 +93,6 @@ func (spell *Spell) OutcomeMagicHitAndCrit(sim *Simulation, result *SpellResult,
 	}
 }
 
-func (spell *Spell) OutcomeMagicHitAndCritAlwaysHit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
-	if spell.CritMultiplier == 0 {
-		panic("Spell " + spell.ActionID.String() + " missing CritMultiplier")
-	}
-
-	if spell.MagicCritCheck(sim, result.Target) {
-		result.Outcome = OutcomeCrit
-		result.Damage *= spell.CritMultiplier
-		spell.SpellMetrics[result.Target.UnitIndex].Crits++
-	} else {
-		result.Outcome = OutcomeHit
-		spell.SpellMetrics[result.Target.UnitIndex].Hits++
-	}
-}
-
 func (spell *Spell) OutcomeMagicCrit(sim *Simulation, result *SpellResult, _ *AttackTable) {
 	if spell.CritMultiplier == 0 {
 		panic("Spell " + spell.ActionID.String() + " missing CritMultiplier")
