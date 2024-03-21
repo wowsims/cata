@@ -49,7 +49,7 @@ func UpdateVengeance(sim *Simulation, character *Character, tracker *VengeanceTr
 	}
 
 	// TODO: verify that stam actually shows up in this formula, currently implemented as simcraft has it
-	apBonusMax := character.GetStat(stats.Stamina) + 0.1*character.GetStat(stats.Health)
+	apBonusMax := character.GetStat(stats.Stamina) + 0.1*character.MaxHealth()
 	tracker.apBonus = Clamp(tracker.apBonus, 0, apBonusMax)
 
 	tracker.recentMaxAPBonus = math.Max(tracker.apBonus, tracker.recentMaxAPBonus)
