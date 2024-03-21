@@ -319,6 +319,10 @@ type PseudoStats struct {
 	// Only used for NPCs, governs variance in enemy auto-attack damage
 	DamageSpread float64
 
+	// Only used for Fury Warrior's mastery, increases the effect of any spell that causes or requires enrage
+	// Needs to be out here to allow other class's spells to see the modifier (Unholy Frenzy)
+	EnragedEffectMultiplier float64
+
 	///////////////////////////////////////////////////
 	// Effects that apply when this unit is the target.
 	///////////////////////////////////////////////////

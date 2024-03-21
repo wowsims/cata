@@ -1,8 +1,11 @@
 package arms
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/warrior"
 )
 
@@ -39,26 +42,91 @@ func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarri
 		Options: armsOptions,
 	}
 
-	// rbo := core.RageBarOptions{
-	// 	StartingRage:   armsOptions.ClassOptions.StartingRage,
-	// 	RageMultiplier: core.TernaryFloat64(war.Talents.EndlessRage, 1.25, 1),
-	// }
-	// if mh := war.GetMHWeapon(); mh != nil {
-	// 	rbo.MHSwingSpeed = mh.SwingSpeed
-	// }
-	// if oh := war.GetOHWeapon(); oh != nil {
-	// 	rbo.OHSwingSpeed = oh.SwingSpeed
-	// }
+	rbo := core.RageBarOptions{
+		StartingRage:   armsOptions.ClassOptions.StartingRage,
+		RageMultiplier: 1.25, // Endless Rage is now part of Anger Management, now an Arms specialization passive
+	}
+	if mh := war.GetMHWeapon(); mh != nil {
+		rbo.MHSwingSpeed = mh.SwingSpeed
+	}
+	war.EnableRageBar(rbo)
 
-	// war.EnableRageBar(rbo)
-	// war.EnableAutoAttacks(war, core.AutoAttackOptions{
-	// 	MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
-	// 	OffHand:        war.WeaponFromOffHand(war.DefaultMeleeCritMultiplier()),
-	// 	AutoSwingMelee: true,
-	// 	ReplaceMHSwing: war.TryHSOrCleave,
-	// })
+	war.EnableAutoAttacks(war, core.AutoAttackOptions{
+		MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
+		AutoSwingMelee: true,
+	})
+
+	war.RegisterSpecializationEffects()
 
 	return war
+}
+
+func (war *ArmsWarrior) RegisterSpecializationEffects() {
+	// Strikes of Opportunity
+	war.RegisterMastery()
+
+	// Anger Management (flat rage multiplier is set in the RageBarOptions above) (12296)
+	rageMetrics := war.NewRageMetrics(core.ActionID{SpellID: 12296})
+	war.RegisterResetEffect(func(sim *core.Simulation) {
+		core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+			Period: time.Second * 3,
+			OnAction: func(sim *core.Simulation) {
+				war.AddRage(sim, 1, rageMetrics)
+				war.LastAMTick = sim.CurrentTime
+			},
+		})
+	})
+
+	// Two-Handed Weapon Specialization (12712)
+	war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.12
+}
+
+const (
+	StrikesOfOpportunityHitID int32 = 76858
+)
+
+func (war *ArmsWarrior) GetMasteryProcChance() float64 {
+	return (17.6 + 2.2*war.GetMasteryPoints()) / 100
+}
+
+func (war *ArmsWarrior) RegisterMastery() {
+	// TODO:
+	//	test what things the extra attack can proc
+	//	does the extra attack use the same hit table
+	//  can it proc off of missed/dodged/parried attacks
+	//
+	// 4.3.3 simcraft implements SoO as a standard autoattack with a 0.5s ICD
+	procAttackConfig := *war.AutoAttacks.MHConfig()
+	procAttackConfig.ActionID = core.ActionID{SpellID: StrikesOfOpportunityHitID, Tag: procAttackConfig.ActionID.Tag}
+	procAttack := war.RegisterSpell(procAttackConfig)
+
+	icd := core.Cooldown{
+		Timer:    war.NewTimer(),
+		Duration: time.Millisecond * 500,
+	}
+
+	war.RegisterAura(core.Aura{
+		Label:    "Strikes of Opportunity",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() || !spell.ActionID.IsOtherAction(proto.OtherAction_OtherActionAttack) {
+				return
+			}
+
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			proc := war.GetMasteryProcChance()
+			if sim.RandomFloat(aura.Label) < proc {
+				icd.Use(sim)
+				procAttack.Cast(sim, result.Target)
+			}
+		},
+	})
 }
 
 func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {

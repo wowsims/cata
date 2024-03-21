@@ -105,7 +105,8 @@ func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) Initialize() {
-	// warrior.AutoAttacks.MHConfig().CritMultiplier = warrior.autoCritMultiplier(mh)
+	warrior.PseudoStats.EnragedEffectMultiplier = 1.0
+	//warrior.AutoAttacks.MHConfig().CritMultiplier = warrior.autoCritMultiplier(mh)
 	// warrior.AutoAttacks.OHConfig().CritMultiplier = warrior.autoCritMultiplier(oh)
 
 	// primaryTimer := warrior.NewTimer()

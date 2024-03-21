@@ -200,6 +200,9 @@ func (unit *Unit) GetStats() stats.Stats {
 func (unit *Unit) GetStat(stat stats.Stat) float64 {
 	return unit.stats[stat]
 }
+func (unit *Unit) GetMasteryPoints() float64 {
+	return MasteryRatingToMasteryPoints(unit.GetStat(stats.Mastery))
+}
 
 func (unit *Unit) AddStats(stat stats.Stats) {
 	if unit.Env != nil && unit.Env.IsFinalized() {
