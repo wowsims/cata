@@ -10,6 +10,8 @@ const MaxRage = 100.0
 const RageFactor = 453.3
 const ThreatPerRageGained = 5
 
+type OnRageGainCB func(sim *Simulation, spell *Spell, result *SpellResult, rage float64) float64
+
 type rageBar struct {
 	unit *Unit
 
@@ -21,9 +23,17 @@ type rageBar struct {
 
 type RageBarOptions struct {
 	StartingRage   float64
-	RageMultiplier float64
 	MHSwingSpeed   float64
 	OHSwingSpeed   float64
+	RageMultiplier float64
+
+	// Called when rage is calculated from an OnSpellHitDealt event
+	// but before it has been applied to the unit
+	OnHitDealtRageGain OnRageGainCB
+
+	// Called when rage is calculated from an OnSpellHitTaken event
+	// but before it has been applied to the unit
+	OnHitTakenRageGain OnRageGainCB
 }
 
 func (unit *Unit) EnableRageBar(options RageBarOptions) {
@@ -44,13 +54,13 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 				return
 			}
 
-			var hitFactor float64
+			hitFactor := 6.5
 			var speed float64
 			if spell.ProcMask == ProcMaskMeleeMHAuto {
-				hitFactor = 3.5
 				speed = options.MHSwingSpeed
 			} else if spell.ProcMask == ProcMaskMeleeOHAuto {
-				hitFactor = 1.75
+				// OH hits generate 50% of the rage they would if they were MH hits
+				hitFactor /= 2
 				speed = options.OHSwingSpeed
 			} else {
 				return
@@ -60,16 +70,20 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 				hitFactor *= 2
 			}
 
-			damage := result.Damage
-			if result.Outcome.Matches(OutcomeDodge | OutcomeParry) {
-				// Rage is still generated for dodges/parries, based on the damage it WOULD have done.
-				damage = result.PreOutcomeDamage
-			}
+			// TODO: Cataclysm dodge/parry behavior
+			// damage := result.Damage
+			// if result.Outcome.Matches(OutcomeDodge | OutcomeParry) {
+			// 	// Rage is still generated for dodges/parries, based on the damage it WOULD have done.
+			// 	damage = result.PreOutcomeDamage
+			// }
 
-			// generatedRage is capped for very low damage swings
-			generatedRage := min((damage*7.5/RageFactor+hitFactor*speed)/2, damage*15/RageFactor)
-
+			// rage in cata is normalized so it only depends on weapon swing speed and some multipliers
+			generatedRage := hitFactor * speed
 			generatedRage *= options.RageMultiplier
+
+			if options.OnHitDealtRageGain != nil {
+				generatedRage = options.OnHitDealtRageGain(sim, spell, result, generatedRage)
+			}
 
 			var metrics *ResourceMetrics
 			if spell.Cost != nil {
@@ -86,7 +100,14 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			if unit.GetCurrentPowerBar() != RageBar {
 				return
 			}
+
+			// TODO: Figure out the new health-based damage taken rage formula
 			generatedRage := result.Damage * 2.5 / RageFactor
+
+			if options.OnHitTakenRageGain != nil {
+				generatedRage = options.OnHitTakenRageGain(sim, spell, result, generatedRage)
+			}
+
 			unit.AddRage(sim, generatedRage, rageFromDamageTakenMetrics)
 		},
 	})

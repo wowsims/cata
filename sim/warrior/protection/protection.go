@@ -3,6 +3,7 @@ package protection
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/warrior"
 )
 
@@ -27,6 +28,8 @@ type ProtectionWarrior struct {
 	*warrior.Warrior
 
 	Options *proto.ProtectionWarrior_Options
+
+	core.VengeanceTracker
 }
 
 func NewProtectionWarrior(character *core.Character, options *proto.Player) *ProtectionWarrior {
@@ -37,33 +40,85 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 		Options: protOptions,
 	}
 
-	// rbo := core.RageBarOptions{
-	// 	StartingRage:   protOptions.ClassOptions.StartingRage,
-	// 	RageMultiplier: core.TernaryFloat64(war.Talents.EndlessRage, 1.25, 1),
-	// }
-	// if mh := war.GetMHWeapon(); mh != nil {
-	// 	rbo.MHSwingSpeed = mh.SwingSpeed
-	// }
-	// if oh := war.GetOHWeapon(); oh != nil {
-	// 	rbo.OHSwingSpeed = oh.SwingSpeed
-	// }
+	rbo := core.RageBarOptions{
+		StartingRage:   protOptions.ClassOptions.StartingRage,
+		RageMultiplier: 1.0,
 
-	// war.EnableRageBar(rbo)
-	// war.EnableAutoAttacks(war, core.AutoAttackOptions{
-	// 	MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
-	// 	OffHand:        war.WeaponFromOffHand(war.DefaultMeleeCritMultiplier()),
-	// 	AutoSwingMelee: true,
-	// 	ReplaceMHSwing: war.TryHSOrCleave,
-	// })
+		OnHitDealtRageGain: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, rage float64) float64 {
+			if result.Target != nil && result.Target.CurrentTarget != &war.Unit {
+				return rage * 1.5 // Sentinel: Generate 50% addl rage from attacking targets not attacking the warrior
+			}
 
-	// healingModel := options.HealingModel
-	// if healingModel != nil {
-	// 	if healingModel.InspirationUptime > 0.0 {
-	// 		core.ApplyInspiration(war.GetCharacter(), healingModel.InspirationUptime)
-	// 	}
-	// }
+			return rage
+		},
+	}
+	if mh := war.GetMHWeapon(); mh != nil {
+		rbo.MHSwingSpeed = mh.SwingSpeed
+	}
+
+	war.EnableRageBar(rbo)
+	war.EnableAutoAttacks(war, core.AutoAttackOptions{
+		MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
+		AutoSwingMelee: true,
+	})
+
+	//healingModel := options.HealingModel
+	//if healingModel != nil {
+	//	if healingModel.InspirationUptime > 0.0 {
+	//		core.ApplyInspiration(war.GetCharacter(), healingModel.InspirationUptime)
+	//	}
+	//}
 
 	return war
+}
+
+func (war *ProtectionWarrior) RegisterSpecializationEffects() {
+	// Critical block
+	war.RegisterMastery()
+
+	// Sentinel stat buffs
+	war.MultiplyStat(stats.Stamina, 1.15)
+	war.MultiplyStat(stats.Block, 1.15)
+
+	// Vengeance
+	core.ApplyVengeanceEffect(war.GetCharacter(), &war.VengeanceTracker, 93098)
+}
+
+func (war *ProtectionWarrior) RegisterMastery() {
+	dummyCriticalBlockSpell := war.RegisterSpell(core.SpellConfig{
+		ActionID: core.ActionID{SpellID: 76857}, // Doesn't seem like there's an actual spell ID for the block itself, so use the mastery ID
+		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+	})
+
+	// Seems to work pretty much the same as WotLK critical block
+	war.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		if result.Outcome.Matches(core.OutcomeBlock) && !result.Outcome.Matches(core.OutcomeMiss) && !result.Outcome.Matches(core.OutcomeParry) && !result.Outcome.Matches(core.OutcomeDodge) {
+			procChance := war.GetCriticalBlockChance()
+			if sim.RandomFloat("Critical Block Roll") < procChance {
+				blockValue := war.BlockValue()
+				result.Damage = max(0, result.Damage-blockValue)
+				dummyCriticalBlockSpell.Cast(sim, spell.Unit)
+			}
+		}
+	})
+
+	// Crit block mastery also applies an equal amount to regular block
+	// set initial block rating from stats
+	war.AddStat(stats.Block, (war.GetCriticalBlockChance()*100.0)*core.BlockRatingPerBlockChance)
+
+	// and keep it updated when mastery changes
+	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+		oldBlockRating := (1.5 * core.MasteryRatingToMasteryPoints(oldMastery)) * core.BlockRatingPerBlockChance
+		newBlockRating := (1.5 * core.MasteryRatingToMasteryPoints(newMastery)) * core.BlockRatingPerBlockChance
+
+		war.AddStatDynamic(sim, stats.Block, -oldBlockRating)
+		war.AddStatDynamic(sim, stats.Block, newBlockRating)
+	})
+}
+
+func (war *ProtectionWarrior) GetCriticalBlockChance() float64 {
+	// TODO: incorporate Hold The Line's effect (increased crit and crit block chance after parry)
+	return (12.0 + 1.5*war.GetMasteryPoints()) / 100.0
 }
 
 func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
@@ -72,7 +127,7 @@ func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
 
 func (war *ProtectionWarrior) Initialize() {
 	war.Warrior.Initialize()
-
+	war.RegisterSpecializationEffects()
 	// war.RegisterShieldWallCD()
 	// war.RegisterShieldBlockCD()
 	// war.DefensiveStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
