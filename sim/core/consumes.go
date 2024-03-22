@@ -3,7 +3,6 @@ package core
 import (
 	"time"
 
-	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -15,7 +14,7 @@ func applyConsumeEffects(agent Agent) {
 	if consumes == nil {
 		return
 	}
-	alchemyFlaskBonus := core.TernaryInt(character.HasProfession(proto.Profession_Alchemy), 80, 0)
+	alchemyFlaskBonus := TernaryFloat64(character.HasProfession(proto.Profession_Alchemy), 80, 0)
 	if consumes.Flask != proto.Flask_FlaskUnknown {
 		switch consumes.Flask {
 		case proto.Flask_FlaskOfTitanicStrength:
@@ -588,19 +587,20 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		healthMetrics := character.NewHealthMetrics(actionID)
 		return MajorCooldown{
 			Type: CooldownTypeSurvival,
+			ShouldActivate: func(sim *Simulation, character *Character) bool {
+				// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
+				totalRegen := character.ManaRegenPerSecondWhileCasting() * 5
+				manaGain := 11000.0
+				if alchStoneEquipped && potionType == proto.Potions_MythicalManaPotion {
+					manaGain *= 1.4
+				}
+				return character.MaxMana()-(character.CurrentMana()+totalRegen) >= manaGain
+			},
 			Spell: character.GetOrRegisterSpell(SpellConfig{
 				ActionID: actionID,
 				Flags:    SpellFlagNoOnCastComplete,
 				Cast:     potionCast,
-				ShouldActivate: func(sim *Simulation, character *Character) bool {
-					// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
-					totalRegen := character.ManaRegenPerSecondWhileCasting() * 5
-					manaGain := 10750.0
-					if alchStoneEquipped && potionType == proto.Potions_MythicalManaPotion {
-						manaGain *= 1.4
-					}
-					return character.MaxMana()-(character.CurrentMana()+totalRegen) >= manaGain
-				},
+
 				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
 					resourceGain := sim.RollWithLabel(9000, 11000, "MightyRejuvPotion") // Todo: Does it roll once or twice?
 
