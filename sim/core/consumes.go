@@ -203,11 +203,6 @@ func applyConsumeEffects(agent Agent) {
 			})
 		case proto.GuardianElixir_PrismaticElixir:
 			character.AddStats(stats.Stats{
-				stats.Stamina:          90,
-				stats.Strength:         90,
-				stats.Agility:          90,
-				stats.Intellect:        90,
-				stats.Spirit:           90,
 				stats.ArcaneResistance: 90,
 				stats.FireResistance:   90,
 				stats.FrostResistance:  90,

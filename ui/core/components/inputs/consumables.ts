@@ -564,6 +564,7 @@ export const PRE_POTIONS_CONFIG = [
 	{ config: GolembloodPotion, stats: [Stat.StatStrength] },
 	{ config: PotionOfTheTolvir, stats: [Stat.StatAgility] },
 	{ config: VolcanicPotion, stats: [Stat.StatIntellect] },
+	{ config: EarthenPotion, stats: [Stat.StatArmor] },
 	{ config: PotionOfSpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
 ] as ConsumableStatOption<Potions>[];
 
