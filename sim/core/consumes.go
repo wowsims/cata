@@ -592,6 +592,15 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 				ActionID: actionID,
 				Flags:    SpellFlagNoOnCastComplete,
 				Cast:     potionCast,
+				ShouldActivate: func(sim *Simulation, character *Character) bool {
+					// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
+					totalRegen := character.ManaRegenPerSecondWhileCasting() * 5
+					manaGain := 10750.0
+					if alchStoneEquipped && potionType == proto.Potions_MythicalManaPotion {
+						manaGain *= 1.4
+					}
+					return character.MaxMana()-(character.CurrentMana()+totalRegen) >= manaGain
+				},
 				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
 					resourceGain := sim.RollWithLabel(9000, 11000, "MightyRejuvPotion") // Todo: Does it roll once or twice?
 
