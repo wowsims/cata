@@ -20,13 +20,7 @@ func (dk *DeathKnight) registerUnholyFrenzyCD() {
 	if unholyFrenzyTarget == nil {
 		return
 	}
-
-	unholyFrenzyAgent := dk.Env.GetAgentFromUnit(unholyFrenzyTarget)
-	if unholyFrenzyAgent == nil {
-		return
-	}
-
-	dk.UnholyFrenzyAura = core.UnholyFrenzyAura(unholyFrenzyAgent, actionID.Tag)
+	dk.UnholyFrenzyAura = core.UnholyFrenzyAura(unholyFrenzyTarget, actionID.Tag)
 
 	dk.UnholyFrenzy = dk.Character.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,

@@ -43,10 +43,8 @@ func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarri
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage: armsOptions.ClassOptions.StartingRage,
-		OnHitDealtRageGain: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, rage float64) float64 {
-			return rage * 1.25 // Endless Rage is now part of Anger Management, now an Arms specialization passive
-		},
+		StartingRage:   armsOptions.ClassOptions.StartingRage,
+		RageMultiplier: 1.25, // Endless Rage is now part of Anger Management, now an Arms specialization passive
 	}
 	if mh := war.GetMHWeapon(); mh != nil {
 		rbo.MHSwingSpeed = mh.SwingSpeed
@@ -57,8 +55,6 @@ func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarri
 		MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
 		AutoSwingMelee: true,
 	})
-
-	war.RegisterSpecializationEffects()
 
 	return war
 }
@@ -107,12 +103,8 @@ func (war *ArmsWarrior) RegisterMastery() {
 		Duration: time.Millisecond * 500,
 	}
 
-	war.RegisterAura(core.Aura{
-		Label:    "Strikes of Opportunity",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(war.RegisterAura(core.Aura{
+		Label: "Strikes of Opportunity",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() || !spell.ActionID.IsOtherAction(proto.OtherAction_OtherActionAttack) {
 				return
@@ -128,7 +120,7 @@ func (war *ArmsWarrior) RegisterMastery() {
 				procAttack.Cast(sim, result.Target)
 			}
 		},
-	})
+	}))
 }
 
 func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {
@@ -137,6 +129,7 @@ func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {
 
 func (war *ArmsWarrior) Initialize() {
 	war.Warrior.Initialize()
+	war.RegisterSpecializationEffects()
 
 	// if war.Options.UseRecklessness {
 	// 	war.RegisterRecklessnessCD()

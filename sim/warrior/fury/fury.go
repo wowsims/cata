@@ -41,7 +41,8 @@ func NewFuryWarrior(character *core.Character, options *proto.Player) *FuryWarri
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage: furyOptions.ClassOptions.StartingRage,
+		StartingRage:   furyOptions.ClassOptions.StartingRage,
+		RageMultiplier: 1.0,
 	}
 	if mh := war.GetMHWeapon(); mh != nil {
 		rbo.MHSwingSpeed = mh.SwingSpeed
@@ -63,7 +64,9 @@ func NewFuryWarrior(character *core.Character, options *proto.Player) *FuryWarri
 func (war *FuryWarrior) RegisterSpecializationEffects() {
 
 	// Unshackled Fury
-	war.RegisterMastery()
+	// The actual effects of Unshackled Fury need to be handled by specific spells
+	// as it modifies the "benefit" of them (e.g. it both increases Raging Blow's damage
+	// and Enrage's damage bonus)
 
 	// Dual Wield specialization
 	war.AutoAttacks.OHConfig().DamageMultiplier *= 1.25
@@ -76,22 +79,13 @@ func (war *FuryWarrior) GetMasteryBonusMultiplier() float64 {
 	return 1 + (11.2+5.6*war.GetMasteryPoints())/100
 }
 
-func (war *FuryWarrior) RegisterMastery() {
-	// The actual effects of Unshackled Fury need to be handled by specific spells
-	// as it modifies the "benefit" of them (e.g. it both increases Raging Blow's damage
-	// and Enrage's damage bonus) so we just keep this field up to date for spells to read
-	war.PseudoStats.EnragedEffectMultiplier = war.GetMasteryBonusMultiplier()
-	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		war.PseudoStats.EnragedEffectMultiplier = war.GetMasteryBonusMultiplier()
-	})
-}
-
 func (war *FuryWarrior) GetWarrior() *warrior.Warrior {
 	return war.Warrior
 }
 
 func (war *FuryWarrior) Initialize() {
 	war.Warrior.Initialize()
+	war.RegisterSpecializationEffects()
 
 	// if war.Options.UseRecklessness {
 	// 	war.RegisterRecklessnessCD()
