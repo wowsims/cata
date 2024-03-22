@@ -41,8 +41,7 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage:   protOptions.ClassOptions.StartingRage,
-		RageMultiplier: 1,
+		StartingRage: protOptions.ClassOptions.StartingRage,
 
 		OnHitDealtRageGain: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, rage float64) float64 {
 			if result.Target != nil && result.Target.CurrentTarget != &war.Unit {

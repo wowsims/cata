@@ -41,8 +41,7 @@ func NewFuryWarrior(character *core.Character, options *proto.Player) *FuryWarri
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage:   furyOptions.ClassOptions.StartingRage,
-		RageMultiplier: 1,
+		StartingRage: furyOptions.ClassOptions.StartingRage,
 	}
 	if mh := war.GetMHWeapon(); mh != nil {
 		rbo.MHSwingSpeed = mh.SwingSpeed
