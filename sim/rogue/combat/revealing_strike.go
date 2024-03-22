@@ -14,6 +14,7 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 	}
 
 	hasGlyph := comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfRevealingStrike)
+	multiplier := 1 + core.TernaryFloat64(hasGlyph, .45, .35)
 	actionID := core.ActionID{SpellID: 84617}
 
 	// Enemy Debuff Aura for Finisher Damage
@@ -25,16 +26,16 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 
 			// Technically this _could_ cause problems in a target swapping situation, but it's good enough.
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				comRogue.Eviscerate.DamageMultiplierAdditive += core.TernaryFloat64(hasGlyph, .45, .35)
-				comRogue.Envenom.DamageMultiplierAdditive += core.TernaryFloat64(hasGlyph, .45, .35)
-				comRogue.Rupture.DamageMultiplierAdditive += core.TernaryFloat64(hasGlyph, .45, .35)
+				comRogue.Eviscerate.DamageMultiplier *= multiplier
+				comRogue.Envenom.DamageMultiplier *= multiplier
+				comRogue.Rupture.DamageMultiplier *= multiplier
 			},
 
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Unit == &comRogue.Unit && spell.Flags.Matches(rogue.SpellFlagFinisher) {
-					comRogue.Eviscerate.DamageMultiplierAdditive -= core.TernaryFloat64(hasGlyph, .45, .35)
-					comRogue.Envenom.DamageMultiplierAdditive -= core.TernaryFloat64(hasGlyph, .45, .35)
-					comRogue.Rupture.DamageMultiplierAdditive -= core.TernaryFloat64(hasGlyph, .45, .35)
+				if result.Landed() && spell.Flags.Matches(rogue.SpellFlagFinisher) {
+					comRogue.Eviscerate.DamageMultiplier /= multiplier
+					comRogue.Envenom.DamageMultiplier /= multiplier
+					comRogue.Rupture.DamageMultiplier /= multiplier
 					aura.Deactivate(sim)
 				}
 			},

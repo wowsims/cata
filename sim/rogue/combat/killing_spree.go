@@ -41,13 +41,16 @@ func (comRogue *CombatRogue) registerKillingSpreeSpell() {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
 	})
+
+	hasGlyph := comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfKillingSpree)
+	auraDamageMult := core.TernaryFloat64(hasGlyph, 1.3, 1.2)
 	comRogue.KillingSpreeAura = comRogue.RegisterAura(core.Aura{
 		Label:    "Killing Spree",
 		ActionID: core.ActionID{SpellID: 51690},
 		Duration: time.Second*2 + 1,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			comRogue.SetGCDTimer(sim, core.NeverExpires)
-			comRogue.PseudoStats.DamageDealtMultiplier *= core.TernaryFloat64(comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfKillingSpree), 1.3, 1.2)
+			comRogue.PseudoStats.DamageDealtMultiplier *= auraDamageMult
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:          time.Millisecond * 500,
 				NumTicks:        5,
@@ -66,7 +69,7 @@ func (comRogue *CombatRogue) registerKillingSpreeSpell() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			comRogue.SetGCDTimer(sim, sim.CurrentTime)
-			comRogue.PseudoStats.DamageDealtMultiplier /= core.TernaryFloat64(comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfKillingSpree), 1.3, 1.2)
+			comRogue.PseudoStats.DamageDealtMultiplier /= auraDamageMult
 		},
 	})
 	comRogue.KillingSpree = comRogue.RegisterSpell(core.SpellConfig{

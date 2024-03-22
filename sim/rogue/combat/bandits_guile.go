@@ -39,7 +39,7 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 				comRogue.AttackTables[lastAttacked.Index].DamageTakenMultiplier *= damageMult
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				comRogue.AttackTables[lastAttacked.Index].DamageTakenMultiplier *= (1 / damageMult)
+				comRogue.AttackTables[lastAttacked.Index].DamageTakenMultiplier /= damageMult
 				if currentInsightIndex == 2 {
 					currentInsightIndex = -1
 					attackCounter = 0
@@ -68,7 +68,7 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 				}
 				lastAttacked = result.Target
 
-				if sim.Proc(chanceToProc, "Bandit's Guile") {
+				if chanceToProc == 1 || sim.Proc(chanceToProc, "Bandit's Guile") {
 					attackCounter += 1
 					comRogue.BanditsGuileAura.SetStacks(sim, attackCounter+1)
 					if attackCounter == 4 {
