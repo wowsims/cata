@@ -7,7 +7,12 @@ import (
 )
 
 func (rogue *Rogue) registerAmbushSpell() {
-	baseDamage := RogueBaseDamageScalar*0.327 + 28
+	baseDamage := RogueBaseDamageScalar * 0.32699999213
+	baseMultiplier := core.TernaryFloat64(rogue.HasDagger(core.MainHand), 2.86, 1.97) // 77 * 1.38999998569 + 90 (*1.45 for Dagger)
+	damageMultiplier := baseMultiplier *
+		(1 +
+			0.05*float64(rogue.Talents.ImprovedAmbush) +
+			0.1*float64(rogue.Talents.Opportunity))
 
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 8676},
@@ -29,11 +34,8 @@ func (rogue *Rogue) registerAmbushSpell() {
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()
 		},
 
-		BonusCritRating: 20 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),
-		DamageMultiplierAdditive: 1 +
-			0.05*float64(rogue.Talents.ImprovedAmbush) +
-			0.1*float64(rogue.Talents.Opportunity),
-		DamageMultiplier: core.TernaryFloat64(rogue.HasDagger(core.MainHand), 2.85, 1.97),
+		BonusCritRating:  20 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),
+		DamageMultiplier: damageMultiplier,
 		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 

@@ -9,7 +9,11 @@ import (
 
 func (rogue *Rogue) registerSinisterStrikeSpell() {
 	hasGlyphOfSinisterStrike := rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfSinisterStrike)
-	baseDamage := RogueBaseDamageScalar*.178 + 3
+	damageMultiplier := 1.04 * // 84 * .73500001431 + 42
+		(1 +
+			[]float64{0.0, .07, .14, .20}[rogue.Talents.Aggression] +
+			0.01*float64(rogue.Talents.ImprovedSinisterStrike))
+	baseDamage := RogueBaseDamageScalar * 0.1780000031
 
 	rogue.SinisterStrike = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1752},
@@ -28,12 +32,8 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 			IgnoreHaste: true,
 		},
 
-		BonusCritRating: core.TernaryFloat64(rogue.HasSetBonus(Tier9, 4), 5*core.CritRatingPerCritChance, 0),
-		DamageMultiplierAdditive: 1 +
-			[]float64{0.0, .07, .14, .20}[rogue.Talents.Aggression] +
-			0.01*float64(rogue.Talents.ImprovedSinisterStrike) +
-			core.TernaryFloat64(rogue.HasSetBonus(Tier6, 4), 0.06, 0),
-		DamageMultiplier: 1.04,
+		BonusCritRating:  core.TernaryFloat64(rogue.HasSetBonus(Tier9, 4), 5*core.CritRatingPerCritChance, 0),
+		DamageMultiplier: damageMultiplier,
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 

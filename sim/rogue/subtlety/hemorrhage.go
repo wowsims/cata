@@ -34,10 +34,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 			IgnoreHaste: true,
 		},
 
-		BonusCritRating: core.TernaryFloat64(subRogue.HasSetBonus(rogue.Tier9, 4), 5*core.CritRatingPerCritChance, 0),
-
-		DamageMultiplier: core.TernaryFloat64(subRogue.HasDagger(core.MainHand), 3.25, 2.24) +
-			core.TernaryFloat64(subRogue.HasSetBonus(rogue.Tier6, 4), 0.06, 0),
+		DamageMultiplier: core.TernaryFloat64(subRogue.HasDagger(core.MainHand), 3.25, 2.24),
 		CritMultiplier:   subRogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
@@ -73,6 +70,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 				hemoAuras.Get(target).Activate(sim)
 				if hasGlyph {
 					dot := spell.Dot(target)
+					dot.Duration = time.Second * 24
 					dot.Spell = spell
 					dot.SnapshotBaseDamage = result.Damage * .05
 					dot.Apply(sim)

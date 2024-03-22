@@ -17,7 +17,8 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		actionID = core.ActionID{SpellID: MutilateSpellID, Tag: 2}
 		procMask = core.ProcMaskMeleeOHSpecial
 	}
-	mutDamageMultiplier := 1.86 // (84 * 1.3220000267 + 75) / 100
+	mutDamageMultiplier := 1.86 * // (84 * 1.3220000267 + 75) / 100
+		(1 + 0.1*float64(sinRogue.Talents.Opportunity))
 	mutBaseDamage := rogue.RogueBaseDamageScalar * 0.17900000513
 
 	return sinRogue.RegisterSpell(core.SpellConfig{
@@ -29,9 +30,6 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		BonusCritRating: core.TernaryFloat64(sinRogue.HasSetBonus(rogue.Tier9, 4), 5*core.CritRatingPerCritChance, 0) +
 			5*core.CritRatingPerCritChance*float64(sinRogue.Talents.PuncturingWounds),
 
-		DamageMultiplierAdditive: 1 +
-			0.1*float64(sinRogue.Talents.Opportunity) +
-			core.TernaryFloat64(sinRogue.HasSetBonus(rogue.Tier6, 4), 0.06, 0),
 		DamageMultiplier: mutDamageMultiplier,
 		CritMultiplier:   sinRogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
@@ -43,10 +41,6 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 			} else {
 				baseDamage = mutBaseDamage + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			}
-			// TODO: Add support for all poison effects
-			// if sinRogue.DeadlyPoison.Dot(target).IsActive() || sinRogue.WoundPoisonDebuffAuras.Get(target).IsActive() {
-			// 	baseDamage *= 1.2
-			// }
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
