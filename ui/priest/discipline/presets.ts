@@ -69,8 +69,8 @@ export const DefaultOptions = Options.create({
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheFrostWyrm,
 	food: Food.FoodFishFeast,
-	defaultPotion: Potions.PotionOfSpeed,
-	prepopPotion: Potions.PotionOfWildMagic,
+	defaultPotion: Potions.VolcanicPotion,
+	prepopPotion: Potions.VolcanicPotion,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

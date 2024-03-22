@@ -114,7 +114,7 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.PotionOfSpeed,
 	flask: Flask.FlaskOfTheFrostWyrm,
 	food: Food.FoodFishFeast,
-	prepopPotion: Potions.PotionOfWildMagic,
+	prepopPotion: Potions.VolcanicPotion,
 	fillerExplosive: Explosive.ExplosiveSaroniteBomb,
 });
 
