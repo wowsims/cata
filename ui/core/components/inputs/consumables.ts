@@ -554,9 +554,9 @@ export const POTIONS_CONFIG = [
 	{ config: PotionOfConcentration, stats: [Stat.StatMana] },
 	{ config: VolcanicPotion, stats: [Stat.StatIntellect] },
 	{ config: EarthenPotion, stats: [Stat.StatArmor] },
-	{ config: MightyRejuvenationPotion, stats: [Stat.StatMana, Stat.StatHealth] },
+	{ config: MightyRejuvenationPotion, stats: [Stat.StatIntellect, Stat.StatHealth] },
 	{ config: MythicalHealingPotion, stats: [Stat.StatHealth] },
-	{ config: MythicalManaPotion, stats: [Stat.StatMana] },
+	{ config: MythicalManaPotion, stats: [Stat.StatIntellect] },
 	{ config: PotionOfSpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
 ] as ConsumableStatOption<Potions>[];
 
