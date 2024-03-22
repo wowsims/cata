@@ -41,7 +41,8 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 	}
 
 	rbo := core.RageBarOptions{
-		StartingRage: protOptions.ClassOptions.StartingRage,
+		StartingRage:   protOptions.ClassOptions.StartingRage,
+		RageMultiplier: 1.0,
 
 		OnHitDealtRageGain: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, rage float64) float64 {
 			if result.Target != nil && result.Target.CurrentTarget != &war.Unit {
@@ -60,8 +61,6 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 		MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),
 		AutoSwingMelee: true,
 	})
-
-	war.RegisterSpecializationEffects()
 
 	//healingModel := options.HealingModel
 	//if healingModel != nil {
@@ -128,7 +127,7 @@ func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
 
 func (war *ProtectionWarrior) Initialize() {
 	war.Warrior.Initialize()
-
+	war.RegisterSpecializationEffects()
 	// war.RegisterShieldWallCD()
 	// war.RegisterShieldBlockCD()
 	// war.DefensiveStanceAura.BuildPhase = core.CharacterBuildPhaseTalents

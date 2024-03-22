@@ -22,9 +22,10 @@ type rageBar struct {
 }
 
 type RageBarOptions struct {
-	StartingRage float64
-	MHSwingSpeed float64
-	OHSwingSpeed float64
+	StartingRage   float64
+	MHSwingSpeed   float64
+	OHSwingSpeed   float64
+	RageMultiplier float64
 
 	// Called when rage is calculated from an OnSpellHitDealt event
 	// but before it has been applied to the unit
@@ -78,6 +79,7 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 
 			// rage in cata is normalized so it only depends on weapon swing speed and some multipliers
 			generatedRage := hitFactor * speed
+			generatedRage *= options.RageMultiplier
 
 			if options.OnHitDealtRageGain != nil {
 				generatedRage = options.OnHitDealtRageGain(sim, spell, result, generatedRage)

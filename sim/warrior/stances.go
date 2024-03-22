@@ -86,15 +86,18 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 
 	actionID := core.ActionID{SpellID: 71}
 	if warrior.Talents.BastionOfDefense > 0 {
+		damageDealtMultiplier := 1.0 + 0.05*float64(warrior.Talents.BastionOfDefense)
+		enrageChance := 0.1 * float64(warrior.Talents.BastionOfDefense)
+
 		enrageAura := warrior.GetOrRegisterAura(core.Aura{
 			Label:    "Enrage",
 			ActionID: core.ActionID{SpellID: 57516},
 			Duration: 12 * time.Second,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.0 + 0.05*float64(warrior.Talents.BastionOfDefense)
+				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= damageDealtMultiplier
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.0 + 0.05*float64(warrior.Talents.BastionOfDefense)
+				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= damageDealtMultiplier
 			},
 		})
 
@@ -103,7 +106,7 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 			Duration: core.NeverExpires,
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Outcome.Matches(core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry) {
-					if sim.RandomFloat("Enrage Trigger Chance") <= 0.1*float64(warrior.Talents.BastionOfDefense) {
+					if sim.RandomFloat("Enrage Trigger Chance") <= enrageChance {
 						enrageAura.Activate(sim)
 					}
 				}

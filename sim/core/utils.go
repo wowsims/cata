@@ -159,8 +159,7 @@ func Flatten[T any](src [][]T) []T {
 }
 
 func MasteryRatingToMasteryPoints(masteryRating float64) float64 {
-	// TODO: check mastery point rounding behavior
-	return math.Floor(masteryRating / MasteryRatingPerMasteryPoint)
+	return masteryRating / MasteryRatingPerMasteryPoint
 }
 
 type aggregator struct {
