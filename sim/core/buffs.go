@@ -775,6 +775,9 @@ func registerUnholyFrenzyCD(agent Agent, numUnholyFrenzy int32) {
 func UnholyFrenzyAura(character *Unit, actionTag int32) *Aura {
 	actionID := ActionID{SpellID: 49016, Tag: actionTag}
 
+	// TODO: Test if this needs to incorporate the multiplier from Fury's Unshackled Fury
+	// mastery. The wording (and SimC) implies it does as it's an enrage effect, but it doesn't appear
+	// in UF's modified spells list
 	aura := character.GetOrRegisterAura(Aura{
 		Label:    "UnholyFrenzy-" + actionID.String(),
 		Tag:      UnholyFrenzyAuraTag,

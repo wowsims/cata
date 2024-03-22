@@ -293,22 +293,19 @@ enum Explosive {
 
 enum Potions {
 	UnknownPotion = 0;
-	RunicHealingPotion = 1;
-	RunicManaPotion = 2;
-	IndestructiblePotion = 3;
-	PotionOfSpeed = 4;
-	PotionOfWildMagic = 5;
-
-	DestructionPotion = 6;
-	SuperManaPotion = 7;
-	HastePotion = 8;
-	MightyRagePotion = 9;
-	FelManaPotion = 10;
-	InsaneStrengthPotion = 11;
-	IronshieldPotion = 12;
-	HeroicPotion = 13;
-	RunicManaInjector = 14;
-	RunicHealingInjector = 15;
+	GolembloodPotion = 1; //58146
+	PotionOfTheTolvir = 2; //58145
+	PotionOfConcentration = 3; //57194
+	VolcanicPotion = 4; //58091
+	EarthenPotion = 5; //58090
+	MightyRejuvenationPotion = 6; //57193
+	MythicalHealingPotion = 7; //57191
+	MythicalManaPotion = 8; // 57192
+	PotionOfSpeed = 9;
+	HastePotion = 10;
+	MightyRagePotion = 11;
+	RunicManaInjector = 12;
+	RunicHealingInjector = 13;
 }
 
 enum Conjured {
@@ -321,66 +318,60 @@ enum Conjured {
 
 enum Flask {
 	FlaskUnknown = 0;
-	FlaskOfTheFrostWyrm = 1;
-	FlaskOfEndlessRage = 2;
-	FlaskOfPureMojo = 3;
-	FlaskOfStoneblood = 4;
-	LesserFlaskOfToughness = 5;
-	LesserFlaskOfResistance = 6;
+	FlaskOfTitanicStrength = 1;
+	FlaskOfTheWinds = 2;
+	FlaskOfSteelskin = 3;
+	FlaskOfFlowingWater = 4;
 
-	// TBC
-	FlaskOfBlindingLight = 7;
-	FlaskOfMightyRestoration = 8;
-	FlaskOfPureDeath = 9;
-	FlaskOfRelentlessAssault = 10;
-	FlaskOfSupremePower = 11;
-	FlaskOfFortification = 12;
-	FlaskOfChromaticWonder = 13;
+	// Wotlk
+	FlaskOfTheFrostWyrm = 5;
+	FlaskOfEndlessRage = 6;
+	FlaskOfPureMojo = 7;
+	FlaskOfStoneblood = 8;
+	LesserFlaskOfToughness = 9;
+	LesserFlaskOfResistance = 10;
 }
 
 enum BattleElixir {
 	BattleElixirUnknown = 0;
-	ElixirOfAccuracy = 1;
-	ElixirOfArmorPiercing = 2;
-	ElixirOfDeadlyStrikes = 3;
-	ElixirOfExpertise = 4;
-	ElixirOfLightningSpeed = 5;
-	ElixirOfMightyAgility = 6;
-	ElixirOfMightyStrength = 7;
-	GurusElixir = 8;
-	SpellpowerElixir = 9;
-	WrathElixir = 10;
+	ElixirOfTheMaster = 1;
+	ElixirOfMightySpeed = 2;
+	ElixirOfImpossibleAccuracy = 3;
+	ElixirOfTheCobra = 4;
+	ElixirOfTheNaga = 5;
+	GhostElixir = 6;
+
+	//Wotlk
+	ElixirOfAccuracy = 7;
+	ElixirOfArmorPiercing = 8;
+	ElixirOfDeadlyStrikes = 9;
+	ElixirOfExpertise = 10;
+	ElixirOfLightningSpeed = 11;
+	ElixirOfMightyAgility = 12;
+	ElixirOfMightyStrength = 13;
+	GurusElixir = 14;
+	SpellpowerElixir = 15;
+	WrathElixir = 16;
 
 	// TBC
-	AdeptsElixir = 11;
-	ElixirOfDemonslaying = 12;
-	ElixirOfMajorAgility = 13;
-	ElixirOfMajorFirePower = 14;
-	ElixirOfMajorFrostPower = 15;
-	ElixirOfMajorShadowPower = 16;
-	ElixirOfMajorStrength = 17;
-	ElixirOfMastery = 18;
-	ElixirOfTheMongoose = 19;
-	FelStrengthElixir = 20;
-	GreaterArcaneElixir = 21;
+	ElixirOfDemonslaying = 17;
 }
 
 enum GuardianElixir {
 	GuardianElixirUnknown = 0;
-	ElixirOfMightyDefense = 1;
-	ElixirOfMightyFortitude = 2;
-	ElixirOfMightyMageblood = 3;
-	ElixirOfMightyThoughts = 4;
-	ElixirOfProtection = 5;
-	ElixirOfSpirit = 6;
+	ElixirOfDeepEarth = 1;
+	PrismaticElixir = 2;
+
+	//Wotlk
+	ElixirOfMightyDefense = 3;
+	ElixirOfMightyFortitude = 4;
+	ElixirOfMightyMageblood = 5;
+	ElixirOfMightyThoughts = 6;
+	ElixirOfProtection = 7;
+	ElixirOfSpirit = 8;
 
 	// TBC
-	GiftOfArthas = 7;
-	ElixirOfDraenicWisdom = 8;
-	ElixirOfIronskin = 9;
-	ElixirOfMajorDefense = 10;
-	ElixirOfMajorFortitude = 11;
-	ElixirOfMajorMageblood = 12;
+	GiftOfArthas = 9;
 }
 
 enum Food {

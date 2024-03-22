@@ -70,9 +70,9 @@ export const OtherDefaults = {};
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfEndlessRage,
 	food: Food.FoodDragonfinFilet,
-	defaultPotion: Potions.PotionOfSpeed,
+	defaultPotion: Potions.GolembloodPotion,
 	petFood: PetFood.PetFoodSpicedMammothTreats,
-	prepopPotion: Potions.PotionOfSpeed,
+	prepopPotion: Potions.GolembloodPotion,
 	thermalSapper: true,
 	fillerExplosive: Explosive.ExplosiveSaroniteBomb,
 });

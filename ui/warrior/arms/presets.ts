@@ -62,6 +62,6 @@ export const DefaultOptions = WarriorOptions.create({
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfEndlessRage,
 	food: Food.FoodSpicedWormBurger,
-	defaultPotion: Potions.IndestructiblePotion,
-	prepopPotion: Potions.PotionOfSpeed,
+	defaultPotion: Potions.EarthenPotion,
+	prepopPotion: Potions.GolembloodPotion,
 });

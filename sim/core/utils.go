@@ -158,6 +158,10 @@ func Flatten[T any](src [][]T) []T {
 	return dst
 }
 
+func MasteryRatingToMasteryPoints(masteryRating float64) float64 {
+	return masteryRating / MasteryRatingPerMasteryPoint
+}
+
 type aggregator struct {
 	n     int
 	sum   float64
