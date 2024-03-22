@@ -3,6 +3,7 @@ package core
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
@@ -14,40 +15,25 @@ func applyConsumeEffects(agent Agent) {
 	if consumes == nil {
 		return
 	}
-
+	alchemyFlaskBonus := core.TernaryInt(character.HasProfession(proto.Profession_Alchemy), 80, 0)
 	if consumes.Flask != proto.Flask_FlaskUnknown {
 		switch consumes.Flask {
 		case proto.Flask_FlaskOfTitanicStrength:
 			character.AddStats(stats.Stats{
-				stats.Strength: 300,
+				stats.Strength: 300 + alchemyFlaskBonus,
 			})
-			if character.HasProfession(proto.Profession_Alchemy) {
-				character.AddStats(stats.Stats{
-					stats.Strength: 80,
-				})
-			}
 		case proto.Flask_FlaskOfTheWinds:
 			character.AddStats(stats.Stats{
-				stats.Agility: 300,
+				stats.Agility: 300 + alchemyFlaskBonus,
 			})
-			if character.HasProfession(proto.Profession_Alchemy) {
-				character.AddStats(stats.Stats{
-					stats.Agility: 80,
-				})
-			}
 		case proto.Flask_FlaskOfSteelskin:
 			character.AddStats(stats.Stats{
 				stats.Stamina: 450,
 			})
 		case proto.Flask_FlaskOfFlowingWater:
 			character.AddStats(stats.Stats{
-				stats.Spirit: 300,
+				stats.Spirit: 300 + alchemyFlaskBonus,
 			})
-			if character.HasProfession(proto.Profession_Alchemy) {
-				character.AddStats(stats.Stats{
-					stats.Spirit: 80,
-				})
-			}
 		case proto.Flask_FlaskOfTheFrostWyrm:
 			character.AddStats(stats.Stats{
 				stats.SpellPower: 125,
