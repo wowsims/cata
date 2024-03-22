@@ -124,8 +124,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 					rogue.WoundPoison[DeadlyProc].Cast(sim, target)
 				}
 			}
-			// TODO: Thebackstabi 3/17/2024 - Verify Thrown Weapon + Deadly Poison behavior
-			// Currently expecting that it behaves as the Offhand Weapon does.
+			// Confirmed: Thrown Deadly Poison proc only the MH poison, and is not proc'd from MH/OH Deadly Poison
 			if rogue.lastDeadlyPoisonProcMask.Matches(core.ProcMaskRanged) {
 				switch rogue.Options.MhImbue {
 				case proto.RogueOptions_InstantPoison:

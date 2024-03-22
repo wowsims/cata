@@ -11,7 +11,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 	fokSpell := rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 51723},
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeOrRangedSpecial,
+		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagColdBlooded,
 
 		DamageMultiplier: 0.8 * (1 +
