@@ -7,7 +7,6 @@ import (
 )
 
 func (hunter *Hunter) registerMultiShotSpell() {
-	numHits := hunter.Env.GetNumTargets() // Multi is uncapped in Cata
 
 	hunter.MultiShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 2643},
@@ -31,16 +30,21 @@ func (hunter *Hunter) registerMultiShotSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			numHits := hunter.Env.GetNumTargets() // Multi is uncapped in Cata
+
 			sharedDmg := hunter.AutoAttacks.Ranged().BaseDamage(sim) +
 				spell.BonusWeaponDamage() //
 
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := sharedDmg + 0.2*spell.RangedAttackPower(curTarget)
-				spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeRangedHitAndCrit)
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				curTarget := target
+				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+					baseDamage := sharedDmg + 0.2*spell.RangedAttackPower(curTarget)
+					spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeRangedHitAndCrit)
 
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
-			}
+					curTarget = sim.Environment.NextTargetUnit(curTarget)
+				}
+			})
+
 		},
 	})
 }
