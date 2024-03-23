@@ -56,7 +56,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 
 		BonusCritRating:  0 + 5*core.CritRatingPerCritChance*float64(hunter.Talents.SniperTraining),
 		DamageMultiplier: 1.5, //
-		CritMultiplier:   1,   //  hunter.critMultiplier(true, true, false),
+		CritMultiplier:   hunter.CritMultiplier(true, true, false),
 		ThreatMultiplier: 1,
 		// https://web.archive.org/web/20120207222124/http://elitistjerks.com/f74/t110306-hunter_faq_cataclysm_edition_read_before_asking_questions/
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -51,7 +51,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = (460 + 0.40*dot.Spell.RangedAttackPower(target)) / 5
+				dot.SnapshotBaseDamage = ((460 * (15 / 3)) + 0.40*dot.Spell.RangedAttackPower(target)) / 5
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
@@ -66,8 +66,8 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			var result *core.SpellResult
 
 			if hunter.Talents.ImprovedSerpentSting != 0 {
-				baseDamage := 460 + 0.40*spell.RangedAttackPower(target)
-				result = spell.CalcDamage(sim, target, baseDamage*float64(hunter.Talents.ImprovedSerpentSting), spell.OutcomeRangedHitAndCrit)
+				baseDamage := (460 * (15 / 3)) + 0.40*spell.RangedAttackPower(target)
+				result = spell.CalcDamage(sim, target, baseDamage*(0+float64(hunter.Talents.ImprovedSerpentSting)*0.15), spell.OutcomeRangedHitAndCrit)
 			} else {
 				result = spell.CalcOutcome(sim, target, spell.OutcomeRangedHitAndCrit)
 			}
