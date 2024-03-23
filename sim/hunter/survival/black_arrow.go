@@ -33,9 +33,9 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 + .10*float64(hunter.Talents.TrapMastery),
-		ThreatMultiplier:         1,
-		CritMultiplier:           hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology)*0.5),
+		DamageMultiplier: 1 + .10*float64(hunter.Talents.TrapMastery),
+		ThreatMultiplier: 1,
+		CritMultiplier:   hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology)*0.5),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -52,7 +52,7 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 				percentageOfRAP := 0.0665
 
 				// SnapshotBaseDamage calculation for the DoT, divided by 10 to spread across all ticks
-				dot.SnapshotBaseDamage = baseDamage + (percentageOfRAP*rap)/10
+				dot.SnapshotBaseDamage = baseDamage + ((percentageOfRAP * rap) / 10)
 
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
