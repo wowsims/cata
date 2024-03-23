@@ -35,17 +35,17 @@ func (hunter *Hunter) registerMultiShotSpell() {
 			sharedDmg := hunter.AutoAttacks.Ranged().BaseDamage(sim) +
 				spell.BonusWeaponDamage() //
 
-			baseDamageArray := make([]float64, numHits)
+			baseDamageArray := make([]*core.SpellResult, numHits)
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				currentTarget := hunter.Env.GetTargetUnit(hitIndex)
 				baseDamage := sharedDmg + 0.2*spell.RangedAttackPower(currentTarget)
-				baseDamageArray[hitIndex] = baseDamage
+				baseDamageArray[hitIndex] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			}
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					spell.CalcAndDealDamage(sim, curTarget, baseDamageArray[hitIndex], spell.OutcomeRangedHitAndCrit)
+					spell.DealDamage(sim, baseDamageArray[hitIndex])
 
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
