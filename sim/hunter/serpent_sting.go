@@ -14,11 +14,11 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 	impSSCritChance += core.TernaryFloat64(hunter.HasSetBonus(ItemSetLightningChargedBattleGear, 2), 5, 0)
 
 	hunter.SerpentSting = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1978},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
-
+		ActionID:     core.ActionID{SpellID: 1978},
+		SpellSchool:  core.SpellSchoolNature,
+		ProcMask:     core.ProcMaskEmpty,
+		Flags:        core.SpellFlagAPL,
+		MissileSpeed: 40,
 		FocusCost: core.FocusCostOptions{
 			Cost: 25,
 		},
@@ -63,12 +63,23 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
-			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
-				spell.Dot(target).Apply(sim)
+			var result *core.SpellResult
+
+			if hunter.Talents.ImprovedSerpentSting != 0 {
+				baseDamage := 460 + 0.40*spell.RangedAttackPower(target)
+				result = spell.CalcDamage(sim, target, baseDamage*float64(hunter.Talents.ImprovedSerpentSting), spell.OutcomeRangedHitAndCrit)
+			} else {
+				result = spell.CalcOutcome(sim, target, spell.OutcomeRangedHitAndCrit)
 			}
-			spell.DealOutcome(sim, result)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				if result.Landed() {
+					spell.SpellMetrics[target.UnitIndex].Hits--
+					spell.Dot(target).Apply(sim)
+
+					spell.DealOutcome(sim, result)
+				}
+			})
 		},
 	})
 }

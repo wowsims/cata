@@ -13,10 +13,11 @@ func (hunter *MarksmanshipHunter) registerChimeraShotSpell() {
 	}
 
 	hunter.ChimeraShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 53209},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ActionID:     core.ActionID{SpellID: 53209},
+		SpellSchool:  core.SpellSchoolNature,
+		ProcMask:     core.ProcMaskRangedSpecial,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		MissileSpeed: 40,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 50 - (float64(hunter.Talents.Efficiency) * 2),
@@ -41,12 +42,15 @@ func (hunter *MarksmanshipHunter) registerChimeraShotSpell() {
 			baseDamage := 0.732*spell.RangedAttackPower(target) + 1620
 
 			result := spell.CalcDamage(sim, target, wepDmg+baseDamage, spell.OutcomeRangedHitAndCrit)
-			if result.Landed() {
-				if hunter.SerpentSting.Dot(target).IsActive() {
-					hunter.SerpentSting.Dot(target).Rollover(sim)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				if result.Landed() {
+					if hunter.SerpentSting.Dot(target).IsActive() {
+						hunter.SerpentSting.Dot(target).Rollover(sim)
+					}
 				}
-			}
-			spell.DealDamage(sim, result)
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }

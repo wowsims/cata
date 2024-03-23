@@ -22,6 +22,7 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 		FocusCost: core.FocusCostOptions{
 			Cost: 35,
 		},
+		MissileSpeed: 40,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
@@ -65,10 +66,12 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
-			if result.Landed() {
-				spell.Dot(target).Apply(sim)
-			}
-			spell.DealOutcome(sim, result)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				if result.Landed() {
+					spell.Dot(target).Apply(sim)
+				}
+			})
 		},
 	})
 }

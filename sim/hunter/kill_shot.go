@@ -31,10 +31,11 @@ func (hunter *Hunter) registerKillShotSpell() {
 	}
 
 	hunter.KillShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 53351},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:     core.ActionID{SpellID: 53351},
+		SpellSchool:  core.SpellSchoolPhysical,
+		ProcMask:     core.ProcMaskRangedSpecial,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		MissileSpeed: 40,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
@@ -65,7 +66,11 @@ func (hunter *Hunter) registerKillShotSpell() {
 			flatBonus := 543.0
 
 			baseDamage := normalizedWeaponDamage + rapBonusDamage + flatBonus
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }

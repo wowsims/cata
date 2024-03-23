@@ -48,8 +48,8 @@ const (
 )
 
 // These IDs are needed for certain talents.
-const BiteSpellID = 52474
-const ClawSpellID = 52472
+const BiteSpellID = 17253
+const ClawSpellID = 16827
 const SmackSpellID = 52476
 
 func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *core.Spell {
