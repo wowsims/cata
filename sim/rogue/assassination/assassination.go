@@ -75,7 +75,7 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	// Assassin's Resolve: +20% physical damage
 	// +20 Energy handled in base rogue
 	if sinRogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
-		sinRogue.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] += 0.2
+		sinRogue.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.2
 	}
 }
 
