@@ -1,6 +1,7 @@
 package core
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -60,7 +61,11 @@ type Unit struct {
 
 	// How far this unit is from its target(s). Measured in yards, this is used
 	// for calculating spell travel time for certain spells.
-	DistanceFromTarget float64
+	StartDistanceFromTarget float64
+	DistanceFromTarget      float64
+	Moving                  bool
+	moveAura                *Aura
+	moveSpell               *Spell
 
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.
@@ -407,6 +412,68 @@ func (unit *Unit) AddBonusRangedCritRating(amount float64) {
 	})
 }
 
+func (unit *Unit) initMovement() {
+	unit.moveAura = unit.GetOrRegisterAura(Aura{
+		Label:     "Movement",
+		ActionID:  ActionID{OtherID: proto.OtherAction_OtherActionMove},
+		Duration:  NeverExpires,
+		MaxStacks: 30,
+
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AutoAttacks.CancelAutoSwing(sim)
+			unit.Moving = true
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.Moving = false
+			unit.AutoAttacks.EnableAutoSwing(sim)
+
+			// Simulate the delay from starting attack
+			unit.AutoAttacks.DelayMeleeBy(sim, time.Millisecond*50)
+		},
+	})
+
+	unit.moveSpell = unit.GetOrRegisterSpell(SpellConfig{
+		ActionID: ActionID{OtherID: proto.OtherAction_OtherActionMove},
+		Flags:    SpellFlagMeleeMetrics,
+
+		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+			unit.moveAura.Activate(sim)
+			unit.moveAura.SetStacks(sim, int32(unit.DistanceFromTarget))
+		},
+	})
+}
+
+func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
+	if moveRange == unit.DistanceFromTarget {
+		return
+	}
+
+	tickPeriod := 0.5
+
+	moveDistance := moveRange - unit.DistanceFromTarget
+	moveSpeed := 2.0
+	timeToMove := math.Abs(moveDistance) / moveSpeed
+	moveTicks := timeToMove / tickPeriod
+	moveInterval := moveDistance / float64(moveTicks)
+
+	unit.moveSpell.Cast(sim, unit.CurrentTarget)
+
+	sim.AddPendingAction(NewPeriodicAction(sim, PeriodicActionOptions{
+		Period:          time.Millisecond * 500,
+		NumTicks:        int(moveTicks),
+		TickImmediately: false,
+
+		OnAction: func(sim *Simulation) {
+			unit.DistanceFromTarget += moveInterval
+			unit.moveAura.SetStacks(sim, int32(unit.DistanceFromTarget))
+
+			if unit.DistanceFromTarget == moveRange {
+				unit.moveAura.Deactivate(sim)
+			}
+		},
+	}))
+}
+
 func (unit *Unit) SetCurrentPowerBar(bar PowerBarType) {
 	unit.currentPowerBar = bar
 }
@@ -428,6 +495,7 @@ func (unit *Unit) finalize() {
 	unit.defaultTarget = unit.CurrentTarget
 	unit.applyParryHaste()
 	unit.updateCastSpeed()
+	unit.initMovement()
 
 	// All stats added up to this point are part of the 'initial' stats.
 	unit.initialStatsWithoutDeps = unit.stats
