@@ -50,17 +50,17 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 				// https://wago.tools/db2/SpellEffect?build=4.4.0.53750&filter[SpellID]=exact%3A3674&page=1
 				baseDamage := 2852.0
 				rap := dot.Spell.RangedAttackPower(target)
-				percentageOfRAP := 0.0665
+				percentageOfRAP := 0.665
 
 				// SnapshotBaseDamage calculation for the DoT, divided by 10 to spread across all ticks
-				dot.SnapshotBaseDamage = baseDamage + ((percentageOfRAP * rap) / 10)
+				dot.SnapshotBaseDamage = (baseDamage + (percentageOfRAP * rap)) / 10
 
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeMagicHitAndSnapshotCrit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeRangedHitAndCritSnapshot)
 			},
 		},
 
