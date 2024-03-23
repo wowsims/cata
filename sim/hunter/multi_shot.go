@@ -26,13 +26,12 @@ func (hunter *Hunter) registerMultiShotSpell() {
 
 		BonusCritRating:          0,
 		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1.2,
+		DamageMultiplier:         1.21,
 		CritMultiplier:           hunter.CritMultiplier(true, false, false),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			sharedDmg := hunter.AutoAttacks.Ranged().BaseDamage(sim) +
-				spell.BonusWeaponDamage() //
+			sharedDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
 
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {

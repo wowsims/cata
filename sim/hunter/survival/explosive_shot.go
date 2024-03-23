@@ -9,7 +9,8 @@ import (
 
 func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 	actionID := core.ActionID{SpellID: 53301}
-
+	minFlatDamage := 410.708 - (76.8024 / 2)
+	maxFlatDamage := 410.708 + (76.8024 / 2)
 	hunter.Hunter.ExplosiveShot = hunter.Hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolFire,
@@ -43,7 +44,7 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				rap := dot.Spell.RangedAttackPower(target)
-				dot.SnapshotBaseDamage = 448 + (0.273 * rap)
+				dot.SnapshotBaseDamage = sim.Roll(minFlatDamage, maxFlatDamage) + (0.273 * rap)
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
