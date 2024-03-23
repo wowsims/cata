@@ -12,11 +12,11 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 	minFlatDamage := 410.708 - (76.8024 / 2)
 	maxFlatDamage := 410.708 + (76.8024 / 2)
 	hunter.Hunter.ExplosiveShot = hunter.Hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-
+		ActionID:     actionID,
+		SpellSchool:  core.SpellSchoolFire,
+		ProcMask:     core.ProcMaskRangedSpecial,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		MissileSpeed: 40,
 		FocusCost: core.FocusCostOptions{
 			Cost: 50,
 		},
@@ -56,14 +56,18 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeRangedHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHitAndCrit)
 
-			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
-				dot := spell.Dot(target)
-				dot.Apply(sim)
-				dot.TickOnce(sim)
-			}
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) { // Is this the right way of doing this?
+				if result.Landed() {
+					spell.SpellMetrics[target.UnitIndex].Hits--
+					dot := spell.Dot(target)
+					dot.Apply(sim)
+					dot.TickOnce(sim)
+
+					spell.DealOutcome(sim, result)
+				}
+			})
 		},
 	})
 }

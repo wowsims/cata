@@ -14,10 +14,11 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 		dmgMultiplier *= 0.12
 	}
 	hunter.ArcaneShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 3044},
-		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ActionID:     core.ActionID{SpellID: 3044},
+		SpellSchool:  core.SpellSchoolArcane,
+		ProcMask:     core.ProcMaskRangedSpecial,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		MissileSpeed: 40,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 25 - float64(hunter.Talents.Efficiency),
@@ -39,7 +40,11 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 			wepDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
 			baseDamage := wepDmg + (0.0483 * spell.RangedAttackPower(target)) + 289.859
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }

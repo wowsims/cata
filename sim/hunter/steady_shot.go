@@ -12,10 +12,11 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 	ssMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 56641})
 
 	hunter.SteadyShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 56641},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:     core.ActionID{SpellID: 56641},
+		SpellSchool:  core.SpellSchoolPhysical,
+		ProcMask:     core.ProcMaskRangedSpecial,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		MissileSpeed: 40,
 		FocusCost: core.FocusCostOptions{
 
 			Cost: 0,
@@ -56,7 +57,11 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			}
 
 			hunter.AddFocus(sim, focus, ssMetrics)
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }
