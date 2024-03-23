@@ -52,7 +52,7 @@ func (sinRogue *AssassinationRogue) registerVendetta() {
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityDefault,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			return sinRogue.GCD.IsReady(sim) && sinRogue.ComboPoints() >= 4
+			return sinRogue.ComboPoints() >= 4
 		},
 	})
 }

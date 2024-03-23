@@ -1,6 +1,8 @@
 package combat
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 )
@@ -54,8 +56,8 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 			// Undo armor reduction to get the raw damage value.
 			curDmg = result.Damage / result.ResistanceMultiplier
 
-			bfHit.Cast(sim, comRogue.Env.NextTargetUnit(result.Target))
-			bfHit.SpellMetrics[result.Target.UnitIndex].Casts--
+			bfTarget := comRogue.Env.NextTargetUnit(result.Target)
+			bfHit.Cast(sim, bfTarget)
 		},
 	})
 
@@ -67,7 +69,7 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    comRogue.NewTimer(),
-				Duration: core.NeverExpires,
+				Duration: time.Second * 10,
 			},
 		},
 
