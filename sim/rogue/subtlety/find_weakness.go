@@ -11,7 +11,7 @@ func (subRogue *SubtletyRogue) applyFindWeakness() {
 		return
 	}
 
-	debuffPower := .35 * float64(subRogue.Talents.FindWeakness)
+	debuffPower := 1 - .35*float64(subRogue.Talents.FindWeakness)
 
 	fwDebuff := subRogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
@@ -22,10 +22,10 @@ func (subRogue *SubtletyRogue) applyFindWeakness() {
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				// TODO Thebackstabi 3/20/2024 -- Update to AttackTables once completed
 				// Also need to validate if it stacks with Expose/Sunder/Faerie. Currently bugged on beta and does nothing.
-				aura.Unit.PseudoStats.ArmorMultiplier /= debuffPower
+				aura.Unit.PseudoStats.ArmorMultiplier *= debuffPower
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.ArmorMultiplier *= debuffPower
+				aura.Unit.PseudoStats.ArmorMultiplier /= debuffPower
 			},
 		})
 	})
