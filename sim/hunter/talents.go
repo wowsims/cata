@@ -628,6 +628,9 @@ func (hunter *Hunter) applyTNT() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell == hunter.ExplosiveShot {
+
+				hunter.ExplosiveShot.CD.Reset()
+
 				aura.RemoveStack(sim)
 			}
 		},
@@ -653,7 +656,7 @@ func (hunter *Hunter) applyTNT() {
 				hunter.LockAndLoadAura.Activate(sim)
 				hunter.LockAndLoadAura.SetStacks(sim, 2)
 				if hunter.ExplosiveShot != nil {
-					//hunter.ExplosiveShot.CD.Reset()
+					hunter.ExplosiveShot.CD.Reset()
 				}
 			}
 		},

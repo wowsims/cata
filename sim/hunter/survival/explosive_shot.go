@@ -26,6 +26,7 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
+				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 6,
 			},
 		},
