@@ -45,7 +45,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 			}
 			hunter.AddFocus(sim, focus, csMetrics)
 			if hunter.SerpentSting.Dot(target).IsActive() {
-				hunter.SerpentSting.Dot(target).Refresh(sim) // Refresh to cause new total snapshot
+				hunter.SerpentSting.Dot(target).Rollover(sim) // Refresh to cause new total snapshot
 			}
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

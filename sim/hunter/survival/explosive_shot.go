@@ -18,7 +18,7 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		MissileSpeed: 40,
 		FocusCost: core.FocusCostOptions{
-			Cost: 50,
+			Cost: 50 - (float64(hunter.Talents.Efficiency) * 2),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
