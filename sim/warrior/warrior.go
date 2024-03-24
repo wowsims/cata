@@ -17,9 +17,11 @@ type WarriorInputs struct {
 const (
 	SpellFlagBloodsurge  = core.SpellFlagAgentReserved1
 	SpellFlagWhirlwindOH = core.SpellFlagAgentReserved2
+	SpellFlagBleed       = core.SpellFlagAgentReserved3
 	ArmsTree             = 0
 	FuryTree             = 1
 	ProtTree             = 2
+	RendTag              = "Rend"
 )
 
 type Warrior struct {
@@ -36,6 +38,8 @@ type Warrior struct {
 	revengeProcAura      *core.Aura
 	Ymirjar4pcProcAura   *core.Aura
 
+	InnerRage *core.Aura
+
 	// Reaction time values
 	reactionTime       time.Duration
 	lastBloodsurgeProc time.Duration
@@ -48,6 +52,7 @@ type Warrior struct {
 	DefensiveStance *core.Spell
 	BerserkerStance *core.Spell
 
+	ColossusSmash        *core.Spell
 	BerserkerRage        *core.Spell
 	Bloodthirst          *core.Spell
 	DemoralizingShout    *core.Spell
@@ -195,8 +200,8 @@ func isPoleaxe(weapon *core.Item) bool {
 	return weapon.WeaponType == proto.WeaponType_WeaponTypeAxe || weapon.WeaponType == proto.WeaponType_WeaponTypePolearm
 }
 
-func (warrior *Warrior) critMultiplier(hand hand) float64 {
-	return warrior.MeleeCritMultiplier(primary(warrior, hand), 0.1*float64(warrior.Talents.Impale))
+func (warrior *Warrior) HasPrimeGlyph(glyph proto.WarriorPrimeGlyph) bool {
+	return warrior.HasGlyph(int32(glyph))
 }
 
 func (warrior *Warrior) HasMajorGlyph(glyph proto.WarriorMajorGlyph) bool {

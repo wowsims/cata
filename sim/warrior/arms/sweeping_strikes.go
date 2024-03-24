@@ -1,21 +1,22 @@
-package warrior
+package arms
 
 import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/warrior"
 )
 
-func (warrior *Warrior) registerSweepingStrikesCD() {
-	if !warrior.Talents.SweepingStrikes {
+func (war *ArmsWarrior) RegisterSweepingStrikes() {
+	if !war.Talents.SweepingStrikes {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 12723}
+	actionID := core.ActionID{SpellID: 12328}
 
 	var curDmg float64
-	ssHit := warrior.RegisterSpell(core.SpellConfig{
+	ssHit := war.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty, // No proc mask, so it won't proc itself.
@@ -29,23 +30,20 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 		},
 	})
 
-	ssAura := warrior.RegisterAura(core.Aura{
-		Label:     "Sweeping Strikes",
-		ActionID:  actionID,
-		Duration:  core.NeverExpires,
-		MaxStacks: 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.SetStacks(sim, 5)
-		},
+	ssAura := war.RegisterAura(core.Aura{
+		Label:    "Sweeping Strikes",
+		ActionID: actionID,
+		Duration: time.Second * 10,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if aura.GetStacks() == 0 || result.Damage <= 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) {
+			if result.Damage <= 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) || len(war.Env.Encounter.Targets) < 2 {
 				return
 			}
 
-			if spell == warrior.Execute && !sim.IsExecutePhase20() {
+			// TODO: Pretty much everything about this spell needs to be tested, leaving it as it was in wrath for now
+			if spell == war.Execute && !sim.IsExecutePhase20() {
 				curDmg = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
 					spell.BonusWeaponDamage()
-			} else if spell == warrior.Whirlwind {
+			} else if spell == war.Whirlwind {
 				curDmg = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
 					spell.BonusWeaponDamage()
 			} else {
@@ -55,29 +53,29 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 			// Undo armor reduction to get the raw damage value.
 			curDmg /= result.ResistanceMultiplier
 
-			ssHit.Cast(sim, warrior.Env.NextTargetUnit(result.Target))
+			ssHit.Cast(sim, war.Env.NextTargetUnit(result.Target))
 			ssHit.SpellMetrics[result.Target.UnitIndex].Casts--
-			if aura.GetStacks() > 0 {
-				aura.RemoveStack(sim)
-			}
 		},
 	})
 
-	ssCD := warrior.RegisterSpell(core.SpellConfig{
+	ssCD := war.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 
 		RageCost: core.RageCostOptions{
-			Cost: core.TernaryFloat64(warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfSweepingStrikes), 0, 30),
+			Cost: core.TernaryFloat64(war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfSweepingStrikes), 0, 30),
 		},
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: 0,
+			},
 			CD: core.Cooldown{
-				Timer:    warrior.NewTimer(),
-				Duration: time.Second * 30,
+				Timer:    war.NewTimer(),
+				Duration: time.Minute * 1,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return sim.GetNumTargets() > 1
+			return war.StanceMatches(warrior.BattleStance | warrior.BerserkerStance)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
@@ -85,7 +83,7 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 		},
 	})
 
-	warrior.AddMajorCooldown(core.MajorCooldown{
+	war.AddMajorCooldown(core.MajorCooldown{
 		Spell: ssCD,
 		Type:  core.CooldownTypeDPS,
 	})

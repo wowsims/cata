@@ -1,10 +1,13 @@
 package warrior
 
+const EnableOverpowerTag = "EnableOverpower"
+
 func (warrior *Warrior) ToughnessArmorMultiplier() float64 {
 	return 1.0 + 0.02*float64(warrior.Talents.Toughness)
 }
 
 func (warrior *Warrior) ApplyTalents() {
+	warrior.PseudoStats.HealingTakenMultiplier *= 1.0 + (0.03 * float64(warrior.Talents.FieldDressing))
 	// warrior.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(warrior.Talents.Cruelty))
 	// warrior.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*1*float64(warrior.Talents.Precision))
 	// warrior.ApplyEquipScaling(stats.Armor, warrior.ToughnessArmorMultiplier())
@@ -35,8 +38,8 @@ func (warrior *Warrior) ApplyTalents() {
 	// 	warrior.AddStat(stats.Expertise, core.ExpertisePerQuarterPercentReduction*2*float64(warrior.Talents.Vitality))
 	// }
 
+	warrior.RegisterDeepWounds()
 	// warrior.applyAngerManagement()
-	// warrior.applyDeepWounds()
 	// warrior.applyTitansGrip()
 	// warrior.applyOneHandedWeaponSpecialization()
 	// warrior.applyTwoHandedWeaponSpecialization()
@@ -57,6 +60,23 @@ func (warrior *Warrior) ApplyTalents() {
 	// warrior.applyDamageShield()
 	// warrior.applyCriticalBlock()
 	// warrior.applySwordAndBoard()
+}
+
+// Passive bonuses and multipliers that affect multiple spells
+func (warrior *Warrior) GetWarAcademyDamageBonus() float64 {
+	return 1.0 + (0.05 * float64(warrior.Talents.WarAcademy))
+}
+
+func (warrior *Warrior) GetFieldDressingSelfHealingBonus() float64 {
+	return 1.0 + (0.1 * float64(warrior.Talents.FieldDressing))
+}
+
+func (warrior *Warrior) GetDrumsOfWarRageReductionMultiplier() float64 {
+	return 1.0 - (0.5 * float64(warrior.Talents.DrumsOfWar))
+}
+
+func (warrior *Warrior) GetImpaleCritDamageMultiplier() float64 {
+	return 1.0 + (0.1 * float64(warrior.Talents.Impale))
 }
 
 // // Multiplicative with all other modifiers and only applies to the block damage event

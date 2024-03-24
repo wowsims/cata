@@ -30,6 +30,9 @@ type ArmsWarrior struct {
 	*warrior.Warrior
 
 	Options *proto.ArmsWarrior_Options
+
+	slaughter    *core.Aura
+	wreckingCrew *core.Aura
 }
 
 func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarrior {
