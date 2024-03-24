@@ -288,14 +288,17 @@ export class ActionId {
 			case 'Expose Armor':
 			case 'Rupture':
 			case 'Slice and Dice':
+			case 'Recuperate':
 				if (this.tag) name += ` (${this.tag} CP)`;
 				break;
-			case 'Instant Poison IX':
-			case 'Wound Poison VII':
+			case 'Instant Poison':
+			case 'Wound Poison':
 				if (this.tag == 1) {
 					name += ' (Deadly)';
 				} else if (this.tag == 2) {
 					name += ' (Shiv)';
+				} else if (this.tag == 3) {
+					name += ' (Fan of Knives)'
 				}
 				break;
 			case 'Fan of Knives':
@@ -309,6 +312,15 @@ export class ActionId {
 			case 'Tricks of the Trade':
 				if (this.tag == 1) {
 					name += ' (Not Self)';
+				}
+				break;
+			case 'Mutilate':
+				if (this.tag == 0) {
+					name += " (Cast)";
+				} else if (this.tag == 1) {
+					name += " (Main Hand)";
+				} else if (this.tag == 2) {
+					name += ' (Off Hand)';
 				}
 				break;
 			case 'Chain Lightning':
