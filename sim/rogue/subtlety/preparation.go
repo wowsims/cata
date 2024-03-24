@@ -27,13 +27,8 @@ func (subRogue *SubtletyRogue) registerPreparationCD() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			// Spells affected by Preparation are: Shadowstep, Vanish (Overkill/Master of Subtlety), Sprint
 			// If Glyph of Preparation is applied, Smoke Bomb, Dismantle, and Kick are also affected
-			var affectedSpells = []*core.Spell{subRogue.Shadowstep, subRogue.Vanish}
-			// Reset Cooldown on affected spells
-			for _, affectedSpell := range affectedSpells {
-				if affectedSpell != nil {
-					affectedSpell.CD.Reset()
-				}
-			}
+			subRogue.Shadowstep.CD.Reset()
+			subRogue.Vanish.CD.Reset()
 		},
 	})
 

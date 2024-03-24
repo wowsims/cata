@@ -12,7 +12,7 @@ func (comRogue *CombatRogue) applyRestlessBlades() {
 		return
 	}
 
-	cdReduction := core.Ternary(comRogue.Talents.RestlessBlades == 2, time.Second*2, time.Second)
+	cdReduction := time.Duration(comRogue.Talents.RestlessBlades) * time.Second
 	comRogue.RestlessBladesAura = comRogue.RegisterAura(core.Aura{
 		Label:    "Restless Blades",
 		ActionID: core.ActionID{SpellID: 79096},
@@ -20,8 +20,10 @@ func (comRogue *CombatRogue) applyRestlessBlades() {
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Unit == &comRogue.Unit && spell.Flags.Matches(rogue.SpellFlagFinisher) {
-				*comRogue.KillingSpree.CD.Timer -= core.Timer(cdReduction)
-				*comRogue.AdrenalineRush.CD.Timer -= core.Timer(cdReduction)
+				ksNewTime := comRogue.KillingSpree.CD.Timer.ReadyAt() - cdReduction
+				arNewTime := comRogue.AdrenalineRush.CD.Timer.ReadyAt() - cdReduction
+				comRogue.KillingSpree.CD.Timer.Set(ksNewTime)
+				comRogue.AdrenalineRush.CD.Timer.Set(arNewTime)
 			}
 		},
 	})

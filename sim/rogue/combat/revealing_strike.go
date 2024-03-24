@@ -71,9 +71,7 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if result.Landed() {
 				comRogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
-
-				aura := rvsAura.Get(target)
-				aura.Activate(sim)
+				rvsAura.Get(target).Activate(sim)
 			} else {
 				spell.IssueRefund(sim)
 			}

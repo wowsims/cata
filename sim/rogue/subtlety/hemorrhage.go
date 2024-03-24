@@ -43,6 +43,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 				Label:    "Hemorrhage DoT",
 				Tag:      rogue.RogueBleedTag,
 				ActionID: core.ActionID{SpellID: 89775},
+				Duration: time.Second * 24,
 			},
 			NumberOfTicks: 8,
 			TickLength:    time.Second * 3,
@@ -70,8 +71,6 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 				hemoAuras.Get(target).Activate(sim)
 				if hasGlyph {
 					dot := spell.Dot(target)
-					dot.Duration = time.Second * 24
-					dot.Spell = spell
 					dot.SnapshotBaseDamage = result.Damage * .05
 					dot.Apply(sim)
 				}

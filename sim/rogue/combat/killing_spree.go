@@ -8,7 +8,11 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (comRogue *CombatRogue) registerKillingSpreeSpell() {
+func (comRogue *CombatRogue) registerKillingSpreeCD() {
+	if !comRogue.Talents.KillingSpree {
+		return
+	}
+
 	mhWeaponSwing := comRogue.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 51690, Tag: 1}, // actual spellID is 57841
 		SpellSchool:      core.SpellSchoolPhysical,
@@ -104,11 +108,4 @@ func (comRogue *CombatRogue) registerKillingSpreeSpell() {
 			return true
 		},
 	})
-}
-
-func (comRogue *CombatRogue) registerKillingSpreeCD() {
-	if !comRogue.Talents.KillingSpree {
-		return
-	}
-	comRogue.registerKillingSpreeSpell()
 }

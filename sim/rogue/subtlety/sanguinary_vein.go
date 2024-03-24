@@ -14,6 +14,7 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 	}
 
 	svBonus := 1 + 0.08*float64(subRogue.Talents.SanguinaryVein)
+	hasGlyph := subRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfHemorrhage)
 	isApplied := false
 
 	svDebuffArray := subRogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
@@ -62,7 +63,7 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 				return
 			}
 
-			if spell == subRogue.Rupture || (spell == subRogue.Hemorrhage && subRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfHemorrhage)) {
+			if spell == subRogue.Rupture || (spell == subRogue.Hemorrhage && hasGlyph) {
 				aura := svDebuffArray.Get(result.Target)
 				dot := spell.Dot(result.Target)
 				aura.Duration = dot.TickLength * time.Duration(dot.NumberOfTicks)

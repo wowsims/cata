@@ -51,7 +51,7 @@ func (rogue *Rogue) registerRupture() {
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = rogue.RuptureDamage(rogue.ComboPoints())
+				dot.SnapshotBaseDamage = rogue.ruptureDamage(rogue.ComboPoints())
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
@@ -86,16 +86,8 @@ func (rogue *Rogue) registerRupture() {
 	})
 }
 
-func (rogue *Rogue) RuptureDamage(comboPoints int32) float64 {
+func (rogue *Rogue) ruptureDamage(comboPoints int32) float64 {
 	return 142 +
 		20*float64(comboPoints) +
 		[]float64{0, 0.06 / 4, 0.12 / 5, 0.18 / 6, 0.24 / 7, 0.30 / 8}[comboPoints]*rogue.Rupture.MeleeAttackPower()
-}
-
-func (rogue *Rogue) RuptureTicks(comboPoints int32) int32 {
-	return 3 + comboPoints + core.TernaryInt32(rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfRupture), 2, 0)
-}
-
-func (rogue *Rogue) RuptureDuration(comboPoints int32) time.Duration {
-	return time.Duration(rogue.RuptureTicks(comboPoints)) * time.Second * 2
 }

@@ -9,22 +9,15 @@ import (
 func (subRogue *SubtletyRogue) registerMasterOfSubtletyCD() {
 	var MasterOfSubtletyID = core.ActionID{SpellID: 31223}
 
-	percent := 1.1
-
-	effectDuration := time.Second * 6
-	if subRogue.StealthAura.IsActive() {
-		effectDuration = core.NeverExpires
-	}
-
 	subRogue.MasterOfSubtletyAura = subRogue.RegisterAura(core.Aura{
 		Label:    "Master of Subtlety",
 		ActionID: MasterOfSubtletyID,
-		Duration: effectDuration,
+		Duration: time.Second * 6,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			subRogue.PseudoStats.DamageDealtMultiplier *= percent
+			subRogue.PseudoStats.DamageDealtMultiplier *= 1.1
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			subRogue.PseudoStats.DamageDealtMultiplier *= 1 / percent
+			subRogue.PseudoStats.DamageDealtMultiplier /= 1.1
 		},
 	})
 }

@@ -31,19 +31,16 @@ func (rogue *Rogue) registerPoisonAuras() {
 }
 
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
-	var energyMetrics *core.ResourceMetrics
-	if rogue.HasSetBonus(Tier8, 2) {
-		energyMetrics = rogue.NewEnergyMetrics(core.ActionID{SpellID: 64913})
-	}
 
 	rogue.DeadlyPoison = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 96648},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		DamageMultiplier: 1 + 0.12*float64(rogue.Talents.VilePoisons),
-		CritMultiplier:   1,
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),
+		CritMultiplier:           1,
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -80,10 +77,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				if energyMetrics != nil && result.Landed() {
-					rogue.AddEnergy(sim, 1, energyMetrics)
-				}
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
@@ -225,9 +219,10 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		DamageMultiplier: 1 + 0.12*float64(rogue.Talents.VilePoisons),
-		CritMultiplier:   rogue.SpellCritMultiplier(),
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),
+		CritMultiplier:           rogue.SpellCritMultiplier(),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := ipBaseDamage + 0.09*spell.MeleeAttackPower()
@@ -248,9 +243,10 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskWeaponProc,
 
-		DamageMultiplier: 1 + 0.12*float64(rogue.Talents.VilePoisons),
-		CritMultiplier:   rogue.SpellCritMultiplier(),
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),
+		CritMultiplier:           rogue.SpellCritMultiplier(),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := wpBaseDamage + 0.04*spell.MeleeAttackPower()

@@ -20,6 +20,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 	})
 
 	results := make([]*core.SpellResult, len(rogue.Env.Encounter.TargetUnits))
+	poisonProcModifier := []float64{0.0, 0.33, 0.67, 1.0}[rogue.Talents.VilePoisons]
 
 	rogue.FanOfKnives = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 51723},
@@ -51,7 +52,6 @@ func (rogue *Rogue) registerFanOfKnives() {
 				fokSpell.DealDamage(sim, results[i])
 
 				if rogue.Talents.VilePoisons > 0 {
-					poisonProcModifier := 0.33 * float64(rogue.Talents.VilePoisons)
 					mhProcChance := poisonProcModifier * getPoisonsProcChance(core.ProcMaskMeleeMH, rogue.Options.MhImbue, rogue)
 					ohProcChance := poisonProcModifier * getPoisonsProcChance(core.ProcMaskMeleeOH, rogue.Options.OhImbue, rogue)
 

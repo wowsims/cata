@@ -21,10 +21,11 @@ func (subRogue *SubtletyRogue) applyFindWeakness() {
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				// TODO Thebackstabi 3/20/2024 -- Update to AttackTables once completed
-				aura.Unit.PseudoStats.ArmorMultiplier -= debuffPower
+				// Also need to validate if it stacks with Expose/Sunder/Faerie. Currently bugged on beta and does nothing.
+				aura.Unit.PseudoStats.ArmorMultiplier /= debuffPower
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.ArmorMultiplier += debuffPower
+				aura.Unit.PseudoStats.ArmorMultiplier *= debuffPower
 			},
 		})
 	})
@@ -37,9 +38,8 @@ func (subRogue *SubtletyRogue) applyFindWeakness() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Unit == &subRogue.Unit && result.Landed() && (spell == subRogue.Garrote || spell == subRogue.Ambush) {
-				aura := fwDebuff.Get(result.Target)
-				aura.Activate(sim)
+			if result.Landed() && (spell == subRogue.Garrote || spell == subRogue.Ambush) {
+				fwDebuff.Get(result.Target).Activate(sim)
 			}
 		},
 	})
