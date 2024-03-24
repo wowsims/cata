@@ -134,13 +134,12 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 			IgnoreHaste: true,
 		},
 
-		//DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		DamageMultiplier: 1,
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (sim.Roll(132, 188) + 0.4*spell.MeleeAttackPower()) * 0.20
-			//baseDamage *= hp.killCommandMult() //Todo: kill command doesnt work lik ethis anymore
+			baseDamage := sim.Roll(132, 188) + ((0.4 * spell.MeleeAttackPower()) * 0.20)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
