@@ -38,41 +38,42 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	sinRogue.registerVendetta()
 
 	// Apply Mastery
+	// As far as I am able to find, Asn's Mastery is an additive bonus. To be tested.
 	masteryEffect := getMasteryBonus(sinRogue.GetStat(stats.Mastery))
 	for _, spell := range sinRogue.InstantPoison {
-		spell.DamageMultiplier += masteryEffect
+		spell.DamageMultiplierAdditive += masteryEffect
 	}
 	for _, spell := range sinRogue.WoundPoison {
-		spell.DamageMultiplier += masteryEffect
+		spell.DamageMultiplierAdditive += masteryEffect
 	}
-	sinRogue.DeadlyPoison.DamageMultiplier += masteryEffect
-	sinRogue.Envenom.DamageMultiplier += masteryEffect
+	sinRogue.DeadlyPoison.DamageMultiplierAdditive += masteryEffect
+	sinRogue.Envenom.DamageMultiplierAdditive += masteryEffect
 	if sinRogue.Talents.VenomousWounds > 0 {
-		sinRogue.VenomousWounds.DamageMultiplier += masteryEffect
+		sinRogue.VenomousWounds.DamageMultiplierAdditive += masteryEffect
 	}
 
 	sinRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
 		masteryEffectOld := getMasteryBonus(oldMastery)
 		masteryEffectNew := getMasteryBonus(newMastery)
 		for _, spell := range sinRogue.InstantPoison {
-			spell.DamageMultiplier -= masteryEffectOld
-			spell.DamageMultiplier += masteryEffectNew
+			spell.DamageMultiplierAdditive -= masteryEffectOld
+			spell.DamageMultiplierAdditive += masteryEffectNew
 		}
 		for _, spell := range sinRogue.WoundPoison {
-			spell.DamageMultiplier -= masteryEffectOld
-			spell.DamageMultiplier += masteryEffectNew
+			spell.DamageMultiplierAdditive -= masteryEffectOld
+			spell.DamageMultiplierAdditive += masteryEffectNew
 		}
-		sinRogue.DeadlyPoison.DamageMultiplier -= masteryEffectOld
-		sinRogue.DeadlyPoison.DamageMultiplier += masteryEffectNew
-		sinRogue.Envenom.DamageMultiplier -= masteryEffectOld
-		sinRogue.Envenom.DamageMultiplier += masteryEffectNew
+		sinRogue.DeadlyPoison.DamageMultiplierAdditive -= masteryEffectOld
+		sinRogue.DeadlyPoison.DamageMultiplierAdditive += masteryEffectNew
+		sinRogue.Envenom.DamageMultiplierAdditive -= masteryEffectOld
+		sinRogue.Envenom.DamageMultiplierAdditive += masteryEffectNew
 		if sinRogue.Talents.VenomousWounds > 0 {
-			sinRogue.VenomousWounds.DamageMultiplier -= masteryEffectOld
-			sinRogue.VenomousWounds.DamageMultiplier += masteryEffectNew
+			sinRogue.VenomousWounds.DamageMultiplierAdditive -= masteryEffectOld
+			sinRogue.VenomousWounds.DamageMultiplierAdditive += masteryEffectNew
 		}
 	})
 
-	// Assassin's Resolve: +20% physical damage
+	// Assassin's Resolve: +20% Multiplicative physical damage (confirmed)
 	// +20 Energy handled in base rogue
 	if sinRogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
 		sinRogue.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.2

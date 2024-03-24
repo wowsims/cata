@@ -36,10 +36,10 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 			Duration: time.Second * 15,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				comRogue.AttackTables[lastAttacked.Index].DamageTakenMultiplier *= damageMult
+				comRogue.AttackTables[lastAttacked.UnitIndex].DamageTakenMultiplier *= damageMult
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				comRogue.AttackTables[lastAttacked.Index].DamageTakenMultiplier /= damageMult
+				comRogue.AttackTables[lastAttacked.UnitIndex].DamageTakenMultiplier /= damageMult
 				if currentInsightIndex == 2 {
 					currentInsightIndex = -1
 					attackCounter = 0

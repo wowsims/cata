@@ -38,9 +38,7 @@ func (rogue *Rogue) registerRupture() {
 			return rogue.ComboPoints() > 0
 		},
 
-		DamageMultiplier: 1 +
-			core.TernaryFloat64(rogue.HasSetBonus(Tier7, 2), 0.1, 0) +
-			core.TernaryFloat64(rogue.HasSetBonus(Tier8, 4), 0.2, 0),
+		DamageMultiplier: 1,
 		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 
