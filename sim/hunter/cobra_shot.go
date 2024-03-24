@@ -18,6 +18,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},
+		MissileSpeed: 40,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      time.Second,
@@ -44,9 +45,14 @@ func (hunter *Hunter) registerCobraShotSpell() {
 			}
 			hunter.AddFocus(sim, focus, csMetrics)
 			if hunter.SerpentSting.Dot(target).IsActive() {
-				hunter.SerpentSting.Dot(target).Rollover(sim)
+				hunter.SerpentSting.Dot(target).Refresh(sim) // Refresh to cause new total snapshot
 			}
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
+
 		},
 	})
 }

@@ -390,10 +390,11 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	}
 
 	unit.AutoAttacks.ranged.config = SpellConfig{
-		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionShoot},
-		SpellSchool: options.Ranged.GetSpellSchool(),
-		ProcMask:    ProcMaskRangedAuto,
-		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
+		ActionID:     ActionID{OtherID: proto.OtherAction_OtherActionShoot},
+		SpellSchool:  options.Ranged.GetSpellSchool(),
+		ProcMask:     ProcMaskRangedAuto,
+		Flags:        SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
+		MissileSpeed: 40,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
