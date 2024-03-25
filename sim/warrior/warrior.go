@@ -20,6 +20,7 @@ const (
 	ArmsTree             = 0
 	FuryTree             = 1
 	ProtTree             = 2
+	EnableOverpowerTag   = "EnableOverpower"
 )
 
 type Warrior struct {
@@ -180,6 +181,10 @@ const (
 	mh   hand = 1
 	oh   hand = 2
 )
+
+func (warrior *Warrior) HasPrimeGlyph(glyph proto.WarriorPrimeGlyph) bool {
+	return warrior.HasGlyph(int32(glyph))
+}
 
 func (warrior *Warrior) HasMajorGlyph(glyph proto.WarriorMajorGlyph) bool {
 	return warrior.HasGlyph(int32(glyph))
