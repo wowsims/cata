@@ -4,7 +4,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warrior *Warrior) registerExecuteSpell() {
+func (warrior *Warrior) RegisterExecuteSpell() {
 	var rageMetrics *core.ResourceMetrics
 	warrior.Execute = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 47471},
@@ -27,7 +27,6 @@ func (warrior *Warrior) registerExecuteSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.MeleeCritMultiplier(1.0, 0.0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			availableRage := spell.Unit.CurrentRage()

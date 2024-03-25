@@ -1,85 +1,87 @@
 package warrior
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (warrior *Warrior) registerHeroicStrikeSpell() {
-	hasGlyph := warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfHeroicStrike)
-	var rageMetrics *core.ResourceMetrics
-	if hasGlyph {
-		rageMetrics = warrior.NewRageMetrics(core.ActionID{ItemID: 43418})
-	}
+func (warrior *Warrior) RegisterHeroicStrikeSpell() {
 
 	warrior.HeroicStrike = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 47450},
+		ActionID:    core.ActionID{SpellID: 78},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete | SpellFlagBloodsurge,
+		Flags:       core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(warrior.Talents.ImprovedHeroicStrike) - float64(warrior.Talents.FocusedRage),
+			Cost:   30,
 			Refund: 0.8,
 		},
 
-		BonusCritRating:  (5*float64(warrior.Talents.Incite) + core.TernaryFloat64(warrior.HasSetBonus(ItemSetWrynnsBattlegear, 4), 5, 0)) * core.CritRatingPerCritChance,
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: 0,
+			},
+			CD: core.Cooldown{
+				Timer:    warrior.NewTimer(), // TODO: check if HS and Cleave share a CD
+				Duration: time.Second * 3,
+			},
+		},
+
+		BonusCritRating:  (5 * float64(warrior.Talents.Incite)) * core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  259,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 495 +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := 8 + (spell.MeleeAttackPower() * 0.6)
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			if result.DidCrit() && hasGlyph {
-				warrior.AddRage(sim, 10, rageMetrics)
-			} else if !result.Landed() {
+			if !result.Landed() {
 				spell.IssueRefund(sim)
 			}
 
 			spell.DealDamage(sim, result)
-			if warrior.curQueueAura != nil {
-				warrior.curQueueAura.Deactivate(sim)
-			}
 		},
 	})
-	warrior.makeQueueSpellsAndAura(warrior.HeroicStrike)
 }
 
-func (warrior *Warrior) registerCleaveSpell() {
-	flatDamageBonus := 222 * (1 + 0.4*float64(warrior.Talents.ImprovedCleave))
-
+func (warrior *Warrior) RegisterCleaveSpell() {
 	targets := core.TernaryInt32(warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfCleaving), 3, 2)
 	numHits := min(targets, warrior.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
 
 	warrior.Cleave = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 47520},
+		ActionID:    core.ActionID{SpellID: 845},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:       core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
 		RageCost: core.RageCostOptions{
-			Cost: 20 - float64(warrior.Talents.FocusedRage),
+			Cost: 30,
 		},
 
-		BonusCritRating:  float64(warrior.Talents.Incite) * 5 * core.CritRatingPerCritChance,
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: 0,
+			},
+			CD: core.Cooldown{
+				Timer:    warrior.NewTimer(),
+				Duration: time.Second * 3,
+			},
+		},
+
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  225,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := flatDamageBonus +
-					spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
+				baseDamage := 6 + (spell.MeleeAttackPower() * 0.45)
 				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
@@ -90,64 +92,6 @@ func (warrior *Warrior) registerCleaveSpell() {
 				spell.DealDamage(sim, results[hitIndex])
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
-			if warrior.curQueueAura != nil {
-				warrior.curQueueAura.Deactivate(sim)
-			}
 		},
 	})
-	warrior.makeQueueSpellsAndAura(warrior.Cleave)
-}
-
-func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *core.Spell) *core.Spell {
-	queueAura := warrior.RegisterAura(core.Aura{
-		Label:    "HS/Cleave Queue Aura-" + srcSpell.ActionID.String(),
-		ActionID: srcSpell.ActionID,
-		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.curQueueAura != nil {
-				warrior.curQueueAura.Deactivate(sim)
-			}
-			warrior.PseudoStats.DisableDWMissPenalty = true
-			warrior.curQueueAura = aura
-			warrior.curQueuedAutoSpell = srcSpell
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DisableDWMissPenalty = false
-			warrior.curQueueAura = nil
-			warrior.curQueuedAutoSpell = nil
-		},
-	})
-
-	queueSpell := warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    srcSpell.WithTag(1),
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.curQueueAura != queueAura &&
-				warrior.CurrentRage() >= srcSpell.DefaultCast.Cost &&
-				sim.CurrentTime >= warrior.Hardcast.Expires
-		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			queueAura.Activate(sim)
-		},
-	})
-
-	return queueSpell
-}
-
-// Returns true if the regular melee swing should be used, false otherwise.
-func (warrior *Warrior) TryHSOrCleave(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-	if !warrior.curQueueAura.IsActive() {
-		return mhSwingSpell
-	}
-
-	if !warrior.curQueuedAutoSpell.CanCast(sim, warrior.CurrentTarget) {
-		warrior.curQueueAura.Deactivate(sim)
-		return mhSwingSpell
-	}
-
-	return warrior.curQueuedAutoSpell
 }
