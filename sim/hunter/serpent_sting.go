@@ -30,14 +30,14 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 		},
 		BonusCritRating: impSSCritChance + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSerpentSting), 6, 0)*core.CritRatingPerCritChance,
 
-		DamageMultiplierAdditive: 1 + 0.15*float64(hunter.Talents.ImprovedSerpentSting),
+		DamageMultiplier: 1 + 0.15*float64(hunter.Talents.ImprovedSerpentSting),
 		// SS uses Spell Crit which is multiplied by toxicology
 		CritMultiplier:   hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology)*0.5),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "SerpentSting",
+				Label: "SerpentStingDot",
 				Tag:   "SerpentSting",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= noxiousStingsMultiplier
@@ -51,7 +51,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = (460 + 0.40*dot.Spell.RangedAttackPower(target)) / 5
+				dot.SnapshotBaseDamage = 460 + 0.08*dot.Spell.RangedAttackPower(target)
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
@@ -66,8 +66,8 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			var result *core.SpellResult
 
 			if hunter.Talents.ImprovedSerpentSting != 0 {
-				baseDamage := 460 + 0.40*spell.RangedAttackPower(target)
-				result = spell.CalcDamage(sim, target, baseDamage*float64(hunter.Talents.ImprovedSerpentSting), spell.OutcomeRangedHitAndCrit)
+				baseDamage := (460 * 5) + 0.40*spell.RangedAttackPower(target)
+				result = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			} else {
 				result = spell.CalcOutcome(sim, target, spell.OutcomeRangedHitAndCrit)
 			}

@@ -39,7 +39,7 @@ func (hunter *MarksmanshipHunter) registerChimeraShotSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			wepDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
-			baseDamage := 0.732*spell.RangedAttackPower(target) + 1620
+			baseDamage := 0.732*spell.RangedAttackPower(target) + 1620.33
 
 			result := spell.CalcDamage(sim, target, wepDmg+baseDamage, spell.OutcomeRangedHitAndCrit)
 
