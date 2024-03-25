@@ -609,7 +609,7 @@ message Debuffs {
 	bool spore_cloud = 37;
 
 	TristateEffect demoralizing_roar = 25;
-	TristateEffect demoralizing_shout = 26;
+	bool demoralizing_shout = 26;
 	bool vindication = 36;
 	bool demoralizing_screech = 34;
 
