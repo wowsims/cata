@@ -2,17 +2,9 @@ package warrior
 
 import (
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (warrior *Warrior) registerExecuteSpell() {
-	const maxRage = 30
-
-	var extraRageBonus float64
-	if warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfExecution) {
-		extraRageBonus = 10
-	}
-
 	var rageMetrics *core.ResourceMetrics
 	warrior.Execute = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 47471},
@@ -21,10 +13,7 @@ func (warrior *Warrior) registerExecuteSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost: 15 -
-				float64(warrior.Talents.FocusedRage) -
-				[]float64{0, 2, 5}[warrior.Talents.ImprovedExecute] -
-				core.TernaryFloat64(warrior.HasSetBonus(ItemSetOnslaughtBattlegear, 2), 3, 0),
+			Cost:   10,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -34,23 +23,24 @@ func (warrior *Warrior) registerExecuteSpell() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return sim.IsExecutePhase20() || warrior.IsSuddenDeathActive()
+			return sim.IsExecutePhase20() && warrior.StanceMatches(BattleStance|BerserkerStance)
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
-		ThreatMultiplier: 1.25,
+		CritMultiplier:   warrior.MeleeCritMultiplier(1.0, 0.0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			extraRage := spell.Unit.CurrentRage()
-			if extraRage > maxRage-spell.CurCast.Cost {
-				extraRage = maxRage - spell.CurCast.Cost
-			}
+			availableRage := spell.Unit.CurrentRage()
+			extraRage := core.TernaryFloat64(availableRage >= 20, 20, availableRage)
 			warrior.SpendRage(sim, extraRage, rageMetrics)
 			rageMetrics.Events--
 
-			baseDamage := 1456 + 0.2*spell.MeleeAttackPower() + 38*(extraRage+extraRageBonus)
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			ap := spell.MeleeAttackPower()
+			baseDamage := 10.0 + (ap * 0.437)
+			extraDamageScale := extraRage / 20.0
+			extraDamage := ((ap * 0.874) - 1.0) * extraDamageScale
+
+			result := spell.CalcAndDealDamage(sim, target, baseDamage+extraDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)

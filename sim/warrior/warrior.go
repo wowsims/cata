@@ -181,27 +181,6 @@ const (
 	oh   hand = 2
 )
 
-func (warrior *Warrior) autoCritMultiplier(hand hand) float64 {
-	return warrior.MeleeCritMultiplier(primary(warrior, hand), 0)
-}
-
-func primary(warrior *Warrior, hand hand) float64 {
-	// if warrior.Talents.PoleaxeSpecialization > 0 {
-	// 	if (hand == mh && isPoleaxe(warrior.MainHand())) || (hand == oh && isPoleaxe(warrior.OffHand())) {
-	// 		return 1 + 0.01*float64(warrior.Talents.PoleaxeSpecialization)
-	// 	}
-	// }
-	return 1
-}
-
-func isPoleaxe(weapon *core.Item) bool {
-	return weapon.WeaponType == proto.WeaponType_WeaponTypeAxe || weapon.WeaponType == proto.WeaponType_WeaponTypePolearm
-}
-
-func (warrior *Warrior) critMultiplier(hand hand) float64 {
-	return warrior.MeleeCritMultiplier(primary(warrior, hand), 0.1*float64(warrior.Talents.Impale))
-}
-
 func (warrior *Warrior) HasMajorGlyph(glyph proto.WarriorMajorGlyph) bool {
 	return warrior.HasGlyph(int32(glyph))
 }
