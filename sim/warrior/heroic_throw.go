@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
+// TODO: No patch notes for this ability, need to validate the damage and threat coefficients haven't changed
 func (warrior *Warrior) RegisterHeroicThrow() {
 	warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 57755},
@@ -31,7 +32,6 @@ func (warrior *Warrior) RegisterHeroicThrow() {
 			IgnoreHaste: true,
 		},
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
 		ThreatMultiplier: 1.5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
