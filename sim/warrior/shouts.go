@@ -10,21 +10,26 @@ import (
 const ShoutExpirationThreshold = time.Second * 3
 
 func (warrior *Warrior) makeShoutSpellHelper(actionID core.ActionID, allyAuras core.AuraArray) *core.Spell {
+
+	shoutMetrics := warrior.NewRageMetrics(actionID)
+	rageGen := 20.0 + 5.0*float64(warrior.Talents.BoomingVoice)
+	cd := time.Minute - time.Duration(15*float64(warrior.Talents.BoomingVoice))*time.Second
 	return warrior.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagHelpful,
 
-		RageCost: core.RageCostOptions{
-			Cost: 10,
-		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Duration: cd,
+			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			warrior.AddRage(sim, rageGen, shoutMetrics)
 			for _, aura := range allyAuras {
 				if aura != nil {
 					aura.Activate(sim)
@@ -37,11 +42,11 @@ func (warrior *Warrior) makeShoutSpellHelper(actionID core.ActionID, allyAuras c
 }
 
 func (warrior *Warrior) registerShouts() {
-	warrior.BattleShout = warrior.makeShoutSpellHelper(core.ActionID{SpellID: 47436}, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
-		return core.BattleShoutAura(unit, warrior.Talents.CommandingPresence, warrior.Talents.BoomingVoice, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfBattle))
+	warrior.BattleShout = warrior.makeShoutSpellHelper(core.ActionID{SpellID: 6673}, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
+		return core.BattleShoutAura(unit, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfBattle))
 	}))
 
-	warrior.CommandingShout = warrior.makeShoutSpellHelper(core.ActionID{SpellID: 47440}, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
-		return core.CommandingShoutAura(unit, warrior.Talents.CommandingPresence, warrior.Talents.BoomingVoice, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfCommand))
+	warrior.CommandingShout = warrior.makeShoutSpellHelper(core.ActionID{SpellID: 469}, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
+		return core.CommandingShoutAura(unit, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfCommand))
 	}))
 }
