@@ -30,11 +30,12 @@ type Warrior struct {
 	WarriorInputs
 
 	// Current state
-	Stance               Stance
-	RendValidUntil       time.Duration
-	BloodsurgeValidUntil time.Duration
-	revengeProcAura      *core.Aura
-	Ymirjar4pcProcAura   *core.Aura
+	Stance                 Stance
+	RendValidUntil         time.Duration
+	BloodsurgeValidUntil   time.Duration
+	revengeProcAura        *core.Aura
+	Ymirjar4pcProcAura     *core.Aura
+	EnrageEffectMultiplier float64
 
 	// Reaction time values
 	reactionTime       time.Duration
@@ -49,6 +50,7 @@ type Warrior struct {
 	BerserkerStance *core.Spell
 
 	BerserkerRage        *core.Spell
+	BerserkerRageAura    *core.Aura
 	Bloodthirst          *core.Spell
 	DemoralizingShout    *core.Spell
 	Devastate            *core.Spell
@@ -106,6 +108,7 @@ func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 
 func (warrior *Warrior) Initialize() {
 	warrior.registerStances()
+	warrior.EnrageEffectMultiplier = 1.0
 	//warrior.AutoAttacks.MHConfig().CritMultiplier = warrior.autoCritMultiplier(mh)
 	// warrior.AutoAttacks.OHConfig().CritMultiplier = warrior.autoCritMultiplier(oh)
 
@@ -207,9 +210,9 @@ func (warrior *Warrior) HasMinorGlyph(glyph proto.WarriorMinorGlyph) bool {
 	return warrior.HasGlyph(int32(glyph))
 }
 
-func (warrior *Warrior) intensifyRageCooldown(baseCd time.Duration) time.Duration {
+func (warrior *Warrior) IntensifyRageCooldown(baseCd time.Duration) time.Duration {
 	baseCd /= 100
-	return []time.Duration{baseCd * 100, baseCd * 89, baseCd * 78, baseCd * 67}[warrior.Talents.IntensifyRage]
+	return []time.Duration{baseCd * 100, baseCd * 90, baseCd * 80}[warrior.Talents.IntensifyRage]
 }
 
 // Agent is a generic way to access underlying warrior on any of the agents.

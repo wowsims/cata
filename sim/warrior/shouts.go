@@ -9,7 +9,7 @@ import (
 
 const ShoutExpirationThreshold = time.Second * 3
 
-func (warrior *Warrior) makeShoutSpellHelper(actionID core.ActionID, allyAuras core.AuraArray) *core.Spell {
+func (warrior *Warrior) MakeShoutSpellHelper(actionID core.ActionID, allyAuras core.AuraArray) *core.Spell {
 
 	shoutMetrics := warrior.NewRageMetrics(actionID)
 	rageGen := 20.0 + 5.0*float64(warrior.Talents.BoomingVoice)
@@ -24,6 +24,7 @@ func (warrior *Warrior) makeShoutSpellHelper(actionID core.ActionID, allyAuras c
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
+				Timer:    warrior.NewTimer(), // TODO: double-check that BS and CS don't share CDs
 				Duration: cd,
 			},
 		},
@@ -41,12 +42,12 @@ func (warrior *Warrior) makeShoutSpellHelper(actionID core.ActionID, allyAuras c
 	})
 }
 
-func (warrior *Warrior) registerShouts() {
-	warrior.BattleShout = warrior.makeShoutSpellHelper(core.ActionID{SpellID: 6673}, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
+func (warrior *Warrior) RegisterShouts() {
+	warrior.BattleShout = warrior.MakeShoutSpellHelper(core.ActionID{SpellID: 6673}, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
 		return core.BattleShoutAura(unit, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfBattle))
 	}))
 
-	warrior.CommandingShout = warrior.makeShoutSpellHelper(core.ActionID{SpellID: 469}, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
+	warrior.CommandingShout = warrior.MakeShoutSpellHelper(core.ActionID{SpellID: 469}, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
 		return core.CommandingShoutAura(unit, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfCommand))
 	}))
 }
