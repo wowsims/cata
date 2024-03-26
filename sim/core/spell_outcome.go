@@ -540,7 +540,7 @@ func (result *SpellResult) applyEnemyAttackTableDodge(spell *Spell, attackTable 
 		return false
 	}
 
-	*chance = result.Target.GetTotalDodgeChanceAsDefender(attackTable) - spell.Unit.PseudoStats.DodgeReduction
+	*chance = max(result.Target.GetTotalDodgeChanceAsDefender(attackTable)-spell.Unit.PseudoStats.DodgeReduction, 0.0)
 
 	if roll < *chance {
 		result.Outcome = OutcomeDodge
