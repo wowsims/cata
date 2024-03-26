@@ -32,7 +32,6 @@ type Warrior struct {
 
 	// Current state
 	Stance                 Stance
-	RendValidUntil         time.Duration
 	BloodsurgeValidUntil   time.Duration
 	revengeProcAura        *core.Aura
 	Ymirjar4pcProcAura     *core.Aura
@@ -147,7 +146,6 @@ func (warrior *Warrior) Initialize() {
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {
-	warrior.RendValidUntil = 0
 	warrior.curQueueAura = nil
 	warrior.curQueuedAutoSpell = nil
 }
