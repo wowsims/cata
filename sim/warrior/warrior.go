@@ -36,6 +36,7 @@ type Warrior struct {
 	revengeProcAura        *core.Aura
 	Ymirjar4pcProcAura     *core.Aura
 	EnrageEffectMultiplier float64
+	CriticalBlockChance    float64 // Can be gained as non-prot via certain talents and spells
 
 	// Reaction time values
 	reactionTime       time.Duration
