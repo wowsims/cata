@@ -50,6 +50,7 @@ type Warrior struct {
 	DefensiveStance *core.Spell
 	BerserkerStance *core.Spell
 
+	SpecialAttacks       []*core.Spell
 	BerserkerRage        *core.Spell
 	BerserkerRageAura    *core.Aura
 	Bloodthirst          *core.Spell

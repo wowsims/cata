@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
+func (warrior *Warrior) RegisterOverpowerSpell(cdTimer *core.Timer) {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "Overpower Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
