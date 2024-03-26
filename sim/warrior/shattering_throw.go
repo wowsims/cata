@@ -18,7 +18,7 @@ func (warrior *Warrior) RegisterShatteringThrowCD() {
 		Flags:       core.SpellFlagMeleeMetrics,
 
 		RageCost: core.RageCostOptions{
-			Cost: 25 - float64(warrior.Talents.FocusedRage),
+			Cost: 25,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -46,7 +46,6 @@ func (warrior *Warrior) RegisterShatteringThrowCD() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
