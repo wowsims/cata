@@ -41,7 +41,7 @@ message UINPC {
 // Contains all information about an Item needed by the UI.
 // Generally this will include everything needed by the sim, plus some
 // additional data for displaying / filtering.
-// Next tag: 27.
+// Next tag: 28.
 message UIItem {
 	int32 id = 1;
 	string name = 2;
@@ -68,6 +68,7 @@ message UIItem {
 	ItemQuality quality = 17;
 	bool unique = 18;
 	bool heroic = 19;
+	int32 rand_prop_points = 27;
 
 	// Classes that are allowed to use the item. Empty indicates no special class restrictions.
 	repeated Class class_allowlist = 20;

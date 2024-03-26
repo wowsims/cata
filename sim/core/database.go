@@ -88,10 +88,11 @@ type Item struct {
 	WeaponDamageMax  float64
 	SwingSpeed       float64
 
-	Name    string
-	Stats   stats.Stats // Stats applied to wearer
-	Quality proto.ItemQuality
-	SetName string // Empty string if not part of a set.
+	Name             string
+	Stats            stats.Stats // Stats applied to wearer
+	Quality          proto.ItemQuality
+	SetName          string // Empty string if not part of a set.
+	RandomPropPoints int32 // Used to rescale random suffix stats
 
 	GemSockets  []proto.GemColor
 	SocketBonus stats.Stats
@@ -122,6 +123,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		GemSockets:       pData.GemSockets,
 		SocketBonus:      stats.FromFloatArray(pData.SocketBonus),
 		SetName:          pData.SetName,
+		RandomPropPoints: pData.RandPropPoints,
 	}
 }
 
@@ -411,6 +413,10 @@ func (equipment *Equipment) Stats() stats.Stats {
 
 		equipStats = equipStats.Add(item.Stats)
 
+		// TODO: Verify that random suffix stats can be re-forged (current implementation assumes yes)
+		rawSuffixStats := item.RandomSuffix.Stats
+		equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.))
+
 		// Apply reforging
 		if item.Reforging != nil {
 			reforgingChanges := stats.Stats{}
@@ -429,8 +435,6 @@ func (equipment *Equipment) Stats() stats.Stats {
 			equipStats = equipStats.Add(reforgingChanges)
 		}
 
-		// TODO: Check whether random suffix stats can be re-forged (current implementation assumes no)
-		equipStats = equipStats.Add(item.RandomSuffix.Stats)
 		equipStats = equipStats.Add(item.Enchant.Stats)
 
 		for _, gem := range item.Gems {
