@@ -113,7 +113,7 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueCurrentRage(config.GetCurrentRage())
 	case *proto.APLValue_CurrentEnergy:
 		return rot.newValueCurrentEnergy(config.GetCurrentEnergy())
-		case *proto.APLValue_CurrentFocus:
+	case *proto.APLValue_CurrentFocus:
 		return rot.newValueCurrentFocus(config.GetCurrentFocus())
 	case *proto.APLValue_CurrentComboPoints:
 		return rot.newValueCurrentComboPoints(config.GetCurrentComboPoints())
@@ -139,6 +139,10 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueRuneGrace(config.GetRuneGrace())
 	case *proto.APLValue_RuneSlotGrace:
 		return rot.newValueRuneSlotGrace(config.GetRuneSlotGrace())
+
+	//Unit
+	case *proto.APLValue_UnitIsMoving:
+		return rot.newValueCharacterIsMoving(config.GetUnitIsMoving())
 
 	// GCD
 	case *proto.APLValue_GcdIsReady:

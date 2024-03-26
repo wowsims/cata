@@ -12,6 +12,7 @@ import {
 	APLActionCustomRotation,
 	APLActionItemSwap,
 	APLActionItemSwap_SwapSet as ItemSwapSet,
+	APLActionMove,
 	APLActionMultidot,
 	APLActionMultishield,
 	APLActionResetSequence,
@@ -559,7 +560,18 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		newValue: () => APLActionItemSwap.create(),
 		fields: [itemSwapSetFieldConfig('swapSet')],
 	}),
-
+	['move']: inputBuilder({
+		label: 'Move',
+		submenu: ['Misc'],
+		shortDescription: 'Starts a move to the desired range from target.',
+		newValue: () => APLActionMove.create(),
+		fields: [
+			AplValues.valueFieldConfig('rangeFromTarget', {
+				label: 'to Range',
+				labelTooltip: 'Desired range from target.',
+			}),
+		],
+	}),
 	['customRotation']: inputBuilder({
 		label: 'Custom Rotation',
 		//submenu: ['Misc'],
