@@ -23,6 +23,7 @@ import {
 	HandType,
 	HealingModel,
 	IndividualBuffs,
+	ItemRandomSuffix,
 	ItemSlot,
 	Profession,
 	PseudoStat,
@@ -253,6 +254,7 @@ export class Player<SpecType extends Spec> {
 
 	private itemEPCache = new Array<Map<number, number>>();
 	private gemEPCache = new Map<number, number>();
+	private randomSuffixEPCache = new Map<number, number>();
 	private enchantEPCache = new Map<number, number>();
 	private talents: SpecTalents<SpecType> | null = null;
 
@@ -426,6 +428,12 @@ export class Player<SpecType extends Spec> {
 		return this.sim.db.getItems(slot).filter(item => canEquipItem(item, this.playerSpec, slot));
 	}
 
+	// Returns all random suffixes that this player would be interested in for the given base item.
+	getRandomSuffixes(item: Item): Array<ItemRandomSuffix> {
+		const allSuffixes = item.randomSuffixOptions.map((id) => this.sim.db.getRandomSuffixById(id)!);
+		return allSuffixes.filter(suffix => this.computeRandomSuffixEP(suffix) > 0);
+	}
+
 	// Returns all enchants that this player can wear in the given slot.
 	getEnchants(slot: ItemSlot): Array<Enchant> {
 		return this.sim.db.getEnchants(slot).filter(enchant => canEquipEnchant(enchant, this.playerSpec));
@@ -446,7 +454,8 @@ export class Player<SpecType extends Spec> {
 
 		this.gemEPCache = new Map();
 		this.enchantEPCache = new Map();
-		for (let i = 0; i < ItemSlot.ItemSlotRanged + 1; ++i) {
+		this.randomSuffixEPCache = new Map();
+		for(let i = 0; i < ItemSlot.ItemSlotRanged+1; ++i) {
 			this.itemEPCache[i] = new Map();
 		}
 	}
@@ -1030,6 +1039,16 @@ export class Player<SpecType extends Spec> {
 		return ep;
 	}
 
+	computeRandomSuffixEP(randomSuffix: ItemRandomSuffix): number {
+		if (this.randomSuffixEPCache.has(randomSuffix.id)) {
+			return this.randomSuffixEPCache.get(randomSuffix.id)!;
+		}
+
+		let ep = this.computeStatsEP(new Stats(randomSuffix.stats));
+		this.randomSuffixEPCache.set(randomSuffix.id, ep);
+		return ep
+	}
+
 	computeItemEP(item: Item, slot: ItemSlot): number {
 		if (item == null) return 0;
 
@@ -1048,7 +1067,15 @@ export class Player<SpecType extends Spec> {
 			}
 		}
 
-		let ep = itemStats.computeEP(this.epWeights);
+		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
+		let maxSuffixEP = 0;
+
+		if (item.randomSuffixOptions.length > 0) {
+			const suffixEPs = item.randomSuffixOptions.map((id) => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)!));
+			maxSuffixEP = Math.max(...suffixEPs) * item.randPropPoints / 10000;
+		}
+
+		let ep = itemStats.computeEP(this.epWeights) + maxSuffixEP;
 
 		// unique items are slightly worse than non-unique because you can have only one.
 		if (item.unique) {

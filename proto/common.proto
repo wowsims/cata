@@ -99,7 +99,7 @@ enum Profession {
 }
 
 // Keep in sync with sim/core/stats/stats.go.
-// NextIndex: 33;
+// NextIndex: 34;
 enum Stat {
 	StatStrength = 0;
 	StatAgility = 1;
@@ -716,8 +716,15 @@ message PresetEncounter {
 	repeated PresetTarget targets = 2;
 }
 
+message ItemRandomSuffix {
+	int32 id = 1;
+	string name = 2;
+	repeated double stats = 3;
+}
+
 message ItemSpec {
 	int32 id = 2;
+	int32 random_suffix = 6;
 	int32 enchant = 3;
 	repeated int32 gems = 4;
 	int32 reforging = 5; //reforging id
@@ -729,6 +736,7 @@ message EquipmentSpec {
 
 message SimDatabase {
 	repeated SimItem items = 1;
+	repeated ItemRandomSuffix random_suffixes = 5;
 	repeated SimEnchant enchants = 2;
 	repeated SimGem gems = 3;
 	repeated ReforgeStat reforge_stats = 6;
@@ -754,7 +762,7 @@ message SimItem {
 	double weapon_speed = 13;
 
 	string set_name = 14;
-
+	int32 rand_prop_points = 15;
 }
 
 // Extra enum for describing which items are eligible for an enchant, when
