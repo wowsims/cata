@@ -1,0 +1,2 @@
+import"../../../index-kd50R6o3.chunk.js";/* empty css                           */import{S as s,P as t}from"../../../preset_utils-CeU74Uux.chunk.js";import{P as n,T as e}from"../../../detailed_results-BHvK-yoZ.chunk.js";import{D as r}from"../../../sim-CncIvXee.chunk.js";import"../../../inputs-BBMpkEBT.chunk.js";const i=new s,o=new t(n.DestructionWarlock,i);i.raid.setPlayer(e.nextEventID(),0,o),new r(document.body,o);
+//# sourceMappingURL=index.html-CjQwL3nX.entry.js.map

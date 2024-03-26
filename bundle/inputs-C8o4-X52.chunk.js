@@ -1,0 +1,2 @@
+import{a1 as e}from"./preset_utils-CeU74Uux.chunk.js";import{A as s,n as t,U as a}from"./detailed_results-BHvK-yoZ.chunk.js";const n=()=>e({fieldName:"innervateTarget",id:s.fromSpellId(29166),extraCssClasses:["within-raid-sim-hide"],getValue:e=>e.getClassOptions().innervateTarget?.type==t.Player,setValue:(e,s,n)=>{const r=s.getClassOptions();r.innervateTarget=a.create({type:n?t.Player:t.Unknown,index:0}),s.setClassOptions(e,r)}});export{n as S};
+//# sourceMappingURL=inputs-C8o4-X52.chunk.js.map
