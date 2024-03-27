@@ -48,8 +48,8 @@ const (
 )
 
 // These IDs are needed for certain talents.
-const BiteSpellID = 52474
-const ClawSpellID = 52472
+const BiteSpellID = 17253
+const ClawSpellID = 16827
 const SmackSpellID = 52476
 
 func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *core.Spell {
@@ -134,13 +134,12 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 			IgnoreHaste: true,
 		},
 
-		//DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		DamageMultiplier: 1,
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(118, 168) + 0.07*spell.MeleeAttackPower()
-			//baseDamage *= hp.killCommandMult() //Todo: kill command doesnt work lik ethis anymore
+			baseDamage := sim.Roll(132, 188) + ((0.4 * spell.MeleeAttackPower()) * 0.20)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})

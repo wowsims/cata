@@ -10,8 +10,6 @@ import (
 const masteryDamagePerPoint = .01
 const masteryBaseEffect = 0.2
 
-var hasT6 bool = false
-
 func RegisterSubtletyRogue() {
 	core.RegisterAgentFactory(
 		proto.Player_SubtletyRogue{},
@@ -47,30 +45,28 @@ func (subRogue *SubtletyRogue) Initialize() {
 	subRogue.registerShadowstepCD()
 
 	// Apply Mastery
-	hasT6 = subRogue.HasSetBonus(rogue.Tier6, 2)
+	// From all I can find, Sub's Mastery is Additive. Will need to test.
+	masteryEffect := getMasteryBonus(subRogue.GetStat(stats.Mastery))
 
-	masteryPoints := subRogue.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPoint
-	masteryEffect := masteryPoints*masteryDamagePerPoint + masteryBaseEffect
-	subRogue.SliceAndDiceBonus = 1.4
 	subRogue.SliceAndDiceBonus *= (1 + masteryEffect)
-	if hasT6 {
-		subRogue.SliceAndDiceBonus += 0.05
-	}
 	subRogue.Eviscerate.DamageMultiplierAdditive += masteryEffect
 	subRogue.Rupture.DamageMultiplierAdditive += masteryEffect
 
 	subRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		masteryPointsOld := oldMastery / core.MasteryRatingPerMasteryPoint
-		masteryPointsNew := newMastery / core.MasteryRatingPerMasteryPoint
-		masteryEffect := (masteryPointsNew-masteryPointsOld)*masteryDamagePerPoint + masteryBaseEffect
-		subRogue.SliceAndDiceBonus = 1.4
-		subRogue.SliceAndDiceBonus *= (1 + masteryEffect)
-		if hasT6 {
-			subRogue.SliceAndDiceBonus += 0.05
-		}
-		subRogue.Eviscerate.DamageMultiplierAdditive += masteryEffect
-		subRogue.Rupture.DamageMultiplierAdditive += masteryEffect
+		masteryEffectOld := getMasteryBonus(oldMastery)
+		masteryEffectNew := getMasteryBonus(newMastery)
+
+		subRogue.SliceAndDiceBonus /= (1 + masteryEffectOld)
+		subRogue.SliceAndDiceBonus *= (1 + masteryEffectNew)
+		subRogue.Eviscerate.DamageMultiplierAdditive -= masteryEffectOld
+		subRogue.Eviscerate.DamageMultiplierAdditive += masteryEffectNew
+		subRogue.Rupture.DamageMultiplierAdditive -= masteryEffectOld
+		subRogue.Rupture.DamageMultiplierAdditive += masteryEffectNew
 	})
+}
+
+func getMasteryBonus(masteryRating float64) float64 {
+	return masteryBaseEffect + core.MasteryRatingToMasteryPoints(masteryRating)*masteryDamagePerPoint
 }
 
 func NewSubtletyRogue(character *core.Character, options *proto.Player) *SubtletyRogue {

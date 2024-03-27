@@ -66,7 +66,7 @@ export const DefaultOptions = RestorationDruidOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.RunicManaPotion,
+	defaultPotion: Potions.MythicalManaPotion,
 	flask: Flask.FlaskOfTheFrostWyrm,
 	food: Food.FoodFishFeast,
 });

@@ -33,14 +33,15 @@ func (rogue *Rogue) registerBackstabSpell() {
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.HasDagger(core.MainHand)
 		},
 
-		BonusCritRating: core.TernaryFloat64(rogue.HasSetBonus(Tier9, 4), 5*core.CritRatingPerCritChance, 0) +
-			10*core.CritRatingPerCritChance*float64(rogue.Talents.PuncturingWounds),
+		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.PuncturingWounds),
+
+		// Opportunity and Aggression are additive
 		DamageMultiplierAdditive: 1 +
 			0.1*float64(rogue.Talents.Opportunity) +
-			[]float64{0.0, .07, .14, .20}[rogue.Talents.Aggression] +
-			core.TernaryFloat64(rogue.HasSetBonus(Tier6, 4), 0.06, 0),
+			[]float64{0.0, .07, .14, .20}[rogue.Talents.Aggression],
+		// Sinister Calling (Subtlety Spec Passive) is Multiplicative
 		DamageMultiplier: 2.07 *
-			core.TernaryFloat64(rogue.Spec == proto.Spec_SpecSubtletyRogue, 1.4, 1.0),
+			core.TernaryFloat64(rogue.Spec == proto.Spec_SpecSubtletyRogue, 1.4, 1),
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 

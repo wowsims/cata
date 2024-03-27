@@ -29,10 +29,10 @@ func (rogue *Rogue) registerGarrote() {
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()
 		},
 
-		DamageMultiplier: 1 +
-			0.10*float64(rogue.Talents.Opportunity),
-		CritMultiplier:   rogue.MeleeCritMultiplier(false),
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1 + 0.10*float64(rogue.Talents.Opportunity),
+		DamageMultiplier:         1,
+		CritMultiplier:           rogue.MeleeCritMultiplier(false),
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

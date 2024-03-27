@@ -30,7 +30,7 @@ type Warrior struct {
 	WarriorInputs
 
 	// Current state
-	//Stance               Stance
+	Stance               Stance
 	RendValidUntil       time.Duration
 	BloodsurgeValidUntil time.Duration
 	revengeProcAura      *core.Aura
@@ -105,7 +105,8 @@ func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) Initialize() {
-	// warrior.AutoAttacks.MHConfig().CritMultiplier = warrior.autoCritMultiplier(mh)
+	warrior.registerStances()
+	//warrior.AutoAttacks.MHConfig().CritMultiplier = warrior.autoCritMultiplier(mh)
 	// warrior.AutoAttacks.OHConfig().CritMultiplier = warrior.autoCritMultiplier(oh)
 
 	// primaryTimer := warrior.NewTimer()

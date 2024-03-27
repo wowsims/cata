@@ -134,6 +134,26 @@ export const ExplosiveDecoy = makeBooleanConsumeInput({
 ///////////////////////////////////////////////////////////////////////////
 
 // Flasks
+export const FlaskOfTitanicStrength = {
+	actionId: ActionId.fromItemId(58088), // Use the correct item ID
+	value: Flask.FlaskOfTitanicStrength,
+};
+
+export const FlaskOfTheWinds = {
+	actionId: ActionId.fromItemId(58087), // Use the correct item ID
+	value: Flask.FlaskOfTheWinds,
+};
+
+export const FlaskOfSteelskin = {
+	actionId: ActionId.fromItemId(58085), // Use the correct item ID
+	value: Flask.FlaskOfSteelskin,
+};
+
+export const FlaskOfFlowingWater = {
+	actionId: ActionId.fromItemId(67438), // Use the correct item ID
+	value: Flask.FlaskOfFlowingWater,
+};
+
 export const FlaskOfTheFrostWyrm = {
 	actionId: ActionId.fromItemId(46376),
 	value: Flask.FlaskOfTheFrostWyrm,
@@ -158,34 +178,6 @@ export const LesserFlaskOfResistance = {
 	actionId: ActionId.fromItemId(44939),
 	value: Flask.LesserFlaskOfResistance,
 };
-export const FlaskOfBlindingLight = {
-	actionId: ActionId.fromItemId(22861),
-	value: Flask.FlaskOfBlindingLight,
-};
-export const FlaskOfMightyRestoration = {
-	actionId: ActionId.fromItemId(22853),
-	value: Flask.FlaskOfMightyRestoration,
-};
-export const FlaskOfPureDeath = {
-	actionId: ActionId.fromItemId(22866),
-	value: Flask.FlaskOfPureDeath,
-};
-export const FlaskOfRelentlessAssault = {
-	actionId: ActionId.fromItemId(22854),
-	value: Flask.FlaskOfRelentlessAssault,
-};
-export const FlaskOfSupremePower = {
-	actionId: ActionId.fromItemId(13512),
-	value: Flask.FlaskOfSupremePower,
-};
-export const FlaskOfFortification = {
-	actionId: ActionId.fromItemId(22851),
-	value: Flask.FlaskOfFortification,
-};
-export const FlaskOfChromaticWonder = {
-	actionId: ActionId.fromItemId(33208),
-	value: Flask.FlaskOfChromaticWonder,
-};
 
 export const FLASKS_CONFIG = [
 	{ config: FlaskOfTheFrostWyrm, stats: [Stat.StatSpellPower] },
@@ -197,6 +189,10 @@ export const FLASKS_CONFIG = [
 		config: LesserFlaskOfResistance,
 		stats: [Stat.StatArcaneResistance, Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatNatureResistance, Stat.StatShadowResistance],
 	},
+	{ config: FlaskOfTitanicStrength, stats: [Stat.StatStrength] },
+	{ config: FlaskOfTheWinds, stats: [Stat.StatAgility] },
+	{ config: FlaskOfSteelskin, stats: [Stat.StatStamina] },
+	{ config: FlaskOfFlowingWater, stats: [Stat.StatSpirit] },
 ] as ConsumableStatOption<Flask>[];
 
 export const makeFlasksInput = makeConsumeInputFactory({
@@ -212,6 +208,35 @@ export const makeFlasksInput = makeConsumeInputFactory({
 });
 
 // Battle Elixirs
+export const ElixirOfTheMaster = {
+	actionId: ActionId.fromItemId(58148),
+	value: BattleElixir.ElixirOfTheMaster,
+};
+
+export const ElixirOfMightySpeed = {
+	actionId: ActionId.fromItemId(58144),
+	value: BattleElixir.ElixirOfMightySpeed,
+};
+
+export const ElixirOfImpossibleAccuracy = {
+	actionId: ActionId.fromItemId(58094),
+	value: BattleElixir.ElixirOfImpossibleAccuracy,
+};
+
+export const ElixirOfTheCobra = {
+	actionId: ActionId.fromItemId(58092),
+	value: BattleElixir.ElixirOfTheCobra,
+};
+
+export const ElixirOfTheNaga = {
+	actionId: ActionId.fromItemId(58089),
+	value: BattleElixir.ElixirOfTheNaga,
+};
+
+export const GhostElixir = {
+	actionId: ActionId.fromItemId(58084),
+	value: BattleElixir.GhostElixir,
+};
 export const ElixirOfAccuracy = {
 	actionId: ActionId.fromItemId(44325),
 	value: BattleElixir.ElixirOfAccuracy,
@@ -252,54 +277,19 @@ export const WrathElixir = {
 	actionId: ActionId.fromItemId(40068),
 	value: BattleElixir.WrathElixir,
 };
-export const AdeptsElixir = {
-	actionId: ActionId.fromItemId(28103),
-	value: BattleElixir.AdeptsElixir,
-};
 export const ElixirOfDemonslaying = {
 	actionId: ActionId.fromItemId(9224),
 	value: BattleElixir.ElixirOfDemonslaying,
 };
-export const ElixirOfMajorAgility = {
-	actionId: ActionId.fromItemId(22831),
-	value: BattleElixir.ElixirOfMajorAgility,
-};
-export const ElixirOfMajorFirePower = {
-	actionId: ActionId.fromItemId(22833),
-	value: BattleElixir.ElixirOfMajorFirePower,
-};
-export const ElixirOfMajorFrostPower = {
-	actionId: ActionId.fromItemId(22827),
-	value: BattleElixir.ElixirOfMajorFrostPower,
-};
-export const ElixirOfMajorShadowPower = {
-	actionId: ActionId.fromItemId(22835),
-	value: BattleElixir.ElixirOfMajorShadowPower,
-};
-export const ElixirOfMajorStrength = {
-	actionId: ActionId.fromItemId(22824),
-	value: BattleElixir.ElixirOfMajorStrength,
-};
-export const ElixirOfMastery = {
-	actionId: ActionId.fromItemId(28104),
-	value: BattleElixir.ElixirOfMastery,
-};
-export const ElixirOfTheMongoose = {
-	actionId: ActionId.fromItemId(13452),
-	value: BattleElixir.ElixirOfTheMongoose,
-};
-export const FelStrengthElixir = {
-	actionId: ActionId.fromItemId(31679),
-	value: BattleElixir.FelStrengthElixir,
-};
-export const GreaterArcaneElixir = {
-	actionId: ActionId.fromItemId(13454),
-	value: BattleElixir.GreaterArcaneElixir,
-};
 
 export const BATTLE_ELIXIRS_CONFIG = [
+	{ config: ElixirOfTheMaster, stats: [Stat.StatMastery] },
+	{ config: ElixirOfMightySpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
+	{ config: ElixirOfImpossibleAccuracy, stats: [Stat.StatMeleeHit, Stat.StatSpellHit] },
+	{ config: ElixirOfTheCobra, stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit] },
+	{ config: ElixirOfTheNaga, stats: [Stat.StatExpertise] },
+	{ config: GhostElixir, stats: [Stat.StatSpirit] },
 	{ config: ElixirOfAccuracy, stats: [Stat.StatMeleeHit, Stat.StatSpellHit] },
-	{ config: ElixirOfArmorPiercing, stats: [Stat.StatArmorPenetration] },
 	{ config: ElixirOfDeadlyStrikes, stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit] },
 	{ config: ElixirOfExpertise, stats: [Stat.StatExpertise] },
 	{ config: ElixirOfLightningSpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
@@ -325,6 +315,14 @@ export const makeBattleElixirsInput = makeConsumeInputFactory({
 });
 
 // Guardian Elixirs
+export const ElixirOfDeepEarth = {
+	actionId: ActionId.fromItemId(80488),
+	value: GuardianElixir.ElixirOfDeepEarth,
+};
+export const PrismaticElixir = {
+	actionId: ActionId.fromItemId(80492),
+	value: GuardianElixir.PrismaticElixir,
+};
 export const ElixirOfMightyDefense = {
 	actionId: ActionId.fromItemId(44328),
 	value: GuardianElixir.ElixirOfMightyDefense,
@@ -353,28 +351,13 @@ export const GiftOfArthas = {
 	actionId: ActionId.fromItemId(9088),
 	value: GuardianElixir.GiftOfArthas,
 };
-export const ElixirOfDraenicWisdom = {
-	actionId: ActionId.fromItemId(32067),
-	value: GuardianElixir.ElixirOfDraenicWisdom,
-};
-export const ElixirOfIronskin = {
-	actionId: ActionId.fromItemId(32068),
-	value: GuardianElixir.ElixirOfIronskin,
-};
-export const ElixirOfMajorDefense = {
-	actionId: ActionId.fromItemId(22834),
-	value: GuardianElixir.ElixirOfMajorDefense,
-};
-export const ElixirOfMajorFortitude = {
-	actionId: ActionId.fromItemId(32062),
-	value: GuardianElixir.ElixirOfMajorFortitude,
-};
-export const ElixirOfMajorMageblood = {
-	actionId: ActionId.fromItemId(22840),
-	value: GuardianElixir.ElixirOfMajorMageblood,
-};
 
 export const GUARDIAN_ELIXIRS_CONFIG = [
+	{ config: ElixirOfDeepEarth, stats: [Stat.StatArmor] },
+	{
+		config: PrismaticElixir,
+		stats: [Stat.StatArcaneResistance, Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatNatureResistance, Stat.StatShadowResistance],
+	},
 	{ config: ElixirOfMightyDefense, stats: [Stat.StatDefense] },
 	{ config: ElixirOfMightyFortitude, stats: [Stat.StatStamina] },
 	{ config: ElixirOfMightyMageblood, stats: [Stat.StatMP5] },
@@ -519,81 +502,70 @@ export const PetScrollOfStrengthV = makeBooleanConsumeInput({
 ///////////////////////////////////////////////////////////////////////////
 //                                 POTIONS
 ///////////////////////////////////////////////////////////////////////////
+export const GolembloodPotion = {
+	actionId: ActionId.fromItemId(58146),
+	value: Potions.GolembloodPotion,
+};
 
-export const RunicHealingPotion = {
-	actionId: ActionId.fromItemId(33447),
-	value: Potions.RunicHealingPotion,
+export const PotionOfTheTolvir = {
+	actionId: ActionId.fromItemId(58145),
+	value: Potions.PotionOfTheTolvir,
 };
-export const RunicHealingInjector = {
-	actionId: ActionId.fromItemId(41166),
-	value: Potions.RunicHealingInjector,
+
+export const PotionOfConcentration = {
+	actionId: ActionId.fromItemId(57194),
+	value: Potions.PotionOfConcentration,
 };
-export const RunicManaPotion = {
-	actionId: ActionId.fromItemId(33448),
-	value: Potions.RunicManaPotion,
+
+export const VolcanicPotion = {
+	actionId: ActionId.fromItemId(58091),
+	value: Potions.VolcanicPotion,
 };
-export const RunicManaInjector = {
-	actionId: ActionId.fromItemId(42545),
-	value: Potions.RunicManaInjector,
+
+export const EarthenPotion = {
+	actionId: ActionId.fromItemId(58090),
+	value: Potions.EarthenPotion,
 };
-export const IndestructiblePotion = {
-	actionId: ActionId.fromItemId(40093),
-	value: Potions.IndestructiblePotion,
+
+export const MightyRejuvenationPotion = {
+	actionId: ActionId.fromItemId(57193),
+	value: Potions.MightyRejuvenationPotion,
+};
+
+export const MythicalHealingPotion = {
+	actionId: ActionId.fromItemId(57191),
+	value: Potions.MythicalHealingPotion,
+};
+
+export const MythicalManaPotion = {
+	actionId: ActionId.fromItemId(57192),
+	value: Potions.MythicalManaPotion,
 };
 export const PotionOfSpeed = { actionId: ActionId.fromItemId(40211), value: Potions.PotionOfSpeed };
-export const PotionOfWildMagic = {
-	actionId: ActionId.fromItemId(40212),
-	value: Potions.PotionOfWildMagic,
-};
-
-export const DestructionPotion = {
-	actionId: ActionId.fromItemId(22839),
-	value: Potions.DestructionPotion,
-};
 export const HastePotion = { actionId: ActionId.fromItemId(22838), value: Potions.HastePotion };
 export const MightyRagePotion = {
 	actionId: ActionId.fromItemId(13442),
 	value: Potions.MightyRagePotion,
 };
-export const SuperManaPotion = {
-	actionId: ActionId.fromItemId(22832),
-	value: Potions.SuperManaPotion,
-};
-export const FelManaPotion = { actionId: ActionId.fromItemId(31677), value: Potions.FelManaPotion };
-export const InsaneStrengthPotion = {
-	actionId: ActionId.fromItemId(22828),
-	value: Potions.InsaneStrengthPotion,
-};
-export const IronshieldPotion = {
-	actionId: ActionId.fromItemId(22849),
-	value: Potions.IronshieldPotion,
-};
-export const HeroicPotion = { actionId: ActionId.fromItemId(22837), value: Potions.HeroicPotion };
 
 export const POTIONS_CONFIG = [
-	{ config: RunicHealingPotion, stats: [Stat.StatStamina] },
-	{ config: RunicHealingInjector, stats: [Stat.StatStamina] },
-	{ config: RunicManaPotion, stats: [Stat.StatIntellect] },
-	{ config: RunicManaInjector, stats: [Stat.StatIntellect] },
-	{ config: IndestructiblePotion, stats: [Stat.StatArmor] },
-	{ config: InsaneStrengthPotion, stats: [Stat.StatStrength] },
-	{ config: HeroicPotion, stats: [Stat.StatStamina] },
+	{ config: GolembloodPotion, stats: [Stat.StatStrength] },
+	{ config: PotionOfTheTolvir, stats: [Stat.StatAgility] },
+	{ config: PotionOfConcentration, stats: [Stat.StatMana] },
+	{ config: VolcanicPotion, stats: [Stat.StatIntellect] },
+	{ config: EarthenPotion, stats: [Stat.StatArmor] },
+	{ config: MightyRejuvenationPotion, stats: [Stat.StatIntellect, Stat.StatHealth] },
+	{ config: MythicalHealingPotion, stats: [Stat.StatHealth] },
+	{ config: MythicalManaPotion, stats: [Stat.StatIntellect] },
 	{ config: PotionOfSpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
-	{
-		config: PotionOfWildMagic,
-		stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit, Stat.StatSpellPower],
-	},
 ] as ConsumableStatOption<Potions>[];
 
 export const PRE_POTIONS_CONFIG = [
-	{ config: IndestructiblePotion, stats: [Stat.StatArmor] },
-	{ config: InsaneStrengthPotion, stats: [Stat.StatStrength] },
-	{ config: HeroicPotion, stats: [Stat.StatStamina] },
+	{ config: GolembloodPotion, stats: [Stat.StatStrength] },
+	{ config: PotionOfTheTolvir, stats: [Stat.StatAgility] },
+	{ config: VolcanicPotion, stats: [Stat.StatIntellect] },
+	{ config: EarthenPotion, stats: [Stat.StatArmor] },
 	{ config: PotionOfSpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
-	{
-		config: PotionOfWildMagic,
-		stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit, Stat.StatSpellPower],
-	},
 ] as ConsumableStatOption<Potions>[];
 
 export const makePotionsInput = makeConsumeInputFactory({ consumesFieldName: 'defaultPotion' });

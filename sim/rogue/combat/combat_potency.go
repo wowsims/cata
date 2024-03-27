@@ -18,13 +18,10 @@ func (comRogue *CombatRogue) applyCombatPotency() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// from 3.0.3 patch notes: "Combat Potency: Now only works with auto attacks"
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOHAuto) && spell != comRogue.mainGauche {
-				return
-			}
-
-			if sim.RandomFloat("Combat Potency") < procChance {
-				comRogue.AddEnergy(sim, energyBonus, energyMetrics)
+			if result.Landed() && (spell.ProcMask.Matches(core.ProcMaskMeleeOHAuto) || spell == comRogue.mainGauche) {
+				if sim.RandomFloat("Combat Potency") < procChance {
+					comRogue.AddEnergy(sim, energyBonus, energyMetrics)
+				}
 			}
 		},
 	})

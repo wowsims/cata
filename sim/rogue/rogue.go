@@ -31,7 +31,6 @@ type Rogue struct {
 	SliceAndDiceBonus float64
 
 	sliceAndDiceDurations [6]time.Duration
-	recuperateDurations   [6]time.Duration
 	exposeArmorDurations  [6]time.Duration
 
 	Backstab         *core.Spell
@@ -170,9 +169,6 @@ func (rogue *Rogue) Initialize() {
 	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
 
 	rogue.SliceAndDiceBonus = 1.4
-	if rogue.HasSetBonus(Tier6, 2) {
-		rogue.SliceAndDiceBonus += 0.05
-	}
 }
 
 func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {
@@ -186,7 +182,7 @@ func (rogue *Rogue) Reset(sim *core.Simulation) {
 }
 
 func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {
-	var secondaryModifier float64
+	secondaryModifier := 0.0
 	if applyLethality {
 		secondaryModifier += 0.1 * float64(rogue.Talents.Lethality)
 	}
@@ -241,7 +237,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
 	if rogue.Talents.CutToTheChase > 0 && rogue.SliceAndDiceAura.IsActive() {
 		procChance := []float64{0.0, 0.33, 0.67, 1.0}[rogue.Talents.CutToTheChase]
-		if sim.Proc(procChance, "Cut to the Chase") {
+		if procChance == 1 || sim.Proc(procChance, "Cut to the Chase") {
 			rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[5]
 			rogue.SliceAndDiceAura.Activate(sim)
 		}

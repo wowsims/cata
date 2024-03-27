@@ -72,7 +72,7 @@ export const OtherDefaults = {
 };
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfWildMagic,
+	defaultPotion: Potions.VolcanicPotion,
 	flask: Flask.FlaskOfTheFrostWyrm,
 	food: Food.FoodFishFeast,
 });

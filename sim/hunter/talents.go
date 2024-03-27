@@ -628,6 +628,9 @@ func (hunter *Hunter) applyTNT() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell == hunter.ExplosiveShot {
+
+				hunter.ExplosiveShot.CD.Reset()
+
 				aura.RemoveStack(sim)
 			}
 		},
@@ -652,6 +655,9 @@ func (hunter *Hunter) applyTNT() {
 				icd.Use(sim)
 				hunter.LockAndLoadAura.Activate(sim)
 				hunter.LockAndLoadAura.SetStacks(sim, 2)
+				if hunter.ExplosiveShot != nil {
+					hunter.ExplosiveShot.CD.Reset()
+				}
 			}
 		},
 	})
@@ -673,13 +679,12 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// mask 256
-			if spell != hunter.ArcaneShot || spell != hunter.ExplosiveShot || spell != hunter.BlackArrow {
-				return
+			if spell == hunter.ArcaneShot || spell == hunter.ExplosiveShot || spell == hunter.BlackArrow {
+				if sim.Proc(procChance, "ThrillOfTheHunt") {
+					hunter.AddFocus(sim, spell.CurCast.Cost*0.4, focusMetrics)
+				}
 			}
 
-			if sim.Proc(procChance, "ThrillOfTheHunt") {
-				hunter.AddFocus(sim, spell.CurCast.Cost*0.4, focusMetrics)
-			}
 		},
 	})
 }

@@ -47,7 +47,8 @@ func (rogue *Rogue) registerEnvenom() {
 			return rogue.ComboPoints() > 0 && rogue.DeadlyPoison.Dot(target).IsActive()
 		},
 
-		DamageMultiplier: 1 +
+		DamageMultiplier: 1,
+		DamageMultiplierAdditive: 1 +
 			0.12*float64(rogue.Talents.VilePoisons) +
 			[]float64{0, 0.07, .14, .20}[rogue.Talents.CoupDeGrace],
 		CritMultiplier:   rogue.MeleeCritMultiplier(false),

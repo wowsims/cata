@@ -1,5 +1,6 @@
 import { GemColor } from '../proto/common.js';
 import { ItemSpec } from '../proto/common.js';
+import { ItemRandomSuffix } from '../proto/common.js';
 import { ItemType } from '../proto/common.js';
 import { Profession } from '../proto/common.js';
 import {
@@ -25,15 +26,17 @@ export function getWeaponDPS(item: Item): number {
  */
 export class EquippedItem {
 	readonly _item: Item;
+	readonly _randomSuffix: ItemRandomSuffix | null;
 	readonly _enchant: Enchant | null;
 	readonly _gems: Array<Gem | null>;
 
 	readonly numPossibleSockets: number;
 
-	constructor(item: Item, enchant?: Enchant | null, gems?: Array<Gem | null>) {
+	constructor(item: Item, enchant?: Enchant | null, gems?: Array<Gem | null>, randomSuffix?: ItemRandomSuffix | null) {
 		this._item = item;
 		this._enchant = enchant || null;
 		this._gems = gems || [];
+		this._randomSuffix = randomSuffix || null;
 
 		this.numPossibleSockets = this.numSockets(true);
 
@@ -52,6 +55,10 @@ export class EquippedItem {
 		return this._item.id;
 	}
 
+	get randomSuffix(): ItemRandomSuffix | null {
+		return this._randomSuffix ? ItemRandomSuffix.clone(this._randomSuffix) : null;
+	}
+
 	get enchant(): Enchant | null {
 		// Make a defensive copy
 		return this._enchant ? Enchant.clone(this._enchant) : null;
@@ -64,6 +71,12 @@ export class EquippedItem {
 
 	equals(other: EquippedItem) {
 		if (!Item.equals(this._item, other.item))
+			return false;
+
+		if ((this._randomSuffix == null) != (other.randomSuffix == null))
+			return false;
+
+		if (this._randomSuffix && other.randomSuffix && !ItemRandomSuffix.equals(this._randomSuffix, other.randomSuffix))
 			return false;
 
 		if ((this._enchant == null) != (other.enchant == null))
@@ -118,7 +131,7 @@ export class EquippedItem {
 	 * Returns a new EquippedItem with the given enchant applied.
 	 */
 	withEnchant(enchant: Enchant | null): EquippedItem {
-		return new EquippedItem(this._item, enchant, this._gems);
+		return new EquippedItem(this._item, enchant, this._gems, this._randomSuffix);
 	}
 
 	/**
@@ -132,7 +145,7 @@ export class EquippedItem {
 		const newGems = this._gems.slice();
 		newGems[socketIdx] = gem;
 
-		return new EquippedItem(this._item, this._enchant, newGems);
+		return new EquippedItem(this._item, this._enchant, newGems, this._randomSuffix);
 	}
 
 	/**
@@ -170,14 +183,22 @@ export class EquippedItem {
 
 		return curItem;
 	}
+	
+	withRandomSuffix(randomSuffix: ItemRandomSuffix | null): EquippedItem {
+		return new EquippedItem(this._item, this._enchant, this._gems, randomSuffix);
+	}
 
 	asActionId(): ActionId {
+		if (this._randomSuffix)
+			return ActionId.fromRandomSuffix(this._item, this._randomSuffix);
+
 		return ActionId.fromItemId(this._item.id);
 	}
 
 	asSpec(): ItemSpec {
 		return ItemSpec.create({
 			id: this._item.id,
+			randomSuffix: this._randomSuffix?.id,
 			enchant: this._enchant?.effectId,
 			gems: this._gems.map(gem => gem?.id || 0),
 		});

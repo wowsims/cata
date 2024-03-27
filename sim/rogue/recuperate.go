@@ -9,15 +9,6 @@ import (
 func (rogue *Rogue) registerRecuperate() {
 	actionID := core.ActionID{SpellID: 73651}
 
-	rogue.recuperateDurations = [6]time.Duration{
-		0,
-		time.Duration(float64(time.Second * 6)),
-		time.Duration(float64(time.Second * 12)),
-		time.Duration(float64(time.Second * 18)),
-		time.Duration(float64(time.Second * 24)),
-		time.Duration(float64(time.Second * 30)),
-	}
-
 	energeticRecoveryAction := core.ActionID{SpellID: 79152}
 	energeticRecoveryMetrics := rogue.NewEnergyMetrics(energeticRecoveryAction)
 
@@ -62,8 +53,8 @@ func (rogue *Rogue) registerRecuperate() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			aura := spell.Hot(spell.Unit)
-			aura.Duration = rogue.recuperateDurations[rogue.ComboPoints()]
-			aura.NumberOfTicks = int32(aura.TickLength / aura.Duration)
+			aura.Duration = time.Duration(rogue.ComboPoints()) * time.Second * 6
+			aura.NumberOfTicks = rogue.ComboPoints() * 3
 			aura.Activate(sim)
 			rogue.ApplyFinisher(sim, spell)
 		},

@@ -6,22 +6,15 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-var OverkillActionID = core.ActionID{SpellID: 58427}
-
 func (sinRogue *AssassinationRogue) registerOverkill() {
 	if !sinRogue.Talents.Overkill {
 		return
 	}
 
-	effectDuration := time.Second * 20
-	if sinRogue.StealthAura.IsActive() {
-		effectDuration = core.NeverExpires
-	}
-
 	sinRogue.OverkillAura = sinRogue.RegisterAura(core.Aura{
 		Label:    "Overkill",
-		ActionID: OverkillActionID,
-		Duration: effectDuration,
+		ActionID: core.ActionID{SpellID: 58427},
+		Duration: time.Second * 20,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			sinRogue.ApplyEnergyTickMultiplier(0.3)
 		},

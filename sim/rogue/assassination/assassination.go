@@ -7,8 +7,8 @@ import (
 	"github.com/wowsims/cata/sim/rogue"
 )
 
-const masteryDamagePerPercent = .035
-const masteryBaseEffect = .28
+const masteryDamagePerPoint = 0.035
+const masteryBaseEffect = 0.28
 
 func RegisterAssassinationRogue() {
 	core.RegisterAgentFactory(
@@ -38,42 +38,50 @@ func (sinRogue *AssassinationRogue) Initialize() {
 	sinRogue.registerVendetta()
 
 	// Apply Mastery
-	masteryPercent := sinRogue.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPoint
-	masteryEffect := masteryBaseEffect + masteryPercent*masteryDamagePerPercent
+	// As far as I am able to find, Asn's Mastery is an additive bonus. To be tested.
+	masteryEffect := getMasteryBonus(sinRogue.GetStat(stats.Mastery))
 	for _, spell := range sinRogue.InstantPoison {
-		spell.DamageMultiplier += masteryEffect
+		spell.DamageMultiplierAdditive += masteryEffect
 	}
 	for _, spell := range sinRogue.WoundPoison {
-		spell.DamageMultiplier += masteryEffect
+		spell.DamageMultiplierAdditive += masteryEffect
 	}
-	sinRogue.DeadlyPoison.DamageMultiplier += masteryEffect
-	sinRogue.Envenom.DamageMultiplier += masteryEffect
+	sinRogue.DeadlyPoison.DamageMultiplierAdditive += masteryEffect
+	sinRogue.Envenom.DamageMultiplierAdditive += masteryEffect
 	if sinRogue.Talents.VenomousWounds > 0 {
-		sinRogue.VenomousWounds.DamageMultiplier += masteryEffect
+		sinRogue.VenomousWounds.DamageMultiplierAdditive += masteryEffect
 	}
 
 	sinRogue.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		masteryPercentOld := oldMastery / core.MasteryRatingPerMasteryPoint
-		masteryPercentNew := newMastery / core.MasteryRatingPerMasteryPoint
-		masteryEffectChange := masteryBaseEffect + (masteryPercentNew-masteryPercentOld)*masteryDamagePerPercent
+		masteryEffectOld := getMasteryBonus(oldMastery)
+		masteryEffectNew := getMasteryBonus(newMastery)
 		for _, spell := range sinRogue.InstantPoison {
-			spell.DamageMultiplier += masteryEffectChange
+			spell.DamageMultiplierAdditive -= masteryEffectOld
+			spell.DamageMultiplierAdditive += masteryEffectNew
 		}
 		for _, spell := range sinRogue.WoundPoison {
-			spell.DamageMultiplier += masteryEffectChange
+			spell.DamageMultiplierAdditive -= masteryEffectOld
+			spell.DamageMultiplierAdditive += masteryEffectNew
 		}
-		sinRogue.DeadlyPoison.DamageMultiplier += masteryEffectChange
-		sinRogue.Envenom.DamageMultiplier += masteryEffectChange
+		sinRogue.DeadlyPoison.DamageMultiplierAdditive -= masteryEffectOld
+		sinRogue.DeadlyPoison.DamageMultiplierAdditive += masteryEffectNew
+		sinRogue.Envenom.DamageMultiplierAdditive -= masteryEffectOld
+		sinRogue.Envenom.DamageMultiplierAdditive += masteryEffectNew
 		if sinRogue.Talents.VenomousWounds > 0 {
-			sinRogue.VenomousWounds.DamageMultiplier += masteryEffectChange
+			sinRogue.VenomousWounds.DamageMultiplierAdditive -= masteryEffectOld
+			sinRogue.VenomousWounds.DamageMultiplierAdditive += masteryEffectNew
 		}
 	})
 
-	// Assassin's Resolve: +20% physical damage
+	// Assassin's Resolve: +20% Multiplicative physical damage (confirmed)
 	// +20 Energy handled in base rogue
 	if sinRogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
-		sinRogue.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] += 0.2
+		sinRogue.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.2
 	}
+}
+
+func getMasteryBonus(masteryRating float64) float64 {
+	return masteryBaseEffect + core.MasteryRatingToMasteryPoints(masteryRating)*masteryDamagePerPoint
 }
 
 func NewAssassinationRogue(character *core.Character, options *proto.Player) *AssassinationRogue {

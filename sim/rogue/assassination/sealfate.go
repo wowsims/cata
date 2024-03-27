@@ -20,12 +20,8 @@ func (sinRogue *AssassinationRogue) applySealFate() {
 		Duration: 500 * time.Millisecond,
 	}
 
-	sinRogue.RegisterAura(core.Aura{
-		Label:    "Seal Fate",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(sinRogue.RegisterAura(core.Aura{
+		Label: "Seal Fate",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.Flags.Matches(rogue.SpellFlagBuilder) {
 				return
@@ -40,5 +36,5 @@ func (sinRogue *AssassinationRogue) applySealFate() {
 				icd.Use(sim)
 			}
 		},
-	})
+	}))
 }

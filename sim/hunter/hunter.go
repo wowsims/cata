@@ -167,12 +167,19 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		//ReplaceMHSwing:  hunter.TryRaptorStrike, //Todo: Might be weaving
 		AutoSwingRanged: true,
 	})
+	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) + spell.BonusWeaponDamage()
 
+		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+
+		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+			spell.DealDamage(sim, result)
+		})
+	}
 	hunter.Pet = hunter.NewHunterPet()
 
-	hunter.AddStatDependency(stats.Strength, stats.AttackPower, 1)
-	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 1)
-	hunter.AddStatDependency(stats.Agility, stats.RangedAttackPower, 1)
+	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 2)
+	hunter.AddStatDependency(stats.Agility, stats.RangedAttackPower, 2)
 	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
 
 	return hunter
