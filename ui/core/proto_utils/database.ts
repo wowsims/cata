@@ -227,7 +227,6 @@ export class Database {
 		if (itemSpec.randomSuffix && !!this.getRandomSuffixById(itemSpec.randomSuffix)) {
 			randomSuffix = this.getRandomSuffixById(itemSpec.randomSuffix)!;
 		}
-		//console.log(item.id, itemSpec.reforging, itemSpec);
 
 		return new EquippedItem(item, enchant, gems, randomSuffix, itemSpec.reforging);
 	}

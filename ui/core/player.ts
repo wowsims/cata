@@ -1,3 +1,4 @@
+import { ReforgeData } from './components/gear_picker';
 import { getLanguageCode } from './constants/lang';
 import * as Mechanics from './constants/mechanics';
 import { MAX_PARTY_SIZE, Party } from './party';
@@ -1058,6 +1059,17 @@ export class Player<SpecType extends Spec> {
 		const ep = this.computeStatsEP(new Stats(randomSuffix.stats));
 		this.randomSuffixEPCache.set(randomSuffix.id, ep);
 		return ep;
+	}
+
+	computeReforgingEP(reforging: ReforgeData): number {
+		let stats = new Stats([]);
+		reforging.fromStat.forEach(stat => {
+			stats = stats.addStat(stat, reforging.fromAmount);
+		});
+		reforging.toStat.forEach(stat => {
+			stats = stats.addStat(stat, reforging.toAmount);
+		});
+		return this.computeStatsEP(stats);
 	}
 
 	computeItemEP(item: Item, slot: ItemSlot): number {

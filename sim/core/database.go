@@ -419,17 +419,15 @@ func (equipment *Equipment) Stats() stats.Stats {
 		if item.Reforging != nil {
 			reforgingChanges := stats.Stats{}
 			for _, fromStat := range item.Reforging.FromStat {
-				if equipStats[fromStat] > 0 {
-					reduction := math.Floor(equipStats[fromStat] * item.Reforging.Multiplier)
+				if item.Stats[fromStat] > 0 {
+					reduction := math.Floor(item.Stats[fromStat] * item.Reforging.Multiplier)
 					reforgingChanges[fromStat] = -reduction
+					for _, toStat := range item.Reforging.ToStat {
+						reforgingChanges[toStat] = reduction
+					}
 				}
 			}
-			for _, toStat := range item.Reforging.ToStat {
-				if equipStats[toStat] > 0 {
-					increase := math.Floor(equipStats[toStat] * item.Reforging.Multiplier)
-					reforgingChanges[toStat] = +increase
-				}
-			}
+
 			equipStats = equipStats.Add(reforgingChanges)
 		}
 
