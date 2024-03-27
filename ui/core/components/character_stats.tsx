@@ -3,7 +3,7 @@ import { Popover, Tooltip } from 'bootstrap';
 import { element, fragment } from 'tsx-vanilla';
 
 import { Player } from '..//player.js';
-import { Class, PseudoStat, Stat, TristateEffect } from '..//proto/common.js';
+import { Class, PseudoStat, Spec, Stat, TristateEffect } from '..//proto/common.js';
 import { getClassStatName, statOrder } from '..//proto_utils/names.js';
 import { Stats } from '..//proto_utils/stats.js';
 import { EventID, TypedEvent } from '..//typed_event.js';
@@ -101,7 +101,7 @@ export class CharacterStats extends Component {
 		this.stats.forEach((stat, idx) => {
 			const valueElem = (
 				<a href="javascript:void(0)" className="stat-value-link" attributes={{ role: 'button' }}>
-					{`${this.statDisplayString(finalStats, finalStats, stat)} `}
+					{`${this.statDisplayString(finalStats, finalStats, stat, true)} `}
 				</a>
 			);
 
@@ -122,7 +122,7 @@ export class CharacterStats extends Component {
 				<div>
 					<div className="character-stats-tooltip-row">
 						<span>Base:</span>
-						<span>{this.statDisplayString(baseStats, baseDelta, stat)}</span>
+						<span>{this.statDisplayString(baseStats, baseDelta, stat, true)}</span>
 					</div>
 					<div className="character-stats-tooltip-row">
 						<span>Gear:</span>
@@ -154,7 +154,7 @@ export class CharacterStats extends Component {
 					)}
 					<div className="character-stats-tooltip-row">
 						<span>Total:</span>
-						<span>{this.statDisplayString(finalStats, finalStats, stat)}</span>
+						<span>{this.statDisplayString(finalStats, finalStats, stat, true)}</span>
 					</div>
 				</div>
 			);
@@ -232,7 +232,7 @@ export class CharacterStats extends Component {
 		}
 	}
 
-	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat): string {
+	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat, includeBase?: boolean): string {
 		let rawValue = deltaStats.getStat(stat);
 
 		if (stat == Stat.StatBlockValue) {
@@ -280,6 +280,8 @@ export class CharacterStats extends Component {
 			displayStr += ` (${(stats.getPseudoStat(PseudoStat.PseudoStatParry) * 100).toFixed(2)}%)`;
 		} else if (stat == Stat.StatResilience) {
 			displayStr += ` (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
+		} else if (stat == Stat.StatMastery) {
+			displayStr += ` (${(this.masteryPointsToPercent(rawValue / Mechanics.MASTERY_RATING_PER_MASTERY_POINT, includeBase)).toFixed(2)}%)`;
 		}
 
 		return displayStr;
@@ -353,5 +355,14 @@ export class CharacterStats extends Component {
 
 		const prefix = playerCritCapDelta > 0 ? 'Over by ' : 'Under by ';
 		return `${prefix} ${Math.abs(playerCritCapDelta).toFixed(2)}%`;
+	}
+
+	private masteryPointsToPercent(masteryPoints: number, includeBase?: boolean): number {
+		let rtnValue = 0.0
+		switch(this.player.getSpec()) {
+			case Spec.SpecAssassinationRogue:
+				rtnValue = (includeBase ? Mechanics.MASTERY_ROGUE_ASSASSINATION_BASE : 0) + masteryPoints * Mechanics.MASTERY_ROGUE_ASSASSINATION_PER_POINT
+		}
+		return rtnValue
 	}
 }
