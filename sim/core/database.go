@@ -92,7 +92,7 @@ type Item struct {
 	Stats            stats.Stats // Stats applied to wearer
 	Quality          proto.ItemQuality
 	SetName          string // Empty string if not part of a set.
-	RandomPropPoints int32 // Used to rescale random suffix stats
+	RandomPropPoints int32  // Used to rescale random suffix stats
 
 	GemSockets  []proto.GemColor
 	SocketBonus stats.Stats
@@ -355,7 +355,6 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 	fromStatValid := false
 	for _, fromStat := range reforging.FromStat {
 		if item.Stats[fromStat] > 0 {
-			println("hello")
 			fromStatValid = true
 			break
 		}
@@ -367,7 +366,6 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 	toStatValid := false
 	for _, toStat := range reforging.ToStat {
 		if item.Stats[toStat] == 0 {
-			println("hello2")
 			toStatValid = true
 			break
 		}
@@ -426,7 +424,7 @@ func (equipment *Equipment) Stats() stats.Stats {
 					reforgingChanges[fromStat] = -reduction
 				}
 			}
-			for _, toStat := range item.Reforging.FromStat {
+			for _, toStat := range item.Reforging.ToStat {
 				if equipStats[toStat] > 0 {
 					increase := math.Floor(equipStats[toStat] * item.Reforging.Multiplier)
 					reforgingChanges[toStat] = +increase
