@@ -1,3 +1,4 @@
+import { ReforgeData } from './components/gear_picker';
 import { getLanguageCode } from './constants/lang';
 import * as Mechanics from './constants/mechanics';
 import { MAX_PARTY_SIZE, Party } from './party';
@@ -28,6 +29,7 @@ import {
 	Profession,
 	PseudoStat,
 	Race,
+	ReforgeStat,
 	SimDatabase,
 	Spec,
 	Stat,
@@ -430,8 +432,18 @@ export class Player<SpecType extends Spec> {
 
 	// Returns all random suffixes that this player would be interested in for the given base item.
 	getRandomSuffixes(item: Item): Array<ItemRandomSuffix> {
-		const allSuffixes = item.randomSuffixOptions.map((id) => this.sim.db.getRandomSuffixById(id)!);
+		const allSuffixes = item.randomSuffixOptions.map(id => this.sim.db.getRandomSuffixById(id)!);
 		return allSuffixes.filter(suffix => this.computeRandomSuffixEP(suffix) > 0);
+	}
+
+	// Returns all reforgings that are valid with a given item
+	getAvailableReforgings(item: Item): ReforgeStat[] | undefined {
+		return this.sim.db.getAvailableReforges(item);
+	}
+
+	// Returns reforge given an id
+	getReforge(id: number): ReforgeStat | undefined {
+		return this.sim.db.getReforge(id);
 	}
 
 	// Returns all enchants that this player can wear in the given slot.
@@ -455,7 +467,7 @@ export class Player<SpecType extends Spec> {
 		this.gemEPCache = new Map();
 		this.enchantEPCache = new Map();
 		this.randomSuffixEPCache = new Map();
-		for(let i = 0; i < ItemSlot.ItemSlotRanged+1; ++i) {
+		for (let i = 0; i < ItemSlot.ItemSlotRanged + 1; ++i) {
 			this.itemEPCache[i] = new Map();
 		}
 	}
@@ -1044,9 +1056,20 @@ export class Player<SpecType extends Spec> {
 			return this.randomSuffixEPCache.get(randomSuffix.id)!;
 		}
 
-		let ep = this.computeStatsEP(new Stats(randomSuffix.stats));
+		const ep = this.computeStatsEP(new Stats(randomSuffix.stats));
 		this.randomSuffixEPCache.set(randomSuffix.id, ep);
-		return ep
+		return ep;
+	}
+
+	computeReforgingEP(reforging: ReforgeData): number {
+		let stats = new Stats([]);
+		reforging.fromStat.forEach(stat => {
+			stats = stats.addStat(stat, reforging.fromAmount);
+		});
+		reforging.toStat.forEach(stat => {
+			stats = stats.addStat(stat, reforging.toAmount);
+		});
+		return this.computeStatsEP(stats);
 	}
 
 	computeItemEP(item: Item, slot: ItemSlot): number {
@@ -1071,8 +1094,8 @@ export class Player<SpecType extends Spec> {
 		let maxSuffixEP = 0;
 
 		if (item.randomSuffixOptions.length > 0) {
-			const suffixEPs = item.randomSuffixOptions.map((id) => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)!));
-			maxSuffixEP = Math.max(...suffixEPs) * item.randPropPoints / 10000;
+			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)!));
+			maxSuffixEP = (Math.max(...suffixEPs) * item.randPropPoints) / 10000;
 		}
 
 		let ep = itemStats.computeEP(this.epWeights) + maxSuffixEP;
@@ -1133,6 +1156,9 @@ export class Player<SpecType extends Spec> {
 		}
 		if (equippedItem.enchant != null) {
 			parts.push('ench=' + equippedItem.enchant.effectId);
+		}
+		if (equippedItem.reforging > 0) {
+			parts.push('forg=' + equippedItem.reforging);
 		}
 		parts.push(
 			'pcs=' +
@@ -1349,8 +1375,8 @@ export class Player<SpecType extends Spec> {
 	}
 
 	private toDatabase(): SimDatabase {
-		const dbGear = this.getGear().toDatabase();
-		const dbItemSwapGear = this.getItemSwapGear().toDatabase();
+		const dbGear = this.getGear().toDatabase(this.sim.db);
+		const dbItemSwapGear = this.getItemSwapGear().toDatabase(this.sim.db);
 		return Database.mergeSimDatabases(dbGear, dbItemSwapGear);
 	}
 
