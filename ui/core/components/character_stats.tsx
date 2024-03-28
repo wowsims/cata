@@ -1,6 +1,6 @@
 import { Popover, Tooltip } from 'bootstrap';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment } from 'tsx-vanilla';
+import { element, fragment, ref } from 'tsx-vanilla';
 
 import { Player } from '..//player.js';
 import { Class, PseudoStat, Stat, TristateEffect } from '..//proto/common.js';
@@ -42,23 +42,20 @@ export class CharacterStats extends Component {
 		this.stats.forEach(stat => {
 			const statName = getClassStatName(stat, player.getClass());
 
-			let row: JSX.Element;
-			if (stat == Stat.StatMastery) {
-				row = (
-					<tr className="character-stats-table-row">
-						<td className="character-stats-table-label">{statName}<br></br>{masterySpellNames.get(this.player.getSpec())}</td>
-						<td className="character-stats-table-value">{this.bonusStatsLink(stat)}<br></br></td>
-					</tr>
-				);
-				this.masteryElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
-			} else {
-				row = (
-					<tr className="character-stats-table-row">
-						<td className="character-stats-table-label">{statName}</td>
-						<td className="character-stats-table-value">{this.bonusStatsLink(stat)}<br></br></td>
-					</tr>
-				);
-			}
+			const row = (
+				<tr className="character-stats-table-row">
+					<td className="character-stats-table-label">
+						{statName}
+						{stat == Stat.StatMastery && (
+							<>
+								<br />
+								{masterySpellNames.get(this.player.getSpec())}
+							</>
+						)}
+					</td>
+					<td className="character-stats-table-value">{this.bonusStatsLink(stat)}</td>
+				</tr>
+			);
 
 			table.appendChild(row);
 
@@ -110,26 +107,42 @@ export class CharacterStats extends Component {
 		const consumesDelta = consumesStats.subtract(buffsStats);
 
 		const finalStats = Stats.fromProto(playerStats.finalStats).add(statMods.talents).add(debuffStats);
+		const masteryPoints =
+			this.player.getBaseMastery() + (playerStats.finalStats?.stats[Stat.StatMastery] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
 
 		this.stats.forEach((stat, idx) => {
+			const bonusStatValue = bonusStats.getStat(stat);
+			let contextualKlass: string;
+			if (bonusStatValue == 0) {
+				contextualKlass = 'text-white';
+			} else if (bonusStatValue > 0) {
+				contextualKlass = 'text-success';
+			} else {
+				contextualKlass = 'text-danger';
+			}
+
+			const statLinkElemRef = ref<HTMLAnchorElement>();
+
 			const valueElem = (
-				<a href="javascript:void(0)" className="stat-value-link" attributes={{ role: 'button' }}>
-					{`${this.statDisplayString(finalStats, finalStats, stat, true)} `}
-				</a>
+				<div className="stat-value-link-container">
+					<a href="javascript:void(0)" className={`stat-value-link ${contextualKlass}`} attributes={{ role: 'button' }} ref={statLinkElemRef}>
+						{`${this.statDisplayString(finalStats, finalStats, stat, true)} `}
+					</a>
+					{stat == Stat.StatMastery && (
+						<a
+							href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
+							className={`stat-value-link-mastery ${contextualKlass}`}
+							attributes={{ role: 'button' }}>
+							{`${(masteryPoints * this.player.getMasteryPerPointModifier()).toFixed(2)}%`}
+						</a>
+					)}
+				</div>
 			);
 
-			this.valueElems[idx].querySelector('.stat-value-link')?.remove();
+			const statLinkElem = statLinkElemRef.value!;
+
+			this.valueElems[idx].querySelector('.stat-value-link-container')?.remove();
 			this.valueElems[idx].prepend(valueElem);
-
-			const bonusStatValue = bonusStats.getStat(stat);
-
-			if (bonusStatValue == 0) {
-				valueElem.classList.add('text-white');
-			} else if (bonusStatValue > 0) {
-				valueElem.classList.add('text-success');
-			} else if (bonusStatValue < 0) {
-				valueElem.classList.add('text-danger');
-			}
 
 			const tooltipContent = (
 				<div>
@@ -171,22 +184,11 @@ export class CharacterStats extends Component {
 					</div>
 				</div>
 			);
-			Tooltip.getOrCreateInstance(valueElem, {
+			Tooltip.getOrCreateInstance(statLinkElem, {
 				title: tooltipContent,
 				html: true,
 			});
 		});
-
-		// Spec-specific Mastery line
-		const masteryPoints = this.player.getBaseMastery() + ((playerStats.finalStats?.stats[Stat.StatMastery] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT)
-		const masteryValueElem = (
-			<a href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)} className="stat-value-link-mastery" attributes={{ role: 'button' }}>
-				{`${(masteryPoints * this.player.getMasteryPerPointModifier()).toFixed(2)}%`}
-			</a>
-		);
-		this.masteryElem?.querySelector('.stat-value-link-mastery')?.remove();
-		this.masteryElem?.append(masteryValueElem);
-
 
 		if (this.meleeCritCapValueElem) {
 			const meleeCritCapInfo = player.getMeleeCritCapInfo();

@@ -16,6 +16,7 @@
 
 			.character-stats-table-label,
 			.character-stats-table-value {
+				width: 50%;
 				padding-top: map-get($spacers, 2);
 				padding-bottom: map-get($spacers, 2);
 				line-height: 20px;
@@ -30,6 +31,11 @@
 				padding-left: map-get($spacers, 2);
 				font-weight: bold;
 				text-align: right;
+
+				.stat-value-link-container {
+					display: inline-flex;
+					flex-direction: column;
+				}
 			}
 		}
 	}
@@ -54,8 +60,4 @@
 	span:first-child {
 		margin-right: map-get($spacers, 2);
 	}
-}
-
-.stat-value-link-mastery {
-	padding-right: 25px;
 }
