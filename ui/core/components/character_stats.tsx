@@ -3,11 +3,12 @@ import { Popover, Tooltip } from 'bootstrap';
 import { element, fragment } from 'tsx-vanilla';
 
 import { Player } from '..//player.js';
-import { Class, PseudoStat, Spec, Stat, TristateEffect } from '..//proto/common.js';
-import { getClassStatName, statOrder } from '..//proto_utils/names.js';
+import { Class, PseudoStat, Stat, TristateEffect } from '..//proto/common.js';
+import { getClassStatName, masterySpellIDs, masterySpellNames, statOrder } from '..//proto_utils/names.js';
 import { Stats } from '..//proto_utils/stats.js';
 import { EventID, TypedEvent } from '..//typed_event.js';
 import * as Mechanics from '../constants/mechanics.js';
+import { ActionId } from '../proto_utils/action_id';
 import { Component } from './component.js';
 import { NumberPicker } from './number_picker';
 
@@ -17,6 +18,7 @@ export class CharacterStats extends Component {
 	readonly stats: Array<Stat>;
 	readonly valueElems: Array<HTMLTableCellElement>;
 	readonly meleeCritCapValueElem: HTMLTableCellElement | undefined;
+	masteryElem: HTMLTableCellElement | undefined;
 
 	private readonly player: Player<any>;
 	private readonly modifyDisplayStats?: (player: Player<any>) => StatMods;
@@ -40,12 +42,23 @@ export class CharacterStats extends Component {
 		this.stats.forEach(stat => {
 			const statName = getClassStatName(stat, player.getClass());
 
-			const row = (
-				<tr className="character-stats-table-row">
-					<td className="character-stats-table-label">{statName}</td>
-					<td className="character-stats-table-value">{this.bonusStatsLink(stat)}</td>
-				</tr>
-			);
+			let row: JSX.Element;
+			if (stat == Stat.StatMastery) {
+				row = (
+					<tr className="character-stats-table-row">
+						<td className="character-stats-table-label">{statName}<br></br>{masterySpellNames.get(this.player.getSpec())}</td>
+						<td className="character-stats-table-value">{this.bonusStatsLink(stat)}<br></br></td>
+					</tr>
+				);
+				this.masteryElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
+			} else {
+				row = (
+					<tr className="character-stats-table-row">
+						<td className="character-stats-table-label">{statName}</td>
+						<td className="character-stats-table-value">{this.bonusStatsLink(stat)}<br></br></td>
+					</tr>
+				);
+			}
 
 			table.appendChild(row);
 
@@ -164,6 +177,17 @@ export class CharacterStats extends Component {
 			});
 		});
 
+		// Spec-specific Mastery line
+		const masteryPoints = this.player.getBaseMastery() + ((playerStats.finalStats?.stats[Stat.StatMastery] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT)
+		const masteryValueElem = (
+			<a href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)} className="stat-value-link-mastery" attributes={{ role: 'button' }}>
+				{`${(masteryPoints * this.player.getMasteryPerPointModifier()).toFixed(2)}%`}
+			</a>
+		);
+		this.masteryElem?.querySelector('.stat-value-link-mastery')?.remove();
+		this.masteryElem?.append(masteryValueElem);
+
+
 		if (this.meleeCritCapValueElem) {
 			const meleeCritCapInfo = player.getMeleeCritCapInfo();
 
@@ -281,7 +305,7 @@ export class CharacterStats extends Component {
 		} else if (stat == Stat.StatResilience) {
 			displayStr += ` (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
 		} else if (stat == Stat.StatMastery) {
-			displayStr += ` (${(this.masteryPointsToPercent(rawValue / Mechanics.MASTERY_RATING_PER_MASTERY_POINT, includeBase)).toFixed(2)}%)`;
+			displayStr += ` (${(rawValue / Mechanics.MASTERY_RATING_PER_MASTERY_POINT + (includeBase ? this.player.getBaseMastery() : 0)).toFixed(2)} Points)`;
 		}
 
 		return displayStr;
@@ -355,14 +379,5 @@ export class CharacterStats extends Component {
 
 		const prefix = playerCritCapDelta > 0 ? 'Over by ' : 'Under by ';
 		return `${prefix} ${Math.abs(playerCritCapDelta).toFixed(2)}%`;
-	}
-
-	private masteryPointsToPercent(masteryPoints: number, includeBase?: boolean): number {
-		let rtnValue = 0.0
-		switch(this.player.getSpec()) {
-			case Spec.SpecAssassinationRogue:
-				rtnValue = (includeBase ? Mechanics.MASTERY_ROGUE_ASSASSINATION_BASE : 0) + masteryPoints * Mechanics.MASTERY_ROGUE_ASSASSINATION_PER_POINT
-		}
-		return rtnValue
 	}
 }

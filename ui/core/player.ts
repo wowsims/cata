@@ -430,7 +430,7 @@ export class Player<SpecType extends Spec> {
 
 	// Returns all random suffixes that this player would be interested in for the given base item.
 	getRandomSuffixes(item: Item): Array<ItemRandomSuffix> {
-		const allSuffixes = item.randomSuffixOptions.map((id) => this.sim.db.getRandomSuffixById(id)!);
+		const allSuffixes = item.randomSuffixOptions.map(id => this.sim.db.getRandomSuffixById(id)!);
 		return allSuffixes.filter(suffix => this.computeRandomSuffixEP(suffix) > 0);
 	}
 
@@ -1044,7 +1044,7 @@ export class Player<SpecType extends Spec> {
 			return this.randomSuffixEPCache.get(randomSuffix.id)!;
 		}
 
-		let ep = this.computeStatsEP(new Stats(randomSuffix.stats));
+		const ep = this.computeStatsEP(new Stats(randomSuffix.stats));
 		this.randomSuffixEPCache.set(randomSuffix.id, ep);
 		return ep
 	}
@@ -1071,7 +1071,7 @@ export class Player<SpecType extends Spec> {
 		let maxSuffixEP = 0;
 
 		if (item.randomSuffixOptions.length > 0) {
-			const suffixEPs = item.randomSuffixOptions.map((id) => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)!));
+			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)!));
 			maxSuffixEP = Math.max(...suffixEPs) * item.randPropPoints / 10000;
 		}
 
@@ -1491,5 +1491,19 @@ export class Player<SpecType extends Spec> {
 				}),
 			);
 		});
+	}
+
+	getBaseMastery(): number {
+		switch(this.playerSpec.specID) {
+			case Spec.SpecFrostMage:
+			case Spec.SpecFuryWarrior:
+				return 2;
+			default:
+				return 8;
+		}
+	}
+
+	getMasteryPerPointModifier(): number {
+		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0
 	}
 }

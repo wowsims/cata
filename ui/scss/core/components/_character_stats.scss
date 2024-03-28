@@ -18,6 +18,7 @@
 			.character-stats-table-value {
 				padding-top: map-get($spacers, 2);
 				padding-bottom: map-get($spacers, 2);
+				line-height: 20px;
 			}
 
 			.character-stats-table-label {
@@ -53,4 +54,8 @@
 	span:first-child {
 		margin-right: map-get($spacers, 2);
 	}
+}
+
+.stat-value-link-mastery {
+	padding-right: 25px;
 }

@@ -1,5 +1,5 @@
 import { ResourceType } from '../proto/api.js';
-import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Stat, WeaponType } from '../proto/common.js';
+import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common.js';
 import { DungeonDifficulty, RaidFilterOption, SourceFilterOption } from '../proto/ui.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
@@ -305,4 +305,70 @@ export const difficultyNames: Map<DungeonDifficulty, string> = new Map([
 	[DungeonDifficulty.DifficultyRaid10H, '10H'],
 	[DungeonDifficulty.DifficultyRaid25, '25N'],
 	[DungeonDifficulty.DifficultyRaid25H, '25H'],
+]);
+
+export const masterySpellNames: Map<Spec, string> = new Map([
+	[Spec.SpecAssassinationRogue, 'Potent Poisons'],
+	[Spec.SpecCombatRogue, 'Main Gauche'],
+	[Spec.SpecSubtletyRogue, 'Executioner'],
+	[Spec.SpecBloodDeathKnight, 'Blood Shield'],
+	[Spec.SpecFrostDeathKnight, 'Frozen Heart'],
+	[Spec.SpecUnholyDeathKnight, 'Dreadblade'],
+	[Spec.SpecBalanceDruid, 'Total Eclipse'],
+	[Spec.SpecFeralDruid, 'No'],
+	[Spec.SpecRestorationDruid, 'Harmony'],
+	[Spec.SpecHolyPaladin, 'Illuminated Healing'],
+	[Spec.SpecProtectionPaladin, 'Divine Bulwark'],
+	[Spec.SpecRetributionPaladin, 'Hand of Light'],
+	[Spec.SpecElementalShaman, 'Elemental Overload'],
+	[Spec.SpecEnhancementShaman, 'Enhanced Elements'],
+	[Spec.SpecRestorationShaman, 'Deep Healing'],
+	[Spec.SpecBeastMasteryHunter, 'Master of Beasts'],
+	[Spec.SpecMarksmanshipHunter, 'Wild Quiver'],
+	[Spec.SpecSurvivalHunter, 'Essence of the Viper'],
+	[Spec.SpecArmsWarrior, 'Strikes of Opportunity'],
+	[Spec.SpecFuryWarrior, 'Unshackled Fury'],
+	[Spec.SpecProtectionWarrior, 'Critical Block'],
+	[Spec.SpecArcaneMage, 'Mana Adept'],
+	[Spec.SpecFireMage, 'Flashburn'],
+	[Spec.SpecFrostMage, 'Frostburn'],
+	[Spec.SpecDisciplinePriest, 'Shield Discipline'],
+	[Spec.SpecHolyPriest, 'Echo of Light'],
+	[Spec.SpecShadowPriest, 'Shadow Orb Power'],
+	[Spec.SpecAfflictionWarlock, 'Potent Afflictions'],
+	[Spec.SpecDemonologyWarlock, 'Master Demonologist'],
+	[Spec.SpecDestructionWarlock, 'Fiery Apocalypse'],
+]);
+
+export const masterySpellIDs: Map<Spec, number> = new Map([
+	[Spec.SpecAssassinationRogue, 76803],
+	[Spec.SpecCombatRogue, 76806],
+	[Spec.SpecSubtletyRogue, 76808],
+	[Spec.SpecBloodDeathKnight, 77513],
+	[Spec.SpecFrostDeathKnight, 77514],
+	[Spec.SpecUnholyDeathKnight, 77515],
+	[Spec.SpecBalanceDruid, 77492],
+	[Spec.SpecFeralDruid, 0],
+	[Spec.SpecRestorationDruid, 77495],
+	[Spec.SpecHolyPaladin, 76669],
+	[Spec.SpecProtectionPaladin, 76671],
+	[Spec.SpecRetributionPaladin, 76672],
+	[Spec.SpecElementalShaman, 77222],
+	[Spec.SpecEnhancementShaman, 77223],
+	[Spec.SpecRestorationShaman, 77226],
+	[Spec.SpecBeastMasteryHunter, 76657],
+	[Spec.SpecMarksmanshipHunter, 76659],
+	[Spec.SpecSurvivalHunter, 76658],
+	[Spec.SpecArmsWarrior, 76838],
+	[Spec.SpecFuryWarrior, 76856],
+	[Spec.SpecProtectionWarrior, 76857],
+	[Spec.SpecArcaneMage, 76547],
+	[Spec.SpecFireMage, 76595],
+	[Spec.SpecFrostMage, 76613],
+	[Spec.SpecDisciplinePriest, 77484],
+	[Spec.SpecHolyPriest, 77485],
+	[Spec.SpecShadowPriest, 77486],
+	[Spec.SpecAfflictionWarlock, 77215],
+	[Spec.SpecDemonologyWarlock, 77219],
+	[Spec.SpecDestructionWarlock, 77220],
 ]);
