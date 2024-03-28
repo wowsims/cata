@@ -181,6 +181,24 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatNatureResistance, 'Nature Resistance'],
 	[Stat.StatShadowResistance, 'Shadow Resistance'],
 	[Stat.StatBonusArmor, 'Bonus Armor'],
+	[Stat.StatMastery, 'Mastery'],
+]);
+
+export const shortSecondaryStatNames: Map<Stat, string> = new Map([
+	[Stat.StatSpirit, 'Spirit'],
+	[Stat.StatSpellHit, 'Hit'],
+	[Stat.StatSpellCrit, 'Crit'],
+	[Stat.StatSpellHaste, 'Haste'],
+	[Stat.StatMeleeHit, 'Hit'],
+	[Stat.StatMeleeCrit, 'Crit'],
+	[Stat.StatMeleeHaste, 'Haste'],
+	[Stat.StatExpertise, 'Expertise'],
+	[Stat.StatMastery, 'Mastery'],
+	[Stat.StatDefense, 'Defense'],
+	[Stat.StatBlock, 'Block'],
+	[Stat.StatBlockValue, 'Block Value'],
+	[Stat.StatDodge, 'Dodge'],
+	[Stat.StatParry, 'Parry'],
 ]);
 
 export const pseudoStatOrder: Array<PseudoStat> = [
