@@ -12,7 +12,7 @@ func (sinRogue *AssassinationRogue) applySealFate() {
 		return
 	}
 
-	procChance := 0.2 * float64(sinRogue.Talents.SealFate)
+	procChance := 0.5 * float64(sinRogue.Talents.SealFate)
 	cpMetrics := sinRogue.NewComboPointMetrics(core.ActionID{SpellID: 14190})
 
 	icd := core.Cooldown{
@@ -31,7 +31,7 @@ func (sinRogue *AssassinationRogue) applySealFate() {
 				return
 			}
 
-			if icd.IsReady(sim) && sim.Proc(procChance, "Seal Fate") {
+			if icd.IsReady(sim) && (procChance == 1 || sim.Proc(procChance, "Seal Fate")) {
 				sinRogue.AddComboPoints(sim, 1, cpMetrics)
 				icd.Use(sim)
 			}

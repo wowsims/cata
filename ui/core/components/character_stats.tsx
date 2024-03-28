@@ -1,13 +1,14 @@
 import { Popover, Tooltip } from 'bootstrap';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment } from 'tsx-vanilla';
+import { element, fragment, ref } from 'tsx-vanilla';
 
 import { Player } from '..//player.js';
 import { Class, PseudoStat, Stat, TristateEffect } from '..//proto/common.js';
-import { getClassStatName, statOrder } from '..//proto_utils/names.js';
+import { getClassStatName, masterySpellIDs, masterySpellNames, statOrder } from '..//proto_utils/names.js';
 import { Stats } from '..//proto_utils/stats.js';
 import { EventID, TypedEvent } from '..//typed_event.js';
 import * as Mechanics from '../constants/mechanics.js';
+import { ActionId } from '../proto_utils/action_id';
 import { Component } from './component.js';
 import { NumberPicker } from './number_picker';
 
@@ -17,6 +18,7 @@ export class CharacterStats extends Component {
 	readonly stats: Array<Stat>;
 	readonly valueElems: Array<HTMLTableCellElement>;
 	readonly meleeCritCapValueElem: HTMLTableCellElement | undefined;
+	masteryElem: HTMLTableCellElement | undefined;
 
 	private readonly player: Player<any>;
 	private readonly modifyDisplayStats?: (player: Player<any>) => StatMods;
@@ -42,7 +44,15 @@ export class CharacterStats extends Component {
 
 			const row = (
 				<tr className="character-stats-table-row">
-					<td className="character-stats-table-label">{statName}</td>
+					<td className="character-stats-table-label">
+						{statName}
+						{stat == Stat.StatMastery && (
+							<>
+								<br />
+								{masterySpellNames.get(this.player.getSpec())}
+							</>
+						)}
+					</td>
 					<td className="character-stats-table-value">{this.bonusStatsLink(stat)}</td>
 				</tr>
 			);
@@ -97,32 +107,48 @@ export class CharacterStats extends Component {
 		const consumesDelta = consumesStats.subtract(buffsStats);
 
 		const finalStats = Stats.fromProto(playerStats.finalStats).add(statMods.talents).add(debuffStats);
+		const masteryPoints =
+			this.player.getBaseMastery() + (playerStats.finalStats?.stats[Stat.StatMastery] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
 
 		this.stats.forEach((stat, idx) => {
+			const bonusStatValue = bonusStats.getStat(stat);
+			let contextualKlass: string;
+			if (bonusStatValue == 0) {
+				contextualKlass = 'text-white';
+			} else if (bonusStatValue > 0) {
+				contextualKlass = 'text-success';
+			} else {
+				contextualKlass = 'text-danger';
+			}
+
+			const statLinkElemRef = ref<HTMLAnchorElement>();
+
 			const valueElem = (
-				<a href="javascript:void(0)" className="stat-value-link" attributes={{ role: 'button' }}>
-					{`${this.statDisplayString(finalStats, finalStats, stat)} `}
-				</a>
+				<div className="stat-value-link-container">
+					<a href="javascript:void(0)" className={`stat-value-link ${contextualKlass}`} attributes={{ role: 'button' }} ref={statLinkElemRef}>
+						{`${this.statDisplayString(finalStats, finalStats, stat, true)} `}
+					</a>
+					{stat == Stat.StatMastery && (
+						<a
+							href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
+							className={`stat-value-link-mastery ${contextualKlass}`}
+							attributes={{ role: 'button' }}>
+							{`${(masteryPoints * this.player.getMasteryPerPointModifier()).toFixed(2)}%`}
+						</a>
+					)}
+				</div>
 			);
 
-			this.valueElems[idx].querySelector('.stat-value-link')?.remove();
+			const statLinkElem = statLinkElemRef.value!;
+
+			this.valueElems[idx].querySelector('.stat-value-link-container')?.remove();
 			this.valueElems[idx].prepend(valueElem);
-
-			const bonusStatValue = bonusStats.getStat(stat);
-
-			if (bonusStatValue == 0) {
-				valueElem.classList.add('text-white');
-			} else if (bonusStatValue > 0) {
-				valueElem.classList.add('text-success');
-			} else if (bonusStatValue < 0) {
-				valueElem.classList.add('text-danger');
-			}
 
 			const tooltipContent = (
 				<div>
 					<div className="character-stats-tooltip-row">
 						<span>Base:</span>
-						<span>{this.statDisplayString(baseStats, baseDelta, stat)}</span>
+						<span>{this.statDisplayString(baseStats, baseDelta, stat, true)}</span>
 					</div>
 					<div className="character-stats-tooltip-row">
 						<span>Gear:</span>
@@ -154,11 +180,11 @@ export class CharacterStats extends Component {
 					)}
 					<div className="character-stats-tooltip-row">
 						<span>Total:</span>
-						<span>{this.statDisplayString(finalStats, finalStats, stat)}</span>
+						<span>{this.statDisplayString(finalStats, finalStats, stat, true)}</span>
 					</div>
 				</div>
 			);
-			Tooltip.getOrCreateInstance(valueElem, {
+			Tooltip.getOrCreateInstance(statLinkElem, {
 				title: tooltipContent,
 				html: true,
 			});
@@ -232,7 +258,7 @@ export class CharacterStats extends Component {
 		}
 	}
 
-	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat): string {
+	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat, includeBase?: boolean): string {
 		let rawValue = deltaStats.getStat(stat);
 
 		if (stat == Stat.StatBlockValue) {
@@ -280,6 +306,8 @@ export class CharacterStats extends Component {
 			displayStr += ` (${(stats.getPseudoStat(PseudoStat.PseudoStatParry) * 100).toFixed(2)}%)`;
 		} else if (stat == Stat.StatResilience) {
 			displayStr += ` (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
+		} else if (stat == Stat.StatMastery) {
+			displayStr += ` (${(rawValue / Mechanics.MASTERY_RATING_PER_MASTERY_POINT + (includeBase ? this.player.getBaseMastery() : 0)).toFixed(2)} Points)`;
 		}
 
 		return displayStr;
