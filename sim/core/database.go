@@ -322,6 +322,7 @@ func NewItem(itemSpec ItemSpec) Item {
 
 	if itemSpec.Reforging > 112 { // There is no id below 113
 		reforge := ReforgeStatsByID[itemSpec.Reforging]
+
 		if validateReforging(&item, reforge) {
 			item.Reforging = &reforge
 		} else {
@@ -352,9 +353,15 @@ func NewItem(itemSpec ItemSpec) Item {
 
 func validateReforging(item *Item, reforging ReforgeStat) bool {
 	// Validate that the item can reforge these to stats
+	stats := stats.Stats{}
+	if item.RandomSuffix.ID != 0 {
+		stats = stats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandomPropPoints) / 10000.))
+	} else {
+		stats = stats.Add(item.Stats)
+	}
 	fromStatValid := false
 	for _, fromStat := range reforging.FromStat {
-		if item.Stats[fromStat] > 0 {
+		if stats[fromStat] > 0 {
 			fromStatValid = true
 			break
 		}
@@ -365,7 +372,7 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 
 	toStatValid := false
 	for _, toStat := range reforging.ToStat {
-		if item.Stats[toStat] == 0 {
+		if stats[toStat] == 0 {
 			toStatValid = true
 			break
 		}
@@ -417,10 +424,12 @@ func (equipment *Equipment) Stats() stats.Stats {
 
 		// Apply reforging
 		if item.Reforging != nil {
+			itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.))
+
 			reforgingChanges := stats.Stats{}
 			for _, fromStat := range item.Reforging.FromStat {
-				if item.Stats[fromStat] > 0 {
-					reduction := math.Floor(item.Stats[fromStat] * item.Reforging.Multiplier)
+				if itemStats[fromStat] > 0 {
+					reduction := math.Floor(itemStats[fromStat] * item.Reforging.Multiplier)
 					reforgingChanges[fromStat] = -reduction
 					for _, toStat := range item.Reforging.ToStat {
 						reforgingChanges[toStat] = reduction

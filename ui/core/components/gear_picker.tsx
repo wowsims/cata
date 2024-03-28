@@ -668,6 +668,7 @@ export class SelectorModal extends BaseModal {
 
 	private prepareReforgeData(reforge: ReforgeStat, item: EquippedItem): ReforgeData & { ep: number } {
 		const itemProto = item.item;
+
 		const fromAmount = Math.ceil(-itemProto.stats[reforge.fromStat[0]] * reforge.multiplier);
 		const toAmount = Math.floor(itemProto.stats[reforge.fromStat[0]] * reforge.multiplier);
 		const forge = {
@@ -691,11 +692,20 @@ export class SelectorModal extends BaseModal {
 		if (equippedItem == undefined) {
 			return;
 		}
+		if (equippedItem.randomSuffix !== null) {
+			equippedItem._item.stats = equippedItem.randomSuffix.stats.map(stat =>
+				stat > 0 ? Math.floor((stat * equippedItem._item.randPropPoints) / 10000) : stat,
+			);
+		}
 		const itemProto = equippedItem.item;
+
 		this.player.gearChangeEmitter.on(() => {
 			const newItem = this.player.getGear().getEquippedItem(this.config.slot);
 
 			if (newItem !== null) {
+				if (newItem.randomSuffix !== null) {
+					newItem._item.stats = newItem.randomSuffix.stats.map(stat => (stat > 0 ? Math.floor((stat * newItem._item.randPropPoints) / 10000) : stat));
+				}
 				const reforgings = this.player.getAvailableReforgings(newItem._item) ?? [];
 
 				this.updateReforgeList(
