@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/rogue"
 )
 
-const masteryDamagePerPoint = .01
+const masteryDamagePerPoint = .025
 const masteryBaseEffect = 0.2
 
 func RegisterSubtletyRogue() {
