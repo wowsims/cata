@@ -1,10 +1,17 @@
 import { Modal } from 'bootstrap';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { element, ref } from 'tsx-vanilla';
 
 import { Component } from './component';
 
 type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
 
 type BaseModalConfig = {
+	closeButton?: {
+		// When true, the button will be rendered in a fixed position on the screen.
+		// Primarily used for the raid sim's embedded player editors
+		fixed?: boolean;
+	};
 	// Whether or not to add a modal-footer element
 	footer?: boolean;
 	// Whether or not to add a modal-header element
@@ -39,47 +46,42 @@ export class BaseModal extends Component {
 		super(parent, 'modal');
 		this.modalConfig = { ...DEFAULT_CONFIG, ...config };
 
+		const dialogRef = ref<HTMLDivElement>();
+		const headerRef = ref<HTMLDivElement>();
+		const bodyRef = ref<HTMLDivElement>();
+		const footerRef = ref<HTMLDivElement>();
+
 		const modalSizeKlass = this.modalConfig.size && this.modalConfig.size != 'md' ? `modal-${this.modalConfig.size}` : '';
 
 		this.rootElem.classList.add('fade');
-		this.rootElem.innerHTML = `
-			<div class="modal-dialog ${cssClass} ${modalSizeKlass}">
-				<div class="modal-content"></div>
-			</div>
-		`;
+		this.rootElem.appendChild(
+			<div className={`modal-dialog ${cssClass} ${modalSizeKlass} ${this.modalConfig.scrollContents ? 'modal-overflow-scroll' : ''}`} ref={dialogRef}>
+				<div className="modal-content">
+					<div className={`modal-header ${this.modalConfig.header ? '' : 'p-0 border-0'}`} ref={headerRef}>
+						{this.modalConfig.title && <h5 className="modal-title">${this.modalConfig.title}</h5>}
+						<button
+							type="button"
+							className={`btn-close ${this.modalConfig.closeButton?.fixed ? 'position-fixed' : ''}`}
+							onclick={() => this.close()}
+							attributes={{ 'aria-label': 'Close' }}>
+							<i className="fas fa-times fa-2xl"></i>
+						</button>
+					</div>
+					<div className="modal-body" ref={bodyRef} />
+					{this.modalConfig.footer && <div className="modal-footer" />}
+				</div>
+			</div>,
+		);
 
-		this.dialog = this.rootElem.querySelector('.modal-dialog') as HTMLElement;
-
-		if (this.modalConfig.scrollContents) {
-			this.dialog.classList.add('modal-overflow-scroll');
-		}
-
-		const container = this.rootElem.querySelector('.modal-content') as HTMLElement;
-
-		if (this.modalConfig.header) {
-			this.header = document.createElement('div');
-			this.header.classList.add('modal-header');
-			container.appendChild(this.header);
-
-			if (this.modalConfig.title) {
-				this.header.insertAdjacentHTML('afterbegin', `<h5 class="modal-title">${this.modalConfig.title}</h5>`);
-			}
-		}
-
-		this.body = document.createElement('div');
-		this.body.classList.add('modal-body');
-		container.appendChild(this.body);
-
-		if (this.modalConfig.footer) {
-			this.footer = document.createElement('div');
-			this.footer.classList.add('modal-footer');
-			container.appendChild(this.footer);
-		}
+		this.dialog = dialogRef.value!;
+		this.header = headerRef.value!;
+		this.body = bodyRef.value!;
+		this.footer = footerRef.value!;
 
 		this.modal = new Modal(this.rootElem, { keyboard: true });
 		this.open();
 
-		this.rootElem.addEventListener('hidden.bs.modal', event => {
+		this.rootElem.addEventListener('hidden.bs.modal', _ => {
 			this.rootElem.remove();
 			this.dispose();
 		});

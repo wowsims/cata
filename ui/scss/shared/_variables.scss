@@ -142,6 +142,10 @@ $link-hover-color: white;
 $link-transition: color 0.15s ease-in-out;
 
 // Component variable overrides
+$btn-close-color: $link-color;
+$btn-close-focus-shadow: none;
+$btn-close-hover-opacity: 1;
+$btn-close-opacity: 1;
 $btn-hover-bg-shade-amount: 30%;
 $btn-font-size: 0.875rem;
 $btn-padding-y: 0.5rem;
