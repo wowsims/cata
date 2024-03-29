@@ -545,9 +545,9 @@ func SunderArmorAura(target *Unit) *Aura {
 	var effect *ExclusiveEffect
 	aura := target.GetOrRegisterAura(Aura{
 		Label:     "Sunder Armor",
-		ActionID:  ActionID{SpellID: 47467},
+		ActionID:  ActionID{SpellID: 58567},
 		Duration:  time.Second * 30,
-		MaxStacks: 5,
+		MaxStacks: 3,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
 			effect.SetPriority(sim, 0.04*float64(newStacks))
 		},

@@ -90,6 +90,7 @@ type Warrior struct {
 	SuddenDeathAura   *core.Aura
 	ShieldBlockAura   *core.Aura
 	ThunderstruckAura *core.Aura
+	InnerRageAura     *core.Aura
 
 	DemoralizingShoutAuras core.AuraArray
 	SunderArmorAuras       core.AuraArray
