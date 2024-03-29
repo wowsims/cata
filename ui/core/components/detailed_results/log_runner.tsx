@@ -12,14 +12,9 @@ export class LogRunner extends ResultComponent {
 
 		// Existing setup code for the component...
 		this.rootElem.innerHTML += `
-			<div class="show-debug-container"></div>
-			<div class="controls-container">
-				<div class="log-search-input">
-					<input type="text" id="log-search-input" class="form-control" placeholder="Filter logs">
-				</div>
-				<div>
-					<button id="scroll-to-top-btn" class="btn btn-secondary">Top</button>
-				</div>
+			<div class="log-runner-actions">
+				<input type="text" id="log-search-input" class="form-control" placeholder="Filter logs">
+				<button id="log-runner-scroll-to-top-btn" class="btn btn-primary order-last">Top</button>
 			</div>
 			<div id="log-runner-logs-scroll" class="log-runner-scroll">
 				<table class="metrics-table log-runner-table">
@@ -40,11 +35,11 @@ export class LogRunner extends ResultComponent {
 			const searchQuery = searchInput.value;
 			this.searchLogs(searchQuery);
 		});
-		const scrollToTopBtn = this.rootElem.querySelector('#scroll-to-top-btn');
+		const scrollToTopBtn = this.rootElem.querySelector('#log-runner-scroll-to-top-btn');
 		scrollToTopBtn?.addEventListener('click', () => {
 			this.virtualScroll?.scrollToTop();
 		});
-		new BooleanPicker<LogRunner>(this.rootElem.querySelector('.show-debug-container')!, this, {
+		new BooleanPicker<LogRunner>(this.rootElem.querySelector('.log-runner-actions')!, this, {
 			extraCssClasses: ['show-debug-picker'],
 			label: 'Show Debug Statements',
 			inline: true,
