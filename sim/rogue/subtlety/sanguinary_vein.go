@@ -47,7 +47,7 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 		if subRogue.Rupture != nil {
 			subRogue.Rupture.RelatedAuras = append(subRogue.Rupture.RelatedAuras, svDebuffArray)
 		}
-		if subRogue.Hemorrhage != nil && subRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfHemorrhage) {
+		if subRogue.Hemorrhage != nil && hasGlyph {
 			subRogue.Hemorrhage.RelatedAuras = append(subRogue.Hemorrhage.RelatedAuras, svDebuffArray)
 		}
 	})
@@ -63,10 +63,14 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 				return
 			}
 
-			if spell == subRogue.Rupture || (spell == subRogue.Hemorrhage && hasGlyph) {
+			if spell == subRogue.Rupture {
 				aura := svDebuffArray.Get(result.Target)
 				dot := spell.Dot(result.Target)
 				aura.Duration = dot.TickLength * time.Duration(dot.NumberOfTicks)
+				aura.Activate(sim)
+			} else if spell == subRogue.Hemorrhage && hasGlyph {
+				aura := svDebuffArray.Get(result.Target)
+				aura.Duration = 24 * time.Second
 				aura.Activate(sim)
 			}
 		},
