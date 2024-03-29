@@ -12,7 +12,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 		return
 	}
 
-	duration := time.Second*12 + core.TernaryDuration(warrior.HasSetBonus(ItemSetDreadnaughtPlate, 4), time.Second*3, 0)
+	duration := time.Second * 12
 	hasGlyph := warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfShieldWall)
 	//This is the inverse of the tooltip since it is a damage TAKEN coefficient
 	damageTaken := core.TernaryFloat64(hasGlyph, 0.6, 0.4)
@@ -30,9 +30,9 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 		},
 	})
 
-	cooldownDur := time.Minute*5 -
-		30*time.Second*time.Duration(warrior.Talents.ImprovedDisciplines) -
-		core.TernaryDuration(hasGlyph, 2*time.Minute, 0)
+	cooldownDur := time.Minute*5 +
+		core.TernaryDuration(hasGlyph, 2*time.Minute, 0) -
+		(time.Second*60)*time.Duration(warrior.Talents.ShieldMastery)
 
 	swSpell := warrior.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -46,9 +46,6 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 				Timer:    warrior.NewTimer(),
 				Duration: cooldownDur,
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(DefensiveStance)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {

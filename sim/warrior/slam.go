@@ -4,17 +4,18 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (warrior *Warrior) registerSlamSpell() {
+func (warrior *Warrior) RegisterSlamSpell() {
 	warrior.Slam = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 47475},
+		ActionID:    core.ActionID{SpellID: 1464},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(warrior.Talents.FocusedRage),
+			Cost:   15,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -22,38 +23,39 @@ func (warrior *Warrior) registerSlamSpell() {
 				GCD:      core.GCDDefault,
 				CastTime: time.Millisecond*1500 - time.Millisecond*500*time.Duration(warrior.Talents.ImprovedSlam),
 			},
-			IgnoreHaste: true,
+			IgnoreHaste: false, // Slam now has a "Haste Affects Melee Ability Casttime" flag in cata
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				// TODO: check to see if slam still delays autoattacks
 				if cast.CastTime > 0 {
 					warrior.AutoAttacks.DelayMeleeBy(sim, cast.CastTime)
 				}
 			},
 		},
 
-		BonusCritRating:  core.TernaryFloat64(warrior.HasSetBonus(ItemSetWrynnsBattlegear, 4), 5, 0) * core.CritRatingPerCritChance,
-		DamageMultiplier: 1 + 0.02*float64(warrior.Talents.UnendingFury) + core.TernaryFloat64(warrior.HasSetBonus(ItemSetDreadnaughtBattlegear, 2), 0.1, 0),
-		CritMultiplier:   warrior.critMultiplier(mh),
+		BonusCritRating:  core.TernaryFloat64(warrior.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfSlam), 5, 0) * core.CritRatingPerCritChance,
+		DamageMultiplier: 1 + 0.1*float64(warrior.Talents.ImprovedSlam) + 0.05*float64(warrior.Talents.WarAcademy),
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier() + (0.1 * float64(warrior.Talents.Impale)),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  140,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 250 +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			bloodsurgeActive := warrior.BloodsurgeAura != nil && warrior.BloodsurgeAura.IsActive()
+			bloodsurgeMultiplier := core.TernaryFloat64(bloodsurgeActive, 1.2, 1.0)
+			baseDamage := 431 +
+				1.1*(spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())+spell.BonusWeaponDamage())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-			if !result.Landed() {
+			result := spell.CalcAndDealDamage(sim, target, baseDamage*bloodsurgeMultiplier, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			if !result.Landed() && !bloodsurgeActive {
 				spell.IssueRefund(sim)
+			}
+
+			// SMF adds an OH hit to slam
+			if warrior.Talents.SingleMindedFury {
+				baseDamage := 431 +
+					1.1*(spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())+spell.BonusWeaponDamage())
+
+				spell.CalcAndDealDamage(sim, target, baseDamage*bloodsurgeMultiplier, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
 		},
 	})
-}
-
-func (warrior *Warrior) ShouldInstantSlam(sim *core.Simulation) bool {
-	return warrior.CurrentRage() >= warrior.Slam.DefaultCast.Cost && warrior.Slam.IsReady(sim) && warrior.isBloodsurgeActive() &&
-		sim.CurrentTime > (warrior.lastBloodsurgeProc+warrior.reactionTime) && warrior.GCD.IsReady(sim)
-}
-
-func (warrior *Warrior) ShouldSlam(sim *core.Simulation) bool {
-	return warrior.CurrentRage() >= warrior.Slam.DefaultCast.Cost && warrior.Slam.IsReady(sim) && warrior.Talents.ImprovedSlam > 0
 }

@@ -86,9 +86,10 @@ type Warrior struct {
 	DefensiveStanceAura *core.Aura
 	BerserkerStanceAura *core.Aura
 
-	BloodsurgeAura  *core.Aura
-	SuddenDeathAura *core.Aura
-	ShieldBlockAura *core.Aura
+	BloodsurgeAura    *core.Aura
+	SuddenDeathAura   *core.Aura
+	ShieldBlockAura   *core.Aura
+	ThunderstruckAura *core.Aura
 
 	DemoralizingShoutAuras core.AuraArray
 	SunderArmorAuras       core.AuraArray
