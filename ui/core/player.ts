@@ -1518,4 +1518,18 @@ export class Player<SpecType extends Spec> {
 			);
 		});
 	}
+
+	getBaseMastery(): number {
+		switch(this.playerSpec.specID) {
+			case Spec.SpecFrostMage:
+			case Spec.SpecFuryWarrior:
+				return 2;
+			default:
+				return 8;
+		}
+	}
+
+	getMasteryPerPointModifier(): number {
+		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0
+	}
 }
