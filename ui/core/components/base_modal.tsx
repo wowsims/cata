@@ -53,12 +53,13 @@ export class BaseModal extends Component {
 
 		const modalSizeKlass = this.modalConfig.size && this.modalConfig.size != 'md' ? `modal-${this.modalConfig.size}` : '';
 
+		console.log(DEFAULT_CONFIG, config, this.modalConfig);
 		this.rootElem.classList.add('fade');
 		this.rootElem.appendChild(
 			<div className={`modal-dialog ${cssClass} ${modalSizeKlass} ${this.modalConfig.scrollContents ? 'modal-overflow-scroll' : ''}`} ref={dialogRef}>
 				<div className="modal-content">
-					<div className={`modal-header ${this.modalConfig.header ? '' : 'p-0 border-0'}`} ref={headerRef}>
-						{this.modalConfig.title && <h5 className="modal-title">${this.modalConfig.title}</h5>}
+					<div className={`modal-header ${this.modalConfig.header || this.modalConfig.title ? '' : 'p-0 border-0'}`} ref={headerRef}>
+						{this.modalConfig.title && <h5 className="modal-title">{this.modalConfig.title}</h5>}
 						<button
 							type="button"
 							className={`btn-close ${this.modalConfig.closeButton?.fixed ? 'position-fixed' : ''}`}
@@ -68,7 +69,7 @@ export class BaseModal extends Component {
 						</button>
 					</div>
 					<div className="modal-body" ref={bodyRef} />
-					{this.modalConfig.footer && <div className="modal-footer" />}
+					{this.modalConfig.footer && <div className="modal-footer" ref={footerRef} />}
 				</div>
 			</div>,
 		);
