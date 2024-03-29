@@ -58,7 +58,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 				if result.DidCrit() && hasGlyph {
 					rogue.AddEnergy(sim, 5, glyphOfBackstabMetrics)
 				}
-				if result.DidCrit() && sim.IsExecutePhase35() && rogue.Talents.MurderousIntent > 0 {
+				if sim.IsExecutePhase35() && rogue.Talents.MurderousIntent > 0 {
 					totalRecovery := 15 * rogue.Talents.MurderousIntent
 					rogue.AddEnergy(sim, float64(totalRecovery), murderousIntentMetrics)
 				}
