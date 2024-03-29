@@ -1,17 +1,22 @@
 .log-runner-root {
-	.log-search-input {
-		width: 20%;
-		flex-grow: 1; /* Allows the search input to take up space */
-		margin-right: 20px; /* Adds some space between the search input and the button */
-	}
-	.controls-container {
+	.log-runner-actions {
 		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 10px;
-	}
-	#scroll-to-top-btn {
-		/* Adjust button styling if needed */
+		margin-bottom: map-get($spacers, 3);
+
+		#log-search-input {
+			width: 25vw;
+		}
+
+		.show-debug-picker {
+			width: unset;
+			margin-bottom: 0;
+			margin-right: $block-spacer;
+			margin-left: auto;
+
+			label {
+				margin-left: map-get($spacers, 1);
+			}
+		}
 	}
 	#log-runner-logs-scroll {
 		overflow-y: auto;
@@ -25,9 +30,15 @@
 		height: 70vh;
 	}
 	.log-runner-table {
+		table-layout: fixed;
+
 		th {
 			padding: map-get($spacers, 2);
 			vertical-align: bottom;
+
+			&:first-child {
+				width: 6.5rem;
+			}
 
 			&:not(:first-child) {
 				padding-left: 0;
@@ -65,18 +76,6 @@
 						color: $brand;
 					}
 				}
-			}
-		}
-	}
-
-	.show-debug-container {
-		display: flex;
-
-		.show-debug-picker {
-			width: unset;
-
-			label {
-				margin-left: map-get($spacers, 1);
 			}
 		}
 	}
