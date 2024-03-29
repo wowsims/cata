@@ -17,7 +17,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 	hemoDotActionID := core.ActionID{SpellID: 89775}
 	hasGlyph := subRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfHemorrhage)
 	hemoAuras := subRogue.NewEnemyAuraArray(core.HemorrhageAura)
-	var lastHemoDamage *float64
+	var lastHemoDamage float64
 
 	// Hemorrhage DoT has a chance to proc MH weapon effects/poisons, so must be defined as its own spell
 	hemoDot := subRogue.RegisterSpell(core.SpellConfig{
@@ -52,7 +52,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dot := spell.Dot(target)
-			dot.SnapshotBaseDamage = *lastHemoDamage * .05
+			dot.SnapshotBaseDamage = lastHemoDamage * .05
 			dot.Apply(sim)
 		},
 	})
@@ -90,7 +90,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 				subRogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 				hemoAuras.Get(target).Activate(sim)
 				if hasGlyph {
-					lastHemoDamage = &result.Damage
+					lastHemoDamage = result.Damage
 					hemoDot.Cast(sim, target)
 				}
 			} else {
