@@ -38,14 +38,14 @@ func (hunter *Hunter) registerCobraShotSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (277.21 + spell.RangedAttackPower(target)*0.017)
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (276.806 + spell.RangedAttackPower(target)*0.017)
 			focus := 9.0
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
 				focus = float64(hunter.Talents.Termination) * 3
 			}
 			hunter.AddFocus(sim, focus, csMetrics)
 			if hunter.SerpentSting.Dot(target).IsActive() {
-				hunter.SerpentSting.Dot(target).Refresh(sim) // Refresh to cause new total snapshot
+				hunter.SerpentSting.Dot(target).Rollover(sim) // Refresh to cause new total snapshot
 			}
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

@@ -163,7 +163,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatExpertise,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
@@ -181,7 +181,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		Stat.StatMeleeCrit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatExpertise,
 	],
 
@@ -199,7 +199,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 				[Stat.StatMeleeHit]: 1.39,
 				[Stat.StatMeleeCrit]: 1.32,
 				[Stat.StatMeleeHaste]: 1.48,
-				[Stat.StatArmorPenetration]: 0.84,
+				[Stat.StatMastery]: 0.0,
 				[Stat.StatExpertise]: 0.98,
 			},
 			{
@@ -245,7 +245,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		inputs: [RogueInputs.ApplyPoisonsManually()],
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [RogueInputs.MainHandImbue(), RogueInputs.OffHandImbue()],
+	playerIconInputs: [RogueInputs.MainHandImbue(), RogueInputs.OffHandImbue(), RogueInputs.ThrownImbue()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.SpellCritBuff,

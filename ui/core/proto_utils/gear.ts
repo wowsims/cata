@@ -1,26 +1,13 @@
-import { EquipmentSpec, ItemSwap } from '../proto/common.js';
-import { GemColor } from '../proto/common.js';
-import { ItemSlot } from '../proto/common.js';
-import { ItemSpec } from '../proto/common.js';
-import { Profession } from '../proto/common.js';
-import { SimDatabase } from '../proto/common.js';
-import { SimItem } from '../proto/common.js';
-import { SimEnchant } from '../proto/common.js';
-import { SimGem } from '../proto/common.js';
-import { equalsOrBothNull } from '../utils.js';
-import { distinct, getEnumValues } from '../utils.js';
+import { EquipmentSpec, GemColor, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimGem, SimItem } from '../proto/common.js';
+import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
-import {
-	UIEnchant as Enchant,
-	UIGem as Gem,
-	UIItem as Item,
-} from '../proto/ui.js';
-
-import { isMetaGemActive } from './gems.js';
-import { gemMatchesSocket } from './gems.js';
+import { Sim } from '../sim';
+import { distinct, equalsOrBothNull, getEnumValues } from '../utils.js';
+import { Database } from './database';
 import { EquippedItem } from './equipped_item.js';
-import { validWeaponCombo } from './utils.js';
+import { gemMatchesSocket, isMetaGemActive } from './gems.js';
 import { Stats } from './stats.js';
+import { validWeaponCombo } from './utils.js';
 
 type InternalGear = Record<ItemSlot, EquippedItem | null>;
 
@@ -29,17 +16,16 @@ abstract class BaseGear {
 
 	constructor(gear: Partial<InternalGear>) {
 		this.getItemSlots().forEach(slot => {
-			if (!gear[slot as ItemSlot])
-				gear[slot as ItemSlot] = null;
+			if (!gear[slot as ItemSlot]) gear[slot as ItemSlot] = null;
 		});
 		this.gear = gear as InternalGear;
 	}
 
-	abstract getItemSlots(): ItemSlot[]
+	abstract getItemSlots(): ItemSlot[];
 
 	equals(other: BaseGear): boolean {
 		const otherArray = other.asArray();
-		return this.asArray().every((thisItem, slot) => equalsOrBothNull(thisItem, otherArray[slot], (a, b) => a.equals(b)))
+		return this.asArray().every((thisItem, slot) => equalsOrBothNull(thisItem, otherArray[slot], (a, b) => a.equals(b)));
 	}
 
 	getEquippedItem(slot: ItemSlot): EquippedItem | null {
@@ -52,9 +38,11 @@ abstract class BaseGear {
 
 	asMap(): Partial<InternalGear> {
 		const newInternalGear: Partial<InternalGear> = {};
-		this.getItemSlots().map(slot => Number(slot) as ItemSlot).forEach(slot => {
-			newInternalGear[slot] = this.getEquippedItem(slot);
-		});
+		this.getItemSlots()
+			.map(slot => Number(slot) as ItemSlot)
+			.forEach(slot => {
+				newInternalGear[slot] = this.getEquippedItem(slot);
+			});
 		return newInternalGear;
 	}
 
@@ -85,19 +73,23 @@ abstract class BaseGear {
 		newItem.gems
 			.filter(gem => gem?.unique)
 			.forEach(gem => {
-				this.getItemSlots().map(slot => Number(slot) as ItemSlot).forEach(slot => {
-					gear[slot] = gear[slot]?.removeGemsWithId(gem!.id) || null;
-				});
+				this.getItemSlots()
+					.map(slot => Number(slot) as ItemSlot)
+					.forEach(slot => {
+						gear[slot] = gear[slot]?.removeGemsWithId(gem!.id) || null;
+					});
 			});
 	}
 
 	private removeUniqueItems(gear: Partial<InternalGear>, newItem: EquippedItem) {
 		if (newItem.item.unique) {
-			this.getItemSlots().map(slot => Number(slot) as ItemSlot).forEach(slot => {
-				if (gear[slot]?.item.id == newItem.item.id) {
-					gear[slot] = null;
-				}
-			});
+			this.getItemSlots()
+				.map(slot => Number(slot) as ItemSlot)
+				.forEach(slot => {
+					if (gear[slot]?.item.id == newItem.item.id) {
+						gear[slot] = null;
+					}
+				});
 		}
 	}
 
@@ -112,10 +104,12 @@ abstract class BaseGear {
 		}
 	}
 
-	toDatabase(): SimDatabase {
+	toDatabase(db: Database): SimDatabase {
 		const equippedItems = this.asArray().filter(ei => ei != null) as Array<EquippedItem>;
 		return SimDatabase.create({
 			items: distinct(equippedItems.map(ei => BaseGear.itemToDB(ei.item))),
+			randomSuffixes: distinct(equippedItems.filter(ei => ei.randomSuffix).map(ei => ei.randomSuffix!)),
+			reforgeStats: distinct(equippedItems.filter(ei => ei.reforging).map(ei => db.getReforge(ei.reforging) ?? {})),
 			enchants: distinct(equippedItems.filter(ei => ei.enchant).map(ei => BaseGear.enchantToDB(ei.enchant!))),
 			gems: distinct(equippedItems.map(ei => (ei._gems.filter(g => g != null) as Array<Gem>).map(gem => BaseGear.gemToDB(gem))).flat()),
 		});
@@ -140,7 +134,6 @@ abstract class BaseGear {
  * This is an immutable type.
  */
 export class Gear extends BaseGear {
-
 	constructor(gear: Partial<InternalGear>) {
 		super(gear);
 	}
@@ -154,14 +147,13 @@ export class Gear extends BaseGear {
 	}
 
 	getTrinkets(): Array<EquippedItem | null> {
-		return [
-			this.getEquippedItem(ItemSlot.ItemSlotTrinket1),
-			this.getEquippedItem(ItemSlot.ItemSlotTrinket2),
-		];
+		return [this.getEquippedItem(ItemSlot.ItemSlotTrinket1), this.getEquippedItem(ItemSlot.ItemSlotTrinket2)];
 	}
 
 	hasTrinket(itemId: number): boolean {
-		return this.getTrinkets().map(t => t?.item.id).includes(itemId);
+		return this.getTrinkets()
+			.map(t => t?.item.id)
+			.includes(itemId);
 	}
 
 	hasRelic(itemId: number): boolean {
@@ -176,13 +168,13 @@ export class Gear extends BaseGear {
 
 	asSpec(): EquipmentSpec {
 		return EquipmentSpec.create({
-			items: this.asArray().map(ei => ei ? ei.asSpec() : ItemSpec.create()),
+			items: this.asArray().map(ei => (ei ? ei.asSpec() : ItemSpec.create())),
 		});
 	}
 
 	getAllGems(isBlacksmithing: boolean): Array<Gem> {
 		return this.asArray()
-			.map(ei => ei == null ? [] : ei.curEquippedGems(isBlacksmithing))
+			.map(ei => (ei == null ? [] : ei.curEquippedGems(isBlacksmithing)))
 			.flat();
 	}
 
@@ -220,7 +212,7 @@ export class Gear extends BaseGear {
 		return this.getGemsOfColor(GemColor.GemColorMeta, true)[0] || null;
 	}
 
-	gemColorCounts(isBlacksmithing: boolean): ({ red: number, yellow: number, blue: number }) {
+	gemColorCounts(isBlacksmithing: boolean): { red: number; yellow: number; blue: number } {
 		const gems = this.getAllGems(isBlacksmithing);
 		return {
 			red: gems.filter(gem => gemMatchesSocket(gem, GemColor.GemColorRed)).length,
@@ -237,9 +229,7 @@ export class Gear extends BaseGear {
 		}
 
 		const gemColorCounts = this.gemColorCounts(isBlacksmithing);
-		return isMetaGemActive(
-			metaGem,
-			gemColorCounts.red, gemColorCounts.yellow, gemColorCounts.blue);
+		return isMetaGemActive(metaGem, gemColorCounts.red, gemColorCounts.yellow, gemColorCounts.blue);
 	}
 
 	hasInactiveMetaGem(isBlacksmithing: boolean): boolean {
@@ -257,7 +247,7 @@ export class Gear extends BaseGear {
 	}
 
 	withSingleGemSubstitution(oldGem: Gem | null, newGem: Gem | null, isBlacksmithing: boolean): Gear {
-		for (var slot of this.getItemSlots()) {
+		for (const slot of this.getItemSlots()) {
 			const item = this.getEquippedItem(slot);
 
 			if (!item) {
@@ -302,7 +292,7 @@ export class Gear extends BaseGear {
 	withoutGems(): Gear {
 		let curGear: Gear = this;
 
-		for (var slot of this.getItemSlots()) {
+		for (const slot of this.getItemSlots()) {
 			const item = this.getEquippedItem(slot);
 
 			if (item) {
@@ -348,14 +338,10 @@ export class Gear extends BaseGear {
 	}
 
 	getProfessionRequirements(): Array<Profession> {
-		return distinct((this.asArray().filter(ei => ei != null) as Array<EquippedItem>)
-			.map(ei => ei.getProfessionRequirements())
-			.flat());
+		return distinct((this.asArray().filter(ei => ei != null) as Array<EquippedItem>).map(ei => ei.getProfessionRequirements()).flat());
 	}
 	getFailedProfessionRequirements(professions: Array<Profession>): Array<Item | Gem | Enchant> {
-		return (this.asArray().filter(ei => ei != null) as Array<EquippedItem>)
-			.map(ei => ei.getFailedProfessionRequirements(professions))
-			.flat();
+		return (this.asArray().filter(ei => ei != null) as Array<EquippedItem>).map(ei => ei.getFailedProfessionRequirements(professions)).flat();
 	}
 }
 
@@ -365,7 +351,6 @@ export class Gear extends BaseGear {
  * This is an immutable type.
  */
 export class ItemSwapGear extends BaseGear {
-
 	constructor(gear: Partial<InternalGear>) {
 		super(gear);
 	}
@@ -383,6 +368,6 @@ export class ItemSwapGear extends BaseGear {
 			mhItem: this.gear[ItemSlot.ItemSlotMainHand]?.asSpec(),
 			ohItem: this.gear[ItemSlot.ItemSlotOffHand]?.asSpec(),
 			rangedItem: this.gear[ItemSlot.ItemSlotRanged]?.asSpec(),
-		})
+		});
 	}
 }

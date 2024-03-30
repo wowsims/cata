@@ -30,7 +30,7 @@ export abstract class Exporter extends BaseModal {
 	protected readonly changedEvent: TypedEvent<void> = new TypedEvent();
 
 	constructor(parent: HTMLElement, simUI: SimUI, options: ExporterOptions) {
-		super(parent, 'exporter', { title: options.title, header: options.header, footer: true });
+		super(parent, 'exporter', { title: options.title, header: true, footer: true });
 
 		this.body.innerHTML = `
 			<textarea spellCheck="false" class="exporter-textarea form-control"></textarea>
@@ -123,7 +123,7 @@ export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 	private readonly exportCategories: Record<SimSettingCategories, boolean>;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, { title: 'Sharable Link', header: true });
+		super(parent, simUI, { title: 'Sharable Link' });
 		this.simUI = simUI;
 
 		const exportCategories: Partial<Record<SimSettingCategories, boolean>> = {};

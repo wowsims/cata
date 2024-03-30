@@ -16,6 +16,18 @@
 	--bs-body-line-height: 1.25;
 }
 
+.btn-close {
+	background: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: $link-transition;
+
+	&:hover {
+		color: white;
+	}
+}
+
 .container {
 	height: 100%;
 	display: flex;
@@ -92,6 +104,18 @@
 		.modal-body {
 			display: flex;
 			flex-direction: column;
+		}
+	}
+}
+
+.modal-header {
+	.btn-close {
+		margin-right: -1 * map-get($spacers, 1);
+		z-index: 1000;
+
+		&.position-fixed {
+			top: calc(var(--bs-modal-margin) + 1px + $gap-width);
+			right: calc(2.5vw + 1px + $gap-width);
 		}
 	}
 }

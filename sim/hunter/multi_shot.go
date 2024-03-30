@@ -25,7 +25,7 @@ func (hunter *Hunter) registerMultiShotSpell() {
 
 		BonusCritRating:          0,
 		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1.2,
+		DamageMultiplier:         1.21,
 		CritMultiplier:           hunter.CritMultiplier(true, false, false),
 		ThreatMultiplier:         1,
 
