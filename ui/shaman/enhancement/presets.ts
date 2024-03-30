@@ -100,7 +100,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	moonkinAura: TristateEffect.TristateEffectImproved,
 	sanctifiedRetribution: true,
 	divineSpirit: true,
-	battleShout: TristateEffect.TristateEffectImproved,
+	battleShout: true,
 	demonicPactSp: 500,
 });
 

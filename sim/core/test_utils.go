@@ -63,7 +63,7 @@ var FullRaidBuffs = &proto.RaidBuffs{
 	LeaderOfThePack:       proto.TristateEffect_TristateEffectImproved,
 	ManaSpringTotem:       proto.TristateEffect_TristateEffectRegular,
 	MoonkinAura:           proto.TristateEffect_TristateEffectImproved,
-	PowerWordFortitude:    true,
+	PowerWordFortitude:    proto.TristateEffect_TristateEffectImproved,
 	SanctifiedRetribution: true,
 	ShadowProtection:      true,
 	SwiftRetribution:      true,

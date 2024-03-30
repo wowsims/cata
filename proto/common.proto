@@ -413,7 +413,7 @@ message RaidBuffs {
 	TristateEffect gift_of_the_wild = 1;
 
 	// +Stam
-	bool power_word_fortitude = 2;
+	TristateEffect power_word_fortitude = 2;
 	bool commanding_shout = 3;
 
 	// +Health
@@ -421,7 +421,7 @@ message RaidBuffs {
 
 	// + Agi and Str
 	bool horn_of_winter = 5;
-	bool strength_of_earth_totem = 6;
+	TristateEffect strength_of_earth_totem = 6; // none, normal, 15% improved
 	bool battle_shout = 10;
 
 	// +Intell and/or Spi
