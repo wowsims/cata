@@ -12,15 +12,17 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 	numHits := warrior.Env.GetNumTargets() // Whirlwind is uncapped in Cata
 	results := make([]*core.SpellResult, numHits)
 
+	var whirlwindOH *core.Spell
 	if warrior.AutoAttacks.IsDualWielding && warrior.GetOHWeapon().WeaponType != proto.WeaponType_WeaponTypeStaff &&
 		warrior.GetOHWeapon().WeaponType != proto.WeaponType_WeaponTypePolearm {
-		warrior.WhirlwindOH = warrior.RegisterSpell(core.SpellConfig{
+		whirlwindOH = warrior.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID.WithTag(1),
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty, // whirlwind offhand hits usually don't proc auras
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete | SpellFlagWhirlwindOH,
 
 			ThreatMultiplier: 1.25,
+			CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 		})
 	}
 
@@ -48,6 +50,7 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 		},
 
 		ThreatMultiplier: 1.25,
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
@@ -74,20 +77,20 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 				spell.CD.Reduce(time.Second * 6)
 			}
 
-			if warrior.WhirlwindOH != nil {
+			if whirlwindOH != nil {
 				curTarget = target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					baseDamage := 0.65 *
 						(spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
 							spell.BonusWeaponDamage())
-					results[hitIndex] = warrior.WhirlwindOH.CalcDamage(sim, curTarget, baseDamage, warrior.WhirlwindOH.OutcomeMeleeWeaponSpecialHitAndCrit)
+					results[hitIndex] = whirlwindOH.CalcDamage(sim, curTarget, baseDamage, whirlwindOH.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 
 				curTarget = target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					warrior.WhirlwindOH.DealDamage(sim, results[hitIndex])
+					whirlwindOH.DealDamage(sim, results[hitIndex])
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			}

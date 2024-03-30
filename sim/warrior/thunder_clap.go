@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (warrior *Warrior) registerThunderClapSpell() {
+func (warrior *Warrior) RegisterThunderClapSpell() {
 	warrior.ThunderClapAuras = warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return core.ThunderClapAura(target)
 	})
@@ -37,6 +37,7 @@ func (warrior *Warrior) registerThunderClapSpell() {
 
 		DamageMultiplier: 1.0 + (0.03 * float64(warrior.Talents.Thunderstruck)),
 		ThreatMultiplier: 1.85,
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 303.0 + 0.228*spell.MeleeAttackPower()

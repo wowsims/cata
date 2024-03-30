@@ -10,7 +10,7 @@ import (
 func (warrior *Warrior) RegisterRevengeSpell() {
 	actionID := core.ActionID{SpellID: 6572}
 
-	warrior.revengeProcAura = warrior.RegisterAura(core.Aura{
+	revengeReadyAura := warrior.RegisterAura(core.Aura{
 		Label:    "Revenge Ready",
 		Duration: 5 * time.Second,
 		ActionID: actionID,
@@ -20,7 +20,7 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 		Label: "Revenge Trigger",
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry) {
-				warrior.revengeProcAura.Activate(sim)
+				revengeReadyAura.Activate(sim)
 			}
 		},
 	}))
@@ -48,12 +48,13 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(DefensiveStance) && warrior.revengeProcAura.IsActive()
+			return warrior.StanceMatches(DefensiveStance) && revengeReadyAura.IsActive()
 		},
 
 		DamageMultiplier: (1.0 + 0.3*float64(warrior.Talents.ImprovedRevenge)) * core.TernaryFloat64(warrior.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfRevenge), 1.1, 1.0),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  121,
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// TODO: check this roll range and ap coefficient, this is from the 4.3.3 simc export
@@ -72,7 +73,7 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 				}
 			}
 
-			warrior.revengeProcAura.Deactivate(sim)
+			revengeReadyAura.Deactivate(sim)
 		},
 	})
 }

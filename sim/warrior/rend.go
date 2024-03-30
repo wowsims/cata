@@ -33,6 +33,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 
 		DamageMultiplier: 1 + (0.03 * float64(warrior.Talents.Thunderstruck)),
 		ThreatMultiplier: 1,
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -58,8 +59,10 @@ func (warrior *Warrior) RegisterRendSpell() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
 				dot := spell.Dot(target)
+
+				// Rend ticks once on application, including on refreshes
 				dot.Apply(sim)
-				dot.TickOnce(sim) // Rend ticks immediately upon application
+				dot.TickOnce(sim)
 			} else {
 				spell.IssueRefund(sim)
 			}

@@ -24,8 +24,8 @@ func (warrior *Warrior) RegisterColossusSmash() {
 	warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeSpecial,
-		Flags:       core.SpellFlagAPL | core.SpellFlagMeleeMetrics,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 		RageCost: core.RageCostOptions{
 			Cost:   20,
 			Refund: 0.8,
@@ -39,6 +39,7 @@ func (warrior *Warrior) RegisterColossusSmash() {
 				Duration: time.Second * 20,
 			},
 		},
+		CritMultiplier: warrior.DefaultMeleeCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			aura.Activate(sim)
 			if warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfColossusSmash) {

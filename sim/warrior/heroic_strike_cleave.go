@@ -7,8 +7,9 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (warrior *Warrior) RegisterHeroicStrikeSpell() {
+const cdDuration = time.Second * 3
 
+func (warrior *Warrior) RegisterHeroicStrikeSpell() {
 	warrior.HeroicStrike = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 78},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -24,9 +25,13 @@ func (warrior *Warrior) RegisterHeroicStrikeSpell() {
 			DefaultCast: core.Cast{
 				GCD: 0,
 			},
+			SharedCD: core.Cooldown{
+				Timer:    warrior.hsCleaveCD,
+				Duration: cdDuration,
+			},
 			CD: core.Cooldown{
-				Timer:    warrior.NewTimer(), // TODO: check if HS and Cleave share a CD
-				Duration: time.Second * 3,
+				Timer:    warrior.NewTimer(),
+				Duration: cdDuration,
 			},
 		},
 
@@ -34,6 +39,7 @@ func (warrior *Warrior) RegisterHeroicStrikeSpell() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  259,
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 8 + (spell.MeleeAttackPower() * 0.6)
@@ -68,15 +74,20 @@ func (warrior *Warrior) RegisterCleaveSpell() {
 			DefaultCast: core.Cast{
 				GCD: 0,
 			},
+			SharedCD: core.Cooldown{
+				Timer:    warrior.hsCleaveCD,
+				Duration: cdDuration,
+			},
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Second * 3,
+				Duration: cdDuration,
 			},
 		},
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  225,
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target

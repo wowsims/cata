@@ -25,7 +25,6 @@ func (warrior *Warrior) RegisterSlamSpell() {
 			},
 			IgnoreHaste: false, // Slam now has a "Haste Affects Melee Ability Casttime" flag in cata
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				// TODO: check to see if slam still delays autoattacks
 				if cast.CastTime > 0 {
 					warrior.AutoAttacks.DelayMeleeBy(sim, cast.CastTime)
 				}

@@ -1,13 +1,15 @@
 package warrior
 
 import (
+	"math"
+
 	"github.com/wowsims/cata/sim/core"
 )
 
 func (warrior *Warrior) RegisterExecuteSpell() {
 	var rageMetrics *core.ResourceMetrics
 	warrior.Execute = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 47471},
+		ActionID:    core.ActionID{SpellID: 5308},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
@@ -26,11 +28,12 @@ func (warrior *Warrior) RegisterExecuteSpell() {
 			return sim.IsExecutePhase20() && warrior.StanceMatches(BattleStance|BerserkerStance)
 		},
 
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 		DamageMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			availableRage := spell.Unit.CurrentRage()
-			extraRage := core.TernaryFloat64(availableRage >= 20, 20, availableRage)
+			extraRage := math.Min(availableRage, 20)
 			warrior.SpendRage(sim, extraRage, rageMetrics)
 			rageMetrics.Events--
 

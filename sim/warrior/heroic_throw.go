@@ -33,6 +33,7 @@ func (warrior *Warrior) RegisterHeroicThrow() {
 		},
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1.5,
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 12 + 0.5*spell.MeleeAttackPower()
