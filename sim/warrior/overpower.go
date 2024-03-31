@@ -45,7 +45,7 @@ func (warrior *Warrior) RegisterOverpowerSpell() {
 		},
 
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier() + (0.1 * float64(warrior.Talents.Impale)),
-		DamageMultiplier: 1.25 * core.TernaryFloat64(warrior.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfOverpower), 1.1, 1.0),
+		DamageMultiplier: 1.0 + core.TernaryFloat64(warrior.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfOverpower), 0.1, 0.0),
 		ThreatMultiplier: 0.75,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -57,8 +57,8 @@ func (warrior *Warrior) RegisterOverpowerSpell() {
 			}
 
 			baseDamage := 0 +
-				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+				1.25*(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())+
+					spell.BonusWeaponDamage())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			if !result.Landed() {

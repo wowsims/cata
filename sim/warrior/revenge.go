@@ -26,6 +26,7 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 	}))
 
 	extraHit := warrior.Talents.ImprovedRevenge > 0 && warrior.Env.GetNumTargets() > 1
+	extraHitMult := 0.5 * float64(warrior.Talents.ImprovedRevenge)
 
 	warrior.Revenge = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
@@ -51,7 +52,7 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 			return warrior.StanceMatches(DefensiveStance) && revengeReadyAura.IsActive()
 		},
 
-		DamageMultiplier: (1.0 + 0.3*float64(warrior.Talents.ImprovedRevenge)) * core.TernaryFloat64(warrior.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfRevenge), 1.1, 1.0),
+		DamageMultiplier: 1.0 + 0.3*float64(warrior.Talents.ImprovedRevenge) + core.TernaryFloat64(warrior.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfRevenge), 0.1, 0.0),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  121,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
@@ -66,11 +67,9 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 			}
 
 			if extraHit {
-				if sim.RandomFloat("Revenge Target Roll") <= 0.5*float64(warrior.Talents.ImprovedRevenge) {
-					otherTarget := sim.Environment.NextTargetUnit(target)
-					baseDamage := sim.Roll(1618.3, 1977.92) + ap
-					spell.CalcAndDealDamage(sim, otherTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				}
+				otherTarget := sim.Environment.NextTargetUnit(target)
+				baseDamage := sim.Roll(1618.3, 1977.92) + ap
+				spell.CalcAndDealDamage(sim, otherTarget, baseDamage*extraHitMult, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 
 			revengeReadyAura.Deactivate(sim)
