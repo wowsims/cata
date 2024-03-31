@@ -1,21 +1,13 @@
-import { GemColor } from '../proto/common.js';
-import { ItemSpec } from '../proto/common.js';
-import { ItemType } from '../proto/common.js';
-import { Profession } from '../proto/common.js';
-import {
-	UIEnchant as Enchant,
-	UIGem as Gem,
-	UIItem as Item,
-} from '../proto/ui.js';
+import { GemColor, ItemRandomSuffix, ItemSpec, ItemType, Profession } from '../proto/common.js';
+import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { distinct } from '../utils.js';
-
 import { ActionId } from './action_id.js';
-import { enchantAppliesToItem } from './utils.js';
 import { gemEligibleForSocket, gemMatchesSocket } from './gems.js';
 import { Stats } from './stats.js';
+import { enchantAppliesToItem } from './utils.js';
 
 export function getWeaponDPS(item: Item): number {
-	return ((item.weaponDamageMin + item.weaponDamageMax) / 2) / (item.weaponSpeed || 1);
+	return (item.weaponDamageMin + item.weaponDamageMax) / 2 / (item.weaponSpeed || 1);
 }
 
 /**
@@ -25,15 +17,19 @@ export function getWeaponDPS(item: Item): number {
  */
 export class EquippedItem {
 	readonly _item: Item;
+	readonly _randomSuffix: ItemRandomSuffix | null;
 	readonly _enchant: Enchant | null;
 	readonly _gems: Array<Gem | null>;
+	readonly _reforging: number;
 
 	readonly numPossibleSockets: number;
 
-	constructor(item: Item, enchant?: Enchant | null, gems?: Array<Gem | null>) {
+	constructor(item: Item, enchant?: Enchant | null, gems?: Array<Gem | null>, randomSuffix?: ItemRandomSuffix | null, reforging?: number) {
 		this._item = item;
 		this._enchant = enchant || null;
 		this._gems = gems || [];
+		this._randomSuffix = randomSuffix || null;
+		this._reforging = reforging || 0;
 
 		this.numPossibleSockets = this.numSockets(true);
 
@@ -52,35 +48,43 @@ export class EquippedItem {
 		return this._item.id;
 	}
 
+	get randomSuffix(): ItemRandomSuffix | null {
+		return this._randomSuffix ? ItemRandomSuffix.clone(this._randomSuffix) : null;
+	}
+
 	get enchant(): Enchant | null {
 		// Make a defensive copy
 		return this._enchant ? Enchant.clone(this._enchant) : null;
 	}
-
+	get reforging(): number {
+		return this._reforging;
+	}
 	get gems(): Array<Gem | null> {
 		// Make a defensive copy
-		return this._gems.map(gem => gem == null ? null : Gem.clone(gem));
+		return this._gems.map(gem => (gem == null ? null : Gem.clone(gem)));
 	}
 
 	equals(other: EquippedItem) {
-		if (!Item.equals(this._item, other.item))
-			return false;
+		if (!Item.equals(this._item, other.item)) return false;
 
-		if ((this._enchant == null) != (other.enchant == null))
-			return false;
+		if ((this._randomSuffix == null) != (other.randomSuffix == null)) return false;
 
-		if (this._enchant && other.enchant && !Enchant.equals(this._enchant, other.enchant))
-			return false;
+		if (this._randomSuffix && other.randomSuffix && !ItemRandomSuffix.equals(this._randomSuffix, other.randomSuffix)) return false;
 
-		if (this._gems.length != other.gems.length)
+		if ((this._enchant == null) != (other.enchant == null)) return false;
+
+		if (this._reforging != other._reforging || this._reforging !== 0) {
 			return false;
+		}
+
+		if (this._enchant && other.enchant && !Enchant.equals(this._enchant, other.enchant)) return false;
+
+		if (this._gems.length != other.gems.length) return false;
 
 		for (let i = 0; i < this._gems.length; i++) {
-			if ((this._gems[i] == null) != (other.gems[i] == null))
-				return false;
+			if ((this._gems[i] == null) != (other.gems[i] == null)) return false;
 
-			if (this._gems[i] && other.gems[i] && !Gem.equals(this._gems[i]!, other.gems[i]!))
-				return false;
+			if (this._gems[i] && other.gems[i] && !Gem.equals(this._gems[i]!, other.gems[i]!)) return false;
 		}
 
 		return true;
@@ -91,20 +95,24 @@ export class EquippedItem {
 	 */
 	withItem(item: Item): EquippedItem {
 		let newEnchant = null;
-		if (this._enchant && enchantAppliesToItem(this._enchant, item))
-			newEnchant = this._enchant;
+		if (this._enchant && enchantAppliesToItem(this._enchant, item)) newEnchant = this._enchant;
 
 		// Reorganize gems to match as many colors in the new item as possible.
 		const newGems = new Array(item.gemSockets.length).fill(null);
-		this._gems.slice(0, this._item.gemSockets.length).filter(gem => gem != null).forEach(gem => {
-			const firstMatchingIndex = item.gemSockets.findIndex((socketColor, socketIdx) => !newGems[socketIdx] && gemMatchesSocket(gem!, socketColor));
-			const firstEligibleIndex = item.gemSockets.findIndex((socketColor, socketIdx) => !newGems[socketIdx] && gemEligibleForSocket(gem!, socketColor));
-			if (firstMatchingIndex != -1) {
-				newGems[firstMatchingIndex] = gem;
-			} else if (firstEligibleIndex != -1) {
-				newGems[firstEligibleIndex] = gem;
-			}
-		});
+		this._gems
+			.slice(0, this._item.gemSockets.length)
+			.filter(gem => gem != null)
+			.forEach(gem => {
+				const firstMatchingIndex = item.gemSockets.findIndex((socketColor, socketIdx) => !newGems[socketIdx] && gemMatchesSocket(gem!, socketColor));
+				const firstEligibleIndex = item.gemSockets.findIndex(
+					(socketColor, socketIdx) => !newGems[socketIdx] && gemEligibleForSocket(gem!, socketColor),
+				);
+				if (firstMatchingIndex != -1) {
+					newGems[firstMatchingIndex] = gem;
+				} else if (firstEligibleIndex != -1) {
+					newGems[firstEligibleIndex] = gem;
+				}
+			});
 
 		// Copy the extra socket gem directly.
 		if (this.couldHaveExtraSocket()) {
@@ -118,7 +126,14 @@ export class EquippedItem {
 	 * Returns a new EquippedItem with the given enchant applied.
 	 */
 	withEnchant(enchant: Enchant | null): EquippedItem {
-		return new EquippedItem(this._item, enchant, this._gems);
+		return new EquippedItem(this._item, enchant, this._gems, this._randomSuffix, this._reforging);
+	}
+
+	/**
+	 * Returns a new EquippedItem with the given enchant applied.
+	 */
+	withReforge(reforge: number): EquippedItem {
+		return new EquippedItem(this._item, this._enchant, this._gems, this._randomSuffix, reforge);
 	}
 
 	/**
@@ -132,7 +147,7 @@ export class EquippedItem {
 		const newGems = this._gems.slice();
 		newGems[socketIdx] = gem;
 
-		return new EquippedItem(this._item, this._enchant, newGems);
+		return new EquippedItem(this._item, this._enchant, newGems, this._randomSuffix, this._reforging);
 	}
 
 	/**
@@ -171,15 +186,23 @@ export class EquippedItem {
 		return curItem;
 	}
 
+	withRandomSuffix(randomSuffix: ItemRandomSuffix | null): EquippedItem {
+		return new EquippedItem(this._item, this._enchant, this._gems, randomSuffix, this._reforging);
+	}
+
 	asActionId(): ActionId {
+		if (this._randomSuffix) return ActionId.fromRandomSuffix(this._item, this._randomSuffix);
+
 		return ActionId.fromItemId(this._item.id);
 	}
 
 	asSpec(): ItemSpec {
 		return ItemSpec.create({
 			id: this._item.id,
+			randomSuffix: this._randomSuffix?.id,
 			enchant: this._enchant?.effectId,
 			gems: this._gems.map(gem => gem?.id || 0),
+			reforging: this._reforging,
 		});
 	}
 
@@ -201,14 +224,11 @@ export class EquippedItem {
 	}
 
 	requiresExtraSocket(): boolean {
-		return [ItemType.ItemTypeWrist, ItemType.ItemTypeHands].includes(this.item.type)
-			&& this.hasExtraGem()
-			&& this._gems[this._gems.length - 1] != null;
+		return [ItemType.ItemTypeWrist, ItemType.ItemTypeHands].includes(this.item.type) && this.hasExtraGem() && this._gems[this._gems.length - 1] != null;
 	}
 
 	hasExtraSocket(isBlacksmithing: boolean): boolean {
-		return this.item.type == ItemType.ItemTypeWaist ||
-			(isBlacksmithing && [ItemType.ItemTypeWrist, ItemType.ItemTypeHands].includes(this.item.type));
+		return this.item.type == ItemType.ItemTypeWaist || (isBlacksmithing && [ItemType.ItemTypeWrist, ItemType.ItemTypeHands].includes(this.item.type));
 	}
 
 	numSockets(isBlacksmithing: boolean): number {
@@ -216,9 +236,9 @@ export class EquippedItem {
 	}
 
 	numSocketsOfColor(color: GemColor | null): number {
-		let numSockets: number = 0;
+		let numSockets = 0;
 
-		for (var socketColor of this._item.gemSockets) {
+		for (const socketColor of this._item.gemSockets) {
 			if (socketColor == color) {
 				numSockets += 1;
 			}
@@ -242,7 +262,7 @@ export class EquippedItem {
 		return this.hasExtraSocket(isBlacksmithing) ? this._item.gemSockets.concat([GemColor.GemColorPrismatic]) : this._item.gemSockets;
 	}
 
-	curGems(isBlacksmithing: boolean): Array<Gem|null> {
+	curGems(isBlacksmithing: boolean): Array<Gem | null> {
 		return this._gems.slice(0, this.numSockets(isBlacksmithing));
 	}
 	curEquippedGems(isBlacksmithing: boolean): Array<Gem> {
@@ -250,7 +270,7 @@ export class EquippedItem {
 	}
 
 	getProfessionRequirements(): Array<Profession> {
-		let profs: Array<Profession> = [];
+		const profs: Array<Profession> = [];
 		if (this._item.requiredProfession != Profession.ProfessionUnknown) {
 			profs.push(this._item.requiredProfession);
 		}
@@ -268,11 +288,15 @@ export class EquippedItem {
 		return distinct(profs);
 	}
 	getFailedProfessionRequirements(professions: Array<Profession>): Array<Item | Gem | Enchant> {
-		let failed: Array<Item | Gem | Enchant> = [];
+		const failed: Array<Item | Gem | Enchant> = [];
 		if (this._item.requiredProfession != Profession.ProfessionUnknown && !professions.includes(this._item.requiredProfession)) {
 			failed.push(this._item);
 		}
-		if (this._enchant != null && this._enchant.requiredProfession != Profession.ProfessionUnknown && !professions.includes(this._enchant.requiredProfession)) {
+		if (
+			this._enchant != null &&
+			this._enchant.requiredProfession != Profession.ProfessionUnknown &&
+			!professions.includes(this._enchant.requiredProfession)
+		) {
 			failed.push(this._enchant);
 		}
 		this._gems.forEach(gem => {
@@ -282,4 +306,4 @@ export class EquippedItem {
 		});
 		return failed;
 	}
-};
+}
