@@ -50,6 +50,7 @@ export const DefaultOptions = RogueOptions.create({
 	classOptions: {
 		mhImbue: RogueOptions_PoisonImbue.DeadlyPoison,
 		ohImbue: RogueOptions_PoisonImbue.InstantPoison,
+		thImbue: RogueOptions_PoisonImbue.WoundPoison,
 		applyPoisonsManually: false,
 		startingOverkillDuration: 20,
 		vanishBreakTime: 0.1,
@@ -60,7 +61,7 @@ export const DefaultOptions = RogueOptions.create({
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.PotionOfSpeed,
 	prepopPotion: Potions.PotionOfSpeed,
-	defaultConjured: Conjured.ConjuredRogueThistleTea,
+	defaultConjured: Conjured.ConjuredUnknown,
 	flask: Flask.FlaskOfEndlessRage,
 	food: Food.FoodMegaMammothMeal,
 });

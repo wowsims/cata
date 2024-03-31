@@ -1,6 +1,7 @@
 package core
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -558,4 +559,40 @@ func (unit *Unit) GetMetadata() *proto.UnitMetadata {
 
 func (unit *Unit) ExecuteCustomRotation(sim *Simulation) {
 	panic("Unimplemented ExecuteCustomRotation")
+}
+
+func (unit *Unit) GetTotalDodgeChanceAsDefender(atkTable *AttackTable) float64 {
+	chance := unit.PseudoStats.BaseDodge +
+		atkTable.BaseDodgeChance +
+		unit.GetDiminishedDodgeChance()
+	return math.Max(chance, 0.0)
+}
+
+func (unit *Unit) GetTotalParryChanceAsDefender(atkTable *AttackTable) float64 {
+	chance := unit.PseudoStats.BaseParry +
+		atkTable.BaseParryChance +
+		unit.GetDiminishedParryChance()
+	return math.Max(chance, 0.0)
+}
+
+func (unit *Unit) GetTotalChanceToBeMissedAsDefender(atkTable *AttackTable) float64 {
+	chance := atkTable.BaseMissChance +
+		unit.GetDiminishedMissChance() +
+		unit.PseudoStats.ReducedPhysicalHitTakenChance
+	return math.Max(chance, 0.0)
+}
+
+func (unit *Unit) GetTotalBlockChanceAsDefender(atkTable *AttackTable) float64 {
+	chance := atkTable.BaseBlockChance +
+		unit.GetStat(stats.Block)/BlockRatingPerBlockChance/100 +
+		unit.GetStat(stats.Defense)*DefenseRatingToChanceReduction
+	return math.Max(chance, 0.0)
+}
+
+func (unit *Unit) GetTotalAvoidanceChance(atkTable *AttackTable) float64 {
+	miss := unit.GetTotalChanceToBeMissedAsDefender(atkTable)
+	dodge := unit.GetTotalDodgeChanceAsDefender(atkTable)
+	parry := unit.GetTotalParryChanceAsDefender(atkTable)
+	block := unit.GetTotalBlockChanceAsDefender(atkTable)
+	return miss + dodge + parry + block
 }

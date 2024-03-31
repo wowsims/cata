@@ -73,7 +73,6 @@ func (war *ArmsWarrior) RegisterSpecializationEffects() {
 			Period: time.Second * 3,
 			OnAction: func(sim *core.Simulation) {
 				war.AddRage(sim, 1, rageMetrics)
-				war.LastAMTick = sim.CurrentTime
 			},
 		})
 	})

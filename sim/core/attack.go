@@ -357,9 +357,10 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ProcMask:    ProcMaskMeleeMHAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: 1,
-		CritMultiplier:   options.MainHand.CritMultiplier,
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           options.MainHand.CritMultiplier,
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
@@ -375,9 +376,10 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ProcMask:    ProcMaskMeleeOHAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: 1,
-		CritMultiplier:   options.OffHand.CritMultiplier,
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           options.OffHand.CritMultiplier,
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) +
@@ -388,14 +390,16 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 	}
 
 	unit.AutoAttacks.ranged.config = SpellConfig{
-		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionShoot},
-		SpellSchool: options.Ranged.GetSpellSchool(),
-		ProcMask:    ProcMaskRangedAuto,
-		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
+		ActionID:     ActionID{OtherID: proto.OtherAction_OtherActionShoot},
+		SpellSchool:  options.Ranged.GetSpellSchool(),
+		ProcMask:     ProcMaskRangedAuto,
+		Flags:        SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
+		MissileSpeed: 40,
 
-		DamageMultiplier: 1,
-		CritMultiplier:   options.Ranged.CritMultiplier,
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           options.Ranged.CritMultiplier,
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +

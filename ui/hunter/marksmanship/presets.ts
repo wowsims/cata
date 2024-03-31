@@ -75,7 +75,8 @@ export const MMDefaultOptions = HunterOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfSpeed,
+	defaultPotion: Potions.PotionOfTheTolvir,
+	prepopPotion: Potions.PotionOfTheTolvir,
 	flask: Flask.FlaskOfEndlessRage,
 	food: Food.FoodFishFeast,
 	petFood: PetFood.PetFoodSpicedMammothTreats,

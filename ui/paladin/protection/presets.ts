@@ -57,6 +57,6 @@ export const DefaultOptions = ProtectionPaladinOptions.create({
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfStoneblood,
 	food: Food.FoodDragonfinFilet,
-	defaultPotion: Potions.IndestructiblePotion,
-	prepopPotion: Potions.IndestructiblePotion,
+	defaultPotion: Potions.EarthenPotion,
+	prepopPotion: Potions.EarthenPotion,
 });

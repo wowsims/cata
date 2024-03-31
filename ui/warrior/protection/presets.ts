@@ -74,8 +74,8 @@ export const DefaultConsumes = Consumes.create({
 	battleElixir: BattleElixir.ElixirOfExpertise,
 	guardianElixir: GuardianElixir.ElixirOfProtection,
 	food: Food.FoodDragonfinFilet,
-	defaultPotion: Potions.IndestructiblePotion,
-	prepopPotion: Potions.IndestructiblePotion,
+	defaultPotion: Potions.EarthenPotion,
+	prepopPotion: Potions.EarthenPotion,
 	thermalSapper: true,
 	fillerExplosive: Explosive.ExplosiveSaroniteBomb,
 });

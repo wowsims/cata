@@ -62,6 +62,7 @@ export const DefaultOptions = RogueOptions.create({
 	classOptions: {
 		mhImbue: RogueOptions_PoisonImbue.DeadlyPoison,
 		ohImbue: RogueOptions_PoisonImbue.InstantPoison,
+		thImbue: RogueOptions_PoisonImbue.WoundPoison,
 		applyPoisonsManually: false,
 		startingOverkillDuration: 20,
 		vanishBreakTime: 0.1,

@@ -31,10 +31,11 @@ func (hunter *Hunter) registerKillShotSpell() {
 	}
 
 	hunter.KillShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 53351},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:     core.ActionID{SpellID: 53351},
+		SpellSchool:  core.SpellSchoolPhysical,
+		ProcMask:     core.ProcMaskRangedSpecial,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		MissileSpeed: 40,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
@@ -55,7 +56,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 
 		BonusCritRating:  0 + 5*core.CritRatingPerCritChance*float64(hunter.Talents.SniperTraining),
 		DamageMultiplier: 1.5, //
-		CritMultiplier:   1,   //  hunter.critMultiplier(true, true, false),
+		CritMultiplier:   hunter.CritMultiplier(true, true, false),
 		ThreatMultiplier: 1,
 		// https://web.archive.org/web/20120207222124/http://elitistjerks.com/f74/t110306-hunter_faq_cataclysm_edition_read_before_asking_questions/
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -65,7 +66,11 @@ func (hunter *Hunter) registerKillShotSpell() {
 			flatBonus := 543.0
 
 			baseDamage := normalizedWeaponDamage + rapBonusDamage + flatBonus
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }

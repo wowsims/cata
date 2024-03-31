@@ -20,11 +20,11 @@ func (hunter *MarksmanshipHunter) registerAimedShotSpell() {
 		})
 	}
 	hunter.AimedShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 19434},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-
+		ActionID:     core.ActionID{SpellID: 19434},
+		SpellSchool:  core.SpellSchoolPhysical,
+		ProcMask:     core.ProcMaskRangedSpecial,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		MissileSpeed: 40,
 		FocusCost: core.FocusCostOptions{
 			Cost: 50 - (float64(hunter.Talents.Efficiency) * 2),
 		},
@@ -51,7 +51,11 @@ func (hunter *MarksmanshipHunter) registerAimedShotSpell() {
 			wepDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
 			rap := spell.RangedAttackPower(target)*0.724 + 766
 			baseDamage := ((wepDmg + rap) * 1.6) + 100
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }

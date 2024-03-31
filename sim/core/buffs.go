@@ -108,8 +108,8 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		})
 	}
 
-	if raidBuffs.CommandingShout > 0 {
-		MakePermanent(CommandingShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.CommandingShout, 0, 5), 0, false))
+	if raidBuffs.CommandingShout {
+		MakePermanent(CommandingShoutAura(&character.Unit, false))
 	}
 	if raidBuffs.BloodPact > 0 {
 		MakePermanent(BloodPactAura(&character.Unit, GetTristateValueInt32(raidBuffs.BloodPact, 0, 3)))
@@ -209,8 +209,8 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		RetributionAura(character, raidBuffs.SanctifiedRetribution)
 	}
 
-	if raidBuffs.BattleShout > 0 {
-		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0, false))
+	if raidBuffs.BattleShout {
+		MakePermanent(BattleShoutAura(&character.Unit, false))
 	}
 	if individualBuffs.BlessingOfMight > 0 {
 		MakePermanent(BlessingOfMightAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfMight, 0, 2)))
@@ -1381,15 +1381,36 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 	})
 }
 
-func BattleShoutAura(unit *Unit, commandingPresencePts int32, boomingVoicePts int32, minorGlyph bool) *Aura {
+// TODO: find the actual str/agi bonus for changed buffs. wowhead doesn't have it yet
+// guesstimate for now based on lack of SoE totem/HoW buff changes in 4.0.1
+func BattleShoutAura(unit *Unit, minorGlyph bool) *Aura {
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Battle Shout",
-		ActionID:   ActionID{SpellID: 47436},
-		Duration:   time.Duration(float64(time.Minute*2)*(1+0.25*float64(boomingVoicePts))) + TernaryDuration(minorGlyph, 2*time.Minute, 0),
+		ActionID:   ActionID{SpellID: 6673},
+		Duration:   time.Duration(float64(time.Minute*2)) + TernaryDuration(minorGlyph, 2*time.Minute, 0),
 		BuildPhase: CharacterBuildPhaseBuffs,
 	})
-	attackPowerBonusEffect(aura, math.Floor(550*(1+0.05*float64(commandingPresencePts))))
+
+	strengthAgilityBonusEffect(aura, 155)
 	return aura
+}
+
+func strengthAgilityBonusEffect(aura *Aura, strBonus float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("StrengthAgilityBonus", false, ExclusiveEffect{
+		Priority: strBonus,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.Strength: ee.Priority,
+				stats.Agility:  ee.Priority,
+			})
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.Strength: -ee.Priority,
+				stats.Agility:  -ee.Priority,
+			})
+		},
+	})
 }
 
 func BlessingOfMightAura(unit *Unit, impBomPts int32) *Aura {
@@ -1424,15 +1445,32 @@ func attackPowerBonusEffect(aura *Aura, apBonus float64) *ExclusiveEffect {
 	})
 }
 
-func CommandingShoutAura(unit *Unit, commandingPresencePts int32, boomingVoicePts int32, minorGlyph bool) *Aura {
+// TODO: same as str/agi buffs, placeholder values until we can get the actual values
+func CommandingShoutAura(unit *Unit, minorGlyph bool) *Aura {
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Commanding Shout",
-		ActionID:   ActionID{SpellID: 47440},
-		Duration:   time.Duration(float64(time.Minute*2)*(1+0.25*float64(boomingVoicePts))) + TernaryDuration(minorGlyph, 2*time.Minute, 0),
+		ActionID:   ActionID{SpellID: 469},
+		Duration:   time.Minute*2 + TernaryDuration(minorGlyph, 2*time.Minute, 0),
 		BuildPhase: CharacterBuildPhaseBuffs,
 	})
-	healthBonusEffect(aura, 2255*(1+0.05*float64(commandingPresencePts)))
+	staminaBonusEffect(aura, 165)
 	return aura
+}
+
+func staminaBonusEffect(aura *Aura, stamBonus float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("StaminaBonus", false, ExclusiveEffect{
+		Priority: stamBonus,
+		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(s, stats.Stats{
+				stats.Stamina: ee.Priority,
+			})
+		},
+		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(s, stats.Stats{
+				stats.Stamina: -ee.Priority,
+			})
+		},
+	})
 }
 
 func BloodPactAura(unit *Unit, impImpPts int32) *Aura {

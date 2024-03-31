@@ -133,8 +133,8 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.DemoralizingRoar != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(DemoralizingRoarAura(target, GetTristateValueInt32(debuffs.DemoralizingRoar, 0, 5)))
 	}
-	if debuffs.DemoralizingShout != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(DemoralizingShoutAura(target, 0, GetTristateValueInt32(debuffs.DemoralizingShout, 0, 5)))
+	if debuffs.DemoralizingShout {
+		MakePermanent(DemoralizingShoutAura(target, false))
 	}
 	if debuffs.Vindication && targetIdx == 0 {
 		MakePermanent(VindicationAura(target, 2))
@@ -145,7 +145,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 
 	// Atk spd reduction
 	if debuffs.ThunderClap != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(ThunderClapAura(target, GetTristateValueInt32(debuffs.ThunderClap, 0, 3)))
+		MakePermanent(ThunderClapAura(target))
 	}
 	if debuffs.FrostFever != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(FrostFeverAura(target, GetTristateValueInt32(debuffs.FrostFever, 0, 3), 0))
@@ -416,6 +416,14 @@ func TraumaAura(target *Unit, points int) *Aura {
 	}, 1+0.15*float64(points))
 }
 
+func HemorrhageAura(target *Unit) *Aura {
+	return bleedDamageAura(target, Aura{
+		Label:    "Hemorrhage",
+		ActionID: ActionID{SpellID: 16511},
+		Duration: time.Minute,
+	}, 1.3)
+}
+
 func StampedeAura(target *Unit) *Aura {
 	return bleedDamageAura(target, Aura{
 		Label:    "Stampede",
@@ -545,9 +553,9 @@ func SunderArmorAura(target *Unit) *Aura {
 	var effect *ExclusiveEffect
 	aura := target.GetOrRegisterAura(Aura{
 		Label:     "Sunder Armor",
-		ActionID:  ActionID{SpellID: 47467},
+		ActionID:  ActionID{SpellID: 58567},
 		Duration:  time.Second * 30,
-		MaxStacks: 5,
+		MaxStacks: 3,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
 			effect.SetPriority(sim, 0.04*float64(newStacks))
 		},
@@ -713,13 +721,13 @@ func DemoralizingRoarAura(target *Unit, points int32) *Aura {
 	return aura
 }
 
-func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts int32) *Aura {
+func DemoralizingShoutAura(target *Unit, glyph bool) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "DemoralizingShout-" + strconv.Itoa(int(impDemoShoutPts)),
-		ActionID: ActionID{SpellID: 47437},
-		Duration: time.Duration(float64(time.Second*30) * (1 + 0.1*float64(boomingVoicePts))),
+		Label:    "DemoralizingShout",
+		ActionID: ActionID{SpellID: 1160},
+		Duration: time.Second*30 + TernaryDuration(glyph, time.Second*15, 0),
 	})
-	apReductionEffect(aura, 411*(1+0.08*float64(impDemoShoutPts)))
+	PhysDamageReductionEffect(aura, 0.1)
 	return aura
 }
 
@@ -743,6 +751,19 @@ func DemoralizingScreechAura(target *Unit) *Aura {
 	return aura
 }
 
+func PhysDamageReductionEffect(aura *Aura, dmgReduction float64) *ExclusiveEffect {
+	reductionMult := 1.0 - dmgReduction
+	return aura.NewExclusiveEffect("PhysDamageReduction", false, ExclusiveEffect{
+		Priority: dmgReduction,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[SpellSchoolPhysical] *= reductionMult
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[SpellSchoolPhysical] /= reductionMult
+		},
+	})
+}
+
 func apReductionEffect(aura *Aura, apReduction float64) *ExclusiveEffect {
 	statReduction := stats.Stats{stats.AttackPower: -apReduction}
 	return aura.NewExclusiveEffect("APReduction", false, ExclusiveEffect{
@@ -756,13 +777,13 @@ func apReductionEffect(aura *Aura, apReduction float64) *ExclusiveEffect {
 	})
 }
 
-func ThunderClapAura(target *Unit, points int32) *Aura {
+func ThunderClapAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "ThunderClap-" + strconv.Itoa(int(points)),
-		ActionID: ActionID{SpellID: 47502},
+		Label:    "ThunderClap",
+		ActionID: ActionID{SpellID: 6343},
 		Duration: time.Second * 30,
 	})
-	AtkSpeedReductionEffect(aura, []float64{1.1, 1.14, 1.17, 1.2}[points])
+	AtkSpeedReductionEffect(aura, 1.2)
 	return aura
 }
 

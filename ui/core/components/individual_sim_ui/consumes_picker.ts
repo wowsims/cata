@@ -37,6 +37,10 @@ export class ConsumesPicker extends Component {
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const potionsElem = this.rootElem.querySelector('.consumes-potions') as HTMLElement;
 
+		//makePrepopPotionsInput;
+		const prePotOptions = ConsumablesInputs.makePrepopPotionsInput(relevantStatOptions(ConsumablesInputs.PRE_POTIONS_CONFIG, this.simUI), 'Prepop Potion');
+		const prePotPicker = buildIconInput(potionsElem, this.simUI.player, prePotOptions);
+
 		const potionsOptions = ConsumablesInputs.makePotionsInput(relevantStatOptions(ConsumablesInputs.POTIONS_CONFIG, this.simUI), 'Combat Potion');
 		const potionsPicker = buildIconInput(potionsElem, this.simUI.player, potionsOptions);
 
@@ -44,7 +48,7 @@ export class ConsumesPicker extends Component {
 		const conjuredPicker = buildIconInput(potionsElem, this.simUI.player, conjuredOptions);
 
 		TypedEvent.onAny([this.simUI.player.professionChangeEmitter]).on(() => {
-			this.updateRow(row, [potionsPicker, conjuredPicker]);
+			this.updateRow(row, [potionsPicker, conjuredPicker, prePotPicker]);
 		});
 	}
 
@@ -62,17 +66,14 @@ export class ConsumesPicker extends Component {
 			</div>
     	`;
 
-		// const rowElem = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const rowElem = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const flasksElem = this.rootElem.querySelector('.consumes-flasks') as HTMLElement;
 		const battleElixirsElem = this.rootElem.querySelector('.consumes-battle-elixirs') as HTMLElement;
 		const guardianElixirsElem = this.rootElem.querySelector('.consumes-guardian-elixirs') as HTMLElement;
-
 		const flasksOptions = ConsumablesInputs.makeFlasksInput(relevantStatOptions(ConsumablesInputs.FLASKS_CONFIG, this.simUI));
 		buildIconInput(flasksElem, this.simUI.player, flasksOptions);
-
 		const battleElixirOptions = ConsumablesInputs.makeBattleElixirsInput(relevantStatOptions(ConsumablesInputs.BATTLE_ELIXIRS_CONFIG, this.simUI));
 		buildIconInput(battleElixirsElem, this.simUI.player, battleElixirOptions);
-
 		const guardianElixirOptions = ConsumablesInputs.makeGuardianElixirsInput(relevantStatOptions(ConsumablesInputs.GUARDIAN_ELIXIRS_CONFIG, this.simUI));
 		buildIconInput(guardianElixirsElem, this.simUI.player, guardianElixirOptions);
 	}

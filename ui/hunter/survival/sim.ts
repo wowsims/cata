@@ -36,17 +36,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	warnings: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatStamina,
-		Stat.StatIntellect,
-		Stat.StatAgility,
-		Stat.StatRangedAttackPower,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatMP5,
-	],
+	epStats: [Stat.StatStamina, Stat.StatAgility, Stat.StatRangedAttackPower, Stat.StatMeleeHit, Stat.StatMeleeCrit, Stat.StatMeleeHaste, Stat.StatMastery],
 	epPseudoStats: [PseudoStat.PseudoStatRangedDps],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatRangedAttackPower,
@@ -55,13 +45,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		Stat.StatHealth,
 		Stat.StatStamina,
 		Stat.StatAgility,
-		Stat.StatIntellect,
 		Stat.StatRangedAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecSurvivalHunter>) => {
 		let stats = new Stats();
@@ -96,7 +84,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 				[Stat.StatMeleeHit]: 2,
 				[Stat.StatMeleeCrit]: 1.5,
 				[Stat.StatMeleeHaste]: 1.39,
-				[Stat.StatArmorPenetration]: 1.32,
+				[Stat.StatMastery]: 1.32,
 			},
 			{
 				[PseudoStat.PseudoStatRangedDps]: 6.32,
@@ -116,7 +104,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			bloodlust: true,
 			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 			windfuryTotem: TristateEffect.TristateEffectImproved,
-			battleShout: TristateEffect.TristateEffectImproved,
+			battleShout: true,
 			leaderOfThePack: TristateEffect.TristateEffectImproved,
 			sanctifiedRetribution: true,
 			unleashedRage: true,
@@ -168,7 +156,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_SV, Presets.ROTATION_PRESET_SV_ADVANCED, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.SV_PRERAID_PRESET, Presets.SV_P1_PRESET, Presets.SV_P2_PRESET, Presets.SV_P3_PRESET, Presets.SV_P4_PRESET, Presets.SV_P5_PRESET],
+		gear: [Presets.SV_PRERAID_PRESET, Presets.SV_P1_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSurvivalHunter>): APLRotation => {
@@ -260,15 +248,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.SV_P1_PRESET.gear,
-					2: Presets.SV_P2_PRESET.gear,
-					3: Presets.SV_P3_PRESET.gear,
-					4: Presets.SV_P4_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.SV_P1_PRESET.gear,
-					2: Presets.SV_P2_PRESET.gear,
-					3: Presets.SV_P3_PRESET.gear,
-					4: Presets.SV_P4_PRESET.gear,
 				},
 			},
 		},
