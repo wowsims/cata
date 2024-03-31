@@ -42,6 +42,7 @@ type Warrior struct {
 
 	SpecialAttacks    []*core.Spell
 	BerserkerRage     *core.Spell
+	ColossusSmash     *core.Spell
 	DemoralizingShout *core.Spell
 	Execute           *core.Spell
 	Overpower         *core.Spell

@@ -11,7 +11,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 	dotTicks := int32(5)
 
 	warrior.Rend = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 47465},
+		ActionID:    core.ActionID{SpellID: 772},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,

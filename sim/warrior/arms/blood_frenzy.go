@@ -22,12 +22,22 @@ func (war *ArmsWarrior) RegisterBloodFrenzy() {
 		return core.TraumaAura(target, int(war.Talents.BloodFrenzy))
 	})
 
+	bfRageProc := core.ActionID{SpellID: 92576}
+	procChance := 0.05 * float64(war.Talents.BloodFrenzy)
+	bfRageMetrics := war.NewRageMetrics(bfRageProc)
 	core.MakePermanent(war.RegisterAura(core.Aura{
 		Label: "Blood Frenzy Buff Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() {
 				return
 			}
+
+			if spell.ActionID.IsOtherAction(proto.OtherAction_OtherActionAttack) {
+				if sim.RandomFloat("Blood Frenzy Rage Proc") < procChance {
+					war.AddRage(sim, 20, bfRageMetrics)
+				}
+			}
+
 			if spell.Flags.Matches(warrior.SpellFlagBleed) {
 				dot := spell.Dot(result.Target)
 
@@ -39,22 +49,6 @@ func (war *ArmsWarrior) RegisterBloodFrenzy() {
 				// Apply Trauma, has fixed duration regardless of bleeds
 				trauma := traumaAuras.Get(result.Target)
 				trauma.Activate(sim)
-			}
-		},
-	}))
-
-	bfRageProc := core.ActionID{SpellID: 92576}
-	procChance := 0.05 * float64(war.Talents.BloodFrenzy)
-	bfRageMetrics := war.NewRageMetrics(bfRageProc)
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Blood Frenzy Rage Proc Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ActionID.IsOtherAction(proto.OtherAction_OtherActionAttack) {
-				return
-			}
-
-			if sim.RandomFloat("Blood Frenzy Rage Proc") < procChance {
-				war.AddRage(sim, 20, bfRageMetrics)
 			}
 		},
 	}))

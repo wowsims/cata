@@ -40,7 +40,7 @@ func (war *ArmsWarrior) RegisterDeadlyCalm() {
 		ProcMask: core.ProcMaskEmpty,
 		RageCost: core.RageCostOptions{Cost: 0},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return war.InnerRage == nil || !war.InnerRage.IsActive()
+			return !war.InnerRageAura.IsActive()
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dcAura.Activate(sim)

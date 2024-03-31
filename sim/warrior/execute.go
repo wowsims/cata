@@ -7,6 +7,8 @@ import (
 )
 
 func (warrior *Warrior) RegisterExecuteSpell() {
+	minRageAfterExecute := 5.0 * float64(warrior.Talents.SuddenDeath)
+
 	var rageMetrics *core.ResourceMetrics
 	warrior.Execute = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 5308},
@@ -29,12 +31,23 @@ func (warrior *Warrior) RegisterExecuteSpell() {
 		},
 
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
-		DamageMultiplier: 1,
+		DamageMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			availableRage := spell.Unit.CurrentRage()
 			extraRage := math.Min(availableRage, 20)
-			warrior.SpendRage(sim, extraRage, rageMetrics)
+
+			// Sudden Death: Keep X rage after using execute
+			// Adjust extra rage spend to hit this floor
+			rageFloorAdjustment := 0.0
+			if minRageAfterExecute > 0 {
+				rageAfterSpend := availableRage - extraRage
+				if rageAfterSpend < float64(minRageAfterExecute) {
+					rageFloorAdjustment = minRageAfterExecute - rageAfterSpend
+				}
+			}
+
+			spell.Unit.SpendRage(sim, extraRage-rageFloorAdjustment, rageMetrics)
 			rageMetrics.Events--
 
 			ap := spell.MeleeAttackPower()

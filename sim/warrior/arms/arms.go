@@ -31,6 +31,7 @@ type ArmsWarrior struct {
 
 	Options *proto.ArmsWarrior_Options
 
+	mortalStrike *core.Spell
 	slaughter    *core.Aura
 	wreckingCrew *core.Aura
 }

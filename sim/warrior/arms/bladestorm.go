@@ -15,11 +15,11 @@ func (war *ArmsWarrior) RegisterBladestorm() {
 	numHits := war.Env.GetNumTargets() // 1 hit per target
 	results := make([]*core.SpellResult, numHits)
 
-	war.Bladestorm = war.RegisterSpell(core.SpellConfig{
+	bladestorm := war.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		Flags:       core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		RageCost: core.RageCostOptions{
 			Cost: 25,
 		},
@@ -33,7 +33,7 @@ func (war *ArmsWarrior) RegisterBladestorm() {
 			},
 			IgnoreHaste: true,
 		},
-		CritMultiplier:   1,
+		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
 		DamageMultiplier: 1.5, // deals 150% weapon damage
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -67,7 +67,7 @@ func (war *ArmsWarrior) RegisterBladestorm() {
 		},
 	})
 	war.AddMajorCooldown(core.MajorCooldown{
-		Spell: war.Bladestorm,
+		Spell: bladestorm,
 		Type:  core.CooldownTypeDPS,
 	})
 }

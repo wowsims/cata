@@ -87,8 +87,8 @@ func (war *ArmsWarrior) TriggerSlaughter(sim *core.Simulation, target *core.Unit
 		return
 	}
 
-	rend := target.GetActiveAuraWithTag(warrior.RendTag)
-	if rend != nil {
+	rend := war.Rend.Dot(target)
+	if rend != nil && rend.IsActive() {
 		rend.Refresh(sim)
 	}
 
@@ -109,6 +109,16 @@ func (war *ArmsWarrior) RegisterSlaughter() {
 		ActionID:  core.ActionID{SpellID: 84586},
 		Duration:  time.Second * 15,
 		MaxStacks: war.Talents.LambsToTheSlaughter,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			// This being negative is a valid case as that means the aura is expiring (newStacks == 0)
+			// so we should subtract whatever bonus had been applied
+			diff := newStacks - oldStacks
+			bonus := 0.1 * float64(diff)
+			war.mortalStrike.DamageMultiplierAdditive += bonus
+			war.Execute.DamageMultiplierAdditive += bonus
+			war.Overpower.DamageMultiplierAdditive += bonus
+			war.Slam.DamageMultiplierAdditive += bonus
+		},
 	})
 }
 

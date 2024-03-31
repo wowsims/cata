@@ -12,7 +12,7 @@ func (warrior *Warrior) RegisterDeepWounds() {
 	}
 
 	warrior.DeepWounds = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 12867},
+		ActionID:    core.ActionID{SpellID: 12868},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | SpellFlagBleed,
