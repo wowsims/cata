@@ -3,6 +3,7 @@ package shadow
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/priest"
 )
 
@@ -36,6 +37,11 @@ func NewShadowPriest(character *core.Character, options *proto.Player) *ShadowPr
 	spriest := &ShadowPriest{
 		Priest:  basePriest,
 		options: shadowOptions.Options,
+	}
+
+	// add spirit -> spell hit conversion for Twisted Faith talent
+	if spriest.Talents.TwistedFaith > 0 {
+		spriest.AddStatDependency(stats.Spirit, stats.SpellHit, 0.5*float64(spriest.Talents.TwistedFaith))
 	}
 
 	spriest.SelfBuffs.PowerInfusionTarget = &proto.UnitReference{}
