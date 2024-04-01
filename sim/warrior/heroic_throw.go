@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 // TODO: No patch notes for this ability, need to validate the damage and threat coefficients haven't changed
@@ -37,7 +38,10 @@ func (warrior *Warrior) RegisterHeroicThrow() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 12 + 0.5*spell.MeleeAttackPower()
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+			if result.Landed() && warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfHeroicThrow) {
+				warrior.TryApplySunderArmorEffect(sim, target)
+			}
 		},
 	})
 }

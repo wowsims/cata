@@ -58,7 +58,8 @@ func (warrior *Warrior) RegisterOverpowerSpell() {
 			}
 
 			baseDamage := 0 +
-				1.25*(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())+spell.BonusWeaponDamage())
+				1.25*(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())+
+					spell.BonusWeaponDamage())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			if !result.Landed() {

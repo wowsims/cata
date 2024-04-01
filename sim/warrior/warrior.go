@@ -73,6 +73,7 @@ type Warrior struct {
 	DemoralizingShoutAuras core.AuraArray
 	SunderArmorAuras       core.AuraArray
 	ThunderClapAuras       core.AuraArray
+	ColossusSmashAuras     core.AuraArray
 }
 
 func (warrior *Warrior) GetCharacter() *core.Character {
