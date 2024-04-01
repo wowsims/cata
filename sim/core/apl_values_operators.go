@@ -271,6 +271,7 @@ type APLValueCompare struct {
 
 func (rot *APLRotation) newValueCompare(config *proto.APLValueCompare) APLValue {
 	lhs, rhs := rot.coerceToSameType(rot.newAPLValue(config.Lhs), rot.newAPLValue(config.Rhs))
+
 	if lhs == nil || rhs == nil {
 		return nil
 	}

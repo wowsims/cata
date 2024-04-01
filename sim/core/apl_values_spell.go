@@ -7,6 +7,27 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
+type APLValueSpellIsKnown struct {
+	DefaultAPLValueImpl
+	spell *Spell
+}
+
+func (rot *APLRotation) newValueSpellIsKnown(config *proto.APLValueSpellIsKnown) APLValue {
+	spell := rot.GetAPLSpell(config.SpellId)
+	return &APLValueSpellIsKnown{
+		spell: spell,
+	}
+}
+func (value *APLValueSpellIsKnown) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeBool
+}
+func (value *APLValueSpellIsKnown) GetBool(sim *Simulation) bool {
+	return value.spell != nil
+}
+func (value *APLValueSpellIsKnown) String() string {
+	return fmt.Sprintf("Is Known(%s)", value.spell.ActionID)
+}
+
 type APLValueSpellCanCast struct {
 	DefaultAPLValueImpl
 	spell *Spell
