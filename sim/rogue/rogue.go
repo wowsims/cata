@@ -209,6 +209,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 		maxEnergy += 10
 	}
 	if rogue.Spec == proto.Spec_SpecAssassinationRogue &&
+		rogue.GetMHWeapon() != nil &&
 		rogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
 		maxEnergy += 20
 	}
