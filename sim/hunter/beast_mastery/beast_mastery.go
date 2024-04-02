@@ -42,7 +42,9 @@ func (hunter *BeastMasteryHunter) Initialize() {
 	// Apply BM Hunter mastery
 	baseMastery := hunter.GetStat(stats.Mastery)
 
-	hunter.Pet.PseudoStats.DamageDealtMultiplier *= hunter.getMasteryBonus(baseMastery)
+	if hunter.Pet != nil {
+		hunter.Pet.PseudoStats.DamageDealtMultiplier *= hunter.getMasteryBonus(baseMastery)
+	}
 
 	hunter.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
 		hunter.Pet.PseudoStats.DamageDealtMultiplier /= hunter.getMasteryBonus(oldMastery)
