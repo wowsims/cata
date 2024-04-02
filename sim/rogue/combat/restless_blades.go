@@ -20,10 +20,15 @@ func (comRogue *CombatRogue) applyRestlessBlades() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Flags.Matches(rogue.SpellFlagFinisher) {
 				cdReduction := time.Duration(comRogue.Talents.RestlessBlades) * time.Second * time.Duration(comRogue.ComboPoints())
-				ksNewTime := comRogue.KillingSpree.CD.Timer.ReadyAt() - cdReduction
-				arNewTime := comRogue.AdrenalineRush.CD.Timer.ReadyAt() - cdReduction
-				comRogue.KillingSpree.CD.Timer.Set(ksNewTime)
-				comRogue.AdrenalineRush.CD.Timer.Set(arNewTime)
+
+				if comRogue.KillingSpree != nil {
+					ksNewTime := comRogue.KillingSpree.CD.Timer.ReadyAt() - cdReduction
+					comRogue.KillingSpree.CD.Timer.Set(ksNewTime)
+				}
+				if comRogue.AdrenalineRush != nil {
+					arNewTime := comRogue.AdrenalineRush.CD.Timer.ReadyAt() - cdReduction
+					comRogue.AdrenalineRush.CD.Timer.Set(arNewTime)
+				}
 			}
 		},
 	})
