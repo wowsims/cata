@@ -8,7 +8,7 @@ import (
 )
 
 func (hunter *Hunter) registerTrapLauncher() {
-	actionID := core.ActionID{SpellID: 42899}
+	actionID := core.ActionID{SpellID: 77769}
 
 	hunter.TrapLauncherAura = hunter.RegisterAura(core.Aura{
 		Label:    "Trap Launcher",
