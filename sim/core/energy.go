@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 // Time between energy ticks.
@@ -217,7 +218,8 @@ func (eb *energyBar) RunTask(sim *Simulation) time.Duration {
 		return eb.nextEnergyTick
 	}
 
-	crossedThreshold := eb.addEnergyInternal(sim, EnergyPerTick*eb.EnergyTickMultiplier, eb.regenMetrics)
+	hasteMultiplier := 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*eb.unit.PseudoStats.MeleeHasteRatingPerHastePercent)
+	crossedThreshold := eb.addEnergyInternal(sim, EnergyPerTick*hasteMultiplier*eb.EnergyTickMultiplier, eb.regenMetrics)
 	eb.onEnergyGain(sim, crossedThreshold)
 
 	eb.nextEnergyTick = sim.CurrentTime + EnergyTickDuration
