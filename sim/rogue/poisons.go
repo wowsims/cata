@@ -31,7 +31,6 @@ func (rogue *Rogue) registerPoisonAuras() {
 }
 
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
-
 	rogue.DeadlyPoison = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 96648},
 		SpellSchool: core.SpellSchoolNature,
