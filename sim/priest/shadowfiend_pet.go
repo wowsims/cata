@@ -7,6 +7,11 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+// DISCLAIMER: Shadowfiend need some extensive research on Level 85
+// Proper Spell Scaling? Wiki says 37.5%, patch notes state 30%
+// WoW Sims implemented priest crit scaling but we do not
+// Right now Stats are inherited statically on spawn, but testing
+// indicates shadow fiend scales per hit based on owner spell power
 type Shadowfiend struct {
 	core.Pet
 
@@ -35,7 +40,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 	_ = core.MakePermanent(shadowfiend.GetOrRegisterAura(core.Aura{
 		Label: "Autoattack mana regen",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			restoreMana := priest.MaxMana() * 0.05
+			restoreMana := priest.MaxMana() * 0.03
 			priest.AddMana(sim, restoreMana, manaMetric)
 		},
 	}))
@@ -74,8 +79,8 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 
 	shadowfiend.EnableAutoAttacks(shadowfiend, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:        110,
-			BaseDamageMax:        145,
+			BaseDamageMin:        221.0,
+			BaseDamageMax:        271.0,
 			SwingSpeed:           1.5,
 			NormalizedSwingSpeed: 1.5,
 			CritMultiplier:       2,
@@ -95,7 +100,8 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 
 func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		inheritableSP := ownerStats[stats.SpellPower] - 0.04*float64(priest.Talents.TwistedFaith)*ownerStats[stats.Spirit]
+		inheritableSP := ownerStats[stats.SpellPower]
+
 		// Shadow fiend gets a "Spell Bonus" that adds bonus damage to each attack
 		// for simplicity, we will just convert this added damage as if it were AP
 		// Spell Bonus SP coefficient: 30%
@@ -105,7 +111,7 @@ func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
 		spellBonusAPEquivalent := inheritableSP * 0.3 * 1.06 * 14 / 1.5
 
 		return stats.Stats{ //still need to nail down shadow fiend crit scaling, but removing owner crit scaling after further investigation
-			stats.AttackPower: inheritableSP*0.57 + spellBonusAPEquivalent,
+			stats.AttackPower: inheritableSP*0.54 + spellBonusAPEquivalent,
 			// never misses
 			stats.MeleeHit:  8 * core.MeleeHitRatingPerHitChance,
 			stats.Expertise: 14 * core.ExpertisePerQuarterPercentReduction * 4,

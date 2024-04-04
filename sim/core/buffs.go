@@ -219,8 +219,13 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	if raidBuffs.FlametongueTotem {
 		MakePermanent(FlametongueTotemAura(character))
 	}
+
 	if raidBuffs.TotemOfWrath {
 		MakePermanent(TotemOfWrathAura(character))
+	}
+
+	if raidBuffs.MindQuickening {
+		MakePermanent(MindQuickeningAura(character))
 	}
 	if raidBuffs.DemonicPactSp > 0 {
 		power := raidBuffs.DemonicPactSp
@@ -230,7 +235,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	}
 
 	if raidBuffs.WrathOfAirTotem {
-		character.PseudoStats.CastSpeedMultiplier *= 1.05
+		MakePermanent(WrathOfAirAura(character))
 	}
 	if raidBuffs.StrengthOfEarthTotem > 0 || raidBuffs.HornOfWinter {
 		val := max(proto.TristateEffect_TristateEffectRegular, raidBuffs.StrengthOfEarthTotem)
@@ -1523,4 +1528,48 @@ func FocusMagicAura(caster *Unit, target *Unit) (*Aura, *Aura) {
 	}
 
 	return casterAura, aura
+}
+
+// Builds an ExclusiveEffect representing a SpellHaste bonus multiplier
+// spellHastePercent should be given as the percent value i.E. 0.05 for +5%
+func SpellHasteBonusEffect(aura *Aura, spellHastePercent float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("SpellHasteBonus", false, ExclusiveEffect{
+		Priority: spellHastePercent,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.CastSpeedMultiplier *= (1 + ee.Priority)
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.CastSpeedMultiplier /= (1 + ee.Priority)
+		},
+	})
+}
+
+func WrathOfAirAura(character *Character) *Aura {
+	aura := character.GetOrRegisterAura(Aura{
+		Label:      "Wrath of Air",
+		ActionID:   ActionID{SpellID: 3738},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+
+	SpellHasteBonusEffect(aura, 0.05)
+	return aura
+}
+
+func MindQuickeningAura(character *Character) *Aura {
+	aura := character.GetOrRegisterAura(Aura{
+		Label:      "Mind Quickening",
+		ActionID:   ActionID{SpellID: 49868},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+
+	SpellHasteBonusEffect(aura, 0.05)
+	return aura
 }

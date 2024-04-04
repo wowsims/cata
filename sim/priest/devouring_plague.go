@@ -1,0 +1,63 @@
+package priest
+
+import (
+	"time"
+
+	"github.com/wowsims/cata/sim/core"
+)
+
+func (priest *Priest) registerDevouringPlagueSpell() {
+	actionID := core.ActionID{SpellID: 2944}
+	priest.DevouringPlague = priest.RegisterSpell(PriestSpellDevouringPlague, core.SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagDisease | core.SpellFlagAPL,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCost: 0.25,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "DevouringPlague",
+			},
+
+			NumberOfTicks:       8,
+			TickLength:          time.Second * 3,
+			AffectedByCastSpeed: true,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+				dot.SnapshotBaseDamage = 0.144*priest.ScalingBaseDamage + 0.163*dot.Spell.SpellPower()
+				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			spell.DealOutcome(sim, result)
+			if result.Landed() {
+				spell.SpellMetrics[target.UnitIndex].Hits--
+				spell.Dot(target).Apply(sim)
+			}
+		},
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			if useSnapshot {
+				dot := spell.Dot(target)
+				return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+			} else {
+				baseDamage := 0.144*priest.ScalingBaseDamage + 0.163*spell.SpellPower()
+				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
+			}
+		},
+	})
+}

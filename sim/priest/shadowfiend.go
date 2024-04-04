@@ -20,7 +20,7 @@ func (priest *Priest) registerShadowfiendSpell() {
 		Duration: time.Second * 15.0,
 	})
 
-	priest.Shadowfiend = priest.RegisterSpell(core.SpellConfig{
+	priest.Shadowfiend = priest.RegisterSpell(PriestSpellShadowFiend, core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
@@ -32,7 +32,7 @@ func (priest *Priest) registerShadowfiendSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    priest.NewTimer(),
-				Duration: time.Minute * time.Duration(5-priest.Talents.VeiledShadows),
+				Duration: time.Minute * 5,
 			},
 		},
 

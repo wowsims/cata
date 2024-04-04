@@ -7,17 +7,19 @@ import (
 )
 
 func (priest *Priest) registerVampiricTouchSpell() {
-	shadowFocus := 0.02 * float64(priest.Talents.ShadowFocus)
+	var replSrc core.ReplenishmentSource
+	if priest.Talents.VampiricTouch {
+		replSrc = priest.Env.Raid.NewReplenishmentSource(core.ActionID{SpellID: 34914})
+	}
 
-	priest.VampiricTouch = priest.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48160},
+	priest.VampiricTouch = priest.RegisterSpell(PriestSpellVampiricTouch, core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 34914},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.16,
-			Multiplier: 1 - shadowFocus,
+			BaseCost: 0.17,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -25,26 +27,25 @@ func (priest *Priest) registerVampiricTouchSpell() {
 				CastTime: time.Millisecond * 1500,
 			},
 		},
-
-		BonusHitRating:   float64(priest.Talents.ShadowFocus) * 1 * core.SpellHitRatingPerHitChance,
-		BonusCritRating:  float64(priest.Talents.MindMelt)*3*core.CritRatingPerCritChance + core.TernaryFloat64(priest.HasSetBonus(ItemSetCrimsonAcolyte, 2), 5, 0)*core.CritRatingPerCritChance,
-		DamageMultiplier: 1 + float64(priest.Talents.Darkness)*0.02,
-		CritMultiplier:   priest.SpellCritMultiplier(1, 1),
-		ThreatMultiplier: 1 - 0.08*float64(priest.Talents.ShadowAffinity),
-
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "VampiricTouch",
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && spell == priest.MindBlast.Spell {
+						priest.Env.Raid.ProcReplenishment(sim, replSrc)
+					}
+				},
 			},
-			NumberOfTicks:       5 + core.TernaryInt32(priest.HasSetBonus(ItemSetZabras, 2), 2, 0),
+			NumberOfTicks:       5,
 			TickLength:          time.Second * 3,
-			AffectedByCastSpeed: priest.Talents.Shadowform,
+			AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = 850/5 + 0.4*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = priest.ScalingBaseDamage*0.101 + 0.352*dot.Spell.SpellPower()
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
+
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if priest.Talents.Shadowform {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -57,27 +58,18 @@ func (priest *Priest) registerVampiricTouchSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
-				priest.AddShadowWeavingStack(sim)
 				spell.Dot(target).Apply(sim)
 			}
+
 			spell.DealOutcome(sim, result)
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
 			if useSnapshot {
 				dot := spell.Dot(target)
-				if priest.Talents.Shadowform {
-					return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
-				} else {
-					return dot.CalcSnapshotDamage(sim, target, spell.OutcomeExpectedMagicAlwaysHit)
-				}
+				return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
 			} else {
-				baseDamage := 850/5 + 0.4*spell.SpellPower()
-				if priest.Talents.Shadowform {
-					return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
-				} else {
-					return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
-				}
+				baseDamage := priest.ScalingBaseDamage*0.101 + 0.352*spell.SpellPower()
+				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 			}
 		},
 	})

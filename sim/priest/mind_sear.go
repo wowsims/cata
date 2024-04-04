@@ -1,0 +1,75 @@
+package priest
+
+import (
+	"strconv"
+	"time"
+
+	"github.com/wowsims/cata/sim/core"
+)
+
+func (priest *Priest) getMindSearBaseConfig() core.SpellConfig {
+	return core.SpellConfig{
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskProc,
+	}
+}
+
+func (priest *Priest) getMindSearTickSpell(numTicks int32) *PriestSpell {
+	config := priest.getMindSearBaseConfig()
+	config.ActionID = core.ActionID{SpellID: 48045}.WithTag(numTicks)
+	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		damage := priest.ScalingBaseDamage*0.23 + 0.2622*spell.SpellPower()
+		spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+	}
+	return priest.RegisterSpell(PriestSpellMindSear, config)
+}
+
+func (priest *Priest) newMindSearSpell(numTicksIdx int32) *PriestSpell {
+	numTicks := numTicksIdx
+	flags := core.SpellFlagChanneled | core.SpellFlagNoMetrics
+	if numTicksIdx == 0 {
+		numTicks = 5
+		flags |= core.SpellFlagAPL
+	}
+
+	mindSearTickSpell := priest.getMindSearTickSpell(numTicksIdx)
+
+	config := priest.getMindSearBaseConfig()
+	config.ActionID = core.ActionID{SpellID: 48045}.WithTag(numTicksIdx)
+	config.Flags = flags
+	config.ManaCost = core.ManaCostOptions{
+		BaseCost: 0.28,
+	}
+	config.Cast = core.CastConfig{
+		DefaultCast: core.Cast{
+			GCD: core.GCDDefault,
+		},
+	}
+	config.Dot = core.DotConfig{
+		Aura: core.Aura{
+			Label: "MindSear-" + strconv.Itoa(int(numTicksIdx)),
+		},
+		NumberOfTicks:       numTicks,
+		TickLength:          time.Second,
+		AffectedByCastSpeed: true,
+		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				mindSearTickSpell.Cast(sim, aoeTarget)
+				mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
+			}
+		},
+	}
+	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+		if result.Landed() {
+			spell.Dot(target).Apply(sim)
+			mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts += 1
+		}
+	}
+	config.ExpectedTickDamage = func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
+		baseDamage := priest.ScalingBaseDamage*0.23 + 0.2622*spell.SpellPower()
+		return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
+	}
+
+	return priest.RegisterSpell(PriestSpellMindSear, config)
+}
