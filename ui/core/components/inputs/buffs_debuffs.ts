@@ -136,10 +136,11 @@ export const SpellCritBuff = InputHelpers.makeMultiIconInput([
 	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(51470), fieldName: 'elementalOath'}),
 ], 'Spell Crit');
 
-export const SpellHasteBuff = withLabel(
-  makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(3738), fieldName: 'wrathOfAirTotem'}),
-  'Spell Haste',
-);
+export const SpellHasteBuff = InputHelpers.makeMultiIconInput([
+	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(49868), fieldName: 'mindQuickening'}),
+	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(24907), fieldName: 'moonkinAura'}),
+	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(3738), fieldName: 'wrathOfAirTotem'})
+], 'Spell Haste');
 
 export const SpellPowerBuff = InputHelpers.makeMultiIconInput([
 	makeMultistateRaidBuffInput({actionId: ActionId.fromSpellId(47240), numStates: 2000, fieldName: 'demonicPactSp', multiplier: 20}),
@@ -379,7 +380,7 @@ export const RAID_BUFFS_CONFIG = [
   },
   {
     config: SpellHasteBuff,
-    picker: IconPicker,
+    picker: MultiIconPicker,
     stats: [Stat.StatSpellHaste],
   },
   {
