@@ -6,17 +6,6 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-// Totem Item IDs
-const (
-	StormfuryTotem           = 31031
-	TotemOfAncestralGuidance = 32330
-	TotemOfStorms            = 23199
-	TotemOfTheVoid           = 28248
-	TotemOfHex               = 40267
-	VentureCoLightningRod    = 38361
-	ThunderfallTotem         = 45255
-)
-
 const (
 	// This could be value or bitflag if we ended up needing multiple flags at the same time.
 	//1 to 5 are used by MaelstromWeapon Stacks
@@ -75,14 +64,4 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 	}
 
 	return spell
-}
-
-func (shaman *Shaman) electricSpellBonusDamage(spellCoeff float64) float64 {
-	bonusDamage := 0 +
-		core.TernaryFloat64(shaman.Ranged().ID == TotemOfStorms, 33, 0) +
-		core.TernaryFloat64(shaman.Ranged().ID == TotemOfTheVoid, 55, 0) +
-		core.TernaryFloat64(shaman.Ranged().ID == TotemOfAncestralGuidance, 85, 0) +
-		core.TernaryFloat64(shaman.Ranged().ID == TotemOfHex, 165, 0)
-
-	return bonusDamage * spellCoeff // These items do not benefit from the bonus coeff from shamanism.
 }
