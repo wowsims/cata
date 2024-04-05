@@ -32,10 +32,6 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	// core.FillTalentsProto(shaman.Talents.ProtoReflect(), talents, TalentTreeSizes)
 	// shaman.EnableManaBar()
 
-	// if shaman.Totems.Fire == proto.FireTotem_TotemOfWrath && !shaman.Talents.TotemOfWrath {
-	// 	shaman.Totems.Fire = proto.FireTotem_FlametongueTotem
-	// }
-
 	// // Add Shaman stat dependencies
 	// shaman.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	// shaman.AddStatDependency(stats.Agility, stats.AttackPower, 1)
@@ -101,6 +97,7 @@ type Shaman struct {
 	LightningShield     *core.Spell
 	LightningShieldAura *core.Aura
 
+	Earthquake   *core.Spell
 	Thunderstorm *core.Spell
 
 	EarthShock *core.Spell
@@ -118,12 +115,12 @@ type Shaman struct {
 	HealingStreamTotem   *core.Spell
 	SearingTotem         *core.Spell
 	StrengthOfEarthTotem *core.Spell
-	TotemOfWrath         *core.Spell
-	TremorTotem          *core.Spell
-	StoneskinTotem       *core.Spell
-	WindfuryTotem        *core.Spell
-	WrathOfAirTotem      *core.Spell
-	FlametongueTotem     *core.Spell
+	//TotemicWrath         *core.Spell
+	TremorTotem      *core.Spell
+	StoneskinTotem   *core.Spell
+	WindfuryTotem    *core.Spell
+	WrathOfAirTotem  *core.Spell
+	FlametongueTotem *core.Spell
 
 	MaelstromWeaponAura *core.Aura
 
@@ -162,53 +159,42 @@ func (shaman *Shaman) HasMinorGlyph(glyph proto.ShamanMinorGlyph) bool {
 }
 
 func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// switch shaman.Totems.Fire {
-	// case proto.FireTotem_TotemOfWrath:
-	// 	raidBuffs.TotemOfWrath = true
-	// case proto.FireTotem_FlametongueTotem:
-	// 	raidBuffs.FlametongueTotem = true
-	// }
 
-	// switch shaman.Totems.Water {
-	// case proto.WaterTotem_ManaSpringTotem:
-	// 	raidBuffs.ManaSpringTotem = max(raidBuffs.ManaSpringTotem, proto.TristateEffect_TristateEffectRegular)
-	// 	if shaman.Talents.RestorativeTotems == 5 {
-	// 		raidBuffs.ManaSpringTotem = proto.TristateEffect_TristateEffectImproved
-	// 	}
-	// }
+	if shaman.Totems.Fire != proto.FireTotem_NoFireTotem {
+		raidBuffs.TotemicWrath = true
+	}
 
-	// switch shaman.Totems.Air {
-	// case proto.AirTotem_WrathOfAirTotem:
-	// 	raidBuffs.WrathOfAirTotem = true
-	// case proto.AirTotem_WindfuryTotem:
-	// 	wfVal := proto.TristateEffect_TristateEffectRegular
-	// 	if shaman.Talents.ImprovedWindfuryTotem > 0 {
-	// 		wfVal = proto.TristateEffect_TristateEffectImproved
-	// 	}
-	// 	raidBuffs.WindfuryTotem = max(wfVal, raidBuffs.WindfuryTotem)
-	// }
+	if shaman.Totems.Fire == proto.FireTotem_FlametongueTotem {
+		raidBuffs.FlametongueTotem = true
+	}
 
-	// switch shaman.Totems.Earth {
-	// case proto.EarthTotem_StrengthOfEarthTotem:
-	// 	totem := proto.TristateEffect_TristateEffectRegular
-	// 	if shaman.Talents.EnhancingTotems == 3 {
-	// 		totem = proto.TristateEffect_TristateEffectImproved
-	// 	}
-	// 	raidBuffs.StrengthOfEarthTotem = max(raidBuffs.StrengthOfEarthTotem, totem)
-	// case proto.EarthTotem_StoneskinTotem:
-	// 	raidBuffs.StoneskinTotem = max(raidBuffs.StoneskinTotem, core.MakeTristateValue(
-	// 		true,
-	// 		shaman.Talents.GuardianTotems == 2,
-	// 	))
-	// }
+	if shaman.Totems.Water == proto.WaterTotem_ManaSpringTotem {
+		raidBuffs.ManaSpringTotem = true
+	}
+
+	switch shaman.Totems.Air {
+	case proto.AirTotem_WrathOfAirTotem:
+		raidBuffs.WrathOfAirTotem = true
+	case proto.AirTotem_WindfuryTotem:
+		raidBuffs.WindfuryTotem = true
+	}
+
+	switch shaman.Totems.Earth {
+	case proto.EarthTotem_StrengthOfEarthTotem:
+		raidBuffs.StrengthOfEarthTotem = true
+	case proto.EarthTotem_StoneskinTotem:
+		raidBuffs.StoneskinTotem = true
+	}
 
 	// if shaman.Talents.UnleashedRage > 0 {
 	// 	raidBuffs.UnleashedRage = true
 	// }
 
-	// if shaman.Talents.ElementalOath > 0 {
-	// 	raidBuffs.ElementalOath = true
-	// }
+	if shaman.Talents.ElementalOath == 1 {
+		raidBuffs.ElementalOath = proto.TristateEffect_TristateEffectRegular
+	} else if shaman.Talents.ElementalOath == 2 {
+		raidBuffs.ElementalOath = proto.TristateEffect_TristateEffectImproved
+	}
 }
 func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 	if shaman.Talents.ManaTideTotem {
@@ -235,7 +221,7 @@ func (shaman *Shaman) Initialize() {
 	// shaman.registerStormstrikeSpell()
 	// shaman.registerStrengthOfEarthTotemSpell()
 	// shaman.registerThunderstormSpell()
-	// shaman.registerTotemOfWrathSpell()
+	// shaman.registerTotemicWrathSpell()
 	// shaman.registerFlametongueTotemSpell()
 	// shaman.registerTremorTotemSpell()
 	// shaman.registerStoneskinTotemSpell()
@@ -280,9 +266,7 @@ func (shaman *Shaman) RegisterHealingSpells() {
 }
 
 func (shaman *Shaman) Reset(sim *core.Simulation) {
-	// if shaman.Totems.Fire == proto.FireTotem_TotemOfWrath {
-	// 	shaman.applyToWDebuff(sim)
-	// }
+
 }
 
 // func (shaman *Shaman) ElementalCritMultiplier(secondary float64) float64 {

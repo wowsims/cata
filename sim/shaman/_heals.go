@@ -13,7 +13,7 @@ func (shaman *Shaman) registerAncestralHealingSpell() {
 		SpellSchool:      core.SpellSchoolNature,
 		ProcMask:         core.ProcMaskSpellHealing,
 		Flags:            core.SpellFlagHelpful | core.SpellFlagAPL,
-		DamageMultiplier: 1 * (1 + .02*float64(shaman.Talents.Purification)),
+		DamageMultiplier: 1,
 		CritMultiplier:   1,
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -54,9 +54,8 @@ func (shaman *Shaman) registerLesserHealingWaveSpell() {
 			},
 		},
 
-		BonusCritRating: float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
-		DamageMultiplier: 1 *
-			(1 + .02*float64(shaman.Talents.Purification)),
+		BonusCritRating:  float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 
@@ -120,9 +119,8 @@ func (shaman *Shaman) registerRiptideSpell() {
 			},
 		},
 
-		BonusCritRating: float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
-		DamageMultiplier: 1 *
-			(1 + .02*float64(shaman.Talents.Purification)),
+		BonusCritRating:  float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 
@@ -205,9 +203,8 @@ func (shaman *Shaman) registerHealingWaveSpell() {
 			},
 		},
 
-		BonusCritRating: float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
-		DamageMultiplier: 1 *
-			(1 + .02*float64(shaman.Talents.Purification)),
+		BonusCritRating:  float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 
@@ -340,7 +337,7 @@ func (shaman *Shaman) registerChainHealSpell() {
 			},
 		},
 		BonusCritRating:  float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
-		DamageMultiplier: 1 + .02*float64(shaman.Talents.Purification) + 0.1*float64(shaman.Talents.ImprovedChainHeal),
+		DamageMultiplier: 1 + 0.1*float64(shaman.Talents.ImprovedChainHeal),
 		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
 		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
 

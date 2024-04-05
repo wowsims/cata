@@ -23,13 +23,6 @@ func (shaman *Shaman) newChainLightningSpell(isLightningOverload bool) *core.Spe
 		time.Millisecond*2000,
 		isLightningOverload)
 
-	if !isLightningOverload {
-		spellConfig.Cast.CD = core.Cooldown{
-			Timer:    shaman.NewTimer(),
-			Duration: time.Second*6 - []time.Duration{0, 750 * time.Millisecond, 1500 * time.Millisecond, 2500 * time.Millisecond}[shaman.Talents.StormEarthAndFire],
-		}
-	}
-
 	numHits := min(core.TernaryInt32(shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning), 4, 3), shaman.Env.GetNumTargets())
 	dmgReductionPerBounce := core.TernaryFloat64(shaman.HasSetBonus(ItemSetTidefury, 2), 0.83, 0.7)
 	dmgBonus := shaman.electricSpellBonusDamage(0.5714)

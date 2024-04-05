@@ -95,7 +95,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	arcaneBrilliance: true,
 	leaderOfThePack: TristateEffect.TristateEffectImproved,
-	totemOfWrath: true,
+	totemicWrath: true,
 	wrathOfAirTotem: true,
 	moonkinAura: TristateEffect.TristateEffectImproved,
 	sanctifiedRetribution: true,
@@ -112,6 +112,5 @@ export const DefaultDebuffs = Debuffs.create({
 	faerieFire: TristateEffect.TristateEffectImproved,
 	judgementOfWisdom: true,
 	misery: true,
-	totemOfWrath: true,
 	shadowMastery: true,
 });

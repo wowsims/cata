@@ -42,8 +42,11 @@ export const StandardTalents = {
 	data: SavedTalents.create({
 		// talentsString: '0533001523213351322301351-005050031',
 		// glyphs: Glyphs.create({
+		// 	prime1: ShamanPrimeGlyph.,
+		// 	prime2: ShamanPrimeGlyph.,
+		// 	prime3: ShamanPrimeGlyph.,
 		// 	major1: ShamanMajorGlyph.GlyphOfFlametongueWeapon,
-		// 	major2: ShamanMajorGlyph.GlyphOfTotemOfWrath,
+		// 	major2: ShamanMajorGlyph.,
 		// 	major3: ShamanMajorGlyph.GlyphOfLightningBolt,
 		// 	minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
 		// 	minor2: ShamanMinorGlyph.GlyphOfWaterShield,
@@ -58,7 +61,7 @@ export const DefaultOptions = ElementalShamanOptions.create({
 		totems: ShamanTotems.create({
 			earth: EarthTotem.StrengthOfEarthTotem,
 			air: AirTotem.WrathOfAirTotem,
-			fire: FireTotem.TotemOfWrath,
+			fire: FireTotem.FlametongueTotem,
 			water: WaterTotem.ManaSpringTotem,
 			useFireElemental: true,
 		}),

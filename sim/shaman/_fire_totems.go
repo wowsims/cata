@@ -16,8 +16,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.07,
 			Multiplier: 1 -
-				0.05*float64(shaman.Talents.TotemicFocus) -
-				0.02*float64(shaman.Talents.MentalQuickness),
+				0.05*float64(shaman.Talents.TotemicFocus),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -26,7 +25,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 		},
 
 		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
-		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
+		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.1,
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 
 		Dot: core.DotConfig{
@@ -67,8 +66,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.27,
 			Multiplier: 1 -
-				0.05*float64(shaman.Talents.TotemicFocus) -
-				0.02*float64(shaman.Talents.MentalQuickness),
+				0.05*float64(shaman.Talents.TotemicFocus),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -77,7 +75,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 		},
 
 		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
-		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05,
+		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.1,
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 
 		Dot: core.DotConfig{

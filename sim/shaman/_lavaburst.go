@@ -53,7 +53,7 @@ func (shaman *Shaman) registerLavaBurstSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.1,
-			Multiplier: 1 - 0.02*float64(shaman.Talents.Convection),
+			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -67,8 +67,8 @@ func (shaman *Shaman) registerLavaBurstSpell() {
 		},
 
 		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
-		DamageMultiplier: 1 + 0.01*float64(shaman.Talents.Concussion) + 0.02*float64(shaman.Talents.CallOfFlame),
-		CritMultiplier:   shaman.ElementalCritMultiplier([]float64{0, 0.06, 0.12, 0.24}[shaman.Talents.LavaFlows] + core.TernaryFloat64(shaman.HasSetBonus(ItemSetEarthShatterGarb, 4), 0.1, 0)),
+		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion) + 0.05*float64(shaman.Talents.CallOfFlame),
+		CritMultiplier:   shaman.ElementalCritMultiplier(0.08*float64(shaman.Talents.LavaFlows) + core.TernaryFloat64(shaman.HasSetBonus(ItemSetEarthShatterGarb, 4), 0.1, 0)),
 		ThreatMultiplier: shaman.spellThreatMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

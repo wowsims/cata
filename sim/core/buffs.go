@@ -65,8 +65,10 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		ThornsAura(character, 0)
 	}
 
-	if raidBuffs.MoonkinAura > 0 || raidBuffs.ElementalOath {
+	if raidBuffs.MoonkinAura > 0 || raidBuffs.ElementalOath == proto.TristateEffect_TristateEffectImproved {
 		character.AddStat(stats.SpellCrit, 5*CritRatingPerCritChance)
+	} else if raidBuffs.ElementalOath == proto.TristateEffect_TristateEffectRegular {
+		character.AddStat(stats.SpellCrit, 3*CritRatingPerCritChance)
 	}
 
 	if raidBuffs.MoonkinAura == proto.TristateEffect_TristateEffectImproved || raidBuffs.SwiftRetribution {
@@ -187,9 +189,9 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	}
 
 	// TODO: Is scroll exclusive to totem?
-	if raidBuffs.StoneskinTotem != proto.TristateEffect_TristateEffectMissing {
+	if raidBuffs.StoneskinTotem {
 		character.AddStats(stats.Stats{
-			stats.Armor: GetTristateValueFloat(raidBuffs.StoneskinTotem, 1150, 1380),
+			stats.Armor: 4076,
 		})
 	}
 
@@ -219,8 +221,8 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	if raidBuffs.FlametongueTotem {
 		MakePermanent(FlametongueTotemAura(character))
 	}
-	if raidBuffs.TotemOfWrath {
-		MakePermanent(TotemOfWrathAura(character))
+	if raidBuffs.TotemicWrath {
+		MakePermanent(TotemicWrathAura(character))
 	}
 	if raidBuffs.DemonicPactSp > 0 {
 		power := raidBuffs.DemonicPactSp
@@ -232,12 +234,11 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	if raidBuffs.WrathOfAirTotem {
 		character.PseudoStats.CastSpeedMultiplier *= 1.05
 	}
-	if raidBuffs.StrengthOfEarthTotem > 0 || raidBuffs.HornOfWinter {
-		val := max(proto.TristateEffect_TristateEffectRegular, raidBuffs.StrengthOfEarthTotem)
-		bonus := GetTristateValueFloat(val, 155, 178)
+	if raidBuffs.StrengthOfEarthTotem || raidBuffs.HornOfWinter {
+		//TODO: I think this is always 549
 		character.AddStats(stats.Stats{
-			stats.Strength: bonus,
-			stats.Agility:  bonus,
+			stats.Strength: 549,
+			stats.Agility:  549,
 		})
 	} else {
 		if raidBuffs.ScrollOfStrength {
@@ -252,16 +253,16 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		}
 	}
 
-	if individualBuffs.BlessingOfWisdom > 0 || raidBuffs.ManaSpringTotem > 0 {
+	// TODO: I think MP5 buff is always 326
+	if individualBuffs.BlessingOfWisdom > 0 || raidBuffs.ManaSpringTotem {
 		character.AddStats(stats.Stats{
-			stats.MP5: GetTristateValueFloat(max(individualBuffs.BlessingOfWisdom, raidBuffs.ManaSpringTotem), 91, 109),
+			stats.MP5: 326,
 		})
 	}
 
-	if raidBuffs.IcyTalons {
-		character.PseudoStats.MeleeSpeedMultiplier *= 1.2
-	} else if raidBuffs.WindfuryTotem > 0 {
-		character.PseudoStats.MeleeSpeedMultiplier *= GetTristateValueFloat(raidBuffs.WindfuryTotem, 1.16, 1.20)
+	// TODO: I think melee haste is always 10%
+	if raidBuffs.IcyTalons || raidBuffs.WindfuryTotem {
+		character.PseudoStats.MeleeSpeedMultiplier *= 1.1
 	}
 
 	if raidBuffs.Bloodlust {
@@ -1326,31 +1327,31 @@ func (raid *Raid) ProcReplenishment(sim *Simulation, src ReplenishmentSource) {
 	}
 }
 
-func TotemOfWrathAura(character *Character) *Aura {
+func TotemicWrathAura(character *Character) *Aura {
 	aura := character.GetOrRegisterAura(Aura{
-		Label:      "Totem of Wrath",
-		ActionID:   ActionID{SpellID: 57722},
+		Label:      "TotemicWrath",
+		ActionID:   ActionID{SpellID: 77746},
 		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
 	})
-	spellPowerBonusEffect(aura, 280)
+	spellPowerBonusEffect(aura, 0)
 	return aura
 }
 
 func FlametongueTotemAura(character *Character) *Aura {
 	aura := character.GetOrRegisterAura(Aura{
 		Label:      "Flametongue Totem",
-		ActionID:   ActionID{SpellID: 58656},
+		ActionID:   ActionID{SpellID: 8227},
 		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
 		},
 	})
-	spellPowerBonusEffect(aura, 144)
+	spellPowerBonusEffect(aura, 0)
 	return aura
 }
 

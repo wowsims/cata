@@ -8,7 +8,7 @@ import (
 )
 
 func (shaman *Shaman) ShockCD() time.Duration {
-	return time.Second*6 - time.Millisecond*200*time.Duration(shaman.Talents.Reverberation)
+	return time.Second*6 - time.Millisecond*500*time.Duration(shaman.Talents.Reverberation)
 }
 
 // Shared logic for all shocks.
@@ -25,8 +25,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 			BaseCost: baseCost,
 			Multiplier: 1 -
 				core.TernaryFloat64(shaman.Talents.ShamanisticFocus, 0.45, 0) -
-				0.02*float64(shaman.Talents.Convection) -
-				0.02*float64(shaman.Talents.MentalQuickness) -
+				0.05*float64(shaman.Talents.Convection) -
 				core.TernaryFloat64(shaman.HasSetBonus(ItemSetSkyshatterHarness, 2), 0.1, 0),
 		},
 		Cast: core.CastConfig{
@@ -41,7 +40,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 
 		BonusHitRating: float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
 		DamageMultiplier: 1 +
-			0.01*float64(shaman.Talents.Concussion) +
+			0.02*float64(shaman.Talents.Concussion) +
 			core.TernaryFloat64(shaman.HasSetBonus(ItemSetThrallsBattlegear, 4), 0.25, 0),
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: shaman.spellThreatMultiplier(),
@@ -77,7 +76,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 	}
 
 	bonusPeriodicDamageMultiplier := 0 +
-		0.2*float64(shaman.Talents.StormEarthAndFire) +
+		0.2*float64(shaman.Talents.LavaFlows) +
 		core.TernaryFloat64(shaman.HasSetBonus(ItemSetWorldbreakerGarb, 2), 0.2, 0) -
 		0.1*float64(shaman.Talents.BoomingEchoes)
 
@@ -105,6 +104,13 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 		},
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+
+			if shaman.Talents.LavaSurge > 0
+			{
+				if sim.RandomFloat("LavaSurge") < (0.1 * float64(shaman.Talents.LavaSurge)) {
+					shaman.LavaBurst.CD.Reset()
+				}
+			}			
 		},
 	}
 

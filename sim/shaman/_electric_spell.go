@@ -42,7 +42,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   core.TernaryFloat64(isLightningOverload, 0, baseCost),
-			Multiplier: 1 - 0.02*float64(shaman.Talents.Convection),
+			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -58,7 +58,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 		BonusCritRating: 0 +
 			float64(shaman.Talents.TidalMastery)*core.CritRatingPerCritChance +
 			core.TernaryFloat64(shaman.Talents.CallOfThunder, 5*core.CritRatingPerCritChance, 0),
-		DamageMultiplier: 1 + 0.01*float64(shaman.Talents.Concussion),
+		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: shaman.spellThreatMultiplier(),
 	}

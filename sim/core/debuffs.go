@@ -162,10 +162,6 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(InsectSwarmAura(target))
 	}
 
-	if debuffs.TotemOfWrath {
-		MakePermanent(TotemOfWrathDebuff(target))
-	}
-
 	if debuffs.MasterPoisoner {
 		MakePermanent(MasterPoisonerDebuff(target, 3))
 	}
@@ -894,10 +890,6 @@ func increasedMissEffect(aura *Aura, increasedMissChance float64) *ExclusiveEffe
 			ee.Aura.Unit.PseudoStats.IncreasedMissChance -= increasedMissChance
 		},
 	})
-}
-
-func TotemOfWrathDebuff(target *Unit) *Aura {
-	return minorCritDebuffAura(target, "Totem of Wrath Debuff", ActionID{SpellID: 30708}, time.Minute*5, 3*CritRatingPerCritChance)
 }
 
 func MasterPoisonerDebuff(target *Unit, points int32) *Aura {

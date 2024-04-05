@@ -1,13 +1,8 @@
 package shaman
 
 func (shaman *Shaman) ApplyTalents() {
-	// We are going to treat this like a snapshot if you have the glyph.
-	// if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfTotemOfWrath) {
-	// 	shaman.AddStat(stats.SpellPower, 280*0.3)
-	// }
-
-	// shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
-	// shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.ThunderingStrikes))
+	// shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
+	// shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	// shaman.AddStat(stats.Dodge, core.DodgeRatingPerDodgeChance*1*float64(shaman.Talents.Anticipation))
 	// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= []float64{1, 1.04, 1.07, 1.1}[shaman.Talents.WeaponMastery]
 
@@ -26,9 +21,6 @@ func (shaman *Shaman) ApplyTalents() {
 	// }
 	// if shaman.Talents.AncestralKnowledge > 0 {
 	// 	shaman.MultiplyStat(stats.Intellect, 1.0+0.02*float64(shaman.Talents.AncestralKnowledge))
-	// }
-	// if shaman.Talents.MentalQuickness > 0 {
-	// 	shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.1*float64(shaman.Talents.MentalQuickness))
 	// }
 	// if shaman.Talents.MentalDexterity > 0 {
 	// 	shaman.AddStatDependency(stats.Intellect, stats.AttackPower, []float64{0, 0.33, 0.66, 1}[shaman.Talents.MentalDexterity])
@@ -234,16 +226,16 @@ func (shaman *Shaman) ApplyTalents() {
 // 		Type:  core.CooldownTypeDPS,
 // 	})
 
-// 	if shaman.HasSetBonus(ItemSetFrostWitchRegalia, 2) {
+// 	if shaman.Talents.Feedback > 0 {
 // 		shaman.RegisterAura(core.Aura{
-// 			Label:    "Shaman T10 Elemental 2P Bonus",
+// 			Label:    "Feedback",
 // 			Duration: core.NeverExpires,
 // 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 // 				aura.Activate(sim)
 // 			},
 // 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 // 				if (spell == shaman.LightningBolt || spell == shaman.ChainLightning) && !eleMastSpell.CD.IsReady(sim) {
-// 					*eleMastSpell.CD.Timer = core.Timer(time.Duration(*eleMastSpell.CD.Timer) - time.Second*2)
+// 					*eleMastSpell.CD.Timer = core.Timer(time.Duration(*eleMastSpell.CD.Timer) - (time.Second * shaman.Talents.Feedback)
 // 					shaman.UpdateMajorCooldowns() // this could get expensive because it will be called all the time.
 // 				}
 // 			},

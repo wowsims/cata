@@ -32,7 +32,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 		},
 
 		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
-		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.05 + float64(shaman.Talents.ImprovedFireNova)*0.1,
+		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.1 + float64(shaman.Talents.ImprovedFireNova)*0.1,
 		CritMultiplier:   shaman.ElementalCritMultiplier(0),
 		ThreatMultiplier: shaman.spellThreatMultiplier(),
 

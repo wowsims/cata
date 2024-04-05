@@ -49,7 +49,7 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 	}
 
 	spellConfig := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 58804, Tag: int32(tag)},
+		ActionID:    core.ActionID{SpellID: 8323, Tag: int32(tag)},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    procMask,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
@@ -133,7 +133,7 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 }
 
 func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item, isDownranked bool) *core.Spell {
-	spellID := 58790
+	spellID := 8024
 	baseDamage := 68.5
 	if isDownranked {
 		spellID = 58789
@@ -271,7 +271,7 @@ func (shaman *Shaman) FrostbrandDebuffAura(target *core.Unit) *core.Aura {
 
 func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 	return shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 58796},
+		ActionID:    core.ActionID{SpellID: 8033},
 		SpellSchool: core.SpellSchoolFrost,
 		ProcMask:    core.ProcMaskEmpty,
 

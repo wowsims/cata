@@ -81,7 +81,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	leaderOfThePack: TristateEffect.TristateEffectImproved,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
 	sanctifiedRetribution: true,
-	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+	strengthOfEarthTotem: true,
 	trueshotAura: true,
 	wrathOfAirTotem: true,
 });
@@ -104,8 +104,7 @@ export const DefaultDebuffs = Debuffs.create({
 	heartOfTheCrusader: true,
 	judgementOfWisdom: true,
 	shadowMastery: true,
-	sunderArmor: true,
-	totemOfWrath: true,
+	sunderArmor: true
 });
 
 export const OtherDefaults = {
