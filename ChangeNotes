@@ -1,0 +1,17 @@
+in... cata/sim/mage/_fireball.go
+
+line 12: hasGlyph := mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfFireball)
+
+line 27: base cast time seems to be 2.55s (see math below)
+line 28: remove (improved fireball is no longer a talent)
+line 29: remove (glyph no longer affects cast time)
+line 35: remove (improved scorch no longer gives crit to spells)
+line 36: append the prime glyph (+5% crit chance to fireball)
+
+
+
+13.05% haste, 2.21s cast time
+86.95% of the og cast time
+2.21 = x * 86.95
+2.21/.8695 = 2.55s
+
