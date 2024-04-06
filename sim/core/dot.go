@@ -34,6 +34,7 @@ type Dot struct {
 	*Aura
 
 	NumberOfTicks int32         // number of ticks over the whole duration
+	BaseDuration  time.Duration // base duration of the dot w/o haste effects
 	TickLength    time.Duration // time between each tick
 
 	// If true, tick length will be shortened based on casting speed.
@@ -125,6 +126,15 @@ func (dot *Dot) RescheduleNextTick(sim *Simulation) {
 }
 
 func (dot *Dot) Apply(sim *Simulation) {
+
+	// for now all DoTs affected by haste (Player DoTs) should be affected
+	// by cata haste scaling no matter what
+	// TODO: Research how HoTs, physical DoTs and trinket induced DoTs might be handled
+	if dot.AffectedByCastSpeed {
+		dot.ApplyOrRefresh(sim)
+		return
+	}
+
 	dot.TakeSnapshot(sim, false)
 
 	dot.Cancel(sim)
@@ -165,7 +175,22 @@ func (dot *Dot) ApplyOrRefresh(sim *Simulation) {
 	dot.TakeSnapshot(sim, false)
 
 	dot.TickCount = 0
-	dot.RecomputeAuraDuration()
+
+	// we a have running dot tick
+	// the next tick never get's clipped and is added onto the dot's time for hasted dots
+	// https://cynwise.wordpress.com/2010/10/29/how-warlock-dots-work-in-cataclysm/
+	// https://youtu.be/hbmtLM3xBsI?si=5IHkechVubGqQStF&t=43 - plague tick ~0.7 seconds in from last spell
+	if dot.tickAction != nil && dot.AffectedByCastSpeed {
+
+		// save next tick timer as timer is computed based on tick time
+		// which we update in RecomputeAuraDuration
+		nextTick := dot.TimeUntilNextTick(sim)
+		dot.RecomputeAuraDuration()
+		dot.Aura.Duration += nextTick
+	} else {
+		dot.RecomputeAuraDuration()
+	}
+
 	dot.Aura.Activate(sim)
 }
 
@@ -179,6 +204,14 @@ func (dot *Dot) Cancel(sim *Simulation) {
 func (dot *Dot) RecomputeAuraDuration() {
 	if dot.AffectedByCastSpeed {
 		dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.TickLength, dot.Spell)
+
+		// cata haste logic here for dots
+		// channels seem not to be affected by the same logic
+		// see: https://youtu.be/Rr4YyKaU7Ik?si=Isuce7Z1bQWMWpMi&t=53
+		if !dot.isChanneled {
+			dot.NumberOfTicks = int32(round(float64(dot.BaseDuration) / float64(dot.tickPeriod)))
+		}
+
 		dot.Aura.Duration = dot.tickPeriod * time.Duration(dot.NumberOfTicks)
 	} else {
 		dot.tickPeriod = dot.TickLength
@@ -304,6 +337,7 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		Spell: config.Spell,
 
 		NumberOfTicks:       config.NumberOfTicks,
+		BaseDuration:        config.TickLength * time.Duration(config.NumberOfTicks),
 		TickLength:          config.TickLength,
 		AffectedByCastSpeed: config.AffectedByCastSpeed,
 
