@@ -65,7 +65,7 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		ThornsAura(character, 0)
 	}
 
-	if raidBuffs.MoonkinAura > 0 || raidBuffs.ElementalOath == proto.TristateEffect_TristateEffectImproved {
+	if raidBuffs.ElementalOath == proto.TristateEffect_TristateEffectImproved {
 		character.AddStat(stats.SpellCrit, 5*CritRatingPerCritChance)
 	} else if raidBuffs.ElementalOath == proto.TristateEffect_TristateEffectRegular {
 		character.AddStat(stats.SpellCrit, 3*CritRatingPerCritChance)
@@ -1327,20 +1327,6 @@ func (raid *Raid) ProcReplenishment(sim *Simulation, src ReplenishmentSource) {
 	}
 }
 
-func TotemicWrathAura(character *Character) *Aura {
-	aura := character.GetOrRegisterAura(Aura{
-		Label:      "TotemicWrath",
-		ActionID:   ActionID{SpellID: 77746},
-		Duration:   NeverExpires,
-		BuildPhase: CharacterBuildPhaseBuffs,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-	})
-	spellPowerBonusEffect(aura, 0)
-	return aura
-}
-
 func FlametongueTotemAura(character *Character) *Aura {
 	aura := character.GetOrRegisterAura(Aura{
 		Label:      "Flametongue Totem",
@@ -1351,18 +1337,46 @@ func FlametongueTotemAura(character *Character) *Aura {
 			aura.Activate(sim)
 		},
 	})
-	spellPowerBonusEffect(aura, 0)
+	spellPowerBonusEffect(aura, 0.6)
+	return aura
+}
+
+func ArcaneBrilliance(character *Character) *Aura {
+	aura := character.GetOrRegisterAura(Aura{
+		Label:      "Arcane Brilliance",
+		ActionID:   ActionID{SpellID: 1459},
+		Duration:   time.Duration(float64(time.Minute * 60)),
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+	spellPowerBonusEffect(aura, 0.6)
+	return aura
+}
+
+func TotemicWrathAura(character *Character) *Aura {
+	aura := character.GetOrRegisterAura(Aura{
+		Label:      "Totemic Wrath",
+		ActionID:   ActionID{SpellID: 77746},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+	spellPowerBonusEffect(aura, 0.1)
 	return aura
 }
 
 func DemonicPactAura(character *Character) *Aura {
 	aura := character.GetOrRegisterAura(Aura{
 		Label:      "Demonic Pact",
-		ActionID:   ActionID{SpellID: 47240},
-		Duration:   time.Second * 45,
+		ActionID:   ActionID{SpellID: 47236},
+		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseBuffs,
 	})
-	spellPowerBonusEffect(aura, 0)
+	spellPowerBonusEffect(aura, 0.10)
 	return aura
 }
 

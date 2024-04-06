@@ -665,22 +665,12 @@
 // 						{
 // 							label: 'Totemic Wrath',
 // 							actionId: ActionId.fromSpellId(57722),
-// 							playerData: playerClassAndTalent(
-// 								Class.ClassShaman,
-// 								'totemOfWrath',
-// 								player => player.getSpecOptions().classOptions?.totems?.fire != FireTotem.NoFireTotem,
-// 							),
-// 						},
-// 						{
-// 							label: 'Flametongue Totem',
-// 							actionId: ActionId.fromSpellId(8227),
-// 							playerData: playerClass(
-// 								Class.ClassShaman,
-// 								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.FlametongueTotem,
+// 							playerData: playerClass(Class.ClassShaman, player => player.getSpec() == Spec.SpecElementalShaman && player.getSpecOptions().classOptions?.totems?.fire != FireTotem.NoFireTotem),
 // 							),
 // 						},
 // 					],
 // 				},
+// TODO: Not sure if these buffs need separated from the above Spell Power. The below only add 6% vs the above spell power 10%
 // 				{
 // 					label: 'Minor Spell Power',
 // 					effects: [
@@ -690,6 +680,12 @@
 // 							playerData: playerClass(
 // 								Class.ClassShaman,
 // 								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.FlametongueTotem,
+// 							),
+// 						},
+// 						{
+// 							label: 'Arcane Brilliance',
+// 							actionId: ActionId.fromSpellId(1459),
+// 							playerData: playerClass(Class.ClassMage),
 // 							),
 // 						},
 // 					],
