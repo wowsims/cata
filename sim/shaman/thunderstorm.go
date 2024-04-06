@@ -8,16 +8,21 @@ import (
 )
 
 func (shaman *Shaman) registerThunderstormSpell() {
-	if !shaman.Talents.Thunderstorm {
+	if shaman.Spec != proto.Spec_SpecElementalShaman {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 59159}
+	actionID := core.ActionID{SpellID: 51490}
 	manaMetrics := shaman.NewManaMetrics(actionID)
 
 	manaRestore := 0.08
 	if shaman.HasMinorGlyph(proto.ShamanMinorGlyph_GlyphOfThunderstorm) {
-		manaRestore = 0.1
+		manaRestore = 0.10
+	}
+
+	cooldown := time.Second * 45
+	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfThunder) {
+		cooldown = 35
 	}
 
 	shaman.Thunderstorm = shaman.RegisterSpell(core.SpellConfig{
@@ -27,8 +32,7 @@ func (shaman *Shaman) registerThunderstormSpell() {
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.1,
-			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection),
+			BaseCost: 0.0,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -36,23 +40,22 @@ func (shaman *Shaman) registerThunderstormSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
-				Duration: time.Second * 45,
+				Duration: cooldown,
 			},
 		},
 
 		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
-		BonusCritRating:  core.TernaryFloat64(shaman.Talents.CallOfThunder, 5*core.CritRatingPerCritChance, 0),
+		BonusCritRating:  0,
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
-		CritMultiplier:   shaman.ElementalCritMultiplier(0),
-		ThreatMultiplier: shaman.spellThreatMultiplier(),
+		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			shaman.AddMana(sim, shaman.MaxMana()*manaRestore, manaMetrics)
 
 			if shaman.thunderstormInRange {
-				dmgFromSP := 0.172 * spell.SpellPower()
+				dmgFromSP := 0.571 * spell.SpellPower()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					baseDamage := sim.Roll(1450, 1656) + dmgFromSP
+					baseDamage := 1637 + dmgFromSP
 					baseDamage *= sim.Encounter.AOECapMultiplier()
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}

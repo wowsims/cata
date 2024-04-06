@@ -17,6 +17,11 @@ func (shaman *Shaman) newTotemSpellConfig(baseCost float64, spellID int32) core.
 			Multiplier: 1 -
 				0.15*float64(shaman.Talents.TotemicFocus),
 		},
+		// Cast: core.CastConfig{
+		// 	DefaultCast: core.Cast{
+		// 		GCD: core.GCDDefault,
+		// 	},
+		// },
 	}
 }
 
@@ -47,7 +52,7 @@ func (shaman *Shaman) registerManaSpringTotemSpell() {
 func (shaman *Shaman) registerHealingStreamTotemSpell() {
 	config := shaman.newTotemSpellConfig(0.03, 5394)
 	hsHeal := shaman.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 52042},
+		ActionID:         core.ActionID{SpellID: 5394},
 		SpellSchool:      core.SpellSchoolNature,
 		ProcMask:         core.ProcMaskEmpty,
 		Flags:            core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete,
@@ -55,8 +60,7 @@ func (shaman *Shaman) registerHealingStreamTotemSpell() {
 		CritMultiplier:   1,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO: find healing stream coeff
-			healing := 25 + spell.HealingPower(target)*0.08272
+			healing := 28 + spell.HealingPower(target)*0.08272
 			spell.CalcAndDealHealing(sim, target, healing, spell.OutcomeHealing)
 		},
 	})

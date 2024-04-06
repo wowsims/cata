@@ -44,10 +44,6 @@ func (shaman *Shaman) ApplyTalents() {
 	// shaman.registerManaTideTotemCD()
 }
 
-// func (shaman *Shaman) spellThreatMultiplier() float64 {
-// 	return []float64{1, 0.9, 0.8, 0.7}[shaman.Talents.ElementalPrecision]
-// }
-
 // func (shaman *Shaman) applyElementalFocus() {
 // 	if !shaman.Talents.ElementalFocus {
 // 		return

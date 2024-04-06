@@ -13,13 +13,13 @@ const (
 )
 
 // Shared precomputation logic for LB and CL.
-func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isLightningOverload bool) core.SpellConfig {
+func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isElementalOverload bool) core.SpellConfig {
 	mask := core.ProcMaskSpellDamage
-	if isLightningOverload {
+	if isElementalOverload {
 		mask = core.ProcMaskProc
 	}
 	flags := SpellFlagElectric | SpellFlagFocusable
-	if !isLightningOverload {
+	if !isElementalOverload {
 		flags |= core.SpellFlagAPL
 	}
 	spell := core.SpellConfig{
@@ -30,12 +30,12 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 		MetricSplits: 6,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   core.TernaryFloat64(isLightningOverload, 0, baseCost),
+			BaseCost:   core.TernaryFloat64(isElementalOverload, 0, baseCost),
 			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				CastTime: baseCastTime - time.Millisecond*100*time.Duration(shaman.Talents.LightningMastery),
+				CastTime: baseCastTime,
 				GCD:      core.GCDDefault,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
@@ -43,23 +43,20 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 			},
 		},
 
-		BonusHitRating: float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
-		BonusCritRating: 0 +
-			float64(shaman.Talents.TidalMastery)*core.CritRatingPerCritChance +
-			core.TernaryFloat64(shaman.Talents.CallOfThunder, 5*core.CritRatingPerCritChance, 0),
+		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
+		BonusCritRating:  0,
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
-		CritMultiplier:   shaman.ElementalCritMultiplier(0),
-		ThreatMultiplier: shaman.spellThreatMultiplier(),
+		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 	}
 
-	if isLightningOverload {
+	if isElementalOverload {
 		spell.ActionID.Tag = CastTagLightningOverload
 		spell.Cast.DefaultCast.CastTime = 0
 		spell.Cast.DefaultCast.GCD = 0
 		spell.Cast.DefaultCast.Cost = 0
 		spell.Cast.ModifyCast = nil
 		spell.MetricSplits = 0
-		spell.DamageMultiplier *= 0.5
+		spell.DamageMultiplier *= 0.75
 		spell.ThreatMultiplier = 0
 	}
 

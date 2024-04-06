@@ -82,17 +82,18 @@ type Shaman struct {
 	// The expiration time of each totem (earth, air, fire, water).
 	TotemExpirations [4]time.Duration
 
-	LightningBolt   *core.Spell
-	LightningBoltLO *core.Spell
+	LightningBolt         *core.Spell
+	LightningBoltOverload *core.Spell
 
-	ChainLightning     *core.Spell
-	ChainLightningHits []*core.Spell
-	ChainLightningLOs  []*core.Spell
+	ChainLightning          *core.Spell
+	ChainLightningHits      []*core.Spell
+	ChainLightningOverloads []*core.Spell
 
-	LavaBurst   *core.Spell
-	FireNova    *core.Spell
-	LavaLash    *core.Spell
-	Stormstrike *core.Spell
+	LavaBurst         *core.Spell
+	LavaBurstOverload *core.Spell
+	FireNova          *core.Spell
+	LavaLash          *core.Spell
+	Stormstrike       *core.Spell
 
 	LightningShield     *core.Spell
 	LightningShieldAura *core.Aura
@@ -217,30 +218,31 @@ func (shaman *Shaman) Initialize() {
 	// shaman.registerFeralSpirit()
 	// shaman.registerFireElementalTotem()
 	// shaman.registerFireNovaSpell()
-	// shaman.registerLavaBurstSpell()
+	shaman.registerLavaBurstSpell()
 	// shaman.registerLavaLashSpell()
-	// shaman.registerLightningBoltSpell()
+	shaman.registerLightningBoltSpell()
 	// shaman.registerLightningShieldSpell()
 	// shaman.registerMagmaTotemSpell()
-	// shaman.registerManaSpringTotemSpell()
-	// shaman.registerHealingStreamTotemSpell()
+	//shaman.registerManaSpringTotemSpell()
+	//shaman.registerHealingStreamTotemSpell()
 	// shaman.registerSearingTotemSpell()
 	shaman.registerShocks()
 	// shaman.registerStormstrikeSpell()
-	// shaman.registerStrengthOfEarthTotemSpell()
-	// shaman.registerThunderstormSpell()
+	//shaman.registerStrengthOfEarthTotemSpell()
+	shaman.registerThunderstormSpell()
 	// shaman.registerTotemicWrathSpell()
-	// shaman.registerFlametongueTotemSpell()
-	// shaman.registerTremorTotemSpell()
-	// shaman.registerStoneskinTotemSpell()
-	// shaman.registerWindfuryTotemSpell()
-	// shaman.registerWrathOfAirTotemSpell()
+	//shaman.registerFlametongueTotemSpell()
+	//shaman.registerTremorTotemSpell()
+	//shaman.registerStoneskinTotemSpell()
+	//shaman.registerWindfuryTotemSpell()
+	//shaman.registerWrathOfAirTotemSpell()
 	shaman.registerUnleashElements()
+	shaman.registerEarthquakeSpell()
 
 	// // This registration must come after all the totems are registered
-	// shaman.registerCallOfTheElements()
+	//shaman.registerCallOfTheElements()
 
-	// shaman.registerBloodlustCD()
+	shaman.registerBloodlustCD()
 
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
 }
@@ -288,4 +290,16 @@ func (shaman *Shaman) ElementalFuryCritMultiplier(secondary float64) float64 {
 	elementalBonus += secondary
 
 	return shaman.SpellCritMultiplier(1, elementalBonus)
+}
+
+func (shaman *Shaman) GetOverloadChance() float64 {
+	overloadChance := 0.0
+
+	if shaman.Spec == proto.Spec_SpecElementalShaman {
+		//  TODO: Get mastery bonus
+		masteryBonus := 0.0
+		overloadChance = 0.16 + masteryBonus
+	}
+
+	return overloadChance
 }
