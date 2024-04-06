@@ -26,9 +26,8 @@ func (shaman *Shaman) newUnleashElementsSpellConfig(unleashElementsTimer *core.T
 	}
 }
 
-func (shaman *Shaman) registerUnleashElementsFlameTongue(unleashElementsTimer *core.Timer) {
-	//TODO: confirm spell coefficient
-	spellCoeff := 0.50
+func (shaman *Shaman) registerUnleashFlame(unleashElementsTimer *core.Timer) {
+	spellCoeff := 0.429
 
 	config := shaman.newUnleashElementsSpellConfig(unleashElementsTimer)
 	config.SpellSchool = core.SpellSchoolFire
@@ -41,29 +40,27 @@ func (shaman *Shaman) registerUnleashElementsFlameTongue(unleashElementsTimer *c
 		spell.DealDamage(sim, result)
 	}
 
-	shaman.UnleashElementsFlameTongue = shaman.RegisterSpell(config)
+	shaman.UnleashFlame = shaman.RegisterSpell(config)
 }
 
-func (shaman *Shaman) registerUnleashElementsFrostbrand(unleashElementsTimer *core.Timer) {
-	//TODO: confirm spell coefficient
-	spellCoeff := 0.40
+func (shaman *Shaman) registerUnleashFrost(unleashElementsTimer *core.Timer) {
+	spellCoeff := 0.386
 
 	config := shaman.newUnleashElementsSpellConfig(unleashElementsTimer)
 	config.SpellSchool = core.SpellSchoolFrost
 	config.ProcMask = core.ProcMaskSpellDamage
 	config.BonusHitRating = float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
 
-	//TODO: confirm spell coefficient
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := 873 + spellCoeff*spell.SpellPower()
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		spell.DealDamage(sim, result)
 	}
 
-	shaman.UnleashElementsFrostbrand = shaman.RegisterSpell(config)
+	shaman.UnleashFrost = shaman.RegisterSpell(config)
 }
 
-func (shaman *Shaman) registerUnleashElementsWindfury(unleashElementsTimer *core.Timer) {
+func (shaman *Shaman) registerUnleashWind(unleashElementsTimer *core.Timer) {
 	config := shaman.newUnleashElementsSpellConfig(unleashElementsTimer)
 	config.SpellSchool = core.SpellSchoolPhysical
 	config.ProcMask = core.ProcMaskSpellDamage
@@ -77,12 +74,12 @@ func (shaman *Shaman) registerUnleashElementsWindfury(unleashElementsTimer *core
 	// 	spell.DealDamage(sim, result)
 	// },
 
-	shaman.UnleashElementsWindfury = shaman.RegisterSpell(config)
+	shaman.UnleashWind = shaman.RegisterSpell(config)
 }
 
-func (shaman *Shaman) registerUnleashElementsEarthliving(unleashElementsTimer *core.Timer) {
-	spellCoeff := 0.20
-	//TODO: need?
+func (shaman *Shaman) registerUnleashLife(unleashElementsTimer *core.Timer) {
+	spellCoeff := 0.201
+	//TODO: does this benefit from shaman.Talents.TidalWaves?
 	//bonusCoeff := 0.02 * float64(shaman.Talents.TidalWaves)
 
 	config := shaman.newUnleashElementsSpellConfig(unleashElementsTimer)
@@ -107,13 +104,13 @@ func (shaman *Shaman) registerUnleashElementsEarthliving(unleashElementsTimer *c
 		}
 	}
 
-	shaman.UnleashElementsEarthliving = shaman.RegisterSpell(config)
+	shaman.UnleashLife = shaman.RegisterSpell(config)
 }
 
 func (shaman *Shaman) registerUnleashElements() {
 	unleashElementsTimer := shaman.NewTimer()
-	shaman.registerUnleashElementsFlameTongue(unleashElementsTimer)
-	shaman.registerUnleashElementsFrostbrand(unleashElementsTimer)
-	shaman.registerUnleashElementsWindfury(unleashElementsTimer)
-	shaman.registerUnleashElementsEarthliving(unleashElementsTimer)
+	shaman.registerUnleashFlame(unleashElementsTimer)
+	shaman.registerUnleashFrost(unleashElementsTimer)
+	shaman.registerUnleashWind(unleashElementsTimer)
+	shaman.registerUnleashLife(unleashElementsTimer)
 }

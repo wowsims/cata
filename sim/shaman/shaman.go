@@ -123,10 +123,10 @@ type Shaman struct {
 	WrathOfAirTotem  *core.Spell
 	FlametongueTotem *core.Spell
 
-	UnleashElementsEarthliving *core.Spell
-	UnleashElementsFlameTongue *core.Spell
-	UnleashElementsFrostbrand  *core.Spell
-	UnleashElementsWindfury    *core.Spell
+	UnleashLife  *core.Spell
+	UnleashFlame *core.Spell
+	UnleashFrost *core.Spell
+	UnleashWind  *core.Spell
 
 	MaelstromWeaponAura *core.Aura
 

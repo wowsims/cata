@@ -83,10 +83,8 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 		TickLength:          time.Second * 3,
 		AffectedByCastSpeed: true,
 
-		//TODO: Snapshot?
-		//TODO: I don't know what 834/6 is
 		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-			dot.SnapshotBaseDamage = 834/6 + 0.1*dot.Spell.SpellPower()
+			dot.SnapshotBaseDamage = 856/6 + 0.1*dot.Spell.SpellPower()
 			dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 
 			dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
