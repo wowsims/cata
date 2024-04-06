@@ -1537,9 +1537,11 @@ func SpellHasteBonusEffect(aura *Aura, spellHastePercent float64) *ExclusiveEffe
 		Priority: spellHastePercent,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.PseudoStats.CastSpeedMultiplier *= (1 + ee.Priority)
+			ee.Aura.Unit.updateCastSpeed()
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.PseudoStats.CastSpeedMultiplier /= (1 + ee.Priority)
+			ee.Aura.Unit.updateCastSpeed()
 		},
 	})
 }
