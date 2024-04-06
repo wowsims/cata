@@ -7,10 +7,11 @@ import (
 )
 
 func (priest *Priest) registerVampiricTouchSpell() {
-	var replSrc core.ReplenishmentSource
-	if priest.Talents.VampiricTouch {
-		replSrc = priest.Env.Raid.NewReplenishmentSource(core.ActionID{SpellID: 34914})
+	if !priest.Talents.VampiricTouch {
+		return
 	}
+
+	replSrc := priest.Env.Raid.NewReplenishmentSource(core.ActionID{SpellID: 34914})
 
 	priest.VampiricTouch = priest.RegisterSpell(PriestSpellVampiricTouch, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 34914},
