@@ -81,7 +81,6 @@ export const DefensiveCooldownBuff = InputHelpers.makeMultiIconInput([
 
 export const HastePercentBuff = InputHelpers.makeMultiIconInput([
 	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(53648), fieldName: 'swiftRetribution'}),
-	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(48396), fieldName: 'moonkinAura', value: TristateEffect.TristateEffectImproved}),
 ], 'Haste %');
 
 export const HealthBuff = InputHelpers.makeMultiIconInput([
