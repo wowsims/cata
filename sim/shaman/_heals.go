@@ -15,7 +15,7 @@ func (shaman *Shaman) registerAncestralHealingSpell() {
 		Flags:            core.SpellFlagHelpful | core.SpellFlagAPL,
 		DamageMultiplier: 1,
 		CritMultiplier:   1,
-		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealHealing(sim, target, shaman.ancestralHealingAmount, spell.OutcomeHealing)
 		},
@@ -57,7 +57,7 @@ func (shaman *Shaman) registerLesserHealingWaveSpell() {
 		BonusCritRating:  float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
-		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			healPower := spell.HealingPower(target)
@@ -122,7 +122,7 @@ func (shaman *Shaman) registerRiptideSpell() {
 		BonusCritRating:  float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
-		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
+		ThreatMultiplier: 1,
 
 		Hot: core.DotConfig{
 			Aura: core.Aura{
@@ -206,7 +206,7 @@ func (shaman *Shaman) registerHealingWaveSpell() {
 		BonusCritRating:  float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
-		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			healPower := spell.HealingPower(target)
@@ -339,7 +339,7 @@ func (shaman *Shaman) registerChainHealSpell() {
 		BonusCritRating:  float64(shaman.Talents.TidalMastery) * 1 * core.CritRatingPerCritChance,
 		DamageMultiplier: 1 + 0.1*float64(shaman.Talents.ImprovedChainHeal),
 		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
-		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			bounceCoeff := 1.0

@@ -122,6 +122,11 @@ type Shaman struct {
 	WrathOfAirTotem  *core.Spell
 	FlametongueTotem *core.Spell
 
+	UnleashElementsEarthliving *core.Spell
+	UnleashElementsFlameTongue *core.Spell
+	UnleashElementsFrostbrand  *core.Spell
+	UnleashElementsWindfury    *core.Spell
+
 	MaelstromWeaponAura *core.Aura
 
 	// Healing Spells
@@ -151,6 +156,9 @@ func (shaman *Shaman) GetCharacter() *core.Character {
 	return &shaman.Character
 }
 
+func (shaman *Shaman) HasPrimeGlyph(glyph proto.ShamanPrimeGlyph) bool {
+	return shaman.HasGlyph(int32(glyph))
+}
 func (shaman *Shaman) HasMajorGlyph(glyph proto.ShamanMajorGlyph) bool {
 	return shaman.HasGlyph(int32(glyph))
 }
@@ -217,7 +225,7 @@ func (shaman *Shaman) Initialize() {
 	// shaman.registerManaSpringTotemSpell()
 	// shaman.registerHealingStreamTotemSpell()
 	// shaman.registerSearingTotemSpell()
-	// shaman.registerShocks()
+	shaman.registerShocks()
 	// shaman.registerStormstrikeSpell()
 	// shaman.registerStrengthOfEarthTotemSpell()
 	// shaman.registerThunderstormSpell()
@@ -227,6 +235,7 @@ func (shaman *Shaman) Initialize() {
 	// shaman.registerStoneskinTotemSpell()
 	// shaman.registerWindfuryTotemSpell()
 	// shaman.registerWrathOfAirTotemSpell()
+	shaman.registerUnleashElements()
 
 	// // This registration must come after all the totems are registered
 	// shaman.registerCallOfTheElements()
@@ -269,7 +278,14 @@ func (shaman *Shaman) Reset(sim *core.Simulation) {
 
 }
 
-// func (shaman *Shaman) ElementalCritMultiplier(secondary float64) float64 {
-// 	critBonus := 0.2*float64(shaman.Talents.ElementalFury) + secondary
-// 	return shaman.SpellCritMultiplier(1, critBonus)
-// }
+func (shaman *Shaman) ElementalFuryCritMultiplier(secondary float64) float64 {
+	elementalBonus := 0.0
+
+	if shaman.Spec == proto.Spec_SpecElementalShaman {
+		elementalBonus = 1.0
+	}
+
+	elementalBonus += secondary
+
+	return shaman.SpellCritMultiplier(1, elementalBonus)
+}

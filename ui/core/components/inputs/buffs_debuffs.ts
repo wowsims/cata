@@ -102,7 +102,7 @@ export const MeleeCritBuff = InputHelpers.makeMultiIconInput([
 
 export const MeleeHasteBuff = InputHelpers.makeMultiIconInput([
 	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(55610), fieldName: 'icyTalons'}),
-	makeTristateRaidBuffInput({actionId: ActionId.fromSpellId(65990), impId: ActionId.fromSpellId(29193), fieldName: 'windfuryTotem'}),
+	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(8512), fieldName: 'windfuryTotem'}),
 ], 'Melee Haste');
 
 export const MP5Buff = InputHelpers.makeMultiIconInput([
