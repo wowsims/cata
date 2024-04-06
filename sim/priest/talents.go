@@ -88,7 +88,7 @@ func (priest *Priest) ApplyTalents() {
 	// Shadow Talents
 	// Darkness
 	if priest.Talents.Darkness > 0 {
-		priest.AddStat(stats.SpellHaste, float64(priest.Talents.Darkness)*core.HasteRatingPerHastePercent)
+		priest.PseudoStats.CastSpeedMultiplier *= 1 + (0.01 * float64(priest.Talents.Darkness))
 	}
 
 	// Improved Shadow Word: Pain
