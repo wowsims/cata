@@ -30,8 +30,9 @@ func (priest *Priest) registerShadowWordPainSpell() {
 				Label: "ShadowWordPain",
 			},
 
-			NumberOfTicks: 6,
-			TickLength:    time.Second * 3,
+			NumberOfTicks:       6,
+			TickLength:          time.Second * 3,
+			AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = 194.709 + 0.161*dot.Spell.SpellPower()
