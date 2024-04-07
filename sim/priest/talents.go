@@ -430,7 +430,10 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dp := priest.DevouringPlague
 			dot := dp.Dot(target)
-			dmg := float64(dot.NumberOfTicks*int32(dp.ExpectedTickDamageFromCurrentSnapshot(sim, target))*priest.Talents.ImprovedDevouringPlague) * 0.15
+
+			// No need to use snapshot dmg. It won't be initialized in time and we're in the same sim cycle
+			// so all mods and buffs will be the same
+			dmg := float64(dot.NumberOfTicks*int32(dp.ExpectedTickDamage(sim, target))*priest.Talents.ImprovedDevouringPlague) * 0.15
 			spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit)
 		},
 	})
