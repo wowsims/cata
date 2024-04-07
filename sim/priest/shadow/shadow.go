@@ -77,6 +77,13 @@ func (spriest *ShadowPriest) Reset(sim *core.Simulation) {
 func (spriest *ShadowPriest) ApplyTalents() {
 
 	// apply shadow spec specific auras
+	// make it an aura so it's visible that it's used in the timeline
+	spriest.AddStaticMod(core.SpellModConfig{
+		FloatValue: 0.15,
+		ClassMask:  int64(priest.PriestSpellsAll),
+		Kind:       core.SpellMod_DamageDonePercent,
+	})
+
 	spriest.RegisterAura(
 		core.Aura{
 			Label:    "ShadowPower",
@@ -87,17 +94,26 @@ func (spriest *ShadowPriest) ApplyTalents() {
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},
-			OnGain: func(_ *core.Aura, _ *core.Simulation) {
-				// only shadow damage here
-				spriest.Priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] += 0.15
-			},
-			OnExpire: func(_ *core.Aura, _ *core.Simulation) {
-				spriest.Priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] -= 0.15
-			},
 		},
 	)
 
-	spriest.Priest.ShadowCritMultiplier = 1.0
+	// Shadow Power
+	spriest.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CritMultiplier,
+		FloatValue: 1.0,
+		School:     core.SpellSchoolShadow,
+		ClassMask:  int64(priest.PriestShadowSpells),
+	})
+
+	shadowOrbMod := spriest.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  int64(priest.PriestSpellMindBlast) | int64(priest.PriestSpellMindSpike),
+		FloatValue: 0.216 + spriest.GetMasteryPoints()*0.0145,
+		Kind:       core.SpellMod_DamageDoneAdd,
+	})
+
+	spriest.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+		shadowOrbMod.UpdateFloatValue(0.216 + core.MasteryRatingToMasteryPoints(newMastery)*0.0145)
+	})
 
 	// mastery aura
 	spriest.shadowOrbsAura = spriest.RegisterAura(core.Aura{
@@ -105,30 +121,39 @@ func (spriest *ShadowPriest) ApplyTalents() {
 		ActionID:  core.ActionID{SpellID: 77487},
 		Duration:  time.Minute,
 		MaxStacks: 3,
-		OnStacksChange: func(_ *core.Aura, _ *core.Simulation, _ int32, newStacks int32) {
-			priest.AddOrReplaceMod(&spriest.DamageDonePercentAddMods, &priest.PriestAuraMod[float64]{
-				SpellID:    77487,
-				ClassSpell: priest.PriestSpellMindBlast | priest.PriestSpellMindSpike,
+		OnStacksChange: func(_ *core.Aura, _ *core.Simulation, oldStacks int32, newStacks int32) {
+			for shadowOrbMod.Stacks < newStacks {
+				shadowOrbMod.AddStack()
+			}
 
-				// 10% + 11.6 base value from our mastery
-				BaseValue: 0.216,
-
-				// add 1.45% dmg per mastery point
-				DynamicValue: func(p *priest.Priest) float64 {
-					return p.GetMasteryPoints() * 0.0145
-				},
-				Stacks: newStacks,
-			})
+			for shadowOrbMod.Stacks > newStacks {
+				shadowOrbMod.RemoveStack()
+			}
 		},
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-			if !spriest.MindBlast.IsEqual(spell) && !spriest.MindSpike.IsEqual(spell) {
+			if spriest.MindBlast != spell && spriest.MindSpike != spell {
 				return
 			}
 
 			spriest.empoweredShadowAura.Activate(sim)
 			aura.Deactivate(sim)
 		},
+
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shadowOrbMod.Deactivate()
+			shadowOrbMod.Stacks = 0
+		},
+	})
+
+	empoweredShadowMod := spriest.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  int64(priest.PriestSpellDoT),
+		Kind:       core.SpellMod_DamageDoneAdd,
+		FloatValue: 0.216 + spriest.GetMasteryPoints()*0.0145,
+	})
+
+	spriest.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+		empoweredShadowMod.UpdateFloatValue(0.216 + core.MasteryRatingToMasteryPoints(newMastery)*0.0145)
 	})
 
 	spriest.empoweredShadowAura = spriest.RegisterAura(core.Aura{
@@ -136,21 +161,11 @@ func (spriest *ShadowPriest) ApplyTalents() {
 		ActionID: core.ActionID{SpellID: 95799},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			priest.AddOrReplaceMod(&spriest.DamageDonePercentAddMods, &priest.PriestAuraMod[float64]{
-				SpellID:    95799,
-				ClassSpell: priest.PriestSpellDoT,
-				School:     core.SpellSchoolShadow,
-
-				// since we're simming 85 players 10 + 11.6 mastery base value
-				BaseValue: 0.216,
-				DynamicValue: func(p *priest.Priest) float64 {
-					return p.GetMasteryPoints() * 0.0145
-				},
-			})
+			empoweredShadowMod.Activate()
 		},
 
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			priest.RemoveMod(&spriest.DamageDonePercentAddMods, 95799)
+			empoweredShadowMod.Deactivate()
 		},
 	})
 
@@ -178,8 +193,8 @@ func handleShadowOrbPower(spriest *ShadowPriest, sim *core.Simulation, spell *co
 		return
 	}
 
-	if spell == spriest.ShadowWordPain.Spell || spell.SpellID == spriest.MindFlayAPL.SpellID {
-		procChance := spriest.GetClassSpellProcChance(0.1, priest.PriestSpellShadowOrbPassive, core.SpellSchoolShadow)
+	if spell == spriest.ShadowWordPain || spell.SpellID == spriest.MindFlayAPL.SpellID {
+		procChance := 0.1 + float64(spriest.Talents.HarnessedShadows)*0.04
 		if sim.RandomFloat("Shadow Orb Power") < procChance {
 			spriest.shadowOrbsAura.Activate(sim)
 			spriest.shadowOrbsAura.AddStack(sim)

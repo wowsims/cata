@@ -1,18 +1,11 @@
 package priest
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
 var TalentTreeSizes = [3]int{21, 21, 21}
-
-type PriestSpell struct {
-	*core.Spell
-	ClassSpell PriestSpellFlag
-}
 
 type Priest struct {
 	core.Character
@@ -26,14 +19,6 @@ type Priest struct {
 	ShadowfiendAura *core.Aura
 	ShadowfiendPet  *Shadowfiend
 
-	// Aura Mods
-	DamageDonePercentMods    []*PriestAuraMod[float64]
-	DamageDonePercentAddMods []*PriestAuraMod[float64]
-	PowerCostPercentMods     []*PriestAuraMod[float64]
-	CastTimePercentMods      []*PriestAuraMod[float64]
-	CooldownMods             []*PriestAuraMod[time.Duration]
-	ProcChanceMods           []*PriestAuraMod[float64]
-
 	// cached cast stuff
 	// TODO: aoe multi-target situations will need multiple spells ticking for each target.
 	InnerFocusAura         *core.Aura
@@ -46,35 +31,35 @@ type Priest struct {
 	SurgeOfLightProcAura *core.Aura
 
 	// might want to move these spell / talents into spec specific initialization
-	Archangel         *PriestSpell
-	DarkArchangel     *PriestSpell
-	BindingHeal       *PriestSpell
-	CircleOfHealing   *PriestSpell
-	DevouringPlague   *PriestSpell
-	FlashHeal         *PriestSpell
-	GreaterHeal       *PriestSpell
-	HolyFire          *PriestSpell
-	InnerFocus        *PriestSpell
-	ShadowWordPain    *PriestSpell
-	MindBlast         *PriestSpell
-	MindFlay          []*PriestSpell
-	MindFlayAPL       *PriestSpell
-	MindSear          []*PriestSpell
-	MindSearAPL       *PriestSpell
-	Penance           *PriestSpell
-	PenanceHeal       *PriestSpell
-	PowerWordShield   *PriestSpell
-	PrayerOfHealing   *PriestSpell
-	PrayerOfMending   *PriestSpell
-	Renew             *PriestSpell
-	EmpoweredRenew    *PriestSpell
-	ShadowWordDeath   *PriestSpell
-	Shadowfiend       *PriestSpell
-	Smite             *PriestSpell
-	VampiricTouch     *PriestSpell
-	Dispersion        *PriestSpell
-	MindSpike         *PriestSpell
-	ShadowyApparition *PriestSpell
+	Archangel         *core.Spell
+	DarkArchangel     *core.Spell
+	BindingHeal       *core.Spell
+	CircleOfHealing   *core.Spell
+	DevouringPlague   *core.Spell
+	FlashHeal         *core.Spell
+	GreaterHeal       *core.Spell
+	HolyFire          *core.Spell
+	InnerFocus        *core.Spell
+	ShadowWordPain    *core.Spell
+	MindBlast         *core.Spell
+	MindFlay          []*core.Spell
+	MindFlayAPL       *core.Spell
+	MindSear          []*core.Spell
+	MindSearAPL       *core.Spell
+	Penance           *core.Spell
+	PenanceHeal       *core.Spell
+	PowerWordShield   *core.Spell
+	PrayerOfHealing   *core.Spell
+	PrayerOfMending   *core.Spell
+	Renew             *core.Spell
+	EmpoweredRenew    *core.Spell
+	ShadowWordDeath   *core.Spell
+	Shadowfiend       *core.Spell
+	Smite             *core.Spell
+	VampiricTouch     *core.Spell
+	Dispersion        *core.Spell
+	MindSpike         *core.Spell
+	ShadowyApparition *core.Spell
 
 	WeakenedSouls core.AuraArray
 
@@ -132,47 +117,6 @@ func (priest *Priest) GetCharacter() *core.Character {
 func (priest *Priest) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
-func (priest *Priest) RegisterSpell(flag PriestSpellFlag, config core.SpellConfig) *PriestSpell {
-
-	spell := &PriestSpell{ClassSpell: flag}
-	apply := config.ApplyEffects
-	snapShot := config.Dot.OnSnapshot
-
-	if config.ManaCost.Multiplier == 0 {
-		config.ManaCost.Multiplier = 1
-	}
-
-	if config.CritMultiplier == 0 {
-		config.CritMultiplier = 1
-	}
-
-	if config.ThreatMultiplier == 0 {
-		config.ThreatMultiplier = 1
-	}
-
-	config.ManaCost.Multiplier *= priest.GetClassSpellModPowerPercent(flag, config.SpellSchool)
-	config.CritMultiplier *= priest.SpellCritMultiplier(1, priest.ShadowCritMultiplier)
-	config.Cast.CD.Duration += priest.GetClassSpellModCooldown(flag, config.SpellSchool)
-	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		spell.DamageMultiplier = priest.GetClassSpellDamageDonePercent(flag, config.SpellSchool)
-		spell.DamageMultiplierAdditive = priest.GetClassSpellDamageDoneAddPercent(flag, config.SpellSchool)
-		if apply != nil {
-			apply(sim, target, spell)
-		}
-	}
-
-	if snapShot != nil {
-		config.Dot.OnSnapshot = func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-			dot.Spell.DamageMultiplier = priest.GetClassSpellDamageDonePercent(PriestSpellMindFlay, core.SpellSchoolShadow)
-			dot.Spell.DamageMultiplierAdditive = priest.GetClassSpellDamageDoneAddPercent(PriestSpellMindFlay, core.SpellSchoolShadow)
-			snapShot(sim, target, dot, isRollover)
-		}
-	}
-
-	spell.Spell = priest.Unit.RegisterSpell(config)
-	return spell
-}
-
 func (priest *Priest) Initialize() {
 
 	// base scaling value for a level 85 priest
@@ -193,14 +137,14 @@ func (priest *Priest) Initialize() {
 	priest.MindFlayAPL = priest.newMindFlaySpell(0)
 	priest.MindSearAPL = priest.newMindSearSpell(0)
 
-	priest.MindFlay = []*PriestSpell{
+	priest.MindFlay = []*core.Spell{
 		nil, // So we can use # of ticks as the index
 		priest.newMindFlaySpell(1),
 		priest.newMindFlaySpell(2),
 		priest.newMindFlaySpell(3),
 	}
 
-	priest.MindSear = []*PriestSpell{
+	priest.MindSear = []*core.Spell{
 		nil, // So we can use # of ticks as the index
 		priest.newMindSearSpell(1),
 		priest.newMindSearSpell(2),
@@ -315,6 +259,8 @@ const (
 	PriestSpellVampiricEmbrace
 	PriestSpellVampiricTouch
 
+	PriestSpellLast
+	PriestSpellsAll    = PriestSpellLast<<1 - 1
 	PriestSpellDoT     = PriestSpellDevouringPlague | PriestSpellHolyFire | PriestSpellMindFlay | PriestSpellShadowWordPain | PriestSpellVampiricTouch
 	PriestSpellInstant = PriestSpellCircleOfHealing |
 		PriestSpellDesperatePrayer |
@@ -334,113 +280,10 @@ const (
 		PriestSpellShadowWordDeath |
 		PriestSpellShadowWordPain |
 		PriestSpellVampiricEmbrace
+	PriestShadowSpells = PriestSpellImprovedDevouringPlague |
+		PriestSpellDevouringPlague |
+		PriestSpellShadowWordDeath |
+		PriestSpellShadowWordPain |
+		PriestSpellMindFlay |
+		PriestSpellMindBlast
 )
-
-type PriestAuraMod[T any] struct {
-	ClassSpell PriestSpellFlag
-	School     core.SpellSchool
-	BaseValue  T
-
-	// dynamic evaluation will be added to the given BaseValue
-	DynamicValue func(*Priest) T
-
-	// Stacks * (BaseValue + DynamicValue)
-	Stacks  int32
-	SpellID int32
-}
-
-// Adds a PriestAuraMod to the list of modifiers or replaces an
-// existing mod if it has the same spellID.
-func AddOrReplaceMod[T any](modList *[]*PriestAuraMod[T], mod *PriestAuraMod[T]) {
-	if mod.SpellID == 0 {
-		panic("mod.SpellID should never be 0")
-	}
-
-	if mod.Stacks == 0 {
-		mod.Stacks = 1
-	}
-
-	for key, val := range *modList {
-		if val.SpellID == mod.SpellID && val.ClassSpell == mod.ClassSpell {
-			(*modList)[key] = mod
-			return
-		}
-	}
-
-	*modList = append(*modList, mod)
-}
-
-// Removes all mods for a specific spellID
-func RemoveMod[T any](modList *[]*PriestAuraMod[T], spellID int32) {
-	removeIdx := []int{}
-	for key, val := range *modList {
-		if val.SpellID == spellID {
-			removeIdx = append(removeIdx, key)
-		}
-	}
-
-	// order of operation is not significant for mod lists
-	// move last index to remove idex and shorten slice
-	for i := 0; i < len(removeIdx); i++ {
-		idx := removeIdx[len(removeIdx)-1-i]
-		(*modList)[idx] = (*modList)[len(*modList)-1-i]
-	}
-
-	*modList = (*modList)[:len(*modList)-len(removeIdx)]
-}
-
-func (priest *Priest) GetClassSpellDamageDonePercent(spell PriestSpellFlag, school core.SpellSchool) float64 {
-	return applyMod(priest, &priest.DamageDonePercentMods, 1, spell, school, multiplyOp)
-}
-
-func (priest *Priest) GetClassSpellDamageDoneAddPercent(spell PriestSpellFlag, school core.SpellSchool) float64 {
-	return applyMod(priest, &priest.DamageDonePercentAddMods, 1, spell, school, multiplyOp)
-}
-
-func (priest *Priest) GetClassSpellModPowerPercent(spell PriestSpellFlag, school core.SpellSchool) float64 {
-	return 1 - applyMod(priest, &priest.PowerCostPercentMods, 1, spell, school, addOp)
-}
-
-func (priest *Priest) GetClassSpellModCooldown(spell PriestSpellFlag, school core.SpellSchool) time.Duration {
-	return applyMod(priest, &priest.CooldownMods, time.Duration(0), spell, school, addOpTime)
-}
-
-func (priest *Priest) GetClassSpellProcChance(base float64, spell PriestSpellFlag, school core.SpellSchool) float64 {
-	return max(0, base+applyMod(priest, &priest.ProcChanceMods, 0, spell, school, addOp))
-}
-
-func addOp(base float64, value float64, stacks int32) float64 {
-	return base + (value * float64(stacks))
-}
-
-func addOpTime(base time.Duration, value time.Duration, stacks int32) time.Duration {
-	return base - time.Duration(int32(value.Milliseconds())*stacks)*time.Millisecond
-}
-
-func multiplyOp(base float64, value float64, stacks int32) float64 {
-	return base * (1 + value*float64(stacks))
-}
-
-func applyMod[T float64 | time.Duration](priest *Priest, modList *[]*PriestAuraMod[T], base T, spell PriestSpellFlag, school core.SpellSchool, op func(T, T, int32) T) T {
-	for _, mod := range *modList {
-		if mod.ClassSpell.Matches(spell) &&
-			(mod.School == core.SpellSchoolNone || mod.School.Matches(school)) {
-			baseValue := mod.BaseValue
-			if mod.DynamicValue != nil {
-				baseValue += mod.DynamicValue(priest)
-			}
-
-			base = op(base, baseValue, mod.Stacks)
-		}
-	}
-
-	return base
-}
-
-func (ps *PriestSpell) IsEqual(other *core.Spell) bool {
-	if ps == nil || other == nil {
-		return false
-	}
-
-	return ps.Spell == other
-}

@@ -18,15 +18,22 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 		return base
 	}
 
-	priest.ShadowWordDeath = priest.RegisterSpell(PriestSpellShadowWordDeath, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 32379},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+	priest.ShadowWordDeath = priest.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 32379},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: int64(PriestSpellShadowWordDeath),
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.12,
+			BaseCost:   0.12,
+			Multiplier: 1,
 		},
+
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           1,
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,

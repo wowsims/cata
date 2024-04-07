@@ -20,11 +20,12 @@ func (priest *Priest) registerShadowfiendSpell() {
 		Duration: time.Second * 15.0,
 	})
 
-	priest.Shadowfiend = priest.RegisterSpell(PriestSpellShadowFiend, core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+	priest.Shadowfiend = priest.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: int64(PriestSpellShadowFiend),
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

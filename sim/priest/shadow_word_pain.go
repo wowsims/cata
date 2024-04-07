@@ -7,15 +7,21 @@ import (
 )
 
 func (priest *Priest) registerShadowWordPainSpell() {
-	priest.ShadowWordPain = priest.RegisterSpell(PriestSpellShadowWordPain, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 589},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+	priest.ShadowWordPain = priest.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 589},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: int64(PriestSpellShadowWordPain),
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.22,
+			BaseCost:   0.22,
+			Multiplier: 1,
 		},
+
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           1,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

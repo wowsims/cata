@@ -9,22 +9,26 @@ import (
 
 func (priest *Priest) getMindSearBaseConfig() core.SpellConfig {
 	return core.SpellConfig{
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskProc,
+		SpellSchool:              core.SpellSchoolShadow,
+		ProcMask:                 core.ProcMaskProc,
+		ClassSpellMask:           int64(PriestSpellMindSear),
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           1,
 	}
 }
 
-func (priest *Priest) getMindSearTickSpell(numTicks int32) *PriestSpell {
+func (priest *Priest) getMindSearTickSpell(numTicks int32) *core.Spell {
 	config := priest.getMindSearBaseConfig()
 	config.ActionID = core.ActionID{SpellID: 48045}.WithTag(numTicks)
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		damage := priest.ScalingBaseDamage*0.23 + 0.2622*spell.SpellPower()
 		spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 	}
-	return priest.RegisterSpell(PriestSpellMindSear, config)
+	return priest.RegisterSpell(config)
 }
 
-func (priest *Priest) newMindSearSpell(numTicksIdx int32) *PriestSpell {
+func (priest *Priest) newMindSearSpell(numTicksIdx int32) *core.Spell {
 	numTicks := numTicksIdx
 	flags := core.SpellFlagChanneled | core.SpellFlagNoMetrics
 	if numTicksIdx == 0 {
@@ -40,11 +44,13 @@ func (priest *Priest) newMindSearSpell(numTicksIdx int32) *PriestSpell {
 	config.ManaCost = core.ManaCostOptions{
 		BaseCost: 0.28,
 	}
+
 	config.Cast = core.CastConfig{
 		DefaultCast: core.Cast{
 			GCD: core.GCDDefault,
 		},
 	}
+
 	config.Dot = core.DotConfig{
 		Aura: core.Aura{
 			Label: "MindSear-" + strconv.Itoa(int(numTicksIdx)),
@@ -71,5 +77,5 @@ func (priest *Priest) newMindSearSpell(numTicksIdx int32) *PriestSpell {
 		return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 	}
 
-	return priest.RegisterSpell(PriestSpellMindSear, config)
+	return priest.RegisterSpell(config)
 }

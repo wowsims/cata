@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (priest *Priest) newMindFlaySpell(numTicksIdx int32) *PriestSpell {
+func (priest *Priest) newMindFlaySpell(numTicksIdx int32) *core.Spell {
 	numTicks := numTicksIdx
 	flags := core.SpellFlagChanneled
 	if numTicksIdx == 0 {
@@ -15,13 +15,15 @@ func (priest *Priest) newMindFlaySpell(numTicksIdx int32) *PriestSpell {
 		flags |= core.SpellFlagAPL
 	}
 
-	return priest.RegisterSpell(PriestSpellMindFlay, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 15407}.WithTag(numTicksIdx),
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       flags,
+	return priest.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 15407}.WithTag(numTicksIdx),
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          flags,
+		ClassSpellMask: int64(PriestSpellMindFlay),
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.08,
+			BaseCost:   0.08,
+			Multiplier: 1,
 		},
 
 		Cast: core.CastConfig{
@@ -29,6 +31,10 @@ func (priest *Priest) newMindFlaySpell(numTicksIdx int32) *PriestSpell {
 				GCD: core.GCDDefault,
 			},
 		},
+
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           1,
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "MindFlay-" + strconv.Itoa(int(numTicksIdx)),

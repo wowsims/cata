@@ -65,17 +65,20 @@ func (priest *Priest) ApplyTalents() {
 	// Improved Power Word: Shield - TBD
 	// Twin Disciplines
 	if priest.Talents.TwinDisciplines > 0 {
-		priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1 + (0.02 * float64(priest.Talents.TwinDisciplines))
-		priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1 + (0.02 * float64(priest.Talents.TwinDisciplines))
+		priest.AddStaticMod(core.SpellModConfig{
+			School:     core.SpellSchoolHoly | core.SpellSchoolShadow,
+			ClassMask:  int64(PriestSpellsAll),
+			FloatValue: (0.02 * float64(priest.Talents.TwinDisciplines)),
+			Kind:       core.SpellMod_DamageDonePercent,
+		})
 	}
 
 	// Mental Agillity
 	if priest.Talents.MentalAgility > 0 {
-		AddOrReplaceMod(&priest.PowerCostPercentMods, &PriestAuraMod[float64]{
-			ClassSpell: PriestSpellInstant,
-			BaseValue:  -0.04 * float64(priest.Talents.MentalAgility),
-			Stacks:     1,
-			SpellID:    14781,
+		priest.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(PriestSpellsAll),
+			FloatValue: -0.04 * float64(priest.Talents.MentalAgility),
+			Kind:       core.SpellMod_PowerCostPercent,
 		})
 	}
 
@@ -93,38 +96,34 @@ func (priest *Priest) ApplyTalents() {
 
 	// Improved Shadow Word: Pain
 	if priest.Talents.ImprovedShadowWordPain > 0 {
-		AddOrReplaceMod(&priest.DamageDonePercentAddMods, &PriestAuraMod[float64]{
-			ClassSpell: PriestSpellShadowWordPain,
-			BaseValue:  0.03 * float64(priest.Talents.ImprovedShadowWordPain),
-			Stacks:     1,
-			SpellID:    15317,
+		priest.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(PriestSpellShadowWordPain),
+			FloatValue: 0.03 * float64(priest.Talents.ImprovedShadowWordPain),
+			Kind:       core.SpellMod_DamageDoneAdd,
 		})
 	}
 
 	// Veiled Shadows
 	if priest.Talents.VeiledShadows > 0 {
-		AddOrReplaceMod(&priest.CooldownMods, &PriestAuraMod[time.Duration]{
-			ClassSpell: PriestSpellFade,
-			BaseValue:  time.Duration(3) * time.Second * time.Duration(priest.Talents.VeiledShadows),
-			Stacks:     1,
-			SpellID:    15311,
+		priest.AddStaticMod(core.SpellModConfig{
+			ClassMask: int64(PriestSpellFade),
+			TimeValue: time.Second * -3 * time.Duration(priest.Talents.VeiledShadows),
+			Kind:      core.SpellMod_CooldownFlat,
 		})
 
-		AddOrReplaceMod(&priest.CooldownMods, &PriestAuraMod[time.Duration]{
-			ClassSpell: PriestSpellShadowFiend,
-			BaseValue:  time.Duration(30) * time.Second * time.Duration(priest.Talents.VeiledShadows),
-			Stacks:     1,
-			SpellID:    15311,
+		priest.AddStaticMod(core.SpellModConfig{
+			ClassMask: int64(PriestSpellShadowFiend),
+			TimeValue: time.Second * -30 * time.Duration(priest.Talents.VeiledShadows),
+			Kind:      core.SpellMod_CooldownFlat,
 		})
 	}
 
 	// Improved Psychic Scream
 	if priest.Talents.ImprovedPsychicScream > 0 {
-		AddOrReplaceMod(&priest.CooldownMods, &PriestAuraMod[time.Duration]{
-			ClassSpell: PriestSpellPsychicScream,
-			BaseValue:  time.Duration(priest.Talents.ImprovedPsychicScream*2) * time.Second,
-			Stacks:     1,
-			SpellID:    15448,
+		priest.AddStaticMod(core.SpellModConfig{
+			ClassMask: int64(PriestSpellPsychicScream),
+			TimeValue: time.Second * -2 * time.Duration(priest.Talents.ImprovedPsychicScream),
+			Kind:      core.SpellMod_CooldownFlat,
 		})
 	}
 
@@ -136,18 +135,28 @@ func (priest *Priest) ApplyTalents() {
 
 	// Twisted Faith
 	if priest.Talents.TwistedFaith > 0 {
-		priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1 + (0.01 * float64(priest.Talents.TwistedFaith))
+		priest.AddStaticMod(core.SpellModConfig{
+			School:     core.SpellSchoolShadow,
+			ClassMask:  int64(PriestShadowSpells),
+			FloatValue: 0.01 * float64(priest.Talents.TwistedFaith),
+			Kind:       core.SpellMod_DamageDonePercent,
+		})
+
 		priest.AddStatDependency(stats.Spirit, stats.SpellHit, 0.5*float64(priest.Talents.TwistedFaith))
 	}
 
 	// Shadowform
 	if priest.Talents.Shadowform {
-		priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.15
+		// no class restrictions
+		priest.AddStaticMod(core.SpellModConfig{
+			School:     core.SpellSchoolShadow,
+			FloatValue: 0.15,
+			Kind:       core.SpellMod_DamageDonePercent,
+		})
 	}
 
 	// Phantasm: Not implemented
-	// Harnessed Shadows
-	priest.applyHarnessedShadows()
+	// Harnessed Shadows - shadow.go
 
 	// Silence: Not implemented
 	// Vampiric Embrace: vampiric_embrace.go
@@ -173,26 +182,26 @@ func (priest *Priest) ApplyTalents() {
 
 	// Glphys
 	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfShadowWordPain)) {
-		AddOrReplaceMod(&priest.DamageDonePercentAddMods, &PriestAuraMod[float64]{
-			SpellID:    55681,
-			BaseValue:  0.1,
-			ClassSpell: PriestSpellShadowWordPain,
+		priest.AddStaticMod(core.SpellModConfig{
+			FloatValue: 0.1,
+			ClassMask:  int64(PriestSpellShadowWordPain),
+			Kind:       core.SpellMod_DamageDoneAdd,
 		})
 	}
 
 	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfMindFlay)) {
-		AddOrReplaceMod(&priest.DamageDonePercentAddMods, &PriestAuraMod[float64]{
-			SpellID:    55687,
-			BaseValue:  0.1,
-			ClassSpell: PriestSpellMindFlay,
+		priest.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(PriestSpellMindFlay),
+			FloatValue: 0.1,
+			Kind:       core.SpellMod_DamageDoneAdd,
 		})
 	}
 
 	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfDispersion)) {
-		AddOrReplaceMod(&priest.CooldownMods, &PriestAuraMod[time.Duration]{
-			SpellID:    63229,
-			BaseValue:  time.Second * -45,
-			ClassSpell: PriestSpellDispersion,
+		priest.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_CooldownFlat,
+			TimeValue: time.Second * -45,
+			ClassMask: int64(PriestSpellDispersion),
 		})
 	}
 
@@ -210,7 +219,7 @@ func (priest *Priest) ApplyTalents() {
 			},
 
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if priest.ShadowWordDeath.IsEqual(spell) && sim.IsExecutePhase25() && aura.Icd.IsReady(sim) {
+				if priest.ShadowWordDeath == spell && sim.IsExecutePhase25() && aura.Icd.IsReady(sim) {
 					aura.Icd.Use(sim)
 					priest.ShadowWordDeath.CD.Reset()
 				}
@@ -280,34 +289,45 @@ func (priest *Priest) applyArchangel() {
 		},
 	})
 
+	darkArchAngelMod := priest.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  int64(PriestSpellMindFlay | PriestSpellMindSpike | PriestSpellMindBlast | PriestSpellShadowWordDeath),
+		FloatValue: 0.04,
+		Kind:       core.SpellMod_DamageDoneAdd,
+	})
+
 	darkArchAngelAura := priest.Unit.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 87153},
 		Label:     "Dark Archangel Aura",
 		MaxStacks: 5,
 		Duration:  time.Second * 18,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			AddOrReplaceMod(&priest.DamageDonePercentAddMods, &PriestAuraMod[float64]{
-				SpellID:    87153,
-				BaseValue:  0.04,
-				Stacks:     newStacks,
-				ClassSpell: PriestSpellMindFlay | PriestSpellMindSpike | PriestSpellMindBlast | PriestSpellShadowWordDeath,
-			})
+			for darkArchAngelMod.Stacks > newStacks {
+				darkArchAngelMod.RemoveStack()
+			}
 
 			if newStacks > oldStacks {
 				priest.AddMana(sim, 0.05*priest.MaxMana()*float64((newStacks-oldStacks)), darkArchAngelMana)
+				for darkArchAngelMod.Stacks < newStacks {
+					darkArchAngelMod.AddStack()
+				}
 			}
 		},
 
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			RemoveMod(&priest.DamageDonePercentAddMods, 87153)
+			darkArchAngelMod.Deactivate()
+			darkArchAngelMod.Stacks = 0
 		},
 	})
 
-	priest.Archangel = priest.RegisterSpell(PriestSpellArchangel, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 87151},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+	priest.Archangel = priest.RegisterSpell(core.SpellConfig{
+		ActionID:                 core.ActionID{SpellID: 87151},
+		SpellSchool:              core.SpellSchoolHoly,
+		ProcMask:                 core.ProcMaskEmpty,
+		Flags:                    core.SpellFlagAPL,
+		ClassSpellMask:           int64(PriestSpellArchangel),
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           1,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
 		},
@@ -331,11 +351,15 @@ func (priest *Priest) applyArchangel() {
 			}
 		},
 	})
-	priest.DarkArchangel = priest.RegisterSpell(PriestSpellDarkArchangel, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 87153},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+	priest.DarkArchangel = priest.RegisterSpell(core.SpellConfig{
+		ActionID:                 core.ActionID{SpellID: 87153},
+		SpellSchool:              core.SpellSchoolHoly,
+		ProcMask:                 core.ProcMaskEmpty,
+		Flags:                    core.SpellFlagAPL,
+		ClassSpellMask:           int64(PriestSpellDarkArchangel),
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           1,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
 		},
@@ -366,17 +390,21 @@ func (priest *Priest) applyImprovedMindBlast() {
 		return
 	}
 
-	AddOrReplaceMod(&priest.CooldownMods, &PriestAuraMod[time.Duration]{
-		SpellID:    48301,
-		ClassSpell: PriestSpellMindBlast,
-		BaseValue:  time.Duration(priest.Talents.ImprovedMindBlast) * time.Millisecond * 500,
+	priest.AddStaticMod(core.SpellModConfig{
+		ClassMask: int64(PriestSpellMindBlast),
+		TimeValue: time.Duration(priest.Talents.ImprovedMindBlast) * time.Millisecond * -500,
+		Kind:      core.SpellMod_CooldownFlat,
 	})
 
-	mindTraumaSpell := priest.RegisterSpell(PriestSpellMindTrauma, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48301},
-		ProcMask:    core.ProcMaskProc,
-		SpellSchool: core.SpellSchoolShadow,
-		Flags:       core.SpellFlagNoMetrics,
+	mindTraumaSpell := priest.RegisterSpell(core.SpellConfig{
+		ActionID:                 core.ActionID{SpellID: 48301},
+		ProcMask:                 core.ProcMaskProc,
+		SpellSchool:              core.SpellSchoolShadow,
+		ClassSpellMask:           int64(PriestSpellMindTrauma),
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           1,
+		Flags:                    core.SpellFlagNoMetrics,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			MindTraumaAura(target).Activate(sim)
 		},
@@ -389,7 +417,7 @@ func (priest *Priest) applyImprovedMindBlast() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && priest.MindBlast.IsEqual(spell) {
+			if result.Landed() && priest.MindBlast == spell {
 				if sim.RandomFloat("Improved Mind Blast") < 0.33*float64(priest.Talents.ImprovedMindBlast) {
 					mindTraumaSpell.Cast(sim, result.Target)
 				}
@@ -422,11 +450,11 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 		ActionID:                 core.ActionID{SpellID: 63675},
 		SpellSchool:              core.SpellSchoolShadow,
 		ProcMask:                 core.ProcMaskProc,
-		Flags:                    core.SpellFlagIgnoreAttackerModifiers,
+		Flags:                    core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagIgnoreTargetModifiers | core.SpellFlagNoSpellMods,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
-		CritMultiplier:           priest.SpellCritMultiplier(1, priest.ShadowCritMultiplier),
+		CritMultiplier:           1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dp := priest.DevouringPlague
 			dot := dp.Dot(target)
@@ -446,27 +474,13 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 		},
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !priest.DevouringPlague.IsEqual(spell) || !result.Landed() {
+			if priest.DevouringPlague != spell || !result.Landed() {
 				return
 			}
 
 			impDPDamage.Cast(sim, result.Target)
 		},
 	})
-}
-
-func (priest *Priest) applyHarnessedShadows() {
-	if priest.Talents.HarnessedShadows == 0 {
-		return
-	}
-
-	AddOrReplaceMod(&priest.ProcChanceMods, &PriestAuraMod[float64]{
-		SpellID:    78228,
-		BaseValue:  0.04 * float64(priest.Talents.HarnessedShadows),
-		ClassSpell: PriestSpellShadowOrbPassive,
-	})
-
-	// Proc on Dmg Taken not implemented yet
 }
 
 func (priest *Priest) applyPainAndSuffering() {
@@ -538,7 +552,7 @@ func (priest *Priest) applyMasochism() {
 
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				// SW:D
-				if priest.ShadowWordDeath.IsEqual(spell) && result.Landed() {
+				if priest.ShadowWordDeath == spell && result.Landed() {
 					priest.AddMana(sim, priest.MaxMana()*0.05*float64(priest.Talents.Masochism), manaMetrics)
 					return
 				}
@@ -552,24 +566,33 @@ func (priest *Priest) applyMindMelt() {
 		return
 	}
 
+	mindMeltMod := priest.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  int64(PriestSpellMindBlast),
+		FloatValue: -0.5,
+		Kind:       core.SpellMod_CastTimePercent,
+	})
+
 	priest.MindMeltProcAura = priest.RegisterAura(core.Aura{
 		Label:     "Mind Melt Proc",
 		ActionID:  core.ActionID{SpellID: 87160},
 		Duration:  time.Second * 15,
 		MaxStacks: 2,
-		OnStacksChange: func(_ *core.Aura, _ *core.Simulation, _ int32, newStacks int32) {
-			AddOrReplaceMod(&priest.CastTimePercentMods, &PriestAuraMod[float64]{
-				SpellID:    87160,
-				Stacks:     newStacks,
-				BaseValue:  -0.5,
-				ClassSpell: PriestSpellMindBlast,
-			})
+		OnStacksChange: func(_ *core.Aura, _ *core.Simulation, oldStacks int32, newStacks int32) {
+			for mindMeltMod.Stacks < newStacks {
+				mindMeltMod.AddStack()
+			}
+
+			for mindMeltMod.Stacks > newStacks {
+				mindMeltMod.RemoveStack()
+			}
 		},
+
 		OnExpire: func(_ *core.Aura, _ *core.Simulation) {
-			RemoveMod(&priest.CastTimePercentMods, 87160)
+			mindMeltMod.Deactivate()
 		},
+
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if priest.MindBlast.IsEqual(spell) {
+			if priest.MindBlast == spell {
 				aura.Deactivate(sim)
 			}
 		},
@@ -583,7 +606,7 @@ func (priest *Priest) applyMindMelt() {
 		},
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && priest.MindSpike.IsEqual(spell) {
+			if result.Landed() && priest.MindSpike == spell {
 				priest.MindMeltProcAura.Activate(sim)
 				priest.MindMeltProcAura.AddStack(sim)
 			}
@@ -605,7 +628,7 @@ func (priest *Priest) applySinAndPunishment() {
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// check for critical mind flay tick
-			if result.Outcome.Matches(core.OutcomeCrit) && priest.MindFlayAPL.IsEqual(spell) {
+			if result.Outcome.Matches(core.OutcomeCrit) && priest.MindFlayAPL.ClassSpellMask == int64(PriestSpellMindFlay) {
 
 				// reduce cooldown
 				remaining := max(0, time.Duration(*priest.Shadowfiend.CD.Timer)-time.Second*5)
@@ -623,10 +646,14 @@ func (priest *Priest) applyShadowyApparition() {
 	const spellScaling = 0.515
 	const levelScaling = 0.514
 
-	priest.ShadowyApparition = priest.RegisterSpell(PriestSpellShadowyApparation, core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 87532},
-		MissileSpeed: 3.5,
-		ProcMask:     core.ProcMaskEmpty, // summoned guardian, should not be able to proc stuff - verify
+	priest.ShadowyApparition = priest.RegisterSpell(core.SpellConfig{
+		ActionID:                 core.ActionID{SpellID: 87532},
+		MissileSpeed:             3.5,
+		ProcMask:                 core.ProcMaskEmpty, // summoned guardian, should not be able to proc stuff - verify
+		ClassSpellMask:           int64(PriestSpellShadowyApparation),
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           1,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				Cost: 0,
@@ -641,10 +668,13 @@ func (priest *Priest) applyShadowyApparition() {
 			baseDamage := priest.ScalingBaseDamage*levelScaling + spellScaling*spell.SpellPower()
 
 			// snapshot values on spawn
-			dmgMulti := priest.GetClassSpellDamageDonePercent(PriestSpellShadowyApparation, core.SpellSchoolShadow)
-			dmgMultiAdd := priest.GetClassSpellDamageDonePercent(PriestSpellShadowyApparation, core.SpellSchoolShadow)
+			dmgMulti := spell.DamageMultiplier
+			dmgMultiAdd := spell.DamageMultiplierAdditive
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+
+				oldMulti := spell.DamageMultiplier
+				oldAdd := spell.DamageMultiplierAdditive
 
 				// calculate dmg on hit, as the apparations profit from the debuffs on the target
 				// when they reach them
@@ -654,6 +684,10 @@ func (priest *Priest) applyShadowyApparition() {
 
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				spell.DealDamage(sim, result)
+
+				// restore mods
+				spell.DamageMultiplier = oldMulti
+				spell.DamageMultiplierAdditive = oldAdd
 			})
 		},
 	})
@@ -666,11 +700,11 @@ func (priest *Priest) applyShadowyApparition() {
 		},
 
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != priest.ShadowWordPain.Spell || !result.Landed() {
+			if spell != priest.ShadowWordPain || !result.Landed() {
 				return
 			}
 
-			procChance := priest.GetClassSpellProcChance(0.04*float64(priest.Talents.ShadowyApparition), PriestSpellShadowyApparation, core.SpellSchoolShadow)
+			procChance := 0.04 * float64(priest.Talents.ShadowyApparition)
 			if sim.RandomFloat("Shadowy Apparition") < procChance {
 				priest.ShadowyApparition.Cast(sim, result.Target)
 			}

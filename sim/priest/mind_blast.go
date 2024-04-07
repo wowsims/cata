@@ -7,14 +7,19 @@ import (
 )
 
 func (priest *Priest) registerMindBlastSpell() {
-	priest.MindBlast = priest.RegisterSpell(PriestSpellMindBlast, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 8092},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+	priest.MindBlast = priest.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 8092},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: int64(PriestSpellMindBlast),
 
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           1,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.17,
+			BaseCost:   0.17,
+			Multiplier: 1,
 		},
 
 		Cast: core.CastConfig{

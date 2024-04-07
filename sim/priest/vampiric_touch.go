@@ -13,15 +13,21 @@ func (priest *Priest) registerVampiricTouchSpell() {
 
 	replSrc := priest.Env.Raid.NewReplenishmentSource(core.ActionID{SpellID: 34914})
 
-	priest.VampiricTouch = priest.RegisterSpell(PriestSpellVampiricTouch, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 34914},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+	priest.VampiricTouch = priest.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 34914},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: int64(PriestSpellVampiricTouch),
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.17,
+			BaseCost:   0.17,
+			Multiplier: 1,
 		},
+
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           1,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -32,7 +38,7 @@ func (priest *Priest) registerVampiricTouchSpell() {
 			Aura: core.Aura{
 				Label: "VampiricTouch",
 				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.Landed() && spell == priest.MindBlast.Spell {
+					if result.Landed() && spell == priest.MindBlast {
 						priest.Env.Raid.ProcReplenishment(sim, replSrc)
 					}
 				},
