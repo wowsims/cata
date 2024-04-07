@@ -32,6 +32,8 @@ func (shaman *Shaman) ApplyTalents() {
 	}
 
 	shaman.applyElementalFocus()
+	shaman.applyRollingThunder()
+	shaman.applyFulmination()
 	shaman.applyElementalDevastation()
 	shaman.applyFlurry()
 	shaman.applyMaelstromWeapon()
@@ -120,6 +122,65 @@ func (shaman *Shaman) applyElementalFocus() {
 			}
 			clearcastingAura.Activate(sim)
 			clearcastingAura.SetStacks(sim, maxStacks)
+		},
+	})
+}
+
+func (shaman *Shaman) applyRollingThunder() {
+	if shaman.Talents.RollingThunder == 0 {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 88765}
+	manaMetrics := shaman.NewManaMetrics(actionID)
+
+	shaman.RegisterAura(core.Aura{
+		Label:    "Rolling Thunder",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if (spell == shaman.LightningBolt || spell == shaman.ChainLightning) && shaman.SelfBuffs.Shield == proto.ShamanShield_LightningShield {
+				if sim.RandomFloat("Rolling Thunder") < 0.3*float64(shaman.Talents.RollingThunder) {
+					shaman.AddMana(sim, 0.02*shaman.MaxMana(), manaMetrics)
+					shaman.LightningShieldAura.AddStack(sim)
+				}
+			}
+		},
+	})
+}
+
+func (shaman *Shaman) applyFulmination() {
+	if !shaman.Talents.Fulmination {
+		return
+	}
+
+	shaman.Fulmination = shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 88767},
+		SpellSchool: core.SpellSchoolNature,
+		ProcMask:    core.ProcMaskProc,
+		Flags:       SpellFlagElectric | SpellFlagFocusable,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCost: 0,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				CastTime: 0,
+				GCD:      0,
+			},
+		},
+
+		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
+		BonusCritRating:  0,
+		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion) + 0.05*float64(shaman.Talents.ImprovedShields),
+		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			damagePerOrb := 350 + 0.267*spell.SpellPower()
+			totalDamage := damagePerOrb * float64(shaman.LightningShieldAura.GetStacks())
+			result := spell.CalcDamage(sim, target, totalDamage, spell.OutcomeMagicHitAndCrit)
+			spell.DealDamage(sim, result)
 		},
 	})
 }

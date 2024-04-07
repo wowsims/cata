@@ -29,7 +29,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	}
 	// shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: 57960})
 
-	// core.FillTalentsProto(shaman.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	core.FillTalentsProto(shaman.Talents.ProtoReflect(), talents, TalentTreeSizes)
 	// shaman.EnableManaBar()
 
 	// // Add Shaman stat dependencies
@@ -94,9 +94,11 @@ type Shaman struct {
 	FireNova          *core.Spell
 	LavaLash          *core.Spell
 	Stormstrike       *core.Spell
+	PrimalStrike      *core.Spell
 
 	LightningShield     *core.Spell
 	LightningShieldAura *core.Aura
+	Fulmination         *core.Spell
 
 	Earthquake   *core.Spell
 	Thunderstorm *core.Spell
@@ -221,7 +223,7 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerLavaBurstSpell()
 	// shaman.registerLavaLashSpell()
 	shaman.registerLightningBoltSpell()
-	// shaman.registerLightningShieldSpell()
+	shaman.registerLightningShieldSpell()
 	// shaman.registerMagmaTotemSpell()
 	//shaman.registerManaSpringTotemSpell()
 	//shaman.registerHealingStreamTotemSpell()

@@ -43,6 +43,11 @@ func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := 931 + 0.386*spell.SpellPower()
 		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+		if shaman.Talents.Fulmination && shaman.LightningShieldAura.GetStacks() > 3 {
+			shaman.Fulmination.Cast(sim, target)
+			shaman.LightningShieldAura.SetStacks(sim, 3)
+		}
 	}
 
 	shaman.EarthShock = shaman.RegisterSpell(config)
