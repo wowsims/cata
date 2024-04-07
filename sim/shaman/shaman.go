@@ -134,7 +134,7 @@ type Shaman struct {
 	tidalWaveProc          *core.Aura
 	ancestralHealingAmount float64
 	AncestralAwakening     *core.Spell
-	LesserHealingWave      *core.Spell
+	HealingSurge           *core.Spell
 	HealingWave            *core.Spell
 	ChainHeal              *core.Spell
 	Riptide                *core.Spell
@@ -214,7 +214,7 @@ func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
 func (shaman *Shaman) Initialize() {
-	// shaman.registerChainLightningSpell()
+	shaman.registerChainLightningSpell()
 	// shaman.registerFeralSpirit()
 	// shaman.registerFireElementalTotem()
 	// shaman.registerFireNovaSpell()
@@ -249,7 +249,7 @@ func (shaman *Shaman) Initialize() {
 
 func (shaman *Shaman) RegisterHealingSpells() {
 	// shaman.registerAncestralHealingSpell()
-	// shaman.registerLesserHealingWaveSpell()
+	// shaman.registerHealingSurgeSpell()
 	// shaman.registerHealingWaveSpell()
 	// shaman.registerRiptideSpell()
 	// shaman.registerEarthShieldSpell()
@@ -265,11 +265,11 @@ func (shaman *Shaman) RegisterHealingSpells() {
 	// 		},
 	// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 	// 			shaman.HealingWave.CastTimeMultiplier *= 0.7
-	// 			shaman.LesserHealingWave.BonusCritRating += core.CritRatingPerCritChance * 25
+	// 			shaman.HealingSurge.BonusCritRating += core.CritRatingPerCritChance * 25
 	// 		},
 	// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 	// 			shaman.HealingWave.CastTimeMultiplier /= 0.7
-	// 			shaman.LesserHealingWave.BonusCritRating -= core.CritRatingPerCritChance * 25
+	// 			shaman.HealingSurge.BonusCritRating -= core.CritRatingPerCritChance * 25
 	// 		},
 	// 		MaxStacks: 2,
 	// 	})

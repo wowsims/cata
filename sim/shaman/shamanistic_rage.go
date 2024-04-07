@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (shaman *Shaman) registerShamanisticRageCD() {
@@ -12,36 +11,19 @@ func (shaman *Shaman) registerShamanisticRageCD() {
 		return
 	}
 
-	t10Bonus := shaman.HasSetBonus(ItemSetFrostWitchBattlegear, 2)
-
 	actionID := core.ActionID{SpellID: 30823}
-	ppmm := shaman.AutoAttacks.NewPPMManager(15, core.ProcMaskMelee)
-	manaMetrics := shaman.NewManaMetrics(actionID)
 	srAura := shaman.RegisterAura(core.Aura{
 		Label:    "Shamanistic Rage",
 		ActionID: actionID,
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			//TODO: Skills, Totems, and Offensive spells (is that everything?) cost 0 when this is up. Did I do this right?
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.7
-			if t10Bonus {
-				aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.12
-			}
+			shaman.LightningBolt.CostMultiplier -= 1.0
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.7
-			if t10Bonus {
-				aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.12
-			}
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			if ppmm.Proc(sim, spell.ProcMask, "shamanistic rage") {
-				mana := aura.Unit.GetStat(stats.AttackPower) * 0.15
-				aura.Unit.AddMana(sim, mana, manaMetrics)
-			}
+			shaman.LightningBolt.CostMultiplier += 1.0
 		},
 	})
 
@@ -66,6 +48,7 @@ func (shaman *Shaman) registerShamanisticRageCD() {
 	shaman.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeMana,
+		//TODO: This might change since it works a bit different now
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
 			return character.CurrentManaPercent() <= 0.2
 		},

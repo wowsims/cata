@@ -227,7 +227,7 @@ message EnhancementShaman {
 enum ShamanHealSpell {
 	AutoHeal = 0;
 	HealingWave = 1;
-	LesserHealingWave = 2;
+	HealingSurge = 2;
 	ChainHeal = 3;
 }
 
