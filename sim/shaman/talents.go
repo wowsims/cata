@@ -134,6 +134,10 @@ func (shaman *Shaman) applyRollingThunder() {
 	actionID := core.ActionID{SpellID: 88765}
 	manaMetrics := shaman.NewManaMetrics(actionID)
 
+	// allowedSpells := make([]*core.Spell, 0)
+	// allowedSpells = append(allowedSpells, shaman.LightningBolt, shaman.LightningBoltOverload, shaman.ChainLightning)
+	// allowedSpells = append(allowedSpells, shaman.ChainLightningOverloads...)
+
 	shaman.RegisterAura(core.Aura{
 		Label:    "Rolling Thunder",
 		Duration: core.NeverExpires,
@@ -141,11 +145,14 @@ func (shaman *Shaman) applyRollingThunder() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell == shaman.LightningBolt || spell == shaman.ChainLightning) && shaman.SelfBuffs.Shield == proto.ShamanShield_LightningShield {
+			if (spell == shaman.LightningBolt || spell == shaman.ChainLightning || spell == shaman.LightningBoltOverload) && shaman.SelfBuffs.Shield == proto.ShamanShield_LightningShield {
+				// for _, allowedSpell := range allowedSpells {
+				// 	if spell == allowedSpell {
 				if sim.RandomFloat("Rolling Thunder") < 0.3*float64(shaman.Talents.RollingThunder) {
 					shaman.AddMana(sim, 0.02*shaman.MaxMana(), manaMetrics)
 					shaman.LightningShieldAura.AddStack(sim)
 				}
+				//  }
 			}
 		},
 	})
@@ -171,14 +178,13 @@ func (shaman *Shaman) applyFulmination() {
 				GCD:      0,
 			},
 		},
-
 		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
 		BonusCritRating:  0,
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion) + 0.05*float64(shaman.Talents.ImprovedShields),
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damagePerOrb := 350 + 0.267*spell.SpellPower()
-			totalDamage := damagePerOrb * float64(shaman.LightningShieldAura.GetStacks())
+			totalDamage := damagePerOrb * (float64(shaman.LightningShieldAura.GetStacks()) - 3)
 			result := spell.CalcDamage(sim, target, totalDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)
 		},
@@ -298,6 +304,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				// TODO: Not sure if overloads also cause feedback
 				if (spell == shaman.LightningBolt || spell == shaman.ChainLightning) && !eleMastSpell.CD.IsReady(sim) {
 					*eleMastSpell.CD.Timer = core.Timer(time.Duration(*eleMastSpell.CD.Timer) - time.Second*time.Duration(shaman.Talents.Feedback))
 					shaman.UpdateMajorCooldowns() // this could get expensive because it will be called all the time.
