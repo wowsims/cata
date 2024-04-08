@@ -285,5 +285,6 @@ const (
 		PriestSpellShadowWordDeath |
 		PriestSpellShadowWordPain |
 		PriestSpellMindFlay |
-		PriestSpellMindBlast
+		PriestSpellMindBlast |
+		PriestSpellVampiricTouch
 )
