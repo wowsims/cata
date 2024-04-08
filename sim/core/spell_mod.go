@@ -24,7 +24,6 @@ type SpellMod struct {
 	School         SpellSchool
 	floatValue     float64
 	intValue       int64
-	Stacks         int32
 	timeValue      time.Duration
 	Apply          SpellModApply
 	Remove         SpellModRemove
@@ -55,7 +54,6 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		Apply:      functions.Apply,
 		Remove:     functions.Remove,
 		IsActive:   false,
-		Stacks:     1,
 	}
 
 	unit.OnSpellRegistered(func(spell *Spell) {
@@ -226,49 +224,49 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 }
 
 func applyDamageDonePercent(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplier *= 1 + mod.floatValue*float64(mod.Stacks)
+	spell.DamageMultiplier *= 1 + mod.floatValue
 }
 
 func removeDamageDonePercent(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplier /= 1 + mod.floatValue*float64(mod.Stacks)
+	spell.DamageMultiplier /= 1 + mod.floatValue
 }
 
 func applyDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplierAdditive += mod.floatValue * float64(mod.Stacks)
+	spell.DamageMultiplierAdditive += mod.floatValue
 }
 
 func removeDamageDonAdd(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplierAdditive -= mod.floatValue * float64(mod.Stacks)
+	spell.DamageMultiplierAdditive -= mod.floatValue
 }
 
 func applyPowerCostPercent(mod *SpellMod, spell *Spell) {
-	spell.DefaultCast.Cost *= 1 + mod.floatValue*float64(mod.Stacks)
+	spell.DefaultCast.Cost *= 1 + mod.floatValue
 }
 
 func removePowerCostPercent(mod *SpellMod, spell *Spell) {
-	spell.DefaultCast.Cost /= 1 + mod.floatValue*float64(mod.Stacks)
+	spell.DefaultCast.Cost /= 1 + mod.floatValue
 }
 
 func applyCooldownFlat(mod *SpellMod, spell *Spell) {
-	spell.CD.Duration += mod.timeValue * time.Duration(mod.Stacks)
+	spell.CD.Duration += mod.timeValue
 }
 
 func removeCooldownFlat(mod *SpellMod, spell *Spell) {
-	spell.CD.Duration -= mod.timeValue * time.Duration(mod.Stacks)
+	spell.CD.Duration -= mod.timeValue
 }
 
 func applyCritMultiplier(mod *SpellMod, spell *Spell) {
-	spell.CritMultiplier = 1 + (spell.CritMultiplier-1)*(mod.floatValue*float64(mod.Stacks)+1)
+	spell.CritMultiplier = 1 + (spell.CritMultiplier-1)*(mod.floatValue+1)
 }
 
 func removeCritMultiplier(mod *SpellMod, spell *Spell) {
-	spell.CritMultiplier = 1 + (spell.CritMultiplier-1)/(mod.floatValue*float64(mod.Stacks)+1)
+	spell.CritMultiplier = 1 + (spell.CritMultiplier-1)/(mod.floatValue+1)
 }
 
 func applyCastTimePercent(mod *SpellMod, spell *Spell) {
-	spell.CastTimeMultiplier += mod.floatValue * float64(mod.Stacks)
+	spell.CastTimeMultiplier += mod.floatValue
 }
 
 func removeCastTimePercent(mod *SpellMod, spell *Spell) {
-	spell.CastTimeMultiplier -= mod.floatValue * float64(mod.Stacks)
+	spell.CastTimeMultiplier -= mod.floatValue
 }
