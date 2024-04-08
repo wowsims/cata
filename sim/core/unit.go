@@ -112,7 +112,6 @@ type Unit struct {
 	// All spells that can be cast by this unit.
 	Spellbook                 []*Spell
 	spellRegistrationHandlers []SpellRegisteredHandler
-	ActiveSpellMods           []*SpellMod
 
 	// Pets owned by this Unit.
 	PetAgents []PetAgent

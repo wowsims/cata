@@ -58,12 +58,6 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		Stacks:     1,
 	}
 
-	for _, spell := range unit.Spellbook {
-		if shouldApply(spell, mod) {
-			mod.AffectedSpells = append(mod.AffectedSpells, spell)
-		}
-	}
-
 	unit.OnSpellRegistered(func(spell *Spell) {
 		if shouldApply(spell, mod) {
 			mod.AffectedSpells = append(mod.AffectedSpells, spell)
@@ -79,7 +73,6 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 
 func (unit *Unit) AddStaticMod(config SpellModConfig) {
 	mod := buildMod(unit, config)
-	unit.ActiveSpellMods = append(unit.ActiveSpellMods, mod)
 	mod.Activate()
 }
 
@@ -171,68 +164,62 @@ func (mod *SpellMod) Deactivate() {
 	mod.IsActive = false
 }
 
-func (mod *SpellMod) AddStack() {
-	if mod.IsActive {
-		mod.Deactivate()
-		mod.Stacks += 1
-		mod.Activate()
-	} else {
-		mod.Stacks += 1
-		mod.Activate()
-	}
-}
-
-func (mod *SpellMod) RemoveStack() {
-	if mod.IsActive {
-		mod.Deactivate()
-		mod.Stacks = max(mod.Stacks-1, 0)
-		if mod.Stacks > 0 {
-			mod.Activate()
-		}
-	} else {
-		mod.Stacks = max(mod.Stacks-1, 0)
-	}
-}
-
 // Mod implmentations
 type SpellModType uint32
 
 const (
-	SpellMod_DamageDonePercent SpellModType = 1 << iota
-	SpellMod_DamageDoneAdd
-	SpellMod_PowerCostPercent
-	SpellMod_CooldownFlat
-	SpellMod_CritMultiplier
-	SpellMod_CastTimePercent
+	// Will multiply the spell.DamageDoneMultiplier. +5% = 0.05
+	// Uses FloatValue
+	SpellMod_DamageDone_Pct SpellModType = 1 << iota
+
+	// Will add the value spell.DamageDoneAddMultiplier
+	// Uses FloatValue
+	SpellMod_DamageDone_Flat
+
+	// Will reduce spell.DefaultCast.Cost by % amount. -5% = -0.05
+	// Uses FloatValue
+	SpellMod_PowerCost_Pct
+
+	// Will add time.Duration to spell.CD.Duration
+	// Uses TimeValue
+	SpellMod_Cooldown_Flat
+
+	// Will increase the CritMultiplier. +100% = 1.0
+	// Uses FloatValue
+	SpellMod_CritMultiplier_Pct
+
+	// Will add / substract % amount from the cast time multiplier.
+	// Ueses: FloatValue
+	SpellMod_CastTime_Pct
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
-	SpellMod_DamageDonePercent: {
+	SpellMod_DamageDone_Pct: {
 		Apply:  applyDamageDonePercent,
 		Remove: removeDamageDonePercent,
 	},
 
-	SpellMod_DamageDoneAdd: {
+	SpellMod_DamageDone_Flat: {
 		Apply:  applyDamageDoneAdd,
 		Remove: removeDamageDonAdd,
 	},
 
-	SpellMod_PowerCostPercent: {
+	SpellMod_PowerCost_Pct: {
 		Apply:  applyPowerCostPercent,
 		Remove: removePowerCostPercent,
 	},
 
-	SpellMod_CooldownFlat: {
+	SpellMod_Cooldown_Flat: {
 		Apply:  applyCooldownFlat,
 		Remove: removeCooldownFlat,
 	},
 
-	SpellMod_CritMultiplier: {
+	SpellMod_CritMultiplier_Pct: {
 		Apply:  applyCritMultiplier,
 		Remove: removeCritMultiplier,
 	},
 
-	SpellMod_CastTimePercent: {
+	SpellMod_CastTime_Pct: {
 		Apply:  applyCastTimePercent,
 		Remove: removeCastTimePercent,
 	},
