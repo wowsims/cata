@@ -81,7 +81,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 	spriest.AddStaticMod(core.SpellModConfig{
 		FloatValue: 0.15,
 		ClassMask:  int64(priest.PriestSpellsAll),
-		Kind:       core.SpellMod_DamageDonePercent,
+		Kind:       core.SpellMod_DamageDone_Pct,
 	})
 
 	spriest.RegisterAura(
@@ -99,7 +99,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 
 	// Shadow Power
 	spriest.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_CritMultiplier,
+		Kind:       core.SpellMod_CritMultiplier_Pct,
 		FloatValue: 1.0,
 		School:     core.SpellSchoolShadow,
 		ClassMask:  int64(priest.PriestShadowSpells),
@@ -108,11 +108,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 	shadowOrbMod := spriest.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  int64(priest.PriestSpellMindBlast) | int64(priest.PriestSpellMindSpike),
 		FloatValue: 0.216 + spriest.GetMasteryPoints()*0.0145,
-		Kind:       core.SpellMod_DamageDoneAdd,
-	})
-
-	spriest.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		shadowOrbMod.UpdateFloatValue(0.216 + core.MasteryRatingToMasteryPoints(newMastery)*0.0145)
+		Kind:       core.SpellMod_DamageDone_Flat,
 	})
 
 	// mastery aura
@@ -122,13 +118,8 @@ func (spriest *ShadowPriest) ApplyTalents() {
 		Duration:  time.Minute,
 		MaxStacks: 3,
 		OnStacksChange: func(_ *core.Aura, _ *core.Simulation, oldStacks int32, newStacks int32) {
-			for shadowOrbMod.Stacks < newStacks {
-				shadowOrbMod.AddStack()
-			}
-
-			for shadowOrbMod.Stacks > newStacks {
-				shadowOrbMod.RemoveStack()
-			}
+			shadowOrbMod.UpdateFloatValue((0.216 + spriest.GetMasteryPoints()*0.0145) * float64(newStacks))
+			shadowOrbMod.Activate()
 		},
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
@@ -142,13 +133,16 @@ func (spriest *ShadowPriest) ApplyTalents() {
 
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shadowOrbMod.Deactivate()
-			shadowOrbMod.Stacks = 0
 		},
+	})
+
+	spriest.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+		shadowOrbMod.UpdateFloatValue((0.216 + core.MasteryRatingToMasteryPoints(newMastery)*0.0145) * float64(spriest.shadowOrbsAura.GetStacks()))
 	})
 
 	empoweredShadowMod := spriest.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  int64(priest.PriestSpellDoT),
-		Kind:       core.SpellMod_DamageDoneAdd,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.216 + spriest.GetMasteryPoints()*0.0145,
 	})
 

@@ -69,7 +69,7 @@ func (priest *Priest) ApplyTalents() {
 			School:     core.SpellSchoolHoly | core.SpellSchoolShadow,
 			ClassMask:  int64(PriestSpellsAll),
 			FloatValue: (0.02 * float64(priest.Talents.TwinDisciplines)),
-			Kind:       core.SpellMod_DamageDonePercent,
+			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 	}
 
@@ -78,7 +78,7 @@ func (priest *Priest) ApplyTalents() {
 		priest.AddStaticMod(core.SpellModConfig{
 			ClassMask:  int64(PriestSpellsAll),
 			FloatValue: -0.04 * float64(priest.Talents.MentalAgility),
-			Kind:       core.SpellMod_PowerCostPercent,
+			Kind:       core.SpellMod_PowerCost_Pct,
 		})
 	}
 
@@ -99,7 +99,7 @@ func (priest *Priest) ApplyTalents() {
 		priest.AddStaticMod(core.SpellModConfig{
 			ClassMask:  int64(PriestSpellShadowWordPain),
 			FloatValue: 0.03 * float64(priest.Talents.ImprovedShadowWordPain),
-			Kind:       core.SpellMod_DamageDoneAdd,
+			Kind:       core.SpellMod_DamageDone_Flat,
 		})
 	}
 
@@ -108,13 +108,13 @@ func (priest *Priest) ApplyTalents() {
 		priest.AddStaticMod(core.SpellModConfig{
 			ClassMask: int64(PriestSpellFade),
 			TimeValue: time.Second * -3 * time.Duration(priest.Talents.VeiledShadows),
-			Kind:      core.SpellMod_CooldownFlat,
+			Kind:      core.SpellMod_Cooldown_Flat,
 		})
 
 		priest.AddStaticMod(core.SpellModConfig{
 			ClassMask: int64(PriestSpellShadowFiend),
 			TimeValue: time.Second * -30 * time.Duration(priest.Talents.VeiledShadows),
-			Kind:      core.SpellMod_CooldownFlat,
+			Kind:      core.SpellMod_Cooldown_Flat,
 		})
 	}
 
@@ -123,7 +123,7 @@ func (priest *Priest) ApplyTalents() {
 		priest.AddStaticMod(core.SpellModConfig{
 			ClassMask: int64(PriestSpellPsychicScream),
 			TimeValue: time.Second * -2 * time.Duration(priest.Talents.ImprovedPsychicScream),
-			Kind:      core.SpellMod_CooldownFlat,
+			Kind:      core.SpellMod_Cooldown_Flat,
 		})
 	}
 
@@ -139,7 +139,7 @@ func (priest *Priest) ApplyTalents() {
 			School:     core.SpellSchoolShadow,
 			ClassMask:  int64(PriestShadowSpells),
 			FloatValue: 0.01 * float64(priest.Talents.TwistedFaith),
-			Kind:       core.SpellMod_DamageDonePercent,
+			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 
 		priest.AddStatDependency(stats.Spirit, stats.SpellHit, 0.5*float64(priest.Talents.TwistedFaith))
@@ -151,7 +151,7 @@ func (priest *Priest) ApplyTalents() {
 		priest.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolShadow,
 			FloatValue: 0.15,
-			Kind:       core.SpellMod_DamageDonePercent,
+			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 	}
 
@@ -185,7 +185,7 @@ func (priest *Priest) ApplyTalents() {
 		priest.AddStaticMod(core.SpellModConfig{
 			FloatValue: 0.1,
 			ClassMask:  int64(PriestSpellShadowWordPain),
-			Kind:       core.SpellMod_DamageDoneAdd,
+			Kind:       core.SpellMod_DamageDone_Flat,
 		})
 	}
 
@@ -193,13 +193,13 @@ func (priest *Priest) ApplyTalents() {
 		priest.AddStaticMod(core.SpellModConfig{
 			ClassMask:  int64(PriestSpellMindFlay),
 			FloatValue: 0.1,
-			Kind:       core.SpellMod_DamageDoneAdd,
+			Kind:       core.SpellMod_DamageDone_Flat,
 		})
 	}
 
 	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfDispersion)) {
 		priest.AddStaticMod(core.SpellModConfig{
-			Kind:      core.SpellMod_CooldownFlat,
+			Kind:      core.SpellMod_Cooldown_Flat,
 			TimeValue: time.Second * -45,
 			ClassMask: int64(PriestSpellDispersion),
 		})
@@ -292,7 +292,7 @@ func (priest *Priest) applyArchangel() {
 	darkArchAngelMod := priest.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  int64(PriestSpellMindFlay | PriestSpellMindSpike | PriestSpellMindBlast | PriestSpellShadowWordDeath),
 		FloatValue: 0.04,
-		Kind:       core.SpellMod_DamageDoneAdd,
+		Kind:       core.SpellMod_DamageDone_Flat,
 	})
 
 	darkArchAngelAura := priest.Unit.RegisterAura(core.Aura{
@@ -301,21 +301,16 @@ func (priest *Priest) applyArchangel() {
 		MaxStacks: 5,
 		Duration:  time.Second * 18,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			for darkArchAngelMod.Stacks > newStacks {
-				darkArchAngelMod.RemoveStack()
-			}
-
 			if newStacks > oldStacks {
 				priest.AddMana(sim, 0.05*priest.MaxMana()*float64((newStacks-oldStacks)), darkArchAngelMana)
-				for darkArchAngelMod.Stacks < newStacks {
-					darkArchAngelMod.AddStack()
-				}
 			}
+
+			darkArchAngelMod.UpdateFloatValue(0.04 * float64(newStacks))
+			darkArchAngelMod.Activate()
 		},
 
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			darkArchAngelMod.Deactivate()
-			darkArchAngelMod.Stacks = 0
 		},
 	})
 
@@ -393,7 +388,7 @@ func (priest *Priest) applyImprovedMindBlast() {
 	priest.AddStaticMod(core.SpellModConfig{
 		ClassMask: int64(PriestSpellMindBlast),
 		TimeValue: time.Duration(priest.Talents.ImprovedMindBlast) * time.Millisecond * -500,
-		Kind:      core.SpellMod_CooldownFlat,
+		Kind:      core.SpellMod_Cooldown_Flat,
 	})
 
 	mindTraumaSpell := priest.RegisterSpell(core.SpellConfig{
@@ -569,7 +564,7 @@ func (priest *Priest) applyMindMelt() {
 	mindMeltMod := priest.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  int64(PriestSpellMindBlast),
 		FloatValue: -0.5,
-		Kind:       core.SpellMod_CastTimePercent,
+		Kind:       core.SpellMod_CastTime_Pct,
 	})
 
 	priest.MindMeltProcAura = priest.RegisterAura(core.Aura{
@@ -578,13 +573,7 @@ func (priest *Priest) applyMindMelt() {
 		Duration:  time.Second * 15,
 		MaxStacks: 2,
 		OnStacksChange: func(_ *core.Aura, _ *core.Simulation, oldStacks int32, newStacks int32) {
-			for mindMeltMod.Stacks < newStacks {
-				mindMeltMod.AddStack()
-			}
-
-			for mindMeltMod.Stacks > newStacks {
-				mindMeltMod.RemoveStack()
-			}
+			mindMeltMod.UpdateFloatValue(-0.5 * float64(newStacks))
 		},
 
 		OnExpire: func(_ *core.Aura, _ *core.Simulation) {
