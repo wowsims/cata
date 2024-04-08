@@ -160,7 +160,7 @@ func (shaman *Shaman) ApplyFlametongueImbueToItem(item *core.Item) {
 	}
 
 	enchantID := 5
-	magicDamageBonus := 5.0 + 0.2*float64(shaman.Talents.ElementalWeapons)
+	magicDamageBonus := 1.0 + (0.05 * (1 + 0.2*float64(shaman.Talents.ElementalWeapons)))
 
 	// TODO: Is this the best way to add "Magical damage"... also how do I take it away if the weapon is unequipped/buff expires?
 	shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= magicDamageBonus

@@ -6,17 +6,19 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
+// TODO: Updated for cata. Not sure if the coefficient is changed. Need to check.
+//
+//	Also not sure if the number of ticks needs to be updated when the talent (20%/40% duration)
 func (shaman *Shaman) registerSearingTotemSpell() {
 	shaman.SearingTotem = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 58704},
+		ActionID:    core.ActionID{SpellID: 3599},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagTotem | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.07,
-			Multiplier: 1 -
-				0.05*float64(shaman.Talents.TotemicFocus),
+			BaseCost:   0.05,
+			Multiplier: 1 - 0.15*float64(shaman.Talents.TotemicFocus),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -26,7 +28,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 
 		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
 		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.1,
-		CritMultiplier:   shaman.ElementalCritMultiplier(0),
+		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -41,32 +43,37 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			NumberOfTicks: 24,
 			TickLength:    time.Second * 60 / 24,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := sim.Roll(90, 120) + 0.167*dot.Spell.SpellPower()
+				baseDamage := 90 + 0.167*dot.Spell.SpellPower()
 				dot.Spell.CalcAndDealDamage(sim, target, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			shaman.MagmaTotem.AOEDot().Cancel(sim)
-			shaman.FireElemental.Disable(sim)
+			// TODO: Disable fire elemental
+			//shaman.FireElemental.Disable(sim)
 			spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
+
+			bonusDuration := 1.0 + 0.20*float64(shaman.Talents.TotemicFocus)
 			// +1 needed because of rounding issues with totem tick time.
-			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Second*60 + 1
+			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Second*60*time.Duration(bonusDuration) + 1
 		},
 	})
 }
 
+// TODO: Updated for cata. Not sure if the coefficient is changed. Need to check.
+//
+//	Also not sure if the number of ticks needs to be updated when the talent (20%/40% duration)
 func (shaman *Shaman) registerMagmaTotemSpell() {
 	shaman.MagmaTotem = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 58734},
+		ActionID:    core.ActionID{SpellID: 8190},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagTotem | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.27,
-			Multiplier: 1 -
-				0.05*float64(shaman.Talents.TotemicFocus),
+			BaseCost:   0.18,
+			Multiplier: 1 - 0.15*float64(shaman.Talents.TotemicFocus),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -76,7 +83,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 
 		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
 		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.1,
-		CritMultiplier:   shaman.ElementalCritMultiplier(0),
+		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -87,7 +94,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			TickLength:    time.Second * 2,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 371 + 0.1*dot.Spell.SpellPower()
+				baseDamage := 268 + 0.1*dot.Spell.SpellPower()
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
@@ -97,10 +104,12 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			shaman.SearingTotem.Dot(shaman.CurrentTarget).Cancel(sim)
-			shaman.FireElemental.Disable(sim)
+			// TODO: Disable fire elemental
+			//shaman.FireElemental.Disable(sim)
 			spell.AOEDot().Apply(sim)
+			bonusDuration := 1.0 + 0.20*float64(shaman.Talents.TotemicFocus)
 			// +1 needed because of rounding issues with totem tick time.
-			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Second*20 + 1
+			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Second*60*time.Duration(bonusDuration) + 1
 		},
 	})
 }

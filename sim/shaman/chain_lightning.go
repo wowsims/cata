@@ -34,21 +34,23 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		castTime,
 		isElementalOverload)
 
-	numHits := min(core.TernaryInt32(shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning), 4, 3), shaman.Env.GetNumTargets())
-	dmgReductionPerBounce := 0.7
 	baseDamage := 1093.0
-
+	numHits := int32(3)
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning) {
 		baseDamage *= 0.90
+		numHits += 2
 	}
+	numHits = min(numHits, shaman.Env.GetNumTargets())
+
+	dmgReductionPerBounce := 0.7
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		bounceCoeff := 1.0
 		curTarget := target
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-			baseDamage += spellCoeff * spell.SpellPower()
-			baseDamage *= bounceCoeff
-			result := spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			totalDamage := baseDamage + spellCoeff*spell.SpellPower()
+			totalDamage *= bounceCoeff
+			result := spell.CalcDamage(sim, curTarget, totalDamage, spell.OutcomeMagicHitAndCrit)
 
 			if canOverload && result.Landed() && sim.RandomFloat("Chain Lightning Elemental Overload") <= overloadChance {
 				shaman.ChainLightningOverloads[hitIndex].Cast(sim, curTarget)
