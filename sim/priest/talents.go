@@ -327,7 +327,7 @@ func (priest *Priest) applyArchangel() {
 		ClassSpellMask:           int64(PriestSpellArchangel),
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           1,
+		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
 		},
@@ -359,7 +359,7 @@ func (priest *Priest) applyArchangel() {
 		ClassSpellMask:           int64(PriestSpellDarkArchangel),
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           1,
+		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
 		},
@@ -403,7 +403,7 @@ func (priest *Priest) applyImprovedMindBlast() {
 		ClassSpellMask:           int64(PriestSpellMindTrauma),
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           1,
+		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		Flags:                    core.SpellFlagNoMetrics,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			MindTraumaAura(target).Activate(sim)
@@ -454,7 +454,7 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
-		CritMultiplier:           1,
+		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dp := priest.DevouringPlague
 			dot := dp.Dot(target)
@@ -653,7 +653,7 @@ func (priest *Priest) applyShadowyApparition() {
 		ClassSpellMask:           int64(PriestSpellShadowyApparation),
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           1,
+		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				Cost: 0,

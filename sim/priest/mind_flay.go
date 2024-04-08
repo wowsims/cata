@@ -34,7 +34,7 @@ func (priest *Priest) newMindFlaySpell(numTicksIdx int32) *core.Spell {
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           1,
+		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "MindFlay-" + strconv.Itoa(int(numTicksIdx)),
