@@ -349,7 +349,7 @@ def loadEffects() -> Mapping[int, SpellEffectRecord]:
                 continue
             if spellID in IGNORE_SPELLS:
                 continue
-            
+
             effect = SpellEffectRecord(spellID, row['EffectMiscValue_0'], row['EffectItemType'])
             effects[effect.spellID] = effect
 
@@ -549,7 +549,7 @@ def getEnchantTypePart(effect: SpellEffectRecord) -> str:
     enchantType = ""
     if equipInfo.itemClass == ItemClass.ARMOR and equipInfo.itemSubClass & (1 << ItemSubclassArmor.SHIELD.value) > 0:
         enchantType = "proto.EnchantType_EnchantTypeShield"
-    if equipInfo.itemClass == ItemClass.WEAPON and equipInfo.itemSubClass & (1 << WeaponType.STAFF.value) > 0:
+    if equipInfo.itemClass == ItemClass.WEAPON and equipInfo.itemSubClass == (1 << WeaponType.STAFF.value):
         enchantType = "proto.EnchantType_EnchantTypeStaff"
     if equipInfo.itemSubClass & WeaponType.mask_twoHanded() == WeaponType.mask_twoHanded() and \
         equipInfo.itemSubClass & WeaponType.mask_oneHanded() == 0:
