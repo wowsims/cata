@@ -63,13 +63,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
 			divineSpirit: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			moonkinAura: TristateEffect.TristateEffectImproved,
 			sanctifiedRetribution: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
 			blessingOfWisdom: 2,
 			vampiricTouch: true,
 		}),
@@ -89,7 +88,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			// RestorationInputs.TriggerEarthShield, 
+			// RestorationInputs.TriggerEarthShield,
 			// OtherInputs.TankAssignment
 		],
 	},

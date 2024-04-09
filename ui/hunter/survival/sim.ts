@@ -100,7 +100,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
 			powerWordFortitude: TristateEffect.TristateEffectImproved,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			bloodlust: true,
 			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 			windfuryTotem: TristateEffect.TristateEffectImproved,
@@ -112,7 +112,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
 			blessingOfWisdom: 2,
 			blessingOfMight: 2,
 			vampiricTouch: true,

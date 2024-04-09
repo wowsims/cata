@@ -80,7 +80,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		specOptions: Presets.DefaultFrostOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			swiftRetribution: true,
 			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 			icyTalons: true,
@@ -98,7 +98,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			heroicPresence: false,
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
 			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
 		debuffs: Debuffs.create({
@@ -136,7 +135,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			// FrostInputs.UseAMSInput,
 			// FrostInputs.AvgAMSSuccessRateInput,
 			// FrostInputs.AvgAMSHitInput,
-
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
 		],

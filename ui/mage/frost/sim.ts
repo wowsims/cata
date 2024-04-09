@@ -69,7 +69,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			bloodlust: true,
 			manaSpringTotem: TristateEffect.TristateEffectImproved,
 			wrathOfAirTotem: true,
@@ -84,7 +84,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 			manaTideTotems: 1,
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
 			blessingOfWisdom: TristateEffect.TristateEffectImproved,
 			innervates: 0,
 			vampiricTouch: true,
@@ -111,8 +110,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			//FrostInputs.WaterElementalDisobeyChance, 
-			OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
+			//FrostInputs.WaterElementalDisobeyChance,
+			OtherInputs.ReactionTime,
+			OtherInputs.DistanceFromTarget,
+			OtherInputs.TankAssignment,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

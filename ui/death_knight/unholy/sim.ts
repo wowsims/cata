@@ -93,7 +93,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		specOptions: Presets.DefaultUnholyOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			swiftRetribution: true,
 			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 			icyTalons: true,
@@ -111,7 +111,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			heroicPresence: false,
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
 			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
 		debuffs: Debuffs.create({
@@ -153,7 +152,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			// UnholyInputs.UseAMSInput,
 			// UnholyInputs.AvgAMSSuccessRateInput,
 			// UnholyInputs.AvgAMSHitInput,
-
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
 		],

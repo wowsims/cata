@@ -102,7 +102,8 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		this.init();
 
 		this.rootAnchor.addEventListener('click', event => {
-			this.handleLeftClick(event);
+			event.preventDefault();
+			this.handleLeftClick();
 		});
 
 		this.rootAnchor.addEventListener('contextmenu', event => {
@@ -112,13 +113,13 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 			const rightClick = isRightClick(event);
 
 			if (rightClick) {
-				this.handleRightClick(event);
 				event.preventDefault();
+				this.handleRightClick();
 			}
 		});
 	}
 
-	handleLeftClick = (event: UIEvent) => {
+	handleLeftClick() {
 		if (this.config.states == 0 || this.currentValue + 1 < this.config.states) {
 			this.currentValue++;
 			this.inputChanged(TypedEvent.nextEventID());
@@ -127,10 +128,9 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 			this.currentValue = 0;
 			this.inputChanged(TypedEvent.nextEventID());
 		}
-		event.preventDefault();
-	};
+	}
 
-	handleRightClick = (_: UIEvent) => {
+	handleRightClick() {
 		if (this.currentValue > 0) {
 			this.currentValue--;
 		} else {
@@ -142,7 +142,7 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 			}
 		}
 		this.inputChanged(TypedEvent.nextEventID());
-	};
+	}
 
 	getInputElem(): HTMLElement {
 		return this.rootAnchor;

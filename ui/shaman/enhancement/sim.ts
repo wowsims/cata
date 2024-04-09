@@ -91,7 +91,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
 			blessingOfWisdom: TristateEffect.TristateEffectImproved,
 			blessingOfMight: TristateEffect.TristateEffectImproved,
 			judgementsOfTheWise: true,

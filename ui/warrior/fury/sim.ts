@@ -85,7 +85,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			swiftRetribution: true,
 			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 			icyTalons: true,
@@ -100,7 +100,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			heroicPresence: false,
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
 			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
 		debuffs: Debuffs.create({

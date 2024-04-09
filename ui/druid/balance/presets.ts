@@ -122,7 +122,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	bloodlust: true,
 	divineSpirit: true,
-	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	markOfTheWild: true,
 	icyTalons: true,
 	moonkinAura: TristateEffect.TristateEffectImproved,
 	leaderOfThePack: TristateEffect.TristateEffectImproved,
@@ -135,7 +135,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfKings: true,
 	blessingOfMight: TristateEffect.TristateEffectImproved,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 	vampiricTouch: true,

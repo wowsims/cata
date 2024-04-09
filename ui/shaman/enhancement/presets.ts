@@ -92,7 +92,7 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	markOfTheWild: true,
 	arcaneBrilliance: true,
 	leaderOfThePack: TristateEffect.TristateEffectImproved,
 	totemOfWrath: true,

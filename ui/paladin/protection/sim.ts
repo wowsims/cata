@@ -126,7 +126,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			powerWordFortitude: TristateEffect.TristateEffectImproved,
 			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 			arcaneBrilliance: true,
@@ -146,7 +146,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
 			blessingOfSanctuary: true,
 			blessingOfWisdom: TristateEffect.TristateEffectImproved,
 			blessingOfMight: TristateEffect.TristateEffectImproved,
@@ -170,7 +169,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.JudgementSelection(), 
+	playerIconInputs: [
+		PaladinInputs.AuraSelection(),
+		PaladinInputs.JudgementSelection(),
 		//PaladinInputs.StartingSealSelection()
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.

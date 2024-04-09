@@ -110,7 +110,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
 			divineSpirit: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			bloodlust: true,
 			manaSpringTotem: TristateEffect.TristateEffectRegular,
 			hornOfWinter: true,
@@ -128,7 +128,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 			judgementsOfTheWise: true,
-			blessingOfKings: true,
+
 			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
 		debuffs: Debuffs.create({
@@ -147,7 +147,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.JudgementSelection(), 
+	playerIconInputs: [
+		PaladinInputs.AuraSelection(),
+		PaladinInputs.JudgementSelection(),
 		//PaladinInputs.StartingSealSelection()
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.

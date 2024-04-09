@@ -82,7 +82,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
 			divineSpirit: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			moonkinAura: TristateEffect.TristateEffectImproved,
 			sanctifiedRetribution: true,
 			demonicPactSp: 500,
@@ -90,7 +90,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
 			blessingOfWisdom: 2,
 			vampiricTouch: true,
 		}),

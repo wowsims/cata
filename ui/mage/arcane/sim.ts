@@ -70,7 +70,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			bloodlust: true,
 			manaSpringTotem: TristateEffect.TristateEffectImproved,
 			wrathOfAirTotem: true,
@@ -85,7 +85,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			manaTideTotems: 1,
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
 			blessingOfWisdom: TristateEffect.TristateEffectImproved,
 			innervates: 0,
 			vampiricTouch: true,

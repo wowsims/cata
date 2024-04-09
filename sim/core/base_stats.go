@@ -26,6 +26,7 @@ var BaseStats = map[BaseStatsKey]stats.Stats{}
 // These are also scattered in various dbc/casc files,
 // `octbasempbyclass.txt`, `combatratings.txt`, `chancetospellcritbase.txt`, etc.
 
+// TODO: Cata - Update race base stats
 var RaceOffsets = map[proto.Race]stats.Stats{
 	proto.Race_RaceUnknown: stats.Stats{},
 	proto.Race_RaceHuman:   stats.Stats{},
@@ -86,6 +87,20 @@ var RaceOffsets = map[proto.Race]stats.Stats{
 		stats.Stamina:   0,
 	},
 	proto.Race_RaceDraenei: {
+		stats.Agility:   -3,
+		stats.Strength:  1,
+		stats.Intellect: 0,
+		stats.Spirit:    2,
+		stats.Stamina:   0,
+	},
+	proto.Race_RaceWorgen: {
+		stats.Agility:   -3,
+		stats.Strength:  1,
+		stats.Intellect: 0,
+		stats.Spirit:    2,
+		stats.Stamina:   0,
+	},
+	proto.Race_RaceGoblin: {
 		stats.Agility:   -3,
 		stats.Strength:  1,
 		stats.Intellect: 0,

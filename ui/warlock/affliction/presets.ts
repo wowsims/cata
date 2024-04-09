@@ -87,7 +87,7 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	markOfTheWild: true,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
 	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 	arcaneBrilliance: true,
@@ -104,14 +104,12 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfKings: true,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 	blessingOfMight: TristateEffect.TristateEffectImproved,
 	vampiricTouch: true,
 });
 
 export const DestroIndividualBuffs = IndividualBuffs.create({
-	blessingOfKings: true,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 	blessingOfMight: TristateEffect.TristateEffectImproved,
 });

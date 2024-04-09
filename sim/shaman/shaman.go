@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 var TalentTreeSizes = [3]int{19, 19, 20}
@@ -29,20 +30,20 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	}
 	// shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: 57960})
 
-	// core.FillTalentsProto(shaman.Talents.ProtoReflect(), talents, TalentTreeSizes)
-	// shaman.EnableManaBar()
+	core.FillTalentsProto(shaman.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	shaman.EnableManaBar()
 
 	// if shaman.Totems.Fire == proto.FireTotem_TotemOfWrath && !shaman.Talents.TotemOfWrath {
 	// 	shaman.Totems.Fire = proto.FireTotem_FlametongueTotem
 	// }
 
 	// // Add Shaman stat dependencies
-	// shaman.AddStatDependency(stats.Strength, stats.AttackPower, 1)
-	// shaman.AddStatDependency(stats.Agility, stats.AttackPower, 1)
-	// shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
-	// shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
+	shaman.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	shaman.AddStatDependency(stats.Agility, stats.AttackPower, 1)
+	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 	// // Set proper Melee Haste scaling
-	// shaman.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
+	shaman.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
 	// if selfBuffs.Shield == proto.ShamanShield_WaterShield {
 	// 	shaman.AddStat(stats.MP5, 100)
@@ -211,11 +212,9 @@ func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	// }
 }
 func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
-	if shaman.Talents.ManaTideTotem {
-		partyBuffs.ManaTideTotems++
-	}
-
-	shaman.hasHeroicPresence = partyBuffs.HeroicPresence
+	// if shaman.Talents.ManaTideTotem {
+	// 	partyBuffs.ManaTideTotems++
+	// }
 }
 
 func (shaman *Shaman) Initialize() {

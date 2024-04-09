@@ -51,7 +51,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			powerWordFortitude: TristateEffect.TristateEffectImproved,
 			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 			arcaneBrilliance: true,
@@ -71,7 +71,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
 			blessingOfSanctuary: true,
 			blessingOfWisdom: TristateEffect.TristateEffectImproved,
 			blessingOfMight: TristateEffect.TristateEffectImproved,

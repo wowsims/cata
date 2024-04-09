@@ -90,8 +90,6 @@ export class SettingsTab extends SimTab {
 			header: { title: 'Other' },
 		});
 
-		this.makeBooleanRaidIconBuffInput(contentBlock.bodyElement, ActionId.fromSpellId(73828), 'strengthOfWrynn');
-
 		// new BooleanPicker(contentBlock.bodyElement, this.simUI.sim.raid, {
 		// 	label: 'Stagger Stormstrikes',
 		// 	labelTooltip: 'When there are multiple Enhancement Shaman in the raid, causes them to coordinate their Stormstrike casts for optimal SS charge usage.',
