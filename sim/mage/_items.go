@@ -90,6 +90,7 @@ var ItemSetKhadgarsRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T10
 var ItemSetBloodmagesRegalia = core.NewItemSet(core.ItemSet{
 	Name: "Bloodmage's Regalia",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -131,4 +132,17 @@ var ItemSetGladiatorsRegalia = core.NewItemSet(core.ItemSet{
 			agent.GetCharacter().AddStat(stats.SpellPower, 88)
 		},
 	},
+})
+
+// T11
+var ItemSetFirelordsVestments = core.NewItemSet(core.ItemSet{
+	Name: "Firelord's Vestments",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: funct(agent core.Agent) {
+			//Increase critical strike chance of Arcane Missiles, Ice Lance, and Pyroblast by 5%
+		},
+		4: funct(agent core.Agent) {
+			//Reduces cast time of Arcane Blast, Fireball, FFB, and Frostbolt by 10%
+		}
+	}
 })
