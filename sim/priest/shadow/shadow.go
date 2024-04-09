@@ -189,7 +189,7 @@ func handleShadowOrbPower(spriest *ShadowPriest, sim *core.Simulation, spell *co
 
 	if spell == spriest.ShadowWordPain || spell.SpellID == spriest.MindFlayAPL.SpellID {
 		procChance := 0.1 + float64(spriest.Talents.HarnessedShadows)*0.04
-		if sim.RandomFloat("Shadow Orb Power") < procChance {
+		if sim.Proc(procChance, "Shadow Orb Power") {
 			spriest.shadowOrbsAura.Activate(sim)
 			spriest.shadowOrbsAura.AddStack(sim)
 		}

@@ -12,7 +12,7 @@ func (priest *Priest) registerShadowWordPainSpell() {
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: int64(PriestSpellShadowWordPain),
+		ClassSpellMask: PriestSpellShadowWordPain,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.22,

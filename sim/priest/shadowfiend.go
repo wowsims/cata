@@ -25,7 +25,7 @@ func (priest *Priest) registerShadowfiendSpell() {
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: int64(PriestSpellShadowFiend),
+		ClassSpellMask: PriestSpellShadowFiend,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

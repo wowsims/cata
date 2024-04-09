@@ -32,7 +32,7 @@ func (priest *Priest) registerDispersionSpell() {
 		ActionID:       core.ActionID{SpellID: 47585},
 		ProcMask:       core.ProcMaskEmpty,
 		SpellSchool:    core.SpellSchoolShadow,
-		ClassSpellMask: int64(PriestSpellDispersion),
+		ClassSpellMask: PriestSpellDispersion,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,

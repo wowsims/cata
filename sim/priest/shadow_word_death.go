@@ -23,7 +23,7 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: int64(PriestSpellShadowWordDeath),
+		ClassSpellMask: PriestSpellShadowWordDeath,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.12,

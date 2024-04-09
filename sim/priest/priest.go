@@ -202,18 +202,9 @@ type PriestAgent interface {
 	GetPriest() *Priest
 }
 
-// Priest Specific Aura MOD Handling
-// Other flags
-type PriestSpellFlag uint64
-
-// Returns whether there is any overlap between the given masks.
-func (se PriestSpellFlag) Matches(other PriestSpellFlag) bool {
-	return (se & other) != 0
-}
-
 const (
-	PriestSpellFlagNone  PriestSpellFlag = 0
-	PriestSpellArchangel PriestSpellFlag = 1 << iota
+	PriestSpellFlagNone  int64 = 0
+	PriestSpellArchangel int64 = 1 << iota
 	PriestSpellDarkArchangel
 	PriestSpellBindingHeal
 	PriestSpellCircleOfHealing

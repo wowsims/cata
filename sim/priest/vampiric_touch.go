@@ -18,7 +18,7 @@ func (priest *Priest) registerVampiricTouchSpell() {
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: int64(PriestSpellVampiricTouch),
+		ClassSpellMask: PriestSpellVampiricTouch,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.17,

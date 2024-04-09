@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -178,54 +177,7 @@ func (priest *Priest) ApplyTalents() {
 	// Shadowy Apparition
 	priest.applyShadowyApparition()
 
-	// Dispersion - TBD
-
-	// Glphys
-	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfShadowWordPain)) {
-		priest.AddStaticMod(core.SpellModConfig{
-			FloatValue: 0.1,
-			ClassMask:  int64(PriestSpellShadowWordPain),
-			Kind:       core.SpellMod_DamageDone_Flat,
-		})
-	}
-
-	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfMindFlay)) {
-		priest.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(PriestSpellMindFlay),
-			FloatValue: 0.1,
-			Kind:       core.SpellMod_DamageDone_Flat,
-		})
-	}
-
-	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfDispersion)) {
-		priest.AddStaticMod(core.SpellModConfig{
-			Kind:      core.SpellMod_Cooldown_Flat,
-			TimeValue: time.Second * -45,
-			ClassMask: int64(PriestSpellDispersion),
-		})
-	}
-
-	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfShadowWordDeath)) {
-		priest.RegisterAura(core.Aura{
-			Label:    "Glyph of Shadow Word: Death",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-
-			Icd: &core.Cooldown{
-				Timer:    priest.NewTimer(),
-				Duration: time.Second * 6,
-			},
-
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if priest.ShadowWordDeath == spell && sim.IsExecutePhase25() && aura.Icd.IsReady(sim) {
-					aura.Icd.Use(sim)
-					priest.ShadowWordDeath.CD.Reset()
-				}
-			},
-		})
-	}
+	priest.ApplyGlyphs()
 }
 
 // disciplin talents
@@ -391,6 +343,10 @@ func (priest *Priest) applyImprovedMindBlast() {
 		Kind:      core.SpellMod_Cooldown_Flat,
 	})
 
+	mindTraumaAura := priest.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		return MindTraumaAura(target)
+	})
+
 	mindTraumaSpell := priest.RegisterSpell(core.SpellConfig{
 		ActionID:                 core.ActionID{SpellID: 48301},
 		ProcMask:                 core.ProcMaskProc,
@@ -401,10 +357,11 @@ func (priest *Priest) applyImprovedMindBlast() {
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		Flags:                    core.SpellFlagNoMetrics,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			MindTraumaAura(target).Activate(sim)
+			mindTraumaAura.Get(target).Activate(sim)
 		},
 	})
 
+	procChance := []float64{0.0, 0.33, 0.66, 1.0}[priest.Talents.ImprovedMindBlast]
 	priest.RegisterAura(core.Aura{
 		Label:    "Improved Mind Blast",
 		Duration: core.NeverExpires,
@@ -413,7 +370,7 @@ func (priest *Priest) applyImprovedMindBlast() {
 		},
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && priest.MindBlast == spell {
-				if sim.RandomFloat("Improved Mind Blast") < 0.33*float64(priest.Talents.ImprovedMindBlast) {
+				if sim.Proc(procChance, "Improved Mind Blast") {
 					mindTraumaSpell.Cast(sim, result.Target)
 				}
 			}
@@ -445,18 +402,15 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 		ActionID:                 core.ActionID{SpellID: 63675},
 		SpellSchool:              core.SpellSchoolShadow,
 		ProcMask:                 core.ProcMaskProc,
-		Flags:                    core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagIgnoreTargetModifiers | core.SpellFlagNoSpellMods,
+		Flags:                    core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagNoSpellMods,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			dp := priest.DevouringPlague
-			dot := dp.Dot(target)
-
-			// No need to use snapshot dmg. It won't be initialized in time and we're in the same sim cycle
-			// so all mods and buffs will be the same
-			dmg := float64(dot.NumberOfTicks*int32(dp.ExpectedTickDamage(sim, target))*priest.Talents.ImprovedDevouringPlague) * 0.15
+			dot := priest.DevouringPlague.Dot(target)
+			dpTickDamage := dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
+			dmg := float64(dot.NumberOfTicks) * dpTickDamage.Damage * float64(priest.Talents.ImprovedDevouringPlague) * 0.15
 			spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit)
 		},
 	})
@@ -513,9 +467,8 @@ func (priest *Priest) applyMasochism() {
 		return
 	}
 
-	// Should we care for the different ranks here?
 	manaMetrics := priest.NewManaMetrics(core.ActionID{
-		SpellID: 88995,
+		SpellID: []int32{0, 88894, 88995}[priest.Talents.Masochism],
 	})
 
 	damageTakenHandler := func(sim *core.Simulation, damage float64) {
@@ -615,12 +568,12 @@ func (priest *Priest) applySinAndPunishment() {
 			aura.Activate(sim)
 		},
 
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// check for critical mind flay tick
 			if result.Outcome.Matches(core.OutcomeCrit) && priest.MindFlayAPL.ClassSpellMask == int64(PriestSpellMindFlay) {
 
 				// reduce cooldown
-				remaining := max(0, time.Duration(*priest.Shadowfiend.CD.Timer)-time.Second*5)
+				remaining := max(0, priest.Shadowfiend.CD.TimeToReady(sim)-time.Second*5)
 				priest.Shadowfiend.CD.Set(remaining)
 			}
 		},
@@ -643,15 +596,8 @@ func (priest *Priest) applyShadowyApparition() {
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				Cost: 0,
-				GCD:  0,
-			},
-		},
-
-		SpellSchool:      core.SpellSchoolShadow,
-		ThreatMultiplier: 1,
+		SpellSchool:              core.SpellSchoolShadow,
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := priest.ScalingBaseDamage*levelScaling + spellScaling*spell.SpellPower()

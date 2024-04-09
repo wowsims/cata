@@ -13,7 +13,7 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagDisease | core.SpellFlagAPL,
-		ClassSpellMask: int64(PriestSpellDevouringPlague),
+		ClassSpellMask: PriestSpellDevouringPlague,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.25,
@@ -48,12 +48,15 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
 				spell.Dot(target).Apply(sim)
 			}
+
+			spell.DealOutcome(sim, result)
 		},
+
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
 			if useSnapshot {
 				dot := spell.Dot(target)

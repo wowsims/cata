@@ -20,7 +20,7 @@ func (priest *Priest) newMindFlaySpell(numTicksIdx int32) *core.Spell {
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          flags,
-		ClassSpellMask: int64(PriestSpellMindFlay),
+		ClassSpellMask: PriestSpellMindFlay,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.08,
 			Multiplier: 1,

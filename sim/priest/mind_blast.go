@@ -12,7 +12,7 @@ func (priest *Priest) registerMindBlastSpell() {
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: int64(PriestSpellMindBlast),
+		ClassSpellMask: PriestSpellMindBlast,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
