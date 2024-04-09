@@ -197,6 +197,7 @@ const (
 	SpellFlagPotion                                         // Indicates this spell is a potion spell.
 	SpellFlagPrepullPotion                                  // Indicates this spell is the prepull potion.
 	SpellFlagCombatPotion                                   // Indicates this spell is the combat potion.
+	SpellFlagNoSpellMods                                    // Indicates that no spell mods should be applied to this spell
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1

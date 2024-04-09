@@ -111,6 +111,7 @@ func GetRegexStringValue(srcStr string, pattern *regexp.Regexp, matchIdx int) st
 }
 func GetRegexIntValue(srcStr string, pattern *regexp.Regexp, matchIdx int) int {
 	matchStr := GetRegexStringValue(srcStr, pattern, matchIdx)
+	matchStr = strings.Replace(matchStr, ",", "", -1)
 
 	val, err := strconv.Atoi(matchStr)
 	if err != nil {
@@ -159,8 +160,8 @@ var strengthRegex = regexp.MustCompile(`<!--stat4-->\+([0-9]+) Strength`)
 var intellectRegex = regexp.MustCompile(`<!--stat5-->\+([0-9]+) Intellect`)
 var spiritRegex = regexp.MustCompile(`<!--stat6-->\+([0-9]+) Spirit`)
 var staminaRegex = regexp.MustCompile(`<!--stat7-->\+([0-9]+) Stamina`)
-var spellPowerRegex = regexp.MustCompile(`Increases spell power by ([0-9]+)\.`)
-var spellPowerRegex2 = regexp.MustCompile(`Increases spell power by <!--rtg45-->([0-9]+)\.`)
+var spellPowerRegex = regexp.MustCompile(`Increases spell power by ([0-9]{1,3}(,[0-9]{3})*)\.`)
+var spellPowerRegex2 = regexp.MustCompile(`Increases spell power by <!--rtg45-->([0-9]{1,3}(,[0-9]{3})*)\.`)
 var masteryRegex = regexp.MustCompile(`<!--rtg49-->([0-9]+)\s*Mastery`)
 
 /*
