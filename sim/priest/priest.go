@@ -202,6 +202,16 @@ type PriestAgent interface {
 	GetPriest() *Priest
 }
 
+func (hunter *Priest) HasPrimeGlyph(glyph proto.PriestPrimeGlyph) bool {
+	return hunter.HasGlyph(int32(glyph))
+}
+func (hunter *Priest) HasMajorGlyph(glyph proto.PriestMajorGlyph) bool {
+	return hunter.HasGlyph(int32(glyph))
+}
+func (hunter *Priest) HasMinorGlyph(glyph proto.PriestMinorGlyph) bool {
+	return hunter.HasGlyph(int32(glyph))
+}
+
 const (
 	PriestSpellFlagNone  int64 = 0
 	PriestSpellArchangel int64 = 1 << iota

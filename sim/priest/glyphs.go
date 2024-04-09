@@ -8,8 +8,8 @@ import (
 )
 
 func (priest *Priest) ApplyGlyphs() {
-	// Glphys
-	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfShadowWordPain)) {
+
+	if priest.HasPrimeGlyph(proto.PriestPrimeGlyph_GlyphOfShadowWordPain) {
 		priest.AddStaticMod(core.SpellModConfig{
 			FloatValue: 0.1,
 			ClassMask:  int64(PriestSpellShadowWordPain),
@@ -17,7 +17,7 @@ func (priest *Priest) ApplyGlyphs() {
 		})
 	}
 
-	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfMindFlay)) {
+	if priest.HasPrimeGlyph(proto.PriestPrimeGlyph_GlyphOfMindFlay) {
 		priest.AddStaticMod(core.SpellModConfig{
 			ClassMask:  int64(PriestSpellMindFlay),
 			FloatValue: 0.1,
@@ -25,7 +25,7 @@ func (priest *Priest) ApplyGlyphs() {
 		})
 	}
 
-	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfDispersion)) {
+	if priest.HasPrimeGlyph(proto.PriestPrimeGlyph_GlyphOfDispersion) {
 		priest.AddStaticMod(core.SpellModConfig{
 			Kind:      core.SpellMod_Cooldown_Flat,
 			TimeValue: time.Second * -45,
@@ -33,7 +33,7 @@ func (priest *Priest) ApplyGlyphs() {
 		})
 	}
 
-	if priest.HasGlyph(int32(proto.PriestPrimeGlyph_GlyphOfShadowWordDeath)) {
+	if priest.HasPrimeGlyph(proto.PriestPrimeGlyph_GlyphOfShadowWordDeath) {
 		priest.RegisterAura(core.Aura{
 			Label:    "Glyph of Shadow Word: Death",
 			Duration: core.NeverExpires,
