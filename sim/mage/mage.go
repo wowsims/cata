@@ -40,7 +40,6 @@ type Mage struct {
 	Fireball                *core.Spell
 	FireBlast               *core.Spell
 	Flamestrike             *core.Spell
-	FlamestrikeRank8        *core.Spell
 	Frostbolt               *core.Spell
 	FrostfireBolt           *core.Spell
 	IceLance                *core.Spell
@@ -58,12 +57,15 @@ type Mage struct {
 	ArcanePowerAura    *core.Aura
 	MissileBarrageAura *core.Aura
 	ClearcastingAura   *core.Aura
-	ScorchAuras        core.AuraArray
+	//ScorchAuras        core.AuraArray
+	CriticalMassAuras  core.AuraArray
 	hotStreakCritAura  *core.Aura
 	HotStreakAura      *core.Aura
 	CombustionAura     *core.Aura
 	FingersOfFrostAura *core.Aura
 	BrainFreezeAura    *core.Aura
+
+	ScalingBaseDamage float64
 
 	CritDebuffCategories core.ExclusiveCategoryArray
 }
@@ -74,6 +76,10 @@ func (mage *Mage) GetCharacter() *core.Character {
 
 func (mage *Mage) GetMage() *Mage {
 	return mage
+}
+
+func (mage *Mage) HasPrimeGlyph(glyph proto.MagePrimeGlyph) bool {
+	return mage.HasGlyph(int32(glyph))
 }
 
 func (mage *Mage) HasMajorGlyph(glyph proto.MageMajorGlyph) bool {
@@ -102,7 +108,7 @@ func (mage *Mage) Initialize() {
 	// mage.registerDeepFreezeSpell()
 	// mage.registerFireballSpell()
 	// mage.registerFireBlastSpell()
-	// mage.registerFlamestrikeSpells()
+	// mage.registerFlamestrikeSpell()
 	// mage.registerFrostboltSpell()
 	// mage.registerIceLanceSpell()
 	// mage.registerPyroblastSpell()
@@ -115,6 +121,7 @@ func (mage *Mage) Initialize() {
 	// mage.registerBlastWaveSpell()
 	// mage.registerDragonsBreathSpell()
 	// mage.registerSummonWaterElementalCD()
+	mage.ScalingBaseDamage = 937.330078125
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {

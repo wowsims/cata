@@ -8,63 +8,47 @@ import (
 )
 
 func (mage *Mage) registerFireballSpell() {
-	spellCoeff := 1 + 0.05*float64(mage.Talents.EmpoweredFire)
-	hasGlyph := mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfFireball)
+	hasPrimeGlyph := mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfFireball)
 
 	mage.Fireball = mage.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 42833},
+		ActionID:     core.ActionID{SpellID: 133},
 		SpellSchool:  core.SpellSchoolFire,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | BarrageSpells | HotStreakSpells | core.SpellFlagAPL,
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.19,
+			BaseCost: 0.09,
 		},
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
-				CastTime: time.Millisecond*3500 -
-					time.Millisecond*100*time.Duration(mage.Talents.ImprovedFireball) -
-					core.TernaryDuration(hasGlyph, time.Millisecond*150, 0),
+				CastTime: time.Millisecond*2500 *
+				core.TernaryFloat64(mage.HasSetBonus(ItemSetFirelordsVestments, 4), 0.9, 1)
 			},
 		},
 
 		BonusCritRating: 0 +
-			2*float64(mage.Talents.CriticalMass)*core.CritRatingPerCritChance +
-			float64(mage.Talents.ImprovedScorch)*core.CritRatingPerCritChance +
-			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0),
-		DamageMultiplier: 1 *
-			(1 + .04*float64(mage.Talents.TormentTheWeak)),
-		DamageMultiplierAdditive: 1 +
-			.02*float64(mage.Talents.SpellImpact) +
-			.02*float64(mage.Talents.FirePower) +
-			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),
-		CritMultiplier:   mage.SpellCritMultiplier(1, mage.bonusCritDamage),
-		ThreatMultiplier: 1 - 0.1*float64(mage.Talents.BurningSoul),
+			// waiting to see how buff talents will be implemented
+			//float64(mage.Talents.PiercingIce)*core.CritRatingPerCritChance + 
+			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0) + 
+			core.TernaryFloat64(hasPrimeGlyph, 5*core.CritRatingPerCritChance, 0)
 
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Fireball",
-			},
-			NumberOfTicks: 4,
-			TickLength:    time.Second * 2,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = 116.0 / 4.0
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-			},
-		},
+		DamageMultiplier: 1
+
+		DamageMultiplierAdditive: 1 +
+			.01*float64(mage.Talents.FirePower) +
+			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),
+
+		CritMultiplier: mage.DefaultSpellCritMultiplier();
+
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(898, 1143) + spellCoeff*spell.SpellPower()
+			baseDamage := sim.Roll(mage.ScalingBaseDamage*1.20, mage.ScalingBaseDamage*1.20+13) + 1.2359*spell.SpellPower()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				if result.Landed() && !hasGlyph {
-					spell.Dot(target).Apply(sim)
-				}
 				spell.DealDamage(sim, result)
 			})
 		},
