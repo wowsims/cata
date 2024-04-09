@@ -398,19 +398,19 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 	}
 
 	// simple spell here as it does not use any dmg mods or calculations
-	impDPDamage := priest.Unit.RegisterSpell(core.SpellConfig{
+	impDPDamage := priest.RegisterSpell(core.SpellConfig{
 		ActionID:                 core.ActionID{SpellID: 63675},
 		SpellSchool:              core.SpellSchoolShadow,
 		ProcMask:                 core.ProcMaskProc,
-		Flags:                    core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagNoSpellMods,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
+		ClassSpellMask:           PriestSpellImprovedDevouringPlague,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dot := priest.DevouringPlague.Dot(target)
-			dpTickDamage := dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
-			dmg := float64(dot.NumberOfTicks) * dpTickDamage.Damage * float64(priest.Talents.ImprovedDevouringPlague) * 0.15
+			dpTickDamage := dot.SnapshotBaseDamage
+			dmg := float64(dot.NumberOfTicks) * dpTickDamage * float64(priest.Talents.ImprovedDevouringPlague) * 0.15
 			spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit)
 		},
 	})

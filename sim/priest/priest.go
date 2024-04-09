@@ -252,10 +252,11 @@ const (
 
 	PriestSpellLast
 	PriestSpellsAll    = PriestSpellLast<<1 - 1
-	PriestSpellDoT     = PriestSpellDevouringPlague | PriestSpellHolyFire | PriestSpellMindFlay | PriestSpellShadowWordPain | PriestSpellVampiricTouch
+	PriestSpellDoT     = PriestSpellDevouringPlague | PriestSpellHolyFire | PriestSpellMindFlay | PriestSpellShadowWordPain | PriestSpellVampiricTouch | PriestSpellImprovedDevouringPlague
 	PriestSpellInstant = PriestSpellCircleOfHealing |
 		PriestSpellDesperatePrayer |
 		PriestSpellDevouringPlague |
+		PriestSpellImprovedDevouringPlague |
 		PriestSpellFade |
 		PriestSpellGuardianSpirit |
 		PriestSpellHolyNova |
