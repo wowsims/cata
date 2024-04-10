@@ -47,8 +47,9 @@ files = [
     "SkillLineAbility"
 ]
 
+asset_dir = "/tmp"
 for file in files:
-    download_file(f"https://wago.tools/db2/{file}/csv?branch={branch}", f"/tmp/{file}.csv")
+    download_file(f"https://wago.tools/db2/{file}/csv?branch={branch}", f"{asset_dir}/{file}.csv")
 
 statMapping: Mapping[str, Callable[[int], str]] = {
     "0": lambda val: f"stats.Mana: {val}",
@@ -185,6 +186,8 @@ class InventoryType(Enum):
     RANGED = 15
     CLOAK = 16
     WEAPON = 17
+    OFFHAND = 23
+
 
 
 class SpellEffectRecord:
@@ -338,7 +341,7 @@ class EnchantItemInfo:
 
 def loadEffects() -> Mapping[int, SpellEffectRecord]:
     effects = {}
-    with open('assets/db_inputs/SpellEffect.csv', newline='') as csvfile:
+    with open(f'{asset_dir}/SpellEffect.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             if row['Effect'] != "53":
@@ -357,7 +360,7 @@ def loadEffects() -> Mapping[int, SpellEffectRecord]:
 
 def loadEnchants() -> Mapping[int, SpellEnchant]:
     enchants = {}
-    with open('assets/db_inputs/SpellItemEnchantment.csv', newline='') as csvfile:
+    with open(f'{asset_dir}/SpellItemEnchantment.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             enchant = SpellEnchant(
@@ -378,7 +381,7 @@ def loadEnchants() -> Mapping[int, SpellEnchant]:
 
 def loadSpellNames(knownSpells: KeysView[int]) -> Mapping[int, SpellNameRecord]:
     names = {}
-    with open('assets/db_inputs/SpellName.csv', newline='') as csvfile:
+    with open(f'{asset_dir}/SpellName.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             id = int(row['ID'])
@@ -390,7 +393,7 @@ def loadSpellNames(knownSpells: KeysView[int]) -> Mapping[int, SpellNameRecord]:
 
 def loadSpellDescriptions(knownSpells: KeysView[int]) -> Mapping[int, SpellDescription]:
     names = {}
-    with open('assets/db_inputs/Spell.csv', newline='') as csvfile:
+    with open(f'{asset_dir}/Spell.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             id = int(row['ID'])
@@ -402,7 +405,7 @@ def loadSpellDescriptions(knownSpells: KeysView[int]) -> Mapping[int, SpellDescr
 
 def loadSlotRequirements(knownSpells: KeysView[int]) -> Mapping[int, SpellItemRequirement]:
     names = {}
-    with open('assets/db_inputs/SpellEquippedItems.csv', newline='') as csvfile:
+    with open(f'{asset_dir}/SpellEquippedItems.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             id = int(row['SpellID'])
@@ -414,7 +417,7 @@ def loadSlotRequirements(knownSpells: KeysView[int]) -> Mapping[int, SpellItemRe
 
 def loadItemInfos(knownSpells: KeysView[int]) -> Mapping[int, EnchantItemInfo]:
     itemInfo = {}
-    with open('assets/db_inputs/ItemEffect.csv', newline='') as csvfile:
+    with open(f'{asset_dir}/ItemEffect.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             id = int(row['SpellID'])
@@ -426,7 +429,7 @@ def loadItemInfos(knownSpells: KeysView[int]) -> Mapping[int, EnchantItemInfo]:
 
 def loadItemSparse(relevantItems: KeysView[int]) -> Mapping[int, SparseItemInfo]:
     itemInfo = {}
-    with open('assets/db_inputs/ItemSparse.csv', newline='') as csvfile:
+    with open(f'{asset_dir}/ItemSparse.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             id = int(row['ID'])
@@ -438,7 +441,7 @@ def loadItemSparse(relevantItems: KeysView[int]) -> Mapping[int, SparseItemInfo]
 
 def loadSkillLines(knownSpells: List[int]) -> Mapping[int, SkillLineAbility]:
     skillLineInfo = {}
-    with open('assets/db_inputs/SkillLineAbility.csv', newline='') as csvfile:
+    with open(f'{asset_dir}/SkillLineAbility.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             id = int(row['Spell'])
@@ -538,6 +541,7 @@ def getExtraSlotsPart(effect: SpellEffectRecord) -> str:
     if slotRequirements[effect.spellID].itemClass == ItemClass.WEAPON:
         return ""    
     slots = list(filter(lambda t: (slotRequirements[effect.spellID].inventoryTypeMask & (1 << t.value)) > 0 and not t == type, InventoryType))
+    slots = list(filter(lambda t: t != InventoryType.OFFHAND, slots))
     if len(slots) < 2:
         return ""
     slots = slots[1:]
@@ -547,11 +551,14 @@ def getExtraSlotsPart(effect: SpellEffectRecord) -> str:
 def getEnchantTypePart(effect: SpellEffectRecord) -> str:
     equipInfo = slotRequirements[effect.spellID]
     enchantType = ""
-    if equipInfo.itemClass == ItemClass.ARMOR and equipInfo.itemSubClass & (1 << ItemSubclassArmor.SHIELD.value) > 0:
+
+    if equipInfo.itemClass == ItemClass.ARMOR and equipInfo.inventoryTypeMask & (1 << InventoryType.OFFHAND.value) > 0:
+        enchantType = "proto.EnchantType_EnchantTypeOffHand"
+    elif equipInfo.itemClass == ItemClass.ARMOR and equipInfo.itemSubClass & (1 << ItemSubclassArmor.SHIELD.value) > 0:
         enchantType = "proto.EnchantType_EnchantTypeShield"
     if equipInfo.itemClass == ItemClass.WEAPON and equipInfo.itemSubClass == (1 << WeaponType.STAFF.value):
         enchantType = "proto.EnchantType_EnchantTypeStaff"
-    if equipInfo.itemSubClass & WeaponType.mask_twoHanded() == WeaponType.mask_twoHanded() and \
+    elif equipInfo.itemSubClass & WeaponType.mask_twoHanded() == WeaponType.mask_twoHanded() and \
         equipInfo.itemSubClass & WeaponType.mask_oneHanded() == 0:
         enchantType = "proto.EnchantType_EnchantTypeTwoHand"
 

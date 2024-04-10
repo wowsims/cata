@@ -10,7 +10,6 @@ import (
 
 var EnchantOverrides = []*proto.UIEnchant{
 	// HANDS
-	{EffectId: 846, SpellId: 71692, Name: "Enchant Gloves - Angler", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 4061, SpellId: 74132, Name: "Enchant Gloves - Mastery", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Mastery: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 4068, SpellId: 74198, Name: "Enchant Gloves - Haste", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MeleeHaste: 50, stats.SpellHaste: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 4075, SpellId: 74212, Name: "Enchant Gloves - Exceptional Strength", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Strength: 35}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
@@ -84,7 +83,6 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 4216, ItemId: 55056, SpellId: 92437, Name: "Pyrium Shield Spike", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
 	{EffectId: 4217, ItemId: 55057, SpellId: 93448, Name: "Pyrium Weapon Chain", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.MeleeHit: 40, stats.SpellHit: 40}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 4227, SpellId: 95471, Name: "Enchant 2H Weapon - Mighty Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 130}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeTwoHand},
-	{EffectId: 4259, ItemId: 68796, SpellId: 96286, Name: "Reinforced Fishing Line", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 
 	// FINGER
 	{EffectId: 4078, SpellId: 74215, Name: "Enchant Ring - Strength", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Strength: 40}.ToFloatArray(), Type: proto.ItemType_ItemTypeFinger, RequiredProfession: proto.Profession_Enchanting},
