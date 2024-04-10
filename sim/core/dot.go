@@ -136,8 +136,8 @@ func (dot *Dot) Apply(sim *Simulation) {
 
 	// we a have running dot tick
 	// the next tick never get's clipped and is added onto the dot's time for hasted dots
-	// see: https://github.com/wowsims/cata/issues/50
-	if dot.tickAction != nil {
+	// see: https://github.com/wowsims/cata/issues/50git
+	if dot.tickAction != nil && !dot.tickAction.cancelled {
 
 		// save next tick timer as timer is computed based on tick time
 		// which we update in RecomputeAuraDuration
