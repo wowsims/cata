@@ -17,7 +17,7 @@ func (shaman *Shaman) registerThunderstormSpell() {
 
 	manaRestore := 0.08
 	if shaman.HasMinorGlyph(proto.ShamanMinorGlyph_GlyphOfThunderstorm) {
-		manaRestore = 0.10
+		manaRestore = 0.02
 	}
 
 	cooldown := time.Second * 45
@@ -44,8 +44,6 @@ func (shaman *Shaman) registerThunderstormSpell() {
 			},
 		},
 
-		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
-		BonusCritRating:  0,
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 

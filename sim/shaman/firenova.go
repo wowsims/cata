@@ -16,7 +16,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.22,
-			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection),
+			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -27,7 +27,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 				Duration: time.Second * time.Duration(4),
 			},
 		},
-		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
+
 		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.1,
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 		ThreatMultiplier: 0,

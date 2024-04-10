@@ -57,7 +57,6 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 			},
 		},
 
-		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion) + 0.05*float64(shaman.Talents.CallOfFlame),
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0.08 * float64(shaman.Talents.LavaFlows)),
 	}

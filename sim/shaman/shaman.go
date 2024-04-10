@@ -49,7 +49,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	// 	totems.BonusSpellpower = 0
 	// }
 
-	// //shaman.FireElemental = shaman.NewFireElemental(float64(totems.BonusSpellpower))
+	shaman.FireElemental = shaman.NewFireElemental(float64(totems.BonusSpellpower))
 	return shaman
 }
 
@@ -110,7 +110,7 @@ type Shaman struct {
 	FeralSpirit *core.Spell
 	//SpiritWolves *SpiritWolves
 
-	//FireElemental      *FireElemental
+	FireElemental      *FireElemental
 	FireElementalTotem *core.Spell
 
 	MagmaTotem           *core.Spell
@@ -131,12 +131,14 @@ type Shaman struct {
 	UnleashWind  *core.Spell
 
 	MaelstromWeaponAura *core.Aura
+	SearingFlamesDot    *core.Spell
 
 	// Healing Spells
 	tidalWaveProc          *core.Aura
 	ancestralHealingAmount float64
 	AncestralAwakening     *core.Spell
 	HealingSurge           *core.Spell
+	GreaterHealingWave     *core.Spell
 	HealingWave            *core.Spell
 	ChainHeal              *core.Spell
 	Riptide                *core.Spell
@@ -304,4 +306,14 @@ func (shaman *Shaman) GetOverloadChance() float64 {
 	}
 
 	return overloadChance
+}
+
+func (shaman *Shaman) GetMentalQuicknessBonus() float64 {
+	mentalQuicknessBonus := 0.0
+
+	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
+		mentalQuicknessBonus += 0.55
+	}
+
+	return mentalQuicknessBonus
 }

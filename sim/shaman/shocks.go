@@ -18,9 +18,8 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 		Flags:       SpellFlagShock | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: baseCost,
-			Multiplier: 1 -
-				0.05*float64(shaman.Talents.Convection),
+			BaseCost:   baseCost,
+			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -32,7 +31,6 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 			},
 		},
 
-		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 	}

@@ -22,13 +22,12 @@ func (shaman *Shaman) registerAncestralHealingSpell() {
 	})
 }
 
-func (shaman *Shaman) registerLesserHealingWaveSpell() {
+// TODO: Just changed the name from lesser healing wave, still needs updated
+func (shaman *Shaman) registerHealingSurgeSpell() {
 	spellCoeff := 0.807
 	bonusCoeff := 0.02 * float64(shaman.Talents.TidalWaves)
 	impShieldChance := 0.2 * float64(shaman.Talents.ImprovedWaterShield)
 	impShieldManaGain := 428.0 * (1 + 0.05*float64(shaman.Talents.ImprovedShields))
-
-	hasGlyph := shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfLesserHealingWave)
 
 	bonusHeal := 0 +
 		core.TernaryFloat64(shaman.Ranged().ID == 42598, 338, 0) +
@@ -36,7 +35,7 @@ func (shaman *Shaman) registerLesserHealingWaveSpell() {
 		core.TernaryFloat64(shaman.Ranged().ID == 42596, 236, 0) +
 		core.TernaryFloat64(shaman.Ranged().ID == 42595, 204, 0)
 
-	shaman.LesserHealingWave = shaman.RegisterSpell(core.SpellConfig{
+	shaman.HealingSurge = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 49276},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
@@ -62,7 +61,7 @@ func (shaman *Shaman) registerLesserHealingWaveSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			healPower := spell.HealingPower(target)
 			baseHealing := sim.Roll(1624, 1852) + spellCoeff*healPower + bonusCoeff*healPower + bonusHeal
-			if hasGlyph {
+			if shaman.Spec == proto.Spec_SpecRestorationShaman {
 				if shaman.EarthShield.Hot(target).IsActive() {
 					baseHealing *= 1.2
 				}
@@ -142,6 +141,11 @@ func (shaman *Shaman) registerRiptideSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			healPower := spell.HealingPower(target)
 			baseHealing := sim.Roll(1604, 1736) + spellCoeff*healPower
+			if shaman.Spec == proto.Spec_SpecRestorationShaman {
+				if shaman.EarthShield.Hot(target).IsActive() {
+					baseHealing *= 1.2
+				}
+			}
 			result := spell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
 			spell.Hot(target).Apply(sim)
 
@@ -177,8 +181,6 @@ func (shaman *Shaman) registerHealingWaveSpell() {
 	impShieldChance := 0.2 * float64(shaman.Talents.ImprovedWaterShield)
 	impShieldManaGain := 428.0 * (1 + 0.05*float64(shaman.Talents.ImprovedShields))
 
-	hasGlyph := shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfLesserHealingWave)
-
 	bonusHeal := 0 +
 		core.TernaryFloat64(shaman.Ranged().ID == 42598, 338, 0) +
 		core.TernaryFloat64(shaman.Ranged().ID == 42597, 267, 0) +
@@ -211,7 +213,7 @@ func (shaman *Shaman) registerHealingWaveSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			healPower := spell.HealingPower(target)
 			baseHealing := sim.Roll(1624, 1852) + spellCoeff*healPower + bonusCoeff*healPower + bonusHeal
-			if hasGlyph {
+			if shaman.Spec == proto.Spec_SpecRestorationShaman {
 				if shaman.EarthShield.Hot(target).IsActive() {
 					baseHealing *= 1.2
 				}
@@ -350,6 +352,11 @@ func (shaman *Shaman) registerChainHealSpell() {
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				healPower := spell.HealingPower(target)
 				baseHealing := sim.Roll(1055, 1205) + spellCoeff*healPower + bonusHeal
+				if shaman.Spec == proto.Spec_SpecRestorationShaman {
+					if shaman.EarthShield.Hot(target).IsActive() {
+						baseHealing *= 1.2
+					}
+				}
 				baseHealing *= bounceCoeff
 
 				riptide := shaman.Riptide.Hot(curTarget)

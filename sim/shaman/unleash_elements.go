@@ -12,7 +12,8 @@ func (shaman *Shaman) newUnleashElementsSpellConfig(unleashElementsTimer *core.T
 		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.07,
+			BaseCost:   0.07,
+			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -29,15 +30,44 @@ func (shaman *Shaman) newUnleashElementsSpellConfig(unleashElementsTimer *core.T
 func (shaman *Shaman) registerUnleashFlame(unleashElementsTimer *core.Timer) {
 	spellCoeff := 0.429
 
+	var affectedSpells []*core.Spell
+
+	unleashFlameAura := shaman.RegisterAura(core.Aura{
+		Label:    "Unleash Flame",
+		ActionID: core.ActionID{SpellID: 73683},
+		Duration: time.Second * 8,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			// TODO: need to confirm all spells that benefit from this
+			affectedSpells = core.FilterSlice([]*core.Spell{
+				shaman.LavaBurst,
+				shaman.FlameShock,
+				shaman.FireNova,
+				shaman.LavaLash,
+				shaman.MagmaTotem,
+				shaman.SearingTotem,
+			}, func(spell *core.Spell) bool { return spell != nil })
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affectedSpells {
+				spell.DamageMultiplierAdditive += 0.2
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affectedSpells {
+				spell.CostMultiplier -= 0.2
+			}
+		},
+	})
+
 	config := shaman.newUnleashElementsSpellConfig(unleashElementsTimer)
 	config.SpellSchool = core.SpellSchoolFire
 	config.ProcMask = core.ProcMaskSpellDamage
-	config.BonusHitRating = float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
 
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := 1118 + spellCoeff*spell.SpellPower()
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		spell.DealDamage(sim, result)
+		unleashFlameAura.Activate(sim)
 	}
 
 	shaman.UnleashFlame = shaman.RegisterSpell(config)
@@ -49,7 +79,6 @@ func (shaman *Shaman) registerUnleashFrost(unleashElementsTimer *core.Timer) {
 	config := shaman.newUnleashElementsSpellConfig(unleashElementsTimer)
 	config.SpellSchool = core.SpellSchoolFrost
 	config.ProcMask = core.ProcMaskSpellDamage
-	config.BonusHitRating = float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
 
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := 873 + spellCoeff*spell.SpellPower()
@@ -61,18 +90,33 @@ func (shaman *Shaman) registerUnleashFrost(unleashElementsTimer *core.Timer) {
 }
 
 func (shaman *Shaman) registerUnleashWind(unleashElementsTimer *core.Timer) {
+
+	unleashWindAura := shaman.RegisterAura(core.Aura{
+		Label:     "Unleash Wind",
+		ActionID:  core.ActionID{SpellID: 73681},
+		Duration:  time.Second * 12,
+		MaxStacks: 6,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyMeleeSpeed(sim, 1.4)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.MultiplyMeleeSpeed(sim, 1/1.4)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+				aura.RemoveStack(sim)
+			}
+		},
+	})
+
 	config := shaman.newUnleashElementsSpellConfig(unleashElementsTimer)
 	config.SpellSchool = core.SpellSchoolPhysical
-	config.ProcMask = core.ProcMaskSpellDamage
-	// TODO: Does this use spell hit?
-	config.BonusHitRating = float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
+	config.ProcMask = core.ProcMaskMeleeSpecial
 
-	// TODO: 175% weapon damage and apply buff here
-	// config.ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 	baseDamage := 2298 + spellCoeff*spell.SpellPower()
-	// 	result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-	// 	spell.DealDamage(sim, result)
-	// },
+	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		// TODO: 175% weapon damage
+		unleashWindAura.Activate(sim)
+	}
 
 	shaman.UnleashWind = shaman.RegisterSpell(config)
 }
@@ -81,6 +125,34 @@ func (shaman *Shaman) registerUnleashLife(unleashElementsTimer *core.Timer) {
 	spellCoeff := 0.201
 	//TODO: does this benefit from shaman.Talents.TidalWaves?
 	//bonusCoeff := 0.02 * float64(shaman.Talents.TidalWaves)
+
+	var affectedSpells []*core.Spell
+
+	unleashLifeAura := shaman.RegisterAura(core.Aura{
+		Label:    "Unleash Life",
+		ActionID: core.ActionID{SpellID: 73685},
+		Duration: time.Second * 8,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			// TODO: need to confirm all spells that benefit from this
+			affectedSpells = core.FilterSlice([]*core.Spell{
+				shaman.ChainHeal,
+				shaman.HealingWave,
+				shaman.HealingSurge,
+				shaman.GreaterHealingWave,
+				shaman.Riptide,
+			}, func(spell *core.Spell) bool { return spell != nil })
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affectedSpells {
+				spell.DamageMultiplierAdditive += 0.2
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affectedSpells {
+				spell.CostMultiplier -= 0.2
+			}
+		},
+	})
 
 	config := shaman.newUnleashElementsSpellConfig(unleashElementsTimer)
 	config.SpellSchool = core.SpellSchoolNature
@@ -102,6 +174,7 @@ func (shaman *Shaman) registerUnleashLife(unleashElementsTimer *core.Timer) {
 				shaman.AncestralAwakening.Cast(sim, target)
 			}
 		}
+		unleashLifeAura.Activate(sim)
 	}
 
 	shaman.UnleashLife = shaman.RegisterSpell(config)

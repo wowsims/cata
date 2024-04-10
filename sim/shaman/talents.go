@@ -25,10 +25,16 @@ func (shaman *Shaman) ApplyTalents() {
 
 		shaman.PseudoStats.CanParry = true
 		//TODO: Enhancement bonuses for mental quickness and primal wisdom
+		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.55)
+
 	}
 
 	if shaman.Talents.Toughness > 0 {
 		shaman.MultiplyStat(stats.Stamina, []float64{1.0, 1.03, 1.07, 1.1}[shaman.Talents.Toughness])
+	}
+
+	if shaman.Talents.ElementalPrecision > 0 {
+		shaman.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.33, 0.66, 1.0}[shaman.Talents.ElementalPrecision])
 	}
 
 	shaman.applyElementalFocus()
@@ -37,6 +43,7 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.applyElementalDevastation()
 	shaman.applyFlurry()
 	shaman.applyMaelstromWeapon()
+	shaman.applySearingFlames()
 	shaman.registerElementalMasteryCD()
 	shaman.registerNaturesSwiftnessCD()
 	shaman.registerShamanisticRageCD()
@@ -80,9 +87,10 @@ func (shaman *Shaman) applyElementalFocus() {
 				spell.CostMultiplier -= 0.4
 			}
 			if oathBonus > 1 {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= oathBonus
+				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= oathBonus
+				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= oathBonus
+				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= oathBonus
+				shaman.PseudoStats.DamageDealtMultiplier *= oathBonus
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -90,9 +98,10 @@ func (shaman *Shaman) applyElementalFocus() {
 				spell.CostMultiplier += 0.4
 			}
 			if oathBonus > 1 {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= oathBonus
+				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= oathBonus
+				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= oathBonus
+				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= oathBonus
+				shaman.PseudoStats.DamageDealtMultiplier *= oathBonus
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -178,8 +187,7 @@ func (shaman *Shaman) applyFulmination() {
 				GCD:      0,
 			},
 		},
-		BonusHitRating:   float64(shaman.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
-		BonusCritRating:  0,
+
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion) + 0.05*float64(shaman.Talents.ImprovedShields),
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -477,6 +485,35 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 				shaman.MaelstromWeaponAura.Activate(sim)
 				shaman.MaelstromWeaponAura.AddStack(sim)
 			}
+		},
+	})
+}
+
+// TODO: Just getting this ready. No idea how this works... a dot stacking up to 5 times?
+func (shaman *Shaman) applySearingFlames() {
+	if shaman.Talents.SearingFlames == 0 {
+		return
+	}
+
+	shaman.SearingFlamesDot = shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 77657},
+		SpellSchool: core.SpellSchoolFire,
+		ProcMask:    core.ProcMaskEmpty,
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Searing Flames",
+			},
+			TickLength:    time.Second * 2,
+			NumberOfTicks: 3,
+
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+			spell.Dot(target).Apply(sim)
 		},
 	})
 }
