@@ -144,6 +144,9 @@ func (dot *Dot) Apply(sim *Simulation) {
 		nextTick := dot.TimeUntilNextTick(sim)
 		dot.RecomputeAuraDuration()
 		dot.Aura.Duration += nextTick
+
+		// add extra tick
+		dot.TickCount--
 	} else {
 		dot.RecomputeAuraDuration()
 	}
