@@ -108,7 +108,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			leaderOfThePack: TristateEffect.TristateEffectImproved,
 			sanctifiedRetribution: true,
 			unleashedRage: true,
-			moonkinAura: TristateEffect.TristateEffectImproved,
+			moonkinAura: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({

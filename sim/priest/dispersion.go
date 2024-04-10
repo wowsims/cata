@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (priest *Priest) registerDispersionSpell() {
@@ -13,11 +12,6 @@ func (priest *Priest) registerDispersionSpell() {
 	}
 
 	manaMetric := priest.NewManaMetrics(core.ActionID{SpellID: 47585})
-	glyphReduction := 0
-	if priest.HasGlyph(int32(proto.PriestMajorGlyph_GlyphOfDispersion)) {
-		glyphReduction = 45
-	}
-
 	priest.DispersionAura = priest.GetOrRegisterAura(core.Aura{
 		Label:    "Dispersion",
 		ActionID: core.ActionID{SpellID: 47585},
@@ -35,15 +29,17 @@ func (priest *Priest) registerDispersionSpell() {
 	})
 
 	priest.Dispersion = priest.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 47585},
-
+		ActionID:       core.ActionID{SpellID: 47585},
+		ProcMask:       core.ProcMaskEmpty,
+		SpellSchool:    core.SpellSchoolShadow,
+		ClassSpellMask: PriestSpellDispersion,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
 				Timer:    priest.NewTimer(),
-				Duration: time.Second*120 - time.Second*time.Duration(glyphReduction),
+				Duration: time.Second * 120,
 			},
 		},
 
