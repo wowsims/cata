@@ -105,8 +105,10 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 4127, ItemId: 56551, SpellId: 78172, Name: "Charscale Leg Armor", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{stats.Stamina: 145, stats.Agility: 55}.ToFloatArray(), Type: proto.ItemType_ItemTypeLegs},
 	{EffectId: 4440, SpellId: 85067, Name: "Dragonbone Leg Reinforcements", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MeleeCrit: 55, stats.SpellCrit: 55, stats.AttackPower: 190, stats.RangedAttackPower: 190}.ToFloatArray(), Type: proto.ItemType_ItemTypeLegs, RequiredProfession: proto.Profession_Leatherworking},
 	{EffectId: 4439, SpellId: 85068, Name: "Charscale Leg Reinforcements", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 145, stats.Agility: 55}.ToFloatArray(), Type: proto.ItemType_ItemTypeLegs, RequiredProfession: proto.Profession_Leatherworking},
-	{EffectId: 4270, ItemId: 71720, SpellId: 101598, Name: "Drakehide Leg Armor", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{stats.Stamina: 145, stats.Dodge: 55}.ToFloatArray(), Type: proto.ItemType_ItemTypeLegs},
-	{EffectId: 4438, SpellId: 101600, Name: "Drakehide Leg Reinforcements", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 145, stats.Dodge: 55}.ToFloatArray(), Type: proto.ItemType_ItemTypeLegs, RequiredProfession: proto.Profession_Leatherworking},
+
+	// Firelands
+	// {EffectId: 4438, SpellId: 101600, Name: "Drakehide Leg Reinforcements", Phase: 3, Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 145, stats.Dodge: 55}.ToFloatArray(), Type: proto.ItemType_ItemTypeLegs, RequiredProfession: proto.Profession_Leatherworking},
+	// {EffectId: 4270, ItemId: 71720, SpellId: 101598, Name: "Drakehide Leg Armor", phase: 3, Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{stats.Stamina: 145, stats.Dodge: 55}.ToFloatArray(), Type: proto.ItemType_ItemTypeLegs},
 
 	// HEAD
 	{EffectId: 4120, ItemId: 56477, SpellId: 78165, Name: "Savage Armor Kit", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 36}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, ExtraTypes: []proto.ItemType{proto.ItemType_ItemTypeShoulder, proto.ItemType_ItemTypeChest, proto.ItemType_ItemTypeLegs, proto.ItemType_ItemTypeFeet, proto.ItemType_ItemTypeHands}},
@@ -169,7 +171,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3820, ItemId: 44877, SpellId: 59970, Name: "Arcanum of Burning Mysteries", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.SpellPower: 30, stats.MeleeCrit: 20, stats.SpellCrit: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead},
 	{EffectId: 3818, ItemId: 44878, SpellId: 59955, Name: "Arcanum of the Stalwart Protector", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.Stamina: 37, stats.Defense: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead},
 	{EffectId: 3817, ItemId: 44879, SpellId: 59954, Name: "Arcanum of Torment", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.AttackPower: 50, stats.RangedAttackPower: 50, stats.MeleeCrit: 20, stats.SpellCrit: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead},
-	{EffectId: 3878, SpellId: 67839, Name: "Mind Amplification Dish", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 45}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, RequiredProfession: proto.Profession_Engineering},
+	{EffectId: 4222, SpellId: 67839, Name: "Mind Amplification Dish", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 45}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, RequiredProfession: proto.Profession_Engineering},
 
 	// Shoulder
 	{EffectId: 2998, ItemId: 29187, SpellId: 35441, Name: "Inscription of Endurance", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.ArcaneResistance: 7, stats.FireResistance: 7, stats.FrostResistance: 7, stats.NatureResistance: 7, stats.ShadowResistance: 7}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
@@ -280,7 +282,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3244, SpellId: 44584, Name: "Greater Vitality", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MP5: 7}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet},
 	{EffectId: 3826, SpellId: 60623, Name: "Icewalker", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MeleeHit: 12, stats.SpellHit: 12, stats.MeleeCrit: 12, stats.SpellCrit: 12}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet},
 	{EffectId: 983, SpellId: 44589, Name: "Superior Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 16}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet},
-	{EffectId: 3606, SpellId: 55016, Name: "Nitro Boosts", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MeleeCrit: 24, stats.SpellCrit: 24}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet, RequiredProfession: proto.Profession_Engineering},
+	{EffectId: 4223, SpellId: 55016, Name: "Nitro Boosts", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MeleeCrit: 24, stats.SpellCrit: 24}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet, RequiredProfession: proto.Profession_Engineering},
 
 	// Weapon
 	{EffectId: 1103, SpellId: 44633, Name: "Exceptional Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 26}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
