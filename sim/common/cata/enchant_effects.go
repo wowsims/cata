@@ -615,7 +615,7 @@ func init() {
 	})
 
 	// Enchant: 4181, Spell: 82180 - Tazik Shocker
-	core.NewEnchantEffect(4179, func(agent core.Agent) {
+	core.NewEnchantEffect(4181, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 82175},
