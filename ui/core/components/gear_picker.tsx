@@ -519,7 +519,7 @@ export class SelectorModal extends BaseModal {
 				return {
 					item: enchant,
 					id: enchant.effectId,
-					actionId: enchant.itemId ? ActionId.fromSpellId(enchant.spellId) : ActionId.fromItemId(enchant.itemId),
+					actionId: enchant.itemId ? ActionId.fromItemId(enchant.itemId) : ActionId.fromSpellId(enchant.spellId),
 					name: enchant.name,
 					quality: enchant.quality,
 					phase: enchant.phase || 1,
