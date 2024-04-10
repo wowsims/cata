@@ -1,4 +1,4 @@
-package wotlk
+package cata
 
 import (
 	"github.com/wowsims/cata/sim/core"
