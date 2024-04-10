@@ -33,11 +33,11 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 4104, SpellId: 74253, Name: "Enchant Boots - Lavawalker", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Mastery: 35}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet},
 
 	// CHEST
-	{EffectId: 4063, SpellId: 74191, Name: "Enchant Chest - Mighty Stats", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
+	{EffectId: 4063, SpellId: 74191, Name: "Enchant Chest - Mighty Stats", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 15, stats.Strength: 15, stats.Agility: 15, stats.Intellect: 15, stats.Spirit: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
 	{EffectId: 4070, SpellId: 74200, Name: "Enchant Chest - Stamina", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 55}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
 	{EffectId: 4077, SpellId: 74214, Name: "Enchant Chest - Mighty Resilience", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Resilience: 40}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
 	{EffectId: 4088, SpellId: 74231, Name: "Enchant Chest - Exceptional Spirit", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Spirit: 40}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
-	{EffectId: 4102, SpellId: 74250, Name: "Enchant Chest - Peerless Stats", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
+	{EffectId: 4102, SpellId: 74250, Name: "Enchant Chest - Peerless Stats", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 20, stats.Strength: 20, stats.Agility: 20, stats.Intellect: 20, stats.Spirit: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
 	{EffectId: 4103, SpellId: 74251, Name: "Enchant Chest - Greater Stamina", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 75}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
 
 	// CLOAK
