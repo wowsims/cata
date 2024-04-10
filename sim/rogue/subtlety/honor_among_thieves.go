@@ -20,23 +20,19 @@ func (subRogue *SubtletyRogue) registerHonorAmongThieves() {
 
 	icd := core.Cooldown{
 		Timer:    subRogue.NewTimer(),
-		Duration: time.Second,
+		Duration: time.Second * 2,
 	}
 
 	maybeProc := func(sim *core.Simulation) {
-		if icd.IsReady(sim) && sim.Proc(procChance, "honor of thieves") {
+		if icd.IsReady(sim) && sim.Proc(procChance, "Honor Among Thieves") {
 			subRogue.AddComboPoints(sim, 1, comboMetrics)
 			icd.Use(sim)
 		}
 	}
 
-	subRogue.HonorAmongThieves = subRogue.RegisterAura(core.Aura{
+	subRogue.HonorAmongThieves = core.MakePermanent(subRogue.RegisterAura(core.Aura{
 		Label:    "Honor Among Thieves",
 		ActionID: honorAmongThievesID,
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
 		OnGain: func(_ *core.Aura, sim *core.Simulation) {
 			// In an ideal party, you'd probably get up to 6 ability crits/s (Rate = 600).
 			//  Survival Hunters, Enhancement Shamans, and Assassination Rogues are particularly good.
@@ -69,5 +65,5 @@ func (subRogue *SubtletyRogue) registerHonorAmongThieves() {
 				maybeProc(sim)
 			}
 		},
-	})
+	}))
 }

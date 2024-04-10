@@ -14,12 +14,13 @@ type CanCastCondition func(sim *Simulation, target *Unit) bool
 type SpellConfig struct {
 	// See definition of Spell (below) for comments on these.
 	ActionID
-	SpellSchool  SpellSchool
-	ProcMask     ProcMask
-	Flags        SpellFlag
-	MissileSpeed float64
-	BaseCost     float64
-	MetricSplits int
+	SpellSchool    SpellSchool
+	ProcMask       ProcMask
+	Flags          SpellFlag
+	MissileSpeed   float64
+	BaseCost       float64
+	MetricSplits   int
+	ClassSpellMask int64
 
 	ManaCost   ManaCostOptions
 	EnergyCost EnergyCostOptions
@@ -74,6 +75,10 @@ type Spell struct {
 
 	// Flags
 	Flags SpellFlag
+
+	// The specific class spell id
+	// should be a unique bit
+	ClassSpellMask int64
 
 	// Speed in yards/second. Spell missile speeds can be found in the game data.
 	// Example: https://wow.tools/dbc/?dbc=spellmisc&build=3.4.0.44996
@@ -188,12 +193,13 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	}
 
 	spell := &Spell{
-		ActionID:     config.ActionID,
-		Unit:         unit,
-		SpellSchool:  config.SpellSchool,
-		ProcMask:     config.ProcMask,
-		Flags:        config.Flags,
-		MissileSpeed: config.MissileSpeed,
+		ActionID:       config.ActionID,
+		Unit:           unit,
+		SpellSchool:    config.SpellSchool,
+		ProcMask:       config.ProcMask,
+		Flags:          config.Flags,
+		MissileSpeed:   config.MissileSpeed,
+		ClassSpellMask: config.ClassSpellMask,
 
 		DefaultCast:        config.Cast.DefaultCast,
 		CD:                 config.Cast.CD,

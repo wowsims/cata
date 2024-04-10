@@ -1,14 +1,49 @@
 .log-runner-root {
+	.log-runner-actions {
+		display: flex;
+		margin-bottom: map-get($spacers, 3);
+
+		#log-search-input {
+			width: 25vw;
+		}
+
+		.show-debug-picker {
+			width: unset;
+			margin-bottom: 0;
+			margin-right: $block-spacer;
+			margin-left: auto;
+
+			label {
+				margin-left: map-get($spacers, 1);
+			}
+		}
+	}
+	#log-runner-logs-scroll {
+		overflow-y: auto;
+		overflow-x: auto;
+
+		margin: 0 auto;
+		position: relative;
+		width: 100%;
+		box-sizing: border-box;
+		will-change: scroll-position;
+		height: 70vh;
+	}
 	.log-runner-table {
+		table-layout: fixed;
+
 		th {
 			padding: map-get($spacers, 2);
 			vertical-align: bottom;
+
+			&:first-child {
+				width: 6.5rem;
+			}
 
 			&:not(:first-child) {
 				padding-left: 0;
 			}
 		}
-
 		.log-runner-logs {
 			tr {
 				&:not(:last-child) {
@@ -41,18 +76,6 @@
 						color: $brand;
 					}
 				}
-			}
-		}
-	}
-
-	.show-debug-container {
-		display: flex;
-
-		.show-debug-picker {
-			width: unset;
-
-			label {
-				margin-left: map-get($spacers, 1);
 			}
 		}
 	}
