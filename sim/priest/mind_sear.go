@@ -5,45 +5,27 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
-
-func (priest *Priest) getMindSearMiseryCoefficient() float64 {
-	return 0.2861 * (1 + 0.05*float64(priest.Talents.Misery))
-}
 
 func (priest *Priest) getMindSearBaseConfig() core.SpellConfig {
 	return core.SpellConfig{
-		SpellSchool:     core.SpellSchoolShadow,
-		ProcMask:        core.ProcMaskProc,
-		BonusHitRating:  float64(priest.Talents.ShadowFocus) * 1 * core.SpellHitRatingPerHitChance,
-		BonusCritRating: float64(priest.Talents.MindMelt) * 2 * core.CritRatingPerCritChance,
-		DamageMultiplier: 1 +
-			0.02*float64(priest.Talents.Darkness) +
-			0.01*float64(priest.Talents.TwinDisciplines),
-		ThreatMultiplier: 1 - 0.08*float64(priest.Talents.ShadowAffinity),
-		CritMultiplier:   priest.DefaultSpellCritMultiplier(),
+		SpellSchool:              core.SpellSchoolShadow,
+		ProcMask:                 core.ProcMaskProc,
+		ClassSpellMask:           int64(PriestSpellMindSear),
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 	}
 }
 
 func (priest *Priest) getMindSearTickSpell(numTicks int32) *core.Spell {
-	hasGlyphOfShadow := priest.HasGlyph(int32(proto.PriestMajorGlyph_GlyphOfShadow))
-	miseryCoeff := priest.getMindSearMiseryCoefficient()
-
 	config := priest.getMindSearBaseConfig()
-	config.ActionID = core.ActionID{SpellID: 53022}.WithTag(numTicks)
+	config.ActionID = core.ActionID{SpellID: 48045}.WithTag(numTicks)
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		damage := sim.Roll(212, 228) + miseryCoeff*spell.SpellPower()
-		result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-
-		if result.Landed() {
-			priest.AddShadowWeavingStack(sim)
-		}
-		if result.DidCrit() && hasGlyphOfShadow {
-			priest.ShadowyInsightAura.Activate(sim)
-		}
+		damage := priest.ScalingBaseDamage*0.23 + 0.2622*spell.SpellPower()
+		spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 	}
-	return priest.GetOrRegisterSpell(config)
+	return priest.RegisterSpell(config)
 }
 
 func (priest *Priest) newMindSearSpell(numTicksIdx int32) *core.Spell {
@@ -54,21 +36,21 @@ func (priest *Priest) newMindSearSpell(numTicksIdx int32) *core.Spell {
 		flags |= core.SpellFlagAPL
 	}
 
-	miseryCoeff := priest.getMindSearMiseryCoefficient()
 	mindSearTickSpell := priest.getMindSearTickSpell(numTicksIdx)
 
 	config := priest.getMindSearBaseConfig()
-	config.ActionID = core.ActionID{SpellID: 53023}.WithTag(numTicksIdx)
+	config.ActionID = core.ActionID{SpellID: 48045}.WithTag(numTicksIdx)
 	config.Flags = flags
 	config.ManaCost = core.ManaCostOptions{
-		BaseCost:   0.28,
-		Multiplier: 1 - 0.05*float64(priest.Talents.FocusedMind),
+		BaseCost: 0.28,
 	}
+
 	config.Cast = core.CastConfig{
 		DefaultCast: core.Cast{
 			GCD: core.GCDDefault,
 		},
 	}
+
 	config.Dot = core.DotConfig{
 		Aura: core.Aura{
 			Label: "MindSear-" + strconv.Itoa(int(numTicksIdx)),
@@ -78,10 +60,8 @@ func (priest *Priest) newMindSearSpell(numTicksIdx int32) *core.Spell {
 		AffectedByCastSpeed: true,
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				if aoeTarget != target {
-					mindSearTickSpell.Cast(sim, aoeTarget)
-					mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
-				}
+				mindSearTickSpell.Cast(sim, aoeTarget)
+				mindSearTickSpell.SpellMetrics[target.UnitIndex].Casts -= 1
 			}
 		},
 	}
@@ -93,8 +73,9 @@ func (priest *Priest) newMindSearSpell(numTicksIdx int32) *core.Spell {
 		}
 	}
 	config.ExpectedTickDamage = func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-		baseDamage := sim.Roll(212, 228) + miseryCoeff*spell.SpellPower()
+		baseDamage := priest.ScalingBaseDamage*0.23 + 0.2622*spell.SpellPower()
 		return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 	}
-	return priest.GetOrRegisterSpell(config)
+
+	return priest.RegisterSpell(config)
 }

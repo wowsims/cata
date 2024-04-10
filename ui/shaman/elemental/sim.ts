@@ -83,7 +83,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			arcaneBrilliance: true,
 			divineSpirit: true,
 			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			moonkinAura: TristateEffect.TristateEffectImproved,
 			sanctifiedRetribution: true,
 			demonicPactSp: 500,
 			wrathOfAirTotem: true,
