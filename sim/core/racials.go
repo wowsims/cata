@@ -208,6 +208,12 @@ func applyRaceEffects(agent Agent) {
 		})
 	case proto.Race_RaceUndead:
 		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
+	case proto.Race_RaceWorgen:
+		character.AddStat(stats.MeleeCrit, CritRatingPerCritChance)
+		character.AddStat(stats.SpellCrit, CritRatingPerCritChance)
+	case proto.Race_RaceGoblin:
+		character.AddStat(stats.MeleeHaste, HasteRatingPerHastePercent)
+		character.AddStat(stats.SpellHaste, HasteRatingPerHastePercent)
 	}
 }
 
