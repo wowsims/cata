@@ -511,7 +511,7 @@ func init() {
 
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 82175},
-			SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolMagic,
+			SpellSchool: core.SpellSchoolPhysical,
 			Flags:       core.SpellFlagNoOnCastComplete,
 
 			Cast: core.CastConfig{
@@ -554,7 +554,7 @@ func init() {
 
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 82177},
-			SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolMagic,
+			SpellSchool: core.SpellSchoolPhysical,
 			Flags:       core.SpellFlagNoOnCastComplete,
 
 			Cast: core.CastConfig{

@@ -48,6 +48,8 @@ func (warrior *Warrior) RegisterOverpowerSpell() {
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 0.75,
 
+		BonusCoefficient: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			auras := warrior.GetAurasWithTag(EnableOverpowerTag)
 			for _, aura := range auras {
@@ -57,8 +59,7 @@ func (warrior *Warrior) RegisterOverpowerSpell() {
 			}
 
 			baseDamage := 0 +
-				1.25*(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())+
-					spell.BonusWeaponDamage())
+				1.25*spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			if !result.Landed() {
