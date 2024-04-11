@@ -8,24 +8,31 @@ import (
 
 func (warrior *Warrior) RegisterInnerRage() {
 	actionID := core.ActionID{SpellID: 1134}
+
+	costMod := warrior.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  SpellMaskHeroicStrike | SpellMaskCleave,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: 0.5,
+	})
+
 	warrior.InnerRageAura = warrior.RegisterAura(core.Aura{
 		Label:    "Inner Rage",
 		ActionID: actionID,
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.HeroicStrike.CostMultiplier *= 0.5
-			warrior.Cleave.CostMultiplier *= 0.5
+			costMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.HeroicStrike.CostMultiplier /= 0.5
-			warrior.Cleave.CostMultiplier /= 0.5
+			costMod.Deactivate()
 		},
 	})
 
 	ir := warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagMCD | core.SpellFlagAPL,
-		SpellSchool: core.SpellSchoolPhysical,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagMCD | core.SpellFlagAPL,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: SpellMaskInnerRage,
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: 0,

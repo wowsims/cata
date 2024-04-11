@@ -11,10 +11,11 @@ func (warrior *Warrior) RegisterRendSpell() {
 	dotTicks := int32(5)
 
 	warrior.Rend = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 47465},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 47465},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskRend,
 
 		RageCost: core.RageCostOptions{
 			Cost:   10,
@@ -31,7 +32,6 @@ func (warrior *Warrior) RegisterRendSpell() {
 			return warrior.StanceMatches(BattleStance | DefensiveStance)
 		},
 
-		DamageMultiplier: 1 + (0.03 * float64(warrior.Talents.Thunderstruck)),
 		ThreatMultiplier: 1,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 

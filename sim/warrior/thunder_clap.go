@@ -13,10 +13,11 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 	})
 
 	warrior.ThunderClap = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 6343},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 6343},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskThunderClap,
 
 		RageCost: core.RageCostOptions{
 			Cost: 20 - core.TernaryFloat64(warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfResonatingPower), 5, 0),
@@ -35,7 +36,6 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 			return warrior.StanceMatches(BattleStance | DefensiveStance)
 		},
 
-		DamageMultiplier: 1.0 + (0.03 * float64(warrior.Talents.Thunderstruck)),
 		ThreatMultiplier: 1.85,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 

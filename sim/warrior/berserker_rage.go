@@ -28,8 +28,9 @@ func (warrior *Warrior) RegisterBerserkerRageSpell() {
 	})
 
 	warrior.BerserkerRage = warrior.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskBerserkerRage,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -38,7 +39,7 @@ func (warrior *Warrior) RegisterBerserkerRageSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: warrior.IntensifyRageCooldown(time.Second * 30),
+				Duration: time.Second * 30,
 			},
 		},
 

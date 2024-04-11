@@ -22,6 +22,41 @@ const (
 	EnableOverpowerTag   = "EnableOverpower"
 )
 
+const (
+	SpellMaskNone          int64 = 0
+	SpellMaskCostsRage     int64 = 1 << iota
+	SpellMaskSpecialAttack       = SpellMaskCostsRage | (1 << iota) // All special attacks have a rage cost
+
+	// Baseline abilities that don't cost rage and aren't attacks
+	SpellMaskBattleShout int64 = 1 << iota
+	SpellMaskBerserkerRage
+	SpellMaskCommandingShout
+	SpellMaskRecklessness
+	SpellMaskShieldWall
+
+	// Baseline abilities that cost rage but aren't attacks
+	SpellMaskDemoShout int64 = 1<<iota | SpellMaskCostsRage
+	SpellMaskInnerRage
+	SpellMaskShieldBlock
+
+	// Baseline special attacks
+	SpellMaskCleave int64 = 1<<iota | SpellMaskSpecialAttack
+	SpellMaskColossusSmash
+	SpellMaskExecute
+	SpellMaskHeroicStrike
+	SpellMaskOverpower
+	SpellMaskRend
+	SpellMaskRevenge
+	SpellMaskShatteringThrow
+	SpellMaskSlam
+	SpellMaskSunderArmor
+	SpellMaskThunderClap
+	SpellMaskWhirlwind
+
+	// Next available bit for spec implementations to start their own mask lists on
+	SpellMaskSpecStartIndex int64 = iota
+)
+
 type Warrior struct {
 	core.Character
 
@@ -33,6 +68,8 @@ type Warrior struct {
 	Stance                 Stance
 	EnrageEffectMultiplier float64
 	CriticalBlockChance    float64 // Can be gained as non-prot via certain talents and spells
+	SpecialAttackModList   int64
+	RageAbilitiesList      int64
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
@@ -40,7 +77,6 @@ type Warrior struct {
 	DefensiveStance *core.Spell
 	BerserkerStance *core.Spell
 
-	SpecialAttacks    []*core.Spell
 	BerserkerRage     *core.Spell
 	DemoralizingShout *core.Spell
 	Execute           *core.Spell
@@ -94,15 +130,6 @@ func (warrior *Warrior) Initialize() {
 	warrior.hsCleaveCD = warrior.NewTimer()
 	warrior.ReactionTime = time.Millisecond * 500
 
-	warrior.OnSpellRegistered(func(spell *core.Spell) {
-		// Cache all player-castable spells that are a melee or ranged (thunder clap, shockwave) special attack
-		// in a list so the couple of talents and spells that modify special attacks are easier to implement
-		// (and we don't need to remember to include each spell in various lists)
-		if spell.ProcMask.Matches(core.ProcMaskMeleeOrRangedSpecial) && spell.Flags.Matches(core.SpellFlagAPL) {
-			warrior.SpecialAttacks = append(warrior.SpecialAttacks, spell)
-		}
-	})
-
 	warrior.RegisterBerserkerRageSpell()
 	warrior.RegisterColossusSmash()
 	warrior.RegisterDemoralizingShoutSpell()
@@ -123,6 +150,8 @@ func (warrior *Warrior) Initialize() {
 	warrior.RegisterSunderArmor()
 	warrior.RegisterThunderClapSpell()
 	warrior.RegisterWhirlwindSpell()
+
+	warrior.ApplyGlyphs()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {

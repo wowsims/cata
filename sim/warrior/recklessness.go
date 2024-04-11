@@ -9,27 +9,30 @@ import (
 func (warrior *Warrior) RegisterRecklessnessCD() {
 	actionID := core.ActionID{SpellID: 1719}
 
+	critMod := warrior.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  SpellMaskSpecialAttack,
+		Kind:       core.SpellMod_BonusCrit_Rating,
+		FloatValue: 50 * core.CritRatingPerCritChance,
+	})
+
 	reckAura := warrior.RegisterAura(core.Aura{
 		Label:    "Recklessness",
 		ActionID: actionID,
 		Duration: time.Second * 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.DamageTakenMultiplier *= 1.2
-			for _, spell := range warrior.SpecialAttacks {
-				spell.BonusCritRating += 50 * core.CritRatingPerCritChance
-			}
+			critMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.DamageTakenMultiplier /= 1.2
-			for _, spell := range warrior.SpecialAttacks {
-				spell.BonusCritRating -= 50 * core.CritRatingPerCritChance
-			}
+			critMod.Deactivate()
 		},
 	})
 
 	reckSpell := warrior.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskRecklessness,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -38,7 +41,7 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: warrior.IntensifyRageCooldown(time.Minute * 5),
+				Duration: time.Minute * 5,
 			},
 		},
 

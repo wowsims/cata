@@ -11,10 +11,11 @@ func (warrior *Warrior) RegisterSunderArmor() *core.Spell {
 	hasGlyph := warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfSunderArmor)
 	numTargets := warrior.Env.GetNumTargets()
 	config := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 7386},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 7386},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskSunderArmor,
 
 		RageCost: core.RageCostOptions{
 			Cost:   15,

@@ -11,10 +11,11 @@ const cdDuration = time.Second * 3
 
 func (warrior *Warrior) RegisterHeroicStrikeSpell() {
 	warrior.HeroicStrike = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 78},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ActionID:       core.ActionID{SpellID: 78},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ClassSpellMask: SpellMaskHeroicStrike,
 
 		RageCost: core.RageCostOptions{
 			Cost:   30,
@@ -35,7 +36,6 @@ func (warrior *Warrior) RegisterHeroicStrikeSpell() {
 			},
 		},
 
-		BonusCritRating:  (5 * float64(warrior.Talents.Incite)) * core.CritRatingPerCritChance,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  259,
@@ -61,10 +61,11 @@ func (warrior *Warrior) RegisterCleaveSpell() {
 	results := make([]*core.SpellResult, numHits)
 
 	warrior.Cleave = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 845},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ActionID:       core.ActionID{SpellID: 845},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ClassSpellMask: SpellMaskCleave,
 
 		RageCost: core.RageCostOptions{
 			Cost: 30,

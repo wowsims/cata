@@ -42,8 +42,9 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 	})
 
 	warrior.ShieldBlock = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: SpellMaskShieldBlock,
 
 		RageCost: core.RageCostOptions{
 			Cost: 10,
@@ -55,7 +56,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 			},
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Second*60 - time.Second*10*time.Duration(warrior.Talents.ShieldMastery),
+				Duration: time.Second * 60,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

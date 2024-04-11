@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (warrior *Warrior) RegisterRevengeSpell() {
@@ -29,10 +28,11 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 	extraHitMult := 0.5 * float64(warrior.Talents.ImprovedRevenge)
 
 	warrior.Revenge = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskRevenge,
 
 		RageCost: core.RageCostOptions{
 			Cost:   5,
@@ -52,7 +52,6 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 			return warrior.StanceMatches(DefensiveStance) && revengeReadyAura.IsActive()
 		},
 
-		DamageMultiplier: 1.0 + 0.3*float64(warrior.Talents.ImprovedRevenge) + core.TernaryFloat64(warrior.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfRevenge), 0.1, 0.0),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  121,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),

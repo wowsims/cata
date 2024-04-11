@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (warrior *Warrior) RegisterOverpowerSpell() {
@@ -25,10 +24,11 @@ func (warrior *Warrior) RegisterOverpowerSpell() {
 	}))
 
 	warrior.Overpower = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 7384},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 7384},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskOverpower,
 
 		RageCost: core.RageCostOptions{
 			Cost:   5,
@@ -44,8 +44,7 @@ func (warrior *Warrior) RegisterOverpowerSpell() {
 			return warrior.HasActiveAuraWithTag(EnableOverpowerTag)
 		},
 
-		CritMultiplier:   warrior.DefaultMeleeCritMultiplier() + (0.1 * float64(warrior.Talents.Impale)),
-		DamageMultiplier: 1.0 + core.TernaryFloat64(warrior.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfOverpower), 0.1, 0.0),
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 0.75,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

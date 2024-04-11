@@ -30,12 +30,11 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 		},
 	})
 
-	cooldownDur := time.Minute*5 +
-		core.TernaryDuration(hasGlyph, 2*time.Minute, 0) -
-		(time.Second*60)*time.Duration(warrior.Talents.ShieldMastery)
+	cooldownDur := time.Minute * 5
 
 	swSpell := warrior.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
+		ActionID:       actionID,
+		ClassSpellMask: SpellMaskShieldWall,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
