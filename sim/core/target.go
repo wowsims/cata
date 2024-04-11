@@ -201,6 +201,7 @@ type AttackTable struct {
 	NatureDamageTakenMultiplier  float64
 	HauntSEDamageTakenMultiplier float64
 	HealingDealtMultiplier       float64
+	IgnoreArmor                  bool // Ignore defender's armor for specifically this attacker's attacks
 }
 
 func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {

@@ -114,7 +114,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			bloodlust: true,
 			manaSpringTotem: true,
 			hornOfWinter: true,
-			battleShout: TristateEffect.TristateEffectImproved,
+			battleShout: true,
 			sanctifiedRetribution: true,
 			swiftRetribution: true,
 			elementalOath: TristateEffect.TristateEffectImproved,
@@ -146,7 +146,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.JudgementSelection(), 
+	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.JudgementSelection(),
 		//PaladinInputs.StartingSealSelection()
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.

@@ -414,22 +414,20 @@ message RaidBuffs {
 
 	// +Stam
 	TristateEffect power_word_fortitude = 2;
+	bool commanding_shout = 3;
 
 	// +Health
-	TristateEffect commanding_shout = 3;
 	TristateEffect blood_pact = 4;
 
 	// + Agi and Str
 	bool horn_of_winter = 5;
 	bool strength_of_earth_totem = 6;
+	bool battle_shout = 10;
 
 	// +Intell and/or Spi
 	bool arcane_brilliance = 7;
 	TristateEffect fel_intelligence = 8;
 	bool divine_spirit = 9;
-
-	// +AP
-	TristateEffect battle_shout = 10;
 
 	// 10% AP
 	bool trueshot_aura = 11;
@@ -451,11 +449,12 @@ message RaidBuffs {
 
 	// +5% Spell Crit and/or +3% Haste
 	bool swift_retribution = 21; //haste only
-	TristateEffect moonkin_aura = 22; //both crit and haste
 	TristateEffect elemental_oath = 23; //crit only, 3%, 5%
 
 	// 5% spell haste
+	bool moonkin_aura = 22;
 	bool wrath_of_air_totem = 24;
+	bool mind_quickening = 50;
 
 	// 3% dmg
 	bool ferocious_inspiration = 25;
@@ -609,7 +608,7 @@ message Debuffs {
 	bool spore_cloud = 37;
 
 	TristateEffect demoralizing_roar = 25;
-	TristateEffect demoralizing_shout = 26;
+	bool demoralizing_shout = 26;
 	bool vindication = 36;
 	bool demoralizing_screech = 34;
 
@@ -771,6 +770,7 @@ enum EnchantType {
 	EnchantTypeShield = 2;
 	EnchantTypeKit = 3;
 	EnchantTypeStaff = 4;
+	EnchantTypeOffHand = 5;
 }
 
 // Contains only the Enchant info needed by the sim.

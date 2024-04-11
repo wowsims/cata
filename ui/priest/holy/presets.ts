@@ -80,7 +80,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	leaderOfThePack: TristateEffect.TristateEffectImproved,
 	icyTalons: true,
 	totemicWrath: true,
-	moonkinAura: TristateEffect.TristateEffectImproved,
 	wrathOfAirTotem: true,
 	sanctifiedRetribution: true,
 	bloodlust: true,

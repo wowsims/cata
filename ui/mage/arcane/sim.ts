@@ -78,7 +78,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			swiftRetribution: true,
 			sanctifiedRetribution: true,
 			demonicPactSp: 500,
-			moonkinAura: TristateEffect.TristateEffectImproved,
 			arcaneBrilliance: true,
 		}),
 		partyBuffs: PartyBuffs.create({

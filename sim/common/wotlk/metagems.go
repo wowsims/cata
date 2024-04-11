@@ -111,9 +111,4 @@ func init() {
 			ProcMask: ^core.ProcMaskProc & ^core.ProcMaskWeaponProc,
 		})
 	})
-
-	// These are handled in character.go, but create empty effects so they are included in tests.
-	core.NewItemEffect(41285, func(_ core.Agent) {}) // Chaotic Skyflare Diamond
-	core.NewItemEffect(41376, func(_ core.Agent) {}) // Revitalizing Skyflare Diamond
-	core.NewItemEffect(41398, func(_ core.Agent) {}) // Relentless Earthsiege Diamond
 }

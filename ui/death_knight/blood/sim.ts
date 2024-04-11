@@ -132,7 +132,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			ebonPlaguebringer: true,
 			mangle: true,
 			heartOfTheCrusader: true,
-			demoralizingShout: TristateEffect.TristateEffectImproved,
+			demoralizingShout: true,
 			frostFever: TristateEffect.TristateEffectImproved,
 			insectSwarm: true,
 			judgementOfLight: true,

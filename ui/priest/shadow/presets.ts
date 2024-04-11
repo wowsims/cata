@@ -85,8 +85,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	leaderOfThePack: TristateEffect.TristateEffectImproved,
 	icyTalons: true,
 	totemicWrath: true,
-	moonkinAura: TristateEffect.TristateEffectImproved,
-	wrathOfAirTotem: true,
+	mindQuickening: true,
 	sanctifiedRetribution: true,
 	bloodlust: true,
 	demonicPactSp: 500,
@@ -111,6 +110,7 @@ export const DefaultDebuffs = Debuffs.create({
 
 export const OtherDefaults = {
 	channelClipDelay: 100,
+	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
 };

@@ -103,7 +103,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			bloodlust: true,
 			devotionAura: TristateEffect.TristateEffectImproved,
 			stoneskinTotem: true,
-			moonkinAura: TristateEffect.TristateEffectRegular,
 			wrathOfAirTotem: true,
 			powerWordFortitude: TristateEffect.TristateEffectImproved,
 		}),

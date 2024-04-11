@@ -14,12 +14,13 @@ type CanCastCondition func(sim *Simulation, target *Unit) bool
 type SpellConfig struct {
 	// See definition of Spell (below) for comments on these.
 	ActionID
-	SpellSchool  SpellSchool
-	ProcMask     ProcMask
-	Flags        SpellFlag
-	MissileSpeed float64
-	BaseCost     float64
-	MetricSplits int
+	SpellSchool    SpellSchool
+	ProcMask       ProcMask
+	Flags          SpellFlag
+	MissileSpeed   float64
+	BaseCost       float64
+	MetricSplits   int
+	ClassSpellMask int64
 
 	ManaCost   ManaCostOptions
 	EnergyCost EnergyCostOptions
@@ -75,6 +76,10 @@ type Spell struct {
 	// Flags
 	Flags SpellFlag
 
+	// The specific class spell id
+	// should be a unique bit
+	ClassSpellMask int64
+
 	// Speed in yards/second. Spell missile speeds can be found in the game data.
 	// Example: https://wow.tools/dbc/?dbc=spellmisc&build=3.4.0.44996
 	MissileSpeed float64
@@ -124,6 +129,8 @@ type Spell struct {
 	// Adds a fixed amount of threat to this spell, before multipliers.
 	FlatThreatBonus float64
 
+	initialCostMultiplier           float64
+	initialCastTimeMultiplier       float64
 	initialBonusHitRating           float64
 	initialBonusCritRating          float64
 	initialBonusSpellPower          float64
@@ -188,12 +195,13 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	}
 
 	spell := &Spell{
-		ActionID:     config.ActionID,
-		Unit:         unit,
-		SpellSchool:  config.SpellSchool,
-		ProcMask:     config.ProcMask,
-		Flags:        config.Flags,
-		MissileSpeed: config.MissileSpeed,
+		ActionID:       config.ActionID,
+		Unit:           unit,
+		SpellSchool:    config.SpellSchool,
+		ProcMask:       config.ProcMask,
+		Flags:          config.Flags,
+		MissileSpeed:   config.MissileSpeed,
+		ClassSpellMask: config.ClassSpellMask,
 
 		DefaultCast:        config.Cast.DefaultCast,
 		CD:                 config.Cast.CD,
@@ -371,13 +379,8 @@ func (spell *Spell) CurCPM(sim *Simulation) float64 {
 }
 
 func (spell *Spell) finalize() {
-	// Assert that user doesn't set dynamic fields during static initialization.
-	if spell.CastTimeMultiplier != 1 {
-		panic(spell.ActionID.String() + " has non-default CastTimeMultiplier during finalize!")
-	}
-	if spell.CostMultiplier != 1 {
-		panic(spell.ActionID.String() + " has non-default CostMultiplier during finalize!")
-	}
+	spell.initialCastTimeMultiplier = spell.CastTimeMultiplier
+	spell.initialCostMultiplier = spell.CostMultiplier
 	spell.initialBonusHitRating = spell.BonusHitRating
 	spell.initialBonusCritRating = spell.BonusCritRating
 	spell.initialBonusSpellPower = spell.BonusSpellPower
@@ -407,8 +410,8 @@ func (spell *Spell) reset(_ *Simulation) {
 	spell.BonusHitRating = spell.initialBonusHitRating
 	spell.BonusCritRating = spell.initialBonusCritRating
 	spell.BonusSpellPower = spell.initialBonusSpellPower
-	spell.CastTimeMultiplier = 1
-	spell.CostMultiplier = 1
+	spell.CastTimeMultiplier = spell.initialCastTimeMultiplier
+	spell.CostMultiplier = spell.initialCostMultiplier
 	spell.DamageMultiplier = spell.initialDamageMultiplier
 	spell.DamageMultiplierAdditive = spell.initialDamageMultiplierAdditive
 	spell.CritMultiplier = spell.initialCritMultiplier

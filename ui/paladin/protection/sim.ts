@@ -136,7 +136,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			totemicWrath: true,
 			demonicPactSp: 500,
 			swiftRetribution: true,
-			moonkinAura: TristateEffect.TristateEffectRegular,
+			moonkinAura: true,
 			sanctifiedRetribution: true,
 			manaSpringTotem: true,
 			bloodlust: true,
