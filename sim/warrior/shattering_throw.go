@@ -12,13 +12,14 @@ func (warrior *Warrior) RegisterShatteringThrowCD() {
 	shattDebuffs := warrior.NewEnemyAuraArray(core.ShatteringThrowAura)
 
 	ShatteringThrowSpell := warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 64382},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics,
+		ActionID:       core.ActionID{SpellID: 64382},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics,
+		ClassSpellMask: SpellMaskShatteringThrow,
 
 		RageCost: core.RageCostOptions{
-			Cost: 25 - float64(warrior.Talents.FocusedRage),
+			Cost: 25,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -46,8 +47,8 @@ func (warrior *Warrior) RegisterShatteringThrowCD() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   warrior.critMultiplier(mh),
 		ThreatMultiplier: 1,
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 12 + 0.5*spell.MeleeAttackPower()

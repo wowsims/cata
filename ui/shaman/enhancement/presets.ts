@@ -99,7 +99,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	wrathOfAirTotem: true,
 	sanctifiedRetribution: true,
 	divineSpirit: true,
-	battleShout: TristateEffect.TristateEffectImproved,
+	battleShout: true,
 	demonicPactSp: 500,
 });
 

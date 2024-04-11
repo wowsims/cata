@@ -7,35 +7,34 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (warrior *Warrior) registerWhirlwindSpell() {
+func (warrior *Warrior) RegisterWhirlwindSpell() {
 	actionID := core.ActionID{SpellID: 1680}
-	numHits := min(4, warrior.Env.GetNumTargets())
+	numHits := warrior.Env.GetNumTargets() // Whirlwind is uncapped in Cata
 	results := make([]*core.SpellResult, numHits)
 
+	var whirlwindOH *core.Spell
 	if warrior.AutoAttacks.IsDualWielding && warrior.GetOHWeapon().WeaponType != proto.WeaponType_WeaponTypeStaff &&
 		warrior.GetOHWeapon().WeaponType != proto.WeaponType_WeaponTypePolearm {
-		warrior.WhirlwindOH = warrior.RegisterSpell(core.SpellConfig{
+		whirlwindOH = warrior.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID.WithTag(1),
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty, // whirlwind offhand hits usually don't proc auras
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete | SpellFlagWhirlwindOH,
 
-			DamageMultiplier: 1 *
-				(1 + 0.02*float64(warrior.Talents.UnendingFury) + 0.1*float64(warrior.Talents.ImprovedWhirlwind)) *
-				(1 + 0.05*float64(warrior.Talents.DualWieldSpecialization)),
-			CritMultiplier:   warrior.critMultiplier(oh),
 			ThreatMultiplier: 1.25,
+			CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 		})
 	}
 
 	warrior.Whirlwind = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBloodsurge | core.SpellFlagAPL,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskWhirlwind,
 
 		RageCost: core.RageCostOptions{
-			Cost: 25 - float64(warrior.Talents.FocusedRage),
+			Cost: 25,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -44,25 +43,27 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: core.TernaryDuration(warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfWhirlwind), time.Second*8, time.Second*10),
+				Duration: time.Second * 10,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return warrior.StanceMatches(BerserkerStance)
 		},
 
-		DamageMultiplier: 1 *
-			(1 + 0.02*float64(warrior.Talents.UnendingFury) + 0.1*float64(warrior.Talents.ImprovedWhirlwind)),
-		CritMultiplier:   warrior.critMultiplier(mh),
 		ThreatMultiplier: 1.25,
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
+			numLandedHits := 0
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := 0 +
-					spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
+				baseDamage := 0.65 *
+					(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
+						spell.BonusWeaponDamage())
 				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				if results[hitIndex].Landed() {
+					numLandedHits++
+				}
 
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
@@ -73,27 +74,27 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 
-			if warrior.WhirlwindOH != nil {
+			if numLandedHits > 4 {
+				spell.CD.Reduce(time.Second * 6)
+			}
+
+			if whirlwindOH != nil {
 				curTarget = target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					baseDamage := 0 +
-						spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-						spell.BonusWeaponDamage()
-					results[hitIndex] = warrior.WhirlwindOH.CalcDamage(sim, curTarget, baseDamage, warrior.WhirlwindOH.OutcomeMeleeWeaponSpecialHitAndCrit)
+					baseDamage := 0.65 *
+						(spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
+							spell.BonusWeaponDamage())
+					results[hitIndex] = whirlwindOH.CalcDamage(sim, curTarget, baseDamage, whirlwindOH.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 
 				curTarget = target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					warrior.WhirlwindOH.DealDamage(sim, results[hitIndex])
+					whirlwindOH.DealDamage(sim, results[hitIndex])
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			}
 		},
 	})
-}
-
-func (warrior *Warrior) CanWhirlwind(sim *core.Simulation) bool {
-	return warrior.StanceMatches(BerserkerStance) && warrior.CurrentRage() >= warrior.Whirlwind.DefaultCast.Cost && warrior.Whirlwind.IsReady(sim)
 }

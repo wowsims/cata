@@ -414,22 +414,20 @@ message RaidBuffs {
 
 	// +Stam
 	TristateEffect power_word_fortitude = 2;
+	bool commanding_shout = 3;
 
 	// +Health
-	TristateEffect commanding_shout = 3;
 	TristateEffect blood_pact = 4;
 
 	// + Agi and Str
 	bool horn_of_winter = 5;
 	TristateEffect strength_of_earth_totem = 6; // none, normal, 15% improved
+	bool battle_shout = 10;
 
 	// +Intell and/or Spi
 	bool arcane_brilliance = 7;
 	TristateEffect fel_intelligence = 8;
 	bool divine_spirit = 9;
-
-	// +AP
-	TristateEffect battle_shout = 10;
 
 	// 10% AP
 	bool trueshot_aura = 11;
@@ -612,7 +610,7 @@ message Debuffs {
 	bool spore_cloud = 37;
 
 	TristateEffect demoralizing_roar = 25;
-	TristateEffect demoralizing_shout = 26;
+	bool demoralizing_shout = 26;
 	bool vindication = 36;
 	bool demoralizing_screech = 34;
 

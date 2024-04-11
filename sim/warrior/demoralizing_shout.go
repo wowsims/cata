@@ -2,21 +2,23 @@ package warrior
 
 import (
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (warrior *Warrior) registerDemoralizingShoutSpell() {
+func (warrior *Warrior) RegisterDemoralizingShoutSpell() {
 	warrior.DemoralizingShoutAuras = warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return core.DemoralizingShoutAura(target, warrior.Talents.BoomingVoice, warrior.Talents.ImprovedDemoralizingShout)
+		return core.DemoralizingShoutAura(target, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfDemoralizingShout))
 	})
 
 	warrior.DemoralizingShout = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 25203},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 1160},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskDemoShout,
 
 		RageCost: core.RageCostOptions{
-			Cost: 10 - float64(warrior.Talents.FocusedRage),
+			Cost: 10,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
