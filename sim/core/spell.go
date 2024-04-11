@@ -129,6 +129,8 @@ type Spell struct {
 	// Adds a fixed amount of threat to this spell, before multipliers.
 	FlatThreatBonus float64
 
+	initialCostMultiplier           float64
+	initialCastTimeMultiplier       float64
 	initialBonusHitRating           float64
 	initialBonusCritRating          float64
 	initialBonusSpellPower          float64
@@ -377,13 +379,8 @@ func (spell *Spell) CurCPM(sim *Simulation) float64 {
 }
 
 func (spell *Spell) finalize() {
-	// Assert that user doesn't set dynamic fields during static initialization.
-	if spell.CastTimeMultiplier != 1 {
-		panic(spell.ActionID.String() + " has non-default CastTimeMultiplier during finalize!")
-	}
-	if spell.CostMultiplier != 1 {
-		panic(spell.ActionID.String() + " has non-default CostMultiplier during finalize!")
-	}
+	spell.initialCastTimeMultiplier = spell.CastTimeMultiplier
+	spell.initialCostMultiplier = spell.CostMultiplier
 	spell.initialBonusHitRating = spell.BonusHitRating
 	spell.initialBonusCritRating = spell.BonusCritRating
 	spell.initialBonusSpellPower = spell.BonusSpellPower
@@ -413,8 +410,8 @@ func (spell *Spell) reset(_ *Simulation) {
 	spell.BonusHitRating = spell.initialBonusHitRating
 	spell.BonusCritRating = spell.initialBonusCritRating
 	spell.BonusSpellPower = spell.initialBonusSpellPower
-	spell.CastTimeMultiplier = 1
-	spell.CostMultiplier = 1
+	spell.CastTimeMultiplier = spell.initialCastTimeMultiplier
+	spell.CostMultiplier = spell.initialCostMultiplier
 	spell.DamageMultiplier = spell.initialDamageMultiplier
 	spell.DamageMultiplierAdditive = spell.initialDamageMultiplierAdditive
 	spell.CritMultiplier = spell.initialCritMultiplier
