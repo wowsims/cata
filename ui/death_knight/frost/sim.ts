@@ -84,7 +84,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			swiftRetribution: true,
 			strengthOfEarthTotem: true,
 			icyTalons: true,
-			abominationsMight: true,
+			abominationsMight: TristateEffect.TristateEffectImproved,
 			leaderOfThePack: TristateEffect.TristateEffectRegular,
 			sanctifiedRetribution: true,
 			bloodlust: true,
@@ -94,9 +94,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			wrathOfAirTotem: true,
 			powerWordFortitude: TristateEffect.TristateEffectImproved,
 		}),
-		partyBuffs: PartyBuffs.create({
-			heroicPresence: false,
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 			blessingOfKings: true,
 			blessingOfMight: TristateEffect.TristateEffectImproved,

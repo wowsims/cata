@@ -433,8 +433,8 @@ message RaidBuffs {
 
 	// 10% AP
 	bool trueshot_aura = 11;
-	bool unleashed_rage = 12;
-	bool abominations_might = 13;
+	TristateEffect unleashed_rage = 12;
+	TristateEffect abominations_might = 13;
 
 	// 5% phy crit
 	TristateEffect leader_of_the_pack = 14;
@@ -505,7 +505,6 @@ message PartyBuffs {
 
 	// Group buffs
 	int32 mana_tide_totems = 6;
-	bool heroic_presence = 7;
 }
 
 // These are usually individual actions taken by other Characters.

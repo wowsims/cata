@@ -97,7 +97,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 			battleShout: TristateEffect.TristateEffectImproved,
 			leaderOfThePack: TristateEffect.TristateEffectImproved,
 			sanctifiedRetribution: true,
-			unleashedRage: true,
+			unleashedRage: TristateEffect.TristateEffectImproved,
 			moonkinAura: TristateEffect.TristateEffectImproved,
 		}),
 		partyBuffs: PartyBuffs.create({}),

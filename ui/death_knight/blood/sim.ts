@@ -111,7 +111,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			swiftRetribution: true,
 			strengthOfEarthTotem: true,
 			icyTalons: true,
-			abominationsMight: true,
+			abominationsMight: TristateEffect.TristateEffectImproved,
 			leaderOfThePack: TristateEffect.TristateEffectRegular,
 			sanctifiedRetribution: true,
 			bloodlust: true,

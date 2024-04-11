@@ -220,7 +220,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			strengthOfEarthTotem: true,
 			icyTalons: true,
 			leaderOfThePack: TristateEffect.TristateEffectImproved,
-			abominationsMight: true,
+			abominationsMight: TristateEffect.TristateEffectImproved,
 			swiftRetribution: true,
 			elementalOath: TristateEffect.TristateEffectImproved,
 			sanctifiedRetribution: true,

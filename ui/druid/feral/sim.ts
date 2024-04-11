@@ -81,14 +81,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			manaSpringTotem: true,
 			strengthOfEarthTotem: true,
 			battleShout: TristateEffect.TristateEffectImproved,
-			unleashedRage: true,
+			unleashedRage: TristateEffect.TristateEffectImproved,
 			icyTalons: true,
 			swiftRetribution: true,
 			sanctifiedRetribution: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-			heroicPresence: true,
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 			blessingOfKings: true,
 			blessingOfMight: TristateEffect.TristateEffectImproved,

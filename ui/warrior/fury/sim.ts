@@ -89,16 +89,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			swiftRetribution: true,
 			strengthOfEarthTotem: true,
 			icyTalons: true,
-			abominationsMight: true,
+			abominationsMight: TristateEffect.TristateEffectImproved,
 			leaderOfThePack: TristateEffect.TristateEffectRegular,
 			sanctifiedRetribution: true,
 			bloodlust: true,
 			devotionAura: TristateEffect.TristateEffectImproved,
 			stoneskinTotem: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-			heroicPresence: false,
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 			blessingOfKings: true,
 			blessingOfMight: TristateEffect.TristateEffectImproved,

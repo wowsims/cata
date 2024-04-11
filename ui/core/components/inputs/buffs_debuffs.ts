@@ -50,8 +50,8 @@ export const AttackPowerBuff = InputHelpers.makeMultiIconInput([
 ], 'AP');
 
 export const AttackPowerPercentBuff = InputHelpers.makeMultiIconInput([
-	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(53138), fieldName: 'abominationsMight'}),
-	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(30809), fieldName: 'unleashedRage'}),
+	makeTristateRaidBuffInput({actionId: ActionId.fromSpellId(53138), impId: ActionId.fromSpellId(53137), fieldName: 'abominationsMight'}),
+	makeTristateRaidBuffInput({actionId: ActionId.fromSpellId(30802), impId: ActionId.fromSpellId(30808), fieldName: 'unleashedRage'}),
 	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(19506), fieldName: 'trueshotAura'}),
 ], 'Atk Pwr %');
 
@@ -173,7 +173,6 @@ export const StrengthOfWrynn = makeBooleanRaidBuffInput({actionId: ActionId.from
 export const RetributionAura = makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(54043), fieldName: 'retributionAura'});
 export const BraidedEterniumChain = makeBooleanPartyBuffInput({actionId: ActionId.fromSpellId(31025), fieldName: 'braidedEterniumChain'});
 export const ChainOfTheTwilightOwl = makeBooleanPartyBuffInput({actionId: ActionId.fromSpellId(31035), fieldName: 'chainOfTheTwilightOwl'});
-export const HeroicPresence = makeBooleanPartyBuffInput({actionId: ActionId.fromSpellId(6562), fieldName: 'heroicPresence'});
 export const EyeOfTheNight = makeBooleanPartyBuffInput({actionId: ActionId.fromSpellId(31033), fieldName: 'eyeOfTheNight'});
 export const Thorns = makeTristateRaidBuffInput({actionId: ActionId.fromSpellId(53307), impId: ActionId.fromSpellId(16840), fieldName: 'thorns'});
 export const ManaTideTotem = makeMultistatePartyBuffInput(ActionId.fromSpellId(16190), 5, 'manaTideTotems');
@@ -391,11 +390,6 @@ export const RAID_BUFFS_MISC_CONFIG = [
     config: StrengthOfWrynn,
     picker: IconPicker,
     stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower, Stat.StatSpellPower],
-  },
-  {
-    config: HeroicPresence,
-    picker: IconPicker,
-    stats: [Stat.StatMeleeHit, Stat.StatSpellHit],
   },
   {
     config: BraidedEterniumChain,

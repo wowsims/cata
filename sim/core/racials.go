@@ -69,6 +69,10 @@ func applyRaceEffects(agent Agent) {
 		})
 	case proto.Race_RaceDraenei:
 		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
+		character.AddStats(stats.Stats{
+			stats.MeleeHit: 1 * MeleeHitRatingPerHitChance,
+			stats.SpellHit: 1 * SpellHitRatingPerHitChance,
+		})
 		// TODO: Gift of the naaru for healers
 	case proto.Race_RaceDwarf:
 		character.PseudoStats.ReducedFrostHitTakenChance += 0.02

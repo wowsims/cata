@@ -537,7 +537,7 @@
 // 						},
 // 						{
 // 							label: 'Unleashed Rage',
-// 							actionId: ActionId.fromSpellId(30809),
+// 							actionId: ActionId.fromSpellId(30802),
 // 							playerData: playerClassAndTalent(Class.ClassShaman, 'unleashedRage'),
 // 						},
 // 						{

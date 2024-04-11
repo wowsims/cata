@@ -122,13 +122,10 @@
 // 			bloodlust: true,
 // 			strengthOfEarthTotem: true,
 // 			battleShout: TristateEffect.TristateEffectImproved,
-// 			unleashedRage: true,
+// 			unleashedRage: TristateEffect.TristateEffectImproved,
 // 			windfuryTotem: true,
 // 			arcaneEmpowerment: true,
 // 			moonkinAura: TristateEffect.TristateEffectImproved,
-// 		}),
-// 		partyBuffs: PartyBuffs.create({
-// 			heroicPresence: true,
 // 		}),
 // 		individualBuffs: IndividualBuffs.create({
 // 			blessingOfKings: true,

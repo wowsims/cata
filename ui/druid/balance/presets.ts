@@ -141,8 +141,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	vampiricTouch: true,
 });
 
-export const DefaultPartyBuffs = PartyBuffs.create({
-	heroicPresence: false,
+export const DefaultPartyBuffs = PartyBuffs.create({	
 });
 
 export const DefaultDebuffs = Debuffs.create({

@@ -224,12 +224,13 @@ func (dk *DeathKnight) GetCharacter() *core.Character {
 }
 
 func (dk *DeathKnight) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
-	dk.HasDraeneiHitAura = partyBuffs.HeroicPresence
 }
 
 func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if dk.Talents.AbominationsMight > 0 {
-		raidBuffs.AbominationsMight = true
+	if dk.Talents.AbominationsMight == 1 {
+		raidBuffs.AbominationsMight = proto.TristateEffect_TristateEffectImproved
+	} else if dk.Talents.AbominationsMight == 2 {
+		raidBuffs.AbominationsMight = proto.TristateEffect_TristateEffectRegular
 	}
 
 	if dk.Talents.ImprovedIcyTalons {

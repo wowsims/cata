@@ -87,10 +87,12 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		}
 	}
 
-	if raidBuffs.TrueshotAura || raidBuffs.AbominationsMight || raidBuffs.UnleashedRage {
-		// Increases AP by 10%
-		character.MultiplyStat(stats.AttackPower, 1.1)
+	if raidBuffs.TrueshotAura || raidBuffs.AbominationsMight == proto.TristateEffect_TristateEffectImproved || raidBuffs.UnleashedRage == proto.TristateEffect_TristateEffectImproved {
+		character.MultiplyStat(stats.AttackPower, 1.2)
 		character.MultiplyStat(stats.RangedAttackPower, 1.1)
+	} else if raidBuffs.AbominationsMight == proto.TristateEffect_TristateEffectRegular || raidBuffs.UnleashedRage == proto.TristateEffect_TristateEffectRegular {
+		character.MultiplyStat(stats.AttackPower, 1.1)
+		character.MultiplyStat(stats.RangedAttackPower, 1.05)
 	}
 
 	if raidBuffs.StrengthOfWrynn {
@@ -101,13 +103,6 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 
 	if raidBuffs.ArcaneEmpowerment || raidBuffs.FerociousInspiration || raidBuffs.SanctifiedRetribution {
 		character.PseudoStats.DamageDealtMultiplier *= 1.03
-	}
-
-	if partyBuffs.HeroicPresence {
-		character.AddStats(stats.Stats{
-			stats.MeleeHit: 1 * MeleeHitRatingPerHitChance,
-			stats.SpellHit: 1 * SpellHitRatingPerHitChance,
-		})
 	}
 
 	if raidBuffs.CommandingShout > 0 {

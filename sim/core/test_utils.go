@@ -48,7 +48,7 @@ var DefaultTargetProto = &proto.Target{
 }
 
 var FullRaidBuffs = &proto.RaidBuffs{
-	AbominationsMight:     true,
+	AbominationsMight:     proto.TristateEffect_TristateEffectImproved,
 	ArcaneBrilliance:      true,
 	ArcaneEmpowerment:     true,
 	BattleShout:           proto.TristateEffect_TristateEffectImproved,
@@ -71,7 +71,7 @@ var FullRaidBuffs = &proto.RaidBuffs{
 	Thorns:                proto.TristateEffect_TristateEffectImproved,
 	TotemicWrath:          true,
 	TrueshotAura:          true,
-	UnleashedRage:         true,
+	UnleashedRage:         proto.TristateEffect_TristateEffectImproved,
 	WindfuryTotem:         true,
 	WrathOfAirTotem:       true,
 }
