@@ -78,7 +78,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 67
+// NextIndex: 68
 message APLValue {
     oneof value {
         // Operators
@@ -155,6 +155,7 @@ message APLValue {
         // Dot values
         APLValueDotIsActive dot_is_active = 6;
         APLValueDotRemainingTime dot_remaining_time = 13;
+        APLValueDotTickFrequency dot_tick_frequency = 67;
 
         // Sequence values
         APLValueSequenceIsComplete sequence_is_complete = 44;
@@ -499,6 +500,10 @@ message APLValueDotIsActive {
     ActionID spell_id = 1;
 }
 message APLValueDotRemainingTime {
+    UnitReference target_unit = 2;
+    ActionID spell_id = 1;
+}
+message APLValueDotTickFrequency {
     UnitReference target_unit = 2;
     ActionID spell_id = 1;
 }

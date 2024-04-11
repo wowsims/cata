@@ -69,6 +69,7 @@ import {
 	APLValueTotemRemainingTime,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
+	APLValueDotTickFrequency,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
@@ -899,6 +900,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Time remaining before the last tick of this DoT will occur, or 0 if the DoT is not currently ticking.',
 		newValue: APLValueDotRemainingTime.create,
 		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', '')],
+	}),
+	dotTickFrequency: inputBuilder({
+		label: "Dot Tick Frequency",
+		submenu: ['DoT'],
+		shortDescription: 'The time between each tick.',
+		newValue: APLValueDotTickFrequency.create,
+		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', '')]
 	}),
 	sequenceIsComplete: inputBuilder({
 		label: 'Sequence Is Complete',

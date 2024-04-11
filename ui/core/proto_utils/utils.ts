@@ -1765,7 +1765,7 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 
 	if (enchant.enchantType == EnchantType.EnchantTypeStaff && item.weaponType != WeaponType.WeaponTypeStaff) return false;
 
-	if (item.weaponType == WeaponType.WeaponTypeOffHand) return false;
+	if ((item.weaponType == WeaponType.WeaponTypeOffHand) != (enchant.enchantType == EnchantType.EnchantTypeOffHand)) return false;
 
 	if (sharedSlots.includes(ItemSlot.ItemSlotRanged)) {
 		if (
