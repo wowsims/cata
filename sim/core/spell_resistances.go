@@ -61,6 +61,10 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 }
 
 func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
+	if at.IgnoreArmor {
+		return 1.0
+	}
+
 	armorConstant := float64(at.Attacker.Level)*467.5 - 22167.5
 	defenderArmor := at.Defender.Armor()
 	reducibleArmor := min((defenderArmor+armorConstant)/3, defenderArmor)

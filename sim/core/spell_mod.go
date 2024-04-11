@@ -178,6 +178,10 @@ const (
 	// Uses FloatValue
 	SpellMod_PowerCost_Pct
 
+	// Increases or decreases spell.DefaultCast.Cost by flat amount
+	// Uses FloatValue
+	SpellMod_PowerCost_Flat
+
 	// Will add time.Duration to spell.CD.Duration
 	// Uses TimeValue
 	SpellMod_Cooldown_Flat
@@ -189,6 +193,10 @@ const (
 	// Will add / substract % amount from the cast time multiplier.
 	// Ueses: FloatValue
 	SpellMod_CastTime_Pct
+
+	// Add/subtract bonus crit rating
+	// Uses: FloatValue
+	SpellMod_BonusCrit_Rating
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -207,6 +215,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 		Remove: removePowerCostPercent,
 	},
 
+	SpellMod_PowerCost_Flat: {
+		Apply:  applyPowerCostFlat,
+		Remove: removePowerCostFlat,
+	},
+
 	SpellMod_Cooldown_Flat: {
 		Apply:  applyCooldownFlat,
 		Remove: removeCooldownFlat,
@@ -220,6 +233,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_CastTime_Pct: {
 		Apply:  applyCastTimePercent,
 		Remove: removeCastTimePercent,
+	},
+
+	SpellMod_BonusCrit_Rating: {
+		Apply:  applyBonusCritRating,
+		Remove: removeBonusCritRating,
 	},
 }
 
@@ -247,6 +265,14 @@ func removePowerCostPercent(mod *SpellMod, spell *Spell) {
 	spell.DefaultCast.Cost /= 1 + mod.floatValue
 }
 
+func applyPowerCostFlat(mod *SpellMod, spell *Spell) {
+	spell.DefaultCast.Cost += mod.floatValue
+}
+
+func removePowerCostFlat(mod *SpellMod, spell *Spell) {
+	spell.DefaultCast.Cost -= mod.floatValue
+}
+
 func applyCooldownFlat(mod *SpellMod, spell *Spell) {
 	spell.CD.Duration += mod.timeValue
 }
@@ -269,4 +295,12 @@ func applyCastTimePercent(mod *SpellMod, spell *Spell) {
 
 func removeCastTimePercent(mod *SpellMod, spell *Spell) {
 	spell.CastTimeMultiplier -= mod.floatValue
+}
+
+func applyBonusCritRating(mod *SpellMod, spell *Spell) {
+	spell.BonusCritRating += mod.floatValue
+}
+
+func removeBonusCritRating(mod *SpellMod, spell *Spell) {
+	spell.BonusCritRating -= mod.floatValue
 }

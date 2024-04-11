@@ -87,6 +87,11 @@ func (war *FuryWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.RegisterSpecializationEffects()
 
+	war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier()
+	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+		war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier()
+	})
+
 	// if war.Options.UseRecklessness {
 	// 	war.RegisterRecklessnessCD()
 	// }
