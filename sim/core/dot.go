@@ -147,6 +147,15 @@ func (dot *Dot) Apply(sim *Simulation) {
 
 		// add extra tick
 		dot.TickCount--
+
+		// update tick action to work with new tick rate, but set next tick to still occur
+		oldNextAction := dot.tickAction.NextActionAt
+		dot.tickAction.Cancel(sim)
+		periodicOptions := dot.basePeriodicOptions()
+		periodicOptions.Period = dot.tickPeriod
+		dot.tickAction = NewPeriodicAction(sim, periodicOptions)
+		dot.tickAction.NextActionAt = oldNextAction
+		sim.AddPendingAction(dot.tickAction)
 	} else {
 		dot.RecomputeAuraDuration()
 	}
