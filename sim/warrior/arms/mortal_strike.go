@@ -32,8 +32,7 @@ func (war *ArmsWarrior) RegisterMortalStrikeSpell() {
 		CritMultiplier:  war.DefaultMeleeCritMultiplier() + (0.1 * float64(war.Talents.Impale)),
 		BonusCritRating: (5.0 * float64(war.Talents.Cruelty)) * core.CritRatingPerCritChance,
 		DamageMultiplier: 1.0 + core.TernaryFloat64(war.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfMortalStrike), 0.1, 0.0) +
-			0.05*float64(war.Talents.WarAcademy) +
-			0.1*float64(war.slaughter.GetStacks()),
+			0.05*float64(war.Talents.WarAcademy),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 423 +

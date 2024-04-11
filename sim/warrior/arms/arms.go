@@ -99,6 +99,7 @@ func (war *ArmsWarrior) RegisterMastery() {
 	// 4.3.3 simcraft implements SoO as a standard autoattack with a 0.5s ICD
 	procAttackConfig := *war.AutoAttacks.MHConfig()
 	procAttackConfig.ActionID = core.ActionID{SpellID: StrikesOfOpportunityHitID, Tag: procAttackConfig.ActionID.Tag}
+	procAttackConfig.ProcMask = core.ProcMaskMeleeSpecial
 	procAttack := war.RegisterSpell(procAttackConfig)
 
 	icd := core.Cooldown{
@@ -133,7 +134,7 @@ func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {
 func (war *ArmsWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.RegisterSpecializationEffects()
-
+	war.RegisterMortalStrikeSpell()
 	// if war.Options.UseRecklessness {
 	// 	war.RegisterRecklessnessCD()
 	// }

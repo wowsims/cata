@@ -74,9 +74,7 @@ func (war *ArmsWarrior) RegisterSuddenDeath() {
 			}
 
 			if sim.RandomFloat("Sudden Death") < procChance {
-				if war.ColossusSmash != nil {
-					war.ColossusSmash.CD.Reset()
-				}
+				war.ColossusSmash.CD.Reset()
 			}
 		},
 	}))
@@ -95,6 +93,7 @@ func (war *ArmsWarrior) TriggerSlaughter(sim *core.Simulation, target *core.Unit
 	if !war.slaughter.IsActive() {
 		war.slaughter.Activate(sim)
 	} else {
+		war.slaughter.Refresh(sim)
 		war.slaughter.AddStack(sim)
 	}
 }

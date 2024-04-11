@@ -24,7 +24,7 @@ func (warrior *Warrior) RegisterColossusSmash() {
 		})
 	})
 
-	warrior.RegisterSpell(core.SpellConfig{
+	warrior.ColossusSmash = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
