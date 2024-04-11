@@ -9,6 +9,7 @@ import (
 func (warrior *Warrior) RegisterOverpowerSpell() {
 	opAura := warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 7384},
+		Tag:      EnableOverpowerTag,
 		Label:    "Overpower Ready",
 		Duration: time.Second * 5,
 	})

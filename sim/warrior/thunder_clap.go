@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (warrior *Warrior) RegisterThunderClapSpell() {
@@ -20,7 +19,7 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 		ClassSpellMask: SpellMaskThunderClap,
 
 		RageCost: core.RageCostOptions{
-			Cost: 20 - core.TernaryFloat64(warrior.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfResonatingPower), 5, 0),
+			Cost: 20,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
