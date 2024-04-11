@@ -22,8 +22,8 @@ const (
 	EnableOverpowerTag   = "EnableOverpower"
 )
 
+const SpellMaskNone int64 = 0
 const (
-	SpellMaskNone          int64 = 0
 	SpellMaskCostsRage     int64 = 1 << iota
 	SpellMaskSpecialAttack       = SpellMaskCostsRage | (1 << iota) // All special attacks have a rage cost
 
