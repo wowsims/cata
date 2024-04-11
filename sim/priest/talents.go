@@ -141,6 +141,8 @@ func (priest *Priest) ApplyTalents() {
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 
+		// Twisted Faith is not applied to base spirit
+		priest.AddStats(stats.Stats{stats.SpellHit: -0.5 * float64(priest.Talents.TwistedFaith) * priest.GetBaseStats()[stats.Spirit]})
 		priest.AddStatDependency(stats.Spirit, stats.SpellHit, 0.5*float64(priest.Talents.TwistedFaith))
 	}
 
@@ -399,7 +401,9 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 
 	// simple spell here as it does not use any dmg mods or calculations
 	impDPDamage := priest.RegisterSpell(core.SpellConfig{
-		ActionID:                 core.ActionID{SpellID: 63675},
+
+		// TODO: improve metric aggregation to show correct DPC
+		ActionID:                 core.ActionID{SpellID: 2944, Tag: 1},
 		SpellSchool:              core.SpellSchoolShadow,
 		ProcMask:                 core.ProcMaskProc,
 		DamageMultiplier:         1,
@@ -573,7 +577,7 @@ func (priest *Priest) applySinAndPunishment() {
 			if result.Outcome.Matches(core.OutcomeCrit) && priest.MindFlayAPL.ClassSpellMask == int64(PriestSpellMindFlay) {
 
 				// reduce cooldown
-				remaining := max(0, priest.Shadowfiend.CD.TimeToReady(sim)-time.Second*5)
+				remaining := max(0, priest.Shadowfiend.CD.ReadyAt()-time.Second*5)
 				priest.Shadowfiend.CD.Set(remaining)
 			}
 		},

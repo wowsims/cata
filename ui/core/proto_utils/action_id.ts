@@ -452,6 +452,11 @@ export class ActionId {
 					name += ' (MT)';
 				}
 				break;
+			case 'Devouring Plague':
+				if (this.tag == 1) {
+					name += ' (Improved)';
+					break;
+				}
 			default:
 				if (this.tag) {
 					name += ' (??)';

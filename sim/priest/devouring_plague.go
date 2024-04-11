@@ -7,7 +7,7 @@ import (
 )
 
 func (priest *Priest) registerDevouringPlagueSpell() {
-	actionID := core.ActionID{SpellID: 2944}
+	actionID := core.ActionID{SpellID: 2944, Tag: 0}
 	priest.DevouringPlague = priest.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolShadow,
