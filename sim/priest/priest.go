@@ -16,19 +16,23 @@ type Priest struct {
 
 	Latency float64
 
-	//ShadowfiendAura *core.Aura
-	//ShadowfiendPet  *Shadowfiend
+	ShadowfiendAura *core.Aura
+	ShadowfiendPet  *Shadowfiend
 
 	// cached cast stuff
 	// TODO: aoe multi-target situations will need multiple spells ticking for each target.
-	InnerFocusAura     *core.Aura
-	ShadowWeavingAura  *core.Aura
-	ShadowyInsightAura *core.Aura
-	ImprovedSpiritTap  *core.Aura
-	DispersionAura     *core.Aura
+	InnerFocusAura         *core.Aura
+	HolyEvangelismProcAura *core.Aura
+	DarkEvangelismProcAura *core.Aura
+	ShadowyInsightAura     *core.Aura
+	DispersionAura         *core.Aura
+	MindMeltProcAura       *core.Aura
 
 	SurgeOfLightProcAura *core.Aura
 
+	// might want to move these spell / talents into spec specific initialization
+	Archangel         *core.Spell
+	DarkArchangel     *core.Spell
 	BindingHeal       *core.Spell
 	CircleOfHealing   *core.Spell
 	DevouringPlague   *core.Spell
@@ -39,8 +43,6 @@ type Priest struct {
 	ShadowWordPain    *core.Spell
 	MindBlast         *core.Spell
 	MindFlay          []*core.Spell
-	MindFlayModifier  float64
-	MindBlastModifier float64
 	MindFlayAPL       *core.Spell
 	MindSear          []*core.Spell
 	MindSearAPL       *core.Spell
@@ -56,12 +58,15 @@ type Priest struct {
 	Smite             *core.Spell
 	VampiricTouch     *core.Spell
 	Dispersion        *core.Spell
+	MindSpike         *core.Spell
+	ShadowyApparition *core.Spell
 
 	WeakenedSouls core.AuraArray
 
 	ProcPrayerOfMending core.ApplySpellResults
 
-	DpInitMultiplier float64
+	ScalingBaseDamage    float64
+	ShadowCritMultiplier float64
 
 	// set bonus cache
 	// The mana cost of your Mind Blast is reduced by 10%.
@@ -113,47 +118,40 @@ func (priest *Priest) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (priest *Priest) Initialize() {
-	// statDep := priest.NewDynamicStatDependency(stats.Spirit, stats.SpellPower, 0.3)
-	// priest.ShadowyInsightAura = priest.GetOrRegisterAura(core.Aura{
-	// 	Label:    "Shadowy Insight",
-	// 	Duration: time.Second * 10,
-	// 	ActionID: core.ActionID{SpellID: 61792},
-	// 	OnGain: func(aura *core.Aura, sim *core.Simulation) {
-	// 		priest.EnableDynamicStatDep(sim, statDep)
-	// 	},
-	// 	OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-	// 		priest.DisableDynamicStatDep(sim, statDep)
-	// 	},
-	// })
+
+	// base scaling value for a level 85 priest
+	priest.ScalingBaseDamage = 945.188842773437500
 
 	// priest.registerSetBonuses()
-	// priest.registerDevouringPlagueSpell()
-	// priest.registerShadowWordPainSpell()
-	// priest.registerMindBlastSpell()
-	// priest.registerShadowWordDeathSpell()
-	// priest.registerShadowfiendSpell()
-	// priest.registerVampiricTouchSpell()
-	// priest.registerDispersionSpell()
+	priest.registerDevouringPlagueSpell()
+	priest.registerShadowWordPainSpell()
+
+	priest.registerMindBlastSpell()
+	priest.registerShadowWordDeathSpell()
+	priest.registerShadowfiendSpell()
+	priest.registerVampiricTouchSpell()
+	priest.registerDispersionSpell()
 
 	// priest.registerPowerInfusionCD()
 
-	// priest.MindFlayAPL = priest.newMindFlaySpell(0)
-	// priest.MindSearAPL = priest.newMindSearSpell(0)
+	priest.MindFlayAPL = priest.newMindFlaySpell(0)
+	priest.MindSearAPL = priest.newMindSearSpell(0)
 
-	// priest.MindFlay = []*core.Spell{
-	// 	nil, // So we can use # of ticks as the index
-	// 	priest.newMindFlaySpell(1),
-	// 	priest.newMindFlaySpell(2),
-	// 	priest.newMindFlaySpell(3),
-	// }
-	// priest.MindSear = []*core.Spell{
-	// 	nil, // So we can use # of ticks as the index
-	// 	priest.newMindSearSpell(1),
-	// 	priest.newMindSearSpell(2),
-	// 	priest.newMindSearSpell(3),
-	// 	priest.newMindSearSpell(4),
-	// 	priest.newMindSearSpell(5),
-	// }
+	priest.MindFlay = []*core.Spell{
+		nil, // So we can use # of ticks as the index
+		priest.newMindFlaySpell(1),
+		priest.newMindFlaySpell(2),
+		priest.newMindFlaySpell(3),
+	}
+
+	priest.MindSear = []*core.Spell{
+		nil, // So we can use # of ticks as the index
+		priest.newMindSearSpell(1),
+		priest.newMindSearSpell(2),
+		priest.newMindSearSpell(3),
+		priest.newMindSearSpell(4),
+		priest.newMindSearSpell(5),
+	}
 }
 
 // func (priest *Priest) RegisterHealingSpells() {
@@ -168,16 +166,21 @@ func (priest *Priest) Initialize() {
 // 	priest.registerRenewSpell()
 // }
 
-// func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation) {
-// 	if priest.ShadowWeavingAura != nil {
-// 		priest.ShadowWeavingAura.Activate(sim)
-// 		priest.ShadowWeavingAura.AddStack(sim)
-// 	}
-// }
+func (priest *Priest) AddHolyEvanglismStack(sim *core.Simulation) {
+	if priest.HolyEvangelismProcAura != nil {
+		priest.HolyEvangelismProcAura.Activate(sim)
+		priest.HolyEvangelismProcAura.AddStack(sim)
+	}
+}
+
+func (priest *Priest) AddDarkEvangelismStack(sim *core.Simulation) {
+	if priest.DarkEvangelismProcAura != nil {
+		priest.DarkEvangelismProcAura.Activate(sim)
+		priest.DarkEvangelismProcAura.AddStack(sim)
+	}
+}
 
 func (priest *Priest) Reset(_ *core.Simulation) {
-	// priest.MindFlayModifier = 1
-	// priest.MindBlastModifier = 1
 }
 
 func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
@@ -186,18 +189,10 @@ func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 		SelfBuffs: selfBuffs,
 		Talents:   &proto.PriestTalents{},
 	}
-	// core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
-	// priest.EnableManaBar()
-	// //priest.ShadowfiendPet = priest.NewShadowfiend()
-
-	// if selfBuffs.UseInnerFire {
-	// 	multi := 1 + float64(priest.Talents.ImprovedInnerFire)*0.15
-	// 	sp := 120.0 * multi
-	// 	armor := 2440 * multi * core.TernaryFloat64(priest.HasMajorGlyph(proto.PriestMajorGlyph_GlyphOfInnerFire), 1.5, 1)
-	// 	priest.AddStat(stats.SpellPower, sp)
-	// 	priest.AddStat(stats.Armor, armor)
-	// }
+	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	priest.EnableManaBar()
+	priest.ShadowfiendPet = priest.NewShadowfiend()
 
 	return priest
 }
@@ -206,3 +201,92 @@ func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 type PriestAgent interface {
 	GetPriest() *Priest
 }
+
+func (hunter *Priest) HasPrimeGlyph(glyph proto.PriestPrimeGlyph) bool {
+	return hunter.HasGlyph(int32(glyph))
+}
+func (hunter *Priest) HasMajorGlyph(glyph proto.PriestMajorGlyph) bool {
+	return hunter.HasGlyph(int32(glyph))
+}
+func (hunter *Priest) HasMinorGlyph(glyph proto.PriestMinorGlyph) bool {
+	return hunter.HasGlyph(int32(glyph))
+}
+
+const (
+	PriestSpellFlagNone  int64 = 0
+	PriestSpellArchangel int64 = 1 << iota
+	PriestSpellDarkArchangel
+	PriestSpellBindingHeal
+	PriestSpellCircleOfHealing
+	PriestSpellDevouringPlague
+	PriestSpellDesperatePrayer
+	PriestSpellDispersion
+	PriestSpellDivineHymn
+	PriestSpellFade
+	PriestSpellFlashHeal
+	PriestSpellGreaterHeal
+	PriestSpellGuardianSpirit
+	PriestSpellHolyFire
+	PriestSpellHolyNova
+	PriestSpellHolyWordChastise
+	PriestSpellHolyWordSanctuary
+	PriestSpellHolyWordSerenity
+	PriestSpellHymnOfHope
+	PriestSpellImprovedDevouringPlague
+	PriestSpellInnerFire
+	PriestSpellInnerFocus
+	PriestSpellInnerWill
+	PriestSpellManaBurn
+	PriestSpellMindBlast
+	PriestSpellMindFlay
+	PriestSpellMindSear
+	PriestSpellMindSpike
+	PriestSpellMindTrauma
+	PriestSpellPainSuppresion
+	PriestSpellPenance
+	PriestSpellPowerInfusion
+	PriestSpellPowerWordBarrier
+	PriestSpellPowerWordShield
+	PriestSpellPrayerOfHealing
+	PriestSpellPrayerOfMending
+	PriestSpellPsychicScream
+	PriestSpellRenew
+	PriestSpellShadowOrbPassive
+	PriestSpellShadowWordDeath
+	PriestSpellShadowWordPain
+	PriestSpellShadowFiend
+	PriestSpellShadowyApparation
+	PriestSpellSmite
+	PriestSpellVampiricEmbrace
+	PriestSpellVampiricTouch
+
+	PriestSpellLast
+	PriestSpellsAll    = PriestSpellLast<<1 - 1
+	PriestSpellDoT     = PriestSpellDevouringPlague | PriestSpellHolyFire | PriestSpellMindFlay | PriestSpellShadowWordPain | PriestSpellVampiricTouch | PriestSpellImprovedDevouringPlague
+	PriestSpellInstant = PriestSpellCircleOfHealing |
+		PriestSpellDesperatePrayer |
+		PriestSpellDevouringPlague |
+		PriestSpellImprovedDevouringPlague |
+		PriestSpellFade |
+		PriestSpellGuardianSpirit |
+		PriestSpellHolyNova |
+		PriestSpellHolyWordChastise |
+		PriestSpellHolyWordSanctuary |
+		PriestSpellHolyWordSerenity |
+		PriestSpellInnerFire |
+		PriestSpellPainSuppresion |
+		PriestSpellPowerInfusion |
+		PriestSpellPowerWordBarrier |
+		PriestSpellPowerWordShield |
+		PriestSpellRenew |
+		PriestSpellShadowWordDeath |
+		PriestSpellShadowWordPain |
+		PriestSpellVampiricEmbrace
+	PriestShadowSpells = PriestSpellImprovedDevouringPlague |
+		PriestSpellDevouringPlague |
+		PriestSpellShadowWordDeath |
+		PriestSpellShadowWordPain |
+		PriestSpellMindFlay |
+		PriestSpellMindBlast |
+		PriestSpellVampiricTouch
+)

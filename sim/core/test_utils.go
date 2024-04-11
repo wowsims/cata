@@ -62,7 +62,7 @@ var FullRaidBuffs = &proto.RaidBuffs{
 	IcyTalons:             true,
 	LeaderOfThePack:       proto.TristateEffect_TristateEffectImproved,
 	ManaSpringTotem:       proto.TristateEffect_TristateEffectRegular,
-	MoonkinAura:           proto.TristateEffect_TristateEffectImproved,
+	MoonkinAura:           true,
 	PowerWordFortitude:    proto.TristateEffect_TristateEffectImproved,
 	SanctifiedRetribution: true,
 	ShadowProtection:      true,

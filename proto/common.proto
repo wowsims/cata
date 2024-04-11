@@ -449,11 +449,12 @@ message RaidBuffs {
 
 	// +5% Spell Crit and/or +3% Haste
 	bool swift_retribution = 21; //haste only
-	TristateEffect moonkin_aura = 22; //both crit and haste
 	bool elemental_oath = 23; //crit only
 
 	// 5% spell haste
+	bool moonkin_aura = 22;
 	bool wrath_of_air_totem = 24;
+	bool mind_quickening = 50;
 
 	// 3% dmg
 	bool ferocious_inspiration = 25;

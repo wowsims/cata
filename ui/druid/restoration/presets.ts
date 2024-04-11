@@ -77,7 +77,6 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	icyTalons: true,
-	moonkinAura: TristateEffect.TristateEffectImproved,
 	leaderOfThePack: TristateEffect.TristateEffectImproved,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
 	sanctifiedRetribution: true,
