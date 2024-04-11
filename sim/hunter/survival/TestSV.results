@@ -40,8 +40,8 @@ character_stats_results: {
 dps_results: {
  key: "TestSV-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 11351.71403
-  tps: 10236.0666
+  dps: 11253.76554
+  tps: 10152.03089
  }
 }
 dps_results: {
@@ -147,8 +147,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-BracingShadowspiritDiamond"
  value: {
-  dps: 11152.35479
-  tps: 9843.23348
+  dps: 11056.436
+  tps: 9761.51843
  }
 }
 dps_results: {
@@ -168,15 +168,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 11251.1087
-  tps: 10142.8697
+  dps: 11153.89517
+  tps: 10058.19225
  }
 }
 dps_results: {
  key: "TestSV-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 11253.51147
-  tps: 10140.73317
+  dps: 11188.24079
+  tps: 10090.21815
  }
 }
 dps_results: {
@@ -688,15 +688,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-ReverberatingShadowspiritDiamond"
  value: {
-  dps: 11251.1087
-  tps: 10142.8697
+  dps: 11153.89517
+  tps: 10058.19225
  }
 }
 dps_results: {
  key: "TestSV-AllItems-RevitalizingShadowspiritDiamond"
  value: {
-  dps: 11251.1087
-  tps: 10142.8697
+  dps: 11153.89517
+  tps: 10058.19225
  }
 }
 dps_results: {
