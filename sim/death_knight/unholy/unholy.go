@@ -51,13 +51,6 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 		AutoSwingMelee: true,
 	})
 
-	uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= uhdk.getMasteryShadowBonus(uhdk.GetStat(stats.Mastery))
-
-	uhdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= uhdk.getMasteryShadowBonus(oldMastery)
-		uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= uhdk.getMasteryShadowBonus(newMastery)
-	})
-
 	return uhdk
 }
 
@@ -71,6 +64,13 @@ func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 
 func (uhdk *UnholyDeathKnight) Initialize() {
 	uhdk.DeathKnight.Initialize()
+
+	uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= uhdk.getMasteryShadowBonus(uhdk.GetStat(stats.Mastery))
+
+	uhdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= uhdk.getMasteryShadowBonus(oldMastery)
+		uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= uhdk.getMasteryShadowBonus(newMastery)
+	})
 }
 
 func (uhdk *UnholyDeathKnight) Reset(sim *core.Simulation) {
