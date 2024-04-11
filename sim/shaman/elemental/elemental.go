@@ -44,11 +44,6 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 		ele.ApplyFlametongueImbueToItem(mh)
 	}
 
-	// TODO: this would never be a case?
-	if oh := ele.GetOHWeapon(); oh != nil {
-		ele.ApplyFlametongueImbueToItem(oh)
-	}
-
 	return ele
 }
 

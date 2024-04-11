@@ -103,7 +103,7 @@ func init() {
 // var enhShamFTFT = &proto.EnhancementShaman_Options{
 // 	Shield:   proto.ShamanShield_LightningShield,
 // 	SyncType: proto.ShamanSyncType_Auto,
-// 	ImbueMh:  proto.ShamanImbue_FlametongueWeaponDownrank,
+// 	ImbueMh:  proto.ShamanImbue_FlametongueWeapon,
 // 	ImbueOh:  proto.ShamanImbue_FlametongueWeapon,
 // 	Totems: &proto.ShamanTotems{
 // 		Earth:            proto.EarthTotem_StrengthOfEarthTotem,

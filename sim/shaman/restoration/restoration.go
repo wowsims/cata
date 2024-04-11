@@ -43,11 +43,6 @@ func NewRestorationShaman(character *core.Character, options *proto.Player) *Res
 		resto.ApplyEarthlivingImbueToItem(resto.GetMHWeapon())
 	}
 
-	// TODO: This would never be a case?
-	if resto.HasOHWeapon() {
-		resto.ApplyEarthlivingImbueToItem(resto.GetOHWeapon())
-	}
-
 	return resto
 }
 
