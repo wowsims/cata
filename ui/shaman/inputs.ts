@@ -29,7 +29,7 @@ export const ShamanImbueMH = <SpecType extends ShamanSpecs>() =>
 		fieldName: 'imbueMh',
 		values: [
 			{ value: ShamanImbue.NoImbue, tooltip: 'No Main Hand Enchant' },
-			{ actionId: ActionId.fromSpellId(8323), value: ShamanImbue.WindfuryWeapon },
+			{ actionId: ActionId.fromSpellId(8232), value: ShamanImbue.WindfuryWeapon },
 			{ actionId: ActionId.fromSpellId(8024), value: ShamanImbue.FlametongueWeapon },
 			{ actionId: ActionId.fromSpellId(8033), value: ShamanImbue.FrostbrandWeapon },
 		],

@@ -17,13 +17,12 @@ func (shaman *Shaman) registerShamanisticRageCD() {
 		ActionID: actionID,
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			//TODO: Skills, Totems, and Offensive spells (is that everything?) cost 0 when this is up. Did I do this right?
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.7
-			shaman.LightningBolt.CostMultiplier -= 1.0
+			shaman.PseudoStats.CostMultiplier -= 1.0
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.7
-			shaman.LightningBolt.CostMultiplier += 1.0
+			shaman.PseudoStats.CostMultiplier += 1.0
 		},
 	})
 

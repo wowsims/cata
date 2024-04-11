@@ -6,9 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-// TODO: Updated for cata. Not sure if the coefficient is changed. Need to check.
-//
-//	Also not sure if the number of ticks needs to be updated when the talent (20%/40% duration)
+// TODO: Do the number of ticks needs to be updated when the talent changes? (20%/40% duration)
 func (shaman *Shaman) registerSearingTotemSpell() {
 	shaman.SearingTotem = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 3599},
@@ -43,15 +41,23 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			TickLength:    time.Second * 60 / 24,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 90 + 0.167*dot.Spell.SpellPower()
+				baseDamage := 90 + 0.2*dot.Spell.SpellPower()
 				result := dot.Spell.CalcAndDealDamage(sim, target, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 
-				// TODO: Just getting this ready. No idea how this works... the tooltip says this dot stacks up to five times. Similar to deadly poison?
 				if shaman.Talents.SearingFlames > 0 && result.Landed() {
 					if shaman.Talents.SearingFlames == 3 || sim.RandomFloat("Searing Flames") < 0.33*float64(shaman.Talents.SearingFlames) {
 						searingFlamesDot := shaman.SearingFlamesDot.Dot(target)
-						searingFlamesDot.SnapshotBaseDamage = result.Damage / float64(dot.NumberOfTicks)
+
+						if searingFlamesDot.Aura.GetStacks() == 0 {
+							searingFlamesDot.Aura.Activate(sim)
+						} else {
+							searingFlamesDot.Aura.AddStack(sim)
+						}
+
+						// recalc damage based on stacks, testing with searing totem seems to indicate the damage is updated dynamically on refesh
+						// instantly taking the bonus of any procs or buffs and applying it times the number of stacks
 						searingFlamesDot.SnapshotAttackerMultiplier = 1
+						searingFlamesDot.SnapshotBaseDamage = float64(searingFlamesDot.Aura.GetStacks()) * result.Damage / float64(searingFlamesDot.NumberOfTicks)
 						searingFlamesDot.Spell.Cast(sim, target)
 					}
 				}
@@ -70,9 +76,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 	})
 }
 
-// TODO: Updated for cata. Not sure if the coefficient is changed. Need to check.
-//
-//	Also not sure if the number of ticks needs to be updated when the talent (20%/40% duration)
+// TODO: Do the number of ticks needs to be updated when the talent changes? (20%/40% duration)
 func (shaman *Shaman) registerMagmaTotemSpell() {
 	shaman.MagmaTotem = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 8190},
@@ -102,7 +106,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			TickLength:    time.Second * 2,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 268 + 0.1*dot.Spell.SpellPower()
+				baseDamage := 268 + 0.08*dot.Spell.SpellPower()
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)

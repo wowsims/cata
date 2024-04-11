@@ -9,7 +9,7 @@ import (
 
 var StormstrikeActionID = core.ActionID{SpellID: 17364}
 
-// TODO: Confirm logic of the glyph modifier
+// TODO: Confirm how this affects lightning shield
 func (shaman *Shaman) StormstrikeDebuffAura(target *core.Unit) *core.Aura {
 	return target.GetOrRegisterAura(core.Aura{
 		Label:    "Stormstrike-" + shaman.Label,

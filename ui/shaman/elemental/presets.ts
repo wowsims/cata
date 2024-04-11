@@ -40,17 +40,17 @@ export const ROTATION_PRESET_ADVANCED = PresetUtils.makePresetAPLRotation('Advan
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		// talentsString: '0533001523213351322301351-005050031',
-		// glyphs: Glyphs.create({
-		// 	prime1: ShamanPrimeGlyph.,
-		// 	prime2: ShamanPrimeGlyph.,
-		// 	prime3: ShamanPrimeGlyph.,
-		// 	major1: ShamanMajorGlyph.GlyphOfFlametongueWeapon,
-		// 	major2: ShamanMajorGlyph.,
-		// 	major3: ShamanMajorGlyph.GlyphOfLightningBolt,
-		// 	minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
-		// 	minor2: ShamanMinorGlyph.GlyphOfWaterShield,
-		// 	minor3: ShamanMinorGlyph.GlyphOfGhostWolf,
+		// talentsString: '3232023212231101321-203002',
+		// glyphs: Glyphs.create({			
+		// 	prime1: ShamanPrimeGlyph.ShamanPrimeGlyphNone,
+		// 	prime2: ShamanPrimeGlyph.ShamanPrimeGlyphNone,
+		// 	prime3: ShamanPrimeGlyph.ShamanPrimeGlyphNone,
+		// 	major1: ShamanMajorGlyph.ShamanMajorGlyphNone,
+		// 	major2: ShamanMajorGlyph.ShamanMajorGlyphNone,
+		// 	major3: ShamanMajorGlyph.ShamanMajorGlyphNone,
+		// 	minor1: ShamanMinorGlyph.ShamanMinorGlyphNone,
+		// 	minor2: ShamanMinorGlyph.ShamanMinorGlyphNone,
+		// 	minor3: ShamanMinorGlyph.ShamanMinorGlyphNone,
 		// }),
 	}),
 };

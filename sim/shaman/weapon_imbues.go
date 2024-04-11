@@ -27,8 +27,6 @@ func (shaman *Shaman) RegisterOnItemSwapWithImbue(effectID int32, procMask *core
 	})
 }
 
-// TODO: Updated for cata numbers. Unsure of the apBonus that was what the tooltip said at 85 naked. Spell works mostly the same with 3 attacks instead of two.
-// not an expert on enhance... may need looked at
 func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 	apBonus := 4430.0
 
@@ -71,7 +69,6 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 	return shaman.RegisterSpell(spellConfig)
 }
 
-// TODO: Updated for cata numbers. not an expert on enhance... may need looked at
 func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 	if procMask == core.ProcMaskUnknown {
 		return
@@ -89,7 +86,7 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 		proc = 0.36
 	}
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfWindfuryWeapon) {
-		proc += 0.02 //TODO: confirm how this actually works
+		proc += 0.02
 	}
 
 	icd := core.Cooldown{
@@ -318,7 +315,6 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 	shaman.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(2, 9.0, &ppmm, aura)
 }
 
-// TODO: Not sure if elemental fury works on heals
 func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {
 	glyphBonus := core.Ternary(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfEarthlivingWeapon), 1.2, 1.0)
 
@@ -328,7 +324,6 @@ func (shaman *Shaman) newEarthlivingImbueSpell() *core.Spell {
 		ProcMask:    core.ProcMaskEmpty,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 		ThreatMultiplier: 1,
 
 		Hot: core.DotConfig{

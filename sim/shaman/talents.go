@@ -9,7 +9,6 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
-	// TODO: Confirm this is best way to apply acuity?
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.Expertise, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))
@@ -17,16 +16,18 @@ func (shaman *Shaman) ApplyTalents() {
 	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
 		shaman.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*6)
 
-		//TODO: Get shaman mastery points
-		masteryBonusPoints := 0.0
+		masteryBonusPoints := shaman.GetMasteryPoints()
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.2 + (masteryBonusPoints * 0.025)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1.2 + (masteryBonusPoints * 0.025)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.2 + (masteryBonusPoints * 0.025)
-
 		shaman.PseudoStats.CanParry = true
-		//TODO: Enhancement bonuses for mental quickness and primal wisdom
-		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.55)
 
+		shaman.applyPrimalWisdom()
+		//TODO: This is the bonus for mental quickness. Still needs to disable all other spellpower gains somehow!
+		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.55)
+		shaman.registerLavaLashSpell()
+	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
+		shaman.registerThunderstormSpell()
 	}
 
 	if shaman.Talents.Toughness > 0 {
@@ -34,16 +35,31 @@ func (shaman *Shaman) ApplyTalents() {
 	}
 
 	if shaman.Talents.ElementalPrecision > 0 {
-		shaman.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.33, 0.66, 1.0}[shaman.Talents.ElementalPrecision])
+		shaman.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.0, 0.33, 0.66, 1.0}[shaman.Talents.ElementalPrecision])
 	}
 
 	shaman.applyElementalFocus()
 	shaman.applyRollingThunder()
 	shaman.applyFulmination()
+
+	if shaman.Talents.Earthquake {
+		shaman.registerEarthquakeSpell()
+	}
+
 	shaman.applyElementalDevastation()
+
+	if shaman.Talents.Stormstrike {
+		shaman.registerStormstrikeSpell()
+	}
+
 	shaman.applyFlurry()
 	shaman.applyMaelstromWeapon()
 	shaman.applySearingFlames()
+
+	if shaman.Talents.FeralSpirit {
+		shaman.registerFeralSpirit()
+	}
+
 	shaman.registerElementalMasteryCD()
 	shaman.registerNaturesSwiftnessCD()
 	shaman.registerShamanisticRageCD()
@@ -101,7 +117,7 @@ func (shaman *Shaman) applyElementalFocus() {
 				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= oathBonus
 				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= oathBonus
 				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= oathBonus
-				shaman.PseudoStats.DamageDealtMultiplier *= oathBonus
+				shaman.PseudoStats.DamageDealtMultiplier /= oathBonus
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -122,7 +138,6 @@ func (shaman *Shaman) applyElementalFocus() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// TODO: need to check for additional spells that cause the proc
 			if !spell.Flags.Matches(SpellFlagShock | SpellFlagFocusable) {
 				return
 			}
@@ -234,12 +249,6 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 
 	cdTimer := shaman.NewTimer()
 	cd := time.Minute * 3
-
-	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfElementalMastery) {
-		// TODO: apply damage reduction if necessary
-	}
-
-	// TODO: Share CD with Natures Swiftness
 
 	buffAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery Buff",
@@ -445,7 +454,6 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	// for LB / CL / LvB
 	// They can't actually hit while casting, but the AA timer doesnt reset if you cast during the AA timer.
 
-	// TODO: This also reduces mana cost in cata (20% per stack?) did I do this right?
 	// For sim purposes maelstrom weapon only impacts CL / LB
 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
 		Label:     "MaelstromWeapon Proc",
@@ -468,7 +476,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 
 	// TODO: This was 2% per talent point and max of 10% proc in wotlk. Can't find data on proc chance in cata but the talent was reduced to 3 pts. Guessing it is 3/7/10 like other talents
-	ppmm := shaman.AutoAttacks.NewPPMManager([]float64{3.0, 7.0, 10.0}[shaman.Talents.MaelstromWeapon], core.ProcMaskMelee)
+	ppmm := shaman.AutoAttacks.NewPPMManager([]float64{0.0, 3.0, 7.0, 10.0}[shaman.Talents.MaelstromWeapon], core.ProcMaskMelee)
 	// This aura is hidden, just applies stacks of the proc aura.
 	shaman.RegisterAura(core.Aura{
 		Label:    "MaelstromWeapon",
@@ -489,11 +497,12 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 }
 
-// TODO: Just getting this ready. No idea how this works... a dot stacking up to 5 times?
 func (shaman *Shaman) applySearingFlames() {
 	if shaman.Talents.SearingFlames == 0 {
 		return
 	}
+
+	improvedLavaLashDamageBonus := 0.1 * float64(shaman.Talents.ImprovedLavaLash)
 
 	shaman.SearingFlamesDot = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 77657},
@@ -501,10 +510,18 @@ func (shaman *Shaman) applySearingFlames() {
 		ProcMask:    core.ProcMaskEmpty,
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Searing Flames",
+				Label:     "Searing Flames",
+				MaxStacks: 5,
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+					if oldStacks > newStacks {
+						shaman.LavaLash.DamageMultiplier -= improvedLavaLashDamageBonus * float64(oldStacks-newStacks)
+					} else {
+						shaman.LavaLash.DamageMultiplier += improvedLavaLashDamageBonus * float64(newStacks-oldStacks)
+					}
+				},
 			},
-			TickLength:    time.Second * 2,
-			NumberOfTicks: 3,
+			TickLength:    time.Second * 3,
+			NumberOfTicks: 5,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -514,6 +531,27 @@ func (shaman *Shaman) applySearingFlames() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 			spell.Dot(target).Apply(sim)
+		},
+	})
+}
+
+func (shaman *Shaman) applyPrimalWisdom() {
+	manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 63375})
+
+	shaman.RegisterAura(core.Aura{
+		Label:    "Primal Wisdom",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
+
+			if sim.RandomFloat("Primal Wisdom") < 0.4 {
+				shaman.AddMana(sim, 0.05*shaman.BaseMana, manaMetrics)
+			}
 		},
 	})
 }

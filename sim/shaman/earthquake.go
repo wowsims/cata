@@ -23,7 +23,7 @@ func (shaman *Shaman) registerEarthquakeSpell() {
 			},
 		},
 
-		//TODO: Probably not right...
+		//TODO: Not sure on the logic
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{

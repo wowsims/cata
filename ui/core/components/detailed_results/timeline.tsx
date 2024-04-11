@@ -1205,7 +1205,7 @@ const idToCategoryMap: Record<number, number> = {
 	[57968]: SPELL_ACTION_CATEGORY + 0.2, // Instant Poison
 
 	// Shaman
-	[8323]: 0.11, // Windfury Weapon
+	[8232]: 0.11, // Windfury Weapon
 	[8024]: 0.12, // Flametongue Weapon
 	[8033]: 0.12, // Frostbrand Weapon
 	[17364]: MELEE_ACTION_CATEGORY + 0.1, // Stormstrike

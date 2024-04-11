@@ -6,7 +6,6 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-// TODO: Numbers updated for cata. Need to check spell coefficient
 func (shaman *Shaman) registerFireNovaSpell() {
 	shaman.FireNova = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1535},
@@ -30,16 +29,14 @@ func (shaman *Shaman) registerFireNovaSpell() {
 
 		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.1,
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
-		ThreatMultiplier: 0,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 789 + 0.2142*spell.SpellPower()
+			damage := 789 + 0.164*spell.SpellPower()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				if aoeTarget.GetAura("FlameShock") != nil {
 					for _, newTarget := range sim.Encounter.TargetUnits {
 						if newTarget != aoeTarget {
-							// TODO: Uncomment this
-							//baseDamage *= sim.Encounter.AOECapMultiplier()
 							spell.CalcAndDealDamage(sim, newTarget, damage, spell.OutcomeMagicHitAndCrit)
 						}
 					}
