@@ -56,6 +56,7 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 	var ppmm PPMManager
 	if config.PPM > 0 {
 		ppmm = unit.AutoAttacks.NewPPMManager(config.PPM, config.ProcMask)
+		aura.Ppmm = &ppmm
 	}
 
 	handler := config.Handler
