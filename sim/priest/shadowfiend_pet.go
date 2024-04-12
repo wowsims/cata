@@ -60,7 +60,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 
 	shadowfiend.Shadowcrawl = shadowfiend.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolHoly | core.SpellSchoolNature,
+		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoLogs,
 
