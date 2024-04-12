@@ -8,13 +8,15 @@ import (
 
 func (mage *Mage) registerScorchSpell() {
 
-	if mage.Talents.CriticalMass > 0 {
-		CMProcChance := float64(mage.Talents.CriticalMass) / 3.0
-		//TODO double check how this works
-		mage.CriticalMassAuras = mage.NewEnemyAuraArray(core.CriticalMassAura)
-		mage.CritDebuffCategories = mage.GetEnemyExclusiveCategories(core.SpellCritEffectCategory)
-		mage.Scorch.RelatedAuras = append(mage.Scorch.RelatedAuras, mage.CriticalMassAuras)
-	}
+	/* 	implement when debuffs updated
+	   	var CMProcChance float64
+	   	if mage.Talents.CriticalMass > 0 {
+	   		CMProcChance := float64(mage.Talents.CriticalMass) / 3.0
+	   		//TODO double check how this works
+	   		mage.CriticalMassAuras = mage.NewEnemyAuraArray(core.CriticalMassAura)
+	   		mage.CritDebuffCategories = mage.GetEnemyExclusiveCategories(core.SpellCritEffectCategory)
+	   		mage.Scorch.RelatedAuras = append(mage.Scorch.RelatedAuras, mage.CriticalMassAuras)
+	   	} */
 
 	mage.Scorch = mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 2948},
@@ -33,7 +35,7 @@ func (mage *Mage) registerScorchSpell() {
 			},
 		},
 
-		DamageMultipler: 1,
+		DamageMultiplier: 1,
 
 		DamageMultiplierAdditive: 1 +
 			.01*float64(mage.Talents.FirePower),
@@ -45,9 +47,10 @@ func (mage *Mage) registerScorchSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(mage.ScalingBaseDamage*0.781, mage.ScalingBaseDamage*0.781+13) + 0.512*spell.SpellPower()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			/*implement when debuffs updated
 			if sim.Proc(CMProcChance, "Critical Mass") {
-				CriticalMassAuras.Get(target).Activate(sim)
-			}
+			  	mage.CriticalMassAura.Get(target).Activate(sim)
+			} */
 			spell.DealDamage(sim, result)
 		},
 	})

@@ -8,7 +8,7 @@ import (
 
 func (mage *Mage) registerFireBlastSpell() {
 	mage.FireBlast = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 42873},
+		ActionID:    core.ActionID{SpellID: 2136},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
@@ -20,23 +20,24 @@ func (mage *Mage) registerFireBlastSpell() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			CD: core.Cooldown{
+			CD: core.Cooldown{ // Note: Impact talent triggers CD refresh on spell *land*, not cast
 				Timer:    mage.NewTimer(),
-				Duration: time.Second*8 - time.Second*time.Duration(mage.Talents.ImprovedFireBlast),
+				Duration: time.Second * 8,
 			},
 		},
 
 		BonusCritRating: 0 +
-			float64(mage.Talents.CriticalMass+mage.Talents.Incineration)*2*core.CritRatingPerCritChance,
+			float64(mage.Talents.ImprovedFireBlast)*4*core.CritRatingPerCritChance,
 		DamageMultiplierAdditive: 1 +
-			.02*float64(mage.Talents.SpellImpact) +
-			.02*float64(mage.Talents.FirePower),
-		CritMultiplier:   mage.SpellCritMultiplier(1, mage.bonusCritDamage),
-		ThreatMultiplier: 1 - 0.1*float64(mage.Talents.BurningSoul),
+			.01*float64(mage.Talents.FirePower),
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(925, 1095) + (1.5/3.5)*spell.SpellPower()
+			baseDamage := 1.113*mage.ScalingBaseDamage + 0.429*spell.SpellPower()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			// impact thing to spread dots goes here most likely
+			// not working, at least on dummies. will need to test if duration refresh
 		},
 	})
 }

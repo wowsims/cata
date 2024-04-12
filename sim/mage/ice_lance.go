@@ -6,7 +6,7 @@ import (
 
 func (mage *Mage) registerIceLanceSpell() {
 	mage.IceLance = mage.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 42914},
+		ActionID:     core.ActionID{SpellID: 30455},
 		SpellSchool:  core.SpellSchoolFrost,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        SpellFlagMage | core.SpellFlagAPL,
@@ -21,12 +21,12 @@ func (mage *Mage) registerIceLanceSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 + .01*float64(mage.Talents.ChilledToTheBone),
-		CritMultiplier:           mage.SpellCritMultiplier(1, mage.bonusCritDamage+float64(mage.Talents.IceShards)/3),
-		ThreatMultiplier:         1 - (0.1/3)*float64(mage.Talents.FrostChanneling),
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(224, 258) + (1.5/3.5/3.0)*spell.SpellPower()
+			baseDamage := 0.432*mage.ScalingBaseDamage + 0.378*spell.SpellPower()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

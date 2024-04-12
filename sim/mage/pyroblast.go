@@ -7,31 +7,34 @@ import (
 )
 
 func (mage *Mage) registerPyroblastSpell() {
-	if !mage.Talents.Pyroblast {
-		return
-	}
-
-	spellCoeff := 1.15 + 0.05*float64(mage.Talents.EmpoweredFire)
-	tickCoeff := 0.05 + 0.05*float64(mage.Talents.EmpoweredFire)
-
 	hasT8_4pc := mage.HasSetBonus(ItemSetKirinTorGarb, 4)
 
 	var pyroblastDot *core.Spell
+	/* implement when debuffs updated
+	var CMProcChance float64
+	if mage.Talents.CriticalMass > 0 {
+		CMProcChance = float64(mage.Talents.CriticalMass) / 3.0
+		//TODO double check how this works
+		mage.CriticalMassAuras = mage.NewEnemyAuraArray(core.CriticalMassAura)
+		mage.CritDebuffCategories = mage.GetEnemyExclusiveCategories(core.SpellCritEffectCategory)
+		mage.Pyroblast.RelatedAuras = append(mage.Pyroblast.RelatedAuras, mage.CriticalMassAuras)
+	} */
 
-	pyroblastConfig := core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 42891},
+	pyroConfig := core.SpellConfig{
+		ActionID:     core.ActionID{SpellID: 11366},
 		SpellSchool:  core.SpellSchoolFire,
 		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | core.SpellFlagAPL,
+		Flags:        SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.22,
+			BaseCost:   0.17,
+			Multiplier: core.TernaryFloat64(mage.HotStreakAura.IsActive(), 0, 1),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 5,
+				CastTime: time.Millisecond * 3500,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				if mage.HotStreakAura.IsActive() {
@@ -43,15 +46,11 @@ func (mage *Mage) registerPyroblastSpell() {
 			},
 		},
 
-		BonusCritRating: 0 +
-			2*float64(mage.Talents.CriticalMass)*core.CritRatingPerCritChance +
-			2*float64(mage.Talents.WorldInFlames)*core.CritRatingPerCritChance,
-		DamageMultiplier: 1 *
-			(1 + .04*float64(mage.Talents.TormentTheWeak)),
+		DamageMultiplier: 1,
 		DamageMultiplierAdditive: 1 +
-			.02*float64(mage.Talents.FirePower),
-		CritMultiplier:   mage.SpellCritMultiplier(1, mage.bonusCritDamage),
-		ThreatMultiplier: 1 - 0.1*float64(mage.Talents.BurningSoul),
+			.01*float64(mage.Talents.FirePower),
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -59,31 +58,38 @@ func (mage *Mage) registerPyroblastSpell() {
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
+
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = 113.0 + tickCoeff*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = (0.175*mage.ScalingBaseDamage + 0.180*dot.Spell.SpellPower()) * mage.GetFireMasteryBonusMultiplier()
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
+
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(1210, 1531) + spellCoeff*spell.SpellPower()
+			baseDamage := 1.5*mage.ScalingBaseDamage + 1.545*spell.SpellPower()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
-					pyroblastDot.SpellMetrics[target.UnitIndex].Casts++
 					pyroblastDot.Dot(target).Apply(sim)
+					pyroblastDot.SpellMetrics[target.UnitIndex].Casts++
+					/* The above line is used to count the dot in the cpm chart.
+					This is misleading since it ends up doubling the overall pyroblast cpm,
+					when most users probably just care how many times they press pyroblast.
+					Example: 5 pyroblast casts in 1 minute end up showing as 10 cpm (5 pyro, 5 pyro dot)
+					Should delete in my opinion.*/
 				}
 				spell.DealDamage(sim, result)
 			})
 		},
 	}
+	// Unsure about the implementation of the below, but just trusting it since it existed here
+	mage.Pyroblast = mage.RegisterSpell(pyroConfig)
 
-	mage.Pyroblast = mage.RegisterSpell(pyroblastConfig)
-
-	dotConfig := pyroblastConfig
+	dotConfig := pyroConfig
 	dotConfig.ActionID = dotConfig.ActionID.WithTag(1)
 	pyroblastDot = mage.RegisterSpell(dotConfig)
 }

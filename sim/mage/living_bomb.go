@@ -8,26 +8,23 @@ import (
 )
 
 func (mage *Mage) registerLivingBombSpell() {
-	if !mage.Talents.LivingBomb {
-		return
-	}
-
+	// Cata version has a cap of 3 active dots at once
+	// Research this implementation
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 55362},
+		ActionID:    core.ActionID{SpellID: 44461},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | HotStreakSpells,
 
-		BonusCritRating: 0 +
-			2*float64(mage.Talents.WorldInFlames)*core.CritRatingPerCritChance +
-			2*float64(mage.Talents.CriticalMass)*core.CritRatingPerCritChance,
 		DamageMultiplierAdditive: 1 +
-			.02*float64(mage.Talents.FirePower),
-		CritMultiplier:   mage.SpellCritMultiplier(1, mage.bonusCritDamage),
-		ThreatMultiplier: 1 - 0.1*float64(mage.Talents.BurningSoul),
+			.01*float64(mage.Talents.FirePower) +
+			.05*float64(mage.Talents.CriticalMass) +
+			core.TernaryFloat64(mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfLivingBomb), .03, 0),
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 690 + 0.4*spell.SpellPower()
+			baseDamage := 0.5*mage.ScalingBaseDamage + 0.515*spell.SpellPower()
 			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -38,34 +35,27 @@ func (mage *Mage) registerLivingBombSpell() {
 	onTick := func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 		dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 	}
-	if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfLivingBomb) {
-		onTick = func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-		}
-	}
 
 	mage.LivingBomb = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 55360},
+		ActionID:    core.ActionID{SpellID: 44457},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.22,
+			BaseCost: 0.17,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
 		},
-
-		// WorldInFlames doesn't apply to DoT component.
-		BonusCritRating: 0 +
-			2*float64(mage.Talents.CriticalMass)*core.CritRatingPerCritChance,
+		DamageMultiplier: mage.GetFireMasteryBonusMultiplier(),
 		DamageMultiplierAdditive: 1 +
-			.02*float64(mage.Talents.FirePower),
-		CritMultiplier:   mage.SpellCritMultiplier(1, mage.bonusCritDamage),
-		ThreatMultiplier: 1 - 0.1*float64(mage.Talents.BurningSoul),
+			.01*float64(mage.Talents.FirePower) +
+			.05*float64(mage.Talents.CriticalMass),
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -75,9 +65,9 @@ func (mage *Mage) registerLivingBombSpell() {
 				},
 			},
 
-			NumberOfTicks: 4,
-			TickLength:    time.Second * 3,
-
+			NumberOfTicks:       4, // TODO haste breakpoint makes a new tick based on haste to stay between 10.5s and 13.5s 🥴
+			TickLength:          time.Second * 3,
+			AffectedByCastSpeed: true,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.SnapshotBaseDamage = 345 + 0.2*dot.Spell.SpellPower()
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)

@@ -23,7 +23,7 @@ type Mage struct {
 	FrostOptions  *proto.FrostMage_Options
 
 	//waterElemental *WaterElemental
-	//mirrorImage    *MirrorImage
+	mirrorImage *MirrorImage
 
 	// Cached values for a few mechanics.
 	bonusCritDamage float64
@@ -39,6 +39,7 @@ type Mage struct {
 	LivingBomb              *core.Spell
 	Fireball                *core.Spell
 	FireBlast               *core.Spell
+	FlameOrb                *core.Spell
 	Flamestrike             *core.Spell
 	Frostbolt               *core.Spell
 	FrostfireBolt           *core.Spell
@@ -53,6 +54,7 @@ type Mage struct {
 	SummonWaterElemental *core.Spell
 
 	ArcaneBlastAura    *core.Aura
+	ArcaneMissilesAura *core.Aura
 	ArcanePotencyAura  *core.Aura
 	ArcanePowerAura    *core.Aura
 	MissileBarrageAura *core.Aura
@@ -100,27 +102,29 @@ func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
 func (mage *Mage) Initialize() {
-	// mage.registerArcaneBarrageSpell()
-	// mage.registerArcaneBlastSpell()
-	// mage.registerArcaneExplosionSpell()
-	// mage.registerArcaneMissilesSpell()
-	// mage.registerBlizzardSpell()
+	mage.registerArcaneBarrageSpell()
+	mage.registerArcaneBlastSpell()
+	mage.registerArcaneExplosionSpell()
+	mage.registerArcaneMissilesSpell()
+	//mage.registerBlizzardSpell()
 	// mage.registerDeepFreezeSpell()
-	// mage.registerFireballSpell()
-	// mage.registerFireBlastSpell()
-	// mage.registerFlamestrikeSpell()
-	// mage.registerFrostboltSpell()
-	// mage.registerIceLanceSpell()
-	// mage.registerPyroblastSpell()
-	// mage.registerScorchSpell()
-	// mage.registerLivingBombSpell()
+	mage.registerFireballSpell()
+	mage.registerFireBlastSpell()
+	mage.registerFlameOrbSpell()
+	mage.registerFlamestrikeSpell()
+	mage.registerFrostboltSpell()
+	mage.registerIceLanceSpell()
+	mage.registerPyroblastSpell()
+	mage.registerScorchSpell()
+	mage.registerLivingBombSpell()
 	// mage.registerFrostfireBoltSpell()
 	// mage.registerEvocation()
-	// mage.registerManaGemsCD()
-	// mage.registerMirrorImageCD()
+	mage.registerManaGemsCD()
+	mage.registerMirrorImageCD()
 	// mage.registerBlastWaveSpell()
 	// mage.registerDragonsBreathSpell()
 	// mage.registerSummonWaterElementalCD()
+
 	mage.ScalingBaseDamage = 937.330078125
 }
 
@@ -158,9 +162,13 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	// 	mage.Character.AddStatDependency(stats.Spirit, stats.SpellCrit, multi)
 	// }
 
-	// mage.mirrorImage = mage.NewMirrorImage()
+	mage.mirrorImage = mage.NewMirrorImage()
 
 	return mage
+}
+
+func (mage *Mage) GetFireMasteryBonusMultiplier() float64 {
+	return (1.22 + 0.28*mage.GetMasteryPoints())
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.

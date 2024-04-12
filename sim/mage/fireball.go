@@ -24,24 +24,24 @@ func (mage *Mage) registerFireballSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
-				CastTime: time.Millisecond*2500 *
-				core.TernaryFloat64(mage.HasSetBonus(ItemSetFirelordsVestments, 4), 0.9, 1)
+				CastTime: time.Millisecond *
+					time.Duration((2500 * core.TernaryFloat64(mage.HasSetBonus(ItemSetFirelordsVestments, 4), 0.9, 1))),
 			},
 		},
 
 		BonusCritRating: 0 +
 			// waiting to see how buff talents will be implemented
-			//float64(mage.Talents.PiercingIce)*core.CritRatingPerCritChance + 
-			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0) + 
-			core.TernaryFloat64(hasPrimeGlyph, 5*core.CritRatingPerCritChance, 0)
+			//float64(mage.Talents.PiercingIce)*core.CritRatingPerCritChance +
+			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0) +
+			core.TernaryFloat64(hasPrimeGlyph, 5*core.CritRatingPerCritChance, 0),
 
-		DamageMultiplier: 1
+		DamageMultiplier: 1,
 
 		DamageMultiplierAdditive: 1 +
 			.01*float64(mage.Talents.FirePower) +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),
 
-		CritMultiplier: mage.DefaultSpellCritMultiplier();
+		CritMultiplier: mage.DefaultSpellCritMultiplier(),
 
 		ThreatMultiplier: 1,
 

@@ -11,9 +11,6 @@ import (
 const IgniteTicks = 2
 
 func (mage *Mage) applyIgnite() {
-	if mage.Talents.Ignite == 0 {
-		return
-	}
 
 	mage.RegisterAura(core.Aura{
 		Label:    "Ignite Talent",
@@ -40,13 +37,13 @@ func (mage *Mage) applyIgnite() {
 	})
 
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 12654},
+		ActionID:    core.ActionID{SpellID: 413843},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskProc,
 		Flags:       SpellFlagMage | core.SpellFlagIgnoreModifiers,
 
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - 0.1*float64(mage.Talents.BurningSoul),
+		DamageMultiplier: mage.GetFireMasteryBonusMultiplier(),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -67,34 +64,26 @@ func (mage *Mage) applyIgnite() {
 }
 
 func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
+
+	// Ignite's per-level gain is not exactly linear
+	var igniteDamageMultiplier float64
+	switch mage.Talents.Ignite {
+	case 1:
+		igniteDamageMultiplier = 0.13
+	case 2:
+		igniteDamageMultiplier = 0.26
+	case 3:
+		igniteDamageMultiplier = 0.40
+	default:
+		return
+	}
+
 	dot := mage.Ignite.Dot(result.Target)
 
-	newDamage := result.Damage * 0.08 * float64(mage.Talents.Ignite)
+	newDamage := result.Damage * igniteDamageMultiplier
 	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
 	dot.SnapshotAttackerMultiplier = 1
 	dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(IgniteTicks)
 	mage.Ignite.Cast(sim, result.Target)
-}
-
-func (mage *Mage) applyEmpoweredFire() {
-	if mage.Talents.EmpoweredFire == 0 {
-		return
-	}
-
-	procChance := []float64{0, .33, .67, 1}[mage.Talents.EmpoweredFire]
-	manaMetrics := mage.NewManaMetrics(core.ActionID{SpellID: 67545})
-
-	mage.RegisterAura(core.Aura{
-		Label:    "Empowered Fire",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == mage.Ignite && (procChance == 1 || sim.Proc(procChance, "Empowered Fire")) {
-				mage.AddMana(sim, mage.Unit.BaseMana*0.02, manaMetrics)
-			}
-		},
-	})
 }
