@@ -14,7 +14,7 @@ func (shaman *Shaman) registerLightningBoltSpell() {
 
 func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core.SpellConfig {
 	castTime := time.Millisecond * 2500
-	spellCoeff := 0.7143
+	spellCoeff := 0.714
 	canOverload := false
 	overloadChance := shaman.GetOverloadChance()
 	if shaman.Spec == proto.Spec_SpecElementalShaman {
