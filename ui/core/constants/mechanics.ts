@@ -3,7 +3,7 @@ import { Spec } from "../proto/common";
 export const CHARACTER_LEVEL = 85;
 export const BOSS_LEVEL = CHARACTER_LEVEL + 3;
 
-export const EXPERTISE_PER_QUARTER_PERCENT_REDUCTION = 32.79 / 4;
+export const EXPERTISE_PER_QUARTER_PERCENT_REDUCTION = 32.014286;
 export const MELEE_CRIT_RATING_PER_CRIT_CHANCE = 179.28;
 export const MELEE_HIT_RATING_PER_HIT_CHANCE = 120.11;
 export const ARMOR_PEN_PER_PERCENT_ARMOR = 13.99;

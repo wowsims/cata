@@ -14,33 +14,39 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 	}
 
 	mhWeaponSwing := comRogue.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 51690, Tag: 1}, // actual spellID is 57841
-		SpellSchool:      core.SpellSchoolPhysical,
-		ProcMask:         core.ProcMaskMeleeMHSpecial,
-		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ActionID:    core.ActionID{SpellID: 51690, Tag: 1}, // actual spellID is 57841
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+
 		DamageMultiplier: 1,
 		CritMultiplier:   comRogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
+
+		BonusCoefficient: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0 +
-				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},
 	})
 	ohWeaponSwing := comRogue.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 51690, Tag: 2}, // actual spellID is 57842
-		SpellSchool:      core.SpellSchoolPhysical,
-		ProcMask:         core.ProcMaskMeleeOHSpecial,
-		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ActionID:    core.ActionID{SpellID: 51690, Tag: 2}, // actual spellID is 57842
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeOHSpecial,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+
 		DamageMultiplier: 1 * comRogue.DWSMultiplier(),
 		CritMultiplier:   comRogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
+
+		BonusCoefficient: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0 +
-				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 		},

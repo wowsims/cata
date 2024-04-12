@@ -21,12 +21,8 @@ type Priest struct {
 
 	// cached cast stuff
 	// TODO: aoe multi-target situations will need multiple spells ticking for each target.
-	InnerFocusAura         *core.Aura
 	HolyEvangelismProcAura *core.Aura
 	DarkEvangelismProcAura *core.Aura
-	ShadowyInsightAura     *core.Aura
-	DispersionAura         *core.Aura
-	MindMeltProcAura       *core.Aura
 
 	SurgeOfLightProcAura *core.Aura
 

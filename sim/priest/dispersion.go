@@ -12,12 +12,13 @@ func (priest *Priest) registerDispersionSpell() {
 	}
 
 	manaMetric := priest.NewManaMetrics(core.ActionID{SpellID: 47585})
-	priest.DispersionAura = priest.GetOrRegisterAura(core.Aura{
+	var pa *core.PendingAction
+	dispersionAura := priest.GetOrRegisterAura(core.Aura{
 		Label:    "Dispersion",
 		ActionID: core.ActionID{SpellID: 47585},
 		Duration: time.Second * 6,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+			pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period:   time.Second,
 				NumTicks: 6,
 				OnAction: func(sim *core.Simulation) {
@@ -25,6 +26,9 @@ func (priest *Priest) registerDispersionSpell() {
 					priest.AddMana(sim, manaGain, manaMetric)
 				},
 			})
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			pa.Cancel(sim)
 		},
 	})
 
@@ -44,8 +48,8 @@ func (priest *Priest) registerDispersionSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			priest.DispersionAura.Activate(sim)
-			priest.WaitUntil(sim, priest.DispersionAura.ExpiresAt())
+			dispersionAura.Activate(sim)
+			priest.WaitUntil(sim, dispersionAura.ExpiresAt())
 		},
 	})
 

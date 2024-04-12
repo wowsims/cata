@@ -283,7 +283,7 @@ func EbonPlaguebringerOrCryptFeverAura(caster *Character, target *Unit, epidemic
 		casterIndex = int(caster.Index)
 		ghostSpell = caster.RegisterSpell(SpellConfig{
 			ActionID:    ActionID{SpellID: 52789},
-			SpellSchool: SpellSchoolMagic,
+			SpellSchool: SpellSchoolShadow,
 			ProcMask:    ProcMaskSpellDamage,
 			Flags:       SpellFlagNoLogs | SpellFlagNoMetrics | SpellFlagNoOnCastComplete | SpellFlagIgnoreModifiers,
 

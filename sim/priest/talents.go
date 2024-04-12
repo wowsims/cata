@@ -362,12 +362,8 @@ func (priest *Priest) applyImprovedMindBlast() {
 	})
 
 	procChance := []float64{0.0, 0.33, 0.66, 1.0}[priest.Talents.ImprovedMindBlast]
-	priest.RegisterAura(core.Aura{
-		Label:    "Improved Mind Blast",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(priest.RegisterAura(core.Aura{
+		Label: "Improved Mind Blast",
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && priest.MindBlast == spell {
 				if sim.Proc(procChance, "Improved Mind Blast") {
@@ -375,7 +371,7 @@ func (priest *Priest) applyImprovedMindBlast() {
 				}
 			}
 		},
-	})
+	}))
 }
 
 func MindTraumaAura(target *core.Unit) *core.Aura {
@@ -415,12 +411,8 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 		},
 	})
 
-	priest.RegisterAura(core.Aura{
-		Label:    "Improved Devouring Plague Talent",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(priest.RegisterAura(core.Aura{
+		Label: "Improved Devouring Plague Talent",
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if priest.DevouringPlague != spell || !result.Landed() {
@@ -429,7 +421,7 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 
 			impDPDamage.Cast(sim, result.Target)
 		},
-	})
+	}))
 }
 
 func (priest *Priest) applyPainAndSuffering() {
@@ -437,28 +429,18 @@ func (priest *Priest) applyPainAndSuffering() {
 		return
 	}
 
-	handler := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if !result.Landed() || spell.SpellID != priest.MindFlayAPL.SpellID {
-			return
-		}
-
-		procChance := float64(priest.Talents.PainAndSuffering) * 0.3
-		if sim.RandomFloat("Pain and Suffering") < procChance {
+	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
+		Name:           "Pain and Suffering",
+		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     float64(priest.Talents.PainAndSuffering) * 0.3,
+		ClassSpellMask: PriestSpellMindFlay,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			swp := priest.ShadowWordPain.Dot(result.Target)
 			if swp.IsActive() {
 				swp.Rollover(sim)
 			}
-		}
-	}
-
-	priest.RegisterAura(core.Aura{
-		Label:    "Pain and Suffering",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
 		},
-		OnPeriodicDamageDealt: handler,
-		OnSpellHitDealt:       handler,
 	})
 }
 
@@ -520,7 +502,7 @@ func (priest *Priest) applyMindMelt() {
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
 
-	priest.MindMeltProcAura = priest.RegisterAura(core.Aura{
+	procAura := priest.RegisterAura(core.Aura{
 		Label:     "Mind Melt Proc",
 		ActionID:  core.ActionID{SpellID: 87160},
 		Duration:  time.Second * 15,
@@ -534,24 +516,21 @@ func (priest *Priest) applyMindMelt() {
 		},
 
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if priest.MindBlast == spell {
+			if spell.ClassSpellMask == PriestSpellMindBlast {
 				aura.Deactivate(sim)
 			}
 		},
 	})
 
-	priest.RegisterAura(core.Aura{
-		Label:    "Mind Melt",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && priest.MindSpike == spell {
-				priest.MindMeltProcAura.Activate(sim)
-				priest.MindMeltProcAura.AddStack(sim)
-			}
+	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
+		Name:           "Mind Melt",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     1,
+		ClassSpellMask: PriestSpellMindSpike,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procAura.Activate(sim)
+			procAura.AddStack(sim)
 		},
 	})
 }
@@ -561,21 +540,14 @@ func (priest *Priest) applySinAndPunishment() {
 		return
 	}
 
-	priest.RegisterAura(core.Aura{
-		Label:    "SinAndPunishment",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// check for critical mind flay tick
-			if result.Outcome.Matches(core.OutcomeCrit) && priest.MindFlayAPL.ClassSpellMask == int64(PriestSpellMindFlay) {
-
-				// reduce cooldown
-				remaining := max(0, priest.Shadowfiend.CD.TimeToReady(sim)-time.Second*5)
-				priest.Shadowfiend.CD.Set(remaining)
-			}
+	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
+		Name:           "Sin And Punishment",
+		Callback:       core.CallbackOnPeriodicDamageDealt,
+		Outcome:        core.OutcomeCrit,
+		ProcChance:     1,
+		ClassSpellMask: PriestSpellMindFlay,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			priest.Shadowfiend.CD.Set(priest.Shadowfiend.CD.ReadyAt() - 5*time.Second)
 		},
 	})
 }
@@ -599,8 +571,10 @@ func (priest *Priest) applyShadowyApparition() {
 		SpellSchool:              core.SpellSchoolShadow,
 		ThreatMultiplier:         1,
 
+		BonusCoefficient: spellScaling,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := priest.ScalingBaseDamage*levelScaling + spellScaling*spell.SpellPower()
+			baseDamage := priest.ScalingBaseDamage * levelScaling
 
 			// snapshot values on spawn
 			dmgMulti := spell.DamageMultiplier
@@ -627,22 +601,14 @@ func (priest *Priest) applyShadowyApparition() {
 		},
 	})
 
-	priest.RegisterAura(core.Aura{
-		Label:    "Shadowy Apparition Aura",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != priest.ShadowWordPain || !result.Landed() {
-				return
-			}
-
-			procChance := 0.04 * float64(priest.Talents.ShadowyApparition)
-			if sim.RandomFloat("Shadowy Apparition") < procChance {
-				priest.ShadowyApparition.Cast(sim, result.Target)
-			}
+	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
+		Name:           "Shadowy Apparition Aura",
+		Callback:       core.CallbackOnPeriodicDamageDealt,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     0.04 * float64(priest.Talents.ShadowyApparition),
+		ClassSpellMask: PriestSpellShadowWordPain,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			priest.ShadowyApparition.Cast(sim, result.Target)
 		},
 	})
 }
