@@ -3,6 +3,7 @@ package priest
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 var TalentTreeSizes = [3]int{21, 21, 21}
@@ -117,6 +118,14 @@ func (priest *Priest) Initialize() {
 
 	// base scaling value for a level 85 priest
 	priest.ScalingBaseDamage = 945.188842773437500
+
+	// we can only wear cloth so add that bonus
+	// want to show it in priest buffs so people see it's actually considered
+	priest.MultiplyStat(stats.Intellect, 1.05)
+	core.MakePermanent(priest.RegisterAura(core.Aura{
+		Label:    "Mysticism",
+		ActionID: core.ActionID{SpellID: 89745},
+	}))
 
 	// priest.registerSetBonuses()
 	priest.registerDevouringPlagueSpell()
