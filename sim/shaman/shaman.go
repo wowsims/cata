@@ -234,11 +234,11 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerStoneskinTotemSpell()
 	shaman.registerWindfuryTotemSpell()
 	shaman.registerWrathOfAirTotemSpell()
-	//shaman.registerManaSpringTotemSpell()
-	//shaman.registerHealingStreamTotemSpell()
+	shaman.registerManaSpringTotemSpell()
+	shaman.registerHealingStreamTotemSpell()
 
 	// // This registration must come after all the totems are registered
-	//shaman.registerCallOfTheElements()
+	shaman.registerCallOfTheElements()
 
 	shaman.registerBloodlustCD()
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
@@ -293,8 +293,8 @@ func (shaman *Shaman) GetOverloadChance() float64 {
 	overloadChance := 0.0
 
 	if shaman.Spec == proto.Spec_SpecElementalShaman {
-		masteryBonus := shaman.GetMasteryPoints()
-		overloadChance = 0.16 + masteryBonus
+		masteryPoints := shaman.GetMasteryPoints()
+		overloadChance = 0.16 + masteryPoints*0.02
 	}
 
 	return overloadChance
