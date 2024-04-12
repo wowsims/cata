@@ -26,7 +26,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 	})
 
 	mage.ArcaneBlast = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 30451},
+		ActionID:    core.ActionID{SpellID: 36032},
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | BarrageSpells | core.SpellFlagAPL,
