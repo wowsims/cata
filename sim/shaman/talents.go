@@ -36,6 +36,9 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.ElementalPrecision > 0 {
 		shaman.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.0, 0.33, 0.66, 1.0}[shaman.Talents.ElementalPrecision])
+		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
+		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
+		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
 	}
 
 	shaman.applyElementalFocus()
