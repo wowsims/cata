@@ -138,7 +138,7 @@ func applyRaceEffects(agent Agent) {
 			spBonus = 584.0
 		case proto.Class_ClassShaman:
 			spBonus = 584.0
-			spBonus = 1196.0
+			apBonus = 1196.0
 		default:
 			apBonus = 1169.0
 		}
