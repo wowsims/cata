@@ -34,13 +34,15 @@ func (priest *Priest) registerMindBlastSpell() {
 		},
 		ThreatMultiplier: 1,
 
+		BonusCoefficient: 1.104,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := priest.ScalingBaseDamage*1.557 + 1.104*spell.SpellPower()
+			baseDamage := priest.ScalingBaseDamage * 1.557
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)
 		},
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := priest.ScalingBaseDamage*1.557 + 1.104*spell.SpellPower()
+			baseDamage := priest.ScalingBaseDamage * 1.557
 			return spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicHitAndCrit)
 		},
 	})

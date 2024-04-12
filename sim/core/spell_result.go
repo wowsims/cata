@@ -313,7 +313,7 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64) {
 		dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.BonusDamage()
 	}
 	attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-	dot.SnapshotCritChance = TernaryFloat64(dot.Spell.SpellSchool.Matches(SpellSchoolPhysical), dot.Spell.PhysicalCritChance(attackTable), dot.Spell.SpellCritChance(target))
+	dot.SnapshotCritChance = TernaryFloat64(dot.Spell.ProcMask.Matches(ProcMaskMeleeOrRanged), dot.Spell.PhysicalCritChance(attackTable), dot.Spell.SpellCritChance(target))
 	dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 }
 
