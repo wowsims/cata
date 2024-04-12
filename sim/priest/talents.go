@@ -579,7 +579,6 @@ func (priest *Priest) applyShadowyApparition() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		SpellSchool:              core.SpellSchoolShadow,
-		ThreatMultiplier:         1,
 
 		BonusCoefficient: spellScaling,
 

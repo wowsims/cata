@@ -21,6 +21,7 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 		},
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
+		ThreatMultiplier:         1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
