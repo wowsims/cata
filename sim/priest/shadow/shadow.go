@@ -75,6 +75,7 @@ func (spriest *ShadowPriest) Reset(sim *core.Simulation) {
 }
 
 func (spriest *ShadowPriest) ApplyTalents() {
+	spriest.Priest.ApplyTalents()
 
 	// apply shadow spec specific auras
 	// make it an aura so it's visible that it's used in the timeline
@@ -178,8 +179,6 @@ func (spriest *ShadowPriest) ApplyTalents() {
 			handleShadowOrbPower(spriest, sim, spell, result)
 		},
 	})
-
-	spriest.Priest.ApplyTalents()
 }
 
 func handleShadowOrbPower(spriest *ShadowPriest, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

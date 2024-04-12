@@ -40,10 +40,10 @@ func (priest *Priest) registerShadowWordPainSpell() {
 			TickLength:          time.Second * 3,
 			AffectedByCastSpeed: true,
 
+			BonusCoefficient: 0.161,
+
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 194.709 + 0.161*dot.Spell.SpellPower()
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.Snapshot(target, 194.709)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if priest.Talents.Shadowform {
@@ -70,7 +70,7 @@ func (priest *Priest) registerShadowWordPainSpell() {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
 			} else {
-				baseDamage := 194.709 + 0.161*spell.SpellPower()
+				baseDamage := 194.709
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 			}
 		},

@@ -64,13 +64,31 @@ func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 
 func (uhdk *UnholyDeathKnight) Initialize() {
 	uhdk.DeathKnight.Initialize()
+}
 
-	uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= uhdk.getMasteryShadowBonus(uhdk.GetStat(stats.Mastery))
+func (uhdk *UnholyDeathKnight) ApplyTalents() {
+	uhdk.DeathKnight.ApplyTalents()
+
+	masteryMod := uhdk.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: uhdk.getMasteryShadowBonus(uhdk.GetStat(stats.Mastery)),
+		School:     core.SpellSchoolShadow,
+	})
 
 	uhdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= uhdk.getMasteryShadowBonus(oldMastery)
-		uhdk.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= uhdk.getMasteryShadowBonus(newMastery)
+		masteryMod.UpdateFloatValue(uhdk.getMasteryShadowBonus(newMastery))
 	})
+
+	core.MakePermanent(uhdk.RegisterAura(core.Aura{
+		Label:    "Dreadblade",
+		ActionID: core.ActionID{SpellID: 77515},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.Deactivate()
+		},
+	}))
 }
 
 func (uhdk *UnholyDeathKnight) Reset(sim *core.Simulation) {
