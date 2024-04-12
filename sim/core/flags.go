@@ -2,7 +2,6 @@ package core
 
 import (
 	"math/bits"
-	"strconv"
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -158,10 +157,15 @@ func (ho HitOutcome) String() string {
 }
 
 func (ho HitOutcome) PartialResistString() string {
-	if x := ho >> OutcomePartialOffset; x > 0 {
-		return " (" + strconv.Itoa(10*int(x)) + "% Resist)"
+	if ho.Matches(OutcomePartial1) {
+		return " (30% Resist)"
+	} else if ho.Matches(OutcomePartial2) {
+		return " (20% Resist)"
+	} else if ho.Matches(OutcomePartial4) {
+		return " (10% Resist)"
+	} else {
+		return ""
 	}
-	return ""
 }
 
 // Other flags

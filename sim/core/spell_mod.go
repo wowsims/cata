@@ -197,6 +197,14 @@ const (
 	// Add/subtract bonus crit rating
 	// Uses: FloatValue
 	SpellMod_BonusCrit_Rating
+
+	// Add/subtract bonus hit rating
+	// Uses: FloatValue
+	SpellMod_BonusHit_Rating
+
+	// Add/subtract to the dots max ticks
+	// Uses: IntValue
+	SpellMod_DotNumberOfTicks_Flat
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -238,6 +246,16 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_BonusCrit_Rating: {
 		Apply:  applyBonusCritRating,
 		Remove: removeBonusCritRating,
+	},
+
+	SpellMod_BonusHit_Rating: {
+		Apply:  applyBonusHitRating,
+		Remove: removeBonusHitRating,
+	},
+
+	SpellMod_DotNumberOfTicks_Flat: {
+		Apply:  applyDotNumberOfTicks,
+		Remove: removeDotNumberOfTicks,
 	},
 }
 
@@ -303,4 +321,38 @@ func applyBonusCritRating(mod *SpellMod, spell *Spell) {
 
 func removeBonusCritRating(mod *SpellMod, spell *Spell) {
 	spell.BonusCritRating -= mod.floatValue
+}
+
+func applyBonusHitRating(mod *SpellMod, spell *Spell) {
+	spell.BonusHitRating += mod.floatValue
+}
+
+func removeBonusHitRating(mod *SpellMod, spell *Spell) {
+	spell.BonusHitRating -= mod.floatValue
+}
+
+func applyDotNumberOfTicks(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.NumberOfTicks += int32(mod.intValue)
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.NumberOfTicks += int32(mod.intValue)
+	}
+}
+
+func removeDotNumberOfTicks(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.NumberOfTicks -= int32(mod.intValue)
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.NumberOfTicks -= int32(mod.intValue)
+	}
 }
