@@ -1,6 +1,7 @@
 package priest
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -410,7 +411,12 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dot := priest.DevouringPlague.Dot(target)
 			dpTickDamage := dot.SnapshotBaseDamage
-			dmg := float64(dot.NumberOfTicks) * dpTickDamage * float64(priest.Talents.ImprovedDevouringPlague) * 0.15
+
+			// Improved Devouring Plague only considers haste on gear nothing else for dot tick frequency
+			// https://github.com/JamminL/cata-classic-bugs/issues/971
+			tickPeriod := float64(dot.TickLength) / (1 + (priest.GetStats()[stats.SpellHaste] / (core.HasteRatingPerHastePercent * 100)))
+			ticks := math.Ceil(float64(dot.BaseDuration) / tickPeriod)
+			dmg := ticks * dpTickDamage * float64(priest.Talents.ImprovedDevouringPlague) * 0.15
 			spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit)
 		},
 	})
