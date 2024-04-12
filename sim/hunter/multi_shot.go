@@ -29,11 +29,12 @@ func (hunter *Hunter) registerMultiShotSpell() {
 		CritMultiplier:           hunter.CritMultiplier(true, false, false),
 		ThreatMultiplier:         1,
 
+		BonusCoefficient: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			numHits := hunter.Env.GetNumTargets() // Multi is uncapped in Cata
 
-			sharedDmg := hunter.AutoAttacks.Ranged().BaseDamage(sim) +
-				spell.BonusWeaponDamage() //
+			sharedDmg := hunter.AutoAttacks.Ranged().BaseDamage(sim)
 
 			baseDamageArray := make([]*core.SpellResult, numHits)
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {

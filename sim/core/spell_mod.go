@@ -258,11 +258,11 @@ func removeDamageDonAdd(mod *SpellMod, spell *Spell) {
 }
 
 func applyPowerCostPercent(mod *SpellMod, spell *Spell) {
-	spell.DefaultCast.Cost *= 1 + mod.floatValue
+	spell.CostMultiplier *= 1 + mod.floatValue
 }
 
 func removePowerCostPercent(mod *SpellMod, spell *Spell) {
-	spell.DefaultCast.Cost /= 1 + mod.floatValue
+	spell.CostMultiplier /= 1 + mod.floatValue
 }
 
 func applyPowerCostFlat(mod *SpellMod, spell *Spell) {

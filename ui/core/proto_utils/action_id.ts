@@ -1,7 +1,7 @@
 import { getWowheadLanguagePrefix } from '../constants/lang.js';
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { ResourceType } from '../proto/api.js';
-import { ActionID as ActionIdProto, OtherAction, ItemRandomSuffix } from '../proto/common.js';
+import { ActionID as ActionIdProto, ItemRandomSuffix,OtherAction } from '../proto/common.js';
 import { IconData, UIItem as Item } from '../proto/ui.js';
 import { Database } from './database.js';
 
@@ -323,6 +323,11 @@ export class ActionId {
 					name += " (Main Hand)";
 				} else if (this.tag == 2) {
 					name += ' (Off Hand)';
+				}
+				break;
+			case 'Hemorrhage':
+				if (this.spellId == 89775) {
+					name += " (DoT)";
 				}
 				break;
 			case 'Chain Lightning':

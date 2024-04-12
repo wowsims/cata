@@ -298,7 +298,7 @@ func (dk *DeathKnight) registerMindFreeze() {
 		// We dont care about the kick part and only want it to trigger on harmful spell procs
 		dk.MindFreezeSpell = dk.Character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 47528},
-			SpellSchool: core.SpellSchoolMagic,
+			SpellSchool: core.SpellSchoolFrost,
 			ProcMask:    core.ProcMaskSpellDamage,
 			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers,
 

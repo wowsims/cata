@@ -25,6 +25,8 @@ type DotConfig struct {
 
 	OnSnapshot OnSnapshot
 	OnTick     OnTick
+
+	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 }
 
 type Dot struct {
@@ -55,6 +57,8 @@ type Dot struct {
 
 	lastTickTime time.Duration
 	isChanneled  bool
+
+	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 }
 
 // TickPeriod is how fast the snapshot dot ticks.
@@ -147,6 +151,15 @@ func (dot *Dot) Apply(sim *Simulation) {
 
 		// add extra tick
 		dot.TickCount--
+
+		// update tick action to work with new tick rate, but set next tick to still occur
+		oldNextAction := dot.tickAction.NextActionAt
+		dot.tickAction.Cancel(sim)
+		periodicOptions := dot.basePeriodicOptions()
+		periodicOptions.Period = dot.tickPeriod
+		dot.tickAction = NewPeriodicAction(sim, periodicOptions)
+		dot.tickAction.NextActionAt = oldNextAction
+		sim.AddPendingAction(dot.tickAction)
 	} else {
 		dot.RecomputeAuraDuration()
 	}
@@ -332,6 +345,8 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		OnTick:     config.OnTick,
 
 		isChanneled: config.Spell.Flags.Matches(SpellFlagChanneled),
+
+		BonusCoefficient: config.BonusCoefficient,
 	}
 
 	auraConfig := config.Aura

@@ -16,6 +16,7 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 	hasGlyph := comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfRevealingStrike)
 	multiplier := 1 + core.TernaryFloat64(hasGlyph, .45, .35)
 	actionID := core.ActionID{SpellID: 84617}
+	isApplied := false
 
 	// Enemy Debuff Aura for Finisher Damage
 	rvsAura := comRogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
@@ -24,18 +25,23 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 			ActionID: actionID,
 			Duration: 15 * time.Second,
 
-			// Technically this _could_ cause problems in a target swapping situation, but it's good enough.
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				comRogue.Eviscerate.DamageMultiplier *= multiplier
-				comRogue.Envenom.DamageMultiplier *= multiplier
-				comRogue.Rupture.DamageMultiplier *= multiplier
+				if !isApplied {
+					comRogue.Eviscerate.DamageMultiplier *= multiplier
+					comRogue.Envenom.DamageMultiplier *= multiplier
+					comRogue.Rupture.DamageMultiplier *= multiplier
+					isApplied = true
+				}
 			},
-
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				comRogue.Eviscerate.DamageMultiplier /= multiplier
+				comRogue.Envenom.DamageMultiplier /= multiplier
+				comRogue.Rupture.DamageMultiplier /= multiplier
+				isApplied = false
+				aura.Deactivate(sim)
+			},
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Landed() && spell.Flags.Matches(rogue.SpellFlagFinisher) {
-					comRogue.Eviscerate.DamageMultiplier /= multiplier
-					comRogue.Envenom.DamageMultiplier /= multiplier
-					comRogue.Rupture.DamageMultiplier /= multiplier
 					aura.Deactivate(sim)
 				}
 			},
@@ -62,11 +68,12 @@ func (comRogue *CombatRogue) registerRevealingStrike() {
 		CritMultiplier:   comRogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 
+		BonusCoefficient: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			comRogue.BreakStealth(sim)
 
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if result.Landed() {

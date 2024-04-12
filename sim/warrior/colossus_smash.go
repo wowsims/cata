@@ -48,9 +48,11 @@ func (warrior *Warrior) RegisterColossusSmash() {
 
 		CritMultiplier: warrior.DefaultMeleeCritMultiplier(),
 
+		BonusCoefficient: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 120.0 +
-				1.5*(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())+spell.BonusWeaponDamage())
+				1.5*spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)

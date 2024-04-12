@@ -42,6 +42,8 @@ func (rogue *Rogue) registerEviscerate() {
 		CritMultiplier:   rogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
 
+		BonusCoefficient: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			comboPoints := rogue.ComboPoints()
@@ -51,8 +53,7 @@ func (rogue *Rogue) registerEviscerate() {
 
 			baseDamage := flatBaseDamage +
 				// 254.0*sim.RandomFloat("Eviscerate") + TODO: Thebackstabi 3/18/2024 - Cataclysm has no spell variance ATM, unsure on damage range
-				apRatio*spell.MeleeAttackPower() +
-				spell.BonusWeaponDamage()
+				apRatio*spell.MeleeAttackPower()
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
