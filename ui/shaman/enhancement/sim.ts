@@ -117,9 +117,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.StandardTalents, Presets.Phase3Talents],
+		talents: [Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_FT_DEFAULT, Presets.ROTATION_WF_DEFAULT, Presets.ROTATION_PHASE_3],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.PRERAID_PRESET,
@@ -134,21 +134,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
-		const hasT94P =
-			player.getCurrentStats().sets.includes("Triumphant Nobundo's Battlegear (4pc)") ||
-			player.getCurrentStats().sets.includes("Nobundo's Battlegear (4pc)") ||
-			player.getCurrentStats().sets.includes("Triumphant Thrall's Battlegear (4pc)") ||
-			player.getCurrentStats().sets.includes("Thrall's Battlegear (4pc)");
-		const options = player.getSpecOptions();
-
-		if (hasT94P) {
-			console.log('has set');
-			return Presets.ROTATION_PHASE_3.rotation.rotation!;
-		} else if (options.classOptions?.imbueMh == ShamanImbue.FlametongueWeapon) {
-			return Presets.ROTATION_FT_DEFAULT.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_WF_DEFAULT.rotation.rotation!;
-		}
+			return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;		
 	},
 
 	raidSimPresets: [

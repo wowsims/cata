@@ -22,11 +22,8 @@ func init() {
 // 		OtherSpecOptions: []core.SpecOptionsCombo{
 // 			{Label: "WF", SpecOptions: PlayerOptionsWFWF},
 // 		},
-// 		Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "default_ft"),
-// 		OtherRotations: []core.RotationCombo{
-// 			core.GetAplRotation("../../../ui/enhancement_shaman/apls", "default_wf"),
-// 			core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_3"),
-// 		},
+// 		Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "default"),
+// 		OtherRotations: []core.RotationCombo{},
 
 // 		ItemFilter: core.ItemFilter{
 // 			WeaponTypes: []proto.WeaponType{
