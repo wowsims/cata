@@ -14,7 +14,7 @@ func (shaman *Shaman) registerFireElementalTotem() {
 
 	actionID := core.ActionID{SpellID: 2894}
 
-	totalDuration := time.Duration(120 * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus)))
+	totalDuration := time.Second * time.Duration(120*(1.0+0.20*float64(shaman.Talents.TotemicFocus)))
 
 	fireElementalAura := shaman.RegisterAura(core.Aura{
 		Label:    "Fire Elemental Totem",
