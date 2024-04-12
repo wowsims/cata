@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 const ArcaneBlastBaseCastTime = time.Millisecond * 2500
@@ -20,7 +19,9 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			oldMultiplier := 1 + float64(oldStacks)*abAuraMultiplierPerStack
 			newMultiplier := 1 + float64(newStacks)*abAuraMultiplierPerStack
-			mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= newMultiplier / oldMultiplier
+
+			mage.ArcaneBlast.DamageMultiplier *= newMultiplier / oldMultiplier
+			mage.ArcaneExplosion.DamageMultiplier *= newMultiplier / oldMultiplier
 			mage.ArcaneBlast.CostMultiplier += 1.5 * float64(newStacks-oldStacks)
 		},
 	})
