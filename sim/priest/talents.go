@@ -67,7 +67,7 @@ func (priest *Priest) ApplyTalents() {
 	if priest.Talents.TwinDisciplines > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolHoly | core.SpellSchoolShadow,
-			ClassMask:  int64(PriestSpellsAll),
+			ClassMask:  PriestSpellsAll,
 			FloatValue: (0.02 * float64(priest.Talents.TwinDisciplines)),
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
@@ -76,7 +76,7 @@ func (priest *Priest) ApplyTalents() {
 	// Mental Agillity
 	if priest.Talents.MentalAgility > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(PriestSpellsAll),
+			ClassMask:  PriestSpellsAll,
 			FloatValue: -0.04 * float64(priest.Talents.MentalAgility),
 			Kind:       core.SpellMod_PowerCost_Pct,
 		})
@@ -97,7 +97,7 @@ func (priest *Priest) ApplyTalents() {
 	// Improved Shadow Word: Pain
 	if priest.Talents.ImprovedShadowWordPain > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(PriestSpellShadowWordPain),
+			ClassMask:  PriestSpellShadowWordPain,
 			FloatValue: 0.03 * float64(priest.Talents.ImprovedShadowWordPain),
 			Kind:       core.SpellMod_DamageDone_Flat,
 		})
@@ -106,13 +106,13 @@ func (priest *Priest) ApplyTalents() {
 	// Veiled Shadows
 	if priest.Talents.VeiledShadows > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
-			ClassMask: int64(PriestSpellFade),
+			ClassMask: PriestSpellFade,
 			TimeValue: time.Second * -3 * time.Duration(priest.Talents.VeiledShadows),
 			Kind:      core.SpellMod_Cooldown_Flat,
 		})
 
 		priest.AddStaticMod(core.SpellModConfig{
-			ClassMask: int64(PriestSpellShadowFiend),
+			ClassMask: PriestSpellShadowFiend,
 			TimeValue: time.Second * -30 * time.Duration(priest.Talents.VeiledShadows),
 			Kind:      core.SpellMod_Cooldown_Flat,
 		})
@@ -121,7 +121,7 @@ func (priest *Priest) ApplyTalents() {
 	// Improved Psychic Scream
 	if priest.Talents.ImprovedPsychicScream > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
-			ClassMask: int64(PriestSpellPsychicScream),
+			ClassMask: PriestSpellPsychicScream,
 			TimeValue: time.Second * -2 * time.Duration(priest.Talents.ImprovedPsychicScream),
 			Kind:      core.SpellMod_Cooldown_Flat,
 		})
@@ -137,7 +137,7 @@ func (priest *Priest) ApplyTalents() {
 	if priest.Talents.TwistedFaith > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolShadow,
-			ClassMask:  int64(PriestShadowSpells),
+			ClassMask:  PriestShadowSpells,
 			FloatValue: 0.01 * float64(priest.Talents.TwistedFaith),
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
@@ -245,7 +245,7 @@ func (priest *Priest) applyArchangel() {
 	})
 
 	darkArchAngelMod := priest.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  int64(PriestSpellMindFlay | PriestSpellMindSpike | PriestSpellMindBlast | PriestSpellShadowWordDeath),
+		ClassMask:  PriestSpellMindFlay | PriestSpellMindSpike | PriestSpellMindBlast | PriestSpellShadowWordDeath,
 		FloatValue: 0.04,
 		Kind:       core.SpellMod_DamageDone_Flat,
 	})
@@ -274,7 +274,7 @@ func (priest *Priest) applyArchangel() {
 		SpellSchool:              core.SpellSchoolHoly,
 		ProcMask:                 core.ProcMaskEmpty,
 		Flags:                    core.SpellFlagAPL,
-		ClassSpellMask:           int64(PriestSpellArchangel),
+		ClassSpellMask:           PriestSpellArchangel,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
@@ -306,7 +306,7 @@ func (priest *Priest) applyArchangel() {
 		SpellSchool:              core.SpellSchoolHoly,
 		ProcMask:                 core.ProcMaskEmpty,
 		Flags:                    core.SpellFlagAPL,
-		ClassSpellMask:           int64(PriestSpellDarkArchangel),
+		ClassSpellMask:           PriestSpellDarkArchangel,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
@@ -341,7 +341,7 @@ func (priest *Priest) applyImprovedMindBlast() {
 	}
 
 	priest.AddStaticMod(core.SpellModConfig{
-		ClassMask: int64(PriestSpellMindBlast),
+		ClassMask: PriestSpellMindBlast,
 		TimeValue: time.Duration(priest.Talents.ImprovedMindBlast) * time.Millisecond * -500,
 		Kind:      core.SpellMod_Cooldown_Flat,
 	})
@@ -354,7 +354,7 @@ func (priest *Priest) applyImprovedMindBlast() {
 		ActionID:                 core.ActionID{SpellID: 48301},
 		ProcMask:                 core.ProcMaskProc,
 		SpellSchool:              core.SpellSchoolShadow,
-		ClassSpellMask:           int64(PriestSpellMindTrauma),
+		ClassSpellMask:           PriestSpellMindTrauma,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
@@ -507,7 +507,7 @@ func (priest *Priest) applyMindMelt() {
 	}
 
 	mindMeltMod := priest.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  int64(PriestSpellMindBlast),
+		ClassMask:  PriestSpellMindBlast,
 		FloatValue: -0.5,
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
@@ -574,7 +574,7 @@ func (priest *Priest) applyShadowyApparition() {
 		ActionID:                 core.ActionID{SpellID: 87532},
 		MissileSpeed:             3.5,
 		ProcMask:                 core.ProcMaskEmpty, // summoned guardian, should not be able to proc stuff - verify
-		ClassSpellMask:           int64(PriestSpellShadowyApparation),
+		ClassSpellMask:           PriestSpellShadowyApparation,
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),

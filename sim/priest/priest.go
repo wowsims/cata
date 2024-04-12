@@ -217,7 +217,9 @@ const (
 	PriestSpellDevouringPlague
 	PriestSpellDesperatePrayer
 	PriestSpellDispersion
+	PriestSpellDivineAegis
 	PriestSpellDivineHymn
+	PriestSpellEmpoweredRenew
 	PriestSpellFade
 	PriestSpellFlashHeal
 	PriestSpellGreaterHeal
