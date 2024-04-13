@@ -382,6 +382,10 @@ func init() {
 				ActionID:  core.ActionID{SpellID: 91320},
 				Duration:  time.Second * 15,
 				MaxStacks: 5,
+				Icd: &core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 30,
+				},
 			},
 			BonusPerStack: stats.Stats{stats.Spirit: 103},
 		})
@@ -395,8 +399,10 @@ func init() {
 			Outcome:    core.OutcomeLanded,
 			ICD:        time.Second * 2,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procAura.Activate(sim)
-				procAura.AddStack(sim)
+				if procAura.Icd.IsReady(sim) {
+					procAura.Activate(sim)
+					procAura.AddStack(sim)
+				}
 			},
 		}))
 
@@ -406,8 +412,17 @@ func init() {
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				procAura.Deactivate(sim)
+
+				// can not regain stacks for 30 seconds
+				procAura.Icd.Use(sim)
 				character.AddMana(sim, 6420, manaMetric)
 			},
 		})
@@ -428,6 +443,10 @@ func init() {
 				ActionID:  core.ActionID{SpellID: 92329},
 				Duration:  time.Second * 15,
 				MaxStacks: 5,
+				Icd: &core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 30,
+				},
 			},
 			BonusPerStack: stats.Stats{stats.Spirit: 116},
 		})
@@ -441,8 +460,10 @@ func init() {
 			Outcome:    core.OutcomeLanded,
 			ICD:        time.Second * 2,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procAura.Activate(sim)
-				procAura.AddStack(sim)
+				if procAura.Icd.IsReady(sim) {
+					procAura.Activate(sim)
+					procAura.AddStack(sim)
+				}
 			},
 		}))
 
@@ -452,8 +473,16 @@ func init() {
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				procAura.Deactivate(sim)
+				// can not regain stacks for 30 seconds
+				procAura.Icd.Use(sim)
 				character.AddMana(sim, 7260, manaMetric)
 			},
 		})
