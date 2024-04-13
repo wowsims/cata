@@ -414,7 +414,7 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 
 			// Improved Devouring Plague only considers haste on gear nothing else for dot tick frequency
 			// https://github.com/JamminL/cata-classic-bugs/issues/971
-			tickPeriod := float64(dot.TickLength) / (1 + (priest.GetStats()[stats.SpellHaste] / (core.HasteRatingPerHastePercent * 100)))
+			tickPeriod := float64(dot.TickLength) / (1 + (priest.GetStat(stats.SpellHaste) / (core.HasteRatingPerHastePercent * 100)))
 			ticks := math.Ceil(float64(dot.BaseDuration) / tickPeriod)
 			dmg := ticks * dpTickDamage * float64(priest.Talents.ImprovedDevouringPlague) * 0.15
 			spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit)
