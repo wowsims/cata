@@ -191,6 +191,20 @@ enum ArmorType {
 	ArmorTypePlate = 4;
 }
 
+enum ArmorSpecialization {
+	ArmorSpecializationCloth = 0;
+	ArmorSpecializationLeather = 1;
+	ArmorSpecializationMail = 2;
+	ArmorSpecializationPlate = 3;
+}
+
+enum PrimaryStat {
+	PrimaryStatStrength = 0;
+	PrimaryStatAgility = 1;
+	PrimaryStatStamina = 2;
+	PrimaryStatIntellect = 3;
+}
+
 enum WeaponType {
 	WeaponTypeUnknown = 0;
 	WeaponTypeAxe = 1;

@@ -84,6 +84,9 @@ type Character struct {
 	conjuredCD         *Timer
 
 	Pets []*Pet // cached in AddPet, for advance()
+
+	ArmorSpecialization proto.ArmorSpecialization
+	PrimaryStat         proto.PrimaryStat
 }
 
 func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character {
@@ -183,6 +186,31 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 		character.enableItemSwap(player.ItemSwap, character.DefaultMeleeCritMultiplier(), character.DefaultMeleeCritMultiplier(), 0)
 	}
 
+	switch character.Spec {
+	case proto.Spec_SpecBloodDeathKnight, proto.Spec_SpecFeralDruid, proto.Spec_SpecProtectionPaladin, proto.Spec_SpecProtectionWarrior:
+		character.PrimaryStat = proto.PrimaryStat_PrimaryStatStamina
+	case proto.Spec_SpecFrostDeathKnight, proto.Spec_SpecUnholyDeathKnight, proto.Spec_SpecRetributionPaladin, proto.Spec_SpecArmsWarrior, proto.Spec_SpecFuryWarrior:
+		character.PrimaryStat = proto.PrimaryStat_PrimaryStatStrength
+	case proto.Spec_SpecBalanceDruid, proto.Spec_SpecRestorationDruid, proto.Spec_SpecArcaneMage, proto.Spec_SpecFireMage, proto.Spec_SpecFrostMage, proto.Spec_SpecHolyPaladin,
+		proto.Spec_SpecDisciplinePriest, proto.Spec_SpecHolyPriest, proto.Spec_SpecShadowPriest, proto.Spec_SpecElementalShaman, proto.Spec_SpecRestorationShaman,
+		proto.Spec_SpecAfflictionWarlock, proto.Spec_SpecDemonologyWarlock, proto.Spec_SpecDestructionWarlock:
+		character.PrimaryStat = proto.PrimaryStat_PrimaryStatIntellect
+	case proto.Spec_SpecBeastMasteryHunter, proto.Spec_SpecMarksmanshipHunter, proto.Spec_SpecSurvivalHunter, proto.Spec_SpecAssassinationRogue,
+		proto.Spec_SpecCombatRogue, proto.Spec_SpecSubtletyRogue, proto.Spec_SpecEnhancementShaman:
+		character.PrimaryStat = proto.PrimaryStat_PrimaryStatAgility
+	}
+
+	switch character.Class {
+	case proto.Class_ClassMage, proto.Class_ClassPriest, proto.Class_ClassWarlock:
+		character.ArmorSpecialization = proto.ArmorSpecialization_ArmorSpecializationCloth
+	case proto.Class_ClassDruid, proto.Class_ClassRogue:
+		character.ArmorSpecialization = proto.ArmorSpecialization_ArmorSpecializationLeather
+	case proto.Class_ClassHunter, proto.Class_ClassShaman:
+		character.ArmorSpecialization = proto.ArmorSpecialization_ArmorSpecializationMail
+	case proto.Class_ClassDeathKnight, proto.Class_ClassPaladin, proto.Class_ClassWarrior:
+		character.ArmorSpecialization = proto.ArmorSpecialization_ArmorSpecializationPlate
+	}
+
 	return character
 }
 
@@ -277,6 +305,8 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.applyBuildPhaseAuras(CharacterBuildPhaseConsumes)
 	playerStats.ConsumesStats = measureStats()
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
+
+	character.applyArmorSpecialization()
 
 	for _, petAgent := range character.PetAgents {
 		applyPetBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
@@ -726,4 +756,46 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3
 		}
 		offset += treeSizes[treeIdx]
 	}
+}
+
+func (character *Character) applyArmorSpecialization() bool {
+	hasBonus := true
+
+	var armorSpecType proto.ArmorType
+
+	if character.ArmorSpecialization == proto.ArmorSpecialization_ArmorSpecializationCloth {
+		armorSpecType = proto.ArmorType_ArmorTypeCloth
+	} else if character.ArmorSpecialization == proto.ArmorSpecialization_ArmorSpecializationLeather {
+		armorSpecType = proto.ArmorType_ArmorTypeLeather
+	} else if character.ArmorSpecialization == proto.ArmorSpecialization_ArmorSpecializationMail {
+		armorSpecType = proto.ArmorType_ArmorTypeMail
+	} else if character.ArmorSpecialization == proto.ArmorSpecialization_ArmorSpecializationPlate {
+		armorSpecType = proto.ArmorType_ArmorTypePlate
+	}
+
+	if character.Head().ArmorType != armorSpecType ||
+		character.Shoulder().ArmorType != armorSpecType ||
+		character.Chest().ArmorType != armorSpecType ||
+		character.Wrist().ArmorType != armorSpecType ||
+		character.Hands().ArmorType != armorSpecType ||
+		character.Waist().ArmorType != armorSpecType ||
+		character.Legs().ArmorType != armorSpecType ||
+		character.Feet().ArmorType != armorSpecType {
+		hasBonus = false
+	}
+
+	if hasBonus {
+		switch character.PrimaryStat {
+		case proto.PrimaryStat_PrimaryStatAgility:
+			character.MultiplyStat(stats.Agility, 1.05)
+		case proto.PrimaryStat_PrimaryStatIntellect:
+			character.MultiplyStat(stats.Intellect, 1.05)
+		case proto.PrimaryStat_PrimaryStatStrength:
+			character.MultiplyStat(stats.Strength, 1.05)
+		case proto.PrimaryStat_PrimaryStatStamina:
+			character.MultiplyStat(stats.Stamina, 1.05)
+		}
+	}
+
+	return hasBonus
 }
