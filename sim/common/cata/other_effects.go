@@ -71,9 +71,13 @@ func init() {
 			DamageMultiplier:         1,
 			DamageMultiplierAdditive: 1,
 			ThreatMultiplier:         1,
+			CritMultiplier:           character.DefaultSpellCritMultiplier(),
 			ProcMask:                 core.ProcMaskEmpty,
 			Flags:                    core.SpellFlagNoOnCastComplete,
 			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Vengful Wisp - 2",
+				},
 				NumberOfTicks:       5,
 				TickLength:          3,
 				AffectedByCastSpeed: false,
@@ -85,7 +89,6 @@ func init() {
 					if sim.Proc(0.1, "Vengeful Wisp") {
 						// select random proc target
 						spreadTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))-1))]
-
 						// refresh or apply this dot on the target
 						dot.Spell.Dot(spreadTarget).Apply(sim)
 					}
@@ -101,7 +104,11 @@ func init() {
 			ThreatMultiplier:         1,
 			ProcMask:                 core.ProcMaskEmpty,
 			Flags:                    core.SpellFlagNoOnCastComplete,
+			CritMultiplier:           character.DefaultSpellCritMultiplier(),
 			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Vengful Wisp - 1",
+				},
 				NumberOfTicks:       5,
 				TickLength:          3,
 				AffectedByCastSpeed: false,
