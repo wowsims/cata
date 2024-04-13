@@ -205,6 +205,10 @@ const (
 	// Add/subtract to the dots max ticks
 	// Uses: IntValue
 	SpellMod_DotNumberOfTicks_Flat
+
+	// Add/subtract to the casts gcd
+	// Uses: TimeValue
+	SpellMod_GlobalCooldown_Flat
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -257,6 +261,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 		Apply:  applyDotNumberOfTicks,
 		Remove: removeDotNumberOfTicks,
 	},
+
+	SpellMod_GlobalCooldown_Flat: {
+		Apply:  applyGlobalCooldownFlat,
+		Remove: removeGlobalCooldownFlat,
+	},
 }
 
 func applyDamageDonePercent(mod *SpellMod, spell *Spell) {
@@ -276,11 +285,11 @@ func removeDamageDonAdd(mod *SpellMod, spell *Spell) {
 }
 
 func applyPowerCostPercent(mod *SpellMod, spell *Spell) {
-	spell.CostMultiplier *= 1 + mod.floatValue
+	spell.CostMultiplier += mod.floatValue
 }
 
 func removePowerCostPercent(mod *SpellMod, spell *Spell) {
-	spell.CostMultiplier /= 1 + mod.floatValue
+	spell.CostMultiplier -= mod.floatValue
 }
 
 func applyPowerCostFlat(mod *SpellMod, spell *Spell) {
@@ -355,4 +364,12 @@ func removeDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 	if spell.aoeDot != nil {
 		spell.aoeDot.NumberOfTicks -= int32(mod.intValue)
 	}
+}
+
+func applyGlobalCooldownFlat(mod *SpellMod, spell *Spell) {
+	spell.DefaultCast.GCD += mod.timeValue
+}
+
+func removeGlobalCooldownFlat(mod *SpellMod, spell *Spell) {
+	spell.DefaultCast.GCD -= mod.timeValue
 }

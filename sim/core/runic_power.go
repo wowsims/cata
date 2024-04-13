@@ -2,10 +2,12 @@ package core
 
 import (
 	"fmt"
+	"math"
 	"strings"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 type RuneChangeType int32
@@ -26,8 +28,10 @@ type OnRuneChange func(sim *Simulation, changeType RuneChangeType)
 type OnRunicPowerGain func(sim *Simulation)
 
 type RuneMeta struct {
-	regenAt       time.Duration // time at which the rune will no longer be spent.
-	lastRegenTime time.Duration // last time the rune regenerated.
+	regenMulti        float64
+	regenAt           time.Duration // time at which the rune will no longer be spent.
+	unscaledRegenLeft time.Duration // time which the rune spent in regen (Unscaled)
+	lastRegenTime     time.Duration // last time the rune regenerated.
 
 	revertAt time.Duration // time at which rune will no longer be kind death.
 }
@@ -54,6 +58,8 @@ type runicPowerBar struct {
 	onRunicPowerGain OnRunicPowerGain
 
 	pa *PendingAction
+
+	runeRegenMultiplier float64
 }
 
 // Constants for finding runes
@@ -110,15 +116,16 @@ func (rp *runicPowerBar) reset(sim *Simulation) {
 	rp.runeStates = baseRuneState
 }
 
-func (unit *Unit) EnableRunicPowerBar(currentRunicPower float64, maxRunicPower float64, runeCD time.Duration,
+func (unit *Unit) EnableRunicPowerBar(currentRunicPower float64, maxRunicPower float64, runeCD time.Duration, runeRegenMultiplier float64,
 	onRuneChange OnRuneChange, onRunicPowerGain OnRunicPowerGain) {
 	unit.SetCurrentPowerBar(RunicPower)
 	unit.runicPowerBar = runicPowerBar{
 		unit: unit,
 
-		maxRunicPower:     maxRunicPower,
-		currentRunicPower: currentRunicPower,
-		runeCD:            runeCD,
+		maxRunicPower:       maxRunicPower,
+		currentRunicPower:   currentRunicPower,
+		runeCD:              runeCD,
+		runeRegenMultiplier: runeRegenMultiplier,
 
 		runeStates: baseRuneState,
 		btSlot:     -1,
@@ -188,6 +195,10 @@ func (rp *runicPowerBar) spendRunicPower(sim *Simulation, amount float64, metric
 	}
 
 	rp.currentRunicPower = newRunicPower
+}
+
+func (rp *runicPowerBar) SpendRunicPower(sim *Simulation, amount float64, metrics *ResourceMetrics) {
+	rp.spendRunicPower(sim, amount, metrics)
 }
 
 // DeathRuneRegenAt returns the time the given death rune will regen at.
@@ -638,9 +649,7 @@ func (rp *runicPowerBar) spendRuneMetrics(sim *Simulation, metrics *ResourceMetr
 }
 
 func (rp *runicPowerBar) regenRune(sim *Simulation, regenAt time.Duration, slot int8) {
-	rp.runeStates ^= isSpents[slot] // unset spent flag for this rune.
-	rp.runeMeta[slot].lastRegenTime = regenAt
-	rp.runeMeta[slot].regenAt = NeverExpires
+	rp.regenRuneInternal(regenAt, slot)
 
 	metrics := rp.bloodRuneGainMetrics
 	if rp.runeStates&isDeaths[slot] > 0 {
@@ -654,15 +663,59 @@ func (rp *runicPowerBar) regenRune(sim *Simulation, regenAt time.Duration, slot 
 	rp.gainRuneMetrics(sim, metrics, 1)
 }
 
-func (rp *runicPowerBar) RegenAllRunes(sim *Simulation) {
+func (rp *runicPowerBar) regenRuneInternal(regenAt time.Duration, slot int8) {
+	rp.runeStates ^= isSpents[slot] // unset spent flag for this rune.
+	rp.runeMeta[slot].lastRegenTime = regenAt
+	rp.runeMeta[slot].regenAt = NeverExpires
+}
+
+func (rp *runicPowerBar) RegenAllRunes(sim *Simulation, metrics []*ResourceMetrics) {
 	changeType := None
 	for i := range rp.runeMeta {
 		if rp.runeStates&isSpents[i] > 0 {
-			rp.regenRune(sim, sim.CurrentTime, int8(i))
+			rp.regenRuneInternal(sim.CurrentTime, int8(i))
+
+			metric := metrics[0]
+			if rp.runeStates&isDeaths[i] > 0 {
+				metric = metrics[3]
+			} else if i == 2 || i == 3 {
+				metric = metrics[1]
+			} else if i == 4 || i == 5 {
+				metric = metrics[2]
+			}
+
+			rp.gainRuneMetrics(sim, metric, 1)
+
 			changeType = GainRune
 		}
 	}
 
+	rp.maybeFireChange(sim, changeType)
+}
+
+func (rp *runicPowerBar) RegenRandomRune(sim *Simulation, runeMetrics []*ResourceMetrics) {
+	changeType := None
+	possibleRunes := make([]int, 0)
+	for i := range rp.runeMeta {
+		if rp.runeStates&isSpents[i] > 0 {
+			possibleRunes = append(possibleRunes, i)
+		}
+	}
+
+	if len(possibleRunes) == 0 {
+		return
+	}
+
+	randomRuneIndex := int(math.Floor(sim.RandomFloat("Rune Regen") * float64(len(possibleRunes))))
+	randomRune := int8(possibleRunes[randomRuneIndex])
+
+	rp.regenRuneInternal(sim.CurrentTime, randomRune)
+	changeType = GainRune
+	if rp.runeStates&isDeaths[randomRune] > 0 {
+		rp.gainRuneMetrics(sim, runeMetrics[3], 1)
+	} else {
+		rp.gainRuneMetrics(sim, runeMetrics[randomRune/2], 1)
+	}
 	rp.maybeFireChange(sim, changeType)
 }
 
@@ -675,9 +728,42 @@ func (rp *runicPowerBar) RuneGraceAt(slot int8, at time.Duration) time.Duration 
 	return min(time.Millisecond*2500, at-lastRegenTime)
 }
 
+func (rp *runicPowerBar) MultiplyRuneRegenSpeed(sim *Simulation, multiplier float64) {
+	rp.runeRegenMultiplier *= multiplier
+	rp.updateRegenTimes(sim)
+}
+
+func (rp *runicPowerBar) updateRegenTimes(sim *Simulation) {
+	if rp.unit == nil {
+		return
+	}
+	hasteMultiplier := 1.0 + rp.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
+	totalMultiplier := 1 / (hasteMultiplier * rp.runeRegenMultiplier)
+
+	for slot := int8(0); slot < 6; slot++ {
+		if rp.runeStates&isSpents[slot] > 0 {
+			// Is spent so we save current progress and then rescale pa
+			regenTime := DurationFromSeconds(rp.runeMeta[slot].unscaledRegenLeft.Seconds() * rp.runeMeta[slot].regenMulti)
+			startTime := rp.runeMeta[slot].regenAt - regenTime
+			unscaledRegenDone := (sim.CurrentTime - startTime).Seconds() / rp.runeMeta[slot].regenMulti
+			regenLeft := (rp.runeMeta[slot].unscaledRegenLeft.Seconds() - unscaledRegenDone)
+
+			rp.runeMeta[slot].regenMulti = totalMultiplier
+			rp.runeMeta[slot].regenAt = sim.CurrentTime + DurationFromSeconds(regenLeft*totalMultiplier)
+			rp.runeMeta[slot].unscaledRegenLeft = DurationFromSeconds(regenLeft)
+
+			rp.launchPA(sim, rp.runeMeta[slot].regenAt)
+		}
+	}
+}
+
 func (rp *runicPowerBar) launchRuneRegen(sim *Simulation, slot int8) {
-	runeGracePeriod := rp.RuneGraceAt(slot, sim.CurrentTime)
-	rp.runeMeta[slot].regenAt = sim.CurrentTime + (rp.runeCD - runeGracePeriod)
+	hasteMultiplier := 1.0 + rp.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
+	totalMultiplier := 1 / (hasteMultiplier * rp.runeRegenMultiplier)
+
+	rp.runeMeta[slot].regenMulti = totalMultiplier
+	rp.runeMeta[slot].regenAt = sim.CurrentTime + DurationFromSeconds(rp.runeCD.Seconds()*totalMultiplier) - rp.RuneGraceAt(slot, sim.CurrentTime)
+	rp.runeMeta[slot].unscaledRegenLeft = rp.runeCD
 
 	rp.launchPA(sim, rp.runeMeta[slot].regenAt)
 }
