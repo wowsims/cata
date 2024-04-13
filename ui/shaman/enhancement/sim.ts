@@ -19,20 +19,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatIntellect,
+	epStats: [		
 		Stat.StatAgility,
-		Stat.StatStrength,
+		Stat.StatIntellect,
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatExpertise,
+		Stat.StatArmorPenetration,		
 		Stat.StatSpellPower,
-		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
+		Stat.StatSpellCrit,		
 		Stat.StatSpellHaste,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -41,7 +41,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	displayStats: [
 		Stat.StatHealth,
 		Stat.StatStamina,
-		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatIntellect,
 		Stat.StatAttackPower,
@@ -54,6 +53,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
+		Stat.StatMastery,
 	],
 
 	defaults: {
