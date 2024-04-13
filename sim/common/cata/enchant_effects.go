@@ -417,10 +417,10 @@ func init() {
 				},
 			},
 
-			ApplyEffects: func(sim *core.Simulation, unit *core.Unit, _ *core.Spell) {
-				intStat := unit.GetStat(stats.Intellect)
-				strStat := unit.GetStat(stats.Strength)
-				agiStat := unit.GetStat(stats.Agility)
+			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+				intStat := character.GetStat(stats.Intellect)
+				strStat := character.GetStat(stats.Strength)
+				agiStat := character.GetStat(stats.Agility)
 				if intStat > strStat && intStat > agiStat {
 					intAura.Activate(sim)
 				} else if agiStat > intStat && agiStat > strStat {
