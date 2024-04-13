@@ -69,6 +69,11 @@ func NewProcStatBonusEffectWithCustomCondition(config ProcStatBonusEffect, condi
 	factory_StatBonusEffect(config, func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult, procAura *core.Aura) {
 		if condition(sim, spell, result) {
 			procAura.Activate(sim)
+		} else {
+			// reset ICD condition was not fulfilled
+			if procAura.Icd != nil && procAura.Icd.Duration != 0 {
+				procAura.Icd.Reset()
+			}
 		}
 	}, nil)
 }
