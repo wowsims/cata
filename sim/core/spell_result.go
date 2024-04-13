@@ -493,6 +493,10 @@ func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic 
 		multiplier *= attackTable.Defender.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
 	}
 
+	if attackTable.DamageDoneByCasterMultiplier != nil {
+		multiplier *= attackTable.DamageDoneByCasterMultiplier(spell, attackTable)
+	}
+
 	return multiplier
 }
 

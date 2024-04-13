@@ -14,6 +14,9 @@ import (
 )
 
 func (dk *DeathKnight) ApplyBloodTalents() {
+	// Toughness
+	dk.ApplyEquipScaling(stats.Armor, 1.0+0.02*float64(dk.Talents.Toughness))
+
 	// Butchery
 	dk.applyButchery()
 

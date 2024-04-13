@@ -35,10 +35,7 @@ func NewFrostDeathKnight(character *core.Character, player *proto.Player) *Frost
 			StartingRunicPower: frostOptions.ClassOptions.StartingRunicPower,
 			PetUptime:          frostOptions.ClassOptions.PetUptime,
 			IsDps:              true,
-
-			UseAMS:            frostOptions.UseAms,
-			AvgAMSSuccessRate: frostOptions.AvgAmsSuccessRate,
-			AvgAMSHit:         frostOptions.AvgAmsHit,
+			UseAMS:             false,
 		}, player.TalentsString),
 	}
 
