@@ -297,3 +297,13 @@ const (
 		PriestSpellMindBlast |
 		PriestSpellVampiricTouch
 )
+
+func (priest *Priest) calcBaseDamage(sim *core.Simulation, coefficient float64, variance float64) float64 {
+	baseDamage := priest.ScalingBaseDamage * coefficient
+	if variance > 0 {
+		delta := priest.ScalingBaseDamage * variance * 0.5
+		baseDamage += sim.Roll(-delta, delta)
+	}
+
+	return baseDamage
+}
