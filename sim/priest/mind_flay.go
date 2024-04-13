@@ -42,10 +42,9 @@ func (priest *Priest) newMindFlaySpell(numTicksIdx int32) *core.Spell {
 			NumberOfTicks:       numTicks,
 			TickLength:          time.Second * 1,
 			AffectedByCastSpeed: true,
+			BonusCoefficient:    0.288,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 187.147 + 0.288*dot.Spell.SpellPower()
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.Snapshot(target, 187.147)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -59,7 +58,7 @@ func (priest *Priest) newMindFlaySpell(numTicksIdx int32) *core.Spell {
 			}
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := 187.147 + 0.288*spell.SpellPower()
+			baseDamage := 187.147
 			return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 		},
 	})
