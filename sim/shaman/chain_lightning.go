@@ -18,13 +18,13 @@ func (shaman *Shaman) registerChainLightningSpell() {
 
 func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spell {
 	castTime := time.Millisecond * 2500
-	spellCoeff := 0.571
+	bonusCoefficient := 0.571
 	canOverload := false
 	overloadChance := shaman.GetOverloadChance()
 	if shaman.Spec == proto.Spec_SpecElementalShaman {
 		castTime -= 500
 		// 0.36 is shamanism bonus
-		spellCoeff += 0.36
+		bonusCoefficient += 0.36
 		canOverload = true
 	}
 
@@ -32,7 +32,9 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		core.ActionID{SpellID: 421},
 		0.26,
 		castTime,
-		isElementalOverload)
+		isElementalOverload,
+		bonusCoefficient,
+	)
 
 	baseDamage := 1093.0
 	numHits := int32(3)
@@ -42,14 +44,11 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 	}
 	numHits = min(numHits, shaman.Env.GetNumTargets())
 
-	dmgReductionPerBounce := 0.7
-
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		bounceCoeff := 1.0
+		bounceReduction := 1.0
 		curTarget := target
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-			totalDamage := baseDamage + spellCoeff*spell.SpellPower()
-			totalDamage *= bounceCoeff
+			totalDamage := baseDamage * bounceReduction
 			result := spell.CalcDamage(sim, curTarget, totalDamage, spell.OutcomeMagicHitAndCrit)
 
 			if canOverload && result.Landed() && sim.RandomFloat("Chain Lightning Elemental Overload") <= overloadChance/3 {
@@ -58,7 +57,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 
 			spell.DealDamage(sim, result)
 
-			bounceCoeff *= dmgReductionPerBounce
+			bounceReduction *= 0.7
 			curTarget = sim.Environment.NextTargetUnit(curTarget)
 		}
 	}

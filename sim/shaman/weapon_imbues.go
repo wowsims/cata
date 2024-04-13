@@ -49,14 +49,13 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 		DamageMultiplier: []float64{1, 1.20, 1.40}[shaman.Talents.ElementalWeapons],
 		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
-
+		BonusCoefficient: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			constBaseDamage := spell.BonusWeaponDamage()
 			mAP := spell.MeleeAttackPower() + apBonus
 
-			baseDamage1 := constBaseDamage + weaponDamageFunc(sim, mAP)
-			baseDamage2 := constBaseDamage + weaponDamageFunc(sim, mAP)
-			baseDamage3 := constBaseDamage + weaponDamageFunc(sim, mAP)
+			baseDamage1 := weaponDamageFunc(sim, mAP)
+			baseDamage2 := weaponDamageFunc(sim, mAP)
+			baseDamage3 := weaponDamageFunc(sim, mAP)
 			result1 := spell.CalcDamage(sim, target, baseDamage1, spell.OutcomeMeleeSpecialHitAndCrit)
 			result2 := spell.CalcDamage(sim, target, baseDamage2, spell.OutcomeMeleeSpecialHitAndCrit)
 			result3 := spell.CalcDamage(sim, target, baseDamage3, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -129,11 +128,8 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 
 // TODO: Not sure on the base damage here wowhead does not seem to be correct. in testing with 1.3 weapon and 129 sp it was 109 damage
 func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
-	spellID := 8024
-	baseDamage := 68.5
-
 	return shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(spellID)},
+		ActionID:    core.ActionID{SpellID: int32(8024)},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskWeaponProc,
 
@@ -143,7 +139,7 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if weapon.SwingSpeed != 0 {
-				damage := weapon.SwingSpeed * (baseDamage + 0.1/2.6*spell.SpellPower())
+				damage := weapon.SwingSpeed * (68.5 + 0.1/2.6*spell.SpellPower())
 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
@@ -263,10 +259,9 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 		ThreatMultiplier: 1,
-
+		BonusCoefficient: 0.1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 612 + 0.1*spell.SpellPower()
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.CalcAndDealDamage(sim, target, 612, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }

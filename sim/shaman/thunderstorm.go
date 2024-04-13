@@ -20,17 +20,12 @@ func (shaman *Shaman) registerThunderstormSpell() {
 		manaRestore = 0.02
 	}
 
-	cooldown := time.Second * 45
-	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfThunder) {
-		cooldown = 35
-	}
-
 	shaman.Thunderstorm = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		Flags:       core.SpellFlagAPL,
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskSpellDamage,
-
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: SpellMaskThunderstorm,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.0,
 		},
@@ -40,21 +35,19 @@ func (shaman *Shaman) registerThunderstormSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
-				Duration: cooldown,
+				Duration: time.Second * 45,
 			},
 		},
 
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
-
+		BonusCoefficient: 0.571,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			shaman.AddMana(sim, shaman.MaxMana()*manaRestore, manaMetrics)
 
 			if shaman.thunderstormInRange {
-				dmgFromSP := 0.571 * spell.SpellPower()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					baseDamage := 1637 + dmgFromSP
-					baseDamage *= sim.Encounter.AOECapMultiplier()
+					baseDamage := 1637 * sim.Encounter.AOECapMultiplier()
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
 			}

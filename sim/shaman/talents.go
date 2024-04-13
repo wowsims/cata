@@ -41,12 +41,81 @@ func (shaman *Shaman) ApplyTalents() {
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
 	}
 
+	if shaman.Talents.CallOfFlame > 0 {
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(SpellMaskLavaBurst),
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.05 * float64(shaman.Talents.CallOfFlame),
+		})
+
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(SpellMaskSearingTotem),
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
+		})
+
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(SpellMaskMagmaTotem),
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
+		})
+
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(SpellMaskFireNova),
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
+		})
+	}
+
 	shaman.applyElementalFocus()
 	shaman.applyRollingThunder()
+
+	if shaman.Talents.LavaFlows > 0 {
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(SpellMaskFlameShock),
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.08 * float64(shaman.Talents.LavaFlows),
+		})
+	}
+
 	shaman.applyFulmination()
 
 	if shaman.Talents.Earthquake {
 		shaman.registerEarthquakeSpell()
+	}
+
+	if shaman.Talents.FocusedStrikes > 0 {
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(SpellMaskPrimalStrike),
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.15 * float64(shaman.Talents.FocusedStrikes),
+		})
+
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(SpellMaskStormstrike),
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.15 * float64(shaman.Talents.FocusedStrikes),
+		})
+	}
+
+	if shaman.Talents.ImprovedShields > 0 {
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(SpellMaskLightningShield),
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
+		})
+
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(SpellMaskFulmination),
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
+		})
+
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(SpellMaskEarthShield),
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
+		})
 	}
 
 	shaman.applyElementalDevastation()
@@ -191,11 +260,11 @@ func (shaman *Shaman) applyFulmination() {
 	}
 
 	shaman.Fulmination = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 88767},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskProc,
-		Flags:       SpellFlagElectric | SpellFlagFocusable,
-
+		ActionID:       core.ActionID{SpellID: 88767},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskProc,
+		Flags:          SpellFlagElectric | SpellFlagFocusable,
+		ClassSpellMask: SpellMaskFulmination,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
 		},
@@ -206,11 +275,11 @@ func (shaman *Shaman) applyFulmination() {
 			},
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion) + 0.05*float64(shaman.Talents.ImprovedShields),
+		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		BonusCoefficient: 0.267,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damagePerOrb := 350 + 0.267*spell.SpellPower()
-			totalDamage := damagePerOrb * (float64(shaman.LightningShieldAura.GetStacks()) - 3)
+			totalDamage := 350 * (float64(shaman.LightningShieldAura.GetStacks()) - 3)
 			result := spell.CalcDamage(sim, target, totalDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)
 		},

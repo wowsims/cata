@@ -8,11 +8,11 @@ import (
 
 func (shaman *Shaman) registerFireNovaSpell() {
 	shaman.FireNova = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1535},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagFocusable | core.SpellFlagAPL,
-
+		ActionID:       core.ActionID{SpellID: 1535},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagFocusable | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskFireNova,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.22,
 			Multiplier: 1 - 0.05*float64(shaman.Talents.Convection) - shaman.GetMentalQuicknessBonus(),
@@ -27,17 +27,16 @@ func (shaman *Shaman) registerFireNovaSpell() {
 			},
 		},
 
-		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.1,
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 		ThreatMultiplier: 1,
-
+		BonusCoefficient: 0.164,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 789 + 0.164*spell.SpellPower()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				if aoeTarget.GetAura("FlameShock") != nil {
 					for _, newTarget := range sim.Encounter.TargetUnits {
 						if newTarget != aoeTarget {
-							spell.CalcAndDealDamage(sim, newTarget, damage, spell.OutcomeMagicHitAndCrit)
+							spell.CalcAndDealDamage(sim, newTarget, 789, spell.OutcomeMagicHitAndCrit)
 						}
 					}
 				}

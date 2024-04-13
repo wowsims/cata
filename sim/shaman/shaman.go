@@ -210,6 +210,7 @@ func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.ElementalOath = proto.TristateEffect_TristateEffectImproved
 	}
 }
+
 func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 	if shaman.Talents.ManaTideTotem {
 		partyBuffs.ManaTideTotems++
@@ -242,6 +243,8 @@ func (shaman *Shaman) Initialize() {
 
 	shaman.registerBloodlustCD()
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
+
+	shaman.ApplyGlyphs()
 }
 
 func (shaman *Shaman) RegisterHealingSpells() {
@@ -309,3 +312,23 @@ func (shaman *Shaman) GetMentalQuicknessBonus() float64 {
 
 	return mentalQuicknessBonus
 }
+
+const (
+	SpellMaskNone               int64 = 0
+	SpellMaskFireElementalTotem int64 = 1 << iota
+	SpellMaskFlameShock
+	SpellMaskLavaBurst
+	SpellMaskLavaLash
+	SpellMaskLightningBolt
+	SpellMaskChainLightning
+	SpellMaskEarthShock
+	SpellMaskLightningShield
+	SpellMaskThunderstorm
+	SpellMaskFireNova
+	SpellMaskMagmaTotem
+	SpellMaskSearingTotem
+	SpellMaskPrimalStrike
+	SpellMaskStormstrike
+	SpellMaskEarthShield
+	SpellMaskFulmination
+)

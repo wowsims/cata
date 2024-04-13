@@ -23,8 +23,8 @@ func (shaman *Shaman) registerFireElementalTotem() {
 	})
 
 	shaman.FireElementalTotem = shaman.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-
+		ActionID:       actionID,
+		ClassSpellMask: SpellMaskFireElementalTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.23,
 		},
@@ -34,7 +34,7 @@ func (shaman *Shaman) registerFireElementalTotem() {
 			},
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
-				Duration: time.Minute * time.Duration(core.TernaryFloat64(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFireElementalTotem), 5, 10)),
+				Duration: time.Minute * 10,
 			},
 		},
 

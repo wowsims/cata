@@ -39,11 +39,9 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) func(*core.Simulation, *
 		var baseDamage float64
 		spell.ProcMask = procMask
 		if isMH {
-			baseDamage = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 		} else {
-			baseDamage = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
 		}
 
 		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
@@ -77,9 +75,9 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 		},
 
 		ThreatMultiplier: 1,
-		DamageMultiplier: 1 + .15*float64(shaman.Talents.FocusedStrikes),
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
-
+		BonusCoefficient: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {

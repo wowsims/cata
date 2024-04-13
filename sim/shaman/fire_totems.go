@@ -9,11 +9,11 @@ import (
 // TODO: Do the number of ticks needs to be updated when the talent changes? (20%/40% duration)
 func (shaman *Shaman) registerSearingTotemSpell() {
 	shaman.SearingTotem = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 3599},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagTotem | core.SpellFlagAPL,
-
+		ActionID:       core.ActionID{SpellID: 3599},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          SpellFlagTotem | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskSearingTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.05,
 			Multiplier: 1 - 0.15*float64(shaman.Talents.TotemicFocus) - shaman.GetMentalQuicknessBonus(),
@@ -24,7 +24,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			},
 		},
 
-		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.1,
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 
 		Dot: core.DotConfig{
@@ -37,12 +37,11 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			// https://wotlk.wowhead.com/spell=25530/attack
 			//NumberOfTicks:        30,
 			//TickLength:           time.Second * 2.2,
-			NumberOfTicks: 24,
-			TickLength:    time.Second * 60 / 24,
-
+			NumberOfTicks:    24,
+			TickLength:       time.Second * 60 / 24,
+			BonusCoefficient: 0.2,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 90 + 0.2*dot.Spell.SpellPower()
-				result := dot.Spell.CalcAndDealDamage(sim, target, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
+				result := dot.Spell.CalcAndDealDamage(sim, target, 90, dot.Spell.OutcomeMagicHitAndCrit)
 
 				if shaman.Talents.SearingFlames > 0 && result.Landed() {
 					if shaman.Talents.SearingFlames == 3 || sim.RandomFloat("Searing Flames") < 0.33*float64(shaman.Talents.SearingFlames) {
@@ -79,11 +78,11 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 // TODO: Do the number of ticks needs to be updated when the talent changes? (20%/40% duration)
 func (shaman *Shaman) registerMagmaTotemSpell() {
 	shaman.MagmaTotem = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 8190},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagTotem | core.SpellFlagAPL,
-
+		ActionID:       core.ActionID{SpellID: 8190},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          SpellFlagTotem | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskMagmaTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.18,
 			Multiplier: 1 - 0.15*float64(shaman.Talents.TotemicFocus) - shaman.GetMentalQuicknessBonus(),
@@ -94,7 +93,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			},
 		},
 
-		DamageMultiplier: 1 + float64(shaman.Talents.CallOfFlame)*0.1,
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
 
 		Dot: core.DotConfig{
@@ -102,12 +101,11 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			Aura: core.Aura{
 				Label: "MagmaTotem",
 			},
-			NumberOfTicks: 10,
-			TickLength:    time.Second * 2,
-
+			NumberOfTicks:    10,
+			TickLength:       time.Second * 2,
+			BonusCoefficient: 0.08,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 268 + 0.08*dot.Spell.SpellPower()
-				baseDamage *= sim.Encounter.AOECapMultiplier()
+				baseDamage := 268 * sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 				}

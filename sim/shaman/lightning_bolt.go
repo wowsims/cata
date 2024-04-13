@@ -14,13 +14,13 @@ func (shaman *Shaman) registerLightningBoltSpell() {
 
 func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core.SpellConfig {
 	castTime := time.Millisecond * 2500
-	spellCoeff := 0.714
+	bonusCoefficient := 0.714
 	canOverload := false
 	overloadChance := shaman.GetOverloadChance()
 	if shaman.Spec == proto.Spec_SpecElementalShaman {
 		castTime -= 500
 		// 0.36 is shamanism bonus
-		spellCoeff += 0.36
+		bonusCoefficient += 0.36
 		canOverload = true
 	}
 
@@ -28,15 +28,13 @@ func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core
 		core.ActionID{SpellID: 403},
 		0.1,
 		castTime,
-		isElementalOverload)
+		isElementalOverload,
+		bonusCoefficient)
 
-	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfLightningBolt) {
-		spellConfig.DamageMultiplier += 0.04
-	}
+	spellConfig.ClassSpellMask = SpellMaskLightningBolt
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := 770 + spellCoeff*spell.SpellPower()
-		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+		result := spell.CalcDamage(sim, target, 770, spell.OutcomeMagicHitAndCrit)
 
 		if canOverload && result.Landed() && sim.RandomFloat("Lightning Bolt Elemental Overload") < overloadChance {
 			shaman.LightningBoltOverload.Cast(sim, target)

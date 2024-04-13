@@ -35,13 +35,13 @@ func (shaman *Shaman) registerUnleashFlame() {
 	})
 
 	shaman.UnleashFlame = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 73683},
-		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage,
-		CritMultiplier: shaman.DefaultSpellCritMultiplier(),
+		ActionID:         core.ActionID{SpellID: 73683},
+		SpellSchool:      core.SpellSchoolFire,
+		ProcMask:         core.ProcMaskSpellDamage,
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.429,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1118 + 0.429*spell.SpellPower()
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, 1118, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)
 			unleashFlameAura.Activate(sim)
 		},
@@ -51,13 +51,13 @@ func (shaman *Shaman) registerUnleashFlame() {
 func (shaman *Shaman) registerUnleashFrost() {
 
 	shaman.UnleashFrost = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 73682},
-		SpellSchool:    core.SpellSchoolFrost,
-		ProcMask:       core.ProcMaskSpellDamage,
-		CritMultiplier: shaman.DefaultSpellCritMultiplier(),
+		ActionID:         core.ActionID{SpellID: 73682},
+		SpellSchool:      core.SpellSchoolFrost,
+		ProcMask:         core.ProcMaskSpellDamage,
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.386,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 873 + 0.386*spell.SpellPower()
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, 873, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)
 		},
 	})
@@ -127,15 +127,14 @@ func (shaman *Shaman) registerUnleashLife() {
 	})
 
 	shaman.UnleashLife = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 73685},
-		SpellSchool:    core.SpellSchoolNature,
-		ProcMask:       core.ProcMaskSpellHealing,
-		Flags:          core.SpellFlagHelpful,
-		CritMultiplier: shaman.DefaultHealingCritMultiplier(),
+		ActionID:         core.ActionID{SpellID: 73685},
+		SpellSchool:      core.SpellSchoolNature,
+		ProcMask:         core.ProcMaskSpellHealing,
+		Flags:            core.SpellFlagHelpful,
+		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
+		BonusCoefficient: 0.201,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			healPower := spell.HealingPower(target)
-			baseHealing := 1996 + 0.201*healPower
-			result := spell.CalcAndDealHealing(sim, target, baseHealing, spell.OutcomeHealingCrit)
+			result := spell.CalcAndDealHealing(sim, target, 1996, spell.OutcomeHealingCrit)
 
 			if result.Outcome.Matches(core.OutcomeCrit) {
 				if shaman.Talents.AncestralAwakening > 0 {

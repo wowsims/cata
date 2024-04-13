@@ -25,7 +25,6 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 	}
 
 	actionID := core.ActionID{SpellID: 51505}
-	spellCoeff += core.TernaryFloat64(shaman.HasMajorGlyph(proto.ShamanMajorGlyph(proto.ShamanPrimeGlyph_GlyphOfLavaBurst)), 0.1, 0)
 
 	mask := core.ProcMaskSpellDamage
 	if isElementalOverload {
@@ -37,10 +36,11 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 	}
 
 	spellConfig := core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    mask,
-		Flags:       flags,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       mask,
+		Flags:          flags,
+		ClassSpellMask: SpellMaskLavaBurst,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   core.TernaryFloat64(isElementalOverload, 0, 0.1),
@@ -57,8 +57,9 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 			},
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion) + 0.05*float64(shaman.Talents.CallOfFlame),
+		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0.08 * float64(shaman.Talents.LavaFlows)),
+		BonusCoefficient: spellCoeff,
 	}
 
 	if isElementalOverload {
@@ -73,8 +74,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 	}
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := 1586 + spellCoeff*spell.SpellPower()
-		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+		result := spell.CalcDamage(sim, target, 1586, spell.OutcomeMagicHitAndCrit)
 
 		if canOverload && result.Landed() && sim.RandomFloat("Lava Burst Elemental Overload") < overloadChance {
 			shaman.LavaBurstOverload.Cast(sim, target)

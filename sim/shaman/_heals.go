@@ -257,11 +257,11 @@ func (shaman *Shaman) registerEarthShieldSpell() {
 	}
 
 	shaman.EarthShield = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
-
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagAPL,
+        ClassSpellMask: SpellMaskEarthShield
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -269,7 +269,7 @@ func (shaman *Shaman) registerEarthShieldSpell() {
 		},
 
 		BonusCritRating:  core.CritRatingPerCritChance,
-		DamageMultiplier: 1 + 0.05*float64(shaman.Talents.ImprovedShields) + 0.05*float64(shaman.Talents.ImprovedEarthShield) + bonusHeal,
+		DamageMultiplier: 1 + 0.05*float64(shaman.Talents.ImprovedEarthShield) + bonusHeal,
 		ThreatMultiplier: 1,
 		Hot: core.DotConfig{
 			Aura: core.Aura{

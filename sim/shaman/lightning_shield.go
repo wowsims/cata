@@ -15,16 +15,15 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 	actionID := core.ActionID{SpellID: 324}
 
 	procSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 26364},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskEmpty,
-
-		DamageMultiplier: 1 + 0.05*float64(shaman.Talents.ImprovedShields),
+		ActionID:         core.ActionID{SpellID: 26364},
+		SpellSchool:      core.SpellSchoolNature,
+		ProcMask:         core.ProcMaskEmpty,
+		ClassSpellMask:   SpellMaskLightningShield,
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1, //fix when spirit weapons is fixed
-
+		BonusCoefficient: 0.267,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 350 + 0.267*spell.SpellPower()
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+			spell.CalcAndDealDamage(sim, target, 350, spell.OutcomeMagicHit)
 		},
 	})
 

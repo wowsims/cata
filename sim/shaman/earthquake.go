@@ -29,11 +29,12 @@ func (shaman *Shaman) registerEarthquakeSpell() {
 			Aura: core.Aura{
 				Label: "Earthquake",
 			},
-			NumberOfTicks: 10,
-			TickLength:    time.Second * 1,
+			NumberOfTicks:    10,
+			TickLength:       time.Second * 1,
+			BonusCoefficient: 0.119,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.SnapshotBaseDamage = 326 + 0.119*dot.Spell.SpellPower()
+					dot.SnapshotBaseDamage = 326
 					dot.SnapshotCritChance = dot.Spell.SpellCritChance(aoeTarget)
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeMagicHitAndSnapshotCrit)

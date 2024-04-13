@@ -8,7 +8,7 @@ import (
 )
 
 // Shared logic for all shocks.
-func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellSchool, baseCost float64, shockTimer *core.Timer) core.SpellConfig {
+func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellSchool, baseCost float64, shockTimer *core.Timer, bonusCoefficient float64) core.SpellConfig {
 	actionID := core.ActionID{SpellID: spellID}
 
 	return core.SpellConfig{
@@ -33,14 +33,14 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		BonusCoefficient: bonusCoefficient,
 	}
 }
 
 func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
-	config := shaman.newShockSpellConfig(8042, core.SpellSchoolNature, 0.18, shockTimer)
+	config := shaman.newShockSpellConfig(8042, core.SpellSchoolNature, 0.18, shockTimer, 0.386)
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := 931 + 0.386*spell.SpellPower()
-		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+		spell.CalcAndDealDamage(sim, target, 931, spell.OutcomeMagicHitAndCrit)
 
 		if shaman.Talents.Fulmination && shaman.LightningShieldAura.GetStacks() > 3 {
 			shaman.Fulmination.Cast(sim, target)
@@ -52,7 +52,7 @@ func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
 }
 
 func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
-	config := shaman.newShockSpellConfig(8050, core.SpellSchoolFire, 0.17, shockTimer)
+	config := shaman.newShockSpellConfig(8050, core.SpellSchoolFire, 0.17, shockTimer, 0.214)
 
 	flameShockBaseNumberOfTicks := int32(6)
 
@@ -60,15 +60,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 		flameShockBaseNumberOfTicks += 3
 	}
 
-	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := 531 + 0.214*spell.SpellPower()
-		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-		if result.Landed() {
-			spell.Dot(target).NumberOfTicks = flameShockBaseNumberOfTicks
-			spell.Dot(target).Apply(sim)
-		}
-		spell.DealDamage(sim, result)
-	}
+	config.ClassSpellMask = SpellMaskFlameShock
 
 	bonusPeriodicDamageMultiplier := 0 + 0.2*float64(shaman.Talents.LavaFlows)
 
@@ -85,11 +77,9 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 		NumberOfTicks:       flameShockBaseNumberOfTicks,
 		TickLength:          time.Second * 3,
 		AffectedByCastSpeed: true,
-
+		BonusCoefficient:    0.1,
 		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-			dot.SnapshotBaseDamage = 856/6 + 0.1*dot.Spell.SpellPower()
-			dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-
+			dot.SnapshotBaseDamage = 856 / 6
 			dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
 			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			dot.Spell.DamageMultiplierAdditive -= bonusPeriodicDamageMultiplier
@@ -105,16 +95,23 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 		},
 	}
 
+	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		result := spell.CalcDamage(sim, target, 531, spell.OutcomeMagicHitAndCrit)
+		if result.Landed() {
+			spell.Dot(target).Apply(sim)
+		}
+		spell.DealDamage(sim, result)
+	}
+
 	shaman.FlameShock = shaman.RegisterSpell(config)
 }
 
 // TODO: need base damage
 func (shaman *Shaman) registerFrostShockSpell(shockTimer *core.Timer) {
-	config := shaman.newShockSpellConfig(8056, core.SpellSchoolFrost, 0.18, shockTimer)
+	config := shaman.newShockSpellConfig(8056, core.SpellSchoolFrost, 0.18, shockTimer, 0.386)
 	config.ThreatMultiplier *= 2
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := sim.Roll(812, 858) + 0.386*spell.SpellPower()
-		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+		spell.CalcAndDealDamage(sim, target, sim.Roll(812, 858), spell.OutcomeMagicHitAndCrit)
 	}
 
 	shaman.FrostShock = shaman.RegisterSpell(config)
