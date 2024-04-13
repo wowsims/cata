@@ -9,17 +9,9 @@ import (
 func (dk *DeathKnight) ApplyUnholyTalents() {
 	// Epidemic
 	if dk.Talents.Epidemic > 0 {
-		extraTicks := 0
-		if dk.Talents.Epidemic == 1 {
-			extraTicks = 1
-		} else if dk.Talents.Epidemic == 2 {
-			extraTicks = 2
-		} else {
-			extraTicks = 4
-		}
 		dk.AddStaticMod(core.SpellModConfig{
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
-			IntValue:  int64(extraTicks),
+			IntValue:  []int64{0, 1, 2, 4}[dk.Talents.Epidemic],
 			ClassMask: DeathKnightSpellDisease,
 		})
 	}

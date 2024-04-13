@@ -132,9 +132,6 @@ type DeathKnight struct {
 	BoneShield     *core.Spell
 	BoneShieldAura *core.Aura
 
-	UnholyFrenzy     *core.Spell
-	UnholyFrenzyAura *core.Aura
-
 	IceboundFortitude     *core.Spell
 	IceboundFortitudeAura *core.Aura
 
@@ -207,6 +204,7 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerDeathAndDecaySpell()
 	dk.registerFesteringStrikeSpell()
 	dk.registerEmpowerRuneWeaponSpell()
+	dk.registerUnholyFrenzySpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -320,6 +318,7 @@ const (
 	DeathKnightSpellFesteringStrike
 	DeathKnightSpellScourgeStrike
 	DeathKnightSpellScourgeStrikeShadow
+	DeathKnightSpellUnholyFrenzy
 
 	DeathKnightSpellFrostStrike
 	DeathKnightSpellRuneStrike
