@@ -197,6 +197,10 @@ const (
 	// Add/subtract bonus crit rating
 	// Uses: FloatValue
 	SpellMod_BonusCrit_Rating
+
+	// Will add / substract the number of ticks to the dot
+	// Uses: IntValue
+	SpellMod_Dot_NumberOfTicks_Flat
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -233,6 +237,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_CastTime_Pct: {
 		Apply:  applyCastTimePercent,
 		Remove: removeCastTimePercent,
+	},
+
+	SpellMod_Dot_NumberOfTicks_Flat: {
+		Apply:  applyDotNumberOfTicksFlat,
+		Remove: removeDotNumberOfTicksFlat,
 	},
 
 	SpellMod_BonusCrit_Rating: {
@@ -295,6 +304,14 @@ func applyCastTimePercent(mod *SpellMod, spell *Spell) {
 
 func removeCastTimePercent(mod *SpellMod, spell *Spell) {
 	spell.CastTimeMultiplier -= mod.floatValue
+}
+
+func applyDotNumberOfTicksFlat(mod *SpellMod, spell *Spell) {
+	spell.CurDot().NumberOfTicks += int32(mod.intValue)
+}
+
+func removeDotNumberOfTicksFlat(mod *SpellMod, spell *Spell) {
+	spell.CurDot().NumberOfTicks -= int32(mod.intValue)
 }
 
 func applyBonusCritRating(mod *SpellMod, spell *Spell) {
