@@ -33,11 +33,11 @@ type manaBar struct {
 // as well as enable the mana gain action to regenerate mana.
 // It will then enable mana gain metrics for reporting.
 func (character *Character) EnableManaBar() {
-	character.EnableManaBarWithModifier(1.0)
+	character.EnableManaBarWithModifier(1.0, true)
 	character.Unit.SetCurrentPowerBar(ManaBar)
 }
 
-func (character *Character) EnableManaBarWithModifier(modifier float64) {
+func (character *Character) EnableManaBarWithModifier(modifier float64, allowSpellPowerScaling bool) {
 	// Assumes all units have >= 20 intellect.
 	// See https://wowwiki-archive.fandom.com/wiki/Base_mana.
 	// Subtract out the non-linear part of the formula separately, so that weird
@@ -46,7 +46,9 @@ func (character *Character) EnableManaBarWithModifier(modifier float64) {
 	character.AddStatDependency(stats.Intellect, stats.Mana, 15*modifier)
 
 	// Starting with cataclysm 1 intellect now provides 1 spell power
-	character.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
+	if allowSpellPowerScaling {
+		character.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
+	}
 
 	// Not a real spell, just holds metrics from mana gain threat.
 	character.RegisterSpell(SpellConfig{

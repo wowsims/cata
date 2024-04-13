@@ -13,23 +13,6 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.Expertise, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))
 
-	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
-		shaman.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*6)
-
-		masteryBonusPoints := shaman.GetMasteryPoints()
-		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.2 + (masteryBonusPoints * 0.025)
-		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1.2 + (masteryBonusPoints * 0.025)
-		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.2 + (masteryBonusPoints * 0.025)
-		shaman.PseudoStats.CanParry = true
-
-		shaman.applyPrimalWisdom()
-		//TODO: This is the bonus for mental quickness. Still needs to disable all other spellpower gains somehow!
-		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.55)
-		shaman.registerLavaLashSpell()
-	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
-		shaman.registerThunderstormSpell()
-	}
-
 	if shaman.Talents.Toughness > 0 {
 		shaman.MultiplyStat(stats.Stamina, []float64{1.0, 1.03, 1.07, 1.1}[shaman.Talents.Toughness])
 	}
