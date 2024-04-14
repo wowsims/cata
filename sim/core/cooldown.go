@@ -58,6 +58,10 @@ func (cd *Cooldown) Use(sim *Simulation) {
 	*cd.Timer = Timer(sim.CurrentTime + cd.Duration)
 }
 
+func (cd *Cooldown) Reduce(t time.Duration) {
+	cd.Set(cd.ReadyAt() - t)
+}
+
 func BothTimersReadyAt(t1 *Timer, t2 *Timer) time.Duration {
 	readyAt := time.Duration(0)
 	if t1 != nil {

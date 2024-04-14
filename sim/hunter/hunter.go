@@ -168,7 +168,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		AutoSwingRanged: true,
 	})
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) + spell.BonusWeaponDamage()
+		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
 
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

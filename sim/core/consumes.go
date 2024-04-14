@@ -253,7 +253,7 @@ func applyConsumeEffects(agent Agent) {
 				},
 				OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 					if result.Landed() &&
-						spell.SpellSchool == SpellSchoolPhysical &&
+						spell.SpellSchool.Matches(SpellSchoolPhysical) &&
 						sim.RandomFloat("Gift of Arthas") < 0.3 {
 						goaProc.Cast(sim, spell.Unit)
 					}

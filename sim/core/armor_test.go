@@ -28,7 +28,7 @@ func TestSunderArmorStacks(t *testing.T) {
 	sunderAura.Activate(&sim)
 	sunderAura.SetStacks(&sim, stacks)
 	tolerance := 0.001
-	for stacks <= 5 {
+	for stacks <= 3 {
 		expectedArmor = baseArmor * (1.0 - float64(stacks)*0.04)
 		if !WithinToleranceFloat64(expectedArmor, target.Armor(), tolerance) {
 			t.Fatalf("Armor value for target should be %f but found %f", expectedArmor, target.Armor())

@@ -47,6 +47,9 @@ type Cast struct {
 	// The amount of time between the call to spell.Cast() and when the spell
 	// effects are invoked.
 	CastTime time.Duration
+
+	// A dummy value to give 0gcd casts a non empty struct
+	NonEmpty bool
 }
 
 func (cast *Cast) EffectiveTime() time.Duration {
