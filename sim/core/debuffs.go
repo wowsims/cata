@@ -24,7 +24,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(CurseOfElementsAura(target))
 	}
 	if debuffs.EbonPlaguebringer {
-		MakePermanent(EbonPlaguebringerOrCryptFeverAura(nil, target, 2, 3, 3))
+		MakePermanent(EbonPlaguebringerAura(nil, target, 2, 3))
 	}
 	if debuffs.EarthAndMoon && targetIdx == 0 {
 		MakePermanent(EarthAndMoonAura(target, 3))
@@ -133,8 +133,8 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.DemoralizingRoar != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(DemoralizingRoarAura(target, GetTristateValueInt32(debuffs.DemoralizingRoar, 0, 5)))
 	}
-	if debuffs.DemoralizingShout != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(DemoralizingShoutAura(target, 0, GetTristateValueInt32(debuffs.DemoralizingShout, 0, 5)))
+	if debuffs.DemoralizingShout {
+		MakePermanent(DemoralizingShoutAura(target, false))
 	}
 	if debuffs.Vindication && targetIdx == 0 {
 		MakePermanent(VindicationAura(target, 2))
@@ -145,10 +145,10 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 
 	// Atk spd reduction
 	if debuffs.ThunderClap != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(ThunderClapAura(target, GetTristateValueInt32(debuffs.ThunderClap, 0, 3)))
+		MakePermanent(ThunderClapAura(target))
 	}
 	if debuffs.FrostFever != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(FrostFeverAura(target, GetTristateValueInt32(debuffs.FrostFever, 0, 3), 0))
+		MakePermanent(FrostFeverAura(nil, target, GetTristateValueInt32(debuffs.FrostFever, 0, 3)))
 	}
 	if debuffs.InfectedWounds && targetIdx == 0 {
 		MakePermanent(InfectedWoundsAura(target, 3))
@@ -279,15 +279,15 @@ func EarthAndMoonAura(target *Unit, points int32) *Aura {
 	return aura
 }
 
-func EbonPlaguebringerOrCryptFeverAura(caster *Character, target *Unit, epidemicPoints, cryptFeverPoints, ebonPlaguebringerPoints int32) *Aura {
-	casterIndex := -1
-	// On application, Crypt Fever and Ebon Plaguebringer trigger extra 'ghost' procs.
+func EbonPlaguebringerAura(caster *Character, target *Unit, epidemicPoints int32, ebonPlaguebringerPoints int32) *Aura {
+	// On application, Ebon Plaguebringer trigger extra 'ghost' procs.
 	var ghostSpell *Spell
+	label := "External"
 	if caster != nil {
-		casterIndex = int(caster.Index)
+		label = caster.Label
 		ghostSpell = caster.RegisterSpell(SpellConfig{
 			ActionID:    ActionID{SpellID: 52789},
-			SpellSchool: SpellSchoolMagic,
+			SpellSchool: SpellSchoolShadow,
 			ProcMask:    ProcMaskSpellDamage,
 			Flags:       SpellFlagNoLogs | SpellFlagNoMetrics | SpellFlagNoOnCastComplete | SpellFlagIgnoreModifiers,
 
@@ -296,42 +296,25 @@ func EbonPlaguebringerOrCryptFeverAura(caster *Character, target *Unit, epidemic
 
 			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 				// Just deal 0 damage as the "Harmful Spell" is implemented on spell damage
-				spell.CalcAndDealDamage(sim, target, 0, spell.OutcomeAlwaysHit)
+				spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 			},
 		})
 	}
 
 	aura := target.GetOrRegisterAura(Aura{
-		Label: "EbonPlaguebringer" + strconv.Itoa(casterIndex), // Support multiple DKs having their EP up
-		Tag:   "EbonPlaguebringer",
-		// ActionID: ActionID{SpellID: 49632}, // Crypt Fever spellID if we ever care
-		ActionID: ActionID{SpellID: 51161},
-		Duration: time.Second * (15 + 3*time.Duration(epidemicPoints)),
+		Label:    "EbonPlaguebringer" + label, // Support multiple DKs having their EP up
+		Tag:      "EbonPlaguebringer",
+		ActionID: ActionID{SpellID: 65142},
+		Duration: time.Second * (21 + []time.Duration{0, 4, 8, 12}[epidemicPoints]),
 		OnGain: func(aura *Aura, sim *Simulation) {
 			if ghostSpell != nil {
-				if cryptFeverPoints > 0 {
-					ghostSpell.Cast(sim, aura.Unit)
-				}
-				if ebonPlaguebringerPoints > 0 {
-					ghostSpell.Cast(sim, aura.Unit)
-				}
+				ghostSpell.Cast(sim, aura.Unit)
 			}
 		},
 	})
 
-	diseaseMultiplier := 1.0 + 0.1*float64(cryptFeverPoints)
-	aura.NewExclusiveEffect("diseaseDmg", false, ExclusiveEffect{
-		Priority: diseaseMultiplier,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.DiseaseDamageTakenMultiplier *= diseaseMultiplier
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.DiseaseDamageTakenMultiplier /= diseaseMultiplier
-		},
-	})
-
 	if ebonPlaguebringerPoints > 0 {
-		spellDamageEffect(aura, []float64{1, 1.04, 1.09, 1.13}[ebonPlaguebringerPoints])
+		spellDamageEffect(aura, 1.08)
 	}
 	return aura
 }
@@ -374,15 +357,7 @@ func bloodFrenzySavageCombatAura(target *Unit, label string, id ActionID, points
 	})
 
 	multiplier := 1 + 0.02*float64(points)
-	aura.NewExclusiveEffect("PhysicalDmg", true, ExclusiveEffect{
-		Priority: multiplier,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= multiplier
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= multiplier
-		},
-	})
+	PhysDamageTakenEffect(aura, multiplier)
 	return aura
 }
 
@@ -553,9 +528,9 @@ func SunderArmorAura(target *Unit) *Aura {
 	var effect *ExclusiveEffect
 	aura := target.GetOrRegisterAura(Aura{
 		Label:     "Sunder Armor",
-		ActionID:  ActionID{SpellID: 47467},
+		ActionID:  ActionID{SpellID: 58567},
 		Duration:  time.Second * 30,
-		MaxStacks: 5,
+		MaxStacks: 3,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
 			effect.SetPriority(sim, 0.04*float64(newStacks))
 		},
@@ -721,13 +696,13 @@ func DemoralizingRoarAura(target *Unit, points int32) *Aura {
 	return aura
 }
 
-func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts int32) *Aura {
+func DemoralizingShoutAura(target *Unit, glyph bool) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "DemoralizingShout-" + strconv.Itoa(int(impDemoShoutPts)),
-		ActionID: ActionID{SpellID: 47437},
-		Duration: time.Duration(float64(time.Second*30) * (1 + 0.1*float64(boomingVoicePts))),
+		Label:    "DemoralizingShout",
+		ActionID: ActionID{SpellID: 1160},
+		Duration: time.Second*30 + TernaryDuration(glyph, time.Second*15, 0),
 	})
-	apReductionEffect(aura, 411*(1+0.08*float64(impDemoShoutPts)))
+	PhysDamageReductionEffect(aura, 0.1)
 	return aura
 }
 
@@ -751,6 +726,32 @@ func DemoralizingScreechAura(target *Unit) *Aura {
 	return aura
 }
 
+func PhysDamageTakenEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("PhysicalDmg", false, ExclusiveEffect{
+		Priority: multiplier,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= multiplier
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= multiplier
+		},
+	})
+
+}
+
+func PhysDamageReductionEffect(aura *Aura, dmgReduction float64) *ExclusiveEffect {
+	reductionMult := 1.0 - dmgReduction
+	return aura.NewExclusiveEffect("PhysDamageReduction", false, ExclusiveEffect{
+		Priority: dmgReduction,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[SpellSchoolPhysical] *= reductionMult
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[SpellSchoolPhysical] /= reductionMult
+		},
+	})
+}
+
 func apReductionEffect(aura *Aura, apReduction float64) *ExclusiveEffect {
 	statReduction := stats.Stats{stats.AttackPower: -apReduction}
 	return aura.NewExclusiveEffect("APReduction", false, ExclusiveEffect{
@@ -764,13 +765,13 @@ func apReductionEffect(aura *Aura, apReduction float64) *ExclusiveEffect {
 	})
 }
 
-func ThunderClapAura(target *Unit, points int32) *Aura {
+func ThunderClapAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "ThunderClap-" + strconv.Itoa(int(points)),
-		ActionID: ActionID{SpellID: 47502},
+		Label:    "ThunderClap",
+		ActionID: ActionID{SpellID: 6343},
 		Duration: time.Second * 30,
 	})
-	AtkSpeedReductionEffect(aura, []float64{1.1, 1.14, 1.17, 1.2}[points])
+	AtkSpeedReductionEffect(aura, 1.2)
 	return aura
 }
 
@@ -796,13 +797,18 @@ func JudgementsOfTheJustAura(target *Unit, points int32) *Aura {
 	return aura
 }
 
-func FrostFeverAura(target *Unit, impIcyTouch int32, epidemic int32) *Aura {
+func FrostFeverAura(caster *Unit, target *Unit, britleBones int32) *Aura {
+	label := "External"
+	if caster != nil {
+		label = caster.Label
+	}
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "FrostFever",
+		Label:    "FrostFeverDebuff" + label,
 		ActionID: ActionID{SpellID: 55095},
-		Duration: time.Second*15 + (time.Second * 3 * time.Duration(epidemic)),
+		Duration: NeverExpires,
 	})
-	AtkSpeedReductionEffect(aura, 1.14+0.02*float64(impIcyTouch))
+	AtkSpeedReductionEffect(aura, 1.2)
+	PhysDamageTakenEffect(aura, 1+0.02*float64(britleBones))
 	return aura
 }
 

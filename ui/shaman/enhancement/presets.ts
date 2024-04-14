@@ -97,10 +97,9 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	leaderOfThePack: TristateEffect.TristateEffectImproved,
 	totemOfWrath: true,
 	wrathOfAirTotem: true,
-	moonkinAura: TristateEffect.TristateEffectImproved,
 	sanctifiedRetribution: true,
 	divineSpirit: true,
-	battleShout: TristateEffect.TristateEffectImproved,
+	battleShout: true,
 	demonicPactSp: 500,
 });
 

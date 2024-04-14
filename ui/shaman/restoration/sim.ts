@@ -64,7 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 			arcaneBrilliance: true,
 			divineSpirit: true,
 			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			moonkinAura: TristateEffect.TristateEffectImproved,
+			moonkinAura: true,
 			sanctifiedRetribution: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),

@@ -77,10 +77,6 @@ func (spell *Spell) RangedAttackPower(target *Unit) float64 {
 		target.PseudoStats.BonusRangedAttackPowerTaken
 }
 
-func (spell *Spell) BonusWeaponDamage() float64 {
-	return spell.Unit.PseudoStats.BonusDamage
-}
-
 func (spell *Spell) ExpertisePercentage() float64 {
 	// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter
 	// percent intervals. Note that in-game character sheet tooltips will still
@@ -105,6 +101,18 @@ func (spell *Spell) PhysicalCritChance(attackTable *AttackTable) float64 {
 }
 func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable) bool {
 	return sim.RandomFloat("Physical Crit Roll") < spell.PhysicalCritChance(attackTable)
+}
+
+func (spell *Spell) BonusDamage() float64 {
+	var bonusDamage float64
+
+	if spell.SpellSchool.Matches(SpellSchoolPhysical) {
+		bonusDamage = spell.Unit.PseudoStats.BonusDamage
+	} else {
+		bonusDamage = spell.SpellPower()
+	}
+
+	return bonusDamage
 }
 
 func (spell *Spell) SpellPower() float64 {
@@ -181,9 +189,22 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 
 	if sim.Log == nil {
 		result.Damage *= attackerMultiplier
-		result.applyTargetModifiers(spell, attackTable, isPeriodic)
 		result.applyResistances(sim, spell, isPeriodic, attackTable)
+		result.applyTargetModifiers(spell, attackTable, isPeriodic)
+
+		// Save partial outcome which comes from applyResistances call
+		partialOutcome := OutcomeEmpty
+		if result.Outcome.Matches(OutcomePartial) {
+			partialOutcome = result.Outcome & OutcomePartial
+		}
+
 		outcomeApplier(sim, result, attackTable)
+
+		// Restore partial outcome
+		if partialOutcome != OutcomeEmpty {
+			result.Outcome |= partialOutcome
+		}
+
 		spell.ApplyPostOutcomeDamageModifiers(sim, result)
 	} else {
 		result.Damage *= attackerMultiplier
@@ -192,8 +213,21 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 		afterResistances := result.Damage
 		result.applyTargetModifiers(spell, attackTable, isPeriodic)
 		afterTargetMods := result.Damage
+
+		// Save partial outcome which comes from applyResistances call
+		partialOutcome := OutcomeEmpty
+		if result.Outcome.Matches(OutcomePartial) {
+			partialOutcome = result.Outcome & OutcomePartial
+		}
+
 		outcomeApplier(sim, result, attackTable)
 		afterOutcome := result.Damage
+
+		// Restore partial outcome
+		if partialOutcome != OutcomeEmpty {
+			result.Outcome |= partialOutcome
+		}
+
 		spell.ApplyPostOutcomeDamageModifiers(sim, result)
 		afterPostOutcome := result.Damage
 
@@ -209,10 +243,23 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 }
 func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex])
+	if spell.BonusCoefficient > 0 {
+		baseDamage += spell.BonusCoefficient * spell.BonusDamage()
+	}
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, false, outcomeApplier)
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex])
+
+	var dot *Dot
+	if spell.aoeDot != nil {
+		dot = spell.aoeDot
+	} else {
+		dot = spell.Dot(target)
+	}
+	if dot.BonusCoefficient > 0 {
+		baseDamage += dot.BonusCoefficient * spell.BonusDamage()
+	}
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, true, outcomeApplier)
 }
 func (dot *Dot) CalcSnapshotDamage(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
@@ -284,6 +331,16 @@ func (dot *Dot) CalcAndDealPeriodicSnapshotDamage(sim *Simulation, target *Unit,
 	return result
 }
 
+func (dot *Dot) Snapshot(target *Unit, baseDamage float64) {
+	dot.SnapshotBaseDamage = baseDamage
+	if dot.BonusCoefficient > 0 {
+		dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.BonusDamage()
+	}
+	attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+	dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+	dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+}
+
 func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHealing float64, casterMultiplier float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackTable := spell.Unit.AttackTables[target.UnitIndex]
 
@@ -313,10 +370,22 @@ func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHeali
 	return result
 }
 func (spell *Spell) CalcHealing(sim *Simulation, target *Unit, baseHealing float64, outcomeApplier OutcomeApplier) *SpellResult {
+	if spell.BonusCoefficient > 0 {
+		baseHealing += spell.BonusCoefficient * spell.HealingPower(target)
+	}
 	return spell.calcHealingInternal(sim, target, baseHealing, spell.CasterHealingMultiplier(), outcomeApplier)
 }
 func (dot *Dot) CalcSnapshotHealing(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
 	return dot.Spell.calcHealingInternal(sim, target, dot.SnapshotBaseDamage, dot.SnapshotAttackerMultiplier, outcomeApplier)
+}
+
+func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64) {
+	dot.SnapshotBaseDamage = baseHealing
+	if dot.BonusCoefficient > 0 {
+		dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.HealingPower(target)
+	}
+	dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+	dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
 }
 
 // Applies the fully computed spell result to the sim.
@@ -422,6 +491,10 @@ func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic 
 		multiplier *= attackTable.NatureDamageTakenMultiplier
 	} else if isPeriodic && spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		multiplier *= attackTable.Defender.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
+	}
+
+	if attackTable.DamageDoneByCasterMultiplier != nil {
+		multiplier *= attackTable.DamageDoneByCasterMultiplier(spell, attackTable)
 	}
 
 	return multiplier

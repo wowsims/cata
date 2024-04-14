@@ -158,7 +158,7 @@ message BloodDeathKnight {
 	message Options {
 		DeathKnightOptions class_options = 1;
 		double defensive_delay = 2;
-		bool drw_pesti_apply = 6;
+		bool drw_pesti_apply = 3;
 	}
 	Options options = 3;
 }

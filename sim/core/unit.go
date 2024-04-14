@@ -263,6 +263,7 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 	}
 	if bonus[stats.MeleeHaste] != 0 {
 		unit.AutoAttacks.UpdateSwingTimers(sim)
+		unit.runicPowerBar.updateRegenTimes(sim)
 	}
 	if bonus[stats.SpellHaste] != 0 {
 		unit.updateCastSpeed()
@@ -348,7 +349,7 @@ func (unit *Unit) ApplyCastSpeedForSpell(dur time.Duration, spell *Spell) time.D
 }
 
 func (unit *Unit) SwingSpeed() float64 {
-	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / (unit.PseudoStats.MeleeHasteRatingPerHastePercent * 100)))
+	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100)))
 }
 
 func (unit *Unit) Armor() float64 {

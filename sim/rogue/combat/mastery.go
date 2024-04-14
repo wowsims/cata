@@ -11,17 +11,20 @@ const masteryBaseEffect = 0.16
 func (comRogue *CombatRogue) applyMastery() {
 
 	comRogue.mainGauche = comRogue.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 86392},
-		SpellSchool:      core.SpellSchoolPhysical,
-		ProcMask:         core.ProcMaskMeleeMHSpecial, // TODO Thebackstabi 3/20/2024 -- Validate if MG can proc things
-		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ActionID:    core.ActionID{SpellID: 86392},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeMHSpecial, // TODO Thebackstabi 3/20/2024 -- Validate if MG can proc things
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+
 		DamageMultiplier: 1,
 		CritMultiplier:   comRogue.MeleeCritMultiplier(false),
 		ThreatMultiplier: 1,
+
+		BonusCoefficient: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0 +
-				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
