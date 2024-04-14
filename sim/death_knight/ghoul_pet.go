@@ -1,0 +1,186 @@
+package death_knight
+
+import (
+	"time"
+
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
+)
+
+type GhoulPet struct {
+	core.Pet
+
+	dkOwner *DeathKnight
+
+	DarkTransformationAura *core.Aura
+	Claw                   *core.Spell
+
+	uptimePercent float64
+}
+
+func (dk *DeathKnight) NewArmyGhoulPet(_ int) *GhoulPet {
+	ghoulPet := &GhoulPet{
+		Pet:     core.NewPet("Army of the Dead", &dk.Character, dk.ghoulBaseStats(), dk.ghoulStatInheritance(), false, true),
+		dkOwner: dk,
+	}
+
+	ghoulPet.PseudoStats.DamageTakenMultiplier *= 0.1
+
+	dk.SetupGhoul(ghoulPet)
+
+	// command doesn't apply to army ghoul
+	if dk.Race == proto.Race_RaceOrc {
+		ghoulPet.PseudoStats.DamageDealtMultiplier /= 1.05
+	}
+
+	return ghoulPet
+}
+
+func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
+	ghoulPet := &GhoulPet{
+		Pet:     core.NewPet("Ghoul", &dk.Character, dk.ghoulBaseStats(), dk.ghoulStatInheritance(), permanent, !permanent),
+		dkOwner: dk,
+	}
+
+	dk.SetupGhoul(ghoulPet)
+
+	if permanent {
+		core.ApplyPetConsumeEffects(&ghoulPet.Character, dk.Consumes)
+	}
+
+	return ghoulPet
+}
+
+func (dk *DeathKnight) SetupGhoul(ghoulPet *GhoulPet) {
+	ghoulPet.EnableAutoAttacks(ghoulPet, core.AutoAttackOptions{
+		MainHand: core.Weapon{
+			// Base 240 DPS with observed around 300 range
+			BaseDamageMin:     (240 - 75) * 2,
+			BaseDamageMax:     (240 + 75) * 2,
+			SwingSpeed:        2,
+			CritMultiplier:    2,
+			AttackPowerPerDPS: 14,
+		},
+		AutoSwingMelee: true,
+	})
+
+	ghoulPet.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	ghoulPet.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/85.5)
+
+	ghoulPet.Pet.OnPetEnable = ghoulPet.enable
+
+	ghoulPet.Unit.EnableFocusBar(100, 10.0, false)
+
+	dk.AddPet(ghoulPet)
+}
+
+func (ghoulPet *GhoulPet) GetPet() *core.Pet {
+	return &ghoulPet.Pet
+}
+
+func (ghoulPet *GhoulPet) Initialize() {
+	ghoulPet.Claw = ghoulPet.registerClaw()
+}
+
+func (ghoulPet *GhoulPet) Reset(_ *core.Simulation) {
+	if !ghoulPet.IsGuardian() {
+		ghoulPet.uptimePercent = min(1, max(0, ghoulPet.dkOwner.Inputs.PetUptime))
+	} else {
+		ghoulPet.uptimePercent = 1.0
+	}
+}
+
+func (ghoulPet *GhoulPet) ExecuteCustomRotation(sim *core.Simulation) {
+	if ghoulPet.uptimePercent < 1.0 { // Apply uptime for permanent pet ghoul
+		if sim.GetRemainingDurationPercent() < 1.0-ghoulPet.uptimePercent { // once fight is % completed, disable pet.
+			ghoulPet.Pet.Disable(sim)
+			return
+		}
+	}
+
+	if ghoulPet.CurrentFocus() < ghoulPet.Claw.DefaultCast.Cost {
+		return
+	}
+
+	ghoulPet.Claw.Cast(sim, ghoulPet.CurrentTarget)
+}
+
+func (ghoulPet *GhoulPet) enable(sim *core.Simulation) {
+	if ghoulPet.IsGuardian() {
+		ghoulPet.PseudoStats.MeleeSpeedMultiplier = 1 // guardians are not affected by raid buffs
+		ghoulPet.MultiplyMeleeSpeed(sim, ghoulPet.dkOwner.PseudoStats.MeleeSpeedMultiplier)
+		return
+	}
+
+	ghoulPet.MultiplyMeleeSpeed(sim, ghoulPet.dkOwner.PseudoStats.MeleeSpeedMultiplier)
+
+	ghoulPet.EnableDynamicMeleeSpeed(func(amount float64) {
+		ghoulPet.MultiplyMeleeSpeed(sim, amount)
+
+		if sim.Log != nil {
+			sim.Log("Ghoul MeleeSpeedMultiplier: %f, ownerMeleeMultiplier: %f\n", ghoulPet.Character.PseudoStats.MeleeSpeedMultiplier, ghoulPet.dkOwner.PseudoStats.MeleeSpeedMultiplier)
+		}
+	})
+}
+
+func (dk *DeathKnight) ghoulBaseStats() stats.Stats {
+	return stats.Stats{
+		stats.Stamina:     388,
+		stats.Agility:     3343,
+		stats.Strength:    476,
+		stats.AttackPower: -20,
+	}
+}
+
+func (dk *DeathKnight) ghoulStatInheritance() core.PetStatInheritance {
+	glyphBonus := core.TernaryFloat64(dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfRaiseDead), 1.4, 0.0)
+
+	return func(ownerStats stats.Stats) stats.Stats {
+		return stats.Stats{
+			stats.Stamina:  ownerStats[stats.Stamina] * (0.904 * glyphBonus),
+			stats.Strength: ownerStats[stats.Strength] * (1.01 + glyphBonus*0.4254),
+
+			stats.MeleeHit:  ownerStats[stats.MeleeHit],
+			stats.Expertise: ownerStats[stats.MeleeHit] * PetExpertiseScale,
+
+			stats.MeleeHaste: ownerStats[stats.MeleeHaste],
+		}
+	}
+}
+
+func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
+	return ghoulPet.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 47468},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+
+		FocusCost: core.FocusCostOptions{
+			Cost:   40,
+			Refund: 0.8,
+		},
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: time.Second,
+			},
+			IgnoreHaste: true,
+		},
+
+		DamageMultiplier: 1.25,
+		CritMultiplier:   2,
+		ThreatMultiplier: 1,
+
+		BonusCoefficient: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			if !result.Landed() {
+				spell.IssueRefund(sim)
+			}
+		},
+	})
+}

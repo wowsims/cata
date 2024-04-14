@@ -30,6 +30,8 @@ type DeathKnightInputs struct {
 	UseAMS            bool
 	AvgAMSSuccessRate float64
 	AvgAMSHit         float64
+
+	Spec proto.Spec
 }
 
 type DeathKnight struct {
@@ -43,7 +45,7 @@ type DeathKnight struct {
 
 	Inputs DeathKnightInputs
 
-	//Ghoul     *GhoulPet
+	Ghoul     *GhoulPet
 	RaiseDead *core.Spell
 
 	//Gargoyle                 *GargoylePet
@@ -272,7 +274,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	// 		dk.Gargoyle = dk.NewGargoyle()
 	// 	}
 
-	// 	dk.Ghoul = dk.NewGhoulPet(dk.Talents.MasterOfGhouls)
+	dk.Ghoul = dk.NewGhoulPet(dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight)
 	// 	dk.OnGargoyleStartFirstCast = func() {}
 	// 	dk.GargoyleSummonDelay = time.Millisecond * 2500
 
@@ -319,6 +321,7 @@ const (
 	DeathKnightSpellScourgeStrike
 	DeathKnightSpellScourgeStrikeShadow
 	DeathKnightSpellUnholyFrenzy
+	DeathKnightSpellDarkTransformation
 
 	DeathKnightSpellFrostStrike
 	DeathKnightSpellRuneStrike

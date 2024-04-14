@@ -60,6 +60,12 @@ func (dk *DeathKnight) ApplyUnholyTalents() {
 
 	// Sudden Doom
 	dk.applySuddenDoom()
+
+	// Shadow Infusion
+	shadowInfusionAura := dk.applyShadowInfusion()
+
+	// Dark Transformation
+	dk.applyDarkTransformation(shadowInfusionAura)
 }
 
 func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
@@ -228,6 +234,109 @@ func (dk *DeathKnight) applySuddenDoom() {
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			aura.Activate(sim)
+		},
+	})
+}
+
+func (dk *DeathKnight) applyShadowInfusion() *core.Aura {
+	if dk.Talents.ShadowInfusion == 0 || dk.Ghoul == nil {
+		return nil
+	}
+
+	trackingAura := dk.GetOrRegisterAura(core.Aura{
+		Label:     "Shadow Infusion Dk",
+		ActionID:  core.ActionID{SpellID: 91342},
+		Duration:  time.Second * 30,
+		MaxStacks: 5,
+	})
+
+	aura := dk.Ghoul.GetOrRegisterAura(core.Aura{
+		Label:     "Shadow Infusion",
+		ActionID:  core.ActionID{SpellID: 91342},
+		Duration:  time.Second * 30,
+		MaxStacks: 5,
+
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			trackingAura.Deactivate(sim)
+		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			trackingAura.Activate(sim)
+			trackingAura.SetStacks(sim, newStacks)
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.0 + float64(oldStacks)*0.06
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.0 + float64(newStacks)*0.06
+		},
+	})
+
+	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+		Name:           "Shadow Infusion",
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: DeathKnightSpellDeathCoil,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     []float64{0.0, 0.33, 0.66, 1.0}[dk.Talents.ShadowInfusion],
+
+		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+			if dk.Ghoul.DarkTransformationAura.IsActive() {
+				return
+			}
+			aura.Activate(sim)
+			aura.AddStack(sim)
+		},
+	})
+
+	return aura
+}
+
+func (dk *DeathKnight) applyDarkTransformation(shadowInfusionAura *core.Aura) {
+	if !dk.Talents.DarkTransformation {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 63560}
+
+	trackingAura := dk.GetOrRegisterAura(core.Aura{
+		Label:    "Dark Transformation Dk",
+		ActionID: actionID,
+		Duration: time.Second * 30,
+	})
+
+	dk.Ghoul.DarkTransformationAura = dk.Ghoul.GetOrRegisterAura(core.Aura{
+		Label:    "Dark Transformation",
+		ActionID: actionID,
+		Duration: time.Second * 30,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			trackingAura.Activate(sim)
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.6
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			trackingAura.Deactivate(sim)
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.6
+		},
+	})
+
+	dk.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolShadow,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: DeathKnightSpellDarkTransformation,
+
+		RuneCost: core.RuneCostOptions{
+			UnholyRuneCost: 1,
+			RunicPowerGain: 10,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return shadowInfusionAura.GetStacks() == shadowInfusionAura.MaxStacks
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			shadowInfusionAura.Deactivate(sim)
+			dk.Ghoul.DarkTransformationAura.Activate(sim)
 		},
 	})
 }
