@@ -27,7 +27,7 @@ func (dk *DeathKnight) NewArmyGhoulPet(_ int) *GhoulPet {
 
 	ghoulPet.PseudoStats.DamageTakenMultiplier *= 0.1
 
-	dk.SetupGhoul(ghoulPet)
+	dk.SetupGhoul(ghoulPet, 14/0.0055)
 
 	// command doesn't apply to army ghoul
 	if dk.Race == proto.Race_RaceOrc {
@@ -43,7 +43,7 @@ func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
 		dkOwner: dk,
 	}
 
-	dk.SetupGhoul(ghoulPet)
+	dk.SetupGhoul(ghoulPet, 14)
 
 	if permanent {
 		core.ApplyPetConsumeEffects(&ghoulPet.Character, dk.Consumes)
@@ -52,7 +52,8 @@ func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
 	return ghoulPet
 }
 
-func (dk *DeathKnight) SetupGhoul(ghoulPet *GhoulPet) {
+func (dk *DeathKnight) SetupGhoul(ghoulPet *GhoulPet, apScaling float64) {
+
 	ghoulPet.EnableAutoAttacks(ghoulPet, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			// Base 240 DPS with observed around 300 range
@@ -60,13 +61,13 @@ func (dk *DeathKnight) SetupGhoul(ghoulPet *GhoulPet) {
 			BaseDamageMax:     (240 + 75) * 2,
 			SwingSpeed:        2,
 			CritMultiplier:    2,
-			AttackPowerPerDPS: 14,
+			AttackPowerPerDPS: apScaling,
 		},
 		AutoSwingMelee: true,
 	})
 
 	ghoulPet.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	ghoulPet.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/85.5)
+	ghoulPet.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/243.7)
 
 	ghoulPet.Pet.OnPetEnable = ghoulPet.enable
 
@@ -99,11 +100,18 @@ func (ghoulPet *GhoulPet) ExecuteCustomRotation(sim *core.Simulation) {
 		}
 	}
 
-	if ghoulPet.CurrentFocus() < ghoulPet.Claw.DefaultCast.Cost {
+	if !ghoulPet.GCD.IsReady(sim) {
 		return
 	}
 
-	ghoulPet.Claw.Cast(sim, ghoulPet.CurrentTarget)
+	if ghoulPet.CurrentFocus() < ghoulPet.Claw.DefaultCast.Cost {
+		ghoulPet.WaitUntil(sim, sim.CurrentTime+core.DurationFromSeconds((ghoulPet.Claw.DefaultCast.Cost-ghoulPet.CurrentFocus())/ghoulPet.FocusRegenPerSecond()))
+		return
+	}
+
+	if ghoulPet.Claw.CanCast(sim, ghoulPet.CurrentTarget) {
+		ghoulPet.Claw.Cast(sim, ghoulPet.CurrentTarget)
+	}
 }
 
 func (ghoulPet *GhoulPet) enable(sim *core.Simulation) {
@@ -117,10 +125,6 @@ func (ghoulPet *GhoulPet) enable(sim *core.Simulation) {
 
 	ghoulPet.EnableDynamicMeleeSpeed(func(amount float64) {
 		ghoulPet.MultiplyMeleeSpeed(sim, amount)
-
-		if sim.Log != nil {
-			sim.Log("Ghoul MeleeSpeedMultiplier: %f, ownerMeleeMultiplier: %f\n", ghoulPet.Character.PseudoStats.MeleeSpeedMultiplier, ghoulPet.dkOwner.PseudoStats.MeleeSpeedMultiplier)
-		}
 	})
 }
 

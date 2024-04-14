@@ -980,7 +980,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodRune(sim *Simulation, 
 	}
 
 	changeType, slots := spell.Unit.spendRuneCost(sim, spell, cost)
-	if !sim.Proc(convertChance, "Blood of The North / Reaping / DRM") {
+	if !sim.Proc(convertChance, "Reaping") {
 		spell.Unit.maybeFireChange(sim, changeType)
 		return
 	}
@@ -1017,7 +1017,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertFrostOrUnholyRune(sim *Simu
 	}
 
 	changeType, slots := spell.Unit.spendRuneCost(sim, spell, cost)
-	if !sim.Proc(convertChance, "Blood of The North / Reaping / DRM") {
+	if !sim.Proc(convertChance, "Blood Rites") {
 		spell.Unit.maybeFireChange(sim, changeType)
 		return
 	}
@@ -1034,6 +1034,47 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertFrostOrUnholyRune(sim *Simu
 
 func (spell *Spell) SpendRefundableCostAndConvertFrostOrUnholyRune(sim *Simulation, result *SpellResult, convertChance float64) {
 	spell.Cost.(*RuneCostImpl).spendRefundableCostAndConvertFrostOrUnholyRune(sim, spell, result, convertChance)
+}
+
+func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, spell *Spell, result *SpellResult, convertChance float64) {
+	cost := RuneCost(spell.CurCast.Cost) // cost was already optimized in RuneSpell.Cast
+	if cost == 0 {
+		return // it was free this time. we don't care
+	}
+	if !result.Landed() {
+		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
+		return
+	}
+
+	changeType, slots := spell.Unit.spendRuneCost(sim, spell, cost)
+	if !sim.Proc(convertChance, "Reaping") {
+		spell.Unit.maybeFireChange(sim, changeType)
+		return
+	}
+
+	for _, slot := range slots {
+		if slot == 0 || slot == 1 {
+			// If the slot to be converted is already blood-tapped, then we convert the other blood rune
+			if spell.Unit.IsBloodTappedRune(slot) {
+				otherRune := (slot + 1) % 2
+				spell.Unit.ConvertToDeath(sim, otherRune, NeverExpires)
+				changeType |= ConvertToDeath
+			} else {
+				spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
+				changeType |= ConvertToDeath
+			}
+		}
+		if slot == 2 || slot == 3 {
+			spell.Unit.ConvertToDeath(sim, slot, NeverExpires)
+			changeType |= ConvertToDeath
+		}
+	}
+
+	spell.Unit.maybeFireChange(sim, changeType)
+}
+
+func (spell *Spell) SpendRefundableCostAndConvertBloodOrFrostRune(sim *Simulation, result *SpellResult, convertChance float64) {
+	spell.Cost.(*RuneCostImpl).spendRefundableCostAndConvertBloodOrFrostRune(sim, spell, result, convertChance)
 }
 
 func (rc *RuneCostImpl) IssueRefund(_ *Simulation, _ *Spell) {

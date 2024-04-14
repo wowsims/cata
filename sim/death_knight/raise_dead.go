@@ -4,11 +4,12 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (dk *DeathKnight) registerRaiseDeadCD() {
+func (dk *DeathKnight) registerRaiseDeadSpell() {
 	// If talented as permanent pet skip this spell
-	if dk.Talents.MasterOfGhouls {
+	if dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight {
 		return
 	}
 
@@ -25,8 +26,9 @@ func (dk *DeathKnight) registerRaiseDeadCD() {
 	})
 
 	dk.RaiseDead = dk.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 46584},
-		Flags:    core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 46584},
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: DeathKnightSpellRaiseDead,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -34,7 +36,7 @@ func (dk *DeathKnight) registerRaiseDeadCD() {
 			},
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),
-				Duration: time.Minute*3 - time.Second*45*time.Duration(dk.Talents.NightOfTheDead),
+				Duration: time.Minute * 3,
 			},
 		},
 
@@ -43,15 +45,11 @@ func (dk *DeathKnight) registerRaiseDeadCD() {
 		},
 	})
 
-	// TODO: Raise Dead should be used from the rotation in a smart way
-	// adding it as a survival MCD with GCDs messes with rotation more then it helps
-	// if !dk.Inputs.IsDps {
-	// 	dk.AddMajorCooldown(core.MajorCooldown{
-	// 		Spell: dk.RaiseDead,
-	// 		Type:  core.CooldownTypeSurvival,
-	// 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-	// 			return dk.CurrentHealthPercent() < 0.5 && sim.GetRemainingDuration() > 5*time.Second
-	// 		},
-	// 	})
-	// }
+	dk.AddMajorCooldown(core.MajorCooldown{
+		Spell: dk.RaiseDead,
+		Type:  core.CooldownTypeDPS,
+		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+			return dk.HasActiveAuraWithTag(core.UnholyFrenzyAuraTag)
+		},
+	})
 }

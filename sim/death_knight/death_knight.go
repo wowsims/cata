@@ -10,9 +10,8 @@ import (
 )
 
 const (
-	PetSpellHitScale   = 17.0 / 8.0 * core.SpellHitRatingPerHitChance / core.MeleeHitRatingPerHitChance    // 1.7
-	PetExpertiseScale  = 3.25 * core.ExpertisePerQuarterPercentReduction / core.MeleeHitRatingPerHitChance // 0.8125
-	PetSpellHasteScale = 1.3
+	PetSpellHitScale  = 17.0 / 8.0 * core.SpellHitRatingPerHitChance / core.MeleeHitRatingPerHitChance    // 1.7
+	PetExpertiseScale = 3.25 * core.ExpertisePerQuarterPercentReduction / core.MeleeHitRatingPerHitChance // 0.8125
 )
 
 var TalentTreeSizes = [3]int{20, 20, 20}
@@ -48,19 +47,14 @@ type DeathKnight struct {
 	Ghoul     *GhoulPet
 	RaiseDead *core.Spell
 
-	//Gargoyle                 *GargoylePet
-	SummonGargoyle           *core.Spell
-	SummonGargoyleAura       *core.Aura
-	GargoyleSummonDelay      time.Duration
+	Gargoyle                 *GargoylePet
 	OnGargoyleStartFirstCast func()
 
 	//RuneWeapon        *RuneWeaponPet
 	DancingRuneWeapon *core.Spell
-	drwDmgSnapshot    float64
-	drwPhysSnapshot   float64
 
 	ArmyOfTheDead *core.Spell
-	//ArmyGhoul     []*GhoulPet
+	ArmyGhoul     []*GhoulPet
 
 	//Bloodworm []*BloodwormPet
 
@@ -189,7 +183,10 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (dk *DeathKnight) ApplyTalents() {
-	//dk.ApplyBloodTalents()
+	// Apply Armor Spec
+	dk.EnableArmorSpecialization(stats.Strength, proto.ArmorType_ArmorTypePlate)
+
+	dk.ApplyBloodTalents()
 	dk.ApplyFrostTalents()
 	dk.ApplyUnholyTalents()
 
@@ -207,6 +204,9 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerFesteringStrikeSpell()
 	dk.registerEmpowerRuneWeaponSpell()
 	dk.registerUnholyFrenzySpell()
+	dk.registerSummonGargoyleSpell()
+	dk.registerArmyOfTheDeadSpell()
+	dk.registerRaiseDeadSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -258,8 +258,8 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	// Runic Focus
 	dk.AddStat(stats.SpellHit, 9*core.SpellHitRatingPerHitChance)
 
-	dk.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
-	dk.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/84.74576271)
+	dk.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/243.7)
+	dk.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/430.69289874)
 	dk.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	dk.AddStatDependency(stats.Strength, stats.Parry, 0.25)
 	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
@@ -270,18 +270,17 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	dk.PseudoStats.BaseDodge += 0.03664
 	dk.PseudoStats.BaseParry += 0.05
 
-	// 	if dk.Talents.SummonGargoyle {
-	// 		dk.Gargoyle = dk.NewGargoyle()
-	// 	}
+	if dk.Talents.SummonGargoyle {
+		dk.Gargoyle = dk.NewGargoyle()
+		dk.OnGargoyleStartFirstCast = func() {}
+	}
 
 	dk.Ghoul = dk.NewGhoulPet(dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight)
-	// 	dk.OnGargoyleStartFirstCast = func() {}
-	// 	dk.GargoyleSummonDelay = time.Millisecond * 2500
 
-	// 	dk.ArmyGhoul = make([]*GhoulPet, 8)
-	// 	for i := 0; i < 8; i++ {
-	// 		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
-	// 	}
+	dk.ArmyGhoul = make([]*GhoulPet, 8)
+	for i := 0; i < 8; i++ {
+		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
+	}
 
 	// 	if dk.Talents.Bloodworms > 0 {
 	// 		dk.Bloodworm = make([]*BloodwormPet, 4)
@@ -322,6 +321,9 @@ const (
 	DeathKnightSpellScourgeStrikeShadow
 	DeathKnightSpellUnholyFrenzy
 	DeathKnightSpellDarkTransformation
+	DeathKnightSpellSummonGargoyle
+	DeathKnightSpellArmyOfTheDead
+	DeathKnightSpellRaiseDead
 
 	DeathKnightSpellFrostStrike
 	DeathKnightSpellRuneStrike

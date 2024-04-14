@@ -143,9 +143,23 @@ func (fb *focusBar) NextFocusTickAt() time.Duration {
 //	}
 func (fb *focusBar) FocusRegenPerTick() float64 {
 	ticksPerSecond := float64(time.Second) / float64(FocusTickDuration)
-	hastePercent := fb.unit.RangedSwingSpeed()
-	tick := fb.baseFocusPerSecond * hastePercent / ticksPerSecond
-	return tick
+	if fb.isPlayer {
+		hastePercent := fb.unit.RangedSwingSpeed()
+		tick := fb.baseFocusPerSecond * hastePercent / ticksPerSecond
+		return tick
+	} else {
+		tick := fb.baseFocusPerSecond / ticksPerSecond
+		return tick
+	}
+}
+
+func (fb *focusBar) FocusRegenPerSecond() float64 {
+	if fb.isPlayer {
+		hastePercent := fb.unit.RangedSwingSpeed()
+		return fb.baseFocusPerSecond * hastePercent
+	} else {
+		return fb.baseFocusPerSecond
+	}
 }
 
 func (fb *focusBar) onFocusGain(sim *Simulation, crossedThreshold bool) {
