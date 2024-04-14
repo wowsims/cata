@@ -26,8 +26,8 @@ import { IconPickerStatOption, PickerStatOptions } from './stat_options';
 
 export const AllStatsBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(1126), fieldName: 'markOfTheWild' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(20217), fieldName: 'blessingOfKings' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(1126), fieldName: 'markOfTheWild' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromItemId(63140), fieldName: 'drumsOfTheBurningWild' }),
 	],
 	'Stats',
@@ -35,156 +35,127 @@ export const AllStatsBuff = InputHelpers.makeMultiIconInput(
 
 export const ArmorBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(48942), impId: ActionId.fromSpellId(20140), fieldName: 'devotionAura' }),
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(58753), impId: ActionId.fromSpellId(16293), fieldName: 'stoneskinTotem' }),
+		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(48942), impId: ActionId.fromSpellId(465), fieldName: 'devotionAura' }),
+		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(58753), impId: ActionId.fromSpellId(8071), fieldName: 'stoneskinTotem' }),
 	],
 	'Armor',
 );
 
-export const AttackPowerBuff = InputHelpers.makeMultiIconInput(
-	[
-		makeTristateIndividualBuffInput({ actionId: ActionId.fromSpellId(48934), impId: ActionId.fromSpellId(20045), fieldName: 'blessingOfMight' }),
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(47436), impId: ActionId.fromSpellId(12861), fieldName: 'battleShout' }),
-	],
-	'AP',
-);
-
 export const AttackPowerPercentBuff = InputHelpers.makeMultiIconInput(
 	[
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(19740), fieldName: 'blessingOfMight' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(53138), fieldName: 'abominationsMight' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(30809), fieldName: 'unleashedRage' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(30808), fieldName: 'unleashedRage' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(19506), fieldName: 'trueshotAura' }),
 	],
 	'Atk Pwr %',
 );
 
-export const Bloodlust = withLabel(makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(2825), fieldName: 'bloodlust' }), 'Lust');
+export const Bloodlust = InputHelpers.makeMultiIconInput(
+	[
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(2825), fieldName: 'bloodlust' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(80353), fieldName: 'timeWarp' }),
+	],
+	"Lust",
+);
+
 
 export const DamagePercentBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(31869), fieldName: 'sanctifiedRetribution' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(31583), fieldName: 'arcaneEmpowerment' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(31876), fieldName: 'communion' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(82930), fieldName: 'arcaneTactics' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(34460), fieldName: 'ferociousInspiration' }),
 	],
-	'Dmg %',
+	'+3% Dmg',
 );
 
-export const DamageReductionPercentBuff = InputHelpers.makeMultiIconInput(
-	[
-		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(57472), fieldName: 'renewedHope' }),
-		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(25899), fieldName: 'blessingOfSanctuary' }),
-		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(50720), fieldName: 'vigilance' }),
-	],
-	'Mit %',
-);
-
-export const DefensiveCooldownBuff = InputHelpers.makeMultiIconInput(
-	[
-		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(6940), numStates: 11, fieldName: 'handOfSacrifices' }),
-		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(53530), numStates: 11, fieldName: 'divineGuardians' }),
-		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(33206), numStates: 11, fieldName: 'painSuppressions' }),
-		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(47788), numStates: 11, fieldName: 'guardianSpirits' }),
-	],
-	'Defensive CDs',
-);
+// TODO: Look at these, what we want and how to structure them for multiple available 
+// export const DefensiveCooldownBuff = InputHelpers.makeMultiIconInput(
+// 	[
+// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(6940), numStates: 11, fieldName: 'handOfSacrifices' }),
+// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(53530), numStates: 11, fieldName: 'divineGuardians' }),
+// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(33206), numStates: 11, fieldName: 'painSuppressions' }),
+// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(47788), numStates: 11, fieldName: 'guardianSpirits' }),
+// 	],
+// 	'Defensive CDs',
+// );
 
 export const HastePercentBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(53648), fieldName: 'swiftRetribution' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(48396), fieldName: 'moonkinAura', value: TristateEffect.TristateEffectImproved }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(15473), fieldName: 'shadowForm' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(24858), fieldName: 'moonkinForm' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(3738), fieldName: 'wrathOfAirTotem' }),
 	],
 	'Haste %',
 );
 
-export const IntellectBuff = InputHelpers.makeMultiIconInput(
+export const ManaBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(43002), fieldName: 'arcaneBrilliance' }),
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(57567), impId: ActionId.fromSpellId(54038), fieldName: 'felIntelligence' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromItemId(37092), fieldName: 'scrollOfIntellect' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(1459), fieldName: 'arcaneBrilliance' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(54424), fieldName: 'felIntelligence' }),
 	],
-	'Int',
+	'Mana',
 );
 
-export const MeleeCritBuff = InputHelpers.makeMultiIconInput(
+export const CritBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(17007), impId: ActionId.fromSpellId(34300), fieldName: 'leaderOfThePack' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(17007), fieldName: 'leaderOfThePack' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(51470), fieldName: 'elementalOath' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(51701), fieldName: 'honorAmongThieves' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(29801), fieldName: 'rampage' }),
 	],
-	'Melee Crit',
+	'Crit %',
 );
 
 export const MeleeHasteBuff = InputHelpers.makeMultiIconInput(
 	[
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(55610), fieldName: 'icyTalons' }),
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(65990), impId: ActionId.fromSpellId(29193), fieldName: 'windfuryTotem' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(8512), fieldName: 'windfuryTotem' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(53290), fieldName: 'huntingParty' }),
 	],
 	'Melee Haste',
 );
 
 export const MP5Buff = InputHelpers.makeMultiIconInput(
 	[
-		makeTristateIndividualBuffInput({ actionId: ActionId.fromSpellId(48938), impId: ActionId.fromSpellId(20245), fieldName: 'blessingOfWisdom' }),
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(58774), impId: ActionId.fromSpellId(16206), fieldName: 'manaSpringTotem' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(19740), fieldName: 'blessingOfMight' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(54424), fieldName: 'felIntelligence' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(5675), fieldName: 'manaSpringTotem' }),
 	],
 	'MP5',
 );
 
 export const ReplenishmentBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(48160), fieldName: 'vampiricTouch' }),
-		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(31878), fieldName: 'judgementsOfTheWise' }),
-		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(53292), fieldName: 'huntingParty' }),
-		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(54118), fieldName: 'improvedSoulLeech' }),
-		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(44561), fieldName: 'enduringWinter' }),
+		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(34914), fieldName: 'vampiricTouch' }),
+		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(31876), fieldName: 'communion' }),
+		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(48544), fieldName: 'revitalize' }),
+		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(30295), fieldName: 'soulLeech' }),
+		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(86508), fieldName: 'enduringWinter' }),
 	],
 	'Replen',
 );
 
 export const ResistanceBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(19891), fieldName: 'resistanceAura', faction: Faction.Alliance }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(8184), fieldName: 'elementalResistanceTotem', faction: Faction.Horde }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(19891), fieldName: 'resistanceAura'}),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(8184), fieldName: 'elementalResistanceTotem'}),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(20043), fieldName: 'aspectOfTheWild' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(27683), fieldName: 'shadowProtection' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(20217), fieldName: 'blessingOfKings'}),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(1126), fieldName: 'markOfTheWild'}),
 	],
 	'Resistances',
 );
 
-export const RevitalizeBuff = InputHelpers.makeMultiIconInput(
-	[
-		makeMultistateMultiplierIndividualBuffInput(ActionId.fromSpellId(26982), 101, 10, 'revitalizeRejuvination'),
-		makeMultistateMultiplierIndividualBuffInput(ActionId.fromSpellId(53251), 101, 10, 'revitalizeWildGrowth'),
-	],
-	'Revit',
-	ActionId.fromSpellId(48545),
-);
-
-export const SpellCritBuff = InputHelpers.makeMultiIconInput(
-	[
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(24907), impId: ActionId.fromSpellId(48396), fieldName: 'moonkinAura' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(51470), fieldName: 'elementalOath' }),
-	],
-	'Spell Crit',
-);
-
-export const SpellHasteBuff = withLabel(makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(3738), fieldName: 'wrathOfAirTotem' }), 'Spell Haste');
-
 export const SpellPowerBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeMultistateRaidBuffInput({ actionId: ActionId.fromSpellId(47240), numStates: 2000, fieldName: 'demonicPactSp', multiplier: 20 }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(57722), fieldName: 'totemOfWrath' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(58656), fieldName: 'flametongueTotem' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(47236), fieldName: 'demonicPact' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(77746), fieldName: 'totemicWrath' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(1459), fieldName: 'arcaneBrilliance' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(8227), fieldName: 'flametongueTotem' }),
 	],
 	'Spell Power',
-);
-
-export const SpiritBuff = InputHelpers.makeMultiIconInput(
-	[
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(48073), fieldName: 'divineSpirit' }),
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(57567), impId: ActionId.fromSpellId(54038), fieldName: 'felIntelligence' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromItemId(37098), fieldName: 'scrollOfSpirit' }),
-	],
-	'Spirit',
 );
 
 export const StaminaBuff = InputHelpers.makeMultiIconInput(
@@ -198,26 +169,22 @@ export const StaminaBuff = InputHelpers.makeMultiIconInput(
 
 export const StrengthAndAgilityBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(58643), impId: ActionId.fromSpellId(52456), fieldName: 'strengthOfEarthTotem' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(57623), fieldName: 'hornOfWinter' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromItemId(43464), fieldName: 'scrollOfAgility' }),
-		makeBooleanRaidBuffInput({ actionId: ActionId.fromItemId(43466), fieldName: 'scrollOfStrength' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(8075), fieldName: 'strengthOfEarthTotem' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(57330), fieldName: 'hornOfWinter' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(6673), fieldName: 'battleShout' }),
 	],
 	'Str/Agi',
 );
 
 // Misc Buffs
 export const RetributionAura = makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(54043), fieldName: 'retributionAura' });
-export const BraidedEterniumChain = makeBooleanPartyBuffInput({ actionId: ActionId.fromSpellId(31025), fieldName: 'braidedEterniumChain' });
-export const ChainOfTheTwilightOwl = makeBooleanPartyBuffInput({ actionId: ActionId.fromSpellId(31035), fieldName: 'chainOfTheTwilightOwl' });
-export const EyeOfTheNight = makeBooleanPartyBuffInput({ actionId: ActionId.fromSpellId(31033), fieldName: 'eyeOfTheNight' });
-export const Thorns = makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(53307), impId: ActionId.fromSpellId(16840), fieldName: 'thorns' });
-export const ManaTideTotem = makeMultistatePartyBuffInput(ActionId.fromSpellId(16190), 5, 'manaTideTotems');
-export const Innervate = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(29166), numStates: 11, fieldName: 'innervates' });
-export const PowerInfusion = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(10060), numStates: 11, fieldName: 'powerInfusions' });
+export const Thorns = makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(53307), fieldName: 'thorns' });
+export const ManaTideTotem = makeMultistateRaidBuffInput({actionId: ActionId.fromSpellId(16190), numStates: 5, fieldName: 'manaTideTotemCount'});
+export const Innervate = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(29166), numStates: 11, fieldName: 'innervateCount' });
+export const PowerInfusion = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(10060), numStates: 11, fieldName: 'powerInfusionCount' });
 export const FocusMagic = makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(54648), fieldName: 'focusMagic' });
-export const TricksOfTheTrade = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(57933), numStates: 20, fieldName: 'tricksOfTheTrades' });
-export const UnholyFrenzy = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(49016), numStates: 11, fieldName: 'unholyFrenzy' });
+export const TricksOfTheTrade = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(57933), numStates: 20, fieldName: 'tricksOfTheTradeCount' });
+export const UnholyFrenzy = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(49016), numStates: 11, fieldName: 'unholyFrenzyCount' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 DEBUFFS
@@ -225,118 +192,79 @@ export const UnholyFrenzy = makeMultistateIndividualBuffInput({ actionId: Action
 
 export const MajorArmorDebuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(47467), fieldName: 'sunderArmor' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(7386), fieldName: 'sunderArmor' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(8647), fieldName: 'exposeArmor' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(55754), fieldName: 'acidSpit' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(770), fieldName: 'faerieFire' }),
+		makeBooleanDebuffInput({actionId: ActionId.fromSpellId(35387), fieldName: 'corrosiveSpit'})
 	],
 	'Major ArP',
 );
 
-export const MinorArmorDebuff = InputHelpers.makeMultiIconInput(
-	[
-		makeTristateDebuffInput({ actionId: ActionId.fromSpellId(770), impId: ActionId.fromSpellId(33602), fieldName: 'faerieFire' }),
-		makeTristateDebuffInput({ actionId: ActionId.fromSpellId(50511), impId: ActionId.fromSpellId(18180), fieldName: 'curseOfWeakness' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(56631), fieldName: 'sting' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(53598), fieldName: 'sporeCloud' }),
-	],
-	'Minor ArP',
-);
-
-export const AttackPowerDebuff = InputHelpers.makeMultiIconInput(
+export const DamageReduction = InputHelpers.makeMultiIconInput(
 	[
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26016), fieldName: 'vindication' }),
-		makeTristateDebuffInput({ actionId: ActionId.fromSpellId(47437), impId: ActionId.fromSpellId(12879), fieldName: 'demoralizingShout' }),
-		makeTristateDebuffInput({ actionId: ActionId.fromSpellId(48560), impId: ActionId.fromSpellId(16862), fieldName: 'demoralizingRoar' }),
-		makeTristateDebuffInput({ actionId: ActionId.fromSpellId(50511), impId: ActionId.fromSpellId(18180), fieldName: 'curseOfWeakness' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(55487), fieldName: 'demoralizingScreech' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26016), fieldName: 'curseOfWeakness' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26016), fieldName: 'demoralizingRoar' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26016), fieldName: 'scarletFever' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26016), fieldName: 'demoralizingShout' }),
 	],
-	'Atk Pwr',
+	'-Dmg %',
 );
 
 export const BleedDebuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(48564), fieldName: 'mangle' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(46855), fieldName: 'trauma' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(29859), fieldName: 'bloodFrenzy' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(33878), fieldName: 'mangle' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(57393), fieldName: 'stampede' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(16511), fieldName: 'hemorrhage' }),
 	],
 	'Bleed',
 );
 
-export const CritDebuff = InputHelpers.makeMultiIconInput(
+export const SpellCritDebuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(30706), fieldName: 'totemOfWrath' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(20337), fieldName: 'heartOfTheCrusader' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(58410), fieldName: 'masterPoisoner' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(12873), fieldName: 'criticalMass' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(17801), fieldName: 'shadowAndFlame' }),
 	],
-	'Crit',
+	'Spell Crit',
 );
 
 export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput(
 	[
-		makeTristateDebuffInput({ actionId: ActionId.fromSpellId(47502), impId: ActionId.fromSpellId(12666), fieldName: 'thunderClap' }),
-		makeTristateDebuffInput({ actionId: ActionId.fromSpellId(55095), impId: ActionId.fromSpellId(51456), fieldName: 'frostFever' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(6343), fieldName: 'thunderClap' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(59921), fieldName: 'frostFever' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(53696), fieldName: 'judgementsOfTheJust' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(48485), fieldName: 'infectedWounds' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(48484), fieldName: 'infectedWounds' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(8042), fieldName: 'earthShock' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(50285), fieldName: 'dustCloud' }),
 	],
 	'Atk Speed',
-);
-
-export const MeleeHitDebuff = InputHelpers.makeMultiIconInput(
-	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(65855), fieldName: 'insectSwarm' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(3043), fieldName: 'scorpidSting' }),
-	],
-	'Miss',
 );
 
 export const PhysicalDamageDebuff = InputHelpers.makeMultiIconInput(
 	[
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(29859), fieldName: 'bloodFrenzy' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(58413), fieldName: 'savageCombat' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(81328), fieldName: 'brittleBones' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(55749), fieldName: 'acidSpit' }),
 	],
 	'Phys Vuln',
 );
 
-export const SpellCritDebuff = InputHelpers.makeMultiIconInput(
-	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(17803), fieldName: 'shadowMastery' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(12873), fieldName: 'improvedScorch' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(28593), fieldName: 'wintersChill' }),
-	],
-	'Spell Crit',
-);
-
-export const SpellHitDebuff = InputHelpers.makeMultiIconInput(
-	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(33198), fieldName: 'misery' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(33602), fieldName: 'faerieFire', value: TristateEffect.TristateEffectImproved }),
-	],
-	'Spell Hit',
-);
-
 export const SpellDamageDebuff = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(51161), fieldName: 'ebonPlaguebringer' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(48511), fieldName: 'earthAndMoon' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(47865), fieldName: 'curseOfElements' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(51160), fieldName: 'ebonPlaguebringer' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(48506), fieldName: 'earthAndMoon' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(1490), fieldName: 'curseOfElements' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(58410), fieldName: 'masterPoisoner' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(34889), fieldName: 'fireBreath' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(24844), fieldName: 'lightningBreath' }),
 	],
 	'Spell Dmg',
 );
 
-export const HuntersMark = withLabel(
-	makeQuadstateDebuffInput({
-		actionId: ActionId.fromSpellId(1130),
-		impId: ActionId.fromSpellId(19423),
-		impId2: ActionId.fromItemId(42907),
-		fieldName: 'huntersMark',
-	}),
-	'Mark',
-);
-export const JudgementOfWisdom = withLabel(makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(53408), fieldName: 'judgementOfWisdom' }), 'JoW');
-export const JudgementOfLight = makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(20271), fieldName: 'judgementOfLight' });
+export const JudgementOfLight = makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(20271), fieldName: 'judgement' });
 export const ShatteringThrow = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(64382), numStates: 20, fieldName: 'shatteringThrows' });
-export const GiftOfArthas = makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(11374), fieldName: 'giftOfArthas' });
-export const CrystalYield = makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(15235), fieldName: 'crystalYield' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 CONFIGS
@@ -365,19 +293,9 @@ export const RAID_BUFFS_CONFIG = [
 		stats: [Stat.StatStrength, Stat.StatAgility],
 	},
 	{
-		config: IntellectBuff,
+		config: ManaBuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatIntellect],
-	},
-	{
-		config: SpiritBuff,
-		picker: MultiIconPicker,
-		stats: [Stat.StatSpirit],
-	},
-	{
-		config: AttackPowerBuff,
-		picker: MultiIconPicker,
-		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
+		stats: [Stat.StatMana],
 	},
 	{
 		config: AttackPowerPercentBuff,
@@ -385,9 +303,9 @@ export const RAID_BUFFS_CONFIG = [
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},
 	{
-		config: MeleeCritBuff,
+		config: CritBuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatMeleeCrit],
+		stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit],
 	},
 	{
 		config: MeleeHasteBuff,
@@ -400,11 +318,6 @@ export const RAID_BUFFS_CONFIG = [
 		stats: [Stat.StatSpellPower],
 	},
 	{
-		config: SpellCritBuff,
-		picker: MultiIconPicker,
-		stats: [Stat.StatSpellCrit],
-	},
-	{
 		config: HastePercentBuff,
 		picker: MultiIconPicker,
 		stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste],
@@ -415,19 +328,9 @@ export const RAID_BUFFS_CONFIG = [
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower, Stat.StatSpellPower],
 	},
 	{
-		config: DamageReductionPercentBuff,
-		picker: MultiIconPicker,
-		stats: [Stat.StatArmor],
-	},
-	{
 		config: ResistanceBuff,
 		picker: MultiIconPicker,
 		stats: [Stat.StatNatureResistance, Stat.StatShadowResistance, Stat.StatFrostResistance],
-	},
-	{
-		config: DefensiveCooldownBuff,
-		picker: MultiIconPicker,
-		stats: [Stat.StatArmor],
 	},
 	{
 		config: MP5Buff,
@@ -441,41 +344,16 @@ export const RAID_BUFFS_CONFIG = [
 	},
 	{
 		config: Bloodlust,
-		picker: IconPicker,
-		stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste],
-	},
-	{
-		config: SpellHasteBuff,
-		picker: IconPicker,
-		stats: [Stat.StatSpellHaste],
-	},
-	{
-		config: RevitalizeBuff,
 		picker: MultiIconPicker,
-		stats: [],
+		stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste],
 	},
 ] as PickerStatOptions[];
 
 export const RAID_BUFFS_MISC_CONFIG = [
 	{
-		config: BraidedEterniumChain,
-		picker: IconPicker,
-		stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit],
-	},
-	{
-		config: ChainOfTheTwilightOwl,
-		picker: IconPicker,
-		stats: [Stat.StatSpellCrit, Stat.StatMeleeCrit],
-	},
-	{
 		config: FocusMagic,
 		picker: IconPicker,
 		stats: [Stat.StatSpellCrit],
-	},
-	{
-		config: EyeOfTheNight,
-		picker: IconPicker,
-		stats: [Stat.StatSpellPower],
 	},
 	{
 		config: Thorns,
@@ -521,11 +399,6 @@ export const DEBUFFS_CONFIG = [
 		stats: [Stat.StatArmorPenetration],
 	},
 	{
-		config: MinorArmorDebuff,
-		picker: MultiIconPicker,
-		stats: [Stat.StatArmorPenetration],
-	},
-	{
 		config: PhysicalDamageDebuff,
 		picker: MultiIconPicker,
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
@@ -541,22 +414,12 @@ export const DEBUFFS_CONFIG = [
 		stats: [Stat.StatSpellPower],
 	},
 	{
-		config: SpellHitDebuff,
-		picker: MultiIconPicker,
-		stats: [Stat.StatSpellHit],
-	},
-	{
 		config: SpellCritDebuff,
 		picker: MultiIconPicker,
 		stats: [Stat.StatSpellCrit],
 	},
 	{
-		config: CritDebuff,
-		picker: MultiIconPicker,
-		stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit],
-	},
-	{
-		config: AttackPowerDebuff,
+		config: DamageReduction,
 		picker: MultiIconPicker,
 		stats: [Stat.StatArmor],
 	},
@@ -564,21 +427,6 @@ export const DEBUFFS_CONFIG = [
 		config: MeleeAttackSpeedDebuff,
 		picker: MultiIconPicker,
 		stats: [Stat.StatArmor],
-	},
-	{
-		config: MeleeHitDebuff,
-		picker: MultiIconPicker,
-		stats: [Stat.StatDodge],
-	},
-	{
-		config: JudgementOfWisdom,
-		picker: IconPicker,
-		stats: [Stat.StatMP5, Stat.StatIntellect],
-	},
-	{
-		config: HuntersMark,
-		picker: IconPicker,
-		stats: [Stat.StatRangedAttackPower],
 	},
 ] as PickerStatOptions[];
 
@@ -590,16 +438,6 @@ export const DEBUFFS_MISC_CONFIG = [
 	},
 	{
 		config: ShatteringThrow,
-		picker: IconPicker,
-		stats: [Stat.StatArmorPenetration],
-	},
-	{
-		config: GiftOfArthas,
-		picker: IconPicker,
-		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
-	},
-	{
-		config: CrystalYield,
 		picker: IconPicker,
 		stats: [Stat.StatArmorPenetration],
 	},

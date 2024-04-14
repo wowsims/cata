@@ -76,31 +76,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
-			markOfTheWild: true,
 			bloodlust: true,
-			manaSpringTotem: TristateEffect.TristateEffectRegular,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
-			battleShout: TristateEffect.TristateEffectImproved,
-			unleashedRage: true,
+			markOfTheWild: true,
 			icyTalons: true,
-			swiftRetribution: true,
-			sanctifiedRetribution: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({
 			heroicPresence: true,
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
 		debuffs: Debuffs.create({
-			judgementOfWisdom: true,
+			judgement: true,
 			bloodFrenzy: true,
-			giftOfArthas: true,
 			exposeArmor: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
 			sunderArmor: true,
-			curseOfWeakness: TristateEffect.TristateEffectRegular,
-			heartOfTheCrusader: true,
 		}),
 	},
 
@@ -109,7 +108,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: FeralInputs.FeralDruidRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.IntellectBuff, BuffDebuffInputs.MP5Buff, BuffDebuffInputs.JudgementOfWisdom],
+	includeBuffDebuffInputs: [BuffDebuffInputs.ManaBuff, BuffDebuffInputs.MP5Buff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

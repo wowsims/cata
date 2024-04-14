@@ -523,65 +523,52 @@ message IndividualBuffs {
 }
 
 message Debuffs {
-	bool judgement_of_wisdom = 1;
-	bool judgement_of_light = 2;
-
-	bool misery = 3;
-	TristateEffect faerie_fire = 4;
-
-	// 13% bonus spell damage
-	bool curse_of_elements = 5;
-	bool ebon_plaguebringer = 6;
-	bool earth_and_moon = 7;
-
-	// +3% to crit against target
-	bool heart_of_the_crusader = 8;
-	bool master_poisoner = 9;
-	bool totem_of_wrath = 10;
+	// 8% spell damage
+	bool curse_of_elements = 1;
+	bool ebon_plaguebringer = 2;
+	bool earth_and_moon = 3;
+	bool master_poisoner = 4;
+	bool fire_breath = 5;
+	bool lightning_breath = 6;
 
 	// 5% spell crit
-	bool shadow_mastery = 11;
-	bool improved_scorch = 12;
-	bool winters_chill = 13;
+	bool critical_mass = 7;
+	bool shadow_and_flame = 8;
 
-	bool blood_frenzy = 14;
-	bool savage_combat = 15;
-
-	// TODO: validate these
-	bool gift_of_arthas = 16;
-
-	// Bleed %
-	bool mangle = 17;
-	bool trauma = 18;
-	bool stampede = 19;
+	// 30% bleed damage
+	bool blood_frenzy = 9;
+	bool hemorrhage = 10;
+	bool mangle = 11;
+	bool stampede = 12;
 
 	// Major armor
-	bool expose_armor = 20;
-	bool sunder_armor = 21;
-	bool acid_spit = 22;
+	bool expose_armor = 13;
+	bool sunder_armor = 14;
+	bool faerie_fire = 15;
+	bool corrosive_spit = 16;
 
-	TristateEffect curse_of_weakness = 23;
-	bool sting = 24;
-	bool spore_cloud = 37;
+	// 4% physical dmg
+	bool savage_combat = 17;
+	bool brittle_bones = 18;
+	bool acid_spit = 19;
 
-	TristateEffect demoralizing_roar = 25;
-	TristateEffect demoralizing_shout = 26;
-	bool vindication = 36;
-	bool demoralizing_screech = 34;
+	// -dmg %
+	bool curse_of_weakness = 20;
+	bool demoralizing_roar = 21;
+	bool demoralizing_shout = 22;
+	bool vindication = 23;
+	bool scarlet_fever = 24;
 
-	TristateEffect thunder_clap = 27;
-	TristateEffect frost_fever = 28;
-	bool infected_wounds = 29;
-	bool judgements_of_the_just = 30;
+	// -attack speed
+	bool thunder_clap = 25;
+	bool frost_fever = 26;
+	bool infected_wounds = 27;
+	bool judgements_of_the_just = 28;
+	bool dust_cloud = 29;
+	bool earth_shock = 30;
 
-	bool insect_swarm = 31;
-	bool scorpid_sting = 32;
-	bool shadow_embrace = 33;
-
-	// 1 = normal, 2 = talented, 3 = talented+glyphed
-	int32 hunters_mark = 35;
-
-	bool crystal_yield = 38;
+	// health on hit
+	bool judgement = 31;
 }
 
 message Consumes {
