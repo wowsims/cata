@@ -42,9 +42,12 @@ type Mage struct {
 	Fireball                *core.Spell
 	FireBlast               *core.Spell
 	FlameOrb                *core.Spell
+	FlameOrbTickSpell       *core.Spell
 	Flamestrike             *core.Spell
 	Frostbolt               *core.Spell
 	FrostfireBolt           *core.Spell
+	FrostfireOrb            *core.Spell
+	FrostfireOrbTickSpell   *core.Spell
 	IceLance                *core.Spell
 	Pyroblast               *core.Spell
 	Scorch                  *core.Spell
@@ -112,6 +115,7 @@ func (mage *Mage) Initialize() {
 	mage.registerFlameOrbSpell()
 	mage.registerFlamestrikeSpell()
 	mage.registerFrostboltSpell()
+	mage.registerFrostfireOrbSpell()
 	mage.registerIceLanceSpell()
 	mage.registerPyroblastSpell()
 	mage.registerScorchSpell()
