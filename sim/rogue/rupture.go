@@ -51,31 +51,19 @@ func (rogue *Rogue) registerRupture() {
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = rogue.ruptureDamage(rogue.ComboPoints())
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+				dot.Snapshot(target, rogue.ruptureDamage(rogue.ComboPoints()))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				if rogue.Talents.VenomousWounds > 0 {
-					vwProcChance := 0.3 * float64(rogue.Talents.VenomousWounds)
-					if sim.Proc(vwProcChance, "Venomous Wounds") {
-						rogue.VenomousWounds.Cast(sim, target)
-					}
-				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
-				numberOfTicks := 3 + rogue.ComboPoints() + glyphTicks
 				dot := spell.Dot(target)
-				dot.Spell = spell
-				dot.NumberOfTicks = numberOfTicks
-				dot.MaxStacks = numberOfTicks // slightly hacky; used to determine max extra ticks from Glyph of Backstab
+				dot.NumberOfTicks = 3 + rogue.ComboPoints() + glyphTicks
 				dot.Apply(sim)
 				rogue.ApplyFinisher(sim, spell)
 			} else {
