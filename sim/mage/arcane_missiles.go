@@ -62,7 +62,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					if mage.ArcaneMissilesAura.IsActive() {
 						if !hasT8_4pc || sim.RandomFloat("MageT84PC") > T84PcProcChance {
-							mage.MissileBarrageAura.Deactivate(sim)
+							mage.ArcaneMissilesAura.Deactivate(sim)
 						}
 					}
 

@@ -16,7 +16,7 @@ sequence: fireblast, frostbolt x3, repeat
 
 damage did NOT change dynamically (equipped staff midway and spells did same damage)
 if a frost bolt is mid-air when mirror images expire, frostbolt does not land
-frost bolt cannot crit, fire blast can
+frost bolt did not seem to crit, fire blast can
 damage numbers at 170 spell power: fireblast 155, frostbolt 304
 */
 
@@ -79,8 +79,7 @@ type MirrorImage struct {
 	ArcaneBlast *core.Spell
 
 	hasGlyph bool
-
-	Spec proto.Spec
+	Spec     proto.Spec
 }
 
 func (mage *Mage) NewMirrorImage() *MirrorImage {
@@ -115,29 +114,21 @@ func (mi *MirrorImage) Reset(_ *core.Simulation) {
 }
 
 func (mi *MirrorImage) ExecuteCustomRotation(sim *core.Simulation) {
-
+	var spell *core.Spell
 	//TODO implement glyph, where mirror images cast your spec's main filler
 
-	// Fire Spec & Glyphed
-	if mi.Spec == proto.Spec_SpecFireMage && mi.hasGlyph {
-		spell := mi.Fireball
-		if success := spell.Cast(sim, mi.CurrentTarget); !success {
-			mi.Disable(sim)
-		}
-	}
-
 	// Arcane Spec & Glyphed
-	if mi.Spec == proto.Spec_SpecArcaneMage && mi.hasGlyph {
-		spell := mi.ArcaneBlast
-		if success := spell.Cast(sim, mi.CurrentTarget); !success {
-			mi.Disable(sim)
+	if mi.Spec == 10 && mi.hasGlyph {
+		spell = mi.ArcaneBlast
+	} else if mi.Spec == 11 && mi.hasGlyph {
+		// Fire Spec & Glyphed
+		spell = mi.Fireball
+	} else {
+		// Frost spec or no glyph
+		spell = mi.Frostbolt
+		if mi.Fireblast.CD.IsReady(sim) {
+			spell = mi.Fireblast
 		}
-	}
-
-	// Frost spec or no glyph
-	spell := mi.Frostbolt
-	if mi.Fireblast.CD.IsReady(sim) {
-		spell = mi.Fireblast
 	}
 	if success := spell.Cast(sim, mi.CurrentTarget); !success {
 		mi.Disable(sim)
@@ -145,7 +136,7 @@ func (mi *MirrorImage) ExecuteCustomRotation(sim *core.Simulation) {
 }
 
 var mirrorImageBaseStats = stats.Stats{
-	stats.Mana: 27020, // Confirmed vis ingame bars
+	stats.Mana: 27020, // Confirmed via ingame bars
 }
 
 var createMirrorImageInheritance = func() func(stats.Stats) stats.Stats {
@@ -239,7 +230,7 @@ func (mi *MirrorImage) registerArcaneBlastSpell() {
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.01,
+			BaseCost: 0.07,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -254,7 +245,7 @@ func (mi *MirrorImage) registerArcaneBlastSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			//3x damage for 3 mirror images
-			baseDamage := (257.76 + 0.275*spell.SpellPower()) * 3 //unsure how to get MI scaling, just used mage's # but can't call it
+			baseDamage := (257.76 + 0.275*spell.SpellPower()) * 3 //unsure how to get MI scaling, just used mage's # but can't call it certain
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

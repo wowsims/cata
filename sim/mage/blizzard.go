@@ -7,16 +7,16 @@ import (
 )
 
 func (mage *Mage) registerBlizzardSpell() {
-	var improvedBlizzardProcApplication *core.Spell
-	if mage.Talents.ImprovedBlizzard > 0 {
+	var iceShardsProcApplication *core.Spell
+	if mage.Talents.IceShards > 0 {
 		auras := mage.NewEnemyAuraArray(func(unit *core.Unit) *core.Aura {
 			return unit.GetOrRegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 12488},
-				Label:    "Improved Blizzard",
+				Label:    "Ice Shards",
 				Duration: time.Millisecond * 1500,
 			})
 		})
-		improvedBlizzardProcApplication = mage.RegisterSpell(core.SpellConfig{
+		iceShardsProcApplication = mage.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 12488},
 			ProcMask: core.ProcMaskProc,
 			Flags:    SpellFlagMage | core.SpellFlagNoLogs,
@@ -27,28 +27,28 @@ func (mage *Mage) registerBlizzardSpell() {
 	}
 
 	blizzardTickSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 42938},
+		ActionID:         core.ActionID{SpellID: 42208},
 		SpellSchool:      core.SpellSchoolFrost,
 		ProcMask:         core.ProcMaskSpellDamage,
 		Flags:            SpellFlagMage,
-		CritMultiplier:   mage.SpellCritMultiplier(1, mage.bonusCritDamage+float64(mage.Talents.IceShards)/3),
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - (0.1/3)*float64(mage.Talents.FrostChanneling),
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 426 + (4.0/3.5/8)*spell.SpellPower()
+			damage := 0.542*mage.ScalingBaseDamage + 0.162*spell.SpellPower()
 			damage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 
-				if improvedBlizzardProcApplication != nil {
-					improvedBlizzardProcApplication.Cast(sim, aoeTarget)
+				if iceShardsProcApplication != nil {
+					iceShardsProcApplication.Cast(sim, aoeTarget)
 				}
 			}
 		},
 	})
 
 	mage.Blizzard = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 42940},
+		ActionID:    core.ActionID{SpellID: 10},
 		SpellSchool: core.SpellSchoolFrost,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | core.SpellFlagChanneled | core.SpellFlagAPL,

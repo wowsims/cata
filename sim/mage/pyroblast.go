@@ -75,7 +75,7 @@ func (mage *Mage) registerPyroblastSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
 					pyroblastDot.Dot(target).Apply(sim)
-					pyroblastDot.SpellMetrics[target.UnitIndex].Casts++
+					//pyroblastDot.SpellMetrics[target.UnitIndex].Casts++
 					/* The above line is used to count the dot in the cpm chart.
 					This is misleading since it ends up doubling the overall pyroblast cpm,
 					when most users probably just care how many times they press pyroblast.

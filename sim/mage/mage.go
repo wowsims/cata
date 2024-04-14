@@ -6,9 +6,10 @@ import (
 )
 
 const (
-	SpellFlagMage   = core.SpellFlagAgentReserved1
-	BarrageSpells   = core.SpellFlagAgentReserved2
-	HotStreakSpells = core.SpellFlagAgentReserved3
+	SpellFlagMage     = core.SpellFlagAgentReserved1
+	BarrageSpells     = core.SpellFlagAgentReserved2
+	HotStreakSpells   = core.SpellFlagAgentReserved3
+	BrainFreezeSpells = core.SpellFlagAgentReserved4
 )
 
 var TalentTreeSizes = [3]int{21, 21, 19}
@@ -34,6 +35,7 @@ type Mage struct {
 	ArcaneMissiles          *core.Spell
 	ArcaneMissilesTickSpell *core.Spell
 	Blizzard                *core.Spell
+	Combustion              *core.Spell
 	DeepFreeze              *core.Spell
 	Ignite                  *core.Spell
 	LivingBomb              *core.Spell
@@ -57,15 +59,12 @@ type Mage struct {
 	ArcaneMissilesAura *core.Aura
 	ArcanePotencyAura  *core.Aura
 	ArcanePowerAura    *core.Aura
-	MissileBarrageAura *core.Aura
+	BrainFreezeAura    *core.Aura
 	ClearcastingAura   *core.Aura
-	//ScorchAuras        core.AuraArray
 	CriticalMassAuras  core.AuraArray
+	FingersOfFrostAura *core.Aura
 	hotStreakCritAura  *core.Aura
 	HotStreakAura      *core.Aura
-	CombustionAura     *core.Aura
-	FingersOfFrostAura *core.Aura
-	BrainFreezeAura    *core.Aura
 
 	ScalingBaseDamage float64
 
@@ -106,7 +105,7 @@ func (mage *Mage) Initialize() {
 	mage.registerArcaneBlastSpell()
 	mage.registerArcaneExplosionSpell()
 	mage.registerArcaneMissilesSpell()
-	//mage.registerBlizzardSpell()
+	mage.registerBlizzardSpell()
 	// mage.registerDeepFreezeSpell()
 	mage.registerFireballSpell()
 	mage.registerFireBlastSpell()
@@ -117,10 +116,11 @@ func (mage *Mage) Initialize() {
 	mage.registerPyroblastSpell()
 	mage.registerScorchSpell()
 	mage.registerLivingBombSpell()
-	// mage.registerFrostfireBoltSpell()
+	mage.registerFrostfireBoltSpell()
 	mage.registerEvocation()
 	mage.registerManaGemsCD()
 	mage.registerMirrorImageCD()
+	//mage.registerCombustionSpell()
 	// mage.registerBlastWaveSpell()
 	// mage.registerDragonsBreathSpell()
 	// mage.registerSummonWaterElementalCD()

@@ -32,10 +32,6 @@ func (mage *Mage) registerLivingBombSpell() {
 		},
 	})
 
-	onTick := func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-		dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-	}
-
 	mage.LivingBomb = mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 44457},
 		SpellSchool: core.SpellSchoolFire,
@@ -73,7 +69,9 @@ func (mage *Mage) registerLivingBombSpell() {
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
-			OnTick: onTick,
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
