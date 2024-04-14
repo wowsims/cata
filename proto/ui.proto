@@ -108,12 +108,31 @@ enum DungeonDifficulty {
 	DifficultyRaid25H = 6;
 }
 
+enum RepLevel {
+	RepLevelUnknown 	= 0;
+	RepLevelHated 		= 1;
+	RepLevelHostile 	= 2;
+	RepLevelUnfriendly 	= 3;
+	RepLevelNeutral 	= 4;
+	RepLevelFriendly 	= 5;
+	RepLevelHonored 	= 6;
+	RepLevelRevered 	= 7;
+	RepLevelExalted 	= 8;
+}
+
+// TODO: Cata Rep Factions
+// Use the faction ID for the field index
+enum RepFaction {
+	RepFactionUnknown = 0;
+}
+
 message UIItemSource {
 	oneof source {
 		CraftedSource crafted = 1;
 		DropSource drop = 2;
 		QuestSource quest = 3;
 		SoldBySource sold_by = 4;
+		RepSource rep = 5;
 	}
 }
 message CraftedSource {
@@ -135,6 +154,11 @@ message SoldBySource {
 	int32 npc_id = 1;
 	string npc_name = 2;
 	int32 zone_id = 3;
+}
+message RepSource {
+	RepFaction rep_faction_id = 1;
+	RepLevel rep_level = 2;
+	Faction faction_id = 3;
 }
 
 message UIEnchant {

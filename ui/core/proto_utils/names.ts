@@ -1,6 +1,6 @@
 import { ResourceType } from '../proto/api.js';
 import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common.js';
-import { DungeonDifficulty, RaidFilterOption, SourceFilterOption } from '../proto/ui.js';
+import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption } from '../proto/ui.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
 	[ArmorType.ArmorTypeUnknown, 'Unknown'],
@@ -326,6 +326,22 @@ export const difficultyNames: Map<DungeonDifficulty, string> = new Map([
 	[DungeonDifficulty.DifficultyRaid25, '25N'],
 	[DungeonDifficulty.DifficultyRaid25H, '25H'],
 ]);
+
+export const REP_LEVEL_NAMES: Record<RepLevel, string> = {
+	[RepLevel.RepLevelUnknown]: 'Unknown',
+	[RepLevel.RepLevelHated]: 'Hated',
+	[RepLevel.RepLevelHostile]: 'Hostile',
+	[RepLevel.RepLevelUnfriendly]: 'Unfriendly',
+	[RepLevel.RepLevelNeutral]: 'Neutral',
+	[RepLevel.RepLevelFriendly]: 'Friendly',
+	[RepLevel.RepLevelHonored]: 'Honored',
+	[RepLevel.RepLevelRevered]: 'Revered',
+	[RepLevel.RepLevelExalted]: 'Exalted',
+};
+
+export const REP_FACTION_NAMES: Record<RepFaction, string> = {
+	[RepFaction.RepFactionUnknown]: 'Unknown',
+};
 
 export const masterySpellNames: Map<Spec, string> = new Map([
 	[Spec.SpecAssassinationRogue, 'Potent Poisons'],
