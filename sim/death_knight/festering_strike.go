@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 var FesteringStrikeActionID = core.ActionID{SpellID: 85948}
@@ -32,6 +33,8 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 	extendHandler := func(aura *core.Aura) {
 		aura.UpdateExpires(aura.ExpiresAt() + time.Second*6)
 	}
+
+	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
 	dk.FesteringStrike = dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       FesteringStrikeActionID.WithTag(1),
@@ -64,7 +67,11 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			spell.SpendRefundableCost(sim, result)
+			if hasReaping {
+				spell.SpendRefundableCostAndConvertBloodOrFrostRune(sim, result, 1)
+			} else {
+				spell.SpendRefundableCost(sim, result)
+			}
 			dk.threatOfThassarianProc(sim, result, ohSpell)
 
 			if result.Landed() {

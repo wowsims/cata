@@ -6,12 +6,16 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (dk *DeathKnight) registerUnholyFrenzyCD() {
-	if !dk.Talents.Hysteria {
+func (dk *DeathKnight) registerUnholyFrenzySpell() {
+	if !dk.Talents.UnholyFrenzy {
 		return
 	}
 
 	actionID := core.ActionID{SpellID: 49016, Tag: dk.Index}
+
+	unholyFrenzyAuras := dk.NewAllyAuraArray(func(u *core.Unit) *core.Aura {
+		return core.UnholyFrenzyAura(u, actionID.Tag)
+	})
 	unholyFrenzyTarget := dk.GetUnit(dk.Inputs.UnholyFrenzyTarget)
 	if unholyFrenzyTarget == nil {
 		unholyFrenzyTarget = &dk.Unit
@@ -20,11 +24,11 @@ func (dk *DeathKnight) registerUnholyFrenzyCD() {
 	if unholyFrenzyTarget == nil {
 		return
 	}
-	dk.UnholyFrenzyAura = core.UnholyFrenzyAura(unholyFrenzyTarget, actionID.Tag)
 
-	dk.UnholyFrenzy = dk.Character.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+	unholyFrenzy := dk.Character.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: DeathKnightSpellUnholyFrenzy,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
@@ -33,13 +37,13 @@ func (dk *DeathKnight) registerUnholyFrenzyCD() {
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			dk.UnholyFrenzyAura.Activate(sim)
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
+			unholyFrenzyAuras.Get(unholyFrenzyTarget).Activate(sim)
 		},
 	})
 
 	dk.AddMajorCooldown(core.MajorCooldown{
-		Spell:    dk.UnholyFrenzy,
+		Spell:    unholyFrenzy,
 		Priority: core.CooldownPriorityBloodlust,
 		Type:     core.CooldownTypeDPS,
 	})

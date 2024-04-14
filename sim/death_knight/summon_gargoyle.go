@@ -7,20 +7,21 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (dk *DeathKnight) registerSummonGargoyleCD() {
+func (dk *DeathKnight) registerSummonGargoyleSpell() {
 	if !dk.Talents.SummonGargoyle {
 		return
 	}
 
-	dk.SummonGargoyleAura = dk.RegisterAura(core.Aura{
+	trackingAura := dk.RegisterAura(core.Aura{
 		Label:    "Summon Gargoyle",
 		ActionID: core.ActionID{SpellID: 49206},
 		Duration: time.Second * 30,
 	})
 
-	dk.SummonGargoyle = dk.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 49206},
-		Flags:    core.SpellFlagAPL,
+	spell := dk.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 49206},
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: DeathKnightSpellSummonGargoyle,
 
 		RuneCost: core.RuneCostOptions{
 			RunicPowerCost: 60,
@@ -39,12 +40,11 @@ func (dk *DeathKnight) registerSummonGargoyleCD() {
 			dk.Gargoyle.EnableWithTimeout(sim, dk.Gargoyle, time.Second*30)
 			dk.Gargoyle.CancelGCDTimer(sim)
 
-			// Add a dummy aura to show in metrics
-			dk.SummonGargoyleAura.Activate(sim)
+			trackingAura.Activate(sim)
 
 			// Start casting after a 2.5s delay to simulate the summon animation
 			pa := core.PendingAction{
-				NextActionAt: sim.CurrentTime + dk.GargoyleSummonDelay,
+				NextActionAt: sim.CurrentTime + time.Millisecond*2500,
 				Priority:     core.ActionPriorityAuto,
 				OnAction: func(s *core.Simulation) {
 					dk.OnGargoyleStartFirstCast()
@@ -56,14 +56,9 @@ func (dk *DeathKnight) registerSummonGargoyleCD() {
 	})
 
 	dk.AddMajorCooldown(core.MajorCooldown{
-		Spell: dk.SummonGargoyle,
+		Spell: spell,
 		Type:  core.CooldownTypeDPS,
 	})
-	if dk.Inputs.IsDps {
-		// We use this for defining the min cast time of gargoyle,
-		// but we don't cast it with the MCD system in the dps sim
-		dk.GetMajorCooldown(dk.SummonGargoyle.ActionID).Disable()
-	}
 }
 
 type GargoylePet struct {
@@ -75,44 +70,30 @@ type GargoylePet struct {
 }
 
 func (dk *DeathKnight) NewGargoyle() *GargoylePet {
-	// Remove any hit that would be given by NocS as it does not translate to pets
-	var nocsHit float64
-	if dk.nervesOfColdSteelActive() {
-		nocsHit = float64(dk.Talents.NervesOfColdSteel) * core.MeleeHitRatingPerHitChance
-	}
-	if dk.HasDraeneiHitAura {
-		nocsHit += 1 * core.MeleeHitRatingPerHitChance
-	}
-
 	gargoyle := &GargoylePet{
 		Pet: core.NewPet("Gargoyle", &dk.Character, stats.Stats{
-			stats.Stamina:  1000,
-			stats.SpellHit: -nocsHit * PetSpellHitScale,
+			stats.Stamina: 1000,
 		}, func(ownerStats stats.Stats) stats.Stats {
 			return stats.Stats{
-				stats.AttackPower: ownerStats[stats.AttackPower],
-				stats.SpellHit:    ownerStats[stats.MeleeHit] * PetSpellHitScale,
-				stats.SpellHaste:  ownerStats[stats.MeleeHaste] * PetSpellHasteScale,
+				stats.SpellPower: ownerStats[stats.AttackPower],
+				stats.SpellHit:   ownerStats[stats.MeleeHit] * PetSpellHitScale,
+				stats.SpellHaste: ownerStats[stats.MeleeHaste],
 			}
 		}, false, true),
 		dkOwner: dk,
 	}
 
-	// NightOfTheDead
-	gargoyle.PseudoStats.DamageTakenMultiplier *= 1.0 - float64(dk.Talents.NightOfTheDead)*0.45
-
 	gargoyle.OnPetEnable = func(sim *core.Simulation) {
 		gargoyle.PseudoStats.CastSpeedMultiplier = 1 // guardians are not affected by raid buffs
 		gargoyle.MultiplyCastSpeed(dk.PseudoStats.MeleeSpeedMultiplier)
 
-		// "Nerfed Gargoyle" dynamically updates with owner's haste and melee speed
 		gargoyle.EnableDynamicMeleeSpeed(func(amount float64) {
 			gargoyle.MultiplyCastSpeed(amount)
 		})
 
 		gargoyle.EnableDynamicStats(func(ownerStats stats.Stats) stats.Stats {
 			return stats.Stats{
-				stats.SpellHaste: ownerStats[stats.MeleeHaste] * PetSpellHasteScale,
+				stats.SpellHaste: ownerStats[stats.MeleeHaste],
 			}
 		})
 	}
@@ -137,8 +118,6 @@ func (garg *GargoylePet) ExecuteCustomRotation(_ *core.Simulation) {
 }
 
 func (garg *GargoylePet) registerGargoyleStrikeSpell() {
-	attackPowerModifier := (1.0 + 0.04*float64(garg.dkOwner.Talents.Impurity)) / 3.0
-
 	garg.GargoyleStrike = garg.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 51963},
 		SpellSchool: core.SpellSchoolNature,
@@ -154,8 +133,10 @@ func (garg *GargoylePet) registerGargoyleStrikeSpell() {
 		CritMultiplier:   1.5,
 		ThreatMultiplier: 1,
 
+		BonusCoefficient: 0.317,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 2.05*sim.Roll(51, 69) + attackPowerModifier*spell.MeleeAttackPower()
+			baseDamage := 291.0
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)
 

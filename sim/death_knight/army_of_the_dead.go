@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (dk *DeathKnight) registerArmyOfTheDeadCD() {
+func (dk *DeathKnight) registerArmyOfTheDeadSpell() {
 	var ghoulIndex = 0
 	aotdAura := dk.RegisterAura(core.Aura{
 		Label:    "Army of the Dead",
@@ -40,8 +40,9 @@ func (dk *DeathKnight) registerArmyOfTheDeadCD() {
 	})
 
 	dk.ArmyOfTheDead = dk.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 42650},
-		Flags:    core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 42650},
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: DeathKnightSpellArmyOfTheDead,
 
 		RuneCost: core.RuneCostOptions{
 			BloodRuneCost:  1,
@@ -55,12 +56,20 @@ func (dk *DeathKnight) registerArmyOfTheDeadCD() {
 			},
 			CD: core.Cooldown{
 				Timer:    dk.NewTimer(),
-				Duration: time.Minute*10 - time.Minute*2*time.Duration(dk.Talents.NightOfTheDead),
+				Duration: time.Minute * 10,
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
 			aotdAura.Activate(sim)
+		},
+	})
+
+	dk.AddMajorCooldown(core.MajorCooldown{
+		Spell: dk.ArmyOfTheDead,
+		Type:  core.CooldownTypeDPS,
+		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+			return dk.HasActiveAuraWithTag(core.UnholyFrenzyAuraTag)
 		},
 	})
 }
