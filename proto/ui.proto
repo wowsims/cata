@@ -109,15 +109,15 @@ enum DungeonDifficulty {
 }
 
 enum RepLevel {
-	RepLevelUnknown 		= 0;
-	RepLevelHated 			= 1;
-	RepLevelHostile 		= 2;
-	RepLevelUnfriendly 		= 3;
-	RepLevelNeutral 		= 4;
-	RepLevelFriendly 		= 5;
-	RepLevelHonored 		= 6;
-	RepLevelRevered 		= 7;
-	RepLevelExalted 		= 8;
+	RepLevelUnknown 	= 0;
+	RepLevelHated 		= 1;
+	RepLevelHostile 	= 2;
+	RepLevelUnfriendly 	= 3;
+	RepLevelNeutral 	= 4;
+	RepLevelFriendly 	= 5;
+	RepLevelHonored 	= 6;
+	RepLevelRevered 	= 7;
+	RepLevelExalted 	= 8;
 }
 
 // TODO: Cata Rep Factions
