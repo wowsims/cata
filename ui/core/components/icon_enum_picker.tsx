@@ -111,6 +111,7 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 
 			const option = document.createElement('a');
 			option.classList.add('icon-picker-button');
+			option.dataset.whtticon = 'false';
 			option.dataset.disableWowheadTouchTooltip = 'true';
 			optionContainer.appendChild(option);
 
