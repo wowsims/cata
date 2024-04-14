@@ -4,6 +4,7 @@ import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class HolyPaladin extends PlayerSpec<Spec.SpecHolyPaladin> {
+	static specIndex = 0;
 	static specID = Spec.SpecHolyPaladin as Spec.SpecHolyPaladin;
 	static classID = Class.ClassPaladin as Class.ClassPaladin;
 	static friendlyName = 'Holy';
@@ -16,6 +17,7 @@ export class HolyPaladin extends PlayerSpec<Spec.SpecHolyPaladin> {
 
 	static canDualWield = false;
 
+	readonly specIndex = HolyPaladin.specIndex;
 	readonly specID = HolyPaladin.specID;
 	readonly classID = HolyPaladin.classID;
 	readonly friendlyName = HolyPaladin.friendlyName;
@@ -38,6 +40,7 @@ export class HolyPaladin extends PlayerSpec<Spec.SpecHolyPaladin> {
 }
 
 export class ProtectionPaladin extends PlayerSpec<Spec.SpecProtectionPaladin> {
+	static specIndex = 1;
 	static specID = Spec.SpecProtectionPaladin as Spec.SpecProtectionPaladin;
 	static classID = Class.ClassPaladin as Class.ClassPaladin;
 	static friendlyName = 'Protection';
@@ -50,6 +53,7 @@ export class ProtectionPaladin extends PlayerSpec<Spec.SpecProtectionPaladin> {
 
 	static canDualWield = false;
 
+	readonly specIndex = ProtectionPaladin.specIndex;
 	readonly specID = ProtectionPaladin.specID;
 	readonly classID = ProtectionPaladin.classID;
 	readonly friendlyName = ProtectionPaladin.friendlyName;
@@ -72,6 +76,7 @@ export class ProtectionPaladin extends PlayerSpec<Spec.SpecProtectionPaladin> {
 }
 
 export class RetributionPaladin extends PlayerSpec<Spec.SpecRetributionPaladin> {
+	static specIndex = 2;
 	static specID = Spec.SpecRetributionPaladin as Spec.SpecRetributionPaladin;
 	static classID = Class.ClassPaladin as Class.ClassPaladin;
 	static friendlyName = 'Retribution';
@@ -84,6 +89,7 @@ export class RetributionPaladin extends PlayerSpec<Spec.SpecRetributionPaladin> 
 
 	static canDualWield = false;
 
+	readonly specIndex = RetributionPaladin.specIndex;
 	readonly specID = RetributionPaladin.specID;
 	readonly classID = RetributionPaladin.classID;
 	readonly friendlyName = RetributionPaladin.friendlyName;
