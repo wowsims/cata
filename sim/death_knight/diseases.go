@@ -71,6 +71,7 @@ func (dk *DeathKnight) registerFrostFever() {
 		ClassSpellMask: DeathKnightSpellFrostFever,
 
 		DamageMultiplier: 1.15,
+		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -90,7 +91,7 @@ func (dk *DeathKnight) registerFrostFever() {
 				dot.Snapshot(target, dot.Spell.MeleeAttackPower()*0.055+0.31999999285*core.CharacterLevel)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
@@ -131,7 +132,7 @@ func (dk *DeathKnight) registerBloodPlague() {
 				dot.Snapshot(target, dot.Spell.MeleeAttackPower()*0.055+0.3939999938*core.CharacterLevel)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 

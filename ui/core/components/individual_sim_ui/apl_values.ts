@@ -35,6 +35,7 @@ import {
 	APLValueCurrentTimePercent,
 	APLValueDotIsActive,
 	APLValueDotRemainingTime,
+	APLValueDotTickFrequency,
 	APLValueFrontOfTarget,
 	APLValueGCDIsReady,
 	APLValueGCDTimeToReady,
@@ -51,9 +52,7 @@ import {
 	APLValueRemainingTime,
 	APLValueRemainingTimePercent,
 	APLValueRuneCooldown,
-	APLValueRuneGrace,
 	APLValueRuneSlotCooldown,
-	APLValueRuneSlotGrace,
 	APLValueSequenceIsComplete,
 	APLValueSequenceIsReady,
 	APLValueSequenceTimeToReady,
@@ -69,7 +68,6 @@ import {
 	APLValueTotemRemainingTime,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
-	APLValueDotTickFrequency,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
@@ -692,22 +690,6 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Resources', 'Runes'],
 		shortDescription: 'Amount of time until a rune of certain slot is ready to use.<br><b>NOTE:</b> Returns 0 if rune is ready',
 		newValue: APLValueRuneSlotCooldown.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
-		fields: [AplHelpers.runeSlotFieldConfig('runeSlot')],
-	}),
-	runeGrace: inputBuilder({
-		label: 'Rune Grace Period',
-		submenu: ['Resources', 'Runes'],
-		shortDescription: 'Amount of rune grace period available for certain rune type.',
-		newValue: APLValueRuneGrace.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
-		fields: [AplHelpers.runeTypeFieldConfig('runeType', false)],
-	}),
-	runeSlotGrace: inputBuilder({
-		label: 'Rune Slot Grace Period',
-		submenu: ['Resources', 'Runes'],
-		shortDescription: 'Amount of rune grace period available for certain rune slot.',
-		newValue: APLValueRuneSlotGrace.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
 		fields: [AplHelpers.runeSlotFieldConfig('runeSlot')],
 	}),
