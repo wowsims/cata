@@ -155,10 +155,11 @@ func (dk *DeathKnight) ghoulStatInheritance() core.PetStatInheritance {
 
 func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 	return ghoulPet.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 47468},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ActionID:       core.ActionID{SpellID: 47468},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ClassSpellMask: GhoulSpellClaw,
 
 		FocusCost: core.FocusCostOptions{
 			Cost:   40,
@@ -179,11 +180,19 @@ func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			results := make([]*core.SpellResult, min(int32(2), min(ghoulPet.Env.GetNumTargets(), core.TernaryInt32(ghoulPet.DarkTransformationAura.IsActive(), 2, 1))))
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			if !result.Landed() {
-				spell.IssueRefund(sim)
+			for idx := range results {
+				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				target = sim.Environment.NextTargetUnit(target)
+			}
+
+			for idx, result := range results {
+				if idx == 0 && !result.Landed() {
+					spell.IssueRefund(sim)
+				}
+				spell.DealDamage(sim, result)
 			}
 		},
 	})

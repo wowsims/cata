@@ -250,20 +250,29 @@ func (dk *DeathKnight) applyShadowInfusion() *core.Aura {
 		MaxStacks: 5,
 	})
 
+	damageMod := dk.Ghoul.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.06,
+	})
+
 	aura := dk.Ghoul.GetOrRegisterAura(core.Aura{
 		Label:     "Shadow Infusion",
 		ActionID:  core.ActionID{SpellID: 91342},
 		Duration:  time.Second * 30,
 		MaxStacks: 5,
 
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			trackingAura.Activate(sim)
+			damageMod.Activate()
+		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			trackingAura.Deactivate(sim)
+			damageMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			trackingAura.Activate(sim)
 			trackingAura.SetStacks(sim, newStacks)
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.0 + float64(oldStacks)*0.06
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.0 + float64(newStacks)*0.06
+			damageMod.UpdateFloatValue(float64(newStacks) * 0.06)
 		},
 	})
 
@@ -293,16 +302,21 @@ func (dk *DeathKnight) applyDarkTransformation(shadowInfusionAura *core.Aura) {
 
 	actionID := core.ActionID{SpellID: 63560}
 
-	clawMod := dk.Ghoul.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  GhoulSpellClaw,
-		FloatValue: 1.2,
-	})
-
 	trackingAura := dk.GetOrRegisterAura(core.Aura{
 		Label:    "Dark Transformation Dk",
 		ActionID: actionID,
 		Duration: time.Second * 30,
+	})
+
+	damageMod := dk.Ghoul.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.6,
+	})
+
+	clawMod := dk.Ghoul.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  GhoulSpellClaw,
+		FloatValue: 0.2,
 	})
 
 	dk.Ghoul.DarkTransformationAura = dk.Ghoul.GetOrRegisterAura(core.Aura{
@@ -312,12 +326,12 @@ func (dk *DeathKnight) applyDarkTransformation(shadowInfusionAura *core.Aura) {
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			trackingAura.Activate(sim)
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.6
+			damageMod.Activate()
 			clawMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			trackingAura.Deactivate(sim)
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.6
+			damageMod.Deactivate()
 			clawMod.Deactivate()
 		},
 	})
