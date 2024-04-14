@@ -121,8 +121,8 @@ func (mage *Mage) Initialize() {
 	mage.registerManaGemsCD()
 	mage.registerMirrorImageCD()
 	//mage.registerCombustionSpell()
-	// mage.registerBlastWaveSpell()
-	// mage.registerDragonsBreathSpell()
+	mage.registerBlastWaveSpell()
+	mage.registerDragonsBreathSpell()
 	// mage.registerSummonWaterElementalCD()
 
 	mage.ScalingBaseDamage = 937.330078125
