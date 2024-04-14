@@ -1,5 +1,4 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../../core/components/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -16,7 +15,6 @@ import {
 	Spec,
 	Stat,
 	TristateEffect,
-	WeaponType,
 } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { Stats } from '../../core/proto_utils/stats';
@@ -210,7 +208,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.AssassinationTalents137.data,
+		talents: Presets.AssassinationTalentsDefault.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -271,14 +269,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.AssassinationTalents137, Presets.AssassinationTalents182, Presets.AssassinationTalentsBF],
+		talents: [Presets.AssassinationTalentsDefault],
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			Presets.ROTATION_PRESET_MUTILATE,
-			Presets.ROTATION_PRESET_MUTILATE_EXPOSE,
-			Presets.ROTATION_PRESET_RUPTURE_MUTILATE,
-			Presets.ROTATION_PRESET_RUPTURE_MUTILATE_EXPOSE,
-			Presets.ROTATION_PRESET_AOE,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
@@ -294,16 +288,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 	autoRotation: (player: Player<Spec.SpecAssassinationRogue>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets >= 5) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_MUTILATE.rotation.rotation!;
 		} else {
-			return Presets.ROTATION_PRESET_MUTILATE_EXPOSE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_MUTILATE.rotation.rotation!;
 		}
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecAssassinationRogue,
-			talents: Presets.AssassinationTalents137.data,
+			talents: Presets.AssassinationTalentsDefault.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {

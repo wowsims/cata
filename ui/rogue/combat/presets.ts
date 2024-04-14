@@ -3,10 +3,6 @@ import { Conjured, Consumes, Flask, Food, Glyphs, Potions } from '../../core/pro
 import { CombatRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { SavedTalents } from '../../core/proto/ui';
 import CombatApl from './apls/combat.apl.json';
-import CombatCleaveSndApl from './apls/combat_cleave_snd.apl.json';
-import CombatCleaveSndExposeApl from './apls/combat_cleave_snd_expose.apl.json';
-import CombatExposeApl from './apls/combat_expose.apl.json';
-import FanAoeApl from './apls/fan_aoe.apl.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
 import P2CombatGear from './gear_sets/p2_combat.gear.json';
 import P3CombatGear from './gear_sets/p3_combat.gear.json';
@@ -26,10 +22,6 @@ export const P4_PRESET_COMBAT = PresetUtils.makePresetGear('P4 Combat', P4Combat
 export const P5_PRESET_COMBAT = PresetUtils.makePresetGear('P5 Combat', P5CombatGear);
 
 export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat', CombatApl);
-export const ROTATION_PRESET_COMBAT_EXPOSE = PresetUtils.makePresetAPLRotation('Combat w/ Expose', CombatExposeApl);
-export const ROTATION_PRESET_COMBAT_CLEAVE_SND = PresetUtils.makePresetAPLRotation('Combat Cleave SND', CombatCleaveSndApl);
-export const ROTATION_PRESET_COMBAT_CLEAVE_SND_EXPOSE = PresetUtils.makePresetAPLRotation('Combat Cleave SND w/ Expose', CombatCleaveSndExposeApl);
-export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Fan AOE', FanAoeApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.

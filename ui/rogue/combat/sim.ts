@@ -275,10 +275,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			Presets.ROTATION_PRESET_COMBAT,
-			Presets.ROTATION_PRESET_COMBAT_EXPOSE,
-			Presets.ROTATION_PRESET_COMBAT_CLEAVE_SND,
-			Presets.ROTATION_PRESET_COMBAT_CLEAVE_SND_EXPOSE,
-			Presets.ROTATION_PRESET_AOE,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
@@ -293,10 +289,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 
 	autoRotation: (player: Player<Spec.SpecCombatRogue>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets >= 5) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
+		if (numTargets >= 2) {
+			return Presets.ROTATION_PRESET_COMBAT.rotation.rotation!;
 		} else {
-			return Presets.ROTATION_PRESET_COMBAT_EXPOSE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_COMBAT.rotation.rotation!;
 		}
 	},
 

@@ -6,6 +6,7 @@ import P1HemoSubGear from './gear_sets/p1_hemosub.gear.json';
 import P2HemoSubGear from './gear_sets/p2_hemosub.gear.json';
 import P3DanceSubGear from './gear_sets/p3_dancesub.gear.json';
 import P3HemoSubGear from './gear_sets/p3_hemosub.gear.json';
+import SubtletyApl from './apls/subtlety.apl.json'
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -16,8 +17,7 @@ export const P2_PRESET_HEMO_SUB = PresetUtils.makePresetGear('P2 Hemo Sub', P2He
 export const P3_PRESET_HEMO_SUB = PresetUtils.makePresetGear('P3 Hemo Sub', P3HemoSubGear, { talentTree: 2 });
 export const P3_PRESET_DANCE_SUB = PresetUtils.makePresetGear('P3 Dance Sub', P3DanceSubGear, { talentTree: 2 });
 
-import FanAoeApl from './apls/fan_aoe.apl.json';
-export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Fan AOE', FanAoeApl);
+export const ROTATION_PRESET_SUBTLETY = PresetUtils.makePresetAPLRotation('Subtlety', SubtletyApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
