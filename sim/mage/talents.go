@@ -8,7 +8,7 @@ import (
 )
 
 func (mage *Mage) ApplyTalents() {
-	// Ordered row-by-row, left to right
+
 	// mage.applyArcaneConcentration
 	mage.applyMasterOfElements()
 	// mage.applyEarlyWinter()
@@ -31,7 +31,6 @@ func (mage *Mage) ApplyTalents() {
 	// mage.applyPyromaniac()
 	// mage.applyCriticalMass()
 	// mage.applyFrostfireOrb()
-	// mage.applyDeepFreeze()
 
 	mage.applyArcaneMissileProc()
 	mage.applyHotStreak()
