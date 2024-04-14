@@ -71,9 +71,13 @@ func init() {
 			DamageMultiplier:         1,
 			DamageMultiplierAdditive: 1,
 			ThreatMultiplier:         1,
+			CritMultiplier:           character.DefaultSpellCritMultiplier(),
 			ProcMask:                 core.ProcMaskEmpty,
 			Flags:                    core.SpellFlagNoOnCastComplete,
 			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Vengful Wisp - 2",
+				},
 				NumberOfTicks:       5,
 				TickLength:          3,
 				AffectedByCastSpeed: false,
@@ -85,7 +89,6 @@ func init() {
 					if sim.Proc(0.1, "Vengeful Wisp") {
 						// select random proc target
 						spreadTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))-1))]
-
 						// refresh or apply this dot on the target
 						dot.Spell.Dot(spreadTarget).Apply(sim)
 					}
@@ -101,7 +104,11 @@ func init() {
 			ThreatMultiplier:         1,
 			ProcMask:                 core.ProcMaskEmpty,
 			Flags:                    core.SpellFlagNoOnCastComplete,
+			CritMultiplier:           character.DefaultSpellCritMultiplier(),
 			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Vengful Wisp - 1",
+				},
 				NumberOfTicks:       5,
 				TickLength:          3,
 				AffectedByCastSpeed: false,
@@ -382,6 +389,10 @@ func init() {
 				ActionID:  core.ActionID{SpellID: 91320},
 				Duration:  time.Second * 15,
 				MaxStacks: 5,
+				Icd: &core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 30,
+				},
 			},
 			BonusPerStack: stats.Stats{stats.Spirit: 103},
 		})
@@ -395,8 +406,10 @@ func init() {
 			Outcome:    core.OutcomeLanded,
 			ICD:        time.Second * 2,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procAura.Activate(sim)
-				procAura.AddStack(sim)
+				if procAura.Icd.IsReady(sim) {
+					procAura.Activate(sim)
+					procAura.AddStack(sim)
+				}
 			},
 		}))
 
@@ -406,8 +419,17 @@ func init() {
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				procAura.Deactivate(sim)
+
+				// can not regain stacks for 30 seconds
+				procAura.Icd.Use(sim)
 				character.AddMana(sim, 6420, manaMetric)
 			},
 		})
@@ -428,6 +450,10 @@ func init() {
 				ActionID:  core.ActionID{SpellID: 92329},
 				Duration:  time.Second * 15,
 				MaxStacks: 5,
+				Icd: &core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 30,
+				},
 			},
 			BonusPerStack: stats.Stats{stats.Spirit: 116},
 		})
@@ -441,8 +467,10 @@ func init() {
 			Outcome:    core.OutcomeLanded,
 			ICD:        time.Second * 2,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procAura.Activate(sim)
-				procAura.AddStack(sim)
+				if procAura.Icd.IsReady(sim) {
+					procAura.Activate(sim)
+					procAura.AddStack(sim)
+				}
 			},
 		}))
 
@@ -452,8 +480,16 @@ func init() {
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				procAura.Deactivate(sim)
+				// can not regain stacks for 30 seconds
+				procAura.Icd.Use(sim)
 				character.AddMana(sim, 7260, manaMetric)
 			},
 		})
