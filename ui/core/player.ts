@@ -427,8 +427,7 @@ export class Player<SpecType extends Spec> {
 
 	// Returns all items that this player can wear in the given slot.
 	getItems(slot: ItemSlot): Array<Item> {
-		// TODO: REMOVE ILVL FILTER - LOCAL DEV ONLY
-		return this.sim.db.getItems(slot).filter(item => canEquipItem(item, this.playerSpec, slot) && item.ilvl <= 372);
+		return this.sim.db.getItems(slot).filter(item => canEquipItem(item, this.playerSpec, slot));
 	}
 
 	// Returns all random suffixes that this player would be interested in for the given base item.
