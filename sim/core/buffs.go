@@ -3,6 +3,7 @@ package core
 import (
 	"cmp"
 	"fmt"
+	"math"
 	"slices"
 	"strconv"
 	"time"
@@ -49,14 +50,9 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	// 	character.PseudoStats.RangedSpeedMultiplier *= 1.03
 	// }
 
-	// if raidBuffs.LeaderOfThePack > 0 || raidBuffs.Rampage {
-	// 	character.AddStats(stats.Stats{
-	// 		stats.MeleeCrit: 5 * CritRatingPerCritChance,
-	// 	})
-	// 	if raidBuffs.LeaderOfThePack == proto.TristateEffect_TristateEffectImproved {
-	// 		// TODO: healing aura from imp LotP
-	// 	}
-	// }
+	if raidBuffs.ElementalOath {
+		character.AddStat(stats.SpellCrit, 5*CritRatingPerCritChance)
+	}
 
 	// if raidBuffs.TrueshotAura || raidBuffs.AbominationsMight || raidBuffs.UnleashedRage {
 	// 	// Increases AP by 10%
@@ -188,6 +184,31 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 	// if individualBuffs.FocusMagic {
 	// 	FocusMagicAura(nil, &character.Unit)
 	// }
+
+	if raidBuffs.BattleShout {
+		MakePermanent(BattleShoutAura(&character.Unit, false))
+	}
+
+	if raidBuffs.FlametongueTotem {
+		MakePermanent(FlametongueTotemAura(character))
+	}
+
+	// 5% haste buffs
+	if raidBuffs.MoonkinForm {
+		MakePermanent(MoonkinAura(character))
+	}
+
+	if raidBuffs.TotemicWrath {
+		MakePermanent(TotemOfWrathAura(character))
+	}
+
+	if raidBuffs.ShadowForm {
+		MakePermanent(MindQuickeningAura(character))
+	}
+
+	if raidBuffs.WrathOfAirTotem {
+		MakePermanent(WrathOfAirAura(character))
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -318,11 +339,11 @@ func BloodPactAura(unit *Unit) *Aura {
 }
 
 // https://www.wowhead.com/cata/spell=469/commanding-shout
-func CommandingShoutAura(unit *Unit) *Aura {
+func CommandingShoutAura(unit *Unit, hasGlyph bool) *Aura {
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Commanding Shout",
 		ActionID:   ActionID{SpellID: 469},
-		Duration:   time.Minute * 2,
+		Duration:   TernaryDuration(hasGlyph, time.Minute*4, time.Minute*2),
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			aura.Activate(sim)
@@ -392,11 +413,11 @@ func HornOfWinterAura(unit *Unit) *Aura {
 }
 
 // https://www.wowhead.com/cata/spell=6673/battle-shout
-func BattleShoutAura(unit *Unit) *Aura {
+func BattleShoutAura(unit *Unit, hasGlyph bool) *Aura {
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Battle Shout",
 		ActionID:   ActionID{SpellID: 6673},
-		Duration:   time.Minute * 2,
+		Duration:   TernaryDuration(hasGlyph, time.Minute*4, time.Minute*2),
 		BuildPhase: CharacterBuildPhaseBuffs,
 	})
 	newExclusivStrengthAgilityBuff(aura)
@@ -415,7 +436,7 @@ func applyStrengthAgilityBuffs(character *Character, raidBuffs *proto.RaidBuffs)
 	}
 
 	if raidBuffs.BattleShout {
-		MakePermanent(BattleShoutAura(&character.Unit))
+		MakePermanent(BattleShoutAura(&character.Unit, false))
 	}
 }
 
@@ -596,7 +617,7 @@ func RetributionAura(character *Character, sanctifiedRetribution bool) *Aura {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if result.Landed() && spell.SpellSchool == SpellSchoolPhysical {
+			if result.Landed() && spell.SpellSchool.Matches(SpellSchoolPhysical) {
 				procSpell.Cast(sim, spell.Unit)
 			}
 		},
@@ -629,7 +650,7 @@ func ThornsAura(character *Character, points int32) *Aura {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if result.Landed() && spell.SpellSchool == SpellSchoolPhysical {
+			if result.Landed() && spell.SpellSchool.Matches(SpellSchoolPhysical) {
 				procSpell.Cast(sim, spell.Unit)
 			}
 		},
@@ -1239,30 +1260,30 @@ func registerRevitalizeHotCD(agent Agent, label string, hotID ActionID, ticks in
 
 const ShatteringThrowCD = time.Minute * 5
 
-func registerShatteringThrowCD(agent Agent, numShatteringThrows int32) {
-	if numShatteringThrows == 0 {
-		return
-	}
+// func registerShatteringThrowCD(agent Agent, numShatteringThrows int32) {
+// 	if numShatteringThrows == 0 {
+// 		return
+// 	}
 
-	stAura := ShatteringThrowAura(agent.GetCharacter().Env.Encounter.TargetUnits[0])
+// 	stAura := ShatteringThrowAura(agent.GetCharacter().Env.Encounter.TargetUnits[0])
 
-	registerExternalConsecutiveCDApproximation(
-		agent,
-		externalConsecutiveCDApproximation{
-			ActionID:         ActionID{SpellID: 64382, Tag: -1},
-			AuraTag:          ShatteringThrowAuraTag,
-			CooldownPriority: CooldownPriorityDefault,
-			AuraDuration:     ShatteringThrowDuration,
-			AuraCD:           ShatteringThrowCD,
-			Type:             CooldownTypeDPS,
+// 	registerExternalConsecutiveCDApproximation(
+// 		agent,
+// 		externalConsecutiveCDApproximation{
+// 			ActionID:         ActionID{SpellID: 64382, Tag: -1},
+// 			AuraTag:          ShatteringThrowAuraTag,
+// 			CooldownPriority: CooldownPriorityDefault,
+// 			AuraDuration:     ShatteringThrowDuration,
+// 			AuraCD:           ShatteringThrowCD,
+// 			Type:             CooldownTypeDPS,
 
-			ShouldActivate: func(sim *Simulation, character *Character) bool {
-				return true
-			},
-			AddAura: func(sim *Simulation, character *Character) { stAura.Activate(sim) },
-		},
-		numShatteringThrows)
-}
+// 			ShouldActivate: func(sim *Simulation, character *Character) bool {
+// 				return true
+// 			},
+// 			AddAura: func(sim *Simulation, character *Character) { stAura.Activate(sim) },
+// 		},
+// 		numShatteringThrows)
+// }
 
 var InnervateAuraTag = "Innervate"
 
@@ -1564,6 +1585,88 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 	})
 }
 
+func strengthAgilityBonusEffect(aura *Aura, strBonus float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("StrengthAgilityBonus", false, ExclusiveEffect{
+		Priority: strBonus,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.Strength: ee.Priority,
+				stats.Agility:  ee.Priority,
+			})
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.Strength: -ee.Priority,
+				stats.Agility:  -ee.Priority,
+			})
+		},
+	})
+}
+
+func BlessingOfMightAura(unit *Unit, impBomPts int32) *Aura {
+	aura := unit.GetOrRegisterAura(Aura{
+		Label:      "Blessing of Might",
+		ActionID:   ActionID{SpellID: 48932},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+	attackPowerBonusEffect(aura, math.Floor(550*(1+GetTristateValueFloat(proto.TristateEffect(impBomPts), 0.12, 0.25))))
+	return aura
+}
+
+func attackPowerBonusEffect(aura *Aura, apBonus float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("AttackPowerBonus", false, ExclusiveEffect{
+		Priority: apBonus,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.AttackPower:       ee.Priority,
+				stats.RangedAttackPower: ee.Priority,
+			})
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.AttackPower:       -ee.Priority,
+				stats.RangedAttackPower: -ee.Priority,
+			})
+		},
+	})
+}
+
+func staminaBonusEffect(aura *Aura, stamBonus float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("StaminaBonus", false, ExclusiveEffect{
+		Priority: stamBonus,
+		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(s, stats.Stats{
+				stats.Stamina: ee.Priority,
+			})
+		},
+		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(s, stats.Stats{
+				stats.Stamina: -ee.Priority,
+			})
+		},
+	})
+}
+
+func healthBonusEffect(aura *Aura, healthBonus float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("HealthBonus", false, ExclusiveEffect{
+		Priority: healthBonus,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.Health: ee.Priority,
+			})
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
+				stats.Health: -ee.Priority,
+			})
+		},
+	})
+}
+
 func FocusMagicAura(caster *Unit, target *Unit) (*Aura, *Aura) {
 	actionID := ActionID{SpellID: 54648}
 
@@ -1622,4 +1725,65 @@ func FocusMagicAura(caster *Unit, target *Unit) (*Aura, *Aura) {
 	}
 
 	return casterAura, aura
+}
+
+// Builds an ExclusiveEffect representing a SpellHaste bonus multiplier
+// spellHastePercent should be given as the percent value i.E. 0.05 for +5%
+func SpellHasteBonusEffect(aura *Aura, spellHastePercent float64) *ExclusiveEffect {
+	return aura.NewExclusiveEffect("SpellHasteBonus", false, ExclusiveEffect{
+		Priority: spellHastePercent,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.CastSpeedMultiplier *= (1 + ee.Priority)
+			ee.Aura.Unit.updateCastSpeed()
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			ee.Aura.Unit.PseudoStats.CastSpeedMultiplier /= (1 + ee.Priority)
+			ee.Aura.Unit.updateCastSpeed()
+		},
+	})
+}
+
+func MoonkinAura(character *Character) *Aura {
+	aura := character.GetOrRegisterAura(Aura{
+		Label:      "Moonkin Aura",
+		ActionID:   ActionID{SpellID: 24858},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+
+	SpellHasteBonusEffect(aura, 0.05)
+	return aura
+}
+
+func WrathOfAirAura(character *Character) *Aura {
+	aura := character.GetOrRegisterAura(Aura{
+		Label:      "Wrath of Air",
+		ActionID:   ActionID{SpellID: 3738},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+
+	SpellHasteBonusEffect(aura, 0.05)
+	return aura
+}
+
+func MindQuickeningAura(character *Character) *Aura {
+	aura := character.GetOrRegisterAura(Aura{
+		Label:      "Mind Quickening",
+		ActionID:   ActionID{SpellID: 49868},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+		},
+	})
+
+	SpellHasteBonusEffect(aura, 0.05)
+	return aura
 }

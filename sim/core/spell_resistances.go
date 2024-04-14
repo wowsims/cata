@@ -9,58 +9,63 @@ import (
 )
 
 func (result *SpellResult) applyResistances(sim *Simulation, spell *Spell, isPeriodic bool, attackTable *AttackTable) {
-	// TODO check why result.Outcome isn't updated with resists anymore
-	resistanceMultiplier := spell.ResistanceMultiplier(sim, isPeriodic, attackTable)
+	resistanceMultiplier, outcome := spell.ResistanceMultiplier(sim, isPeriodic, attackTable)
+
 	result.Damage *= resistanceMultiplier
+	result.Outcome |= outcome
 
 	result.ResistanceMultiplier = resistanceMultiplier
 	result.PreOutcomeDamage = result.Damage
 }
 
 // Modifies damage based on Armor or Magic resistances, depending on the damage type.
-func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attackTable *AttackTable) float64 {
+func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attackTable *AttackTable) (float64, HitOutcome) {
 	if spell.Flags.Matches(SpellFlagIgnoreResists) {
-		return 1
+		return 1, OutcomeEmpty
 	}
 
 	if spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		// All physical dots (Bleeds) ignore armor.
 		if isPeriodic && !spell.Flags.Matches(SpellFlagApplyArmorReduction) {
-			return 1
+			return 1, OutcomeEmpty
 		}
 
 		// Physical resistance (armor).
-		return attackTable.GetArmorDamageModifier(spell)
+		return attackTable.GetArmorDamageModifier(spell), OutcomeEmpty
 	}
 
 	// Magical resistance.
 	averageResist := attackTable.Defender.averageResist(spell.SpellSchool, attackTable.Attacker)
 	if averageResist == 0 { // for equal or lower level mobs
-		return 1
+		return 1, OutcomeEmpty
 	}
 
 	if spell.Flags.Matches(SpellFlagBinary) {
 		if resistanceRoll := sim.RandomFloat("Binary Resist"); resistanceRoll < averageResist {
-			return 0
+			return 0, OutcomeEmpty
 		}
-		return 1
+		return 1, OutcomeEmpty
 	}
 
 	thresholds := attackTable.Defender.partialResistRollThresholds(averageResist)
 
 	switch resistanceRoll := sim.RandomFloat("Partial Resist"); {
 	case resistanceRoll < thresholds[0].cumulativeChance:
-		return thresholds[0].damageMultiplier()
+		return thresholds[0].damageMultiplier(), OutcomePartial8
 	case resistanceRoll < thresholds[1].cumulativeChance:
-		return thresholds[1].damageMultiplier()
+		return thresholds[1].damageMultiplier(), OutcomePartial4
 	case resistanceRoll < thresholds[2].cumulativeChance:
-		return thresholds[2].damageMultiplier()
+		return thresholds[2].damageMultiplier(), OutcomePartial2
 	default:
-		return thresholds[3].damageMultiplier()
+		return thresholds[3].damageMultiplier(), OutcomePartial1
 	}
 }
 
 func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
+	if at.IgnoreArmor {
+		return 1.0
+	}
+
 	armorConstant := float64(at.Attacker.Level)*467.5 - 22167.5
 	defenderArmor := at.Defender.Armor()
 	reducibleArmor := min((defenderArmor+armorConstant)/3, defenderArmor)

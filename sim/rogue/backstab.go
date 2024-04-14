@@ -45,11 +45,12 @@ func (rogue *Rogue) registerBackstabSpell() {
 		CritMultiplier:   rogue.MeleeCritMultiplier(true),
 		ThreatMultiplier: 1,
 
+		BonusCoefficient: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			baseDamage := baseDamage +
-				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
@@ -58,7 +59,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 				if result.DidCrit() && hasGlyph {
 					rogue.AddEnergy(sim, 5, glyphOfBackstabMetrics)
 				}
-				if result.DidCrit() && sim.IsExecutePhase35() && rogue.Talents.MurderousIntent > 0 {
+				if sim.IsExecutePhase35() && rogue.Talents.MurderousIntent > 0 {
 					totalRecovery := 15 * rogue.Talents.MurderousIntent
 					rogue.AddEnergy(sim, float64(totalRecovery), murderousIntentMetrics)
 				}

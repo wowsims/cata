@@ -365,13 +365,23 @@ func (character *Character) calculateCritMultiplier(normalCritDamage float64, pr
 	if character.HasMetaGemEquipped(34220) ||
 		character.HasMetaGemEquipped(32409) ||
 		character.HasMetaGemEquipped(41285) ||
-		character.HasMetaGemEquipped(41398) {
+		character.HasMetaGemEquipped(41398) ||
+		character.HasMetaGemEquipped(52291) ||
+		character.HasMetaGemEquipped(52297) ||
+		character.HasMetaGemEquipped(68778) ||
+		character.HasMetaGemEquipped(68779) ||
+		character.HasMetaGemEquipped(68780) {
 		primaryModifiers *= 1.03
 	}
 	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
 }
 func (character *Character) calculateHealingCritMultiplier(normalCritDamage float64, primaryModifiers float64, secondaryModifiers float64) float64 {
-	if character.HasMetaGemEquipped(41376) {
+	if character.HasMetaGemEquipped(41376) ||
+		character.HasMetaGemEquipped(52291) ||
+		character.HasMetaGemEquipped(52297) ||
+		character.HasMetaGemEquipped(68778) ||
+		character.HasMetaGemEquipped(68779) ||
+		character.HasMetaGemEquipped(68780) {
 		primaryModifiers *= 1.03
 	}
 	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
@@ -697,4 +707,25 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3
 		}
 		offset += treeSizes[treeIdx]
 	}
+}
+
+func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
+	hasBonus := true
+
+	if character.Head().ArmorType != armorType ||
+		character.Shoulder().ArmorType != armorType ||
+		character.Chest().ArmorType != armorType ||
+		character.Wrist().ArmorType != armorType ||
+		character.Hands().ArmorType != armorType ||
+		character.Waist().ArmorType != armorType ||
+		character.Legs().ArmorType != armorType ||
+		character.Feet().ArmorType != armorType {
+		hasBonus = false
+	}
+
+	if hasBonus {
+		character.MultiplyStat(primaryStat, 1.05)
+	}
+
+	return hasBonus
 }
