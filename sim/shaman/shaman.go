@@ -35,10 +35,9 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	// Add Shaman stat dependencies
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[shaman.Class]*core.CritRatingPerCritChance)
-
+	shaman.EnableManaBarWithModifier(1.0)
 	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
-		//TODO: This is the bonus for mental quickness. Still needs to disable all other spellpower gains somehow!
-		shaman.EnableManaBarWithModifier(1.0, false)
+		//TODO: Still needs to disable all other spellpower gains somehow!
 		shaman.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*6)
 		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.55)
 		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.4)
@@ -49,7 +48,6 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.2 + (masteryBonusPoints * 0.025)
 		shaman.PseudoStats.CanParry = true
 	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
-		shaman.EnableManaBarWithModifier(1.0, true)
 		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.0)
 	}
 

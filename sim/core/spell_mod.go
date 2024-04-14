@@ -324,14 +324,6 @@ func removeCastTimePercent(mod *SpellMod, spell *Spell) {
 	spell.CastTimeMultiplier -= mod.floatValue
 }
 
-func applyDotNumberOfTicksFlat(mod *SpellMod, spell *Spell) {
-	spell.CurDot().NumberOfTicks += int32(mod.intValue)
-}
-
-func removeDotNumberOfTicksFlat(mod *SpellMod, spell *Spell) {
-	spell.CurDot().NumberOfTicks -= int32(mod.intValue)
-}
-
 func applyBonusCritRating(mod *SpellMod, spell *Spell) {
 	spell.BonusCritRating += mod.floatValue
 }
