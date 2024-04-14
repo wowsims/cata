@@ -202,6 +202,10 @@ type AttackTable struct {
 	HauntSEDamageTakenMultiplier float64
 	HealingDealtMultiplier       float64
 	IgnoreArmor                  bool // Ignore defender's armor for specifically this attacker's attacks
+
+	// This is for "Apply Aura: Mod Damage Done By Caster" effects.
+	// If set, the damage taken multiplier is multiplied by the callbacks result.
+	DamageDoneByCasterMultiplier func(spell *Spell, attackTable *AttackTable) float64
 }
 
 func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
