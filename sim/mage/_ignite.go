@@ -66,17 +66,7 @@ func (mage *Mage) applyIgnite() {
 func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 
 	// Ignite's per-level gain is not exactly linear
-	var igniteDamageMultiplier float64
-	switch mage.Talents.Ignite {
-	case 1:
-		igniteDamageMultiplier = 0.13
-	case 2:
-		igniteDamageMultiplier = 0.26
-	case 3:
-		igniteDamageMultiplier = 0.40
-	default:
-		return
-	}
+	var igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
 
 	dot := mage.Ignite.Dot(result.Target)
 
