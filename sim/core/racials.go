@@ -113,7 +113,7 @@ func applyRaceEffects(agent Agent) {
 		})
 	case proto.Race_RaceGnome:
 		character.PseudoStats.ReducedArcaneHitTakenChance += 0.02
-		character.MultiplyStat(stats.Intellect, 1.05)
+		character.MultiplyStat(stats.Mana, 1.05)
 	case proto.Race_RaceHuman:
 		character.MultiplyStat(stats.Spirit, 1.03)
 		applyWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
@@ -130,8 +130,18 @@ func applyRaceEffects(agent Agent) {
 
 		// Blood Fury
 		actionID := ActionID{SpellID: 33697}
-		apBonus := float64(character.Level)*4 + 2
-		spBonus := float64(character.Level)*2 + 3
+		apBonus := 0.0
+		spBonus := 0.0
+
+		switch character.Class {
+		case proto.Class_ClassWarlock:
+			spBonus = 584.0
+		case proto.Class_ClassShaman:
+			spBonus = 584.0
+			apBonus = 1196.0
+		default:
+			apBonus = 1169.0
+		}
 		bloodFuryAura := character.NewTemporaryStatsAura("Blood Fury", actionID, stats.Stats{stats.AttackPower: apBonus, stats.RangedAttackPower: apBonus, stats.SpellPower: spBonus}, time.Second*15)
 
 		spell := character.RegisterSpell(SpellConfig{
@@ -208,6 +218,12 @@ func applyRaceEffects(agent Agent) {
 		})
 	case proto.Race_RaceUndead:
 		character.PseudoStats.ReducedShadowHitTakenChance += 0.02
+	case proto.Race_RaceWorgen:
+		character.AddStat(stats.MeleeCrit, CritRatingPerCritChance)
+		character.AddStat(stats.SpellCrit, CritRatingPerCritChance)
+	case proto.Race_RaceGoblin:
+		character.AddStat(stats.MeleeHaste, HasteRatingPerHastePercent)
+		character.AddStat(stats.SpellHaste, HasteRatingPerHastePercent)
 	}
 }
 

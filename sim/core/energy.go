@@ -218,7 +218,7 @@ func (eb *energyBar) RunTask(sim *Simulation) time.Duration {
 		return eb.nextEnergyTick
 	}
 
-	hasteMultiplier := 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*eb.unit.PseudoStats.MeleeHasteRatingPerHastePercent)
+	hasteMultiplier := 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
 	crossedThreshold := eb.addEnergyInternal(sim, EnergyPerTick*hasteMultiplier*eb.EnergyTickMultiplier, eb.regenMetrics)
 	eb.onEnergyGain(sim, crossedThreshold)
 
