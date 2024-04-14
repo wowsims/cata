@@ -89,8 +89,17 @@ func init() {
 					if sim.Proc(0.1, "Vengeful Wisp") {
 						// select random proc target
 						spreadTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))-1))]
-						// refresh or apply this dot on the target
-						dot.Spell.Dot(spreadTarget).Apply(sim)
+
+						// refresh dot on next step - refreshing potentially on aura expire
+						// which will cause nasty things to happen
+						core.StartDelayedAction(sim, core.DelayedActionOptions{
+							DoAt:     sim.CurrentTime + 1,
+							Priority: core.ActionPriorityDOT,
+							OnAction: func(s *core.Simulation) {
+								dot.Spell.Dot(spreadTarget).Apply(s)
+							},
+						})
+
 					}
 				},
 			},
@@ -121,7 +130,7 @@ func init() {
 					if sim.Proc(0.1, "Vengeful Wisp") {
 						// select random proc target
 						spreadTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))-1))]
-						spreadDot.Dot(spreadTarget).Apply(sim)
+						spreadDot.Dot(spreadTarget).Apply(sim) // refresh self on
 					}
 				},
 			},
