@@ -6,7 +6,7 @@ import { setItemQualityCssClass } from '../css_utils';
 import { IndividualSimUI } from '../individual_sim_ui.js';
 import { Player } from '../player';
 import { Class, GemColor, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec, ItemType, ReforgeStat, Stat } from '../proto/common';
-import { DatabaseFilters, RepFaction, UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
+import { DatabaseFilters, RepFaction, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UIItem_FactionRestriction } from '../proto/ui.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getEnchantDescription, getUniqueEnchantString } from '../proto_utils/enchants';
 import { EquippedItem } from '../proto_utils/equipped_item';
@@ -1447,7 +1447,7 @@ export class ItemList<T> {
 	private getSourceInfo(item: Item, sim: Sim): JSX.Element {
 		const makeAnchor = (href: string, inner: string | JSX.Element) => {
 			return (
-				<a href={href} target="_blank">
+				<a href={href} target="_blank" dataset={{ whtticon: 'false' }}>
 					<small>{inner}</small>
 				</a>
 			);
@@ -1504,6 +1504,12 @@ export class ItemList<T> {
 				ActionId.makeQuestUrl(src.id),
 				<span>
 					Quest
+					{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
+						<img src="/cata/assets/img/alliance.png" className="ms-1" width="15" height="15" />
+					)}
+					{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
+						<img src="/cata/assets/img/horde.png" className="ms-1" width="15" height="15" />
+					)}
 					<br />
 					{src.name}
 				</span>,
@@ -1521,6 +1527,12 @@ export class ItemList<T> {
 					{factionNames.map(name => (
 						<span>
 							{name}
+							{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
+								<img src="/cata/assets/img/alliance.png" className="ms-1" width="15" height="15" />
+							)}
+							{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
+								<img src="/cata/assets/img/horde.png" className="ms-1" width="15" height="15" />
+							)}
 							<br />
 						</span>
 					))}
