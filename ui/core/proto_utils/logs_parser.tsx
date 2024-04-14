@@ -372,11 +372,11 @@ export class DamageDealtLog extends SimLog {
 		if (!this.miss && !this.dodge && !this.parry) {
 			result += ` for <strong class="text-danger">${this.amount.toFixed(2)} damage</strong>`;
 			if (this.partialResist1_4) {
-				result += ' (25% Resist)';
+				result += ' (10% Resist)';
 			} else if (this.partialResist2_4) {
-				result += ' (50% Resist)';
+				result += ' (20% Resist)';
 			} else if (this.partialResist3_4) {
-				result += ' (75% Resist)';
+				result += ' (30% Resist)';
 			}
 			result += '.';
 		}
@@ -413,9 +413,9 @@ export class DamageDealtLog extends SimLog {
 						match[3] == 'Parry',
 						match[3] == 'Block' || match[3] == 'CriticalBlock',
 						Boolean(match[2]) && match[2].includes('tick'),
-						match[14] == '25',
-						match[14] == '50',
-						match[14] == '75',
+						match[14] == '10',
+						match[14] == '20',
+						match[14] == '30',
 					);
 				});
 		} else {

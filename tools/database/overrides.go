@@ -308,6 +308,12 @@ var ItemDenyList = map[int32]struct{}{
 	48897: {}, // DK's Tier 9 Duplicates
 	48898: {}, // DK's Tier 9 Duplicates
 	48899: {}, // DK's Tier 9 Duplicates
+	68710: {}, // Stump of Time Duplicate (Not available ingame)
+	68711: {}, // Mandala of Stirring Patterns Duplicate
+	68712: {}, // Impatience of Youth Duplicate
+	68713: {}, // Mirror of Broken Images Duplicate
+	65104: {}, // DONTUSEUnheeded Warning
+	65015: {}, // DONTUSEFury of Angerforge
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.

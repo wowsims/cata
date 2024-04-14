@@ -112,9 +112,7 @@ func (spell *Spell) BonusDamage() float64 {
 		bonusDamage = spell.SpellPower()
 	}
 
-	return bonusDamage +
-		spell.BonusSpellPower +
-		spell.Unit.PseudoStats.MobTypeSpellPower
+	return bonusDamage
 }
 
 func (spell *Spell) SpellPower() float64 {
@@ -191,9 +189,22 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 
 	if sim.Log == nil {
 		result.Damage *= attackerMultiplier
-		result.applyTargetModifiers(spell, attackTable, isPeriodic)
 		result.applyResistances(sim, spell, isPeriodic, attackTable)
+		result.applyTargetModifiers(spell, attackTable, isPeriodic)
+
+		// Save partial outcome which comes from applyResistances call
+		partialOutcome := OutcomeEmpty
+		if result.Outcome.Matches(OutcomePartial) {
+			partialOutcome = result.Outcome & OutcomePartial
+		}
+
 		outcomeApplier(sim, result, attackTable)
+
+		// Restore partial outcome
+		if partialOutcome != OutcomeEmpty {
+			result.Outcome |= partialOutcome
+		}
+
 		spell.ApplyPostOutcomeDamageModifiers(sim, result)
 	} else {
 		result.Damage *= attackerMultiplier
@@ -202,8 +213,21 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 		afterResistances := result.Damage
 		result.applyTargetModifiers(spell, attackTable, isPeriodic)
 		afterTargetMods := result.Damage
+
+		// Save partial outcome which comes from applyResistances call
+		partialOutcome := OutcomeEmpty
+		if result.Outcome.Matches(OutcomePartial) {
+			partialOutcome = result.Outcome & OutcomePartial
+		}
+
 		outcomeApplier(sim, result, attackTable)
 		afterOutcome := result.Damage
+
+		// Restore partial outcome
+		if partialOutcome != OutcomeEmpty {
+			result.Outcome |= partialOutcome
+		}
+
 		spell.ApplyPostOutcomeDamageModifiers(sim, result)
 		afterPostOutcome := result.Damage
 
@@ -313,7 +337,7 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64) {
 		dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.BonusDamage()
 	}
 	attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-	dot.SnapshotCritChance = TernaryFloat64(dot.Spell.ProcMask.Matches(ProcMaskMeleeOrRanged), dot.Spell.PhysicalCritChance(attackTable), dot.Spell.SpellCritChance(target))
+	dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 	dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 }
 
@@ -467,6 +491,10 @@ func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic 
 		multiplier *= attackTable.NatureDamageTakenMultiplier
 	} else if isPeriodic && spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		multiplier *= attackTable.Defender.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
+	}
+
+	if attackTable.DamageDoneByCasterMultiplier != nil {
+		multiplier *= attackTable.DamageDoneByCasterMultiplier(spell, attackTable)
 	}
 
 	return multiplier

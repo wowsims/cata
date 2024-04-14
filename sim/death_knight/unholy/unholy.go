@@ -33,6 +33,8 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 
 	uhdk := &UnholyDeathKnight{
 		DeathKnight: death_knight.NewDeathKnight(character, death_knight.DeathKnightInputs{
+			Spec: proto.Spec_SpecUnholyDeathKnight,
+
 			StartingRunicPower: unholyOptions.ClassOptions.StartingRunicPower,
 			PetUptime:          unholyOptions.ClassOptions.PetUptime,
 			IsDps:              true,
@@ -55,7 +57,7 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 }
 
 func (uhdk UnholyDeathKnight) getMasteryShadowBonus(mastery float64) float64 {
-	return 1.2 + 0.025*(mastery/core.MasteryRatingPerMasteryPoint)
+	return 0.2 + 0.025*(mastery/core.MasteryRatingPerMasteryPoint)
 }
 
 func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
@@ -64,6 +66,8 @@ func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 
 func (uhdk *UnholyDeathKnight) Initialize() {
 	uhdk.DeathKnight.Initialize()
+
+	uhdk.RegisterScourgeStrikeSpell()
 }
 
 func (uhdk *UnholyDeathKnight) ApplyTalents() {
@@ -89,6 +93,15 @@ func (uhdk *UnholyDeathKnight) ApplyTalents() {
 			masteryMod.Deactivate()
 		},
 	}))
+
+	// Unholy Might
+	uhdk.MultiplyStat(stats.Strength, 1.25)
+	core.MakePermanent(uhdk.RegisterAura(core.Aura{
+		Label:    "Unholy Might",
+		ActionID: core.ActionID{SpellID: 91107},
+	}))
+
+	// Master of Ghouls
 }
 
 func (uhdk *UnholyDeathKnight) Reset(sim *core.Simulation) {

@@ -1,6 +1,5 @@
 import { Stat, TristateEffect } from "../../proto/common";
 import { ActionId } from "../../proto_utils/action_id";
-
 import {
   makeBooleanDebuffInput,
   makeBooleanIndividualBuffInput,
@@ -17,11 +16,9 @@ import {
   withLabel,
 } from "../icon_inputs";
 import { IconPicker } from "../icon_picker";
-import { MultiIconPicker } from "../multi_icon_picker";
-
-import { IconPickerStatOption, PickerStatOptions } from "./stat_options";
-
 import * as InputHelpers from '../input_helpers';
+import { MultiIconPicker } from "../multi_icon_picker";
+import { IconPickerStatOption, PickerStatOptions } from "./stat_options";
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 RAID BUFFS
@@ -215,7 +212,7 @@ export const BleedDebuff = InputHelpers.makeMultiIconInput([
 
 export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput([
 	makeTristateDebuffInput({actionId: ActionId.fromSpellId(47502), impId: ActionId.fromSpellId(12666), fieldName: 'thunderClap'}),
-	makeTristateDebuffInput({actionId: ActionId.fromSpellId(55095), impId: ActionId.fromSpellId(51456), fieldName: 'frostFever'}),
+	makeTristateDebuffInput({actionId: ActionId.fromSpellId(55095), impId: ActionId.fromSpellId(81328), fieldName: 'frostFever'}),
 	makeBooleanDebuffInput({actionId: ActionId.fromSpellId(53696), fieldName: 'judgementsOfTheJust'}),
 	makeBooleanDebuffInput({actionId: ActionId.fromSpellId(48485), fieldName: 'infectedWounds'}),
 ], 'Atk Speed');
@@ -228,6 +225,7 @@ export const MeleeHitDebuff = InputHelpers.makeMultiIconInput([
 export const PhysicalDamageDebuff = InputHelpers.makeMultiIconInput([
 	makeBooleanDebuffInput({actionId: ActionId.fromSpellId(29859), fieldName: 'bloodFrenzy'}),
 	makeBooleanDebuffInput({actionId: ActionId.fromSpellId(58413), fieldName: 'savageCombat'}),
+	makeBooleanDebuffInput({actionId: ActionId.fromSpellId(81328), fieldName: 'frostFever', value: TristateEffect.TristateEffectImproved}),
 ], 'Phys Vuln');
 
 export const SpellCritDebuff = InputHelpers.makeMultiIconInput([
@@ -242,7 +240,7 @@ export const SpellHitDebuff = InputHelpers.makeMultiIconInput([
 ], 'Spell Hit');
 
 export const SpellDamageDebuff = InputHelpers.makeMultiIconInput([
-	makeBooleanDebuffInput({actionId: ActionId.fromSpellId(51161), fieldName: 'ebonPlaguebringer'}),
+	makeBooleanDebuffInput({actionId: ActionId.fromSpellId(65142), fieldName: 'ebonPlaguebringer'}),
 	makeBooleanDebuffInput({actionId: ActionId.fromSpellId(48511), fieldName: 'earthAndMoon'}),
 	makeBooleanDebuffInput({actionId: ActionId.fromSpellId(47865), fieldName: 'curseOfElements'}),
 ], 'Spell Dmg');

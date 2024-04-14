@@ -198,9 +198,17 @@ const (
 	// Uses: FloatValue
 	SpellMod_BonusCrit_Rating
 
-	// Will add / substract the number of ticks to the dot
+	// Add/subtract bonus hit rating
+	// Uses: FloatValue
+	SpellMod_BonusHit_Rating
+
+	// Add/subtract to the dots max ticks
 	// Uses: IntValue
-	SpellMod_Dot_NumberOfTicks_Flat
+	SpellMod_DotNumberOfTicks_Flat
+
+	// Add/subtract to the casts gcd
+	// Uses: TimeValue
+	SpellMod_GlobalCooldown_Flat
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -248,6 +256,21 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 		Apply:  applyBonusCritRating,
 		Remove: removeBonusCritRating,
 	},
+
+	SpellMod_BonusHit_Rating: {
+		Apply:  applyBonusHitRating,
+		Remove: removeBonusHitRating,
+	},
+
+	SpellMod_DotNumberOfTicks_Flat: {
+		Apply:  applyDotNumberOfTicks,
+		Remove: removeDotNumberOfTicks,
+	},
+
+	SpellMod_GlobalCooldown_Flat: {
+		Apply:  applyGlobalCooldownFlat,
+		Remove: removeGlobalCooldownFlat,
+	},
 }
 
 func applyDamageDonePercent(mod *SpellMod, spell *Spell) {
@@ -267,11 +290,11 @@ func removeDamageDonAdd(mod *SpellMod, spell *Spell) {
 }
 
 func applyPowerCostPercent(mod *SpellMod, spell *Spell) {
-	spell.CostMultiplier *= 1 + mod.floatValue
+	spell.CostMultiplier += mod.floatValue
 }
 
 func removePowerCostPercent(mod *SpellMod, spell *Spell) {
-	spell.CostMultiplier /= 1 + mod.floatValue
+	spell.CostMultiplier -= mod.floatValue
 }
 
 func applyPowerCostFlat(mod *SpellMod, spell *Spell) {
@@ -320,4 +343,46 @@ func applyBonusCritRating(mod *SpellMod, spell *Spell) {
 
 func removeBonusCritRating(mod *SpellMod, spell *Spell) {
 	spell.BonusCritRating -= mod.floatValue
+}
+
+func applyBonusHitRating(mod *SpellMod, spell *Spell) {
+	spell.BonusHitRating += mod.floatValue
+}
+
+func removeBonusHitRating(mod *SpellMod, spell *Spell) {
+	spell.BonusHitRating -= mod.floatValue
+}
+
+func applyDotNumberOfTicks(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.NumberOfTicks += int32(mod.intValue)
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.NumberOfTicks += int32(mod.intValue)
+	}
+}
+
+func removeDotNumberOfTicks(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.NumberOfTicks -= int32(mod.intValue)
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.NumberOfTicks -= int32(mod.intValue)
+	}
+}
+
+func applyGlobalCooldownFlat(mod *SpellMod, spell *Spell) {
+	spell.DefaultCast.GCD += mod.timeValue
+}
+
+func removeGlobalCooldownFlat(mod *SpellMod, spell *Spell) {
+	spell.DefaultCast.GCD -= mod.timeValue
 }
