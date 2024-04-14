@@ -247,11 +247,6 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 		Remove: removeCastTimePercent,
 	},
 
-	SpellMod_Dot_NumberOfTicks_Flat: {
-		Apply:  applyDotNumberOfTicksFlat,
-		Remove: removeDotNumberOfTicksFlat,
-	},
-
 	SpellMod_BonusCrit_Rating: {
 		Apply:  applyBonusCritRating,
 		Remove: removeBonusCritRating,

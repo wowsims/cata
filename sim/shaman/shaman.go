@@ -53,9 +53,6 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.0)
 	}
 
-	// Set proper Melee Haste scaling
-	shaman.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
-
 	if selfBuffs.Shield == proto.ShamanShield_WaterShield {
 		shaman.AddStat(stats.MP5, 354)
 	}
@@ -253,7 +250,6 @@ func (shaman *Shaman) Initialize() {
 
 	shaman.registerBloodlustCD()
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
-
 
 	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
 		shaman.applyPrimalWisdom()

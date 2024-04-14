@@ -20,7 +20,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFlameShock) {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask: int64(SpellMaskFlameShock),
-			Kind:      core.SpellMod_Dot_NumberOfTicks_Flat,
+			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
 			IntValue:  3,
 		})
 	}
