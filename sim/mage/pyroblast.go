@@ -50,27 +50,29 @@ func (mage *Mage) registerPyroblastSpell() {
 		DamageMultiplierAdditive: 1 +
 			.01*float64(mage.Talents.FirePower),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 1.545,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Pyroblast",
+				Tag:   "FireMasteryDot",
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = (0.175*mage.ScalingBaseDamage + 0.180*dot.Spell.SpellPower()) * mage.GetFireMasteryBonusMultiplier()
+				dot.SnapshotBaseDamage = 0.175 * mage.ScalingBaseDamage
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
-
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
+			BonusCoefficient: 0.180,
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1.5*mage.ScalingBaseDamage + 1.545*spell.SpellPower()
+			baseDamage := 1.5 * mage.ScalingBaseDamage
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {

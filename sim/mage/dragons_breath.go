@@ -30,10 +30,11 @@ func (mage *Mage) registerDragonsBreathSpell() {
 		},
 		DamageMultiplierAdditive: 1 + .01*float64(mage.Talents.FirePower),
 		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient:         0.193,
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := 1.378*mage.ScalingBaseDamage + 0.193*spell.SpellPower()
+				baseDamage := 1.378 * mage.ScalingBaseDamage
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}

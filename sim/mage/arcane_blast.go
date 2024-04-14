@@ -48,10 +48,11 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			(1 + .02*float64(mage.Talents.TormentTheWeak)),
 
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 1.0,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1.933*mage.ScalingBaseDamage + 1.0*spell.SpellPower()
+			baseDamage := 1.933 * mage.ScalingBaseDamage
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			mage.ArcaneBlastAura.Activate(sim)
 			mage.ArcaneBlastAura.AddStack(sim)

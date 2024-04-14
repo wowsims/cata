@@ -23,10 +23,11 @@ func (mage *Mage) registerIceLanceSpell() {
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient:         0.378,
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.432*mage.ScalingBaseDamage + 0.378*spell.SpellPower()
+			baseDamage := 0.432 * mage.ScalingBaseDamage
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

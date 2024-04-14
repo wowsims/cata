@@ -31,15 +31,15 @@ func (mage *Mage) registerBlizzardSpell() {
 		SpellSchool:      core.SpellSchoolFrost,
 		ProcMask:         core.ProcMaskSpellDamage,
 		Flags:            SpellFlagMage,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.162,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 0.542*mage.ScalingBaseDamage + 0.162*spell.SpellPower()
+			damage := 0.542 * mage.ScalingBaseDamage
 			damage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
-
 				if iceShardsProcApplication != nil {
 					iceShardsProcApplication.Cast(sim, aoeTarget)
 				}

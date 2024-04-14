@@ -28,23 +28,17 @@ func (mage *Mage) registerFireballSpell() {
 					time.Duration((2500 * core.TernaryFloat64(mage.HasSetBonus(ItemSetFirelordsVestments, 4), 0.9, 1))),
 			},
 		},
-
 		BonusCritRating: 0 +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0) +
 			core.TernaryFloat64(hasPrimeGlyph, 5*core.CritRatingPerCritChance, 0),
-
-		DamageMultiplier: 1,
-
 		DamageMultiplierAdditive: 1 +
 			.01*float64(mage.Talents.FirePower) +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),
-
-		CritMultiplier: mage.DefaultSpellCritMultiplier(),
-
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 1.236,
 		ThreatMultiplier: 1,
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(mage.ScalingBaseDamage*1.20, mage.ScalingBaseDamage*1.20+13) + 1.2359*spell.SpellPower()
+			baseDamage := 1.20 * mage.ScalingBaseDamage
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

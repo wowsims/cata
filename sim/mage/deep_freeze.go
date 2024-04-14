@@ -32,10 +32,11 @@ func (mage *Mage) registerDeepFreezeSpell() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 2.058,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1.392*mage.ScalingBaseDamage + 2.058*spell.SpellPower()
+			baseDamage := 1.392 * mage.ScalingBaseDamage
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

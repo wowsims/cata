@@ -31,12 +31,13 @@ func (mage *Mage) registerBlastWaveSpell() {
 		DamageMultiplierAdditive: 1 +
 			.01*float64(mage.Talents.FirePower),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1 - 0.1*float64(mage.Talents.BurningSoul),
+		BonusCoefficient: 0.193,
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			var targetCount int32
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				targetCount++
-				baseDamage := sim.Roll(1047, 1233) + 0.193*spell.SpellPower()
+				baseDamage := sim.Roll(1047, 1233)
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}

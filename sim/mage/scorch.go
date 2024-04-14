@@ -40,12 +40,12 @@ func (mage *Mage) registerScorchSpell() {
 		DamageMultiplierAdditive: 1 +
 			.01*float64(mage.Talents.FirePower),
 
-		CritMultiplier: mage.DefaultSpellCritMultiplier(),
-
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.512,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(mage.ScalingBaseDamage*0.781, mage.ScalingBaseDamage*0.781+13) + 0.512*spell.SpellPower()
+			baseDamage := 0.781 * mage.ScalingBaseDamage
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			/*implement when debuffs updated
 			if sim.Proc(CMProcChance, "Critical Mass") {

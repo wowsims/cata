@@ -40,10 +40,11 @@ func (mage *Mage) registerFrostboltSpell() {
 			core.TernaryFloat64(hasPrimeGlyph, .05, 0) +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.943,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.884*mage.ScalingBaseDamage + 0.943*spell.SpellPower()
+			baseDamage := 0.884 * mage.ScalingBaseDamage
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

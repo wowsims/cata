@@ -28,9 +28,10 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 		DamageMultiplierAdditive: 1 +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.278,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 0.432*mage.ScalingBaseDamage + 0.278*spell.SpellPower()
+			damage := 0.432*mage.ScalingBaseDamage + spell.SpellPower()
 			result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {

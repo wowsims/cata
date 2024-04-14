@@ -31,10 +31,11 @@ func (mage *Mage) registerFireBlastSpell() {
 		DamageMultiplierAdditive: 1 +
 			.01*float64(mage.Talents.FirePower),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.429,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1.113*mage.ScalingBaseDamage + 0.429*spell.SpellPower()
+			baseDamage := 1.113 * mage.ScalingBaseDamage
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			// impact thing to spread dots goes here most likely
 			// not working, at least on dummies. will need to test if duration refresh

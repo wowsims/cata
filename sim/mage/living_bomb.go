@@ -21,10 +21,11 @@ func (mage *Mage) registerLivingBombSpell() {
 			.05*float64(mage.Talents.CriticalMass) +
 			core.TernaryFloat64(mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfLivingBomb), .03, 0),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.516,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.5*mage.ScalingBaseDamage + 0.515*spell.SpellPower()
+			baseDamage := 0.5 * mage.ScalingBaseDamage
 			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -46,7 +47,7 @@ func (mage *Mage) registerLivingBombSpell() {
 				GCD: core.GCDDefault,
 			},
 		},
-		DamageMultiplier: mage.GetFireMasteryBonusMultiplier(),
+
 		DamageMultiplierAdditive: 1 +
 			.01*float64(mage.Talents.FirePower) +
 			.05*float64(mage.Talents.CriticalMass),
@@ -65,13 +66,14 @@ func (mage *Mage) registerLivingBombSpell() {
 			TickLength:          time.Second * 3,
 			AffectedByCastSpeed: true,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = 345 + 0.2*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = 0.25 * mage.ScalingBaseDamage
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
+			BonusCoefficient: 0.258,
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

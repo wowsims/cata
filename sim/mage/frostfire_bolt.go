@@ -37,6 +37,7 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 		DamageMultiplierAdditive: 1 +
 			.01*float64(mage.Talents.FirePower),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.977,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -49,17 +50,18 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = 0.00712*mage.ScalingBaseDamage + .00733*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = 0.00712 * mage.ScalingBaseDamage
 				dot.SnapshotBaseDamage *= float64(dot.Aura.GetStacks())
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
 			},
+			BonusCoefficient: 0.00733,
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.949*mage.ScalingBaseDamage + 0.977*spell.SpellPower()
+			baseDamage := 0.949 * mage.ScalingBaseDamage
 			// Not sure if double dipping exists in Cata. Removed for now.
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
