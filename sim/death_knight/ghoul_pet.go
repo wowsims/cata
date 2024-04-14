@@ -188,3 +188,11 @@ func (ghoulPet *GhoulPet) registerClaw() *core.Spell {
 		},
 	})
 }
+
+const (
+	GhoulSpellNone int64 = 0
+	GhoulSpellClaw int64 = 1 << iota
+
+	GhoulSpellLast
+	GhoulSpellsAll = DeathKnightSpellLast<<1 - 1
+)

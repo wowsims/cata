@@ -293,6 +293,12 @@ func (dk *DeathKnight) applyDarkTransformation(shadowInfusionAura *core.Aura) {
 
 	actionID := core.ActionID{SpellID: 63560}
 
+	clawMod := dk.Ghoul.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  GhoulSpellClaw,
+		FloatValue: 1.2,
+	})
+
 	trackingAura := dk.GetOrRegisterAura(core.Aura{
 		Label:    "Dark Transformation Dk",
 		ActionID: actionID,
@@ -307,10 +313,12 @@ func (dk *DeathKnight) applyDarkTransformation(shadowInfusionAura *core.Aura) {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			trackingAura.Activate(sim)
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.6
+			clawMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			trackingAura.Deactivate(sim)
 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.6
+			clawMod.Deactivate()
 		},
 	})
 
