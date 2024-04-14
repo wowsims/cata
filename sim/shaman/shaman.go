@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 var TalentTreeSizes = [3]int{19, 19, 20}
@@ -248,6 +249,12 @@ func (shaman *Shaman) Initialize() {
 	// shaman.registerBloodlustCD()
 
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
+
+	if shaman.Spec == proto.Spec_SpecElementalShaman || shaman.Spec == proto.Spec_SpecRestorationShaman {
+		shaman.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeMail)
+	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
+		shaman.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeMail)
+	}
 }
 
 func (shaman *Shaman) RegisterHealingSpells() {
