@@ -34,7 +34,6 @@ func (mage *Mage) registerFrostboltSpell() {
 		},
 
 		BonusCritRating: 0 +
-			.01*float64(mage.Talents.PiercingIce) +
 			core.TernaryFloat64(hasPrimeGlyph, 5*core.CritRatingPerCritChance, 0) +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0),
 		DamageMultiplierAdditive: 1 +

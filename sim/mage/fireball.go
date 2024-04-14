@@ -30,8 +30,6 @@ func (mage *Mage) registerFireballSpell() {
 		},
 
 		BonusCritRating: 0 +
-			// waiting to see how buff talents will be implemented
-			//float64(mage.Talents.PiercingIce)*core.CritRatingPerCritChance +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0) +
 			core.TernaryFloat64(hasPrimeGlyph, 5*core.CritRatingPerCritChance, 0),
 
