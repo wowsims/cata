@@ -31,37 +31,9 @@ $favorite-cell-width: 2rem;
 	.gear-picker-right {
 		.item-picker-root {
 			flex-direction: row-reverse;
-			text-align: right;
-		}
-	}
-}
 
-.selector-modal {
-	.modal-header {
-		padding-bottom: 0;
-
-		.selector-modal-tabs {
-			border-bottom: 0;
-
-			.selector-modal-tab-gem {
-				height: 100%;
-				padding: 0;
-				padding: calc(var(--bs-nav-link-padding-y) / 2) calc(var(--bs-nav-link-padding-x) / 2);
-				margin-left: calc(var(--bs-nav-link-padding-x) / 2);
-				margin-right: calc(var(--bs-nav-link-padding-x) / -2);
-				display: flex;
-				align-items: center;
-				opacity: 0.7;
-				transition: opacity 0.15s ease-in-out;
-
-				&:hover,
-				&.active {
-					opacity: 1;
-				}
-
-				.gem-socket-container {
-					--gem-width: 2rem;
-				}
+			.item-picker-labels-container {
+				align-items: flex-end;
 			}
 		}
 	}
@@ -111,45 +83,57 @@ $favorite-cell-width: 2rem;
 	}
 }
 
+@include media-breakpoint-down(xl) {
+	.gear-picker-right {
+		margin-bottom: 2 * map.get($spacers, 3);
+	}
+}
+
 @include media-breakpoint-down(md) {
 	.gear-picker-root {
-		flex-direction: column;
-
-		.gear-picker-left,
-		.gear-picker-right {
-			width: 100%;
-			margin-right: 0;
+		.gear-picker-left {
+			.item-picker-root:last-child {
+				margin-bottom: map.get($spacers, 5);
+			}
 		}
 
 		.gear-picker-right {
 			.item-picker-root {
 				flex-direction: row;
-				text-align: left;
-			}
-		}
-	}
-}
 
-@include media-breakpoint-down(xl) {
-	.gear-picker-root {
-		.gear-picker-left {
-			.item-picker-root {
-				// Increase the spacing to help separate the weapons/bonus item slots
-				&:nth-child(6) {
-					margin-bottom: calc($container-padding * 2);
+				.item-picker-labels-container {
+					align-items: flex-start;
 				}
 			}
 		}
 	}
 }
 
-@include media-breakpoint-down(md) {
-	.gear-picker-root {
-		.gear-picker-left {
-			.item-picker-root {
-				// Increase the spacing to help separate the weapons/bonus item slots
-				&:last-child {
-					margin-bottom: calc($container-padding * 2);
+.selector-modal {
+	.modal-header {
+		padding-bottom: 0;
+
+		.selector-modal-tabs {
+			border-bottom: 0;
+
+			.selector-modal-tab-gem {
+				height: 100%;
+				padding: 0;
+				padding: calc(var(--bs-nav-link-padding-y) / 2) calc(var(--bs-nav-link-padding-x) / 2);
+				margin-left: calc(var(--bs-nav-link-padding-x) / 2);
+				margin-right: calc(var(--bs-nav-link-padding-x) / -2);
+				display: flex;
+				align-items: center;
+				opacity: 0.7;
+				transition: opacity 0.15s ease-in-out;
+
+				&:hover,
+				&.active {
+					opacity: 1;
+				}
+
+				.gem-socket-container {
+					--gem-width: 2rem;
 				}
 			}
 		}

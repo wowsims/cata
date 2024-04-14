@@ -53,7 +53,6 @@ export class BaseModal extends Component {
 
 		const modalSizeKlass = this.modalConfig.size && this.modalConfig.size != 'md' ? `modal-${this.modalConfig.size}` : '';
 
-		console.log(DEFAULT_CONFIG, config, this.modalConfig);
 		this.rootElem.classList.add('fade');
 		this.rootElem.appendChild(
 			<div className={`modal-dialog ${cssClass} ${modalSizeKlass} ${this.modalConfig.scrollContents ? 'modal-overflow-scroll' : ''}`} ref={dialogRef}>
