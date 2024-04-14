@@ -3,69 +3,14 @@ package wotlk
 import (
 	"time"
 
+	"github.com/wowsims/cata/sim/common/shared"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-type ProcStatBonusEffect struct {
-	Name       string
-	ID         int32
-	AuraID     int32
-	Bonus      stats.Stats
-	Duration   time.Duration
-	Callback   core.AuraCallback
-	ProcMask   core.ProcMask
-	Outcome    core.HitOutcome
-	Harmful    bool
-	ProcChance float64
-	PPM        float64
-	ICD        time.Duration
-
-	// For ignoring a hardcoded spell.
-	IgnoreSpellID int32
-}
-
-func newProcStatBonusEffect(config ProcStatBonusEffect) {
-	core.NewItemEffect(config.ID, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procID := core.ActionID{SpellID: config.AuraID}
-		if procID.IsEmptyAction() {
-			procID = core.ActionID{ItemID: config.ID}
-		}
-		procAura := character.NewTemporaryStatsAura(config.Name+" Proc", procID, config.Bonus, config.Duration)
-
-		handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-			procAura.Activate(sim)
-		}
-		if config.IgnoreSpellID != 0 {
-			ignoreSpellID := config.IgnoreSpellID
-			handler = func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-				if !spell.IsSpellAction(ignoreSpellID) {
-					procAura.Activate(sim)
-				}
-			}
-		}
-
-		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{ItemID: config.ID},
-			Name:       config.Name,
-			Callback:   config.Callback,
-			ProcMask:   config.ProcMask,
-			Outcome:    config.Outcome,
-			Harmful:    config.Harmful,
-			ProcChance: config.ProcChance,
-			PPM:        config.PPM,
-			ICD:        config.ICD,
-			Handler:    handler,
-		})
-		procAura.Icd = triggerAura.Icd
-	})
-}
-
 func init() {
 	// Keep these separated by stat, ordered by item ID within each group.
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Meteorite Whetstone",
 		ID:         37390,
 		AuraID:     60302,
@@ -77,7 +22,7 @@ func init() {
 		ProcChance: 0.15,
 		ICD:        time.Second * 45,
 	})
-	//newProcStatBonusEffect(ProcStatBonusEffect{
+	//shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 	//	Name:       "Serrah's Star",
 	//	ID:         37559,
 	//	Bonus:      stats.Stats{stats.MeleeCrit: 167, stats.SpellCrit: 167},
@@ -88,7 +33,7 @@ func init() {
 	//	ProcChance: 0.45,
 	//	ICD:        time.Second * 45,
 	//})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Spark of Life",
 		ID:         37657,
 		AuraID:     60520,
@@ -98,7 +43,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Forge Ember",
 		ID:         37660,
 		AuraID:     60479,
@@ -113,7 +58,7 @@ func init() {
 
 	core.AddEffectsToTest = false
 
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Je'Tze's Bell",
 		ID:         37835,
 		AuraID:     49623,
@@ -123,7 +68,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	//newProcStatBonusEffect(ProcStatBonusEffect{
+	//shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 	//	Name:       "Valonforth's Remembrance",
 	//	ID:         38071,
 	//	Bonus:      stats.Stats{stats.Spirit: 222},
@@ -134,7 +79,7 @@ func init() {
 	//	ProcChance: 0.15,
 	//	ICD:        time.Second * 45,
 	//})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Embrace of the Spider",
 		ID:         39229,
 		AuraID:     60492,
@@ -145,7 +90,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Dying Curse",
 		ID:         40255,
 		AuraID:     60494,
@@ -156,7 +101,7 @@ func init() {
 		ProcChance: 0.15,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Grim Toll",
 		ID:         40256,
 		AuraID:     60437,
@@ -168,7 +113,7 @@ func init() {
 		ProcChance: 0.15,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Sundial of the Exiled",
 		ID:         40682,
 		AuraID:     60064,
@@ -179,7 +124,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Mirror of Truth",
 		ID:         40684,
 		AuraID:     60065,
@@ -192,7 +137,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "The Egg of Mortal Essence",
 		ID:         40685,
 		AuraID:     60062,
@@ -202,7 +147,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Sonic Booster",
 		ID:         40767,
 		AuraID:     55018,
@@ -214,7 +159,7 @@ func init() {
 		ProcChance: 0.35,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Tears of Bitter Anguish",
 		ID:         43573,
 		AuraID:     58904,
@@ -226,7 +171,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Crusader's Locket",
 		ID:         43829,
 		AuraID:     61671,
@@ -238,7 +183,7 @@ func init() {
 		ProcChance: 0.15,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Chuchu's Tiny Box of Horrors",
 		ID:         43838,
 		AuraID:     61619,
@@ -250,7 +195,7 @@ func init() {
 		ProcChance: 0.15,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Signet of Edward the Odd",
 		ID:         44308,
 		AuraID:     60318,
@@ -262,7 +207,7 @@ func init() {
 		ProcChance: 0.15,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Flow of Knowledge",
 		ID:         44912,
 		AuraID:     60064,
@@ -272,7 +217,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Anvil of Titans",
 		ID:         44914,
 		AuraID:     60065,
@@ -283,7 +228,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Jouster's Fury Alliance",
 		ID:         45131,
 		AuraID:     63250,
@@ -295,7 +240,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Jouster's Fury Horde",
 		ID:         45219,
 		AuraID:     63250,
@@ -307,7 +252,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Pyrite Infuser",
 		ID:         45286,
 		AuraID:     65014,
@@ -319,7 +264,7 @@ func init() {
 		ProcChance: 0.1,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Pandora's Plea",
 		ID:         45490,
 		AuraID:     64741,
@@ -330,7 +275,7 @@ func init() {
 		ProcChance: 0.1,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Blood of the Old God",
 		ID:         45522,
 		AuraID:     64790,
@@ -342,7 +287,7 @@ func init() {
 		ProcChance: 0.1, // wowhead shows proc chance: 10% but a comment says 1.12PPM? TODO: validate.
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Flare of the Heavens",
 		ID:         45518,
 		AuraID:     64713,
@@ -353,7 +298,7 @@ func init() {
 		ProcChance: 0.1,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Show of Faith",
 		ID:         45535,
 		AuraID:     64739,
@@ -363,7 +308,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Comet's Trail",
 		ID:         45609,
 		AuraID:     64772,
@@ -375,7 +320,7 @@ func init() {
 		ProcChance: 0.15,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Elemental Focus Stone",
 		ID:         45866,
 		AuraID:     65004,
@@ -388,7 +333,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Sif's Remembrance",
 		ID:         45929,
 		AuraID:     65003,
@@ -398,7 +343,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Mjolnir Runestone",
 		ID:         45931,
 		AuraID:     65019,
@@ -410,7 +355,7 @@ func init() {
 		ProcChance: 0.15,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Dark Matter",
 		ID:         46038,
 		AuraID:     65024,
@@ -422,7 +367,7 @@ func init() {
 		ProcChance: 0.15,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Abyssal Rune",
 		ID:         47213,
 		AuraID:     67669,
@@ -434,7 +379,7 @@ func init() {
 		ProcChance: 0.25,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Banner of Victory",
 		ID:         47214,
 		AuraID:     67671,
@@ -446,7 +391,7 @@ func init() {
 		ProcChance: 0.20,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "The Black Heart",
 		ID:         47216,
 		AuraID:     67631,
@@ -458,7 +403,7 @@ func init() {
 		ProcChance: 0.25,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Coren's Chromium Coaster",
 		ID:         49074,
 		AuraID:     60065,
@@ -470,7 +415,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Mithril Pocketwatch",
 		ID:         49076,
 		AuraID:     60064,
@@ -482,7 +427,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Ancient Pickled Egg",
 		ID:         49078,
 		AuraID:     60062,
@@ -492,7 +437,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Needle-Encrusted Scorpion",
 		ID:         50198,
 		AuraID:     71403,
@@ -504,7 +449,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Whispering Fanged Skull",
 		ID:         50342,
 		AuraID:     71401,
@@ -516,7 +461,7 @@ func init() {
 		ProcChance: 0.35,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Whispering Fanged Skull H",
 		ID:         50343,
 		AuraID:     71541,
@@ -528,7 +473,7 @@ func init() {
 		ProcChance: 0.35,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Purified Lunar Dust",
 		ID:         50358,
 		AuraID:     71584,
@@ -538,7 +483,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Phylactery of the Nameless Lich",
 		ID:         50360,
 		AuraID:     71605,
@@ -549,7 +494,7 @@ func init() {
 		ProcChance: 0.30,
 		ICD:        time.Second * 100,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Phylactery of the Nameless Lich H",
 		ID:         50365,
 		AuraID:     71636,
@@ -560,7 +505,7 @@ func init() {
 		ProcChance: 0.30,
 		ICD:        time.Second * 100,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Unmatched Destruction
 		Name:       "Frostforged Sage",
 		ID:         50397,
@@ -573,7 +518,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 60,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Destruction
 		Name:       "Frostforged Sage",
 		ID:         50398,
@@ -586,7 +531,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 60,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Unmatched Vengeance
 		Name:     "Frostforged Champion",
 		ID:       50401,
@@ -599,7 +544,7 @@ func init() {
 		PPM:      1,
 		ICD:      time.Second * 60,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Vengeance
 		Name:     "Frostforged Champion",
 		ID:       50402,
@@ -612,7 +557,7 @@ func init() {
 		PPM:      1,
 		ICD:      time.Second * 60,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Unmatched Courage
 		Name:       "Frostforged Defender",
 		ID:         50403,
@@ -625,7 +570,7 @@ func init() {
 		ProcChance: 0.03,
 		ICD:        time.Second * 60,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Courage
 		Name:       "Frostforged Defender",
 		ID:         50404,
@@ -638,7 +583,7 @@ func init() {
 		ProcChance: 0.03,
 		ICD:        time.Second * 60,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Unmatched Might
 		Name:     "Frostforged Champion",
 		ID:       52571,
@@ -651,7 +596,7 @@ func init() {
 		PPM:      1,
 		ICD:      time.Second * 60,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		// Ashen Band of Endless Might
 		Name:     "Frostforged Champion",
 		ID:       52572,
@@ -664,7 +609,7 @@ func init() {
 		PPM:      1,
 		ICD:      time.Second * 60,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Sharpened Twilight Scale",
 		ID:         54569,
 		AuraID:     75458,
@@ -676,7 +621,7 @@ func init() {
 		ProcChance: 0.35,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Sharpened Twilight Scale H",
 		ID:         54590,
 		AuraID:     75456,
@@ -688,7 +633,7 @@ func init() {
 		ProcChance: 0.35,
 		ICD:        time.Second * 45,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Charred Twilight Scale",
 		ID:         54572,
 		AuraID:     75466,
@@ -699,7 +644,7 @@ func init() {
 		ProcChance: 0.10,
 		ICD:        time.Second * 50,
 	})
-	newProcStatBonusEffect(ProcStatBonusEffect{
+	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Charred Twilight Scale H",
 		ID:         54588,
 		AuraID:     75473,
