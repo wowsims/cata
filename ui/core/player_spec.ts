@@ -12,6 +12,7 @@ export abstract class PlayerSpec<SpecType extends Spec> {
 	static weaponTypes: EligibleWeaponType[];
 	static rangedWeaponTypes: RangedWeaponType[];
 
+	abstract readonly specIndex: number;
 	abstract readonly specID: SpecType;
 	abstract readonly classID: SpecClasses<SpecType>;
 	abstract readonly friendlyName: string;

@@ -4,6 +4,7 @@ import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class AfflictionWarlock extends PlayerSpec<Spec.SpecAfflictionWarlock> {
+	static specIndex = 1;
 	static specID = Spec.SpecAfflictionWarlock as Spec.SpecAfflictionWarlock;
 	static classID = Class.ClassWarlock as Class.ClassWarlock;
 	static friendlyName = 'Affliction';
@@ -16,6 +17,7 @@ export class AfflictionWarlock extends PlayerSpec<Spec.SpecAfflictionWarlock> {
 
 	static canDualWield = false;
 
+	readonly specIndex = AfflictionWarlock.specIndex;
 	readonly specID = AfflictionWarlock.specID;
 	readonly classID = AfflictionWarlock.classID;
 	readonly friendlyName = AfflictionWarlock.friendlyName;
@@ -38,6 +40,7 @@ export class AfflictionWarlock extends PlayerSpec<Spec.SpecAfflictionWarlock> {
 }
 
 export class DemonologyWarlock extends PlayerSpec<Spec.SpecDemonologyWarlock> {
+	static specIndex = 1;
 	static specID = Spec.SpecDemonologyWarlock as Spec.SpecDemonologyWarlock;
 	static classID = Class.ClassWarlock as Class.ClassWarlock;
 	static friendlyName = 'Demonology';
@@ -50,6 +53,7 @@ export class DemonologyWarlock extends PlayerSpec<Spec.SpecDemonologyWarlock> {
 
 	static canDualWield = false;
 
+	readonly specIndex = DemonologyWarlock.specIndex;
 	readonly specID = DemonologyWarlock.specID;
 	readonly classID = DemonologyWarlock.classID;
 	readonly friendlyName = DemonologyWarlock.friendlyName;
@@ -72,6 +76,7 @@ export class DemonologyWarlock extends PlayerSpec<Spec.SpecDemonologyWarlock> {
 }
 
 export class DestructionWarlock extends PlayerSpec<Spec.SpecDestructionWarlock> {
+	static specIndex = 2;
 	static specID = Spec.SpecDestructionWarlock as Spec.SpecDestructionWarlock;
 	static classID = Class.ClassWarlock as Class.ClassWarlock;
 	static friendlyName = 'Destruction';
@@ -84,6 +89,7 @@ export class DestructionWarlock extends PlayerSpec<Spec.SpecDestructionWarlock> 
 
 	static canDualWield = false;
 
+	readonly specIndex = DestructionWarlock.specIndex;
 	readonly specID = DestructionWarlock.specID;
 	readonly classID = DestructionWarlock.classID;
 	readonly friendlyName = DestructionWarlock.friendlyName;
