@@ -314,6 +314,7 @@ const (
 	DeathKnightSpellIcyTouch int64 = 1 << iota
 	DeathKnightSpellDeathCoil
 	DeathKnightSpellDeathAndDecay
+	DeathKnightSpellOutbreak
 	DeathKnightSpellEmpowerRuneWeapon
 	DeathKnightSpellPlagueStrike
 	DeathKnightSpellFesteringStrike
@@ -336,7 +337,7 @@ const (
 
 	DeathKnightSpellDisease = DeathKnightSpellFrostFever | DeathKnightSpellBloodPlague
 
-	DeathKnightSpellMagic = DeathKnightSpellIcyTouch | DeathKnightSpellDeathCoil | DeathKnightSpellDeathAndDecay
+	DeathKnightSpellMagic = DeathKnightSpellIcyTouch | DeathKnightSpellDeathCoil | DeathKnightSpellDeathAndDecay | DeathKnightSpellOutbreak
 
 	DeathKnightSpellWeapon = DeathKnightSpellPlagueStrike | DeathKnightSpellFesteringStrike | DeathKnightSpellScourgeStrike | DeathKnightSpellFrostStrike | DeathKnightSpellRuneStrike
 )
