@@ -61,19 +61,18 @@ func (mage *Mage) registerLivingBombSpell() {
 					livingBombExplosionSpell.Cast(sim, aura.Unit)
 				},
 			},
-
-			NumberOfTicks:       4, // TODO haste breakpoint makes a new tick based on haste to stay between 10.5s and 13.5s 🥴
+			BonusCoefficient:    0.258,
+			NumberOfTicks:       4,
 			TickLength:          time.Second * 3,
 			AffectedByCastSpeed: true,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = 0.25 * mage.ScalingBaseDamage
+				dot.SnapshotBaseDamage = 4*0.25*mage.ScalingBaseDamage + 0.258*4*dot.Spell.SpellPower()
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
-			BonusCoefficient: 0.258,
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
