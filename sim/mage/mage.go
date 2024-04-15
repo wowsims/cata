@@ -144,7 +144,8 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 		Talents:   &proto.MageTalents{},
 		Options:   mageOptions,
 	}
-	// core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+
+	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
 	// mage.bonusCritDamage = .25*float64(mage.Talents.SpellPower) + .1*float64(mage.Talents.Burnout)
 	// mage.EnableManaBar()
@@ -175,6 +176,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	return mage
 }
 
+// Phase this out for SpellMods when the chance is available
 func (mage *Mage) GetFireMasteryBonusMultiplier() float64 {
 	return (1.22 + 0.28*mage.GetMasteryPoints())
 }
