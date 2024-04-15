@@ -15,9 +15,6 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 	// Butchery
 	dk.applyButchery()
 
-	// Subversion
-	// Implemented outside
-
 	// Blade barrier
 	if dk.Talents.BladeBarrier > 0 {
 		dk.PseudoStats.DamageTakenMultiplier *= 1.0 - 0.02*float64(dk.Talents.BladeBarrier)
@@ -40,9 +37,7 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 	// Scent of Blood
 	dk.applyScentOfBlood()
 
-	// Mark of Blood
-	// Implemented
-
+	// Blood Parasite
 	dk.applyBloodworms()
 
 	// Abomination's Might

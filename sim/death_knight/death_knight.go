@@ -207,6 +207,7 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerObliterateSpell()
 	dk.registerHowlingBlastSpell()
 	dk.registerPillarOfFrostSpell()
+	dk.registerPestilenceSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -323,6 +324,7 @@ const (
 	DeathKnightSpellHowlingBlast
 	DeathKnightSpellHornOfWinter
 	DeathKnightSpellPillarOfFrost
+	DeathKnightSpellPestilence
 
 	DeathKnightSpellLast
 	DeathKnightSpellsAll = DeathKnightSpellLast<<1 - 1
