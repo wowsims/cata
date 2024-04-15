@@ -23,6 +23,14 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 		dk.PseudoStats.DamageTakenMultiplier *= 1.0 - 0.02*float64(dk.Talents.BladeBarrier)
 	}
 
+	if dk.Talents.ImprovedBloodTap > 0 {
+		dk.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_Cooldown_Flat,
+			TimeValue: time.Second * -15 * time.Duration(dk.Talents.ImprovedBloodTap),
+			ClassMask: DeathKnightSpellBloodTap,
+		})
+	}
+
 	// Bladed Armor
 	if dk.Talents.BladedArmor > 0 {
 		coeff := float64(dk.Talents.BladedArmor) * 2
