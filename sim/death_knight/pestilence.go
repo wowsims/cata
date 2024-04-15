@@ -10,13 +10,10 @@ var PestilenceActionID = core.ActionID{SpellID: 50842}
 func (dk *DeathKnight) registerPestilenceSpell() {
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
-	// This becomes too involved to move to a spell mod because we dont have
-	// correct events to react to the pesti cast
-	contagionBonus := 1.0 + 0.5*float64(dk.Talents.Contagion)
 	pestiHandler := func(sim *core.Simulation, spell *core.Spell, target *core.Unit) {
-		spell.DamageMultiplier *= 0.5 * contagionBonus
+		spell.DamageMultiplier *= 0.5
 		spell.Cast(sim, target)
-		spell.DamageMultiplier /= 0.5 * contagionBonus
+		spell.DamageMultiplier /= 0.5
 	}
 
 	dk.Pestilence = dk.RegisterSpell(core.SpellConfig{
