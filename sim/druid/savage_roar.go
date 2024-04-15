@@ -9,14 +9,14 @@ import (
 )
 
 func (druid *Druid) getSavageRoarMultiplier() float64 {
-	return 1.3 + core.TernaryFloat64(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfSavageRoar), 0.03, 0)
+	return 1.8 + core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfSavageRoar), 0.05, 0)
 }
 
 func (druid *Druid) registerSavageRoarSpell() {
 	actionID := core.ActionID{SpellID: 52610}
 
 	srm := druid.getSavageRoarMultiplier()
-	durBonus := core.TernaryDuration(druid.HasSetBonus(ItemSetNightsongBattlegear, 4), time.Second*8, 0)
+	durBonus := core.DurationFromSeconds(4.0 * float64(druid.Talents.EndlessCarnage))
 	druid.SavageRoarDurationTable = [6]time.Duration{
 		0,
 		durBonus + time.Second*(9+5),
