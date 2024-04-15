@@ -693,7 +693,9 @@ func FrostFeverAura(caster *Unit, target *Unit, britleBones int32) *Aura {
 		Duration: NeverExpires,
 	})
 	AtkSpeedReductionEffect(aura, 1.2)
-	PhysDamageTakenEffect(aura, 1+0.02*float64(britleBones))
+	if britleBones > 0 {
+		PhysDamageTakenEffect(aura, 1+0.02*float64(britleBones))
+	}
 	return aura
 }
 

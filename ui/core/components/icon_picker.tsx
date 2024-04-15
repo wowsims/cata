@@ -70,8 +70,14 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		const ce = ref<HTMLSpanElement>();
 		this.rootAnchor.appendChild(
 			<div className="icon-input-level-container">
-				<a ref={ia} className="icon-picker-button icon-input-improved icon-input-improved1" dataset={{ disableWowheadTouchTooltip: 'true' }}></a>
-				<a ref={ia2} className="icon-picker-button icon-input-improved icon-input-improved2" dataset={{ disableWowheadTouchTooltip: 'true' }}></a>
+				<a
+					ref={ia}
+					className="icon-picker-button icon-input-improved icon-input-improved1"
+					dataset={{ whtticon: 'false', disableWowheadTouchTooltip: 'true' }}></a>
+				<a
+					ref={ia2}
+					className="icon-picker-button icon-input-improved icon-input-improved2"
+					dataset={{ whtticon: 'false', disableWowheadTouchTooltip: 'true' }}></a>
 				<span ref={ce} className={`icon-picker-label ${this.config.states > 2 ? '' : 'hide'}`}></span>
 			</div>,
 		);

@@ -26,10 +26,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatAgility,
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
+		Stat.StatExpertise,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatExpertise,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -41,30 +41,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatAgility,
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
+		Stat.StatExpertise,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatExpertise,
+		Stat.StatMastery,
 		Stat.StatMana,
 	],
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET.gear,
+		gear: Presets.P3_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatStrength]: 2.4,
-				[Stat.StatAgility]: 2.39,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatMeleeHit]: 2.51,
-				[Stat.StatMeleeCrit]: 2.23,
-				[Stat.StatMeleeHaste]: 1.83,
-				[Stat.StatArmorPenetration]: 2.08,
-				[Stat.StatExpertise]: 2.44,
+				[Stat.StatStrength]: 0.38,
+				[Stat.StatAgility]: 1.0,
+				[Stat.StatAttackPower]: 0.37,
+				[Stat.StatMeleeHit]: 0.43,
+				[Stat.StatExpertise]: 0.43,
+				[Stat.StatMeleeCrit]: 0.40,
+				[Stat.StatMeleeHaste]: 0.41,
+				[Stat.StatMastery]: 0.58,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 16.5,
+				[PseudoStat.PseudoStatMainHandDps]: 1.94,
 			},
 		),
 		// Default consumes settings.
@@ -91,7 +91,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({
-			heroicPresence: true,
 		}),
 		individualBuffs: IndividualBuffs.create({
 		}),

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 // Time between focus ticks.
@@ -32,7 +33,7 @@ type focusBar struct {
 	isPlayer      bool
 
 	// Multiplies focus regen from ticks.
-	FocusTickMultiplier float64
+	focusRegenMultiplier float64
 
 	regenMetrics       *ResourceMetrics
 	focusRefundMetrics *ResourceMetrics
@@ -42,13 +43,13 @@ func (unit *Unit) EnableFocusBar(maxFocus float64, baseFocusPerSecond float64, i
 	unit.SetCurrentPowerBar(FocusBar)
 
 	unit.focusBar = focusBar{
-		unit:                unit,
-		maxFocus:            max(100, maxFocus),
-		FocusTickMultiplier: 1,
-		isPlayer:            isPlayer,
-		baseFocusPerSecond:  baseFocusPerSecond,
-		regenMetrics:        unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionFocusRegen}),
-		focusRefundMetrics:  unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
+		unit:                 unit,
+		maxFocus:             max(100, maxFocus),
+		focusRegenMultiplier: 1,
+		isPlayer:             isPlayer,
+		baseFocusPerSecond:   baseFocusPerSecond,
+		regenMetrics:         unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionFocusRegen}),
+		focusRefundMetrics:   unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
 	}
 }
 
@@ -132,20 +133,27 @@ func (fb *focusBar) NextFocusTickAt() time.Duration {
 	return fb.nextFocusTick
 }
 
-// Returns the rate of focus regen per second from melee haste.
-// Todo: Verify that this is actually how it works. Check simc code below
-// player_t::focus_regen_per_second =========================================
-// double player_t::focus_regen_per_second() const
-//
-//	{
-//	  double r = base_focus_regen_per_second * ( 1.0 / composite_attack_haste() );
-//	  return r;
-//	}
+func (fb *focusBar) MultiplyFocusRegenSpeed(sim *Simulation, multiplier float64) {
+	fb.focusRegenMultiplier *= multiplier
+}
+
 func (fb *focusBar) FocusRegenPerTick() float64 {
 	ticksPerSecond := float64(time.Second) / float64(FocusTickDuration)
-	hastePercent := fb.unit.RangedSwingSpeed()
-	tick := fb.baseFocusPerSecond * hastePercent / ticksPerSecond
-	return tick
+	return fb.FocusRegenPerSecond() / ticksPerSecond
+}
+
+func (fb *focusBar) FocusRegenPerSecond() float64 {
+	if fb.isPlayer {
+		return fb.baseFocusPerSecond * fb.getTotalRegenMultiplier()
+	} else {
+		return fb.baseFocusPerSecond
+	}
+}
+
+func (fb *focusBar) getTotalRegenMultiplier() float64 {
+	hasteMultiplier := 1.0 + fb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
+	totalMultiplier := hasteMultiplier * fb.focusRegenMultiplier
+	return totalMultiplier
 }
 
 func (fb *focusBar) onFocusGain(sim *Simulation, crossedThreshold bool) {

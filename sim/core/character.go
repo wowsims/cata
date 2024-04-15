@@ -238,9 +238,8 @@ func (character *Character) applyEquipment() {
 }
 
 func (character *Character) addUniversalStatDependencies() {
-	character.AddStat(stats.Health, 20-10*20)
-	character.AddStatDependency(stats.Stamina, stats.Health, 10)
-	character.AddStatDependency(stats.Agility, stats.Armor, 2)
+	character.AddStat(stats.Health, 20-14*20)
+	character.AddStatDependency(stats.Stamina, stats.Health, 14)
 }
 
 // Returns a partially-filled PlayerStats proto for use in the CharacterStats api call.
@@ -569,9 +568,7 @@ func (character *Character) HasOHWeapon() bool {
 func (character *Character) GetRangedWeapon() *Item {
 	weapon := character.Ranged()
 	if weapon.ID == 0 ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeIdol ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeLibram ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeTotem {
+		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeRelic {
 		return nil
 	} else {
 		return weapon

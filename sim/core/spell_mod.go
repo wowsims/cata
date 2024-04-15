@@ -13,6 +13,7 @@ type SpellModConfig struct {
 	ClassMask  int64
 	Kind       SpellModType
 	School     SpellSchool
+	ProcMask   ProcMask
 	IntValue   int64
 	TimeValue  time.Duration
 	FloatValue float64
@@ -22,6 +23,7 @@ type SpellMod struct {
 	ClassMask      int64
 	Kind           SpellModType
 	School         SpellSchool
+	ProcMask       ProcMask
 	floatValue     float64
 	intValue       int64
 	timeValue      time.Duration
@@ -48,6 +50,7 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		ClassMask:  config.ClassMask,
 		Kind:       config.Kind,
 		School:     config.School,
+		ProcMask:   config.ProcMask,
 		floatValue: config.FloatValue,
 		intValue:   config.IntValue,
 		timeValue:  config.TimeValue,
@@ -90,6 +93,10 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 	}
 
 	if mod.School > 0 && !mod.School.Matches(spell.SpellSchool) {
+		return false
+	}
+
+	if mod.ProcMask > 0 && !mod.ProcMask.Matches(spell.ProcMask) {
 		return false
 	}
 
