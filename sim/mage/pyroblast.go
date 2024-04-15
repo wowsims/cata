@@ -67,6 +67,7 @@ func (mage *Mage) registerPyroblastSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				pyroblastDot.SpellMetrics[target.UnitIndex].Hits++
 			},
 			BonusCoefficient: 0.180,
 		},
@@ -77,12 +78,11 @@ func (mage *Mage) registerPyroblastSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
 					pyroblastDot.Dot(target).Apply(sim)
-					//pyroblastDot.SpellMetrics[target.UnitIndex].Casts++
-					/* The above line is used to count the dot in the cpm chart.
-					This is misleading since it ends up doubling the overall pyroblast cpm,
-					when most users probably just care how many times they press pyroblast.
-					Example: 5 pyroblast casts in 1 minute end up showing as 10 cpm (5 pyro, 5 pyro dot)
-					Should delete in my opinion.*/
+					//pyroblastDot.SpellMetrics[target.UnitIndex].Hits++
+					//pyroblastDot.SpellMetrics[target.UnitIndex].Casts = 0
+					/* The 2 above metric changes should show how many ticks land
+					without affecting the overall pyroblast cast metric
+					*/
 				}
 				spell.DealDamage(sim, result)
 			})
