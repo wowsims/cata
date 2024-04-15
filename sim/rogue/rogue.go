@@ -62,6 +62,7 @@ type Rogue struct {
 	RevealingStrike  *core.Spell
 	KillingSpree     *core.Spell
 	AdrenalineRush   *core.Spell
+	Gouge            *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
@@ -165,6 +166,7 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerPoisonAuras()
 	rogue.registerShivSpell()
 	rogue.registerThistleTeaCD()
+	rogue.registerGougeSpell()
 
 	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
 
