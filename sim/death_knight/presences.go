@@ -66,6 +66,7 @@ func (dk *DeathKnight) registerFrostPresenceAura(timer *core.Timer) {
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
 
 	damageMulti := 1.1
+	runicMulti := 1.1
 
 	dk.FrostPresence = dk.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -88,17 +89,17 @@ func (dk *DeathKnight) registerFrostPresenceAura(timer *core.Timer) {
 		},
 	})
 
-	// TODO: Runic Power Gen
-
 	dk.FrostPresenceAura = dk.GetOrRegisterAura(core.Aura{
 		Label:    "Frost Presence",
 		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			dk.PseudoStats.DamageDealtMultiplier *= damageMulti
+			dk.MultiplyRunicRegen(runicMulti)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			dk.PseudoStats.DamageDealtMultiplier /= damageMulti
+			dk.MultiplyRunicRegen(1 / runicMulti)
 		},
 	})
 	dk.FrostPresenceAura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})

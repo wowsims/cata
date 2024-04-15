@@ -394,6 +394,15 @@ func (unit *Unit) MultiplyAttackSpeed(sim *Simulation, amount float64) {
 	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
 
+// Helper for multiplying resource generation speed
+func (unit *Unit) MultiplyResourceRegenSpeed(sim *Simulation, amount float64) {
+	if unit.HasRunicPowerBar() {
+		unit.MultiplyRuneRegenSpeed(sim, amount)
+	} else if unit.HasFocusBar() {
+		unit.MultiplyFocusRegenSpeed(sim, amount)
+	}
+}
+
 func (unit *Unit) AddBonusRangedHitRating(amount float64) {
 	unit.OnSpellRegistered(func(spell *Spell) {
 		if spell.ProcMask.Matches(ProcMaskRanged) {

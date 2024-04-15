@@ -9,6 +9,8 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+const SpellFlagMercilessCombat = core.SpellFlagAgentReserved1
+
 const (
 	PetSpellHitScale  = 17.0 / 8.0 * core.SpellHitRatingPerHitChance / core.MeleeHitRatingPerHitChance    // 1.7
 	PetExpertiseScale = 3.25 * core.ExpertisePerQuarterPercentReduction / core.MeleeHitRatingPerHitChance // 0.8125
@@ -95,8 +97,7 @@ type DeathKnight struct {
 	// Dummy aura for timeline metrics
 	GhoulFrenzyAura *core.Aura
 
-	LastScourgeStrikeDamage float64
-	ScourgeStrike           *core.Spell
+	ScourgeStrike *core.Spell
 
 	DeathCoil *core.Spell
 
@@ -207,6 +208,8 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerSummonGargoyleSpell()
 	dk.registerArmyOfTheDeadSpell()
 	dk.registerRaiseDeadSpell()
+	dk.registerBloodTapSpell()
+	dk.registerObliterateSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -243,6 +246,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		currentRunicPower,
 		maxRunicPower,
 		10*time.Second,
+		1.0,
 		1.0,
 		func(sim *core.Simulation, changeType core.RuneChangeType) {
 			if dk.onRuneSpendT10 != nil {
@@ -316,21 +320,22 @@ const (
 	DeathKnightSpellDeathAndDecay
 	DeathKnightSpellOutbreak
 	DeathKnightSpellEmpowerRuneWeapon
-	DeathKnightSpellPlagueStrike
-	DeathKnightSpellFesteringStrike
-	DeathKnightSpellScourgeStrike
-	DeathKnightSpellScourgeStrikeShadow
 	DeathKnightSpellUnholyFrenzy
 	DeathKnightSpellDarkTransformation
 	DeathKnightSpellSummonGargoyle
 	DeathKnightSpellArmyOfTheDead
 	DeathKnightSpellRaiseDead
-
+	DeathKnightSpellBloodTap
+	DeathKnightSpellObliterate
 	DeathKnightSpellFrostStrike
 	DeathKnightSpellRuneStrike
-
+	DeathKnightSpellPlagueStrike
+	DeathKnightSpellFesteringStrike
+	DeathKnightSpellScourgeStrike
+	DeathKnightSpellScourgeStrikeShadow
 	DeathKnightSpellFrostFever
 	DeathKnightSpellBloodPlague
+	DeathKnightSpellHowlingBlast
 
 	DeathKnightSpellLast
 	DeathKnightSpellsAll = DeathKnightSpellLast<<1 - 1
@@ -339,5 +344,10 @@ const (
 
 	DeathKnightSpellMagic = DeathKnightSpellIcyTouch | DeathKnightSpellDeathCoil | DeathKnightSpellDeathAndDecay | DeathKnightSpellOutbreak
 
-	DeathKnightSpellWeapon = DeathKnightSpellPlagueStrike | DeathKnightSpellFesteringStrike | DeathKnightSpellScourgeStrike | DeathKnightSpellFrostStrike | DeathKnightSpellRuneStrike
+	DeathKnightSpellWeapon = DeathKnightSpellPlagueStrike |
+		DeathKnightSpellFesteringStrike |
+		DeathKnightSpellScourgeStrike |
+		DeathKnightSpellFrostStrike |
+		DeathKnightSpellRuneStrike |
+		DeathKnightSpellObliterate
 )
