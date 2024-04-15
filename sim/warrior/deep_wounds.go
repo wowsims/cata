@@ -6,16 +6,16 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warrior *Warrior) applyDeepWounds() {
+func (warrior *Warrior) RegisterDeepWounds() {
 	if warrior.Talents.DeepWounds == 0 {
 		return
 	}
 
 	warrior.DeepWounds = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 12867},
+		ActionID:    core.ActionID{SpellID: 12868},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | SpellFlagBleed,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

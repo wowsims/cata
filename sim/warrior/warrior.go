@@ -16,10 +16,10 @@ type WarriorInputs struct {
 
 const (
 	SpellFlagWhirlwindOH = core.SpellFlagAgentReserved1
+	SpellFlagBleed       = core.SpellFlagAgentReserved2
 	ArmsTree             = 0
 	FuryTree             = 1
 	ProtTree             = 2
-	EnableOverpowerTag   = "EnableOverpower"
 )
 
 const SpellMaskNone int64 = 0
@@ -78,6 +78,7 @@ type Warrior struct {
 	BerserkerStance *core.Spell
 
 	BerserkerRage     *core.Spell
+	ColossusSmash     *core.Spell
 	DemoralizingShout *core.Spell
 	Execute           *core.Spell
 	Overpower         *core.Spell

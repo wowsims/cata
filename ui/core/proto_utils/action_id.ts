@@ -457,6 +457,8 @@ export class ActionId {
 					name += ' (MT)';
 				}
 				break;
+			case 'Opportunity Strike':
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';
