@@ -54,24 +54,15 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 		BonusCoefficient: 0.193,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO implement proc chance when talents get fixed
-			// procChance := []float64{0.0, 0.33, 0.66, 1.0}[mage.Talents.FirePower]
-
-			// Debugging proc chance
-			/* 			fmt.Println("---")
-			   			fmt.Println(procChance)
-			   			fmt.Println("Ignite Talents: ", mage.Talents.Ignite)
-			   			fmt.Println("Fire Power Talents: ", mage.Talents.FirePower)
-			   			fmt.Println("Blazing Speed Talents: ", mage.Talents.BlazingSpeed)
-			   			fmt.Println("Impact Talents: ", mage.Talents.Impact) */
+			procChance := []float64{0.0, 0.33, 0.66, 1.0}[mage.Talents.FirePower]
 
 			damage := 1.318 * mage.ScalingBaseDamage
-			// if sim.Proc(procChance, "FlameOrbExplosion") {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
-				spell.SpellMetrics[target.UnitIndex].Hits++
+			if sim.Proc(procChance, "FlameOrbExplosion") {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+					spell.SpellMetrics[target.UnitIndex].Hits++
+				}
 			}
-			// }
 		},
 	})
 }
