@@ -185,7 +185,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PRERAID_PRESET_ASSASSINATION.gear,
+		gear: Presets.P1_PRESET_ASSASSINATION.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -276,12 +276,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.PRERAID_PRESET_ASSASSINATION,
 			Presets.P1_PRESET_ASSASSINATION,
-			Presets.P2_PRESET_ASSASSINATION,
-			Presets.P3_PRESET_ASSASSINATION,
-			Presets.P4_PRESET_ASSASSINATION,
-			Presets.P5_PRESET_ASSASSINATION,
 		],
 	},
 
@@ -309,15 +304,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_PRESET_ASSASSINATION.gear,
-					2: Presets.P2_PRESET_ASSASSINATION.gear,
-					3: Presets.P3_PRESET_ASSASSINATION.gear,
-					4: Presets.P4_PRESET_ASSASSINATION.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_PRESET_ASSASSINATION.gear,
-					2: Presets.P2_PRESET_ASSASSINATION.gear,
-					3: Presets.P3_PRESET_ASSASSINATION.gear,
-					4: Presets.P4_PRESET_ASSASSINATION.gear,
 				},
 			},
 		},

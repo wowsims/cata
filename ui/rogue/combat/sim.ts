@@ -187,7 +187,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET_COMBAT.gear,
+		gear: Presets.P1_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -278,12 +278,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.PRERAID_PRESET_COMBAT,
 			Presets.P1_PRESET_COMBAT,
-			Presets.P2_PRESET_COMBAT,
-			Presets.P3_PRESET_COMBAT,
-			Presets.P4_PRESET_COMBAT,
-			Presets.P5_PRESET_COMBAT,
 		],
 	},
 
@@ -311,15 +306,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_PRESET_COMBAT.gear,
-					2: Presets.P2_PRESET_COMBAT.gear,
-					3: Presets.P3_PRESET_COMBAT.gear,
-					4: Presets.P4_PRESET_COMBAT.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_PRESET_COMBAT.gear,
-					2: Presets.P2_PRESET_COMBAT.gear,
-					3: Presets.P3_PRESET_COMBAT.gear,
-					4: Presets.P4_PRESET_COMBAT.gear,
 				},
 			},
 		},

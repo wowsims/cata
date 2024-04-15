@@ -47,6 +47,9 @@ func (rogue *Rogue) registerGougeSpell() {
 			calcBaseDamage := baseDamage +
 				0.20999999344*spell.MeleeAttackPower()
 			result := spell.CalcAndDealDamage(sim, target, calcBaseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+
+			// Gouge disables auto attacks, requiring a macro to re-enable, retaining whatever the remaining swing timer is.
+			// Properly modeling this is near-impossible, so add just a little delay for each gouge. This will essentially under-value Gouge by a bit, but is more reasonable than literally 0 AA downtime.
 			rogue.AutoAttacks.DelayMeleeBy(sim, rogue.ReactionTime)
 
 			if result.Landed() {

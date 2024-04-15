@@ -5,22 +5,12 @@ import { CombatRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_Pois
 import { SavedTalents } from '../../core/proto/ui';
 import CombatApl from './apls/combat.apl.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
-import P2CombatGear from './gear_sets/p2_combat.gear.json';
-import P3CombatGear from './gear_sets/p3_combat.gear.json';
-import P4CombatGear from './gear_sets/p4_combat.gear.json';
-import P5CombatGear from './gear_sets/p5_combat.gear.json';
-import PreraidCombatGear from './gear_sets/preraid_combat.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const PRERAID_PRESET_COMBAT = PresetUtils.makePresetGear('PreRaid Combat', PreraidCombatGear, { talentTree: 1 });
 export const P1_PRESET_COMBAT = PresetUtils.makePresetGear('P1 Combat', P1CombatGear);
-export const P2_PRESET_COMBAT = PresetUtils.makePresetGear('P2 Combat', P2CombatGear);
-export const P3_PRESET_COMBAT = PresetUtils.makePresetGear('P3 Combat', P3CombatGear);
-export const P4_PRESET_COMBAT = PresetUtils.makePresetGear('P4 Combat', P4CombatGear);
-export const P5_PRESET_COMBAT = PresetUtils.makePresetGear('P5 Combat', P5CombatGear);
 
 export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat', CombatApl);
 
@@ -30,7 +20,7 @@ export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat'
 export const CombatTalents = {
 	name: 'Combat',
 	data: SavedTalents.create({
-		talentsString: '0331-2332030310230012321-003',
+		talentsString: '0322-2332030310230012321-003',
 		glyphs: Glyphs.create({
 			prime1: RoguePrimeGlyph.GlyphOfAdrenalineRush,
 			prime2: RoguePrimeGlyph.GlyphOfSinisterStrike,
