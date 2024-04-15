@@ -26,7 +26,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
@@ -46,12 +46,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatExpertise,
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_FROST_PRESET.gear,
+		gear: Presets.DEFAULT_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -75,9 +75,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.FrostTalents.data,
+		talents: Presets.SingleTargetTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultFrostOptions,
+		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			giftOfTheWild: TristateEffect.TristateEffectImproved,
@@ -112,12 +112,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
-		const talentPoints = player.getTalentTreePoints();
-		// TODO: Add Frost AOE rotation
-		if (talentPoints[0] > talentPoints[2]) {
-			return Presets.FROST_BL_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		const numTargets = player.sim.encounter.targets.length;
+		if (numTargets > 1) {
+			return Presets.AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		} else {
-			return Presets.FROST_UH_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 
@@ -158,8 +157,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFrostDeathKnight,
-			talents: Presets.FrostTalents.data,
-			specOptions: Presets.DefaultFrostOptions,
+			talents: Presets.SingleTargetTalents.data,
+			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
@@ -169,16 +168,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_FROST_PRESET.gear,
-					2: Presets.P2_FROST_PRESET.gear,
-					3: Presets.P3_FROST_PRESET.gear,
-					4: Presets.P4_FROST_PRESET.gear,
+					1: Presets.DEFAULT_GEAR_PRESET.gear,
+					2: Presets.DEFAULT_GEAR_PRESET.gear,
+					3: Presets.DEFAULT_GEAR_PRESET.gear,
+					4: Presets.DEFAULT_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_FROST_PRESET.gear,
-					2: Presets.P2_FROST_PRESET.gear,
-					3: Presets.P3_FROST_PRESET.gear,
-					4: Presets.P4_FROST_PRESET.gear,
+					1: Presets.DEFAULT_GEAR_PRESET.gear,
+					2: Presets.DEFAULT_GEAR_PRESET.gear,
+					3: Presets.DEFAULT_GEAR_PRESET.gear,
+					4: Presets.DEFAULT_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

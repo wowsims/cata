@@ -10,7 +10,7 @@ func (dk *DeathKnight) DiseasesAreActive(target *core.Unit) bool {
 	return dk.FrostFeverSpell.Dot(target).IsActive() || dk.BloodPlagueSpell.Dot(target).IsActive()
 }
 
-func (dk *DeathKnight) dkCountActiveDiseases(target *core.Unit) float64 {
+func (dk *DeathKnight) CountActiveDiseases(target *core.Unit) float64 {
 	count := 0
 	if dk.FrostFeverSpell.Dot(target).IsActive() {
 		count++

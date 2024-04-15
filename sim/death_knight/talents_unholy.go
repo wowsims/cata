@@ -99,13 +99,14 @@ func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 			dk.NewDeathRuneMetrics(actionId),
 		}
 		handler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			dk.RegenRandomRune(sim, runeMetrics)
+			dk.RegenRandomDepletedRune(sim, runeMetrics)
 		}
 	}
 
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:           "Runic Empowerement",
 		Callback:       core.CallbackOnSpellHitDealt,
+		ProcMask:       core.ProcMaskMeleeMH | core.ProcMaskSpellDamage,
 		Outcome:        core.OutcomeLanded,
 		ClassSpellMask: DeathKnightSpellDeathCoil | DeathKnightSpellRuneStrike | DeathKnightSpellFrostStrike,
 		ProcChance:     0.45,
@@ -165,7 +166,7 @@ func (dk *DeathKnight) applyUnholyBlight() {
 	})
 }
 
-func (dk *DeathKnight) ebonPlaguebringerDiseaseMultiplier(spell *core.Spell, _ *core.AttackTable) float64 {
+func (dk *DeathKnight) ebonPlaguebringerDiseaseMultiplier(_ *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
 	return core.TernaryFloat64(spell.ClassSpellMask&DeathKnightSpellDisease > 0, 1.0+0.15*float64(dk.Talents.EbonPlaguebringer), 1.0)
 }
 
