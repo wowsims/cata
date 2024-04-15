@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (druid *Druid) registerTigersFurySpell() {
@@ -12,7 +13,7 @@ func (druid *Druid) registerTigersFurySpell() {
 	instantEnergy := 20.0 * float64(druid.Talents.KingOfTheJungle)
 
 	dmgBonus := 80.0
-	cdReduction := core.TernaryDuration(druid.HasSetBonus(ItemSetDreamwalkerBattlegear, 4), time.Second*3, 0)
+	cdReduction := core.TernaryDuration(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfTigersFury), time.Second*3, 0)
 
 	druid.TigersFuryAura = druid.RegisterAura(core.Aura{
 		Label:    "Tiger's Fury Aura",
