@@ -5,6 +5,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
+// test hi!
 const (
 	SpellFlagMage     = core.SpellFlagAgentReserved1
 	BarrageSpells     = core.SpellFlagAgentReserved2
