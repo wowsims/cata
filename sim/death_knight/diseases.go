@@ -96,10 +96,6 @@ func (dk *DeathKnight) registerFrostFever() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if dk.Talents.EbonPlaguebringer > 0 {
-				dk.EbonPlagueBringerAura.Get(target).Activate(sim)
-			}
-
 			dot := spell.Dot(target)
 			dot.Apply(sim)
 		},
@@ -137,10 +133,6 @@ func (dk *DeathKnight) registerBloodPlague() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if dk.Talents.EbonPlaguebringer > 0 {
-				dk.EbonPlagueBringerAura.Get(target).Activate(sim)
-			}
-
 			spell.Dot(target).Apply(sim)
 		},
 	})
