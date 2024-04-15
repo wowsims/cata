@@ -117,9 +117,6 @@ type DeathKnight struct {
 
 	EmpowerRuneWeapon *core.Spell
 
-	UnbreakableArmor     *core.Spell
-	UnbreakableArmorAura *core.Aura
-
 	VampiricBlood     *core.Spell
 	VampiricBloodAura *core.Aura
 
@@ -209,6 +206,7 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerBloodTapSpell()
 	dk.registerObliterateSpell()
 	dk.registerHowlingBlastSpell()
+	dk.registerPillarOfFrostSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -324,6 +322,7 @@ const (
 	DeathKnightSpellBloodPlague
 	DeathKnightSpellHowlingBlast
 	DeathKnightSpellHornOfWinter
+	DeathKnightSpellPillarOfFrost
 
 	DeathKnightSpellLast
 	DeathKnightSpellsAll = DeathKnightSpellLast<<1 - 1
