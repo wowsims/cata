@@ -210,7 +210,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.HemoSubtletyTalents.data,
+		talents: Presets.SubtletyTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -272,9 +272,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.SubtletyTalents, Presets.HemoSubtletyTalents],
+		talents: [Presets.SubtletyTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_AOE],
+		rotations: [Presets.ROTATION_PRESET_SUBTLETY],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.P1_PRESET_HEMO_SUB, Presets.P2_PRESET_HEMO_SUB, Presets.P3_PRESET_HEMO_SUB, Presets.P3_PRESET_DANCE_SUB],
 	},
@@ -282,17 +282,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 	autoRotation: (player: Player<Spec.SpecSubtletyRogue>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets >= 5) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_SUBTLETY.rotation.rotation!;
 		} else {
 			// TODO: Need a sub rotation here
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_SUBTLETY.rotation.rotation!;
 		}
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecSubtletyRogue,
-			talents: Presets.HemoSubtletyTalents.data,
+			talents: Presets.SubtletyTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
