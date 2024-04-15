@@ -210,7 +210,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.HemoSubtletyTalents.data,
+		talents: Presets.SubtletyTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -272,7 +272,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.SubtletyTalents, Presets.HemoSubtletyTalents],
+		talents: [Presets.SubtletyTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SUBTLETY],
 		// Preset gear configurations that the user can quickly select.
@@ -292,7 +292,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecSubtletyRogue,
-			talents: Presets.HemoSubtletyTalents.data,
+			talents: Presets.SubtletyTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {

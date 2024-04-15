@@ -1,6 +1,7 @@
+import { Rogue } from '../../core/player_classes/rogue';
 import * as PresetUtils from '../../core/preset_utils';
 import { Conjured, Consumes, Flask, Food, Glyphs, Potions } from '../../core/proto/common';
-import { CombatRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonImbue } from '../../core/proto/rogue';
+import { CombatRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonImbue, RoguePrimeGlyph } from '../../core/proto/rogue';
 import { SavedTalents } from '../../core/proto/ui';
 import CombatApl from './apls/combat.apl.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
@@ -26,27 +27,18 @@ export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat'
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
 
-export const CombatHackTalents = {
-	name: 'Combat Axes/Swords',
+export const CombatTalents = {
+	name: 'Combat',
 	data: SavedTalents.create({
-		// talentsString: '00532010414-0252051000035015223100501251',
-		// glyphs: Glyphs.create({
-		// 	major1: RogueMajorGlyph.GlyphOfKillingSpree,
-		// 	major2: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
-		// 	major3: RogueMajorGlyph.GlyphOfRupture,
-		// }),
-	}),
-};
-
-export const CombatCQCTalents = {
-	name: 'Combat Fists',
-	data: SavedTalents.create({
-		// talentsString: '00532010414-0252051050035010223100501251',
-		// glyphs: Glyphs.create({
-		// 	major1: RogueMajorGlyph.GlyphOfKillingSpree,
-		// 	major2: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
-		// 	major3: RogueMajorGlyph.GlyphOfRupture,
-		// }),
+		talentsString: '0331-2332030310230012321-003',
+		glyphs: Glyphs.create({
+			prime1: RoguePrimeGlyph.GlyphOfAdrenalineRush,
+			prime2: RoguePrimeGlyph.GlyphOfSinisterStrike,
+			prime3: RoguePrimeGlyph.GlyphOfSliceAndDice,
+			major1: RogueMajorGlyph.GlyphOfBladeFlurry,
+			major2: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
+			major3: RogueMajorGlyph.GlyphOfGouge,
+		}),
 	}),
 };
 

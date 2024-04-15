@@ -210,7 +210,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.CombatHackTalents.data,
+		talents: Presets.CombatTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -271,7 +271,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.CombatHackTalents, Presets.CombatCQCTalents],
+		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			Presets.ROTATION_PRESET_COMBAT,
@@ -299,7 +299,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecCombatRogue,
-			talents: Presets.CombatCQCTalents.data,
+			talents: Presets.CombatTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
