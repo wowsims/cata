@@ -41,9 +41,6 @@ type DeathKnight struct {
 
 	ClassBaseScaling float64
 
-	onRuneSpendT10          core.OnRuneChange
-	onRuneSpendBladeBarrier core.OnRuneChange
-
 	Inputs DeathKnightInputs
 
 	Ghoul     *GhoulPet
@@ -249,12 +246,6 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		1.0,
 		1.0,
 		func(sim *core.Simulation, changeType core.RuneChangeType) {
-			if dk.onRuneSpendT10 != nil {
-				dk.onRuneSpendT10(sim, changeType)
-			}
-			if dk.onRuneSpendBladeBarrier != nil {
-				dk.onRuneSpendBladeBarrier(sim, changeType)
-			}
 		},
 		nil,
 	)
