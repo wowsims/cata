@@ -58,18 +58,12 @@ func makeExclusiveFlatStatBuff(aura *Aura, stat stats.Stat, value float64) {
 }
 
 func registerExlusiveEffects(aura *Aura, config []StatConfig) {
-	hasMultiplier := false
 	for _, statConfig := range config {
 		if statConfig.IsMultiplicative {
-			hasMultiplier = false
 			makeExclusiveMultiplierBuff(aura, statConfig.Stat, statConfig.Amount)
 		} else {
 			makeExclusiveFlatStatBuff(aura, statConfig.Stat, statConfig.Amount)
 		}
-	}
-
-	if hasMultiplier {
-		aura.BuildPhase = CharacterBuildPhaseNone
 	}
 }
 
