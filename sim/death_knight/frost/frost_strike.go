@@ -2,7 +2,6 @@ package frost
 
 import (
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/death_knight"
 )
 
@@ -37,7 +36,7 @@ func (dk *FrostDeathKnight) registerFrostStrikeSpell() {
 		ClassSpellMask: death_knight.DeathKnightSpellFrostStrike,
 
 		RuneCost: core.RuneCostOptions{
-			RunicPowerCost: core.TernaryFloat64(dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfFrostStrike), 32, 40),
+			RunicPowerCost: 40,
 			Refundable:     true,
 		},
 		Cast: core.CastConfig{

@@ -114,7 +114,6 @@ func (rp *runicPowerBar) reset(sim *Simulation) {
 }
 
 func (unit *Unit) EnableRunicPowerBar(currentRunicPower float64, maxRunicPower float64, runeCD time.Duration,
-	runeRegenMultiplier float64, runicRegenMultiplier float64,
 	onRuneChange OnRuneChange, onRunicPowerGain OnRunicPowerGain) {
 	unit.SetCurrentPowerBar(RunicPower)
 	unit.runicPowerBar = runicPowerBar{
@@ -123,8 +122,8 @@ func (unit *Unit) EnableRunicPowerBar(currentRunicPower float64, maxRunicPower f
 		maxRunicPower:        maxRunicPower,
 		currentRunicPower:    currentRunicPower,
 		runeCD:               runeCD,
-		runeRegenMultiplier:  runeRegenMultiplier,
-		runicRegenMultiplier: runicRegenMultiplier,
+		runeRegenMultiplier:  1.0,
+		runicRegenMultiplier: 1.0,
 
 		runeStates: baseRuneState,
 		btSlot:     -1,
@@ -912,6 +911,17 @@ func newRuneCost(spell *Spell, options RuneCostOptions) *RuneCostImpl {
 	}
 }
 
+func (rc *RuneCostImpl) GetConfig() RuneCostOptions {
+	return RuneCostOptions{
+		BloodRuneCost:  rc.BloodRuneCost,
+		FrostRuneCost:  rc.FrostRuneCost,
+		UnholyRuneCost: rc.UnholyRuneCost,
+		RunicPowerCost: rc.RunicPowerCost,
+		RunicPowerGain: rc.RunicPowerGain,
+		Refundable:     rc.Refundable,
+	}
+}
+
 func (rc *RuneCostImpl) MeetsRequirement(_ *Simulation, spell *Spell) bool {
 	spell.CurCast.Cost *= spell.CostMultiplier // TODO this looks fishy - multiplying and rune costs don't go well together
 
@@ -1092,6 +1102,10 @@ func (spell *Spell) SpendRefundableCostAndConvertBloodOrFrostRune(sim *Simulatio
 func (rc *RuneCostImpl) IssueRefund(_ *Simulation, _ *Spell) {
 	// Instead of issuing refunds we just don't charge the cost of spells which
 	// miss; this is better for perf since we'd have to cancel the regen actions.
+}
+
+func (spell *Spell) RuneCostImpl() *RuneCostImpl {
+	return spell.Cost.(*RuneCostImpl)
 }
 
 func (spell *Spell) RunicPowerMetrics() *ResourceMetrics {

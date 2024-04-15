@@ -46,13 +46,24 @@ func (dk *DeathKnight) ApplyGlyphs() {
 		})
 	}
 
-	// TODO: Look into adding rune specific spell mods
-	// Implemented in frost_strike.go for now...
-	// if dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfFrostStrike) {
-	// 	dk.AddStaticMod(core.SpellModConfig{
-	// 		Kind:       core.SpellMod_RunicPowerCost_Flat,
-	// 		ClassMask:  DeathKnightSpellRuneStrike,
-	// 		FloatValue: -8,
-	// 	})
-	// }
+	if dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfFrostStrike) {
+		dk.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_RunicPowerCost_Flat,
+			ClassMask:  DeathKnightSpellFrostStrike,
+			ProcMask:   core.ProcMaskMeleeMH,
+			FloatValue: -8,
+		})
+	}
+
+	if dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfHowlingBlast) {
+		core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+			Name:           "Howling Blast Disease",
+			Callback:       core.CallbackOnSpellHitDealt,
+			Outcome:        core.OutcomeLanded,
+			ClassSpellMask: DeathKnightSpellHowlingBlast,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				dk.FrostFeverSpell.Cast(sim, result.Target)
+			},
+		})
+	}
 }

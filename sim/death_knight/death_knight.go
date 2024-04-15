@@ -194,6 +194,7 @@ func (dk *DeathKnight) ApplyTalents() {
 func (dk *DeathKnight) Initialize() {
 	dk.registerPresences()
 
+	dk.registerHornOfWinterSpell()
 	dk.registerDiseaseDots()
 	dk.registerIcyTouchSpell()
 	dk.registerPlagueStrikeSpell()
@@ -207,15 +208,12 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerRaiseDeadSpell()
 	dk.registerBloodTapSpell()
 	dk.registerObliterateSpell()
+	dk.registerHowlingBlastSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
 	dk.DeathStrikeHeals = dk.DeathStrikeHeals[:0]
 }
-
-// func (dk *DeathKnight) IsFuStrike(spell *core.Spell) bool {
-// 	return spell == dk.Obliterate || spell == dk.ScourgeStrike || spell == dk.DeathStrike
-// }
 
 func (dk *DeathKnight) HasPrimeGlyph(glyph proto.DeathKnightPrimeGlyph) bool {
 	return dk.HasGlyph(int32(glyph))
@@ -243,8 +241,6 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		currentRunicPower,
 		maxRunicPower,
 		10*time.Second,
-		1.0,
-		1.0,
 		func(sim *core.Simulation, changeType core.RuneChangeType) {
 		},
 		nil,
@@ -327,18 +323,10 @@ const (
 	DeathKnightSpellFrostFever
 	DeathKnightSpellBloodPlague
 	DeathKnightSpellHowlingBlast
+	DeathKnightSpellHornOfWinter
 
 	DeathKnightSpellLast
 	DeathKnightSpellsAll = DeathKnightSpellLast<<1 - 1
 
 	DeathKnightSpellDisease = DeathKnightSpellFrostFever | DeathKnightSpellBloodPlague
-
-	DeathKnightSpellMagic = DeathKnightSpellIcyTouch | DeathKnightSpellDeathCoil | DeathKnightSpellDeathAndDecay | DeathKnightSpellOutbreak
-
-	DeathKnightSpellWeapon = DeathKnightSpellPlagueStrike |
-		DeathKnightSpellFesteringStrike |
-		DeathKnightSpellScourgeStrike |
-		DeathKnightSpellFrostStrike |
-		DeathKnightSpellRuneStrike |
-		DeathKnightSpellObliterate
 )

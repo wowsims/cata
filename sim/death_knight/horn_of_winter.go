@@ -7,12 +7,14 @@ import (
 )
 
 func (dk *DeathKnight) registerHornOfWinterSpell() {
-	actionID := core.ActionID{SpellID: 57623}
+	actionID := core.ActionID{SpellID: 57330}
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
 
 	dk.HornOfWinter = dk.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: DeathKnightSpellHornOfWinter,
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -23,6 +25,7 @@ func (dk *DeathKnight) registerHornOfWinterSpell() {
 			},
 			IgnoreHaste: true,
 		},
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dk.AddRunicPower(sim, 10, rpMetrics)
 		},
