@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 var HowlingBlastActionID = core.ActionID{SpellID: 51411}
@@ -14,8 +13,7 @@ func (dk *DeathKnight) registerHowlingBlastSpell() {
 		return
 	}
 
-	rpBonus := 2.5 * float64(dk.Talents.ChillOfTheGrave)
-	hasGlyph := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfHowlingBlast)
+	rpBonus := 5 * float64(dk.Talents.ChillOfTheGrave)
 
 	dk.HowlingBlast = dk.RegisterSpell(core.SpellConfig{
 		ActionID:    HowlingBlastActionID,
@@ -58,10 +56,6 @@ func (dk *DeathKnight) registerHowlingBlastSpell() {
 				}
 				if rpBonus > 0 && result.Landed() {
 					dk.AddRunicPower(sim, rpBonus, spell.RunicPowerMetrics())
-				}
-
-				if hasGlyph {
-					dk.FrostFeverSpell.Cast(sim, aoeTarget)
 				}
 
 				spell.DealDamage(sim, result)

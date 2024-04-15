@@ -1,40 +1,41 @@
-package death_knight
+package unholy
 
 import (
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/death_knight"
 )
 
-var ScourgeStrikeActionID = core.ActionID{SpellID: 55090}
+var scourgeStrikeActionID = core.ActionID{SpellID: 55090}
 
 // this is just a simple spell because it has no rune costs and is really just a wrapper.
-func (dk *DeathKnight) registerScourgeStrikeShadowDamageSpell() *core.Spell {
+func (dk *UnholyDeathKnight) registerScourgeStrikeShadowDamageSpell() *core.Spell {
 	return dk.Unit.RegisterSpell(core.SpellConfig{
-		ActionID:       ScourgeStrikeActionID.WithTag(2),
+		ActionID:       scourgeStrikeActionID.WithTag(2),
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellOrProc,
 		Flags:          core.SpellFlagMeleeMetrics,
-		ClassSpellMask: DeathKnightSpellScourgeStrikeShadow,
+		ClassSpellMask: death_knight.DeathKnightSpellScourgeStrikeShadow,
 
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.LastScourgeStrikeDamage * dk.dkCountActiveDiseases(target) * 0.18
+			baseDamage := dk.lastScourgeStrikeDamage * dk.CountActiveDiseases(target) * 0.18
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
 		},
 	})
 }
 
-func (dk *DeathKnight) RegisterScourgeStrikeSpell() {
+func (dk *UnholyDeathKnight) registerScourgeStrikeSpell() {
 	shadowDamageSpell := dk.registerScourgeStrikeShadowDamageSpell()
 
 	dk.ScourgeStrike = dk.RegisterSpell(core.SpellConfig{
-		ActionID:       ScourgeStrikeActionID.WithTag(1),
+		ActionID:       scourgeStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: DeathKnightSpellScourgeStrike,
+		ClassSpellMask: death_knight.DeathKnightSpellScourgeStrike,
 
 		RuneCost: core.RuneCostOptions{
 			UnholyRuneCost: 1,
@@ -58,12 +59,12 @@ func (dk *DeathKnight) RegisterScourgeStrikeSpell() {
 			baseDamage := dk.ClassBaseScaling*0.55500000715 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			spell.SpendRefundableCost(sim, result)
 
 			if result.Landed() && dk.DiseasesAreActive(target) {
-				dk.LastScourgeStrikeDamage = result.Damage
+				dk.lastScourgeStrikeDamage = result.Damage
 				shadowDamageSpell.Cast(sim, target)
 			}
 

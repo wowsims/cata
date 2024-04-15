@@ -64,7 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P2_UNHOLY_DW_PRESET.gear,
+		gear: Presets.DEFAULT_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -88,9 +88,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.UnholyDualWieldTalents.data,
+		talents: Presets.SingleTargetTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultUnholyOptions,
+		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			giftOfTheWild: TristateEffect.TristateEffectImproved,
@@ -127,13 +127,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	autoRotation: (player: Player<Spec.SpecUnholyDeathKnight>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 1) {
-			return Presets.UNHOLY_DND_AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		} else {
-			if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)!.item.handType == HandType.HandTypeTwoHand) {
-				return Presets.UNHOLY_2H_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-			} else {
-				return Presets.UNHOLY_DW_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-			}
+			return Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 
@@ -165,31 +161,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.UnholyDualWieldTalents, Presets.UnholyDualWieldSSTalents, Presets.Unholy2HTalents, Presets.UnholyAoeTalents],
+		talents: [
+		],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.UNHOLY_DW_ROTATION_PRESET_DEFAULT, Presets.UNHOLY_2H_ROTATION_PRESET_DEFAULT, Presets.UNHOLY_DND_AOE_ROTATION_PRESET_DEFAULT],
+		rotations: [
+
+		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.P1_UNHOLY_DW_PRESET,
-			Presets.P2_UNHOLY_DW_PRESET,
-			Presets.P3_UNHOLY_DW_PRESET,
-			Presets.P4_UNHOLY_DW_PRESET,
-			Presets.P4_UNHOLY_2H_PRESET,
-			// Not needed anymore just filling ui Space
-			// Disabled on purpose
-			//Presets.P1_FROSTSUBUNH_PRESET,
-			//Presets.P1_FROST_PRE_BIS_PRESET,
-			//Presets.PRERAID_UNHOLY_DW_PRESET,
-			//Presets.PRERAID_UNHOLY_2H_PRESET,
-			//Presets.P1_UNHOLY_2H_PRESET,
 		],
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecUnholyDeathKnight,
-			talents: Presets.UnholyDualWieldTalents.data,
-			specOptions: Presets.DefaultUnholyOptions,
+			talents: Presets.SingleTargetTalents.data,
+			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
@@ -199,16 +186,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_UNHOLY_DW_PRESET.gear,
-					2: Presets.P2_UNHOLY_DW_PRESET.gear,
-					3: Presets.P3_UNHOLY_DW_PRESET.gear,
-					4: Presets.P4_UNHOLY_DW_PRESET.gear,
+					1: Presets.DEFAULT_GEAR_PRESET.gear,
+					2: Presets.DEFAULT_GEAR_PRESET.gear,
+					3: Presets.DEFAULT_GEAR_PRESET.gear,
+					4: Presets.DEFAULT_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_UNHOLY_DW_PRESET.gear,
-					2: Presets.P2_UNHOLY_DW_PRESET.gear,
-					3: Presets.P3_UNHOLY_DW_PRESET.gear,
-					4: Presets.P4_UNHOLY_DW_PRESET.gear,
+					1: Presets.DEFAULT_GEAR_PRESET.gear,
+					2: Presets.DEFAULT_GEAR_PRESET.gear,
+					3: Presets.DEFAULT_GEAR_PRESET.gear,
+					4: Presets.DEFAULT_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
