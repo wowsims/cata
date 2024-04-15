@@ -53,7 +53,7 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 	healingModel := options.HealingModel
 	if healingModel != nil {
 		if healingModel.InspirationUptime > 0.0 {
-			core.ApplyInspiration(bdk.GetCharacter(), healingModel.InspirationUptime)
+			core.ApplyInspiration(&bdk.Unit, healingModel.InspirationUptime)
 		}
 	}
 

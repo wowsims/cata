@@ -130,7 +130,7 @@ export const ReplenishmentBuff = InputHelpers.makeMultiIconInput(
 		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(34914), fieldName: 'vampiricTouch' }),
 		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(31876), fieldName: 'communion' }),
 		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(48544), fieldName: 'revitalize' }),
-		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(30295), fieldName: 'soulLeech' }),
+		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(30295), fieldName: 'soulLeach' }),
 		makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(86508), fieldName: 'enduringWinter' }),
 	],
 	'Replen',
@@ -178,7 +178,6 @@ export const StrengthAndAgilityBuff = InputHelpers.makeMultiIconInput(
 
 // Misc Buffs
 export const RetributionAura = makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(54043), fieldName: 'retributionAura' });
-export const Thorns = makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(53307), fieldName: 'thorns' });
 export const ManaTideTotem = makeMultistateRaidBuffInput({actionId: ActionId.fromSpellId(16190), numStates: 5, fieldName: 'manaTideTotemCount'});
 export const Innervate = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(29166), numStates: 11, fieldName: 'innervateCount' });
 export const PowerInfusion = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(10060), numStates: 11, fieldName: 'powerInfusionCount' });
@@ -264,7 +263,6 @@ export const SpellDamageDebuff = InputHelpers.makeMultiIconInput(
 );
 
 export const JudgementOfLight = makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(20271), fieldName: 'judgement' });
-export const ShatteringThrow = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(64382), numStates: 20, fieldName: 'shatteringThrows' });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 CONFIGS
@@ -356,11 +354,6 @@ export const RAID_BUFFS_MISC_CONFIG = [
 		stats: [Stat.StatSpellCrit],
 	},
 	{
-		config: Thorns,
-		picker: IconPicker,
-		stats: [Stat.StatArmor],
-	},
-	{
 		config: RetributionAura,
 		picker: IconPicker,
 		stats: [Stat.StatArmor],
@@ -435,10 +428,5 @@ export const DEBUFFS_MISC_CONFIG = [
 		config: JudgementOfLight,
 		picker: IconPicker,
 		stats: [Stat.StatStamina],
-	},
-	{
-		config: ShatteringThrow,
-		picker: IconPicker,
-		stats: [Stat.StatArmorPenetration],
 	},
 ] as IconPickerStatOption[];

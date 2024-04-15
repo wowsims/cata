@@ -58,6 +58,8 @@ var FullRaidBuffs = &proto.RaidBuffs{
 	ArcaneBrilliance:     true,
 	DemonicPact:          true,
 	Bloodlust:            true,
+	Communion:            true,
+	ShadowForm:           true,
 }
 var FullPartyBuffs = &proto.PartyBuffs{
 	//BraidedEterniumChain: true,
@@ -85,6 +87,8 @@ var FullDebuffs = &proto.Debuffs{
 	ThunderClap:       true,
 	Vindication:       true,
 	MasterPoisoner:    true,
+	CriticalMass:      true,
+	DemoralizingRoar:  true,
 }
 
 func NewDefaultTarget() *proto.Target {

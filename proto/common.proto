@@ -369,9 +369,6 @@ enum GuardianElixir {
 	ElixirOfMightyThoughts = 6;
 	ElixirOfProtection = 7;
 	ElixirOfSpirit = 8;
-
-	// TBC
-	GiftOfArthas = 9;
 }
 
 enum Food {
@@ -469,21 +466,21 @@ message RaidBuffs {
 	bool elemental_oath = 34;
 	bool honor_among_thieves = 35;
 	bool rampage = 36;
+	bool terrifying_roar = 37;
 
 	// Major Haste
-	bool bloodlust = 37;
-	bool heroism = 38;
-	bool time_warp = 39;
+	bool bloodlust = 38;
+	bool heroism = 39;
+	bool time_warp = 40;
 
 	// Major Mana Replenishment
-	int32 mana_tide_totem_count = 40;
+	int32 mana_tide_totem_count = 41;
 
 	// +Armor
-	bool devotion_aura = 41;
-	bool stoneskin_totem = 42;
+	bool devotion_aura = 42;
+	bool stoneskin_totem = 43;
 
 	// Miscellaneous
-	bool thorns = 43;
 	bool retribution_aura = 44;
 }
 
@@ -504,7 +501,7 @@ message IndividualBuffs {
 	// Minor Mana Replenishment
 	bool vampiric_touch = 14;
 	bool enduring_winter = 18;
-	bool soul_leech = 16;
+	bool soul_leach = 16;
 	bool revitalize = 17;
 	bool communion = 100;
 
@@ -517,9 +514,6 @@ message IndividualBuffs {
 	int32 hand_of_sacrifice_count = 25;
 	int32 guardian_spirit_count = 26;
 	bool focus_magic = 22;
-
-	// Technically a debuff, but only used by individual sims.
-	int32 shattering_throws = 20;
 }
 
 message Debuffs {
@@ -558,17 +552,18 @@ message Debuffs {
 	bool demoralizing_shout = 22;
 	bool vindication = 23;
 	bool scarlet_fever = 24;
+	bool demoralizing_screech = 25;
 
 	// -attack speed
-	bool thunder_clap = 25;
-	bool frost_fever = 26;
-	bool infected_wounds = 27;
-	bool judgements_of_the_just = 28;
-	bool dust_cloud = 29;
-	bool earth_shock = 30;
+	bool thunder_clap = 26;
+	bool frost_fever = 27;
+	bool infected_wounds = 28;
+	bool judgements_of_the_just = 29;
+	bool dust_cloud = 30;
+	bool earth_shock = 31;
 
 	// health on hit
-	bool judgement = 31;
+	bool judgement = 32;
 }
 
 message Consumes {

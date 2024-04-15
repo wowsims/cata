@@ -223,42 +223,6 @@ func applyConsumeEffects(agent Agent) {
 			character.AddStats(stats.Stats{
 				stats.Spirit: 50,
 			})
-		case proto.GuardianElixir_GiftOfArthas:
-			character.AddStats(stats.Stats{
-				stats.ShadowResistance: 10,
-			})
-
-			debuffAuras := (&character.Unit).NewEnemyAuraArray(GiftOfArthasAura)
-
-			actionID := ActionID{SpellID: 11374}
-			goaProc := character.RegisterSpell(SpellConfig{
-				ActionID:    actionID,
-				SpellSchool: SpellSchoolNature,
-				ProcMask:    ProcMaskEmpty,
-
-				ThreatMultiplier: 1,
-				FlatThreatBonus:  90,
-
-				ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-					debuffAuras.Get(target).Activate(sim)
-					spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
-				},
-			})
-
-			character.RegisterAura(Aura{
-				Label:    "Gift of Arthas",
-				Duration: NeverExpires,
-				OnReset: func(aura *Aura, sim *Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-					if result.Landed() &&
-						spell.SpellSchool.Matches(SpellSchoolPhysical) &&
-						sim.RandomFloat("Gift of Arthas") < 0.3 {
-						goaProc.Cast(sim, spell.Unit)
-					}
-				},
-			})
 		}
 	}
 

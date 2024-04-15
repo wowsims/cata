@@ -347,10 +347,6 @@ export const ElixirOfSpirit = {
 	actionId: ActionId.fromItemId(40072),
 	value: GuardianElixir.ElixirOfSpirit,
 };
-export const GiftOfArthas = {
-	actionId: ActionId.fromItemId(9088),
-	value: GuardianElixir.GiftOfArthas,
-};
 
 export const GUARDIAN_ELIXIRS_CONFIG = [
 	{ config: ElixirOfDeepEarth, stats: [Stat.StatArmor] },
@@ -364,7 +360,6 @@ export const GUARDIAN_ELIXIRS_CONFIG = [
 	{ config: ElixirOfMightyThoughts, stats: [Stat.StatIntellect] },
 	{ config: ElixirOfProtection, stats: [Stat.StatArmor] },
 	{ config: ElixirOfSpirit, stats: [Stat.StatSpirit] },
-	{ config: GiftOfArthas, stats: [Stat.StatStamina] },
 ] as ConsumableStatOption<GuardianElixir>[];
 
 export const makeGuardianElixirsInput = makeConsumeInputFactory({
