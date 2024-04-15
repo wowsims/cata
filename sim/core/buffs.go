@@ -605,6 +605,8 @@ func BloodlustAura(character *Character, actionTag int32) *Aura {
 		ActionID: actionID,
 		Duration: BloodlustDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.MultiplyAttackSpeed(sim, 1.3)
+			aura.Unit.MultiplyResourceRegenSpeed(sim, 1.3)
 			for _, pet := range character.Pets {
 				if pet.IsEnabled() && !pet.IsGuardian() {
 					BloodlustAura(&pet.Character, actionTag).Activate(sim)
@@ -613,8 +615,11 @@ func BloodlustAura(character *Character, actionTag int32) *Aura {
 
 			sated.Activate(sim)
 		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.MultiplyAttackSpeed(sim, 1/1.3)
+			aura.Unit.MultiplyResourceRegenSpeed(sim, 1/1.3)
+		},
 	})
-	multiplyAttackSpeedEffect(aura, 1.3)
 	multiplyCastSpeedEffect(aura, 1.3)
 	return aura
 }
@@ -681,18 +686,6 @@ func multiplyCastSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.MultiplyCastSpeed(1 / multiplier)
-		},
-	})
-}
-
-func multiplyAttackSpeedEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
-	return aura.NewExclusiveEffect("MultiplyAttackSpeed", false, ExclusiveEffect{
-		Priority: multiplier,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyAttackSpeed(sim, multiplier)
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.MultiplyAttackSpeed(sim, 1/multiplier)
 		},
 	})
 }
@@ -785,8 +778,15 @@ func UnholyFrenzyAura(character *Unit, actionTag int32) *Aura {
 		Tag:      UnholyFrenzyAuraTag,
 		ActionID: actionID,
 		Duration: UnholyFrenzyDuration,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.MultiplyAttackSpeed(sim, 1.2)
+			aura.Unit.MultiplyResourceRegenSpeed(sim, 1.2)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.MultiplyAttackSpeed(sim, 1/1.2)
+			aura.Unit.MultiplyResourceRegenSpeed(sim, 1/1.2)
+		},
 	})
-	multiplyAttackSpeedEffect(aura, 1.2)
 	return aura
 }
 

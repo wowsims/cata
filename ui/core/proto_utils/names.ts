@@ -1,6 +1,6 @@
 import { ResourceType } from '../proto/api.js';
 import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common.js';
-import { DungeonDifficulty, RaidFilterOption, SourceFilterOption } from '../proto/ui.js';
+import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption } from '../proto/ui.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
 	[ArmorType.ArmorTypeUnknown, 'Unknown'],
@@ -28,11 +28,8 @@ export const rangedWeaponTypeNames: Map<RangedWeaponType, string> = new Map([
 	[RangedWeaponType.RangedWeaponTypeBow, 'Bow'],
 	[RangedWeaponType.RangedWeaponTypeCrossbow, 'Crossbow'],
 	[RangedWeaponType.RangedWeaponTypeGun, 'Gun'],
-	[RangedWeaponType.RangedWeaponTypeIdol, 'Idol'],
-	[RangedWeaponType.RangedWeaponTypeLibram, 'Libram'],
-	[RangedWeaponType.RangedWeaponTypeSigil, 'Sigil'],
+	[RangedWeaponType.RangedWeaponTypeRelic, 'Relic'],
 	[RangedWeaponType.RangedWeaponTypeThrown, 'Thrown'],
-	[RangedWeaponType.RangedWeaponTypeTotem, 'Totem'],
 	[RangedWeaponType.RangedWeaponTypeWand, 'Wand'],
 ]);
 
@@ -327,6 +324,22 @@ export const difficultyNames: Map<DungeonDifficulty, string> = new Map([
 	[DungeonDifficulty.DifficultyRaid25H, '25H'],
 ]);
 
+export const REP_LEVEL_NAMES: Record<RepLevel, string> = {
+	[RepLevel.RepLevelUnknown]: 'Unknown',
+	[RepLevel.RepLevelHated]: 'Hated',
+	[RepLevel.RepLevelHostile]: 'Hostile',
+	[RepLevel.RepLevelUnfriendly]: 'Unfriendly',
+	[RepLevel.RepLevelNeutral]: 'Neutral',
+	[RepLevel.RepLevelFriendly]: 'Friendly',
+	[RepLevel.RepLevelHonored]: 'Honored',
+	[RepLevel.RepLevelRevered]: 'Revered',
+	[RepLevel.RepLevelExalted]: 'Exalted',
+};
+
+export const REP_FACTION_NAMES: Record<RepFaction, string> = {
+	[RepFaction.RepFactionUnknown]: 'Unknown',
+};
+
 export const masterySpellNames: Map<Spec, string> = new Map([
 	[Spec.SpecAssassinationRogue, 'Potent Poisons'],
 	[Spec.SpecCombatRogue, 'Main Gauche'],
@@ -335,7 +348,7 @@ export const masterySpellNames: Map<Spec, string> = new Map([
 	[Spec.SpecFrostDeathKnight, 'Frozen Heart'],
 	[Spec.SpecUnholyDeathKnight, 'Dreadblade'],
 	[Spec.SpecBalanceDruid, 'Total Eclipse'],
-	[Spec.SpecFeralDruid, 'No'],
+	[Spec.SpecFeralDruid, 'Razor Claws'],
 	[Spec.SpecRestorationDruid, 'Harmony'],
 	[Spec.SpecHolyPaladin, 'Illuminated Healing'],
 	[Spec.SpecProtectionPaladin, 'Divine Bulwark'],
@@ -368,7 +381,7 @@ export const masterySpellIDs: Map<Spec, number> = new Map([
 	[Spec.SpecFrostDeathKnight, 77514],
 	[Spec.SpecUnholyDeathKnight, 77515],
 	[Spec.SpecBalanceDruid, 77492],
-	[Spec.SpecFeralDruid, 0],
+	[Spec.SpecFeralDruid, 77493],
 	[Spec.SpecRestorationDruid, 77495],
 	[Spec.SpecHolyPaladin, 76669],
 	[Spec.SpecProtectionPaladin, 76671],

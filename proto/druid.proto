@@ -92,7 +92,7 @@ enum DruidPrimeGlyph {
 	GlyphOfStarfire = 40916;
 	GlyphOfStarsurge = 45603;
 	GlyphOfSwiftmend = 40906;
-	GlyphOfTigerSFury = 67487;
+	GlyphOfTigersFury = 67487;
 	GlyphOfWrath = 40922;
 }
 enum DruidMajorGlyph {

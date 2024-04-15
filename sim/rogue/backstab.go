@@ -12,6 +12,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 	baseDamage := RogueBaseDamageScalar * .307
 	murderousIntentMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 79132})
 	glyphOfBackstabMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 56800})
+	t11Bonus := core.TernaryFloat64(rogue.HasSetBonus(Tier11, 2), 5*core.CritRatingPerCritChance, 0)
 
 	rogue.Backstab = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 53},
@@ -33,7 +34,8 @@ func (rogue *Rogue) registerBackstabSpell() {
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.HasDagger(core.MainHand)
 		},
 
-		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.PuncturingWounds),
+		BonusCritRating: 10*core.CritRatingPerCritChance*float64(rogue.Talents.PuncturingWounds) +
+			t11Bonus,
 
 		// Opportunity and Aggression are additive
 		DamageMultiplierAdditive: 1 +

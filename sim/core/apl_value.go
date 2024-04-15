@@ -135,10 +135,6 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueNextRuneCooldown(config.GetNextRuneCooldown())
 	case *proto.APLValue_RuneSlotCooldown:
 		return rot.newValueRuneSlotCooldown(config.GetRuneSlotCooldown())
-	case *proto.APLValue_RuneGrace:
-		return rot.newValueRuneGrace(config.GetRuneGrace())
-	case *proto.APLValue_RuneSlotGrace:
-		return rot.newValueRuneSlotGrace(config.GetRuneSlotGrace())
 
 	// GCD
 	case *proto.APLValue_GcdIsReady:

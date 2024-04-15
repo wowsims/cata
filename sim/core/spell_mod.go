@@ -13,6 +13,7 @@ type SpellModConfig struct {
 	ClassMask  int64
 	Kind       SpellModType
 	School     SpellSchool
+	ProcMask   ProcMask
 	IntValue   int64
 	TimeValue  time.Duration
 	FloatValue float64
@@ -22,6 +23,7 @@ type SpellMod struct {
 	ClassMask      int64
 	Kind           SpellModType
 	School         SpellSchool
+	ProcMask       ProcMask
 	floatValue     float64
 	intValue       int64
 	timeValue      time.Duration
@@ -48,6 +50,7 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		ClassMask:  config.ClassMask,
 		Kind:       config.Kind,
 		School:     config.School,
+		ProcMask:   config.ProcMask,
 		floatValue: config.FloatValue,
 		intValue:   config.IntValue,
 		timeValue:  config.TimeValue,
@@ -90,6 +93,10 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 	}
 
 	if mod.School > 0 && !mod.School.Matches(spell.SpellSchool) {
+		return false
+	}
+
+	if mod.ProcMask > 0 && !mod.ProcMask.Matches(spell.ProcMask) {
 		return false
 	}
 
@@ -182,6 +189,10 @@ const (
 	// Uses FloatValue
 	SpellMod_PowerCost_Flat
 
+	// Increases or decreases RuneCost.RunicPowerCost by flat amount
+	// Uses FloatValue
+	SpellMod_RunicPowerCost_Flat
+
 	// Will add time.Duration to spell.CD.Duration
 	// Uses TimeValue
 	SpellMod_Cooldown_Flat
@@ -230,6 +241,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_PowerCost_Flat: {
 		Apply:  applyPowerCostFlat,
 		Remove: removePowerCostFlat,
+	},
+
+	SpellMod_RunicPowerCost_Flat: {
+		Apply:  applyRunicPowerCostFlat,
+		Remove: removeRunicPowerCostFlat,
 	},
 
 	SpellMod_Cooldown_Flat: {
@@ -298,6 +314,18 @@ func applyPowerCostFlat(mod *SpellMod, spell *Spell) {
 
 func removePowerCostFlat(mod *SpellMod, spell *Spell) {
 	spell.DefaultCast.Cost -= mod.floatValue
+}
+
+func applyRunicPowerCostFlat(mod *SpellMod, spell *Spell) {
+	cost := spell.RuneCostImpl()
+	cost.RunicPowerCost += mod.floatValue
+	spell.Cost = newRuneCost(spell, cost.GetConfig())
+}
+
+func removeRunicPowerCostFlat(mod *SpellMod, spell *Spell) {
+	cost := spell.RuneCostImpl()
+	cost.RunicPowerCost -= mod.floatValue
+	spell.Cost = newRuneCost(spell, cost.GetConfig())
 }
 
 func applyCooldownFlat(mod *SpellMod, spell *Spell) {

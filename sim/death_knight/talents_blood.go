@@ -15,12 +15,17 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 	// Butchery
 	dk.applyButchery()
 
-	// Subversion
-	// Implemented outside
-
 	// Blade barrier
 	if dk.Talents.BladeBarrier > 0 {
 		dk.PseudoStats.DamageTakenMultiplier *= 1.0 - 0.02*float64(dk.Talents.BladeBarrier)
+	}
+
+	if dk.Talents.ImprovedBloodTap > 0 {
+		dk.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_Cooldown_Flat,
+			TimeValue: time.Second * -15 * time.Duration(dk.Talents.ImprovedBloodTap),
+			ClassMask: DeathKnightSpellBloodTap,
+		})
 	}
 
 	// Bladed Armor
@@ -32,9 +37,7 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 	// Scent of Blood
 	dk.applyScentOfBlood()
 
-	// Mark of Blood
-	// Implemented
-
+	// Blood Parasite
 	dk.applyBloodworms()
 
 	// Abomination's Might

@@ -187,7 +187,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET_COMBAT.gear,
+		gear: Presets.P1_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -210,7 +210,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.CombatHackTalents.data,
+		talents: Presets.CombatTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -271,39 +271,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.CombatHackTalents, Presets.CombatCQCTalents],
+		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			Presets.ROTATION_PRESET_COMBAT,
-			Presets.ROTATION_PRESET_COMBAT_EXPOSE,
-			Presets.ROTATION_PRESET_COMBAT_CLEAVE_SND,
-			Presets.ROTATION_PRESET_COMBAT_CLEAVE_SND_EXPOSE,
-			Presets.ROTATION_PRESET_AOE,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.PRERAID_PRESET_COMBAT,
 			Presets.P1_PRESET_COMBAT,
-			Presets.P2_PRESET_COMBAT,
-			Presets.P3_PRESET_COMBAT,
-			Presets.P4_PRESET_COMBAT,
-			Presets.P5_PRESET_COMBAT,
 		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecCombatRogue>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets >= 5) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
+		if (numTargets >= 2) {
+			return Presets.ROTATION_PRESET_COMBAT.rotation.rotation!;
 		} else {
-			return Presets.ROTATION_PRESET_COMBAT_EXPOSE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_COMBAT.rotation.rotation!;
 		}
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecCombatRogue,
-			talents: Presets.CombatCQCTalents.data,
+			talents: Presets.CombatTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -315,15 +306,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_PRESET_COMBAT.gear,
-					2: Presets.P2_PRESET_COMBAT.gear,
-					3: Presets.P3_PRESET_COMBAT.gear,
-					4: Presets.P4_PRESET_COMBAT.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_PRESET_COMBAT.gear,
-					2: Presets.P2_PRESET_COMBAT.gear,
-					3: Presets.P3_PRESET_COMBAT.gear,
-					4: Presets.P4_PRESET_COMBAT.gear,
 				},
 			},
 		},
