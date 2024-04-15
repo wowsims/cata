@@ -27,7 +27,7 @@ func (shaman *Shaman) registerBloodlustCD() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.26,
-			Multiplier: 1 - 0.02*float64(shaman.Talents.MentalQuickness),
+			Multiplier: 1.0 - shaman.GetMentalQuicknessBonus(),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

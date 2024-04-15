@@ -61,17 +61,18 @@ var FullRaidBuffs = &proto.RaidBuffs{
 	GiftOfTheWild:         proto.TristateEffect_TristateEffectImproved,
 	IcyTalons:             true,
 	LeaderOfThePack:       proto.TristateEffect_TristateEffectImproved,
-	ManaSpringTotem:       proto.TristateEffect_TristateEffectRegular,
+	ManaSpringTotem:       true,
 	MoonkinAura:           true,
 	PowerWordFortitude:    proto.TristateEffect_TristateEffectImproved,
 	SanctifiedRetribution: true,
 	ShadowProtection:      true,
+	StrengthOfEarthTotem:  true,
 	SwiftRetribution:      true,
 	Thorns:                proto.TristateEffect_TristateEffectImproved,
-	TotemOfWrath:          true,
+	TotemicWrath:          true,
 	TrueshotAura:          true,
 	UnleashedRage:         true,
-	WindfuryTotem:         proto.TristateEffect_TristateEffectImproved,
+	WindfuryTotem:         true,
 	WrathOfAirTotem:       true,
 }
 var FullPartyBuffs = &proto.PartyBuffs{
@@ -108,7 +109,6 @@ var FullDebuffs = &proto.Debuffs{
 	ShadowMastery:      true,
 	SunderArmor:        true,
 	ThunderClap:        proto.TristateEffect_TristateEffectImproved,
-	TotemOfWrath:       true,
 	Vindication:        true,
 }
 

@@ -372,22 +372,9 @@
 // 							),
 // 						},
 // 						{
-// 							label: 'Improved Stoneskin Totem',
-// 							actionId: ActionId.fromSpellId(16293),
-// 							playerData: playerClassAndTalent(
-// 								Class.ClassShaman,
-// 								'guardianTotems',
-// 								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StoneskinTotem,
-// 							),
-// 						},
-// 						{
 // 							label: 'Stoneskin Totem',
-// 							actionId: ActionId.fromSpellId(58753),
-// 							playerData: playerClassAndMissingTalent(
-// 								Class.ClassShaman,
-// 								'guardianTotems',
-// 								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StoneskinTotem,
-// 							),
+// 							actionId: ActionId.fromSpellId(8071),
+// 							playerData: playerClass(Class.ClassShaman),
 // 						},
 // 						{
 // 							label: 'Scroll of Protection',
@@ -420,22 +407,9 @@
 // 					label: 'Str + Agi',
 // 					effects: [
 // 						{
-// 							label: 'Improved Strength of Earth Totem',
-// 							actionId: ActionId.fromSpellId(52456),
-// 							playerData: playerClassAndTalent(
-// 								Class.ClassShaman,
-// 								'enhancingTotems',
-// 								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StrengthOfEarthTotem,
-// 							),
-// 						},
-// 						{
 // 							label: 'Strength of Earth Totem',
-// 							actionId: ActionId.fromSpellId(58643),
-// 							playerData: playerClassAndMissingTalent(
-// 								Class.ClassShaman,
-// 								'enhancingTotems',
-// 								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StrengthOfEarthTotem,
-// 							),
+// 							actionId: ActionId.fromSpellId(8075),
+// 							playerData: playerClass(Class.ClassShaman),
 // 						},
 // 						{
 // 							label: 'Horn of Winter',
@@ -563,7 +537,7 @@
 // 						},
 // 						{
 // 							label: 'Unleashed Rage',
-// 							actionId: ActionId.fromSpellId(30809),
+// 							actionId: ActionId.fromSpellId(30808),
 // 							playerData: playerClassAndTalent(Class.ClassShaman, 'unleashedRage'),
 // 						},
 // 						{
@@ -642,21 +616,9 @@
 // 							playerData: playerClassAndMissingTalent(Class.ClassPaladin, 'improvedBlessingOfWisdom'),
 // 						},
 // 						{
-// 							label: 'Improved Mana Spring Totem',
-// 							actionId: ActionId.fromSpellId(16206),
-// 							playerData: playerClassAndTalent(
-// 								Class.ClassShaman,
-// 								'restorativeTotems',
-// 								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ManaSpringTotem,
-// 							),
-// 						},
-// 						{
 // 							label: 'Mana Spring Totem',
-// 							actionId: ActionId.fromSpellId(58774),
-// 							playerData: playerClassAndMissingTalent(
-// 								Class.ClassShaman,
-// 								'restorativeTotems',
-// 								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ManaSpringTotem,
+// 							actionId: ActionId.fromSpellId(5675),
+// 							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ManaSpringTotem,
 // 							),
 // 						},
 // 					],
@@ -685,21 +647,9 @@
 // 							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'improvedIcyTalons'),
 // 						},
 // 						{
-// 							label: 'Improved Windfury Totem',
-// 							actionId: ActionId.fromSpellId(29193),
-// 							playerData: playerClassAndTalent(
-// 								Class.ClassShaman,
-// 								'improvedWindfuryTotem',
-// 								player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WindfuryTotem,
-// 							),
-// 						},
-// 						{
 // 							label: 'Windfury Totem',
-// 							actionId: ActionId.fromSpellId(65990),
-// 							playerData: playerClassAndMissingTalent(
-// 								Class.ClassShaman,
-// 								'improvedWindfuryTotem',
-// 								player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WindfuryTotem,
+// 							actionId: ActionId.fromSpellId(8512),
+// 							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WindfuryTotem,
 // 							),
 // 						},
 // 					],
@@ -713,20 +663,29 @@
 // 							playerData: playerClassAndTalent(Class.ClassWarlock, 'demonicPact'),
 // 						},
 // 						{
-// 							label: 'Totem of Wrath',
+// 							label: 'Totemic Wrath',
 // 							actionId: ActionId.fromSpellId(57722),
-// 							playerData: playerClassAndTalent(
-// 								Class.ClassShaman,
-// 								'totemOfWrath',
-// 								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.TotemOfWrath,
+// 							playerData: playerClass(Class.ClassShaman, player => player.getSpec() == Spec.SpecElementalShaman && player.getSpecOptions().classOptions?.totems?.fire != FireTotem.NoFireTotem),
 // 							),
 // 						},
+// 					],
+// 				},
+// TODO: Not sure if these buffs need separated from the above Spell Power. The below only add 6% vs the above spell power 10%
+// 				{
+// 					label: 'Minor Spell Power',
+// 					effects: [
 // 						{
 // 							label: 'Flametongue Totem',
-// 							actionId: ActionId.fromSpellId(58656),
+// 							actionId: ActionId.fromSpellId(8227),
 // 							playerData: playerClass(
 // 								Class.ClassShaman,
 // 								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.FlametongueTotem,
+// 							),
+// 						},
+// 						{
+// 							label: 'Arcane Brilliance',
+// 							actionId: ActionId.fromSpellId(1459),
+// 							playerData: playerClass(Class.ClassMage),
 // 							),
 // 						},
 // 					],
@@ -984,32 +943,6 @@
 // 							label: 'Stampede',
 // 							actionId: ActionId.fromSpellId(57393),
 // 							playerData: playerClass(Class.ClassHunter, player => player.getSpecOptions().classOptions?.petType == HunterPetType.Rhino),
-// 						},
-// 					],
-// 				},
-// 				{
-// 					label: 'Crit',
-// 					effects: [
-// 						{
-// 							label: 'Totem of Wrath',
-// 							actionId: ActionId.fromSpellId(30706),
-// 							playerData: playerClassAndTalent(
-// 								Class.ClassShaman,
-// 								'totemOfWrath',
-// 								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.TotemOfWrath,
-// 							),
-// 						},
-// 						{
-// 							label: 'Heart of the Crusader',
-// 							actionId: ActionId.fromSpellId(20337),
-// 							playerData: playerClassAndTalent(Class.ClassPaladin, 'heartOfTheCrusader', player =>
-// 								[Spec.SpecRetributionPaladin, Spec.SpecProtectionPaladin].includes(player.getSpec()),
-// 							),
-// 						},
-// 						{
-// 							label: 'Master Poisoner',
-// 							actionId: ActionId.fromSpellId(58410),
-// 							playerData: playerClassAndTalent(Class.ClassRogue, 'masterPoisoner'),
 // 						},
 // 					],
 // 				},

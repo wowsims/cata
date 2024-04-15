@@ -162,7 +162,6 @@ func (dk *DeathKnight) GetCharacter() *core.Character {
 }
 
 func (dk *DeathKnight) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
-	dk.HasDraeneiHitAura = partyBuffs.HeroicPresence
 }
 
 func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {

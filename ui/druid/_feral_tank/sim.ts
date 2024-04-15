@@ -120,15 +120,12 @@
 // 			giftOfTheWild: TristateEffect.TristateEffectImproved,
 // 			thorns: TristateEffect.TristateEffectImproved,
 // 			bloodlust: true,
-// 			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+// 			strengthOfEarthTotem: true,
 // 			battleShout: TristateEffect.TristateEffectImproved,
-// 			unleashedRage: true,
-// 			windfuryTotem: TristateEffect.TristateEffectImproved,
+// 			unleashedRage: TristateEffect.TristateEffectImproved,
+// 			windfuryTotem: true,
 // 			arcaneEmpowerment: true,
 // 			moonkinAura: TristateEffect.TristateEffectImproved,
-// 		}),
-// 		partyBuffs: PartyBuffs.create({
-// 			heroicPresence: true,
 // 		}),
 // 		individualBuffs: IndividualBuffs.create({
 // 			blessingOfKings: true,

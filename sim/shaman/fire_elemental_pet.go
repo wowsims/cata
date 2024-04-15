@@ -50,7 +50,7 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 		fireElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*4.45)
 	}
 
-	if shaman.hasHeroicPresence || shaman.Race == proto.Race_RaceDraenei {
+	if shaman.Race == proto.Race_RaceDraenei {
 		fireElemental.AddStats(stats.Stats{
 			stats.MeleeHit:  -core.MeleeHitRatingPerHitChance,
 			stats.SpellHit:  -core.SpellHitRatingPerHitChance,

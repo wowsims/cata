@@ -12,23 +12,18 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 49281}
-	procChance := 0.02*float64(shaman.Talents.StaticShock) + core.TernaryFloat64(shaman.HasSetBonus(ItemSetThrallsBattlegear, 2), 0.03, 0)
+	actionID := core.ActionID{SpellID: 324}
 
 	procSpell := shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 49279},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskEmpty,
-
-		DamageMultiplier: 1 +
-			0.05*float64(shaman.Talents.ImprovedShields) +
-			core.TernaryFloat64(shaman.HasSetBonus(ItemSetEarthshatterBattlegear, 2), 0.1, 0) +
-			core.TernaryFloat64(shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfLightningShield), 0.2, 0),
+		ActionID:         core.ActionID{SpellID: 26364},
+		SpellSchool:      core.SpellSchoolNature,
+		ProcMask:         core.ProcMaskEmpty,
+		ClassSpellMask:   SpellMaskLightningShield,
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1, //fix when spirit weapons is fixed
-
+		BonusCoefficient: 0.267,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 380 + 0.267*spell.SpellPower()
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+			spell.CalcAndDealDamage(sim, target, 350, spell.OutcomeMagicHit)
 		},
 	})
 
@@ -46,20 +41,17 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 			aura.Activate(sim)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.SetStacks(sim, 3+(2*shaman.Talents.StaticShock))
+			aura.SetStacks(sim, 3)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Landed() {
-				return
+			if shaman.Talents.StaticShock > 0 && spell == shaman.LavaLash || spell == shaman.Stormstrike || spell == shaman.PrimalStrike {
+				if sim.RandomFloat("Static Shock") < 0.15*float64(shaman.Talents.StaticShock) {
+					procSpell.Cast(sim, result.Target)
+				}
 			}
-			if sim.RandomFloat("Static Shock") > procChance {
-				return
-			}
-			aura.RemoveStack(sim)
-			procSpell.Cast(sim, result.Target)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Landed() {
+			if !result.Landed() {
 				return
 			}
 			if !icd.IsReady(sim) {
