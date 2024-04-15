@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (mage *Mage) ApplyTalents() {
@@ -12,7 +11,7 @@ func (mage *Mage) ApplyTalents() {
 	// mage.applyArcaneConcentration
 	mage.applyMasterOfElements()
 	// mage.applyEarlyWinter()
-	mage.applyIgnite()
+	// mage.applyIgnite()
 	// mage.applyImpact()
 	// mage.applyIceFloes()
 	// mage.applyPiercingChill()
@@ -55,9 +54,28 @@ func (mage *Mage) ApplyTalents() {
 	// mage.AddStat(stats.SpellCrit, float64(mage.Talents.ArcaneInstability)*1*core.CritRatingPerCritChance)
 	// mage.PseudoStats.DamageDealtMultiplier *= 1 + .01*float64(mage.Talents.ArcaneInstability)
 	// mage.PseudoStats.DamageDealtMultiplier *= 1 + .01*float64(mage.Talents.PlayingWithFire)
-	mage.PseudoStats.CastSpeedMultiplier *= 1 + .01*float64(mage.Talents.NetherwindPresence)
 
-	mage.AddStat(stats.SpellCrit, 0.01*float64(mage.Talents.PiercingIce)*core.CritRatingPerCritChance)
+	mage.AddStaticMod(core.SpellModConfig{
+		ClassMask:  MageSpellsAll,
+		FloatValue: 0.01 * float64(mage.Talents.NetherwindPresence) * core.HasteRatingPerHastePercent,
+		Kind:       core.SpellMod_CastTime_Pct,
+	})
+
+	mage.AddStaticMod(core.SpellModConfig{
+		ClassMask:  MageSpellsAll,
+		FloatValue: 0.01 * float64(mage.Talents.PiercingIce) * core.CritRatingPerCritChance,
+		Kind:       core.SpellMod_BonusCrit_Rating,
+	})
+
+	fireMastery := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellFireDoT,
+		FloatValue: float64(1.22 + 0.28*mage.GetMasteryPoints()),
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	mage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+		fireMastery.UpdateFloatValue(1.22 + 0.28*core.MasteryRatingToMasteryPoints(newMastery))
+	})
 	// mage.PseudoStats.SpiritRegenRateCasting += float64(mage.Talents.Pyromaniac) / 6
 
 	// mage.AddStat(stats.SpellHit, float64(mage.Talents.Precision)*core.SpellHitRatingPerHitChance)
@@ -82,7 +100,7 @@ func (mage *Mage) applyHotStreak() {
 	t10ProcAura := mage.BloodmagesRegalia2pcAura()
 
 	mage.HotStreakAura = mage.RegisterAura(core.Aura{
-		Label:    "HotStreak",
+		Label:    "Hot Streak",
 		ActionID: core.ActionID{SpellID: 48108},
 		Duration: time.Second * 10,
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

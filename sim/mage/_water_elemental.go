@@ -33,9 +33,8 @@ func (mage *Mage) registerSummonWaterElementalCD() {
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
-				Timer: mage.NewTimer(),
-				Duration: time.Duration(float64(time.Minute*3)*(1-0.1*float64(mage.Talents.ColdAsIce))) -
-					core.TernaryDuration(mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfWaterElemental), time.Second*30, 0),
+				Timer:    mage.NewTimer(),
+				Duration: time.Duration(float64(time.Minute*3) * (1 - 0.1*float64(mage.Talents.ColdAsIce))),
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -82,6 +81,7 @@ func (we *WaterElemental) GetPet() *core.Pet {
 
 func (we *WaterElemental) Initialize() {
 	we.registerWaterboltSpell()
+	we.registerFreezeSpell()
 }
 
 func (we *WaterElemental) Reset(_ *core.Simulation) {
@@ -136,7 +136,33 @@ func (we *WaterElemental) registerWaterboltSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(601, 673) + (2.5/3.0)*spell.SpellPower()
+			baseDamage := .405 * mage.ScalingBaseDamage
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+		},
+	})
+}
+
+func (we *WaterElemental) registerFreezeSpell() {
+	we.Freeze = we.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 33395},
+		SpellSchool: core.SpellSchoolFrost,
+		ProcMask:    core.ProcMaskSpellDamage,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCost: 0.12,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   we.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := .410*mage.ScalingBaseDamage + 0.029*spell.SpellPower()
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

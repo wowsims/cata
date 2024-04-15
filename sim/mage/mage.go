@@ -25,6 +25,7 @@ type Mage struct {
 
 	//waterElemental *WaterElemental
 	mirrorImage *MirrorImage
+	flameOrb    *FlameOrb
 
 	// Cached values for a few mechanics.
 	bonusCritDamage float64
@@ -42,7 +43,7 @@ type Mage struct {
 	Fireball                *core.Spell
 	FireBlast               *core.Spell
 	FlameOrb                *core.Spell
-	FlameOrbTickSpell       *core.Spell
+	FlameOrbExplode         *core.Spell
 	Flamestrike             *core.Spell
 	Frostbolt               *core.Spell
 	FrostfireBolt           *core.Spell
@@ -66,6 +67,7 @@ type Mage struct {
 	ClearcastingAura   *core.Aura
 	CriticalMassAuras  core.AuraArray
 	FingersOfFrostAura *core.Aura
+	FlameOrbTimer      *core.Aura
 	hotStreakCritAura  *core.Aura
 	HotStreakAura      *core.Aura
 
@@ -109,10 +111,11 @@ func (mage *Mage) Initialize() {
 	mage.registerArcaneExplosionSpell()
 	mage.registerArcaneMissilesSpell()
 	mage.registerBlizzardSpell()
-	// mage.registerDeepFreezeSpell()
+	mage.registerDeepFreezeSpell()
 	mage.registerFireballSpell()
 	mage.registerFireBlastSpell()
 	mage.registerFlameOrbSpell()
+	mage.registerFlameOrbExplodeSpell()
 	mage.registerFlamestrikeSpell()
 	mage.registerFrostboltSpell()
 	mage.registerFrostfireOrbSpell()
@@ -167,6 +170,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	// }
 
 	mage.mirrorImage = mage.NewMirrorImage()
+	mage.flameOrb = mage.NewFlameOrb()
 
 	return mage
 }
@@ -179,3 +183,37 @@ func (mage *Mage) GetFireMasteryBonusMultiplier() float64 {
 type MageAgent interface {
 	GetMage() *Mage
 }
+
+const (
+	MageSpellFlagNone          int64 = 0
+	MageSpellFlagArcaneBarrage int64 = 1 << iota
+	MageSpellArcaneBlast
+	MageSpellArcaneExplosion
+	MageSpellArcaneMissiles
+	MageSpellBlastWave
+	MageSpellBlizzard
+	MageSpellDeepFreeze
+	MageSpellDragonsBreath
+	MageSpellEvocation
+	MageSpellFireBlast
+	MageSpellFireball
+	MageSpellFlamestrike
+	MageSpellFlameOrb
+	MageSpellFocusMagic
+	MageSpellFrostbolt
+	MageSpellFrostfireBolt
+	MageSpellFrostfireOrb
+	MageSpellIceLance
+	MageSpellIgnite
+	MageSpellLivingBomb
+	MageSpellLivingBombDot
+	MageSpellManaGems
+	MageSpellMirrorImage
+	MageSpellPyroblast
+	MageSpellPyroblastDot
+	MageSpellScorch
+
+	MageSpellLast
+	MageSpellsAll    = MageSpellLast<<1 - 1
+	MageSpellFireDoT = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellIgnite
+)

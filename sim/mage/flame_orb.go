@@ -1,60 +1,21 @@
 package mage
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (mage *Mage) registerFlameOrbSpell() {
-	//Fire Power gives 33/66/100 percent chance to explode at end like Living Bomb
-	orbExplosionChance := float64(mage.Talents.FirePower) / 3
-
-	mage.FlameOrbTickSpell = mage.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 82739},
-		SpellSchool: core.SpellSchoolFire,
-		// no idea yet what it procs, likely nothing
-		ProcMask:     core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:        SpellFlagMage | core.SpellFlagNoLogs,
-		MissileSpeed: 20,
-
-		DamageMultiplier: 1 + .01*float64(mage.Talents.TormentTheWeak),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := (0.278*mage.ScalingBaseDamage + 0.134*spell.SpellPower()) / float64(len(sim.Encounter.TargetUnits))
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
-			}
-		},
-	})
-
-	flameOrbExplosionSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 123}, //TODO find id, can't check log since no lvl 81 toon
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage,
-
-		DamageMultiplierAdditive: 1 +
-			.01*float64(mage.Talents.FirePower) +
-			.05*float64(mage.Talents.CriticalMass),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.5*mage.ScalingBaseDamage + 0.515*spell.SpellPower()
-			baseDamage *= sim.Encounter.AOECapMultiplier()
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
-		},
-	})
 
 	mage.FlameOrb = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 82731}, //82731 summons orb, 82739 is LIKELY the damaging ID
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 82731},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskEmpty, //tbd
+		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellFlameOrb,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
@@ -69,27 +30,132 @@ func (mage *Mage) registerFlameOrbSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 +
-			.01*float64(mage.Talents.FirePower) +
-			.05*float64(mage.Talents.CriticalMass),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			mage.flameOrb.EnableWithTimeout(sim, mage.flameOrb, time.Second*15)
+		},
+	})
 
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label:    "Flame Orb",
-				Duration: time.Second * 15,
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					if sim.RandomFloat(aura.Label) < orbExplosionChance {
-						flameOrbExplosionSpell.Cast(sim, aura.Unit)
-					}
-				},
+	mage.AddMajorCooldown(core.MajorCooldown{
+		Spell: mage.FlameOrb,
+		Type:  core.CooldownTypeDPS,
+	})
+}
+
+func (mage *Mage) registerFlameOrbExplodeSpell() {
+
+	mage.FlameOrbExplode = mage.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 83619},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
+		Flags:          SpellFlagMage | core.SpellFlagNoLogs,
+		ClassSpellMask: MageSpellFlameOrb,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.193,
+		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			// TODO fix the proc chance issue
+			procChance := []float64{0.0, 0.33, 0.66, 1.0}[mage.Talents.FirePower]
+			fmt.Println(procChance)
+			fmt.Println(mage.Talents.FirePower)
+			damage := 1.318 * mage.ScalingBaseDamage
+			if sim.Proc(procChance, "FlameOrbExplosion") {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+					spell.SpellMetrics[target.UnitIndex].Hits++
+				}
+			}
+		},
+	})
+}
+
+type FlameOrb struct {
+	core.Pet
+
+	mageOwner *Mage
+
+	FlameOrbTick    *core.Spell
+	FlameOrbExplode *core.Spell
+	TickCount       int64
+	TalentPoints    float64
+}
+
+func (mage *Mage) NewFlameOrb() *FlameOrb {
+	flameOrb := &FlameOrb{
+		Pet:          core.NewPet("Flame Orb", &mage.Character, flameOrbBaseStats, createFlameOrbInheritance(), false, true),
+		mageOwner:    mage,
+		TickCount:    0,
+		TalentPoints: float64(mage.Talents.FirePower),
+	}
+
+	mage.AddPet(flameOrb)
+
+	return flameOrb
+}
+
+func (fo *FlameOrb) GetPet() *core.Pet {
+	return &fo.Pet
+}
+
+func (fo *FlameOrb) Initialize() {
+	fo.registerFlameOrbTickSpell()
+}
+
+func (fo *FlameOrb) Reset(_ *core.Simulation) {
+}
+
+func (fo *FlameOrb) ExecuteCustomRotation(sim *core.Simulation) {
+
+	// develop something where on timer expire, cast FlameOrbExplode
+	spell := fo.FlameOrbTick
+	if success := spell.Cast(sim, fo.CurrentTarget); !success {
+		fo.Disable(sim)
+	}
+}
+
+var flameOrbBaseStats = stats.Stats{}
+
+var createFlameOrbInheritance = func() func(stats.Stats) stats.Stats {
+	return func(ownerStats stats.Stats) stats.Stats {
+		return stats.Stats{
+			stats.SpellHit:   ownerStats[stats.SpellHit],
+			stats.SpellCrit:  ownerStats[stats.SpellCrit],
+			stats.SpellPower: ownerStats[stats.SpellPower],
+		}
+	}
+}
+
+func (fo *FlameOrb) registerFlameOrbTickSpell() {
+	curTarget := fo.CurrentTarget
+
+	fo.FlameOrbTick = fo.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 82739},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
+		Flags:          SpellFlagMage | core.SpellFlagNoLogs,
+		ClassSpellMask: MageSpellFlameOrb,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: time.Second,
 			},
 		},
 
+		DamageMultiplier: 1,
+		CritMultiplier:   fo.mageOwner.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.134,
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for i := 0; i < 15; i++ {
-				mage.FlameOrbTickSpell.Cast(sim, target)
+			damage := 0.278 * fo.mageOwner.ScalingBaseDamage
+			spell.CalcAndDealDamage(sim, curTarget, damage, spell.OutcomeMagicHitAndCrit)
+			curTarget = sim.Environment.NextTargetUnit(curTarget)
+
+			fo.TickCount += 1
+			//spell.SpellMetrics[target.UnitIndex].Casts--
+			if fo.TickCount == 15 {
+				fo.mageOwner.FlameOrbExplode.Cast(sim, fo.mageOwner.CurrentTarget)
+				fo.TickCount = 0
 			}
 		},
 	})
