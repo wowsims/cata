@@ -31,7 +31,7 @@ export class Druid extends PlayerClass<Class.ClassDruid> {
 		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
 		{ weaponType: WeaponType.WeaponTypePolearm, canUseTwoHand: true },
 	];
-	static rangedWeaponTypes: RangedWeaponType[] = [RangedWeaponType.RangedWeaponTypeLibram];
+	static rangedWeaponTypes: RangedWeaponType[] = [RangedWeaponType.RangedWeaponTypeRelic];
 
 	readonly classID = Druid.classID;
 	readonly friendlyName = Druid.name;

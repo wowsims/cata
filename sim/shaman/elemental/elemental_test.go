@@ -39,7 +39,7 @@ func init() {
 // 			},
 // 			ArmorType: proto.ArmorType_ArmorTypeMail,
 // 			RangedWeaponTypes: []proto.RangedWeaponType{
-// 				proto.RangedWeaponType_RangedWeaponTypeTotem,
+// 				proto.RangedWeaponType_RangedWeaponTypeRelic,
 // 			},
 // 		},
 
