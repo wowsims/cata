@@ -214,12 +214,36 @@ func (equipment *Equipment) Head() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotHead]
 }
 
+func (equipment *Equipment) Neck() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotNeck]
+}
+
+func (equipment *Equipment) Shoulder() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotShoulder]
+}
+
+func (equipment *Equipment) Chest() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotChest]
+}
+
+func (equipment *Equipment) Wrist() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotWrist]
+}
+
 func (equipment *Equipment) Hands() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotHands]
 }
 
-func (equipment *Equipment) Neck() *Item {
-	return &equipment[proto.ItemSlot_ItemSlotNeck]
+func (equipment *Equipment) Waist() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotWaist]
+}
+
+func (equipment *Equipment) Legs() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotLegs]
+}
+
+func (equipment *Equipment) Feet() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotFeet]
 }
 
 func (equipment *Equipment) Trinket1() *Item {

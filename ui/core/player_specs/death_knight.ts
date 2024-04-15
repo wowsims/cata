@@ -4,6 +4,7 @@ import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class BloodDeathKnight extends PlayerSpec<Spec.SpecBloodDeathKnight> {
+	static specIndex = 0;
 	static specID = Spec.SpecBloodDeathKnight as Spec.SpecBloodDeathKnight;
 	static classID = Class.ClassDeathKnight as Class.ClassDeathKnight;
 	static friendlyName = 'Blood';
@@ -16,6 +17,7 @@ export class BloodDeathKnight extends PlayerSpec<Spec.SpecBloodDeathKnight> {
 
 	static canDualWield = true;
 
+	readonly specIndex = BloodDeathKnight.specIndex;
 	readonly specID = BloodDeathKnight.specID;
 	readonly classID = BloodDeathKnight.classID;
 	readonly friendlyName = BloodDeathKnight.friendlyName;
@@ -38,6 +40,7 @@ export class BloodDeathKnight extends PlayerSpec<Spec.SpecBloodDeathKnight> {
 }
 
 export class FrostDeathKnight extends PlayerSpec<Spec.SpecFrostDeathKnight> {
+	static specIndex = 1;
 	static specID = Spec.SpecFrostDeathKnight as Spec.SpecFrostDeathKnight;
 	static classID = Class.ClassDeathKnight as Class.ClassDeathKnight;
 	static friendlyName = 'Frost';
@@ -50,6 +53,7 @@ export class FrostDeathKnight extends PlayerSpec<Spec.SpecFrostDeathKnight> {
 
 	static canDualWield = true;
 
+	readonly specIndex = FrostDeathKnight.specIndex;
 	readonly specID = FrostDeathKnight.specID;
 	readonly classID = FrostDeathKnight.classID;
 	readonly friendlyName = FrostDeathKnight.friendlyName;
@@ -72,6 +76,7 @@ export class FrostDeathKnight extends PlayerSpec<Spec.SpecFrostDeathKnight> {
 }
 
 export class UnholyDeathKnight extends PlayerSpec<Spec.SpecUnholyDeathKnight> {
+	static specIndex = 2;
 	static specID = Spec.SpecUnholyDeathKnight as Spec.SpecUnholyDeathKnight;
 	static classID = Class.ClassDeathKnight as Class.ClassDeathKnight;
 	static friendlyName = 'Unholy';
@@ -84,6 +89,7 @@ export class UnholyDeathKnight extends PlayerSpec<Spec.SpecUnholyDeathKnight> {
 
 	static canDualWield = true;
 
+	readonly specIndex = UnholyDeathKnight.specIndex;
 	readonly specID = UnholyDeathKnight.specID;
 	readonly classID = UnholyDeathKnight.classID;
 	readonly friendlyName = UnholyDeathKnight.friendlyName;
