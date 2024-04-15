@@ -38,17 +38,16 @@ var Tier11 = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(rogue.RegisterAura(core.Aura{
-				Label: "Deadly Scheme Aura",
-
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell == rogue.AutoAttacks.MHAuto() || spell == rogue.AutoAttacks.OHAuto() {
-						if sim.Proc(0.01, "Deadly Scheme") {
-							t11Proc.Activate(sim)
-						}
-					}
+			core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+				Name:       "Deadly Scheme Aura",
+				Callback:   core.CallbackOnSpellHitDealt,
+				ProcMask:   core.ProcMaskMeleeWhiteHit,
+				Outcome:    core.OutcomeLanded,
+				ProcChance: 0.01,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					t11Proc.Activate(sim)
 				},
-			}))
+			})
 		},
 	},
 })

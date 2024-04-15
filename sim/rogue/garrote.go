@@ -42,7 +42,7 @@ func (rogue *Rogue) registerGarrote() {
 			NumberOfTicks: numTicks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, 119+dot.Spell.MeleeAttackPower()*0.07)
+				dot.SnapshotPhysical(target, 119+dot.Spell.MeleeAttackPower()*0.07)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)

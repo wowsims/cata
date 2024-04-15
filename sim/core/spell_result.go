@@ -341,6 +341,14 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64) {
 	dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 }
 
+func (dot *Dot) SnapshotPhysical(target *Unit, baseDamage float64) {
+	dot.SnapshotBaseDamage = baseDamage
+	// At this time, not aware of any physical-scaling DoTs that need BonusCoefficient
+	attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+	dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
+	dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+}
+
 func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHealing float64, casterMultiplier float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackTable := spell.Unit.AttackTables[target.UnitIndex]
 
