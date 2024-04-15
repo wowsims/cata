@@ -117,7 +117,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			battleShout: true,
 			sanctifiedRetribution: true,
 			swiftRetribution: true,
-			elementalOath: TristateEffect.TristateEffectImproved,
+			elementalOath: true,
 			rampage: true,
 			trueshotAura: true,
 			icyTalons: true,

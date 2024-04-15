@@ -55,7 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 			powerWordFortitude: TristateEffect.TristateEffectImproved,
 			strengthOfEarthTotem: true,
 			arcaneBrilliance: true,
-			unleashedRage: TristateEffect.TristateEffectImproved,
+			unleashedRage: true,
 			leaderOfThePack: TristateEffect.TristateEffectRegular,
 			icyTalons: true,
 			totemicWrath: true,

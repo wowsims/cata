@@ -47,8 +47,8 @@ export const AttackPowerBuff = InputHelpers.makeMultiIconInput([
 ], 'AP');
 
 export const AttackPowerPercentBuff = InputHelpers.makeMultiIconInput([
-	makeTristateRaidBuffInput({actionId: ActionId.fromSpellId(53138), impId: ActionId.fromSpellId(53137), fieldName: 'abominationsMight'}),
-	makeTristateRaidBuffInput({actionId: ActionId.fromSpellId(30802), impId: ActionId.fromSpellId(30808), fieldName: 'unleashedRage'}),
+	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(53138), fieldName: 'abominationsMight'}),
+	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(30808), fieldName: 'unleashedRage'}),
 	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(19506), fieldName: 'trueshotAura'}),
 ], 'Atk Pwr %');
 
@@ -129,7 +129,7 @@ export const RevitalizeBuff = InputHelpers.makeMultiIconInput([
 
 export const SpellCritBuff = InputHelpers.makeMultiIconInput([
 	makeTristateRaidBuffInput({actionId: ActionId.fromSpellId(24907), impId: ActionId.fromSpellId(48396), fieldName: 'moonkinAura'}),
-	makeTristateRaidBuffInput({actionId: ActionId.fromSpellId(51466), impId: ActionId.fromSpellId(51470), fieldName: 'elementalOath'}),
+	makeBooleanRaidBuffInput({actionId: ActionId.fromSpellId(51470), fieldName: 'elementalOath'}),
 ], 'Spell Crit');
 
 export const SpellHasteBuff = InputHelpers.makeMultiIconInput([

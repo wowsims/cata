@@ -65,10 +65,8 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		ThornsAura(character, 0)
 	}
 
-	if raidBuffs.ElementalOath == proto.TristateEffect_TristateEffectImproved {
+	if raidBuffs.ElementalOath == true {
 		character.AddStat(stats.SpellCrit, 5*CritRatingPerCritChance)
-	} else if raidBuffs.ElementalOath == proto.TristateEffect_TristateEffectRegular {
-		character.AddStat(stats.SpellCrit, 3*CritRatingPerCritChance)
 	}
 
 	if raidBuffs.LeaderOfThePack > 0 || raidBuffs.Rampage {
@@ -80,12 +78,9 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, partyBuffs *proto
 		}
 	}
 
-	if raidBuffs.TrueshotAura || raidBuffs.AbominationsMight == proto.TristateEffect_TristateEffectImproved || raidBuffs.UnleashedRage == proto.TristateEffect_TristateEffectImproved {
+	if raidBuffs.TrueshotAura || raidBuffs.AbominationsMight || raidBuffs.UnleashedRage {
 		character.MultiplyStat(stats.AttackPower, 1.2)
 		character.MultiplyStat(stats.RangedAttackPower, 1.1)
-	} else if raidBuffs.AbominationsMight == proto.TristateEffect_TristateEffectRegular || raidBuffs.UnleashedRage == proto.TristateEffect_TristateEffectRegular {
-		character.MultiplyStat(stats.AttackPower, 1.1)
-		character.MultiplyStat(stats.RangedAttackPower, 1.05)
 	}
 
 	if raidBuffs.StrengthOfWrynn {

@@ -203,16 +203,12 @@ func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.StoneskinTotem = true
 	}
 
-	if shaman.Talents.UnleashedRage == 1 {
-		raidBuffs.UnleashedRage = proto.TristateEffect_TristateEffectRegular
-	} else if shaman.Talents.UnleashedRage == 2 {
-		raidBuffs.UnleashedRage = proto.TristateEffect_TristateEffectImproved
+	if shaman.Talents.UnleashedRage > 0 {
+		raidBuffs.UnleashedRage = true
 	}
 
-	if shaman.Talents.ElementalOath == 1 {
-		raidBuffs.ElementalOath = proto.TristateEffect_TristateEffectRegular
-	} else if shaman.Talents.ElementalOath == 2 {
-		raidBuffs.ElementalOath = proto.TristateEffect_TristateEffectImproved
+	if shaman.Talents.ElementalOath > 0 {
+		raidBuffs.ElementalOath = true
 	}
 }
 

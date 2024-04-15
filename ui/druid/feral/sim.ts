@@ -81,7 +81,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			manaSpringTotem: true,
 			strengthOfEarthTotem: true,
 			battleShout: true,
-			unleashedRage: TristateEffect.TristateEffectImproved,
+			unleashedRage: true,
 			icyTalons: true,
 			swiftRetribution: true,
 			sanctifiedRetribution: true,

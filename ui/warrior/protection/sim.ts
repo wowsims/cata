@@ -105,7 +105,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		raidBuffs: RaidBuffs.create({
 			giftOfTheWild: TristateEffect.TristateEffectImproved,
 			powerWordFortitude: TristateEffect.TristateEffectImproved,
-			abominationsMight: TristateEffect.TristateEffectImproved,
+			abominationsMight: true,
 			swiftRetribution: true,
 			bloodlust: true,
 			strengthOfEarthTotem: true,

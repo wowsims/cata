@@ -48,7 +48,7 @@ var DefaultTargetProto = &proto.Target{
 }
 
 var FullRaidBuffs = &proto.RaidBuffs{
-	AbominationsMight:     proto.TristateEffect_TristateEffectImproved,
+	AbominationsMight:     true,
 	ArcaneBrilliance:      true,
 	ArcaneEmpowerment:     true,
 	BattleShout:           true,
@@ -56,7 +56,7 @@ var FullRaidBuffs = &proto.RaidBuffs{
 	DemonicPactSp:         500,
 	DevotionAura:          proto.TristateEffect_TristateEffectImproved,
 	DivineSpirit:          true,
-	ElementalOath:         proto.TristateEffect_TristateEffectImproved,
+	ElementalOath:         true,
 	FerociousInspiration:  true,
 	GiftOfTheWild:         proto.TristateEffect_TristateEffectImproved,
 	IcyTalons:             true,
@@ -71,7 +71,7 @@ var FullRaidBuffs = &proto.RaidBuffs{
 	Thorns:                proto.TristateEffect_TristateEffectImproved,
 	TotemicWrath:          true,
 	TrueshotAura:          true,
-	UnleashedRage:         proto.TristateEffect_TristateEffectImproved,
+	UnleashedRage:         true,
 	WindfuryTotem:         true,
 	WrathOfAirTotem:       true,
 }
