@@ -269,7 +269,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		panic("Empty DefaultCast with a cost for spell " + config.ActionID.String())
 	}
 
-	if spell.DefaultCast.GCD == 0 && spell.DefaultCast.CastTime == 0 {
+	if spell.DefaultCast.GCD <= 0 && spell.DefaultCast.CastTime == 0 {
 		config.Cast.IgnoreHaste = true
 	}
 
