@@ -2,6 +2,7 @@ package death_knight
 
 import (
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 var obliterateActionID = core.ActionID{SpellID: 49020}
@@ -26,6 +27,8 @@ func (dk *DeathKnight) registerObliterateSpell() {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
+
+	hasBloodRites := dk.Inputs.Spec == proto.Spec_SpecBloodDeathKnight
 
 	dk.Obliterate = dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       obliterateActionID.WithTag(1),
@@ -60,7 +63,11 @@ func (dk *DeathKnight) registerObliterateSpell() {
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			spell.SpendRefundableCost(sim, result)
+			if hasBloodRites {
+				spell.SpendRefundableCostAndConvertFrostOrUnholyRune(sim, result, 1)
+			} else {
+				spell.SpendRefundableCost(sim, result)
+			}
 			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 
 			spell.DealDamage(sim, result)
