@@ -26,7 +26,7 @@ func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core
 
 	spellConfig := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: 403},
-		0.1,
+		0.06,
 		castTime,
 		isElementalOverload,
 		bonusCoefficient)

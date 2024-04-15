@@ -69,9 +69,11 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 			Label: "FlameShock",
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				shaman.LavaBurst.BonusCritRating += 100 * core.CritRatingPerCritChance
+				shaman.LavaBurstOverload.BonusCritRating += 100 * core.CritRatingPerCritChance
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				shaman.LavaBurst.BonusCritRating -= 100 * core.CritRatingPerCritChance
+				shaman.LavaBurstOverload.BonusCritRating += 100 * core.CritRatingPerCritChance
 			},
 		},
 		NumberOfTicks:       flameShockBaseNumberOfTicks,
