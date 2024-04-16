@@ -26,7 +26,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
-
+		BonusCoefficient: 0.2,
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "SearingTotem",
@@ -37,9 +37,8 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			// https://wotlk.wowhead.com/spell=25530/attack
 			//NumberOfTicks:        30,
 			//TickLength:           time.Second * 2.2,
-			NumberOfTicks:    24,
-			TickLength:       time.Second * 60 / 24,
-			BonusCoefficient: 0.2,
+			NumberOfTicks: 24,
+			TickLength:    time.Second * 60 / 24,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				result := dot.Spell.CalcAndDealDamage(sim, target, 90, dot.Spell.OutcomeMagicHitAndCrit)
 
