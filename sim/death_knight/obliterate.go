@@ -30,7 +30,7 @@ func (dk *DeathKnight) registerObliterateSpell() {
 
 	hasBloodRites := dk.Inputs.Spec == proto.Spec_SpecBloodDeathKnight
 
-	dk.Obliterate = dk.GetOrRegisterSpell(core.SpellConfig{
+	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       obliterateActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,

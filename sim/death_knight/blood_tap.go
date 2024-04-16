@@ -24,7 +24,7 @@ func (dk *DeathKnight) registerBloodTapSpell() {
 		},
 	})
 
-	dk.BloodTap = dk.RegisterSpell(core.SpellConfig{
+	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellBloodTap,

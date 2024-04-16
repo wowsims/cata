@@ -30,7 +30,7 @@ func (dk *UnholyDeathKnight) registerScourgeStrikeShadowDamageSpell() *core.Spel
 func (dk *UnholyDeathKnight) registerScourgeStrikeSpell() {
 	shadowDamageSpell := dk.registerScourgeStrikeShadowDamageSpell()
 
-	dk.ScourgeStrike = dk.RegisterSpell(core.SpellConfig{
+	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       scourgeStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,

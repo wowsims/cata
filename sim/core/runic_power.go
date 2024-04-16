@@ -25,7 +25,7 @@ func (r RuneChangeType) Matches(other RuneChangeType) bool {
 	return (r & other) != 0
 }
 
-type OnRuneChange func(sim *Simulation, changeType RuneChangeType)
+type OnRuneChange func(sim *Simulation, changeType RuneChangeType, runeRegen []int8)
 type OnRunicPowerGain func(sim *Simulation)
 
 type RuneMeta struct {
@@ -63,6 +63,8 @@ type runicPowerBar struct {
 	runicRegenMultiplier float64
 
 	permanentDeaths []int8
+
+	lastRegen []int8
 }
 
 // Constants for finding runes
@@ -132,6 +134,7 @@ func (unit *Unit) EnableRunicPowerBar(currentRunicPower float64, maxRunicPower f
 		onRunicPowerGain: onRunicPowerGain,
 
 		permanentDeaths: make([]int8, 0),
+		lastRegen:       make([]int8, 0),
 	}
 
 	unit.bloodRuneGainMetrics = unit.NewBloodRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionBloodRuneGain, Tag: 1})
@@ -158,7 +161,9 @@ func (rp *runicPowerBar) CurrentRunicPower() float64 {
 
 func (rp *runicPowerBar) maybeFireChange(sim *Simulation, changeType RuneChangeType) {
 	if changeType != None && rp.onRuneChange != nil {
-		rp.onRuneChange(sim, changeType)
+		rp.onRuneChange(sim, changeType, rp.lastRegen)
+		// Clear regen runes
+		rp.lastRegen = make([]int8, 0)
 	}
 }
 
@@ -644,6 +649,7 @@ func (rp *runicPowerBar) regenRune(sim *Simulation, regenAt time.Duration, slot 
 }
 
 func (rp *runicPowerBar) regenRuneInternal(sim *Simulation, regenAt time.Duration, slot int8) {
+	rp.lastRegen = append(rp.lastRegen, slot)
 	rp.runeStates ^= isSpents[slot] // unset spent flag for this rune.
 	rp.runeMeta[slot].regenAt = NeverExpires
 
