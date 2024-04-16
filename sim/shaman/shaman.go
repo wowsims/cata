@@ -26,7 +26,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		Talents:             &proto.ShamanTalents{},
 		Totems:              totems,
 		SelfBuffs:           selfBuffs,
-		thunderstormInRange: thunderstormRange,
+		ThunderstormInRange: thunderstormRange,
 	}
 	// shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: 57960})
 
@@ -78,7 +78,7 @@ const (
 type Shaman struct {
 	core.Character
 
-	thunderstormInRange bool // flag if thunderstorm will be in range.
+	ThunderstormInRange bool // flag if thunderstorm will be in range.
 
 	Talents   *proto.ShamanTalents
 	SelfBuffs SelfBuffs
@@ -244,10 +244,7 @@ func (shaman *Shaman) Initialize() {
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
 
 	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
-		shaman.applyPrimalWisdom()
-		shaman.registerLavaLashSpell()
 	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
-		shaman.registerThunderstormSpell()
 	}
 
 	shaman.ApplyGlyphs()

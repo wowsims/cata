@@ -30,6 +30,8 @@ const (
 
 type DynamicDamageTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult)
 
+type GetSpellpowerValue func(spell *Spell) float64
+
 // Unit is an abstraction of a Character/Boss/Pet/etc, containing functionality
 // shared by all of them.
 type Unit struct {
@@ -158,6 +160,14 @@ type Unit struct {
 
 	// Used for reacting to mastery stat changes if a spec needs it
 	OnMasteryStatChanged []OnMasteryStatChanged
+
+	GetSpellPowerValue GetSpellpowerValue
+}
+
+func (unit *Unit) getSpellpowerValueImpl(spell *Spell) float64 {
+	return unit.stats[stats.SpellPower] +
+		spell.BonusSpellPower +
+		spell.Unit.PseudoStats.MobTypeSpellPower
 }
 
 // Units can be disabled for several reasons:
@@ -496,6 +506,10 @@ func (unit *Unit) finalize() {
 	unit.stats = unit.initialStats
 
 	unit.AutoAttacks.finalize()
+
+	if unit.GetSpellPowerValue == nil {
+		unit.GetSpellPowerValue = unit.getSpellpowerValueImpl
+	}
 
 	for _, spell := range unit.Spellbook {
 		spell.finalize()

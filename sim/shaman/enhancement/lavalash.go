@@ -1,24 +1,25 @@
-package shaman
+package enhancement
 
 import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/shaman"
 )
 
-func (shaman *Shaman) registerLavaLashSpell() {
+func (enh *EnhancementShaman) registerLavaLashSpell() {
 	damageMultiplier := 2.6
-	if shaman.SelfBuffs.ImbueOH == proto.ShamanImbue_FlametongueWeapon {
+	if enh.SelfBuffs.ImbueOH == proto.ShamanImbue_FlametongueWeapon {
 		damageMultiplier += 0.4
 	}
 
-	shaman.LavaLash = shaman.RegisterSpell(core.SpellConfig{
+	enh.LavaLash = enh.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 78146},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskMeleeOHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskLavaLash,
+		ClassSpellMask: shaman.SpellMaskLavaLash,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.04,
 		},
@@ -28,13 +29,13 @@ func (shaman *Shaman) registerLavaLashSpell() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    shaman.NewTimer(),
+				Timer:    enh.NewTimer(),
 				Duration: time.Second * 6,
 			},
 		},
 
 		DamageMultiplier: damageMultiplier,
-		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		CritMultiplier:   enh.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -46,7 +47,7 @@ func (shaman *Shaman) registerLavaLashSpell() {
 				maxTargets := 4
 				for _, otherTarget := range sim.Encounter.TargetUnits {
 					if otherTarget != target {
-						shaman.FlameShock.Cast(sim, otherTarget)
+						enh.FlameShock.Cast(sim, otherTarget)
 						numberSpread++
 					}
 
@@ -57,11 +58,11 @@ func (shaman *Shaman) registerLavaLashSpell() {
 			}
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return shaman.HasOHWeapon()
+			return enh.HasOHWeapon()
 		},
 	})
 }
 
-func (shaman *Shaman) IsLavaLashCastable(sim *core.Simulation) bool {
-	return shaman.LavaLash.IsReady(sim)
+func (enh *EnhancementShaman) IsLavaLashCastable(sim *core.Simulation) bool {
+	return enh.LavaLash.IsReady(sim)
 }
