@@ -33,6 +33,10 @@ func applyConsumeEffects(agent Agent) {
 			character.AddStats(stats.Stats{
 				stats.Spirit: 300 + alchemyFlaskBonus,
 			})
+		case proto.Flask_FlaskOfTheDraconicMind:
+			character.AddStats(stats.Stats{
+				stats.Intellect: 300 + alchemyFlaskBonus,
+			})
 		case proto.Flask_FlaskOfTheFrostWyrm:
 			character.AddStats(stats.Stats{
 				stats.SpellPower: 125,
@@ -223,42 +227,6 @@ func applyConsumeEffects(agent Agent) {
 			character.AddStats(stats.Stats{
 				stats.Spirit: 50,
 			})
-		case proto.GuardianElixir_GiftOfArthas:
-			character.AddStats(stats.Stats{
-				stats.ShadowResistance: 10,
-			})
-
-			debuffAuras := (&character.Unit).NewEnemyAuraArray(GiftOfArthasAura)
-
-			actionID := ActionID{SpellID: 11374}
-			goaProc := character.RegisterSpell(SpellConfig{
-				ActionID:    actionID,
-				SpellSchool: SpellSchoolNature,
-				ProcMask:    ProcMaskEmpty,
-
-				ThreatMultiplier: 1,
-				FlatThreatBonus:  90,
-
-				ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-					debuffAuras.Get(target).Activate(sim)
-					spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
-				},
-			})
-
-			character.RegisterAura(Aura{
-				Label:    "Gift of Arthas",
-				Duration: NeverExpires,
-				OnReset: func(aura *Aura, sim *Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-					if result.Landed() &&
-						spell.SpellSchool.Matches(SpellSchoolPhysical) &&
-						sim.RandomFloat("Gift of Arthas") < 0.3 {
-						goaProc.Cast(sim, spell.Unit)
-					}
-				},
-			})
 		}
 	}
 
@@ -371,6 +339,82 @@ func applyConsumeEffects(agent Agent) {
 		character.AddStats(stats.Stats{
 			stats.Stamina: 30,
 			stats.Spirit:  20,
+		})
+	case proto.Food_FoodSeafoodFeast:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+		})
+		character.AddHighestStat(stats.Stats{
+			stats.Strength:  90,
+			stats.Agility:   90,
+			stats.Intellect: 90,
+		})
+	case proto.Food_FoodFortuneCookie:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+		})
+		character.AddHighestStat(stats.Stats{
+			stats.Strength:  90,
+			stats.Agility:   90,
+			stats.Intellect: 90,
+		})
+	case proto.Food_FoodSeveredSagefish:
+		character.AddStats(stats.Stats{
+			stats.Stamina:   90,
+			stats.Intellect: 90,
+		})
+	case proto.Food_FoodBeerBasedCrocolisk:
+		character.AddStats(stats.Stats{
+			stats.Stamina:  90,
+			stats.Strength: 90,
+		})
+	case proto.Food_FoodSkeweredEel:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+			stats.Agility: 90,
+		})
+	case proto.Food_FoodDeliciousSagefishTail:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+			stats.Spirit:  90,
+		})
+	case proto.Food_FoodBasiliskLiverdog:
+		character.AddStats(stats.Stats{
+			stats.Stamina:    90,
+			stats.MeleeHaste: 90,
+			stats.SpellHaste: 90,
+		})
+	case proto.Food_FoodBakedRockfish:
+		character.AddStats(stats.Stats{
+			stats.Stamina:   90,
+			stats.MeleeCrit: 90,
+			stats.SpellCrit: 90,
+		})
+	case proto.Food_FoodCrocoliskAuGratin:
+		character.AddStats(stats.Stats{
+			stats.Stamina:   90,
+			stats.Expertise: 90,
+		})
+	case proto.Food_FoodGrilledDragon:
+		character.AddStats(stats.Stats{
+			stats.Stamina:  90,
+			stats.MeleeHit: 90,
+			stats.SpellHit: 90,
+		})
+	case proto.Food_FoodLavascaleMinestrone:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+			stats.Mastery: 90,
+		})
+	case proto.Food_FoodBlackbellySushi:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+			stats.Parry:   90,
+		})
+	case proto.Food_FoodMushroomSauceMudfish:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+			stats.Dodge:   90,
 		})
 	}
 

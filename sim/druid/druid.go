@@ -188,6 +188,9 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 }
 
 func (druid *Druid) Initialize() {
+	if druid.Spec == proto.Spec_SpecFeralDruid {
+		druid.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeLeather)
+	}
 	// druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
 	// if druid.Talents.PrimalPrecision > 0 {
@@ -211,21 +214,21 @@ func (druid *Druid) Initialize() {
 // }
 
 func (druid *Druid) RegisterFeralCatSpells() {
-// 	druid.registerBerserkCD()
+	// 	druid.registerBerserkCD()
 	druid.registerCatFormSpell()
-// 	druid.registerBearFormSpell()
-// 	druid.registerEnrageSpell()
-// 	druid.registerFerociousBiteSpell()
-// 	druid.registerMangleBearSpell()
-// 	druid.registerMangleCatSpell()
-// 	druid.registerMaulSpell()
-// 	druid.registerLacerateSpell()
-// 	druid.registerRakeSpell()
-// 	druid.registerRipSpell()
-// 	druid.registerSavageRoarSpell()
-// 	druid.registerShredSpell()
-// 	druid.registerSwipeBearSpell()
-// 	druid.registerSwipeCatSpell()
+	// 	druid.registerBearFormSpell()
+	// 	druid.registerEnrageSpell()
+	// 	druid.registerFerociousBiteSpell()
+	// 	druid.registerMangleBearSpell()
+	// 	druid.registerMangleCatSpell()
+	// 	druid.registerMaulSpell()
+	// 	druid.registerLacerateSpell()
+	// 	druid.registerRakeSpell()
+	// 	druid.registerRipSpell()
+	// 	druid.registerSavageRoarSpell()
+	// 	druid.registerShredSpell()
+	// 	druid.registerSwipeBearSpell()
+	// 	druid.registerSwipeCatSpell()
 	druid.registerTigersFurySpell()
 }
 
@@ -257,9 +260,9 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 
 func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
 	druid := &Druid{
-		Character: *char,
-		SelfBuffs: selfBuffs,
-		Talents:   &proto.DruidTalents{},
+		Character:    *char,
+		SelfBuffs:    selfBuffs,
+		Talents:      &proto.DruidTalents{},
 		StartingForm: form,
 		form:         form,
 	}

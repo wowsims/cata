@@ -108,6 +108,30 @@ func (enh *EnhancementShaman) Initialize() {
 	enh.GetSpellPowerValue = func(spell *core.Spell) float64 {
 		return spell.MeleeAttackPower() * 0.55
 	}
+
+	enh.applyPrimalWisdom()
+	enh.registerLavaLashSpell()
+}
+
+func (enh *EnhancementShaman) applyPrimalWisdom() {
+	manaMetrics := enh.NewManaMetrics(core.ActionID{SpellID: 63375})
+
+	enh.RegisterAura(core.Aura{
+		Label:    "Primal Wisdom",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
+
+			if sim.RandomFloat("Primal Wisdom") < 0.4 {
+				enh.AddMana(sim, 0.05*enh.BaseMana, manaMetrics)
+			}
+		},
+	})
 }
 
 func (enh *EnhancementShaman) Reset(sim *core.Simulation) {

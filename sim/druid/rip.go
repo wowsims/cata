@@ -5,12 +5,11 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (druid *Druid) registerRipSpell() {
-	ripBaseNumTicks := 6 +
-		core.TernaryInt32(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfRip), 2, 0) +
-		core.TernaryInt32(druid.HasSetBonus(ItemSetDreamwalkerBattlegear, 2), 2, 0)
+	ripBaseNumTicks := int32(8)
 
 	comboPointCoeff := 93.0
 	if druid.Ranged().ID == 28372 { // Idol of Feral Shadows
@@ -19,6 +18,8 @@ func (druid *Druid) registerRipSpell() {
 		comboPointCoeff += 21
 	}
 
+	glyphMulti := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfRip), 1.15, 1.0)
+
 	druid.Rip = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 49800},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -26,8 +27,8 @@ func (druid *Druid) registerRipSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:          30 - core.TernaryFloat64(druid.HasSetBonus(ItemSetLasherweaveBattlegear, 2), 10, 0),
-			Refund:        0.4 * float64(druid.Talents.PrimalPrecision),
+			Cost:          30,
+			Refund:        0.8,
 			RefundMetrics: druid.PrimalPrecisionRecoveryMetrics,
 		},
 		Cast: core.CastConfig{
@@ -40,9 +41,9 @@ func (druid *Druid) registerRipSpell() {
 			return druid.ComboPoints() > 0
 		},
 
-		BonusCritRating:  core.TernaryFloat64(druid.HasSetBonus(ItemSetMalfurionsBattlegear, 4), 5*core.CritRatingPerCritChance, 0.0),
-		DamageMultiplier: 1 + core.TernaryFloat64(druid.HasSetBonus(ItemSetThunderheartHarness, 4), 0.15, 0),
-		CritMultiplier:   druid.MeleeCritMultiplier(Cat),
+		BonusCritRating:  0,
+		DamageMultiplier: glyphMulti * druid.RazorClawsMultiplier(druid.GetStat(stats.Mastery)),
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -65,11 +66,7 @@ func (druid *Druid) registerRipSpell() {
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if druid.Talents.PrimalGore {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
-				}
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
@@ -87,14 +84,16 @@ func (druid *Druid) registerRipSpell() {
 			spell.DealOutcome(sim, result)
 		},
 	})
+
+	druid.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		druid.Rip.DamageMultiplier *= druid.RazorClawsMultiplier(newMastery) / druid.RazorClawsMultiplier(oldMastery)
+	})
 }
 
 func (druid *Druid) MaxRipTicks() int32 {
-	base := int32(6)
-	t7bonus := core.TernaryInt32(druid.HasSetBonus(ItemSetDreamwalkerBattlegear, 2), 2, 0)
-	ripGlyphBonus := core.TernaryInt32(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfRip), 2, 0)
-	shredGlyphBonus := core.TernaryInt32(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfShred), 3, 0)
-	return base + ripGlyphBonus + shredGlyphBonus + t7bonus
+	base := int32(8)
+	shredGlyphBonus := core.TernaryInt32(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting), 3, 0)
+	return base + shredGlyphBonus
 }
 
 func (druid *Druid) CurrentRipCost() float64 {
