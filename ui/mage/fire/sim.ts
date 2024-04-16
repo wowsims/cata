@@ -71,7 +71,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		raidBuffs: RaidBuffs.create({
 			giftOfTheWild: TristateEffect.TristateEffectImproved,
 			bloodlust: true,
-			manaSpringTotem: TristateEffect.TristateEffectImproved,
+			manaSpringTotem: true,
 			wrathOfAirTotem: true,
 			divineSpirit: true,
 			swiftRetribution: true,

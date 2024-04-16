@@ -23,6 +23,7 @@ const (
 	CallbackOnHealDealt
 	CallbackOnPeriodicHealDealt
 	CallbackOnCastComplete
+	CallbackOnApplyEffects
 )
 
 type ProcHandler func(sim *Simulation, spell *Spell, result *SpellResult)
@@ -139,6 +140,33 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 				icd.Use(sim)
 			}
 			handler(sim, spell, nil)
+		}
+	}
+	if config.Callback.Matches(CallbackOnApplyEffects) {
+		aura.OnApplyEffects = func(aura *Aura, sim *Simulation, target *Unit, spell *Spell) {
+			if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
+				return
+			}
+			if config.ClassSpellMask > 0 && config.ClassSpellMask&spell.ClassSpellMask == 0 {
+				return
+			}
+			if config.ProcMask != ProcMaskUnknown && !spell.ProcMask.Matches(config.ProcMask) {
+				return
+			}
+			if config.ProcMaskExclude != ProcMaskUnknown && spell.ProcMask.Matches(config.ProcMaskExclude) {
+				return
+			}
+			if icd.Duration != 0 && !icd.IsReady(sim) {
+				return
+			}
+			if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
+				return
+			}
+
+			if icd.Duration != 0 {
+				icd.Use(sim)
+			}
+			handler(sim, spell, &SpellResult{Target: target})
 		}
 	}
 }

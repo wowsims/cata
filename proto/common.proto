@@ -418,7 +418,7 @@ message RaidBuffs {
 
 	// + Agi and Str
 	bool horn_of_winter = 5;
-	TristateEffect strength_of_earth_totem = 6; // none, normal, 15% improved
+	bool strength_of_earth_totem = 6;
 	bool battle_shout = 10;
 
 	// +Intell and/or Spi
@@ -437,16 +437,16 @@ message RaidBuffs {
 
 	// 20% Melee Haste
 	bool icy_talons = 16;
-	TristateEffect windfury_totem = 17; // none, 16%, 20%
+	bool windfury_totem = 17;
 
 	// +Spell Power
-	bool totem_of_wrath = 18;
+	bool totemic_wrath = 18;
 	bool flametongue_totem = 19;
 	int32 demonic_pact_sp = 44; // SP buff NEW CORRECT
 
 	// +5% Spell Crit and/or +3% Haste
 	bool swift_retribution = 21; //haste only
-	bool elemental_oath = 23; //crit only
+	bool elemental_oath = 23; //crit only, 3%, 5%
 
 	// 5% spell haste
 	bool moonkin_aura = 22;
@@ -459,7 +459,7 @@ message RaidBuffs {
 	bool arcane_empowerment = 27;
 
 	// mp5
-	TristateEffect mana_spring_totem = 28;
+	bool mana_spring_totem = 28;
 
 	// Resistances
 	bool shadow_protection = 33;
@@ -472,7 +472,7 @@ message RaidBuffs {
 	bool bloodlust = 29;
 	TristateEffect thorns = 30;
 	TristateEffect devotion_aura = 31;
-	TristateEffect stoneskin_totem = 42;
+	bool stoneskin_totem = 42;
 	bool retribution_aura = 32;
 	bool strength_of_wrynn = 49;
 
@@ -501,7 +501,6 @@ message PartyBuffs {
 
 	// Group buffs
 	int32 mana_tide_totems = 6;
-	bool heroic_presence = 7;
 }
 
 // These are usually individual actions taken by other Characters.
@@ -579,7 +578,6 @@ message Debuffs {
 	// +3% to crit against target
 	bool heart_of_the_crusader = 8;
 	bool master_poisoner = 9;
-	bool totem_of_wrath = 10;
 
 	// 5% spell crit
 	bool shadow_mastery = 11;

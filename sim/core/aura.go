@@ -60,6 +60,7 @@ type Aura struct {
 
 	active                     bool
 	activeIndex                int32 // Position of this aura's index in the activeAuras array.
+	onApplyEffectsIndex        int32 // Position of this aura's index in the onApplyEffectsAuras array.
 	onCastCompleteIndex        int32 // Position of this aura's index in the onCastCompleteAuras array.
 	onSpellHitDealtIndex       int32 // Position of this aura's index in the onSpellHitAuras array.
 	onSpellHitTakenIndex       int32 // Position of this aura's index in the onSpellHitAuras array.
@@ -85,7 +86,8 @@ type Aura struct {
 	OnExpire        OnExpire
 	OnStacksChange  OnStacksChange // Invoked when the number of stacks of this aura changes.
 
-	OnCastComplete        OnCastComplete   // Invoked when a spell cast completes casting, before results are calculated.
+	OnApplyEffects        OnApplyEffects   // Invoked when a spell cast is completing, before apply effects are called
+	OnCastComplete        OnCastComplete   // Invoked when a spell cast completes casting, after apply effects.
 	OnSpellHitDealt       OnSpellHit       // Invoked when a spell hits and this unit is the caster.
 	OnSpellHitTaken       OnSpellHit       // Invoked when a spell hits and this unit is the target.
 	OnPeriodicDamageDealt OnPeriodicDamage // Invoked when a dot tick occurs and this unit is the caster.
@@ -290,6 +292,7 @@ type auraTracker struct {
 	minExpires time.Duration
 
 	// Auras that have a non-nil XXX function set and are currently active.
+	onApplyEffectsAuras        []*Aura
 	onCastCompleteAuras        []*Aura
 	onSpellHitDealtAuras       []*Aura
 	onSpellHitTakenAuras       []*Aura
@@ -365,6 +368,7 @@ func (at *auraTracker) registerAura(unit *Unit, aura Aura) *Aura {
 	newAura.Icd = aura.Icd
 	newAura.metrics.ID = aura.ActionID
 	newAura.activeIndex = Inactive
+	newAura.onApplyEffectsIndex = Inactive
 	newAura.onCastCompleteIndex = Inactive
 	newAura.onSpellHitDealtIndex = Inactive
 	newAura.onSpellHitTakenIndex = Inactive
@@ -455,6 +459,7 @@ func (at *auraTracker) RegisterResetEffect(resetEffect ResetEffect) {
 
 func (at *auraTracker) reset(sim *Simulation) {
 	at.activeAuras = at.activeAuras[:0]
+	at.onApplyEffectsAuras = at.onApplyEffectsAuras[:0]
 	at.onCastCompleteAuras = at.onCastCompleteAuras[:0]
 	at.onSpellHitDealtAuras = at.onSpellHitDealtAuras[:0]
 	at.onSpellHitTakenAuras = at.onSpellHitTakenAuras[:0]
@@ -565,6 +570,11 @@ func (aura *Aura) Activate(sim *Simulation) {
 		aura.Unit.activeAuras = append(aura.Unit.activeAuras, aura)
 	}
 
+	if aura.OnApplyEffects != nil {
+		aura.onApplyEffectsIndex = int32(len(aura.Unit.onApplyEffectsAuras))
+		aura.Unit.onApplyEffectsAuras = append(aura.Unit.onApplyEffectsAuras, aura)
+	}
+
 	if aura.OnCastComplete != nil {
 		aura.onCastCompleteIndex = int32(len(aura.Unit.onCastCompleteAuras))
 		aura.Unit.onCastCompleteAuras = append(aura.Unit.onCastCompleteAuras, aura)
@@ -647,6 +657,15 @@ func (aura *Aura) Deactivate(sim *Simulation) {
 			aura.Unit.activeAuras[removeActiveIndex].activeIndex = removeActiveIndex
 		}
 		aura.activeIndex = Inactive
+	}
+
+	if aura.onApplyEffectsIndex != Inactive {
+		removeOnApplyEffectsIndex := aura.onApplyEffectsIndex
+		aura.Unit.onApplyEffectsAuras = removeBySwappingToBack(aura.Unit.onApplyEffectsAuras, removeOnApplyEffectsIndex)
+		if removeOnApplyEffectsIndex < int32(len(aura.Unit.onApplyEffectsAuras)) {
+			aura.Unit.onApplyEffectsAuras[removeOnApplyEffectsIndex].onApplyEffectsIndex = removeOnApplyEffectsIndex
+		}
+		aura.onApplyEffectsIndex = Inactive
 	}
 
 	if aura.onCastCompleteIndex != Inactive {
@@ -749,6 +768,13 @@ func (aura *Aura) Deactivate(sim *Simulation) {
 func removeBySwappingToBack[T any, U constraints.Integer](arr []T, removeIdx U) []T {
 	arr[removeIdx] = arr[len(arr)-1]
 	return arr[:len(arr)-1]
+}
+
+// Invokes the OnApplyEffects event for all tracked Auras.
+func (at *auraTracker) OnApplyEffects(sim *Simulation, target *Unit, spell *Spell) {
+	for _, aura := range at.onApplyEffectsAuras {
+		aura.OnApplyEffects(aura, sim, target, spell)
+	}
 }
 
 // Invokes the OnCastComplete event for all tracked Auras.
