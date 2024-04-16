@@ -183,7 +183,12 @@ var ItemSetCrimsonAcolyte = core.NewItemSet(core.ItemSet{
 			})
 		},
 		4: func(agent core.Agent) {
-			// TODO: Implemement proper aura mod to mod total duration
+			character := agent.GetCharacter()
+			character.AddStaticMod(core.SpellModConfig{
+				Kind:      core.SpellMod_DotTickLength_Flat,
+				TimeValue: -time.Millisecond * 170,
+				ClassMask: PriestSpellMindFlay,
+			})
 		},
 	},
 })
