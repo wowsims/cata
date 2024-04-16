@@ -1,31 +1,29 @@
-package shaman
+package elemental
 
 import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/shaman"
 )
 
-func (shaman *Shaman) registerThunderstormSpell() {
-	if shaman.Spec != proto.Spec_SpecElementalShaman {
-		return
-	}
-
+func (elemental *ElementalShaman) registerThunderstormSpell() {
 	actionID := core.ActionID{SpellID: 51490}
-	manaMetrics := shaman.NewManaMetrics(actionID)
+	manaMetrics := elemental.NewManaMetrics(actionID)
 
 	manaRestore := 0.08
-	if shaman.HasMinorGlyph(proto.ShamanMinorGlyph_GlyphOfThunderstorm) {
+	if elemental.HasMinorGlyph(proto.ShamanMinorGlyph_GlyphOfThunderstorm) {
 		manaRestore = 0.02
 	}
 
-	shaman.Thunderstorm = shaman.RegisterSpell(core.SpellConfig{
+	elemental.Thunderstorm = elemental.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: SpellMaskThunderstorm,
+		ClassSpellMask: shaman.SpellMaskThunderstorm,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.0,
 		},
@@ -34,18 +32,18 @@ func (shaman *Shaman) registerThunderstormSpell() {
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
-				Timer:    shaman.NewTimer(),
+				Timer:    elemental.NewTimer(),
 				Duration: time.Second * 45,
 			},
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		DamageMultiplier: 1 + 0.02*float64(elemental.Talents.Concussion),
+		CritMultiplier:   elemental.ElementalFuryCritMultiplier(0),
 		BonusCoefficient: 0.571,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			shaman.AddMana(sim, shaman.MaxMana()*manaRestore, manaMetrics)
+			elemental.AddMana(sim, elemental.MaxMana()*manaRestore, manaMetrics)
 
-			if shaman.thunderstormInRange {
+			if elemental.Shaman.ThunderstormInRange {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					baseDamage := 1637 * sim.Encounter.AOECapMultiplier()
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
