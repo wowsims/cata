@@ -1,44 +1,69 @@
 package mage
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-const ArcaneBlastBaseCastTime = time.Millisecond * 2500
-
 func (mage *Mage) registerArcaneBlastSpell() {
-	abAuraMultiplierPerStack := core.TernaryFloat64(mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfArcaneBlast), .13, .10)
+
+	abDamageScalar := core.TernaryFloat64(mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfArcaneBlast), 0.13, 0.1)
+	abDamageMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellArcaneBlast | MageSpellArcaneExplosion,
+		FloatValue: abDamageScalar,
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+	abCostMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellArcaneBlast | MageSpellArcaneExplosion,
+		FloatValue: 1.5,
+		Kind:       core.SpellMod_PowerCost_Pct,
+	})
+	//Update to flat casttime when implemented
+	abCastMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellArcaneBlast,
+		FloatValue: -0.1,
+		Kind:       core.SpellMod_CastTime_Pct,
+	})
+
 	mage.ArcaneBlastAura = mage.GetOrRegisterAura(core.Aura{
-		Label:     "Arcane Blast",
-		ActionID:  core.ActionID{SpellID: 30451},
+		Label:     "Arcane Blast Debuff",
+		ActionID:  core.ActionID{SpellID: 36032},
 		Duration:  time.Second * 6,
 		MaxStacks: 4,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			abDamageMod.Activate()
+			abCostMod.Activate()
+			abCastMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			abDamageMod.Deactivate()
+			abCostMod.Deactivate()
+			abCastMod.Deactivate()
+		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			oldMultiplier := 1 + float64(oldStacks)*abAuraMultiplierPerStack
-			newMultiplier := 1 + float64(newStacks)*abAuraMultiplierPerStack
-
-			mage.ArcaneBlast.DamageMultiplier *= newMultiplier / oldMultiplier
-			mage.ArcaneExplosion.DamageMultiplier *= newMultiplier / oldMultiplier
-			mage.ArcaneBlast.CostMultiplier += 1.5 * float64(newStacks-oldStacks)
+			abDamageMod.UpdateFloatValue(abDamageScalar * float64(newStacks))
+			abCostMod.UpdateFloatValue(1.5 * float64(newStacks))
+			abCastMod.UpdateFloatValue(-0.1 * float64(newStacks))
+			fmt.Println(abDamageMod.GetFloatValue())
 		},
 	})
 
 	mage.ArcaneBlast = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 36032},
-		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | BarrageSpells | core.SpellFlagAPL,
-
+		ActionID:       core.ActionID{SpellID: 30451},
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | ArcaneMissileSpells | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellArcaneBlast,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.07,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: ArcaneBlastBaseCastTime,
+				CastTime: time.Millisecond * 2500,
 			},
 		},
 
