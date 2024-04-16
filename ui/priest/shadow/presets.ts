@@ -45,8 +45,8 @@ export const DefaultOptions = Options.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheFrostWyrm,
-	food: Food.FoodFishFeast,
+	flask: Flask.FlaskOfTheDraconicMind,
+	food: Food.FoodSeafoodFeast,
 	defaultPotion: Potions.VolcanicPotion,
 	prepopPotion: Potions.VolcanicPotion,
 });
@@ -86,6 +86,6 @@ export const DefaultDebuffs = Debuffs.create({
 export const OtherDefaults = {
 	channelClipDelay: 100,
 	distanceFromTarget: 20,
-	profession1: Profession.Engineering,
+	profession1: Profession.Enchanting,
 	profession2: Profession.Tailoring,
 };

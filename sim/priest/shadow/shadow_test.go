@@ -15,7 +15,7 @@ func init() {
 func TestShadow(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassPriest,
-		Race:       proto.Race_RaceUndead,
+		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceNightElf, proto.Race_RaceDraenei},
 
 		GearSet:  core.GetGearSet("../../../ui/priest/shadow/gear_sets", "p1"),
@@ -56,8 +56,8 @@ var DefaultGlyphs = &proto.Glyphs{
 }
 
 var FullConsumes = &proto.Consumes{
-	Flask:           proto.Flask_FlaskOfTheFrostWyrm,
-	Food:            proto.Food_FoodBlackenedBasilisk,
+	Flask:           proto.Flask_FlaskOfTheDraconicMind,
+	Food:            proto.Food_FoodSeafoodFeast,
 	DefaultPotion:   proto.Potions_VolcanicPotion,
 	PrepopPotion:    proto.Potions_VolcanicPotion,
 	DefaultConjured: proto.Conjured_ConjuredDarkRune,
