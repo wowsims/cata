@@ -224,6 +224,10 @@ const (
 	// Add/subtract to the casts gcd
 	// Uses: TimeValue
 	SpellMod_GlobalCooldown_Flat
+
+	// Add/substrct to the base tick frequency
+	// Uses: TimeValue
+	SpellMod_DotTickLength_Flat
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -290,6 +294,10 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_GlobalCooldown_Flat: {
 		Apply:  applyGlobalCooldownFlat,
 		Remove: removeGlobalCooldownFlat,
+	},
+	SpellMod_DotTickLength_Flat: {
+		Apply:  applyDotTickLengthFlat,
+		Remove: removeDotTickLengthFlat,
 	},
 }
 
@@ -417,4 +425,30 @@ func applyGlobalCooldownFlat(mod *SpellMod, spell *Spell) {
 
 func removeGlobalCooldownFlat(mod *SpellMod, spell *Spell) {
 	spell.DefaultCast.GCD -= mod.timeValue
+}
+
+func applyDotTickLengthFlat(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.TickLength += mod.timeValue
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.TickLength += mod.timeValue
+	}
+}
+
+func removeDotTickLengthFlat(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.TickLength -= mod.timeValue
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.TickLength -= mod.timeValue
+	}
 }

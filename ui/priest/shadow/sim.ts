@@ -15,7 +15,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	cssClass: 'shadow-priest-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Priest),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [],
+	knownIssues: ["Some items may display and use stats a litle higher than their original value."],
 
 	// All stats for which EP should be calculated.
 	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery],
@@ -45,16 +45,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET.gear,
+		gear: Presets.P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.11,
+			[Stat.StatIntellect]: 1.2,
 			[Stat.StatSpirit]: 0.47,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellHit]: 0.87,
 			[Stat.StatSpellCrit]: 0.74,
-			[Stat.StatSpellHaste]: 1.65,
-			[Stat.StatMP5]: 0.0,
+			[Stat.StatSpellHaste]: 0.87,
+			[Stat.StatMastery]: 0.58
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -92,26 +92,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
-		showExecuteProportion: false,
+		showExecuteProportion: true,
 	},
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.StandardTalents, Presets.EnlightenmentTalents],
-		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_AOE24, Presets.ROTATION_PRESET_AOE4PLUS],
+		talents: [Presets.StandardTalents],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
+		gear: [Presets.P1_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecShadowPriest>): APLRotation => {
-		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets > 4) {
-			return Presets.ROTATION_PRESET_AOE4PLUS.rotation.rotation!;
-		} else if (numTargets > 1) {
-			return Presets.ROTATION_PRESET_AOE24.rotation.rotation!;
-		} else {
 			return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		}
 	},
 
 	raidSimPresets: [
@@ -122,22 +115,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceDwarf,
-				[Faction.Horde]: Race.RaceUndead,
+				[Faction.Alliance]: Race.RaceWorgen,
+				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
-					4: Presets.P4_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
-					4: Presets.P4_PRESET.gear,
 				},
 			},
 		},

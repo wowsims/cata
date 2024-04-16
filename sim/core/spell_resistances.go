@@ -87,15 +87,17 @@ func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
   - the resist cap is likely gone, since resists work like armor now
  https://web.archive.org/web/20110209210726/http://elitistjerks.com/f75/t38540-general_mage_discussion_information/p11/#post1171056
  This handles the player vs. mob partial resists case
-  - average resist is still 2% percent per level vs. higher level mobs
-  - otherwise it's modelled identical to the mob vs. player case
+  - it's modelled identical to the mob vs. player case
   - the resulting numbers have been verified in game (55% for 0%, 30% for 10%, 15% for 20% resists)
 */
 
 func (unit *Unit) averageResist(school SpellSchool, attacker *Unit) float64 {
 	resistance := unit.GetStat(school.ResistanceStat()) - attacker.stats[stats.SpellPenetration]
 	if resistance <= 0 {
-		return unit.levelBasedResist(attacker)
+
+		// https://wowpedia.fandom.com/wiki/Resistance?oldid=6512353
+		// With the release of cataclysm, level based resistances seem to have been removed
+		return 0
 	}
 
 	c := 5 * float64(attacker.Level)
@@ -103,14 +105,7 @@ func (unit *Unit) averageResist(school SpellSchool, attacker *Unit) float64 {
 		c = 510 // other values TBD, but not very useful in practice
 	}
 
-	return resistance/(c+resistance) + unit.levelBasedResist(attacker) // these may stack differently, but that's irrelevant in practice
-}
-
-func (unit *Unit) levelBasedResist(attacker *Unit) float64 {
-	if unit.Type == EnemyUnit && unit.Level > attacker.Level {
-		return 0.02 * float64(unit.Level-attacker.Level)
-	}
-	return 0
+	return resistance / (c + resistance)
 }
 
 type Threshold struct {
