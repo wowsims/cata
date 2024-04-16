@@ -50,6 +50,7 @@ var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 				Name:           "Magma Plated Battlegear",
 				Callback:       core.CallbackOnCastComplete,
 				ClassSpellMask: DeathKnightSpellConvertToDeathRune | DeathKnightSpellKillingMachine,
+				ICD:            time.Millisecond * 10, // Batch together double rune converts
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					aura.Activate(sim)
 					aura.AddStack(sim)

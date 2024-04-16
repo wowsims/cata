@@ -57,16 +57,12 @@ func (dk *DeathKnight) applyChillOfTheGrave() {
 	rpAmount := 5.0 * float64(dk.Talents.ChillOfTheGrave)
 	rpMetric := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 50115})
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
-		Name:           "Chill of the Grave",
-		Callback:       core.CallbackOnSpellHitDealt,
-		ClassSpellMask: DeathKnightChillOfTheGrave,
-		Outcome:        core.OutcomeLanded,
+		Name:            "Chill of the Grave",
+		Callback:        core.CallbackOnSpellHitDealt,
+		ClassSpellMask:  DeathKnightChillOfTheGrave,
+		Outcome:         core.OutcomeLanded,
+		ProcMaskExclude: core.ProcMaskMeleeOH, // Dont trigger on Obliterate Off hand
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Dont trigger on Obliterate Off hand
-			if spell.ClassSpellMask == DeathKnightSpellObliterate && spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
-				return
-			}
-
 			dk.AddRunicPower(sim, rpAmount, rpMetric)
 		},
 	})
@@ -103,10 +99,10 @@ func (dk *DeathKnight) applyMercilessCombat() {
 			Duration: core.NeverExpires,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				dk.SetDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex], dk.mercilessCombatMultiplier)
+				SetDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex], dk.mercilessCombatMultiplier)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				dk.ClearDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex])
+				ClearDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex])
 			},
 		})
 		return aura

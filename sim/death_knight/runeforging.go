@@ -137,7 +137,6 @@ func init() {
 
 	// Rune of Razorice
 	core.NewEnchantEffect(3370, func(agent core.Agent) {
-		dk := agent.(*DeathKnight).GetDeathKnight()
 		character := agent.GetCharacter()
 
 		actionID := core.ActionID{SpellID: 50401}
@@ -192,10 +191,10 @@ func init() {
 				MaxStacks: 5,
 
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					dk.SetDDBC(DDBCRuneOfRazorice, dk.AttackTables[aura.Unit.UnitIndex], handler)
+					SetDDBC(DDBCRuneOfRazorice, character.AttackTables[aura.Unit.UnitIndex], handler)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					dk.ClearDDBC(DDBCRuneOfRazorice, dk.AttackTables[aura.Unit.UnitIndex])
+					ClearDDBC(DDBCRuneOfRazorice, character.AttackTables[aura.Unit.UnitIndex])
 				},
 			})
 		})

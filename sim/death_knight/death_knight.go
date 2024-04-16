@@ -26,14 +26,14 @@ const (
 	TotalDDBC = 3
 )
 
-func (dk *DeathKnight) SetDDBC(index int, attackTable *core.AttackTable, handler core.DynamicDamageDoneByCaster) {
+func SetDDBC(index int, attackTable *core.AttackTable, handler core.DynamicDamageDoneByCaster) {
 	if attackTable.DamageDoneByCasterExtraMultiplier == nil {
 		attackTable.DamageDoneByCasterExtraMultiplier = make([]core.DynamicDamageDoneByCaster, TotalDDBC)
 	}
 	attackTable.DamageDoneByCasterExtraMultiplier[index] = handler
 }
 
-func (dk *DeathKnight) ClearDDBC(index int, attackTable *core.AttackTable) {
+func ClearDDBC(index int, attackTable *core.AttackTable) {
 	attackTable.DamageDoneByCasterExtraMultiplier[index] = nil
 }
 
@@ -161,8 +161,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 			if deathRuneConvertSpellId == 0 {
 				return
 			}
-			// Only trigger on converts from death rune masteries
-			if changeType.Matches(core.ConvertToDeath & core.SpendRune) {
+			if changeType.Matches(core.ConvertToDeath) {
 				spell := dk.GetOrRegisterSpell(core.SpellConfig{
 					ActionID:       core.ActionID{SpellID: deathRuneConvertSpellId},
 					Flags:          core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
