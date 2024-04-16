@@ -15,7 +15,7 @@ func init() {
 func TestShadow(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassPriest,
-		Race:       proto.Race_RaceUndead,
+		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceNightElf, proto.Race_RaceDraenei},
 
 		GearSet:  core.GetGearSet("../../../ui/priest/shadow/gear_sets", "p1"),
@@ -44,9 +44,9 @@ func TestShadow(t *testing.T) {
 
 var DefaultTalents = "033002--322032212201222100231"
 var DefaultGlyphs = &proto.Glyphs{
-	Prime1: 0,
-	Prime2: 0,
-	Prime3: 0,
+	Prime1: int32(proto.PriestPrimeGlyph_GlyphOfMindFlay),
+	Prime2: int32(proto.PriestPrimeGlyph_GlyphOfShadowWordPain),
+	Prime3: int32(proto.PriestPrimeGlyph_GlyphOfMindFlay),
 	Major1: 0,
 	Major2: 0,
 	Major3: 0,
@@ -56,10 +56,10 @@ var DefaultGlyphs = &proto.Glyphs{
 }
 
 var FullConsumes = &proto.Consumes{
-	Flask:           proto.Flask_FlaskUnknown,
-	Food:            proto.Food_FoodBlackenedBasilisk,
-	DefaultPotion:   proto.Potions_HastePotion,
-	PrepopPotion:    proto.Potions_HastePotion,
+	Flask:           proto.Flask_FlaskOfTheDraconicMind,
+	Food:            proto.Food_FoodSeafoodFeast,
+	DefaultPotion:   proto.Potions_VolcanicPotion,
+	PrepopPotion:    proto.Potions_VolcanicPotion,
 	DefaultConjured: proto.Conjured_ConjuredDarkRune,
 }
 
