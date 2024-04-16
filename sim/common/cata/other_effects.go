@@ -88,7 +88,7 @@ func init() {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 					if sim.Proc(0.1, "Vengeful Wisp") {
 						// select random proc target
-						spreadTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))-1))]
+						spreadTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
 
 						// refresh dot on next step - refreshing potentially on aura expire
 						// which will cause nasty things to happen
@@ -129,7 +129,7 @@ func init() {
 
 					if sim.Proc(0.1, "Vengeful Wisp") {
 						// select random proc target
-						spreadTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))-1))]
+						spreadTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
 						spreadDot.Dot(spreadTarget).Apply(sim) // refresh self on
 					}
 				},
