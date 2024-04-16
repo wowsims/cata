@@ -67,7 +67,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 
 			if hunter.Talents.ImprovedSerpentSting != 0 {
 				baseDamage := (460 * 5) + 0.40*spell.RangedAttackPower(target)
-				result = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+				result = spell.CalcDamage(sim, target, (0.15*float64(hunter.Talents.ImprovedSerpentSting))*baseDamage, spell.OutcomeRangedHitAndCrit)
 			} else {
 				result = spell.CalcOutcome(sim, target, spell.OutcomeRangedHitAndCrit)
 			}
