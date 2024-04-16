@@ -179,7 +179,7 @@ export class Encounter {
 			parryHaste: true,
 			spellSchool: SpellSchool.SpellSchoolPhysical,
 			stats: Stats.fromMap({
-				[Stat.StatArmor]: 10643,
+				[Stat.StatArmor]: 11977,
 				[Stat.StatAttackPower]: 805,
 				[Stat.StatBlockValue]: 76,
 			}).asArray(),
