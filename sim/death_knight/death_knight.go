@@ -132,9 +132,9 @@ type DeathKnight struct {
 	MindFreezeSpell *core.Spell
 
 	// Diseases
-	FrostFeverSpell       *core.Spell
-	BloodPlagueSpell      *core.Spell
-	EbonPlagueBringerAura core.AuraArray
+	FrostFeverSpell  *core.Spell
+	BloodPlagueSpell *core.Spell
+	EbonPlagueAura   core.AuraArray
 
 	//UnholyBlightSpell *core.Spell
 

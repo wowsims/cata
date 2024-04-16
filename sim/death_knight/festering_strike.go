@@ -81,8 +81,8 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 				if dk.BloodPlagueSpell.Dot(target).IsActive() {
 					extendHandler(dk.BloodPlagueSpell.Dot(target).Aura)
 				}
-				if dk.Talents.EbonPlaguebringer > 0 && dk.EbonPlagueBringerAura.Get(target).IsActive() {
-					extendHandler(dk.EbonPlagueBringerAura.Get(target))
+				if dk.Talents.EbonPlaguebringer > 0 && dk.EbonPlagueAura.Get(target).IsActive() {
+					extendHandler(dk.EbonPlagueAura.Get(target))
 				}
 			}
 
