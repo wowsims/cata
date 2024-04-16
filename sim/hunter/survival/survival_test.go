@@ -18,7 +18,7 @@ func TestSV(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-		GearSet:     core.GetGearSet("../../../ui/hunter/survival/gear_sets", "p1_sv"),
+		GearSet:     core.GetGearSet("../../../ui/hunter/survival/gear_sets", "preraid_sv"),
 		Talents:     SVTalents,
 		Glyphs:      SVGlyphs,
 		Consumes:    FullConsumes,
@@ -58,7 +58,7 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassHunter,
-				Equipment:     core.GetGearSet("../../ui/hunter/gear_sets", "p1_sv").GearSet,
+				Equipment:     core.GetGearSet("../../ui/hunter/gear_sets", "preraid_sv").GearSet,
 				Consumes:      FullConsumes,
 				Spec:          PlayerOptionsBasic,
 				Glyphs:        SVGlyphs,
