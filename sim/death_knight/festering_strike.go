@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 var FesteringStrikeActionID = core.ActionID{SpellID: 85948}
@@ -25,13 +26,15 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 			baseDamage := dk.ClassBaseScaling*0.24899999797 +
 				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
 
 	extendHandler := func(aura *core.Aura) {
 		aura.UpdateExpires(aura.ExpiresAt() + time.Second*6)
 	}
+
+	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
 	dk.FesteringStrike = dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       FesteringStrikeActionID.WithTag(1),
@@ -62,10 +65,14 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 			baseDamage := dk.ClassBaseScaling*0.49799999595 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			spell.SpendRefundableCost(sim, result)
-			dk.threatOfThassarianProc(sim, result, ohSpell)
+			if hasReaping {
+				spell.SpendRefundableCostAndConvertBloodOrFrostRune(sim, result, 1)
+			} else {
+				spell.SpendRefundableCost(sim, result)
+			}
+			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 
 			if result.Landed() {
 				if dk.FrostFeverSpell.Dot(target).IsActive() {

@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/druid"
 )
 
@@ -42,15 +43,15 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	// cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
 	// //cat.maxRipTicks = cat.MaxRipTicks()
 
-	// cat.EnableEnergyBar(100.0)
+	cat.EnableEnergyBar(100.0)
 
 	// cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1, MHSwingSpeed: 2.5})
 
-	// cat.EnableAutoAttacks(cat, core.AutoAttackOptions{
-	// 	// Base paw weapon.
-	// 	//MainHand:       cat.GetCatWeapon(),
-	// 	AutoSwingMelee: true,
-	// })
+	cat.EnableAutoAttacks(cat, core.AutoAttackOptions{
+		// Base paw weapon.
+		MainHand:       cat.GetCatWeapon(),
+		AutoSwingMelee: true,
+	})
 	// cat.ReplaceBearMHFunc = func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
 	// 	return cat.checkReplaceMaul(sim, mhSwingSpell)
 	// }
@@ -92,13 +93,18 @@ func (cat *FeralDruid) MissChance() float64 {
 
 func (cat *FeralDruid) Initialize() {
 	cat.Druid.Initialize()
-	//cat.RegisterFeralCatSpells()
+	cat.RegisterFeralCatSpells()
+}
+
+func (cat *FeralDruid) ApplyTalents() {
+	cat.Druid.ApplyTalents()
+	cat.MultiplyStat(stats.AttackPower, 1.25) // Aggression passive
 }
 
 func (cat *FeralDruid) Reset(sim *core.Simulation) {
 	cat.Druid.Reset(sim)
-	// cat.Druid.ClearForm(sim)
-	// cat.CatFormAura.Activate(sim)
+	cat.Druid.ClearForm(sim)
+	cat.CatFormAura.Activate(sim)
 	// cat.readyToShift = false
 	// cat.waitingForTick = false
 	// cat.berserkUsed = false

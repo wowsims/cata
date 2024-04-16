@@ -205,7 +205,7 @@ type AttackTable struct {
 
 	// This is for "Apply Aura: Mod Damage Done By Caster" effects.
 	// If set, the damage taken multiplier is multiplied by the callbacks result.
-	DamageDoneByCasterMultiplier func(spell *Spell, attackTable *AttackTable) float64
+	DamageDoneByCasterMultiplier func(sim *Simulation, spell *Spell, attackTable *AttackTable) float64
 }
 
 func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {

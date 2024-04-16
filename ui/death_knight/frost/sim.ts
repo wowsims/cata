@@ -26,7 +26,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
@@ -46,12 +46,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatExpertise,
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_FROST_PRESET.gear,
+		gear: Presets.DEFAULT_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -75,49 +75,47 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.FrostTalents.data,
+		talents: Presets.SingleTargetTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultFrostOptions,
+		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			swiftRetribution: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
+			communion: true,
 			icyTalons: true,
-			abominationsMight: true,
-			leaderOfThePack: TristateEffect.TristateEffectRegular,
-			sanctifiedRetribution: true,
+			leaderOfThePack: true,
 			bloodlust: true,
-			devotionAura: TristateEffect.TristateEffectImproved,
-			stoneskinTotem: TristateEffect.TristateEffectImproved,
+			hornOfWinter: true,
+			stoneskinTotem: true,
+			moonkinForm: true,
 			wrathOfAirTotem: true,
-			powerWordFortitude: TristateEffect.TristateEffectImproved,
+			powerWordFortitude: true,
+			arcaneBrilliance: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
 		}),
 		partyBuffs: PartyBuffs.create({
 			heroicPresence: false,
 		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			bloodFrenzy: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
 			sunderArmor: true,
 			ebonPlaguebringer: true,
 			mangle: true,
-			heartOfTheCrusader: true,
-			shadowMastery: true,
+			criticalMass: true,
+			demoralizingShout: true,
+			frostFever: true,
+			judgement: true,
 		}),
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
-		const talentPoints = player.getTalentTreePoints();
-		// TODO: Add Frost AOE rotation
-		if (talentPoints[0] > talentPoints[2]) {
-			return Presets.FROST_BL_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		const numTargets = player.sim.encounter.targets.length;
+		if (numTargets > 1) {
+			return Presets.AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		} else {
-			return Presets.FROST_UH_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 
@@ -126,7 +124,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.StaminaBuff],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.AttackPowerDebuff, BuffDebuffInputs.DamageReductionPercentBuff, BuffDebuffInputs.MeleeAttackSpeedDebuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.MeleeAttackSpeedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -135,7 +133,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			// FrostInputs.UseAMSInput,
 			// FrostInputs.AvgAMSSuccessRateInput,
 			// FrostInputs.AvgAMSHitInput,
-
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
 		],
@@ -158,8 +155,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFrostDeathKnight,
-			talents: Presets.FrostTalents.data,
-			specOptions: Presets.DefaultFrostOptions,
+			talents: Presets.SingleTargetTalents.data,
+			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
@@ -169,16 +166,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_FROST_PRESET.gear,
-					2: Presets.P2_FROST_PRESET.gear,
-					3: Presets.P3_FROST_PRESET.gear,
-					4: Presets.P4_FROST_PRESET.gear,
+					1: Presets.DEFAULT_GEAR_PRESET.gear,
+					2: Presets.DEFAULT_GEAR_PRESET.gear,
+					3: Presets.DEFAULT_GEAR_PRESET.gear,
+					4: Presets.DEFAULT_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_FROST_PRESET.gear,
-					2: Presets.P2_FROST_PRESET.gear,
-					3: Presets.P3_FROST_PRESET.gear,
-					4: Presets.P4_FROST_PRESET.gear,
+					1: Presets.DEFAULT_GEAR_PRESET.gear,
+					2: Presets.DEFAULT_GEAR_PRESET.gear,
+					3: Presets.DEFAULT_GEAR_PRESET.gear,
+					4: Presets.DEFAULT_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

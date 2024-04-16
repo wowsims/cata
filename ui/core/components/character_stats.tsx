@@ -229,10 +229,6 @@ export class CharacterStats extends Component {
 						<span>To Exp Cap:</span>
 						<span>{`${meleeCritCapInfo.remainingExpertiseCap.toFixed(2)}%`}</span>
 					</div>
-					<div className="character-stats-tooltip-row">
-						<span>Debuffs:</span>
-						<span>{`${meleeCritCapInfo.debuffCrit.toFixed(2)}%`}</span>
-					</div>
 					{meleeCritCapInfo.specSpecificOffset != 0 && (
 						<div className="character-stats-tooltip-row">
 							<span>Spec Offsets:</span>
@@ -274,11 +270,7 @@ export class CharacterStats extends Component {
 		} else if (stat == Stat.StatMeleeCrit || stat == Stat.StatSpellCrit) {
 			displayStr += ` (${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%)`;
 		} else if (stat == Stat.StatMeleeHaste) {
-			if ([Class.ClassDruid, Class.ClassShaman, Class.ClassPaladin, Class.ClassDeathKnight].includes(this.player.getClass())) {
-				displayStr += ` (${(rawValue / Mechanics.SPECIAL_MELEE_HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
-			} else {
-				displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
-			}
+			displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
 		} else if (stat == Stat.StatSpellHaste) {
 			displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
 		} else if (stat == Stat.StatArmorPenetration) {
@@ -317,14 +309,7 @@ export class CharacterStats extends Component {
 		let debuffStats = new Stats();
 
 		const debuffs = this.player.sim.raid.getDebuffs();
-		if (debuffs.misery || debuffs.faerieFire == TristateEffect.TristateEffectImproved) {
-			debuffStats = debuffStats.addStat(Stat.StatSpellHit, 3 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-		}
-		if (debuffs.totemOfWrath || debuffs.heartOfTheCrusader || debuffs.masterPoisoner) {
-			debuffStats = debuffStats.addStat(Stat.StatSpellCrit, 3 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
-			debuffStats = debuffStats.addStat(Stat.StatMeleeCrit, 3 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-		}
-		if (debuffs.improvedScorch || debuffs.wintersChill || debuffs.shadowMastery) {
+		if (debuffs.criticalMass || debuffs.shadowAndFlame) {
 			debuffStats = debuffStats.addStat(Stat.StatSpellCrit, 5 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
 		}
 

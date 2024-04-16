@@ -7,6 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+type OnApplyEffects func(aura *Aura, sim *Simulation, target *Unit, spell *Spell)
 type ApplySpellResults func(sim *Simulation, target *Unit, spell *Spell)
 type ExpectedDamageCalculator func(sim *Simulation, target *Unit, spell *Spell, useSnapshot bool) *SpellResult
 type CanCastCondition func(sim *Simulation, target *Unit) bool
@@ -269,7 +270,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		panic("Empty DefaultCast with a cost for spell " + config.ActionID.String())
 	}
 
-	if spell.DefaultCast.GCD == 0 && spell.DefaultCast.CastTime == 0 {
+	if spell.DefaultCast.GCD <= 0 && spell.DefaultCast.CastTime == 0 {
 		config.Cast.IgnoreHaste = true
 	}
 
@@ -506,6 +507,13 @@ func (spell *Spell) SkipCastAndApplyEffects(sim *Simulation, target *Unit) {
 func (spell *Spell) applyEffects(sim *Simulation, target *Unit) {
 	spell.SpellMetrics[target.UnitIndex].Casts++
 	spell.casts++
+
+	// Not sure if we want to split this flag into its own?
+	// Both are used to optimize away unneccesery calls and 99%
+	// of the time are gonna be used together. For now just in one
+	if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
+		spell.Unit.OnApplyEffects(sim, target, spell)
+	}
 
 	spell.ApplyEffects(sim, target, spell)
 }

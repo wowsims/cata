@@ -19,20 +19,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatIntellect,
+	epStats: [		
 		Stat.StatAgility,
-		Stat.StatStrength,
+		Stat.StatIntellect,
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatExpertise,
+		Stat.StatArmorPenetration,		
 		Stat.StatSpellPower,
-		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
+		Stat.StatSpellCrit,		
 		Stat.StatSpellHaste,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -41,7 +41,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	displayStats: [
 		Stat.StatHealth,
 		Stat.StatStamina,
-		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatIntellect,
 		Stat.StatAttackPower,
@@ -54,6 +53,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
+		Stat.StatMastery,
 	],
 
 	defaults: {
@@ -91,10 +91,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: TristateEffect.TristateEffectImproved,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-			judgementsOfTheWise: true,
+			vampiricTouch: true,
 		}),
 		debuffs: Presets.DefaultDebuffs,
 	},
@@ -102,7 +99,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [ShamanInputs.ShamanShieldInput(), ShamanInputs.ShamanImbueMH(), EnhancementInputs.ShamanImbueOH],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.ReplenishmentBuff, BuffDebuffInputs.MP5Buff, BuffDebuffInputs.SpellHasteBuff, BuffDebuffInputs.SpiritBuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.ReplenishmentBuff, BuffDebuffInputs.MP5Buff, BuffDebuffInputs.HastePercentBuff],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -117,9 +114,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.StandardTalents, Presets.Phase3Talents],
+		talents: [Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_FT_DEFAULT, Presets.ROTATION_WF_DEFAULT, Presets.ROTATION_PHASE_3],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.PRERAID_PRESET,
@@ -134,21 +131,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
-		const hasT94P =
-			player.getCurrentStats().sets.includes("Triumphant Nobundo's Battlegear (4pc)") ||
-			player.getCurrentStats().sets.includes("Nobundo's Battlegear (4pc)") ||
-			player.getCurrentStats().sets.includes("Triumphant Thrall's Battlegear (4pc)") ||
-			player.getCurrentStats().sets.includes("Thrall's Battlegear (4pc)");
-		const options = player.getSpecOptions();
-
-		if (hasT94P) {
-			console.log('has set');
-			return Presets.ROTATION_PHASE_3.rotation.rotation!;
-		} else if (options.classOptions?.imbueMh == ShamanImbue.FlametongueWeapon) {
-			return Presets.ROTATION_FT_DEFAULT.rotation.rotation!;
-		} else {
-			return Presets.ROTATION_WF_DEFAULT.rotation.rotation!;
-		}
+			return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;		
 	},
 
 	raidSimPresets: [

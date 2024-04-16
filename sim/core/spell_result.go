@@ -190,7 +190,7 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 	if sim.Log == nil {
 		result.Damage *= attackerMultiplier
 		result.applyResistances(sim, spell, isPeriodic, attackTable)
-		result.applyTargetModifiers(spell, attackTable, isPeriodic)
+		result.applyTargetModifiers(sim, spell, attackTable, isPeriodic)
 
 		// Save partial outcome which comes from applyResistances call
 		partialOutcome := OutcomeEmpty
@@ -211,7 +211,7 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 		afterAttackMods := result.Damage
 		result.applyResistances(sim, spell, isPeriodic, attackTable)
 		afterResistances := result.Damage
-		result.applyTargetModifiers(spell, attackTable, isPeriodic)
+		result.applyTargetModifiers(sim, spell, attackTable, isPeriodic)
 		afterTargetMods := result.Damage
 
 		// Save partial outcome which comes from applyResistances call
@@ -341,6 +341,14 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64) {
 	dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 }
 
+func (dot *Dot) SnapshotPhysical(target *Unit, baseDamage float64) {
+	dot.SnapshotBaseDamage = baseDamage
+	// At this time, not aware of any physical-scaling DoTs that need BonusCoefficient
+	attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+	dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
+	dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+}
+
 func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHealing float64, casterMultiplier float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackTable := spell.Unit.AttackTables[target.UnitIndex]
 
@@ -459,7 +467,7 @@ func (spell *Spell) attackerDamageMultiplierInternal(attackTable *AttackTable) f
 		attackTable.DamageDealtMultiplier
 }
 
-func (result *SpellResult) applyTargetModifiers(spell *Spell, attackTable *AttackTable, isPeriodic bool) {
+func (result *SpellResult) applyTargetModifiers(sim *Simulation, spell *Spell, attackTable *AttackTable, isPeriodic bool) {
 	if spell.Flags.Matches(SpellFlagIgnoreTargetModifiers) {
 		return
 	}
@@ -468,9 +476,9 @@ func (result *SpellResult) applyTargetModifiers(spell *Spell, attackTable *Attac
 		result.Damage += attackTable.Defender.PseudoStats.BonusPhysicalDamageTaken
 	}
 
-	result.Damage *= spell.TargetDamageMultiplier(attackTable, isPeriodic)
+	result.Damage *= spell.TargetDamageMultiplier(sim, attackTable, isPeriodic)
 }
-func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic bool) float64 {
+func (spell *Spell) TargetDamageMultiplier(sim *Simulation, attackTable *AttackTable, isPeriodic bool) float64 {
 	if spell.Flags.Matches(SpellFlagIgnoreTargetModifiers) {
 		return 1
 	}
@@ -494,7 +502,7 @@ func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic 
 	}
 
 	if attackTable.DamageDoneByCasterMultiplier != nil {
-		multiplier *= attackTable.DamageDoneByCasterMultiplier(spell, attackTable)
+		multiplier *= attackTable.DamageDoneByCasterMultiplier(sim, spell, attackTable)
 	}
 
 	return multiplier

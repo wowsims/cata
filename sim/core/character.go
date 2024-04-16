@@ -238,9 +238,8 @@ func (character *Character) applyEquipment() {
 }
 
 func (character *Character) addUniversalStatDependencies() {
-	character.AddStat(stats.Health, 20-10*20)
-	character.AddStatDependency(stats.Stamina, stats.Health, 10)
-	character.AddStatDependency(stats.Agility, stats.Armor, 2)
+	character.AddStat(stats.Health, 20-14*20)
+	character.AddStatDependency(stats.Stamina, stats.Health, 14)
 }
 
 // Returns a partially-filled PlayerStats proto for use in the CharacterStats api call.
@@ -408,25 +407,6 @@ func (character *Character) DefaultHealingCritMultiplier() float64 {
 func (character *Character) AddRaidBuffs(_ *proto.RaidBuffs) {
 }
 func (character *Character) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
-	if character.Race == proto.Race_RaceDraenei {
-		partyBuffs.HeroicPresence = true
-	}
-
-	switch character.MainHand().ID {
-	case ItemIDAtieshMage:
-		partyBuffs.AtieshMage += 1
-	case ItemIDAtieshWarlock:
-		partyBuffs.AtieshWarlock += 1
-	}
-
-	switch character.Neck().ID {
-	case ItemIDBraidedEterniumChain:
-		partyBuffs.BraidedEterniumChain = true
-	case ItemIDChainOfTheTwilightOwl:
-		partyBuffs.ChainOfTheTwilightOwl = true
-	case ItemIDEyeOfTheNight:
-		partyBuffs.EyeOfTheNight = true
-	}
 }
 
 func (character *Character) initialize(agent Agent) {
@@ -588,9 +568,7 @@ func (character *Character) HasOHWeapon() bool {
 func (character *Character) GetRangedWeapon() *Item {
 	weapon := character.Ranged()
 	if weapon.ID == 0 ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeIdol ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeLibram ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeTotem {
+		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeRelic {
 		return nil
 	} else {
 		return weapon
@@ -726,4 +704,25 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3
 		}
 		offset += treeSizes[treeIdx]
 	}
+}
+
+func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
+	hasBonus := true
+
+	if character.Head().ArmorType != armorType ||
+		character.Shoulder().ArmorType != armorType ||
+		character.Chest().ArmorType != armorType ||
+		character.Wrist().ArmorType != armorType ||
+		character.Hands().ArmorType != armorType ||
+		character.Waist().ArmorType != armorType ||
+		character.Legs().ArmorType != armorType ||
+		character.Feet().ArmorType != armorType {
+		hasBonus = false
+	}
+
+	if hasBonus {
+		character.MultiplyStat(primaryStat, 1.05)
+	}
+
+	return hasBonus
 }

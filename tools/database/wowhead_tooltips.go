@@ -425,12 +425,9 @@ var rangedWeaponTypePatterns = map[proto.RangedWeaponType]*regexp.Regexp{
 	proto.RangedWeaponType_RangedWeaponTypeBow:      regexp.MustCompile(`<span class="q1">Bow</span>`),
 	proto.RangedWeaponType_RangedWeaponTypeCrossbow: regexp.MustCompile(`<span class="q1">Crossbow</span>`),
 	proto.RangedWeaponType_RangedWeaponTypeGun:      regexp.MustCompile(`<span class="q1">Gun</span>`),
-	proto.RangedWeaponType_RangedWeaponTypeIdol:     regexp.MustCompile(`<span class="q1">Idol</span>`),
-	proto.RangedWeaponType_RangedWeaponTypeLibram:   regexp.MustCompile(`<span class="q1">Libram</span>`),
+	proto.RangedWeaponType_RangedWeaponTypeRelic:    regexp.MustCompile(`<td>Relic</td>`),
 	proto.RangedWeaponType_RangedWeaponTypeThrown:   regexp.MustCompile(`<span class="q1">Thrown</span>`),
-	proto.RangedWeaponType_RangedWeaponTypeTotem:    regexp.MustCompile(`<span class="q1">Totem</span>`),
 	proto.RangedWeaponType_RangedWeaponTypeWand:     regexp.MustCompile(`<span class="q1">Wand</span>`),
-	proto.RangedWeaponType_RangedWeaponTypeSigil:    regexp.MustCompile(`<span class="q1">Sigil</span>`),
 }
 
 func (item WowheadItemResponse) GetRangedWeaponType() proto.RangedWeaponType {

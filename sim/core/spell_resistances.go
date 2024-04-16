@@ -61,12 +61,15 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 	}
 }
 
+// https://web.archive.org/web/20130208043756/http://elitistjerks.com/f15/t29453-combat_ratings_level_85_cataclysm/
+// https://web.archive.org/web/20110309163709/http://elitistjerks.com/f78/t105429-cataclysm_mechanics_testing/
 func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
 	if at.IgnoreArmor {
 		return 1.0
 	}
 
-	armorConstant := float64(at.Attacker.Level)*467.5 - 22167.5
+	// Assume target > 80
+	armorConstant := float64(at.Attacker.Level)*2167.5 - 158167.5
 	defenderArmor := at.Defender.Armor()
 	reducibleArmor := min((defenderArmor+armorConstant)/3, defenderArmor)
 	armorPenRating := at.Attacker.stats[stats.ArmorPenetration] + spell.BonusArmorPenRating
