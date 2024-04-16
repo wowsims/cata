@@ -127,6 +127,15 @@ func (priest *Priest) Initialize() {
 		ActionID: core.ActionID{SpellID: 89745},
 	}))
 
+	if priest.SelfBuffs.UseInnerFire {
+		priest.AddStat(stats.SpellPower, 531)
+		priest.ApplyEquipScaling(stats.Armor, 1.6)
+		core.MakePermanent(priest.RegisterAura(core.Aura{
+			Label:    "Inner Fire",
+			ActionID: core.ActionID{SpellID: 588},
+		}))
+	}
+
 	// priest.registerSetBonuses()
 	priest.registerDevouringPlagueSpell()
 	priest.registerShadowWordPainSpell()
@@ -136,6 +145,7 @@ func (priest *Priest) Initialize() {
 	priest.registerShadowfiendSpell()
 	priest.registerVampiricTouchSpell()
 	priest.registerDispersionSpell()
+	priest.registerMindSpike()
 
 	// priest.registerPowerInfusionCD()
 
@@ -198,7 +208,6 @@ func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
 	priest.EnableManaBar()
 	priest.ShadowfiendPet = priest.NewShadowfiend()
-
 	return priest
 }
 
