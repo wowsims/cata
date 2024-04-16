@@ -870,6 +870,9 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	raidBuffs.UnleashedRage = false
 	raidBuffs.AbominationsMight = false
 	raidBuffs.BlessingOfMight = false
+	// +Armor
+	raidBuffs.DevotionAura = false
+	raidBuffs.StoneskinTotem = false
 
 	individualBuffs.HymnOfHopeCount = 0
 	individualBuffs.InnervateCount = 0
@@ -883,6 +886,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.UnholyFrenzyCount = 0
 
 	if !petAgent.GetPet().enabledOnStart {
+		// What do we do with permanent pets that are not enabled at start?
 	}
 
 	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
