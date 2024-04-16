@@ -104,6 +104,10 @@ func (enh *EnhancementShaman) Initialize() {
 			enh.ApplySyncType(proto.ShamanSyncType_Auto)
 		})
 	}
+
+	enh.GetSpellPowerValue = func(spell *core.Spell) float64 {
+		return spell.MeleeAttackPower() * 0.55
+	}
 }
 
 func (enh *EnhancementShaman) Reset(sim *core.Simulation) {
