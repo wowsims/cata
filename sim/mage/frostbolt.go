@@ -20,7 +20,7 @@ func (mage *Mage) registerFrostboltSpell() {
 		ActionID:     core.ActionID{SpellID: 116},
 		SpellSchool:  core.SpellSchoolFrost,
 		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | BarrageSpells | core.SpellFlagAPL,
+		Flags:        SpellFlagMage | ArcaneMissileSpells | core.SpellFlagAPL,
 		MissileSpeed: 28,
 
 		ManaCost: core.ManaCostOptions{

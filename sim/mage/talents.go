@@ -51,16 +51,15 @@ func (mage *Mage) ApplyTalents() {
 	// Arcane Specialization Bonus
 	if mage.Spec == proto.Spec_SpecArcaneMage {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneMissiles | MageSpellArcaneExplosion,
+			ClassMask:  MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion, // | MageSpellArcaneMissiles,
 			FloatValue: 0.25,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 		})
 	}
 
 	// Cooldowns/Special Implementations
 	mage.registerArcanePowerCD()
 	mage.registerPresenceOfMindCD()
-	mage.applyArcaneMissileProc()
 	mage.applyFocusMagic()
 	mage.applyArcanePotency()
 	mage.applyArcaneConcentration()
@@ -77,9 +76,9 @@ func (mage *Mage) ApplyTalents() {
 	// Torment the Weak
 	if mage.Talents.TormentTheWeak > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneMissiles | MageSpellArcaneExplosion,
+			ClassMask:  MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion, //| MageSpellArcaneMissiles,
 			FloatValue: 0.02 * float64(mage.Talents.TormentTheWeak),
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 		})
 	}
 
@@ -89,6 +88,15 @@ func (mage *Mage) ApplyTalents() {
 			ClassMask: MageSpellArcaneMissiles,
 			IntValue:  int64(mage.Talents.ImprovedArcaneMissiles),
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
+		})
+	}
+
+	// Missile Barrage
+	if mage.Talents.MissileBarrage > 0 {
+		mage.AddStaticMod(core.SpellModConfig{
+			ClassMask: MageSpellArcaneMissiles,
+			TimeValue: time.Millisecond * time.Duration(-100*mage.Talents.MissileBarrage),
+			Kind:      core.SpellMod_DotTickLength_Flat,
 		})
 	}
 
@@ -149,7 +157,7 @@ func (mage *Mage) ApplyTalents() {
 		mage.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolFire,
 			FloatValue: 0.01 * float64(mage.Talents.FirePower),
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 		})
 	}
 
@@ -468,7 +476,7 @@ func (mage *Mage) applyArcaneConcentration() {
 			if spell.DefaultCast.Cost == 0 {
 				return
 			}
-			if spell == mage.ArcaneMissiles && mage.ArcaneMissilesAura.IsActive() {
+			if spell == mage.ArcaneMissiles && mage.ArcaneMissilesProcAura.IsActive() {
 				return
 			}
 			if proccedAt == sim.CurrentTime && proccedSpell == spell {
@@ -476,56 +484,6 @@ func (mage *Mage) applyArcaneConcentration() {
 				return
 			}
 			aura.Deactivate(sim)
-		},
-	})
-}
-
-func (mage *Mage) applyArcaneMissileProc() {
-
-	t10ProcAura := mage.BloodmagesRegalia2pcAura()
-
-	arcaneMissilesMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellArcaneMissiles,
-		FloatValue: -1,
-		Kind:       core.SpellMod_PowerCost_Pct,
-	})
-	mage.ArcaneMissilesAura = mage.RegisterAura(core.Aura{
-		Label:    "Arcane Missiles Proc",
-		ActionID: core.ActionID{SpellID: 79683},
-		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			arcaneMissilesMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			arcaneMissilesMod.Deactivate()
-			if t10ProcAura != nil {
-				t10ProcAura.Activate(sim)
-			}
-		},
-	})
-
-	var procChance float64
-	if mage.Talents.HotStreak {
-		procChance = .05 // Chance for hot streak crit
-	} else if mage.Talents.BrainFreeze == 0 {
-		procChance = .05 * float64(mage.Talents.BrainFreeze)
-	} else {
-		procChance = 0.4
-	}
-
-	mage.RegisterAura(core.Aura{
-		Label:    "Arcane Missiles Activation",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) { // Arcane Missiles and Brain Freeze proc on cast complete
-			if !spell.Flags.Matches(ArcaneMissileSpells) {
-				return
-			}
-			if sim.Proc(procChance, "Arcane Missiles") {
-				mage.ArcaneMissilesAura.Activate(sim)
-			}
 		},
 	})
 }

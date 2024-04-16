@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -21,7 +20,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		FloatValue: 1.5,
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
-	//Update to flat casttime when implemented
+	//Update to flat casttime when implemented, using PCT just to test
 	abCastMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellArcaneBlast,
 		FloatValue: -0.1,
@@ -47,7 +46,6 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			abDamageMod.UpdateFloatValue(abDamageScalar * float64(newStacks))
 			abCostMod.UpdateFloatValue(1.5 * float64(newStacks))
 			abCastMod.UpdateFloatValue(-0.1 * float64(newStacks))
-			fmt.Println(abDamageMod.GetFloatValue())
 		},
 	})
 
@@ -69,9 +67,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 
 		BonusCritRating: 0 +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0),
-		DamageMultiplier: 1 *
-			(1 + .02*float64(mage.Talents.TormentTheWeak)),
-
+		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 1.0,
 		ThreatMultiplier: 1,

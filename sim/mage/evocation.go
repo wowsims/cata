@@ -8,7 +8,7 @@ import (
 
 func (mage *Mage) registerEvocation() {
 	actionID := core.ActionID{SpellID: 12051}
-	maxTicks := core.TernaryInt32(mage.HasSetBonus(ItemSetTempestRegalia, 2), 4, 3)
+	maxTicks := core.TernaryInt32(mage.HasSetBonus(ItemSetTempestRegalia, 2), 5, 4)
 	manaMetrics := mage.NewManaMetrics(actionID)
 	manaPerTick := 0.0
 
@@ -22,7 +22,7 @@ func (mage *Mage) registerEvocation() {
 			},
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Second * time.Duration(240*(1-mage.GetArcaneFlowsCDReduction())),
+				Duration: time.Minute * time.Duration(4-mage.Talents.ArcaneFlows),
 			},
 		},
 
@@ -41,7 +41,6 @@ func (mage *Mage) registerEvocation() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			mage.AddMana(sim, mage.MaxMana()*0.15, manaMetrics)
 			manaPerTick = mage.MaxMana() * 0.15
 			spell.SelfHot().Apply(sim)
 		},

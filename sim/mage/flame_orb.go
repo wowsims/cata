@@ -75,15 +75,13 @@ type FlameOrb struct {
 	FlameOrbTick    *core.Spell
 	FlameOrbExplode *core.Spell
 	TickCount       int64
-	TalentPoints    float64
 }
 
 func (mage *Mage) NewFlameOrb() *FlameOrb {
 	flameOrb := &FlameOrb{
-		Pet:          core.NewPet("Flame Orb", &mage.Character, flameOrbBaseStats, createFlameOrbInheritance(), false, true),
-		mageOwner:    mage,
-		TickCount:    0,
-		TalentPoints: float64(mage.Talents.FirePower),
+		Pet:       core.NewPet("Flame Orb", &mage.Character, flameOrbBaseStats, createFlameOrbInheritance(), false, true),
+		mageOwner: mage,
+		TickCount: 0,
 	}
 
 	mage.AddPet(flameOrb)
@@ -124,7 +122,6 @@ var createFlameOrbInheritance = func() func(stats.Stats) stats.Stats {
 }
 
 func (fo *FlameOrb) registerFlameOrbTickSpell() {
-	curTarget := fo.CurrentTarget
 
 	fo.FlameOrbTick = fo.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 82739},
@@ -145,11 +142,9 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := 0.278 * fo.mageOwner.ScalingBaseDamage
-			spell.CalcAndDealDamage(sim, curTarget, damage, spell.OutcomeMagicHitAndCrit)
-			curTarget = sim.Environment.NextTargetUnit(curTarget)
-
+			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
+			spell.CalcAndDealDamage(sim, randomTarget, damage, spell.OutcomeMagicHitAndCrit)
 			fo.TickCount += 1
-			//spell.SpellMetrics[target.UnitIndex].Casts--
 			if fo.TickCount == 15 {
 				fo.mageOwner.FlameOrbExplode.Cast(sim, fo.mageOwner.CurrentTarget)
 				fo.TickCount = 0

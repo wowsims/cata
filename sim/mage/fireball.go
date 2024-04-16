@@ -14,7 +14,7 @@ func (mage *Mage) registerFireballSpell() {
 		ActionID:     core.ActionID{SpellID: 133},
 		SpellSchool:  core.SpellSchoolFire,
 		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | BarrageSpells | HotStreakSpells | core.SpellFlagAPL,
+		Flags:        SpellFlagMage | ArcaneMissileSpells | HotStreakSpells | core.SpellFlagAPL,
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{

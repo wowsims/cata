@@ -10,11 +10,12 @@ import (
 func (mage *Mage) registerArcaneBarrageSpell() {
 
 	mage.ArcaneBarrage = mage.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 44425},
-		SpellSchool:  core.SpellSchoolArcane,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | BarrageSpells | core.SpellFlagAPL,
-		MissileSpeed: 24,
+		ActionID:       core.ActionID{SpellID: 44425},
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | ArcaneMissileSpells | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellArcaneBarrage,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.11,
