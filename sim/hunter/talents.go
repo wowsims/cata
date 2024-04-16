@@ -9,6 +9,7 @@ import (
 )
 
 func (hunter *Hunter) ApplyTalents() {
+	hunter.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeMail)
 	if hunter.Pet != nil {
 		hunter.applyFrenzy()
 		hunter.registerBestialWrathCD()
@@ -34,7 +35,18 @@ func (hunter *Hunter) ApplyTalents() {
 	if hunter.Talents.KillingStreak > 0 {
 		hunter.applyKillingStreak()
 	}
-
+	if hunter.Talents.Efficiency > 0 {
+		hunter.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_PowerCost_Flat,
+			ClassMask:  HunterSpellArcaneShot,
+			FloatValue: -float64(hunter.Talents.Efficiency),
+		})
+		hunter.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_PowerCost_Flat,
+			ClassMask:  HunterSpellExplosiveShot | HunterSpellChimeraShot,
+			FloatValue: -(float64(hunter.Talents.Efficiency) * 2),
+		})
+	}
 	hunter.applyCobraStrikes()
 	hunter.applyPiercingShots()
 	hunter.applySpiritBond()
@@ -322,17 +334,27 @@ func (hunter *Hunter) applyKillingStreak() {
 	if hunter.Talents.KillingStreak == 0 {
 		return
 	}
+	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  HunterSpellKillCommand,
+		FloatValue: float64(hunter.Talents.KillingStreak) * 0.1,
+	})
+	costMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Flat,
+		ClassMask:  HunterSpellKillCommand,
+		FloatValue: -(float64(hunter.Talents.KillingStreak) * 5),
+	})
 	hunter.KillingStreakAura = hunter.RegisterAura(core.Aura{
 		Label:    "Killing Streak",
 		ActionID: core.ActionID{SpellID: 82748},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.KillCommand.DamageMultiplier *= 1 + (float64(hunter.Talents.KillingStreak) * 0.1)
-			hunter.KillCommand.ApplyCostModifiers(hunter.KillCommand.CurCast.Cost - (float64(hunter.Talents.KillingStreak) * 5))
+			damageMod.Activate()
+			costMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.KillCommand.DamageMultiplier /= 1 + (float64(hunter.Talents.KillingStreak) * 0.1)
-			hunter.KillCommand.ApplyCostModifiers(hunter.KillCommand.CurCast.Cost + (float64(hunter.Talents.KillingStreak) * 5))
+			damageMod.Deactivate()
+			costMod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell == hunter.KillCommand {
@@ -701,7 +723,7 @@ func (hunter *Hunter) applySniperTraining() {
 	uptime = min(1, uptime)
 
 	dmgMod := hunter.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  SpellMaskCobraShot | SpellMaskSteadyShot,
+		ClassMask:  HunterSpellCobraShot | HunterSpellSteadyShot,
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: .02 * float64(hunter.Talents.SniperTraining),
 	})

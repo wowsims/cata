@@ -63,7 +63,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 	// Happiness
 	// Todo:
-	//hp.PseudoStats.DamageDealtMultiplier *= 1.25
+	hp.PseudoStats.DamageDealtMultiplier *= 1.25
 
 	// Pet family bonus is now the same for all pets.
 	//Todo: Should this stay?
@@ -145,7 +145,6 @@ var hunterPetBaseStats = stats.Stats{
 const PetExpertiseScale = 3.25
 
 func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
-	hvw := hunter.Talents.HunterVsWild
 
 	return func(ownerStats stats.Stats) stats.Stats {
 		// EJ posts claim this value is passed through math.Floor, but in-game testing
@@ -157,11 +156,11 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.RangedAttackPower]*0.22 + ownerStats[stats.Stamina]*0.1*float64(hvw),
+			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.22,
 
 			stats.MeleeHit:  hitRatingFromOwner,
-			stats.SpellHit:  hitRatingFromOwner * 2,
-			stats.Expertise: ownerHitChance * PetExpertiseScale * core.ExpertisePerQuarterPercentReduction,
+			stats.SpellHit:  hitRatingFromOwner,
+			stats.Expertise: (ownerHitChance * 26 / 8) / 100,
 		}
 	}
 }

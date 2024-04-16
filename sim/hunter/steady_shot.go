@@ -14,7 +14,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 	hunter.SteadyShot = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 56641},
 		SpellSchool:    core.SpellSchoolPhysical,
-		ClassSpellMask: SpellMaskSteadyShot,
+		ClassSpellMask: HunterSpellSteadyShot,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		MissileSpeed:   40,

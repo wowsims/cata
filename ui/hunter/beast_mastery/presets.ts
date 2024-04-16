@@ -13,23 +13,15 @@ import { SavedTalents } from '../../core/proto/ui';
 import { ferocityBMDefault } from '../../core/talents/hunter_pet';
 import AoeApl from './apls/aoe.apl.json';
 import BmApl from './apls/bm.apl.json';
-import P1MMGear from './gear_sets/p1_mm.gear.json';
-import P2MMGear from './gear_sets/p2_mm.gear.json';
-import P3MMGear from './gear_sets/p3_mm.gear.json';
-import P4MMGear from './gear_sets/p4_mm.gear.json';
-import P5MMGear from './gear_sets/p5_mm.gear.json';
-import PreraidMMGear from './gear_sets/preraid_mm.gear.json';
+import P1BMGear from './gear_sets/p1_bm.gear.json';
+import PreraidBMGear from './gear_sets/preraid_bm.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const BM_PRERAID_PRESET = PresetUtils.makePresetGear('BM PreRaid Preset', PreraidMMGear);
-export const BM_P1_PRESET = PresetUtils.makePresetGear('BM P1 Preset', P1MMGear);
-export const BM_P2_PRESET = PresetUtils.makePresetGear('BM P2 Preset', P2MMGear);
-export const BM_P3_PRESET = PresetUtils.makePresetGear('BM P3 Preset', P3MMGear);
-export const BM_P4_PRESET = PresetUtils.makePresetGear('BM P4 Preset', P4MMGear);
-export const BM_P5_PRESET = PresetUtils.makePresetGear('BM P5 Preset', P5MMGear);
+export const BM_PRERAID_PRESET = PresetUtils.makePresetGear('BM PreRaid Preset', PreraidBMGear);
+export const BM_P1_PRESET = PresetUtils.makePresetGear('BM P1 Preset', P1BMGear);
 
 export const DefaultSimpleRotation = BeastMasteryRotation.create({
 	type: RotationType.SingleTarget,
@@ -73,8 +65,8 @@ export const BMDefaultOptions = BeastMasteryOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfSpeed,
-	flask: Flask.FlaskOfEndlessRage,
+	defaultPotion: Potions.PotionOfTheTolvir,
+	prepopPotion: Potions.PotionOfTheTolvir,
+	flask: Flask.FlaskOfTheWinds,
 	food: Food.FoodFishFeast,
-	petFood: PetFood.PetFoodSpicedMammothTreats,
 });

@@ -121,6 +121,9 @@ func (hunter *Hunter) Initialize() {
 	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
 	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
 	hunter.FireTrapTimer = hunter.NewTimer()
+
+	hunter.ApplyGlyphs()
+
 	hunter.registerSteadyShotSpell()
 	hunter.registerArcaneShotSpell()
 	hunter.registerKillShotSpell()
@@ -186,11 +189,16 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 }
 
 const (
-	SpellMaskNone         int64 = 0
-	SpellMaskRangedAttack int64 = 1 << iota
-	SpellMaskAutoShot
-	SpellMaskSteadyShot
-	SpellMaskCobraShot
+	HunterSpellFlagsNone int64 = 0
+	SpellMaskSpellRanged int64 = 1 << iota
+	HunterSpellAutoShot
+	HunterSpellSteadyShot
+	HunterSpellCobraShot
+	HunterSpellArcaneShot
+	HunterSpellKillCommand
+	HunterSpellChimeraShot
+	HunterSpellExplosiveShot
+	HunterSpellBlackArrow
 )
 
 // Agent is a generic way to access underlying hunter on any of the agents.

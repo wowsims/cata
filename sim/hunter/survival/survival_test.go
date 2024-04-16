@@ -97,12 +97,12 @@ var FerocityTalents = &proto.HunterPetTalents{
 	SerpentSwiftness: 2,
 	Dive:             true,
 	SpikedCollar:     3,
-	BoarsSpeed:       true,
+	Bloodthirsty:     1,
 	CullingTheHerd:   3,
 	SpidersBite:      3,
 	Rabid:            true,
 	CallOfTheWild:    true,
-	WildHunt:         1,
+	SharkAttack:      2,
 }
 
 var PlayerOptionsBasic = &proto.Player_SurvivalHunter{
