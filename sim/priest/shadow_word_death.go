@@ -22,8 +22,8 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
-
-		BonusCoefficient: 0.316,
+		ThreatMultiplier:         1,
+		BonusCoefficient:         0.316,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
