@@ -127,7 +127,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	leaderOfThePack: TristateEffect.TristateEffectImproved,
 	powerWordFortitude: TristateEffect.TristateEffectImproved,
 	sanctifiedRetribution: true,
-	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+	strengthOfEarthTotem: true,
 	trueshotAura: true,
 	wrathOfAirTotem: true,
 	demonicPactSp: 500,
@@ -140,8 +140,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	vampiricTouch: true,
 });
 
-export const DefaultPartyBuffs = PartyBuffs.create({
-	heroicPresence: false,
+export const DefaultPartyBuffs = PartyBuffs.create({	
 });
 
 export const DefaultDebuffs = Debuffs.create({
@@ -151,8 +150,7 @@ export const DefaultDebuffs = Debuffs.create({
 	heartOfTheCrusader: true,
 	judgementOfWisdom: true,
 	shadowMastery: true,
-	sunderArmor: true,
-	totemOfWrath: true,
+	sunderArmor: true
 });
 
 export const OtherDefaults = {

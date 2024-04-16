@@ -407,10 +407,6 @@ func (character *Character) DefaultHealingCritMultiplier() float64 {
 func (character *Character) AddRaidBuffs(_ *proto.RaidBuffs) {
 }
 func (character *Character) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
-	if character.Race == proto.Race_RaceDraenei {
-		partyBuffs.HeroicPresence = true
-	}
-
 	switch character.MainHand().ID {
 	case ItemIDAtieshMage:
 		partyBuffs.AtieshMage += 1

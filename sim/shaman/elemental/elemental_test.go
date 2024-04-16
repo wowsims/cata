@@ -93,14 +93,14 @@ func init() {
 // 	Earth: proto.EarthTotem_TremorTotem,
 // 	Air:   proto.AirTotem_WrathOfAirTotem,
 // 	Water: proto.WaterTotem_ManaSpringTotem,
-// 	Fire:  proto.FireTotem_TotemOfWrath,
+// 	Fire:  proto.FireTotem_FlametongueTotem,
 // }
 
 // var FireElementalBasicTotems = &proto.ShamanTotems{
 // 	Earth:            proto.EarthTotem_TremorTotem,
 // 	Air:              proto.AirTotem_WrathOfAirTotem,
 // 	Water:            proto.WaterTotem_ManaSpringTotem,
-// 	Fire:             proto.FireTotem_TotemOfWrath,
+// 	Fire:             proto.FireTotem_FlametongueTotem,
 // 	UseFireElemental: true,
 // }
 

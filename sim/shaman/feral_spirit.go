@@ -7,14 +7,10 @@ import (
 )
 
 func (shaman *Shaman) registerFeralSpirit() {
-	if !shaman.Talents.FeralSpirit {
-		return
-	}
-
 	spiritWolvesActiveAura := shaman.RegisterAura(core.Aura{
 		Label:    "Feral Spirit",
 		ActionID: core.ActionID{SpellID: 51533},
-		Duration: time.Second * 45,
+		Duration: time.Second * 30,
 	})
 
 	shaman.FeralSpirit = shaman.RegisterSpell(core.SpellConfig{
@@ -30,7 +26,7 @@ func (shaman *Shaman) registerFeralSpirit() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
-				Duration: time.Minute * 3,
+				Duration: time.Minute * 2,
 			},
 		},
 
