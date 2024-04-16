@@ -119,13 +119,7 @@ func (priest *Priest) Initialize() {
 	// base scaling value for a level 85 priest
 	priest.ScalingBaseDamage = 945.188842773437500
 
-	// we can only wear cloth so add that bonus
-	// want to show it in priest buffs so people see it's actually considered
-	priest.MultiplyStat(stats.Intellect, 1.05)
-	core.MakePermanent(priest.RegisterAura(core.Aura{
-		Label:    "Mysticism",
-		ActionID: core.ActionID{SpellID: 89745},
-	}))
+	priest.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
 
 	if priest.SelfBuffs.UseInnerFire {
 		priest.AddStat(stats.SpellPower, 531)
