@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (mage *Mage) registerArcaneBarrageSpell() {
@@ -32,8 +31,7 @@ func (mage *Mage) registerArcaneBarrageSpell() {
 		},
 
 		DamageMultiplier: 1 +
-			.02*float64(mage.Talents.TormentTheWeak) +
-			core.TernaryFloat64(mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfArcaneBarrage), .04, 0),
+			.02*float64(mage.Talents.TormentTheWeak),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.907,
 		ThreatMultiplier: 1,

@@ -4,11 +4,9 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (mage *Mage) registerFrostboltSpell() {
-	hasPrimeGlyph := mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfFrostbolt)
 
 	replProcChance := float64(mage.Talents.EnduringWinter) / 3
 	var replSrc core.ReplenishmentSource
@@ -34,10 +32,8 @@ func (mage *Mage) registerFrostboltSpell() {
 		},
 
 		BonusCritRating: 0 +
-			core.TernaryFloat64(hasPrimeGlyph, 5*core.CritRatingPerCritChance, 0) +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0),
 		DamageMultiplierAdditive: 1 +
-			core.TernaryFloat64(hasPrimeGlyph, .05, 0) +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.943,

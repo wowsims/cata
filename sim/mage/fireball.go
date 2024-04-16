@@ -4,11 +4,9 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (mage *Mage) registerFireballSpell() {
-	hasPrimeGlyph := mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfFireball)
 
 	mage.Fireball = mage.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 133},
@@ -29,8 +27,7 @@ func (mage *Mage) registerFireballSpell() {
 			},
 		},
 		BonusCritRating: 0 +
-			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0) +
-			core.TernaryFloat64(hasPrimeGlyph, 5*core.CritRatingPerCritChance, 0),
+			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0),
 		DamageMultiplierAdditive: 1 +
 			.01*float64(mage.Talents.FirePower) +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),

@@ -4,25 +4,23 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (mage *Mage) registerLivingBombSpell() {
 	// Cata version has a cap of 3 active dots at once
 	// Research this implementation
+
+	//var activeLivingBombs core.AuraArray
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 44461},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagMage | HotStreakSpells,
 
-		DamageMultiplierAdditive: 1 +
-			.01*float64(mage.Talents.FirePower) +
-			.05*float64(mage.Talents.CriticalMass) +
-			core.TernaryFloat64(mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfLivingBomb), .03, 0),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		BonusCoefficient: 0.516,
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient:         0.516,
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.5 * mage.ScalingBaseDamage
@@ -30,6 +28,7 @@ func (mage *Mage) registerLivingBombSpell() {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
+
 		},
 	})
 
@@ -82,6 +81,7 @@ func (mage *Mage) registerLivingBombSpell() {
 				spell.Dot(target).Apply(sim)
 			}
 			spell.DealOutcome(sim, result)
+
 		},
 	})
 }
