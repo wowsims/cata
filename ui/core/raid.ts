@@ -129,7 +129,6 @@ export class Raid {
 
 		// Make a defensive copy
 		this.buffs = RaidBuffs.clone(newBuffs);
-
 		this.buffsChangeEmitter.emit(eventID);
 	}
 
@@ -144,7 +143,6 @@ export class Raid {
 
 		// Make a defensive copy
 		this.debuffs = Debuffs.clone(newDebuffs);
-
 		this.debuffsChangeEmitter.emit(eventID);
 	}
 

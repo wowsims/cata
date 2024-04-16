@@ -229,10 +229,6 @@ export class CharacterStats extends Component {
 						<span>To Exp Cap:</span>
 						<span>{`${meleeCritCapInfo.remainingExpertiseCap.toFixed(2)}%`}</span>
 					</div>
-					<div className="character-stats-tooltip-row">
-						<span>Debuffs:</span>
-						<span>{`${meleeCritCapInfo.debuffCrit.toFixed(2)}%`}</span>
-					</div>
 					{meleeCritCapInfo.specSpecificOffset != 0 && (
 						<div className="character-stats-tooltip-row">
 							<span>Spec Offsets:</span>
@@ -313,11 +309,7 @@ export class CharacterStats extends Component {
 		let debuffStats = new Stats();
 
 		const debuffs = this.player.sim.raid.getDebuffs();
-		if (debuffs.misery || debuffs.faerieFire == TristateEffect.TristateEffectImproved) {
-			debuffStats = debuffStats.addStat(Stat.StatSpellHit, 3 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-		}
-
-		if (debuffs.improvedScorch || debuffs.wintersChill || debuffs.shadowMastery) {
+		if (debuffs.criticalMass || debuffs.shadowAndFlame) {
 			debuffStats = debuffStats.addStat(Stat.StatSpellCrit, 5 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
 		}
 
