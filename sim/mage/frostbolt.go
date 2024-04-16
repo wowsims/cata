@@ -48,7 +48,7 @@ func (mage *Mage) registerFrostboltSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
-				if replProcChance == 1 || sim.RandomFloat("Enduring Winter") < replProcChance {
+				if replProcChance == 1 || sim.Proc(replProcChance, "Enduring Winter") {
 					mage.Env.Raid.ProcReplenishment(sim, replSrc)
 				}
 			})

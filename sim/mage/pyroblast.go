@@ -39,7 +39,7 @@ func (mage *Mage) registerPyroblastSpell() {
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				if mage.HotStreakAura.IsActive() {
 					cast.CastTime = 0
-					if !hasT8_4pc || sim.RandomFloat("MageT84PC") > T84PcProcChance {
+					if !hasT8_4pc || sim.Proc(T84PcProcChance, "MageT84PC") {
 						mage.HotStreakAura.Deactivate(sim)
 					}
 				}
