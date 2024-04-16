@@ -362,7 +362,7 @@ func HemorrhageAura(target *Unit) *Aura {
 func StampedeAura(target *Unit) *Aura {
 	return bleedDamageAura(target, Aura{
 		Label:    "Stampede",
-		ActionID: ActionID{SpellID: 57393},
+		ActionID: ActionID{SpellID: 57386},
 		Duration: time.Second * 30,
 	}, 1.3)
 }
