@@ -126,6 +126,7 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerHowlingBlastSpell()
 	dk.registerPillarOfFrostSpell()
 	dk.registerPestilenceSpell()
+	dk.registerBloodBoilSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
