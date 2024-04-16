@@ -117,7 +117,7 @@
 // 		raidBuffs: RaidBuffs.create({
 // 			powerWordFortitude: TristateEffect.TristateEffectImproved,
 // 			shadowProtection: true,
-// 			giftOfTheWild: TristateEffect.TristateEffectImproved,
+// 			markOfTheWild: true,
 // 			thorns: TristateEffect.TristateEffectImproved,
 // 			bloodlust: true,
 // 			strengthOfEarthTotem: true,
@@ -128,7 +128,7 @@
 // 			moonkinAura: TristateEffect.TristateEffectImproved,
 // 		}),
 // 		individualBuffs: IndividualBuffs.create({
-// 			blessingOfKings: true,
+//
 // 			blessingOfMight: TristateEffect.TristateEffectImproved,
 // 			renewedHope: true,
 // 		}),

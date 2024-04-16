@@ -79,10 +79,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDisciplinePriest, {
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.ReplenishmentBuff,
 		BuffDebuffInputs.MeleeHasteBuff,
-		BuffDebuffInputs.MeleeCritBuff,
+		BuffDebuffInputs.CritBuff,
 		BuffDebuffInputs.MP5Buff,
 		BuffDebuffInputs.AttackPowerPercentBuff,
-		BuffDebuffInputs.AttackPowerBuff,
 		BuffDebuffInputs.StaminaBuff,
 	],
 	excludeBuffDebuffInputs: [],

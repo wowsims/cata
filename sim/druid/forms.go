@@ -8,16 +8,16 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
- type DruidForm uint8
+type DruidForm uint8
 
- const (
- 	Humanoid DruidForm = 1 << iota
- 	Bear
- 	Cat
- 	Moonkin
- 	Tree
- 	Any = Humanoid | Bear | Cat | Moonkin | Tree
- )
+const (
+	Humanoid DruidForm = 1 << iota
+	Bear
+	Cat
+	Moonkin
+	Tree
+	Any = Humanoid | Bear | Cat | Moonkin | Tree
+)
 
 // Converts from 0.009327 to 0.0085
 const AnimalSpiritRegenSuppression = 0.911337
@@ -75,7 +75,8 @@ func (druid *Druid) registerCatFormSpell() {
 	srm := druid.getSavageRoarMultiplier()
 
 	statBonus := stats.Stats{
-		stats.MeleeCrit:   core.TernaryFloat64(druid.Talents.MasterShapeshifter, 4.0 * core.CritRatingPerCritChance, 0.0),
+		stats.AttackPower: -20, // This offset is needed because the first 10 points of Agility do not contribute any Attack Power.
+		stats.MeleeCrit:   core.TernaryFloat64(druid.Talents.MasterShapeshifter, 4.0*core.CritRatingPerCritChance, 0.0),
 	}
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)

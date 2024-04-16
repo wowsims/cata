@@ -839,7 +839,7 @@ func (hp *HunterPet) newStampede() *core.Spell {
 		Type:    Stampede,
 		Cost:    0,
 		CD:      time.Second * 60,
-		SpellID: 57393,
+		SpellID: 57386,
 		School:  core.SpellSchoolPhysical,
 		MinDmg:  182,
 		MaxDmg:  264,

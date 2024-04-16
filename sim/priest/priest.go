@@ -3,6 +3,7 @@ package priest
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 var TalentTreeSizes = [3]int{21, 21, 21}
@@ -118,6 +119,17 @@ func (priest *Priest) Initialize() {
 	// base scaling value for a level 85 priest
 	priest.ScalingBaseDamage = 945.188842773437500
 
+	priest.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
+
+	if priest.SelfBuffs.UseInnerFire {
+		priest.AddStat(stats.SpellPower, 531)
+		priest.ApplyEquipScaling(stats.Armor, 1.6)
+		core.MakePermanent(priest.RegisterAura(core.Aura{
+			Label:    "Inner Fire",
+			ActionID: core.ActionID{SpellID: 588},
+		}))
+	}
+
 	// priest.registerSetBonuses()
 	priest.registerDevouringPlagueSpell()
 	priest.registerShadowWordPainSpell()
@@ -127,6 +139,7 @@ func (priest *Priest) Initialize() {
 	priest.registerShadowfiendSpell()
 	priest.registerVampiricTouchSpell()
 	priest.registerDispersionSpell()
+	priest.registerMindSpike()
 
 	// priest.registerPowerInfusionCD()
 
@@ -189,7 +202,6 @@ func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
 	priest.EnableManaBar()
 	priest.ShadowfiendPet = priest.NewShadowfiend()
-
 	return priest
 }
 
@@ -217,7 +229,9 @@ const (
 	PriestSpellDevouringPlague
 	PriestSpellDesperatePrayer
 	PriestSpellDispersion
+	PriestSpellDivineAegis
 	PriestSpellDivineHymn
+	PriestSpellEmpoweredRenew
 	PriestSpellFade
 	PriestSpellFlashHeal
 	PriestSpellGreaterHeal
@@ -286,3 +300,13 @@ const (
 		PriestSpellMindBlast |
 		PriestSpellVampiricTouch
 )
+
+func (priest *Priest) calcBaseDamage(sim *core.Simulation, coefficient float64, variance float64) float64 {
+	baseDamage := priest.ScalingBaseDamage * coefficient
+	if variance > 0 {
+		delta := priest.ScalingBaseDamage * variance * 0.5
+		baseDamage += sim.Roll(-delta, delta)
+	}
+
+	return baseDamage
+}
