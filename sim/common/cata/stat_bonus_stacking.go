@@ -80,7 +80,7 @@ func init() {
 	})
 
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
-		Name:       "Tia's Grace (Heroic)",
+		Name:       "Darkmoon Card: Tsunami",
 		ID:         62050,
 		AuraID:     92090,
 		Bonus:      stats.Stats{stats.Spirit: 80},
