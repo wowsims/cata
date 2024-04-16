@@ -1,5 +1,20 @@
 package druid
 
+import (
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
+)
+
+func (druid *Druid) RazorClawsMultiplier(masteryRating float64) float64 {
+	razorClawsMulti := 1.0
+
+	if druid.Spec == proto.Spec_SpecFeralDruid {
+		razorClawsMulti += 0.25 + 0.03125*core.MasteryRatingToMasteryPoints(masteryRating)
+	}
+
+	return razorClawsMulti
+}
+
 func (druid *Druid) ThickHideMultiplier() float64 {
 	thickHideMulti := 1.0
 
@@ -260,29 +275,29 @@ func (druid *Druid) ApplyTalents() {
 // 	})
 // }
 
-// // Modifies the Bleed aura to apply the bonus.
-// func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
-// 	if druid.FerociousBite == nil || druid.Talents.RendAndTear == 0 || druid.AssumeBleedActive {
-// 		return aura
-// 	}
+// Modifies the Bleed aura to apply the bonus.
+func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
+	if druid.FerociousBite == nil || druid.Talents.RendAndTear == 0 || druid.AssumeBleedActive {
+		return aura
+	}
 
-// 	bonusCrit := 5.0 * float64(druid.Talents.RendAndTear) * core.CritRatingPerCritChance
+	bonusCrit := 5.0 * float64(druid.Talents.RendAndTear) * core.CritRatingPerCritChance
 
-// 	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-// 		if druid.BleedsActive == 0 {
-// 			druid.FerociousBite.BonusCritRating += bonusCrit
-// 		}
-// 		druid.BleedsActive++
-// 	})
-// 	aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-// 		druid.BleedsActive--
-// 		if druid.BleedsActive == 0 {
-// 			druid.FerociousBite.BonusCritRating -= bonusCrit
-// 		}
-// 	})
+	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+		if druid.BleedsActive == 0 {
+			druid.FerociousBite.BonusCritRating += bonusCrit
+		}
+		druid.BleedsActive++
+	})
+	aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+		druid.BleedsActive--
+		if druid.BleedsActive == 0 {
+			druid.FerociousBite.BonusCritRating -= bonusCrit
+		}
+	})
 
-// 	return aura
-// }
+	return aura
+}
 
 // func (druid *Druid) applyOmenOfClarity() {
 // 	// Feral 2p needs clearcasting aura
