@@ -304,6 +304,10 @@ func init() {
 					Timer:    sharedCD,
 					Duration: time.Second * 20,
 				},
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				buffAura.Activate(sim)
@@ -370,6 +374,10 @@ func init() {
 				SharedCD: core.Cooldown{
 					Timer:    sharedCD,
 					Duration: time.Second * 20,
+				},
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
 				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
