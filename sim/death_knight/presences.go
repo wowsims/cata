@@ -68,6 +68,10 @@ func (dk *DeathKnight) registerFrostPresenceAura(timer *core.Timer) {
 	damageMulti := 1.1
 	runicMulti := 1.1
 
+	if dk.Talents.ImprovedFrostPresence > 0 {
+		damageMulti += []float64{0, 0.02, 0.05}[dk.Talents.ImprovedFrostPresence]
+	}
+
 	dk.FrostPresence = dk.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,

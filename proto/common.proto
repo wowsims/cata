@@ -597,15 +597,6 @@ message Consumes {
 	bool thermal_sapper = 15;
 	bool explosive_decoy = 16;
 	Explosive filler_explosive = 17;
-
-	// TODO: Scrolls now count as elixirs in Cata
-	// Scroll
-	// bool scroll_of_protection = 36;
-	// bool scroll_of_stamina = 37;
-	// bool scroll_of_strength = 38;
-	// bool scroll_of_agility = 39;
-	// bool scroll_of_intellect = 40;
-	// bool scroll_of_spirit = 41;
 }
 
 enum MobType {

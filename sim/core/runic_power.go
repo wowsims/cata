@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"math"
+	"slices"
 	"strings"
 	"time"
 
@@ -60,6 +61,8 @@ type runicPowerBar struct {
 
 	runeRegenMultiplier  float64
 	runicRegenMultiplier float64
+
+	permanentDeaths []int8
 }
 
 // Constants for finding runes
@@ -105,10 +108,12 @@ func (rp *runicPowerBar) reset(sim *Simulation) {
 	}
 
 	rp.runeStates = baseRuneState
+	for i := range rp.permanentDeaths {
+		rp.runeStates |= isDeaths[i]
+	}
 }
 
 func (unit *Unit) EnableRunicPowerBar(currentRunicPower float64, maxRunicPower float64, runeCD time.Duration,
-	runeRegenMultiplier float64, runicRegenMultiplier float64,
 	onRuneChange OnRuneChange, onRunicPowerGain OnRunicPowerGain) {
 	unit.SetCurrentPowerBar(RunicPower)
 	unit.runicPowerBar = runicPowerBar{
@@ -117,14 +122,16 @@ func (unit *Unit) EnableRunicPowerBar(currentRunicPower float64, maxRunicPower f
 		maxRunicPower:        maxRunicPower,
 		currentRunicPower:    currentRunicPower,
 		runeCD:               runeCD,
-		runeRegenMultiplier:  runeRegenMultiplier,
-		runicRegenMultiplier: runicRegenMultiplier,
+		runeRegenMultiplier:  1.0,
+		runicRegenMultiplier: 1.0,
 
 		runeStates: baseRuneState,
 		btSlot:     -1,
 
 		onRuneChange:     onRuneChange,
 		onRunicPowerGain: onRunicPowerGain,
+
+		permanentDeaths: make([]int8, 0),
 	}
 
 	unit.bloodRuneGainMetrics = unit.NewBloodRuneMetrics(ActionID{OtherID: proto.OtherAction_OtherActionBloodRuneGain, Tag: 1})
@@ -135,6 +142,10 @@ func (unit *Unit) EnableRunicPowerBar(currentRunicPower float64, maxRunicPower f
 
 func (unit *Unit) HasRunicPowerBar() bool {
 	return unit.runicPowerBar.unit != nil
+}
+
+func (rp *runicPowerBar) SetPermanentDeathRunes(permanentDeaths []int8) {
+	rp.permanentDeaths = permanentDeaths
 }
 
 func (rp *runicPowerBar) SetRuneCd(runeCd time.Duration) {
@@ -339,6 +350,10 @@ func (rp *runicPowerBar) AnyRuneReadyAt(sim *Simulation) time.Duration {
 
 // ConvertFromDeath reverts the rune to its original type.
 func (rp *runicPowerBar) ConvertFromDeath(sim *Simulation, slot int8) {
+	if slices.Contains(rp.permanentDeaths, slot) {
+		return
+	}
+
 	rp.runeStates ^= isDeaths[slot]
 	rp.runeMeta[slot].revertAt = NeverExpires
 
@@ -356,6 +371,10 @@ func (rp *runicPowerBar) ConvertFromDeath(sim *Simulation, slot int8) {
 
 // ConvertToDeath converts the given slot to death and sets up the reversion conditions
 func (rp *runicPowerBar) ConvertToDeath(sim *Simulation, slot int8, revertAt time.Duration) {
+	if slices.Contains(rp.permanentDeaths, slot) && rp.runeStates&isDeaths[slot] > 0 {
+		return
+	}
+
 	rp.runeStates |= isDeaths[slot]
 
 	if rp.btSlot != slot {
@@ -815,7 +834,7 @@ func (rp *runicPowerBar) findReadyRune(slot int8) int8 {
 
 func (rp *runicPowerBar) spendDeathRune(sim *Simulation, order []int8, metrics *ResourceMetrics) int8 {
 	slot := rp.findReadyDeathRune(order)
-	if rp.btSlot != slot {
+	if rp.btSlot != slot && !slices.Contains(rp.permanentDeaths, slot) {
 		rp.runeMeta[slot].revertAt = NeverExpires // disable revert at
 		rp.runeStates ^= isDeaths[slot]           // clear death bit to revert.
 	}
@@ -889,6 +908,17 @@ func newRuneCost(spell *Spell, options RuneCostOptions) *RuneCostImpl {
 		frostRuneMetrics:  Ternary(options.FrostRuneCost > 0, spell.Unit.NewFrostRuneMetrics(spell.ActionID), nil),
 		unholyRuneMetrics: Ternary(options.UnholyRuneCost > 0, spell.Unit.NewUnholyRuneMetrics(spell.ActionID), nil),
 		deathRuneMetrics:  spell.Unit.NewDeathRuneMetrics(spell.ActionID),
+	}
+}
+
+func (rc *RuneCostImpl) GetConfig() RuneCostOptions {
+	return RuneCostOptions{
+		BloodRuneCost:  rc.BloodRuneCost,
+		FrostRuneCost:  rc.FrostRuneCost,
+		UnholyRuneCost: rc.UnholyRuneCost,
+		RunicPowerCost: rc.RunicPowerCost,
+		RunicPowerGain: rc.RunicPowerGain,
+		Refundable:     rc.Refundable,
 	}
 }
 
@@ -1072,6 +1102,10 @@ func (spell *Spell) SpendRefundableCostAndConvertBloodOrFrostRune(sim *Simulatio
 func (rc *RuneCostImpl) IssueRefund(_ *Simulation, _ *Spell) {
 	// Instead of issuing refunds we just don't charge the cost of spells which
 	// miss; this is better for perf since we'd have to cancel the regen actions.
+}
+
+func (spell *Spell) RuneCostImpl() *RuneCostImpl {
+	return spell.Cost.(*RuneCostImpl)
 }
 
 func (spell *Spell) RunicPowerMetrics() *ResourceMetrics {

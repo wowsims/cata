@@ -40,25 +40,9 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, inRange),
 	}
 
-	// if mh := ele.GetMHWeapon(); mh != nil {
-	// 	ele.ApplyFlametongueImbueToItem(mh, false)
-	// }
-
-	// if oh := ele.GetOHWeapon(); oh != nil {
-	// 	ele.ApplyFlametongueImbueToItem(oh, false)
-	// }
-
-	// if ele.Talents.FeralSpirit {
-	// 	// Enable Auto Attacks but don't enable auto swinging
-	// 	ele.EnableAutoAttacks(ele, core.AutoAttackOptions{
-	// 		MainHand: ele.WeaponFromMainHand(ele.DefaultMeleeCritMultiplier()),
-	// 		OffHand:  ele.WeaponFromOffHand(ele.DefaultMeleeCritMultiplier()),
-	// 	})
-	// 	// ele.SpiritWolves = &shaman.SpiritWolves{
-	// 	// 	SpiritWolf1: ele.NewSpiritWolf(1),
-	// 	// 	SpiritWolf2: ele.NewSpiritWolf(2),
-	// 	// }
-	// }
+	if mh := ele.GetMHWeapon(); mh != nil {
+		ele.ApplyFlametongueImbueToItem(mh)
+	}
 
 	return ele
 }

@@ -75,7 +75,8 @@ func (druid *Druid) registerCatFormSpell() {
 	srm := druid.getSavageRoarMultiplier()
 
 	statBonus := stats.Stats{
-		stats.MeleeCrit: core.TernaryFloat64(druid.Talents.MasterShapeshifter, 4.0*core.CritRatingPerCritChance, 0.0),
+		stats.AttackPower: -20, // This offset is needed because the first 10 points of Agility do not contribute any Attack Power.
+		stats.MeleeCrit:   core.TernaryFloat64(druid.Talents.MasterShapeshifter, 4.0*core.CritRatingPerCritChance, 0.0),
 	}
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 2)

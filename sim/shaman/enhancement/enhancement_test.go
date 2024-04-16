@@ -22,11 +22,8 @@ func init() {
 // 		OtherSpecOptions: []core.SpecOptionsCombo{
 // 			{Label: "WF", SpecOptions: PlayerOptionsWFWF},
 // 		},
-// 		Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "default_ft"),
-// 		OtherRotations: []core.RotationCombo{
-// 			core.GetAplRotation("../../../ui/enhancement_shaman/apls", "default_wf"),
-// 			core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_3"),
-// 		},
+// 		Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "default"),
+// 		OtherRotations: []core.RotationCombo{},
 
 // 		ItemFilter: core.ItemFilter{
 // 			WeaponTypes: []proto.WeaponType{
@@ -103,7 +100,7 @@ func init() {
 // var enhShamFTFT = &proto.EnhancementShaman_Options{
 // 	Shield:   proto.ShamanShield_LightningShield,
 // 	SyncType: proto.ShamanSyncType_Auto,
-// 	ImbueMh:  proto.ShamanImbue_FlametongueWeaponDownrank,
+// 	ImbueMh:  proto.ShamanImbue_FlametongueWeapon,
 // 	ImbueOh:  proto.ShamanImbue_FlametongueWeapon,
 // 	Totems: &proto.ShamanTotems{
 // 		Earth:            proto.EarthTotem_StrengthOfEarthTotem,

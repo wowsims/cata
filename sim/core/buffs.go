@@ -283,7 +283,6 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 	if raidBuffs.RetributionAura {
 		RetributionAura(&character.Unit)
 	}
-
 	if raidBuffs.Bloodlust {
 		registerBloodlustCD(agent, 2825)
 	} else if raidBuffs.Heroism {

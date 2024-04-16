@@ -108,9 +108,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			blessingOfMight: true,
 			communion: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-			heroicPresence: false,
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 		}),
 		debuffs: Debuffs.create({

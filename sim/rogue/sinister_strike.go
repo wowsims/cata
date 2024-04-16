@@ -10,6 +10,7 @@ import (
 func (rogue *Rogue) registerSinisterStrikeSpell() {
 	hasGlyphOfSinisterStrike := rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfSinisterStrike)
 	baseDamage := RogueBaseDamageScalar * 0.1780000031
+	t11Bonus := core.TernaryFloat64(rogue.HasSetBonus(Tier11, 2), 5*core.CritRatingPerCritChance, 0)
 
 	rogue.SinisterStrike = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1752},
@@ -28,7 +29,7 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 			IgnoreHaste: true,
 		},
 
-		BonusCritRating:  core.TernaryFloat64(rogue.HasSetBonus(Tier9, 4), 5*core.CritRatingPerCritChance, 0),
+		BonusCritRating:  t11Bonus,
 		DamageMultiplier: 1.04, // 84 * .73500001431 + 42
 		DamageMultiplierAdditive: 1 +
 			[]float64{0.0, .07, .14, .20}[rogue.Talents.Aggression] +

@@ -46,7 +46,7 @@ export class FeralDruid extends PlayerSpec<Spec.SpecFeralDruid> {
 	static friendlyName = 'Feral';
 	static simLink = getSpecSiteUrl('druid', 'feral');
 
-	static isTankSpec = true;
+	static isTankSpec = false;
 	static isHealingSpec = false;
 	static isRangedDpsSpec = false;
 	static isMeleeDpsSpec = true;
@@ -67,7 +67,7 @@ export class FeralDruid extends PlayerSpec<Spec.SpecFeralDruid> {
 	readonly canDualWield = FeralDruid.canDualWield;
 
 	static getIcon = (size: IconSize): string => {
-		return `https://wow.zamimg.com/images/wow/icons/${size}/ability_racial_bearform.jpg`;
+		return `https://wow.zamimg.com/images/wow/icons/${size}/ability_druid_catform.jpg`;
 	};
 
 	getIcon = (size: IconSize): string => {

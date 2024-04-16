@@ -127,7 +127,6 @@ export class Raid {
 		if (RaidBuffs.equals(this.buffs, newBuffs))
 			return;
 
-
 		// Make a defensive copy
 		this.buffs = RaidBuffs.clone(newBuffs);
 		this.buffsChangeEmitter.emit(eventID);

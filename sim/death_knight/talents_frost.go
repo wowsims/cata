@@ -3,7 +3,10 @@ package death_knight
 import (
 	//"github.com/wowsims/cata/sim/core/proto"
 
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -39,6 +42,9 @@ func (dk *DeathKnight) ApplyFrostTalents() {
 	if dk.Talents.ImprovedIcyTalons {
 		dk.PseudoStats.MeleeSpeedMultiplier *= 1.05
 	}
+
+	// Might of the Frozen Wastes
+	dk.applyMightOfTheFrozenWastes()
 }
 
 const DeathKnightChillOfTheGrave = DeathKnightSpellIcyTouch | DeathKnightSpellHowlingBlast | DeathKnightSpellObliterate
@@ -123,7 +129,42 @@ func (dk *DeathKnight) applyRime() {
 		return
 	}
 
-	// TODO:
+	rimeMod := dk.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -1,
+		ClassMask:  DeathKnightSpellIcyTouch | DeathKnightSpellHowlingBlast,
+	})
+
+	freezingFogAura := dk.GetOrRegisterAura(core.Aura{
+		Label:    "Freezing Fog",
+		ActionID: core.ActionID{SpellID: 59052},
+		Duration: time.Second * 15,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			rimeMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rimeMod.Deactivate()
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask&(DeathKnightSpellIcyTouch|DeathKnightSpellHowlingBlast) == 0 {
+				return
+			}
+			aura.Deactivate(sim)
+		},
+	})
+
+	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+		Name:           "Rime",
+		Callback:       core.CallbackOnSpellHitDealt,
+		ProcMask:       core.ProcMaskMeleeMH,
+		ClassSpellMask: DeathKnightSpellObliterate,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     0.45,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			freezingFogAura.Activate(sim)
+		},
+	})
 }
 
 func (dk *DeathKnight) applyKillingMachine() {
@@ -131,7 +172,72 @@ func (dk *DeathKnight) applyKillingMachine() {
 		return
 	}
 
-	// TODO:
+	kmMod := dk.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Rating,
+		FloatValue: 100 * core.CritRatingPerCritChance,
+		ClassMask:  DeathKnightSpellObliterate | DeathKnightSpellFrostStrike,
+	})
+
+	kmAura := dk.GetOrRegisterAura(core.Aura{
+		Label:    "Killing Machine Proc",
+		ActionID: core.ActionID{SpellID: 51124},
+		Duration: time.Second * 10,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			kmMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			kmMod.Deactivate()
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask&(DeathKnightSpellObliterate|DeathKnightSpellFrostStrike) == 0 {
+				return
+			}
+			if !result.Landed() {
+				return
+			}
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeMH) {
+				return
+			}
+			aura.Deactivate(sim)
+		},
+	})
+
+	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+		Name:     "Killing Machine",
+		Callback: core.CallbackOnSpellHitDealt,
+		ProcMask: core.ProcMaskMeleeWhiteHit,
+		Outcome:  core.OutcomeLanded,
+		PPM:      2.0 * float64(dk.Talents.KillingMachine),
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			kmAura.Activate(sim)
+		},
+	})
+}
+
+func (dk *DeathKnight) applyMightOfTheFrozenWastes() {
+	if dk.Talents.MightOfTheFrozenWastes == 0 || dk.Equipment.MainHand().HandType != proto.HandType_HandTypeTwoHand {
+		return
+	}
+
+	dk.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: []float64{0.0, 0.03, 0.6, 0.10}[dk.Talents.MightOfTheFrozenWastes],
+		ProcMask:   core.ProcMaskMelee,
+		ClassMask:  DeathKnightSpellsAll,
+	})
+
+	rpMetric := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 81331})
+	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+		Name:       "Might of the Frozen Wastes",
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: 0.15 * float64(dk.Talents.MightOfTheFrozenWastes),
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			dk.AddRunicPower(sim, 10, rpMetric)
+		},
+	})
 }
 
 func (dk *DeathKnight) ThreatOfThassarianProc(sim *core.Simulation, result *core.SpellResult, ohSpell *core.Spell) {

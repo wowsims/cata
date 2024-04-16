@@ -6,16 +6,16 @@ import {
 	EnhancementShaman_Options as EnhancementShamanOptions,
 	FireTotem,
 	ShamanImbue,
+	ShamanPrimeGlyph,
 	ShamanMajorGlyph,
+	ShamanMinorGlyph,
 	ShamanShield,
 	ShamanSyncType,
 	ShamanTotems,
 	WaterTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
-import DefaultFt from './apls/default_ft.apl.json';
-import DefaultWf from './apls/default_wf.apl.json';
-import Phase3Apl from './apls/phase_3.apl.json';
+import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import P2FtGear from './gear_sets/p2_ft.gear.json';
 import P2WfGear from './gear_sets/p2_wf.gear.json';
@@ -38,35 +38,25 @@ export const P3_PRESET_HORDE = PresetUtils.makePresetGear('P3 Preset [H]', P3Hor
 export const P4_PRESET_FT = PresetUtils.makePresetGear('P4 Preset FT', P4FtGear);
 export const P4_PRESET_WF = PresetUtils.makePresetGear('P4 Preset WF', P4WfGear);
 
-export const ROTATION_FT_DEFAULT = PresetUtils.makePresetAPLRotation('Default FT', DefaultFt);
-export const ROTATION_WF_DEFAULT = PresetUtils.makePresetAPLRotation('Default WF', DefaultWf);
-export const ROTATION_PHASE_3 = PresetUtils.makePresetAPLRotation('Phase 3', Phase3Apl);
+export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		// talentsString: '053030152-30405003105021333031131031051',
-		// glyphs: Glyphs.create({
-		// 	major1: ShamanMajorGlyph.GlyphOfFireNova,
-		// 	major2: ShamanMajorGlyph.GlyphOfFlametongueWeapon,
-		// 	major3: ShamanMajorGlyph.GlyphOfFeralSpirit,
-		// 	//minor glyphs dont affect damage done, all convenience/QoL
-		// }),
-	}),
-};
-
-export const Phase3Talents = {
-	name: 'Phase 3',
-	data: SavedTalents.create({
-		// talentsString: '053030152-30505003105001333031131131051',
-		// glyphs: Glyphs.create({
-		// 	major1: ShamanMajorGlyph.GlyphOfFireNova,
-		// 	major2: ShamanMajorGlyph.GlyphOfFlametongueWeapon,
-		// 	major3: ShamanMajorGlyph.GlyphOfFeralSpirit,
-		// 	//minor glyphs dont affect damage done, all convenience/QoL
-		// }),
+		talentsString: '3020003-2333310013003012321',
+		glyphs: Glyphs.create({
+			prime1: ShamanPrimeGlyph.GlyphOfLavaLash,
+			prime2: ShamanPrimeGlyph.GlyphOfStormstrike,
+			prime3: ShamanPrimeGlyph.GlyphOfWindfuryWeapon,
+			major1: ShamanMajorGlyph.GlyphOfLightningShield,
+			major2: ShamanMajorGlyph.GlyphOfChainLightning,
+			major3: ShamanMajorGlyph.GlyphOfFireNova,
+			minor1: ShamanMinorGlyph.GlyphOfWaterWalking,
+			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
+			minor3: ShamanMinorGlyph.GlyphOfTheArcticWolf,
+		}),
 	}),
 };
 

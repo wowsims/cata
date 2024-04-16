@@ -41,9 +41,6 @@ type DeathKnight struct {
 
 	ClassBaseScaling float64
 
-	onRuneSpendT10          core.OnRuneChange
-	onRuneSpendBladeBarrier core.OnRuneChange
-
 	Inputs DeathKnightInputs
 
 	Ghoul     *GhoulPet
@@ -120,9 +117,6 @@ type DeathKnight struct {
 
 	EmpowerRuneWeapon *core.Spell
 
-	UnbreakableArmor     *core.Spell
-	UnbreakableArmorAura *core.Aura
-
 	VampiricBlood     *core.Spell
 	VampiricBloodAura *core.Aura
 
@@ -196,6 +190,7 @@ func (dk *DeathKnight) ApplyTalents() {
 func (dk *DeathKnight) Initialize() {
 	dk.registerPresences()
 
+	dk.registerHornOfWinterSpell()
 	dk.registerDiseaseDots()
 	dk.registerIcyTouchSpell()
 	dk.registerPlagueStrikeSpell()
@@ -209,15 +204,14 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerRaiseDeadSpell()
 	dk.registerBloodTapSpell()
 	dk.registerObliterateSpell()
+	dk.registerHowlingBlastSpell()
+	dk.registerPillarOfFrostSpell()
+	dk.registerPestilenceSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
 	dk.DeathStrikeHeals = dk.DeathStrikeHeals[:0]
 }
-
-// func (dk *DeathKnight) IsFuStrike(spell *core.Spell) bool {
-// 	return spell == dk.Obliterate || spell == dk.ScourgeStrike || spell == dk.DeathStrike
-// }
 
 func (dk *DeathKnight) HasPrimeGlyph(glyph proto.DeathKnightPrimeGlyph) bool {
 	return dk.HasGlyph(int32(glyph))
@@ -245,15 +239,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		currentRunicPower,
 		maxRunicPower,
 		10*time.Second,
-		1.0,
-		1.0,
 		func(sim *core.Simulation, changeType core.RuneChangeType) {
-			if dk.onRuneSpendT10 != nil {
-				dk.onRuneSpendT10(sim, changeType)
-			}
-			if dk.onRuneSpendBladeBarrier != nil {
-				dk.onRuneSpendBladeBarrier(sim, changeType)
-			}
 		},
 		nil,
 	)
@@ -335,18 +321,12 @@ const (
 	DeathKnightSpellFrostFever
 	DeathKnightSpellBloodPlague
 	DeathKnightSpellHowlingBlast
+	DeathKnightSpellHornOfWinter
+	DeathKnightSpellPillarOfFrost
+	DeathKnightSpellPestilence
 
 	DeathKnightSpellLast
 	DeathKnightSpellsAll = DeathKnightSpellLast<<1 - 1
 
 	DeathKnightSpellDisease = DeathKnightSpellFrostFever | DeathKnightSpellBloodPlague
-
-	DeathKnightSpellMagic = DeathKnightSpellIcyTouch | DeathKnightSpellDeathCoil | DeathKnightSpellDeathAndDecay | DeathKnightSpellOutbreak
-
-	DeathKnightSpellWeapon = DeathKnightSpellPlagueStrike |
-		DeathKnightSpellFesteringStrike |
-		DeathKnightSpellScourgeStrike |
-		DeathKnightSpellFrostStrike |
-		DeathKnightSpellRuneStrike |
-		DeathKnightSpellObliterate
 )
