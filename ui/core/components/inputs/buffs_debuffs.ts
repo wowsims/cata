@@ -35,8 +35,8 @@ export const AllStatsBuff = InputHelpers.makeMultiIconInput(
 
 export const ArmorBuff = InputHelpers.makeMultiIconInput(
 	[
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(48942), impId: ActionId.fromSpellId(465), fieldName: 'devotionAura' }),
-		makeTristateRaidBuffInput({ actionId: ActionId.fromSpellId(58753), impId: ActionId.fromSpellId(8071), fieldName: 'stoneskinTotem' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(465), fieldName: 'devotionAura' }),
+		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(8071), fieldName: 'stoneskinTotem' }),
 	],
 	'Armor',
 );
@@ -177,7 +177,7 @@ export const StrengthAndAgilityBuff = InputHelpers.makeMultiIconInput(
 );
 
 // Misc Buffs
-export const RetributionAura = makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(54043), fieldName: 'retributionAura' });
+export const RetributionAura = makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(7294), fieldName: 'retributionAura' });
 export const ManaTideTotem = makeMultistateRaidBuffInput({actionId: ActionId.fromSpellId(16190), numStates: 5, fieldName: 'manaTideTotemCount'});
 export const Innervate = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(29166), numStates: 11, fieldName: 'innervateCount' });
 export const PowerInfusion = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(10060), numStates: 11, fieldName: 'powerInfusionCount' });
@@ -214,7 +214,7 @@ export const BleedDebuff = InputHelpers.makeMultiIconInput(
 	[
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(29859), fieldName: 'bloodFrenzy' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(33878), fieldName: 'mangle' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(57393), fieldName: 'stampede' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(57386), fieldName: 'stampede' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(16511), fieldName: 'hemorrhage' }),
 	],
 	'Bleed',
