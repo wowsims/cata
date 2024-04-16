@@ -322,7 +322,7 @@ export const makeBattleElixirsInput = makeConsumeInputFactory({
 
 // Guardian Elixirs
 export const ElixirOfDeepEarth = {
-	actionId: ActionId.fromItemId(80488),
+	actionId: ActionId.fromItemId(58093),
 	value: GuardianElixir.ElixirOfDeepEarth,
 };
 export const PrismaticElixir = {
