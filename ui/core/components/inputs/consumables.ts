@@ -154,6 +154,11 @@ export const FlaskOfFlowingWater = {
 	value: Flask.FlaskOfFlowingWater,
 };
 
+export const FlaskOfTheDraconicMind = {
+	actionId: ActionId.fromItemId(58086), // Use the correct item ID
+	value: Flask.FlaskOfTheDraconicMind,
+};
+
 export const FlaskOfTheFrostWyrm = {
 	actionId: ActionId.fromItemId(46376),
 	value: Flask.FlaskOfTheFrostWyrm,
@@ -180,6 +185,11 @@ export const LesserFlaskOfResistance = {
 };
 
 export const FLASKS_CONFIG = [
+	{ config: FlaskOfTheDraconicMind, stats: [Stat.StatSpellPower] },
+	{ config: FlaskOfTitanicStrength, stats: [Stat.StatStrength] },
+	{ config: FlaskOfTheWinds, stats: [Stat.StatAgility] },
+	{ config: FlaskOfSteelskin, stats: [Stat.StatStamina] },
+	{ config: FlaskOfFlowingWater, stats: [Stat.StatSpirit] },
 	{ config: FlaskOfTheFrostWyrm, stats: [Stat.StatSpellPower] },
 	{ config: FlaskOfEndlessRage, stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower] },
 	{ config: FlaskOfPureMojo, stats: [Stat.StatMP5] },
@@ -189,10 +199,6 @@ export const FLASKS_CONFIG = [
 		config: LesserFlaskOfResistance,
 		stats: [Stat.StatArcaneResistance, Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatNatureResistance, Stat.StatShadowResistance],
 	},
-	{ config: FlaskOfTitanicStrength, stats: [Stat.StatStrength] },
-	{ config: FlaskOfTheWinds, stats: [Stat.StatAgility] },
-	{ config: FlaskOfSteelskin, stats: [Stat.StatStamina] },
-	{ config: FlaskOfFlowingWater, stats: [Stat.StatSpirit] },
 ] as ConsumableStatOption<Flask>[];
 
 export const makeFlasksInput = makeConsumeInputFactory({
@@ -449,8 +455,76 @@ export const FoodFishermansFeast = {
 	actionId: ActionId.fromItemId(33052),
 	value: Food.FoodFishermansFeast,
 };
+export const FoodSeafoodMagnifiqueFeast = {
+	actionId: ActionId.fromItemId(62290),
+	value: Food.FoodFortuneCookie,
+};
+export const FoodFortuneCookie = {
+	actionId: ActionId.fromItemId(62649),
+	value: Food.FoodFortuneCookie,
+};
+export const FoodSeveredSagefishHead = {
+	actionId: ActionId.fromItemId(62671),
+	value: Food.FoodSeveredSagefish,
+};
+export const FoodBeerBastedCrocolisk = {
+	actionId: ActionId.fromItemId(62670),
+	value: Food.FoodBeerBasedCrocolisk,
+};
+export const FoodBakedRockfish = {
+	actionId: ActionId.fromItemId(62661),
+	value: Food.FoodBakedRockfish,
+};
+export const FoodBasiliskLiverdog = {
+	actionId: ActionId.fromItemId(62665),
+	value: Food.FoodBakedRockfish,
+};
+export const FoodBlackbellySushi = {
+	actionId: ActionId.fromItemId(62668),
+	value: Food.FoodBlackbellySushi,
+};
+export const FoodSkeweredEll = {
+	actionId: ActionId.fromItemId(62669),
+	value: Food.FoodSkeweredEel,
+};
+export const FoodCrocoliskAuGratin = {
+	actionId: ActionId.fromItemId(62664),
+	value: Food.FoodCrocoliskAuGratin,
+};
+export const FoodDeliciousSagefishTail = {
+	actionId: ActionId.fromItemId(62666),
+	value: Food.FoodDeliciousSagefishTail,
+};
+export const FoodMushroomSauceMudfish = {
+	actionId: ActionId.fromItemId(62667),
+	value: Food.FoodMushroomSauceMudfish,
+};
+export const FoodGrilledDragon = {
+	actionId: ActionId.fromItemId(62662),
+	value: Food.FoodGrilledDragon,
+};
+export const FoodLavascaleMinestrone = {
+	actionId: ActionId.fromItemId(62663),
+	value: Food.FoodLavascaleMinestrone,
+};
 
 export const FOOD_CONFIG = [
+	{
+		config: FoodSeafoodMagnifiqueFeast,
+		stats: [Stat.StatStamina, Stat.StatStrength, Stat.StatIntellect, Stat.StatAgility],
+	},
+	{ config: FoodFortuneCookie, stats: [Stat.StatAgility, Stat.StatStamina, Stat.StatStrength, Stat.StatAgility] },
+	{ config: FoodSeveredSagefishHead, stats: [Stat.StatIntellect] },
+	{ config: FoodBeerBastedCrocolisk, stats: [Stat.StatStrength] },
+	{ config: FoodSkeweredEll, stats: [Stat.StatAgility] },
+	{ config: FoodDeliciousSagefishTail, stats: [Stat.StatSpirit] },
+	{ config: FoodBakedRockfish, stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit] },
+	{ config: FoodBasiliskLiverdog, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
+	{ config: FoodLavascaleMinestrone, stats: [Stat.StatMastery] },
+	{ config: FoodGrilledDragon, stats: [Stat.StatMeleeHit, Stat.StatSpellHit] },
+	{ config: FoodCrocoliskAuGratin, stats: [Stat.StatExpertise] },
+	{ config: FoodMushroomSauceMudfish, stats: [Stat.StatDodge] },
+	{ config: FoodBlackbellySushi, stats: [Stat.StatParry] },
 	{
 		config: FoodFishFeast,
 		stats: [Stat.StatStamina, Stat.StatAttackPower, Stat.StatRangedAttackPower, Stat.StatSpellPower],

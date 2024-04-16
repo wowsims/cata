@@ -346,17 +346,9 @@ func bloodFrenzySavageCombatAura(target *Unit, label string, id ActionID, points
 func MangleAura(target *Unit) *Aura {
 	return bleedDamageAura(target, Aura{
 		Label:    "Mangle",
-		ActionID: ActionID{SpellID: 48566},
+		ActionID: ActionID{SpellID: 33876},
 		Duration: time.Minute,
 	}, 1.3)
-}
-
-func TraumaAura(target *Unit, points int) *Aura {
-	return bleedDamageAura(target, Aura{
-		Label:    "Trauma",
-		ActionID: ActionID{SpellID: 46855},
-		Duration: time.Second * 60,
-	}, 1+0.15*float64(points))
 }
 
 func HemorrhageAura(target *Unit) *Aura {

@@ -319,14 +319,15 @@ enum Flask {
 	FlaskOfTheWinds = 2;
 	FlaskOfSteelskin = 3;
 	FlaskOfFlowingWater = 4;
+	FlaskOfTheDraconicMind = 5;
 
 	// Wotlk
-	FlaskOfTheFrostWyrm = 5;
-	FlaskOfEndlessRage = 6;
-	FlaskOfPureMojo = 7;
-	FlaskOfStoneblood = 8;
-	LesserFlaskOfToughness = 9;
-	LesserFlaskOfResistance = 10;
+	FlaskOfTheFrostWyrm = 6;
+	FlaskOfEndlessRage = 7;
+	FlaskOfPureMojo = 8;
+	FlaskOfStoneblood = 9;
+	LesserFlaskOfToughness = 10;
+	LesserFlaskOfResistance = 11;
 }
 
 enum BattleElixir {
@@ -392,6 +393,21 @@ enum Food {
 	FoodSkullfishSoup = 18;
 	FoodSpicyHotTalbuk = 19;
 	FoodFishermansFeast = 20;
+
+	// Cata
+	FoodSeafoodFeast = 21;
+	FoodFortuneCookie = 22;
+	FoodSeveredSagefish = 23;
+	FoodBeerBasedCrocolisk = 24;
+	FoodSkeweredEel = 25;
+	FoodDeliciousSagefishTail = 26;
+	FoodBasiliskLiverdog = 27;
+	FoodBakedRockfish = 28;
+	FoodCrocoliskAuGratin = 29;
+	FoodGrilledDragon = 30;
+	FoodLavascaleMinestrone = 31;
+	FoodBlackbellySushi = 32;
+	FoodMushroomSauceMudfish = 33;
 }
 
 enum PetFood {
