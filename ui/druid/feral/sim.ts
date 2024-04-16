@@ -64,7 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				[Stat.StatMastery]: 0.58,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 1.94,
+				[PseudoStat.PseudoStatMainHandDps]: 1.55,
 			},
 		),
 		// Default consumes settings.
@@ -75,30 +75,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			bloodlust: true,
 			markOfTheWild: true,
-			icyTalons: true,
-			moonkinForm: true,
-			leaderOfThePack: true,
-			powerWordFortitude: true,
 			strengthOfEarthTotem: true,
-			trueshotAura: true,
-			wrathOfAirTotem: true,
-			demonicPact: true,
-			blessingOfKings: true,
-			blessingOfMight: true,
+			abominationsMight: true,
+			windfuryTotem: true,
+			bloodlust: true,
 			communion: true,
+			leaderOfThePack: true,
+			arcaneBrilliance: true,
+			manaSpringTotem: true,
 		}),
 		partyBuffs: PartyBuffs.create({
 		}),
 		individualBuffs: IndividualBuffs.create({
 		}),
 		debuffs: Debuffs.create({
-			judgement: true,
-			bloodFrenzy: true,
-			exposeArmor: true,
-			sunderArmor: true,
+			savageCombat: true,
 		}),
 	},
 

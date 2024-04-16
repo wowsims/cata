@@ -80,13 +80,13 @@ export const DamagePercentBuff = InputHelpers.makeMultiIconInput(
 // 	'Defensive CDs',
 // );
 
-export const HastePercentBuff = InputHelpers.makeMultiIconInput(
+export const SpellHasteBuff = InputHelpers.makeMultiIconInput(
 	[
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(15473), fieldName: 'shadowForm' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(24858), fieldName: 'moonkinForm' }),
 		makeBooleanRaidBuffInput({ actionId: ActionId.fromSpellId(3738), fieldName: 'wrathOfAirTotem' }),
 	],
-	'Haste %',
+	'Spell Haste',
 );
 
 export const ManaBuff = InputHelpers.makeMultiIconInput(
@@ -316,9 +316,9 @@ export const RAID_BUFFS_CONFIG = [
 		stats: [Stat.StatSpellPower],
 	},
 	{
-		config: HastePercentBuff,
+		config: SpellHasteBuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste],
+		stats: [Stat.StatSpellHaste],
 	},
 	{
 		config: DamagePercentBuff,
@@ -389,7 +389,7 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: MajorArmorDebuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatArmorPenetration],
+		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},
 	{
 		config: PhysicalDamageDebuff,
