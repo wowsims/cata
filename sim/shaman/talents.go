@@ -619,27 +619,6 @@ func (shaman *Shaman) applySearingFlames() {
 
 }
 
-func (shaman *Shaman) applyPrimalWisdom() {
-	manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 63375})
-
-	shaman.RegisterAura(core.Aura{
-		Label:    "Primal Wisdom",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
-			}
-
-			if sim.RandomFloat("Primal Wisdom") < 0.4 {
-				shaman.AddMana(sim, 0.05*shaman.BaseMana, manaMetrics)
-			}
-		},
-	})
-}
-
 func (shaman *Shaman) registerManaTideTotemCD() {
 	if !shaman.Talents.ManaTideTotem {
 		return

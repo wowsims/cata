@@ -47,6 +47,12 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 	return ele
 }
 
+func (eleShaman *ElementalShaman) Initialize() {
+	eleShaman.Shaman.Initialize()
+
+	eleShaman.registerThunderstormSpell()
+}
+
 type ElementalShaman struct {
 	*shaman.Shaman
 }

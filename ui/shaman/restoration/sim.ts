@@ -62,23 +62,28 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
-			divineSpirit: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			moonkinAura: true,
-			sanctifiedRetribution: true,
+			bloodlust: true,
+			markOfTheWild: true,
+			icyTalons: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: 2,
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			faerieFire: TristateEffect.TristateEffectImproved,
-			judgementOfWisdom: true,
-			misery: true,
+			judgement: true,
 			curseOfElements: true,
-			shadowMastery: true,
+			shadowAndFlame: true,
 		}),
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -89,7 +94,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			// RestorationInputs.TriggerEarthShield, 
+			// RestorationInputs.TriggerEarthShield,
 			// OtherInputs.TankAssignment
 		],
 	},

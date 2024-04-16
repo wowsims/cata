@@ -179,6 +179,8 @@ func (target *Target) GetMetricsProto() *proto.UnitMetrics {
 	return metrics
 }
 
+type DynamicDamageDoneByCaster func(sim *Simulation, spell *Spell, attackTable *AttackTable) float64
+
 // Holds cached values for outcome/damage calculations, for a specific attacker+defender pair.
 // These are updated dynamically when attacker or defender stats change.
 type AttackTable struct {
@@ -205,7 +207,10 @@ type AttackTable struct {
 
 	// This is for "Apply Aura: Mod Damage Done By Caster" effects.
 	// If set, the damage taken multiplier is multiplied by the callbacks result.
-	DamageDoneByCasterMultiplier func(sim *Simulation, spell *Spell, attackTable *AttackTable) float64
+	DamageDoneByCasterMultiplier DynamicDamageDoneByCaster
+
+	// When you need more then 1 active, default to using the above one
+	DamageDoneByCasterExtraMultiplier []DynamicDamageDoneByCaster
 }
 
 func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {

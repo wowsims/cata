@@ -5,7 +5,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
-import { Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
+import { Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat, TristateEffect, UnitStats } from '../../core/proto/common.js';
 import { ShamanImbue } from '../../core/proto/shaman.js';
 import { Stats } from '../../core/proto_utils/stats.js';
 import * as ShamanInputs from '../inputs.js';
@@ -18,8 +18,33 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [],
 
+	overwriteDisplayStats: (player: Player<Spec.SpecEnhancementShaman>) => {
+		const playerStats = player.getCurrentStats();
+
+		const statMod = (current: UnitStats, previous?: UnitStats) => {
+			return new Stats().withStat(Stat.StatSpellPower, Stats.fromProto(current).subtract(Stats.fromProto(previous)).getStat(Stat.StatAttackPower) * 0.55);
+		}
+
+		const base = statMod(playerStats.baseStats!);
+		const gear = statMod(playerStats.gearStats!, playerStats.baseStats);
+		const talents = statMod(playerStats.talentsStats!, playerStats.gearStats);
+		const buffs = statMod(playerStats.buffsStats!, playerStats.talentsStats);
+		const consumes = statMod(playerStats.consumesStats!, playerStats.buffsStats);
+		const final = new Stats().withStat(Stat.StatSpellPower, Stats.fromProto(playerStats.finalStats).getStat(Stat.StatAttackPower) * 0.55);
+
+		return {
+			base: base,
+			gear: gear,
+			talents: talents,
+			buffs: buffs,
+			consumes: consumes,
+			final: final,
+			stats: [Stat.StatSpellPower],
+		};
+	},
+
 	// All stats for which EP should be calculated.
-	epStats: [		
+	epStats: [
 		Stat.StatAgility,
 		Stat.StatIntellect,
 		Stat.StatAttackPower,
@@ -27,10 +52,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
-		Stat.StatArmorPenetration,		
+		Stat.StatArmorPenetration,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
-		Stat.StatSpellCrit,		
+		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMastery,
 	],
@@ -91,10 +116,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: TristateEffect.TristateEffectImproved,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-			judgementsOfTheWise: true,
+			vampiricTouch: true,
 		}),
 		debuffs: Presets.DefaultDebuffs,
 	},
@@ -102,7 +124,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [ShamanInputs.ShamanShieldInput(), ShamanInputs.ShamanImbueMH(), EnhancementInputs.ShamanImbueOH],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.ReplenishmentBuff, BuffDebuffInputs.MP5Buff, BuffDebuffInputs.SpellHasteBuff, BuffDebuffInputs.SpiritBuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.ReplenishmentBuff, BuffDebuffInputs.MP5Buff, BuffDebuffInputs.SpellHasteBuff],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -134,7 +156,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
-			return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;		
+			return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	raidSimPresets: [

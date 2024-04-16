@@ -64,7 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				[Stat.StatMastery]: 0.58,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 1.94,
+				[PseudoStat.PseudoStatMainHandDps]: 1.55,
 			},
 		),
 		// Default consumes settings.
@@ -75,12 +75,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
+			markOfTheWild: true,
+			strengthOfEarthTotem: true,
+			abominationsMight: true,
+			windfuryTotem: true,
+			bloodlust: true,
+			communion: true,
+			leaderOfThePack: true,
+			arcaneBrilliance: true,
+			manaSpringTotem: true,
 		}),
 		partyBuffs: PartyBuffs.create({
 		}),
 		individualBuffs: IndividualBuffs.create({
 		}),
 		debuffs: Debuffs.create({
+			savageCombat: true,
 		}),
 	},
 
@@ -89,7 +99,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: FeralInputs.FeralDruidRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.IntellectBuff, BuffDebuffInputs.MP5Buff, BuffDebuffInputs.JudgementOfWisdom],
+	includeBuffDebuffInputs: [BuffDebuffInputs.ManaBuff, BuffDebuffInputs.MP5Buff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

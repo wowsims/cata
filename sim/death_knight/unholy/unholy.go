@@ -44,7 +44,7 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 			UseAMS:            unholyOptions.UseAms,
 			AvgAMSSuccessRate: unholyOptions.AvgAmsSuccessRate,
 			AvgAMSHit:         unholyOptions.AvgAmsHit,
-		}, player.TalentsString),
+		}, player.TalentsString, 56835),
 	}
 
 	uhdk.Inputs.UnholyFrenzyTarget = unholyOptions.UnholyFrenzyTarget

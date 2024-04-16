@@ -30,6 +30,8 @@ const (
 
 type DynamicDamageTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult)
 
+type GetSpellpowerValue func(spell *Spell) float64
+
 // Unit is an abstraction of a Character/Boss/Pet/etc, containing functionality
 // shared by all of them.
 type Unit struct {
@@ -158,6 +160,14 @@ type Unit struct {
 
 	// Used for reacting to mastery stat changes if a spec needs it
 	OnMasteryStatChanged []OnMasteryStatChanged
+
+	GetSpellPowerValue GetSpellpowerValue
+}
+
+func (unit *Unit) getSpellpowerValueImpl(spell *Spell) float64 {
+	return unit.stats[stats.SpellPower] +
+		spell.BonusSpellPower +
+		spell.Unit.PseudoStats.MobTypeSpellPower
 }
 
 // Units can be disabled for several reasons:
@@ -216,6 +226,49 @@ func (unit *Unit) AddStat(stat stats.Stat, amount float64) {
 		panic("Already finalized, use AddStatDynamic instead!")
 	}
 	unit.stats[stat] += amount
+}
+
+// Adds only the highest current stat of the unit from the given stat options
+func (unit *Unit) AddHighestStat(stat stats.Stats) {
+	if unit.Env != nil && unit.Env.IsFinalized() {
+		panic("Already finalized, use AddHighestStatDynamic instead!")
+	}
+
+	highestStatIndex := -1
+	for i := 0; i < int(stats.Len); i++ {
+		if highestStatIndex == -1 && stat[i] > 0 {
+			highestStatIndex = i
+		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
+			highestStatIndex = i
+		}
+	}
+
+	if highestStatIndex == -1 {
+		// this should only occur if stat was the empt stat list - so nothing todo
+		return
+	}
+
+	unit.stats[highestStatIndex] += stat[highestStatIndex]
+}
+
+// Adds only the highest current stat of the unit from the given stat options
+func (unit *Unit) AddHighestStatDynamic(sim *Simulation, stat stats.Stats) {
+	highestStatIndex := -1
+	for i := 0; i < int(stats.Len); i++ {
+		if highestStatIndex == -1 && stat[i] > 0 {
+			highestStatIndex = i
+		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
+			highestStatIndex = i
+		}
+	}
+
+	if highestStatIndex == -1 {
+		// this should only occur if stat was the empt stat list - so nothing todo
+		return
+	}
+	bonus := stats.Stats{}
+	bonus[highestStatIndex] = stat[highestStatIndex]
+	unit.AddStatsDynamic(sim, bonus)
 }
 
 func (unit *Unit) AddDynamicDamageTakenModifier(ddtm DynamicDamageTakenModifier) {
@@ -453,6 +506,10 @@ func (unit *Unit) finalize() {
 	unit.stats = unit.initialStats
 
 	unit.AutoAttacks.finalize()
+
+	if unit.GetSpellPowerValue == nil {
+		unit.GetSpellPowerValue = unit.getSpellpowerValueImpl
+	}
 
 	for _, spell := range unit.Spellbook {
 		spell.finalize()

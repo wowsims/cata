@@ -10,7 +10,7 @@ func (dk *DeathKnight) registerHornOfWinterSpell() {
 	actionID := core.ActionID{SpellID: 57330}
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
 
-	dk.HornOfWinter = dk.RegisterSpell(core.SpellConfig{
+	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellHornOfWinter,

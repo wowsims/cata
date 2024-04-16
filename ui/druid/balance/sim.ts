@@ -64,11 +64,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.MeleeHasteBuff,
-		BuffDebuffInputs.MeleeCritBuff,
+		BuffDebuffInputs.CritBuff,
 		BuffDebuffInputs.AttackPowerPercentBuff,
-		BuffDebuffInputs.AttackPowerBuff,
 		BuffDebuffInputs.MajorArmorDebuff,
-		BuffDebuffInputs.MinorArmorDebuff,
 		BuffDebuffInputs.PhysicalDamageDebuff,
 	],
 	excludeBuffDebuffInputs: [],

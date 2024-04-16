@@ -47,7 +47,6 @@ func (dk *DeathKnight) registerSummonGargoyleSpell() {
 				NextActionAt: sim.CurrentTime + time.Millisecond*2500,
 				Priority:     core.ActionPriorityAuto,
 				OnAction: func(s *core.Simulation) {
-					dk.OnGargoyleStartFirstCast()
 					dk.Gargoyle.GargoyleStrike.Cast(sim, dk.CurrentTarget)
 				},
 			}
@@ -78,6 +77,7 @@ func (dk *DeathKnight) NewGargoyle() *GargoylePet {
 				stats.SpellPower: ownerStats[stats.AttackPower],
 				stats.SpellHit:   ownerStats[stats.MeleeHit] * PetSpellHitScale,
 				stats.SpellHaste: ownerStats[stats.MeleeHaste],
+				stats.SpellCrit:  ownerStats[stats.SpellCrit],
 			}
 		}, false, true),
 		dkOwner: dk,
@@ -94,6 +94,8 @@ func (dk *DeathKnight) NewGargoyle() *GargoylePet {
 		gargoyle.EnableDynamicStats(func(ownerStats stats.Stats) stats.Stats {
 			return stats.Stats{
 				stats.SpellHaste: ownerStats[stats.MeleeHaste],
+				stats.SpellHit:   ownerStats[stats.MeleeHit] * PetSpellHitScale,
+				stats.SpellCrit:  ownerStats[stats.SpellCrit],
 			}
 		})
 	}

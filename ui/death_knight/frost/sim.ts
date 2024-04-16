@@ -20,7 +20,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	epStats: [
 		Stat.StatStrength,
 		Stat.StatArmor,
-		Stat.StatAgility,
 		Stat.StatAttackPower,
 		Stat.StatExpertise,
 		Stat.StatMeleeHit,
@@ -30,6 +29,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
+		Stat.StatArmorPenetration,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -39,7 +39,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatHealth,
 		Stat.StatArmor,
 		Stat.StatStrength,
-		Stat.StatAgility,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatAttackPower,
@@ -56,7 +55,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		epWeights: Stats.fromMap(
 			{
 				[Stat.StatStrength]: 3.22,
-				[Stat.StatAgility]: 0.62,
 				[Stat.StatArmor]: 0.01,
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatExpertise]: 1.13,
@@ -80,32 +78,33 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			swiftRetribution: true,
-			strengthOfEarthTotem: true,
+			markOfTheWild: true,
+			communion: true,
 			icyTalons: true,
-			abominationsMight: true,
-			leaderOfThePack: TristateEffect.TristateEffectRegular,
-			sanctifiedRetribution: true,
+			leaderOfThePack: true,
 			bloodlust: true,
-			devotionAura: TristateEffect.TristateEffectImproved,
+			hornOfWinter: true,
 			stoneskinTotem: true,
+			moonkinForm: true,
 			wrathOfAirTotem: true,
-			powerWordFortitude: TristateEffect.TristateEffectImproved,
-		}),
-		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
+			powerWordFortitude: true,
+			arcaneBrilliance: true,
 			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
+			blessingOfMight: true,
 		}),
+		partyBuffs: PartyBuffs.create({
+			heroicPresence: false,
+		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			bloodFrenzy: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
 			sunderArmor: true,
 			ebonPlaguebringer: true,
 			mangle: true,
-			heartOfTheCrusader: true,
-			shadowMastery: true,
+			criticalMass: true,
+			demoralizingShout: true,
+			frostFever: true,
+			judgement: true,
 		}),
 	},
 
@@ -123,7 +122,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.StaminaBuff],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.AttackPowerDebuff, BuffDebuffInputs.DamageReductionPercentBuff, BuffDebuffInputs.MeleeAttackSpeedDebuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.MeleeAttackSpeedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -132,7 +131,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			// FrostInputs.UseAMSInput,
 			// FrostInputs.AvgAMSSuccessRateInput,
 			// FrostInputs.AvgAMSHitInput,
-
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
 		],

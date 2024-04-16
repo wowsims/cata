@@ -116,9 +116,7 @@ func (spell *Spell) BonusDamage() float64 {
 }
 
 func (spell *Spell) SpellPower() float64 {
-	return spell.Unit.GetStat(stats.SpellPower) +
-		spell.BonusSpellPower +
-		spell.Unit.PseudoStats.MobTypeSpellPower
+	return spell.Unit.GetSpellPowerValue(spell)
 }
 
 func (spell *Spell) SpellHitChance(target *Unit) float64 {
@@ -234,7 +232,7 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 		spell.Unit.Log(
 			sim,
 			"%s %s [DEBUG] MAP: %0.01f, RAP: %0.01f, SP: %0.01f, BaseDamage:%0.01f, AfterAttackerMods:%0.01f, AfterResistances:%0.01f, AfterTargetMods:%0.01f, AfterOutcome:%0.01f, AfterPostOutcome:%0.01f",
-			target.LogLabel(), spell.ActionID, spell.Unit.GetStat(stats.AttackPower), spell.Unit.GetStat(stats.RangedAttackPower), spell.Unit.GetStat(stats.SpellPower), baseDamage, afterAttackMods, afterResistances, afterTargetMods, afterOutcome, afterPostOutcome)
+			target.LogLabel(), spell.ActionID, spell.Unit.GetStat(stats.AttackPower), spell.Unit.GetStat(stats.RangedAttackPower), spell.SpellPower(), baseDamage, afterAttackMods, afterResistances, afterTargetMods, afterOutcome, afterPostOutcome)
 	}
 
 	result.Threat = spell.ThreatFromDamage(result.Outcome, result.Damage)
@@ -503,6 +501,14 @@ func (spell *Spell) TargetDamageMultiplier(sim *Simulation, attackTable *AttackT
 
 	if attackTable.DamageDoneByCasterMultiplier != nil {
 		multiplier *= attackTable.DamageDoneByCasterMultiplier(sim, spell, attackTable)
+	}
+
+	if attackTable.DamageDoneByCasterExtraMultiplier != nil {
+		for i := range attackTable.DamageDoneByCasterExtraMultiplier {
+			if attackTable.DamageDoneByCasterExtraMultiplier[i] != nil {
+				multiplier *= attackTable.DamageDoneByCasterExtraMultiplier[i](sim, spell, attackTable)
+			}
+		}
 	}
 
 	return multiplier

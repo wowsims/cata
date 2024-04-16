@@ -56,7 +56,7 @@ func (dk *DeathKnight) applyWillOfTheNecropolis() {
 	}
 
 	actionID := core.ActionID{SpellID: 50150}
-	dk.WillOfTheNecropolis = dk.RegisterAura(core.Aura{
+	wotnAura := dk.RegisterAura(core.Aura{
 		Label:    "Will of The Necropolis",
 		ActionID: actionID,
 		Duration: core.NeverExpires,
@@ -67,10 +67,11 @@ func (dk *DeathKnight) applyWillOfTheNecropolis() {
 		if (dk.CurrentHealth()-result.Damage)/dk.MaxHealth() <= 0.35 {
 			result.Damage *= damageMitigation
 			if (dk.CurrentHealth()-result.Damage)/dk.MaxHealth() <= 0.35 {
-				dk.WillOfTheNecropolis.Activate(sim)
-				return
+				wotnAura.Activate(sim)
 			}
+			return
 		}
+		wotnAura.Deactivate(sim)
 	})
 }
 
@@ -84,7 +85,7 @@ func (dk *DeathKnight) applyScentOfBlood() {
 
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
 
-	dk.ScentOfBloodAura = dk.RegisterAura(core.Aura{
+	procAura := dk.RegisterAura(core.Aura{
 		Label:     "Scent of Blood Proc",
 		ActionID:  actionID,
 		Duration:  core.NeverExpires,
@@ -107,8 +108,8 @@ func (dk *DeathKnight) applyScentOfBlood() {
 	core.MakePermanent(dk.GetOrRegisterAura(core.Aura{
 		Label: "Scent of Blood",
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if sim.RandomFloat("Scent Of Blood Proc Chance") <= procChance {
-				dk.ScentOfBloodAura.Activate(sim)
+			if sim.Proc(procChance, "Scent Of Blood Proc Chance") {
+				procAura.Activate(sim)
 			}
 		},
 	}))
@@ -123,16 +124,20 @@ func (dk *DeathKnight) applyButchery() {
 	amountOfRunicPower := 1.0 * float64(dk.Talents.Butchery)
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
 
-	dk.ButcheryAura = core.MakePermanent(dk.RegisterAura(core.Aura{
+	var pa *core.PendingAction
+	core.MakePermanent(dk.RegisterAura(core.Aura{
 		ActionID: actionID,
 		Label:    "Butchery",
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			dk.ButcheryPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+			pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period: time.Second * 5,
 				OnAction: func(sim *core.Simulation) {
 					dk.AddRunicPower(sim, amountOfRunicPower, rpMetrics)
 				},
 			})
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			pa.Cancel(sim)
 		},
 	}))
 }
