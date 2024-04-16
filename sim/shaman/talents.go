@@ -559,10 +559,16 @@ func (shaman *Shaman) applySearingFlames() {
 
 	improvedLavaLashDamageBonus := 0.1 * float64(shaman.Talents.ImprovedLavaLash)
 
-	shaman.SearingFlamesDot = shaman.RegisterSpell(core.SpellConfig{
+	shaman.SearingFlames = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 77657},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
+
+		DamageMultiplierAdditive: 1,
+		DamageMultiplier:         1,
+		ThreatMultiplier:         1,
+
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label:     "Searing Flames",
@@ -584,10 +590,33 @@ func (shaman *Shaman) applySearingFlames() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.Dot(target).ApplyOrReset(sim)
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
-			spell.Dot(target).Apply(sim)
 		},
 	})
+
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:           "Searing Flames",
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: SpellMaskSearingTotem,
+		Outcome:        core.OutcomeLanded,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			dot := shaman.SearingFlames.Dot(result.Target)
+
+			if shaman.Talents.SearingFlames == 3 || sim.RandomFloat("Searing Flames") < 0.33*float64(shaman.Talents.SearingFlames) {
+				dot.Aura.Activate(sim)
+				dot.Aura.AddStack(sim)
+
+				// recalc damage based on stacks, testing with searing totem seems to indicate the damage is updated dynamically on refesh
+				// instantly taking the bonus of any procs or buffs and applying it times the number of stacks
+				dot.SnapshotBaseDamage = float64(dot.GetStacks()) * result.Damage / float64(dot.NumberOfTicks)
+				dot.SnapshotAttackerMultiplier = shaman.SearingFlames.DamageMultiplier
+				shaman.SearingFlames.Cast(sim, result.Target)
+			}
+		},
+	})
+
 }
 
 func (shaman *Shaman) applyPrimalWisdom() {

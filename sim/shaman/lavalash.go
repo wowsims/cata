@@ -39,9 +39,13 @@ func (shaman *Shaman) registerLavaLashSpell() {
 		BonusCoefficient: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			if target.GetAura("Searing Flames") != nil {
+			if result.Landed() {
+				return
+			}
+			searingFlames := shaman.SearingFlames.Dot(target)
+			if searingFlames.GetStacks() > 0 {
 				numberSpread := 0
 				maxTargets := 4
 				for _, otherTarget := range sim.Encounter.TargetUnits {
@@ -54,6 +58,8 @@ func (shaman *Shaman) registerLavaLashSpell() {
 						return
 					}
 				}
+
+				searingFlames.SetStacks(sim, 0)
 			}
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

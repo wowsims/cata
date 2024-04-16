@@ -137,7 +137,7 @@ type Shaman struct {
 	UnleashWind     *core.Spell
 
 	MaelstromWeaponAura *core.Aura
-	SearingFlamesDot    *core.Spell
+	SearingFlames       *core.Spell
 
 	// Healing Spells
 	tidalWaveProc          *core.Aura
@@ -248,6 +248,12 @@ func (shaman *Shaman) Initialize() {
 	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
 		shaman.applyPrimalWisdom()
 		shaman.registerLavaLashSpell()
+
+		masteryBonus := 1.2 + shaman.GetMasteryPoints()*0.025
+		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= masteryBonus
+		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= masteryBonus
+		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= masteryBonus
+
 	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
 		shaman.registerThunderstormSpell()
 	}

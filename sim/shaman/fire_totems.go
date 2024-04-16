@@ -40,25 +40,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			NumberOfTicks: 24,
 			TickLength:    time.Second * 60 / 24,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.Spell.CalcAndDealDamage(sim, target, 90, dot.Spell.OutcomeMagicHitAndCrit)
-
-				if shaman.Talents.SearingFlames > 0 && result.Landed() {
-					if shaman.Talents.SearingFlames == 3 || sim.RandomFloat("Searing Flames") < 0.33*float64(shaman.Talents.SearingFlames) {
-						searingFlamesDot := shaman.SearingFlamesDot.Dot(target)
-
-						if searingFlamesDot.Aura.GetStacks() == 0 {
-							searingFlamesDot.Aura.Activate(sim)
-						} else {
-							searingFlamesDot.Aura.AddStack(sim)
-						}
-
-						// recalc damage based on stacks, testing with searing totem seems to indicate the damage is updated dynamically on refesh
-						// instantly taking the bonus of any procs or buffs and applying it times the number of stacks
-						searingFlamesDot.SnapshotAttackerMultiplier = 1
-						searingFlamesDot.SnapshotBaseDamage = float64(searingFlamesDot.Aura.GetStacks()) * result.Damage / float64(searingFlamesDot.NumberOfTicks)
-						searingFlamesDot.Spell.Cast(sim, target)
-					}
-				}
+				dot.Spell.CalcAndDealDamage(sim, target, 90, dot.Spell.OutcomeMagicHitAndCrit)
 			},
 		},
 
