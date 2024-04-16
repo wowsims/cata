@@ -160,7 +160,8 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 
 	if mage.Options.Armor == proto.MageOptions_MoltenArmor {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellsAll,
+			//ClassMask:  MageSpellsAll,
+			ClassMask:  MageSpellArcaneBlast,
 			FloatValue: 0.02 * core.CritRatingPerCritChance,
 			Kind:       core.SpellMod_BonusCrit_Rating,
 		})
@@ -201,7 +202,8 @@ func (mage *Mage) GetArcaneMasteryBonus() float64 {
 func (mage *Mage) applyArcaneMastery() {
 	// Arcane Mastery Mod
 	arcaneMastery := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll,
+		//ClassMask:  MageSpellsAll,
+		ClassMask:  MageSpellArcaneBlast,
 		FloatValue: mage.CurrentMana() / mage.MaxMana() * mage.GetArcaneMasteryBonus(), //take current % of mana, get that portion of damage bonus
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
@@ -293,7 +295,8 @@ const (
 	MageSpellArcaneBarrage int64 = 1 << iota
 	MageSpellArcaneBlast
 	MageSpellArcaneExplosion
-	MageSpellArcaneMissiles
+	MageSpellArcaneMissilesCast
+	MageSpellArcaneMissilesTick
 	MageSpellBlastWave
 	MageSpellBlizzard
 	MageSpellDeepFreeze

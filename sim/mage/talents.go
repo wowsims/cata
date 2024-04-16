@@ -67,7 +67,7 @@ func (mage *Mage) ApplyTalents() {
 	// Netherwind Presence
 	if mage.Talents.NetherwindPresence > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellsAll,
+			ClassMask:  MageSpellArcaneBarrage,
 			FloatValue: -0.01 * float64(mage.Talents.NetherwindPresence) * core.HasteRatingPerHastePercent,
 			Kind:       core.SpellMod_CastTime_Pct,
 		})
@@ -85,7 +85,7 @@ func (mage *Mage) ApplyTalents() {
 	//Improved Arcane Missiles
 	if mage.Talents.ImprovedArcaneMissiles > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask: MageSpellArcaneMissiles,
+			ClassMask: MageSpellArcaneMissilesCast,
 			IntValue:  int64(mage.Talents.ImprovedArcaneMissiles),
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
 		})
@@ -94,7 +94,7 @@ func (mage *Mage) ApplyTalents() {
 	// Missile Barrage
 	if mage.Talents.MissileBarrage > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask: MageSpellArcaneMissiles,
+			ClassMask: MageSpellArcaneMissilesCast,
 			TimeValue: time.Millisecond * time.Duration(-100*mage.Talents.MissileBarrage),
 			Kind:      core.SpellMod_DotTickLength_Flat,
 		})
@@ -204,7 +204,8 @@ func (mage *Mage) ApplyTalents() {
 	// Piercing Ice
 	if mage.Talents.PiercingIce > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellsAll,
+			//ClassMask:  MageSpellsAll,
+			ClassMask:  MageSpellArcaneBlast,
 			FloatValue: 0.01 * float64(mage.Talents.PiercingIce) * core.CritRatingPerCritChance,
 			Kind:       core.SpellMod_BonusCrit_Rating,
 		})
@@ -356,7 +357,8 @@ func (mage *Mage) applyArcanePotency() {
 	}
 
 	arcanePotencyMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAllDamaging,
+		//ClassMask:  MageSpellsAllDamaging,
+		ClassMask:  MageSpellArcaneBarrage,
 		FloatValue: []float64{0.0, 0.07, 0.15}[mage.Talents.ArcanePotency] * core.CritRatingPerCritChance,
 		Kind:       core.SpellMod_BonusCrit_Rating,
 	})
@@ -453,7 +455,8 @@ func (mage *Mage) applyArcaneConcentration() {
 		})
 	} */
 	clearCastingMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAllDamaging,
+		//ClassMask:  MageSpellsAllDamaging,
+		ClassMask:  MageSpellArcaneBlast,
 		FloatValue: -1,
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
@@ -703,7 +706,8 @@ func (mage *Mage) registerIcyVeinsCD() {
 	}
 
 	icyVeinsMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll,
+		//ClassMask:  MageSpellsAll,
+		ClassMask:  MageSpellArcaneBlast,
 		FloatValue: -0.2,
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
@@ -810,7 +814,8 @@ func (mage *Mage) applyMoltenFury() {
 	}
 
 	moltenFuryMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll,
+		//ClassMask:  MageSpellsAll,
+		ClassMask:  MageSpellArcaneBarrage,
 		FloatValue: .04 * float64(mage.Talents.MoltenFury),
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})

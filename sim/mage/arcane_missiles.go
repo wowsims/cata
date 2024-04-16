@@ -103,6 +103,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 */
 
 func (mage *Mage) registerArcaneMissilesSpell() {
+
 	hasT8_4pc := mage.HasSetBonus(ItemSetKirinTorGarb, 4)
 
 	mage.ArcaneMissilesTickSpell = mage.GetOrRegisterSpell(core.SpellConfig{
@@ -111,10 +112,10 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 		// unlike Mind Flay, this CAN proc JoW. It can also proc trinkets without the "can proc from proc" flag
 		// such as illustration of the dragon soul
 		// however, it cannot proc Nibelung so we add the ProcMaskNotInSpellbook flag
-		ProcMask: core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:    SpellFlagMage,
-		//ClassSpellMask: MageSpellArcaneMissiles,
-		MissileSpeed: 20,
+		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
+		Flags:          SpellFlagMage,
+		ClassSpellMask: MageSpellArcaneMissilesTick,
+		MissileSpeed:   20,
 
 		DamageMultiplier: 1,
 		DamageMultiplierAdditive: 1 +
@@ -125,26 +126,34 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := 0.432 * mage.ScalingBaseDamage
 			result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealDamage(sim, result)
-			})
+			//spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+			spell.DealDamage(sim, result)
+			//})
 		},
 	})
 
+	var numTicks int32 = 3
 	mage.ArcaneMissiles = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 7268},
-		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagChanneled | core.SpellFlagAPL,
-		//ClassSpellMask: MageSpellArcaneMissiles,
+		ActionID:       core.ActionID{SpellID: 5143},
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | core.SpellFlagChanneled | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellArcaneMissilesCast,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
 		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return mage.ArcaneMissilesProcAura.IsActive()
+		},
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "ArcaneMissiles",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					// Currently it doesn't cast the first missile until the time of the first tick
+					mage.ArcaneMissilesTickSpell.Cast(sim, mage.CurrentTarget)
+				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					if mage.ArcaneMissilesProcAura.IsActive() {
 						if !hasT8_4pc || sim.Proc(T84PcProcChance, "T84PC") {
@@ -163,7 +172,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 					mage.ArcaneBlastAura.Deactivate(sim)
 				},
 			},
-			NumberOfTicks:       3,
+			NumberOfTicks:       numTicks - 1, // subtracting 1 due to autocasting one OnGain
 			TickLength:          time.Millisecond * 700,
 			AffectedByCastSpeed: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
