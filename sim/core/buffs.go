@@ -617,10 +617,10 @@ func ManaSpringTotem(unit *Unit) *Aura {
 func registerExclusiveMeleeHaste(aura *Aura, value float64) {
 	aura.NewExclusiveEffect("AttackSpeed%", false, ExclusiveEffect{
 		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.PseudoStats.MeleeSpeedMultiplier *= value
+			ee.Aura.Unit.MultiplyAttackSpeed(s, value)
 		},
 		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
-			ee.Aura.Unit.PseudoStats.MeleeSpeedMultiplier /= value
+			ee.Aura.Unit.MultiplyAttackSpeed(s, 1/value)
 		},
 	})
 }
@@ -732,12 +732,10 @@ func registerExclusiveSpellHaste(aura *Aura, spellHastePercent float64) {
 	aura.NewExclusiveEffect("SpellHaste%Buff", false, ExclusiveEffect{
 		Priority: spellHastePercent,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.CastSpeedMultiplier *= (1 + ee.Priority)
-			ee.Aura.Unit.updateCastSpeed()
+			ee.Aura.Unit.MultiplyCastSpeed(1 + ee.Priority)
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.CastSpeedMultiplier /= (1 + ee.Priority)
-			ee.Aura.Unit.updateCastSpeed()
+			ee.Aura.Unit.MultiplyCastSpeed(1 / (1 + ee.Priority))
 		},
 	})
 }
