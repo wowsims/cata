@@ -40,6 +40,9 @@ func (dk *DeathKnight) ApplyUnholyTalents() {
 		})
 	}
 
+	// Contagion
+	dk.applyContagion()
+
 	// Rage of Rivendare
 	if dk.Talents.RageOfRivendare > 0 {
 		dk.AddStaticMod(core.SpellModConfig{
@@ -66,6 +69,32 @@ func (dk *DeathKnight) ApplyUnholyTalents() {
 
 	// Dark Transformation
 	dk.applyDarkTransformation(shadowInfusionAura)
+}
+
+func (dk *DeathKnight) applyContagion() {
+	contagionMod := dk.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.5 * float64(dk.Talents.Contagion),
+		ClassMask:  DeathKnightSpellDisease,
+	})
+
+	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+		Name:           "Contagion Activate",
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: DeathKnightSpellPestilence,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			contagionMod.Activate()
+		},
+	})
+
+	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+		Name:           "Contagion Deactivate",
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: DeathKnightSpellPestilence,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			contagionMod.Deactivate()
+		},
+	})
 }
 
 func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
@@ -188,6 +217,15 @@ func (dk *DeathKnight) applyEbonPlaguebringer() {
 	dk.Env.RegisterPreFinalizeEffect(func() {
 		dk.FrostFeverSpell.RelatedAuras = append(dk.FrostFeverSpell.RelatedAuras, dk.EbonPlagueBringerAura)
 		dk.BloodPlagueSpell.RelatedAuras = append(dk.BloodPlagueSpell.RelatedAuras, dk.EbonPlagueBringerAura)
+	})
+
+	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+		Name:           "Ebon Plague Activate",
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: DeathKnightSpellDisease,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			dk.EbonPlagueBringerAura.Get(result.Target).Activate(sim)
+		},
 	})
 }
 

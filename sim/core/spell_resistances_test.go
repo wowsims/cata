@@ -119,7 +119,8 @@ func Test_PartialResistsVsBoss(t *testing.T) {
 			chance = th.cumulativeChance
 		}
 
-		expectedAr := 0.06 + resist/(400+resist)
+		// no more level based resists
+		expectedAr := resist / (400 + resist)
 
 		if math.Abs(resultingAr-expectedAr) > 1e-9 {
 			t.Errorf("resist = %.2f, thresholds = %s, resultingAr = %.2f%%, expectedAr = %.2f%%", resist, thresholds, resultingAr, expectedAr)

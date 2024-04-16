@@ -80,34 +80,33 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			swiftRetribution: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
+			communion: true,
 			icyTalons: true,
-			abominationsMight: true,
-			leaderOfThePack: TristateEffect.TristateEffectRegular,
-			sanctifiedRetribution: true,
+			leaderOfThePack: true,
 			bloodlust: true,
-			devotionAura: TristateEffect.TristateEffectImproved,
-			stoneskinTotem: TristateEffect.TristateEffectImproved,
+			hornOfWinter: true,
+			stoneskinTotem: true,
+			moonkinForm: true,
 			wrathOfAirTotem: true,
-			powerWordFortitude: TristateEffect.TristateEffectImproved,
+			powerWordFortitude: true,
+			arcaneBrilliance: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
 		}),
 		partyBuffs: PartyBuffs.create({
 			heroicPresence: false,
 		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			bloodFrenzy: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
 			sunderArmor: true,
 			ebonPlaguebringer: true,
 			mangle: true,
-			heartOfTheCrusader: true,
-			shadowMastery: true,
+			criticalMass: true,
+			demoralizingShout: true,
+			frostFever: true,
+			judgement: true,
 		}),
 	},
 
@@ -125,7 +124,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.StaminaBuff],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.AttackPowerDebuff, BuffDebuffInputs.DamageReductionPercentBuff, BuffDebuffInputs.MeleeAttackSpeedDebuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.MeleeAttackSpeedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -134,7 +133,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			// FrostInputs.UseAMSInput,
 			// FrostInputs.AvgAMSSuccessRateInput,
 			// FrostInputs.AvgAMSHitInput,
-
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
 		],

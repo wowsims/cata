@@ -87,7 +87,7 @@ export class ConsumesPicker extends Component {
 			</div>
     	`;
 
-		// const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const foodsElem = this.rootElem.querySelector('.consumes-food') as HTMLElement;
 
 		const foodOptions = ConsumablesInputs.makeFoodInput(relevantStatOptions(ConsumablesInputs.FOOD_CONFIG, this.simUI));

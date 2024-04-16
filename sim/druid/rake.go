@@ -4,11 +4,10 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (druid *Druid) registerRakeSpell() {
-	dotCanCrit := druid.HasSetBonus(ItemSetLasherweaveBattlegear, 4)
-
 	druid.Rake = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48574},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -16,7 +15,7 @@ func (druid *Druid) registerRakeSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   40 - float64(druid.Talents.Ferocity),
+			Cost:   35,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -26,8 +25,8 @@ func (druid *Druid) registerRakeSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
-		CritMultiplier:   druid.MeleeCritMultiplier(Cat),
+		DamageMultiplier: druid.RazorClawsMultiplier(druid.GetStat(stats.Mastery)),
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -35,7 +34,7 @@ func (druid *Druid) registerRakeSpell() {
 				Label:    "Rake",
 				Duration: time.Second * 9,
 			}),
-			NumberOfTicks: 3 + core.TernaryInt32(druid.HasSetBonus(ItemSetMalfurionsBattlegear, 2), 1, 0),
+			NumberOfTicks: 3 + druid.Talents.EndlessCarnage,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = 358 + 0.06*dot.Spell.MeleeAttackPower()
@@ -44,11 +43,7 @@ func (druid *Druid) registerRakeSpell() {
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if dotCanCrit {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
-				}
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
@@ -85,13 +80,14 @@ func (druid *Druid) registerRakeSpell() {
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
 			critChance := spell.PhysicalCritChance(attackTable)
 			critMod := (critChance * (spell.CritMultiplier - 1))
-
-			if dotCanCrit {
-				ticks.Damage *= 1 + critMod
-			}
+			ticks.Damage *= 1 + critMod
 
 			return ticks
 		},
+	})
+
+	druid.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		druid.Rake.DamageMultiplier *= druid.RazorClawsMultiplier(newMastery) / druid.RazorClawsMultiplier(oldMastery)
 	})
 }
 

@@ -332,8 +332,9 @@ export class ActionId {
 				break;
 			case 'Chain Lightning':
 			case 'Lightning Bolt':
+			case 'Lava Burst':
 				if (this.tag == 6) {
-					name += ' (LO)';
+					name += ' (Overload)';
 				} else if (this.tag) {
 					name += ` (${this.tag} MW)`;
 				}
@@ -457,6 +458,11 @@ export class ActionId {
 					name += ' (MT)';
 				}
 				break;
+			case 'Devouring Plague':
+				if (this.tag == 1) {
+					name += ' (Improved)';
+					break;
+				}
 			default:
 				if (this.tag) {
 					name += ' (??)';

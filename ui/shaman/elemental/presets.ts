@@ -5,6 +5,7 @@ import {
 	EarthTotem,
 	ElementalShaman_Options as ElementalShamanOptions,
 	FireTotem,
+	ShamanPrimeGlyph,
 	ShamanMajorGlyph,
 	ShamanMinorGlyph,
 	ShamanShield,
@@ -12,7 +13,6 @@ import {
 	WaterTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
-import AdvancedApl from './apls/advanced.apl.json';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import P2Gear from './gear_sets/p2.gear.json';
@@ -33,22 +33,24 @@ export const P3_PRESET_HORDE = PresetUtils.makePresetGear('P3 Preset [H]', P3Hor
 export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
-export const ROTATION_PRESET_ADVANCED = PresetUtils.makePresetAPLRotation('Advanced', AdvancedApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		// talentsString: '0533001523213351322301351-005050031',
-		// glyphs: Glyphs.create({
-		// 	major1: ShamanMajorGlyph.GlyphOfFlametongueWeapon,
-		// 	major2: ShamanMajorGlyph.GlyphOfTotemOfWrath,
-		// 	major3: ShamanMajorGlyph.GlyphOfLightningBolt,
-		// 	minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
-		// 	minor2: ShamanMinorGlyph.GlyphOfWaterShield,
-		// 	minor3: ShamanMinorGlyph.GlyphOfGhostWolf,
-		// }),
+		talentsString: '3232023212231101321-203002',
+		glyphs: Glyphs.create({			
+			prime1: ShamanPrimeGlyph.GlyphOfFlameShock,
+			prime2: ShamanPrimeGlyph.GlyphOfLavaBurst,
+			prime3: ShamanPrimeGlyph.GlyphOfLightningBolt,
+			major1: ShamanMajorGlyph.GlyphOfLightningShield,
+			major2: ShamanMajorGlyph.GlyphOfThunder,
+			major3: ShamanMajorGlyph.GlyphOfFireNova,
+			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
+			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
+			minor3: ShamanMinorGlyph.GlyphOfTheArcticWolf,
+		}),
 	}),
 };
 
@@ -58,7 +60,7 @@ export const DefaultOptions = ElementalShamanOptions.create({
 		totems: ShamanTotems.create({
 			earth: EarthTotem.StrengthOfEarthTotem,
 			air: AirTotem.WrathOfAirTotem,
-			fire: FireTotem.TotemOfWrath,
+			fire: FireTotem.FlametongueTotem,
 			water: WaterTotem.ManaSpringTotem,
 			useFireElemental: true,
 		}),
