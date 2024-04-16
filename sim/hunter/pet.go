@@ -53,8 +53,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	// Todo: Change for Cataclysm
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  50,
-			BaseDamageMax:  78,
+			BaseDamageMin:  73,
+			BaseDamageMax:  110,
 			SwingSpeed:     atkSpd,
 			CritMultiplier: 2,
 		},

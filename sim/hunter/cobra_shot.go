@@ -11,10 +11,11 @@ func (hunter *Hunter) registerCobraShotSpell() {
 	csMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 77767})
 
 	hunter.CobraShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 77767},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 77767},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		ClassSpellMask: SpellMaskCobraShot,
+		Flags:          core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},

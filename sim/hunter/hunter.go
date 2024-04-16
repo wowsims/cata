@@ -185,6 +185,14 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	return hunter
 }
 
+const (
+	SpellMaskNone         int64 = 0
+	SpellMaskRangedAttack int64 = 1 << iota
+	SpellMaskAutoShot
+	SpellMaskSteadyShot
+	SpellMaskCobraShot
+)
+
 // Agent is a generic way to access underlying hunter on any of the agents.
 type HunterAgent interface {
 	GetHunter() *Hunter
