@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/druid"
 )
 
@@ -93,6 +94,11 @@ func (cat *FeralDruid) MissChance() float64 {
 func (cat *FeralDruid) Initialize() {
 	cat.Druid.Initialize()
 	cat.RegisterFeralCatSpells()
+}
+
+func (cat *FeralDruid) ApplyTalents() {
+	cat.Druid.ApplyTalents()
+	cat.MultiplyStat(stats.AttackPower, 1.25) // Aggression passive
 }
 
 func (cat *FeralDruid) Reset(sim *core.Simulation) {
