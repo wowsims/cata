@@ -100,9 +100,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			blessingOfMight: true,
 			communion: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-			heroicPresence: false,
-		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 		}),
