@@ -39,7 +39,7 @@ func (dk *DeathKnight) registerArmyOfTheDeadSpell() {
 		},
 	})
 
-	dk.ArmyOfTheDead = dk.RegisterSpell(core.SpellConfig{
+	spell := dk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 42650},
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: DeathKnightSpellArmyOfTheDead,
@@ -66,7 +66,7 @@ func (dk *DeathKnight) registerArmyOfTheDeadSpell() {
 	})
 
 	dk.AddMajorCooldown(core.MajorCooldown{
-		Spell: dk.ArmyOfTheDead,
+		Spell: spell,
 		Type:  core.CooldownTypeDPS,
 		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
 			return dk.HasActiveAuraWithTag(core.UnholyFrenzyAuraTag)

@@ -41,13 +41,6 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 		MainHand:       bdk.WeaponFromMainHand(bdk.DefaultMeleeCritMultiplier()),
 		OffHand:        bdk.WeaponFromOffHand(bdk.DefaultMeleeCritMultiplier()),
 		AutoSwingMelee: true,
-		ReplaceMHSwing: func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-			if bdk.RuneStrikeQueued && bdk.RuneStrike.CanCast(sim, nil) {
-				return bdk.RuneStrike
-			} else {
-				return mhSwingSpell
-			}
-		},
 	})
 
 	healingModel := options.HealingModel

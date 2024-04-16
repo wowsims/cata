@@ -855,39 +855,35 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	// We need to modify the buffs a bit because some things are applied to pets by
 	// the owner during combat (Bloodlust) or don't make sense for a pet.
 	raidBuffs.Bloodlust = false
-	raidBuffs.WrathOfAirTotem = false
-	// individualBuffs.HymnOfHope = 0
-	// individualBuffs.HandOfSalvation = 0
-	// individualBuffs.Innervates = 0
-	// individualBuffs.PowerInfusions = 0
-	// individualBuffs.UnholyFrenzy = 0
-	// individualBuffs.RevitalizeRejuvination = 0
-	// individualBuffs.RevitalizeWildGrowth = 0
-	// individualBuffs.TricksOfTheTrades = 0
-	// individualBuffs.ShatteringThrows = 0
-	// individualBuffs.FocusMagic = false
+	// Str/Agi
+	raidBuffs.StrengthOfEarthTotem = false
+	raidBuffs.HornOfWinter = false
+	raidBuffs.BattleShout = false
+	// Crit%
+	raidBuffs.LeaderOfThePack = false
+	raidBuffs.HonorAmongThieves = false
+	raidBuffs.ElementalOath = false
+	raidBuffs.Rampage = false
+	raidBuffs.TerrifyingRoar = false
+	// AP%
+	raidBuffs.TrueshotAura = false
+	raidBuffs.UnleashedRage = false
+	raidBuffs.AbominationsMight = false
+	raidBuffs.BlessingOfMight = false
+
+	individualBuffs.HymnOfHopeCount = 0
+	individualBuffs.InnervateCount = 0
+	individualBuffs.PowerInfusionCount = 0
+	individualBuffs.DivineGuardianCount = 0
+	individualBuffs.GuardianSpiritCount = 0
+	individualBuffs.HandOfSacrificeCount = 0
+	individualBuffs.PainSuppressionCount = 0
+	individualBuffs.PowerInfusionCount = 0
+	individualBuffs.TricksOfTheTradeCount = 0
+	individualBuffs.UnholyFrenzyCount = 0
 
 	if !petAgent.GetPet().enabledOnStart {
-		// raidBuffs.ArcaneBrilliance = false
-		// raidBuffs.BlessingOfKings = false
-		// raidBuffs.MarkOfTheWild = false
-		// raidBuffs.PowerWordFortitude = false
-		// raidBuffs.Thorns = 0
-		// raidBuffs.ShadowProtection = false
-		// raidBuffs.DrumsOfTheWild = false
-		// raidBuffs.ScrollOfProtection = false
-		// raidBuffs.ScrollOfStamina = false
-		// raidBuffs.ScrollOfStrength = false
-		// raidBuffs.ScrollOfAgility = false
-		// raidBuffs.ScrollOfIntellect = false
-		// raidBuffs.ScrollOfSpirit = false
-		// individualBuffs.BlessingOfSanctuary = false
-		// individualBuffs.BlessingOfMight = 0
-		// individualBuffs.BlessingOfWisdom = 0
 	}
-
-	// For some reason pets don't benefit from buffs that are ratings, e.g. crit rating or haste rating.
-	// partyBuffs.BraidedEterniumChain = false
 
 	applyBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
 }

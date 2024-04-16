@@ -36,7 +36,7 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
-	dk.FesteringStrike = dk.GetOrRegisterSpell(core.SpellConfig{
+	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       FesteringStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,

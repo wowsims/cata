@@ -675,12 +675,8 @@ func DustCloud(target *Unit) *Aura {
 }
 
 func FrostFeverAura(caster *Unit, target *Unit, britleBones int32) *Aura {
-	label := "External"
-	if caster != nil {
-		label = caster.Label
-	}
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "FrostFeverDebuff" + label,
+		Label:    "FrostFeverDebuff",
 		ActionID: ActionID{SpellID: 55095},
 		Duration: NeverExpires,
 	})

@@ -18,28 +18,7 @@ func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
 	actionID := core.ActionID{SpellID: 48263}
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
 
-	dk.BloodPresence = dk.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
-
-		RuneCost: core.RuneCostOptions{
-			BloodRuneCost: 1,
-		},
-		Cast: core.CastConfig{
-			CD: core.Cooldown{
-				Timer:    timer,
-				Duration: time.Second,
-			},
-		},
-		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			dk.BloodPresenceAura.Activate(sim)
-			if dk.CurrentRunicPower() > 0 {
-				dk.SpendRunicPower(sim, dk.CurrentRunicPower(), rpMetrics)
-			}
-		},
-	})
-
-	aura := core.Aura{
+	presenceAura := dk.GetOrRegisterAura(core.Aura{
 		Label:    "Blood Presence",
 		ActionID: actionID,
 		Duration: core.NeverExpires,
@@ -55,10 +34,29 @@ func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
 			aura.Unit.DisableDynamicStatDep(sim, stamDep)
 			dk.RemoveDynamicEquipScaling(sim, stats.Armor, armorScaling)
 		},
-	}
+	})
+	presenceAura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
 
-	dk.BloodPresenceAura = dk.GetOrRegisterAura(aura)
-	dk.BloodPresenceAura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
+	dk.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagAPL,
+
+		RuneCost: core.RuneCostOptions{
+			BloodRuneCost: 1,
+		},
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    timer,
+				Duration: time.Second,
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
+			presenceAura.Activate(sim)
+			if dk.CurrentRunicPower() > 0 {
+				dk.SpendRunicPower(sim, dk.CurrentRunicPower(), rpMetrics)
+			}
+		},
+	})
 }
 
 func (dk *DeathKnight) registerFrostPresenceAura(timer *core.Timer) {
@@ -72,7 +70,22 @@ func (dk *DeathKnight) registerFrostPresenceAura(timer *core.Timer) {
 		damageMulti += []float64{0, 0.02, 0.05}[dk.Talents.ImprovedFrostPresence]
 	}
 
-	dk.FrostPresence = dk.RegisterSpell(core.SpellConfig{
+	presenceAura := dk.GetOrRegisterAura(core.Aura{
+		Label:    "Frost Presence",
+		ActionID: actionID,
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			dk.PseudoStats.DamageDealtMultiplier *= damageMulti
+			dk.MultiplyRunicRegen(runicMulti)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			dk.PseudoStats.DamageDealtMultiplier /= damageMulti
+			dk.MultiplyRunicRegen(1 / runicMulti)
+		},
+	})
+	presenceAura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
+
+	dk.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
@@ -86,27 +99,12 @@ func (dk *DeathKnight) registerFrostPresenceAura(timer *core.Timer) {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			dk.FrostPresenceAura.Activate(sim)
+			presenceAura.Activate(sim)
 			if dk.CurrentRunicPower() > 0 {
 				dk.SpendRunicPower(sim, dk.CurrentRunicPower(), rpMetrics)
 			}
 		},
 	})
-
-	dk.FrostPresenceAura = dk.GetOrRegisterAura(core.Aura{
-		Label:    "Frost Presence",
-		ActionID: actionID,
-		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			dk.PseudoStats.DamageDealtMultiplier *= damageMulti
-			dk.MultiplyRunicRegen(runicMulti)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			dk.PseudoStats.DamageDealtMultiplier /= damageMulti
-			dk.MultiplyRunicRegen(1 / runicMulti)
-		},
-	})
-	dk.FrostPresenceAura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
 }
 
 func (dk *DeathKnight) registerUnholyPresenceAura(timer *core.Timer) {
@@ -118,34 +116,13 @@ func (dk *DeathKnight) registerUnholyPresenceAura(timer *core.Timer) {
 		hasteMulti += []float64{0, 0.02, 0.05}[dk.Talents.ImprovedUnholyPresence]
 	}
 
-	dk.UnholyPresence = dk.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
-
-		RuneCost: core.RuneCostOptions{
-			UnholyRuneCost: 1,
-		},
-		Cast: core.CastConfig{
-			CD: core.Cooldown{
-				Timer:    timer,
-				Duration: time.Second,
-			},
-		},
-		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			dk.UnholyPresenceAura.Activate(sim)
-			if dk.CurrentRunicPower() > 0 {
-				dk.SpendRunicPower(sim, dk.CurrentRunicPower(), rpMetrics)
-			}
-		},
-	})
-
 	unholyPresenceMod := dk.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_GlobalCooldown_Flat,
 		ClassMask: DeathKnightSpellsAll,
 		TimeValue: time.Millisecond * -500,
 	})
 
-	dk.UnholyPresenceAura = dk.GetOrRegisterAura(core.Aura{
+	presenceAura := dk.GetOrRegisterAura(core.Aura{
 		Label:    "Unholy Presence",
 		ActionID: actionID,
 		Duration: core.NeverExpires,
@@ -160,7 +137,28 @@ func (dk *DeathKnight) registerUnholyPresenceAura(timer *core.Timer) {
 			unholyPresenceMod.Deactivate()
 		},
 	})
-	dk.UnholyPresenceAura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
+	presenceAura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
+
+	dk.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagAPL,
+
+		RuneCost: core.RuneCostOptions{
+			UnholyRuneCost: 1,
+		},
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    timer,
+				Duration: time.Second,
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
+			presenceAura.Activate(sim)
+			if dk.CurrentRunicPower() > 0 {
+				dk.SpendRunicPower(sim, dk.CurrentRunicPower(), rpMetrics)
+			}
+		},
+	})
 }
 
 func (dk *DeathKnight) registerPresences() {

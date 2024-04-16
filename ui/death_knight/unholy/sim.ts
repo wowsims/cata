@@ -33,7 +33,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	epStats: [
 		Stat.StatStrength,
 		Stat.StatArmor,
-		Stat.StatAgility,
 		Stat.StatAttackPower,
 		Stat.StatExpertise,
 		Stat.StatMeleeHit,
@@ -43,6 +42,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
+		Stat.StatArmorPenetration,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -52,7 +52,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		Stat.StatHealth,
 		Stat.StatArmor,
 		Stat.StatStrength,
-		Stat.StatAgility,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatAttackPower,
@@ -69,7 +68,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		epWeights: Stats.fromMap(
 			{
 				[Stat.StatStrength]: 3.22,
-				[Stat.StatAgility]: 0.62,
 				[Stat.StatArmor]: 0.01,
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatExpertise]: 1.13,

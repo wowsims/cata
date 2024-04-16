@@ -43,118 +43,18 @@ type DeathKnight struct {
 
 	Inputs DeathKnightInputs
 
-	Ghoul     *GhoulPet
-	RaiseDead *core.Spell
-
-	Gargoyle                 *GargoylePet
-	OnGargoyleStartFirstCast func()
-
-	//RuneWeapon        *RuneWeaponPet
+	// Pets
+	Ghoul             *GhoulPet
+	Gargoyle          *GargoylePet
 	DancingRuneWeapon *core.Spell
-
-	ArmyOfTheDead *core.Spell
-	ArmyGhoul     []*GhoulPet
-
+	ArmyGhoul         []*GhoulPet
+	//RuneWeapon        *RuneWeaponPet
 	//Bloodworm []*BloodwormPet
-
-	IcyTouch   *core.Spell
-	BloodBoil  *core.Spell
-	Pestilence *core.Spell
-
-	PlagueStrike    *core.Spell
-	FesteringStrike *core.Spell
-
-	DeathStrike      *core.Spell
-	DeathStrikeMhHit *core.Spell
-	DeathStrikeOhHit *core.Spell
-	DeathStrikeHeals []float64
-
-	Obliterate      *core.Spell
-	ObliterateMhHit *core.Spell
-	ObliterateOhHit *core.Spell
-
-	BloodStrike      *core.Spell
-	BloodStrikeMhHit *core.Spell
-	BloodStrikeOhHit *core.Spell
-
-	FrostStrike      *core.Spell
-	FrostStrikeMhHit *core.Spell
-	FrostStrikeOhHit *core.Spell
-
-	HeartStrike       *core.Spell
-	HeartStrikeOffHit *core.Spell
-
-	RuneStrikeQueued bool
-	RuneStrikeQueue  *core.Spell
-	RuneStrike       *core.Spell
-	RuneStrikeOh     *core.Spell
-	RuneStrikeAura   *core.Aura
-
-	GhoulFrenzy *core.Spell
-	// Dummy aura for timeline metrics
-	GhoulFrenzyAura *core.Aura
-
-	ScourgeStrike *core.Spell
-
-	DeathCoil *core.Spell
-
-	DeathAndDecay *core.Spell
-
-	HowlingBlast *core.Spell
-
-	HasDraeneiHitAura bool
-	HornOfWinter      *core.Spell
-
-	// "CDs"
-	RuneTap     *core.Spell
-	MarkOfBlood *core.Spell
-
-	BloodTap     *core.Spell
-	BloodTapAura *core.Aura
-
-	AntiMagicShell     *core.Spell
-	AntiMagicShellAura *core.Aura
-
-	EmpowerRuneWeapon *core.Spell
-
-	VampiricBlood     *core.Spell
-	VampiricBloodAura *core.Aura
-
-	BoneShield     *core.Spell
-	BoneShieldAura *core.Aura
-
-	IceboundFortitude     *core.Spell
-	IceboundFortitudeAura *core.Aura
-
-	DeathPact *core.Spell
-
-	// Used only to proc stuff as its free GCD
-	MindFreezeSpell *core.Spell
 
 	// Diseases
 	FrostFeverSpell  *core.Spell
 	BloodPlagueSpell *core.Spell
 	EbonPlagueAura   core.AuraArray
-
-	//UnholyBlightSpell *core.Spell
-
-	// Talent Auras
-	KillingMachineAura  *core.Aura
-	IcyTalonsAura       *core.Aura
-	BloodCakedBladeAura *core.Aura
-	ButcheryAura        *core.Aura
-	ButcheryPA          *core.PendingAction
-	FreezingFogAura     *core.Aura
-	ScentOfBloodAura    *core.Aura
-	WillOfTheNecropolis *core.Aura
-
-	// Presences
-	BloodPresence      *core.Spell
-	BloodPresenceAura  *core.Aura
-	FrostPresence      *core.Spell
-	FrostPresenceAura  *core.Aura
-	UnholyPresence     *core.Spell
-	UnholyPresenceAura *core.Aura
 }
 
 func (dk *DeathKnight) GetCharacter() *core.Character {
@@ -210,7 +110,6 @@ func (dk *DeathKnight) Initialize() {
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
-	dk.DeathStrikeHeals = dk.DeathStrikeHeals[:0]
 }
 
 func (dk *DeathKnight) HasPrimeGlyph(glyph proto.DeathKnightPrimeGlyph) bool {
@@ -261,7 +160,6 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 
 	if dk.Talents.SummonGargoyle {
 		dk.Gargoyle = dk.NewGargoyle()
-		dk.OnGargoyleStartFirstCast = func() {}
 	}
 
 	dk.Ghoul = dk.NewGhoulPet(dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight)
