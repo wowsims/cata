@@ -189,6 +189,10 @@ func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.ManaSpringTotem = true
 	}
 
+	if shaman.Talents.ManaTideTotem {
+		raidBuffs.ManaTideTotemCount++
+	}
+
 	switch shaman.Totems.Air {
 	case proto.AirTotem_WrathOfAirTotem:
 		raidBuffs.WrathOfAirTotem = true
@@ -209,12 +213,6 @@ func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
 	if shaman.Talents.ElementalOath > 0 {
 		raidBuffs.ElementalOath = true
-	}
-}
-
-func (shaman *Shaman) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
-	if shaman.Talents.ManaTideTotem {
-		partyBuffs.ManaTideTotems++
 	}
 }
 

@@ -228,6 +228,49 @@ func (unit *Unit) AddStat(stat stats.Stat, amount float64) {
 	unit.stats[stat] += amount
 }
 
+// Adds only the highest current stat of the unit from the given stat options
+func (unit *Unit) AddHighestStat(stat stats.Stats) {
+	if unit.Env != nil && unit.Env.IsFinalized() {
+		panic("Already finalized, use AddHighestStatDynamic instead!")
+	}
+
+	highestStatIndex := -1
+	for i := 0; i < int(stats.Len); i++ {
+		if highestStatIndex == -1 && stat[i] > 0 {
+			highestStatIndex = i
+		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
+			highestStatIndex = i
+		}
+	}
+
+	if highestStatIndex == -1 {
+		// this should only occur if stat was the empt stat list - so nothing todo
+		return
+	}
+
+	unit.stats[highestStatIndex] += stat[highestStatIndex]
+}
+
+// Adds only the highest current stat of the unit from the given stat options
+func (unit *Unit) AddHighestStatDynamic(sim *Simulation, stat stats.Stats) {
+	highestStatIndex := -1
+	for i := 0; i < int(stats.Len); i++ {
+		if highestStatIndex == -1 && stat[i] > 0 {
+			highestStatIndex = i
+		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
+			highestStatIndex = i
+		}
+	}
+
+	if highestStatIndex == -1 {
+		// this should only occur if stat was the empt stat list - so nothing todo
+		return
+	}
+	bonus := stats.Stats{}
+	bonus[highestStatIndex] = stat[highestStatIndex]
+	unit.AddStatsDynamic(sim, bonus)
+}
+
 func (unit *Unit) AddDynamicDamageTakenModifier(ddtm DynamicDamageTakenModifier) {
 	if unit.Env != nil && unit.Env.IsFinalized() {
 		panic("Already finalized, cannot add dynamic damage taken modifier!")

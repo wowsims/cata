@@ -82,24 +82,29 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	arcaneBrilliance: true,
-	leaderOfThePack: TristateEffect.TristateEffectImproved,
-	totemicWrath: true,
+	bloodlust: true,
+	markOfTheWild: true,
+	icyTalons: true,
+	moonkinForm: true,
+	leaderOfThePack: true,
+	powerWordFortitude: true,
+	strengthOfEarthTotem: true,
+	trueshotAura: true,
 	wrathOfAirTotem: true,
-	sanctifiedRetribution: true,
-	divineSpirit: true,
-	battleShout: true,
-	demonicPactSp: 500,
+	demonicPact: true,
+	blessingOfKings: true,
+	blessingOfMight: true,
+	communion: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	bloodFrenzy: true,
 	sunderArmor: true,
-	curseOfWeakness: TristateEffect.TristateEffectRegular,
-	curseOfElements: true,
-	faerieFire: TristateEffect.TristateEffectImproved,
-	judgementOfWisdom: true,
-	misery: true,
-	shadowMastery: true,
+	ebonPlaguebringer: true,
+	mangle: true,
+	criticalMass: true,
+	demoralizingShout: true,
+	frostFever: true,
+	judgement: true,
 });

@@ -183,7 +183,6 @@ export interface MeleeCritCapInfo {
 	expertise: number;
 	suppression: number;
 	glancing: number;
-	debuffCrit: number;
 	hasOffhandWeapon: boolean;
 	meleeHitCap: number;
 	expertiseCap: number;
@@ -734,10 +733,8 @@ export class Player<SpecType extends Spec> {
 			specSpecificOffset = 3.0 * ranks;
 		}
 
-		let debuffCrit = 0.0;
-
 		const baseCritCap = 100.0 - glancing + suppression - remainingMeleeHitCap - remainingExpertiseCap - specSpecificOffset;
-		const playerCritCapDelta = meleeCrit - baseCritCap + debuffCrit;
+		const playerCritCapDelta = meleeCrit - baseCritCap;
 
 		return {
 			meleeCrit,
@@ -745,7 +742,6 @@ export class Player<SpecType extends Spec> {
 			expertise,
 			suppression,
 			glancing,
-			debuffCrit,
 			hasOffhandWeapon,
 			meleeHitCap,
 			expertiseCap,
