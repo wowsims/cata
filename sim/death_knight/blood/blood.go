@@ -34,7 +34,7 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 		DeathKnight: death_knight.NewDeathKnight(character, death_knight.DeathKnightInputs{
 			IsDps:              false,
 			StartingRunicPower: dkOptions.Options.ClassOptions.StartingRunicPower,
-		}, options.TalentsString),
+		}, options.TalentsString, 50034),
 	}
 
 	bdk.EnableAutoAttacks(bdk, core.AutoAttackOptions{

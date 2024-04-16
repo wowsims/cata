@@ -739,22 +739,6 @@ func MarkOfBloodAura(target *Unit) *Aura {
 	return aura
 }
 
-func RuneOfRazoriceVulnerabilityAura(target *Unit) *Aura {
-	frostVulnPerStack := 0.02
-	aura := target.GetOrRegisterAura(Aura{
-		Label:     "RuneOfRazoriceVulnerability",
-		ActionID:  ActionID{SpellID: 50401},
-		Duration:  NeverExpires,
-		MaxStacks: 5,
-		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
-			oldMultiplier := 1.0 + float64(oldStacks)*frostVulnPerStack
-			newMultiplier := 1.0 + float64(newStacks)*frostVulnPerStack
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= newMultiplier / oldMultiplier
-		},
-	})
-	return aura
-}
-
 func InsectSwarmAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "InsectSwarmMiss",

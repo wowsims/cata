@@ -36,7 +36,7 @@ func NewFrostDeathKnight(character *core.Character, player *proto.Player) *Frost
 			PetUptime:          frostOptions.ClassOptions.PetUptime,
 			IsDps:              true,
 			UseAMS:             false,
-		}, player.TalentsString),
+		}, player.TalentsString, 0),
 	}
 
 	fdk.EnableAutoAttacks(fdk, core.AutoAttackOptions{

@@ -103,10 +103,10 @@ func (dk *DeathKnight) applyMercilessCombat() {
 			Duration: core.NeverExpires,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				dk.AttackTables[aura.Unit.UnitIndex].DamageDoneByCasterMultiplier = dk.mercilessCombatMultiplier
+				dk.SetDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex], dk.mercilessCombatMultiplier)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				dk.AttackTables[aura.Unit.UnitIndex].DamageDoneByCasterMultiplier = nil
+				dk.ClearDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex])
 			},
 		})
 		return aura
@@ -203,6 +203,13 @@ func (dk *DeathKnight) applyKillingMachine() {
 		},
 	})
 
+	// Dummy spell to react with triggers
+	kmProcSpell := dk.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 51124},
+		Flags:          core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
+		ClassSpellMask: DeathKnightSpellKillingMachine,
+	})
+
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:     "Killing Machine",
 		Callback: core.CallbackOnSpellHitDealt,
@@ -211,6 +218,7 @@ func (dk *DeathKnight) applyKillingMachine() {
 		PPM:      2.0 * float64(dk.Talents.KillingMachine),
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			kmAura.Activate(sim)
+			kmProcSpell.Cast(sim, nil)
 		},
 	})
 }

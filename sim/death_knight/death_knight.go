@@ -18,6 +18,25 @@ const (
 
 var TalentTreeSizes = [3]int{20, 20, 20}
 
+const (
+	DDBCMercilessCombat   = 0
+	DDBCEbonPlaguebringer = 1
+	DDBCRuneOfRazorice    = 2
+
+	TotalDDBC = 3
+)
+
+func (dk *DeathKnight) SetDDBC(index int, attackTable *core.AttackTable, handler core.DynamicDamageDoneByCaster) {
+	if attackTable.DamageDoneByCasterExtraMultiplier == nil {
+		attackTable.DamageDoneByCasterExtraMultiplier = make([]core.DynamicDamageDoneByCaster, TotalDDBC)
+	}
+	attackTable.DamageDoneByCasterExtraMultiplier[index] = handler
+}
+
+func (dk *DeathKnight) ClearDDBC(index int, attackTable *core.AttackTable) {
+	attackTable.DamageDoneByCasterExtraMultiplier[index] = nil
+}
+
 type DeathKnightInputs struct {
 	// Option Vars
 	IsDps bool
@@ -122,7 +141,7 @@ func (dk *DeathKnight) HasMinorGlyph(glyph proto.DeathKnightMinorGlyph) bool {
 	return dk.HasGlyph(int32(glyph))
 }
 
-func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents string) *DeathKnight {
+func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents string, deathRuneConvertSpellId int32) *DeathKnight {
 	dk := &DeathKnight{
 		Character:        *character,
 		Talents:          &proto.DeathKnightTalents{},
@@ -138,7 +157,19 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		currentRunicPower,
 		maxRunicPower,
 		10*time.Second,
-		func(sim *core.Simulation, changeType core.RuneChangeType) {
+		func(sim *core.Simulation, changeType core.RuneChangeType, runeRegen []int8) {
+			if deathRuneConvertSpellId == 0 {
+				return
+			}
+			// Only trigger on converts from death rune masteries
+			if changeType.Matches(core.ConvertToDeath & core.SpendRune) {
+				spell := dk.GetOrRegisterSpell(core.SpellConfig{
+					ActionID:       core.ActionID{SpellID: deathRuneConvertSpellId},
+					Flags:          core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
+					ClassSpellMask: DeathKnightSpellConvertToDeathRune,
+				})
+				spell.Cast(sim, nil)
+			}
 		},
 		nil,
 	)
@@ -180,13 +211,8 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	// 		dk.RuneWeapon = dk.NewRuneWeapon()
 	// 	}
 
-	// 	// done here so enchants that modify stats are applied before stats are calculated
-	// 	dk.registerItems()
-
 	return dk
 }
-
-// Agent is a generic way to access underlying warrior on any of the agents.
 
 func (dk *DeathKnight) GetDeathKnight() *DeathKnight {
 	return dk
@@ -222,6 +248,10 @@ const (
 	DeathKnightSpellHornOfWinter
 	DeathKnightSpellPillarOfFrost
 	DeathKnightSpellPestilence
+	DeathKnightSpellBloodBoil
+
+	DeathKnightSpellKillingMachine     // Used to react to km procs
+	DeathKnightSpellConvertToDeathRune // Used to react to death rune gains
 
 	DeathKnightSpellLast
 	DeathKnightSpellsAll = DeathKnightSpellLast<<1 - 1
