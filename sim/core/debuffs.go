@@ -675,12 +675,8 @@ func DustCloud(target *Unit) *Aura {
 }
 
 func FrostFeverAura(caster *Unit, target *Unit, britleBones int32) *Aura {
-	label := "External"
-	if caster != nil {
-		label = caster.Label
-	}
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "FrostFeverDebuff" + label,
+		Label:    "FrostFeverDebuff",
 		ActionID: ActionID{SpellID: 55095},
 		Duration: NeverExpires,
 	})
@@ -738,22 +734,6 @@ func MarkOfBloodAura(target *Unit) *Aura {
 					aura.Deactivate(sim)
 				}
 			}
-		},
-	})
-	return aura
-}
-
-func RuneOfRazoriceVulnerabilityAura(target *Unit) *Aura {
-	frostVulnPerStack := 0.02
-	aura := target.GetOrRegisterAura(Aura{
-		Label:     "RuneOfRazoriceVulnerability",
-		ActionID:  ActionID{SpellID: 50401},
-		Duration:  NeverExpires,
-		MaxStacks: 5,
-		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
-			oldMultiplier := 1.0 + float64(oldStacks)*frostVulnPerStack
-			newMultiplier := 1.0 + float64(newStacks)*frostVulnPerStack
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= newMultiplier / oldMultiplier
 		},
 	})
 	return aura

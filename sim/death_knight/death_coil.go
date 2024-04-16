@@ -7,7 +7,7 @@ import (
 var DeathCoilActionID = core.ActionID{SpellID: 47541}
 
 func (dk *DeathKnight) registerDeathCoilSpell() {
-	dk.DeathCoil = dk.RegisterSpell(core.SpellConfig{
+	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       DeathCoilActionID,
 		Flags:          core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolShadow,

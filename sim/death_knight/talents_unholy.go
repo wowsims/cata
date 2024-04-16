@@ -204,19 +204,19 @@ func (dk *DeathKnight) applyEbonPlaguebringer() {
 		return
 	}
 
-	dk.EbonPlagueBringerAura = dk.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+	dk.EbonPlagueAura = dk.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		aura := core.EbonPlaguebringerAura(dk.GetCharacter(), target, dk.Talents.Epidemic, dk.Talents.EbonPlaguebringer)
 		aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-			dk.AttackTables[aura.Unit.UnitIndex].DamageDoneByCasterMultiplier = dk.ebonPlaguebringerDiseaseMultiplier
+			SetDDBC(DDBCEbonPlaguebringer, dk.AttackTables[aura.Unit.UnitIndex], dk.ebonPlaguebringerDiseaseMultiplier)
 		})
 		aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-			dk.AttackTables[aura.Unit.UnitIndex].DamageDoneByCasterMultiplier = nil
+			ClearDDBC(DDBCEbonPlaguebringer, dk.AttackTables[aura.Unit.UnitIndex])
 		})
 		return aura
 	})
 	dk.Env.RegisterPreFinalizeEffect(func() {
-		dk.FrostFeverSpell.RelatedAuras = append(dk.FrostFeverSpell.RelatedAuras, dk.EbonPlagueBringerAura)
-		dk.BloodPlagueSpell.RelatedAuras = append(dk.BloodPlagueSpell.RelatedAuras, dk.EbonPlagueBringerAura)
+		dk.FrostFeverSpell.RelatedAuras = append(dk.FrostFeverSpell.RelatedAuras, dk.EbonPlagueAura)
+		dk.BloodPlagueSpell.RelatedAuras = append(dk.BloodPlagueSpell.RelatedAuras, dk.EbonPlagueAura)
 	})
 
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
@@ -224,7 +224,7 @@ func (dk *DeathKnight) applyEbonPlaguebringer() {
 		Callback:       core.CallbackOnApplyEffects,
 		ClassSpellMask: DeathKnightSpellDisease,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			dk.EbonPlagueBringerAura.Get(result.Target).Activate(sim)
+			dk.EbonPlagueAura.Get(result.Target).Activate(sim)
 		},
 	})
 }

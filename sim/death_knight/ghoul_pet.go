@@ -44,6 +44,7 @@ func (dk *DeathKnight) NewGhoulPet(permanent bool) *GhoulPet {
 	}
 
 	dk.SetupGhoul(ghoulPet, 14)
+	ghoulPet.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/324.72)
 
 	if permanent {
 		core.ApplyPetConsumeEffects(&ghoulPet.Character, dk.Consumes)
@@ -67,7 +68,6 @@ func (dk *DeathKnight) SetupGhoul(ghoulPet *GhoulPet, apScaling float64) {
 	})
 
 	ghoulPet.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	ghoulPet.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/243.7)
 
 	ghoulPet.Pet.OnPetEnable = ghoulPet.enable
 
@@ -131,7 +131,7 @@ func (ghoulPet *GhoulPet) enable(sim *core.Simulation) {
 func (dk *DeathKnight) ghoulBaseStats() stats.Stats {
 	return stats.Stats{
 		stats.Stamina:     388,
-		stats.Agility:     3343,
+		stats.Agility:     3343 - 10, // We remove 10 to not mess with crit conversion
 		stats.Strength:    476,
 		stats.AttackPower: -20,
 	}
@@ -149,6 +149,7 @@ func (dk *DeathKnight) ghoulStatInheritance() core.PetStatInheritance {
 			stats.Expertise: ownerStats[stats.MeleeHit] * PetExpertiseScale,
 
 			stats.MeleeHaste: ownerStats[stats.MeleeHaste],
+			stats.MeleeCrit:  ownerStats[stats.MeleeCrit],
 		}
 	}
 }

@@ -7,7 +7,7 @@ import (
 var IcyTouchActionID = core.ActionID{SpellID: 45477}
 
 func (dk *DeathKnight) registerIcyTouchSpell() {
-	dk.IcyTouch = dk.RegisterSpell(core.SpellConfig{
+	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       IcyTouchActionID,
 		Flags:          core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolFrost,

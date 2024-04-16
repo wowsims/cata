@@ -503,6 +503,14 @@ func (spell *Spell) TargetDamageMultiplier(sim *Simulation, attackTable *AttackT
 		multiplier *= attackTable.DamageDoneByCasterMultiplier(sim, spell, attackTable)
 	}
 
+	if attackTable.DamageDoneByCasterExtraMultiplier != nil {
+		for i := range attackTable.DamageDoneByCasterExtraMultiplier {
+			if attackTable.DamageDoneByCasterExtraMultiplier[i] != nil {
+				multiplier *= attackTable.DamageDoneByCasterExtraMultiplier[i](sim, spell, attackTable)
+			}
+		}
+	}
+
 	return multiplier
 }
 
