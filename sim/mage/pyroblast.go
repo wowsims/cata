@@ -4,9 +4,14 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (mage *Mage) registerPyroblastSpell() {
+	if mage.Spec != (proto.Spec_SpecFireMage) {
+		return
+	}
+
 	hasT8_4pc := mage.HasSetBonus(ItemSetKirinTorGarb, 4)
 
 	var pyroblastDot *core.Spell
@@ -55,8 +60,7 @@ func (mage *Mage) registerPyroblastSpell() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Pyroblast",
-				Tag:   "FireMasteryDot",
+				Label: "PyroblastDoT",
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,

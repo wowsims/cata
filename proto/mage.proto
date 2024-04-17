@@ -122,6 +122,7 @@ message MageOptions {
 		NoArmor = 0;
 		MageArmor = 1;
 		MoltenArmor = 2;
+		FrostArmor = 3;
 	}
 	ArmorType armor = 1;
 }

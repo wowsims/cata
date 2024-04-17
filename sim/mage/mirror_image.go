@@ -46,7 +46,7 @@ func (mage *Mage) registerMirrorImageCD() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.TernaryDuration(mage.ArcanePowerAura.IsActive(), 0, core.GCDDefault),
+				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),

@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -19,6 +18,9 @@ var TalentTreeSizes = [3]int{21, 21, 19}
 
 type Mage struct {
 	core.Character
+
+	moltenArmorMod    *core.SpellMod
+	arcanePowerGCDmod *core.SpellMod
 
 	Talents       *proto.MageTalents
 	Options       *proto.MageOptions
@@ -38,6 +40,7 @@ type Mage struct {
 	ArcaneExplosion         *core.Spell
 	ArcaneMissiles          *core.Spell
 	ArcaneMissilesTickSpell *core.Spell
+	ArcanePower             *core.Spell
 	Blizzard                *core.Spell
 	Combustion              *core.Spell
 	DeepFreeze              *core.Spell
@@ -54,6 +57,7 @@ type Mage struct {
 	FrostfireOrbTickSpell   *core.Spell
 	IceLance                *core.Spell
 	Pyroblast               *core.Spell
+	PyroblastDot            *core.Spell
 	Scorch                  *core.Spell
 	MirrorImage             *core.Spell
 	BlastWave               *core.Spell
@@ -70,6 +74,8 @@ type Mage struct {
 	CriticalMassAuras      core.AuraArray
 	FingersOfFrostAura     *core.Aura
 	FlameOrbTimer          *core.Aura
+	FrostArmorAura         *core.Aura
+	GlyphedFrostArmorPA    *core.PendingAction
 	hotStreakCritAura      *core.Aura
 	HotStreakAura          *core.Aura
 	MageArmorAura          *core.Aura
@@ -111,6 +117,8 @@ func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
 func (mage *Mage) Initialize() {
+	mage.applyGlyphs()
+	mage.applyArmor()
 	mage.registerArcaneBarrageSpell()
 	mage.registerArcaneBlastSpell()
 	mage.registerArcaneExplosionSpell()
@@ -132,7 +140,7 @@ func (mage *Mage) Initialize() {
 	mage.registerEvocation()
 	mage.registerManaGemsCD()
 	mage.registerMirrorImageCD()
-	//mage.registerCombustionSpell()
+	mage.registerCombustionSpell()
 	mage.registerBlastWaveSpell()
 	mage.registerDragonsBreathSpell()
 	// mage.registerSummonWaterElementalCD()
@@ -140,13 +148,46 @@ func (mage *Mage) Initialize() {
 	mage.applyArcaneMastery()
 	mage.applyFireMastery()
 	mage.applyArcaneMissileProc()
-
 	mage.ScalingBaseDamage = 937.330078125
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
 }
 
+func (mage *Mage) applyArmor() {
+	if mage.Options.Armor == proto.MageOptions_MoltenArmor {
+		if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMoltenArmor) {
+			mage.AddStaticMod(core.SpellModConfig{
+				ClassMask:  MageSpellsAll,
+				FloatValue: 7 * core.CritRatingPerCritChance,
+				Kind:       core.SpellMod_BonusCrit_Rating,
+			})
+		} else {
+			mage.AddStaticMod(core.SpellModConfig{
+				ClassMask:  MageSpellsAll,
+				FloatValue: 5 * core.CritRatingPerCritChance,
+				Kind:       core.SpellMod_BonusCrit_Rating,
+			})
+		}
+	} else if mage.Options.Armor == proto.MageOptions_MageArmor {
+		hasGlyph := mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMageArmor)
+		manaRegenPerSecond := mage.MaxMana() * core.TernaryFloat64(hasGlyph, .072, 0.06)
+		// TODO regen 3% max mana as mp5 aka 0.6% max mana per second
+		mage.MageArmorAura = core.MakePermanent(mage.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 6117},
+			Label:    "Mage Armor",
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				mage.MageArmorPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period: time.Second * 1,
+					OnAction: func(sim *core.Simulation) {
+						mage.AddMana(sim, manaRegenPerSecond, mage.NewManaMetrics(core.ActionID{SpellID: 6117}))
+					},
+				})
+			},
+		}))
+	}
+
+}
 func NewMage(character *core.Character, options *proto.Player, mageOptions *proto.MageOptions) *Mage {
 	mage := &Mage{
 		Character: *character,
@@ -157,29 +198,6 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
 	// mage.EnableManaBar()
-
-	if mage.Options.Armor == proto.MageOptions_MoltenArmor {
-		mage.AddStaticMod(core.SpellModConfig{
-			//ClassMask:  MageSpellsAll,
-			ClassMask:  MageSpellArcaneBlast,
-			FloatValue: 0.02 * core.CritRatingPerCritChance,
-			Kind:       core.SpellMod_BonusCrit_Rating,
-		})
-	} else if mage.Options.Armor == proto.MageOptions_MageArmor {
-		// TODO regen 3% max mana as mp5 aka 0.6% max mana per second
-		mage.MageArmorAura = core.MakePermanent(mage.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 6117},
-			Label:    "Mage Armor",
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				mage.MageArmorPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-					Period: time.Second * 1,
-					OnAction: func(sim *core.Simulation) {
-						mage.AddMana(sim, 0.06*mage.MaxMana(), mage.NewManaMetrics(core.ActionID{SpellID: 6117}))
-					},
-				})
-			},
-		}))
-	}
 
 	mage.mirrorImage = mage.NewMirrorImage()
 	mage.flameOrb = mage.NewFlameOrb()
@@ -202,8 +220,7 @@ func (mage *Mage) GetArcaneMasteryBonus() float64 {
 func (mage *Mage) applyArcaneMastery() {
 	// Arcane Mastery Mod
 	arcaneMastery := mage.AddDynamicMod(core.SpellModConfig{
-		//ClassMask:  MageSpellsAll,
-		ClassMask:  MageSpellArcaneBlast,
+		ClassMask:  MageSpellsAll,
 		FloatValue: mage.CurrentMana() / mage.MaxMana() * mage.GetArcaneMasteryBonus(), //take current % of mana, get that portion of damage bonus
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
@@ -211,6 +228,17 @@ func (mage *Mage) applyArcaneMastery() {
 	mage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
 		arcaneMastery.UpdateFloatValue(1.22 + 0.28*core.MasteryRatingToMasteryPoints(newMastery))
 	})
+
+	core.MakePermanent(mage.GetOrRegisterAura(core.Aura{
+		Label:    "Mana Adept",
+		ActionID: core.ActionID{SpellID: 76547},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			arcaneMastery.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			arcaneMastery.Deactivate()
+		},
+	}))
 }
 
 /*
@@ -247,6 +275,9 @@ type MageAgent interface {
 }
 
 func (mage *Mage) applyArcaneMissileProc() {
+	if mage.Talents.HotStreak || mage.Talents.BrainFreeze > 0 {
+		return
+	}
 
 	t10ProcAura := mage.BloodmagesRegalia2pcAura()
 
@@ -282,12 +313,9 @@ func (mage *Mage) applyArcaneMissileProc() {
 			}
 			if sim.Proc(procChance, "Arcane Missiles") {
 				mage.ArcaneMissilesProcAura.Activate(sim)
-				fmt.Println("ArcMiss procced by")
 			}
 		},
 	})
-
-	fmt.Println("Arcane Missiles Proc Registered")
 }
 
 const (
@@ -295,10 +323,13 @@ const (
 	MageSpellArcaneBarrage int64 = 1 << iota
 	MageSpellArcaneBlast
 	MageSpellArcaneExplosion
+	MageSpellArcanePower
 	MageSpellArcaneMissilesCast
 	MageSpellArcaneMissilesTick
 	MageSpellBlastWave
 	MageSpellBlizzard
+	MageSpellCombustion
+	MageSpellConeOfCold
 	MageSpellDeepFreeze
 	MageSpellDragonsBreath
 	MageSpellEvocation
@@ -313,20 +344,21 @@ const (
 	MageSpellIceLance
 	MageSpellIcyVeins
 	MageSpellIgnite
-	MageSpellLivingBomb
+	MageSpellLivingBombExplosion
 	MageSpellLivingBombDot
 	MageSpellManaGems
 	MageSpellMirrorImage
 	MageSpellPyroblast
 	MageSpellPyroblastDot
 	MageSpellScorch
-
 	MageSpellLast
+
 	MageSpellsAll         = MageSpellLast<<1 - 1
-	MageSpellFireDoT      = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellIgnite
+	MageSpellLivingBomb   = MageSpellLivingBombDot | MageSpellLivingBombExplosion
+	MageSpellFireDoT      = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellIgnite | MageSpellCombustion
 	MageSpellChill        = MageSpellFrostbolt | MageSpellFrostfireBolt
 	MageSpellBrainFreeze  = MageSpellFireball | MageSpellFrostfireBolt
 	MageSpellsAllDamaging = MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | /*MageSpellArcaneMissiles | */ MageSpellBlastWave | MageSpellBlizzard | MageSpellDeepFreeze |
 		MageSpellDragonsBreath | MageSpellFireBlast | MageSpellFireball | MageSpellFlamestrike | MageSpellFlameOrb | MageSpellFrostbolt | MageSpellFrostfireBolt |
-		MageSpellFrostfireOrb | MageSpellIceLance | MageSpellLivingBomb | MageSpellPyroblast | MageSpellScorch
+		MageSpellFrostfireOrb | MageSpellIceLance | MageSpellLivingBombExplosion | MageSpellLivingBombDot | MageSpellPyroblast | MageSpellPyroblastDot | MageSpellScorch
 )
