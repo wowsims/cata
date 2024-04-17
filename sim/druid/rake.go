@@ -40,7 +40,7 @@ func (druid *Druid) registerRakeSpell() {
 				dot.SnapshotBaseDamage = 358 + 0.06*dot.Spell.MeleeAttackPower()
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)

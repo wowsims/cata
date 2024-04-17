@@ -41,7 +41,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		Stat.StatMastery,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatArmorPenetration,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
@@ -63,7 +62,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.DEFAULT_GEAR_PRESET.gear,
+		gear: Presets.P1_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -91,30 +90,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
+			devotionAura: true,
 			bloodlust: true,
 			markOfTheWild: true,
 			icyTalons: true,
-			moonkinForm: true,
 			leaderOfThePack: true,
 			powerWordFortitude: true,
-			strengthOfEarthTotem: true,
-			trueshotAura: true,
-			wrathOfAirTotem: true,
-			demonicPact: true,
-			blessingOfKings: true,
-			blessingOfMight: true,
-			communion: true,
+			hornOfWinter: true,
+			abominationsMight: true,
+			arcaneTactics: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
 		}),
 		debuffs: Debuffs.create({
-			bloodFrenzy: true,
-			faerieFire: true,
 			sunderArmor: true,
+			brittleBones: true,
 			ebonPlaguebringer: true,
-			mangle: true,
+			shadowAndFlame: true
 		}),
 	},
 
@@ -131,8 +124,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	playerIconInputs: [],
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.StaminaBuff],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.MeleeAttackSpeedDebuff],
+	includeBuffDebuffInputs: [
+		BuffDebuffInputs.SpellDamageDebuff
+	],
+	excludeBuffDebuffInputs: [
+		BuffDebuffInputs.DamageReduction,
+		BuffDebuffInputs.MeleeAttackSpeedDebuff,
+		BuffDebuffInputs.BleedDebuff
+	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -144,6 +143,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			// UnholyInputs.AvgAMSHitInput,
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
+			OtherInputs.DarkIntentUptime
 		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
@@ -155,13 +155,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			Presets.SingleTargetTalents,
+			//Presets.AoeTalents,
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-
+			Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT,
+			//Presets.AOE_ROTATION_PRESET_DEFAULT,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			Presets.P1_GEAR_PRESET,
 		],
 	},
 
@@ -179,16 +183,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.DEFAULT_GEAR_PRESET.gear,
-					2: Presets.DEFAULT_GEAR_PRESET.gear,
-					3: Presets.DEFAULT_GEAR_PRESET.gear,
-					4: Presets.DEFAULT_GEAR_PRESET.gear,
+					1: Presets.P1_GEAR_PRESET.gear,
+					2: Presets.P1_GEAR_PRESET.gear,
+					3: Presets.P1_GEAR_PRESET.gear,
+					4: Presets.P1_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.DEFAULT_GEAR_PRESET.gear,
-					2: Presets.DEFAULT_GEAR_PRESET.gear,
-					3: Presets.DEFAULT_GEAR_PRESET.gear,
-					4: Presets.DEFAULT_GEAR_PRESET.gear,
+					1: Presets.P1_GEAR_PRESET.gear,
+					2: Presets.P1_GEAR_PRESET.gear,
+					3: Presets.P1_GEAR_PRESET.gear,
+					4: Presets.P1_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

@@ -24,13 +24,10 @@ import PreraidSVGear from './gear_sets/preraid_sv.gear.json';
 
 export const SV_PRERAID_PRESET = PresetUtils.makePresetGear('SV PreRaid Preset', PreraidSVGear);
 export const SV_P1_PRESET = PresetUtils.makePresetGear('SV P1 Preset', P1SVGear);
-
 export const DefaultSimpleRotation = HunterRotation.create({
 	type: RotationType.SingleTarget,
 	sting: HunterStingType.SerpentSting,
-	trapWeave: true,
 	multiDotSerpentSting: true,
-	allowExplosiveShotDownrank: true,
 });
 
 export const ROTATION_PRESET_SIMPLE_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecSurvivalHunter, DefaultSimpleRotation);
@@ -55,19 +52,17 @@ export const SurvivalTalents = {
 
 export const SVDefaultOptions = HunterOptions.create({
 	classOptions: {
-		ammo: Ammo.SaroniteRazorheads,
 		useHuntersMark: true,
 		petType: PetType.Wolf,
 		petTalents: ferocityDefault,
 		petUptime: 1,
-		timeToTrapWeaveMs: 2000,
 	},
 	sniperTrainingUptime: 0.9,
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfSpeed,
-	flask: Flask.FlaskOfEndlessRage,
+	defaultPotion: Potions.PotionOfTheTolvir,
+	prepopPotion: Potions.PotionOfTheTolvir,
+	flask: Flask.FlaskOfTheWinds,
 	food: Food.FoodFishFeast,
-	petFood: PetFood.PetFoodSpicedMammothTreats,
 });

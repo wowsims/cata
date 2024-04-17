@@ -92,6 +92,7 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.IcyTalons = true
 	}
 
+	// TODO: Make horn of winter dynamic
 	raidBuffs.HornOfWinter = true
 }
 
@@ -108,9 +109,10 @@ func (dk *DeathKnight) ApplyTalents() {
 
 func (dk *DeathKnight) Initialize() {
 	dk.registerPresences()
-
+	dk.registerFrostFever()
+	dk.registerBloodPlague()
+	dk.registerOutbreak()
 	dk.registerHornOfWinterSpell()
-	dk.registerDiseaseDots()
 	dk.registerIcyTouchSpell()
 	dk.registerPlagueStrikeSpell()
 	dk.registerDeathCoilSpell()
@@ -126,6 +128,7 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerHowlingBlastSpell()
 	dk.registerPillarOfFrostSpell()
 	dk.registerPestilenceSpell()
+	dk.registerBloodBoilSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {

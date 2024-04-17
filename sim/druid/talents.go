@@ -1,8 +1,11 @@
 package druid
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (druid *Druid) RazorClawsMultiplier(masteryRating float64) float64 {
@@ -25,12 +28,13 @@ func (druid *Druid) ThickHideMultiplier() float64 {
 	return thickHideMulti
 }
 
-// func (druid *Druid) BearArmorMultiplier() float64 {
-// 	sotfMulti := 1.0 + 0.33/3.0*float64(druid.Talents.SurvivalOfTheFittest)
-// 	return 4.7 * sotfMulti
-// }
+func (druid *Druid) BearArmorMultiplier() float64 {
+	thickHideBearMulti := 1.0 + 0.26*float64(druid.Talents.ThickHide) // This is a bear-specific multiplier that stacks with the generic multiplier calculated above.
+	return 2.2 * thickHideBearMulti
+}
 
 func (druid *Druid) ApplyTalents() {
+	druid.MultiplyStat(stats.Mana, 1.0+0.05*float64(druid.Talents.Furor))
 	// druid.AddStat(stats.SpellHit, float64(druid.Talents.BalanceOfPower)*2*core.SpellHitRatingPerHitChance)
 	// druid.AddStat(stats.SpellCrit, float64(druid.Talents.NaturalPerfection)*1*core.CritRatingPerCritChance)
 	// druid.PseudoStats.CastSpeedMultiplier *= 1 + (float64(druid.Talents.CelestialFocus) * 0.01)
@@ -90,7 +94,7 @@ func (druid *Druid) ApplyTalents() {
 	// druid.registerNaturesSwiftnessCD()
 	// druid.applyEarthAndMoon()
 	// druid.applyMoonkinForm()
-	// druid.applyPrimalFury()
+	druid.applyPrimalFury()
 	// druid.applyOmenOfClarity()
 	// druid.applyEclipse()
 	// druid.applyImprovedLotp()
@@ -98,6 +102,7 @@ func (druid *Druid) ApplyTalents() {
 	// druid.applyNaturalReaction()
 	// druid.applyOwlkinFrenzy()
 	// druid.applyInfectedWounds()
+	druid.applyFurySwipes()
 }
 
 // func (druid *Druid) setupNaturesGrace() {
@@ -239,41 +244,77 @@ func (druid *Druid) ApplyTalents() {
 // 	})
 // }
 
-// func (druid *Druid) applyPrimalFury() {
-// 	if druid.Talents.PrimalFury == 0 {
-// 		return
-// 	}
+func (druid *Druid) applyFurySwipes() {
+	if druid.Talents.FurySwipes == 0 {
+		return
+	}
 
-// 	procChance := []float64{0, 0.5, 1}[druid.Talents.PrimalFury]
-// 	actionID := core.ActionID{SpellID: 37117}
-// 	rageMetrics := druid.NewRageMetrics(actionID)
-// 	cpMetrics := druid.NewComboPointMetrics(actionID)
+	furySwipesSpell := druid.RegisterSpell(Cat|Bear, core.SpellConfig{
+		ActionID:         core.ActionID{SpellID: 80861},
+		SpellSchool:      core.SpellSchoolPhysical,
+		ProcMask:         core.ProcMaskMeleeMHSpecial,
+		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		DamageMultiplier: 3.1,
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
-// 	druid.RegisterAura(core.Aura{
-// 		Label:    "Primal Fury",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if druid.InForm(Bear) {
-// 				if result.Outcome.Matches(core.OutcomeCrit) {
-// 					if sim.Proc(procChance, "Primal Fury") {
-// 						druid.AddRage(sim, 5, rageMetrics)
-// 					}
-// 				}
-// 			} else if druid.InForm(Cat) {
-// 				if druid.IsMangle(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) {
-// 					if result.Outcome.Matches(core.OutcomeCrit) {
-// 						if sim.Proc(procChance, "Primal Fury") {
-// 							druid.AddComboPoints(sim, 1, cpMetrics)
-// 						}
-// 					}
-// 				}
-// 			}
-// 		},
-// 	})
-// }
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()), spell.OutcomeMeleeSpecialHitAndCrit)
+		},
+	})
+
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:       "Fury Swipes Trigger",
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		Harmful:    true,
+		ProcChance: 0.05 * float64(druid.Talents.FurySwipes),
+		ICD:        time.Second * 3,
+
+		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+			if druid.InForm(Cat | Bear) {
+				furySwipesSpell.Cast(sim, druid.CurrentTarget)
+			}
+		},
+	})
+}
+
+func (druid *Druid) applyPrimalFury() {
+	if druid.Talents.PrimalFury == 0 {
+		return
+	}
+
+	procChance := []float64{0, 0.5, 1}[druid.Talents.PrimalFury]
+	actionID := core.ActionID{SpellID: 37117}
+	rageMetrics := druid.NewRageMetrics(actionID)
+	cpMetrics := druid.NewComboPointMetrics(actionID)
+
+	druid.RegisterAura(core.Aura{
+		Label:    "Primal Fury",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if druid.InForm(Bear) {
+				if result.Outcome.Matches(core.OutcomeCrit) {
+					if sim.Proc(procChance, "Primal Fury") {
+						druid.AddRage(sim, 5, rageMetrics)
+					}
+				}
+			} else if druid.InForm(Cat) {
+				if druid.IsMangle(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) {
+					if result.Outcome.Matches(core.OutcomeCrit) {
+						if sim.Proc(procChance, "Primal Fury") {
+							druid.AddComboPoints(sim, 1, cpMetrics)
+						}
+					}
+				}
+			}
+		},
+	})
+}
 
 // Modifies the Bleed aura to apply the bonus.
 func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {

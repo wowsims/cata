@@ -36,7 +36,7 @@ func (shaman *Shaman) registerEarthquakeSpell() {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.SnapshotBaseDamage = 326
 					dot.SnapshotCritChance = dot.Spell.SpellCritChance(aoeTarget)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeMagicHitAndSnapshotCrit)
 				}
 			},

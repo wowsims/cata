@@ -247,10 +247,18 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	playerStats := &proto.PlayerStats{}
 
 	measureStats := func() *proto.UnitStats {
-		return &proto.UnitStats{
+		base := &proto.UnitStats{
 			Stats:       character.SortAndApplyStatDependencies(character.stats).ToFloatArray(),
 			PseudoStats: character.GetPseudoStatsProto(),
 		}
+
+		meleeMulti := 1 + (base.Stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100))
+		spellMulti := 1 + (base.Stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))
+
+		// TODO: Hunter would like to use RangedSpeedMultiplier
+		base.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+		base.Stats[stats.SpellHaste] = (spellMulti*character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+		return base
 	}
 
 	applyRaceEffects(agent)
@@ -477,6 +485,13 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 		Stats:       character.GetStats().ToFloatArray(),
 		PseudoStats: character.GetPseudoStatsProto(),
 	}
+
+	meleeMulti := 1 + (playerStats.FinalStats.Stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100))
+	spellMulti := 1 + (playerStats.FinalStats.Stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))
+
+	playerStats.FinalStats.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+	playerStats.FinalStats.Stats[stats.SpellHaste] = (spellMulti*character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
 	playerStats.Sets = character.GetActiveSetBonusNames()
 
@@ -493,9 +508,9 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 }
 
 func (character *Character) reset(sim *Simulation, agent Agent) {
+	character.ItemSwap.reset(sim)
 	character.Unit.reset(sim, agent)
 	character.majorCooldownManager.reset(sim)
-	character.ItemSwap.reset(sim)
 	character.CurrentTarget = character.defaultTarget
 
 	agent.Reset(sim)

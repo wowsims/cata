@@ -75,10 +75,10 @@ func (uhdk *UnholyDeathKnight) Initialize() {
 func (uhdk *UnholyDeathKnight) ApplyTalents() {
 	uhdk.DeathKnight.ApplyTalents()
 
+	// Mastery: Dreadblade
 	masteryMod := uhdk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: uhdk.getMasteryShadowBonus(),
-		School:     core.SpellSchoolShadow,
+		Kind:   core.SpellMod_DamageDone_Pct,
+		School: core.SpellSchoolShadow,
 	})
 
 	uhdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
@@ -89,6 +89,7 @@ func (uhdk *UnholyDeathKnight) ApplyTalents() {
 		Label:    "Dreadblade",
 		ActionID: core.ActionID{SpellID: 77515},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.UpdateFloatValue(uhdk.getMasteryShadowBonus())
 			masteryMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -102,8 +103,6 @@ func (uhdk *UnholyDeathKnight) ApplyTalents() {
 		Label:    "Unholy Might",
 		ActionID: core.ActionID{SpellID: 91107},
 	}))
-
-	// Master of Ghouls
 }
 
 func (uhdk *UnholyDeathKnight) Reset(sim *core.Simulation) {
