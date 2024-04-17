@@ -14,6 +14,7 @@ func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
 	armorScaling := 1.55
 	damageTakenMult := 1 / 1.08
 	stamDep := dk.NewDynamicMultiplyStat(stats.Stamina, 1.08)
+	runicMulti := 1.0 + 0.02*float64(dk.Talents.ImprovedFrostPresence)
 
 	actionID := core.ActionID{SpellID: 48263}
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
@@ -27,12 +28,14 @@ func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMult
 			aura.Unit.EnableDynamicStatDep(sim, stamDep)
 			dk.ApplyDynamicEquipScaling(sim, stats.Armor, armorScaling)
+			dk.MultiplyRunicRegen(runicMulti)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.ThreatMultiplier /= threatMult
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= damageTakenMult
 			aura.Unit.DisableDynamicStatDep(sim, stamDep)
 			dk.RemoveDynamicEquipScaling(sim, stats.Armor, armorScaling)
+			dk.MultiplyRunicRegen(1 / runicMulti)
 		},
 	})
 	presenceAura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})
@@ -115,6 +118,7 @@ func (dk *DeathKnight) registerUnholyPresenceAura(timer *core.Timer) {
 	if dk.Talents.ImprovedUnholyPresence > 0 {
 		hasteMulti += []float64{0, 0.02, 0.05}[dk.Talents.ImprovedUnholyPresence]
 	}
+	runicMulti := 1.0 + 0.02*float64(dk.Talents.ImprovedFrostPresence)
 
 	unholyPresenceMod := dk.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_GlobalCooldown_Flat,
@@ -129,11 +133,13 @@ func (dk *DeathKnight) registerUnholyPresenceAura(timer *core.Timer) {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			dk.MultiplyMeleeSpeed(sim, hasteMulti)
 			dk.MultiplyRuneRegenSpeed(sim, hasteMulti)
+			dk.MultiplyRunicRegen(runicMulti)
 			unholyPresenceMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			dk.MultiplyMeleeSpeed(sim, 1/hasteMulti)
 			dk.MultiplyRuneRegenSpeed(sim, 1/hasteMulti)
+			dk.MultiplyRunicRegen(1 / runicMulti)
 			unholyPresenceMod.Deactivate()
 		},
 	})

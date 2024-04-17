@@ -54,6 +54,11 @@ func init() {
 	core.NewEnchantEffect(3368, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
+		if character.GetAura("Rune Of The Fallen Crusader") != nil {
+			// Already registerd from one weapon
+			return
+		}
+
 		procMask := character.GetProcMaskForEnchant(3368)
 
 		rfcAura := character.NewTemporaryStatsAuraWrapped("Rune Of The Fallen Crusader Proc", core.ActionID{SpellID: 53365}, stats.Stats{}, time.Second*15, func(aura *core.Aura) {
@@ -86,6 +91,11 @@ func init() {
 	core.NewEnchantEffect(3369, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
+		if character.GetAura("Rune of Cinderglacier") != nil {
+			// Already registerd from one weapon
+			return
+		}
+
 		cinderMod := character.AddDynamicMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.2,
@@ -93,7 +103,7 @@ func init() {
 			School:     core.SpellSchoolShadow | core.SpellSchoolFrost,
 		})
 
-		cinderAura := character.RegisterAura(core.Aura{
+		cinderAura := character.GetOrRegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 53386},
 			Label:     "Cinderglacier",
 			Duration:  time.Second * 30,
@@ -139,12 +149,12 @@ func init() {
 	core.NewEnchantEffect(3370, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		actionID := core.ActionID{SpellID: 50401}
-		if spell := character.GetSpell(actionID.WithTag(1)); spell != nil {
-			// This function gets called twice when dual wielding this enchant, but we
-			// handle both in one call.
+		if character.GetAura("Razor Frost") != nil {
+			// Already registerd from one weapon
 			return
 		}
+
+		actionID := core.ActionID{SpellID: 50401}
 
 		// Rune of Razorice
 		newRazoriceHitSpell := func(character *core.Character, isMH bool) *core.Spell {
@@ -152,22 +162,26 @@ func init() {
 			if !isMH {
 				weapon = character.GetOHWeapon()
 			}
-
 			if weapon == nil {
 				return nil
 			}
 
-			dmg := 0.5 * (weapon.WeaponDamageMin + weapon.WeaponDamageMax) * 0.02
-
 			return character.GetOrRegisterSpell(core.SpellConfig{
 				ActionID:    actionID.WithTag(core.TernaryInt32(isMH, 1, 2)),
 				SpellSchool: core.SpellSchoolFrost,
-				ProcMask:    core.ProcMaskSpellDamage,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagNoOnCastComplete,
 
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					dmg := 0.0
+					if isMH {
+						dmg = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.02
+					} else {
+						dmg = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.02
+					}
 					spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeAlwaysHit)
 				},
 			})
@@ -208,6 +222,7 @@ func init() {
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
 			ProcMask: procMask,
+			ICD:      time.Millisecond * 8,
 
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				vulnAura := vulnAuras.Get(result.Target)
