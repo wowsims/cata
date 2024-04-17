@@ -18,7 +18,6 @@ import {
 	RotationType,
 	Spec,
 	Stat,
-	TristateEffect,
 } from '../../core/proto/common';
 import { HunterStingType, MarksmanshipHunter_Rotation } from '../../core/proto/hunter';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
@@ -84,7 +83,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.MM_P4_PRESET.gear,
+		gear: Presets.MM_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -160,7 +159,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_MM, Presets.ROTATION_PRESET_MM_ADVANCED, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.MM_PRERAID_PRESET, Presets.MM_P1_PRESET, Presets.MM_P2_PRESET, Presets.MM_P3_PRESET, Presets.MM_P4_PRESET, Presets.MM_P5_PRESET],
+		gear: [Presets.MM_PRERAID_PRESET, Presets.MM_P1_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecMarksmanshipHunter>): APLRotation => {
@@ -252,15 +251,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.MM_P1_PRESET.gear,
-					2: Presets.MM_P2_PRESET.gear,
-					3: Presets.MM_P3_PRESET.gear,
-					4: Presets.MM_P4_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.MM_P1_PRESET.gear,
-					2: Presets.MM_P2_PRESET.gear,
-					3: Presets.MM_P3_PRESET.gear,
-					4: Presets.MM_P4_PRESET.gear,
 				},
 			},
 		},

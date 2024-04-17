@@ -229,6 +229,7 @@ func applyRaceEffects(agent Agent) {
 		character.AddStat(stats.SpellCrit, CritRatingPerCritChance)
 	case proto.Race_RaceGoblin:
 		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
+		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 		character.PseudoStats.CastSpeedMultiplier *= 1.01
 	}
 }

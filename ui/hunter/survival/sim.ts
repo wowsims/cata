@@ -240,7 +240,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceNightElf,
-				[Faction.Horde]: Race.RaceOrc,
+				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
