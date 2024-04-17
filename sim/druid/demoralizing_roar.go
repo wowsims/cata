@@ -8,7 +8,7 @@ import (
 
 func (druid *Druid) registerDemoralizingRoarSpell() {
 	druid.DemoralizingRoarAuras = druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return core.DemoralizingRoarAura(target, druid.Talents.FeralAggression)
+		return core.DemoralizingRoarAura(target)
 	})
 
 	druid.DemoralizingRoar = druid.RegisterSpell(Bear, core.SpellConfig{

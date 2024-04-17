@@ -12,7 +12,7 @@ func (druid *Druid) registerShredSpell() {
 		core.TernaryFloat64(druid.Ranged().ID == 29390, 88, 0) +
 		core.TernaryFloat64(druid.Ranged().ID == 40713, 203, 0)) / 2.25
 
-	hasGlyphofShred := druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfShred)
+	hasGlyphofShred := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting)
 	maxRipTicks := druid.MaxRipTicks()
 
 	druid.Shred = druid.RegisterSpell(Cat, core.SpellConfig{
@@ -22,7 +22,7 @@ func (druid *Druid) registerShredSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   60 - 9*float64(druid.Talents.ShreddingAttacks),
+			Cost:   40,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -36,13 +36,13 @@ func (druid *Druid) registerShredSpell() {
 		},
 
 		DamageMultiplier: 2.25,
-		CritMultiplier:   druid.MeleeCritMultiplier(Cat),
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatDamageBonus +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			modifier := 1.0
 			if druid.BleedCategories.Get(target).AnyActive() {
@@ -72,7 +72,7 @@ func (druid *Druid) registerShredSpell() {
 			}
 		},
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := flatDamageBonus + spell.Unit.AutoAttacks.MH().CalculateAverageWeaponDamage(spell.MeleeAttackPower()) + spell.BonusWeaponDamage()
+			baseDamage := flatDamageBonus + spell.Unit.AutoAttacks.MH().CalculateAverageWeaponDamage(spell.MeleeAttackPower())
 
 			modifier := 1.0
 			if druid.BleedCategories.Get(target).AnyActive() {
