@@ -63,6 +63,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 					dot := spell.Dot(target)
 					dot.Apply(sim)
 					dot.TickOnce(sim)
+					spell.DealOutcome(sim, result)
 				}
 			})
 		},
