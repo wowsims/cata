@@ -199,27 +199,11 @@ func (mage *Mage) ApplyTalents() {
 	// Piercing Ice
 	if mage.Talents.PiercingIce > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			//ClassMask:  MageSpellsAll,
-			ClassMask:  MageSpellArcaneBlast,
+			ClassMask:  MageSpellsAll,
 			FloatValue: 0.01 * float64(mage.Talents.PiercingIce) * core.CritRatingPerCritChance,
 			Kind:       core.SpellMod_BonusCrit_Rating,
 		})
 	}
-
-	// mage.PseudoStats.SpiritRegenRateCasting += float64(mage.Talents.Pyromaniac) / 6
-
-	// mage.AddStat(stats.SpellHit, float64(mage.Talents.Precision)*core.SpellHitRatingPerHitChance)
-	// mage.PseudoStats.CostMultiplier *= 1 - .01*float64(mage.Talents.Precision)
-
-	// mage.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1 + .01*float64(mage.Talents.ArcticWinds)
-	// mage.PseudoStats.CostMultiplier *= 1 - .04*float64(mage.Talents.FrostChanneling)
-
-	// magicAbsorptionBonus := 2 * float64(mage.Talents.MagicAbsorption)
-	// mage.AddStat(stats.ArcaneResistance, magicAbsorptionBonus)
-	// mage.AddStat(stats.FireResistance, magicAbsorptionBonus)
-	// mage.AddStat(stats.FrostResistance, magicAbsorptionBonus)
-	// mage.AddStat(stats.NatureResistance, magicAbsorptionBonus)
-	// mage.AddStat(stats.ShadowResistance, magicAbsorptionBonus)
 }
 
 func (mage *Mage) applyPyromaniac() {
@@ -367,8 +351,7 @@ func (mage *Mage) applyArcanePotency() {
 	}
 
 	arcanePotencyMod := mage.AddDynamicMod(core.SpellModConfig{
-		//ClassMask:  MageSpellsAllDamaging,
-		ClassMask:  MageSpellArcaneBarrage,
+		ClassMask:  MageSpellsAllDamaging,
 		FloatValue: []float64{0.0, 0.07, 0.15}[mage.Talents.ArcanePotency] * core.CritRatingPerCritChance,
 		Kind:       core.SpellMod_BonusCrit_Rating,
 	})
@@ -465,8 +448,7 @@ func (mage *Mage) applyArcaneConcentration() {
 		})
 	} */
 	clearCastingMod := mage.AddDynamicMod(core.SpellModConfig{
-		//ClassMask:  MageSpellsAllDamaging,
-		ClassMask:  MageSpellArcaneBlast,
+		ClassMask:  MageSpellsAllDamaging,
 		FloatValue: -1,
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
@@ -509,15 +491,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 	actionID := core.ActionID{SpellID: 12043}
 	var spellToUse *core.Spell
 	mage.Env.RegisterPostFinalizeEffect(func() {
-		if mage.Pyroblast != nil {
-			spellToUse = mage.Pyroblast
-		} else if mage.PrimaryTalentTree == 1 {
-			spellToUse = mage.Fireball
-		} else if mage.PrimaryTalentTree == 2 {
-			spellToUse = mage.Frostbolt
-		} else {
-			spellToUse = mage.ArcaneBlast
-		}
+		spellToUse = mage.ArcaneBlast
 	})
 
 	spell := mage.RegisterSpell(core.SpellConfig{
@@ -648,78 +622,13 @@ func (mage *Mage) applyMasterOfElements() {
 	})
 }
 
-/* func (mage *Mage) registerCombustionCD() {
-
-	if !mage.Talents.Combustion {
-		return
-	}
-
-	var combustionDotDamage float64
-	var spellsToDuplicate []*core.Spell
-	if mage.LivingBomb.Dot(target) {
-		spellsToDuplicate = append(dotsToDuplicate, mage.LivingBomb)
-	}
-	if mage.Pyroblast.Get(target) {
-		spellsToDuplicate = append(dotsToDuplicate, mage.Pyroblast)
-	}
-	if mage.Ignite.Get(target) {
-		spellsToDuplicate = append(dotsToDuplicate, mage.Ignite)
-	}
-	for _, activeDots := range spellsToDuplicate {
-		combustionDotDamage += float64(activeDots.CalcPeriodicDamage().Outcome) * float64(activeDots.Dot(activeDots.Unit).NumberOfTicks)
-	}
-
-	combustionAura := mage.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return target.GetOrRegisterAura(core.Aura{
-			Label:    "Combustion",
-			ActionID: actionID,
-			Duration: 15 * time.Second,
-
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			},
-		})
-	})
-	mage.Combustion = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 11129},
-		SpellSchool: core.SpellSchoolFire,
-		//ProcMask:    core.SpellFlagNoOnCastComplete,
-		Flags: SpellFlagMage,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-		},
-
-		DamageMultiplier: mage.GetFireMasteryBonusMultiplier(),
-		DamageMultiplierAdditive: 1 +
-			.01*float64(mage.Talents.FirePower),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.429*mage.ScalingBaseDamage + 1.113*spell.SpellPower()
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
-			spell.Dot(target).Apply(sim)
-			spell.DealDamage(sim, result)
-		},
-	})
-
-	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.Combustion,
-		Type:  core.CooldownTypeDPS,
-	})
-}
-*/
-
 func (mage *Mage) registerIcyVeinsCD() {
 	if !mage.Talents.IcyVeins {
 		return
 	}
 
 	icyVeinsMod := mage.AddDynamicMod(core.SpellModConfig{
-		//ClassMask:  MageSpellsAll,
-		ClassMask:  MageSpellArcaneBlast,
+		ClassMask:  MageSpellsAll,
 		FloatValue: -0.2,
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
@@ -826,8 +735,7 @@ func (mage *Mage) applyMoltenFury() {
 	}
 
 	moltenFuryMod := mage.AddDynamicMod(core.SpellModConfig{
-		//ClassMask:  MageSpellsAll,
-		ClassMask:  MageSpellArcaneBarrage,
+		ClassMask:  MageSpellsAll,
 		FloatValue: .04 * float64(mage.Talents.MoltenFury),
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
@@ -1009,52 +917,6 @@ func (mage *Mage) applyEarlyFrost() {
 // 				if aura.IsActive() {
 // 					aura.AddStack(sim)
 // 				}
-// 			}
-// 		},
-// 	})
-// }
-
-// func (mage *Mage) applyFireStarter() {
-// 	if mage.Talents.Firestarter == 0 {
-// 		return
-// 	}
-
-// 	firestarterAura := mage.RegisterAura(core.Aura{
-// 		Label:    "Firestarter",
-// 		ActionID: core.ActionID{SpellID: 54741},
-// 		Duration: 10 * time.Second,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			mage.Flamestrike.CostMultiplier -= 100
-// 			mage.Flamestrike.CastTimeMultiplier -= 1
-// 			mage.FlamestrikeRank8.CostMultiplier -= 100
-// 			mage.FlamestrikeRank8.CastTimeMultiplier -= 1
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			mage.Flamestrike.CostMultiplier += 100
-// 			mage.Flamestrike.CastTimeMultiplier += 1
-// 			mage.FlamestrikeRank8.CostMultiplier += 100
-// 			mage.FlamestrikeRank8.CastTimeMultiplier += 1
-// 		},
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if spell == mage.Flamestrike || spell == mage.FlamestrikeRank8 {
-// 				aura.Deactivate(sim)
-// 			}
-// 		},
-// 	})
-
-// 	mage.RegisterAura(core.Aura{
-// 		Label:    "Firestarter talent",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.Landed() {
-// 				return
-// 			}
-
-// 			if spell == mage.BlastWave || spell == mage.DragonsBreath {
-// 				firestarterAura.Activate(sim)
 // 			}
 // 		},
 // 	})
