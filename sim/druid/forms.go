@@ -180,7 +180,7 @@ func (druid *Druid) registerCatFormSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			maxShiftEnergy := float64(20 * druid.Talents.Furor)
+			maxShiftEnergy := float64(100 * druid.Talents.Furor) / 3.0
 
 			energyDelta := maxShiftEnergy - druid.CurrentEnergy()
 
@@ -285,7 +285,7 @@ func (druid *Druid) registerBearFormSpell() {
 
 	rageMetrics := druid.NewRageMetrics(actionID)
 
-	furorProcChance := []float64{0, 0.2, 0.4, 0.6, 0.8, 1}[druid.Talents.Furor]
+	furorProcChance := float64(druid.Talents.Furor) / 3.0
 
 	druid.BearForm = druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID: actionID,
@@ -322,7 +322,6 @@ func (druid *Druid) registerBearFormSpell() {
 // 		return
 // 	}
 
-// 	druid.MultiplyStat(stats.Intellect, 1+(0.02*float64(druid.Talents.Furor)))
 // 	druid.PseudoStats.DamageDealtMultiplier *= 1 + (float64(druid.Talents.MasterShapeshifter) * 0.02)
 // 	if druid.Talents.ImprovedMoonkinForm > 0 {
 // 		druid.AddStatDependency(stats.Spirit, stats.SpellPower, 0.1*float64(druid.Talents.ImprovedMoonkinForm))

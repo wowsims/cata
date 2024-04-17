@@ -14,10 +14,6 @@ func (druid *Druid) registerSwipeBearSpell() {
 		flatBaseDamage += 24
 	}
 
-	lbdm := core.TernaryFloat64(druid.HasSetBonus(ItemSetLasherweaveBattlegear, 2), 1.2, 1.0)
-	thdm := core.TernaryFloat64(druid.HasSetBonus(ItemSetThunderheartHarness, 4), 1.15, 1.0)
-	fidm := 1.0 + 0.1*float64(druid.Talents.FeralInstinct)
-
 	druid.SwipeBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48562},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -25,7 +21,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost: 20 - float64(druid.Talents.Ferocity),
+			Cost: 15,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -34,8 +30,8 @@ func (druid *Druid) registerSwipeBearSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: lbdm * thdm * fidm,
-		CritMultiplier:   druid.MeleeCritMultiplier(Bear),
+		DamageMultiplier: 1,
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -50,7 +46,6 @@ func (druid *Druid) registerSwipeBearSpell() {
 
 func (druid *Druid) registerSwipeCatSpell() {
 	weaponMulti := 2.5
-	fidm := 1.0 + 0.1*float64(druid.Talents.FeralInstinct)
 
 	druid.SwipeCat = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 62078},
@@ -59,7 +54,7 @@ func (druid *Druid) registerSwipeCatSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: 50 - float64(druid.Talents.Ferocity),
+			Cost: 45,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -68,8 +63,8 @@ func (druid *Druid) registerSwipeCatSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: fidm * weaponMulti,
-		CritMultiplier:   druid.MeleeCritMultiplier(Cat),
+		DamageMultiplier: weaponMulti,
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

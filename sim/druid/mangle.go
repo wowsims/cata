@@ -8,13 +8,8 @@ import (
 )
 
 func (druid *Druid) registerMangleBearSpell() {
-	if !druid.Talents.Mangle {
-		return
-	}
-
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
-	durReduction := (0.5) * float64(druid.Talents.ImprovedMangle)
-	glyphBonus := core.TernaryFloat64(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfMangle), 1.1, 1.0)
+	glyphBonus := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfMangle), 1.1, 1.0)
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48564},
@@ -23,7 +18,7 @@ func (druid *Druid) registerMangleBearSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   20 - float64(druid.Talents.Ferocity),
+			Cost:   15,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -33,18 +28,18 @@ func (druid *Druid) registerMangleBearSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Duration(float64(time.Second) * (6 - durReduction)),
+				Duration: time.Duration(float64(time.Second) * 6),
 			},
 		},
 
-		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * 1.15 * glyphBonus,
-		CritMultiplier:   druid.MeleeCritMultiplier(Bear),
-		ThreatMultiplier: core.TernaryFloat64(druid.HasSetBonus(ItemSetThunderheartHarness, 2), 1.15, 1),
+		DamageMultiplier: 1.9 * glyphBonus,
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 299/1.15 +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := 3306.0/1.9 +
+				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
@@ -64,12 +59,8 @@ func (druid *Druid) registerMangleBearSpell() {
 }
 
 func (druid *Druid) registerMangleCatSpell() {
-	if !druid.Talents.Mangle {
-		return
-	}
-
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
-	glyphBonus := core.TernaryFloat64(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfMangle), 1.1, 1.0)
+	glyphBonus := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfMangle), 1.1, 1.0)
 
 	druid.MangleCat = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48566},
@@ -78,7 +69,7 @@ func (druid *Druid) registerMangleCatSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   45.0 - 2*float64(druid.Talents.ImprovedMangle) - float64(druid.Talents.Ferocity) - core.TernaryFloat64(druid.HasSetBonus(ItemSetThunderheartHarness, 2), 5, 0),
+			Cost:   35.0,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -88,14 +79,14 @@ func (druid *Druid) registerMangleCatSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * 2.0 * glyphBonus,
-		CritMultiplier:   druid.MeleeCritMultiplier(Cat),
+		DamageMultiplier: 5.4 * glyphBonus,
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 566/2.0 +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := 302.0/5.4 +
+				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
