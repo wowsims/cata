@@ -12,10 +12,11 @@ func (mage *Mage) registerLivingBombSpell() {
 
 	//var activeLivingBombs core.AuraArray
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 44461},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | HotStreakSpells,
+		ActionID:       core.ActionID{SpellID: 44461},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | HotStreakSpells,
+		ClassSpellMask: MageSpellLivingBombExplosion,
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
@@ -33,10 +34,11 @@ func (mage *Mage) registerLivingBombSpell() {
 	})
 
 	mage.LivingBomb = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 44457},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 44457},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellLivingBombDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.17,
@@ -47,11 +49,9 @@ func (mage *Mage) registerLivingBombSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 +
-			.01*float64(mage.Talents.FirePower) +
-			.05*float64(mage.Talents.CriticalMass),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -60,12 +60,12 @@ func (mage *Mage) registerLivingBombSpell() {
 					livingBombExplosionSpell.Cast(sim, aura.Unit)
 				},
 			},
-			BonusCoefficient:    0.258,
 			NumberOfTicks:       4,
 			TickLength:          time.Second * 3,
 			AffectedByCastSpeed: true,
+			BonusCoefficient:    0.258,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = 4*0.25*mage.ScalingBaseDamage + 0.258*4*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = 0.25 * mage.ScalingBaseDamage
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
 			},
@@ -77,7 +77,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
+				//spell.SpellMetrics[target.UnitIndex].Hits--
 				spell.Dot(target).Apply(sim)
 			}
 			spell.DealOutcome(sim, result)
