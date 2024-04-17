@@ -23,7 +23,7 @@ func (mage *Mage) registerEvocation() {
 			},
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Minute * time.Duration(4-mage.Talents.ArcaneFlows),
+				Duration: time.Minute*4 - time.Duration(mage.Talents.ArcaneFlows),
 			},
 		},
 

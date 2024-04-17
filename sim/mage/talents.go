@@ -52,6 +52,30 @@ func (mage *Mage) ApplyTalents() {
 		})
 	}
 
+	// Arcane Mastery
+	if mage.Spec == proto.Spec_SpecArcaneMage {
+		arcaneMastery := mage.AddDynamicMod(core.SpellModConfig{
+			ClassMask: MageSpellsAll,
+			Kind:      core.SpellMod_DamageDone_Pct,
+		})
+
+		mage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+			arcaneMastery.UpdateFloatValue(mage.ArcaneMasteryValue())
+		})
+
+		core.MakePermanent(mage.GetOrRegisterAura(core.Aura{
+			Label:    "Mana Adept",
+			ActionID: core.ActionID{SpellID: 76547},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				arcaneMastery.UpdateFloatValue(mage.CurrentMana() / mage.MaxMana() * mage.GetArcaneMasteryBonus())
+				arcaneMastery.Activate()
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				arcaneMastery.Deactivate()
+			},
+		}))
+	}
+
 	// Cooldowns/Special Implementations
 	mage.registerArcanePowerCD()
 	mage.registerPresenceOfMindCD()
@@ -127,23 +151,34 @@ func (mage *Mage) ApplyTalents() {
 		mage.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolFire,
 			FloatValue: 0.25,
-			Kind:       core.SpellMod_DamageDone_Flat,
+			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 	}
 
-	// Mastery
+	// Fire Mastery
 	if mage.Spec == proto.Spec_SpecFireMage {
-		//
 		fireMastery := mage.AddDynamicMod(core.SpellModConfig{
 			ClassMask:  MageSpellFireDoT,
 			FloatValue: float64(1.22 + 0.28*mage.GetMasteryPoints()),
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
-		fireMastery.Activate()
 
 		mage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-			fireMastery.UpdateFloatValue(1.22 + 0.28*core.MasteryRatingToMasteryPoints(newMastery))
+			fireMastery.UpdateFloatValue(mage.GetFireMasteryBonus())
 		})
+
+		core.MakePermanent(mage.GetOrRegisterAura(core.Aura{
+			Label:    "Flashburn",
+			ActionID: core.ActionID{SpellID: 76595},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				fireMastery.UpdateFloatValue(mage.GetFireMasteryBonus())
+				fireMastery.Activate()
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				fireMastery.Deactivate()
+			},
+		}))
+
 	}
 
 	// Cooldowns/Special Implementations
@@ -202,6 +237,25 @@ func (mage *Mage) ApplyTalents() {
 	/* --------------------------------------
 				 FROST TALENTS
 	---------------------------------------*/
+	// Frost  Specialization Bonus
+	if mage.Spec == proto.Spec_SpecFireMage {
+		mage.AddStaticMod(core.SpellModConfig{
+			School:     core.SpellSchoolFrost,
+			FloatValue: 0.25,
+			Kind:       core.SpellMod_DamageDone_Pct,
+		})
+
+		mage.AddStaticMod(core.SpellModConfig{
+			ClassMask:  MageSpellFrostbolt,
+			FloatValue: 0.15,
+			Kind:       core.SpellMod_DamageDone_Pct,
+		})
+	}
+
+	// Frost Mastery Bonus
+	if mage.Spec == proto.Spec_SpecFrostMage {
+
+	}
 
 	// Cooldowns/Special Implementations
 	mage.registerIcyVeinsCD()
@@ -219,14 +273,44 @@ func (mage *Mage) ApplyTalents() {
 		})
 	}
 
-	//Enduring Winter
-	if mage.Talents.EnduringWinter > 0 {
-		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellsAll,
-			FloatValue: -1 * []float64{0, 0.03, 0.06, 0.1}[mage.Talents.EnduringWinter],
-			Kind:       core.SpellMod_PowerCost_Pct,
+	//Early Frost
+	if mage.Talents.EarlyFrost > 0 {
+		earlyFrostMod := mage.AddDynamicMod(core.SpellModConfig{
+			ClassMask: MageSpellFrostbolt,
+			TimeValue: []time.Duration{0, time.Millisecond * -300, time.Millisecond * -600}[mage.Talents.EarlyFrost],
+			Kind:      core.SpellMod_CastTime_Flat,
 		})
+
+		mage.RegisterAura(core.Aura{
+			Label:    "Early Frost",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+				earlyFrostMod.Activate()
+			},
+			Icd: &core.Cooldown{
+				Timer:    mage.NewTimer(),
+				Duration: time.Second * 15,
+			},
+
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if aura.Icd.IsReady(sim) {
+					aura.Icd.Use(sim)
+					earlyFrostMod.Activate()
+				}
+				if spell == mage.Frostbolt && earlyFrostMod.IsActive {
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt: sim.CurrentTime + 10*time.Millisecond,
+						OnAction: func(sim *core.Simulation) {
+							earlyFrostMod.Deactivate()
+						},
+					})
+				}
+			},
+		})
+
 	}
+
 }
 
 func (mage *Mage) applyPyromaniac() {

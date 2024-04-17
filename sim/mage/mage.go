@@ -153,8 +153,6 @@ func (mage *Mage) Initialize() {
 	mage.registerDragonsBreathSpell()
 	// mage.registerSummonWaterElementalCD()
 
-	mage.applyArcaneMastery()
-	mage.applyFireMastery()
 	mage.applyArcaneMissileProc()
 	mage.ScalingBaseDamage = 937.330078125
 }
@@ -213,69 +211,21 @@ func (mage *Mage) applyArmor() {
 	}
 }
 
-/*
---------------------------------------
-	Arcane Mastery
----------------------------------------
-*/
-//Increases all spell damage done by up to 12%, based on the amount of mana the Mage has unspent.
-//Each point of Mastery increases damage done by up to an additional 1.5%.
-
 func (mage *Mage) GetArcaneMasteryBonus() float64 {
 	return (1.12 + 0.015*mage.GetMasteryPoints())
 }
 
-func (mage *Mage) applyArcaneMastery() {
-	// Arcane Mastery Mod
-	arcaneMastery := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll,
-		FloatValue: mage.CurrentMana() / mage.MaxMana() * mage.GetArcaneMasteryBonus(), //take current % of mana, get that portion of damage bonus
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
-
-	mage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		arcaneMastery.UpdateFloatValue(1.22 + 0.28*core.MasteryRatingToMasteryPoints(newMastery))
-	})
-
-	core.MakePermanent(mage.GetOrRegisterAura(core.Aura{
-		Label:    "Mana Adept",
-		ActionID: core.ActionID{SpellID: 76547},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			arcaneMastery.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			arcaneMastery.Deactivate()
-		},
-	}))
+func (mage *Mage) ArcaneMasteryValue() float64 {
+	return mage.GetArcaneMasteryBonus() * (mage.CurrentMana() / mage.MaxMana())
 }
 
-/*
---------------------------------------
-
-	Fire Mastery
-
----------------------------------------
-*/
 func (mage *Mage) GetFireMasteryBonus() float64 {
-	return (1.22 + 0.28*mage.GetMasteryPoints())
+	return (1.22 + 0.028*mage.GetMasteryPoints())
 }
 
-func (mage *Mage) applyFireMastery() {
-	// Fire Mastery Mod
-	fireMastery := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellFireDoT,
-		FloatValue: mage.GetFireMasteryBonus(),
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
-
-	mage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		fireMastery.UpdateFloatValue(1.22 + 0.28*core.MasteryRatingToMasteryPoints(newMastery))
-	})
+func (mage *Mage) GetFrostMasteryBonus() float64 {
+	return (1.05 + 0.025*mage.GetMasteryPoints())
 }
-
-/* --------------------------------------
-				Frost Mastery
----------------------------------------*/
 
 // Agent is a generic way to access underlying mage on any of the agents.
 type MageAgent interface {
