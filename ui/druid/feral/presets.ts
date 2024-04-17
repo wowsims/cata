@@ -81,4 +81,8 @@ export const DefaultOptions = FeralDruidOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
+	flask: Flask.FlaskOfTheWinds,
+	food: Food.FoodSkeweredEel,
+	defaultPotion: Potions.PotionOfTheTolvir,
+	prepopPotion: Potions.PotionOfTheTolvir,
 });

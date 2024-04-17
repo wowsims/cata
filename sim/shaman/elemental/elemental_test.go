@@ -39,7 +39,7 @@ func init() {
 // 			},
 // 			ArmorType: proto.ArmorType_ArmorTypeMail,
 // 			RangedWeaponTypes: []proto.RangedWeaponType{
-// 				proto.RangedWeaponType_RangedWeaponTypeTotem,
+// 				proto.RangedWeaponType_RangedWeaponTypeRelic,
 // 			},
 // 		},
 
@@ -93,14 +93,14 @@ func init() {
 // 	Earth: proto.EarthTotem_TremorTotem,
 // 	Air:   proto.AirTotem_WrathOfAirTotem,
 // 	Water: proto.WaterTotem_ManaSpringTotem,
-// 	Fire:  proto.FireTotem_TotemOfWrath,
+// 	Fire:  proto.FireTotem_FlametongueTotem,
 // }
 
 // var FireElementalBasicTotems = &proto.ShamanTotems{
 // 	Earth:            proto.EarthTotem_TremorTotem,
 // 	Air:              proto.AirTotem_WrathOfAirTotem,
 // 	Water:            proto.WaterTotem_ManaSpringTotem,
-// 	Fire:             proto.FireTotem_TotemOfWrath,
+// 	Fire:             proto.FireTotem_FlametongueTotem,
 // 	UseFireElemental: true,
 // }
 

@@ -7,7 +7,7 @@ import (
 )
 
 func (dk *DeathKnight) registerDeathAndDecaySpell() {
-	dk.DeathAndDecay = dk.RegisterSpell(core.SpellConfig{
+	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 43265},
 		Flags:          core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolShadow,

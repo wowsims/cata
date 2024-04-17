@@ -23,11 +23,11 @@ func (dk *DeathKnight) registerPlagueStrikeSpell() {
 			baseDamage := dk.ClassBaseScaling*0.18700000644 +
 				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
 
-	dk.PlagueStrike = dk.GetOrRegisterSpell(core.SpellConfig{
+	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       PlagueStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
@@ -55,10 +55,10 @@ func (dk *DeathKnight) registerPlagueStrikeSpell() {
 			baseDamage := dk.ClassBaseScaling*0.37400001287 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			spell.SpendRefundableCost(sim, result)
-			dk.threatOfThassarianProc(sim, result, ohSpell)
+			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 			if result.Landed() {
 				dk.BloodPlagueSpell.Cast(sim, target)
 			}

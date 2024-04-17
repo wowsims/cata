@@ -13,6 +13,7 @@ type SpellModConfig struct {
 	ClassMask  int64
 	Kind       SpellModType
 	School     SpellSchool
+	ProcMask   ProcMask
 	IntValue   int64
 	TimeValue  time.Duration
 	FloatValue float64
@@ -22,6 +23,7 @@ type SpellMod struct {
 	ClassMask      int64
 	Kind           SpellModType
 	School         SpellSchool
+	ProcMask       ProcMask
 	floatValue     float64
 	intValue       int64
 	timeValue      time.Duration
@@ -48,6 +50,7 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		ClassMask:  config.ClassMask,
 		Kind:       config.Kind,
 		School:     config.School,
+		ProcMask:   config.ProcMask,
 		floatValue: config.FloatValue,
 		intValue:   config.IntValue,
 		timeValue:  config.TimeValue,
@@ -90,6 +93,10 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 	}
 
 	if mod.School > 0 && !mod.School.Matches(spell.SpellSchool) {
+		return false
+	}
+
+	if mod.ProcMask > 0 && !mod.ProcMask.Matches(spell.ProcMask) {
 		return false
 	}
 
@@ -182,6 +189,10 @@ const (
 	// Uses FloatValue
 	SpellMod_PowerCost_Flat
 
+	// Increases or decreases RuneCost.RunicPowerCost by flat amount
+	// Uses FloatValue
+	SpellMod_RunicPowerCost_Flat
+
 	// Will add time.Duration to spell.CD.Duration
 	// Uses TimeValue
 	SpellMod_Cooldown_Flat
@@ -193,6 +204,10 @@ const (
 	// Will add / substract % amount from the cast time multiplier.
 	// Ueses: FloatValue
 	SpellMod_CastTime_Pct
+
+	// Will add / substract time from the cast time.
+	// Ueses: TimeValue
+	SpellMod_CastTime_Flat
 
 	// Add/subtract bonus crit rating
 	// Uses: FloatValue
@@ -209,6 +224,10 @@ const (
 	// Add/subtract to the casts gcd
 	// Uses: TimeValue
 	SpellMod_GlobalCooldown_Flat
+
+	// Add/substrct to the base tick frequency
+	// Uses: TimeValue
+	SpellMod_DotTickLength_Flat
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -232,6 +251,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 		Remove: removePowerCostFlat,
 	},
 
+	SpellMod_RunicPowerCost_Flat: {
+		Apply:  applyRunicPowerCostFlat,
+		Remove: removeRunicPowerCostFlat,
+	},
+
 	SpellMod_Cooldown_Flat: {
 		Apply:  applyCooldownFlat,
 		Remove: removeCooldownFlat,
@@ -245,6 +269,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_CastTime_Pct: {
 		Apply:  applyCastTimePercent,
 		Remove: removeCastTimePercent,
+	},
+
+	SpellMod_CastTime_Flat: {
+		Apply:  applyCastTimeFlat,
+		Remove: removeCastTimeFlat,
 	},
 
 	SpellMod_BonusCrit_Rating: {
@@ -265,6 +294,10 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_GlobalCooldown_Flat: {
 		Apply:  applyGlobalCooldownFlat,
 		Remove: removeGlobalCooldownFlat,
+	},
+	SpellMod_DotTickLength_Flat: {
+		Apply:  applyDotTickLengthFlat,
+		Remove: removeDotTickLengthFlat,
 	},
 }
 
@@ -300,6 +333,18 @@ func removePowerCostFlat(mod *SpellMod, spell *Spell) {
 	spell.DefaultCast.Cost -= mod.floatValue
 }
 
+func applyRunicPowerCostFlat(mod *SpellMod, spell *Spell) {
+	cost := spell.RuneCostImpl()
+	cost.RunicPowerCost += mod.floatValue
+	spell.Cost = newRuneCost(spell, cost.GetConfig())
+}
+
+func removeRunicPowerCostFlat(mod *SpellMod, spell *Spell) {
+	cost := spell.RuneCostImpl()
+	cost.RunicPowerCost -= mod.floatValue
+	spell.Cost = newRuneCost(spell, cost.GetConfig())
+}
+
 func applyCooldownFlat(mod *SpellMod, spell *Spell) {
 	spell.CD.Duration += mod.timeValue
 }
@@ -322,6 +367,14 @@ func applyCastTimePercent(mod *SpellMod, spell *Spell) {
 
 func removeCastTimePercent(mod *SpellMod, spell *Spell) {
 	spell.CastTimeMultiplier -= mod.floatValue
+}
+
+func applyCastTimeFlat(mod *SpellMod, spell *Spell) {
+	spell.DefaultCast.CastTime += mod.timeValue
+}
+
+func removeCastTimeFlat(mod *SpellMod, spell *Spell) {
+	spell.DefaultCast.CastTime -= mod.timeValue
 }
 
 func applyBonusCritRating(mod *SpellMod, spell *Spell) {
@@ -372,4 +425,30 @@ func applyGlobalCooldownFlat(mod *SpellMod, spell *Spell) {
 
 func removeGlobalCooldownFlat(mod *SpellMod, spell *Spell) {
 	spell.DefaultCast.GCD -= mod.timeValue
+}
+
+func applyDotTickLengthFlat(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.TickLength += mod.timeValue
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.TickLength += mod.timeValue
+	}
+}
+
+func removeDotTickLengthFlat(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.TickLength -= mod.timeValue
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.TickLength -= mod.timeValue
+	}
 }

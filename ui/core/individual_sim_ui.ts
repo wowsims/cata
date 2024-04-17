@@ -1,4 +1,4 @@
-import { CharacterStats, StatMods } from './components/character_stats';
+import { CharacterStats, StatMods, StatWrites } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
 import { EmbeddedDetailedResults } from './components/detailed_results';
 import { EncounterPickerConfig } from './components/encounter_picker';
@@ -100,6 +100,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	epReferenceStat: Stat;
 	displayStats: Array<Stat>;
 	modifyDisplayStats?: (player: Player<SpecType>) => StatMods;
+	overwriteDisplayStats?: (player: Player<SpecType>) => StatWrites;
 
 	defaults: {
 		gear: EquipmentSpec;
@@ -333,6 +334,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player,
 			this.individualConfig.displayStats,
 			this.individualConfig.modifyDisplayStats,
+			this.individualConfig.overwriteDisplayStats,
 		);
 	}
 
@@ -397,11 +399,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		TypedEvent.freezeAllAndDo(() => {
 			const tankSpec = this.player.getPlayerSpec().isTankSpec;
 			const healingSpec = this.player.getPlayerSpec().isHealingSpec;
-
-			//Special case for Totem of Wrath keeps buff and debuff sync'd
-			const towEnabled = this.individualConfig.defaults.raidBuffs.totemOfWrath || this.individualConfig.defaults.debuffs.totemOfWrath;
-			this.individualConfig.defaults.raidBuffs.totemOfWrath = towEnabled;
-			this.individualConfig.defaults.debuffs.totemOfWrath = towEnabled;
 
 			this.player.applySharedDefaults(eventID);
 			this.player.setRace(eventID, this.player.getPlayerClass().races[0]);

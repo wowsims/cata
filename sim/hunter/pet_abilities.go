@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 type PetAbilityType int
@@ -139,7 +138,7 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(132, 188) + ((0.4 * spell.MeleeAttackPower()) * 0.20)
+			baseDamage := sim.Roll(132, 188) + (0.192 * spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
@@ -325,9 +324,6 @@ func (hp *HunterPet) newFroststormBreath() *core.Spell {
 func (hp *HunterPet) newFuriousHowl() *core.Spell {
 	actionID := core.ActionID{SpellID: 64495}
 
-	petAura := hp.NewTemporaryStatsAura("FuriousHowl", actionID, stats.Stats{stats.AttackPower: 320, stats.RangedAttackPower: 320}, time.Second*20)
-	ownerAura := hp.hunterOwner.NewTemporaryStatsAura("FuriousHowl", actionID, stats.Stats{stats.AttackPower: 320, stats.RangedAttackPower: 320}, time.Second*20)
-
 	howlSpell := hp.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 
@@ -337,15 +333,15 @@ func (hp *HunterPet) newFuriousHowl() *core.Spell {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    hp.NewTimer(),
-				Duration: hp.hunterOwner.applyLongevity(time.Second * 40),
+				Duration: hp.hunterOwner.applyLongevity(time.Second * 45),
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hp.IsEnabled()
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			petAura.Activate(sim)
-			ownerAura.Activate(sim)
+			//petAura.Activate(sim)
+			//ownerAura.Activate(sim)
 		},
 	})
 
@@ -360,10 +356,10 @@ func (hp *HunterPet) newFuriousHowl() *core.Spell {
 		},
 	})
 
-	hp.hunterOwner.AddMajorCooldown(core.MajorCooldown{
-		Spell: howlSpell,
-		Type:  core.CooldownTypeDPS,
-	})
+	// hp.hunterOwner.AddMajorCooldown(core.MajorCooldown{
+	// 	Spell: howlSpell,
+	// 	Type:  core.CooldownTypeDPS,
+	// })
 
 	return nil
 }
@@ -839,7 +835,7 @@ func (hp *HunterPet) newStampede() *core.Spell {
 		Type:    Stampede,
 		Cost:    0,
 		CD:      time.Second * 60,
-		SpellID: 57393,
+		SpellID: 57386,
 		School:  core.SpellSchoolPhysical,
 		MinDmg:  182,
 		MaxDmg:  264,

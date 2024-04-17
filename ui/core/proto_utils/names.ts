@@ -28,11 +28,8 @@ export const rangedWeaponTypeNames: Map<RangedWeaponType, string> = new Map([
 	[RangedWeaponType.RangedWeaponTypeBow, 'Bow'],
 	[RangedWeaponType.RangedWeaponTypeCrossbow, 'Crossbow'],
 	[RangedWeaponType.RangedWeaponTypeGun, 'Gun'],
-	[RangedWeaponType.RangedWeaponTypeIdol, 'Idol'],
-	[RangedWeaponType.RangedWeaponTypeLibram, 'Libram'],
-	[RangedWeaponType.RangedWeaponTypeSigil, 'Sigil'],
+	[RangedWeaponType.RangedWeaponTypeRelic, 'Relic'],
 	[RangedWeaponType.RangedWeaponTypeThrown, 'Thrown'],
-	[RangedWeaponType.RangedWeaponTypeTotem, 'Totem'],
 	[RangedWeaponType.RangedWeaponTypeWand, 'Wand'],
 ]);
 
@@ -42,6 +39,7 @@ export const raceNames: Map<Race, string> = new Map([
 	[Race.RaceDraenei, 'Draenei'],
 	[Race.RaceDwarf, 'Dwarf'],
 	[Race.RaceGnome, 'Gnome'],
+	[Race.RaceGoblin, 'Goblin'],
 	[Race.RaceHuman, 'Human'],
 	[Race.RaceNightElf, 'Night Elf'],
 	[Race.RaceOrc, 'Orc'],
@@ -49,7 +47,6 @@ export const raceNames: Map<Race, string> = new Map([
 	[Race.RaceTroll, 'Troll'],
 	[Race.RaceUndead, 'Undead'],
 	[Race.RaceWorgen, 'Worgen'],
-	[Race.RaceGoblin, 'Goblin'],
 ]);
 
 export function nameToRace(name: string): Race {

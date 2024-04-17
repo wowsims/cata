@@ -188,6 +188,9 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 }
 
 func (druid *Druid) Initialize() {
+	if druid.Spec == proto.Spec_SpecFeralDruid {
+		druid.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeLeather)
+	}
 	// druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
 	// if druid.Talents.PrimalPrecision > 0 {
@@ -211,21 +214,21 @@ func (druid *Druid) Initialize() {
 // }
 
 func (druid *Druid) RegisterFeralCatSpells() {
-// 	druid.registerBerserkCD()
+	// 	druid.registerBerserkCD()
 	druid.registerCatFormSpell()
-// 	druid.registerBearFormSpell()
-// 	druid.registerEnrageSpell()
-// 	druid.registerFerociousBiteSpell()
-// 	druid.registerMangleBearSpell()
-// 	druid.registerMangleCatSpell()
-// 	druid.registerMaulSpell()
-// 	druid.registerLacerateSpell()
-// 	druid.registerRakeSpell()
-// 	druid.registerRipSpell()
-// 	druid.registerSavageRoarSpell()
-// 	druid.registerShredSpell()
-// 	druid.registerSwipeBearSpell()
-// 	druid.registerSwipeCatSpell()
+	// 	druid.registerBearFormSpell()
+	// 	druid.registerEnrageSpell()
+	// 	druid.registerFerociousBiteSpell()
+	// 	druid.registerMangleBearSpell()
+	// 	druid.registerMangleCatSpell()
+	// 	druid.registerMaulSpell()
+	// 	druid.registerLacerateSpell()
+	// 	druid.registerRakeSpell()
+	// 	druid.registerRipSpell()
+	// 	druid.registerSavageRoarSpell()
+	// 	druid.registerShredSpell()
+	// 	druid.registerSwipeBearSpell()
+	// 	druid.registerSwipeCatSpell()
 	druid.registerTigersFurySpell()
 }
 
@@ -257,14 +260,14 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 
 func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
 	druid := &Druid{
-		Character: *char,
-		SelfBuffs: selfBuffs,
-		Talents:   &proto.DruidTalents{},
+		Character:    *char,
+		SelfBuffs:    selfBuffs,
+		Talents:      &proto.DruidTalents{},
 		StartingForm: form,
 		form:         form,
 	}
-	// 	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
-	// 	// druid.EnableManaBar()
+	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	druid.EnableManaBar()
 
 	druid.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
@@ -275,8 +278,8 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	// 	// // Druids get extra melee haste
 	// 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-	// 	// // Base dodge is unaffected by Diminishing Returns
-	// 	// druid.PseudoStats.BaseDodge += 0.056097
+	// Base dodge is unaffected by Diminishing Returns
+	druid.PseudoStats.BaseDodge += 0.056097 // TODO: Check if this is different in Cata
 
 	// 	// if druid.Talents.ForceOfNature {
 	// 	// 	druid.Treant1 = druid.NewTreant()
@@ -292,26 +295,26 @@ type DruidSpell struct {
 	FormMask DruidForm
 }
 
-// func (ds *DruidSpell) IsReady(sim *core.Simulation) bool {
-// 	if ds == nil {
-// 		return false
-// 	}
-// 	return ds.Spell.IsReady(sim)
-// }
+func (ds *DruidSpell) IsReady(sim *core.Simulation) bool {
+	if ds == nil {
+		return false
+	}
+	return ds.Spell.IsReady(sim)
+}
 
-// func (ds *DruidSpell) CanCast(sim *core.Simulation, target *core.Unit) bool {
-// 	if ds == nil {
-// 		return false
-// 	}
-// 	return ds.Spell.CanCast(sim, target)
-// }
+func (ds *DruidSpell) CanCast(sim *core.Simulation, target *core.Unit) bool {
+	if ds == nil {
+		return false
+	}
+	return ds.Spell.CanCast(sim, target)
+}
 
-// func (ds *DruidSpell) IsEqual(s *core.Spell) bool {
-// 	if ds == nil || s == nil {
-// 		return false
-// 	}
-// 	return ds.Spell == s
-// }
+func (ds *DruidSpell) IsEqual(s *core.Spell) bool {
+	if ds == nil || s == nil {
+		return false
+	}
+	return ds.Spell == s
+}
 
 // Agent is a generic way to access underlying druid on any of the agents (for example balance druid.)
 type DruidAgent interface {

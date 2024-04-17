@@ -12,7 +12,8 @@ import { ActionId } from '../proto_utils/action_id';
 import { Component } from './component.js';
 import { NumberPicker } from './number_picker';
 
-export type StatMods = { talents: Stats };
+export type StatMods = { base?:Stats, gear?:Stats, talents?: Stats, buffs?: Stats, consumes?: Stats, final?: Stats, stats?: Array<Stat> };
+export type StatWrites = { base:Stats, gear:Stats, talents: Stats, buffs: Stats, consumes: Stats, final: Stats, stats: Array<Stat> };
 
 export class CharacterStats extends Component {
 	readonly stats: Array<Stat>;
@@ -22,12 +23,14 @@ export class CharacterStats extends Component {
 
 	private readonly player: Player<any>;
 	private readonly modifyDisplayStats?: (player: Player<any>) => StatMods;
+	private readonly overwriteDisplayStats?: (player: Player<any>) => StatWrites;
 
-	constructor(parent: HTMLElement, player: Player<any>, stats: Array<Stat>, modifyDisplayStats?: (player: Player<any>) => StatMods) {
+	constructor(parent: HTMLElement, player: Player<any>, stats: Array<Stat>, modifyDisplayStats?: (player: Player<any>) => StatMods, overwriteDisplayStats?: (player: Player<any>) => StatWrites) {
 		super(parent, 'character-stats-root');
 		this.stats = statOrder.filter(stat => stats.includes(stat));
 		this.player = player;
 		this.modifyDisplayStats = modifyDisplayStats;
+		this.overwriteDisplayStats = overwriteDisplayStats;
 
 		const label = document.createElement('label');
 		label.classList.add('character-stats-label');
@@ -89,7 +92,6 @@ export class CharacterStats extends Component {
 		const statMods = this.modifyDisplayStats
 			? this.modifyDisplayStats(this.player)
 			: {
-					talents: new Stats(),
 			  };
 
 		const baseStats = Stats.fromProto(playerStats.baseStats);
@@ -100,13 +102,35 @@ export class CharacterStats extends Component {
 		const debuffStats = this.getDebuffStats();
 		const bonusStats = player.getBonusStats();
 
-		const baseDelta = baseStats;
-		const gearDelta = gearStats.subtract(baseStats).subtract(bonusStats);
-		const talentsDelta = talentsStats.subtract(gearStats).add(statMods.talents);
-		const buffsDelta = buffsStats.subtract(talentsStats);
-		const consumesDelta = consumesStats.subtract(buffsStats);
+		let baseDelta = baseStats.add(statMods.base || new Stats());
+		let gearDelta = gearStats.subtract(baseStats).subtract(bonusStats).add(statMods.gear || new Stats());
+		let talentsDelta = talentsStats.subtract(gearStats).add(statMods.talents || new Stats());
+		let buffsDelta = buffsStats.subtract(talentsStats).add(statMods.buffs || new Stats());
+		let consumesDelta = consumesStats.subtract(buffsStats).add(statMods.consumes || new Stats());
 
-		const finalStats = Stats.fromProto(playerStats.finalStats).add(statMods.talents).add(debuffStats);
+		let finalStats = Stats.fromProto(playerStats.finalStats)
+			.add(statMods.base || new Stats())
+			.add(statMods.gear || new Stats())
+			.add(statMods.talents || new Stats())
+			.add(statMods.buffs || new Stats())
+			.add(statMods.consumes || new Stats())
+			.add(statMods.final || new Stats())
+			.add(debuffStats);
+
+		if (this.overwriteDisplayStats) {
+			const statOverwrites = this.overwriteDisplayStats(this.player);
+			if (statOverwrites.stats) {
+				statOverwrites.stats.forEach((stat, _) => {
+					baseDelta = baseDelta.withStat(stat, statOverwrites.base.getStat(stat))
+					gearDelta = gearDelta.withStat(stat, statOverwrites.gear.getStat(stat))
+					talentsDelta = talentsDelta.withStat(stat, statOverwrites.talents.getStat(stat))
+					buffsDelta = buffsDelta.withStat(stat, statOverwrites.buffs.getStat(stat))
+					consumesDelta = consumesDelta.withStat(stat, statOverwrites.consumes.getStat(stat))
+					finalStats = finalStats.withStat(stat, statOverwrites.final.getStat(stat))
+				})
+			}
+		}
+
 		const masteryPoints =
 			this.player.getBaseMastery() + (playerStats.finalStats?.stats[Stat.StatMastery] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
 
@@ -229,10 +253,6 @@ export class CharacterStats extends Component {
 						<span>To Exp Cap:</span>
 						<span>{`${meleeCritCapInfo.remainingExpertiseCap.toFixed(2)}%`}</span>
 					</div>
-					<div className="character-stats-tooltip-row">
-						<span>Debuffs:</span>
-						<span>{`${meleeCritCapInfo.debuffCrit.toFixed(2)}%`}</span>
-					</div>
 					{meleeCritCapInfo.specSpecificOffset != 0 && (
 						<div className="character-stats-tooltip-row">
 							<span>Spec Offsets:</span>
@@ -313,14 +333,7 @@ export class CharacterStats extends Component {
 		let debuffStats = new Stats();
 
 		const debuffs = this.player.sim.raid.getDebuffs();
-		if (debuffs.misery || debuffs.faerieFire == TristateEffect.TristateEffectImproved) {
-			debuffStats = debuffStats.addStat(Stat.StatSpellHit, 3 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-		}
-		if (debuffs.totemOfWrath || debuffs.heartOfTheCrusader || debuffs.masterPoisoner) {
-			debuffStats = debuffStats.addStat(Stat.StatSpellCrit, 3 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
-			debuffStats = debuffStats.addStat(Stat.StatMeleeCrit, 3 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
-		}
-		if (debuffs.improvedScorch || debuffs.wintersChill || debuffs.shadowMastery) {
+		if (debuffs.criticalMass || debuffs.shadowAndFlame) {
 			debuffStats = debuffStats.addStat(Stat.StatSpellCrit, 5 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
 		}
 

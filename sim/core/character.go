@@ -407,25 +407,6 @@ func (character *Character) DefaultHealingCritMultiplier() float64 {
 func (character *Character) AddRaidBuffs(_ *proto.RaidBuffs) {
 }
 func (character *Character) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
-	if character.Race == proto.Race_RaceDraenei {
-		partyBuffs.HeroicPresence = true
-	}
-
-	switch character.MainHand().ID {
-	case ItemIDAtieshMage:
-		partyBuffs.AtieshMage += 1
-	case ItemIDAtieshWarlock:
-		partyBuffs.AtieshWarlock += 1
-	}
-
-	switch character.Neck().ID {
-	case ItemIDBraidedEterniumChain:
-		partyBuffs.BraidedEterniumChain = true
-	case ItemIDChainOfTheTwilightOwl:
-		partyBuffs.ChainOfTheTwilightOwl = true
-	case ItemIDEyeOfTheNight:
-		partyBuffs.EyeOfTheNight = true
-	}
 }
 
 func (character *Character) initialize(agent Agent) {
@@ -587,9 +568,7 @@ func (character *Character) HasOHWeapon() bool {
 func (character *Character) GetRangedWeapon() *Item {
 	weapon := character.Ranged()
 	if weapon.ID == 0 ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeIdol ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeLibram ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeTotem {
+		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeRelic {
 		return nil
 	} else {
 		return weapon
