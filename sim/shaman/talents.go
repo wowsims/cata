@@ -57,6 +57,12 @@ func (shaman *Shaman) ApplyTalents() {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  int64(SpellMaskFlameShock),
 			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.20 * float64(shaman.Talents.LavaFlows),
+		})
+		//TODO: Does this need applied to overload as well?
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask:  int64(SpellMaskLavaBurst),
+			Kind:       core.SpellMod_CritMultiplier_Pct,
 			FloatValue: 0.08 * float64(shaman.Talents.LavaFlows),
 		})
 	}
@@ -259,7 +265,7 @@ func (shaman *Shaman) applyFulmination() {
 		},
 
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.267,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			totalDamage := 350 * (float64(shaman.LightningShieldAura.GetStacks()) - 3)

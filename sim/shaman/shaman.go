@@ -243,16 +243,6 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerBloodlustCD()
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
 
-	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
-
-		masteryBonus := 1.2 + shaman.GetMasteryPoints()*0.025
-		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= masteryBonus
-		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= masteryBonus
-		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= masteryBonus
-
-	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
-	}
-
 	shaman.ApplyGlyphs()
 
 	if shaman.Spec == proto.Spec_SpecElementalShaman || shaman.Spec == proto.Spec_SpecRestorationShaman {
@@ -295,18 +285,6 @@ func (shaman *Shaman) Reset(sim *core.Simulation) {
 
 }
 
-func (shaman *Shaman) ElementalFuryCritMultiplier(secondary float64) float64 {
-	elementalBonus := 0.0
-
-	if shaman.Spec == proto.Spec_SpecElementalShaman {
-		elementalBonus = 1.0
-	}
-
-	elementalBonus += secondary
-
-	return shaman.SpellCritMultiplier(1, elementalBonus)
-}
-
 func (shaman *Shaman) GetOverloadChance() float64 {
 	overloadChance := 0.0
 
@@ -333,9 +311,12 @@ const (
 	SpellMaskFireElementalTotem int64 = 1 << iota
 	SpellMaskFlameShock
 	SpellMaskLavaBurst
+	SpellMaskLavaBurstOverload
 	SpellMaskLavaLash
 	SpellMaskLightningBolt
+	SpellMaskLightningBoltOverload
 	SpellMaskChainLightning
+	SpellMaskChainLightningOverload
 	SpellMaskEarthShock
 	SpellMaskLightningShield
 	SpellMaskThunderstorm

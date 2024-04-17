@@ -45,7 +45,7 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 			if result.Landed() {
 				return
 			}
-			searingFlames := shaman.SearingFlames.Dot(target)
+			searingFlames := enh.SearingFlames.Dot(target)
 			if searingFlames.GetStacks() > 0 {
 				numberSpread := 0
 				maxTargets := 4

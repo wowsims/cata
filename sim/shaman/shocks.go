@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 // Shared logic for all shocks.
@@ -32,7 +31,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 		},
 
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		BonusCoefficient: bonusCoefficient,
 	}
 }
@@ -54,12 +53,6 @@ func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
 func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 	config := shaman.newShockSpellConfig(8050, core.SpellSchoolFire, 0.17, shockTimer, 0.214)
 
-	flameShockBaseNumberOfTicks := int32(6)
-
-	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFlameShock) {
-		flameShockBaseNumberOfTicks += 3
-	}
-
 	config.ClassSpellMask = SpellMaskFlameShock
 
 	bonusPeriodicDamageMultiplier := 0 + 0.2*float64(shaman.Talents.LavaFlows)
@@ -76,7 +69,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 				shaman.LavaBurstOverload.BonusCritRating += 100 * core.CritRatingPerCritChance
 			},
 		},
-		NumberOfTicks:       flameShockBaseNumberOfTicks,
+		NumberOfTicks:       6,
 		TickLength:          time.Second * 3,
 		AffectedByCastSpeed: true,
 		BonusCoefficient:    0.1,
