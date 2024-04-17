@@ -162,22 +162,26 @@ func init() {
 			if !isMH {
 				weapon = character.GetOHWeapon()
 			}
-
 			if weapon == nil {
 				return nil
 			}
 
-			dmg := 0.5 * (weapon.WeaponDamageMin + weapon.WeaponDamageMax) * 0.02
-
 			return character.GetOrRegisterSpell(core.SpellConfig{
 				ActionID:    actionID.WithTag(core.TernaryInt32(isMH, 1, 2)),
 				SpellSchool: core.SpellSchoolFrost,
-				ProcMask:    core.ProcMaskSpellDamage,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagNoOnCastComplete,
 
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					dmg := 0.0
+					if isMH {
+						dmg = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.02
+					} else {
+						dmg = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * 0.02
+					}
 					spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeAlwaysHit)
 				},
 			})
@@ -218,6 +222,7 @@ func init() {
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
 			ProcMask: procMask,
+			ICD:      time.Millisecond * 8,
 
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				vulnAura := vulnAuras.Get(result.Target)
