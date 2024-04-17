@@ -4,20 +4,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLAction, APLListItem, APLRotation } from '../../core/proto/apl';
-import {
-	Cooldowns,
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	RotationType,
-	Spec,
-	Stat,
-	TristateEffect,
-} from '../../core/proto/common';
+import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, RotationType, Spec, Stat } from '../../core/proto/common';
 import { BeastMasteryHunter_Rotation, HunterStingType } from '../../core/proto/hunter';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats } from '../../core/proto_utils/stats';
@@ -63,7 +50,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.BM_P4_PRESET.gear,
+		gear: Presets.BM_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -139,7 +126,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_BM, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.BM_PRERAID_PRESET, Presets.BM_P1_PRESET, Presets.BM_P2_PRESET, Presets.BM_P3_PRESET, Presets.BM_P4_PRESET, Presets.BM_P5_PRESET],
+		gear: [Presets.BM_PRERAID_PRESET, Presets.BM_P1_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecBeastMasteryHunter>): APLRotation => {
@@ -225,15 +212,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.BM_P1_PRESET.gear,
-					2: Presets.BM_P2_PRESET.gear,
-					3: Presets.BM_P3_PRESET.gear,
-					4: Presets.BM_P4_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.BM_P1_PRESET.gear,
-					2: Presets.BM_P2_PRESET.gear,
-					3: Presets.BM_P3_PRESET.gear,
-					4: Presets.BM_P4_PRESET.gear,
 				},
 			},
 		},

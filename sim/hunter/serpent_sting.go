@@ -30,7 +30,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 		},
 		BonusCritRating: impSSCritChance + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSerpentSting), 6, 0)*core.CritRatingPerCritChance,
 
-		DamageMultiplier: 1 + 0.15*float64(hunter.Talents.ImprovedSerpentSting),
+		DamageMultiplierAdditive: 1,
 		// SS uses Spell Crit which is multiplied by toxicology
 		CritMultiplier:   hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology)*0.5),
 		ThreatMultiplier: 1,
@@ -49,16 +49,9 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			},
 			NumberOfTicks: 5,
 			TickLength:    time.Second * 3,
-
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 460 + 0.08*dot.Spell.RangedAttackPower(target)
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
-
-			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				baseDmg := 460 + 0.08*dot.Spell.RangedAttackPower(target)
+				dot.Spell.CalcAndDealPeriodicDamage(sim, target, baseDmg, dot.OutcomeTickPhysicalCrit)
 			},
 		},
 
@@ -67,14 +60,14 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 
 			if hunter.Talents.ImprovedSerpentSting != 0 {
 				baseDamage := (460 * 5) + 0.40*spell.RangedAttackPower(target)
-				result = spell.CalcDamage(sim, target, (0.15*float64(hunter.Talents.ImprovedSerpentSting))*baseDamage, spell.OutcomeRangedHitAndCrit)
+				result = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			} else {
 				result = spell.CalcOutcome(sim, target, spell.OutcomeRangedHitAndCrit)
 			}
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
-					spell.SpellMetrics[target.UnitIndex].Hits--
+					//spell.SpellMetrics[target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 
 					spell.DealOutcome(sim, result)

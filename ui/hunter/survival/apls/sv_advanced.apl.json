@@ -41,15 +41,23 @@
 							{ "dotIsActive": { "spellId": { "spellId": 53301 } } },
 							{
 								"cmp": {
-									"op": "OpLt",
+									"op": "OpGe",
 									"lhs": { "dotRemainingTime": { "spellId": { "spellId": 53301 } } },
 									"rhs": { "const": { "val": "1000ms" } }
+								}
+							},
+							{ "spellCanCast": { "spellId": { "spellId": 53301 } } },
+							{
+								"cmp": {
+									"op": "OpLe",
+									"lhs": { "dotRemainingTime": { "spellId": { "spellId": 53301 } } },
+									"rhs": { "const": { "val": "1050ms" } }
 								}
 							}
 						]
 					}
 				},
-				"castSpell": { "spellId": { "spellId": 53301 } }
+				"wait": { "duration": { "const": { "val": "51ms" } } }
 			}
 		},
 		{
@@ -73,7 +81,20 @@
 		},
 		{
 			"action": {
-				"condition": { "not": { "val": { "dotIsActive": { "spellId": { "spellId": 53301 } } } } },
+				"condition": {
+					"or": {
+						"vals": [
+							{ "not": { "val": { "dotIsActive": { "spellId": { "spellId": 53301 } } } } },
+							{
+								"cmp": {
+									"op": "OpLt",
+									"lhs": { "dotRemainingTime": { "spellId": { "spellId": 53301 } } },
+									"rhs": { "const": { "val": "1000ms" } }
+								}
+							}
+						]
+					}
+				},
 				"castSpell": { "spellId": { "spellId": 53301 } }
 			}
 		},

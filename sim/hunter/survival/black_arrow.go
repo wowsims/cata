@@ -4,21 +4,22 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/hunter"
 )
 
-func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
-	if !hunter.Talents.BlackArrow {
+func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
+	if !svHunter.Talents.BlackArrow {
 		return
 	}
 
 	actionID := core.ActionID{SpellID: 3674}
 
-	hunter.Hunter.BlackArrow = hunter.Hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskRangedSpecial,
-
-		Flags: core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+	svHunter.Hunter.BlackArrow = svHunter.Hunter.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		ClassSpellMask: hunter.HunterSpellBlackArrow,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
 			Cost: 35,
 		},
@@ -30,13 +31,13 @@ func (hunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second*30 - time.Second*2*time.Duration(hunter.Talents.Resourcefulness),
+				Duration: time.Second*30 - time.Second*2*time.Duration(svHunter.Talents.Resourcefulness),
 			},
 		},
 
-		DamageMultiplier: 1 + .10*float64(hunter.Talents.TrapMastery),
+		DamageMultiplier: 1 + .10*float64(svHunter.Talents.TrapMastery),
 		ThreatMultiplier: 1,
-		CritMultiplier:   hunter.SpellCritMultiplier(1, float64(hunter.Talents.Toxicology)*0.5),
+		CritMultiplier:   svHunter.SpellCritMultiplier(1, float64(svHunter.Talents.Toxicology)*0.5),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

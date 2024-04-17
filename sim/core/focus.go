@@ -11,7 +11,7 @@ import (
 )
 
 // Time between focus ticks.
-const FocusTickDuration = time.Millisecond * 200
+const FocusTickDuration = time.Millisecond * 100
 
 type focusBar struct {
 	unit *Unit

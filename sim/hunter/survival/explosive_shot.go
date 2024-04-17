@@ -4,21 +4,22 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/hunter"
 )
 
-func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
+func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 	actionID := core.ActionID{SpellID: 53301}
 	minFlatDamage := 410.708 - (76.8024 / 2)
 	maxFlatDamage := 410.708 + (76.8024 / 2)
-	hunter.Hunter.ExplosiveShot = hunter.Hunter.RegisterSpell(core.SpellConfig{
-		ActionID:     actionID,
-		SpellSchool:  core.SpellSchoolFire,
-		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		MissileSpeed: 40,
+	svHunter.Hunter.ExplosiveShot = svHunter.Hunter.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolFire,
+		ClassSpellMask: hunter.HunterSpellExplosiveShot,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		MissileSpeed:   40,
 		FocusCost: core.FocusCostOptions{
-			Cost: 50 - (float64(hunter.Talents.Efficiency) * 2),
+			Cost: 50,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -26,15 +27,12 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    hunter.NewTimer(),
+				Timer:    svHunter.NewTimer(),
 				Duration: time.Second * 6,
 			},
 		},
-
-		BonusCritRating: 0 +
-			core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfExplosiveShot), 6*core.CritRatingPerCritChance, 0),
 		DamageMultiplier: 1,
-		CritMultiplier:   hunter.CritMultiplier(true, false, false),
+		CritMultiplier:   svHunter.CritMultiplier(true, false, false),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -56,7 +54,7 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHitAndCrit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) { // Is this the right way of doing this?
 				if result.Landed() {
@@ -64,7 +62,6 @@ func (hunter *SurvivalHunter) registerExplosiveShotSpell() {
 					dot := spell.Dot(target)
 					dot.Apply(sim)
 					dot.TickOnce(sim)
-
 					spell.DealOutcome(sim, result)
 				}
 			})

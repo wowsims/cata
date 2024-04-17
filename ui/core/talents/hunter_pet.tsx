@@ -115,78 +115,71 @@ export function getPetTalentsConfig(petType: PetType): TalentsConfig<HunterPetTa
 export const cunningDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
 	dive: true,
-	boarsSpeed: true,
-	mobility: 2,
+	owlsFocus: 2,
 	spikedCollar: 3,
-	cornered: 2,
+	cullingTheHerd: 3,
 	feedingFrenzy: 2,
+	roarOfRecovery: true,
 	wolverineBite: true,
-	bullheaded: true,
-	wildHunt: 1,
+	wildHunt: 2,
 });
 export const ferocityDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
 	dive: true,
 	spikedCollar: 3,
-	boarsSpeed: true,
+	bloodthirsty: 1,
 	cullingTheHerd: 3,
 	spidersBite: 3,
 	rabid: true,
 	callOfTheWild: true,
-	wildHunt: 1,
+	sharkAttack: 2,
 });
 export const tenacityDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
 	charge: true,
-	greatStamina: 3,
-	bloodOfTheRhino: 2,
-	guardDog: 2,
+	spikedCollar: 3,
+	boarsSpeed: true,
+	cullingTheHerd: 3,
 	thunderstomp: true,
 	graceOfTheMantis: 2,
-	taunt: true,
 	roarOfSacrifice: true,
-	wildHunt: 1,
+	intervene: true,
+	wildHunt: 2,
 });
 const defaultTalents = [cunningDefault, ferocityDefault, tenacityDefault];
 
 export const cunningBMDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
 	dive: true,
-	boarsSpeed: true,
-	mobility: 2,
+	owlsFocus: 2,
 	spikedCollar: 3,
-	cornered: 2,
+	cullingTheHerd: 3,
 	feedingFrenzy: 2,
+	roarOfRecovery: true,
 	wolverineBite: true,
-	bullheaded: true,
-	graceOfTheMantis: 2,
 	wildHunt: 2,
-	roarOfSacrifice: true,
 });
 export const ferocityBMDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
 	dive: true,
-	bloodthirsty: 1,
 	spikedCollar: 3,
-	boarsSpeed: true,
+	bloodthirsty: 1,
 	cullingTheHerd: 3,
 	spidersBite: 3,
 	rabid: true,
 	callOfTheWild: true,
 	sharkAttack: 2,
-	wildHunt: 2,
 });
 export const tenacityBMDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
 	charge: true,
-	greatStamina: 3,
 	spikedCollar: 3,
-	bloodOfTheRhino: 2,
-	guardDog: 2,
+	boarsSpeed: true,
+	cullingTheHerd: 3,
 	thunderstomp: true,
 	graceOfTheMantis: 2,
-	taunt: true,
 	roarOfSacrifice: true,
+	intervene: true,
 	wildHunt: 2,
 });
 const defaultBMTalents = [cunningBMDefault, ferocityBMDefault, tenacityBMDefault];
@@ -296,6 +289,7 @@ export class HunterPetTalentsPicker<SpecType extends HunterSpecs> extends Compon
 		player.specOptionsChangeEmitter.on(() => {
 			const petCategory = this.getCategoryFromPlayer();
 			const categoryIdx = categoryOrder.indexOf(petCategory);
+			console.log('should change pet talents', petCategory);
 
 			if (petCategory != this.curCategory) {
 				this.curCategory = petCategory;
@@ -303,6 +297,7 @@ export class HunterPetTalentsPicker<SpecType extends HunterSpecs> extends Compon
 				this.rootElem.classList.add(categoryClasses[categoryIdx]);
 
 				const curTalents = this.getPetTalentsFromPlayer();
+				console.log(curTalents);
 				if (!HunterPetTalents.equals(curTalents, this.curTalents)) {
 					// If the current talents have also changed, this was probably a load so we shouldn't switch sets.
 					this.curTalents = curTalents;
