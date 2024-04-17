@@ -12,6 +12,7 @@ func (druid *Druid) registerEnrageSpell() {
 	rageMetrics := druid.NewRageMetrics(actionID)
 
 	instantRage := 20.0
+	primalMadnessRage := 6.0 * float64(druid.Talents.PrimalMadness)
 
 	dmgBonus := 0.05 * float64(druid.Talents.KingOfTheJungle)
 
@@ -53,6 +54,10 @@ func (druid *Druid) registerEnrageSpell() {
 			})
 
 			druid.EnrageAura.Activate(sim)
+
+			if primalMadnessRage > 0 {
+				druid.AddRage(sim, primalMadnessRage, druid.PrimalMadnessRageMetrics)
+			}
 		},
 	})
 

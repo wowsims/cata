@@ -79,6 +79,7 @@ type Druid struct {
 	MoonkinT84PCAura         *core.Aura
 	NaturesGraceProcAura     *core.Aura
 	PredatoryInstinctsAura   *core.Aura
+	PrimalMadnessAura        *core.Aura
 	SavageDefenseAura        *core.Aura
 	SurvivalInstinctsAura    *core.Aura
 	TigersFuryAura           *core.Aura
@@ -89,6 +90,7 @@ type Druid struct {
 
 	BleedCategories core.ExclusiveCategoryArray
 
+	PrimalMadnessRageMetrics       *core.ResourceMetrics
 	PrimalPrecisionRecoveryMetrics *core.ResourceMetrics
 	SavageRoarDurationTable        [6]time.Duration
 

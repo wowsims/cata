@@ -94,6 +94,7 @@ func (druid *Druid) ApplyTalents() {
 	// druid.applyOwlkinFrenzy()
 	// druid.applyInfectedWounds()
 	druid.applyFurySwipes()
+	druid.applyPrimalMadness()
 }
 
 // func (druid *Druid) setupNaturesGrace() {
@@ -303,6 +304,34 @@ func (druid *Druid) applyPrimalFury() {
 					}
 				}
 			}
+		},
+	})
+}
+
+func (druid *Druid) applyPrimalMadness() {
+	if (druid.Talents.PrimalMadness == 0) || !druid.InForm(Cat | Bear) {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 80315 + druid.Talents.PrimalMadness}
+	druid.PrimalMadnessRageMetrics = druid.NewRageMetrics(actionID)
+
+	if !druid.InForm(Cat) {
+		return
+	}
+
+	energyMetrics := druid.NewEnergyMetrics(actionID)
+	energyGain := 10.0 * float64(druid.Talents.PrimalMadness)
+
+	druid.PrimalMadnessAura = druid.RegisterAura(core.Aura{
+		Label:    "Primal Madness",
+		ActionID: actionID,
+		Duration: core.NeverExpires, // duration is tied to Tiger's Fury / Berserk durations
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.UpdateMaxEnergy(sim, 100.0 + energyGain, energyMetrics)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.UpdateMaxEnergy(sim, 100.0, energyMetrics)
 		},
 	})
 }

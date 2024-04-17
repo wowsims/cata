@@ -194,6 +194,19 @@ func (eb *energyBar) ResetEnergyTick(sim *Simulation) {
 	sim.RescheduleTask(eb.nextEnergyTick)
 }
 
+// Used for dynamic updates to maximum Energy, such as from the Druid Primal Madness talent
+func (eb *energyBar) UpdateMaxEnergy(sim *Simulation, newMaxEnergy float64, metrics *ResourceMetrics) {
+	oldMaxEnergy := eb.maxEnergy
+	eb.maxEnergy = newMaxEnergy
+	energyDelta := newMaxEnergy - oldMaxEnergy
+
+	if energyDelta >= 0 {
+		eb.AddEnergy(sim, energyDelta, metrics)
+	} else {
+		eb.SpendEnergy(sim, min(-energyDelta, eb.currentEnergy), metrics)
+	}
+}
+
 func (eb *energyBar) AddComboPoints(sim *Simulation, pointsToAdd int32, metrics *ResourceMetrics) {
 	newComboPoints := min(eb.comboPoints+pointsToAdd, 5)
 	metrics.AddEvent(float64(pointsToAdd), float64(newComboPoints-eb.comboPoints))
