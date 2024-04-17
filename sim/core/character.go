@@ -252,8 +252,12 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 			PseudoStats: character.GetPseudoStatsProto(),
 		}
 
-		base.Stats[stats.MeleeHaste] += (character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
-		base.Stats[stats.SpellHaste] += (character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+		meleeMulti := 1 + (base.Stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100))
+		spellMulti := 1 + (base.Stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))
+
+		// TODO: Hunter would like to use RangedSpeedMultiplier
+		base.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+		base.Stats[stats.SpellHaste] = (spellMulti*character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
 		return base
 	}
 
@@ -481,8 +485,13 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 		Stats:       character.GetStats().ToFloatArray(),
 		PseudoStats: character.GetPseudoStatsProto(),
 	}
-	playerStats.FinalStats.Stats[stats.MeleeHaste] += (character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
-	playerStats.FinalStats.Stats[stats.SpellHaste] += (character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+
+	meleeMulti := 1 + (playerStats.FinalStats.Stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100))
+	spellMulti := 1 + (playerStats.FinalStats.Stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))
+
+	playerStats.FinalStats.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+	playerStats.FinalStats.Stats[stats.SpellHaste] = (spellMulti*character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
 	playerStats.Sets = character.GetActiveSetBonusNames()
 
