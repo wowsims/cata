@@ -11,7 +11,7 @@ import (
 func (enh *EnhancementShaman) registerLavaLashSpell() {
 	damageMultiplier := 2.6
 	if enh.SelfBuffs.ImbueOH == proto.ShamanImbue_FlametongueWeapon {
-		damageMultiplier += 0.4
+		damageMultiplier *= 1.4
 	}
 
 	enh.LavaLash = enh.RegisterSpell(core.SpellConfig{
@@ -33,19 +33,19 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 				Duration: time.Second * 6,
 			},
 		},
-
 		DamageMultiplier: damageMultiplier,
 		CritMultiplier:   enh.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
+			searingFlames := enh.SearingFlames.Dot(target)
+			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage *= 1 + 0.1*float64(enh.Talents.ImprovedLavaLash)*float64(searingFlames.GetStacks())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			if result.Landed() {
+			if !result.Landed() {
 				return
 			}
-			searingFlames := enh.SearingFlames.Dot(target)
+
 			if searingFlames.GetStacks() > 0 {
 				numberSpread := 0
 				maxTargets := 4

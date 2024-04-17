@@ -75,7 +75,7 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 		},
 
 		ThreatMultiplier: 1,
-		DamageMultiplier: 1,
+		DamageMultiplier: 2.25,
 		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
 		BonusCoefficient: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

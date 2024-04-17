@@ -563,8 +563,6 @@ func (shaman *Shaman) applySearingFlames() {
 		return
 	}
 
-	improvedLavaLashDamageBonus := 0.1 * float64(shaman.Talents.ImprovedLavaLash)
-
 	shaman.SearingFlames = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 77657},
 		SpellSchool: core.SpellSchoolFire,
@@ -579,13 +577,6 @@ func (shaman *Shaman) applySearingFlames() {
 			Aura: core.Aura{
 				Label:     "Searing Flames",
 				MaxStacks: 5,
-				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-					if oldStacks > newStacks {
-						shaman.LavaLash.DamageMultiplier -= improvedLavaLashDamageBonus * float64(oldStacks-newStacks)
-					} else {
-						shaman.LavaLash.DamageMultiplier += improvedLavaLashDamageBonus * float64(newStacks-oldStacks)
-					}
-				},
 			},
 			TickLength:    time.Second * 3,
 			NumberOfTicks: 5,
