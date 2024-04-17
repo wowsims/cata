@@ -50,34 +50,23 @@ func (mage *Mage) registerCombustionSpell() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				combustionDotDamage = 0.0
-				// Dots to snapshot onto combustion
-				/* 				var dotsToDuplicate []*core.Dot
-				   				if mage.LivingBomb.Dot(target).IsActive() {
-				   					dotsToDuplicate = append(dotsToDuplicate, mage.LivingBomb.CurDot())
-				   				}
-				   				if mage.Pyroblast.Dot(target).IsActive() {
-				   					dotsToDuplicate = append(dotsToDuplicate, mage.Pyroblast.Dot(target))
-				   				}
-				   				if mage.Ignite.Dot(target).IsActive() {
-				   					dotsToDuplicate = append(dotsToDuplicate, mage.Ignite.Dot(target))
-				   				}
-				   				for _, Dot := range dotsToDuplicate {
-				   					combustionDotDamage += Dot.SnapshotBaseDamage
-				   				}
-				   				dot.SnapshotBaseDamage = combustionDotDamage
-				*/
-				var dotSpells []*core.Spell
-				dotSpells = append(dotSpells, mage.LivingBomb, mage.Ignite) //, mage.PyroblastDot)
+
+				dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite}
+				fmt.Println("Calc Time: ", sim.CurrentTime)
 				for _, spell := range dotSpells {
 					dots := spell.Dot(mage.CurrentTarget)
 					if dots != nil && dots.IsActive() {
-						fmt.Println("Snapshot: ", spell.Dot(mage.CurrentTarget).SnapshotBaseDamage)
-						combustionDotDamage += spell.Dot(mage.CurrentTarget).SnapshotBaseDamage
+						normalizedDPS := 1000000000 * spell.Dot(mage.CurrentTarget).SnapshotBaseDamage / float64(spell.Dot(mage.CurrentTarget).TickPeriod())
+						fmt.Println("Snapshot Spell:     ", spell.ActionID)
+						fmt.Println("Snapshot Amt:       ", spell.Dot(mage.CurrentTarget).SnapshotBaseDamage)
+						fmt.Println("Tick Period(s):     ", (spell.Dot(mage.CurrentTarget).TickPeriod()))
+						fmt.Println("Tick Period(float): ", float64(spell.Dot(mage.CurrentTarget).TickPeriod()))
+						fmt.Println("Normalized DPS:     ", normalizedDPS)
+						combustionDotDamage += normalizedDPS
 					}
 				}
 				dot.Snapshot(mage.CurrentTarget, combustionDotDamage)
-				fmt.Println("Timer: ", sim.CurrentTime)
-				fmt.Println("Combustion snapshot: ", combustionDotDamage)
+				fmt.Println("Combustion base snapshot: ", dot.SnapshotBaseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
