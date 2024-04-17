@@ -23,18 +23,39 @@ func (warrior *Warrior) ApplyCommonTalents(
 }
 
 func (warrior *Warrior) applyArmsCommonTalents(warMachineSpellMask int64) {
+	warrior.applyWarMachine(warMachineSpellMask)
+	warrior.RegisterDeepWounds()
+}
+
+func (warrior *Warrior) applyFuryCommonTalents(battleTranceTriggerSpellMask int64, battleTranceEffectSpellMask int64, crueltySpellMask int64) {
+	warrior.applyBattleTrance(battleTranceTriggerSpellMask, battleTranceEffectSpellMask)
+	warrior.applyCruelty(crueltySpellMask)
+	warrior.applyExecutioner()
+}
+
+func (warrior *Warrior) applyProtectionCommonTalents() {
+	warrior.applyIncite()
+	warrior.applyToughness()
+	warrior.applyBloodAndThunder()
+	warrior.applyShieldSpecialization()
+	warrior.applyShieldMastery()
+	warrior.applyHoldTheLine()
+	warrior.applyGagOrder()
+}
+
+func (warrior *Warrior) applyWarMachine(spellMask int64) {
 	if warrior.Talents.WarAcademy > 0 {
 		warrior.AddStaticMod(core.SpellModConfig{
-			ClassMask:  warMachineSpellMask | SpellMaskSlam, // This technically also includes Victory Rush but we don't model it
+			ClassMask:  spellMask | SpellMaskSlam, // This technically also includes Victory Rush but we don't model it
 			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 1.0 + (0.5 * float64(warrior.Talents.WarAcademy)),
+			FloatValue: 1.0 + (0.05 * float64(warrior.Talents.WarAcademy)),
 		})
 	}
 }
 
-func (warrior *Warrior) applyFuryCommonTalents(battleTranceTriggerSpellMask int64, battleTranceEffectSpellMask int64, crueltySpellMask int64) {
+func (warrior *Warrior) applyBattleTrance(triggerSpellMask int64, effectSpellMask int64) {
 	if warrior.Talents.BattleTrance > 0 {
-		var affectedSpellMask int64 = battleTranceEffectSpellMask
+		var affectedSpellMask int64 = effectSpellMask
 		for _, spell := range warrior.Spellbook {
 			if spell.DefaultCast.Cost > 5 {
 				affectedSpellMask |= spell.ClassSpellMask
@@ -69,14 +90,13 @@ func (warrior *Warrior) applyFuryCommonTalents(battleTranceTriggerSpellMask int6
 
 		procChance := 0.05 * float64(warrior.Talents.BattleTrance)
 		core.MakePermanent(warrior.RegisterAura(core.Aura{
-			Label:    "Battle Trance Trigger",
-			ActionID: core.ActionID{SpellID: 85742},
+			Label: "Battle Trance Trigger",
 			Icd: &core.Cooldown{
 				Timer:    warrior.NewTimer(),
 				Duration: time.Second * 5,
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if (spell.ClassSpellMask & battleTranceTriggerSpellMask) == 0 {
+				if (spell.ClassSpellMask & triggerSpellMask) == 0 {
 					return
 				}
 
@@ -91,15 +111,19 @@ func (warrior *Warrior) applyFuryCommonTalents(battleTranceTriggerSpellMask int6
 			},
 		}))
 	}
+}
 
+func (warrior *Warrior) applyCruelty(spellMask int64) {
 	if warrior.Talents.Cruelty > 0 {
 		warrior.AddStaticMod(core.SpellModConfig{
-			ClassMask:  crueltySpellMask,
+			ClassMask:  spellMask,
 			Kind:       core.SpellMod_BonusCrit_Rating,
 			FloatValue: 5 * float64(warrior.Talents.Cruelty) * core.CritRatingPerCritChance,
 		})
 	}
+}
 
+func (warrior *Warrior) applyExecutioner() {
 	if warrior.Talents.Executioner > 0 {
 		executionerBuff := warrior.RegisterAura(core.Aura{
 			Label:     "Executioner",
@@ -115,8 +139,7 @@ func (warrior *Warrior) applyFuryCommonTalents(battleTranceTriggerSpellMask int6
 
 		procChance := 0.5 * float64(warrior.Talents.Executioner)
 		core.MakePermanent(warrior.RegisterAura(core.Aura{
-			Label:    "Executioner Trigger",
-			ActionID: core.ActionID{SpellID: 20503},
+			Label: "Executioner Trigger",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() {
 					return
@@ -135,7 +158,7 @@ func (warrior *Warrior) applyFuryCommonTalents(battleTranceTriggerSpellMask int6
 	}
 }
 
-func (warrior *Warrior) applyProtectionCommonTalents() {
+func (warrior *Warrior) applyIncite() {
 	if warrior.Talents.Incite > 0 {
 		warrior.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskHeroicStrike,
@@ -152,6 +175,7 @@ func (warrior *Warrior) applyProtectionCommonTalents() {
 		inciteAura := warrior.RegisterAura(core.Aura{
 			Label:    "Incite",
 			ActionID: core.ActionID{SpellID: 86627},
+			Duration: 10 * time.Second,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				inciteMod.Activate()
 			},
@@ -162,8 +186,7 @@ func (warrior *Warrior) applyProtectionCommonTalents() {
 
 		procChance := []float64{0.0, 0.33, 0.66, 1.0}[warrior.Talents.Incite]
 		core.MakePermanent(warrior.RegisterAura(core.Aura{
-			Label:    "Incite Trigger",
-			ActionID: core.ActionID{SpellID: 50687},
+			Label: "Incite Trigger",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if (spell.ClassSpellMask & SpellMaskHeroicStrike) != 0 {
 					if result.DidCrit() {
@@ -179,10 +202,15 @@ func (warrior *Warrior) applyProtectionCommonTalents() {
 			},
 		}))
 	}
+}
 
+func (warrior *Warrior) applyToughness() {
 	if warrior.Talents.Toughness > 0 {
 		warrior.PseudoStats.ArmorMultiplier *= 1.0 + []float64{0.0, 0.03, 0.06, 0.1}[warrior.Talents.Toughness]
 	}
+}
+
+func (warrior *Warrior) applyBloodAndThunder() {
 
 	// TODO: check
 	// - does this refresh rend on the primary target
@@ -215,7 +243,9 @@ func (warrior *Warrior) applyProtectionCommonTalents() {
 			},
 		}))
 	}
+}
 
+func (warrior *Warrior) applyShieldSpecialization() {
 	if warrior.Talents.ShieldSpecialization > 0 {
 		extraBlockRage := 5 * float64(warrior.Talents.ShieldSpecialization)
 
@@ -242,7 +272,9 @@ func (warrior *Warrior) applyProtectionCommonTalents() {
 			},
 		}))
 	}
+}
 
+func (warrior *Warrior) applyShieldMastery() {
 	if warrior.Talents.ShieldMastery > 0 {
 		warrior.AddStaticMod(core.SpellModConfig{
 			ClassMask: SpellMaskShieldBlock,
@@ -289,7 +321,9 @@ func (warrior *Warrior) applyProtectionCommonTalents() {
 			},
 		}))
 	}
+}
 
+func (warrior *Warrior) applyHoldTheLine() {
 	if warrior.Talents.HoldTheLine > 0 {
 		buff := warrior.RegisterAura(core.Aura{
 			Label:    "Hold the Line",
@@ -315,7 +349,9 @@ func (warrior *Warrior) applyProtectionCommonTalents() {
 			},
 		}))
 	}
+}
 
+func (warrior *Warrior) applyGagOrder() {
 	if warrior.Talents.GagOrder > 0 {
 		warrior.AddStaticMod(core.SpellModConfig{
 			ClassMask: SpellMaskHeroicThrow,
