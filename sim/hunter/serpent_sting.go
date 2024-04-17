@@ -67,7 +67,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
-					spell.SpellMetrics[target.UnitIndex].Hits--
+					//spell.SpellMetrics[target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
 
 					spell.DealOutcome(sim, result)
