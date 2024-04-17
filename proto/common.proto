@@ -288,6 +288,15 @@ enum Explosive {
 	ExplosiveCobaltFragBomb = 2;
 }
 
+enum TinkerHands {
+	TinkerHandsNone = 0;
+	TinkerHandsSynapseSprings = 1;
+	TinkerHandsTazikShocker = 2;
+	TinkerHandsQuickflipDeflectionPlates = 3;
+	TinkerHandsSpinalHealingInjector = 4;
+	TinkerHandsZ50ManaGulper = 8;
+}
+
 enum Potions {
 	UnknownPotion = 0;
 	GolembloodPotion = 1; //58146
@@ -598,6 +607,8 @@ message Consumes {
 	bool thermal_sapper = 15;
 	bool explosive_decoy = 16;
 	Explosive filler_explosive = 17;
+
+	TinkerHands tinker_hands = 18;
 }
 
 enum MobType {

@@ -622,7 +622,7 @@ func TrueShotAura(unit *Unit) *Aura {
 func AbominationsMightAura(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
 		"Abominations Might",
-		ActionID{SpellID: 53183},
+		ActionID{SpellID: 53138},
 		[]StatConfig{
 			{stats.AttackPower, 1.2, true},
 			{stats.RangedAttackPower, 1.1, true},
@@ -916,9 +916,11 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	partyBuffs = googleProto.Clone(partyBuffs).(*proto.PartyBuffs)
 	individualBuffs = googleProto.Clone(individualBuffs).(*proto.IndividualBuffs)
 
-	// We need to modify the buffs a bit because some things are applied to pets by
-	// the owner during combat (Bloodlust) or don't make sense for a pet.
+	// Remove buffs that do not apply to pets
+	// Or those that will be applied from the player (BL)
 	raidBuffs.Bloodlust = false
+	raidBuffs.Heroism = false
+	raidBuffs.TimeWarp = false
 	// Str/Agi
 	raidBuffs.StrengthOfEarthTotem = false
 	raidBuffs.HornOfWinter = false
@@ -934,9 +936,26 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	raidBuffs.UnleashedRage = false
 	raidBuffs.AbominationsMight = false
 	raidBuffs.BlessingOfMight = false
+	// +5% Spell haste
+	raidBuffs.MoonkinForm = false
+	raidBuffs.ShadowForm = false
+	raidBuffs.WrathOfAirTotem = false
 	// +Armor
 	raidBuffs.DevotionAura = false
 	raidBuffs.StoneskinTotem = false
+	// +3% All Damage
+	//raidBuffs.ArcaneTactics = false
+	//raidBuffs.FerociousInspiration = false
+	//raidBuffs.Communion = false
+	// +Spell Resistances
+	raidBuffs.ElementalResistanceTotem = false
+	raidBuffs.ResistanceAura = false
+	raidBuffs.ShadowProtection = false
+	raidBuffs.AspectOfTheWild = false
+	// +5% Base Stats and Spell Resistances
+	raidBuffs.MarkOfTheWild = false
+	raidBuffs.BlessingOfKings = false
+	raidBuffs.DrumsOfTheBurningWild = false
 
 	individualBuffs.HymnOfHopeCount = 0
 	individualBuffs.InnervateCount = 0
@@ -1656,10 +1675,11 @@ func registerManaTideTotemCD(agent Agent, numManaTideTotems int32) {
 	var mttAura *Aura
 
 	character := agent.GetCharacter()
+	mttAura = ManaTideTotemAura(character, -1)
+
 	character.Env.RegisterPostFinalizeEffect(func() {
 		// Use first MTT at 60s, or halfway through the fight, whichever comes first.
 		initialDelay = min(character.Env.BaseDuration/2, time.Second*60)
-		mttAura = ManaTideTotemAura(character, -1)
 	})
 
 	registerExternalConsecutiveCDApproximation(

@@ -1,5 +1,5 @@
 import { Player } from '../../player';
-import { BattleElixir, Class, Conjured, Consumes, Explosive, Flask, Food, GuardianElixir, PetFood, Potions, Spec, Stat } from '../../proto/common';
+import { BattleElixir, Class, Conjured, Consumes, Explosive, Flask, Food, GuardianElixir, PetFood, Potions, Profession, Spec, Stat, TinkerHands } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import { EventID, TypedEvent } from '../../typed_event';
 import { IconEnumValueConfig } from '../icon_enum_picker';
@@ -45,7 +45,7 @@ function makeConsumeInputFactory<T extends number, SpecType extends Spec>(
 			),
 			equals: (a: T, b: T) => a == b,
 			zeroValue: 0 as T,
-			changedEvent: (player: Player<any>) => TypedEvent.onAny([player.consumesChangeEmitter, player.gearChangeEmitter]),
+			changedEvent: (player: Player<any>) => TypedEvent.onAny([player.consumesChangeEmitter, player.gearChangeEmitter, player.professionChangeEmitter]),
 			showWhen: (player: Player<any>) => !args.showWhen || args.showWhen(player),
 			getValue: (player: Player<any>) => player.getConsumes()[args.consumesFieldName] as T,
 			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
@@ -118,15 +118,56 @@ export const EXPLOSIVES_CONFIG = [
 
 export const makeExplosivesInput = makeConsumeInputFactory({
 	consumesFieldName: 'fillerExplosive',
+	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
 
 export const ThermalSapper = makeBooleanConsumeInput({
 	actionId: ActionId.fromItemId(42641),
 	fieldName: 'thermalSapper',
+	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
 export const ExplosiveDecoy = makeBooleanConsumeInput({
 	actionId: ActionId.fromItemId(40536),
 	fieldName: 'explosiveDecoy',
+	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
+});
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Tinkers
+///////////////////////////////////////////////////////////////////////////
+
+export const TinkerHandsSynapseSprings = {
+	actionId: ActionId.fromSpellId(82174),
+	value: TinkerHands.TinkerHandsSynapseSprings,
+};
+export const TinkerHandsQuickflipDeflectionPlates = {
+	actionId: ActionId.fromSpellId(82176),
+	value: TinkerHands.TinkerHandsQuickflipDeflectionPlates,
+};
+export const TinkerHandsTazikShocker = {
+	actionId: ActionId.fromSpellId(82179),
+	value: TinkerHands.TinkerHandsTazikShocker,
+};
+export const TinkerHandsSpinalHealingInjector = {
+	actionId: ActionId.fromSpellId(82184),
+	value: TinkerHands.TinkerHandsSpinalHealingInjector,
+};
+export const TinkerHandsZ50ManaGulper = {
+	actionId: ActionId.fromSpellId(82186),
+	value: TinkerHands.TinkerHandsZ50ManaGulper,
+};
+
+export const TINKERS_HANDS_CONFIG = [
+	{ config: TinkerHandsSynapseSprings, stats: [] },
+	{ config: TinkerHandsQuickflipDeflectionPlates, stats: [] },
+	{ config: TinkerHandsTazikShocker, stats: [] },
+	{ config: TinkerHandsSpinalHealingInjector, stats: [] },
+	{ config: TinkerHandsZ50ManaGulper, stats: [] },
+] as ConsumableStatOption<TinkerHands>[];
+
+export const makeTinkerHandsInput = makeConsumeInputFactory({
+	consumesFieldName: 'tinkerHands',
+	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
 
 ///////////////////////////////////////////////////////////////////////////
