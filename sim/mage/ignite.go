@@ -12,6 +12,7 @@ const IgniteTicks = 2
 
 func (mage *Mage) applyIgnite() {
 
+	// Ignite proc listener
 	mage.RegisterAura(core.Aura{
 		Label:    "Ignite Talent",
 		Duration: core.NeverExpires,
@@ -36,13 +37,14 @@ func (mage *Mage) applyIgnite() {
 		},
 	})
 
+	// The ignite dot
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 413843},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskProc,
 		Flags:       SpellFlagMage | core.SpellFlagIgnoreModifiers,
 
-		DamageMultiplier: mage.GetFireMasteryBonusMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -65,15 +67,17 @@ func (mage *Mage) applyIgnite() {
 
 func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 
-	// Ignite's per-level gain is not exactly linear
-	var igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
+	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
 
 	dot := mage.Ignite.Dot(result.Target)
 
 	newDamage := result.Damage * igniteDamageMultiplier
+
+	// if ignite was still active, we store up the remaining damage to be added to the next application
 	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
 	dot.SnapshotAttackerMultiplier = 1
+	// Add the remaining damage to the new ignite proc, divide it over 2 ticks
 	dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(IgniteTicks)
 	mage.Ignite.Cast(sim, result.Target)
 }
