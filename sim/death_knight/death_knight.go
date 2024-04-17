@@ -109,9 +109,10 @@ func (dk *DeathKnight) ApplyTalents() {
 
 func (dk *DeathKnight) Initialize() {
 	dk.registerPresences()
-
+	dk.registerFrostFever()
+	dk.registerBloodPlague()
+	dk.registerOutbreak()
 	dk.registerHornOfWinterSpell()
-	dk.registerDiseaseDots()
 	dk.registerIcyTouchSpell()
 	dk.registerPlagueStrikeSpell()
 	dk.registerDeathCoilSpell()
