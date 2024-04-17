@@ -81,7 +81,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			windfuryTotem: true,
 			bloodlust: true,
 			communion: true,
-			leaderOfThePack: true,
 			arcaneBrilliance: true,
 			manaSpringTotem: true,
 		}),

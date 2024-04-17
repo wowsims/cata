@@ -131,12 +131,9 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	// 		raidBuffs.MoonkinAura = proto.TristateEffect_TristateEffectImproved
 	// 	}
 	// }
-	// if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
-	// 	raidBuffs.LeaderOfThePack = max(raidBuffs.LeaderOfThePack, proto.TristateEffect_TristateEffectRegular)
-	// 	if druid.Talents.ImprovedLeaderOfThePack > 0 {
-	// 		raidBuffs.LeaderOfThePack = proto.TristateEffect_TristateEffectImproved
-	// 	}
-	// }
+	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
+		raidBuffs.LeaderOfThePack = true
+	}
 }
 
 // func (druid *Druid) BalanceCritMultiplier() float64 {

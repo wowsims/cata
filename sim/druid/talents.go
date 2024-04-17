@@ -88,7 +88,7 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyPrimalFury()
 	// druid.applyOmenOfClarity()
 	// druid.applyEclipse()
-	// druid.applyImprovedLotp()
+	druid.applyLotp()
 	// druid.applyPredatoryInstincts()
 	// druid.applyNaturalReaction()
 	// druid.applyOwlkinFrenzy()
@@ -597,45 +597,48 @@ func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
 // 	})
 // }
 
-// func (druid *Druid) applyImprovedLotp() {
-// 	if druid.Talents.ImprovedLeaderOfThePack == 0 {
-// 		return
-// 	}
+func (druid *Druid) applyLotp() {
+	if !druid.Talents.LeaderOfThePack {
+		return
+	}
 
-// 	actionID := core.ActionID{SpellID: 34300}
-// 	manaMetrics := druid.NewManaMetrics(actionID)
-// 	healthMetrics := druid.NewHealthMetrics(actionID)
-// 	manaRestore := float64(druid.Talents.ImprovedLeaderOfThePack) * 0.04
-// 	healthRestore := 0.5 * manaRestore
+	actionID := core.ActionID{SpellID: 17007}
+	manaMetrics := druid.NewManaMetrics(actionID)
+	healthMetrics := druid.NewHealthMetrics(actionID)
+	manaRestore := 0.08
+	healthRestore := 0.05
 
-// 	icd := core.Cooldown{
-// 		Timer:    druid.NewTimer(),
-// 		Duration: time.Second * 6,
-// 	}
+	icd := core.Cooldown{
+		Timer:    druid.NewTimer(),
+		Duration: time.Second * 6,
+	}
 
-// 	druid.RegisterAura(core.Aura{
-// 		Icd:      &icd,
-// 		Label:    "Improved Leader of the Pack",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.Landed() {
-// 				return
-// 			}
-// 			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.Outcome.Matches(core.OutcomeCrit) {
-// 				return
-// 			}
-// 			if !icd.IsReady(sim) {
-// 				return
-// 			}
-// 			icd.Use(sim)
-// 			druid.AddMana(sim, druid.MaxMana()*manaRestore, manaMetrics)
-// 			druid.GainHealth(sim, druid.MaxHealth()*healthRestore, healthMetrics)
-// 		},
-// 	})
-// }
+	druid.RegisterAura(core.Aura{
+		Icd:      &icd,
+		Label:    "Improved Leader of the Pack",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() {
+				return
+			}
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.Outcome.Matches(core.OutcomeCrit) {
+				return
+			}
+			if !icd.IsReady(sim) {
+				return
+			}
+			if !druid.InForm(Cat | Bear) {
+				return
+			}
+			icd.Use(sim)
+			druid.AddMana(sim, druid.MaxMana()*manaRestore, manaMetrics)
+			druid.GainHealth(sim, druid.MaxHealth()*healthRestore, healthMetrics)
+		},
+	})
+}
 
 // func (druid *Druid) applyPredatoryInstincts() {
 // 	if druid.Talents.PredatoryInstincts == 0 {
