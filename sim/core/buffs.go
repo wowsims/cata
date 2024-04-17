@@ -539,14 +539,22 @@ func StrengthOfEarthTotemAura(unit *Unit) *Aura {
 }
 
 // https://www.wowhead.com/cata/spell=57330/horn-of-winter
-func HornOfWinterAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
+func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
+	baseAura := makeExclusiveBuff(unit, BuffConfig{
 		"Horn of Winter",
 		ActionID{SpellID: 57330},
 		[]StatConfig{
 			{stats.Agility, 549.0, false},
 			{stats.Strength, 549.0, false},
 		}})
+
+	if asExternal {
+		return baseAura
+	}
+
+	baseAura.OnReset = nil
+	baseAura.Duration = TernaryDuration(withGlyph, time.Minute*3, time.Minute*2)
+	return baseAura
 }
 
 // https://www.wowhead.com/cata/spell=6673/battle-shout
@@ -574,7 +582,7 @@ func applyStrengthAgilityBuffs(unit *Unit, raidBuffs *proto.RaidBuffs) {
 	}
 
 	if raidBuffs.HornOfWinter {
-		MakePermanent(HornOfWinterAura(unit))
+		MakePermanent(HornOfWinterAura(unit, true, false))
 	}
 
 	if raidBuffs.BattleShout {
