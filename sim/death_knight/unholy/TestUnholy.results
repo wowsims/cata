@@ -1892,21 +1892,21 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-Settings-Goblin-p1-Basic-st-NoBuffs-LongMultiTarget"
  value: {
-  dps: 29941.3962
+  dps: 29948.61546
   tps: 34195.80913
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Goblin-p1-Basic-st-NoBuffs-LongSingleTarget"
  value: {
-  dps: 17391.73827
+  dps: 17399.31075
   tps: 12435.00272
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Goblin-p1-Basic-st-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 22114.30933
+  dps: 22152.16968
   tps: 14050.1154
  }
 }
@@ -1934,21 +1934,21 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-Settings-Worgen-p1-Basic-st-NoBuffs-LongMultiTarget"
  value: {
-  dps: 30199.16862
+  dps: 30206.52498
   tps: 34556.20393
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Worgen-p1-Basic-st-NoBuffs-LongSingleTarget"
  value: {
-  dps: 17437.19612
+  dps: 17444.2702
   tps: 12490.33941
  }
 }
 dps_results: {
  key: "TestUnholy-Settings-Worgen-p1-Basic-st-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 22197.69306
+  dps: 22233.41247
   tps: 14161.13665
  }
 }

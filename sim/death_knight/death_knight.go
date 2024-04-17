@@ -91,6 +91,9 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if dk.Talents.ImprovedIcyTalons {
 		raidBuffs.IcyTalons = true
 	}
+
+	// TODO: Make horn of winter dynamic
+	raidBuffs.HornOfWinter = true
 }
 
 func (dk *DeathKnight) ApplyTalents() {
