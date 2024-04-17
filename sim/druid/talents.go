@@ -41,7 +41,8 @@ func (druid *Druid) ApplyTalents() {
 	// druid.PseudoStats.DamageDealtMultiplier *= 1 + (float64(druid.Talents.EarthAndMoon) * 0.02)
 	// druid.PseudoStats.SpiritRegenRateCasting = float64(druid.Talents.Intensity) * (0.5 / 3)
 	// druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(druid.Talents.Naturalist)
-	// druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
+	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
+	druid.PseudoStats.ReducedCritTakenChance += 0.02 * float64(druid.Talents.ThickHide)
 
 	// if druid.Talents.LunarGuidance > 0 {
 	// 	bonus := 0.04 * float64(druid.Talents.LunarGuidance)
@@ -60,16 +61,6 @@ func (druid *Druid) ApplyTalents() {
 
 	// if druid.Talents.ImprovedFaerieFire > 0 && druid.CurrentTarget.HasAuraWithTag(core.FaerieFireAuraTag) {
 	// 	druid.AddStat(stats.SpellCrit, float64(druid.Talents.ImprovedFaerieFire)*1*core.CritRatingPerCritChance)
-	// }
-
-	// if druid.Talents.SurvivalOfTheFittest > 0 {
-	// 	bonus := 0.02 * float64(druid.Talents.SurvivalOfTheFittest)
-	// 	druid.MultiplyStat(stats.Stamina, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Strength, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Agility, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Intellect, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Spirit, 1.0+bonus)
-	// 	druid.PseudoStats.ReducedCritTakenChance += 0.02 * float64(druid.Talents.SurvivalOfTheFittest)
 	// }
 
 	// if druid.Talents.ImprovedMarkOfTheWild > 0 {
