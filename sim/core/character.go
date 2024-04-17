@@ -493,9 +493,9 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 }
 
 func (character *Character) reset(sim *Simulation, agent Agent) {
+	character.ItemSwap.reset(sim)
 	character.Unit.reset(sim, agent)
 	character.majorCooldownManager.reset(sim)
-	character.ItemSwap.reset(sim)
 	character.CurrentTarget = character.defaultTarget
 
 	agent.Reset(sim)
