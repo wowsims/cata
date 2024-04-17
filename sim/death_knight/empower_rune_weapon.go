@@ -15,7 +15,8 @@ func (dk *DeathKnight) registerEmpowerRuneWeaponSpell() {
 		dk.NewDeathRuneMetrics(actionId),
 		dk.NewRunicPowerMetrics(actionId),
 	}
-	dk.EmpowerRuneWeapon = dk.RegisterSpell(core.SpellConfig{
+
+	spell := dk.RegisterSpell(core.SpellConfig{
 		ActionID: actionId,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
@@ -31,7 +32,7 @@ func (dk *DeathKnight) registerEmpowerRuneWeaponSpell() {
 	})
 
 	dk.AddMajorCooldown(core.MajorCooldown{
-		Spell: dk.EmpowerRuneWeapon,
+		Spell: spell,
 		Type:  core.CooldownTypeDPS,
 		ShouldActivate: func(sim *core.Simulation, _ *core.Character) bool {
 			return dk.AllRunesSpent()

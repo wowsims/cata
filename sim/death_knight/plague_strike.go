@@ -27,7 +27,7 @@ func (dk *DeathKnight) registerPlagueStrikeSpell() {
 		},
 	})
 
-	dk.PlagueStrike = dk.GetOrRegisterSpell(core.SpellConfig{
+	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       PlagueStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
