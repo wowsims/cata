@@ -527,6 +527,7 @@ message IndividualBuffs {
 	int32 hand_of_sacrifice_count = 25;
 	int32 guardian_spirit_count = 26;
 	bool focus_magic = 22;
+	bool dark_intent = 27;
 }
 
 message Debuffs {

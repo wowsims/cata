@@ -101,6 +101,17 @@ export const ChannelClipDelay = {
 	},
 };
 
+export const DarkIntentUptime = {
+	type: 'number' as const,
+	label: 'Dark Intent Uptime',
+	labelTooltip: '% uptime on Dark Intent on the player (Only the stacking damage component)',
+	changedEvent: (player: Player<any>) => player.miscOptionsChangeEmitter,
+	getValue: (player: Player<any>) => player.getDarkIntentUptime(),
+	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+		player.setDarkIntentUptime(eventID, newValue);
+	},
+}
+
 export const InFrontOfTarget = {
 	type: 'boolean' as const,
 	label: 'In Front of Target',

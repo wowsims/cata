@@ -141,6 +141,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			SVInputs.SniperTrainingUptime,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
+			OtherInputs.DarkIntentUptime
 		],
 	},
 	encounterPicker: {
