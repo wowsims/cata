@@ -9,10 +9,11 @@ import (
 func (mage *Mage) registerFlamestrikeSpell() {
 
 	mage.Flamestrike = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 2120},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 2120},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellFlamestrike,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.30,

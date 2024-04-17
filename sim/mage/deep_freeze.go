@@ -12,10 +12,11 @@ func (mage *Mage) registerDeepFreezeSpell() {
 	} */
 
 	mage.DeepFreeze = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 44572},
-		SpellSchool: core.SpellSchoolFrost,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 44572},
+		SpellSchool:    core.SpellSchoolFrost,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellDeepFreeze,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.09,

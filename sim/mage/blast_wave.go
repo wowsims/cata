@@ -12,10 +12,11 @@ func (mage *Mage) registerBlastWaveSpell() {
 	} */
 
 	mage.BlastWave = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 11113},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 11113},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellBlastWave,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.07,
 		},

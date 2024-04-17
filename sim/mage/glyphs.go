@@ -78,7 +78,7 @@ func (mage *Mage) applyGlyphs() {
 	}
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMageArmor) && mage.Options.Armor == proto.MageOptions_MoltenArmor {
-		mage.moltenArmorMod.UpdateFloatValue(5 * core.CritRatingPerCritChance)
+		mage.moltenArmorMod.UpdateFloatValue(7 * core.CritRatingPerCritChance)
 	}
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfPyroblast) {

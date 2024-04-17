@@ -51,10 +51,11 @@ func (mage *Mage) registerBlizzardSpell() {
 	})
 
 	mage.Blizzard = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 10},
-		SpellSchool: core.SpellSchoolFrost,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagChanneled | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 10},
+		SpellSchool:    core.SpellSchoolFrost,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | core.SpellFlagChanneled | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellBlizzard,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.74,
 		},

@@ -13,8 +13,9 @@ func (mage *Mage) registerEvocation() {
 	manaPerTick := 0.0
 
 	evocation := mage.GetOrRegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagHelpful | core.SpellFlagChanneled | core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagChanneled | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellEvocation,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -8,10 +8,11 @@ import (
 
 func (mage *Mage) registerFireBlastSpell() {
 	mage.FireBlast = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 2136},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 2136},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellFireBlast,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.21,

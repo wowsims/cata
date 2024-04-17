@@ -15,11 +15,12 @@ func (mage *Mage) registerFrostboltSpell() {
 	}
 
 	mage.Frostbolt = mage.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 116},
-		SpellSchool:  core.SpellSchoolFrost,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | ArcaneMissileSpells | core.SpellFlagAPL,
-		MissileSpeed: 28,
+		ActionID:       core.ActionID{SpellID: 116},
+		SpellSchool:    core.SpellSchoolFrost,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | ArcaneMissileSpells | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellFrostbolt,
+		MissileSpeed:   28,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.13,

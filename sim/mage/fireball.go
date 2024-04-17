@@ -9,11 +9,12 @@ import (
 func (mage *Mage) registerFireballSpell() {
 
 	mage.Fireball = mage.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 133},
-		SpellSchool:  core.SpellSchoolFire,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | ArcaneMissileSpells | HotStreakSpells | core.SpellFlagAPL,
-		MissileSpeed: 24,
+		ActionID:       core.ActionID{SpellID: 133},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | ArcaneMissileSpells | HotStreakSpells | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellFireball,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.09,
@@ -29,7 +30,6 @@ func (mage *Mage) registerFireballSpell() {
 		BonusCritRating: 0 +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0),
 		DamageMultiplierAdditive: 1 +
-			.01*float64(mage.Talents.FirePower) +
 			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 1.236,

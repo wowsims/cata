@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -118,7 +119,7 @@ func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 
 func (mage *Mage) Initialize() {
 	mage.applyGlyphs()
-	mage.applyArmor()
+	mage.applyArmorChoice()
 	mage.registerArcaneBarrageSpell()
 	mage.registerArcaneBlastSpell()
 	mage.registerArcaneExplosionSpell()
@@ -154,17 +155,18 @@ func (mage *Mage) Initialize() {
 func (mage *Mage) Reset(sim *core.Simulation) {
 }
 
-func (mage *Mage) applyArmor() {
+func (mage *Mage) applyArmorChoice() {
+	fmt.Println(mage.Options.Armor)
 	if mage.Options.Armor == proto.MageOptions_MoltenArmor {
 		if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMoltenArmor) {
 			mage.AddStaticMod(core.SpellModConfig{
-				ClassMask:  MageSpellsAll,
+				ClassMask:  MageSpellsAllDamaging,
 				FloatValue: 7 * core.CritRatingPerCritChance,
 				Kind:       core.SpellMod_BonusCrit_Rating,
 			})
 		} else {
 			mage.AddStaticMod(core.SpellModConfig{
-				ClassMask:  MageSpellsAll,
+				ClassMask:  MageSpellsAllDamaging,
 				FloatValue: 5 * core.CritRatingPerCritChance,
 				Kind:       core.SpellMod_BonusCrit_Rating,
 			})

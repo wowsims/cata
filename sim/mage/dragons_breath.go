@@ -12,10 +12,11 @@ func (mage *Mage) registerDragonsBreathSpell() {
 	} */
 
 	mage.DragonsBreath = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 31661},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 31661},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellDragonsBreath,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.07,
 		},

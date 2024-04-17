@@ -38,9 +38,9 @@ func (mage *Mage) registerMirrorImageCD() {
 	}
 
 	mage.MirrorImage = mage.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 55342},
-		Flags:    core.SpellFlagAPL,
-
+		ActionID:       core.ActionID{SpellID: 55342},
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: MageSpellMirrorImage,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.1,
 		},

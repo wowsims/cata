@@ -26,11 +26,12 @@ func (mage *Mage) registerPyroblastSpell() {
 	} */
 
 	pyroConfig := core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 11366},
-		SpellSchool:  core.SpellSchoolFire,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
-		MissileSpeed: 24,
+		ActionID:       core.ActionID{SpellID: 11366},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellPyroblast,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.17,
@@ -62,18 +63,16 @@ func (mage *Mage) registerPyroblastSpell() {
 			Aura: core.Aura{
 				Label: "PyroblastDoT",
 			},
-			NumberOfTicks: 4,
-			TickLength:    time.Second * 3,
-
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = 0.175 * mage.ScalingBaseDamage
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+			NumberOfTicks:    4,
+			TickLength:       time.Second * 3,
+			BonusCoefficient: 0.180,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.SnapshotBaseDamage = 0.25 * mage.ScalingBaseDamage
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				pyroblastDot.SpellMetrics[target.UnitIndex].Hits++
 			},
-			BonusCoefficient: 0.180,
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -92,7 +91,7 @@ func (mage *Mage) registerPyroblastSpell() {
 			})
 		},
 	}
-	// Unsure about the implementation of the below, but just trusting it since it existed here
+
 	mage.Pyroblast = mage.RegisterSpell(pyroConfig)
 
 	dotConfig := pyroConfig

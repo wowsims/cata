@@ -19,10 +19,11 @@ func (mage *Mage) registerScorchSpell() {
 	   	} */
 
 	mage.Scorch = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 2948},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 2948},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellScorch,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.08 -

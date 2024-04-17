@@ -39,10 +39,11 @@ func (mage *Mage) applyIgnite() {
 
 	// The ignite dot
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 413843},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskProc,
-		Flags:       SpellFlagMage | core.SpellFlagIgnoreModifiers,
+		ActionID:       core.ActionID{SpellID: 413843},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskProc,
+		Flags:          SpellFlagMage | core.SpellFlagIgnoreModifiers,
+		ClassSpellMask: MageSpellIgnite,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

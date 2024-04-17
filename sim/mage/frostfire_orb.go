@@ -16,9 +16,10 @@ func (mage *Mage) registerFrostfireOrbSpell() {
 		ActionID:    core.ActionID{SpellID: 82739},
 		SpellSchool: core.SpellSchoolFire,
 		// no idea yet what it procs, likely nothing
-		ProcMask:     core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:        SpellFlagMage | core.SpellFlagNoLogs,
-		MissileSpeed: 20,
+		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
+		Flags:          SpellFlagMage | core.SpellFlagNoLogs,
+		ClassSpellMask: MageSpellFrostfireOrb,
+		MissileSpeed:   20,
 
 		DamageMultiplier: 1 + .01*float64(mage.Talents.TormentTheWeak),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
