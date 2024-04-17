@@ -1,6 +1,8 @@
 package druid
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -100,6 +102,7 @@ func (druid *Druid) ApplyTalents() {
 	// druid.applyNaturalReaction()
 	// druid.applyOwlkinFrenzy()
 	// druid.applyInfectedWounds()
+	druid.applyFurySwipes()
 }
 
 // func (druid *Druid) setupNaturesGrace() {
@@ -240,6 +243,42 @@ func (druid *Druid) ApplyTalents() {
 // 		},
 // 	})
 // }
+
+func (druid *Druid) applyFurySwipes() {
+	if druid.Talents.FurySwipes == 0 {
+		return
+	}
+
+	furySwipesSpell := druid.RegisterSpell(Cat | Bear, core.SpellConfig{
+		ActionID:         core.ActionID{SpellID: 80861},
+		SpellSchool:      core.SpellSchoolPhysical,
+		ProcMask:         core.ProcMaskMeleeMHSpecial,
+		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		DamageMultiplier: 3.1,
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()), spell.OutcomeMeleeSpecialHitAndCrit)
+		},
+	})
+
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:       "Fury Swipes Trigger",
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		Harmful:    true,
+		ProcChance: 0.05 * float64(druid.Talents.FurySwipes),
+		ICD:        time.Second * 3,
+
+		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+			if druid.InForm(Cat | Bear) {
+				furySwipesSpell.Cast(sim, druid.CurrentTarget)
+			}
+		},
+	})
+}
 
 // func (druid *Druid) applyPrimalFury() {
 // 	if druid.Talents.PrimalFury == 0 {
