@@ -4,15 +4,16 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/warrior"
 )
 
 func (war *ArmsWarrior) RegisterMortalStrikeSpell() {
 	war.mortalStrike = war.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 12294},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagMeleeMetrics,
+		ActionID:       core.ActionID{SpellID: 12294},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagMeleeMetrics,
+		ClassSpellMask: SpellMaskMortalStrike | warrior.SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   20,
@@ -29,14 +30,10 @@ func (war *ArmsWarrior) RegisterMortalStrikeSpell() {
 			},
 		},
 
-		CritMultiplier:  war.DefaultMeleeCritMultiplier() + (0.1 * float64(war.Talents.Impale)),
-		BonusCritRating: (5.0 * float64(war.Talents.Cruelty)) * core.CritRatingPerCritChance,
-		DamageMultiplier: 1.0 + core.TernaryFloat64(war.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfMortalStrike), 0.1, 0.0) +
-			0.05*float64(war.Talents.WarAcademy),
+		CritMultiplier: war.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 423 +
-				0.8*(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())+spell.BonusWeaponDamage())
+			baseDamage := 423 + 0.8*(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()))
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)

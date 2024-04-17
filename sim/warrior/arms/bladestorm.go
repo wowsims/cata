@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/warrior"
 )
 
 func (war *ArmsWarrior) RegisterBladestorm() {
@@ -16,10 +16,12 @@ func (war *ArmsWarrior) RegisterBladestorm() {
 	results := make([]*core.SpellResult, numHits)
 
 	bladestorm := war.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskBladestorm | warrior.SpellMaskSpecialAttack,
+
 		RageCost: core.RageCostOptions{
 			Cost: 25,
 		},
@@ -29,12 +31,11 @@ func (war *ArmsWarrior) RegisterBladestorm() {
 			},
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
-				Duration: core.TernaryDuration(war.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfBladestorm), time.Second*75, time.Second*90),
+				Duration: time.Second * 90,
 			},
 			IgnoreHaste: true,
 		},
-		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
-		DamageMultiplier: 1.5, // deals 150% weapon damage
+		CritMultiplier: war.DefaultMeleeCritMultiplier(),
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
@@ -47,9 +48,7 @@ func (war *ArmsWarrior) RegisterBladestorm() {
 				spell := dot.Spell
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					baseDamage := 0 +
-						spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-						spell.BonusWeaponDamage()
+					baseDamage := 1.5 * spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 					results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}

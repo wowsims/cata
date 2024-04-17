@@ -26,14 +26,14 @@ func (war *ArmsWarrior) RegisterBloodFrenzy() {
 	procChance := 0.05 * float64(war.Talents.BloodFrenzy)
 	bfRageMetrics := war.NewRageMetrics(bfRageProc)
 	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Blood Frenzy Buff Trigger",
+		Label: "Blood Frenzy Debuff Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() {
 				return
 			}
 
 			if spell.ActionID.IsOtherAction(proto.OtherAction_OtherActionAttack) {
-				if sim.RandomFloat("Blood Frenzy Rage Proc") < procChance {
+				if sim.Proc(procChance, "Blood Frenzy Rage Proc") {
 					war.AddRage(sim, 20, bfRageMetrics)
 				}
 			}

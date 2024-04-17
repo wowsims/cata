@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/warrior"
 )
 
@@ -40,12 +39,8 @@ func (war *ArmsWarrior) RegisterSweepingStrikes() {
 			}
 
 			// TODO: Pretty much everything about this spell needs to be tested, leaving it as it was in wrath for now
-			if spell == war.Execute && !sim.IsExecutePhase20() {
-				curDmg = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
-			} else if spell == war.Whirlwind {
-				curDmg = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
+			if (spell == war.Execute && !sim.IsExecutePhase20()) || spell == war.Whirlwind {
+				curDmg = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			} else {
 				curDmg = result.Damage
 			}
@@ -59,11 +54,12 @@ func (war *ArmsWarrior) RegisterSweepingStrikes() {
 	})
 
 	ssCD := war.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: SpellMaskSweepingStrikes,
 
 		RageCost: core.RageCostOptions{
-			Cost: core.TernaryFloat64(war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfSweepingStrikes), 0, 30),
+			Cost: 30,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

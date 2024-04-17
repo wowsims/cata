@@ -8,7 +8,8 @@ import (
 )
 
 func (war *ArmsWarrior) ApplyTalents() {
-	war.Warrior.ApplyTalents()
+	specialAttacks := SpellMaskBladestorm | SpellMaskMortalStrike
+	war.Warrior.ApplyCommonTalents(SpellMaskMortalStrike, SpellMaskMortalStrike, specialAttacks, SpellMaskMortalStrike)
 
 	war.RegisterBladestorm()
 	war.RegisterBloodFrenzy()
@@ -27,11 +28,6 @@ func (war *ArmsWarrior) RegisterTasteForBlood() {
 
 	procChance := []float64{0, 0.33, 0.66, 1}[war.Talents.TasteForBlood]
 
-	icd := core.Cooldown{
-		Timer:    war.NewTimer(),
-		Duration: time.Second * 5,
-	}
-
 	// Use a specific aura for TfB so we can track procs
 	// Overpower will check for any aura with the EnableOverpowerTag when it tries to cast
 	tfbAura := war.RegisterAura(core.Aura{
@@ -42,18 +38,22 @@ func (war *ArmsWarrior) RegisterTasteForBlood() {
 	})
 
 	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Taste for Blood Monitor",
+		Label: "Taste for Blood Trigger",
+		Icd: &core.Cooldown{
+			Timer:    war.NewTimer(),
+			Duration: time.Second * 5,
+		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell != war.Rend {
 				return
 			}
 
-			if !icd.IsReady(sim) {
+			if !aura.Icd.IsReady(sim) {
 				return
 			}
 
-			if sim.RandomFloat("Taste for Blood") < procChance {
-				icd.Use(sim)
+			if sim.Proc(procChance, "Taste for Blood") {
+				aura.Icd.Use(sim)
 				tfbAura.Activate(sim)
 			}
 		},
@@ -73,7 +73,7 @@ func (war *ArmsWarrior) RegisterSuddenDeath() {
 				return
 			}
 
-			if sim.RandomFloat("Sudden Death") < procChance {
+			if sim.Proc(procChance, "Sudden Death") {
 				war.ColossusSmash.CD.Reset()
 			}
 		},
@@ -103,20 +103,26 @@ func (war *ArmsWarrior) RegisterSlaughter() {
 		return
 	}
 
+	damageMod := war.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  SpellMaskMortalStrike | warrior.SpellMaskExecute | warrior.SpellMaskOverpower | warrior.SpellMaskSlam,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0.0,
+	})
+
 	war.slaughter = war.RegisterAura(core.Aura{
 		Label:     "Slaughter",
 		ActionID:  core.ActionID{SpellID: 84586},
 		Duration:  time.Second * 15,
 		MaxStacks: war.Talents.LambsToTheSlaughter,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			// This being negative is a valid case as that means the aura is expiring (newStacks == 0)
-			// so we should subtract whatever bonus had been applied
-			diff := newStacks - oldStacks
-			bonus := 0.1 * float64(diff)
-			war.mortalStrike.DamageMultiplierAdditive += bonus
-			war.Execute.DamageMultiplierAdditive += bonus
-			war.Overpower.DamageMultiplierAdditive += bonus
-			war.Slam.DamageMultiplierAdditive += bonus
+			bonus := 0.1 * float64(newStacks)
+			damageMod.UpdateFloatValue(bonus)
+
+			if newStacks != 0 {
+				damageMod.Activate()
+			} else {
+				damageMod.Deactivate()
+			}
 		},
 	})
 }
@@ -148,7 +154,7 @@ func (war *ArmsWarrior) TriggerWreckingCrew(sim *core.Simulation) {
 	}
 
 	procChance := 0.5 * float64(war.Talents.WreckingCrew)
-	if sim.RandomFloat("Wrecking Crew") < procChance {
+	if sim.Proc(procChance, "Wrecking Crew") {
 		war.wreckingCrew.Activate(sim)
 	}
 }

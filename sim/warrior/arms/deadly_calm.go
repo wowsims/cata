@@ -12,6 +12,15 @@ func (war *ArmsWarrior) RegisterDeadlyCalm() {
 	}
 
 	dcActionID := core.ActionID{SpellID: 85730}
+
+	// Using an aura that modifies the PseudoStat instead of a SpellMod to avoid stomping
+	// over Battle Trance if it's procced. Having both of these edit spells could result in a sequence like
+	// 1: <Use Deadly Calm> (spell.CostMultiplier = 0)
+	// 2: <Proc Battle Trance> (spell.CostMultiplier = -1) (what does this even do? refund on every ability?)
+	// 3: <Use Battle Trance> (spell.CostMultiplier = 0)
+	// 4: <Deadly Calm Fades> (spell.CostMultiplier = 1)
+	// We can't just clamp CostMultiplier inside of the SpellMod application either as that would result in the
+	// multiplier becoming 1 before it should (on event 3)
 	dcAura := war.RegisterAura(core.Aura{
 		Label:    "Deadly Calm",
 		ActionID: dcActionID,
@@ -25,9 +34,11 @@ func (war *ArmsWarrior) RegisterDeadlyCalm() {
 	})
 
 	dc := war.RegisterSpell(core.SpellConfig{
-		ActionID:    dcActionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagAPL | core.SpellFlagMCD | core.SpellFlagNoOnDamageDealt | core.SpellFlagHelpful,
+		ActionID:       dcActionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMCD | core.SpellFlagNoOnDamageDealt | core.SpellFlagHelpful,
+		ClassSpellMask: SpellMaskDeadlyCalm,
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: 0,

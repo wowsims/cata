@@ -9,6 +9,17 @@ import (
 	"github.com/wowsims/cata/sim/warrior"
 )
 
+const armsSpellMaskStartBit = 1 << warrior.SpellMaskSpecStartIndex
+
+const (
+	SpellMaskDeadlyCalm int64 = (armsSpellMaskStartBit << iota)
+
+	SpellMaskSweepingStrikes
+
+	SpellMaskMortalStrike
+	SpellMaskBladestorm
+)
+
 func RegisterArmsWarrior() {
 	core.RegisterAgentFactory(
 		proto.Player_ArmsWarrior{},
@@ -92,11 +103,7 @@ func (war *ArmsWarrior) GetMasteryProcChance() float64 {
 
 func (war *ArmsWarrior) RegisterMastery() {
 	// TODO:
-	//	test what things the extra attack can proc
-	//	does the extra attack use the same hit table
-	//  can it proc off of missed/dodged/parried attacks
-	//
-	// 4.3.3 simcraft implements SoO as a standard autoattack with a 0.5s ICD
+	//  can it proc off of missed/dodged/parried attacks - seems like no, need more data
 	procAttackConfig := *war.AutoAttacks.MHConfig()
 	procAttackConfig.ActionID = core.ActionID{SpellID: StrikesOfOpportunityHitID, Tag: procAttackConfig.ActionID.Tag}
 	procAttackConfig.ProcMask = core.ProcMaskMeleeSpecial
@@ -134,20 +141,10 @@ func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {
 func (war *ArmsWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.RegisterSpecializationEffects()
-	war.RegisterMortalStrikeSpell()
-	// if war.Options.UseRecklessness {
-	// 	war.RegisterRecklessnessCD()
-	// }
-
-	// if war.Options.ClassOptions.UseShatteringThrow {
-	// 	war.RegisterShatteringThrowCD()
-	// }
-
-	// war.BattleStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
 }
 
-// func (war *ArmsWarrior) Reset(sim *core.Simulation) {
-// 	war.Warrior.Reset(sim)
-// 	war.BattleStanceAura.Activate(sim)
-// 	war.Stance = warrior.BattleStance
-// }
+func (war *ArmsWarrior) Reset(sim *core.Simulation) {
+	war.Warrior.Reset(sim)
+	war.BattleStanceAura.Activate(sim)
+	war.Stance = warrior.BattleStance
+}
