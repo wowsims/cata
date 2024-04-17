@@ -91,8 +91,6 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if dk.Talents.ImprovedIcyTalons {
 		raidBuffs.IcyTalons = true
 	}
-
-	raidBuffs.HornOfWinter = true
 }
 
 func (dk *DeathKnight) ApplyTalents() {

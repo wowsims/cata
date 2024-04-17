@@ -14,6 +14,9 @@ func (dk *DeathKnight) registerUnholyFrenzySpell() {
 	actionID := core.ActionID{SpellID: 49016, Tag: dk.Index}
 
 	unholyFrenzyAuras := dk.NewAllyAuraArray(func(u *core.Unit) *core.Aura {
+		if u.Type == core.PetUnit {
+			return nil
+		}
 		return core.UnholyFrenzyAura(u, actionID.Tag)
 	})
 	unholyFrenzyTarget := dk.GetUnit(dk.Inputs.UnholyFrenzyTarget)
