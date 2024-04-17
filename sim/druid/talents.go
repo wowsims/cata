@@ -25,10 +25,10 @@ func (druid *Druid) ThickHideMultiplier() float64 {
 	return thickHideMulti
 }
 
-// func (druid *Druid) BearArmorMultiplier() float64 {
-// 	sotfMulti := 1.0 + 0.33/3.0*float64(druid.Talents.SurvivalOfTheFittest)
-// 	return 4.7 * sotfMulti
-// }
+func (druid *Druid) BearArmorMultiplier() float64 {
+	thickHideBearMulti := 1.0 + 0.26*float64(druid.Talents.ThickHide) // This is a bear-specific multiplier that stacks with the generic multiplier calculated above.
+	return 2.2 * thickHideBearMulti
+}
 
 func (druid *Druid) ApplyTalents() {
 	// druid.AddStat(stats.SpellHit, float64(druid.Talents.BalanceOfPower)*2*core.SpellHitRatingPerHitChance)

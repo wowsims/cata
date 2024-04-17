@@ -278,8 +278,8 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	// 	// // Druids get extra melee haste
 	// 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-	// 	// // Base dodge is unaffected by Diminishing Returns
-	// 	// druid.PseudoStats.BaseDodge += 0.056097
+	// Base dodge is unaffected by Diminishing Returns
+	druid.PseudoStats.BaseDodge += 0.056097 // TODO: Check if this is different in Cata
 
 	// 	// if druid.Talents.ForceOfNature {
 	// 	// 	druid.Treant1 = druid.NewTreant()
