@@ -457,7 +457,7 @@ export const FoodFishermansFeast = {
 };
 export const FoodSeafoodMagnifiqueFeast = {
 	actionId: ActionId.fromItemId(62290),
-	value: Food.FoodFortuneCookie,
+	value: Food.FoodSeafoodFeast,
 };
 export const FoodFortuneCookie = {
 	actionId: ActionId.fromItemId(62649),
@@ -477,7 +477,7 @@ export const FoodBakedRockfish = {
 };
 export const FoodBasiliskLiverdog = {
 	actionId: ActionId.fromItemId(62665),
-	value: Food.FoodBakedRockfish,
+	value: Food.FoodBasiliskLiverdog,
 };
 export const FoodBlackbellySushi = {
 	actionId: ActionId.fromItemId(62668),
