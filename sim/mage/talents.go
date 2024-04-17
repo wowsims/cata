@@ -122,15 +122,29 @@ func (mage *Mage) ApplyTalents() {
 	/* --------------------------------------
 				  FIRE TALENTS
 	---------------------------------------*/
-	fireMastery := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellFireDoT,
-		FloatValue: float64(1.22 + 0.28*mage.GetMasteryPoints()),
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
+	// Fire  Specialization Bonus
+	if mage.Spec == proto.Spec_SpecFireMage {
+		mage.AddStaticMod(core.SpellModConfig{
+			School:     core.SpellSchoolFire,
+			FloatValue: 0.25,
+			Kind:       core.SpellMod_DamageDone_Flat,
+		})
+	}
 
-	mage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
-		fireMastery.UpdateFloatValue(1.22 + 0.28*core.MasteryRatingToMasteryPoints(newMastery))
-	})
+	// Mastery
+	if mage.Spec == proto.Spec_SpecFireMage {
+		//
+		fireMastery := mage.AddDynamicMod(core.SpellModConfig{
+			ClassMask:  MageSpellFireDoT,
+			FloatValue: float64(1.22 + 0.28*mage.GetMasteryPoints()),
+			Kind:       core.SpellMod_DamageDone_Pct,
+		})
+		fireMastery.Activate()
+
+		mage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+			fireMastery.UpdateFloatValue(1.22 + 0.28*core.MasteryRatingToMasteryPoints(newMastery))
+		})
+	}
 
 	// Cooldowns/Special Implementations
 	mage.applyHotStreak()
@@ -202,6 +216,15 @@ func (mage *Mage) ApplyTalents() {
 			ClassMask:  MageSpellsAll,
 			FloatValue: 0.01 * float64(mage.Talents.PiercingIce) * core.CritRatingPerCritChance,
 			Kind:       core.SpellMod_BonusCrit_Rating,
+		})
+	}
+
+	//Enduring Winter
+	if mage.Talents.EnduringWinter > 0 {
+		mage.AddStaticMod(core.SpellModConfig{
+			ClassMask:  MageSpellsAll,
+			FloatValue: -1 * []float64{0, 0.03, 0.06, 0.1}[mage.Talents.EnduringWinter],
+			Kind:       core.SpellMod_PowerCost_Pct,
 		})
 	}
 }
@@ -281,7 +304,7 @@ func (mage *Mage) applyHotStreak() {
 	// Improved Hotstreak Crit Stacking Aura
 	mage.hotStreakCritAura = mage.RegisterAura(core.Aura{
 		Label:     "Hot Streak Proc Aura",
-		ActionID:  core.ActionID{SpellID: 44448, Tag: 1},
+		ActionID:  core.ActionID{SpellID: 44448}, //, Tag: 1}, Removing Tag gets rid of the (??) in Timeline
 		MaxStacks: 2,
 		Duration:  time.Hour,
 	})

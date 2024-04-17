@@ -359,11 +359,14 @@ const (
 	MageSpellPyroblast
 	MageSpellPyroblastDot
 	MageSpellScorch
-	MageSpellLast
 
-	MageSpellsAll         = MageSpellLast<<1 - 1
-	MageSpellLivingBomb   = MageSpellLivingBombDot | MageSpellLivingBombExplosion
-	MageSpellFireDoT      = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellIgnite | MageSpellCombustion
+	MageSpellLast
+	MageSpellsAll       = MageSpellLast<<1 - 1
+	MageSpellLivingBomb = MageSpellLivingBombDot | MageSpellLivingBombExplosion
+	MageSpellFireDoT    = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellIgnite | MageSpellCombustion
+	MageSpellFire       = MageSpellBlastWave | MageSpellCombustion | MageSpellDragonsBreath | MageSpellFireball |
+		MageSpellFireBlast | MageSpellFlameOrb | MageSpellFlamestrike | MageSpellFrostfireBolt | MageSpellIgnite |
+		MageSpellLivingBomb | MageSpellPyroblast | MageSpellScorch
 	MageSpellChill        = MageSpellFrostbolt | MageSpellFrostfireBolt
 	MageSpellBrainFreeze  = MageSpellFireball | MageSpellFrostfireBolt
 	MageSpellsAllDamaging = MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | /*MageSpellArcaneMissiles | */ MageSpellBlastWave | MageSpellBlizzard | MageSpellDeepFreeze |
