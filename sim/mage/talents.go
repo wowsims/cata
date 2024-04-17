@@ -11,7 +11,7 @@ import (
 
 func (mage *Mage) ApplyTalents() {
 
-	// mage.applyIgnite()
+	mage.applyIgnite()
 	// mage.applyImpact()
 	// mage.applyIceFloes()
 	// mage.applyPiercingChill()
@@ -22,13 +22,8 @@ func (mage *Mage) ApplyTalents() {
 	// mage.applyColdSnap()
 
 	// mage.applyImprovedFlamestrike()
-
-	// mage.applyImprovedManaGem()
-
 	// mage.applyCriticalMass()
 	// mage.applyFrostfireOrb()
-
-	//mage.registerCombustionCD()
 
 	// Stat Buffs
 	// mage.PseudoStats.SpiritRegenRateCasting += float64(mage.Talents.ArcaneMeditation) / 6
@@ -184,7 +179,7 @@ func (mage *Mage) ApplyTalents() {
 	// Critical Mass
 	if mage.Talents.CriticalMass > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellLivingBomb | MageSpellFlameOrb,
+			ClassMask:  MageSpellLivingBombDot | MageSpellLivingBombExplosion | MageSpellFlameOrb,
 			FloatValue: 0.05 * float64(mage.Talents.CriticalMass),
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
@@ -231,36 +226,51 @@ func (mage *Mage) applyPyromaniac() {
 	if mage.Talents.Pyromaniac == 0 {
 		return
 	}
-	// Want to check to see if 3 fire spell dots are active
-	/* 	if mage.Talents.Pyromaniac > 0 {
-	   		pyromaniacMod := mage.AddDynamicMod(core.SpellModConfig{
-	   			ClassMask:  MageSpellsAll,
-	   			FloatValue: -0.05 * float64(mage.Talents.Pyromaniac),
-	   			Kind:       core.SpellMod_CastTime_Pct,
-	   		})
-	   	}
-	*/
-	var activeFireDots []*core.Spell
-	mage.PyromaniacAura = mage.RegisterAura(core.Aura{
-		Label:     "Pyromaniac",
-		ActionID:  core.ActionID{SpellID: 83582},
-		Duration:  core.NeverExpires,
-		MaxStacks: 10,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		/* 		OnDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			//for _, aoeTarget := range sim.Encounter.TargetUnits {
+	/*
+		pyromaniacMod := mage.AddDynamicMod(core.SpellModConfig{
+			ClassMask:  MageSpellsAll,
+			FloatValue: -.05 * float64(mage.Talents.Pyromaniac),
+			Kind:       core.SpellMod_CastTime_Pct,
+		})
+		var activeFireDots []*core.Spell
 
-			//}
+		mage.PyromaniacAura = mage.RegisterAura(core.Aura{
+			Label:    "Pyromaniac Trackers",
+			ActionID: core.ActionID{SpellID: 83582},
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				if len(sim.AllUnits) < 3 {
+					return
+				}
+				aura.Activate(sim)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 
-		}, */
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask == MageSpellFireDoT {
-				activeFireDots = append(activeFireDots, spell)
-			}
-		},
-	})
+				 for _, aoeTarget := range sim.Encounter.TargetUnits {
+					if mage.LivingBomb.Dot(aoeTarget).RemainingDuration(sim) > 0 {
+
+					}
+					if spell.ClassSpellMask == MageSpellFireDoT {
+						activeFireDots = append(activeFireDots, spell)
+						core.StartDelayedAction(sim, core.DelayedActionOptions{
+							DoAt: sim.CurrentTime + spell.Dot(mage.CurrentTarget).RemainingDuration(sim),
+							OnAction: func(sim *core.Simulation) {
+								l := len(activeFireDots)
+								activeFireDots = activeFireDots[:l-1]
+
+							},
+						})
+					}
+				}
+				fmt.Println("activeFireDots: ", len(activeFireDots))
+
+				if len(activeFireDots) >= 3 {
+					pyromaniacMod.Activate()
+				} else {
+					pyromaniacMod.Deactivate()
+				}
+			},
+		})*/
 }
 
 func (mage *Mage) applyHotStreak() {
@@ -571,12 +581,14 @@ func (mage *Mage) registerArcanePowerCD() {
 				spell.DamageMultiplierAdditive += 0.2
 				spell.CostMultiplier += 0.1
 			}
+			mage.arcanePowerGCDmod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive -= 0.2
 				spell.CostMultiplier -= 0.2
 			}
+			mage.arcanePowerGCDmod.Deactivate()
 		},
 	})
 	core.RegisterPercentDamageModifierEffect(mage.ArcanePowerAura, 1.2)

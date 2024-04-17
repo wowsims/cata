@@ -11,7 +11,8 @@ export const ArmorInput = <SpecType extends MageSpecs>() =>
 		fieldName: 'armor',
 		values: [
 			{ value: MageOptions_ArmorType.NoArmor, tooltip: 'No Armor' },
-			{ actionId: ActionId.fromSpellId(43024), value: MageOptions_ArmorType.MageArmor },
-			{ actionId: ActionId.fromSpellId(43046), value: MageOptions_ArmorType.MoltenArmor },
+			{ actionId: ActionId.fromSpellId(6117), value: MageOptions_ArmorType.MageArmor },
+			{ actionId: ActionId.fromSpellId(30482), value: MageOptions_ArmorType.MoltenArmor },
+			{ actionId: ActionId.fromSpellId(7302), value: MageOptions_ArmorType.FrostArmor },
 		],
 	});
