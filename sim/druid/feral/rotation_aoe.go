@@ -44,7 +44,7 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 	nextFfEnergy := curEnergy + float64((cat.FaerieFire.TimeToReady(sim)+cat.latency)/core.EnergyTickDuration)
 	waitForFf := (cat.FaerieFire.TimeToReady(sim) < time.Second-rotation.MaxFfDelay) && (nextFfEnergy < ffThresh) && !isClearcast
 
-	furorCap := min(20.0*float64(cat.Talents.Furor), 85)
+	furorCap := min(100.0*float64(cat.Talents.Furor)/3.0, 85)
 	flowershiftEnergy := min(furorCap, 75) - 10*cat.SpellGCD().Seconds() - 20*latencySecs
 
 	flowerEnd := time.Duration(float64(sim.CurrentTime) + float64(cat.SpellGCD()) + (2.5+2*latencySecs)*float64(time.Second))
