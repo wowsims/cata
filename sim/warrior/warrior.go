@@ -24,26 +24,26 @@ const (
 
 const SpellMaskNone int64 = 0
 const (
-	SpellMaskCostsRage     int64 = 1 << iota
-	SpellMaskSpecialAttack       = SpellMaskCostsRage | (1 << iota) // All special attacks have a rage cost
+	SpellMaskSpecialAttack int64 = 1 << iota
 
 	// Baseline abilities that don't cost rage and aren't attacks
-	SpellMaskBattleShout int64 = 1 << iota
+	SpellMaskBattleShout
 	SpellMaskBerserkerRage
 	SpellMaskCommandingShout
 	SpellMaskRecklessness
 	SpellMaskShieldWall
 
 	// Baseline abilities that cost rage but aren't attacks
-	SpellMaskDemoShout int64 = 1<<iota | SpellMaskCostsRage
+	SpellMaskDemoShout
 	SpellMaskInnerRage
 	SpellMaskShieldBlock
 
 	// Baseline special attacks
-	SpellMaskCleave int64 = 1<<iota | SpellMaskSpecialAttack
+	SpellMaskCleave
 	SpellMaskColossusSmash
 	SpellMaskExecute
 	SpellMaskHeroicStrike
+	SpellMaskHeroicThrow
 	SpellMaskOverpower
 	SpellMaskRend
 	SpellMaskRevenge

@@ -29,7 +29,7 @@ func (warrior *Warrior) RegisterColossusSmash() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
-		ClassSpellMask: SpellMaskColossusSmash,
+		ClassSpellMask: SpellMaskColossusSmash | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   20,

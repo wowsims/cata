@@ -10,10 +10,11 @@ import (
 // TODO: No patch notes for this ability, need to validate the damage and threat coefficients haven't changed
 func (warrior *Warrior) RegisterHeroicThrow() {
 	warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 57755},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 57755},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskHeroicThrow | SpellMaskSpecialAttack,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

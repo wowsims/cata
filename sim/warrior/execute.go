@@ -15,7 +15,7 @@ func (warrior *Warrior) RegisterExecuteSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskExecute,
+		ClassSpellMask: SpellMaskExecute | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   10,

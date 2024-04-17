@@ -15,7 +15,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskRend,
+		ClassSpellMask: SpellMaskRend | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   10,

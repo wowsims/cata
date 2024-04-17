@@ -35,6 +35,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.AddStatDynamic(sim, stats.Block, -25*core.BlockRatingPerBlockChance)
+
 			if extraAvoidance > 0.0 {
 				warrior.CriticalBlockChance -= extraAvoidance
 			}
