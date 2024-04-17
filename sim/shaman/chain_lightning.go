@@ -20,6 +20,13 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 421}, 0.26, time.Second*2, isElementalOverload, 0.571)
 	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, SpellMaskChainLightningOverload, SpellMaskChainLightning)
 
+	if !isElementalOverload {
+		spellConfig.Cast.CD = core.Cooldown{
+			Timer:    shaman.NewTimer(),
+			Duration: time.Second * 3,
+		}
+	}
+
 	baseDamage := 1093.0
 	numHits := int32(3)
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning) {

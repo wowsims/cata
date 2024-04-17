@@ -54,6 +54,7 @@ func (eleShaman *ElementalShaman) Initialize() {
 
 	eleShaman.registerThunderstormSpell()
 
+	// Shamanism
 	eleShaman.AddStaticMod(core.SpellModConfig{
 		ClassMask: shaman.SpellMaskLavaBurst | shaman.SpellMaskChainLightning | shaman.SpellMaskLightningBolt,
 		Kind:      core.SpellMod_CastTime_Flat,
@@ -67,11 +68,18 @@ func (eleShaman *ElementalShaman) Initialize() {
 		FloatValue: 0.36,
 	})
 
+	// Elemental Fury
 	eleShaman.AddStaticMod(core.SpellModConfig{
 		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
 		ClassMask:  shaman.SpellMaskSearingTotem | shaman.SpellMaskMagmaTotem,
 		Kind:       core.SpellMod_CritMultiplier_Pct,
 		FloatValue: 1.0,
+	})
+
+	eleShaman.AddStaticMod(core.SpellModConfig{
+		ClassMask: shaman.SpellMaskChainLightning,
+		Kind:      core.SpellMod_CastTime_Flat,
+		TimeValue: time.Second * -3,
 	})
 }
 
