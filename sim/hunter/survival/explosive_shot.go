@@ -55,7 +55,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHitAndCrit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) { // Is this the right way of doing this?
 				if result.Landed() {
@@ -63,8 +63,6 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 					dot := spell.Dot(target)
 					dot.Apply(sim)
 					dot.TickOnce(sim)
-
-					spell.DealOutcome(sim, result)
 				}
 			})
 		},

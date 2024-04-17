@@ -8,7 +8,7 @@ import (
 func (hunter *Hunter) ApplyGlyphs() {
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfArcaneShot) {
 		hunter.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			ClassMask:  HunterSpellArcaneShot,
 			FloatValue: 0.12,
 		})
