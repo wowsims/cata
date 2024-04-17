@@ -62,7 +62,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 type FeralDruid struct {
 	*druid.Druid
 
-	// Rotation FeralDruidRotation
+	Rotation FeralDruidRotation
 
 	prepopOoc         bool
 	missChance        float64

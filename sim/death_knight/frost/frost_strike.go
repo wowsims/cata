@@ -28,7 +28,7 @@ func (dk *FrostDeathKnight) registerFrostStrikeSpell() {
 		},
 	})
 
-	dk.FrostStrike = dk.GetOrRegisterSpell(core.SpellConfig{
+	dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       frostStrikeActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,

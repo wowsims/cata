@@ -18,7 +18,7 @@ func (dk *DeathKnight) CountActiveDiseases(target *core.Unit) float64 {
 	if dk.BloodPlagueSpell.Dot(target).IsActive() {
 		count++
 	}
-	if dk.Talents.EbonPlaguebringer > 0 && dk.EbonPlagueBringerAura.Get(target).IsActive() {
+	if dk.Talents.EbonPlaguebringer > 0 && dk.EbonPlagueAura.Get(target).IsActive() {
 		count++
 	}
 	return float64(count)
