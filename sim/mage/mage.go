@@ -1,11 +1,11 @@
 package mage
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 const (
@@ -19,6 +19,7 @@ var TalentTreeSizes = [3]int{21, 21, 19}
 
 type Mage struct {
 	core.Character
+	SelfBuffs
 
 	moltenArmorMod    *core.SpellMod
 	arcanePowerGCDmod *core.SpellMod
@@ -88,6 +89,11 @@ type Mage struct {
 	CritDebuffCategories core.ExclusiveCategoryArray
 }
 
+type SelfBuffs struct {
+	UseMoltenArmor bool
+	UseMageArmor   bool
+}
+
 func (mage *Mage) GetCharacter() *core.Character {
 	return &mage.Character
 }
@@ -118,8 +124,9 @@ func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
 func (mage *Mage) Initialize() {
+
+	mage.applyArmor()
 	mage.applyGlyphs()
-	mage.applyArmorChoice()
 	mage.registerArcaneBarrageSpell()
 	mage.registerArcaneBlastSpell()
 	mage.registerArcaneExplosionSpell()
@@ -155,23 +162,39 @@ func (mage *Mage) Initialize() {
 func (mage *Mage) Reset(sim *core.Simulation) {
 }
 
-func (mage *Mage) applyArmorChoice() {
-	fmt.Println(mage.Options.Armor)
+func NewMage(character *core.Character, options *proto.Player, mageOptions *proto.MageOptions) *Mage {
+	mage := &Mage{
+		Character: *character,
+		Talents:   &proto.MageTalents{},
+		Options:   mageOptions,
+	}
+
+	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+
+	mage.mirrorImage = mage.NewMirrorImage()
+	mage.flameOrb = mage.NewFlameOrb()
+	mage.EnableManaBar()
+	return mage
+}
+
+func (mage *Mage) applyArmor() {
+	// Molten Armor
 	if mage.Options.Armor == proto.MageOptions_MoltenArmor {
+		var critToAdd float64
 		if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMoltenArmor) {
-			mage.AddStaticMod(core.SpellModConfig{
-				ClassMask:  MageSpellsAllDamaging,
-				FloatValue: 7 * core.CritRatingPerCritChance,
-				Kind:       core.SpellMod_BonusCrit_Rating,
-			})
+			critToAdd = 5 * core.CritRatingPerCritChance
 		} else {
-			mage.AddStaticMod(core.SpellModConfig{
-				ClassMask:  MageSpellsAllDamaging,
-				FloatValue: 5 * core.CritRatingPerCritChance,
-				Kind:       core.SpellMod_BonusCrit_Rating,
-			})
+			critToAdd = 3 * core.CritRatingPerCritChance
 		}
-	} else if mage.Options.Armor == proto.MageOptions_MageArmor {
+		mage.AddStat(stats.SpellCrit, critToAdd)
+		core.MakePermanent(mage.RegisterAura(core.Aura{
+			Label:    "Molten Armor",
+			ActionID: core.ActionID{SpellID: 30482},
+		}))
+	}
+
+	// Mage Armor
+	if mage.Options.Armor == proto.MageOptions_MageArmor {
 		hasGlyph := mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMageArmor)
 		manaRegenPerSecond := mage.MaxMana() * core.TernaryFloat64(hasGlyph, .072, 0.06)
 		// TODO regen 3% max mana as mp5 aka 0.6% max mana per second
@@ -188,23 +211,6 @@ func (mage *Mage) applyArmorChoice() {
 			},
 		}))
 	}
-
-}
-func NewMage(character *core.Character, options *proto.Player, mageOptions *proto.MageOptions) *Mage {
-	mage := &Mage{
-		Character: *character,
-		Talents:   &proto.MageTalents{},
-		Options:   mageOptions,
-	}
-
-	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
-
-	// mage.EnableManaBar()
-
-	mage.mirrorImage = mage.NewMirrorImage()
-	mage.flameOrb = mage.NewFlameOrb()
-	mage.EnableManaBar()
-	return mage
 }
 
 /*
