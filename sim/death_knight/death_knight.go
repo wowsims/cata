@@ -92,6 +92,7 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.IcyTalons = true
 	}
 
+	// TODO: Make horn of winter dynamic
 	raidBuffs.HornOfWinter = true
 }
 
