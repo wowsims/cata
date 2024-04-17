@@ -17,7 +17,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:          35,
-			Refund:        0.4 * float64(druid.Talents.PrimalPrecision),
+			Refund:        0.8,
 			RefundMetrics: druid.PrimalPrecisionRecoveryMetrics,
 		},
 		Cast: core.CastConfig{
@@ -31,11 +31,9 @@ func (druid *Druid) registerFerociousBiteSpell() {
 		},
 
 		BonusCritRating: 0 +
-			core.TernaryFloat64(druid.HasSetBonus(ItemSetMalfurionsBattlegear, 4), 5*core.CritRatingPerCritChance, 0.0) +
-			core.TernaryFloat64(druid.AssumeBleedActive, 5*float64(druid.Talents.RendAndTear)*core.CritRatingPerCritChance, 0),
-		DamageMultiplier: (1 + 0.03*float64(druid.Talents.FeralAggression)) *
-			core.TernaryFloat64(druid.HasSetBonus(ItemSetThunderheartHarness, 4), 1.15, 1.0),
-		CritMultiplier:   druid.MeleeCritMultiplier(Cat),
+			core.TernaryFloat64(druid.AssumeBleedActive, 25.0/3.0*float64(druid.Talents.RendAndTear)*core.CritRatingPerCritChance, 0),
+		DamageMultiplier: 1 + 0.05*float64(druid.Talents.FeralAggression),
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

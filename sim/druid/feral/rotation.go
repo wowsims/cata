@@ -384,11 +384,11 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	latencySecs := cat.latency.Seconds()
 	// Allow for bearweaving if the next pending action is >= 4.5s away
-	furorCap := min(20.0*float64(cat.Talents.Furor), 85)
+	furorCap := min(100.0*float64(cat.Talents.Furor)/3.0, 85)
 	weaveEnergy := furorCap - 30 - 20*latencySecs
 
-	// With 4/5 or 5/5 Furor, force 2-GCD bearweaves whenever possible
-	if cat.Talents.Furor > 3 {
+	// With 3/3 Furor, force 2-GCD bearweaves whenever possible
+	if cat.Talents.Furor == 3 {
 		weaveEnergy -= 15.0
 
 		// Force a 3-GCD weave when stacking Lacerates for the first time
@@ -702,9 +702,6 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 		return
 	}
 
-	hasT72P := cat.HasSetBonus(druid.ItemSetDreamwalkerBattlegear, 2)
-	hasT84P := cat.HasSetBonus(druid.ItemSetNightsongBattlegear, 4)
-
 	cat.Rotation.UseRake = true
 	cat.Rotation.UseBite = true
 
@@ -715,21 +712,6 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 		cat.Rotation.FlowerWeave = true
 	}
 
-	if cat.Rotation.FlowerWeave || (cat.Rotation.BearweaveType == proto.FeralDruid_Rotation_None) {
-		if hasT84P {
-			cat.Rotation.MinRoarOffset = 34 * time.Second
-		} else {
-			cat.Rotation.MinRoarOffset = 25 * time.Second
-		}
-		cat.Rotation.BiteTime = 4 * time.Second
-	} else {
-		if hasT72P {
-			cat.Rotation.MinRoarOffset = 14 * time.Second
-		} else if hasT84P {
-			cat.Rotation.MinRoarOffset = 27 * time.Second
-		} else {
-			cat.Rotation.MinRoarOffset = 12 * time.Second
-		}
-		cat.Rotation.BiteTime = 10 * time.Second
-	}
+	cat.Rotation.MinRoarOffset = 12 * time.Second
+	cat.Rotation.BiteTime = 10 * time.Second
 }
