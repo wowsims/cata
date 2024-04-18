@@ -7,6 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 const (
