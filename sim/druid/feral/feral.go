@@ -44,8 +44,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	// //cat.maxRipTicks = cat.MaxRipTicks()
 
 	cat.EnableEnergyBar(100.0)
-
-	// cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1, MHSwingSpeed: 2.5})
+	cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1, MHSwingSpeed: 2.5})
 
 	cat.EnableAutoAttacks(cat, core.AutoAttackOptions{
 		// Base paw weapon.

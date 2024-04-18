@@ -9,8 +9,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-const SpellFlagMercilessCombat = core.SpellFlagAgentReserved1
-
 const (
 	PetSpellHitScale  = 17.0 / 8.0 * core.SpellHitRatingPerHitChance / core.MeleeHitRatingPerHitChance    // 1.7
 	PetExpertiseScale = 3.25 * core.ExpertisePerQuarterPercentReduction / core.MeleeHitRatingPerHitChance // 0.8125
@@ -26,14 +24,14 @@ const (
 	TotalDDBC = 3
 )
 
-func SetDDBC(index int, attackTable *core.AttackTable, handler core.DynamicDamageDoneByCaster) {
+func EnableDamageDoneByCaster(index int, attackTable *core.AttackTable, handler core.DynamicDamageDoneByCaster) {
 	if attackTable.DamageDoneByCasterExtraMultiplier == nil {
 		attackTable.DamageDoneByCasterExtraMultiplier = make([]core.DynamicDamageDoneByCaster, TotalDDBC)
 	}
 	attackTable.DamageDoneByCasterExtraMultiplier[index] = handler
 }
 
-func ClearDDBC(index int, attackTable *core.AttackTable) {
+func DisableDamageDoneByCaster(index int, attackTable *core.AttackTable) {
 	attackTable.DamageDoneByCasterExtraMultiplier[index] = nil
 }
 

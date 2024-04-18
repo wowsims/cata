@@ -169,8 +169,8 @@ func (druid *Druid) registerCatFormSpell() {
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.35,
-			Multiplier: (1 - 0.2*float64(druid.Talents.KingOfTheJungle)) * (1 - 0.1*float64(druid.Talents.NaturalShapeshifter)),
+			BaseCost:   0.05,
+			Multiplier: 1 - 0.1*float64(druid.Talents.NaturalShapeshifter),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -279,6 +279,7 @@ func (druid *Druid) registerBearFormSpell() {
 				druid.UpdateManaRegenRates()
 				druid.EnrageAura.Deactivate(sim)
 				druid.MaulQueueAura.Deactivate(sim)
+				druid.PulverizeAura.Deactivate(sim)
 			}
 		},
 	})
@@ -292,8 +293,8 @@ func (druid *Druid) registerBearFormSpell() {
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.35,
-			Multiplier: (1 - 0.2*float64(druid.Talents.KingOfTheJungle)) * (1 - 0.1*float64(druid.Talents.NaturalShapeshifter)),
+			BaseCost:   0.05,
+			Multiplier: 1 - 0.1*float64(druid.Talents.NaturalShapeshifter),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

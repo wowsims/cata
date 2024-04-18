@@ -739,11 +739,10 @@ func (warrior *Warrior) ApplyTalents() {
 // 		Duration: time.Second * 20,
 // 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 // 			bonusHealth = warrior.MaxHealth() * 0.3
-// 			warrior.AddStatsDynamic(sim, stats.Stats{stats.Health: bonusHealth})
-// 			warrior.GainHealth(sim, bonusHealth, healthMetrics)
+//			warrior.UpdateMaxHealth(sim, bonusHealth, healthMetrics)
 // 		},
 // 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			warrior.AddStatsDynamic(sim, stats.Stats{stats.Health: -bonusHealth})
+//			warrior.UpdateMaxHealth(sim, -bonusHealth, healthMetrics)
 // 		},
 // 	})
 

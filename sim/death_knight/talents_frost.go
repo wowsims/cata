@@ -99,10 +99,10 @@ func (dk *DeathKnight) applyMercilessCombat() {
 			Duration: core.NeverExpires,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				SetDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex], dk.mercilessCombatMultiplier)
+				EnableDamageDoneByCaster(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex], dk.mercilessCombatMultiplier)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				ClearDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex])
+				DisableDamageDoneByCaster(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex])
 			},
 		})
 		return aura
@@ -110,7 +110,7 @@ func (dk *DeathKnight) applyMercilessCombat() {
 
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:           "Merciless Combat Proc",
-		Callback:       core.CallbackOnSpellHitDealt,
+		Callback:       core.CallbackOnApplyEffects,
 		ClassSpellMask: DeathKnightSpellMercilessCombat,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if sim.IsExecutePhase35() {
@@ -228,7 +228,6 @@ func (dk *DeathKnight) applyMightOfTheFrozenWastes() {
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: []float64{0.0, 0.03, 0.6, 0.10}[dk.Talents.MightOfTheFrozenWastes],
 		ProcMask:   core.ProcMaskMelee,
-		ClassMask:  DeathKnightSpellsAll,
 	})
 
 	rpMetric := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 81331})
