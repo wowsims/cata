@@ -35,6 +35,7 @@ func (hunter *Hunter) ApplyTalents() {
 	if hunter.Talents.KillingStreak > 0 {
 		hunter.applyKillingStreak()
 	}
+
 	if hunter.Talents.Efficiency > 0 {
 		hunter.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_PowerCost_Flat,
@@ -790,18 +791,11 @@ func (hunter *Hunter) registerReadinessCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			hunter.RapidFire.CD.Reset()
-			hunter.MultiShot.CD.Reset()
 			hunter.KillShot.CD.Reset()
 			hunter.RaptorStrike.CD.Reset()
 			hunter.ExplosiveTrap.CD.Reset()
 			if hunter.KillCommand != nil {
 				hunter.KillCommand.CD.Reset()
-			}
-			if hunter.AimedShot != nil {
-				hunter.AimedShot.CD.Reset()
-			}
-			if hunter.SilencingShot != nil {
-				hunter.SilencingShot.CD.Reset()
 			}
 			if hunter.ChimeraShot != nil {
 				hunter.ChimeraShot.CD.Reset()
