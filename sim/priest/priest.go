@@ -4,6 +4,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 var TalentTreeSizes = [3]int{21, 21, 21}
@@ -200,6 +201,8 @@ func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 	}
 
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	priest.FillTalentsData(talent_trees.PriestTalentsConfig, talents)
+
 	priest.EnableManaBar()
 	priest.ShadowfiendPet = priest.NewShadowfiend()
 	return priest

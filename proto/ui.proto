@@ -201,6 +201,14 @@ message UIGem {
 	Profession required_profession = 9;
 }
 
+message UITalent {
+	int32 id = 1;
+	string baseName = 2;
+	string name = 3;
+	string spec = 4;
+	int32 maxPoints = 5;
+}
+
 message IconData {
 	int32 id = 1;
 	string name = 2;

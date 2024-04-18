@@ -164,6 +164,10 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 	case *proto.APLValue_SpellChanneledTicks:
 		return rot.newValueSpellChanneledTicks(config.GetSpellChanneledTicks())
 
+	// Talents
+	case *proto.APLValue_TalentIsKnown:
+		return rot.newValueTalentIsKnown(config.GetTalentIsKnown())
+
 	// Auras
 	case *proto.APLValue_AuraIsActive:
 		return rot.newValueAuraIsActive(config.GetAuraIsActive())

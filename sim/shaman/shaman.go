@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 var TalentTreeSizes = [3]int{19, 19, 20}
@@ -31,6 +32,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	// shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: 57960})
 
 	core.FillTalentsProto(shaman.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	shaman.FillTalentsData(talent_trees.ShamanTalentsConfig, talents)
 
 	// Add Shaman stat dependencies
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)

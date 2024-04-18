@@ -3,6 +3,7 @@ package paladin
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 const (
@@ -170,6 +171,7 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 		Talents:   &proto.PaladinTalents{},
 	}
 	// core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
+	paladin.FillTalentsData(talent_trees.PaladinTalentsConfig, talentsStr)
 
 	// // This is used to cache its effect in talents.go
 	// paladin.HasTuralyonsOrLiadrinsBattlegear2Pc = paladin.HasSetBonus(ItemSetTuralyonsBattlegear, 2)

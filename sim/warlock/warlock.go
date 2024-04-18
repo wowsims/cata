@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 var TalentTreeSizes = [3]int{18, 19, 19}
@@ -165,6 +166,8 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 		Options:   warlockOptions,
 	}
 	// core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	warlock.FillTalentsData(talent_trees.WarlockTalentsConfig, options.TalentsString)
+
 	// warlock.EnableManaBar()
 
 	// warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
