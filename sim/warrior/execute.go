@@ -40,16 +40,15 @@ func (warrior *Warrior) RegisterExecuteSpell() {
 
 			// Sudden Death: Keep X rage after using execute
 			// Adjust extra rage spend to hit this floor
-			rageFloorAdjustment := 0.0
-			if minRageAfterExecute > 0 {
-				rageAfterSpend := availableRage - extraRage
-				if rageAfterSpend < float64(minRageAfterExecute) {
-					rageFloorAdjustment = minRageAfterExecute - rageAfterSpend
-				}
-			}
 
-			spell.Unit.SpendRage(sim, extraRage-rageFloorAdjustment, rageMetrics)
+			spell.Unit.SpendRage(sim, extraRage, rageMetrics)
 			rageMetrics.Events--
+
+			rageAfterSpend := spell.Unit.CurrentRage()
+			if rageAfterSpend < minRageAfterExecute {
+				spell.Unit.AddRage(sim, minRageAfterExecute-rageAfterSpend, rageMetrics)
+				rageMetrics.Events--
+			}
 
 			ap := spell.MeleeAttackPower()
 			baseDamage := 10.0 + (ap * 0.437)

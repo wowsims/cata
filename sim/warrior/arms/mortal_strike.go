@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/warrior"
 )
 
-func (war *ArmsWarrior) RegisterMortalStrikeSpell() {
+func (war *ArmsWarrior) RegisterMortalStrike() {
 	war.mortalStrike = war.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 12294},
 		SpellSchool:    core.SpellSchoolPhysical,

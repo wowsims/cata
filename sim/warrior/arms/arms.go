@@ -141,6 +141,7 @@ func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {
 func (war *ArmsWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.RegisterSpecializationEffects()
+	war.RegisterMortalStrike()
 }
 
 func (war *ArmsWarrior) Reset(sim *core.Simulation) {

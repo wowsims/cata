@@ -71,6 +71,7 @@ func (warrior *Warrior) applyBattleTrance(triggerSpellMask int64, effectSpellMas
 			FloatValue: -5,
 		})
 
+		var lastTriggertime int64 = 0
 		btAura := warrior.RegisterAura(core.Aura{
 			Label:    "Battle Trance",
 			ActionID: core.ActionID{SpellID: 12964},
@@ -79,7 +80,7 @@ func (warrior *Warrior) applyBattleTrance(triggerSpellMask int64, effectSpellMas
 				btMod.Activate()
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.ClassSpellMask&affectedSpellMask != 0 {
+				if spell.ClassSpellMask&affectedSpellMask != 0 && lastTriggertime != int64(sim.CurrentTime) {
 					aura.Deactivate(sim)
 				}
 			},
@@ -106,6 +107,7 @@ func (warrior *Warrior) applyBattleTrance(triggerSpellMask int64, effectSpellMas
 
 				if sim.Proc(procChance, "Battle Trance Trigger") {
 					aura.Icd.Use(sim)
+					lastTriggertime = int64(sim.CurrentTime)
 					btAura.Activate(sim)
 				}
 			},
@@ -215,28 +217,28 @@ func (warrior *Warrior) applyBloodAndThunder() {
 	// TODO: check
 	// - does this refresh rend on the primary target
 	// - do the extra rends copy the initial snapshot of the main rend or does it resnapshot all of them
+
 	if warrior.Talents.BloodAndThunder > 0 {
 		procChance := 0.5 * float64(warrior.Talents.BloodAndThunder)
-
+		var lastAppliedTime int64 = -1
 		core.MakePermanent(warrior.RegisterAura(core.Aura{
-			Label:    "Blood and Thunder Trigger",
-			ActionID: core.ActionID{SpellID: 84615},
+			Label: "Blood and Thunder Trigger",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if (spell.ClassSpellMask&SpellMaskThunderClap) != 0 && result.Target.HasActiveAuraWithTag("Rend") && sim.Proc(procChance, "Blood and Thunder") {
 
 					// If the rend we're checking was applied this iteration, skip to avoid an explosion of B&T procs
 					// (8 targets, Rend T1, TClap hits T1 + B&T applies Rend to 7 other targets, TClap hits T2 + applies Rend to 7 other targets, etc...)
-					primaryRend := warrior.Rend.Dot(result.Target)
-					if primaryRend.ActionID.Tag == int32(sim.CurrentTime) {
+					if lastAppliedTime == int64(sim.CurrentTime) {
 						return
 					}
 
 					// For now - refresh the initial rend and treat the others as brand-new applications (they take their own snapshots)
 					for _, target := range sim.Encounter.TargetUnits {
 						rend := warrior.Rend.Dot(target)
-						if !rend.IsActive() || rend.ActionID.Tag != int32(sim.CurrentTime) {
-							rend.ActionID.Tag = int32(sim.CurrentTime)
+						if !rend.IsActive() {
+							lastAppliedTime = int64(sim.CurrentTime)
 							rend.Apply(sim)
+							rend.TickOnce(sim)
 						}
 					}
 				}
