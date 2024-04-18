@@ -52,6 +52,13 @@ func (druid *Druid) registerMangleBearSpell() {
 			if druid.BerserkAura.IsActive() {
 				spell.CD.Reset()
 			}
+
+			// Preferentially consume Berserk procs over Clearcasting procs
+			if druid.BerserkProcAura.IsActive() {
+				druid.BerserkProcAura.Deactivate(sim)
+			} else if druid.ClearcastingAura.IsActive() {
+				druid.ClearcastingAura.Deactivate(sim)
+			}
 		},
 
 		RelatedAuras: []core.AuraArray{mangleAuras},

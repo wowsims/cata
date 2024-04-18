@@ -14,13 +14,8 @@ func (druid *Druid) registerLacerateSpell() {
 		initialDamage += 8
 	}
 
-	initialDamageMul := 1 *
-		core.TernaryFloat64(druid.HasSetBonus(ItemSetLasherweaveBattlegear, 2), 1.2, 1) *
-		core.TernaryFloat64(druid.HasSetBonus(ItemSetDreamwalkerBattlegear, 2), 1.05, 1)
-
-	tickDamageMul := 1 *
-		core.TernaryFloat64(druid.HasSetBonus(ItemSetLasherweaveBattlegear, 2), 1.2, 1) *
-		core.TernaryFloat64(druid.HasSetBonus(ItemSetMalfurionsBattlegear, 2), 1.05, 1)
+	initialDamageMul := 1.0
+	tickDamageMul := 1.0
 
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48568},
@@ -29,7 +24,7 @@ func (druid *Druid) registerLacerateSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(druid.Talents.ShreddingAttacks),
+			Cost:   15,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -40,7 +35,7 @@ func (druid *Druid) registerLacerateSpell() {
 		},
 
 		DamageMultiplier: initialDamageMul,
-		CritMultiplier:   druid.MeleeCritMultiplier(Bear),
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 0.5,
 		// FlatThreatBonus:  515.5, // Handled below
 
@@ -61,14 +56,14 @@ func (druid *Druid) registerLacerateSpell() {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 					dot.Spell.DamageMultiplier = tickDamageMul
 					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if druid.Talents.PrimalGore {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+
+				if (druid.BerserkProcAura != nil) && sim.Proc(0.5, "Berserk") {
+					druid.BerserkProcAura.Activate(sim)
 				}
 			},
 		},
