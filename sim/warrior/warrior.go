@@ -15,11 +15,10 @@ type WarriorInputs struct {
 }
 
 const (
-	SpellFlagWhirlwindOH = core.SpellFlagAgentReserved1
-	SpellFlagBleed       = core.SpellFlagAgentReserved2
-	ArmsTree             = 0
-	FuryTree             = 1
-	ProtTree             = 2
+	SpellFlagBleed = core.SpellFlagAgentReserved1
+	ArmsTree       = 0
+	FuryTree       = 1
+	ProtTree       = 2
 )
 
 const SpellMaskNone int64 = 0
@@ -56,6 +55,9 @@ const (
 	// Next available bit for spec implementations to start their own mask lists on
 	SpellMaskSpecStartIndex int64 = iota
 )
+
+const EnableOverpowerTag = "EnableOverpower"
+const EnrageTag = "EnrageEffect"
 
 type Warrior struct {
 	core.Character

@@ -186,6 +186,11 @@ const (
 	// Uses TimeValue
 	SpellMod_Cooldown_Flat
 
+	// Increases or decreases spell.CD.Duration by % amount
+	// Not safe to use with SpellMod_Cooldown_Flat
+	// Uses FloatValue
+	SpellMod_Cooldown_Pct
+
 	// Will increase the CritMultiplier. +100% = 1.0
 	// Uses FloatValue
 	SpellMod_CritMultiplier_Pct
@@ -239,6 +244,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_Cooldown_Flat: {
 		Apply:  applyCooldownFlat,
 		Remove: removeCooldownFlat,
+	},
+
+	SpellMod_Cooldown_Pct: {
+		Apply:  applyCooldownPct,
+		Remove: removeCooldownPct,
 	},
 
 	SpellMod_CritMultiplier_Pct: {
@@ -315,6 +325,14 @@ func applyCooldownFlat(mod *SpellMod, spell *Spell) {
 
 func removeCooldownFlat(mod *SpellMod, spell *Spell) {
 	spell.CD.Duration -= mod.timeValue
+}
+
+func applyCooldownPct(mod *SpellMod, spell *Spell) {
+	spell.CD.Duration *= time.Duration(1.0 - mod.floatValue)
+}
+
+func removeCooldownPct(mod *SpellMod, spell *Spell) {
+	spell.CD.Duration /= time.Duration(1.0 - mod.floatValue)
 }
 
 func applyCritMultiplier(mod *SpellMod, spell *Spell) {

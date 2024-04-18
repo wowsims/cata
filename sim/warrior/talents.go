@@ -7,8 +7,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-const EnableOverpowerTag = "EnableOverpower"
-
 // Applies the effects of "common" talents: talents in the first two rows of each tree that any spec could theoretically take
 // Because cata restricts you to 10 points in a different tree, anything more is inaccessible. The rest of the trees are handled in each
 // spec's implementation
@@ -182,12 +180,18 @@ func (warrior *Warrior) applyIncite() {
 		FloatValue: 200.0 * core.CritRatingPerCritChance, // This is actually how Incite is implemented
 	})
 
+	var lastTriggerTime int64 = 0
 	inciteAura := warrior.RegisterAura(core.Aura{
 		Label:    "Incite",
 		ActionID: core.ActionID{SpellID: 86627},
 		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			inciteMod.Activate()
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if (spell.ClassSpellMask&SpellMaskHeroicStrike) != 0 && result.DidCrit() && lastTriggerTime != int64(sim.CurrentTime) {
+				aura.Deactivate(sim)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			inciteMod.Deactivate()
@@ -199,12 +203,9 @@ func (warrior *Warrior) applyIncite() {
 		Label: "Incite Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if (spell.ClassSpellMask & SpellMaskHeroicStrike) != 0 {
-				if result.DidCrit() {
-					if inciteAura.IsActive() {
-						// Deactivate the buff aura from here rather than its own OnSpellHitDealt so we don't get weird order-dependent behavior
-						// where the aura is removed and then immediately reprocced by its crit
-						inciteAura.Deactivate(sim)
-					} else if sim.Proc(procChance, "Incite Trigger") {
+				if result.DidCrit() && !inciteAura.IsActive() {
+					if sim.Proc(procChance, "Incite Trigger") {
+						lastTriggerTime = int64(sim.CurrentTime)
 						inciteAura.Activate(sim)
 					}
 				}

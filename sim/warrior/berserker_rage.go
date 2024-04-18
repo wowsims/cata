@@ -19,6 +19,7 @@ func (warrior *Warrior) RegisterBerserkerRageSpell() {
 
 	warrior.BerserkerRageAura = warrior.RegisterAura(core.Aura{
 		Label:    "Berserker Rage",
+		Tag:      EnrageTag,
 		ActionID: actionID,
 		Duration: time.Second * 10,
 		// TODO: rage from damage taken multiplier

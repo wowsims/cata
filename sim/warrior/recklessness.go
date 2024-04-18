@@ -31,14 +31,14 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 
 	reckSpell := warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMCD,
 		ClassSpellMask: SpellMaskRecklessness,
 
+		RageCost: core.RageCostOptions{
+			Cost: 0,
+		},
+
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: 0,
-			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
 				Duration: time.Minute * 5,

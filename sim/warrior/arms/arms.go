@@ -147,5 +147,4 @@ func (war *ArmsWarrior) Initialize() {
 func (war *ArmsWarrior) Reset(sim *core.Simulation) {
 	war.Warrior.Reset(sim)
 	war.BattleStanceAura.Activate(sim)
-	war.Stance = warrior.BattleStance
 }
