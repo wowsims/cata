@@ -205,10 +205,10 @@ func init() {
 				MaxStacks: 5,
 
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					SetDDBC(DDBCRuneOfRazorice, character.AttackTables[aura.Unit.UnitIndex], handler)
+					EnableDamageDoneByCaster(DDBCRuneOfRazorice, character.AttackTables[aura.Unit.UnitIndex], handler)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					ClearDDBC(DDBCRuneOfRazorice, character.AttackTables[aura.Unit.UnitIndex])
+					DisableDamageDoneByCaster(DDBCRuneOfRazorice, character.AttackTables[aura.Unit.UnitIndex])
 				},
 			})
 		})
