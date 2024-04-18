@@ -88,15 +88,10 @@ func (fdk *FrostDeathKnight) ApplyTalents() {
 	}))
 
 	// Icy Talons
+	fdk.PseudoStats.MeleeSpeedMultiplier *= 1.2
 	core.MakePermanent(fdk.GetOrRegisterAura(core.Aura{
 		Label:    "Icy Talons" + fdk.Label,
 		ActionID: core.ActionID{SpellID: 50887},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			fdk.MultiplyAttackSpeed(sim, 1.2)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			fdk.MultiplyAttackSpeed(sim, 1/1.2)
-		},
 	}))
 
 	// Blood of the North
