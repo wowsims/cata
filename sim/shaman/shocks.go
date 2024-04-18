@@ -101,12 +101,11 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 	shaman.FlameShock = shaman.RegisterSpell(config)
 }
 
-// TODO: need base damage
 func (shaman *Shaman) registerFrostShockSpell(shockTimer *core.Timer) {
 	config := shaman.newShockSpellConfig(8056, core.SpellSchoolFrost, 0.18, shockTimer, 0.386)
 	config.ThreatMultiplier *= 2
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		spell.CalcAndDealDamage(sim, target, sim.Roll(812, 858), spell.OutcomeMagicHitAndCrit)
+		spell.CalcAndDealDamage(sim, target, sim.Roll(848, 897), spell.OutcomeMagicHitAndCrit)
 	}
 
 	shaman.FrostShock = shaman.RegisterSpell(config)

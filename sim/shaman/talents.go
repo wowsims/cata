@@ -164,10 +164,10 @@ func (shaman *Shaman) applyElementalFocus() {
 				spell.CostMultiplier -= 0.4
 			}
 			if oathBonus > 1 {
-				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= oathBonus
-				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= oathBonus
-				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= oathBonus
-				shaman.PseudoStats.DamageDealtMultiplier *= oathBonus
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= oathBonus
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= oathBonus
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= oathBonus
+				shaman.Earthquake.DamageMultiplierAdditive += 0.05
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -175,17 +175,14 @@ func (shaman *Shaman) applyElementalFocus() {
 				spell.CostMultiplier += 0.4
 			}
 			if oathBonus > 1 {
-				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= oathBonus
-				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= oathBonus
-				// shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= oathBonus
-				shaman.PseudoStats.DamageDealtMultiplier /= oathBonus
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= oathBonus
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= oathBonus
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= oathBonus
+				shaman.Earthquake.DamageMultiplierAdditive -= 0.05
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Flags.Matches(SpellFlagShock | SpellFlagFocusable) {
-				return
-			}
-			if spell.ActionID.Tag == 6 { // Filter LO casts
+			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || spell.ActionID.Tag == 6 {
 				return
 			}
 			aura.RemoveStack(sim)
@@ -199,7 +196,7 @@ func (shaman *Shaman) applyElementalFocus() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagShock | SpellFlagFocusable) {
+			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || spell == shaman.Earthquake {
 				return
 			}
 			if !result.Outcome.Matches(core.OutcomeCrit) {
@@ -381,8 +378,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				// TODO: Not sure if overloads also cause feedback
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if (spell == shaman.LightningBolt || spell == shaman.ChainLightning) && !eleMastSpell.CD.IsReady(sim) {
 					*eleMastSpell.CD.Timer = core.Timer(time.Duration(*eleMastSpell.CD.Timer) - time.Second*time.Duration(shaman.Talents.Feedback))
 					shaman.UpdateMajorCooldowns() // this could get expensive because it will be called all the time.
@@ -537,7 +533,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 
 	// TODO: This was 2% per talent point and max of 10% proc in wotlk. Can't find data on proc chance in cata but the talent was reduced to 3 pts. Guessing it is 3/7/10 like other talents
-	ppmm := shaman.AutoAttacks.NewPPMManager([]float64{0.0, 3.0, 7.0, 10.0}[shaman.Talents.MaelstromWeapon], core.ProcMaskMelee)
+	ppmm := shaman.AutoAttacks.NewPPMManager([]float64{0.0, 3.0, 6.0, 10.0}[shaman.Talents.MaelstromWeapon], core.ProcMaskMelee)
 	// This aura is hidden, just applies stacks of the proc aura.
 	shaman.RegisterAura(core.Aura{
 		Label:    "MaelstromWeapon",
