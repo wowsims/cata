@@ -45,3 +45,55 @@ func (frostMage *FrostMage) GetMage() *mage.Mage {
 func (frostMage *FrostMage) Reset(sim *core.Simulation) {
 	frostMage.Mage.Reset(sim)
 }
+
+func (frostMage *FrostMage) Initialize() {
+	frostMage.Mage.Initialize()
+
+	//frostMage.registerWaterElementalSpell()
+}
+
+func (frostMage *FrostMage) ApplyFrostSpecInnate() {
+
+	// Frost  Specialization Bonus
+
+	frostMage.AddStaticMod(core.SpellModConfig{
+		School:     core.SpellSchoolFrost,
+		FloatValue: 0.25,
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	frostMage.AddStaticMod(core.SpellModConfig{
+		ClassMask:  mage.MageSpellFrostbolt,
+		FloatValue: 0.15,
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	// Frost Mastery Bonus
+
+	frostMasteryMod := frostMage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  mage.MageSpellIceLance | mage.MageSpellDeepFreeze,
+		FloatValue: frostMage.GetMasteryBonus(),
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	core.MakePermanent(frostMage.GetOrRegisterAura(core.Aura{
+		Label:    "Frostburn",
+		ActionID: core.ActionID{SpellID: 76595},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			frostMasteryMod.UpdateFloatValue(frostMage.GetMasteryBonus())
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			frostMasteryMod.Deactivate()
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if frostMage.FingersOfFrostAura.IsActive() && (spell == frostMage.IceLance || spell == frostMage.DeepFreeze) {
+				frostMasteryMod.Activate()
+			}
+		},
+	}))
+
+}
+
+func (frostMage *FrostMage) GetMasteryBonus() float64 {
+	return (.05 + 0.025*frostMage.GetMasteryPoints())
+}

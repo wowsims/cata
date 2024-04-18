@@ -19,7 +19,6 @@ var TalentTreeSizes = [3]int{21, 21, 19}
 
 type Mage struct {
 	core.Character
-	SelfBuffs
 
 	moltenArmorMod    *core.SpellMod
 	arcanePowerGCDmod *core.SpellMod
@@ -53,6 +52,7 @@ type Mage struct {
 	FlameOrb                *core.Spell
 	FlameOrbExplode         *core.Spell
 	Flamestrike             *core.Spell
+	Freeze                  *core.Spell
 	Frostbolt               *core.Spell
 	FrostfireBolt           *core.Spell
 	FrostfireOrb            *core.Spell
@@ -89,11 +89,6 @@ type Mage struct {
 	CritDebuffCategories core.ExclusiveCategoryArray
 }
 
-type SelfBuffs struct {
-	UseMoltenArmor bool
-	UseMageArmor   bool
-}
-
 func (mage *Mage) GetCharacter() *core.Character {
 	return &mage.Character
 }
@@ -123,11 +118,17 @@ func (mage *Mage) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
+func (mage *Mage) ApplyTalents() {
+
+	mage.ApplyArcaneTalents()
+	mage.ApplyFireTalents()
+	mage.ApplyFrostTalents()
+}
+
 func (mage *Mage) Initialize() {
 
 	mage.applyArmor()
 	mage.applyGlyphs()
-	mage.registerArcaneBarrageSpell()
 	mage.registerArcaneBlastSpell()
 	mage.registerArcaneExplosionSpell()
 	mage.registerArcaneMissilesSpell()
@@ -141,7 +142,6 @@ func (mage *Mage) Initialize() {
 	mage.registerFrostboltSpell()
 	mage.registerFrostfireOrbSpell()
 	mage.registerIceLanceSpell()
-	mage.registerPyroblastSpell()
 	mage.registerScorchSpell()
 	mage.registerLivingBombSpell()
 	mage.registerFrostfireBoltSpell()
@@ -219,14 +219,6 @@ func (mage *Mage) ArcaneMasteryValue() float64 {
 	return mage.GetArcaneMasteryBonus() * (mage.CurrentMana() / mage.MaxMana())
 }
 
-func (mage *Mage) GetFireMasteryBonus() float64 {
-	return (1.22 + 0.028*mage.GetMasteryPoints())
-}
-
-func (mage *Mage) GetFrostMasteryBonus() float64 {
-	return (1.05 + 0.025*mage.GetMasteryPoints())
-}
-
 // Agent is a generic way to access underlying mage on any of the agents.
 type MageAgent interface {
 	GetMage() *Mage
@@ -274,6 +266,10 @@ func (mage *Mage) applyArcaneMissileProc() {
 			}
 		},
 	})
+}
+
+func (mage *Mage) hasChillEffect(spell *core.Spell) bool {
+	return spell == mage.Frostbolt || spell == mage.FrostfireBolt || (spell == mage.Blizzard && mage.Talents.IceShards > 0)
 }
 
 const (

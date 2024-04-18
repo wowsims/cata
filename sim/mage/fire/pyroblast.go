@@ -1,18 +1,16 @@
-package mage
+package fire
 
 import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/mage"
 )
 
-func (mage *Mage) registerPyroblastSpell() {
-	if mage.Spec != (proto.Spec_SpecFireMage) {
-		return
-	}
+func (Mage *FireMage) registerPyroblastSpell() {
 
-	hasT8_4pc := mage.HasSetBonus(ItemSetKirinTorGarb, 4)
+	hasT8_4pc := Mage.HasSetBonus(mage.ItemSetKirinTorGarb, 4)
+	const T84PcProcChance = 0.2
 
 	var pyroblastDot *core.Spell
 	/* implement when debuffs updated
@@ -29,13 +27,13 @@ func (mage *Mage) registerPyroblastSpell() {
 		ActionID:       core.ActionID{SpellID: 11366},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
-		ClassSpellMask: MageSpellPyroblast,
+		Flags:          mage.SpellFlagMage | mage.HotStreakSpells | core.SpellFlagAPL,
+		ClassSpellMask: mage.MageSpellPyroblast,
 		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.17,
-			Multiplier: core.TernaryFloat64(mage.HotStreakAura.IsActive(), 0, 1),
+			Multiplier: core.TernaryFloat64(Mage.HotStreakAura.IsActive(), 0, 1),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -43,10 +41,10 @@ func (mage *Mage) registerPyroblastSpell() {
 				CastTime: time.Millisecond * 3500,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				if mage.HotStreakAura.IsActive() {
+				if Mage.HotStreakAura.IsActive() {
 					cast.CastTime = 0
-					if !hasT8_4pc || sim.Proc(T84PcProcChance, "MageT84PC") {
-						mage.HotStreakAura.Deactivate(sim)
+					if !hasT8_4pc || sim.Proc(mage.T84PcProcChance, "MageT84PC") {
+						Mage.HotStreakAura.Deactivate(sim)
 					}
 				}
 			},
@@ -54,8 +52,8 @@ func (mage *Mage) registerPyroblastSpell() {
 
 		DamageMultiplier: 1,
 		DamageMultiplierAdditive: 1 +
-			.01*float64(mage.Talents.FirePower),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+			.01*float64(Mage.Talents.FirePower),
+		CritMultiplier:   Mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 1.545,
 		ThreatMultiplier: 1,
 
@@ -67,7 +65,7 @@ func (mage *Mage) registerPyroblastSpell() {
 			TickLength:       time.Second * 3,
 			BonusCoefficient: 0.180,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 0.25 * mage.ScalingBaseDamage
+				dot.SnapshotBaseDamage = 0.25 * Mage.ScalingBaseDamage
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -76,7 +74,7 @@ func (mage *Mage) registerPyroblastSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1.5 * mage.ScalingBaseDamage
+			baseDamage := 1.5 * Mage.ScalingBaseDamage
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
@@ -92,9 +90,9 @@ func (mage *Mage) registerPyroblastSpell() {
 		},
 	}
 
-	mage.Pyroblast = mage.RegisterSpell(pyroConfig)
+	Mage.Pyroblast = Mage.RegisterSpell(pyroConfig)
 
 	dotConfig := pyroConfig
 	dotConfig.ActionID = dotConfig.ActionID.WithTag(1)
-	pyroblastDot = mage.RegisterSpell(dotConfig)
+	pyroblastDot = Mage.RegisterSpell(dotConfig)
 }
