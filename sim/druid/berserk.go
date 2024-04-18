@@ -57,9 +57,6 @@ func (druid *Druid) registerBerserkCD() {
 		Flags:    core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: time.Second,
-			},
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
 				Duration: time.Minute * 3,
