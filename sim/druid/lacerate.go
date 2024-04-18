@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (druid *Druid) registerLacerateSpell() {
@@ -34,6 +35,7 @@ func (druid *Druid) registerLacerateSpell() {
 			IgnoreHaste: true,
 		},
 
+		BonusCritRating:  core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfLacerate), 5.0 * core.CritRatingPerCritChance, 0),
 		DamageMultiplier: initialDamageMul,
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 0.5,
