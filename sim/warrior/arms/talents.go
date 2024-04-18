@@ -22,6 +22,9 @@ func (war *ArmsWarrior) ApplyTalents() {
 	war.applySuddenDeath()
 	war.applyTasteForBlood()
 	war.applyWreckingCrew()
+
+	// Apply glyphs after talents so we can modify spells added from talents
+	war.ApplyGlyphs()
 }
 
 func (war *ArmsWarrior) applyTasteForBlood() {

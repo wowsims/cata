@@ -151,8 +151,6 @@ func (warrior *Warrior) Initialize() {
 	warrior.RegisterSunderArmor()
 	warrior.RegisterThunderClapSpell()
 	warrior.RegisterWhirlwindSpell()
-
-	warrior.ApplyGlyphs()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {

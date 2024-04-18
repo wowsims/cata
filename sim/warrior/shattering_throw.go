@@ -43,7 +43,7 @@ func (warrior *Warrior) RegisterShatteringThrowCD() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.StanceMatches(BattleStance) || warrior.BattleStance.IsReady(sim) || hasGlyph
+			return warrior.StanceMatches(BattleStance) || hasGlyph
 		},
 
 		DamageMultiplier: 1,
