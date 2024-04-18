@@ -562,8 +562,8 @@ func (sim *Simulation) nextExecutePhase() {
 	sim.nextExecuteDamage = math.MaxFloat64
 
 	switch sim.executePhase {
-	case 0: // reset, starts at 100%
-		setup(100, 1.0, 1.0) // Initially, execute is active
+	case 0:
+		setup(100, 0.90, sim.Encounter.ExecuteProportion_90)
 	case 100: // initially active, waiting to deactivate at 90%
 		setup(90, 0.90, sim.Encounter.ExecuteProportion_90)
 	case 90: // at 90%, deactivate and wait for 35%
