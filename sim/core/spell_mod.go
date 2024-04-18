@@ -194,6 +194,10 @@ const (
 	// Ueses: FloatValue
 	SpellMod_CastTime_Pct
 
+	// Add/subtract time.Duration from spell's default cast time
+	// Uses: TimeValue
+	SpellMod_CastTime_Flat
+
 	// Add/subtract bonus crit rating
 	// Uses: FloatValue
 	SpellMod_BonusCrit_Rating
@@ -245,6 +249,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_CastTime_Pct: {
 		Apply:  applyCastTimePercent,
 		Remove: removeCastTimePercent,
+	},
+
+	SpellMod_CastTime_Flat: {
+		Apply:  applyCastTimeFlat,
+		Remove: removeCastTimeFlat,
 	},
 
 	SpellMod_BonusCrit_Rating: {
@@ -322,6 +331,15 @@ func applyCastTimePercent(mod *SpellMod, spell *Spell) {
 
 func removeCastTimePercent(mod *SpellMod, spell *Spell) {
 	spell.CastTimeMultiplier -= mod.floatValue
+}
+
+func applyCastTimeFlat(mod *SpellMod, spell *Spell) {
+	newTime := spell.DefaultCast.CastTime - mod.timeValue
+	spell.DefaultCast.CastTime = TernaryDuration(newTime < 0, time.Duration(0), newTime)
+}
+
+func removeCastTimeFlat(mod *SpellMod, spell *Spell) {
+	spell.DefaultCast.CastTime += mod.timeValue
 }
 
 func applyBonusCritRating(mod *SpellMod, spell *Spell) {

@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/cata/sim/warrior"
 )
 
-func (war *ArmsWarrior) RegisterBloodFrenzy() {
+func (war *ArmsWarrior) applyBloodFrenzy() {
 	if war.Talents.BloodFrenzy == 0 {
 		return
 	}

@@ -12,19 +12,28 @@ func (war *ArmsWarrior) ApplyTalents() {
 	war.Warrior.ApplyCommonTalents(SpellMaskMortalStrike, SpellMaskMortalStrike, specialAttacks, SpellMaskMortalStrike)
 
 	war.RegisterBladestorm()
-	war.RegisterBloodFrenzy()
 	war.RegisterDeadlyCalm()
-	war.RegisterSlaughter()
-	war.RegisterSuddenDeath()
 	war.RegisterSweepingStrikes()
-	war.RegisterTasteForBlood()
-	war.RegisterWreckingCrew()
+
+	war.applyBloodFrenzy()
+	war.applyImpale()
+	war.applyImprovedSlam()
+	war.applySlaughter()
+	war.applySuddenDeath()
+	war.applyTasteForBlood()
+	war.applyWreckingCrew()
 }
 
-func (war *ArmsWarrior) RegisterTasteForBlood() {
+func (war *ArmsWarrior) applyTasteForBlood() {
 	if war.Talents.TasteForBlood == 0 {
 		return
 	}
+
+	war.AddStaticMod(core.SpellModConfig{
+		ClassMask:  warrior.SpellMaskOverpower,
+		Kind:       core.SpellMod_BonusCrit_Rating,
+		FloatValue: 20.0 * float64(war.Talents.TasteForBlood) * core.CritRatingPerCritChance,
+	})
 
 	procChance := []float64{0, 0.33, 0.66, 1}[war.Talents.TasteForBlood]
 
@@ -60,7 +69,37 @@ func (war *ArmsWarrior) RegisterTasteForBlood() {
 	}))
 }
 
-func (war *ArmsWarrior) RegisterSuddenDeath() {
+func (war *ArmsWarrior) applyImpale() {
+	if war.Talents.Impale == 0 {
+		return
+	}
+
+	war.AddStaticMod(core.SpellModConfig{
+		ClassMask:  SpellMaskMortalStrike | warrior.SpellMaskSlam | warrior.SpellMaskOverpower,
+		Kind:       core.SpellMod_BonusCrit_Rating,
+		FloatValue: 0.1 * float64(war.Talents.Impale),
+	})
+}
+
+func (war *ArmsWarrior) applyImprovedSlam() {
+	if war.Talents.ImprovedSlam == 0 {
+		return
+	}
+
+	war.AddStaticMod(core.SpellModConfig{
+		ClassMask: warrior.SpellMaskSlam,
+		Kind:      core.SpellMod_CastTime_Flat,
+		TimeValue: time.Millisecond * time.Duration(-500*war.Talents.ImprovedSlam),
+	})
+
+	war.AddStaticMod(core.SpellModConfig{
+		ClassMask:  warrior.SpellMaskSlam,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.1 * float64(war.Talents.ImprovedSlam),
+	})
+}
+
+func (war *ArmsWarrior) applySuddenDeath() {
 	if war.Talents.SuddenDeath == 0 {
 		return
 	}
@@ -98,7 +137,7 @@ func (war *ArmsWarrior) TriggerSlaughter(sim *core.Simulation, target *core.Unit
 	}
 }
 
-func (war *ArmsWarrior) RegisterSlaughter() {
+func (war *ArmsWarrior) applySlaughter() {
 	if war.Talents.LambsToTheSlaughter == 0 {
 		return
 	}
@@ -127,7 +166,7 @@ func (war *ArmsWarrior) RegisterSlaughter() {
 	})
 }
 
-func (war *ArmsWarrior) RegisterWreckingCrew() {
+func (war *ArmsWarrior) applyWreckingCrew() {
 	if war.Talents.WreckingCrew == 0 {
 		return
 	}
