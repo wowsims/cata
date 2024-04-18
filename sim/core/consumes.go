@@ -522,7 +522,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}
 	} else if potionType == proto.Potions_GolembloodPotion {
 		actionID := ActionID{ItemID: 58146}
-		aura := character.NewTemporaryStatsAura("Golemblood Potion", actionID, stats.Stats{stats.Strength: 1200}, time.Second*15)
+		aura := character.NewTemporaryStatsAura("Golemblood Potion", actionID, stats.Stats{stats.Strength: 1200}, time.Second*25)
 		return MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -536,7 +536,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}
 	} else if potionType == proto.Potions_PotionOfTheTolvir {
 		actionID := ActionID{ItemID: 58145}
-		aura := character.NewTemporaryStatsAura("Potion of the Tol'vir", actionID, stats.Stats{stats.Agility: 1200}, time.Second*15)
+		aura := character.NewTemporaryStatsAura("Potion of the Tol'vir", actionID, stats.Stats{stats.Agility: 1200}, time.Second*25)
 		return MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -554,7 +554,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		// Not sure about exact functionality
 	} else if potionType == proto.Potions_VolcanicPotion {
 		actionID := ActionID{ItemID: 58091}
-		aura := character.NewTemporaryStatsAura("Volcanic Potion", actionID, stats.Stats{stats.Intellect: 1200}, time.Second*15)
+		aura := character.NewTemporaryStatsAura("Volcanic Potion", actionID, stats.Stats{stats.Intellect: 1200}, time.Second*25)
 		return MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -713,74 +713,7 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 				return character.MaxMana()-(character.CurrentMana()+totalRegen) >= 1500
 			},
 		})
-	} else if conjuredType == proto.Conjured_ConjuredFlameCap {
-		actionID := ActionID{ItemID: 22788}
 
-		flameCapProc := character.RegisterSpell(SpellConfig{
-			ActionID:    actionID,
-			ProcMask:    ProcMaskEmpty,
-			SpellSchool: SpellSchoolFire,
-
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-				spell.CalcAndDealDamage(sim, target, 40, spell.OutcomeMagicHitAndCrit)
-			},
-		})
-
-		const procChance = 0.185
-		var fireSpells []*Spell
-		character.OnSpellRegistered(func(spell *Spell) {
-			if spell.SpellSchool.Matches(SpellSchoolFire) {
-				fireSpells = append(fireSpells, spell)
-			}
-		})
-
-		flameCapAura := character.RegisterAura(Aura{
-			Label:    "Flame Cap",
-			ActionID: actionID,
-			Duration: time.Minute,
-			OnGain: func(aura *Aura, sim *Simulation) {
-				for _, spell := range fireSpells {
-					spell.BonusSpellPower += 80
-				}
-			},
-			OnExpire: func(aura *Aura, sim *Simulation) {
-				for _, spell := range fireSpells {
-					spell.BonusSpellPower -= 80
-				}
-			},
-			OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeOrRanged) {
-					return
-				}
-				if sim.RandomFloat("Flame Cap Melee") > procChance {
-					return
-				}
-
-				flameCapProc.Cast(sim, result.Target)
-			},
-		})
-
-		spell := character.RegisterSpell(SpellConfig{
-			ActionID: actionID,
-			Flags:    SpellFlagNoOnCastComplete,
-			Cast: CastConfig{
-				CD: Cooldown{
-					Timer:    character.GetConjuredCD(),
-					Duration: time.Minute * 3,
-				},
-			},
-			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-				flameCapAura.Activate(sim)
-			},
-		})
-		character.AddMajorCooldown(MajorCooldown{
-			Spell: spell,
-			Type:  CooldownTypeDPS,
-		})
 	} else if conjuredType == proto.Conjured_ConjuredHealthstone {
 		actionID := ActionID{ItemID: 36892}
 		healthMetrics := character.NewHealthMetrics(actionID)
