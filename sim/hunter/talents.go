@@ -48,6 +48,7 @@ func (hunter *Hunter) ApplyTalents() {
 			FloatValue: -(float64(hunter.Talents.Efficiency) * 2),
 		})
 	}
+	hunter.registerSicEm()
 	hunter.applyCobraStrikes()
 	hunter.applyPiercingShots()
 	hunter.applySpiritBond()
@@ -763,7 +764,42 @@ func (hunter *Hunter) applyHuntingParty() {
 		},
 	})
 }
+func (hunter *Hunter) registerSicEm() {
+	if hunter.Talents.SicEm == 0 {
+		return
+	}
 
+	actionId := core.ActionID{SpellID: 83356}
+	sicEmMod := hunter.Pet.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -(float64(hunter.Talents.SicEm) * 0.5),
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+	})
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label:    "Sic'Em Mod",
+		ActionID: actionId,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == hunter.ArcaneShot || spell == hunter.AimedShot || spell == hunter.ExplosiveShot {
+				if result.DidCrit() {
+					sicEmMod.Activate()
+				}
+			}
+		},
+	}))
+	core.MakePermanent(hunter.Pet.RegisterAura(core.Aura{
+		ActionID: actionId,
+		Label:    "Sic'Em",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask == core.ProcMaskMeleeMHSpecial {
+				if sicEmMod.IsActive {
+					sicEmMod.Deactivate()
+				}
+			}
+		},
+	}))
+
+}
 func (hunter *Hunter) registerReadinessCD() {
 	if !hunter.Talents.Readiness {
 		return

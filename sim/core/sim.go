@@ -546,6 +546,11 @@ func (sim *Simulation) advance(nextTime time.Duration) {
 		}
 	}
 }
+func (sim *Simulation) setupReverseExecute(phase int32, activeProportion float64) {
+	sim.executePhase = phase
+	// This calculates the duration for which the phase is active from the start
+	sim.nextExecuteDuration = time.Duration(activeProportion * float64(sim.Duration))
+}
 
 // nextExecutePhase updates nextExecuteDuration and nextExecuteDamage based on executePhase.
 func (sim *Simulation) nextExecutePhase() {
@@ -562,17 +567,17 @@ func (sim *Simulation) nextExecutePhase() {
 	sim.nextExecuteDamage = math.MaxFloat64
 
 	switch sim.executePhase {
-	case 0:
-		setup(100, 0.90, sim.Encounter.ExecuteProportion_90)
-	case 100: // initially active, waiting to deactivate at 90%
-		setup(90, 0.90, sim.Encounter.ExecuteProportion_90)
-	case 90: // at 90%, deactivate and wait for 35%
-		setup(35, 0.35, sim.Encounter.ExecuteProportion_35)
-	case 35: // at 35%, waiting for 25%
-		setup(25, 0.25, sim.Encounter.ExecuteProportion_25)
-	case 25: // at 25%, waiting for 20%
-		setup(20, 0.20, sim.Encounter.ExecuteProportion_20)
-	case 20: // at 20%, done waiting
+	case 0: // initially waiting for 90%
+		//setup(100, 0.90, sim.Encounter.ExecuteProportion_90)
+		sim.executePhase = 100
+		sim.nextExecuteDuration = time.Duration(0.10 * float64(sim.GetMaxDuration()))
+	case 100: // at 90%, waiting for 35%
+		setup(90, 0.35, sim.Encounter.ExecuteProportion_35)
+	case 90: // at 35%, waiting for 25%
+		setup(35, 0.25, sim.Encounter.ExecuteProportion_25)
+	case 35: // at 25%, waiting for 20%
+		setup(25, 0.20, sim.Encounter.ExecuteProportion_20)
+	case 25: // at 20%, done waiting
 		sim.executePhase = 20 // could also be used for end of fight handling
 	default:
 		panic(fmt.Sprintf("executePhase = %d invalid", sim.executePhase))
