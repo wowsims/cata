@@ -113,7 +113,7 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueCurrentRage(config.GetCurrentRage())
 	case *proto.APLValue_CurrentEnergy:
 		return rot.newValueCurrentEnergy(config.GetCurrentEnergy())
-		case *proto.APLValue_CurrentFocus:
+	case *proto.APLValue_CurrentFocus:
 		return rot.newValueCurrentFocus(config.GetCurrentFocus())
 	case *proto.APLValue_CurrentComboPoints:
 		return rot.newValueCurrentComboPoints(config.GetCurrentComboPoints())
@@ -135,10 +135,6 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueNextRuneCooldown(config.GetNextRuneCooldown())
 	case *proto.APLValue_RuneSlotCooldown:
 		return rot.newValueRuneSlotCooldown(config.GetRuneSlotCooldown())
-	case *proto.APLValue_RuneGrace:
-		return rot.newValueRuneGrace(config.GetRuneGrace())
-	case *proto.APLValue_RuneSlotGrace:
-		return rot.newValueRuneSlotGrace(config.GetRuneSlotGrace())
 
 	// GCD
 	case *proto.APLValue_GcdIsReady:
@@ -189,6 +185,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueDotIsActive(config.GetDotIsActive())
 	case *proto.APLValue_DotRemainingTime:
 		return rot.newValueDotRemainingTime(config.GetDotRemainingTime())
+	case *proto.APLValue_DotTickFrequency:
+		return rot.newValueDotTickFrequency(config.GetDotTickFrequency())
 
 	// Sequences
 	case *proto.APLValue_SequenceIsComplete:

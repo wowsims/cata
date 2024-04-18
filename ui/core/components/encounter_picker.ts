@@ -192,7 +192,7 @@ class AdvancedEncounterModal extends BaseModal {
 
 		new EnumPicker<Encounter>(this.header as HTMLElement, this.encounter, {
 			label: 'Encounter',
-			extraCssClasses: ['encounter-picker', 'mb-0', 'pe-2'],
+			extraCssClasses: ['encounter-picker', 'mb-0', 'pe-2', 'order-first'],
 			values: [{ name: 'Custom', value: -1 }].concat(
 				presetEncounters.map((pe, i) => {
 					return {
@@ -646,6 +646,19 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 			getValue: (encounter: Encounter) => encounter.getExecuteProportion35() * 100,
 			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 				encounter.setExecuteProportion35(eventID, newValue / 100);
+			},
+			enableWhen: _obj => {
+				return !encounter.getUseHealth();
+			},
+		});
+		new NumberPicker(executeGroup, encounter, {
+			label: 'Execute Duration 90 (%)',
+			labelTooltip:
+				'Percentage of the total encounter duration, for which the targets will be considered to be in range (>= 90% HP) for the purpose of effects like Hunter Careful Aim',
+			changedEvent: (encounter: Encounter) => encounter.changeEmitter,
+			getValue: (encounter: Encounter) => encounter.getExecuteProportion90() * 100,
+			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
+				encounter.setExecuteProportion90(eventID, newValue / 100);
 			},
 			enableWhen: _obj => {
 				return !encounter.getUseHealth();

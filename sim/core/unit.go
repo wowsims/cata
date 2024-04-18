@@ -1,6 +1,7 @@
 package core
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
@@ -28,6 +29,8 @@ const (
 )
 
 type DynamicDamageTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult)
+
+type GetSpellpowerValue func(spell *Spell) float64
 
 // Unit is an abstraction of a Character/Boss/Pet/etc, containing functionality
 // shared by all of them.
@@ -61,6 +64,9 @@ type Unit struct {
 	// How far this unit is from its target(s). Measured in yards, this is used
 	// for calculating spell travel time for certain spells.
 	DistanceFromTarget float64
+
+	// How much uptime of Dark Intent the unit will have
+	DarkIntentUptimePercent float64
 
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.
@@ -157,6 +163,14 @@ type Unit struct {
 
 	// Used for reacting to mastery stat changes if a spec needs it
 	OnMasteryStatChanged []OnMasteryStatChanged
+
+	GetSpellPowerValue GetSpellpowerValue
+}
+
+func (unit *Unit) getSpellpowerValueImpl(spell *Spell) float64 {
+	return unit.stats[stats.SpellPower] +
+		spell.BonusSpellPower +
+		spell.Unit.PseudoStats.MobTypeSpellPower
 }
 
 // Units can be disabled for several reasons:
@@ -200,6 +214,9 @@ func (unit *Unit) GetStats() stats.Stats {
 func (unit *Unit) GetStat(stat stats.Stat) float64 {
 	return unit.stats[stat]
 }
+func (unit *Unit) GetMasteryPoints() float64 {
+	return MasteryRatingToMasteryPoints(unit.GetStat(stats.Mastery))
+}
 
 func (unit *Unit) AddStats(stat stats.Stats) {
 	if unit.Env != nil && unit.Env.IsFinalized() {
@@ -212,6 +229,49 @@ func (unit *Unit) AddStat(stat stats.Stat, amount float64) {
 		panic("Already finalized, use AddStatDynamic instead!")
 	}
 	unit.stats[stat] += amount
+}
+
+// Adds only the highest current stat of the unit from the given stat options
+func (unit *Unit) AddHighestStat(stat stats.Stats) {
+	if unit.Env != nil && unit.Env.IsFinalized() {
+		panic("Already finalized, use AddHighestStatDynamic instead!")
+	}
+
+	highestStatIndex := -1
+	for i := 0; i < int(stats.Len); i++ {
+		if highestStatIndex == -1 && stat[i] > 0 {
+			highestStatIndex = i
+		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
+			highestStatIndex = i
+		}
+	}
+
+	if highestStatIndex == -1 {
+		// this should only occur if stat was the empt stat list - so nothing todo
+		return
+	}
+
+	unit.stats[highestStatIndex] += stat[highestStatIndex]
+}
+
+// Adds only the highest current stat of the unit from the given stat options
+func (unit *Unit) AddHighestStatDynamic(sim *Simulation, stat stats.Stats) {
+	highestStatIndex := -1
+	for i := 0; i < int(stats.Len); i++ {
+		if highestStatIndex == -1 && stat[i] > 0 {
+			highestStatIndex = i
+		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
+			highestStatIndex = i
+		}
+	}
+
+	if highestStatIndex == -1 {
+		// this should only occur if stat was the empt stat list - so nothing todo
+		return
+	}
+	bonus := stats.Stats{}
+	bonus[highestStatIndex] = stat[highestStatIndex]
+	unit.AddStatsDynamic(sim, bonus)
 }
 
 func (unit *Unit) AddDynamicDamageTakenModifier(ddtm DynamicDamageTakenModifier) {
@@ -259,6 +319,7 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 	}
 	if bonus[stats.MeleeHaste] != 0 {
 		unit.AutoAttacks.UpdateSwingTimers(sim)
+		unit.runicPowerBar.updateRegenTimes(sim)
 	}
 	if bonus[stats.SpellHaste] != 0 {
 		unit.updateCastSpeed()
@@ -344,7 +405,7 @@ func (unit *Unit) ApplyCastSpeedForSpell(dur time.Duration, spell *Spell) time.D
 }
 
 func (unit *Unit) SwingSpeed() float64 {
-	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / (unit.PseudoStats.MeleeHasteRatingPerHastePercent * 100)))
+	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100)))
 }
 
 func (unit *Unit) Armor() float64 {
@@ -387,6 +448,15 @@ func (unit *Unit) MultiplyAttackSpeed(sim *Simulation, amount float64) {
 		pet.dynamicMeleeSpeedInheritance(amount)
 	}
 	unit.AutoAttacks.UpdateSwingTimers(sim)
+}
+
+// Helper for multiplying resource generation speed
+func (unit *Unit) MultiplyResourceRegenSpeed(sim *Simulation, amount float64) {
+	if unit.HasRunicPowerBar() {
+		unit.MultiplyRuneRegenSpeed(sim, amount)
+	} else if unit.HasFocusBar() {
+		unit.MultiplyFocusRegenSpeed(sim, amount)
+	}
 }
 
 func (unit *Unit) AddBonusRangedHitRating(amount float64) {
@@ -440,6 +510,10 @@ func (unit *Unit) finalize() {
 
 	unit.AutoAttacks.finalize()
 
+	if unit.GetSpellPowerValue == nil {
+		unit.GetSpellPowerValue = unit.getSpellpowerValueImpl
+	}
+
 	for _, spell := range unit.Spellbook {
 		spell.finalize()
 	}
@@ -456,7 +530,6 @@ func (unit *Unit) reset(sim *Simulation, _ Agent) {
 	unit.stats = unit.initialStats
 	unit.PseudoStats = unit.initialPseudoStats
 	unit.auraTracker.reset(sim)
-	// Spellbook needs to be reset AFTER auras.
 	for _, spell := range unit.Spellbook {
 		spell.reset(sim)
 	}
@@ -555,4 +628,40 @@ func (unit *Unit) GetMetadata() *proto.UnitMetadata {
 
 func (unit *Unit) ExecuteCustomRotation(sim *Simulation) {
 	panic("Unimplemented ExecuteCustomRotation")
+}
+
+func (unit *Unit) GetTotalDodgeChanceAsDefender(atkTable *AttackTable) float64 {
+	chance := unit.PseudoStats.BaseDodge +
+		atkTable.BaseDodgeChance +
+		unit.GetDiminishedDodgeChance()
+	return math.Max(chance, 0.0)
+}
+
+func (unit *Unit) GetTotalParryChanceAsDefender(atkTable *AttackTable) float64 {
+	chance := unit.PseudoStats.BaseParry +
+		atkTable.BaseParryChance +
+		unit.GetDiminishedParryChance()
+	return math.Max(chance, 0.0)
+}
+
+func (unit *Unit) GetTotalChanceToBeMissedAsDefender(atkTable *AttackTable) float64 {
+	chance := atkTable.BaseMissChance +
+		unit.GetDiminishedMissChance() +
+		unit.PseudoStats.ReducedPhysicalHitTakenChance
+	return math.Max(chance, 0.0)
+}
+
+func (unit *Unit) GetTotalBlockChanceAsDefender(atkTable *AttackTable) float64 {
+	chance := atkTable.BaseBlockChance +
+		unit.GetStat(stats.Block)/BlockRatingPerBlockChance/100 +
+		unit.GetStat(stats.Defense)*DefenseRatingToChanceReduction
+	return math.Max(chance, 0.0)
+}
+
+func (unit *Unit) GetTotalAvoidanceChance(atkTable *AttackTable) float64 {
+	miss := unit.GetTotalChanceToBeMissedAsDefender(atkTable)
+	dodge := unit.GetTotalDodgeChanceAsDefender(atkTable)
+	parry := unit.GetTotalParryChanceAsDefender(atkTable)
+	block := unit.GetTotalBlockChanceAsDefender(atkTable)
+	return miss + dodge + parry + block
 }

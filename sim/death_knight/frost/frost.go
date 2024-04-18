@@ -35,11 +35,8 @@ func NewFrostDeathKnight(character *core.Character, player *proto.Player) *Frost
 			StartingRunicPower: frostOptions.ClassOptions.StartingRunicPower,
 			PetUptime:          frostOptions.ClassOptions.PetUptime,
 			IsDps:              true,
-
-			UseAMS:            frostOptions.UseAms,
-			AvgAMSSuccessRate: frostOptions.AvgAmsSuccessRate,
-			AvgAMSHit:         frostOptions.AvgAmsHit,
-		}, player.TalentsString),
+			UseAMS:             false,
+		}, player.TalentsString, 0),
 	}
 
 	fdk.EnableAutoAttacks(fdk, core.AutoAttackOptions{
@@ -51,23 +48,61 @@ func NewFrostDeathKnight(character *core.Character, player *proto.Player) *Frost
 	return fdk
 }
 
-// func (fdk *FrostDeathKnight) FrostPointsInBlood() int32 {
-// 	return fdk.Talents.Butchery + fdk.Talents.Subversion + fdk.Talents.BladeBarrier + fdk.Talents.DarkConviction
-// }
-
-// func (fdk *FrostDeathKnight) FrostPointsInFrost() int32 {
-// 	return fdk.Talents.ViciousStrikes + fdk.Talents.Virulence + fdk.Talents.Epidemic + fdk.Talents.RavenousDead + fdk.Talents.Necrosis + fdk.Talents.BloodCakedBlade
-// }
-
 func (fdk *FrostDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 	return fdk.DeathKnight
 }
 
+func (fdk FrostDeathKnight) getMasteryFrostBonus() float64 {
+	return 0.16 + 0.02*fdk.GetMasteryPoints()
+}
+
 func (fdk *FrostDeathKnight) Initialize() {
 	fdk.DeathKnight.Initialize()
+
+	fdk.registerFrostStrikeSpell()
+}
+
+func (fdk *FrostDeathKnight) ApplyTalents() {
+	fdk.DeathKnight.ApplyTalents()
+
+	masteryMod := fdk.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: fdk.getMasteryFrostBonus(),
+		ClassMask:  death_knight.DeathKnightSpellsAll,
+		School:     core.SpellSchoolFrost,
+	})
+
+	fdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		masteryMod.UpdateFloatValue(fdk.getMasteryFrostBonus())
+	})
+
+	core.MakePermanent(fdk.GetOrRegisterAura(core.Aura{
+		Label:    "Frozen Heart",
+		ActionID: core.ActionID{SpellID: 77514},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.Deactivate()
+		},
+	}))
+
+	// Icy Talons
+	fdk.PseudoStats.MeleeSpeedMultiplier *= 1.2
+	core.MakePermanent(fdk.GetOrRegisterAura(core.Aura{
+		Label:    "Icy Talons" + fdk.Label,
+		ActionID: core.ActionID{SpellID: 50887},
+	}))
+
+	// Blood of the North
+	permanentDeathRunes := []int8{0, 1}
+	fdk.SetPermanentDeathRunes(permanentDeathRunes)
+	core.MakePermanent(fdk.GetOrRegisterAura(core.Aura{
+		Label:    "Blood of the North" + fdk.Label,
+		ActionID: core.ActionID{SpellID: 54637},
+	}))
 }
 
 func (fdk *FrostDeathKnight) Reset(sim *core.Simulation) {
 	fdk.DeathKnight.Reset(sim)
-	//fdk.Presence = death_knight.UnsetPresence
 }

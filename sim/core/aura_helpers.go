@@ -23,6 +23,7 @@ const (
 	CallbackOnHealDealt
 	CallbackOnPeriodicHealDealt
 	CallbackOnCastComplete
+	CallbackOnApplyEffects
 )
 
 type ProcHandler func(sim *Simulation, spell *Spell, result *SpellResult)
@@ -41,6 +42,7 @@ type ProcTrigger struct {
 	PPM             float64
 	ICD             time.Duration
 	Handler         ProcHandler
+	ClassSpellMask  int64
 }
 
 func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
@@ -56,11 +58,15 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 	var ppmm PPMManager
 	if config.PPM > 0 {
 		ppmm = unit.AutoAttacks.NewPPMManager(config.PPM, config.ProcMask)
+		aura.Ppmm = &ppmm
 	}
 
 	handler := config.Handler
 	callback := func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 		if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
+			return
+		}
+		if config.ClassSpellMask > 0 && config.ClassSpellMask&spell.ClassSpellMask == 0 {
 			return
 		}
 		if config.ProcMaskExclude != ProcMaskUnknown && spell.ProcMask.Matches(config.ProcMaskExclude) {
@@ -114,6 +120,9 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 			if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
 				return
 			}
+			if config.ClassSpellMask > 0 && config.ClassSpellMask&spell.ClassSpellMask == 0 {
+				return
+			}
 			if config.ProcMask != ProcMaskUnknown && !spell.ProcMask.Matches(config.ProcMask) {
 				return
 			}
@@ -131,6 +140,33 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 				icd.Use(sim)
 			}
 			handler(sim, spell, nil)
+		}
+	}
+	if config.Callback.Matches(CallbackOnApplyEffects) {
+		aura.OnApplyEffects = func(aura *Aura, sim *Simulation, target *Unit, spell *Spell) {
+			if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
+				return
+			}
+			if config.ClassSpellMask > 0 && config.ClassSpellMask&spell.ClassSpellMask == 0 {
+				return
+			}
+			if config.ProcMask != ProcMaskUnknown && !spell.ProcMask.Matches(config.ProcMask) {
+				return
+			}
+			if config.ProcMaskExclude != ProcMaskUnknown && spell.ProcMask.Matches(config.ProcMaskExclude) {
+				return
+			}
+			if icd.Duration != 0 && !icd.IsReady(sim) {
+				return
+			}
+			if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
+				return
+			}
+
+			if icd.Duration != 0 {
+				icd.Use(sim)
+			}
+			handler(sim, spell, &SpellResult{Target: target})
 		}
 	}
 }
@@ -244,6 +280,9 @@ func ApplyFixedUptimeAura(aura *Aura, uptime float64, tickLength time.Duration, 
 			OnAction: func(sim *Simulation) {
 				if sim.RandomFloat("FixedAura") < chancePerTick {
 					aura.Activate(sim)
+					if aura.MaxStacks > 0 {
+						aura.AddStack(sim)
+					}
 				}
 			},
 		})

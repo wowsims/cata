@@ -4,6 +4,7 @@ import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class BalanceDruid extends PlayerSpec<Spec.SpecBalanceDruid> {
+	static specIndex = 0;
 	static specID = Spec.SpecBalanceDruid as Spec.SpecBalanceDruid;
 	static classID = Class.ClassDruid as Class.ClassDruid;
 	static friendlyName = 'Balance';
@@ -16,6 +17,7 @@ export class BalanceDruid extends PlayerSpec<Spec.SpecBalanceDruid> {
 
 	static canDualWield = false;
 
+	readonly specIndex = BalanceDruid.specIndex;
 	readonly specID = BalanceDruid.specID;
 	readonly classID = BalanceDruid.classID;
 	readonly friendlyName = BalanceDruid.friendlyName;
@@ -38,18 +40,20 @@ export class BalanceDruid extends PlayerSpec<Spec.SpecBalanceDruid> {
 }
 
 export class FeralDruid extends PlayerSpec<Spec.SpecFeralDruid> {
+	static specIndex = 1;
 	static specID = Spec.SpecFeralDruid as Spec.SpecFeralDruid;
 	static classID = Class.ClassDruid as Class.ClassDruid;
 	static friendlyName = 'Feral';
 	static simLink = getSpecSiteUrl('druid', 'feral');
 
-	static isTankSpec = true;
+	static isTankSpec = false;
 	static isHealingSpec = false;
 	static isRangedDpsSpec = false;
 	static isMeleeDpsSpec = true;
 
 	static canDualWield = false;
 
+	readonly specIndex = FeralDruid.specIndex;
 	readonly specID = FeralDruid.specID;
 	readonly classID = FeralDruid.classID;
 	readonly friendlyName = FeralDruid.friendlyName;
@@ -63,7 +67,7 @@ export class FeralDruid extends PlayerSpec<Spec.SpecFeralDruid> {
 	readonly canDualWield = FeralDruid.canDualWield;
 
 	static getIcon = (size: IconSize): string => {
-		return `https://wow.zamimg.com/images/wow/icons/${size}/ability_racial_bearform.jpg`;
+		return `https://wow.zamimg.com/images/wow/icons/${size}/ability_druid_catform.jpg`;
 	};
 
 	getIcon = (size: IconSize): string => {
@@ -72,6 +76,7 @@ export class FeralDruid extends PlayerSpec<Spec.SpecFeralDruid> {
 }
 
 export class RestorationDruid extends PlayerSpec<Spec.SpecRestorationDruid> {
+	static specIndex = 2;
 	static specID = Spec.SpecRestorationDruid as Spec.SpecRestorationDruid;
 	static classID = Class.ClassDruid as Class.ClassDruid;
 	static friendlyName = 'Restoration';
@@ -84,6 +89,7 @@ export class RestorationDruid extends PlayerSpec<Spec.SpecRestorationDruid> {
 
 	static canDualWield = false;
 
+	readonly specIndex = RestorationDruid.specIndex;
 	readonly specID = RestorationDruid.specID;
 	readonly classID = RestorationDruid.classID;
 	readonly friendlyName = RestorationDruid.friendlyName;

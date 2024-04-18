@@ -78,7 +78,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 67
+// NextIndex: 68
 message APLValue {
     oneof value {
         // Operators
@@ -122,8 +122,6 @@ message APLValue {
         APLValueRuneCooldown rune_cooldown = 32;
         APLValueNextRuneCooldown next_rune_cooldown = 33;
         APLValueRuneSlotCooldown rune_slot_cooldown = 53;
-        APLValueRuneGrace rune_grace = 54;
-        APLValueRuneSlotGrace rune_slot_grace = 55;
 
         // GCD values
         APLValueGCDIsReady gcd_is_ready = 17;
@@ -155,6 +153,7 @@ message APLValue {
         // Dot values
         APLValueDotIsActive dot_is_active = 6;
         APLValueDotRemainingTime dot_remaining_time = 13;
+        APLValueDotTickFrequency dot_tick_frequency = 67;
 
         // Sequence values
         APLValueSequenceIsComplete sequence_is_complete = 44;
@@ -349,6 +348,7 @@ message APLValueIsExecutePhase {
         E20 = 1;
         E25 = 2;
         E35 = 3;
+		E90 = 4;
     }
     ExecutePhaseThreshold threshold = 1;
 }
@@ -418,12 +418,6 @@ message APLValueNextRuneCooldown{
 }
 message APLValueRuneSlotCooldown{
     APLValueRuneSlot rune_slot = 1;
-}
-message APLValueRuneGrace{
-    APLValueRuneType rune_type = 1;
-}
-message APLValueRuneSlotGrace{
-    APLValueRuneType rune_slot = 1;
 }
 
 message APLValueGCDIsReady {}
@@ -499,6 +493,10 @@ message APLValueDotIsActive {
     ActionID spell_id = 1;
 }
 message APLValueDotRemainingTime {
+    UnitReference target_unit = 2;
+    ActionID spell_id = 1;
+}
+message APLValueDotTickFrequency {
     UnitReference target_unit = 2;
     ActionID spell_id = 1;
 }

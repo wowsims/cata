@@ -35,6 +35,7 @@ import {
 	APLValueCurrentTimePercent,
 	APLValueDotIsActive,
 	APLValueDotRemainingTime,
+	APLValueDotTickFrequency,
 	APLValueFrontOfTarget,
 	APLValueGCDIsReady,
 	APLValueGCDTimeToReady,
@@ -51,9 +52,7 @@ import {
 	APLValueRemainingTime,
 	APLValueRemainingTimePercent,
 	APLValueRuneCooldown,
-	APLValueRuneGrace,
 	APLValueRuneSlotCooldown,
-	APLValueRuneSlotGrace,
 	APLValueSequenceIsComplete,
 	APLValueSequenceIsReady,
 	APLValueSequenceTimeToReady,
@@ -342,6 +341,7 @@ function executePhaseThresholdFieldConfig(field: string): AplHelpers.APLPickerBu
 					{ value: ExecutePhaseThreshold.E20, label: '20%' },
 					{ value: ExecutePhaseThreshold.E25, label: '25%' },
 					{ value: ExecutePhaseThreshold.E35, label: '35%' },
+					{ value: ExecutePhaseThreshold.E90, label: '90%' },
 				],
 			}),
 	};
@@ -694,22 +694,6 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
 		fields: [AplHelpers.runeSlotFieldConfig('runeSlot')],
 	}),
-	runeGrace: inputBuilder({
-		label: 'Rune Grace Period',
-		submenu: ['Resources', 'Runes'],
-		shortDescription: 'Amount of rune grace period available for certain rune type.',
-		newValue: APLValueRuneGrace.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
-		fields: [AplHelpers.runeTypeFieldConfig('runeType', false)],
-	}),
-	runeSlotGrace: inputBuilder({
-		label: 'Rune Slot Grace Period',
-		submenu: ['Resources', 'Runes'],
-		shortDescription: 'Amount of rune grace period available for certain rune slot.',
-		newValue: APLValueRuneSlotGrace.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassDeathKnight,
-		fields: [AplHelpers.runeSlotFieldConfig('runeSlot')],
-	}),
 
 	// GCD
 	gcdIsReady: inputBuilder({
@@ -898,6 +882,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['DoT'],
 		shortDescription: 'Time remaining before the last tick of this DoT will occur, or 0 if the DoT is not currently ticking.',
 		newValue: APLValueDotRemainingTime.create,
+		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', '')],
+	}),
+	dotTickFrequency: inputBuilder({
+		label: 'Dot Tick Frequency',
+		submenu: ['DoT'],
+		shortDescription: 'The time between each tick.',
+		newValue: APLValueDotTickFrequency.create,
 		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', '')],
 	}),
 	sequenceIsComplete: inputBuilder({

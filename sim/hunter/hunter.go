@@ -121,6 +121,9 @@ func (hunter *Hunter) Initialize() {
 	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
 	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
 	hunter.FireTrapTimer = hunter.NewTimer()
+
+	hunter.ApplyGlyphs()
+
 	hunter.registerSteadyShotSpell()
 	hunter.registerArcaneShotSpell()
 	hunter.registerKillShotSpell()
@@ -167,16 +170,37 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		//ReplaceMHSwing:  hunter.TryRaptorStrike, //Todo: Might be weaving
 		AutoSwingRanged: true,
 	})
+	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
 
+		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+
+		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+			spell.DealDamage(sim, result)
+		})
+	}
 	hunter.Pet = hunter.NewHunterPet()
 
-	hunter.AddStatDependency(stats.Strength, stats.AttackPower, 1)
-	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 1)
-	hunter.AddStatDependency(stats.Agility, stats.RangedAttackPower, 1)
+	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 2)
+	hunter.AddStatDependency(stats.Agility, stats.RangedAttackPower, 2)
 	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
 
 	return hunter
 }
+
+const (
+	HunterSpellFlagsNone int64 = 0
+	SpellMaskSpellRanged int64 = 1 << iota
+	HunterSpellAutoShot
+	HunterSpellSteadyShot
+	HunterSpellCobraShot
+	HunterSpellArcaneShot
+	HunterSpellKillCommand
+	HunterSpellChimeraShot
+	HunterSpellExplosiveShot
+	HunterSpellBlackArrow
+	HunterSpellAimedShot
+)
 
 // Agent is a generic way to access underlying hunter on any of the agents.
 type HunterAgent interface {

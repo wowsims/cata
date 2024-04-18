@@ -5,13 +5,13 @@ import { element, fragment, ref } from 'tsx-vanilla';
 import { setItemQualityCssClass } from '../css_utils';
 import { IndividualSimUI } from '../individual_sim_ui.js';
 import { Player } from '../player';
-import { Class, GemColor, ItemQuality, ItemSlot, ItemSpec, ItemType } from '../proto/common';
-import { DatabaseFilters, UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
+import { Class, GemColor, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec, ItemType, ReforgeStat, Stat } from '../proto/common';
+import { DatabaseFilters, RepFaction, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UIItem_FactionRestriction } from '../proto/ui.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getEnchantDescription, getUniqueEnchantString } from '../proto_utils/enchants';
 import { EquippedItem } from '../proto_utils/equipped_item';
 import { gemMatchesSocket, getEmptyGemSocketIconUrl } from '../proto_utils/gems';
-import { difficultyNames, professionNames, slotNames } from '../proto_utils/names.js';
+import { difficultyNames, professionNames, REP_FACTION_NAMES, REP_LEVEL_NAMES, shortSecondaryStatNames, slotNames } from '../proto_utils/names.js';
 import { Stats } from '../proto_utils/stats';
 import { Sim } from '../sim.js';
 import { SimUI } from '../sim_ui';
@@ -106,6 +106,7 @@ export class ItemRenderer extends Component {
 	readonly iconElem: HTMLAnchorElement;
 	readonly nameElem: HTMLAnchorElement;
 	readonly enchantElem: HTMLAnchorElement;
+	readonly reforgeElem: HTMLAnchorElement;
 	readonly socketsContainerElem: HTMLElement;
 
 	constructor(parent: HTMLElement, root: HTMLElement, player: Player<any>) {
@@ -115,6 +116,7 @@ export class ItemRenderer extends Component {
 		const iconElem = ref<HTMLAnchorElement>();
 		const nameElem = ref<HTMLAnchorElement>();
 		const enchantElem = ref<HTMLAnchorElement>();
+		const reforgeElem = ref<HTMLAnchorElement>();
 		const sce = ref<HTMLDivElement>();
 		this.rootElem.appendChild(
 			<>
@@ -123,14 +125,15 @@ export class ItemRenderer extends Component {
 				</a>
 				<div className="item-picker-labels-container">
 					<a ref={nameElem} className="item-picker-name" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<br />
 					<a ref={enchantElem} className="item-picker-enchant" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<a ref={reforgeElem} className="item-picker-reforge" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
 				</div>
 			</>,
 		);
 
 		this.iconElem = iconElem.value!;
 		this.nameElem = nameElem.value!;
+		this.reforgeElem = reforgeElem.value!;
 		this.enchantElem = enchantElem.value!;
 		this.socketsContainerElem = sce.value!;
 	}
@@ -146,16 +149,33 @@ export class ItemRenderer extends Component {
 
 		this.iconElem.style.backgroundImage = '';
 		this.enchantElem.innerText = '';
+		this.reforgeElem.innerText = '';
 		this.socketsContainerElem.innerText = '';
 		this.nameElem.textContent = '';
 	}
 
 	update(newItem: EquippedItem) {
 		this.nameElem.textContent = newItem.item.name;
+
+		if (newItem.randomSuffix) {
+			this.nameElem.textContent += ' ' + newItem.randomSuffix.name;
+		}
+
 		if (newItem.item.heroic) {
 			this.nameElem.insertAdjacentElement('beforeend', createHeroicLabel());
 		} else {
 			this.nameElem.querySelector('.heroic-label')?.remove();
+		}
+
+		if (newItem._reforging !== 0) {
+			const reforge = this.player.getReforge(newItem.reforging);
+			if (reforge) {
+				this.reforgeElem.innerText = `Reforged ${shortSecondaryStatNames.get(reforge?.fromStat[0])} > ${shortSecondaryStatNames.get(
+					reforge?.toStat[0],
+				)}`;
+			}
+		} else {
+			this.reforgeElem.innerText = '';
 		}
 
 		setItemQualityCssClass(this.nameElem, newItem.item.quality);
@@ -245,9 +265,14 @@ export class ItemPicker extends Component {
 				event.preventDefault();
 				this.openSelectorModal(SelectorModalTabs.Enchants, gearData);
 			};
+			const openReforgeSelector = (event: Event) => {
+				event.preventDefault();
+				this.openSelectorModal(SelectorModalTabs.Reforging, gearData);
+			};
 
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
+			this.itemElem.reforgeElem.addEventListener('click', openReforgeSelector);
 			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
 		});
 
@@ -372,6 +397,7 @@ export interface GearData {
 export enum SelectorModalTabs {
 	Items = 'Items',
 	Enchants = 'Enchants',
+	Reforging = 'Reforging',
 	Gem1 = 'Gem1',
 	Gem2 = 'Gem2',
 	Gem3 = 'Gem3',
@@ -391,6 +417,7 @@ export class SelectorModal extends BaseModal {
 	private player: Player<any>;
 	private config: SelectorModalConfig;
 	private ilists: ItemList<any>[];
+	private updateReforgeList: (newReforgeData: Array<ReforgeData & { ep: number }>) => void;
 
 	private readonly tabsElem: HTMLElement;
 	private readonly contentElem: HTMLElement;
@@ -402,6 +429,9 @@ export class SelectorModal extends BaseModal {
 		this.player = player;
 		this.config = config;
 		this.ilists = [];
+		this.updateReforgeList = (_newReforgeData: Array<ReforgeData & { ep: number }>) => {
+			return;
+		};
 
 		window.scrollTo({ top: 0 });
 
@@ -477,6 +507,7 @@ export class SelectorModal extends BaseModal {
 			eventID => {
 				gearData.equipItem(eventID, null);
 				this.removeTabs('Gem');
+				this.removeTabs('Random Suffixes');
 			},
 		);
 
@@ -486,7 +517,7 @@ export class SelectorModal extends BaseModal {
 				return {
 					item: enchant,
 					id: enchant.effectId,
-					actionId: enchant.spellId ? ActionId.fromSpellId(enchant.spellId) : ActionId.fromItemId(enchant.itemId),
+					actionId: enchant.itemId ? ActionId.fromItemId(enchant.itemId) : ActionId.fromSpellId(enchant.spellId),
 					name: enchant.name,
 					quality: enchant.quality,
 					phase: enchant.phase || 1,
@@ -508,6 +539,8 @@ export class SelectorModal extends BaseModal {
 			},
 		);
 
+		this.addRandomSuffixTab(equippedItem, gearData);
+		this.addReforgingTab(gearData.getEquippedItem(), gearData);
 		this.addGemTabs(slot, equippedItem, gearData);
 	}
 
@@ -594,6 +627,196 @@ export class SelectorModal extends BaseModal {
 		});
 	}
 
+	private addRandomSuffixTab(equippedItem: EquippedItem | null, gearData: GearData) {
+		if (equippedItem == undefined || equippedItem.item.randomSuffixOptions.length == 0) {
+			return;
+		}
+
+		const itemProto = equippedItem.item;
+
+		this.addTab<ItemRandomSuffix>(
+			'Random Suffixes',
+			this.player.getRandomSuffixes(itemProto).map((randomSuffix: ItemRandomSuffix) => {
+				return {
+					item: randomSuffix,
+					id: randomSuffix.id,
+					actionId: ActionId.fromRandomSuffix(itemProto, randomSuffix),
+					name: randomSuffix.name,
+					quality: itemProto.quality,
+					phase: itemProto.phase,
+					heroic: false,
+					baseEP: this.player.computeRandomSuffixEP(randomSuffix),
+					ignoreEPFilter: true,
+					onEquip: (eventID, randomSuffix: ItemRandomSuffix) => {
+						const equippedItem = gearData.getEquippedItem();
+
+						if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(randomSuffix));
+					},
+				};
+			}),
+			randomSuffix => this.player.computeRandomSuffixEP(randomSuffix),
+			equippedItem => equippedItem?.randomSuffix,
+			GemColor.GemColorUnknown,
+			eventID => {
+				const equippedItem = gearData.getEquippedItem();
+				if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(null));
+			},
+		);
+	}
+
+	private prepareReforgeData(reforge: ReforgeStat, item: EquippedItem): ReforgeData & { ep: number } {
+		const itemProto = item.item;
+
+		const fromAmount = Math.ceil(-itemProto.stats[reforge.fromStat[0]] * reforge.multiplier);
+		const toAmount = Math.floor(itemProto.stats[reforge.fromStat[0]] * reforge.multiplier);
+		const forge = {
+			reforge,
+			item,
+			fromStat: reforge.fromStat,
+			toAmount,
+			toStat: reforge.toStat,
+			reforgeId: reforge.id,
+			fromAmount,
+		};
+
+		const ep = this.player.computeReforgingEP(forge);
+		return {
+			...forge,
+			ep,
+		};
+	}
+
+	private addReforgingTab(equippedItem: EquippedItem | null, gearData: GearData) {
+		if (equippedItem == undefined) {
+			return;
+		}
+		if (equippedItem.randomSuffix !== null) {
+			equippedItem._item.stats = equippedItem.randomSuffix.stats.map(stat =>
+				stat > 0 ? Math.floor((stat * equippedItem._item.randPropPoints) / 10000) : stat,
+			);
+		}
+		const itemProto = equippedItem.item;
+
+		this.player.gearChangeEmitter.on(() => {
+			const newItem = this.player.getGear().getEquippedItem(this.config.slot);
+
+			if (newItem !== null) {
+				if (newItem.randomSuffix !== null) {
+					newItem._item.stats = newItem.randomSuffix.stats.map(stat => (stat > 0 ? Math.floor((stat * newItem._item.randPropPoints) / 10000) : stat));
+				}
+				const reforgings = this.player.getAvailableReforgings(newItem._item) ?? [];
+
+				this.updateReforgeList(
+					reforgings
+						?.map(reforge => {
+							return this.prepareReforgeData(reforge, newItem);
+						})
+						.sort((a, b) => b.ep - a.ep) ?? [],
+				);
+			}
+		});
+		const reforgings = this.player.getAvailableReforgings(itemProto);
+		this.addReforgeTabs(
+			'Reforging',
+			reforgings
+				?.map(reforge => {
+					return this.prepareReforgeData(reforge, equippedItem);
+				})
+				.sort((a, b) => b.ep - a.ep) ?? [],
+			(item, id) => {
+				gearData.equipItem(id, item);
+				return;
+			},
+		);
+	}
+	private addReforgeTabs(label: string, reforgeData: Array<ReforgeData>, onAdd: (item: EquippedItem, EventId: EventID) => void) {
+		if (reforgeData.length == 0) {
+			//return;
+		}
+
+		const tabContentId = (label + '-tab').split(' ').join('');
+		const selected = label === this.config.selectedTab;
+
+		const tabAnchor = ref<HTMLAnchorElement>();
+		this.tabsElem.appendChild(
+			<li className="nav-item">
+				<a
+					ref={tabAnchor}
+					className={`nav-link selector-modal-item-tab ${selected ? 'active' : ''}`}
+					dataset={{
+						label: label,
+						contentId: tabContentId,
+						bsToggle: 'tab',
+						bsTarget: `#${tabContentId}`,
+					}}
+					attributes={{
+						role: 'tab',
+						'aria-selected': selected,
+					}}
+					type="button"></a>
+			</li>,
+		);
+		tabAnchor.value!.textContent = label;
+		// Tab content for Reforges
+		const tabContent = (
+			<div id={tabContentId} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
+				<div className="selector-modal-list-labels">
+					<label className="item-label">
+						<small>Reforge</small>
+					</label>
+					<label className="reforge-label">
+						<small>To</small>
+					</label>
+					<label className="ep-label">
+						<small>EP</small>
+					</label>
+				</div>
+				<ul className="selector-modal-list"></ul>
+			</div>
+		);
+		const updateReforgeList = (newReforgeData: ReforgeData[]) => {
+			const listElement = document.querySelector(`#${tabContentId} .selector-modal-list`);
+			if (listElement) {
+				// Clear the current list
+				listElement.innerHTML = '';
+				newReforgeData.forEach(data => {
+					const listItem = document.createElement('li');
+					listItem.className = `selector-modal-list-item reforge ${data.reforgeId == data.item.reforging ? 'selected' : ''}`;
+					listItem.setAttribute('data-reforge-id', data.reforgeId.toString());
+					listItem.onclick = () => {
+						if (data.item.reforging !== data.reforgeId) {
+							onAdd(data.item.withReforge(data.reforgeId), TypedEvent.nextEventID());
+						} else {
+							onAdd(data.item.withItem(data.item.item), TypedEvent.nextEventID());
+						}
+					};
+
+					const lossSpan = document.createElement('span');
+					lossSpan.className = 'loss';
+					lossSpan.textContent = `${data.fromAmount} ${shortSecondaryStatNames.get(data.fromStat[0])}`;
+					listItem.appendChild(lossSpan);
+
+					const gainSpan = document.createElement('span');
+					gainSpan.className = 'gain';
+					gainSpan.textContent = `+${data.toAmount} ${shortSecondaryStatNames.get(data.toStat[0])}`;
+					listItem.appendChild(gainSpan);
+					const ep = this.player.computeReforgingEP(data);
+					const epSpan = document.createElement('span');
+					epSpan.className = `selector-modal-list-item-ep ${ep < 0 ? 'loss' : 'gain'}`;
+					epSpan.textContent = `${ep > 0 ? '+' : ''}${Number(ep.toFixed(2)).toString()}`;
+					listItem.appendChild(epSpan);
+
+					listElement.appendChild(listItem);
+				});
+			}
+		};
+		this.contentElem.appendChild(tabContent);
+		this.updateReforgeList = updateReforgeList;
+
+		// Initial
+		updateReforgeList(reforgeData);
+	}
+
 	/**
 	 * Adds one of the tabs for the item selector menu.
 	 *
@@ -663,10 +886,14 @@ export class SelectorModal extends BaseModal {
 				const item = itemData.item;
 				itemData.onEquip(TypedEvent.nextEventID(), item);
 
-				// If the item changes, the gem slots might change, so remove and recreate the gem tabs
+				// If the item changes, then gem slots and random suffix options will also change, so remove and recreate these tabs.
 				if (Item.is(item)) {
+					this.removeTabs('Random Suffixes');
+					this.addRandomSuffixTab(gearData.getEquippedItem(), gearData);
 					this.removeTabs('Gem');
 					this.addGemTabs(slot, gearData.getEquippedItem(), gearData);
+					this.removeTabs('Reforging');
+					this.addReforgingTab(gearData.getEquippedItem(), gearData);
 				}
 			},
 		);
@@ -695,7 +922,7 @@ export class SelectorModal extends BaseModal {
 			ilist.dispose();
 		});
 
-		tabAnchor.value!.addEventListener('shown.bs.tab', event => {
+		tabAnchor.value!.addEventListener('shown.bs.tab', _event => {
 			ilist.sizeRefresh();
 		});
 
@@ -725,6 +952,15 @@ export interface ItemData<T> {
 	ignoreEPFilter: boolean;
 	heroic: boolean;
 	onEquip: (eventID: EventID, item: T) => void;
+}
+export interface ReforgeData {
+	item: EquippedItem;
+	reforge: ReforgeStat;
+	fromStat: Stat[];
+	toStat: Stat[];
+	fromAmount: number;
+	toAmount: number;
+	reforgeId: number;
 }
 
 interface ItemDataWithIdx<T> {
@@ -841,14 +1077,8 @@ export class ItemList<T> {
 			title: EP_TOOLTIP,
 		});
 
-		const show1hWeaponsSelector = makeShow1hWeaponsSelector(
-			this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement,
-			player.sim,
-		);
-		const show2hWeaponsSelector = makeShow2hWeaponsSelector(
-			this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement,
-			player.sim,
-		);
+		makeShow1hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement, player.sim);
+		makeShow2hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement, player.sim);
 		if (!(label == 'Items' && (slot == ItemSlot.ItemSlotMainHand || (slot == ItemSlot.ItemSlotOffHand && player.getClass() == Class.ClassWarrior)))) {
 			(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement).style.display = 'none';
 			(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement).style.display = 'none';
@@ -856,15 +1086,12 @@ export class ItemList<T> {
 
 		makeShowEPValuesSelector(this.tabContent.getElementsByClassName('selector-modal-show-ep-values')[0] as HTMLElement, player.sim);
 
-		const showMatchingGemsSelector = makeShowMatchingGemsSelector(
-			this.tabContent.getElementsByClassName('selector-modal-show-matching-gems')[0] as HTMLElement,
-			player.sim,
-		);
+		makeShowMatchingGemsSelector(this.tabContent.getElementsByClassName('selector-modal-show-matching-gems')[0] as HTMLElement, player.sim);
 		if (!label.startsWith('Gem')) {
 			(this.tabContent.getElementsByClassName('selector-modal-show-matching-gems')[0] as HTMLElement).style.display = 'none';
 		}
 
-		const phaseSelector = makePhaseSelector(this.tabContent.getElementsByClassName('selector-modal-phase-selector')[0] as HTMLElement, player.sim);
+		makePhaseSelector(this.tabContent.getElementsByClassName('selector-modal-phase-selector')[0] as HTMLElement, player.sim);
 
 		if (label == 'Items') {
 			const filtersButton = this.tabContent.getElementsByClassName('selector-modal-filters-button')[0] as HTMLElement;
@@ -903,7 +1130,7 @@ export class ItemList<T> {
 		);
 
 		const removeButton = this.tabContent.getElementsByClassName('selector-modal-remove-button')[0] as HTMLButtonElement;
-		removeButton.addEventListener('click', event => {
+		removeButton.addEventListener('click', _event => {
 			onRemove(TypedEvent.nextEventID());
 		});
 
@@ -924,7 +1151,7 @@ export class ItemList<T> {
 			player.sim.showExperimentalChangeEmitter.on(() => {
 				simAllButton.hidden = !player.sim.getShowExperimental();
 			});
-			simAllButton.addEventListener('click', event => {
+			simAllButton.addEventListener('click', _event => {
 				if (simUI instanceof IndividualSimUI) {
 					const itemSpecs = Array<ItemSpec>();
 					const isRangedOrTrinket =
@@ -1218,22 +1445,30 @@ export class ItemList<T> {
 	}
 
 	private getSourceInfo(item: Item, sim: Sim): JSX.Element {
-		if (!item.sources || item.sources.length == 0) {
-			return <></>;
-		}
-
-		const makeAnchor = (href: string, inner: string) => {
+		const makeAnchor = (href: string, inner: string | JSX.Element) => {
 			return (
-				<a href={href}>
+				<a href={href} target="_blank" dataset={{ whtticon: 'false' }}>
 					<small>{inner}</small>
 				</a>
 			);
 		};
 
-		const source = item.sources[0];
+		if (!item.sources || item.sources.length == 0) {
+			if (item.randomSuffixOptions.length) {
+				return makeAnchor(`${ActionId.makeItemUrl(item.id)}#dropped-by`, 'World Drop');
+			}
+
+			return <></>;
+		}
+
+		let source = item.sources[0];
 		if (source.source.oneofKind == 'crafted') {
 			const src = source.source.crafted;
-			return makeAnchor(ActionId.makeSpellUrl(src.spellId), professionNames.get(src.profession) ?? 'Unknown');
+
+			if (src.spellId) {
+				return makeAnchor(ActionId.makeSpellUrl(src.spellId), professionNames.get(src.profession) ?? 'Unknown');
+			}
+			return makeAnchor(ActionId.makeItemUrl(item.id), professionNames.get(src.profession) ?? 'Unknown');
 		} else if (source.source.oneofKind == 'drop') {
 			const src = source.source.drop;
 			const zone = sim.db.getZone(src.zoneId);
@@ -1242,30 +1477,78 @@ export class ItemList<T> {
 				throw new Error('No zone found for item: ' + item);
 			}
 
-			const rtnEl = makeAnchor(ActionId.makeZoneUrl(zone.id), `${zone.name} (${difficultyNames.get(src.difficulty) ?? 'Unknown'})`);
-
 			const category = src.category ? ` - ${src.category}` : '';
 			if (npc) {
-				rtnEl.appendChild(document.createElement('br'));
-				rtnEl.appendChild(makeAnchor(ActionId.makeNpcUrl(npc.id), `${npc.name + category}`));
+				return makeAnchor(
+					ActionId.makeNpcUrl(npc.id),
+					<span>
+						{zone.name} ({difficultyNames.get(src.difficulty) ?? 'Unknown'})
+						<br />
+						{npc.name + category}
+					</span>,
+				);
 			} else if (src.otherName) {
-				/*innerHTML += `
-					<br>
-					<a href="${ActionId.makeZoneUrl(zone.id)}"><small>${src.otherName + category}</small></a>
-				`;*/
-			} else if (category) {
-				/*innerHTML += `
-					<br>
-					<a href="${ActionId.makeZoneUrl(zone.id)}"><small>${category}</small></a>
-				`;*/
+				return makeAnchor(
+					ActionId.makeZoneUrl(zone.id),
+					<span>
+						{zone.name}
+						<br />
+						{src.otherName}
+					</span>,
+				);
 			}
-			return rtnEl;
-		} else if (source.source.oneofKind == 'quest') {
+			return makeAnchor(ActionId.makeZoneUrl(zone.id), zone.name);
+		} else if (source.source.oneofKind == 'quest' && source.source.quest.name) {
 			const src = source.source.quest;
-			return makeAnchor(ActionId.makeQuestUrl(src.id), src.name);
+			return makeAnchor(
+				ActionId.makeQuestUrl(src.id),
+				<span>
+					Quest
+					{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
+						<img src="/cata/assets/img/alliance.png" className="ms-1" width="15" height="15" />
+					)}
+					{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
+						<img src="/cata/assets/img/horde.png" className="ms-1" width="15" height="15" />
+					)}
+					<br />
+					{src.name}
+				</span>,
+			);
+		} else if ((source = item.sources.find(source => source.source.oneofKind == 'rep') ?? source).source.oneofKind == 'rep') {
+			const factionNames = item.sources
+				.filter(source => source.source.oneofKind == 'rep')
+				.map(source =>
+					source.source.oneofKind == 'rep' ? REP_FACTION_NAMES[source.source.rep.repFactionId] : REP_FACTION_NAMES[RepFaction.RepFactionUnknown],
+				);
+			const src = source.source.rep;
+			return makeAnchor(
+				ActionId.makeItemUrl(item.id),
+				<>
+					{factionNames.map(name => (
+						<span>
+							{name}
+							{item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY && (
+								<img src="/cata/assets/img/alliance.png" className="ms-1" width="15" height="15" />
+							)}
+							{item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY && (
+								<img src="/cata/assets/img/horde.png" className="ms-1" width="15" height="15" />
+							)}
+							<br />
+						</span>
+					))}
+					<span>{REP_LEVEL_NAMES[src.repLevel]}</span>
+				</>,
+			);
 		} else if (source.source.oneofKind == 'soldBy') {
 			const src = source.source.soldBy;
-			return makeAnchor(ActionId.makeNpcUrl(src.npcId), src.npcName);
+			return makeAnchor(
+				ActionId.makeNpcUrl(src.npcId),
+				<span>
+					Sold by
+					<br />
+					{src.npcName}
+				</span>,
+			);
 		}
 		return <></>;
 	}

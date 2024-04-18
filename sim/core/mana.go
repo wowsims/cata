@@ -45,8 +45,14 @@ func (character *Character) EnableManaBarWithModifier(modifier float64) {
 	character.AddStat(stats.Mana, 20-15*20*modifier)
 	character.AddStatDependency(stats.Intellect, stats.Mana, 15*modifier)
 
-	// This conversion is now universal for
-	character.AddStatDependency(stats.Intellect, stats.SpellCrit, CritRatingPerCritChance/166.66667)
+	// Starting with cataclysm 1 intellect now provides 1 spell power
+	character.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
+
+	if character.Unit.Type == PlayerUnit {
+		// Every caster gains 1% crit per 648.91
+		// Pets have different scaling so let them handle their scaling
+		character.AddStatDependency(stats.Intellect, stats.SpellCrit, 1.0/648.91*CritRatingPerCritChance)
+	}
 
 	// Not a real spell, just holds metrics from mana gain threat.
 	character.RegisterSpell(SpellConfig{

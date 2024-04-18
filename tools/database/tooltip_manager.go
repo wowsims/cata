@@ -64,7 +64,6 @@ func (tm *TooltipManager) Fetch(minId, maxId int32, otherIds []string) {
 		}
 	}
 	idsToFetch = append(idsToFetch, otherIds...)
-
 	newTooltips := tm.FetchFromWeb(idsToFetch)
 
 	for k, v := range newTooltips {

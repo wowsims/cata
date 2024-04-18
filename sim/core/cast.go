@@ -47,11 +47,14 @@ type Cast struct {
 	// The amount of time between the call to spell.Cast() and when the spell
 	// effects are invoked.
 	CastTime time.Duration
+
+	// A dummy value to give 0gcd casts a non empty struct
+	NonEmpty bool
 }
 
 func (cast *Cast) EffectiveTime() time.Duration {
-	gcd := cast.GCD
-	if cast.GCD != 0 {
+	gcd := max(0, cast.GCD)
+	if cast.GCD > 0 {
 		// TODO: isn't this wrong for spells like shadowfury, that have a reduced GCD?
 		gcd = max(GCDMin, gcd)
 	}
@@ -99,7 +102,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		if !config.IgnoreHaste {
-			spell.CurCast.GCD = spell.Unit.ApplyCastSpeed(spell.CurCast.GCD)
+			spell.CurCast.GCD = max(0, spell.Unit.ApplyCastSpeed(spell.CurCast.GCD))
 			spell.CurCast.CastTime = spell.Unit.ApplyCastSpeedForSpell(spell.CurCast.CastTime, spell)
 		}
 
@@ -120,7 +123,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		// By panicking if spell is on CD, we force each sim to properly check for their own CDs.
-		if spell.CurCast.GCD != 0 && !spell.Unit.GCD.IsReady(sim) {
+		if spell.CurCast.GCD > 0 && !spell.Unit.GCD.IsReady(sim) {
 			return spell.castFailureHelper(sim, "GCD on cooldown for %s, curTime = %s", spell.Unit.GCD.TimeToReady(sim), sim.CurrentTime)
 		}
 

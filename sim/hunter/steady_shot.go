@@ -12,10 +12,12 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 	ssMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 56641})
 
 	hunter.SteadyShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 56641},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 56641},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: HunterSpellSteadyShot,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		MissileSpeed:   40,
 		FocusCost: core.FocusCostOptions{
 
 			Cost: 0,
@@ -41,7 +43,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280 + spell.RangedAttackPower(target)*0.021)
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280.182 + spell.RangedAttackPower(target)*0.021)
 			focus := 9.0
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
 				focus = float64(hunter.Talents.Termination) * 3
@@ -56,7 +58,17 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			}
 
 			hunter.AddFocus(sim, focus, ssMetrics)
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+			if sim.IsExecutePhase90() {
+				spell.BonusCritRating += (30.0 * float64(hunter.Talents.CarefulAim)) * core.CritRatingPerCritChance
+			}
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+				if sim.IsExecutePhase90() {
+					spell.BonusCritRating -= (30.0 * float64(hunter.Talents.CarefulAim)) * core.CritRatingPerCritChance
+				}
+			})
 		},
 	})
 }

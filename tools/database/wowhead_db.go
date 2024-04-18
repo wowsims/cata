@@ -49,15 +49,98 @@ func ParseWowheadDB(dbContents string) WowheadDatabase {
 				log.Fatalf("failed to parse wowhead item db to json %s\n\n%s", err, dbContents[0:30])
 			}
 		}
+
+		if dbName == "wow.gearPlanner.cata.randomEnchant" {
+			standardized, err := hujson.Standardize([]byte(dbContents)) // Removes invalid JSON, such as trailing commas
+			if err != nil {
+				log.Fatalf("Failed to standardize json %s\n\n%s\n\n%s", err, dbContents[0:30], dbContents[len(dbContents)-30:])
+			}
+
+			err = json.Unmarshal(standardized, &wowheadDB.RandomSuffixes)
+			if err != nil {
+				log.Fatalf("failed to parse wowhead random suffix db to json %s\n\n%s", err, dbContents[0:30])
+			}
+		}
 	}
 
 	fmt.Printf("\n--\nWowhead DB items loaded: %d\n--\n", len(wowheadDB.Items))
+	fmt.Printf("\n--\nWowhead DB random suffixes loaded: %d\n--\n", len(wowheadDB.RandomSuffixes))
 
 	return wowheadDB
 }
 
 type WowheadDatabase struct {
-	Items map[string]WowheadItem
+	Items          map[string]WowheadItem
+	RandomSuffixes map[string]WowheadRandomSuffix
+}
+
+type WowheadRandomSuffix struct {
+	ID    int32                    `json:"id"`
+	Name  string                   `json:"name"`
+	Stats WowheadRandomSuffixStats `json:"stats"`
+}
+
+type WowheadRandomSuffixStats struct {
+	Strength          int32 `json:"str"`
+	Agility           int32 `json:"agi"`
+	Stamina           int32 `json:"sta"`
+	Intellect         int32 `json:"int"`
+	Spirit            int32 `json:"spi"`
+	SpellPower        int32 `json:"spldmg"`
+	MP5               int32 `json:"manargn"`
+	HitRating         int32 `json:"hitrtng"`
+	CritRating        int32 `json:"critstrkrtng"`
+	HasteRating       int32 `json:"hastertng"`
+	AttackPower       int32 `json:"mleatkpwr"`
+	Expertise         int32 `json:"exprtng"`
+	Armor             int32 `json:"armor"`
+	RangedAttackPower int32 `json:"rgdatkpwr"`
+	Block             int32 `json:"blockrtng"`
+	Dodge             int32 `json:"dodgertng"`
+	Parry             int32 `json:"parryrtng"`
+	ArcaneResistance  int32 `json:"arcres"`
+	FireResistance    int32 `json:"firres"`
+	FrostResistance   int32 `json:"frores"`
+	NatureResistance  int32 `json:"natres"`
+	ShadowResistance  int32 `json:"shares"`
+	Mastery           int32 `json:"mastrtng"`
+}
+
+func (wrs WowheadRandomSuffix) ToProto() *proto.ItemRandomSuffix {
+	stats := Stats{
+		proto.Stat_StatStrength:          float64(wrs.Stats.Strength),
+		proto.Stat_StatAgility:           float64(wrs.Stats.Agility),
+		proto.Stat_StatStamina:           float64(wrs.Stats.Stamina),
+		proto.Stat_StatIntellect:         float64(wrs.Stats.Intellect),
+		proto.Stat_StatSpirit:            float64(wrs.Stats.Spirit),
+		proto.Stat_StatSpellPower:        float64(wrs.Stats.SpellPower),
+		proto.Stat_StatMP5:               float64(wrs.Stats.MP5),
+		proto.Stat_StatSpellHit:          float64(wrs.Stats.HitRating),
+		proto.Stat_StatSpellCrit:         float64(wrs.Stats.CritRating),
+		proto.Stat_StatSpellHaste:        float64(wrs.Stats.HasteRating),
+		proto.Stat_StatAttackPower:       float64(wrs.Stats.AttackPower),
+		proto.Stat_StatMeleeHit:          float64(wrs.Stats.HitRating),
+		proto.Stat_StatMeleeCrit:         float64(wrs.Stats.CritRating),
+		proto.Stat_StatMeleeHaste:        float64(wrs.Stats.HasteRating),
+		proto.Stat_StatExpertise:         float64(wrs.Stats.Expertise),
+		proto.Stat_StatArmor:             float64(wrs.Stats.Armor),
+		proto.Stat_StatRangedAttackPower: float64(wrs.Stats.RangedAttackPower),
+		proto.Stat_StatBlock:             float64(wrs.Stats.Block),
+		proto.Stat_StatDodge:             float64(wrs.Stats.Dodge),
+		proto.Stat_StatParry:             float64(wrs.Stats.Parry),
+		proto.Stat_StatArcaneResistance:  float64(wrs.Stats.ArcaneResistance),
+		proto.Stat_StatFireResistance:    float64(wrs.Stats.FireResistance),
+		proto.Stat_StatFrostResistance:   float64(wrs.Stats.FrostResistance),
+		proto.Stat_StatNatureResistance:  float64(wrs.Stats.NatureResistance),
+		proto.Stat_StatShadowResistance:  float64(wrs.Stats.ShadowResistance),
+		proto.Stat_StatMastery:           float64(wrs.Stats.Mastery),
+	}
+
+	return &proto.ItemRandomSuffix{
+		Id:    wrs.ID,
+		Name:  wrs.Name,
+		Stats: toSlice(stats),
+	}
 }
 
 type WowheadItem struct {
@@ -69,7 +152,11 @@ type WowheadItem struct {
 	Ilvl    int32 `json:"itemLevel"`
 	Phase   int32 `json:"contentPhase"`
 
-	Stats WowheadItemStats `json:"stats"`
+	RaceMask  uint32 `json:"raceMask"`
+	ClassMask uint16 `json:"classMask"`
+
+	Stats               WowheadItemStats `json:"stats"`
+	RandomSuffixOptions []int32          `json:"randomEnchants"`
 
 	SourceTypes   []int32             `json:"source"` // 1 = Crafted, 2 = Dropped by, 3 = sold by zone vendor? barely used, 4 = Quest, 5 = Sold by
 	SourceDetails []WowheadItemSource `json:"sourcemore"`
@@ -124,11 +211,76 @@ func (wi WowheadItem) ToProto() *proto.UIItem {
 	}
 
 	return &proto.UIItem{
-		Id:      wi.ID,
-		Name:    wi.Name,
-		Icon:    wi.Icon,
-		Ilvl:    wi.Ilvl,
-		Phase:   wi.Phase,
-		Sources: sources,
+		Id:                  wi.ID,
+		Name:                wi.Name,
+		Icon:                wi.Icon,
+		Ilvl:                wi.Ilvl,
+		Phase:               wi.Phase,
+		FactionRestriction:  wi.getFactionRstriction(),
+		ClassAllowlist:      wi.getClassRestriction(),
+		Sources:             sources,
+		RandomSuffixOptions: wi.RandomSuffixOptions,
 	}
+}
+
+func (wi WowheadItem) getFactionRstriction() proto.UIItem_FactionRestriction {
+	if wi.RaceMask == 2098253 {
+		return proto.UIItem_FACTION_RESTRICTION_ALLIANCE_ONLY
+	} else if wi.RaceMask == 946 {
+		return proto.UIItem_FACTION_RESTRICTION_HORDE_ONLY
+	} else {
+		return proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED
+	}
+}
+
+type ClassMask uint16
+
+const (
+	ClassMaskWarrior     ClassMask = 1 << iota
+	ClassMaskPaladin               // 2
+	ClassMaskHunter                // 4
+	ClassMaskRogue                 // 8
+	ClassMaskPriest                // 16
+	ClassMaskDeathKnight           // 32
+	ClassMaskShaman                // 64
+	ClassMaskMage                  // 128
+	ClassMaskWarlock               // 256
+	ClassMaskUnknown               // 512 seemingly unused?
+	ClassMaskDruid                 // 1024
+)
+
+func (wi WowheadItem) getClassRestriction() []proto.Class {
+	classAllowlist := []proto.Class{}
+	if wi.ClassMask&uint16(ClassMaskWarrior) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassWarrior)
+	}
+	if wi.ClassMask&uint16(ClassMaskPaladin) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassPaladin)
+	}
+	if wi.ClassMask&uint16(ClassMaskHunter) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassHunter)
+	}
+	if wi.ClassMask&uint16(ClassMaskRogue) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassRogue)
+	}
+	if wi.ClassMask&uint16(ClassMaskPriest) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassPriest)
+	}
+	if wi.ClassMask&uint16(ClassMaskDruid) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassDruid)
+	}
+	if wi.ClassMask&uint16(ClassMaskShaman) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassShaman)
+	}
+	if wi.ClassMask&uint16(ClassMaskMage) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassMage)
+	}
+	if wi.ClassMask&uint16(ClassMaskWarlock) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassWarlock)
+	}
+	if wi.ClassMask&uint16(ClassMaskDeathKnight) != 0 {
+		classAllowlist = append(classAllowlist, proto.Class_ClassDeathKnight)
+	}
+
+	return classAllowlist
 }

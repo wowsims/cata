@@ -9,59 +9,67 @@ import (
 )
 
 func (result *SpellResult) applyResistances(sim *Simulation, spell *Spell, isPeriodic bool, attackTable *AttackTable) {
-	// TODO check why result.Outcome isn't updated with resists anymore
-	resistanceMultiplier := spell.ResistanceMultiplier(sim, isPeriodic, attackTable)
+	resistanceMultiplier, outcome := spell.ResistanceMultiplier(sim, isPeriodic, attackTable)
+
 	result.Damage *= resistanceMultiplier
+	result.Outcome |= outcome
 
 	result.ResistanceMultiplier = resistanceMultiplier
 	result.PreOutcomeDamage = result.Damage
 }
 
 // Modifies damage based on Armor or Magic resistances, depending on the damage type.
-func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attackTable *AttackTable) float64 {
+func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attackTable *AttackTable) (float64, HitOutcome) {
 	if spell.Flags.Matches(SpellFlagIgnoreResists) {
-		return 1
+		return 1, OutcomeEmpty
 	}
 
 	if spell.SpellSchool.Matches(SpellSchoolPhysical) {
 		// All physical dots (Bleeds) ignore armor.
 		if isPeriodic && !spell.Flags.Matches(SpellFlagApplyArmorReduction) {
-			return 1
+			return 1, OutcomeEmpty
 		}
 
 		// Physical resistance (armor).
-		return attackTable.GetArmorDamageModifier(spell)
+		return attackTable.GetArmorDamageModifier(spell), OutcomeEmpty
 	}
 
 	// Magical resistance.
 	averageResist := attackTable.Defender.averageResist(spell.SpellSchool, attackTable.Attacker)
 	if averageResist == 0 { // for equal or lower level mobs
-		return 1
+		return 1, OutcomeEmpty
 	}
 
 	if spell.Flags.Matches(SpellFlagBinary) {
 		if resistanceRoll := sim.RandomFloat("Binary Resist"); resistanceRoll < averageResist {
-			return 0
+			return 0, OutcomeEmpty
 		}
-		return 1
+		return 1, OutcomeEmpty
 	}
 
 	thresholds := attackTable.Defender.partialResistRollThresholds(averageResist)
 
 	switch resistanceRoll := sim.RandomFloat("Partial Resist"); {
 	case resistanceRoll < thresholds[0].cumulativeChance:
-		return thresholds[0].damageMultiplier()
+		return thresholds[0].damageMultiplier(), OutcomePartial8
 	case resistanceRoll < thresholds[1].cumulativeChance:
-		return thresholds[1].damageMultiplier()
+		return thresholds[1].damageMultiplier(), OutcomePartial4
 	case resistanceRoll < thresholds[2].cumulativeChance:
-		return thresholds[2].damageMultiplier()
+		return thresholds[2].damageMultiplier(), OutcomePartial2
 	default:
-		return thresholds[3].damageMultiplier()
+		return thresholds[3].damageMultiplier(), OutcomePartial1
 	}
 }
 
+// https://web.archive.org/web/20130208043756/http://elitistjerks.com/f15/t29453-combat_ratings_level_85_cataclysm/
+// https://web.archive.org/web/20110309163709/http://elitistjerks.com/f78/t105429-cataclysm_mechanics_testing/
 func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
-	armorConstant := float64(at.Attacker.Level)*467.5 - 22167.5
+	if at.IgnoreArmor {
+		return 1.0
+	}
+
+	// Assume target > 80
+	armorConstant := float64(at.Attacker.Level)*2167.5 - 158167.5
 	defenderArmor := at.Defender.Armor()
 	reducibleArmor := min((defenderArmor+armorConstant)/3, defenderArmor)
 	armorPenRating := at.Attacker.stats[stats.ArmorPenetration] + spell.BonusArmorPenRating
@@ -79,15 +87,17 @@ func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
   - the resist cap is likely gone, since resists work like armor now
  https://web.archive.org/web/20110209210726/http://elitistjerks.com/f75/t38540-general_mage_discussion_information/p11/#post1171056
  This handles the player vs. mob partial resists case
-  - average resist is still 2% percent per level vs. higher level mobs
-  - otherwise it's modelled identical to the mob vs. player case
+  - it's modelled identical to the mob vs. player case
   - the resulting numbers have been verified in game (55% for 0%, 30% for 10%, 15% for 20% resists)
 */
 
 func (unit *Unit) averageResist(school SpellSchool, attacker *Unit) float64 {
 	resistance := unit.GetStat(school.ResistanceStat()) - attacker.stats[stats.SpellPenetration]
 	if resistance <= 0 {
-		return unit.levelBasedResist(attacker)
+
+		// https://wowpedia.fandom.com/wiki/Resistance?oldid=6512353
+		// With the release of cataclysm, level based resistances seem to have been removed
+		return 0
 	}
 
 	c := 5 * float64(attacker.Level)
@@ -95,14 +105,7 @@ func (unit *Unit) averageResist(school SpellSchool, attacker *Unit) float64 {
 		c = 510 // other values TBD, but not very useful in practice
 	}
 
-	return resistance/(c+resistance) + unit.levelBasedResist(attacker) // these may stack differently, but that's irrelevant in practice
-}
-
-func (unit *Unit) levelBasedResist(attacker *Unit) float64 {
-	if unit.Type == EnemyUnit && unit.Level > attacker.Level {
-		return 0.02 * float64(unit.Level-attacker.Level)
-	}
-	return 0
+	return resistance / (c + resistance)
 }
 
 type Threshold struct {

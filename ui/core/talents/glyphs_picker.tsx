@@ -154,8 +154,8 @@ class GlyphPicker extends Input<Player<any>, number> {
 			new GlyphSelectorModal(this.rootElem.closest('.individual-sim-ui')!, this, this.glyphOptions);
 		};
 
-		this.iconElem.addEventListener('click', openGlyphSelectorModal);
-		this.nameElem.addEventListener('click', openGlyphSelectorModal);
+		this.anchorElem.addEventListener('click', openGlyphSelectorModal);
+		this.addOnDisposeCallback(() => this.anchorElem.removeEventListener('click', openGlyphSelectorModal));
 
 		this.init();
 	}

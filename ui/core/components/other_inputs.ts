@@ -4,7 +4,7 @@ import { Player } from '../player.js';
 import { ItemSlot, UnitReference } from '../proto/common.js';
 import { emptyUnitReference } from '../proto_utils/utils.js';
 import { Sim } from '../sim.js';
-import { EventID } from '../typed_event.js';
+import { EventID, TypedEvent } from '../typed_event.js';
 
 export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): BooleanPicker<Sim> {
 	return new BooleanPicker<Sim>(parent, sim, {
@@ -100,6 +100,20 @@ export const ChannelClipDelay = {
 		player.setChannelClipDelay(eventID, newValue);
 	},
 };
+
+export const DarkIntentUptime = {
+	type: 'number' as const,
+	label: 'Dark Intent Uptime',
+	labelTooltip: '% uptime on Dark Intent on the player (Only the stacking damage component)',
+	changedEvent: (player: Player<any>) => TypedEvent.onAny([player.buffsChangeEmitter, player.miscOptionsChangeEmitter]),
+	getValue: (player: Player<any>) => player.getDarkIntentUptime(),
+	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+		player.setDarkIntentUptime(eventID, newValue);
+	},
+	showWhen: (player: Player<any>) => {
+		return player.getBuffs().darkIntent
+	},
+}
 
 export const InFrontOfTarget = {
 	type: 'boolean' as const,

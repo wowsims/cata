@@ -15,17 +15,17 @@ func TestSingleAuraExclusiveDurationNoOverwrite(t *testing.T) {
 		auraTracker: newAuraTracker(),
 	}
 	mangle := MangleAura(&target)
-	trauma := MakePermanent(TraumaAura(&target, 2))
+	hemorrhage := MakePermanent(HemorrhageAura(&target))
 
 	// Trauma in this case should *never* be overwritten
 	// as its duration from 'MakePermanent' should make it non overwritable by 1 min duration mangles
-	trauma.Activate(sim)
+	hemorrhage.Activate(sim)
 
 	sim.CurrentTime = 1 * time.Second
 
 	mangle.Activate(sim)
 
-	if !(trauma.IsActive() && !mangle.IsActive()) {
+	if !(hemorrhage.IsActive() && !mangle.IsActive()) {
 		t.Fatalf("lower duration exclusive aura overwrote previous!")
 	}
 }
@@ -40,9 +40,9 @@ func TestSingleAuraExclusiveDurationOverwrite(t *testing.T) {
 		auraTracker: newAuraTracker(),
 	}
 	mangle := MangleAura(&target)
-	trauma := TraumaAura(&target, 2)
+	hemorrhage := HemorrhageAura(&target)
 
-	trauma.Activate(sim)
+	hemorrhage.Activate(sim)
 
 	sim.CurrentTime = 1 * time.Second
 
@@ -50,7 +50,7 @@ func TestSingleAuraExclusiveDurationOverwrite(t *testing.T) {
 
 	// In this case mangle should overwrite trauma as mangle will give a greater duration
 
-	if !(mangle.IsActive() && !trauma.IsActive()) {
+	if !(mangle.IsActive() && !hemorrhage.IsActive()) {
 		t.Fatalf("longer duration exclusive aura failed to overwrite")
 	}
 }

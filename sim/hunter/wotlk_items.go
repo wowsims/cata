@@ -235,9 +235,10 @@ func init() {
 					CritMultiplier:   hunter.AutoAttacks.RangedConfig().CritMultiplier,
 					ThreatMultiplier: 1,
 
+					BonusCoefficient: 1,
+
 					ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 						baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
-						spell.BonusWeaponDamage()
 
 						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 					},

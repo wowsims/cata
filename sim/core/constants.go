@@ -38,3 +38,5 @@ type Hand bool
 
 const MainHand Hand = true
 const OffHand Hand = false
+
+const CombatTableCoverageCap = 1.024 // 102.4% chance to avoid an attack

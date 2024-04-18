@@ -238,9 +238,8 @@ func (character *Character) applyEquipment() {
 }
 
 func (character *Character) addUniversalStatDependencies() {
-	character.AddStat(stats.Health, 20-10*20)
-	character.AddStatDependency(stats.Stamina, stats.Health, 10)
-	character.AddStatDependency(stats.Agility, stats.Armor, 2)
+	character.AddStat(stats.Health, 20-14*20)
+	character.AddStatDependency(stats.Stamina, stats.Health, 14)
 }
 
 // Returns a partially-filled PlayerStats proto for use in the CharacterStats api call.
@@ -248,10 +247,18 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	playerStats := &proto.PlayerStats{}
 
 	measureStats := func() *proto.UnitStats {
-		return &proto.UnitStats{
+		base := &proto.UnitStats{
 			Stats:       character.SortAndApplyStatDependencies(character.stats).ToFloatArray(),
 			PseudoStats: character.GetPseudoStatsProto(),
 		}
+
+		meleeMulti := 1 + (base.Stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100))
+		spellMulti := 1 + (base.Stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))
+
+		// TODO: Hunter would like to use RangedSpeedMultiplier
+		base.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+		base.Stats[stats.SpellHaste] = (spellMulti*character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+		return base
 	}
 
 	applyRaceEffects(agent)
@@ -365,13 +372,23 @@ func (character *Character) calculateCritMultiplier(normalCritDamage float64, pr
 	if character.HasMetaGemEquipped(34220) ||
 		character.HasMetaGemEquipped(32409) ||
 		character.HasMetaGemEquipped(41285) ||
-		character.HasMetaGemEquipped(41398) {
+		character.HasMetaGemEquipped(41398) ||
+		character.HasMetaGemEquipped(52291) ||
+		character.HasMetaGemEquipped(52297) ||
+		character.HasMetaGemEquipped(68778) ||
+		character.HasMetaGemEquipped(68779) ||
+		character.HasMetaGemEquipped(68780) {
 		primaryModifiers *= 1.03
 	}
 	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
 }
 func (character *Character) calculateHealingCritMultiplier(normalCritDamage float64, primaryModifiers float64, secondaryModifiers float64) float64 {
-	if character.HasMetaGemEquipped(41376) {
+	if character.HasMetaGemEquipped(41376) ||
+		character.HasMetaGemEquipped(52291) ||
+		character.HasMetaGemEquipped(52297) ||
+		character.HasMetaGemEquipped(68778) ||
+		character.HasMetaGemEquipped(68779) ||
+		character.HasMetaGemEquipped(68780) {
 		primaryModifiers *= 1.03
 	}
 	return 1.0 + (normalCritDamage*primaryModifiers-1.0)*(1.0+secondaryModifiers)
@@ -398,25 +415,6 @@ func (character *Character) DefaultHealingCritMultiplier() float64 {
 func (character *Character) AddRaidBuffs(_ *proto.RaidBuffs) {
 }
 func (character *Character) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
-	if character.Race == proto.Race_RaceDraenei {
-		partyBuffs.HeroicPresence = true
-	}
-
-	switch character.MainHand().ID {
-	case ItemIDAtieshMage:
-		partyBuffs.AtieshMage += 1
-	case ItemIDAtieshWarlock:
-		partyBuffs.AtieshWarlock += 1
-	}
-
-	switch character.Neck().ID {
-	case ItemIDBraidedEterniumChain:
-		partyBuffs.BraidedEterniumChain = true
-	case ItemIDChainOfTheTwilightOwl:
-		partyBuffs.ChainOfTheTwilightOwl = true
-	case ItemIDEyeOfTheNight:
-		partyBuffs.EyeOfTheNight = true
-	}
 }
 
 func (character *Character) initialize(agent Agent) {
@@ -487,6 +485,13 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 		Stats:       character.GetStats().ToFloatArray(),
 		PseudoStats: character.GetPseudoStatsProto(),
 	}
+
+	meleeMulti := 1 + (playerStats.FinalStats.Stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100))
+	spellMulti := 1 + (playerStats.FinalStats.Stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))
+
+	playerStats.FinalStats.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+	playerStats.FinalStats.Stats[stats.SpellHaste] = (spellMulti*character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
 	playerStats.Sets = character.GetActiveSetBonusNames()
 
@@ -503,9 +508,9 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 }
 
 func (character *Character) reset(sim *Simulation, agent Agent) {
+	character.ItemSwap.reset(sim)
 	character.Unit.reset(sim, agent)
 	character.majorCooldownManager.reset(sim)
-	character.ItemSwap.reset(sim)
 	character.CurrentTarget = character.defaultTarget
 
 	agent.Reset(sim)
@@ -578,9 +583,7 @@ func (character *Character) HasOHWeapon() bool {
 func (character *Character) GetRangedWeapon() *Item {
 	weapon := character.Ranged()
 	if weapon.ID == 0 ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeIdol ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeLibram ||
-		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeTotem {
+		weapon.RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeRelic {
 		return nil
 	} else {
 		return weapon
@@ -716,4 +719,25 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3
 		}
 		offset += treeSizes[treeIdx]
 	}
+}
+
+func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
+	hasBonus := true
+
+	if character.Head().ArmorType != armorType ||
+		character.Shoulder().ArmorType != armorType ||
+		character.Chest().ArmorType != armorType ||
+		character.Wrist().ArmorType != armorType ||
+		character.Hands().ArmorType != armorType ||
+		character.Waist().ArmorType != armorType ||
+		character.Legs().ArmorType != armorType ||
+		character.Feet().ArmorType != armorType {
+		hasBonus = false
+	}
+
+	if hasBonus {
+		character.MultiplyStat(primaryStat, 1.05)
+	}
+
+	return hasBonus
 }

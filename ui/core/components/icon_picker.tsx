@@ -70,8 +70,14 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		const ce = ref<HTMLSpanElement>();
 		this.rootAnchor.appendChild(
 			<div className="icon-input-level-container">
-				<a ref={ia} className="icon-picker-button icon-input-improved icon-input-improved1" dataset={{ disableWowheadTouchTooltip: 'true' }}></a>
-				<a ref={ia2} className="icon-picker-button icon-input-improved icon-input-improved2" dataset={{ disableWowheadTouchTooltip: 'true' }}></a>
+				<a
+					ref={ia}
+					className="icon-picker-button icon-input-improved icon-input-improved1"
+					dataset={{ whtticon: 'false', disableWowheadTouchTooltip: 'true' }}></a>
+				<a
+					ref={ia2}
+					className="icon-picker-button icon-input-improved icon-input-improved2"
+					dataset={{ whtticon: 'false', disableWowheadTouchTooltip: 'true' }}></a>
 				<span ref={ce} className={`icon-picker-label ${this.config.states > 2 ? '' : 'hide'}`}></span>
 			</div>,
 		);
@@ -102,7 +108,8 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 		this.init();
 
 		this.rootAnchor.addEventListener('click', event => {
-			this.handleLeftClick(event);
+			event.preventDefault();
+			this.handleLeftClick();
 		});
 
 		this.rootAnchor.addEventListener('contextmenu', event => {
@@ -112,13 +119,13 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 			const rightClick = isRightClick(event);
 
 			if (rightClick) {
-				this.handleRightClick(event);
 				event.preventDefault();
+				this.handleRightClick();
 			}
 		});
 	}
 
-	handleLeftClick = (event: UIEvent) => {
+	handleLeftClick() {
 		if (this.config.states == 0 || this.currentValue + 1 < this.config.states) {
 			this.currentValue++;
 			this.inputChanged(TypedEvent.nextEventID());
@@ -127,10 +134,9 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 			this.currentValue = 0;
 			this.inputChanged(TypedEvent.nextEventID());
 		}
-		event.preventDefault();
-	};
+	}
 
-	handleRightClick = (_: UIEvent) => {
+	handleRightClick() {
 		if (this.currentValue > 0) {
 			this.currentValue--;
 		} else {
@@ -142,7 +148,7 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 			}
 		}
 		this.inputChanged(TypedEvent.nextEventID());
-	};
+	}
 
 	getInputElem(): HTMLElement {
 		return this.rootAnchor;
