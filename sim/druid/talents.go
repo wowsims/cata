@@ -90,7 +90,7 @@ func (druid *Druid) ApplyTalents() {
 	// druid.applyEclipse()
 	druid.applyLotp()
 	// druid.applyPredatoryInstincts()
-	// druid.applyNaturalReaction()
+	druid.applyNaturalReaction()
 	// druid.applyOwlkinFrenzy()
 	// druid.applyInfectedWounds()
 	druid.applyFurySwipes()
@@ -693,26 +693,26 @@ func (druid *Druid) applyLotp() {
 // 	})
 // }
 
-// func (druid *Druid) applyNaturalReaction() {
-// 	if druid.Talents.NaturalReaction == 0 {
-// 		return
-// 	}
+func (druid *Druid) applyNaturalReaction() {
+	if druid.Talents.NaturalReaction == 0 {
+		return
+	}
 
-// 	actionID := core.ActionID{SpellID: 59072}
-// 	rageMetrics := druid.NewRageMetrics(actionID)
-// 	rageAdded := float64(druid.Talents.NaturalReaction)
+	actionID := core.ActionID{SpellID: 59071}
+	rageMetrics := druid.NewRageMetrics(actionID)
+	rageAdded := 1.0 + 2.0 * float64(druid.Talents.NaturalReaction - 1)
 
-// 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
-// 		Name:     "Natural Reaction Trigger",
-// 		Callback: core.CallbackOnSpellHitTaken,
-// 		ProcMask: core.ProcMaskMelee,
-// 		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
-// 			if druid.InForm(Bear) && result.Outcome.Matches(core.OutcomeDodge) {
-// 				druid.AddRage(sim, rageAdded, rageMetrics)
-// 			}
-// 		},
-// 	})
-// }
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:     "Natural Reaction Trigger",
+		Callback: core.CallbackOnSpellHitTaken,
+		ProcMask: core.ProcMaskMelee,
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			if druid.InForm(Bear) && result.Outcome.Matches(core.OutcomeDodge) {
+				druid.AddRage(sim, rageAdded, rageMetrics)
+			}
+		},
+	})
+}
 
 // func (druid *Druid) applyInfectedWounds() {
 // 	if druid.Talents.InfectedWounds == 0 {
