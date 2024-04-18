@@ -106,7 +106,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
-		showExecuteProportion: false,
+		showExecuteProportion: true,
 	},
 
 	presets: {
