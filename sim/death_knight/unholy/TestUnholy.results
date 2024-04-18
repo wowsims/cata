@@ -1,0 +1,1961 @@
+character_stats_results: {
+ key: "TestUnholy-CharacterStats-Default"
+ value: {
+  final_stats: 6382.13563
+  final_stats: 755.4225
+  final_stats: 5280.87
+  final_stats: 54.6
+  final_stats: 82
+  final_stats: 0
+  final_stats: 326
+  final_stats: 1890.01166
+  final_stats: 2365.68024
+  final_stats: 2416.8858
+  final_stats: 0
+  final_stats: 16326.69552
+  final_stats: 968
+  final_stats: 2921.41342
+  final_stats: 3141.7716
+  final_stats: 0
+  final_stats: 512
+  final_stats: 2126
+  final_stats: 21136
+  final_stats: 209
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 309.95968
+  final_stats: 1595.53391
+  final_stats: 0
+  final_stats: 116957.18
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 240
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-AgileShadowspiritDiamond"
+ value: {
+  dps: 26519.90165
+  tps: 18968.96604
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Althor'sAbacus-50359"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Althor'sAbacus-50366"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Anhuur'sHymnal-55889"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Anhuur'sHymnal-56407"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-AustereEarthsiegeDiamond"
+ value: {
+  dps: 26363.77602
+  tps: 18816.8799
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-AustereShadowspiritDiamond"
+ value: {
+  dps: 26363.77602
+  tps: 18816.8799
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Bandit'sInsignia-40371"
+ value: {
+  dps: 25151.00732
+  tps: 18254.29714
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BaubleofTrueBlood-50354"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+  hps: 85.60947
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BaubleofTrueBlood-50726"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+  hps: 85.60947
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BeamingEarthsiegeDiamond"
+ value: {
+  dps: 26376.99222
+  tps: 18823.41021
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BedrockTalisman-58182"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BellofEnragingResonance-59326"
+ value: {
+  dps: 25281.09705
+  tps: 18267.4314
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BellofEnragingResonance-65053"
+ value: {
+  dps: 25328.94095
+  tps: 18305.90978
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BindingPromise-67037"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BlessedBattlegearofUndeadSlaying"
+ value: {
+  dps: 19877.69449
+  tps: 14197.16894
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BlessedGarboftheUndeadSlayer"
+ value: {
+  dps: 18908.36387
+  tps: 13565.13089
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BlessedRegaliaofUndeadCleansing"
+ value: {
+  dps: 18650.5197
+  tps: 13344.38306
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Blood-SoakedAleMug-63843"
+ value: {
+  dps: 25298.99207
+  tps: 18355.58686
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BloodofIsiset-55995"
+ value: {
+  dps: 25166.58211
+  tps: 18276.90193
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BloodofIsiset-56414"
+ value: {
+  dps: 25202.54768
+  tps: 18316.22097
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
+ value: {
+  dps: 25186.25007
+  tps: 18182.06137
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BloodthirstyGladiator'sBadgeofDominance-64688"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BloodthirstyGladiator'sBadgeofVictory-64689"
+ value: {
+  dps: 26223.40821
+  tps: 18882.96421
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740"
+ value: {
+  dps: 25262.06476
+  tps: 18253.80573
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BloodthirstyGladiator'sInsigniaofConquest-64761"
+ value: {
+  dps: 25100.23494
+  tps: 18104.05155
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
+ value: {
+  dps: 24892.12365
+  tps: 17976.66361
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763"
+ value: {
+  dps: 26086.05479
+  tps: 18765.01191
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BottledLightning-66879"
+ value: {
+  dps: 25036.11503
+  tps: 18087.98815
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BracingEarthsiegeDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18428.92974
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BracingShadowspiritDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18428.92974
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Bryntroll,theBoneArbiter-50415"
+ value: {
+  dps: 27658.82594
+  tps: 19882.00764
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Bryntroll,theBoneArbiter-50709"
+ value: {
+  dps: 27759.58694
+  tps: 19964.11505
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-BurningShadowspiritDiamond"
+ value: {
+  dps: 26492.68257
+  tps: 18953.7477
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ChaoticShadowspiritDiamond"
+ value: {
+  dps: 26550.56361
+  tps: 19000.28306
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ChaoticSkyflareDiamond"
+ value: {
+  dps: 26519.03582
+  tps: 18973.23036
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CoreofRipeness-58184"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CorpseTongueCoin-50349"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CorpseTongueCoin-50352"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CorrodedSkeletonKey-50356"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+  hps: 64
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CrushingWeight-59506"
+ value: {
+  dps: 26540.98152
+  tps: 19095.2766
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-CrushingWeight-65118"
+ value: {
+  dps: 26790.44142
+  tps: 19241.84378
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DarkmoonCard:Berserker!-42989"
+ value: {
+  dps: 25000.25681
+  tps: 18052.52143
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DarkmoonCard:Death-42990"
+ value: {
+  dps: 25099.69032
+  tps: 18175.12674
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DarkmoonCard:Earthquake-62048"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DarkmoonCard:Greatness-44255"
+ value: {
+  dps: 25275.00991
+  tps: 18247.5667
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DarkmoonCard:Hurricane-62049"
+ value: {
+  dps: 26515.69566
+  tps: 19233.95766
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DarkmoonCard:Hurricane-62051"
+ value: {
+  dps: 25532.29965
+  tps: 18546.58751
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DarkmoonCard:Tsunami-62050"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DarkmoonCard:Volcano-62047"
+ value: {
+  dps: 25312.92319
+  tps: 18451.4342
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Death'sChoice-47464"
+ value: {
+  dps: 25797.38748
+  tps: 18687.36372
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DeathKnight'sAnguish-38212"
+ value: {
+  dps: 24985.76047
+  tps: 18047.00798
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Deathbringer'sWill-50362"
+ value: {
+  dps: 25580.07353
+  tps: 18545.04812
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Deathbringer'sWill-50363"
+ value: {
+  dps: 25704.69568
+  tps: 18617.91676
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Defender'sCode-40257"
+ value: {
+  dps: 24916.77368
+  tps: 18000.92191
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DestructiveShadowspiritDiamond"
+ value: {
+  dps: 26407.08521
+  tps: 18848.93163
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DestructiveSkyflareDiamond"
+ value: {
+  dps: 26379.08768
+  tps: 18825.25549
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DislodgedForeignObject-50348"
+ value: {
+  dps: 25140.50345
+  tps: 18150.09433
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-DislodgedForeignObject-50353"
+ value: {
+  dps: 25158.36525
+  tps: 18166.64541
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EffulgentShadowspiritDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EffulgentSkyflareDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ElectrosparkHeartstarter-67118"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EmberShadowspiritDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EmberSkyflareDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EnigmaticShadowspiritDiamond"
+ value: {
+  dps: 26407.08521
+  tps: 18848.93163
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EnigmaticSkyflareDiamond"
+ value: {
+  dps: 26376.99222
+  tps: 18823.41021
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EnigmaticStarflareDiamond"
+ value: {
+  dps: 26374.54174
+  tps: 18821.94432
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EphemeralSnowflake-50260"
+ value: {
+  dps: 24963.96224
+  tps: 18004.42149
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EssenceofGossamer-37220"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EssenceoftheCyclone-59473"
+ value: {
+  dps: 25462.4872
+  tps: 18375.52173
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EssenceoftheCyclone-65140"
+ value: {
+  dps: 25561.04404
+  tps: 18437.22135
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EternalEarthsiegeDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EternalShadowspiritDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ExtractofNecromanticPower-40373"
+ value: {
+  dps: 25123.83641
+  tps: 18199.89896
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-EyeoftheBroodmother-45308"
+ value: {
+  dps: 25005.33112
+  tps: 18056.97658
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-FallofMortality-59500"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-FallofMortality-65124"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Figurine-DemonPanther-52199"
+ value: {
+  dps: 25167.62614
+  tps: 18167.97581
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Figurine-DreamOwl-52354"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Figurine-EarthenGuardian-52352"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Figurine-JeweledSerpent-52353"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Figurine-KingofBoars-52351"
+ value: {
+  dps: 26465.72596
+  tps: 19182.80717
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Figurine-SapphireOwl-42413"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-FleetShadowspiritDiamond"
+ value: {
+  dps: 26413.03913
+  tps: 18872.23882
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-FluidDeath-58181"
+ value: {
+  dps: 25065.22896
+  tps: 18086.82794
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ForethoughtTalisman-40258"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ForgeEmber-37660"
+ value: {
+  dps: 24970.74715
+  tps: 18033.90336
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ForlornShadowspiritDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ForlornSkyflareDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ForlornStarflareDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-FuryofAngerforge-59461"
+ value: {
+  dps: 29148.03776
+  tps: 21065.07469
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-FuryoftheFiveFlights-40431"
+ value: {
+  dps: 25145.50788
+  tps: 18224.51175
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-FuturesightRune-38763"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-GaleofShadows-56138"
+ value: {
+  dps: 25371.97235
+  tps: 18327.88733
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-GaleofShadows-56462"
+ value: {
+  dps: 25401.22164
+  tps: 18377.60618
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-GearDetector-61462"
+ value: {
+  dps: 25178.65221
+  tps: 18093.61046
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-GlowingTwilightScale-54573"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-GlowingTwilightScale-54589"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-GnomishLightningGenerator-41121"
+ value: {
+  dps: 25063.08389
+  tps: 18150.14278
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-GraceoftheHerald-55266"
+ value: {
+  dps: 25163.76588
+  tps: 18167.10679
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-GraceoftheHerald-56295"
+ value: {
+  dps: 25312.21259
+  tps: 18272.44014
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-HarmlightToken-63839"
+ value: {
+  dps: 25022.7075
+  tps: 18107.41903
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Harrison'sInsigniaofPanache-65803"
+ value: {
+  dps: 25965.86062
+  tps: 18792.46287
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-HeartofIgnacious-59514"
+ value: {
+  dps: 25368.36518
+  tps: 18276.29395
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-HeartofIgnacious-65110"
+ value: {
+  dps: 25296.55214
+  tps: 18180.29129
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-HeartofRage-65072"
+ value: {
+  dps: 26902.27004
+  tps: 19252.19831
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-HeartofSolace-55868"
+ value: {
+  dps: 25371.97235
+  tps: 18327.88733
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-HeartofSolace-56393"
+ value: {
+  dps: 26872.51779
+  tps: 19272.29919
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-HeartofThunder-55845"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-HeartofThunder-56370"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-HeartoftheVile-66969"
+ value: {
+  dps: 25140.36025
+  tps: 18143.12542
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-IllustrationoftheDragonSoul-40432"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ImpassiveShadowspiritDiamond"
+ value: {
+  dps: 26407.08521
+  tps: 18848.93163
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ImpassiveSkyflareDiamond"
+ value: {
+  dps: 26376.99222
+  tps: 18823.41021
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ImpassiveStarflareDiamond"
+ value: {
+  dps: 26374.54174
+  tps: 18821.94432
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ImpatienceofYouth-62464"
+ value: {
+  dps: 26666.71035
+  tps: 19337.63734
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ImpatienceofYouth-62469"
+ value: {
+  dps: 26666.71035
+  tps: 19337.63734
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ImpetuousQuery-55881"
+ value: {
+  dps: 25166.58211
+  tps: 18276.90193
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ImpetuousQuery-56406"
+ value: {
+  dps: 25202.54768
+  tps: 18316.22097
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-IncisorFragment-37723"
+ value: {
+  dps: 25156.90636
+  tps: 18238.67547
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-InsightfulEarthsiegeDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-InsigniaofDiplomacy-61433"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-InsigniaoftheEarthenLord-61429"
+ value: {
+  dps: 25103.39771
+  tps: 18207.82356
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-InvigoratingEarthsiegeDiamond"
+ value: {
+  dps: 26387.79334
+  tps: 18840.35026
+  hps: 40.93501
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-JarofAncientRemedies-59354"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-JarofAncientRemedies-65029"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-JujuofNimbleness-63840"
+ value: {
+  dps: 25298.99207
+  tps: 18355.58686
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-KeytotheEndlessChamber-55795"
+ value: {
+  dps: 25056.93639
+  tps: 18086.31047
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-KeytotheEndlessChamber-56328"
+ value: {
+  dps: 25094.41576
+  tps: 18111.01033
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-KvaldirBattleStandard-59685"
+ value: {
+  dps: 25778.37513
+  tps: 18629.44545
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-KvaldirBattleStandard-59689"
+ value: {
+  dps: 25778.37513
+  tps: 18629.44545
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-LadyLa-La'sSingingShell-67152"
+ value: {
+  dps: 25030.9562
+  tps: 18061.37356
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-LastWord-50179"
+ value: {
+  dps: 27035.52592
+  tps: 19323.08348
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-LastWord-50708"
+ value: {
+  dps: 27099.38551
+  tps: 19369.78564
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Lavanthor'sTalisman-37872"
+ value: {
+  dps: 24892.21724
+  tps: 17976.84143
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-LeadenDespair-55816"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-LeadenDespair-56347"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-LeftEyeofRajh-56102"
+ value: {
+  dps: 25152.88184
+  tps: 18164.27973
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-LeftEyeofRajh-56427"
+ value: {
+  dps: 25236.39176
+  tps: 18218.54585
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MagmaPlatedBattlegear"
+ value: {
+  dps: 25655.08828
+  tps: 18449.28346
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MagnetiteMirror-55814"
+ value: {
+  dps: 25783.04089
+  tps: 18682.39539
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MagnetiteMirror-56345"
+ value: {
+  dps: 26201.06972
+  tps: 19005.77018
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MajesticDragonFigurine-40430"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MandalaofStirringPatterns-62467"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MandalaofStirringPatterns-62472"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MarkofKhardros-56132"
+ value: {
+  dps: 26191.42125
+  tps: 19015.6904
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MarkofKhardros-56458"
+ value: {
+  dps: 26363.66109
+  tps: 19154.05913
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MeteoriteWhetstone-37390"
+ value: {
+  dps: 25034.279
+  tps: 18127.15665
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MightoftheOcean-55251"
+ value: {
+  dps: 25515.835
+  tps: 18469.24915
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MightoftheOcean-56285"
+ value: {
+  dps: 26053.77444
+  tps: 18893.91241
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MirrorofBrokenImages-62466"
+ value: {
+  dps: 25241.79593
+  tps: 18359.12754
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MirrorofBrokenImages-62471"
+ value: {
+  dps: 25241.79593
+  tps: 18359.12754
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-MoonwellChalice-70142"
+ value: {
+  dps: 25323.44575
+  tps: 18453.72648
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-NevermeltingIceCrystal-50259"
+ value: {
+  dps: 25061.96183
+  tps: 18115.26248
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-OfferingofSacrifice-37638"
+ value: {
+  dps: 24908.14095
+  tps: 17992.488
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Oremantle'sFavor-61448"
+ value: {
+  dps: 25890.80084
+  tps: 18685.65507
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PersistentEarthshatterDiamond"
+ value: {
+  dps: 26380.90895
+  tps: 18833.62266
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PersistentEarthsiegeDiamond"
+ value: {
+  dps: 26387.79334
+  tps: 18840.35026
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PetrifiedScarab-21685"
+ value: {
+  dps: 24892.12365
+  tps: 17976.66361
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PetrifiedTwilightScale-54571"
+ value: {
+  dps: 24957.98057
+  tps: 18041.1798
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PetrifiedTwilightScale-54591"
+ value: {
+  dps: 24966.44064
+  tps: 18049.44504
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PorcelainCrab-55237"
+ value: {
+  dps: 25083.11052
+  tps: 18186.64932
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PorcelainCrab-56280"
+ value: {
+  dps: 25238.75459
+  tps: 18352.66979
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PowerfulEarthshatterDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PowerfulEarthsiegeDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PowerfulShadowspiritDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Prestor'sTalismanofMachination-59441"
+ value: {
+  dps: 25503.32796
+  tps: 18373.71889
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Prestor'sTalismanofMachination-65026"
+ value: {
+  dps: 25587.78451
+  tps: 18435.0232
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-PurifiedShardoftheGods"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Rainsong-55854"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Rainsong-56377"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ReignoftheDead-47316"
+ value: {
+  dps: 24951.78183
+  tps: 18059.55983
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ReignoftheDead-47477"
+ value: {
+  dps: 24957.00112
+  tps: 18064.77912
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RelentlessEarthsiegeDiamond"
+ value: {
+  dps: 26505.49118
+  tps: 18960.56826
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ReverberatingShadowspiritDiamond"
+ value: {
+  dps: 26696.55392
+  tps: 19093.97604
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RevitalizingShadowspiritDiamond"
+ value: {
+  dps: 26492.68257
+  tps: 18953.7477
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RevitalizingSkyflareDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RightEyeofRajh-56100"
+ value: {
+  dps: 25770.92198
+  tps: 18547.73303
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RightEyeofRajh-56431"
+ value: {
+  dps: 25834.19275
+  tps: 18553.25401
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-RuneofRepulsion-40372"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Schnottz'sMedallionofCommand-65805"
+ value: {
+  dps: 25237.11669
+  tps: 18280.94822
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SeaStar-55256"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SeaStar-56290"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SealofthePantheon-36993"
+ value: {
+  dps: 24917.97069
+  tps: 18000.67066
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Shadowmourne-49623"
+ value: {
+  dps: 29125.75993
+  tps: 21007.13551
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ShinyShardoftheGods"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Shrine-CleansingPurifier-63838"
+ value: {
+  dps: 26045.39089
+  tps: 18735.2668
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Sindragosa'sFlawlessFang-50361"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Skardyn'sGrace-56115"
+ value: {
+  dps: 25378.5453
+  tps: 18436.71524
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Skardyn'sGrace-56440"
+ value: {
+  dps: 25446.8404
+  tps: 18497.29936
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SliverofPureIce-50339"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SliverofPureIce-50346"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Sorrowsong-55879"
+ value: {
+  dps: 25166.58211
+  tps: 18276.90193
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Sorrowsong-56400"
+ value: {
+  dps: 25202.4475
+  tps: 18316.03063
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Soul'sAnguish-66994"
+ value: {
+  dps: 25515.835
+  tps: 18469.24915
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SoulCasket-58183"
+ value: {
+  dps: 25241.79593
+  tps: 18359.12754
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SoulPreserver-37111"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SouloftheDead-40382"
+ value: {
+  dps: 25007.33039
+  tps: 18058.97585
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SparkofLife-37657"
+ value: {
+  dps: 25027.92717
+  tps: 18115.45979
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SphereofRedDragon'sBlood-37166"
+ value: {
+  dps: 25036.76629
+  tps: 18110.15223
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Stonemother'sKiss-61411"
+ value: {
+  dps: 25173.36127
+  tps: 18191.9349
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-StumpofTime-62465"
+ value: {
+  dps: 24892.21724
+  tps: 17976.84143
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-StumpofTime-62470"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SwiftSkyflareDiamond"
+ value: {
+  dps: 26387.79334
+  tps: 18840.35026
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SwiftStarflareDiamond"
+ value: {
+  dps: 26380.90895
+  tps: 18833.62266
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SwiftWindfireDiamond"
+ value: {
+  dps: 26368.86128
+  tps: 18821.84935
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SymbioticWorm-59332"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-SymbioticWorm-65048"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TalismanofSinisterOrder-65804"
+ value: {
+  dps: 25087.37006
+  tps: 18190.24337
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TalismanofTrollDivinity-37734"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Tank-CommanderInsignia-63841"
+ value: {
+  dps: 25900.92993
+  tps: 18599.27301
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TearofBlood-55819"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TearofBlood-56351"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TearsoftheVanquished-47215"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TendrilsofBurrowingDark-55810"
+ value: {
+  dps: 25126.17132
+  tps: 18232.64172
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TendrilsofBurrowingDark-56339"
+ value: {
+  dps: 25202.54768
+  tps: 18316.22097
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TheGeneral'sHeart-45507"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Theralion'sMirror-59519"
+ value: {
+  dps: 25289.11623
+  tps: 18414.85259
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Theralion'sMirror-65105"
+ value: {
+  dps: 25349.04535
+  tps: 18475.40718
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Throngus'sFinger-56121"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Throngus'sFinger-56449"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ThunderingSkyflareDiamond"
+ value: {
+  dps: 26386.91936
+  tps: 18813.77557
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Tia'sGrace-55874"
+ value: {
+  dps: 25355.72231
+  tps: 18394.99297
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Tia'sGrace-56394"
+ value: {
+  dps: 25421.9447
+  tps: 18456.59281
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TinyAbominationinaJar-50351"
+ value: {
+  dps: 25290.66189
+  tps: 18352.17249
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TinyAbominationinaJar-50706"
+ value: {
+  dps: 25329.36478
+  tps: 18373.8949
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TirelessSkyflareDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TirelessStarflareDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TomeofArcanePhenomena-36972"
+ value: {
+  dps: 25016.08418
+  tps: 18098.26019
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TrenchantEarthshatterDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-TrenchantEarthsiegeDiamond"
+ value: {
+  dps: 26351.65032
+  tps: 18805.03034
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Tyrande'sFavoriteDoll-64645"
+ value: {
+  dps: 24927.38587
+  tps: 18039.05278
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-UndeadSlayer'sBlessedArmor"
+ value: {
+  dps: 18933.41156
+  tps: 13589.13777
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-UnheededWarning-59520"
+ value: {
+  dps: 25412.42803
+  tps: 18404.45322
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-UnquenchableFlame-67101"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-UnsolvableRiddle-62468"
+ value: {
+  dps: 25481.11415
+  tps: 18512.12072
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-UnsolvableRiddle-68709"
+ value: {
+  dps: 25481.11415
+  tps: 18512.12072
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Val'anyr,HammerofAncientKings-46017"
+ value: {
+  dps: 18099.33559
+  tps: 11892.66958
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-VialofStolenMemories-59515"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-VialofStolenMemories-65109"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sBadgeofConquest-61033"
+ value: {
+  dps: 25129.94794
+  tps: 18128.33443
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sBadgeofDominance-61035"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sBadgeofVictory-61034"
+ value: {
+  dps: 26297.84438
+  tps: 18933.62524
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
+ value: {
+  dps: 25354.27752
+  tps: 18324.81687
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
+ value: {
+  dps: 25309.15338
+  tps: 18291.85468
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
+ value: {
+  dps: 25076.66816
+  tps: 18133.69341
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sEmblemofProwess-61029"
+ value: {
+  dps: 25262.51579
+  tps: 18381.77818
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
+ value: {
+  dps: 25115.06258
+  tps: 18108.26361
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
+ value: {
+  dps: 24891.93085
+  tps: 17976.29729
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
+ value: {
+  dps: 26141.59896
+  tps: 18797.98302
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WingedTalisman-37844"
+ value: {
+  dps: 24892.31429
+  tps: 17977.02582
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WitchingHourglass-55787"
+ value: {
+  dps: 25131.70217
+  tps: 18131.06259
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-WitchingHourglass-56320"
+ value: {
+  dps: 25349.49338
+  tps: 18262.94675
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-World-QuellerFocus-63842"
+ value: {
+  dps: 25130.62802
+  tps: 18237.59437
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Za'brox'sLuckyTooth-63742"
+ value: {
+  dps: 25187.5935
+  tps: 18302.11058
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-Za'brox'sLuckyTooth-63745"
+ value: {
+  dps: 25187.5935
+  tps: 18302.11058
+ }
+}
+dps_results: {
+ key: "TestUnholy-Average-Default"
+ value: {
+  dps: 26710.1203
+  tps: 19134.43926
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Goblin-p1-Basic-st-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 46250.10661
+  tps: 53770.31176
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Goblin-p1-Basic-st-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 26457.84527
+  tps: 18917.8375
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Goblin-p1-Basic-st-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 36360.11898
+  tps: 22952.55923
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Goblin-p1-Basic-st-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 29588.21565
+  tps: 33883.07161
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Goblin-p1-Basic-st-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 17156.43705
+  tps: 12308.40363
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Goblin-p1-Basic-st-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 21831.65531
+  tps: 13944.29428
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Worgen-p1-Basic-st-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 46660.51726
+  tps: 54576.97937
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Worgen-p1-Basic-st-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 26696.55392
+  tps: 19093.97604
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Worgen-p1-Basic-st-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 36659.01157
+  tps: 23067.46705
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Worgen-p1-Basic-st-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 29844.177
+  tps: 34242.76678
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Worgen-p1-Basic-st-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 17204.02171
+  tps: 12363.19638
+ }
+}
+dps_results: {
+ key: "TestUnholy-Settings-Worgen-p1-Basic-st-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 21912.86016
+  tps: 14053.8553
+ }
+}
+dps_results: {
+ key: "TestUnholy-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 25507.82356
+  tps: 18333.6896
+ }
+}
