@@ -99,3 +99,13 @@ func (druid *Druid) MaxRipTicks() int32 {
 func (druid *Druid) CurrentRipCost() float64 {
 	return druid.Rip.ApplyCostModifiers(druid.Rip.DefaultCast.Cost)
 }
+
+func (druid *Druid) ApplyBloodletting(target *core.Unit) {
+	ripDot := druid.Rip.Dot(target)
+
+	if ripDot.IsActive() && (ripDot.NumberOfTicks < 11) {
+		ripDot.NumberOfTicks += 1
+		ripDot.RecomputeAuraDuration()
+		ripDot.UpdateExpires(ripDot.ExpiresAt() + time.Second * 2)
+	}
+}

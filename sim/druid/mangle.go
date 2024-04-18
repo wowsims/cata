@@ -68,6 +68,7 @@ func (druid *Druid) registerMangleBearSpell() {
 func (druid *Druid) registerMangleCatSpell() {
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
 	glyphBonus := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfMangle), 1.1, 1.0)
+	hasBloodletting := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting)
 
 	druid.MangleCat = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48566},
@@ -100,6 +101,11 @@ func (druid *Druid) registerMangleCatSpell() {
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 				mangleAuras.Get(target).Activate(sim)
+
+				// Mangle (Cat) can also extend Rip in Cata
+				if hasBloodletting {
+					druid.ApplyBloodletting(target)
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}
