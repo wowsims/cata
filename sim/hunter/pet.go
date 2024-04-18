@@ -49,7 +49,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	baseFocusPerSecond *= 1.0 + (0.10 * float64(hunter.Talents.BestialDiscipline))
 	hp.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), baseFocusPerSecond, false)
 
-	atkSpd := 2 / (1 + 0.5*float64(hp.Talents().SerpentSwiftness))
+	atkSpd := 2 / (1 + 0.05*float64(hp.Talents().SerpentSwiftness))
 	// Todo: Change for Cataclysm
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
@@ -70,7 +70,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	hp.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
 
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/(0.01/243.6))
+	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/324.72)
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
 
 	hunter.AddPet(hp)
@@ -156,11 +156,11 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.22,
-
-			stats.MeleeHit:  hitRatingFromOwner,
-			stats.SpellHit:  hitRatingFromOwner,
-			stats.Expertise: (ownerHitChance * 26 / 8) / 100,
+			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.425,
+			stats.Agility:     ownerStats[stats.Agility],
+			stats.MeleeHit:    hitRatingFromOwner,
+			stats.SpellHit:    hitRatingFromOwner,
+			stats.Expertise:   (ownerHitChance * 26 / 8) / 100,
 		}
 	}
 }
