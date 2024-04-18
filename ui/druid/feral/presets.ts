@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Spec } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, Potions, Spec, TinkerHands } from '../../core/proto/common';
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
@@ -85,4 +85,5 @@ export const DefaultConsumes = Consumes.create({
 	food: Food.FoodSkeweredEel,
 	defaultPotion: Potions.PotionOfTheTolvir,
 	prepopPotion: Potions.PotionOfTheTolvir,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
