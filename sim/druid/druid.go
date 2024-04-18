@@ -48,6 +48,7 @@ type Druid struct {
 	Maul                 *DruidSpell
 	MaulQueueSpell       *DruidSpell
 	Moonfire             *DruidSpell
+	Pulverize            *DruidSpell
 	Rebirth              *DruidSpell
 	Rake                 *DruidSpell
 	Rip                  *DruidSpell
@@ -80,6 +81,7 @@ type Druid struct {
 	NaturesGraceProcAura     *core.Aura
 	PredatoryInstinctsAura   *core.Aura
 	PrimalMadnessAura        *core.Aura
+	PulverizeAura            *core.Aura
 	SavageDefenseAura        *core.Aura
 	SurvivalInstinctsAura    *core.Aura
 	TigersFuryAura           *core.Aura

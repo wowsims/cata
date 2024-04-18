@@ -279,6 +279,7 @@ func (druid *Druid) registerBearFormSpell() {
 				druid.UpdateManaRegenRates()
 				druid.EnrageAura.Deactivate(sim)
 				druid.MaulQueueAura.Deactivate(sim)
+				druid.PulverizeAura.Deactivate(sim)
 			}
 		},
 	})
