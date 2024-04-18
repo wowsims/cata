@@ -99,10 +99,10 @@ func (dk *DeathKnight) applyMercilessCombat() {
 			Duration: core.NeverExpires,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				SetDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex], dk.mercilessCombatMultiplier)
+				EnableDamageDoneByCaster(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex], dk.mercilessCombatMultiplier)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				ClearDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex])
+				DisableDamageDoneByCaster(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex])
 			},
 		})
 		return aura

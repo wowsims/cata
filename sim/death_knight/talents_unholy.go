@@ -207,10 +207,10 @@ func (dk *DeathKnight) applyEbonPlaguebringer() {
 	dk.EbonPlagueAura = dk.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		aura := core.EbonPlaguebringerAura(dk.GetCharacter(), target, dk.Talents.Epidemic, dk.Talents.EbonPlaguebringer)
 		aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-			SetDDBC(DDBCEbonPlaguebringer, dk.AttackTables[aura.Unit.UnitIndex], dk.ebonPlaguebringerDiseaseMultiplier)
+			EnableDamageDoneByCaster(DDBCEbonPlaguebringer, dk.AttackTables[aura.Unit.UnitIndex], dk.ebonPlaguebringerDiseaseMultiplier)
 		})
 		aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-			ClearDDBC(DDBCEbonPlaguebringer, dk.AttackTables[aura.Unit.UnitIndex])
+			DisableDamageDoneByCaster(DDBCEbonPlaguebringer, dk.AttackTables[aura.Unit.UnitIndex])
 		})
 		return aura
 	})
