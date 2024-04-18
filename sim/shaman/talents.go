@@ -26,25 +26,25 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.CallOfFlame > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskLavaBurst),
+			ClassMask:  SpellMaskLavaBurst,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.05 * float64(shaman.Talents.CallOfFlame),
 		})
 
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskSearingTotem),
+			ClassMask:  SpellMaskSearingTotem,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
 		})
 
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskMagmaTotem),
+			ClassMask:  SpellMaskMagmaTotem,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
 		})
 
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskFireNova),
+			ClassMask:  SpellMaskFireNova,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
 		})
@@ -55,13 +55,13 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.LavaFlows > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskFlameShock),
+			ClassMask:  SpellMaskFlameShock,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.20 * float64(shaman.Talents.LavaFlows),
 		})
 		//TODO: Does this need applied to overload as well?
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskLavaBurst),
+			ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
 			Kind:       core.SpellMod_CritMultiplier_Pct,
 			FloatValue: 0.08 * float64(shaman.Talents.LavaFlows),
 		})
@@ -75,13 +75,13 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.FocusedStrikes > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskPrimalStrike),
+			ClassMask:  SpellMaskPrimalStrike,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.15 * float64(shaman.Talents.FocusedStrikes),
 		})
 
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskStormstrike),
+			ClassMask:  SpellMaskStormstrike,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.15 * float64(shaman.Talents.FocusedStrikes),
 		})
@@ -89,19 +89,19 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.ImprovedShields > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskLightningShield),
+			ClassMask:  SpellMaskLightningShield,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
 		})
 
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskFulmination),
+			ClassMask:  SpellMaskFulmination,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
 		})
 
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskEarthShield),
+			ClassMask:  SpellMaskEarthShield,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
 		})

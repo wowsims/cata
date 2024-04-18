@@ -111,9 +111,8 @@ func (enh *EnhancementShaman) Initialize() {
 
 	// Mastery: Enhanced Elements
 	masteryMod := enh.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: enh.getMasteryBonus(),
-		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
+		Kind:   core.SpellMod_DamageDone_Pct,
+		School: core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
 	})
 
 	enh.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
@@ -124,6 +123,7 @@ func (enh *EnhancementShaman) Initialize() {
 		Label:    "Mastery: Enhanced Elements",
 		ActionID: core.ActionID{SpellID: 77223},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.UpdateFloatValue(enh.getMasteryBonus())
 			masteryMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

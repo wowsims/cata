@@ -42,7 +42,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 			totalDamage := baseDamage * bounceReduction
 			result := spell.CalcDamage(sim, curTarget, totalDamage, spell.OutcomeMagicHitAndCrit)
 
-			if result.Landed() && sim.RandomFloat("Chain Lightning Elemental Overload") <= shaman.GetOverloadChance()/3 {
+			if result.Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
 				shaman.ChainLightningOverloads[hitIndex].Cast(sim, curTarget)
 			}
 
