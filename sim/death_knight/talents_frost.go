@@ -228,7 +228,6 @@ func (dk *DeathKnight) applyMightOfTheFrozenWastes() {
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: []float64{0.0, 0.03, 0.6, 0.10}[dk.Talents.MightOfTheFrozenWastes],
 		ProcMask:   core.ProcMaskMelee,
-		ClassMask:  DeathKnightSpellsAll,
 	})
 
 	rpMetric := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 81331})
