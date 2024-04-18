@@ -21,9 +21,17 @@ func (druid *Druid) registerTigersFurySpell() {
 		Duration: 6 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.BonusDamage += dmgBonus
+
+			if druid.PrimalMadnessAura != nil {
+				druid.PrimalMadnessAura.Activate(sim)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.BonusDamage -= dmgBonus
+
+			if druid.PrimalMadnessAura.IsActive() && !druid.BerserkAura.IsActive() {
+				druid.PrimalMadnessAura.Deactivate(sim)
+			}
 		},
 	})
 

@@ -87,6 +87,17 @@ func (hb *healthBar) RemoveHealth(sim *Simulation, amount float64) {
 	hb.currentHealth = newHealth
 }
 
+// Used for dynamic updates to maximum health from "Last Stand" effects
+func (hb *healthBar) UpdateMaxHealth(sim *Simulation, bonusHealth float64, metrics *ResourceMetrics) {
+	hb.unit.AddStatsDynamic(sim, stats.Stats{stats.Health: bonusHealth})
+
+	if bonusHealth >= 0 {
+		hb.GainHealth(sim, bonusHealth, metrics)
+	} else {
+		hb.RemoveHealth(sim, min(-bonusHealth, hb.currentHealth - 1)) // Last Stand effects always leave the player with at least 1 HP when they expire
+	}
+}
+
 var ChanceOfDeathAuraLabel = "Chance of Death"
 
 func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel) {

@@ -81,7 +81,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			windfuryTotem: true,
 			bloodlust: true,
 			communion: true,
-			leaderOfThePack: true,
 			arcaneBrilliance: true,
 			manaSpringTotem: true,
 		}),
@@ -107,7 +106,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
-		showExecuteProportion: false,
+		showExecuteProportion: true,
 	},
 
 	presets: {
