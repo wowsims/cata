@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -9,7 +10,7 @@ import (
 func (mage *Mage) registerLivingBombSpell() {
 	// Cata version has a cap of 3 active dots at once
 	// Research this implementation
-
+	fmt.Println("Living Bomb Registered")
 	//var activeLivingBombs core.AuraArray
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44461},
@@ -33,7 +34,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		},
 	})
 
-	mage.LivingBomb = mage.RegisterSpell(core.SpellConfig{
+	mage.LivingBomb = mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44457},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -80,7 +81,7 @@ func (mage *Mage) registerLivingBombSpell() {
 			}
 			spell.DealOutcome(sim, result)
 		},
-		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+		/* ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
 			if useSnapshot {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
@@ -88,6 +89,6 @@ func (mage *Mage) registerLivingBombSpell() {
 				baseDamage := 0.25 * mage.ScalingBaseDamage
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 			}
-		},
+		}, */
 	})
 }

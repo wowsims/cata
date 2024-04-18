@@ -31,8 +31,7 @@ func NewFireMage(character *core.Character, options *proto.Player) *FireMage {
 	}
 	fireMage.FireOptions = fireOptions
 
-	fireMage.ApplyTalents()
-
+	fireMage.ApplyFireSpecInnate()
 	return fireMage
 }
 

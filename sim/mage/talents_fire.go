@@ -11,7 +11,10 @@ import (
 func (mage *Mage) ApplyFireTalents() {
 
 	// Cooldowns/Special Implementations
+<<<<<<< Updated upstream
 	mage.applyIgnite()
+=======
+>>>>>>> Stashed changes
 	mage.applyHotStreak()
 	mage.applyMoltenFury()
 	mage.applyMasterOfElements()

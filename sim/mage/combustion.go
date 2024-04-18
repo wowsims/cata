@@ -60,7 +60,6 @@ func (mage *Mage) registerCombustionSpell() {
 						fmt.Println("Snapshot Spell:     ", spell.ActionID)
 						fmt.Println("Snapshot Amt:       ", spell.Dot(mage.CurrentTarget).SnapshotBaseDamage)
 						fmt.Println("Tick Period(s):     ", (spell.Dot(mage.CurrentTarget).TickPeriod()))
-						fmt.Println("Tick Period(float): ", float64(spell.Dot(mage.CurrentTarget).TickPeriod()))
 						fmt.Println("Normalized DPS:     ", normalizedDPS)
 						combustionDotDamage += normalizedDPS
 					}
