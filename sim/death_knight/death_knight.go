@@ -16,24 +16,14 @@ const (
 
 var TalentTreeSizes = [3]int{20, 20, 20}
 
+// Damage Done By Caster setup
 const (
-	DDBCMercilessCombat   = 0
-	DDBCEbonPlaguebringer = 1
-	DDBCRuneOfRazorice    = 2
+	DDBC_MercilessCombat   int = 0
+	DDBC_EbonPlaguebringer     = iota
+	DDBC_RuneOfRazorice
 
-	TotalDDBC = 3
+	DDBC_Total
 )
-
-func EnableDamageDoneByCaster(index int, attackTable *core.AttackTable, handler core.DynamicDamageDoneByCaster) {
-	if attackTable.DamageDoneByCasterExtraMultiplier == nil {
-		attackTable.DamageDoneByCasterExtraMultiplier = make([]core.DynamicDamageDoneByCaster, TotalDDBC)
-	}
-	attackTable.DamageDoneByCasterExtraMultiplier[index] = handler
-}
-
-func DisableDamageDoneByCaster(index int, attackTable *core.AttackTable) {
-	attackTable.DamageDoneByCasterExtraMultiplier[index] = nil
-}
 
 type DeathKnightInputs struct {
 	// Option Vars
