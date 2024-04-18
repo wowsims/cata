@@ -342,7 +342,7 @@ func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
 		return aura
 	}
 
-	bonusCrit := 5.0 * float64(druid.Talents.RendAndTear) * core.CritRatingPerCritChance
+	bonusCrit := []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear] * core.CritRatingPerCritChance
 
 	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 		if druid.BleedsActive == 0 {

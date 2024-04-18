@@ -14,6 +14,7 @@ func (druid *Druid) registerMaulSpell() {
 	}
 
 	numHits := core.TernaryInt32(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfMaul) && druid.Env.GetNumTargets() > 1, 2, 1)
+	rendAndTearMod := []float64{1.0, 1.07, 1.13, 1.2}[druid.Talents.RendAndTear]
 
 	druid.Maul = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48480},
@@ -22,14 +23,15 @@ func (druid *Druid) registerMaulSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(druid.Talents.Ferocity),
+			Cost:   30,
 			Refund: 0.8,
 		},
 
-		DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
-		CritMultiplier:   druid.MeleeCritMultiplier(Bear),
+		DamageMultiplier: 1,
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  424,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Need to specially deactivate CC here in case maul is cast simultaneously with another spell.
@@ -42,14 +44,13 @@ func (druid *Druid) registerMaulSpell() {
 				modifier += .3
 			}
 			if druid.AssumeBleedActive || druid.Rip.Dot(target).IsActive() || druid.Rake.Dot(target).IsActive() || druid.Lacerate.Dot(target).IsActive() {
-				modifier *= 1.0 + (0.04 * float64(druid.Talents.RendAndTear))
+				modifier *= rendAndTearMod
 			}
 
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				baseDamage := flatBaseDamage +
-					spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
+					spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 				baseDamage *= modifier
 
 				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

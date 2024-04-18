@@ -14,6 +14,7 @@ func (druid *Druid) registerShredSpell() {
 
 	hasGlyphofShred := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting)
 	maxRipTicks := druid.MaxRipTicks()
+	rendAndTearMod := []float64{1.0, 1.07, 1.13, 1.2}[druid.Talents.RendAndTear]
 
 	druid.Shred = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48572},
@@ -51,7 +52,7 @@ func (druid *Druid) registerShredSpell() {
 
 			ripDot := druid.Rip.Dot(target)
 			if druid.AssumeBleedActive || ripDot.IsActive() || druid.Rake.Dot(target).IsActive() || druid.Lacerate.Dot(target).IsActive() {
-				modifier *= 1.0 + (0.04 * float64(druid.Talents.RendAndTear))
+				modifier *= rendAndTearMod
 			}
 			baseDamage *= modifier
 
@@ -79,7 +80,7 @@ func (druid *Druid) registerShredSpell() {
 				modifier += .3
 			}
 			if druid.AssumeBleedActive || druid.Rip.Dot(target).IsActive() || druid.Rake.Dot(target).IsActive() || druid.Lacerate.Dot(target).IsActive() {
-				modifier *= 1.0 + (0.04 * float64(druid.Talents.RendAndTear))
+				modifier *= rendAndTearMod
 			}
 			baseDamage *= modifier
 			baseres := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)

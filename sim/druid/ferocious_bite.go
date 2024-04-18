@@ -32,7 +32,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 		},
 
 		BonusCritRating: 0 +
-			core.TernaryFloat64(druid.AssumeBleedActive, 25.0/3.0*float64(druid.Talents.RendAndTear)*core.CritRatingPerCritChance, 0),
+			core.TernaryFloat64(druid.AssumeBleedActive, []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear] * core.CritRatingPerCritChance, 0),
 		DamageMultiplier: 1 + 0.05*float64(druid.Talents.FeralAggression),
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
