@@ -4,9 +4,9 @@ import {
 	BeastMasteryHunter_Options as HunterOptions,
 	BeastMasteryHunter_Rotation as HunterRotation,
 	HunterMajorGlyph as MajorGlyph,
-	HunterMinorGlyph as MinorGlyph,
 	HunterOptions_Ammo as Ammo,
 	HunterOptions_PetType as PetType,
+	HunterPrimeGlyph as PrimeGlyph,
 	HunterStingType,
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
@@ -43,26 +43,21 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeA
 export const MarksmanTalents = {
 	name: 'Marksman',
 	data: SavedTalents.create({
-		// talentsString: '502-025335101030013233135031051-5000032',
-		// glyphs: Glyphs.create({
-		// 	major1: MajorGlyph.GlyphOfSerpentSting,
-		// 	major2: MajorGlyph.GlyphOfSteadyShot,
-		// 	major3: MajorGlyph.GlyphOfExplosiveTrap,
-		// 	minor1: MinorGlyph.GlyphOfFeignDeath,
-		// 	minor2: MinorGlyph.GlyphOfRevivePet,
-		// 	minor3: MinorGlyph.GlyphOfMendPet,
-		// }),
+		talentsString: '032002-2302320032120231221-03',
+		glyphs: Glyphs.create({
+			prime1: PrimeGlyph.GlyphOfArcaneShot,
+			prime2: PrimeGlyph.GlyphOfRapidFire,
+			prime3: PrimeGlyph.GlyphOfSteadyShot,
+		}),
 	}),
 };
 
 export const MMDefaultOptions = HunterOptions.create({
 	classOptions: {
-		ammo: Ammo.SaroniteRazorheads,
 		useHuntersMark: true,
 		petType: PetType.Wolf,
 		petTalents: ferocityDefault,
 		petUptime: 1,
-		timeToTrapWeaveMs: 2000,
 	},
 });
 
