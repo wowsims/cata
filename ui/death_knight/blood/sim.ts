@@ -150,6 +150,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
 			DeathKnightInputs.StartingRunicPower(),
+			OtherInputs.DarkIntentUptime
 		],
 	},
 	encounterPicker: {

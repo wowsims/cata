@@ -381,6 +381,7 @@ function makeWrappedIconInput<SpecType extends Spec, ModObject, T>(
 		actionId: config.actionId,
 		states: config.states,
 		changedEvent: (player: Player<SpecType>) => config.changedEvent(getModObject(player)),
+		showWhen: (player: Player<SpecType>) => !config.showWhen || (config.showWhen(getModObject(player)) as any),
 		getValue: (player: Player<SpecType>) => config.getValue(getModObject(player)),
 		setValue: (eventID: EventID, player: Player<SpecType>, newValue: T) => config.setValue(eventID, getModObject(player), newValue),
 		extraCssClasses: config.extraCssClasses,
@@ -410,6 +411,7 @@ export function makeBooleanIconInput<SpecType extends Spec, Message, ModObject>(
 		actionId: actionId,
 		states: 2,
 		changedEvent: config.changeEmitter,
+		showWhen: config.showWhen,
 		getValue:
 			config.getFieldValue ||
 			((modObj: ModObject) =>

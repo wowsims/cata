@@ -240,14 +240,14 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 	return result
 }
 func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
-	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex])
+	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex], false)
 	if spell.BonusCoefficient > 0 {
 		baseDamage += spell.BonusCoefficient * spell.BonusDamage()
 	}
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, false, outcomeApplier)
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
-	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex])
+	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex], true)
 
 	var dot *Dot
 	if spell.aoeDot != nil {
@@ -336,7 +336,7 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64) {
 	}
 	attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 	dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-	dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+	dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 }
 
 func (dot *Dot) SnapshotPhysical(target *Unit, baseDamage float64) {
@@ -344,7 +344,7 @@ func (dot *Dot) SnapshotPhysical(target *Unit, baseDamage float64) {
 	// At this time, not aware of any physical-scaling DoTs that need BonusCoefficient
 	attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 	dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-	dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+	dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 }
 
 func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHealing float64, casterMultiplier float64, outcomeApplier OutcomeApplier) *SpellResult {
@@ -450,10 +450,14 @@ func (spell *Spell) WaitTravelTime(sim *Simulation, callback func(*Simulation)) 
 }
 
 // Returns the combined attacker modifiers.
-func (spell *Spell) AttackerDamageMultiplier(attackTable *AttackTable) float64 {
+func (spell *Spell) AttackerDamageMultiplier(attackTable *AttackTable, isDot bool) float64 {
+	damageMultiplierAdditive := TernaryFloat64(isDot,
+		spell.DamageMultiplierAdditive+spell.Unit.PseudoStats.DotDamageMultiplierAdditive-1,
+		spell.DamageMultiplierAdditive)
+
 	return spell.attackerDamageMultiplierInternal(attackTable) *
 		spell.DamageMultiplier *
-		spell.DamageMultiplierAdditive
+		damageMultiplierAdditive
 }
 func (spell *Spell) attackerDamageMultiplierInternal(attackTable *AttackTable) float64 {
 	if spell.Flags.Matches(SpellFlagIgnoreAttackerModifiers) {

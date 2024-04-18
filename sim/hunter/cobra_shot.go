@@ -11,10 +11,11 @@ func (hunter *Hunter) registerCobraShotSpell() {
 	csMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 77767})
 
 	hunter.CobraShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 77767},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 77767},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		ClassSpellMask: HunterSpellCobraShot,
+		Flags:          core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},
@@ -45,7 +46,7 @@ func (hunter *Hunter) registerCobraShotSpell() {
 			}
 			hunter.AddFocus(sim, focus, csMetrics)
 			if hunter.SerpentSting.Dot(target).IsActive() {
-				hunter.SerpentSting.Dot(target).Rollover(sim) // Refresh to cause new total snapshot
+				hunter.SerpentSting.Dot(target).Apply(sim) // Refresh to cause new total snapshot
 			}
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

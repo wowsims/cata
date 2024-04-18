@@ -280,6 +280,9 @@ func ApplyFixedUptimeAura(aura *Aura, uptime float64, tickLength time.Duration, 
 			OnAction: func(sim *Simulation) {
 				if sim.RandomFloat("FixedAura") < chancePerTick {
 					aura.Activate(sim)
+					if aura.MaxStacks > 0 {
+						aura.AddStack(sim)
+					}
 				}
 			},
 		})
