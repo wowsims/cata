@@ -39,21 +39,22 @@ func (druid *Druid) registerMaulSpell() {
 				druid.ClearcastingAura.Deactivate(sim)
 			}
 
-			modifier := 1.0
-			if druid.BleedCategories.Get(target).AnyActive() {
-				modifier += .3
-			}
-			if druid.AssumeBleedActive || druid.Rip.Dot(target).IsActive() || druid.Rake.Dot(target).IsActive() || druid.Lacerate.Dot(target).IsActive() {
-				modifier *= rendAndTearMod
-			}
+			baseDamage := flatBaseDamage + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := flatBaseDamage +
-					spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-				baseDamage *= modifier
+				modifier := 1.0
+				if druid.BleedCategories.Get(curTarget).AnyActive() {
+					modifier += .3
+				}
+				if druid.AssumeBleedActive || druid.Rip.Dot(curTarget).IsActive() || druid.Rake.Dot(curTarget).IsActive() || druid.Lacerate.Dot(curTarget).IsActive() {
+					modifier *= rendAndTearMod
+				}
+				if hitIndex > 0 {
+					modifier *= 0.5
+				}
 
-				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage * modifier, spell.OutcomeMeleeSpecialHitAndCrit)
 
 				if !result.Landed() {
 					spell.IssueRefund(sim)

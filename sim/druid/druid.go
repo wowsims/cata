@@ -70,6 +70,7 @@ type Druid struct {
 	BarkskinAura             *core.Aura
 	BearFormAura             *core.Aura
 	BerserkAura              *core.Aura
+	BerserkProcAura          *core.Aura
 	CatFormAura              *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
@@ -201,6 +202,7 @@ func (druid *Druid) Initialize() {
 	// druid.registerRebirthSpell()
 	// druid.registerInnervateCD()
 	// druid.registerFakeGotw()
+	druid.applyOmenOfClarity()
 }
 
 // func (druid *Druid) RegisterBalanceSpells() {
