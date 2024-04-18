@@ -1,6 +1,7 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { Consumes, Flask, Food, Glyphs, Potions, Spec, TinkerHands } from '../../core/proto/common';
 import {
+	DruidPrimeGlyph,
 	DruidMajorGlyph,
 	DruidMinorGlyph,
 	FeralDruid_Options as FeralDruidOptions,
@@ -63,15 +64,18 @@ export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Sim
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		// talentsString: '-543202132322010053120030310511-203503012',
-		// glyphs: Glyphs.create({
-		// 	major1: DruidMajorGlyph.GlyphOfOmenOfClarity,
-		// 	major2: DruidMajorGlyph.GlyphOfSavageRoar,
-		// 	major3: DruidMajorGlyph.GlyphOfShred,
-		// 	minor1: DruidMinorGlyph.GlyphOfDash,
-		// 	minor2: DruidMinorGlyph.GlyphOfTheWild,
-		// 	minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-		// }),
+		talentsString: '-2320322312012121202301-020301',
+		glyphs: Glyphs.create({
+			prime1: DruidPrimeGlyph.GlyphOfRip,
+			prime2: DruidPrimeGlyph.GlyphOfBloodletting,
+			prime3: DruidPrimeGlyph.GlyphOfBerserk,
+			major1: DruidMajorGlyph.GlyphOfThorns,
+			major2: DruidMajorGlyph.GlyphOfFeralCharge,
+			major3: DruidMajorGlyph.GlyphOfRebirth,
+			minor1: DruidMinorGlyph.GlyphOfDash,
+			minor2: DruidMinorGlyph.GlyphOfMarkOfTheWild,
+			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		}),
 	}),
 };
 
