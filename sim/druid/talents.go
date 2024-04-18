@@ -34,7 +34,7 @@ func (druid *Druid) BearArmorMultiplier() float64 {
 }
 
 func (druid *Druid) ApplyTalents() {
-	druid.MultiplyStat(stats.Mana, 1.0 + 0.05*float64(druid.Talents.Furor))
+	druid.MultiplyStat(stats.Mana, 1.0+0.05*float64(druid.Talents.Furor))
 	// druid.AddStat(stats.SpellHit, float64(druid.Talents.BalanceOfPower)*2*core.SpellHitRatingPerHitChance)
 	// druid.AddStat(stats.SpellCrit, float64(druid.Talents.NaturalPerfection)*1*core.CritRatingPerCritChance)
 	// druid.PseudoStats.CastSpeedMultiplier *= 1 + (float64(druid.Talents.CelestialFocus) * 0.01)
@@ -250,7 +250,7 @@ func (druid *Druid) applyFurySwipes() {
 		return
 	}
 
-	furySwipesSpell := druid.RegisterSpell(Cat | Bear, core.SpellConfig{
+	furySwipesSpell := druid.RegisterSpell(Cat|Bear, core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 80861},
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskMeleeMHSpecial,

@@ -567,7 +567,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}
 	} else if potionType == proto.Potions_GolembloodPotion {
 		actionID := ActionID{ItemID: 58146}
-		aura := character.NewTemporaryStatsAura("Golemblood Potion", actionID, stats.Stats{stats.Strength: 1200}, time.Second*15)
+		aura := character.NewTemporaryStatsAura("Golemblood Potion", actionID, stats.Stats{stats.Strength: 1200}, time.Second*25)
 		return MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -581,7 +581,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}
 	} else if potionType == proto.Potions_PotionOfTheTolvir {
 		actionID := ActionID{ItemID: 58145}
-		aura := character.NewTemporaryStatsAura("Potion of the Tol'vir", actionID, stats.Stats{stats.Agility: 1200}, time.Second*15)
+		aura := character.NewTemporaryStatsAura("Potion of the Tol'vir", actionID, stats.Stats{stats.Agility: 1200}, time.Second*25)
 		return MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -599,7 +599,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		// Not sure about exact functionality
 	} else if potionType == proto.Potions_VolcanicPotion {
 		actionID := ActionID{ItemID: 58091}
-		aura := character.NewTemporaryStatsAura("Volcanic Potion", actionID, stats.Stats{stats.Intellect: 1200}, time.Second*15)
+		aura := character.NewTemporaryStatsAura("Volcanic Potion", actionID, stats.Stats{stats.Intellect: 1200}, time.Second*25)
 		return MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
