@@ -125,7 +125,7 @@ func (ai *Gormok25HAI) registerImpaleSpell(target *core.Target) {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 					dot.Spell.DamageMultiplier = 1
 					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 				}
 			},
 

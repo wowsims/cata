@@ -15,10 +15,6 @@ import AoeApl from './apls/aoe.apl.json';
 import MmApl from './apls/mm.apl.json';
 import MmAdvApl from './apls/mm_advanced.apl.json';
 import P1MMGear from './gear_sets/p1_mm.gear.json';
-import P2MMGear from './gear_sets/p2_mm.gear.json';
-import P3MMGear from './gear_sets/p3_mm.gear.json';
-import P4MMGear from './gear_sets/p4_mm.gear.json';
-import P5MMGear from './gear_sets/p5_mm.gear.json';
 import PreraidMMGear from './gear_sets/preraid_mm.gear.json';
 
 // Preset options for this spec.
@@ -27,10 +23,6 @@ import PreraidMMGear from './gear_sets/preraid_mm.gear.json';
 
 export const MM_PRERAID_PRESET = PresetUtils.makePresetGear('MM PreRaid Preset', PreraidMMGear);
 export const MM_P1_PRESET = PresetUtils.makePresetGear('MM P1 Preset', P1MMGear);
-export const MM_P2_PRESET = PresetUtils.makePresetGear('MM P2 Preset', P2MMGear);
-export const MM_P3_PRESET = PresetUtils.makePresetGear('MM P3 Preset', P3MMGear);
-export const MM_P4_PRESET = PresetUtils.makePresetGear('MM P4 Preset', P4MMGear);
-export const MM_P5_PRESET = PresetUtils.makePresetGear('MM P5 Preset', P5MMGear);
 
 export const DefaultSimpleRotation = HunterRotation.create({
 	type: RotationType.SingleTarget,
@@ -77,7 +69,6 @@ export const MMDefaultOptions = HunterOptions.create({
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.PotionOfTheTolvir,
 	prepopPotion: Potions.PotionOfTheTolvir,
-	flask: Flask.FlaskOfEndlessRage,
+	flask: Flask.FlaskOfTheWinds,
 	food: Food.FoodFishFeast,
-	petFood: PetFood.PetFoodSpicedMammothTreats,
 });

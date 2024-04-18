@@ -12,11 +12,12 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 	ssMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 56641})
 
 	hunter.SteadyShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 56641},
-		SpellSchool:  core.SpellSchoolPhysical,
-		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		MissileSpeed: 40,
+		ActionID:       core.ActionID{SpellID: 56641},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: HunterSpellSteadyShot,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		MissileSpeed:   40,
 		FocusCost: core.FocusCostOptions{
 
 			Cost: 0,

@@ -65,6 +65,9 @@ type Unit struct {
 	// for calculating spell travel time for certain spells.
 	DistanceFromTarget float64
 
+	// How much uptime of Dark Intent the unit will have
+	DarkIntentUptimePercent float64
+
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.
 	Env *Environment
@@ -527,7 +530,6 @@ func (unit *Unit) reset(sim *Simulation, _ Agent) {
 	unit.stats = unit.initialStats
 	unit.PseudoStats = unit.initialPseudoStats
 	unit.auraTracker.reset(sim)
-	// Spellbook needs to be reset AFTER auras.
 	for _, spell := range unit.Spellbook {
 		spell.reset(sim)
 	}

@@ -19,6 +19,7 @@ export class Hunter extends PlayerClass<Class.ClassHunter> {
 		Race.RaceDwarf,
 		Race.RaceNightElf,
 		Race.RaceDraenei,
+		Race.RaceWorgen,
 		// [H]
 		Race.RaceOrc,
 		Race.RaceUndead,
