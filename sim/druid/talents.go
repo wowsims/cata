@@ -54,10 +54,10 @@ func (druid *Druid) ApplyTalents() {
 	// 	druid.AddStatDependency(stats.Intellect, stats.MP5, bonus)
 	// }
 
-	// if druid.Talents.HeartOfTheWild > 0 {
-	// 	bonus := 0.04 * float64(druid.Talents.HeartOfTheWild)
-	// 	druid.MultiplyStat(stats.Intellect, 1.0+bonus)
-	// }
+	if druid.Talents.HeartOfTheWild > 0 {
+		bonus := 0.02 * float64(druid.Talents.HeartOfTheWild)
+		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
+	}
 
 	// if druid.Talents.ImprovedFaerieFire > 0 && druid.CurrentTarget.HasAuraWithTag(core.FaerieFireAuraTag) {
 	// 	druid.AddStat(stats.SpellCrit, float64(druid.Talents.ImprovedFaerieFire)*1*core.CritRatingPerCritChance)
@@ -80,6 +80,16 @@ func (druid *Druid) ApplyTalents() {
 	// 	bonus := 0.05 * float64(druid.Talents.LivingSpirit)
 	// 	druid.MultiplyStat(stats.Spirit, 1.0+bonus)
 	// }
+
+	if druid.Talents.Perseverance > 0 {
+		multiplier := 1.0 - 0.02 * float64(druid.Talents.Perseverance)
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= multiplier
+	}
 
 	// druid.setupNaturesGrace()
 	// druid.registerNaturesSwiftnessCD()
