@@ -1,6 +1,8 @@
 package elemental
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/shaman"
@@ -51,6 +53,34 @@ func (eleShaman *ElementalShaman) Initialize() {
 	eleShaman.Shaman.Initialize()
 
 	eleShaman.registerThunderstormSpell()
+
+	// Shamanism
+	eleShaman.AddStaticMod(core.SpellModConfig{
+		ClassMask: shaman.SpellMaskLavaBurst | shaman.SpellMaskChainLightning | shaman.SpellMaskLightningBolt,
+		Kind:      core.SpellMod_CastTime_Flat,
+		TimeValue: time.Millisecond * -500,
+	})
+
+	eleShaman.AddStaticMod(core.SpellModConfig{
+		ClassMask: shaman.SpellMaskLavaBurst | shaman.SpellMaskChainLightning | shaman.SpellMaskLightningBolt |
+			shaman.SpellMaskLightningBoltOverload | shaman.SpellMaskChainLightningOverload | shaman.SpellMaskLavaBurstOverload,
+		Kind:       core.SpellMod_BonusCoeffecient_Flat,
+		FloatValue: 0.36,
+	})
+
+	// Elemental Fury
+	eleShaman.AddStaticMod(core.SpellModConfig{
+		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
+		ClassMask:  shaman.SpellMaskSearingTotem | shaman.SpellMaskMagmaTotem,
+		Kind:       core.SpellMod_CritMultiplier_Pct,
+		FloatValue: 1.0,
+	})
+
+	eleShaman.AddStaticMod(core.SpellModConfig{
+		ClassMask: shaman.SpellMaskChainLightning,
+		Kind:      core.SpellMod_CastTime_Flat,
+		TimeValue: time.Second * -3,
+	})
 }
 
 type ElementalShaman struct {

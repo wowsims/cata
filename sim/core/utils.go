@@ -72,6 +72,14 @@ func TernaryInt32(condition bool, val1 int32, val2 int32) int32 {
 	}
 }
 
+func TernaryInt64(condition bool, val1 int64, val2 int64) int64 {
+	if condition {
+		return val1
+	} else {
+		return val2
+	}
+}
+
 func TernaryFloat64(condition bool, val1 float64, val2 float64) float64 {
 	if condition {
 		return val1

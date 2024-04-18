@@ -180,7 +180,7 @@ func (druid *Druid) registerCatFormSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			maxShiftEnergy := float64(100 * druid.Talents.Furor) / 3.0
+			maxShiftEnergy := float64(100*druid.Talents.Furor) / 3.0
 
 			energyDelta := maxShiftEnergy - druid.CurrentEnergy()
 
@@ -230,7 +230,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= core.TernaryFloat64(druid.Talents.MasterShapeshifter, 1.04, 1.0)
 			druid.PseudoStats.DamageTakenMultiplier *= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodge += 0.02 * float64(druid.Talents.FeralSwiftness) + 0.03 * float64(druid.Talents.NaturalReaction)
+			druid.PseudoStats.BaseDodge += 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.ApplyDynamicEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
@@ -259,7 +259,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= core.TernaryFloat64(druid.Talents.MasterShapeshifter, 1.04, 1.0)
 			druid.PseudoStats.DamageTakenMultiplier /= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodge -= 0.02 * float64(druid.Talents.FeralSwiftness) + 0.03 * float64(druid.Talents.NaturalReaction)
+			druid.PseudoStats.BaseDodge -= 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.RemoveDynamicEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())

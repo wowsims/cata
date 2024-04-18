@@ -134,7 +134,7 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 		ProcMask:    core.ProcMaskWeaponProc,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -257,7 +257,7 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 		ProcMask:    core.ProcMaskEmpty,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
