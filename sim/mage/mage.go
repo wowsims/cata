@@ -229,8 +229,6 @@ func (mage *Mage) applyArcaneMissileProc() {
 		return
 	}
 
-	t10ProcAura := mage.BloodmagesRegalia2pcAura()
-
 	// Aura for when proc is successful
 	mage.ArcaneMissilesProcAura = mage.RegisterAura(core.Aura{
 		Label:    "Arcane Missiles Proc",
@@ -239,11 +237,6 @@ func (mage *Mage) applyArcaneMissileProc() {
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell == mage.ArcaneMissiles {
 				aura.Deactivate(sim)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if t10ProcAura != nil {
-				t10ProcAura.Activate(sim)
 			}
 		},
 	})

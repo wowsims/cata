@@ -21,21 +21,6 @@ damage numbers at 170 spell power: fireblast 155, frostbolt 304
 */
 
 func (mage *Mage) registerMirrorImageCD() {
-	var t10Aura *core.Aura
-
-	if mage.HasSetBonus(ItemSetBloodmagesRegalia, 4) {
-		t10Aura = mage.RegisterAura(core.Aura{
-			Label:    "Mirror Image Bonus Damage T10 4PC",
-			ActionID: core.ActionID{SpellID: 70748},
-			Duration: time.Second * 30,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				mage.PseudoStats.DamageDealtMultiplier *= 1.18
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				mage.PseudoStats.DamageDealtMultiplier /= 1.18
-			},
-		})
-	}
 
 	mage.MirrorImage = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 55342},
@@ -56,9 +41,6 @@ func (mage *Mage) registerMirrorImageCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			mage.mirrorImage.EnableWithTimeout(sim, mage.mirrorImage, time.Second*30)
-			if t10Aura != nil {
-				t10Aura.Activate(sim)
-			}
 		},
 	})
 

@@ -32,13 +32,10 @@ func (mage *Mage) registerFrostboltSpell() {
 			},
 		},
 
-		BonusCritRating: 0 +
-			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0),
-		DamageMultiplierAdditive: 1 +
-			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		BonusCoefficient: 0.943,
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient:         0.943,
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.884 * mage.ScalingBaseDamage

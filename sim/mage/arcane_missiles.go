@@ -84,8 +84,6 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 
 func (mage *Mage) registerArcaneMissilesSpell() {
 
-	hasT8_4pc := mage.HasSetBonus(ItemSetKirinTorGarb, 4)
-
 	mage.ArcaneMissilesTickSpell = mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7268},
 		SpellSchool:    core.SpellSchoolArcane,
@@ -95,8 +93,6 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 		MissileSpeed:   20,
 
 		DamageMultiplier: 1,
-		DamageMultiplierAdditive: 1 +
-			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.278,
@@ -130,12 +126,11 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					// Currently it doesn't cast the first missile until the time of the first tick
 					mage.ArcaneMissilesTickSpell.Cast(sim, mage.CurrentTarget)
+					mage.ArcaneMissilesProcAura.Deactivate(sim)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					if mage.ArcaneMissilesProcAura.IsActive() {
-						if !hasT8_4pc || sim.Proc(T84PcProcChance, "T84PC") {
-							mage.ArcaneMissilesProcAura.Deactivate(sim)
-						}
+						//mage.ArcaneMissilesProcAura.Deactivate(sim)
 					}
 
 					// TODO: This check is necessary to ensure the final tick occurs before

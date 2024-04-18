@@ -11,10 +11,7 @@ import (
 func (mage *Mage) ApplyFireTalents() {
 
 	// Cooldowns/Special Implementations
-<<<<<<< Updated upstream
 	mage.applyIgnite()
-=======
->>>>>>> Stashed changes
 	mage.applyHotStreak()
 	mage.applyMoltenFury()
 	mage.applyMasterOfElements()
@@ -108,18 +105,12 @@ func (mage *Mage) applyHotStreak() {
 
 	ImprovedHotStreakProcChance := float64(mage.Talents.ImprovedHotStreak) * 0.5
 	BaseHotStreakProcChance := float64(0.25) // Research needed
-	t10ProcAura := mage.BloodmagesRegalia2pcAura()
 
 	// Unimproved Hot Streak Proc Aura
 	mage.HotStreakAura = mage.RegisterAura(core.Aura{
 		Label:    "Hot Streak",
 		ActionID: core.ActionID{SpellID: 48108},
 		Duration: time.Second * 10,
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if t10ProcAura != nil {
-				t10ProcAura.Activate(sim)
-			}
-		},
 	})
 
 	// Improved Hotstreak Crit Stacking Aura

@@ -65,8 +65,6 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			},
 		},
 
-		BonusCritRating: 0 +
-			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0),
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 1.0,

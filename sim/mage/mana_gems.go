@@ -12,17 +12,6 @@ func (mage *Mage) registerManaGemsCD() {
 	var manaGain float64
 	actionID := core.ActionID{ItemID: 36799} // this is the correct item ID for mana gem
 	manaMetrics := mage.NewManaMetrics(actionID)
-	hasT7_2pc := mage.HasSetBonus(ItemSetFrostfireGarb, 2)
-
-	var T7GemAura *core.Aura
-	if hasT7_2pc {
-		T7GemAura = mage.NewTemporaryStatsAura("Improved Mana Gems T7", core.ActionID{SpellID: 61062}, stats.Stats{stats.SpellPower: 225}, 15*time.Second)
-	}
-
-	var serpentCoilAura *core.Aura
-	if mage.HasTrinketEquipped(30720) {
-		serpentCoilAura = mage.NewTemporaryStatsAura("Serpent-Coil Braid", core.ActionID{ItemID: 30720}, stats.Stats{stats.SpellPower: 225}, 15*time.Second)
-	}
 
 	//id for improved mana gem buff 83098
 	//id for "Replenish Mana" is 5405
@@ -35,18 +24,13 @@ func (mage *Mage) registerManaGemsCD() {
 			15*time.Second)
 	}
 
-	// Multiply the mana restoral effect e.g. SCB restores +25% mana
-	manaMultiplier := (1 +
-		core.TernaryFloat64(serpentCoilAura != nil, 0.25, 0) +
-		core.TernaryFloat64(hasT7_2pc, 0.25, 0))
-
 	// Numbers may be different at 85, these are 80 values
-	minManaGain := 3330.0 * manaMultiplier
-	maxManaGain := 3500.0 * manaMultiplier
+	minManaGain := 3330.0
+	maxManaGain := 3500.0
 
 	var remainingManaGems int
 	mage.RegisterResetEffect(func(sim *core.Simulation) {
-		remainingManaGems = 3 // Now only have 1 gem, so 6 -> 3
+		remainingManaGems = 3
 	})
 
 	spell := mage.RegisterSpell(core.SpellConfig{
@@ -69,13 +53,6 @@ func (mage *Mage) registerManaGemsCD() {
 
 			if remainingManaGems > 0 {
 				manaGain = sim.Roll(minManaGain, maxManaGain)
-			}
-
-			if T7GemAura != nil {
-				T7GemAura.Activate(sim)
-			}
-			if serpentCoilAura != nil {
-				serpentCoilAura.Activate(sim)
 			}
 
 			if mage.Talents.ImprovedManaGem > 0 {

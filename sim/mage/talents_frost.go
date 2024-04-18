@@ -192,9 +192,6 @@ func (mage *Mage) applyBrainFreeze() {
 		return
 	}
 
-	hasT8_4pc := mage.HasSetBonus(ItemSetKirinTorGarb, 4)
-	t10ProcAura := mage.BloodmagesRegalia2pcAura()
-
 	brainFreezeCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellBrainFreeze,
 		FloatValue: -1,
@@ -218,15 +215,10 @@ func (mage *Mage) applyBrainFreeze() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			brainFreezeCostMod.Deactivate()
 			brainFreezeCastMod.Deactivate()
-			if t10ProcAura != nil {
-				t10ProcAura.Activate(sim)
-			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell == mage.FrostfireBolt || spell == mage.Fireball {
-				if !hasT8_4pc || !sim.Proc(T84PcProcChance, "MageT84PC") {
-					aura.Deactivate(sim)
-				}
+				aura.Deactivate(sim)
 			}
 		},
 	})

@@ -8,7 +8,7 @@ import (
 
 func (mage *Mage) registerEvocation() {
 	actionID := core.ActionID{SpellID: 12051}
-	maxTicks := core.TernaryInt32(mage.HasSetBonus(ItemSetTempestRegalia, 2), 5, 4)
+	var maxTicks int32 = 4
 	manaMetrics := mage.NewManaMetrics(actionID)
 	manaPerTick := 0.0
 

@@ -9,9 +9,6 @@ import (
 
 func (Mage *FireMage) registerPyroblastSpell() {
 
-	hasT8_4pc := Mage.HasSetBonus(mage.ItemSetKirinTorGarb, 4)
-	const T84PcProcChance = 0.2
-
 	var pyroblastDot *core.Spell
 	/* implement when debuffs updated
 	var CMProcChance float64
@@ -43,9 +40,7 @@ func (Mage *FireMage) registerPyroblastSpell() {
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				if Mage.HotStreakAura.IsActive() {
 					cast.CastTime = 0
-					if !hasT8_4pc || sim.Proc(mage.T84PcProcChance, "MageT84PC") {
-						Mage.HotStreakAura.Deactivate(sim)
-					}
+					Mage.HotStreakAura.Deactivate(sim)
 				}
 			},
 		},

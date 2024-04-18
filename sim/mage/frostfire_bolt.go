@@ -30,12 +30,7 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 			},
 		},
 
-		BonusCritRating: 0 +
-			core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0),
-		DamageMultiplier: 1 +
-			core.TernaryFloat64(hasGlyph, .15, 0),
-		DamageMultiplierAdditive: 1 +
-			.01*float64(mage.Talents.FirePower),
+		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.977,
 		ThreatMultiplier: 1,
