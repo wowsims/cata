@@ -7,6 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 const (
@@ -16,24 +17,14 @@ const (
 
 var TalentTreeSizes = [3]int{20, 20, 20}
 
+// Damage Done By Caster setup
 const (
-	DDBCMercilessCombat   = 0
-	DDBCEbonPlaguebringer = 1
-	DDBCRuneOfRazorice    = 2
+	DDBC_MercilessCombat   int = 0
+	DDBC_EbonPlaguebringer     = iota
+	DDBC_RuneOfRazorice
 
-	TotalDDBC = 3
+	DDBC_Total
 )
-
-func EnableDamageDoneByCaster(index int, attackTable *core.AttackTable, handler core.DynamicDamageDoneByCaster) {
-	if attackTable.DamageDoneByCasterExtraMultiplier == nil {
-		attackTable.DamageDoneByCasterExtraMultiplier = make([]core.DynamicDamageDoneByCaster, TotalDDBC)
-	}
-	attackTable.DamageDoneByCasterExtraMultiplier[index] = handler
-}
-
-func DisableDamageDoneByCaster(index int, attackTable *core.AttackTable) {
-	attackTable.DamageDoneByCasterExtraMultiplier[index] = nil
-}
 
 type DeathKnightInputs struct {
 	// Option Vars
@@ -150,6 +141,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		ClassBaseScaling: 1125.227400,
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	dk.FillTalentsData(talent_trees.DeathKnightTalentsConfig, talents)
 
 	maxRunicPower := 100.0 + 15.0*float64(dk.Talents.RunicPowerMastery)
 	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)

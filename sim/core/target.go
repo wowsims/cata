@@ -210,6 +210,7 @@ type AttackTable struct {
 	DamageDoneByCasterMultiplier DynamicDamageDoneByCaster
 
 	// When you need more then 1 active, default to using the above one
+	// Used with EnableDamageDoneByCaster/DisableDamageDoneByCaster
 	DamageDoneByCasterExtraMultiplier []DynamicDamageDoneByCaster
 }
 
@@ -247,4 +248,15 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 	}
 
 	return table
+}
+
+func EnableDamageDoneByCaster(index int, maxIndex int, attackTable *AttackTable, handler DynamicDamageDoneByCaster) {
+	if attackTable.DamageDoneByCasterExtraMultiplier == nil {
+		attackTable.DamageDoneByCasterExtraMultiplier = make([]DynamicDamageDoneByCaster, maxIndex)
+	}
+	attackTable.DamageDoneByCasterExtraMultiplier[index] = handler
+}
+
+func DisableDamageDoneByCaster(index int, attackTable *AttackTable) {
+	attackTable.DamageDoneByCasterExtraMultiplier[index] = nil
 }
