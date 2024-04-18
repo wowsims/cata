@@ -110,7 +110,7 @@ func (dk *DeathKnight) applyMercilessCombat() {
 
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:           "Merciless Combat Proc",
-		Callback:       core.CallbackOnSpellHitDealt,
+		Callback:       core.CallbackOnApplyEffects,
 		ClassSpellMask: DeathKnightSpellMercilessCombat,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if sim.IsExecutePhase35() {
