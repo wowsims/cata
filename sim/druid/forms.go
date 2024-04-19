@@ -128,7 +128,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 				// These buffs stay up, but corresponding changes don't
 				if druid.SavageRoarAura.IsActive() {
-					druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= srm
+					druid.MHAutoSpell.DamageMultiplier *= srm
 				}
 
 				if druid.PredatoryInstinctsAura != nil {
@@ -163,7 +163,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 				// These buffs stay up, but corresponding changes don't
 				if druid.SavageRoarAura.IsActive() {
-					druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= srm
+					druid.MHAutoSpell.DamageMultiplier /= srm
 				}
 
 				if druid.PredatoryInstinctsAura != nil {
