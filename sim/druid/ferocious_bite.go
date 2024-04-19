@@ -11,7 +11,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 	ripRefreshChance := 0.5 * float64(druid.Talents.BloodInTheWater)
 
 	druid.FerociousBite = druid.RegisterSpell(Cat, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48577},
+		ActionID:    core.ActionID{SpellID: 22568},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,

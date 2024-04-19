@@ -9,7 +9,7 @@ import (
 
 func (druid *Druid) registerRakeSpell() {
 	druid.Rake = druid.RegisterSpell(Cat, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48574},
+		ActionID:    core.ActionID{SpellID: 1822},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
