@@ -328,11 +328,13 @@ func removeCooldownFlat(mod *SpellMod, spell *Spell) {
 }
 
 func applyCooldownPct(mod *SpellMod, spell *Spell) {
-	spell.CD.Duration *= time.Duration(1.0 - mod.floatValue)
+	coeff := int64((1.0 - mod.floatValue) * 100)
+	spell.CD.Duration = time.Duration((int64(spell.CD.Duration) * coeff) / 100)
 }
 
 func removeCooldownPct(mod *SpellMod, spell *Spell) {
-	spell.CD.Duration /= time.Duration(1.0 - mod.floatValue)
+	coeff := int64((1.0 - mod.floatValue) * 100)
+	spell.CD.Duration = time.Duration(int64(spell.CD.Duration) * 100 / coeff)
 }
 
 func applyCritMultiplier(mod *SpellMod, spell *Spell) {

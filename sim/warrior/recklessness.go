@@ -34,10 +34,6 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 		Flags:          core.SpellFlagAPL | core.SpellFlagMCD,
 		ClassSpellMask: SpellMaskRecklessness,
 
-		RageCost: core.RageCostOptions{
-			Cost: 0,
-		},
-
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),

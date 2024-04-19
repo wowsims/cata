@@ -9,7 +9,7 @@ import (
 
 func (war *FuryWarrior) RegisterRagingBlow() {
 
-	actionID := core.ActionID{SpellID: 85288}
+	actionID := core.ActionID{SpellID: 85288, Tag: 0}
 	rbOffhand := war.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID.WithTag(1),
 		SpellSchool: core.SpellSchoolPhysical,
