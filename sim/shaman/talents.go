@@ -167,7 +167,9 @@ func (shaman *Shaman) applyElementalFocus() {
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= oathBonus
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= oathBonus
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= oathBonus
-				shaman.Earthquake.DamageMultiplierAdditive += 0.05
+				if shaman.Earthquake != nil {
+					shaman.Earthquake.DamageMultiplierAdditive += 0.05
+				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -178,7 +180,9 @@ func (shaman *Shaman) applyElementalFocus() {
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= oathBonus
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= oathBonus
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= oathBonus
-				shaman.Earthquake.DamageMultiplierAdditive -= 0.05
+				if shaman.Earthquake != nil {
+					shaman.Earthquake.DamageMultiplierAdditive -= 0.05
+				}
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

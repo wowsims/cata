@@ -30,7 +30,7 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    enh.NewTimer(),
-				Duration: time.Second * 6,
+				Duration: time.Second * 10,
 			},
 		},
 		DamageMultiplier: damageMultiplier,

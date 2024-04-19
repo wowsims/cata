@@ -37,7 +37,6 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[shaman.Class]*core.CritRatingPerCritChance)
 	shaman.EnableManaBarWithModifier(1.0)
 	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
-		//TODO: Still needs to disable all other spellpower gains somehow!
 		shaman.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*6)
 		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.55)
 		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.4)

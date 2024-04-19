@@ -44,6 +44,7 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 
 	if mh := ele.GetMHWeapon(); mh != nil {
 		ele.ApplyFlametongueImbueToItem(mh)
+		ele.SelfBuffs.ImbueMH = proto.ShamanImbue_FlametongueWeapon
 	}
 
 	return ele
