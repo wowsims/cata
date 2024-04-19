@@ -28,7 +28,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.164,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -8,9 +8,10 @@ import (
 
 func (druid *Druid) registerFerociousBiteSpell() {
 	dmgPerComboPoint := 290.0 + core.TernaryFloat64(druid.Ranged().ID == 25667, 14, 0)
+	ripRefreshChance := 0.5 * float64(druid.Talents.BloodInTheWater)
 
 	druid.FerociousBite = druid.RegisterSpell(Cat, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48577},
+		ActionID:    core.ActionID{SpellID: 22568},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
@@ -31,7 +32,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 		},
 
 		BonusCritRating: 0 +
-			core.TernaryFloat64(druid.AssumeBleedActive, 25.0/3.0*float64(druid.Talents.RendAndTear)*core.CritRatingPerCritChance, 0),
+			core.TernaryFloat64(druid.AssumeBleedActive, []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear] * core.CritRatingPerCritChance, 0),
 		DamageMultiplier: 1 + 0.05*float64(druid.Talents.FeralAggression),
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
@@ -52,6 +53,13 @@ func (druid *Druid) registerFerociousBiteSpell() {
 			if result.Landed() {
 				druid.SpendEnergy(sim, excessEnergy, spell.Cost.(*core.EnergyCost).ResourceMetrics)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
+
+				// Blood in the Water
+				ripDot := druid.Rip.Dot(target)
+
+				if sim.IsExecutePhase25() && ripDot.IsActive() && sim.Proc(ripRefreshChance, "Blood in the Water") {
+					ripDot.Apply(sim)
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}

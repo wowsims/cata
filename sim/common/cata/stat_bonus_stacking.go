@@ -12,7 +12,7 @@ func init() {
 	shared.NewStackingStatBonusCD(shared.StackingStatBonusCD{
 		Name:                  "World-Queller Focus",
 		ID:                    63842,
-		AuraID:                90900,
+		AuraID:                90927,
 		Bonus:                 stats.Stats{stats.SpellPower: 313},
 		MaxStacks:             5,
 		ProcMask:              core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -28,7 +28,7 @@ func init() {
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Gale of Shadows",
 		ID:         56138,
-		AuraID:     90943,
+		AuraID:     90953,
 		Bonus:      stats.Stats{stats.SpellPower: 15},
 		MaxStacks:  20,
 		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -42,7 +42,7 @@ func init() {
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Gale of Shadows (Heroic)",
 		ID:         56462,
-		AuraID:     90986,
+		AuraID:     90985,
 		Bonus:      stats.Stats{stats.SpellPower: 17},
 		MaxStacks:  20,
 		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -56,7 +56,7 @@ func init() {
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Tia's Grace",
 		ID:         55874,
-		AuraID:     92086,
+		AuraID:     92085,
 		Bonus:      stats.Stats{stats.Agility: 30},
 		MaxStacks:  10,
 		ProcMask:   core.ProcMaskMeleeOrRanged,
@@ -69,7 +69,7 @@ func init() {
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Tia's Grace (Heroic)",
 		ID:         56394,
-		AuraID:     92090,
+		AuraID:     92089,
 		Bonus:      stats.Stats{stats.Agility: 34},
 		MaxStacks:  10,
 		ProcMask:   core.ProcMaskMeleeOrRanged,
@@ -96,7 +96,7 @@ func init() {
 	shared.NewStackingStatBonusEffect(shared.StackingStatBonusEffect{
 		Name:       "Fluid Death",
 		ID:         58181,
-		AuraID:     92105,
+		AuraID:     92104,
 		Bonus:      stats.Stats{stats.Agility: 28},
 		MaxStacks:  10,
 		ProcMask:   core.ProcMaskMeleeOrRanged,

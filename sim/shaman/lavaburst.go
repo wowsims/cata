@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (shaman *Shaman) registerLavaBurstSpell() {
@@ -13,17 +12,6 @@ func (shaman *Shaman) registerLavaBurstSpell() {
 }
 
 func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.SpellConfig {
-	castTime := time.Millisecond * 2000
-	spellCoeff := 0.628
-	canOverload := false
-	overloadChance := shaman.GetOverloadChance()
-	if shaman.Spec == proto.Spec_SpecElementalShaman {
-		//apply shamanism bonuses
-		castTime -= 500
-		spellCoeff += 0.36
-		canOverload = true
-	}
-
 	actionID := core.ActionID{SpellID: 51505}
 
 	mask := core.ProcMaskSpellDamage
@@ -40,7 +28,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       mask,
 		Flags:          flags,
-		ClassSpellMask: SpellMaskLavaBurst,
+		ClassSpellMask: core.TernaryInt64(isElementalOverload, SpellMaskLavaBurstOverload, SpellMaskLavaBurst),
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   core.TernaryFloat64(isElementalOverload, 0, 0.1),
@@ -48,7 +36,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				CastTime: castTime,
+				CastTime: time.Millisecond * 2000,
 				GCD:      core.GCDDefault,
 			},
 			CD: core.Cooldown{
@@ -58,8 +46,8 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 		},
 
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0.08 * float64(shaman.Talents.LavaFlows)),
-		BonusCoefficient: spellCoeff,
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.628,
 	}
 
 	if isElementalOverload {
@@ -76,7 +64,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		result := spell.CalcDamage(sim, target, 1586, spell.OutcomeMagicHitAndCrit)
 
-		if canOverload && result.Landed() && sim.RandomFloat("Lava Burst Elemental Overload") < overloadChance {
+		if result.Landed() && sim.RandomFloat("Lava Burst Elemental Overload") < shaman.GetOverloadChance() {
 			shaman.LavaBurstOverload.Cast(sim, target)
 		}
 

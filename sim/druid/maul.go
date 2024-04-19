@@ -14,6 +14,7 @@ func (druid *Druid) registerMaulSpell() {
 	}
 
 	numHits := core.TernaryInt32(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfMaul) && druid.Env.GetNumTargets() > 1, 2, 1)
+	rendAndTearMod := []float64{1.0, 1.07, 1.13, 1.2}[druid.Talents.RendAndTear]
 
 	druid.Maul = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48480},
@@ -22,14 +23,15 @@ func (druid *Druid) registerMaulSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(druid.Talents.Ferocity),
+			Cost:   30,
 			Refund: 0.8,
 		},
 
-		DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
-		CritMultiplier:   druid.MeleeCritMultiplier(Bear),
+		DamageMultiplier: 1,
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  424,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Need to specially deactivate CC here in case maul is cast simultaneously with another spell.
@@ -37,22 +39,22 @@ func (druid *Druid) registerMaulSpell() {
 				druid.ClearcastingAura.Deactivate(sim)
 			}
 
-			modifier := 1.0
-			if druid.BleedCategories.Get(target).AnyActive() {
-				modifier += .3
-			}
-			if druid.AssumeBleedActive || druid.Rip.Dot(target).IsActive() || druid.Rake.Dot(target).IsActive() || druid.Lacerate.Dot(target).IsActive() {
-				modifier *= 1.0 + (0.04 * float64(druid.Talents.RendAndTear))
-			}
+			baseDamage := flatBaseDamage + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := flatBaseDamage +
-					spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-					spell.BonusWeaponDamage()
-				baseDamage *= modifier
+				modifier := 1.0
+				if druid.BleedCategories.Get(curTarget).AnyActive() {
+					modifier += .3
+				}
+				if druid.AssumeBleedActive || druid.Rip.Dot(curTarget).IsActive() || druid.Rake.Dot(curTarget).IsActive() || druid.Lacerate.Dot(curTarget).IsActive() {
+					modifier *= rendAndTearMod
+				}
+				if hitIndex > 0 {
+					modifier *= 0.5
+				}
 
-				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage * modifier, spell.OutcomeMeleeSpecialHitAndCrit)
 
 				if !result.Landed() {
 					spell.IssueRefund(sim)

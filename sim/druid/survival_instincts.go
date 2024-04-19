@@ -4,8 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (druid *Druid) registerSurvivalInstinctsCD() {
@@ -14,31 +12,25 @@ func (druid *Druid) registerSurvivalInstinctsCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 61336}
-	healthMetrics := druid.NewHealthMetrics(actionID)
 
 	cdTimer := druid.NewTimer()
 	cd := time.Minute * 3
-	healthFac := core.TernaryFloat64(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfSurvivalInstincts), 0.45, 0.3)
 
-	var bonusHealth float64
 	druid.SurvivalInstinctsAura = druid.RegisterAura(core.Aura{
 		Label:    "Survival Instincts",
 		ActionID: actionID,
-		Duration: time.Second*20 + core.TernaryDuration(druid.HasSetBonus(ItemSetNightsongBattlegear, 4), 8*time.Second, 0),
+		Duration: time.Second * 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			bonusHealth = druid.MaxHealth() * healthFac
-			druid.AddStatsDynamic(sim, stats.Stats{stats.Health: bonusHealth})
-			druid.GainHealth(sim, bonusHealth, healthMetrics)
+			druid.PseudoStats.DamageTakenMultiplier *= 0.5
 		},
 
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.AddStatsDynamic(sim, stats.Stats{stats.Health: -bonusHealth})
+			druid.PseudoStats.DamageTakenMultiplier /= 0.5
 		},
 	})
 
 	druid.SurvivalInstincts = druid.RegisterSpell(Cat|Bear, core.SpellConfig{
 		ActionID: actionID,
-		Flags:    SpellFlagOmenTrigger,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    cdTimer,
