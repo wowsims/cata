@@ -12,12 +12,11 @@ func (druid *Druid) registerShredSpell() {
 		core.TernaryFloat64(druid.Ranged().ID == 29390, 88, 0) +
 		core.TernaryFloat64(druid.Ranged().ID == 40713, 203, 0)) / 2.25
 
-	hasGlyphofShred := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting)
-	maxRipTicks := druid.MaxRipTicks()
+	hasBloodletting := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting)
 	rendAndTearMod := []float64{1.0, 1.07, 1.13, 1.2}[druid.Talents.RendAndTear]
 
 	druid.Shred = druid.RegisterSpell(Cat, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48572},
+		ActionID:    core.ActionID{SpellID: 5221},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
@@ -50,8 +49,7 @@ func (druid *Druid) registerShredSpell() {
 				modifier += .3
 			}
 
-			ripDot := druid.Rip.Dot(target)
-			if druid.AssumeBleedActive || ripDot.IsActive() || druid.Rake.Dot(target).IsActive() || druid.Lacerate.Dot(target).IsActive() {
+			if druid.AssumeBleedActive || druid.Rip.Dot(target).IsActive() || druid.Rake.Dot(target).IsActive() || druid.Lacerate.Dot(target).IsActive() {
 				modifier *= rendAndTearMod
 			}
 			baseDamage *= modifier
@@ -61,12 +59,8 @@ func (druid *Druid) registerShredSpell() {
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 
-				if hasGlyphofShred && ripDot.IsActive() {
-					if ripDot.NumberOfTicks < maxRipTicks {
-						ripDot.NumberOfTicks += 1
-						ripDot.RecomputeAuraDuration()
-						ripDot.UpdateExpires(ripDot.ExpiresAt() + time.Second*2)
-					}
+				if hasBloodletting {
+					druid.ApplyBloodletting(target)
 				}
 			} else {
 				spell.IssueRefund(sim)

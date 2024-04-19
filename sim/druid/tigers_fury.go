@@ -8,7 +8,7 @@ import (
 )
 
 func (druid *Druid) registerTigersFurySpell() {
-	actionID := core.ActionID{SpellID: 50213}
+	actionID := core.ActionID{SpellID: 5217}
 	energyMetrics := druid.NewEnergyMetrics(actionID)
 	instantEnergy := 20.0 * float64(druid.Talents.KingOfTheJungle)
 

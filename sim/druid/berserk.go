@@ -76,4 +76,19 @@ func (druid *Druid) registerBerserkCD() {
 		Spell: druid.Berserk.Spell,
 		Type:  core.CooldownTypeDPS,
 	})
+
+	// Cata additionally adds a passive proc buff when Berserk is talented
+	druid.BerserkProcAura = druid.RegisterAura(core.Aura{
+		Label:    "Berserk (Proc)",
+		ActionID: core.ActionID{SpellID: 93622},
+		Duration: time.Second * 5,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MangleBear.CD.Reset()
+			druid.MangleBear.CostMultiplier -= 1.0
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MangleBear.CostMultiplier += 1.0
+		},
+	})
 }

@@ -70,6 +70,7 @@ type Druid struct {
 	BarkskinAura             *core.Aura
 	BearFormAura             *core.Aura
 	BerserkAura              *core.Aura
+	BerserkProcAura          *core.Aura
 	CatFormAura              *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
@@ -192,15 +193,16 @@ func (druid *Druid) Initialize() {
 	if druid.Spec == proto.Spec_SpecFeralDruid {
 		druid.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeLeather)
 	}
-	// druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
+	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.PrimalPrecisionRecoveryMetrics = druid.NewEnergyMetrics(core.ActionID{SpellID: 48410})
 	// }
-	// druid.registerFaerieFireSpell()
+	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	// druid.registerInnervateCD()
 	// druid.registerFakeGotw()
+	druid.applyOmenOfClarity()
 }
 
 // func (druid *Druid) RegisterBalanceSpells() {
@@ -215,19 +217,19 @@ func (druid *Druid) Initialize() {
 // }
 
 func (druid *Druid) RegisterFeralCatSpells() {
-	// 	druid.registerBerserkCD()
+	druid.registerBerserkCD()
 	druid.registerCatFormSpell()
 	// 	druid.registerBearFormSpell()
 	// 	druid.registerEnrageSpell()
-	// 	druid.registerFerociousBiteSpell()
+	druid.registerFerociousBiteSpell()
 	// 	druid.registerMangleBearSpell()
-	// 	druid.registerMangleCatSpell()
+	druid.registerMangleCatSpell()
 	// 	druid.registerMaulSpell()
-	// 	druid.registerLacerateSpell()
-	// 	druid.registerRakeSpell()
-	// 	druid.registerRipSpell()
-	// 	druid.registerSavageRoarSpell()
-	// 	druid.registerShredSpell()
+	druid.registerLacerateSpell()
+	druid.registerRakeSpell()
+	druid.registerRipSpell()
+	druid.registerSavageRoarSpell()
+	druid.registerShredSpell()
 	// 	druid.registerSwipeBearSpell()
 	// 	druid.registerSwipeCatSpell()
 	druid.registerTigersFurySpell()
