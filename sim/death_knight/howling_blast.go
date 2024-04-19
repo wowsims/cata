@@ -29,9 +29,8 @@ func (dk *DeathKnight) registerHowlingBlastSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		CritMultiplier: dk.DefaultMeleeCritMultiplier(),
 

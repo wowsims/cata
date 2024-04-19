@@ -8,7 +8,7 @@ import (
 )
 
 func (druid *Druid) registerTigersFurySpell() {
-	actionID := core.ActionID{SpellID: 50213}
+	actionID := core.ActionID{SpellID: 5217}
 	energyMetrics := druid.NewEnergyMetrics(actionID)
 	instantEnergy := 20.0 * float64(druid.Talents.KingOfTheJungle)
 
@@ -21,9 +21,17 @@ func (druid *Druid) registerTigersFurySpell() {
 		Duration: 6 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.BonusDamage += dmgBonus
+
+			if druid.PrimalMadnessAura != nil {
+				druid.PrimalMadnessAura.Activate(sim)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.BonusDamage -= dmgBonus
+
+			if druid.PrimalMadnessAura.IsActive() && !druid.BerserkAura.IsActive() {
+				druid.PrimalMadnessAura.Deactivate(sim)
+			}
 		},
 	})
 

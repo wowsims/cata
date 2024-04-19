@@ -13,8 +13,14 @@ import (
 func (dk *DeathKnight) ApplyFrostTalents() {
 
 	// Nerves Of Cold Steel
-	if dk.HasMHWeapon() && dk.HasOHWeapon() && dk.Talents.NervesOfColdSteel > 0 {
-		dk.applyNervesOfColdSteel()
+	if dk.Talents.NervesOfColdSteel > 0 && dk.HasMHWeapon() && dk.HasOHWeapon() {
+		dk.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*float64(dk.Talents.NervesOfColdSteel))
+
+		dk.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: []float64{0.0, 0.08, 0.16, 0.25}[dk.Talents.NervesOfColdSteel],
+			ProcMask:   core.ProcMaskMeleeOH,
+		})
 	}
 
 	// Annihilation
@@ -68,16 +74,6 @@ func (dk *DeathKnight) applyChillOfTheGrave() {
 	})
 }
 
-func (dk *DeathKnight) applyNervesOfColdSteel() {
-	dk.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*float64(dk.Talents.NervesOfColdSteel))
-
-	dk.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: []float64{0.0, 0.08, 0.16, 0.25}[dk.Talents.NervesOfColdSteel],
-		ProcMask:   core.ProcMaskMeleeOH,
-	})
-}
-
 const DeathKnightSpellMercilessCombat = DeathKnightSpellIcyTouch | DeathKnightSpellObliterate | DeathKnightSpellFrostStrike | DeathKnightSpellHowlingBlast
 
 func (dk *DeathKnight) mercilessCombatMultiplier(sim *core.Simulation, spell *core.Spell, _ *core.AttackTable) float64 {
@@ -99,10 +95,10 @@ func (dk *DeathKnight) applyMercilessCombat() {
 			Duration: core.NeverExpires,
 
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				SetDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex], dk.mercilessCombatMultiplier)
+				core.EnableDamageDoneByCaster(DDBC_MercilessCombat, DDBC_Total, dk.AttackTables[aura.Unit.UnitIndex], dk.mercilessCombatMultiplier)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				ClearDDBC(DDBCMercilessCombat, dk.AttackTables[aura.Unit.UnitIndex])
+				core.DisableDamageDoneByCaster(DDBC_MercilessCombat, dk.AttackTables[aura.Unit.UnitIndex])
 			},
 		})
 		return aura
@@ -110,7 +106,7 @@ func (dk *DeathKnight) applyMercilessCombat() {
 
 	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:           "Merciless Combat Proc",
-		Callback:       core.CallbackOnSpellHitDealt,
+		Callback:       core.CallbackOnApplyEffects,
 		ClassSpellMask: DeathKnightSpellMercilessCombat,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if sim.IsExecutePhase35() {
@@ -228,7 +224,6 @@ func (dk *DeathKnight) applyMightOfTheFrozenWastes() {
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: []float64{0.0, 0.03, 0.6, 0.10}[dk.Talents.MightOfTheFrozenWastes],
 		ProcMask:   core.ProcMaskMelee,
-		ClassMask:  DeathKnightSpellsAll,
 	})
 
 	rpMetric := dk.NewRunicPowerMetrics(core.ActionID{SpellID: 81331})

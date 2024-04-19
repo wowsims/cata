@@ -199,6 +199,7 @@ const (
 	HunterSpellChimeraShot
 	HunterSpellExplosiveShot
 	HunterSpellBlackArrow
+	HunterSpellAimedShot
 )
 
 // Agent is a generic way to access underlying hunter on any of the agents.

@@ -18,7 +18,6 @@ func (cat *FeralDruid) OnGCDReady(sim *core.Simulation) {
 		return
 	}
 
-	cat.missChance = cat.MissChance()
 	cat.bleedAura = cat.CurrentTarget.GetExclusiveEffectCategory(core.BleedEffectCategory).GetActiveAura()
 
 	if cat.preRotationCleanup(sim) {

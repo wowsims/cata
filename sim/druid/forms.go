@@ -84,7 +84,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 	var hotwDep *stats.StatDependency
 	if druid.Talents.HeartOfTheWild > 0 {
-		hotwDep = druid.NewDynamicMultiplyStat(stats.AttackPower, 1.0+0.02*float64(druid.Talents.HeartOfTheWild))
+		hotwDep = druid.NewDynamicMultiplyStat(stats.AttackPower, []float64{1.0, 1.03, 1.07, 1.1}[druid.Talents.HeartOfTheWild])
 	}
 
 	clawWeapon := druid.GetCatWeapon()
@@ -169,8 +169,8 @@ func (druid *Druid) registerCatFormSpell() {
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.35,
-			Multiplier: (1 - 0.2*float64(druid.Talents.KingOfTheJungle)) * (1 - 0.1*float64(druid.Talents.NaturalShapeshifter)),
+			BaseCost:   0.05,
+			Multiplier: 1 - 0.1*float64(druid.Talents.NaturalShapeshifter),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -180,7 +180,7 @@ func (druid *Druid) registerCatFormSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			maxShiftEnergy := float64(100 * druid.Talents.Furor) / 3.0
+			maxShiftEnergy := float64(100*druid.Talents.Furor) / 3.0
 
 			energyDelta := maxShiftEnergy - druid.CurrentEnergy()
 
@@ -230,7 +230,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= core.TernaryFloat64(druid.Talents.MasterShapeshifter, 1.04, 1.0)
 			druid.PseudoStats.DamageTakenMultiplier *= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodge += 0.02 * float64(druid.Talents.FeralSwiftness) + 0.03 * float64(druid.Talents.NaturalReaction)
+			druid.PseudoStats.BaseDodge += 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.ApplyDynamicEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
@@ -259,7 +259,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= core.TernaryFloat64(druid.Talents.MasterShapeshifter, 1.04, 1.0)
 			druid.PseudoStats.DamageTakenMultiplier /= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodge -= 0.02 * float64(druid.Talents.FeralSwiftness) + 0.03 * float64(druid.Talents.NaturalReaction)
+			druid.PseudoStats.BaseDodge -= 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.RemoveDynamicEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
@@ -279,6 +279,7 @@ func (druid *Druid) registerBearFormSpell() {
 				druid.UpdateManaRegenRates()
 				druid.EnrageAura.Deactivate(sim)
 				druid.MaulQueueAura.Deactivate(sim)
+				druid.PulverizeAura.Deactivate(sim)
 			}
 		},
 	})
@@ -292,8 +293,8 @@ func (druid *Druid) registerBearFormSpell() {
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.35,
-			Multiplier: (1 - 0.2*float64(druid.Talents.KingOfTheJungle)) * (1 - 0.1*float64(druid.Talents.NaturalShapeshifter)),
+			BaseCost:   0.05,
+			Multiplier: 1 - 0.1*float64(druid.Talents.NaturalShapeshifter),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
