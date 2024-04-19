@@ -51,6 +51,9 @@ func (hunter *BeastMasteryHunter) Initialize() {
 			hunter.Pet.PseudoStats.DamageDealtMultiplier *= hunter.getMasteryBonus(newMastery)
 		}
 	})
+
+	// BM Hunter Spec Bonus
+	hunter.MultiplyStat(stats.RangedAttackPower, 1.30)
 }
 func (hunter *BeastMasteryHunter) getMasteryBonus(mastery float64) float64 {
 	return 1.134 + ((mastery / core.MasteryRatingPerMasteryPoint) * 0.0167)
