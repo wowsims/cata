@@ -44,16 +44,11 @@ export const DefaultRotation = FeralDruidRotation.create({
 	biteModeType: FeralDruid_Rotation_BiteModeType.Emperical,
 	biteTime: 4.0,
 	berserkBiteThresh: 25.0,
-	berserkFfThresh: 15.0,
 	powerbear: false,
 	minRoarOffset: 12.0,
 	ripLeeway: 3.0,
 	maintainFaerieFire: true,
-	hotUptime: 0.0,
 	snekWeave: false,
-	flowerWeave: false,
-	raidTargets: 30,
-	maxFfDelay: 0.1,
 });
 
 export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFeralDruid, DefaultRotation);
