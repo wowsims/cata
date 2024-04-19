@@ -185,25 +185,26 @@ func (eb *energyBar) ComboPoints() int32 {
 // Gives an immediate partial energy tick and restarts the tick timer.
 func (eb *energyBar) ResetEnergyTick(sim *Simulation) {
 	timeSinceLastTick := sim.CurrentTime - (eb.NextEnergyTickAt() - EnergyTickDuration)
-	partialTickAmount := (EnergyPerTick * eb.EnergyTickMultiplier) * (float64(timeSinceLastTick) / float64(EnergyTickDuration))
+	hasteMultiplier := 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
+	partialTickAmount := (EnergyPerTick * hasteMultiplier * eb.EnergyTickMultiplier) * (float64(timeSinceLastTick) / float64(EnergyTickDuration))
 
 	crossedThreshold := eb.addEnergyInternal(sim, partialTickAmount, eb.regenMetrics)
-	eb.onEnergyGain(sim, crossedThreshold)
-
 	eb.nextEnergyTick = sim.CurrentTime + EnergyTickDuration
+	eb.onEnergyGain(sim, crossedThreshold)
 	sim.RescheduleTask(eb.nextEnergyTick)
 }
 
 // Used for dynamic updates to maximum Energy, such as from the Druid Primal Madness talent
-func (eb *energyBar) UpdateMaxEnergy(sim *Simulation, newMaxEnergy float64, metrics *ResourceMetrics) {
-	oldMaxEnergy := eb.maxEnergy
-	eb.maxEnergy = newMaxEnergy
-	energyDelta := newMaxEnergy - oldMaxEnergy
+func (eb *energyBar) UpdateMaxEnergy(sim *Simulation, bonusEnergy float64, metrics *ResourceMetrics) {
+	// Reset tick timer first so that Energy is properly zeroed out when bonusEnergy < -currentEnergy
+	eb.ResetEnergyTick(sim)
 
-	if energyDelta >= 0 {
-		eb.AddEnergy(sim, energyDelta, metrics)
+	eb.maxEnergy += bonusEnergy
+
+	if bonusEnergy >= 0 {
+		eb.AddEnergy(sim, bonusEnergy, metrics)
 	} else {
-		eb.SpendEnergy(sim, min(-energyDelta, eb.currentEnergy), metrics)
+		eb.SpendEnergy(sim, min(-bonusEnergy, eb.currentEnergy), metrics)
 	}
 }
 
@@ -233,9 +234,8 @@ func (eb *energyBar) RunTask(sim *Simulation) time.Duration {
 
 	hasteMultiplier := 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
 	crossedThreshold := eb.addEnergyInternal(sim, EnergyPerTick*hasteMultiplier*eb.EnergyTickMultiplier, eb.regenMetrics)
-	eb.onEnergyGain(sim, crossedThreshold)
-
 	eb.nextEnergyTick = sim.CurrentTime + EnergyTickDuration
+	eb.onEnergyGain(sim, crossedThreshold)
 	return eb.nextEnergyTick
 }
 
