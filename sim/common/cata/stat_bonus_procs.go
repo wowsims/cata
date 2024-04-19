@@ -532,9 +532,10 @@ func init() {
 		ProcChance: 0.3,
 		ICD:        time.Second * 45,
 	}, shared.DamageEffect{
-		School: core.SpellSchoolFire,
-		MinDmg: 900,
-		MaxDmg: 1500,
+		SpellID: 89091,
+		School:  core.SpellSchoolFire,
+		MinDmg:  900,
+		MaxDmg:  1500,
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
