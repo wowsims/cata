@@ -54,7 +54,6 @@ export const DefaultRotation = FeralDruidRotation.create({
 	flowerWeave: false,
 	raidTargets: 30,
 	maxFfDelay: 0.1,
-	prePopOoc: true,
 });
 
 export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFeralDruid, DefaultRotation);

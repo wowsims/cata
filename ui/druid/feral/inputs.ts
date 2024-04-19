@@ -41,20 +41,6 @@ export const FeralDruidRotationConfig = {
 				{ name: 'AOE', value: AplType.Aoe },
 			],
 		}),
-		// InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
-		// 	fieldName: 'prePopOoc',
-		// 	label: 'Pre-pop Clearcasting',
-		// 	labelTooltip: 'Start fight with clearcasting',
-		// 	showWhen: (player: Player<Spec.SpecFeralDruid>) => player.getTalents().omenOfClarity,
-		// 	changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		// }),
-		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
-			fieldName: 'prePopBerserk',
-			label: 'Pre-pop Berserk',
-			labelTooltip: 'Pre pop berserk 1 sec before fight',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) => player.getTalents().berserk,
-			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'manualParams',
 			label: 'Manual Advanced Parameters',

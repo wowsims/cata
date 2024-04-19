@@ -63,7 +63,6 @@ type FeralDruid struct {
 
 	Rotation FeralDruidRotation
 
-	prepopOoc         bool
 	readyToShift      bool
 	readyToGift       bool
 	waitingForTick    bool
@@ -96,8 +95,8 @@ func (cat *FeralDruid) Reset(sim *core.Simulation) {
 	cat.Druid.Reset(sim)
 	cat.Druid.ClearForm(sim)
 	cat.CatFormAura.Activate(sim)
-	// cat.readyToShift = false
-	// cat.waitingForTick = false
-	// cat.berserkUsed = false
-	// cat.rotationAction = nil
+	cat.readyToShift = false
+	cat.waitingForTick = false
+	cat.berserkUsed = false
+	cat.rotationAction = nil
 }

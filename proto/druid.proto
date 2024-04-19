@@ -179,8 +179,6 @@ message FeralDruid {
 	bool manual_params = 17;
 	float max_ff_delay = 20;
 	AplType rotation_type = 21;
-	bool pre_pop_berserk = 22;
-	bool pre_pop_ooc = 23;
   }
   Rotation rotation = 1;
 

@@ -124,8 +124,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	simpleRotation: (player: Player<Spec.SpecFeralDruid>, simple: DruidRotation, cooldowns: Cooldowns): APLRotation => {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
-		const preOmen = APLPrepullAction.fromJsonString(`{"action":{"activateAura":{"auraId":{"spellId":16870}}},"doAtValue":{"const":{"val":"-1s"}}}`);
-		const preZerk = APLPrepullAction.fromJsonString(`{"action":{"castSpell":{"spellId":{"spellId":50334}}},"doAtValue":{"const":{"val":"-1s"}}}`);
 		const blockZerk = APLAction.fromJsonString(`{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}`);
 		const doRotation = APLAction.fromJsonString(
 			`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maxFfDelay":${simple.maxFfDelay.toFixed(
@@ -134,8 +132,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				simple.useBite
 			},"biteTime":${simple.biteTime.toFixed(2)},"flowerWeave":${simple.flowerWeave}}}`,
 		);
-
-		prepullActions.push(...([simple.prePopOoc ? preOmen : null, simple.prePopBerserk ? preZerk : null].filter(a => a) as Array<APLPrepullAction>));
 
 		actions.push(...([blockZerk, doRotation].filter(a => a) as Array<APLAction>));
 
