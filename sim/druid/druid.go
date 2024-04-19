@@ -26,6 +26,7 @@ type Druid struct {
 	RebirthTiming     float64
 	BleedsActive      int
 	AssumeBleedActive bool
+	LeatherSpecActive bool
 
 	ReplaceBearMHFunc core.ReplaceMHSwing
 
@@ -190,9 +191,7 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 }
 
 func (druid *Druid) Initialize() {
-	if druid.Spec == proto.Spec_SpecFeralDruid {
-		druid.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeLeather)
-	}
+	druid.LeatherSpecActive = druid.MeetsArmorSpecializationRequirement(proto.ArmorType_ArmorTypeLeather)
 	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
 	// if druid.Talents.PrimalPrecision > 0 {
