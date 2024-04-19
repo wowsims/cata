@@ -228,6 +228,10 @@ const (
 	// Add/substrct to the base tick frequency
 	// Uses: TimeValue
 	SpellMod_DotTickLength_Flat
+
+	// Add/subtract bonus coefficient
+	// Uses: FloatValue
+	SpellMod_BonusCoeffecient_Flat
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -298,6 +302,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_DotTickLength_Flat: {
 		Apply:  applyDotTickLengthFlat,
 		Remove: removeDotTickLengthFlat,
+	},
+
+	SpellMod_BonusCoeffecient_Flat: {
+		Apply:  applyBonusCoefficientFlat,
+		Remove: removeBonusCoefficientFlat,
 	},
 }
 
@@ -451,4 +460,12 @@ func removeDotTickLengthFlat(mod *SpellMod, spell *Spell) {
 	if spell.aoeDot != nil {
 		spell.aoeDot.TickLength -= mod.timeValue
 	}
+}
+
+func applyBonusCoefficientFlat(mod *SpellMod, spell *Spell) {
+	spell.BonusCoefficient += mod.floatValue
+}
+
+func removeBonusCoefficientFlat(mod *SpellMod, spell *Spell) {
+	spell.BonusCoefficient -= mod.floatValue
 }

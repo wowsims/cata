@@ -34,7 +34,7 @@ func (druid *Druid) BearArmorMultiplier() float64 {
 }
 
 func (druid *Druid) ApplyTalents() {
-	druid.MultiplyStat(stats.Mana, 1.0 + 0.05*float64(druid.Talents.Furor))
+	druid.MultiplyStat(stats.Mana, 1.0+0.05*float64(druid.Talents.Furor))
 	// druid.AddStat(stats.SpellHit, float64(druid.Talents.BalanceOfPower)*2*core.SpellHitRatingPerHitChance)
 	// druid.AddStat(stats.SpellCrit, float64(druid.Talents.NaturalPerfection)*1*core.CritRatingPerCritChance)
 	// druid.PseudoStats.CastSpeedMultiplier *= 1 + (float64(druid.Talents.CelestialFocus) * 0.01)
@@ -54,10 +54,10 @@ func (druid *Druid) ApplyTalents() {
 	// 	druid.AddStatDependency(stats.Intellect, stats.MP5, bonus)
 	// }
 
-	// if druid.Talents.HeartOfTheWild > 0 {
-	// 	bonus := 0.04 * float64(druid.Talents.HeartOfTheWild)
-	// 	druid.MultiplyStat(stats.Intellect, 1.0+bonus)
-	// }
+	if druid.Talents.HeartOfTheWild > 0 {
+		bonus := 0.02 * float64(druid.Talents.HeartOfTheWild)
+		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
+	}
 
 	// if druid.Talents.ImprovedFaerieFire > 0 && druid.CurrentTarget.HasAuraWithTag(core.FaerieFireAuraTag) {
 	// 	druid.AddStat(stats.SpellCrit, float64(druid.Talents.ImprovedFaerieFire)*1*core.CritRatingPerCritChance)
@@ -81,12 +81,21 @@ func (druid *Druid) ApplyTalents() {
 	// 	druid.MultiplyStat(stats.Spirit, 1.0+bonus)
 	// }
 
+	if druid.Talents.Perseverance > 0 {
+		multiplier := 1.0 - 0.02 * float64(druid.Talents.Perseverance)
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= multiplier
+	}
+
 	// druid.setupNaturesGrace()
 	// druid.registerNaturesSwiftnessCD()
 	// druid.applyEarthAndMoon()
 	// druid.applyMoonkinForm()
 	druid.applyPrimalFury()
-	// druid.applyOmenOfClarity()
 	// druid.applyEclipse()
 	druid.applyLotp()
 	// druid.applyPredatoryInstincts()
@@ -241,7 +250,7 @@ func (druid *Druid) applyFurySwipes() {
 		return
 	}
 
-	furySwipesSpell := druid.RegisterSpell(Cat | Bear, core.SpellConfig{
+	furySwipesSpell := druid.RegisterSpell(Cat|Bear, core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 80861},
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskMeleeMHSpecial,
@@ -359,157 +368,6 @@ func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
 
 	return aura
 }
-
-// func (druid *Druid) applyOmenOfClarity() {
-// 	// Feral 2p needs clearcasting aura
-// 	if !druid.Talents.OmenOfClarity && !druid.HasSetBonus(ItemSetNightsongBattlegear, 2) {
-// 		return
-// 	}
-
-// 	// T10-2P
-// 	var lasherweave2P *core.Aura
-// 	if druid.HasSetBonus(ItemSetLasherweaveRegalia, 2) {
-// 		lasherweave2P = druid.RegisterAura(core.Aura{
-// 			Label:    "T10-2P proc",
-// 			ActionID: core.ActionID{SpellID: 70718},
-// 			Duration: time.Second * 6,
-// 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 				druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1.15
-// 				druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.15
-// 			},
-// 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 				druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] /= 1.15
-// 				druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= 1.15
-// 			},
-// 		})
-// 	}
-
-// 	var affectedSpells []*DruidSpell
-// 	druid.ClearcastingAura = druid.RegisterAura(core.Aura{
-// 		Label:    "Clearcasting",
-// 		ActionID: core.ActionID{SpellID: 16870},
-// 		Duration: time.Second * 15,
-// 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-// 			affectedSpells = core.FilterSlice([]*DruidSpell{
-// 				// Balance
-// 				druid.Hurricane,
-// 				druid.InsectSwarm,
-// 				druid.Moonfire,
-// 				// TODO druid.Starfall, not sure how the proc chance is affected.
-// 				druid.Starfire,
-// 				druid.Typhoon,
-// 				druid.Wrath,
-
-// 				// Feral
-// 				druid.DemoralizingRoar,
-// 				druid.FerociousBite,
-// 				druid.Lacerate,
-// 				druid.MangleBear,
-// 				druid.MangleCat,
-// 				druid.Maul,
-// 				druid.Rake,
-// 				druid.Rip,
-// 				druid.Shred,
-// 				druid.SwipeBear,
-// 				druid.SwipeCat,
-// 			}, func(spell *DruidSpell) bool { return spell != nil })
-// 		},
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			for _, spell := range affectedSpells {
-// 				spell.CostMultiplier -= 1
-// 			}
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			for _, spell := range affectedSpells {
-// 				spell.CostMultiplier += 1
-// 			}
-// 		},
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if aura.RemainingDuration(sim) == aura.Duration {
-// 				// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate
-// 				// if it was just activated.
-// 				return
-// 			}
-
-// 			for _, as := range affectedSpells {
-// 				if as.IsEqual(spell) {
-// 					aura.Deactivate(sim)
-// 					break
-// 				}
-// 			}
-// 		},
-// 	})
-
-// 	if !druid.Talents.OmenOfClarity {
-// 		return
-// 	}
-
-// 	druid.ProcOoc = func(sim *core.Simulation) {
-// 		druid.ClearcastingAura.Activate(sim)
-// 		if lasherweave2P != nil {
-// 			lasherweave2P.Activate(sim)
-// 		}
-// 	}
-
-// 	hasOocGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfOmenOfClarity)
-
-// 	druid.RegisterAura(core.Aura{
-// 		Label:    "Omen of Clarity",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.Landed() {
-// 				return
-// 			}
-
-// 			// https://github.com/JamminL/wotlk-classic-bugs/issues/66#issuecomment-1182017571
-// 			if druid.HurricaneTickSpell.IsEqual(spell) {
-// 				curCastTickSpeed := spell.CurDot().TickPeriod().Seconds() / 10
-// 				hurricaneCoeff := 1.0 - (7.0 / 9.0)
-// 				spellCoeff := hurricaneCoeff * curCastTickSpeed
-// 				chanceToProc := ((1.5 / 60) * 3.5) * spellCoeff
-// 				if sim.RandomFloat("Clearcasting") < chanceToProc {
-// 					druid.ProcOoc(sim)
-// 				}
-// 			} else if druid.AutoAttacks.PPMProc(sim, 3.5, core.ProcMaskMeleeWhiteHit, "Omen of Clarity", spell) { // Melee
-// 				druid.ProcOoc(sim)
-// 			} else if spell.Flags.Matches(SpellFlagOmenTrigger) { // Spells
-// 				// Heavily based on comment here
-// 				// https://github.com/JamminL/wotlk-classic-bugs/issues/66#issuecomment-1182017571
-// 				// Instants are treated as 1.5
-// 				// Uses current cast time rather than default cast time (PPM is constant with haste)
-// 				castTime := spell.CurCast.CastTime.Seconds()
-// 				if castTime == 0 {
-// 					castTime = 1.5
-// 				}
-
-// 				chanceToProc := (castTime / 60) * 3.5
-// 				if druid.Typhoon.IsEqual(spell) { // Add Typhoon
-// 					chanceToProc *= 0.25
-// 				} else if druid.Moonfire.IsEqual(spell) { // Add Moonfire
-// 					chanceToProc *= 0.076
-// 				} else if druid.GiftOfTheWild.IsEqual(spell) { // Add Gift of the Wild
-// 					// the above comment says it's 0.0875 * (1-0.924) which apparently is out-dated,
-// 					// there is no longer an instant suppression factor
-// 					// we assume 30 targets (25man + pets)
-// 					chanceToProc = 1 - math.Pow(1-chanceToProc, 30)
-// 				} else {
-// 					chanceToProc *= 0.666
-// 				}
-// 				if sim.RandomFloat("Clearcasting") < chanceToProc {
-// 					druid.ProcOoc(sim)
-// 				}
-// 			}
-// 		},
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if druid.FaerieFire.IsEqual(spell) && druid.InForm(Cat|Bear) && hasOocGlyph {
-// 				druid.ProcOoc(sim)
-// 			}
-// 		},
-// 	})
-// }
 
 // func (druid *Druid) applyEclipse() {
 // 	druid.SolarICD = core.Cooldown{Timer: druid.NewTimer(), Duration: 0}

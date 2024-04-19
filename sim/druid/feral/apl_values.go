@@ -109,17 +109,14 @@ func (impl *APLActionCatOptimalRotationAction) GetNextAction(*core.Simulation) *
 func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, config *proto.APLActionCatOptimalRotationAction) core.APLActionImpl {
 	rotationOptions := &proto.FeralDruid_Rotation{
 		RotationType:       config.RotationType,
-		MaintainFaerieFire: true,
+		MaintainFaerieFire: config.MaintainFaerieFire,
 		UseRake:            config.UseRake,
 		UseBite:            config.UseBite,
 		BiteTime:           config.BiteTime,
 		MangleSpam:         false,
-		MaxFfDelay:         config.MaxFfDelay,
 		Powerbear:          false,
 		MinRoarOffset:      config.MinRoarOffset,
 		RipLeeway:          config.RipLeeway,
-		HotUptime:          0.0,
-		FlowerWeave:        config.FlowerWeave,
 		ManualParams:       config.ManualParams,
 	}
 
@@ -139,7 +136,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 
 	// If a melee swing resulted in an Omen proc, then schedule the
 	// next player decision based on latency.
-	if cat.Talents.OmenOfClarity && cat.ClearcastingAura.RemainingDuration(sim) == cat.ClearcastingAura.Duration {
+	if cat.ClearcastingAura.RemainingDuration(sim) == cat.ClearcastingAura.Duration {
 		// Kick gcd loop, also need to account for any gcd 'left'
 		// otherwise it breaks gcd logic
 		kickTime := max(cat.NextGCDAt(), sim.CurrentTime+cat.latency)

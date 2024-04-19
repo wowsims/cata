@@ -359,7 +359,7 @@ func init() {
 
 		statAura := character.NewTemporaryStatsAura(
 			"Lightweave Embroidery Proc",
-			core.ActionID{SpellID: 75171},
+			core.ActionID{SpellID: 75170},
 			stats.Stats{stats.Intellect: 480},
 			time.Second*15,
 		)
@@ -410,7 +410,7 @@ func init() {
 	// Enchant: 4215, Spell: 92433, Item: 55055 - Elementium Shield Spike
 	core.NewEnchantEffect(4215, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 55055}
+		actionID := core.ActionID{SpellID: 92432}
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
@@ -443,7 +443,7 @@ func init() {
 	// Enchant: 4216, Spell: 92437, Item: 55056  - Pyrium Shield Spike
 	core.NewEnchantEffect(4216, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 55055}
+		actionID := core.ActionID{SpellID: 92436}
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
