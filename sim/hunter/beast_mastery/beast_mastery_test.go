@@ -18,14 +18,14 @@ func TestBM(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-		GearSet:     core.GetGearSet("../../ui/hunter/beast_mastery/gear_sets", "p1_bm"),
+		GearSet:     core.GetGearSet("../../../ui/hunter/beast_mastery/gear_sets", "preraid_bm"),
 		Talents:     BMTalents,
 		Glyphs:      BMGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
-		Rotation:    core.GetAplRotation("../../ui/hunter/beast_mastery/apls", "bm"),
+		Rotation:    core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm"),
 		OtherRotations: []core.RotationCombo{
-			core.GetAplRotation("../../ui/hunter/beast_mastery/apls", "bm_advanced"),
+			core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm_advanced"),
 		},
 
 		ItemFilter: ItemFilter,
@@ -57,7 +57,7 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassHunter,
-				Equipment:     core.GetGearSet("../../ui/hunter/gear_sets", "p1_sv").GearSet,
+				Equipment:     core.GetGearSet("../../../ui/hunter/beast_mastery/gear_sets", "preraid_bm").GearSet,
 				Consumes:      FullConsumes,
 				Spec:          PlayerOptionsBasic,
 				Glyphs:        BMGlyphs,
