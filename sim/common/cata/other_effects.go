@@ -11,7 +11,7 @@ import (
 func init() {
 	core.NewItemEffect(55816, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 55816}
+		actionID := core.ActionID{SpellID: 92179}
 
 		procAura := character.NewTemporaryStatsAura("Leaden Despair Proc", actionID, stats.Stats{stats.Armor: 2580}, time.Second*10)
 
@@ -38,7 +38,7 @@ func init() {
 
 	core.NewItemEffect(56347, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 56347}
+		actionID := core.ActionID{SpellID: 92184}
 
 		procAura := character.NewTemporaryStatsAura("Leaden Despair (Heroic) Proc", actionID, stats.Stats{stats.Armor: 3420}, time.Second*10)
 
@@ -167,7 +167,7 @@ func init() {
 		}))
 
 		sharedTimer := character.GetOffensiveTrinketCD()
-		manaMetric := character.NewManaMetrics(core.ActionID{ItemID: 64645})
+		manaMetric := character.NewManaMetrics(core.ActionID{SpellID: 92601})
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:                 core.ActionID{ItemID: 64645},
 			SpellSchool:              core.SpellSchoolArcane,
@@ -204,7 +204,7 @@ func init() {
 
 		dummyAura := character.RegisterAura(core.Aura{
 			Label:     "Raw Fury",
-			ActionID:  core.ActionID{ItemID: 59461},
+			ActionID:  core.ActionID{SpellID: 91832},
 			Duration:  time.Second * 15,
 			MaxStacks: 5,
 		})
@@ -223,7 +223,7 @@ func init() {
 			},
 		}))
 
-		buffAura := character.NewTemporaryStatsAura("Forged Fury", core.ActionID{ItemID: 59461}, stats.Stats{stats.Strength: 1926}, time.Second*20)
+		buffAura := character.NewTemporaryStatsAura("Forged Fury", core.ActionID{SpellID: 91836}, stats.Stats{stats.Strength: 1926}, time.Second*20)
 		sharedCD := character.GetOffensiveTrinketCD()
 		trinketSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{ItemID: 59461},
@@ -284,7 +284,7 @@ func init() {
 
 		buffAura := character.RegisterAura(core.Aura{
 			Label:     "Heart's Judgement",
-			ActionID:  core.ActionID{ItemID: 59514},
+			ActionID:  core.ActionID{SpellID: 91041},
 			Duration:  time.Second * 20,
 			MaxStacks: 5,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
@@ -355,7 +355,7 @@ func init() {
 
 		buffAura := character.RegisterAura(core.Aura{
 			Label:     "Heart's Judgement (Heroic)",
-			ActionID:  core.ActionID{ItemID: 65110},
+			ActionID:  core.ActionID{SpellID: 92328},
 			Duration:  time.Second * 20,
 			MaxStacks: 5,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
@@ -430,7 +430,7 @@ func init() {
 			},
 		}))
 
-		manaMetric := character.NewManaMetrics(core.ActionID{ItemID: 59354})
+		manaMetric := character.NewManaMetrics(core.ActionID{SpellID: 91322})
 		trinketSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{ItemID: 59461},
 			SpellSchool: core.SpellSchoolPhysical,
@@ -491,7 +491,7 @@ func init() {
 			},
 		}))
 
-		manaMetric := character.NewManaMetrics(core.ActionID{ItemID: 65029})
+		manaMetric := character.NewManaMetrics(core.ActionID{SpellID: 92331})
 		trinketSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{ItemID: 65029},
 			SpellSchool: core.SpellSchoolPhysical,
