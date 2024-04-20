@@ -83,7 +83,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET_WF.gear,
+		gear: Presets.P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -146,12 +146,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		gear: [
 			Presets.PRERAID_PRESET,
 			Presets.P1_PRESET,
-			Presets.P2_PRESET_FT,
-			Presets.P2_PRESET_WF,
-			Presets.P3_PRESET_ALLIANCE,
-			Presets.P3_PRESET_HORDE,
-			Presets.P4_PRESET_FT,
-			Presets.P4_PRESET_WF,
 		],
 	},
 
@@ -174,15 +168,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET_FT.gear,
-					3: Presets.P3_PRESET_ALLIANCE.gear,
-					4: Presets.P4_PRESET_FT.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET_FT.gear,
-					3: Presets.P3_PRESET_HORDE.gear,
-					4: Presets.P4_PRESET_FT.gear,
 				},
 			},
 		},
