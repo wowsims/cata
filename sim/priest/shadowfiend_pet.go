@@ -36,6 +36,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		Priest: priest,
 	}
 
+	shadowfiend.DelayInitialInheritance(time.Millisecond * 500)
 	manaMetric := priest.NewManaMetrics(core.ActionID{SpellID: 34433})
 	_ = core.MakePermanent(shadowfiend.GetOrRegisterAura(core.Aura{
 		Label: "Autoattack mana regen",
@@ -77,6 +78,12 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 
 	shadowfiend.PseudoStats.DamageTakenMultiplier *= 0.1
 
+	// never misses
+	shadowfiend.AddStats(stats.Stats{
+		stats.MeleeHit:  8 * core.MeleeHitRatingPerHitChance,
+		stats.Expertise: 14 * core.ExpertisePerQuarterPercentReduction * 4,
+	})
+
 	shadowfiend.EnableAutoAttacks(shadowfiend, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:        221.0,
@@ -109,12 +116,9 @@ func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
 		// Damage to DPS coefficient: 1/1.5 (1.5 speed weapon)
 		// DPS to AP coefficient: 14
 		spellBonusAPEquivalent := inheritableSP * 0.3 * 1.06 * 14 / 1.5
-
 		return stats.Stats{ //still need to nail down shadow fiend crit scaling, but removing owner crit scaling after further investigation
 			stats.AttackPower: inheritableSP*0.54 + spellBonusAPEquivalent,
-			// never misses
-			stats.MeleeHit:  8 * core.MeleeHitRatingPerHitChance,
-			stats.Expertise: 14 * core.ExpertisePerQuarterPercentReduction * 4,
+			stats.MeleeCrit:   ownerStats[stats.SpellCrit],
 		}
 	}
 }
