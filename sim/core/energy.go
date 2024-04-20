@@ -33,8 +33,9 @@ type energyBar struct {
 
 	nextEnergyTick time.Duration
 
-	// Multiplies energy regen from ticks.
-	EnergyTickMultiplier float64
+	// These two terms are multiplied together to scale the total Energy regen from ticks.
+	energyRegenMultiplier float64
+	hasteRatingMultiplier float64
 
 	regenMetrics        *ResourceMetrics
 	EnergyRefundMetrics *ResourceMetrics
@@ -44,11 +45,11 @@ func (unit *Unit) EnableEnergyBar(maxEnergy float64) {
 	unit.SetCurrentPowerBar(EnergyBar)
 
 	unit.energyBar = energyBar{
-		unit:                 unit,
-		maxEnergy:            max(100, maxEnergy),
-		EnergyTickMultiplier: 1,
-		regenMetrics:         unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionEnergyRegen}),
-		EnergyRefundMetrics:  unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
+		unit:                  unit,
+		maxEnergy:             max(100, maxEnergy),
+		energyRegenMultiplier: 1,
+		regenMetrics:          unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionEnergyRegen}),
+		EnergyRefundMetrics:   unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
 	}
 }
 
@@ -131,6 +132,11 @@ func (eb *energyBar) NextEnergyTickAt() time.Duration {
 	return eb.nextEnergyTick
 }
 
+func (eb *energyBar) MultiplyEnergyRegenSpeed(sim *Simulation, multiplier float64) {
+	eb.ResetEnergyTick(sim)
+	eb.energyRegenMultiplier *= multiplier
+}
+
 func (eb *energyBar) onEnergyGain(sim *Simulation, crossedThreshold bool) {
 	if sim.CurrentTime < 0 {
 		return
@@ -185,13 +191,16 @@ func (eb *energyBar) ComboPoints() int32 {
 // Gives an immediate partial energy tick and restarts the tick timer.
 func (eb *energyBar) ResetEnergyTick(sim *Simulation) {
 	timeSinceLastTick := sim.CurrentTime - (eb.NextEnergyTickAt() - EnergyTickDuration)
-	hasteMultiplier := 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
-	partialTickAmount := (EnergyPerTick * hasteMultiplier * eb.EnergyTickMultiplier) * (float64(timeSinceLastTick) / float64(EnergyTickDuration))
-
+	partialTickAmount := (EnergyPerTick * eb.hasteRatingMultiplier * eb.energyRegenMultiplier) * (float64(timeSinceLastTick) / float64(EnergyTickDuration))
 	crossedThreshold := eb.addEnergyInternal(sim, partialTickAmount, eb.regenMetrics)
 	eb.nextEnergyTick = sim.CurrentTime + EnergyTickDuration
 	eb.onEnergyGain(sim, crossedThreshold)
 	sim.RescheduleTask(eb.nextEnergyTick)
+}
+
+func (eb *energyBar) ProcessDynamicHasteRatingChange(sim *Simulation) {
+	eb.ResetEnergyTick(sim)
+	eb.hasteRatingMultiplier = 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
 }
 
 // Used for dynamic updates to maximum Energy, such as from the Druid Primal Madness talent
@@ -232,8 +241,7 @@ func (eb *energyBar) RunTask(sim *Simulation) time.Duration {
 		return eb.nextEnergyTick
 	}
 
-	hasteMultiplier := 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
-	crossedThreshold := eb.addEnergyInternal(sim, EnergyPerTick*hasteMultiplier*eb.EnergyTickMultiplier, eb.regenMetrics)
+	crossedThreshold := eb.addEnergyInternal(sim, EnergyPerTick*eb.hasteRatingMultiplier*eb.energyRegenMultiplier, eb.regenMetrics)
 	eb.nextEnergyTick = sim.CurrentTime + EnergyTickDuration
 	eb.onEnergyGain(sim, crossedThreshold)
 	return eb.nextEnergyTick
@@ -246,6 +254,8 @@ func (eb *energyBar) reset(sim *Simulation) {
 
 	eb.currentEnergy = eb.maxEnergy
 	eb.comboPoints = 0
+	eb.hasteRatingMultiplier = 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
+	eb.energyRegenMultiplier = 1.0
 
 	if eb.unit.Type != PetUnit {
 		eb.enable(sim, sim.Environment.PrepullStartTime())

@@ -34,12 +34,10 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 		ActionID: BladeFlurryActionID,
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			comRogue.ResetEnergyTick(sim)
-			comRogue.ApplyEnergyTickMultiplier(energyReduction)
+			comRogue.ApplyAdditiveEnergyRegenBonus(sim, energyReduction)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			comRogue.ResetEnergyTick(sim)
-			comRogue.ApplyEnergyTickMultiplier(-energyReduction)
+			comRogue.ApplyAdditiveEnergyRegenBonus(sim, -energyReduction)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if sim.GetNumTargets() < 2 {
