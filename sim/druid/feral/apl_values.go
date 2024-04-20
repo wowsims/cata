@@ -109,17 +109,14 @@ func (impl *APLActionCatOptimalRotationAction) GetNextAction(*core.Simulation) *
 func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, config *proto.APLActionCatOptimalRotationAction) core.APLActionImpl {
 	rotationOptions := &proto.FeralDruid_Rotation{
 		RotationType:       config.RotationType,
-		MaintainFaerieFire: true,
+		MaintainFaerieFire: config.MaintainFaerieFire,
 		UseRake:            config.UseRake,
 		UseBite:            config.UseBite,
 		BiteTime:           config.BiteTime,
 		MangleSpam:         false,
-		MaxFfDelay:         config.MaxFfDelay,
 		Powerbear:          false,
 		MinRoarOffset:      config.MinRoarOffset,
 		RipLeeway:          config.RipLeeway,
-		HotUptime:          0.0,
-		FlowerWeave:        config.FlowerWeave,
 		ManualParams:       config.ManualParams,
 	}
 
