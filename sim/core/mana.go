@@ -91,7 +91,7 @@ func (unit *Unit) AddMana(sim *Simulation, amount float64, metrics *ResourceMetr
 	metrics.AddEvent(amount, newMana-oldMana)
 
 	if sim.Log != nil {
-		unit.Log(sim, "Gained %0.3f mana from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, oldMana, newMana)
+		unit.Log(sim, "Gained %0.3f mana from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, oldMana, newMana, unit.MaxMana())
 	}
 
 	unit.currentMana = newMana
@@ -107,7 +107,7 @@ func (unit *Unit) SpendMana(sim *Simulation, amount float64, metrics *ResourceMe
 	metrics.AddEvent(-amount, -amount)
 
 	if sim.Log != nil {
-		unit.Log(sim, "Spent %0.3f mana from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, unit.CurrentMana(), newMana)
+		unit.Log(sim, "Spent %0.3f mana from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, unit.CurrentMana(), newMana, unit.MaxMana())
 	}
 
 	unit.currentMana = newMana
