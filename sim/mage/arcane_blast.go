@@ -20,11 +20,10 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		FloatValue: 1.5,
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
-	//Update to flat casttime when implemented, using PCT just to test
 	abCastMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellArcaneBlast,
 		FloatValue: -0.1,
-		Kind:       core.SpellMod_CastTime_Pct,
+		Kind:       core.SpellMod_CastTime_Flat,
 	})
 
 	mage.ArcaneBlastAura = mage.GetOrRegisterAura(core.Aura{
