@@ -9,7 +9,6 @@ import (
 
 func (Mage *FireMage) registerPyroblastSpell() {
 
-	var pyroblastDot *core.Spell
 	/* implement when debuffs updated
 	var CMProcChance float64
 	if mage.Talents.CriticalMass > 0 {
@@ -20,7 +19,7 @@ func (Mage *FireMage) registerPyroblastSpell() {
 		mage.Pyroblast.RelatedAuras = append(mage.Pyroblast.RelatedAuras, mage.CriticalMassAuras)
 	} */
 
-	pyroConfig := core.SpellConfig{
+	Mage.Pyroblast = Mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11366},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -45,11 +44,50 @@ func (Mage *FireMage) registerPyroblastSpell() {
 			},
 		},
 
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           Mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient:         1.545,
+		ThreatMultiplier:         1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := 1.5 * Mage.ScalingBaseDamage
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				if result.Landed() {
+					if result.DidCrit() {
+						Mage.PyroblastDot.DamageMultiplier = 2
+						Mage.PyroblastDot.Cast(sim, target)
+						Mage.PyroblastDot.DamageMultiplier = 1
+					}
+
+					//Mage.PyroblastDot.Cast(sim, target)
+					spell.DealDamage(sim, result)
+					//pyroblastDot.SpellMetrics[target.UnitIndex].Hits++
+					//pyroblastDot.SpellMetrics[target.UnitIndex].Casts = 0
+					/* The 2 above metric changes should show how many ticks land
+					without affecting the overall pyroblast cast metric
+					*/
+				}
+			})
+		},
+	})
+
+	Mage.PyroblastDot = Mage.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 11366}.WithTag(1),
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          mage.SpellFlagMage,
+		ClassSpellMask: mage.MageSpellPyroblastDot,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+		},
+
 		DamageMultiplier: 1,
-		DamageMultiplierAdditive: 1 +
-			.01*float64(Mage.Talents.FirePower),
 		CritMultiplier:   Mage.DefaultSpellCritMultiplier(),
-		BonusCoefficient: 1.545,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -60,34 +98,19 @@ func (Mage *FireMage) registerPyroblastSpell() {
 			TickLength:       time.Second * 3,
 			BonusCoefficient: 0.180,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 0.25 * Mage.ScalingBaseDamage
+				dot.SnapshotBaseDamage = 0.175 * Mage.ScalingBaseDamage
+				dot.SnapshotCritChance = 0
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-				pyroblastDot.SpellMetrics[target.UnitIndex].Hits++
+				result := dot.Spell.CalcAndDealPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
+				dot.Spell.DealPeriodicDamage(sim, result)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1.5 * Mage.ScalingBaseDamage
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				if result.Landed() {
-					pyroblastDot.Dot(target).Apply(sim)
-					//pyroblastDot.SpellMetrics[target.UnitIndex].Hits++
-					//pyroblastDot.SpellMetrics[target.UnitIndex].Casts = 0
-					/* The 2 above metric changes should show how many ticks land
-					without affecting the overall pyroblast cast metric
-					*/
-				}
-				spell.DealDamage(sim, result)
-			})
+			spell.Dot(target).ApplyOrReset(sim)
+			//pyroblastDot.SpellMetrics[target.UnitIndex].Hits--
+			Mage.PyroblastDot.SpellMetrics[target.UnitIndex].Casts = 0
 		},
-	}
-
-	Mage.Pyroblast = Mage.RegisterSpell(pyroConfig)
-
-	dotConfig := pyroConfig
-	dotConfig.ActionID = dotConfig.ActionID.WithTag(1)
-	pyroblastDot = Mage.RegisterSpell(dotConfig)
+	})
 }
