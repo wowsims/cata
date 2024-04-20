@@ -1,6 +1,7 @@
 package core
 
 import (
+	"math"
 	"time"
 )
 
@@ -15,6 +16,9 @@ type Cooldown struct {
 	// Default amount of time after activation before this CD can be used again.
 	// Note that some CDs won't use this, e.g. the GCD.
 	Duration time.Duration
+
+	// Percentage that the cooldown should be shortened or lengthened
+	Multiplier float64
 }
 
 func (unit *Unit) NewTimer() *Timer {
@@ -55,7 +59,7 @@ func (timer *Timer) IsReady(sim *Simulation) bool {
 
 // Puts this CD on cooldown, using the default duration.
 func (cd *Cooldown) Use(sim *Simulation) {
-	*cd.Timer = Timer(sim.CurrentTime + cd.Duration)
+	*cd.Timer = Timer(sim.CurrentTime + time.Duration(float64(cd.Duration)*math.Max(cd.Multiplier, 0.0)))
 }
 
 func (cd *Cooldown) Reduce(t time.Duration) {
