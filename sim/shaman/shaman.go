@@ -241,14 +241,6 @@ func (shaman *Shaman) Initialize() {
 
 	shaman.registerBloodlustCD()
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
-
-	shaman.ApplyGlyphs()
-
-	if shaman.Spec == proto.Spec_SpecElementalShaman || shaman.Spec == proto.Spec_SpecRestorationShaman {
-		shaman.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeMail)
-	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
-		shaman.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeMail)
-	}
 }
 
 func (shaman *Shaman) RegisterHealingSpells() {
@@ -326,4 +318,11 @@ const (
 	SpellMaskStormstrike
 	SpellMaskEarthShield
 	SpellMaskFulmination
+	SpellMaskFrostShock
+	SpellMaskUnleashFrost
+	SpellMaskUnleashFlame
+
+	SpellMaskFire   = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame
+	SpellMaskNature = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination
+	SpellMaskFrost  = SpellMaskUnleashFrost | SpellMaskFrostShock
 )

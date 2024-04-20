@@ -8,7 +8,6 @@ import (
 )
 
 func (shaman *Shaman) ApplyGlyphs() {
-
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFireElementalTotem) {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask: SpellMaskFireElementalTotem,
