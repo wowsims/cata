@@ -12,7 +12,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Gear Detector",
 		ID:         61462,
-		AuraID:     92056,
+		AuraID:     92055,
 		Bonus:      stats.Stats{stats.MeleeHaste: 1002, stats.SpellHaste: 1002},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -25,7 +25,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Stonemother's Kiss",
 		ID:         61411,
-		AuraID:     90892,
+		AuraID:     90895,
 		Bonus:      stats.Stats{stats.MeleeCrit: 1164, stats.SpellCrit: 1164},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
@@ -38,7 +38,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Witching Hourglass",
 		ID:         56320,
-		AuraID:     90888,
+		AuraID:     90887,
 		Bonus:      stats.Stats{stats.MeleeHaste: 1710, stats.SpellHaste: 1710},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -51,7 +51,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Witching Hourglass",
 		ID:         55787,
-		AuraID:     90886,
+		AuraID:     90885,
 		Bonus:      stats.Stats{stats.MeleeHaste: 918, stats.SpellHaste: 918},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -64,7 +64,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Grace of the Herald",
 		ID:         55266,
-		AuraID:     92054,
+		AuraID:     92052,
 		Bonus:      stats.Stats{stats.MeleeCrit: 924, stats.SpellCrit: 924},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -77,7 +77,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Grace of the Herald (Heroic)",
 		ID:         56295,
-		AuraID:     92088,
+		AuraID:     92087,
 		Bonus:      stats.Stats{stats.MeleeCrit: 1710, stats.SpellCrit: 1710},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -90,7 +90,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Porcelain Crab",
 		ID:         55237,
-		AuraID:     92164,
+		AuraID:     92166,
 		Bonus:      stats.Stats{stats.Mastery: 918},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -103,7 +103,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Porcelain Crab (Heroic)",
 		ID:         56280,
-		AuraID:     92175,
+		AuraID:     92174,
 		Bonus:      stats.Stats{stats.Mastery: 1710},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -116,7 +116,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Key to the Endless Chamber",
 		ID:         55795,
-		AuraID:     92070,
+		AuraID:     92069,
 		Bonus:      stats.Stats{stats.Agility: 1290},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -129,7 +129,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Key to the Endless Chamber (Heroic)",
 		ID:         56328,
-		AuraID:     92093,
+		AuraID:     92091,
 		Bonus:      stats.Stats{stats.Agility: 1710},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -142,7 +142,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Tendrils of Burrowing Dark",
 		ID:         55810,
-		AuraID:     90897,
+		AuraID:     90896,
 		Bonus:      stats.Stats{stats.SpellPower: 1290},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
@@ -155,7 +155,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Tendrils of Burrowing Dark (Heroic)",
 		ID:         56339,
-		AuraID:     90899,
+		AuraID:     90898,
 		Bonus:      stats.Stats{stats.SpellPower: 1710},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
@@ -168,7 +168,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Tear of Blood",
 		ID:         55819,
-		AuraID:     91137,
+		AuraID:     91138,
 		Bonus:      stats.Stats{stats.Spirit: 1290},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -181,7 +181,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Tear of Blood (Heroic)",
 		ID:         56351,
-		AuraID:     91140,
+		AuraID:     91139,
 		Bonus:      stats.Stats{stats.Spirit: 1710},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -194,7 +194,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Rainsong",
 		ID:         55854,
-		AuraID:     91142,
+		AuraID:     91141,
 		Bonus:      stats.Stats{stats.MeleeHaste: 1290, stats.SpellHaste: 1290},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -207,7 +207,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Rainsong (Heroic)",
 		ID:         56377,
-		AuraID:     91144,
+		AuraID:     91143,
 		Bonus:      stats.Stats{stats.MeleeHaste: 1710, stats.SpellHaste: 1710},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -220,7 +220,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Tank-Commander Insignia",
 		ID:         63841,
-		AuraID:     91353,
+		AuraID:     91355,
 		Bonus:      stats.Stats{stats.MeleeHaste: 1314, stats.SpellHaste: 1314},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -246,7 +246,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Talisman of Sinister Order",
 		ID:         65804,
-		AuraID:     95878,
+		AuraID:     92166,
 		Bonus:      stats.Stats{stats.Mastery: 918},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnPeriodicHealDealt | core.CallbackOnHealDealt,
@@ -298,7 +298,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Anhuur's Hymnal",
 		ID:         55889,
-		AuraID:     90990,
+		AuraID:     90989,
 		Bonus:      stats.Stats{stats.SpellPower: 1512},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
@@ -311,7 +311,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Anhuur's Hymnal (Heroic)",
 		ID:         56407,
-		AuraID:     90993,
+		AuraID:     90992,
 		Bonus:      stats.Stats{stats.SpellPower: 1710},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
@@ -339,7 +339,7 @@ func init() {
 	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
 		Name:       "Sorrowsong (Heroic)",
 		ID:         56400,
-		AuraID:     91003,
+		AuraID:     91002,
 		Bonus:      stats.Stats{stats.SpellPower: 1710},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -354,7 +354,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Right Eye of Rajh",
 		ID:         56100,
-		AuraID:     91369,
+		AuraID:     91370,
 		Bonus:      stats.Stats{stats.Strength: 1512},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -367,7 +367,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Right Eye of Rajh (Heroic)",
 		ID:         56431,
-		AuraID:     91366,
+		AuraID:     91368,
 		Bonus:      stats.Stats{stats.Strength: 1710},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -380,7 +380,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Blood of Isiset",
 		ID:         55995,
-		AuraID:     91148,
+		AuraID:     91147,
 		Bonus:      stats.Stats{stats.Spirit: 1512},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnHealDealt,
@@ -393,7 +393,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Blood of Isiset (Heroic)",
 		ID:         56414,
-		AuraID:     91150,
+		AuraID:     91149,
 		Bonus:      stats.Stats{stats.Spirit: 1710},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnHealDealt,
@@ -406,7 +406,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Throngus's Finger",
 		ID:         56121,
-		AuraID:     92209,
+		AuraID:     92208,
 		Bonus:      stats.Stats{stats.Parry: 1512},
 		Duration:   time.Second * 12,
 		Callback:   core.CallbackOnSpellHitTaken,
@@ -419,7 +419,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Throngus's Finger (Heroic)",
 		ID:         56449,
-		AuraID:     92207,
+		AuraID:     92205,
 		Bonus:      stats.Stats{stats.Parry: 1710},
 		Duration:   time.Second * 12,
 		Callback:   core.CallbackOnSpellHitTaken,
@@ -432,7 +432,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Heart of Solace",
 		ID:         55868,
-		AuraID:     91361,
+		AuraID:     91363,
 		Bonus:      stats.Stats{stats.Strength: 1512},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -445,7 +445,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Heart of Solace (Heroic)",
 		ID:         56393,
-		AuraID:     91365,
+		AuraID:     91364,
 		Bonus:      stats.Stats{stats.Strength: 1710},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -458,7 +458,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Left Eye of Rajh",
 		ID:         56102,
-		AuraID:     92097,
+		AuraID:     92096,
 		Bonus:      stats.Stats{stats.Agility: 1512},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -471,7 +471,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Left Eye of Rajh (Heroic)",
 		ID:         56427,
-		AuraID:     92095,
+		AuraID:     92094,
 		Bonus:      stats.Stats{stats.Agility: 1710},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -484,7 +484,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Bloodthirsty Gladiator's Insignia of Dominance",
 		ID:         64762,
-		AuraID:     92219,
+		AuraID:     92218,
 		Bonus:      stats.Stats{stats.SpellPower: 912},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
@@ -497,7 +497,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Bloodthirsty Gladiator's Insignia of Victory",
 		ID:         64763,
-		AuraID:     92217,
+		AuraID:     92216,
 		Bonus:      stats.Stats{stats.Strength: 912},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -510,7 +510,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Bloodthirsty Gladiator's Insignia of Conquest",
 		ID:         64761,
-		AuraID:     92221,
+		AuraID:     92220,
 		Bonus:      stats.Stats{stats.Agility: 912},
 		Duration:   time.Second * 20,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -523,7 +523,7 @@ func init() {
 	shared.NewProcStatBonusEffectWithDamageProc(shared.ProcStatBonusEffect{
 		Name:       "Darkmoon Card: Volcano",
 		ID:         62047,
-		AuraID:     89088,
+		AuraID:     89091,
 		Bonus:      stats.Stats{stats.Intellect: 1600},
 		Duration:   time.Second * 12,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -532,15 +532,16 @@ func init() {
 		ProcChance: 0.3,
 		ICD:        time.Second * 45,
 	}, shared.DamageEffect{
-		School: core.SpellSchoolFire,
-		MinDmg: 900,
-		MaxDmg: 1500,
+		SpellID: 89091,
+		School:  core.SpellSchoolFire,
+		MinDmg:  900,
+		MaxDmg:  1500,
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Stump of Time (Horde)",
 		ID:         62465,
-		AuraID:     91048,
+		AuraID:     91047,
 		Bonus:      stats.Stats{stats.SpellPower: 1926},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
@@ -566,7 +567,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Unheeded Warning",
 		ID:         59520,
-		AuraID:     92114,
+		AuraID:     92108,
 		Bonus:      stats.Stats{stats.AttackPower: 1926, stats.RangedAttackPower: 1926},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitDealt,
@@ -620,7 +621,7 @@ func init() {
 	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
 		Name:       "Symbiotic Worm (Heroic)",
 		ID:         65048,
-		AuraID:     92356,
+		AuraID:     92355,
 		Bonus:      stats.Stats{stats.Mastery: 1089},
 		Duration:   time.Second * 10,
 		Callback:   core.CallbackOnSpellHitTaken,
