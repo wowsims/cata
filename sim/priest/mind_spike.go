@@ -63,8 +63,14 @@ func (priest *Priest) registerMindSpike() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Outcome.Matches(core.OutcomeLanded) {
 				priest.ShadowWordPain.Dot(target).Deactivate(sim)
-				priest.VampiricTouch.Dot(target).Deactivate(sim)
-				priest.DevouringPlague.Dot(target).Deactivate(sim)
+
+				// only access those if they're actually registered and talented
+				if priest.VampiricTouch != nil {
+					priest.VampiricTouch.Dot(target).Deactivate(sim)
+				}
+				if priest.DevouringPlague != nil {
+					priest.DevouringPlague.Dot(target).Deactivate(sim)
+				}
 				procAura.Activate(sim)
 				procAura.AddStack(sim)
 			}
