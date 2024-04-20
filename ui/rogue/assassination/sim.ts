@@ -261,6 +261,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			// RogueInputs.AssumeBleedActive(),
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InputDelay,
 		],
 	},
 	encounterPicker: {

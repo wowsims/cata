@@ -96,6 +96,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		inputs: [
 			// RestorationInputs.TriggerEarthShield,
 			// OtherInputs.TankAssignment
+			OtherInputs.InputDelay,
 		],
 	},
 	customSections: [ShamanInputs.TotemsSection],
