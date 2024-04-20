@@ -48,7 +48,7 @@ func (dk *DeathKnight) registerArmyOfTheDeadSpell() {
 			BloodRuneCost:  1,
 			FrostRuneCost:  1,
 			UnholyRuneCost: 1,
-			RunicPowerGain: 15,
+			RunicPowerGain: 30,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
