@@ -406,12 +406,12 @@ func applyDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.NumberOfTicks += int32(mod.intValue)
+				dot.AddTicks(int32(mod.intValue))
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.NumberOfTicks += int32(mod.intValue)
+		spell.aoeDot.AddTicks(int32(mod.intValue))
 	}
 }
 
@@ -419,12 +419,12 @@ func removeDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.NumberOfTicks -= int32(mod.intValue)
+				dot.AddTicks(-int32(mod.intValue))
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.NumberOfTicks -= int32(mod.intValue)
+		spell.aoeDot.AddTicks(-int32(mod.intValue))
 	}
 }
 
