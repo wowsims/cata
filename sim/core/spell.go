@@ -122,6 +122,7 @@ type Spell struct {
 	BonusArmorPenRating      float64
 	CastTimeMultiplier       float64
 	CostMultiplier           float64
+	CdMultiplier             float64
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
 	CritMultiplier           float64
@@ -216,6 +217,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		BonusArmorPenRating:      config.BonusArmorPenRating,
 		CastTimeMultiplier:       1,
 		CostMultiplier:           1,
+		CdMultiplier:             1,
 		DamageMultiplier:         config.DamageMultiplier,
 		DamageMultiplierAdditive: config.DamageMultiplierAdditive,
 		CritMultiplier:           config.CritMultiplier,

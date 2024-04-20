@@ -372,11 +372,11 @@ func removeCooldownFlat(mod *SpellMod, spell *Spell) {
 }
 
 func applyCooldownMultiplier(mod *SpellMod, spell *Spell) {
-	spell.CD.Multiplier += mod.floatValue
+	spell.CdMultiplier += mod.floatValue
 }
 
 func removeCooldownMultiplier(mod *SpellMod, spell *Spell) {
-	spell.CD.Multiplier -= mod.floatValue
+	spell.CdMultiplier -= mod.floatValue
 }
 
 func applyCritMultiplier(mod *SpellMod, spell *Spell) {
