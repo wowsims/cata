@@ -755,10 +755,10 @@ export class ResourceChangedLogGroup extends SimLog {
 	readonly resourceType: ResourceType;
 	readonly valueBefore: number;
 	readonly valueAfter: number;
-	readonly maxValue: number | null;
+	readonly maxValue: number;
 	readonly logs: Array<ResourceChangedLog>;
 
-	constructor(params: SimLogParams, resourceType: ResourceType, valueBefore: number, valueAfter: number, maxValue: number | null, logs: Array<ResourceChangedLog>) {
+	constructor(params: SimLogParams, resourceType: ResourceType, valueBefore: number, valueAfter: number, maxValue: number, logs: Array<ResourceChangedLog>) {
 		super(params);
 		this.resourceType = resourceType;
 		this.valueBefore = valueBefore;
