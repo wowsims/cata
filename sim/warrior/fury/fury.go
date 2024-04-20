@@ -95,5 +95,4 @@ func (war *FuryWarrior) Initialize() {
 
 func (war *FuryWarrior) Reset(sim *core.Simulation) {
 	war.Warrior.Reset(sim)
-	war.BerserkerStanceAura.Activate(sim)
 }

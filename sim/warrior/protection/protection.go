@@ -139,5 +139,4 @@ func (war *ProtectionWarrior) Initialize() {
 
 func (war *ProtectionWarrior) Reset(sim *core.Simulation) {
 	war.Warrior.Reset(sim)
-	war.DefensiveStanceAura.Activate(sim)
 }
