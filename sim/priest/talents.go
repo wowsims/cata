@@ -282,9 +282,6 @@ func (priest *Priest) applyArchangel() {
 			BaseCost: 0,
 		},
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
 			CD: core.Cooldown{
 				Timer:    priest.NewTimer(),
 				Duration: time.Second * 30,
@@ -314,9 +311,6 @@ func (priest *Priest) applyArchangel() {
 			BaseCost: 0,
 		},
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
 			CD: core.Cooldown{
 				Timer:    priest.NewTimer(),
 				Duration: time.Second * 90,
