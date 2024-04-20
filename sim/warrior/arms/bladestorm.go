@@ -20,7 +20,7 @@ func (war *ArmsWarrior) RegisterBladestorm() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskBladestorm | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskBladestorm | warrior.SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost: 25,
@@ -35,7 +35,10 @@ func (war *ArmsWarrior) RegisterBladestorm() {
 			},
 			IgnoreHaste: true,
 		},
-		CritMultiplier: war.DefaultMeleeCritMultiplier(),
+
+		DamageMultiplier: 1.0,
+		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
+
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{

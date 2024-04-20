@@ -9,17 +9,6 @@ import (
 	"github.com/wowsims/cata/sim/warrior"
 )
 
-const armsSpellMaskStartBit = 1 << warrior.SpellMaskSpecStartIndex
-
-const (
-	SpellMaskDeadlyCalm int64 = (armsSpellMaskStartBit << iota)
-
-	SpellMaskSweepingStrikes
-
-	SpellMaskMortalStrike
-	SpellMaskBladestorm
-)
-
 func RegisterArmsWarrior() {
 	core.RegisterAgentFactory(
 		proto.Player_ArmsWarrior{},
@@ -102,8 +91,7 @@ func (war *ArmsWarrior) GetMasteryProcChance() float64 {
 }
 
 func (war *ArmsWarrior) RegisterMastery() {
-	// TODO:
-	//  can it proc off of missed/dodged/parried attacks - seems like no, need more data
+	// TODO: can it proc off of missed/dodged/parried attacks - seems like no, need more data
 	procAttackConfig := *war.AutoAttacks.MHConfig()
 	procAttackConfig.ActionID = core.ActionID{SpellID: StrikesOfOpportunityHitID, Tag: procAttackConfig.ActionID.Tag}
 	procAttackConfig.ProcMask = core.ProcMaskMeleeSpecial

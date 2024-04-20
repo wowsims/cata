@@ -13,7 +13,7 @@ func (war *ArmsWarrior) RegisterMortalStrike() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagMeleeMetrics,
-		ClassSpellMask: SpellMaskMortalStrike | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskMortalStrike | warrior.SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   20,
@@ -30,7 +30,8 @@ func (war *ArmsWarrior) RegisterMortalStrike() {
 			},
 		},
 
-		CritMultiplier: war.DefaultMeleeCritMultiplier(),
+		DamageMultiplier: 1.0,
+		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 423 + 0.8*(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()))

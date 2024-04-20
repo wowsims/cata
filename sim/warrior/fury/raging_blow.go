@@ -25,7 +25,7 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskRagingBlow | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskRagingBlow | warrior.SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   20,
@@ -47,7 +47,7 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return war.StanceMatches(warrior.BerserkerStance) && war.HasActiveAuraWithTag(warrior.EnrageTag) && war.AutoAttacks.OH() != nil
+			return war.StanceMatches(warrior.BerserkerStance) && war.HasActiveAuraWithTag(warrior.EnrageTag) && war.HasOHWeapon()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -58,13 +58,15 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 				return
 			}
 
-			// TODO: check if these two hits should use the same attack rolls and proc masks
-			// Mirroring Stormstrike for now
+			// 1 hit roll then 2 damage events
 			mhBaseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, mhBaseDamage*war.EnrageEffectMultiplier, spell.OutcomeMeleeSpecialCritOnly)
 
+			// TODO: Check if this OH hit still gets 50% damage reduction once there's more data
 			ohBaseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			rbOffhand.CalcAndDealDamage(sim, target, ohBaseDamage*war.EnrageEffectMultiplier, spell.OutcomeMeleeSpecialCritOnly)
+			rbOffhand.CalcAndDealDamage(sim, target, ohBaseDamage*war.EnrageEffectMultiplier, rbOffhand.OutcomeMeleeSpecialCritOnly)
+
+			spell.SpellMetrics[target.UnitIndex].Hits--
 		},
 	})
 }

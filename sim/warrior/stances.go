@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 type Stance uint8
@@ -85,35 +84,7 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 	const threatMult = 5.0
 
 	actionID := core.ActionID{SpellID: 71}
-	if warrior.Talents.BastionOfDefense > 0 {
-		damageDealtMultiplier := 1.0 + 0.05*float64(warrior.Talents.BastionOfDefense)
-		enrageChance := 0.1 * float64(warrior.Talents.BastionOfDefense)
-
-		enrageAura := warrior.GetOrRegisterAura(core.Aura{
-			Label:    "Enrage",
-			ActionID: core.ActionID{SpellID: 57516},
-			Duration: 12 * time.Second,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= damageDealtMultiplier
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= damageDealtMultiplier
-			},
-		})
-
-		core.MakePermanent(warrior.GetOrRegisterAura(core.Aura{
-			Label:    "Enrage Trigger",
-			Duration: core.NeverExpires,
-			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Outcome.Matches(core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry) {
-					if sim.RandomFloat("Enrage Trigger Chance") <= enrageChance {
-						enrageAura.Activate(sim)
-					}
-				}
-			},
-		}))
-	}
-
+	reducedCritTakenChance := 0.03 * float64(warrior.Talents.BastionOfDefense)
 	warrior.DefensiveStanceAura = warrior.GetOrRegisterAura(core.Aura{
 		Label:    "Defensive Stance",
 		ActionID: actionID,
@@ -121,10 +92,12 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.ThreatMultiplier *= threatMult
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.90
+			aura.Unit.PseudoStats.ReducedCritTakenChance += reducedCritTakenChance
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.ThreatMultiplier /= threatMult
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.90
+			aura.Unit.PseudoStats.ReducedCritTakenChance += reducedCritTakenChance
 		},
 	})
 	warrior.DefensiveStanceAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{})

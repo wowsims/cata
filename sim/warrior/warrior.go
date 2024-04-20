@@ -25,19 +25,23 @@ const SpellMaskNone int64 = 0
 const (
 	SpellMaskSpecialAttack int64 = 1 << iota
 
-	// Baseline abilities that don't cost rage and aren't attacks
+	// Abilities that don't cost rage and aren't attacks
 	SpellMaskBattleShout
 	SpellMaskBerserkerRage
 	SpellMaskCommandingShout
 	SpellMaskRecklessness
 	SpellMaskShieldWall
+	SpellMaskLastStand
+	SpellMaskDeadlyCalm
 
-	// Baseline abilities that cost rage but aren't attacks
+	// Abilities that cost rage but aren't attacks
 	SpellMaskDemoShout
 	SpellMaskInnerRage
 	SpellMaskShieldBlock
+	SpellMaskDeathWish
+	SpellMaskSweepingStrikes
 
-	// Baseline special attacks
+	// Special attacks
 	SpellMaskCleave
 	SpellMaskColossusSmash
 	SpellMaskExecute
@@ -51,9 +55,15 @@ const (
 	SpellMaskSunderArmor
 	SpellMaskThunderClap
 	SpellMaskWhirlwind
-
-	// Next available bit for spec implementations to start their own mask lists on
-	SpellMaskSpecStartIndex int64 = iota
+	SpellMaskShieldSlam
+	SpellMaskConcussionBlow
+	SpellMaskDevastate
+	SpellMaskShockwave
+	SpellMaskVictoryRush
+	SpellMaskBloodthirst
+	SpellMaskRagingBlow
+	SpellMaskMortalStrike
+	SpellMaskBladestorm
 )
 
 const EnableOverpowerTag = "EnableOverpower"
@@ -70,8 +80,6 @@ type Warrior struct {
 	Stance                 Stance
 	EnrageEffectMultiplier float64
 	CriticalBlockChance    float64 // Can be gained as non-prot via certain talents and spells
-	SpecialAttackModList   int64
-	RageAbilitiesList      int64
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell

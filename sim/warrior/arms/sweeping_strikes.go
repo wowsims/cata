@@ -38,7 +38,6 @@ func (war *ArmsWarrior) RegisterSweepingStrikes() {
 				return
 			}
 
-			// TODO: Pretty much everything about this spell needs to be tested, leaving it as it was in wrath for now
 			if (spell == war.Execute && !sim.IsExecutePhase20()) || spell == war.Whirlwind {
 				curDmg = spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			} else {
@@ -56,7 +55,7 @@ func (war *ArmsWarrior) RegisterSweepingStrikes() {
 	ssCD := war.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
-		ClassSpellMask: SpellMaskSweepingStrikes,
+		ClassSpellMask: warrior.SpellMaskSweepingStrikes,
 
 		RageCost: core.RageCostOptions{
 			Cost: 30,

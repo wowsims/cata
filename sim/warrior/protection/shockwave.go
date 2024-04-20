@@ -1,4 +1,4 @@
-package fury
+package protection
 
 import (
 	"time"
@@ -7,17 +7,20 @@ import (
 	"github.com/wowsims/cata/sim/warrior"
 )
 
-func (war *FuryWarrior) RegisterBloodthirst() {
+func (war *ProtectionWarrior) RegisterShockwave() {
+	if !war.Talents.Shockwave {
+		return
+	}
+
 	war.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 23881},
+		ActionID:       core.ActionID{SpellID: 46968},
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: warrior.SpellMaskBloodthirst | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskShockwave | warrior.SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
-			Cost:   20,
-			Refund: 0.8,
+			Cost: 15,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -26,7 +29,7 @@ func (war *FuryWarrior) RegisterBloodthirst() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
-				Duration: time.Second * 3,
+				Duration: 20 * time.Second,
 			},
 		},
 
@@ -35,10 +38,10 @@ func (war *FuryWarrior) RegisterBloodthirst() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.81 * spell.MeleeAttackPower()
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			if !result.Landed() {
-				spell.IssueRefund(sim)
+			baseDamage := 0.75 * spell.MeleeAttackPower()
+			baseDamage *= sim.Encounter.AOECapMultiplier()
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			}
 		},
 	})

@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/warrior"
 )
 
 func (war *ArmsWarrior) ApplyGlyphs() {
@@ -21,7 +22,7 @@ func (war *ArmsWarrior) applyGlyphOfBladestorm() {
 	}
 
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask: SpellMaskBladestorm,
+		ClassMask: warrior.SpellMaskBladestorm,
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: -15 * time.Second,
 	})
@@ -33,7 +34,7 @@ func (war *ArmsWarrior) applyGlyphOfMortalStrike() {
 	}
 
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskMortalStrike,
+		ClassMask:  warrior.SpellMaskMortalStrike,
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.1,
 	})
@@ -45,7 +46,7 @@ func (war *ArmsWarrior) applyGlyphOfSweepingStrikes() {
 	}
 
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskSweepingStrikes,
+		ClassMask:  warrior.SpellMaskSweepingStrikes,
 		Kind:       core.SpellMod_PowerCost_Pct,
 		FloatValue: -1.0,
 	})

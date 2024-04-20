@@ -36,7 +36,7 @@ func (war *FuryWarrior) RegisterDeathWish() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagAPL | core.SpellFlagMCD,
-		ClassSpellMask: SpellMaskDeathWish,
+		ClassSpellMask: warrior.SpellMaskDeathWish,
 
 		RageCost: core.RageCostOptions{
 			Cost: 10,

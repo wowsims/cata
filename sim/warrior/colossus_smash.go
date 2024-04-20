@@ -46,7 +46,8 @@ func (warrior *Warrior) RegisterColossusSmash() {
 			},
 		},
 
-		CritMultiplier: warrior.DefaultMeleeCritMultiplier(),
+		DamageMultiplier: 1.0,
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		BonusCoefficient: 1,
 

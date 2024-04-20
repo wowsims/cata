@@ -7,13 +7,6 @@ import (
 	"github.com/wowsims/cata/sim/warrior"
 )
 
-const (
-	SpellMaskDeathWish int64 = 1 << (warrior.SpellMaskSpecStartIndex + iota)
-
-	SpellMaskBloodthirst
-	SpellMaskRagingBlow
-)
-
 func RegisterFuryWarrior() {
 	core.RegisterAgentFactory(
 		proto.Player_FuryWarrior{},

@@ -8,8 +8,7 @@ import (
 )
 
 func (war *ArmsWarrior) ApplyTalents() {
-	specialAttacks := SpellMaskBladestorm | SpellMaskMortalStrike
-	war.Warrior.ApplyCommonTalents(SpellMaskMortalStrike, SpellMaskMortalStrike, specialAttacks, SpellMaskMortalStrike)
+	war.Warrior.ApplyCommonTalents()
 
 	war.RegisterBladestorm()
 	war.RegisterDeadlyCalm()
@@ -78,7 +77,7 @@ func (war *ArmsWarrior) applyImpale() {
 	}
 
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskMortalStrike | warrior.SpellMaskSlam | warrior.SpellMaskOverpower,
+		ClassMask:  warrior.SpellMaskMortalStrike | warrior.SpellMaskSlam | warrior.SpellMaskOverpower,
 		Kind:       core.SpellMod_BonusCrit_Rating,
 		FloatValue: 0.1 * float64(war.Talents.Impale),
 	})
@@ -146,7 +145,7 @@ func (war *ArmsWarrior) applySlaughter() {
 	}
 
 	damageMod := war.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  SpellMaskMortalStrike | warrior.SpellMaskExecute | warrior.SpellMaskOverpower | warrior.SpellMaskSlam,
+		ClassMask:  warrior.SpellMaskMortalStrike | warrior.SpellMaskExecute | warrior.SpellMaskOverpower | warrior.SpellMaskSlam,
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.0,
 	})
@@ -157,10 +156,9 @@ func (war *ArmsWarrior) applySlaughter() {
 		Duration:  time.Second * 15,
 		MaxStacks: war.Talents.LambsToTheSlaughter,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			bonus := 0.1 * float64(newStacks)
-			damageMod.UpdateFloatValue(bonus)
-
 			if newStacks != 0 {
+				bonus := 0.1 * float64(newStacks)
+				damageMod.UpdateFloatValue(bonus)
 				damageMod.Activate()
 			} else {
 				damageMod.Deactivate()

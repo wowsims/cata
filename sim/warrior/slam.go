@@ -31,6 +31,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 			},
 		},
 
+		DamageMultiplier: 1.0,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  140,

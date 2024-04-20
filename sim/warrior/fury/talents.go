@@ -4,11 +4,12 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/warrior"
 )
 
 func (war *FuryWarrior) ApplyTalents() {
-	war.Warrior.ApplyCommonTalents(SpellMaskRagingBlow, SpellMaskBloodthirst, SpellMaskBloodthirst|SpellMaskRagingBlow, SpellMaskBloodthirst)
+	war.Warrior.ApplyCommonTalents()
 
 	war.RegisterDeathWish()
 	war.RegisterRagingBlow()
@@ -100,7 +101,9 @@ func (war *FuryWarrior) applyEnrage() {
 }
 
 func (war *FuryWarrior) applyRampage() {
-	// Handled in warrior.ApplyRaidBuffs
+	// Raid buff is handled in warrior.ApplyRaidBuffs
+
+	war.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
 }
 
 func (war *FuryWarrior) applyMeatCleaver() {
@@ -121,10 +124,9 @@ func (war *FuryWarrior) applyMeatCleaver() {
 		Duration:  10 * time.Second,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			bonus := bonusPerStack * float64(newStacks)
-			buffMod.UpdateFloatValue(bonus)
-
 			if newStacks != 0 {
+				bonus := bonusPerStack * float64(newStacks)
+				buffMod.UpdateFloatValue(bonus)
 				buffMod.Activate()
 			} else {
 				buffMod.Deactivate()
@@ -193,7 +195,7 @@ func (war *FuryWarrior) applyBloodsurge() {
 	core.MakePermanent(war.RegisterAura(core.Aura{
 		Label: "Bloodsurge Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || (spell.ClassSpellMask&SpellMaskBloodthirst) == 0 {
+			if !result.Landed() || (spell.ClassSpellMask&warrior.SpellMaskBloodthirst) == 0 {
 				return
 			}
 
@@ -209,10 +211,10 @@ func (war *FuryWarrior) applyIntensityRage() {
 		return
 	}
 
-	cdr := 0.1 * float64(war.Talents.IntensifyRage)
+	cdr := -0.1 * float64(war.Talents.IntensifyRage)
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  warrior.SpellMaskBerserkerRage | warrior.SpellMaskRecklessness | SpellMaskDeathWish,
-		Kind:       core.SpellMod_Cooldown_Pct,
+		ClassMask:  warrior.SpellMaskBerserkerRage | warrior.SpellMaskRecklessness | warrior.SpellMaskDeathWish,
+		Kind:       core.SpellMod_Cooldown_Multiplier,
 		FloatValue: cdr,
 	})
 }

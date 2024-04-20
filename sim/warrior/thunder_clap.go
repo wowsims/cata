@@ -35,6 +35,7 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 			return warrior.StanceMatches(BattleStance | DefensiveStance)
 		},
 
+		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.85,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 

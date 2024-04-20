@@ -1,6 +1,9 @@
 package fury
 
-import "github.com/wowsims/cata/sim/core"
+import (
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/warrior"
+)
 
 func (war *FuryWarrior) ApplyGlyphs() {
 	war.Warrior.ApplyGlyphs()
@@ -11,7 +14,7 @@ func (war *FuryWarrior) ApplyGlyphs() {
 
 func (war *FuryWarrior) applyGlyphOfBloodthirst() {
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskBloodthirst,
+		ClassMask:  warrior.SpellMaskBloodthirst,
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.1,
 	})
@@ -19,7 +22,7 @@ func (war *FuryWarrior) applyGlyphOfBloodthirst() {
 
 func (war *FuryWarrior) applyGlyphOfRagingBlow() {
 	war.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskRagingBlow,
+		ClassMask:  warrior.SpellMaskRagingBlow,
 		Kind:       core.SpellMod_BonusCrit_Rating,
 		FloatValue: 5 * core.CritRatingPerCritChance,
 	})

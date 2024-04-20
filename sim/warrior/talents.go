@@ -10,24 +10,20 @@ import (
 // Applies the effects of "common" talents: talents in the first two rows of each tree that any spec could theoretically take
 // Because cata restricts you to 10 points in a different tree, anything more is inaccessible. The rest of the trees are handled in each
 // spec's implementation
-func (warrior *Warrior) ApplyCommonTalents(
-	warMachineSpellMask int64,
-	battleTranceTriggerSpellMask int64,
-	battleTranceEffectSpellMask int64,
-	crueltySpellMask int64) {
-	warrior.applyArmsCommonTalents(warMachineSpellMask)
-	warrior.applyFuryCommonTalents(battleTranceTriggerSpellMask, battleTranceEffectSpellMask, crueltySpellMask)
+func (warrior *Warrior) ApplyCommonTalents() {
+	warrior.applyArmsCommonTalents()
+	warrior.applyFuryCommonTalents()
 	warrior.applyProtectionCommonTalents()
 }
 
-func (warrior *Warrior) applyArmsCommonTalents(warMachineSpellMask int64) {
-	warrior.applyWarMachine(warMachineSpellMask)
+func (warrior *Warrior) applyArmsCommonTalents() {
+	warrior.applyWarMachine()
 	warrior.RegisterDeepWounds()
 }
 
-func (warrior *Warrior) applyFuryCommonTalents(battleTranceTriggerSpellMask int64, battleTranceEffectSpellMask int64, crueltySpellMask int64) {
-	warrior.applyBattleTrance(battleTranceTriggerSpellMask, battleTranceEffectSpellMask)
-	warrior.applyCruelty(crueltySpellMask)
+func (warrior *Warrior) applyFuryCommonTalents() {
+	warrior.applyBattleTrance()
+	warrior.applyCruelty()
 	warrior.applyExecutioner()
 }
 
@@ -41,25 +37,30 @@ func (warrior *Warrior) applyProtectionCommonTalents() {
 	warrior.applyGagOrder()
 }
 
-func (warrior *Warrior) applyWarMachine(spellMask int64) {
+func (warrior *Warrior) applyWarMachine() {
 	if warrior.Talents.WarAcademy == 0 {
 		return
 	}
 
 	warrior.AddStaticMod(core.SpellModConfig{
-		ClassMask:  spellMask | SpellMaskSlam, // This technically also includes Victory Rush but we don't model it
+		ClassMask: SpellMaskMortalStrike |
+			SpellMaskRagingBlow |
+			SpellMaskDevastate |
+			SpellMaskVictoryRush |
+			SpellMaskSlam,
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 1.0 + (0.05 * float64(warrior.Talents.WarAcademy)),
 	})
 }
 
-func (warrior *Warrior) applyBattleTrance(triggerSpellMask int64, effectSpellMask int64) {
+func (warrior *Warrior) applyBattleTrance() {
 	if warrior.Talents.BattleTrance == 0 {
 		return
 	}
-	var affectedSpellMask int64 = effectSpellMask
+
+	var affectedSpellMask int64 = 0
 	for _, spell := range warrior.Spellbook {
-		if spell.DefaultCast.Cost > 5 {
+		if spell.DefaultCast.Cost > 5 && (spell.ClassSpellMask&SpellMaskSpecialAttack) != 0 {
 			affectedSpellMask |= spell.ClassSpellMask
 		}
 	}
@@ -82,7 +83,9 @@ func (warrior *Warrior) applyBattleTrance(triggerSpellMask int64, effectSpellMas
 			btMod.Activate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&affectedSpellMask != 0 && lastTriggertime != int64(sim.CurrentTime) {
+			// Battle Trance affects the spells that proc it, so make sure we don't eat the proc with the same attack
+			// that just proced it
+			if (spell.ClassSpellMask&affectedSpellMask) != 0 && lastTriggertime != int64(sim.CurrentTime) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -92,6 +95,7 @@ func (warrior *Warrior) applyBattleTrance(triggerSpellMask int64, effectSpellMas
 	})
 
 	procChance := 0.05 * float64(warrior.Talents.BattleTrance)
+	triggerSpellMask := SpellMaskBloodthirst | SpellMaskMortalStrike | SpellMaskShieldSlam
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "Battle Trance Trigger",
 		Icd: &core.Cooldown{
@@ -116,12 +120,12 @@ func (warrior *Warrior) applyBattleTrance(triggerSpellMask int64, effectSpellMas
 	}))
 }
 
-func (warrior *Warrior) applyCruelty(spellMask int64) {
+func (warrior *Warrior) applyCruelty() {
 	if warrior.Talents.Cruelty == 0 {
 		return
 	}
 	warrior.AddStaticMod(core.SpellModConfig{
-		ClassMask:  spellMask,
+		ClassMask:  SpellMaskBloodthirst | SpellMaskMortalStrike | SpellMaskShieldSlam,
 		Kind:       core.SpellMod_BonusCrit_Rating,
 		FloatValue: 5 * float64(warrior.Talents.Cruelty) * core.CritRatingPerCritChance,
 	})
@@ -223,11 +227,6 @@ func (warrior *Warrior) applyToughness() {
 }
 
 func (warrior *Warrior) applyBloodAndThunder() {
-
-	// TODO: check
-	// - does this refresh rend on the primary target
-	// - do the extra rends copy the initial snapshot of the main rend or does it resnapshot all of them
-
 	if warrior.Talents.BloodAndThunder == 0 {
 		return
 	}
@@ -244,14 +243,12 @@ func (warrior *Warrior) applyBloodAndThunder() {
 					return
 				}
 
-				// For now - refresh the initial rend and treat the others as brand-new applications (they take their own snapshots)
+				// B&T resnapshots all of the rends it applies and will overwrite "better" rends on any target the TC hits
 				for _, target := range sim.Encounter.TargetUnits {
 					rend := warrior.Rend.Dot(target)
-					if !rend.IsActive() {
-						lastAppliedTime = int64(sim.CurrentTime)
-						rend.Apply(sim)
-						rend.TickOnce(sim)
-					}
+					lastAppliedTime = int64(sim.CurrentTime)
+					rend.Apply(sim)
+					rend.TickOnce(sim)
 				}
 			}
 		},
@@ -265,11 +262,9 @@ func (warrior *Warrior) applyShieldSpecialization() {
 	}
 	extraBlockRage := 5 * float64(warrior.Talents.ShieldSpecialization)
 
-	actionID := core.ActionID{SpellID: 12725}
-	metrics := warrior.NewRageMetrics(actionID)
+	metrics := warrior.NewRageMetrics(core.ActionID{SpellID: 12725})
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label:    "Shield Specialization Rage Trigger",
-		ActionID: actionID,
+		Label: "Shield Specialization Rage Trigger",
 		Icd: &core.Cooldown{
 			Timer:    warrior.NewTimer(),
 			Duration: 1500 * time.Millisecond,
@@ -330,8 +325,7 @@ func (warrior *Warrior) applyShieldMastery() {
 	})
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label:    "Shield Mastery Trigger",
-		ActionID: core.ActionID{SpellID: 84608},
+		Label: "Shield Mastery Trigger",
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if (spell.ClassSpellMask & SpellMaskShieldBlock) != 0 {
 				sbMagicDamageReductionAura.Activate(sim)
@@ -360,8 +354,7 @@ func (warrior *Warrior) applyHoldTheLine() {
 	})
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label:    "Hold the Line Trigger",
-		ActionID: core.ActionID{SpellID: 84621},
+		Label: "Hold the Line Trigger",
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(core.OutcomeParry) {
 				buff.Activate(sim)
@@ -379,7 +372,7 @@ func (warrior *Warrior) applyGagOrder() {
 	warrior.AddStaticMod(core.SpellModConfig{
 		ClassMask: SpellMaskHeroicThrow,
 		Kind:      core.SpellMod_Cooldown_Flat,
-		TimeValue: time.Duration(15*warrior.Talents.GagOrder) * time.Second,
+		TimeValue: time.Duration(-15*warrior.Talents.GagOrder) * time.Second,
 	})
 
 }

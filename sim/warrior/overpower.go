@@ -45,6 +45,7 @@ func (warrior *Warrior) RegisterOverpowerSpell() {
 			return warrior.HasActiveAuraWithTag(EnableOverpowerTag)
 		},
 
+		DamageMultiplier: 1.0,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 0.75,
 

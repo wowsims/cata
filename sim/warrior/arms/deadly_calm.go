@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/warrior"
 )
 
 func (war *ArmsWarrior) RegisterDeadlyCalm() {
@@ -37,7 +38,7 @@ func (war *ArmsWarrior) RegisterDeadlyCalm() {
 		ActionID:       dcActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		Flags:          core.SpellFlagAPL | core.SpellFlagMCD | core.SpellFlagNoOnDamageDealt | core.SpellFlagHelpful,
-		ClassSpellMask: SpellMaskDeadlyCalm,
+		ClassSpellMask: warrior.SpellMaskDeadlyCalm,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
