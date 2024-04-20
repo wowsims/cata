@@ -72,7 +72,6 @@ func (eleShaman *ElementalShaman) Initialize() {
 	// Elemental Fury
 	eleShaman.AddStaticMod(core.SpellModConfig{
 		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
-		ClassMask:  shaman.SpellMaskSearingTotem | shaman.SpellMaskMagmaTotem,
 		Kind:       core.SpellMod_CritMultiplier_Pct,
 		FloatValue: 1.0,
 	})
