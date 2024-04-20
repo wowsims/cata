@@ -174,7 +174,7 @@ func (fb *focusBar) addFocusInternal(sim *Simulation, amount float64, metrics *R
 
 	if fb.isPlayer {
 		if sim.Log != nil {
-			fb.unit.Log(sim, "Gained %0.3f focus from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, fb.currentFocus, newFocus)
+			fb.unit.Log(sim, "Gained %0.3f focus from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, fb.currentFocus, newFocus, fb.maxFocus)
 		}
 		metrics.AddEvent(amount, newFocus-fb.currentFocus)
 	}
@@ -198,7 +198,7 @@ func (fb *focusBar) SpendFocus(sim *Simulation, amount float64, metrics *Resourc
 	metrics.AddEvent(-amount, -amount)
 
 	if sim.Log != nil {
-		fb.unit.Log(sim, "Spent %0.3f focus from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, fb.currentFocus, newFocus)
+		fb.unit.Log(sim, "Spent %0.3f focus from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, fb.currentFocus, newFocus, fb.maxFocus)
 	}
 
 	fb.currentFocus = newFocus

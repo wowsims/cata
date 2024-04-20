@@ -699,9 +699,9 @@ export class ResourceChangedLog extends SimLog {
 	readonly valueBefore: number;
 	readonly valueAfter: number;
 	readonly isSpend: boolean;
-	readonly total: number | null;
+	readonly total: number;
 
-	constructor(params: SimLogParams, resourceType: ResourceType, valueBefore: number, valueAfter: number, isSpend: boolean, total: number | null) {
+	constructor(params: SimLogParams, resourceType: ResourceType, valueBefore: number, valueAfter: number, isSpend: boolean, total: number) {
 		super(params);
 		this.resourceType = resourceType;
 		this.valueBefore = valueBefore;
@@ -738,7 +738,7 @@ export class ResourceChangedLog extends SimLog {
 		);
 		if (match) {
 			const resourceType = stringToResourceType(match[4]);
-			const total = match[20] !== undefined ? parseFloat(match[20]) : null
+			const total = match[20] !== undefined ? parseFloat(match[20]) : 0
 			return ActionId.fromLogString(match[16])
 				.fill(params.source?.index)
 				.then(cause => {
@@ -776,10 +776,10 @@ export class ResourceChangedLogGroup extends SimLog {
 	static fromLogs(logs: Array<SimLog>): Record<ResourceType, Array<ResourceChangedLogGroup>> {
 		const allResourceChangedLogs = logs.filter((log): log is ResourceChangedLog => log.isResourceChanged());
 
-		const maxRessource = function(logs: ResourceChangedLog[]) {
-			let max : number | null = null
+		const maxResource = function(logs: ResourceChangedLog[]) {
+			let max : number = 0
 			logs.forEach(l => {
-				if (l.total !== null && (max == null || l.total > max)) {
+				if (l.total > max) {
 					max = l.total
 				}})
 			return max;
@@ -805,7 +805,7 @@ export class ResourceChangedLogGroup extends SimLog {
 						resourceType,
 						logGroup[0].valueBefore,
 						logGroup[logGroup.length - 1].valueAfter,
-						maxRessource(logGroup),
+						maxResource(logGroup),
 						logGroup,
 					),
 			);

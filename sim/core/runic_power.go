@@ -177,7 +177,7 @@ func (rp *runicPowerBar) addRunicPowerInterval(sim *Simulation, amount float64, 
 	metrics.AddEvent(amount, newRunicPower-rp.currentRunicPower)
 
 	if sim.Log != nil {
-		rp.unit.Log(sim, "Gained %0.3f runic power from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, rp.currentRunicPower, newRunicPower)
+		rp.unit.Log(sim, "Gained %0.3f runic power from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rp.currentRunicPower, newRunicPower, rp.maxRunicPower)
 	}
 
 	rp.currentRunicPower = newRunicPower
@@ -200,7 +200,7 @@ func (rp *runicPowerBar) spendRunicPower(sim *Simulation, amount float64, metric
 	metrics.AddEvent(-amount, -amount)
 
 	if sim.Log != nil {
-		rp.unit.Log(sim, "Spent %0.3f runic power from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, rp.currentRunicPower, newRunicPower)
+		rp.unit.Log(sim, "Spent %0.3f runic power from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rp.currentRunicPower, newRunicPower, rp.maxRunicPower)
 	}
 
 	rp.currentRunicPower = newRunicPower

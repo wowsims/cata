@@ -141,7 +141,7 @@ func (rb *rageBar) AddRage(sim *Simulation, amount float64, metrics *ResourceMet
 	metrics.AddEvent(amount, newRage-rb.currentRage)
 
 	if sim.Log != nil {
-		rb.unit.Log(sim, "Gained %0.3f rage from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, rb.currentRage, newRage)
+		rb.unit.Log(sim, "Gained %0.3f rage from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rb.currentRage, newRage, 100.0)
 	}
 
 	rb.currentRage = newRage
@@ -159,7 +159,7 @@ func (rb *rageBar) SpendRage(sim *Simulation, amount float64, metrics *ResourceM
 	metrics.AddEvent(-amount, -amount)
 
 	if sim.Log != nil {
-		rb.unit.Log(sim, "Spent %0.3f rage from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, rb.currentRage, newRage)
+		rb.unit.Log(sim, "Spent %0.3f rage from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rb.currentRage, newRage, 100.0)
 	}
 
 	rb.currentRage = newRage

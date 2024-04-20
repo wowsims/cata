@@ -55,7 +55,7 @@ func (hb *healthBar) GainHealth(sim *Simulation, amount float64, metrics *Resour
 	metrics.AddEvent(amount, newHealth-oldHealth)
 
 	if sim.Log != nil {
-		hb.unit.Log(sim, "Gained %0.3f health from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, oldHealth, newHealth)
+		hb.unit.Log(sim, "Gained %0.3f health from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, oldHealth, newHealth, hb.MaxHealth())
 	}
 
 	hb.currentHealth = newHealth
@@ -81,7 +81,7 @@ func (hb *healthBar) RemoveHealth(sim *Simulation, amount float64) {
 	}
 
 	if sim.Log != nil {
-		hb.unit.Log(sim, "Spent %0.3f health from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, oldHealth, newHealth)
+		hb.unit.Log(sim, "Spent %0.3f health from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, oldHealth, newHealth, hb.MaxHealth())
 	}
 
 	hb.currentHealth = newHealth
@@ -94,7 +94,7 @@ func (hb *healthBar) UpdateMaxHealth(sim *Simulation, bonusHealth float64, metri
 	if bonusHealth >= 0 {
 		hb.GainHealth(sim, bonusHealth, metrics)
 	} else {
-		hb.RemoveHealth(sim, min(-bonusHealth, hb.currentHealth - 1)) // Last Stand effects always leave the player with at least 1 HP when they expire
+		hb.RemoveHealth(sim, min(-bonusHealth, hb.currentHealth-1)) // Last Stand effects always leave the player with at least 1 HP when they expire
 	}
 }
 
