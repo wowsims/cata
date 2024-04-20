@@ -190,7 +190,7 @@ func (eb *energyBar) ComboPoints() int32 {
 
 // Gives an immediate partial energy tick and restarts the tick timer.
 func (eb *energyBar) ResetEnergyTick(sim *Simulation) {
-	timeSinceLastTick := sim.CurrentTime - (eb.NextEnergyTickAt() - EnergyTickDuration)
+	timeSinceLastTick := max(sim.CurrentTime-(eb.NextEnergyTickAt()-EnergyTickDuration), 0)
 	partialTickAmount := (EnergyPerTick * eb.hasteRatingMultiplier * eb.energyRegenMultiplier) * (float64(timeSinceLastTick) / float64(EnergyTickDuration))
 	crossedThreshold := eb.addEnergyInternal(sim, partialTickAmount, eb.regenMetrics)
 	eb.nextEnergyTick = sim.CurrentTime + EnergyTickDuration
