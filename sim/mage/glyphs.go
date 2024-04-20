@@ -77,9 +77,10 @@ func (mage *Mage) applyGlyphs() {
 		})
 	}
 
-	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMageArmor) && mage.Options.Armor == proto.MageOptions_MoltenArmor {
-		mage.moltenArmorMod.UpdateFloatValue(7 * core.CritRatingPerCritChance)
-	}
+	//Molten Armor Glyph added inside the armor spell in order to reflect on sheet
+	/* 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMoltenArmor) && mage.Options.Armor == proto.MageOptions_MoltenArmor {
+		mage.moltenArmorMod.UpdateFloatValue(5 * core.CritRatingPerCritChance)
+	} */
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfPyroblast) {
 		mage.AddStaticMod(core.SpellModConfig{
@@ -92,21 +93,10 @@ func (mage *Mage) applyGlyphs() {
 	// Majors
 
 	if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfArcanePower) {
-		core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
-			Name:           "Arcane Power Mirror Image GCD Reduction",
-			Callback:       core.CallbackOnCastComplete,
-			ClassSpellMask: MageSpellArcanePower,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ClassSpellMask == MageSpellArcanePower {
-					mage.MirrorImage.DefaultCast.GCD = 0
-				}
-				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + mage.ArcanePowerAura.Duration,
-					OnAction: func(*core.Simulation) {
-						mage.MirrorImage.DefaultCast.GCD = core.GCDDefault
-					},
-				})
-			},
+		mage.arcanePowerGCDmod = mage.AddDynamicMod(core.SpellModConfig{
+			ClassMask: MageSpellMirrorImage,
+			TimeValue: time.Millisecond * -1500,
+			Kind:      core.SpellMod_GlobalCooldown_Flat,
 		})
 	}
 

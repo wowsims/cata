@@ -20,8 +20,10 @@ var TalentTreeSizes = [3]int{21, 21, 19}
 type Mage struct {
 	core.Character
 
-	moltenArmorMod    *core.SpellMod
-	arcanePowerGCDmod *core.SpellMod
+	PresenceOfMindMod  *core.SpellMod
+	arcanePowerCostMod *core.SpellMod
+	arcanePowerDmgMod  *core.SpellMod
+	arcanePowerGCDmod  *core.SpellMod
 
 	Talents       *proto.MageTalents
 	Options       *proto.MageOptions
@@ -29,12 +31,9 @@ type Mage struct {
 	FireOptions   *proto.FireMage_Options
 	FrostOptions  *proto.FrostMage_Options
 
-	//waterElemental *WaterElemental
-	mirrorImage *MirrorImage
-	flameOrb    *FlameOrb
-
-	// Cached values for a few mechanics.
-	bonusCritDamage float64
+	mirrorImage  *MirrorImage
+	flameOrb     *FlameOrb
+	frostfireOrb *FrostfireOrb
 
 	ArcaneBarrage           *core.Spell
 	ArcaneBlast             *core.Spell
@@ -60,12 +59,12 @@ type Mage struct {
 	IceLance                *core.Spell
 	Pyroblast               *core.Spell
 	PyroblastDot            *core.Spell
+	SummonWaterElemental    *core.Spell
 	Scorch                  *core.Spell
 	MirrorImage             *core.Spell
 	BlastWave               *core.Spell
 	DragonsBreath           *core.Spell
 	IcyVeins                *core.Spell
-	SummonWaterElemental    *core.Spell
 
 	ArcaneBlastAura        *core.Aura
 	ArcaneMissilesProcAura *core.Aura
@@ -75,13 +74,15 @@ type Mage struct {
 	ClearcastingAura       *core.Aura
 	CriticalMassAuras      core.AuraArray
 	FingersOfFrostAura     *core.Aura
-	FlameOrbTimer          *core.Aura
 	FrostArmorAura         *core.Aura
 	GlyphedFrostArmorPA    *core.PendingAction
 	hotStreakCritAura      *core.Aura
 	HotStreakAura          *core.Aura
+	IgniteDamageTracker    *core.Aura
+	Impact                 *core.Aura
 	MageArmorAura          *core.Aura
 	MageArmorPA            *core.PendingAction
+	PresenceOfMindAura     *core.Aura
 	PyromaniacAura         *core.Aura
 
 	ScalingBaseDamage float64
@@ -119,16 +120,18 @@ func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
 func (mage *Mage) ApplyTalents() {
+	mage.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
 
 	mage.ApplyArcaneTalents()
 	mage.ApplyFireTalents()
 	mage.ApplyFrostTalents()
+
+	mage.applyGlyphs()
 }
 
 func (mage *Mage) Initialize() {
 
 	mage.applyArmor()
-	mage.applyGlyphs()
 	mage.registerArcaneBlastSpell()
 	mage.registerArcaneExplosionSpell()
 	mage.registerArcaneMissilesSpell()
@@ -139,6 +142,7 @@ func (mage *Mage) Initialize() {
 	mage.registerFlameOrbSpell()
 	mage.registerFlameOrbExplodeSpell()
 	mage.registerFlamestrikeSpell()
+	mage.registerFreezeSpell()
 	mage.registerFrostboltSpell()
 	mage.registerFrostfireOrbSpell()
 	mage.registerIceLanceSpell()
@@ -171,12 +175,15 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 
 	mage.mirrorImage = mage.NewMirrorImage()
 	mage.flameOrb = mage.NewFlameOrb()
+	mage.frostfireOrb = mage.NewFrostfireOrb()
 	mage.EnableManaBar()
 	return mage
 }
 
 func (mage *Mage) applyArmor() {
+	mageArmorManaMetric := mage.NewManaMetrics(core.ActionID{SpellID: 6117})
 	// Molten Armor
+	// +3% spell crit, +5% with glyph
 	if mage.Options.Armor == proto.MageOptions_MoltenArmor {
 		var critToAdd float64
 		if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMoltenArmor) {
@@ -192,18 +199,18 @@ func (mage *Mage) applyArmor() {
 	}
 
 	// Mage Armor
+	// Restores 3% of your max mana every 5 seconds (+20% affect with glyph)
 	if mage.Options.Armor == proto.MageOptions_MageArmor {
 		hasGlyph := mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMageArmor)
-		manaRegenPerSecond := mage.MaxMana() * core.TernaryFloat64(hasGlyph, .072, 0.06)
-		// TODO regen 3% max mana as mp5 aka 0.6% max mana per second
+		manaRegenPer5Second := mage.MaxMana() * core.TernaryFloat64(hasGlyph, .036, 0.03)
 		mage.MageArmorAura = core.MakePermanent(mage.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 6117},
 			Label:    "Mage Armor",
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				mage.MageArmorPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-					Period: time.Second * 1,
+					Period: time.Second * 5,
 					OnAction: func(sim *core.Simulation) {
-						mage.AddMana(sim, manaRegenPerSecond, mage.NewManaMetrics(core.ActionID{SpellID: 6117}))
+						mage.AddMana(sim, manaRegenPer5Second, mageArmorManaMetric)
 					},
 				})
 			},
@@ -262,7 +269,7 @@ func (mage *Mage) applyArcaneMissileProc() {
 }
 
 func (mage *Mage) hasChillEffect(spell *core.Spell) bool {
-	return spell == mage.Frostbolt || spell == mage.FrostfireBolt || (spell == mage.Blizzard && mage.Talents.IceShards > 0)
+	return spell == mage.Frostbolt || spell == mage.FrostfireBolt || (spell == mage.Blizzard && mage.Talents.IceShards > 0) || spell.ClassSpellMask == MageSpellFrostfireOrb
 }
 
 const (
@@ -285,6 +292,7 @@ const (
 	MageSpellFlamestrike
 	MageSpellFlameOrb
 	MageSpellFocusMagic
+	MageSpellFreeze
 	MageSpellFrostbolt
 	MageSpellFrostfireBolt
 	MageSpellFrostfireOrb
@@ -300,15 +308,15 @@ const (
 	MageSpellScorch
 
 	MageSpellLast
-	MageSpellsAll       = MageSpellLast<<1 - 1
-	MageSpellLivingBomb = MageSpellLivingBombDot | MageSpellLivingBombExplosion
-	MageSpellFireDoT    = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellIgnite | MageSpellCombustion
-	MageSpellFire       = MageSpellBlastWave | MageSpellCombustion | MageSpellDragonsBreath | MageSpellFireball |
+	MageSpellsAll        = MageSpellLast<<1 - 1
+	MageSpellLivingBomb  = MageSpellLivingBombDot | MageSpellLivingBombExplosion
+	MageSpellFireMastery = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellIgnite
+	MageSpellFire        = MageSpellBlastWave | MageSpellCombustion | MageSpellDragonsBreath | MageSpellFireball |
 		MageSpellFireBlast | MageSpellFlameOrb | MageSpellFlamestrike | MageSpellFrostfireBolt | MageSpellIgnite |
 		MageSpellLivingBomb | MageSpellPyroblast | MageSpellScorch
 	MageSpellChill        = MageSpellFrostbolt | MageSpellFrostfireBolt
 	MageSpellBrainFreeze  = MageSpellFireball | MageSpellFrostfireBolt
-	MageSpellsAllDamaging = MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | /*MageSpellArcaneMissiles | */ MageSpellBlastWave | MageSpellBlizzard | MageSpellDeepFreeze |
+	MageSpellsAllDamaging = MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | MageSpellArcaneMissilesTick | MageSpellBlastWave | MageSpellBlizzard | MageSpellDeepFreeze |
 		MageSpellDragonsBreath | MageSpellFireBlast | MageSpellFireball | MageSpellFlamestrike | MageSpellFlameOrb | MageSpellFrostbolt | MageSpellFrostfireBolt |
 		MageSpellFrostfireOrb | MageSpellIceLance | MageSpellLivingBombExplosion | MageSpellLivingBombDot | MageSpellPyroblast | MageSpellPyroblastDot | MageSpellScorch
 )

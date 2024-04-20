@@ -46,7 +46,7 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 		ActionID:       core.ActionID{SpellID: 83619},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          SpellFlagMage | core.SpellFlagNoLogs,
+		Flags:          SpellFlagMage, // | HotStreakSpell (unlikely based on videos)
 		ClassSpellMask: MageSpellFlameOrb,
 
 		DamageMultiplier: 1,
@@ -72,9 +72,9 @@ type FlameOrb struct {
 
 	mageOwner *Mage
 
-	FlameOrbTick    *core.Spell
-	FlameOrbExplode *core.Spell
-	TickCount       int64
+	FlameOrbTick *core.Spell
+
+	TickCount int64
 }
 
 func (mage *Mage) NewFlameOrb() *FlameOrb {
@@ -101,8 +101,6 @@ func (fo *FlameOrb) Reset(_ *core.Simulation) {
 }
 
 func (fo *FlameOrb) ExecuteCustomRotation(sim *core.Simulation) {
-
-	// develop something where on timer expire, cast FlameOrbExplode
 	spell := fo.FlameOrbTick
 	if success := spell.Cast(sim, fo.CurrentTarget); !success {
 		fo.Disable(sim)
@@ -127,7 +125,7 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 		ActionID:       core.ActionID{SpellID: 82739},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          SpellFlagMage | core.SpellFlagNoLogs,
+		Flags:          SpellFlagMage | core.SpellFlagNoLogs | HotStreakSpells,
 		ClassSpellMask: MageSpellFlameOrb,
 
 		Cast: core.CastConfig{

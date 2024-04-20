@@ -37,6 +37,8 @@ func NewArcaneMage(character *core.Character, options *proto.Player) *ArcaneMage
 	}
 	arcaneMage.ArcaneOptions = arcaneOptions
 
+	arcaneMage.ApplyArcaneSpecInnate()
+
 	return arcaneMage
 }
 
@@ -75,8 +77,8 @@ func (arcaneMage *ArcaneMage) ApplyArcaneSpecInnate() {
 	})
 
 	core.MakePermanent(arcaneMage.GetOrRegisterAura(core.Aura{
-		Label:    "Mana Adept",
-		ActionID: core.ActionID{SpellID: 76547},
+		Label: "Mana Adept",
+		//ActionID: core.ActionID{SpellID: 76547},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			arcaneMastery.UpdateFloatValue(arcaneMage.CurrentMana() / arcaneMage.MaxMana() * arcaneMage.GetArcaneMasteryBonus())
 			arcaneMastery.Activate()

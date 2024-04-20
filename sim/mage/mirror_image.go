@@ -8,16 +8,10 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-// The numbers in this file are VERY rough approximations based on logs.
 /* Cata dummy testing
-mirror image casts over duration
-
-sequence: fireblast, frostbolt x3, repeat
 
 damage did NOT change dynamically (equipped staff midway and spells did same damage)
 if a frost bolt is mid-air when mirror images expire, frostbolt does not land
-frost bolt did not seem to crit, fire blast can
-damage numbers at 170 spell power: fireblast 155, frostbolt 304
 */
 
 func (mage *Mage) registerMirrorImageCD() {
@@ -118,14 +112,14 @@ func (mi *MirrorImage) ExecuteCustomRotation(sim *core.Simulation) {
 }
 
 var mirrorImageBaseStats = stats.Stats{
-	stats.Mana: 27020, // Confirmed via ingame bars
+	stats.Mana: 27020, // Confirmed via ingame bars at 80
 }
 
 var createMirrorImageInheritance = func() func(stats.Stats) stats.Stats {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
 			stats.SpellHit: ownerStats[stats.SpellHit],
-			// seems to be about 8% baseline
+			// seems to be about 8% baseline in wotlk
 			stats.SpellCrit:  8 * core.CritRatingPerCritChance,
 			stats.SpellPower: ownerStats[stats.SpellPower] * 0.33,
 		}

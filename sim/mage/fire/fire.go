@@ -67,7 +67,7 @@ func (fireMage *FireMage) ApplyFireSpecInnate() {
 	})
 
 	fireMastery := fireMage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  mage.MageSpellFireDoT,
+		ClassMask:  mage.MageSpellFireMastery,
 		FloatValue: fireMage.GetMasteryBonus(),
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})

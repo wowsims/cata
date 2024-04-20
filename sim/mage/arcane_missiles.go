@@ -6,82 +6,6 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-/* 1 spell bar, no channeling background
-func (mage *Mage) registerArcaneMissilesSpell() {
-
-	hasT8_4pc := mage.HasSetBonus(ItemSetKirinTorGarb, 4)
-	var numTicks int32 = 3
-
-	mage.ArcaneMissiles = mage.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 5143},
-		SpellSchool:    core.SpellSchoolArcane,
-		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          SpellFlagMage | core.SpellFlagAPL | core.SpellFlagChanneled,
-		ClassSpellMask: MageSpellArcaneMissilesCast,
-		MissileSpeed:   20,
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-		},
-
-		BonusCritRating:  core.TernaryFloat64(mage.HasSetBonus(ItemSetKhadgarsRegalia, 4), 5*core.CritRatingPerCritChance, 0),
-		DamageMultiplier: 1,
-		DamageMultiplierAdditive: 1 +
-			core.TernaryFloat64(mage.HasSetBonus(ItemSetTempestRegalia, 4), .05, 0),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
-		BonusCoefficient: 0.278,
-
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				ActionID: core.ActionID{SpellID: 7268},
-				Label:    "Arcane Missile Casting",
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					if mage.ArcaneMissilesProcAura.IsActive() {
-						if !hasT8_4pc || sim.Proc(T84PcProcChance, "MageT84PC") {
-							mage.ArcaneMissilesProcAura.Deactivate(sim)
-						}
-					}
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					// Ensures tick occurs before aura ends after the last tick
-					dot := mage.ArcaneMissiles.Dot(aura.Unit)
-					if dot.TickCount < dot.NumberOfTicks {
-						dot.TickCount++
-						dot.TickOnce(sim)
-					}
-					mage.ArcaneBlastAura.Deactivate(sim)
-				},
-			},
-			NumberOfTicks:       numTicks - 1, // -1 due to forcing first tick to occur on Aura gain
-			TickLength:          time.Millisecond * 700,
-			AffectedByCastSpeed: true,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				mage.ArcaneBlastAura.Deactivate(sim)
-				baseDamage := 0.432 * mage.ScalingBaseDamage
-				dot.Snapshot(target, baseDamage)
-				//dot.TickOnce(sim)
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalCrit)
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			dot := spell.Dot(target)
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitAndCrit)
-			dot.Apply(sim)
-			dot.TickOnce(sim)
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealOutcome(sim, result)
-			})
-		},
-	})
-
-}
-*/
-
 func (mage *Mage) registerArcaneMissilesSpell() {
 
 	mage.ArcaneMissilesTickSpell = mage.GetOrRegisterSpell(core.SpellConfig{
@@ -124,13 +48,13 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 			Aura: core.Aura{
 				Label: "ArcaneMissiles",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					// Currently it doesn't cast the first missile until the time of the first tick
+					// Force cast a missile right away
 					mage.ArcaneMissilesTickSpell.Cast(sim, mage.CurrentTarget)
 					mage.ArcaneMissilesProcAura.Deactivate(sim)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					if mage.ArcaneMissilesProcAura.IsActive() {
-						//mage.ArcaneMissilesProcAura.Deactivate(sim)
+						mage.ArcaneMissilesProcAura.Deactivate(sim)
 					}
 
 					// TODO: This check is necessary to ensure the final tick occurs before

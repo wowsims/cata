@@ -59,7 +59,7 @@ func (mage *Mage) ApplyFrostTalents() {
 	if mage.Talents.PiercingIce > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
 			ClassMask:  MageSpellsAll,
-			FloatValue: 0.01 * float64(mage.Talents.PiercingIce) * core.CritRatingPerCritChance,
+			FloatValue: 1 * float64(mage.Talents.PiercingIce) * core.CritRatingPerCritChance,
 			Kind:       core.SpellMod_BonusCrit_Rating,
 		})
 	}
@@ -254,17 +254,14 @@ func (mage *Mage) registerColdSnapCD() {
 				Duration: time.Minute * 8,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+		/* 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			// Don't use if there are no cooldowns to reset.
 			return (mage.IcyVeins != nil && !mage.IcyVeins.IsReady(sim)) ||
 				(mage.SummonWaterElemental != nil && !mage.SummonWaterElemental.IsReady(sim))
-		},
+		}, */
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			if mage.IcyVeins != nil {
 				mage.IcyVeins.CD.Reset()
-			}
-			if mage.SummonWaterElemental != nil {
-				mage.SummonWaterElemental.CD.Reset()
 			}
 		},
 	})

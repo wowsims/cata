@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -10,7 +9,6 @@ import (
 func (mage *Mage) registerLivingBombSpell() {
 	// Cata version has a cap of 3 active dots at once
 	// Research this implementation
-	fmt.Println("Living Bomb Registered")
 	//var activeLivingBombs core.AuraArray
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44461},
