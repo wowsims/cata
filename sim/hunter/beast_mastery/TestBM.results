@@ -666,8 +666,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-FluidDeath-58181"
  value: {
-  dps: 18051.23723
-  tps: 15694.92319
+  dps: 18258.78151
+  tps: 15886.23042
  }
 }
 dps_results: {
@@ -1073,8 +1073,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-LicensetoSlay-58180"
  value: {
-  dps: 18167.75839
-  tps: 15816.21439
+  dps: 17479.39237
+  tps: 15214.33196
  }
 }
 dps_results: {
