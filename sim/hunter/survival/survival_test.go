@@ -58,7 +58,7 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassHunter,
-				Equipment:     core.GetGearSet("../../ui/hunter/gear_sets", "preraid_sv").GearSet,
+				Equipment:     core.GetGearSet("../../ui/hunter/survival/gear_sets", "preraid_sv").GearSet,
 				Consumes:      FullConsumes,
 				Spec:          PlayerOptionsBasic,
 				Glyphs:        SVGlyphs,
@@ -81,10 +81,8 @@ func BenchmarkSimulate(b *testing.B) {
 }
 
 var FullConsumes = &proto.Consumes{
-	Flask:           proto.Flask_FlaskOfTheWinds,
-	DefaultPotion:   proto.Potions_PotionOfTheTolvir,
-	DefaultConjured: proto.Conjured_ConjuredFlameCap,
-	PetFood:         proto.PetFood_PetFoodKiblersBits,
+	Flask:         proto.Flask_FlaskOfTheWinds,
+	DefaultPotion: proto.Potions_PotionOfTheTolvir,
 }
 var SVTalents = "03-2302-23203003023022121311"
 var SVGlyphs = &proto.Glyphs{

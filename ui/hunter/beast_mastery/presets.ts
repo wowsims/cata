@@ -4,9 +4,9 @@ import {
 	BeastMasteryHunter_Options as BeastMasteryOptions,
 	BeastMasteryHunter_Rotation as BeastMasteryRotation,
 	HunterMajorGlyph as MajorGlyph,
-	HunterMinorGlyph as MinorGlyph,
 	HunterOptions_Ammo as Ammo,
 	HunterOptions_PetType as PetType,
+	HunterPrimeGlyph as PrimeGlyph,
 	HunterStingType as StingType,
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
@@ -41,26 +41,33 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeA
 export const BeastMasteryTalents = {
 	name: 'Beast Mastery',
 	data: SavedTalents.create({
-		// talentsString: '51200201505112243120531251-025305101',
-		// glyphs: Glyphs.create({
-		// 	major1: MajorGlyph.GlyphOfBestialWrath,
-		// 	major2: MajorGlyph.GlyphOfSteadyShot,
-		// 	major3: MajorGlyph.GlyphOfSerpentSting,
-		// 	minor1: MinorGlyph.GlyphOfFeignDeath,
-		// 	minor2: MinorGlyph.GlyphOfRevivePet,
-		// 	minor3: MinorGlyph.GlyphOfMendPet,
-		// }),
+		talentsString: '2330230311320112121-2302-03',
+		glyphs: Glyphs.create({
+			prime1: PrimeGlyph.GlyphOfArcaneShot,
+			prime2: PrimeGlyph.GlyphOfKillCommand,
+			prime3: PrimeGlyph.GlyphOfKillShot,
+			major1: MajorGlyph.GlyphOfBestialWrath,
+		}),
 	}),
 };
 
 export const BMDefaultOptions = BeastMasteryOptions.create({
 	classOptions: {
-		ammo: Ammo.SaroniteRazorheads,
 		useHuntersMark: true,
 		petType: PetType.Wolf,
-		petTalents: ferocityBMDefault,
-		petUptime: 1,
-		timeToTrapWeaveMs: 2000,
+		petTalents: {
+			serpentSwiftness: 2,
+			dash: true,
+			bloodthirsty: 2,
+			spikedCollar: 3,
+			cullingTheHerd: 3,
+			charge: true,
+			spidersBite: 3,
+			rabid: true,
+			callOfTheWild: true,
+			sharkAttack: 2,
+			wildHunt: 2,
+		},
 	},
 });
 
