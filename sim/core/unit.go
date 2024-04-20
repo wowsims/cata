@@ -320,6 +320,10 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 	if bonus[stats.MeleeHaste] != 0 {
 		unit.AutoAttacks.UpdateSwingTimers(sim)
 		unit.runicPowerBar.updateRegenTimes(sim)
+
+		if unit.HasEnergyBar() {
+			unit.ProcessDynamicHasteRatingChange(sim)
+		}
 	}
 	if bonus[stats.SpellHaste] != 0 {
 		unit.updateCastSpeed()
@@ -456,6 +460,8 @@ func (unit *Unit) MultiplyResourceRegenSpeed(sim *Simulation, amount float64) {
 		unit.MultiplyRuneRegenSpeed(sim, amount)
 	} else if unit.HasFocusBar() {
 		unit.MultiplyFocusRegenSpeed(sim, amount)
+	} else if unit.HasEnergyBar() {
+		unit.MultiplyEnergyRegenSpeed(sim, amount)
 	}
 }
 
