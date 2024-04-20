@@ -69,32 +69,33 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			bloodlust: true,
-			manaSpringTotem: TristateEffect.TristateEffectImproved,
-			wrathOfAirTotem: true,
-			divineSpirit: true,
-			swiftRetribution: true,
-			sanctifiedRetribution: true,
-			demonicPactSp: 500,
 			arcaneBrilliance: true,
+			bloodlust: true,
+			markOfTheWild: true,
+			icyTalons: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({
 			manaTideTotems: 1,
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: TristateEffect.TristateEffectImproved,
-			innervates: 0,
+			innervateCount: 0,
 			vampiricTouch: true,
 			focusMagic: true,
 		}),
 		debuffs: Debuffs.create({
-			judgementOfWisdom: true,
-			misery: true,
+			judgement: true,
 			ebonPlaguebringer: true,
-			shadowMastery: true,
-			heartOfTheCrusader: true,
+			shadowAndFlame: true,
 		}),
 	},
 
@@ -109,7 +110,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
+		inputs: [OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment, OtherInputs.DarkIntentUptime,],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

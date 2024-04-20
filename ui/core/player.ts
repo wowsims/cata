@@ -183,7 +183,6 @@ export interface MeleeCritCapInfo {
 	expertise: number;
 	suppression: number;
 	glancing: number;
-	debuffCrit: number;
 	hasOffhandWeapon: boolean;
 	meleeHitCap: number;
 	expertiseCap: number;
@@ -248,6 +247,7 @@ export class Player<SpecType extends Spec> {
 	private channelClipDelay = 0;
 	private inFrontOfTarget = false;
 	private distanceFromTarget = 0;
+	private darkIntentUptime = 100;
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
 
@@ -734,15 +734,8 @@ export class Player<SpecType extends Spec> {
 			specSpecificOffset = 3.0 * ranks;
 		}
 
-		let debuffCrit = 0.0;
-
-		const debuffs = this.sim.raid.getDebuffs();
-		if (debuffs.totemOfWrath || debuffs.heartOfTheCrusader || debuffs.masterPoisoner) {
-			debuffCrit = 3.0;
-		}
-
 		const baseCritCap = 100.0 - glancing + suppression - remainingMeleeHitCap - remainingExpertiseCap - specSpecificOffset;
-		const playerCritCapDelta = meleeCrit - baseCritCap + debuffCrit;
+		const playerCritCapDelta = meleeCrit - baseCritCap;
 
 		return {
 			meleeCrit,
@@ -750,7 +743,6 @@ export class Player<SpecType extends Spec> {
 			expertise,
 			suppression,
 			glancing,
-			debuffCrit,
 			hasOffhandWeapon,
 			meleeHitCap,
 			expertiseCap,
@@ -948,6 +940,17 @@ export class Player<SpecType extends Spec> {
 		if (newChannelClipDelay == this.channelClipDelay) return;
 
 		this.channelClipDelay = newChannelClipDelay;
+		this.miscOptionsChangeEmitter.emit(eventID);
+	}
+
+	getDarkIntentUptime() : number {
+		return this.darkIntentUptime;
+	}
+
+	setDarkIntentUptime(eventID: EventID, newDarkIntentUptime: number) {
+		if (newDarkIntentUptime == this.darkIntentUptime) return;
+
+		this.darkIntentUptime = newDarkIntentUptime;
 		this.miscOptionsChangeEmitter.emit(eventID);
 	}
 
@@ -1428,6 +1431,7 @@ export class Player<SpecType extends Spec> {
 				inFrontOfTarget: this.getInFrontOfTarget(),
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
+				darkIntentUptime: this.getDarkIntentUptime(),
 			});
 			player = withSpec(this.getSpec(), player, this.getSpecOptions());
 		}
@@ -1477,6 +1481,7 @@ export class Player<SpecType extends Spec> {
 				this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
 				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
 				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
+				this.setDarkIntentUptime(eventID, proto.darkIntentUptime);
 			}
 			if (loadCategory(SimSettingCategories.External)) {
 				this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());

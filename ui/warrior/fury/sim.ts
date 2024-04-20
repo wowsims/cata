@@ -85,31 +85,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			swiftRetribution: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
-			icyTalons: true,
-			abominationsMight: true,
-			leaderOfThePack: TristateEffect.TristateEffectRegular,
-			sanctifiedRetribution: true,
+			arcaneBrilliance: true,
 			bloodlust: true,
-			devotionAura: TristateEffect.TristateEffectImproved,
-			stoneskinTotem: TristateEffect.TristateEffectImproved,
-		}),
-		partyBuffs: PartyBuffs.create({
-			heroicPresence: false,
-		}),
-		individualBuffs: IndividualBuffs.create({
+			markOfTheWild: true,
+			icyTalons: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
 			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
+			blessingOfMight: true,
+			communion: true,
+		}),
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: IndividualBuffs.create({
 		}),
 		debuffs: Debuffs.create({
 			bloodFrenzy: true,
-			heartOfTheCrusader: true,
 			mangle: true,
 			sunderArmor: true,
-			curseOfWeakness: TristateEffect.TristateEffectRegular,
-			faerieFire: TristateEffect.TristateEffectImproved,
+			curseOfElements: true,
 			ebonPlaguebringer: true,
 		}),
 	},
@@ -120,7 +118,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 	includeBuffDebuffInputs: [
 		// just for Bryntroll
 		BuffDebuffInputs.SpellDamageDebuff,
-		BuffDebuffInputs.SpellHitDebuff,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.

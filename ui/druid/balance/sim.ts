@@ -64,17 +64,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.MeleeHasteBuff,
-		BuffDebuffInputs.MeleeCritBuff,
+		BuffDebuffInputs.CritBuff,
 		BuffDebuffInputs.AttackPowerPercentBuff,
-		BuffDebuffInputs.AttackPowerBuff,
 		BuffDebuffInputs.MajorArmorDebuff,
-		BuffDebuffInputs.MinorArmorDebuff,
 		BuffDebuffInputs.PhysicalDamageDebuff,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [BalanceInputs.OkfUptime, OtherInputs.TankAssignment, OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget],
+		inputs: [BalanceInputs.OkfUptime, OtherInputs.TankAssignment, OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget, OtherInputs.DarkIntentUptime],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

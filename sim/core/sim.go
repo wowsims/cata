@@ -546,6 +546,11 @@ func (sim *Simulation) advance(nextTime time.Duration) {
 		}
 	}
 }
+func (sim *Simulation) setupReverseExecute(phase int32, activeProportion float64) {
+	sim.executePhase = phase
+	// This calculates the duration for which the phase is active from the start
+	sim.nextExecuteDuration = time.Duration(activeProportion * float64(sim.Duration))
+}
 
 // nextExecutePhase updates nextExecuteDuration and nextExecuteDamage based on executePhase.
 func (sim *Simulation) nextExecutePhase() {
@@ -562,9 +567,11 @@ func (sim *Simulation) nextExecutePhase() {
 	sim.nextExecuteDamage = math.MaxFloat64
 
 	switch sim.executePhase {
-	case 0: // reset, waiting for 35%
-		setup(100, 0.35, sim.Encounter.ExecuteProportion_35)
-	case 100: // at 35%, waiting for 25%
+	case 0: // initially waiting for 90%
+		setup(100, 0.90, sim.Encounter.ExecuteProportion_90)
+	case 100: // at 90%, waiting for 35%
+		setup(90, 0.35, sim.Encounter.ExecuteProportion_35)
+	case 90: // at 35%, waiting for 25%
 		setup(35, 0.25, sim.Encounter.ExecuteProportion_25)
 	case 35: // at 25%, waiting for 20%
 		setup(25, 0.20, sim.Encounter.ExecuteProportion_20)
@@ -611,6 +618,9 @@ func (sim *Simulation) IsExecutePhase25() bool {
 }
 func (sim *Simulation) IsExecutePhase35() bool {
 	return sim.executePhase <= 35
+}
+func (sim *Simulation) IsExecutePhase90() bool {
+	return sim.executePhase > 90
 }
 
 func (sim *Simulation) GetRemainingDuration() time.Duration {

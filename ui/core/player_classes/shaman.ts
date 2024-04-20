@@ -33,7 +33,7 @@ export class Shaman extends PlayerClass<Class.ClassShaman> {
 		{ weaponType: WeaponType.WeaponTypeShield },
 		{ weaponType: WeaponType.WeaponTypeStaff, canUseTwoHand: true },
 	];
-	static rangedWeaponTypes: RangedWeaponType[] = [RangedWeaponType.RangedWeaponTypeTotem];
+	static rangedWeaponTypes: RangedWeaponType[] = [RangedWeaponType.RangedWeaponTypeRelic];
 
 	readonly classID = Shaman.classID;
 	readonly friendlyName = Shaman.name;

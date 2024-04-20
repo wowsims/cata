@@ -99,31 +99,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
-			powerWordFortitude: TristateEffect.TristateEffectImproved,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
 			bloodlust: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
-			windfuryTotem: TristateEffect.TristateEffectImproved,
-			battleShout: true,
-			leaderOfThePack: TristateEffect.TristateEffectImproved,
-			sanctifiedRetribution: true,
-			unleashedRage: true,
-			moonkinAura: true,
+			markOfTheWild: true,
+			icyTalons: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: 2,
-			blessingOfMight: 2,
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
 			sunderArmor: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
-			judgementOfWisdom: true,
 			curseOfElements: true,
-			heartOfTheCrusader: true,
 			savageCombat: true,
+			bloodFrenzy: true,
 		}),
 	},
 
@@ -133,7 +131,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	rotationInputs: SVInputs.SVRotationConfig,
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff, BuffDebuffInputs.SpellDamageDebuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff, BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.MajorArmorDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -143,6 +141,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			SVInputs.SniperTrainingUptime,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
+			OtherInputs.DarkIntentUptime
 		],
 	},
 	encounterPicker: {
@@ -242,7 +241,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceNightElf,
-				[Faction.Horde]: Race.RaceOrc,
+				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},

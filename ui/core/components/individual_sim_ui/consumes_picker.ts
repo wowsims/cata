@@ -87,7 +87,7 @@ export class ConsumesPicker extends Component {
 			</div>
     	`;
 
-		// const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
+		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const foodsElem = this.rootElem.querySelector('.consumes-food') as HTMLElement;
 
 		const foodOptions = ConsumablesInputs.makeFoodInput(relevantStatOptions(ConsumablesInputs.FOOD_CONFIG, this.simUI));
@@ -106,13 +106,17 @@ export class ConsumesPicker extends Component {
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const engiConsumesElem = this.rootElem.querySelector('.consumes-engi') as HTMLElement;
 
+		const tinkerOptions = ConsumablesInputs.makeTinkerHandsInput(relevantStatOptions(ConsumablesInputs.TINKERS_HANDS_CONFIG, this.simUI), 'Gloves Tinkers');
+		const tinkerPicker = buildIconInput(engiConsumesElem, this.simUI.player, tinkerOptions);
+
 		const decoyPicker = buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.ExplosiveDecoy);
 		const sapperPicker = buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.ThermalSapper);
+
 		const explosiveOptions = ConsumablesInputs.makeExplosivesInput(relevantStatOptions(ConsumablesInputs.EXPLOSIVES_CONFIG, this.simUI), 'Explosives');
 		const explosivePicker = buildIconInput(engiConsumesElem, this.simUI.player, explosiveOptions);
 
-		TypedEvent.onAny([this.simUI.player.professionChangeEmitter]).on(() => this.updateRow(row, [decoyPicker, sapperPicker, explosivePicker]));
-		this.updateRow(row, [decoyPicker, sapperPicker, explosivePicker]);
+		TypedEvent.onAny([this.simUI.player.professionChangeEmitter]).on(() => this.updateRow(row, [decoyPicker, sapperPicker, explosivePicker, tinkerPicker]));
+		this.updateRow(row, [decoyPicker, sapperPicker, explosivePicker, tinkerPicker]);
 	}
 
 	private buildPetPicker() {

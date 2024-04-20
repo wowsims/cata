@@ -39,12 +39,9 @@ func NewRestorationShaman(character *core.Character, options *proto.Player) *Res
 		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, false),
 	}
 
-	// if resto.HasMHWeapon() {
-	// 	resto.ApplyEarthlivingImbueToItem(resto.GetMHWeapon())
-	// }
-	// if resto.HasOHWeapon() {
-	// 	resto.ApplyEarthlivingImbueToItem(resto.GetOHWeapon())
-	// }
+	if resto.HasMHWeapon() {
+		resto.ApplyEarthlivingImbueToItem(resto.GetMHWeapon())
+	}
 
 	return resto
 }

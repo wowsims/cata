@@ -10,7 +10,7 @@ func (dk *DeathKnight) DiseasesAreActive(target *core.Unit) bool {
 	return dk.FrostFeverSpell.Dot(target).IsActive() || dk.BloodPlagueSpell.Dot(target).IsActive()
 }
 
-func (dk *DeathKnight) dkCountActiveDiseases(target *core.Unit) float64 {
+func (dk *DeathKnight) CountActiveDiseases(target *core.Unit) float64 {
 	count := 0
 	if dk.FrostFeverSpell.Dot(target).IsActive() {
 		count++
@@ -18,16 +18,10 @@ func (dk *DeathKnight) dkCountActiveDiseases(target *core.Unit) float64 {
 	if dk.BloodPlagueSpell.Dot(target).IsActive() {
 		count++
 	}
-	if dk.Talents.EbonPlaguebringer > 0 && dk.EbonPlagueBringerAura.Get(target).IsActive() {
+	if dk.Talents.EbonPlaguebringer > 0 && dk.EbonPlagueAura.Get(target).IsActive() {
 		count++
 	}
 	return float64(count)
-}
-
-func (dk *DeathKnight) registerDiseaseDots() {
-	dk.registerFrostFever()
-	dk.registerBloodPlague()
-	dk.registerOutbreak()
 }
 
 func (dk *DeathKnight) registerOutbreak() {
@@ -96,10 +90,6 @@ func (dk *DeathKnight) registerFrostFever() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if dk.Talents.EbonPlaguebringer > 0 {
-				dk.EbonPlagueBringerAura.Get(target).Activate(sim)
-			}
-
 			dot := spell.Dot(target)
 			dot.Apply(sim)
 		},
@@ -137,10 +127,6 @@ func (dk *DeathKnight) registerBloodPlague() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if dk.Talents.EbonPlaguebringer > 0 {
-				dk.EbonPlagueBringerAura.Get(target).Activate(sim)
-			}
-
 			spell.Dot(target).Apply(sim)
 		},
 	})

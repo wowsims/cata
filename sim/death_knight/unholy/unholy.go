@@ -26,6 +26,8 @@ func RegisterUnholyDeathKnight() {
 
 type UnholyDeathKnight struct {
 	*death_knight.DeathKnight
+
+	lastScourgeStrikeDamage float64
 }
 
 func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *UnholyDeathKnight {
@@ -42,7 +44,7 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 			UseAMS:            unholyOptions.UseAms,
 			AvgAMSSuccessRate: unholyOptions.AvgAmsSuccessRate,
 			AvgAMSHit:         unholyOptions.AvgAmsHit,
-		}, player.TalentsString),
+		}, player.TalentsString, 56835),
 	}
 
 	uhdk.Inputs.UnholyFrenzyTarget = unholyOptions.UnholyFrenzyTarget
@@ -56,8 +58,8 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 	return uhdk
 }
 
-func (uhdk UnholyDeathKnight) getMasteryShadowBonus(mastery float64) float64 {
-	return 0.2 + 0.025*(mastery/core.MasteryRatingPerMasteryPoint)
+func (uhdk UnholyDeathKnight) getMasteryShadowBonus() float64 {
+	return 0.2 + 0.025*uhdk.GetMasteryPoints()
 }
 
 func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
@@ -67,26 +69,27 @@ func (uhdk *UnholyDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
 func (uhdk *UnholyDeathKnight) Initialize() {
 	uhdk.DeathKnight.Initialize()
 
-	uhdk.RegisterScourgeStrikeSpell()
+	uhdk.registerScourgeStrikeSpell()
 }
 
 func (uhdk *UnholyDeathKnight) ApplyTalents() {
 	uhdk.DeathKnight.ApplyTalents()
 
+	// Mastery: Dreadblade
 	masteryMod := uhdk.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: uhdk.getMasteryShadowBonus(uhdk.GetStat(stats.Mastery)),
-		School:     core.SpellSchoolShadow,
+		Kind:   core.SpellMod_DamageDone_Pct,
+		School: core.SpellSchoolShadow,
 	})
 
 	uhdk.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		masteryMod.UpdateFloatValue(uhdk.getMasteryShadowBonus(newMastery))
+		masteryMod.UpdateFloatValue(uhdk.getMasteryShadowBonus())
 	})
 
-	core.MakePermanent(uhdk.RegisterAura(core.Aura{
+	core.MakePermanent(uhdk.GetOrRegisterAura(core.Aura{
 		Label:    "Dreadblade",
 		ActionID: core.ActionID{SpellID: 77515},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.UpdateFloatValue(uhdk.getMasteryShadowBonus())
 			masteryMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -96,12 +99,10 @@ func (uhdk *UnholyDeathKnight) ApplyTalents() {
 
 	// Unholy Might
 	uhdk.MultiplyStat(stats.Strength, 1.25)
-	core.MakePermanent(uhdk.RegisterAura(core.Aura{
+	core.MakePermanent(uhdk.GetOrRegisterAura(core.Aura{
 		Label:    "Unholy Might",
 		ActionID: core.ActionID{SpellID: 91107},
 	}))
-
-	// Master of Ghouls
 }
 
 func (uhdk *UnholyDeathKnight) Reset(sim *core.Simulation) {

@@ -28,7 +28,8 @@ type Rogue struct {
 	CombatOptions        *proto.CombatRogue_Options
 	SubtletyOptions      *proto.SubtletyRogue_Options
 
-	SliceAndDiceBonus float64
+	SliceAndDiceBonus        float64
+	AdditiveEnergyRegenBonus float64
 
 	sliceAndDiceDurations [6]time.Duration
 	exposeArmorDurations  [6]time.Duration
@@ -62,6 +63,7 @@ type Rogue struct {
 	RevealingStrike  *core.Spell
 	KillingSpree     *core.Spell
 	AdrenalineRush   *core.Spell
+	Gouge            *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
@@ -165,20 +167,26 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerPoisonAuras()
 	rogue.registerShivSpell()
 	rogue.registerThistleTeaCD()
+	rogue.registerGougeSpell()
 
 	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
 
 	rogue.SliceAndDiceBonus = 1.4
 }
 
-func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {
-	rogue.EnergyTickMultiplier += multiplier
+func (rogue *Rogue) ApplyAdditiveEnergyRegenBonus(sim *core.Simulation, increment float64) {
+	oldBonus := rogue.AdditiveEnergyRegenBonus
+	newBonus := oldBonus + increment
+	rogue.MultiplyEnergyRegenSpeed(sim, (1.0+newBonus)/(1.0+oldBonus))
+	rogue.AdditiveEnergyRegenBonus = newBonus
 }
 
 func (rogue *Rogue) Reset(sim *core.Simulation) {
 	for _, mcd := range rogue.GetMajorCooldowns() {
 		mcd.Disable()
 	}
+
+	rogue.MultiplyEnergyRegenSpeed(sim, 1.0+rogue.AdditiveEnergyRegenBonus)
 }
 
 func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {

@@ -38,7 +38,6 @@ func (hunter *SurvivalHunter) Initialize() {
 		stats.SchoolIndexFrost,
 		stats.SchoolIndexShadow,
 	}
-
 	baseMastery := hunter.GetStat(stats.Mastery)
 	for _, school := range schoolsAffectedBySurvivalMastery {
 		hunter.PseudoStats.SchoolDamageDealtMultiplier[school] *= hunter.getMasteryBonus(baseMastery)
@@ -50,6 +49,9 @@ func (hunter *SurvivalHunter) Initialize() {
 			hunter.PseudoStats.SchoolDamageDealtMultiplier[school] *= hunter.getMasteryBonus(newMastery)
 		}
 	})
+
+	// Survival Spec Bonus
+	hunter.MultiplyStat(stats.Agility, 1.1)
 }
 func (hunter *SurvivalHunter) getMasteryBonus(mastery float64) float64 {
 	return 1.08 + ((mastery / core.MasteryRatingPerMasteryPoint) * 0.01)

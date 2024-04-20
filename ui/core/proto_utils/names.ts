@@ -28,11 +28,8 @@ export const rangedWeaponTypeNames: Map<RangedWeaponType, string> = new Map([
 	[RangedWeaponType.RangedWeaponTypeBow, 'Bow'],
 	[RangedWeaponType.RangedWeaponTypeCrossbow, 'Crossbow'],
 	[RangedWeaponType.RangedWeaponTypeGun, 'Gun'],
-	[RangedWeaponType.RangedWeaponTypeIdol, 'Idol'],
-	[RangedWeaponType.RangedWeaponTypeLibram, 'Libram'],
-	[RangedWeaponType.RangedWeaponTypeSigil, 'Sigil'],
+	[RangedWeaponType.RangedWeaponTypeRelic, 'Relic'],
 	[RangedWeaponType.RangedWeaponTypeThrown, 'Thrown'],
-	[RangedWeaponType.RangedWeaponTypeTotem, 'Totem'],
 	[RangedWeaponType.RangedWeaponTypeWand, 'Wand'],
 ]);
 
@@ -42,6 +39,7 @@ export const raceNames: Map<Race, string> = new Map([
 	[Race.RaceDraenei, 'Draenei'],
 	[Race.RaceDwarf, 'Dwarf'],
 	[Race.RaceGnome, 'Gnome'],
+	[Race.RaceGoblin, 'Goblin'],
 	[Race.RaceHuman, 'Human'],
 	[Race.RaceNightElf, 'Night Elf'],
 	[Race.RaceOrc, 'Orc'],
@@ -49,7 +47,6 @@ export const raceNames: Map<Race, string> = new Map([
 	[Race.RaceTroll, 'Troll'],
 	[Race.RaceUndead, 'Undead'],
 	[Race.RaceWorgen, 'Worgen'],
-	[Race.RaceGoblin, 'Goblin'],
 ]);
 
 export function nameToRace(name: string): Race {
@@ -351,7 +348,7 @@ export const masterySpellNames: Map<Spec, string> = new Map([
 	[Spec.SpecFrostDeathKnight, 'Frozen Heart'],
 	[Spec.SpecUnholyDeathKnight, 'Dreadblade'],
 	[Spec.SpecBalanceDruid, 'Total Eclipse'],
-	[Spec.SpecFeralDruid, 'No'],
+	[Spec.SpecFeralDruid, 'Razor Claws'],
 	[Spec.SpecRestorationDruid, 'Harmony'],
 	[Spec.SpecHolyPaladin, 'Illuminated Healing'],
 	[Spec.SpecProtectionPaladin, 'Divine Bulwark'],
@@ -384,7 +381,7 @@ export const masterySpellIDs: Map<Spec, number> = new Map([
 	[Spec.SpecFrostDeathKnight, 77514],
 	[Spec.SpecUnholyDeathKnight, 77515],
 	[Spec.SpecBalanceDruid, 77492],
-	[Spec.SpecFeralDruid, 0],
+	[Spec.SpecFeralDruid, 77493],
 	[Spec.SpecRestorationDruid, 77495],
 	[Spec.SpecHolyPaladin, 76669],
 	[Spec.SpecProtectionPaladin, 76671],

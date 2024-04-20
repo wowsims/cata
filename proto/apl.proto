@@ -263,14 +263,13 @@ message APLActionItemSwap {
 
 message APLActionCatOptimalRotationAction {
     FeralDruid.Rotation.AplType rotation_type = 1;
+    bool maintain_faerie_fire = 3;
     bool manual_params = 2;
-    float max_ff_delay = 3;
     float min_roar_offset = 4;
     int32 rip_leeway = 5;
     bool use_rake = 6;
     bool use_bite = 7;
     float bite_time = 8;
-    bool flower_weave = 9;
 }
 
 message APLActionCustomRotation {
@@ -348,6 +347,7 @@ message APLValueIsExecutePhase {
         E20 = 1;
         E25 = 2;
         E35 = 3;
+		E90 = 4;
     }
     ExecutePhaseThreshold threshold = 1;
 }

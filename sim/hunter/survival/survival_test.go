@@ -18,7 +18,7 @@ func TestSV(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-		GearSet:     core.GetGearSet("../../../ui/hunter/survival/gear_sets", "p1_sv"),
+		GearSet:     core.GetGearSet("../../../ui/hunter/survival/gear_sets", "preraid_sv"),
 		Talents:     SVTalents,
 		Glyphs:      SVGlyphs,
 		Consumes:    FullConsumes,
@@ -58,7 +58,7 @@ func BenchmarkSimulate(b *testing.B) {
 			&proto.Player{
 				Race:          proto.Race_RaceOrc,
 				Class:         proto.Class_ClassHunter,
-				Equipment:     core.GetGearSet("../../ui/hunter/gear_sets", "p1_sv").GearSet,
+				Equipment:     core.GetGearSet("../../ui/hunter/survival/gear_sets", "preraid_sv").GearSet,
 				Consumes:      FullConsumes,
 				Spec:          PlayerOptionsBasic,
 				Glyphs:        SVGlyphs,
@@ -81,10 +81,8 @@ func BenchmarkSimulate(b *testing.B) {
 }
 
 var FullConsumes = &proto.Consumes{
-	Flask:           proto.Flask_FlaskOfTheWinds,
-	DefaultPotion:   proto.Potions_PotionOfTheTolvir,
-	DefaultConjured: proto.Conjured_ConjuredFlameCap,
-	PetFood:         proto.PetFood_PetFoodKiblersBits,
+	Flask:         proto.Flask_FlaskOfTheWinds,
+	DefaultPotion: proto.Potions_PotionOfTheTolvir,
 }
 var SVTalents = "03-2302-23203003023022121311"
 var SVGlyphs = &proto.Glyphs{
@@ -97,12 +95,12 @@ var FerocityTalents = &proto.HunterPetTalents{
 	SerpentSwiftness: 2,
 	Dive:             true,
 	SpikedCollar:     3,
-	BoarsSpeed:       true,
+	Bloodthirsty:     1,
 	CullingTheHerd:   3,
 	SpidersBite:      3,
 	Rabid:            true,
 	CallOfTheWild:    true,
-	WildHunt:         1,
+	SharkAttack:      2,
 }
 
 var PlayerOptionsBasic = &proto.Player_SurvivalHunter{

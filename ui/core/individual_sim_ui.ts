@@ -1,4 +1,4 @@
-import { CharacterStats, StatMods } from './components/character_stats';
+import { CharacterStats, StatMods, StatWrites } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
 import { EmbeddedDetailedResults } from './components/detailed_results';
 import { EncounterPickerConfig } from './components/encounter_picker';
@@ -69,6 +69,7 @@ export interface OtherDefaults {
 	profession2?: Profession;
 	distanceFromTarget?: number;
 	channelClipDelay?: number;
+	darkIntentUptime?: number;
 }
 
 export interface RaidSimPreset<SpecType extends Spec> {
@@ -100,6 +101,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	epReferenceStat: Stat;
 	displayStats: Array<Stat>;
 	modifyDisplayStats?: (player: Player<SpecType>) => StatMods;
+	overwriteDisplayStats?: (player: Player<SpecType>) => StatWrites;
 
 	defaults: {
 		gear: EquipmentSpec;
@@ -333,6 +335,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player,
 			this.individualConfig.displayStats,
 			this.individualConfig.modifyDisplayStats,
+			this.individualConfig.overwriteDisplayStats,
 		);
 	}
 
@@ -398,11 +401,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			const tankSpec = this.player.getPlayerSpec().isTankSpec;
 			const healingSpec = this.player.getPlayerSpec().isHealingSpec;
 
-			//Special case for Totem of Wrath keeps buff and debuff sync'd
-			const towEnabled = this.individualConfig.defaults.raidBuffs.totemOfWrath || this.individualConfig.defaults.debuffs.totemOfWrath;
-			this.individualConfig.defaults.raidBuffs.totemOfWrath = towEnabled;
-			this.individualConfig.defaults.debuffs.totemOfWrath = towEnabled;
-
 			this.player.applySharedDefaults(eventID);
 			this.player.setRace(eventID, this.player.getPlayerClass().races[0]);
 			this.player.setGear(eventID, this.sim.db.lookupEquipmentSpec(this.individualConfig.defaults.gear));
@@ -420,6 +418,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.setProfession2(eventID, this.individualConfig.defaults.other?.profession2 || Profession.Jewelcrafting);
 			this.player.setDistanceFromTarget(eventID, this.individualConfig.defaults.other?.distanceFromTarget || 0);
 			this.player.setChannelClipDelay(eventID, this.individualConfig.defaults.other?.channelClipDelay || 0);
+			this.player.setDarkIntentUptime(eventID, this.individualConfig.defaults.other?.darkIntentUptime || 100);
 
 			if (this.isWithinRaidSim) {
 				this.sim.raid.setTargetDummies(eventID, 0);

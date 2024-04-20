@@ -7,7 +7,7 @@ import (
 var DeathCoilActionID = core.ActionID{SpellID: 47541}
 
 func (dk *DeathKnight) registerDeathCoilSpell() {
-	dk.DeathCoil = dk.RegisterSpell(core.SpellConfig{
+	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       DeathCoilActionID,
 		Flags:          core.SpellFlagAPL,
 		SpellSchool:    core.SpellSchoolShadow,
@@ -23,10 +23,9 @@ func (dk *DeathKnight) registerDeathCoilSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		CritMultiplier:           dk.DefaultMeleeCritMultiplier(),
-		ThreatMultiplier:         1.0,
+		DamageMultiplier: 1,
+		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := dk.ClassBaseScaling*0.87599998713 + spell.MeleeAttackPower()*0.23

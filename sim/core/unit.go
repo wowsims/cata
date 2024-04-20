@@ -30,6 +30,8 @@ const (
 
 type DynamicDamageTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult)
 
+type GetSpellpowerValue func(spell *Spell) float64
+
 // Unit is an abstraction of a Character/Boss/Pet/etc, containing functionality
 // shared by all of them.
 type Unit struct {
@@ -62,6 +64,9 @@ type Unit struct {
 	// How far this unit is from its target(s). Measured in yards, this is used
 	// for calculating spell travel time for certain spells.
 	DistanceFromTarget float64
+
+	// How much uptime of Dark Intent the unit will have
+	DarkIntentUptimePercent float64
 
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.
@@ -158,6 +163,14 @@ type Unit struct {
 
 	// Used for reacting to mastery stat changes if a spec needs it
 	OnMasteryStatChanged []OnMasteryStatChanged
+
+	GetSpellPowerValue GetSpellpowerValue
+}
+
+func (unit *Unit) getSpellpowerValueImpl(spell *Spell) float64 {
+	return unit.stats[stats.SpellPower] +
+		spell.BonusSpellPower +
+		spell.Unit.PseudoStats.MobTypeSpellPower
 }
 
 // Units can be disabled for several reasons:
@@ -218,6 +231,49 @@ func (unit *Unit) AddStat(stat stats.Stat, amount float64) {
 	unit.stats[stat] += amount
 }
 
+// Adds only the highest current stat of the unit from the given stat options
+func (unit *Unit) AddHighestStat(stat stats.Stats) {
+	if unit.Env != nil && unit.Env.IsFinalized() {
+		panic("Already finalized, use AddHighestStatDynamic instead!")
+	}
+
+	highestStatIndex := -1
+	for i := 0; i < int(stats.Len); i++ {
+		if highestStatIndex == -1 && stat[i] > 0 {
+			highestStatIndex = i
+		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
+			highestStatIndex = i
+		}
+	}
+
+	if highestStatIndex == -1 {
+		// this should only occur if stat was the empt stat list - so nothing todo
+		return
+	}
+
+	unit.stats[highestStatIndex] += stat[highestStatIndex]
+}
+
+// Adds only the highest current stat of the unit from the given stat options
+func (unit *Unit) AddHighestStatDynamic(sim *Simulation, stat stats.Stats) {
+	highestStatIndex := -1
+	for i := 0; i < int(stats.Len); i++ {
+		if highestStatIndex == -1 && stat[i] > 0 {
+			highestStatIndex = i
+		} else if unit.stats[i] > unit.stats[highestStatIndex] && stat[i] > 0 {
+			highestStatIndex = i
+		}
+	}
+
+	if highestStatIndex == -1 {
+		// this should only occur if stat was the empt stat list - so nothing todo
+		return
+	}
+	bonus := stats.Stats{}
+	bonus[highestStatIndex] = stat[highestStatIndex]
+	unit.AddStatsDynamic(sim, bonus)
+}
+
 func (unit *Unit) AddDynamicDamageTakenModifier(ddtm DynamicDamageTakenModifier) {
 	if unit.Env != nil && unit.Env.IsFinalized() {
 		panic("Already finalized, cannot add dynamic damage taken modifier!")
@@ -264,6 +320,10 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 	if bonus[stats.MeleeHaste] != 0 {
 		unit.AutoAttacks.UpdateSwingTimers(sim)
 		unit.runicPowerBar.updateRegenTimes(sim)
+
+		if unit.HasEnergyBar() {
+			unit.ProcessDynamicHasteRatingChange(sim)
+		}
 	}
 	if bonus[stats.SpellHaste] != 0 {
 		unit.updateCastSpeed()
@@ -394,6 +454,17 @@ func (unit *Unit) MultiplyAttackSpeed(sim *Simulation, amount float64) {
 	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
 
+// Helper for multiplying resource generation speed
+func (unit *Unit) MultiplyResourceRegenSpeed(sim *Simulation, amount float64) {
+	if unit.HasRunicPowerBar() {
+		unit.MultiplyRuneRegenSpeed(sim, amount)
+	} else if unit.HasFocusBar() {
+		unit.MultiplyFocusRegenSpeed(sim, amount)
+	} else if unit.HasEnergyBar() {
+		unit.MultiplyEnergyRegenSpeed(sim, amount)
+	}
+}
+
 func (unit *Unit) AddBonusRangedHitRating(amount float64) {
 	unit.OnSpellRegistered(func(spell *Spell) {
 		if spell.ProcMask.Matches(ProcMaskRanged) {
@@ -445,6 +516,10 @@ func (unit *Unit) finalize() {
 
 	unit.AutoAttacks.finalize()
 
+	if unit.GetSpellPowerValue == nil {
+		unit.GetSpellPowerValue = unit.getSpellpowerValueImpl
+	}
+
 	for _, spell := range unit.Spellbook {
 		spell.finalize()
 	}
@@ -461,7 +536,6 @@ func (unit *Unit) reset(sim *Simulation, _ Agent) {
 	unit.stats = unit.initialStats
 	unit.PseudoStats = unit.initialPseudoStats
 	unit.auraTracker.reset(sim)
-	// Spellbook needs to be reset AFTER auras.
 	for _, spell := range unit.Spellbook {
 		spell.reset(sim)
 	}
