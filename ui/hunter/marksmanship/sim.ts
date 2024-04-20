@@ -53,13 +53,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		Stat.StatHealth,
 		Stat.StatStamina,
 		Stat.StatAgility,
-		Stat.StatIntellect,
 		Stat.StatRangedAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecMarksmanshipHunter>) => {
 		let stats = new Stats();

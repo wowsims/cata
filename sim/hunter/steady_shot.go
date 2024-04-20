@@ -38,12 +38,12 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		},
 
 		DamageMultiplierAdditive: 1 + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSteadyShot), 0.1, 0),
-		DamageMultiplier:         0.62,
+		DamageMultiplier:         1,
 		CritMultiplier:           hunter.CritMultiplier(true, false, false),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (280.182 + spell.RangedAttackPower(target)*0.021)
+			baseDamage := (hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) * 0.62) + (280.182 + spell.RangedAttackPower(target)*0.021)
 			focus := 9.0
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
 				focus = float64(hunter.Talents.Termination) * 3

@@ -721,7 +721,7 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3
 	}
 }
 
-func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
+func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.ArmorType) bool {
 	hasBonus := true
 
 	if character.Head().ArmorType != armorType ||
@@ -734,6 +734,12 @@ func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, ar
 		character.Feet().ArmorType != armorType {
 		hasBonus = false
 	}
+
+	return hasBonus
+}
+
+func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
+	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
 
 	if hasBonus {
 		character.MultiplyStat(primaryStat, 1.05)

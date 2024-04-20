@@ -568,9 +568,7 @@ func (sim *Simulation) nextExecutePhase() {
 
 	switch sim.executePhase {
 	case 0: // initially waiting for 90%
-		//setup(100, 0.90, sim.Encounter.ExecuteProportion_90)
-		sim.executePhase = 100
-		sim.nextExecuteDuration = time.Duration(0.10 * float64(sim.GetMaxDuration()))
+		setup(100, 0.90, sim.Encounter.ExecuteProportion_90)
 	case 100: // at 90%, waiting for 35%
 		setup(90, 0.35, sim.Encounter.ExecuteProportion_35)
 	case 90: // at 35%, waiting for 25%
