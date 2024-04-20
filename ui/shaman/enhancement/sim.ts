@@ -83,27 +83,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET_WF.gear,
+		gear: Presets.PRERAID_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatIntellect]: 1.48,
-				[Stat.StatAgility]: 1.59,
-				[Stat.StatStrength]: 1.1,
-				[Stat.StatSpellPower]: 1.13,
+				[Stat.StatIntellect]: 0.06,
+				[Stat.StatAgility]: 2.82,
+				[Stat.StatStrength]: 0.0,
+				[Stat.StatSpellPower]: 0.0,
 				[Stat.StatSpellHit]: 0, //default EP assumes cap
-				[Stat.StatSpellCrit]: 0.91,
-				[Stat.StatSpellHaste]: 0.37,
+				[Stat.StatSpellCrit]: 0.19,
+				[Stat.StatSpellHaste]: 0.14,
 				[Stat.StatAttackPower]: 1.0,
-				[Stat.StatMeleeHit]: 1.38,
-				[Stat.StatMeleeCrit]: 0.81,
-				[Stat.StatMeleeHaste]: 1.61, //haste is complicated
-				[Stat.StatArmorPenetration]: 0.48,
+				[Stat.StatMeleeHit]: 0.61,
+				[Stat.StatMeleeCrit]: 0.51,
+				[Stat.StatMeleeHaste]: 0.57, //haste is complicated
+				[Stat.StatArmorPenetration]: 0.87,
 				[Stat.StatExpertise]: 0, //default EP assumes cap
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 5.21,
-				[PseudoStat.PseudoStatOffHandDps]: 2.21,
+				[PseudoStat.PseudoStatMainHandDps]: 3.16,
+				[PseudoStat.PseudoStatOffHandDps]: 2.79,
 			},
 		),
 		// Default consumes settings.
@@ -146,12 +146,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		gear: [
 			Presets.PRERAID_PRESET,
 			Presets.P1_PRESET,
-			Presets.P2_PRESET_FT,
-			Presets.P2_PRESET_WF,
-			Presets.P3_PRESET_ALLIANCE,
-			Presets.P3_PRESET_HORDE,
-			Presets.P4_PRESET_FT,
-			Presets.P4_PRESET_WF,
+			Presets.PREPATCH_PRESET,
 		],
 	},
 
@@ -166,24 +161,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceDraenei,
 				[Faction.Horde]: Race.RaceOrc,
+				[Faction.Unknown]: Race.RaceUnknown,
 			},
 			defaultGear: {
-				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET_FT.gear,
-					3: Presets.P3_PRESET_ALLIANCE.gear,
-					4: Presets.P4_PRESET_FT.gear,
+					1: Presets.PRERAID_PRESET.gear,
+					2: Presets.P1_PRESET.gear,
+					3: Presets.PREPATCH_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET_FT.gear,
-					3: Presets.P3_PRESET_HORDE.gear,
-					4: Presets.P4_PRESET_FT.gear,
+					1: Presets.PRERAID_PRESET.gear,
+					2: Presets.P1_PRESET.gear,
+					3: Presets.PREPATCH_PRESET.gear,
+				
 				},
+				[Faction.Unknown]: {},
 			},
 		},
 	],
