@@ -367,6 +367,14 @@ func StampedeAura(target *Unit) *Aura {
 	}, 1.3)
 }
 
+func TraumaAura(target *Unit, points int32) *Aura {
+	return bleedDamageAura(target, Aura{
+		Label:    "Trauma",
+		ActionID: ActionID{SpellID: TernaryInt32(points == 1, 46856, 46857)},
+		Duration: 1 * time.Minute,
+	}, TernaryFloat64(points == 1, 1.15, 1.3))
+}
+
 // Bleed Damage Multiplier category
 const BleedEffectCategory = "BleedDamage"
 

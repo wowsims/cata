@@ -19,7 +19,7 @@ func (war *ArmsWarrior) applyBloodFrenzy() {
 
 	// Trauma is also applied by the Blood Frenzy talent in Cata
 	traumaAuras := war.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return core.TraumaAura(target, int(war.Talents.BloodFrenzy))
+		return core.TraumaAura(target, war.Talents.BloodFrenzy)
 	})
 
 	bfRageProc := core.ActionID{SpellID: 92576}
