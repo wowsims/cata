@@ -1,42 +1,19 @@
 package mage
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (mage *Mage) registerFrostfireOrbSpell() {
-	// For future documenting...
-	// Talent point 1 = benefit from frost specialization
-	// Talent point 2 = slows more, so not important here
-	// Need logs/spell IDs
-
-	mage.FrostfireOrbTickSpell = mage.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 82739},
-		SpellSchool: core.SpellSchoolFire,
-		// no idea yet what it procs, likely nothing
-		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          SpellFlagMage | core.SpellFlagNoLogs,
-		ClassSpellMask: MageSpellFrostfireOrb,
-		MissileSpeed:   20,
-
-		DamageMultiplier: 1 + .01*float64(mage.Talents.TormentTheWeak),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// Seems like the most straightforward way to split damage onto different units for results page
-			damage := (0.278*mage.ScalingBaseDamage + 0.134*spell.SpellPower()) / float64(len(sim.Encounter.TargetUnits))
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
-			}
-		},
-	})
 
 	mage.FrostfireOrb = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 84714}, // Assumed
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
+		ActionID:    core.ActionID{SpellID: 92283},
+		SpellSchool: core.SpellSchoolFrost,
+		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
@@ -52,20 +29,99 @@ func (mage *Mage) registerFrostfireOrbSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			mage.frostfireOrb.EnableWithTimeout(sim, mage.frostfireOrb, time.Second*15)
+		},
+	})
 
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label:    "Frostfire Orb",
-				Duration: time.Second * 15,
+	mage.AddMajorCooldown(core.MajorCooldown{
+		Spell: mage.FrostfireOrb,
+		Type:  core.CooldownTypeDPS,
+	})
+}
+
+type FrostfireOrb struct {
+	core.Pet
+
+	mageOwner *Mage
+
+	FrostfireOrbTick *core.Spell
+
+	TickCount int64
+}
+
+func (mage *Mage) NewFrostfireOrb() *FrostfireOrb {
+	frostfireOrb := &FrostfireOrb{
+		Pet:       core.NewPet("Frostfire Orb", &mage.Character, frostfireOrbBaseStats, createFrostfireOrbInheritance(), false, true),
+		mageOwner: mage,
+		TickCount: 0,
+	}
+
+	mage.AddPet(frostfireOrb)
+
+	return frostfireOrb
+}
+
+func (ffo *FrostfireOrb) GetPet() *core.Pet {
+	return &ffo.Pet
+}
+
+func (ffo *FrostfireOrb) Initialize() {
+	ffo.registerFrostfireOrbTickSpell()
+}
+
+func (ffo *FrostfireOrb) Reset(_ *core.Simulation) {
+}
+
+func (ffo *FrostfireOrb) ExecuteCustomRotation(sim *core.Simulation) {
+
+	spell := ffo.FrostfireOrbTick
+	fmt.Println(spell.CanCast(sim, ffo.CurrentTarget))
+
+	if success := spell.Cast(sim, ffo.mageOwner.CurrentTarget); !success {
+		ffo.Disable(sim)
+	}
+
+}
+
+var frostfireOrbBaseStats = stats.Stats{}
+
+var createFrostfireOrbInheritance = func() func(stats.Stats) stats.Stats {
+	return func(ownerStats stats.Stats) stats.Stats {
+		return stats.Stats{
+			stats.SpellHit:   ownerStats[stats.SpellHit],
+			stats.SpellCrit:  ownerStats[stats.SpellCrit],
+			stats.SpellPower: ownerStats[stats.SpellPower],
+		}
+	}
+}
+
+func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
+
+	ffo.FrostfireOrbTick = ffo.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 95969},
+		SpellSchool:    core.SpellSchoolFrost,
+		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
+		Flags:          SpellFlagMage | ArcaneMissileSpells | core.SpellFlagNoLogs,
+		ClassSpellMask: MageSpellFrostfireOrb,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: time.Second,
 			},
 		},
 
+		DamageMultiplier: 1,
+		CritMultiplier:   ffo.mageOwner.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.134,
+		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for i := 0; i < 15; i++ {
-				mage.FrostfireOrbTickSpell.Cast(sim, target)
+			damage := 0.278 * ffo.mageOwner.ScalingBaseDamage
+			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
+			spell.CalcAndDealDamage(sim, randomTarget, damage, spell.OutcomeMagicHitAndCrit)
+			ffo.TickCount += 1
+			if ffo.TickCount == 15 {
+				ffo.TickCount = 0
 			}
 		},
 	})
