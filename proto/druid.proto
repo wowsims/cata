@@ -179,7 +179,6 @@ message FeralDruid {
 
   message Options {
     DruidOptions class_options = 1;
-    int32 latency_ms = 2;
     bool assume_bleed_active = 4;
   }
   Options options = 3;
