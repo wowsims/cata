@@ -159,14 +159,14 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-BlessedGarboftheUndeadSlayer"
  value: {
-  dps: 15721.60787
+  dps: 15729.97015
   tps: 375.82586
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-BlessedRegaliaofUndeadCleansing"
  value: {
-  dps: 15756.33371
+  dps: 15755.36443
   tps: 378.17767
  }
 }
@@ -1692,7 +1692,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-UndeadSlayer'sBlessedArmor"
  value: {
-  dps: 15159.96418
+  dps: 15168.04626
   tps: 364.23797
  }
 }
@@ -1965,7 +1965,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 21892.01147
+  dps: 21916.07882
   tps: 469.79205
  }
 }
