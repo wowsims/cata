@@ -86,7 +86,7 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 		if icd.Duration != 0 && !icd.IsReady(sim) {
 			return
 		}
-		if !config.ExtraCondition(sim, spell, result) {
+		if config.ExtraCondition != nil && !config.ExtraCondition(sim, spell, result) {
 			return
 		}
 		if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
