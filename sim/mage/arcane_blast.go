@@ -21,9 +21,9 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 	abCastMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellArcaneBlast,
-		FloatValue: -0.1,
-		Kind:       core.SpellMod_CastTime_Flat,
+		ClassMask: MageSpellArcaneBlast,
+		TimeValue: time.Millisecond * -100,
+		Kind:      core.SpellMod_CastTime_Flat,
 	})
 
 	mage.ArcaneBlastAura = mage.GetOrRegisterAura(core.Aura{
@@ -44,7 +44,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			abDamageMod.UpdateFloatValue(abDamageScalar * float64(newStacks))
 			abCostMod.UpdateFloatValue(1.5 * float64(newStacks))
-			abCastMod.UpdateFloatValue(-0.1 * float64(newStacks))
+			abCastMod.UpdateTimeValue(time.Millisecond * time.Duration(-100*newStacks))
 		},
 	})
 
