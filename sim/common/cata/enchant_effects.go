@@ -393,12 +393,12 @@ func init() {
 
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Darkglow Embroidery Cata",
-			ActionID:   core.ActionID{SpellID: 75171},
+			ActionID:   core.ActionID{SpellID: 75173},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
 			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 			Outcome:    core.OutcomeLanded,
 			ICD:        time.Second * 60,
-			ProcChance: 0.35,
+			ProcChance: 0.30,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				statAura.Activate(sim)
 			},
@@ -411,7 +411,7 @@ func init() {
 	core.NewEnchantEffect(4118, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procAura := character.NewTemporaryStatsAura("Swordguard Embroidery Cata", core.ActionID{SpellID: 75178}, stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000}, time.Second*15)
+		procAura := character.NewTemporaryStatsAura("Swordguard Embroidery Cata", core.ActionID{SpellID: 75176}, stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000}, time.Second*15)
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
 			Duration: time.Second * 55,
@@ -429,7 +429,7 @@ func init() {
 					return
 				}
 
-				if icd.IsReady(sim) && sim.RandomFloat("Swordguard") < 0.2 {
+				if icd.IsReady(sim) && sim.RandomFloat("Swordguard") < 0.15 {
 					icd.Use(sim)
 					procAura.Activate(sim)
 				}
