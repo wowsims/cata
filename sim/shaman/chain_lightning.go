@@ -41,7 +41,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 			totalDamage := baseDamage * bounceReduction
 
-			result := shaman.calcDamageStormstrikeCritChance(sim, target, totalDamage, spell)
+			result := shaman.calcDamageStormstrikeCritChance(sim, curTarget, totalDamage, spell)
 
 			if result.Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
 				shaman.ChainLightningOverloads[hitIndex].Cast(sim, curTarget)
