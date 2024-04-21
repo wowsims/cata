@@ -11,12 +11,7 @@ import (
 func (druid *Druid) registerRipSpell() {
 	ripBaseNumTicks := int32(8)
 
-	comboPointCoeff := 93.0
-	if druid.Ranged().ID == 28372 { // Idol of Feral Shadows
-		comboPointCoeff += 7
-	} else if druid.Ranged().ID == 39757 { // Idol of Worship
-		comboPointCoeff += 21
-	}
+	comboPointCoeff := 161.0
 
 	glyphMulti := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfRip), 1.15, 1.0)
 
@@ -29,7 +24,6 @@ func (druid *Druid) registerRipSpell() {
 		EnergyCost: core.EnergyCostOptions{
 			Cost:          30,
 			Refund:        0.8,
-			RefundMetrics: druid.PrimalPrecisionRecoveryMetrics,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -57,7 +51,7 @@ func (druid *Druid) registerRipSpell() {
 				cp := float64(druid.ComboPoints())
 				ap := dot.Spell.MeleeAttackPower()
 
-				dot.SnapshotBaseDamage = 36 + comboPointCoeff*cp + 0.01*cp*ap
+				dot.SnapshotBaseDamage = 56 + comboPointCoeff*cp + 0.0207*cp*ap
 
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
