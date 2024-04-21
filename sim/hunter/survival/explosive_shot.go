@@ -43,7 +43,10 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				rap := dot.Spell.RangedAttackPower(target)
-				dot.Snapshot(target, sim.Roll(minFlatDamage, maxFlatDamage)+(0.273*rap))
+				dot.SnapshotBaseDamage = sim.Roll(minFlatDamage, maxFlatDamage) + (0.273 * rap)
+				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeRangedHitAndCritSnapshot)
@@ -56,7 +59,6 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) { // Is this the right way of doing this?
 				if result.Landed() {
 					spell.SpellMetrics[target.UnitIndex].Hits--
-
 					dot := spell.Dot(target)
 					dot.Apply(sim)
 					dot.TickOnce(sim)
