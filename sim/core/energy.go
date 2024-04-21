@@ -103,7 +103,11 @@ func (eb *energyBar) ResetEnergyTick(sim *Simulation) {
 	sim.RescheduleTask(eb.nextEnergyTick)
 }
 
-func (eb *energyBar) ProcessDynamicHasteRatingChange(sim *Simulation) {
+func (eb *energyBar) processDynamicHasteRatingChange(sim *Simulation) {
+	if eb.unit == nil {
+		return
+	}
+
 	eb.ResetEnergyTick(sim)
 	eb.hasteRatingMultiplier = 1.0 + eb.unit.GetStat(stats.MeleeHaste)/(100*HasteRatingPerHastePercent)
 }

@@ -459,12 +459,6 @@ func (character *Character) Finalize() {
 
 	character.Unit.finalize()
 
-	if character.Class == proto.Class_ClassHunter {
-		character.Env.RegisterPostFinalizeEffect(func() {
-			character.focusBar.setupFocusThresholds()
-		})
-	}
-
 	character.majorCooldownManager.finalize()
 }
 
