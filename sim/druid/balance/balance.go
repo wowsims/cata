@@ -61,7 +61,7 @@ func (moonkin *BalanceDruid) Initialize() {
 	moonkin.EnableEclipseBar()
 
 	moonkin.RegisterTestSpells()
-	//moonkin.RegisterBalanceSpells()
+	moonkin.RegisterBalanceSpells()
 
 	// if moonkin.OwlkinFrenzyAura != nil && moonkin.Options.OkfUptime > 0 {
 	// 	moonkin.Env.RegisterPreFinalizeEffect(func() {

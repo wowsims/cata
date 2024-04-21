@@ -145,9 +145,9 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	}
 }
 
-// func (druid *Druid) BalanceCritMultiplier() float64 {
-// 	return druid.SpellCritMultiplier(1, 0.2*float64(druid.Talents.Vengeance))
-// }
+func (druid *Druid) BalanceCritMultiplier() float64 {
+	return druid.SpellCritMultiplier(1, 0)
+}
 
 func (druid *Druid) HasPrimeGlyph(glyph proto.DruidPrimeGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
@@ -211,16 +211,16 @@ func (druid *Druid) Initialize() {
 	druid.applyOmenOfClarity()
 }
 
-// func (druid *Druid) RegisterBalanceSpells() {
-// 	druid.registerHurricaneSpell()
-// 	druid.registerInsectSwarmSpell()
-// 	druid.registerMoonfireSpell()
-// 	druid.registerStarfireSpell()
-// 	druid.registerWrathSpell()
-// 	druid.registerStarfallSpell()
-// 	druid.registerTyphoonSpell()
-// 	druid.registerForceOfNatureCD()
-// }
+func (druid *Druid) RegisterBalanceSpells() {
+	//druid.registerHurricaneSpell()
+	//druid.registerInsectSwarmSpell()
+	//druid.registerMoonfireSpell()
+	//druid.registerStarfireSpell()
+	druid.registerWrathSpell()
+	//druid.registerStarfallSpell()
+	//druid.registerTyphoonSpell()
+	//druid.registerForceOfNatureCD()
+}
 
 func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerBerserkCD()
