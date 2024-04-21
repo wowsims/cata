@@ -54,8 +54,9 @@ func (hunter *Hunter) ApplyTalents() {
 			ClassMask:  HunterSpellAimedShot | HunterSpellCobraShot | HunterSpellSteadyShot,
 			FloatValue: (30.0 * float64(hunter.Talents.CarefulAim)) * core.CritRatingPerCritChance,
 		})
-		caCritMod.Activate()
+
 		hunter.RegisterResetEffect(func(sim *core.Simulation) {
+			caCritMod.Activate()
 			sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 				caCritMod.Deactivate()
 			})
