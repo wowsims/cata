@@ -9,17 +9,17 @@ export enum LaunchStatus {
 	Alpha,
 	Beta,
 	Launched,
-};
+}
 
 export type SimStatus = {
-	phase: Phase,
-	status: LaunchStatus
-}
+	phase: Phase;
+	status: LaunchStatus;
+};
 
 export const raidSimStatus: SimStatus = {
 	phase: Phase.Phase1,
 	status: LaunchStatus.Unlaunched,
-}
+};
 
 // This list controls which links are shown in the top-left dropdown menu.
 export const simLaunchStatuses: Record<Spec, SimStatus> = {
@@ -56,15 +56,15 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	// Hunter
 	[Spec.SpecBeastMasteryHunter]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Unlaunched,
+		status: LaunchStatus.Alpha,
 	},
 	[Spec.SpecMarksmanshipHunter]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Unlaunched,
+		status: LaunchStatus.Alpha,
 	},
 	[Spec.SpecSurvivalHunter]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Unlaunched,
+		status: LaunchStatus.Alpha,
 	},
 	// Mage
 	[Spec.SpecArcaneMage]: {
@@ -121,11 +121,11 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	// Shaman
 	[Spec.SpecElementalShaman]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Beta,
+		status: LaunchStatus.Alpha,
 	},
 	[Spec.SpecEnhancementShaman]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Beta,
+		status: LaunchStatus.Alpha,
 	},
 	[Spec.SpecRestorationShaman]: {
 		phase: Phase.Phase1,

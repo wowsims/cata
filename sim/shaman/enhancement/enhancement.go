@@ -109,8 +109,34 @@ func (enh *EnhancementShaman) Initialize() {
 		return spell.MeleeAttackPower() * 0.55
 	}
 
+	// Mastery: Enhanced Elements
+	masteryMod := enh.AddDynamicMod(core.SpellModConfig{
+		Kind:   core.SpellMod_DamageDone_Pct,
+		School: core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
+	})
+
+	enh.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		masteryMod.UpdateFloatValue(enh.getMasteryBonus())
+	})
+
+	core.MakePermanent(enh.GetOrRegisterAura(core.Aura{
+		Label:    "Mastery: Enhanced Elements",
+		ActionID: core.ActionID{SpellID: 77223},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.UpdateFloatValue(enh.getMasteryBonus())
+			masteryMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.Deactivate()
+		},
+	}))
+
 	enh.applyPrimalWisdom()
 	enh.registerLavaLashSpell()
+}
+
+func (enh EnhancementShaman) getMasteryBonus() float64 {
+	return 0.2 + 0.025*enh.GetMasteryPoints()
 }
 
 func (enh *EnhancementShaman) applyPrimalWisdom() {

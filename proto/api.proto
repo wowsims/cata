@@ -16,7 +16,7 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
-// NextIndex: 52
+// NextIndex: 53
 message Player {
 	// Label used for logging.
 	string name = 51;
@@ -91,6 +91,7 @@ message Player {
 	int32 channel_clip_delay_ms = 46;
 	bool in_front_of_target = 47;
 	double distance_from_target = 48;
+	double dark_intent_uptime = 52;
 
 	HealingModel healing_model = 49;
 

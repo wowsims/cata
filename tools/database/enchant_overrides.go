@@ -16,11 +16,12 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 4082, SpellId: 74220, Name: "Enchant Gloves - Greater Expertise", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Expertise: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 4106, SpellId: 74254, Name: "Enchant Gloves - Mighty Strength", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Strength: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 4107, SpellId: 74255, Name: "Enchant Gloves - Greater Mastery", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Mastery: 65}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
-	{EffectId: 4179, SpellId: 82175, Name: "Synapse Springs", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
-	{EffectId: 4180, SpellId: 82177, Name: "Quickflip Deflection Plates", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
-	{EffectId: 4181, SpellId: 82180, Name: "Tazik Shocker", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
-	{EffectId: 4182, SpellId: 82200, Name: "Spinal Healing Injector", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
-	{EffectId: 4183, SpellId: 82201, Name: "Z50 Mana Gulper", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
+	// Moved to engineering consumes
+	//{EffectId: 4179, SpellId: 82175, Name: "Synapse Springs", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
+	//{EffectId: 4180, SpellId: 82177, Name: "Quickflip Deflection Plates", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
+	//{EffectId: 4181, SpellId: 82180, Name: "Tazik Shocker", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
+	//{EffectId: 4182, SpellId: 82200, Name: "Spinal Healing Injector", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
+	//{EffectId: 4183, SpellId: 82201, Name: "Z50 Mana Gulper", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands, RequiredProfession: proto.Profession_Engineering},
 
 	// FEET
 	{EffectId: 4062, SpellId: 74189, Name: "Enchant Boots - Earthen Vitality", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 30}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet},
@@ -75,7 +76,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 4083, SpellId: 74223, Name: "Enchant Weapon - Hurricane", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 4084, SpellId: 74225, Name: "Enchant Weapon - Heartsong", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 4085, SpellId: 74226, Name: "Enchant Shield - Mastery", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Mastery: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
-	{EffectId: 4091, SpellId: 74235, Name: "Enchant Off-Hand - Superior Intellect", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Intellect: 40}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
+	{EffectId: 4091, SpellId: 74235, Name: "Enchant Off-Hand - Superior Intellect", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Intellect: 40}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeOffHand},
 	{EffectId: 4097, SpellId: 74242, Name: "Enchant Weapon - Power Torrent", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 4098, SpellId: 74244, Name: "Enchant Weapon - Windwalk", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 	{EffectId: 4099, SpellId: 74246, Name: "Enchant Weapon - Landslide", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
@@ -126,9 +127,10 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 4267, ItemId: 70139, SpellId: 99623, Name: "Flintlocke's Woodchucker", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeRanged, ClassAllowlist: []proto.Class{proto.Class_ClassHunter}},
 
 	// WAIST
-	{EffectId: 4187, SpellId: 84424, Name: "Invisibility Field", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWaist, RequiredProfession: proto.Profession_Engineering},
-	{EffectId: 4214, SpellId: 84425, Name: "Cardboard Assassin", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWaist, RequiredProfession: proto.Profession_Engineering},
-	{EffectId: 4188, SpellId: 84427, Name: "Grounded Plasma Shield", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWaist, RequiredProfession: proto.Profession_Engineering},
+	// Moved to engineering consumes
+	//{EffectId: 4187, SpellId: 84424, Name: "Invisibility Field", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWaist, RequiredProfession: proto.Profession_Engineering},
+	//{EffectId: 4214, SpellId: 84425, Name: "Cardboard Assassin", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWaist, RequiredProfession: proto.Profession_Engineering},
+	//{EffectId: 4188, SpellId: 84427, Name: "Grounded Plasma Shield", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWaist, RequiredProfession: proto.Profession_Engineering},
 
 	// SHOULDERS
 	{EffectId: 4193, SpellId: 86375, Name: "Swiftsteel Inscription", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 130, stats.Mastery: 25}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder, RequiredProfession: proto.Profession_Inscription},

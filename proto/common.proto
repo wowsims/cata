@@ -288,6 +288,15 @@ enum Explosive {
 	ExplosiveCobaltFragBomb = 2;
 }
 
+enum TinkerHands {
+	TinkerHandsNone = 0;
+	TinkerHandsSynapseSprings = 1;
+	TinkerHandsTazikShocker = 2;
+	TinkerHandsQuickflipDeflectionPlates = 3;
+	TinkerHandsSpinalHealingInjector = 4;
+	TinkerHandsZ50ManaGulper = 8;
+}
+
 enum Potions {
 	UnknownPotion = 0;
 	GolembloodPotion = 1; //58146
@@ -527,6 +536,7 @@ message IndividualBuffs {
 	int32 hand_of_sacrifice_count = 25;
 	int32 guardian_spirit_count = 26;
 	bool focus_magic = 22;
+	bool dark_intent = 27;
 }
 
 message Debuffs {
@@ -597,6 +607,8 @@ message Consumes {
 	bool thermal_sapper = 15;
 	bool explosive_decoy = 16;
 	Explosive filler_explosive = 17;
+
+	TinkerHands tinker_hands = 18;
 }
 
 enum MobType {
@@ -669,11 +681,15 @@ message Encounter {
 	// Same as execute_proportion but for 35%.
 	double execute_proportion_35 = 4;
 
+	// Same as execute_proportion but for > 90%.
+	double execute_proportion_90 = 8;
+
 	// If set, will use the targets health value instead of a duration for fight length.
 	bool use_health = 5;
 
 	// If type != Simple or Custom, then this may be empty.
 	repeated Target targets = 6;
+
 }
 
 message PresetTarget {

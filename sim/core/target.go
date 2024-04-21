@@ -17,6 +17,7 @@ type Encounter struct {
 	ExecuteProportion_20 float64
 	ExecuteProportion_25 float64
 	ExecuteProportion_35 float64
+	ExecuteProportion_90 float64
 
 	EndFightAtHealth float64
 	// DamageTaken is used to track health fights instead of duration fights.
@@ -39,6 +40,7 @@ func NewEncounter(options *proto.Encounter) Encounter {
 		ExecuteProportion_20: max(options.ExecuteProportion_20, 0),
 		ExecuteProportion_25: max(options.ExecuteProportion_25, 0),
 		ExecuteProportion_35: max(options.ExecuteProportion_35, 0),
+		ExecuteProportion_90: max(options.ExecuteProportion_90, 0),
 		Targets:              []*Target{},
 	}
 	// If UseHealth is set, we use the sum of targets health.
@@ -210,6 +212,7 @@ type AttackTable struct {
 	DamageDoneByCasterMultiplier DynamicDamageDoneByCaster
 
 	// When you need more then 1 active, default to using the above one
+	// Used with EnableDamageDoneByCaster/DisableDamageDoneByCaster
 	DamageDoneByCasterExtraMultiplier []DynamicDamageDoneByCaster
 }
 
@@ -247,4 +250,15 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 	}
 
 	return table
+}
+
+func EnableDamageDoneByCaster(index int, maxIndex int, attackTable *AttackTable, handler DynamicDamageDoneByCaster) {
+	if attackTable.DamageDoneByCasterExtraMultiplier == nil {
+		attackTable.DamageDoneByCasterExtraMultiplier = make([]DynamicDamageDoneByCaster, maxIndex)
+	}
+	attackTable.DamageDoneByCasterExtraMultiplier[index] = handler
+}
+
+func DisableDamageDoneByCaster(index int, attackTable *AttackTable) {
+	attackTable.DamageDoneByCasterExtraMultiplier[index] = nil
 }

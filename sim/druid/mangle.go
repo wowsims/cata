@@ -52,6 +52,13 @@ func (druid *Druid) registerMangleBearSpell() {
 			if druid.BerserkAura.IsActive() {
 				spell.CD.Reset()
 			}
+
+			// Preferentially consume Berserk procs over Clearcasting procs
+			if druid.BerserkProcAura.IsActive() {
+				druid.BerserkProcAura.Deactivate(sim)
+			} else if druid.ClearcastingAura.IsActive() {
+				druid.ClearcastingAura.Deactivate(sim)
+			}
 		},
 
 		RelatedAuras: []core.AuraArray{mangleAuras},
@@ -61,9 +68,10 @@ func (druid *Druid) registerMangleBearSpell() {
 func (druid *Druid) registerMangleCatSpell() {
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
 	glyphBonus := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfMangle), 1.1, 1.0)
+	hasBloodletting := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting)
 
 	druid.MangleCat = druid.RegisterSpell(Cat, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48566},
+		ActionID:    core.ActionID{SpellID: 33876},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
@@ -93,6 +101,11 @@ func (druid *Druid) registerMangleCatSpell() {
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 				mangleAuras.Get(target).Activate(sim)
+
+				// Mangle (Cat) can also extend Rip in Cata
+				if hasBloodletting {
+					druid.ApplyBloodletting(target)
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}

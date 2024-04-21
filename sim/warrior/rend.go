@@ -48,7 +48,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 				ap := dot.Spell.MeleeAttackPower() / 14.0
 				dot.SnapshotBaseDamage = 529 + (0.25 * 6 * (avgWeaponDamage + ap*warrior.AutoAttacks.MH().SwingSpeed))
 
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalCrit)

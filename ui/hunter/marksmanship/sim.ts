@@ -53,13 +53,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		Stat.StatHealth,
 		Stat.StatStamina,
 		Stat.StatAgility,
-		Stat.StatIntellect,
 		Stat.StatRangedAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecMarksmanshipHunter>) => {
 		let stats = new Stats();
@@ -146,18 +144,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [HunterInputs.PetUptime(), HunterInputs.TimeToTrapWeaveMs(), OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [
+			HunterInputs.PetUptime(),
+			HunterInputs.TimeToTrapWeaveMs(),
+			OtherInputs.InputDelay,
+			OtherInputs.TankAssignment,
+			OtherInputs.InFrontOfTarget,
+			OtherInputs.DarkIntentUptime,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
-		showExecuteProportion: false,
+		showExecuteProportion: true,
 	},
 
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.MarksmanTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_MM, Presets.ROTATION_PRESET_MM_ADVANCED, Presets.ROTATION_PRESET_AOE],
+		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_MM, Presets.ROTATION_PRESET_MM_ADVANCED],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.MM_PRERAID_PRESET, Presets.MM_P1_PRESET],
 	},

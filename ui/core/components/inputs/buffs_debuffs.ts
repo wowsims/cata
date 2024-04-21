@@ -184,6 +184,7 @@ export const PowerInfusion = makeMultistateIndividualBuffInput({ actionId: Actio
 export const FocusMagic = makeBooleanIndividualBuffInput({ actionId: ActionId.fromSpellId(54648), fieldName: 'focusMagic' });
 export const TricksOfTheTrade = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(57933), numStates: 20, fieldName: 'tricksOfTheTradeCount' });
 export const UnholyFrenzy = makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(49016), numStates: 11, fieldName: 'unholyFrenzyCount' });
+export const DarkIntent = makeBooleanIndividualBuffInput({actionId: ActionId.fromSpellId(85759), fieldName: 'darkIntent'})
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 DEBUFFS
@@ -348,6 +349,11 @@ export const RAID_BUFFS_CONFIG = [
 ] as PickerStatOptions[];
 
 export const RAID_BUFFS_MISC_CONFIG = [
+	{
+		config: DarkIntent,
+		picker: IconPicker,
+		stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste],
+	},
 	{
 		config: FocusMagic,
 		picker: IconPicker,

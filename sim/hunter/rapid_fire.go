@@ -26,7 +26,9 @@ func (hunter *Hunter) registerRapidFireCD() {
 				Period:   time.Second * 3,
 				NumTicks: 5,
 				OnAction: func(sim *core.Simulation) {
-					hunter.AddFocus(sim, 6*float64(hunter.Talents.RapidRecuperation), focusMetrics)
+					if hunter.Talents.RapidRecuperation > 0 {
+						hunter.AddFocus(sim, 6*float64(hunter.Talents.RapidRecuperation), focusMetrics)
+					}
 				},
 			})
 

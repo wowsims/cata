@@ -50,10 +50,9 @@ func (dk *DeathKnight) registerObliterateSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier:         1.5,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultMeleeCritMultiplier(),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1.5,
+		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := dk.ClassBaseScaling*0.57800000906 +

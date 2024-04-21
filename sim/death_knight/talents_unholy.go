@@ -154,9 +154,8 @@ func (dk *DeathKnight) applyUnholyBlight() {
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -207,10 +206,10 @@ func (dk *DeathKnight) applyEbonPlaguebringer() {
 	dk.EbonPlagueAura = dk.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		aura := core.EbonPlaguebringerAura(dk.GetCharacter(), target, dk.Talents.Epidemic, dk.Talents.EbonPlaguebringer)
 		aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-			SetDDBC(DDBCEbonPlaguebringer, dk.AttackTables[aura.Unit.UnitIndex], dk.ebonPlaguebringerDiseaseMultiplier)
+			core.EnableDamageDoneByCaster(DDBC_EbonPlaguebringer, DDBC_Total, dk.AttackTables[aura.Unit.UnitIndex], dk.ebonPlaguebringerDiseaseMultiplier)
 		})
 		aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-			ClearDDBC(DDBCEbonPlaguebringer, dk.AttackTables[aura.Unit.UnitIndex])
+			core.DisableDamageDoneByCaster(DDBC_EbonPlaguebringer, dk.AttackTables[aura.Unit.UnitIndex])
 		})
 		return aura
 	})

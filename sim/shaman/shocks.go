@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 // Shared logic for all shocks.
@@ -32,7 +31,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 		},
 
 		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		BonusCoefficient: bonusCoefficient,
 	}
 }
@@ -54,12 +53,6 @@ func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
 func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 	config := shaman.newShockSpellConfig(8050, core.SpellSchoolFire, 0.17, shockTimer, 0.214)
 
-	flameShockBaseNumberOfTicks := int32(6)
-
-	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFlameShock) {
-		flameShockBaseNumberOfTicks += 3
-	}
-
 	config.ClassSpellMask = SpellMaskFlameShock
 
 	bonusPeriodicDamageMultiplier := 0 + 0.2*float64(shaman.Talents.LavaFlows)
@@ -76,14 +69,15 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 				shaman.LavaBurstOverload.BonusCritRating += 100 * core.CritRatingPerCritChance
 			},
 		},
-		NumberOfTicks:       flameShockBaseNumberOfTicks,
+		NumberOfTicks:       6,
 		TickLength:          time.Second * 3,
 		AffectedByCastSpeed: true,
 		BonusCoefficient:    0.1,
 		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 			dot.SnapshotBaseDamage = 856 / 6
+			dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 			dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
-			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
 			dot.Spell.DamageMultiplierAdditive -= bonusPeriodicDamageMultiplier
 		},
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -108,12 +102,11 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 	shaman.FlameShock = shaman.RegisterSpell(config)
 }
 
-// TODO: need base damage
 func (shaman *Shaman) registerFrostShockSpell(shockTimer *core.Timer) {
 	config := shaman.newShockSpellConfig(8056, core.SpellSchoolFrost, 0.18, shockTimer, 0.386)
 	config.ThreatMultiplier *= 2
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		spell.CalcAndDealDamage(sim, target, sim.Roll(812, 858), spell.OutcomeMagicHitAndCrit)
+		spell.CalcAndDealDamage(sim, target, sim.Roll(848, 897), spell.OutcomeMagicHitAndCrit)
 	}
 
 	shaman.FrostShock = shaman.RegisterSpell(config)

@@ -341,6 +341,7 @@ function executePhaseThresholdFieldConfig(field: string): AplHelpers.APLPickerBu
 					{ value: ExecutePhaseThreshold.E20, label: '20%' },
 					{ value: ExecutePhaseThreshold.E25, label: '25%' },
 					{ value: ExecutePhaseThreshold.E35, label: '35%' },
+					{ value: ExecutePhaseThreshold.E90, label: '90%' },
 				],
 			}),
 	};
@@ -884,11 +885,11 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', '')],
 	}),
 	dotTickFrequency: inputBuilder({
-		label: "Dot Tick Frequency",
+		label: 'Dot Tick Frequency',
 		submenu: ['DoT'],
 		shortDescription: 'The time between each tick.',
 		newValue: APLValueDotTickFrequency.create,
-		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', '')]
+		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', '')],
 	}),
 	sequenceIsComplete: inputBuilder({
 		label: 'Sequence Is Complete',

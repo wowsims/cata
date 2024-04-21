@@ -48,6 +48,12 @@ func (character *Character) EnableManaBarWithModifier(modifier float64) {
 	// Starting with cataclysm 1 intellect now provides 1 spell power
 	character.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
 
+	if character.Unit.Type == PlayerUnit {
+		// Every caster gains 1% crit per 648.91
+		// Pets have different scaling so let them handle their scaling
+		character.AddStatDependency(stats.Intellect, stats.SpellCrit, 1.0/648.91*CritRatingPerCritChance)
+	}
+
 	// Not a real spell, just holds metrics from mana gain threat.
 	character.RegisterSpell(SpellConfig{
 		ActionID: ActionID{OtherID: proto.OtherAction_OtherActionManaGain},
@@ -85,7 +91,7 @@ func (unit *Unit) AddMana(sim *Simulation, amount float64, metrics *ResourceMetr
 	metrics.AddEvent(amount, newMana-oldMana)
 
 	if sim.Log != nil {
-		unit.Log(sim, "Gained %0.3f mana from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, oldMana, newMana)
+		unit.Log(sim, "Gained %0.3f mana from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, oldMana, newMana, unit.MaxMana())
 	}
 
 	unit.currentMana = newMana
@@ -101,7 +107,7 @@ func (unit *Unit) SpendMana(sim *Simulation, amount float64, metrics *ResourceMe
 	metrics.AddEvent(-amount, -amount)
 
 	if sim.Log != nil {
-		unit.Log(sim, "Spent %0.3f mana from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, unit.CurrentMana(), newMana)
+		unit.Log(sim, "Spent %0.3f mana from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, unit.CurrentMana(), newMana, unit.MaxMana())
 	}
 
 	unit.currentMana = newMana

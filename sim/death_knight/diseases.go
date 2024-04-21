@@ -24,12 +24,6 @@ func (dk *DeathKnight) CountActiveDiseases(target *core.Unit) float64 {
 	return float64(count)
 }
 
-func (dk *DeathKnight) registerDiseaseDots() {
-	dk.registerFrostFever()
-	dk.registerBloodPlague()
-	dk.registerOutbreak()
-}
-
 func (dk *DeathKnight) registerOutbreak() {
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 77575},

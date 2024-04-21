@@ -9,8 +9,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-const SpellFlagMercilessCombat = core.SpellFlagAgentReserved1
-
 const (
 	PetSpellHitScale  = 17.0 / 8.0 * core.SpellHitRatingPerHitChance / core.MeleeHitRatingPerHitChance    // 1.7
 	PetExpertiseScale = 3.25 * core.ExpertisePerQuarterPercentReduction / core.MeleeHitRatingPerHitChance // 0.8125
@@ -18,24 +16,14 @@ const (
 
 var TalentTreeSizes = [3]int{20, 20, 20}
 
+// Damage Done By Caster setup
 const (
-	DDBCMercilessCombat   = 0
-	DDBCEbonPlaguebringer = 1
-	DDBCRuneOfRazorice    = 2
+	DDBC_MercilessCombat   int = 0
+	DDBC_EbonPlaguebringer     = iota
+	DDBC_RuneOfRazorice
 
-	TotalDDBC = 3
+	DDBC_Total
 )
-
-func SetDDBC(index int, attackTable *core.AttackTable, handler core.DynamicDamageDoneByCaster) {
-	if attackTable.DamageDoneByCasterExtraMultiplier == nil {
-		attackTable.DamageDoneByCasterExtraMultiplier = make([]core.DynamicDamageDoneByCaster, TotalDDBC)
-	}
-	attackTable.DamageDoneByCasterExtraMultiplier[index] = handler
-}
-
-func ClearDDBC(index int, attackTable *core.AttackTable) {
-	attackTable.DamageDoneByCasterExtraMultiplier[index] = nil
-}
 
 type DeathKnightInputs struct {
 	// Option Vars
@@ -92,6 +80,7 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.IcyTalons = true
 	}
 
+	// TODO: Make horn of winter dynamic
 	raidBuffs.HornOfWinter = true
 }
 
@@ -108,9 +97,10 @@ func (dk *DeathKnight) ApplyTalents() {
 
 func (dk *DeathKnight) Initialize() {
 	dk.registerPresences()
-
+	dk.registerFrostFever()
+	dk.registerBloodPlague()
+	dk.registerOutbreak()
 	dk.registerHornOfWinterSpell()
-	dk.registerDiseaseDots()
 	dk.registerIcyTouchSpell()
 	dk.registerPlagueStrikeSpell()
 	dk.registerDeathCoilSpell()

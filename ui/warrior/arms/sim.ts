@@ -126,6 +126,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 			WarriorInputs.StartingRage(),
 			WarriorInputs.StanceSnapshot(),
 			WarriorInputs.DisableExpertiseGemming(),
+			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 		],

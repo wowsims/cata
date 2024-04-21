@@ -1,6 +1,7 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Spec } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, Potions, Spec, TinkerHands } from '../../core/proto/common';
 import {
+	DruidPrimeGlyph,
 	DruidMajorGlyph,
 	DruidMinorGlyph,
 	FeralDruid_Options as FeralDruidOptions,
@@ -43,17 +44,11 @@ export const DefaultRotation = FeralDruidRotation.create({
 	biteModeType: FeralDruid_Rotation_BiteModeType.Emperical,
 	biteTime: 4.0,
 	berserkBiteThresh: 25.0,
-	berserkFfThresh: 15.0,
 	powerbear: false,
 	minRoarOffset: 12.0,
 	ripLeeway: 3.0,
 	maintainFaerieFire: true,
-	hotUptime: 0.0,
 	snekWeave: false,
-	flowerWeave: false,
-	raidTargets: 30,
-	maxFfDelay: 0.1,
-	prePopOoc: true,
 });
 
 export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFeralDruid, DefaultRotation);
@@ -63,20 +58,22 @@ export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Sim
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		// talentsString: '-543202132322010053120030310511-203503012',
-		// glyphs: Glyphs.create({
-		// 	major1: DruidMajorGlyph.GlyphOfOmenOfClarity,
-		// 	major2: DruidMajorGlyph.GlyphOfSavageRoar,
-		// 	major3: DruidMajorGlyph.GlyphOfShred,
-		// 	minor1: DruidMinorGlyph.GlyphOfDash,
-		// 	minor2: DruidMinorGlyph.GlyphOfTheWild,
-		// 	minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-		// }),
+		talentsString: '-2320322312012121202301-020301',
+		glyphs: Glyphs.create({
+			prime1: DruidPrimeGlyph.GlyphOfRip,
+			prime2: DruidPrimeGlyph.GlyphOfBloodletting,
+			prime3: DruidPrimeGlyph.GlyphOfBerserk,
+			major1: DruidMajorGlyph.GlyphOfThorns,
+			major2: DruidMajorGlyph.GlyphOfFeralCharge,
+			major3: DruidMajorGlyph.GlyphOfRebirth,
+			minor1: DruidMinorGlyph.GlyphOfDash,
+			minor2: DruidMinorGlyph.GlyphOfMarkOfTheWild,
+			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		}),
 	}),
 };
 
 export const DefaultOptions = FeralDruidOptions.create({
-	latencyMs: 100,
 	assumeBleedActive: true,
 });
 
@@ -85,4 +82,5 @@ export const DefaultConsumes = Consumes.create({
 	food: Food.FoodSkeweredEel,
 	defaultPotion: Potions.PotionOfTheTolvir,
 	prepopPotion: Potions.PotionOfTheTolvir,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });

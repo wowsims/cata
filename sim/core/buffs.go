@@ -304,6 +304,62 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 	if individualBuffs.FocusMagic {
 		FocusMagicAura(nil, &character.Unit)
 	}
+
+	if individualBuffs.DarkIntent && character.Unit.Type == PlayerUnit {
+		MakePermanent(DarkIntentAura(&character.Unit, false))
+	}
+}
+
+func DarkIntentAura(unit *Unit, selfBuff bool) *Aura {
+	var hasteEffect *ExclusiveEffect
+	procAura := unit.RegisterAura(Aura{
+		Label:     "Dark Intent Proc",
+		ActionID:  ActionID{SpellID: 85759},
+		Duration:  time.Second * 7,
+		MaxStacks: 3,
+		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
+			hasteEffect.SetPriority(sim, TernaryFloat64(selfBuff, 0.03, 0.01)*float64(newStacks))
+		},
+	})
+	hasteEffect = procAura.NewExclusiveEffect("DarkIntent", false, ExclusiveEffect{
+		Priority: 0,
+		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
+			ee.Aura.Unit.PseudoStats.DotDamageMultiplierAdditive += ee.Priority
+		},
+		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
+			ee.Aura.Unit.PseudoStats.DotDamageMultiplierAdditive -= ee.Priority
+		},
+	})
+
+	// proc this based on the uptime configuration
+	if !selfBuff {
+		// We assume lock precasts dot so first tick might happen after 2 seconds already
+		ApplyFixedUptimeAura(procAura, unit.DarkIntentUptimePercent, time.Second*2, time.Second*2)
+	}
+
+	var periodicHandler OnPeriodicDamage
+	if selfBuff {
+		periodicHandler = func(_ *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			if result.Outcome.Matches(OutcomeCrit) && spell.SchoolIndex > stats.SchoolIndexPhysical {
+				procAura.Activate(sim)
+				procAura.AddStack(sim)
+			}
+		}
+	}
+
+	return unit.RegisterAura(Aura{
+		Label:    "Dark Intent",
+		ActionID: ActionID{SpellID: 85767},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.MultiplyCastSpeed(1.03)
+			aura.Unit.MultiplyAttackSpeed(sim, 1.03)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.MultiplyCastSpeed(1 / 1.03)
+			aura.Unit.MultiplyAttackSpeed(sim, 1/1.03)
+		},
+		OnPeriodicDamageDealt: periodicHandler,
+	})
 }
 
 func StoneskinTotem(unit *Unit) *Aura {
@@ -483,14 +539,22 @@ func StrengthOfEarthTotemAura(unit *Unit) *Aura {
 }
 
 // https://www.wowhead.com/cata/spell=57330/horn-of-winter
-func HornOfWinterAura(unit *Unit) *Aura {
-	return makeExclusiveBuff(unit, BuffConfig{
+func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
+	baseAura := makeExclusiveBuff(unit, BuffConfig{
 		"Horn of Winter",
 		ActionID{SpellID: 57330},
 		[]StatConfig{
 			{stats.Agility, 549.0, false},
 			{stats.Strength, 549.0, false},
 		}})
+
+	if asExternal {
+		return baseAura
+	}
+
+	baseAura.OnReset = nil
+	baseAura.Duration = TernaryDuration(withGlyph, time.Minute*3, time.Minute*2)
+	return baseAura
 }
 
 // https://www.wowhead.com/cata/spell=6673/battle-shout
@@ -518,7 +582,7 @@ func applyStrengthAgilityBuffs(unit *Unit, raidBuffs *proto.RaidBuffs) {
 	}
 
 	if raidBuffs.HornOfWinter {
-		MakePermanent(HornOfWinterAura(unit))
+		MakePermanent(HornOfWinterAura(unit, true, false))
 	}
 
 	if raidBuffs.BattleShout {
@@ -558,7 +622,7 @@ func TrueShotAura(unit *Unit) *Aura {
 func AbominationsMightAura(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
 		"Abominations Might",
-		ActionID{SpellID: 53183},
+		ActionID{SpellID: 53138},
 		[]StatConfig{
 			{stats.AttackPower, 1.2, true},
 			{stats.RangedAttackPower, 1.1, true},
@@ -852,9 +916,11 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	partyBuffs = googleProto.Clone(partyBuffs).(*proto.PartyBuffs)
 	individualBuffs = googleProto.Clone(individualBuffs).(*proto.IndividualBuffs)
 
-	// We need to modify the buffs a bit because some things are applied to pets by
-	// the owner during combat (Bloodlust) or don't make sense for a pet.
+	// Remove buffs that do not apply to pets
+	// Or those that will be applied from the player (BL)
 	raidBuffs.Bloodlust = false
+	raidBuffs.Heroism = false
+	raidBuffs.TimeWarp = false
 	// Str/Agi
 	raidBuffs.StrengthOfEarthTotem = false
 	raidBuffs.HornOfWinter = false
@@ -870,9 +936,26 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	raidBuffs.UnleashedRage = false
 	raidBuffs.AbominationsMight = false
 	raidBuffs.BlessingOfMight = false
+	// +5% Spell haste
+	raidBuffs.MoonkinForm = false
+	raidBuffs.ShadowForm = false
+	raidBuffs.WrathOfAirTotem = false
 	// +Armor
 	raidBuffs.DevotionAura = false
 	raidBuffs.StoneskinTotem = false
+	// +3% All Damage
+	//raidBuffs.ArcaneTactics = false
+	//raidBuffs.FerociousInspiration = false
+	//raidBuffs.Communion = false
+	// +Spell Resistances
+	raidBuffs.ElementalResistanceTotem = false
+	raidBuffs.ResistanceAura = false
+	raidBuffs.ShadowProtection = false
+	raidBuffs.AspectOfTheWild = false
+	// +5% Base Stats and Spell Resistances
+	raidBuffs.MarkOfTheWild = false
+	raidBuffs.BlessingOfKings = false
+	raidBuffs.DrumsOfTheBurningWild = false
 
 	individualBuffs.HymnOfHopeCount = 0
 	individualBuffs.InnervateCount = 0
@@ -1592,10 +1675,11 @@ func registerManaTideTotemCD(agent Agent, numManaTideTotems int32) {
 	var mttAura *Aura
 
 	character := agent.GetCharacter()
+	mttAura = ManaTideTotemAura(character, -1)
+
 	character.Env.RegisterPostFinalizeEffect(func() {
 		// Use first MTT at 60s, or halfway through the fight, whichever comes first.
 		initialDelay = min(character.Env.BaseDuration/2, time.Second*60)
-		mttAura = ManaTideTotemAura(character, -1)
 	})
 
 	registerExternalConsecutiveCDApproximation(

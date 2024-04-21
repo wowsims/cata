@@ -7,11 +7,12 @@ import (
 
 func init() {
 	shared.NewProcDamageEffect(shared.ProcDamageEffect{
-		ItemID: 62049,
-		School: core.SpellSchoolNature,
-		MinDmg: 5250,
-		MaxDmg: 8750,
-		Flags:  core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers,
+		ItemID:  62049,
+		SpellID: 89087,
+		School:  core.SpellSchoolNature,
+		MinDmg:  5250,
+		MaxDmg:  8750,
+		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers,
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
@@ -22,11 +23,12 @@ func init() {
 	})
 
 	shared.NewProcDamageEffect(shared.ProcDamageEffect{
-		ItemID: 62051,
-		School: core.SpellSchoolNature,
-		MinDmg: 5250,
-		MaxDmg: 8750,
-		Flags:  core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers,
+		ItemID:  62051,
+		SpellID: 89087,
+		School:  core.SpellSchoolNature,
+		MinDmg:  5250,
+		MaxDmg:  8750,
+		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers,
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,

@@ -42,17 +42,22 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / mmHunter.RangedSwingSpeed())
 			},
 		},
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		CritMultiplier:           mmHunter.CritMultiplier(true, true, false),
-		ThreatMultiplier:         1,
+		BonusCritRating:  0,
+		DamageMultiplier: 1.32,
+		CritMultiplier:   mmHunter.CritMultiplier(true, true, false),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			wepDmg := mmHunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
-			rap := spell.RangedAttackPower(target)*0.724 + 766
-			baseDamage := ((wepDmg + rap) * 1.6) + 100
+			rap := spell.RangedAttackPower(target) * 0.724
+			baseDamage := (wepDmg + rap) + 821
+			if sim.IsExecutePhase90() {
+				spell.BonusCritRating = (30.0 * float64(mmHunter.Talents.CarefulAim)) * core.CritRatingPerCritChance
+			}
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-
+			if sim.IsExecutePhase90() {
+				spell.BonusCritRating = 0
+			}
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})

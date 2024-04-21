@@ -26,9 +26,10 @@ type ProcStatBonusEffect struct {
 }
 
 type DamageEffect struct {
-	School core.SpellSchool
-	MinDmg float64
-	MaxDmg float64
+	SpellID int32
+	School  core.SpellSchool
+	MinDmg  float64
+	MaxDmg  float64
 }
 
 type ExtraSpellInfo struct {
@@ -43,7 +44,7 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 	factory_StatBonusEffect(config, nil, func(agent core.Agent) ExtraSpellInfo {
 		character := agent.GetCharacter()
 		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:                 core.ActionID{ItemID: config.ID},
+			ActionID:                 core.ActionID{SpellID: damage.SpellID},
 			SpellSchool:              damage.School,
 			ProcMask:                 core.ProcMaskEmpty,
 			Flags:                    core.SpellFlagNoOnCastComplete,
@@ -368,6 +369,7 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 
 type ProcDamageEffect struct {
 	ItemID  int32
+	SpellID int32
 	Trigger core.ProcTrigger
 
 	School core.SpellSchool
@@ -388,7 +390,7 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 		}
 
 		damageSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{ItemID: config.ItemID},
+			ActionID:    core.ActionID{SpellID: config.SpellID},
 			SpellSchool: config.School,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       config.Flags,

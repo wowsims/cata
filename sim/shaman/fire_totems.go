@@ -25,41 +25,19 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
-
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		BonusCoefficient: 0.2,
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "SearingTotem",
 			},
-			// These are the real tick values, but searing totem doesn't start its next
-			// cast until the previous missile hits the target. We don't have an option
-			// for target distance yet so just pretend the tick rate is lower.
-			// https://wotlk.wowhead.com/spell=25530/attack
-			//NumberOfTicks:        30,
-			//TickLength:           time.Second * 2.2,
-			NumberOfTicks:    24,
-			TickLength:       time.Second * 60 / 24,
-			BonusCoefficient: 0.2,
+			// Actual searing totem cast in game is currently 1500 milliseconds with a slight random
+			// delay inbetween each cast so using an extra 20 milliseconds to account for the delay
+			// subtracting 1 tick so that it doesn't shoot after its actual expiration
+			NumberOfTicks: int32(40*(1.0+0.20*float64(shaman.Talents.TotemicFocus))) - 1,
+			TickLength:    time.Millisecond * (1500 + 20),
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.Spell.CalcAndDealDamage(sim, target, 90, dot.Spell.OutcomeMagicHitAndCrit)
-
-				if shaman.Talents.SearingFlames > 0 && result.Landed() {
-					if shaman.Talents.SearingFlames == 3 || sim.RandomFloat("Searing Flames") < 0.33*float64(shaman.Talents.SearingFlames) {
-						searingFlamesDot := shaman.SearingFlamesDot.Dot(target)
-
-						if searingFlamesDot.Aura.GetStacks() == 0 {
-							searingFlamesDot.Aura.Activate(sim)
-						} else {
-							searingFlamesDot.Aura.AddStack(sim)
-						}
-
-						// recalc damage based on stacks, testing with searing totem seems to indicate the damage is updated dynamically on refesh
-						// instantly taking the bonus of any procs or buffs and applying it times the number of stacks
-						searingFlamesDot.SnapshotAttackerMultiplier = 1
-						searingFlamesDot.SnapshotBaseDamage = float64(searingFlamesDot.Aura.GetStacks()) * result.Damage / float64(searingFlamesDot.NumberOfTicks)
-						searingFlamesDot.Spell.Cast(sim, target)
-					}
-				}
+				dot.Spell.CalcAndDealDamage(sim, target, 90, dot.Spell.OutcomeMagicHitAndCrit)
 			},
 		},
 
@@ -67,10 +45,8 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			shaman.MagmaTotem.AOEDot().Cancel(sim)
 			shaman.FireElemental.Disable(sim)
 			spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
-
-			bonusDuration := 1.0 + 0.20*float64(shaman.Talents.TotemicFocus)
-			// +1 needed because of rounding issues with totem tick time.
-			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Second*60*time.Duration(bonusDuration) + 1
+			duration := 60 * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus))
+			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Duration(duration)*time.Second
 		},
 	})
 }
@@ -94,14 +70,14 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
 				Label: "MagmaTotem",
 			},
-			NumberOfTicks:    10,
+			NumberOfTicks:    int32(30 * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus))),
 			TickLength:       time.Second * 2,
 			BonusCoefficient: 0.08,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -116,9 +92,9 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			shaman.SearingTotem.Dot(shaman.CurrentTarget).Cancel(sim)
 			shaman.FireElemental.Disable(sim)
 			spell.AOEDot().Apply(sim)
-			bonusDuration := 1.0 + 0.20*float64(shaman.Talents.TotemicFocus)
-			// +1 needed because of rounding issues with totem tick time.
-			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Second*60*time.Duration(bonusDuration) + 1
+
+			duration := 60 * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus))
+			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + time.Duration(duration)*time.Second
 		},
 	})
 }

@@ -17,10 +17,9 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: DeathKnightSpellFesteringStrike,
 
-		DamageMultiplier:         1.5,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultMeleeCritMultiplier(),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1.5,
+		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := dk.ClassBaseScaling*0.24899999797 +
@@ -56,10 +55,9 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier:         1.5,
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           dk.DefaultMeleeCritMultiplier(),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1.5,
+		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := dk.ClassBaseScaling*0.49799999595 +

@@ -427,7 +427,7 @@ func SunderArmorAura(target *Unit) *Aura {
 		ActionID:  ActionID{SpellID: 58567},
 		Duration:  time.Second * 30,
 		MaxStacks: 3,
-		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
+		OnStacksChange: func(_ *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
 			effect.SetPriority(sim, 0.04*float64(newStacks))
 		},
 	})
@@ -440,7 +440,7 @@ func FaerieFireAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:     "Faerie Fire",
 		ActionID:  ActionID{SpellID: 770},
-		Duration:  time.Second * 30,
+		Duration:  time.Minute * 5,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
 			effect.SetPriority(sim, 0.04*float64(newStacks))

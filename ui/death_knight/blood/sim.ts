@@ -141,6 +141,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.IncomingHps,
@@ -150,6 +151,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
 			DeathKnightInputs.StartingRunicPower(),
+			OtherInputs.DarkIntentUptime
 		],
 	},
 	encounterPicker: {

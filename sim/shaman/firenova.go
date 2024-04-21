@@ -28,12 +28,12 @@ func (shaman *Shaman) registerFireNovaSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.ElementalFuryCritMultiplier(0),
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.164,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				if aoeTarget.GetAura("FlameShock") != nil {
+				if shaman.FlameShock.Dot(aoeTarget).IsActive() {
 					for _, newTarget := range sim.Encounter.TargetUnits {
 						if newTarget != aoeTarget {
 							spell.CalcAndDealDamage(sim, newTarget, 789, spell.OutcomeMagicHitAndCrit)
@@ -42,17 +42,13 @@ func (shaman *Shaman) registerFireNovaSpell() {
 				}
 			}
 		},
-	})
-}
-
-func (shaman *Shaman) IsFireNovaCastable(sim *core.Simulation) bool {
-	if shaman.FireNova.IsReady(sim) {
-		for _, aoeTarget := range sim.Encounter.TargetUnits {
-			if aoeTarget.GetAura("FlameShock") != nil {
-				return true
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				if shaman.FlameShock.Dot(aoeTarget).IsActive() {
+					return true
+				}
 			}
-		}
-	}
-
-	return false
+			return false
+		},
+	})
 }

@@ -26,7 +26,9 @@ type Druid struct {
 	RebirthTiming     float64
 	BleedsActive      int
 	AssumeBleedActive bool
+	LeatherSpecActive bool
 
+	MHAutoSpell       *core.Spell
 	ReplaceBearMHFunc core.ReplaceMHSwing
 
 	Barkskin             *DruidSpell
@@ -48,6 +50,7 @@ type Druid struct {
 	Maul                 *DruidSpell
 	MaulQueueSpell       *DruidSpell
 	Moonfire             *DruidSpell
+	Pulverize            *DruidSpell
 	Rebirth              *DruidSpell
 	Rake                 *DruidSpell
 	Rip                  *DruidSpell
@@ -69,6 +72,7 @@ type Druid struct {
 	BarkskinAura             *core.Aura
 	BearFormAura             *core.Aura
 	BerserkAura              *core.Aura
+	BerserkProcAura          *core.Aura
 	CatFormAura              *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
@@ -79,6 +83,8 @@ type Druid struct {
 	MoonkinT84PCAura         *core.Aura
 	NaturesGraceProcAura     *core.Aura
 	PredatoryInstinctsAura   *core.Aura
+	PrimalMadnessAura        *core.Aura
+	PulverizeAura            *core.Aura
 	SavageDefenseAura        *core.Aura
 	SurvivalInstinctsAura    *core.Aura
 	TigersFuryAura           *core.Aura
@@ -89,6 +95,7 @@ type Druid struct {
 
 	BleedCategories core.ExclusiveCategoryArray
 
+	PrimalMadnessRageMetrics       *core.ResourceMetrics
 	PrimalPrecisionRecoveryMetrics *core.ResourceMetrics
 	SavageRoarDurationTable        [6]time.Duration
 
@@ -131,12 +138,9 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	// 		raidBuffs.MoonkinAura = proto.TristateEffect_TristateEffectImproved
 	// 	}
 	// }
-	// if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
-	// 	raidBuffs.LeaderOfThePack = max(raidBuffs.LeaderOfThePack, proto.TristateEffect_TristateEffectRegular)
-	// 	if druid.Talents.ImprovedLeaderOfThePack > 0 {
-	// 		raidBuffs.LeaderOfThePack = proto.TristateEffect_TristateEffectImproved
-	// 	}
-	// }
+	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
+		raidBuffs.LeaderOfThePack = true
+	}
 }
 
 // func (druid *Druid) BalanceCritMultiplier() float64 {
@@ -188,18 +192,21 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 }
 
 func (druid *Druid) Initialize() {
-	if druid.Spec == proto.Spec_SpecFeralDruid {
-		druid.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeLeather)
-	}
-	// druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
+	druid.LeatherSpecActive = druid.MeetsArmorSpecializationRequirement(proto.ArmorType_ArmorTypeLeather)
+	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
+
+	druid.Env.RegisterPostFinalizeEffect(func() {
+		druid.MHAutoSpell = druid.AutoAttacks.MHAuto()
+	})
 
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.PrimalPrecisionRecoveryMetrics = druid.NewEnergyMetrics(core.ActionID{SpellID: 48410})
 	// }
-	// druid.registerFaerieFireSpell()
+	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	// druid.registerInnervateCD()
 	// druid.registerFakeGotw()
+	druid.applyOmenOfClarity()
 }
 
 // func (druid *Druid) RegisterBalanceSpells() {
@@ -214,19 +221,19 @@ func (druid *Druid) Initialize() {
 // }
 
 func (druid *Druid) RegisterFeralCatSpells() {
-	// 	druid.registerBerserkCD()
+	druid.registerBerserkCD()
 	druid.registerCatFormSpell()
 	// 	druid.registerBearFormSpell()
 	// 	druid.registerEnrageSpell()
-	// 	druid.registerFerociousBiteSpell()
+	druid.registerFerociousBiteSpell()
 	// 	druid.registerMangleBearSpell()
-	// 	druid.registerMangleCatSpell()
+	druid.registerMangleCatSpell()
 	// 	druid.registerMaulSpell()
-	// 	druid.registerLacerateSpell()
-	// 	druid.registerRakeSpell()
-	// 	druid.registerRipSpell()
-	// 	druid.registerSavageRoarSpell()
-	// 	druid.registerShredSpell()
+	druid.registerLacerateSpell()
+	druid.registerRakeSpell()
+	druid.registerRipSpell()
+	druid.registerSavageRoarSpell()
+	druid.registerShredSpell()
 	// 	druid.registerSwipeBearSpell()
 	// 	druid.registerSwipeCatSpell()
 	druid.registerTigersFurySpell()

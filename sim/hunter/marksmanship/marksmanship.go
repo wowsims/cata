@@ -28,7 +28,7 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 	wqSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskRangedAuto,
+		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 0.8, // Wowwiki says it remains 80%
@@ -72,6 +72,12 @@ func NewMarksmanshipHunter(character *core.Character, options *proto.Player) *Ma
 }
 func (mmHunter *MarksmanshipHunter) Initialize() {
 	mmHunter.Hunter.Initialize()
+	// MM Hunter Spec Bonus
+	mmHunter.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ProcMask:   core.ProcMaskRangedAuto,
+		FloatValue: 0.15,
+	})
 
 	mmHunter.registerAimedShotSpell()
 	mmHunter.registerChimeraShotSpell()

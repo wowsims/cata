@@ -359,7 +359,7 @@ func init() {
 
 		statAura := character.NewTemporaryStatsAura(
 			"Lightweave Embroidery Proc",
-			core.ActionID{SpellID: 75171},
+			core.ActionID{SpellID: 75170},
 			stats.Stats{stats.Intellect: 480},
 			time.Second*15,
 		)
@@ -378,98 +378,6 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4115, aura)
-	})
-
-	// Enchant: 4179, Spell: 82175 - Synapse Springs
-	core.NewEnchantEffect(4179, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		agiAura := character.NewTemporaryStatsAura(
-			"Hyperspeed Acceleration - Agi",
-			core.ActionID{SpellID: 96228},
-			stats.Stats{stats.Agility: 480},
-			time.Second*10,
-		)
-
-		strAura := character.NewTemporaryStatsAura(
-			"Hyperspeed Acceleration - Str",
-			core.ActionID{SpellID: 96229},
-			stats.Stats{stats.Strength: 480},
-			time.Second*10,
-		)
-
-		intAura := character.NewTemporaryStatsAura(
-			"Hyperspeed Acceleration - Int",
-			core.ActionID{SpellID: 96230},
-			stats.Stats{stats.Intellect: 480},
-			time.Second*10,
-		)
-
-		spell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 82175},
-			SpellSchool: core.SpellSchoolPhysical,
-			Flags:       core.SpellFlagNoOnCastComplete,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 60,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				intStat := character.GetStat(stats.Intellect)
-				strStat := character.GetStat(stats.Strength)
-				agiStat := character.GetStat(stats.Agility)
-				if intStat > strStat && intStat > agiStat {
-					intAura.Activate(sim)
-				} else if agiStat > intStat && agiStat > strStat {
-					agiAura.Activate(sim)
-				} else {
-					strAura.Activate(sim)
-				}
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    spell,
-			Priority: core.CooldownPriorityLow,
-			Type:     core.CooldownTypeDPS,
-		})
-	})
-
-	// Enchant: 4180, Spell: 82177 - Quickflip Deflection Plates
-	core.NewEnchantEffect(4180, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		statAura := character.NewTemporaryStatsAura(
-			"Quickflip Deflection Plates Buff",
-			core.ActionID{SpellID: 82176},
-			stats.Stats{stats.Armor: 1500},
-			time.Second*12,
-		)
-
-		spell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 82177},
-			SpellSchool: core.SpellSchoolPhysical,
-			Flags:       core.SpellFlagNoOnCastComplete,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 60,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				statAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    spell,
-			Priority: core.CooldownPriorityLow,
-			Type:     core.CooldownTypeSurvival,
-		})
 	})
 
 	// Enchant: 4175, Spell: 81932, Item: 59594 - Gnomish X-Ray Scope
@@ -499,115 +407,10 @@ func init() {
 		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4175, aura)
 	})
 
-	// Enchant: 4181, Spell: 82180 - Tazik Shocker
-	core.NewEnchantEffect(4181, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		spell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 82175},
-			SpellSchool: core.SpellSchoolNature,
-			Flags:       core.SpellFlagNoOnCastComplete,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 120,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-				// Benerfits from enhancement mastery
-				// Ele crit dmg multi
-				// Moonkin eclipse, so basically everything
-				spell.CalcAndDealDamage(sim, unit, sim.Roll(4320, 961), spell.OutcomeMagicHitAndCrit)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    spell,
-			Priority: core.CooldownPriorityLow,
-			Type:     core.CooldownTypeDPS,
-		})
-	})
-
-	// Enchant: 4182, Spell: 82200 - Spinal Healing Injector
-	core.NewEnchantEffect(4182, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		healthMetric := character.NewHealthMetrics(core.ActionID{SpellID: 82184})
-		spell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 82200},
-			SpellSchool: core.SpellSchoolPhysical,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagCombatPotion,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 60,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-				result := sim.Roll(27000, 33000)
-				if character.HasAlchStone() {
-					result *= 1.4
-				}
-
-				character.GainHealth(sim, result, healthMetric)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    spell,
-			Priority: core.CooldownPriorityLow,
-			Type:     core.CooldownTypeSurvival,
-		})
-	})
-
-	// Enchant: 4183, Spell: 82201 - Z50 Mana Gulper
-	core.NewEnchantEffect(4183, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		manaMetric := character.NewManaMetrics(core.ActionID{SpellID: 82186})
-		spell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 82201},
-			SpellSchool: core.SpellSchoolPhysical,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPotion,
-
-			// TODO: In theory those ingi on-use enchants share a CD with potions
-			// The potion CD timer is not available right now
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 60,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-				mana := sim.Roll(10730, 12470)
-				if character.HasAlchStone() {
-					mana *= 1.4
-				}
-
-				character.AddMana(sim, mana, manaMetric)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
-				return c.HasManaBar() && (c.MaxMana()-c.CurrentMana()) > 10730
-			},
-			Spell:    spell,
-			Priority: core.CooldownPriorityLow,
-			Type:     core.CooldownTypeMana,
-		})
-	})
-
-	// Enchant: 4187, Spell: 84424 - Invisibility Field -- Non combat enchant won't implement
-	// Enchant: 4214, Spell: 84425 - Cardboard Assassin -- Non combat enchant won't implement
-	// Enchant: 4188, Spell: 84427 - Grounded Plasma Shield -- Shield Absorbs not supported?
-
 	// Enchant: 4215, Spell: 92433, Item: 55055 - Elementium Shield Spike
 	core.NewEnchantEffect(4215, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 55055}
+		actionID := core.ActionID{SpellID: 92432}
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
@@ -640,7 +443,7 @@ func init() {
 	// Enchant: 4216, Spell: 92437, Item: 55056  - Pyrium Shield Spike
 	core.NewEnchantEffect(4216, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 55055}
+		actionID := core.ActionID{SpellID: 92436}
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,

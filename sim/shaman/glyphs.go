@@ -8,10 +8,9 @@ import (
 )
 
 func (shaman *Shaman) ApplyGlyphs() {
-
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFireElementalTotem) {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask: int64(SpellMaskFireElementalTotem),
+			ClassMask: SpellMaskFireElementalTotem,
 			Kind:      core.SpellMod_Cooldown_Flat,
 			TimeValue: time.Minute * -5,
 		})
@@ -19,7 +18,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFlameShock) {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask: int64(SpellMaskFlameShock),
+			ClassMask: SpellMaskFlameShock,
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
 			IntValue:  3,
 		})
@@ -27,7 +26,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfLavaBurst) {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskLavaBurst),
+			ClassMask:  SpellMaskLavaBurst,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.1,
 		})
@@ -35,7 +34,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfLavaLash) {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskLavaLash),
+			ClassMask:  SpellMaskLavaLash,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.2,
 		})
@@ -43,7 +42,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfLightningBolt) {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  int64(SpellMaskLightningBolt),
+			ClassMask:  SpellMaskLightningBolt,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.04,
 		})
@@ -51,7 +50,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfThunder) {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask: int64(SpellMaskThunderstorm),
+			ClassMask: SpellMaskThunderstorm,
 			Kind:      core.SpellMod_Cooldown_Flat,
 			TimeValue: time.Second * -10,
 		})

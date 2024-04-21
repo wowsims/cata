@@ -32,6 +32,11 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 		Duration: time.Millisecond * 3500,
 	}
 
+	icdStaticShock := core.Cooldown{
+		Timer:    shaman.NewTimer(),
+		Duration: time.Millisecond * 500,
+	}
+
 	shaman.LightningShieldAura = shaman.RegisterAura(core.Aura{
 		Label:     "Lightning Shield",
 		ActionID:  actionID,
@@ -44,6 +49,9 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 			aura.SetStacks(sim, 3)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !icdStaticShock.IsReady(sim) || !aura.IsActive() {
+				return
+			}
 			if shaman.Talents.StaticShock > 0 && spell == shaman.LavaLash || spell == shaman.Stormstrike || spell == shaman.PrimalStrike {
 				if sim.RandomFloat("Static Shock") < 0.15*float64(shaman.Talents.StaticShock) {
 					procSpell.Cast(sim, result.Target)

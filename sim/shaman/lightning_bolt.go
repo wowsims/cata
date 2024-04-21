@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (shaman *Shaman) registerLightningBoltSpell() {
@@ -13,30 +12,14 @@ func (shaman *Shaman) registerLightningBoltSpell() {
 }
 
 func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core.SpellConfig {
-	castTime := time.Millisecond * 2500
-	bonusCoefficient := 0.714
-	canOverload := false
-	overloadChance := shaman.GetOverloadChance()
-	if shaman.Spec == proto.Spec_SpecElementalShaman {
-		castTime -= 500
-		// 0.36 is shamanism bonus
-		bonusCoefficient += 0.36
-		canOverload = true
-	}
+	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 403}, 0.06, time.Millisecond*2500, isElementalOverload, 0.714)
 
-	spellConfig := shaman.newElectricSpellConfig(
-		core.ActionID{SpellID: 403},
-		0.06,
-		castTime,
-		isElementalOverload,
-		bonusCoefficient)
-
-	spellConfig.ClassSpellMask = SpellMaskLightningBolt
+	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, SpellMaskLightningBoltOverload, SpellMaskLightningBolt)
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		result := spell.CalcDamage(sim, target, 770, spell.OutcomeMagicHitAndCrit)
 
-		if canOverload && result.Landed() && sim.RandomFloat("Lightning Bolt Elemental Overload") < overloadChance {
+		if result.Landed() && sim.RandomFloat("Lightning Bolt Elemental Overload") < shaman.GetOverloadChance() {
 			shaman.LightningBoltOverload.Cast(sim, target)
 		}
 

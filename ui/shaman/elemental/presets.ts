@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Faction, Flask, Food, Glyphs, Potions, Profession } from '../../core/proto/common.js';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession } from '../../core/proto/common.js';
 import {
 	AirTotem,
 	EarthTotem,
@@ -15,10 +15,6 @@ import {
 import { SavedTalents } from '../../core/proto/ui.js';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
-import P2Gear from './gear_sets/p2.gear.json';
-import P3AllianceGear from './gear_sets/p3_alliance.gear.json';
-import P3HordeGear from './gear_sets/p3_horde.gear.json';
-import P4Gear from './gear_sets/p4.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -27,19 +23,33 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
-export const P2_PRESET = PresetUtils.makePresetGear('P2 Preset', P2Gear);
-export const P3_PRESET_ALLI = PresetUtils.makePresetGear('P3 Preset [A]', P3AllianceGear, { faction: Faction.Alliance });
-export const P3_PRESET_HORDE = PresetUtils.makePresetGear('P3 Preset [H]', P3HordeGear, { faction: Faction.Horde });
-export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
-export const StandardTalents = {
-	name: 'Standard',
+export const TalentsTotemDuration = {
+	name: 'Totem Duration',
 	data: SavedTalents.create({
-		talentsString: '3232023212231101321-203002',
+		talentsString: '303202321223110132-201-20302',
+		glyphs: Glyphs.create({			
+			prime1: ShamanPrimeGlyph.GlyphOfFlameShock,
+			prime2: ShamanPrimeGlyph.GlyphOfLavaBurst,
+			prime3: ShamanPrimeGlyph.GlyphOfLightningBolt,
+			major1: ShamanMajorGlyph.GlyphOfLightningShield,
+			major2: ShamanMajorGlyph.GlyphOfThunder,
+			major3: ShamanMajorGlyph.GlyphOfFireNova,
+			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
+			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
+			minor3: ShamanMinorGlyph.GlyphOfTheArcticWolf,
+		}),
+	}),
+};
+
+export const TalentsImprovedShields = {
+	name: 'Improved Shields',
+	data: SavedTalents.create({
+		talentsString: '3032023212231101321-2030022',
 		glyphs: Glyphs.create({			
 			prime1: ShamanPrimeGlyph.GlyphOfFlameShock,
 			prime2: ShamanPrimeGlyph.GlyphOfLavaBurst,
@@ -56,11 +66,11 @@ export const StandardTalents = {
 
 export const DefaultOptions = ElementalShamanOptions.create({
 	classOptions: {
-		shield: ShamanShield.WaterShield,
+		shield: ShamanShield.LightningShield,
 		totems: ShamanTotems.create({
 			earth: EarthTotem.StrengthOfEarthTotem,
 			air: AirTotem.WrathOfAirTotem,
-			fire: FireTotem.FlametongueTotem,
+			fire: FireTotem.SearingTotem,
 			water: WaterTotem.ManaSpringTotem,
 			useFireElemental: true,
 		}),
@@ -75,6 +85,7 @@ export const OtherDefaults = {
 
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.VolcanicPotion,
-	flask: Flask.FlaskOfTheFrostWyrm,
-	food: Food.FoodFishFeast,
+	prepopPotion: Potions.VolcanicPotion,
+	flask: Flask.FlaskOfTheDraconicMind,
+	food: Food.FoodSeafoodFeast,
 });

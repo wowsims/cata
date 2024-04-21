@@ -14,37 +14,45 @@ func (druid *Druid) registerFrenziedRegenerationCD() {
 
 	cdTimer := druid.NewTimer()
 	cd := time.Minute * 3
-	healingMulti := core.TernaryFloat64(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfFrenziedRegeneration), 1.2, 1.0)
+	isGlyphed := druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfFrenziedRegeneration)
+	healingMulti := core.TernaryFloat64(isGlyphed, 1.3, 1.0)
 
+	var bonusHealth float64
 	druid.FrenziedRegenerationAura = druid.RegisterAura(core.Aura{
 		Label:    "Frenzied Regeneration",
 		ActionID: actionID,
-		Duration: time.Second * 10,
+		Duration: time.Second * 20,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.HealingTakenMultiplier *= healingMulti
+			bonusHealth = druid.MaxHealth() * 0.3
+			druid.UpdateMaxHealth(sim, bonusHealth, healthMetrics)
 		},
 
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.HealingTakenMultiplier /= healingMulti
+			druid.UpdateMaxHealth(sim, -bonusHealth, healthMetrics)
 		},
 	})
 
 	druid.FrenziedRegeneration = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID: actionID,
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
 			CD: core.Cooldown{
 				Timer:    cdTimer,
 				Duration: cd,
 			},
-			IgnoreHaste: true,
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			druid.FrenziedRegenerationAura.Activate(sim)
+
+			if isGlyphed {
+				return
+			}
+
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				NumTicks: 10,
+				NumTicks: 20,
 				Period:   time.Second * 1,
+				Priority: core.ActionPriorityDOT,
 				OnAction: func(sim *core.Simulation) {
 					rageDumped := min(druid.CurrentRage(), 10.0)
 					healthGained := rageDumped * 0.3 / 100 * druid.MaxHealth() * druid.PseudoStats.HealingTakenMultiplier
@@ -55,8 +63,6 @@ func (druid *Druid) registerFrenziedRegenerationCD() {
 					}
 				},
 			})
-
-			druid.FrenziedRegenerationAura.Activate(sim)
 		},
 	})
 

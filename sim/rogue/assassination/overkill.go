@@ -16,10 +16,10 @@ func (sinRogue *AssassinationRogue) registerOverkill() {
 		ActionID: core.ActionID{SpellID: 58427},
 		Duration: time.Second * 20,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			sinRogue.ApplyEnergyTickMultiplier(0.3)
+			sinRogue.ApplyAdditiveEnergyRegenBonus(sim, 0.3)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			sinRogue.ApplyEnergyTickMultiplier(-0.3)
+			sinRogue.ApplyAdditiveEnergyRegenBonus(sim, -0.3)
 		},
 	})
 }

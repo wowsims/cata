@@ -40,7 +40,7 @@ func (combatRogue *CombatRogue) Initialize() {
 
 	// Vitality Passive
 	combatRogue.AutoAttacks.OHConfig().DamageMultiplier *= 1.75
-	combatRogue.EnergyTickMultiplier *= 1.25
+	combatRogue.AdditiveEnergyRegenBonus += 0.25
 	combatRogue.MultiplyStat(stats.AttackPower, 1.3)
 
 	combatRogue.registerRevealingStrike()

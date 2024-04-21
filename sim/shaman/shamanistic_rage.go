@@ -47,9 +47,5 @@ func (shaman *Shaman) registerShamanisticRageCD() {
 	shaman.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeMana,
-		//TODO: This might change since it works a bit different now
-		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			return character.CurrentManaPercent() <= 0.2
-		},
 	})
 }

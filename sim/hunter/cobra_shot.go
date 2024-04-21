@@ -48,10 +48,16 @@ func (hunter *Hunter) registerCobraShotSpell() {
 			if hunter.SerpentSting.Dot(target).IsActive() {
 				hunter.SerpentSting.Dot(target).Apply(sim) // Refresh to cause new total snapshot
 			}
+			if sim.IsExecutePhase90() {
+				spell.BonusCritRating += (30.0 * float64(hunter.Talents.CarefulAim)) * core.CritRatingPerCritChance
+			}
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
+				if sim.IsExecutePhase90() {
+					spell.BonusCritRating -= (30.0 * float64(hunter.Talents.CarefulAim)) * core.CritRatingPerCritChance
+				}
 			})
 
 		},

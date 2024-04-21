@@ -84,7 +84,12 @@ func (druid *Druid) registerCatFormSpell() {
 
 	var hotwDep *stats.StatDependency
 	if druid.Talents.HeartOfTheWild > 0 {
-		hotwDep = druid.NewDynamicMultiplyStat(stats.AttackPower, 1.0+0.02*float64(druid.Talents.HeartOfTheWild))
+		hotwDep = druid.NewDynamicMultiplyStat(stats.AttackPower, []float64{1.0, 1.03, 1.07, 1.1}[druid.Talents.HeartOfTheWild])
+	}
+
+	var leatherSpecDep *stats.StatDependency
+	if druid.LeatherSpecActive {
+		leatherSpecDep = druid.NewDynamicMultiplyStat(stats.Agility, 1.05)
 	}
 
 	clawWeapon := druid.GetCatWeapon()
@@ -112,6 +117,9 @@ func (druid *Druid) registerCatFormSpell() {
 			if hotwDep != nil {
 				druid.EnableDynamicStatDep(sim, hotwDep)
 			}
+			if leatherSpecDep != nil {
+				druid.EnableDynamicStatDep(sim, leatherSpecDep)
+			}
 
 			if !druid.Env.MeasuringStats {
 				druid.AutoAttacks.SetReplaceMHSwing(nil)
@@ -120,7 +128,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 				// These buffs stay up, but corresponding changes don't
 				if druid.SavageRoarAura.IsActive() {
-					druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= srm
+					druid.MHAutoSpell.DamageMultiplier *= srm
 				}
 
 				if druid.PredatoryInstinctsAura != nil {
@@ -142,6 +150,9 @@ func (druid *Druid) registerCatFormSpell() {
 			if hotwDep != nil {
 				druid.DisableDynamicStatDep(sim, hotwDep)
 			}
+			if leatherSpecDep != nil {
+				druid.DisableDynamicStatDep(sim, leatherSpecDep)
+			}
 
 			if !druid.Env.MeasuringStats {
 				druid.AutoAttacks.SetReplaceMHSwing(nil)
@@ -152,7 +163,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 				// These buffs stay up, but corresponding changes don't
 				if druid.SavageRoarAura.IsActive() {
-					druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= srm
+					druid.MHAutoSpell.DamageMultiplier /= srm
 				}
 
 				if druid.PredatoryInstinctsAura != nil {
@@ -169,8 +180,8 @@ func (druid *Druid) registerCatFormSpell() {
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.35,
-			Multiplier: (1 - 0.2*float64(druid.Talents.KingOfTheJungle)) * (1 - 0.1*float64(druid.Talents.NaturalShapeshifter)),
+			BaseCost:   0.05,
+			Multiplier: 1 - 0.1*float64(druid.Talents.NaturalShapeshifter),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -180,7 +191,7 @@ func (druid *Druid) registerCatFormSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			maxShiftEnergy := float64(100 * druid.Talents.Furor) / 3.0
+			maxShiftEnergy := float64(100*druid.Talents.Furor) / 3.0
 
 			energyDelta := maxShiftEnergy - druid.CurrentEnergy()
 
@@ -208,6 +219,11 @@ func (druid *Druid) registerBearFormSpell() {
 		hotwDep = druid.NewDynamicMultiplyStat(stats.Stamina, 1.0+0.02*float64(druid.Talents.HeartOfTheWild))
 	}
 
+	var leatherSpecDep *stats.StatDependency
+	if druid.LeatherSpecActive {
+		leatherSpecDep = druid.NewDynamicMultiplyStat(stats.Stamina, 1.05)
+	}
+
 	nrdtm := 1 - 0.09*float64(druid.Talents.NaturalReaction)
 
 	clawWeapon := druid.GetBearWeapon()
@@ -230,7 +246,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= core.TernaryFloat64(druid.Talents.MasterShapeshifter, 1.04, 1.0)
 			druid.PseudoStats.DamageTakenMultiplier *= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier *= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodge += 0.02 * float64(druid.Talents.FeralSwiftness) + 0.03 * float64(druid.Talents.NaturalReaction)
+			druid.PseudoStats.BaseDodge += 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.ApplyDynamicEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
@@ -241,6 +257,9 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.EnableDynamicStatDep(sim, stamDep)
 			if hotwDep != nil {
 				druid.EnableDynamicStatDep(sim, hotwDep)
+			}
+			if leatherSpecDep != nil {
+				druid.EnableDynamicStatDep(sim, leatherSpecDep)
 			}
 			druid.GainHealth(sim, healthFrac*druid.MaxHealth()-druid.CurrentHealth(), healthMetrics)
 
@@ -259,7 +278,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= core.TernaryFloat64(druid.Talents.MasterShapeshifter, 1.04, 1.0)
 			druid.PseudoStats.DamageTakenMultiplier /= nrdtm
 			druid.PseudoStats.SpiritRegenMultiplier /= AnimalSpiritRegenSuppression
-			druid.PseudoStats.BaseDodge -= 0.02 * float64(druid.Talents.FeralSwiftness) + 0.03 * float64(druid.Talents.NaturalReaction)
+			druid.PseudoStats.BaseDodge -= 0.02*float64(druid.Talents.FeralSwiftness) + 0.03*float64(druid.Talents.NaturalReaction)
 
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.RemoveDynamicEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
@@ -270,6 +289,9 @@ func (druid *Druid) registerBearFormSpell() {
 			if hotwDep != nil {
 				druid.DisableDynamicStatDep(sim, hotwDep)
 			}
+			if leatherSpecDep != nil {
+				druid.DisableDynamicStatDep(sim, leatherSpecDep)
+			}
 			druid.RemoveHealth(sim, druid.CurrentHealth()-healthFrac*druid.MaxHealth())
 
 			if !druid.Env.MeasuringStats {
@@ -279,6 +301,7 @@ func (druid *Druid) registerBearFormSpell() {
 				druid.UpdateManaRegenRates()
 				druid.EnrageAura.Deactivate(sim)
 				druid.MaulQueueAura.Deactivate(sim)
+				druid.PulverizeAura.Deactivate(sim)
 			}
 		},
 	})
@@ -292,8 +315,8 @@ func (druid *Druid) registerBearFormSpell() {
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.35,
-			Multiplier: (1 - 0.2*float64(druid.Talents.KingOfTheJungle)) * (1 - 0.1*float64(druid.Talents.NaturalShapeshifter)),
+			BaseCost:   0.05,
+			Multiplier: 1 - 0.1*float64(druid.Talents.NaturalShapeshifter),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

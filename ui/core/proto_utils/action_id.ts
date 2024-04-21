@@ -1,7 +1,7 @@
 import { getWowheadLanguagePrefix } from '../constants/lang.js';
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { ResourceType } from '../proto/api.js';
-import { ActionID as ActionIdProto, ItemRandomSuffix,OtherAction } from '../proto/common.js';
+import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction } from '../proto/common.js';
 import { IconData, UIItem as Item } from '../proto/ui.js';
 import { Database } from './database.js';
 
@@ -20,7 +20,16 @@ export class ActionId {
 	readonly name: string;
 	readonly iconUrl: string;
 
-	private constructor(itemId: number, spellId: number, otherId: OtherAction, tag: number, baseName: string, name: string, iconUrl: string, randomSuffixId?: number) {
+	private constructor(
+		itemId: number,
+		spellId: number,
+		otherId: OtherAction,
+		tag: number,
+		baseName: string,
+		name: string,
+		iconUrl: string,
+		randomSuffixId?: number,
+	) {
 		this.itemId = itemId;
 		this.randomSuffixId = randomSuffixId || 0;
 		this.spellId = spellId;
@@ -121,11 +130,7 @@ export class ActionId {
 	}
 
 	equalsIgnoringTag(other: ActionId): boolean {
-		return (
-			this.itemId == other.itemId
-			&& this.randomSuffixId == other.randomSuffixId
-			&& this.spellId == other.spellId
-			&& this.otherId == other.otherId);
+		return this.itemId == other.itemId && this.randomSuffixId == other.randomSuffixId && this.spellId == other.spellId && this.otherId == other.otherId;
 	}
 
 	setBackground(elem: HTMLElement) {
@@ -300,7 +305,7 @@ export class ActionId {
 				} else if (this.tag == 2) {
 					name += ' (Shiv)';
 				} else if (this.tag == 3) {
-					name += ' (Fan of Knives)'
+					name += ' (Fan of Knives)';
 				}
 				break;
 			case 'Fan of Knives':
@@ -318,16 +323,16 @@ export class ActionId {
 				break;
 			case 'Mutilate':
 				if (this.tag == 0) {
-					name += " (Cast)";
+					name += ' (Cast)';
 				} else if (this.tag == 1) {
-					name += " (Main Hand)";
+					name += ' (Main Hand)';
 				} else if (this.tag == 2) {
 					name += ' (Off Hand)';
 				}
 				break;
 			case 'Hemorrhage':
 				if (this.spellId == 89775) {
-					name += " (DoT)";
+					name += ' (DoT)';
 				}
 				break;
 			case 'Chain Lightning':
@@ -465,6 +470,11 @@ export class ActionId {
 					name += ' (Improved)';
 					break;
 				}
+			case 'Improved Steady Shot':
+				if (this.tag == 2) {
+					name += ' (pre)';
+				}
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';

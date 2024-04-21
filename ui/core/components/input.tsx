@@ -1,9 +1,8 @@
 import { Tooltip } from 'bootstrap';
-import { EventID, TypedEvent } from '../typed_event.js';
-
-import { Component } from './component.js';
-
 import { element, fragment } from 'tsx-vanilla'
+
+import { EventID, TypedEvent } from '../typed_event.js';
+import { Component } from './component.js';
 
 /**
  * Data for creating a new input UI element.
@@ -43,7 +42,7 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	private readonly inputConfig: InputConfig<ModObject, T, V>;
 	readonly modObject: ModObject;
 
-	protected enabled: boolean = true;
+	protected enabled = true;
 
 	readonly changeEmitter = new TypedEvent<void>();
 
@@ -64,9 +63,9 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	}
 
 	private buildLabel(config: InputConfig<ModObject, T, V>): JSX.Element {
-		let dataset = {};
+		const dataset = {};
 
-		let label = (
+		const label = (
 			<label className="form-label">
 				{config.label}
 			</label>
@@ -141,7 +140,7 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	}
 
 	static newGroupContainer(): HTMLElement {
-		let group = document.createElement('div');
+		const group = document.createElement('div');
 		group.classList.add('picker-group');
 		return group;
 	}

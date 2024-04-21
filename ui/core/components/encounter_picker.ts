@@ -651,6 +651,19 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 				return !encounter.getUseHealth();
 			},
 		});
+		new NumberPicker(executeGroup, encounter, {
+			label: 'Execute Duration 90 (%)',
+			labelTooltip:
+				'Percentage of the total encounter duration, for which the targets will be considered to be in range (>= 90% HP) for the purpose of effects like Hunter Careful Aim',
+			changedEvent: (encounter: Encounter) => encounter.changeEmitter,
+			getValue: (encounter: Encounter) => encounter.getExecuteProportion90() * 100,
+			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
+				encounter.setExecuteProportion90(eventID, newValue / 100);
+			},
+			enableWhen: _obj => {
+				return !encounter.getUseHealth();
+			},
+		});
 	}
 }
 

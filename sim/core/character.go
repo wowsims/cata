@@ -102,7 +102,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 			StatDependencyManager: stats.NewStatDependencyManager(),
 
-			ReactionTime:       max(0, time.Duration(player.ReactionTimeMs)*time.Millisecond),
+			ReactionTime:       time.Duration(max(player.ReactionTimeMs, 10)) * time.Millisecond,
 			ChannelClipDelay:   max(0, time.Duration(player.ChannelClipDelayMs)*time.Millisecond),
 			DistanceFromTarget: player.DistanceFromTarget,
 		},
@@ -247,10 +247,18 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	playerStats := &proto.PlayerStats{}
 
 	measureStats := func() *proto.UnitStats {
-		return &proto.UnitStats{
+		base := &proto.UnitStats{
 			Stats:       character.SortAndApplyStatDependencies(character.stats).ToFloatArray(),
 			PseudoStats: character.GetPseudoStatsProto(),
 		}
+
+		meleeMulti := 1 + (base.Stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100))
+		spellMulti := 1 + (base.Stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))
+
+		// TODO: Hunter would like to use RangedSpeedMultiplier
+		base.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+		base.Stats[stats.SpellHaste] = (spellMulti*character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+		return base
 	}
 
 	applyRaceEffects(agent)
@@ -451,19 +459,6 @@ func (character *Character) Finalize() {
 
 	character.Unit.finalize()
 
-	// For now, restrict this optimization to rogues only. Ferals will require
-	// some extra logic to handle their ExcessEnergy() calc.
-	if character.Class == proto.Class_ClassRogue {
-		character.Env.RegisterPostFinalizeEffect(func() {
-			character.energyBar.setupEnergyThresholds()
-		})
-	}
-	if character.Class == proto.Class_ClassHunter {
-		character.Env.RegisterPostFinalizeEffect(func() {
-			character.focusBar.setupFocusThresholds()
-		})
-	}
-
 	character.majorCooldownManager.finalize()
 }
 
@@ -477,6 +472,13 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 		Stats:       character.GetStats().ToFloatArray(),
 		PseudoStats: character.GetPseudoStatsProto(),
 	}
+
+	meleeMulti := 1 + (playerStats.FinalStats.Stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100))
+	spellMulti := 1 + (playerStats.FinalStats.Stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))
+
+	playerStats.FinalStats.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+	playerStats.FinalStats.Stats[stats.SpellHaste] = (spellMulti*character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
+
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
 	playerStats.Sets = character.GetActiveSetBonusNames()
 
@@ -493,9 +495,9 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 }
 
 func (character *Character) reset(sim *Simulation, agent Agent) {
+	character.ItemSwap.reset(sim)
 	character.Unit.reset(sim, agent)
 	character.majorCooldownManager.reset(sim)
-	character.ItemSwap.reset(sim)
 	character.CurrentTarget = character.defaultTarget
 
 	agent.Reset(sim)
@@ -706,7 +708,7 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3
 	}
 }
 
-func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
+func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.ArmorType) bool {
 	hasBonus := true
 
 	if character.Head().ArmorType != armorType ||
@@ -719,6 +721,12 @@ func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, ar
 		character.Feet().ArmorType != armorType {
 		hasBonus = false
 	}
+
+	return hasBonus
+}
+
+func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
+	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
 
 	if hasBonus {
 		character.MultiplyStat(primaryStat, 1.05)

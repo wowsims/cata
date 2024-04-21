@@ -11,25 +11,19 @@ import (
 func (druid *Druid) registerRipSpell() {
 	ripBaseNumTicks := int32(8)
 
-	comboPointCoeff := 93.0
-	if druid.Ranged().ID == 28372 { // Idol of Feral Shadows
-		comboPointCoeff += 7
-	} else if druid.Ranged().ID == 39757 { // Idol of Worship
-		comboPointCoeff += 21
-	}
+	comboPointCoeff := 161.0
 
 	glyphMulti := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfRip), 1.15, 1.0)
 
 	druid.Rip = druid.RegisterSpell(Cat, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 49800},
+		ActionID:    core.ActionID{SpellID: 1079},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:          30,
-			Refund:        0.8,
-			RefundMetrics: druid.PrimalPrecisionRecoveryMetrics,
+			Cost:   30,
+			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -57,12 +51,12 @@ func (druid *Druid) registerRipSpell() {
 				cp := float64(druid.ComboPoints())
 				ap := dot.Spell.MeleeAttackPower()
 
-				dot.SnapshotBaseDamage = 36 + comboPointCoeff*cp + 0.01*cp*ap
+				dot.SnapshotBaseDamage = 56 + comboPointCoeff*cp + 0.0207*cp*ap
 
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -98,4 +92,14 @@ func (druid *Druid) MaxRipTicks() int32 {
 
 func (druid *Druid) CurrentRipCost() float64 {
 	return druid.Rip.ApplyCostModifiers(druid.Rip.DefaultCast.Cost)
+}
+
+func (druid *Druid) ApplyBloodletting(target *core.Unit) {
+	ripDot := druid.Rip.Dot(target)
+
+	if ripDot.IsActive() && (ripDot.NumberOfTicks < 11) {
+		ripDot.NumberOfTicks += 1
+		ripDot.RecomputeAuraDuration()
+		ripDot.UpdateExpires(ripDot.ExpiresAt() + time.Second*2)
+	}
 }

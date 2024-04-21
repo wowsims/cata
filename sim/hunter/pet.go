@@ -49,7 +49,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	baseFocusPerSecond *= 1.0 + (0.10 * float64(hunter.Talents.BestialDiscipline))
 	hp.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), baseFocusPerSecond, false)
 
-	atkSpd := 2 / (1 + 0.5*float64(hp.Talents().SerpentSwiftness))
+	atkSpd := 2 / (1 + 0.05*float64(hp.Talents().SerpentSwiftness))
 	// Todo: Change for Cataclysm
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
@@ -70,7 +70,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	hp.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
 
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/(0.01/243.6))
+	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/324.72)
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
 
 	hunter.AddPet(hp)
@@ -150,17 +150,15 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 		// EJ posts claim this value is passed through math.Floor, but in-game testing
 		// shows pets benefit from each point of owner hit rating in WotLK Classic.
 		// https://web.archive.org/web/20120112003252/http://elitistjerks.com/f80/t100099-demonology_releasing_demon_you
-		ownerHitChance := ownerStats[stats.MeleeHit] / core.MeleeHitRatingPerHitChance
-		hitRatingFromOwner := ownerHitChance * core.MeleeHitRatingPerHitChance
 
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
 			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.22,
-
-			stats.MeleeHit:  hitRatingFromOwner,
-			stats.SpellHit:  hitRatingFromOwner,
-			stats.Expertise: (ownerHitChance * 26 / 8) / 100,
+			stats.Agility:     ownerStats[stats.Agility],
+			stats.MeleeHit:    ownerStats[stats.MeleeHit],
+			stats.Expertise:   ownerStats[stats.MeleeHit] * PetExpertiseScale,
+			stats.SpellHit:    ownerStats[stats.MeleeHit],
 		}
 	}
 }
