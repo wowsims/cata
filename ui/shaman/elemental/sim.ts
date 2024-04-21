@@ -63,7 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET_HORDE.gear,
+		gear: Presets.P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.22,
@@ -77,7 +77,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.StandardTalents.data,
+		talents: Presets.TalentsTotemDuration.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
@@ -128,11 +128,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.StandardTalents],
+		talents: [Presets.TalentsTotemDuration, Presets.TalentsImprovedShields],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET_ALLI, Presets.P3_PRESET_HORDE, Presets.P4_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecElementalShaman>): APLRotation => {
@@ -142,7 +142,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecElementalShaman,
-			talents: Presets.StandardTalents.data,
+			talents: Presets.TalentsTotemDuration.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -154,15 +154,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET_ALLI.gear,
-					4: Presets.P4_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET_HORDE.gear,
-					4: Presets.P4_PRESET.gear,
 				},
 			},
 		},

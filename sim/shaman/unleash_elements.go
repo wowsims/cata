@@ -24,12 +24,12 @@ func (shaman *Shaman) registerUnleashFlame() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += 0.2
+				spell.DamageMultiplier *= 1.2
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.CostMultiplier -= 0.2
+				spell.DamageMultiplier /= 1.2
 			}
 		},
 	})
@@ -39,10 +39,10 @@ func (shaman *Shaman) registerUnleashFlame() {
 		SpellSchool:      core.SpellSchoolFire,
 		ProcMask:         core.ProcMaskSpellDamage,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		DamageMultiplier: 1,
 		BonusCoefficient: 0.429,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcDamage(sim, target, 1118, spell.OutcomeMagicHitAndCrit)
-			spell.DealDamage(sim, result)
+			spell.CalcAndDealDamage(sim, target, 1118, spell.OutcomeMagicHitAndCrit)
 			unleashFlameAura.Activate(sim)
 		},
 	})
@@ -55,10 +55,10 @@ func (shaman *Shaman) registerUnleashFrost() {
 		SpellSchool:      core.SpellSchoolFrost,
 		ProcMask:         core.ProcMaskSpellDamage,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		DamageMultiplier: 1,
 		BonusCoefficient: 0.386,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcDamage(sim, target, 873, spell.OutcomeMagicHitAndCrit)
-			spell.DealDamage(sim, result)
+			spell.CalcAndDealDamage(sim, target, 873, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }
@@ -90,9 +90,8 @@ func (shaman *Shaman) registerUnleashWind() {
 		DamageMultiplier: 1.75,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			result := spell.CalcDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
-			spell.DealDamage(sim, result)
+			damage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
 			unleashWindAura.Activate(sim)
 		},
 	})
@@ -181,7 +180,7 @@ func (shaman *Shaman) registerUnleashElements() {
 			case proto.ShamanImbue_EarthlivingWeapon:
 				shaman.UnleashLife.Cast(sim, target)
 			case proto.ShamanImbue_FrostbrandWeapon:
-				shaman.UnleashLife.Cast(sim, target)
+				shaman.UnleashFrost.Cast(sim, target)
 			}
 		},
 	})
