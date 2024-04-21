@@ -55,13 +55,7 @@ func (Mage *FireMage) registerPyroblastSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
-					if result.DidCrit() {
-						Mage.PyroblastDot.DamageMultiplier = 2
-						Mage.PyroblastDot.Cast(sim, target)
-						Mage.PyroblastDot.DamageMultiplier = 1
-					}
-
-					//Mage.PyroblastDot.Cast(sim, target)
+					Mage.PyroblastDot.Cast(sim, target)
 					spell.DealDamage(sim, result)
 					//pyroblastDot.SpellMetrics[target.UnitIndex].Hits++
 					//pyroblastDot.SpellMetrics[target.UnitIndex].Casts = 0
@@ -98,18 +92,15 @@ func (Mage *FireMage) registerPyroblastSpell() {
 			TickLength:       time.Second * 3,
 			BonusCoefficient: 0.180,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 0.175 * Mage.ScalingBaseDamage
-				dot.SnapshotCritChance = 0
+				dot.Snapshot(target, 0.175*Mage.ScalingBaseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.Spell.CalcAndDealPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
-				dot.Spell.DealPeriodicDamage(sim, result)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).ApplyOrReset(sim)
-			//pyroblastDot.SpellMetrics[target.UnitIndex].Hits--
 			Mage.PyroblastDot.SpellMetrics[target.UnitIndex].Casts = 0
 		},
 	})
