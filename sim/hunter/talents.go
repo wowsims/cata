@@ -316,7 +316,7 @@ func (hunter *Hunter) applyImprovedSteadyShot() {
 		ActionID:  core.ActionID{SpellID: 53221, Tag: 2},
 		MaxStacks: 2,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskRangedAuto) && spell.ActionID.SpellID == 0 && !spell.Flags.Matches(core.SpellFlagAPL) {
+			if spell.ProcMask.Matches(core.ProcMaskRangedAuto) || spell.ActionID.SpellID == 0 || !spell.Flags.Matches(core.SpellFlagAPL) {
 				return
 			}
 			if spell != hunter.SteadyShot {
