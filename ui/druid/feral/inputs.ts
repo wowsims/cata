@@ -8,12 +8,6 @@ import { TypedEvent } from '../../core/typed_event.js';
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 
-export const LatencyMs = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecFeralDruid>({
-	fieldName: 'latencyMs',
-	label: 'Latency',
-	labelTooltip: 'Player latency, in milliseconds. Adds a delay to actions that cannot be spell queued.',
-});
-
 export const AssumeBleedActive = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecFeralDruid>({
 	fieldName: 'assumeBleedActive',
 	label: 'Assume Bleed Always Active',

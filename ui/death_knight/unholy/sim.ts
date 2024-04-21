@@ -143,6 +143,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			// UnholyInputs.AvgAMSHitInput,
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InputDelay,
 			OtherInputs.DarkIntentUptime
 		],
 	},

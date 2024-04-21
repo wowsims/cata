@@ -128,7 +128,6 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerStances()
 	warrior.EnrageEffectMultiplier = 1.0
 	warrior.hsCleaveCD = warrior.NewTimer()
-	warrior.ReactionTime = time.Millisecond * 500
 
 	warrior.RegisterBerserkerRageSpell()
 	warrior.RegisterColossusSmash()

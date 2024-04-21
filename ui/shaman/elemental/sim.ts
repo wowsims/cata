@@ -118,7 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [ElementalInputs.InThunderstormRange, OtherInputs.TankAssignment],
+		inputs: [ElementalInputs.InThunderstormRange, OtherInputs.InputDelay, OtherInputs.TankAssignment],
 	},
 	customSections: [ShamanInputs.TotemsSection],
 	encounterPicker: {

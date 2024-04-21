@@ -102,7 +102,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [FeralInputs.LatencyMs, FeralInputs.AssumeBleedActive, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget, OtherInputs.DarkIntentUptime],
+		inputs: [FeralInputs.AssumeBleedActive, OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget, OtherInputs.DarkIntentUptime],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

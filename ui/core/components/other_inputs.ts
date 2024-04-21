@@ -79,10 +79,10 @@ export function makePhaseSelector(parent: HTMLElement, sim: Sim): EnumPicker<Sim
 	});
 }
 
-export const ReactionTime = {
+export const InputDelay = {
 	type: 'number' as const,
-	label: 'Reaction Time',
-	labelTooltip: 'Reaction time of the player, in milliseconds. Used with certain APL values (such as \'Aura Is Active With Reaction Time\').',
+	label: 'Input Delay',
+	labelTooltip: 'Player input delay, in milliseconds. Specifies the maximum delay on actions that cannot be spell queued, such as spell casts that are waiting on resource gains or waiting for a cooldown to expire. Also used with certain APL values (such as \'Aura Is Active With Reaction Time\'). Roughly models the sum of reaction time + server latency.',
 	changedEvent: (player: Player<any>) => player.miscOptionsChangeEmitter,
 	getValue: (player: Player<any>) => player.getReactionTime(),
 	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {

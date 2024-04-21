@@ -55,14 +55,15 @@ func BenchmarkSimulate(b *testing.B) {
 	rsr := &proto.RaidSimRequest{
 		Raid: core.SinglePlayerRaidProto(
 			&proto.Player{
-				Race:          proto.Race_RaceOrc,
-				Class:         proto.Class_ClassHunter,
-				Equipment:     core.GetGearSet("../../../ui/hunter/beast_mastery/gear_sets", "preraid_bm").GearSet,
-				Consumes:      FullConsumes,
-				Spec:          PlayerOptionsBasic,
-				Glyphs:        BMGlyphs,
-				TalentsString: BMTalents,
-				Buffs:         core.FullIndividualBuffs,
+				Race:           proto.Race_RaceOrc,
+				Class:          proto.Class_ClassHunter,
+				Equipment:      core.GetGearSet("../../../ui/hunter/beast_mastery/gear_sets", "preraid_bm").GearSet,
+				Consumes:       FullConsumes,
+				Spec:           PlayerOptionsBasic,
+				Glyphs:         BMGlyphs,
+				TalentsString:  BMTalents,
+				Buffs:          core.FullIndividualBuffs,
+				ReactionTimeMs: 100,
 			},
 			core.FullPartyBuffs,
 			core.FullRaidBuffs,
