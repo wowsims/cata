@@ -69,7 +69,7 @@ func (eb *energyBar) AddEnergy(sim *Simulation, amount float64, metrics *Resourc
 	metrics.AddEvent(amount, newEnergy-eb.currentEnergy)
 
 	if sim.Log != nil {
-		eb.unit.Log(sim, "Gained %0.3f energy from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, eb.currentEnergy, newEnergy)
+		eb.unit.Log(sim, "Gained %0.3f energy from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, eb.currentEnergy, newEnergy, eb.maxEnergy)
 	}
 
 	eb.currentEnergy = newEnergy
@@ -84,7 +84,7 @@ func (eb *energyBar) SpendEnergy(sim *Simulation, amount float64, metrics *Resou
 	metrics.AddEvent(-amount, -amount)
 
 	if sim.Log != nil {
-		eb.unit.Log(sim, "Spent %0.3f energy from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, eb.currentEnergy, newEnergy)
+		eb.unit.Log(sim, "Spent %0.3f energy from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, eb.currentEnergy, newEnergy, eb.maxEnergy)
 	}
 
 	eb.currentEnergy = newEnergy
@@ -131,7 +131,7 @@ func (eb *energyBar) AddComboPoints(sim *Simulation, pointsToAdd int32, metrics 
 	metrics.AddEvent(float64(pointsToAdd), float64(newComboPoints-eb.comboPoints))
 
 	if sim.Log != nil {
-		eb.unit.Log(sim, "Gained %d combo points from %s (%d --> %d)", pointsToAdd, metrics.ActionID, eb.comboPoints, newComboPoints)
+		eb.unit.Log(sim, "Gained %d combo points from %s (%d --> %d) of %0.0f total.", pointsToAdd, metrics.ActionID, eb.comboPoints, newComboPoints, 5.0)
 	}
 
 	eb.comboPoints = newComboPoints
@@ -139,7 +139,7 @@ func (eb *energyBar) AddComboPoints(sim *Simulation, pointsToAdd int32, metrics 
 
 func (eb *energyBar) SpendComboPoints(sim *Simulation, metrics *ResourceMetrics) {
 	if sim.Log != nil {
-		eb.unit.Log(sim, "Spent %d combo points from %s (%d --> %d).", eb.comboPoints, metrics.ActionID, eb.comboPoints, 0)
+		eb.unit.Log(sim, "Spent %d combo points from %s (%d --> %d) of %0.0f total.", eb.comboPoints, metrics.ActionID, eb.comboPoints, 0, 5.0)
 	}
 	metrics.AddEvent(float64(-eb.comboPoints), float64(-eb.comboPoints))
 	eb.comboPoints = 0

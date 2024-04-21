@@ -30,7 +30,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	selfBuffs := druid.SelfBuffs{}
 
 	cat := &FeralDruid{
-		Druid:   druid.New(character, druid.Cat, selfBuffs, options.TalentsString),
+		Druid: druid.New(character, druid.Cat, selfBuffs, options.TalentsString),
 	}
 
 	// cat.SelfBuffs.InnervateTarget = &proto.UnitReference{}
