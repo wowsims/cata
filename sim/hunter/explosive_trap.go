@@ -29,7 +29,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           hunter.CritMultiplier(false, false, false),
+		CritMultiplier:           hunter.SpellCritMultiplier(1, 0),
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
