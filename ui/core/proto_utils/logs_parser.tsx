@@ -699,13 +699,15 @@ export class ResourceChangedLog extends SimLog {
 	readonly valueBefore: number;
 	readonly valueAfter: number;
 	readonly isSpend: boolean;
+	readonly total: number;
 
-	constructor(params: SimLogParams, resourceType: ResourceType, valueBefore: number, valueAfter: number, isSpend: boolean) {
+	constructor(params: SimLogParams, resourceType: ResourceType, valueBefore: number, valueAfter: number, isSpend: boolean, total: number) {
 		super(params);
 		this.resourceType = resourceType;
 		this.valueBefore = valueBefore;
 		this.valueAfter = valueAfter;
 		this.isSpend = isSpend;
+		this.total = total;
 	}
 
 	toString(includeTimestamp = true): string {
@@ -732,15 +734,16 @@ export class ResourceChangedLog extends SimLog {
 
 	static parse(params: SimLogParams): Promise<ResourceChangedLog> | null {
 		const match = params.raw.match(
-			/((Gained)|(Spent)) \d+\.?\d* ((health)|(mana)|(energy)|(focus)|(rage)|(combo points)|(runic power)|(blood rune)|(frost rune)|(unholy rune)|(death rune)) from (.*) \((\d+\.?\d*) --> (\d+\.?\d*)\)/,
+			/((Gained)|(Spent)) \d+\.?\d* ((health)|(mana)|(energy)|(focus)|(rage)|(combo points)|(runic power)|(blood rune)|(frost rune)|(unholy rune)|(death rune)) from (.*) \((\d+\.?\d*) --> (\d+\.?\d*)\)( of (\d+\.?\d*) total)?/,
 		);
 		if (match) {
 			const resourceType = stringToResourceType(match[4]);
+			const total = match[20] !== undefined ? parseFloat(match[20]) : 0
 			return ActionId.fromLogString(match[16])
 				.fill(params.source?.index)
 				.then(cause => {
 					params.actionId = cause;
-					return new ResourceChangedLog(params, resourceType, parseFloat(match[17]), parseFloat(match[18]), match[1] == 'Spent');
+					return new ResourceChangedLog(params, resourceType, parseFloat(match[17]), parseFloat(match[18]), match[1] == 'Spent', total);
 				});
 		} else {
 			return null;
@@ -752,13 +755,15 @@ export class ResourceChangedLogGroup extends SimLog {
 	readonly resourceType: ResourceType;
 	readonly valueBefore: number;
 	readonly valueAfter: number;
+	readonly maxValue: number;
 	readonly logs: Array<ResourceChangedLog>;
 
-	constructor(params: SimLogParams, resourceType: ResourceType, valueBefore: number, valueAfter: number, logs: Array<ResourceChangedLog>) {
+	constructor(params: SimLogParams, resourceType: ResourceType, valueBefore: number, valueAfter: number, maxValue: number, logs: Array<ResourceChangedLog>) {
 		super(params);
 		this.resourceType = resourceType;
 		this.valueBefore = valueBefore;
 		this.valueAfter = valueAfter;
+		this.maxValue = maxValue;
 		this.logs = logs;
 	}
 
@@ -771,6 +776,14 @@ export class ResourceChangedLogGroup extends SimLog {
 	static fromLogs(logs: Array<SimLog>): Record<ResourceType, Array<ResourceChangedLogGroup>> {
 		const allResourceChangedLogs = logs.filter((log): log is ResourceChangedLog => log.isResourceChanged());
 
+		const maxResource = function(logs: ResourceChangedLog[]) {
+			let max : number = 0
+			logs.forEach(l => {
+				if (l.total > max) {
+					max = l.total
+				}})
+			return max;
+		}
 		const results: Partial<Record<ResourceType, Array<ResourceChangedLogGroup>>> = {};
 		const resourceTypes = (getEnumValues(ResourceType) as Array<ResourceType>).filter(val => val != ResourceType.ResourceTypeNone);
 		resourceTypes.forEach(resourceType => {
@@ -792,6 +805,7 @@ export class ResourceChangedLogGroup extends SimLog {
 						resourceType,
 						logGroup[0].valueBefore,
 						logGroup[logGroup.length - 1].valueAfter,
+						maxResource(logGroup),
 						logGroup,
 					),
 			);

@@ -8,10 +8,7 @@ import (
 )
 
 func (druid *Druid) registerShredSpell() {
-	flatDamageBonus := (666 +
-		core.TernaryFloat64(druid.Ranged().ID == 29390, 88, 0) +
-		core.TernaryFloat64(druid.Ranged().ID == 40713, 203, 0)) / 2.25
-
+	flatDamageBonus := 302.0 / 5.4
 	hasBloodletting := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting)
 	rendAndTearMod := []float64{1.0, 1.07, 1.13, 1.2}[druid.Talents.RendAndTear]
 
@@ -35,7 +32,7 @@ func (druid *Druid) registerShredSpell() {
 			return !druid.PseudoStats.InFrontOfTarget
 		},
 
-		DamageMultiplier: 2.25,
+		DamageMultiplier: 5.4,
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,

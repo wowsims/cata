@@ -74,7 +74,6 @@ export const StandardTalents = {
 };
 
 export const DefaultOptions = FeralDruidOptions.create({
-	latencyMs: 100,
 	assumeBleedActive: true,
 });
 

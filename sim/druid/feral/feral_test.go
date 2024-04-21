@@ -101,7 +101,6 @@ var StandardGlyphs = &proto.Glyphs{
 var PlayerOptionsMonoCat = &proto.Player_FeralDruid{
 	FeralDruid: &proto.FeralDruid{
 		Options: &proto.FeralDruid_Options{
-			LatencyMs:         100,
 			AssumeBleedActive: true,
 		},
 	},
@@ -110,7 +109,6 @@ var PlayerOptionsMonoCat = &proto.Player_FeralDruid{
 var PlayerOptionsMonoCatNoBleed = &proto.Player_FeralDruid{
 	FeralDruid: &proto.FeralDruid{
 		Options: &proto.FeralDruid_Options{
-			LatencyMs:         100,
 			AssumeBleedActive: false,
 		},
 	},
@@ -120,7 +118,6 @@ var PlayerOptionsMonoCatNoBleed = &proto.Player_FeralDruid{
 // 	FeralDruid: &proto.FeralDruid{
 // 		Options: &proto.FeralDruid_Options{
 // 			InnervateTarget:   &proto.UnitReference{}, // no Innervate
-// 			LatencyMs:         100,
 // 			AssumeBleedActive: false,
 // 		},
 // 		Rotation: &proto.FeralDruid_Rotation{

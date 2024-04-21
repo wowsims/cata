@@ -37,7 +37,6 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[shaman.Class]*core.CritRatingPerCritChance)
 	shaman.EnableManaBarWithModifier(1.0)
 	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
-		//TODO: Still needs to disable all other spellpower gains somehow!
 		shaman.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*6)
 		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.55)
 		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.4)
@@ -242,14 +241,6 @@ func (shaman *Shaman) Initialize() {
 
 	shaman.registerBloodlustCD()
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
-
-	shaman.ApplyGlyphs()
-
-	if shaman.Spec == proto.Spec_SpecElementalShaman || shaman.Spec == proto.Spec_SpecRestorationShaman {
-		shaman.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeMail)
-	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
-		shaman.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeMail)
-	}
 }
 
 func (shaman *Shaman) RegisterHealingSpells() {
@@ -327,4 +318,11 @@ const (
 	SpellMaskStormstrike
 	SpellMaskEarthShield
 	SpellMaskFulmination
+	SpellMaskFrostShock
+	SpellMaskUnleashFrost
+	SpellMaskUnleashFlame
+
+	SpellMaskFire   = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame
+	SpellMaskNature = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination
+	SpellMaskFrost  = SpellMaskUnleashFrost | SpellMaskFrostShock
 )

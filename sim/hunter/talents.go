@@ -765,7 +765,7 @@ func (hunter *Hunter) applyHuntingParty() {
 	})
 }
 func (hunter *Hunter) registerSicEm() {
-	if hunter.Talents.SicEm == 0 {
+	if hunter.Talents.SicEm == 0 || hunter.Pet == nil {
 		return
 	}
 

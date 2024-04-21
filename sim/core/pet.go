@@ -40,6 +40,7 @@ type Pet struct {
 	statInheritance        PetStatInheritance
 	dynamicStatInheritance PetStatInheritance
 	inheritedStats         stats.Stats
+	inheritanceDelay       time.Duration
 
 	// DK pets also inherit their owner's MeleeSpeed. This replace OwnerAttackSpeedChanged.
 	dynamicMeleeSpeedInheritance PetMeleeSpeedInheritance
@@ -64,6 +65,8 @@ func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritanc
 				Metrics:     NewUnitMetrics(),
 
 				StatDependencyManager: stats.NewStatDependencyManager(),
+
+				ReactionTime: owner.ReactionTime,
 			},
 			Name:       name,
 			Party:      owner.Party,
@@ -134,8 +137,18 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 		pet.reset(sim, petAgent)
 	}
 
-	pet.inheritedStats = pet.statInheritance(pet.Owner.GetStats())
-	pet.AddStatsDynamic(sim, pet.inheritedStats)
+	if pet.inheritanceDelay > 0 {
+		sim.AddPendingAction(&PendingAction{
+			NextActionAt: sim.CurrentTime + pet.inheritanceDelay,
+			OnAction: func(sim *Simulation) {
+				pet.inheritedStats = pet.statInheritance(pet.Owner.GetStats())
+				pet.AddStatsDynamic(sim, pet.inheritedStats)
+			},
+		})
+	} else {
+		pet.inheritedStats = pet.statInheritance(pet.Owner.GetStats())
+		pet.AddStatsDynamic(sim, pet.inheritedStats)
+	}
 
 	if !pet.isGuardian {
 		pet.Owner.DynamicStatsPets = append(pet.Owner.DynamicStatsPets, pet)
@@ -203,6 +216,12 @@ func (pet *Pet) EnableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
 		pet.Owner.DynamicMeleeSpeedPets = append(pet.Owner.DynamicMeleeSpeedPets, pet)
 	}
 	pet.dynamicMeleeSpeedInheritance = inheritance
+}
+
+// Some pets, i.E. Shadowfiend only inherit their owners stat after a brief period of time
+// Causing initial attacks and abilities to not be scaled
+func (pet *Pet) DelayInitialInheritance(time time.Duration) {
+	pet.inheritanceDelay = time
 }
 
 func (pet *Pet) Disable(sim *Simulation) {
