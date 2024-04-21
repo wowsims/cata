@@ -32,14 +32,6 @@ func (cat *FeralDruid) OnGCDReady(sim *core.Simulation) {
 			cat.postRotation(sim, nextAction)
 		}
 	}
-
-	// Replace gcd event with our own if we casted a spell
-	if !cat.GCD.IsReady(sim) {
-		nextGcd := cat.NextGCDAt()
-		cat.CancelGCDTimer(sim)
-
-		cat.NextRotationAction(sim, nextGcd)
-	}
 }
 
 func (cat *FeralDruid) NextRotationAction(sim *core.Simulation, kickAt time.Duration) {
@@ -155,7 +147,7 @@ func (cat *FeralDruid) tfExpectedBefore(sim *core.Simulation, futureTime time.Du
 	return true
 }
 
-func (cat *FeralDruid) doTigersFury(sim *core.Simulation) {
+func (cat *FeralDruid) TryTigersFury(sim *core.Simulation) {
 	// Handle tigers fury
 	if !cat.TigersFury.IsReady(sim) {
 		return
@@ -180,6 +172,38 @@ func (cat *FeralDruid) doTigersFury(sim *core.Simulation) {
 		cat.TigersFury.Cast(sim, nil)
 		// Kick gcd loop, also need to account for any gcd 'left'
 		// otherwise it breaks gcd logic
+		cat.NextRotationAction(sim, sim.CurrentTime+leewayTime)
+	}
+}
+
+func (cat *FeralDruid) TryBerserk(sim *core.Simulation) {
+	// Berserk algorithm: time Berserk for just after a Tiger's Fury
+	// *unless* we'll lose Berserk uptime by waiting for Tiger's Fury to
+	// come off cooldown. The latter exception is necessary for
+	// Lacerateweave rotation since TF timings can drift over time.
+	simTimeRemain := sim.GetRemainingDuration()
+	waitForTf := cat.Talents.Berserk && (cat.TigersFury.ReadyAt() <= cat.BerserkAura.Duration) && (cat.TigersFury.ReadyAt()+cat.ReactionTime < simTimeRemain-cat.BerserkAura.Duration)
+	isClearcast := cat.ClearcastingAura.IsActive()
+	berserkNow := cat.Berserk.IsReady(sim) && !waitForTf && !isClearcast
+
+	// Additionally, for Lacerateweave rotation, postpone the final Berserk
+	// of the fight to as late as possible so as to minimize the impact of
+	// dropping Lacerate stacks during the Berserk window. Rationale for the
+	// 3 second additional leeway given beyond just berserk_dur in the below
+	// expression is to be able to fit in a final TF and dump the Energy
+	// from it in cases where Berserk and TF CDs are desynced due to drift.
+	if berserkNow && cat.Rotation.BearweaveType == proto.FeralDruid_Rotation_Lacerate && cat.berserkUsed && simTimeRemain < cat.Berserk.CD.Duration {
+		berserkNow = simTimeRemain < cat.BerserkAura.Duration+(3*time.Second)
+	}
+
+	if berserkNow {
+		cat.Berserk.Cast(sim, nil)
+		cat.UpdateMajorCooldowns()
+
+		// Kick gcd loop, also need to account for any gcd 'left'
+		// otherwise it breaks gcd logic
+		gcdTimeToRdy := cat.GCD.TimeToReady(sim)
+		leewayTime := max(gcdTimeToRdy, cat.ReactionTime)
 		cat.NextRotationAction(sim, sim.CurrentTime+leewayTime)
 	}
 }
@@ -287,23 +311,6 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	// Disable Energy pooling for Rake in weaving rotations, since these
 	// rotations prioritize weave cpm over Rake uptime.
 	poolForRake := (rotation.BearweaveType == proto.FeralDruid_Rotation_None)
-
-	// Berserk algorithm: time Berserk for just after a Tiger's Fury
-	// *unless* we'll lose Berserk uptime by waiting for Tiger's Fury to
-	// come off cooldown. The latter exception is necessary for
-	// Lacerateweave rotation since TF timings can drift over time.
-	waitForTf := cat.Talents.Berserk && (cat.TigersFury.ReadyAt() <= cat.BerserkAura.Duration) && (cat.TigersFury.ReadyAt()+time.Second < simTimeRemain-cat.BerserkAura.Duration)
-	berserkNow := cat.Berserk.IsReady(sim) && !waitForTf && ripDot.IsActive() && !isClearcast
-
-	// Additionally, for Lacerateweave rotation, postpone the final Berserk
-	// of the fight to as late as possible so as to minimize the impact of
-	// dropping Lacerate stacks during the Berserk window. Rationale for the
-	// 3 second additional leeway given beyond just berserk_dur in the below
-	// expression is to be able to fit in a final TF and dump the Energy
-	// from it in cases where Berserk and TF CDs are desynced due to drift.
-	if berserkNow && rotation.BearweaveType == proto.FeralDruid_Rotation_Lacerate && cat.berserkUsed && simTimeRemain < cat.Berserk.CD.Duration {
-		berserkNow = simTimeRemain < cat.BerserkAura.Duration+(3*time.Second)
-	}
 
 	roarNow := curCp >= 1 && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim))
 
@@ -459,10 +466,6 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		cat.readyToShift = true
 	} else if ffNow {
 		cat.FaerieFire.Cast(sim, cat.CurrentTarget)
-		return false, 0
-	} else if berserkNow {
-		cat.Berserk.Cast(sim, nil)
-		cat.UpdateMajorCooldowns()
 		return false, 0
 	} else if roarNow {
 		if cat.SavageRoar.CanCast(sim, cat.CurrentTarget) {
