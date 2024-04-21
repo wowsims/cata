@@ -58,7 +58,7 @@ func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
 
 func (moonkin *BalanceDruid) Initialize() {
 	moonkin.Druid.Initialize()
-	//moonkin.RegisterBalanceSpells()
+	moonkin.RegisterBalanceSpells()
 
 	// if moonkin.OwlkinFrenzyAura != nil && moonkin.Options.OkfUptime > 0 {
 	// 	moonkin.Env.RegisterPreFinalizeEffect(func() {
