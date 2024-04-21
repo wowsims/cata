@@ -9,6 +9,12 @@ import (
 
 func (mage *Mage) registerFlameOrbSpell() {
 
+	// Frostfire Orb talent converts Flame Orb spell into Frostfire Orb spell.
+	// Don't allow a user access to both at the same time.
+	if mage.Talents.FrostfireOrb != 0 {
+		return
+	}
+
 	mage.FlameOrb = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 82731},
 		SpellSchool:    core.SpellSchoolFire,
