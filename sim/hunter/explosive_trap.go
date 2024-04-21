@@ -10,10 +10,11 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 	bonusPeriodicDamageMultiplier := .10 * float64(hunter.Talents.TrapMastery)
 
 	hunter.ExplosiveTrap = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 13812},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 13812},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: HunterSpellExplosiveTrap,
+		Flags:          core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 0, // Todo: Verify focus cost https://warcraft.wiki.gg/index.php?title=Explosive_Trap&oldid=2963725
@@ -24,7 +25,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			},
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second*30 - time.Second*2*time.Duration(hunter.Talents.Resourcefulness),
+				Duration: time.Second * 30,
 			},
 		},
 

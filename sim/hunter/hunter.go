@@ -203,6 +203,7 @@ const (
 	HunterSpellKillCommand
 	HunterSpellChimeraShot
 	HunterSpellExplosiveShot
+	HunterSpellExplosiveTrap
 	HunterSpellBlackArrow
 	HunterSpellAimedShot
 )

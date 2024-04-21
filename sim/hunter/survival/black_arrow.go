@@ -31,13 +31,12 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second*30 - time.Second*2*time.Duration(svHunter.Talents.Resourcefulness),
+				Duration: time.Second * 30,
 			},
 		},
-
-		DamageMultiplier: 1 + .10*float64(svHunter.Talents.TrapMastery),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   svHunter.SpellCritMultiplier(1, float64(svHunter.Talents.Toxicology)*0.5),
+		CritMultiplier:   svHunter.DefaultSpellCritMultiplier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -53,9 +52,11 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 				baseDamage := 2852.0
 				rap := dot.Spell.RangedAttackPower(target)
 				percentageOfRAP := 0.665
-
+				dot.SnapshotBaseDamage = (baseDamage + (percentageOfRAP * rap)) / 10
 				// SnapshotBaseDamage calculation for the DoT, divided by 10 to spread across all ticks
-				dot.Snapshot(target, (baseDamage+(percentageOfRAP*rap))/10)
+				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
+				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeRangedHitAndCritSnapshot)
