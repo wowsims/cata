@@ -218,10 +218,10 @@ func (mage *Mage) applyArmor() {
 	}
 }
 
+// TODO Place in arcane
 func (mage *Mage) GetArcaneMasteryBonus() float64 {
 	return (1.12 + 0.015*mage.GetMasteryPoints())
 }
-
 func (mage *Mage) ArcaneMasteryValue() float64 {
 	return mage.GetArcaneMasteryBonus() * (mage.CurrentMana() / mage.MaxMana())
 }
@@ -269,7 +269,7 @@ func (mage *Mage) applyArcaneMissileProc() {
 }
 
 func (mage *Mage) hasChillEffect(spell *core.Spell) bool {
-	return spell == mage.Frostbolt || spell == mage.FrostfireBolt || (spell == mage.Blizzard && mage.Talents.IceShards > 0) || spell.ClassSpellMask == MageSpellFrostfireOrb
+	return spell == mage.Frostbolt || spell == mage.FrostfireBolt || (spell == mage.Blizzard && mage.Talents.IceShards > 0)
 }
 
 const (
@@ -310,7 +310,7 @@ const (
 	MageSpellLast
 	MageSpellsAll        = MageSpellLast<<1 - 1
 	MageSpellLivingBomb  = MageSpellLivingBombDot | MageSpellLivingBombExplosion
-	MageSpellFireMastery = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellIgnite
+	MageSpellFireMastery = MageSpellLivingBombDot | MageSpellPyroblastDot // Ignite done manually in spell due to unique mechanic
 	MageSpellFire        = MageSpellBlastWave | MageSpellCombustion | MageSpellDragonsBreath | MageSpellFireball |
 		MageSpellFireBlast | MageSpellFlameOrb | MageSpellFlamestrike | MageSpellFrostfireBolt | MageSpellIgnite |
 		MageSpellLivingBomb | MageSpellPyroblast | MageSpellScorch

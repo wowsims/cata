@@ -62,15 +62,18 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				dot := spell.Dot(target)
 				if result.Landed() {
-					if dot.IsActive() {
-						dot.Refresh(sim)
-						dot.AddStack(sim)
-						dot.TakeSnapshot(sim, true)
-					} else if hasGlyph {
-						dot.Apply(sim)
-						dot.SetStacks(sim, 1)
-						dot.TakeSnapshot(sim, true)
+					if hasGlyph {
+						if dot.IsActive() {
+							dot.Refresh(sim)
+							dot.AddStack(sim)
+							dot.TakeSnapshot(sim, true)
+						} else {
+							dot.Apply(sim)
+							//dot.SetStacks(sim, 1)
+							dot.TakeSnapshot(sim, true)
+						}
 					}
+
 					spell.DealDamage(sim, result)
 				}
 			})

@@ -118,7 +118,7 @@ func (mage *Mage) registerIcyVeinsCD() {
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			// Need to check for icy veins already active in case Cold Snap is used right after.
-			return !icyVeinsAura.IsActive()
+			return !icyVeinsAura.IsActive() && !mage.frostfireOrb.IsEnabled()
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
@@ -192,6 +192,8 @@ func (mage *Mage) applyBrainFreeze() {
 		return
 	}
 
+	procChance := .05 * float64(mage.Talents.BrainFreeze)
+
 	brainFreezeCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellBrainFreeze,
 		FloatValue: -1,
@@ -223,7 +225,6 @@ func (mage *Mage) applyBrainFreeze() {
 		},
 	})
 
-	procChance := .05 * float64(mage.Talents.BrainFreeze)
 	mage.RegisterAura(core.Aura{
 		Label:    "Brain Freeze Talent",
 		Duration: core.NeverExpires,
@@ -274,7 +275,12 @@ func (mage *Mage) registerColdSnapCD() {
 			if mage.IcyVeins != nil && mage.IcyVeins.IsReady(sim) {
 				return false
 			}
+
 			if mage.SummonWaterElemental != nil && mage.SummonWaterElemental.IsReady(sim) {
+				return false
+			}
+			// You want to reset orb
+			if mage.FrostfireOrb.IsReady(sim) {
 				return false
 			}
 			return true
