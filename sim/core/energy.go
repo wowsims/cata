@@ -8,10 +8,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-// Time between energy ticks.
-const EnergyTickDuration = time.Millisecond * 100
-const EnergyPerTick = 1.0
-
 type energyBar struct {
 	unit *Unit
 
@@ -19,6 +15,10 @@ type energyBar struct {
 	currentEnergy  float64
 	comboPoints    int32
 	nextEnergyTick time.Duration
+
+	// Time between Energy ticks.
+	EnergyTickDuration time.Duration
+	EnergyPerTick      float64
 
 	// These two terms are multiplied together to scale the total Energy regen from ticks.
 	energyRegenMultiplier float64
@@ -34,7 +34,10 @@ func (unit *Unit) EnableEnergyBar(maxEnergy float64) {
 	unit.energyBar = energyBar{
 		unit:                  unit,
 		maxEnergy:             max(100, maxEnergy),
+		EnergyTickDuration:    unit.ReactionTime,
+		EnergyPerTick:         10.0 * unit.ReactionTime.Seconds(),
 		energyRegenMultiplier: 1,
+		hasteRatingMultiplier: 1,
 		regenMetrics:          unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionEnergyRegen}),
 		EnergyRefundMetrics:   unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
 	}
@@ -93,10 +96,10 @@ func (eb *energyBar) ComboPoints() int32 {
 
 // Gives an immediate partial energy tick and restarts the tick timer.
 func (eb *energyBar) ResetEnergyTick(sim *Simulation) {
-	timeSinceLastTick := max(sim.CurrentTime-(eb.NextEnergyTickAt()-EnergyTickDuration), 0)
-	partialTickAmount := (EnergyPerTick * eb.hasteRatingMultiplier * eb.energyRegenMultiplier) * (float64(timeSinceLastTick) / float64(EnergyTickDuration))
+	timeSinceLastTick := max(sim.CurrentTime-(eb.NextEnergyTickAt()-eb.EnergyTickDuration), 0)
+	partialTickAmount := (eb.EnergyPerTick * eb.hasteRatingMultiplier * eb.energyRegenMultiplier) * (float64(timeSinceLastTick) / float64(eb.EnergyTickDuration))
 	eb.AddEnergy(sim, partialTickAmount, eb.regenMetrics)
-	eb.nextEnergyTick = sim.CurrentTime + EnergyTickDuration
+	eb.nextEnergyTick = sim.CurrentTime + eb.EnergyTickDuration
 	sim.RescheduleTask(eb.nextEnergyTick)
 }
 
@@ -143,8 +146,8 @@ func (eb *energyBar) RunTask(sim *Simulation) time.Duration {
 		return eb.nextEnergyTick
 	}
 
-	eb.AddEnergy(sim, EnergyPerTick*eb.hasteRatingMultiplier*eb.energyRegenMultiplier, eb.regenMetrics)
-	eb.nextEnergyTick = sim.CurrentTime + EnergyTickDuration
+	eb.AddEnergy(sim, eb.EnergyPerTick*eb.hasteRatingMultiplier*eb.energyRegenMultiplier, eb.regenMetrics)
+	eb.nextEnergyTick = sim.CurrentTime + eb.EnergyTickDuration
 	return eb.nextEnergyTick
 }
 
@@ -165,7 +168,7 @@ func (eb *energyBar) reset(sim *Simulation) {
 
 func (eb *energyBar) enable(sim *Simulation, startAt time.Duration) {
 	sim.AddTask(eb)
-	eb.nextEnergyTick = startAt + time.Duration(sim.RandomFloat("Energy Tick")*float64(EnergyTickDuration))
+	eb.nextEnergyTick = startAt + time.Duration(sim.RandomFloat("Energy Tick")*float64(eb.EnergyTickDuration))
 	sim.RescheduleTask(eb.nextEnergyTick)
 }
 
