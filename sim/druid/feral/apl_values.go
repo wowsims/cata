@@ -152,7 +152,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	cat.TryTigersFury(sim)
 	cat.TryBerserk(sim)
 
-	if (cat.rotationAction == nil || sim.CurrentTime >= cat.rotationAction.NextActionAt) {
+	if cat.rotationAction == nil || sim.CurrentTime >= cat.rotationAction.NextActionAt {
 		cat.OnGCDReady(sim)
 	}
 }
