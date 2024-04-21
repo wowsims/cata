@@ -181,10 +181,10 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 		return
 	}
 
-	icd := core.Cooldown{
-		Timer:    shaman.NewTimer(),
-		Duration: time.Millisecond,
-	}
+	// icd := core.Cooldown{
+	// 	Timer:    shaman.NewTimer(),
+	// 	Duration: time.Millisecond,
+	// }
 
 	mhSpell := shaman.newFlametongueImbueSpell(shaman.MainHand())
 	ohSpell := shaman.newFlametongueImbueSpell(shaman.OffHand())
@@ -203,11 +203,11 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 				return
 			}
 
-			if !icd.IsReady(sim) {
-				return
-			}
+			// if !icd.IsReady(sim) {
+			// 	return
+			// }
 
-			icd.Use(sim)
+			// icd.Use(sim)
 
 			if spell.IsMH() {
 				mhSpell.Cast(sim, result.Target)
