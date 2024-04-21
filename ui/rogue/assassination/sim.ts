@@ -1,4 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
+import * as OtherInputs from '../../core/components/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -261,6 +262,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			// RogueInputs.AssumeBleedActive(),
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InputDelay,
 		],
 	},
 	encounterPicker: {

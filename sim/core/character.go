@@ -102,7 +102,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 			StatDependencyManager: stats.NewStatDependencyManager(),
 
-			ReactionTime:       max(0, time.Duration(player.ReactionTimeMs)*time.Millisecond),
+			ReactionTime:       time.Duration(max(player.ReactionTimeMs, 10)) * time.Millisecond,
 			ChannelClipDelay:   max(0, time.Duration(player.ChannelClipDelayMs)*time.Millisecond),
 			DistanceFromTarget: player.DistanceFromTarget,
 		},
@@ -458,19 +458,6 @@ func (character *Character) Finalize() {
 	character.PseudoStats.ParryHaste = character.PseudoStats.CanParry
 
 	character.Unit.finalize()
-
-	// For now, restrict this optimization to rogues only. Ferals will require
-	// some extra logic to handle their ExcessEnergy() calc.
-	if character.Class == proto.Class_ClassRogue {
-		character.Env.RegisterPostFinalizeEffect(func() {
-			character.energyBar.setupEnergyThresholds()
-		})
-	}
-	if character.Class == proto.Class_ClassHunter {
-		character.Env.RegisterPostFinalizeEffect(func() {
-			character.focusBar.setupFocusThresholds()
-		})
-	}
 
 	character.majorCooldownManager.finalize()
 }

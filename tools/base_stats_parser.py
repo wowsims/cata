@@ -79,7 +79,7 @@ import (
 
 '''
     output = header
-    output += f"const ExpertisePerQuarterPercentReduction = {cs.CombatRatings['weapon skill'][BASE_LEVEL-1]}\n"
+    output += f"const ExpertisePerQuarterPercentReduction = {cs.CombatRatings['expertise'][BASE_LEVEL-1]}\n"
     output += f"const HasteRatingPerHastePercent = {cs.CombatRatings['haste melee'][BASE_LEVEL-1]}\n"
     output += f"const CritRatingPerCritChance = {cs.CombatRatings['crit melee'][BASE_LEVEL-1]}\n"
     output += f"const MeleeHitRatingPerHitChance = {cs.CombatRatings['hit melee'][BASE_LEVEL-1]}\n"

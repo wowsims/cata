@@ -207,20 +207,26 @@ func (priest *Priest) applyEvangelism() {
 		// dummy aura used to track stacks in spells
 	})
 
-	priest.GetOrRegisterAura(core.Aura{
-		Label:    "Evangilism",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			switch spell.SpellID {
-			case 585: // smite
-			case 14914: // holy fire
-				priest.AddHolyEvanglismStack(sim)
-			case 15407: // mind flay
+	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
+		Name:           "Evangilism Hit",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: PriestSpellSmite | PriestSpellHolyFire | PriestSpellMindFlay,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask == PriestSpellMindFlay {
 				priest.AddDarkEvangelismStack(sim)
+				return
 			}
+			priest.AddHolyEvanglismStack(sim)
+		},
+	})
+
+	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
+		Name:           "Evangilism Tick",
+		Callback:       core.CallbackOnPeriodicDamageDealt,
+		ClassSpellMask: PriestSpellMindFlay,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			priest.AddDarkEvangelismStack(sim)
 		},
 	})
 }
@@ -282,9 +288,6 @@ func (priest *Priest) applyArchangel() {
 			BaseCost: 0,
 		},
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
 			CD: core.Cooldown{
 				Timer:    priest.NewTimer(),
 				Duration: time.Second * 30,
@@ -314,9 +317,6 @@ func (priest *Priest) applyArchangel() {
 			BaseCost: 0,
 		},
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
 			CD: core.Cooldown{
 				Timer:    priest.NewTimer(),
 				Duration: time.Second * 90,
@@ -415,7 +415,7 @@ func (priest *Priest) applyImprovedDevouringPlague() {
 			// Improved Devouring Plague only considers haste on gear nothing else for dot tick frequency
 			// https://github.com/JamminL/cata-classic-bugs/issues/971
 			tickPeriod := float64(dot.TickLength) / (1 + (priest.GetStat(stats.SpellHaste) / (core.HasteRatingPerHastePercent * 100)))
-			ticks := math.Ceil(float64(dot.BaseDuration) / tickPeriod)
+			ticks := math.Ceil(float64(dot.GetBaseDuration()) / tickPeriod)
 			dmg := ticks * dpTickDamage * float64(priest.Talents.ImprovedDevouringPlague) * 0.15
 			spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMagicCrit)
 		},

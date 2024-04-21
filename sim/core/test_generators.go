@@ -175,7 +175,7 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 				Cooldowns:          combos.Cooldowns,
 				Rotation:           rotationsCombo.Rotation,
 				DistanceFromTarget: 30,
-				ReactionTimeMs:     150,
+				ReactionTimeMs:     100,
 				ChannelClipDelayMs: 50,
 			}, specOptionsCombo.SpecOptions),
 			buffsCombo.Party,
@@ -475,7 +475,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 
 			InFrontOfTarget:    config.InFrontOfTarget,
 			DistanceFromTarget: 30,
-			ReactionTimeMs:     150,
+			ReactionTimeMs:     100,
 			ChannelClipDelayMs: 50,
 		},
 		config.SpecOptions.SpecOptions)

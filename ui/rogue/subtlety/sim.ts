@@ -264,6 +264,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 			// SubInputs.HonorAmongThievesCritRate,
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InputDelay,
 		],
 	},
 	encounterPicker: {

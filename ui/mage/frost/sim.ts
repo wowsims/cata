@@ -112,7 +112,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	otherInputs: {
 		inputs: [
 			//FrostInputs.WaterElementalDisobeyChance,
-			OtherInputs.ReactionTime,
+			OtherInputs.InputDelay,
 			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,
 		],
