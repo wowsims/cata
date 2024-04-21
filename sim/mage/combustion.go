@@ -1,28 +1,16 @@
 package mage
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 )
 
 func (mage *Mage) registerCombustionSpell() {
-
+	if !mage.Talents.Combustion {
+		return
+	}
 	var combustionDotDamage float64
-
-	/* 	combustionAura := mage.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return target.GetOrRegisterAura(core.Aura{
-			Label:    "Combustion",
-			Tag:      "FireMasteryDot",
-			ActionID: actionID,
-			Duration: 15 * time.Second,
-
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-
-			},
-		})
-	}) */
 
 	mage.Combustion = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11129},
@@ -51,24 +39,18 @@ func (mage *Mage) registerCombustionSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				combustionDotDamage = 0.0
 
-				dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite}
-				fmt.Println("Calc Time: ", sim.CurrentTime)
+				dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.PyroblastDot}
 				for _, spell := range dotSpells {
 					dots := spell.Dot(mage.CurrentTarget)
 					if dots != nil && dots.IsActive() {
 						normalizedDPS := 1000000000 * spell.Dot(mage.CurrentTarget).SnapshotBaseDamage / float64(spell.Dot(mage.CurrentTarget).TickPeriod())
-						fmt.Println("Snapshot Spell:     ", spell.ActionID)
-						fmt.Println("Snapshot Amt:       ", spell.Dot(mage.CurrentTarget).SnapshotBaseDamage)
-						fmt.Println("Tick Period(s):     ", (spell.Dot(mage.CurrentTarget).TickPeriod()))
-						fmt.Println("Normalized DPS:     ", normalizedDPS)
 						combustionDotDamage += normalizedDPS
 					}
 				}
 				dot.Snapshot(mage.CurrentTarget, combustionDotDamage)
-				fmt.Println("Combustion base snapshot: ", dot.SnapshotBaseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 		DamageMultiplierAdditive: 1 +
