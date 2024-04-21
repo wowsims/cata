@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -9,6 +8,9 @@ import (
 )
 
 func (mage *Mage) registerFrostfireOrbSpell() {
+	if mage.Talents.FrostfireOrb == 0 {
+		return
+	}
 
 	mage.FrostfireOrb = mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 92283},
@@ -31,6 +33,7 @@ func (mage *Mage) registerFrostfireOrbSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			mage.frostfireOrb.EnableWithTimeout(sim, mage.frostfireOrb, time.Second*15)
+
 		},
 	})
 
@@ -46,6 +49,8 @@ type FrostfireOrb struct {
 	mageOwner *Mage
 
 	FrostfireOrbTick *core.Spell
+
+	FrostfireOrbFingerOfFrost *core.Aura
 
 	TickCount int64
 }
@@ -76,7 +81,6 @@ func (ffo *FrostfireOrb) Reset(_ *core.Simulation) {
 func (ffo *FrostfireOrb) ExecuteCustomRotation(sim *core.Simulation) {
 
 	spell := ffo.FrostfireOrbTick
-	fmt.Println(spell.CanCast(sim, ffo.CurrentTarget))
 
 	if success := spell.Cast(sim, ffo.mageOwner.CurrentTarget); !success {
 		ffo.Disable(sim)
@@ -97,6 +101,8 @@ var createFrostfireOrbInheritance = func() func(stats.Stats) stats.Stats {
 }
 
 func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
+
+	procChance := []float64{0, 0.07, 0.14, 0.20}[ffo.mageOwner.Talents.FingersOfFrost]
 
 	ffo.FrostfireOrbTick = ffo.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 95969},
@@ -125,4 +131,15 @@ func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
 			}
 		},
 	})
+
+	ffo.FrostfireOrbFingerOfFrost = core.MakePermanent(ffo.RegisterAura(core.Aura{
+		Label: "Frostfire Orb FoF",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == ffo.FrostfireOrbTick && sim.Proc(procChance, "FingersOfFrostProc") {
+				ffo.mageOwner.FingersOfFrostAura.Activate(sim)
+				ffo.mageOwner.FingersOfFrostAura.AddStack(sim)
+			}
+		},
+	}))
+
 }
