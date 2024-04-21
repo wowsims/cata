@@ -99,5 +99,5 @@ func (druid *Druid) ShouldFaerieFire(sim *core.Simulation, target *core.Unit) bo
 		return false
 	}
 
-	return druid.FaerieFireAuras.Get(target).ShouldRefreshExclusiveEffects(sim, time.Second*3)
+	return druid.FaerieFireAuras.Get(target).ShouldRefreshExclusiveEffects(sim, time.Second*6)
 }

@@ -14,7 +14,7 @@ export class Encounter {
 	private executeProportion20 = 0.2;
 	private executeProportion25 = 0.25;
 	private executeProportion35 = 0.35;
-	private executeProportion90 = 0.1;
+	private executeProportion90 = 0.9;
 	private useHealth = false;
 	targets: Array<TargetProto>;
 	targetsMetadata: UnitMetadataList;
@@ -157,7 +157,7 @@ export class Encounter {
 				executeProportion20: 0.2,
 				executeProportion25: 0.25,
 				executeProportion35: 0.35,
-				executeProportion90: 0.1,
+				executeProportion90: 0.9,
 				targets: [Encounter.defaultTargetProto()],
 			}),
 		);

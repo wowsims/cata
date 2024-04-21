@@ -41,10 +41,10 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			TickLength:    time.Second * 2,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 90 + 0.1*dot.Spell.RangedAttackPower(target) // Todo: Change this to use Cata calculations
+				baseDamage := 296 + 0.546*dot.Spell.RangedAttackPower(target)
 				dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeRangedHitAndCritNoBlock)
+					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage/10, dot.Spell.OutcomeRangedHitAndCritNoBlock)
 				}
 				dot.Spell.DamageMultiplierAdditive -= bonusPeriodicDamageMultiplier
 			},
@@ -63,7 +63,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 					DoAt: 0,
 					OnAction: func(sim *core.Simulation) {
 						for _, aoeTarget := range sim.Encounter.TargetUnits {
-							baseDamage := sim.Roll(523, 671) + 0.1*spell.RangedAttackPower(aoeTarget) // Todo: Change this to use Cata calculations
+							baseDamage := 223 + 0.0546*spell.RangedAttackPower(aoeTarget)
 							baseDamage *= sim.Encounter.AOECapMultiplier()
 							spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
 						}
@@ -72,7 +72,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 				})
 			} else {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					baseDamage := sim.Roll(523, 671) + 0.1*spell.RangedAttackPower(aoeTarget) // Todo: Change this to use Cata calculations
+					baseDamage := 223 + 0.0546*spell.RangedAttackPower(aoeTarget)
 					baseDamage *= sim.Encounter.AOECapMultiplier()
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
 				}

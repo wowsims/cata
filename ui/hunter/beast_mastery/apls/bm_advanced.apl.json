@@ -1,0 +1,69 @@
+{
+	"type": "TypeAPL",
+	"prepullActions": [
+		{ "action": { "castSpell": { "spellId": { "otherId": "OtherActionPotion" } } }, "doAtValue": { "const": { "val": "-1s" } } },
+		{ "action": { "castSpell": { "spellId": { "spellId": 13165 } } }, "doAtValue": { "const": { "val": "-2s" } } },
+		{ "action": { "castSpell": { "spellId": { "spellId": 1130 } } }, "doAtValue": { "const": { "val": "-3s" } } },
+		{ "action": { "castSpell": { "spellId": { "spellId": 2825, "tag": -1 } } }, "doAtValue": { "const": { "val": "-1s" } } },
+		{ "action": {}, "doAtValue": { "const": { "val": "-1s" } } }
+	],
+	"priorityList": [
+		{ "action": { "autocastOtherCooldowns": {} } },
+		{
+			"action": {
+				"condition": {
+					"and": {
+						"vals": [
+							{
+								"cmp": {
+									"op": "OpEq",
+									"lhs": {
+										"auraNumStacks": { "sourceUnit": { "type": "Pet", "owner": { "type": "Self" } }, "auraId": { "spellId": 19622 } }
+									},
+									"rhs": { "const": { "val": "5" } }
+								}
+							},
+							{ "cmp": { "op": "OpLe", "lhs": { "auraRemainingTime": { "auraId": { "spellId": 82692 } } }, "rhs": { "const": { "val": "4s" } } } }
+						]
+					}
+				},
+				"castSpell": { "spellId": { "spellId": 82692 } }
+			}
+		},
+		{
+			"action": {
+				"condition": { "cmp": { "op": "OpGe", "lhs": { "currentFocus": {} }, "rhs": { "const": { "val": "60" } } } },
+				"castSpell": { "spellId": { "spellId": 19574 } }
+			}
+		},
+		{
+			"action": {
+				"condition": { "not": { "val": { "dotIsActive": { "spellId": { "spellId": 1978 } } } } },
+				"castSpell": { "spellId": { "spellId": 1978 } }
+			}
+		},
+		{ "action": { "castSpell": { "spellId": { "spellId": 53351 } } } },
+		{ "action": { "castSpell": { "spellId": { "spellId": 3045 } } } },
+		{ "action": { "castSpell": { "spellId": { "spellId": 34026 } } } },
+		{
+			"action": {
+				"condition": { "cmp": { "op": "OpLe", "lhs": { "currentFocus": {} }, "rhs": { "const": { "val": "37" } } } },
+				"castSpell": { "spellId": { "spellId": 82726 } }
+			}
+		},
+		{
+			"action": {
+				"condition": {
+					"or": {
+						"vals": [
+							{ "cmp": { "op": "OpGe", "lhs": { "currentFocus": {} }, "rhs": { "const": { "val": "59" } } } },
+							{ "auraIsActive": { "auraId": { "spellId": 19574 } } }
+						]
+					}
+				},
+				"castSpell": { "spellId": { "spellId": 3044 } }
+			}
+		},
+		{ "action": { "castSpell": { "spellId": { "spellId": 77767 } } } }
+	]
+}

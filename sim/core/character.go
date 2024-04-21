@@ -102,7 +102,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 			StatDependencyManager: stats.NewStatDependencyManager(),
 
-			ReactionTime:       max(0, time.Duration(player.ReactionTimeMs)*time.Millisecond),
+			ReactionTime:       time.Duration(max(player.ReactionTimeMs, 10)) * time.Millisecond,
 			ChannelClipDelay:   max(0, time.Duration(player.ChannelClipDelayMs)*time.Millisecond),
 			DistanceFromTarget: player.DistanceFromTarget,
 		},
@@ -459,19 +459,6 @@ func (character *Character) Finalize() {
 
 	character.Unit.finalize()
 
-	// For now, restrict this optimization to rogues only. Ferals will require
-	// some extra logic to handle their ExcessEnergy() calc.
-	if character.Class == proto.Class_ClassRogue {
-		character.Env.RegisterPostFinalizeEffect(func() {
-			character.energyBar.setupEnergyThresholds()
-		})
-	}
-	if character.Class == proto.Class_ClassHunter {
-		character.Env.RegisterPostFinalizeEffect(func() {
-			character.focusBar.setupFocusThresholds()
-		})
-	}
-
 	character.majorCooldownManager.finalize()
 }
 
@@ -721,7 +708,7 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3
 	}
 }
 
-func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
+func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.ArmorType) bool {
 	hasBonus := true
 
 	if character.Head().ArmorType != armorType ||
@@ -734,6 +721,12 @@ func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, ar
 		character.Feet().ArmorType != armorType {
 		hasBonus = false
 	}
+
+	return hasBonus
+}
+
+func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
+	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
 
 	if hasBonus {
 		character.MultiplyStat(primaryStat, 1.05)

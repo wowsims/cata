@@ -75,73 +75,9 @@ type Hunter struct {
 func (hunter *Hunter) GetCharacter() *core.Character {
 	return &hunter.Character
 }
-func (hunter *Hunter) HasPrimeGlyph(glyph proto.HunterPrimeGlyph) bool {
-	return hunter.HasGlyph(int32(glyph))
-}
-func (hunter *Hunter) HasMajorGlyph(glyph proto.HunterMajorGlyph) bool {
-	return hunter.HasGlyph(int32(glyph))
-}
-func (hunter *Hunter) HasMinorGlyph(glyph proto.HunterMinorGlyph) bool {
-	return hunter.HasGlyph(int32(glyph))
-}
 
 func (hunter *Hunter) GetHunter() *Hunter {
 	return hunter
-}
-
-func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if hunter.Talents.TrueshotAura {
-		raidBuffs.TrueshotAura = true
-	}
-	if hunter.Talents.FerociousInspiration && hunter.Pet != nil {
-		raidBuffs.FerociousInspiration = true
-	}
-}
-func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
-}
-func (hunter *Hunter) CalculateMasteryPoints() float64 {
-	return hunter.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPoint
-}
-func (hunter *Hunter) CritMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS bool) float64 {
-	primaryModifier := 1.0
-	secondaryModifier := 0.0
-
-	// if isRanged {
-	// 	//secondaryModifier += mortalShotsFactor * float64(hunter.Talents.MortalShots)
-	// 	if isMFDSpell {
-	// 		//secondaryModifier += 0.02 * float64(hunter.Talents.MarkedForDeath)
-	// 	}
-	// }
-
-	return hunter.MeleeCritMultiplier(primaryModifier, secondaryModifier)
-}
-
-func (hunter *Hunter) Initialize() {
-	hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
-	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
-	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
-	hunter.FireTrapTimer = hunter.NewTimer()
-
-	hunter.ApplyGlyphs()
-
-	hunter.registerSteadyShotSpell()
-	hunter.registerArcaneShotSpell()
-	hunter.registerKillShotSpell()
-	hunter.registerAspectOfTheHawkSpell()
-	hunter.registerSerpentStingSpell()
-	hunter.registerMultiShotSpell()
-	hunter.registerKillCommandSpell()
-	hunter.registerExplosiveTrapSpell(hunter.FireTrapTimer)
-	hunter.registerCobraShotSpell()
-	hunter.registerRapidFireCD()
-	hunter.registerSilencingShotSpell()
-	hunter.registerRaptorStrikeSpell()
-	hunter.registerTrapLauncher()
-	hunter.registerHuntersMarkSpell()
-}
-
-func (hunter *Hunter) Reset(_ *core.Simulation) {
-	hunter.mayMoveAt = 0
 }
 
 func NewHunter(character *core.Character, options *proto.Player, hunterOptions *proto.HunterOptions) *Hunter {
@@ -170,6 +106,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		//ReplaceMHSwing:  hunter.TryRaptorStrike, //Todo: Might be weaving
 		AutoSwingRanged: true,
 	})
+
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
 
@@ -181,11 +118,79 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	}
 	hunter.Pet = hunter.NewHunterPet()
 
-	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 2)
-	hunter.AddStatDependency(stats.Agility, stats.RangedAttackPower, 2)
-	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+	hunter.AddStatDependencies()
 
 	return hunter
+}
+
+func (hunter *Hunter) Initialize() {
+	hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
+	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
+	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
+	hunter.FireTrapTimer = hunter.NewTimer()
+
+	hunter.ApplyGlyphs()
+	hunter.RegisterSpells()
+}
+
+func (hunter *Hunter) RegisterSpells() {
+	hunter.registerSteadyShotSpell()
+	hunter.registerArcaneShotSpell()
+	hunter.registerKillShotSpell()
+	hunter.registerAspectOfTheHawkSpell()
+	hunter.registerSerpentStingSpell()
+	hunter.registerMultiShotSpell()
+	hunter.registerKillCommandSpell()
+	hunter.registerExplosiveTrapSpell(hunter.FireTrapTimer)
+	hunter.registerCobraShotSpell()
+	hunter.registerRapidFireCD()
+	hunter.registerSilencingShotSpell()
+	hunter.registerRaptorStrikeSpell()
+	hunter.registerTrapLauncher()
+	hunter.registerHuntersMarkSpell()
+}
+
+func (hunter *Hunter) AddStatDependencies() {
+	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 2)
+	hunter.AddStatDependency(stats.Agility, stats.RangedAttackPower, 2)
+	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[hunter.Class]*core.CritRatingPerCritChance)
+}
+
+func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	if hunter.Talents.TrueshotAura {
+		raidBuffs.TrueshotAura = true
+	}
+	if hunter.Talents.FerociousInspiration && hunter.Pet != nil {
+		raidBuffs.FerociousInspiration = true
+	}
+}
+
+func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
+}
+
+func (hunter *Hunter) CalculateMasteryPoints() float64 {
+	return hunter.GetStat(stats.Mastery) / core.MasteryRatingPerMasteryPoint
+}
+
+func (hunter *Hunter) CritMultiplier(isRanged bool, isMFDSpell bool, doubleDipMS bool) float64 {
+	primaryModifier := 1.0
+	secondaryModifier := 0.0
+
+	return hunter.MeleeCritMultiplier(primaryModifier, secondaryModifier)
+}
+
+func (hunter *Hunter) HasPrimeGlyph(glyph proto.HunterPrimeGlyph) bool {
+	return hunter.HasGlyph(int32(glyph))
+}
+func (hunter *Hunter) HasMajorGlyph(glyph proto.HunterMajorGlyph) bool {
+	return hunter.HasGlyph(int32(glyph))
+}
+func (hunter *Hunter) HasMinorGlyph(glyph proto.HunterMinorGlyph) bool {
+	return hunter.HasGlyph(int32(glyph))
+}
+
+func (hunter *Hunter) Reset(_ *core.Simulation) {
+	hunter.mayMoveAt = 0
 }
 
 const (

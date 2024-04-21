@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (druid *Druid) getSavageRoarMultiplier() float64 {
@@ -31,11 +30,11 @@ func (druid *Druid) registerSavageRoarSpell() {
 		ActionID: actionID,
 		Duration: 9,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= srm
+			druid.MHAutoSpell.DamageMultiplier *= srm
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if druid.InForm(Cat) {
-				druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= srm
+				druid.MHAutoSpell.DamageMultiplier /= srm
 			}
 		},
 	})

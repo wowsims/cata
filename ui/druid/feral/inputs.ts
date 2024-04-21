@@ -8,12 +8,6 @@ import { TypedEvent } from '../../core/typed_event.js';
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 
-export const LatencyMs = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecFeralDruid>({
-	fieldName: 'latencyMs',
-	label: 'Latency',
-	labelTooltip: 'Player latency, in milliseconds. Adds a delay to actions that cannot be spell queued.',
-});
-
 export const AssumeBleedActive = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecFeralDruid>({
 	fieldName: 'assumeBleedActive',
 	label: 'Assume Bleed Always Active',
@@ -41,32 +35,15 @@ export const FeralDruidRotationConfig = {
 				{ name: 'AOE', value: AplType.Aoe },
 			],
 		}),
-		// InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
-		// 	fieldName: 'prePopOoc',
-		// 	label: 'Pre-pop Clearcasting',
-		// 	labelTooltip: 'Start fight with clearcasting',
-		// 	showWhen: (player: Player<Spec.SpecFeralDruid>) => player.getTalents().omenOfClarity,
-		// 	changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		// }),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
-			fieldName: 'prePopBerserk',
-			label: 'Pre-pop Berserk',
-			labelTooltip: 'Pre pop berserk 1 sec before fight',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) => player.getTalents().berserk,
-			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+			fieldName: 'maintainFaerieFire',
+			label: 'Maintain Faerie Fire',
+			labelTooltip: 'Maintain Faerie Fire debuff. Overwrites any external Sunder effects specified in settings.',
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'manualParams',
 			label: 'Manual Advanced Parameters',
 			labelTooltip: 'Manually specify advanced parameters, otherwise will use preset defaults',
-		}),
-		InputHelpers.makeRotationNumberInput<Spec.SpecFeralDruid>({
-			fieldName: 'maxFfDelay',
-			label: 'Max FF Delay',
-			labelTooltip: 'Max allowed delay to wait for ff to come off CD in seconds',
-			float: true,
-			positive: true,
-			showWhen: (player: Player<Spec.SpecFeralDruid>) => player.getSimpleRotation().manualParams,
 		}),
 		InputHelpers.makeRotationNumberInput<Spec.SpecFeralDruid>({
 			fieldName: 'minRoarOffset',
@@ -99,20 +76,6 @@ export const FeralDruidRotationConfig = {
 			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
 				ShouldShowAdvParamST(player) && player.getSimpleRotation().useBite == true && player.getSimpleRotation().biteModeType == BiteModeType.Emperical,
 		}),
-		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
-			fieldName: 'flowerWeave',
-			label: 'Flower Weave',
-			labelTooltip: 'Fish for clearcasting during rotation with gotw',
-			showWhen: ShouldShowAdvParamAoe,
-		}),
-		InputHelpers.makeRotationNumberInput<Spec.SpecFeralDruid>({
-			extraCssClasses: ['used-in-apl'],
-			fieldName: 'raidTargets',
-			label: 'GotW Raid Targets',
-			labelTooltip: 'Raid size to assume for clearcast proc chance (can include pets as well, so 25 man raid potentically can be ~30)',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
-				player.aplRotation.type != APLRotation_Type.TypeSimple || (ShouldShowAdvParamAoe(player) && player.getSimpleRotation().flowerWeave == true),
-		}),
 		// Can be uncommented if/when analytical bite mode is added
 		//InputHelpers.makeRotationEnumInput<Spec.SpecFeralDruid, BiteModeType>({
 		//	fieldName: 'biteModeType',
@@ -123,13 +86,5 @@ export const FeralDruidRotationConfig = {
 		//	],
 		//	showWhen: (player: Player<Spec.SpecFeralDruid>) => player.getSimpleRotation().useBite == true
 		//}),
-		InputHelpers.makeRotationNumberInput<Spec.SpecFeralDruid>({
-			fieldName: 'hotUptime',
-			label: 'Revitalize Hot Uptime',
-			labelTooltip: 'Hot uptime percentage to assume when theorizing energy gains',
-			percent: true,
-			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
-				player.getSimpleRotation().useBite == true && player.getSimpleRotation().biteModeType == BiteModeType.Analytical,
-		}),
 	],
 };

@@ -109,17 +109,14 @@ func (impl *APLActionCatOptimalRotationAction) GetNextAction(*core.Simulation) *
 func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, config *proto.APLActionCatOptimalRotationAction) core.APLActionImpl {
 	rotationOptions := &proto.FeralDruid_Rotation{
 		RotationType:       config.RotationType,
-		MaintainFaerieFire: true,
+		MaintainFaerieFire: config.MaintainFaerieFire,
 		UseRake:            config.UseRake,
 		UseBite:            config.UseBite,
 		BiteTime:           config.BiteTime,
 		MangleSpam:         false,
-		MaxFfDelay:         config.MaxFfDelay,
 		Powerbear:          false,
 		MinRoarOffset:      config.MinRoarOffset,
 		RipLeeway:          config.RipLeeway,
-		HotUptime:          0.0,
-		FlowerWeave:        config.FlowerWeave,
 		ManualParams:       config.ManualParams,
 	}
 
@@ -142,16 +139,22 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	if cat.ClearcastingAura.RemainingDuration(sim) == cat.ClearcastingAura.Duration {
 		// Kick gcd loop, also need to account for any gcd 'left'
 		// otherwise it breaks gcd logic
-		kickTime := max(cat.NextGCDAt(), sim.CurrentTime+cat.latency)
+		kickTime := max(cat.NextGCDAt(), sim.CurrentTime+cat.ReactionTime)
 		cat.NextRotationAction(sim, kickTime)
 	}
 
-	if cat.GCD.IsReady(sim) && (cat.rotationAction == nil || sim.CurrentTime >= cat.rotationAction.NextActionAt) {
-		cat.OnGCDReady(sim)
+	action.lastAction = sim.CurrentTime
+
+	if !cat.GCD.IsReady(sim) {
+		return
 	}
 
-	cat.doTigersFury(sim)
-	action.lastAction = sim.CurrentTime
+	cat.TryTigersFury(sim)
+	cat.TryBerserk(sim)
+
+	if cat.rotationAction == nil || sim.CurrentTime >= cat.rotationAction.NextActionAt {
+		cat.OnGCDReady(sim)
+	}
 }
 
 func (action *APLActionCatOptimalRotationAction) Reset(*core.Simulation) {

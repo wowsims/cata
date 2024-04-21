@@ -5,14 +5,13 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (druid *Druid) registerTigersFurySpell() {
 	actionID := core.ActionID{SpellID: 5217}
 	energyMetrics := druid.NewEnergyMetrics(actionID)
 	instantEnergy := 20.0 * float64(druid.Talents.KingOfTheJungle)
-
-	dmgBonus := 80.0
 	cdReduction := core.TernaryDuration(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfTigersFury), time.Second*3, 0)
 
 	druid.TigersFuryAura = druid.RegisterAura(core.Aura{
@@ -20,14 +19,14 @@ func (druid *Druid) registerTigersFurySpell() {
 		ActionID: actionID,
 		Duration: 6 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.BonusDamage += dmgBonus
+			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.15
 
 			if druid.PrimalMadnessAura != nil {
 				druid.PrimalMadnessAura.Activate(sim)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.BonusDamage -= dmgBonus
+			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.15
 
 			if druid.PrimalMadnessAura.IsActive() && !druid.BerserkAura.IsActive() {
 				druid.PrimalMadnessAura.Deactivate(sim)

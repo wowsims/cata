@@ -87,6 +87,11 @@ func (druid *Druid) registerCatFormSpell() {
 		hotwDep = druid.NewDynamicMultiplyStat(stats.AttackPower, []float64{1.0, 1.03, 1.07, 1.1}[druid.Talents.HeartOfTheWild])
 	}
 
+	var leatherSpecDep *stats.StatDependency
+	if druid.LeatherSpecActive {
+		leatherSpecDep = druid.NewDynamicMultiplyStat(stats.Agility, 1.05)
+	}
+
 	clawWeapon := druid.GetCatWeapon()
 
 	druid.CatFormAura = druid.RegisterAura(core.Aura{
@@ -112,6 +117,9 @@ func (druid *Druid) registerCatFormSpell() {
 			if hotwDep != nil {
 				druid.EnableDynamicStatDep(sim, hotwDep)
 			}
+			if leatherSpecDep != nil {
+				druid.EnableDynamicStatDep(sim, leatherSpecDep)
+			}
 
 			if !druid.Env.MeasuringStats {
 				druid.AutoAttacks.SetReplaceMHSwing(nil)
@@ -120,7 +128,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 				// These buffs stay up, but corresponding changes don't
 				if druid.SavageRoarAura.IsActive() {
-					druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= srm
+					druid.MHAutoSpell.DamageMultiplier *= srm
 				}
 
 				if druid.PredatoryInstinctsAura != nil {
@@ -142,6 +150,9 @@ func (druid *Druid) registerCatFormSpell() {
 			if hotwDep != nil {
 				druid.DisableDynamicStatDep(sim, hotwDep)
 			}
+			if leatherSpecDep != nil {
+				druid.DisableDynamicStatDep(sim, leatherSpecDep)
+			}
 
 			if !druid.Env.MeasuringStats {
 				druid.AutoAttacks.SetReplaceMHSwing(nil)
@@ -152,7 +163,7 @@ func (druid *Druid) registerCatFormSpell() {
 
 				// These buffs stay up, but corresponding changes don't
 				if druid.SavageRoarAura.IsActive() {
-					druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= srm
+					druid.MHAutoSpell.DamageMultiplier /= srm
 				}
 
 				if druid.PredatoryInstinctsAura != nil {
@@ -208,6 +219,11 @@ func (druid *Druid) registerBearFormSpell() {
 		hotwDep = druid.NewDynamicMultiplyStat(stats.Stamina, 1.0+0.02*float64(druid.Talents.HeartOfTheWild))
 	}
 
+	var leatherSpecDep *stats.StatDependency
+	if druid.LeatherSpecActive {
+		leatherSpecDep = druid.NewDynamicMultiplyStat(stats.Stamina, 1.05)
+	}
+
 	nrdtm := 1 - 0.09*float64(druid.Talents.NaturalReaction)
 
 	clawWeapon := druid.GetBearWeapon()
@@ -242,6 +258,9 @@ func (druid *Druid) registerBearFormSpell() {
 			if hotwDep != nil {
 				druid.EnableDynamicStatDep(sim, hotwDep)
 			}
+			if leatherSpecDep != nil {
+				druid.EnableDynamicStatDep(sim, leatherSpecDep)
+			}
 			druid.GainHealth(sim, healthFrac*druid.MaxHealth()-druid.CurrentHealth(), healthMetrics)
 
 			if !druid.Env.MeasuringStats {
@@ -269,6 +288,9 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.DisableDynamicStatDep(sim, stamDep)
 			if hotwDep != nil {
 				druid.DisableDynamicStatDep(sim, hotwDep)
+			}
+			if leatherSpecDep != nil {
+				druid.DisableDynamicStatDep(sim, leatherSpecDep)
 			}
 			druid.RemoveHealth(sim, druid.CurrentHealth()-healthFrac*druid.MaxHealth())
 

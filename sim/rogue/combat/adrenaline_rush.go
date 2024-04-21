@@ -22,13 +22,11 @@ func (comRogue *CombatRogue) registerAdrenalineRushCD() {
 		ActionID: AdrenalineRushActionID,
 		Duration: core.TernaryDuration(comRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfAdrenalineRush), time.Second*20, time.Second*15),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			comRogue.ResetEnergyTick(sim)
-			comRogue.ApplyEnergyTickMultiplier(1.0)
+			comRogue.ApplyAdditiveEnergyRegenBonus(sim, 1.0)
 			comRogue.MultiplyMeleeSpeed(sim, speedBonus)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			comRogue.ResetEnergyTick(sim)
-			comRogue.ApplyEnergyTickMultiplier(-1.0)
+			comRogue.ApplyAdditiveEnergyRegenBonus(sim, -1.0)
 			comRogue.MultiplyMeleeSpeed(sim, inverseBonus)
 		},
 	})

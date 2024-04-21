@@ -27,12 +27,10 @@ func RegisterFeralDruid() {
 }
 
 func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid {
-	feralOptions := options.GetFeralDruid()
 	selfBuffs := druid.SelfBuffs{}
 
 	cat := &FeralDruid{
-		Druid:   druid.New(character, druid.Cat, selfBuffs, options.TalentsString),
-		latency: time.Duration(max(feralOptions.Options.LatencyMs, 1)) * time.Millisecond,
+		Druid: druid.New(character, druid.Cat, selfBuffs, options.TalentsString),
 	}
 
 	// cat.SelfBuffs.InnervateTarget = &proto.UnitReference{}
@@ -63,11 +61,9 @@ type FeralDruid struct {
 
 	Rotation FeralDruidRotation
 
-	prepopOoc         bool
 	readyToShift      bool
 	readyToGift       bool
 	waitingForTick    bool
-	latency           time.Duration
 	maxRipTicks       int32
 	berserkUsed       bool
 	bleedAura         *core.Aura
@@ -96,8 +92,8 @@ func (cat *FeralDruid) Reset(sim *core.Simulation) {
 	cat.Druid.Reset(sim)
 	cat.Druid.ClearForm(sim)
 	cat.CatFormAura.Activate(sim)
-	// cat.readyToShift = false
-	// cat.waitingForTick = false
-	// cat.berserkUsed = false
-	// cat.rotationAction = nil
+	cat.readyToShift = false
+	cat.waitingForTick = false
+	cat.berserkUsed = false
+	cat.rotationAction = nil
 }

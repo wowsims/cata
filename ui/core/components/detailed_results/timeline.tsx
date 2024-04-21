@@ -702,7 +702,13 @@ export class Timeline extends ResultComponent {
 		if (resourceLogs.length == 0) {
 			return;
 		}
-		const startValue = resourceLogs[0].valueBefore;
+		const startValue = function(group: ResourceChangedLogGroup) : number {
+			if (group.maxValue == null) {
+				return resourceLogs[0].valueBefore;
+			}
+
+			return group.maxValue;
+		};
 		const labelElem = (
 			<div className="rotation-label rotation-row">
 				<a
@@ -736,13 +742,13 @@ export class Timeline extends ResultComponent {
 			);
 
 			if (percentageResources.includes(resourceType)) {
-				resourceElem.textContent = ((resourceLogGroup.valueAfter / startValue) * 100).toFixed(0) + '%';
+				resourceElem.textContent = ((resourceLogGroup.valueAfter / startValue(resourceLogGroup)) * 100).toFixed(0) + '%';
 			} else {
 				if (resourceType == ResourceType.ResourceTypeEnergy || resourceType == ResourceType.ResourceTypeFocus) {
 					const bgElem = document.createElement('div');
 					bgElem.classList.add('rotation-timeline-resource-fill');
 					bgElem.classList.add(cNames);
-					bgElem.style.height = ((resourceLogGroup.valueAfter / startValue) * 100).toFixed(0) + '%';
+					bgElem.style.height = ((resourceLogGroup.valueAfter / startValue(resourceLogGroup)) * 100).toFixed(0) + '%';
 					resourceElem.appendChild(bgElem);
 				} else {
 					resourceElem.textContent = Math.floor(resourceLogGroup.valueAfter).toFixed(0);
@@ -753,7 +759,7 @@ export class Timeline extends ResultComponent {
 			Tooltip.getOrCreateInstance(resourceElem, {
 				html: true,
 				placement: 'bottom',
-				title: this.resourceTooltipElem(resourceLogGroup, startValue, false),
+				title: this.resourceTooltipElem(resourceLogGroup, startValue(resourceLogGroup), false),
 			});
 		});
 		this.rotationTimeline.appendChild(rowElem);

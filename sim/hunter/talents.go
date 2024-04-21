@@ -389,10 +389,11 @@ func (hunter *Hunter) applyFrenzy() {
 	if hunter.Talents.Frenzy == 0 {
 		return
 	}
-
+	actionID := core.ActionID{SpellID: 19622}
 	hunter.Pet.FrenzyAura = hunter.Pet.RegisterAura(core.Aura{
 		Label:     "Frenzy",
 		Duration:  time.Second * 10,
+		ActionID:  actionID,
 		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.MultiplyMeleeSpeed(sim, 1.02)
@@ -401,6 +402,7 @@ func (hunter *Hunter) applyFrenzy() {
 			aura.Unit.MultiplyMeleeSpeed(sim, 1/1.02)
 		},
 	})
+
 	hunter.Pet.RegisterAura(core.Aura{
 		Label:    "FrenzyHandler",
 		Duration: core.NeverExpires,
@@ -549,15 +551,13 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		ActionID: actionID,
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.1
-			aura.Unit.PseudoStats.CostMultiplier -= 0.5
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.2
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.1
-			aura.Unit.PseudoStats.CostMultiplier += 0.5
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.2
 		},
 	})
-	core.RegisterPercentDamageModifierEffect(bestialWrathAura, 1.1)
+	core.RegisterPercentDamageModifierEffect(bestialWrathAura, 1.2)
 
 	bwSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -765,7 +765,7 @@ func (hunter *Hunter) applyHuntingParty() {
 	})
 }
 func (hunter *Hunter) registerSicEm() {
-	if hunter.Talents.SicEm == 0 {
+	if hunter.Talents.SicEm == 0 || hunter.Pet == nil {
 		return
 	}
 

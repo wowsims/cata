@@ -317,9 +317,16 @@ func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
 	if bonus[stats.MP5] != 0 || bonus[stats.Intellect] != 0 || bonus[stats.Spirit] != 0 {
 		unit.UpdateManaRegenRates()
 	}
+	if bonus[stats.Mana] != 0 && unit.HasManaBar() {
+		if unit.CurrentMana() > unit.MaxMana() {
+			unit.currentMana = unit.MaxMana()
+		}
+	}
 	if bonus[stats.MeleeHaste] != 0 {
 		unit.AutoAttacks.UpdateSwingTimers(sim)
 		unit.runicPowerBar.updateRegenTimes(sim)
+		unit.energyBar.processDynamicHasteRatingChange(sim)
+		unit.focusBar.processDynamicHasteRatingChange(sim)
 	}
 	if bonus[stats.SpellHaste] != 0 {
 		unit.updateCastSpeed()
@@ -456,6 +463,8 @@ func (unit *Unit) MultiplyResourceRegenSpeed(sim *Simulation, amount float64) {
 		unit.MultiplyRuneRegenSpeed(sim, amount)
 	} else if unit.HasFocusBar() {
 		unit.MultiplyFocusRegenSpeed(sim, amount)
+	} else if unit.HasEnergyBar() {
+		unit.MultiplyEnergyRegenSpeed(sim, amount)
 	}
 }
 

@@ -337,10 +337,10 @@ func (druid *Druid) applyPrimalMadness() {
 		ActionID: actionID,
 		Duration: core.NeverExpires, // duration is tied to Tiger's Fury / Berserk durations
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.UpdateMaxEnergy(sim, 100.0 + energyGain, energyMetrics)
+			druid.UpdateMaxEnergy(sim, energyGain, energyMetrics)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.UpdateMaxEnergy(sim, 100.0, energyMetrics)
+			druid.UpdateMaxEnergy(sim, -energyGain, energyMetrics)
 		},
 	})
 }

@@ -150,17 +150,15 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 		// EJ posts claim this value is passed through math.Floor, but in-game testing
 		// shows pets benefit from each point of owner hit rating in WotLK Classic.
 		// https://web.archive.org/web/20120112003252/http://elitistjerks.com/f80/t100099-demonology_releasing_demon_you
-		ownerHitChance := ownerStats[stats.MeleeHit] / core.MeleeHitRatingPerHitChance
-		hitRatingFromOwner := ownerHitChance * core.MeleeHitRatingPerHitChance
 
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.425,
+			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.22,
 			stats.Agility:     ownerStats[stats.Agility],
-			stats.MeleeHit:    hitRatingFromOwner,
-			stats.SpellHit:    hitRatingFromOwner,
-			stats.Expertise:   (ownerHitChance * 26 / 8) / 100,
+			stats.MeleeHit:    ownerStats[stats.MeleeHit],
+			stats.Expertise:   ownerStats[stats.MeleeHit] * PetExpertiseScale,
+			stats.SpellHit:    ownerStats[stats.MeleeHit],
 		}
 	}
 }
