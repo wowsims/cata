@@ -47,7 +47,6 @@ func (hunter *Hunter) ApplySurvivalTalents() {
 
 	hunter.applyTNT()
 	hunter.applySniperTraining()
-	hunter.applyHuntingParty()
 	hunter.applyThrillOfTheHunt()
 }
 
@@ -73,26 +72,6 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 				}
 			}
 
-		},
-	})
-}
-
-func (hunter *Hunter) applyHuntingParty() {
-	if !hunter.Talents.HuntingParty {
-		return
-	}
-
-	hunter.RegisterAura(core.Aura{
-		Label:    "Hunting Party",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, 1.10)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, 1/1.10)
 		},
 	})
 }
