@@ -97,11 +97,6 @@ func (war *ArmsWarrior) RegisterMastery() {
 	procAttackConfig.ProcMask = core.ProcMaskMeleeSpecial
 	procAttack := war.RegisterSpell(procAttackConfig)
 
-	icd := core.Cooldown{
-		Timer:    war.NewTimer(),
-		Duration: time.Millisecond * 500,
-	}
-
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
 		Name:     "Strikes of Opportunity",
 		ActionID: procAttackConfig.ActionID,
