@@ -22,8 +22,8 @@ func (druid *Druid) registerRipSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:          30,
-			Refund:        0.8,
+			Cost:   30,
+			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -100,6 +100,6 @@ func (druid *Druid) ApplyBloodletting(target *core.Unit) {
 	if ripDot.IsActive() && (ripDot.NumberOfTicks < 11) {
 		ripDot.NumberOfTicks += 1
 		ripDot.RecomputeAuraDuration()
-		ripDot.UpdateExpires(ripDot.ExpiresAt() + time.Second * 2)
+		ripDot.UpdateExpires(ripDot.ExpiresAt() + time.Second*2)
 	}
 }
