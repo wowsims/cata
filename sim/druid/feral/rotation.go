@@ -316,7 +316,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	// Keep up Sunder debuff if not provided externally
 	ffNow := rotation.MaintainFaerieFire && cat.ShouldFaerieFire(sim, cat.CurrentTarget)
-	
+
 	// Pooling calcs
 	cat.ripRefreshPending = false
 	pendingPool := PoolingActions{}
@@ -390,7 +390,6 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			cat.Metrics.MarkOOM(sim)
 		}
 	}
-
 
 	// Main  decision tree starts here
 	timeToNextAction := time.Duration(0)
