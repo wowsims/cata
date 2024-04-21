@@ -220,6 +220,7 @@ func (druid *Druid) RegisterBalanceSpells() {
 	//druid.registerStarfallSpell()
 	//druid.registerTyphoonSpell()
 	//druid.registerForceOfNatureCD()
+	druid.registerStarsurgeSpell()
 }
 
 func (druid *Druid) RegisterFeralCatSpells() {
