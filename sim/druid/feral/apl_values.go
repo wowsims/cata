@@ -139,7 +139,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	if cat.ClearcastingAura.RemainingDuration(sim) == cat.ClearcastingAura.Duration {
 		// Kick gcd loop, also need to account for any gcd 'left'
 		// otherwise it breaks gcd logic
-		kickTime := max(cat.NextGCDAt(), sim.CurrentTime+cat.latency)
+		kickTime := max(cat.NextGCDAt(), sim.CurrentTime+cat.ReactionTime)
 		cat.NextRotationAction(sim, kickTime)
 	}
 

@@ -1499,7 +1499,7 @@ export class Player<SpecType extends Spec> {
 		TypedEvent.freezeAllAndDo(() => {
 			this.setEnableItemSwap(eventID, false);
 			this.setItemSwapGear(eventID, new ItemSwapGear({}));
-			this.setReactionTime(eventID, 200);
+			this.setReactionTime(eventID, 100);
 			this.setInFrontOfTarget(eventID, this.playerSpec.isTankSpec);
 			this.setHealingModel(
 				eventID,
