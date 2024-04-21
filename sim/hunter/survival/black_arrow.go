@@ -43,8 +43,9 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			Aura: core.Aura{
 				Label: "Black Arrow Dot",
 			},
-			NumberOfTicks: 10,
-			TickLength:    time.Second * 2,
+			NumberOfTicks:       10,
+			TickLength:          time.Second * 2,
+			AffectedByCastSpeed: false,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				// https://web.archive.org/web/20120207222124/http://elitistjerks.com/f74/t110306-hunter_faq_cataclysm_edition_read_before_asking_questions/
 				//  66.5% RAP + 2849 (total damage) - changed 6/28 in 4.2 (based off spell crit multiplier, modified by toxicology)
@@ -54,11 +55,7 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 				percentageOfRAP := 0.665
 
 				// SnapshotBaseDamage calculation for the DoT, divided by 10 to spread across all ticks
-				dot.SnapshotBaseDamage = (baseDamage + (percentageOfRAP * rap)) / 10
-
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
+				dot.Snapshot(target, (baseDamage+(percentageOfRAP*rap))/10)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeRangedHitAndCritSnapshot)

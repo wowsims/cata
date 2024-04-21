@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/hunter"
 )
 
 func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
@@ -20,11 +21,12 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 		})
 	}
 	mmHunter.AimedShot = mmHunter.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 19434},
-		SpellSchool:  core.SpellSchoolPhysical,
-		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		MissileSpeed: 40,
+		ActionID:       core.ActionID{SpellID: 19434},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ClassSpellMask: hunter.HunterSpellAimedShot,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		MissileSpeed:   40,
 		FocusCost: core.FocusCostOptions{
 			Cost: 50 - (float64(mmHunter.Talents.Efficiency) * 2),
 		},
@@ -51,13 +53,9 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 			wepDmg := mmHunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) * 1.6
 			rap := spell.RangedAttackPower(target) * 0.73
 			baseDamage := (wepDmg + rap) + sim.Roll(776, 866)
-			if sim.IsExecutePhase90() {
-				spell.BonusCritRating = (30.0 * float64(mmHunter.Talents.CarefulAim)) * core.CritRatingPerCritChance
-			}
+
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-			if sim.IsExecutePhase90() {
-				spell.BonusCritRating = 0
-			}
+
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})

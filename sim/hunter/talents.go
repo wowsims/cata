@@ -48,6 +48,19 @@ func (hunter *Hunter) ApplyTalents() {
 			FloatValue: -(float64(hunter.Talents.Efficiency) * 2),
 		})
 	}
+	if hunter.Talents.CarefulAim > 0 {
+		caCritMod := hunter.AddDynamicMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusCrit_Rating,
+			ClassMask:  HunterSpellAimedShot | HunterSpellCobraShot | HunterSpellSteadyShot,
+			FloatValue: (30.0 * float64(hunter.Talents.CarefulAim)) * core.CritRatingPerCritChance,
+		})
+		caCritMod.Activate()
+		hunter.RegisterResetEffect(func(sim *core.Simulation) {
+			sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
+				caCritMod.Deactivate()
+			})
+		})
+	}
 	hunter.registerSicEm()
 	hunter.applyCobraStrikes()
 	hunter.applyPiercingShots()
@@ -69,7 +82,11 @@ func (hunter *Hunter) applyMasterMarksman() {
 	if hunter.Talents.MasterMarksman == 0 {
 		return
 	}
-
+	costMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  HunterSpellAimedShot,
+		FloatValue: -1,
+	})
 	procChance := float64(hunter.Talents.MasterMarksman) * 0.2
 	hunter.MasterMarksmanAura = hunter.RegisterAura(core.Aura{
 		Label:    "Ready, Set, Aim...",
@@ -77,13 +94,13 @@ func (hunter *Hunter) applyMasterMarksman() {
 		Duration: time.Second * 8,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.AimedShot != nil {
-				hunter.AimedShot.CostMultiplier = 0
+				costMod.Activate()
 				hunter.AimedShot.DefaultCast.CastTime = 0
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.AimedShot != nil {
-				hunter.AimedShot.CostMultiplier = 1
+				costMod.Deactivate()
 				hunter.AimedShot.DefaultCast.CastTime = time.Second * 3
 			}
 		},
@@ -431,7 +448,7 @@ func (hunter *Hunter) applyLongevity(dur time.Duration) time.Duration {
 }
 
 func (hunter *Hunter) applyFocusFireCD() {
-	if !hunter.Talents.FocusFire {
+	if !hunter.Talents.FocusFire || hunter.Pet == nil {
 		return
 	}
 
