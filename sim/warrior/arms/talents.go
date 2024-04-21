@@ -41,34 +41,25 @@ func (war *ArmsWarrior) applyTasteForBlood() {
 
 	// Use a specific aura for TfB so we can track procs
 	// Overpower will check for any aura with the EnableOverpowerTag when it tries to cast
+	actionID := core.ActionID{SpellID: 60503}
 	tfbAura := war.RegisterAura(core.Aura{
 		Label:    "Taste for Blood",
-		ActionID: core.ActionID{SpellID: 60503},
+		ActionID: actionID,
 		Duration: time.Second * 9,
 		Tag:      warrior.EnableOverpowerTag,
 	})
 
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Taste for Blood Trigger",
-		Icd: &core.Cooldown{
-			Timer:    war.NewTimer(),
-			Duration: time.Second * 5,
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:           "Taste for Blood Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnPeriodicDamageDealt,
+		ClassSpellMask: warrior.SpellMaskRend,
+		ICD:            5 * time.Second,
+		ProcChance:     procChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			tfbAura.Activate(sim)
 		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != war.Rend {
-				return
-			}
-
-			if !aura.Icd.IsReady(sim) {
-				return
-			}
-
-			if sim.Proc(procChance, "Taste for Blood") {
-				aura.Icd.Use(sim)
-				tfbAura.Activate(sim)
-			}
-		},
-	}))
+	})
 }
 
 func (war *ArmsWarrior) applyImpale() {
@@ -107,18 +98,16 @@ func (war *ArmsWarrior) applySuddenDeath() {
 	}
 
 	procChance := 0.03 * float64(war.Talents.SuddenDeath)
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Sudden Death Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
-			}
-
-			if sim.Proc(procChance, "Sudden Death") {
-				war.ColossusSmash.CD.Reset()
-			}
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:       "Sudden Death Trigger",
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMelee,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: procChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			war.ColossusSmash.CD.Reset()
 		},
-	}))
+	})
 }
 
 func (war *ArmsWarrior) TriggerSlaughter(sim *core.Simulation, target *core.Unit) {

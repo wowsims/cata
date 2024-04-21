@@ -31,9 +31,10 @@ func (war *FuryWarrior) applyFlurry() {
 	}
 
 	atkSpeedBonus := 1.0 - []float64{0.0, 0.08, 0.16, 0.25}[war.Talents.Flurry]
+	actionID := core.ActionID{SpellID: 12968}
 	flurryAura := war.RegisterAura(core.Aura{
 		Label:     "Flurry",
-		ActionID:  core.ActionID{SpellID: 12968},
+		ActionID:  actionID,
 		Duration:  15 * time.Second,
 		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -44,13 +45,13 @@ func (war *FuryWarrior) applyFlurry() {
 		},
 	})
 
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Flurry Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
-			}
-
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:     "Flurry Trigger",
+		ActionID: actionID,
+		Callback: core.CallbackOnSpellHitDealt,
+		ProcMask: core.ProcMaskMelee,
+		Outcome:  core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.DidCrit() {
 				if flurryAura.IsActive() {
 					flurryAura.SetStacks(sim, flurryAura.GetStacks()-1)
@@ -60,7 +61,7 @@ func (war *FuryWarrior) applyFlurry() {
 				flurryAura.SetStacks(sim, flurryAura.MaxStacks)
 			}
 		},
-	}))
+	})
 }
 
 func (war *FuryWarrior) applyEnrage() {
@@ -68,13 +69,14 @@ func (war *FuryWarrior) applyEnrage() {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: 14202}
 	procChance := 0.03 * float64(war.Talents.Enrage)
 	baseDamageBonus := []float64{0.0, 0.03, 0.07, 0.1}[war.Talents.Enrage]
 	var bonusSnapshot float64
 	enrageAura := war.RegisterAura(core.Aura{
 		Label:    "Enrage",
 		Tag:      warrior.EnrageTag,
-		ActionID: core.ActionID{SpellID: 14202},
+		ActionID: actionID,
 		Duration: 9 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			bonusSnapshot = 1.0 + (baseDamageBonus * war.EnrageEffectMultiplier)
@@ -86,18 +88,17 @@ func (war *FuryWarrior) applyEnrage() {
 		},
 	})
 
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Enrage Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
-			}
-
-			if sim.Proc(procChance, "Enrage") {
-				enrageAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:       "Enrage Trigger",
+		ActionID:   actionID,
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMelee,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: procChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			enrageAura.Activate(sim)
 		},
-	}))
+	})
 }
 
 func (war *FuryWarrior) applyRampage() {
@@ -117,10 +118,11 @@ func (war *FuryWarrior) applyMeatCleaver() {
 		FloatValue: 0.0,
 	})
 
+	actionID := core.ActionID{SpellID: 85739}
 	bonusPerStack := 0.05 * float64(war.Talents.MeatCleaver)
 	buff := war.RegisterAura(core.Aura{
 		Label:     "Meat Cleaver",
-		ActionID:  core.ActionID{SpellID: 85739},
+		ActionID:  actionID,
 		Duration:  10 * time.Second,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
@@ -134,17 +136,17 @@ func (war *FuryWarrior) applyMeatCleaver() {
 		},
 	})
 
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Meat Cleaver Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || (spell.ClassSpellMask&(warrior.SpellMaskCleave|warrior.SpellMaskWhirlwind)) == 0 {
-				return
-			}
-
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:           "Meat Cleaver Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: warrior.SpellMaskCleave | warrior.SpellMaskWhirlwind,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			buff.Activate(sim)
 			buff.AddStack(sim)
 		},
-	}))
+	})
 }
 
 func (war *FuryWarrior) applyBloodsurge() {
@@ -170,9 +172,10 @@ func (war *FuryWarrior) applyBloodsurge() {
 		FloatValue: 0.2,
 	})
 
+	actionID := core.ActionID{SpellID: 46916}
 	buff := war.RegisterAura(core.Aura{
 		Label:    "Bloodsurge",
-		ActionID: core.ActionID{SpellID: 46916},
+		ActionID: actionID,
 		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Activate()
@@ -192,18 +195,17 @@ func (war *FuryWarrior) applyBloodsurge() {
 	})
 
 	procChance := 0.1 * float64(war.Talents.Bloodsurge)
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Bloodsurge Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || (spell.ClassSpellMask&warrior.SpellMaskBloodthirst) == 0 {
-				return
-			}
-
-			if sim.Proc(procChance, "Bloodsurge") {
-				buff.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:           "Bloodsurge Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: warrior.SpellMaskBloodthirst,
+		ProcChance:     procChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			buff.Activate(sim)
 		},
-	}))
+	})
 }
 
 func (war *FuryWarrior) applyIntensityRage() {

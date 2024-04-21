@@ -38,10 +38,10 @@ func (war *ProtectionWarrior) applyBastionOfDefense() {
 
 	damageDealtMultiplier := 1.0 + 0.05*float64(war.Talents.BastionOfDefense)
 	enrageChance := 0.1 * float64(war.Talents.BastionOfDefense)
-
+	actionID := core.ActionID{SpellID: 57516}
 	enrageAura := war.GetOrRegisterAura(core.Aura{
 		Label:    "Enrage",
-		ActionID: core.ActionID{SpellID: 57516},
+		ActionID: actionID,
 		Duration: 12 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= damageDealtMultiplier
@@ -51,16 +51,16 @@ func (war *ProtectionWarrior) applyBastionOfDefense() {
 		},
 	})
 
-	core.MakePermanent(war.GetOrRegisterAura(core.Aura{
-		Label: "Enrage Trigger",
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry) {
-				if sim.Proc(enrageChance, "Enrage Trigger Chance") {
-					enrageAura.Activate(sim)
-				}
-			}
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:       "Enrage Trigger",
+		ActionID:   actionID,
+		Callback:   core.CallbackOnSpellHitTaken,
+		Outcome:    core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry,
+		ProcChance: enrageChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			enrageAura.Activate(sim)
 		},
-	}))
+	})
 }
 
 func (war *ProtectionWarrior) applyImprovedRevenge() {
@@ -83,10 +83,10 @@ func (war *ProtectionWarrior) applyImpendingVictory() {
 	}
 
 	const vrReady = "Impending Victory"
-
+	actionID := core.ActionID{SpellID: 82368}
 	enableVRAura := war.RegisterAura(core.Aura{
 		Label:    "Victorious",
-		ActionID: core.ActionID{SpellID: 82368},
+		ActionID: actionID,
 		Tag:      vrReady,
 
 		Duration: 20 * time.Second,
@@ -98,18 +98,20 @@ func (war *ProtectionWarrior) applyImpendingVictory() {
 	})
 
 	procChance := 0.25 * float64(war.Talents.ImpendingVictory)
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Impending Victory Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.ClassSpellMask&warrior.SpellMaskDevastate) == 0 || !result.Landed() {
-				return
-			}
-
-			if spell.Unit.CurrentHealthPercent() <= 0.2 && sim.Proc(procChance, "Impending Victory") {
-				enableVRAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:           "Impending Victory Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     procChance,
+		ClassSpellMask: warrior.SpellMaskDevastate,
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			return spell.Unit.CurrentHealthPercent() <= 0.2
 		},
-	}))
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			enableVRAura.Activate(sim)
+		},
+	})
 
 	// We register Victory Rush in here as this talent is the only way it can be used rotationally
 	war.RegisterSpell(core.SpellConfig{
@@ -156,10 +158,11 @@ func (war *ProtectionWarrior) applyThunderstruck() {
 		FloatValue: 0.0,
 	})
 
+	actionID := core.ActionID{SpellID: 87096}
 	shockwaveBonus := 0.05 * float64(war.Talents.Thunderstruck)
 	shockwaveAura := war.RegisterAura(core.Aura{
 		Label:     "Thunderstruck",
-		ActionID:  core.ActionID{SpellID: 87096},
+		ActionID:  actionID,
 		Duration:  20 * time.Second,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
@@ -173,19 +176,16 @@ func (war *ProtectionWarrior) applyThunderstruck() {
 		},
 	})
 
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Thunderstruck Trigger",
-
-		// The shockwave buff is gained after any cast of Thunder Clap, even if it doesn't hit any targets
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if (spell.ClassSpellMask & warrior.SpellMaskThunderClap) == 0 {
-				return
-			}
-
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:           "Thunderstruck Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: warrior.SpellMaskThunderClap,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			shockwaveAura.Activate(sim)
 			shockwaveAura.AddStack(sim)
 		},
-	}))
+	})
 }
 
 func (war *ProtectionWarrior) applyHeavyRepercussions() {
@@ -210,14 +210,14 @@ func (war *ProtectionWarrior) applyHeavyRepercussions() {
 		},
 	})
 
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Heavy Repercussions Trigger",
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if (spell.ClassSpellMask & warrior.SpellMaskShieldBlock) != 0 {
-				buff.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:           "Heavy Repercussions Trigger",
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: warrior.SpellMaskShieldBlock,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			buff.Activate(sim)
 		},
-	}))
+	})
 }
 
 func (war *ProtectionWarrior) applySwordAndBoard() {
@@ -237,9 +237,10 @@ func (war *ProtectionWarrior) applySwordAndBoard() {
 		FloatValue: -1.0,
 	})
 
+	actionID := core.ActionID{SpellID: 50227}
 	buffAura := war.RegisterAura(core.Aura{
 		Label:    "Sword and Board",
-		ActionID: core.ActionID{SpellID: 50227},
+		ActionID: actionID,
 		Duration: 5 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			costMod.Activate()
@@ -255,17 +256,16 @@ func (war *ProtectionWarrior) applySwordAndBoard() {
 	})
 
 	procChance := 0.1 * float64(war.Talents.SwordAndBoard)
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Sword and Board Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || (spell.ClassSpellMask&(warrior.SpellMaskDevastate|warrior.SpellMaskRevenge)) == 0 {
-				return
-			}
-
-			if sim.Proc(procChance, "Sword and Board") {
-				war.shieldSlam.CD.Reset()
-				buffAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:           "Heavy Repercussions Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: warrior.SpellMaskDevastate | warrior.SpellMaskRevenge,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     procChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			war.shieldSlam.CD.Reset()
+			buffAura.Activate(sim)
 		},
-	}))
+	})
 }

@@ -15,14 +15,15 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 		ActionID: actionID.WithTag(1),
 	})
 
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Revenge Trigger",
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry) {
-				revengeReadyAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:     "Overpower Trigger",
+		ActionID: actionID,
+		Callback: core.CallbackOnSpellHitTaken,
+		Outcome:  core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			revengeReadyAura.Activate(sim)
 		},
-	}))
+	})
 
 	extraHit := warrior.Talents.ImprovedRevenge > 0 && warrior.Env.GetNumTargets() > 1
 	extraHitMult := 0.5 * float64(warrior.Talents.ImprovedRevenge)

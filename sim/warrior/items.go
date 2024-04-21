@@ -19,10 +19,11 @@ var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
+			actionID := core.ActionID{SpellID: 90294}
 
 			buff := character.RegisterAura(core.Aura{
 				Label:     "Rage of the Ages",
-				ActionID:  core.ActionID{SpellID: 90294},
+				ActionID:  actionID,
 				Duration:  30 * time.Second,
 				MaxStacks: 3,
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
@@ -32,15 +33,16 @@ var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(agent.GetCharacter().RegisterAura(core.Aura{
-				Label: "Rage of the Ages Trigger",
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if (spell.ClassSpellMask & (SpellMaskOverpower | SpellMaskRagingBlow)) != 0 {
-						buff.Activate(sim)
-						buff.AddStack(sim)
-					}
+			core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+				Name:           "Rage of the Ages Trigger",
+				ActionID:       actionID,
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: SpellMaskOverpower | SpellMaskRagingBlow,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					buff.Activate(sim)
+					buff.AddStack(sim)
 				},
-			}))
+			})
 		},
 	},
 })
@@ -70,9 +72,10 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
+			actionID := core.ActionID{SpellID: 99233}
 			buff := character.RegisterAura(core.Aura{
 				Label:    "Burning Rage",
-				ActionID: core.ActionID{SpellID: 99233},
+				ActionID: actionID,
 				Duration: 12 * time.Second,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					character.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] *= 1.1
@@ -82,20 +85,22 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(character.RegisterAura(core.Aura{
-				Label: "Burning Rage Trigger",
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if (spell.ClassSpellMask & SpellMaskColossusSmash) != 0 {
-						buff.Activate(sim)
-					}
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:           "Burning Rage Trigger",
+				ActionID:       actionID,
+				ClassSpellMask: SpellMaskColossusSmash,
+				Callback:       core.CallbackOnSpellHitDealt,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					buff.Activate(sim)
 				},
-			}))
+			})
 		},
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
+			actionID := core.ActionID{SpellID: 99237}
 
 			fieryAttack := character.RegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: 99237},
+				ActionID:    actionID,
 				SpellSchool: core.SpellSchoolFire,
 				ProcMask:    core.ProcMaskEmpty, // TODO (4.2) Test this
 				Flags:       core.SpellFlagMeleeMetrics,
@@ -105,16 +110,16 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(character.RegisterAura(core.Aura{
-				Label: "Fiery Attack Trigger",
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if (spell.ClassSpellMask & (SpellMaskMortalStrike | SpellMaskRagingBlow)) != 0 {
-						if sim.Proc(0.3, "Fiery Attack") {
-							fieryAttack.Cast(sim, result.Target)
-						}
-					}
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:           "Fiery Attack Trigger",
+				ActionID:       actionID,
+				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: SpellMaskMortalStrike | SpellMaskRagingBlow,
+				ProcChance:     0.3,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					fieryAttack.Cast(sim, result.Target)
 				},
-			}))
+			})
 		},
 	},
 })
@@ -124,11 +129,12 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
+			actionID := core.ActionID{SpellID: 99240}
 
 			// TODO (4.2): Test if this rolls damage over like deep wounds or just resets it
 			var shieldSlamDamage float64 = 0.0
 			debuff := character.RegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: 99240},
+				ActionID:    actionID,
 				SpellSchool: core.SpellSchoolFire,
 				ProcMask:    core.ProcMaskEmpty,
 				Flags:       core.SpellFlagIgnoreAttackerModifiers,
@@ -152,15 +158,16 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(character.RegisterAura(core.Aura{
-				Label: "Combust Trigger",
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.Landed() && (spell.ClassSpellMask&SpellMaskShieldSlam) != 0 {
-						shieldSlamDamage = result.Damage
-						debuff.Cast(sim, result.Target)
-					}
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:           "Combust Trigger",
+				ActionID:       actionID,
+				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: SpellMaskShieldSlam,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					shieldSlamDamage = result.Damage
+					debuff.Cast(sim, result.Target)
 				},
-			}))
+			})
 		},
 		4: func(agent core.Agent) {
 			panic("Not yet implemented pending a way to model 'trigger aura on expiration of another'")
@@ -180,9 +187,10 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 				FloatValue: -10,
 			})
 
+			actionID := core.ActionID{SpellID: 105860}
 			buffAura := character.RegisterAura(core.Aura{
 				Label:    "Volatile Outrage",
-				ActionID: core.ActionID{SpellID: 105860},
+				ActionID: actionID,
 				Duration: 15 * time.Second,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					mod.Activate()
@@ -192,20 +200,22 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(character.RegisterAura(core.Aura{
-				Label: "Volatile Outrage Trigger",
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if (spell.ClassSpellMask & SpellMaskInnerRage) != 0 {
-						buffAura.Activate(sim)
-					}
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:           "Volatile Outrage Trigger",
+				ActionID:       actionID,
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: SpellMaskInnerRage,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					buffAura.Activate(sim)
 				},
-			}))
+			})
 		},
 		4: func(agent core.Agent) {
 			warrior := agent.(WarriorAgent).GetWarrior()
 
+			actionID := core.ActionID{SpellID: 108126}
 			procCS := warrior.RegisterSpell(core.SpellConfig{
-				ActionID:    core.ActionID{SpellID: 108126},
+				ActionID:    actionID,
 				SpellSchool: core.SpellSchoolPhysical,
 				Flags:       core.SpellFlagNoOnDamageDealt | core.SpellFlagNoOnCastComplete,
 				Cast: core.CastConfig{
@@ -218,23 +228,28 @@ var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(agent.GetCharacter().RegisterAura(core.Aura{
-				Label: "Warrior T13 4P Trigger",
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					// TODO (4.3): Check if this cares that the hit landed
-					if (spell.ClassSpellMask & SpellMaskBloodthirst) != 0 {
-						if sim.Proc(0.06, "Warrior T13 4P Bloodthirst Proc") {
-							procCS.Cast(sim, result.Target)
-						}
-					}
-
-					if (spell.ClassSpellMask & SpellMaskMortalStrike) != 0 {
-						if sim.Proc(0.13, "Warrior T13 4P Mortal Strike Proc") {
-							procCS.Cast(sim, result.Target)
-						}
-					}
+			// TODO (4.3): Check if this cares that the hit landed
+			core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+				Name:           "Warrior T13 4P Bloodthirst Trigger",
+				ActionID:       actionID,
+				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: SpellMaskBloodthirst,
+				ProcChance:     0.06,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					procCS.Cast(sim, result.Target)
 				},
-			}))
+			})
+
+			core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+				Name:           "Warrior T13 4P Mortal Strike Trigger",
+				ActionID:       actionID,
+				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: SpellMaskMortalStrike,
+				ProcChance:     0.13,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					procCS.Cast(sim, result.Target)
+				},
+			})
 		},
 	},
 })
@@ -244,11 +259,12 @@ var ItemSetColossalDragonplateArmor = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
+			actionID := core.ActionID{SpellID: 105909}
 
 			//var shieldAmt float64 = 0.0
 			shieldAura := character.RegisterAura(core.Aura{
 				Label:    "Shield of Fury",
-				ActionID: core.ActionID{SpellID: 105909},
+				ActionID: actionID,
 				Duration: 6 * time.Second,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					// TODO: Shield mechanics NYI
@@ -258,15 +274,17 @@ var ItemSetColossalDragonplateArmor = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			core.MakePermanent(character.RegisterAura(core.Aura{
-				Label: "Shield of Fury",
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if (spell.ClassSpellMask&SpellMaskRevenge) != 0 && result.Landed() {
-						//shieldAmt = result.Damage * 0.2
-						shieldAura.Activate(sim)
-					}
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:           "Shield of Fury Trigger",
+				ActionID:       actionID,
+				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: SpellMaskRevenge,
+				Outcome:        core.OutcomeLanded,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					// shieldAmt = result.Damage * 0.2
+					shieldAura.Activate(sim)
 				},
-			}))
+			})
 		},
 		4: func(agent core.Agent) {
 			// TODO: Implement this, turns Shield Wall into a raid buff

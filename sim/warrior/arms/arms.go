@@ -102,24 +102,21 @@ func (war *ArmsWarrior) RegisterMastery() {
 		Duration: time.Millisecond * 500,
 	}
 
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Strikes of Opportunity",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ActionID.IsOtherAction(proto.OtherAction_OtherActionAttack) {
-				return
-			}
-
-			if !icd.IsReady(sim) {
-				return
-			}
-
-			proc := war.GetMasteryProcChance()
-			if sim.RandomFloat(aura.Label) < proc {
-				icd.Use(sim)
-				procAttack.Cast(sim, result.Target)
-			}
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:     "Strikes of Opportunity",
+		ActionID: procAttackConfig.ActionID,
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee,
+		ICD:      500 * time.Millisecond,
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			// Implement the proc in here so we can get the most up to date proc chance from mastery
+			return sim.Proc(war.GetMasteryProcChance(), "Strikes of Opportunity")
 		},
-	}))
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procAttack.Cast(sim, result.Target)
+		},
+	})
 }
 
 func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {

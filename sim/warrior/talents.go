@@ -74,10 +74,11 @@ func (warrior *Warrior) applyBattleTrance() {
 		FloatValue: -5,
 	})
 
+	actionID := core.ActionID{SpellID: 12964}
 	var lastTriggertime int64 = 0
 	btAura := warrior.RegisterAura(core.Aura{
 		Label:    "Battle Trance",
-		ActionID: core.ActionID{SpellID: 12964},
+		ActionID: actionID,
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			btMod.Activate()
@@ -96,28 +97,20 @@ func (warrior *Warrior) applyBattleTrance() {
 
 	procChance := 0.05 * float64(warrior.Talents.BattleTrance)
 	triggerSpellMask := SpellMaskBloodthirst | SpellMaskMortalStrike | SpellMaskShieldSlam
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Battle Trance Trigger",
-		Icd: &core.Cooldown{
-			Timer:    warrior.NewTimer(),
-			Duration: time.Second * 5,
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.ClassSpellMask & triggerSpellMask) == 0 {
-				return
-			}
 
-			if !aura.Icd.IsReady(sim) {
-				return
-			}
-
-			if sim.Proc(procChance, "Battle Trance Trigger") {
-				aura.Icd.Use(sim)
-				lastTriggertime = int64(sim.CurrentTime)
-				btAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:           "Battle Trance Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     procChance,
+		ICD:            5 * time.Second,
+		ClassSpellMask: triggerSpellMask,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			lastTriggertime = int64(sim.CurrentTime)
+			btAura.Activate(sim)
 		},
-	}))
+	})
 }
 
 func (warrior *Warrior) applyCruelty() {
@@ -135,9 +128,11 @@ func (warrior *Warrior) applyExecutioner() {
 	if warrior.Talents.Executioner == 0 {
 		return
 	}
+
+	actionID := core.ActionID{SpellID: 90806}
 	executionerBuff := warrior.RegisterAura(core.Aura{
 		Label:     "Executioner",
-		ActionID:  core.ActionID{SpellID: 90806},
+		ActionID:  actionID,
 		Duration:  time.Second * 9,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
@@ -148,24 +143,18 @@ func (warrior *Warrior) applyExecutioner() {
 	})
 
 	procChance := 0.5 * float64(warrior.Talents.Executioner)
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Executioner Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			if (spell.ClassSpellMask & SpellMaskExecute) == 0 {
-				return
-			}
-
-			if sim.Proc(procChance, "Executioner Trigger") {
-				executionerBuff.Activate(sim)
-				executionerBuff.AddStack(sim)
-			}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:           "Executioner Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: SpellMaskExecute,
+		ProcChance:     procChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			executionerBuff.Activate(sim)
+			executionerBuff.AddStack(sim)
 		},
-	}))
-
+	})
 }
 
 func (warrior *Warrior) applyIncite() {
@@ -184,10 +173,11 @@ func (warrior *Warrior) applyIncite() {
 		FloatValue: 200.0 * core.CritRatingPerCritChance, // This is actually how Incite is implemented
 	})
 
+	actionID := core.ActionID{SpellID: 86627}
 	var lastTriggerTime int64 = 0
 	inciteAura := warrior.RegisterAura(core.Aura{
 		Label:    "Incite",
-		ActionID: core.ActionID{SpellID: 86627},
+		ActionID: actionID,
 		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			inciteMod.Activate()
@@ -203,19 +193,21 @@ func (warrior *Warrior) applyIncite() {
 	})
 
 	procChance := []float64{0.0, 0.33, 0.66, 1.0}[warrior.Talents.Incite]
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Incite Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.ClassSpellMask & SpellMaskHeroicStrike) != 0 {
-				if result.DidCrit() && !inciteAura.IsActive() {
-					if sim.Proc(procChance, "Incite Trigger") {
-						lastTriggerTime = int64(sim.CurrentTime)
-						inciteAura.Activate(sim)
-					}
-				}
-			}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:           "Incite Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeCrit,
+		ClassSpellMask: SpellMaskHeroicStrike,
+		ProcChance:     procChance,
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			return !inciteAura.IsActive()
 		},
-	}))
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			lastTriggerTime = int64(sim.CurrentTime)
+			inciteAura.Activate(sim)
+		},
+	})
 
 }
 
@@ -232,28 +224,27 @@ func (warrior *Warrior) applyBloodAndThunder() {
 	}
 	procChance := 0.5 * float64(warrior.Talents.BloodAndThunder)
 	var lastAppliedTime int64 = -1
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Blood and Thunder Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.ClassSpellMask&SpellMaskThunderClap) != 0 && result.Target.HasActiveAuraWithTag("Rend") && sim.Proc(procChance, "Blood and Thunder") {
-
-				// If the rend we're checking was applied this iteration, skip to avoid an explosion of B&T procs
-				// (8 targets, Rend T1, TClap hits T1 + B&T applies Rend to 7 other targets, TClap hits T2 + applies Rend to 7 other targets, etc...)
-				if lastAppliedTime == int64(sim.CurrentTime) {
-					return
-				}
-
-				// B&T resnapshots all of the rends it applies and will overwrite "better" rends on any target the TC hits
-				for _, target := range sim.Encounter.TargetUnits {
-					rend := warrior.Rend.Dot(target)
-					lastAppliedTime = int64(sim.CurrentTime)
-					rend.Apply(sim)
-					rend.TickOnce(sim)
-				}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:           "Blood and Thunder Trigger",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: SpellMaskThunderClap,
+		ProcChance:     procChance,
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			// If the rend we're checking was applied this iteration, skip to avoid an explosion of B&T procs
+			// (8 targets, Rend T1, TClap hits T1 + B&T applies Rend to 7 other targets, TClap hits T2 + applies Rend to 7 other targets, etc...)
+			return result.Target.HasActiveAuraWithTag("Rend") && lastAppliedTime != int64(sim.CurrentTime)
+		},
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// B&T resnapshots all of the rends it applies and will overwrite "better" rends on any target the TC hits
+			for _, target := range sim.Encounter.TargetUnits {
+				rend := warrior.Rend.Dot(target)
+				lastAppliedTime = int64(sim.CurrentTime)
+				rend.Apply(sim)
+				rend.TickOnce(sim)
 			}
 		},
-	}))
-
+	})
 }
 
 func (warrior *Warrior) applyShieldSpecialization() {
@@ -263,26 +254,15 @@ func (warrior *Warrior) applyShieldSpecialization() {
 	extraBlockRage := 5 * float64(warrior.Talents.ShieldSpecialization)
 
 	metrics := warrior.NewRageMetrics(core.ActionID{SpellID: 12725})
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Shield Specialization Rage Trigger",
-		Icd: &core.Cooldown{
-			Timer:    warrior.NewTimer(),
-			Duration: 1500 * time.Millisecond,
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:     "Shield Specialization Rage Trigger",
+		Callback: core.CallbackOnSpellHitTaken,
+		Outcome:  core.OutcomeBlock,
+		ICD:      1500 * time.Millisecond,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			warrior.AddRage(sim, extraBlockRage, metrics)
 		},
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !aura.Icd.IsReady(sim) {
-				return
-			}
-
-			if result.Outcome.Matches(core.OutcomeBlock) {
-				aura.Icd.Use(sim)
-				warrior.AddRage(sim, extraBlockRage, metrics)
-			}
-
-			// TODO: Rage on spell reflect, if we ever decide to model that
-		},
-	}))
-
+	})
 }
 
 func (warrior *Warrior) applyShieldMastery() {
@@ -301,10 +281,11 @@ func (warrior *Warrior) applyShieldMastery() {
 		TimeValue: time.Duration(-30*warrior.Talents.ShieldMastery) * time.Second,
 	})
 
+	actionID := core.ActionID{SpellID: 84608}
 	magicDamageReduction := 1.0 - []float64{0.0, 0.07, 0.14, 0.2}[warrior.Talents.ShieldMastery]
 	sbMagicDamageReductionAura := warrior.RegisterAura(core.Aura{
 		Label:    "Shield Mastery",
-		ActionID: core.ActionID{SpellID: 84608},
+		ActionID: actionID,
 		Duration: 6 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= magicDamageReduction
@@ -324,14 +305,15 @@ func (warrior *Warrior) applyShieldMastery() {
 		},
 	})
 
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Shield Mastery Trigger",
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if (spell.ClassSpellMask & SpellMaskShieldBlock) != 0 {
-				sbMagicDamageReductionAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:           "Shield Mastery Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: SpellMaskShieldBlock,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			sbMagicDamageReductionAura.Activate(sim)
 		},
-	}))
+	})
 
 }
 
@@ -342,7 +324,7 @@ func (warrior *Warrior) applyHoldTheLine() {
 	buff := warrior.RegisterAura(core.Aura{
 		Label:    "Hold the Line",
 		ActionID: core.ActionID{SpellID: 84621},
-		Duration: 10 * time.Second,
+		Duration: 5 * time.Second * time.Duration(warrior.Talents.HoldTheLine),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.CriticalBlockChance += 0.1
 			warrior.AddStatDynamic(sim, stats.Block, 10*core.BlockRatingPerBlockChance)
@@ -353,15 +335,14 @@ func (warrior *Warrior) applyHoldTheLine() {
 		},
 	})
 
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Hold the Line Trigger",
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeParry) {
-				buff.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:     "Hold the Line Trigger",
+		Callback: core.CallbackOnSpellHitTaken,
+		Outcome:  core.OutcomeParry,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			buff.Activate(sim)
 		},
-	}))
-
+	})
 }
 
 func (warrior *Warrior) applyGagOrder() {

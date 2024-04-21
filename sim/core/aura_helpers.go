@@ -27,6 +27,7 @@ const (
 )
 
 type ProcHandler func(sim *Simulation, spell *Spell, result *SpellResult)
+type ProcExtraCondition func(sim *Simulation, spell *Spell, result *SpellResult) bool
 
 type ProcTrigger struct {
 	Name            string
@@ -43,6 +44,7 @@ type ProcTrigger struct {
 	ICD             time.Duration
 	Handler         ProcHandler
 	ClassSpellMask  int64
+	ExtraCondition  ProcExtraCondition
 }
 
 func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
@@ -82,6 +84,9 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 			return
 		}
 		if icd.Duration != 0 && !icd.IsReady(sim) {
+			return
+		}
+		if !config.ExtraCondition(sim, spell, result) {
 			return
 		}
 		if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {

@@ -7,22 +7,25 @@ import (
 )
 
 func (warrior *Warrior) RegisterOverpowerSpell() {
+	actionID := core.ActionID{SpellID: 7384}
 	opAura := warrior.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 7384},
+		ActionID: actionID,
 		Tag:      EnableOverpowerTag,
 		Label:    "Overpower Ready",
 		Duration: time.Second * 5,
 	})
 
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Overpower Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// If TFB is already active and there's a dodge, the OP activation gets munched
-			if result.Outcome.Matches(core.OutcomeDodge) && !warrior.HasActiveAuraWithTagExcludingAura(EnableOverpowerTag, opAura) {
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:     "Overpower Trigger",
+		ActionID: actionID,
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeDodge,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !warrior.HasActiveAuraWithTagExcludingAura(EnableOverpowerTag, opAura) {
 				opAura.Activate(sim)
 			}
 		},
-	}))
+	})
 
 	warrior.Overpower = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7384},
