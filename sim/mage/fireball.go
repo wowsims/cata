@@ -22,9 +22,8 @@ func (mage *Mage) registerFireballSpell() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-				CastTime: time.Millisecond *
-					time.Duration((2500 * core.TernaryFloat64(mage.HasSetBonus(ItemSetFirelordsVestments, 4), 0.9, 1))),
+				GCD:      core.GCDDefault,
+				CastTime: time.Millisecond * 2500,
 			},
 		},
 

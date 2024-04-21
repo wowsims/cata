@@ -28,7 +28,7 @@ func (mage *Mage) registerFrostboltSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 2, //TODO early winter lowers cast time of frostbolt by 0.6 seconds, then effect is inactive for 15 seconds
+				CastTime: time.Second * 2,
 			},
 		},
 
