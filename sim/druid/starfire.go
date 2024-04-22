@@ -8,14 +8,9 @@ import (
 )
 
 func (druid *Druid) registerStarfireSpell() {
-	spellCoeff := 1.0
-	bonusCoeff := 0.04 * float64(druid.Talents.WrathOfCenarius)
+	spellCoeff := 1.231
 
-	idolSpellPower := 0 +
-		core.TernaryFloat64(druid.Ranged().ID == 27518, 55, 0) + // Ivory Moongoddess
-		core.TernaryFloat64(druid.Ranged().ID == 40321, 165, 0) // Shooting Star
-
-	hasGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfStarfire)
+	hasGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph(proto.DruidPrimeGlyph_GlyphOfStarfire))
 
 	starfireGlyphSpell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 54845},
@@ -32,13 +27,13 @@ func (druid *Druid) registerStarfireSpell() {
 	})
 
 	druid.Starfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48465},
+		ActionID:    core.ActionID{SpellID: 2912},
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagNaturesGrace | SpellFlagOmenTrigger | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.16,
+			BaseCost:   0.11,
 			Multiplier: 1 - 0.03*float64(druid.Talents.Moonglow),
 		},
 		Cast: core.CastConfig{
@@ -49,16 +44,15 @@ func (druid *Druid) registerStarfireSpell() {
 		},
 
 		BonusCritRating: 0 +
-			2*float64(druid.Talents.NaturesMajesty)*core.CritRatingPerCritChance +
-			core.TernaryFloat64(druid.HasSetBonus(ItemSetThunderheartRegalia, 4), 5*core.CritRatingPerCritChance, 0) +
-			core.TernaryFloat64(druid.HasSetBonus(ItemSetDreamwalkerGarb, 4), 5*core.CritRatingPerCritChance, 0),
-		DamageMultiplier: (1 + []float64{0.0, 0.03, 0.06, 0.1}[druid.Talents.Moonfury]) *
-			core.TernaryFloat64(druid.HasSetBonus(ItemSetMalfurionsRegalia, 4), 1.04, 1),
+			2*float64(druid.Talents.NaturesMajesty)*core.CritRatingPerCritChance,
+
+		DamageMultiplier: 1,
+
 		CritMultiplier:   druid.BalanceCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(1038, 1222) + ((spell.SpellPower() + idolSpellPower) * spellCoeff) + (spell.SpellPower() * bonusCoeff)
+			baseDamage := sim.Roll(987, 1231) + (spell.SpellPower() * spellCoeff)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() && hasGlyph {
 				starfireGlyphSpell.Cast(sim, target)

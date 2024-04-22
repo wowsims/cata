@@ -213,7 +213,7 @@ func (druid *Druid) RegisterBalanceSpells() {
 	//druid.registerHurricaneSpell()
 	//druid.registerInsectSwarmSpell()
 	//druid.registerMoonfireSpell()
-	//druid.registerStarfireSpell()
+	druid.registerStarfireSpell()
 	druid.registerWrathSpell()
 	//druid.registerStarfallSpell()
 	//druid.registerTyphoonSpell()
@@ -224,6 +224,7 @@ func (druid *Druid) RegisterBalanceSpells() {
 func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerBerserkCD()
 	druid.registerCatFormSpell()
+
 	// 	druid.registerBearFormSpell()
 	// 	druid.registerEnrageSpell()
 	druid.registerFerociousBiteSpell()
