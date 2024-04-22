@@ -270,6 +270,7 @@ message APLActionCatOptimalRotationAction {
     bool use_rake = 6;
     bool use_bite = 7;
     float bite_time = 8;
+    bool bite_during_execute = 9;
 }
 
 message APLActionCustomRotation {

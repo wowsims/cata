@@ -16,7 +16,7 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskThunderClap,
+		ClassSpellMask: SpellMaskThunderClap | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost: 20,
@@ -35,6 +35,7 @@ func (warrior *Warrior) RegisterThunderClapSpell() {
 			return warrior.StanceMatches(BattleStance | DefensiveStance)
 		},
 
+		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.85,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 

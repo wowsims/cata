@@ -206,13 +206,13 @@ func CurseOfElementsAura(target *Unit) *Aura {
 		ActionID: ActionID{SpellID: 47865},
 		Duration: time.Minute * 5,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: -165, stats.FireResistance: -165, stats.FrostResistance: -165, stats.ShadowResistance: -165, stats.NatureResistance: -165})
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: -215, stats.FireResistance: -215, stats.FrostResistance: -215, stats.ShadowResistance: -215, stats.NatureResistance: -215})
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: 165, stats.FireResistance: 165, stats.FrostResistance: 165, stats.ShadowResistance: 165, stats.NatureResistance: 165})
+			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: 215, stats.FireResistance: 215, stats.FrostResistance: 215, stats.ShadowResistance: 215, stats.NatureResistance: 215})
 		},
 	})
-	spellDamageEffect(aura, 1.13)
+	spellDamageEffect(aura, 1.08)
 	return aura
 }
 
@@ -365,6 +365,14 @@ func StampedeAura(target *Unit) *Aura {
 		ActionID: ActionID{SpellID: 57386},
 		Duration: time.Second * 30,
 	}, 1.3)
+}
+
+func TraumaAura(target *Unit, points int32) *Aura {
+	return bleedDamageAura(target, Aura{
+		Label:    "Trauma",
+		ActionID: ActionID{SpellID: TernaryInt32(points == 1, 46856, 46857)},
+		Duration: 1 * time.Minute,
+	}, TernaryFloat64(points == 1, 1.15, 1.3))
 }
 
 // Bleed Damage Multiplier category
