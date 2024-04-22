@@ -404,37 +404,34 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4115, aura)
+		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4116, aura)
 	})
 
 	// Enchant: 4118, Spell: 75178 - Swordguard Embroidery
 	core.NewEnchantEffect(4118, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procAura := character.NewTemporaryStatsAura("Swordguard Embroidery Cata", core.ActionID{SpellID: 75176}, stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000}, time.Second*15)
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Second * 55,
-		}
-		procAura.Icd = &icd
+		statAura := character.NewTemporaryStatsAura(
+			"Swordguard Embroidery Cata",
+			core.ActionID{SpellID: 75176},
+			stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000},
+			time.Second*15,
+		)
 
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Swordguard Embroidery",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
-					return
-				}
-
-				if icd.IsReady(sim) && sim.RandomFloat("Swordguard") < 0.15 {
-					icd.Use(sim)
-					procAura.Activate(sim)
-				}
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Swordguard Embroidery Cataa",
+			ActionID:   core.ActionID{SpellID: 75176},
+			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+			ProcMask:   core.ProcMaskMeleeOrRanged,
+			Outcome:    core.OutcomeLanded,
+			ICD:        time.Second * 55,
+			ProcChance: 0.15,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				statAura.Activate(sim)
 			},
 		})
+		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4118, aura)
+
 	})
 
 	// Enchant: 4175, Spell: 81932, Item: 59594 - Gnomish X-Ray Scope
