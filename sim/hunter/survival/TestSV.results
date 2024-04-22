@@ -400,15 +400,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-DarkmoonCard:Hurricane-62049"
  value: {
-  dps: 22858.57062
-  tps: 20769.65413
+  dps: 22839.12819
+  tps: 20747.87765
  }
 }
 dps_results: {
  key: "TestSV-AllItems-DarkmoonCard:Hurricane-62051"
  value: {
-  dps: 23872.59729
-  tps: 21676.20365
+  dps: 23504.83825
+  tps: 21308.58647
  }
 }
 dps_results: {

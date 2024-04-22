@@ -400,15 +400,15 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-DarkmoonCard:Hurricane-62049"
  value: {
-  dps: 17946.57487
-  tps: 14348.2356
+  dps: 17950.15008
+  tps: 14383.01956
  }
 }
 dps_results: {
  key: "TestBM-AllItems-DarkmoonCard:Hurricane-62051"
  value: {
-  dps: 18659.53875
-  tps: 14895.30559
+  dps: 18219.82481
+  tps: 14455.56428
  }
 }
 dps_results: {
