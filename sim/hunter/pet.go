@@ -154,7 +154,7 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.22,
+			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.425,
 			stats.Agility:     ownerStats[stats.Agility],
 			stats.MeleeHit:    ownerStats[stats.MeleeHit],
 			stats.Expertise:   ownerStats[stats.MeleeHit] * PetExpertiseScale,

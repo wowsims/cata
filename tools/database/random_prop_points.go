@@ -53,8 +53,8 @@ func ParseRandPropPointsTable(contents string) RandomPropAllocationsByIlvl {
 			panic(err)
 		}
 		processedAllocationMap[int32(ilvl)] = RandomPropAllocationMap{
-			proto.ItemQuality_ItemQualityEpic: [5]int32{allocations.Epic0, allocations.Epic1, allocations.Epic2, allocations.Epic3, allocations.Epic4},
-			proto.ItemQuality_ItemQualityRare: [5]int32{allocations.Superior0, allocations.Superior1, allocations.Superior2, allocations.Superior3, allocations.Superior4},
+			proto.ItemQuality_ItemQualityEpic:     [5]int32{allocations.Epic0, allocations.Epic1, allocations.Epic2, allocations.Epic3, allocations.Epic4},
+			proto.ItemQuality_ItemQualityRare:     [5]int32{allocations.Superior0, allocations.Superior1, allocations.Superior2, allocations.Superior3, allocations.Superior4},
 			proto.ItemQuality_ItemQualityUncommon: [5]int32{allocations.Good0, allocations.Good1, allocations.Good2, allocations.Good3, allocations.Good4},
 		}
 	}
@@ -79,7 +79,7 @@ func (allocationMap RandomPropAllocationsByIlvl) CalcItemAllocation(item *proto.
 		}
 	case proto.ItemType_ItemTypeWeapon:
 		switch item.WeaponType {
-		case  proto.WeaponType_WeaponTypeOffHand, proto.WeaponType_WeaponTypeShield:
+		case proto.WeaponType_WeaponTypeOffHand, proto.WeaponType_WeaponTypeShield:
 			idx = 2
 		default:
 			switch item.HandType {

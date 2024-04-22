@@ -170,6 +170,49 @@ func MasteryRatingToMasteryPoints(masteryRating float64) float64 {
 	return masteryRating / MasteryRatingPerMasteryPoint
 }
 
+// Gets the spell scaling coefficient associated with a given class
+// Retrieved from https://wago.tools/api/casc/1391660?download&branch=wow_classic_beta
+func GetClassSpellScalingCoefficient(class proto.Class) float64 {
+	switch class {
+	case proto.Class_ClassDeathKnight:
+		return 1125.227400
+	case proto.Class_ClassDruid:
+		return 986.626460
+	case proto.Class_ClassHunter:
+		return 1125.227400
+	case proto.Class_ClassMage:
+		return 937.330080
+	case proto.Class_ClassPaladin:
+		return 1029.493400
+	case proto.Class_ClassPriest:
+		return 945.188840
+	case proto.Class_ClassRogue:
+		return 1125.227400
+	case proto.Class_ClassShaman:
+		return 1004.487900
+	case proto.Class_ClassWarlock:
+		return 962.335630
+	case proto.Class_ClassWarrior:
+		return 1125.227400
+	default:
+		return 0.0
+	}
+}
+
+// spellEffectCoefficient is the value in the "Coefficient" column of the SpellEffect DB2 table
+func CalcScalingSpellAverageEffect(class proto.Class, spellEffectCoefficient float64) float64 {
+	return GetClassSpellScalingCoefficient(class) * spellEffectCoefficient
+}
+
+// spellEffectCoefficient is the value in the "Coefficient" column of the SpellEffect DB2 table
+// spellEffectVariance is the value in the "Variance" column of the SpellEffect DB2 table
+func CalcScalingSpellEffectVarianceMinMax(class proto.Class, spellEffectCoefficient float64, spellEffectVariance float64) (float64, float64) {
+	avgEffect := CalcScalingSpellAverageEffect(class, spellEffectCoefficient)
+	min := avgEffect * (1 - spellEffectVariance/2.0)
+	max := avgEffect * (1 + spellEffectVariance/2.0)
+	return min, max
+}
+
 type aggregator struct {
 	n     int
 	sum   float64

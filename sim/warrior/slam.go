@@ -12,7 +12,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskSlam,
+		ClassSpellMask: SpellMaskSlam | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   15,
@@ -31,6 +31,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 			},
 		},
 
+		DamageMultiplier: 1.0,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  140,
