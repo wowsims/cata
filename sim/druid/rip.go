@@ -14,6 +14,9 @@ func (druid *Druid) registerRipSpell() {
 	comboPointCoeff := 161.0
 	glyphMulti := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfRip), 1.15, 1.0)
 
+	// Blood in the Water refreshes use the CP value from the last "raw" Rip cast, so we need to store that here.
+	var comboPointSnapshot int32
+
 	druid.Rip = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1079},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -47,7 +50,7 @@ func (druid *Druid) registerRipSpell() {
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				cp := float64(druid.ComboPoints())
+				cp := float64(comboPointSnapshot)
 				ap := dot.Spell.MeleeAttackPower()
 
 				dot.SnapshotBaseDamage = 56 + comboPointCoeff*cp + 0.0207*cp*ap
@@ -69,6 +72,7 @@ func (druid *Druid) registerRipSpell() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
 				dot := spell.Dot(target)
 				dot.NumberOfTicks = RipBaseNumTicks
+				comboPointSnapshot = druid.ComboPoints()
 				dot.Apply(sim)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 			} else {

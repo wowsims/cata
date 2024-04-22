@@ -585,7 +585,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				useRake: true,
 				useBite: true,
 				biteTime: 10.0,
-				biteDuringExecute: false,
+				biteDuringExecute: true,
 			}),
 		fields: [
 			AplHelpers.rotationTypeFieldConfig('rotationType'),
