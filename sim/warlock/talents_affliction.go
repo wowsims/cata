@@ -1,6 +1,6 @@
 package warlock
 
-func (warlock *Warlock) ApplyTalents() {
+func (warlock *Warlock) ApplyAfflictionTalents() {
 	// // Demonic Embrace
 	// if warlock.Talents.DemonicEmbrace > 0 {
 	// 	warlock.MultiplyStat(stats.Stamina, 1.01+(float64(warlock.Talents.DemonicEmbrace)*0.03))

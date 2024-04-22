@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 var TalentTreeSizes = [3]int{18, 19, 19}
@@ -69,6 +70,8 @@ type Warlock struct {
 	PreviousTime  time.Duration
 
 	petStmBonusSP float64
+
+	FireAndBrimstoneAura core.AuraArray
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -86,29 +89,38 @@ func (warlock *Warlock) GrandFirestoneBonus() float64 {
 	return core.TernaryFloat64(warlock.Options.WeaponImbue == proto.WarlockOptions_GrandFirestone, 0.01, 0)
 }
 
+func (warlock *Warlock) ApplyTalents() {
+	// Apply Armor Spec
+	warlock.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
+
+	warlock.ApplyAfflictionTalents()
+	warlock.ApplyDemonologyTalents()
+	warlock.ApplyDestructionTalents()
+
+	warlock.ApplyGlyphs()
+}
+
 func (warlock *Warlock) Initialize() {
-	// warlock.registerIncinerateSpell()
+	warlock.registerIncinerateSpell()
 	// warlock.registerShadowBoltSpell()
-	// warlock.registerImmolateSpell()
+	warlock.registerImmolateSpell()
 	// warlock.registerCorruptionSpell()
 	// warlock.registerCurseOfElementsSpell()
 	// warlock.registerCurseOfWeaknessSpell()
 	// warlock.registerCurseOfTonguesSpell()
 	// warlock.registerCurseOfAgonySpell()
 	// warlock.registerCurseOfDoomSpell()
-	// warlock.registerLifeTapSpell()
+	warlock.registerLifeTapSpell()
 	// warlock.registerSeedSpell()
 	// warlock.registerSoulFireSpell()
 	// warlock.registerUnstableAfflictionSpell()
 	// warlock.registerDrainSoulSpell()
-	// warlock.registerConflagrateSpell()
 	// warlock.registerHauntSpell()
-	// warlock.registerChaosBoltSpell()
 	// warlock.registerDemonicEmpowermentSpell()
 	// warlock.registerMetamorphosisSpell()
 	// warlock.registerDarkPactSpell()
 	// warlock.registerShadowBurnSpell()
-	// warlock.registerSearingPainSpell()
+	warlock.registerSearingPainSpell()
 	// warlock.registerInfernoSpell()
 	// warlock.registerBlackBook()
 
@@ -164,8 +176,8 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 		Talents:   &proto.WarlockTalents{},
 		Options:   warlockOptions,
 	}
-	// core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
-	// warlock.EnableManaBar()
+	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	warlock.EnableManaBar()
 
 	// warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 
@@ -192,6 +204,10 @@ type WarlockAgent interface {
 	GetWarlock() *Warlock
 }
 
+func (warlock *Warlock) HasPrimeGlyph(glyph proto.WarlockPrimeGlyph) bool {
+	return warlock.HasGlyph(int32(glyph))
+}
+
 func (warlock *Warlock) HasMajorGlyph(glyph proto.WarlockMajorGlyph) bool {
 	return warlock.HasGlyph(int32(glyph))
 }
@@ -199,3 +215,14 @@ func (warlock *Warlock) HasMajorGlyph(glyph proto.WarlockMajorGlyph) bool {
 func (warlock *Warlock) HasMinorGlyph(glyph proto.WarlockMinorGlyph) bool {
 	return warlock.HasGlyph(int32(glyph))
 }
+
+const (
+	WarlockSpellFlagNone    int64 = 0
+	WarlockSpellConflagrate int64 = 1 << iota
+	WarlockSpellShadowBolt
+	WarlockSpellChaosBolt
+	WarlockSpellImmolate
+	WarlockSpellIncinerate
+	WarlockSpellSoulFire
+	WarlockSpellLifeTap
+)

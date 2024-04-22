@@ -114,7 +114,7 @@ func (wp *WarlockPet) registerShadowBiteSpell() {
 		},
 
 		DamageMultiplier: 1 + 0.03*float64(wp.owner.Talents.ShadowMastery),
-		CritMultiplier:   1.5 + 0.1*float64(wp.owner.Talents.Ruin),
+		CritMultiplier:   1.5,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
