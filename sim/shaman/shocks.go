@@ -38,6 +38,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 
 func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
 	config := shaman.newShockSpellConfig(8042, core.SpellSchoolNature, 0.18, shockTimer, 0.386)
+	config.ClassSpellMask = SpellMaskEarthShock
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		spell.CalcAndDealDamage(sim, target, 931, spell.OutcomeMagicHitAndCrit)
 
@@ -104,6 +105,7 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 
 func (shaman *Shaman) registerFrostShockSpell(shockTimer *core.Timer) {
 	config := shaman.newShockSpellConfig(8056, core.SpellSchoolFrost, 0.18, shockTimer, 0.386)
+	config.ClassSpellMask = SpellMaskFrostShock
 	config.ThreatMultiplier *= 2
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		spell.CalcAndDealDamage(sim, target, sim.Roll(848, 897), spell.OutcomeMagicHitAndCrit)
