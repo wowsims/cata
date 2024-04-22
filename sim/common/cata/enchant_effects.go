@@ -397,7 +397,7 @@ func init() {
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
 			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 60,
+			ICD:        time.Second * 57,
 			ProcChance: 0.30,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				statAura.Activate(sim)
