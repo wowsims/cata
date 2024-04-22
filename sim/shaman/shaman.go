@@ -40,11 +40,6 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		shaman.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*6)
 		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.55)
 		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.4)
-
-		masteryBonusPoints := shaman.GetMasteryPoints()
-		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.2 + (masteryBonusPoints * 0.025)
-		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1.2 + (masteryBonusPoints * 0.025)
-		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.2 + (masteryBonusPoints * 0.025)
 		shaman.PseudoStats.CanParry = true
 	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
 		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.0)
