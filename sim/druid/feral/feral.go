@@ -69,7 +69,6 @@ type FeralDruid struct {
 	berserkUsed       bool
 	bleedAura         *core.Aura
 	lastShift         time.Duration
-	ripRefreshPending bool
 	usingHardcodedAPL bool
 
 	rotationAction *core.PendingAction

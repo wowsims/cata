@@ -40,7 +40,6 @@ func (value *APLValueCatExcessEnergy) GetFloat(sim *core.Simulation) float64 {
 	if ripDot := cat.Rip.CurDot(); ripDot.IsActive() && ripDot.RemainingDuration(sim) < simTimeRemain-time.Second*10 && cat.ComboPoints() == 5 {
 		ripCost := core.Ternary(cat.berserkExpectedAt(sim, ripDot.ExpiresAt()), cat.Rip.DefaultCast.Cost*0.5, cat.Rip.DefaultCast.Cost)
 		pendingPool.addAction(ripDot.ExpiresAt(), ripCost)
-		cat.ripRefreshPending = true
 	}
 	if rakeDot := cat.Rake.CurDot(); rakeDot.IsActive() && rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.Duration {
 		rakeCost := core.Ternary(cat.berserkExpectedAt(sim, rakeDot.ExpiresAt()), cat.Rake.DefaultCast.Cost*0.5, cat.Rake.DefaultCast.Cost)
