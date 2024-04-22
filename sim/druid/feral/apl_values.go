@@ -112,6 +112,7 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 		UseRake:            config.UseRake,
 		UseBite:            config.UseBite,
 		BiteTime:           config.BiteTime,
+		BiteDuringExecute:  config.BiteDuringExecute,
 		MangleSpam:         false,
 		Powerbear:          false,
 		MinRoarOffset:      config.MinRoarOffset,

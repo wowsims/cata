@@ -65,6 +65,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 				ripDot := druid.Rip.Dot(target)
 
 				if sim.IsExecutePhase25() && ripDot.IsActive() && sim.Proc(ripRefreshChance, "Blood in the Water") {
+					ripDot.NumberOfTicks = RipBaseNumTicks
 					ripDot.Apply(sim)
 				}
 			} else {

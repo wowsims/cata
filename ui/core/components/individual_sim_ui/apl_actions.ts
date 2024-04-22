@@ -580,11 +580,12 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				rotationType: FeralDruid_Rotation_AplType.SingleTarget,
 				maintainFaerieFire: true,
 				manualParams: true,
-				minRoarOffset: 25.0,
+				minRoarOffset: 12.0,
 				ripLeeway: 4,
 				useRake: true,
 				useBite: true,
-				biteTime: 4.0,
+				biteTime: 10.0,
+				biteDuringExecute: false,
 			}),
 		fields: [
 			AplHelpers.rotationTypeFieldConfig('rotationType'),
@@ -612,6 +613,10 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			AplHelpers.numberFieldConfig('biteTime', true, {
 				label: 'Bite Time',
 				labelTooltip: 'Min seconds remaining on Rip/Roar to allow a Bite. Ignored if not Biting during rotation.',
+			}),
+			AplHelpers.booleanFieldConfig('biteDuringExecute', 'Bite during Execute phase', {
+				labelTooltip:
+					'Bite aggressively during Execute phase. Ignored if Blood in the Water is not talented, or if not using manual advanced parameters.',
 			}),
 		],
 	}),

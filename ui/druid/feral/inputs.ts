@@ -76,6 +76,14 @@ export const FeralDruidRotationConfig = {
 			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
 				ShouldShowAdvParamST(player) && player.getSimpleRotation().useBite == true && player.getSimpleRotation().biteModeType == BiteModeType.Emperical,
 		}),
+		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
+			fieldName: 'biteDuringExecute',
+			label: 'Bite during Execute phase',
+			labelTooltip: 'Bite aggressively during Execute phase',
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				ShouldShowAdvParamST(player) && player.getTalents().bloodInTheWater > 0,
+			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+		}),
 		// Can be uncommented if/when analytical bite mode is added
 		//InputHelpers.makeRotationEnumInput<Spec.SpecFeralDruid, BiteModeType>({
 		//	fieldName: 'biteModeType',
