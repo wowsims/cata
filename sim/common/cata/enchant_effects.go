@@ -413,7 +413,7 @@ func init() {
 
 		statAura := character.NewTemporaryStatsAura(
 			"Swordguard Embroidery Cata",
-			core.ActionID{SpellID: 75176},
+			core.ActionID{SpellID: 75178},
 			stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000},
 			time.Second*15,
 		)
