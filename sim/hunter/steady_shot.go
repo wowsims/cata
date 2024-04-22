@@ -36,7 +36,7 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
 			},
 		},
-
+		BonusCritRating:          0,
 		DamageMultiplierAdditive: 1 + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSteadyShot), 0.1, 0),
 		DamageMultiplier:         1,
 		CritMultiplier:           hunter.CritMultiplier(true, false, false),
@@ -58,16 +58,10 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			}
 
 			hunter.AddFocus(sim, focus, ssMetrics)
-			if sim.IsExecutePhase90() {
-				spell.BonusCritRating += (30.0 * float64(hunter.Talents.CarefulAim)) * core.CritRatingPerCritChance
-			}
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
-				if sim.IsExecutePhase90() {
-					spell.BonusCritRating -= (30.0 * float64(hunter.Talents.CarefulAim)) * core.CritRatingPerCritChance
-				}
 			})
 		},
 	})

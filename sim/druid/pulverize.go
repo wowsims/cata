@@ -16,8 +16,8 @@ func (druid *Druid) registerPulverizeSpell() {
 		Label:     "Pulverize",
 		ActionID:  core.ActionID{SpellID: 80951},
 		MaxStacks: 3,
-		Duration:  core.DurationFromSeconds(10.0 + 4.0 * float64(druid.Talents.EndlessCarnage)),
-		
+		Duration:  core.DurationFromSeconds(10.0 + 4.0*float64(druid.Talents.EndlessCarnage)),
+
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			druid.AddStatsDynamic(sim, statBonusPerStack.Multiply(float64(newStacks-oldStacks)))
 		},

@@ -30,6 +30,8 @@ type ProtectionWarrior struct {
 	Options *proto.ProtectionWarrior_Options
 
 	core.VengeanceTracker
+
+	shieldSlam *core.Spell
 }
 
 func NewProtectionWarrior(character *core.Character, options *proto.Player) *ProtectionWarrior {
@@ -93,8 +95,8 @@ func (war *ProtectionWarrior) RegisterMastery() {
 	// Seems to work pretty much the same as WotLK critical block
 	war.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 		if result.Outcome.Matches(core.OutcomeBlock) && !result.Outcome.Matches(core.OutcomeMiss) && !result.Outcome.Matches(core.OutcomeParry) && !result.Outcome.Matches(core.OutcomeDodge) {
-			procChance := war.GetCriticalBlockChance()
-			if sim.RandomFloat("Critical Block Roll") < procChance {
+			procChance := war.CriticalBlockChance // Use the member and not GetCriticalBlockChance as Hold the Line may have been applied from the baseline warrior impl
+			if sim.Proc(procChance, "Critical Block Roll") {
 				blockValue := war.BlockValue()
 				result.Damage = max(0, result.Damage-blockValue)
 				dummyCriticalBlockSpell.Cast(sim, spell.Unit)
@@ -104,21 +106,25 @@ func (war *ProtectionWarrior) RegisterMastery() {
 
 	// Crit block mastery also applies an equal amount to regular block
 	// set initial block rating from stats
-	war.AddStat(stats.Block, (war.GetCriticalBlockChance()*100.0)*core.BlockRatingPerBlockChance)
+	war.CriticalBlockChance = war.GetCriticalBlockChance()
+	war.AddStat(stats.Block, (war.CriticalBlockChance*100.0)*core.BlockRatingPerBlockChance)
 
 	// and keep it updated when mastery changes
 	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
 		oldBlockRating := (1.5 * core.MasteryRatingToMasteryPoints(oldMastery)) * core.BlockRatingPerBlockChance
 		newBlockRating := (1.5 * core.MasteryRatingToMasteryPoints(newMastery)) * core.BlockRatingPerBlockChance
 
-		war.AddStatDynamic(sim, stats.Block, -oldBlockRating)
-		war.AddStatDynamic(sim, stats.Block, newBlockRating)
+		war.AddStatDynamic(sim, stats.Block, -oldBlockRating+newBlockRating)
+		war.CriticalBlockChance = war.GetCriticalBlockChance()
 	})
 }
 
+func CalcMasteryPercent(points float64) float64 {
+	return 12.0 + 1.5*points
+}
+
 func (war *ProtectionWarrior) GetCriticalBlockChance() float64 {
-	// TODO: incorporate Hold The Line's effect (increased crit and crit block chance after parry)
-	return (12.0 + 1.5*war.GetMasteryPoints()) / 100.0
+	return CalcMasteryPercent(war.GetMasteryPoints()) / 100.0
 }
 
 func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
@@ -128,18 +134,9 @@ func (war *ProtectionWarrior) GetWarrior() *warrior.Warrior {
 func (war *ProtectionWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.RegisterSpecializationEffects()
-	// war.RegisterShieldWallCD()
-	// war.RegisterShieldBlockCD()
-	// war.DefensiveStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
-
-	// if war.Options.ClassOptions.UseShatteringThrow {
-	// 	war.RegisterShatteringThrowCD()
-	// }
+	war.RegisterShieldSlam()
 }
 
 func (war *ProtectionWarrior) Reset(sim *core.Simulation) {
-	// war.Warrior.Reset(sim)
-	// war.DefensiveStanceAura.Activate(sim)
-	// war.Stance = warrior.DefensiveStance
-	// war.Warrior.PseudoStats.Stunned = false
+	war.Warrior.Reset(sim)
 }

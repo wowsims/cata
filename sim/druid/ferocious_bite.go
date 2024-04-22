@@ -7,7 +7,16 @@ import (
 )
 
 func (druid *Druid) registerFerociousBiteSpell() {
-	dmgPerComboPoint := 290.0 + core.TernaryFloat64(druid.Ranged().ID == 25667, 14, 0)
+	// Raw parameters from spell database
+	coefficient := 0.38299998641
+	variance := 0.74000000954
+	resourceCoefficient := 0.58399999142
+
+	// Scaled parameters for spell code
+	avgBaseDamage := coefficient * SpellScalingConstant
+	damageSpread := variance * avgBaseDamage
+	minBaseDamage := avgBaseDamage - damageSpread / 2
+	dmgPerComboPoint := resourceCoefficient * SpellScalingConstant
 	ripRefreshChance := 0.5 * float64(druid.Talents.BloodInTheWater)
 
 	druid.FerociousBite = druid.RegisterSpell(Cat, core.SpellConfig{
@@ -17,9 +26,8 @@ func (druid *Druid) registerFerociousBiteSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:          35,
+			Cost:          25,
 			Refund:        0.8,
-			RefundMetrics: druid.PrimalPrecisionRecoveryMetrics,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -31,8 +39,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 			return druid.ComboPoints() > 0
 		},
 
-		BonusCritRating: 0 +
-			core.TernaryFloat64(druid.AssumeBleedActive, []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear] * core.CritRatingPerCritChance, 0),
+		BonusCritRating: core.TernaryFloat64(druid.AssumeBleedActive, []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear] * core.CritRatingPerCritChance, 0),
 		DamageMultiplier: 1 + 0.05*float64(druid.Talents.FeralAggression),
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
@@ -40,13 +47,13 @@ func (druid *Druid) registerFerociousBiteSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			comboPoints := float64(druid.ComboPoints())
 			attackPower := spell.MeleeAttackPower()
-			excessEnergy := min(druid.CurrentEnergy(), 30)
+			excessEnergy := min(druid.CurrentEnergy(), 25)
 
-			baseDamage := 120.0 +
-				sim.RandomFloat("Ferocious Bite")*140.0 +
+			baseDamage := minBaseDamage +
+				sim.RandomFloat("Ferocious Bite")*damageSpread +
 				dmgPerComboPoint*comboPoints +
-				excessEnergy*(9.4+attackPower/410) +
-				attackPower*0.07*comboPoints
+				attackPower*0.125*comboPoints
+			baseDamage *= 1.0 + excessEnergy / 25
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
@@ -58,6 +65,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 				ripDot := druid.Rip.Dot(target)
 
 				if sim.IsExecutePhase25() && ripDot.IsActive() && sim.Proc(ripRefreshChance, "Blood in the Water") {
+					ripDot.NumberOfTicks = RipBaseNumTicks
 					ripDot.Apply(sim)
 				}
 			} else {

@@ -367,15 +367,47 @@ func NewStackingStatBonusEffect(config StackingStatBonusEffect) {
 	})
 }
 
+type OutcomeType uint64
+
+const (
+	OutcomeDefault                  = 0
+	OutcomeMeleeCanCrit OutcomeType = iota
+	OutcomeMeleeNoCrit
+	OutcomeMeleeNoBlockDodgeParryCrit
+	OutcomeSpellCanCrit
+	OutcomeSpellNoCrit
+	OutcomeSpellNoMissCanCrit
+)
+
 type ProcDamageEffect struct {
 	ItemID  int32
 	SpellID int32
 	Trigger core.ProcTrigger
 
-	School core.SpellSchool
-	MinDmg float64
-	MaxDmg float64
-	Flags  core.SpellFlag
+	School  core.SpellSchool
+	MinDmg  float64
+	MaxDmg  float64
+	Flags   core.SpellFlag
+	Outcome OutcomeType
+}
+
+func GetOutcome(spell *core.Spell, outcome OutcomeType) core.OutcomeApplier {
+	switch outcome {
+	case OutcomeMeleeCanCrit:
+		return spell.OutcomeMeleeSpecialHitAndCrit
+	case OutcomeMeleeNoCrit:
+		return spell.OutcomeMeleeSpecialHit
+	case OutcomeMeleeNoBlockDodgeParryCrit:
+		return spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCrit
+	case OutcomeSpellCanCrit:
+		return spell.OutcomeMagicHitAndCrit
+	case OutcomeSpellNoMissCanCrit:
+		return spell.OutcomeMagicCrit
+	case OutcomeSpellNoCrit:
+		return spell.OutcomeMagicHit
+	default:
+		return spell.OutcomeMagicHitAndCrit
+	}
 }
 
 func NewProcDamageEffect(config ProcDamageEffect) {
@@ -400,7 +432,7 @@ func NewProcDamageEffect(config ProcDamageEffect) {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, sim.Roll(minDmg, maxDmg), spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, sim.Roll(minDmg, maxDmg), GetOutcome(spell, config.Outcome))
 			},
 		})
 

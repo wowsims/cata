@@ -11,11 +11,11 @@ func (warrior *Warrior) RegisterRendSpell() {
 	dotTicks := int32(5)
 
 	warrior.Rend = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 47465},
+		ActionID:       core.ActionID{SpellID: 772},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskRend,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | SpellFlagBleed,
+		ClassSpellMask: SpellMaskRend | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   10,
@@ -32,23 +32,25 @@ func (warrior *Warrior) RegisterRendSpell() {
 			return warrior.StanceMatches(BattleStance | DefensiveStance)
 		},
 
+		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Rend",
-				Tag:   "Rend",
+				Label:    "Rend",
+				ActionID: core.ActionID{SpellID: 94009},
+				Tag:      "Rend",
 			},
-			NumberOfTicks:       dotTicks,
-			TickLength:          time.Second * 3,
-			AffectedByCastSpeed: true,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				avgWeaponDamage := warrior.AutoAttacks.MH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower())
-				ap := dot.Spell.MeleeAttackPower() / 14.0
-				dot.SnapshotBaseDamage = 529 + (0.25 * 6 * (avgWeaponDamage + ap*warrior.AutoAttacks.MH().SwingSpeed))
+			NumberOfTicks: dotTicks,
+			TickLength:    time.Second * 3,
 
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+				weaponMH := warrior.AutoAttacks.MH()
+				avgMHDamage := weaponMH.CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower())
+
+				ap := dot.Spell.MeleeAttackPower() / 14.0
+				dot.Snapshot(target, (529+(0.25*6*(avgMHDamage+ap*weaponMH.SwingSpeed)))/float64(dot.NumberOfTicks))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalCrit)
