@@ -17,21 +17,6 @@ func (hunter *Hunter) ApplyTalents() {
 		hunter.Pet.ApplyTalents()
 	}
 
-	if hunter.Talents.Pathing > 0 {
-		bonus := 0.01 * float64(hunter.Talents.Pathing)
-		hunter.PseudoStats.RangedSpeedMultiplier *= 1 + bonus
-	}
-
-	if hunter.Talents.HunterVsWild > 0 {
-		bonus := 0.05 * float64(hunter.Talents.HunterVsWild)
-		hunter.MultiplyStat(stats.Stamina, 1+bonus)
-	}
-
-	if hunter.Talents.HuntingParty {
-		agiBonus := 0.02
-		hunter.MultiplyStat(stats.Agility, 1.0+agiBonus)
-	}
-
 	if hunter.Talents.KillingStreak > 0 {
 		hunter.applyKillingStreak()
 	}
@@ -48,16 +33,30 @@ func (hunter *Hunter) ApplyTalents() {
 			FloatValue: -(float64(hunter.Talents.Efficiency) * 2),
 		})
 	}
+	if hunter.Talents.CarefulAim > 0 {
+		caCritMod := hunter.AddDynamicMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusCrit_Rating,
+			ClassMask:  HunterSpellAimedShot | HunterSpellCobraShot | HunterSpellSteadyShot,
+			FloatValue: (30.0 * float64(hunter.Talents.CarefulAim)) * core.CritRatingPerCritChance,
+		})
+
+		hunter.RegisterResetEffect(func(sim *core.Simulation) {
+			caCritMod.Activate()
+			sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
+				caCritMod.Deactivate()
+			})
+		})
+	}
+
+	//Apply Survival Talents
+	hunter.ApplySurvivalTalents()
+
 	hunter.registerSicEm()
 	hunter.applyCobraStrikes()
 	hunter.applyPiercingShots()
 	hunter.applySpiritBond()
 	hunter.applyInvigoration()
 	hunter.applyGoForTheThroat()
-	hunter.applyThrillOfTheHunt()
-	hunter.applyTNT()
-	hunter.applySniperTraining()
-	hunter.applyHuntingParty()
 	hunter.applyImprovedSteadyShot()
 	hunter.applyFocusFireCD()
 	hunter.applyFervorCD()
@@ -69,7 +68,11 @@ func (hunter *Hunter) applyMasterMarksman() {
 	if hunter.Talents.MasterMarksman == 0 {
 		return
 	}
-
+	costMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  HunterSpellAimedShot,
+		FloatValue: -1,
+	})
 	procChance := float64(hunter.Talents.MasterMarksman) * 0.2
 	hunter.MasterMarksmanAura = hunter.RegisterAura(core.Aura{
 		Label:    "Ready, Set, Aim...",
@@ -77,13 +80,13 @@ func (hunter *Hunter) applyMasterMarksman() {
 		Duration: time.Second * 8,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.AimedShot != nil {
-				hunter.AimedShot.CostMultiplier = 0
+				costMod.Activate()
 				hunter.AimedShot.DefaultCast.CastTime = 0
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.AimedShot != nil {
-				hunter.AimedShot.CostMultiplier = 1
+				costMod.Deactivate()
 				hunter.AimedShot.DefaultCast.CastTime = time.Second * 3
 			}
 		},
@@ -316,7 +319,7 @@ func (hunter *Hunter) applyImprovedSteadyShot() {
 		ActionID:  core.ActionID{SpellID: 53221, Tag: 2},
 		MaxStacks: 2,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskRangedAuto) && spell.ActionID.SpellID == 0 && !spell.Flags.Matches(core.SpellFlagAPL) {
+			if spell.ProcMask.Matches(core.ProcMaskRangedAuto) || spell.ActionID.SpellID == 0 || !spell.Flags.Matches(core.SpellFlagAPL) {
 				return
 			}
 			if spell != hunter.SteadyShot {
@@ -431,7 +434,7 @@ func (hunter *Hunter) applyLongevity(dur time.Duration) time.Duration {
 }
 
 func (hunter *Hunter) applyFocusFireCD() {
-	if !hunter.Talents.FocusFire {
+	if !hunter.Talents.FocusFire || hunter.Pet == nil {
 		return
 	}
 
@@ -620,150 +623,6 @@ func (hunter *Hunter) applyGoForTheThroat() {
 	})
 }
 
-// Todo: Should we support precasting freezing/ice trap?
-func (hunter *Hunter) applyTNT() {
-	if hunter.Talents.TNT == 0 {
-		return
-	}
-
-	actionID := core.ActionID{SpellID: 56343}
-	procChance := []float64{0, 0.10, 0.20}[hunter.Talents.TNT]
-
-	icd := core.Cooldown{
-		Timer:    hunter.NewTimer(),
-		Duration: time.Second * 10,
-	}
-
-	hunter.LockAndLoadAura = hunter.RegisterAura(core.Aura{
-		Icd:       &icd,
-		Label:     "Lock and Load Proc",
-		ActionID:  actionID,
-		Duration:  time.Second * 12,
-		MaxStacks: 2,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.ExplosiveShot != nil {
-				hunter.ExplosiveShot.CostMultiplier -= 1
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.ExplosiveShot != nil {
-				hunter.ExplosiveShot.CostMultiplier += 1
-			}
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == hunter.ExplosiveShot {
-
-				hunter.ExplosiveShot.CD.Reset()
-
-				aura.RemoveStack(sim)
-			}
-		},
-	})
-
-	hunter.RegisterAura(core.Aura{
-		Label:    "TNT Talent",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != hunter.BlackArrow && spell != hunter.ExplosiveTrap {
-				return
-			}
-
-			if !icd.IsReady(sim) {
-				return
-			}
-
-			if sim.RandomFloat("Lock and Load") < procChance {
-				icd.Use(sim)
-				hunter.LockAndLoadAura.Activate(sim)
-				hunter.LockAndLoadAura.SetStacks(sim, 2)
-				if hunter.ExplosiveShot != nil {
-					hunter.ExplosiveShot.CD.Reset()
-				}
-			}
-		},
-	})
-}
-
-func (hunter *Hunter) applyThrillOfTheHunt() {
-	if hunter.Talents.ThrillOfTheHunt == 0 {
-		return
-	}
-
-	procChance := float64(hunter.Talents.ThrillOfTheHunt) * 0.05
-	focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 34499})
-
-	hunter.RegisterAura(core.Aura{
-		Label:    "Thrill of the Hunt",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			// mask 256
-			if spell == hunter.ArcaneShot || spell == hunter.ExplosiveShot || spell == hunter.BlackArrow {
-				if sim.Proc(procChance, "ThrillOfTheHunt") {
-					hunter.AddFocus(sim, spell.CurCast.Cost*0.4, focusMetrics)
-				}
-			}
-
-		},
-	})
-}
-
-func (hunter *Hunter) applySniperTraining() {
-	if hunter.Talents.SniperTraining == 0 {
-		return
-	}
-
-	uptime := hunter.SurvivalOptions.SniperTrainingUptime
-	if uptime <= 0 {
-		return
-	}
-	uptime = min(1, uptime)
-
-	dmgMod := hunter.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  HunterSpellCobraShot | HunterSpellSteadyShot,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: .02 * float64(hunter.Talents.SniperTraining),
-	})
-
-	stAura := hunter.RegisterAura(core.Aura{
-		Label:    "Sniper Training",
-		ActionID: core.ActionID{SpellID: 53304},
-		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			dmgMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			dmgMod.Deactivate()
-		},
-	})
-
-	core.ApplyFixedUptimeAura(stAura, uptime, time.Second*15, 1)
-}
-
-func (hunter *Hunter) applyHuntingParty() {
-	if !hunter.Talents.HuntingParty {
-		return
-	}
-
-	hunter.RegisterAura(core.Aura{
-		Label:    "Hunting Party",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, 1.10)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyAttackSpeed(sim, 1/1.10)
-		},
-	})
-}
 func (hunter *Hunter) registerSicEm() {
 	if hunter.Talents.SicEm == 0 || hunter.Pet == nil {
 		return

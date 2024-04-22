@@ -21,9 +21,11 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 		ClassSpellMask:   SpellMaskLightningShield,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1, //fix when spirit weapons is fixed
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.267,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, 390.7, spell.OutcomeMagicHit)
+			result := shaman.calcDamageStormstrikeCritChance(sim, target, 350, spell)
+			spell.DealDamage(sim, result)
 		},
 	})
 

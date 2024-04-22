@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -31,6 +32,12 @@ func (shaman *Shaman) registerUnleashFlame() {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplier /= 1.2
 			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !slices.Contains(affectedSpells, spell) {
+				return
+			}
+			aura.Deactivate(sim)
 		},
 	})
 
@@ -74,6 +81,7 @@ func (shaman *Shaman) registerUnleashWind() {
 		MaxStacks: 6,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, 1.4)
+			aura.SetStacks(sim, aura.MaxStacks)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyMeleeSpeed(sim, 1/1.4)
@@ -183,6 +191,18 @@ func (shaman *Shaman) registerUnleashElements() {
 				shaman.UnleashLife.Cast(sim, target)
 			case proto.ShamanImbue_FrostbrandWeapon:
 				shaman.UnleashFrost.Cast(sim, target)
+			}
+			if shaman.SelfBuffs.ImbueOH != proto.ShamanImbue_NoImbue && shaman.SelfBuffs.ImbueOH != shaman.SelfBuffs.ImbueMH {
+				switch shaman.SelfBuffs.ImbueOH {
+				case proto.ShamanImbue_FlametongueWeapon:
+					shaman.UnleashFlame.Cast(sim, target)
+				case proto.ShamanImbue_WindfuryWeapon:
+					shaman.UnleashWind.Cast(sim, target)
+				case proto.ShamanImbue_EarthlivingWeapon:
+					shaman.UnleashLife.Cast(sim, target)
+				case proto.ShamanImbue_FrostbrandWeapon:
+					shaman.UnleashFrost.Cast(sim, target)
+				}
 			}
 		},
 	})
