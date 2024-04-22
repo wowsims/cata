@@ -283,10 +283,11 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	regenRate := cat.EnergyRegenPerSecond()
 	isExecutePhase := rotation.BiteDuringExecute && sim.IsExecutePhase25()
 
-	// Prioritize using rake/rip with omen procs if bleed isnt active
-	// But less priority then mangle aura
+	// Prioritize using Rip with omen procs if bleed isnt active
 	ripCcCheck := core.Ternary(isBleedActive, !isClearcast, true)
-	rakeCcCheck := core.Ternary(isBleedActive, !isClearcast, cat.bleedAura.IsActive())
+
+	// Allow Clearcast Rakes if we will lose Rake uptime by Shredding first
+	rakeCcCheck := !isClearcast || !rakeDot.IsActive() || (rakeDot.RemainingDuration(sim) < time.Second)
 
 	endThresh := time.Second * 10
 
