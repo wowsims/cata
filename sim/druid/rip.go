@@ -8,11 +8,10 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+const RipBaseNumTicks = int32(8)
+
 func (druid *Druid) registerRipSpell() {
-	ripBaseNumTicks := int32(8)
-
 	comboPointCoeff := 161.0
-
 	glyphMulti := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfRip), 1.15, 1.0)
 
 	druid.Rip = druid.RegisterSpell(Cat, core.SpellConfig{
@@ -44,7 +43,7 @@ func (druid *Druid) registerRipSpell() {
 			Aura: druid.applyRendAndTear(core.Aura{
 				Label: "Rip",
 			}),
-			NumberOfTicks: ripBaseNumTicks,
+			NumberOfTicks: RipBaseNumTicks,
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -69,7 +68,7 @@ func (druid *Druid) registerRipSpell() {
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = ripBaseNumTicks
+				dot.NumberOfTicks = RipBaseNumTicks
 				dot.Apply(sim)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 			} else {
@@ -85,9 +84,7 @@ func (druid *Druid) registerRipSpell() {
 }
 
 func (druid *Druid) MaxRipTicks() int32 {
-	base := int32(8)
-	shredGlyphBonus := core.TernaryInt32(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting), 3, 0)
-	return base + shredGlyphBonus
+	return RipBaseNumTicks + core.TernaryInt32(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting), 3, 0)
 }
 
 func (druid *Druid) CurrentRipCost() float64 {
@@ -97,7 +94,7 @@ func (druid *Druid) CurrentRipCost() float64 {
 func (druid *Druid) ApplyBloodletting(target *core.Unit) {
 	ripDot := druid.Rip.Dot(target)
 
-	if ripDot.IsActive() && (ripDot.NumberOfTicks < 11) {
+	if ripDot.IsActive() && (ripDot.NumberOfTicks < RipBaseNumTicks + 3) {
 		ripDot.NumberOfTicks += 1
 		ripDot.RecomputeAuraDuration()
 		ripDot.UpdateExpires(ripDot.ExpiresAt() + time.Second*2)

@@ -27,6 +27,7 @@ func RegisterFeralDruid() {
 }
 
 func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid {
+	feralOptions := options.GetFeralDruid()
 	selfBuffs := druid.SelfBuffs{}
 
 	cat := &FeralDruid{
@@ -38,8 +39,8 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	// 	cat.SelfBuffs.InnervateTarget = feralOptions.Options.ClassOptions.InnervateTarget
 	// }
 
-	// cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
-	// //cat.maxRipTicks = cat.MaxRipTicks()
+	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
+	cat.maxRipTicks = cat.MaxRipTicks()
 
 	cat.EnableEnergyBar(100.0)
 	cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1, MHSwingSpeed: 2.5})
@@ -68,7 +69,6 @@ type FeralDruid struct {
 	berserkUsed       bool
 	bleedAura         *core.Aura
 	lastShift         time.Duration
-	ripRefreshPending bool
 	usingHardcodedAPL bool
 
 	rotationAction *core.PendingAction
