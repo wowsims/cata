@@ -12,17 +12,18 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 	revengeReadyAura := warrior.RegisterAura(core.Aura{
 		Label:    "Revenge Ready",
 		Duration: 5 * time.Second,
-		ActionID: actionID,
+		ActionID: actionID.WithTag(1),
 	})
 
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Revenge Trigger",
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry) {
-				revengeReadyAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:     "Overpower Trigger",
+		ActionID: actionID,
+		Callback: core.CallbackOnSpellHitTaken,
+		Outcome:  core.OutcomeBlock | core.OutcomeDodge | core.OutcomeParry,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			revengeReadyAura.Activate(sim)
 		},
-	}))
+	})
 
 	extraHit := warrior.Talents.ImprovedRevenge > 0 && warrior.Env.GetNumTargets() > 1
 	extraHitMult := 0.5 * float64(warrior.Talents.ImprovedRevenge)
@@ -32,7 +33,7 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskRevenge,
+		ClassSpellMask: SpellMaskRevenge | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   5,
@@ -52,12 +53,12 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 			return warrior.StanceMatches(DefensiveStance) && revengeReadyAura.IsActive()
 		},
 
+		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  121,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO: check this roll range and ap coefficient, this is from the 4.3.3 simc export
 			ap := spell.MeleeAttackPower() * 0.31
 			baseDamage := sim.Roll(1618.3, 1977.92) + ap
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -67,6 +68,7 @@ func (warrior *Warrior) RegisterRevengeSpell() {
 
 			if extraHit {
 				otherTarget := sim.Environment.NextTargetUnit(target)
+				// TODO: Reimplement using scaling coefficients and variance once those stats are available
 				baseDamage := sim.Roll(1618.3, 1977.92) + ap
 				spell.CalcAndDealDamage(sim, otherTarget, baseDamage*extraHitMult, spell.OutcomeMeleeSpecialHitAndCrit)
 			}

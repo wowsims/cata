@@ -19,8 +19,9 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 			ActionID:    actionID.WithTag(1),
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty, // whirlwind offhand hits usually don't proc auras
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete | SpellFlagWhirlwindOH,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
+			DamageMultiplier: 1.0,
 			ThreatMultiplier: 1.25,
 			CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
@@ -33,7 +34,7 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskWhirlwind,
+		ClassSpellMask: SpellMaskWhirlwind | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost: 25,
@@ -52,6 +53,7 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 			return warrior.StanceMatches(BerserkerStance)
 		},
 
+		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.25,
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 

@@ -82,7 +82,7 @@ func (druid *Druid) ApplyTalents() {
 	// }
 
 	if druid.Talents.Perseverance > 0 {
-		multiplier := 1.0 - 0.02 * float64(druid.Talents.Perseverance)
+		multiplier := 1.0 - 0.02*float64(druid.Talents.Perseverance)
 		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= multiplier
 		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= multiplier
 		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= multiplier
@@ -318,7 +318,7 @@ func (druid *Druid) applyPrimalFury() {
 }
 
 func (druid *Druid) applyPrimalMadness() {
-	if (druid.Talents.PrimalMadness == 0) || !druid.InForm(Cat | Bear) {
+	if (druid.Talents.PrimalMadness == 0) || !druid.InForm(Cat|Bear) {
 		return
 	}
 
@@ -558,7 +558,7 @@ func (druid *Druid) applyNaturalReaction() {
 
 	actionID := core.ActionID{SpellID: 59071}
 	rageMetrics := druid.NewRageMetrics(actionID)
-	rageAdded := 1.0 + 2.0 * float64(druid.Talents.NaturalReaction - 1)
+	rageAdded := 1.0 + 2.0*float64(druid.Talents.NaturalReaction-1)
 
 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
 		Name:     "Natural Reaction Trigger",
