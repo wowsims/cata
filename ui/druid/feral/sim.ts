@@ -5,6 +5,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl.js';
+import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { FeralDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
@@ -69,6 +70,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
+		// Default rotation settings.
+		rotationType: APLRotationType.TypeSimple,
+		simpleRotation: Presets.DefaultRotation,
 		// Default talents.
 		talents: Presets.StandardTalents.data,
 		// Default spec-specific settings.
