@@ -68,7 +68,7 @@ func (db *WowDatabase) Clone() *WowDatabase {
 		Gems:           maps.Clone(db.Gems),
 		Zones:          maps.Clone(db.Zones),
 		Npcs:           maps.Clone(db.Npcs),
-		
+
 		ItemIcons:    maps.Clone(db.ItemIcons),
 		SpellIcons:   maps.Clone(db.SpellIcons),
 		ReforgeStats: maps.Clone(db.ReforgeStats),

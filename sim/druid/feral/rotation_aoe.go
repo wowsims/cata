@@ -22,7 +22,7 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 	mangleNow := useBuilder && rotation.AoeMangleBuilder
 	rakeNow := useBuilder && !rotation.AoeMangleBuilder
 	ffNow := rotation.MaintainFaerieFire && cat.ShouldFaerieFire(sim, cat.CurrentTarget)
-	roarNow := curCp >= 1 && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim))
+	roarNow := curCp >= 1 && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim, false))
 
 	// Pooling calcs
 	pendingPool := PoolingActions{}

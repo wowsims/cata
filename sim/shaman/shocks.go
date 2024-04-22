@@ -40,7 +40,8 @@ func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
 	config := shaman.newShockSpellConfig(8042, core.SpellSchoolNature, 0.18, shockTimer, 0.386)
 	config.ClassSpellMask = SpellMaskEarthShock
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		spell.CalcAndDealDamage(sim, target, 931, spell.OutcomeMagicHitAndCrit)
+		result := shaman.calcDamageStormstrikeCritChance(sim, target, 931, spell)
+		spell.DealDamage(sim, result)
 
 		if shaman.Talents.Fulmination && shaman.LightningShieldAura.GetStacks() > 3 {
 			shaman.Fulmination.Cast(sim, target)
