@@ -17,6 +17,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 	damageSpread := variance * avgBaseDamage
 	minBaseDamage := avgBaseDamage - damageSpread / 2
 	dmgPerComboPoint := resourceCoefficient * SpellScalingConstant
+	scalingPerComboPoint := 0.125
 	ripRefreshChance := 0.5 * float64(druid.Talents.BloodInTheWater)
 
 	druid.FerociousBite = druid.RegisterSpell(Cat, core.SpellConfig{
@@ -52,7 +53,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 			baseDamage := minBaseDamage +
 				sim.RandomFloat("Ferocious Bite")*damageSpread +
 				dmgPerComboPoint*comboPoints +
-				attackPower*0.125*comboPoints
+				attackPower*scalingPerComboPoint*comboPoints
 			baseDamage *= 1.0 + excessEnergy / 25
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -71,6 +72,19 @@ func (druid *Druid) registerFerociousBiteSpell() {
 			} else {
 				spell.IssueRefund(sim)
 			}
+		},
+
+		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
+			// Assume no excess Energy spend, let the user handle that
+			comboPoints := float64(druid.ComboPoints())
+			attackPower := spell.MeleeAttackPower()
+			baseDamage := avgBaseDamage + comboPoints * (dmgPerComboPoint + attackPower * scalingPerComboPoint)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
+			attackTable := spell.Unit.AttackTables[target.UnitIndex]
+			critChance := spell.PhysicalCritChance(attackTable)
+			critMod := critChance * (spell.CritMultiplier - 1)
+			result.Damage *= 1 + critMod
+			return result
 		},
 	})
 }
