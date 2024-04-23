@@ -116,12 +116,36 @@ func (cat *FeralDruid) calcBuilderDpe(sim *core.Simulation) (float64, float64) {
 	return rakeDpc / cat.Rake.DefaultCast.Cost, shredDpc / cat.Shred.DefaultCast.Cost
 }
 
+func (cat *FeralDruid) calcRipEndThresh(sim *core.Simulation) time.Duration {
+	// Use cached value when below 5 CP
+	if cat.ComboPoints() < 5 {
+		return cat.cachedRipEndThresh
+	}
+
+	// Calculate the minimum DoT duration at which a Rip cast will provide higher DPE than a Bite cast
+	expectedBiteDPE := cat.FerociousBite.ExpectedInitialDamage(sim, cat.CurrentTarget) / cat.FerociousBite.DefaultCast.Cost
+	expectedRipTickDPE := cat.Rip.ExpectedTickDamage(sim, cat.CurrentTarget) / cat.Rip.DefaultCast.Cost
+	numTicksToBreakEven := 1 + int32(expectedBiteDPE / expectedRipTickDPE)
+
+	if sim.Log != nil {
+		cat.Log(sim, "Bite Break-Even Point = %d Rip ticks", numTicksToBreakEven)
+	}
+
+	ripDot := cat.Rip.CurDot()
+	endThresh := time.Duration(numTicksToBreakEven) * ripDot.TickLength
+
+	// Store the result so we can keep using it even when not at 5 CP
+	cat.cachedRipEndThresh = endThresh
+
+	return endThresh
+}
+
 func (cat *FeralDruid) clipRoar(sim *core.Simulation, isExecutePhase bool) bool {
 	ripDot := cat.Rip.CurDot()
 	ripdotRemaining := ripDot.RemainingDuration(sim)
 	simTimeRemaining := sim.GetRemainingDuration()
 
-	if !ripDot.IsActive() || (simTimeRemaining-ripdotRemaining < 10*time.Second) {
+	if !ripDot.IsActive() || (simTimeRemaining-ripdotRemaining < cat.cachedRipEndThresh) {
 		return false
 	}
 
@@ -294,10 +318,11 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	// Allow Clearcast Rakes if we will lose Rake uptime by Shredding first
 	rakeCcCheck := !isClearcast || !rakeDot.IsActive() || (rakeDot.RemainingDuration(sim) < time.Second)
 
-	endThresh := time.Second * 10
-
-	ripNow := (curCp >= rotation.MinCombosForRip) && (!ripDot.IsActive() || ((ripDot.RemainingDuration(sim) < ripDot.TickLength) && !isExecutePhase)) && (simTimeRemain >= endThresh) && ripCcCheck
-	biteAtEnd := (curCp >= rotation.MinCombosForBite) && ((simTimeRemain < endThresh) || (ripDot.IsActive() && (simTimeRemain-ripDot.RemainingDuration(sim) < endThresh)))
+	// Use DPE calculation for deciding the end-of-fight breakpoint for Rip vs. Bite usage
+	baseEndThresh := cat.calcRipEndThresh(sim)
+	endThreshForClip := baseEndThresh + core.TernaryDuration(ripDot.IsActive(), ripDot.TimeUntilNextTick(sim), 0)
+	ripNow := (curCp >= rotation.MinCombosForRip) && (!ripDot.IsActive() || ((ripDot.RemainingDuration(sim) < ripDot.TickLength) && !isExecutePhase)) && (simTimeRemain >= endThreshForClip) && ripCcCheck
+	biteAtEnd := (curCp >= rotation.MinCombosForBite) && ((simTimeRemain < endThreshForClip) || (ripDot.IsActive() && (simTimeRemain-ripDot.RemainingDuration(sim) < baseEndThresh)))
 
 	// Clip Mangle if it won't change the total number of Mangles we have to
 	// cast before the fight ends.
@@ -355,7 +380,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	ffNow := rotation.MaintainFaerieFire && cat.ShouldFaerieFire(sim, cat.CurrentTarget)
 
 	// Pooling calcs
-	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain - endThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))
+	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain - baseEndThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))
 	rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain - rakeDot.TickLength)
 	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain - cat.ReactionTime) && (curCp >= 1)
 	pendingPool := PoolingActions{}
