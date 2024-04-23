@@ -86,6 +86,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		Talents:   &proto.HunterTalents{},
 		Options:   hunterOptions,
 	}
+
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
 	// Todo: Verify that is is actually 4 focus per second
@@ -116,10 +117,9 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 			spell.DealDamage(sim, result)
 		})
 	}
-	hunter.Pet = hunter.NewHunterPet()
 
 	hunter.AddStatDependencies()
-
+	hunter.Pet = hunter.NewHunterPet()
 	return hunter
 }
 
