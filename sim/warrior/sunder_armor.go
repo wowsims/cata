@@ -15,7 +15,7 @@ func (warrior *Warrior) RegisterSunderArmor() *core.Spell {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskSunderArmor,
+		ClassSpellMask: SpellMaskSunderArmor | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   15,

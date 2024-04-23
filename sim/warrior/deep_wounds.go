@@ -6,16 +6,16 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warrior *Warrior) applyDeepWounds() {
+func (warrior *Warrior) RegisterDeepWounds() {
 	if warrior.Talents.DeepWounds == 0 {
 		return
 	}
 
 	warrior.DeepWounds = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 12867},
+		ActionID:    core.ActionID{SpellID: 12868},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | SpellFlagBleed,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -64,13 +64,13 @@ func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, 
 	attackTable := warrior.AttackTables[target.UnitIndex]
 	var awd float64
 	if isOh {
-		adm := warrior.AutoAttacks.OHAuto().AttackerDamageMultiplier(attackTable)
-		tdm := warrior.AutoAttacks.OHAuto().TargetDamageMultiplier(attackTable, false)
-		awd = ((warrior.AutoAttacks.OH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) * 0.5) + dot.Spell.BonusWeaponDamage()) * adm * tdm
+		adm := warrior.AutoAttacks.OHAuto().AttackerDamageMultiplier(attackTable, false)
+		tdm := warrior.AutoAttacks.OHAuto().TargetDamageMultiplier(sim, attackTable, false)
+		awd = (warrior.AutoAttacks.OH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) * 0.5) * adm * tdm
 	} else { // MH, Ranged (e.g. Thunder Clap)
-		adm := warrior.AutoAttacks.MHAuto().AttackerDamageMultiplier(attackTable)
-		tdm := warrior.AutoAttacks.MHAuto().TargetDamageMultiplier(attackTable, false)
-		awd = (warrior.AutoAttacks.MH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) + dot.Spell.BonusWeaponDamage()) * adm * tdm
+		adm := warrior.AutoAttacks.MHAuto().AttackerDamageMultiplier(attackTable, false)
+		tdm := warrior.AutoAttacks.MHAuto().TargetDamageMultiplier(sim, attackTable, false)
+		awd = (warrior.AutoAttacks.MH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower())) * adm * tdm
 	}
 	newDamage := awd * 0.16 * float64(warrior.Talents.DeepWounds)
 

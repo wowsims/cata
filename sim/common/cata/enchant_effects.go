@@ -380,6 +380,60 @@ func init() {
 		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4115, aura)
 	})
 
+	// Enchant: 4116, Spell: 75175 - Darkglow Embroidery
+	core.NewEnchantEffect(4116, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		statAura := character.NewTemporaryStatsAura(
+			"Darkglow Embroidery Cata",
+			core.ActionID{SpellID: 75175},
+			stats.Stats{stats.Spirit: 480},
+			time.Second*15,
+		)
+
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Darkglow Embroidery Cata",
+			ActionID:   core.ActionID{SpellID: 75173},
+			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+			Outcome:    core.OutcomeLanded,
+			ICD:        time.Second * 57,
+			ProcChance: 0.30,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				statAura.Activate(sim)
+			},
+		})
+
+		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4116, aura)
+	})
+
+	// Enchant: 4118, Spell: 75178 - Swordguard Embroidery
+	core.NewEnchantEffect(4118, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		statAura := character.NewTemporaryStatsAura(
+			"Swordguard Embroidery Cata",
+			core.ActionID{SpellID: 75178},
+			stats.Stats{stats.AttackPower: 1000, stats.RangedAttackPower: 1000},
+			time.Second*15,
+		)
+
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Swordguard Embroidery Cataa",
+			ActionID:   core.ActionID{SpellID: 75176},
+			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
+			ProcMask:   core.ProcMaskMeleeOrRanged,
+			Outcome:    core.OutcomeLanded,
+			ICD:        time.Second * 55,
+			ProcChance: 0.15,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				statAura.Activate(sim)
+			},
+		})
+		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4118, aura)
+
+	})
+
 	// Enchant: 4175, Spell: 81932, Item: 59594 - Gnomish X-Ray Scope
 	core.NewEnchantEffect(4175, func(agent core.Agent) {
 		character := agent.GetCharacter()
