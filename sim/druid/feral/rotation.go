@@ -533,18 +533,18 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	} else if ffNow {
 		cat.FaerieFire.Cast(sim, cat.CurrentTarget)
 		return false, 0
-	} else if roarNow {
-		if cat.SavageRoar.CanCast(sim, cat.CurrentTarget) {
-			cat.SavageRoar.Cast(sim, nil)
-			return false, 0
-		}
-		timeToNextAction = core.DurationFromSeconds((cat.CurrentSavageRoarCost() - curEnergy) / regenRate)
 	} else if ripNow {
 		if cat.Rip.CanCast(sim, cat.CurrentTarget) {
 			cat.Rip.Cast(sim, cat.CurrentTarget)
 			return false, 0
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentRipCost() - curEnergy) / regenRate)
+	} else if roarNow {
+		if cat.SavageRoar.CanCast(sim, cat.CurrentTarget) {
+			cat.SavageRoar.Cast(sim, nil)
+			return false, 0
+		}
+		timeToNextAction = core.DurationFromSeconds((cat.CurrentSavageRoarCost() - curEnergy) / regenRate)
 	} else if biteNow {
 		if cat.FerociousBite.CanCast(sim, cat.CurrentTarget) {
 			cat.FerociousBite.Cast(sim, cat.CurrentTarget)
