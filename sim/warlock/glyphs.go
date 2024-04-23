@@ -64,4 +64,46 @@ func (warlock *Warlock) ApplyGlyphs() {
 			IntValue:  2,
 		})
 	}
+
+	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfUnstableAffliction) {
+		warlock.AddStaticMod(core.SpellModConfig{
+			ClassMask: WarlockSpellUnstableAffliction,
+			Kind:      core.SpellMod_CastTime_Flat,
+			TimeValue: time.Millisecond * 200,
+		})
+	}
+
+	//if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfLashOfPain) {
+	// pet.AddStaticMod(core.SpellModConfig{
+	// 	ClassMask: WarlockSpellSuccubusLashOfPain,
+	// 	Kind:      core.SpellMod_DamageDone_Pct,
+	// 	FloatValue: 0.25,
+	// })
+	//}
+
+	// if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis) {
+	// 	warlock.AddStaticMod(core.SpellModConfig{
+	// 		ClassMask: WarlockSpellMetamorphosis,
+	// 		Kind:      core.SpellMod_,
+	// 		TimeValue: time.Second * 6,
+	// 	})
+	// }
+
+	// if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfFelguard) {
+	// pet.AddStaticMod(core.SpellModConfig{
+	// 	ClassMask: WarlockSpellFelGuardLegionStrike,
+	// 	Kind:      core.SpellMod_DamageDone_Pct,
+	// 	FloatValue: 0.05,
+	// })
+	// }
+
+	// if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfImp) {
+	// 	pet.AddStaticMod(core.SpellModConfig{
+	// 		ClassMask: WarlockSpellImpFireBolt,
+	// 		Kind:      core.SpellMod_DamageDone_Pct,
+	// 		FloatValue: 0.20,
+	// 	})
+	// 	}
+
+	//TODO: Soul Swap with spell
 }

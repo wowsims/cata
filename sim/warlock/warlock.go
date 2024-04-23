@@ -114,7 +114,6 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerLifeTapSpell()
 	// warlock.registerSeedSpell()
 	warlock.registerSoulFireSpell()
-	// warlock.registerUnstableAfflictionSpell()
 	// warlock.registerDrainSoulSpell()
 	warlock.registerHauntSpell()
 	// warlock.registerDemonicEmpowermentSpell()
@@ -235,6 +234,10 @@ const (
 	WarlockSpellBaneOfDoom
 	WarlockSpellDrainSoul
 	WarlockSpellDrainLife
+	WarlockSpellMetamorphosis
+	WarlockSpellSuccubusLashOfPain
+	WarlockSpellFelGuardLegionStrike
+	WarlockSpellImpFireBolt
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
 		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellShadowBolt

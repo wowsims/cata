@@ -1234,7 +1234,7 @@ const idToCategoryMap: Record<number, number> = {
 	[980]: SPELL_ACTION_CATEGORY + 0.02, // Curse of Agony
 	[172]: SPELL_ACTION_CATEGORY + 0.1, // Corruption
 	[48181]: SPELL_ACTION_CATEGORY + 0.2, // Haunt
-	[47843]: SPELL_ACTION_CATEGORY + 0.3, // Unstable Affliction
+	[30108]: SPELL_ACTION_CATEGORY + 0.3, // Unstable Affliction
 	[348]: SPELL_ACTION_CATEGORY + 0.31, // Immolate
 	[17962]: SPELL_ACTION_CATEGORY + 0.32, // Conflagrate
 	[50796]: SPELL_ACTION_CATEGORY + 0.49, // Chaos Bolt

@@ -9,11 +9,11 @@ import (
 
 func (destruction *DestructionWarlock) registerConflagrateSpell() {
 	destruction.Conflagrate = destruction.RegisterSpell(core.SpellConfig{
-		ClassSpellMask: warlock.WarlockSpellConflagrate,
 		ActionID:       core.ActionID{SpellID: 17962},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: warlock.WarlockSpellConflagrate,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.16,
