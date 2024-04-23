@@ -88,11 +88,50 @@ func (Mage *FireMage) registerPyroblastSpell() {
 			Aura: core.Aura{
 				Label: "PyroblastDoT",
 			},
-			NumberOfTicks:    4,
-			TickLength:       time.Second * 3,
-			BonusCoefficient: 0.180,
+			NumberOfTicks:       4,
+			TickLength:          time.Second * 3,
+			BonusCoefficient:    0.180,
+			AffectedByCastSpeed: true,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, 0.175*Mage.ScalingBaseDamage)
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.Dot(target).ApplyOrReset(sim)
+			Mage.PyroblastDot.SpellMetrics[target.UnitIndex].Casts = 0
+		},
+	})
+
+	Mage.PyroblastDotImpact = Mage.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 11366}.WithTag(1),
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          mage.SpellFlagMage,
+		ClassSpellMask: mage.MageSpellPyroblastDot,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   Mage.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "PyroblastDoT Fake Impact",
+			},
+			NumberOfTicks:       4,
+			TickLength:          time.Second * 3,
+			AffectedByCastSpeed: true,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+				//
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

@@ -43,9 +43,12 @@ type Mage struct {
 	ArcanePower             *core.Spell
 	Blizzard                *core.Spell
 	Combustion              *core.Spell
+	CombustionImpact        *core.Spell
 	DeepFreeze              *core.Spell
 	Ignite                  *core.Spell
+	IgniteImpact            *core.Spell
 	LivingBomb              *core.Spell
+	LivingBombImpact        *core.Spell
 	Fireball                *core.Spell
 	FireBlast               *core.Spell
 	FlameOrb                *core.Spell
@@ -59,6 +62,7 @@ type Mage struct {
 	IceLance                *core.Spell
 	Pyroblast               *core.Spell
 	PyroblastDot            *core.Spell
+	PyroblastDotImpact      *core.Spell
 	SummonWaterElemental    *core.Spell
 	Scorch                  *core.Spell
 	MirrorImage             *core.Spell
@@ -79,7 +83,7 @@ type Mage struct {
 	hotStreakCritAura      *core.Aura
 	HotStreakAura          *core.Aura
 	IgniteDamageTracker    *core.Aura
-	Impact                 *core.Aura
+	ImpactAura             *core.Aura
 	MageArmorAura          *core.Aura
 	MageArmorPA            *core.PendingAction
 	PresenceOfMindAura     *core.Aura
@@ -310,7 +314,7 @@ const (
 	MageSpellLast
 	MageSpellsAll        = MageSpellLast<<1 - 1
 	MageSpellLivingBomb  = MageSpellLivingBombDot | MageSpellLivingBombExplosion
-	MageSpellFireMastery = MageSpellLivingBombDot | MageSpellPyroblastDot // Ignite done manually in spell due to unique mechanic
+	MageSpellFireMastery = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellCombustion // Ignite done manually in spell due to unique mechanic
 	MageSpellFire        = MageSpellBlastWave | MageSpellCombustion | MageSpellDragonsBreath | MageSpellFireball |
 		MageSpellFireBlast | MageSpellFlameOrb | MageSpellFlamestrike | MageSpellFrostfireBolt | MageSpellIgnite |
 		MageSpellLivingBomb | MageSpellPyroblast | MageSpellScorch
@@ -319,4 +323,7 @@ const (
 	MageSpellsAllDamaging = MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | MageSpellArcaneMissilesTick | MageSpellBlastWave | MageSpellBlizzard | MageSpellDeepFreeze |
 		MageSpellDragonsBreath | MageSpellFireBlast | MageSpellFireball | MageSpellFlamestrike | MageSpellFlameOrb | MageSpellFrostbolt | MageSpellFrostfireBolt |
 		MageSpellFrostfireOrb | MageSpellIceLance | MageSpellLivingBombExplosion | MageSpellLivingBombDot | MageSpellPyroblast | MageSpellPyroblastDot | MageSpellScorch
+	MageSpellInstantCast = MageSpellArcaneBarrage | MageSpellArcaneMissilesCast | MageSpellFireBlast | MageSpellArcaneExplosion |
+		MageSpellBlastWave | MageSpellCombustion | MageSpellConeOfCold | MageSpellDeepFreeze | MageSpellDragonsBreath | MageSpellIceLance |
+		MageSpellManaGems | MageSpellMirrorImage
 )
