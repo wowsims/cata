@@ -37,7 +37,8 @@ func NewFrostMage(character *core.Character, options *proto.Player) *FrostMage {
 		Mage:             mage.NewMage(character, options, frostOptions.ClassOptions),
 		ClassBaseScaling: 937.330078125,
 	}
-	frostMage.waterElemental = frostMage.NewWaterElemental(0.20)
+	//frostMage.waterElemental = frostMage.NewWaterElemental(0.20)
+	frostMage.ApplyFrostSpecInnate()
 	return frostMage
 }
 
@@ -56,7 +57,6 @@ func (frostMage *FrostMage) Initialize() {
 }
 
 func (frostMage *FrostMage) ApplyFrostSpecInnate() {
-	frostMage.Mage.ApplyTalents()
 	// Frost  Specialization Bonus
 
 	frostMage.Mage.AddStaticMod(core.SpellModConfig{
@@ -89,12 +89,15 @@ func (frostMage *FrostMage) ApplyFrostSpecInnate() {
 			frostMasteryMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if frostMage.Mage.FingersOfFrostAura.IsActive() && (spell == frostMage.Mage.IceLance || spell == frostMage.Mage.DeepFreeze) {
+			if frostMage.Mage.FingersOfFrostAura.IsActive() {
 				frostMasteryMod.Activate()
 			}
 		},
 	}))
 
+	frostMage.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+		frostMasteryMod.UpdateFloatValue(frostMage.GetMasteryBonus())
+	})
 }
 
 func (frostMage *FrostMage) GetMasteryBonus() float64 {
