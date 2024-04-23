@@ -8,11 +8,12 @@ import (
 
 func (warlock *Warlock) registerIncinerateSpell() {
 	warlock.Incinerate = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 47838},
-		SpellSchool:  core.SpellSchoolFire,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        core.SpellFlagAPL,
-		MissileSpeed: 24,
+		ActionID:       core.ActionID{SpellID: 29722},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		MissileSpeed:   24,
+		ClassSpellMask: WarlockSpellIncinerate,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.14,

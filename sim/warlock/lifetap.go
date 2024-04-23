@@ -15,7 +15,7 @@ func (warlock *Warlock) registerLifeTapSpell() {
 	var petManaMetrics *core.ResourceMetrics
 	//	if warlock.Talents.ManaFeed && warlock.Pet != nil {
 	if warlock.Talents.ManaFeed > 0 {
-		petManaMetrics = warlock.Pet.NewManaMetrics(actionID)
+		//petManaMetrics = warlock.Pet.NewManaMetrics(actionID)
 	}
 
 	warlock.LifeTap = warlock.RegisterSpell(core.SpellConfig{
@@ -38,7 +38,7 @@ func (warlock *Warlock) registerLifeTapSpell() {
 
 			//if warlock.Talents.ManaFeed && warlock.Pet != nil {
 			if warlock.Talents.ManaFeed > 0 {
-				warlock.Pet.AddMana(sim, restore*petManaGain, petManaMetrics)
+				//warlock.Pet.AddMana(sim, restore*petManaGain, petManaMetrics)
 			}
 			if warlock.GlyphOfLifeTapAura != nil {
 				warlock.GlyphOfLifeTapAura.Activate(sim)

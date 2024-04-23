@@ -8,7 +8,7 @@ import (
 
 func (warlock *Warlock) registerCorruptionSpell() {
 	warlock.Corruption = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 47813},
+		ActionID:       core.ActionID{SpellID: 172},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagHauntSE | core.SpellFlagAPL,
