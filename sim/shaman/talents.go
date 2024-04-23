@@ -58,8 +58,7 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.LavaFlows > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			// TODO: Should only be periodic damage
-			ClassMask:  SpellMaskFlameShock,
+			ClassMask:  SpellMaskFlameShockDot,
 			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.20 * float64(shaman.Talents.LavaFlows),
 		})
