@@ -30,7 +30,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 			},
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		BonusCoefficient: bonusCoefficient,
 	}

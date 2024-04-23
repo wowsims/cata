@@ -19,6 +19,15 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.Expertise, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))
 
+	if shaman.Talents.Concussion > 0 {
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask: SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload |
+				SpellMaskThunderstorm | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskEarthShock | SpellMaskFlameShock | SpellMaskFrost,
+			Kind:       core.SpellMod_DamageDone_Flat,
+			FloatValue: 0.02 * float64(shaman.Talents.Concussion),
+		})
+	}
+
 	if shaman.Talents.Toughness > 0 {
 		shaman.MultiplyStat(stats.Stamina, []float64{1.0, 1.03, 1.07, 1.1}[shaman.Talents.Toughness])
 	}
