@@ -78,13 +78,24 @@ export const DefaultFireOptions = MageOptions.create({
 });
 
 export const DefaultFireConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheFrostWyrm,
-	food: Food.FoodFirecrackerSalmon,
-	defaultPotion: Potions.PotionOfSpeed,
+	flask: Flask.FlaskOfTheDraconicMind,
+	food: Food.FoodSeafoodFeast,
+	defaultPotion: Potions.VolcanicPotion,
 	defaultConjured: Conjured.ConjuredFlameCap,
-	prepopPotion: Potions.PotionOfSpeed,
+	prepopPotion: Potions.VolcanicPotion,
 });
 
+export const DefaultDebuffs = Debuffs.create({
+	bloodFrenzy: true,
+	sunderArmor: true,
+	ebonPlaguebringer: true,
+	mangle: true,
+	criticalMass: true,
+	demoralizingShout: true,
+	frostFever: true,
+	judgement: true,
+});
+	
 export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
