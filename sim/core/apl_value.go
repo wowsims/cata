@@ -119,12 +119,6 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueCurrentComboPoints(config.GetCurrentComboPoints())
 	case *proto.APLValue_CurrentRunicPower:
 		return rot.newValueCurrentRunicPower(config.GetCurrentRunicPower())
-	case *proto.APLValue_CurrentSolarEnergy:
-		return rot.newValueCurrentSolarEnergy(config.GetCurrentSolarEnergy())
-	case *proto.APLValue_CurrentLunarEnergy:
-		return rot.newValueCurrentLunarEnergy(config.GetCurrentLunarEnergy())
-	case *proto.APLValue_DruidCurrentEclipsePhase:
-		return rot.newValueCurrentEclipsePhase(config.GetDruidCurrentEclipsePhase())
 
 	// Resources Runes
 	case *proto.APLValue_CurrentRuneCount:

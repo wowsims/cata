@@ -33,7 +33,7 @@ func (balance *BalanceDruid) RegisterTestSpells() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcDamage(sim, target, 200, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-				balance.AddEclipseEnergy(13+1.0/3.0, core.LunarEnergy, sim, testWrathlMetric)
+				balance.AddEclipseEnergy(13+1.0/3.0, LunarEnergy, sim, testWrathlMetric)
 				spell.WaitTravelTime(sim, func(s *core.Simulation) {
 					spell.DealDamage(sim, result)
 				})
@@ -64,7 +64,7 @@ func (balance *BalanceDruid) RegisterTestSpells() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealDamage(sim, target, 200, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-				balance.AddEclipseEnergy(13+1.0/3.0, core.SolarEnergy, sim, testSFMetric)
+				balance.AddEclipseEnergy(13+1.0/3.0, SolarEnergy, sim, testSFMetric)
 			}
 		},
 	})
@@ -96,8 +96,8 @@ func (balance *BalanceDruid) RegisterTestSpells() {
 		},
 	})
 
-	balance.AddEclipseCallback(func(eclipse core.Eclipse, gained bool, sim *core.Simulation) {
-		if eclipse == core.LunarEclipse {
+	balance.AddEclipseCallback(func(eclipse Eclipse, gained bool, sim *core.Simulation) {
+		if eclipse == LunarEclipse {
 			if gained {
 				lunarEclipse.Activate(sim)
 			} else {

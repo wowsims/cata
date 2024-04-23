@@ -113,7 +113,6 @@ type Unit struct {
 	energyBar
 	focusBar
 	runicPowerBar
-	eclipseEnergyBar
 
 	// All spells that can be cast by this unit.
 	Spellbook                 []*Spell
@@ -547,7 +546,6 @@ func (unit *Unit) reset(sim *Simulation, _ Agent) {
 	unit.manaBar.reset()
 	unit.focusBar.reset(sim)
 	unit.healthBar.reset(sim)
-	unit.eclipseEnergyBar.reset()
 	unit.UpdateManaRegenRates()
 
 	unit.energyBar.reset(sim)
