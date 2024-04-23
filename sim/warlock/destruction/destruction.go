@@ -75,8 +75,12 @@ func (destruction *DestructionWarlock) ApplyTalents() {
 		},
 	}))
 
-	// TODO: Cataclysm
-	// Incease fire spell damage by 25%
+	// Cataclysm
+	destruction.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  warlock.WarlockFireDamage,
+		FloatValue: 0.25,
+	})
 }
 
 func (destruction *DestructionWarlock) Reset(sim *core.Simulation) {

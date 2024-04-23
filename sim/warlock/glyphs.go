@@ -56,4 +56,12 @@ func (warlock *Warlock) ApplyGlyphs() {
 			FloatValue: -0.15,
 		})
 	}
+
+	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfBaneOfAgony) {
+		warlock.AddStaticMod(core.SpellModConfig{
+			ClassMask: WarlockSpellBaneOfAgony,
+			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
+			IntValue:  2,
+		})
+	}
 }

@@ -134,12 +134,6 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 	wp.AddStats(stats.Stats{
 		stats.MeleeCrit: float64(warlock.Talents.DemonicTactics) * 2 * core.CritRatingPerCritChance,
 		stats.SpellCrit: float64(warlock.Talents.DemonicTactics) * 2 * core.CritRatingPerCritChance,
-
-		// Fix pet stats resulting from gaining the incorrect amount of stats from suppression/hit debuff
-		// see makeStatInheritance() below for a more details about these values
-		stats.MeleeHit:  -float64(warlock.Talents.Suppression) * core.MeleeHitRatingPerHitChance,
-		stats.SpellHit:  (-5.0 * float64(warlock.Talents.Suppression)) / 12.0 * core.SpellHitRatingPerHitChance,
-		stats.Expertise: -float64(warlock.Talents.Suppression) * PetExpertiseScale * core.ExpertisePerQuarterPercentReduction,
 	})
 
 	wp.PseudoStats.DamageDealtMultiplier *= 1.0 + 0.04*float64(warlock.Talents.UnholyPower)

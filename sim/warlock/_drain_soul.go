@@ -42,7 +42,7 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.14,
-			Multiplier: 1 - 0.02*float64(warlock.Talents.Suppression),
+			Multiplier: 1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -55,7 +55,7 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 			warlock.GrandSpellstoneBonus() +
 			0.03*float64(warlock.Talents.ShadowMastery),
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - 0.1*float64(warlock.Talents.ImprovedDrainSoul),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

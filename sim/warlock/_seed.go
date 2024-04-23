@@ -22,7 +22,7 @@ func (warlock *Warlock) registerSeedSpell() {
 			0.03*float64(warlock.Talents.ShadowMastery) +
 			0.01*float64(warlock.Talents.Contagion),
 		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1 - 0.1*float64(warlock.Talents.ImprovedDrainSoul),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDmg := (sim.Roll(1633, 1897) + 0.286*spell.SpellPower()) * sim.Encounter.AOECapMultiplier()
@@ -50,7 +50,7 @@ func (warlock *Warlock) registerSeedSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.34,
-			Multiplier: 1 - 0.02*float64(warlock.Talents.Suppression),
+			Multiplier: 1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -64,7 +64,7 @@ func (warlock *Warlock) registerSeedSpell() {
 			0.03*float64(warlock.Talents.ShadowMastery) +
 			0.01*float64(warlock.Talents.Contagion) +
 			core.TernaryFloat64(warlock.Talents.SiphonLife, 0.05, 0),
-		ThreatMultiplier: 1 - 0.1*float64(warlock.Talents.ImprovedDrainSoul),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

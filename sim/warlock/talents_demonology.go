@@ -19,9 +19,6 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 
 	// warlock.setupDemonicPact()
 
-	// // Suppression (Add 1% hit per point)
-	// warlock.AddStat(stats.SpellHit, float64(warlock.Talents.Suppression)*core.SpellHitRatingPerHitChance)
-
 	// // Backlash (Add 1% crit per point)
 	// warlock.AddStat(stats.SpellCrit, float64(warlock.Talents.Backlash)*core.CritRatingPerCritChance)
 

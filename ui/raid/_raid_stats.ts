@@ -896,7 +896,7 @@
 // 						},
 // 						{
 // 							label: 'Curse of Weakness',
-// 							actionId: ActionId.fromSpellId(50511),
+// 							actionId: ActionId.fromSpellId(702),
 // 							playerData: playerClass(Class.ClassWarlock),
 // 						},
 // 						{
@@ -1043,7 +1043,7 @@
 // 						},
 // 						{
 // 							label: 'Curse of Weakness',
-// 							actionId: ActionId.fromSpellId(50511),
+// 							actionId: ActionId.fromSpellId(702),
 // 							playerData: playerClassAndMissingTalent(Class.ClassWarlock, 'improvedCurseOfWeakness'),
 // 						},
 // 						{

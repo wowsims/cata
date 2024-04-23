@@ -26,21 +26,42 @@ func RegisterDemonologyWarlock() {
 func NewDemonologyWarlock(character *core.Character, options *proto.Player) *DemonologyWarlock {
 	demoOptions := options.GetDemonologyWarlock().Options
 
-	demoLock := &DemonologyWarlock{
+	demonology := &DemonologyWarlock{
 		Warlock: warlock.NewWarlock(character, options, demoOptions.ClassOptions),
 	}
 
-	return demoLock
+	return demonology
 }
 
 type DemonologyWarlock struct {
 	*warlock.Warlock
 }
 
-func (demoLock *DemonologyWarlock) GetWarlock() *warlock.Warlock {
-	return demoLock.Warlock
+func (demonology DemonologyWarlock) getMasteryBonus() float64 {
+	return 0.18 + 0.023*demonology.GetMasteryPoints()
 }
 
-func (demoLock *DemonologyWarlock) Reset(sim *core.Simulation) {
-	demoLock.Warlock.Reset(sim)
+func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
+	return demonology.Warlock
+}
+
+func (demonology *DemonologyWarlock) Initialize() {
+	demonology.Warlock.Initialize()
+}
+
+func (demonology *DemonologyWarlock) ApplyTalents() {
+	demonology.Warlock.ApplyTalents()
+
+	// TODO: Mastery: Master Demonologist
+
+	// Demonic Knowledge
+	demonology.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  warlock.WarlockShadowDamage | warlock.WarlockFireDamage,
+		FloatValue: 0.15,
+	})
+}
+
+func (demonology *DemonologyWarlock) Reset(sim *core.Simulation) {
+	demonology.Warlock.Reset(sim)
 }

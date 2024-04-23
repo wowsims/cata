@@ -38,8 +38,9 @@ type Warlock struct {
 	CurseOfWeaknessAuras core.AuraArray
 	CurseOfTongues       *core.Spell
 	CurseOfTonguesAuras  core.AuraArray
-	CurseOfAgony         *core.Spell
-	CurseOfDoom          *core.Spell
+	BaneOfAgony          *core.Spell
+	BaneOfDoom           *core.Spell
+	BaneOfHavoc          *core.Spell
 	Seed                 *core.Spell
 	SeedDamageTracker    []float64
 
@@ -105,11 +106,11 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerShadowBoltSpell()
 	warlock.registerImmolateSpell()
 	warlock.registerCorruptionSpell()
-	// warlock.registerCurseOfElementsSpell()
-	// warlock.registerCurseOfWeaknessSpell()
-	// warlock.registerCurseOfTonguesSpell()
-	// warlock.registerCurseOfAgonySpell()
-	// warlock.registerCurseOfDoomSpell()
+	warlock.registerCurseOfElementsSpell()
+	warlock.registerCurseOfWeaknessSpell()
+	warlock.registerCurseOfTonguesSpell()
+	warlock.registerBaneOfAgonySpell()
+	warlock.registerBaneOfDoomSpell()
 	warlock.registerLifeTapSpell()
 	// warlock.registerSeedSpell()
 	warlock.registerSoulFireSpell()
@@ -226,4 +227,20 @@ const (
 	WarlockSpellLifeTap
 	WarlockSpellCorruption
 	WarlockSpellHaunt
+	WarlockSpellUnstableAffliction
+	WarlockSpellCurseOfElements
+	WarlockSpellCurseOfWeakness
+	WarlockSpellCurseOfTongues
+	WarlockSpellBaneOfAgony
+	WarlockSpellBaneOfDoom
+	WarlockSpellDrainSoul
+	WarlockSpellDrainLife
+
+	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
+		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellShadowBolt
+
+	WarlockPeriodicShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
+		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony
+
+	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire
 )

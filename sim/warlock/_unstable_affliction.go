@@ -19,7 +19,7 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.15,
-			Multiplier: 1 - 0.02*float64(warlock.Talents.Suppression),
+			Multiplier: 1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -35,7 +35,7 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 			0.03*float64(warlock.Talents.ShadowMastery) +
 			core.TernaryFloat64(warlock.Talents.SiphonLife, 0.05, 0),
 		CritMultiplier:   warlock.SpellCritMultiplier(1, 1),
-		ThreatMultiplier: 1 - 0.1*float64(warlock.Talents.ImprovedDrainSoul),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

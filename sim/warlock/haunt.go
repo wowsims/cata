@@ -7,6 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
+// TODO: SpellFlagHauntSE
 func (warlock *Warlock) registerHauntSpell() {
 	if !warlock.Talents.Haunt {
 		return

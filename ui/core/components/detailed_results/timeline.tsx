@@ -1230,8 +1230,8 @@ const idToCategoryMap: Record<number, number> = {
 	[2825]: DEFAULT_ACTION_CATEGORY + 0.1, // Bloodlust
 
 	// Warlock
-	[47867]: SPELL_ACTION_CATEGORY + 0.01, // Curse of Doom
-	[47864]: SPELL_ACTION_CATEGORY + 0.02, // Curse of Agony
+	[603]: SPELL_ACTION_CATEGORY + 0.01, // Curse of Doom
+	[980]: SPELL_ACTION_CATEGORY + 0.02, // Curse of Agony
 	[172]: SPELL_ACTION_CATEGORY + 0.1, // Corruption
 	[48181]: SPELL_ACTION_CATEGORY + 0.2, // Haunt
 	[47843]: SPELL_ACTION_CATEGORY + 0.3, // Unstable Affliction

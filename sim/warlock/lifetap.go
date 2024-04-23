@@ -10,9 +10,9 @@ func (warlock *Warlock) registerLifeTapSpell() {
 	actionID := core.ActionID{SpellID: 1454}
 	impLifetap := 1.0 + 0.1*float64(warlock.Talents.ImprovedLifeTap)
 	manaMetrics := warlock.NewManaMetrics(actionID)
-	petManaGain := 0.3 * float64(warlock.Talents.ManaFeed)
+	//petManaGain := 0.3 * float64(warlock.Talents.ManaFeed)
 
-	var petManaMetrics *core.ResourceMetrics
+	//var petManaMetrics *core.ResourceMetrics
 	//	if warlock.Talents.ManaFeed && warlock.Pet != nil {
 	if warlock.Talents.ManaFeed > 0 {
 		//petManaMetrics = warlock.Pet.NewManaMetrics(actionID)
