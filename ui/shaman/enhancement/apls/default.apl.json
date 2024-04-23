@@ -5,7 +5,7 @@
     {"action":{"castSpell":{"spellId":{"spellId":51533}}},"doAtValue":{"const":{"val":"-1.5s"}}}
   ],
   "priorityList": [
-    {"action":{"castSpell":{"spellId":{"spellId":2825,"tag":-1}}}},
+	{"action":{"autocastOtherCooldowns":{}}},
     {"action":{"castSpell":{"spellId":{"spellId":2825}}}},
     {"action":{"castSpell":{"spellId":{"spellId":2894}}}},
     {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"spellId":{"spellId":3599}}},"rhs":{"const":{"val":"100ms"}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":2894}}}}}]}},"castSpell":{"spellId":{"spellId":3599}}}},
