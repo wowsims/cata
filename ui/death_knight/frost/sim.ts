@@ -130,6 +130,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			// FrostInputs.AvgAMSHitInput,
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InputDelay,
 			OtherInputs.DarkIntentUptime
 		],
 	},

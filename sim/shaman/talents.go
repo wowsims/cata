@@ -9,6 +9,12 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
+	if shaman.Spec == proto.Spec_SpecElementalShaman || shaman.Spec == proto.Spec_SpecRestorationShaman {
+		shaman.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeMail)
+	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
+		shaman.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeMail)
+	}
+
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.Expertise, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))
@@ -59,7 +65,6 @@ func (shaman *Shaman) ApplyTalents() {
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: 0.20 * float64(shaman.Talents.LavaFlows),
 		})
-		//TODO: Does this need applied to overload as well?
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
 			Kind:       core.SpellMod_CritMultiplier_Pct,
@@ -125,6 +130,8 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.registerNaturesSwiftnessCD()
 	shaman.registerShamanisticRageCD()
 	shaman.registerManaTideTotemCD()
+
+	shaman.ApplyGlyphs()
 }
 
 func (shaman *Shaman) applyElementalFocus() {
@@ -167,7 +174,9 @@ func (shaman *Shaman) applyElementalFocus() {
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= oathBonus
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= oathBonus
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= oathBonus
-				shaman.Earthquake.DamageMultiplierAdditive += 0.05
+				if shaman.Earthquake != nil {
+					shaman.Earthquake.DamageMultiplierAdditive += 0.05
+				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -178,7 +187,9 @@ func (shaman *Shaman) applyElementalFocus() {
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= oathBonus
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= oathBonus
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= oathBonus
-				shaman.Earthquake.DamageMultiplierAdditive -= 0.05
+				if shaman.Earthquake != nil {
+					shaman.Earthquake.DamageMultiplierAdditive -= 0.05
+				}
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

@@ -163,6 +163,10 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if hunter.Talents.FerociousInspiration && hunter.Pet != nil {
 		raidBuffs.FerociousInspiration = true
 	}
+
+	if hunter.Talents.HuntingParty {
+		raidBuffs.HuntingParty = true
+	}
 }
 
 func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
@@ -203,6 +207,7 @@ const (
 	HunterSpellKillCommand
 	HunterSpellChimeraShot
 	HunterSpellExplosiveShot
+	HunterSpellExplosiveTrap
 	HunterSpellBlackArrow
 	HunterSpellAimedShot
 )

@@ -113,6 +113,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 		inputs: [
 			HunterInputs.PetUptime(),
 			HunterInputs.TimeToTrapWeaveMs(),
+			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 			OtherInputs.DarkIntentUptime,

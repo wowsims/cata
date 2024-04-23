@@ -132,7 +132,7 @@ export class Party {
 				const currentPlayer = this.players[i];
 
 				// Reuse the current player if possible, so that event handlers are preserved.
-				if (currentPlayer && spec == currentPlayer.getSpec()) {
+				if (currentPlayer && spec.specID == currentPlayer.getSpec()) {
 					currentPlayer.fromProto(eventID, playerProto);
 				} else {
 					const newPlayer = new Player(spec, this.sim);

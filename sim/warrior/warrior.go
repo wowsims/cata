@@ -15,35 +15,38 @@ type WarriorInputs struct {
 }
 
 const (
-	SpellFlagWhirlwindOH = core.SpellFlagAgentReserved1
-	ArmsTree             = 0
-	FuryTree             = 1
-	ProtTree             = 2
-	EnableOverpowerTag   = "EnableOverpower"
+	SpellFlagBleed = core.SpellFlagAgentReserved1
+	ArmsTree       = 0
+	FuryTree       = 1
+	ProtTree       = 2
 )
 
 const SpellMaskNone int64 = 0
 const (
-	SpellMaskCostsRage     int64 = 1 << iota
-	SpellMaskSpecialAttack       = SpellMaskCostsRage | (1 << iota) // All special attacks have a rage cost
+	SpellMaskSpecialAttack int64 = 1 << iota
 
-	// Baseline abilities that don't cost rage and aren't attacks
-	SpellMaskBattleShout int64 = 1 << iota
+	// Abilities that don't cost rage and aren't attacks
+	SpellMaskBattleShout
 	SpellMaskBerserkerRage
 	SpellMaskCommandingShout
 	SpellMaskRecklessness
 	SpellMaskShieldWall
+	SpellMaskLastStand
+	SpellMaskDeadlyCalm
 
-	// Baseline abilities that cost rage but aren't attacks
-	SpellMaskDemoShout int64 = 1<<iota | SpellMaskCostsRage
+	// Abilities that cost rage but aren't attacks
+	SpellMaskDemoShout
 	SpellMaskInnerRage
 	SpellMaskShieldBlock
+	SpellMaskDeathWish
+	SpellMaskSweepingStrikes
 
-	// Baseline special attacks
-	SpellMaskCleave int64 = 1<<iota | SpellMaskSpecialAttack
+	// Special attacks
+	SpellMaskCleave
 	SpellMaskColossusSmash
 	SpellMaskExecute
 	SpellMaskHeroicStrike
+	SpellMaskHeroicThrow
 	SpellMaskOverpower
 	SpellMaskRend
 	SpellMaskRevenge
@@ -52,10 +55,19 @@ const (
 	SpellMaskSunderArmor
 	SpellMaskThunderClap
 	SpellMaskWhirlwind
-
-	// Next available bit for spec implementations to start their own mask lists on
-	SpellMaskSpecStartIndex int64 = iota
+	SpellMaskShieldSlam
+	SpellMaskConcussionBlow
+	SpellMaskDevastate
+	SpellMaskShockwave
+	SpellMaskVictoryRush
+	SpellMaskBloodthirst
+	SpellMaskRagingBlow
+	SpellMaskMortalStrike
+	SpellMaskBladestorm
 )
+
+const EnableOverpowerTag = "EnableOverpower"
+const EnrageTag = "EnrageEffect"
 
 type Warrior struct {
 	core.Character
@@ -68,8 +80,6 @@ type Warrior struct {
 	Stance                 Stance
 	EnrageEffectMultiplier float64
 	CriticalBlockChance    float64 // Can be gained as non-prot via certain talents and spells
-	SpecialAttackModList   int64
-	RageAbilitiesList      int64
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
@@ -78,6 +88,7 @@ type Warrior struct {
 	BerserkerStance *core.Spell
 
 	BerserkerRage     *core.Spell
+	ColossusSmash     *core.Spell
 	DemoralizingShout *core.Spell
 	Execute           *core.Spell
 	Overpower         *core.Spell
@@ -128,7 +139,6 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerStances()
 	warrior.EnrageEffectMultiplier = 1.0
 	warrior.hsCleaveCD = warrior.NewTimer()
-	warrior.ReactionTime = time.Millisecond * 500
 
 	warrior.RegisterBerserkerRageSpell()
 	warrior.RegisterColossusSmash()
@@ -150,8 +160,6 @@ func (warrior *Warrior) Initialize() {
 	warrior.RegisterSunderArmor()
 	warrior.RegisterThunderClapSpell()
 	warrior.RegisterWhirlwindSpell()
-
-	warrior.ApplyGlyphs()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {

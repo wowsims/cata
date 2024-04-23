@@ -34,9 +34,11 @@ func (pa *PoolingActions) calcFloatingEnergy(cat *FeralDruid, sim *core.Simulati
 	floatingEnergy := 0.0
 	previousTime := sim.CurrentTime
 	tfPending := false
+	regenRate := cat.EnergyRegenPerSecond()
 
 	for _, s := range pa.actions {
-		delta_t := float64((s.refreshTime - previousTime) / core.EnergyTickDuration)
+		elapsedTime := s.refreshTime - previousTime
+		energyGain := elapsedTime.Seconds() * regenRate
 		if !tfPending {
 			tfPending = cat.tfExpectedBefore(sim, s.refreshTime)
 			if tfPending {
@@ -44,11 +46,11 @@ func (pa *PoolingActions) calcFloatingEnergy(cat *FeralDruid, sim *core.Simulati
 			}
 		}
 
-		if delta_t < s.cost {
-			floatingEnergy += s.cost - delta_t
+		if energyGain < s.cost {
+			floatingEnergy += s.cost - energyGain
 			previousTime = s.refreshTime
 		} else {
-			previousTime += time.Duration(s.cost * float64(core.EnergyTickDuration))
+			previousTime += core.DurationFromSeconds(s.cost / regenRate)
 		}
 	}
 

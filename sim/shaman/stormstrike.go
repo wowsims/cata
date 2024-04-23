@@ -15,16 +15,20 @@ func (shaman *Shaman) StormstrikeDebuffAura(target *core.Unit) *core.Aura {
 		Label:    "Stormstrike-" + shaman.Label,
 		ActionID: StormstrikeActionID,
 		Duration: time.Second * 15,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Unit != &shaman.Unit {
-				return
-			}
-
-			if spell == shaman.LightningBolt || spell == shaman.ChainLightning || spell == shaman.LightningShield || spell == shaman.EarthShock {
-				spell.CritMultiplier += core.TernaryFloat64(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfStormstrike), 0.35, 0.25)
-			}
-		},
 	})
+}
+
+func (shaman *Shaman) calcDamageStormstrikeCritChance(sim *core.Simulation, target *core.Unit, baseDamage float64, spell *core.Spell) *core.SpellResult {
+	var result *core.SpellResult
+	if target.HasActiveAura("Stormstrike-" + shaman.Label) {
+		critBonus := core.CritRatingPerCritChance * core.TernaryFloat64(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfStormstrike), 35, 25)
+		spell.BonusCritRating += critBonus
+		result = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+		spell.BonusCritRating -= critBonus
+	} else {
+		result = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+	}
+	return result
 }
 
 func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) func(*core.Simulation, *core.Unit, *core.Spell) {

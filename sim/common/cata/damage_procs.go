@@ -12,7 +12,8 @@ func init() {
 		School:  core.SpellSchoolNature,
 		MinDmg:  5250,
 		MaxDmg:  8750,
-		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers,
+		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
+		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
 			ProcMask: core.ProcMaskMeleeOrRanged,
@@ -28,10 +29,11 @@ func init() {
 		School:  core.SpellSchoolNature,
 		MinDmg:  5250,
 		MaxDmg:  8750,
-		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers,
+		Outcome: shared.OutcomeMeleeNoBlockDodgeParryCrit,
+		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
-			ProcMask: core.ProcMaskMeleeOrRanged,
+			ProcMask: core.ProcMaskProc,
 			PPM:      1,
 			Outcome:  core.OutcomeLanded,
 			Callback: core.CallbackOnSpellHitDealt,

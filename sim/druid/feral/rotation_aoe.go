@@ -22,7 +22,7 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 	mangleNow := useBuilder && rotation.AoeMangleBuilder
 	rakeNow := useBuilder && !rotation.AoeMangleBuilder
 	ffNow := rotation.MaintainFaerieFire && cat.ShouldFaerieFire(sim, cat.CurrentTarget)
-	roarNow := curCp >= 1 && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim))
+	roarNow := curCp >= 1 && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim, false))
 
 	// Pooling calcs
 	pendingPool := PoolingActions{}
@@ -58,25 +58,25 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 			cat.SavageRoar.Cast(sim, nil)
 			return false, 0
 		}
-		timeToNextAction = time.Duration((cat.CurrentSavageRoarCost() - curEnergy) * float64(core.EnergyTickDuration))
+		timeToNextAction = time.Duration((cat.CurrentSavageRoarCost() - curEnergy) * float64(cat.EnergyTickDuration))
 	} else if mangleNow {
 		if cat.MangleCat.CanCast(sim, cat.CurrentTarget) {
 			cat.MangleCat.Cast(sim, cat.CurrentTarget)
 			return false, 0
 		}
-		timeToNextAction = time.Duration((cat.CurrentMangleCatCost() - curEnergy) * float64(core.EnergyTickDuration))
+		timeToNextAction = time.Duration((cat.CurrentMangleCatCost() - curEnergy) * float64(cat.EnergyTickDuration))
 	} else if rakeNow {
 		if cat.Rake.CanCast(sim, cat.CurrentTarget) {
 			cat.Rake.Cast(sim, cat.CurrentTarget)
 			return false, 0
 		}
-		timeToNextAction = time.Duration((cat.CurrentRakeCost() - curEnergy) * float64(core.EnergyTickDuration))
+		timeToNextAction = time.Duration((cat.CurrentRakeCost() - curEnergy) * float64(cat.EnergyTickDuration))
 	} else {
 		if excessE > cat.CurrentSwipeCatCost() || isClearcast {
 			cat.SwipeCat.Cast(sim, cat.CurrentTarget)
 			return false, 0
 		}
-		timeToNextAction = time.Duration((cat.CurrentSwipeCatCost() - excessE) * float64(core.EnergyTickDuration))
+		timeToNextAction = time.Duration((cat.CurrentSwipeCatCost() - excessE) * float64(cat.EnergyTickDuration))
 	}
 
 	// Model in latency when waiting on Energy for our next action

@@ -31,8 +31,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	selfBuffs := druid.SelfBuffs{}
 
 	cat := &FeralDruid{
-		Druid:   druid.New(character, druid.Cat, selfBuffs, options.TalentsString),
-		latency: time.Duration(max(feralOptions.Options.LatencyMs, 1)) * time.Millisecond,
+		Druid: druid.New(character, druid.Cat, selfBuffs, options.TalentsString),
 	}
 
 	// cat.SelfBuffs.InnervateTarget = &proto.UnitReference{}
@@ -40,8 +39,8 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	// 	cat.SelfBuffs.InnervateTarget = feralOptions.Options.ClassOptions.InnervateTarget
 	// }
 
-	// cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
-	// //cat.maxRipTicks = cat.MaxRipTicks()
+	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
+	cat.maxRipTicks = cat.MaxRipTicks()
 
 	cat.EnableEnergyBar(100.0)
 	cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1, MHSwingSpeed: 2.5})
@@ -63,16 +62,15 @@ type FeralDruid struct {
 
 	Rotation FeralDruidRotation
 
-	readyToShift      bool
-	readyToGift       bool
-	waitingForTick    bool
-	latency           time.Duration
-	maxRipTicks       int32
-	berserkUsed       bool
-	bleedAura         *core.Aura
-	lastShift         time.Duration
-	ripRefreshPending bool
-	usingHardcodedAPL bool
+	readyToShift       bool
+	readyToGift        bool
+	waitingForTick     bool
+	maxRipTicks        int32
+	berserkUsed        bool
+	bleedAura          *core.Aura
+	lastShift          time.Duration
+	cachedRipEndThresh time.Duration
+	usingHardcodedAPL  bool
 
 	rotationAction *core.PendingAction
 }

@@ -8,12 +8,6 @@ import { TypedEvent } from '../../core/typed_event.js';
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 
-export const LatencyMs = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecFeralDruid>({
-	fieldName: 'latencyMs',
-	label: 'Latency',
-	labelTooltip: 'Player latency, in milliseconds. Adds a delay to actions that cannot be spell queued.',
-});
-
 export const AssumeBleedActive = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecFeralDruid>({
 	fieldName: 'assumeBleedActive',
 	label: 'Assume Bleed Always Active',
@@ -81,6 +75,14 @@ export const FeralDruidRotationConfig = {
 			labelTooltip: 'Min seconds on Rip/Roar to bite',
 			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
 				ShouldShowAdvParamST(player) && player.getSimpleRotation().useBite == true && player.getSimpleRotation().biteModeType == BiteModeType.Emperical,
+		}),
+		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
+			fieldName: 'biteDuringExecute',
+			label: 'Bite during Execute phase',
+			labelTooltip: 'Bite aggressively during Execute phase',
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				ShouldShowAdvParamST(player) && player.getTalents().bloodInTheWater > 0,
+			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
 		}),
 		// Can be uncommented if/when analytical bite mode is added
 		//InputHelpers.makeRotationEnumInput<Spec.SpecFeralDruid, BiteModeType>({

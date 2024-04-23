@@ -111,7 +111,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			if !spell.CD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on cooldown for %s, curTime = %s", spell.CD.TimeToReady(sim), sim.CurrentTime)
 			}
-			spell.CD.Set(sim.CurrentTime + spell.CurCast.CastTime + spell.CD.Duration)
+			spell.CD.Set(sim.CurrentTime + spell.CurCast.CastTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
 		}
 
 		if config.SharedCD.Timer != nil {
@@ -119,7 +119,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			if !spell.SharedCD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on shared cooldown for %s, curTime = %s", spell.SharedCD.TimeToReady(sim), sim.CurrentTime)
 			}
-			spell.SharedCD.Set(sim.CurrentTime + spell.CurCast.CastTime + spell.SharedCD.Duration)
+			spell.SharedCD.Set(sim.CurrentTime + spell.CurCast.CastTime + time.Duration(float64(spell.SharedCD.Duration)*spell.CdMultiplier))
 		}
 
 		// By panicking if spell is on CD, we force each sim to properly check for their own CDs.
@@ -205,7 +205,7 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 				return spell.castFailureHelper(sim, "still on cooldown for %s, curTime = %s", spell.CD.TimeToReady(sim), sim.CurrentTime)
 			}
 
-			spell.CD.Set(sim.CurrentTime + spell.CD.Duration)
+			spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
 		}
 
 		if spell.SharedCD.Timer != nil {
@@ -214,7 +214,7 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 				return spell.castFailureHelper(sim, "still on shared cooldown for %s, curTime = %s", spell.SharedCD.TimeToReady(sim), sim.CurrentTime)
 			}
 
-			spell.SharedCD.Set(sim.CurrentTime + spell.SharedCD.Duration)
+			spell.SharedCD.Set(sim.CurrentTime + time.Duration(float64(spell.SharedCD.Duration)*spell.CdMultiplier))
 		}
 
 		if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {

@@ -11,6 +11,7 @@ import (
 const (
 	SpellFlagNaturesGrace = core.SpellFlagAgentReserved1
 	SpellFlagOmenTrigger  = core.SpellFlagAgentReserved2
+	SpellScalingConstant  = 986.626460 // for level 85
 )
 
 var TalentTreeSizes = [3]int{20, 22, 21}

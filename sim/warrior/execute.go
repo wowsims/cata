@@ -7,13 +7,15 @@ import (
 )
 
 func (warrior *Warrior) RegisterExecuteSpell() {
+	minRageAfterExecute := 5.0 * float64(warrior.Talents.SuddenDeath)
+
 	var rageMetrics *core.ResourceMetrics
 	warrior.Execute = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 5308},
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskExecute,
+		ClassSpellMask: SpellMaskExecute | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   10,
@@ -30,13 +32,23 @@ func (warrior *Warrior) RegisterExecuteSpell() {
 		},
 
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
-		DamageMultiplier: 1,
+		DamageMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			availableRage := spell.Unit.CurrentRage()
 			extraRage := math.Min(availableRage, 20)
-			warrior.SpendRage(sim, extraRage, rageMetrics)
+
+			// Sudden Death: Keep X rage after using execute
+			// Adjust extra rage spend to hit this floor
+
+			spell.Unit.SpendRage(sim, extraRage, rageMetrics)
 			rageMetrics.Events--
+
+			rageAfterSpend := spell.Unit.CurrentRage()
+			if rageAfterSpend < minRageAfterExecute {
+				spell.Unit.AddRage(sim, minRageAfterExecute-rageAfterSpend, rageMetrics)
+				rageMetrics.Events--
+			}
 
 			ap := spell.MeleeAttackPower()
 			baseDamage := 10.0 + (ap * 0.437)

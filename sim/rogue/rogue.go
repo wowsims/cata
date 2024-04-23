@@ -177,8 +177,8 @@ func (rogue *Rogue) Initialize() {
 func (rogue *Rogue) ApplyAdditiveEnergyRegenBonus(sim *core.Simulation, increment float64) {
 	oldBonus := rogue.AdditiveEnergyRegenBonus
 	newBonus := oldBonus + increment
-	rogue.MultiplyEnergyRegenSpeed(sim, (1.0 + newBonus) / (1.0 + oldBonus))
 	rogue.AdditiveEnergyRegenBonus = newBonus
+	rogue.MultiplyEnergyRegenSpeed(sim, (1.0+newBonus)/(1.0+oldBonus))
 }
 
 func (rogue *Rogue) Reset(sim *core.Simulation) {
@@ -186,7 +186,7 @@ func (rogue *Rogue) Reset(sim *core.Simulation) {
 		mcd.Disable()
 	}
 
-	rogue.MultiplyEnergyRegenSpeed(sim, 1.0 + rogue.AdditiveEnergyRegenBonus)
+	rogue.MultiplyEnergyRegenSpeed(sim, 1.0+rogue.AdditiveEnergyRegenBonus)
 }
 
 func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {

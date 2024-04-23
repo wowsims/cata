@@ -197,6 +197,10 @@ const (
 	// Uses TimeValue
 	SpellMod_Cooldown_Flat
 
+	// Increases or decreases spell.CD.Multiplier by flat amount
+	// Uses FloatValue
+	SpellMod_Cooldown_Multiplier
+
 	// Will increase the CritMultiplier. +100% = 1.0
 	// Uses FloatValue
 	SpellMod_CritMultiplier_Pct
@@ -263,6 +267,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_Cooldown_Flat: {
 		Apply:  applyCooldownFlat,
 		Remove: removeCooldownFlat,
+	},
+
+	SpellMod_Cooldown_Multiplier: {
+		Apply:  applyCooldownMultiplier,
+		Remove: removeCooldownMultiplier,
 	},
 
 	SpellMod_CritMultiplier_Pct: {
@@ -362,6 +371,14 @@ func removeCooldownFlat(mod *SpellMod, spell *Spell) {
 	spell.CD.Duration -= mod.timeValue
 }
 
+func applyCooldownMultiplier(mod *SpellMod, spell *Spell) {
+	spell.CdMultiplier += mod.floatValue
+}
+
+func removeCooldownMultiplier(mod *SpellMod, spell *Spell) {
+	spell.CdMultiplier -= mod.floatValue
+}
+
 func applyCritMultiplier(mod *SpellMod, spell *Spell) {
 	spell.CritMultiplier = 1 + (spell.CritMultiplier-1)*(mod.floatValue+1)
 }
@@ -406,12 +423,12 @@ func applyDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.NumberOfTicks += int32(mod.intValue)
+				dot.AddTicks(int32(mod.intValue))
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.NumberOfTicks += int32(mod.intValue)
+		spell.aoeDot.AddTicks(int32(mod.intValue))
 	}
 }
 
@@ -419,12 +436,12 @@ func removeDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.NumberOfTicks -= int32(mod.intValue)
+				dot.AddTicks(-int32(mod.intValue))
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.NumberOfTicks -= int32(mod.intValue)
+		spell.aoeDot.AddTicks(-int32(mod.intValue))
 	}
 }
 

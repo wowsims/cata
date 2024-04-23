@@ -167,6 +167,7 @@ message FeralDruid {
 	float bite_time = 7;
 	int32 min_combos_for_bite = 8;
 	int32 berserk_bite_thresh = 9;
+	bool bite_during_execute = 13;
 	int32 rip_leeway = 19;
 	bool powerbear = 10;
 	float min_roar_offset = 11;
@@ -179,7 +180,6 @@ message FeralDruid {
 
   message Options {
     DruidOptions class_options = 1;
-    int32 latency_ms = 2;
     bool assume_bleed_active = 4;
   }
   Options options = 3;

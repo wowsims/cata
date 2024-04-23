@@ -33,22 +33,22 @@ export const APL_ROTATION_CUSTOM_EXAMPLE = PresetUtils.makePresetAPLRotation('Cu
 
 export const DefaultRotation = FeralDruidRotation.create({
 	rotationType: FeralDruid_Rotation_AplType.SingleTarget,
-
 	bearWeaveType: FeralDruid_Rotation_BearweaveType.None,
 	minCombosForRip: 5,
 	minCombosForBite: 5,
-
 	useRake: true,
 	useBite: true,
 	mangleSpam: false,
 	biteModeType: FeralDruid_Rotation_BiteModeType.Emperical,
-	biteTime: 4.0,
+	biteTime: 10.0,
 	berserkBiteThresh: 25.0,
 	powerbear: false,
 	minRoarOffset: 12.0,
-	ripLeeway: 3.0,
+	ripLeeway: 4.0,
 	maintainFaerieFire: true,
 	snekWeave: false,
+	manualParams: true,
+	biteDuringExecute: true,
 });
 
 export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFeralDruid, DefaultRotation);
@@ -74,7 +74,6 @@ export const StandardTalents = {
 };
 
 export const DefaultOptions = FeralDruidOptions.create({
-	latencyMs: 100,
 	assumeBleedActive: true,
 });
 

@@ -164,11 +164,6 @@ func (spriest *ShadowPriest) ApplyTalents() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
-
-		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			handleShadowOrbPower(spriest, sim, spell, result)
-		},
-
 		OnPeriodicDamageDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			handleShadowOrbPower(spriest, sim, spell, result)
 		},
