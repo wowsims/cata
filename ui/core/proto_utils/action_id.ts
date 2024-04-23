@@ -344,6 +344,11 @@ export class ActionId {
 					name += ` (${this.tag} MW)`;
 				}
 				break;
+			case 'Flame Shock':
+				if (this.tag == 1) {
+					name += ' (DoT)'
+				}
+				break;
 			case 'Holy Shield':
 				if (this.tag == 1) {
 					name += ' (Proc)';
