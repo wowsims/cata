@@ -201,6 +201,11 @@ func (cat *FeralDruid) tfExpectedBefore(sim *core.Simulation, futureTime time.Du
 	return true
 }
 
+func (cat *FeralDruid) calcTfEnergyThresh(leewayTime time.Duration) float64 {
+	delayTime := leewayTime + core.TernaryDuration(cat.ClearcastingAura.IsActive(), time.Second, 0)
+	return 40.0 - delayTime.Seconds() * cat.EnergyRegenPerSecond()
+}
+
 func (cat *FeralDruid) TryTigersFury(sim *core.Simulation) {
 	// Handle tigers fury
 	if !cat.TigersFury.IsReady(sim) {
@@ -209,7 +214,7 @@ func (cat *FeralDruid) TryTigersFury(sim *core.Simulation) {
 
 	gcdTimeToRdy := cat.GCD.TimeToReady(sim)
 	leewayTime := max(gcdTimeToRdy, cat.ReactionTime)
-	tfEnergyThresh := 40.0 - 10.0*(leewayTime+core.Ternary(cat.ClearcastingAura.IsActive(), 1*time.Second, 0)).Seconds()
+	tfEnergyThresh := cat.calcTfEnergyThresh(leewayTime)
 	tfNow := (cat.CurrentEnergy() < tfEnergyThresh) && !cat.BerserkAura.IsActive()
 
 	// If Lacerateweaving, then delay Tiger's Fury if Lacerate is due to
