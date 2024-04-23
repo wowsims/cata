@@ -263,12 +263,14 @@ func (hunter *Hunter) applyPiercingShots() {
 				// Specifically account for bleed modifiers, since it still affects the spell, but we're ignoring all modifiers.
 				dot.SnapshotAttackerMultiplier = target.PseudoStats.PeriodicPhysicalDamageTakenMultiplier
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).ApplyOrReset(sim)
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+
 		},
 	})
 
@@ -399,10 +401,10 @@ func (hunter *Hunter) applyFrenzy() {
 		ActionID:  actionID,
 		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyMeleeSpeed(sim, 1.02)
+			aura.Unit.MultiplyMeleeSpeed(sim, 1+(float64(hunter.Talents.Frenzy)*0.02))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyMeleeSpeed(sim, 1/1.02)
+			aura.Unit.MultiplyMeleeSpeed(sim, 1/(1+float64(hunter.Talents.Frenzy)*0.02))
 		},
 	})
 

@@ -10,7 +10,7 @@ import (
 type PetAbilityType int
 
 // Pet AI doesn't use abilities immediately, so model this with a 1.6s GCD.
-const PetGCD = time.Millisecond * 1600
+const PetGCD = time.Millisecond * 1200
 
 // Todo: Pet not done
 // Apply Wild Hunt
@@ -139,7 +139,7 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
-				Duration: time.Second * 3,
+				Duration: time.Millisecond * 3300,
 				Timer:    hp.NewTimer(),
 			},
 			DefaultCast: core.Cast{

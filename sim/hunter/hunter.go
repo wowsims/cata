@@ -127,6 +127,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
 	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
 	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
+
 	hunter.FireTrapTimer = hunter.NewTimer()
 
 	hunter.ApplyGlyphs()
