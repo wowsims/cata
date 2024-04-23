@@ -146,6 +146,11 @@ func (cat *FeralDruid) clipRoar(sim *core.Simulation, isExecutePhase bool) bool 
 		return true
 	}
 
+	// If waiting another GCD to build an additional CP would lower our total Roar casts for the fight, then force a wait.
+	if newRoarDur + time.Second + core.TernaryDuration(cat.ComboPoints() < 5, time.Second * 5, 0) >= simTimeRemaining {
+		return false
+	}
+
 	// Clip as soon as we have enough CPs for the new roar to expire well
 	// after the current rip
 	if !isExecutePhase {
