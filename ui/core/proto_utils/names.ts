@@ -258,6 +258,8 @@ export const resourceNames: Map<ResourceType, string> = new Map([
 	[ResourceType.ResourceTypeFrostRune, 'Frost Rune'],
 	[ResourceType.ResourceTypeUnholyRune, 'Unholy Rune'],
 	[ResourceType.ResourceTypeDeathRune, 'Death Rune'],
+	[ResourceType.ResourceTypeSolarEnergy, 'Solar Energy'],
+	[ResourceType.ResourceTypeLunarEnergy, 'Lunar Energy'],
 ]);
 
 export const resourceColors: Map<ResourceType, string> = new Map([
@@ -273,6 +275,8 @@ export const resourceColors: Map<ResourceType, string> = new Map([
 	[ResourceType.ResourceTypeFrostRune, '#0000ff'],
 	[ResourceType.ResourceTypeUnholyRune, '#00ff00'],
 	[ResourceType.ResourceTypeDeathRune, '#8b008b'],
+	[ResourceType.ResourceTypeSolarEnergy, '#d2952b'],
+	[ResourceType.ResourceTypeLunarEnergy, '#2c4f8f'],
 ]);
 
 export function stringToResourceType(str: string): ResourceType {

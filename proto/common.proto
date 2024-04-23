@@ -817,6 +817,8 @@ enum OtherAction {
 	OtherActionUnholyRuneGain  = 15; // Indicates healing received from healing model.
 	OtherActionDeathRuneGain  = 16; // Indicates healing received from healing model.
 	OtherActionPotion = 17; // Used by APL to generically refer to either the prepull or combat potion.
+	OtherActionSolarEnergyGain = 18; // For balance druid solar energy
+	OtherActionLunarEnergyGain = 19; // For balance druid lunar energy
 }
 
 message ActionID {

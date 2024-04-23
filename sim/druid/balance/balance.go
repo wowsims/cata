@@ -48,7 +48,6 @@ type BalanceOnUseTrinket struct {
 
 type BalanceDruid struct {
 	*druid.Druid
-
 	Options *proto.BalanceDruid_Options
 }
 
@@ -58,6 +57,9 @@ func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
 
 func (moonkin *BalanceDruid) Initialize() {
 	moonkin.Druid.Initialize()
+	moonkin.Druid.EnableEclipseBar()
+
+	moonkin.RegisterTestSpells()
 	//moonkin.RegisterBalanceSpells()
 
 	// if moonkin.OwlkinFrenzyAura != nil && moonkin.Options.OkfUptime > 0 {
