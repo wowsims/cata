@@ -66,6 +66,7 @@ type Druid struct {
 	TigersFury           *DruidSpell
 	Typhoon              *DruidSpell
 	Wrath                *DruidSpell
+	Thrash               *DruidSpell
 
 	CatForm  *DruidSpell
 	BearForm *DruidSpell
