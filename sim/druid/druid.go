@@ -19,7 +19,6 @@ var TalentTreeSizes = [3]int{20, 22, 21}
 type Druid struct {
 	core.Character
 	SelfBuffs
-	eclipseEnergyBar
 	Talents *proto.DruidTalents
 
 	StartingForm DruidForm
@@ -265,7 +264,6 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 	// druid.RebirthUsed = false
 	// druid.LunarICD.Timer.Reset()
 	// druid.SolarICD.Timer.Reset()
-	druid.eclipseEnergyBar.reset()
 }
 
 func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {

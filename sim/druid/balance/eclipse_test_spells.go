@@ -33,7 +33,7 @@ func (balance *BalanceDruid) RegisterTestSpells() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcDamage(sim, target, 200, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-				balance.AddEclipseEnergy(13+1.0/3.0, druid.LunarEnergy, sim, testWrathlMetric)
+				balance.AddEclipseEnergy(13+1.0/3.0, core.LunarEnergy, sim, testWrathlMetric)
 				spell.WaitTravelTime(sim, func(s *core.Simulation) {
 					spell.DealDamage(sim, result)
 				})
@@ -41,7 +41,7 @@ func (balance *BalanceDruid) RegisterTestSpells() {
 		},
 	})
 
-	testSFMetric := balance.NewSolarEnergyMetric(core.ActionID{SpellID: 9739})
+	testSFMetric := balance.NewSolarEnergyMetric(core.ActionID{SpellID: 21668})
 	balance.RegisterSpell(druid.Moonkin|druid.Humanoid, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 21668},
 		SpellSchool: core.SpellSchoolNature,
@@ -64,7 +64,7 @@ func (balance *BalanceDruid) RegisterTestSpells() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealDamage(sim, target, 200, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-				balance.AddEclipseEnergy(13+1.0/3.0, druid.SolarEnergy, sim, testSFMetric)
+				balance.AddEclipseEnergy(13+1.0/3.0, core.SolarEnergy, sim, testSFMetric)
 			}
 		},
 	})
@@ -96,8 +96,8 @@ func (balance *BalanceDruid) RegisterTestSpells() {
 		},
 	})
 
-	balance.AddEclipseCallback(func(eclipse druid.Eclipse, gained bool, sim *core.Simulation) {
-		if eclipse == druid.LunarEclipse {
+	balance.AddEclipseCallback(func(eclipse core.Eclipse, gained bool, sim *core.Simulation) {
+		if eclipse == core.LunarEclipse {
 			if gained {
 				lunarEclipse.Activate(sim)
 			} else {

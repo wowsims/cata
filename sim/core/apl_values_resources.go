@@ -142,6 +142,7 @@ func (value *APLValueCurrentRage) GetFloat(sim *Simulation) float64 {
 func (value *APLValueCurrentRage) String() string {
 	return "Current Rage"
 }
+
 type APLValueCurrentFocus struct {
 	DefaultAPLValueImpl
 	unit *Unit
@@ -243,4 +244,101 @@ func (value *APLValueCurrentRunicPower) GetInt(sim *Simulation) int32 {
 }
 func (value *APLValueCurrentRunicPower) String() string {
 	return "Current Runic Power"
+}
+
+type APLValueCurrentSolarEnergy struct {
+	DefaultAPLValueImpl
+	unit *Unit
+}
+
+func (rot *APLRotation) newValueCurrentSolarEnergy(_ *proto.APLValueCurrentSolarEnergy) APLValue {
+	unit := rot.unit
+	if !unit.HasEclipseBar() {
+		rot.ValidationWarning("%s does not use Eclipse Bar", unit.Label)
+		return nil
+	}
+
+	return &APLValueCurrentSolarEnergy{
+		unit: unit,
+	}
+}
+
+func (value *APLValueCurrentSolarEnergy) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeInt
+}
+
+func (value *APLValueCurrentSolarEnergy) GetInt(sim *Simulation) int32 {
+	return int32(value.unit.CurrentSolarEnergy())
+}
+
+func (value *APLValueCurrentSolarEnergy) String() string {
+	return "Current Solar Energy"
+}
+
+type APLValueCurrentLunarEnergy struct {
+	DefaultAPLValueImpl
+	unit *Unit
+}
+
+func (rot *APLRotation) newValueCurrentLunarEnergy(_ *proto.APLValueCurrentLunarEnergy) APLValue {
+	unit := rot.unit
+	if !unit.HasEclipseBar() {
+		rot.ValidationWarning("%s does not use Eclipse Bar", unit.Label)
+		return nil
+	}
+
+	return &APLValueCurrentLunarEnergy{
+		unit: unit,
+	}
+}
+
+func (value *APLValueCurrentLunarEnergy) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeInt
+}
+
+func (value *APLValueCurrentLunarEnergy) GetInt(sim *Simulation) int32 {
+	return int32(value.unit.CurrentLunarEnergy())
+}
+
+func (value *APLValueCurrentLunarEnergy) String() string {
+	return "Current Solar Energy"
+}
+
+type APLValueCurrentEclipsePhase struct {
+	DefaultAPLValueImpl
+	phase proto.APLValueEclipsePhase
+	unit  *Unit
+}
+
+func (value *APLValueCurrentEclipsePhase) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeBool
+}
+
+func (value *APLValueCurrentEclipsePhase) GetBool(sim *Simulation) bool {
+	if value.unit.gainMask&SolarAndLunarEnergy == SolarAndLunarEnergy {
+		return value.phase == proto.APLValueEclipsePhase_NeutralPhase
+
+		// if we can only gain lunar energy we're in solar eclipse phase
+	} else if value.unit.gainMask&LunarEnergy > 0 {
+		return value.phase == proto.APLValueEclipsePhase_SolarPhase
+	}
+
+	return value.phase == proto.APLValueEclipsePhase_LunarPhase
+}
+
+func (value *APLValueCurrentEclipsePhase) String() string {
+	return "Current Eclipse Phase"
+}
+
+func (rot *APLRotation) newValueCurrentEclipsePhase(config *proto.APLValueCurrentEclipsePhase) APLValue {
+	unit := rot.unit
+	if !unit.HasEclipseBar() {
+		rot.ValidationWarning("%s does not use Eclipse Bar", unit.Label)
+		return nil
+	}
+
+	return &APLValueCurrentEclipsePhase{
+		unit:  unit,
+		phase: config.EclipsePhase,
+	}
 }
