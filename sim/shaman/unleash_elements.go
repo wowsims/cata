@@ -92,7 +92,7 @@ func (shaman *Shaman) registerUnleashWind() {
 		SpellSchool:      core.SpellSchoolPhysical,
 		ProcMask:         core.ProcMaskRangedSpecial,
 		DamageMultiplier: 1.75,
-		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
