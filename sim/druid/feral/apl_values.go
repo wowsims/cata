@@ -159,6 +159,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 
 func (action *APLActionCatOptimalRotationAction) Reset(*core.Simulation) {
 	action.cat.usingHardcodedAPL = true
+	action.cat.cachedRipEndThresh = time.Second * 10 // placeholder until first calc
 	action.lastAction = core.DurationFromSeconds(-100)
 }
 

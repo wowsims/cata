@@ -11,7 +11,9 @@ import (
 const RipBaseNumTicks = int32(8)
 
 func (druid *Druid) registerRipSpell() {
+	baseDamage := 56.0
 	comboPointCoeff := 161.0
+	attackPowerCoeff := 0.0207
 	glyphMulti := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfRip), 1.15, 1.0)
 
 	// Blood in the Water refreshes use the CP value from the last "raw" Rip cast, so we need to store that here.
@@ -53,7 +55,7 @@ func (druid *Druid) registerRipSpell() {
 				cp := float64(comboPointSnapshot)
 				ap := dot.Spell.MeleeAttackPower()
 
-				dot.SnapshotBaseDamage = 56 + comboPointCoeff*cp + 0.0207*cp*ap
+				dot.SnapshotBaseDamage = baseDamage + comboPointCoeff*cp + attackPowerCoeff*cp*ap
 
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
@@ -79,6 +81,18 @@ func (druid *Druid) registerRipSpell() {
 				spell.IssueRefund(sim)
 			}
 			spell.DealOutcome(sim, result)
+		},
+
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
+			cp := float64(druid.ComboPoints())
+			ap := spell.MeleeAttackPower()
+			baseTickDamage := baseDamage + comboPointCoeff*cp + attackPowerCoeff*cp*ap
+			result := spell.CalcPeriodicDamage(sim, target, baseTickDamage, spell.OutcomeExpectedMagicAlwaysHit)
+			attackTable := spell.Unit.AttackTables[target.UnitIndex]
+			critChance := spell.PhysicalCritChance(attackTable)
+			critMod := critChance * (spell.CritMultiplier - 1)
+			result.Damage *= 1 + critMod
+			return result
 		},
 	})
 

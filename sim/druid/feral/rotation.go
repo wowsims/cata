@@ -116,12 +116,36 @@ func (cat *FeralDruid) calcBuilderDpe(sim *core.Simulation) (float64, float64) {
 	return rakeDpc / cat.Rake.DefaultCast.Cost, shredDpc / cat.Shred.DefaultCast.Cost
 }
 
+func (cat *FeralDruid) calcRipEndThresh(sim *core.Simulation) time.Duration {
+	// Use cached value when below 5 CP
+	if cat.ComboPoints() < 5 {
+		return cat.cachedRipEndThresh
+	}
+
+	// Calculate the minimum DoT duration at which a Rip cast will provide higher DPE than a Bite cast
+	expectedBiteDPE := cat.FerociousBite.ExpectedInitialDamage(sim, cat.CurrentTarget) / cat.FerociousBite.DefaultCast.Cost
+	expectedRipTickDPE := cat.Rip.ExpectedTickDamage(sim, cat.CurrentTarget) / cat.Rip.DefaultCast.Cost
+	numTicksToBreakEven := 1 + int32(expectedBiteDPE/expectedRipTickDPE)
+
+	if sim.Log != nil {
+		cat.Log(sim, "Bite Break-Even Point = %d Rip ticks", numTicksToBreakEven)
+	}
+
+	ripDot := cat.Rip.CurDot()
+	endThresh := time.Duration(numTicksToBreakEven) * ripDot.TickLength
+
+	// Store the result so we can keep using it even when not at 5 CP
+	cat.cachedRipEndThresh = endThresh
+
+	return endThresh
+}
+
 func (cat *FeralDruid) clipRoar(sim *core.Simulation, isExecutePhase bool) bool {
 	ripDot := cat.Rip.CurDot()
 	ripdotRemaining := ripDot.RemainingDuration(sim)
 	simTimeRemaining := sim.GetRemainingDuration()
 
-	if !ripDot.IsActive() || (simTimeRemaining-ripdotRemaining < 10*time.Second) {
+	if !ripDot.IsActive() || (simTimeRemaining-ripdotRemaining < cat.cachedRipEndThresh) {
 		return false
 	}
 
@@ -144,6 +168,11 @@ func (cat *FeralDruid) clipRoar(sim *core.Simulation, isExecutePhase bool) bool 
 	// If a fresh Roar cast now would cover us to end of fight, then clip now for maximum CP efficiency.
 	if newRoarDur >= simTimeRemaining {
 		return true
+	}
+
+	// If waiting another GCD to build an additional CP would lower our total Roar casts for the fight, then force a wait.
+	if newRoarDur+time.Second+core.TernaryDuration(cat.ComboPoints() < 5, time.Second*5, 0) >= simTimeRemaining {
+		return false
 	}
 
 	// Clip as soon as we have enough CPs for the new roar to expire well
@@ -283,15 +312,17 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	regenRate := cat.EnergyRegenPerSecond()
 	isExecutePhase := rotation.BiteDuringExecute && sim.IsExecutePhase25()
 
-	// Prioritize using rake/rip with omen procs if bleed isnt active
-	// But less priority then mangle aura
+	// Prioritize using Rip with omen procs if bleed isnt active
 	ripCcCheck := core.Ternary(isBleedActive, !isClearcast, true)
-	rakeCcCheck := core.Ternary(isBleedActive, !isClearcast, cat.bleedAura.IsActive())
 
-	endThresh := time.Second * 10
+	// Allow Clearcast Rakes if we will lose Rake uptime by Shredding first
+	rakeCcCheck := !isClearcast || !rakeDot.IsActive() || (rakeDot.RemainingDuration(sim) < time.Second)
 
-	ripNow := (curCp >= rotation.MinCombosForRip) && (!ripDot.IsActive() || ((ripDot.RemainingDuration(sim) < ripDot.TickLength) && !isExecutePhase)) && (simTimeRemain >= endThresh) && ripCcCheck
-	biteAtEnd := (curCp >= rotation.MinCombosForBite) && ((simTimeRemain < endThresh) || (ripDot.IsActive() && (simTimeRemain-ripDot.RemainingDuration(sim) < endThresh)))
+	// Use DPE calculation for deciding the end-of-fight breakpoint for Rip vs. Bite usage
+	baseEndThresh := cat.calcRipEndThresh(sim)
+	endThreshForClip := baseEndThresh + core.TernaryDuration(ripDot.IsActive(), ripDot.TimeUntilNextTick(sim), 0)
+	ripNow := (curCp >= rotation.MinCombosForRip) && (!ripDot.IsActive() || ((ripDot.RemainingDuration(sim) < ripDot.TickLength) && !isExecutePhase)) && (simTimeRemain >= endThreshForClip) && ripCcCheck
+	biteAtEnd := (curCp >= rotation.MinCombosForBite) && ((simTimeRemain < endThreshForClip) || (ripDot.IsActive() && (simTimeRemain-ripDot.RemainingDuration(sim) < baseEndThresh)))
 
 	// Clip Mangle if it won't change the total number of Mangles we have to
 	// cast before the fight ends.
@@ -300,15 +331,15 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	clipMangle := false
 
 	if mangleRefreshPending {
-		numManglesRemaining := int((time.Second + (simTimeRemain - cat.bleedAura.RemainingDuration(sim) - time.Second)).Minutes())
-		earliestMangle := (sim.GetRemainingDuration() + sim.CurrentTime) - time.Duration(numManglesRemaining)*time.Minute
+		numManglesRemaining := 1 + int32((sim.Duration-time.Second-cat.bleedAura.ExpiresAt())/time.Minute)
+		earliestMangle := sim.Duration - time.Duration(numManglesRemaining)*time.Minute
 		clipMangle = sim.CurrentTime >= earliestMangle
 	}
 
 	mangleNow := !ripNow && cat.MangleCat != nil && (mangleRefreshNow || clipMangle)
 
 	biteBeforeRip := (curCp >= rotation.MinCombosForBite) && ripDot.IsActive() && cat.SavageRoarAura.IsActive() && (rotation.UseBite || isExecutePhase) && cat.canBite(sim, isExecutePhase)
-	biteNow := (biteBeforeRip || biteAtEnd) && !isClearcast && curEnergy < 67
+	biteNow := (biteBeforeRip || biteAtEnd) && !isClearcast
 
 	// During Berserk, we additionally add an Energy constraint on Bite
 	// usage to maximize the total Energy expenditure we can get.
@@ -320,7 +351,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	emergencyBiteNow := isExecutePhase && ripDot.IsActive() && (ripDot.RemainingDuration(sim) < ripDot.TickLength) && (curCp >= 1)
 	biteNow = biteNow || emergencyBiteNow
 
-	rakeNow := rotation.UseRake && (!rakeDot.IsActive() || (rakeDot.RemainingDuration(sim) < rakeDot.TickLength)) && (simTimeRemain > rakeDot.Duration) && rakeCcCheck
+	rakeNow := rotation.UseRake && (!rakeDot.IsActive() || (rakeDot.RemainingDuration(sim) < rakeDot.TickLength)) && (simTimeRemain > rakeDot.TickLength) && rakeCcCheck
 
 	// Additionally, don't Rake if the current Shred DPE is higher due to
 	// trinket procs etc.
@@ -349,8 +380,9 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	ffNow := rotation.MaintainFaerieFire && cat.ShouldFaerieFire(sim, cat.CurrentTarget)
 
 	// Pooling calcs
-	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain-endThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))
-	rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.Duration)
+	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain-baseEndThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))
+	rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.TickLength)
+	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain-cat.ReactionTime) && (curCp >= 1)
 	pendingPool := PoolingActions{}
 	pendingPool.create(4)
 
@@ -369,7 +401,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		mangleCost := core.Ternary(cat.berserkExpectedAt(sim, cat.bleedAura.ExpiresAt()), cat.MangleCat.DefaultCast.Cost*0.5, cat.MangleCat.DefaultCast.Cost)
 		pendingPool.addAction(cat.bleedAura.ExpiresAt(), mangleCost)
 	}
-	if cat.SavageRoarAura.IsActive() {
+	if roarRefreshPending {
 		roarCost := core.Ternary(cat.berserkExpectedAt(sim, cat.SavageRoarAura.ExpiresAt()), cat.SavageRoar.DefaultCast.Cost*0.5, cat.SavageRoar.DefaultCast.Cost)
 		pendingPool.addAction(cat.SavageRoarAura.ExpiresAt(), roarCost)
 	}
@@ -501,18 +533,18 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	} else if ffNow {
 		cat.FaerieFire.Cast(sim, cat.CurrentTarget)
 		return false, 0
-	} else if roarNow {
-		if cat.SavageRoar.CanCast(sim, cat.CurrentTarget) {
-			cat.SavageRoar.Cast(sim, nil)
-			return false, 0
-		}
-		timeToNextAction = core.DurationFromSeconds((cat.CurrentSavageRoarCost() - curEnergy) / regenRate)
 	} else if ripNow {
 		if cat.Rip.CanCast(sim, cat.CurrentTarget) {
 			cat.Rip.Cast(sim, cat.CurrentTarget)
 			return false, 0
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentRipCost() - curEnergy) / regenRate)
+	} else if roarNow {
+		if cat.SavageRoar.CanCast(sim, cat.CurrentTarget) {
+			cat.SavageRoar.Cast(sim, nil)
+			return false, 0
+		}
+		timeToNextAction = core.DurationFromSeconds((cat.CurrentSavageRoarCost() - curEnergy) / regenRate)
 	} else if biteNow {
 		if cat.FerociousBite.CanCast(sim, cat.CurrentTarget) {
 			cat.FerociousBite.Cast(sim, cat.CurrentTarget)
