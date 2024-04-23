@@ -645,6 +645,13 @@ func (hunter *Hunter) registerSicEm() {
 				}
 			}
 		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == hunter.ExplosiveShot {
+				if result.DidCrit() {
+					sicEmMod.Activate()
+				}
+			}
+		},
 	}))
 	core.MakePermanent(hunter.Pet.RegisterAura(core.Aura{
 		ActionID: actionId,

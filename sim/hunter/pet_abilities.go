@@ -117,11 +117,22 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 }
 
 func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell {
+	focusIncreaseMod := hp.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  HunterPetFocusDump,
+		FloatValue: float64(hp.Talents().WildHunt) * 0.5,
+	})
+	damageMod := hp.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  HunterPetFocusDump,
+		FloatValue: float64(hp.Talents().WildHunt) * 0.6,
+	})
 	return hp.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		ClassSpellMask: HunterPetFocusDump,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 25,
@@ -143,6 +154,15 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(132, 188) + (0.20 * spell.MeleeAttackPower())
+			if hp.Talents().WildHunt > 0 {
+				if hp.CurrentFocus() >= 50 {
+					focusIncreaseMod.Activate()
+					damageMod.Activate()
+				} else {
+					focusIncreaseMod.Deactivate()
+					damageMod.Deactivate()
+				}
+			}
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
