@@ -92,23 +92,10 @@ func (shaman *Shaman) ApplyTalents() {
 		})
 	}
 
-	// TODO: Change to additive
 	if shaman.Talents.ImprovedShields > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskLightningShield,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskFulmination,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskEarthShield,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  SpellMaskLightningShield | SpellMaskFulmination | SpellMaskEarthShield,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
 		})
 	}
