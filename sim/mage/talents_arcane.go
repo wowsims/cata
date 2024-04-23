@@ -175,7 +175,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			mage.PresenceOfMindMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.CastTime() == 0 && spell != mage.ArcaneMissiles {
+			if spell.ClassSpellMask != MageSpellInstantCast {
 				aura.Deactivate(sim)
 			}
 		},
