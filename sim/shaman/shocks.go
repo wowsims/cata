@@ -86,15 +86,13 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = 856 / 6 + dot.BonusCoefficient * dot.Spell.BonusDamage()
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
+				dot.Snapshot(target, 856/6)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 
 				if shaman.Talents.LavaSurge > 0 {
-					if sim.RandomFloat("LavaSurge") < (0.1 * float64(shaman.Talents.LavaSurge)) {
+					if sim.Proc(0.1*float64(shaman.Talents.LavaSurge), "LavaSurge") {
 						shaman.LavaBurst.CD.Reset()
 					}
 				}
