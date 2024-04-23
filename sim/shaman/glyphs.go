@@ -27,7 +27,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfLavaBurst) {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskLavaBurst,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.1,
 		})
 	}
@@ -35,7 +35,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfLavaLash) {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskLavaLash,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.2,
 		})
 	}
@@ -43,7 +43,7 @@ func (shaman *Shaman) ApplyGlyphs() {
 	if shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfLightningBolt) {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskLightningBolt,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.04,
 		})
 	}

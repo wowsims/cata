@@ -33,25 +33,13 @@ func (shaman *Shaman) ApplyTalents() {
 	if shaman.Talents.CallOfFlame > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskLavaBurst,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.05 * float64(shaman.Talents.CallOfFlame),
 		})
 
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskSearingTotem,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskMagmaTotem,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskFireNova,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  SpellMaskSearingTotem | SpellMaskMagmaTotem | SpellMaskFireNova,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
 		})
 	}
@@ -61,8 +49,9 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.LavaFlows > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
+			// TODO: Should only be periodic damage
 			ClassMask:  SpellMaskFlameShock,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.20 * float64(shaman.Talents.LavaFlows),
 		})
 		shaman.AddStaticMod(core.SpellModConfig{
