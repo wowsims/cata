@@ -33,7 +33,7 @@ func (hunter *Hunter) registerKillCommandSpell() {
 				Duration: time.Second * 6,
 			},
 		},
-		BonusCritRating:          core.CritRatingPerCritChance * +(float64(hunter.Talents.ImprovedKillCommand) * 0.05),
+		BonusCritRating:          core.CritRatingPerCritChance * (float64(hunter.Talents.ImprovedKillCommand) * 0.05),
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           hunter.CritMultiplier(false, false, false),
 		ThreatMultiplier:         1,
