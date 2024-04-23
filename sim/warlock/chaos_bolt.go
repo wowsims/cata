@@ -7,9 +7,6 @@ import (
 )
 
 func (warlock *Warlock) registerChaosBoltSpell() {
-	// ChaosBolt is affected by level-based partial resists.
-	// TODO If there's bosses with elevated fire resistances, we'd need another spell flag,
-	//  or add an unlimited amount of "bonusSpellPenetration".
 	warlock.ChaosBolt = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 50796},
 		SpellSchool:      core.SpellSchoolFire,

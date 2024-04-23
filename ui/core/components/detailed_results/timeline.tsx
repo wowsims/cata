@@ -1233,14 +1233,14 @@ const idToCategoryMap: Record<number, number> = {
 	[47867]: SPELL_ACTION_CATEGORY + 0.01, // Curse of Doom
 	[47864]: SPELL_ACTION_CATEGORY + 0.02, // Curse of Agony
 	[47813]: SPELL_ACTION_CATEGORY + 0.1, // Corruption
-	[59164]: SPELL_ACTION_CATEGORY + 0.2, // Haunt
+	[48181]: SPELL_ACTION_CATEGORY + 0.2, // Haunt
 	[47843]: SPELL_ACTION_CATEGORY + 0.3, // Unstable Affliction
 	[47811]: SPELL_ACTION_CATEGORY + 0.31, // Immolate
 	[17962]: SPELL_ACTION_CATEGORY + 0.32, // Conflagrate
-	[59172]: SPELL_ACTION_CATEGORY + 0.49, // Chaos Bolt
-	[47809]: SPELL_ACTION_CATEGORY + 0.5, // Shadow Bolt
+	[50796]: SPELL_ACTION_CATEGORY + 0.49, // Chaos Bolt
+	[686]: SPELL_ACTION_CATEGORY + 0.5, // Shadow Bolt
 	[47838]: SPELL_ACTION_CATEGORY + 0.51, // Incinerate
-	[47825]: SPELL_ACTION_CATEGORY + 0.52, // Soul Fire
+	[6353]: SPELL_ACTION_CATEGORY + 0.52, // Soul Fire
 	[47855]: SPELL_ACTION_CATEGORY + 0.6, // Drain Soul
 	[57946]: SPELL_ACTION_CATEGORY + 0.7, // Life Tap
 	[47241]: SPELL_ACTION_CATEGORY + 0.8, // Metamorphosis

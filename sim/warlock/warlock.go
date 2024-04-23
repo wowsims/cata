@@ -102,9 +102,9 @@ func (warlock *Warlock) ApplyTalents() {
 
 func (warlock *Warlock) Initialize() {
 	warlock.registerIncinerateSpell()
-	// warlock.registerShadowBoltSpell()
+	warlock.registerShadowBoltSpell()
 	warlock.registerImmolateSpell()
-	// warlock.registerCorruptionSpell()
+	warlock.registerCorruptionSpell()
 	// warlock.registerCurseOfElementsSpell()
 	// warlock.registerCurseOfWeaknessSpell()
 	// warlock.registerCurseOfTonguesSpell()
@@ -112,13 +112,12 @@ func (warlock *Warlock) Initialize() {
 	// warlock.registerCurseOfDoomSpell()
 	warlock.registerLifeTapSpell()
 	// warlock.registerSeedSpell()
-	// warlock.registerSoulFireSpell()
+	warlock.registerSoulFireSpell()
 	// warlock.registerUnstableAfflictionSpell()
 	// warlock.registerDrainSoulSpell()
-	// warlock.registerHauntSpell()
+	warlock.registerHauntSpell()
 	// warlock.registerDemonicEmpowermentSpell()
 	// warlock.registerMetamorphosisSpell()
-	// warlock.registerDarkPactSpell()
 	// warlock.registerShadowBurnSpell()
 	warlock.registerSearingPainSpell()
 	// warlock.registerInfernoSpell()
@@ -225,4 +224,6 @@ const (
 	WarlockSpellIncinerate
 	WarlockSpellSoulFire
 	WarlockSpellLifeTap
+	WarlockSpellCorruption
+	WarlockSpellHaunt
 )

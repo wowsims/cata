@@ -12,8 +12,8 @@ func (warlock *Warlock) registerHauntSpell() {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 59164}
-	debuffMult := core.TernaryFloat64(warlock.HasMajorGlyph(proto.WarlockMajorGlyph_GlyphOfHaunt), 1.23, 1.2)
+	actionID := core.ActionID{SpellID: 48181}
+	debuffMult := core.TernaryFloat64(warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfHaunt), 1.23, 1.2)
 
 	warlock.HauntDebuffAuras = warlock.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
@@ -30,15 +30,16 @@ func (warlock *Warlock) registerHauntSpell() {
 	})
 
 	warlock.Haunt = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:     actionID,
-		SpellSchool:  core.SpellSchoolShadow,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        core.SpellFlagAPL,
-		MissileSpeed: 20,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: WarlockSpellHaunt,
+		MissileSpeed:   20,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.12,
-			Multiplier: 1 - 0.02*float64(warlock.Talents.Suppression),
+			Multiplier: 1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -51,20 +52,19 @@ func (warlock *Warlock) registerHauntSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 +
-			warlock.GrandFirestoneBonus() +
-			0.03*float64(warlock.Talents.ShadowMastery),
-		CritMultiplier:   warlock.SpellCritMultiplier(1, core.TernaryFloat64(warlock.Talents.Pandemic, 1, 0)),
-		ThreatMultiplier: 1 - 0.1*float64(warlock.Talents.ImprovedDrainSoul),
+		DamageMultiplierAdditive: 1 + warlock.GrandFirestoneBonus(),
+		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(645, 753) + 0.429*spell.SpellPower()
+			baseDamage := 1078 + (spell.SpellPower()*0.5577)*1.25
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 				if result.Landed() {
 					warlock.HauntDebuffAuras.Get(result.Target).Activate(sim)
-					warlock.everlastingAfflictionRefresh(sim, target)
+					//TODO: EverlastingAffliction
+					//warlock.everlastingAfflictionRefresh(sim, target)
 				}
 			})
 		},

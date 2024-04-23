@@ -48,4 +48,12 @@ func (warlock *Warlock) ApplyGlyphs() {
 			FloatValue: 0.5,
 		})
 	}
+
+	if warlock.HasMajorGlyph(proto.WarlockMajorGlyph_GlyphOfShadowBolt) {
+		warlock.AddStaticMod(core.SpellModConfig{
+			ClassMask:  WarlockSpellShadowBolt,
+			Kind:       core.SpellMod_PowerCost_Pct,
+			FloatValue: -0.15,
+		})
+	}
 }

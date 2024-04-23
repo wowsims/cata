@@ -12,7 +12,7 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 		return
 	}
 
-	spellCoeff := 0.429 * (1 + 0.04*float64(warlock.Talents.ShadowAndFlame))
+	spellCoeff := 0.429
 
 	if warlock.HasMajorGlyph(proto.WarlockMajorGlyph_GlyphOfShadowburn) {
 		warlock.RegisterResetEffect(func(sim *core.Simulation) {
