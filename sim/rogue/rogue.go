@@ -171,7 +171,7 @@ func (rogue *Rogue) Initialize() {
 
 	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
 
-	rogue.SliceAndDiceBonus = 1.4
+	rogue.SliceAndDiceBonus = 0.4
 }
 
 func (rogue *Rogue) ApplyAdditiveEnergyRegenBonus(sim *core.Simulation, increment float64) {
