@@ -115,4 +115,3 @@ func (druid *Druid) applyOmenOfClarity() {
 		},
 	})
 }
-

@@ -21,12 +21,11 @@ func (rogue *Rogue) registerPoisonAuras() {
 		})
 	}
 	if rogue.Talents.MasterPoisoner {
-		// TODO (TheBackstabi, 3/16/2024) - Revisit when debuffs.go has had a pass
-		// rogue.masterPoisonerDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		// 	aura := core.MasterPoisonerDebuff(target, rogue.Talents.MasterPoisoner)
-		// 	aura.Duration = core.NeverExpires
-		// 	return aura
-		// })
+		rogue.MasterPoisonerDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+			aura := core.MasterPoisonerDebuff(target)
+			aura.Duration = core.NeverExpires
+			return aura
+		})
 	}
 }
 
@@ -50,17 +49,17 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 					if rogue.Talents.SavageCombat > 0 {
 						rogue.SavageCombatDebuffAuras.Get(aura.Unit).Activate(sim)
 					}
-					// if rogue.Talents.MasterPoisoner {
-					// 	rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Activate(sim)
-					// }
+					if rogue.Talents.MasterPoisoner {
+						rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Activate(sim)
+					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					if rogue.Talents.SavageCombat > 0 {
 						rogue.SavageCombatDebuffAuras.Get(aura.Unit).Deactivate(sim)
 					}
-					// if rogue.Talents.MasterPoisoner {
-					// 	rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Deactivate(sim)
-					// }
+					if rogue.Talents.MasterPoisoner {
+						rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Deactivate(sim)
+					}
 				},
 			},
 			NumberOfTicks: 4,
@@ -275,17 +274,17 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 			if rogue.Talents.SavageCombat > 0 {
 				rogue.SavageCombatDebuffAuras.Get(aura.Unit).Activate(sim)
 			}
-			// if rogue.Talents.MasterPoisoner {
-			// 	rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Activate(sim)
-			// }
+			if rogue.Talents.MasterPoisoner {
+				rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Activate(sim)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if rogue.Talents.SavageCombat > 0 {
 				rogue.SavageCombatDebuffAuras.Get(aura.Unit).Deactivate(sim)
 			}
-			// if rogue.Talents.MasterPoisoner {
-			// 	rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Deactivate(sim)
-			// }
+			if rogue.Talents.MasterPoisoner {
+				rogue.MasterPoisonerDebuffAuras.Get(aura.Unit).Deactivate(sim)
+			}
 		},
 	}
 

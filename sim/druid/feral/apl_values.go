@@ -40,7 +40,6 @@ func (value *APLValueCatExcessEnergy) GetFloat(sim *core.Simulation) float64 {
 	if ripDot := cat.Rip.CurDot(); ripDot.IsActive() && ripDot.RemainingDuration(sim) < simTimeRemain-time.Second*10 && cat.ComboPoints() == 5 {
 		ripCost := core.Ternary(cat.berserkExpectedAt(sim, ripDot.ExpiresAt()), cat.Rip.DefaultCast.Cost*0.5, cat.Rip.DefaultCast.Cost)
 		pendingPool.addAction(ripDot.ExpiresAt(), ripCost)
-		cat.ripRefreshPending = true
 	}
 	if rakeDot := cat.Rake.CurDot(); rakeDot.IsActive() && rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.Duration {
 		rakeCost := core.Ternary(cat.berserkExpectedAt(sim, rakeDot.ExpiresAt()), cat.Rake.DefaultCast.Cost*0.5, cat.Rake.DefaultCast.Cost)
@@ -113,6 +112,7 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 		UseRake:            config.UseRake,
 		UseBite:            config.UseBite,
 		BiteTime:           config.BiteTime,
+		BiteDuringExecute:  config.BiteDuringExecute,
 		MangleSpam:         false,
 		Powerbear:          false,
 		MinRoarOffset:      config.MinRoarOffset,
@@ -159,6 +159,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 
 func (action *APLActionCatOptimalRotationAction) Reset(*core.Simulation) {
 	action.cat.usingHardcodedAPL = true
+	action.cat.cachedRipEndThresh = time.Second * 10 // placeholder until first calc
 	action.lastAction = core.DurationFromSeconds(-100)
 }
 

@@ -37,7 +37,7 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 			},
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(elemental.Talents.Concussion),
+		DamageMultiplier: 1,
 		CritMultiplier:   elemental.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.571,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

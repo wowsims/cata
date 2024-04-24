@@ -21,6 +21,7 @@ import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from
 import { PlayerSpecs } from './player_specs';
 import { PresetGear, PresetRotation } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
+import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
 	Consumes,
 	Debuffs,
@@ -43,7 +44,7 @@ import { IndividualSimSettings, SavedTalents } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { professionNames } from './proto_utils/names';
 import { Stats } from './proto_utils/stats';
-import { getTalentPoints, SpecOptions } from './proto_utils/utils';
+import { getTalentPoints, SpecOptions, SpecRotation } from './proto_utils/utils';
 import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
 import { MAX_POINTS_PLAYER } from './talents/talents_picker';
@@ -115,6 +116,9 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		individualBuffs: IndividualBuffs;
 
 		debuffs: Debuffs;
+
+		rotationType?: APLRotationType,
+		simpleRotation?: SpecRotation<SpecType>,
 
 		other?: OtherDefaults;
 	};
@@ -396,6 +400,22 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.simHeader.addExportLink('CLI', _parent => new Exporters.IndividualCLIExporter(this.rootElem, this), true);
 	}
 
+	applyDefaultRotation(eventID: EventID) {
+		TypedEvent.freezeAllAndDo(() => {
+			const defaultRotationType = this.individualConfig.defaults.rotationType || APLRotationType.TypeAuto;
+			this.player.setAplRotation(eventID, APLRotation.create({
+				type: defaultRotationType,
+			}))
+
+			if (!this.individualConfig.defaults.simpleRotation) {
+				return;
+			}
+
+			const defaultSimpleRotation = this.individualConfig.defaults.simpleRotation || this.player.specTypeFunctions.rotationCreate();
+			this.player.setSimpleRotation(eventID, defaultSimpleRotation);
+		});
+	}
+
 	applyDefaults(eventID: EventID) {
 		TypedEvent.freezeAllAndDo(() => {
 			const tankSpec = this.player.getPlayerSpec().isTankSpec;
@@ -405,6 +425,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.setRace(eventID, this.player.getPlayerClass().races[0]);
 			this.player.setGear(eventID, this.sim.db.lookupEquipmentSpec(this.individualConfig.defaults.gear));
 			this.player.setConsumes(eventID, this.individualConfig.defaults.consumes);
+			this.applyDefaultRotation(eventID);
 			this.player.setTalentsString(eventID, this.individualConfig.defaults.talents.talentsString);
 			this.player.setGlyphs(eventID, this.individualConfig.defaults.talents.glyphs || Glyphs.create());
 			this.player.setSpecOptions(eventID, this.individualConfig.defaults.specOptions);
