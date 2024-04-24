@@ -305,22 +305,31 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	cdTimer := shaman.NewTimer()
 	cd := time.Minute * 3
 
+	damageMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
+		FloatValue: 0.15,
+	})
+
 	buffAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery Buff",
 		ActionID: core.ActionID{SpellID: 64701},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1.20)
-			// This is updated for the new elemental mastery this says fire/frost/nature damage increased by 15%.
-			// In beta this looks like it is applying to magma totem even if you use it after searing totem is dropped.
-			// It is not doing the same for fire elemental totem
-			// need to look into how this multiplier works and if it is affecting totems
-			shaman.PseudoStats.DamageDealtMultiplier *= 1.15
+			damageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1 / 1.20)
-			shaman.PseudoStats.DamageDealtMultiplier /= 1.18
+			damageMod.Deactivate()
 		},
+	})
+
+	affectedSpells := SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskLightningBolt
+	castTimeMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  affectedSpells,
+		FloatValue: -1,
 	})
 
 	emAura := shaman.RegisterAura(core.Aura{
@@ -328,23 +337,18 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		ActionID: eleMasterActionID,
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.ChainLightning.CastTimeMultiplier -= 1
-			shaman.LavaBurst.CastTimeMultiplier -= 1
-			shaman.LightningBolt.CastTimeMultiplier -= 1
+			castTimeMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.ChainLightning.CastTimeMultiplier += 1
-			shaman.LavaBurst.CastTimeMultiplier += 1
-			shaman.LightningBolt.CastTimeMultiplier += 1
+			castTimeMod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != shaman.LightningBolt && spell != shaman.ChainLightning && spell != shaman.LavaBurst {
-				return
+			if spell.ClassSpellMask&affectedSpells > 0 {
+				// Remove the buff and put skill on CD
+				aura.Deactivate(sim)
+				cdTimer.Set(sim.CurrentTime + cd)
+				shaman.UpdateMajorCooldowns()
 			}
-			// Remove the buff and put skill on CD
-			aura.Deactivate(sim)
-			cdTimer.Set(sim.CurrentTime + cd)
-			shaman.UpdateMajorCooldowns()
 		},
 	})
 
