@@ -44,7 +44,14 @@ func (mage *Mage) ApplyArcaneTalents() {
 		})
 	}
 
-	// Arcane Flows is inside each relevant spell
+	// Arcane Flows
+	if mage.Talents.ArcaneFlows > 0 {
+		mage.AddStaticMod(core.SpellModConfig{
+			ClassMask:  MageSpellArcanePower | MageSpellPresenceOfMind,
+			FloatValue: -[]float64{0, 0.12, 0.25}[mage.Talents.ArcaneFlows],
+			Kind:       core.SpellMod_Cooldown_Multiplier,
+		})
+	}
 
 	// Missile Barrage
 	if mage.Talents.MissileBarrage > 0 {
@@ -182,15 +189,16 @@ func (mage *Mage) registerPresenceOfMindCD() {
 	})
 
 	spell := mage.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 12043},
-		Flags:    core.SpellFlagNoOnCastComplete,
+		ActionID:       core.ActionID{SpellID: 12043},
+		Flags:          core.SpellFlagNoOnCastComplete,
+		ClassSpellMask: MageSpellPresenceOfMind,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				NonEmpty: true,
 			},
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Second * time.Duration(120*(1-[]float64{0.0, 0.07, 0.15}[mage.Talents.ArcaneFlows])),
+				Duration: time.Second * 120,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -295,7 +303,7 @@ func (mage *Mage) registerArcanePowerCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Second * time.Duration(120*(1-[]float64{0.0, 0.07, 0.15}[mage.Talents.ArcaneFlows])),
+				Duration: time.Second * 120,
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {

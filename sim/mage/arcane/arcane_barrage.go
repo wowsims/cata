@@ -31,8 +31,7 @@ func (Mage *ArcaneMage) registerArcaneBarrageSpell() {
 			},
 		},
 
-		DamageMultiplier: 1 +
-			.02*float64(Mage.Talents.TormentTheWeak),
+		DamageMultiplier: 1,
 		CritMultiplier:   Mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.907,
 		ThreatMultiplier: 1,
