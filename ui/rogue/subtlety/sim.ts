@@ -187,7 +187,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET_HEMO_SUB.gear,
+		gear: Presets.P1_PRESET_SUB.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -278,7 +278,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_SUBTLETY],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRESET_HEMO_SUB, Presets.P2_PRESET_HEMO_SUB, Presets.P3_PRESET_HEMO_SUB, Presets.P3_PRESET_DANCE_SUB],
+		gear: [Presets.P1_PRESET_SUB],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSubtletyRogue>): APLRotation => {
@@ -305,14 +305,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PRESET_HEMO_SUB.gear,
-					2: Presets.P2_PRESET_HEMO_SUB.gear,
-					3: Presets.P3_PRESET_DANCE_SUB.gear,
+					1: Presets.P1_PRESET_SUB.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PRESET_HEMO_SUB.gear,
-					2: Presets.P2_PRESET_HEMO_SUB.gear,
-					3: Presets.P3_PRESET_DANCE_SUB.gear,
+					1: Presets.P1_PRESET_SUB.gear,
 				},
 			},
 		},

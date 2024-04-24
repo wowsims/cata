@@ -78,7 +78,7 @@ func (eleShaman *ElementalShaman) Initialize() {
 
 	eleShaman.AddStaticMod(core.SpellModConfig{
 		ClassMask: shaman.SpellMaskChainLightning,
-		Kind:      core.SpellMod_CastTime_Flat,
+		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: time.Second * -3,
 	})
 }

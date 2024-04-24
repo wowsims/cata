@@ -30,7 +30,7 @@ func (shaman *Shaman) newShockSpellConfig(spellID int32, spellSchool core.SpellS
 			},
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		BonusCoefficient: bonusCoefficient,
 	}
@@ -55,49 +55,60 @@ func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
 func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 	config := shaman.newShockSpellConfig(8050, core.SpellSchoolFire, 0.17, shockTimer, 0.214)
 
-	config.ClassSpellMask = SpellMaskFlameShock
+	config.ClassSpellMask = SpellMaskFlameShockDirect
 
-	bonusPeriodicDamageMultiplier := 0 + 0.2*float64(shaman.Talents.LavaFlows)
+	lavaBurstCritMod := shaman.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
+		Kind:       core.SpellMod_BonusCrit_Rating,
+		FloatValue: 100 * core.CritRatingPerCritChance,
+	})
 
-	config.Dot = core.DotConfig{
-		Aura: core.Aura{
-			Label: "FlameShock",
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.LavaBurst.BonusCritRating += 100 * core.CritRatingPerCritChance
-				shaman.LavaBurstOverload.BonusCritRating += 100 * core.CritRatingPerCritChance
+	shaman.FlameShockDot = shaman.RegisterSpell(core.SpellConfig{
+		ActionID:         core.ActionID{SpellID: 8050, Tag: 1},
+		SpellSchool:      core.SpellSchoolFire,
+		ProcMask:         core.ProcMaskSpellDamage,
+		Flags:            config.Flags & ^core.SpellFlagAPL,
+		ClassSpellMask:   SpellMaskFlameShockDot,
+		DamageMultiplier: 1,
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "FlameShock",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					lavaBurstCritMod.Activate()
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					lavaBurstCritMod.Deactivate()
+				},
 			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.LavaBurst.BonusCritRating -= 100 * core.CritRatingPerCritChance
-				shaman.LavaBurstOverload.BonusCritRating += 100 * core.CritRatingPerCritChance
+			NumberOfTicks:       6,
+			TickLength:          time.Second * 3,
+			AffectedByCastSpeed: true,
+			BonusCoefficient:    0.1,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+				dot.Snapshot(target, 856/6)
 			},
-		},
-		NumberOfTicks:       6,
-		TickLength:          time.Second * 3,
-		AffectedByCastSpeed: true,
-		BonusCoefficient:    0.1,
-		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-			dot.SnapshotBaseDamage = 856 / 6
-			dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.BonusDamage()
-			dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-			dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
-			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
-			dot.Spell.DamageMultiplierAdditive -= bonusPeriodicDamageMultiplier
-		},
-		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 
-			if shaman.Talents.LavaSurge > 0 {
-				if sim.RandomFloat("LavaSurge") < (0.1 * float64(shaman.Talents.LavaSurge)) {
-					shaman.LavaBurst.CD.Reset()
+				if shaman.Talents.LavaSurge > 0 {
+					if sim.Proc(0.1*float64(shaman.Talents.LavaSurge), "LavaSurge") {
+						shaman.LavaBurst.CD.Reset()
+					}
 				}
-			}
+			},
 		},
-	}
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+			spell.Dot(target).Apply(sim)
+		},
+	})
 
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		result := spell.CalcDamage(sim, target, 531, spell.OutcomeMagicHitAndCrit)
 		if result.Landed() {
-			spell.Dot(target).Apply(sim)
+			shaman.FlameShockDot.Cast(sim, target)
 		}
 		spell.DealDamage(sim, result)
 	}

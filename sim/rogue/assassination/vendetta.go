@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (sinRogue *AssassinationRogue) registerVendetta() {
@@ -12,12 +13,14 @@ func (sinRogue *AssassinationRogue) registerVendetta() {
 	}
 
 	actionID := core.ActionID{SpellID: 79140}
+	hasGlyph := sinRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfVendetta)
+	duration := time.Duration(core.TernaryFloat64(hasGlyph, 36, 30))
 
 	vendettaAura := sinRogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Vendetta",
 			ActionID: actionID,
-			Duration: 20 * time.Second,
+			Duration: duration * time.Second,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				sinRogue.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= 1.2
 			},

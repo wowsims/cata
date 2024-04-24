@@ -103,9 +103,10 @@ type Shaman struct {
 	Earthquake   *core.Spell
 	Thunderstorm *core.Spell
 
-	EarthShock *core.Spell
-	FlameShock *core.Spell
-	FrostShock *core.Spell
+	EarthShock    *core.Spell
+	FlameShock    *core.Spell
+	FlameShockDot *core.Spell
+	FrostShock    *core.Spell
 
 	FeralSpirit  *core.Spell
 	SpiritWolves *SpiritWolves
@@ -295,7 +296,8 @@ func (shaman *Shaman) GetMentalQuicknessBonus() float64 {
 const (
 	SpellMaskNone               int64 = 0
 	SpellMaskFireElementalTotem int64 = 1 << iota
-	SpellMaskFlameShock
+	SpellMaskFlameShockDirect
+	SpellMaskFlameShockDot
 	SpellMaskLavaBurst
 	SpellMaskLavaBurstOverload
 	SpellMaskLavaLash
@@ -317,7 +319,8 @@ const (
 	SpellMaskUnleashFrost
 	SpellMaskUnleashFlame
 
-	SpellMaskFire   = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame
-	SpellMaskNature = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination
-	SpellMaskFrost  = SpellMaskUnleashFrost | SpellMaskFrostShock
+	SpellMaskFlameShock = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
+	SpellMaskFire       = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame
+	SpellMaskNature     = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination
+	SpellMaskFrost      = SpellMaskUnleashFrost | SpellMaskFrostShock
 )
