@@ -31,7 +31,6 @@ func NewFireMage(character *core.Character, options *proto.Player) *FireMage {
 	}
 	fireMage.FireOptions = fireOptions
 
-	fireMage.ApplyFireSpecInnate()
 	return fireMage
 }
 
@@ -57,7 +56,9 @@ func (fireMage *FireMage) GetMasteryBonus() float64 {
 	return (0.22 + 0.028*fireMage.GetMasteryPoints())
 }
 
-func (fireMage *FireMage) ApplyFireSpecInnate() {
+func (fireMage *FireMage) ApplyTalents() {
+
+	fireMage.Mage.ApplyTalents()
 
 	// Fire  Specialization Bonus
 	fireMage.AddStaticMod(core.SpellModConfig{

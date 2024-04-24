@@ -37,8 +37,6 @@ func NewArcaneMage(character *core.Character, options *proto.Player) *ArcaneMage
 	}
 	arcaneMage.ArcaneOptions = arcaneOptions
 
-	arcaneMage.ApplyArcaneSpecInnate()
-
 	return arcaneMage
 }
 
@@ -56,8 +54,9 @@ func (arcaneMage *ArcaneMage) Initialize() {
 	arcaneMage.registerArcaneBarrageSpell()
 }
 
-func (arcaneMage *ArcaneMage) ApplyArcaneSpecInnate() {
+func (arcaneMage *ArcaneMage) ApplyTalents() {
 
+	arcaneMage.Mage.ApplyTalents()
 	// Arcane Specialization Bonus
 	arcaneMage.AddStaticMod(core.SpellModConfig{
 		School:     core.SpellSchoolArcane,
