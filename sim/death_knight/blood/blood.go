@@ -39,6 +39,7 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 		DeathKnight: death_knight.NewDeathKnight(character, death_knight.DeathKnightInputs{
 			IsDps:              false,
 			StartingRunicPower: dkOptions.Options.ClassOptions.StartingRunicPower,
+			Spec:               proto.Spec_SpecBloodDeathKnight,
 		}, options.TalentsString, 50034),
 		vengeance: &core.VengeanceTracker{},
 	}

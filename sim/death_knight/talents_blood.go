@@ -39,7 +39,7 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 
 	//Toughness
 	if dk.Talents.Toughness > 0 {
-		dk.ApplyEquipScaling(stats.Armor, []float64{0.03, 0.06, 0.1}[dk.Talents.Toughness])
+		dk.ApplyEquipScaling(stats.Armor, []float64{1.0, 1.03, 1.06, 1.1}[dk.Talents.Toughness])
 	}
 
 	// Abomination's Might
