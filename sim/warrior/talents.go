@@ -84,7 +84,6 @@ func (warrior *Warrior) applyBattleTrance() {
 	})
 
 	actionID := core.ActionID{SpellID: 12964}
-	var lastTriggertime int64 = 0
 	btAura := warrior.RegisterAura(core.Aura{
 		Label:    "Battle Trance",
 		ActionID: actionID,
@@ -95,7 +94,7 @@ func (warrior *Warrior) applyBattleTrance() {
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Battle Trance affects the spells that proc it, so make sure we don't eat the proc with the same attack
 			// that just proced it
-			if (spell.ClassSpellMask&battleTranceAffectedSpellsMask) != 0 && lastTriggertime != int64(sim.CurrentTime) {
+			if (spell.ClassSpellMask&battleTranceAffectedSpellsMask) != 0 && aura.TimeActive(sim) != 0 {
 				aura.Deactivate(sim)
 			}
 		},
@@ -116,7 +115,6 @@ func (warrior *Warrior) applyBattleTrance() {
 		ICD:            5 * time.Second,
 		ClassSpellMask: triggerSpellMask,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			lastTriggertime = int64(sim.CurrentTime)
 			btAura.Activate(sim)
 		},
 	})
