@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (shaman *Shaman) registerLavaBurstSpell() {
@@ -48,7 +49,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		CritMultiplier:   shaman.SpellCritMultiplier(1.0, core.TernaryFloat64(shaman.Spec == proto.Spec_SpecElementalShaman, 1.0, 0)+float64(shaman.Talents.LavaFlows)*0.08),
 		BonusCoefficient: 0.628,
 	}
 
