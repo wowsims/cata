@@ -189,13 +189,37 @@ func (priest *Priest) applyEvangelism() {
 		return
 	}
 
+	darkEvangelismMod := priest.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0.0,
+		ClassMask:  PriestSpellDoT,
+	})
+
 	priest.DarkEvangelismProcAura = priest.GetOrRegisterAura(core.Aura{
 		Label:     "Dark EvangelismProc",
 		ActionID:  core.ActionID{SpellID: 87118},
 		Duration:  time.Second * 20,
 		MaxStacks: 5,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			darkEvangelismMod.UpdateFloatValue(0.02 * float64(newStacks))
+			darkEvangelismMod.Activate()
+		},
 
-		// dummy aura used to track stacks in spells
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			darkEvangelismMod.Deactivate()
+		},
+	})
+
+	evangelismDmgMod := priest.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0.0,
+		ClassMask:  PriestSpellSmite | PriestSpellHolyFire | PriestSpellPenance,
+	})
+
+	evangelismManaMod := priest.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: 0.0,
+		ClassMask:  PriestSpellSmite | PriestSpellHolyFire | PriestSpellPenance,
 	})
 
 	priest.HolyEvangelismProcAura = priest.GetOrRegisterAura(core.Aura{
@@ -203,8 +227,18 @@ func (priest *Priest) applyEvangelism() {
 		ActionID:  core.ActionID{SpellID: 81661},
 		Duration:  time.Second * 20,
 		MaxStacks: 5,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			evangelismDmgMod.UpdateFloatValue(0.04 * float64(newStacks))
+			evangelismDmgMod.Activate()
 
-		// dummy aura used to track stacks in spells
+			evangelismManaMod.UpdateFloatValue(-0.06 * float64(newStacks))
+			evangelismManaMod.Activate()
+		},
+
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			evangelismDmgMod.Deactivate()
+			evangelismManaMod.Deactivate()
+		},
 	})
 
 	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
