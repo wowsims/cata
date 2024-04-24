@@ -18,7 +18,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 	if isElementalOverload {
 		mask = core.ProcMaskProc
 	}
-	flags := SpellFlagElectric | SpellFlagFocusable
+	flags := SpellFlagFocusable
 	if !isElementalOverload {
 		flags |= core.SpellFlagAPL
 	}

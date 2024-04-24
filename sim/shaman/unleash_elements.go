@@ -40,6 +40,7 @@ func (shaman *Shaman) registerUnleashFlame() {
 		SpellSchool:      core.SpellSchoolFire,
 		ProcMask:         core.ProcMaskSpellDamage,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		ClassSpellMask:   SpellMaskUnleashFlame,
 		DamageMultiplier: 1,
 		BonusCoefficient: 0.429,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -55,6 +56,7 @@ func (shaman *Shaman) registerUnleashFrost() {
 		ActionID:         core.ActionID{SpellID: 73682},
 		SpellSchool:      core.SpellSchoolFrost,
 		ProcMask:         core.ProcMaskSpellDamage,
+		ClassSpellMask:   SpellMaskUnleashFrost,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		DamageMultiplier: 1,
 		BonusCoefficient: 0.386,

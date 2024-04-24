@@ -91,20 +91,8 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.ImprovedShields > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskLightningShield,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskFulmination,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskEarthShield,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  SpellMaskLightningShield | SpellMaskFulmination | SpellMaskEarthShield,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
 		})
 	}
@@ -136,7 +124,7 @@ func (shaman *Shaman) applyElementalFocus() {
 		return
 	}
 
-	oathBonus := 1 + 0.05*float64(shaman.Talents.ElementalOath)
+	oathBonus := 0.05 * float64(shaman.Talents.ElementalOath)
 	var affectedSpells []*core.Spell
 
 	// TODO: fix this.
@@ -167,12 +155,12 @@ func (shaman *Shaman) applyElementalFocus() {
 			for _, spell := range affectedSpells {
 				spell.CostMultiplier -= 0.4
 			}
-			if oathBonus > 1 {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= oathBonus
+			if oathBonus > 0 {
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1 + oathBonus
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + oathBonus
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1 + oathBonus
 				if shaman.Earthquake != nil {
-					shaman.Earthquake.DamageMultiplierAdditive += 0.05
+					shaman.Earthquake.DamageMultiplierAdditive += oathBonus
 				}
 			}
 		},
@@ -180,12 +168,12 @@ func (shaman *Shaman) applyElementalFocus() {
 			for _, spell := range affectedSpells {
 				spell.CostMultiplier += 0.4
 			}
-			if oathBonus > 1 {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= oathBonus
+			if oathBonus > 0 {
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= 1 + oathBonus
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1 + oathBonus
+				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= 1 + oathBonus
 				if shaman.Earthquake != nil {
-					shaman.Earthquake.DamageMultiplierAdditive -= 0.05
+					shaman.Earthquake.DamageMultiplierAdditive -= oathBonus
 				}
 			}
 		},
@@ -257,7 +245,7 @@ func (shaman *Shaman) applyFulmination() {
 		ActionID:       core.ActionID{SpellID: 88767},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskProc,
-		Flags:          SpellFlagElectric | SpellFlagFocusable,
+		Flags:          SpellFlagFocusable,
 		ClassSpellMask: SpellMaskFulmination,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
@@ -269,11 +257,10 @@ func (shaman *Shaman) applyFulmination() {
 			},
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
-		BonusCoefficient: 0.267,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			totalDamage := 350 * (float64(shaman.LightningShieldAura.GetStacks()) - 3)
+			totalDamage := (390.7 + 0.267*spell.SpellPower()) * (float64(shaman.LightningShieldAura.GetStacks()) - 3)
 			result := spell.CalcDamage(sim, target, totalDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)
 		},
@@ -591,7 +578,7 @@ func (shaman *Shaman) applySearingFlames() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).ApplyOrReset(sim)
+			spell.Dot(target).Apply(sim)
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 		},
 	})

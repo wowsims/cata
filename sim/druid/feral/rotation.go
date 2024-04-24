@@ -129,7 +129,7 @@ func (cat *FeralDruid) calcRipEndThresh(sim *core.Simulation) time.Duration {
 	// Calculate the minimum DoT duration at which a Rip cast will provide higher DPE than a Bite cast
 	expectedBiteDPE := cat.FerociousBite.ExpectedInitialDamage(sim, cat.CurrentTarget) / cat.FerociousBite.DefaultCast.Cost
 	expectedRipTickDPE := cat.Rip.ExpectedTickDamage(sim, cat.CurrentTarget) / cat.Rip.DefaultCast.Cost
-	numTicksToBreakEven := 1 + int32(expectedBiteDPE / expectedRipTickDPE)
+	numTicksToBreakEven := 1 + int32(expectedBiteDPE/expectedRipTickDPE)
 
 	if sim.Log != nil {
 		cat.Log(sim, "Bite Break-Even Point = %d Rip ticks", numTicksToBreakEven)
@@ -155,7 +155,7 @@ func (cat *FeralDruid) clipRoar(sim *core.Simulation, isExecutePhase bool) bool 
 
 	// Project Rip end time assuming full Glyph of Shred extensions
 	remainingExtensions := cat.maxRipTicks - ripDot.NumberOfTicks
-	ripDur := ripdotRemaining + time.Duration(remainingExtensions) * ripDot.TickLength
+	ripDur := ripdotRemaining + time.Duration(remainingExtensions)*ripDot.TickLength
 	roarDur := cat.SavageRoarAura.RemainingDuration(sim)
 
 	if roarDur > (ripDur + cat.Rotation.RipLeeway) {
@@ -175,7 +175,7 @@ func (cat *FeralDruid) clipRoar(sim *core.Simulation, isExecutePhase bool) bool 
 	}
 
 	// If waiting another GCD to build an additional CP would lower our total Roar casts for the fight, then force a wait.
-	if newRoarDur + time.Second + core.TernaryDuration(cat.ComboPoints() < 5, time.Second * 5, 0) >= simTimeRemaining {
+	if newRoarDur+time.Second+core.TernaryDuration(cat.ComboPoints() < 5, time.Second*5, 0) >= simTimeRemaining {
 		return false
 	}
 
@@ -375,8 +375,8 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	clipMangle := false
 
 	if mangleRefreshPending {
-		numManglesRemaining := 1 + int32((sim.Duration - time.Second - cat.bleedAura.ExpiresAt()) / time.Minute)
-		earliestMangle := sim.Duration - time.Duration(numManglesRemaining) * time.Minute
+		numManglesRemaining := 1 + int32((sim.Duration-time.Second-cat.bleedAura.ExpiresAt())/time.Minute)
+		earliestMangle := sim.Duration - time.Duration(numManglesRemaining)*time.Minute
 		clipMangle = sim.CurrentTime >= earliestMangle
 	}
 
@@ -409,8 +409,8 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	// our available glyph of shred extensions before rip falls off
 	if rakeNow && ripDot.IsActive() {
 		remainingExt := cat.maxRipTicks - ripDot.NumberOfTicks
-		remainingRipDur := ripDot.RemainingDuration(sim) + time.Duration(remainingExt) * ripDot.TickLength
-		energyForShreds := curEnergy - cat.CurrentRakeCost() - cat.Rip.DefaultCast.Cost + remainingRipDur.Seconds() * regenRate + core.Ternary(cat.tfExpectedBefore(sim, sim.CurrentTime + remainingRipDur), 60.0, 0.0)
+		remainingRipDur := ripDot.RemainingDuration(sim) + time.Duration(remainingExt)*ripDot.TickLength
+		energyForShreds := curEnergy - cat.CurrentRakeCost() - cat.Rip.DefaultCast.Cost + remainingRipDur.Seconds()*regenRate + core.Ternary(cat.tfExpectedBefore(sim, sim.CurrentTime+remainingRipDur), 60.0, 0.0)
 		maxShredsPossible := min(energyForShreds/cat.Shred.DefaultCast.Cost, (ripDot.ExpiresAt() - (sim.CurrentTime + time.Second)).Seconds())
 		rakeNow = remainingExt == 0 || (maxShredsPossible > float64(remainingExt))
 	}
@@ -425,9 +425,9 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	ffNow := rotation.MaintainFaerieFire && cat.ShouldFaerieFire(sim, cat.CurrentTarget)
 
 	// Pooling calcs
-	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain - baseEndThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))
-	rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain - rakeDot.TickLength)
-	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain - cat.ReactionTime) && (curCp >= 1)
+	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain-baseEndThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))
+	rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.TickLength)
+	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain-cat.ReactionTime) && (curCp >= 1)
 	pendingPool := PoolingActions{}
 	pendingPool.create(4)
 
@@ -623,7 +623,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		}
 		// Also Shred if we're about to cap on Energy. Catches some edge
 		// cases where floating_energy > 100 due to too many synced timers.
-		if curEnergy > cat.MaximumEnergy() - regenRate * latencySecs {
+		if curEnergy > cat.MaximumEnergy()-regenRate*latencySecs {
 			cat.Shred.Cast(sim, cat.CurrentTarget)
 			return false, 0
 		}

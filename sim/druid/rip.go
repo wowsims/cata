@@ -113,7 +113,7 @@ func (druid *Druid) CurrentRipCost() float64 {
 func (druid *Druid) ApplyBloodletting(target *core.Unit) {
 	ripDot := druid.Rip.Dot(target)
 
-	if ripDot.IsActive() && (ripDot.NumberOfTicks < RipBaseNumTicks + 3) {
+	if ripDot.IsActive() && (ripDot.NumberOfTicks < RipBaseNumTicks+3) {
 		ripDot.NumberOfTicks += 1
 		ripDot.RecomputeAuraDuration()
 		ripDot.UpdateExpires(ripDot.ExpiresAt() + time.Second*2)
