@@ -7,13 +7,14 @@ import (
 )
 
 func (warlock *Warlock) registerSeedSpell() {
-	actionID := core.ActionID{SpellID: 47836}
+	actionID := core.ActionID{SpellID: 27243}
 
 	seedExplosion := warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID.WithTag(1), // actually 47834
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagHauntSE | core.SpellFlagNoLogs,
+		ActionID:       actionID.WithTag(1), // actually 47834
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagHauntSE | core.SpellFlagNoLogs,
+		ClassSpellMask: WarlockSpellSeedOfCorruption,
 
 		BonusCritRating: 0 +
 			float64(warlock.Talents.ImprovedCorruption)*core.CritRatingPerCritChance,

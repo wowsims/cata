@@ -238,6 +238,7 @@ const (
 	WarlockSpellSuccubusLashOfPain
 	WarlockSpellFelGuardLegionStrike
 	WarlockSpellImpFireBolt
+	WarlockSpellSeedOfCorruption
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
 		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellShadowBolt
