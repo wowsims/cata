@@ -65,11 +65,14 @@ func (rogue *Rogue) registerRupture() {
 				dot := spell.Dot(target)
 				dot.NumberOfTicks = 3 + rogue.ComboPoints() + glyphTicks
 				dot.Apply(sim)
+				// DealOutcome must come before ApplyFinisher, or it breaks calculations based on spent combo points.
+				spell.DealOutcome(sim, result)
 				rogue.ApplyFinisher(sim, spell)
 			} else {
+				spell.DealOutcome(sim, result)
 				spell.IssueRefund(sim)
 			}
-			spell.DealOutcome(sim, result)
+
 		},
 	})
 }

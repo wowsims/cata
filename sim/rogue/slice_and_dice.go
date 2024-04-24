@@ -30,10 +30,10 @@ func (rogue *Rogue) registerSliceAndDice() {
 		// This will be overridden on cast, but set a non-zero default so it doesn't crash when used in APL prepull
 		Duration: rogue.sliceAndDiceDurations[5],
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, rogue.SliceAndDiceBonus)
+			rogue.MultiplyMeleeSpeed(sim, 1+rogue.SliceAndDiceBonus)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, 1/rogue.SliceAndDiceBonus)
+			rogue.MultiplyMeleeSpeed(sim, 1/(1+rogue.SliceAndDiceBonus))
 		},
 	})
 

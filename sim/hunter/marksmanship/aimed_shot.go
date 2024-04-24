@@ -36,8 +36,10 @@ func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
 				CastTime: time.Second * 3,
 			},
 			IgnoreHaste: true,
-			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				cast.CastTime = spell.CastTime()
+				// Aimed Shot on Beta currently is a full reset
+				mmHunter.AutoAttacks.StopRangedUntil(sim, sim.CurrentTime+spell.CastTime())
 			},
 
 			CastTime: func(spell *core.Spell) time.Duration {
