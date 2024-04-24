@@ -1514,13 +1514,6 @@ export class Player<SpecType extends Spec> {
 				}),
 			);
 			this.setBonusStats(eventID, new Stats());
-
-			this.setAplRotation(
-				eventID,
-				APLRotation.create({
-					type: APLRotationType.TypeAuto,
-				}),
-			);
 		});
 	}
 

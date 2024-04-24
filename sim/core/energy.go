@@ -51,6 +51,10 @@ func (eb *energyBar) CurrentEnergy() float64 {
 	return eb.currentEnergy
 }
 
+func (eb *energyBar) MaximumEnergy() float64 {
+	return eb.maxEnergy
+}
+
 func (eb *energyBar) NextEnergyTickAt() time.Duration {
 	return eb.nextEnergyTick
 }
@@ -58,6 +62,10 @@ func (eb *energyBar) NextEnergyTickAt() time.Duration {
 func (eb *energyBar) MultiplyEnergyRegenSpeed(sim *Simulation, multiplier float64) {
 	eb.ResetEnergyTick(sim)
 	eb.energyRegenMultiplier *= multiplier
+}
+
+func (eb *energyBar) EnergyRegenPerSecond() float64 {
+	return 10.0 * eb.hasteRatingMultiplier * eb.energyRegenMultiplier
 }
 
 func (eb *energyBar) AddEnergy(sim *Simulation, amount float64, metrics *ResourceMetrics) {

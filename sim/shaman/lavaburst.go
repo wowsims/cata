@@ -39,13 +39,19 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 				CastTime: time.Millisecond * 2000,
 				GCD:      core.GCDDefault,
 			},
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
+				if castTime > 0 {
+					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+				}
+			},
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
 				Duration: time.Second * 8,
 			},
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.628,
 	}

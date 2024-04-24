@@ -70,7 +70,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	hp.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
 
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/324.72)
+	//hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/243.6)
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
 
 	hunter.AddPet(hp)
@@ -154,11 +154,17 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.22,
-			stats.Agility:     ownerStats[stats.Agility],
-			stats.MeleeHit:    ownerStats[stats.MeleeHit],
-			stats.Expertise:   ownerStats[stats.MeleeHit] * PetExpertiseScale,
-			stats.SpellHit:    ownerStats[stats.MeleeHit],
+			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.425,
+
+			stats.MeleeHit:  ownerStats[stats.MeleeHit],
+			stats.Expertise: ownerStats[stats.MeleeHit] * PetExpertiseScale,
+			stats.SpellHit:  ownerStats[stats.MeleeHit],
+
+			stats.MeleeCrit: ownerStats[stats.MeleeCrit],
+			stats.SpellCrit: ownerStats[stats.MeleeCrit],
+
+			stats.MeleeHaste: ownerStats[stats.MeleeHaste],
+			stats.SpellHaste: ownerStats[stats.MeleeHaste],
 		}
 	}
 }

@@ -1,7 +1,6 @@
 package warrior
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -11,8 +10,7 @@ import (
 func (warrior *Warrior) RegisterShieldBlockCD() {
 	actionID := core.ActionID{SpellID: 2565}
 
-	// TODO: check if the crit block chance adapts to the current target in-game
-	// for now, use a most-likely attack table (level+3 boss)
+	// extra avoidance to crit block effect seems to be based on basic level+3 target
 	atkTableAttacker := &core.Unit{Level: warrior.Level + 3, Type: core.EnemyUnit}
 	atkTable := core.NewAttackTable(atkTableAttacker, &warrior.Unit)
 	extraAvoidance := 0.0
@@ -23,18 +21,17 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.AddStatDynamic(sim, stats.Block, 25*core.BlockRatingPerBlockChance)
 
-			// TODO: Wording of the second effect implies it'll use the higher of the two between total avoidance
-			// or block, this should be tested though
 			avoidance := warrior.GetTotalAvoidanceChance(atkTable)
-			blockChance := warrior.GetTotalBlockChanceAsDefender(atkTable)
-			highestChance := math.Max(avoidance, blockChance)
-			if highestChance > core.CombatTableCoverageCap {
-				extraAvoidance = highestChance - core.CombatTableCoverageCap
+			if avoidance > core.CombatTableCoverageCap {
+				extraAvoidance = avoidance - core.CombatTableCoverageCap
 				warrior.CriticalBlockChance += extraAvoidance
+			} else {
+				extraAvoidance = 0.0
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.AddStatDynamic(sim, stats.Block, -25*core.BlockRatingPerBlockChance)
+
 			if extraAvoidance > 0.0 {
 				warrior.CriticalBlockChance -= extraAvoidance
 			}

@@ -19,6 +19,15 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.Expertise, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))
 
+	if shaman.Talents.Concussion > 0 {
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask: SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload |
+				SpellMaskThunderstorm | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskEarthShock | SpellMaskFlameShock | SpellMaskFrost,
+			Kind:       core.SpellMod_DamageDone_Flat,
+			FloatValue: 0.02 * float64(shaman.Talents.Concussion),
+		})
+	}
+
 	if shaman.Talents.Toughness > 0 {
 		shaman.MultiplyStat(stats.Stamina, []float64{1.0, 1.03, 1.07, 1.1}[shaman.Talents.Toughness])
 	}
@@ -33,25 +42,13 @@ func (shaman *Shaman) ApplyTalents() {
 	if shaman.Talents.CallOfFlame > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskLavaBurst,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.05 * float64(shaman.Talents.CallOfFlame),
 		})
 
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskSearingTotem,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskMagmaTotem,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskFireNova,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  SpellMaskSearingTotem | SpellMaskMagmaTotem | SpellMaskFireNova,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
 		})
 	}
@@ -61,8 +58,8 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.LavaFlows > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskFlameShock,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  SpellMaskFlameShockDot,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.20 * float64(shaman.Talents.LavaFlows),
 		})
 		shaman.AddStaticMod(core.SpellModConfig{

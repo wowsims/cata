@@ -24,12 +24,12 @@ func (warrior *Warrior) RegisterColossusSmash() {
 		})
 	})
 
-	warrior.RegisterSpell(core.SpellConfig{
+	warrior.ColossusSmash = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
-		ClassSpellMask: SpellMaskColossusSmash,
+		ClassSpellMask: SpellMaskColossusSmash | SpellMaskSpecialAttack,
 
 		RageCost: core.RageCostOptions{
 			Cost:   20,
@@ -46,7 +46,8 @@ func (warrior *Warrior) RegisterColossusSmash() {
 			},
 		},
 
-		CritMultiplier: warrior.DefaultMeleeCritMultiplier(),
+		DamageMultiplier: 1.0,
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		BonusCoefficient: 1,
 

@@ -8,12 +8,16 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+const RipBaseNumTicks = int32(8)
+
 func (druid *Druid) registerRipSpell() {
-	ripBaseNumTicks := int32(8)
-
+	baseDamage := 56.0
 	comboPointCoeff := 161.0
-
+	attackPowerCoeff := 0.0207
 	glyphMulti := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfRip), 1.15, 1.0)
+
+	// Blood in the Water refreshes use the CP value from the last "raw" Rip cast, so we need to store that here.
+	var comboPointSnapshot int32
 
 	druid.Rip = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1079},
@@ -44,14 +48,14 @@ func (druid *Druid) registerRipSpell() {
 			Aura: druid.applyRendAndTear(core.Aura{
 				Label: "Rip",
 			}),
-			NumberOfTicks: ripBaseNumTicks,
+			NumberOfTicks: RipBaseNumTicks,
 			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				cp := float64(druid.ComboPoints())
+				cp := float64(comboPointSnapshot)
 				ap := dot.Spell.MeleeAttackPower()
 
-				dot.SnapshotBaseDamage = 56 + comboPointCoeff*cp + 0.0207*cp*ap
+				dot.SnapshotBaseDamage = baseDamage + comboPointCoeff*cp + attackPowerCoeff*cp*ap
 
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
@@ -69,13 +73,26 @@ func (druid *Druid) registerRipSpell() {
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = ripBaseNumTicks
+				dot.NumberOfTicks = RipBaseNumTicks
+				comboPointSnapshot = druid.ComboPoints()
 				dot.Apply(sim)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)
 			}
 			spell.DealOutcome(sim, result)
+		},
+
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
+			cp := float64(druid.ComboPoints())
+			ap := spell.MeleeAttackPower()
+			baseTickDamage := baseDamage + comboPointCoeff*cp + attackPowerCoeff*cp*ap
+			result := spell.CalcPeriodicDamage(sim, target, baseTickDamage, spell.OutcomeExpectedMagicAlwaysHit)
+			attackTable := spell.Unit.AttackTables[target.UnitIndex]
+			critChance := spell.PhysicalCritChance(attackTable)
+			critMod := critChance * (spell.CritMultiplier - 1)
+			result.Damage *= 1 + critMod
+			return result
 		},
 	})
 
@@ -85,9 +102,7 @@ func (druid *Druid) registerRipSpell() {
 }
 
 func (druid *Druid) MaxRipTicks() int32 {
-	base := int32(8)
-	shredGlyphBonus := core.TernaryInt32(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting), 3, 0)
-	return base + shredGlyphBonus
+	return RipBaseNumTicks + core.TernaryInt32(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfBloodletting), 3, 0)
 }
 
 func (druid *Druid) CurrentRipCost() float64 {
@@ -97,7 +112,7 @@ func (druid *Druid) CurrentRipCost() float64 {
 func (druid *Druid) ApplyBloodletting(target *core.Unit) {
 	ripDot := druid.Rip.Dot(target)
 
-	if ripDot.IsActive() && (ripDot.NumberOfTicks < 11) {
+	if ripDot.IsActive() && (ripDot.NumberOfTicks < RipBaseNumTicks + 3) {
 		ripDot.NumberOfTicks += 1
 		ripDot.RecomputeAuraDuration()
 		ripDot.UpdateExpires(ripDot.ExpiresAt() + time.Second*2)
