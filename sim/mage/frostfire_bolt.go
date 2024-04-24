@@ -41,18 +41,16 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 				MaxStacks: 3,
 				Duration:  time.Second * 12,
 			},
-			NumberOfTicks: 4,
-			TickLength:    time.Second * 3,
-
+			NumberOfTicks:    4,
+			TickLength:       time.Second * 3,
+			BonusCoefficient: 0.00733,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.SnapshotBaseDamage = 0.00712 * mage.ScalingBaseDamage
-				dot.SnapshotBaseDamage *= float64(dot.Aura.GetStacks())
+				dot.Snapshot(target, 0.00712*mage.ScalingBaseDamage)
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
 			},
-			BonusCoefficient: 0.00733,
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -69,11 +67,9 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 							dot.TakeSnapshot(sim, true)
 						} else {
 							dot.Apply(sim)
-							//dot.SetStacks(sim, 1)
 							dot.TakeSnapshot(sim, true)
 						}
 					}
-
 					spell.DealDamage(sim, result)
 				}
 			})
