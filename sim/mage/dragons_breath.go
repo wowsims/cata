@@ -29,7 +29,7 @@ func (mage *Mage) registerDragonsBreathSpell() {
 				Duration: time.Second * 20,
 			},
 		},
-		DamageMultiplierAdditive: 1 + .01*float64(mage.Talents.FirePower),
+		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient:         0.193,
 		ThreatMultiplier:         1,

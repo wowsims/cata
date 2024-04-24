@@ -38,8 +38,7 @@ func (mage *Mage) registerScorchSpell() {
 
 		DamageMultiplier: 1,
 
-		DamageMultiplierAdditive: 1 +
-			.01*float64(mage.Talents.FirePower),
+		DamageMultiplierAdditive: 1,
 
 		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.512,

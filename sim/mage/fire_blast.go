@@ -29,11 +29,10 @@ func (mage *Mage) registerFireBlastSpell() {
 
 		BonusCritRating: 0 +
 			float64(mage.Talents.ImprovedFireBlast)*4*core.CritRatingPerCritChance,
-		DamageMultiplierAdditive: 1 +
-			.01*float64(mage.Talents.FirePower),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		BonusCoefficient: 0.429,
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient:         0.429,
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 1.113 * mage.ScalingBaseDamage

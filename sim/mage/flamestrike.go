@@ -25,11 +25,10 @@ func (mage *Mage) registerFlamestrikeSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 +
-			.01*float64(mage.Talents.FirePower),
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
-		BonusCoefficient: 0.146,
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient:         0.146,
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
