@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 const (
@@ -276,6 +277,7 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 		form:         form,
 	}
 	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	druid.FillTalentsData(talent_trees.DruidTalentsConfig, talents)
 	druid.EnableManaBar()
 
 	druid.AddStatDependency(stats.Strength, stats.AttackPower, 1)

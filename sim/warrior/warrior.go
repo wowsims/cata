@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 var TalentTreeSizes = [3]int{20, 21, 20}
@@ -172,6 +173,7 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 		WarriorInputs: inputs,
 	}
 	core.FillTalentsProto(warrior.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	warrior.FillTalentsData(talent_trees.WarriorTalentsConfig, talents)
 
 	warrior.PseudoStats.CanParry = true
 

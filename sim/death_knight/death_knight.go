@@ -7,6 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 const (
@@ -140,6 +141,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		ClassBaseScaling: 1125.227400,
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	dk.FillTalentsData(talent_trees.DeathKnightTalentsConfig, talents)
 
 	maxRunicPower := 100.0 + 15.0*float64(dk.Talents.RunicPowerMastery)
 	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)

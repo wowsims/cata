@@ -3,6 +3,7 @@ package mage
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 const (
@@ -127,6 +128,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 		Options:   mageOptions,
 	}
 	// core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	mage.FillTalentsData(talent_trees.MageTalentsConfig, options.TalentsString)
 
 	// mage.bonusCritDamage = .25*float64(mage.Talents.SpellPower) + .1*float64(mage.Talents.Burnout)
 	// mage.EnableManaBar()

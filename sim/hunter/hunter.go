@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 var TalentTreeSizes = [3]int{19, 19, 20}
@@ -88,6 +89,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	}
 
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	hunter.FillTalentsData(talent_trees.HunterTalentsConfig, options.TalentsString)
 
 	// Todo: Verify that is is actually 4 focus per second
 	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), 4.0, true)

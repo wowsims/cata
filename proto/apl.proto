@@ -78,7 +78,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 68
+// NextIndex: 69
 message APLValue {
     oneof value {
         // Operators
@@ -140,6 +140,9 @@ message APLValue {
         APLValueSpellIsChanneling spell_is_channeling = 56;
         APLValueSpellChanneledTicks spell_channeled_ticks = 57;
         APLValueSpellCurrentCost spell_current_cost = 62;
+
+		// Talent Values
+		APLValueTalentIsKnown talent_is_known = 68;
 
         // Aura values
         APLValueAuraIsActive aura_is_active = 22;
@@ -456,6 +459,10 @@ message APLValueSpellChanneledTicks {
 }
 message APLValueSpellCurrentCost {
     ActionID spell_id = 1;
+}
+
+message APLValueTalentIsKnown {
+    ActionID talent_id = 1;
 }
 
 message APLValueAuraIsActive {

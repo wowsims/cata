@@ -11,7 +11,8 @@ import {
 	ReforgeStat,
 	SimDatabase,
 } from '../proto/common.js';
-import { GlyphID, IconData, UIDatabase, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UINPC as Npc, UIZone as Zone } from '../proto/ui.js';
+import { GlyphID, IconData, UIDatabase, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UINPC as Npc, UITalent as Talent, UIZone as Zone } from '../proto/ui.js';
+import { classTalentsConfig } from '../talents/factory';
 import { distinct } from '../utils.js';
 import { EquippedItem } from './equipped_item.js';
 import { Gear, ItemSwapGear } from './gear.js';
@@ -82,10 +83,30 @@ export class Database {
 	private readonly itemIcons: Record<number, Promise<IconData>> = {};
 	private readonly spellIcons: Record<number, Promise<IconData>> = {};
 	private readonly glyphIds: Array<GlyphID> = [];
+	private readonly talents: Record<number, Talent> = {};
+
 	private loadedLeftovers = false;
 
 	private constructor(db: UIDatabase) {
 		this.loadProto(db);
+
+		// Is this the correct place to do this?
+		Object.values(classTalentsConfig)
+		.flat()
+		.forEach(tree => {
+			tree.talents.forEach(talent => {
+				let rank = 1
+				talent.spellIds.forEach(spellId => {
+					this.talents[spellId] = Talent.create({
+						id: spellId,
+						baseName: talent.fancyName,
+						name: talent.fancyName + (talent.maxPoints > 1 ? " (Rank " + rank++ + ")" : ""),
+						spec: tree.name,
+						maxPoints: talent.maxPoints,
+					})
+				});
+			});
+		})
 	}
 
 	// Add all data from the db proto into this database.
@@ -147,6 +168,10 @@ export class Database {
 
 	getItemById(id: number): Item | undefined {
 		return this.items.get(id);
+	}
+
+	getTalentById(id: number): Talent {
+		return this.talents[id]
 	}
 
 	getRandomSuffixById(id: number): ItemRandomSuffix | undefined {

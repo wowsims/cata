@@ -640,6 +640,8 @@ export type TalentLocation = {
 export type TalentConfig<TalentsProto> = {
 	fieldName?: keyof TalentsProto | string;
 
+	fancyName?: string;
+
 	location: TalentLocation;
 
 	// Location of a prerequisite talent, if any

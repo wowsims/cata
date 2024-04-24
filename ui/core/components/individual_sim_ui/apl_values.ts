@@ -65,6 +65,7 @@ import {
 	APLValueSpellIsReady,
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
+	APLValueTalentIsKnown,
 	APLValueTotemRemainingTime,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
@@ -793,6 +794,15 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'The amount of time specified by the <b>Channel Clip Delay</b> setting.',
 		newValue: APLValueChannelClipDelay.create,
 		fields: [],
+	}),
+
+	// Talents
+	talentIsKnown: inputBuilder({
+		label: 'Talent is Known',
+		submenu: ['Talents'],
+		shortDescription: '<b>True</b> if the talent is currently known, otherwise <b>False</b>.',
+		newValue: APLValueTalentIsKnown.create,
+		fields: [AplHelpers.talentFieldConfig('talentId')],
 	}),
 
 	// Auras

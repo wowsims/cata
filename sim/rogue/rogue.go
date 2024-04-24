@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/core/talent_trees"
 )
 
 const (
@@ -207,6 +208,7 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 		Options:   options,
 	}
 	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	rogue.FillTalentsData(talent_trees.RogueTalentsConfig, talents)
 
 	// Passive rogue threat reduction: https://wotlk.wowhead.com/spell=21184/rogue-passive-dnd
 	rogue.PseudoStats.ThreatMultiplier *= 0.71

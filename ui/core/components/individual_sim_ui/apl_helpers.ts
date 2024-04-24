@@ -2,7 +2,10 @@ import { Player, UnitMetadata } from '../../player.js';
 import { APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
 import { ActionID, OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
+import { IconData, UITalent as Talent } from '../../proto/ui';
 import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
+import { Database } from '../../proto_utils/database';
+import { classTalentsConfig } from '../../talents/factory';
 import { EventID, TypedEvent } from '../../typed_event.js';
 import { bucket } from '../../utils.js';
 import { BooleanPicker } from '../boolean_picker.js';
@@ -275,6 +278,65 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 		};
 		updateValues();
 		TypedEvent.onAny([player.sim.unitMetadataEmitter, player.rotationChangeEmitter]).on(updateValues);
+	}
+}
+
+export interface APLTalentPickerConfig<ModObject>
+	extends Omit<DropdownPickerConfig<ModObject, ActionID, Talent>, 'defaultLabel' | 'equals' | 'setOptionContent' | 'values' | 'getValue' | 'setValue'> {
+	getValue: (obj: ModObject) => ActionID;
+	setValue: (eventID: EventID, obj: ModObject, newValue: ActionID) => void;
+}
+
+export class APLTalentPicker extends DropdownPicker<Player<any>, ActionID, Talent> {
+	constructor(parent: HTMLElement, player: Player<any>, config: APLTalentPickerConfig<Player<any>>) {
+		super(parent, player, {
+			...config,
+			sourceToValue: (src: ActionID) => {
+				return src?.rawId.oneofKind == 'spellId' ? player.sim.db.getTalentById(src.rawId.spellId) : Talent.create();
+			},
+			valueToSource: (val: Talent) => {
+				return ActionID.create({
+					rawId: {
+						oneofKind: 'spellId',
+						spellId: val.id,
+					},
+				});
+			},
+			defaultLabel: 'Talents',
+			equals: (a, b) => a == b,
+			setOptionContent: (button, valueConfig) => {
+				const actionId = ActionId.fromSpellId(valueConfig.value.id);
+				const iconElem = document.createElement('a');
+				iconElem.classList.add('apl-actionid-item-icon');
+				iconElem.dataset.whtticon = 'false';
+				iconElem.classList.add('apl-actionid-item-icon');
+				actionId.fillAndSet(iconElem, true, true);
+				button.appendChild(iconElem);
+
+				const textElem = document.createTextNode(valueConfig.value.name);
+				button.appendChild(textElem);
+			},
+			values: [],
+		});
+
+		const updateValues = async () => {
+			const values = Object.values(classTalentsConfig[player.getClass()])
+				.filter(v => typeof v != 'string')
+				.map(tree => tree.talents)
+				.flat()
+				.map(talent => talent.spellIds)
+				.flat()
+				.map(spellId => {
+					const value = player.sim.db.getTalentById(spellId)
+					return {
+						value: value,
+						submenu: value.maxPoints > 1 ? [value.spec, value.baseName] : [value.spec],
+					};
+				});
+			this.setOptions(values);
+		};
+		updateValues();
+		player.rotationChangeEmitter.on(() => this.update);
 	}
 }
 
@@ -608,6 +670,18 @@ export function stringFieldConfig(field: string, options?: Partial<APLPickerBuil
 			return new AdaptiveStringPicker(parent, player, config);
 		},
 		...(options || {}),
+	};
+}
+
+export function talentFieldConfig(field: string): APLPickerBuilderFieldConfig<any, any> {
+	return {
+		field: field,
+		newValue: () => ActionID.create(),
+		factory: (parent, player, config, _getParentValue) => {
+			return new APLTalentPicker(parent, player, {
+				...config,
+			});
+		},
 	};
 }
 

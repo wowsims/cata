@@ -84,6 +84,8 @@ type Character struct {
 	conjuredCD         *Timer
 
 	Pets []*Pet // cached in AddPet, for advance()
+
+	talents *Talents
 }
 
 func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character {
