@@ -60,6 +60,7 @@ type Hunter struct {
 	TrapWeaveSpell *core.Spell
 
 	AspectOfTheHawkAura           *core.Aura
+	AspectOfTheFoxAura            *core.Aura
 	ImprovedSteadyShotAura        *core.Aura
 	ImprovedSteadyShotAuraCounter *core.Aura
 	LockAndLoadAura               *core.Aura
@@ -149,6 +150,7 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerTrapLauncher()
 	hunter.registerHuntersMarkSpell()
+	hunter.registerAspectOfTheFoxSpell()
 }
 
 func (hunter *Hunter) AddStatDependencies() {
