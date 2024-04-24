@@ -7,8 +7,16 @@ import (
 )
 
 func (druid *Druid) registerThrashBearSpell() {
-	flatBaseDamage := 1042.0 // need variance?
-	flatBleedDamage := 581.0
+	// Raw parameters from spell database
+	hitCoefficient := 1.05599999428
+	hitVariance := 0.20999999344
+	bleedCoefficient := 0.58899998665
+
+	// Scaled parameters for spell code
+	avgBaseDamage := hitCoefficient * SpellScalingConstant // second factor is defined in druid.go
+	damageSpread := hitVariance * avgBaseDamage
+	flatBaseDamage := avgBaseDamage - damageSpread/2
+	flatBleedDamage := bleedCoefficient * SpellScalingConstant
 
 	druid.Thrash = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 77758},
@@ -51,7 +59,7 @@ func (druid *Druid) registerThrashBearSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatBaseDamage + 0.0982*spell.MeleeAttackPower()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				perTargetDamage := baseDamage * sim.Encounter.AOECapMultiplier()
+				perTargetDamage := (baseDamage + (sim.RandomFloat("Thrash") * damageSpread)) * sim.Encounter.AOECapMultiplier()
 				if druid.BleedCategories.Get(aoeTarget).AnyActive() {
 					perTargetDamage *= 1.3
 				}
@@ -63,7 +71,7 @@ func (druid *Druid) registerThrashBearSpell() {
 		},
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := 1042.0 + 0.0982*spell.MeleeAttackPower()
+			baseDamage := avgBaseDamage + 0.0982*spell.MeleeAttackPower()
 			initial := spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
@@ -73,7 +81,7 @@ func (druid *Druid) registerThrashBearSpell() {
 			return initial
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			tickBase := (581 + 0.0167*spell.MeleeAttackPower())
+			tickBase := (flatBleedDamage + 0.0167*spell.MeleeAttackPower())
 			ticks := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
