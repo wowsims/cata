@@ -57,10 +57,7 @@ const battleTranceAffectedSpellsMask = SpellMaskCleave |
 	SpellMaskColossusSmash |
 	SpellMaskExecute |
 	SpellMaskHeroicStrike |
-	SpellMaskHeroicThrow |
-	SpellMaskOverpower |
 	SpellMaskRend |
-	SpellMaskRevenge |
 	SpellMaskShatteringThrow |
 	SpellMaskSlam |
 	SpellMaskSunderArmor |
@@ -70,7 +67,6 @@ const battleTranceAffectedSpellsMask = SpellMaskCleave |
 	SpellMaskConcussionBlow |
 	SpellMaskDevastate |
 	SpellMaskShockwave |
-	SpellMaskVictoryRush |
 	SpellMaskBloodthirst |
 	SpellMaskRagingBlow |
 	SpellMaskMortalStrike |
