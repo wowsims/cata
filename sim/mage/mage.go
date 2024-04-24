@@ -222,14 +222,6 @@ func (mage *Mage) applyArmor() {
 	}
 }
 
-// TODO Place in arcane
-func (mage *Mage) GetArcaneMasteryBonus() float64 {
-	return (1.12 + 0.015*mage.GetMasteryPoints())
-}
-func (mage *Mage) ArcaneMasteryValue() float64 {
-	return mage.GetArcaneMasteryBonus() * (mage.CurrentMana() / mage.MaxMana())
-}
-
 // Agent is a generic way to access underlying mage on any of the agents.
 type MageAgent interface {
 	GetMage() *Mage

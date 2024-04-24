@@ -79,7 +79,7 @@ func (arcaneMage *ArcaneMage) ApplyTalents() {
 		Label: "Mana Adept",
 		//ActionID: core.ActionID{SpellID: 76547},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			arcaneMastery.UpdateFloatValue(arcaneMage.CurrentMana() / arcaneMage.MaxMana() * arcaneMage.GetArcaneMasteryBonus())
+			arcaneMastery.UpdateFloatValue(arcaneMage.ArcaneMasteryValue())
 			arcaneMastery.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -87,4 +87,20 @@ func (arcaneMage *ArcaneMage) ApplyTalents() {
 		},
 	}))
 
+	core.MakeProcTriggerAura(&arcaneMage.Unit, core.ProcTrigger{
+		Name:     "Arcane Mastery Mana Updater",
+		Callback: core.CallbackOnCastComplete,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			arcaneMastery.UpdateFloatValue(arcaneMastery.GetFloatValue())
+		},
+	})
+
+}
+
+func (arcaneMage *ArcaneMage) GetArcaneMasteryBonus() float64 {
+	return (1.12 + 0.015*arcaneMage.GetMasteryPoints())
+}
+
+func (arcaneMage *ArcaneMage) ArcaneMasteryValue() float64 {
+	return arcaneMage.GetArcaneMasteryBonus() * (arcaneMage.CurrentMana() / arcaneMage.MaxMana())
 }
