@@ -1022,6 +1022,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-MagmaPlatedBattlearmor"
+ value: {
+  dps: 24309.28745
+  tps: 22320.92873
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-MagmaPlatedBattlegear"
  value: {
   dps: 26675.47941

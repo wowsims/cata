@@ -11,6 +11,8 @@ func (dk *DeathKnight) registerHowlingBlastSpell() {
 		return
 	}
 
+	results := make([]*core.SpellResult, dk.Env.GetNumTargets())
+
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       HowlingBlastActionID,
 		Flags:          core.SpellFlagAPL,
@@ -35,14 +37,16 @@ func (dk *DeathKnight) registerHowlingBlastSpell() {
 		CritMultiplier: dk.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, sim.GetNumTargets())
 			for idx, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := dk.ClassBaseScaling*1.17499995232 + 0.44*spell.MeleeAttackPower()
 
 				if aoeTarget != target {
-					baseDamage *= 0.5
+					spell.DamageMultiplier *= 0.5
+					results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+					spell.DamageMultiplier /= 0.5
+				} else {
+					results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
-				results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 				if aoeTarget == target {
 					spell.SpendRefundableCost(sim, results[idx])

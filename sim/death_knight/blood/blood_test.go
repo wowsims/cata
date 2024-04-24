@@ -1,169 +1,66 @@
 package blood
 
 import (
+	"testing"
+
 	_ "github.com/wowsims/cata/sim/common" // imported to get item effects included.
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func init() {
 	RegisterBloodDeathKnight()
 }
 
-// func TestBlood(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-// 		Class:      proto.Class_ClassDeathKnight,
-// 		Race:       proto.Race_RaceOrc,
-// 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
+func TestBlood(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
+		Class:      proto.Class_ClassDeathKnight,
+		Race:       proto.Race_RaceWorgen,
+		OtherRaces: []proto.Race{proto.Race_RaceGoblin},
 
-// 		GearSet:     core.GetGearSet("../../../ui/DeathKnight/gear_sets", "p3_blood"),
-// 		Talents:     BloodTalents,
-// 		Glyphs:      BloodDefaultGlyphs,
-// 		Consumes:    FullConsumes,
-// 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBlood},
-// 		Rotation:    core.GetAplRotation("../../../ui/DeathKnight/apls", "blood_dps"),
+		GearSet:  core.GetGearSet("../../../ui/death_knight/blood/gear_sets", "p1"),
+		Talents:  BloodTalents,
+		Glyphs:   BloodDefaultGlyphs,
+		Consumes: FullConsumes,
 
-// 		ItemFilter: ItemFilter,
-// 	}))
-// }
+		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsUnholy},
+		Rotation:    core.GetAplRotation("../../../ui/death_knight/blood/apls", "p1"),
 
-// func TestUnholy(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-// 		Class:      proto.Class_ClassDeathKnight,
-// 		Race:       proto.Race_RaceOrc,
-// 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
+		ItemFilter: ItemFilter,
+	}))
+}
 
-// 		GearSet:     core.GetGearSet("../../../ui/DeathKnight/gear_sets", "p3_uh_dw"),
-// 		Talents:     UnholyTalents,
-// 		Glyphs:      UnholyDefaultGlyphs,
-// 		Consumes:    FullConsumes,
-// 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsUnholy},
-// 		Rotation:    core.GetAplRotation("../../../ui/DeathKnight/apls", "uh_2h_ss"),
+var BloodTalents = "03323203132212311321--003"
+var BloodDefaultGlyphs = &proto.Glyphs{
+	Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfDeathStrike),
+	Prime2: int32(proto.DeathKnightPrimeGlyph_GlyphOfHeartStrike),
+	Prime3: int32(proto.DeathKnightPrimeGlyph_GlyphOfRuneStrike),
+	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfVampiricBlood),
+	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfDancingRuneWeapon),
+	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfBoneShield),
+}
 
-// 		OtherRotations: []core.RotationCombo{
-// 			core.GetAplRotation("../../../ui/DeathKnight/apls", "uh_dnd_aoe"),
-// 			core.GetAplRotation("../../../ui/DeathKnight/apls", "unholy_dw_ss"),
-// 		},
+var PlayerOptionsUnholy = &proto.Player_BloodDeathKnight{
+	BloodDeathKnight: &proto.BloodDeathKnight{
+		Options: &proto.BloodDeathKnight_Options{
+			ClassOptions: &proto.DeathKnightOptions{},
+		},
+	},
+}
 
-// 		ItemFilter: ItemFilter,
-// 	}))
-// }
+var FullConsumes = &proto.Consumes{
+	Flask:         proto.Flask_FlaskOfTitanicStrength,
+	DefaultPotion: proto.Potions_GolembloodPotion,
+	PrepopPotion:  proto.Potions_GolembloodPotion,
+	Food:          proto.Food_FoodBeerBasedCrocolisk,
+}
 
-// func TestFrost(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-// 		Class:      proto.Class_ClassDeathKnight,
-// 		Race:       proto.Race_RaceOrc,
-// 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
+var ItemFilter = core.ItemFilter{
+	ArmorType: proto.ArmorType_ArmorTypePlate,
 
-// 		GearSet:     core.GetGearSet("../../../ui/DeathKnight/gear_sets", "p3_frost"),
-// 		Talents:     FrostTalents,
-// 		Glyphs:      FrostDefaultGlyphs,
-// 		Consumes:    FullConsumes,
-// 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFrost},
-// 		OtherSpecOptions: []core.SpecOptionsCombo{
-// 			{Label: "Desync", SpecOptions: PlayerOptionsDesyncFrost},
-// 		},
-// 		Rotation: core.GetAplRotation("../../../ui/DeathKnight/apls", "frost_bl_pesti"),
-
-// 		OtherRotations: []core.RotationCombo{
-// 			core.GetAplRotation("../../../ui/DeathKnight/apls", "frost_uh_pesti"),
-// 		},
-
-// 		ItemFilter: ItemFilter,
-// 	}))
-// }
-
-// func TestFrostUH(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-// 		Class:      proto.Class_ClassDeathKnight,
-// 		Race:       proto.Race_RaceOrc,
-// 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
-
-// 		GearSet:     core.GetGearSet("../../../ui/DeathKnight/gear_sets", "p3_frost"),
-// 		Talents:     FrostUHTalents,
-// 		Glyphs:      FrostUHDefaultGlyphs,
-// 		Consumes:    FullConsumes,
-// 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFrost},
-// 		Rotation:    core.GetAplRotation("../../../ui/DeathKnight/apls", "frost_uh_pesti"),
-
-// 		ItemFilter: ItemFilter,
-// 	}))
-// }
-
-// var BloodTalents = "2305120530003303231023001351--230220305003"
-// var BloodDefaultGlyphs = &proto.Glyphs{
-// 	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfDancingRuneWeapon),
-// 	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfDeathStrike),
-// 	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfDisease),
-// 	// No interesting minor glyphs.
-// }
-
-// var FrostTalents = "23050005-32005350352203012300033101351"
-// var FrostDefaultGlyphs = &proto.Glyphs{
-// 	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfFrostStrike),
-// 	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfObliterate),
-// 	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfDisease),
-// 	// No interesting minor glyphs.
-// }
-
-// var FrostUHTalents = "01-32002350342203012300033101351-230200305003"
-// var FrostUHDefaultGlyphs = &proto.Glyphs{
-// 	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfFrostStrike),
-// 	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfObliterate),
-// 	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfDisease),
-// 	// No interesting minor glyphs.
-// }
-
-// var UnholyTalents = "-320043500002-2300303050032152000150013133051"
-// var UnholyDefaultGlyphs = &proto.Glyphs{
-// 	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfTheGhoul),
-// 	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfDarkDeath),
-// 	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfDeathAndDecay),
-// 	// No interesting minor glyphs.
-// }
-
-// var PlayerOptionsBlood = &proto.Player_DeathKnight{
-// 	DeathKnight: &proto.DeathKnight{
-// 		Options: DeathKnightOptions,
-// 	},
-// }
-
-// var PlayerOptionsUnholy = &proto.Player_DeathKnight{
-// 	DeathKnight: &proto.DeathKnight{
-// 		Options: DeathKnightOptions,
-// 	},
-// }
-
-// var PlayerOptionsFrost = &proto.Player_DeathKnight{
-// 	DeathKnight: &proto.DeathKnight{
-// 		Options: DeathKnightOptions,
-// 	},
-// }
-
-// var PlayerOptionsDesyncFrost = &proto.Player_DeathKnight{
-// 	DeathKnight: &proto.DeathKnight{
-// 		Options: DeathKnightOptions,
-// 	},
-// }
-
-// var DeathKnightOptions = &proto.DeathKnight_Options{
-// 	UnholyFrenzyTarget: &proto.UnitReference{Type: proto.UnitReference_Player, Index: 0},
-// 	DrwPestiApply:      true,
-// 	StartingRunicPower: 0,
-// 	PetUptime:          1,
-// }
-
-// var FullConsumes = &proto.Consumes{
-// 	Flask:         proto.Flask_FlaskOfEndlessRage,
-// 	DefaultPotion: proto.Potions_PotionOfSpeed,
-// 	PrepopPotion:  proto.Potions_PotionOfSpeed,
-// 	Food:          proto.Food_FoodDragonfinFilet,
-// }
-
-// var ItemFilter = core.ItemFilter{
-// 	ArmorType: proto.ArmorType_ArmorTypePlate,
-
-// 	WeaponTypes: []proto.WeaponType{
-// 		proto.WeaponType_WeaponTypeAxe,
-// 		proto.WeaponType_WeaponTypeSword,
-// 		proto.WeaponType_WeaponTypeMace,
-// 	},
-// }
+	WeaponTypes: []proto.WeaponType{
+		proto.WeaponType_WeaponTypeAxe,
+		proto.WeaponType_WeaponTypeSword,
+		proto.WeaponType_WeaponTypeMace,
+	},
+}
