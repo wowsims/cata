@@ -107,6 +107,7 @@ func (mage *Mage) applyHotStreak() {
 
 	ImprovedHotStreakProcChance := float64(mage.Talents.ImprovedHotStreak) * 0.5
 	BaseHotStreakProcChance := float64(-2.7*(mage.GetStat(stats.SpellCrit)/core.CritRatingPerCritChance)/100 + 0.9) // EJ settled on -2.7*critChance+0.9
+
 	// Unimproved Hot Streak Proc Aura
 	mage.HotStreakAura = mage.RegisterAura(core.Aura{
 		Label:    "Hot Streak",
@@ -134,24 +135,29 @@ func (mage *Mage) applyHotStreak() {
 				return
 			}
 
+			// Pyroblast! cannot trigger hot streak
+			// TODO can Pyroblast! *reset* hot streak crit streak? This implementation assumes no.
+			// If so, will need to envelope it around the hot streak checks
+			if spell == mage.Pyroblast && spell.CurCast.CastTime == 0 {
+				return
+			}
 			// Hot Streak Base Talent Proc
 			if result.DidCrit() && spell.Flags.Matches(HotStreakSpells) {
-				// Pyroblast! cannot trigger hot streak
-				if spell != mage.Pyroblast && spell.CastTimeMultiplier != 0 {
-					if sim.Proc(BaseHotStreakProcChance, "Hot Streak") {
-						if mage.HotStreakAura.IsActive() {
-							mage.HotStreakAura.Refresh(sim)
-						} else {
-							mage.HotStreakAura.Activate(sim)
-						}
+				if sim.Proc(BaseHotStreakProcChance, "Hot Streak") {
+					if mage.HotStreakAura.IsActive() {
+						mage.HotStreakAura.Refresh(sim)
+					} else {
+						mage.HotStreakAura.Activate(sim)
 					}
 				}
+
 			}
 
 			// Improved Hot Streak
 			if mage.Talents.ImprovedHotStreak > 0 {
 
 				// If you didn't crit, reset your crit counter
+
 				if !result.DidCrit() {
 					mage.hotStreakCritAura.SetStacks(sim, 0)
 					mage.hotStreakCritAura.Deactivate(sim)
