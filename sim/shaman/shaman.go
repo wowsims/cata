@@ -319,6 +319,7 @@ const (
 	SpellMaskFrostShock
 	SpellMaskUnleashFrost
 	SpellMaskUnleashFlame
+	SpellMaskEarthquake
 
 	SpellMaskFlameShock = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
 	SpellMaskFire       = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame
