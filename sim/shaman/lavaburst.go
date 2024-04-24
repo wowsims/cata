@@ -18,7 +18,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 	if isElementalOverload {
 		mask = core.ProcMaskProc
 	}
-	flags := SpellFlagElectric | SpellFlagFocusable
+	flags := SpellFlagFocusable
 	if !isElementalOverload {
 		flags |= core.SpellFlagAPL
 	}
@@ -51,7 +51,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 			},
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.628,
 	}

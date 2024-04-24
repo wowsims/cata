@@ -359,6 +359,7 @@ func DarkIntentAura(unit *Unit, selfBuff bool) *Aura {
 			aura.Unit.MultiplyAttackSpeed(sim, 1/1.03)
 		},
 		OnPeriodicDamageDealt: periodicHandler,
+		BuildPhase:            CharacterBuildPhaseBuffs,
 	})
 }
 

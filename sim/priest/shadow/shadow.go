@@ -136,7 +136,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 	})
 
 	empoweredShadowMod := spriest.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  int64(priest.PriestSpellDoT),
+		ClassMask:  priest.PriestSpellDoT | priest.PriestSpellMindSear,
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.216 + spriest.GetMasteryPoints()*0.0145,
 	})

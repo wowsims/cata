@@ -36,25 +36,37 @@ func (rogue *Rogue) registerRecuperate() {
 			Aura: core.Aura{
 				Label: "Recuperate",
 			},
-			NumberOfTicks: 0, // Decided at cast time
-			TickLength:    time.Second * 3,
+			NumberOfTicks:       0, // Decided at cast time
+			TickLength:          time.Second * 3,
+			AffectedByCastSpeed: false,
+			BonusCoefficient:    1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				rogue.RecuperateAura = dot.Aura
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				// Maybe implement Recup heal?
+				healValue := rogue.MaxHealth() * (.03 + .005*float64(rogue.Talents.ImprovedRecuperate))
+				dot.Spell.CalcAndDealPeriodicHealing(sim, target, healValue, dot.OutcomeTick)
 
 				if rogue.Talents.EnergeticRecovery > 0 {
 					energyRegen := float64(rogue.Talents.EnergeticRecovery) * 4.0
-					rogue.AddEnergy(sim, energyRegen, energeticRecoveryMetrics)
+					// Trigger Energetic Recovery after small delay to prevent aura refresh loops
+					// https://i.gyazo.com/dc845a371102294abfb207c6fd586bfa.png
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt:     sim.CurrentTime + 1,
+						Priority: core.ActionPriorityDOT,
+						OnAction: func(s *core.Simulation) {
+							rogue.AddEnergy(sim, energyRegen, energeticRecoveryMetrics)
+						},
+					})
 				}
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			aura := spell.Hot(spell.Unit)
 			aura.Duration = time.Duration(rogue.ComboPoints()) * time.Second * 6
-			aura.NumberOfTicks = rogue.ComboPoints() * 3
+			aura.NumberOfTicks = rogue.ComboPoints() * 2
 			aura.Activate(sim)
 			rogue.ApplyFinisher(sim, spell)
 		},

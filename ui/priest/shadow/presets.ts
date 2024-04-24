@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profession, RaidBuffs, TristateEffect } from '../../core/proto/common.js';
+import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profession, RaidBuffs, TinkerHands, TristateEffect } from '../../core/proto/common.js';
 import {
 	PriestPrimeGlyph as PrimeGlyph,
 	PriestMajorGlyph as MajorGlyph,
@@ -9,11 +9,13 @@ import {
 } from '../../core/proto/priest.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import DefaultApl from './apls/default.apl.json';
+import PreRaidGear from './gear_sets/preraid.gear.json';
 import P1Gear from './gear_sets/p1.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
+export const PRE_RAID = PresetUtils.makePresetGear('Pre Raid', PreRaidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
@@ -49,6 +51,7 @@ export const DefaultConsumes = Consumes.create({
 	food: Food.FoodSeafoodFeast,
 	defaultPotion: Potions.VolcanicPotion,
 	prepopPotion: Potions.VolcanicPotion,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -70,6 +73,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	vampiricTouch: true,
+	darkIntent: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
@@ -84,8 +88,9 @@ export const DefaultDebuffs = Debuffs.create({
 });
 
 export const OtherDefaults = {
-	channelClipDelay: 100,
+	channelClipDelay: 40,
 	distanceFromTarget: 20,
-	profession1: Profession.Enchanting,
+	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
+	darkIntentUptime: 100,
 };

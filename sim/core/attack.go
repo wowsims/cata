@@ -627,6 +627,14 @@ func (aa *AutoAttacks) StopMeleeUntil(sim *Simulation, readyAt time.Duration, de
 		sim.rescheduleWeaponAttack(aa.oh.swingAt)
 	}
 }
+func (aa *AutoAttacks) StopRangedUntil(sim *Simulation, readyAt time.Duration) {
+	if !aa.AutoSwingRanged { // if not auto swinging, don't auto restart.
+		return
+	}
+
+	aa.ranged.swingAt = readyAt + aa.ranged.curSwingDuration
+	sim.rescheduleWeaponAttack(aa.ranged.swingAt)
+}
 
 // Delays all swing timers for the specified amount. Only used by Slam.
 func (aa *AutoAttacks) DelayMeleeBy(sim *Simulation, delay time.Duration) {
@@ -639,6 +647,26 @@ func (aa *AutoAttacks) DelayMeleeBy(sim *Simulation, delay time.Duration) {
 
 	if aa.IsDualWielding {
 		aa.oh.swingAt += delay
+		sim.rescheduleWeaponAttack(aa.oh.swingAt)
+	}
+}
+
+// PauseMeleeBy will prevent any swing from completing for the specified time.
+// This replicates a /stopattack and /startattack with a brief "pause" in the middle.
+// It's possible that no swing time is lost if the pauseTime is less than the remaining swing time.
+// Used by Rogue Gouge
+func (aa *AutoAttacks) PauseMeleeBy(sim *Simulation, pauseTime time.Duration) {
+	if !aa.AutoSwingMelee {
+		return
+	}
+
+	timeToResume := sim.CurrentTime + pauseTime
+	if aa.mh.swingAt < timeToResume {
+		aa.mh.swingAt = timeToResume
+		sim.rescheduleWeaponAttack(aa.mh.swingAt)
+	}
+	if aa.IsDualWielding && aa.oh.swingAt < timeToResume {
+		aa.oh.swingAt = timeToResume
 		sim.rescheduleWeaponAttack(aa.oh.swingAt)
 	}
 }

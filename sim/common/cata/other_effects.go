@@ -235,6 +235,10 @@ func init() {
 					Timer:    sharedCD,
 					Duration: time.Second * 20,
 				},
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				dummyAura.Deactivate(sim)
@@ -295,7 +299,7 @@ func init() {
 
 		sharedCD := character.GetOffensiveTrinketCD()
 		trinketSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{ItemID: 59461},
+			ActionID:    core.ActionID{ItemID: 59514},
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete,
