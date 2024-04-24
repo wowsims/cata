@@ -254,7 +254,7 @@ export const PhysicalDamageDebuff = InputHelpers.makeMultiIconInput(
 export const SpellDamageDebuff = InputHelpers.makeMultiIconInput(
 	[
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(51160), fieldName: 'ebonPlaguebringer' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(48506), fieldName: 'earthAndMoon' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(60433), fieldName: 'earthAndMoon' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(1490), fieldName: 'curseOfElements' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(58410), fieldName: 'masterPoisoner' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(34889), fieldName: 'fireBreath' }),
