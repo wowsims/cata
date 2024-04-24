@@ -10,7 +10,7 @@ func (dk *DeathKnight) DiseasesAreActive(target *core.Unit) bool {
 	return dk.FrostFeverSpell.Dot(target).IsActive() || dk.BloodPlagueSpell.Dot(target).IsActive()
 }
 
-func (dk *DeathKnight) CountActiveDiseases(target *core.Unit) float64 {
+func (dk *DeathKnight) GetDiseaseMulti(target *core.Unit, base float64, increase float64) float64 {
 	count := 0
 	if dk.FrostFeverSpell.Dot(target).IsActive() {
 		count++
@@ -21,7 +21,7 @@ func (dk *DeathKnight) CountActiveDiseases(target *core.Unit) float64 {
 	if dk.Talents.EbonPlaguebringer > 0 && dk.EbonPlagueAura.Get(target).IsActive() {
 		count++
 	}
-	return float64(count)
+	return base + increase*float64(count)
 }
 
 func (dk *DeathKnight) registerOutbreak() {

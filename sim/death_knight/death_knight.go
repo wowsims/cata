@@ -231,6 +231,8 @@ const (
 	DeathKnightSpellPlagueStrike
 	DeathKnightSpellFesteringStrike
 	DeathKnightSpellScourgeStrike
+	DeathKnightSpellHeartStrike
+	DeathKnightSpellDeathStrike
 	DeathKnightSpellScourgeStrikeShadow
 	DeathKnightSpellFrostFever
 	DeathKnightSpellBloodPlague

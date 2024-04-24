@@ -37,14 +37,19 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 	// Scent of Blood
 	dk.applyScentOfBlood()
 
-	// Blood Parasite
-	dk.applyBloodworms()
+	//Toughness
+	if dk.Talents.Toughness > 0 {
+		dk.ApplyEquipScaling(stats.Armor, []float64{0.03, 0.06, 0.1}[dk.Talents.Toughness])
+	}
 
 	// Abomination's Might
 	if dk.Talents.AbominationsMight > 0 {
 		strengthCoeff := 0.01 * float64(dk.Talents.AbominationsMight)
 		dk.MultiplyStat(stats.Strength, 1.0+strengthCoeff)
 	}
+
+	// Blood Parasite
+	dk.applyBloodworms()
 
 	// Will of the Necropolis
 	dk.applyWillOfTheNecropolis()
@@ -91,10 +96,6 @@ func (dk *DeathKnight) applyScentOfBlood() {
 		Duration:  core.NeverExpires,
 		MaxStacks: dk.Talents.ScentOfBlood,
 
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.SetStacks(sim, aura.MaxStacks)
-		},
-
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
 				return
@@ -110,6 +111,7 @@ func (dk *DeathKnight) applyScentOfBlood() {
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if sim.Proc(procChance, "Scent Of Blood Proc Chance") {
 				procAura.Activate(sim)
+				procAura.SetStacks(sim, procAura.MaxStacks)
 			}
 		},
 	}))
