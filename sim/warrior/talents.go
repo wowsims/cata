@@ -53,25 +53,38 @@ func (warrior *Warrior) applyWarMachine() {
 	})
 }
 
+const battleTranceAffectedSpellsMask = SpellMaskCleave |
+	SpellMaskColossusSmash |
+	SpellMaskExecute |
+	SpellMaskHeroicStrike |
+	SpellMaskHeroicThrow |
+	SpellMaskOverpower |
+	SpellMaskRend |
+	SpellMaskRevenge |
+	SpellMaskShatteringThrow |
+	SpellMaskSlam |
+	SpellMaskSunderArmor |
+	SpellMaskThunderClap |
+	SpellMaskWhirlwind |
+	SpellMaskShieldSlam |
+	SpellMaskConcussionBlow |
+	SpellMaskDevastate |
+	SpellMaskShockwave |
+	SpellMaskVictoryRush |
+	SpellMaskBloodthirst |
+	SpellMaskRagingBlow |
+	SpellMaskMortalStrike |
+	SpellMaskBladestorm
+
 func (warrior *Warrior) applyBattleTrance() {
 	if warrior.Talents.BattleTrance == 0 {
 		return
 	}
 
-	var affectedSpellMask int64 = 0
-	for _, spell := range warrior.Spellbook {
-		if spell.DefaultCast.Cost > 5 && (spell.ClassSpellMask&SpellMaskSpecialAttack) != 0 {
-			affectedSpellMask |= spell.ClassSpellMask
-		}
-	}
-
-	// mask off the special attack bit so we don't accidentally match against everything
-	affectedSpellMask &= ^SpellMaskSpecialAttack
-
 	btMod := warrior.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  affectedSpellMask,
-		Kind:       core.SpellMod_PowerCost_Flat,
-		FloatValue: -5,
+		ClassMask:  battleTranceAffectedSpellsMask,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -1.0,
 	})
 
 	actionID := core.ActionID{SpellID: 12964}
@@ -86,7 +99,7 @@ func (warrior *Warrior) applyBattleTrance() {
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Battle Trance affects the spells that proc it, so make sure we don't eat the proc with the same attack
 			// that just proced it
-			if (spell.ClassSpellMask&affectedSpellMask) != 0 && lastTriggertime != int64(sim.CurrentTime) {
+			if (spell.ClassSpellMask&battleTranceAffectedSpellsMask) != 0 && lastTriggertime != int64(sim.CurrentTime) {
 				aura.Deactivate(sim)
 			}
 		},
