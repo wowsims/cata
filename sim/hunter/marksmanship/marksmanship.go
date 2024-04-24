@@ -50,10 +50,9 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != hunter.AutoAttacks.RangedAuto() {
+			if spell != hunter.AutoAttacks.RangedAuto() && spell.ProcMask != core.ProcMaskRangedSpecial {
 				return
 			}
-
 			procChance := 0.168 + (hunter.CalculateMasteryPoints() * 0.021) // Todo: Is this right scaling?
 			if sim.RandomFloat("Wild Quiver") < procChance {
 				wqSpell.Cast(sim, result.Target)
@@ -86,8 +85,6 @@ func (mmHunter *MarksmanshipHunter) Initialize() {
 
 type MarksmanshipHunter struct {
 	*hunter.Hunter
-
-	aimedShotTimer *core.Timer
 }
 
 func (mmHunter *MarksmanshipHunter) GetHunter() *hunter.Hunter {

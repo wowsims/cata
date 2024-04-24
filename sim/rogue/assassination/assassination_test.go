@@ -17,7 +17,7 @@ func TestAssassination(t *testing.T) {
 		Class:       proto.Class_ClassRogue,
 		Race:        proto.Race_RaceHuman,
 		OtherRaces:  []proto.Race{proto.Race_RaceOrc},
-		GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p1_assassination"),
+		GearSet:     core.GetGearSet("../../../ui/rogue/assassination/gear_sets", "p1_assassination_test"),
 		Talents:     AssassinationTalents,
 		Glyphs:      AssassinationGlyphs,
 		Consumes:    FullConsumes,
@@ -27,7 +27,7 @@ func TestAssassination(t *testing.T) {
 			{Label: "MH Instant OH Instant", SpecOptions: PlayerOptionsAssassinationII},
 			{Label: "MH Deadly OH Deadly", SpecOptions: PlayerOptionsAssassinationDD},
 		},
-		Rotation:       core.GetAplRotation("../../../ui/rogue/apls", "mutilate"),
+		Rotation:       core.GetAplRotation("../../../ui/rogue/assassination/apls", "mutilate"),
 		OtherRotations: []core.RotationCombo{},
 		ItemFilter: core.ItemFilter{
 			ArmorType: proto.ArmorType_ArmorTypeLeather,
@@ -35,10 +35,10 @@ func TestAssassination(t *testing.T) {
 				proto.RangedWeaponType_RangedWeaponTypeBow,
 				proto.RangedWeaponType_RangedWeaponTypeCrossbow,
 				proto.RangedWeaponType_RangedWeaponTypeGun,
+				proto.RangedWeaponType_RangedWeaponTypeThrown,
 			},
 			WeaponTypes: []proto.WeaponType{
 				proto.WeaponType_WeaponTypeDagger,
-				proto.WeaponType_WeaponTypeFist,
 			},
 		},
 	}))

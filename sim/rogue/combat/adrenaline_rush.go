@@ -36,7 +36,7 @@ func (comRogue *CombatRogue) registerAdrenalineRushCD() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: time.Second,
+				GCD: 0,
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{

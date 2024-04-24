@@ -1,7 +1,6 @@
 package shaman
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -9,35 +8,30 @@ import (
 )
 
 func (shaman *Shaman) registerUnleashFlame() {
-	var affectedSpells []*core.Spell
+
+	spellMask := SpellMaskLavaBurst | SpellMaskFlameShock | SpellMaskFireNova
+
+	unleashFlameMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  spellMask,
+		FloatValue: 0.2 * (1 + 0.25*float64(shaman.Talents.ElementalWeapons)),
+	})
 
 	unleashFlameAura := shaman.RegisterAura(core.Aura{
 		Label:    "Unleash Flame",
 		ActionID: core.ActionID{SpellID: 73683},
 		Duration: time.Second * 8,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// You can cast flame shock as lava burst lands and get the benefit for both spells
-			affectedSpells = core.FilterSlice([]*core.Spell{
-				shaman.LavaBurst,  // only if the aura is up when lava burst is cast
-				shaman.FlameShock, // intial hit and dot
-				shaman.FireNova,
-			}, func(spell *core.Spell) bool { return spell != nil })
-		},
+
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplier *= 1.2
-			}
+			unleashFlameMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplier /= 1.2
-			}
+			unleashFlameMod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains(affectedSpells, spell) {
-				return
+			if spellMask&spell.ClassSpellMask > 0 {
+				aura.Deactivate(sim)
 			}
-			aura.Deactivate(sim)
 		},
 	})
 
@@ -72,17 +66,19 @@ func (shaman *Shaman) registerUnleashFrost() {
 
 func (shaman *Shaman) registerUnleashWind() {
 
+	speedMultiplier := 1 + 0.4*(1+0.25*float64(shaman.Talents.ElementalWeapons))
+
 	unleashWindAura := shaman.RegisterAura(core.Aura{
 		Label:     "Unleash Wind",
 		ActionID:  core.ActionID{SpellID: 73681},
 		Duration:  time.Second * 12,
 		MaxStacks: 6,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, 1.4)
+			shaman.MultiplyMeleeSpeed(sim, speedMultiplier)
 			aura.SetStacks(sim, aura.MaxStacks)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, 1/1.4)
+			shaman.MultiplyMeleeSpeed(sim, 1/speedMultiplier)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if aura.GetStacks() > 0 && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
