@@ -307,6 +307,7 @@ const (
 	MageSpellLivingBombDot
 	MageSpellManaGems
 	MageSpellMirrorImage
+	MageSpellPresenceOfMind
 	MageSpellPyroblast
 	MageSpellPyroblastDot
 	MageSpellScorch
