@@ -15,7 +15,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 	// Scaled parameters for spell code
 	avgBaseDamage := coefficient * SpellScalingConstant
 	damageSpread := variance * avgBaseDamage
-	minBaseDamage := avgBaseDamage - damageSpread / 2
+	minBaseDamage := avgBaseDamage - damageSpread/2
 	dmgPerComboPoint := resourceCoefficient * SpellScalingConstant
 	scalingPerComboPoint := 0.125
 	ripRefreshChance := 0.5 * float64(druid.Talents.BloodInTheWater)
@@ -27,8 +27,8 @@ func (druid *Druid) registerFerociousBiteSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:          25,
-			Refund:        0.8,
+			Cost:   25,
+			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -40,7 +40,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 			return druid.ComboPoints() > 0
 		},
 
-		BonusCritRating: core.TernaryFloat64(druid.AssumeBleedActive, []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear] * core.CritRatingPerCritChance, 0),
+		BonusCritRating:  core.TernaryFloat64(druid.AssumeBleedActive, []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear]*core.CritRatingPerCritChance, 0),
 		DamageMultiplier: 1 + 0.05*float64(druid.Talents.FeralAggression),
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
@@ -54,7 +54,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 				sim.RandomFloat("Ferocious Bite")*damageSpread +
 				dmgPerComboPoint*comboPoints +
 				attackPower*scalingPerComboPoint*comboPoints
-			baseDamage *= 1.0 + excessEnergy / 25
+			baseDamage *= 1.0 + excessEnergy/25
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
@@ -78,7 +78,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 			// Assume no excess Energy spend, let the user handle that
 			comboPoints := float64(druid.ComboPoints())
 			attackPower := spell.MeleeAttackPower()
-			baseDamage := avgBaseDamage + comboPoints * (dmgPerComboPoint + attackPower * scalingPerComboPoint)
+			baseDamage := avgBaseDamage + comboPoints*(dmgPerComboPoint+attackPower*scalingPerComboPoint)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
 			critChance := spell.PhysicalCritChance(attackTable)

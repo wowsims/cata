@@ -43,9 +43,9 @@ export const DefaultOptions = RogueOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfSpeed,
-	prepopPotion: Potions.PotionOfSpeed,
+	defaultPotion: Potions.PotionOfTheTolvir,
+	prepopPotion: Potions.PotionOfTheTolvir,
 	defaultConjured: Conjured.ConjuredRogueThistleTea,
-	flask: Flask.FlaskOfEndlessRage,
-	food: Food.FoodMegaMammothMeal,
+	flask: Flask.FlaskOfTheWinds,
+	food: Food.FoodSkeweredEel,
 });

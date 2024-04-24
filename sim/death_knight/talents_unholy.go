@@ -99,7 +99,14 @@ func (dk *DeathKnight) applyContagion() {
 
 func (dk *DeathKnight) applyRunicEmpowerementCorruption() {
 	var handler func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult)
+
 	if dk.Talents.RunicCorruption > 0 {
+		dk.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_RunicPowerCost_Flat,
+			ClassMask:  DeathKnightSpellDeathCoil,
+			FloatValue: -3.0 * float64(dk.Talents.RunicCorruption),
+		})
+
 		multi := 1.0 + float64(dk.Talents.RunicCorruption)*0.5
 		// Runic Corruption gives rune regen speed
 		regenAura := dk.GetOrRegisterAura(core.Aura{

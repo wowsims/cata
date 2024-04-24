@@ -219,7 +219,7 @@ func CurseOfElementsAura(target *Unit) *Aura {
 func EarthAndMoonAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Earth And Moon",
-		ActionID: ActionID{SpellID: 48511},
+		ActionID: ActionID{SpellID: 60433},
 		Duration: time.Second * 12,
 	})
 	spellDamageEffect(aura, 1.08)

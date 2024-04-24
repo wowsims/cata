@@ -15,10 +15,11 @@ func (hunter *Hunter) registerKillCommandSpell() {
 	actionID := core.ActionID{SpellID: 34026}
 
 	hunter.KillCommand = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMelee,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMelee,
+		ClassSpellMask: HunterSpellKillCommand,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 40 - core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfKillCommand), 3, 0), // Todo: Check if changed by other stuff
@@ -32,7 +33,8 @@ func (hunter *Hunter) registerKillCommandSpell() {
 				Duration: time.Second * 6,
 			},
 		},
-		DamageMultiplierAdditive: 1 + (float64(hunter.Talents.ImprovedKillCommand) * 0.05),
+		BonusCritRating:          core.CritRatingPerCritChance * (float64(hunter.Talents.ImprovedKillCommand) * 0.05),
+		DamageMultiplierAdditive: 1,
 		CritMultiplier:           hunter.CritMultiplier(false, false, false),
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
