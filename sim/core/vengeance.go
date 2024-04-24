@@ -50,7 +50,7 @@ func UpdateVengeance(sim *Simulation, character *Character, tracker *VengeanceTr
 
 	// Vengeance tooltip is wrong in sake of simplicity as stated by blizzard
 	// Actual formula used is Stamina + 10% of Base HP
-	apBonusMax := character.GetStat(stats.Stamina) + 0.1*character.MaxHealth()
+	apBonusMax := character.GetStat(stats.Stamina) + 0.1*character.baseStats[stats.Health]
 	tracker.apBonus = Clamp(tracker.apBonus, 0, apBonusMax)
 
 	tracker.recentMaxAPBonus = math.Max(tracker.apBonus, tracker.recentMaxAPBonus)

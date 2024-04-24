@@ -62,7 +62,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P2_BLOOD_PRESET.gear,
+		gear: Presets.P1_BLOOD_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -152,15 +152,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 
 	presets: {
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.BLOOD_IT_SPAM_ROTATION_PRESET_DEFAULT, Presets.BLOOD_AGGRO_ROTATION_PRESET_DEFAULT],
+		rotations: [
+			Presets.BLOOD_P1_ROTATION_PRESET_DEFAULT
+		],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.BloodTalents, Presets.BloodAggroTalents, Presets.DoubleBuffBloodTalents],
+		talents: [
+			Presets.BloodTalents
+		],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_BLOOD_PRESET, Presets.P2_BLOOD_PRESET, Presets.P3_BLOOD_PRESET, Presets.P4_BLOOD_PRESET],
+		gear: [
+			Presets.P1_BLOOD_PRESET
+		],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBloodDeathKnight>): APLRotation => {
-		return Presets.BLOOD_IT_SPAM_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		return Presets.BLOOD_P1_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -178,15 +184,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_BLOOD_PRESET.gear,
-					2: Presets.P2_BLOOD_PRESET.gear,
-					3: Presets.P3_BLOOD_PRESET.gear,
-					4: Presets.P4_BLOOD_PRESET.gear,
+					2: Presets.P1_BLOOD_PRESET.gear,
+					3: Presets.P1_BLOOD_PRESET.gear,
+					4: Presets.P1_BLOOD_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_BLOOD_PRESET.gear,
-					2: Presets.P2_BLOOD_PRESET.gear,
-					3: Presets.P3_BLOOD_PRESET.gear,
-					4: Presets.P4_BLOOD_PRESET.gear,
+					2: Presets.P1_BLOOD_PRESET.gear,
+					3: Presets.P1_BLOOD_PRESET.gear,
+					4: Presets.P1_BLOOD_PRESET.gear,
 				},
 			},
 		},
