@@ -10,11 +10,12 @@ func (dk *DeathKnight) registerIceboundFortitudeSpell() {
 	actionID := core.ActionID{SpellID: 48792}
 
 	dmgTakenMult := 0.8 - 0.15*float64(dk.Talents.SanguineFortitude)
+	hasSet := dk.HasSetBonus(ItemSetMagmaPlatedBattlearmor, 4)
 
 	aura := dk.RegisterAura(core.Aura{
 		Label:    "Icebound Fortitude",
 		ActionID: actionID,
-		Duration: time.Second * 12,
+		Duration: core.TernaryDuration(hasSet, time.Second*18, time.Second*12),
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= dmgTakenMult

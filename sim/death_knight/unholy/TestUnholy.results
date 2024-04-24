@@ -1022,6 +1022,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-MagmaPlatedBattlearmor"
+ value: {
+  dps: 28048.16351
+  tps: 19753.65164
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-MagmaPlatedBattlegear"
  value: {
   dps: 30471.01433
