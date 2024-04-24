@@ -39,7 +39,8 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	if shaman.Spec == proto.Spec_SpecEnhancementShaman {
 		shaman.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*6)
 		shaman.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.55)
-		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.4)
+		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.0)
+		shaman.AddStatDependency(stats.Strength, stats.AttackPower, 1.0)
 		shaman.PseudoStats.CanParry = true
 	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
 		shaman.AddStatDependency(stats.Agility, stats.AttackPower, 2.0)
