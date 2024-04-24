@@ -13,12 +13,12 @@ func (mage *Mage) registerArcaneBlastSpell() {
 	abDamageMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellArcaneBlast | MageSpellArcaneExplosion,
 		FloatValue: abDamageScalar,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 	})
 	abCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellArcaneBlast | MageSpellArcaneExplosion,
 		FloatValue: 1.5,
-		Kind:       core.SpellMod_PowerCost_Pct,
+		Kind:       core.SpellMod_PowerCost_Flat,
 	})
 	abCastMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask: MageSpellArcaneBlast,
