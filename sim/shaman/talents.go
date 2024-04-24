@@ -126,8 +126,24 @@ func (shaman *Shaman) applyElementalFocus() {
 		return
 	}
 
+	affectedSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | SpellMaskEarthShock | SpellMaskFlameShock | SpellMaskFrostShock
+	costReductionMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  affectedSpells,
+		FloatValue: -0.4,
+	})
+
 	oathBonus := 0.05 * float64(shaman.Talents.ElementalOath)
-	var affectedSpells []*core.Spell
+	oathMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
+		FloatValue: oathBonus,
+	})
+	oathModEarthquake := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  SpellMaskEarthquake,
+		FloatValue: oathBonus,
+	})
 
 	// TODO: fix this.
 	// Right now: Set to 3 so that the spell that cast it consumes a charge down to expected 2.
@@ -135,49 +151,20 @@ func (shaman *Shaman) applyElementalFocus() {
 	maxStacks := int32(3)
 
 	// TODO: need to check for additional spells that benefit from the cost reduction
-	// TODO: the damage bonus may apply to more spells now need to check how this works
-	// I tested on beta and totems like magma benefit from the spell bonus
 	clearcastingAura := shaman.RegisterAura(core.Aura{
 		Label:     "Clearcasting",
 		ActionID:  core.ActionID{SpellID: 16246},
 		Duration:  time.Second * 15,
 		MaxStacks: maxStacks,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice([]*core.Spell{
-				shaman.LightningBolt,
-				shaman.ChainLightning,
-				shaman.LavaBurst,
-				shaman.FireNova,
-				shaman.EarthShock,
-				shaman.FlameShock,
-				shaman.FrostShock,
-			}, func(spell *core.Spell) bool { return spell != nil })
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.CostMultiplier -= 0.4
-			}
-			if oathBonus > 0 {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1 + oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1 + oathBonus
-				if shaman.Earthquake != nil {
-					shaman.Earthquake.DamageMultiplierAdditive += oathBonus
-				}
-			}
+			costReductionMod.Activate()
+			oathMod.Activate()
+			oathModEarthquake.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.CostMultiplier += 0.4
-			}
-			if oathBonus > 0 {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= 1 + oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1 + oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= 1 + oathBonus
-				if shaman.Earthquake != nil {
-					shaman.Earthquake.DamageMultiplierAdditive -= oathBonus
-				}
-			}
+			costReductionMod.Deactivate()
+			oathMod.Deactivate()
+			oathModEarthquake.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || spell.ActionID.Tag == 6 {
