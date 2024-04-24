@@ -95,7 +95,7 @@ export const DefaultDebuffs = Debuffs.create({
 	frostFever: true,
 	judgement: true,
 });
-	
+
 export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
