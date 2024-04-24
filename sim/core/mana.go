@@ -48,6 +48,9 @@ func (character *Character) EnableManaBarWithModifier(modifier float64) {
 	// Starting with cataclysm 1 intellect now provides 1 spell power
 	character.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
 
+	// first 10 int should not count so remove them
+	character.AddStat(stats.SpellPower, -10)
+
 	if character.Unit.Type == PlayerUnit {
 		// Every caster gains 1% crit per 648.91
 		// Pets have different scaling so let them handle their scaling

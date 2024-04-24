@@ -76,7 +76,7 @@ func (priest *Priest) ApplyTalents() {
 	// Mental Agillity
 	if priest.Talents.MentalAgility > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
-			ClassMask:  PriestSpellsAll,
+			ClassMask:  PriestSpellInstant,
 			FloatValue: -0.04 * float64(priest.Talents.MentalAgility),
 			Kind:       core.SpellMod_PowerCost_Pct,
 		})
