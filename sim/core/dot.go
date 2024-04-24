@@ -21,7 +21,8 @@ type DotConfig struct {
 	TickLength    time.Duration // time between each tick
 
 	// If true, tick length will be shortened based on casting speed.
-	AffectedByCastSpeed bool
+	AffectedByCastSpeed  bool
+	HasteAffectsDuration bool
 
 	OnSnapshot OnSnapshot
 	OnTick     OnTick
@@ -40,7 +41,8 @@ type Dot struct {
 	TickLength    time.Duration // time between each tick
 
 	// If true, tick length will be shortened based on casting speed.
-	AffectedByCastSpeed bool
+	AffectedByCastSpeed  bool
+	HasteAffectsDuration bool
 
 	OnSnapshot OnSnapshot
 	OnTick     OnTick
@@ -208,7 +210,7 @@ func (dot *Dot) RecomputeAuraDuration() {
 		// cata haste logic here for dots
 		// channels seem not to be affected by the same logic
 		// see: https://youtu.be/Rr4YyKaU7Ik?si=Isuce7Z1bQWMWpMi&t=53
-		if !dot.isChanneled {
+		if !dot.isChanneled && !dot.HasteAffectsDuration {
 			dot.NumberOfTicks = int32(round(float64(dot.GetBaseDuration()) / float64(dot.tickPeriod)))
 		}
 
@@ -345,10 +347,11 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 	dot := Dot{
 		Spell: config.Spell,
 
-		NumberOfTicks:       config.NumberOfTicks,
-		BaseTickCount:       config.NumberOfTicks,
-		TickLength:          config.TickLength,
-		AffectedByCastSpeed: config.AffectedByCastSpeed,
+		NumberOfTicks:        config.NumberOfTicks,
+		BaseTickCount:        config.NumberOfTicks,
+		TickLength:           config.TickLength,
+		AffectedByCastSpeed:  config.AffectedByCastSpeed,
+		HasteAffectsDuration: config.HasteAffectsDuration,
 
 		OnSnapshot: config.OnSnapshot,
 		OnTick:     config.OnTick,

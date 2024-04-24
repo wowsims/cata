@@ -298,6 +298,8 @@ const (
 		PriestSpellShadowWordPain |
 		PriestSpellMindFlay |
 		PriestSpellMindBlast |
+		PriestSpellMindSear |
+		PriestSpellMindSpike |
 		PriestSpellVampiricTouch
 )
 

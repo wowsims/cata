@@ -66,6 +66,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	displayStats: [
 		Stat.StatHealth,
 		Stat.StatStamina,
+		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatIntellect,
 		Stat.StatAttackPower,

@@ -546,6 +546,21 @@ func (priest *Priest) applyMindMelt() {
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
 
+	mindMeltSWDMod := priest.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  PriestSpellShadowWordDeath,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.3,
+	})
+
+	priest.RegisterResetEffect(func(s *core.Simulation) {
+		mindMeltSWDMod.Deactivate()
+		s.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
+			if isExecute == 25 {
+				mindMeltSWDMod.Activate()
+			}
+		})
+	})
+
 	procAura := priest.RegisterAura(core.Aura{
 		Label:     "Mind Melt Proc",
 		ActionID:  core.ActionID{SpellID: 87160},
