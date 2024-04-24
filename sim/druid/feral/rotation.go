@@ -207,7 +207,7 @@ func (cat *FeralDruid) tfExpectedBefore(sim *core.Simulation, futureTime time.Du
 
 func (cat *FeralDruid) calcTfEnergyThresh(leewayTime time.Duration) float64 {
 	delayTime := leewayTime + core.TernaryDuration(cat.ClearcastingAura.IsActive(), time.Second, 0)
-	return 40.0 - delayTime.Seconds() * cat.EnergyRegenPerSecond()
+	return 40.0 - delayTime.Seconds()*cat.EnergyRegenPerSecond()
 }
 
 func (cat *FeralDruid) TryTigersFury(sim *core.Simulation) {
@@ -312,13 +312,13 @@ func (cat *FeralDruid) calcRipClipThreshold(ripDot *core.Dot, tfActive bool, fig
 	}
 
 	// Likewise, if the existing TF buff will still be up at the start of the normal window, then don't clip unnecessarily
-	if cat.TigersFuryAura.ExpiresAt() > ripDot.ExpiresAt() - ripDot.TickLength + cat.ReactionTime {
+	if cat.TigersFuryAura.ExpiresAt() > ripDot.ExpiresAt()-ripDot.TickLength+cat.ReactionTime {
 		return ripDot.TickLength
 	}
 
-	buffedTickCount := min(cat.maxRipTicks, int32(fightLengthRemaining / ripDot.TickLength))
+	buffedTickCount := min(cat.maxRipTicks, int32(fightLengthRemaining/ripDot.TickLength))
 	equivalentTicksGained := int32(0.15 * float64(buffedTickCount))
-	return ripDot.TickLength * time.Duration(1 + equivalentTicksGained)
+	return ripDot.TickLength * time.Duration(1+equivalentTicksGained)
 }
 
 func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
@@ -354,12 +354,12 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	// Delay Rip refreshes if Tiger's Fury will be usable soon enough for the snapshot to outweigh the lost Rip ticks from waiting
 	if ripNow && !tfActive {
-		buffedTickCount := min(cat.maxRipTicks, int32((simTimeRemain - finalTickLeeway) / ripDot.TickLength))
-		delayBreakpoint := finalTickLeeway + core.DurationFromSeconds(0.15 * float64(buffedTickCount) * ripDot.TickLength.Seconds())
+		buffedTickCount := min(cat.maxRipTicks, int32((simTimeRemain-finalTickLeeway)/ripDot.TickLength))
+		delayBreakpoint := finalTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*ripDot.TickLength.Seconds())
 
-		if cat.tfExpectedBefore(sim, sim.CurrentTime + delayBreakpoint) {
+		if cat.tfExpectedBefore(sim, sim.CurrentTime+delayBreakpoint) {
 			delaySeconds := delayBreakpoint.Seconds()
-			energyToDump := curEnergy + delaySeconds * regenRate - cat.calcTfEnergyThresh(cat.ReactionTime)
+			energyToDump := curEnergy + delaySeconds*regenRate - cat.calcTfEnergyThresh(cat.ReactionTime)
 			secondsToDump := math.Ceil(energyToDump / cat.Shred.DefaultCast.Cost)
 
 			if secondsToDump < delaySeconds {
