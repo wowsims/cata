@@ -47,7 +47,30 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	// base_focus_regen_per_second *= 1.0 + o -> talents.bestial_discipline -> effect1().percent();
 	baseFocusPerSecond := 24.5 / 4.0
 	baseFocusPerSecond *= 1.0 + (0.10 * float64(hunter.Talents.BestialDiscipline))
-	hp.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), baseFocusPerSecond, false)
+
+	WHFocusIncreaseMod := hp.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Flat,
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		FloatValue: float64(hp.Talents().WildHunt) * 12.5,
+	})
+
+	WHDamageMod := hp.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		FloatValue: float64(hp.Talents().WildHunt) * 0.6,
+	})
+
+	hp.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {
+		if hp.Talents().WildHunt > 0 {
+			if focus >= 50 {
+				WHFocusIncreaseMod.Activate()
+				WHDamageMod.Activate()
+			} else {
+				WHFocusIncreaseMod.Deactivate()
+				WHDamageMod.Deactivate()
+			}
+		}
+	})
 
 	atkSpd := 2 / (1 + 0.05*float64(hp.Talents().SerpentSwiftness))
 	// Todo: Change for Cataclysm
@@ -70,7 +93,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	hp.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
 
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	//hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/243.6)
+	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/324.72)
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
 
 	hunter.AddPet(hp)
