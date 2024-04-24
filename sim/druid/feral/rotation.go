@@ -305,6 +305,22 @@ func (cat *FeralDruid) postRotation(sim *core.Simulation, nextAction time.Durati
 	}
 }
 
+func (cat *FeralDruid) calcRipClipThreshold(ripDot *core.Dot, tfActive bool, fightLengthRemaining time.Duration) time.Duration {
+	// If we're not gaining a new Tiger's Fury snapshot, then use the standard 1 tick refresh window
+	if !tfActive || cat.RipTfSnapshot {
+		return ripDot.TickLength
+	}
+
+	// Likewise, if the existing TF buff will still be up at the start of the normal window, then don't clip unnecessarily
+	if cat.TigersFuryAura.ExpiresAt() > ripDot.ExpiresAt() - ripDot.TickLength + cat.ReactionTime {
+		return ripDot.TickLength
+	}
+
+	buffedTickCount := min(cat.maxRipTicks, int32(fightLengthRemaining / ripDot.TickLength))
+	equivalentTicksGained := int32(0.15 * float64(buffedTickCount))
+	return ripDot.TickLength * time.Duration(1 + equivalentTicksGained)
+}
+
 func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	// Store state variables for re-use
 	rotation := &cat.Rotation
@@ -320,6 +336,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	isBleedActive := cat.AssumeBleedActive || ripDot.IsActive() || rakeDot.IsActive() || lacerateDot.IsActive()
 	regenRate := cat.EnergyRegenPerSecond()
 	isExecutePhase := rotation.BiteDuringExecute && sim.IsExecutePhase25()
+	tfActive := cat.TigersFuryAura.IsActive()
 
 	// Prioritize using Rip with omen procs if bleed isnt active
 	ripCcCheck := core.Ternary(isBleedActive, !isClearcast, true)
@@ -331,8 +348,25 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	baseEndThresh := cat.calcRipEndThresh(sim)
 	finalTickLeeway := core.TernaryDuration(ripDot.IsActive(), ripDot.TimeUntilNextTick(sim), 0)
 	endThreshForClip := baseEndThresh + finalTickLeeway
-	ripNow := (curCp >= rotation.MinCombosForRip) && (!ripDot.IsActive() || ((ripDot.RemainingDuration(sim) < ripDot.TickLength) && !isExecutePhase)) && (simTimeRemain >= endThreshForClip) && ripCcCheck
+	ripClipThresh := cat.calcRipClipThreshold(ripDot, tfActive, simTimeRemain)
+	ripNow := (curCp >= rotation.MinCombosForRip) && (!ripDot.IsActive() || ((ripDot.RemainingDuration(sim) < ripClipThresh) && !isExecutePhase)) && (simTimeRemain >= endThreshForClip) && ripCcCheck
 	biteAtEnd := (curCp >= rotation.MinCombosForBite) && ((simTimeRemain < endThreshForClip) || (ripDot.IsActive() && (simTimeRemain-ripDot.RemainingDuration(sim) < baseEndThresh)))
+
+	// Delay Rip refreshes if Tiger's Fury will be usable soon enough for the snapshot to outweigh the lost Rip ticks from waiting
+	if ripNow && !tfActive {
+		buffedTickCount := min(cat.maxRipTicks, int32((simTimeRemain - finalTickLeeway) / ripDot.TickLength))
+		delayBreakpoint := finalTickLeeway + core.DurationFromSeconds(0.15 * float64(buffedTickCount) * ripDot.TickLength.Seconds())
+
+		if cat.tfExpectedBefore(sim, sim.CurrentTime + delayBreakpoint) {
+			delaySeconds := delayBreakpoint.Seconds()
+			energyToDump := curEnergy + delaySeconds * regenRate - cat.calcTfEnergyThresh(cat.ReactionTime)
+			secondsToDump := math.Ceil(energyToDump / cat.Shred.DefaultCast.Cost)
+
+			if secondsToDump < delaySeconds {
+				ripNow = false
+			}
+		}
+	}
 
 	// Clip Mangle if it won't change the total number of Mangles we have to
 	// cast before the fight ends.
@@ -355,23 +389,6 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	// usage to maximize the total Energy expenditure we can get.
 	if biteNow && cat.BerserkAura.IsActive() {
 		biteNow = curEnergy <= rotation.BerserkBiteThresh
-	}
-
-	// Delay Rip refreshes if Tiger's Fury will be usable soon enough for the snapshot to outweigh the lost Rip ticks from waiting
-	if (ripNow || (biteNow && isExecutePhase)) && !cat.TigersFuryAura.IsActive() {
-		buffedTickCount := min(cat.maxRipTicks, int32((simTimeRemain - finalTickLeeway) / ripDot.TickLength))
-		delayBreakpoint := finalTickLeeway + core.DurationFromSeconds(0.15 * float64(buffedTickCount) * ripDot.TickLength.Seconds())
-
-		if cat.tfExpectedBefore(sim, sim.CurrentTime + delayBreakpoint) {
-			delaySeconds := delayBreakpoint.Seconds()
-			energyToDump := curEnergy + delaySeconds * regenRate - cat.calcTfEnergyThresh(cat.ReactionTime)
-			secondsToDump := math.Ceil(energyToDump / cat.Shred.DefaultCast.Cost)
-
-			if secondsToDump < delaySeconds {
-				ripNow = false
-				biteNow = false
-			}
-		}
 	}
 
 	// Ignore minimum CP enforcement during Execute phase if Rip is about to fall off
