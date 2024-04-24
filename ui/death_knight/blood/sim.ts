@@ -58,9 +58,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		Stat.StatMeleeHaste,
 		Stat.StatDodge,
 		Stat.StatParry,
-		Stat.StatNatureResistance,
-		Stat.StatShadowResistance,
-		Stat.StatFrostResistance,
+		Stat.StatMastery,
 	],
 	defaults: {
 		// Default equipped gear.
@@ -125,8 +123,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: BloodInputs.BloodDeathKnightRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
-	excludeBuffDebuffInputs: [],
+	includeBuffDebuffInputs: [
+		BuffDebuffInputs.SpellDamageDebuff
+	],
+	excludeBuffDebuffInputs: [
+		BuffDebuffInputs.SpellHasteBuff
+	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [

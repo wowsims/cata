@@ -50,8 +50,11 @@ func (dk *DeathKnight) ApplyGlyphs() {
 			ClassSpellMask: DeathKnightSpellDeathStrike,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				dsMod.UpdateFloatValue(min(0.4, (dk.CurrentRunicPower()/5.0)*0.02))
-				dsMod.Activate()
 			},
+		})
+
+		dk.RegisterResetEffect(func(s *core.Simulation) {
+			dsMod.Activate()
 		})
 	}
 

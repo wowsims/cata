@@ -18,7 +18,10 @@ func (dk *DeathKnight) GetDiseaseMulti(target *core.Unit, base float64, increase
 	if dk.BloodPlagueSpell.Dot(target).IsActive() {
 		count++
 	}
-	if dk.Talents.EbonPlaguebringer > 0 && dk.EbonPlagueAura.Get(target).IsActive() {
+	if dk.EbonPlagueAura.Get(target).IsActive() {
+		count++
+	}
+	if dk.ScarletFeverAura.Get(target).IsActive() {
 		count++
 	}
 	return base + increase*float64(count)

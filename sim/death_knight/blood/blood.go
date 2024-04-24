@@ -70,7 +70,7 @@ func (bdk *BloodDeathKnight) Initialize() {
 	bdk.registerHeartStrikeSpell()
 }
 
-func (bdk BloodDeathKnight) getMasteryBonus() float64 {
+func (bdk BloodDeathKnight) getBloodShieldMasteryBonus() float64 {
 	return 0.5 + 0.0625*bdk.GetMasteryPoints()
 }
 
@@ -94,9 +94,61 @@ func (bdk *BloodDeathKnight) ApplyTalents() {
 	core.ApplyVengeanceEffect(&bdk.Character, bdk.vengeance, 93099)
 
 	// Mastery: Blood Shield
+	shieldAmount := 0.0
+	currentShield := 0.0
+	shieldSpell := bdk.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 77535},
+		ProcMask:    core.ProcMaskSpellHealing,
+		SpellSchool: core.SpellSchoolPhysical,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		Shield: core.ShieldConfig{
+			SelfOnly: true,
+			Aura: core.Aura{
+				Label:    "Blood Shield",
+				Duration: core.NeverExpires,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if currentShield < bdk.MaxHealth() {
+				shieldAmount = min(shieldAmount, bdk.MaxHealth()-currentShield)
+				currentShield += shieldAmount
+				spell.SelfShield().Apply(sim, shieldAmount)
+			}
+		},
+	})
 	core.MakePermanent(bdk.GetOrRegisterAura(core.Aura{
-		Label:    "Blood Shield",
+		Label:    "Mastery: Blood Shield",
 		ActionID: core.ActionID{SpellID: 77513},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
+				return
+			}
+
+			if currentShield <= 0 || result.Damage <= 0 {
+				return
+			}
+
+			damageReduced := min(result.Damage, currentShield)
+			currentShield -= damageReduced
+
+			bdk.GainHealth(sim, damageReduced, shieldSpell.HealthMetrics(result.Target))
+
+			if currentShield <= 0 {
+				shieldSpell.SelfShield().Deactivate(sim)
+			}
+		},
+		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask&death_knight.DeathKnightSpellDeathStrikeHeal == 0 {
+				return
+			}
+
+			shieldAmount = result.Damage * bdk.getBloodShieldMasteryBonus()
+			shieldSpell.Cast(sim, result.Target)
+		},
 	}))
 
 }
