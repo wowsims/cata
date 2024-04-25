@@ -24,6 +24,7 @@ socketToMatchingColors.set(GemColor.GemColorPrismatic, [
 	GemColor.GemColorPurple,
 	GemColor.GemColorPrismatic,
 ]);
+socketToMatchingColors.set(GemColor.GemColorCogwheel, [GemColor.GemColorCogwheel]);
 
 export function gemColorMatchesSocket(gemColor: GemColor, socketColor: GemColor) {
 	return gemColor == socketColor || (socketToMatchingColors.has(socketColor) && socketToMatchingColors.get(socketColor)!.includes(gemColor));
@@ -36,7 +37,14 @@ export function gemMatchesSocket(gem: Gem, socketColor: GemColor) {
 
 // Whether the gem is capable of slotting into a socket of the given color.
 export function gemEligibleForSocket(gem: Gem, socketColor: GemColor) {
-	return (gem.color == GemColor.GemColorMeta) == (socketColor == GemColor.GemColorMeta);
+	switch (socketColor) {
+		case GemColor.GemColorMeta:
+			return gem.color == GemColor.GemColorMeta;
+		case GemColor.GemColorCogwheel:
+			return gem.color == GemColor.GemColorCogwheel;
+		default:
+			return gem.color != GemColor.GemColorMeta && gem.color != GemColor.GemColorCogwheel;
+	}
 }
 
 export function isUnrestrictedGem(gem: Gem, phase?: number): boolean {
@@ -216,6 +224,7 @@ const emptyGemSocketIcons: Partial<Record<GemColor, string>> = {
 	[GemColor.GemColorRed]: 'https://wow.zamimg.com/images/icons/socket-red.gif',
 	[GemColor.GemColorYellow]: 'https://wow.zamimg.com/images/icons/socket-yellow.gif',
 	[GemColor.GemColorPrismatic]: 'https://wow.zamimg.com/images/icons/socket-prismatic.gif',
+	[GemColor.GemColorCogwheel]: 'https://wow.zamimg.com/images/icons/socket-cogwheel.gif',
 };
 export function getEmptyGemSocketIconUrl(color: GemColor): string {
 	if (emptyGemSocketIcons[color])

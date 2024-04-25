@@ -61,6 +61,7 @@ func (druid *Druid) registerRipSpell() {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
+					druid.RipTfSnapshot = druid.TigersFuryAura.IsActive()
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -112,7 +113,7 @@ func (druid *Druid) CurrentRipCost() float64 {
 func (druid *Druid) ApplyBloodletting(target *core.Unit) {
 	ripDot := druid.Rip.Dot(target)
 
-	if ripDot.IsActive() && (ripDot.NumberOfTicks < RipBaseNumTicks + 3) {
+	if ripDot.IsActive() && (ripDot.NumberOfTicks < RipBaseNumTicks+3) {
 		ripDot.NumberOfTicks += 1
 		ripDot.RecomputeAuraDuration()
 		ripDot.UpdateExpires(ripDot.ExpiresAt() + time.Second*2)

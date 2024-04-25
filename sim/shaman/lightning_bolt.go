@@ -19,7 +19,7 @@ func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		result := shaman.calcDamageStormstrikeCritChance(sim, target, 770, spell)
 
-		if result.Landed() && sim.RandomFloat("Lightning Bolt Elemental Overload") < shaman.GetOverloadChance() {
+		if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Lightning Bolt Elemental Overload") {
 			shaman.LightningBoltOverload.Cast(sim, target)
 		}
 

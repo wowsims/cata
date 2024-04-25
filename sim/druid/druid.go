@@ -28,6 +28,7 @@ type Druid struct {
 	BleedsActive      int
 	AssumeBleedActive bool
 	LeatherSpecActive bool
+	RipTfSnapshot     bool
 
 	MHAutoSpell       *core.Spell
 	ReplaceBearMHFunc core.ReplaceMHSwing

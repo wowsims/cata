@@ -10,32 +10,39 @@ import (
 const presenceEffectCategory = "Presence"
 
 func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
-	threatMult := 4.0
+	threatMult := 5.0
 	armorScaling := 1.55
 	damageTakenMult := 1 / 1.08
 	stamDep := dk.NewDynamicMultiplyStat(stats.Stamina, 1.08)
 	runicMulti := 1.0 + 0.02*float64(dk.Talents.ImprovedFrostPresence)
+	critReduction := 0.03 * float64(dk.Talents.ImprovedBloodPresence)
 
 	actionID := core.ActionID{SpellID: 48263}
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
+
+	runeRegenSpeed := 1.0 + 0.1*float64(dk.Talents.ImprovedBloodPresence)
 
 	presenceAura := dk.GetOrRegisterAura(core.Aura{
 		Label:    "Blood Presence",
 		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.ReducedCritTakenChance += critReduction
 			aura.Unit.PseudoStats.ThreatMultiplier *= threatMult
 			aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMult
 			aura.Unit.EnableDynamicStatDep(sim, stamDep)
 			dk.ApplyDynamicEquipScaling(sim, stats.Armor, armorScaling)
 			dk.MultiplyRunicRegen(runicMulti)
+			dk.MultiplyRuneRegenSpeed(sim, runeRegenSpeed)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.ReducedCritTakenChance -= critReduction
 			aura.Unit.PseudoStats.ThreatMultiplier /= threatMult
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= damageTakenMult
 			aura.Unit.DisableDynamicStatDep(sim, stamDep)
 			dk.RemoveDynamicEquipScaling(sim, stats.Armor, armorScaling)
 			dk.MultiplyRunicRegen(1 / runicMulti)
+			dk.MultiplyRuneRegenSpeed(sim, 1/runeRegenSpeed)
 		},
 	})
 	presenceAura.NewExclusiveEffect(presenceEffectCategory, true, core.ExclusiveEffect{})

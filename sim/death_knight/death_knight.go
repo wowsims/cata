@@ -62,6 +62,7 @@ type DeathKnight struct {
 	FrostFeverSpell  *core.Spell
 	BloodPlagueSpell *core.Spell
 	EbonPlagueAura   core.AuraArray
+	ScarletFeverAura core.AuraArray
 }
 
 func (dk *DeathKnight) GetCharacter() *core.Character {
@@ -117,6 +118,12 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerPillarOfFrostSpell()
 	dk.registerPestilenceSpell()
 	dk.registerBloodBoilSpell()
+	dk.registerRuneStrikeSpell()
+	dk.registerDeathStrikeSpell()
+	dk.registerRuneTapSpell()
+	dk.registerVampiricBloodSpell()
+	dk.registerIceboundFortitudeSpell()
+	dk.registerBoneShieldSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -231,6 +238,8 @@ const (
 	DeathKnightSpellPlagueStrike
 	DeathKnightSpellFesteringStrike
 	DeathKnightSpellScourgeStrike
+	DeathKnightSpellHeartStrike
+	DeathKnightSpellDeathStrike
 	DeathKnightSpellScourgeStrikeShadow
 	DeathKnightSpellFrostFever
 	DeathKnightSpellBloodPlague
@@ -239,6 +248,12 @@ const (
 	DeathKnightSpellPillarOfFrost
 	DeathKnightSpellPestilence
 	DeathKnightSpellBloodBoil
+	DeathKnightSpellRuneTap
+	DeathKnightSpellVampiricBlood
+	DeathKnightSpellIceboundFortitude
+	DeathKnightSpellBoneShield
+
+	DeathKnightSpellDeathStrikeHeal // Heal spell for DS
 
 	DeathKnightSpellKillingMachine     // Used to react to km procs
 	DeathKnightSpellConvertToDeathRune // Used to react to death rune gains
