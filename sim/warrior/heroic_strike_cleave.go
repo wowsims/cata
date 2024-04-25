@@ -26,12 +26,8 @@ func (warrior *Warrior) RegisterHeroicStrikeSpell() {
 			DefaultCast: core.Cast{
 				GCD: 0,
 			},
-			SharedCD: core.Cooldown{
-				Timer:    warrior.hsCleaveCD,
-				Duration: cdDuration,
-			},
 			CD: core.Cooldown{
-				Timer:    warrior.NewTimer(),
+				Timer:    warrior.hsCleaveCD,
 				Duration: cdDuration,
 			},
 		},
@@ -75,12 +71,8 @@ func (warrior *Warrior) RegisterCleaveSpell() {
 			DefaultCast: core.Cast{
 				GCD: 0,
 			},
-			SharedCD: core.Cooldown{
-				Timer:    warrior.hsCleaveCD,
-				Duration: cdDuration,
-			},
 			CD: core.Cooldown{
-				Timer:    warrior.NewTimer(),
+				Timer:    warrior.hsCleaveCD,
 				Duration: cdDuration,
 			},
 		},

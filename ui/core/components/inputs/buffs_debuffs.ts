@@ -69,7 +69,7 @@ export const DamagePercentBuff = InputHelpers.makeMultiIconInput(
 	'+3% Dmg',
 );
 
-// TODO: Look at these, what we want and how to structure them for multiple available 
+// TODO: Look at these, what we want and how to structure them for multiple available
 // export const DefensiveCooldownBuff = InputHelpers.makeMultiIconInput(
 // 	[
 // 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(6940), numStates: 11, fieldName: 'handOfSacrifices' }),
@@ -202,11 +202,11 @@ export const MajorArmorDebuff = InputHelpers.makeMultiIconInput(
 
 export const DamageReduction = InputHelpers.makeMultiIconInput(
 	[
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26016), fieldName: 'vindication' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26016), fieldName: 'curseOfWeakness' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26016), fieldName: 'demoralizingRoar' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26016), fieldName: 'scarletFever' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26016), fieldName: 'demoralizingShout' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(26017), fieldName: 'vindication' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(702), fieldName: 'curseOfWeakness' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(99), fieldName: 'demoralizingRoar' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(81130), fieldName: 'scarletFever' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(1160), fieldName: 'demoralizingShout' }),
 	],
 	'-Dmg %',
 );
@@ -254,7 +254,7 @@ export const PhysicalDamageDebuff = InputHelpers.makeMultiIconInput(
 export const SpellDamageDebuff = InputHelpers.makeMultiIconInput(
 	[
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(51160), fieldName: 'ebonPlaguebringer' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(48506), fieldName: 'earthAndMoon' }),
+		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(60433), fieldName: 'earthAndMoon' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(1490), fieldName: 'curseOfElements' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(58410), fieldName: 'masterPoisoner' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(34889), fieldName: 'fireBreath' }),

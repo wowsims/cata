@@ -47,7 +47,30 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	// base_focus_regen_per_second *= 1.0 + o -> talents.bestial_discipline -> effect1().percent();
 	baseFocusPerSecond := 24.5 / 4.0
 	baseFocusPerSecond *= 1.0 + (0.10 * float64(hunter.Talents.BestialDiscipline))
-	hp.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), baseFocusPerSecond, false)
+
+	WHFocusIncreaseMod := hp.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Flat,
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		FloatValue: float64(hp.Talents().WildHunt) * 12.5,
+	})
+
+	WHDamageMod := hp.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		FloatValue: float64(hp.Talents().WildHunt) * 0.6,
+	})
+
+	hp.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {
+		if hp.Talents().WildHunt > 0 {
+			if focus >= 50 {
+				WHFocusIncreaseMod.Activate()
+				WHDamageMod.Activate()
+			} else {
+				WHFocusIncreaseMod.Deactivate()
+				WHDamageMod.Deactivate()
+			}
+		}
+	})
 
 	atkSpd := 2 / (1 + 0.05*float64(hp.Talents().SerpentSwiftness))
 	// Todo: Change for Cataclysm
@@ -152,13 +175,20 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 		// https://web.archive.org/web/20120112003252/http://elitistjerks.com/f80/t100099-demonology_releasing_demon_you
 
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
-			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.425,
-			stats.Agility:     ownerStats[stats.Agility],
-			stats.MeleeHit:    ownerStats[stats.MeleeHit],
-			stats.Expertise:   ownerStats[stats.MeleeHit] * PetExpertiseScale,
-			stats.SpellHit:    ownerStats[stats.MeleeHit],
+			stats.Stamina:           ownerStats[stats.Stamina] * 0.3,
+			stats.Armor:             ownerStats[stats.Armor] * 0.35,
+			stats.AttackPower:       ownerStats[stats.RangedAttackPower] * 0.425,
+			stats.RangedAttackPower: ownerStats[stats.RangedAttackPower] * 0.40,
+
+			stats.MeleeHit:  ownerStats[stats.MeleeHit],
+			stats.Expertise: ownerStats[stats.MeleeHit] * PetExpertiseScale,
+			stats.SpellHit:  ownerStats[stats.MeleeHit],
+
+			stats.MeleeCrit: ownerStats[stats.MeleeCrit],
+			stats.SpellCrit: ownerStats[stats.MeleeCrit],
+
+			stats.MeleeHaste: ownerStats[stats.MeleeHaste],
+			stats.SpellHaste: ownerStats[stats.MeleeHaste],
 		}
 	}
 }

@@ -14,7 +14,14 @@ func (hp *HunterPet) ApplyTalents() {
 
 	hp.AddStat(stats.MeleeCrit, 3*core.CritRatingPerCritChance*float64(talents.SpidersBite))
 	hp.AddStat(stats.SpellCrit, 3*core.CritRatingPerCritChance*float64(talents.SpidersBite))
-	hp.PseudoStats.DamageDealtMultiplier *= 1 + 0.03*float64(talents.SpikedCollar)
+
+	if talents.SpikedCollar > 0 {
+		hp.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  HunterPetFocusDump,
+			FloatValue: 0.03 * float64(talents.SpikedCollar),
+		})
+	}
 	hp.PseudoStats.DamageDealtMultiplier *= 1 + 0.03*float64(talents.SharkAttack)
 
 	hp.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 1 - 0.05*float64(talents.GreatResistance)

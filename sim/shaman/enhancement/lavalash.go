@@ -37,30 +37,40 @@ func (enh *EnhancementShaman) registerLavaLashSpell() {
 		CritMultiplier:   enh.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			searingFlames := enh.SearingFlames.Dot(target)
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			baseDamage *= 1 + 0.1*float64(enh.Talents.ImprovedLavaLash)*float64(searingFlames.GetStacks())
+			searingFlamesBounus := 1.0
+
+			var searingFlames *core.Dot
+
+			if enh.Talents.SearingFlames > 0 {
+				searingFlames = enh.SearingFlames.Dot(target)
+				searingFlamesBounus += 0.1 * float64(enh.Talents.ImprovedLavaLash) * float64(searingFlames.GetStacks())
+			}
+
+			baseDamage *= searingFlamesBounus
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {
 				return
 			}
 
-			if searingFlames.GetStacks() > 0 {
-				numberSpread := 0
-				maxTargets := 4
-				for _, otherTarget := range sim.Encounter.TargetUnits {
-					if otherTarget != target {
-						enh.FlameShock.Cast(sim, otherTarget)
-						numberSpread++
+			if enh.Talents.SearingFlames > 0 {
+				if searingFlames.GetStacks() > 0 {
+					numberSpread := 0
+					maxTargets := 4
+					for _, otherTarget := range sim.Encounter.TargetUnits {
+						if otherTarget != target {
+							enh.FlameShock.Cast(sim, otherTarget)
+							numberSpread++
+						}
+
+						if numberSpread >= maxTargets {
+							return
+						}
 					}
 
-					if numberSpread >= maxTargets {
-						return
-					}
+					searingFlames.SetStacks(sim, 0)
 				}
-
-				searingFlames.SetStacks(sim, 0)
 			}
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

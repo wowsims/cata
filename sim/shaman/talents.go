@@ -19,6 +19,15 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.Expertise, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))
 
+	if shaman.Talents.Concussion > 0 {
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask: SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload |
+				SpellMaskThunderstorm | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskEarthShock | SpellMaskFlameShock | SpellMaskFrost,
+			Kind:       core.SpellMod_DamageDone_Flat,
+			FloatValue: 0.02 * float64(shaman.Talents.Concussion),
+		})
+	}
+
 	if shaman.Talents.Toughness > 0 {
 		shaman.MultiplyStat(stats.Stamina, []float64{1.0, 1.03, 1.07, 1.1}[shaman.Talents.Toughness])
 	}
@@ -33,25 +42,13 @@ func (shaman *Shaman) ApplyTalents() {
 	if shaman.Talents.CallOfFlame > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskLavaBurst,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.05 * float64(shaman.Talents.CallOfFlame),
 		})
 
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskSearingTotem,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskMagmaTotem,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskFireNova,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  SpellMaskSearingTotem | SpellMaskMagmaTotem | SpellMaskFireNova,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.10 * float64(shaman.Talents.CallOfFlame),
 		})
 	}
@@ -61,15 +58,17 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.LavaFlows > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskFlameShock,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  SpellMaskFlameShockDot,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.20 * float64(shaman.Talents.LavaFlows),
 		})
+		/* TODO: Use if CritMultiplier_Flat gets added
 		shaman.AddStaticMod(core.SpellModConfig{
 			ClassMask:  SpellMaskLavaBurst | SpellMaskLavaBurstOverload,
-			Kind:       core.SpellMod_CritMultiplier_Pct,
+			Kind:       core.SpellMod_CritMultiplier_Flat,
 			FloatValue: 0.08 * float64(shaman.Talents.LavaFlows),
 		})
+		*/
 	}
 
 	shaman.applyFulmination()
@@ -94,20 +93,8 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.ImprovedShields > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskLightningShield,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskFulmination,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
-		})
-
-		shaman.AddStaticMod(core.SpellModConfig{
-			ClassMask:  SpellMaskEarthShield,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  SpellMaskLightningShield | SpellMaskFulmination | SpellMaskEarthShield,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.05 * float64(shaman.Talents.ImprovedShields),
 		})
 	}
@@ -139,8 +126,24 @@ func (shaman *Shaman) applyElementalFocus() {
 		return
 	}
 
-	oathBonus := 1 + 0.05*float64(shaman.Talents.ElementalOath)
-	var affectedSpells []*core.Spell
+	affectedSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | SpellMaskEarthShock | SpellMaskFlameShock | SpellMaskFrostShock
+	costReductionMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  affectedSpells,
+		FloatValue: -0.4,
+	})
+
+	oathBonus := 0.05 * float64(shaman.Talents.ElementalOath)
+	oathMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
+		FloatValue: oathBonus,
+	})
+	oathModEarthquake := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  SpellMaskEarthquake,
+		FloatValue: oathBonus,
+	})
 
 	// TODO: fix this.
 	// Right now: Set to 3 so that the spell that cast it consumes a charge down to expected 2.
@@ -148,49 +151,20 @@ func (shaman *Shaman) applyElementalFocus() {
 	maxStacks := int32(3)
 
 	// TODO: need to check for additional spells that benefit from the cost reduction
-	// TODO: the damage bonus may apply to more spells now need to check how this works
-	// I tested on beta and totems like magma benefit from the spell bonus
 	clearcastingAura := shaman.RegisterAura(core.Aura{
 		Label:     "Clearcasting",
 		ActionID:  core.ActionID{SpellID: 16246},
 		Duration:  time.Second * 15,
 		MaxStacks: maxStacks,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice([]*core.Spell{
-				shaman.LightningBolt,
-				shaman.ChainLightning,
-				shaman.LavaBurst,
-				shaman.FireNova,
-				shaman.EarthShock,
-				shaman.FlameShock,
-				shaman.FrostShock,
-			}, func(spell *core.Spell) bool { return spell != nil })
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.CostMultiplier -= 0.4
-			}
-			if oathBonus > 1 {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= oathBonus
-				if shaman.Earthquake != nil {
-					shaman.Earthquake.DamageMultiplierAdditive += 0.05
-				}
-			}
+			costReductionMod.Activate()
+			oathMod.Activate()
+			oathModEarthquake.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.CostMultiplier += 0.4
-			}
-			if oathBonus > 1 {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= oathBonus
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] /= oathBonus
-				if shaman.Earthquake != nil {
-					shaman.Earthquake.DamageMultiplierAdditive -= 0.05
-				}
-			}
+			costReductionMod.Deactivate()
+			oathMod.Deactivate()
+			oathModEarthquake.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || spell.ActionID.Tag == 6 {
@@ -243,6 +217,7 @@ func (shaman *Shaman) applyRollingThunder() {
 				// 	if spell == allowedSpell {
 				if sim.RandomFloat("Rolling Thunder") < 0.3*float64(shaman.Talents.RollingThunder) {
 					shaman.AddMana(sim, 0.02*shaman.MaxMana(), manaMetrics)
+					shaman.LightningShieldAura.Refresh(sim)
 					shaman.LightningShieldAura.AddStack(sim)
 				}
 				//  }
@@ -260,7 +235,7 @@ func (shaman *Shaman) applyFulmination() {
 		ActionID:       core.ActionID{SpellID: 88767},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskProc,
-		Flags:          SpellFlagElectric | SpellFlagFocusable,
+		Flags:          SpellFlagFocusable,
 		ClassSpellMask: SpellMaskFulmination,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0,
@@ -272,11 +247,10 @@ func (shaman *Shaman) applyFulmination() {
 			},
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(shaman.Talents.Concussion),
+		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
-		BonusCoefficient: 0.267,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			totalDamage := 350 * (float64(shaman.LightningShieldAura.GetStacks()) - 3)
+			totalDamage := (390.7 + 0.267*spell.SpellPower()) * (float64(shaman.LightningShieldAura.GetStacks()) - 3)
 			result := spell.CalcDamage(sim, target, totalDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)
 		},
@@ -319,22 +293,31 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	cdTimer := shaman.NewTimer()
 	cd := time.Minute * 3
 
+	damageMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		School:     core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
+		FloatValue: 0.15,
+	})
+
 	buffAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery Buff",
 		ActionID: core.ActionID{SpellID: 64701},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1.20)
-			// This is updated for the new elemental mastery this says fire/frost/nature damage increased by 15%.
-			// In beta this looks like it is applying to magma totem even if you use it after searing totem is dropped.
-			// It is not doing the same for fire elemental totem
-			// need to look into how this multiplier works and if it is affecting totems
-			shaman.PseudoStats.DamageDealtMultiplier *= 1.15
+			damageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1 / 1.20)
-			shaman.PseudoStats.DamageDealtMultiplier /= 1.18
+			damageMod.Deactivate()
 		},
+	})
+
+	affectedSpells := SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskLightningBolt
+	castTimeMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  affectedSpells,
+		FloatValue: -1,
 	})
 
 	emAura := shaman.RegisterAura(core.Aura{
@@ -342,23 +325,18 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		ActionID: eleMasterActionID,
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.ChainLightning.CastTimeMultiplier -= 1
-			shaman.LavaBurst.CastTimeMultiplier -= 1
-			shaman.LightningBolt.CastTimeMultiplier -= 1
+			castTimeMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.ChainLightning.CastTimeMultiplier += 1
-			shaman.LavaBurst.CastTimeMultiplier += 1
-			shaman.LightningBolt.CastTimeMultiplier += 1
+			castTimeMod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != shaman.LightningBolt && spell != shaman.ChainLightning && spell != shaman.LavaBurst {
-				return
+			if spell.ClassSpellMask&affectedSpells > 0 {
+				// Remove the buff and put skill on CD
+				aura.Deactivate(sim)
+				cdTimer.Set(sim.CurrentTime + cd)
+				shaman.UpdateMajorCooldowns()
 			}
-			// Remove the buff and put skill on CD
-			aura.Deactivate(sim)
-			cdTimer.Set(sim.CurrentTime + cd)
-			shaman.UpdateMajorCooldowns()
 		},
 	})
 
@@ -594,7 +572,7 @@ func (shaman *Shaman) applySearingFlames() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).ApplyOrReset(sim)
+			spell.Dot(target).Apply(sim)
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 		},
 	})

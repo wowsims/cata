@@ -56,7 +56,7 @@ export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Sim
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const StandardTalents = {
-	name: 'Standard',
+	name: 'Mono-Cat',
 	data: SavedTalents.create({
 		talentsString: '-2320322312012121202301-020301',
 		glyphs: Glyphs.create({
@@ -68,6 +68,24 @@ export const StandardTalents = {
 			major3: DruidMajorGlyph.GlyphOfRebirth,
 			minor1: DruidMinorGlyph.GlyphOfDash,
 			minor2: DruidMinorGlyph.GlyphOfMarkOfTheWild,
+			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		}),
+	}),
+};
+
+export const HybridTalents = {
+	name: 'Hybrid',
+	data: SavedTalents.create({
+		talentsString: '-2300322312310001220311-020331',
+		glyphs: Glyphs.create({
+			prime1: DruidPrimeGlyph.GlyphOfRip,
+			prime2: DruidPrimeGlyph.GlyphOfBloodletting,
+			prime3: DruidPrimeGlyph.GlyphOfBerserk,
+			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
+			major2: DruidMajorGlyph.GlyphOfMaul,
+			major3: DruidMajorGlyph.GlyphOfRebirth,
+			minor1: DruidMinorGlyph.GlyphOfDash,
+			minor2: DruidMinorGlyph.GlyphOfChallengingRoar,
 			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
 		}),
 	}),

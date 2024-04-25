@@ -1,5 +1,5 @@
 {"items": [
-        {"id":65099,"enchant":4209,"gems":[68778,52220],"reforging":144},
+        {"id":60202,"enchant":4209,"gems":[68778,52220],"reforging":144},
         {"id":67137,"reforging":151},
         {"id":63449,"enchant":4204,"gems":[52212],"reforging":147},
         {"id":67134,"enchant":4100,"reforging":147},
@@ -15,5 +15,5 @@
         {"id":56394},
         {"id":55066,"enchant":4227,"reforging":144},
         {},
-        {"id":63460,"reforging":147}
+        {"id":63460,"gems":[52212],"reforging":147}
 ]}

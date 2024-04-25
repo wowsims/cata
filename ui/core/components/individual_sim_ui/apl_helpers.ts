@@ -1,5 +1,5 @@
 import { Player, UnitMetadata } from '../../player.js';
-import { APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
+import { APLValueEclipsePhase, APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
 import { ActionID, OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
 import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
@@ -608,6 +608,26 @@ export function stringFieldConfig(field: string, options?: Partial<APLPickerBuil
 			return new AdaptiveStringPicker(parent, player, config);
 		},
 		...(options || {}),
+	};
+}
+
+export function eclipseTypeFieldConfig(field: string): APLPickerBuilderFieldConfig<any, any> {
+	const values = [
+		{ value: APLValueEclipsePhase.LunarPhase, label: 'Lunar' },
+		{ value: APLValueEclipsePhase.SolarPhase, label: 'Solar' },
+		{ value: APLValueEclipsePhase.NeutralPhase, label: 'Neutral' },
+	];
+
+	return {
+		field: field,
+		newValue: () => APLValueRuneType.RuneBlood,
+		factory: (parent, player, config) =>
+			new TextDropdownPicker(parent, player, {
+				...config,
+				defaultLabel: 'Lunar',
+				equals: (a, b) => a == b,
+				values: values,
+			}),
 	};
 }
 

@@ -1844,6 +1844,8 @@ export const orderedResourceTypes: Array<ResourceType> = [
 	ResourceType.ResourceTypeFrostRune,
 	ResourceType.ResourceTypeUnholyRune,
 	ResourceType.ResourceTypeDeathRune,
+	ResourceType.ResourceTypeLunarEnergy,
+	ResourceType.ResourceTypeSolarEnergy,
 ];
 
 export const AL_CATEGORY_HARD_MODE = 'Hard Mode';

@@ -33,6 +33,30 @@ func (hunter *Hunter) registerAspectOfTheHawkSpell() {
 		},
 	})
 }
+func (hunter *Hunter) registerAspectOfTheFoxSpell() {
+	actionID := core.ActionID{SpellID: 82661}
+	// restoreFocus := 2
+
+	// if hunter.Talents.OneWithNature > 0 {
+	// 	restoreFocus += 1 * float64(hunter.Talents.OneWithNature)
+	// }
+
+	hunter.AspectOfTheFoxAura = core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
+		ActionID: actionID,
+		Label:    "Aspect of the Fox",
+	}))
+
+	hunter.applySharedAspectConfig(true, hunter.AspectOfTheFoxAura)
+
+	hunter.AspectOfTheFox = hunter.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		Flags:    core.SpellFlagAPL,
+
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			hunter.AspectOfTheFoxAura.Activate(sim)
+		},
+	})
+}
 
 // Todo: Implement Aspect of the Fox?
 

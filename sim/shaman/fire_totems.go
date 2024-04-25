@@ -6,7 +6,6 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-// TODO: Do the number of ticks needs to be updated when the talent changes? (20%/40% duration)
 func (shaman *Shaman) registerSearingTotemSpell() {
 	shaman.SearingTotem = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 3599},
@@ -26,7 +25,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
-		BonusCoefficient: 0.2,
+		BonusCoefficient: 0.167,
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "SearingTotem",
@@ -37,7 +36,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			NumberOfTicks: int32(40*(1.0+0.20*float64(shaman.Talents.TotemicFocus))) - 1,
 			TickLength:    time.Millisecond * (1500 + 20),
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.Spell.CalcAndDealDamage(sim, target, 90, dot.Spell.OutcomeMagicHitAndCrit)
+				dot.Spell.CalcAndDealDamage(sim, target, sim.Roll(82, 111), dot.Spell.OutcomeMagicHitAndCrit)
 			},
 		},
 
@@ -51,7 +50,6 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 	})
 }
 
-// TODO: Do the number of ticks needs to be updated when the talent changes? (20%/40% duration)
 func (shaman *Shaman) registerMagmaTotemSpell() {
 	shaman.MagmaTotem = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8190},

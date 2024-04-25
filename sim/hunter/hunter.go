@@ -60,6 +60,7 @@ type Hunter struct {
 	TrapWeaveSpell *core.Spell
 
 	AspectOfTheHawkAura           *core.Aura
+	AspectOfTheFoxAura            *core.Aura
 	ImprovedSteadyShotAura        *core.Aura
 	ImprovedSteadyShotAuraCounter *core.Aura
 	LockAndLoadAura               *core.Aura
@@ -86,10 +87,11 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		Talents:   &proto.HunterTalents{},
 		Options:   hunterOptions,
 	}
+
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
 	// Todo: Verify that is is actually 4 focus per second
-	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), 4.0, true)
+	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), 4.0, true, nil)
 
 	hunter.PseudoStats.CanParry = true
 
@@ -116,10 +118,9 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 			spell.DealDamage(sim, result)
 		})
 	}
-	hunter.Pet = hunter.NewHunterPet()
 
 	hunter.AddStatDependencies()
-
+	hunter.Pet = hunter.NewHunterPet()
 	return hunter
 }
 
@@ -127,6 +128,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.AutoAttacks.MHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
 	hunter.AutoAttacks.OHConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
 	hunter.AutoAttacks.RangedConfig().CritMultiplier = hunter.CritMultiplier(false, false, false)
+
 	hunter.FireTrapTimer = hunter.NewTimer()
 
 	hunter.ApplyGlyphs()
@@ -148,6 +150,7 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerTrapLauncher()
 	hunter.registerHuntersMarkSpell()
+	hunter.registerAspectOfTheFoxSpell()
 }
 
 func (hunter *Hunter) AddStatDependencies() {
@@ -210,6 +213,7 @@ const (
 	HunterSpellExplosiveTrap
 	HunterSpellBlackArrow
 	HunterSpellAimedShot
+	HunterPetFocusDump
 )
 
 // Agent is a generic way to access underlying hunter on any of the agents.

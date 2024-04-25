@@ -10,7 +10,7 @@ import (
 type PetAbilityType int
 
 // Pet AI doesn't use abilities immediately, so model this with a 1.6s GCD.
-const PetGCD = time.Millisecond * 1600
+const PetGCD = time.Millisecond * 1200
 
 // Todo: Pet not done
 // Apply Wild Hunt
@@ -117,28 +117,34 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 }
 
 func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell {
+
 	return hp.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		ClassSpellMask: HunterPetFocusDump,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 25,
 		},
 		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Duration: time.Millisecond * 3300,
+				Timer:    hp.NewTimer(),
+			},
 			DefaultCast: core.Cast{
 				GCD: PetGCD,
 			},
 			IgnoreHaste: true,
 		},
-
-		DamageMultiplier: 1,
-		CritMultiplier:   2,
-		ThreatMultiplier: 1,
-
+		DamageMultiplierAdditive: 1,
+		DamageMultiplier:         0.2,
+		CritMultiplier:           2,
+		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(132, 188) + (0.20 * spell.MeleeAttackPower())
+			baseDamage := sim.Roll(132, 188) + spell.RangedAttackPower(target)
+
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
