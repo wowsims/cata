@@ -325,4 +325,5 @@ const (
 	SpellMaskFire       = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame
 	SpellMaskNature     = SpellMaskLightningBolt | SpellMaskLightningBoltOverload | SpellMaskChainLightning | SpellMaskChainLightningOverload | SpellMaskEarthShock | SpellMaskThunderstorm | SpellMaskFulmination
 	SpellMaskFrost      = SpellMaskUnleashFrost | SpellMaskFrostShock
+	SpellMaskOverload   = SpellMaskLavaBurstOverload | SpellMaskLightningBoltOverload | SpellMaskChainLightningOverload
 )

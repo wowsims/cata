@@ -148,7 +148,7 @@ func (shaman *Shaman) applyElementalFocus() {
 	// TODO: fix this.
 	// Right now: Set to 3 so that the spell that cast it consumes a charge down to expected 2.
 	// Correct fix would be to figure out how to make 'onCastComplete' fire before 'onspellhitdealt' without breaking all the other things.
-	maxStacks := int32(3)
+	maxStacks := int32(2)
 
 	// TODO: need to check for additional spells that benefit from the cost reduction
 	clearcastingAura := shaman.RegisterAura(core.Aura{
@@ -167,7 +167,7 @@ func (shaman *Shaman) applyElementalFocus() {
 			oathModEarthquake.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || spell.ActionID.Tag == 6 {
+			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || (spell.ClassSpellMask&(SpellMaskOverload|SpellMaskThunderstorm) != 0) {
 				return
 			}
 			aura.RemoveStack(sim)
@@ -181,7 +181,7 @@ func (shaman *Shaman) applyElementalFocus() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || spell == shaman.Earthquake {
+			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || (spell.ClassSpellMask&(SpellMaskOverload|SpellMaskUnleashFlame) != 0) || spell == shaman.Earthquake {
 				return
 			}
 			if !result.Outcome.Matches(core.OutcomeCrit) {
