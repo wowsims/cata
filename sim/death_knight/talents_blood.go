@@ -50,8 +50,7 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 
 	// Abomination's Might
 	if dk.Talents.AbominationsMight > 0 {
-		strengthCoeff := 0.01 * float64(dk.Talents.AbominationsMight)
-		dk.MultiplyStat(stats.Strength, 1.0+strengthCoeff)
+		dk.MultiplyStat(stats.Strength, 1.0+0.01*float64(dk.Talents.AbominationsMight))
 	}
 
 	// Sanguine Fortitude
@@ -76,6 +75,7 @@ func (dk *DeathKnight) ApplyBloodTalents() {
 			ClassMask:  DeathKnightSpellDeathStrike,
 			FloatValue: 0.4 * float64(dk.Talents.ImprovedDeathStrike),
 		})
+
 		dk.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Flat,
 			ClassMask:  DeathKnightSpellDeathStrikeHeal,
@@ -349,44 +349,56 @@ func (dk *DeathKnight) applyButchery() {
 }
 
 func (dk *DeathKnight) applyBloodworms() {
-	// if dk.Talents.BloodParasite == 0 {
-	// 	return
-	// }
+	if dk.Talents.BloodParasite == 0 {
+		return
+	}
 
-	// procChance := 0.03 * float64(dk.Talents.BloodParasite)
-	// icd := core.Cooldown{
-	// 	Timer:    dk.NewTimer(),
-	// 	Duration: time.Second * 20,
-	// }
+	procChance := 0.05 * float64(dk.Talents.BloodParasite)
+	icd := core.Cooldown{
+		Timer:    dk.NewTimer(),
+		Duration: time.Second * 5,
+	}
 
-	// // For tracking purposes
-	// procSpell := dk.RegisterSpell(core.SpellConfig{
-	// 	ActionID: core.ActionID{SpellID: 49543},
-	// 	ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-	// 		// Summon Bloodworms
-	// 		random := int(math.Round(sim.RandomFloat("Bloodworms count")*2.0)) + 2
-	// 		for i := 0; i < random; i++ {
-	// 			dk.Bloodworm[i].EnableWithTimeout(sim, dk.Bloodworm[i], time.Second*20)
-	// 			dk.Bloodworm[i].CancelGCDTimer(sim)
-	// 		}
-	// 	},
-	// })
+	// For tracking purposes
+	procSpell := dk.RegisterSpell(core.SpellConfig{
+		ActionID: core.ActionID{SpellID: 49542},
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			// Summon Bloodworm
+			i := 0
+			max := len(dk.Bloodworm)
+			for ; i < max; i++ {
+				if !dk.Bloodworm[i].IsActive() {
+					break
+				}
+			}
+			if i == max {
+				// No free worms - increase cap
+				return
+			}
+			dk.Bloodworm[i].EnableWithTimeout(sim, dk.Bloodworm[i], time.Second*20)
+			dk.Bloodworm[i].CancelGCDTimer(sim)
+		},
+	})
 
-	// core.MakePermanent(dk.RegisterAura(core.Aura{
-	// 	Label: "Bloodworms Proc",
-	// 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 		if !spell.ProcMask.Matches(core.ProcMaskMelee) {
-	// 			return
-	// 		}
+	core.MakePermanent(dk.RegisterAura(core.Aura{
+		Label: "Bloodworms Proc",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
 
-	// 		if !icd.IsReady(sim) {
-	// 			return
-	// 		}
+			if !result.Landed() {
+				return
+			}
 
-	// 		if sim.RandomFloat("Bloodworms proc") < procChance {
-	// 			icd.Use(sim)
-	// 			procSpell.Cast(sim, result.Target)
-	// 		}
-	// 	},
-	// }))
+			if !icd.IsReady(sim) {
+				return
+			}
+
+			if sim.RandomFloat("Bloodworms proc") < procChance {
+				icd.Use(sim)
+				procSpell.Cast(sim, result.Target)
+			}
+		},
+	}))
 }

@@ -12,7 +12,7 @@ export const BLOOD_P1_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotatio
 export const BloodTalents = {
 	name: 'Blood',
 	data: SavedTalents.create({
-		talentsString: '03323203132212311321--003',
+		talentsString: '03323200132212311321--033',
 		glyphs: Glyphs.create({
 			prime1: DeathKnightPrimeGlyph.GlyphOfDeathStrike,
 			prime2: DeathKnightPrimeGlyph.GlyphOfHeartStrike,
