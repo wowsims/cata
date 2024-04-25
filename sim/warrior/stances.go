@@ -21,7 +21,7 @@ func (warrior *Warrior) StanceMatches(other Stance) bool {
 }
 
 func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD *core.Timer) *core.Spell {
-	maxRetainedRage := 10.0 + 25*float64(warrior.Talents.TacticalMastery)
+	maxRetainedRage := 25.0 + 25*float64(warrior.Talents.TacticalMastery)
 	actionID := aura.ActionID
 	rageMetrics := warrior.NewRageMetrics(actionID)
 

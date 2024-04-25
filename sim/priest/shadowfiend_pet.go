@@ -21,19 +21,24 @@ type Shadowfiend struct {
 }
 
 var baseStats = stats.Stats{
-	stats.Strength:    314,
-	stats.Agility:     90,
+	stats.Strength:    0,
+	stats.Agility:     0,
 	stats.Stamina:     348,
-	stats.Intellect:   201,
-	stats.AttackPower: -20,
+	stats.Intellect:   350,
+	stats.AttackPower: 350,
 	// with 3% crit debuff, shadowfiend crits around 9-12% (TODO: verify and narrow down)
 	stats.MeleeCrit: 8 * core.CritRatingPerCritChance,
+	stats.Mana:      12295,
 }
 
 func (priest *Priest) NewShadowfiend() *Shadowfiend {
 	shadowfiend := &Shadowfiend{
 		Pet:    core.NewPet("Shadowfiend", &priest.Character, baseStats, priest.shadowfiendStatInheritance(), false, false),
 		Priest: priest,
+	}
+
+	shadowfiend.OnPetEnable = func(sim *core.Simulation) {
+		shadowfiend.AutoAttacks.PauseMeleeBy(sim, time.Duration(1))
 	}
 
 	shadowfiend.DelayInitialInheritance(time.Millisecond * 500)
@@ -86,8 +91,8 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 
 	shadowfiend.EnableAutoAttacks(shadowfiend, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:        221.0,
-			BaseDamageMax:        271.0,
+			BaseDamageMin:        331.5,
+			BaseDamageMax:        406.5,
 			SwingSpeed:           1.5,
 			NormalizedSwingSpeed: 1.5,
 			CritMultiplier:       2,
@@ -96,10 +101,10 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		AutoSwingMelee: true,
 	})
 
-	shadowfiend.AddStatDependency(stats.Strength, stats.AttackPower, 2.0)
+	shadowfiend.AutoAttacks.MHConfig().BonusCoefficient = 0
 
+	shadowfiend.EnableManaBar()
 	core.ApplyPetConsumeEffects(&shadowfiend.Character, priest.Consumes)
-
 	priest.AddPet(shadowfiend)
 
 	return shadowfiend
@@ -107,18 +112,11 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 
 func (priest *Priest) shadowfiendStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		inheritableSP := ownerStats[stats.SpellPower]
-
-		// Shadow fiend gets a "Spell Bonus" that adds bonus damage to each attack
-		// for simplicity, we will just convert this added damage as if it were AP
-		// Spell Bonus SP coefficient: 30%
-		// Spell Bonus Damage coefficient: 106%
-		// Damage to DPS coefficient: 1/1.5 (1.5 speed weapon)
-		// DPS to AP coefficient: 14
-		spellBonusAPEquivalent := inheritableSP * 0.3 * 1.06 * 14 / 1.5
 		return stats.Stats{ //still need to nail down shadow fiend crit scaling, but removing owner crit scaling after further investigation
-			stats.AttackPower: inheritableSP*0.54 + spellBonusAPEquivalent,
 			stats.MeleeCrit:   ownerStats[stats.SpellCrit],
+			stats.Intellect:   (ownerStats[stats.Intellect] - 10) * 0.5333,
+			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
+			stats.AttackPower: 4.9 * (ownerStats[stats.SpellPower] - priest.GetBaseStats()[stats.Intellect] + 10),
 		}
 	}
 }

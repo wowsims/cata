@@ -869,6 +869,9 @@ func (at *auraTracker) GetMetricsProto() []*proto.AuraMetrics {
 type AuraArray []*Aura
 
 func (auras AuraArray) Get(target *Unit) *Aura {
+	if auras == nil {
+		return nil
+	}
 	return auras[target.UnitIndex]
 }
 

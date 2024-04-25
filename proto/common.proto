@@ -264,6 +264,7 @@ enum GemColor {
 	GemColorOrange = 6;
 	GemColorPurple = 7;
 	GemColorPrismatic = 8;
+	GemColorCogwheel = 9;
 }
 
 enum SpellSchool {

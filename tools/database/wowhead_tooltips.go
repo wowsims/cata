@@ -476,7 +476,7 @@ func (item WowheadItemResponse) GetWeaponSpeed() float64 {
 	return 0
 }
 
-var gemColorsRegex = regexp.MustCompile("(Meta|Yellow|Blue|Red) Socket")
+var gemColorsRegex = regexp.MustCompile("(Meta|Yellow|Blue|Red|Cogwheel|Prismatic) Socket")
 
 func (item WowheadItemResponse) GetGemSockets() []proto.GemColor {
 	matches := gemColorsRegex.FindAllStringSubmatch(item.Tooltip, -1)
@@ -564,6 +564,7 @@ var gemSocketColorPatterns = map[proto.GemColor]*regexp.Regexp{
 	proto.GemColor_GemColorPurple:    regexp.MustCompile(`Matches a ((Blue)|(Red)) or ((Blue)|(Red)) [Ss]ocket\.`),
 	proto.GemColor_GemColorGreen:     regexp.MustCompile(`Matches a ((Yellow)|(Blue)) or ((Yellow)|(Blue)) [Ss]ocket\.`),
 	proto.GemColor_GemColorPrismatic: regexp.MustCompile(`(Matches any [Ss]ocket)|(Matches a Red, Yellow or Blue [Ss]ocket)`),
+	proto.GemColor_GemColorCogwheel:  regexp.MustCompile(`Only fits in a Cogwheel socket.`),
 }
 
 func (item WowheadItemResponse) GetSocketColor() proto.GemColor {

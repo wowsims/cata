@@ -11,7 +11,6 @@ import (
 )
 
 func (dk *DeathKnight) ApplyFrostTalents() {
-
 	// Nerves Of Cold Steel
 	if dk.Talents.NervesOfColdSteel > 0 && dk.HasMHWeapon() && dk.HasOHWeapon() {
 		dk.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*float64(dk.Talents.NervesOfColdSteel))

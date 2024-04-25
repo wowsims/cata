@@ -94,7 +94,7 @@ func (hb *healthBar) UpdateMaxHealth(sim *Simulation, bonusHealth float64, metri
 	if bonusHealth >= 0 {
 		hb.GainHealth(sim, bonusHealth, metrics)
 	} else {
-		hb.RemoveHealth(sim, min(-bonusHealth, hb.currentHealth-1)) // Last Stand effects always leave the player with at least 1 HP when they expire
+		hb.RemoveHealth(sim, max(0, min(-bonusHealth, hb.currentHealth-1))) // Last Stand effects always leave the player with at least 1 HP when they expire
 	}
 }
 
@@ -128,10 +128,18 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 				aura.Unit.RemoveHealth(sim, result.Damage)
 
 				if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
-					aura.Unit.Metrics.Died = true
-					if sim.Log != nil {
-						character.Log(sim, "Dead")
-					}
+					// Queue a pending action to let shield effects give health
+					StartDelayedAction(sim, DelayedActionOptions{
+						DoAt: sim.CurrentTime,
+						OnAction: func(s *Simulation) {
+							if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
+								aura.Unit.Metrics.Died = true
+								if sim.Log != nil {
+									character.Log(sim, "Dead")
+								}
+							}
+						},
+					})
 				}
 			}
 		},
@@ -170,7 +178,7 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 	character.RegisterResetEffect(func(sim *Simulation) {
 		// Hack since we don't have OnHealingReceived aura handlers yet.
 		//ardentDefenderAura := character.GetAura("Ardent Defender")
-		willOfTheNecropolisAura := character.GetAura("Will of The Necropolis")
+		//willOfTheNecropolisAura := character.GetAura("Will of The Necropolis")
 
 		// Initialize randomized cadence model
 		timeToNextHeal := DurationFromSeconds(0.0)
@@ -191,9 +199,9 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 			//	ardentDefenderAura.Deactivate(sim)
 			//}
 
-			if willOfTheNecropolisAura != nil && character.CurrentHealthPercent() > 0.35 {
-				willOfTheNecropolisAura.Deactivate(sim)
-			}
+			// if willOfTheNecropolisAura != nil && character.CurrentHealthPercent() > 0.35 {
+			// 	willOfTheNecropolisAura.Deactivate(sim)
+			// }
 
 			// Random roll for time to next heal. In the case where CadenceVariation exceeds CadenceSeconds, then
 			// CadenceSeconds is treated as the median, with two separate uniform distributions to the left and right
