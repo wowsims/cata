@@ -104,15 +104,18 @@ func (cat *FeralDruid) canBite(sim *core.Simulation, isExecutePhase bool) bool {
 
 func (cat *FeralDruid) berserkExpectedAt(sim *core.Simulation, futureTime time.Duration) bool {
 	if cat.BerserkAura.IsActive() {
-		return futureTime < cat.BerserkAura.ExpiresAt() || futureTime > cat.Berserk.ReadyAt()
+		return futureTime < cat.BerserkAura.ExpiresAt()
 	}
+
+	if !cat.Talents.Berserk {
+		return false
+	}
+
 	if cat.Berserk.IsReady(sim) {
-		return futureTime > sim.CurrentTime+cat.Berserk.CD.Duration
+		return cat.TigersFuryAura.IsActive() || cat.tfExpectedBefore(sim, futureTime)
 	}
-	if cat.TigersFuryAura.IsActive() && cat.Talents.Berserk {
-		return futureTime > cat.TigersFuryAura.ExpiresAt()
-	}
-	return false
+
+	return futureTime > cat.Berserk.ReadyAt()
 }
 
 func (cat *FeralDruid) calcBuilderDpe(sim *core.Simulation) (float64, float64) {
