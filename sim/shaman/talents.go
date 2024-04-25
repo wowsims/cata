@@ -145,9 +145,6 @@ func (shaman *Shaman) applyElementalFocus() {
 		FloatValue: oathBonus,
 	})
 
-	// TODO: fix this.
-	// Right now: Set to 3 so that the spell that cast it consumes a charge down to expected 2.
-	// Correct fix would be to figure out how to make 'onCastComplete' fire before 'onspellhitdealt' without breaking all the other things.
 	maxStacks := int32(2)
 
 	// TODO: need to check for additional spells that benefit from the cost reduction
@@ -330,7 +327,10 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Deactivate()
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		//TODO: there are timeline graphical anomalies due to elemental mastery's logic.
+		//It doesn't know which lighting bolt cast correspond to which hit so put a grey bar under one and two hit to the second one
+		//Travel time visual is also missing
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask&affectedSpells > 0 {
 				// Remove the buff and put skill on CD
 				aura.Deactivate(sim)
