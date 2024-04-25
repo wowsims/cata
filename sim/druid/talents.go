@@ -35,19 +35,12 @@ func (druid *Druid) BearArmorMultiplier() float64 {
 
 func (druid *Druid) ApplyTalents() {
 	druid.MultiplyStat(stats.Mana, 1.0+0.05*float64(druid.Talents.Furor))
-	// druid.AddStat(stats.SpellHit, float64(druid.Talents.BalanceOfPower)*2*core.SpellHitRatingPerHitChance)
 	// druid.AddStat(stats.SpellCrit, float64(druid.Talents.NaturalPerfection)*1*core.CritRatingPerCritChance)
 	// druid.PseudoStats.CastSpeedMultiplier *= 1 + (float64(druid.Talents.CelestialFocus) * 0.01)
-	// druid.PseudoStats.DamageDealtMultiplier *= 1 + (float64(druid.Talents.EarthAndMoon) * 0.02)
-	// druid.PseudoStats.SpiritRegenRateCasting = float64(druid.Talents.Intensity) * (0.5 / 3)
+	druid.PseudoStats.DamageDealtMultiplier *= 1 + (core.TernaryFloat64(druid.Talents.EarthAndMoon, 0.02, 0))
 	// druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(druid.Talents.Naturalist)
 	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
 	druid.PseudoStats.ReducedCritTakenChance += 0.02 * float64(druid.Talents.ThickHide)
-
-	// if druid.Talents.LunarGuidance > 0 {
-	// 	bonus := 0.04 * float64(druid.Talents.LunarGuidance)
-	// 	druid.AddStatDependency(stats.Intellect, stats.SpellPower, bonus)
-	// }
 
 	// if druid.Talents.Dreamstate > 0 {
 	// 	bonus := 0.04 * float64(druid.Talents.Dreamstate)
@@ -59,18 +52,13 @@ func (druid *Druid) ApplyTalents() {
 		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
 	}
 
-	// if druid.Talents.ImprovedFaerieFire > 0 && druid.CurrentTarget.HasAuraWithTag(core.FaerieFireAuraTag) {
-	// 	druid.AddStat(stats.SpellCrit, float64(druid.Talents.ImprovedFaerieFire)*1*core.CritRatingPerCritChance)
-	// }
+	if druid.Talents.BalanceOfPower > 0 {
+		druid.AddStats(stats.Stats{stats.SpellHit: -0.5 * float64(druid.Talents.BalanceOfPower) * druid.GetBaseStats()[stats.Spirit]})
+		druid.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.0, 0.5, 1.0}[druid.Talents.BalanceOfPower])
 
-	// if druid.Talents.ImprovedMarkOfTheWild > 0 {
-	// 	bonus := 0.01 * float64(druid.Talents.ImprovedMarkOfTheWild)
-	// 	druid.MultiplyStat(stats.Stamina, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Strength, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Agility, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Intellect, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Spirit, 1.0+bonus)
-	// }
+		druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1 + 0.01*float64(druid.Talents.BalanceOfPower)
+		druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1 + 0.01*float64(druid.Talents.BalanceOfPower)
+	}
 
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.AddStat(stats.Expertise, 5.0*float64(druid.Talents.PrimalPrecision)*core.ExpertisePerQuarterPercentReduction)
