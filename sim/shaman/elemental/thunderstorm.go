@@ -19,7 +19,7 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 
 	elemental.Thunderstorm = elemental.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | shaman.SpellFlagFocusable,
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: shaman.SpellMaskThunderstorm,

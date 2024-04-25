@@ -9,7 +9,7 @@ import (
 func (shaman *Shaman) registerEarthquakeSpell() {
 	shaman.Earthquake = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: 77478},
-		Flags:            core.SpellFlagAPL,
+		Flags:            core.SpellFlagAPL | SpellFlagFocusable,
 		SpellSchool:      core.SpellSchoolPhysical,
 		ClassSpellMask:   SpellMaskEarthquake,
 		ProcMask:         core.ProcMaskEmpty,
