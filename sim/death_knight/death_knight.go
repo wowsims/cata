@@ -55,7 +55,7 @@ type DeathKnight struct {
 	Gargoyle   *GargoylePet
 	ArmyGhoul  []*GhoulPet
 	RuneWeapon *RuneWeaponPet
-	//Bloodworm []*BloodwormPet
+	Bloodworm  []*BloodwormPet
 
 	// Diseases
 	FrostFeverSpell  *core.Spell
@@ -199,12 +199,12 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
 	}
 
-	// 	if dk.Talents.Bloodworms > 0 {
-	// 		dk.Bloodworm = make([]*BloodwormPet, 4)
-	// 		for i := 0; i < 4; i++ {
-	// 			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
-	// 		}
-	// 	}
+	if dk.Talents.BloodParasite > 0 {
+		dk.Bloodworm = make([]*BloodwormPet, 5)
+		for i := 0; i < 5; i++ {
+			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
+		}
+	}
 
 	if dk.Talents.DancingRuneWeapon {
 		dk.RuneWeapon = dk.NewRuneWeapon()

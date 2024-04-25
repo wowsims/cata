@@ -67,6 +67,7 @@ func (dk *DeathKnight) registerAntiMagicShellSpell() {
 		},
 	})
 
+	// TODO:
 	if dk.Inputs.UseAMS {
 		dk.AddMajorCooldown(core.MajorCooldown{
 			Spell:    shieldSpell,
