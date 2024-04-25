@@ -9,6 +9,8 @@ import (
 func (warrior *Warrior) RegisterHeroicLeap() {
 
 	numHits := warrior.Env.GetNumTargets()
+	results := make([]*core.SpellResult, numHits)
+
 	warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 6544},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -40,11 +42,16 @@ func (warrior *Warrior) RegisterHeroicLeap() {
 			curTarget := target
 
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				damageTarget := spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				spell.DealDamage(sim, damageTarget)
-
+				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
+
+			curTarget = target
+			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+				spell.DealDamage(sim, results[hitIndex])
+				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			}
+
 		},
 	})
 }
