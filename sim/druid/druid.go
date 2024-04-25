@@ -214,7 +214,7 @@ func (druid *Druid) Initialize() {
 
 func (druid *Druid) RegisterBalanceSpells() {
 	//druid.registerHurricaneSpell()
-	//druid.registerInsectSwarmSpell()
+	druid.registerInsectSwarmSpell()
 	//druid.registerMoonfireSpell()
 	druid.registerStarfireSpell()
 	druid.registerWrathSpell()
