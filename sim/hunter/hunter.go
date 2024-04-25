@@ -60,6 +60,7 @@ type Hunter struct {
 	TrapWeaveSpell *core.Spell
 
 	AspectOfTheHawkAura           *core.Aura
+	AspectOfTheFoxAura            *core.Aura
 	ImprovedSteadyShotAura        *core.Aura
 	ImprovedSteadyShotAuraCounter *core.Aura
 	LockAndLoadAura               *core.Aura
@@ -90,7 +91,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
 	// Todo: Verify that is is actually 4 focus per second
-	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), 4.0, true)
+	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), 4.0, true, nil)
 
 	hunter.PseudoStats.CanParry = true
 
@@ -149,6 +150,7 @@ func (hunter *Hunter) RegisterSpells() {
 	hunter.registerRaptorStrikeSpell()
 	hunter.registerTrapLauncher()
 	hunter.registerHuntersMarkSpell()
+	hunter.registerAspectOfTheFoxSpell()
 }
 
 func (hunter *Hunter) AddStatDependencies() {

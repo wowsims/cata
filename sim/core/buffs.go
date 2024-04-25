@@ -944,10 +944,14 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	// +Armor
 	raidBuffs.DevotionAura = false
 	raidBuffs.StoneskinTotem = false
+	// 10% Haste
+	// raidBuffs.HuntingParty = false
+	// raidBuffs.IcyTalons = false
+	// raidBuffs.WindfuryTotem = false
 	// +3% All Damage
-	//raidBuffs.ArcaneTactics = false
-	//raidBuffs.FerociousInspiration = false
-	//raidBuffs.Communion = false
+	raidBuffs.ArcaneTactics = false
+	raidBuffs.FerociousInspiration = false
+	raidBuffs.Communion = false
 	// +Spell Resistances
 	raidBuffs.ElementalResistanceTotem = false
 	raidBuffs.ResistanceAura = false
