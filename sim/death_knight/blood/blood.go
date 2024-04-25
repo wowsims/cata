@@ -68,6 +68,10 @@ func (bdk *BloodDeathKnight) Initialize() {
 	bdk.DeathKnight.Initialize()
 
 	bdk.registerHeartStrikeSpell()
+
+	if bdk.Talents.DancingRuneWeapon {
+		bdk.RuneWeapon.AddCopySpell(HeartStrikeActionID, bdk.registerDrwHeartStrikeSpell())
+	}
 }
 
 func (bdk BloodDeathKnight) getBloodShieldMasteryBonus() float64 {
