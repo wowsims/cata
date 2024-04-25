@@ -61,6 +61,7 @@ type Druid struct {
 	Starfire             *DruidSpell
 	Starfall             *DruidSpell
 	StarfallSplash       *DruidSpell
+	Starsurge            *DruidSpell
 	SurvivalInstincts    *DruidSpell
 	SwipeBear            *DruidSpell
 	SwipeCat             *DruidSpell
