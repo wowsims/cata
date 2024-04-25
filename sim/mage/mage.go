@@ -60,6 +60,7 @@ type Mage struct {
 	FrostfireOrb            *core.Spell
 	FrostfireOrbTickSpell   *core.Spell
 	IceLance                *core.Spell
+	PresenceOfMind          *core.Spell
 	Pyroblast               *core.Spell
 	PyroblastDot            *core.Spell
 	PyroblastDotImpact      *core.Spell
@@ -316,7 +317,8 @@ const (
 	MageSpellsAllDamaging = MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | MageSpellArcaneMissilesTick | MageSpellBlastWave | MageSpellBlizzard | MageSpellDeepFreeze |
 		MageSpellDragonsBreath | MageSpellFireBlast | MageSpellFireball | MageSpellFlamestrike | MageSpellFlameOrb | MageSpellFrostbolt | MageSpellFrostfireBolt |
 		MageSpellFrostfireOrb | MageSpellIceLance | MageSpellLivingBombExplosion | MageSpellLivingBombDot | MageSpellPyroblast | MageSpellPyroblastDot | MageSpellScorch
-	MageSpellInstantCast = MageSpellArcaneBarrage | MageSpellArcaneMissilesCast | MageSpellFireBlast | MageSpellArcaneExplosion |
+	MageSpellInstantCast = MageSpellArcaneBarrage | MageSpellArcaneMissilesCast | MageSpellArcaneMissilesTick | MageSpellFireBlast | MageSpellArcaneExplosion |
 		MageSpellBlastWave | MageSpellCombustion | MageSpellConeOfCold | MageSpellDeepFreeze | MageSpellDragonsBreath | MageSpellIceLance |
-		MageSpellManaGems | MageSpellMirrorImage
+		MageSpellManaGems | MageSpellMirrorImage | MageSpellPresenceOfMind
+	MageSpellExtraResult = MageSpellLivingBombExplosion | MageSpellArcaneMissilesTick | MageSpellBlizzard
 )

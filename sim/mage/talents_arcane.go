@@ -182,13 +182,13 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			mage.PresenceOfMindMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask != MageSpellInstantCast {
+			if spell.ClassSpellMask == MageSpellArcaneBlast {
 				aura.Deactivate(sim)
 			}
 		},
 	})
 
-	spell := mage.RegisterSpell(core.SpellConfig{
+	mage.PresenceOfMind = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 12043},
 		Flags:          core.SpellFlagNoOnCastComplete,
 		ClassSpellMask: MageSpellPresenceOfMind,
@@ -196,6 +196,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			DefaultCast: core.Cast{
 				NonEmpty: true,
 			},
+			// TODO don't start the cooldown until aura removed
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
 				Duration: time.Second * 120,
@@ -212,8 +213,9 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			mage.PresenceOfMindAura.Activate(sim)
 		},
 	})
+
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: spell,
+		Spell: mage.PresenceOfMind,
 		Type:  core.CooldownTypeDPS,
 	})
 }
@@ -244,14 +246,15 @@ func (mage *Mage) applyArcanePotency() {
 				},
 			})
 		},
-
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			arcanePotencyMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Only remove a stack if it's an applicable spell
-			if spell.CastTime() != 0 && aura.GetStacks() != 0 {
-				aura.RemoveStack(sim)
+			if spell.ClassSpellMask != MageSpellExtraResult {
+				if aura != nil && aura.GetStacks() != 0 {
+					aura.RemoveStack(sim)
+				}
 			}
 		},
 	})
@@ -317,4 +320,8 @@ func (mage *Mage) registerArcanePowerCD() {
 		Spell: mage.ArcanePower,
 		Type:  core.CooldownTypeDPS,
 	})
+}
+
+func (mage *Mage) ApplyCastSpeedForSpell(dur time.Duration, spell *core.Spell) time.Duration {
+	return time.Duration(float64(dur) * mage.CastSpeed * max(0, spell.CastTimeMultiplier))
 }
