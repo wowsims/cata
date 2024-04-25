@@ -91,7 +91,7 @@ func (arcaneMage *ArcaneMage) ApplyTalents() {
 		Name:     "Arcane Mastery Mana Updater",
 		Callback: core.CallbackOnCastComplete,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			arcaneMastery.UpdateFloatValue(arcaneMastery.GetFloatValue())
+			arcaneMastery.UpdateFloatValue(arcaneMage.ArcaneMasteryValue())
 		},
 	})
 
