@@ -47,6 +47,8 @@ func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
 
 func (demonology *DemonologyWarlock) Initialize() {
 	demonology.Warlock.Initialize()
+
+	demonology.registerHandOfGuldanSpell()
 }
 
 func (demonology *DemonologyWarlock) ApplyTalents() {

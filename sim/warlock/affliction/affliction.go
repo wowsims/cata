@@ -47,6 +47,7 @@ func (affliction *AfflictionWarlock) GetWarlock() *warlock.Warlock {
 func (affliction *AfflictionWarlock) Initialize() {
 	affliction.Warlock.Initialize()
 
+	affliction.registerHauntSpell()
 	affliction.registerUnstableAfflictionSpell()
 }
 
@@ -58,7 +59,7 @@ func (affliction *AfflictionWarlock) ApplyTalents() {
 	// Shadow Mastery
 	affliction.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  warlock.WarlockShadowDamage,
+		ClassMask:  warlock.WarlockPeriodicShadowDamage,
 		FloatValue: 0.30,
 	})
 }

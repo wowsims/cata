@@ -2,7 +2,6 @@ package warlock
 
 import (
 	"math"
-	"time"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
@@ -131,136 +130,13 @@ func (warlock *Warlock) NewWarlockPet() *WarlockPet {
 		wp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
 	}
 
-	wp.AddStats(stats.Stats{
-		stats.MeleeCrit: float64(warlock.Talents.DemonicTactics) * 2 * core.CritRatingPerCritChance,
-		stats.SpellCrit: float64(warlock.Talents.DemonicTactics) * 2 * core.CritRatingPerCritChance,
-	})
-
-	wp.PseudoStats.DamageDealtMultiplier *= 1.0 + 0.04*float64(warlock.Talents.UnholyPower)
-
 	if warlock.Options.Summon != proto.WarlockOptions_Imp { // imps generally don't meele
 		wp.EnableAutoAttacks(wp, cfg.AutoAttacks)
 	}
 
 	if warlock.Options.Summon == proto.WarlockOptions_Felguard {
-		if wp.owner.HasMajorGlyph(proto.WarlockMajorGlyph_GlyphOfFelguard) {
-			wp.MultiplyStat(stats.AttackPower, 1.2)
-		}
-
-		statDeps := []*stats.StatDependency{nil}
-		for i := 1; i <= 10; i++ {
-			statDeps = append(statDeps, wp.NewDynamicMultiplyStat(stats.AttackPower,
-				1+float64(i)*(0.05+0.01*float64(warlock.Talents.DemonicBrutality))))
-		}
-
-		DemonicFrenzyAura := wp.RegisterAura(core.Aura{
-			Label:     "Demonic Frenzy",
-			ActionID:  core.ActionID{SpellID: 32851},
-			Duration:  time.Second * 10,
-			MaxStacks: 10,
-			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				if oldStacks != 0 {
-					aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
-				}
-				if newStacks != 0 {
-					aura.Unit.EnableDynamicStatDep(sim, statDeps[newStacks])
-				}
-			},
-		})
-		wp.RegisterAura(core.Aura{
-			Label:    "Demonic Frenzy Hidden Aura",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
-					return
-				}
-				DemonicFrenzyAura.Activate(sim)
-				DemonicFrenzyAura.AddStack(sim)
-			},
-		})
-	}
-
-	if warlock.Talents.FelVitality > 0 {
-		bonus := 1.0 + 0.05*float64(warlock.Talents.FelVitality)
-		wp.MultiplyStat(stats.Intellect, bonus)
-		wp.MultiplyStat(stats.Stamina, bonus)
-	}
-
-	if warlock.Talents.MasterDemonologist > 0 {
-		val := 1.0 + 0.01*float64(warlock.Talents.MasterDemonologist)
-		md := core.Aura{
-			Label:    "Master Demonologist",
-			ActionID: core.ActionID{SpellID: 35706}, // many different spells associated with this talent
-			Duration: core.NeverExpires,
-			OnGain: func(aura *core.Aura, _ *core.Simulation) {
-				switch warlock.Options.Summon {
-				case proto.WarlockOptions_Imp:
-					aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= val
-				case proto.WarlockOptions_Succubus:
-					aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= val
-				case proto.WarlockOptions_Felguard:
-					aura.Unit.PseudoStats.DamageDealtMultiplier *= val
-				}
-			},
-			OnExpire: func(aura *core.Aura, _ *core.Simulation) {
-				switch warlock.Options.Summon {
-				case proto.WarlockOptions_Imp:
-					aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= val
-				case proto.WarlockOptions_Succubus:
-					aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= val
-				case proto.WarlockOptions_Felguard:
-					aura.Unit.PseudoStats.DamageDealtMultiplier /= val
-				}
-			},
-		}
-
-		mdLockAura := warlock.RegisterAura(md)
-		mdPetAura := wp.RegisterAura(md)
-
-		masterDemonologist := float64(warlock.Talents.MasterDemonologist) * core.CritRatingPerCritChance
-		masterDemonologistFireCrit := core.TernaryFloat64(warlock.Options.Summon == proto.WarlockOptions_Imp, masterDemonologist, 0)
-		masterDemonologistShadowCrit := core.TernaryFloat64(warlock.Options.Summon == proto.WarlockOptions_Succubus, masterDemonologist, 0)
-
-		wp.OnPetEnable = func(sim *core.Simulation) {
-			mdLockAura.Activate(sim)
-			mdPetAura.Activate(sim)
-
-			spellbook := make([]*core.Spell, 0)
-			spellbook = append(spellbook, warlock.Spellbook...)
-			spellbook = append(spellbook, wp.Spellbook...)
-
-			for _, spell := range spellbook {
-				if spell.SpellSchool.Matches(core.SpellSchoolFire) {
-					spell.BonusCritRating += masterDemonologistFireCrit
-				}
-
-				if spell.SpellSchool.Matches(core.SpellSchoolShadow) {
-					spell.BonusCritRating += masterDemonologistShadowCrit
-				}
-			}
-		}
-
-		wp.OnPetDisable = func(sim *core.Simulation) {
-			mdLockAura.Deactivate(sim)
-			mdPetAura.Deactivate(sim)
-
-			spellbook := make([]*core.Spell, 0)
-			spellbook = append(spellbook, warlock.Spellbook...)
-			spellbook = append(spellbook, wp.Spellbook...)
-
-			for _, spell := range spellbook {
-				if spell.SpellSchool.Matches(core.SpellSchoolFire) {
-					spell.BonusCritRating -= masterDemonologistFireCrit
-				}
-
-				if spell.SpellSchool.Matches(core.SpellSchoolShadow) {
-					spell.BonusCritRating -= masterDemonologistShadowCrit
-				}
-			}
-		}
+		//TODO: Felstorm
+		//TODO: Legion Strike
 	}
 
 	core.ApplyPetConsumeEffects(&wp.Character, warlock.Consumes)
@@ -277,8 +153,8 @@ func (wp *WarlockPet) GetPet() *core.Pet {
 func (wp *WarlockPet) Initialize() {
 	switch wp.owner.Options.Summon {
 	case proto.WarlockOptions_Felguard:
-		wp.registerCleaveSpell()
-		wp.registerInterceptSpell()
+		wp.registerFelstormSpell()
+		wp.registerLegionStrikeSpell()
 	case proto.WarlockOptions_Succubus:
 		wp.registerLashOfPainSpell()
 	case proto.WarlockOptions_Felhunter:
@@ -301,8 +177,6 @@ func (wp *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
 }
 
 func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
-	improvedDemonicTactics := float64(warlock.Talents.ImprovedDemonicTactics)
-
 	return func(ownerStats stats.Stats) stats.Stats {
 		// based on testing for WotLK Classic the following is true:
 		// - pets are meele hit capped if and only if the warlock has 210 (8%) spell hit rating or more
@@ -334,10 +208,11 @@ func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
 			stats.AttackPower:      ownerStats[stats.SpellPower] * 0.57,
 			stats.SpellPower:       ownerStats[stats.SpellPower] * 0.15,
 			stats.SpellPenetration: ownerStats[stats.SpellPenetration],
-			stats.SpellCrit:        improvedDemonicTactics * 0.1 * ownerStats[stats.SpellCrit],
-			stats.MeleeCrit:        improvedDemonicTactics * 0.1 * ownerStats[stats.SpellCrit],
-			stats.MeleeHit:         ownerHitChance * core.MeleeHitRatingPerHitChance,
-			stats.SpellHit:         math.Floor(ownerStats[stats.SpellHit] / 12.0 * 17.0),
+			//With demonic tactics gone is there any crit inheritance?
+			//stats.SpellCrit:        improvedDemonicTactics * 0.1 * ownerStats[stats.SpellCrit],
+			//stats.MeleeCrit:        improvedDemonicTactics * 0.1 * ownerStats[stats.SpellCrit],
+			stats.MeleeHit: ownerHitChance * core.MeleeHitRatingPerHitChance,
+			stats.SpellHit: math.Floor(ownerStats[stats.SpellHit] / 12.0 * 17.0),
 			// TODO: revisit
 			stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) *
 				PetExpertiseScale * core.ExpertisePerQuarterPercentReduction,

@@ -9,11 +9,6 @@ import (
 func (warlock *Warlock) registerImmolateSpell() {
 	fireAndBrimstoneBonus := 0.05 * float64(warlock.Talents.FireAndBrimstone)
 
-	//  TODO: What is this doing?
-	bonusPeriodicDamageMultiplier := 0 +
-		warlock.GrandSpellstoneBonus() -
-		warlock.GrandFirestoneBonus()
-
 	warlock.Immolate = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 348},
 		SpellSchool:    core.SpellSchoolFire,
@@ -32,7 +27,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 + warlock.GrandFirestoneBonus(),
+		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 		BonusCoefficient:         0.21999999881,
@@ -60,9 +55,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = 444
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
-				dot.Spell.DamageMultiplierAdditive -= bonusPeriodicDamageMultiplier
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)

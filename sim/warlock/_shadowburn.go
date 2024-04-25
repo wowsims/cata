@@ -44,11 +44,9 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 +
-			warlock.GrandFirestoneBonus() +
-			0.03*float64(warlock.Talents.ShadowMastery),
-		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1 + 0.03*float64(warlock.Talents.ShadowMastery),
+		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
+		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(775, 865) + spellCoeff*spell.SpellPower()

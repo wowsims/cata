@@ -28,7 +28,7 @@ func (warlock *Warlock) registerIncinerateSpell() {
 		},
 
 		BonusCoefficient:         0.53899997473,
-		DamageMultiplierAdditive: 1 + warlock.GrandFirestoneBonus(),
+		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 

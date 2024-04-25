@@ -29,7 +29,7 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 + warlock.GrandFirestoneBonus(),
+		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 

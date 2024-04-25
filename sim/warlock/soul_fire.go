@@ -26,7 +26,7 @@ func (warlock *Warlock) registerSoulFireSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 + warlock.GrandFirestoneBonus(),
+		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 		BonusCoefficient:         0.726,

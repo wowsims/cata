@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
+// TODO: Check spell damage and coefficients
 func (warlock *Warlock) registerSeedSpell() {
 	actionID := core.ActionID{SpellID: 27243}
 
@@ -14,19 +15,15 @@ func (warlock *Warlock) registerSeedSpell() {
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagHauntSE | core.SpellFlagNoLogs,
-		ClassSpellMask: WarlockSpellSeedOfCorruption,
+		ClassSpellMask: WarlockSpellSeedOfCorruptionExposion,
 
-		BonusCritRating: 0 +
-			float64(warlock.Talents.ImprovedCorruption)*core.CritRatingPerCritChance,
-		DamageMultiplierAdditive: 1 +
-			warlock.GrandFirestoneBonus() +
-			0.03*float64(warlock.Talents.ShadowMastery) +
-			0.01*float64(warlock.Talents.Contagion),
-		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
+		ThreatMultiplier:         1,
+		BonusCoefficient:         0.17159999907,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDmg := (sim.Roll(1633, 1897) + 0.286*spell.SpellPower()) * sim.Encounter.AOECapMultiplier()
+			baseDmg := (862 + 0.17159999907*spell.SpellPower()) * sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, spell.OutcomeMagicHitAndCrit)
 			}
@@ -36,18 +33,19 @@ func (warlock *Warlock) registerSeedSpell() {
 	warlock.SeedDamageTracker = make([]float64, len(warlock.Env.AllUnits))
 	trySeedPop := func(sim *core.Simulation, target *core.Unit, dmg float64) {
 		warlock.SeedDamageTracker[target.UnitIndex] += dmg
-		if warlock.SeedDamageTracker[target.UnitIndex] > 1518 {
+		if warlock.SeedDamageTracker[target.UnitIndex] > 2378 {
 			warlock.Seed.Dot(target).Deactivate(sim)
 			seedExplosion.Cast(sim, target)
 		}
 	}
 
 	warlock.Seed = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:     actionID,
-		SpellSchool:  core.SpellSchoolShadow,
-		ProcMask:     core.ProcMaskEmpty,
-		Flags:        core.SpellFlagHauntSE | core.SpellFlagAPL,
-		MissileSpeed: 28,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagHauntSE | core.SpellFlagAPL,
+		MissileSpeed:   28,
+		ClassSpellMask: WarlockSpellSeedOfCorruption,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.34,
@@ -60,12 +58,8 @@ func (warlock *Warlock) registerSeedSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 +
-			warlock.GrandSpellstoneBonus() +
-			0.03*float64(warlock.Talents.ShadowMastery) +
-			0.01*float64(warlock.Talents.Contagion) +
-			core.TernaryFloat64(warlock.Talents.SiphonLife, 0.05, 0),
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1,
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -90,12 +84,12 @@ func (warlock *Warlock) registerSeedSpell() {
 				},
 			},
 
-			NumberOfTicks: 6,
-			TickLength:    time.Second * 3,
+			NumberOfTicks:    6,
+			TickLength:       time.Second * 3,
+			BonusCoefficient: 0.30,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 1518/6 + 0.25*dot.Spell.SpellPower()
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex])
+				dot.Snapshot(target, 2042/6)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

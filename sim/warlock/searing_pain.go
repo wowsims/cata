@@ -25,7 +25,7 @@ func (warlock *Warlock) registerSearingPainSpell() {
 		},
 
 		BonusCoefficient:         0.37799999118,
-		DamageMultiplierAdditive: 1 + warlock.GrandFirestoneBonus(),
+		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 

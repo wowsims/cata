@@ -26,7 +26,7 @@ func (affliction *AfflictionWarlock) registerUnstableAfflictionSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 + affliction.GrandSpellstoneBonus(),
+		DamageMultiplierAdditive: 1,
 		CritMultiplier:           affliction.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 

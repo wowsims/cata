@@ -81,14 +81,6 @@ func (warlock *Warlock) ApplyGlyphs() {
 	// })
 	//}
 
-	// if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis) {
-	// 	warlock.AddStaticMod(core.SpellModConfig{
-	// 		ClassMask: WarlockSpellMetamorphosis,
-	// 		Kind:      core.SpellMod_,
-	// 		TimeValue: time.Second * 6,
-	// 	})
-	// }
-
 	// if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfFelguard) {
 	// pet.AddStaticMod(core.SpellModConfig{
 	// 	ClassMask: WarlockSpellFelGuardLegionStrike,

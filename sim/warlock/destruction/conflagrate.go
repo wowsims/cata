@@ -32,7 +32,7 @@ func (destruction *DestructionWarlock) registerConflagrateSpell() {
 			return destruction.Immolate.Dot(target).IsActive()
 		},
 
-		DamageMultiplierAdditive: 1 + destruction.GrandFirestoneBonus(),
+		DamageMultiplierAdditive: 1,
 		CritMultiplier:           destruction.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 

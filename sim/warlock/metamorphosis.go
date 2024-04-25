@@ -14,8 +14,8 @@ func (warlock *Warlock) registerMetamorphosisSpell() {
 
 	warlock.MetamorphosisAura = warlock.RegisterAura(core.Aura{
 		Label:    "Metamorphosis Aura",
-		ActionID: core.ActionID{SpellID: 47241},
-		Duration: time.Second * (30 + 6*core.TernaryDuration(warlock.HasMajorGlyph(proto.WarlockMajorGlyph_GlyphOfMetamorphosis), 1, 0)),
+		ActionID: core.ActionID{SpellID: 59672},
+		Duration: time.Second * (30 + 6*core.TernaryDuration(warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 1, 0)),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.2
 		},
@@ -26,11 +26,11 @@ func (warlock *Warlock) registerMetamorphosisSpell() {
 	})
 
 	warlock.Metamorphosis = warlock.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 47241},
+		ActionID: core.ActionID{SpellID: 59672},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Duration(180-18*warlock.Talents.Nemesis) * time.Second,
+				Duration: 180 * time.Second,
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
@@ -42,12 +42,14 @@ func (warlock *Warlock) registerMetamorphosisSpell() {
 		Spell: warlock.Metamorphosis,
 		Type:  core.CooldownTypeDPS,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+			//TODO: This will probably need tuning for Cata and the new Impending Doom talent
+			// Changed the execute phase to 25 and I think the demonic pact can be removed.
 			if !warlock.GetAura("Demonic Pact").IsActive() {
 				return false
 			}
 			MetamorphosisNumber := (float64(sim.Duration) + float64(warlock.MetamorphosisAura.Duration)) / float64(warlock.Metamorphosis.CD.Duration)
 			if MetamorphosisNumber < 1 {
-				return warlock.HasActiveAura("Bloodlust-"+core.BloodlustActionID.WithTag(-1).String()) || sim.IsExecutePhase35()
+				return warlock.HasActiveAura("Bloodlust-"+core.BloodlustActionID.WithTag(-1).String()) || sim.IsExecutePhase25()
 			}
 
 			return true
@@ -55,11 +57,11 @@ func (warlock *Warlock) registerMetamorphosisSpell() {
 	})
 
 	warlock.ImmolationAura = warlock.RegisterSpell(core.SpellConfig{
-		// the spellID that deals damage in the combat log is 50590, but we don't use it here
-		ActionID:    core.ActionID{SpellID: 50589},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 50589},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: WarlockSpellImmolationAura,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.64,
@@ -89,7 +91,8 @@ func (warlock *Warlock) registerMetamorphosisSpell() {
 			TickLength:          time.Second * 1,
 			AffectedByCastSpeed: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDmg := (251 + 20*11.5 + 0.143*dot.Spell.SpellPower()) * sim.Encounter.AOECapMultiplier()
+				// TODO: Base damage and spell power coeffecient updated. Not sure what 20*11.5 is?
+				baseDmg := (663 + 20*11.5 + 0.1*dot.Spell.SpellPower()) * sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, dot.Spell.OutcomeMagicHit)
 				}

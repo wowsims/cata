@@ -1,41 +1,42 @@
-package warlock
+package affliction
 
 import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/warlock"
 )
 
 // TODO: SpellFlagHauntSE
-func (warlock *Warlock) registerHauntSpell() {
-	if !warlock.Talents.Haunt {
+func (affliction *AfflictionWarlock) registerHauntSpell() {
+	if !affliction.Talents.Haunt {
 		return
 	}
 
 	actionID := core.ActionID{SpellID: 48181}
-	debuffMult := core.TernaryFloat64(warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfHaunt), 1.23, 1.2)
+	debuffMult := core.TernaryFloat64(affliction.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfHaunt), 1.23, 1.2)
 
-	warlock.HauntDebuffAuras = warlock.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+	affliction.HauntDebuffAuras = affliction.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
-			Label:    "Haunt-" + warlock.Label,
+			Label:    "Haunt-" + affliction.Label,
 			ActionID: actionID,
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.AttackTables[aura.Unit.UnitIndex].HauntSEDamageTakenMultiplier *= debuffMult
+				affliction.AttackTables[aura.Unit.UnitIndex].HauntSEDamageTakenMultiplier *= debuffMult
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.AttackTables[aura.Unit.UnitIndex].HauntSEDamageTakenMultiplier /= debuffMult
+				affliction.AttackTables[aura.Unit.UnitIndex].HauntSEDamageTakenMultiplier /= debuffMult
 			},
 		})
 	})
 
-	warlock.Haunt = warlock.RegisterSpell(core.SpellConfig{
+	affliction.Haunt = affliction.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: WarlockSpellHaunt,
+		ClassSpellMask: warlock.WarlockSpellHaunt,
 		MissileSpeed:   20,
 
 		ManaCost: core.ManaCostOptions{
@@ -48,13 +49,13 @@ func (warlock *Warlock) registerHauntSpell() {
 				CastTime: time.Millisecond * 1500,
 			},
 			CD: core.Cooldown{
-				Timer:    warlock.NewTimer(),
+				Timer:    affliction.NewTimer(),
 				Duration: time.Second * 8,
 			},
 		},
 
-		DamageMultiplierAdditive: 1 + warlock.GrandFirestoneBonus(),
-		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           affliction.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -63,9 +64,7 @@ func (warlock *Warlock) registerHauntSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 				if result.Landed() {
-					warlock.HauntDebuffAuras.Get(result.Target).Activate(sim)
-					//TODO: EverlastingAffliction
-					//warlock.everlastingAfflictionRefresh(sim, target)
+					affliction.HauntDebuffAuras.Get(result.Target).Activate(sim)
 				}
 			})
 		},

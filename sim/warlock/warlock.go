@@ -1,8 +1,6 @@
 package warlock
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -15,23 +13,23 @@ type Warlock struct {
 	Talents *proto.WarlockTalents
 	Options *proto.WarlockOptions
 
-	//Pet *WarlockPet
+	Pet *WarlockPet
 
-	ShadowBolt         *core.Spell
-	Incinerate         *core.Spell
-	Immolate           *core.Spell
-	UnstableAffliction *core.Spell
-	Corruption         *core.Spell
-	Haunt              *core.Spell
-	LifeTap            *core.Spell
-	DarkPact           *core.Spell
-	ChaosBolt          *core.Spell
-	SoulFire           *core.Spell
-	Conflagrate        *core.Spell
-	DrainSoul          *core.Spell
-	Shadowburn         *core.Spell
-	SearingPain        *core.Spell
-
+	ShadowBolt           *core.Spell
+	Incinerate           *core.Spell
+	Immolate             *core.Spell
+	UnstableAffliction   *core.Spell
+	Corruption           *core.Spell
+	Haunt                *core.Spell
+	LifeTap              *core.Spell
+	DarkPact             *core.Spell
+	ChaosBolt            *core.Spell
+	SoulFire             *core.Spell
+	Conflagrate          *core.Spell
+	DrainSoul            *core.Spell
+	Shadowburn           *core.Spell
+	SearingPain          *core.Spell
+	HandOfGuldan         *core.Spell
 	CurseOfElements      *core.Spell
 	CurseOfElementsAuras core.AuraArray
 	CurseOfWeakness      *core.Spell
@@ -63,16 +61,14 @@ type Warlock struct {
 	GlyphOfLifeTapAura     *core.Aura
 	SpiritsoftheDamnedAura *core.Aura
 
-	//Infernal *InfernalPet
-	Inferno *core.Spell
-
-	// The sum total of demonic pact spell power * seconds.
-	DPSPAggregate float64
-	PreviousTime  time.Duration
+	Infernal *InfernalPet
+	Inferno  *core.Spell
 
 	petStmBonusSP float64
 
 	FireAndBrimstoneAura core.AuraArray
+
+	ScalingBaseDamage float64
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -81,13 +77,6 @@ func (warlock *Warlock) GetCharacter() *core.Character {
 
 func (warlock *Warlock) GetWarlock() *Warlock {
 	return warlock
-}
-
-func (warlock *Warlock) GrandSpellstoneBonus() float64 {
-	return core.TernaryFloat64(warlock.Options.WeaponImbue == proto.WarlockOptions_GrandSpellstone, 0.01, 0)
-}
-func (warlock *Warlock) GrandFirestoneBonus() float64 {
-	return core.TernaryFloat64(warlock.Options.WeaponImbue == proto.WarlockOptions_GrandFirestone, 0.01, 0)
 }
 
 func (warlock *Warlock) ApplyTalents() {
@@ -102,6 +91,10 @@ func (warlock *Warlock) ApplyTalents() {
 }
 
 func (warlock *Warlock) Initialize() {
+
+	// base scaling value for a level 85 priest
+	warlock.ScalingBaseDamage = 962.335630
+
 	warlock.registerIncinerateSpell()
 	warlock.registerShadowBoltSpell()
 	warlock.registerImmolateSpell()
@@ -112,12 +105,10 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerBaneOfAgonySpell()
 	warlock.registerBaneOfDoomSpell()
 	warlock.registerLifeTapSpell()
-	// warlock.registerSeedSpell()
+	warlock.registerSeedSpell()
 	warlock.registerSoulFireSpell()
-	// warlock.registerDrainSoulSpell()
-	warlock.registerHauntSpell()
-	// warlock.registerDemonicEmpowermentSpell()
-	// warlock.registerMetamorphosisSpell()
+	warlock.registerDrainSoulSpell()
+	warlock.registerMetamorphosisSpell()
 	// warlock.registerShadowBurnSpell()
 	warlock.registerSearingPainSpell()
 	// warlock.registerInfernoSpell()
@@ -193,8 +184,6 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 
 	// warlock.Infernal = warlock.NewInfernal()
 
-	// warlock.applyWeaponImbue()
-
 	return warlock
 }
 
@@ -237,14 +226,31 @@ const (
 	WarlockSpellMetamorphosis
 	WarlockSpellSuccubusLashOfPain
 	WarlockSpellFelGuardLegionStrike
+	WarlockSpellFelGuardFelstorm
 	WarlockSpellImpFireBolt
+	WarlockSpellFelHunterShadowBite
 	WarlockSpellSeedOfCorruption
+	WarlockSpellSeedOfCorruptionExposion
+	WarlockSpellHandOfGuldan
+	WarlockSpellImmolationAura
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
-		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellShadowBolt
+		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony |
+		WarlockSpellShadowBolt | WarlockSpellSeedOfCorruptionExposion | WarlockSpellHandOfGuldan
 
-	WarlockPeriodicShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
-		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony
+	WarlockPeriodicShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
+		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony
 
-	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire
+	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire |
+		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan
 )
+
+func (warlock *Warlock) calcBaseDamage(sim *core.Simulation, coefficient float64, variance float64) float64 {
+	baseDamage := warlock.ScalingBaseDamage * coefficient
+	if variance > 0 {
+		delta := warlock.ScalingBaseDamage * variance * 0.5
+		baseDamage += sim.Roll(-delta, delta)
+	}
+
+	return baseDamage
+}
