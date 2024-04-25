@@ -51,12 +51,11 @@ type DeathKnight struct {
 	Inputs DeathKnightInputs
 
 	// Pets
-	Ghoul             *GhoulPet
-	Gargoyle          *GargoylePet
-	DancingRuneWeapon *core.Spell
-	ArmyGhoul         []*GhoulPet
-	//RuneWeapon        *RuneWeaponPet
-	//Bloodworm []*BloodwormPet
+	Ghoul      *GhoulPet
+	Gargoyle   *GargoylePet
+	ArmyGhoul  []*GhoulPet
+	RuneWeapon *RuneWeaponPet
+	Bloodworm  []*BloodwormPet
 
 	// Diseases
 	FrostFeverSpell  *core.Spell
@@ -124,6 +123,9 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerVampiricBloodSpell()
 	dk.registerIceboundFortitudeSpell()
 	dk.registerBoneShieldSpell()
+	dk.registerDancingRuneWeaponSpell()
+	dk.registerDeathPactSpell()
+	dk.registerAntiMagicShellSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -197,16 +199,16 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
 	}
 
-	// 	if dk.Talents.Bloodworms > 0 {
-	// 		dk.Bloodworm = make([]*BloodwormPet, 4)
-	// 		for i := 0; i < 4; i++ {
-	// 			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
-	// 		}
-	// 	}
+	if dk.Talents.BloodParasite > 0 {
+		dk.Bloodworm = make([]*BloodwormPet, 5)
+		for i := 0; i < 5; i++ {
+			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
+		}
+	}
 
-	// 	if dk.Talents.DancingRuneWeapon {
-	// 		dk.RuneWeapon = dk.NewRuneWeapon()
-	// 	}
+	if dk.Talents.DancingRuneWeapon {
+		dk.RuneWeapon = dk.NewRuneWeapon()
+	}
 
 	return dk
 }
@@ -252,6 +254,8 @@ const (
 	DeathKnightSpellVampiricBlood
 	DeathKnightSpellIceboundFortitude
 	DeathKnightSpellBoneShield
+	DeathKnightSpellDancingRuneWeapon
+	DeathKnightSpellDeathPact
 
 	DeathKnightSpellDeathStrikeHeal // Heal spell for DS
 

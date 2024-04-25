@@ -324,18 +324,30 @@ func (unit *Unit) GetOrRegisterSpell(config SpellConfig) *Spell {
 }
 
 func (spell *Spell) Dot(target *Unit) *Dot {
+	if spell.dots == nil {
+		return nil
+	}
 	return spell.dots.Get(target)
 }
 func (spell *Spell) CurDot() *Dot {
+	if spell.dots == nil {
+		return nil
+	}
 	return spell.dots.Get(spell.Unit.CurrentTarget)
 }
 func (spell *Spell) AOEDot() *Dot {
 	return spell.aoeDot
 }
 func (spell *Spell) Hot(target *Unit) *Dot {
+	if spell.dots == nil {
+		return nil
+	}
 	return spell.dots.Get(target)
 }
 func (spell *Spell) CurHot() *Dot {
+	if spell.dots == nil {
+		return nil
+	}
 	return spell.dots.Get(spell.Unit.CurrentTarget)
 }
 func (spell *Spell) AOEHot() *Dot {
@@ -345,6 +357,9 @@ func (spell *Spell) SelfHot() *Dot {
 	return spell.aoeDot
 }
 func (spell *Spell) Shield(target *Unit) *Shield {
+	if spell.shields == nil {
+		return nil
+	}
 	return spell.shields.Get(target)
 }
 func (spell *Spell) SelfShield() *Shield {
