@@ -21,7 +21,7 @@ func (dk *UnholyDeathKnight) registerScourgeStrikeShadowDamageSpell() *core.Spel
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.lastScourgeStrikeDamage * dk.CountActiveDiseases(target) * 0.18
+			baseDamage := dk.lastScourgeStrikeDamage * dk.GetDiseaseMulti(target, 0.0, 0.18)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
 		},
 	})

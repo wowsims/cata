@@ -8,14 +8,19 @@ import (
 
 func (shaman *Shaman) registerEarthquakeSpell() {
 	shaman.Earthquake = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 77478},
-		Flags:       core.SpellFlagAPL,
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskEmpty,
+		ActionID:         core.ActionID{SpellID: 77478},
+		Flags:            core.SpellFlagAPL,
+		SpellSchool:      core.SpellSchoolPhysical,
+		ClassSpellMask:   SpellMaskEarthquake,
+		ProcMask:         core.ProcMaskEmpty,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				CastTime: 2500 * time.Millisecond,
+				GCD:      core.GCDDefault,
 			},
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
@@ -23,21 +28,20 @@ func (shaman *Shaman) registerEarthquakeSpell() {
 			},
 		},
 
-		//TODO: Not sure on the logic
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
 				Label: "Earthquake",
 			},
-			NumberOfTicks:    10,
-			TickLength:       time.Second * 1,
-			BonusCoefficient: 0.119,
+			NumberOfTicks:        10,
+			TickLength:           time.Second * 1,
+			AffectedByCastSpeed:  true,
+			HasteAffectsDuration: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				// Coefficient damage calculated manually because it's a Nature spell but deals Physical damage
+				baseDamage := 325 + 0.11*dot.Spell.SpellPower()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.SnapshotBaseDamage = 326
-					dot.SnapshotCritChance = dot.Spell.SpellCritChance(aoeTarget)
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeMagicHitAndSnapshotCrit)
+					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 				}
 			},
 		},
@@ -45,7 +49,6 @@ func (shaman *Shaman) registerEarthquakeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dot := spell.AOEDot()
 			dot.Apply(sim)
-			dot.TickOnce(sim)
 		},
 	})
 }

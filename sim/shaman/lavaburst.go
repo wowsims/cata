@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (shaman *Shaman) registerLavaBurstSpell() {
@@ -45,14 +46,10 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
 				}
 			},
-			CD: core.Cooldown{
-				Timer:    shaman.NewTimer(),
-				Duration: time.Second * 8,
-			},
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
+		CritMultiplier:   shaman.SpellCritMultiplier(1.0, core.TernaryFloat64(shaman.Spec == proto.Spec_SpecElementalShaman, 1.0, 0)+float64(shaman.Talents.LavaFlows)*0.08),
 		BonusCoefficient: 0.628,
 	}
 
@@ -65,12 +62,17 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 		spellConfig.MetricSplits = 0
 		spellConfig.DamageMultiplier *= 0.75
 		spellConfig.ThreatMultiplier = 0
+	} else {
+		spellConfig.Cast.CD = core.Cooldown{
+			Timer:    shaman.NewTimer(),
+			Duration: time.Second * 8,
+		}
 	}
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		result := spell.CalcDamage(sim, target, 1586, spell.OutcomeMagicHitAndCrit)
 
-		if result.Landed() && sim.RandomFloat("Lava Burst Elemental Overload") < shaman.GetOverloadChance() {
+		if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Lava Burst Elemental Overload") {
 			shaman.LavaBurstOverload.Cast(sim, target)
 		}
 
