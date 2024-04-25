@@ -158,7 +158,7 @@ func (infernal *InfernalPet) Initialize() {
 
 				// we remove all the spirit based sp since immolation aura doesn't benefit from it, see
 				// JamminL/wotlk-classic-bugs#329
-				coef := core.TernaryFloat64(infernal.owner.GlyphOfLifeTapAura.IsActive(), 0.2, 0) + felarmor_coef
+				coef := felarmor_coef
 
 				warlockSP := infernal.owner.Unit.GetStat(stats.SpellPower) - infernal.owner.Unit.GetStat(stats.Spirit)*coef
 				baseDmg := (40 + warlockSP*0.2) * sim.Encounter.AOECapMultiplier()

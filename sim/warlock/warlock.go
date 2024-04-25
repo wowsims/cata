@@ -45,9 +45,6 @@ type Warlock struct {
 	ShadowEmbraceAuras     core.AuraArray
 	NightfallProcAura      *core.Aura
 	EradicationAura        *core.Aura
-	DemonicEmpowerment     *core.Spell
-	DemonicEmpowermentAura *core.Aura
-	DemonicPactAura        *core.Aura
 	DemonicSoulAura        *core.Aura
 	Metamorphosis          *core.Spell
 	MetamorphosisAura      *core.Aura
@@ -58,7 +55,6 @@ type Warlock struct {
 	PyroclasmAura          *core.Aura
 	BackdraftAura          *core.Aura
 	EmpoweredImpAura       *core.Aura
-	GlyphOfLifeTapAura     *core.Aura
 	SpiritsoftheDamnedAura *core.Aura
 
 	Infernal *InfernalPet

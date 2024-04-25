@@ -15,8 +15,6 @@ type WarlockPet struct {
 
 	primaryAbility   *core.Spell
 	secondaryAbility *core.Spell
-
-	DemonicEmpowermentAura *core.Aura
 }
 
 const PetExpertiseScale = 1.53

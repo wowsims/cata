@@ -1241,9 +1241,9 @@ const idToCategoryMap: Record<number, number> = {
 	[686]: SPELL_ACTION_CATEGORY + 0.5, // Shadow Bolt
 	[29722]: SPELL_ACTION_CATEGORY + 0.51, // Incinerate
 	[6353]: SPELL_ACTION_CATEGORY + 0.52, // Soul Fire
-	[47855]: SPELL_ACTION_CATEGORY + 0.6, // Drain Soul
+	[1120]: SPELL_ACTION_CATEGORY + 0.6, // Drain Soul
 	[1454]: SPELL_ACTION_CATEGORY + 0.7, // Life Tap
-	[47241]: SPELL_ACTION_CATEGORY + 0.8, // Metamorphosis
+	[59672]: SPELL_ACTION_CATEGORY + 0.8, // Metamorphosis
 	[50589]: SPELL_ACTION_CATEGORY + 0.81, // Immolation Aura
 	[47193]: SPELL_ACTION_CATEGORY + 0.82, // Demonic Empowerment
 
