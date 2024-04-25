@@ -60,7 +60,6 @@ type Druid struct {
 	Shred                *DruidSpell
 	Starfire             *DruidSpell
 	Starfall             *DruidSpell
-	StarfallSplash       *DruidSpell
 	Starsurge            *DruidSpell
 	SurvivalInstincts    *DruidSpell
 	SwipeBear            *DruidSpell
@@ -218,7 +217,7 @@ func (druid *Druid) RegisterBalanceSpells() {
 	//druid.registerMoonfireSpell()
 	druid.registerStarfireSpell()
 	druid.registerWrathSpell()
-	//druid.registerStarfallSpell()
+	druid.registerStarfallSpell()
 	druid.registerTyphoonSpell()
 	//druid.registerForceOfNatureCD()
 	druid.registerStarsurgeSpell()

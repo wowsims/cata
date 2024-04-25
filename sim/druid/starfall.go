@@ -64,39 +64,7 @@ func (druid *Druid) registerStarfallSpell() {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
-				druid.StarfallSplash.Dot(target).Apply(sim)
 			}
-		},
-	})
-
-	starfallSplashTickSpell := druid.RegisterSpell(Any, core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 53190},
-		SpellSchool:      core.SpellSchoolArcane,
-		ProcMask:         core.ProcMaskSuppressedProc,
-		BonusCritRating:  2 * float64(druid.Talents.NaturesMajesty) * core.CritRatingPerCritChance,
-		DamageMultiplier: 1 * (1 + core.TernaryFloat64(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfFocus), 0.1, 0)),
-		CritMultiplier:   druid.BalanceCritMultiplier(),
-		ThreatMultiplier: 1,
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 101 + 0.13*spell.SpellPower()
-			baseDamage *= sim.Encounter.AOECapMultiplier()
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
-		},
-	})
-
-	druid.StarfallSplash = druid.RegisterSpell(Any, core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 53190},
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "StarfallSplash",
-			},
-			NumberOfTicks: numberOfTicks,
-			TickLength:    tickLength,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				starfallSplashTickSpell.Cast(sim, target)
-			},
 		},
 	})
 }
