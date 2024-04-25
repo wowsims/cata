@@ -92,9 +92,25 @@ func (war *ArmsWarrior) GetMasteryProcChance() float64 {
 
 func (war *ArmsWarrior) RegisterMastery() {
 	// TODO: can it proc off of missed/dodged/parried attacks - seems like no, need more data
-	procAttackConfig := *war.AutoAttacks.MHConfig()
-	procAttackConfig.ActionID = core.ActionID{SpellID: StrikesOfOpportunityHitID, Tag: procAttackConfig.ActionID.Tag}
-	procAttackConfig.ProcMask = core.ProcMaskMeleeSpecial
+	procAttackConfig := core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: StrikesOfOpportunityHitID},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeSpecial,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+
+		DamageMultiplier:         1.0,
+		DamageMultiplierAdditive: 1.0,
+		CritMultiplier:           war.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier:         1.0,
+
+		BonusCoefficient: 1.0,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+		},
+	}
+
 	procAttack := war.RegisterSpell(procAttackConfig)
 
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
