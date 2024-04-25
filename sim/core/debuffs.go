@@ -155,7 +155,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 
 	if debuffs.ScarletFever {
-		MakePermanent(ScarletFeverAura(target, 2))
+		MakePermanent(ScarletFeverAura(nil, target, 2, 0))
 	}
 
 	// Atk spd reduction
@@ -575,7 +575,7 @@ func DemoralizingShoutAura(target *Unit, glyph bool) *Aura {
 func VindicationAura(target *Unit, points int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Vindication",
-		ActionID: ActionID{SpellID: 26016},
+		ActionID: ActionID{SpellID: 26017},
 		Duration: time.Second * 30,
 	})
 	PhysDamageReductionEffect(aura, 0.1)
@@ -592,11 +592,15 @@ func DemoralizingScreechAura(target *Unit) *Aura {
 	return aura
 }
 
-func ScarletFeverAura(target *Unit, points int32) *Aura {
+func ScarletFeverAura(caster *Character, target *Unit, points int32, epidemic int32) *Aura {
+	label := "External"
+	if caster != nil {
+		label = caster.Label
+	}
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Scarlet Fever",
-		ActionID: ActionID{SpellID: 81132},
-		Duration: time.Second * 21,
+		Label:    "Scarlet Fever" + label,
+		ActionID: ActionID{SpellID: 81130},
+		Duration: time.Second * time.Duration(21+epidemic*4),
 	})
 	PhysDamageReductionEffect(aura, 0.05*float64(points))
 	return aura

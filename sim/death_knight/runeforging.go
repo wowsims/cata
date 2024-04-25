@@ -189,7 +189,7 @@ func init() {
 
 		var vulnAuras core.AuraArray
 
-		handler := func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
+		ddbcHandler := func(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
 			if spell.ClassSpellMask&DeathKnightSpellsAll == 0 || !spell.SpellSchool.Matches(core.SpellSchoolFrost) {
 				return 1.0
 			}
@@ -205,7 +205,7 @@ func init() {
 				MaxStacks: 5,
 
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					core.EnableDamageDoneByCaster(DDBC_RuneOfRazorice, DDBC_Total, character.AttackTables[aura.Unit.UnitIndex], handler)
+					core.EnableDamageDoneByCaster(DDBC_RuneOfRazorice, DDBC_Total, character.AttackTables[aura.Unit.UnitIndex], ddbcHandler)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					core.DisableDamageDoneByCaster(DDBC_RuneOfRazorice, character.AttackTables[aura.Unit.UnitIndex])

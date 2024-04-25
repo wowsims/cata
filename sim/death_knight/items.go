@@ -60,5 +60,23 @@ var ItemSetMagmaPlatedBattlegear = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var ItemSetMagmaPlatedBattlearmor = core.NewItemSet(core.ItemSet{
+	Name: "Magma Plated Battlearmor",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			// Increases the damage done by your Death Strike ability by 5%.
+			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Flat,
+				ClassMask:  DeathKnightSpellDeathStrike,
+				FloatValue: 0.05,
+			})
+		},
+		4: func(agent core.Agent) {
+			// Increases the duration of your Icebound Fortitude ability by 50%.
+			// Implemented in icebound_fortitude.go
+		},
+	},
+})
+
 func init() {
 }

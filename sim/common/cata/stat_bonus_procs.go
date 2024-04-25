@@ -615,7 +615,7 @@ func init() {
 		ProcChance: 1,
 		ICD:        time.Second * 30,
 	}, func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-		return spell.Unit.CurrentHealthPercent() < 0.35
+		return result.Target.CurrentHealthPercent() < 0.35
 	})
 
 	shared.NewProcStatBonusEffectWithCustomCondition(shared.ProcStatBonusEffect{
@@ -630,7 +630,7 @@ func init() {
 		ProcChance: 1,
 		ICD:        time.Second * 30,
 	}, func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-		return spell.Unit.CurrentHealthPercent() < 0.35
+		return result.Target.CurrentHealthPercent() < 0.35
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
@@ -749,7 +749,7 @@ func init() {
 		ProcChance: 1,
 		ICD:        time.Second * 30,
 	}, func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
-		return spell.Unit.CurrentHealthPercent() < 0.35
+		return result.Target.CurrentHealthPercent() < 0.35
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
