@@ -21,15 +21,24 @@ var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 90294}
 
+			apDep := make([]*stats.StatDependency, 3)
+			for i := 1; i <= 3; i++ {
+				apDep[i-1] = character.NewDynamicMultiplyStat(stats.AttackPower, 1.0+float64(i)*0.01)
+			}
+
 			buff := character.RegisterAura(core.Aura{
 				Label:     "Rage of the Ages",
 				ActionID:  actionID,
 				Duration:  30 * time.Second,
 				MaxStacks: 3,
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-					oldBonus := core.TernaryFloat64(oldStacks != 0, 0.01*float64(oldStacks), 1.0)
-					newBonus := 0.01 * float64(newStacks)
-					character.MultiplyStat(stats.AttackPower, newBonus/oldBonus)
+					// Example from DK Death Eater
+					if oldStacks > 0 {
+						character.DisableDynamicStatDep(sim, apDep[oldStacks-1])
+					}
+					if newStacks > 0 {
+						character.EnableDynamicStatDep(sim, apDep[newStacks-1])
+					}
 				},
 			})
 
