@@ -19,8 +19,8 @@
 	  {"action":{"condition":{"cmp":{"op":"OpEq","lhs":{"currentRuneCount":{"runeType":"RuneBlood"}},"rhs":{"const":{"val":"2"}}}},"castSpell":{"spellId":{"spellId":55050}}}},
 	  {"action":{"castSpell":{"spellId":{"spellId":46584}}}},
 	  {"action":{"castSpell":{"spellId":{"spellId":55050}}}},
-	  {"action":{"castSpell":{"spellId":{"spellId":56815,"tag":1}}}},
 	  {"action":{"castSpell":{"spellId":{"spellId":48721}}}},
+	  {"action":{"castSpell":{"spellId":{"spellId":56815,"tag":1}}}},
 	  {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"runeCooldown":{"runeType":"RuneBlood"}},"rhs":{"const":{"val":"1s"}}}},"castSpell":{"spellId":{"spellId":45529}}}}
     ]
 }
