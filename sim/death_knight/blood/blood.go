@@ -1,8 +1,11 @@
 package blood
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/death_knight"
 )
 
@@ -25,6 +28,8 @@ func RegisterBloodDeathKnight() {
 
 type BloodDeathKnight struct {
 	*death_knight.DeathKnight
+
+	vengeance *core.VengeanceTracker
 }
 
 func NewBloodDeathKnight(character *core.Character, options *proto.Player) *BloodDeathKnight {
@@ -34,7 +39,9 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 		DeathKnight: death_knight.NewDeathKnight(character, death_knight.DeathKnightInputs{
 			IsDps:              false,
 			StartingRunicPower: dkOptions.Options.ClassOptions.StartingRunicPower,
+			Spec:               proto.Spec_SpecBloodDeathKnight,
 		}, options.TalentsString, 50034),
+		vengeance: &core.VengeanceTracker{},
 	}
 
 	bdk.EnableAutoAttacks(bdk, core.AutoAttackOptions{
@@ -53,17 +60,99 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 	return bdk
 }
 
-func (dk *BloodDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
-	return dk.DeathKnight
+func (bdk *BloodDeathKnight) GetDeathKnight() *death_knight.DeathKnight {
+	return bdk.DeathKnight
 }
 
-func (dk *BloodDeathKnight) Initialize() {
-	dk.DeathKnight.Initialize()
+func (bdk *BloodDeathKnight) Initialize() {
+	bdk.DeathKnight.Initialize()
+
+	bdk.registerHeartStrikeSpell()
 }
 
-func (dk *BloodDeathKnight) Reset(sim *core.Simulation) {
-	dk.DeathKnight.Reset(sim)
+func (bdk BloodDeathKnight) getBloodShieldMasteryBonus() float64 {
+	return 0.5 + 0.0625*bdk.GetMasteryPoints()
+}
 
-	//dk.Presence = death_knight.UnsetPresence
-	//dk.DeathKnight.PseudoStats.Stunned = false
+func (bdk *BloodDeathKnight) ApplyTalents() {
+	bdk.DeathKnight.ApplyTalents()
+
+	// Veteran of the Third War
+	bdk.AddStaticMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: death_knight.DeathKnightSpellOutbreak,
+		TimeValue: time.Second * -30,
+	})
+	bdk.MultiplyStat(stats.Stamina, 1.09)
+	bdk.AddStat(stats.Expertise, 6*core.ExpertisePerQuarterPercentReduction)
+	core.MakePermanent(bdk.GetOrRegisterAura(core.Aura{
+		Label:    "Veteran of the Third War",
+		ActionID: core.ActionID{SpellID: 50029},
+	}))
+
+	// Vengeance
+	core.ApplyVengeanceEffect(&bdk.Character, bdk.vengeance, 93099)
+
+	// Mastery: Blood Shield
+	shieldAmount := 0.0
+	currentShield := 0.0
+	shieldSpell := bdk.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 77535},
+		ProcMask:    core.ProcMaskSpellHealing,
+		SpellSchool: core.SpellSchoolPhysical,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		Shield: core.ShieldConfig{
+			SelfOnly: true,
+			Aura: core.Aura{
+				Label:    "Blood Shield",
+				Duration: core.NeverExpires,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if currentShield < bdk.MaxHealth() {
+				shieldAmount = min(shieldAmount, bdk.MaxHealth()-currentShield)
+				currentShield += shieldAmount
+				spell.SelfShield().Apply(sim, shieldAmount)
+			}
+		},
+	})
+	core.MakePermanent(bdk.GetOrRegisterAura(core.Aura{
+		Label:    "Mastery: Blood Shield",
+		ActionID: core.ActionID{SpellID: 77513},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
+				return
+			}
+
+			if currentShield <= 0 || result.Damage <= 0 {
+				return
+			}
+
+			damageReduced := min(result.Damage, currentShield)
+			currentShield -= damageReduced
+
+			bdk.GainHealth(sim, damageReduced, shieldSpell.HealthMetrics(result.Target))
+
+			if currentShield <= 0 {
+				shieldSpell.SelfShield().Deactivate(sim)
+			}
+		},
+		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask&death_knight.DeathKnightSpellDeathStrikeHeal == 0 {
+				return
+			}
+
+			shieldAmount = result.Damage * bdk.getBloodShieldMasteryBonus()
+			shieldSpell.Cast(sim, result.Target)
+		},
+	}))
+
+}
+
+func (bdk *BloodDeathKnight) Reset(sim *core.Simulation) {
+	bdk.DeathKnight.Reset(sim)
 }
