@@ -12,15 +12,19 @@ func (druid *Druid) registerTyphoonSpell() {
 		return
 	}
 
+	spellCoeff := 0.126
+	hasTyphoonGlyph := druid.HasMinorGlyph(proto.DruidMinorGlyph_GlyphOfTyphoon)
+	hasMonsoonGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfMonsoon)
+
 	druid.Typhoon = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 61384},
+		ActionID:    core.ActionID{SpellID: 61391},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellDamage,
 		Flags:       SpellFlagOmenTrigger | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.25,
-			Multiplier: 1,
+			BaseCost:   0.16,
+			Multiplier: 1 - (0.08 * core.TernaryFloat64(hasTyphoonGlyph, 1, 0)),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -28,7 +32,7 @@ func (druid *Druid) registerTyphoonSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Second * (20 - core.TernaryDuration(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfMonsoon), 3, 0)),
+				Duration: time.Second * (20 - core.TernaryDuration(hasMonsoonGlyph, 3, 0)),
 			},
 		},
 
@@ -39,7 +43,7 @@ func (druid *Druid) registerTyphoonSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				baseDamage := 1190 + 0.193*spell.SpellPower()
+				baseDamage := 1323 + (spell.SpellPower() * spellCoeff)
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)

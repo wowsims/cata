@@ -219,7 +219,7 @@ func (druid *Druid) RegisterBalanceSpells() {
 	druid.registerStarfireSpell()
 	druid.registerWrathSpell()
 	//druid.registerStarfallSpell()
-	//druid.registerTyphoonSpell()
+	druid.registerTyphoonSpell()
 	//druid.registerForceOfNatureCD()
 	druid.registerStarsurgeSpell()
 }
