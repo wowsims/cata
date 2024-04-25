@@ -46,10 +46,8 @@ func (warrior *Warrior) RegisterHeroicLeap() {
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 
-			curTarget = target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				spell.DealDamage(sim, results[hitIndex])
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 
 		},
