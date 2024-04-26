@@ -14,7 +14,6 @@ import * as InputHelpers from './components/input_helpers';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
 import { addStatWeightsAction } from './components/stat_weights_action';
-import * as Mechanics from './constants/mechanics';
 import * as Tooltips from './constants/tooltips';
 import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
@@ -117,8 +116,8 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 
 		debuffs: Debuffs;
 
-		rotationType?: APLRotationType,
-		simpleRotation?: SpecRotation<SpecType>,
+		rotationType?: APLRotationType;
+		simpleRotation?: SpecRotation<SpecType>;
 
 		other?: OtherDefaults;
 	};
@@ -403,9 +402,12 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	applyDefaultRotation(eventID: EventID) {
 		TypedEvent.freezeAllAndDo(() => {
 			const defaultRotationType = this.individualConfig.defaults.rotationType || APLRotationType.TypeAuto;
-			this.player.setAplRotation(eventID, APLRotation.create({
-				type: defaultRotationType,
-			}))
+			this.player.setAplRotation(
+				eventID,
+				APLRotation.create({
+					type: defaultRotationType,
+				}),
+			);
 
 			if (!this.individualConfig.defaults.simpleRotation) {
 				return;
