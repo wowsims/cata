@@ -67,7 +67,11 @@ func (druid *Druid) ApplyTalents() {
 
 	// Nature's Majesty
 	if druid.Talents.NaturesMajesty > 0 {
-		druid.AddStaticMod(core.SpellModConfig{})
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidSpellsAll,
+			FloatValue: 0.02 * float64(druid.Talents.NaturesMajesty),
+			Kind:       core.SpellMod_CritMultiplier_Pct,
+		})
 	}
 
 	// if druid.Talents.PrimalPrecision > 0 {
