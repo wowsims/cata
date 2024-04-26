@@ -14,7 +14,7 @@ func (mage *Mage) registerFrostfireOrbSpell() {
 
 	mage.FrostfireOrb = mage.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 92283},
-		SpellSchool: core.SpellSchoolFrost,
+		SpellSchool: core.SpellSchoolFrost | core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
@@ -33,7 +33,6 @@ func (mage *Mage) registerFrostfireOrbSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			mage.frostfireOrb.EnableWithTimeout(sim, mage.frostfireOrb, time.Second*15)
-
 		},
 	})
 
@@ -106,7 +105,7 @@ func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
 
 	ffo.FrostfireOrbTick = ffo.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 95969},
-		SpellSchool:    core.SpellSchoolFrost,
+		SpellSchool:    core.SpellSchoolFrost | core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
 		Flags:          SpellFlagMage | ArcaneMissileSpells | core.SpellFlagNoLogs,
 		ClassSpellMask: MageSpellFrostfireOrb,

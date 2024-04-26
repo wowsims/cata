@@ -13,7 +13,7 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 
 	mage.FrostfireBolt = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44614},
-		SpellSchool:    core.SpellSchoolFire,
+		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          SpellFlagMage | ArcaneMissileSpells | HotStreakSpells | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFrostfireBolt,
