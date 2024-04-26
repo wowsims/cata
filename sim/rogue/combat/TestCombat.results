@@ -400,8 +400,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-AllItems-DarkmoonCard:Hurricane-62051"
  value: {
-  dps: 28071.35601
-  tps: 19930.66277
+  dps: 28745.90092
+  tps: 20409.58965
  }
 }
 dps_results: {
@@ -2270,7 +2270,7 @@ dps_results: {
 dps_results: {
  key: "TestCombat-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 27516.08673
-  tps: 19536.42158
+  dps: 27582.79322
+  tps: 19583.78318
  }
 }

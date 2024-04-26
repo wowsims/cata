@@ -66,9 +66,11 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 				return
 			}
 
-			if result.Outcome.Matches(OutcomeCrit) {
-				hitFactor *= 2
-			}
+			// Currently, rage does not get doubled for crits in cataclysm
+			// Leaving the code here for reference with a note.
+			//if result.Outcome.Matches(OutcomeCrit) {
+			//	hitFactor *= 2
+			//}
 
 			// TODO: Cataclysm dodge/parry behavior
 			// damage := result.Damage

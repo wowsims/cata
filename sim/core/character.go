@@ -496,7 +496,6 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 
 func (character *Character) reset(sim *Simulation, agent Agent) {
 	character.Unit.reset(sim, agent)
-	character.ItemSwap.reset(sim, false)
 	character.majorCooldownManager.reset(sim)
 	character.CurrentTarget = character.defaultTarget
 
@@ -616,6 +615,7 @@ func (character *Character) doneIteration(sim *Simulation) {
 		character.Metrics.AddFinalPetMetrics(&pet.Metrics)
 	}
 
+	character.ItemSwap.doneIteration(sim)
 	character.Unit.doneIteration(sim)
 }
 

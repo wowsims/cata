@@ -44,12 +44,6 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 		vengeance: &core.VengeanceTracker{},
 	}
 
-	bdk.EnableAutoAttacks(bdk, core.AutoAttackOptions{
-		MainHand:       bdk.WeaponFromMainHand(bdk.DefaultMeleeCritMultiplier()),
-		OffHand:        bdk.WeaponFromOffHand(bdk.DefaultMeleeCritMultiplier()),
-		AutoSwingMelee: true,
-	})
-
 	healingModel := options.HealingModel
 	if healingModel != nil {
 		if healingModel.InspirationUptime > 0.0 {

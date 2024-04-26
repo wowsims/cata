@@ -33,7 +33,7 @@ func init() {
 		Flags:   core.SpellFlagNoSpellMods | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 		Trigger: core.ProcTrigger{
 			Name:     "Darkmoon Card: Hurricane",
-			ProcMask: core.ProcMaskProc,
+			ProcMask: core.ProcMaskMeleeOrRanged,
 			PPM:      1,
 			Outcome:  core.OutcomeLanded,
 			Callback: core.CallbackOnSpellHitDealt,
