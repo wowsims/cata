@@ -1,4 +1,5 @@
 import { Tooltip } from 'bootstrap';
+import internal from 'stream';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment } from 'tsx-vanilla';
 
@@ -21,6 +22,12 @@ type TooltipHandler = (dataPointIndex: number) => string;
 const dpsColor = '#ed5653';
 const manaColor = '#2E93fA';
 const threatColor = '#b56d07';
+
+const buffAuraToSpellIdMap:Map<number, ActionId> = new Map([
+	[96228, ActionId.fromSpellId(82174)], // Synapse Springs
+	[96229, ActionId.fromSpellId(82174)], // Synapse Springs
+	[96230, ActionId.fromSpellId(82174)], // Synapse Springs
+])
 
 export class Timeline extends ResultComponent {
 	private readonly dpsResourcesPlotElem: HTMLElement;
@@ -867,7 +874,8 @@ export class Timeline extends ResultComponent {
 
 		// If there are any auras that correspond to this cast, visualize them in the same row.
 		aurasById
-			.filter(auraUptimeLogs => auraUptimeLogs[0].actionId!.equalsIgnoringTag(actionId))
+			.filter(auraUptimeLogs => actionId.equalsIgnoringTag(buffAuraToSpellIdMap.get(auraUptimeLogs[0].actionId!.spellId) ?? auraUptimeLogs[0].actionId!))
+			//.filter(auraUptimeLogs => auraUptimeLogs[0].actionId!.equalsIgnoringTag(actionId))
 			.forEach(auraUptimeLogs => this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem));
 
 		this.rotationTimeline.appendChild(rowElem);
