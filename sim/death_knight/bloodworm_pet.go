@@ -92,7 +92,7 @@ func (bloodworm *BloodwormPet) Initialize() {
 			bloodworm.stackAura.Activate(sim)
 			bloodworm.stackAura.AddStack(sim)
 
-			explodeChance := float64(bloodworm.stackAura.GetStacks()) * 0.1
+			explodeChance := float64(bloodworm.stackAura.GetStacks()*bloodworm.stackAura.GetStacks()) * 0.01
 
 			if sim.Proc(explodeChance, "Blood Burst") {
 				explosion.Cast(sim, &bloodworm.Unit)

@@ -29,6 +29,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       mask,
 		Flags:          flags,
+		MissileSpeed:   24,
 		ClassSpellMask: core.TernaryInt64(isElementalOverload, SpellMaskLavaBurstOverload, SpellMaskLavaBurst),
 
 		ManaCost: core.ManaCostOptions{
@@ -72,11 +73,13 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isElementalOverload bool) core.Spe
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		result := spell.CalcDamage(sim, target, 1586, spell.OutcomeMagicHitAndCrit)
 
-		if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Lava Burst Elemental Overload") {
-			shaman.LavaBurstOverload.Cast(sim, target)
-		}
+		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+			if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Lava Burst Elemental Overload") {
+				shaman.LavaBurstOverload.Cast(sim, target)
+			}
 
-		spell.DealDamage(sim, result)
+			spell.DealDamage(sim, result)
+		})
 	}
 
 	return spellConfig
