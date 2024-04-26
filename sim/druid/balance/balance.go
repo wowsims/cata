@@ -48,7 +48,6 @@ type BalanceOnUseTrinket struct {
 
 type BalanceDruid struct {
 	*druid.Druid
-	eclipseEnergyBar
 	Options *proto.BalanceDruid_Options
 }
 
@@ -72,6 +71,5 @@ func (moonkin *BalanceDruid) Initialize() {
 
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
 	moonkin.Druid.Reset(sim)
-	moonkin.eclipseEnergyBar.reset()
 	//moonkin.RebirthTiming = moonkin.Env.BaseDuration.Seconds() * sim.RandomFloat("Rebirth Timing")
 }

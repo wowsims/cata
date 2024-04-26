@@ -9,6 +9,7 @@ import (
 
 func (druid *Druid) registerStarfireSpell() {
 	spellCoeff := 1.231
+	sfMetric := druid.NewSolarEnergyMetric(core.ActionID{SpellID: 2912})
 
 	hasGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph(proto.DruidPrimeGlyph_GlyphOfStarfire))
 
@@ -54,6 +55,11 @@ func (druid *Druid) registerStarfireSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(987, 1231) + (spell.SpellPower() * spellCoeff)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			if result.Landed() {
+				druid.AddEclipseEnergy(20+1.0/3.0, SolarEnergy, sim, sfMetric)
+			}
+
 			if result.Landed() && hasGlyph {
 				starfireGlyphSpell.Cast(sim, target)
 			}

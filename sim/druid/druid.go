@@ -19,6 +19,7 @@ var TalentTreeSizes = [3]int{20, 22, 21}
 type Druid struct {
 	core.Character
 	SelfBuffs
+	eclipseEnergyBar
 	Talents *proto.DruidTalents
 
 	StartingForm DruidForm
@@ -264,6 +265,8 @@ func (druid *Druid) RegisterFeralCatSpells() {
 // }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
+
+	druid.eclipseEnergyBar.reset()
 	// druid.BleedsActive = 0
 	// druid.form = druid.StartingForm
 	// druid.disabledMCDs = []*core.MajorCooldown{}

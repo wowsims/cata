@@ -1,4 +1,4 @@
-package balance
+package druid
 
 import (
 	"github.com/wowsims/cata/sim/core"
@@ -27,7 +27,7 @@ const (
 
 type EclipseCallback func(eclipse Eclipse, gained bool, sim *core.Simulation)
 type eclipseEnergyBar struct {
-	druid            *BalanceDruid
+	druid            *Druid
 	lunarEnergy      float64
 	solarEnergy      float64
 	currentEclipse   Eclipse
@@ -48,14 +48,14 @@ func (eb *eclipseEnergyBar) reset() {
 	eb.currentEclipse = NoEclipse
 }
 
-func (druid *BalanceDruid) EnableEclipseBar() {
+func (druid *Druid) EnableEclipseBar() {
 	druid.eclipseEnergyBar = eclipseEnergyBar{
 		druid:    druid,
 		gainMask: SolarEnergy | LunarEnergy,
 	}
 }
 
-func (druid *BalanceDruid) HasEclipseBar() bool {
+func (druid *Druid) HasEclipseBar() bool {
 	return druid.eclipseEnergyBar.druid != nil
 }
 
@@ -206,10 +206,10 @@ func (eb *eclipseEnergyBar) addSolarEnergy(amount float64, sim *core.Simulation,
 	metrics.AddEvent(amount, gain)
 }
 
-func (unit *BalanceDruid) NewSolarEnergyMetric(actionID core.ActionID) *core.ResourceMetrics {
+func (unit *Druid) NewSolarEnergyMetric(actionID core.ActionID) *core.ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeSolarEnergy)
 }
 
-func (unit *BalanceDruid) NewLunarEnergyMetrics(actionID core.ActionID) *core.ResourceMetrics {
+func (unit *Druid) NewLunarEnergyMetrics(actionID core.ActionID) *core.ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeLunarEnergy)
 }
