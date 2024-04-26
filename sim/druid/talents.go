@@ -52,6 +52,15 @@ func (druid *Druid) ApplyTalents() {
 		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
 	}
 
+	// Starlight Wrath
+	if druid.Talents.StarlightWrath > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask: DruidSpellStarfire | DruidSpellWrath,
+			TimeValue: time.Millisecond * time.Duration([]int{0, -150, -250, -500}[druid.Talents.StarlightWrath]),
+			Kind:      core.SpellMod_CastTime_Flat,
+		})
+	}
+
 	// Balance of Power
 	if druid.Talents.BalanceOfPower > 0 {
 		druid.AddStaticMod(core.SpellModConfig{

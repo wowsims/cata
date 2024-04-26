@@ -40,7 +40,7 @@ func (druid *Druid) registerStarfireSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: druid.starfireCastTime(),
+				CastTime: time.Millisecond * 3500,
 			},
 		},
 
@@ -66,8 +66,4 @@ func (druid *Druid) registerStarfireSpell() {
 			spell.DealDamage(sim, result)
 		},
 	})
-}
-
-func (druid *Druid) starfireCastTime() time.Duration {
-	return time.Millisecond*3500 - time.Millisecond*100*time.Duration(druid.Talents.StarlightWrath)
 }

@@ -26,7 +26,7 @@ func (druid *Druid) registerWrathSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond*2500 - time.Millisecond*100*time.Duration(druid.Talents.StarlightWrath),
+				CastTime: time.Millisecond * 2500,
 			},
 		},
 
