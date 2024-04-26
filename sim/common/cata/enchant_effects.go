@@ -233,7 +233,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4074, 1.0, &ppmm, aura)
+		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(4083, 1.0, &ppmm, aura)
 	})
 
 	// Enchant: 4084, Spell: 74225 - Enchant Weapon - Heartsong
@@ -364,7 +364,7 @@ func init() {
 			time.Second*15,
 		)
 
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Lightweave Embroidery Cata",
 			ActionID:   core.ActionID{SpellID: 75171},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
@@ -376,8 +376,6 @@ func init() {
 				statAura.Activate(sim)
 			},
 		})
-
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4115, aura)
 	})
 
 	// Enchant: 4116, Spell: 75175 - Darkglow Embroidery
@@ -391,7 +389,7 @@ func init() {
 			time.Second*15,
 		)
 
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Darkglow Embroidery Cata",
 			ActionID:   core.ActionID{SpellID: 75173},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
@@ -403,8 +401,6 @@ func init() {
 				statAura.Activate(sim)
 			},
 		})
-
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4116, aura)
 	})
 
 	// Enchant: 4118, Spell: 75178 - Swordguard Embroidery
@@ -418,7 +414,7 @@ func init() {
 			time.Second*15,
 		)
 
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Swordguard Embroidery Cataa",
 			ActionID:   core.ActionID{SpellID: 75176},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
@@ -430,8 +426,6 @@ func init() {
 				statAura.Activate(sim)
 			},
 		})
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4118, aura)
-
 	})
 
 	// Enchant: 4175, Spell: 81932, Item: 59594 - Gnomish X-Ray Scope
@@ -445,7 +439,7 @@ func init() {
 			time.Second*10,
 		)
 
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Gnomish X-Ray Scope",
 			ActionID:   core.ActionID{SpellID: 95712},
 			Callback:   core.CallbackOnSpellHitDealt,
@@ -457,8 +451,6 @@ func init() {
 				statAura.Activate(sim)
 			},
 		})
-
-		character.ItemSwap.RegisterOnSwapItemForEnchantEffect(4175, aura)
 	})
 
 	// Enchant: 4215, Spell: 92433, Item: 55055 - Elementium Shield Spike
