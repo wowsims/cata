@@ -761,7 +761,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 	cat.Rotation.UseBite = true
 	cat.Rotation.BiteDuringExecute = (cat.Talents.BloodInTheWater == 2)
 
-	cat.Rotation.RipLeeway = 4 * time.Second
-	cat.Rotation.MinRoarOffset = 12 * time.Second
-	cat.Rotation.BiteTime = 10 * time.Second
+	cat.Rotation.RipLeeway = 1 * time.Second
+	cat.Rotation.MinRoarOffset = 29 * time.Second
+	cat.Rotation.BiteTime = 11 * time.Second
 }
