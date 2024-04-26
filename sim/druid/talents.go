@@ -83,6 +83,17 @@ func (druid *Druid) ApplyTalents() {
 		})
 	}
 
+	if druid.Talents.Genesis > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask: DruidSpellMoonfire | DruidSpellSunfire | DruidSpellInsectSwarm,
+			TimeValue: time.Second * time.Duration(1*druid.Talents.Genesis),
+			// TODO: this might not be correct
+			Kind: core.SpellMod_DotNumberOfTicks_Flat,
+		})
+
+		// TODO: implement bonus to HOTs and Swiftmend
+	}
+
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.AddStat(stats.Expertise, 5.0*float64(druid.Talents.PrimalPrecision)*core.ExpertisePerQuarterPercentReduction)
 	// }
