@@ -23,10 +23,11 @@ const dpsColor = '#ed5653';
 const manaColor = '#2E93fA';
 const threatColor = '#b56d07';
 
+// Use this to connect a buff row to a cast row in the timeline view
 const buffAuraToSpellIdMap:Map<number, ActionId> = new Map([
-	[96228, ActionId.fromSpellId(82174)], // Synapse Springs
-	[96229, ActionId.fromSpellId(82174)], // Synapse Springs
-	[96230, ActionId.fromSpellId(82174)], // Synapse Springs
+	[96228, ActionId.fromSpellId(82174)], // Synapse Springs - Agi
+	[96229, ActionId.fromSpellId(82174)], // Synapse Springs - Str
+	[96230, ActionId.fromSpellId(82174)], // Synapse Springs - Int
 ])
 
 export class Timeline extends ResultComponent {
