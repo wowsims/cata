@@ -17,7 +17,7 @@ func (mage *Mage) ApplyFireTalents() {
 	mage.applyHotStreak()
 	mage.applyMoltenFury()
 	mage.applyMasterOfElements()
-	//mage.applyPyromaniac()
+	mage.applyPyromaniac()
 
 	// Improved Fire Blast
 	if mage.Talents.ImprovedFireBlast > 0 {
@@ -193,49 +193,41 @@ func (mage *Mage) applyPyromaniac() {
 	if mage.Talents.Pyromaniac == 0 {
 		return
 	}
-	/*
-		pyromaniacMod := mage.AddDynamicMod(core.SpellModConfig{
-			ClassMask:  MageSpellsAll,
-			FloatValue: -.05 * float64(mage.Talents.Pyromaniac),
-			Kind:       core.SpellMod_CastTime_Pct,
-		})
-		var activeFireDots []*core.Spell
 
-		mage.PyromaniacAura = mage.RegisterAura(core.Aura{
-			Label:    "Pyromaniac Trackers",
-			ActionID: core.ActionID{SpellID: 83582},
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				if len(sim.AllUnits) < 3 {
-					return
-				}
-				aura.Activate(sim)
-			},
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+	pyromaniacMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellsAll,
+		FloatValue: -.05 * float64(mage.Talents.Pyromaniac),
+		Kind:       core.SpellMod_CastTime_Pct,
+	})
 
-				 for _, aoeTarget := range sim.Encounter.TargetUnits {
-					if mage.LivingBomb.Dot(aoeTarget).RemainingDuration(sim) > 0 {
-
-					}
-					if spell.ClassSpellMask == MageSpellFireDoT {
-						activeFireDots = append(activeFireDots, spell)
-						core.StartDelayedAction(sim, core.DelayedActionOptions{
-							DoAt: sim.CurrentTime + spell.Dot(mage.CurrentTarget).RemainingDuration(sim),
-							OnAction: func(sim *core.Simulation) {
-								l := len(activeFireDots)
-								activeFireDots = activeFireDots[:l-1]
-
-							},
-						})
+	mage.PyromaniacAura = mage.RegisterAura(core.Aura{
+		Label:    "Pyromaniac Trackers",
+		ActionID: core.ActionID{SpellID: 83582},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			if len(sim.AllUnits) < 3 {
+				return
+			}
+			aura.Activate(sim)
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.PyroblastDot, mage.Combustion}
+			activeDotTargets := 0
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				for _, spells := range dotSpells {
+					if aoeTarget.GetAuraByID(spells.ActionID).IsActive() {
+						activeDotTargets++
+						break
 					}
 				}
-				if len(activeFireDots) >= 3 {
-					pyromaniacMod.Activate()
-				} else {
-					pyromaniacMod.Deactivate()
-				}
-			},
-		})*/
+			}
+			if activeDotTargets >= 3 && !pyromaniacMod.IsActive {
+				pyromaniacMod.Activate()
+			} else if activeDotTargets < 3 && pyromaniacMod.IsActive {
+				pyromaniacMod.Deactivate()
+			}
+		},
+	})
 }
 
 func (mage *Mage) applyMoltenFury() {
