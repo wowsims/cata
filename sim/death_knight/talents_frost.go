@@ -201,17 +201,20 @@ func (dk *DeathKnight) applyKillingMachine() {
 		ClassSpellMask: DeathKnightSpellKillingMachine,
 	})
 
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+	ppm := 2.0 * float64(dk.Talents.KillingMachine)
+	triggerAura := core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:     "Killing Machine",
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeWhiteHit,
 		Outcome:  core.OutcomeLanded,
-		PPM:      2.0 * float64(dk.Talents.KillingMachine),
+		PPM:      ppm,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			kmAura.Activate(sim)
 			kmProcSpell.Cast(sim, nil)
 		},
 	})
+
+	dk.ItemSwap.RegisterOnSwapItemUpdateProcMaskWithPPMManager(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm)
 }
 
 func (dk *DeathKnight) applyMightOfTheFrozenWastes() {

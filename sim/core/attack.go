@@ -491,13 +491,34 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 	aa.enabled = true
 
 	if aa.AutoSwingMelee {
+		if aa.mh.swingAt == NeverExpires {
+			aa.mh.swingAt = 0
+		}
 		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
+
 		if aa.IsDualWielding {
+			if aa.oh.swingAt == NeverExpires {
+				aa.oh.swingAt = 0
+			}
 			aa.oh.addWeaponAttack(sim, aa.mh.curSwingSpeed)
+
+			// Apply random delay of 0 - 50% swing time, to one of the weapons if dual wielding
+			if aa.oh.unit.Type == EnemyUnit {
+				aa.oh.swingAt = DurationFromSeconds(aa.mh.SwingSpeed / 2)
+			} else {
+				if sim.RandomFloat("SwingResetWeapon") < 0.5 {
+					aa.mh.swingAt = DurationFromSeconds(sim.RandomFloat("SwingResetDelay") * aa.mh.SwingSpeed / 2)
+				} else {
+					aa.oh.swingAt = DurationFromSeconds(sim.RandomFloat("SwingResetDelay") * aa.mh.SwingSpeed / 2)
+				}
+			}
 		}
 	}
 
 	if aa.AutoSwingRanged {
+		if aa.ranged.swingAt == NeverExpires {
+			aa.ranged.swingAt = 0
+		}
 		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 	}
 }
