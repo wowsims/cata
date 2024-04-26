@@ -981,7 +981,7 @@ func (rc *RuneCostImpl) spendRefundableCost(sim *Simulation, spell *Spell, resul
 		if rc.RunicPowerGain > 0 {
 			spell.Unit.AddRunicPower(sim, rc.RunicPowerGain, spell.RunicPowerMetrics())
 		}
-	} else if cost.RunicPower() > 0 {
+	} else if rc.RefundCost > 0 {
 		spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
 	}
 }
@@ -998,7 +998,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodRune(sim *Simulation, 
 	if !result.Landed() {
 		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
 		// only spend RP
-		if cost.RunicPower() > 0 {
+		if rc.RefundCost > 0 {
 			spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
 		}
 		return
@@ -1043,7 +1043,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertFrostOrUnholyRune(sim *Simu
 	if !result.Landed() {
 		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
 		// only spend RP
-		if cost.RunicPower() > 0 {
+		if rc.RefundCost > 0 {
 			spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
 		}
 		return
@@ -1081,7 +1081,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simul
 	if !result.Landed() {
 		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
 		// only spend RP
-		if cost.RunicPower() > 0 {
+		if rc.RefundCost > 0 {
 			spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
 		}
 		return
