@@ -39,12 +39,6 @@ func NewFrostDeathKnight(character *core.Character, player *proto.Player) *Frost
 		}, player.TalentsString, 0),
 	}
 
-	fdk.EnableAutoAttacks(fdk, core.AutoAttackOptions{
-		MainHand:       fdk.WeaponFromMainHand(fdk.DefaultMeleeCritMultiplier()),
-		OffHand:        fdk.WeaponFromOffHand(fdk.DefaultMeleeCritMultiplier()),
-		AutoSwingMelee: true,
-	})
-
 	return fdk
 }
 

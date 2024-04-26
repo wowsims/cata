@@ -26,10 +26,11 @@ type ProcStatBonusEffect struct {
 }
 
 type DamageEffect struct {
-	SpellID int32
-	School  core.SpellSchool
-	MinDmg  float64
-	MaxDmg  float64
+	SpellID          int32
+	School           core.SpellSchool
+	MinDmg           float64
+	MaxDmg           float64
+	BonusCoefficient float64
 }
 
 type ExtraSpellInfo struct {
@@ -52,6 +53,7 @@ func NewProcStatBonusEffectWithDamageProc(config ProcStatBonusEffect, damage Dam
 			CritMultiplier:           character.DefaultSpellCritMultiplier(),
 			DamageMultiplierAdditive: 1,
 			ThreatMultiplier:         1,
+			BonusCoefficient:         damage.BonusCoefficient,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.CalcAndDealDamage(sim, target, sim.Roll(damage.MinDmg, damage.MaxDmg), spell.OutcomeMagicCrit)
 			},

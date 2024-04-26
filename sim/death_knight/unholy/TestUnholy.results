@@ -273,15 +273,15 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Bryntroll,theBoneArbiter-50415"
  value: {
-  dps: 35340.31212
-  tps: 25214.04175
+  dps: 35251.8108
+  tps: 25144.89903
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-Bryntroll,theBoneArbiter-50709"
  value: {
-  dps: 35446.39146
-  tps: 25300.61612
+  dps: 35357.93362
+  tps: 25231.55162
  }
 }
 dps_results: {
@@ -975,15 +975,15 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-LastWord-50179"
  value: {
-  dps: 34728.7228
-  tps: 24705.00018
+  dps: 34721.5785
+  tps: 24670.81111
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-LastWord-50708"
  value: {
-  dps: 34797.97388
-  tps: 24756.10892
+  dps: 34789.62254
+  tps: 24720.63944
  }
 }
 dps_results: {
@@ -1346,8 +1346,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Shadowmourne-49623"
  value: {
-  dps: 36690.13106
-  tps: 26046.46478
+  dps: 36696.47962
+  tps: 26080.88071
  }
 }
 dps_results: {

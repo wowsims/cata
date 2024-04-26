@@ -127,7 +127,9 @@ func init() {
 					return
 				}
 
-				aura.RemoveStack(sim)
+				if aura.IsActive() {
+					aura.RemoveStack(sim)
+				}
 			},
 		})
 
@@ -139,6 +141,7 @@ func init() {
 			PPM:      1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				cinderAura.Activate(sim)
+				cinderAura.SetStacks(sim, cinderAura.MaxStacks)
 			},
 		})
 
