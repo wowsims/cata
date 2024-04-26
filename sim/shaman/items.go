@@ -105,7 +105,7 @@ var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
 				},
 				//TODO Could change to OnCastComplete when behavior is confirmed.
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.ClassSpellMask != SpellMaskLightningBolt || !sim.Proc(0.3, "Volcanic Regalia 2P") {
+					if spell.ClassSpellMask != SpellMaskLightningBolt || !sim.Proc(0.3, "Volcanic Regalia 2P") || shaman.FireElementalTotem == nil {
 						return
 					}
 					shaman.FireElementalTotem.CD.Reduce(4 * time.Second)
