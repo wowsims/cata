@@ -446,6 +446,11 @@ func (equipment *Equipment) Stats() stats.Stats {
 
 func ItemEquipmentStats(item Item) stats.Stats {
 	equipStats := stats.Stats{}
+
+	if item.ID == 0 {
+		return equipStats
+	}
+
 	equipStats = equipStats.Add(item.Stats)
 
 	// TODO: Verify that random suffix stats can be re-forged (current implementation assumes yes)

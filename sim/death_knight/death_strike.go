@@ -77,7 +77,6 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 			FrostRuneCost:  1,
 			UnholyRuneCost: 1,
 			RunicPowerGain: 20,
-			Refundable:     true,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -96,13 +95,10 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			spell.SpendRefundableCost(sim, result)
 			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 
-			if result.Landed() {
-				healingSpell.Cast(sim, spell.Unit)
-				healingSpell.CalcAndDealHealing(sim, spell.Unit, max(damageTakenInFive*0.2, spell.Unit.MaxHealth()*0.07), healingSpell.OutcomeHealing)
-			}
+			healingSpell.Cast(sim, spell.Unit)
+			healingSpell.CalcAndDealHealing(sim, spell.Unit, max(damageTakenInFive*0.2, spell.Unit.MaxHealth()*0.07), healingSpell.OutcomeHealing)
 
 			spell.DealDamage(sim, result)
 		},

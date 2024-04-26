@@ -49,12 +49,6 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 
 	uhdk.Inputs.UnholyFrenzyTarget = unholyOptions.UnholyFrenzyTarget
 
-	uhdk.EnableAutoAttacks(uhdk, core.AutoAttackOptions{
-		MainHand:       uhdk.WeaponFromMainHand(uhdk.DefaultMeleeCritMultiplier()),
-		OffHand:        uhdk.WeaponFromOffHand(uhdk.DefaultMeleeCritMultiplier()),
-		AutoSwingMelee: true,
-	})
-
 	return uhdk
 }
 
