@@ -51,17 +51,17 @@ type DeathKnight struct {
 	Inputs DeathKnightInputs
 
 	// Pets
-	Ghoul             *GhoulPet
-	Gargoyle          *GargoylePet
-	DancingRuneWeapon *core.Spell
-	ArmyGhoul         []*GhoulPet
-	//RuneWeapon        *RuneWeaponPet
-	//Bloodworm []*BloodwormPet
+	Ghoul      *GhoulPet
+	Gargoyle   *GargoylePet
+	ArmyGhoul  []*GhoulPet
+	RuneWeapon *RuneWeaponPet
+	Bloodworm  []*BloodwormPet
 
 	// Diseases
 	FrostFeverSpell  *core.Spell
 	BloodPlagueSpell *core.Spell
 	EbonPlagueAura   core.AuraArray
+	ScarletFeverAura core.AuraArray
 }
 
 func (dk *DeathKnight) GetCharacter() *core.Character {
@@ -117,6 +117,15 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerPillarOfFrostSpell()
 	dk.registerPestilenceSpell()
 	dk.registerBloodBoilSpell()
+	dk.registerRuneStrikeSpell()
+	dk.registerDeathStrikeSpell()
+	dk.registerRuneTapSpell()
+	dk.registerVampiricBloodSpell()
+	dk.registerIceboundFortitudeSpell()
+	dk.registerBoneShieldSpell()
+	dk.registerDancingRuneWeaponSpell()
+	dk.registerDeathPactSpell()
+	dk.registerAntiMagicShellSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -190,16 +199,16 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
 	}
 
-	// 	if dk.Talents.Bloodworms > 0 {
-	// 		dk.Bloodworm = make([]*BloodwormPet, 4)
-	// 		for i := 0; i < 4; i++ {
-	// 			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
-	// 		}
-	// 	}
+	if dk.Talents.BloodParasite > 0 {
+		dk.Bloodworm = make([]*BloodwormPet, 5)
+		for i := 0; i < 5; i++ {
+			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
+		}
+	}
 
-	// 	if dk.Talents.DancingRuneWeapon {
-	// 		dk.RuneWeapon = dk.NewRuneWeapon()
-	// 	}
+	if dk.Talents.DancingRuneWeapon {
+		dk.RuneWeapon = dk.NewRuneWeapon()
+	}
 
 	return dk
 }
@@ -231,6 +240,8 @@ const (
 	DeathKnightSpellPlagueStrike
 	DeathKnightSpellFesteringStrike
 	DeathKnightSpellScourgeStrike
+	DeathKnightSpellHeartStrike
+	DeathKnightSpellDeathStrike
 	DeathKnightSpellScourgeStrikeShadow
 	DeathKnightSpellFrostFever
 	DeathKnightSpellBloodPlague
@@ -239,6 +250,14 @@ const (
 	DeathKnightSpellPillarOfFrost
 	DeathKnightSpellPestilence
 	DeathKnightSpellBloodBoil
+	DeathKnightSpellRuneTap
+	DeathKnightSpellVampiricBlood
+	DeathKnightSpellIceboundFortitude
+	DeathKnightSpellBoneShield
+	DeathKnightSpellDancingRuneWeapon
+	DeathKnightSpellDeathPact
+
+	DeathKnightSpellDeathStrikeHeal // Heal spell for DS
 
 	DeathKnightSpellKillingMachine     // Used to react to km procs
 	DeathKnightSpellConvertToDeathRune // Used to react to death rune gains

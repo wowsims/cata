@@ -425,7 +425,6 @@ export class ActionId {
 			case 'Frost Strike':
 			case 'Plague Strike':
 			case 'Blood Strike':
-			case 'Death Strike':
 			case 'Obliterate':
 			case 'Blood-Caked Strike':
 			case 'Festering Strike':
@@ -437,6 +436,15 @@ export class ActionId {
 					name += ' (Main Hand)';
 				} else if (this.tag == 2) {
 					name += ' (Off Hand)';
+				}
+				break;
+			case 'Death Strike':
+				if (this.tag == 1) {
+					name += ' (Main Hand)';
+				} else if (this.tag == 2) {
+					name += ' (Off Hand)';
+				} else if (this.tag == 3) {
+					name += ' (Heal)';
 				}
 				break;
 			case 'Battle Shout':
@@ -741,4 +749,6 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeFrostRune]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
 	[ResourceType.ResourceTypeUnholyRune]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_unholypresence.jpg',
 	[ResourceType.ResourceTypeDeathRune]: '/cata/assets/img/death_rune.png',
+	[ResourceType.ResourceTypeSolarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipseorange.jpg',
+	[ResourceType.ResourceTypeLunarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipse.jpg',
 };

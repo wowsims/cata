@@ -17,7 +17,7 @@ func (hp *HunterPet) ApplyTalents() {
 
 	if talents.SpikedCollar > 0 {
 		hp.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			ClassMask:  HunterPetFocusDump,
 			FloatValue: 0.03 * float64(talents.SpikedCollar),
 		})

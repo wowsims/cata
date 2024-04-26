@@ -22,6 +22,13 @@ $threat-color: #b56d07;
 .combo-points .series-color, .combo-points.series-color {
 	color: $combo-points-color;
 }
+.solar-energy .series-color, .solar-energy.series-color {
+	color: $solar-energy-color;
+}
+
+.lunar-energy .series-color, .lunar-energy.series-color {
+	color: $lunar-energy-color;
+}
 
 .timeline-root {
 	display: flex;
@@ -172,6 +179,17 @@ $threat-color: #b56d07;
 
 	&.energy {
 		background-color: yellow;
+	}
+
+	&.lunar-energy {
+		background-color: $lunar-energy-color;
+		width: 24px;
+	}
+
+	&.solar-energy{
+		background-color: $solar-energy-color;
+		top: 0;
+		width: 24px;
 	}
 }
 .rotation-timeline-cast {

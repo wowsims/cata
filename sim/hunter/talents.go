@@ -631,42 +631,45 @@ func (hunter *Hunter) registerSicEm() {
 	}
 
 	actionId := core.ActionID{SpellID: 83356}
+
 	sicEmMod := hunter.Pet.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -(float64(hunter.Talents.SicEm) * 0.5),
+		Kind:       core.SpellMod_PowerCost_Flat,
+		FloatValue: -(float64(hunter.Talents.SicEm) * 12.5),
 		ProcMask:   core.ProcMaskMeleeMHSpecial,
 	})
 
-	core.MakePermanent(hunter.RegisterAura(core.Aura{
-		Label:    "Sic'Em Mod",
+	sicEmAura := hunter.Pet.RegisterAura(core.Aura{
 		ActionID: actionId,
+		Label:    "Sic'Em",
+		Duration: time.Second * 12,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			sicEmMod.Activate()
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask == core.ProcMaskMeleeMHSpecial {
+				sicEmMod.Deactivate()
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Sic'Em Mod",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell == hunter.ArcaneShot || spell == hunter.AimedShot || spell == hunter.ExplosiveShot {
 				if result.DidCrit() {
-					sicEmMod.Activate()
+					sicEmAura.Activate(sim)
 				}
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell == hunter.ExplosiveShot {
 				if result.DidCrit() {
-					sicEmMod.Activate()
+					sicEmAura.Activate(sim)
 				}
 			}
 		},
 	}))
-	core.MakePermanent(hunter.Pet.RegisterAura(core.Aura{
-		ActionID: actionId,
-		Label:    "Sic'Em",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask == core.ProcMaskMeleeMHSpecial {
-				if sicEmMod.IsActive {
-					sicEmMod.Deactivate()
-				}
-			}
-		},
-	}))
-
 }
 func (hunter *Hunter) registerReadinessCD() {
 	if !hunter.Talents.Readiness {

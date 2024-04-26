@@ -10,7 +10,7 @@ func (dk *DeathKnight) DiseasesAreActive(target *core.Unit) bool {
 	return dk.FrostFeverSpell.Dot(target).IsActive() || dk.BloodPlagueSpell.Dot(target).IsActive()
 }
 
-func (dk *DeathKnight) CountActiveDiseases(target *core.Unit) float64 {
+func (dk *DeathKnight) GetDiseaseMulti(target *core.Unit, base float64, increase float64) float64 {
 	count := 0
 	if dk.FrostFeverSpell.Dot(target).IsActive() {
 		count++
@@ -18,15 +18,17 @@ func (dk *DeathKnight) CountActiveDiseases(target *core.Unit) float64 {
 	if dk.BloodPlagueSpell.Dot(target).IsActive() {
 		count++
 	}
-	if dk.Talents.EbonPlaguebringer > 0 && dk.EbonPlagueAura.Get(target).IsActive() {
+	if dk.EbonPlagueAura.Get(target).IsActive() {
 		count++
 	}
-	return float64(count)
+	return base + increase*float64(count)
 }
+
+var OutbreakActionID = core.ActionID{SpellID: 77575}
 
 func (dk *DeathKnight) registerOutbreak() {
 	dk.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 77575},
+		ActionID:       OutbreakActionID,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
@@ -71,7 +73,6 @@ func (dk *DeathKnight) registerFrostFever() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "FrostFever" + dk.Label,
-				Tag:   "FrostFever",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					extraEffectAura.Get(aura.Unit).Activate(sim)
 				},
@@ -90,8 +91,7 @@ func (dk *DeathKnight) registerFrostFever() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			dot := spell.Dot(target)
-			dot.Apply(sim)
+			spell.Dot(target).Apply(sim)
 		},
 
 		RelatedAuras: []core.AuraArray{extraEffectAura},
@@ -113,7 +113,6 @@ func (dk *DeathKnight) registerBloodPlague() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "BloodPlague" + dk.Label,
-				Tag:   "BloodPlague",
 			},
 			NumberOfTicks: 7,
 			TickLength:    time.Second * 3,
@@ -127,6 +126,98 @@ func (dk *DeathKnight) registerBloodPlague() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.Dot(target).Apply(sim)
+		},
+	})
+}
+
+func (runeWeapon *RuneWeaponPet) DiseasesAreActive(target *core.Unit) bool {
+	return runeWeapon.FrostFeverSpell.Dot(target).IsActive() || runeWeapon.BloodPlagueSpell.Dot(target).IsActive()
+}
+
+func (runeWeapon *RuneWeaponPet) GetDiseaseMulti(target *core.Unit, base float64, increase float64) float64 {
+	count := 0
+	if runeWeapon.FrostFeverSpell.Dot(target).IsActive() {
+		count++
+	}
+	if runeWeapon.BloodPlagueSpell.Dot(target).IsActive() {
+		count++
+	}
+	return base + increase*float64(count)
+}
+
+func (dk *DeathKnight) registerDrwOutbreakSpell() *core.Spell {
+	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:       OutbreakActionID,
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: DeathKnightSpellOutbreak,
+
+		CritMultiplier: dk.DefaultMeleeCritMultiplier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+			if result.Landed() {
+				dk.RuneWeapon.FrostFeverSpell.Cast(sim, target)
+				dk.RuneWeapon.BloodPlagueSpell.Cast(sim, target)
+			}
+		},
+	})
+}
+
+func (dk *DeathKnight) registerDrwFrostFever() {
+	dk.RuneWeapon.FrostFeverSpell = dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 55095},
+		SpellSchool: core.SpellSchoolFrost,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagDisease,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "FrostFever" + dk.RuneWeapon.Label,
+			},
+			NumberOfTicks: 7,
+			TickLength:    time.Second * 3,
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, dot.Spell.MeleeAttackPower()*0.055+0.31999999285*core.CharacterLevel)
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			CopySpellMultipliers(dk.FrostFeverSpell, dk.RuneWeapon.FrostFeverSpell, target)
+			spell.Dot(target).Apply(sim)
+		},
+	})
+}
+
+func (dk *DeathKnight) registerDrwBloodPlague() {
+	dk.RuneWeapon.BloodPlagueSpell = dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 55078},
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagDisease,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "BloodPlague" + dk.RuneWeapon.Label,
+			},
+			NumberOfTicks: 7,
+			TickLength:    time.Second * 3,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				dot.Snapshot(target, dot.Spell.MeleeAttackPower()*0.055+0.3939999938*core.CharacterLevel)
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			CopySpellMultipliers(dk.BloodPlagueSpell, dk.RuneWeapon.BloodPlagueSpell, target)
 			spell.Dot(target).Apply(sim)
 		},
 	})

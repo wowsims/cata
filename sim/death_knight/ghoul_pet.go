@@ -71,7 +71,7 @@ func (dk *DeathKnight) SetupGhoul(ghoulPet *GhoulPet, apScaling float64) {
 
 	ghoulPet.Pet.OnPetEnable = ghoulPet.enable
 
-	ghoulPet.Unit.EnableFocusBar(100, 10.0, false)
+	ghoulPet.Unit.EnableFocusBar(100, 10.0, false, nil)
 
 	dk.AddPet(ghoulPet)
 }

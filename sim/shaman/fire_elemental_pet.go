@@ -35,18 +35,18 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 	fireElemental.EnableManaBar()
 	fireElemental.EnableAutoAttacks(fireElemental, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  1,  // Estimated from base AP
-			BaseDamageMax:  23, // Estimated from base AP
+			BaseDamageMin:  429, //Estimated from beta testing
+			BaseDamageMax:  463, //Estimated from beta testing
 			SwingSpeed:     2,
-			CritMultiplier: 2, // Pretty sure this is right.
+			CritMultiplier: 2.66, //Estimated from beta testing
 			SpellSchool:    core.SpellSchoolFire,
 		},
 		AutoSwingMelee: true,
 	})
 
 	if bonusSpellPower > 0 {
-		fireElemental.AddStat(stats.SpellPower, float64(bonusSpellPower)*0.5218)
-		fireElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*4.45)
+		fireElemental.AddStat(stats.SpellPower, float64(bonusSpellPower)*0.5883)
+		fireElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*0.7)
 	}
 
 	if shaman.Race == proto.Race_RaceDraenei {
@@ -139,12 +139,12 @@ func (fireElemental *FireElemental) TryCast(sim *core.Simulation, target *core.U
 }
 
 var fireElementalPetBaseStats = stats.Stats{
-	stats.Mana:        1789,
-	stats.Health:      994,
-	stats.Intellect:   147,
-	stats.Stamina:     327,
-	stats.SpellPower:  0,    //Estimated
-	stats.AttackPower: 1303, //Estimated
+	stats.Mana:        8893, //Estimated from beta testing
+	stats.Health:      4903, //Estimated from beta testing
+	stats.Intellect:   0,
+	stats.Stamina:     0,
+	stats.SpellPower:  0, //Estimated
+	stats.AttackPower: 0, //Estimated
 
 	// TODO : Log digging and my own samples this seems to be around the 5% mark.
 	stats.MeleeCrit: (5 + 1.8) * core.CritRatingPerCritChance,
@@ -156,23 +156,20 @@ func (shaman *Shaman) fireElementalStatInheritance() core.PetStatInheritance {
 		ownerSpellHitChance := math.Floor(ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance)
 		spellHitRatingFromOwner := ownerSpellHitChance * core.SpellHitRatingPerHitChance
 
-		ownerHitChance := ownerStats[stats.MeleeHit] / core.MeleeHitRatingPerHitChance
-		hitRatingFromOwner := math.Floor(ownerHitChance) * core.MeleeHitRatingPerHitChance
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.75,
-			stats.Intellect:   ownerStats[stats.Intellect] * 0.30,
-			stats.SpellPower:  ownerStats[stats.SpellPower] * 0.4970,
-			stats.AttackPower: ownerStats[stats.SpellPower] * 4.2381,
+			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,      //Estimated from beta testing
+			stats.Intellect:   ownerStats[stats.Intellect] * 0.3198,  //Estimated from beta testing
+			stats.SpellPower:  ownerStats[stats.SpellPower] * 0.5883, //Estimated from beta testing
+			stats.AttackPower: ownerStats[stats.SpellPower] * 0.7,    //Estimated from beta testing
 
-			// TODO tested useing pre-patch lvl 70 stats need to confirm in WOTLK at 80.
-			stats.MeleeHit: hitRatingFromOwner,
+			stats.MeleeHit: spellHitRatingFromOwner,
 			stats.SpellHit: spellHitRatingFromOwner,
 
 			/*
 				TODO working on figuring this out, getting close need more trials. will need to remove specific buffs,
 				ie does not gain the benefit from draenei buff.
 			*/
-			stats.Expertise: math.Floor(spellHitRatingFromOwner * 0.79),
+			stats.Expertise: math.Floor(spellHitRatingFromOwner * 27 / 16),
 		}
 	}
 }
