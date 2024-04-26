@@ -72,6 +72,8 @@ func (shaman *Shaman) ApplyTalents() {
 		*/
 	}
 
+	shaman.applyLavaSurge()
+
 	shaman.applyFulmination()
 
 	if shaman.Talents.Earthquake {
@@ -220,6 +222,25 @@ func (shaman *Shaman) applyRollingThunder() {
 				}
 				//  }
 			}
+		},
+	})
+}
+
+func (shaman *Shaman) applyLavaSurge() {
+	if shaman.Talents.LavaSurge == 0 {
+		return
+	}
+	shaman.RegisterAura(core.Aura{
+		Label:    "Lava Surge",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask != SpellMaskFlameShockDot || !sim.Proc(0.1*float64(shaman.Talents.LavaSurge), "LavaSurge") {
+				return
+			}
+			shaman.LavaBurst.CD.Reset()
 		},
 	})
 }
