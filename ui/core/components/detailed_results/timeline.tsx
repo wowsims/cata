@@ -5,7 +5,7 @@ import { element, fragment } from 'tsx-vanilla';
 
 import { ResourceType } from '../../proto/api.js';
 import { OtherAction } from '../../proto/common.js';
-import { ActionId, resourceTypeToIcon } from '../../proto_utils/action_id.js';
+import { ActionId, buffAuraToSpellIdMap, resourceTypeToIcon } from '../../proto_utils/action_id.js';
 import { AuraUptimeLog, CastLog, DpsLog, ResourceChangedLogGroup, SimLog, ThreatLogGroup } from '../../proto_utils/logs_parser.js';
 import { resourceNames } from '../../proto_utils/names.js';
 import { UnitMetrics } from '../../proto_utils/sim_result.js';
@@ -22,13 +22,6 @@ type TooltipHandler = (dataPointIndex: number) => string;
 const dpsColor = '#ed5653';
 const manaColor = '#2E93fA';
 const threatColor = '#b56d07';
-
-// Use this to connect a buff row to a cast row in the timeline view
-const buffAuraToSpellIdMap:Map<number, ActionId> = new Map([
-	[96228, ActionId.fromSpellId(82174)], // Synapse Springs - Agi
-	[96229, ActionId.fromSpellId(82174)], // Synapse Springs - Str
-	[96230, ActionId.fromSpellId(82174)], // Synapse Springs - Int
-])
 
 export class Timeline extends ResultComponent {
 	private readonly dpsResourcesPlotElem: HTMLElement;
@@ -875,7 +868,7 @@ export class Timeline extends ResultComponent {
 
 		// If there are any auras that correspond to this cast, visualize them in the same row.
 		aurasById
-			.filter(auraUptimeLogs => actionId.equalsIgnoringTag(buffAuraToSpellIdMap.get(auraUptimeLogs[0].actionId!.spellId) ?? auraUptimeLogs[0].actionId!))
+			.filter(auraUptimeLogs => actionId.equalsIgnoringTag(buffAuraToSpellIdMap[auraUptimeLogs[0].actionId!.spellId] ?? auraUptimeLogs[0].actionId!))
 			.forEach(auraUptimeLogs => this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem));
 
 		this.rotationTimeline.appendChild(rowElem);
