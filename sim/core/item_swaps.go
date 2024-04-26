@@ -160,7 +160,7 @@ func (swap *ItemSwap) CalcStatChanges(slots []proto.ItemSlot) stats.Stats {
 	return newStats
 }
 
-func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot) {
+func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot, updateStats bool) {
 	if !swap.IsEnabled() {
 		return
 	}
@@ -183,10 +183,12 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot) {
 		}
 	}
 
-	character.AddStatsDynamic(sim, newStats)
+	if updateStats {
+		character.AddStatsDynamic(sim, newStats)
 
-	if sim.Log != nil {
-		sim.Log("Item Swap Stats: %v", newStats)
+		if sim.Log != nil {
+			sim.Log("Item Swap Stats: %v", newStats)
+		}
 	}
 
 	for _, onSwap := range swap.onSwapCallbacks {
@@ -232,14 +234,7 @@ func (swap *ItemSwap) swapItem(slot proto.ItemSlot, has2H bool) (bool, stats.Sta
 }
 
 func (swap *ItemSwap) getItemStats(item Item) stats.Stats {
-	itemStats := item.Stats
-	itemStats = itemStats.Add(item.Enchant.Stats)
-
-	for _, gem := range item.Gems {
-		itemStats = itemStats.Add(gem.Stats)
-	}
-
-	return itemStats
+	return ItemEquipmentStats(item)
 }
 
 func (swap *ItemSwap) swapWeapon(slot proto.ItemSlot) {
@@ -265,12 +260,12 @@ func (swap *ItemSwap) swapWeapon(slot proto.ItemSlot) {
 	}
 }
 
-func (swap *ItemSwap) reset(sim *Simulation) {
+func (swap *ItemSwap) reset(sim *Simulation, updateStats bool) {
 	if !swap.IsEnabled() || !swap.IsSwapped() {
 		return
 	}
 
-	swap.SwapItems(sim, swap.slots)
+	swap.SwapItems(sim, swap.slots, updateStats)
 }
 
 func toItem(itemSpec *proto.ItemSpec) Item {
@@ -279,8 +274,10 @@ func toItem(itemSpec *proto.ItemSpec) Item {
 	}
 
 	return NewItem(ItemSpec{
-		ID:      itemSpec.Id,
-		Gems:    itemSpec.Gems,
-		Enchant: itemSpec.Enchant,
+		ID:           itemSpec.Id,
+		Gems:         itemSpec.Gems,
+		Enchant:      itemSpec.Enchant,
+		RandomSuffix: itemSpec.RandomSuffix,
+		Reforging:    itemSpec.Reforging,
 	})
 }

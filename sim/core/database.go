@@ -439,52 +439,57 @@ func (equipment *Equipment) Stats() stats.Stats {
 	equipStats := stats.Stats{}
 
 	for _, item := range equipment {
-
-		equipStats = equipStats.Add(item.Stats)
-
-		// TODO: Verify that random suffix stats can be re-forged (current implementation assumes yes)
-		rawSuffixStats := item.RandomSuffix.Stats
-		equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.))
-
-		// Apply reforging
-		if item.Reforging != nil {
-			itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.))
-
-			reforgingChanges := stats.Stats{}
-			for _, fromStat := range item.Reforging.FromStat {
-				if itemStats[fromStat] > 0 {
-					reduction := math.Floor(itemStats[fromStat] * item.Reforging.Multiplier)
-					reforgingChanges[fromStat] = -reduction
-					for _, toStat := range item.Reforging.ToStat {
-						reforgingChanges[toStat] = reduction
-					}
-				}
-			}
-
-			equipStats = equipStats.Add(reforgingChanges)
-		}
-
-		equipStats = equipStats.Add(item.Enchant.Stats)
-
-		for _, gem := range item.Gems {
-			equipStats = equipStats.Add(gem.Stats)
-		}
-		// Check socket bonus
-		if len(item.GemSockets) > 0 && len(item.Gems) >= len(item.GemSockets) {
-			allMatch := true
-			for gemIndex, socketColor := range item.GemSockets {
-				if !ColorIntersects(socketColor, item.Gems[gemIndex].Color) {
-					allMatch = false
-					break
-				}
-			}
-
-			if allMatch {
-				equipStats = equipStats.Add(item.SocketBonus)
-			}
-		}
-
+		equipStats = equipStats.Add(ItemEquipmentStats(item))
 	}
+	return equipStats
+}
+
+func ItemEquipmentStats(item Item) stats.Stats {
+	equipStats := stats.Stats{}
+	equipStats = equipStats.Add(item.Stats)
+
+	// TODO: Verify that random suffix stats can be re-forged (current implementation assumes yes)
+	rawSuffixStats := item.RandomSuffix.Stats
+	equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.))
+
+	// Apply reforging
+	if item.Reforging != nil {
+		itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.))
+
+		reforgingChanges := stats.Stats{}
+		for _, fromStat := range item.Reforging.FromStat {
+			if itemStats[fromStat] > 0 {
+				reduction := math.Floor(itemStats[fromStat] * item.Reforging.Multiplier)
+				reforgingChanges[fromStat] = -reduction
+				for _, toStat := range item.Reforging.ToStat {
+					reforgingChanges[toStat] = reduction
+				}
+			}
+		}
+
+		equipStats = equipStats.Add(reforgingChanges)
+	}
+
+	equipStats = equipStats.Add(item.Enchant.Stats)
+
+	for _, gem := range item.Gems {
+		equipStats = equipStats.Add(gem.Stats)
+	}
+	// Check socket bonus
+	if len(item.GemSockets) > 0 && len(item.Gems) >= len(item.GemSockets) {
+		allMatch := true
+		for gemIndex, socketColor := range item.GemSockets {
+			if !ColorIntersects(socketColor, item.Gems[gemIndex].Color) {
+				allMatch = false
+				break
+			}
+		}
+
+		if allMatch {
+			equipStats = equipStats.Add(item.SocketBonus)
+		}
+	}
+
 	return equipStats
 }
 

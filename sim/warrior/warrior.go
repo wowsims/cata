@@ -64,6 +64,7 @@ const (
 	SpellMaskRagingBlow
 	SpellMaskMortalStrike
 	SpellMaskBladestorm
+	SpellMaskHeroicLeap
 )
 
 const EnableOverpowerTag = "EnableOverpower"
@@ -146,6 +147,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.RegisterExecuteSpell()
 	warrior.RegisterHeroicStrikeSpell()
 	warrior.RegisterCleaveSpell()
+	warrior.RegisterHeroicLeap()
 	warrior.RegisterHeroicThrow()
 	warrior.RegisterInnerRage()
 	warrior.RegisterOverpowerSpell()
