@@ -304,17 +304,17 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Bryntroll,theBoneArbiter-50415"
  value: {
-  dps: 13990.4476
-  tps: 70251.90863
-  hps: 5980.26545
+  dps: 13995.85351
+  tps: 70443.36149
+  hps: 5985.09603
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-Bryntroll,theBoneArbiter-50709"
  value: {
-  dps: 14040.61117
-  tps: 70513.29156
-  hps: 5986.49325
+  dps: 14047.42077
+  tps: 70713.8955
+  hps: 5991.32885
  }
 }
 dps_results: {
@@ -1112,17 +1112,17 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-LastWord-50179"
  value: {
-  dps: 13857.28868
-  tps: 69166.63872
-  hps: 6349.80629
+  dps: 13888.54454
+  tps: 69383.36631
+  hps: 6334.07075
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-LastWord-50708"
  value: {
-  dps: 13888.01427
-  tps: 69324.99043
-  hps: 6344.26837
+  dps: 13919.47883
+  tps: 69542.91
+  hps: 6328.54655
  }
 }
 dps_results: {
@@ -1544,9 +1544,9 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Shadowmourne-49623"
  value: {
-  dps: 14385.1194
-  tps: 72468.54728
-  hps: 6007.19414
+  dps: 14537.12215
+  tps: 73088.34611
+  hps: 6089.15265
  }
 }
 dps_results: {
