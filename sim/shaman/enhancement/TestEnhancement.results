@@ -412,6 +412,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-DeadlyGladiator'sTotemofSurvival-42602"
+ value: {
+  dps: 26814.00123
+  tps: 18503.1826
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-Death'sChoice-47464"
  value: {
   dps: 26830.85247
@@ -678,6 +685,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-FuriousGladiator'sTotemofSurvival-42603"
+ value: {
+  dps: 26821.15477
+  tps: 18507.36855
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-FuryofAngerforge-59461"
  value: {
   dps: 26701.91009
@@ -766,6 +780,13 @@ dps_results: {
  value: {
   dps: 26489.31919
   tps: 18222.78383
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-HatefulGladiator'sTotemofSurvival-42601"
+ value: {
+  dps: 26812.22783
+  tps: 18501.60825
  }
 }
 dps_results: {
@@ -1260,6 +1281,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-RegaliaoftheRagingElements"
+ value: {
+  dps: 18912.39447
+  tps: 13276.74788
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-ReignoftheDead-47316"
  value: {
   dps: 26152.36359
@@ -1278,6 +1306,13 @@ dps_results: {
  value: {
   dps: 27331.3123
   tps: 18848.82138
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-RelentlessGladiator'sTotemofSurvival-42604"
+ value: {
+  dps: 26830.06002
+  tps: 18514.40806
  }
 }
 dps_results: {
@@ -1320,6 +1355,13 @@ dps_results: {
  value: {
   dps: 25815.63361
   tps: 17818.85642
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SavageGladiator'sTotemofSurvival-42594"
+ value: {
+  dps: 26810.1258
+  tps: 18499.53601
  }
 }
 dps_results: {
@@ -1400,6 +1442,27 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-SkycallTotem-33506"
+ value: {
+  dps: 26713.05428
+  tps: 18429.5884
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SkyshatterHarness"
+ value: {
+  dps: 15222.50814
+  tps: 10810.1984
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-SkyshatterRegalia"
+ value: {
+  dps: 14137.75016
+  tps: 10084.92777
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-SliverofPureIce-50339"
  value: {
   dps: 25836.77298
@@ -1467,6 +1530,20 @@ dps_results: {
  value: {
   dps: 26090.38339
   tps: 17974.34128
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Spiritwalker'sRegalia"
+ value: {
+  dps: 19479.83624
+  tps: 13401.85875
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-Stonebreaker'sTotem-33507"
+ value: {
+  dps: 26986.75665
+  tps: 18624.67526
  }
 }
 dps_results: {
@@ -1638,6 +1715,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-TidefuryRaiment"
+ value: {
+  dps: 17276.20617
+  tps: 12198.99606
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-TinyAbominationinaJar-50351"
  value: {
   dps: 26546.04929
@@ -1670,6 +1754,13 @@ dps_results: {
  value: {
   dps: 25728.43964
   tps: 17759.80853
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-TotemofQuakingEarth-47667"
+ value: {
+  dps: 27177.24514
+  tps: 18777.27568
  }
 }
 dps_results: {
@@ -1834,6 +1925,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-VolcanicRegalia"
+ value: {
+  dps: 19309.34627
+  tps: 13472.62933
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-WingedTalisman-37844"
  value: {
   dps: 25815.63361
@@ -1859,6 +1957,13 @@ dps_results: {
  value: {
   dps: 26181.56003
   tps: 18022.83674
+ }
+}
+dps_results: {
+ key: "TestEnhancement-AllItems-WrathfulGladiator'sTotemofSurvival-51513"
+ value: {
+  dps: 26836.98663
+  tps: 18518.38128
  }
 }
 dps_results: {
