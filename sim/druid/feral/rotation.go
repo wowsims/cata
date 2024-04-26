@@ -430,12 +430,6 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	biteBeforeRip := (curCp >= rotation.MinCombosForBite) && ripDot.IsActive() && cat.SavageRoarAura.IsActive() && (rotation.UseBite || isExecutePhase) && cat.canBite(sim, isExecutePhase)
 	biteNow := (biteBeforeRip || biteAtEnd) && !isClearcast
 
-	// During Berserk, we additionally add an Energy constraint on Bite
-	// usage to maximize the total Energy expenditure we can get.
-	if biteNow && cat.BerserkAura.IsActive() {
-		biteNow = curEnergy <= rotation.BerserkBiteThresh
-	}
-
 	// Ignore minimum CP enforcement during Execute phase if Rip is about to fall off
 	emergencyBiteNow := isExecutePhase && ripDot.IsActive() && (ripDot.RemainingDuration(sim) < ripDot.TickLength) && (curCp >= 1)
 	biteNow = biteNow || emergencyBiteNow
@@ -721,7 +715,6 @@ type FeralDruidRotation struct {
 	BiteDuringExecute  bool
 	MinCombosForBite   int32
 	MangleSpam         bool
-	BerserkBiteThresh  float64
 	Powerbear          bool
 	MinRoarOffset      time.Duration
 	RipLeeway          time.Duration
@@ -734,7 +727,6 @@ type FeralDruidRotation struct {
 
 func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 	// Force reset params that aren't customizable, or removed from ui
-	rotation.BerserkBiteThresh = 25
 	rotation.BearWeaveType = proto.FeralDruid_Rotation_None
 
 	equipedIdol := cat.Ranged().ID
@@ -750,7 +742,6 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 		BiteDuringExecute:  core.Ternary(cat.Talents.BloodInTheWater > 0, rotation.BiteDuringExecute, false),
 		MinCombosForBite:   5,
 		MangleSpam:         rotation.MangleSpam,
-		BerserkBiteThresh:  float64(rotation.BerserkBiteThresh),
 		Powerbear:          rotation.Powerbear,
 		MinRoarOffset:      time.Duration(float64(rotation.MinRoarOffset) * float64(time.Second)),
 		RipLeeway:          time.Duration(float64(rotation.RipLeeway) * float64(time.Second)),
