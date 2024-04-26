@@ -230,6 +230,19 @@ func (shaman *Shaman) applyLavaSurge() {
 	if shaman.Talents.LavaSurge == 0 {
 		return
 	}
+
+	has4PT12 := shaman.HasSetBonus(ItemSetVolcanicRegalia, 4)
+
+	var instantLavaSurgeMod *core.SpellMod
+
+	if has4PT12 {
+		instantLavaSurgeMod = shaman.AddDynamicMod(core.SpellModConfig{
+			Kind:       core.SpellMod_CastTime_Pct,
+			FloatValue: -1,
+			ClassMask:  SpellMaskLavaBurst,
+		})
+	}
+
 	shaman.RegisterAura(core.Aura{
 		Label:    "Lava Surge",
 		Duration: core.NeverExpires,
@@ -241,6 +254,15 @@ func (shaman *Shaman) applyLavaSurge() {
 				return
 			}
 			shaman.LavaBurst.CD.Reset()
+			if has4PT12 {
+				instantLavaSurgeMod.Activate()
+			}
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask != SpellMaskLavaBurst || !has4PT12 {
+				return
+			}
+			instantLavaSurgeMod.Deactivate()
 		},
 	})
 }
@@ -318,6 +340,8 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		FloatValue: 0.15,
 	})
 
+	has2PT13 := shaman.HasSetBonus(ItemSetSpiritwalkersRegalia, 2)
+
 	buffAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery Buff",
 		ActionID: core.ActionID{SpellID: 64701},
@@ -325,10 +349,16 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1.20)
 			damageMod.Activate()
+			if has2PT13 {
+				shaman.AddStatDynamic(sim, stats.Mastery, 2000)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1 / 1.20)
 			damageMod.Deactivate()
+			if has2PT13 {
+				shaman.AddStatDynamic(sim, stats.Mastery, -2000)
+			}
 		},
 	})
 
