@@ -17,7 +17,7 @@ import {
 } from '../../core/proto/common.js';
 import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph, DruidMinorGlyph, DruidPrimeGlyph } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
-import DefaultApl from './apls/basic_p3.apl.json';
+import DefaultApl from './apls/default.apl.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 export const PreraidPresetGear = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
