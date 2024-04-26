@@ -24,7 +24,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatMP5,
 		Stat.StatMastery,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
