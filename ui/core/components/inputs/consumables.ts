@@ -578,7 +578,7 @@ export const FOOD_CONFIG = [
 	{ config: FoodDragonfinFilet, stats: [Stat.StatStrength] },
 	{ config: FoodCuttlesteak, stats: [Stat.StatSpirit] },
 	{ config: FoodMegaMammothMeal, stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower] },
-	{ config: FoodHeartyRhino, stats: [Stat.StatArmorPenetration] },
+	{ config: FoodHeartyRhino, stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit] },
 	{ config: FoodRhinoliciousWormsteak, stats: [Stat.StatExpertise] },
 	{ config: FoodFirecrackerSalmon, stats: [Stat.StatSpellPower] },
 	{ config: FoodSnapperExtreme, stats: [Stat.StatMeleeHit, Stat.StatSpellHit] },
