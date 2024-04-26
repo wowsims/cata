@@ -53,11 +53,15 @@ func (druid *Druid) ApplyTalents() {
 	}
 
 	if druid.Talents.BalanceOfPower > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
+			ClassMask:  DruidArcaneSpells | DruidNatureSpells,
+			FloatValue: 0.05 * float64(druid.Talents.BalanceOfPower),
+			Kind:       core.SpellMod_DamageDone_Pct,
+		})
+
 		druid.AddStats(stats.Stats{stats.SpellHit: -0.5 * float64(druid.Talents.BalanceOfPower) * druid.GetBaseStats()[stats.Spirit]})
 		druid.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.0, 0.5, 1.0}[druid.Talents.BalanceOfPower])
-
-		druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1 + 0.01*float64(druid.Talents.BalanceOfPower)
-		druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1 + 0.01*float64(druid.Talents.BalanceOfPower)
 	}
 
 	// if druid.Talents.PrimalPrecision > 0 {
