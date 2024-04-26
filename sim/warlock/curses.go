@@ -120,7 +120,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 }
 
 func (warlock *Warlock) registerBaneOfAgonySpell() {
-	baseTickDmg := 1796.0 / 12.0
+	baseTickDmg := warlock.CalcBaseDamage(0.133) / 12.0
 
 	warlock.BaneOfAgony = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 980},
@@ -144,7 +144,7 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "CurseofAgony",
+				Label: "Bane of Agony",
 			},
 			NumberOfTicks:    12,
 			TickLength:       time.Second * 2,
@@ -153,8 +153,7 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 				dot.Snapshot(target, 0.5*baseTickDmg)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				//TODO: Can this crit? Has the ramp up damage changed at all in Cata?
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				if dot.TickCount%4 == 0 { // CoA ramp up
 					dot.SnapshotBaseDamage += 0.5 * baseTickDmg
 				}
@@ -174,12 +173,13 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 	})
 }
 
+// TODO: Does this benefit from haunt?
 func (warlock *Warlock) registerBaneOfDoomSpell() {
 	warlock.BaneOfDoom = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 603},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagHauntSE | core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellBaneOfDoom,
 
 		ManaCost: core.ManaCostOptions{
@@ -202,18 +202,17 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "CurseofDoom",
+				Label: "Bane of Doom",
 			},
-			NumberOfTicks:    1,
+			NumberOfTicks:    4,
 			TickLength:       time.Second * 15,
 			BonusCoefficient: 0.88,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				//TODO: Can this crit? Is it snapshotted on cast?
-				dot.Snapshot(target, 2277)
+				dot.Snapshot(target, warlock.CalcBaseDamage(2.024))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				//TODO: Can this crit? Is it snapshotted on cast?
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				//TODO: 20% Chance to summon Ebon Imp
 			},
 		},
 

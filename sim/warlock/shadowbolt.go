@@ -31,9 +31,9 @@ func (warlock *Warlock) registerShadowBoltSpell() {
 		ThreatMultiplier:         1,
 		BonusCoefficient:         0.754,
 
-		//TODO: Confirm cast time and damage
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcDamage(sim, target, 597, spell.OutcomeMagicHitAndCrit)
+			baseDamage := warlock.CalcBaseDamageWithVariance(sim, 0.62, 0.1099999994)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})

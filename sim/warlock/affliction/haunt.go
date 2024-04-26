@@ -8,7 +8,6 @@ import (
 	"github.com/wowsims/cata/sim/warlock"
 )
 
-// TODO: SpellFlagHauntSE
 func (affliction *AfflictionWarlock) registerHauntSpell() {
 	if !affliction.Talents.Haunt {
 		return

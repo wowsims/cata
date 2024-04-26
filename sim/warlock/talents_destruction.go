@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (warlock *Warlock) ApplyDestructionTalents() {
@@ -38,34 +40,26 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 		TimeValue: -1 * time.Duration([]int{0, 130, 250}[warlock.Talents.Emberstorm]) * time.Millisecond,
 	})
 
-	//TODO: Improved Searing Pain
+	warlock.registerImprovedSearingPain()
+	warlock.registerImprovedSoulFire()
+	warlock.registerBackdraft()
 
-	//TODO: Improved Soul Fire
-
-	//TODO: Backdraft
-	// warlock.setupBackdraft()
-
-	//TODO: Shadowburn
+	if warlock.Talents.ChaosBolt {
+		warlock.registerShadowBurnSpell()
+	}
 
 	//TODO: Burning Embers
 
-	//TODO: Soul Leech
-	// warlock.setupImprovedSoulLeech()
+	warlock.registerSoulLeech()
 
-	//BACKLASH NA
-	//NETHERWARD NA
-
-	//TODO: FireAndBrimstone inc & chaos bolt damage is done in immolate, not sure how to do this as a spell mod
+	//FireAndBrimstoneDamage mod is in Immolate
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask:  WarlockSpellConflagrate,
 		Kind:       core.SpellMod_BonusCrit_Rating,
 		FloatValue: 5.0 * float64(warlock.Talents.FireAndBrimstone) * core.CritRatingPerCritChance,
 	})
 
-	// NETHER PROTECTION NA
-
-	// TODO: EMPOWERED IMP
-	// warlock.setupEmpoweredImp()
+	warlock.registerEmpoweredImp()
 
 	// TODO: BANE OF HAVOC
 
@@ -74,160 +68,177 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 	}
 }
 
-// func (warlock *Warlock) setupEmpoweredImp() {
-// 	if warlock.Talents.EmpoweredImp <= 0 || warlock.Options.Summon != proto.WarlockOptions_Imp {
-// 		return
-// 	}
+func (warlock *Warlock) registerImprovedSearingPain() {
+	if warlock.Talents.ImprovedSearingPain <= 0 {
+		return
+	}
 
-// 	warlock.Pet.PseudoStats.DamageDealtMultiplier *= 1.0 + 0.1*float64(warlock.Talents.EmpoweredImp)
+	improvedSearingPain := warlock.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Rating,
+		ClassMask:  WarlockSpellSearingPain,
+		FloatValue: 20 * float64(warlock.Talents.ImprovedSearingPain) * core.CritRatingPerCritChance,
+	})
 
-// 	var affectedSpells []*core.Spell
-// 	warlock.EmpoweredImpAura = warlock.RegisterAura(core.Aura{
-// 		Label:    "Empowered Imp Proc Aura",
-// 		ActionID: core.ActionID{SpellID: 47283},
-// 		Duration: time.Second * 8,
-// 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-// 			affectedSpells = core.FilterSlice([]*core.Spell{
-// 				warlock.Immolate,
-// 				warlock.ShadowBolt,
-// 				warlock.Incinerate,
-// 				warlock.Shadowburn,
-// 				warlock.SoulFire,
-// 				warlock.ChaosBolt,
-// 				warlock.SearingPain,
-// 				// missing: shadowfury, shadowflame, seed explosion (not dot)
-// 				//          rain of fire (consumes proc on cast start, but doesn't increase crit, ticks
-// 				//          also consume the proc but do seem to benefit from the increaesed crit)
-// 			}, func(spell *core.Spell) bool { return spell != nil })
-// 		},
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			for _, spell := range affectedSpells {
-// 				spell.BonusCritRating += 100 * core.CritRatingPerCritChance
-// 			}
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			for _, spell := range affectedSpells {
-// 				spell.BonusCritRating -= 100 * core.CritRatingPerCritChance
-// 			}
-// 		},
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if slices.Contains(affectedSpells, spell) {
-// 				aura.Deactivate(sim)
-// 			}
-// 		},
-// 	})
+	warlock.RegisterResetEffect(func(sim *core.Simulation) {
+		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
+			//TODO: Does this need to deactivate somewhere?
+			if isExecute == 25 {
+				improvedSearingPain.Activate()
+			}
+		})
+	})
+}
 
-// 	warlock.Pet.RegisterAura(core.Aura{
-// 		Label:    "Empowered Imp Hidden Aura",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.DidCrit() {
-// 				warlock.EmpoweredImpAura.Activate(sim)
-// 			}
-// 		},
-// 	})
-// }
+func (warlock *Warlock) registerImprovedSoulFire() {
+	if warlock.Talents.ImprovedSoulFire <= 0 {
+		return
+	}
 
-// func (warlock *Warlock) setupBackdraft() {
-// 	if warlock.Talents.Backdraft <= 0 {
-// 		return
-// 	}
+	damageBonus := 1 + .04*float64(warlock.Talents.ImprovedSoulFire)
 
-// 	castTimeModifier := 0.1 * float64(warlock.Talents.Backdraft)
-// 	var affectedSpells []*core.Spell
+	improvedSoulFire := warlock.RegisterAura(core.Aura{
+		Label:    "Improved Soul Fire",
+		ActionID: core.ActionID{SpellID: 18120},
+		Duration: time.Second * 20,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			//TODO: Add or mult?
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= damageBonus
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= damageBonus
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			//TODO: Add or mult?
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= damageBonus
+			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= damageBonus
+		},
+	})
 
-// 	warlock.BackdraftAura = warlock.RegisterAura(core.Aura{
-// 		Label:     "Backdraft Proc Aura",
-// 		ActionID:  core.ActionID{SpellID: 54277},
-// 		Duration:  time.Second * 15,
-// 		MaxStacks: 3,
-// 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-// 			affectedSpells = core.FilterSlice([]*core.Spell{
-// 				warlock.Incinerate,
-// 				warlock.SoulFire,
-// 				warlock.ShadowBolt,
-// 				warlock.ChaosBolt,
-// 				warlock.Immolate,
-// 				warlock.SearingPain,
-// 			}, func(spell *core.Spell) bool { return spell != nil })
-// 		},
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			for _, destroSpell := range affectedSpells {
-// 				destroSpell.CastTimeMultiplier -= castTimeModifier
-// 				destroSpell.DefaultCast.GCD = time.Duration(float64(destroSpell.DefaultCast.GCD) * (1 - castTimeModifier))
-// 			}
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			for _, destroSpell := range affectedSpells {
-// 				destroSpell.CastTimeMultiplier += castTimeModifier
-// 				destroSpell.DefaultCast.GCD = time.Duration(float64(destroSpell.DefaultCast.GCD) / (1 - castTimeModifier))
-// 			}
-// 		},
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if slices.Contains(affectedSpells, spell) {
-// 				aura.RemoveStack(sim)
-// 			}
-// 		},
-// 	})
+	warlock.RegisterAura(core.Aura{
+		Label:    "Improved Soul Fire Hidden Aura",
+		Duration: core.NeverExpires,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && (spell == warlock.SoulFire) {
+				improvedSoulFire.Activate(sim)
+			}
+		},
+	})
+}
 
-// 	warlock.RegisterAura(core.Aura{
-// 		Label:    "Backdraft Hidden Aura",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if spell == warlock.Conflagrate && result.Landed() {
-// 				warlock.BackdraftAura.Activate(sim)
-// 				warlock.BackdraftAura.SetStacks(sim, 3)
-// 			}
-// 		},
-// 	})
-// }
+func (warlock *Warlock) registerBackdraft() {
+	if warlock.Talents.Backdraft <= 0 {
+		return
+	}
 
-// func (warlock *Warlock) setupImprovedSoulLeech() {
-// 	if warlock.Talents.ImprovedSoulLeech <= 0 {
-// 		return
-// 	}
+	castReduction := 0.10 * float64(warlock.Talents.Backdraft)
 
-// 	soulLeechProcChance := 0.1 * float64(warlock.Talents.SoulLeech)
-// 	impSoulLeechProcChance := float64(warlock.Talents.ImprovedSoulLeech) / 2.
-// 	actionID := core.ActionID{SpellID: 54118}
-// 	impSoulLeechManaMetric := warlock.NewManaMetrics(actionID)
-// 	var impSoulLeechPetManaMetric *core.ResourceMetrics
-// 	if warlock.Pet != nil {
-// 		impSoulLeechPetManaMetric = warlock.Pet.NewManaMetrics(actionID)
-// 	}
-// 	replSrc := warlock.Env.Raid.NewReplenishmentSource(core.ActionID{SpellID: 54118})
+	backdraft := warlock.RegisterAura(core.Aura{
+		Label:     "Backdraft",
+		ActionID:  core.ActionID{SpellID: 47260},
+		Duration:  time.Second * 15,
+		MaxStacks: 3,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.ShadowBolt.CastTimeMultiplier -= castReduction
+			warlock.Incinerate.CastTimeMultiplier -= castReduction
+			warlock.ChaosBolt.CastTimeMultiplier -= castReduction
+			warlock.ShadowBolt.DefaultCast.GCD = time.Duration(float64(warlock.ShadowBolt.DefaultCast.GCD) * (1 - castReduction))
+			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) * (1 - castReduction))
+			warlock.ChaosBolt.DefaultCast.GCD = time.Duration(float64(warlock.ChaosBolt.DefaultCast.GCD) * (1 - castReduction))
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.ShadowBolt.CastTimeMultiplier += castReduction
+			warlock.Incinerate.CastTimeMultiplier += castReduction
+			warlock.ChaosBolt.CastTimeMultiplier += castReduction
+			warlock.ShadowBolt.DefaultCast.GCD = time.Duration(float64(warlock.ShadowBolt.DefaultCast.GCD) / (1 - castReduction))
+			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) / (1 - castReduction))
+			warlock.ChaosBolt.DefaultCast.GCD = time.Duration(float64(warlock.ChaosBolt.DefaultCast.GCD) / (1 - castReduction))
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell == warlock.ShadowBolt || spell == warlock.Incinerate || spell == warlock.ChaosBolt {
+				aura.RemoveStack(sim)
+			}
+		},
+	})
 
-// 	warlock.RegisterAura(core.Aura{
-// 		Label:    "Improved Soul Leech Hidden Aura",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if (spell == warlock.Conflagrate || spell == warlock.ShadowBolt || spell == warlock.ChaosBolt ||
-// 				spell == warlock.SoulFire || spell == warlock.Incinerate) && result.Landed() {
-// 				if !sim.Proc(soulLeechProcChance, "SoulLeech") {
-// 					return
-// 				}
+	warlock.RegisterAura(core.Aura{
+		Label:    "Backdraft Hidden Aura",
+		ActionID: core.ActionID{SpellID: 47260},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell == warlock.Conflagrate {
+				backdraft.Activate(sim)
+				backdraft.SetStacks(sim, 3)
+			}
+		},
+	})
+}
 
-// 				restorePct := float64(warlock.Talents.ImprovedSoulLeech) / 100
-// 				warlock.AddMana(sim, warlock.MaxMana()*restorePct, impSoulLeechManaMetric)
-// 				pet := warlock.Pet
-// 				if pet != nil {
-// 					pet.AddMana(sim, pet.MaxMana()*restorePct, impSoulLeechPetManaMetric)
-// 				}
+func (warlock *Warlock) registerSoulLeech() {
+	if warlock.Talents.SoulLeech <= 0 {
+		return
+	}
 
-// 				if sim.Proc(impSoulLeechProcChance, "ImprovedSoulLeech") {
-// 					warlock.Env.Raid.ProcReplenishment(sim, replSrc)
-// 				}
-// 			}
-// 		},
-// 	})
-// }
-// }
+	actionID := core.ActionID{SpellID: 30295}
+	restore := 0.02 * float64(warlock.Talents.SoulLeech)
+	manaMetrics := warlock.NewManaMetrics(actionID)
+
+	warlock.RegisterAura(core.Aura{
+		Label:    "Soul Leech Hidden Aura",
+		ActionID: actionID,
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == warlock.Shadowburn || spell == warlock.SoulFire || spell == warlock.ChaosBolt {
+				warlock.AddMana(sim, restore*warlock.MaxMana(), manaMetrics)
+				// also restores health but probably NA
+			}
+		},
+	})
+}
+
+func (warlock *Warlock) registerEmpoweredImp() {
+	if warlock.Talents.EmpoweredImp <= 0 || warlock.Options.Summon != proto.WarlockOptions_Imp {
+		return
+	}
+
+	procChance := 0.02 * float64(warlock.Talents.EmpoweredImp)
+
+	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  WarlockSpellSoulFire,
+		FloatValue: -1,
+	})
+
+	warlock.EmpoweredImpAura = warlock.RegisterAura(core.Aura{
+		Label:    "Empowered Imp",
+		ActionID: core.ActionID{SpellID: 47221},
+		Duration: time.Second * 8,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			castTimeMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			castTimeMod.Deactivate()
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell == warlock.SoulFire {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	warlock.Pet.RegisterAura(core.Aura{
+		Label:    "Empowered Imp Hidden Aura",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask == WarlockSpellImpFireBolt && sim.Proc(procChance, "Empowered Imp") {
+				warlock.EmpoweredImpAura.Activate(sim)
+			}
+		},
+	})
+}

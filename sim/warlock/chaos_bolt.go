@@ -8,12 +8,12 @@ import (
 
 func (warlock *Warlock) registerChaosBoltSpell() {
 	warlock.ChaosBolt = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 50796},
-		SpellSchool:      core.SpellSchoolFire,
-		ProcMask:         core.ProcMaskSpellDamage,
-		Flags:            core.SpellFlagAPL,
-		ClassSpellMask:   WarlockSpellChaosBolt,
-		BonusCoefficient: 0.62800002098,
+		ActionID:       core.ActionID{SpellID: 50796},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: WarlockSpellChaosBolt,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.07,
 			Multiplier: 1,
@@ -32,10 +32,10 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
-
+		BonusCoefficient:         0.628,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//TODO: Damage
-			spell.CalcAndDealDamage(sim, target, sim.Roll(1429, 1813), spell.OutcomeMagicCrit)
+			baseDamage := warlock.CalcBaseDamageWithVariance(sim, 1.547, 0.238)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }

@@ -32,10 +32,9 @@ func (warlock *Warlock) ApplyGlyphs() {
 		})
 	}
 
-	// TODO: only applies to periodic damage
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfImmolate) {
 		warlock.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellImmolate,
+			ClassMask:  WarlockSpellImmolateDot,
 			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.10,
 		})
@@ -96,6 +95,28 @@ func (warlock *Warlock) ApplyGlyphs() {
 	// 		FloatValue: 0.20,
 	// 	})
 	// 	}
+
+	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfShadowburn) {
+		warlock.RegisterAura(core.Aura{
+			Label:    "Glyph of Shadowburn",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+
+			Icd: &core.Cooldown{
+				Timer:    warlock.NewTimer(),
+				Duration: time.Second * 6,
+			},
+
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell == warlock.Shadowburn && sim.IsExecutePhase25() && aura.Icd.IsReady(sim) {
+					aura.Icd.Use(sim)
+					warlock.Shadowburn.CD.Reset()
+				}
+			},
+		})
+	}
 
 	//TODO: Soul Swap with spell
 }

@@ -181,7 +181,6 @@ func (warlock *Warlock) registerPandemic() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			//TODO: Does this need to deactivate here?
-			//aura.Activate(sim)
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell != warlock.DrainSoul {
@@ -243,7 +242,7 @@ func (warlock *Warlock) registerNightfall() {
 			aura.Activate(sim)
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == warlock.Corruption { // TODO: also works on drain life...
+			if spell == warlock.Corruption {
 				if sim.Proc(nightfallProcChance, "Nightfall") {
 					warlock.NightfallProcAura.Activate(sim)
 				}

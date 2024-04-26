@@ -38,10 +38,10 @@ func (affliction *AfflictionWarlock) registerUnstableAfflictionSpell() {
 			TickLength:       time.Second * 3,
 			BonusCoefficient: 0.2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, 1305/5)
+				baseDamage := affliction.CalcBaseDamage(0.231) / 5
+				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				//TODO: Baseline crit?
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},

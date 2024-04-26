@@ -37,9 +37,8 @@ func (destruction *DestructionWarlock) registerConflagrateSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// takes the SP of the immolate dot on the target
-			// TODO: damage & coefficient
-			baseDamage := 471.0 + 0.6*destruction.Immolate.Dot(target).Spell.SpellPower()
+			//TODO: How does conflagrate work?
+			baseDamage := 471.0 + 0.6*destruction.ImmolateDot.Dot(target).Spell.SpellPower()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if !result.Landed() {
 				return

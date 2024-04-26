@@ -55,6 +55,24 @@ func (demonology *DemonologyWarlock) ApplyTalents() {
 	demonology.Warlock.ApplyTalents()
 
 	// TODO: Mastery: Master Demonologist
+	// This needs to affect your own damage during metamorphosis and your pets damage at all times
+	masteryMod := demonology.AddDynamicMod(core.SpellModConfig{})
+
+	demonology.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		masteryMod.UpdateFloatValue(demonology.getMasteryBonus())
+	})
+
+	core.MakePermanent(demonology.GetOrRegisterAura(core.Aura{
+		Label:    "Mastery: Master Demonologist",
+		ActionID: core.ActionID{SpellID: 77219},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.UpdateFloatValue(demonology.getMasteryBonus())
+			masteryMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.Deactivate()
+		},
+	}))
 
 	// Demonic Knowledge
 	demonology.AddDynamicMod(core.SpellModConfig{

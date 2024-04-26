@@ -6,7 +6,6 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-// TODO: Check spell damage and coefficients
 func (warlock *Warlock) registerSeedSpell() {
 	actionID := core.ActionID{SpellID: 27243}
 
@@ -20,10 +19,10 @@ func (warlock *Warlock) registerSeedSpell() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
-		BonusCoefficient:         0.17159999907,
+		BonusCoefficient:         0.1716,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDmg := (862 + 0.17159999907*spell.SpellPower()) * sim.Encounter.AOECapMultiplier()
+			baseDmg := warlock.CalcBaseDamage(2.113) * sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, spell.OutcomeMagicHitAndCrit)
 			}
@@ -89,7 +88,8 @@ func (warlock *Warlock) registerSeedSpell() {
 			BonusCoefficient: 0.30,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, 2042/6)
+				baseDamage := warlock.CalcBaseDamage(0.3024) / 6
+				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

@@ -18,6 +18,7 @@ type Warlock struct {
 	ShadowBolt           *core.Spell
 	Incinerate           *core.Spell
 	Immolate             *core.Spell
+	ImmolateDot          *core.Spell
 	UnstableAffliction   *core.Spell
 	Corruption           *core.Spell
 	Haunt                *core.Spell
@@ -60,10 +61,6 @@ type Warlock struct {
 	Infernal *InfernalPet
 	Inferno  *core.Spell
 
-	petStmBonusSP float64
-
-	FireAndBrimstoneAura core.AuraArray
-
 	ScalingBaseDamage float64
 }
 
@@ -88,7 +85,7 @@ func (warlock *Warlock) ApplyTalents() {
 
 func (warlock *Warlock) Initialize() {
 
-	// base scaling value for a level 85 priest
+	// base scaling value for a level 85 warlock
 	warlock.ScalingBaseDamage = 962.335630
 
 	warlock.registerIncinerateSpell()
@@ -105,55 +102,30 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSoulFireSpell()
 	warlock.registerDrainSoulSpell()
 	warlock.registerMetamorphosisSpell()
-	// warlock.registerShadowBurnSpell()
 	warlock.registerSearingPainSpell()
-	// warlock.registerInfernoSpell()
+	warlock.registerInfernoSpell()
 	// warlock.registerBlackBook()
 
-	// // Do this post-finalize so cast speed is updated with new stats
-	// warlock.Env.RegisterPostFinalizeEffect(func() {
-	// 	// if itemswap is enabled, correct for any possible haste changes
-	// 	var correction stats.Stats
-	// 	if warlock.ItemSwap.IsEnabled() {
-	// 		correction = warlock.ItemSwap.CalcStatChanges([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand,
-	// 			proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged})
+	// Do this post-finalize so cast speed is updated with new stats
+	warlock.Env.RegisterPostFinalizeEffect(func() {
+		// if itemswap is enabled, correct for any possible haste changes
+		var correction stats.Stats
+		if warlock.ItemSwap.IsEnabled() {
+			correction = warlock.ItemSwap.CalcStatChanges([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand,
+				proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged})
 
-	// 		warlock.AddStats(correction)
-	// 		warlock.MultiplyCastSpeed(1.0)
-	// 	}
-
-	// 	if warlock.Options.Summon != proto.WarlockOptions_NoSummon && warlock.Talents.DemonicKnowledge > 0 {
-	// 		warlock.RegisterPrepullAction(-999*time.Second, func(sim *core.Simulation) {
-	// 			// TODO: investigate a better way of handling this like a "reverse inheritance" for pets.
-	// 			// TODO: this will break if we ever get stamina/intellect from procs, but there aren't
-	// 			// many such effects and none that we care about
-	// 			bonus := (warlock.Pet.GetStat(stats.Stamina) + warlock.Pet.GetStat(stats.Intellect)) *
-	// 				(0.04 * float64(warlock.Talents.DemonicKnowledge))
-	// 			if bonus != warlock.petStmBonusSP {
-	// 				warlock.AddStatDynamic(sim, stats.SpellPower, bonus-warlock.petStmBonusSP)
-	// 				warlock.petStmBonusSP = bonus
-	// 			}
-	// 		})
-	// 	}
-	// })
+			warlock.AddStats(correction)
+			warlock.MultiplyCastSpeed(1.0)
+		}
+	})
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// raidBuffs.BloodPact = max(raidBuffs.BloodPact, core.MakeTristateValue(
-	// 	warlock.Options.Summon == proto.WarlockOptions_Imp,
-	// 	warlock.Talents.ImprovedImp == 2,
-	// ))
-
-	// raidBuffs.FelIntelligence = max(raidBuffs.FelIntelligence, core.MakeTristateValue(
-	// 	warlock.Options.Summon == proto.WarlockOptions_Felhunter,
-	// 	warlock.Talents.ImprovedFelhunter == 2,
-	// ))
+	raidBuffs.BloodPact = warlock.Options.Summon == proto.WarlockOptions_Imp
+	raidBuffs.FelIntelligence = warlock.Options.Summon == proto.WarlockOptions_Felhunter
 }
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
-	if sim.CurrentTime == 0 {
-		warlock.petStmBonusSP = 0
-	}
 }
 
 func NewWarlock(character *core.Character, options *proto.Player, warlockOptions *proto.WarlockOptions) *Warlock {
@@ -165,20 +137,17 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 	warlock.EnableManaBar()
 
-	// warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 
-	// if warlock.Options.Armor == proto.WarlockOptions_FelArmor {
-	// 	demonicAegisMultiplier := 1 + float64(warlock.Talents.DemonicAegis)*0.1
-	// 	amount := 180.0 * demonicAegisMultiplier
-	// 	warlock.AddStat(stats.SpellPower, amount)
-	// 	warlock.AddStatDependency(stats.Spirit, stats.SpellPower, 0.3*demonicAegisMultiplier)
-	// }
+	if warlock.Options.Armor == proto.WarlockOptions_FelArmor {
+		warlock.AddStat(stats.SpellPower, 638)
+	}
 
-	// if warlock.Options.Summon != proto.WarlockOptions_NoSummon {
-	// 	warlock.Pet = warlock.NewWarlockPet()
-	// }
+	if warlock.Options.Summon != proto.WarlockOptions_NoSummon {
+		warlock.Pet = warlock.NewWarlockPet()
+	}
 
-	// warlock.Infernal = warlock.NewInfernal()
+	warlock.Infernal = warlock.NewInfernal()
 
 	return warlock
 }
@@ -206,6 +175,7 @@ const (
 	WarlockSpellShadowBolt
 	WarlockSpellChaosBolt
 	WarlockSpellImmolate
+	WarlockSpellImmolateDot
 	WarlockSpellIncinerate
 	WarlockSpellSoulFire
 	WarlockSpellLifeTap
@@ -229,6 +199,7 @@ const (
 	WarlockSpellSeedOfCorruptionExposion
 	WarlockSpellHandOfGuldan
 	WarlockSpellImmolationAura
+	WarlockSpellSearingPain
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
 		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony |
@@ -238,10 +209,14 @@ const (
 		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony
 
 	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire |
-		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan
+		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot
 )
 
-func (warlock *Warlock) calcBaseDamage(sim *core.Simulation, coefficient float64, variance float64) float64 {
+func (warlock *Warlock) CalcBaseDamage(coefficient float64) float64 {
+	return warlock.ScalingBaseDamage * coefficient
+}
+
+func (warlock *Warlock) CalcBaseDamageWithVariance(sim *core.Simulation, coefficient float64, variance float64) float64 {
 	baseDamage := warlock.ScalingBaseDamage * coefficient
 	if variance > 0 {
 		delta := warlock.ScalingBaseDamage * variance * 0.5

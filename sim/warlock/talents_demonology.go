@@ -15,24 +15,25 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 
 	//Dark Arts
 	if warlock.Talents.DarkArts > 0 {
-		// pet.AddStaticMod(core.SpellModConfig{
-		// 	ClassMask: WarlockSpellImpFireBolt,
-		// 	Kind:      core.SpellMod_CastTime_Flat,
-		// 	TimeValue: time.Millisecond * -250 * time.Duration(warlock.Talents.DarkArts),
-		// })
+		warlock.Pet.AddStaticMod(core.SpellModConfig{
+			ClassMask: WarlockSpellImpFireBolt,
+			Kind:      core.SpellMod_CastTime_Flat,
+			TimeValue: time.Millisecond * -250 * time.Duration(warlock.Talents.DarkArts),
+		})
 
-		// //TODO: Add/Mult
-		// pet.AddStaticMod(core.SpellModConfig{
-		// 	ClassMask:  WarlockSpellFelGuardLegionStrike,
-		// 	Kind:       core.SpellMod_DamageDone_Pct,
-		// 	FloatValue: .05 * float64(warlock.Talents.DarkArts),
-		// })
+		//TODO: Add/Mult
+		warlock.Pet.AddStaticMod(core.SpellModConfig{
+			ClassMask:  WarlockSpellFelGuardLegionStrike,
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: .05 * float64(warlock.Talents.DarkArts),
+		})
 
-		// pet.AddStaticMod(core.SpellModConfig{
-		// 	ClassMask:  WarlockSpellFelHunterShadowBite,
-		// 	Kind:       core.SpellMod_DamageDone_Pct,
-		// 	FloatValue: .05 * float64(warlock.Talents.DarkArts),
-		// })
+		//TODO: Add/Mult
+		warlock.Pet.AddStaticMod(core.SpellModConfig{
+			ClassMask:  WarlockSpellFelHunterShadowBite,
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: .05 * float64(warlock.Talents.DarkArts),
+		})
 	}
 
 	//TODO: Mana Feed
@@ -54,8 +55,7 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 	}
 
 	warlock.registerDecimation()
-
-	//TODO: Cremation
+	warlock.registerCremation()
 
 	if warlock.Talents.DemonicPact {
 		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.1
@@ -108,13 +108,11 @@ func (warlock *Warlock) registerMoltenCore() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.Incinerate.DamageMultiplier *= moltenCoreDamageBonus
 			warlock.Incinerate.CastTimeMultiplier -= castReduction
-			//TODO: Is this still valid? Not in either wotlk or cata tooltip.
 			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) * (1 - castReduction))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.Incinerate.DamageMultiplier /= moltenCoreDamageBonus
 			warlock.Incinerate.CastTimeMultiplier += castReduction
-			//TODO: Is this still valid? Not in either wotlk or cata tooltip.
 			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) / (1 - castReduction))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -125,8 +123,7 @@ func (warlock *Warlock) registerMoltenCore() {
 	})
 
 	warlock.RegisterAura(core.Aura{
-		Label: "Molten Core Hidden Aura",
-		// ActionID: core.ActionID{SpellID: 47247},
+		Label:    "Molten Core Hidden Aura",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
@@ -155,12 +152,10 @@ func (warlock *Warlock) registerDecimation() {
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.SoulFire.CastTimeMultiplier -= decimationMod
-			//TODO: Is this still valid? Not in either wotlk or cata tooltip.
 			warlock.SoulFire.DefaultCast.GCD = time.Duration(float64(warlock.SoulFire.DefaultCast.GCD) * (1 - decimationMod))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.SoulFire.CastTimeMultiplier += decimationMod
-			//TODO: Is this still valid? Not in either wotlk or cata tooltip.
 			warlock.SoulFire.DefaultCast.GCD = time.Duration(float64(warlock.SoulFire.DefaultCast.GCD) / (1 - decimationMod))
 		},
 	})
@@ -179,6 +174,38 @@ func (warlock *Warlock) registerDecimation() {
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 25 {
 				decimation.Activate(sim)
+			}
+		})
+	})
+}
+
+func (warlock *Warlock) registerCremation() {
+	if warlock.Talents.Cremation <= 0 {
+		return
+	}
+
+	procChance := []float64{0.5, 1.0}[warlock.Talents.Cremation]
+
+	pandemicAura := warlock.RegisterAura(core.Aura{
+		Label:    "Cremation Talent",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == warlock.HandOfGuldan {
+				if warlock.ImmolateDot.Dot(aura.Unit).IsActive() && sim.Proc(procChance, "Cremation") {
+					//TODO: Should this Rollover or Apply like other dots in cata?
+					warlock.ImmolateDot.Dot(aura.Unit).Rollover(sim)
+				}
+			}
+		},
+	})
+
+	warlock.RegisterResetEffect(func(sim *core.Simulation) {
+		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
+			if isExecute == 25 {
+				pandemicAura.Activate(sim)
 			}
 		})
 	})

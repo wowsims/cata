@@ -37,7 +37,7 @@ type AfflictionWarlock struct {
 }
 
 func (affliction AfflictionWarlock) getMasteryBonus() float64 {
-	return 0.25 + 0.0163*affliction.GetMasteryPoints()
+	return 0.13 + 0.0163*affliction.GetMasteryPoints()
 }
 
 func (affliction *AfflictionWarlock) GetWarlock() *warlock.Warlock {
@@ -54,12 +54,32 @@ func (affliction *AfflictionWarlock) Initialize() {
 func (affliction *AfflictionWarlock) ApplyTalents() {
 	affliction.Warlock.ApplyTalents()
 
-	// TODO: Mastery: Potent Afflictions
+	// Mastery: Potent Afflictions
+	masteryMod := affliction.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Pct,
+		ClassMask: warlock.WarlockPeriodicShadowDamage,
+	})
+
+	affliction.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
+	})
+
+	core.MakePermanent(affliction.GetOrRegisterAura(core.Aura{
+		Label:    "Mastery: Potent Afflictions",
+		ActionID: core.ActionID{SpellID: 77215},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
+			masteryMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.Deactivate()
+		},
+	}))
 
 	// Shadow Mastery
-	affliction.AddDynamicMod(core.SpellModConfig{
+	affliction.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  warlock.WarlockPeriodicShadowDamage,
+		ClassMask:  warlock.WarlockShadowDamage,
 		FloatValue: 0.30,
 	})
 }

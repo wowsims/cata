@@ -21,24 +21,20 @@ func (warlock *Warlock) registerIncinerateSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-				//TODO: Check cast time
+				GCD:      core.GCDDefault,
 				CastTime: time.Millisecond * 2500,
 			},
 		},
 
-		BonusCoefficient:         0.53899997473,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
+		BonusCoefficient:         0.53899997473,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//TODO: Check Damage
-			var baseDamage float64
+			baseDamage := 645.0
 			if warlock.Immolate.Dot(target).IsActive() {
-				baseDamage = sim.Roll(582+145, 676+169)
-			} else {
-				baseDamage = sim.Roll(582, 676)
+				baseDamage += 645.0
 			}
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
