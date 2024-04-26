@@ -8,6 +8,7 @@ const CharacterLevel = 85
 
 const GCDMin = time.Second * 1
 const GCDDefault = time.Millisecond * 1500
+const MaxSpellQueueWindow = time.Millisecond * 400
 
 const DefaultAttackPowerPerDPS = 14.0
 const ArmorPenPerPercentArmor = 13.99

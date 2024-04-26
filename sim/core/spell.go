@@ -145,6 +145,9 @@ type Spell struct {
 
 	// Per-target auras that are related to this spell, usually buffs or debuffs applied by the spell.
 	RelatedAuras []AuraArray
+
+	// Store the results of CanCastOrQueue() and CastOrQueue() calls
+	IsQueued      bool
 }
 
 func (unit *Unit) OnSpellRegistered(handler SpellRegisteredHandler) {
@@ -504,11 +507,89 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 	return true
 }
 
+// Returns whether the spell could be queued by the player at the current time using the
+// game's spell queueing functionality. Assumes the maximum spell queue window of 400ms
+// that the game allows.
+func (spell *Spell) CanQueue(sim *Simulation, target *Unit) bool {
+	if spell == nil {
+		return false
+	}
+
+	// Same extra cast conditions apply as if we were casting right now
+	if spell.ExtraCastCondition != nil && !spell.ExtraCastCondition(sim, target) {
+		return false
+	}
+
+	// Hardcasts are already sequenced with no delays, so don't change logic for those
+	if spell.Unit.Hardcast.Expires > sim.CurrentTime {
+		return false
+	}
+
+	// Apply SQW leniency to GCD timer
+	if spell.DefaultCast.GCD > 0 && spell.Unit.GCD.TimeToReady(sim) > MaxSpellQueueWindow {
+		return false
+	}
+
+	// Spells that are within one SQW of coming off cooldown can also be queued
+	if MaxTimeToReady(spell.CD.Timer, spell.SharedCD.Timer, sim) > MaxSpellQueueWindow {
+		return false
+	}
+
+	// By contrast, spells that are waiting on resources to cast *cannot* be queued
+	if spell.Cost != nil {
+		spell.CurCast.Cost = spell.DefaultCast.Cost
+		if !spell.Cost.MeetsRequirement(sim, spell) {
+			return false
+		}
+	}
+
+	return true
+}
+
+// Helper function for APL checks
+func (spell *Spell) CanCastOrQueue(sim *Simulation, target *Unit) bool {
+	return !spell.IsQueued && (spell.CanCast(sim, target) || spell.CanQueue(sim, target))
+}
+
 func (spell *Spell) Cast(sim *Simulation, target *Unit) bool {
 	if target == nil {
 		target = spell.Unit.CurrentTarget
 	}
 	return spell.castFn(sim, target)
+}
+
+// Helper function for APL, assumes that CanCastOrQueue() has been called first
+func (spell *Spell) CastOrQueue(sim *Simulation, target *Unit) {
+	if spell.Cast(sim, target) {
+		return
+	}
+	
+	if spell.CanQueue(sim, target) && !spell.IsQueued {
+		// Determine which timer the spell is waiting on
+		queueTime := max(spell.Unit.Hardcast.Expires, BothTimersReadyAt(spell.CD.Timer, spell.SharedCD.Timer))
+
+		if spell.DefaultCast.GCD > 0 {
+			queueTime = max(queueTime, spell.Unit.GCD.ReadyAt())
+		}
+
+		// Schedule the cast to go off without delay
+		scheduledCast := &PendingAction{
+			NextActionAt: queueTime,
+			Priority:     ActionPriorityRegen, // make sure we beat the standard GCD action
+			
+			OnAction: func(sim *Simulation) {
+				spell.Cast(sim, target)
+				spell.IsQueued = false
+			},
+		}
+		sim.AddPendingAction(scheduledCast)
+		spell.IsQueued = true
+
+		// Wait until the cast goes off so that APL doesn't introduce an artificial GCD
+		if spell.DefaultCast.GCD > 0 {
+			spell.Unit.WaitUntil(sim, queueTime)
+		}
+	}
 }
 
 // Skips the actual cast and applies spell effects immediately.
