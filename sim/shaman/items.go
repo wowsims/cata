@@ -64,6 +64,98 @@ var ItemSetSkyshatterHarness = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T11 elem
+// (2) Set: Increases the critical strike chance of your Flame Shock spell by 10%.
+// (4) Set: Reduces the cast time of your Lightning Bolt spell by 10%.
+var ItemSetRagingElementsRegalia = core.NewItemSet(core.ItemSet{
+	Name: "Regalia of the Raging Elements",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_BonusCrit_Rating,
+				FloatValue: 10 * core.CritRatingPerCritChance,
+				ClassMask:  SpellMaskFlameShock,
+			})
+		},
+		4: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_CastTime_Pct,
+				FloatValue: -0.1,
+				ClassMask:  SpellMaskLightningBolt,
+			})
+		},
+	},
+})
+
+// T12 elem
+// (2) Set: Your Lightning Bolt has a 30% chance to reduce the remaining cooldown on your Fire Elemental Totem by 4 sec.
+// (4) Set: Your Lava Surge talent also makes Lava Burst instant when it triggers.
+var ItemSetVolcanicRegalia = core.NewItemSet(core.ItemSet{
+	Name: "Volcanic Regalia",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.RegisterAura(core.Aura{
+				Label:    "Volcanic Regalia 2P",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				//TODO Could change to OnCastComplete when behavior is confirmed.
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.ClassSpellMask != SpellMaskLightningBolt || !sim.Proc(0.3, "Volcanic Regalia 2P") || shaman.FireElementalTotem == nil {
+						return
+					}
+					shaman.FireElementalTotem.CD.Reduce(4 * time.Second)
+				},
+			})
+		},
+		4: func(agent core.Agent) {
+			//in talents.go under lava surge proc
+		},
+	},
+})
+
+// T13 elem
+// (2) Set: Elemental Mastery also grants you 2000 mastery rating 15 sec.
+// (4) Set: Each time Elemental Overload triggers, you gain 250 haste rating for 4 sec, stacking up to 3 times.
+var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
+	Name: "Spiritwalker's Regalia",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			//In talents.go under elemental mastery
+		},
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			procAura := shaman.RegisterAura(core.Aura{
+				Label:     "Time Rupture",
+				ActionID:  core.ActionID{SpellID: 105821},
+				Duration:  4 * time.Second,
+				MaxStacks: 3,
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					changedHaste := (newStacks - oldStacks) * 250
+					shaman.AddStatDynamic(sim, stats.SpellHaste, float64(changedHaste))
+				},
+			})
+			shaman.RegisterAura(core.Aura{
+				Label:    "Spiritwalker's Regalia 4P",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.ClassSpellMask&SpellMaskOverload > 0 {
+						procAura.Activate(sim)
+						procAura.AddStack(sim)
+					}
+				},
+			})
+		},
+	},
+})
+
 func init() {
 	core.NewItemEffect(33506, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()

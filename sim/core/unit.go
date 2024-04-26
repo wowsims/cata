@@ -408,7 +408,7 @@ func (unit *Unit) ApplyCastSpeed(dur time.Duration) time.Duration {
 	return time.Duration(float64(dur) * unit.CastSpeed)
 }
 func (unit *Unit) ApplyCastSpeedForSpell(dur time.Duration, spell *Spell) time.Duration {
-	return time.Duration(float64(dur) * unit.CastSpeed * spell.CastTimeMultiplier)
+	return time.Duration(float64(dur) * unit.CastSpeed * max(0, spell.CastTimeMultiplier))
 }
 
 func (unit *Unit) SwingSpeed() float64 {

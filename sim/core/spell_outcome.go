@@ -508,7 +508,7 @@ func (result *SpellResult) applyEnemyAttackTableMiss(spell *Spell, attackTable *
 	if spell.Unit.AutoAttacks.IsDualWielding && !spell.Unit.PseudoStats.DisableDWMissPenalty {
 		missChance += 0.19
 	}
-	*chance = max(0, missChance)
+	*chance += max(0, missChance)
 
 	if roll < *chance {
 		result.Outcome = OutcomeMiss
@@ -524,7 +524,7 @@ func (result *SpellResult) applyEnemyAttackTableBlock(spell *Spell, attackTable 
 		return false
 	}
 
-	*chance = result.Target.GetTotalBlockChanceAsDefender(attackTable)
+	*chance += result.Target.GetTotalBlockChanceAsDefender(attackTable)
 
 	if roll < *chance {
 		result.Outcome |= OutcomeBlock
@@ -540,7 +540,7 @@ func (result *SpellResult) applyEnemyAttackTableDodge(spell *Spell, attackTable 
 		return false
 	}
 
-	*chance = max(result.Target.GetTotalDodgeChanceAsDefender(attackTable)-spell.Unit.PseudoStats.DodgeReduction, 0.0)
+	*chance += max(result.Target.GetTotalDodgeChanceAsDefender(attackTable)-spell.Unit.PseudoStats.DodgeReduction, 0.0)
 
 	if roll < *chance {
 		result.Outcome = OutcomeDodge
@@ -556,7 +556,7 @@ func (result *SpellResult) applyEnemyAttackTableParry(spell *Spell, attackTable 
 		return false
 	}
 
-	*chance = result.Target.GetTotalParryChanceAsDefender(attackTable)
+	*chance += result.Target.GetTotalParryChanceAsDefender(attackTable)
 
 	if roll < *chance {
 		result.Outcome = OutcomeParry
