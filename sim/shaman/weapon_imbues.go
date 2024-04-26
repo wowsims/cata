@@ -139,7 +139,7 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if weapon.SwingSpeed != 0 {
-				damage := weapon.SwingSpeed * (68.5 + 0.1/2.6*spell.SpellPower())
+				damage := weapon.SwingSpeed * (68.5 + 0.08/2.6*spell.MeleeAttackPower())
 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 			}
 		},

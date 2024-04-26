@@ -2,18 +2,18 @@ import { Popover, Tooltip } from 'bootstrap';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
-import { Player } from '..//player.js';
-import { Class, PseudoStat, Stat, TristateEffect } from '..//proto/common.js';
-import { getClassStatName, masterySpellIDs, masterySpellNames, statOrder } from '..//proto_utils/names.js';
-import { Stats } from '..//proto_utils/stats.js';
-import { EventID, TypedEvent } from '..//typed_event.js';
 import * as Mechanics from '../constants/mechanics.js';
+import { Player } from '../player.js';
+import { PseudoStat, Stat } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id';
+import { getClassStatName, masterySpellIDs, masterySpellNames, statOrder } from '../proto_utils/names.js';
+import { Stats } from '../proto_utils/stats.js';
+import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
 import { NumberPicker } from './number_picker';
 
-export type StatMods = { base?:Stats, gear?:Stats, talents?: Stats, buffs?: Stats, consumes?: Stats, final?: Stats, stats?: Array<Stat> };
-export type StatWrites = { base:Stats, gear:Stats, talents: Stats, buffs: Stats, consumes: Stats, final: Stats, stats: Array<Stat> };
+export type StatMods = { base?: Stats; gear?: Stats; talents?: Stats; buffs?: Stats; consumes?: Stats; final?: Stats; stats?: Array<Stat> };
+export type StatWrites = { base: Stats; gear: Stats; talents: Stats; buffs: Stats; consumes: Stats; final: Stats; stats: Array<Stat> };
 
 export class CharacterStats extends Component {
 	readonly stats: Array<Stat>;
@@ -25,7 +25,13 @@ export class CharacterStats extends Component {
 	private readonly modifyDisplayStats?: (player: Player<any>) => StatMods;
 	private readonly overwriteDisplayStats?: (player: Player<any>) => StatWrites;
 
-	constructor(parent: HTMLElement, player: Player<any>, stats: Array<Stat>, modifyDisplayStats?: (player: Player<any>) => StatMods, overwriteDisplayStats?: (player: Player<any>) => StatWrites) {
+	constructor(
+		parent: HTMLElement,
+		player: Player<any>,
+		stats: Array<Stat>,
+		modifyDisplayStats?: (player: Player<any>) => StatMods,
+		overwriteDisplayStats?: (player: Player<any>) => StatWrites,
+	) {
 		super(parent, 'character-stats-root');
 		this.stats = statOrder.filter(stat => stats.includes(stat));
 		this.player = player;
@@ -89,10 +95,7 @@ export class CharacterStats extends Component {
 	private updateStats(player: Player<any>) {
 		const playerStats = player.getCurrentStats();
 
-		const statMods = this.modifyDisplayStats
-			? this.modifyDisplayStats(this.player)
-			: {
-			  };
+		const statMods = this.modifyDisplayStats ? this.modifyDisplayStats(this.player) : {};
 
 		const baseStats = Stats.fromProto(playerStats.baseStats);
 		const gearStats = Stats.fromProto(playerStats.gearStats);
@@ -103,7 +106,10 @@ export class CharacterStats extends Component {
 		const bonusStats = player.getBonusStats();
 
 		let baseDelta = baseStats.add(statMods.base || new Stats());
-		let gearDelta = gearStats.subtract(baseStats).subtract(bonusStats).add(statMods.gear || new Stats());
+		let gearDelta = gearStats
+			.subtract(baseStats)
+			.subtract(bonusStats)
+			.add(statMods.gear || new Stats());
 		let talentsDelta = talentsStats.subtract(gearStats).add(statMods.talents || new Stats());
 		let buffsDelta = buffsStats.subtract(talentsStats).add(statMods.buffs || new Stats());
 		let consumesDelta = consumesStats.subtract(buffsStats).add(statMods.consumes || new Stats());
@@ -121,13 +127,13 @@ export class CharacterStats extends Component {
 			const statOverwrites = this.overwriteDisplayStats(this.player);
 			if (statOverwrites.stats) {
 				statOverwrites.stats.forEach((stat, _) => {
-					baseDelta = baseDelta.withStat(stat, statOverwrites.base.getStat(stat))
-					gearDelta = gearDelta.withStat(stat, statOverwrites.gear.getStat(stat))
-					talentsDelta = talentsDelta.withStat(stat, statOverwrites.talents.getStat(stat))
-					buffsDelta = buffsDelta.withStat(stat, statOverwrites.buffs.getStat(stat))
-					consumesDelta = consumesDelta.withStat(stat, statOverwrites.consumes.getStat(stat))
-					finalStats = finalStats.withStat(stat, statOverwrites.final.getStat(stat))
-				})
+					baseDelta = baseDelta.withStat(stat, statOverwrites.base.getStat(stat));
+					gearDelta = gearDelta.withStat(stat, statOverwrites.gear.getStat(stat));
+					talentsDelta = talentsDelta.withStat(stat, statOverwrites.talents.getStat(stat));
+					buffsDelta = buffsDelta.withStat(stat, statOverwrites.buffs.getStat(stat));
+					consumesDelta = consumesDelta.withStat(stat, statOverwrites.consumes.getStat(stat));
+					finalStats = finalStats.withStat(stat, statOverwrites.final.getStat(stat));
+				});
 			}
 		}
 
@@ -136,26 +142,26 @@ export class CharacterStats extends Component {
 
 		this.stats.forEach((stat, idx) => {
 			const bonusStatValue = bonusStats.getStat(stat);
-			let contextualKlass: string;
+			let contextualClass: string;
 			if (bonusStatValue == 0) {
-				contextualKlass = 'text-white';
+				contextualClass = 'text-white';
 			} else if (bonusStatValue > 0) {
-				contextualKlass = 'text-success';
+				contextualClass = 'text-success';
 			} else {
-				contextualKlass = 'text-danger';
+				contextualClass = 'text-danger';
 			}
 
 			const statLinkElemRef = ref<HTMLAnchorElement>();
 
 			const valueElem = (
 				<div className="stat-value-link-container">
-					<a href="javascript:void(0)" className={`stat-value-link ${contextualKlass}`} attributes={{ role: 'button' }} ref={statLinkElemRef}>
+					<a href="javascript:void(0)" className={`stat-value-link ${contextualClass}`} attributes={{ role: 'button' }} ref={statLinkElemRef}>
 						{`${this.statDisplayString(finalStats, finalStats, stat, true)} `}
 					</a>
 					{stat == Stat.StatMastery && (
 						<a
 							href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
-							className={`stat-value-link-mastery ${contextualKlass}`}
+							className={`stat-value-link-mastery ${contextualClass}`}
 							attributes={{ role: 'button' }}>
 							{`${(masteryPoints * this.player.getMasteryPerPointModifier()).toFixed(2)}%`}
 						</a>
@@ -297,8 +303,6 @@ export class CharacterStats extends Component {
 			displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
 		} else if (stat == Stat.StatSpellHaste) {
 			displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
-		} else if (stat == Stat.StatArmorPenetration) {
-			displayStr += ` (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
 		} else if (stat == Stat.StatExpertise) {
 			// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter percent intervals. Note that
 			// in-game character sheet tooltips will still display the truncated values, but it has been tested to behave

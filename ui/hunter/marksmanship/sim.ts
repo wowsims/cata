@@ -42,8 +42,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatRangedDps],
 	// Reference stat against which to calculate EP.
@@ -92,7 +92,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 				[Stat.StatMeleeHit]: 2,
 				[Stat.StatMeleeCrit]: 1.5,
 				[Stat.StatMeleeHaste]: 1.39,
-				[Stat.StatArmorPenetration]: 1.32,
 			},
 			{
 				[PseudoStat.PseudoStatRangedDps]: 6.32,

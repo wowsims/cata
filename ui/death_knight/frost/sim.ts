@@ -28,7 +28,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatMastery,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatArmorPenetration,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -60,7 +59,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 				[Stat.StatMeleeHaste]: 1.85,
 				[Stat.StatMeleeHit]: 1.92,
 				[Stat.StatMeleeCrit]: 0.76,
-				[Stat.StatArmorPenetration]: 0.77,
 				[Stat.StatSpellHit]: 0.8,
 				[Stat.StatSpellCrit]: 0.34,
 			},
@@ -95,7 +93,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			sunderArmor: true,
 			brittleBones: true,
 			ebonPlaguebringer: true,
-			shadowAndFlame: true
+			shadowAndFlame: true,
 		}),
 	},
 
@@ -112,14 +110,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	playerIconInputs: [],
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellDamageDebuff
-	],
-	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.DamageReduction,
-		BuffDebuffInputs.MeleeAttackSpeedDebuff,
-		BuffDebuffInputs.BleedDebuff
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.MeleeAttackSpeedDebuff, BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -131,7 +123,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
-			OtherInputs.DarkIntentUptime
+			OtherInputs.DarkIntentUptime,
 		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
@@ -148,9 +140,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT,
 			//Presets.AOE_ROTATION_PRESET_DEFAULT,
 		],
-		gear: [
-			Presets.P1_GEAR_PRESET,
-		],
+		gear: [Presets.P1_GEAR_PRESET],
 	},
 
 	raidSimPresets: [
