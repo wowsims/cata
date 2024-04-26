@@ -99,9 +99,15 @@ var waterElementalBaseStats = stats.Stats{
 var waterElementalStatInheritance = func(ownerStats stats.Stats) stats.Stats {
 	// These numbers are just rough guesses based on looking at some logs.
 	return stats.Stats{
+		// TODO Pet stats scale dynamically in combat
 		stats.Stamina:    ownerStats[stats.Stamina] * 0.2,
 		stats.Intellect:  ownerStats[stats.Intellect] * 0.3,
 		stats.SpellPower: ownerStats[stats.SpellPower] * 0.333,
+		// TODO test crit chance. It does crit, so figure out how often and if it scales
+		/* Results: owner 5% crit, Waterbolt 13% crit
+
+		 */
+		// stats.SpellCrit:  ownerStats[stats.SpellCrit],
 	}
 }
 

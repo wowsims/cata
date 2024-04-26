@@ -37,7 +37,7 @@ func NewFrostMage(character *core.Character, options *proto.Player) *FrostMage {
 		Mage:             mage.NewMage(character, options, frostOptions.ClassOptions),
 		ClassBaseScaling: 937.330078125,
 	}
-	//frostMage.waterElemental = frostMage.NewWaterElemental(0.20)
+	frostMage.waterElemental = frostMage.NewWaterElemental(0.20)
 
 	return frostMage
 }
@@ -61,6 +61,12 @@ func (frostMage *FrostMage) ApplyTalents() {
 
 	// Frost  Specialization Bonus
 	frostMage.Mage.AddStaticMod(core.SpellModConfig{
+		School:     core.SpellSchoolFrost,
+		FloatValue: 0.25,
+		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	frostMage.waterElemental.AddStaticMod(core.SpellModConfig{
 		School:     core.SpellSchoolFrost,
 		FloatValue: 0.25,
 		Kind:       core.SpellMod_DamageDone_Pct,
