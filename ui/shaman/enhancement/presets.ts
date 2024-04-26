@@ -33,10 +33,10 @@ export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Defaul
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '3020023-2333310013003012321',
+		talentsString: '303202-2323320013003012321',
 		glyphs: Glyphs.create({
 			prime1: ShamanPrimeGlyph.GlyphOfLavaLash,
-			prime2: ShamanPrimeGlyph.GlyphOfWindfuryWeapon,
+			prime2: ShamanPrimeGlyph.GlyphOfStormstrike,
 			prime3: ShamanPrimeGlyph.GlyphOfFeralSpirit,
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
 			major2: ShamanMajorGlyph.GlyphOfChainLightning,
@@ -52,9 +52,9 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 	classOptions: {
 		shield: ShamanShield.LightningShield,
 		totems: ShamanTotems.create({
-			earth: EarthTotem.StrengthOfEarthTotem,
+			earth: EarthTotem.StoneskinTotem,
 			fire: FireTotem.SearingTotem,
-			water: WaterTotem.ManaSpringTotem,
+			water: WaterTotem.HealingStreamTotem,
 			air: AirTotem.WindfuryTotem,
 		}),
 		imbueMh: ShamanImbue.WindfuryWeapon,
