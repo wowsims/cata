@@ -126,6 +126,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	}
 
 	character.GCD = character.NewTimer()
+	character.RotationTimer = character.NewTimer()
 
 	character.Label = fmt.Sprintf("%s (#%d)", character.Name, character.Index+1)
 

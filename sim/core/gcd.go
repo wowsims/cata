@@ -37,7 +37,7 @@ func (unit *Unit) NextGCDAt() time.Duration {
 }
 
 func (unit *Unit) NextRotationActionAt() time.Duration {
-	return unit.rotationAction.NextActionAt
+	return unit.RotationTimer.ReadyAt()
 }
 
 func (unit *Unit) SetGCDTimer(sim *Simulation, gcdReadyAt time.Duration) {
@@ -46,20 +46,35 @@ func (unit *Unit) SetGCDTimer(sim *Simulation, gcdReadyAt time.Duration) {
 	}
 
 	unit.GCD.Set(gcdReadyAt)
+	unit.SetRotationTimer(sim, gcdReadyAt)
+}
+
+func (unit *Unit) SetRotationTimer(sim *Simulation, rotationReadyAt time.Duration) {
+	if unit.rotationAction == nil {
+		return
+	}
+
+	unit.RotationTimer.Set(rotationReadyAt)
 
 	if unit.rotationAction.consumed {
 		unit.rotationAction.cancelled = false
-		unit.rotationAction.NextActionAt = gcdReadyAt
+		unit.rotationAction.NextActionAt = rotationReadyAt
 	} else {
 		unit.rotationAction.Cancel(sim)
 		oldAction := unit.rotationAction.OnAction
 		unit.rotationAction = &PendingAction{
-			NextActionAt: gcdReadyAt,
+			NextActionAt: rotationReadyAt,
 			Priority:     ActionPriorityGCD,
 			OnAction:     oldAction,
 		}
 	}
 	sim.AddPendingAction(unit.rotationAction)
+}
+
+// Call this when reacting to events that occur before the next scheduled rotation action
+func (unit *Unit) ReactToEvent(sim *Simulation) {
+	unit.RotationTimer.Reset()
+	unit.Rotation.DoNextAction(sim)
 }
 
 // Call this to stop the GCD loop for a unit.
