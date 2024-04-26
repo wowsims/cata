@@ -62,6 +62,7 @@ type Druid struct {
 	Starfire             *DruidSpell
 	Starfall             *DruidSpell
 	Starsurge            *DruidSpell
+	Sunfire              *DruidSpell
 	SurvivalInstincts    *DruidSpell
 	SwipeBear            *DruidSpell
 	SwipeCat             *DruidSpell
@@ -116,6 +117,27 @@ type Druid struct {
 	disabledMCDs []*core.MajorCooldown
 }
 
+const (
+	DruidSpellFlagNone int64 = 0
+	DruidSpellBarkskin int64 = 1 << iota
+	DruidSpellHurricane
+	DruidSpellInsectSwarm
+	DruidSpellMoonfire
+	DruidSpellStarfall
+	DruidSpellStarfire
+	DruidSpellStarsurge
+	DruidSpellSunfire
+	DruidSpellTyphoon
+	DruidSpellWrath
+
+	DruidSpellLast
+	DruidSpellsAll    = DruidSpellLast<<1 - 1
+	DruidSpellDoT     = DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellSunfire
+	DruidSpellInstant = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire
+	DruidArcaneSpells = DruidSpellMoonfire | DruidSpellStarfire | DruidSpellStarsurge
+	DruidNatureSpells = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellTyphoon
+)
+
 type SelfBuffs struct {
 	InnervateTarget *proto.UnitReference
 }
@@ -154,9 +176,11 @@ func (druid *Druid) BalanceCritMultiplier() float64 {
 func (druid *Druid) HasPrimeGlyph(glyph proto.DruidPrimeGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
+
 func (druid *Druid) HasMajorGlyph(glyph proto.DruidMajorGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
+
 func (druid *Druid) HasMinorGlyph(glyph proto.DruidMinorGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
