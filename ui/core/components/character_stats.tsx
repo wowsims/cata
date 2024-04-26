@@ -303,8 +303,6 @@ export class CharacterStats extends Component {
 			displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
 		} else if (stat == Stat.StatSpellHaste) {
 			displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
-		} else if (stat == Stat.StatArmorPenetration) {
-			displayStr += ` (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
 		} else if (stat == Stat.StatExpertise) {
 			// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter percent intervals. Note that
 			// in-game character sheet tooltips will still display the truncated values, but it has been tested to behave

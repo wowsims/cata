@@ -27,8 +27,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatMeleeHaste,
 		Stat.StatMastery,
 		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatArmorPenetration,
+		Stat.StatSpellCrit
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -60,7 +59,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 				[Stat.StatMeleeHaste]: 1.85,
 				[Stat.StatMeleeHit]: 1.92,
 				[Stat.StatMeleeCrit]: 0.76,
-				[Stat.StatArmorPenetration]: 0.77,
 				[Stat.StatSpellHit]: 0.8,
 				[Stat.StatSpellCrit]: 0.34,
 			},

@@ -24,9 +24,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatMastery,
-		Stat.StatArmor,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -42,8 +40,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatArmor,
 		Stat.StatMastery,
 	],
 	// modifyDisplayStats: (player: Player<Spec.SpecArmsWarrior>) => {
@@ -70,8 +66,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 				[Stat.StatMeleeHit]: 0.79,
 				[Stat.StatMeleeCrit]: 2.12,
 				[Stat.StatMeleeHaste]: 1.72,
-				[Stat.StatArmorPenetration]: 2.17,
-				[Stat.StatArmor]: 0.03,
+				// @todo: Calculate actual weights
+				// This probably applies for all weights
+				// [Stat.StatMastery]: 0,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 6.29,
