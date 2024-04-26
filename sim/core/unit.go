@@ -145,8 +145,8 @@ type Unit struct {
 	// No more than one cast may be active at any given time.
 	Hardcast Hardcast
 
-	// GCD-related PendingActions.
-	gcdAction      *PendingAction
+	// Rotation-related PendingActions.
+	rotationAction *PendingAction
 	hardcastAction *PendingAction
 
 	// Cached mana return values per tick.

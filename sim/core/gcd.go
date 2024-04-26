@@ -33,35 +33,39 @@ func (unit *Unit) newHardcastAction(sim *Simulation) {
 }
 
 func (unit *Unit) NextGCDAt() time.Duration {
-	return unit.gcdAction.NextActionAt
+	return unit.GCD.ReadyAt()
+}
+
+func (unit *Unit) NextRotationActionAt() time.Duration {
+	return unit.rotationAction.NextActionAt
 }
 
 func (unit *Unit) SetGCDTimer(sim *Simulation, gcdReadyAt time.Duration) {
-	if unit.gcdAction == nil {
+	if unit.rotationAction == nil {
 		return
 	}
 
 	unit.GCD.Set(gcdReadyAt)
 
-	if unit.gcdAction.consumed {
-		unit.gcdAction.cancelled = false
-		unit.gcdAction.NextActionAt = gcdReadyAt
+	if unit.rotationAction.consumed {
+		unit.rotationAction.cancelled = false
+		unit.rotationAction.NextActionAt = gcdReadyAt
 	} else {
-		unit.gcdAction.Cancel(sim)
-		oldAction := unit.gcdAction.OnAction
-		unit.gcdAction = &PendingAction{
+		unit.rotationAction.Cancel(sim)
+		oldAction := unit.rotationAction.OnAction
+		unit.rotationAction = &PendingAction{
 			NextActionAt: gcdReadyAt,
 			Priority:     ActionPriorityGCD,
 			OnAction:     oldAction,
 		}
 	}
-	sim.AddPendingAction(unit.gcdAction)
+	sim.AddPendingAction(unit.rotationAction)
 }
 
 // Call this to stop the GCD loop for a unit.
 // This is mostly used for pets that get summoned / expire.
 func (unit *Unit) CancelGCDTimer(sim *Simulation) {
-	unit.gcdAction.Cancel(sim)
+	unit.rotationAction.Cancel(sim)
 }
 
 func (unit *Unit) WaitUntil(sim *Simulation, readyTime time.Duration) {

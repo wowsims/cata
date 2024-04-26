@@ -41,7 +41,7 @@ func (target *Target) initialize(config *proto.Target) {
 	if target.AI != nil {
 		target.AI.Initialize(target, config)
 
-		target.gcdAction = &PendingAction{
+		target.rotationAction = &PendingAction{
 			Priority: ActionPriorityGCD,
 			OnAction: func(sim *Simulation) {
 				target.Rotation.DoNextAction(sim)
