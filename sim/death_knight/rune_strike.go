@@ -35,6 +35,7 @@ func (dk *DeathKnight) registerRuneStrikeSpell() {
 		RuneCost: core.RuneCostOptions{
 			RunicPowerCost: 30,
 			Refundable:     true,
+			RefundCost:     6,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
