@@ -41,6 +41,7 @@ func (shaman *Shaman) registerUnleashFlame() {
 		ProcMask:         core.ProcMaskSpellDamage,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		ClassSpellMask:   SpellMaskUnleashFlame,
+		Flags:            SpellFlagFocusable,
 		DamageMultiplier: 1,
 		BonusCoefficient: 0.429,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
