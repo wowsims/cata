@@ -28,10 +28,11 @@ func (druid *Druid) registerStarfireSpell() {
 	})
 
 	druid.Starfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 2912},
-		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagOmenTrigger | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 2912},
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: DruidSpellStarfire | DruidArcaneSpells,
+		Flags:          SpellFlagOmenTrigger | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.11,

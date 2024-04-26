@@ -12,11 +12,12 @@ func (druid *Druid) registerWrathSpell() {
 	wrathlMetric := druid.NewLunarEnergyMetrics(core.ActionID{SpellID: 5176})
 
 	druid.Wrath = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 5176},
-		SpellSchool:  core.SpellSchoolNature,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagOmenTrigger | core.SpellFlagAPL,
-		MissileSpeed: 20,
+		ActionID:       core.ActionID{SpellID: 5176},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: DruidSpellWrath | DruidNatureSpells,
+		Flags:          SpellFlagOmenTrigger | core.SpellFlagAPL,
+		MissileSpeed:   20,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.09,

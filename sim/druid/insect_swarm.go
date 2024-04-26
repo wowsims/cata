@@ -11,10 +11,11 @@ func (druid *Druid) registerInsectSwarmSpell() {
 	hasGlyph := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfInsectSwarm)
 
 	druid.InsectSwarm = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 5570},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagNaturesGrace | SpellFlagOmenTrigger | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 5570},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: DruidSpellInsectSwarm | DruidNatureSpells | DruidSpellDoT,
+		Flags:          SpellFlagNaturesGrace | SpellFlagOmenTrigger | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.08,
