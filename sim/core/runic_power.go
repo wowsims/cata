@@ -11,8 +11,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-const RunicPowerRefundCost = 0.125 // 7/8 refund
-
 type RuneChangeType int32
 
 const (
@@ -881,6 +879,7 @@ type RuneCostOptions struct {
 	RunicPowerCost float64
 	RunicPowerGain float64
 	Refundable     bool
+	RefundCost     float64
 }
 
 type RuneCostImpl struct {
@@ -890,6 +889,7 @@ type RuneCostImpl struct {
 	RunicPowerCost float64
 	RunicPowerGain float64
 	Refundable     bool
+	RefundCost     float64
 
 	runicPowerMetrics *ResourceMetrics
 	bloodRuneMetrics  *ResourceMetrics
@@ -910,6 +910,7 @@ func newRuneCost(spell *Spell, options RuneCostOptions) *RuneCostImpl {
 		RunicPowerCost: options.RunicPowerCost,
 		RunicPowerGain: options.RunicPowerGain,
 		Refundable:     options.Refundable,
+		RefundCost:     options.RefundCost,
 
 		runicPowerMetrics: Ternary(options.RunicPowerCost > 0 || options.RunicPowerGain > 0, spell.Unit.NewRunicPowerMetrics(spell.ActionID), nil),
 		bloodRuneMetrics:  Ternary(options.BloodRuneCost > 0, spell.Unit.NewBloodRuneMetrics(spell.ActionID), nil),
@@ -981,7 +982,7 @@ func (rc *RuneCostImpl) spendRefundableCost(sim *Simulation, spell *Spell, resul
 			spell.Unit.AddRunicPower(sim, rc.RunicPowerGain, spell.RunicPowerMetrics())
 		}
 	} else if cost.RunicPower() > 0 {
-		spell.Unit.spendRunicPower(sim, float64(cost.RunicPower())*RunicPowerRefundCost, spell.RunicPowerMetrics())
+		spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
 	}
 }
 
@@ -998,7 +999,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodRune(sim *Simulation, 
 		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
 		// only spend RP
 		if cost.RunicPower() > 0 {
-			spell.Unit.spendRunicPower(sim, float64(cost.RunicPower())*RunicPowerRefundCost, spell.RunicPowerMetrics())
+			spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
 		}
 		return
 	}
@@ -1043,7 +1044,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertFrostOrUnholyRune(sim *Simu
 		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
 		// only spend RP
 		if cost.RunicPower() > 0 {
-			spell.Unit.spendRunicPower(sim, float64(cost.RunicPower())*RunicPowerRefundCost, spell.RunicPowerMetrics())
+			spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
 		}
 		return
 	}
@@ -1081,7 +1082,7 @@ func (rc *RuneCostImpl) spendRefundableCostAndConvertBloodOrFrostRune(sim *Simul
 		// misses just don't get spent as a way to avoid having to cancel regeneration PAs
 		// only spend RP
 		if cost.RunicPower() > 0 {
-			spell.Unit.spendRunicPower(sim, float64(cost.RunicPower())*RunicPowerRefundCost, spell.RunicPowerMetrics())
+			spell.Unit.spendRunicPower(sim, rc.RefundCost, spell.RunicPowerMetrics())
 		}
 		return
 	}

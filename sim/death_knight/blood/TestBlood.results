@@ -160,24 +160,24 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-BlessedBattlegearofUndeadSlaying"
  value: {
-  dps: 11120.24801
-  tps: 55800.84606
+  dps: 11119.85146
+  tps: 55798.81697
   hps: 4308.39009
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-BlessedGarboftheUndeadSlayer"
  value: {
-  dps: 10703.43716
-  tps: 53687.04207
+  dps: 10703.13492
+  tps: 53685.48637
   hps: 4286.97418
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-BlessedRegaliaofUndeadCleansing"
  value: {
-  dps: 10576.44413
-  tps: 52945.6065
+  dps: 10573.0739
+  tps: 52926.83533
   hps: 4269.35981
  }
 }
@@ -1176,8 +1176,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-MagmaPlatedBattlearmor"
  value: {
-  dps: 12998.80255
-  tps: 65349.28505
+  dps: 12998.21509
+  tps: 65346.28341
   hps: 5007.91334
  }
 }
@@ -1928,8 +1928,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-UndeadSlayer'sBlessedArmor"
  value: {
-  dps: 10647.32998
-  tps: 53317.71172
+  dps: 10643.47635
+  tps: 53295.17663
   hps: 4265.23847
  }
 }
@@ -1968,8 +1968,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 7776.95009
-  tps: 37774.28055
+  dps: 7776.13463
+  tps: 37770.27572
   hps: 5864.69702
  }
 }
