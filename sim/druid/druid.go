@@ -65,6 +65,7 @@ type Druid struct {
 	SwipeBear            *DruidSpell
 	SwipeCat             *DruidSpell
 	TigersFury           *DruidSpell
+	Thrash               *DruidSpell
 	Typhoon              *DruidSpell
 	Wrath                *DruidSpell
 
@@ -239,6 +240,7 @@ func (druid *Druid) RegisterFeralCatSpells() {
 	// 	druid.registerSwipeBearSpell()
 	// 	druid.registerSwipeCatSpell()
 	druid.registerTigersFurySpell()
+	druid.registerThrashBearSpell()
 }
 
 // func (druid *Druid) RegisterFeralTankSpells() {
@@ -256,6 +258,7 @@ func (druid *Druid) RegisterFeralCatSpells() {
 // 	druid.registerSavageDefensePassive()
 // 	druid.registerSurvivalInstinctsCD()
 // 	druid.registerSwipeBearSpell()
+//  druid.registerThrashBearSpell()
 // }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
