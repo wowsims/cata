@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -11,6 +12,12 @@ import (
 // Because cata restricts you to 10 points in a different tree, anything more is inaccessible. The rest of the trees are handled in each
 // spec's implementation
 func (warrior *Warrior) ApplyCommonTalents() {
+	if warrior.Spec == proto.Spec_SpecProtectionWarrior {
+		warrior.EnableArmorSpecialization(stats.Stamina, proto.ArmorType_ArmorTypePlate)
+	} else  {
+		warrior.EnableArmorSpecialization(stats.Strength, proto.ArmorType_ArmorTypePlate)
+	}
+
 	warrior.applyArmsCommonTalents()
 	warrior.applyFuryCommonTalents()
 	warrior.applyProtectionCommonTalents()
