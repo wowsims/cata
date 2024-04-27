@@ -8,10 +8,9 @@ import (
 )
 
 func (druid *Druid) registerStarfireSpell() {
-	spellCoeff := 1.231
-	sfMetric := druid.NewSolarEnergyMetric(core.ActionID{SpellID: 2912})
+	solarMetric := druid.NewSolarEnergyMetric(core.ActionID{SpellID: 2912})
 
-	hasGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph(proto.DruidPrimeGlyph_GlyphOfStarfire))
+	hasStarfireGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph(proto.DruidPrimeGlyph_GlyphOfStarfire))
 
 	starfireGlyphSpell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 54845},
@@ -36,35 +35,40 @@ func (druid *Druid) registerStarfireSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.11,
-			Multiplier: 1 - 0.03*float64(druid.Talents.Moonglow),
+			Multiplier: 1,
 		},
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 3500,
+				CastTime: time.Millisecond * 3200,
 			},
 		},
 
-		BonusCritRating: 0 +
-			2*float64(druid.Talents.NaturesMajesty)*core.CritRatingPerCritChance,
+		BonusCoefficient: 1.231,
+
+		BonusCritRating: 1,
 
 		DamageMultiplier: 1,
 
-		CritMultiplier:   druid.BalanceCritMultiplier(),
+		CritMultiplier: druid.BalanceCritMultiplier(),
+
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(987, 1231) + (spell.SpellPower() * spellCoeff)
+			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 1.383, 0.22)
+			baseDamage := sim.Roll(min, max)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				druid.AddEclipseEnergy(20+1.0/3.0, SolarEnergy, sim, sfMetric)
-			}
+				druid.AddEclipseEnergy(20, SolarEnergy, sim, solarMetric)
 
-			if result.Landed() && hasGlyph {
-				starfireGlyphSpell.Cast(sim, target)
+				if hasStarfireGlyph {
+					starfireGlyphSpell.Cast(sim, target)
+				}
+
+				spell.DealDamage(sim, result)
 			}
-			spell.DealDamage(sim, result)
 		},
 	})
 }

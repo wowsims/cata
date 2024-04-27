@@ -8,8 +8,7 @@ import (
 )
 
 func (druid *Druid) registerWrathSpell() {
-	spellCoeff := 0.879
-	wrathlMetric := druid.NewLunarEnergyMetrics(core.ActionID{SpellID: 5176})
+	lunarMetric := druid.NewLunarEnergyMetrics(core.ActionID{SpellID: 5176})
 
 	druid.Wrath = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 5176},
@@ -21,7 +20,7 @@ func (druid *Druid) registerWrathSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.09,
-			Multiplier: 1 - 0.03*float64(druid.Talents.Moonglow),
+			Multiplier: 1,
 		},
 
 		Cast: core.CastConfig{
@@ -31,7 +30,9 @@ func (druid *Druid) registerWrathSpell() {
 			},
 		},
 
-		BonusCritRating: 2 * float64(druid.Talents.NaturesMajesty) * core.CritRatingPerCritChance,
+		BonusCoefficient: 0.879,
+
+		BonusCritRating: 1,
 
 		DamageMultiplier: 1 + core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfWrath), 0.1, 0),
 
@@ -40,17 +41,17 @@ func (druid *Druid) registerWrathSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(675, 761) + spellCoeff*spell.SpellPower()
+			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.896, 0.12)
+			baseDamage := sim.Roll(min, max)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				druid.AddEclipseEnergy(13+1.0/3.0, LunarEnergy, sim, wrathlMetric)
+				druid.AddEclipseEnergy(13+1.0/3.0, LunarEnergy, sim, lunarMetric)
 
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 				})
 			}
-
 		},
 	})
 }
