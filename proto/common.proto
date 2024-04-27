@@ -429,6 +429,7 @@ enum PetFood {
 
 // Buffs that affect the entire raid.
 // TODO: Reindex
+// next index: 46
 message RaidBuffs {
 	// +5% Base Stats and Spell Resistances
 	bool mark_of_the_wild = 1;
@@ -490,6 +491,7 @@ message RaidBuffs {
 	bool honor_among_thieves = 35;
 	bool rampage = 36;
 	bool terrifying_roar = 37;
+	bool furious_howl = 45;
 
 	// Major Haste
 	bool bloodlust = 38;
