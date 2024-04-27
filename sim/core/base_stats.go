@@ -194,7 +194,7 @@ var ClassBaseStats = map[proto.Class]stats.Stats{
 		stats.Health:      39533,
 		stats.Agility:     89,
 		stats.Strength:    96,
-		stats.Intellect:   165,
+		stats.Intellect:   156,
 		stats.Spirit:      173,
 		stats.Stamina:     106,
 		stats.AttackPower: float64(CharacterLevel)*3.0 - 10,
