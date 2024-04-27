@@ -452,9 +452,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Icy Talons',
 							actionId: ActionId.fromSpellId(55610),
-							playerData: playerClass(Class.ClassDeathKnight,
-								player => player.isSpec(Spec.SpecFrostDeathKnight)
-							),
+							playerData: playerClassAndTalent(Class.ClassDeathKnight, 'improvedIcyTalons'),
 						},
 						{
 							label: 'Hunting Party',
