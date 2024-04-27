@@ -216,6 +216,10 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 		return
 	}
 
+	if !apl.unit.RotationTimer.IsReady(sim) {
+		return
+	}
+
 	i := 0
 	apl.inLoop = true
 
@@ -234,7 +238,7 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 
 	gcdReady := apl.unit.GCD.IsReady(sim)
 	if gcdReady {
-		apl.unit.WaitUntil(sim, sim.CurrentTime+apl.unit.ReactionTime)
+		apl.unit.WaitUntil(sim, sim.CurrentTime + apl.unit.ReactionTime)
 	}
 }
 
