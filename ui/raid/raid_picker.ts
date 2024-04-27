@@ -647,7 +647,7 @@ class NewPlayerPicker extends Component {
 						data-bs-title="${matchingPreset.tooltip ?? PlayerSpecs.getFullSpecName(playerSpec)}"
 						data-bs-html="true"
 					>
-						<img class="preset-picker-icon player-icon" src="${matchingPreset ?? playerSpec.getIcon('medium')}"/>
+						<img class="preset-picker-icon player-icon" src="${playerSpec.getIcon('medium')}"/>
 					</a>
 				`;
 				const presetElem = presetElemFragment.children[0] as HTMLElement;

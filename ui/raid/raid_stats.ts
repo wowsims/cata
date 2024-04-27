@@ -1,258 +1,258 @@
-// import { Tooltip } from 'bootstrap';
+import { Tooltip } from 'bootstrap';
 
-// import { Component } from '../core/components/component.js';
-// import { Player } from '../core/player.js';
-// import { PlayerClasses } from '../core/player_classes';
-// import { PlayerSpecs } from '../core/player_specs';
-// import { Class, RaidBuffs, Spec } from '../core/proto/common.js';
-// import { HunterOptions_PetType as HunterPetType } from '../core/proto/hunter.js';
-// import { PaladinAura } from '../core/proto/paladin.js';
-// import { AirTotem, EarthTotem, FireTotem, WaterTotem } from '../core/proto/shaman.js';
-// import { WarlockOptions_Summon as WarlockSummon } from '../core/proto/warlock.js';
-// import { WarriorShout } from '../core/proto/warrior.js';
-// import { ActionId } from '../core/proto_utils/action_id.js';
-// import { ClassSpecs, SpecTalents, textCssClassForClass } from '../core/proto_utils/utils.js';
-// import { Raid } from '../core/raid.js';
-// import { sum } from '../core/utils.js';
-// import { RaidSimUI } from './raid_sim_ui.js';
+import { Component } from '../core/components/component.js';
+import { Player } from '../core/player.js';
+import { PlayerClasses } from '../core/player_classes';
+import { PlayerSpecs } from '../core/player_specs';
+import { Class, RaidBuffs, Spec } from '../core/proto/common.js';
+import { HunterOptions_PetType as HunterPetType } from '../core/proto/hunter.js';
+import { PaladinAura } from '../core/proto/paladin.js';
+import { AirTotem, EarthTotem, FireTotem, WaterTotem } from '../core/proto/shaman.js';
+import { WarlockOptions_Summon as WarlockSummon } from '../core/proto/warlock.js';
+import { WarriorShout } from '../core/proto/warrior.js';
+import { ActionId } from '../core/proto_utils/action_id.js';
+import { ClassSpecs, SpecTalents, textCssClassForClass } from '../core/proto_utils/utils.js';
+import { Raid } from '../core/raid.js';
+import { sum } from '../core/utils.js';
+import { RaidSimUI } from './raid_sim_ui.js';
 
-// interface RaidStatsOptions {
-// 	sections: Array<RaidStatsSectionOptions>;
-// }
+interface RaidStatsOptions {
+	sections: Array<RaidStatsSectionOptions>;
+}
 
-// interface RaidStatsSectionOptions {
-// 	label: string;
-// 	categories: Array<RaidStatsCategoryOptions>;
-// }
+interface RaidStatsSectionOptions {
+	label: string;
+	categories: Array<RaidStatsCategoryOptions>;
+}
 
-// interface RaidStatsCategoryOptions {
-// 	label: string;
-// 	effects: Array<RaidStatsEffectOptions>;
-// }
+interface RaidStatsCategoryOptions {
+	label: string;
+	effects: Array<RaidStatsEffectOptions>;
+}
 
-// type PlayerProvider = { class?: Class; condition: (player: Player<any>) => boolean };
-// type RaidProvider = (raid: Raid) => boolean;
+type PlayerProvider = { class?: Class; condition: (player: Player<any>) => boolean };
+type RaidProvider = (raid: Raid) => boolean;
 
-// interface RaidStatsEffectOptions {
-// 	label: string;
-// 	actionId?: ActionId;
-// 	playerData?: PlayerProvider;
-// 	raidData?: RaidProvider;
-// }
+interface RaidStatsEffectOptions {
+	label: string;
+	actionId?: ActionId;
+	playerData?: PlayerProvider;
+	raidData?: RaidProvider;
+}
 
-// export class RaidStats extends Component {
-// 	private readonly categories: Array<RaidStatsCategory>;
+export class RaidStats extends Component {
+	private readonly categories: Array<RaidStatsCategory>;
 
-// 	constructor(parent: HTMLElement, raidSimUI: RaidSimUI) {
-// 		super(parent, 'raid-stats');
+	constructor(parent: HTMLElement, raidSimUI: RaidSimUI) {
+		super(parent, 'raid-stats');
 
-// 		const categories: Array<RaidStatsCategory> = [];
-// 		RAID_STATS_OPTIONS.sections.forEach(section => {
-// 			const sectionElem = document.createElement('div');
-// 			sectionElem.classList.add('raid-stats-section');
-// 			this.rootElem.appendChild(sectionElem);
-// 			sectionElem.innerHTML = `
-// 				<div class="raid-stats-section-header">
-// 					<label class="raid-stats-section-label form-label">${section.label}</label>
-// 				</div>
-// 				<div class="raid-stats-section-content"></div>
-// 			`;
-// 			const contentElem = sectionElem.getElementsByClassName('raid-stats-section-content')[0] as HTMLDivElement;
+		const categories: Array<RaidStatsCategory> = [];
+		// RAID_STATS_OPTIONS.sections.forEach(section => {
+		// 	const sectionElem = document.createElement('div');
+		// 	sectionElem.classList.add('raid-stats-section');
+		// 	this.rootElem.appendChild(sectionElem);
+		// 	sectionElem.innerHTML = `
+		// 		<div class="raid-stats-section-header">
+		// 			<label class="raid-stats-section-label form-label">${section.label}</label>
+		// 		</div>
+		// 		<div class="raid-stats-section-content"></div>
+		// 	`;
+		// 	const contentElem = sectionElem.getElementsByClassName('raid-stats-section-content')[0] as HTMLDivElement;
 
-// 			section.categories.forEach(categoryOptions => {
-// 				categories.push(new RaidStatsCategory(contentElem, raidSimUI, categoryOptions));
-// 			});
-// 		});
-// 		this.categories = categories;
+		// 	section.categories.forEach(categoryOptions => {
+		// 		categories.push(new RaidStatsCategory(contentElem, raidSimUI, categoryOptions));
+		// 	});
+		// });
+		this.categories = categories;
 
-// 		raidSimUI.changeEmitter.on(_eventID => this.categories.forEach(c => c.update()));
-// 	}
-// }
+		raidSimUI.changeEmitter.on(_eventID => this.categories.forEach(c => c.update()));
+	}
+}
 
-// class RaidStatsCategory extends Component {
-// 	readonly raidSimUI: RaidSimUI;
-// 	private readonly options: RaidStatsCategoryOptions;
-// 	private readonly effects: Array<RaidStatsEffect>;
-// 	private readonly counterElem: HTMLElement;
-// 	private readonly tooltipElem: HTMLElement;
+class RaidStatsCategory extends Component {
+	readonly raidSimUI: RaidSimUI;
+	private readonly options: RaidStatsCategoryOptions;
+	private readonly effects: Array<RaidStatsEffect>;
+	private readonly counterElem: HTMLElement;
+	private readonly tooltipElem: HTMLElement;
 
-// 	constructor(parent: HTMLElement, raidSimUI: RaidSimUI, options: RaidStatsCategoryOptions) {
-// 		super(parent, 'raid-stats-category-root');
-// 		this.raidSimUI = raidSimUI;
-// 		this.options = options;
+	constructor(parent: HTMLElement, raidSimUI: RaidSimUI, options: RaidStatsCategoryOptions) {
+		super(parent, 'raid-stats-category-root');
+		this.raidSimUI = raidSimUI;
+		this.options = options;
 
-// 		this.rootElem.innerHTML = `
-// 			<a href="javascript:void(0)" role="button" class="raid-stats-category">
-// 				<span class="raid-stats-category-counter"></span>
-// 				<span class="raid-stats-category-label">${options.label}</span>
-// 			</a>
-// 		`;
+		this.rootElem.innerHTML = `
+			<a href="javascript:void(0)" role="button" class="raid-stats-category">
+				<span class="raid-stats-category-counter"></span>
+				<span class="raid-stats-category-label">${options.label}</span>
+			</a>
+		`;
 
-// 		this.counterElem = this.rootElem.querySelector('.raid-stats-category-counter') as HTMLElement;
-// 		this.tooltipElem = document.createElement('div');
-// 		this.tooltipElem.innerHTML = `
-// 			<label class="raid-stats-category-label">${options.label}</label>
-// 		`;
+		this.counterElem = this.rootElem.querySelector('.raid-stats-category-counter') as HTMLElement;
+		this.tooltipElem = document.createElement('div');
+		this.tooltipElem.innerHTML = `
+			<label class="raid-stats-category-label">${options.label}</label>
+		`;
 
-// 		this.effects = options.effects.map(opt => new RaidStatsEffect(this.tooltipElem, raidSimUI, opt));
+		this.effects = options.effects.map(opt => new RaidStatsEffect(this.tooltipElem, raidSimUI, opt));
 
-// 		if (options.effects.length != 1 || options.effects[0].playerData?.class) {
-// 			const statsLink = this.rootElem.querySelector('.raid-stats-category') as HTMLElement;
+		if (options.effects.length != 1 || options.effects[0].playerData?.class) {
+			const statsLink = this.rootElem.querySelector('.raid-stats-category') as HTMLElement;
 
-// 			// Using the title option here because outerHTML sanitizes and filters out the img src options
-// 			Tooltip.getOrCreateInstance(statsLink, {
-// 				customClass: 'raid-stats-category-tooltip',
-// 				html: true,
-// 				placement: 'right',
-// 				title: this.tooltipElem,
-// 			});
-// 		}
-// 	}
+			// Using the title option here because outerHTML sanitizes and filters out the img src options
+			Tooltip.getOrCreateInstance(statsLink, {
+				customClass: 'raid-stats-category-tooltip',
+				html: true,
+				placement: 'right',
+				title: this.tooltipElem,
+			});
+		}
+	}
 
-// 	update() {
-// 		this.effects.forEach(effect => effect.update());
+	update() {
+		this.effects.forEach(effect => effect.update());
 
-// 		const total = sum(this.effects.map(effect => effect.count));
-// 		this.counterElem.textContent = String(total);
+		const total = sum(this.effects.map(effect => effect.count));
+		this.counterElem.textContent = String(total);
 
-// 		const statsLink = this.rootElem.querySelector('.raid-stats-category') as HTMLElement;
+		const statsLink = this.rootElem.querySelector('.raid-stats-category') as HTMLElement;
 
-// 		if (total == 0) {
-// 			statsLink?.classList.remove('active');
-// 		} else {
-// 			statsLink?.classList.add('active');
-// 		}
-// 	}
-// }
+		if (total == 0) {
+			statsLink?.classList.remove('active');
+		} else {
+			statsLink?.classList.add('active');
+		}
+	}
+}
 
-// class RaidStatsEffect extends Component {
-// 	readonly raidSimUI: RaidSimUI;
-// 	private readonly options: RaidStatsEffectOptions;
-// 	private readonly counterElem: HTMLElement;
+class RaidStatsEffect extends Component {
+	readonly raidSimUI: RaidSimUI;
+	private readonly options: RaidStatsEffectOptions;
+	private readonly counterElem: HTMLElement;
 
-// 	curPlayers: Array<Player<any>>;
-// 	count: number;
+	curPlayers: Array<Player<any>>;
+	count: number;
 
-// 	constructor(parent: HTMLElement, raidSimUI: RaidSimUI, options: RaidStatsEffectOptions) {
-// 		super(parent, 'raid-stats-effect');
-// 		this.raidSimUI = raidSimUI;
-// 		this.options = options;
+	constructor(parent: HTMLElement, raidSimUI: RaidSimUI, options: RaidStatsEffectOptions) {
+		super(parent, 'raid-stats-effect');
+		this.raidSimUI = raidSimUI;
+		this.options = options;
 
-// 		this.curPlayers = [];
-// 		this.count = 0;
+		this.curPlayers = [];
+		this.count = 0;
 
-// 		this.rootElem.innerHTML = `
-// 			<span class="raid-stats-effect-counter"></span>
-// 			<img class="raid-stats-effect-icon"></img>
-// 			<span class="raid-stats-effect-label">${options.label}</span>
-// 		`;
-// 		this.counterElem = this.rootElem.querySelector('.raid-stats-effect-counter') as HTMLElement;
+		this.rootElem.innerHTML = `
+			<span class="raid-stats-effect-counter"></span>
+			<img class="raid-stats-effect-icon"></img>
+			<span class="raid-stats-effect-label">${options.label}</span>
+		`;
+		this.counterElem = this.rootElem.querySelector('.raid-stats-effect-counter') as HTMLElement;
 
-// 		if (this.options.playerData?.class) {
-// 			const labelElem = this.rootElem.querySelector('.raid-stats-effect-label') as HTMLElement;
-// 			const playerCssClass = textCssClassForClass(PlayerClasses.fromProto(this.options.playerData.class));
-// 			labelElem.classList.add(playerCssClass);
-// 		}
+		if (this.options.playerData?.class) {
+			const labelElem = this.rootElem.querySelector('.raid-stats-effect-label') as HTMLElement;
+			const playerCssClass = textCssClassForClass(PlayerClasses.fromProto(this.options.playerData.class));
+			labelElem.classList.add(playerCssClass);
+		}
 
-// 		const iconElem = this.rootElem.querySelector('.raid-stats-effect-icon') as HTMLImageElement;
-// 		if (options.actionId) {
-// 			options.actionId.fill().then(actionId => (iconElem.src = actionId.iconUrl));
-// 		} else {
-// 			iconElem.remove();
-// 		}
-// 	}
+		const iconElem = this.rootElem.querySelector('.raid-stats-effect-icon') as HTMLImageElement;
+		if (options.actionId) {
+			options.actionId.fill().then(actionId => (iconElem.src = actionId.iconUrl));
+		} else {
+			iconElem.remove();
+		}
+	}
 
-// 	update() {
-// 		if (this.options.playerData) {
-// 			this.curPlayers = this.raidSimUI.getActivePlayers().filter(p => this.options.playerData!.condition(p));
-// 		}
+	update() {
+		if (this.options.playerData) {
+			this.curPlayers = this.raidSimUI.getActivePlayers().filter(p => this.options.playerData!.condition(p));
+		}
 
-// 		const raidData = this.options.raidData && this.options.raidData(this.raidSimUI.sim.raid);
+		const raidData = this.options.raidData && this.options.raidData(this.raidSimUI.sim.raid);
 
-// 		this.count = this.curPlayers.length + (raidData ? 1 : 0);
-// 		this.counterElem.textContent = String(this.count);
-// 		if (this.count == 0) {
-// 			this.rootElem.classList.remove('active');
-// 		} else {
-// 			this.rootElem.classList.add('active');
-// 		}
-// 	}
-// }
+		this.count = this.curPlayers.length + (raidData ? 1 : 0);
+		this.counterElem.textContent = String(this.count);
+		if (this.count == 0) {
+			this.rootElem.classList.remove('active');
+		} else {
+			this.rootElem.classList.add('active');
+		}
+	}
+}
 
-// function negateIf(val: boolean, cond: boolean): boolean {
-// 	return cond ? !val : val;
-// }
+function negateIf(val: boolean, cond: boolean): boolean {
+	return cond ? !val : val;
+}
 
-// function playerClass<T extends Class>(clazz: T, extraCondition?: (player: Player<ClassSpecs<T>>) => boolean): PlayerProvider {
-// 	return {
-// 		class: clazz,
-// 		condition: (player: Player<any>): boolean => {
-// 			return player.isClass(clazz) && (!extraCondition || extraCondition(player));
-// 		},
-// 	};
-// }
-// function playerClassAndTalentInternal<T extends Class>(
-// 	clazz: T,
-// 	talentName: keyof SpecTalents<ClassSpecs<T>>,
-// 	negateTalent: boolean,
-// 	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
-// ): PlayerProvider {
-// 	return {
-// 		class: clazz,
-// 		condition: (player: Player<any>): boolean => {
-// 			return (
-// 				player.isClass(clazz) &&
-// 				negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent) &&
-// 				(!extraCondition || extraCondition(player))
-// 			);
-// 		},
-// 	};
-// }
-// function playerClassAndTalent<T extends Class>(
-// 	clazz: T,
-// 	talentName: keyof SpecTalents<ClassSpecs<T>>,
-// 	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
-// ): PlayerProvider {
-// 	return playerClassAndTalentInternal(clazz, talentName, false, extraCondition);
-// }
-// function playerClassAndMissingTalent<T extends Class>(
-// 	clazz: T,
-// 	talentName: keyof SpecTalents<ClassSpecs<T>>,
-// 	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
-// ): PlayerProvider {
-// 	return playerClassAndTalentInternal(clazz, talentName, true, extraCondition);
-// }
-// function playerSpecAndTalentInternal<T extends Spec>(
-// 	spec: T,
-// 	talentName: keyof SpecTalents<T>,
-// 	negateTalent: boolean,
-// 	extraCondition?: (player: Player<T>) => boolean,
-// ): PlayerProvider {
-// 	return {
-// 		class: PlayerSpecs.fromProto(spec).classID,
-// 		condition: (player: Player<any>): boolean => {
-// 			return (
-// 				player.isSpec(spec) && negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent) && (!extraCondition || extraCondition(player))
-// 			);
-// 		},
-// 	};
-// }
-// function playerSpecAndTalent<T extends Spec>(spec: T, talentName: keyof SpecTalents<T>, extraCondition?: (player: Player<T>) => boolean): PlayerProvider {
-// 	return playerSpecAndTalentInternal(spec, talentName, false, extraCondition);
-// }
-// function playerSpecAndMissingTalent<T extends Spec>(
-// 	spec: T,
-// 	talentName: keyof SpecTalents<T>,
-// 	extraCondition?: (player: Player<T>) => boolean,
-// ): PlayerProvider {
-// 	return playerSpecAndTalentInternal(spec, talentName, true, extraCondition);
-// }
+function playerClass<T extends Class>(clazz: T, extraCondition?: (player: Player<ClassSpecs<T>>) => boolean): PlayerProvider {
+	return {
+		class: clazz,
+		condition: (player: Player<any>): boolean => {
+			return player.isClass(clazz) && (!extraCondition || extraCondition(player));
+		},
+	};
+}
+function playerClassAndTalentInternal<T extends Class>(
+	clazz: T,
+	talentName: keyof SpecTalents<ClassSpecs<T>>,
+	negateTalent: boolean,
+	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
+): PlayerProvider {
+	return {
+		class: clazz,
+		condition: (player: Player<any>): boolean => {
+			return (
+				player.isClass(clazz) &&
+				negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent) &&
+				(!extraCondition || extraCondition(player))
+			);
+		},
+	};
+}
+function playerClassAndTalent<T extends Class>(
+	clazz: T,
+	talentName: keyof SpecTalents<ClassSpecs<T>>,
+	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
+): PlayerProvider {
+	return playerClassAndTalentInternal(clazz, talentName, false, extraCondition);
+}
+function playerClassAndMissingTalent<T extends Class>(
+	clazz: T,
+	talentName: keyof SpecTalents<ClassSpecs<T>>,
+	extraCondition?: (player: Player<ClassSpecs<T>>) => boolean,
+): PlayerProvider {
+	return playerClassAndTalentInternal(clazz, talentName, true, extraCondition);
+}
+function playerSpecAndTalentInternal<T extends Spec>(
+	spec: T,
+	talentName: keyof SpecTalents<T>,
+	negateTalent: boolean,
+	extraCondition?: (player: Player<T>) => boolean,
+): PlayerProvider {
+	return {
+		class: PlayerSpecs.fromProto(spec).classID,
+		condition: (player: Player<any>): boolean => {
+			return (
+				player.isSpec(spec) && negateIf(Boolean((player.getTalents() as any)[talentName]), negateTalent) && (!extraCondition || extraCondition(player))
+			);
+		},
+	};
+}
+function playerSpecAndTalent<T extends Spec>(spec: T, talentName: keyof SpecTalents<T>, extraCondition?: (player: Player<T>) => boolean): PlayerProvider {
+	return playerSpecAndTalentInternal(spec, talentName, false, extraCondition);
+}
+function playerSpecAndMissingTalent<T extends Spec>(
+	spec: T,
+	talentName: keyof SpecTalents<T>,
+	extraCondition?: (player: Player<T>) => boolean,
+): PlayerProvider {
+	return playerSpecAndTalentInternal(spec, talentName, true, extraCondition);
+}
 
-// function raidBuff(buffName: keyof RaidBuffs): RaidProvider {
-// 	return (raid: Raid): boolean => {
-// 		return Boolean(raid.getBuffs()[buffName]);
-// 	};
-// }
+function raidBuff(buffName: keyof RaidBuffs): RaidProvider {
+	return (raid: Raid): boolean => {
+		return Boolean(raid.getBuffs()[buffName]);
+	};
+}
 
 // const RAID_STATS_OPTIONS: RaidStatsOptions = {
 // 	sections: [
@@ -666,11 +666,9 @@
 // 							label: 'Totemic Wrath',
 // 							actionId: ActionId.fromSpellId(57722),
 // 							playerData: playerClass(Class.ClassShaman, player => player.getSpec() == Spec.SpecElementalShaman && player.getSpecOptions().classOptions?.totems?.fire != FireTotem.NoFireTotem),
-// 							),
 // 						},
 // 					],
 // 				},
-// TODO: Not sure if these buffs need separated from the above Spell Power. The below only add 6% vs the above spell power 10%
 // 				{
 // 					label: 'Minor Spell Power',
 // 					effects: [
@@ -686,7 +684,6 @@
 // 							label: 'Arcane Brilliance',
 // 							actionId: ActionId.fromSpellId(1459),
 // 							playerData: playerClass(Class.ClassMage),
-// 							),
 // 						},
 // 					],
 // 				},
