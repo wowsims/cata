@@ -216,6 +216,10 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 		return
 	}
 
+	if !apl.unit.RotationTimer.IsReady(sim) {
+		return
+	}
+
 	i := 0
 	apl.inLoop = true
 

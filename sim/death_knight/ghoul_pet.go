@@ -105,7 +105,7 @@ func (ghoulPet *GhoulPet) ExecuteCustomRotation(sim *core.Simulation) {
 	}
 
 	if ghoulPet.CurrentFocus() < ghoulPet.Claw.DefaultCast.Cost {
-		ghoulPet.WaitUntil(sim, sim.CurrentTime+core.DurationFromSeconds((ghoulPet.Claw.DefaultCast.Cost-ghoulPet.CurrentFocus())/ghoulPet.FocusRegenPerSecond()))
+		ghoulPet.ExtendGCDUntil(sim, sim.CurrentTime+core.DurationFromSeconds((ghoulPet.Claw.DefaultCast.Cost-ghoulPet.CurrentFocus())/ghoulPet.FocusRegenPerSecond()))
 		return
 	}
 

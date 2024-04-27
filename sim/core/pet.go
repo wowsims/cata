@@ -81,6 +81,7 @@ func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritanc
 		isGuardian:      isGuardian,
 	}
 	pet.GCD = pet.NewTimer()
+	pet.RotationTimer = pet.NewTimer()
 
 	pet.AddStats(baseStats)
 	pet.addUniversalStatDependencies()

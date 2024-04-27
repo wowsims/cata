@@ -134,6 +134,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	}
 
 	character.GCD = character.NewTimer()
+	character.RotationTimer = character.NewTimer()
 
 	character.Label = fmt.Sprintf("%s (#%d)", character.Name, character.Index+1)
 
@@ -429,7 +430,7 @@ func (character *Character) initialize(agent Agent) {
 	character.majorCooldownManager.initialize(character)
 	character.ItemSwap.initialize(character)
 
-	character.gcdAction = &PendingAction{
+	character.rotationAction = &PendingAction{
 		Priority: ActionPriorityGCD,
 		OnAction: func(sim *Simulation) {
 			if hc := &character.Hardcast; hc.Expires != startingCDTime && hc.Expires <= sim.CurrentTime {
@@ -731,7 +732,7 @@ func (character *Character) MeetsArmorSpecializationRequirement() bool {
 	return true
 }
 
-func (character *Character) ApplyArmorSpecializationEffect()  {
+func (character *Character) ApplyArmorSpecializationEffect() {
 	hasBonus := character.MeetsArmorSpecializationRequirement()
 	if hasBonus {
 		character.MultiplyStat(character.PrimaryStat, 1.05)
