@@ -97,6 +97,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 				[PseudoStat.PseudoStatRangedDps]: 6.32,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -260,6 +261,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 					1: Presets.MM_P1_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });
