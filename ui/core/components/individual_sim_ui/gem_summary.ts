@@ -4,6 +4,7 @@ import { Player } from '../../player';
 import { UIGem as Gem } from '../../proto/ui.js';
 import { ActionId } from '../../proto_utils/action_id';
 import { SimUI } from '../../sim_ui';
+import { TypedEvent } from '../../typed_event';
 import { ContentBlock } from '../content_block';
 
 interface GemSummaryData {
@@ -32,24 +33,28 @@ export class GemSummary extends Component {
 	private updateTable() {
 		this.container.bodyElement.innerHTML = ``;
 		const fullGemList = this.player.getGear().getAllGems(this.player.isBlacksmithing());
-		const gemCounts: Record<string, GemSummaryData> = {};
+		const hasGems = !!fullGemList.length;
+		this.rootElem.classList[!hasGems ? 'add' : 'remove']('hide');
 
-		for (const gem of fullGemList) {
-			if (gemCounts[gem.name]) {
-				gemCounts[gem.name].count += 1;
-			} else {
-				gemCounts[gem.name] = {
-					gem: gem,
-					count: 1,
-				};
+		if (hasGems) {
+			const gemCounts: Record<string, GemSummaryData> = {};
+
+			for (const gem of fullGemList) {
+				if (gemCounts[gem.name]) {
+					gemCounts[gem.name].count += 1;
+				} else {
+					gemCounts[gem.name] = {
+						gem: gem,
+						count: 1,
+					};
+				}
 			}
-		}
 
-		for (const gemName of Object.keys(gemCounts)) {
-			const gemData = gemCounts[gemName];
-			const row = document.createElement('div');
-			row.classList.add('summary-table-row', 'd-flex', 'align-items-center');
-			row.innerHTML = `
+			for (const gemName of Object.keys(gemCounts)) {
+				const gemData = gemCounts[gemName];
+				const row = document.createElement('div');
+				row.classList.add('summary-table-row', 'd-flex', 'align-items-center');
+				row.innerHTML = `
 				<a class="summary-table-link" data-whtticon='false' target='_blank'>
 					<img class="gem-icon"/>
 					<div>${gemName}</div>
@@ -57,19 +62,35 @@ export class GemSummary extends Component {
 				<div>${gemData.count.toFixed(0)}</div>
 			`;
 
-			const itemLinkElem = row.querySelector('.summary-table-link') as HTMLAnchorElement;
-			const iconElem = row.querySelector('.gem-icon') as HTMLImageElement;
+				const itemLinkElem = row.querySelector('.summary-table-link') as HTMLAnchorElement;
+				const iconElem = row.querySelector('.gem-icon') as HTMLImageElement;
 
-			setItemQualityCssClass(itemLinkElem, gemData.gem.quality);
+				setItemQualityCssClass(itemLinkElem, gemData.gem.quality);
 
-			ActionId.fromItemId(gemData.gem.id)
-				.fill()
-				.then(filledId => {
-					iconElem.src = filledId.iconUrl;
-					filledId.setWowheadHref(itemLinkElem);
-				});
+				ActionId.fromItemId(gemData.gem.id)
+					.fill()
+					.then(filledId => {
+						iconElem.src = filledId.iconUrl;
+						filledId.setWowheadHref(itemLinkElem);
+					});
 
-			this.container.bodyElement.appendChild(row);
+				this.container.bodyElement.appendChild(row);
+			}
+
+			const footer = document.createElement('div');
+			footer.classList.add('summary-table-footer', 'd-flex', 'justify-content-end');
+			footer.innerHTML = `
+				<button class="btn btn-sm btn-outline-primary">
+					<i class="fas fa-close me-1"></i>
+					Reset gems
+				</button>
+			`;
+
+			const resetButton = footer.querySelector('button') as HTMLButtonElement;
+			resetButton.onclick = () => {
+				this.player.setGear(TypedEvent.nextEventID(), this.player.getGear().withoutGems());
+			};
+			this.container.bodyElement.appendChild(footer);
 		}
 	}
 }

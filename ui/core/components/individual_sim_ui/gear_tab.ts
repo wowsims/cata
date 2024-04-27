@@ -34,21 +34,21 @@ export class GearTab extends SimTab {
 
 	protected buildTabContent() {
 		this.buildGearPickers();
-		this.buildGemSummary();
-		this.buildReforgeSummary();
+		this.buildSummaryTablesContainer();
 		this.buildSavedGearsetPicker();
+	}
+
+	private buildSummaryTablesContainer() {
+		const container = document.createElement('div');
+		container.classList.add('summary-tables-container');
+		this.leftPanel.appendChild(container);
+
+		new GemSummary(container, this.simUI, this.simUI.player);
+		new ReforgeSummary(container, this.simUI, this.simUI.player);
 	}
 
 	private buildGearPickers() {
 		new GearPicker(this.leftPanel, this.simUI, this.simUI.player);
-	}
-
-	private buildGemSummary() {
-		new GemSummary(this.leftPanel, this.simUI, this.simUI.player);
-	}
-
-	private buildReforgeSummary() {
-		new ReforgeSummary(this.leftPanel, this.simUI, this.simUI.player);
 	}
 
 	private buildSavedGearsetPicker() {
