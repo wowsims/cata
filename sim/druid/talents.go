@@ -83,6 +83,7 @@ func (druid *Druid) ApplyTalents() {
 		})
 	}
 
+	// Genesis
 	if druid.Talents.Genesis > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
 			ClassMask: DruidSpellMoonfire | DruidSpellSunfire | DruidSpellInsectSwarm,
@@ -91,6 +92,19 @@ func (druid *Druid) ApplyTalents() {
 		})
 
 		// TODO: implement bonus to HOTs and Swiftmend
+	}
+
+	// Moonglow
+	if druid.Talents.Moonglow > 0 {
+		// damage spells
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidSpellsAll,
+			FloatValue: 0.03 * float64(druid.Talents.Moonglow),
+			Kind:       core.SpellMod_PowerCost_Pct,
+		})
+
+		// healing spells
+		druid.AddStaticMod(core.SpellModConfig{})
 	}
 
 	// if druid.Talents.PrimalPrecision > 0 {
