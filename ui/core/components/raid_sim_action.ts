@@ -2,7 +2,7 @@ import { Tooltip } from 'bootstrap';
 import tippy from 'tippy.js';
 
 import { DistributionMetrics as DistributionMetricsProto, ProgressMetrics, Raid as RaidProto } from '../proto/api.js';
-import { Encounter as EncounterProto } from '../proto/common.js';
+import { Encounter as EncounterProto, Spec } from '../proto/common.js';
 import { SimRunData } from '../proto/ui.js';
 import { ActionMetrics, SimResult, SimResultFilter } from '../proto_utils/sim_result.js';
 import { SimUI } from '../sim_ui.js';
@@ -407,6 +407,15 @@ export class RaidSimResultsManager {
 					stdev: dtpsMetrics.stdev,
 					classes: this.getResultsLineClasses('dtps'),
 				}).outerHTML;
+
+				if (players[0].spec?.specID == Spec.SpecBloodDeathKnight) {
+					content += this.buildResultsLine({
+						average: playerMetrics.hps.avg,
+						stdev: playerMetrics.hps.stdev,
+						classes: this.getResultsLineClasses('hps'),
+					}).outerHTML;
+				}
+
 				content += this.buildResultsLine({
 					average: tmiMetrics.avg,
 					stdev: tmiMetrics.stdev,
@@ -438,18 +447,28 @@ export class RaidSimResultsManager {
 						classes: this.getResultsLineClasses('dtps'),
 					}).outerHTML;
 				}
+
+				if (players[0].spec?.specID == Spec.SpecBloodDeathKnight) {
+					content += this.buildResultsLine({
+						average: playerMetrics.hps.avg,
+						stdev: playerMetrics.hps.stdev,
+						classes: this.getResultsLineClasses('hps'),
+					}).outerHTML;
+				}
 			}
 
-			content += this.buildResultsLine({
-				average: playerMetrics.tto.avg,
-				stdev: playerMetrics.tto.stdev,
-				classes: this.getResultsLineClasses('tto'),
-			}).outerHTML;
-			content += this.buildResultsLine({
-				average: playerMetrics.hps.avg,
-				stdev: playerMetrics.hps.stdev,
-				classes: this.getResultsLineClasses('hps'),
-			}).outerHTML;
+			if (players[0].spec?.specID != Spec.SpecBloodDeathKnight) {
+				content += this.buildResultsLine({
+					average: playerMetrics.tto.avg,
+					stdev: playerMetrics.tto.stdev,
+					classes: this.getResultsLineClasses('tto'),
+				}).outerHTML;
+				content += this.buildResultsLine({
+					average: playerMetrics.hps.avg,
+					stdev: playerMetrics.hps.stdev,
+					classes: this.getResultsLineClasses('hps'),
+				}).outerHTML;
+			}
 		} else {
 			const dpsMetrics = simResult.raidMetrics.dps;
 			content += this.buildResultsLine({
