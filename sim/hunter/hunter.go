@@ -163,7 +163,7 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if hunter.Talents.TrueshotAura {
 		raidBuffs.TrueshotAura = true
 	}
-	if hunter.Talents.FerociousInspiration && hunter.Pet != nil {
+	if hunter.Talents.FerociousInspiration && hunter.Options.PetType != proto.HunterOptions_PetNone {
 		raidBuffs.FerociousInspiration = true
 	}
 
