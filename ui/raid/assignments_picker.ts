@@ -15,7 +15,7 @@ export class AssignmentsPicker extends Component {
 	private readonly innervatesPicker: InnervatesPicker;
 	private readonly powerInfusionsPicker: PowerInfusionsPicker;
 	private readonly tricksOfTheTradesPicker: TricksOfTheTradesPicker;
-	//private readonly unholyFrenzyPicker: UnholyFrenzyPicker;
+	private readonly unholyFrenzyPicker: UnholyFrenzyPicker;
 	private readonly focusMagicsPicker: FocusMagicsPicker;
 
 	constructor(parentElem: HTMLElement, raidSimUI: RaidSimUI) {
@@ -25,7 +25,7 @@ export class AssignmentsPicker extends Component {
 		this.innervatesPicker = new InnervatesPicker(this.rootElem, raidSimUI);
 		this.powerInfusionsPicker = new PowerInfusionsPicker(this.rootElem, raidSimUI);
 		this.tricksOfTheTradesPicker = new TricksOfTheTradesPicker(this.rootElem, raidSimUI);
-		//this.unholyFrenzyPicker = new UnholyFrenzyPicker(this.rootElem, raidSimUI);
+		this.unholyFrenzyPicker = new UnholyFrenzyPicker(this.rootElem, raidSimUI);
 		this.focusMagicsPicker = new FocusMagicsPicker(this.rootElem, raidSimUI);
 	}
 }
@@ -173,27 +173,27 @@ class TricksOfTheTradesPicker extends AssignedBuffPicker {
 	}
 }
 
-// class UnholyFrenzyPicker extends AssignedBuffPicker {
-// 	getTitle(): string {
-// 		return 'Unholy Frenzy';
-// 	}
+class UnholyFrenzyPicker extends AssignedBuffPicker {
+	getTitle(): string {
+		return 'Unholy Frenzy';
+	}
 
-// 	getSourcePlayers(): Array<Player<any>> {
-// 		return this.raidSimUI
-// 			.getActivePlayers()
-// 			.filter(player => player.isSpec(Spec.SpecUnholyDeathKnight) && (player.getTalents() as DeathKnightTalents).hysteria);
-// 	}
+	getSourcePlayers(): Array<Player<any>> {
+		return this.raidSimUI
+			.getActivePlayers()
+			.filter(player => player.isSpec(Spec.SpecUnholyDeathKnight) && (player.getTalents() as DeathKnightTalents).unholyFrenzy);
+	}
 
-// 	getPlayerValue(player: Player<any>): UnitReference {
-// 		return (player as Player<Spec.SpecUnholyDeathKnight>).getSpecOptions().unholyFrenzyTarget || emptyUnitReference();
-// 	}
+	getPlayerValue(player: Player<any>): UnitReference {
+		return (player as Player<Spec.SpecUnholyDeathKnight>).getSpecOptions().unholyFrenzyTarget || emptyUnitReference();
+	}
 
-// 	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
-// 		const newOptions = (player as Player<Spec.SpecUnholyDeathKnight>).getSpecOptions();
-// 		newOptions.unholyFrenzyTarget = newValue;
-// 		player.setSpecOptions(eventID, newOptions);
-// 	}
-// }
+	setPlayerValue(eventID: EventID, player: Player<any>, newValue: UnitReference) {
+		const newOptions = (player as Player<Spec.SpecUnholyDeathKnight>).getSpecOptions();
+		newOptions.unholyFrenzyTarget = newValue;
+		player.setSpecOptions(eventID, newOptions);
+	}
+}
 
 class FocusMagicsPicker extends AssignedBuffPicker {
 	getTitle(): string {

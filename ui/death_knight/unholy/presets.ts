@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Explosive, Flask, Food, Glyphs, PetFood, Potions, UnitReference } from '../../core/proto/common';
+import { Consumes, Explosive, Flask, Food, Glyphs, PetFood, Potions, Profession, UnitReference } from '../../core/proto/common';
 import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, UnholyDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
 import SingleTargetApl from '../../death_knight/unholy/apls/st.apl.json'
@@ -59,7 +59,10 @@ export const DefaultOptions = UnholyDeathKnight_Options.create({
 	unholyFrenzyTarget: UnitReference.create(),
 });
 
-export const OtherDefaults = {};
+export const OtherDefaults = {
+	profession1: Profession.Engineering,
+	profession2: Profession.Jewelcrafting,
+};
 
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTitanicStrength,
