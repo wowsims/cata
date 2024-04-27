@@ -13,7 +13,7 @@
 	}
 
 	.raid-controls {
-		grid-template-columns: repeat(5, 1fr);
+		grid-template-columns: repeat(3, 1fr);
 
 		&> * {
 			margin-bottom: 0;
@@ -21,7 +21,6 @@
 	}
 
 	.new-player-picker-root {
-		max-width: 960px;
 		margin-bottom: $block-spacer * 2;
 		grid-template-columns: repeat(5, 1fr);
 

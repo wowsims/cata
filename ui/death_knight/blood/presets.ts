@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession } from '../../core/proto/common.js';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common.js';
 import { BloodDeathKnight_Options, DeathKnightMajorGlyph, DeathKnightMinorGlyph,DeathKnightPrimeGlyph } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui.js';
 import P1BloodApl from './apls/p1.apl.json';
@@ -38,6 +38,7 @@ export const DefaultConsumes = Consumes.create({
 	food: Food.FoodBeerBasedCrocolisk,
 	defaultPotion: Potions.GolembloodPotion,
 	prepopPotion: Potions.GolembloodPotion,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
 
 export const OtherDefaults = {
