@@ -78,7 +78,12 @@ func (bloodworm *BloodwormPet) Initialize() {
 					continue
 				}
 
-				healSpell.CalcAndDealHealing(sim, target, float64(bloodworm.stackAura.GetStacks())*0.3*(bloodworm.dkOwner.MaxHealth()*0.18), healSpell.OutcomeHealing)
+				if target.DistanceFromTarget > 5 {
+					continue
+				}
+
+				wormHp := 4000 + (bloodworm.dkOwner.GetStat(stats.Stamina)-10)*3.45100
+				healSpell.CalcAndDealHealing(sim, target, float64(bloodworm.stackAura.GetStacks())*0.05*wormHp, healSpell.OutcomeHealing)
 			}
 			bloodworm.Pet.Disable(sim)
 		},

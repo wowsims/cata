@@ -62,6 +62,7 @@ export const DefaultOptions = UnholyDeathKnight_Options.create({
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Jewelcrafting,
+	distanceFromTarget: 5,
 };
 
 export const DefaultConsumes = Consumes.create({

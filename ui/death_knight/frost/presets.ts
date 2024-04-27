@@ -60,6 +60,7 @@ export const DefaultOptions = FrostDeathKnight_Options.create({
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Jewelcrafting,
+	distanceFromTarget: 5,
 };
 
 export const DefaultConsumes = Consumes.create({

@@ -855,6 +855,7 @@ export class Player<SpecType extends Spec> {
 	setTalentsString(eventID: EventID, newTalentsString: string) {
 		if (newTalentsString == this.talentsString) return;
 
+		console.log(newTalentsString)
 		this.talentsString = newTalentsString;
 		this.talents = null;
 		this.talentsChangeEmitter.emit(eventID);

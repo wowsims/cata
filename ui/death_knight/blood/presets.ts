@@ -1,3 +1,4 @@
+import { DistanceFromTarget } from '../../core/components/other_inputs';
 import * as PresetUtils from '../../core/preset_utils.js';
 import { Consumes, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common.js';
 import { BloodDeathKnight_Options, DeathKnightMajorGlyph, DeathKnightMinorGlyph,DeathKnightPrimeGlyph } from '../../core/proto/death_knight';
@@ -44,4 +45,5 @@ export const DefaultConsumes = Consumes.create({
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Leatherworking,
+	distanceFromTarget: 5,
 };
