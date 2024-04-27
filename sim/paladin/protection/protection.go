@@ -3,6 +3,7 @@ package protection
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/paladin"
 )
 
@@ -74,6 +75,11 @@ func (prot *ProtectionPaladin) Initialize() {
 	// if prot.Options.ClassOptions.UseAvengingWrath {
 	// 	prot.RegisterAvengingWrathCD()
 	// }
+}
+
+func (prot *ProtectionPaladin) ApplyTalents() {
+	prot.Paladin.ApplyTalents()
+	prot.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypePlate)
 }
 
 func (prot *ProtectionPaladin) Reset(sim *core.Simulation) {
