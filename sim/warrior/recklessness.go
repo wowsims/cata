@@ -15,7 +15,7 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 		FloatValue: 50 * core.CritRatingPerCritChance,
 	})
 
-	reckAura := warrior.RegisterAura(core.Aura{
+	warrior.RecklessnessAura = warrior.RegisterAura(core.Aura{
 		Label:    "Recklessness",
 		ActionID: actionID,
 		Duration: time.Second * 12,
@@ -41,8 +41,15 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 			},
 		},
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			if warrior.DeadlyCalmAura != nil {
+				return !warrior.DeadlyCalmAura.IsActive()
+			}
+			return true
+		},
+
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			reckAura.Activate(sim)
+			warrior.RecklessnessAura.Activate(sim)
 		},
 	})
 

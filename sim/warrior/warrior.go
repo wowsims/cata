@@ -116,6 +116,8 @@ type Warrior struct {
 	ShieldBlockAura   *core.Aura
 	ThunderstruckAura *core.Aura
 	InnerRageAura     *core.Aura
+	RecklessnessAura  *core.Aura
+	DeadlyCalmAura    *core.Aura
 
 	DemoralizingShoutAuras core.AuraArray
 	SunderArmorAuras       core.AuraArray
