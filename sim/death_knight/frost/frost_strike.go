@@ -38,6 +38,7 @@ func (dk *FrostDeathKnight) registerFrostStrikeSpell() {
 		RuneCost: core.RuneCostOptions{
 			RunicPowerCost: 40,
 			Refundable:     true,
+			RefundCost:     4,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

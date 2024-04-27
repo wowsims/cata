@@ -481,6 +481,10 @@ export class Player<SpecType extends Spec> {
 			// By default value TPS and DTPS EP equally for tanking spec
 			defaultRatios[2] = 1;
 			defaultRatios[3] = 1;
+			if (this.getSpec() == Spec.SpecBloodDeathKnight) {
+				// Add healing EPs for BDKs
+				defaultRatios[1] = 1;
+			}
 		} else {
 			// By default only value DPS EP
 			defaultRatios[0] = 1;
