@@ -137,7 +137,7 @@ func (priest *Priest) ApplyTalents() {
 	if priest.Talents.TwistedFaith > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolShadow,
-			ClassMask:  PriestShadowSpells,
+			ClassMask:  PriestShadowSpells | PriestSpellShadowyApparation,
 			FloatValue: 0.01 * float64(priest.Talents.TwistedFaith),
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
