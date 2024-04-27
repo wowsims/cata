@@ -149,8 +149,9 @@ type Unit struct {
 	Hardcast Hardcast
 
 	// Rotation-related PendingActions.
-	rotationAction *PendingAction
-	hardcastAction *PendingAction
+	rotationAction   *PendingAction
+	hardcastAction   *PendingAction
+	spellQueueAction *PendingAction
 
 	// Cached mana return values per tick.
 	manaTickWhileCasting    float64
