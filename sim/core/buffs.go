@@ -985,7 +985,7 @@ func InspirationAura(unit *Unit, points int32) *Aura {
 
 	return unit.GetOrRegisterAura(Aura{
 		Label:    "Inspiration",
-		ActionID: ActionID{SpellID: 15363},
+		ActionID: ActionID{SpellID: 15357},
 		Duration: time.Second * 15,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= multiplier
