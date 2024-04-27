@@ -3,6 +3,7 @@ package holy
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/paladin"
 )
 
@@ -30,6 +31,8 @@ func NewHolyPaladin(character *core.Character, options *proto.Player) *HolyPalad
 		Paladin: paladin.NewPaladin(character, options.TalentsString),
 		Options: holyOptions.Options,
 	}
+
+	holy.Character.PrimaryStat = stats.Intellect
 
 	holy.PaladinAura = holyOptions.Options.ClassOptions.Aura
 

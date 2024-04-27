@@ -119,8 +119,6 @@ func (priest *Priest) Initialize() {
 	// base scaling value for a level 85 priest
 	priest.ScalingBaseDamage = 945.188842773437500
 
-	priest.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
-
 	if priest.SelfBuffs.UseInnerFire {
 		priest.AddStat(stats.SpellPower, 531)
 		priest.ApplyEquipScaling(stats.Armor, 1.6)
@@ -198,6 +196,9 @@ func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 		SelfBuffs: selfBuffs,
 		Talents:   &proto.PriestTalents{},
 	}
+
+	priest.Character.ArmorType = proto.ArmorType_ArmorTypeCloth
+	priest.Character.PrimaryStat = stats.Intellect
 
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
 	priest.EnableManaBar()

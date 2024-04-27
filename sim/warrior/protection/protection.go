@@ -42,6 +42,8 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 		Options: protOptions,
 	}
 
+	war.Character.PrimaryStat = stats.Stamina
+
 	rbo := core.RageBarOptions{
 		StartingRage:   protOptions.ClassOptions.StartingRage,
 		RageMultiplier: 1.0,

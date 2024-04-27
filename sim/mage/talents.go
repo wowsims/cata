@@ -1,6 +1,7 @@
 package mage
 
 func (mage *Mage) ApplyTalents() {
+	mage.ApplyArmorSpecializationEffect()
 	// mage.applyArcaneConcentration()
 	// mage.applyFocusMagic()
 	// mage.applyIgnite()

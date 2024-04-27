@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 var TalentTreeSizes = [3]int{18, 19, 19}
@@ -164,6 +165,10 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 		Talents:   &proto.WarlockTalents{},
 		Options:   warlockOptions,
 	}
+
+	warlock.Character.ArmorType = proto.ArmorType_ArmorTypeCloth
+	warlock.Character.PrimaryStat = stats.Intellect
+
 	// core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 	// warlock.EnableManaBar()
 

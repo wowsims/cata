@@ -34,6 +34,8 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 		Druid: druid.New(character, druid.Cat, selfBuffs, options.TalentsString),
 	}
 
+	cat.Character.PrimaryStat = stats.Agility
+
 	// cat.SelfBuffs.InnervateTarget = &proto.UnitReference{}
 	// if feralOptions.Options.ClassOptions.InnervateTarget != nil {
 	// 	cat.SelfBuffs.InnervateTarget = feralOptions.Options.ClassOptions.InnervateTarget

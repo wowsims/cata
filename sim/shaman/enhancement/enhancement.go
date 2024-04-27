@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/shaman"
 )
 
@@ -42,6 +43,8 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 	enh := &EnhancementShaman{
 		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, true),
 	}
+
+	enh.Character.PrimaryStat = stats.Agility
 
 	// Enable Auto Attacks for this spec
 	enh.EnableAutoAttacks(enh, core.AutoAttackOptions{

@@ -3,6 +3,7 @@ package protection
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/paladin"
 )
 
@@ -31,6 +32,8 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 		Options: protOptions.Options,
 		Seal:    protOptions.Options.ClassOptions.Seal,
 	}
+
+	prot.Character.PrimaryStat = stats.Stamina
 
 	// prot.PaladinAura = protOptions.Options.ClassOptions.Aura
 

@@ -9,6 +9,7 @@ import (
 )
 
 func (priest *Priest) ApplyTalents() {
+	priest.ApplyArmorSpecializationEffect()
 	// TODO:
 	// Reflective Shield
 	// Improved Flash Heal

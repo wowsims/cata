@@ -206,6 +206,9 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 		Talents:   &proto.RogueTalents{},
 		Options:   options,
 	}
+	rogue.Character.ArmorType = proto.ArmorType_ArmorTypeLeather
+	rogue.Character.PrimaryStat = stats.Agility
+
 	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
 	// Passive rogue threat reduction: https://wotlk.wowhead.com/spell=21184/rogue-passive-dnd
@@ -234,8 +237,6 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 	rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 2)
 	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
-	// Make an assumption we're wearing leather for Leather Armor Spec
-	rogue.MultiplyStat(stats.Agility, 1.05)
 
 	return rogue
 }

@@ -3,6 +3,7 @@ package retribution
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/paladin"
 )
 
@@ -32,6 +33,8 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 		Paladin: pal,
 		Seal:    retOptions.Options.ClassOptions.Seal,
 	}
+
+	ret.Character.PrimaryStat = stats.Strength
 
 	ret.PaladinAura = retOptions.Options.ClassOptions.Aura
 

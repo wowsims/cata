@@ -44,6 +44,8 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 		vengeance: &core.VengeanceTracker{},
 	}
 
+	bdk.Character.PrimaryStat = stats.Stamina
+
 	healingModel := options.HealingModel
 	if healingModel != nil {
 		if healingModel.InspirationUptime > 0.0 {

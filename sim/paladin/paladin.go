@@ -169,6 +169,8 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 		Character: *character,
 		Talents:   &proto.PaladinTalents{},
 	}
+	paladin.Character.ArmorType = proto.ArmorType_ArmorTypePlate
+
 	// core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
 
 	// // This is used to cache its effect in talents.go

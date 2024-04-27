@@ -3,6 +3,7 @@ package restoration
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/druid"
 )
 
@@ -30,6 +31,8 @@ func NewRestorationDruid(character *core.Character, options *proto.Player) *Rest
 	resto := &RestorationDruid{
 		Druid: druid.New(character, druid.Tree, selfBuffs, options.TalentsString),
 	}
+
+	resto.Character.PrimaryStat = stats.Intellect
 
 	resto.SelfBuffs.InnervateTarget = &proto.UnitReference{}
 	if restoOptions.Options.ClassOptions.InnervateTarget != nil {

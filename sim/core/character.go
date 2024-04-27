@@ -43,17 +43,25 @@ type Character struct {
 
 	// Current gear.
 	Equipment
+
 	//Item Swap Handler
 	ItemSwap ItemSwap
 
 	// Consumables this Character will be using.
 	Consumes *proto.Consumes
 
+	// Default armor type for this Character.
+	ArmorType proto.ArmorType
+
+	// Default primary stat for this Character.
+	PrimaryStat stats.Stat
+
 	// Base stats for this Character.
 	baseStats stats.Stats
 
 	// Handles scaling that only affects stats from items
 	itemStatMultipliers stats.Stats
+
 	// Used to track if we need to separately apply multipliers, because
 	// equipment was already applied
 	equipStatsApplied bool
@@ -708,29 +716,24 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3
 	}
 }
 
-func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.ArmorType) bool {
-	hasBonus := true
-
-	if character.Head().ArmorType != armorType ||
-		character.Shoulder().ArmorType != armorType ||
-		character.Chest().ArmorType != armorType ||
-		character.Wrist().ArmorType != armorType ||
-		character.Hands().ArmorType != armorType ||
-		character.Waist().ArmorType != armorType ||
-		character.Legs().ArmorType != armorType ||
-		character.Feet().ArmorType != armorType {
-		hasBonus = false
+func (character *Character) MeetsArmorSpecializationRequirement() bool {
+	if character.Head().ArmorType != character.ArmorType ||
+		character.Shoulder().ArmorType != character.ArmorType ||
+		character.Chest().ArmorType != character.ArmorType ||
+		character.Wrist().ArmorType != character.ArmorType ||
+		character.Hands().ArmorType != character.ArmorType ||
+		character.Waist().ArmorType != character.ArmorType ||
+		character.Legs().ArmorType != character.ArmorType ||
+		character.Feet().ArmorType != character.ArmorType {
+		return false
 	}
 
-	return hasBonus
+	return true
 }
 
-func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
-	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
-
+func (character *Character) ApplyArmorSpecializationEffect()  {
+	hasBonus := character.MeetsArmorSpecializationRequirement()
 	if hasBonus {
-		character.MultiplyStat(primaryStat, 1.05)
+		character.MultiplyStat(character.PrimaryStat, 1.05)
 	}
-
-	return hasBonus
 }

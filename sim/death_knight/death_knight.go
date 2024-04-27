@@ -85,9 +85,7 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (dk *DeathKnight) ApplyTalents() {
-	// Apply Armor Spec
-	dk.EnableArmorSpecialization(stats.Strength, proto.ArmorType_ArmorTypePlate)
-
+	dk.ApplyArmorSpecializationEffect()
 	dk.ApplyBloodTalents()
 	dk.ApplyFrostTalents()
 	dk.ApplyUnholyTalents()
@@ -149,6 +147,9 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		ClassBaseScaling: 1125.227400,
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
+
+	dk.Character.ArmorType = proto.ArmorType_ArmorTypePlate
+	dk.Character.PrimaryStat = stats.Strength
 
 	maxRunicPower := 100.0 + 15.0*float64(dk.Talents.RunicPowerMastery)
 	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)
