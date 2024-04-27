@@ -85,9 +85,6 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (dk *DeathKnight) ApplyTalents() {
-	// Apply Armor Spec
-	dk.EnableArmorSpecialization(stats.Strength, proto.ArmorType_ArmorTypePlate)
-
 	dk.ApplyBloodTalents()
 	dk.ApplyFrostTalents()
 	dk.ApplyUnholyTalents()

@@ -9,6 +9,7 @@ import { PlayerClasses } from '../core/player_classes';
 import { PlayerSpecs } from '../core/player_specs';
 import { Player as PlayerProto } from '../core/proto/api.js';
 import { Class, Faction, Glyphs, Profession, Spec } from '../core/proto/common.js';
+import { UnholyDeathKnight_Options } from '../core/proto/death_knight';
 import { BalanceDruid_Options as BalanceDruidOptions } from '../core/proto/druid.js';
 import { ArcaneMage_Options } from '../core/proto/mage';
 import { getPlayerSpecFromPlayer, newUnitReference } from '../core/proto_utils/utils.js';
@@ -64,7 +65,6 @@ export class RaidPicker extends Component {
 				{ name: '5', value: 1 },
 				{ name: '10', value: 2 },
 				{ name: '25', value: 5 },
-				{ name: '40', value: 8 },
 			],
 			changedEvent: (raid: Raid) => raid.numActivePartiesChangeEmitter,
 			getValue: (raid: Raid) => raid.getNumActiveParties(),
@@ -108,11 +108,23 @@ export class RaidPicker extends Component {
 		this.partyPickers = this.raid.getParties().map((party, i) => new PartyPicker(partiesContainer, party, i, this));
 
 		const updateActiveParties = () => {
+			if (this.raidSimUI.sim.raid.getNumActiveParties() == 1) {
+				partiesContainer.classList.remove('parties-container-small');
+				partiesContainer.classList.remove('parties-container-full');
+			} else if (this.raidSimUI.sim.raid.getNumActiveParties() <= 2) {
+				partiesContainer.classList.add('parties-container-small');
+				partiesContainer.classList.remove('parties-container-full');
+			} else {
+				partiesContainer.classList.remove('parties-container-small');
+				partiesContainer.classList.add('parties-container-full');
+			}
 			this.partyPickers.forEach(partyPicker => {
 				if (partyPicker.index < this.raidSimUI.sim.raid.getNumActiveParties()) {
 					partyPicker.rootElem.classList.add('active');
+					partyPicker.rootElem.classList.remove('hide');
 				} else {
 					partyPicker.rootElem.classList.remove('active');
+					partyPicker.rootElem.classList.add('hide');
 				}
 			});
 		};
@@ -714,6 +726,10 @@ function applyNewPlayerAssignments(eventID: EventID, newPlayer: Player<any>, rai
 	} else if (newPlayer.getSpec() == Spec.SpecArcaneMage) {
 		const newOptions = newPlayer.getSpecOptions() as ArcaneMage_Options;
 		newOptions.focusMagicTarget = newUnitReference(newPlayer.getRaidIndex());
+		newPlayer.setSpecOptions(eventID, newOptions);
+	} else if (newPlayer.getSpec() == Spec.SpecUnholyDeathKnight) {
+		const newOptions = newPlayer.getSpecOptions() as UnholyDeathKnight_Options;
+		newOptions.unholyFrenzyTarget = newUnitReference(newPlayer.getRaidIndex());
 		newPlayer.setSpecOptions(eventID, newOptions);
 	}
 }
