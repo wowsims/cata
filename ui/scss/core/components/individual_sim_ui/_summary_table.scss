@@ -1,0 +1,48 @@
+.summary-table-root {
+	width: 50%;
+	margin-top: $section-spacer;
+}
+
+.summary-table-row {
+	.gem-icon {
+		--gem-width: 2rem;
+		position: unset;
+		margin-right: map-get($spacers, 1);
+		border-radius: 0;
+		border: $border-default;
+	}
+
+	:last-child {
+		margin-left: auto;
+	}
+
+	&:not(:last-child) {
+		margin-bottom: map-get($spacers, 1);
+	}
+}
+
+.summary-table-link {
+	display: flex;
+	align-items: center;
+}
+
+.summary-table-footer {
+	.positive {
+		color: green;
+	}
+	.negative {
+		color: red;
+	}
+}
+
+@include media-breakpoint-down(xl) {
+	.summary-table-root {
+		margin-bottom: $container-padding;
+	}
+}
+
+@include media-breakpoint-down(md) {
+	.summary-table-root {
+		width: 100%;
+	}
+}

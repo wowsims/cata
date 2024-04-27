@@ -18,12 +18,13 @@ export class GemSummary extends Component {
 	private readonly container: ContentBlock;
 
 	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>) {
-		super(parent, 'gem-summary-root');
+		super(parent, 'summary-table-root');
 		this.simUI = simUI;
 		this.player = player;
 
-		this.container = new ContentBlock(this.rootElem, 'gem-summary-container', {
+		this.container = new ContentBlock(this.rootElem, 'summary-table-container', {
 			header: { title: 'Gem Summary' },
+			extraCssClasses: ['summary-table--gems'],
 		});
 		player.gearChangeEmitter.on(() => this.updateTable());
 	}
@@ -47,25 +48,25 @@ export class GemSummary extends Component {
 		for (const gemName of Object.keys(gemCounts)) {
 			const gemData = gemCounts[gemName];
 			const row = document.createElement('div');
-			row.classList.add('d-flex', 'align-items-center', 'justify-content-between');
+			row.classList.add('summary-table-row', 'd-flex', 'align-items-center');
 			row.innerHTML = `
-				<a class="gem-summary-link" data-whtticon='false' target='_blank'>
+				<a class="summary-table-link" data-whtticon='false' target='_blank'>
 					<img class="gem-icon"/>
 					<div>${gemName}</div>
 				</a>
 				<div>${gemData.count.toFixed(0)}</div>
 			`;
 
-			const gemLinkElem = row.querySelector('.gem-summary-link') as HTMLAnchorElement;
-			const gemIconElem = row.querySelector('.gem-icon') as HTMLImageElement;
+			const itemLinkElem = row.querySelector('.summary-table-link') as HTMLAnchorElement;
+			const iconElem = row.querySelector('.gem-icon') as HTMLImageElement;
 
-			setItemQualityCssClass(gemLinkElem, gemData.gem.quality);
+			setItemQualityCssClass(itemLinkElem, gemData.gem.quality);
 
 			ActionId.fromItemId(gemData.gem.id)
 				.fill()
 				.then(filledId => {
-					gemIconElem.src = filledId.iconUrl;
-					filledId.setWowheadHref(gemLinkElem);
+					iconElem.src = filledId.iconUrl;
+					filledId.setWowheadHref(itemLinkElem);
 				});
 
 			this.container.bodyElement.appendChild(row);
