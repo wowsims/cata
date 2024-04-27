@@ -61,9 +61,6 @@ func (war *ArmsWarrior) RegisterSweepingStrikes() {
 			Cost: 30,
 		},
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: 0,
-			},
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
 				Duration: time.Minute * 1,

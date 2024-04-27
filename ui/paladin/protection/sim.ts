@@ -31,7 +31,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatMeleeCrit,
 		Stat.StatExpertise,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellPower,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
@@ -44,6 +43,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -61,7 +61,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatDefense,
@@ -73,6 +72,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
+		Stat.StatMastery,
 	],
 	// modifyDisplayStats: (player: Player<Spec.SpecProtectionPaladin>) => {
 	// 	let stats = new Stats();
@@ -106,7 +106,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 				[Stat.StatMeleeHit]: 0.79,
 				[Stat.StatMeleeCrit]: 0.3,
 				[Stat.StatMeleeHaste]: 0.17,
-				[Stat.StatArmorPenetration]: 0.04,
 				[Stat.StatSpellPower]: 0.13,
 				[Stat.StatBlock]: 0.52,
 				[Stat.StatBlockValue]: 0.28,

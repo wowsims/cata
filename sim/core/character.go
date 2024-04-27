@@ -126,6 +126,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	}
 
 	character.GCD = character.NewTimer()
+	character.RotationTimer = character.NewTimer()
 
 	character.Label = fmt.Sprintf("%s (#%d)", character.Name, character.Index+1)
 
@@ -421,7 +422,7 @@ func (character *Character) initialize(agent Agent) {
 	character.majorCooldownManager.initialize(character)
 	character.ItemSwap.initialize(character)
 
-	character.gcdAction = &PendingAction{
+	character.rotationAction = &PendingAction{
 		Priority: ActionPriorityGCD,
 		OnAction: func(sim *Simulation) {
 			if hc := &character.Hardcast; hc.Expires != startingCDTime && hc.Expires <= sim.CurrentTime {
@@ -496,7 +497,6 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 
 func (character *Character) reset(sim *Simulation, agent Agent) {
 	character.Unit.reset(sim, agent)
-	character.ItemSwap.reset(sim, false)
 	character.majorCooldownManager.reset(sim)
 	character.CurrentTarget = character.defaultTarget
 
@@ -616,6 +616,7 @@ func (character *Character) doneIteration(sim *Simulation) {
 		character.Metrics.AddFinalPetMetrics(&pet.Metrics)
 	}
 
+	character.ItemSwap.doneIteration(sim)
 	character.Unit.doneIteration(sim)
 }
 

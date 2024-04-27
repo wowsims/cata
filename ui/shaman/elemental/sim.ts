@@ -159,6 +159,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 					1: Presets.P1_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });

@@ -1,6 +1,6 @@
 import { EligibleWeaponType, IconSize, PlayerClass } from '../player_class';
 import { PlayerSpec } from '../player_spec';
-import { PlayerSpecs } from '../player_specs';
+import { AfflictionWarlock, DemonologyWarlock, DestructionWarlock } from '../player_specs/warlock';
 import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/common';
 import { WarlockSpecs } from '../proto_utils/utils';
 
@@ -9,9 +9,9 @@ export class Warlock extends PlayerClass<Class.ClassWarlock> {
 	static friendlyName = 'Warlock';
 	static hexColor = '#9482c9';
 	static specs: Record<string, PlayerSpec<WarlockSpecs>> = {
-		[PlayerSpecs.AfflictionWarlock.friendlyName]: PlayerSpecs.AfflictionWarlock,
-		[PlayerSpecs.DemonologyWarlock.friendlyName]: PlayerSpecs.DemonologyWarlock,
-		[PlayerSpecs.DestructionWarlock.friendlyName]: PlayerSpecs.DestructionWarlock,
+		[AfflictionWarlock.friendlyName]: AfflictionWarlock,
+		[DemonologyWarlock.friendlyName]: DemonologyWarlock,
+		[DestructionWarlock.friendlyName]: DestructionWarlock,
 	};
 	static races: Race[] = [
 		// [A]

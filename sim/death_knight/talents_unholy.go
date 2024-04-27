@@ -270,17 +270,20 @@ func (dk *DeathKnight) applySuddenDoom() {
 		},
 	})
 
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
+	ppm := 1.0 * float64(dk.Talents.SuddenDoom) // TODO: Find correct PPM
+	triggerAura := core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:     "Sudden Doom",
 		Callback: core.CallbackOnSpellHitDealt,
 		ProcMask: core.ProcMaskMeleeMH,
 		Outcome:  core.OutcomeLanded,
-		PPM:      1.0 * float64(dk.Talents.SuddenDoom), // TODO: Find correct PPM
+		PPM:      ppm,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			aura.Activate(sim)
 		},
 	})
+
+	dk.ItemSwap.RegisterOnSwapItemUpdateProcMaskWithPPMManager(core.ProcMaskMeleeMH, ppm, triggerAura.Ppmm)
 }
 
 func (dk *DeathKnight) applyShadowInfusion() *core.Aura {

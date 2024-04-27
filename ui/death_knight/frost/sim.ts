@@ -28,7 +28,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatMastery,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatArmorPenetration,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -60,7 +59,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 				[Stat.StatMeleeHaste]: 1.85,
 				[Stat.StatMeleeHit]: 1.92,
 				[Stat.StatMeleeCrit]: 0.76,
-				[Stat.StatArmorPenetration]: 0.77,
 				[Stat.StatSpellHit]: 0.8,
 				[Stat.StatSpellCrit]: 0.34,
 			},
@@ -69,6 +67,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 				[PseudoStat.PseudoStatOffHandDps]: 1.79,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -95,7 +94,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			sunderArmor: true,
 			brittleBones: true,
 			ebonPlaguebringer: true,
-			shadowAndFlame: true
+			shadowAndFlame: true,
 		}),
 	},
 
@@ -131,7 +130,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
-			OtherInputs.DarkIntentUptime
+			OtherInputs.DarkIntentUptime,
 		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
@@ -148,9 +147,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT,
 			//Presets.AOE_ROTATION_PRESET_DEFAULT,
 		],
-		gear: [
-			Presets.P1_GEAR_PRESET,
-		],
+		gear: [Presets.P1_GEAR_PRESET],
 	},
 
 	raidSimPresets: [
@@ -161,7 +158,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Alliance]: Race.RaceWorgen,
 				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {

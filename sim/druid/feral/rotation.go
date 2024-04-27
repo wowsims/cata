@@ -40,17 +40,17 @@ func (cat *FeralDruid) OnGCDReady(sim *core.Simulation) {
 }
 
 func (cat *FeralDruid) NextRotationAction(sim *core.Simulation, kickAt time.Duration) {
-	if cat.rotationAction != nil {
-		cat.rotationAction.Cancel(sim)
+	if cat.customRotationAction != nil {
+		cat.customRotationAction.Cancel(sim)
 	}
 
-	cat.rotationAction = &core.PendingAction{
+	cat.customRotationAction = &core.PendingAction{
 		Priority:     core.ActionPriorityGCD,
 		OnAction:     cat.OnGCDReady,
 		NextActionAt: kickAt,
 	}
 
-	sim.AddPendingAction(cat.rotationAction)
+	sim.AddPendingAction(cat.customRotationAction)
 }
 
 func (cat *FeralDruid) checkReplaceMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {

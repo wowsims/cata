@@ -49,12 +49,6 @@ func NewUnholyDeathKnight(character *core.Character, player *proto.Player) *Unho
 
 	uhdk.Inputs.UnholyFrenzyTarget = unholyOptions.UnholyFrenzyTarget
 
-	uhdk.EnableAutoAttacks(uhdk, core.AutoAttackOptions{
-		MainHand:       uhdk.WeaponFromMainHand(uhdk.DefaultMeleeCritMultiplier()),
-		OffHand:        uhdk.WeaponFromOffHand(uhdk.DefaultMeleeCritMultiplier()),
-		AutoSwingMelee: true,
-	})
-
 	return uhdk
 }
 
@@ -74,6 +68,8 @@ func (uhdk *UnholyDeathKnight) Initialize() {
 
 func (uhdk *UnholyDeathKnight) ApplyTalents() {
 	uhdk.DeathKnight.ApplyTalents()
+	// Apply Armor Spec
+	uhdk.EnableArmorSpecialization(stats.Strength, proto.ArmorType_ArmorTypePlate)
 
 	// Mastery: Dreadblade
 	masteryMod := uhdk.AddDynamicMod(core.SpellModConfig{

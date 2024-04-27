@@ -38,6 +38,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -84,6 +85,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 				[PseudoStat.PseudoStatOffHandDps]: 0.0,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -92,17 +94,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			blessingOfMight: true,
 			retributionAura: true,
 			powerWordFortitude: true,
 			markOfTheWild: true,
-			strengthOfEarthTotem: true,
 			icyTalons: true,
+			hornOfWinter: true,
 			abominationsMight: true,
 			leaderOfThePack: true,
 			bloodlust: true,
+			arcaneTactics: true,
 			devotionAura: true,
-			stoneskinTotem: true,
+			resistanceAura: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({}),
@@ -110,9 +112,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			bloodFrenzy: true,
 			sunderArmor: true,
 			ebonPlaguebringer: true,
-			mangle: true,
 			criticalMass: true,
-			demoralizingShout: true,
+			vindication: true,
 			frostFever: true,
 			judgement: true,
 		}),
@@ -127,7 +128,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		BuffDebuffInputs.SpellDamageDebuff
 	],
 	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellHasteBuff
+		BuffDebuffInputs.SpellHasteBuff,
+		BuffDebuffInputs.BleedDebuff,
 	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -177,7 +179,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Alliance]: Race.RaceWorgen,
 				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
@@ -195,6 +197,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 					4: Presets.P1_BLOOD_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });

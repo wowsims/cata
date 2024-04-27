@@ -752,3 +752,10 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeSolarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipseorange.jpg',
 	[ResourceType.ResourceTypeLunarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipse.jpg',
 };
+
+// Use this to connect a buff row to a cast row in the timeline view
+export const buffAuraToSpellIdMap: Record<number, ActionId> = {
+	96228: ActionId.fromSpellId(82174), // Synapse Springs - Agi
+	96229: ActionId.fromSpellId(82174), // Synapse Springs - Str
+	96230: ActionId.fromSpellId(82174), // Synapse Springs - Int
+}

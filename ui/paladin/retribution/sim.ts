@@ -30,11 +30,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
 		Stat.StatSpellHaste,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -50,13 +50,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellHaste,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
 		Stat.StatMana,
 		Stat.StatHealth,
+		Stat.StatMastery,
 	],
 	// modifyDisplayStats: (player: Player<Spec.SpecRetributionPaladin>) => {
 	// 	let stats = new Stats();
@@ -93,7 +93,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 				[Stat.StatMeleeHit]: 1.96,
 				[Stat.StatMeleeCrit]: 1.16,
 				[Stat.StatMeleeHaste]: 1.44,
-				[Stat.StatArmorPenetration]: 0.76,
 				[Stat.StatExpertise]: 1.8,
 			},
 			{
@@ -124,8 +123,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			exposeArmor: true,
 			bloodFrenzy: true,

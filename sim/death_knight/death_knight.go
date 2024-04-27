@@ -85,9 +85,6 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (dk *DeathKnight) ApplyTalents() {
-	// Apply Armor Spec
-	dk.EnableArmorSpecialization(stats.Strength, proto.ArmorType_ArmorTypePlate)
-
 	dk.ApplyBloodTalents()
 	dk.ApplyFrostTalents()
 	dk.ApplyUnholyTalents()
@@ -209,6 +206,12 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	if dk.Talents.DancingRuneWeapon {
 		dk.RuneWeapon = dk.NewRuneWeapon()
 	}
+
+	dk.EnableAutoAttacks(dk, core.AutoAttackOptions{
+		MainHand:       dk.WeaponFromMainHand(dk.DefaultMeleeCritMultiplier()),
+		OffHand:        dk.WeaponFromOffHand(dk.DefaultMeleeCritMultiplier()),
+		AutoSwingMelee: true,
+	})
 
 	return dk
 }

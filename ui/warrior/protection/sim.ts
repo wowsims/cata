@@ -29,7 +29,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		Stat.StatMeleeHaste,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
-		Stat.StatArmorPenetration,
 		Stat.StatDefense,
 		Stat.StatBlock,
 		Stat.StatBlockValue,
@@ -39,6 +38,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -56,7 +56,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatDefense,
 		Stat.StatBlock,
 		Stat.StatBlockValue,
@@ -66,6 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
+		Stat.StatMastery,
 	],
 
 	defaults: {
@@ -84,12 +84,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 				[Stat.StatMeleeHit]: 1.432,
 				[Stat.StatMeleeCrit]: 0.925,
 				[Stat.StatMeleeHaste]: 0.431,
-				[Stat.StatArmorPenetration]: 1.055,
 				[Stat.StatBlock]: 1.32,
 				[Stat.StatBlockValue]: 1.373,
 				[Stat.StatDodge]: 2.606,
 				[Stat.StatParry]: 2.649,
 				[Stat.StatDefense]: 3.305,
+				// @todo: Calculate actual weights
+				// This probably applies for all weights
+				// [Stat.StatMastery]: 0,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 6.081,
@@ -119,8 +121,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			sunderArmor: true,
 			mangle: true,
