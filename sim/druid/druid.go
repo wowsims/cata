@@ -280,6 +280,9 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 		StartingForm: form,
 		form:         form,
 	}
+
+	druid.Character.ArmorType = proto.ArmorType_ArmorTypeLeather
+
 	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
 	druid.EnableManaBar()
 
