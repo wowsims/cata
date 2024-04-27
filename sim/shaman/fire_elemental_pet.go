@@ -122,7 +122,7 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 		return
 	}
 
-	fireElemental.WaitUntil(sim, sim.CurrentTime+time.Second)
+	fireElemental.ExtendGCDUntil(sim, sim.CurrentTime+time.Second)
 }
 
 func (fireElemental *FireElemental) TryCast(sim *core.Simulation, target *core.Unit, spell *core.Spell, maxCastCount int32) bool {

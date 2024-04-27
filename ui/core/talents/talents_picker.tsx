@@ -121,8 +121,6 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 		this.trees.forEach(tree => tree.talents.forEach(talent => talent.setPoints(0, false)));
 
 		if (!this.isHunterPet()) {
-			this.updatePlayerTrees();
-
 			let carouselitemIdx = 0;
 			const slidePrev = () => {
 				if (carouselitemIdx >= 1) return;
@@ -148,6 +146,7 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 		}
 
 		this.init();
+		this.updatePlayerTrees();
 	}
 
 	getInputElem(): HTMLElement {
