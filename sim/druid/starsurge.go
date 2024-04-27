@@ -4,16 +4,19 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (druid *Druid) registerStarsurgeSpell() {
-	spellCoeff := 1.228
+	solarMetric := druid.NewSolarEnergyMetric(core.ActionID{SpellID: 78674})
+	lunarMetric := druid.NewLunarEnergyMetrics(core.ActionID{SpellID: 78674})
 
 	druid.Starsurge = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 98995},
-		SpellSchool: core.SpellSchoolArcane | core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagOmenTrigger | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 78674},
+		SpellSchool:    core.SpellSchoolArcane | core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: DruidSpellStarsurge | DruidArcaneSpells | DruidNatureSpells,
+		Flags:          SpellFlagOmenTrigger | core.SpellFlagAPL,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
@@ -30,20 +33,27 @@ func (druid *Druid) registerStarsurgeSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Second * 8,
+				Duration: time.Second * 15,
 			},
 		},
+
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 1.228,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(1363, 1752) + (spell.SpellPower() * spellCoeff)
+			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 1.228, 0.32)
+			baseDamage := sim.Roll(min, max)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealDamage(sim, result)
-			})
+			if result.Landed() {
+				druid.AddEclipseEnergy(15, SolarEnergy, sim, solarMetric)
+				druid.AddEclipseEnergy(15, LunarEnergy, sim, lunarMetric)
+
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.DealDamage(sim, result)
+				})
+			}
 		},
 	})
 }
