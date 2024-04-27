@@ -1,9 +1,9 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { Consumes, Flask, Food, Glyphs, Potions, Spec, TinkerHands } from '../../core/proto/common';
 import {
-	DruidPrimeGlyph,
 	DruidMajorGlyph,
 	DruidMinorGlyph,
+	DruidPrimeGlyph,
 	FeralDruid_Options as FeralDruidOptions,
 	FeralDruid_Rotation as FeralDruidRotation,
 	FeralDruid_Rotation_AplType,
@@ -101,3 +101,7 @@ export const DefaultConsumes = Consumes.create({
 	prepopPotion: Potions.PotionOfTheTolvir,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
+
+export const OtherDefaults = {
+	distanceFromTarget: 5
+}

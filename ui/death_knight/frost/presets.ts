@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Explosive, Flask, Food, Glyphs, PetFood, Potions } from '../../core/proto/common';
+import { Consumes, Explosive, Flask, Food, Glyphs, PetFood, Potions, Profession, TinkerHands } from '../../core/proto/common';
 import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, FrostDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
 import SingleTargetAPL from '../../death_knight/frost/apls/st.apl.json'
@@ -57,14 +57,16 @@ export const DefaultOptions = FrostDeathKnight_Options.create({
 	},
 });
 
-export const OtherDefaults = {};
+export const OtherDefaults = {
+	profession1: Profession.Engineering,
+	profession2: Profession.Jewelcrafting,
+	distanceFromTarget: 5,
+};
 
 export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTitanicStrength,
 	food: Food.FoodBeerBasedCrocolisk,
 	defaultPotion: Potions.GolembloodPotion,
-	petFood: PetFood.PetFoodSpicedMammothTreats,
 	prepopPotion: Potions.GolembloodPotion,
-	thermalSapper: true,
-	fillerExplosive: Explosive.ExplosiveSaroniteBomb,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });

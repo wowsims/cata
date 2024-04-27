@@ -50,7 +50,7 @@ func (warrior *Warrior) applyWarMachine() {
 			SpellMaskVictoryRush |
 			SpellMaskSlam,
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 1.0 + (0.05 * float64(warrior.Talents.WarAcademy)),
+		FloatValue: (0.05 * float64(warrior.Talents.WarAcademy)),
 	})
 }
 

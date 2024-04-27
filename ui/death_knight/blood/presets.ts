@@ -1,5 +1,6 @@
+import { DistanceFromTarget } from '../../core/components/other_inputs';
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Glyphs, Potions } from '../../core/proto/common.js';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common.js';
 import { BloodDeathKnight_Options, DeathKnightMajorGlyph, DeathKnightMinorGlyph,DeathKnightPrimeGlyph } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui.js';
 import P1BloodApl from './apls/p1.apl.json';
@@ -34,8 +35,15 @@ export const DefaultOptions = BloodDeathKnight_Options.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfStoneblood,
-	food: Food.FoodDragonfinFilet,
-	defaultPotion: Potions.EarthenPotion,
-	prepopPotion: Potions.EarthenPotion,
+	flask: Flask.FlaskOfSteelskin,
+	food: Food.FoodBeerBasedCrocolisk,
+	defaultPotion: Potions.GolembloodPotion,
+	prepopPotion: Potions.GolembloodPotion,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
+
+export const OtherDefaults = {
+	profession1: Profession.Engineering,
+	profession2: Profession.Leatherworking,
+	distanceFromTarget: 5,
+};
