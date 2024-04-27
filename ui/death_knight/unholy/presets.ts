@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Explosive, Flask, Food, Glyphs, PetFood, Potions, Profession, UnitReference } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, PetFood, Potions, Profession, TinkerHands, UnitReference } from '../../core/proto/common';
 import { DeathKnightMajorGlyph, DeathKnightMinorGlyph, DeathKnightPrimeGlyph, UnholyDeathKnight_Options } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui';
 import SingleTargetApl from '../../death_knight/unholy/apls/st.apl.json'
@@ -70,6 +70,5 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.GolembloodPotion,
 	petFood: PetFood.PetFoodSpicedMammothTreats,
 	prepopPotion: Potions.GolembloodPotion,
-	thermalSapper: true,
-	fillerExplosive: Explosive.ExplosiveSaroniteBomb,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });

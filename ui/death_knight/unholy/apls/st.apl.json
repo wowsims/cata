@@ -9,8 +9,8 @@
   "priorityList": [
 	{"action":{"autocastOtherCooldowns":{}}},
 	{"action":{"castSpell":{"spellId":{"spellId":63560}}}},
-	{"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Pet","index":1,"owner":{"type":"Self"}},"auraId":{"spellId":63560}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}}}}]}},"castSpell":{"spellId":{"spellId":49016}}}},
-	{"action":{"condition":{"or":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Pet","index":1,"owner":{"type":"Self"}},"auraId":{"spellId":63560}}},{"cmp":{"op":"OpLe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"15s"}}}}]}},"castSpell":{"spellId":{"spellId":82175}}}},
+	{"action":{"condition":{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Pet","index":1,"owner":{"type":"Self"}},"auraId":{"spellId":63560}}}]}},"castSpell":{"spellId":{"spellId":49016}}}},
+	{"action":{"condition":{"or":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Pet","index":1,"owner":{"type":"Self"}},"auraId":{"spellId":63560}}},{"cmp":{"op":"OpLe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"15s"}}}}]}},"castSpell":{"spellId":{"spellId":82174}}}},
 	{"action":{"condition":{"auraIsActive":{"sourceUnit":{"type":"Pet","index":1,"owner":{"type":"Self"}},"auraId":{"spellId":63560}}},"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}}},
 	{"action":{"condition":{"or":{"vals":[{"and":{"vals":[{"auraIsActive":{"sourceUnit":{"type":"Pet","index":1,"owner":{"type":"Self"}},"auraId":{"spellId":63560}}},{"or":{"vals":[{"spellIsReady":{"spellId":{"spellId":49016}}},{"auraIsActive":{"auraId":{"spellId":49016}}},{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}}]}}]}},{"cmp":{"op":"OpLt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"45s"}}}}]}},"castSpell":{"spellId":{"spellId":49206}}}},
 	{"action":{"condition":{"or":{"vals":[{"not":{"val":{"dotIsActive":{"spellId":{"spellId":55095}}}}},{"not":{"val":{"dotIsActive":{"spellId":{"spellId":55078}}}}}]}},"castSpell":{"spellId":{"spellId":77575}}}},
@@ -26,5 +26,5 @@
 	{"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpEq","lhs":{"currentRuneCount":{"runeType":"RuneBlood"}},"rhs":{"const":{"val":"0"}}}}]}},"castSpell":{"spellId":{"spellId":45529}}}},
 	{"action":{"cancelAura":{"auraId":{"spellId":45529}}}},
 	{"action":{"castSpell":{"spellId":{"spellId":57330}}}}
-    ]
+  ]
 }
