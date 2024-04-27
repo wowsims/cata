@@ -144,6 +144,8 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
 		raidBuffs.LeaderOfThePack = true
 	}
+
+	raidBuffs.MarkOfTheWild = true
 }
 
 // func (druid *Druid) BalanceCritMultiplier() float64 {

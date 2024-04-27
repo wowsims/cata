@@ -105,13 +105,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
-			otherDefaults: {
-				channelClipDelay: 40,
-				darkIntentUptime: 100,
-				distanceFromTarget: 20,
-				profession1: Profession.Engineering,
-				profession2: Profession.Tailoring,
-			},
+			otherDefaults: Presets.OtherDefaults,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceWorgen,

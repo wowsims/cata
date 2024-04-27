@@ -197,7 +197,7 @@ export const MajorArmorDebuff = InputHelpers.makeMultiIconInput(
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(770), fieldName: 'faerieFire' }),
 		makeBooleanDebuffInput({actionId: ActionId.fromSpellId(35387), fieldName: 'corrosiveSpit'})
 	],
-	'Major ArP',
+	'-Armor %',
 );
 
 export const DamageReduction = InputHelpers.makeMultiIconInput(
@@ -218,7 +218,7 @@ export const BleedDebuff = InputHelpers.makeMultiIconInput(
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(57386), fieldName: 'stampede' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(16511), fieldName: 'hemorrhage' }),
 	],
-	'Bleed',
+	'+Bleed %',
 );
 
 export const SpellCritDebuff = InputHelpers.makeMultiIconInput(

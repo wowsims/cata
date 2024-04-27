@@ -1,3 +1,6 @@
+import { MAX_PARTY_SIZE,Party } from './party.js';
+import { Player } from './player.js';
+import { Raid as RaidProto } from './proto/api.js';
 import {
 	Class,
 	Debuffs,
@@ -5,23 +8,19 @@ import {
 	UnitReference,
 	UnitReference_Type as UnitType,
 } from './proto/common.js';
-import { Raid as RaidProto } from './proto/api.js';
-
-import { Party, MAX_PARTY_SIZE } from './party.js';
-import { Player } from './player.js';
-import { EventID, TypedEvent } from './typed_event.js';
 import { Sim } from './sim.js';
+import { EventID, TypedEvent } from './typed_event.js';
 import { sum } from './utils.js';
 
-export const MAX_NUM_PARTIES = 8;
+export const MAX_NUM_PARTIES = 5;
 
 // Manages all the settings for a single Raid.
 export class Raid {
 	private buffs: RaidBuffs = RaidBuffs.create();
 	private debuffs: Debuffs = Debuffs.create();
 	private tanks: Array<UnitReference> = [];
-	private targetDummies: number = 0;
-	private numActiveParties: number = 5;
+	private targetDummies = 0;
+	private numActiveParties = 5;
 
 	// Emits when a raid member is added/removed/moved.
 	readonly compChangeEmitter = new TypedEvent<void>();

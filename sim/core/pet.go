@@ -67,6 +67,8 @@ func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritanc
 				StatDependencyManager: stats.NewStatDependencyManager(),
 
 				ReactionTime: owner.ReactionTime,
+
+				DistanceFromTarget: 5,
 			},
 			Name:       name,
 			Party:      owner.Party,

@@ -68,6 +68,8 @@ func (uhdk *UnholyDeathKnight) Initialize() {
 
 func (uhdk *UnholyDeathKnight) ApplyTalents() {
 	uhdk.DeathKnight.ApplyTalents()
+	// Apply Armor Spec
+	uhdk.EnableArmorSpecialization(stats.Strength, proto.ArmorType_ArmorTypePlate)
 
 	// Mastery: Dreadblade
 	masteryMod := uhdk.AddDynamicMod(core.SpellModConfig{
