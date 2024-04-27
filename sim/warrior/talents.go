@@ -11,7 +11,6 @@ import (
 // Because cata restricts you to 10 points in a different tree, anything more is inaccessible. The rest of the trees are handled in each
 // spec's implementation
 func (warrior *Warrior) ApplyCommonTalents() {
-	warrior.ApplyArmorSpecializationEffect()
 	warrior.applyArmsCommonTalents()
 	warrior.applyFuryCommonTalents()
 	warrior.applyProtectionCommonTalents()

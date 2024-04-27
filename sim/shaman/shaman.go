@@ -28,8 +28,6 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		SelfBuffs:           selfBuffs,
 		ThunderstormInRange: thunderstormRange,
 	}
-	shaman.Character.ArmorType = proto.ArmorType_ArmorTypeMail
-	shaman.Character.PrimaryStat = stats.Intellect
 	// shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: 57960})
 
 	core.FillTalentsProto(shaman.Talents.ProtoReflect(), talents, TalentTreeSizes)

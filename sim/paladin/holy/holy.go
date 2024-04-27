@@ -32,8 +32,6 @@ func NewHolyPaladin(character *core.Character, options *proto.Player) *HolyPalad
 		Options: holyOptions.Options,
 	}
 
-	holy.Character.PrimaryStat = stats.Intellect
-
 	holy.PaladinAura = holyOptions.Options.ClassOptions.Aura
 
 	return holy
@@ -47,6 +45,11 @@ type HolyPaladin struct {
 
 func (holy *HolyPaladin) GetPaladin() *paladin.Paladin {
 	return holy.Paladin
+}
+
+func (holy *HolyPaladin) ApplyTalents() {
+	holy.Paladin.ApplyTalents()
+	holy.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypePlate)
 }
 
 func (holy *HolyPaladin) Initialize() {

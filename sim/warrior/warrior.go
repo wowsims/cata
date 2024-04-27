@@ -176,9 +176,6 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	}
 	core.FillTalentsProto(warrior.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
-	warrior.Character.ArmorType = proto.ArmorType_ArmorTypePlate
-	warrior.Character.PrimaryStat = stats.Strength
-
 	warrior.PseudoStats.CanParry = true
 
 	warrior.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)

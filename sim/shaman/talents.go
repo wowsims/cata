@@ -9,7 +9,6 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
-	shaman.ApplyArmorSpecializationEffect()
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.Expertise, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))

@@ -33,8 +33,6 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 		Seal:    protOptions.Options.ClassOptions.Seal,
 	}
 
-	prot.Character.PrimaryStat = stats.Stamina
-
 	// prot.PaladinAura = protOptions.Options.ClassOptions.Aura
 
 	// //prot.HasGlyphAS = prot.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfAvengerSShield)
@@ -77,6 +75,11 @@ func (prot *ProtectionPaladin) Initialize() {
 	// if prot.Options.ClassOptions.UseAvengingWrath {
 	// 	prot.RegisterAvengingWrathCD()
 	// }
+}
+
+func (prot *ProtectionPaladin) ApplyTalents() {
+	prot.Paladin.ApplyTalents()
+	prot.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypePlate)
 }
 
 func (prot *ProtectionPaladin) Reset(sim *core.Simulation) {

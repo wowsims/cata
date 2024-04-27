@@ -88,9 +88,6 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		Options:   hunterOptions,
 	}
 
-	hunter.Character.ArmorType = proto.ArmorType_ArmorTypeMail
-	hunter.Character.PrimaryStat = stats.Agility
-
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
 	// Todo: Verify that is is actually 4 focus per second

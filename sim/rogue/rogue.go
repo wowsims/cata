@@ -206,8 +206,6 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 		Talents:   &proto.RogueTalents{},
 		Options:   options,
 	}
-	rogue.Character.ArmorType = proto.ArmorType_ArmorTypeLeather
-	rogue.Character.PrimaryStat = stats.Agility
 
 	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
 

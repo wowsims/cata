@@ -44,8 +44,6 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 		vengeance: &core.VengeanceTracker{},
 	}
 
-	bdk.Character.PrimaryStat = stats.Stamina
-
 	healingModel := options.HealingModel
 	if healingModel != nil {
 		if healingModel.InspirationUptime > 0.0 {
@@ -76,6 +74,7 @@ func (bdk BloodDeathKnight) getBloodShieldMasteryBonus() float64 {
 
 func (bdk *BloodDeathKnight) ApplyTalents() {
 	bdk.DeathKnight.ApplyTalents()
+	bdk.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypePlate)
 
 	// Veteran of the Third War
 	bdk.AddStaticMod(core.SpellModConfig{

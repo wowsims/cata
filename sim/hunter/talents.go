@@ -5,10 +5,11 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (hunter *Hunter) ApplyTalents() {
-	hunter.ApplyArmorSpecializationEffect()
+	hunter.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail)
 
 	if hunter.Pet != nil {
 		hunter.applyFrenzy()

@@ -44,8 +44,6 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, true),
 	}
 
-	enh.Character.PrimaryStat = stats.Agility
-
 	// Enable Auto Attacks for this spec
 	enh.EnableAutoAttacks(enh, core.AutoAttackOptions{
 		MainHand:       enh.WeaponFromMainHand(enh.DefaultMeleeCritMultiplier()),
@@ -89,6 +87,11 @@ type EnhancementShaman struct {
 
 func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
 	return enh.Shaman
+}
+
+func (enh *EnhancementShaman) ApplyTalents() {
+	enh.Shaman.ApplyTalents()
+	enh.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail)
 }
 
 func (enh *EnhancementShaman) Initialize() {

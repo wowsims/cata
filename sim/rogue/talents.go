@@ -9,7 +9,7 @@ import (
 )
 
 func (rogue *Rogue) ApplyTalents() {
-	rogue.ApplyArmorSpecializationEffect()
+	rogue.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeLeather)
 	rogue.PseudoStats.MeleeSpeedMultiplier *= []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.LightningReflexes]
 	rogue.AddStat(stats.MeleeHit, core.MeleeHitRatingPerHitChance*2*float64(rogue.Talents.Precision))
 	rogue.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*2*float64(rogue.Talents.Precision))

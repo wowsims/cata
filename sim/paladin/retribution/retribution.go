@@ -34,8 +34,6 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 		Seal:    retOptions.Options.ClassOptions.Seal,
 	}
 
-	ret.Character.PrimaryStat = stats.Strength
-
 	ret.PaladinAura = retOptions.Options.ClassOptions.Aura
 
 	ret.EnableAutoAttacks(ret, core.AutoAttackOptions{
@@ -59,6 +57,11 @@ func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
 func (ret *RetributionPaladin) Initialize() {
 	ret.Paladin.Initialize()
 	//ret.RegisterAvengingWrathCD()
+}
+
+func (ret *RetributionPaladin) ApplyTalents() {
+	ret.Paladin.ApplyTalents()
+	ret.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate)
 }
 
 func (ret *RetributionPaladin) Reset(sim *core.Simulation) {

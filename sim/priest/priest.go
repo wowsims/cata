@@ -197,9 +197,6 @@ func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 		Talents:   &proto.PriestTalents{},
 	}
 
-	priest.Character.ArmorType = proto.ArmorType_ArmorTypeCloth
-	priest.Character.PrimaryStat = stats.Intellect
-
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
 	priest.EnableManaBar()
 	priest.ShadowfiendPet = priest.NewShadowfiend()

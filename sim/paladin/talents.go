@@ -8,7 +8,6 @@ func (paladin *Paladin) ToughnessArmorMultiplier() float64 {
 }
 
 func (paladin *Paladin) ApplyTalents() {
-	paladin.ApplyArmorSpecializationEffect()
 	// paladin.AddStat(stats.MeleeCrit, float64(paladin.Talents.Conviction)*core.CritRatingPerCritChance)
 	// paladin.AddStat(stats.SpellCrit, float64(paladin.Talents.Conviction)*core.CritRatingPerCritChance)
 	// paladin.AddStat(stats.MeleeCrit, float64(paladin.Talents.SanctityOfBattle)*core.CritRatingPerCritChance)
