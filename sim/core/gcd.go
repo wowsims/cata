@@ -87,8 +87,18 @@ func (unit *Unit) WaitUntil(sim *Simulation, readyTime time.Duration) {
 	if readyTime < sim.CurrentTime {
 		panic(unit.Label + ": cannot wait negative time")
 	}
+	unit.SetRotationTimer(sim, readyTime)
+	if sim.Log != nil && readyTime > sim.CurrentTime {
+		unit.Log(sim, "Pausing rotation for %s due to resources / CDs.", readyTime-sim.CurrentTime)
+	}
+}
+
+func (unit *Unit) ExtendGCDUntil(sim *Simulation, readyTime time.Duration) {
+	if readyTime < sim.CurrentTime {
+		panic(unit.Label + ": cannot wait negative time")
+	}
 	unit.SetGCDTimer(sim, readyTime)
 	if sim.Log != nil && readyTime > sim.CurrentTime {
-		unit.Log(sim, "Pausing GCD for %s due to rotation / CDs.", readyTime-sim.CurrentTime)
+		unit.Log(sim, "Extending GCD for %s due to rotation / CDs.", readyTime-sim.CurrentTime)
 	}
 }

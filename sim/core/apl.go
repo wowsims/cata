@@ -238,7 +238,7 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 
 	gcdReady := apl.unit.GCD.IsReady(sim)
 	if gcdReady {
-		apl.unit.SetRotationTimer(sim, sim.CurrentTime + apl.unit.ReactionTime)
+		apl.unit.WaitUntil(sim, sim.CurrentTime + apl.unit.ReactionTime)
 	}
 }
 
