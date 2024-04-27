@@ -39,6 +39,7 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 				Timer:    warrior.NewTimer(),
 				Duration: time.Minute * 5,
 			},
+			IgnoreHaste: true,
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

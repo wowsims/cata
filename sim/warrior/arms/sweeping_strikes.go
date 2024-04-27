@@ -68,6 +68,7 @@ func (war *ArmsWarrior) RegisterSweepingStrikes() {
 				Timer:    war.NewTimer(),
 				Duration: time.Minute * 1,
 			},
+			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return war.StanceMatches(warrior.BattleStance | warrior.BerserkerStance)

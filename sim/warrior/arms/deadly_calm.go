@@ -39,9 +39,6 @@ func (war *ArmsWarrior) RegisterDeadlyCalm() {
 		ClassSpellMask: warrior.SpellMaskDeadlyCalm,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: 0,
-			},
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
 				Duration: time.Minute * 2,
