@@ -23,8 +23,12 @@ func (warrior *Warrior) RegisterSlamSpell() {
 				GCD:      core.GCDDefault,
 				CastTime: time.Millisecond * 1500,
 			},
-			IgnoreHaste: false, // Slam now has a "Haste Affects Melee Ability Casttime" flag in cata
+			IgnoreHaste: true,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+
+				// Slam now has a "Haste Affects Melee Ability Casttime" flag in cata, which doesn't change slam gcd but increases the cast speed
+				warrior.Slam.CurCast.CastTime = spell.Unit.ApplyCastSpeedForSpell(spell.CurCast.CastTime, spell)
+
 				if cast.CastTime > 0 {
 					warrior.AutoAttacks.DelayMeleeBy(sim, cast.CastTime)
 				}
