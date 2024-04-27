@@ -5,10 +5,12 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (priest *Priest) ApplyTalents() {
+	priest.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
 	// TODO:
 	// Reflective Shield
 	// Improved Flash Heal

@@ -4,11 +4,13 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/warrior"
 )
 
 func (war *FuryWarrior) ApplyTalents() {
+	war.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate)
 	war.Warrior.ApplyCommonTalents()
 
 	war.RegisterDeathWish()

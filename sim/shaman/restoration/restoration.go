@@ -3,6 +3,7 @@ package restoration
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/shaman"
 )
 
@@ -82,4 +83,9 @@ func (resto *RestorationShaman) Initialize() {
 
 	resto.Shaman.Initialize()
 	resto.Shaman.RegisterHealingSpells()
+}
+
+func (resto *RestorationShaman) ApplyTalents() {
+	resto.Shaman.ApplyTalents()
+	resto.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeMail)
 }

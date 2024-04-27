@@ -22,6 +22,7 @@ import { PresetGear, PresetRotation } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
+	Class,
 	Consumes,
 	Debuffs,
 	Encounter as EncounterProto,
@@ -41,7 +42,7 @@ import {
 } from './proto/common';
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
-import { professionNames } from './proto_utils/names';
+import { armorTypeNames, professionNames } from './proto_utils/names';
 import { Stats } from './proto_utils/stats';
 import { getTalentPoints, SpecOptions, SpecRotation } from './proto_utils/utils';
 import { SimSettingCategories } from './sim';
@@ -244,6 +245,35 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 					return 'Unspent talent points.';
 				} else if (talentPoints > MAX_POINTS_PLAYER) {
 					return 'More than maximum talent points spent.';
+				} else {
+					return '';
+				}
+			},
+		});
+		this.addWarning({
+			updateOn: this.player.gearChangeEmitter,
+			getContent: () => {
+				const playerClass = this.player.getPlayerClass();
+				// We always pick the first entry since this is always the preffered armor type
+				const armorSpecializationArmorType = playerClass.armorTypes[0];
+
+				if (!armorSpecializationArmorType || playerClass.classID === Class.ClassDruid) {
+					return '';
+				}
+
+				if (
+					[
+						ItemSlot.ItemSlotHead,
+						ItemSlot.ItemSlotShoulder,
+						ItemSlot.ItemSlotChest,
+						ItemSlot.ItemSlotWrist,
+						ItemSlot.ItemSlotHands,
+						ItemSlot.ItemSlotWaist,
+						ItemSlot.ItemSlotLegs,
+						ItemSlot.ItemSlotFeet,
+					].some(itemSlot => this.player.getEquippedItem(itemSlot)?.item.armorType !== armorSpecializationArmorType)
+				) {
+					return `Equip ${armorTypeNames.get(armorSpecializationArmorType)} gear in each slot for the Armor Specialization (5% primary stat) effect.`;
 				} else {
 					return '';
 				}

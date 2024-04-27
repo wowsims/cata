@@ -9,7 +9,8 @@ import (
 )
 
 func (hunter *Hunter) ApplyTalents() {
-	hunter.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeMail)
+	hunter.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail)
+
 	if hunter.Pet != nil {
 		hunter.applyFrenzy()
 		hunter.registerBestialWrathCD()
