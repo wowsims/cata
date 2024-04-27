@@ -10,6 +10,7 @@ import {
 PseudoStat,
 	RangedWeaponType,
 	SimDatabase,
+	Spec,
 	Stat, 	UnitReference,
 	UnitReference_Type as UnitType,
 	WeaponType,
@@ -471,7 +472,7 @@ export class Sim {
 	}
 
 	getShowHealingMetrics(): boolean {
-		return this.showHealingMetrics;
+		return this.showHealingMetrics || (this.showThreatMetrics && this.raid.getPlayer(0)?.playerSpec.specID == Spec.SpecBloodDeathKnight);
 	}
 	setShowHealingMetrics(eventID: EventID, newShowHealingMetrics: boolean) {
 		if (newShowHealingMetrics != this.showHealingMetrics) {
