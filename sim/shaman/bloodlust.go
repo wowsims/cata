@@ -21,7 +21,7 @@ func (shaman *Shaman) registerBloodlustCD() {
 		}
 	}
 
-	shaman.RegisterSpell(core.SpellConfig{
+	spell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
@@ -57,5 +57,11 @@ func (shaman *Shaman) registerBloodlustCD() {
 				}
 			}
 		},
+	})
+
+	shaman.AddMajorCooldown(core.MajorCooldown{
+		Spell:    spell,
+		Type:     core.CooldownTypeDPS,
+		Priority: core.CooldownPriorityBloodlust,
 	})
 }

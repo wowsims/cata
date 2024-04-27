@@ -2011,22 +2011,22 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-p1-Standard-default-NoBuffs-LongMultiTarget"
  value: {
-  dps: 21059.44228
-  tps: 19448.8713
+  dps: 21414.61451
+  tps: 19801.93138
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-p1-Standard-default-NoBuffs-LongSingleTarget"
  value: {
-  dps: 20559.05902
-  tps: 14358.32164
+  dps: 20954.35039
+  tps: 14606.35241
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-p1-Standard-default-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 20863.52254
-  tps: 14533.05381
+  dps: 22791.41008
+  tps: 15852.96031
  }
 }
 dps_results: {
@@ -2053,22 +2053,22 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-LongMultiTarget"
  value: {
-  dps: 21081.1359
-  tps: 19504.9381
+  dps: 21571.74162
+  tps: 19865.56125
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-LongSingleTarget"
  value: {
-  dps: 20808.00286
-  tps: 14528.57186
+  dps: 21115.63394
+  tps: 14712.44667
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 21364.48892
-  tps: 14878.19937
+  dps: 23117.78761
+  tps: 16011.66657
  }
 }
 dps_results: {
@@ -2095,22 +2095,22 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Troll-p1-Standard-default-NoBuffs-LongMultiTarget"
  value: {
-  dps: 20940.06598
-  tps: 19431.6512
+  dps: 21459.49957
+  tps: 19865.69604
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-p1-Standard-default-NoBuffs-LongSingleTarget"
  value: {
-  dps: 20565.05705
-  tps: 14348.48677
+  dps: 20853.49937
+  tps: 14570.72971
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Troll-p1-Standard-default-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 21131.95775
-  tps: 14626.91837
+  dps: 22943.87045
+  tps: 15980.27818
  }
 }
 dps_results: {
