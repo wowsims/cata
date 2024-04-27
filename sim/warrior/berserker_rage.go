@@ -34,10 +34,6 @@ func (warrior *Warrior) RegisterBerserkerRageSpell() {
 		ClassSpellMask: SpellMaskBerserkerRage,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: 0,
-			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
 				Duration: time.Second * 30,

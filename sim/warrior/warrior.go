@@ -102,9 +102,10 @@ type Warrior struct {
 	Whirlwind         *core.Spell
 	DeepWounds        *core.Spell
 
-	hsCleaveCD   *core.Timer
-	HeroicStrike *core.Spell
-	Cleave       *core.Spell
+	recklessnessDeadlyCalmCD *core.Timer
+	hsCleaveCD               *core.Timer
+	HeroicStrike             *core.Spell
+	Cleave                   *core.Spell
 
 	BattleStanceAura    *core.Aura
 	DefensiveStanceAura *core.Aura
@@ -205,6 +206,11 @@ func (warrior *Warrior) HasMinorGlyph(glyph proto.WarriorMinorGlyph) bool {
 func (warrior *Warrior) IntensifyRageCooldown(baseCd time.Duration) time.Duration {
 	baseCd /= 100
 	return []time.Duration{baseCd * 100, baseCd * 90, baseCd * 80}[warrior.Talents.IntensifyRage]
+}
+
+// Shared cooldown for Deadly Calm and Recklessness Activation
+func (warrior *Warrior) RecklessnessDeadlyCalmLock() *core.Timer {
+	return warrior.Character.GetOrInitTimer(&warrior.recklessnessDeadlyCalmCD)
 }
 
 // Agent is a generic way to access underlying warrior on any of the agents.
