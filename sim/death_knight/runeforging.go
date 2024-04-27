@@ -28,14 +28,14 @@ func init() {
 	core.NewEnchantEffect(3594, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.AddStat(stats.Parry, 2*core.ParryRatingPerParryChance)
+		character.PseudoStats.BaseParry += 0.02
 	})
 
 	// Rune of Swordshattering
 	core.NewEnchantEffect(3365, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.AddStat(stats.Parry, 4*core.ParryRatingPerParryChance)
+		character.PseudoStats.BaseParry += 0.04
 	})
 
 	// Rune of the Spellbreaking
