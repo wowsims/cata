@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/shaman"
 )
 
@@ -83,6 +84,11 @@ func (eleShaman *ElementalShaman) Initialize() {
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: time.Second * -3,
 	})
+}
+
+func (ele *ElementalShaman) ApplyTalents() {
+	ele.Shaman.ApplyTalents()
+	ele.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeMail)
 }
 
 type ElementalShaman struct {

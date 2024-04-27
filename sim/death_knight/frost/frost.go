@@ -59,8 +59,7 @@ func (fdk *FrostDeathKnight) Initialize() {
 
 func (fdk *FrostDeathKnight) ApplyTalents() {
 	fdk.DeathKnight.ApplyTalents()
-	// Apply Armor Spec
-	fdk.EnableArmorSpecialization(stats.Strength, proto.ArmorType_ArmorTypePlate)
+	fdk.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate)
 
 	masteryMod := fdk.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Flat,

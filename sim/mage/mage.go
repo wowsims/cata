@@ -126,6 +126,7 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 		Talents:   &proto.MageTalents{},
 		Options:   mageOptions,
 	}
+
 	// core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
 	// mage.bonusCritDamage = .25*float64(mage.Talents.SpellPower) + .1*float64(mage.Talents.Burnout)

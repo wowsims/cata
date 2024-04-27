@@ -43,6 +43,7 @@ type Character struct {
 
 	// Current gear.
 	Equipment
+
 	//Item Swap Handler
 	ItemSwap ItemSwap
 
@@ -54,6 +55,7 @@ type Character struct {
 
 	// Handles scaling that only affects stats from items
 	itemStatMultipliers stats.Stats
+
 	// Used to track if we need to separately apply multipliers, because
 	// equipment was already applied
 	equipStatsApplied bool
@@ -710,8 +712,6 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3
 }
 
 func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.ArmorType) bool {
-	hasBonus := true
-
 	if character.Head().ArmorType != armorType ||
 		character.Shoulder().ArmorType != armorType ||
 		character.Chest().ArmorType != armorType ||
@@ -720,18 +720,15 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 		character.Waist().ArmorType != armorType ||
 		character.Legs().ArmorType != armorType ||
 		character.Feet().ArmorType != armorType {
-		hasBonus = false
+		return false
 	}
 
-	return hasBonus
+	return true
 }
 
-func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
+func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType) {
 	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
-
 	if hasBonus {
 		character.MultiplyStat(primaryStat, 1.05)
 	}
-
-	return hasBonus
 }

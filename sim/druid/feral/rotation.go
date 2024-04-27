@@ -34,7 +34,7 @@ func (cat *FeralDruid) OnGCDReady(sim *core.Simulation) {
 	}
 
 	// Check for an opportunity to cancel Primal Madness if we just casted a spell
-	if !cat.GCD.IsReady(sim) && cat.PrimalMadnessAura.IsActive() && (cat.CurrentEnergy() < 10.0 * float64(cat.Talents.PrimalMadness)) {
+	if !cat.GCD.IsReady(sim) && cat.PrimalMadnessAura.IsActive() && (cat.CurrentEnergy() < 10.0*float64(cat.Talents.PrimalMadness)) {
 		cat.PrimalMadnessAura.Deactivate(sim)
 	}
 }
@@ -328,16 +328,16 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 	// Likewise, if the existing TF buff will still be up at the start of the normal window, then don't clip unnecessarily
 	tfEnd := cat.TigersFuryAura.ExpiresAt()
 
-	if tfEnd > standardRefreshTime + cat.ReactionTime {
+	if tfEnd > standardRefreshTime+cat.ReactionTime {
 		return standardRefreshTime
 	}
 
 	// Potential clips for a TF snapshot should be done as late as possible
-	latestPossibleSnapshot := tfEnd - cat.ReactionTime * time.Duration(2)
+	latestPossibleSnapshot := tfEnd - cat.ReactionTime*time.Duration(2)
 
 	// Determine if an early clip would cost us an extra Rip cast over the course of the fight
 	maxRipDur := time.Duration(cat.maxRipTicks) * ripDot.TickLength
-	finalPossibleRipCast := core.TernaryDuration(cat.Rotation.BiteDuringExecute, core.DurationFromSeconds(0.75 * sim.Duration.Seconds()) - cat.ReactionTime, sim.Duration - cat.cachedRipEndThresh)
+	finalPossibleRipCast := core.TernaryDuration(cat.Rotation.BiteDuringExecute, core.DurationFromSeconds(0.75*sim.Duration.Seconds())-cat.ReactionTime, sim.Duration-cat.cachedRipEndThresh)
 	minRipsPossible := (finalPossibleRipCast - standardRefreshTime) / maxRipDur
 	projectedRipCasts := (finalPossibleRipCast - latestPossibleSnapshot) / maxRipDur
 
@@ -348,7 +348,7 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 
 	// If the clip costs us a Rip cast (30 Energy), then we need to determine whether the damage gain is worth the spend.
 	// First calculate the maximum number of buffed Rip ticks we can get out before the fight ends.
-	buffedTickCount := min(cat.maxRipTicks + 1, int32((sim.Duration - latestPossibleSnapshot) / ripDot.TickLength))
+	buffedTickCount := min(cat.maxRipTicks+1, int32((sim.Duration-latestPossibleSnapshot)/ripDot.TickLength))
 
 	// Subtract out any ticks that would already be buffed by an existing snapshot
 	if cat.RipTfSnapshot {
@@ -356,7 +356,7 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 	}
 
 	// Perform a DPE comparison vs. Shred
-	expectedDamageGain := cat.Rip.ExpectedTickDamage(sim, cat.CurrentTarget) * (1.0 - 1.0 / 1.15) * float64(buffedTickCount)
+	expectedDamageGain := cat.Rip.ExpectedTickDamage(sim, cat.CurrentTarget) * (1.0 - 1.0/1.15) * float64(buffedTickCount)
 	energyEquivalent := expectedDamageGain / cat.Shred.ExpectedInitialDamage(sim, cat.CurrentTarget) * cat.Shred.DefaultCast.Cost
 
 	if sim.Log != nil {
