@@ -6,6 +6,8 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
+const InnerRageExclusionTag = "InnerRageDeadlyCalm"
+
 func (warrior *Warrior) RegisterInnerRage() {
 	actionID := core.ActionID{SpellID: 1134}
 
@@ -19,6 +21,7 @@ func (warrior *Warrior) RegisterInnerRage() {
 		Label:    "Inner Rage",
 		ActionID: actionID,
 		Duration: time.Second * 15,
+		Tag:      InnerRageExclusionTag,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			costMod.Activate()
 		},
@@ -43,13 +46,8 @@ func (warrior *Warrior) RegisterInnerRage() {
 			},
 		},
 		ThreatMultiplier: 0.0,
-
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			if warrior.DeadlyCalmAura != nil {
-				return !warrior.DeadlyCalmAura.IsActive()
-			}
-			return true
-
+			return !warrior.HasActiveAuraWithTag(InnerRageExclusionTag)
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			warrior.InnerRageAura.Activate(sim)
