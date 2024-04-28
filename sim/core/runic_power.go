@@ -812,6 +812,11 @@ func (rp *runicPowerBar) Advance(sim *Simulation, newTime time.Duration) {
 	}
 
 	rp.maybeFireChange(sim, changeType)
+
+	// Query APL if a change occurred
+	if changeType != None {
+		rp.unit.ReactToEvent(sim)
+	}
 }
 
 func (rp *runicPowerBar) spendRune(sim *Simulation, firstSlot int8, metrics *ResourceMetrics) int8 {
