@@ -135,7 +135,7 @@ func (priest *Priest) Initialize() {
 	priest.registerDispersionSpell()
 	priest.registerMindSpike()
 
-	// priest.registerPowerInfusionCD()
+	priest.registerPowerInfusionSpell()
 
 	priest.MindFlayAPL = priest.newMindFlaySpell(0)
 	priest.MindSearAPL = priest.newMindSearSpell(0)
