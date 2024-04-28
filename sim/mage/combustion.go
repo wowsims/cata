@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -39,9 +40,8 @@ func (mage *Mage) registerCombustionSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				combustionDotDamage = 0.0
 
-				var normalizedDPS float64
 				dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.PyroblastDot}
-				for _, spell := range dotSpells {
+				/* 				for _, spell := range dotSpells {
 					dots := spell.Dot(mage.CurrentTarget)
 					// EJ states that combustion double dips on mastery for LB + Pyro, but not ignite
 					// https://web.archive.org/web/20120207223126/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/
@@ -56,6 +56,25 @@ func (mage *Mage) registerCombustionSpell() {
 						}
 					}
 					combustionDotDamage += normalizedDPS
+				} */
+				var spellDPS float64
+				for _, spell := range dotSpells {
+					dots := spell.Dot(mage.CurrentTarget)
+					// EJ states that combustion double dips on mastery for LB + Pyro, but not ignite
+					// https://web.archive.org/web/20120207223126/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/
+					if spell != mage.Ignite {
+						if dots != nil && dots.IsActive() {
+							spellDPS = spell.Dot(mage.CurrentTarget).CalcSnapshotDamage(sim, mage.CurrentTarget, dots.OutcomeTick).Damage / 3
+							fmt.Println(dots.Label, " snapped for : ", spellDPS)
+						}
+					} else {
+						//This part is for ignite. The denominator will probably be variable if it works as intended in cata.
+						if dots != nil && dots.IsActive() {
+							spellDPS = spell.Dot(mage.CurrentTarget).SnapshotBaseDamage / 2
+							fmt.Println(dots.Label, " snapped for : ", spellDPS)
+						}
+					}
+					combustionDotDamage += spellDPS
 				}
 				dot.Snapshot(mage.CurrentTarget, combustionDotDamage)
 			},

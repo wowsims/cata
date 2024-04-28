@@ -60,15 +60,14 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 		BonusCoefficient: 0.193,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			procChance := []float64{0.0, 0.33, 0.66, 1.0}[mage.Talents.FirePower]
 
 			damage := 1.318 * mage.ScalingBaseDamage
-			if sim.Proc(procChance, "FlameOrbExplosion") {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
-					spell.SpellMetrics[target.UnitIndex].Hits++
-				}
+
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
+				spell.SpellMetrics[target.UnitIndex].Hits++
 			}
+
 		},
 	})
 }
@@ -150,7 +149,10 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 			spell.CalcAndDealDamage(sim, randomTarget, damage, spell.OutcomeMagicHitAndCrit)
 			fo.TickCount += 1
 			if fo.TickCount == 15 {
-				fo.mageOwner.FlameOrbExplode.Cast(sim, fo.mageOwner.CurrentTarget)
+				procChance := []float64{0.0, 0.33, 0.66, 1.0}[fo.mageOwner.Talents.FirePower]
+				if sim.Proc(procChance, "FlameOrbExplosion") {
+					fo.mageOwner.FlameOrbExplode.Cast(sim, fo.mageOwner.CurrentTarget)
+				}
 				fo.TickCount = 0
 			}
 		},

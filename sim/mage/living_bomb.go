@@ -69,8 +69,11 @@ func (mage *Mage) registerLivingBombSpell() {
 			Aura: core.Aura{
 				Label: "LivingBomb",
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					//TODO make it not cast the explosion if expiration was due to target cap
 					livingBombExplosionSpell.Cast(sim, aura.Unit)
-					activeLivingBombs = activeLivingBombs[1:]
+					if len(activeLivingBombs) != 0 {
+						activeLivingBombs = activeLivingBombs[1:]
+					}
 				},
 			},
 			NumberOfTicks:       4,
@@ -90,9 +93,11 @@ func (mage *Mage) registerLivingBombSpell() {
 			spell.DealOutcome(sim, result)
 
 			if result.Landed() {
-				if len(activeLivingBombs) > maxLivingBombs {
-					activeLivingBombs = activeLivingBombs[:1]
-
+				if len(activeLivingBombs) >= maxLivingBombs {
+					activeLivingBombs[len(activeLivingBombs)-1].Deactivate(sim)
+					if len(activeLivingBombs) != 0 {
+						activeLivingBombs = activeLivingBombs[:1]
+					}
 				}
 				spell.Dot(target).Apply(sim)
 				activeLivingBombs = append(activeLivingBombs, mage.LivingBomb.Dot(mage.CurrentTarget))
