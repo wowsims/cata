@@ -119,6 +119,7 @@ enum EarthTotem {
 	StrengthOfEarthTotem = 1;
 	TremorTotem = 2;
 	StoneskinTotem = 3;
+	EarthElementalTotem = 4;
 }
 
 enum AirTotem {
@@ -132,6 +133,7 @@ enum FireTotem {
 	MagmaTotem = 1;
 	SearingTotem = 2;
 	FlametongueTotem = 3;
+	FireElementalTotem = 4;
 }
 
 enum WaterTotem {

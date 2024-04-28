@@ -27,7 +27,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		}
 	}
 
-	baseDamage := 1093.0
+	baseDamage := shaman.ClassSpellScaling * 1.08800005913
 	numHits := int32(3)
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning) {
 		baseDamage *= 0.90
@@ -41,6 +41,7 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 			totalDamage := baseDamage * bounceReduction
 
+			//TODO : damage reduction from glyph need to be applied to spell power part of the damage also
 			result := shaman.calcDamageStormstrikeCritChance(sim, curTarget, totalDamage, spell)
 
 			if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {

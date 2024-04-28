@@ -1,0 +1,57 @@
+package shaman
+
+import (
+	"time"
+
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
+)
+
+func (shaman *Shaman) registerEarthElementalTotem() {
+	/*if !shaman.Totems.UseEarthElemental {
+		return
+	}*/
+
+	actionID := core.ActionID{SpellID: 2062}
+
+	totalDuration := time.Second * time.Duration(120*(1.0+0.20*float64(shaman.Talents.TotemicFocus)))
+
+	earthElementalAura := shaman.RegisterAura(core.Aura{
+		Label:    "Earth Elemental Totem",
+		ActionID: actionID,
+		Duration: totalDuration,
+	})
+
+	shaman.EarthElementalTotem = shaman.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		ClassSpellMask: SpellMaskEarthElementalTotem,
+		ManaCost: core.ManaCostOptions{
+			BaseCost: 0.24,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			CD: core.Cooldown{
+				Timer:    shaman.NewTimer(),
+				Duration: time.Minute * 10,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
+			if shaman.Totems.Earth != proto.EarthTotem_NoEarthTotem {
+				shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + totalDuration
+			}
+
+			shaman.EarthElemental.EnableWithTimeout(sim, shaman.EarthElemental, totalDuration)
+
+			// Add a dummy aura to show in metrics
+			earthElementalAura.Activate(sim)
+		},
+	})
+
+	/*shaman.AddMajorCooldown(core.MajorCooldown{
+		Spell: shaman.EarthElementalTotem,
+		Type:  core.CooldownTypeDPS,
+	})*/
+}
