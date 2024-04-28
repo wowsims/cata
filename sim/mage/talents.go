@@ -1,6 +1,12 @@
 package mage
 
+import (
+	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
+)
+
 func (mage *Mage) ApplyTalents() {
+	mage.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
 	// mage.applyArcaneConcentration()
 	// mage.applyFocusMagic()
 	// mage.applyIgnite()

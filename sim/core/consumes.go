@@ -138,7 +138,9 @@ func applyConsumeEffects(agent Agent) {
 			})
 		case proto.BattleElixir_ElixirOfArmorPiercing:
 			character.AddStats(stats.Stats{
-				stats.ArmorPenetration: 45,
+				stats.Agility:   25,
+				stats.MeleeCrit: 25,
+				stats.SpellCrit: 25,
 			})
 		case proto.BattleElixir_ElixirOfDeadlyStrikes:
 			character.AddStats(stats.Stats{
@@ -252,8 +254,9 @@ func applyConsumeEffects(agent Agent) {
 		})
 	case proto.Food_FoodHeartyRhino:
 		character.AddStats(stats.Stats{
-			stats.ArmorPenetration: 40,
-			stats.Stamina:          40,
+			stats.MeleeCrit: 40,
+			stats.SpellCrit: 40,
+			stats.Stamina:   40,
 		})
 	case proto.Food_FoodMegaMammothMeal:
 		character.AddStats(stats.Stats{

@@ -48,7 +48,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 
 	if debuffs.FrostFever || debuffs.BrittleBones {
-		MakePermanent(FrostFeverAura(nil, target, TernaryInt32(debuffs.BrittleBones, 2, 0)))
+		MakePermanent(FrostFeverAura(target, TernaryInt32(debuffs.BrittleBones, 2, 0)))
 	}
 
 	if debuffs.AcidSpit && targetIdx == 0 {
@@ -154,8 +154,12 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(DemoralizingScreechAura(target))
 	}
 
+	if debuffs.Vindication {
+		MakePermanent(VindicationAura(target))
+	}
+
 	if debuffs.ScarletFever {
-		MakePermanent(ScarletFeverAura(nil, target, 2, 0))
+		MakePermanent(ScarletFeverAura(target, 2, 0))
 	}
 
 	// Atk spd reduction
@@ -572,7 +576,7 @@ func DemoralizingShoutAura(target *Unit, glyph bool) *Aura {
 	return aura
 }
 
-func VindicationAura(target *Unit, points int32) *Aura {
+func VindicationAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Vindication",
 		ActionID: ActionID{SpellID: 26017},
@@ -592,13 +596,9 @@ func DemoralizingScreechAura(target *Unit) *Aura {
 	return aura
 }
 
-func ScarletFeverAura(caster *Character, target *Unit, points int32, epidemic int32) *Aura {
-	label := "External"
-	if caster != nil {
-		label = caster.Label
-	}
+func ScarletFeverAura(target *Unit, points int32, epidemic int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Scarlet Fever" + label,
+		Label:    "Scarlet Fever",
 		ActionID: ActionID{SpellID: 81130},
 		Duration: time.Second * time.Duration(21+epidemic*4),
 	})
@@ -686,7 +686,7 @@ func DustCloud(target *Unit) *Aura {
 	return aura
 }
 
-func FrostFeverAura(caster *Unit, target *Unit, britleBones int32) *Aura {
+func FrostFeverAura(target *Unit, britleBones int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "FrostFeverDebuff",
 		ActionID: ActionID{SpellID: 55095},

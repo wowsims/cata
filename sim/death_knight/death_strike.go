@@ -54,7 +54,7 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.14699999988 +
+			baseDamage := dk.ClassSpellScaling*0.14699999988 +
 				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
@@ -77,7 +77,6 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 			FrostRuneCost:  1,
 			UnholyRuneCost: 1,
 			RunicPowerGain: 20,
-			Refundable:     true,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -91,18 +90,15 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.29399999976 +
+			baseDamage := dk.ClassSpellScaling*0.29399999976 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			spell.SpendRefundableCost(sim, result)
 			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 
-			if result.Landed() {
-				healingSpell.Cast(sim, spell.Unit)
-				healingSpell.CalcAndDealHealing(sim, spell.Unit, max(damageTakenInFive*0.2, spell.Unit.MaxHealth()*0.07), healingSpell.OutcomeHealing)
-			}
+			healingSpell.Cast(sim, spell.Unit)
+			healingSpell.CalcAndDealHealing(sim, spell.Unit, max(damageTakenInFive*0.2, spell.Unit.MaxHealth()*0.07), healingSpell.OutcomeHealing)
 
 			spell.DealDamage(sim, result)
 		},
@@ -117,7 +113,7 @@ func (dk *DeathKnight) registerDrwDeathStrikeSpell() *core.Spell {
 		Flags:       core.SpellFlagMeleeMetrics,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.29399999976 +
+			baseDamage := dk.ClassSpellScaling*0.29399999976 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)

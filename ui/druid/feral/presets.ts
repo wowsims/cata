@@ -1,9 +1,9 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { Consumes, Flask, Food, Glyphs, Potions, Spec, TinkerHands } from '../../core/proto/common';
 import {
-	DruidPrimeGlyph,
 	DruidMajorGlyph,
 	DruidMinorGlyph,
+	DruidPrimeGlyph,
 	FeralDruid_Options as FeralDruidOptions,
 	FeralDruid_Rotation as FeralDruidRotation,
 	FeralDruid_Rotation_AplType,
@@ -40,11 +40,10 @@ export const DefaultRotation = FeralDruidRotation.create({
 	useBite: true,
 	mangleSpam: false,
 	biteModeType: FeralDruid_Rotation_BiteModeType.Emperical,
-	biteTime: 10.0,
-	berserkBiteThresh: 25.0,
+	biteTime: 11.0,
 	powerbear: false,
-	minRoarOffset: 12.0,
-	ripLeeway: 4.0,
+	minRoarOffset: 29.0,
+	ripLeeway: 1.0,
 	maintainFaerieFire: true,
 	snekWeave: false,
 	manualParams: true,
@@ -102,3 +101,7 @@ export const DefaultConsumes = Consumes.create({
 	prepopPotion: Potions.PotionOfTheTolvir,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
+
+export const OtherDefaults = {
+	distanceFromTarget: 5
+}

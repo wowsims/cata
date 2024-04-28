@@ -16,11 +16,12 @@ const (
 
 var TalentTreeSizes = [3]int{19, 19, 19}
 
-const RogueBaseDamageScalar = 1125.23
 const RogueBleedTag = "RogueBleed"
 
 type Rogue struct {
 	core.Character
+
+	ClassSpellScaling float64
 
 	Talents              *proto.RogueTalents
 	Options              *proto.RogueOptions
@@ -202,10 +203,12 @@ func (rogue *Rogue) SpellCritMultiplier() float64 {
 
 func NewRogue(character *core.Character, options *proto.RogueOptions, talents string) *Rogue {
 	rogue := &Rogue{
-		Character: *character,
-		Talents:   &proto.RogueTalents{},
-		Options:   options,
+		Character:         *character,
+		Talents:           &proto.RogueTalents{},
+		Options:           options,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassRogue),
 	}
+
 	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
 	// Passive rogue threat reduction: https://wotlk.wowhead.com/spell=21184/rogue-passive-dnd
@@ -234,8 +237,6 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 	rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 2)
 	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
-	// Make an assumption we're wearing leather for Leather Armor Spec
-	rogue.MultiplyStat(stats.Agility, 1.05)
 
 	return rogue
 }

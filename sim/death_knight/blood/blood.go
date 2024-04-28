@@ -44,12 +44,6 @@ func NewBloodDeathKnight(character *core.Character, options *proto.Player) *Bloo
 		vengeance: &core.VengeanceTracker{},
 	}
 
-	bdk.EnableAutoAttacks(bdk, core.AutoAttackOptions{
-		MainHand:       bdk.WeaponFromMainHand(bdk.DefaultMeleeCritMultiplier()),
-		OffHand:        bdk.WeaponFromOffHand(bdk.DefaultMeleeCritMultiplier()),
-		AutoSwingMelee: true,
-	})
-
 	healingModel := options.HealingModel
 	if healingModel != nil {
 		if healingModel.InspirationUptime > 0.0 {
@@ -80,6 +74,7 @@ func (bdk BloodDeathKnight) getBloodShieldMasteryBonus() float64 {
 
 func (bdk *BloodDeathKnight) ApplyTalents() {
 	bdk.DeathKnight.ApplyTalents()
+	bdk.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypePlate)
 
 	// Veteran of the Third War
 	bdk.AddStaticMod(core.SpellModConfig{

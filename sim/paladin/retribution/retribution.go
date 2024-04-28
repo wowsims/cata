@@ -3,6 +3,7 @@ package retribution
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/paladin"
 )
 
@@ -56,6 +57,11 @@ func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
 func (ret *RetributionPaladin) Initialize() {
 	ret.Paladin.Initialize()
 	//ret.RegisterAvengingWrathCD()
+}
+
+func (ret *RetributionPaladin) ApplyTalents() {
+	ret.Paladin.ApplyTalents()
+	ret.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate)
 }
 
 func (ret *RetributionPaladin) Reset(sim *core.Simulation) {

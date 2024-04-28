@@ -208,8 +208,12 @@ func CalcScalingSpellAverageEffect(class proto.Class, spellEffectCoefficient flo
 // spellEffectVariance is the value in the "Variance" column of the SpellEffect DB2 table
 func CalcScalingSpellEffectVarianceMinMax(class proto.Class, spellEffectCoefficient float64, spellEffectVariance float64) (float64, float64) {
 	avgEffect := CalcScalingSpellAverageEffect(class, spellEffectCoefficient)
-	min := avgEffect * (1 - spellEffectVariance/2.0)
-	max := avgEffect * (1 + spellEffectVariance/2.0)
+	return ApplyVarianceMinMax(avgEffect, spellEffectVariance)
+}
+
+func ApplyVarianceMinMax(avgEffect float64, variance float64) (float64, float64) {
+	min := avgEffect * (1 - variance/2.0)
+	max := avgEffect * (1 + variance/2.0)
 	return min, max
 }
 

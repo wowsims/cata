@@ -4,8 +4,7 @@ import { PhysicalDPSGemOptimizer } from '../../core/components/suggest_gems_acti
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl.js';
-import { APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
+import { APLAction, APLListItem, APLPrepullAction, APLRotation , APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { FeralDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
@@ -68,6 +67,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				[PseudoStat.PseudoStatMainHandDps]: 1.55,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default rotation settings.
@@ -169,6 +169,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 					4: Presets.P4_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });

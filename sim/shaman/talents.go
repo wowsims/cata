@@ -9,12 +9,6 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
-	if shaman.Spec == proto.Spec_SpecElementalShaman || shaman.Spec == proto.Spec_SpecRestorationShaman {
-		shaman.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeMail)
-	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
-		shaman.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeMail)
-	}
-
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.Expertise, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))
@@ -71,6 +65,8 @@ func (shaman *Shaman) ApplyTalents() {
 		})
 		*/
 	}
+
+	shaman.applyLavaSurge()
 
 	shaman.applyFulmination()
 
@@ -224,6 +220,47 @@ func (shaman *Shaman) applyRollingThunder() {
 	})
 }
 
+func (shaman *Shaman) applyLavaSurge() {
+	if shaman.Talents.LavaSurge == 0 {
+		return
+	}
+
+	has4PT12 := shaman.HasSetBonus(ItemSetVolcanicRegalia, 4)
+
+	var instantLavaSurgeMod *core.SpellMod
+
+	if has4PT12 {
+		instantLavaSurgeMod = shaman.AddDynamicMod(core.SpellModConfig{
+			Kind:       core.SpellMod_CastTime_Pct,
+			FloatValue: -1,
+			ClassMask:  SpellMaskLavaBurst,
+		})
+	}
+
+	shaman.RegisterAura(core.Aura{
+		Label:    "Lava Surge",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask != SpellMaskFlameShockDot || !sim.Proc(0.1*float64(shaman.Talents.LavaSurge), "LavaSurge") {
+				return
+			}
+			shaman.LavaBurst.CD.Reset()
+			if has4PT12 {
+				instantLavaSurgeMod.Activate()
+			}
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask != SpellMaskLavaBurst || !has4PT12 {
+				return
+			}
+			instantLavaSurgeMod.Deactivate()
+		},
+	})
+}
+
 func (shaman *Shaman) applyFulmination() {
 	if !shaman.Talents.Fulmination {
 		return
@@ -297,6 +334,8 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		FloatValue: 0.15,
 	})
 
+	has2PT13 := shaman.HasSetBonus(ItemSetSpiritwalkersRegalia, 2)
+
 	buffAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery Buff",
 		ActionID: core.ActionID{SpellID: 64701},
@@ -304,10 +343,16 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1.20)
 			damageMod.Activate()
+			if has2PT13 {
+				shaman.AddStatDynamic(sim, stats.Mastery, 2000)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1 / 1.20)
 			damageMod.Deactivate()
+			if has2PT13 {
+				shaman.AddStatDynamic(sim, stats.Mastery, -2000)
+			}
 		},
 	})
 

@@ -264,7 +264,7 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 
 	if wa.replaceSwing != nil {
 		// Need to check APL here to allow last-moment HS queue casts.
-		wa.unit.Rotation.DoNextAction(sim)
+		wa.unit.ReactToEvent(sim)
 
 		// Need to check this again in case the DoNextAction call swapped items.
 		if wa.replaceSwing != nil {
@@ -279,7 +279,7 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 	attackSpell.Cast(sim, wa.unit.CurrentTarget)
 
 	if !sim.Options.Interactive && wa.unit.Rotation != nil {
-		wa.unit.Rotation.DoNextAction(sim)
+		wa.unit.ReactToEvent(sim)
 	}
 
 	return wa.swingAt
@@ -491,13 +491,34 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 	aa.enabled = true
 
 	if aa.AutoSwingMelee {
-		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
+		if aa.mh.swingAt == NeverExpires {
+			aa.mh.swingAt = 0
+		}
+
 		if aa.IsDualWielding {
+			if aa.oh.swingAt == NeverExpires {
+				aa.oh.swingAt = 0
+
+				// Apply random delay of 0 - 50% swing time, to one of the weapons if dual wielding
+				if aa.oh.unit.Type == EnemyUnit {
+					aa.oh.swingAt = DurationFromSeconds(aa.mh.SwingSpeed / 2)
+				} else {
+					if sim.RandomFloat("SwingResetWeapon") < 0.5 {
+						aa.mh.swingAt = DurationFromSeconds(sim.RandomFloat("SwingResetDelay") * aa.mh.SwingSpeed / 2)
+					} else {
+						aa.oh.swingAt = DurationFromSeconds(sim.RandomFloat("SwingResetDelay") * aa.mh.SwingSpeed / 2)
+					}
+				}
+			}
 			aa.oh.addWeaponAttack(sim, aa.mh.curSwingSpeed)
 		}
+		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 	}
 
 	if aa.AutoSwingRanged {
+		if aa.ranged.swingAt == NeverExpires {
+			aa.ranged.swingAt = 0
+		}
 		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 	}
 }

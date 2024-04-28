@@ -36,6 +36,7 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+			IgnoreHaste: true,
 
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),

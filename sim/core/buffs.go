@@ -184,6 +184,10 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		TerrifyingRoar(&character.Unit)
 	}
 
+	if raidBuffs.FuriousHowl {
+		FuriousHowl(&character.Unit)
+	}
+
 	// +% Attackpower
 	if raidBuffs.AbominationsMight {
 		AbominationsMightAura(&character.Unit)
@@ -786,6 +790,18 @@ func TerrifyingRoar(unit *Unit) *Aura {
 	return baseAura
 }
 
+func FuriousHowl(unit *Unit) *Aura {
+	baseAura := makeExclusiveBuff(unit, BuffConfig{
+		"Terrifying Roar",
+		ActionID{SpellID: 24604},
+		[]StatConfig{
+			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
+			{stats.SpellCrit, 5 * CritRatingPerCritChance, false},
+		}})
+
+	return baseAura
+}
+
 // /////////////////////////////////////////////////////////////////////////
 //
 //	Spell Haste
@@ -932,6 +948,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	raidBuffs.ElementalOath = false
 	raidBuffs.Rampage = false
 	raidBuffs.TerrifyingRoar = false
+	raidBuffs.FuriousHowl = false
 	// AP%
 	raidBuffs.TrueshotAura = false
 	raidBuffs.UnleashedRage = false
@@ -985,7 +1002,7 @@ func InspirationAura(unit *Unit, points int32) *Aura {
 
 	return unit.GetOrRegisterAura(Aura{
 		Label:    "Inspiration",
-		ActionID: ActionID{SpellID: 15363},
+		ActionID: ActionID{SpellID: 15357},
 		Duration: time.Second * 15,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= multiplier

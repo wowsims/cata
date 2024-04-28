@@ -28,6 +28,7 @@ func (war *ArmsWarrior) RegisterMortalStrike() {
 				Timer:    war.NewTimer(),
 				Duration: time.Millisecond * 4500,
 			},
+			IgnoreHaste: true,
 		},
 
 		DamageMultiplier: 1.0,

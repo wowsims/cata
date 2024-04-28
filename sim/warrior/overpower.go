@@ -45,7 +45,7 @@ func (warrior *Warrior) RegisterOverpowerSpell() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return warrior.HasActiveAuraWithTag(EnableOverpowerTag)
+			return warrior.HasActiveAuraWithTag(EnableOverpowerTag) && warrior.StanceMatches(BattleStance)
 		},
 
 		DamageMultiplier: 1.0,

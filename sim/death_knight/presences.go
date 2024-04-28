@@ -62,8 +62,8 @@ func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
 		},
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
 			presenceAura.Activate(sim)
-			if dk.CurrentRunicPower() > 0 {
-				dk.SpendRunicPower(sim, dk.CurrentRunicPower(), rpMetrics)
+			if rp := dk.CurrentRunicPower(); rp > 0 {
+				dk.SpendRunicPower(sim, rp, rpMetrics)
 			}
 		},
 	})
@@ -110,8 +110,8 @@ func (dk *DeathKnight) registerFrostPresenceAura(timer *core.Timer) {
 		},
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
 			presenceAura.Activate(sim)
-			if dk.CurrentRunicPower() > 0 {
-				dk.SpendRunicPower(sim, dk.CurrentRunicPower(), rpMetrics)
+			if rp := dk.CurrentRunicPower(); rp > 0 {
+				dk.SpendRunicPower(sim, rp, rpMetrics)
 			}
 		},
 	})
@@ -167,8 +167,8 @@ func (dk *DeathKnight) registerUnholyPresenceAura(timer *core.Timer) {
 		},
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
 			presenceAura.Activate(sim)
-			if dk.CurrentRunicPower() > 0 {
-				dk.SpendRunicPower(sim, dk.CurrentRunicPower(), rpMetrics)
+			if rp := dk.CurrentRunicPower(); rp > 0 {
+				dk.SpendRunicPower(sim, rp, rpMetrics)
 			}
 		},
 	})

@@ -1,6 +1,6 @@
 import { EligibleWeaponType, IconSize, PlayerClass } from '../player_class';
 import { PlayerSpec } from '../player_spec';
-import { PlayerSpecs } from '../player_specs';
+import { DisciplinePriest, HolyPriest, ShadowPriest } from '../player_specs/priest';
 import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/common';
 import { PriestSpecs } from '../proto_utils/utils';
 
@@ -9,9 +9,9 @@ export class Priest extends PlayerClass<Class.ClassPriest> {
 	static friendlyName = 'Priest';
 	static hexColor = '#fff';
 	static specs: Record<string, PlayerSpec<PriestSpecs>> = {
-		[PlayerSpecs.DisciplinePriest.friendlyName]: PlayerSpecs.DisciplinePriest,
-		[PlayerSpecs.HolyPriest.friendlyName]: PlayerSpecs.HolyPriest,
-		[PlayerSpecs.ShadowPriest.friendlyName]: PlayerSpecs.ShadowPriest,
+		[DisciplinePriest.friendlyName]: DisciplinePriest,
+		[HolyPriest.friendlyName]: HolyPriest,
+		[ShadowPriest.friendlyName]: ShadowPriest,
 	};
 	static races: Race[] = [
 		// [A]

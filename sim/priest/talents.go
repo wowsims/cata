@@ -5,10 +5,12 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (priest *Priest) ApplyTalents() {
+	priest.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
 	// TODO:
 	// Reflective Shield
 	// Improved Flash Heal
@@ -137,7 +139,7 @@ func (priest *Priest) ApplyTalents() {
 	if priest.Talents.TwistedFaith > 0 {
 		priest.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolShadow,
-			ClassMask:  PriestShadowSpells,
+			ClassMask:  PriestShadowSpells | PriestSpellShadowyApparation,
 			FloatValue: 0.01 * float64(priest.Talents.TwistedFaith),
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
@@ -632,7 +634,7 @@ func (priest *Priest) applyShadowyApparition() {
 		BonusCoefficient: spellScaling,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := priest.ScalingBaseDamage * levelScaling
+			baseDamage := priest.ClassSpellScaling * levelScaling
 
 			// snapshot values on spawn
 			dmgMulti := spell.DamageMultiplier

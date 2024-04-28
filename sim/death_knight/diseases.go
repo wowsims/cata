@@ -56,7 +56,7 @@ func (dk *DeathKnight) registerOutbreak() {
 
 func (dk *DeathKnight) registerFrostFever() {
 	extraEffectAura := dk.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return core.FrostFeverAura(&dk.Unit, target, dk.Talents.BrittleBones)
+		return core.FrostFeverAura(target, dk.Talents.BrittleBones)
 	})
 
 	dk.FrostFeverSpell = dk.RegisterSpell(core.SpellConfig{

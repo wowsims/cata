@@ -1,6 +1,6 @@
 import { EligibleWeaponType, IconSize, PlayerClass } from '../player_class';
 import { PlayerSpec } from '../player_spec';
-import { PlayerSpecs } from '../player_specs';
+import { ElementalShaman, EnhancementShaman, RestorationShaman } from '../player_specs/shaman';
 import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/common';
 import { ShamanSpecs } from '../proto_utils/utils';
 
@@ -9,9 +9,9 @@ export class Shaman extends PlayerClass<Class.ClassShaman> {
 	static friendlyName = 'Shaman';
 	static hexColor = '#2459ff';
 	static specs: Record<string, PlayerSpec<ShamanSpecs>> = {
-		[PlayerSpecs.ElementalShaman.friendlyName]: PlayerSpecs.ElementalShaman,
-		[PlayerSpecs.EnhancementShaman.friendlyName]: PlayerSpecs.EnhancementShaman,
-		[PlayerSpecs.RestorationShaman.friendlyName]: PlayerSpecs.RestorationShaman,
+		[ElementalShaman.friendlyName]: ElementalShaman,
+		[EnhancementShaman.friendlyName]: EnhancementShaman,
+		[RestorationShaman.friendlyName]: RestorationShaman,
 	};
 	static races: Race[] = [
 		// [A]

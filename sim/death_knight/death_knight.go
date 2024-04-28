@@ -46,7 +46,7 @@ type DeathKnight struct {
 	core.Character
 	Talents *proto.DeathKnightTalents
 
-	ClassBaseScaling float64
+	ClassSpellScaling float64
 
 	Inputs DeathKnightInputs
 
@@ -85,9 +85,6 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (dk *DeathKnight) ApplyTalents() {
-	// Apply Armor Spec
-	dk.EnableArmorSpecialization(stats.Strength, proto.ArmorType_ArmorTypePlate)
-
 	dk.ApplyBloodTalents()
 	dk.ApplyFrostTalents()
 	dk.ApplyUnholyTalents()
@@ -143,10 +140,10 @@ func (dk *DeathKnight) HasMinorGlyph(glyph proto.DeathKnightMinorGlyph) bool {
 
 func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents string, deathRuneConvertSpellId int32) *DeathKnight {
 	dk := &DeathKnight{
-		Character:        *character,
-		Talents:          &proto.DeathKnightTalents{},
-		Inputs:           inputs,
-		ClassBaseScaling: 1125.227400,
+		Character:         *character,
+		Talents:           &proto.DeathKnightTalents{},
+		Inputs:            inputs,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDeathKnight),
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
@@ -177,15 +174,17 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	dk.AddStat(stats.SpellHit, 9*core.SpellHitRatingPerHitChance)
 
 	dk.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/243.7)
-	dk.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/430.69289874)
 	dk.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	dk.AddStatDependency(stats.Strength, stats.Parry, 0.25)
+
+	dk.AddStat(stats.Parry, -dk.GetBaseStats()[stats.Strength]*0.27)
+	dk.AddStatDependency(stats.Strength, stats.Parry, 0.27)
+
 	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	dk.PseudoStats.CanParry = true
 
 	// 	// Base dodge unaffected by Diminishing Returns
-	dk.PseudoStats.BaseDodge += 0.03664
+	dk.PseudoStats.BaseDodge += 0.05
 	dk.PseudoStats.BaseParry += 0.05
 
 	if dk.Talents.SummonGargoyle {
@@ -209,6 +208,12 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	if dk.Talents.DancingRuneWeapon {
 		dk.RuneWeapon = dk.NewRuneWeapon()
 	}
+
+	dk.EnableAutoAttacks(dk, core.AutoAttackOptions{
+		MainHand:       dk.WeaponFromMainHand(dk.DefaultMeleeCritMultiplier()),
+		OffHand:        dk.WeaponFromOffHand(dk.DefaultMeleeCritMultiplier()),
+		AutoSwingMelee: true,
+	})
 
 	return dk
 }

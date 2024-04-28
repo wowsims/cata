@@ -1,8 +1,8 @@
 import { Tooltip } from 'bootstrap';
+import { element, fragment } from 'tsx-vanilla';
+
 import { Component } from '../components/component.js';
 import { TypedEvent } from '../typed_event.js';
-
-import { element, fragment } from 'tsx-vanilla';
 
 // Config for displaying a warning to the user whenever a condition is met.
 interface SimWarning {
@@ -53,7 +53,7 @@ export class ResultsViewer extends Component {
 	}
 
 	private addWarningLink(args: WarningLinkArgs): HTMLElement {
-		let item = (
+		const item = (
 			<div className="sim-toolbar-item">
 				<a
 					href={args.href ? args.href : 'javascript:void(0)'}
@@ -66,7 +66,7 @@ export class ResultsViewer extends Component {
 			</div>
 		);
 
-		let link = item.children[0] as HTMLElement;
+		const link = item.children[0] as HTMLElement;
 
 		if (args.onclick) {
 			link.addEventListener('click', () => {
@@ -107,16 +107,16 @@ export class ResultsViewer extends Component {
 
 	private updateWarnings() {
 		const activeWarnings = this.warnings.map(warning => warning.getContent()).flat().filter(content => content != '');
-		let tooltipFragment = document.createElement('fragment');
+		const tooltipFragment = document.createElement('fragment');
 		tooltipFragment.innerHTML = this.warningsLink.getAttribute('data-bs-title') as string;
-		let list = tooltipFragment.children[0] as HTMLElement;
+		const list = tooltipFragment.children[0] as HTMLElement;
 		list.innerHTML = '';
 		if (activeWarnings.length == 0) {
 			this.warningsLink.parentElement?.classList?.add('hide');
 		} else {
 			this.warningsLink.parentElement?.classList?.remove('hide');
 			activeWarnings.forEach(warning => {
-				let listItem = document.createElement('li');
+				const listItem = document.createElement('li');
 				listItem.innerHTML = warning;
 				list.appendChild(listItem);
 			});
