@@ -40,7 +40,8 @@ func (shaman *Shaman) registerEarthShockSpell(shockTimer *core.Timer) {
 	config := shaman.newShockSpellConfig(8042, core.SpellSchoolNature, 0.18, shockTimer, 0.386)
 	config.ClassSpellMask = SpellMaskEarthShock
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		result := shaman.calcDamageStormstrikeCritChance(sim, target, 931, spell)
+		baseDamage := shaman.ClassSpellScaling * 0.92699998617
+		result := shaman.calcDamageStormstrikeCritChance(sim, target, baseDamage, spell)
 		spell.DealDamage(sim, result)
 
 		if shaman.Talents.Fulmination && shaman.LightningShieldAura.GetStacks() > 3 {
@@ -87,7 +88,8 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, 856/6)
+				baseDamage := shaman.ClassSpellScaling * 0.14200000465
+				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -100,7 +102,8 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 	})
 
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		result := spell.CalcDamage(sim, target, 531, spell.OutcomeMagicHitAndCrit)
+		baseDamage := shaman.ClassSpellScaling * 0.52899998426
+		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		if result.Landed() {
 			shaman.FlameShockDot.Cast(sim, target)
 		}
@@ -115,7 +118,8 @@ func (shaman *Shaman) registerFrostShockSpell(shockTimer *core.Timer) {
 	config.ClassSpellMask = SpellMaskFrostShock
 	config.ThreatMultiplier *= 2
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		spell.CalcAndDealDamage(sim, target, sim.Roll(848, 897), spell.OutcomeMagicHitAndCrit)
+		baseDamage := shaman.ClassSpellScaling * 0.86900001764
+		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 	}
 
 	shaman.FrostShock = shaman.RegisterSpell(config)
