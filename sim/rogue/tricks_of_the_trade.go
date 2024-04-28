@@ -15,9 +15,9 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 	hasShadowblades := rogue.HasSetBonus(Tier10, 2)
 	energyCost := core.TernaryFloat64(hasGlyph || hasShadowblades, 0, 15)
 
-	var targetUnit *core.Unit
+	var tottTarget *core.Unit
 	if rogue.Options.TricksOfTheTradeTarget != nil {
-		targetUnit = rogue.GetUnit(rogue.Options.TricksOfTheTradeTarget)
+		tottTarget = rogue.GetUnit(rogue.Options.TricksOfTheTradeTarget)
 	}
 
 	tricksOfTheTradeThreatTransferAura := rogue.GetOrRegisterAura(core.Aura{
@@ -75,9 +75,9 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if targetUnit != nil {
-				castTarget = targetUnit
-			} else if target != &rogue.Unit { // Cant cast on ourself
+			if tottTarget != nil {
+				castTarget = tottTarget
+			} else if target.Type == core.PlayerUnit && target != &rogue.Unit { // Cant cast on ourself
 				castTarget = target
 			}
 			tricksOfTheTradeApplicationAura.Activate(sim)
@@ -91,7 +91,7 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 		Spell: rogue.TricksOfTheTrade,
 		Type:  core.CooldownTypeDPS,
 		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
-			return targetUnit != nil
+			return tottTarget != nil
 		},
 	})
 }
