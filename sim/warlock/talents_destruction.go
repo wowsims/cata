@@ -45,7 +45,6 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 		warlock.registerShadowBurnSpell()
 	}
 
-	//TODO: Burning Embers
 	warlock.registerBurningEmbers()
 
 	warlock.registerSoulLeech()
@@ -206,6 +205,7 @@ func (warlock *Warlock) registerBurningEmbers() {
 			},
 		},
 
+		DamageMultiplier: 1,
 		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 

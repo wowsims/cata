@@ -34,7 +34,7 @@ func (warlock *Warlock) registerSummonSuccubusSpell() {
 }
 
 type SuccubusPet struct {
-	*WarlockPet
+	core.Pet
 
 	LashOfPain *core.Spell
 }
@@ -51,7 +51,7 @@ func (warlock *Warlock) NewSuccubusPet() *SuccubusPet {
 		stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
 	}
 
-	autoAttackOptions := &core.AutoAttackOptions{
+	autoAttackOptions := core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  88.8,
 			BaseDamageMax:  133.3,
@@ -62,16 +62,33 @@ func (warlock *Warlock) NewSuccubusPet() *SuccubusPet {
 	}
 
 	succubus := &SuccubusPet{
-		WarlockPet: NewWarlockPet(warlock, PetSuccubus, baseStats, autoAttackOptions),
+		Pet: core.NewPet(PetSuccubus, &warlock.Character, baseStats, warlock.MakeStatInheritance(), false, false),
 	}
 
 	succubus.EnableManaBarWithModifier(0.77)
 
+	succubus.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	succubus.AddStat(stats.AttackPower, -20)
+
+	succubus.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
+
+	succubus.EnableAutoAttacks(succubus, autoAttackOptions)
+
+	core.ApplyPetConsumeEffects(&succubus.Character, warlock.Consumes)
+
+	warlock.AddPet(succubus)
+
 	return succubus
 }
 
-func (succubus *SuccubusPet) Initialize() {
+func (succubus *SuccubusPet) GetPet() *core.Pet {
+	return &succubus.Pet
+}
 
+func (succubus *SuccubusPet) Reset(_ *core.Simulation) {
+}
+
+func (succubus *SuccubusPet) Initialize() {
 	succubus.registerLashOfPainSpell()
 }
 

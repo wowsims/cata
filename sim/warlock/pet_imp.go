@@ -34,7 +34,7 @@ func (warlock *Warlock) registerSummonImpSpell() {
 }
 
 type ImpPet struct {
-	*WarlockPet
+	core.Pet
 
 	Firebolt *core.Spell
 }
@@ -53,19 +53,30 @@ func (warlock *Warlock) NewImpPet() *ImpPet {
 	}
 
 	imp := &ImpPet{
-		WarlockPet: NewWarlockPet(warlock, PetImp, baseStats, nil),
+		Pet: core.NewPet(PetImp, &warlock.Character, baseStats, warlock.MakeStatInheritance(), false, false),
 	}
 
 	imp.EnableManaBarWithModifier(0.33)
+	imp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	imp.AddStat(stats.AttackPower, -20)
+	imp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
+
+	core.ApplyPetConsumeEffects(&warlock.Character, warlock.Consumes)
+
+	warlock.AddPet(imp)
 
 	return imp
 }
 
-func (imp *ImpPet) Initialize() {
-	imp.registerFireboltSpell()
+func (imp *ImpPet) GetPet() *core.Pet {
+	return &imp.Pet
 }
 
 func (imp *ImpPet) Reset(_ *core.Simulation) {
+}
+
+func (imp *ImpPet) Initialize() {
+	imp.registerFireboltSpell()
 }
 
 func (imp *ImpPet) ExecuteCustomRotation(sim *core.Simulation) {

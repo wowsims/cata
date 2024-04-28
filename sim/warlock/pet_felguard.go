@@ -34,7 +34,7 @@ func (warlock *Warlock) registerSummonFelguardSpell() {
 }
 
 type FelguardPet struct {
-	*WarlockPet
+	core.Pet
 
 	LegionStrike *core.Spell
 	Felstorm     *core.Spell
@@ -63,12 +63,24 @@ func (warlock *Warlock) NewFelguardPet() *FelguardPet {
 	}
 
 	felguard := &FelguardPet{
-		WarlockPet: NewWarlockPet(warlock, PetFelguard, baseStats, autoAttackOptions),
+		Pet: core.NewPet(PetFelguard, &warlock.Character, baseStats, warlock.MakeStatInheritance(), false, false),
 	}
 
 	felguard.EnableManaBarWithModifier(0.77)
-
+	felguard.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	felguard.AddStat(stats.AttackPower, -20)
+	felguard.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
+	felguard.EnableAutoAttacks(felguard, *autoAttackOptions)
+	core.ApplyPetConsumeEffects(&warlock.Character, warlock.Consumes)
+	warlock.AddPet(felguard)
 	return felguard
+}
+
+func (felguard *FelguardPet) GetPet() *core.Pet {
+	return &felguard.Pet
+}
+
+func (felguard *FelguardPet) Reset(_ *core.Simulation) {
 }
 
 func (felguard *FelguardPet) Initialize() {
@@ -78,12 +90,11 @@ func (felguard *FelguardPet) Initialize() {
 
 // TODO: script
 func (felguard *FelguardPet) ExecuteCustomRotation(sim *core.Simulation) {
-	if !felguard.Felstorm.IsReady(sim) {
-		felguard.WaitUntil(sim, felguard.Felstorm.CD.ReadyAt())
-		return
+	if felguard.Felstorm.CanCast(sim, felguard.CurrentTarget) {
+		felguard.Felstorm.Cast(sim, felguard.CurrentTarget)
+	} else if felguard.LegionStrike.CanCast(sim, felguard.CurrentTarget) {
+		felguard.LegionStrike.Cast(sim, felguard.CurrentTarget)
 	}
-
-	felguard.Felstorm.Cast(sim, felguard.CurrentTarget)
 }
 
 func (felguard *FelguardPet) registerFelstormSpell() {
@@ -160,8 +171,9 @@ func (felguard *FelguardPet) registerLegionStrikeSpell() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage,
 		ClassSpellMask: WarlockSpellFelGuardLegionStrike,
 
-		RageCost: core.RageCostOptions{
-			Cost: 30,
+		ManaCost: core.ManaCostOptions{
+			BaseCost:   0.06,
+			Multiplier: 1,
 		},
 
 		Cast: core.CastConfig{

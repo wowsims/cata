@@ -34,7 +34,7 @@ func (warlock *Warlock) registerSummonFelHunterSpell() {
 }
 
 type FelhunterPet struct {
-	*WarlockPet
+	core.Pet
 
 	owner *Warlock
 
@@ -53,7 +53,7 @@ func (warlock *Warlock) NewFelhunterPet() *FelhunterPet {
 		stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
 	}
 
-	autoAttackOptions := &core.AutoAttackOptions{
+	autoAttackOptions := core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  88.8,
 			BaseDamageMax:  133.3,
@@ -64,14 +64,27 @@ func (warlock *Warlock) NewFelhunterPet() *FelhunterPet {
 	}
 
 	felhunter := &FelhunterPet{
-		WarlockPet: NewWarlockPet(warlock, PetFelhunter, baseStats, autoAttackOptions),
+		Pet: core.NewPet(PetFelhunter, &warlock.Character, baseStats, warlock.MakeStatInheritance(), false, false),
 	}
 
 	felhunter.owner = warlock
 
 	felhunter.EnableManaBarWithModifier(0.77)
+	felhunter.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	felhunter.AddStat(stats.AttackPower, -20)
+	felhunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
+	felhunter.EnableAutoAttacks(felhunter, autoAttackOptions)
+	core.ApplyPetConsumeEffects(&warlock.Character, warlock.Consumes)
+	warlock.AddPet(felhunter)
 
 	return felhunter
+}
+
+func (felhunter *FelhunterPet) GetPet() *core.Pet {
+	return &felhunter.Pet
+}
+
+func (felhunter *FelhunterPet) Reset(_ *core.Simulation) {
 }
 
 func (felhunter *FelhunterPet) Initialize() {
@@ -121,8 +134,8 @@ func (felhunter *FelhunterPet) registerShadowBiteSpell() {
 				// missing: drain life, shadowflame
 			}
 			counter := 0
-			for _, spell := range spells {
-				if spell != nil && spell.Dot(target).IsActive() {
+			for _, ownerSpell := range spells {
+				if ownerSpell != nil && ownerSpell.Dot(target).IsActive() {
 					counter++
 				}
 			}

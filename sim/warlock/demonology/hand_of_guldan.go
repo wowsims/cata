@@ -65,20 +65,20 @@ func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
 			},
 		},
 
+		DamageMultiplier: 1,
 		CritMultiplier:   demonology.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.968,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := demonology.CalcBaseDamageWithVariance(sim, 1.593, 0.166)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if result.Landed() {
 
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := demonology.CalcBaseDamageWithVariance(sim, 1.593, 0.166)
-				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-				if result.Landed() {
-					//aura := demonology.ActivePet.CurseOfGuldanDebuffs.Get(target)
-					//aura.Activate(sim)
-				}
+				//for _, aoeTarget := range sim.Encounter.TargetUnits {
+				//aura := demonology.ActivePet.CurseOfGuldanDebuffs.Get(target)
+				//aura.Activate(sim)
+				//}
 			}
 		},
 	})

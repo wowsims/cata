@@ -10,7 +10,7 @@ import (
 func (warlock *Warlock) ApplyDemonologyTalents() {
 	// Demonic Embrace
 	if warlock.Talents.DemonicEmbrace > 0 {
-		warlock.MultiplyStat(stats.Stamina, []float64{1.04, 1.07, 1.10}[warlock.Talents.DemonicEmbrace])
+		warlock.MultiplyStat(stats.Stamina, []float64{1.0, 1.04, 1.07, 1.10}[warlock.Talents.DemonicEmbrace])
 	}
 
 	//Dark Arts
@@ -43,9 +43,9 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 	// Inferno
 	if warlock.Talents.Inferno {
 		warlock.AddStaticMod(core.SpellModConfig{
-			ClassMask: WarlockSpellImmolate,
+			ClassMask: WarlockSpellImmolateDot,
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
-			TimeValue: 2,
+			IntValue:  2,
 		})
 	}
 
@@ -99,10 +99,11 @@ func (warlock *Warlock) registerImpendingDoom() {
 			ActionID: core.ActionID{SpellID: 85107},
 			//TODO: Do they need to hit?
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if (spell == warlock.ShadowBolt || spell == warlock.HandOfGuldan || spell == warlock.SoulFire || spell == warlock.Incinerate) &&
-					!warlock.Metamorphosis.CD.IsReady(sim) && sim.Proc(impendingDoomProcChance, "Impending Doom") {
-					*warlock.Metamorphosis.CD.Timer = core.Timer(time.Duration(*warlock.Metamorphosis.CD.Timer) - time.Second*15)
-					warlock.UpdateMajorCooldowns()
+				if spell == warlock.ShadowBolt || spell == warlock.HandOfGuldan || spell == warlock.SoulFire || spell == warlock.Incinerate {
+					if !warlock.Metamorphosis.CD.IsReady(sim) && sim.Proc(impendingDoomProcChance, "Impending Doom") {
+						*warlock.Metamorphosis.CD.Timer = core.Timer(time.Duration(*warlock.Metamorphosis.CD.Timer) - time.Second*15)
+						warlock.UpdateMajorCooldowns()
+					}
 				}
 			},
 		}))
@@ -143,7 +144,7 @@ func (warlock *Warlock) registerMoltenCore() {
 			Label: "Molten Core Hidden Aura",
 			//TODO: Can this occur on the initial Immolate damage?
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == warlock.Immolate {
+				if spell == warlock.ImmolateDot {
 					if sim.Proc(0.02*float64(warlock.Talents.MoltenCore), "Molten Core") {
 						warlock.MoltenCoreAura.Activate(sim)
 						warlock.MoltenCoreAura.SetStacks(sim, 3)
@@ -197,26 +198,18 @@ func (warlock *Warlock) registerCremation() {
 		return
 	}
 
-	procChance := []float64{0.5, 1.0}[warlock.Talents.Cremation]
+	procChance := []float64{0.0, 0.5, 1.0}[warlock.Talents.Cremation]
 
-	cremationAura := warlock.RegisterAura(core.Aura{
-		Label:    "Cremation Talent",
-		Duration: core.NeverExpires,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == warlock.HandOfGuldan {
-				if warlock.ImmolateDot.Dot(aura.Unit).IsActive() && sim.Proc(procChance, "Cremation") {
-					//TODO: Should this Rollover or Apply like other dots in cata?
-					warlock.ImmolateDot.Dot(aura.Unit).Rollover(sim)
+	core.MakePermanent(
+		warlock.RegisterAura(core.Aura{
+			Label: "Cremation Talent",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell == warlock.HandOfGuldan {
+					if warlock.ImmolateDot.Dot(result.Target).IsActive() && sim.Proc(procChance, "Cremation") {
+						//TODO: Should this Rollover or Apply like other dots in cata?
+						warlock.ImmolateDot.Dot(result.Target).Rollover(sim)
+					}
 				}
-			}
-		},
-	})
-
-	warlock.RegisterResetEffect(func(sim *core.Simulation) {
-		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
-			if isExecute == 25 {
-				cremationAura.Activate(sim)
-			}
-		})
-	})
+			},
+		}))
 }

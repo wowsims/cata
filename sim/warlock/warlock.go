@@ -12,6 +12,11 @@ const (
 	PetExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
 )
 
+const PetFelhunter string = "Felhunter"
+const PetFelguard string = "Felguard"
+const PetSuccubus string = "Succubus"
+const PetImp string = "Imp"
+
 var TalentTreeSizes = [3]int{18, 19, 19}
 
 type Warlock struct {
@@ -72,6 +77,7 @@ type Warlock struct {
 	SummonInfernal  *core.Spell
 
 	ActivePet string
+	//ActivePet *core.Pet
 	Felhunter *FelhunterPet
 	Felguard  *FelguardPet
 	Imp       *ImpPet
@@ -322,31 +328,33 @@ func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
 func (warlock *Warlock) ChangeActivePet(sim *core.Simulation, newPet string) {
 	switch warlock.ActivePet {
 	case PetFelguard:
-		warlock.Felguard.WarlockPet.Disable(sim)
+		warlock.Felguard.Disable(sim)
 	case PetFelhunter:
-		warlock.Felhunter.WarlockPet.Disable(sim)
+		warlock.Felhunter.Disable(sim)
 	case PetImp:
-		warlock.Imp.WarlockPet.Disable(sim)
+		warlock.Imp.Disable(sim)
 	case PetSuccubus:
-		warlock.Succubus.WarlockPet.Disable(sim)
+		warlock.Succubus.Disable(sim)
 	}
 
 	switch newPet {
 	case PetFelguard:
-		warlock.Felguard.WarlockPet.Enable(sim, warlock.Felguard)
+		warlock.Felguard.Enable(sim, warlock.Felguard)
 	case PetFelhunter:
-		warlock.Felhunter.WarlockPet.Enable(sim, warlock.Felhunter)
+		warlock.Felhunter.Enable(sim, warlock.Felhunter)
 	case PetImp:
-		warlock.Imp.WarlockPet.Enable(sim, warlock.Imp)
+		warlock.Imp.Enable(sim, warlock.Imp)
 	case PetSuccubus:
-		warlock.Succubus.WarlockPet.Enable(sim, warlock.Succubus)
+		warlock.Succubus.Enable(sim, warlock.Succubus)
 	}
+
+	warlock.ActivePet = newPet
 }
 
-// func (warlock *Warlock) ChangeActivePet(sim *core.Simulation, newPet *WarlockPet) {
+// func (warlock *Warlock) ChangeActivePet(sim *core.Simulation, newPet *core.Pet) {
 // 		if warlock.ActivePet != nil {
 // 			warlock.ActivePet.Disable(sim)
 // 		}
-// 		warlock.ActivePet = &newPet
-// 		warlock.ActivePet.Enable(sim, warlock.ActivePet)
+// 		warlock.ActivePet = newPet
+// 		warlock.ActivePet.Enable(sim, warlock.ActivePet.Pet)
 // 	}

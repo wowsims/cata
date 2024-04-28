@@ -1,49 +1,38 @@
 package warlock
 
-import (
-	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
-)
+// type WarlockPet struct {
+// 	core.Pet
 
-const PetFelhunter string = "Felhunter"
-const PetFelguard string = "Felguard"
-const PetSuccubus string = "Succubus"
-const PetImp string = "Imp"
+// 	CurseOfGuldanDebuffs core.AuraArray
+// }
 
-type WarlockPet struct {
-	core.Pet
+// func NewWarlockPet(owner *Warlock, name string, baseStats stats.Stats, autoAttackOptions *core.AutoAttackOptions) *WarlockPet {
+// 	warlockPet := &WarlockPet{
+// 		Pet: core.NewPet(name, &owner.Character, baseStats, owner.MakeStatInheritance(), false, false),
+// 	}
 
-	CurseOfGuldanDebuffs core.AuraArray
-}
+// 	warlockPet.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+// 	warlockPet.AddStat(stats.AttackPower, -20)
 
-func NewWarlockPet(owner *Warlock, name string, baseStats stats.Stats, autoAttackOptions *core.AutoAttackOptions) *WarlockPet {
-	warlockPet := &WarlockPet{
-		Pet: core.NewPet(name, &owner.Character, baseStats, owner.MakeStatInheritance(), false, false),
-	}
+// 	warlockPet.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
 
-	warlockPet.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	warlockPet.AddStat(stats.AttackPower, -20)
+// 	if autoAttackOptions != nil {
+// 		warlockPet.EnableAutoAttacks(warlockPet, *autoAttackOptions)
+// 	}
 
-	warlockPet.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
+// 	core.ApplyPetConsumeEffects(&warlockPet.Character, owner.Consumes)
 
-	if autoAttackOptions != nil {
-		warlockPet.EnableAutoAttacks(warlockPet, *autoAttackOptions)
-	}
+// 	owner.AddPet(warlockPet)
 
-	core.ApplyPetConsumeEffects(&warlockPet.Character, owner.Consumes)
+// 	return warlockPet
+// }
 
-	owner.AddPet(warlockPet)
+// func (warlockPet *WarlockPet) GetPet() *core.Pet {
+// 	return &warlockPet.Pet
+// }
 
-	return warlockPet
-}
+// func (warlockPet *WarlockPet) Initialize() {
+// }
 
-func (warlockPet *WarlockPet) GetPet() *core.Pet {
-	return &warlockPet.Pet
-}
-
-func (warlockPet *WarlockPet) Initialize() {
-
-}
-
-func (warlockPet *WarlockPet) Reset(_ *core.Simulation) {
-}
+// func (warlockPet *WarlockPet) Reset(_ *core.Simulation) {
+// }

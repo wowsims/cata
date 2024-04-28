@@ -59,7 +59,7 @@ func (demonology *DemonologyWarlock) ApplyTalents() {
 
 	//Mastery: Master Demonologist
 	//TODO: Is there a better way to apply this mod/activate/deactivate it from all pets?
-	MasterDemonologistOwnerMod := demonology.AddDynamicMod(core.SpellModConfig{
+	demonology.MasterDemonologistOwnerMod = demonology.AddDynamicMod(core.SpellModConfig{
 		Kind: core.SpellMod_DamageDone_Pct,
 	})
 
@@ -92,7 +92,7 @@ func (demonology *DemonologyWarlock) ApplyTalents() {
 	})
 
 	demonology.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		MasterDemonologistOwnerMod.UpdateFloatValue(demonology.getMasteryBonus())
+		demonology.MasterDemonologistOwnerMod.UpdateFloatValue(demonology.getMasteryBonus())
 		MasterDemonologistPetMod_Felguard.UpdateFloatValue(demonology.getMasteryBonus())
 		MasterDemonologistPetMod_Felhunter.UpdateFloatValue(demonology.getMasteryBonus())
 		MasterDemonologistPetMod_Imp.UpdateFloatValue(demonology.getMasteryBonus())
@@ -106,7 +106,7 @@ func (demonology *DemonologyWarlock) ApplyTalents() {
 		Label:    "Mastery: Master Demonologist",
 		ActionID: core.ActionID{SpellID: 77219},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			MasterDemonologistOwnerMod.UpdateFloatValue(demonology.getMasteryBonus())
+			demonology.MasterDemonologistOwnerMod.UpdateFloatValue(demonology.getMasteryBonus())
 			MasterDemonologistPetMod_Felguard.Activate()
 			MasterDemonologistPetMod_Felhunter.Activate()
 			MasterDemonologistPetMod_Imp.Activate()
