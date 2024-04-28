@@ -33,33 +33,38 @@ func (druid *Druid) registerInsectSwarmSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Insect Swarm",
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					// check whether to apply nature's grace maybe?
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-
-				},
 			},
-			NumberOfTicks: 6,
-			TickLength:    time.Second * 2,
+
+			NumberOfTicks:       6,
+			TickLength:          time.Second * 2,
+			AffectedByCastSpeed: true,
+			BonusCoefficient:    0.13,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 215 + 0.2*(dot.Spell.SpellPower())
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
+				min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.138, 0)
+				baseDamage := sim.Roll(min, max)
+				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-
-				// shooting stars proc
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+
 			if result.Landed() {
+				spell.SpellMetrics[target.UnitIndex].Hits--
 				spell.Dot(target).Apply(sim)
 			}
+
 			spell.DealOutcome(sim, result)
+		},
+
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
+			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.138, 0)
+			baseDamage := sim.Roll(min, max)
+			return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 		},
 	})
 }

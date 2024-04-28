@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func (druid *Druid) registerMoonfireSpell() {
@@ -16,7 +17,7 @@ func (druid *Druid) registerMoonfireSpell() {
 	//bonusPeriodicDamageMultiplier := core.TernaryFloat64(hasMoonfireGlyph, 0.2, 0)
 
 	druid.Moonfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 48463},
+		ActionID:       core.ActionID{SpellID: 8921},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellMoonfire | DruidArcaneSpells | DruidSpellDoT,
@@ -24,7 +25,7 @@ func (druid *Druid) registerMoonfireSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.21,
-			Multiplier: 1 - 0.03*float64(druid.Talents.Moonglow),
+			Multiplier: 1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -36,6 +37,7 @@ func (druid *Druid) registerMoonfireSpell() {
 
 		CritMultiplier:   druid.BalanceCritMultiplier(),
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.18,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -48,7 +50,7 @@ func (druid *Druid) registerMoonfireSpell() {
 				},
 			},
 			NumberOfTicks: druid.moonfireTicks(),
-			TickLength:    time.Second * 3,
+			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				// dot.Spell.DamageMultiplier = baseDamageMultiplier + bonusPeriodicDamageMultiplier
@@ -64,19 +66,22 @@ func (druid *Druid) registerMoonfireSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(406, 476) + 0.15*spell.SpellPower()
+			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.221, 0.2)
+			baseDamage := sim.Roll(min, max)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
 			if result.Landed() {
 				druid.ExtendingMoonfireStacks = 3
 				dot := spell.Dot(target)
 				dot.NumberOfTicks = numTicks
 				dot.Apply(sim)
 			}
+
 			spell.DealDamage(sim, result)
 		},
 	})
 }
 
 func (druid *Druid) moonfireTicks() int32 {
-	return 4
+	return 6
 }
