@@ -5,6 +5,7 @@ import {
 	APLActionActivateAura,
 	APLActionAutocastOtherCooldowns,
 	APLActionCancelAura,
+	APLActionCastFriendlySpell,
 	APLActionCastSpell,
 	APLActionCatOptimalRotationAction,
 	APLActionChangeTarget,
@@ -331,7 +332,20 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		label: 'Cast',
 		shortDescription: 'Casts the spell if possible, i.e. resource/cooldown/GCD/etc requirements are all met.',
 		newValue: APLActionCastSpell.create,
-		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', ''), AplHelpers.unitFieldConfig('target', 'targets')],
+		fields: [
+			AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', ''),
+			AplHelpers.unitFieldConfig('target', 'targets')
+		],
+	}),
+	['castFriendlySpell']: inputBuilder({
+		label: 'Cast at Player',
+		shortDescription: 'Casts a friendly spell if possible, i.e. resource/cooldown/GCD/etc requirements are all met.',
+		newValue: APLActionCastFriendlySpell.create,
+		fields: [
+			AplHelpers.actionIdFieldConfig('spellId', 'friendly_spells', ''),
+			AplHelpers.unitFieldConfig('target', 'players')
+		],
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getRaid()!.size() > 1,
 	}),
 	['multidot']: inputBuilder({
 		label: 'Multi Dot',

@@ -28,7 +28,7 @@ func (dk *DeathKnight) registerDeathCoilSpell() {
 		ThreatMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.87599998713 + spell.MeleeAttackPower()*0.23
+			baseDamage := dk.ClassSpellScaling*0.87599998713 + spell.MeleeAttackPower()*0.23
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -41,7 +41,7 @@ func (dk *DeathKnight) registerDrwDeathCoilSpell() *core.Spell {
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.87599998713 + spell.MeleeAttackPower()*0.23
+			baseDamage := dk.ClassSpellScaling*0.87599998713 + spell.MeleeAttackPower()*0.23
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

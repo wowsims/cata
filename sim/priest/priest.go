@@ -62,7 +62,7 @@ type Priest struct {
 
 	ProcPrayerOfMending core.ApplySpellResults
 
-	ScalingBaseDamage    float64
+	ClassSpellScaling    float64
 	ShadowCritMultiplier float64
 
 	// set bonus cache
@@ -115,10 +115,6 @@ func (priest *Priest) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (priest *Priest) Initialize() {
-
-	// base scaling value for a level 85 priest
-	priest.ScalingBaseDamage = 945.188842773437500
-
 	if priest.SelfBuffs.UseInnerFire {
 		priest.AddStat(stats.SpellPower, 531)
 		priest.ApplyEquipScaling(stats.Armor, 1.6)
@@ -192,9 +188,10 @@ func (priest *Priest) Reset(_ *core.Simulation) {
 
 func New(char *core.Character, selfBuffs SelfBuffs, talents string) *Priest {
 	priest := &Priest{
-		Character: *char,
-		SelfBuffs: selfBuffs,
-		Talents:   &proto.PriestTalents{},
+		Character:         *char,
+		SelfBuffs:         selfBuffs,
+		Talents:           &proto.PriestTalents{},
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassPriest),
 	}
 
 	core.FillTalentsProto(priest.Talents.ProtoReflect(), talents, TalentTreeSizes)
@@ -302,9 +299,9 @@ const (
 )
 
 func (priest *Priest) calcBaseDamage(sim *core.Simulation, coefficient float64, variance float64) float64 {
-	baseDamage := priest.ScalingBaseDamage * coefficient
+	baseDamage := priest.ClassSpellScaling * coefficient
 	if variance > 0 {
-		delta := priest.ScalingBaseDamage * variance * 0.5
+		delta := priest.ClassSpellScaling * variance * 0.5
 		baseDamage += sim.Roll(-delta, delta)
 	}
 

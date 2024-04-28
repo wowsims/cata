@@ -374,6 +374,7 @@ export class ActionId {
 			case 'Innervate':
 			case 'Focus Magic':
 			case 'Mana Tide Totem':
+			case 'Unholy Frenzy':
 			case 'Power Infusion':
 				if (this.tag != -1) {
 					if (this.tag === playerIndex || playerIndex == undefined) {

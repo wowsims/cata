@@ -634,7 +634,7 @@ func (priest *Priest) applyShadowyApparition() {
 		BonusCoefficient: spellScaling,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := priest.ScalingBaseDamage * levelScaling
+			baseDamage := priest.ClassSpellScaling * levelScaling
 
 			// snapshot values on spawn
 			dmgMulti := spell.DamageMultiplier

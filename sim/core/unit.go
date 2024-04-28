@@ -620,6 +620,7 @@ func (unit *Unit) GetMetadata() *proto.UnitMetadata {
 			PrepullOnly:     spell.Flags.Matches(SpellFlagPrepullOnly),
 			EncounterOnly:   spell.Flags.Matches(SpellFlagEncounterOnly),
 			HasCastTime:     spell.DefaultCast.CastTime > 0,
+			IsFriendly:      spell.Flags.Matches(SpellFlagHelpful),
 		}
 	})
 

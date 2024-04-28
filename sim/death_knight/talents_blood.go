@@ -153,7 +153,7 @@ func (dk *DeathKnight) applyScarletFever() {
 	}
 
 	dk.ScarletFeverAura = dk.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return core.ScarletFeverAura(dk.GetCharacter(), target, dk.Talents.ScarletFever, dk.Talents.Epidemic)
+		return core.ScarletFeverAura(target, dk.Talents.ScarletFever, dk.Talents.Epidemic)
 	})
 	dk.Env.RegisterPreFinalizeEffect(func() {
 		dk.BloodPlagueSpell.RelatedAuras = append(dk.BloodPlagueSpell.RelatedAuras, dk.ScarletFeverAura)
