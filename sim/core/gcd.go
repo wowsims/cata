@@ -114,7 +114,7 @@ func (unit *Unit) QueueSpell(sim *Simulation, spell *Spell, target *Unit, queueA
 	unit.CancelQueuedSpell(sim)
 	unit.spellQueueAction = &PendingAction{
 		NextActionAt: queueAt,
-		Priority:     ActionPriorityRegen, // execute before any rotation calls
+		Priority:     ActionPriorityGCD,
 
 		OnAction: func(sim *Simulation) {
 			spell.Cast(sim, target)
