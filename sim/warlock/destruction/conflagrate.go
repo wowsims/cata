@@ -29,7 +29,7 @@ func (destruction *DestructionWarlock) registerConflagrateSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return destruction.Immolate.Dot(target).IsActive()
+			return destruction.ImmolateDot.Dot(target).IsActive()
 		},
 
 		DamageMultiplierAdditive: 1,

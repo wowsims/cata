@@ -72,37 +72,33 @@ func (warlock *Warlock) ApplyGlyphs() {
 		})
 	}
 
-	//if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfLashOfPain) {
-	// pet.AddStaticMod(core.SpellModConfig{
-	// 	ClassMask: WarlockSpellSuccubusLashOfPain,
-	// 	Kind:      core.SpellMod_DamageDone_Pct,
-	// 	FloatValue: 0.25,
-	// })
-	//}
+	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfLashOfPain) {
+		warlock.Succubus.AddStaticMod(core.SpellModConfig{
+			ClassMask:  WarlockSpellSuccubusLashOfPain,
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.25,
+		})
+	}
 
-	// if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfFelguard) {
-	// pet.AddStaticMod(core.SpellModConfig{
-	// 	ClassMask: WarlockSpellFelGuardLegionStrike,
-	// 	Kind:      core.SpellMod_DamageDone_Pct,
-	// 	FloatValue: 0.05,
-	// })
-	// }
+	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfFelguard) {
+		warlock.Felguard.AddStaticMod(core.SpellModConfig{
+			ClassMask:  WarlockSpellFelGuardLegionStrike,
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.05,
+		})
+	}
 
-	// if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfImp) {
-	// 	pet.AddStaticMod(core.SpellModConfig{
-	// 		ClassMask: WarlockSpellImpFireBolt,
-	// 		Kind:      core.SpellMod_DamageDone_Pct,
-	// 		FloatValue: 0.20,
-	// 	})
-	// 	}
+	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfImp) {
+		warlock.Imp.AddStaticMod(core.SpellModConfig{
+			ClassMask:  WarlockSpellImpFireBolt,
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 0.20,
+		})
+	}
 
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfShadowburn) {
-		warlock.RegisterAura(core.Aura{
-			Label:    "Glyph of Shadowburn",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
+		core.MakePermanent(warlock.RegisterAura(core.Aura{
+			Label: "Glyph of Shadowburn",
 
 			Icd: &core.Cooldown{
 				Timer:    warlock.NewTimer(),
@@ -115,7 +111,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 					warlock.Shadowburn.CD.Reset()
 				}
 			},
-		})
+		}))
 	}
 
 	//TODO: Soul Swap with spell

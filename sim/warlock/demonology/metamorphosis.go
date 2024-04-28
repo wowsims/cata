@@ -1,67 +1,71 @@
-package warlock
+package demonology
 
 import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/warlock"
 )
 
-func (warlock *Warlock) registerMetamorphosisSpell() {
-	if !warlock.Talents.Metamorphosis {
+func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
+	if !demonology.Talents.Metamorphosis {
 		return
 	}
 
-	warlock.MetamorphosisAura = warlock.RegisterAura(core.Aura{
+	demonology.MetamorphosisAura = demonology.RegisterAura(core.Aura{
 		Label:    "Metamorphosis Aura",
 		ActionID: core.ActionID{SpellID: 59672},
-		Duration: time.Second * (30 + 6*core.TernaryDuration(warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 1, 0)),
+		Duration: time.Second * (30 + 6*core.TernaryDuration(demonology.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 1, 0)),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.2
+			demonology.MasterDemonologistOwnerMod.UpdateFloatValue(demonology.getMasteryBonus())
+			demonology.MasterDemonologistOwnerMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.2
-			warlock.ImmolationAura.AOEDot().Deactivate(sim)
+			demonology.MasterDemonologistOwnerMod.Deactivate()
+			demonology.ImmolationAura.AOEDot().Deactivate(sim)
 		},
 	})
 
-	warlock.Metamorphosis = warlock.RegisterSpell(core.SpellConfig{
+	demonology.Metamorphosis = demonology.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 59672},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
-				Timer:    warlock.NewTimer(),
+				Timer:    demonology.NewTimer(),
 				Duration: 180 * time.Second,
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			warlock.MetamorphosisAura.Activate(sim)
+			demonology.MetamorphosisAura.Activate(sim)
 		},
 	})
 
-	warlock.AddMajorCooldown(core.MajorCooldown{
-		Spell: warlock.Metamorphosis,
+	demonology.AddMajorCooldown(core.MajorCooldown{
+		Spell: demonology.Metamorphosis,
 		Type:  core.CooldownTypeDPS,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
 			//TODO: This will probably need tuning for Cata and the new Impending Doom talent
 			// Changed the execute phase to 25 and I think the demonic pact can be removed.
-			if !warlock.GetAura("Demonic Pact").IsActive() {
+			if !demonology.GetAura("Demonic Pact").IsActive() {
 				return false
 			}
-			MetamorphosisNumber := (float64(sim.Duration) + float64(warlock.MetamorphosisAura.Duration)) / float64(warlock.Metamorphosis.CD.Duration)
+			MetamorphosisNumber := (float64(sim.Duration) + float64(demonology.MetamorphosisAura.Duration)) / float64(demonology.Metamorphosis.CD.Duration)
 			if MetamorphosisNumber < 1 {
-				return warlock.HasActiveAura("Bloodlust-"+core.BloodlustActionID.WithTag(-1).String()) || sim.IsExecutePhase25()
+				return demonology.HasActiveAura("Bloodlust-"+core.BloodlustActionID.WithTag(-1).String()) || sim.IsExecutePhase25()
 			}
 
 			return true
 		},
 	})
 
-	warlock.ImmolationAura = warlock.RegisterSpell(core.SpellConfig{
+	demonology.ImmolationAura = demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 50589},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: WarlockSpellImmolationAura,
+		ClassSpellMask: warlock.WarlockSpellImmolationAura,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.64,
@@ -71,12 +75,12 @@ func (warlock *Warlock) registerMetamorphosisSpell() {
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
-				Timer:    warlock.NewTimer(),
+				Timer:    demonology.NewTimer(),
 				Duration: time.Second * time.Duration(30),
 			},
 		},
 		ExtraCastCondition: func(_ *core.Simulation, _ *core.Unit) bool {
-			return warlock.MetamorphosisAura.IsActive()
+			return demonology.MetamorphosisAura.IsActive()
 		},
 
 		DamageMultiplier: 1,

@@ -22,19 +22,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		Stat.StatHealth,
+		Stat.StatMana,
+		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
+		Stat.StatMastery,
 		Stat.StatMP5,
 		Stat.StatStamina,
 	],
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_AFFLICTION_HORDE_PRESET.gear,
+		gear: Presets.P4_WOTLK_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
@@ -52,7 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 		// Default talents.
 		talents: Presets.AfflictionTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.AfflictionOptions,
+		specOptions: Presets.DefaultOptions,
 
 		// Default buffs and debuffs settings.
 		raidBuffs: Presets.DefaultRaidBuffs,
@@ -68,9 +71,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
-		// WarlockInputs.PetInput(), 
-		// WarlockInputs.ArmorInput(), 
-		// WarlockInputs.WeaponImbueInput()
+		WarlockInputs.PetInput(), 
+		WarlockInputs.ArmorInput(),
 	],
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
@@ -101,28 +103,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.AfflictionTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.APL_Affliction_Default],
+		rotations: [Presets.APL_Default],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_AFFLICTION_PRESET,
-			Presets.P1_AFFLICTION_PRESET,
-			Presets.P2_AFFLICTION_PRESET,
-			Presets.P3_AFFLICTION_ALLIANCE_PRESET,
-			Presets.P3_AFFLICTION_HORDE_PRESET,
-			Presets.P4_AFFLICTION_PRESET,
-		],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P4_WOTLK_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecAfflictionWarlock>): APLRotation => {
-		return Presets.APL_Affliction_Default.rotation.rotation!;
+		return Presets.APL_Default.rotation.rotation!;
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecAfflictionWarlock,
 			talents: Presets.AfflictionTalents.data,
-			specOptions: Presets.AfflictionOptions,
+			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
@@ -132,16 +127,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_AFFLICTION_PRESET.gear,
-					2: Presets.P2_AFFLICTION_PRESET.gear,
-					3: Presets.P3_AFFLICTION_ALLIANCE_PRESET.gear,
-					4: Presets.P4_AFFLICTION_PRESET.gear,
+					1: Presets.PRERAID_PRESET.gear,
+					2: Presets.P1_PRESET.gear,
+					3: Presets.P4_WOTLK_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_AFFLICTION_PRESET.gear,
-					2: Presets.P2_AFFLICTION_PRESET.gear,
-					3: Presets.P3_AFFLICTION_HORDE_PRESET.gear,
-					4: Presets.P4_AFFLICTION_PRESET.gear,
+					1: Presets.PRERAID_PRESET.gear,
+					2: Presets.P1_PRESET.gear,
+					3: Presets.P4_WOTLK_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

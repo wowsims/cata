@@ -14,28 +14,16 @@ func (warlock *Warlock) registerImmolateSpell() {
 	})
 
 	warlock.ImmolateDot = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 348},
-		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: WarlockSpellImmolateDot,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0,
-			Multiplier: 1,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      0,
-				CastTime: 0,
-			},
-		},
-
+		ActionID:         core.ActionID{SpellID: 348}.WithTag(1),
+		SpellSchool:      core.SpellSchoolFire,
+		ProcMask:         core.ProcMaskSpellDamage,
+		ClassSpellMask:   WarlockSpellImmolateDot,
+		DamageMultiplier: 1,
 		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Immolate",
+				Label: "Immolate (DoT)",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					fireAndBrimstoneMod.Activate()
 				},
@@ -43,16 +31,21 @@ func (warlock *Warlock) registerImmolateSpell() {
 					fireAndBrimstoneMod.Deactivate()
 				},
 			},
-			BonusCoefficient: 0.176,
-			NumberOfTicks:    5,
-			TickLength:       time.Second * 3,
-
+			NumberOfTicks:       5,
+			TickLength:          time.Second * 3,
+			AffectedByCastSpeed: true,
+			BonusCoefficient:    0.176,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, warlock.CalcBaseDamage(0.439))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			//spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+			spell.Dot(target).Apply(sim)
 		},
 	})
 
@@ -74,6 +67,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 			},
 		},
 
+		DamageMultiplier: 1,
 		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.212,
@@ -83,7 +77,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 			if result.Landed() {
 				warlock.ImmolateDot.Cast(sim, target)
 			}
-			spell.DealOutcome(sim, result)
+			spell.DealDamage(sim, result)
 		},
 	})
 }

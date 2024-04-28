@@ -95,10 +95,22 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 		},
 	})
 
+	drainSoulExecuteAura := warlock.RegisterAura(core.Aura{
+		Label:    "Drain Soul Execute",
+		ActionID: core.ActionID{SpellID: 1120},
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.DrainSoul.DamageMultiplier *= 2.0
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warlock.DrainSoul.DamageMultiplier /= 2.0
+		},
+	})
+
 	warlock.RegisterResetEffect(func(sim *core.Simulation) {
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 25 {
-				warlock.DrainSoul.DamageMultiplier *= 2.0
+				drainSoulExecuteAura.Activate(sim)
 			}
 		})
 	})

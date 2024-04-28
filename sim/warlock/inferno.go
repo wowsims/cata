@@ -9,7 +9,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (warlock *Warlock) registerInfernoSpell() {
+func (warlock *Warlock) registerSummonInfernalSpell(timer *core.Timer) {
 	duration := time.Second * time.Duration(45+10*warlock.Talents.AncientGrimoire)
 
 	summonInfernalAura := warlock.RegisterAura(core.Aura{
@@ -18,7 +18,7 @@ func (warlock *Warlock) registerInfernoSpell() {
 		Duration: duration,
 	})
 
-	warlock.Inferno = warlock.RegisterSpell(core.SpellConfig{
+	warlock.SummonInfernal = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1122},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
@@ -33,7 +33,7 @@ func (warlock *Warlock) registerInfernoSpell() {
 				GCD:      core.GCDDefault,
 			},
 			CD: core.Cooldown{
-				Timer:    warlock.NewTimer(),
+				Timer:    timer,
 				Duration: time.Minute * 10,
 			},
 		},
@@ -62,7 +62,7 @@ type InfernalPet struct {
 	immolationAura *core.Spell
 }
 
-func (warlock *Warlock) NewInfernal() *InfernalPet {
+func (warlock *Warlock) NewInfernalPet() *InfernalPet {
 	statInheritance := func(ownerStats stats.Stats) stats.Stats {
 		ownerHitChance := math.Floor(ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance)
 

@@ -8,10 +8,11 @@ import (
 
 func (warlock *Warlock) registerSearingPainSpell() {
 	warlock.SearingPain = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 5676},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 5676},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: WarlockSpellSearingPain,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.12,

@@ -21,26 +21,31 @@ func (demonology *DemonologyWarlock) CurseOfGuldanDebuffAura(target *core.Unit) 
 	})
 }
 
-// TODO: Since we are assuming hand of guldan will hit all targets can we just give the pets 10% crit for the duration?
+// TODO: Curse
 func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
-	if !demonology.Talents.Haunt {
+	if !demonology.Talents.HandOfGuldan {
 		return
 	}
 
-	demonology.RegisterAura(core.Aura{
-		Label:    "Hand of Guldan",
-		ActionID: core.ActionID{SpellID: 47197},
-		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-		},
-	})
+	// TODO: If you switch pets or summon a new one they won't have the attack tables do not switch when I think curse of guldan would apply to any active and future pets
+	// When the curse expires will it be taken away from the current active pet or the pet we originally assigned it to?
+	// demonology.ActivePet.CurseOfGuldanDebuffs = demonology.ActivePet.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+	// 	return target.GetOrRegisterAura(core.Aura{
+	// 		Label:    "Curse of Guldan",
+	// 		ActionID: core.ActionID{SpellID: 86000},
+	// 		Duration: time.Second * 15,
+	// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+	// 			demonology.ActivePet.AttackTables[aura.Unit.UnitIndex].BonusCritRating += 10.0 * core.CritRatingPerCritChance
+	// 		},
+	// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+	// 			demonology.ActivePet.AttackTables[aura.Unit.UnitIndex].BonusCritRating -= 10.0 * core.CritRatingPerCritChance
+	// 		},
+	// 	})
+	// })
 
-	//TODO: Damage is shadow flame... How to make this shadow and fire schools?
 	demonology.HandOfGuldan = demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 71521},
-		SpellSchool:    core.SpellSchoolFire,
+		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellHandOfGuldan,
@@ -65,9 +70,15 @@ func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
 		BonusCoefficient: 0.968,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealDamage(sim, target, 1793, spell.OutcomeMagicHitAndCrit)
-			if !result.Landed() {
-				return
+
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				baseDamage := demonology.CalcBaseDamageWithVariance(sim, 1.593, 0.166)
+				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+				if result.Landed() {
+					//aura := demonology.ActivePet.CurseOfGuldanDebuffs.Get(target)
+					//aura.Activate(sim)
+				}
 			}
 		},
 	})

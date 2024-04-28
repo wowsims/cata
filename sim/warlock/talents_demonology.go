@@ -15,35 +15,30 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 
 	//Dark Arts
 	if warlock.Talents.DarkArts > 0 {
-		warlock.Pet.AddStaticMod(core.SpellModConfig{
+		warlock.Imp.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellImpFireBolt,
 			Kind:      core.SpellMod_CastTime_Flat,
-			TimeValue: time.Millisecond * -250 * time.Duration(warlock.Talents.DarkArts),
+			TimeValue: time.Millisecond * time.Duration(-250*warlock.Talents.DarkArts),
 		})
 
 		//TODO: Add/Mult
-		warlock.Pet.AddStaticMod(core.SpellModConfig{
+		warlock.Felguard.AddStaticMod(core.SpellModConfig{
 			ClassMask:  WarlockSpellFelGuardLegionStrike,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: .05 * float64(warlock.Talents.DarkArts),
 		})
 
 		//TODO: Add/Mult
-		warlock.Pet.AddStaticMod(core.SpellModConfig{
+		warlock.Felhunter.AddStaticMod(core.SpellModConfig{
 			ClassMask:  WarlockSpellFelHunterShadowBite,
 			Kind:       core.SpellMod_DamageDone_Pct,
 			FloatValue: .05 * float64(warlock.Talents.DarkArts),
 		})
 	}
 
-	//TODO: Mana Feed
-
+	warlock.registerManaFeed()
 	warlock.registerImpendingDoom()
-	//TODO: Bane Of Doom Mod
-
 	warlock.registerMoltenCore()
-
-	//TODO: Ancient Grimoire
 
 	// Inferno
 	if warlock.Talents.Inferno {
@@ -64,7 +59,31 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.1
 		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
 	}
+}
 
+func (warlock *Warlock) registerManaFeed() {
+	if warlock.Talents.ManaFeed <= 0 {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 85175}
+	manaMetrics := warlock.NewManaMetrics(actionID)
+	manaReturn := 0.02 * float64(warlock.Talents.ManaFeed)
+
+	core.MakePermanent(
+		warlock.RegisterAura(core.Aura{
+			Label:    "Mana Feed",
+			ActionID: actionID,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.DidCrit() && (spell.ClassSpellMask == WarlockSpellImpFireBolt ||
+					spell.ClassSpellMask == WarlockSpellFelGuardLegionStrike ||
+					spell.ClassSpellMask == WarlockSpellSuccubusLashOfPain ||
+					spell.ClassSpellMask == WarlockSpellFelHunterShadowBite) {
+					restore := manaReturn * warlock.GetStat(stats.Mana)
+					warlock.AddMana(sim, restore, manaMetrics)
+				}
+			},
+		}))
 }
 
 func (warlock *Warlock) registerImpendingDoom() {
@@ -74,22 +93,19 @@ func (warlock *Warlock) registerImpendingDoom() {
 
 	impendingDoomProcChance := 0.05 * float64(warlock.Talents.ImpendingDoom)
 
-	warlock.NightfallProcAura = warlock.RegisterAura(core.Aura{
-		Label:    "Impending Doom",
-		ActionID: core.ActionID{SpellID: 85107},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		//TODO: Do they need to hit?
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if (spell == warlock.ShadowBolt || spell == warlock.HandOfGuldan || spell == warlock.SoulFire || spell == warlock.Incinerate) &&
-				!warlock.Metamorphosis.CD.IsReady(sim) && sim.Proc(impendingDoomProcChance, "Impending Doom") {
-				*warlock.Metamorphosis.CD.Timer = core.Timer(time.Duration(*warlock.Metamorphosis.CD.Timer) - time.Second*15)
-				warlock.UpdateMajorCooldowns()
-			}
-		},
-	})
+	core.MakePermanent(
+		warlock.RegisterAura(core.Aura{
+			Label:    "Impending Doom",
+			ActionID: core.ActionID{SpellID: 85107},
+			//TODO: Do they need to hit?
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if (spell == warlock.ShadowBolt || spell == warlock.HandOfGuldan || spell == warlock.SoulFire || spell == warlock.Incinerate) &&
+					!warlock.Metamorphosis.CD.IsReady(sim) && sim.Proc(impendingDoomProcChance, "Impending Doom") {
+					*warlock.Metamorphosis.CD.Timer = core.Timer(time.Duration(*warlock.Metamorphosis.CD.Timer) - time.Second*15)
+					warlock.UpdateMajorCooldowns()
+				}
+			},
+		}))
 }
 
 func (warlock *Warlock) registerMoltenCore() {
@@ -122,22 +138,19 @@ func (warlock *Warlock) registerMoltenCore() {
 		},
 	})
 
-	warlock.RegisterAura(core.Aura{
-		Label:    "Molten Core Hidden Aura",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		//TODO: Can this occur on the initial Immolate damage?
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == warlock.Immolate {
-				if sim.Proc(0.02*float64(warlock.Talents.MoltenCore), "Molten Core") {
-					warlock.MoltenCoreAura.Activate(sim)
-					warlock.MoltenCoreAura.SetStacks(sim, 3)
+	core.MakePermanent(
+		warlock.RegisterAura(core.Aura{
+			Label: "Molten Core Hidden Aura",
+			//TODO: Can this occur on the initial Immolate damage?
+			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell == warlock.Immolate {
+					if sim.Proc(0.02*float64(warlock.Talents.MoltenCore), "Molten Core") {
+						warlock.MoltenCoreAura.Activate(sim)
+						warlock.MoltenCoreAura.SetStacks(sim, 3)
+					}
 				}
-			}
-		},
-	})
+			},
+		}))
 }
 
 func (warlock *Warlock) registerDecimation() {
@@ -186,12 +199,9 @@ func (warlock *Warlock) registerCremation() {
 
 	procChance := []float64{0.5, 1.0}[warlock.Talents.Cremation]
 
-	pandemicAura := warlock.RegisterAura(core.Aura{
+	cremationAura := warlock.RegisterAura(core.Aura{
 		Label:    "Cremation Talent",
 		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell == warlock.HandOfGuldan {
 				if warlock.ImmolateDot.Dot(aura.Unit).IsActive() && sim.Proc(procChance, "Cremation") {
@@ -205,7 +215,7 @@ func (warlock *Warlock) registerCremation() {
 	warlock.RegisterResetEffect(func(sim *core.Simulation) {
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 25 {
-				pandemicAura.Activate(sim)
+				cremationAura.Activate(sim)
 			}
 		})
 	})

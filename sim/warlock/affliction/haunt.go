@@ -56,9 +56,10 @@ func (affliction *AfflictionWarlock) registerHauntSpell() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           affliction.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
+		BonusCoefficient:         0.5577 * 1.25,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1078 + (spell.SpellPower()*0.5577)*1.25
+			baseDamage := affliction.CalcBaseDamage(0.9581)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

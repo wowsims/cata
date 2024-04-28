@@ -34,6 +34,8 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 			if result.Landed() {
 				warlock.CurseOfElementsAuras.Get(target).Activate(sim)
 			}
+
+			spell.DealOutcome(sim, result)
 		},
 
 		RelatedAuras: []core.AuraArray{warlock.CurseOfElementsAuras},
@@ -70,6 +72,8 @@ func (warlock *Warlock) registerCurseOfWeaknessSpell() {
 			if result.Landed() {
 				warlock.CurseOfWeaknessAuras.Get(target).Activate(sim)
 			}
+
+			spell.DealOutcome(sim, result)
 		},
 
 		RelatedAuras: []core.AuraArray{warlock.CurseOfWeaknessAuras},
@@ -113,6 +117,8 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 			if result.Landed() {
 				warlock.CurseOfTonguesAuras.Get(target).Activate(sim)
 			}
+
+			spell.DealOutcome(sim, result)
 		},
 
 		RelatedAuras: []core.AuraArray{warlock.CurseOfTonguesAuras},
@@ -175,6 +181,9 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 
 // TODO: Does this benefit from haunt?
 func (warlock *Warlock) registerBaneOfDoomSpell() {
+
+	ebonImpBonusSummon := 0.1 * float64(warlock.Talents.ImpendingDoom)
+
 	warlock.BaneOfDoom = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 603},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -189,10 +198,6 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
-			},
-			CD: core.Cooldown{
-				Timer:    warlock.NewTimer(),
-				Duration: time.Minute,
 			},
 		},
 
@@ -212,7 +217,9 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-				//TODO: 20% Chance to summon Ebon Imp
+				if sim.Proc(0.2+ebonImpBonusSummon, "Ebon Imp") {
+					warlock.EbonImp.EnableWithTimeout(sim, warlock.EbonImp, time.Second*15)
+				}
 			},
 		},
 

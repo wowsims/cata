@@ -33,7 +33,8 @@ func (warlock *Warlock) registerIncinerateSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 645.0
-			if warlock.Immolate.Dot(target).IsActive() {
+
+			if warlock.ImmolateDot.Dot(target).IsActive() {
 				baseDamage += 645.0
 			}
 

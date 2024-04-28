@@ -22,19 +22,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		Stat.StatHealth,
+		Stat.StatMana,
+		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
+		Stat.StatMastery,
 		Stat.StatMP5,
 		Stat.StatStamina,
 	],
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_DEMO_PRESET.gear,
+		gear: Presets.P4_WOTLK_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
@@ -52,7 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 		// Default talents.
 		talents: Presets.DemonologyTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DemonologyOptions,
+		specOptions: Presets.DefaultOptions,
 
 		// Default buffs and debuffs settings.
 		raidBuffs: Presets.DefaultRaidBuffs,
@@ -68,9 +71,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
-		// WarlockInputs.PetInput(), 
-		// WarlockInputs.ArmorInput(), 
-		// WarlockInputs.WeaponImbueInput()
+		WarlockInputs.PetInput(), 
+		WarlockInputs.ArmorInput(),
 	],
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
@@ -101,27 +103,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DemonologyTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.APL_Demo_Default],
+		rotations: [Presets.APL_Default],
 
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.P1_DEMODESTRO_PRESET,
-			Presets.P2_DEMODESTRO_PRESET,
-			Presets.P3_DEMO_ALLIANCE_PRESET,
-			Presets.P3_DEMO_HORDE_PRESET,
-			Presets.P4_DEMO_PRESET,
-		],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P4_WOTLK_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecDemonologyWarlock>): APLRotation => {
-		return Presets.APL_Demo_Default.rotation.rotation!;
+		return Presets.APL_Default.rotation.rotation!;
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecDemonologyWarlock,
 			talents: Presets.DemonologyTalents.data,
-			specOptions: Presets.DemonologyOptions,
+			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
@@ -131,16 +127,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_DEMODESTRO_PRESET.gear,
-					2: Presets.P2_DEMODESTRO_PRESET.gear,
-					3: Presets.P3_DEMO_ALLIANCE_PRESET.gear,
-					4: Presets.P4_DEMO_PRESET.gear,
+					1: Presets.PRERAID_PRESET.gear,
+					2: Presets.P1_PRESET.gear,
+					3: Presets.P4_WOTLK_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_DEMODESTRO_PRESET.gear,
-					2: Presets.P2_DEMODESTRO_PRESET.gear,
-					3: Presets.P3_DEMO_HORDE_PRESET.gear,
-					4: Presets.P4_DEMO_PRESET.gear,
+					1: Presets.PRERAID_PRESET.gear,
+					2: Presets.P1_PRESET.gear,
+					3: Presets.P4_WOTLK_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

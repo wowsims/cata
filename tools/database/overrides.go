@@ -322,10 +322,6 @@ var ExtraItemIcons = []int32{
 	33874,
 	43005,
 
-	// Spellstones
-	41174,
-	41196,
-
 	// Demonic Rune
 	12662,
 

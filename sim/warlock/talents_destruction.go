@@ -9,35 +9,32 @@ import (
 )
 
 func (warlock *Warlock) ApplyDestructionTalents() {
+	//Bane
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask: WarlockSpellShadowBolt | WarlockSpellChaosBolt | WarlockSpellImmolate,
 		Kind:      core.SpellMod_CastTime_Flat,
-		TimeValue: -1 * time.Duration([]int{0, 100, 300, 500}[warlock.Talents.Bane]) * time.Millisecond,
+		TimeValue: time.Duration([]int{0, -100, -300, -500}[warlock.Talents.Bane]) * time.Millisecond,
 	})
 
-	//TODO: Add/Mult?
+	// Shadow And Flame
 	warlock.AddStaticMod(core.SpellModConfig{
-		ClassMask:  WarlockSpellShadowBolt | WarlockSpellChaosBolt,
+		ClassMask:  WarlockSpellShadowBolt | WarlockSpellIncinerate,
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: []float64{0.0, 1.04, 1.08, 1.12}[warlock.Talents.ShadowAndFlame],
+		FloatValue: []float64{0.0, 0.04, 0.08, 0.12}[warlock.Talents.ShadowAndFlame],
 	})
 
+	// Improved Immolate
 	warlock.AddStaticMod(core.SpellModConfig{
-		ClassMask:  WarlockSpellImmolate,
+		ClassMask:  WarlockSpellImmolate | WarlockSpellImmolateDot,
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: []float64{1.0, 1.1, 1.2}[warlock.Talents.ImprovedImmolate],
+		FloatValue: []float64{0.0, 0.1, 0.2}[warlock.Talents.ImprovedImmolate],
 	})
 
+	// Emberstorm
 	warlock.AddStaticMod(core.SpellModConfig{
-		ClassMask: WarlockSpellSoulFire,
+		ClassMask: WarlockSpellSoulFire | WarlockSpellIncinerate,
 		Kind:      core.SpellMod_CastTime_Flat,
-		TimeValue: -1 * time.Duration([]int{0, 500, 1000}[warlock.Talents.Emberstorm]) * time.Millisecond,
-	})
-
-	warlock.AddStaticMod(core.SpellModConfig{
-		ClassMask: WarlockSpellIncinerate,
-		Kind:      core.SpellMod_CastTime_Flat,
-		TimeValue: -1 * time.Duration([]int{0, 130, 250}[warlock.Talents.Emberstorm]) * time.Millisecond,
+		TimeValue: time.Millisecond * time.Duration(-500*warlock.Talents.Emberstorm),
 	})
 
 	warlock.registerImprovedSearingPain()
@@ -49,6 +46,7 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 	}
 
 	//TODO: Burning Embers
+	warlock.registerBurningEmbers()
 
 	warlock.registerSoulLeech()
 
@@ -79,11 +77,22 @@ func (warlock *Warlock) registerImprovedSearingPain() {
 		FloatValue: 20 * float64(warlock.Talents.ImprovedSearingPain) * core.CritRatingPerCritChance,
 	})
 
+	improvedSearingPainAura := warlock.RegisterAura(core.Aura{
+		Label:    "Improved Searing Pain",
+		ActionID: core.ActionID{SpellID: 17927},
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			improvedSearingPain.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			improvedSearingPain.Deactivate()
+		},
+	})
+
 	warlock.RegisterResetEffect(func(sim *core.Simulation) {
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
-			//TODO: Does this need to deactivate somewhere?
 			if isExecute == 25 {
-				improvedSearingPain.Activate()
+				improvedSearingPainAura.Activate(sim)
 			}
 		})
 	})
@@ -112,15 +121,15 @@ func (warlock *Warlock) registerImprovedSoulFire() {
 		},
 	})
 
-	warlock.RegisterAura(core.Aura{
-		Label:    "Improved Soul Fire Hidden Aura",
-		Duration: core.NeverExpires,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && (spell == warlock.SoulFire) {
-				improvedSoulFire.Activate(sim)
-			}
-		},
-	})
+	core.MakePermanent(
+		warlock.RegisterAura(core.Aura{
+			Label: "Improved Soul Fire Hidden Aura",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell == warlock.SoulFire {
+					improvedSoulFire.Activate(sim)
+				}
+			},
+		}))
 }
 
 func (warlock *Warlock) registerBackdraft() {
@@ -158,20 +167,102 @@ func (warlock *Warlock) registerBackdraft() {
 		},
 	})
 
-	warlock.RegisterAura(core.Aura{
-		Label:    "Backdraft Hidden Aura",
-		ActionID: core.ActionID{SpellID: 47260},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	core.MakePermanent(
+		warlock.RegisterAura(core.Aura{
+			Label:    "Backdraft Hidden Aura",
+			ActionID: core.ActionID{SpellID: 47260},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell == warlock.Conflagrate {
+					backdraft.Activate(sim)
+					backdraft.SetStacks(sim, 3)
+				}
+			},
+		}))
+}
+
+func (warlock *Warlock) registerBurningEmbers() {
+	if warlock.Talents.BurningEmbers <= 0 {
+		return
+	}
+
+	damageGainPerHit := 0.25 * float64(warlock.Talents.BurningEmbers)
+	spellPowerMultiplier := 0.7 * float64(warlock.Talents.BurningEmbers)
+	baseDamage := warlock.CalcBaseDamage([]float64{0.0, 0.0734, 0.147}[warlock.Talents.BurningEmbers])
+
+	warlock.BurningEmbers = warlock.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 85112},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: WarlockSpellBurningEmbers,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCost:   0,
+			Multiplier: 1,
 		},
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell == warlock.Conflagrate {
-				backdraft.Activate(sim)
-				backdraft.SetStacks(sim, 3)
-			}
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD:      0,
+				CastTime: 0,
+			},
+		},
+
+		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Burning Embers",
+			},
+			NumberOfTicks: 7,
+			TickLength:    time.Second * 1,
+			//?AffectedByCastSpeed: true,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+			spell.Dot(target).Apply(sim)
 		},
 	})
+
+	core.MakePermanent(
+		warlock.RegisterAura(core.Aura{
+			Label:    "Burning Embers Hidden Aura",
+			ActionID: core.ActionID{SpellID: 85112},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !result.Landed() {
+					return
+				}
+				if spell == warlock.SoulFire {
+					warlock.BurningEmbers.Dot(result.Target).Apply(sim)
+				}
+			},
+		}))
+
+	core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
+		Name:           "Burning Embers",
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: WarlockSpellSoulFire | WarlockSpellImpFireBolt,
+		Outcome:        core.OutcomeLanded,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			dot := warlock.BurningEmbers.Dot(result.Target)
+			// Max damage is based on the formula which changes per talent point:
+			//1: [(Spell power * 0.7 + 71) / 7]
+			//2: [(Spell power * 1.4 + 141) / 7]
+			maxDamagePerTick := (baseDamage + (dot.Spell.SpellPower() * spellPowerMultiplier)) / 7
+
+			// The damage per tick is then based off the damage of the Imp Firebolt or Soulfire that just hit
+			dot.SnapshotBaseDamage = min(result.Damage*damageGainPerHit, maxDamagePerTick)
+			dot.SnapshotAttackerMultiplier = warlock.BurningEmbers.DamageMultiplier
+			warlock.BurningEmbers.Cast(sim, result.Target)
+		},
+	})
+
 }
 
 func (warlock *Warlock) registerSoulLeech() {
@@ -183,20 +274,17 @@ func (warlock *Warlock) registerSoulLeech() {
 	restore := 0.02 * float64(warlock.Talents.SoulLeech)
 	manaMetrics := warlock.NewManaMetrics(actionID)
 
-	warlock.RegisterAura(core.Aura{
-		Label:    "Soul Leech Hidden Aura",
-		ActionID: actionID,
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == warlock.Shadowburn || spell == warlock.SoulFire || spell == warlock.ChaosBolt {
-				warlock.AddMana(sim, restore*warlock.MaxMana(), manaMetrics)
-				// also restores health but probably NA
-			}
-		},
-	})
+	core.MakePermanent(
+		warlock.RegisterAura(core.Aura{
+			Label:    "Soul Leech Hidden Aura",
+			ActionID: actionID,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell == warlock.Shadowburn || spell == warlock.SoulFire || spell == warlock.ChaosBolt {
+					warlock.AddMana(sim, restore*warlock.MaxMana(), manaMetrics)
+					// also restores health but probably NA
+				}
+			},
+		}))
 }
 
 func (warlock *Warlock) registerEmpoweredImp() {
@@ -229,16 +317,14 @@ func (warlock *Warlock) registerEmpoweredImp() {
 		},
 	})
 
-	warlock.Pet.RegisterAura(core.Aura{
-		Label:    "Empowered Imp Hidden Aura",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask == WarlockSpellImpFireBolt && sim.Proc(procChance, "Empowered Imp") {
-				warlock.EmpoweredImpAura.Activate(sim)
-			}
-		},
-	})
+	core.MakePermanent(
+		warlock.Imp.RegisterAura(core.Aura{
+			Label: "Empowered Imp Hidden Aura",
+
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ClassSpellMask == WarlockSpellImpFireBolt && sim.Proc(procChance, "Empowered Imp") {
+					warlock.EmpoweredImpAura.Activate(sim)
+				}
+			},
+		}))
 }
