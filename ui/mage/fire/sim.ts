@@ -85,10 +85,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			vampiricTouch: true,
 			focusMagic: true,
 		}),
-		debuffs: Debuffs.create({
-			ebonPlaguebringer: true,
-			shadowAndFlame: true
-		}),
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.

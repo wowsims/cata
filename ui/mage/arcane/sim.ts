@@ -20,8 +20,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
-	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
+	epStats: [Stat.StatIntellect,
+		Stat.StatSpirit,
+		Stat.StatSpellPower,
+		Stat.StatSpellHit,
+		Stat.StatSpellCrit,
+		Stat.StatSpellHaste,
+		Stat.StatMastery,
+	],	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
@@ -34,7 +40,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 	// modifyDisplayStats: (player: Player<Spec.SpecArcaneMage>) => {
 	// 	let stats = new Stats();
@@ -50,7 +56,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.ARCANE_P4_PRESET_HORDE.gear,
+		gear: Presets.ARCANE_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.48,
@@ -59,7 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			[Stat.StatSpellHit]: 0.38,
 			[Stat.StatSpellCrit]: 0.58,
 			[Stat.StatSpellHaste]: 0.94,
-			[Stat.StatMP5]: 0.09,
+			[Stat.StatMastery]: 0.8
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultArcaneConsumes,
@@ -69,22 +75,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		specOptions: Presets.DefaultArcaneOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			bloodlust: true,
-			markOfTheWild: true,
-			icyTalons: true,
-			moonkinForm: true,
-			leaderOfThePack: true,
-			powerWordFortitude: true,
-			strengthOfEarthTotem: true,
-			trueshotAura: true,
-			wrathOfAirTotem: true,
-			demonicPact: true,
-			blessingOfKings: true,
-			blessingOfMight: true,
-			communion: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
+
 		partyBuffs: PartyBuffs.create({
 			manaTideTotems: 1,
 		}),
@@ -93,11 +85,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			vampiricTouch: true,
 			focusMagic: true,
 		}),
-		debuffs: Debuffs.create({
-			judgement: true,
-			ebonPlaguebringer: true,
-			shadowAndFlame: true,
-		}),
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -120,31 +108,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 
 	presets: {
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.ARCANE_ROTATION_PRESET_DEFAULT, Presets.ARCANE_ROTATION_PRESET_AOE],
+		rotations: [Presets.ARCANE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.ArcaneTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.ARCANE_PRERAID_PRESET,
 			Presets.ARCANE_P1_PRESET,
-			Presets.ARCANE_P2_PRESET,
-			Presets.ARCANE_P3_PRESET_ALLIANCE,
-			Presets.ARCANE_P3_PRESET_HORDE,
-			Presets.ARCANE_P4_PRESET_HORDE,
-			Presets.ARCANE_P4_PRESET_ALLIANCE,
 		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecArcaneMage>): APLRotation => {
-		const numTargets = player.sim.encounter.targets.length;
+/* 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 3) {
 			return Presets.ARCANE_ROTATION_PRESET_AOE.rotation.rotation!;
 		} else {
 			return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		}
+		} */
+		return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!
 	},
 
-	simpleRotation: (player: Player<Spec.SpecArcaneMage>, simple: ArcaneMage_Rotation, cooldowns: Cooldowns): APLRotation => {
+	/* simpleRotation: (player: Player<Spec.SpecArcaneMage>, simple: ArcaneMage_Rotation, cooldowns: Cooldowns): APLRotation => {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
 		const prepullMirrorImage = APLPrepullAction.fromJsonString(
@@ -210,7 +193,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 				}),
 			),
 		});
-	},
+	}, */
 
 	raidSimPresets: [
 		{
@@ -228,15 +211,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.ARCANE_P1_PRESET.gear,
-					2: Presets.ARCANE_P2_PRESET.gear,
-					3: Presets.ARCANE_P3_PRESET_ALLIANCE.gear,
-					4: Presets.ARCANE_P4_PRESET_ALLIANCE.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.ARCANE_P1_PRESET.gear,
-					2: Presets.ARCANE_P2_PRESET.gear,
-					3: Presets.ARCANE_P3_PRESET_HORDE.gear,
-					4: Presets.ARCANE_P4_PRESET_HORDE.gear,
 				},
 			},
 		},
