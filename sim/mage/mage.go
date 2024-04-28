@@ -125,7 +125,7 @@ func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
 func (mage *Mage) ApplyTalents() {
-	mage.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
+	mage.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
 
 	mage.ApplyArcaneTalents()
 	mage.ApplyFireTalents()
