@@ -53,7 +53,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 
 			// SMF adds an OH hit to slam
 			if warrior.Talents.SingleMindedFury {
-				baseDamage := 625 + 1.25*spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage := 625 + 1.45*spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
 
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
