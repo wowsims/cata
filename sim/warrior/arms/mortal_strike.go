@@ -8,7 +8,7 @@ import (
 )
 
 func (war *ArmsWarrior) RegisterMortalStrike() {
-	spellScalingConfig := core.SpellScalingConfig{
+	weaponDamageConfig := warrior.SpellEffectWeaponDmgPctConfig{
 		BaseWeapon_Pct:    0.8,
 		Coefficient:       0.37599998713,
 		EffectPerLevel:    1,
@@ -40,11 +40,11 @@ func (war *ArmsWarrior) RegisterMortalStrike() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: spellScalingConfig.CalcSpellDamagePct(),
+		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
 		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spellScalingConfig.CalcAddedSpellDamage() +
+			baseDamage := weaponDamageConfig.CalcAddedSpellDamage() +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if !result.Landed() {

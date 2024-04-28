@@ -55,10 +55,9 @@ type SpellConfig struct {
 	ExpectedInitialDamage ExpectedDamageCalculator
 	ExpectedTickDamage    ExpectedDamageCalculator
 
-	Dot                DotConfig
-	Hot                DotConfig
-	Shield             ShieldConfig
-	SpellScalingConfig SpellScalingConfig
+	Dot    DotConfig
+	Hot    DotConfig
+	Shield ShieldConfig
 
 	RelatedAuras []AuraArray
 }
