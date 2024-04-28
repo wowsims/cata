@@ -120,22 +120,44 @@ type Druid struct {
 const (
 	DruidSpellFlagNone int64 = 0
 	DruidSpellBarkskin int64 = 1 << iota
+	DruidSpellCyclone
+	DruidSpellEntanglingRoots
+	DruidSpellFearieFire
+	DruidSpellHibernate
 	DruidSpellHurricane
+	DruidSpellInnervate
 	DruidSpellInsectSwarm
 	DruidSpellMoonfire
+	DruidSpellNaturesGrasp
 	DruidSpellStarfall
 	DruidSpellStarfire
 	DruidSpellStarsurge
 	DruidSpellSunfire
+	DruidSpellThorns
 	DruidSpellTyphoon
+	DruidSpellWildMushroom
+	DruidSpellWildMushroomDetonate
 	DruidSpellWrath
 
+	DruidSpellHealingTouch
+	DruidSpellRegrowth
+	DruidSpellLifebloom
+	DruidSpellRejuvenation
+	DruidSpellNourish
+	DruidSpellTranquility
+	DruidSpellMarkOfTheWild
+	DruidSpellSwiftmend
+	DruidSpellWildGrowth
+
 	DruidSpellLast
-	DruidSpellsAll    = DruidSpellLast<<1 - 1
-	DruidSpellDoT     = DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellSunfire
-	DruidSpellInstant = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire
-	DruidArcaneSpells = DruidSpellMoonfire | DruidSpellStarfire | DruidSpellStarsurge
-	DruidNatureSpells = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellTyphoon
+	DruidSpellsAll      = DruidSpellLast<<1 - 1
+	DruidSpellDoT       = DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellSunfire
+	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
+	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
+	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
+	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellTyphoon | DruidSpellHurricane
+	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
+	DruidDamagingSpells = DruidArcaneSpells | DruidNatureSpells
 )
 
 type SelfBuffs struct {
