@@ -1604,18 +1604,6 @@ export function getPlayerSpecFromPlayer<SpecType extends Spec>(player: Player): 
 	throw new Error('Unable to parse spec from player proto: ' + JSON.stringify(Player.toJson(player), null, 2));
 }
 
-export function getPlayerClassFromPlayer<ClassType extends Class>(player: Player): PlayerClass<ClassType> {
-	const classValues = getEnumValues(Class);
-	for (let i = 0; i < classValues.length; i++) {
-		const klass = classValues[i] as ClassType;
-		if (player.class == klass) {
-			return PlayerClasses.fromProto(klass);
-		}
-	}
-
-	throw new Error('Unable to parse class from player proto: ' + JSON.stringify(Player.toJson(player), null, 2));
-}
-
 export function isSharpWeaponType(weaponType: WeaponType): boolean {
 	return [WeaponType.WeaponTypeAxe, WeaponType.WeaponTypeDagger, WeaponType.WeaponTypePolearm, WeaponType.WeaponTypeSword].includes(weaponType);
 }

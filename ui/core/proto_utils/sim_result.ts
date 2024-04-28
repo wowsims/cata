@@ -1,4 +1,5 @@
 import { PlayerSpec } from '../player_spec.js';
+import { PlayerSpecs } from '../player_specs';
 import {
 	ActionMetrics as ActionMetricsProto,
 	AuraMetrics as AuraMetricsProto,
@@ -19,7 +20,7 @@ import {
 import { Class, Encounter as EncounterProto, Target as TargetProto } from '../proto/common.js';
 import { SimRun } from '../proto/ui.js';
 import { ActionId, defaultTargetIcon } from '../proto_utils/action_id.js';
-import { getPlayerClassFromPlayer, getPlayerSpecFromPlayer } from '../proto_utils/utils.js';
+import { getPlayerSpecFromPlayer } from '../proto_utils/utils.js';
 import { bucket, sum } from '../utils.js';
 import {
 	AuraUptimeLog,
@@ -338,7 +339,7 @@ export class UnitMetrics {
 		this.spec = this.player ? getPlayerSpecFromPlayer(this.player) : null;
 		this.petActionId = petActionId;
 		this.iconUrl = this.isPlayer ? this.spec?.getIcon('medium') ?? '' : this.isTarget ? defaultTargetIcon : '';
-		this.classColor = this.isTarget ? '' : this.player ? getPlayerClassFromPlayer(this.player).friendlyName.toLowerCase().replace(/\s/g, '-') ?? '' : '';
+		this.classColor = this.isTarget ? '' : PlayerSpecs.getPlayerClass(this.spec as PlayerSpec<any>).friendlyName.toLowerCase().replace(/\s/g, '-') ?? '';
 		this.dps = this.metrics.dps!;
 		this.dpasp = this.metrics.dpasp!;
 		this.hps = this.metrics.hps!;
