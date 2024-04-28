@@ -61,7 +61,7 @@ func (arcaneMage *ArcaneMage) ApplyTalents() {
 	arcaneMage.AddStaticMod(core.SpellModConfig{
 		School:     core.SpellSchoolArcane,
 		FloatValue: 0.25,
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 	})
 
 	// Arcane Mastery
@@ -98,7 +98,7 @@ func (arcaneMage *ArcaneMage) ApplyTalents() {
 }
 
 func (arcaneMage *ArcaneMage) GetArcaneMasteryBonus() float64 {
-	return (1.12 + 0.015*arcaneMage.GetMasteryPoints())
+	return (0.12 + 0.015*arcaneMage.GetMasteryPoints())
 }
 
 func (arcaneMage *ArcaneMage) ArcaneMasteryValue() float64 {
