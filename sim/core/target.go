@@ -131,10 +131,12 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 			Metrics:     NewUnitMetrics(),
 
 			StatDependencyManager: stats.NewStatDependencyManager(),
+			ReactionTime:          time.Millisecond * 1620,
 		},
 	}
 	defaultRaidBossLevel := int32(CharacterLevel + 3)
 	target.GCD = target.NewTimer()
+	target.RotationTimer = target.NewTimer()
 	if target.Level == 0 {
 		target.Level = defaultRaidBossLevel
 	}
