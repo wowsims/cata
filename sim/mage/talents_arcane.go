@@ -231,30 +231,41 @@ func (mage *Mage) applyArcanePotency() {
 		Kind:       core.SpellMod_BonusCrit_Rating,
 	})
 
+	var procTime time.Duration
 	mage.ArcanePotencyAura = mage.RegisterAura(core.Aura{
 		Label:     "Arcane Potency",
 		ActionID:  core.ActionID{SpellID: 57531},
 		Duration:  time.Hour,
 		MaxStacks: 2,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			//prevent the spell that procced it from spending it
-			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + time.Millisecond*10,
-				OnAction: func(sim *core.Simulation) {
-					aura.SetStacks(sim, 2)
-					arcanePotencyMod.Activate()
-				},
-			})
+			procTime = sim.CurrentTime
+			arcanePotencyMod.Activate()
+			aura.SetStacks(sim, 2)
 		},
+
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			arcanePotencyMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Only remove a stack if it's an applicable spell
-			if spell.ClassSpellMask != MageSpellExtraResult {
+			if sim.CurrentTime == procTime {
+				return
+			}
+			if spell != mage.ArcaneMissilesTickSpell && spell != mage.ArcaneMissiles {
 				if aura != nil && aura.GetStacks() != 0 {
 					aura.RemoveStack(sim)
 				}
+			}
+			// To allow arcane missile ticks to benefit from crit, delay the removal
+			if spell == mage.ArcaneMissiles {
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + spell.Dot(mage.CurrentTarget).Duration,
+					OnAction: func(s *core.Simulation) {
+						if aura != nil && aura.GetStacks() != 0 {
+							aura.RemoveStack(sim)
+						}
+					},
+				})
 			}
 		},
 	})
