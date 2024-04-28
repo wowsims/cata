@@ -52,60 +52,12 @@ func (druid *Druid) ApplyTalents() {
 		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
 	}
 
-	// Starlight Wrath
-	if druid.Talents.StarlightWrath > 0 {
-		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask: DruidSpellStarfire | DruidSpellWrath,
-			TimeValue: time.Millisecond * time.Duration([]int{0, -150, -250, -500}[druid.Talents.StarlightWrath]),
-			Kind:      core.SpellMod_CastTime_Flat,
-		})
-	}
-
-	// Balance of Power
-	if druid.Talents.BalanceOfPower > 0 {
-		druid.AddStaticMod(core.SpellModConfig{
-			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
-			ClassMask:  DruidArcaneSpells | DruidNatureSpells,
-			FloatValue: 0.01 * float64(druid.Talents.BalanceOfPower),
-			Kind:       core.SpellMod_DamageDone_Pct,
-		})
-
-		druid.AddStats(stats.Stats{stats.SpellHit: -0.5 * float64(druid.Talents.BalanceOfPower) * druid.GetBaseStats()[stats.Spirit]})
-		druid.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.0, 0.5, 1.0}[druid.Talents.BalanceOfPower])
-	}
-
-	// Nature's Majesty
-	if druid.Talents.NaturesMajesty > 0 {
-		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidSpellsAll,
-			FloatValue: 0.02 * float64(druid.Talents.NaturesMajesty),
-			Kind:       core.SpellMod_CritMultiplier_Pct,
-		})
-	}
-
-	// Genesis
-	if druid.Talents.Genesis > 0 {
-		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask: DruidSpellMoonfire | DruidSpellSunfire | DruidSpellInsectSwarm,
-			IntValue:  int64(1 * druid.Talents.Genesis),
-			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
-		})
-
-		// TODO: implement bonus to HOTs and Swiftmend
-	}
-
-	// Moonglow
-	if druid.Talents.Moonglow > 0 {
-		// damage spells
-		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask:  DruidSpellsAll,
-			FloatValue: 0.03 * float64(druid.Talents.Moonglow),
-			Kind:       core.SpellMod_PowerCost_Pct,
-		})
-
-		// healing spells
-		druid.AddStaticMod(core.SpellModConfig{})
-	}
+	// Balance
+	druid.applyStarlightWrath()
+	druid.applyBalanceOfPower()
+	druid.applyNaturesMajesty()
+	druid.applyMoonglow()
+	druid.applyGenesis()
 
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.AddStat(stats.Expertise, 5.0*float64(druid.Talents.PrimalPrecision)*core.ExpertisePerQuarterPercentReduction)
@@ -139,6 +91,63 @@ func (druid *Druid) ApplyTalents() {
 	// druid.applyInfectedWounds()
 	druid.applyFurySwipes()
 	druid.applyPrimalMadness()
+}
+
+func (druid *Druid) applyBalanceOfPower() {
+	if druid.Talents.BalanceOfPower > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
+			ClassMask:  DruidArcaneSpells | DruidNatureSpells,
+			FloatValue: 0.01 * float64(druid.Talents.BalanceOfPower),
+			Kind:       core.SpellMod_DamageDone_Pct,
+		})
+
+		druid.AddStats(stats.Stats{stats.SpellHit: -0.5 * float64(druid.Talents.BalanceOfPower) * druid.GetBaseStats()[stats.Spirit]})
+		druid.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.0, 0.5, 1.0}[druid.Talents.BalanceOfPower])
+	}
+}
+
+func (druid *Druid) applyStarlightWrath() {
+	if druid.Talents.StarlightWrath > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask: DruidSpellStarfire | DruidSpellWrath,
+			TimeValue: time.Millisecond * time.Duration([]int{0, -150, -250, -500}[druid.Talents.StarlightWrath]),
+			Kind:      core.SpellMod_CastTime_Flat,
+		})
+	}
+}
+
+func (druid *Druid) applyNaturesMajesty() {
+	if druid.Talents.NaturesMajesty > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidSpellsAll,
+			FloatValue: 0.02 * float64(druid.Talents.NaturesMajesty),
+			Kind:       core.SpellMod_CritMultiplier_Pct,
+		})
+	}
+}
+
+func (druid *Druid) applyMoonglow() {
+	if druid.Talents.Moonglow > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidDamagingSpells | DruidHealingSpells,
+			FloatValue: -0.03 * float64(druid.Talents.Moonglow),
+			Kind:       core.SpellMod_PowerCost_Pct,
+		})
+	}
+}
+
+func (druid *Druid) applyGenesis() {
+	if druid.Talents.Genesis > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask: DruidSpellMoonfire | DruidSpellSunfire | DruidSpellInsectSwarm,
+			IntValue:  int64(1 * druid.Talents.Genesis),
+			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
+		})
+
+		// TODO: periodic healing spells
+		// TODO: swiftmend
+	}
 }
 
 // func (druid *Druid) setupNaturesGrace() {
