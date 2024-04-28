@@ -26,6 +26,14 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 		Duration: core.TernaryDuration(hasGlyph, time.Second*10, time.Second*6),
 	})
 
+	tricksOfTheTradeDamageAura := rogue.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
+		if unit.Type == core.PetUnit {
+			return nil
+		}
+		return core.TricksOfTheTradeAura(unit, rogue.Index, hasGlyph)
+	})
+
+	var castTarget *core.Unit
 	tricksOfTheTradeApplicationAura := rogue.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 57934},
 		Label:    "TricksOfTheTradeApplication",
@@ -33,8 +41,8 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() {
 				tricksOfTheTradeThreatTransferAura.Activate(sim)
-				if targetUnit != nil {
-					core.TricksOfTheTradeAura(targetUnit, rogue.Index, hasGlyph).Activate(sim)
+				if castTarget != nil {
+					tricksOfTheTradeDamageAura.Get(castTarget).Activate(sim)
 				}
 				aura.Deactivate(sim)
 			}
@@ -66,11 +74,24 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 				Duration: time.Second * time.Duration(30), // CD is handled by application aura
 			},
 		},
-		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if targetUnit != nil {
+				castTarget = targetUnit
+			} else if target != &rogue.Unit { // Cant cast on ourself
+				castTarget = target
+			}
 			tricksOfTheTradeApplicationAura.Activate(sim)
 			if hasShadowblades {
 				rogue.AddEnergy(sim, 15, energyMetrics)
 			}
+		},
+	})
+
+	rogue.AddMajorCooldown(core.MajorCooldown{
+		Spell: rogue.TricksOfTheTrade,
+		Type:  core.CooldownTypeDPS,
+		ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+			return targetUnit != nil
 		},
 	})
 }
