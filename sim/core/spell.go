@@ -145,9 +145,6 @@ type Spell struct {
 
 	// Per-target auras that are related to this spell, usually buffs or debuffs applied by the spell.
 	RelatedAuras []AuraArray
-
-	// Store when calls to CanQueue() are made to prevent APL infinite loops
-	LastQueueCheck time.Duration
 }
 
 func (unit *Unit) OnSpellRegistered(handler SpellRegisteredHandler) {
@@ -507,77 +504,12 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 	return true
 }
 
-// Returns whether the spell could be queued by the player at the current time using the
-// game's spell queueing functionality. Assumes the maximum spell queue window of 400ms
-// that the game allows.
-func (spell *Spell) CanQueue(sim *Simulation, target *Unit) bool {
-	spell.LastQueueCheck = sim.CurrentTime
-
-	if spell == nil {
-		return false
-	}
-
-	// Same extra cast conditions apply as if we were casting right now
-	if spell.ExtraCastCondition != nil && !spell.ExtraCastCondition(sim, target) {
-		return false
-	}
-
-	// Apply SQW leniency to any pending hardcasts
-	if spell.Unit.Hardcast.Expires > sim.CurrentTime + MaxSpellQueueWindow {
-		return false
-	}
-
-	// Apply SQW leniency to GCD timer
-	if spell.DefaultCast.GCD > 0 && spell.Unit.GCD.TimeToReady(sim) > MaxSpellQueueWindow {
-		return false
-	}
-
-	// Spells that are within one SQW of coming off cooldown can also be queued
-	if MaxTimeToReady(spell.CD.Timer, spell.SharedCD.Timer, sim) > MaxSpellQueueWindow {
-		return false
-	}
-
-	// By contrast, spells that are waiting on resources to cast *cannot* be queued
-	if spell.Cost != nil {
-		spell.CurCast.Cost = spell.DefaultCast.Cost
-		if !spell.Cost.MeetsRequirement(sim, spell) {
-			return false
-		}
-	}
-
-	return true
-}
-
-// Helper function for APL checks
-func (spell *Spell) CanCastOrQueue(sim *Simulation, target *Unit) bool {
-	return spell.CanCast(sim, target) || ((sim.CurrentTime > spell.LastQueueCheck) && spell.CanQueue(sim, target))
-}
-
 func (spell *Spell) Cast(sim *Simulation, target *Unit) bool {
 	spell.Unit.CancelQueuedSpell(sim)
 	if target == nil {
 		target = spell.Unit.CurrentTarget
 	}
 	return spell.castFn(sim, target)
-}
-
-func (spell *Spell) CastOrQueue(sim *Simulation, target *Unit) {
-	if spell.CanCast(sim, target) {
-		spell.Cast(sim, target)
-	} else if spell.CanQueue(sim, target) {
-		// Determine which timer the spell is waiting on
-		queueTime := max(spell.Unit.Hardcast.Expires, BothTimersReadyAt(spell.CD.Timer, spell.SharedCD.Timer))
-
-		if spell.DefaultCast.GCD > 0 {
-			queueTime = max(queueTime, spell.Unit.GCD.ReadyAt())
-		}
-
-		// Schedule the cast to go off without delay
-		spell.Unit.QueueSpell(sim, spell, target, queueTime)
-	} else {
-		// Fallback to make sure there is always log output
-		spell.Cast(sim, target)
-	}
 }
 
 // Skips the actual cast and applies spell effects immediately.

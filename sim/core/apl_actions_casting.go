@@ -26,9 +26,6 @@ func (rot *APLRotation) newActionCastSpell(config *proto.APLActionCastSpell) APL
 		target: target,
 	}
 }
-func (action *APLActionCastSpell) Reset(*Simulation) {
-	action.spell.LastQueueCheck = -NeverExpires
-}
 func (action *APLActionCastSpell) IsReady(sim *Simulation) bool {
 	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim))
 }
@@ -109,9 +106,6 @@ func (rot *APLRotation) newActionChannelSpell(config *proto.APLActionChannelSpel
 func (action *APLActionChannelSpell) GetAPLValues() []APLValue {
 	return []APLValue{action.interruptIf}
 }
-func (action *APLActionChannelSpell) Reset(*Simulation) {
-	action.spell.LastQueueCheck = -NeverExpires
-}
 func (action *APLActionChannelSpell) IsReady(sim *Simulation) bool {
 	return action.spell.CanCastOrQueue(sim, action.target.Get())
 }
@@ -167,7 +161,6 @@ func (action *APLActionMultidot) GetAPLValues() []APLValue {
 }
 func (action *APLActionMultidot) Reset(*Simulation) {
 	action.nextTarget = nil
-	action.spell.LastQueueCheck = -NeverExpires
 }
 func (action *APLActionMultidot) IsReady(sim *Simulation) bool {
 	maxOverlap := action.maxOverlap.GetDuration(sim)
@@ -240,7 +233,6 @@ func (action *APLActionMultishield) GetAPLValues() []APLValue {
 }
 func (action *APLActionMultishield) Reset(*Simulation) {
 	action.nextTarget = nil
-	action.spell.LastQueueCheck = -NeverExpires
 }
 func (action *APLActionMultishield) IsReady(sim *Simulation) bool {
 	maxOverlap := action.maxOverlap.GetDuration(sim)

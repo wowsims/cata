@@ -107,27 +107,3 @@ func (unit *Unit) ExtendGCDUntil(sim *Simulation, readyTime time.Duration) {
 		unit.Log(sim, "Extending GCD for %s due to rotation / CDs.", readyTime-sim.CurrentTime)
 	}
 }
-
-// Models the use of /cqs macros to change which spell should be cast at the last minute
-func (unit *Unit) CancelQueuedSpell(sim *Simulation) {
-	if unit.spellQueueAction != nil {
-		unit.spellQueueAction.Cancel(sim)
-	}
-}
-
-func (unit *Unit) QueueSpell(sim *Simulation, spell *Spell, target *Unit, queueAt time.Duration) {
-	unit.CancelQueuedSpell(sim)
-	unit.spellQueueAction = &PendingAction{
-		NextActionAt: queueAt + time.Duration(1), // 1ns artificial delay guarantees last-second cancellation if desired
-		Priority:     ActionPriorityGCD,
-
-		OnAction: func(sim *Simulation) {
-			spell.Cast(sim, target)
-		},
-	}
-	sim.AddPendingAction(unit.spellQueueAction)
-
-	if sim.Log != nil {
-		unit.Log(sim, "Queueing up %s to cast at %s.", spell.ActionID, queueAt)
-	}
-}
