@@ -35,7 +35,7 @@ func (war *ArmsWarrior) RegisterMortalStrike() {
 		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 423 + 0.8*(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()))
+			baseDamage := 634 + 1.5*(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()))
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)
