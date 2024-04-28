@@ -46,7 +46,7 @@ type DeathKnight struct {
 	core.Character
 	Talents *proto.DeathKnightTalents
 
-	ClassBaseScaling float64
+	ClassSpellScaling float64
 
 	Inputs DeathKnightInputs
 
@@ -140,10 +140,10 @@ func (dk *DeathKnight) HasMinorGlyph(glyph proto.DeathKnightMinorGlyph) bool {
 
 func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents string, deathRuneConvertSpellId int32) *DeathKnight {
 	dk := &DeathKnight{
-		Character:        *character,
-		Talents:          &proto.DeathKnightTalents{},
-		Inputs:           inputs,
-		ClassBaseScaling: 1125.227400,
+		Character:         *character,
+		Talents:           &proto.DeathKnightTalents{},
+		Inputs:            inputs,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDeathKnight),
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
 

@@ -19,7 +19,7 @@ func (dk *DeathKnight) registerPlagueStrikeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.18700000644 +
+			baseDamage := dk.ClassSpellScaling*0.18700000644 +
 				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
@@ -50,7 +50,7 @@ func (dk *DeathKnight) registerPlagueStrikeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.37400001287 +
+			baseDamage := dk.ClassSpellScaling*0.37400001287 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
@@ -74,7 +74,7 @@ func (dk *DeathKnight) registerDrwPlagueStrikeSpell() *core.Spell {
 		Flags:       core.SpellFlagMeleeMetrics,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.37400001287 +
+			baseDamage := dk.ClassSpellScaling*0.37400001287 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)

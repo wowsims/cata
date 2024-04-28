@@ -15,6 +15,8 @@ const ThoridalTheStarsFuryItemID = 34334
 type Hunter struct {
 	core.Character
 
+	ClassSpellScaling float64
+
 	Talents             *proto.HunterTalents
 	Options             *proto.HunterOptions
 	BeastMasteryOptions *proto.BeastMasteryHunter_Options
@@ -83,9 +85,10 @@ func (hunter *Hunter) GetHunter() *Hunter {
 
 func NewHunter(character *core.Character, options *proto.Player, hunterOptions *proto.HunterOptions) *Hunter {
 	hunter := &Hunter{
-		Character: *character,
-		Talents:   &proto.HunterTalents{},
-		Options:   hunterOptions,
+		Character:         *character,
+		Talents:           &proto.HunterTalents{},
+		Options:           hunterOptions,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassHunter),
 	}
 
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)

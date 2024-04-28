@@ -35,7 +35,7 @@ func (dk *BloodDeathKnight) registerHeartStrikeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.72799998522 +
+			baseDamage := dk.ClassSpellScaling*0.72799998522 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			currentTarget := target
@@ -69,7 +69,7 @@ func (dk *BloodDeathKnight) registerDrwHeartStrikeSpell() *core.Spell {
 		Flags:       core.SpellFlagMeleeMetrics,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.72799998522 +
+			baseDamage := dk.ClassSpellScaling*0.72799998522 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			currentTarget := target

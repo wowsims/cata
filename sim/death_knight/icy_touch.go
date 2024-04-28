@@ -30,7 +30,7 @@ func (dk *DeathKnight) registerIcyTouchSpell() {
 		ThreatMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.46799999475 + spell.MeleeAttackPower()*0.2
+			baseDamage := dk.ClassSpellScaling*0.46799999475 + spell.MeleeAttackPower()*0.2
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.SpendRefundableCost(sim, result)
@@ -51,7 +51,7 @@ func (dk *DeathKnight) registerDrwIcyTouchSpell() *core.Spell {
 		ProcMask:    core.ProcMaskSpellDamage,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.46799999475 + spell.MeleeAttackPower()*0.2
+			baseDamage := dk.ClassSpellScaling*0.46799999475 + spell.MeleeAttackPower()*0.2
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 

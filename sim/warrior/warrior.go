@@ -73,6 +73,8 @@ const EnrageTag = "EnrageEffect"
 type Warrior struct {
 	core.Character
 
+	ClassSpellScaling float64
+
 	Talents *proto.WarriorTalents
 
 	WarriorInputs
@@ -170,9 +172,10 @@ func (warrior *Warrior) Reset(_ *core.Simulation) {
 
 func NewWarrior(character *core.Character, talents string, inputs WarriorInputs) *Warrior {
 	warrior := &Warrior{
-		Character:     *character,
-		Talents:       &proto.WarriorTalents{},
-		WarriorInputs: inputs,
+		Character:         *character,
+		Talents:           &proto.WarriorTalents{},
+		WarriorInputs:     inputs,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassWarrior),
 	}
 	core.FillTalentsProto(warrior.Talents.ProtoReflect(), talents, TalentTreeSizes)
 

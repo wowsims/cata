@@ -27,6 +27,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		Totems:              totems,
 		SelfBuffs:           selfBuffs,
 		ThunderstormInRange: thunderstormRange,
+		ClassSpellScaling:   core.GetClassSpellScalingCoefficient(proto.Class_ClassShaman),
 	}
 	// shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: 57960})
 
@@ -72,6 +73,8 @@ const (
 // Shaman represents a shaman character.
 type Shaman struct {
 	core.Character
+
+	ClassSpellScaling float64
 
 	ThunderstormInRange bool // flag if thunderstorm will be in range.
 
