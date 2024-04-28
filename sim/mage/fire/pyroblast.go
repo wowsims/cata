@@ -9,7 +9,7 @@ import (
 
 func (Mage *FireMage) registerPyroblastSpell() {
 
-	/* implement when debuffs updated
+	/* TODO implement for CM Maintenance settings with scorch
 	var CMProcChance float64
 	if mage.Talents.CriticalMass > 0 {
 		CMProcChance = float64(mage.Talents.CriticalMass) / 3.0
@@ -55,13 +55,8 @@ func (Mage *FireMage) registerPyroblastSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
-					Mage.PyroblastDot.Cast(sim, target)
+					Mage.PyroblastDot.Dot(target).Apply(sim)
 					spell.DealDamage(sim, result)
-					//pyroblastDot.SpellMetrics[target.UnitIndex].Hits++
-					//pyroblastDot.SpellMetrics[target.UnitIndex].Casts = 0
-					/* The 2 above metric changes should show how many ticks land
-					without affecting the overall pyroblast cast metric
-					*/
 				}
 			})
 		},
@@ -102,45 +97,6 @@ func (Mage *FireMage) registerPyroblastSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).ApplyOrReset(sim)
-			Mage.PyroblastDot.SpellMetrics[target.UnitIndex].Casts = 0
-		},
-	})
-
-	Mage.PyroblastDotImpact = Mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 11366}.WithTag(1),
-		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          mage.SpellFlagMage,
-		ClassSpellMask: mage.MageSpellPyroblastDot,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				NonEmpty: true,
-			},
-		},
-
-		DamageMultiplier: 1,
-		CritMultiplier:   Mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
-
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "PyroblastDoT Fake Impact",
-			},
-			NumberOfTicks:       4,
-			TickLength:          time.Second * 3,
-			AffectedByCastSpeed: true,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				//
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).ApplyOrReset(sim)
-			Mage.PyroblastDot.SpellMetrics[target.UnitIndex].Casts = 0
 		},
 	})
 }

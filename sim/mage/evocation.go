@@ -12,13 +12,6 @@ func (mage *Mage) registerEvocation() {
 	manaMetrics := mage.NewManaMetrics(actionID)
 	manaPerTick := 0.0
 
-	if mage.Talents.ArcaneFlows > 0 {
-		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask: MageSpellEvocation,
-			TimeValue: -time.Minute * time.Duration(mage.Talents.ArcaneFlows),
-			Kind:      core.SpellMod_Cooldown_Flat,
-		})
-	}
 	evocation := mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		Flags:          core.SpellFlagHelpful | core.SpellFlagChanneled | core.SpellFlagAPL,

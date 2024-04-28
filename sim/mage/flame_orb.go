@@ -65,7 +65,6 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
-				spell.SpellMetrics[target.UnitIndex].Hits++
 			}
 
 		},

@@ -21,7 +21,7 @@ func (mage *Mage) registerFlamestrikeSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond*2000 - 1000*time.Duration(mage.Talents.ImprovedFlamestrike),
+				CastTime: time.Millisecond * 2000,
 			},
 		},
 

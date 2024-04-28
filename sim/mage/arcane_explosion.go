@@ -28,9 +28,9 @@ func (mage *Mage) registerArcaneExplosionSpell() {
 		ThreatMultiplier: 1 - 0.4*float64(mage.Talents.ImprovedArcaneExplosion),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := 0.368 * mage.ScalingBaseDamage
+			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := 0.368 * mage.ScalingBaseDamage
-				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},

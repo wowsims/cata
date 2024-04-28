@@ -51,6 +51,12 @@ func (mage *Mage) ApplyArcaneTalents() {
 			FloatValue: -[]float64{0, 0.12, 0.25}[mage.Talents.ArcaneFlows],
 			Kind:       core.SpellMod_Cooldown_Multiplier,
 		})
+
+		mage.AddStaticMod(core.SpellModConfig{
+			ClassMask: MageSpellEvocation,
+			TimeValue: -time.Minute * time.Duration(mage.Talents.ArcaneFlows),
+			Kind:      core.SpellMod_Cooldown_Flat,
+		})
 	}
 
 	// Missile Barrage

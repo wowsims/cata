@@ -27,8 +27,6 @@ func (mage *Mage) registerFireBlastSpell() {
 			},
 		},
 
-		BonusCritRating: 0 +
-			float64(mage.Talents.ImprovedFireBlast)*4*core.CritRatingPerCritChance,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
 		BonusCoefficient:         0.429,

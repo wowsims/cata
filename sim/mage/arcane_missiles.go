@@ -23,13 +23,14 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := 0.432 * mage.ScalingBaseDamage
 			result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-			//spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-			spell.DealDamage(sim, result)
-			//})
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 
 	var numTicks int32 = 3
+	TickLengthBase := time.Millisecond * time.Duration(700-100*mage.Talents.MissileBarrage)
 	mage.ArcaneMissiles = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7268},
 		SpellSchool:    core.SpellSchoolArcane,
@@ -68,9 +69,10 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 					mage.ArcaneBlastAura.Deactivate(sim)
 				},
 			},
-			NumberOfTicks:       numTicks - 1, // subtracting 1 due to autocasting one OnGain
-			TickLength:          time.Millisecond * 700,
-			AffectedByCastSpeed: true,
+			NumberOfTicks:        numTicks - 1, // subtracting 1 due to autocasting one OnGain
+			TickLength:           TickLengthBase,
+			HasteAffectsDuration: true,
+			AffectedByCastSpeed:  true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				mage.ArcaneMissilesTickSpell.Cast(sim, target)
 			},
@@ -80,7 +82,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
 			}
-			spell.DealOutcome(sim, result)
+			//spell.DealOutcome(sim, result)
 		},
 	})
 }

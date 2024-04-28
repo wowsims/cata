@@ -36,11 +36,8 @@ func (mage *Mage) registerFreezeSpell() {
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
-			if mage.FingersOfFrostAura.IsActive() {
-				mage.FingersOfFrostAura.Refresh(sim)
-			} else {
-				mage.FingersOfFrostAura.Activate(sim)
-			}
+
+			mage.FingersOfFrostAura.Activate(sim)
 			mage.FingersOfFrostAura.SetStacks(sim, 2)
 		},
 	})

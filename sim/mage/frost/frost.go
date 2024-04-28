@@ -25,7 +25,6 @@ func RegisterFrostMage() {
 
 type FrostMage struct {
 	*mage.Mage
-	ClassBaseScaling float64
 
 	waterElemental *WaterElemental
 }
@@ -34,8 +33,7 @@ func NewFrostMage(character *core.Character, options *proto.Player) *FrostMage {
 	frostOptions := options.GetFrostMage().Options
 
 	frostMage := &FrostMage{
-		Mage:             mage.NewMage(character, options, frostOptions.ClassOptions),
-		ClassBaseScaling: 937.330078125,
+		Mage: mage.NewMage(character, options, frostOptions.ClassOptions),
 	}
 	frostMage.waterElemental = frostMage.NewWaterElemental(0.20)
 
@@ -75,7 +73,7 @@ func (frostMage *FrostMage) ApplyTalents() {
 	frostMage.Mage.AddStaticMod(core.SpellModConfig{
 		ClassMask:  mage.MageSpellFrostbolt,
 		FloatValue: 0.15,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 	})
 
 	// Frost Mastery Bonus

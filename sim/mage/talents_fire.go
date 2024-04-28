@@ -55,8 +55,6 @@ func (mage *Mage) ApplyFireTalents() {
 		})
 	}
 
-	// Pyromaniac
-
 	// Critical Mass
 	if mage.Talents.CriticalMass > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
