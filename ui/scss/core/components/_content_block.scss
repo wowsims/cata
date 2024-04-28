@@ -7,19 +7,20 @@
 	&:not(:last-child) {
 		margin-bottom: $section-spacer;
 	}
+}
 
-	.content-block-header {
-		border-bottom: $border-default;
-		margin-bottom: $block-spacer;
-		display: flex;
+.content-block-header {
+	border-bottom: $border-default;
+	margin-bottom: $block-spacer;
+	display: flex;
+	align-items: baseline;
+}
 
-		.content-block-title {
-			font-weight: bold;
-		}
-	}
+.content-block-title {
+	font-weight: bold;
+}
 
-	.content-block-body {
-		display: flex;
-		flex-direction: column;
-	}
+.content-block-body {
+	display: flex;
+	flex-direction: column;
 }

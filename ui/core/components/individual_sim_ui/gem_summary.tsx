@@ -1,10 +1,12 @@
-import { Component } from '../../components/component';
+import { element, fragment } from 'tsx-vanilla';
+
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
 import { UIGem as Gem } from '../../proto/ui.js';
 import { ActionId } from '../../proto_utils/action_id';
 import { SimUI } from '../../sim_ui';
 import { TypedEvent } from '../../typed_event';
+import { Component } from '../component';
 import { ContentBlock } from '../content_block';
 
 interface GemSummaryData {
@@ -24,7 +26,7 @@ export class GemSummary extends Component {
 		this.player = player;
 
 		this.container = new ContentBlock(this.rootElem, 'summary-table-container', {
-			header: { title: 'Gem Summary' },
+			header: { title: 'Gem Summary', extraCssClasses: ['summary-table--gems'] },
 			extraCssClasses: ['summary-table--gems'],
 		});
 		player.gearChangeEmitter.on(() => this.updateTable());
@@ -52,15 +54,17 @@ export class GemSummary extends Component {
 
 			for (const gemName of Object.keys(gemCounts)) {
 				const gemData = gemCounts[gemName];
-				const row = document.createElement('div');
-				row.classList.add('summary-table-row', 'd-flex', 'align-items-center');
-				row.innerHTML = `
-				<a class="summary-table-link" data-whtticon='false' target='_blank'>
-					<img class="gem-icon"/>
-					<div>${gemName}</div>
-				</a>
-				<div>${gemData.count.toFixed(0)}</div>
-			`;
+				const row = (
+					<div className="summary-table-row d-flex align-items-center">
+						<a className="summary-table-link" data-whtticon="false" target="_blank">
+							<img className="gem-icon" />
+							<div>{gemName}</div>
+						</a>
+						<div>{gemData.count.toFixed(0)}</div>
+					</div>
+				);
+
+				this.container.bodyElement.appendChild(row);
 
 				const itemLinkElem = row.querySelector('.summary-table-link') as HTMLAnchorElement;
 				const iconElem = row.querySelector('.gem-icon') as HTMLImageElement;
@@ -77,20 +81,24 @@ export class GemSummary extends Component {
 				this.container.bodyElement.appendChild(row);
 			}
 
-			const footer = document.createElement('div');
-			footer.classList.add('summary-table-footer', 'd-flex', 'justify-content-end');
-			footer.innerHTML = `
-				<button class="btn btn-sm btn-outline-primary">
-					<i class="fas fa-close me-1"></i>
+			if (!this.container.headerElement) return;
+			const existingResetButton = this.container.headerElement.querySelector('.summary-table-reset-button');
+			const resetButton = (
+				<button
+					className="btn btn-sm btn-reset summary-table-reset-button"
+					onclick={() => {
+						this.player.setGear(TypedEvent.nextEventID(), this.player.getGear().withoutGems());
+					}}>
 					Reset gems
+					<i className="fas fa-close ms-1"></i>
 				</button>
-			`;
+			);
 
-			const resetButton = footer.querySelector('button') as HTMLButtonElement;
-			resetButton.onclick = () => {
-				this.player.setGear(TypedEvent.nextEventID(), this.player.getGear().withoutGems());
-			};
-			this.container.bodyElement.appendChild(footer);
+			if (existingResetButton) {
+				this.container.headerElement.replaceChild(resetButton, existingResetButton);
+			} else {
+				this.container.headerElement.appendChild(resetButton);
+			}
 		}
 	}
 }
