@@ -118,7 +118,7 @@ func (unit *Unit) CancelQueuedSpell(sim *Simulation) {
 func (unit *Unit) QueueSpell(sim *Simulation, spell *Spell, target *Unit, queueAt time.Duration) {
 	unit.CancelQueuedSpell(sim)
 	unit.spellQueueAction = &PendingAction{
-		NextActionAt: queueAt,
+		NextActionAt: queueAt + time.Duration(1), // 1ns artificial delay guarantees last-second cancellation if desired
 		Priority:     ActionPriorityGCD,
 
 		OnAction: func(sim *Simulation) {
