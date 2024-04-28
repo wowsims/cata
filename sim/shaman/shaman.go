@@ -27,6 +27,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		Totems:              totems,
 		SelfBuffs:           selfBuffs,
 		ThunderstormInRange: thunderstormRange,
+		ClassSpellScaling:   core.GetClassSpellScalingCoefficient(proto.Class_ClassShaman),
 	}
 	// shaman.waterShieldManaMetrics = shaman.NewManaMetrics(core.ActionID{SpellID: 57960})
 
@@ -51,6 +52,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	}
 
 	shaman.FireElemental = shaman.NewFireElemental(float64(totems.BonusSpellpower))
+	shaman.EarthElemental = shaman.NewEarthElemental(float64(totems.BonusSpellpower))
 	return shaman
 }
 
@@ -72,6 +74,8 @@ const (
 // Shaman represents a shaman character.
 type Shaman struct {
 	core.Character
+
+	ClassSpellScaling float64
 
 	ThunderstormInRange bool // flag if thunderstorm will be in range.
 
@@ -114,6 +118,9 @@ type Shaman struct {
 
 	FireElemental      *FireElemental
 	FireElementalTotem *core.Spell
+
+	EarthElemental      *EarthElemental
+	EarthElementalTotem *core.Spell
 
 	MagmaTotem           *core.Spell
 	ManaSpringTotem      *core.Spell
@@ -215,6 +222,7 @@ func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 func (shaman *Shaman) Initialize() {
 	shaman.registerChainLightningSpell()
 	shaman.registerFireElementalTotem()
+	shaman.registerEarthElementalTotem()
 	shaman.registerFireNovaSpell()
 	shaman.registerLavaBurstSpell()
 	shaman.registerLightningBoltSpell()
@@ -297,6 +305,7 @@ func (shaman *Shaman) GetMentalQuicknessBonus() float64 {
 const (
 	SpellMaskNone               int64 = 0
 	SpellMaskFireElementalTotem int64 = 1 << iota
+	SpellMaskEarthElementalTotem
 	SpellMaskFlameShockDirect
 	SpellMaskFlameShockDot
 	SpellMaskLavaBurst

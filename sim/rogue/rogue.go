@@ -16,11 +16,12 @@ const (
 
 var TalentTreeSizes = [3]int{19, 19, 19}
 
-const RogueBaseDamageScalar = 1125.23
 const RogueBleedTag = "RogueBleed"
 
 type Rogue struct {
 	core.Character
+
+	ClassSpellScaling float64
 
 	Talents              *proto.RogueTalents
 	Options              *proto.RogueOptions
@@ -202,9 +203,10 @@ func (rogue *Rogue) SpellCritMultiplier() float64 {
 
 func NewRogue(character *core.Character, options *proto.RogueOptions, talents string) *Rogue {
 	rogue := &Rogue{
-		Character: *character,
-		Talents:   &proto.RogueTalents{},
-		Options:   options,
+		Character:         *character,
+		Talents:           &proto.RogueTalents{},
+		Options:           options,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassRogue),
 	}
 
 	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)

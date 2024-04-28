@@ -9,7 +9,7 @@ import (
 
 func (rogue *Rogue) registerBackstabSpell() {
 	hasGlyph := rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfBackstab)
-	baseDamage := RogueBaseDamageScalar * .307
+	baseDamage := rogue.ClassSpellScaling * .307
 	murderousIntentMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 79132})
 	glyphOfBackstabMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 56800})
 	t11Bonus := core.TernaryFloat64(rogue.HasSetBonus(Tier11, 2), 5*core.CritRatingPerCritChance, 0)

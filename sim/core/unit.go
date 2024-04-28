@@ -505,6 +505,10 @@ func (unit *Unit) finalize() {
 		panic("Initial stats may not be set before finalized: " + unit.initialStats.String())
 	}
 
+	if unit.ReactionTime == 0 {
+		panic("Unset unit.ReactionTime")
+	}
+
 	unit.defaultTarget = unit.CurrentTarget
 	unit.applyParryHaste()
 	unit.updateCastSpeed()

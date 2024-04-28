@@ -9,7 +9,7 @@ import (
 
 func (rogue *Rogue) registerSinisterStrikeSpell() {
 	hasGlyphOfSinisterStrike := rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfSinisterStrike)
-	baseDamage := RogueBaseDamageScalar * 0.1780000031
+	baseDamage := rogue.ClassSpellScaling * 0.1780000031
 	t11Bonus := core.TernaryFloat64(rogue.HasSetBonus(Tier11, 2), 5*core.CritRatingPerCritChance, 0)
 
 	rogue.SinisterStrike = rogue.RegisterSpell(core.SpellConfig{

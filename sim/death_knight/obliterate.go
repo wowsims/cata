@@ -21,7 +21,7 @@ func (dk *DeathKnight) registerObliterateSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.28900000453 +
+			baseDamage := dk.ClassSpellScaling*0.28900000453 +
 				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
@@ -55,7 +55,7 @@ func (dk *DeathKnight) registerObliterateSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.57800000906 +
+			baseDamage := dk.ClassSpellScaling*0.57800000906 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			baseDamage *= dk.GetDiseaseMulti(target, 1.0, 0.125)

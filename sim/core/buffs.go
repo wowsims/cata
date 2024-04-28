@@ -1237,7 +1237,7 @@ func registerPowerInfusionCD(agent Agent, numPowerInfusions int32) {
 
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				// Haste portion doesn't stack with Bloodlust, so prefer to wait.
-				return !character.HasActiveAura("Bloodlust-" + BloodlustActionID.WithTag(-1).String())
+				return !character.HasActiveAuraWithTag(BloodlustAuraTag)
 			},
 			AddAura: func(sim *Simulation, character *Character) { piAura.Activate(sim) },
 		},

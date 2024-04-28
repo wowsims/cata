@@ -211,7 +211,7 @@ const (
 
 func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 	isShivProc := procSource == ShivProc
-	ipBaseDamage := 0.31299999356 * RogueBaseDamageScalar
+	ipBaseDamage := 0.31299999356 * rogue.ClassSpellScaling
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 8680, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
@@ -235,7 +235,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 
 func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 	isShivProc := procSource == ShivProc
-	wpBaseDamage := 0.24500000477 * RogueBaseDamageScalar
+	wpBaseDamage := 0.24500000477 * rogue.ClassSpellScaling
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 13218, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
