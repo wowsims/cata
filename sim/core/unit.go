@@ -140,13 +140,16 @@ type Unit struct {
 
 	GCD *Timer
 
+	// Separate from GCD timer to support spell queueing and off-GCD actions
+	RotationTimer *Timer
+
 	// Used for applying the effect of a hardcast spell when casting finishes.
 	//  For channeled spells, only Expires is set.
 	// No more than one cast may be active at any given time.
 	Hardcast Hardcast
 
-	// GCD-related PendingActions.
-	gcdAction      *PendingAction
+	// Rotation-related PendingActions.
+	rotationAction *PendingAction
 	hardcastAction *PendingAction
 
 	// Cached mana return values per tick.
@@ -617,6 +620,7 @@ func (unit *Unit) GetMetadata() *proto.UnitMetadata {
 			PrepullOnly:     spell.Flags.Matches(SpellFlagPrepullOnly),
 			EncounterOnly:   spell.Flags.Matches(SpellFlagEncounterOnly),
 			HasCastTime:     spell.DefaultCast.CastTime > 0,
+			IsFriendly:      spell.Flags.Matches(SpellFlagHelpful),
 		}
 	})
 

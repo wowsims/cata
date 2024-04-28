@@ -3,9 +3,9 @@ import { SimTab } from "../core/components/sim_tab";
 import { Raid as RaidProto } from "../core/proto/api";
 import { BlessingsAssignments, SavedRaid } from "../core/proto/ui";
 import { EventID, TypedEvent } from "../core/typed_event";
-//import { RaidStats } from "./_raid_stats";
 import { RaidPicker } from "./raid_picker";
 import { RaidSimUI } from "./raid_sim_ui";
+import { RaidStats } from "./raid_stats";
 
 export class RaidTab extends SimTab {
 	protected simUI: RaidSimUI;
@@ -33,7 +33,7 @@ export class RaidTab extends SimTab {
 
 	protected buildTabContent() {
 		this.simUI.raidPicker = new RaidPicker(this.leftPanel, this.simUI);
-		//new RaidStats(this.leftPanel, this.simUI);
+		new RaidStats(this.leftPanel, this.simUI);
 
 		const savedRaidManager = new SavedDataManager<RaidSimUI, SavedRaid>(this.rightPanel, this.simUI, {
 			label: 'Raid',

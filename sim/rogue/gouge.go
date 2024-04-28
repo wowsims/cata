@@ -9,7 +9,7 @@ import (
 
 func (rogue *Rogue) registerGougeSpell() {
 	hasGlyph := rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfGouge)
-	baseDamage := RogueBaseDamageScalar * 0.10400000215
+	baseDamage := rogue.ClassSpellScaling * 0.10400000215
 
 	rogue.Gouge = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1776},

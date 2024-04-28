@@ -11,7 +11,6 @@ import (
 const (
 	SpellFlagNaturesGrace = core.SpellFlagAgentReserved1
 	SpellFlagOmenTrigger  = core.SpellFlagAgentReserved2
-	SpellScalingConstant  = 986.626460 // for level 85
 )
 
 var TalentTreeSizes = [3]int{20, 22, 21}
@@ -21,6 +20,8 @@ type Druid struct {
 	SelfBuffs
 	eclipseEnergyBar
 	Talents *proto.DruidTalents
+
+	ClassSpellScaling float64
 
 	StartingForm DruidForm
 
@@ -167,6 +168,8 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
 		raidBuffs.LeaderOfThePack = true
 	}
+
+	raidBuffs.MarkOfTheWild = true
 }
 
 func (druid *Druid) BalanceCritMultiplier() float64 {
@@ -301,12 +304,14 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 
 func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
 	druid := &Druid{
-		Character:    *char,
-		SelfBuffs:    selfBuffs,
-		Talents:      &proto.DruidTalents{},
-		StartingForm: form,
-		form:         form,
+		Character:         *char,
+		SelfBuffs:         selfBuffs,
+		Talents:           &proto.DruidTalents{},
+		StartingForm:      form,
+		form:              form,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDruid),
 	}
+
 	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
 	druid.EnableManaBar()
 

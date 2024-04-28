@@ -41,7 +41,7 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 			BonusCoefficient: 0.163,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, 0.144*priest.ScalingBaseDamage)
+				dot.Snapshot(target, 0.144*priest.ClassSpellScaling)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -63,7 +63,7 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
 			} else {
-				baseDamage := 0.144 * priest.ScalingBaseDamage
+				baseDamage := 0.144 * priest.ClassSpellScaling
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 			}
 		},

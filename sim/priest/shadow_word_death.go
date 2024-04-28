@@ -38,7 +38,7 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 			if sim.IsExecutePhase25() {
 				spell.DamageMultiplier *= 3
 			}
-			spell.CalcAndDealDamage(sim, target, priest.ScalingBaseDamage*0.357, spell.OutcomeMagicHitAndCrit)
+			spell.CalcAndDealDamage(sim, target, priest.ClassSpellScaling*0.357, spell.OutcomeMagicHitAndCrit)
 			if sim.IsExecutePhase25() {
 				spell.DamageMultiplier /= 3
 			}
@@ -47,7 +47,7 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 			if sim.IsExecutePhase25() {
 				spell.DamageMultiplier *= 3
 			}
-			result := spell.CalcDamage(sim, target, priest.ScalingBaseDamage*0.357, spell.OutcomeExpectedMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, priest.ClassSpellScaling*0.357, spell.OutcomeExpectedMagicHitAndCrit)
 			if sim.IsExecutePhase25() {
 				spell.DamageMultiplier /= 3
 			}

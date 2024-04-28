@@ -9,12 +9,6 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
-	if shaman.Spec == proto.Spec_SpecElementalShaman || shaman.Spec == proto.Spec_SpecRestorationShaman {
-		shaman.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeMail)
-	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
-		shaman.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeMail)
-	}
-
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.Expertise, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))

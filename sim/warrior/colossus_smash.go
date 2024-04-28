@@ -44,6 +44,7 @@ func (warrior *Warrior) RegisterColossusSmash() {
 				Timer:    warrior.NewTimer(),
 				Duration: time.Second * 20,
 			},
+			IgnoreHaste: true,
 		},
 
 		DamageMultiplier: 1.0,

@@ -1,14 +1,14 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, RaidBuffs, Profession } from '../../core/proto/common.js';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession,RaidBuffs } from '../../core/proto/common.js';
 import {
 	AirTotem,
 	EarthTotem,
 	EnhancementShaman_Options as EnhancementShamanOptions,
 	FireTotem,
 	ShamanImbue,
-	ShamanPrimeGlyph,
 	ShamanMajorGlyph,
 	ShamanMinorGlyph,
+	ShamanPrimeGlyph,
 	ShamanShield,
 	ShamanSyncType,
 	ShamanTotems,
@@ -66,6 +66,7 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
+	distanceFromTarget: 5,
 };
 
 export const DefaultConsumes = Consumes.create({
