@@ -57,10 +57,10 @@ func (rot *APLRotation) newActionCastFriendlySpell(config *proto.APLActionCastFr
 	}
 }
 func (action *APLActionCastFriendlySpell) IsReady(sim *Simulation) bool {
-	return action.spell.CanCast(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim))
+	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim))
 }
 func (action *APLActionCastFriendlySpell) Execute(sim *Simulation) {
-	action.spell.Cast(sim, action.target.Get())
+	action.spell.CastOrQueue(sim, action.target.Get())
 }
 func (action *APLActionCastFriendlySpell) String() string {
 	return fmt.Sprintf("Cast Friendly Spell(%s)", action.spell.ActionID)
