@@ -1,10 +1,12 @@
+import { element, fragment } from 'tsx-vanilla';
+
 import { Player } from '../../player.js';
-import { Stat } from '../../proto/common';
-import { shortSecondaryStatNames } from '../../proto_utils/names';
+import { Stat } from '../../proto/common.js';
+import { shortSecondaryStatNames } from '../../proto_utils/names.js';
 import { SimUI } from '../../sim_ui.js';
-import { TypedEvent } from '../../typed_event';
+import { TypedEvent } from '../../typed_event.js';
 import { Component } from '../component.js';
-import { ContentBlock } from '../content_block.js';
+import { ContentBlock } from '../content_block.jsx';
 
 type ReforgeSummaryTotal = {
 	[key in Stat]?: number;
@@ -63,33 +65,37 @@ export class ReforgeSummary extends Component {
 				const stat: Stat = Number(key);
 				const value = totals[stat];
 				if (!value) return;
-				const row = document.createElement('div');
-				row.classList.add('summary-table-row', 'd-flex', 'align-items-center');
-				row.innerHTML = `
-					<div>${shortSecondaryStatNames.get(stat)}</div>
-					<div class="${value === 0 ? '' : value > 0 ? 'positive' : 'negative'}">${value}</div>
-				`;
-				this.container.bodyElement.appendChild(row);
+
+				this.container.bodyElement.appendChild(
+					<div className="summary-table-row d-flex align-items-center">
+						<div>{shortSecondaryStatNames.get(stat)}</div>
+						<div className={`${value === 0 ? '' : value > 0 ? 'positive' : 'negative'}`}>{value}</div>
+					</div>,
+				);
 			});
 
-			const footer = document.createElement('div');
-			footer.classList.add('summary-table-footer', 'd-flex', 'justify-content-end');
-			footer.innerHTML = `
-				<button class="btn btn-sm btn-outline-primary">
-					<i class="fas fa-close me-1"></i>
-					Reset reforged items
+			if (!this.container.headerElement) return;
+			const existingResetButton = this.container.headerElement.querySelector('.summary-table-reset-button');
+			const resetButton = (
+				<button
+					className="btn btn-sm btn-reset summary-table-reset-button"
+					onclick={() => {
+						gear.getItemSlots().forEach(itemSlot => {
+							const item = gear.getEquippedItem(itemSlot);
+							if (item) gear = gear.withEquippedItem(itemSlot, item.withItem(item.item), this.player.canDualWield2H());
+						});
+						this.player.setGear(TypedEvent.nextEventID(), gear);
+					}}>
+					Reset reforges
+					<i className="fas fa-close ms-1"></i>
 				</button>
-			`;
+			);
 
-			const resetButton = footer.querySelector('button') as HTMLButtonElement;
-			resetButton.onclick = () => {
-				gear.getItemSlots().forEach(itemSlot => {
-					const item = gear.getEquippedItem(itemSlot);
-					if (item) gear = gear.withEquippedItem(itemSlot, item.withItem(item.item), this.player.canDualWield2H());
-				});
-				this.player.setGear(TypedEvent.nextEventID(), gear);
-			};
-			this.container.bodyElement.appendChild(footer);
+			if (existingResetButton) {
+				this.container.headerElement.replaceChild(resetButton, existingResetButton);
+			} else {
+				this.container.headerElement.appendChild(resetButton);
+			}
 		}
 	}
 }
