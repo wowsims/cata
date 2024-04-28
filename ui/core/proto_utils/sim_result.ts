@@ -339,7 +339,7 @@ export class UnitMetrics {
 		this.spec = this.player ? getPlayerSpecFromPlayer(this.player) : null;
 		this.petActionId = petActionId;
 		this.iconUrl = this.isPlayer ? this.spec?.getIcon('medium') ?? '' : this.isTarget ? defaultTargetIcon : '';
-		this.classColor = this.isTarget ? '' : PlayerSpecs.getPlayerClass(this.spec as PlayerSpec<any>).hexColor ?? '';
+		this.classColor = this.isTarget ? '' : PlayerSpecs.getPlayerClass(this.spec as PlayerSpec<any>).friendlyName.toLowerCase().replace(/\s/g, '-') ?? '';
 		this.dps = this.metrics.dps!;
 		this.dpasp = this.metrics.dpasp!;
 		this.hps = this.metrics.hps!;

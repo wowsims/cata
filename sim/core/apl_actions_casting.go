@@ -39,6 +39,36 @@ func (action *APLActionCastSpell) String() string {
 	return fmt.Sprintf("Cast Spell(%s)", action.spell.ActionID)
 }
 
+type APLActionCastFriendlySpell struct {
+	defaultAPLActionImpl
+	spell  *Spell
+	target UnitReference
+}
+
+func (rot *APLRotation) newActionCastFriendlySpell(config *proto.APLActionCastFriendlySpell) APLActionImpl {
+	spell := rot.GetAPLSpell(config.SpellId)
+	if spell == nil {
+		return nil
+	}
+	target := rot.GetTargetUnit(config.Target)
+	if target.Get() == nil {
+		return nil
+	}
+	return &APLActionCastFriendlySpell{
+		spell:  spell,
+		target: target,
+	}
+}
+func (action *APLActionCastFriendlySpell) IsReady(sim *Simulation) bool {
+	return action.spell.CanCast(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim))
+}
+func (action *APLActionCastFriendlySpell) Execute(sim *Simulation) {
+	action.spell.Cast(sim, action.target.Get())
+}
+func (action *APLActionCastFriendlySpell) String() string {
+	return fmt.Sprintf("Cast Friendly Spell(%s)", action.spell.ActionID)
+}
+
 type APLActionChannelSpell struct {
 	defaultAPLActionImpl
 	spell       *Spell
