@@ -30,7 +30,7 @@ func (dk *DeathKnight) registerUnholyFrenzySpell() {
 
 	unholyFrenzy := dk.Character.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
 		ClassSpellMask: DeathKnightSpellUnholyFrenzy,
 
 		Cast: core.CastConfig{
@@ -41,7 +41,11 @@ func (dk *DeathKnight) registerUnholyFrenzySpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
-			unholyFrenzyAuras.Get(unholyFrenzyTarget).Activate(sim)
+			if target.Type == core.PlayerUnit {
+				unholyFrenzyAuras.Get(target).Activate(sim)
+			} else {
+				unholyFrenzyAuras.Get(unholyFrenzyTarget).Activate(sim)
+			}
 		},
 	})
 
