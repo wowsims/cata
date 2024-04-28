@@ -51,7 +51,7 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 
 	rogue.TricksOfTheTrade = rogue.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		Flags:    core.SpellFlagAPL | core.SpellFlagHelpful,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: energyCost,
@@ -63,7 +63,7 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second*time.Duration(30), // CD is handled by application aura
+				Duration: time.Second * time.Duration(30), // CD is handled by application aura
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {

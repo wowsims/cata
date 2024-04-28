@@ -24,7 +24,7 @@ func (priest *Priest) getMindSearTickSpell(numTicks int32) *core.Spell {
 	config := priest.getMindSearBaseConfig()
 	config.ActionID = core.ActionID{SpellID: 48045}.WithTag(numTicks)
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		damage := priest.ScalingBaseDamage * 0.23
+		damage := priest.ClassSpellScaling * 0.23
 		spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 	}
 	return priest.RegisterSpell(config)
@@ -75,7 +75,7 @@ func (priest *Priest) newMindSearSpell(numTicksIdx int32) *core.Spell {
 		}
 	}
 	config.ExpectedTickDamage = func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-		baseDamage := priest.ScalingBaseDamage * 0.23
+		baseDamage := priest.ClassSpellScaling * 0.23
 		return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 	}
 

@@ -4,11 +4,14 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/warrior"
 )
 
 func (war *ProtectionWarrior) ApplyTalents() {
+	war.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypePlate)
+
 	// Vigilance is not implemented as it requires a second friendly target
 	// We can probably fake it or make it configurable or something, but I expect it wouldn't
 	// make much of a difference as I think tanks getting hit by bosses will be sitting at or near

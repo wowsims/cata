@@ -947,7 +947,7 @@ export class Player<SpecType extends Spec> {
 		this.miscOptionsChangeEmitter.emit(eventID);
 	}
 
-	getDarkIntentUptime() : number {
+	getDarkIntentUptime(): number {
 		return this.darkIntentUptime;
 	}
 
@@ -1522,7 +1522,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getBaseMastery(): number {
-		switch(this.playerSpec.specID) {
+		switch (this.playerSpec.specID) {
 			case Spec.SpecFrostMage:
 			case Spec.SpecFuryWarrior:
 				return 2;
@@ -1532,6 +1532,6 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getMasteryPerPointModifier(): number {
-		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0
+		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0;
 	}
 }

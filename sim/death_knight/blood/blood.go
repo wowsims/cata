@@ -74,6 +74,7 @@ func (bdk BloodDeathKnight) getBloodShieldMasteryBonus() float64 {
 
 func (bdk *BloodDeathKnight) ApplyTalents() {
 	bdk.DeathKnight.ApplyTalents()
+	bdk.ApplyArmorSpecializationEffect(stats.Stamina, proto.ArmorType_ArmorTypePlate)
 
 	// Veteran of the Third War
 	bdk.AddStaticMod(core.SpellModConfig{

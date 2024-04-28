@@ -1,4 +1,3 @@
-import { playerPresets } from '../../../raid/presets';
 import { Player } from '../../player.js';
 import {
 	APLValue,
@@ -20,10 +19,12 @@ import {
 	APLValueCompare_ComparisonOperator as ComparisonOperator,
 	APLValueConst,
 	APLValueCurrentComboPoints,
+	APLValueCurrentEclipsePhase,
 	APLValueCurrentEnergy,
 	APLValueCurrentFocus,
 	APLValueCurrentHealth,
 	APLValueCurrentHealthPercent,
+	APLValueCurrentLunarEnergy,
 	APLValueCurrentMana,
 	APLValueCurrentManaPercent,
 	APLValueCurrentNonDeathRuneCount,
@@ -32,6 +33,7 @@ import {
 	APLValueCurrentRuneCount,
 	APLValueCurrentRuneDeath,
 	APLValueCurrentRunicPower,
+	APLValueCurrentSolarEnergy,
 	APLValueCurrentTime,
 	APLValueCurrentTimePercent,
 	APLValueDotIsActive,
@@ -69,9 +71,6 @@ import {
 	APLValueTotemRemainingTime,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
-	APLValueCurrentSolarEnergy,
-	APLValueCurrentLunarEnergy,
-	APLValueCurrentEclipsePhase,
 } from '../../proto/apl.js';
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';

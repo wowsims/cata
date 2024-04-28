@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/shaman"
 )
 
@@ -86,6 +87,11 @@ type EnhancementShaman struct {
 
 func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
 	return enh.Shaman
+}
+
+func (enh *EnhancementShaman) ApplyTalents() {
+	enh.Shaman.ApplyTalents()
+	enh.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail)
 }
 
 func (enh *EnhancementShaman) Initialize() {

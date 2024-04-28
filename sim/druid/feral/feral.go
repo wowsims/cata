@@ -72,7 +72,7 @@ type FeralDruid struct {
 	cachedRipEndThresh time.Duration
 	usingHardcodedAPL  bool
 
-	rotationAction *core.PendingAction
+	customRotationAction *core.PendingAction
 }
 
 func (cat *FeralDruid) GetDruid() *druid.Druid {
@@ -96,5 +96,5 @@ func (cat *FeralDruid) Reset(sim *core.Simulation) {
 	cat.readyToShift = false
 	cat.waitingForTick = false
 	cat.berserkUsed = false
-	cat.rotationAction = nil
+	cat.customRotationAction = nil
 }

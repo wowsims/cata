@@ -13,10 +13,10 @@ func (druid *Druid) registerThrashBearSpell() {
 	bleedCoefficient := 0.58899998665
 
 	// Scaled parameters for spell code
-	avgBaseDamage := hitCoefficient * SpellScalingConstant // second factor is defined in druid.go
+	avgBaseDamage := hitCoefficient * druid.ClassSpellScaling // second factor is defined in druid.go
 	damageSpread := hitVariance * avgBaseDamage
 	flatBaseDamage := avgBaseDamage - damageSpread/2
-	flatBleedDamage := bleedCoefficient * SpellScalingConstant
+	flatBleedDamage := bleedCoefficient * druid.ClassSpellScaling
 
 	druid.Thrash = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 77758},

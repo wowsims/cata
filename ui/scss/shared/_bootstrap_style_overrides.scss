@@ -28,6 +28,23 @@
 	}
 }
 
+.btn-reset {
+	@include button-variant(
+		$background: transparent,
+		$border: transparent,
+		$color: $link-danger-color,
+		$hover-background: transparent,
+		$hover-border: transparent,
+		$hover-color: $body-color,
+		$active-background: transparent,
+		$active-border: transparent,
+		$active-color: $link-danger-color,
+		$disabled-background: transparent,
+		$disabled-border: transparent,
+		$disabled-color: rgba($body-color, 0.6)
+	);
+}
+
 .container {
 	height: 100%;
 	display: flex;

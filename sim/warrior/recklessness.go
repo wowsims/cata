@@ -39,6 +39,11 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 				Timer:    warrior.NewTimer(),
 				Duration: time.Minute * 5,
 			},
+
+			SharedCD: core.Cooldown{
+				Timer:    warrior.RecklessnessDeadlyCalmLock(),
+				Duration: 12 * time.Second,
+			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {

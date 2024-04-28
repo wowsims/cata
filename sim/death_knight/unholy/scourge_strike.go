@@ -56,7 +56,7 @@ func (dk *UnholyDeathKnight) registerScourgeStrikeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.55500000715 +
+			baseDamage := dk.ClassSpellScaling*0.55500000715 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)

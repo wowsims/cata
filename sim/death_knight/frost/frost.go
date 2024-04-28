@@ -3,6 +3,7 @@ package frost
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/death_knight"
 )
 
@@ -58,6 +59,7 @@ func (fdk *FrostDeathKnight) Initialize() {
 
 func (fdk *FrostDeathKnight) ApplyTalents() {
 	fdk.DeathKnight.ApplyTalents()
+	fdk.ApplyArmorSpecializationEffect(stats.Strength, proto.ArmorType_ArmorTypePlate)
 
 	masteryMod := fdk.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Flat,
