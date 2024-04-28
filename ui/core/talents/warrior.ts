@@ -181,5 +181,10 @@ export const warriorGlyphsConfig: GlyphsConfig = {
 			description: 'All targets of your Intimidating Shout now tremble in place instead of fleeing in fear.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_golemthunderclap.jpg',
 		},
+		[WarriorMinorGlyph.GlyphOfShatteringThrow]: {
+			name: 'Glyph of Shattering Throw',
+			description: 'Your Shattering Throw is now instant and can be used in any stance, but it no longer removes invulnerabilities and cannot be used on players or player-controlled targets.',
+			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_questionmark.jpg',
+		},
 	},
 };
