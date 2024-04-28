@@ -54,14 +54,14 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.14699999988 +
+			baseDamage := dk.ClassSpellScaling*0.14699999988 +
 				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 
 			if result.Landed() {
-				healingSpell.Cast(sim, &dk.Unit)
-				healingSpell.CalcAndDealHealing(sim, &dk.Unit, max(damageTakenInFive*0.05, dk.MaxHealth()*0.07), healingSpell.OutcomeHealing)
+				healingSpell.Cast(sim, spell.Unit)
+				healingSpell.CalcAndDealHealing(sim, spell.Unit, max(damageTakenInFive*0.05, spell.Unit.MaxHealth()*0.07), healingSpell.OutcomeHealing)
 			}
 		},
 	})
@@ -77,7 +77,6 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 			FrostRuneCost:  1,
 			UnholyRuneCost: 1,
 			RunicPowerGain: 20,
-			Refundable:     true,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -91,46 +90,33 @@ func (dk *DeathKnight) registerDeathStrikeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.29399999976 +
+			baseDamage := dk.ClassSpellScaling*0.29399999976 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			spell.SpendRefundableCost(sim, result)
 			dk.ThreatOfThassarianProc(sim, result, ohSpell)
 
-			if result.Landed() {
-				healingSpell.Cast(sim, &dk.Unit)
-				healingSpell.CalcAndDealHealing(sim, &dk.Unit, max(damageTakenInFive*0.2, dk.MaxHealth()*0.07), healingSpell.OutcomeHealing)
-			}
+			healingSpell.Cast(sim, spell.Unit)
+			healingSpell.CalcAndDealHealing(sim, spell.Unit, max(damageTakenInFive*0.2, spell.Unit.MaxHealth()*0.07), healingSpell.OutcomeHealing)
 
 			spell.DealDamage(sim, result)
 		},
 	})
 }
 
-// func (dk *DeathKnight) registerDrwDeathStrikeSpell() {
-// 	bonusBaseDamage := dk.sigilOfAwarenessBonus()
-// 	hasGlyph := dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfDeathStrike)
+func (dk *DeathKnight) registerDrwDeathStrikeSpell() *core.Spell {
+	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    DeathStrikeActionID.WithTag(1),
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagMeleeMetrics,
 
-// 	dk.RuneWeapon.DeathStrike = dk.RuneWeapon.RegisterSpell(core.SpellConfig{
-// 		ActionID:    DeathStrikeActionID.WithTag(1),
-// 		SpellSchool: core.SpellSchoolPhysical,
-// 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-// 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := dk.ClassSpellScaling*0.29399999976 +
+				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-// 		BonusCritRating:  (dk.annihilationCritBonus() + dk.improvedDeathStrikeCritBonus()) * core.CritRatingPerCritChance,
-// 		DamageMultiplier: .75 * dk.improvedDeathStrikeDamageBonus(),
-// 		CritMultiplier:   dk.bonusCritMultiplier(dk.Talents.MightOfMograine),
-// 		ThreatMultiplier: 1,
-
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			baseDamage := 297 + bonusBaseDamage + dk.DrwWeaponDamage(sim, spell)
-
-// 			if hasGlyph {
-// 				baseDamage *= 1 + 0.01*min(dk.CurrentRunicPower(), 25)
-// 			}
-// 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-// 		},
-// 	})
-// }
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+		},
+	})
+}

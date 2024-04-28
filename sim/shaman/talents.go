@@ -9,12 +9,6 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
-	if shaman.Spec == proto.Spec_SpecElementalShaman || shaman.Spec == proto.Spec_SpecRestorationShaman {
-		shaman.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeMail)
-	} else if shaman.Spec == proto.Spec_SpecElementalShaman {
-		shaman.EnableArmorSpecialization(stats.Agility, proto.ArmorType_ArmorTypeMail)
-	}
-
 	shaman.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.SpellCrit, core.CritRatingPerCritChance*1*float64(shaman.Talents.Acuity))
 	shaman.AddStat(stats.Expertise, 4*core.ExpertisePerQuarterPercentReduction*float64(shaman.Talents.UnleashedRage))
@@ -33,6 +27,7 @@ func (shaman *Shaman) ApplyTalents() {
 	}
 
 	if shaman.Talents.ElementalPrecision > 0 {
+		shaman.AddStats(stats.Stats{stats.SpellHit: []float64{0.0, -0.33, -0.66, -1.0}[shaman.Talents.ElementalPrecision] * shaman.GetBaseStats()[stats.Spirit]})
 		shaman.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.0, 0.33, 0.66, 1.0}[shaman.Talents.ElementalPrecision])
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
 		shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1 + 0.01*float64(shaman.Talents.ElementalPrecision)
@@ -70,6 +65,8 @@ func (shaman *Shaman) ApplyTalents() {
 		})
 		*/
 	}
+
+	shaman.applyLavaSurge()
 
 	shaman.applyFulmination()
 
@@ -145,10 +142,7 @@ func (shaman *Shaman) applyElementalFocus() {
 		FloatValue: oathBonus,
 	})
 
-	// TODO: fix this.
-	// Right now: Set to 3 so that the spell that cast it consumes a charge down to expected 2.
-	// Correct fix would be to figure out how to make 'onCastComplete' fire before 'onspellhitdealt' without breaking all the other things.
-	maxStacks := int32(3)
+	maxStacks := int32(2)
 
 	// TODO: need to check for additional spells that benefit from the cost reduction
 	clearcastingAura := shaman.RegisterAura(core.Aura{
@@ -167,7 +161,7 @@ func (shaman *Shaman) applyElementalFocus() {
 			oathModEarthquake.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || spell.ActionID.Tag == 6 {
+			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || (spell.ClassSpellMask&(SpellMaskOverload|SpellMaskThunderstorm) != 0) {
 				return
 			}
 			aura.RemoveStack(sim)
@@ -181,7 +175,7 @@ func (shaman *Shaman) applyElementalFocus() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || spell == shaman.Earthquake {
+			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || (spell.ClassSpellMask&(SpellMaskOverload|SpellMaskUnleashFlame) != 0) || spell == shaman.Earthquake {
 				return
 			}
 			if !result.Outcome.Matches(core.OutcomeCrit) {
@@ -217,10 +211,52 @@ func (shaman *Shaman) applyRollingThunder() {
 				// 	if spell == allowedSpell {
 				if sim.RandomFloat("Rolling Thunder") < 0.3*float64(shaman.Talents.RollingThunder) {
 					shaman.AddMana(sim, 0.02*shaman.MaxMana(), manaMetrics)
+					shaman.LightningShieldAura.Refresh(sim)
 					shaman.LightningShieldAura.AddStack(sim)
 				}
 				//  }
 			}
+		},
+	})
+}
+
+func (shaman *Shaman) applyLavaSurge() {
+	if shaman.Talents.LavaSurge == 0 {
+		return
+	}
+
+	has4PT12 := shaman.HasSetBonus(ItemSetVolcanicRegalia, 4)
+
+	var instantLavaSurgeMod *core.SpellMod
+
+	if has4PT12 {
+		instantLavaSurgeMod = shaman.AddDynamicMod(core.SpellModConfig{
+			Kind:       core.SpellMod_CastTime_Pct,
+			FloatValue: -1,
+			ClassMask:  SpellMaskLavaBurst,
+		})
+	}
+
+	shaman.RegisterAura(core.Aura{
+		Label:    "Lava Surge",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask != SpellMaskFlameShockDot || !sim.Proc(0.1*float64(shaman.Talents.LavaSurge), "LavaSurge") {
+				return
+			}
+			shaman.LavaBurst.CD.Reset()
+			if has4PT12 {
+				instantLavaSurgeMod.Activate()
+			}
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask != SpellMaskLavaBurst || !has4PT12 {
+				return
+			}
+			instantLavaSurgeMod.Deactivate()
 		},
 	})
 }
@@ -298,6 +334,8 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		FloatValue: 0.15,
 	})
 
+	has2PT13 := shaman.HasSetBonus(ItemSetSpiritwalkersRegalia, 2)
+
 	buffAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery Buff",
 		ActionID: core.ActionID{SpellID: 64701},
@@ -305,10 +343,16 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1.20)
 			damageMod.Activate()
+			if has2PT13 {
+				shaman.AddStatDynamic(sim, stats.Mastery, 2000)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.MultiplyCastSpeed(1 / 1.20)
 			damageMod.Deactivate()
+			if has2PT13 {
+				shaman.AddStatDynamic(sim, stats.Mastery, -2000)
+			}
 		},
 	})
 
@@ -329,7 +373,10 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Deactivate()
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		//TODO: there are timeline graphical anomalies due to elemental mastery's logic.
+		//It doesn't know which lighting bolt cast correspond to which hit so put a grey bar under one and two hit to the second one
+		//Travel time visual is also missing
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask&affectedSpells > 0 {
 				// Remove the buff and put skill on CD
 				aura.Deactivate(sim)

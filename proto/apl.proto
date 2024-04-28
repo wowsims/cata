@@ -41,13 +41,14 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 20
+// NextIndex: 21
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
     oneof action {
         // Casting
         APLActionCastSpell cast_spell = 3;
+		APLActionCastFriendlySpell cast_friendly_spell = 20;
         APLActionChannelSpell channel_spell = 16;
         APLActionMultidot multidot = 8;
         APLActionMultishield multishield = 12;
@@ -78,7 +79,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 68
+// NextIndex: 71
 message APLValue {
     oneof value {
         // Operators
@@ -113,6 +114,8 @@ message APLValue {
         APLValueCurrentFocus current_focus = 66;
         APLValueCurrentComboPoints current_combo_points = 16;
         APLValueCurrentRunicPower current_runic_power = 25;
+        APLValueCurrentSolarEnergy current_solar_energy = 68;
+        APLValueCurrentLunarEnergy current_lunar_energy = 69;
 
         // Rune Resource values
         APLValueCurrentRuneCount current_rune_count = 29;
@@ -170,6 +173,7 @@ message APLValue {
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
         APLValueWarlockShouldRecastDrainSoul warlock_should_recast_drain_soul = 59;
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
+        APLValueCurrentEclipsePhase druid_current_eclipse_phase = 70;
     }
 }
 
@@ -178,6 +182,11 @@ message APLValue {
 ///////////////////////////////////////////////////////////////////////////
 
 message APLActionCastSpell {
+    ActionID spell_id = 1;
+    UnitReference target = 2;
+}
+
+message APLActionCastFriendlySpell {
     ActionID spell_id = 1;
     UnitReference target = 2;
 }
@@ -380,6 +389,8 @@ message APLValueCurrentEnergy {}
 message APLValueCurrentFocus {}
 message APLValueCurrentComboPoints {}
 message APLValueCurrentRunicPower {}
+message APLValueCurrentSolarEnergy {}
+message APLValueCurrentLunarEnergy {}
 
 enum APLValueRuneType {
     RuneUnknown = 0;
@@ -418,6 +429,17 @@ message APLValueNextRuneCooldown{
 }
 message APLValueRuneSlotCooldown{
     APLValueRuneSlot rune_slot = 1;
+}
+
+enum APLValueEclipsePhase {
+    UnknownPhase = 0;
+    NeutralPhase = 1;
+    SolarPhase = 2;
+    LunarPhase = 3;
+}
+
+message APLValueCurrentEclipsePhase {
+    APLValueEclipsePhase eclipse_phase = 1;
 }
 
 message APLValueGCDIsReady {}

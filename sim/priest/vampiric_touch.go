@@ -51,7 +51,7 @@ func (priest *Priest) registerVampiricTouchSpell() {
 			BonusCoefficient: 0.352,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, priest.ScalingBaseDamage*0.101)
+				dot.Snapshot(target, priest.ClassSpellScaling*0.101)
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -76,7 +76,7 @@ func (priest *Priest) registerVampiricTouchSpell() {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, dot.OutcomeExpectedMagicSnapshotCrit)
 			} else {
-				baseDamage := priest.ScalingBaseDamage * 0.101
+				baseDamage := priest.ClassSpellScaling * 0.101
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 			}
 		},

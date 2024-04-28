@@ -140,6 +140,9 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 			if castSpellAction, ok := action.impl.(*APLActionCastSpell); ok {
 				character.removeInitialMajorCooldown(castSpellAction.spell.ActionID)
 			}
+			if castFriendlySpellAction, ok := action.impl.(*APLActionCastFriendlySpell); ok {
+				character.removeInitialMajorCooldown(castFriendlySpellAction.spell.ActionID)
+			}
 		}
 	}
 
@@ -213,6 +216,10 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 	}
 
 	if apl.unit.ChanneledDot != nil {
+		return
+	}
+
+	if !apl.unit.RotationTimer.IsReady(sim) {
 		return
 	}
 

@@ -429,6 +429,7 @@ enum PetFood {
 
 // Buffs that affect the entire raid.
 // TODO: Reindex
+// next index: 46
 message RaidBuffs {
 	// +5% Base Stats and Spell Resistances
 	bool mark_of_the_wild = 1;
@@ -490,6 +491,7 @@ message RaidBuffs {
 	bool honor_among_thieves = 35;
 	bool rampage = 36;
 	bool terrifying_roar = 37;
+	bool furious_howl = 45;
 
 	// Major Haste
 	bool bloodlust = 38;
@@ -818,6 +820,8 @@ enum OtherAction {
 	OtherActionUnholyRuneGain  = 15; // Indicates healing received from healing model.
 	OtherActionDeathRuneGain  = 16; // Indicates healing received from healing model.
 	OtherActionPotion = 17; // Used by APL to generically refer to either the prepull or combat potion.
+	OtherActionSolarEnergyGain = 18; // For balance druid solar energy
+	OtherActionLunarEnergyGain = 19; // For balance druid lunar energy
 }
 
 message ActionID {

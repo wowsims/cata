@@ -28,14 +28,14 @@ func init() {
 	core.NewEnchantEffect(3594, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.AddStat(stats.Parry, 2*core.ParryRatingPerParryChance)
+		character.PseudoStats.BaseParry += 0.02
 	})
 
 	// Rune of Swordshattering
 	core.NewEnchantEffect(3365, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.AddStat(stats.Parry, 4*core.ParryRatingPerParryChance)
+		character.PseudoStats.BaseParry += 0.04
 	})
 
 	// Rune of the Spellbreaking
@@ -127,7 +127,9 @@ func init() {
 					return
 				}
 
-				aura.RemoveStack(sim)
+				if aura.IsActive() {
+					aura.RemoveStack(sim)
+				}
 			},
 		})
 
@@ -139,6 +141,7 @@ func init() {
 			PPM:      1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				cinderAura.Activate(sim)
+				cinderAura.SetStacks(sim, cinderAura.MaxStacks)
 			},
 		})
 

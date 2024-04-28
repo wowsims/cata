@@ -17,7 +17,7 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		actionID = core.ActionID{SpellID: MutilateSpellID, Tag: 2}
 		procMask = core.ProcMaskMeleeOHSpecial
 	}
-	mutBaseDamage := rogue.RogueBaseDamageScalar * 0.17900000513
+	mutBaseDamage := sinRogue.ClassSpellScaling * 0.17900000513
 	t11Bonus := core.TernaryFloat64(sinRogue.HasSetBonus(rogue.Tier11, 2), 5*core.CritRatingPerCritChance, 0)
 
 	return sinRogue.RegisterSpell(core.SpellConfig{

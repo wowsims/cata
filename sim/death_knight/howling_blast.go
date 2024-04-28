@@ -38,7 +38,7 @@ func (dk *DeathKnight) registerHowlingBlastSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := dk.ClassBaseScaling*1.17499995232 + 0.44*spell.MeleeAttackPower()
+				baseDamage := dk.ClassSpellScaling*1.17499995232 + 0.44*spell.MeleeAttackPower()
 
 				if aoeTarget != target {
 					spell.DamageMultiplier *= 0.5

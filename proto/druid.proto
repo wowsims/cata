@@ -166,7 +166,6 @@ message FeralDruid {
 	bool mangle_spam = 6;
 	float bite_time = 7;
 	int32 min_combos_for_bite = 8;
-	int32 berserk_bite_thresh = 9;
 	bool bite_during_execute = 13;
 	int32 rip_leeway = 19;
 	bool powerbear = 10;

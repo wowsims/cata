@@ -9,6 +9,10 @@ import (
 
 var FesteringStrikeActionID = core.ActionID{SpellID: 85948}
 
+func festeringExtendHandler(aura *core.Aura) {
+	aura.UpdateExpires(aura.ExpiresAt() + time.Second*6)
+}
+
 func (dk *DeathKnight) registerFesteringStrikeSpell() {
 	ohSpell := dk.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       FesteringStrikeActionID.WithTag(2),
@@ -22,16 +26,12 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.24899999797 +
+			baseDamage := dk.ClassSpellScaling*0.24899999797 +
 				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
-
-	extendHandler := func(aura *core.Aura) {
-		aura.UpdateExpires(aura.ExpiresAt() + time.Second*6)
-	}
 
 	hasReaping := dk.Inputs.Spec == proto.Spec_SpecUnholyDeathKnight
 
@@ -60,7 +60,7 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := dk.ClassBaseScaling*0.49799999595 +
+			baseDamage := dk.ClassSpellScaling*0.49799999595 +
 				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
@@ -74,13 +74,13 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 
 			if result.Landed() {
 				if dk.FrostFeverSpell.Dot(target).IsActive() {
-					extendHandler(dk.FrostFeverSpell.Dot(target).Aura)
+					festeringExtendHandler(dk.FrostFeverSpell.Dot(target).Aura)
 				}
 				if dk.BloodPlagueSpell.Dot(target).IsActive() {
-					extendHandler(dk.BloodPlagueSpell.Dot(target).Aura)
+					festeringExtendHandler(dk.BloodPlagueSpell.Dot(target).Aura)
 				}
 				if dk.Talents.EbonPlaguebringer > 0 && dk.EbonPlagueAura.Get(target).IsActive() {
-					extendHandler(dk.EbonPlagueAura.Get(target))
+					festeringExtendHandler(dk.EbonPlagueAura.Get(target))
 				}
 			}
 
@@ -89,27 +89,29 @@ func (dk *DeathKnight) registerFesteringStrikeSpell() {
 	})
 }
 
-// func (dk *DeathKnight) registerDrwPlagueStrikeSpell() {
-// 	dk.RuneWeapon.PlagueStrike = dk.RuneWeapon.RegisterSpell(core.SpellConfig{
-// 		ActionID:    PlagueStrikeActionID.WithTag(1),
-// 		SpellSchool: core.SpellSchoolPhysical,
-// 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-// 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+func (dk *DeathKnight) registerDrwFesteringStrikeSpell() *core.Spell {
+	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    FesteringStrikeActionID.WithTag(1),
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagMeleeMetrics,
 
-// 		BonusCritRating: (dk.annihilationCritBonus() + dk.scourgebornePlateCritBonus() + dk.viciousStrikesCritChanceBonus()) * core.CritRatingPerCritChance,
-// 		DamageMultiplier: 0.5 *
-// 			(1.0 + 0.1*float64(dk.Talents.Outbreak)),
-// 		CritMultiplier:   dk.bonusCritMultiplier(dk.Talents.ViciousStrikes),
-// 		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := dk.ClassSpellScaling*0.49799999595 +
+				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			baseDamage := 378 + dk.DrwWeaponDamage(sim, spell)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-// 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			if result.Landed() {
+				if dk.RuneWeapon.FrostFeverSpell.Dot(target).IsActive() {
+					festeringExtendHandler(dk.RuneWeapon.FrostFeverSpell.Dot(target).Aura)
+				}
+				if dk.RuneWeapon.BloodPlagueSpell.Dot(target).IsActive() {
+					festeringExtendHandler(dk.RuneWeapon.BloodPlagueSpell.Dot(target).Aura)
+				}
+			}
 
-// 			if result.Landed() {
-// 				dk.RuneWeapon.BloodPlagueSpell.Cast(sim, target)
-// 			}
-// 		},
-// 	})
-// }
+			spell.DealDamage(sim, result)
+		},
+	})
+}

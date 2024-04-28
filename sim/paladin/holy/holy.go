@@ -3,6 +3,7 @@ package holy
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/paladin"
 )
 
@@ -44,6 +45,11 @@ type HolyPaladin struct {
 
 func (holy *HolyPaladin) GetPaladin() *paladin.Paladin {
 	return holy.Paladin
+}
+
+func (holy *HolyPaladin) ApplyTalents() {
+	holy.Paladin.ApplyTalents()
+	holy.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypePlate)
 }
 
 func (holy *HolyPaladin) Initialize() {

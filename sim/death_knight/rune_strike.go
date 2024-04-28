@@ -35,6 +35,7 @@ func (dk *DeathKnight) registerRuneStrikeSpell() {
 		RuneCost: core.RuneCostOptions{
 			RunicPowerCost: 30,
 			Refundable:     true,
+			RefundCost:     6,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -63,24 +64,17 @@ func (dk *DeathKnight) registerRuneStrikeSpell() {
 	})
 }
 
-// func (dk *DeathKnight) registerDrwRuneStrikeSpell() {
-// 	runeStrikeGlyphCritBonus := core.TernaryFloat64(dk.HasMajorGlyph(proto.DeathKnightMajorGlyph_GlyphOfRuneStrike), 10.0, 0.0)
+func (dk *DeathKnight) registerDrwRuneStrikeSpell() *core.Spell {
+	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    RuneStrikeActionID.WithTag(1),
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagMeleeMetrics,
 
-// 	dk.RuneWeapon.RuneStrike = dk.RuneWeapon.RegisterSpell(core.SpellConfig{
-// 		ActionID:    RuneStrikeActionID.WithTag(1),
-// 		SpellSchool: core.SpellSchoolPhysical,
-// 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-// 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) + spell.MeleeAttackPower()*0.1
 
-// 		BonusCritRating: (dk.annihilationCritBonus() + runeStrikeGlyphCritBonus) * core.CritRatingPerCritChance,
-// 		DamageMultiplier: 1.5 *
-// 			dk.darkrunedPlateRuneStrikeDamageBonus(),
-// 		CritMultiplier:   dk.DefaultMeleeCritMultiplier(),
-// 		ThreatMultiplier: 1.75,
-
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			baseDamage := 0.15*spell.MeleeAttackPower() + dk.DrwWeaponDamage(sim, spell)
-// 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
-// 		},
-// 	})
-// }
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+		},
+	})
+}

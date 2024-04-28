@@ -8,6 +8,7 @@ var BloodBoilActionID = core.ActionID{SpellID: 48721}
 
 func (dk *DeathKnight) registerBloodBoilSpell() {
 	rpMetric := dk.NewRunicPowerMetrics(BloodBoilActionID)
+	results := make([]*core.SpellResult, dk.Env.GetNumTargets())
 	dk.RegisterSpell(core.SpellConfig{
 		ActionID:       BloodBoilActionID,
 		Flags:          core.SpellFlagAPL,
@@ -29,10 +30,9 @@ func (dk *DeathKnight) registerBloodBoilSpell() {
 		ThreatMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			results := make([]*core.SpellResult, sim.GetNumTargets())
 			anyHit := false
 			for idx, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := dk.ClassBaseScaling*0.31700000167 + 0.08*spell.MeleeAttackPower()
+				baseDamage := dk.ClassSpellScaling*0.31700000167 + 0.08*spell.MeleeAttackPower()
 				baseDamage *= core.TernaryFloat64(dk.DiseasesAreActive(aoeTarget), 1.5, 1.0)
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 
@@ -51,23 +51,25 @@ func (dk *DeathKnight) registerBloodBoilSpell() {
 	})
 }
 
-// func (dk *DeathKnight) registerDrwBloodBoilSpell() {
-// 	dk.RuneWeapon.BloodBoil = dk.RuneWeapon.RegisterSpell(core.SpellConfig{
-// 		ActionID:    BloodBoilActionID,
-// 		SpellSchool: core.SpellSchoolShadow,
-// 		ProcMask:    core.ProcMaskSpellDamage,
+func (dk *DeathKnight) registerDrwBloodBoilSpell() *core.Spell {
+	results := make([]*core.SpellResult, dk.Env.GetNumTargets())
+	return dk.RuneWeapon.RegisterSpell(core.SpellConfig{
+		ActionID:    BloodBoilActionID,
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellDamage,
 
-// 		DamageMultiplier: dk.bloodyStrikesBonus(BloodyStrikesBB),
-// 		CritMultiplier:   dk.bonusCritMultiplier(dk.Talents.MightOfMograine),
-// 		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			for idx, aoeTarget := range sim.Encounter.TargetUnits {
+				baseDamage := dk.ClassSpellScaling*0.31700000167 + 0.08*spell.MeleeAttackPower()
+				baseDamage *= core.TernaryFloat64(dk.RuneWeapon.DiseasesAreActive(aoeTarget), 1.5, 1.0)
+				baseDamage *= sim.Encounter.AOECapMultiplier()
 
-// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-// 				baseDamage := (sim.Roll(180, 220) + 0.06*dk.RuneWeapon.getImpurityBonus(spell)) * core.TernaryFloat64(dk.DrwDiseasesAreActive(aoeTarget), 1.5, 1.0)
-// 				baseDamage *= sim.Encounter.AOECapMultiplier()
+				results[idx] = spell.CalcDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			}
 
-// 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-// 			}
-// 		},
-// 	})
-// }
+			for _, result := range results {
+				spell.DealDamage(sim, result)
+			}
+		},
+	})
+}

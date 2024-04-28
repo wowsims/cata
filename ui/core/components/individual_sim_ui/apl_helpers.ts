@@ -1,5 +1,5 @@
 import { Player, UnitMetadata } from '../../player.js';
-import { APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
+import { APLValueEclipsePhase, APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
 import { ActionID, OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
 import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
@@ -22,7 +22,8 @@ export type ACTION_ID_SET =
 	| 'channel_spells'
 	| 'dot_spells'
 	| 'shield_spells'
-	| 'non_instant_spells';
+	| 'non_instant_spells'
+	| 'friendly_spells';
 
 const actionIdSets: Record<
 	ACTION_ID_SET,
@@ -171,6 +172,19 @@ const actionIdSets: Record<
 				});
 		},
 	},
+	friendly_spells: {
+		defaultLabel: 'Friendly Spell',
+		getActionIDs: async metadata => {
+			return metadata
+				.getSpells()
+				.filter(spell => spell.data.isCastable && spell.data.isFriendly)
+				.map(actionId => {
+					return {
+						value: actionId.id,
+					};
+				});
+		},
+	},
 	channel_spells: {
 		defaultLabel: 'Channeled Spell',
 		getActionIDs: async metadata => {
@@ -278,7 +292,7 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 	}
 }
 
-export type UNIT_SET = 'aura_sources' | 'aura_sources_targets_first' | 'targets';
+export type UNIT_SET = 'aura_sources' | 'aura_sources_targets_first' | 'targets' | 'players';
 
 const unitSets: Record<
 	UNIT_SET,
@@ -297,6 +311,7 @@ const unitSets: Record<
 					.asList()
 					.map((petMetadata, i) => UnitReference.create({ type: UnitType.Pet, index: i, owner: UnitReference.create({ type: UnitType.Self }) })),
 				UnitReference.create({ type: UnitType.CurrentTarget }),
+				player.sim.raid.getActivePlayers().filter(filter => filter != player).map(mapPlayer => UnitReference.create({ type: UnitType.Player, index: mapPlayer.getRaidIndex() })),
 				player.sim.encounter.targetsMetadata.asList().map((targetMetadata, i) => UnitReference.create({ type: UnitType.Target, index: i })),
 			].flat();
 		},
@@ -320,7 +335,16 @@ const unitSets: Record<
 		getUnits: player => {
 			return [
 				undefined,
-				player.sim.encounter.targetsMetadata.asList().map((targetMetadata, i) => UnitReference.create({ type: UnitType.Target, index: i })),
+				player.sim.encounter.targetsMetadata.asList().map((_targetMetadata, i) => UnitReference.create({ type: UnitType.Target, index: i })),
+			].flat();
+		},
+	},
+	players: {
+		targetUI: true,
+		getUnits: player => {
+			return [
+				undefined,
+				player.sim.raid.getActivePlayers().map(player => UnitReference.create({ type: UnitType.Player, index: player.getRaidIndex() })),
 			].flat();
 		},
 	},
@@ -608,6 +632,26 @@ export function stringFieldConfig(field: string, options?: Partial<APLPickerBuil
 			return new AdaptiveStringPicker(parent, player, config);
 		},
 		...(options || {}),
+	};
+}
+
+export function eclipseTypeFieldConfig(field: string): APLPickerBuilderFieldConfig<any, any> {
+	const values = [
+		{ value: APLValueEclipsePhase.LunarPhase, label: 'Lunar' },
+		{ value: APLValueEclipsePhase.SolarPhase, label: 'Solar' },
+		{ value: APLValueEclipsePhase.NeutralPhase, label: 'Neutral' },
+	];
+
+	return {
+		field: field,
+		newValue: () => APLValueRuneType.RuneBlood,
+		factory: (parent, player, config) =>
+			new TextDropdownPicker(parent, player, {
+				...config,
+				defaultLabel: 'Lunar',
+				equals: (a, b) => a == b,
+				values: values,
+			}),
 	};
 }
 

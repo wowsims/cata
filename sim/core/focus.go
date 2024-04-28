@@ -8,6 +8,8 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+type OnFocusGain func(*Simulation, float64)
+
 type focusBar struct {
 	unit *Unit
 
@@ -24,9 +26,11 @@ type focusBar struct {
 
 	regenMetrics       *ResourceMetrics
 	focusRefundMetrics *ResourceMetrics
+
+	OnFocusGain OnFocusGain
 }
 
-func (unit *Unit) EnableFocusBar(maxFocus float64, baseFocusPerSecond float64, isPlayer bool) {
+func (unit *Unit) EnableFocusBar(maxFocus float64, baseFocusPerSecond float64, isPlayer bool, onFocusGain OnFocusGain) {
 	unit.SetCurrentPowerBar(FocusBar)
 
 	unit.focusBar = focusBar{
@@ -39,6 +43,7 @@ func (unit *Unit) EnableFocusBar(maxFocus float64, baseFocusPerSecond float64, i
 		baseFocusPerSecond:    baseFocusPerSecond,
 		regenMetrics:          unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionFocusRegen}),
 		focusRefundMetrics:    unit.NewFocusMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
+		OnFocusGain:           onFocusGain,
 	}
 }
 
@@ -87,6 +92,10 @@ func (fb *focusBar) AddFocus(sim *Simulation, amount float64, metrics *ResourceM
 			fb.unit.Log(sim, "Gained %0.3f focus from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, fb.currentFocus, newFocus, fb.maxFocus)
 		}
 		metrics.AddEvent(amount, newFocus-fb.currentFocus)
+	}
+
+	if fb.OnFocusGain != nil {
+		fb.OnFocusGain(sim, newFocus)
 	}
 
 	fb.currentFocus = newFocus

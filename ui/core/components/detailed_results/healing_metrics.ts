@@ -1,5 +1,4 @@
 import { ActionMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
-
 import { ColumnSortType, MetricsTable } from './metrics_table.js';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 
@@ -93,7 +92,9 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 		const player = players[0];
 
 		//const actions = player.getSpellActions().map(action => action.forTarget(resultData.filter));
-		const actions = player.getHealingActions();
+		// TODO: Do we want to show 0 hps metrics in here? Make it conditional for healing sims
+		// in case they want to show the threat for non healing spells
+		const actions = player.getHealingActions().filter(action => action.hps > 0);
 		const actionGroups = ActionMetrics.groupById(actions);
 
 		return actionGroups;

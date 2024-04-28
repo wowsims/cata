@@ -142,6 +142,7 @@ func (value *APLValueCurrentRage) GetFloat(sim *Simulation) float64 {
 func (value *APLValueCurrentRage) String() string {
 	return "Current Rage"
 }
+
 type APLValueCurrentFocus struct {
 	DefaultAPLValueImpl
 	unit *Unit

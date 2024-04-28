@@ -1,6 +1,6 @@
 import { EligibleWeaponType, IconSize, PlayerClass } from '../player_class';
 import { PlayerSpec } from '../player_spec';
-import { PlayerSpecs } from '../player_specs';
+import { BalanceDruid, FeralDruid, RestorationDruid } from '../player_specs/druid';
 import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/common';
 import { DruidSpecs } from '../proto_utils/utils';
 
@@ -9,11 +9,11 @@ export class Druid extends PlayerClass<Class.ClassDruid> {
 	static friendlyName = 'Druid';
 	static hexColor = '#ff7d0a';
 	static specs: Record<string, PlayerSpec<DruidSpecs>> = {
-		[PlayerSpecs.BalanceDruid.friendlyName]: PlayerSpecs.BalanceDruid,
-		[PlayerSpecs.FeralDruid.friendlyName]: PlayerSpecs.FeralDruid,
-		[PlayerSpecs.RestorationDruid.friendlyName]: PlayerSpecs.RestorationDruid,
+		[BalanceDruid.friendlyName]: BalanceDruid,
+		[FeralDruid.friendlyName]: FeralDruid,
+		[RestorationDruid.friendlyName]: RestorationDruid,
 	};
-	
+
 	static races: Race[] = [
 		// [A]
 		Race.RaceNightElf,

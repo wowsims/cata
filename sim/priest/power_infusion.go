@@ -1,12 +1,10 @@
 package priest
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (priest *Priest) registerPowerInfusionCD() {
+func (priest *Priest) registerPowerInfusionSpell() {
 	if !priest.Talents.PowerInfusion {
 		return
 	}
@@ -14,10 +12,12 @@ func (priest *Priest) registerPowerInfusionCD() {
 	actionID := core.ActionID{SpellID: 10060, Tag: priest.Index}
 
 	powerInfusionTarget := priest.GetUnit(priest.SelfBuffs.PowerInfusionTarget)
-	if powerInfusionTarget == nil {
-		return
-	}
-	powerInfusionAura := core.PowerInfusionAura(powerInfusionTarget, actionID.Tag)
+	powerInfusionAuras := priest.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
+		if unit.Type == core.PetUnit {
+			return nil
+		}
+		return core.PowerInfusionAura(unit, actionID.Tag)
+	})
 
 	piSpell := priest.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -29,12 +29,16 @@ func (priest *Priest) registerPowerInfusionCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    priest.NewTimer(),
-				Duration: time.Duration(float64(core.PowerInfusionCD) * (1 - .1*float64(priest.Talents.Aspiration))),
+				Duration: core.PowerInfusionCD,
 			},
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			powerInfusionAura.Activate(sim)
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
+			if powerInfusionTarget != nil {
+				powerInfusionAuras.Get(powerInfusionTarget).Activate(sim)
+			} else {
+				powerInfusionAuras.Get(target).Activate(sim)
+			}
 		},
 	})
 
@@ -48,7 +52,7 @@ func (priest *Priest) registerPowerInfusionCD() {
 			//if powerInfusionTarget.CurrentMana() < 3000 {
 			//	return false
 			//}
-			return !powerInfusionTarget.HasActiveAura("Bloodlust-" + core.BloodlustActionID.WithTag(-1).String())
+			return powerInfusionTarget != nil && !powerInfusionTarget.HasActiveAuraWithTag(core.BloodlustAuraTag)
 		},
 	})
 }

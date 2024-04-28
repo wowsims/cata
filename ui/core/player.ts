@@ -481,6 +481,10 @@ export class Player<SpecType extends Spec> {
 			// By default value TPS and DTPS EP equally for tanking spec
 			defaultRatios[2] = 1;
 			defaultRatios[3] = 1;
+			if (this.getSpec() == Spec.SpecBloodDeathKnight) {
+				// Add healing EPs for BDKs
+				defaultRatios[1] = 1;
+			}
 		} else {
 			// By default only value DPS EP
 			defaultRatios[0] = 1;
@@ -943,7 +947,7 @@ export class Player<SpecType extends Spec> {
 		this.miscOptionsChangeEmitter.emit(eventID);
 	}
 
-	getDarkIntentUptime() : number {
+	getDarkIntentUptime(): number {
 		return this.darkIntentUptime;
 	}
 
@@ -1518,7 +1522,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getBaseMastery(): number {
-		switch(this.playerSpec.specID) {
+		switch (this.playerSpec.specID) {
 			case Spec.SpecFrostMage:
 			case Spec.SpecFuryWarrior:
 				return 2;
@@ -1528,6 +1532,6 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getMasteryPerPointModifier(): number {
-		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0
+		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0;
 	}
 }

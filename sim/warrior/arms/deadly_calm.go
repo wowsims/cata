@@ -24,6 +24,7 @@ func (war *ArmsWarrior) RegisterDeadlyCalm() {
 		Label:    "Deadly Calm",
 		ActionID: dcActionID,
 		Duration: time.Second * 10,
+		Tag:      warrior.InnerRageExclusionTag,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			dcMod.Activate()
 		},
@@ -39,18 +40,20 @@ func (war *ArmsWarrior) RegisterDeadlyCalm() {
 		ClassSpellMask: warrior.SpellMaskDeadlyCalm,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: 0,
-			},
 			CD: core.Cooldown{
 				Timer:    war.NewTimer(),
 				Duration: time.Minute * 2,
 			},
+			SharedCD: core.Cooldown{
+				Timer:    war.RecklessnessDeadlyCalmLock(),
+				Duration: 10 * time.Second,
+			},
 		},
 		ProcMask: core.ProcMaskEmpty,
 		RageCost: core.RageCostOptions{Cost: 0},
+
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !war.InnerRageAura.IsActive()
+			return !war.HasActiveAuraWithTag(warrior.InnerRageExclusionTag)
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dcAura.Activate(sim)

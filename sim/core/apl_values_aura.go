@@ -13,6 +13,9 @@ type APLValueAuraIsActive struct {
 }
 
 func (rot *APLRotation) newValueAuraIsActive(config *proto.APLValueAuraIsActive) APLValue {
+	if config.AuraId == nil {
+		return nil
+	}
 	aura := rot.GetAPLAura(rot.GetSourceUnit(config.SourceUnit), config.AuraId)
 	if aura.Get() == nil {
 		return nil
@@ -38,6 +41,9 @@ type APLValueAuraIsActiveWithReactionTime struct {
 }
 
 func (rot *APLRotation) newValueAuraIsActiveWithReactionTime(config *proto.APLValueAuraIsActiveWithReactionTime) APLValue {
+	if config.AuraId == nil {
+		return nil
+	}
 	aura := rot.GetAPLAura(rot.GetSourceUnit(config.SourceUnit), config.AuraId)
 	if aura.Get() == nil {
 		return nil
@@ -64,6 +70,9 @@ type APLValueAuraRemainingTime struct {
 }
 
 func (rot *APLRotation) newValueAuraRemainingTime(config *proto.APLValueAuraRemainingTime) APLValue {
+	if config.AuraId == nil {
+		return nil
+	}
 	aura := rot.GetAPLAura(rot.GetSourceUnit(config.SourceUnit), config.AuraId)
 	if aura.Get() == nil {
 		return nil
@@ -88,6 +97,9 @@ type APLValueAuraNumStacks struct {
 }
 
 func (rot *APLRotation) newValueAuraNumStacks(config *proto.APLValueAuraNumStacks) APLValue {
+	if config.AuraId == nil {
+		return nil
+	}
 	aura := rot.GetAPLAura(rot.GetSourceUnit(config.SourceUnit), config.AuraId)
 	if aura.Get() == nil {
 		return nil
@@ -116,6 +128,9 @@ type APLValueAuraInternalCooldown struct {
 }
 
 func (rot *APLRotation) newValueAuraInternalCooldown(config *proto.APLValueAuraInternalCooldown) APLValue {
+	if config.AuraId == nil {
+		return nil
+	}
 	aura := rot.GetAPLICDAura(rot.GetSourceUnit(config.SourceUnit), config.AuraId)
 	if aura.Get() == nil {
 		return nil
@@ -141,6 +156,9 @@ type APLValueAuraICDIsReadyWithReactionTime struct {
 }
 
 func (rot *APLRotation) newValueAuraICDIsReadyWithReactionTime(config *proto.APLValueAuraICDIsReadyWithReactionTime) APLValue {
+	if config.AuraId == nil {
+		return nil
+	}
 	aura := rot.GetAPLICDAura(rot.GetSourceUnit(config.SourceUnit), config.AuraId)
 	if aura.Get() == nil {
 		return nil
@@ -168,6 +186,9 @@ type APLValueAuraShouldRefresh struct {
 }
 
 func (rot *APLRotation) newValueAuraShouldRefresh(config *proto.APLValueAuraShouldRefresh) APLValue {
+	if config.AuraId == nil {
+		return nil
+	}
 	aura := rot.GetAPLAura(rot.GetTargetUnit(config.SourceUnit), config.AuraId)
 	if aura.Get() == nil {
 		return nil

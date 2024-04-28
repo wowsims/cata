@@ -13,10 +13,10 @@ func (druid *Druid) registerFerociousBiteSpell() {
 	resourceCoefficient := 0.58399999142
 
 	// Scaled parameters for spell code
-	avgBaseDamage := coefficient * SpellScalingConstant
+	avgBaseDamage := coefficient * druid.ClassSpellScaling
 	damageSpread := variance * avgBaseDamage
 	minBaseDamage := avgBaseDamage - damageSpread/2
-	dmgPerComboPoint := resourceCoefficient * SpellScalingConstant
+	dmgPerComboPoint := resourceCoefficient * druid.ClassSpellScaling
 	scalingPerComboPoint := 0.125
 	ripRefreshChance := 0.5 * float64(druid.Talents.BloodInTheWater)
 

@@ -1,6 +1,6 @@
 import { EligibleWeaponType, IconSize, PlayerClass } from '../player_class';
 import { PlayerSpec } from '../player_spec';
-import { PlayerSpecs } from '../player_specs';
+import { HolyPaladin, ProtectionPaladin, RetributionPaladin } from '../player_specs/paladin';
 import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/common';
 import { PaladinSpecs } from '../proto_utils/utils';
 
@@ -10,9 +10,9 @@ export class Paladin extends PlayerClass<Class.ClassPaladin> {
 	static cssClass = 'paladin';
 	static hexColor = '#f58cba';
 	static specs: Record<string, PlayerSpec<PaladinSpecs>> = {
-		[PlayerSpecs.HolyPaladin.friendlyName]: PlayerSpecs.HolyPaladin,
-		[PlayerSpecs.ProtectionPaladin.friendlyName]: PlayerSpecs.ProtectionPaladin,
-		[PlayerSpecs.RetributionPaladin.friendlyName]: PlayerSpecs.RetributionPaladin,
+		[HolyPaladin.friendlyName]: HolyPaladin,
+		[ProtectionPaladin.friendlyName]: ProtectionPaladin,
+		[RetributionPaladin.friendlyName]: RetributionPaladin,
 	};
 	static races: Race[] = [
 		// [A]

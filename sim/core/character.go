@@ -43,6 +43,7 @@ type Character struct {
 
 	// Current gear.
 	Equipment
+
 	//Item Swap Handler
 	ItemSwap ItemSwap
 
@@ -54,6 +55,7 @@ type Character struct {
 
 	// Handles scaling that only affects stats from items
 	itemStatMultipliers stats.Stats
+
 	// Used to track if we need to separately apply multipliers, because
 	// equipment was already applied
 	equipStatsApplied bool
@@ -126,6 +128,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	}
 
 	character.GCD = character.NewTimer()
+	character.RotationTimer = character.NewTimer()
 
 	character.Label = fmt.Sprintf("%s (#%d)", character.Name, character.Index+1)
 
@@ -421,7 +424,7 @@ func (character *Character) initialize(agent Agent) {
 	character.majorCooldownManager.initialize(character)
 	character.ItemSwap.initialize(character)
 
-	character.gcdAction = &PendingAction{
+	character.rotationAction = &PendingAction{
 		Priority: ActionPriorityGCD,
 		OnAction: func(sim *Simulation) {
 			if hc := &character.Hardcast; hc.Expires != startingCDTime && hc.Expires <= sim.CurrentTime {
@@ -495,7 +498,6 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 }
 
 func (character *Character) reset(sim *Simulation, agent Agent) {
-	character.ItemSwap.reset(sim)
 	character.Unit.reset(sim, agent)
 	character.majorCooldownManager.reset(sim)
 	character.CurrentTarget = character.defaultTarget
@@ -616,6 +618,7 @@ func (character *Character) doneIteration(sim *Simulation) {
 		character.Metrics.AddFinalPetMetrics(&pet.Metrics)
 	}
 
+	character.ItemSwap.doneIteration(sim)
 	character.Unit.doneIteration(sim)
 }
 
@@ -709,8 +712,6 @@ func FillTalentsProto(data protoreflect.Message, talentsStr string, treeSizes [3
 }
 
 func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.ArmorType) bool {
-	hasBonus := true
-
 	if character.Head().ArmorType != armorType ||
 		character.Shoulder().ArmorType != armorType ||
 		character.Chest().ArmorType != armorType ||
@@ -719,18 +720,15 @@ func (character *Character) MeetsArmorSpecializationRequirement(armorType proto.
 		character.Waist().ArmorType != armorType ||
 		character.Legs().ArmorType != armorType ||
 		character.Feet().ArmorType != armorType {
-		hasBonus = false
+		return false
 	}
 
-	return hasBonus
+	return true
 }
 
-func (character *Character) EnableArmorSpecialization(primaryStat stats.Stat, armorType proto.ArmorType) bool {
+func (character *Character) ApplyArmorSpecializationEffect(primaryStat stats.Stat, armorType proto.ArmorType) {
 	hasBonus := character.MeetsArmorSpecializationRequirement(armorType)
-
 	if hasBonus {
 		character.MultiplyStat(primaryStat, 1.05)
 	}
-
-	return hasBonus
 }

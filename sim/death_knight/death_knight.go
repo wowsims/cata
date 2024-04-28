@@ -46,17 +46,16 @@ type DeathKnight struct {
 	core.Character
 	Talents *proto.DeathKnightTalents
 
-	ClassBaseScaling float64
+	ClassSpellScaling float64
 
 	Inputs DeathKnightInputs
 
 	// Pets
-	Ghoul             *GhoulPet
-	Gargoyle          *GargoylePet
-	DancingRuneWeapon *core.Spell
-	ArmyGhoul         []*GhoulPet
-	//RuneWeapon        *RuneWeaponPet
-	//Bloodworm []*BloodwormPet
+	Ghoul      *GhoulPet
+	Gargoyle   *GargoylePet
+	ArmyGhoul  []*GhoulPet
+	RuneWeapon *RuneWeaponPet
+	Bloodworm  []*BloodwormPet
 
 	// Diseases
 	FrostFeverSpell  *core.Spell
@@ -86,9 +85,6 @@ func (dk *DeathKnight) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (dk *DeathKnight) ApplyTalents() {
-	// Apply Armor Spec
-	dk.EnableArmorSpecialization(stats.Strength, proto.ArmorType_ArmorTypePlate)
-
 	dk.ApplyBloodTalents()
 	dk.ApplyFrostTalents()
 	dk.ApplyUnholyTalents()
@@ -124,6 +120,9 @@ func (dk *DeathKnight) Initialize() {
 	dk.registerVampiricBloodSpell()
 	dk.registerIceboundFortitudeSpell()
 	dk.registerBoneShieldSpell()
+	dk.registerDancingRuneWeaponSpell()
+	dk.registerDeathPactSpell()
+	dk.registerAntiMagicShellSpell()
 }
 
 func (dk *DeathKnight) Reset(sim *core.Simulation) {
@@ -141,10 +140,10 @@ func (dk *DeathKnight) HasMinorGlyph(glyph proto.DeathKnightMinorGlyph) bool {
 
 func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents string, deathRuneConvertSpellId int32) *DeathKnight {
 	dk := &DeathKnight{
-		Character:        *character,
-		Talents:          &proto.DeathKnightTalents{},
-		Inputs:           inputs,
-		ClassBaseScaling: 1125.227400,
+		Character:         *character,
+		Talents:           &proto.DeathKnightTalents{},
+		Inputs:            inputs,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDeathKnight),
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
@@ -175,15 +174,17 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	dk.AddStat(stats.SpellHit, 9*core.SpellHitRatingPerHitChance)
 
 	dk.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/243.7)
-	dk.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/430.69289874)
 	dk.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	dk.AddStatDependency(stats.Strength, stats.Parry, 0.25)
+
+	dk.AddStat(stats.Parry, -dk.GetBaseStats()[stats.Strength]*0.27)
+	dk.AddStatDependency(stats.Strength, stats.Parry, 0.27)
+
 	dk.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	dk.PseudoStats.CanParry = true
 
 	// 	// Base dodge unaffected by Diminishing Returns
-	dk.PseudoStats.BaseDodge += 0.03664
+	dk.PseudoStats.BaseDodge += 0.05
 	dk.PseudoStats.BaseParry += 0.05
 
 	if dk.Talents.SummonGargoyle {
@@ -197,16 +198,22 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 		dk.ArmyGhoul[i] = dk.NewArmyGhoulPet(i)
 	}
 
-	// 	if dk.Talents.Bloodworms > 0 {
-	// 		dk.Bloodworm = make([]*BloodwormPet, 4)
-	// 		for i := 0; i < 4; i++ {
-	// 			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
-	// 		}
-	// 	}
+	if dk.Talents.BloodParasite > 0 {
+		dk.Bloodworm = make([]*BloodwormPet, 5)
+		for i := 0; i < 5; i++ {
+			dk.Bloodworm[i] = dk.NewBloodwormPet(i)
+		}
+	}
 
-	// 	if dk.Talents.DancingRuneWeapon {
-	// 		dk.RuneWeapon = dk.NewRuneWeapon()
-	// 	}
+	if dk.Talents.DancingRuneWeapon {
+		dk.RuneWeapon = dk.NewRuneWeapon()
+	}
+
+	dk.EnableAutoAttacks(dk, core.AutoAttackOptions{
+		MainHand:       dk.WeaponFromMainHand(dk.DefaultMeleeCritMultiplier()),
+		OffHand:        dk.WeaponFromOffHand(dk.DefaultMeleeCritMultiplier()),
+		AutoSwingMelee: true,
+	})
 
 	return dk
 }
@@ -238,9 +245,10 @@ const (
 	DeathKnightSpellPlagueStrike
 	DeathKnightSpellFesteringStrike
 	DeathKnightSpellScourgeStrike
+	DeathKnightSpellScourgeStrikeShadow
 	DeathKnightSpellHeartStrike
 	DeathKnightSpellDeathStrike
-	DeathKnightSpellScourgeStrikeShadow
+	DeathKnightSpellDeathStrikeHeal
 	DeathKnightSpellFrostFever
 	DeathKnightSpellBloodPlague
 	DeathKnightSpellHowlingBlast
@@ -252,8 +260,8 @@ const (
 	DeathKnightSpellVampiricBlood
 	DeathKnightSpellIceboundFortitude
 	DeathKnightSpellBoneShield
-
-	DeathKnightSpellDeathStrikeHeal // Heal spell for DS
+	DeathKnightSpellDancingRuneWeapon
+	DeathKnightSpellDeathPact
 
 	DeathKnightSpellKillingMachine     // Used to react to km procs
 	DeathKnightSpellConvertToDeathRune // Used to react to death rune gains

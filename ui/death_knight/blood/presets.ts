@@ -1,5 +1,6 @@
+import { DistanceFromTarget } from '../../core/components/other_inputs';
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Glyphs, Potions } from '../../core/proto/common.js';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common.js';
 import { BloodDeathKnight_Options, DeathKnightMajorGlyph, DeathKnightMinorGlyph,DeathKnightPrimeGlyph } from '../../core/proto/death_knight';
 import { SavedTalents } from '../../core/proto/ui.js';
 import P1BloodApl from './apls/p1.apl.json';
@@ -12,7 +13,7 @@ export const BLOOD_P1_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotatio
 export const BloodTalents = {
 	name: 'Blood',
 	data: SavedTalents.create({
-		talentsString: '03323203132212311321--003',
+		talentsString: '03323000132222311321-3-013',
 		glyphs: Glyphs.create({
 			prime1: DeathKnightPrimeGlyph.GlyphOfDeathStrike,
 			prime2: DeathKnightPrimeGlyph.GlyphOfHeartStrike,
@@ -34,8 +35,15 @@ export const DefaultOptions = BloodDeathKnight_Options.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfStoneblood,
-	food: Food.FoodDragonfinFilet,
-	defaultPotion: Potions.EarthenPotion,
-	prepopPotion: Potions.EarthenPotion,
+	flask: Flask.FlaskOfSteelskin,
+	food: Food.FoodBeerBasedCrocolisk,
+	defaultPotion: Potions.GolembloodPotion,
+	prepopPotion: Potions.GolembloodPotion,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
+
+export const OtherDefaults = {
+	profession1: Profession.Engineering,
+	profession2: Profession.Leatherworking,
+	distanceFromTarget: 5,
+};

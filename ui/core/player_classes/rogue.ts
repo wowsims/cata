@@ -1,6 +1,6 @@
 import { EligibleWeaponType, IconSize, PlayerClass } from '../player_class';
 import { PlayerSpec } from '../player_spec';
-import { PlayerSpecs } from '../player_specs';
+import { AssassinationRogue, CombatRogue, SubtletyRogue } from '../player_specs/rogue';
 import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/common';
 import { RogueSpecs } from '../proto_utils/utils';
 
@@ -9,9 +9,9 @@ export class Rogue extends PlayerClass<Class.ClassRogue> {
 	static friendlyName = 'Rogue';
 	static hexColor = '#fff569';
 	static specs: Record<string, PlayerSpec<RogueSpecs>> = {
-		[PlayerSpecs.AssassinationRogue.friendlyName]: PlayerSpecs.AssassinationRogue,
-		[PlayerSpecs.CombatRogue.friendlyName]: PlayerSpecs.CombatRogue,
-		[PlayerSpecs.SubtletyRogue.friendlyName]: PlayerSpecs.SubtletyRogue,
+		[AssassinationRogue.friendlyName]: AssassinationRogue,
+		[CombatRogue.friendlyName]: CombatRogue,
+		[SubtletyRogue.friendlyName]: SubtletyRogue,
 	};
 	static races: Race[] = [
 		// [A]

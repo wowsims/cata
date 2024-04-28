@@ -27,12 +27,12 @@ func (fireElemental *FireElemental) registerFireBlast() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fireElemental.DefaultSpellCritMultiplier(),
+		CritMultiplier:   2, //Estimated from beta testing
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.429,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// TODO these are approximation, from base SP
-			spell.CalcAndDealDamage(sim, target, sim.Roll(714, 844), spell.OutcomeMagicHitAndCrit)
+			spell.CalcAndDealDamage(sim, target, sim.Roll(287, 335), spell.OutcomeMagicHitAndCrit) //Estimated from beta testing
 		},
 	})
 }
@@ -59,12 +59,12 @@ func (fireElemental *FireElemental) registerFireNova() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fireElemental.DefaultSpellCritMultiplier(),
+		CritMultiplier:   2, //Estimated from beta testing
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(955, 1098) * sim.Encounter.AOECapMultiplier()
+				baseDamage := sim.Roll(1527, 1731) * sim.Encounter.AOECapMultiplier() //Estimated from beta testing
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
@@ -81,7 +81,7 @@ func (fireElemental *FireElemental) registerFireShieldAura() {
 		ProcMask:    core.ProcMaskEmpty,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fireElemental.DefaultSpellCritMultiplier(),
+		CritMultiplier:   2, //Estimated from beta testing
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -97,7 +97,7 @@ func (fireElemental *FireElemental) registerFireShieldAura() {
 				// TODO these are approximation, from base SP
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					//baseDamage *= sim.Encounter.AOECapMultiplier()
-					dot.Spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(95, 97), dot.Spell.OutcomeMagicCrit)
+					dot.Spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(107, 107), dot.Spell.OutcomeMagicCrit) //Estimated from beta testing
 				}
 			},
 		},
