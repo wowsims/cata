@@ -46,19 +46,6 @@ $favorite-cell-width: 2rem;
 		margin-bottom: $block-spacer;
 	}
 
-	.item-picker-icon-wrapper {
-		position: relative;
-		width: 4rem;
-		height: 4rem;
-		border: $border-default;
-	}
-
-	.item-picker-icon {
-		@include wowhead-background-icon;
-		height: 100%;
-		width: 100%;
-	}
-
 	.item-picker-sockets-container {
 		@include vertical-bottom;
 		@include horizontal-center;
@@ -92,6 +79,19 @@ $favorite-cell-width: 2rem;
 	}
 }
 
+.item-picker-icon-wrapper {
+	position: relative;
+	width: 4rem;
+	height: 4rem;
+	border: $border-default;
+}
+
+.item-picker-icon {
+	@include wowhead-background-icon;
+	height: 100%;
+	width: 100%;
+}
+
 @include media-breakpoint-down(xl) {
 	.gear-picker-right {
 		margin-bottom: 2 * map.get($spacers, 3);
@@ -114,6 +114,25 @@ $favorite-cell-width: 2rem;
 					align-items: flex-start;
 				}
 			}
+		}
+	}
+}
+
+.gear-picker-modal-slots {
+	// Without this the slots are not clickable
+	pointer-events: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+
+	.item-picker-icon-wrapper {
+		width: $icon-size-md;
+		height: $icon-size-md;
+
+		&.active {
+			width: calc($icon-size-md + map-get($spacers, 2));
+			height: calc($icon-size-md + map-get($spacers, 2));
+			border: 2px solid $success;
 		}
 	}
 }
