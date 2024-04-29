@@ -354,8 +354,8 @@ export class ItemPicker extends Component {
 	}
 
 	private addQuickEnchantHelpers() {
-		this.itemElem.enchantElem.addEventListener('click', event => event?.preventDefault());
 		if (!this._equippedItem) return;
+		this.itemElem.enchantElem.addEventListener('click', event => event?.preventDefault());
 		const gearData = this.createGearData();
 		const openEnchantSelector = () => this.openSelectorModal(SelectorModalTabs.Enchants, gearData);
 		this.quickSwapEnchantPopover = addQuickEnchantPopover(this.player, this.itemElem.enchantElem, this._equippedItem, this.slot, openEnchantSelector);
