@@ -24,22 +24,17 @@ func RegisterHolyPriest() {
 }
 
 func NewHolyPriest(character *core.Character, options *proto.Player) *HolyPriest {
-	smiteOptions := options.GetHolyPriest()
+	holyOptions := options.GetHolyPriest()
 
 	selfBuffs := priest.SelfBuffs{
-		UseInnerFire:   smiteOptions.Options.ClassOptions.Armor == proto.PriestOptions_InnerFire,
-		UseShadowfiend: smiteOptions.Options.ClassOptions.UseShadowfiend,
+		UseInnerFire:   holyOptions.Options.ClassOptions.Armor == proto.PriestOptions_InnerFire,
+		UseShadowfiend: holyOptions.Options.ClassOptions.UseShadowfiend,
 	}
 
 	basePriest := priest.New(character, selfBuffs, options.TalentsString)
 	holyPriest := &HolyPriest{
 		Priest: basePriest,
 	}
-
-	// holyPriest.SelfBuffs.PowerInfusionTarget = &proto.UnitReference{}
-	// if holyPriest.Talents.PowerInfusion && smiteOptions.Options.PowerInfusionTarget != nil {
-	// 	holyPriest.SelfBuffs.PowerInfusionTarget = smiteOptions.Options.PowerInfusionTarget
-	// }
 
 	return holyPriest
 }

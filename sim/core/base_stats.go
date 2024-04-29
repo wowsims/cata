@@ -201,6 +201,19 @@ var ClassBaseStats = map[proto.Class]stats.Stats{
 	},
 }
 
+var ClassBaseScaling = map[proto.Class]float64{
+	proto.Class_ClassDeathKnight: 1125.227400,
+	proto.Class_ClassDruid:       986.626460,
+	proto.Class_ClassHunter:      1125.227400,
+	proto.Class_ClassMage:        937.330080,
+	proto.Class_ClassPaladin:     1029.493400,
+	proto.Class_ClassPriest:      945.188840,
+	proto.Class_ClassRogue:       1125.227400,
+	proto.Class_ClassShaman:      1004.487900,
+	proto.Class_ClassWarlock:     962.335630,
+	proto.Class_ClassWarrior:     1125.227400,
+}
+
 func AddBaseStatsCombo(r proto.Race, c proto.Class) {
 	BaseStats[BaseStatsKey{Race: r, Class: c}] = ClassBaseStats[c].Add(RaceOffsets[r]).Add(ExtraClassBaseStats[c])
 }
