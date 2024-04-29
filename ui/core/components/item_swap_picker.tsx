@@ -8,7 +8,7 @@ import { SimUI } from '../sim_ui.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { BooleanPicker } from './boolean_picker.js';
 import { Component } from './component.js';
-import { IconItemSwapPicker } from './gear_picker.jsx';
+import { IconItemSwapPicker } from './gear_picker/gear_picker.jsx';
 import { Input } from './input.jsx';
 
 export interface ItemSwapConfig {

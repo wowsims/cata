@@ -1,4 +1,4 @@
-import { ReforgeData } from './components/gear_picker';
+import { ReforgeData } from './components/gear_picker/gear_picker';
 import { getLanguageCode } from './constants/lang';
 import * as Mechanics from './constants/mechanics';
 import { MAX_PARTY_SIZE, Party } from './party';

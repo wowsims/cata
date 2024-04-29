@@ -13,7 +13,7 @@ import { BaseModal } from '../base_modal';
 import { BooleanPicker } from '../boolean_picker';
 import { Component } from '../component';
 import { ContentBlock } from '../content_block';
-import { ItemData, ItemList, ItemRenderer, SelectorModal, SelectorModalTabs } from '../gear_picker';
+import { ItemData, ItemList, ItemRenderer, SelectorModal, SelectorModalTabs } from '../gear_picker/gear_picker';
 import { Importer } from '../importers';
 import { ResultsViewer } from '../results_viewer';
 import { SimTab } from '../sim_tab';

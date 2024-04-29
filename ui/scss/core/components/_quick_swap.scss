@@ -1,0 +1,82 @@
+.tooltip-quick-swap {
+	--bs-popover-body-opacity: 1;
+	--bs-popover-body-padding-x: 0;
+	--bs-popover-body-padding-y: 0;
+	--bs-popover-body-bg: black;
+	width: 280px;
+	border: $border-default;
+	cursor: default;
+
+	ul {
+		padding-left: 0;
+		list-style: none;
+		margin-bottom: 0;
+		gap: 2px;
+	}
+
+	li {
+		&:not(:last-child) {
+			border-bottom: $border-default;
+		}
+		&:nth-child(odd) {
+			.tooltip-quick-swap__anchor {
+				background-color: $table-row-odd-bg;
+			}
+		}
+	}
+
+	.tooltip-quick-swap__icon {
+		--gem-width: 2.5rem;
+		position: unset;
+		margin-right: map-get($spacers, 1);
+		border-radius: 0;
+	}
+}
+
+.tooltip-quick-swap__title,
+.tooltip-quick-swap__footer,
+.tooltip-quick-swap__empty {
+	padding-left: map-get($spacers, 2);
+	padding-right: map-get($spacers, 2);
+}
+
+.tooltip-quick-swap__title,
+.tooltip-quick-swap__footer {
+	padding-top: map-get($spacers, 2);
+	padding-bottom: map-get($spacers, 2);
+	margin-bottom: 0;
+}
+
+.tooltip-quick-swap__list {
+	max-height: 206px;
+	overflow-y: auto;
+}
+
+.tooltip-quick-swap__anchor {
+	cursor: pointer;
+	background-color: $table-row-even-bg;
+	transition: $link-transition;
+	border: 1px solid transparent;
+	transition-property: background-color, color, border;
+
+	@media (pointer: fine) {
+		&:hover {
+			background-color: lighten($table-row-even-bg, 10%) !important;
+		}
+	}
+
+	&.active {
+		border-color: $success;
+	}
+}
+
+.tooltip-quick-swap__label {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.tooltip-quick-swap__empty {
+	margin-bottom: 0;
+	color: $link-danger-color;
+}
