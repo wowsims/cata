@@ -290,7 +290,7 @@ func (mage *Mage) applyIgnite() {
 		},
 	})
 
-	actionId := core.ActionID{SpellID: []int32{0, 11119, 11120, 12846}[mage.Talents.Ignite]}
+	actionId := core.ActionID{SpellID: 12846}
 
 	mage.IgniteDamageTracker = core.MakePermanent(mage.RegisterAura(core.Aura{
 		ActionID:  actionId,
