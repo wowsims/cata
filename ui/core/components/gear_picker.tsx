@@ -249,13 +249,7 @@ export class ItemPicker extends Component {
 			this._items = this.player.getItems(this.slot);
 			this._enchants = this.player.getEnchants(this.slot);
 
-			const gearData = {
-				equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
-					this.player.equipItem(eventID, this.slot, equippedItem);
-				},
-				getEquippedItem: () => this.player.getEquippedItem(this.slot),
-				changeEvent: player.gearChangeEmitter,
-			};
+			const gearData = this.createGearData();
 
 			const openGearSelector = (event: Event) => {
 				event.preventDefault();
@@ -269,29 +263,42 @@ export class ItemPicker extends Component {
 				event.preventDefault();
 				this.openSelectorModal(SelectorModalTabs.Reforging, gearData);
 			};
-			const openGemSelector = (anchor: HTMLAnchorElement) => {
-				this.openSelectorModal(`Gem ${(Number(anchor.dataset!.gemIndex) || 0) + 1}` as SelectorModalTabs, gearData);
-			};
+
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
-			[...this.itemElem.socketsContainerElem.querySelectorAll<HTMLAnchorElement>('.gem-socket-container')]?.forEach(anchor =>
-				anchor.addEventListener('click', event => {
-					event?.preventDefault();
-					openGemSelector(anchor);
-				}),
-			);
+
 			this.itemElem.reforgeElem.addEventListener('click', openReforgeSelector);
 			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
 		});
 
 		player.gearChangeEmitter.on(() => {
 			this.item = player.getEquippedItem(slot);
+			const gearData = this.createGearData();
+			const openGemSelector = (anchor: HTMLAnchorElement) => {
+				this.openSelectorModal(`Gem ${(Number(anchor.dataset!.gemIndex) || 0) + 1}` as SelectorModalTabs, gearData);
+			};
+			[...this.itemElem.socketsContainerElem.querySelectorAll<HTMLAnchorElement>('.gem-socket-container')]?.forEach(anchor =>
+				anchor.addEventListener('click', event => {
+					event?.preventDefault();
+					openGemSelector(anchor);
+				}),
+			);
 		});
 		player.professionChangeEmitter.on(() => {
 			if (this._equippedItem != null) {
 				this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
 			}
 		});
+	}
+
+	createGearData(): GearData {
+		return {
+			equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
+				this.player.equipItem(eventID, this.slot, equippedItem);
+			},
+			getEquippedItem: () => this.player.getEquippedItem(this.slot),
+			changeEvent: this.player.gearChangeEmitter,
+		};
 	}
 
 	set item(newItem: EquippedItem | null) {
