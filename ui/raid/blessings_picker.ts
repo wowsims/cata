@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 
 import { Component } from '../core/components/component';
 import { IconEnumPicker } from '../core/components/icon_enum_picker';
@@ -102,7 +102,7 @@ export class BlessingsPicker extends Component {
 		`;
 
 		const icon = fragment.querySelector('.blessings-spec-icon') as HTMLElement;
-		Tooltip.getOrCreateInstance(icon, { title: spec.friendlyName });
+		tippy(icon, { content: spec.friendlyName });
 
 		return fragment.children[0] as HTMLElement;
 	}

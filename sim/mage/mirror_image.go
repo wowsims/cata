@@ -18,6 +18,7 @@ func (mage *Mage) registerMirrorImageCD() {
 
 	mage.MirrorImage = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 55342},
+		SpellSchool:    core.SpellSchoolArcane,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellMirrorImage,
 		ManaCost: core.ManaCostOptions{

@@ -72,7 +72,7 @@ func (war *ArmsWarrior) applyImpale() {
 
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskMortalStrike | warrior.SpellMaskSlam | warrior.SpellMaskOverpower,
-		Kind:       core.SpellMod_BonusCrit_Rating,
+		Kind:       core.SpellMod_CritMultiplier_Pct,
 		FloatValue: 0.1 * float64(war.Talents.Impale),
 	})
 }

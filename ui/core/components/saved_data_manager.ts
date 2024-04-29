@@ -1,15 +1,15 @@
-import { EventID, TypedEvent } from '../typed_event.js';
-import { ContentBlock, ContentBlockHeaderConfig } from './content_block';
+import tippy from 'tippy.js';
 
 import { Component } from '../components/component.js';
-import { Tooltip } from 'bootstrap';
+import { EventID, TypedEvent } from '../typed_event.js';
+import { ContentBlock, ContentBlockHeaderConfig } from './content_block';
 
 export type SavedDataManagerConfig<ModObject, T> = {
 	label: string;
 	header?: ContentBlockHeaderConfig;
 	presetsOnly?: boolean;
 	storageKey: string;
-	changeEmitters: Array<TypedEvent<any>>,
+	changeEmitters: Array<TypedEvent<any>>;
 	equals: (a: T, b: T) => boolean;
 	getData: (modObject: ModObject) => T;
 	setData: (eventID: EventID, modObject: ModObject, data: T) => void;
@@ -41,7 +41,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 	private readonly userData: Array<SavedData<ModObject, T>>;
 	private readonly presets: Array<SavedData<ModObject, T>>;
 
-	private readonly savedDataDiv: HTMLElement
+	private readonly savedDataDiv: HTMLElement;
 	private readonly presetDataDiv: HTMLElement;
 	private readonly customDataDiv: HTMLElement;
 	private readonly saveInput?: HTMLInputElement;
@@ -57,7 +57,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 		this.presets = [];
 		this.frozen = false;
 
-		let contentBlock = new ContentBlock(this.rootElem, 'saved-data', { header: config.header });
+		const contentBlock = new ContentBlock(this.rootElem, 'saved-data', { header: config.header });
 
 		contentBlock.bodyElement.innerHTML = `
 			<div class="saved-data-container hide">
@@ -90,7 +90,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 			}
 			dataArr.push(newData);
 		} else {
-			dataArr[oldIdx].elem.replaceWith(newData.elem)
+			dataArr[oldIdx].elem.replaceWith(newData.elem);
 			dataArr[oldIdx] = newData;
 		}
 	}
@@ -104,15 +104,14 @@ export class SavedDataManager<ModObject, T> extends Component {
 		`;
 
 		const dataElem = dataElemFragment.children[0] as HTMLElement;
-		dataElem.addEventListener('click', event => {
+		dataElem.addEventListener('click', () => {
 			this.config.setData(TypedEvent.nextEventID(), this.modObject, config.data);
 
-			if (this.saveInput)
-				this.saveInput.value = config.name;
+			if (this.saveInput) this.saveInput.value = config.name;
 		});
 
 		if (!config.isPreset) {
-			let deleteFragment = document.createElement('fragment');
+			const deleteFragment = document.createElement('fragment');
 			deleteFragment.innerHTML = `
 				<a
 					href="javascript:void(0)"
@@ -126,15 +125,14 @@ export class SavedDataManager<ModObject, T> extends Component {
 			const deleteButton = deleteFragment.children[0] as HTMLElement;
 			dataElem.appendChild(deleteButton);
 
-			const tooltip = Tooltip.getOrCreateInstance(deleteButton, {title:`Delete saved ${this.config.label}`});
+			const tooltip = tippy(deleteButton, { content: `Delete saved ${this.config.label}` });
 
 			deleteButton.addEventListener('click', event => {
 				event.stopPropagation();
 				const shouldDelete = confirm(`Delete saved ${this.config.label} '${config.name}'?`);
-				if (!shouldDelete)
-					return;
+				if (!shouldDelete) return;
 
-				tooltip.dispose();
+				tooltip.destroy();
 
 				const idx = this.userData.findIndex(data => data.name == config.name);
 				this.userData[idx].elem.remove();
@@ -144,10 +142,9 @@ export class SavedDataManager<ModObject, T> extends Component {
 		}
 
 		if (config.tooltip) {
-			Tooltip.getOrCreateInstance(dataElem, {
-				title: config.tooltip,
+			tippy(dataElem, {
+				content: config.tooltip,
 				placement: 'bottom',
-				html: true,
 			});
 		}
 
@@ -178,13 +175,12 @@ export class SavedDataManager<ModObject, T> extends Component {
 
 	// Save data to window.localStorage.
 	private saveUserData() {
-		const userData: Record<string, Object> = {};
+		const userData: Record<string, unknown> = {};
 		this.userData.forEach(savedData => {
 			userData[savedData.name] = this.config.toJson(savedData.data);
 		});
 
-		if (this.userData.length == 0 && this.presets.length == 0)
-			this.savedDataDiv.classList.add('hide');
+		if (this.userData.length == 0 && this.presets.length == 0) this.savedDataDiv.classList.add('hide');
 
 		window.localStorage.setItem(this.config.storageKey, JSON.stringify(userData));
 	}
@@ -192,8 +188,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 	// Load data from window.localStorage.
 	loadUserData() {
 		const dataStr = window.localStorage.getItem(this.config.storageKey);
-		if (!dataStr)
-			return;
+		if (!dataStr) return;
 
 		let jsonData;
 		try {
@@ -202,7 +197,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 			console.warn('Invalid json for local storage value: ' + dataStr);
 		}
 
-		for (let name in jsonData) {
+		for (const name in jsonData) {
 			try {
 				this.addSavedData({
 					name: name,
@@ -221,7 +216,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 	}
 
 	private buildCreateContainer(): HTMLElement {
-		let savedDataCreateFragment = document.createElement('fragment');
+		const savedDataCreateFragment = document.createElement('fragment');
 		savedDataCreateFragment.innerHTML = `
 			<div class="saved-data-create-container">
 				<label class="form-label">${this.config.label} Name</label>
@@ -232,9 +227,8 @@ export class SavedDataManager<ModObject, T> extends Component {
 
 		const saveButton = savedDataCreateFragment.querySelector('.saved-data-save-button') as HTMLButtonElement;
 
-		saveButton.addEventListener('click', event => {
-			if (this.frozen)
-				return;
+		saveButton.addEventListener('click', () => {
+			if (this.frozen) return;
 
 			const newName = this.saveInput?.value;
 			if (!newName) {
