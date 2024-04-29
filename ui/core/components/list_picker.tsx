@@ -2,7 +2,6 @@ import tippy, { Instance as TippyInstance } from 'tippy.js';
 import { element, fragment } from 'tsx-vanilla';
 
 import { EventID, TypedEvent } from '../typed_event.js';
-import { swap } from '../utils.js';
 import { Input, InputConfig } from './input.js';
 
 export type ListItemAction = 'create' | 'delete' | 'move' | 'copy';
@@ -191,8 +190,8 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			const moveButton = ListPicker.makeActionElem('list-picker-item-move', 'fa-arrows-up-down');
 			itemHeader.appendChild(moveButton);
 
-			const moveButtonTooltip = Tooltip.getOrCreateInstance(moveButton, { title: 'Move (Drag+Drop)' });
-			moveButton.addEventListener('click', event => {
+			const moveButtonTooltip = tippy(moveButton, { content: 'Move (Drag+Drop)' });
+			moveButton.addEventListener('click', () => {
 				moveButtonTooltip.hide();
 			});
 
@@ -258,7 +257,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		if (this.actionEnabled('copy')) {
 			const copyButton = ListPicker.makeActionElem('list-picker-item-copy', 'fa-copy');
 			itemHeader.appendChild(copyButton);
-			const copyButtonTooltip = Tooltip.getOrCreateInstance(copyButton, { title: `Copy to New ${this.config.itemLabel}` });
+			const copyButtonTooltip = tippy(copyButton, { content: `Copy to New ${this.config.itemLabel}` });
 
 			copyButton.addEventListener('click', event => {
 				const newList = this.config.getValue(this.modObject).slice();
@@ -272,7 +271,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			const deleteButton = ListPicker.makeActionElem('list-picker-item-delete', 'fa-times');
 			deleteButton.classList.add('link-danger');
 			itemHeader.appendChild(deleteButton);
-			const deleteButtonTooltip = Tooltip.getOrCreateInstance(deleteButton, { title: `Delete ${this.config.itemLabel}` });
+			const deleteButtonTooltip = tippy(deleteButton, { content: `Delete ${this.config.itemLabel}` });
 
 			deleteButton.addEventListener('click', event => {
 				const newList = this.config.getValue(this.modObject);

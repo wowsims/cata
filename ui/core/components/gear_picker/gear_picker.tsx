@@ -275,6 +275,7 @@ export class ItemPicker extends Component {
 			this.itemElem.reforgeElem.addEventListener('click', openReforgeSelector);
 			this.addQuickEnchantHelpers();
 		});
+
 		player.gearChangeEmitter.on(() => {
 			this.item = this.player.getEquippedItem(this.slot);
 			if (this._equippedItem) {
@@ -284,6 +285,7 @@ export class ItemPicker extends Component {
 				}
 			}
 		});
+
 		player.sim.filtersChangeEmitter.on(() => {
 			if (this._equippedItem) {
 				if (this._equippedItem !== this.quickSwapEnchantPopover?.item) {
@@ -292,6 +294,13 @@ export class ItemPicker extends Component {
 				}
 			}
 		});
+
+		player.sim.showQuickSwapChangeEmitter.on(() => {
+			console.log(this.player.sim.getShowQuickSwap() ? 'enable' : 'disable');
+			this.quickSwapEnchantPopover?.tooltip?.[this.player.sim.getShowQuickSwap() ? 'enable' : 'disable']();
+			this.quickSwapGemPopover.forEach(quickSwap => quickSwap.tooltip?.[this.player.sim.getShowQuickSwap() ? 'enable' : 'disable']());
+		});
+
 		player.professionChangeEmitter.on(() => {
 			if (this._equippedItem != null) {
 				this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
@@ -344,14 +353,13 @@ export class ItemPicker extends Component {
 		this.itemElem.socketsElem?.forEach(element => {
 			const socketIdx = Number(element.dataset.socketIdx) || 0;
 			element.addEventListener('click', event => {
-				console.log(event);
-				event.stopPropagation();
 				event.preventDefault();
 				openGemDetailTab(0);
 			});
-			this.quickSwapGemPopover.push(
-				addQuickGemPopover(this.player, element, this._equippedItem!, this.slot, socketIdx, () => openGemDetailTab(socketIdx)),
-			);
+			const popover = addQuickGemPopover(this.player, element, this._equippedItem!, this.slot, socketIdx, () => openGemDetailTab(socketIdx));
+			console.log('getShowQuickSwap', this.player.sim.getShowQuickSwap());
+			if (this.player.sim.getShowQuickSwap()) popover.tooltip?.disable();
+			this.quickSwapGemPopover.push(popover);
 		});
 	}
 
@@ -364,13 +372,8 @@ export class ItemPicker extends Component {
 			openEnchantSelector();
 		});
 		this.quickSwapEnchantPopover = addQuickEnchantPopover(this.player, this.itemElem.enchantElem, this._equippedItem, this.slot, openEnchantSelector);
-		// this.itemElem.enchantElem.addEventListener('mouseover', event => {
-		// 	this.quickSwapEnchantPopover?.popover?.show();
-		// });
-		// this.itemElem.enchantElem.addEventListener('mouseout', event => {
-		// 	console.log('mouseout', event);
-		// 	this.quickSwapEnchantPopover?.popover?.hide();
-		// });
+		console.log('getShowQuickSwap', this.player.sim.getShowQuickSwap());
+		if (this.player.sim.getShowQuickSwap()) this.quickSwapEnchantPopover.tooltip?.disable();
 	}
 }
 

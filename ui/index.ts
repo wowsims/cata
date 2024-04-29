@@ -1,7 +1,7 @@
 import './shared/bootstrap_overrides';
 
-// import * as Popper from '@popperjs/core';
-import * as bootstrap from 'bootstrap';
+import * as Popper from '@popperjs/core';
+import { Dropdown, Modal, Tab } from 'bootstrap';
 import tippy from 'tippy.js';
 
 declare global {
@@ -12,8 +12,8 @@ declare global {
 }
 
 tippy.setDefaultProps({ arrow: false, allowHTML: true });
-// window.Popper = Popper;
-window.bootstrap = bootstrap;
+window.Popper = Popper;
+window.bootstrap = { Dropdown, Modal, Tab };
 
 // Force scroll to top when refreshing
 if (history.scrollRestoration) {

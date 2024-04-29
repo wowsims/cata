@@ -8,13 +8,9 @@ Dropdown.Default.offset = [0, -1];
 
 const body = document.querySelector('body') as HTMLElement;
 
-function hasTouch() {
-	return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-}
+export const hasTouch = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-function hasHover() {
-	return window.matchMedia('(any-hover: hover)').matches;
-}
+export const hasHover = () => window.matchMedia('(any-hover: hover)').matches;
 
 // Disable 'mouseover' to avoid needed to double click on mobile
 // Leaving 'mouseleave', however still allows dropdown to close when clicking new box
