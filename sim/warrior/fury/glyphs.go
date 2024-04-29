@@ -15,7 +15,7 @@ func (war *FuryWarrior) ApplyGlyphs() {
 func (war *FuryWarrior) applyGlyphOfBloodthirst() {
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskBloodthirst,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.1,
 	})
 }
