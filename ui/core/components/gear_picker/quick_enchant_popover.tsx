@@ -6,8 +6,6 @@ import { TypedEvent } from '../../typed_event';
 import QuickSwapList from '../quick_swap';
 
 export const addQuickEnchantPopover = (player: Player<any>, popoverElement: HTMLElement, item: EquippedItem, itemSlot: ItemSlot, openDetailTab: () => void) => {
-	const eligibleEnchants = player.sim.db.getEnchants(itemSlot);
-
 	return new QuickSwapList({
 		title: 'Favorite Enchants',
 		emptyMessage: 'Add favorite Enchants',
@@ -17,6 +15,7 @@ export const addQuickEnchantPopover = (player: Player<any>, popoverElement: HTML
 		},
 		item,
 		getItems: (currentItem: EquippedItem) => {
+			const eligibleEnchants = player.sim.db.getEnchants(itemSlot);
 			const favoriteEnchants = player.sim.getFilters().favoriteEnchants;
 			const eligibleFavoriteEnchants = favoriteEnchants
 				?.map(favoriteId => {
