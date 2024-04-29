@@ -25,7 +25,7 @@ func (value *APLValueSpellCanCast) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
 }
 func (value *APLValueSpellCanCast) GetBool(sim *Simulation) bool {
-	return value.spell.CanCast(sim, value.spell.Unit.CurrentTarget)
+	return value.spell.CanCastOrQueue(sim, value.spell.Unit.CurrentTarget)
 }
 func (value *APLValueSpellCanCast) String() string {
 	return fmt.Sprintf("Can Cast(%s)", value.spell.ActionID)
