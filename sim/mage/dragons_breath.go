@@ -7,15 +7,16 @@ import (
 )
 
 func (mage *Mage) registerDragonsBreathSpell() {
-	if !mage.Talents.DragonsBreath {
+	/* 	if !mage.Talents.DragonsBreath {
 		return
-	}
+	} */
 
 	mage.DragonsBreath = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 42950},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 31661},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellDragonsBreath,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.07,
 		},
@@ -28,13 +29,13 @@ func (mage *Mage) registerDragonsBreathSpell() {
 				Duration: time.Second * 20,
 			},
 		},
-		BonusCritRating:          float64(mage.Talents.CriticalMass+mage.Talents.WorldInFlames) * 2 * core.CritRatingPerCritChance,
-		DamageMultiplierAdditive: 1 + .02*float64(mage.Talents.FirePower),
-		CritMultiplier:           mage.SpellCritMultiplier(1, mage.bonusCritDamage),
-		ThreatMultiplier:         1 - 0.1*float64(mage.Talents.BurningSoul),
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		BonusCoefficient:         0.193,
+		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(1101, 1279) + 0.193*spell.SpellPower()
+				baseDamage := 1.378 * mage.ScalingBaseDamage
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}

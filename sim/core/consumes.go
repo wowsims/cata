@@ -138,7 +138,7 @@ func applyConsumeEffects(agent Agent) {
 			})
 		case proto.BattleElixir_ElixirOfArmorPiercing:
 			character.AddStats(stats.Stats{
-				stats.Agility: 25,
+				stats.Agility:   25,
 				stats.MeleeCrit: 25,
 				stats.SpellCrit: 25,
 			})
