@@ -49,7 +49,7 @@ func (value *APLValueSpellIsReady) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
 }
 func (value *APLValueSpellIsReady) GetBool(sim *Simulation) bool {
-	return value.spell.IsReady(sim)
+	return value.spell.IsReady(sim) || (value.spell.TimeToReady(sim) <= MaxSpellQueueWindow)
 }
 func (value *APLValueSpellIsReady) String() string {
 	return fmt.Sprintf("Is Ready(%s)", value.spell.ActionID)
