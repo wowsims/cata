@@ -358,7 +358,6 @@ export class ItemPicker extends Component {
 		if (!this._equippedItem) return;
 		const gearData = this.createGearData();
 		const openEnchantSelector = () => this.openSelectorModal(SelectorModalTabs.Enchants, gearData);
-		console.log('addQuickEnchantHelpers');
 		this.quickSwapEnchantPopover = addQuickEnchantPopover(this.player, this.itemElem.enchantElem, this._equippedItem, this.slot, openEnchantSelector);
 	}
 }
