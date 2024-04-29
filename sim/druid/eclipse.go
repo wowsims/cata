@@ -64,6 +64,9 @@ func (eb *eclipseEnergyBar) AddEclipseCallback(callback EclipseCallback) {
 }
 
 func (eb *eclipseEnergyBar) AddEclipseEnergy(amount float64, kind EclipseEnergy, sim *core.Simulation, metrics *core.ResourceMetrics) {
+	if eb.druid == nil {
+		return
+	}
 
 	// unit currently can not gain the specified energy
 	if kind&eb.gainMask == 0 {

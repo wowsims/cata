@@ -10,7 +10,6 @@ import (
 func (druid *Druid) registerMoonfireSpell() {
 	// TODO: Shooting stars proc on periodic damage
 	// TODO: Glyph of Moonfire increase to periodic damage
-	numTicks := druid.moonfireTicks()
 	//hasMoonfireGlyph := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfMoonfire)
 	//bonusPeriodicDamageMultiplier := core.TernaryFloat64(hasMoonfireGlyph, 0.2, 0)
 
@@ -19,10 +18,10 @@ func (druid *Druid) registerMoonfireSpell() {
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellMoonfire,
-		Flags:          SpellFlagNaturesGrace | SpellFlagOmenTrigger | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.21,
+			BaseCost:   0.09,
 			Multiplier: 1,
 		},
 		Cast: core.CastConfig{
@@ -41,7 +40,7 @@ func (druid *Druid) registerMoonfireSpell() {
 			Aura: core.Aura{
 				Label: "Moonfire",
 			},
-			NumberOfTicks:       druid.moonfireTicks(),
+			NumberOfTicks:       6,
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: true,
 
@@ -66,15 +65,11 @@ func (druid *Druid) registerMoonfireSpell() {
 			if result.Landed() {
 				druid.ExtendingMoonfireStacks = 3
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = numTicks
+				dot.NumberOfTicks = 6
 				dot.Apply(sim)
 			}
 
 			spell.DealDamage(sim, result)
 		},
 	})
-}
-
-func (druid *Druid) moonfireTicks() int32 {
-	return 6
 }

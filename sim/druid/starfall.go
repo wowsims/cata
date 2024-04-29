@@ -20,7 +20,6 @@ func (druid *Druid) registerStarfallSpell() {
 		ActionID:         core.ActionID{SpellID: 50286},
 		SpellSchool:      core.SpellSchoolArcane,
 		ProcMask:         core.ProcMaskSuppressedProc,
-		Flags:            SpellFlagNaturesGrace,
 		BonusCritRating:  2 * float64(druid.Talents.NaturesMajesty) * core.CritRatingPerCritChance,
 		DamageMultiplier: 1 * (1 + core.TernaryFloat64(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfFocus), 0.1, 0)),
 		CritMultiplier:   druid.BalanceCritMultiplier(),
@@ -35,7 +34,7 @@ func (druid *Druid) registerStarfallSpell() {
 		ActionID:    core.ActionID{SpellID: 48505},
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | SpellFlagOmenTrigger,
+		Flags:       core.SpellFlagAPL,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.35,
 			Multiplier: 1,

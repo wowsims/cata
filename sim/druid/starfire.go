@@ -31,7 +31,7 @@ func (druid *Druid) registerStarfireSpell() {
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellStarfire,
-		Flags:          SpellFlagOmenTrigger | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.11,

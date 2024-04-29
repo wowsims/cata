@@ -16,13 +16,13 @@ func (druid *Druid) registerStarsurgeSpell() {
 		SpellSchool:    core.SpellSchoolArcane | core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellStarsurge,
-		Flags:          SpellFlagOmenTrigger | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           druid.DefaultSpellCritMultiplier(),
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.17,
+			BaseCost:   0.11,
 			Multiplier: 1,
 		},
 

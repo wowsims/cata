@@ -35,10 +35,6 @@ func (druid *Druid) BearArmorMultiplier() float64 {
 
 func (druid *Druid) ApplyTalents() {
 	druid.MultiplyStat(stats.Mana, 1.0+0.05*float64(druid.Talents.Furor))
-	// druid.AddStat(stats.SpellCrit, float64(druid.Talents.NaturalPerfection)*1*core.CritRatingPerCritChance)
-	// druid.PseudoStats.CastSpeedMultiplier *= 1 + (float64(druid.Talents.CelestialFocus) * 0.01)
-	druid.PseudoStats.DamageDealtMultiplier *= 1 + (core.TernaryFloat64(druid.Talents.EarthAndMoon, 0.02, 0))
-	// druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(druid.Talents.Naturalist)
 	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
 	druid.PseudoStats.ReducedCritTakenChance += 0.02 * float64(druid.Talents.ThickHide)
 
@@ -59,7 +55,7 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyMoonglow()
 	druid.applyGenesis()
 	druid.applyGaleWinds()
-
+	druid.applyEarthAndMoon()
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.AddStat(stats.Expertise, 5.0*float64(druid.Talents.PrimalPrecision)*core.ExpertisePerQuarterPercentReduction)
 	// }
@@ -157,6 +153,16 @@ func (druid *Druid) applyGaleWinds() {
 			ClassMask:  DruidSpellTyphoon | DruidSpellHurricane,
 			FloatValue: float64(0.15 * float64(druid.Talents.GaleWinds)),
 			Kind:       core.SpellMod_DamageDone_Flat,
+		})
+	}
+}
+
+func (druid *Druid) applyEarthAndMoon() {
+	if druid.Talents.EarthAndMoon {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidDamagingSpells,
+			FloatValue: 0.02,
+			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 	}
 }
