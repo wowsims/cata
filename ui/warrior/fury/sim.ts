@@ -55,7 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_FURY_PRESET_ALLIANCE.gear,
+		gear: Presets.P1_FURY_SMF_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -68,17 +68,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 				[Stat.StatMeleeHaste]: 1.72,
 				// @todo: Calculate actual weights
 				// This probably applies for all weights
-				// [Stat.StatMastery]: 0,
+				[Stat.StatMastery]: 0,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 6.29,
 				[PseudoStat.PseudoStatOffHandDps]: 3.58,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.FuryTalents.data,
+		talents: Presets.FurySMFTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -135,18 +136,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.FuryTalents],
+		talents: [Presets.FurySMFTalents, Presets.FuryTGTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_FURY, Presets.ROTATION_FURY_SUNDER],
+		rotations: [Presets.ROTATION_FURY],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.PRERAID_FURY_PRESET,
-			Presets.P1_FURY_PRESET,
-			Presets.P2_FURY_PRESET,
-			Presets.P3_FURY_PRESET_ALLIANCE,
-			Presets.P3_FURY_PRESET_HORDE,
-			Presets.P4_FURY_PRESET_ALLIANCE,
-			Presets.P4_FURY_PRESET_HORDE,
+			Presets.PRERAID_FURY_SMF_PRESET,
+			Presets.PRERAID_FURY_TG_PRESET,
+			Presets.P1_FURY_SMF_PRESET,
+			Presets.P1_FURY_TG_PRESET,
 		],
 	},
 
@@ -157,7 +155,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFuryWarrior,
-			talents: Presets.FuryTalents.data,
+			talents: Presets.FurySMFTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -168,18 +166,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_FURY_PRESET.gear,
-					2: Presets.P2_FURY_PRESET.gear,
-					3: Presets.P3_FURY_PRESET_ALLIANCE.gear,
-					4: Presets.P4_FURY_PRESET_ALLIANCE.gear,
+					1: Presets.P1_FURY_SMF_PRESET.gear,
+					2: Presets.P1_FURY_TG_PRESET.gear,
+					3: Presets.PRERAID_FURY_SMF_PRESET.gear,
+					4: Presets.PRERAID_FURY_TG_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_FURY_PRESET.gear,
-					2: Presets.P2_FURY_PRESET.gear,
-					3: Presets.P3_FURY_PRESET_HORDE.gear,
-					4: Presets.P4_FURY_PRESET_HORDE.gear,
+					1: Presets.P1_FURY_SMF_PRESET.gear,
+					2: Presets.P1_FURY_TG_PRESET.gear,
+					3: Presets.PRERAID_FURY_SMF_PRESET.gear,
+					4: Presets.PRERAID_FURY_TG_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });
