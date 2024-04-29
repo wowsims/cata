@@ -45,7 +45,7 @@ func (elemental *ElementalShaman) registerThunderstormSpell() {
 
 			if elemental.Shaman.ThunderstormInRange {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					baseDamage := 1637 * sim.Encounter.AOECapMultiplier()
+					baseDamage := elemental.GetShaman().ClassSpellScaling * 1.62999999523 * sim.Encounter.AOECapMultiplier()
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
 			}

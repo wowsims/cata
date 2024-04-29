@@ -7,6 +7,16 @@ import (
 )
 
 func (warrior *Warrior) RegisterSlamSpell() {
+
+	weaponDamageConfig := SpellEffectWeaponDmgPctConfig{
+		BaseWeapon_Pct:    1.1,
+		Coefficient:       0.3829999864,
+		EffectPerLevel:    0.97299998999,
+		BaseSpellLevel:    44,
+		MaxSpellLevel:     80,
+		ClassSpellScaling: warrior.ClassSpellScaling,
+	}
+
 	warrior.Slam = warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1464},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -35,7 +45,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 			},
 		},
 
-		DamageMultiplier: 1.0,
+		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  140,
@@ -44,7 +54,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 
 		// TODO: check if the OH SMF hit is on a separate attack table roll
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 431 + 1.1*spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := weaponDamageConfig.CalcAddedSpellDamage() + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if !result.Landed() {
@@ -53,7 +63,7 @@ func (warrior *Warrior) RegisterSlamSpell() {
 
 			// SMF adds an OH hit to slam
 			if warrior.Talents.SingleMindedFury {
-				baseDamage := 431 + 1.1*spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDamage := weaponDamageConfig.CalcAddedSpellDamage() + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
