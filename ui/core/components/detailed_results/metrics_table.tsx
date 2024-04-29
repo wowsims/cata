@@ -209,6 +209,7 @@ export abstract class MetricsTable<T> extends ResultComponent {
 	static playerNameCellConfig(): MetricsColumnConfig<UnitMetrics> {
 		return {
 			name: 'Name',
+			columnClass: 'name-cell',
 			fillCell: (player: UnitMetrics, cellElem: HTMLElement, rowElem: HTMLElement) => {
 				cellElem.appendChild(
 					<>

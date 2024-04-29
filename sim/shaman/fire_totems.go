@@ -36,7 +36,8 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 			NumberOfTicks: int32(40*(1.0+0.20*float64(shaman.Talents.TotemicFocus))) - 1,
 			TickLength:    time.Millisecond * (1500 + 20),
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.Spell.CalcAndDealDamage(sim, target, sim.Roll(82, 111), dot.Spell.OutcomeMagicHitAndCrit)
+				baseDamage := shaman.ClassSpellScaling * 0.09600000083
+				dot.Spell.CalcAndDealDamage(sim, target, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 			},
 		},
 
@@ -79,7 +80,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			TickLength:       time.Second * 2,
 			BonusCoefficient: 0.08,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 268 * sim.Encounter.AOECapMultiplier()
+				baseDamage := shaman.ClassSpellScaling * 0.26699998975 * sim.Encounter.AOECapMultiplier()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 				}

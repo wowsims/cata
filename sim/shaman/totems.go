@@ -196,6 +196,8 @@ func (shaman *Shaman) getEarthTotemSpell(totemType proto.EarthTotem) *core.Spell
 		return shaman.TremorTotem
 	case proto.EarthTotem_StoneskinTotem:
 		return shaman.StoneskinTotem
+	case proto.EarthTotem_EarthElementalTotem:
+		return shaman.EarthElementalTotem
 	}
 	return nil
 }
@@ -208,6 +210,8 @@ func (shaman *Shaman) getFireTotemSpell(totemType proto.FireTotem) *core.Spell {
 		return shaman.MagmaTotem
 	case proto.FireTotem_FlametongueTotem:
 		return shaman.FlametongueTotem
+	case proto.FireTotem_FireElementalTotem:
+		return shaman.FireElementalTotem
 	}
 	return nil
 }

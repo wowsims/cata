@@ -91,7 +91,7 @@ var ItemSetConquerorSanct = core.NewItemSet(core.ItemSet{
 				},
 				// TODO: Does this affect the spell that procs it?
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell == priest.MindBlast {
+					if spell.ClassSpellMask == PriestSpellMindBlast {
 						procAura.Activate(sim)
 					}
 				},
@@ -232,7 +232,7 @@ var ItemSetCrimsonAcolytesRaiment = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				},
 				OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.ClassSpellMask != PriestSpellFlashHeal || sim.Proc(0.33, "Crimson Acolytes Raiment 2pc") {
+					if spell.ClassSpellMask != PriestSpellFlashHeal || !sim.Proc(0.33, "Crimson Acolytes Raiment 2pc") {
 						return
 					}
 

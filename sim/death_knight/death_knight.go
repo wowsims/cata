@@ -245,9 +245,10 @@ const (
 	DeathKnightSpellPlagueStrike
 	DeathKnightSpellFesteringStrike
 	DeathKnightSpellScourgeStrike
+	DeathKnightSpellScourgeStrikeShadow
 	DeathKnightSpellHeartStrike
 	DeathKnightSpellDeathStrike
-	DeathKnightSpellScourgeStrikeShadow
+	DeathKnightSpellDeathStrikeHeal
 	DeathKnightSpellFrostFever
 	DeathKnightSpellBloodPlague
 	DeathKnightSpellHowlingBlast
@@ -261,8 +262,6 @@ const (
 	DeathKnightSpellBoneShield
 	DeathKnightSpellDancingRuneWeapon
 	DeathKnightSpellDeathPact
-
-	DeathKnightSpellDeathStrikeHeal // Heal spell for DS
 
 	DeathKnightSpellKillingMachine     // Used to react to km procs
 	DeathKnightSpellConvertToDeathRune // Used to react to death rune gains

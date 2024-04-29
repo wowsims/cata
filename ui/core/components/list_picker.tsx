@@ -30,7 +30,8 @@ export interface ListPickerConfig<ModObject, ItemType> extends InputConfig<ModOb
 	inlineMenuBar?: boolean;
 	hideUi?: boolean;
 	horizontalLayout?: boolean;
-
+	// If set, will disable the delete button if the list is at the minimum.
+	minimumItems?: number;
 	// If set, only actions included in the list are allowed. Otherwise, all actions are allowed.
 	allowedActions?: Array<ListItemAction>;
 }
@@ -259,7 +260,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			itemHeader.appendChild(copyButton);
 			const copyButtonTooltip = tippy(copyButton, { content: `Copy to New ${this.config.itemLabel}` });
 
-			copyButton.addEventListener('click', event => {
+			copyButton.addEventListener('click', () => {
 				const newList = this.config.getValue(this.modObject).slice();
 				newList.splice(index, 0, this.config.copyItem(newList[index]));
 				this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
@@ -268,17 +269,19 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		}
 
 		if (this.actionEnabled('delete')) {
-			const deleteButton = ListPicker.makeActionElem('list-picker-item-delete', 'fa-times');
-			deleteButton.classList.add('link-danger');
-			itemHeader.appendChild(deleteButton);
-			const deleteButtonTooltip = tippy(deleteButton, { content: `Delete ${this.config.itemLabel}` });
+			if (!this.config.minimumItems || index < this.config.minimumItems) {
+				const deleteButton = ListPicker.makeActionElem('list-picker-item-delete', 'fa-times');
+				deleteButton.classList.add('link-danger');
+				itemHeader.appendChild(deleteButton);
 
-			deleteButton.addEventListener('click', event => {
-				const newList = this.config.getValue(this.modObject);
-				newList.splice(index, 1);
-				this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
-				deleteButtonTooltip.hide();
-			});
+				const deleteButtonTooltip = tippy(deleteButton, { content: `Delete ${this.config.itemLabel}` });
+				deleteButton.addEventListener('click', () => {
+					const newList = this.config.getValue(this.modObject);
+					newList.splice(index, 1);
+					this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
+					deleteButtonTooltip.hide();
+				});
+			}
 		}
 
 		this.itemPickerPairs.push(item);

@@ -153,8 +153,8 @@ type Unit struct {
 	hardcastAction *PendingAction
 
 	// Cached mana return values per tick.
-	manaTickWhileCasting    float64
-	manaTickWhileNotCasting float64
+	manaTickWhileCombat    float64
+	manaTickWhileNotCombat float64
 
 	CastSpeed float64
 
@@ -502,6 +502,10 @@ func (unit *Unit) finalize() {
 	// Make sure we don't accidentally set initial stats instead of stats.
 	if !unit.initialStats.Equals(stats.Stats{}) {
 		panic("Initial stats may not be set before finalized: " + unit.initialStats.String())
+	}
+
+	if unit.ReactionTime == 0 {
+		panic("Unset unit.ReactionTime")
 	}
 
 	unit.defaultTarget = unit.CurrentTarget

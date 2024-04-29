@@ -33,7 +33,7 @@ func (priest *Priest) registerMindSpike() {
 		},
 	})
 
-	priest.MindSpike = priest.RegisterSpell(core.SpellConfig{
+	priest.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 73510},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
