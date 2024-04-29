@@ -116,7 +116,7 @@ func (war *FuryWarrior) applyMeatCleaver() {
 
 	buffMod := war.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskCleave | warrior.SpellMaskWhirlwind,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.0,
 	})
 

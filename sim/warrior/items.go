@@ -13,7 +13,7 @@ var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 				ClassMask:  SpellMaskBloodthirst | SpellMaskMortalStrike,
-				Kind:       core.SpellMod_DamageDone_Pct,
+				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: 0.05,
 			})
 		},
@@ -62,7 +62,7 @@ var ItemSetEarthenBattleplate = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 				ClassMask:  SpellMaskShieldSlam,
-				Kind:       core.SpellMod_DamageDone_Pct,
+				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: 0.05,
 			})
 		},

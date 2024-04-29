@@ -1,25 +1,17 @@
 package priest
 
 import (
-	"strconv"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (priest *Priest) newMindFlaySpell(numTicksIdx int32) *core.Spell {
-	numTicks := numTicksIdx
-	flags := core.SpellFlagChanneled
-	if numTicksIdx == 0 {
-		numTicks = 3
-		flags |= core.SpellFlagAPL
-	}
-
+func (priest *Priest) newMindFlaySpell() *core.Spell {
 	return priest.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 15407}.WithTag(numTicksIdx),
+		ActionID:       core.ActionID{SpellID: 15407},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          flags,
+		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
 		ClassSpellMask: PriestSpellMindFlay,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.08,
@@ -38,9 +30,9 @@ func (priest *Priest) newMindFlaySpell(numTicksIdx int32) *core.Spell {
 		CritMultiplier:           priest.DefaultSpellCritMultiplier(),
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "MindFlay-" + strconv.Itoa(int(numTicksIdx)),
+				Label: "MindFlay-" + priest.Label,
 			},
-			NumberOfTicks:       numTicks,
+			NumberOfTicks:       3,
 			TickLength:          time.Second * 1,
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.288,

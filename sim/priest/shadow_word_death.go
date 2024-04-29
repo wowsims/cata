@@ -7,7 +7,7 @@ import (
 )
 
 func (priest *Priest) registerShadowWordDeathSpell() {
-	priest.ShadowWordDeath = priest.RegisterSpell(core.SpellConfig{
+	priest.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 32379},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
