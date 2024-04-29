@@ -505,7 +505,9 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 }
 
 func (spell *Spell) Cast(sim *Simulation, target *Unit) bool {
-	spell.Unit.CancelQueuedSpell(sim)
+	if spell.DefaultCast.EffectiveTime() > 0 {
+		spell.Unit.CancelQueuedSpell(sim)
+	}
 	if target == nil {
 		target = spell.Unit.CurrentTarget
 	}
