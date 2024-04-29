@@ -134,6 +134,12 @@ $favorite-cell-width: 2rem;
 			height: calc($icon-size-md + map-get($spacers, 2));
 			border: 2px solid $success;
 		}
+
+		&:nth-child(6),
+		&:nth-child(14) {
+			// Spacing between ragdoll sections
+			margin-bottom: map-get($spacers, 3);
+		}
 	}
 }
 
