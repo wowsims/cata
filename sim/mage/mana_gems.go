@@ -24,9 +24,8 @@ func (mage *Mage) registerManaGemsCD() {
 			15*time.Second)
 	}
 
-	// Numbers may be different at 85, these are 80 values
-	minManaGain := 3330.0
-	maxManaGain := 3500.0
+	minManaGain := 11801.0
+	maxManaGain := 12405.0
 
 	var remainingManaGems int
 	mage.RegisterResetEffect(func(sim *core.Simulation) {
