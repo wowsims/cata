@@ -43,7 +43,6 @@ type Mage struct {
 	ArcanePower             *core.Spell
 	Blizzard                *core.Spell
 	Combustion              *core.Spell
-	CombustionImpact        *core.Spell
 	DeepFreeze              *core.Spell
 	Ignite                  *core.Spell
 	IgniteImpact            *core.Spell

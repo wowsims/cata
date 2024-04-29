@@ -344,7 +344,3 @@ func (mage *Mage) registerArcanePowerCD() {
 		Type:  core.CooldownTypeDPS,
 	})
 }
-
-func (mage *Mage) ApplyCastSpeedForSpell(dur time.Duration, spell *core.Spell) time.Duration {
-	return time.Duration(float64(dur) * mage.CastSpeed * max(0, spell.CastTimeMultiplier))
-}

@@ -43,12 +43,12 @@ func (mage *Mage) registerCombustionSpell() {
 
 				var spellDPS float64
 				for _, spell := range dotSpells {
-					dots := spell.Dot(mage.CurrentTarget)
+					dots := spell.Dot(target)
 					// EJ states that combustion double dips on mastery for LB + Pyro, but not ignite
 					// https://web.archive.org/web/20120207223126/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/
 					if spell != mage.Ignite {
 						if dots != nil && dots.IsActive() {
-							spellDPS = spell.Dot(mage.CurrentTarget).CalcSnapshotDamage(sim, target, dots.OutcomeTick).Damage / 3
+							spellDPS = spell.Dot(target).CalcSnapshotDamage(sim, target, dots.OutcomeTick).Damage / 3
 							//fmt.Println(dots.Label, " snapped for : ", spellDPS)
 						}
 					} else {
@@ -60,7 +60,7 @@ func (mage *Mage) registerCombustionSpell() {
 					}
 					combustionDotDamage += spellDPS
 				}
-				dot.Snapshot(mage.CurrentTarget, combustionDotDamage)
+				dot.Snapshot(target, combustionDotDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -85,41 +85,4 @@ func (mage *Mage) registerCombustionSpell() {
 		Spell: mage.Combustion,
 		Type:  core.CooldownTypeDPS,
 	})
-
-	mage.CombustionImpact = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 11129}.WithTag(1),
-		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlag(MageSpellFlagNone),
-		ClassSpellMask: MageSpellCombustion,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-		},
-
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Combustion Impact Fake Dot",
-			},
-			NumberOfTicks:       10,
-			TickLength:          time.Second,
-			AffectedByCastSpeed: true,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-			},
-		},
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).ApplyOrReset(sim)
-		},
-	})
-
 }
