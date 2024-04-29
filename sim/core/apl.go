@@ -240,8 +240,10 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 	}
 
 	// Schedule the next rotation evaluation based on either the GCD or reaction time
-	nextEvaluation := max(apl.unit.NextGCDAt(), sim.CurrentTime + apl.unit.ReactionTime)
-	apl.unit.WaitUntil(sim, nextEvaluation)
+	if apl.unit.RotationTimer.IsReady(sim) {
+		nextEvaluation := max(apl.unit.NextGCDAt(), sim.CurrentTime + apl.unit.ReactionTime)
+		apl.unit.WaitUntil(sim, nextEvaluation)
+	}
 }
 
 func (apl *APLRotation) getNextAction(sim *Simulation) *APLAction {

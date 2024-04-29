@@ -161,15 +161,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-AllItems-BlessedGarboftheUndeadSlayer"
  value: {
-  dps: 17920.29734
-  tps: 402.66057
+  dps: 17911.77315
+  tps: 402.52269
  }
 }
 dps_results: {
  key: "TestElemental-AllItems-BlessedRegaliaofUndeadCleansing"
  value: {
-  dps: 17901.48637
-  tps: 396.58346
+  dps: 17926.40854
+  tps: 396.37847
  }
 }
 dps_results: {
