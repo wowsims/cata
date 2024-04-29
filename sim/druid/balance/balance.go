@@ -57,9 +57,10 @@ func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
 
 func (moonkin *BalanceDruid) Initialize() {
 	moonkin.Druid.Initialize()
-	moonkin.EnableEclipseBar()
 
-	moonkin.RegisterTestSpells()
+	moonkin.EnableEclipseBar()
+	moonkin.RegisterEclipseAuras()
+
 	moonkin.RegisterBalanceSpells()
 
 	// if moonkin.OwlkinFrenzyAura != nil && moonkin.Options.OkfUptime > 0 {

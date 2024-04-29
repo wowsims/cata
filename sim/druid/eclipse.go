@@ -55,6 +55,48 @@ func (druid *Druid) EnableEclipseBar() {
 	}
 }
 
+func (druid *Druid) RegisterEclipseAuras() {
+	lunarEclipse := druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 48518},
+		Label:    "Eclipse (Lunar)",
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			// Do stuff
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			// Do stuff
+		},
+	})
+
+	solarEclipse := druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 48517},
+		Label:    "Eclipse (Solar)",
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			// Do stuff
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			// Do stuff
+		},
+	})
+
+	druid.AddEclipseCallback(func(eclipse Eclipse, gained bool, sim *core.Simulation) {
+		if eclipse == LunarEclipse {
+			if gained {
+				lunarEclipse.Activate(sim)
+			} else {
+				lunarEclipse.Deactivate(sim)
+			}
+		} else {
+			if gained {
+				solarEclipse.Activate(sim)
+			} else {
+				solarEclipse.Deactivate(sim)
+			}
+		}
+	})
+}
+
 func (druid *Druid) HasEclipseBar() bool {
 	return druid.eclipseEnergyBar.druid != nil
 }
