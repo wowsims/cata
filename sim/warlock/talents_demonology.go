@@ -137,7 +137,6 @@ func (warlock *Warlock) registerMoltenCore() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMultiplierMod.Activate()
 			castTimeMod.Activate()
-			warlock.Incinerate.CastTimeMultiplier -= castReduction
 			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) * (1 - castReduction))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
