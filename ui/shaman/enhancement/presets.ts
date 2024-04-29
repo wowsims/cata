@@ -33,7 +33,7 @@ export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Defaul
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '3020023-2333310013003012321',
+		talentsString: '3022003-2333310013003012321',
 		glyphs: Glyphs.create({
 			prime1: ShamanPrimeGlyph.GlyphOfLavaLash,
 			prime2: ShamanPrimeGlyph.GlyphOfStormstrike,
