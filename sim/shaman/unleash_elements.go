@@ -45,7 +45,8 @@ func (shaman *Shaman) registerUnleashFlame() {
 		DamageMultiplier: 1,
 		BonusCoefficient: 0.429,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, 1118, spell.OutcomeMagicHitAndCrit)
+			baseDamage := shaman.ClassSpellScaling * 1.11300003529
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			unleashFlameAura.Activate(sim)
 		},
 	})
@@ -62,7 +63,8 @@ func (shaman *Shaman) registerUnleashFrost() {
 		DamageMultiplier: 1,
 		BonusCoefficient: 0.386,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, 873, spell.OutcomeMagicHitAndCrit)
+			baseDamage := shaman.ClassSpellScaling * 0.86900001764
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }
@@ -140,7 +142,8 @@ func (shaman *Shaman) registerUnleashLife() {
 		CritMultiplier:   shaman.DefaultHealingCritMultiplier(),
 		BonusCoefficient: 0.201,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcAndDealHealing(sim, target, 1996, spell.OutcomeHealingCrit)
+			baseHeal := shaman.ClassSpellScaling * 1.98699998856
+			result := spell.CalcAndDealHealing(sim, target, baseHeal, spell.OutcomeHealingCrit)
 
 			if result.Outcome.Matches(core.OutcomeCrit) {
 				if shaman.Talents.AncestralAwakening > 0 {

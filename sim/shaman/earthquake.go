@@ -39,7 +39,7 @@ func (shaman *Shaman) registerEarthquakeSpell() {
 			HasteAffectsDuration: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				// Coefficient damage calculated manually because it's a Nature spell but deals Physical damage
-				baseDamage := 325 + 0.11*dot.Spell.SpellPower()
+				baseDamage := shaman.ClassSpellScaling*0.32400000095 + 0.11*dot.Spell.SpellPower()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 				}
