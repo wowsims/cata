@@ -49,6 +49,7 @@ func (druid *Druid) ApplyTalents() {
 	}
 
 	// Balance
+	druid.applyNaturesGrace()
 	druid.applyStarlightWrath()
 	druid.applyBalanceOfPower()
 	druid.applyNaturesMajesty()
@@ -88,6 +89,43 @@ func (druid *Druid) ApplyTalents() {
 	// druid.applyInfectedWounds()
 	druid.applyFurySwipes()
 	druid.applyPrimalMadness()
+}
+
+func (druid *Druid) applyNaturesGrace() {
+	if druid.Talents.NaturesGrace == 0 {
+		return
+	}
+
+	ngAuraSpellId := []int32{0, 16880, 61345, 61345}[druid.Talents.NaturesGrace]
+	ngAuraSpellHastePct := []float64{0, 0.05, 0.1, 0.15}[druid.Talents.NaturesGrace]
+	ngCooldown := core.Cooldown{
+		Timer:    druid.NewTimer(),
+		Duration: time.Second * 60,
+	}
+
+	ngAura := druid.RegisterAura(core.Aura{
+		Label:    "Natures Grace Proc",
+		ActionID: core.ActionID{SpellID: ngAuraSpellId},
+		Duration: time.Second * 15,
+		Icd:      &ngCooldown,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MultiplyCastSpeed(1 + ngAuraSpellHastePct)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MultiplyCastSpeed(1 / (1 + ngAuraSpellHastePct))
+		},
+	})
+
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:           "Natures Grace (Talent)",
+		Callback:       core.CallbackOnApplyEffects,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: DruidSpellMoonfire | DruidSpellInsectSwarm,
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			ngAura.Activate(sim)
+		},
+	})
 }
 
 func (druid *Druid) applyBalanceOfPower() {
@@ -166,42 +204,6 @@ func (druid *Druid) applyEarthAndMoon() {
 		})
 	}
 }
-
-// func (druid *Druid) setupNaturesGrace() {
-// 	if druid.Talents.NaturesGrace == 0 {
-// 		return
-// 	}
-
-// 	druid.NaturesGraceProcAura = druid.RegisterAura(core.Aura{
-// 		Label:    "Natures Grace Proc",
-// 		ActionID: core.ActionID{SpellID: 16886},
-// 		Duration: time.Second * 3,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			druid.MultiplyCastSpeed(1.2)
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			druid.MultiplyCastSpeed(1 / 1.2)
-// 		},
-// 	})
-
-// 	procChance := []float64{0, .33, .66, 1}[druid.Talents.NaturesGrace]
-
-// 	druid.RegisterAura(core.Aura{
-// 		Label:    "Natures Grace",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.Outcome.Matches(core.OutcomeCrit) {
-// 				return
-// 			}
-// 			if spell.Flags.Matches(SpellFlagNaturesGrace) && sim.Proc(procChance, "Natures Grace") {
-// 				druid.NaturesGraceProcAura.Activate(sim)
-// 			}
-// 		},
-// 	})
-// }
 
 // func (druid *Druid) registerNaturesSwiftnessCD() {
 // 	if !druid.Talents.NaturesSwiftness {
