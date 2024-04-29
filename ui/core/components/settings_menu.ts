@@ -1,18 +1,19 @@
-import { SimUI } from '../sim_ui.js';
-import { Sim } from '../sim.js';
-import { EventID, TypedEvent } from '../typed_event.js';
-import { wowheadSupportedLanguages } from '../constants/lang.js';
+import tippy from 'tippy.js';
+
 import { BooleanPicker } from '../components/boolean_picker.js';
 import { EnumPicker } from '../components/enum_picker.js';
 import { NumberPicker } from '../components/number_picker.js';
+import { wowheadSupportedLanguages } from '../constants/lang.js';
+import { Sim } from '../sim.js';
+import { SimUI } from '../sim_ui.js';
+import { EventID, TypedEvent } from '../typed_event.js';
 import { BaseModal } from './base_modal.js';
-import { Tooltip } from 'bootstrap';
 
 export class SettingsMenu extends BaseModal {
 	private readonly simUI: SimUI;
 
 	constructor(parent: HTMLElement, simUI: SimUI) {
-		super(parent, 'settings-menu', { title: "Options", footer: true });
+		super(parent, 'settings-menu', { title: 'Options', footer: true });
 		this.simUI = simUI;
 
 		this.body.innerHTML = `
@@ -32,20 +33,21 @@ export class SettingsMenu extends BaseModal {
 			<button
 				class="restore-defaults-button btn btn-primary"
 			>Restore Defaults</button>
-		`
+		`;
 
 		const restoreDefaultsButton = this.rootElem.getElementsByClassName('restore-defaults-button')[0] as HTMLElement;
-		Tooltip.getOrCreateInstance(restoreDefaultsButton, {
-			title: "Restores all default settings (gear, consumes, buffs, talents, EP weights, etc). Saved settings are preserved."
+		tippy(restoreDefaultsButton, {
+			content: 'Restores all default settings (gear, consumes, buffs, talents, EP weights, etc). Saved settings are preserved.',
 		});
-		restoreDefaultsButton.addEventListener('click', event => {
+		restoreDefaultsButton.addEventListener('click', () => {
 			this.simUI.applyDefaults(TypedEvent.nextEventID());
 		});
 
 		const fixedRngSeed = this.rootElem.getElementsByClassName('fixed-rng-seed')[0] as HTMLElement;
 		new NumberPicker(fixedRngSeed, this.simUI.sim, {
 			label: 'Fixed RNG Seed',
-			labelTooltip: 'Seed value for the random number generator used during sims, or 0 to use different randomness each run. Use this to share exact sim results or for debugging.',
+			labelTooltip:
+				'Seed value for the random number generator used during sims, or 0 to use different randomness each run. Use this to share exact sim results or for debugging.',
 			extraCssClasses: ['mb-0'],
 			changedEvent: (sim: Sim) => sim.fixedRngSeedChangeEmitter,
 			getValue: (sim: Sim) => sim.getFixedRngSeed(),
@@ -56,7 +58,7 @@ export class SettingsMenu extends BaseModal {
 
 		const lastUsedRngSeed = this.rootElem.getElementsByClassName('last-used-rng-seed')[0] as HTMLElement;
 		lastUsedRngSeed.textContent = String(this.simUI.sim.getLastUsedRngSeed());
-		this.simUI.sim.lastUsedRngSeedChangeEmitter.on(() => lastUsedRngSeed.textContent = String(this.simUI.sim.getLastUsedRngSeed()));
+		this.simUI.sim.lastUsedRngSeedChangeEmitter.on(() => (lastUsedRngSeed.textContent = String(this.simUI.sim.getLastUsedRngSeed())));
 
 		const language = this.rootElem.getElementsByClassName('language-picker')[0] as HTMLElement;
 		const langs = Object.keys(wowheadSupportedLanguages);

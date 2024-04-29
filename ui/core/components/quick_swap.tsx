@@ -1,5 +1,5 @@
+import tippy, { hideAll, Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Popover } from 'bootstrap';
 import { element, fragment, ref } from 'tsx-vanilla';
 
 import { setItemQualityCssClass } from '../css_utils';
@@ -16,8 +16,8 @@ type QuickSwapListItem<T extends QuickSwapAllowedItem> = {
 
 type QuickSwapListConfig<T extends QuickSwapAllowedItem> = {
 	title: string;
-	popoverElement: HTMLElement;
-	popoverConfig: Partial<Popover.Options>;
+	tippyElement: HTMLElement;
+	tippyConfig: Partial<TippyProps>;
 	emptyMessage: string;
 	item: EquippedItem;
 	getItems: (currentItem: EquippedItem) => QuickSwapListItem<T>[];
@@ -30,22 +30,33 @@ type QuickSwapListConfig<T extends QuickSwapAllowedItem> = {
 
 class QuickSwapList<T extends QuickSwapAllowedItem> {
 	config: QuickSwapListConfig<T>;
-	popover: Popover | null = null;
+	tooltip: TippyInstance | null = null;
 	item: EquippedItem;
 	constructor(config: QuickSwapListConfig<T>) {
 		this.config = config;
 		this.item = config.item;
-		this.attachPopover();
+		this.attachTooltip();
 	}
-	attachPopover() {
-		const config: QuickSwapListConfig<T>['popoverConfig'] = {
-			html: true,
-			trigger: 'focus',
-			customClass: 'tooltip-quick-swap',
+	attachTooltip() {
+		const config: QuickSwapListConfig<T>['tippyConfig'] = {
+			trigger: 'mouseenter',
+			triggerTarget: this.config.tippyElement,
+			interactive: true,
+			interactiveBorder: 10,
+			offset: [0, 5],
+			animation: false,
+			placement: 'bottom',
+			theme: 'tooltip-quick-swap',
 			content: () => this.buildList(),
-			...this.config.popoverConfig,
+			onCreate: instance => {
+				instance.popper.addEventListener('click', () => instance.hide());
+			},
+			onShow: instance => {
+				hideAll({ exclude: instance });
+			},
+			...this.config.tippyConfig,
 		};
-		this.popover = Popover.getOrCreateInstance(this.config.popoverElement, config);
+		this.tooltip = tippy(this.config.tippyElement, config);
 	}
 	update(config: Partial<QuickSwapListConfig<T>>) {
 		this.config = {
@@ -53,7 +64,7 @@ class QuickSwapList<T extends QuickSwapAllowedItem> {
 			...config,
 		};
 		if (config.item) this.item = config.item;
-		this.buildList();
+		this.tooltip?.setContent(this.buildList());
 	}
 	buildList() {
 		return buildList(this.config);

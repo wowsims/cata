@@ -7,7 +7,7 @@ import QuickSwapList from '../quick_swap';
 
 export const addQuickGemPopover = (
 	player: Player<any>,
-	popoverElement: HTMLElement,
+	tooltipElement: HTMLElement,
 	item: EquippedItem,
 	itemSlot: ItemSlot,
 	socketIdx: number,
@@ -16,9 +16,9 @@ export const addQuickGemPopover = (
 	return new QuickSwapList({
 		title: 'Favorite gems',
 		emptyMessage: 'Add favorite gems.',
-		popoverElement,
-		popoverConfig: {
-			container: document.querySelector('.sim-ui')!,
+		tippyElement: tooltipElement,
+		tippyConfig: {
+			appendTo: document.querySelector('.sim-ui')!,
 		},
 		item,
 		getItems: (currentItem: EquippedItem) => {

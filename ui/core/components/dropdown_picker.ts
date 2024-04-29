@@ -1,29 +1,28 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 
 import { TypedEvent } from '../typed_event.js';
-
 import { Input, InputConfig } from './input.js';
 
 export interface DropdownValueConfig<V> {
-	value: V,
-	submenu?: Array<string | V>,
-	headerText?: string,
-	tooltip?: string,
-	extraCssClasses?: Array<string>,
+	value: V;
+	submenu?: Array<string | V>;
+	headerText?: string;
+	tooltip?: string;
+	extraCssClasses?: Array<string>;
 }
 
 export interface DropdownPickerConfig<ModObject, T, V = T> extends InputConfig<ModObject, T, V> {
 	values: Array<DropdownValueConfig<V>>;
-	equals: (a: V | undefined, b: V | undefined) => boolean,
-	setOptionContent: (button: HTMLButtonElement, valueConfig: DropdownValueConfig<V>, isSelectButton: boolean) => void,
-	createMissingValue?: (val: V) => Promise<DropdownValueConfig<V>>,
-	defaultLabel: string,
+	equals: (a: V | undefined, b: V | undefined) => boolean;
+	setOptionContent: (button: HTMLButtonElement, valueConfig: DropdownValueConfig<V>, isSelectButton: boolean) => void;
+	createMissingValue?: (val: V) => Promise<DropdownValueConfig<V>>;
+	defaultLabel: string;
 }
 
 interface DropdownSubmenu<V> {
-	path: Array<string|V>,
+	path: Array<string | V>;
 
-	listElem: HTMLUListElement,
+	listElem: HTMLUListElement;
 }
 
 /** UI Input that uses a dropdown menu. */
@@ -73,7 +72,7 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		this.submenus = [];
 		valueConfigs.forEach(valueConfig => {
 			const itemElem = document.createElement('li');
-			const containsSubmenuChildren = valueConfigs.some(vc => vc.submenu?.some(e => !(typeof e == 'string') && this.config.equals(e, valueConfig.value)))
+			const containsSubmenuChildren = valueConfigs.some(vc => vc.submenu?.some(e => !(typeof e == 'string') && this.config.equals(e, valueConfig.value)));
 			if (valueConfig.extraCssClasses) {
 				itemElem.classList.add(...valueConfig.extraCssClasses);
 			}
@@ -93,14 +92,13 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 				this.config.setOptionContent(buttonElem, valueConfig, false);
 
 				if (valueConfig.tooltip) {
-					Tooltip.getOrCreateInstance(buttonElem, {
-						animation: false,
-						placement: 'right',
-						fallbackPlacements: ['left', 'bottom'],
-						offset: [0, 10],
-						customClass: 'dropdown-tooltip',
-						html: true,
-						title: valueConfig.tooltip
+					tippy(buttonElem, {
+						// animation: false,
+						// placement: 'right',
+						// fallbackPlacements: ['left', 'bottom'],
+						// offset: [0, 10],
+						theme: 'dropdown-tooltip',
+						content: valueConfig.tooltip,
 					});
 				}
 
@@ -110,7 +108,7 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 				});
 
 				if (containsSubmenuChildren) {
-					this.createSubmenu((valueConfig.submenu || []).concat([valueConfig.value]), buttonElem, itemElem)
+					this.createSubmenu((valueConfig.submenu || []).concat([valueConfig.value]), buttonElem, itemElem);
 				} else {
 					itemElem.appendChild(buttonElem);
 				}
@@ -130,14 +128,14 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		});
 	}
 
-	private getSubmenu(path: Array<string|V> | undefined): DropdownSubmenu<V> | null {
+	private getSubmenu(path: Array<string | V> | undefined): DropdownSubmenu<V> | null {
 		if (!path) {
 			return null;
 		}
 		return this.submenus.find(submenu => this.equalPaths(submenu.path, path)) || null;
 	}
 
-	private createSubmenu(path: Array<string|V>, buttonElem?: HTMLButtonElement, itemElem?: HTMLLIElement): DropdownSubmenu<V> {
+	private createSubmenu(path: Array<string | V>, buttonElem?: HTMLButtonElement, itemElem?: HTMLLIElement): DropdownSubmenu<V> {
 		const submenu = this.getSubmenu(path);
 		if (submenu) {
 			return submenu;
@@ -187,12 +185,11 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		return newSubmenu;
 	}
 
-	private equalPaths(a: Array<string|V> | null | undefined, b: Array<string|V> | null | undefined): boolean {
-		return (a?.length || 0) == (b?.length || 0) &&
-			(a || []).every((aVal, i) =>
-				(typeof aVal == 'string')
-					? aVal == (b![i] as string)
-					: this.config.equals(aVal, b![i] as V));
+	private equalPaths(a: Array<string | V> | null | undefined, b: Array<string | V> | null | undefined): boolean {
+		return (
+			(a?.length || 0) == (b?.length || 0) &&
+			(a || []).every((aVal, i) => (typeof aVal == 'string' ? aVal == (b![i] as string) : this.config.equals(aVal, b![i] as V)))
+		);
 	}
 
 	getInputElem(): HTMLElement {
@@ -231,11 +228,11 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 }
 
 export interface TextDropdownValueConfig<T> extends DropdownValueConfig<T> {
-	label: string,
+	label: string;
 }
 
 export interface TextDropdownPickerConfig<ModObject, T> extends Omit<DropdownPickerConfig<ModObject, T>, 'values' | 'setOptionContent'> {
-	values: Array<TextDropdownValueConfig<T>>,
+	values: Array<TextDropdownValueConfig<T>>;
 }
 
 export class TextDropdownPicker<ModObject, T> extends DropdownPicker<ModObject, T> {
@@ -244,7 +241,7 @@ export class TextDropdownPicker<ModObject, T> extends DropdownPicker<ModObject, 
 			...config,
 			setOptionContent: (button: HTMLButtonElement, valueConfig: DropdownValueConfig<T>) => {
 				button.textContent = (valueConfig as TextDropdownValueConfig<T>).label;
-			}
+			},
 		});
 	}
 }

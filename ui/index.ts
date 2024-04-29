@@ -1,7 +1,8 @@
 import './shared/bootstrap_overrides';
 
-import * as Popper from '@popperjs/core';
+// import * as Popper from '@popperjs/core';
 import * as bootstrap from 'bootstrap';
+import tippy from 'tippy.js';
 
 declare global {
 	interface Window {
@@ -10,7 +11,8 @@ declare global {
 	}
 }
 
-window.Popper = Popper;
+tippy.setDefaultProps({ arrow: false, allowHTML: true });
+// window.Popper = Popper;
 window.bootstrap = bootstrap;
 
 // Force scroll to top when refreshing

@@ -5,13 +5,13 @@ import { EquippedItem } from '../../proto_utils/equipped_item';
 import { TypedEvent } from '../../typed_event';
 import QuickSwapList from '../quick_swap';
 
-export const addQuickEnchantPopover = (player: Player<any>, popoverElement: HTMLElement, item: EquippedItem, itemSlot: ItemSlot, openDetailTab: () => void) => {
+export const addQuickEnchantPopover = (player: Player<any>, tooltipElement: HTMLElement, item: EquippedItem, itemSlot: ItemSlot, openDetailTab: () => void) => {
 	return new QuickSwapList({
 		title: 'Favorite Enchants',
 		emptyMessage: 'Add favorite Enchants',
-		popoverElement,
-		popoverConfig: {
-			container: document.querySelector('.sim-ui')!,
+		tippyElement: tooltipElement,
+		tippyConfig: {
+			appendTo: document.querySelector('.sim-ui')!,
 		},
 		item,
 		getItems: (currentItem: EquippedItem) => {

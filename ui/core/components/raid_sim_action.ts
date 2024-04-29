@@ -1,4 +1,3 @@
-import { Tooltip } from 'bootstrap';
 import tippy from 'tippy.js';
 
 import { DistributionMetrics as DistributionMetricsProto, ProgressMetrics, Raid as RaidProto } from '../proto/api.js';
@@ -161,7 +160,7 @@ export class RaidSimResultsManager {
 		const setResultTooltip = (cssClass: string, tooltip: string) => {
 			const resultDivElem = this.simUI.resultsViewer.contentElem.getElementsByClassName(cssClass)[0] as HTMLElement | undefined;
 			if (resultDivElem) {
-				Tooltip.getOrCreateInstance(resultDivElem, { title: tooltip, html: true, placement: 'right' });
+				tippy(resultDivElem, { content: tooltip, allowHTML: true, placement: 'right' });
 			}
 		};
 		setResultTooltip('results-sim-dps', 'Damage Per Second');
@@ -207,10 +206,10 @@ export class RaidSimResultsManager {
 			this.referenceChangeEmitter.emit(TypedEvent.nextEventID());
 			this.updateReference();
 		});
-		Tooltip.getOrCreateInstance(simReferenceSetButton, { title: 'Use as reference' });
+		tippy(simReferenceSetButton, { content: 'Use as reference' });
 
 		const simReferenceSwapButton = this.simUI.resultsViewer.contentElem.getElementsByClassName('results-sim-reference-swap')[0] as HTMLSpanElement;
-		simReferenceSwapButton.addEventListener('click', event => {
+		simReferenceSwapButton.addEventListener('click', () => {
 			TypedEvent.freezeAllAndDo(() => {
 				if (this.currentData && this.referenceData) {
 					const swapEventID = TypedEvent.nextEventID();
@@ -233,7 +232,7 @@ export class RaidSimResultsManager {
 		});
 
 		const simReferenceDeleteButton = this.simUI.resultsViewer.contentElem.getElementsByClassName('results-sim-reference-delete')[0] as HTMLSpanElement;
-		simReferenceDeleteButton.addEventListener('click', event => {
+		simReferenceDeleteButton.addEventListener('click', () => {
 			this.referenceData = null;
 			this.referenceChangeEmitter.emit(TypedEvent.nextEventID());
 			this.updateReference();

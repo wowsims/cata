@@ -1,12 +1,10 @@
+import { Player } from '../../player.js';
+import { ActionID as ActionIdProto , Cooldown } from '../../proto/common.js';
+import { ActionId } from '../../proto_utils/action_id.js';
+import { EventID, TypedEvent } from '../../typed_event.js';
 import { Component } from '../component.js';
 import { IconEnumPicker, IconEnumValueConfig } from '../icon_enum_picker.js';
 import { NumberListPicker } from '../number_list_picker.js';
-import { Player } from '../../player.js';
-import { EventID, TypedEvent } from '../../typed_event.js';
-import { ActionID as ActionIdProto } from '../../proto/common.js';
-import { Cooldown } from '../../proto/common.js';
-import { ActionId } from '../../proto_utils/action_id.js';
-import { Tooltip } from 'bootstrap';
 
 export class CooldownsPicker extends Component {
 	readonly player: Player<any>;
@@ -50,7 +48,7 @@ export class CooldownsPicker extends Component {
 
 			const timingsPicker = this.makeTimingsPicker(row, i);
 
-			let deleteButtonFragment = document.createElement('fragment');
+			const deleteButtonFragment = document.createElement('fragment');
 			deleteButtonFragment.innerHTML = `
 				<a
 					href="javascript:void(0)"

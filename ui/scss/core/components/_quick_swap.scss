@@ -1,11 +1,12 @@
-.tooltip-quick-swap {
-	--bs-popover-body-opacity: 1;
-	--bs-popover-body-padding-x: 0;
-	--bs-popover-body-padding-y: 0;
-	--bs-popover-body-bg: black;
-	width: 280px;
+.tippy-box[data-theme='tooltip-quick-swap'] {
+	opacity: 1;
+	width: 220px;
 	border: $border-default;
 	cursor: default;
+
+	.tippy-content {
+		padding: 0;
+	}
 
 	ul {
 		padding-left: 0;

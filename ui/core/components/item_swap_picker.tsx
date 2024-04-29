@@ -1,5 +1,5 @@
-import { Tooltip } from 'bootstrap';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import tippy from 'tippy.js';
 import { element, fragment } from 'tsx-vanilla';
 
 import { Player } from '../player.js';
@@ -66,23 +66,17 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 		itemSwapContainer.classList.add('icon-group');
 		swapPickerContainer.appendChild(itemSwapContainer);
 
-		const swapButtonFragment = document.createElement('fragment');
-		swapButtonFragment.innerHTML = `
-			<a
-				href="javascript:void(0)"
-				class="gear-swap-icon"
-				role="button"
-				data-bs-title="Swap with equipped items"
-			>
-				<i class="fas fa-arrows-rotate me-1"></i>
+		const swapButton = (
+			<a href="javascript:void(0)" className="gear-swap-icon" attributes={{ role: 'button' }}>
+				<i className="fas fa-arrows-rotate me-1"></i>
 			</a>
-		`;
-
-		const swapButton = swapButtonFragment.children[0] as HTMLElement;
+		);
+		swapButton.addEventListener('click', _event => this.swapWithGear(TypedEvent.nextEventID(), player));
 		itemSwapContainer.appendChild(swapButton);
 
-		swapButton.addEventListener('click', _event => this.swapWithGear(TypedEvent.nextEventID(), player));
-		Tooltip.getOrCreateInstance(swapButton);
+		tippy(swapButton, {
+			content: 'Swap with equipped items',
+		});
 
 		this.itemSlots.forEach(itemSlot => {
 			new IconItemSwapPicker(itemSwapContainer, simUI, player, itemSlot);

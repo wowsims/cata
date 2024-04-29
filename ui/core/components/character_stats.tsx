@@ -1,4 +1,4 @@
-import { Popover, Tooltip } from 'bootstrap';
+import tippy, { Instance as TippyInstance } from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
@@ -214,9 +214,8 @@ export class CharacterStats extends Component {
 					</div>
 				</div>
 			);
-			Tooltip.getOrCreateInstance(statLinkElem, {
-				title: tooltipContent,
-				html: true,
+			tippy(statLinkElem, {
+				content: tooltipContent,
 			});
 		});
 
@@ -277,9 +276,9 @@ export class CharacterStats extends Component {
 				</div>
 			);
 
-			Tooltip.getOrCreateInstance(valueElem, {
-				title: tooltipContent,
-				html: true,
+			tippy(valueElem, {
+				content: tooltipContent,
+				allowHTML: true,
 			});
 		}
 	}
@@ -353,9 +352,9 @@ export class CharacterStats extends Component {
 			</a>
 		);
 
-		Tooltip.getOrCreateInstance(link.children[0], { title: `Bonus ${statName}` });
+		tippy(link.children[0], { content: `Bonus ${statName}` });
 
-		let popover: Popover | null = null;
+		let popover: TippyInstance | null = null;
 
 		const picker = new NumberPicker(null, this.player, {
 			label: `Bonus ${statName}`,
@@ -369,12 +368,11 @@ export class CharacterStats extends Component {
 			},
 		});
 
-		popover = Popover.getOrCreateInstance(link, {
-			customClass: 'bonus-stats-popover',
+		popover = tippy(link, {
+			interactive: true,
+			trigger: 'click',
+			theme: 'bonus-stats-popover',
 			placement: 'right',
-			fallbackPlacements: ['left'],
-			sanitize: false,
-			html: true,
 			content: picker.rootElem,
 		});
 
@@ -385,7 +383,7 @@ export class CharacterStats extends Component {
 		return player.getPlayerSpec().isMeleeDpsSpec;
 	}
 
-	private meleeCritCapDisplayString(player: Player<any>, finalStats: Stats): string {
+	private meleeCritCapDisplayString(player: Player<any>, _finalStats: Stats): string {
 		const playerCritCapDelta = player.getMeleeCritCap();
 
 		if (playerCritCapDelta === 0.0) {

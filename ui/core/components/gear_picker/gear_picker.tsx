@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
@@ -43,8 +43,9 @@ const createHeroicLabel = () => {
 
 const createGemContainer = (socketColor: GemColor, gem: Gem | null, index: number) => {
 	const gemIconElem = ref<HTMLImageElement>();
+	const gemContainerElem = ref<HTMLAnchorElement>();
 	const gemContainer = (
-		<a className="gem-socket-container" href="javascript:void(0)" attributes={{ role: 'button' }} dataset={{ socketIdx: index }}>
+		<a ref={gemContainerElem} className="gem-socket-container" href="javascript:void(0)" attributes={{ role: 'button' }} dataset={{ socketIdx: index }}>
 			<img ref={gemIconElem} className={`gem-icon ${gem == null ? 'hide' : ''}`} />
 			<img className="socket-icon" src={getEmptyGemSocketIconUrl(socketColor)} />
 		</a>
@@ -54,6 +55,7 @@ const createGemContainer = (socketColor: GemColor, gem: Gem | null, index: numbe
 		ActionId.fromItemId(gem.id)
 			.fill()
 			.then(filledId => {
+				filledId.setWowheadHref(gemContainerElem.value!);
 				gemIconElem.value!.src = filledId.iconUrl;
 			});
 	}
@@ -271,15 +273,15 @@ export class ItemPicker extends Component {
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
 			this.itemElem.reforgeElem.addEventListener('click', openReforgeSelector);
-			this.addQuickSwapHelpers();
+			this.addQuickEnchantHelpers();
 		});
 		player.gearChangeEmitter.on(() => {
 			this.item = this.player.getEquippedItem(this.slot);
 			if (this._equippedItem) {
 				if (this._equippedItem !== this.quickSwapEnchantPopover?.item) {
 					this.quickSwapEnchantPopover?.update({ item: this._equippedItem });
+					this.addQuickGemHelpers();
 				}
-				this.addQuickGemHelpers();
 			}
 		});
 		player.sim.filtersChangeEmitter.on(() => {
@@ -335,17 +337,18 @@ export class ItemPicker extends Component {
 		});
 	}
 
-	private addQuickSwapHelpers() {
-		this.addQuickEnchantHelpers();
-		this.addQuickGemHelpers();
-	}
-
 	private addQuickGemHelpers() {
 		if (!this._equippedItem) return;
 		const gearData = this.createGearData();
 		const openGemDetailTab = (socketIdx: number) => this.openSelectorModal(`Gem ${socketIdx + 1}` as SelectorModalTabs, gearData);
 		this.itemElem.socketsElem?.forEach(element => {
 			const socketIdx = Number(element.dataset.socketIdx) || 0;
+			element.addEventListener('click', event => {
+				console.log(event);
+				event.stopPropagation();
+				event.preventDefault();
+				openGemDetailTab(0);
+			});
 			this.quickSwapGemPopover.push(
 				addQuickGemPopover(this.player, element, this._equippedItem!, this.slot, socketIdx, () => openGemDetailTab(socketIdx)),
 			);
@@ -354,10 +357,20 @@ export class ItemPicker extends Component {
 
 	private addQuickEnchantHelpers() {
 		if (!this._equippedItem) return;
-		this.itemElem.enchantElem.addEventListener('click', event => event?.preventDefault());
-		const gearData = this.createGearData();
 		const openEnchantSelector = () => this.openSelectorModal(SelectorModalTabs.Enchants, gearData);
+		const gearData = this.createGearData();
+		this.itemElem.enchantElem.addEventListener('click', event => {
+			event?.preventDefault();
+			openEnchantSelector();
+		});
 		this.quickSwapEnchantPopover = addQuickEnchantPopover(this.player, this.itemElem.enchantElem, this._equippedItem, this.slot, openEnchantSelector);
+		// this.itemElem.enchantElem.addEventListener('mouseover', event => {
+		// 	this.quickSwapEnchantPopover?.popover?.show();
+		// });
+		// this.itemElem.enchantElem.addEventListener('mouseout', event => {
+		// 	console.log('mouseout', event);
+		// 	this.quickSwapEnchantPopover?.popover?.hide();
+		// });
 	}
 }
 
@@ -1116,8 +1129,8 @@ export class ItemList<T> {
 
 		parent.appendChild(this.tabContent);
 
-		new Tooltip(epButton.value!, {
-			title: EP_TOOLTIP,
+		tippy(epButton.value!, {
+			content: EP_TOOLTIP,
 		});
 
 		makeShow1hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement, player.sim);
@@ -1419,9 +1432,10 @@ export class ItemList<T> {
 
 		setItemQualityCssClass(nameElem.value!, itemData.quality);
 
-		new Tooltip(favoriteElem.value!, {
-			title: 'Add to favorites',
+		tippy(favoriteElem.value!, {
+			content: 'Add to favorites',
 		});
+
 		const setFavorite = (isFavorite: boolean) => {
 			const filters = this.player.sim.getFilters();
 			if (this.label == 'Items') {

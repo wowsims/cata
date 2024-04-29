@@ -46,6 +46,7 @@
 		}
 
 		.sim-sidebar-results {
+			position: relative;
 			min-height: 25vh;
 			display: flex;
 			justify-content: center;
@@ -63,6 +64,12 @@
 			& > *:not(:last-child) {
 				margin-right: map-get($spacers, 3);
 			}
+		}
+	}
+
+	.warning-zone {
+		[data-tippy-root] {
+			width: 100%;
 		}
 	}
 }
