@@ -55,24 +55,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_ARMS_PRESET_HORDE.gear,
+		gear: Presets.PRERAID_ARMS_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatStrength]: 2.72,
-				[Stat.StatAgility]: 1.82,
+				[Stat.StatStrength]: 2.21,
+				[Stat.StatAgility]: 0.88,
 				[Stat.StatAttackPower]: 1,
-				[Stat.StatExpertise]: 2.55,
-				[Stat.StatMeleeHit]: 0.79,
-				[Stat.StatMeleeCrit]: 2.12,
-				[Stat.StatMeleeHaste]: 1.72,
+				[Stat.StatExpertise]: 1.08,
+				[Stat.StatMeleeHit]: 0,
+				[Stat.StatMeleeCrit]: 1.13,
+				[Stat.StatMeleeHaste]: 0.53,
 				// @todo: Calculate actual weights
 				// This probably applies for all weights
-				// [Stat.StatMastery]: 0,
+				[Stat.StatMastery]: 0.53,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 6.29,
-				[PseudoStat.PseudoStatOffHandDps]: 3.58,
+				[PseudoStat.PseudoStatMainHandDps]: 9.27,
+				[PseudoStat.PseudoStatOffHandDps]: 0,
 			},
 		),
 		// Default consumes settings.
@@ -137,23 +137,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.ArmsTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_ARMS, Presets.ROTATION_ARMS_SUNDER],
+		rotations: [Presets.ROTATION_ARMS],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.PRERAID_ARMS_PRESET,
 			Presets.P1_ARMS_PRESET,
-			Presets.P2_ARMS_PRESET,
-			Presets.P3_ARMS_2P_PRESET_ALLIANCE,
-			Presets.P3_ARMS_4P_PRESET_ALLIANCE,
-			Presets.P3_ARMS_2P_PRESET_HORDE,
-			Presets.P3_ARMS_4P_PRESET_HORDE,
-			Presets.P4_ARMS_PRESET_ALLIANCE,
-			Presets.P4_ARMS_PRESET_HORDE,
 		],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecArmsWarrior>): APLRotation => {
-		return Presets.ROTATION_ARMS_SUNDER.rotation.rotation!;
+		return Presets.ROTATION_ARMS.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -171,15 +164,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_ARMS_PRESET.gear,
-					2: Presets.P2_ARMS_PRESET.gear,
-					3: Presets.P3_ARMS_4P_PRESET_ALLIANCE.gear,
-					4: Presets.P4_ARMS_PRESET_ALLIANCE.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_ARMS_PRESET.gear,
-					2: Presets.P2_ARMS_PRESET.gear,
-					3: Presets.P3_ARMS_4P_PRESET_HORDE.gear,
-					4: Presets.P4_ARMS_PRESET_HORDE.gear,
 				},
 			},
 		},
