@@ -65,7 +65,6 @@ func (druid *Druid) registerMoonfireSpell() {
 			if result.Landed() {
 				druid.ExtendingMoonfireStacks = 3
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = 6
 				dot.Apply(sim)
 			}
 
