@@ -17,7 +17,7 @@ func (warlock *Warlock) registerLifeTapSpell() {
 	//	petManaMetrics = warlock.ActivePet.NewManaMetrics(actionID)
 	//}
 
-	warlock.LifeTap = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,

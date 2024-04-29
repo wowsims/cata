@@ -106,7 +106,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 			},
 
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == warlock.Shadowburn && sim.IsExecutePhase25() && aura.Icd.IsReady(sim) {
+				if spell.ClassSpellMask == WarlockSpellShadowBurn && sim.IsExecutePhase25() && aura.Icd.IsReady(sim) {
 					aura.Icd.Use(sim)
 					warlock.Shadowburn.CD.Reset()
 				}

@@ -88,7 +88,7 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 		},
 	})
 
-	warlock.DemonSoul = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 77801},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,

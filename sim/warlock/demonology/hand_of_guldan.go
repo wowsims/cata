@@ -43,7 +43,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
 	// 	})
 	// })
 
-	demonology.HandOfGuldan = demonology.RegisterSpell(core.SpellConfig{
+	demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 71521},
 		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -71,7 +71,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
 		BonusCoefficient: 0.968,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := demonology.CalcBaseDamageWithVariance(sim, 1.593, 0.166)
+			baseDamage := demonology.CalcBaseDamageWithVariance(sim, warlock.Coefficient_HandOfGuldan, warlock.Variance_HandOfGuldan)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 

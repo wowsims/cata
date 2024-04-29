@@ -8,7 +8,7 @@ import (
 )
 
 func (warlock *Warlock) registerSummonFelHunterSpell() {
-	warlock.SummonImp = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 691},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
@@ -92,7 +92,9 @@ func (felhunter *FelhunterPet) Initialize() {
 }
 
 func (felhunter *FelhunterPet) ExecuteCustomRotation(sim *core.Simulation) {
-	felhunter.ShadowBite.Cast(sim, felhunter.CurrentTarget)
+	if felhunter.ShadowBite.CanCast(sim, felhunter.CurrentTarget) {
+		felhunter.ShadowBite.Cast(sim, felhunter.CurrentTarget)
+	}
 }
 
 func (felhunter *FelhunterPet) registerShadowBiteSpell() {
@@ -122,25 +124,15 @@ func (felhunter *FelhunterPet) registerShadowBiteSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 166 + (1.228 * (0.5 * spell.SpellPower()))
 
-			owner := felhunter.owner
-			spells := []*core.Spell{
-				owner.UnstableAffliction,
-				owner.Immolate,
-				owner.BaneOfAgony,
-				owner.BaneOfDoom,
-				owner.Corruption,
-				owner.Seed,
-				owner.DrainSoul,
-				// missing: drain life, shadowflame
-			}
-			counter := 0
-			for _, ownerSpell := range spells {
-				if ownerSpell != nil && ownerSpell.Dot(target).IsActive() {
-					counter++
+			activeDots := 0
+
+			for _, spell := range felhunter.owner.Spellbook {
+				if spell.ClassSpellMask&WarlockDoT > 0 && spell.Dot(target).IsActive() {
+					activeDots++
 				}
 			}
 
-			baseDamage *= 1 + 0.15*float64(counter)
+			baseDamage *= 1 + 0.15*float64(activeDots)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)
 		},

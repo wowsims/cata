@@ -57,7 +57,7 @@ func (warlock *Warlock) registerEradication() {
 	}
 
 	castSpeedMultiplier := []float64{1, 1.06, 1.12, 1.20}[warlock.Talents.Eradication]
-	warlock.EradicationAura = warlock.RegisterAura(core.Aura{
+	eradicationAura := warlock.RegisterAura(core.Aura{
 		Label:    "Eradication",
 		ActionID: core.ActionID{SpellID: 47197},
 		Duration: time.Second * 10,
@@ -73,12 +73,8 @@ func (warlock *Warlock) registerEradication() {
 		warlock.RegisterAura(core.Aura{
 			Label: "Eradication Talent",
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell != warlock.Corruption {
-					return
-				}
-
-				if sim.Proc(0.06, "Eradication") {
-					warlock.EradicationAura.Activate(sim)
+				if spell.ClassSpellMask&(WarlockSpellCorruption) > 0 && sim.Proc(0.06, "Eradication") {
+					eradicationAura.Activate(sim)
 				}
 			},
 		}))
@@ -158,14 +154,19 @@ func (warlock *Warlock) registerEverlastingAffliction() {
 		warlock.RegisterAura(core.Aura{
 			Label: "EverlastingAffliction Talent",
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				//TODO: Does this apply on haunt damage or just the dot?
-				if spell != warlock.DrainSoul || spell != warlock.Haunt {
+				if spell.ClassSpellMask != WarlockSpellDrainSoul {
 					return
 				}
 
-				if warlock.Corruption.Dot(aura.Unit).IsActive() && sim.Proc(procChance, "EverlastingAffliction") {
-					//TODO: Should this Rollover or Apply like other dots in cata?
-					warlock.Corruption.Dot(aura.Unit).Rollover(sim)
+				if warlock.Corruption.Dot(result.Target).IsActive() && sim.Proc(procChance, "EverlastingAffliction") {
+					warlock.Corruption.Dot(result.Target).Apply(sim)
+				}
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ClassSpellMask == WarlockSpellHaunt && result.Landed() {
+					if warlock.Corruption.Dot(result.Target).IsActive() && sim.Proc(procChance, "EverlastingAffliction") {
+						warlock.Corruption.Dot(result.Target).Apply(sim)
+					}
 				}
 			},
 		}))
@@ -186,9 +187,8 @@ func (warlock *Warlock) registerPandemic() {
 				return
 			}
 
-			if warlock.UnstableAffliction.Dot(aura.Unit).IsActive() && sim.Proc(procChance, "Pandemic") {
-				//TODO: Should this Rollover or Apply like other dots in cata?
-				warlock.UnstableAffliction.Dot(aura.Unit).Rollover(sim)
+			if warlock.UnstableAffliction.Dot(result.Target).IsActive() && sim.Proc(procChance, "Pandemic") {
+				warlock.UnstableAffliction.Dot(result.Target).Apply(sim)
 			}
 		},
 	})
@@ -215,7 +215,7 @@ func (warlock *Warlock) registerNightfall() {
 		Duration: time.Second * 6,
 	}
 
-	warlock.NightfallProcAura = warlock.RegisterAura(core.Aura{
+	nightfallProcAura := warlock.RegisterAura(core.Aura{
 		Icd:      &icd,
 		Label:    "Nightfall Shadow Trance",
 		ActionID: core.ActionID{SpellID: 17941},
@@ -228,7 +228,7 @@ func (warlock *Warlock) registerNightfall() {
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Check if the shadowbolt was instant cast and not a normal one
-			if spell == warlock.ShadowBolt && spell.CurCast.CastTime == 0 {
+			if spell.ClassSpellMask&(WarlockSpellShadowBolt) > 0 && spell.CurCast.CastTime == 0 {
 				aura.Deactivate(sim)
 			}
 		},
@@ -240,7 +240,7 @@ func (warlock *Warlock) registerNightfall() {
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell == warlock.Corruption {
 					if sim.Proc(nightfallProcChance, "Nightfall") {
-						warlock.NightfallProcAura.Activate(sim)
+						nightfallProcAura.Activate(sim)
 					}
 				}
 			},

@@ -13,7 +13,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 		return
 	}
 
-	demonology.MetamorphosisAura = demonology.RegisterAura(core.Aura{
+	metamorphosisAura := demonology.RegisterAura(core.Aura{
 		Label:    "Metamorphosis Aura",
 		ActionID: core.ActionID{SpellID: 59672},
 		Duration: time.Second * (30 + 6*core.TernaryDuration(demonology.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 1, 0)),
@@ -38,7 +38,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			demonology.MetamorphosisAura.Activate(sim)
+			metamorphosisAura.Activate(sim)
 		},
 	})
 
@@ -51,7 +51,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 			if !demonology.GetAura("Demonic Pact").IsActive() {
 				return false
 			}
-			MetamorphosisNumber := (float64(sim.Duration) + float64(demonology.MetamorphosisAura.Duration)) / float64(demonology.Metamorphosis.CD.Duration)
+			MetamorphosisNumber := (float64(sim.Duration) + float64(metamorphosisAura.Duration)) / float64(demonology.Metamorphosis.CD.Duration)
 			if MetamorphosisNumber < 1 {
 				return demonology.HasActiveAura("Bloodlust-"+core.BloodlustActionID.WithTag(-1).String()) || sim.IsExecutePhase25()
 			}
@@ -80,7 +80,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 			},
 		},
 		ExtraCastCondition: func(_ *core.Simulation, _ *core.Unit) bool {
-			return demonology.MetamorphosisAura.IsActive()
+			return metamorphosisAura.IsActive()
 		},
 
 		DamageMultiplier: 1,

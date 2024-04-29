@@ -8,15 +8,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-const (
-	PetExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
-)
-
-const PetFelhunter string = "Felhunter"
-const PetFelguard string = "Felguard"
-const PetSuccubus string = "Succubus"
-const PetImp string = "Imp"
-
 var TalentTreeSizes = [3]int{18, 19, 19}
 
 type Warlock struct {
@@ -24,57 +15,30 @@ type Warlock struct {
 	Talents *proto.WarlockTalents
 	Options *proto.WarlockOptions
 
+	ClassSpellScaling float64
+
 	ShadowBolt           *core.Spell
 	Incinerate           *core.Spell
-	Immolate             *core.Spell
 	ImmolateDot          *core.Spell
 	UnstableAffliction   *core.Spell
 	Corruption           *core.Spell
 	Haunt                *core.Spell
-	LifeTap              *core.Spell
-	DarkPact             *core.Spell
 	ChaosBolt            *core.Spell
 	SoulFire             *core.Spell
-	Conflagrate          *core.Spell
 	DrainSoul            *core.Spell
 	Shadowburn           *core.Spell
-	SearingPain          *core.Spell
-	HandOfGuldan         *core.Spell
-	CurseOfElements      *core.Spell
 	CurseOfElementsAuras core.AuraArray
-	CurseOfWeakness      *core.Spell
 	CurseOfWeaknessAuras core.AuraArray
-	CurseOfTongues       *core.Spell
 	CurseOfTonguesAuras  core.AuraArray
 	BaneOfAgony          *core.Spell
 	BaneOfDoom           *core.Spell
-	BaneOfHavoc          *core.Spell
 	Seed                 *core.Spell
 	SeedDamageTracker    []float64
-	BurningEmbers        *core.Spell
-	DemonSoul            *core.Spell
 
-	ShadowEmbraceAuras     core.AuraArray
-	NightfallProcAura      *core.Aura
-	EradicationAura        *core.Aura
-	DemonicSoulAura        *core.Aura
-	Metamorphosis          *core.Spell
-	MetamorphosisAura      *core.Aura
-	ImmolationAura         *core.Spell
-	HauntDebuffAuras       core.AuraArray
-	MoltenCoreAura         *core.Aura
-	DecimationAura         *core.Aura
-	PyroclasmAura          *core.Aura
-	BackdraftAura          *core.Aura
-	EmpoweredImpAura       *core.Aura
-	SpiritsoftheDamnedAura *core.Aura
-
-	SummonFelhunter *core.Spell
-	SummonFelguard  *core.Spell
-	SummonImp       *core.Spell
-	SummonSuccubus  *core.Spell
-	SummonDoomguard *core.Spell
-	SummonInfernal  *core.Spell
+	ShadowEmbraceAuras core.AuraArray
+	Metamorphosis      *core.Spell
+	ImmolationAura     *core.Spell
+	HauntDebuffAuras   core.AuraArray
 
 	ActivePet string
 	//ActivePet *core.Pet
@@ -100,8 +64,7 @@ func (warlock *Warlock) GetWarlock() *Warlock {
 }
 
 func (warlock *Warlock) ApplyTalents() {
-	// Apply Armor Spec
-	warlock.EnableArmorSpecialization(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
+	warlock.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeCloth)
 
 	warlock.ApplyAfflictionTalents()
 	warlock.ApplyDemonologyTalents()
@@ -173,9 +136,10 @@ func (warlock *Warlock) Reset(sim *core.Simulation) {
 
 func NewWarlock(character *core.Character, options *proto.Player, warlockOptions *proto.WarlockOptions) *Warlock {
 	warlock := &Warlock{
-		Character: *character,
-		Talents:   &proto.WarlockTalents{},
-		Options:   warlockOptions,
+		Character:         *character,
+		Talents:           &proto.WarlockTalents{},
+		Options:           warlockOptions,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassWarlock),
 	}
 	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 	warlock.EnableManaBar()
@@ -223,6 +187,7 @@ const (
 	WarlockSpellImmolateDot
 	WarlockSpellIncinerate
 	WarlockSpellSoulFire
+	WarlockSpellShadowBurn
 	WarlockSpellLifeTap
 	WarlockSpellCorruption
 	WarlockSpellHaunt
@@ -263,11 +228,38 @@ const (
 
 	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire |
 		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot
+
+	WarlockDoT = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
+		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot
 )
 
-func (warlock *Warlock) CalcBaseDamage(coefficient float64) float64 {
-	return warlock.ScalingBaseDamage * coefficient
-}
+const (
+	PetExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
+)
+
+const Coefficient_Haunt float64 = 0.9581
+const Coefficient_UnstableAffliction float64 = 0.231
+const Coefficient_BaneOfAgony float64 = 0.133
+const Coefficient_BaneOfDoom float64 = 2.024
+const Coefficient_Immolate float64 = 0.692
+const Coefficient_ImmolateDot float64 = 0.439
+const Coefficient_SeedExplosion float64 = 2.113
+const Coefficient_SeedDot float64 = 0.3024
+const Coefficient_BurningEmbers_1 float64 = 0.0734
+const Coefficient_BurningEmbers_2 float64 = 0.147
+const Coefficient_ChaosBolt float64 = 1.547
+const Coefficient_Infernal float64 = 0.485
+const Coefficient_ShadowBolt float64 = 0.62
+const Coefficient_HandOfGuldan float64 = 1.593
+
+const Variance_ChaosBolt float64 = 0.238
+const Variance_ShadowBolt float64 = 0.1099999994
+const Variance_HandOfGuldan float64 = 0.166
+const Variance_Infernal float64 = 0.119
+const PetFelhunter string = "Felhunter"
+const PetFelguard string = "Felguard"
+const PetSuccubus string = "Succubus"
+const PetImp string = "Imp"
 
 func (warlock *Warlock) CalcBaseDamageWithVariance(sim *core.Simulation, coefficient float64, variance float64) float64 {
 	baseDamage := warlock.ScalingBaseDamage * coefficient

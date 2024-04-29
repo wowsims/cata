@@ -7,7 +7,7 @@ import (
 )
 
 func (warlock *Warlock) registerSearingPainSpell() {
-	warlock.SearingPain = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 5676},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,

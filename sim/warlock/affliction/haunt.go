@@ -59,7 +59,7 @@ func (affliction *AfflictionWarlock) registerHauntSpell() {
 		BonusCoefficient:         0.5577 * 1.25,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := affliction.CalcBaseDamage(0.9581)
+			baseDamage := affliction.ScalingBaseDamage * warlock.Coefficient_Haunt
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
@@ -67,6 +67,7 @@ func (affliction *AfflictionWarlock) registerHauntSpell() {
 					affliction.HauntDebuffAuras.Get(result.Target).Activate(sim)
 				}
 			})
+
 		},
 	})
 }

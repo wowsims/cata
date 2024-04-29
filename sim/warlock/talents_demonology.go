@@ -99,9 +99,9 @@ func (warlock *Warlock) registerImpendingDoom() {
 			ActionID: core.ActionID{SpellID: 85107},
 			//TODO: Do they need to hit?
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell == warlock.ShadowBolt || spell == warlock.HandOfGuldan || spell == warlock.SoulFire || spell == warlock.Incinerate {
+				if spell.ClassSpellMask&(WarlockSpellShadowBolt|WarlockSpellHandOfGuldan|WarlockSpellSoulFire|WarlockSpellIncinerate) > 0 {
 					if !warlock.Metamorphosis.CD.IsReady(sim) && sim.Proc(impendingDoomProcChance, "Impending Doom") {
-						*warlock.Metamorphosis.CD.Timer = core.Timer(time.Duration(*warlock.Metamorphosis.CD.Timer) - time.Second*15)
+						warlock.Metamorphosis.CD.Reduce(time.Second * 15)
 						warlock.UpdateMajorCooldowns()
 					}
 				}
@@ -114,22 +114,35 @@ func (warlock *Warlock) registerMoltenCore() {
 		return
 	}
 
-	castReduction := 0.06 * float64(warlock.Talents.MoltenCore)
+	castReduction := -0.06 * float64(warlock.Talents.MoltenCore)
 	moltenCoreDamageBonus := 1 + 0.06*float64(warlock.Talents.MoltenCore)
 
-	warlock.MoltenCoreAura = warlock.RegisterAura(core.Aura{
+	damageMultiplierMod := warlock.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  WarlockSpellIncinerate,
+		FloatValue: moltenCoreDamageBonus,
+	})
+
+	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  WarlockSpellIncinerate,
+		FloatValue: castReduction,
+	})
+
+	moltenCoreAura := warlock.RegisterAura(core.Aura{
 		Label:     "Molten Core Proc Aura",
 		ActionID:  core.ActionID{SpellID: 71165},
 		Duration:  time.Second * 15,
 		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.Incinerate.DamageMultiplier *= moltenCoreDamageBonus
+			damageMultiplierMod.Activate()
+			castTimeMod.Activate()
 			warlock.Incinerate.CastTimeMultiplier -= castReduction
 			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) * (1 - castReduction))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.Incinerate.DamageMultiplier /= moltenCoreDamageBonus
-			warlock.Incinerate.CastTimeMultiplier += castReduction
+			damageMultiplierMod.Deactivate()
+			castTimeMod.Deactivate()
 			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) / (1 - castReduction))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -146,8 +159,8 @@ func (warlock *Warlock) registerMoltenCore() {
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell == warlock.ImmolateDot {
 					if sim.Proc(0.02*float64(warlock.Talents.MoltenCore), "Molten Core") {
-						warlock.MoltenCoreAura.Activate(sim)
-						warlock.MoltenCoreAura.SetStacks(sim, 3)
+						moltenCoreAura.Activate(sim)
+						moltenCoreAura.SetStacks(sim, 3)
 					}
 				}
 			},
@@ -160,7 +173,7 @@ func (warlock *Warlock) registerDecimation() {
 	}
 
 	decimationMod := 0.2 * float64(warlock.Talents.Decimation)
-	warlock.DecimationAura = warlock.RegisterAura(core.Aura{
+	decimationAura := warlock.RegisterAura(core.Aura{
 		Label:    "Decimation Proc Aura",
 		ActionID: core.ActionID{SpellID: 63167},
 		Duration: time.Second * 10,
@@ -178,8 +191,8 @@ func (warlock *Warlock) registerDecimation() {
 		Label:    "Decimation Talent Hidden Aura",
 		Duration: core.NeverExpires,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && (spell == warlock.ShadowBolt || spell == warlock.Incinerate || spell == warlock.SoulFire) {
-				warlock.DecimationAura.Activate(sim)
+			if result.Landed() && spell.ClassSpellMask&(WarlockSpellShadowBolt|WarlockSpellIncinerate|WarlockSpellSoulFire) > 0 {
+				decimationAura.Activate(sim)
 			}
 		},
 	})
@@ -204,10 +217,9 @@ func (warlock *Warlock) registerCremation() {
 		warlock.RegisterAura(core.Aura{
 			Label: "Cremation Talent",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == warlock.HandOfGuldan {
+				if spell.ClassSpellMask == WarlockSpellHandOfGuldan {
 					if warlock.ImmolateDot.Dot(result.Target).IsActive() && sim.Proc(procChance, "Cremation") {
-						//TODO: Should this Rollover or Apply like other dots in cata?
-						warlock.ImmolateDot.Dot(result.Target).Rollover(sim)
+						warlock.ImmolateDot.Dot(result.Target).Apply(sim)
 					}
 				}
 			},

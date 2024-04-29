@@ -36,7 +36,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.176,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.CalcBaseDamage(0.439))
+				dot.Snapshot(target, warlock.ScalingBaseDamage*Coefficient_ImmolateDot)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -49,7 +49,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 		},
 	})
 
-	warlock.Immolate = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 348},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -73,7 +73,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 		BonusCoefficient: 0.212,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcDamage(sim, target, warlock.CalcBaseDamage(0.692), spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, warlock.ScalingBaseDamage*Coefficient_Immolate, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				warlock.ImmolateDot.Cast(sim, target)
 			}

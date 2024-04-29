@@ -32,7 +32,7 @@ func (warlock *Warlock) registerShadowBoltSpell() {
 		BonusCoefficient:         0.754,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := warlock.CalcBaseDamageWithVariance(sim, 0.62, 0.1099999994)
+			baseDamage := warlock.CalcBaseDamageWithVariance(sim, Coefficient_ShadowBolt, Variance_ShadowBolt)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

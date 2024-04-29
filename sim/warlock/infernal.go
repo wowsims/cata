@@ -18,7 +18,7 @@ func (warlock *Warlock) registerSummonInfernalSpell(timer *core.Timer) {
 		Duration: duration,
 	})
 
-	warlock.SummonInfernal = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1122},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
@@ -44,7 +44,7 @@ func (warlock *Warlock) registerSummonInfernalSpell(timer *core.Timer) {
 		BonusCoefficient: 0.765,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := warlock.CalcBaseDamageWithVariance(sim, 0.485, 0.119) * sim.Encounter.AOECapMultiplier()
+				baseDamage := warlock.CalcBaseDamageWithVariance(sim, Coefficient_Infernal, Variance_Infernal) * sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 

@@ -8,7 +8,7 @@ import (
 )
 
 func (warlock *Warlock) registerSummonFelguardSpell() {
-	warlock.SummonFelguard = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30146},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,

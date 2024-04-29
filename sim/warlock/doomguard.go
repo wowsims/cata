@@ -10,7 +10,13 @@ import (
 func (warlock *Warlock) registerSummonDoomguardSpell(timer *core.Timer) {
 	duration := time.Second * time.Duration(45+10*warlock.Talents.AncientGrimoire)
 
-	warlock.SummonDoomguard = warlock.RegisterSpell(core.SpellConfig{
+	summonDoomguardAura := warlock.RegisterAura(core.Aura{
+		Label:    "Summon Doomguard",
+		ActionID: core.ActionID{SpellID: 18540},
+		Duration: duration,
+	})
+
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 18540},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
@@ -34,6 +40,7 @@ func (warlock *Warlock) registerSummonDoomguardSpell(timer *core.Timer) {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			warlock.Doomguard.EnableWithTimeout(sim, warlock.Doomguard, duration)
+			summonDoomguardAura.Activate(sim)
 		},
 	})
 }

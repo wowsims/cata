@@ -8,7 +8,7 @@ import (
 )
 
 func (warlock *Warlock) registerSummonImpSpell() {
-	warlock.SummonImp = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 688},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,

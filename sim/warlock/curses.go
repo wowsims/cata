@@ -9,7 +9,7 @@ import (
 func (warlock *Warlock) registerCurseOfElementsSpell() {
 	warlock.CurseOfElementsAuras = warlock.NewEnemyAuraArray(core.CurseOfElementsAura)
 
-	warlock.CurseOfElements = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1490},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
@@ -47,7 +47,7 @@ func (warlock *Warlock) registerCurseOfWeaknessSpell() {
 		return core.CurseOfWeaknessAura(target)
 	})
 
-	warlock.CurseOfWeakness = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 702},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
@@ -84,7 +84,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 	actionID := core.ActionID{SpellID: 1714}
 
 	// Empty aura so we can simulate cost/time to keep tongues up
-	warlock.CurseOfTonguesAuras = warlock.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+	warlock.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Curse of Tongues",
 			ActionID: actionID,
@@ -92,7 +92,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 		})
 	})
 
-	warlock.CurseOfTongues = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
@@ -126,7 +126,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 }
 
 func (warlock *Warlock) registerBaneOfAgonySpell() {
-	baseTickDmg := warlock.CalcBaseDamage(0.133) / 12.0
+	baseTickDmg := warlock.ScalingBaseDamage * Coefficient_BaneOfAgony / 12.0
 
 	warlock.BaneOfAgony = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 980},
@@ -213,7 +213,7 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 			TickLength:       time.Second * 15,
 			BonusCoefficient: 0.88,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.CalcBaseDamage(2.024))
+				dot.Snapshot(target, warlock.ScalingBaseDamage*Coefficient_BaneOfDoom)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

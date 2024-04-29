@@ -8,7 +8,7 @@ import (
 )
 
 func (warlock *Warlock) registerSummonSuccubusSpell() {
-	warlock.SummonImp = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 712},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
@@ -97,6 +97,8 @@ func (succubus *SuccubusPet) ExecuteCustomRotation(sim *core.Simulation) {
 		succubus.WaitUntil(sim, succubus.LashOfPain.CD.ReadyAt())
 		return
 	}
+
+	succubus.LashOfPain.Cast(sim, succubus.CurrentTarget)
 }
 
 func (succubus *SuccubusPet) registerLashOfPainSpell() {
