@@ -133,6 +133,10 @@ func (eb *eclipseEnergyBar) CurrentLunarEnergy() int32 {
 	return int32(eb.lunarEnergy)
 }
 
+func (eb *eclipseEnergyBar) CanGainEnergy(kind EclipseEnergy) bool {
+	return eb.gainMask&kind > 0
+}
+
 // spends the given amount of energy and returns how much energy remains
 // this might be added to the solar energy
 func (eb *eclipseEnergyBar) spendLunarEnergy(amount float64, sim *core.Simulation, metrics *core.ResourceMetrics) float64 {

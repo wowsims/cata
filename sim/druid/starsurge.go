@@ -47,8 +47,11 @@ func (druid *Druid) registerStarsurgeSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				druid.AddEclipseEnergy(15, SolarEnergy, sim, solarMetric)
-				druid.AddEclipseEnergy(15, LunarEnergy, sim, lunarMetric)
+				if druid.CanGainEnergy(SolarEnergy) {
+					druid.AddEclipseEnergy(15, SolarEnergy, sim, solarMetric)
+				} else {
+					druid.AddEclipseEnergy(15, LunarEnergy, sim, lunarMetric)
+				}
 
 				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
