@@ -87,10 +87,10 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 				ActionID: actionID,
 				Duration: 12 * time.Second,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					character.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] *= 1.1
+					character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					character.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] /= 1.1
+					character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.1
 				},
 			})
 

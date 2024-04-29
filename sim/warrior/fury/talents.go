@@ -82,11 +82,11 @@ func (war *FuryWarrior) applyEnrage() {
 		Duration: 9 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			bonusSnapshot = 1.0 + (baseDamageBonus * war.EnrageEffectMultiplier)
-			war.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] *= bonusSnapshot
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= bonusSnapshot
 			core.RegisterPercentDamageModifierEffect(aura, bonusSnapshot)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			war.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] /= bonusSnapshot
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= bonusSnapshot
 		},
 	})
 
