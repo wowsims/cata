@@ -311,7 +311,7 @@ func (priest *Priest) applyArchangel() {
 		},
 	})
 
-	priest.Archangel = priest.RegisterSpell(core.SpellConfig{
+	priest.RegisterSpell(core.SpellConfig{
 		ActionID:                 core.ActionID{SpellID: 87151},
 		SpellSchool:              core.SpellSchoolHoly,
 		ProcMask:                 core.ProcMaskEmpty,
@@ -340,7 +340,7 @@ func (priest *Priest) applyArchangel() {
 			}
 		},
 	})
-	priest.DarkArchangel = priest.RegisterSpell(core.SpellConfig{
+	priest.RegisterSpell(core.SpellConfig{
 		ActionID:                 core.ActionID{SpellID: 87153},
 		SpellSchool:              core.SpellSchoolHoly,
 		ProcMask:                 core.ProcMaskEmpty,
@@ -404,7 +404,7 @@ func (priest *Priest) applyImprovedMindBlast() {
 	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: "Improved Mind Blast",
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && priest.MindBlast == spell {
+			if result.Landed() && spell.ClassSpellMask == PriestSpellMindBlast {
 				if sim.Proc(procChance, "Improved Mind Blast") {
 					mindTraumaSpell.Cast(sim, result.Target)
 				}
@@ -528,7 +528,7 @@ func (priest *Priest) applyMasochism() {
 
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				// SW:D
-				if priest.ShadowWordDeath == spell && result.Landed() {
+				if spell.ClassSpellMask == PriestSpellShadowWordDeath && result.Landed() {
 					priest.AddMana(sim, priest.MaxMana()*0.05*float64(priest.Talents.Masochism), manaMetrics)
 					return
 				}
@@ -621,7 +621,7 @@ func (priest *Priest) applyShadowyApparition() {
 	const spellScaling = 0.515
 	const levelScaling = 0.514
 
-	priest.ShadowyApparition = priest.RegisterSpell(core.SpellConfig{
+	spell := priest.RegisterSpell(core.SpellConfig{
 		ActionID:                 core.ActionID{SpellID: 87532},
 		MissileSpeed:             3.5,
 		ProcMask:                 core.ProcMaskEmpty, // summoned guardian, should not be able to proc stuff - verify
@@ -667,8 +667,8 @@ func (priest *Priest) applyShadowyApparition() {
 		Outcome:        core.OutcomeLanded,
 		ProcChance:     0.04 * float64(priest.Talents.ShadowyApparition),
 		ClassSpellMask: PriestSpellShadowWordPain,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			priest.ShadowyApparition.Cast(sim, result.Target)
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			spell.Cast(sim, result.Target)
 		},
 	})
 }

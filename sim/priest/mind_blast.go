@@ -7,7 +7,7 @@ import (
 )
 
 func (priest *Priest) registerMindBlastSpell() {
-	priest.MindBlast = priest.RegisterSpell(core.SpellConfig{
+	priest.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8092},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
