@@ -46,19 +46,25 @@ $favorite-cell-width: 2rem;
 		margin-bottom: $block-spacer;
 	}
 
-	.item-picker-icon {
-		@include wowhead-background-icon;
+	.item-picker-icon-wrapper {
+		position: relative;
 		width: 4rem;
 		height: 4rem;
 		border: $border-default;
+	}
 
-		.item-picker-sockets-container {
-			@include vertical-bottom;
-			@include horizontal-center;
-			width: 100%;
-			display: flex;
-			justify-content: center;
-		}
+	.item-picker-icon {
+		@include wowhead-background-icon;
+		height: 100%;
+		width: 100%;
+	}
+
+	.item-picker-sockets-container {
+		@include vertical-bottom;
+		@include horizontal-center;
+		width: 100%;
+		display: flex;
+		justify-content: center;
 	}
 
 	.item-picker-labels-container {

@@ -19,15 +19,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMP5,
-		Stat.StatMastery,
+	epStats: [Stat.StatIntellect,
+			  Stat.StatSpirit,
+			  Stat.StatSpellPower,
+			  Stat.StatSpellHit,
+			  Stat.StatSpellCrit,
+			  Stat.StatSpellHaste,
+			  Stat.StatMastery,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -42,7 +40,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatMP5,
 		Stat.StatMastery,
 	],
 	// modifyDisplayStats: (player: Player<Spec.SpecFireMage>) => {
@@ -59,7 +56,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.FIRE_P3_PRESET_HORDE.gear,
+		gear: Presets.FIRE_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.48,
@@ -68,7 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			[Stat.StatSpellHit]: 0.38,
 			[Stat.StatSpellCrit]: 0.58,
 			[Stat.StatSpellHaste]: 0.94,
-			[Stat.StatMP5]: 0.09,
+			[Stat.StatMastery]: 0.8
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
@@ -78,22 +75,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		specOptions: Presets.DefaultFireOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
-		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			bloodlust: true,
-			markOfTheWild: true,
-			icyTalons: true,
-			moonkinForm: true,
-			leaderOfThePack: true,
-			powerWordFortitude: true,
-			strengthOfEarthTotem: true,
-			trueshotAura: true,
-			wrathOfAirTotem: true,
-			demonicPact: true,
-			blessingOfKings: true,
-			blessingOfMight: true,
-			communion: true,
-		}),
+		raidBuffs: Presets.DefaultRaidBuffs,
+
 		partyBuffs: PartyBuffs.create({
 			manaTideTotems: 1,
 		}),
@@ -102,11 +85,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			vampiricTouch: true,
 			focusMagic: true,
 		}),
-		debuffs: Debuffs.create({
-			judgement: true,
-			ebonPlaguebringer: true,
-			shadowAndFlame: true,
-		}),
+		debuffs: Presets.DefaultDebuffs,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -129,31 +108,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 
 	presets: {
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.FIRE_ROTATION_PRESET_DEFAULT, Presets.FIRE_ROTATION_PRESET_AOE],
+		rotations: [Presets.FIRE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.FIRE_PRERAID_PRESET,
-			Presets.FIRE_P1_PRESET,
-			Presets.FIRE_P2_PRESET,
-			Presets.FIRE_P3_PRESET_ALLIANCE,
-			Presets.FIRE_P3_PRESET_HORDE,
-			Presets.FIRE_P4_PRESET_HORDE,
-			Presets.FIRE_P4_PRESET_ALLIANCE,
-		],
+			Presets.FIRE_P1_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecFireMage>): APLRotation => {
-		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets > 3) {
+		/*const numTargets = player.sim.encounter.targets.length;
+ 		if (numTargets > 3) {
 			return Presets.FIRE_ROTATION_PRESET_AOE.rotation.rotation!;
 		} else {
 			return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		}
+		} */
+		return Presets.FIRE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
-	simpleRotation: (player: Player<Spec.SpecFireMage>, simple: FireMage_Rotation, cooldowns: Cooldowns): APLRotation => {
+	/* simpleRotation: (player: Player<Spec.SpecFireMage>, simple: FireMage_Rotation, cooldowns: Cooldowns): APLRotation => {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
 		const prepullMirrorImage = APLPrepullAction.fromJsonString(
@@ -222,7 +195,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				}),
 			),
 		});
-	},
+	}, */
 
 	raidSimPresets: [
 		{
@@ -240,15 +213,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.FIRE_P1_PRESET.gear,
-					2: Presets.FIRE_P2_PRESET.gear,
-					3: Presets.FIRE_P3_PRESET_ALLIANCE.gear,
-					4: Presets.FIRE_P4_PRESET_ALLIANCE.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.FIRE_P1_PRESET.gear,
-					2: Presets.FIRE_P2_PRESET.gear,
-					3: Presets.FIRE_P3_PRESET_HORDE.gear,
-					4: Presets.FIRE_P4_PRESET_HORDE.gear,
 				},
 			},
 		},

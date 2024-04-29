@@ -38,14 +38,13 @@ const createHeroicLabel = () => {
 	return <span className="heroic-label">[H]</span>;
 };
 
-const createGemContainer = (socketColor: GemColor, gem: Gem | null) => {
+const createGemContainer = (socketColor: GemColor, gem: Gem | null, index: number) => {
 	const gemIconElem = ref<HTMLImageElement>();
-
 	const gemContainer = (
-		<div className="gem-socket-container">
+		<a className="gem-socket-container" href="javascript:void(0)" attributes={{ role: 'button' }} dataset={{ gemIndex: index }}>
 			<img ref={gemIconElem} className={`gem-icon ${gem == null ? 'hide' : ''}`} />
 			<img className="socket-icon" src={getEmptyGemSocketIconUrl(socketColor)} />
-		</div>
+		</a>
 	);
 
 	if (gem != null) {
@@ -120,9 +119,10 @@ export class ItemRenderer extends Component {
 		const sce = ref<HTMLDivElement>();
 		this.rootElem.appendChild(
 			<>
-				<a ref={iconElem} className="item-picker-icon" href="javascript:void(0)" attributes={{ role: 'button' }}>
+				<div className="item-picker-icon-wrapper">
+					<a ref={iconElem} className="item-picker-icon" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
 					<div ref={sce} className="item-picker-sockets-container"></div>
-				</a>
+				</div>
 				<div className="item-picker-labels-container">
 					<a ref={nameElem} className="item-picker-name" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
 					<a ref={enchantElem} className="item-picker-enchant" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
@@ -206,7 +206,7 @@ export class ItemRenderer extends Component {
 		}
 
 		newItem.allSocketColors().forEach((socketColor, gemIdx) => {
-			const gemContainer = createGemContainer(socketColor, newItem.gems[gemIdx]);
+			const gemContainer = createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx);
 
 			if (gemIdx == newItem.numPossibleSockets - 1 && [ItemType.ItemTypeWrist, ItemType.ItemTypeHands].includes(newItem.item.type)) {
 				const updateProfession = () => {
@@ -269,9 +269,17 @@ export class ItemPicker extends Component {
 				event.preventDefault();
 				this.openSelectorModal(SelectorModalTabs.Reforging, gearData);
 			};
-
+			const openGemSelector = (anchor: HTMLAnchorElement) => {
+				this.openSelectorModal(`Gem ${(Number(anchor.dataset!.gemIndex) || 0) + 1}` as SelectorModalTabs, gearData);
+			};
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
+			[...this.itemElem.socketsContainerElem.querySelectorAll<HTMLAnchorElement>('.gem-socket-container')]?.forEach(anchor =>
+				anchor.addEventListener('click', event => {
+					event?.preventDefault();
+					openGemSelector(anchor);
+				}),
+			);
 			this.itemElem.reforgeElem.addEventListener('click', openReforgeSelector);
 			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
 		});
@@ -380,7 +388,7 @@ export class IconItemSwapPicker extends Component {
 			this.player.setWowheadData(newItem, this.iconAnchor);
 
 			newItem.allSocketColors().forEach((socketColor, gemIdx) => {
-				this.socketsContainerElem.appendChild(createGemContainer(socketColor, newItem.gems[gemIdx]));
+				this.socketsContainerElem.appendChild(createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx));
 			});
 		} else {
 			this.iconAnchor.classList.remove('active');
@@ -547,15 +555,11 @@ export class SelectorModal extends BaseModal {
 	protected override onShow(e: Event) {
 		// Only refresh opened tab
 		const t = e.target! as HTMLElement;
-		const tab = t.querySelector<HTMLElement>('.active')!.dataset.contentId!;
-		if (tab.includes('Item')) {
-			this.ilists[0].sizeRefresh();
-		} else if (tab.includes('Enchant')) {
-			this.ilists[1].sizeRefresh();
-		}
+		const tabLabel = t.querySelector<HTMLElement>('.active')!.dataset.label!;
+		this.ilists.find(list => tabLabel === list.label)?.sizeRefresh();
 	}
 
-	private addGemTabs(slot: ItemSlot, equippedItem: EquippedItem | null, gearData: GearData) {
+	private addGemTabs(_slot: ItemSlot, equippedItem: EquippedItem | null, gearData: GearData) {
 		if (equippedItem == undefined) {
 			return;
 		}
@@ -595,7 +599,7 @@ export class SelectorModal extends BaseModal {
 					if (equippedItem) gearData.equipItem(eventID, equippedItem.withGem(null, socketIdx));
 				},
 				tabAnchor => {
-					const gemContainer = createGemContainer(socketColor, null);
+					const gemContainer = createGemContainer(socketColor, null, socketIdx);
 					tabAnchor.appendChild(gemContainer);
 					tabAnchor.classList.add('selector-modal-tab-gem');
 
@@ -736,7 +740,6 @@ export class SelectorModal extends BaseModal {
 
 		const tabContentId = (label + '-tab').split(' ').join('');
 		const selected = label === this.config.selectedTab;
-
 		const tabAnchor = ref<HTMLAnchorElement>();
 		this.tabsElem.appendChild(
 			<li className="nav-item">
@@ -994,7 +997,7 @@ export function getEmptySlotIconUrl(slot: ItemSlot): string {
 export class ItemList<T> {
 	private listElem: HTMLElement;
 	private readonly player: Player<any>;
-	private label: string;
+	public label: string;
 	private slot: ItemSlot;
 	private itemData: Array<ItemData<T>>;
 	private itemsToDisplay: Array<number>;
@@ -1099,7 +1102,6 @@ export class ItemList<T> {
 		}
 
 		this.listElem = this.tabContent.getElementsByClassName('selector-modal-list')[0] as HTMLElement;
-
 		this.itemsToDisplay = [];
 
 		this.scroller = new Clusterize(

@@ -8,6 +8,15 @@ import (
 )
 
 func (war *ArmsWarrior) RegisterMortalStrike() {
+	weaponDamageConfig := warrior.SpellEffectWeaponDmgPctConfig{
+		BaseWeapon_Pct:    0.8,
+		Coefficient:       0.37599998713,
+		EffectPerLevel:    1,
+		BaseSpellLevel:    10,
+		MaxSpellLevel:     80,
+		ClassSpellScaling: war.ClassSpellScaling,
+	}
+
 	war.mortalStrike = war.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 12294},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -31,11 +40,12 @@ func (war *ArmsWarrior) RegisterMortalStrike() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1.0,
+		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
 		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 423 + 0.8*(spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()))
+			baseDamage := weaponDamageConfig.CalcAddedSpellDamage() +
+				spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)
