@@ -281,17 +281,15 @@ export class ItemPicker extends Component {
 			if (this._equippedItem) {
 				if (this._equippedItem !== this.quickSwapEnchantPopover?.item) {
 					this.quickSwapEnchantPopover?.update({ item: this._equippedItem });
-					this.addQuickGemHelpers();
 				}
+				this.addQuickGemHelpers();
 			}
 		});
 
 		player.sim.filtersChangeEmitter.on(() => {
 			if (this._equippedItem) {
-				if (this._equippedItem !== this.quickSwapEnchantPopover?.item) {
-					this.quickSwapEnchantPopover?.update({ item: this._equippedItem });
-					this.quickSwapGemPopover.forEach(quickSwap => quickSwap.update({ item: this._equippedItem! }));
-				}
+				this.quickSwapEnchantPopover?.update({ item: this._equippedItem });
+				this.quickSwapGemPopover.forEach(quickSwap => quickSwap.update({ item: this._equippedItem! }));
 			}
 		});
 
