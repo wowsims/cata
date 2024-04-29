@@ -52,6 +52,7 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 	}
 
 	shaman.FireElemental = shaman.NewFireElemental(float64(totems.BonusSpellpower))
+	shaman.EarthElemental = shaman.NewEarthElemental(float64(totems.BonusSpellpower))
 	return shaman
 }
 
@@ -117,6 +118,9 @@ type Shaman struct {
 
 	FireElemental      *FireElemental
 	FireElementalTotem *core.Spell
+
+	EarthElemental      *EarthElemental
+	EarthElementalTotem *core.Spell
 
 	MagmaTotem           *core.Spell
 	ManaSpringTotem      *core.Spell
@@ -218,6 +222,7 @@ func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 func (shaman *Shaman) Initialize() {
 	shaman.registerChainLightningSpell()
 	shaman.registerFireElementalTotem()
+	shaman.registerEarthElementalTotem()
 	shaman.registerFireNovaSpell()
 	shaman.registerLavaBurstSpell()
 	shaman.registerLightningBoltSpell()
@@ -300,6 +305,7 @@ func (shaman *Shaman) GetMentalQuicknessBonus() float64 {
 const (
 	SpellMaskNone               int64 = 0
 	SpellMaskFireElementalTotem int64 = 1 << iota
+	SpellMaskEarthElementalTotem
 	SpellMaskFlameShockDirect
 	SpellMaskFlameShockDot
 	SpellMaskLavaBurst

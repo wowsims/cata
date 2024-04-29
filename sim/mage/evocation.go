@@ -8,13 +8,14 @@ import (
 
 func (mage *Mage) registerEvocation() {
 	actionID := core.ActionID{SpellID: 12051}
-	maxTicks := core.TernaryInt32(mage.HasSetBonus(ItemSetTempestRegalia, 2), 5, 4)
+	var maxTicks int32 = 4
 	manaMetrics := mage.NewManaMetrics(actionID)
 	manaPerTick := 0.0
 
 	evocation := mage.GetOrRegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagHelpful | core.SpellFlagChanneled | core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagChanneled | core.SpellFlagAPL,
+		ClassSpellMask: MageSpellEvocation,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -22,7 +23,7 @@ func (mage *Mage) registerEvocation() {
 			},
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Minute * time.Duration(4-mage.Talents.ArcaneFlows),
+				Duration: time.Minute * 4,
 			},
 		},
 

@@ -184,6 +184,7 @@ class AdvancedEncounterModal extends BaseModal {
 				index: number,
 				config: ListItemPickerConfig<Encounter, TargetProto>,
 			) => new TargetPicker(parent, encounter, index, config),
+			minimumItems: 1,
 		});
 	}
 
@@ -245,9 +246,9 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			<div class="target-picker-section target-picker-section3 threat-metrics"></div>
 		`;
 
-		const section1 = this.rootElem.getElementsByClassName('target-picker-section1')[0] as HTMLElement;
-		const section2 = this.rootElem.getElementsByClassName('target-picker-section2')[0] as HTMLElement;
-		const section3 = this.rootElem.getElementsByClassName('target-picker-section3')[0] as HTMLElement;
+		const section1 = this.rootElem.querySelector('.target-picker-section1') as HTMLElement;
+		const section2 = this.rootElem.querySelector('.target-picker-section2') as HTMLElement;
+		const section3 = this.rootElem.querySelector('.target-picker-section3') as HTMLElement;
 
 		const presetTargets = encounter.sim.db.getAllPresetTargets();
 		new EnumPicker<null>(section1, null, {
@@ -689,10 +690,10 @@ function makeTargetInputsPicker(parent: HTMLElement, encounter: Encounter, targe
 }
 
 function equalTargetsIgnoreInputs(target1: TargetProto | undefined, target2: TargetProto | undefined): boolean {
-	if ((target1 == null) != (target2 == null)) {
+	if (!!target1 != !!target2) {
 		return false;
 	}
-	if (target1 == null) {
+	if (!target1) {
 		return true;
 	}
 	const modTarget2 = TargetProto.clone(target2!);
