@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession,RaidBuffs } from '../../core/proto/common.js';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession,RaidBuffs, TinkerHands } from '../../core/proto/common.js';
 import {
 	AirTotem,
 	EarthTotem,
@@ -33,7 +33,7 @@ export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Defaul
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '303202-2323320013003012321',
+		talentsString: '3020023-2333310013003012321',
 		glyphs: Glyphs.create({
 			prime1: ShamanPrimeGlyph.GlyphOfLavaLash,
 			prime2: ShamanPrimeGlyph.GlyphOfStormstrike,
@@ -74,6 +74,7 @@ export const DefaultConsumes = Consumes.create({
 	prepopPotion: Potions.PotionOfTheTolvir,
 	flask: Flask.FlaskOfTheWinds,
 	food: Food.FoodSeafoodFeast,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
