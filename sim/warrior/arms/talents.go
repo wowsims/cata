@@ -90,7 +90,7 @@ func (war *ArmsWarrior) applyImprovedSlam() {
 
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskSlam,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.1 * float64(war.Talents.ImprovedSlam),
 	})
 }
