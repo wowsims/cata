@@ -290,8 +290,10 @@ func (mage *Mage) applyIgnite() {
 		},
 	})
 
+	actionId := core.ActionID{SpellID: []int32{0, 11119, 11120, 12846}[mage.Talents.Ignite]}
+
 	mage.IgniteDamageTracker = core.MakePermanent(mage.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 413843},
+		ActionID:  actionId,
 		Label:     "Ignite Damage Tracker",
 		Duration:  core.NeverExpires,
 		MaxStacks: 1000000,
@@ -302,7 +304,7 @@ func (mage *Mage) applyIgnite() {
 
 	// The ignite dot
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 413843},
+		ActionID:       actionId,
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskProc,
 		Flags:          SpellFlagMage | core.SpellFlagIgnoreModifiers,
