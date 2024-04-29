@@ -548,7 +548,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 			Type: CooldownTypeMana,
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
-				totalRegen := character.ManaRegenPerSecondWhileCasting() * 5
+				totalRegen := character.ManaRegenPerSecondWhileCombat() * 5
 				manaGain := 10750.0
 				if alchStoneEquipped && potionType == proto.Potions_MythicalManaPotion {
 					manaGain *= 1.4
@@ -637,7 +637,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 			Type: CooldownTypeSurvival,
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
-				totalRegen := character.ManaRegenPerSecondWhileCasting() * 5
+				totalRegen := character.ManaRegenPerSecondWhileCombat() * 5
 				manaGain := 11000.0
 				if alchStoneEquipped && potionType == proto.Potions_MythicalManaPotion {
 					manaGain *= 1.4
@@ -757,7 +757,7 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 			Type:  CooldownTypeMana,
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
-				totalRegen := character.ManaRegenPerSecondWhileCasting() * 5
+				totalRegen := character.ManaRegenPerSecondWhileCombat() * 5
 				return character.MaxMana()-(character.CurrentMana()+totalRegen) >= 1500
 			},
 		})

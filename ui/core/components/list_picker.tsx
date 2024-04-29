@@ -1,8 +1,7 @@
-import { Tooltip } from 'bootstrap';
+import tippy, { Instance as TippyInstance } from 'tippy.js';
 import { element, fragment } from 'tsx-vanilla';
 
 import { EventID, TypedEvent } from '../typed_event.js';
-import { swap } from '../utils.js';
 import { Input, InputConfig } from './input.js';
 
 export type ListItemAction = 'create' | 'delete' | 'move' | 'copy';
@@ -87,27 +86,24 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		}
 
 		if (this.config.titleTooltip) {
-			const cfg = {
-				title: this.config.titleTooltip,
-			};
-			Tooltip.getOrCreateInstance(this.rootElem.querySelector('.list-picker-title') as HTMLElement, cfg);
+			tippy(this.rootElem.querySelector('.list-picker-title') as HTMLElement, { content: this.config.titleTooltip });
 		}
 
 		this.itemsDiv = this.rootElem.getElementsByClassName('list-picker-items')[0] as HTMLElement;
 
 		if (this.actionEnabled('create')) {
 			let newItemButton = null;
-			let newButtonTooltip: Tooltip | null = null;
+			let newButtonTooltip: TippyInstance | null = null;
 			if (this.config.actions?.create?.useIcon) {
 				newItemButton = ListPicker.makeActionElem('link-success', 'fa-plus');
-				newButtonTooltip = Tooltip.getOrCreateInstance(newItemButton, { title: `New ${config.itemLabel}` });
+				newButtonTooltip = tippy(newItemButton, { content: `New ${config.itemLabel}` });
 			} else {
 				newItemButton = document.createElement('button');
 				newItemButton.classList.add('btn', 'btn-primary');
 				newItemButton.textContent = `New ${config.itemLabel}`;
 			}
 			newItemButton.classList.add('list-picker-new-button');
-			newItemButton.addEventListener('click', event => {
+			newItemButton.addEventListener('click', () => {
 				const newItem = this.config.newItem();
 				const newList = this.config.getValue(this.modObject).concat([newItem]);
 				this.config.setValue(TypedEvent.nextEventID(), this.modObject, newList);
@@ -195,8 +191,8 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			const moveButton = ListPicker.makeActionElem('list-picker-item-move', 'fa-arrows-up-down');
 			itemHeader.appendChild(moveButton);
 
-			const moveButtonTooltip = Tooltip.getOrCreateInstance(moveButton, { title: 'Move (Drag+Drop)' });
-			moveButton.addEventListener('click', event => {
+			const moveButtonTooltip = tippy(moveButton, { content: 'Move (Drag+Drop)' });
+			moveButton.addEventListener('click', () => {
 				moveButtonTooltip.hide();
 			});
 
@@ -262,7 +258,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		if (this.actionEnabled('copy')) {
 			const copyButton = ListPicker.makeActionElem('list-picker-item-copy', 'fa-copy');
 			itemHeader.appendChild(copyButton);
-			const copyButtonTooltip = Tooltip.getOrCreateInstance(copyButton, { title: `Copy to New ${this.config.itemLabel}` });
+			const copyButtonTooltip = tippy(copyButton, { content: `Copy to New ${this.config.itemLabel}` });
 
 			copyButton.addEventListener('click', () => {
 				const newList = this.config.getValue(this.modObject).slice();
@@ -277,8 +273,8 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				const deleteButton = ListPicker.makeActionElem('list-picker-item-delete', 'fa-times');
 				deleteButton.classList.add('link-danger');
 				itemHeader.appendChild(deleteButton);
-				const deleteButtonTooltip = Tooltip.getOrCreateInstance(deleteButton, { title: `Delete ${this.config.itemLabel}` });
 
+				const deleteButtonTooltip = tippy(deleteButton, { content: `Delete ${this.config.itemLabel}` });
 				deleteButton.addEventListener('click', () => {
 					const newList = this.config.getValue(this.modObject);
 					newList.splice(index, 1);

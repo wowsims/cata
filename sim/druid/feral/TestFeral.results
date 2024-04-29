@@ -7,7 +7,7 @@ character_stats_results: {
   final_stats: 201.453
   final_stats: 195
   final_stats: 210.5983
-  final_stats: 326
+  final_stats: 1257.75
   final_stats: 734
   final_stats: 2240.99438
   final_stats: 1407.8358
@@ -450,7 +450,7 @@ dps_results: {
  key: "TestFeral-AllItems-ElectrosparkHeartstarter-67118"
  value: {
   dps: 21633.67611
-  tps: 15398.42685
+  tps: 15391.46675
  }
 }
 dps_results: {

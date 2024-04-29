@@ -13,7 +13,7 @@ var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 				ClassMask:  SpellMaskBloodthirst | SpellMaskMortalStrike,
-				Kind:       core.SpellMod_DamageDone_Pct,
+				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: 0.05,
 			})
 		},
@@ -62,7 +62,7 @@ var ItemSetEarthenBattleplate = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 				ClassMask:  SpellMaskShieldSlam,
-				Kind:       core.SpellMod_DamageDone_Pct,
+				Kind:       core.SpellMod_DamageDone_Flat,
 				FloatValue: 0.05,
 			})
 		},
@@ -87,10 +87,10 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 				ActionID: actionID,
 				Duration: 12 * time.Second,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					character.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] *= 1.1
+					character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					character.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] /= 1.1
+					character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.1
 				},
 			})
 

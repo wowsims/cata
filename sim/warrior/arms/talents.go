@@ -72,7 +72,7 @@ func (war *ArmsWarrior) applyImpale() {
 
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskMortalStrike | warrior.SpellMaskSlam | warrior.SpellMaskOverpower,
-		Kind:       core.SpellMod_BonusCrit_Rating,
+		Kind:       core.SpellMod_CritMultiplier_Pct,
 		FloatValue: 0.1 * float64(war.Talents.Impale),
 	})
 }
@@ -90,7 +90,7 @@ func (war *ArmsWarrior) applyImprovedSlam() {
 
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskSlam,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.1 * float64(war.Talents.ImprovedSlam),
 	})
 }
@@ -167,13 +167,13 @@ func (war *ArmsWarrior) applyWreckingCrew() {
 	effect := 1.0 + (0.05 * float64(war.Talents.WreckingCrew))
 	war.wreckingCrew = war.RegisterAura(core.Aura{
 		Label:    "Wrecking Crew",
-		ActionID: core.ActionID{SpellID: 56611},
+		ActionID: core.ActionID{SpellID: 57519},
 		Duration: time.Second * 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			war.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] *= effect
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= effect
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			war.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] /= effect
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= effect
 		},
 	})
 

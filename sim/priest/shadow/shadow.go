@@ -118,7 +118,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 		},
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-			if spriest.MindBlast != spell && spriest.MindSpike != spell {
+			if spell.ClassSpellMask&(priest.PriestSpellMindBlast|priest.PriestSpellMindSpike) == 0 {
 				return
 			}
 
@@ -172,7 +172,7 @@ func handleShadowOrbPower(spriest *ShadowPriest, sim *core.Simulation, spell *co
 		return
 	}
 
-	if spell == spriest.ShadowWordPain || spell.SpellID == spriest.MindFlayAPL.SpellID {
+	if spell.ClassSpellMask&(priest.PriestSpellShadowWordPain|priest.PriestSpellMindFlay) > 0 {
 		procChance := 0.1 + float64(spriest.Talents.HarnessedShadows)*0.04
 		if sim.Proc(procChance, "Shadow Orb Power") {
 			spriest.shadowOrbsAura.Activate(sim)

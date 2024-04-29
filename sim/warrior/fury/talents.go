@@ -82,11 +82,11 @@ func (war *FuryWarrior) applyEnrage() {
 		Duration: 9 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			bonusSnapshot = 1.0 + (baseDamageBonus * war.EnrageEffectMultiplier)
-			war.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] *= bonusSnapshot
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= bonusSnapshot
 			core.RegisterPercentDamageModifierEffect(aura, bonusSnapshot)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			war.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] /= bonusSnapshot
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= bonusSnapshot
 		},
 	})
 
@@ -116,7 +116,7 @@ func (war *FuryWarrior) applyMeatCleaver() {
 
 	buffMod := war.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskCleave | warrior.SpellMaskWhirlwind,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.0,
 	})
 

@@ -1,11 +1,11 @@
-import { UnitMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
-import { maxIndex } from '../../utils.js';
+import tippy from 'tippy.js';
 
+import { SimResult, SimResultFilter,UnitMetrics } from '../../proto_utils/sim_result.js';
+import { maxIndex } from '../../utils.js';
 import { ColumnSortType, MetricsTable } from './metrics_table.js';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 import { ResultsFilter } from './results_filter.js';
 import { SourceChart } from './source_chart.js';
-import tippy from 'tippy.js';
 
 export class PlayerDamageMetricsTable extends MetricsTable<UnitMetrics> {
 	private readonly resultsFilter: ResultsFilter;
@@ -61,6 +61,7 @@ export class PlayerDamageMetricsTable extends MetricsTable<UnitMetrics> {
 			{
 				name: 'DPS',
 				tooltip: 'Damage / Encounter Duration',
+				columnClass: 'dps-cell',
 				sort: ColumnSortType.Descending,
 				getValue: (metric: UnitMetrics) => metric.dps.avg,
 				getDisplayString: (metric: UnitMetrics) => metric.dps.avg.toFixed(1),
