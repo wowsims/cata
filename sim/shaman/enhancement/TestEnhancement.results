@@ -2032,43 +2032,43 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-LongMultiTarget"
  value: {
-  dps: 30787.93091
-  tps: 24800.68006
+  dps: 30780.81248
+  tps: 24796.05459
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-LongSingleTarget"
  value: {
-  dps: 30222.5736
-  tps: 20335.80963
+  dps: 30215.62041
+  tps: 20331.33507
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 34789.20041
-  tps: 22957.88742
+  dps: 34776.26362
+  tps: 22949.79656
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-LongMultiTarget"
  value: {
-  dps: 23760.38763
-  tps: 20391.10102
+  dps: 23754.34949
+  tps: 20387.19865
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-LongSingleTarget"
  value: {
-  dps: 23314.87548
-  tps: 15906.83495
+  dps: 23308.99993
+  tps: 15903.15819
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 25447.21029
-  tps: 17048.10175
+  dps: 25436.23613
+  tps: 17041.25833
  }
 }
 dps_results: {
