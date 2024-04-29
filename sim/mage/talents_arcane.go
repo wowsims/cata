@@ -238,6 +238,7 @@ func (mage *Mage) applyArcanePotency() {
 	})
 
 	var procTime time.Duration
+	const ArcanePotencyClassMask = MageSpellArcaneBlast | MageSpellArcaneBarrage | MageSpellArcaneMissilesCast | MageSpellArcaneExplosion
 	mage.ArcanePotencyAura = mage.RegisterAura(core.Aura{
 		Label:     "Arcane Potency",
 		ActionID:  core.ActionID{SpellID: 57531},
@@ -257,6 +258,11 @@ func (mage *Mage) applyArcanePotency() {
 			if sim.CurrentTime == procTime {
 				return
 			}
+
+			if spell.ClassSpellMask&ArcanePotencyClassMask == 0 {
+				return
+			}
+
 			if spell != mage.ArcaneMissilesTickSpell && spell != mage.ArcaneMissiles {
 				if aura != nil && aura.GetStacks() != 0 {
 					aura.RemoveStack(sim)
