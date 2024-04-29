@@ -111,7 +111,6 @@ export class ItemRenderer extends Component {
 	readonly reforgeElem: HTMLAnchorElement;
 	readonly socketsContainerElem: HTMLElement;
 	socketsElem: HTMLAnchorElement[] = [];
-	readonly c: HTMLAnchorElement[] = [];
 
 	constructor(parent: HTMLElement, root: HTMLElement, player: Player<any>) {
 		super(parent, 'item-picker-root', root);
