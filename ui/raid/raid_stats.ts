@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 
 import { Component } from '../core/components/component.js';
 import { Player } from '../core/player.js';
@@ -100,11 +100,10 @@ class RaidStatsCategory extends Component {
 			const statsLink = this.rootElem.querySelector('.raid-stats-category') as HTMLElement;
 
 			// Using the title option here because outerHTML sanitizes and filters out the img src options
-			Tooltip.getOrCreateInstance(statsLink, {
-				customClass: 'raid-stats-category-tooltip',
-				html: true,
+			tippy(statsLink, {
+				theme: 'raid-stats-category-tooltip',
 				placement: 'right',
-				title: this.tooltipElem,
+				content: this.tooltipElem,
 			});
 		}
 	}
@@ -341,8 +340,9 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Strength of Earth Totem',
 							actionId: ActionId.fromSpellId(8075),
-							playerData: playerClass(Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StrengthOfEarthTotem
+							playerData: playerClass(
+								Class.ClassShaman,
+								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StrengthOfEarthTotem,
 							),
 						},
 						{
@@ -368,8 +368,9 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Stoneskin Totem',
 							actionId: ActionId.fromSpellId(8071),
-							playerData: playerClass(Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StoneskinTotem
+							playerData: playerClass(
+								Class.ClassShaman,
+								player => player.getSpecOptions().classOptions?.totems?.earth == EarthTotem.StoneskinTotem,
 							),
 						},
 					],
@@ -420,8 +421,9 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Flametongue Totem',
 							actionId: ActionId.fromSpellId(8227),
-							playerData: playerClass(Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.FlametongueTotem
+							playerData: playerClass(
+								Class.ClassShaman,
+								player => player.getSpecOptions().classOptions?.totems?.fire == FireTotem.FlametongueTotem,
 							),
 						},
 					],
@@ -462,9 +464,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Windfury Totem',
 							actionId: ActionId.fromSpellId(8512),
-							playerData: playerClass(Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WindfuryTotem
-							),
+							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WindfuryTotem),
 						},
 					],
 				},
@@ -484,9 +484,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Wrath of Air Totem',
 							actionId: ActionId.fromSpellId(3738),
-							playerData: playerClass(Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WrathOfAirTotem
-							),
+							playerData: playerClass(Class.ClassShaman, player => player.getSpecOptions().classOptions?.totems?.air == AirTotem.WrathOfAirTotem),
 						},
 					],
 				},
@@ -546,8 +544,9 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Mana Spring Totem',
 							actionId: ActionId.fromSpellId(5675),
-							playerData: playerClass(Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ManaSpringTotem
+							playerData: playerClass(
+								Class.ClassShaman,
+								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ManaSpringTotem,
 							),
 						},
 					],
@@ -613,8 +612,9 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Elemental Resistance Totem',
 							actionId: ActionId.fromSpellId(8184),
-							playerData: playerClass(Class.ClassShaman,
-								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ElementalResistanceTotem
+							playerData: playerClass(
+								Class.ClassShaman,
+								player => player.getSpecOptions().classOptions?.totems?.water == WaterTotem.ElementalResistanceTotem,
 							),
 						},
 						{
@@ -800,9 +800,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Mangle',
 							actionId: ActionId.fromSpellId(33878),
-							playerData: playerClass(Class.ClassDruid,
-								player => player.isSpec(Spec.SpecFeralDruid)
-							),
+							playerData: playerClass(Class.ClassDruid, player => player.isSpec(Spec.SpecFeralDruid)),
 						},
 						{
 							label: 'Hemorrhage',
@@ -889,9 +887,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 						{
 							label: 'Demoralizing Roar',
 							actionId: ActionId.fromSpellId(99),
-							playerData: playerClass(Class.ClassDruid,
-								player => player.isSpec(Spec.SpecFeralDruid)
-							),
+							playerData: playerClass(Class.ClassDruid, player => player.isSpec(Spec.SpecFeralDruid)),
 						},
 						{
 							label: 'Scarlet Fever',

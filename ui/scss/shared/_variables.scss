@@ -217,13 +217,12 @@ $nav-tabs-border-color: $border-color;
 $nav-tabs-link-active-bg: transparent;
 $nav-tabs-link-active-color: white;
 
-$popover-bg: #424557;
-$popover-body-color: white;
-$popover-body-padding-x: map-get($spacers, 2);
-$popover-body-padding-y: map-get($spacers, 2);
 
-$tooltip-bg: $popover-bg;
-$tooltip-color: white;
+$tooltip-bg: #424557;
+$tooltip-border: $link-color;
+$tooltip-body-color: white;
 $tooltip-max-width: 15vw;
 $tooltip-max-width-lg: 25vw;
 $tooltip-max-width-sm: 75vw;
+$tooltip-body-padding-x: map-get($spacers, 2);
+$tooltip-body-padding-y: map-get($spacers, 2);

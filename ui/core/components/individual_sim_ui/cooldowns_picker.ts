@@ -1,12 +1,12 @@
+import tippy from 'tippy.js';
+
+import { Player } from '../../player.js';
+import { ActionID as ActionIdProto, Cooldown } from '../../proto/common.js';
+import { ActionId } from '../../proto_utils/action_id.js';
+import { EventID, TypedEvent } from '../../typed_event.js';
 import { Component } from '../component.js';
 import { IconEnumPicker, IconEnumValueConfig } from '../icon_enum_picker.js';
 import { NumberListPicker } from '../number_list_picker.js';
-import { Player } from '../../player.js';
-import { EventID, TypedEvent } from '../../typed_event.js';
-import { ActionID as ActionIdProto } from '../../proto/common.js';
-import { Cooldown } from '../../proto/common.js';
-import { ActionId } from '../../proto_utils/action_id.js';
-import { Tooltip } from 'bootstrap';
 
 export class CooldownsPicker extends Component {
 	readonly player: Player<any>;
@@ -44,13 +44,15 @@ export class CooldownsPicker extends Component {
 			const label = document.createElement('label');
 			label.classList.add('cooldown-picker-label', 'form-label');
 			if (cooldown && cooldown.id) {
-				ActionId.fromProto(cooldown.id).fill(this.player.getRaidIndex()).then(filledId => label.textContent = filledId.name);
+				ActionId.fromProto(cooldown.id)
+					.fill(this.player.getRaidIndex())
+					.then(filledId => (label.textContent = filledId.name));
 			}
 			row.appendChild(label);
 
 			const timingsPicker = this.makeTimingsPicker(row, i);
 
-			let deleteButtonFragment = document.createElement('fragment');
+			const deleteButtonFragment = document.createElement('fragment');
 			deleteButtonFragment.innerHTML = `
 				<a
 					href="javascript:void(0)"
@@ -59,9 +61,9 @@ export class CooldownsPicker extends Component {
 				>
 					<i class="fa fa-times fa-xl"></i>
 				</a>
-			`
+			`;
 			const deleteButton = deleteButtonFragment.children[0] as HTMLElement;
-			const deleteButtonTooltip = Tooltip.getOrCreateInstance(deleteButton, {title: 'Delete Cooldown'});
+			const deleteButtonTooltip = tippy(deleteButton, { content: 'Delete Cooldown' });
 			deleteButton.addEventListener('click', event => {
 				const newCooldowns = this.player.getSimpleCooldowns();
 				newCooldowns.cooldowns.splice(i, 1);
@@ -75,18 +77,20 @@ export class CooldownsPicker extends Component {
 	}
 
 	private makeActionPicker(parentElem: HTMLElement, cooldownIndex: number): IconEnumPicker<Player<any>, ActionIdProto> {
-		const availableCooldowns = this.player.getMetadata().getSpells().filter(spell => spell.data.isMajorCooldown).map(spell => spell.id);
+		const availableCooldowns = this.player
+			.getMetadata()
+			.getSpells()
+			.filter(spell => spell.data.isMajorCooldown)
+			.map(spell => spell.id);
 
 		const actionPicker = new IconEnumPicker<Player<any>, ActionIdProto>(parentElem, this.player, {
-			extraCssClasses: [
-				'cooldown-action-picker',
-			],
+			extraCssClasses: ['cooldown-action-picker'],
 			numColumns: 3,
-			values: ([
-				{ color: '#grey', value: ActionIdProto.create() },
-			] as Array<IconEnumValueConfig<Player<any>, ActionIdProto>>).concat(availableCooldowns.map(cooldownAction => {
-				return { actionId: cooldownAction, value: cooldownAction.toProto() };
-			})),
+			values: ([{ color: '#grey', value: ActionIdProto.create() }] as Array<IconEnumValueConfig<Player<any>, ActionIdProto>>).concat(
+				availableCooldowns.map(cooldownAction => {
+					return { actionId: cooldownAction, value: cooldownAction.toProto() };
+				}),
+			),
 			equals: (a: ActionIdProto, b: ActionIdProto) => ActionIdProto.equals(a, b),
 			zeroValue: ActionIdProto.create(),
 			backupIconUrl: (value: ActionIdProto) => ActionId.fromProto(value),
@@ -111,9 +115,7 @@ export class CooldownsPicker extends Component {
 
 	private makeTimingsPicker(parentElem: HTMLElement, cooldownIndex: number): NumberListPicker<Player<any>> {
 		const actionPicker = new NumberListPicker(parentElem, this.player, {
-			extraCssClasses: [
-				'cooldown-timings-picker',
-			],
+			extraCssClasses: ['cooldown-timings-picker'],
 			placeholder: '20, 40, ...',
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
 			getValue: (player: Player<any>) => {

@@ -1,33 +1,36 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
-import { setItemQualityCssClass } from '../css_utils';
-import { IndividualSimUI } from '../individual_sim_ui.js';
-import { Player } from '../player';
-import { Class, GemColor, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec, ItemType, ReforgeStat, Stat } from '../proto/common';
-import { DatabaseFilters, RepFaction, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UIItem_FactionRestriction } from '../proto/ui.js';
-import { ActionId } from '../proto_utils/action_id';
-import { getEnchantDescription, getUniqueEnchantString } from '../proto_utils/enchants';
-import { EquippedItem } from '../proto_utils/equipped_item';
-import { gemMatchesSocket, getEmptyGemSocketIconUrl } from '../proto_utils/gems';
-import { difficultyNames, professionNames, REP_FACTION_NAMES, REP_LEVEL_NAMES, shortSecondaryStatNames, slotNames } from '../proto_utils/names.js';
-import { Stats } from '../proto_utils/stats';
-import { Sim } from '../sim.js';
-import { SimUI } from '../sim_ui';
-import { EventID, TypedEvent } from '../typed_event';
-import { formatDeltaTextElem } from '../utils';
-import { BaseModal } from './base_modal';
-import { Component } from './component';
-import { FiltersMenu } from './filters_menu';
+import { setItemQualityCssClass } from '../../css_utils';
+import { IndividualSimUI } from '../../individual_sim_ui';
+import { Player } from '../../player';
+import { Class, GemColor, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec, ItemType, ReforgeStat, Stat } from '../../proto/common';
+import { DatabaseFilters, RepFaction, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UIItem_FactionRestriction } from '../../proto/ui';
+import { ActionId } from '../../proto_utils/action_id';
+import { getEnchantDescription, getUniqueEnchantString } from '../../proto_utils/enchants';
+import { EquippedItem } from '../../proto_utils/equipped_item';
+import { gemMatchesSocket, getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
+import { difficultyNames, professionNames, REP_FACTION_NAMES, REP_LEVEL_NAMES, shortSecondaryStatNames, slotNames } from '../../proto_utils/names';
+import { Stats } from '../../proto_utils/stats';
+import { Sim } from '../../sim';
+import { SimUI } from '../../sim_ui';
+import { EventID, TypedEvent } from '../../typed_event';
+import { formatDeltaTextElem } from '../../utils';
+import { BaseModal } from '../base_modal';
+import { Component } from '../component';
+import { FiltersMenu } from '../filters_menu';
 import {
 	makePhaseSelector,
 	makeShow1hWeaponsSelector,
 	makeShow2hWeaponsSelector,
 	makeShowEPValuesSelector,
 	makeShowMatchingGemsSelector,
-} from './other_inputs';
-import { Clusterize } from './virtual_scroll/clusterize.js';
+} from '../other_inputs';
+import QuickSwapList from '../quick_swap';
+import { Clusterize } from '../virtual_scroll/clusterize';
+import { addQuickEnchantPopover } from './quick_enchant_popover';
+import { addQuickGemPopover } from './quick_gem_popover';
 
 const EP_TOOLTIP = `
 	EP (Equivalence Points) is way of comparing items by multiplying the raw stats of an item with your current stat weights.
@@ -40,8 +43,9 @@ const createHeroicLabel = () => {
 
 const createGemContainer = (socketColor: GemColor, gem: Gem | null, index: number) => {
 	const gemIconElem = ref<HTMLImageElement>();
+	const gemContainerElem = ref<HTMLAnchorElement>();
 	const gemContainer = (
-		<a className="gem-socket-container" href="javascript:void(0)" attributes={{ role: 'button' }} dataset={{ gemIndex: index }}>
+		<a ref={gemContainerElem} className="gem-socket-container" href="javascript:void(0)" attributes={{ role: 'button' }} dataset={{ socketIdx: index }}>
 			<img ref={gemIconElem} className={`gem-icon ${gem == null ? 'hide' : ''}`} />
 			<img className="socket-icon" src={getEmptyGemSocketIconUrl(socketColor)} />
 		</a>
@@ -51,10 +55,11 @@ const createGemContainer = (socketColor: GemColor, gem: Gem | null, index: numbe
 		ActionId.fromItemId(gem.id)
 			.fill()
 			.then(filledId => {
+				filledId.setWowheadHref(gemContainerElem.value!);
 				gemIconElem.value!.src = filledId.iconUrl;
 			});
 	}
-	return gemContainer;
+	return gemContainer as HTMLAnchorElement;
 };
 
 export class GearPicker extends Component {
@@ -107,6 +112,7 @@ export class ItemRenderer extends Component {
 	readonly enchantElem: HTMLAnchorElement;
 	readonly reforgeElem: HTMLAnchorElement;
 	readonly socketsContainerElem: HTMLElement;
+	socketsElem: HTMLAnchorElement[] = [];
 
 	constructor(parent: HTMLElement, root: HTMLElement, player: Player<any>) {
 		super(parent, 'item-picker-root', root);
@@ -151,6 +157,7 @@ export class ItemRenderer extends Component {
 		this.enchantElem.innerText = '';
 		this.reforgeElem.innerText = '';
 		this.socketsContainerElem.innerText = '';
+		this.socketsElem = [];
 		this.nameElem.textContent = '';
 	}
 
@@ -207,7 +214,6 @@ export class ItemRenderer extends Component {
 
 		newItem.allSocketColors().forEach((socketColor, gemIdx) => {
 			const gemContainer = createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx);
-
 			if (gemIdx == newItem.numPossibleSockets - 1 && [ItemType.ItemTypeWrist, ItemType.ItemTypeHands].includes(newItem.item.type)) {
 				const updateProfession = () => {
 					if (this.player.isBlacksmithing()) {
@@ -219,6 +225,7 @@ export class ItemRenderer extends Component {
 				this.player.professionChangeEmitter.on(updateProfession);
 				updateProfession();
 			}
+			this.socketsElem.push(gemContainer);
 			this.socketsContainerElem.appendChild(gemContainer);
 		});
 	}
@@ -237,6 +244,9 @@ export class ItemPicker extends Component {
 	private _enchants: Array<Enchant> = [];
 	private _equippedItem: EquippedItem | null = null;
 
+	private quickSwapEnchantPopover: QuickSwapList<Enchant> | null = null;
+	private quickSwapGemPopover: QuickSwapList<Gem>[] = [];
+
 	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, slot: ItemSlot) {
 		super(parent, 'item-picker-root');
 		this.slot = slot;
@@ -248,17 +258,13 @@ export class ItemPicker extends Component {
 		player.sim.waitForInit().then(() => {
 			this._items = this.player.getItems(this.slot);
 			this._enchants = this.player.getEnchants(this.slot);
-
 			const gearData = this.createGearData();
 
 			const openGearSelector = (event: Event) => {
 				event.preventDefault();
 				this.openSelectorModal(SelectorModalTabs.Items, gearData);
 			};
-			const openEnchantSelector = (event: Event) => {
-				event.preventDefault();
-				this.openSelectorModal(SelectorModalTabs.Enchants, gearData);
-			};
+
 			const openReforgeSelector = (event: Event) => {
 				event.preventDefault();
 				this.openSelectorModal(SelectorModalTabs.Reforging, gearData);
@@ -266,24 +272,32 @@ export class ItemPicker extends Component {
 
 			this.itemElem.iconElem.addEventListener('click', openGearSelector);
 			this.itemElem.nameElem.addEventListener('click', openGearSelector);
-
 			this.itemElem.reforgeElem.addEventListener('click', openReforgeSelector);
-			this.itemElem.enchantElem.addEventListener('click', openEnchantSelector);
+			this.addQuickEnchantHelpers();
 		});
 
 		player.gearChangeEmitter.on(() => {
-			this.item = player.getEquippedItem(slot);
-			const gearData = this.createGearData();
-			const openGemSelector = (anchor: HTMLAnchorElement) => {
-				this.openSelectorModal(`Gem ${(Number(anchor.dataset!.gemIndex) || 0) + 1}` as SelectorModalTabs, gearData);
-			};
-			[...this.itemElem.socketsContainerElem.querySelectorAll<HTMLAnchorElement>('.gem-socket-container')]?.forEach(anchor =>
-				anchor.addEventListener('click', event => {
-					event?.preventDefault();
-					openGemSelector(anchor);
-				}),
-			);
+			this.item = this.player.getEquippedItem(this.slot);
+			if (this._equippedItem) {
+				if (this._equippedItem !== this.quickSwapEnchantPopover?.item) {
+					this.quickSwapEnchantPopover?.update({ item: this._equippedItem });
+				}
+				this.addQuickGemHelpers();
+			}
 		});
+
+		player.sim.filtersChangeEmitter.on(() => {
+			if (this._equippedItem) {
+				this.quickSwapEnchantPopover?.update({ item: this._equippedItem });
+				this.quickSwapGemPopover.forEach(quickSwap => quickSwap.update({ item: this._equippedItem! }));
+			}
+		});
+
+		player.sim.showQuickSwapChangeEmitter.on(() => {
+			this.quickSwapEnchantPopover?.tooltip?.[this.player.sim.getShowQuickSwap() ? 'enable' : 'disable']();
+			this.quickSwapGemPopover.forEach(quickSwap => quickSwap.tooltip?.[this.player.sim.getShowQuickSwap() ? 'enable' : 'disable']());
+		});
+
 		player.professionChangeEmitter.on(() => {
 			if (this._equippedItem != null) {
 				this.player.setWowheadData(this._equippedItem, this.itemElem.iconElem);
@@ -304,6 +318,8 @@ export class ItemPicker extends Component {
 	set item(newItem: EquippedItem | null) {
 		// Clear everything first
 		this.itemElem.clear();
+		// Clear quick swap gems array since gem sockets are rerendered every time
+		this.quickSwapGemPopover = [];
 		this.itemElem.nameElem.textContent = slotNames.get(this.slot) ?? '';
 		setItemQualityCssClass(this.itemElem.nameElem, null);
 
@@ -325,6 +341,34 @@ export class ItemPicker extends Component {
 			eligibleEnchants: this._enchants,
 			gearData: gearData,
 		});
+	}
+
+	private addQuickGemHelpers() {
+		if (!this._equippedItem) return;
+		const gearData = this.createGearData();
+		const openGemDetailTab = (socketIdx: number) => this.openSelectorModal(`Gem ${socketIdx + 1}` as SelectorModalTabs, gearData);
+		this.itemElem.socketsElem?.forEach(element => {
+			const socketIdx = Number(element.dataset.socketIdx) || 0;
+			element.addEventListener('click', event => {
+				event.preventDefault();
+				openGemDetailTab(0);
+			});
+			const popover = addQuickGemPopover(this.player, element, this._equippedItem!, this.slot, socketIdx, () => openGemDetailTab(socketIdx));
+			if (!this.player.sim.getShowQuickSwap()) popover.tooltip?.disable();
+			this.quickSwapGemPopover.push(popover);
+		});
+	}
+
+	private addQuickEnchantHelpers() {
+		if (!this._equippedItem) return;
+		const openEnchantSelector = () => this.openSelectorModal(SelectorModalTabs.Enchants, gearData);
+		const gearData = this.createGearData();
+		this.itemElem.enchantElem.addEventListener('click', event => {
+			event?.preventDefault();
+			openEnchantSelector();
+		});
+		this.quickSwapEnchantPopover = addQuickEnchantPopover(this.player, this.itemElem.enchantElem, this._equippedItem, this.slot, openEnchantSelector);
+		if (!this.player.sim.getShowQuickSwap()) this.quickSwapEnchantPopover.tooltip?.disable();
 	}
 }
 
@@ -1083,8 +1127,8 @@ export class ItemList<T> {
 
 		parent.appendChild(this.tabContent);
 
-		new Tooltip(epButton.value!, {
-			title: EP_TOOLTIP,
+		tippy(epButton.value!, {
+			content: EP_TOOLTIP,
 		});
 
 		makeShow1hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement, player.sim);
@@ -1386,9 +1430,10 @@ export class ItemList<T> {
 
 		setItemQualityCssClass(nameElem.value!, itemData.quality);
 
-		new Tooltip(favoriteElem.value!, {
-			title: 'Add to favorites',
+		tippy(favoriteElem.value!, {
+			content: 'Add to favorites',
 		});
+
 		const setFavorite = (isFavorite: boolean) => {
 			const filters = this.player.sim.getFilters();
 			if (this.label == 'Items') {
