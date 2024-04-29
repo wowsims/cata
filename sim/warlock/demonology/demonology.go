@@ -1,6 +1,8 @@
 package demonology
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/warlock"
@@ -52,6 +54,7 @@ func (demonology *DemonologyWarlock) Initialize() {
 
 	demonology.registerHandOfGuldanSpell()
 	demonology.registerMetamorphosisSpell()
+	demonology.registerSummonFelguardSpell()
 }
 
 func (demonology *DemonologyWarlock) ApplyTalents() {
@@ -136,4 +139,30 @@ func (demonology *DemonologyWarlock) ApplyTalents() {
 
 func (demonology *DemonologyWarlock) Reset(sim *core.Simulation) {
 	demonology.Warlock.Reset(sim)
+}
+
+func (demonology *DemonologyWarlock) registerSummonFelguardSpell() {
+	demonology.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 30146},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: warlock.WarlockSpellSummonFelguard,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCost:   0.8,
+			Multiplier: 1,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD:      core.GCDDefault,
+				CastTime: time.Second * 6,
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			//warlock.ChangeActivePet(sim, warlock.Imp.WarlockPet)
+			demonology.ChangeActivePet(sim, warlock.PetFelguard)
+		},
+	})
 }

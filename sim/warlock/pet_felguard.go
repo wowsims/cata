@@ -7,32 +7,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (warlock *Warlock) registerSummonFelguardSpell() {
-	warlock.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 30146},
-		SpellSchool:    core.SpellSchoolShadow,
-		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: WarlockSpellSummonFelguard,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.8,
-			Multiplier: 1,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: time.Second * 6,
-			},
-		},
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//warlock.ChangeActivePet(sim, warlock.Imp.WarlockPet)
-			warlock.ChangeActivePet(sim, PetFelguard)
-		},
-	})
-}
-
 type FelguardPet struct {
 	core.Pet
 
