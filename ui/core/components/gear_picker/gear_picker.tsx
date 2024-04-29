@@ -256,7 +256,6 @@ export class ItemPicker extends Component {
 		player.sim.waitForInit().then(() => {
 			this._items = this.player.getItems(this.slot);
 			this._enchants = this.player.getEnchants(this.slot);
-
 			const gearData = this.createGearData();
 
 			const openGearSelector = (event: Event) => {

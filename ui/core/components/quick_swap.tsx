@@ -84,12 +84,9 @@ const buildList = <T extends QuickSwapAllowedItem>(data: QuickSwapListConfig<T>)
 							</li>
 						);
 						if (labelElem.value) setItemQualityCssClass(labelElem.value, item.item.quality);
-
-						ActionId.fromItemId('id' in item.item ? item.item.id : item.item.effectId)
-							.fill()
-							.then(filledId => {
-								iconElem.value!.src = filledId.iconUrl;
-							});
+						('spellId' in item.item ? ActionId.fromSpellId(item.item.spellId) : ActionId.fromItemId(item.item.id)).fill().then(filledId => {
+							iconElem.value!.src = filledId.iconUrl;
+						});
 
 						return listItem;
 					})}
