@@ -356,7 +356,7 @@ export class ItemPicker extends Component {
 				openGemDetailTab(0);
 			});
 			const popover = addQuickGemPopover(this.player, element, this._equippedItem!, this.slot, socketIdx, () => openGemDetailTab(socketIdx));
-			if (this.player.sim.getShowQuickSwap()) popover.tooltip?.disable();
+			if (!this.player.sim.getShowQuickSwap()) popover.tooltip?.disable();
 			this.quickSwapGemPopover.push(popover);
 		});
 	}
@@ -370,7 +370,7 @@ export class ItemPicker extends Component {
 			openEnchantSelector();
 		});
 		this.quickSwapEnchantPopover = addQuickEnchantPopover(this.player, this.itemElem.enchantElem, this._equippedItem, this.slot, openEnchantSelector);
-		if (this.player.sim.getShowQuickSwap()) this.quickSwapEnchantPopover.tooltip?.disable();
+		if (!this.player.sim.getShowQuickSwap()) this.quickSwapEnchantPopover.tooltip?.disable();
 	}
 }
 
