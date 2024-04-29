@@ -160,7 +160,7 @@ export class RaidSimResultsManager {
 		const setResultTooltip = (cssClass: string, tooltip: string) => {
 			const resultDivElem = this.simUI.resultsViewer.contentElem.getElementsByClassName(cssClass)[0] as HTMLElement | undefined;
 			if (resultDivElem) {
-				tippy(resultDivElem, { content: tooltip, allowHTML: true, placement: 'right' });
+				tippy(resultDivElem, { content: tooltip, placement: 'right' });
 			}
 		};
 		setResultTooltip('results-sim-dps', 'Damage Per Second');

@@ -278,7 +278,6 @@ export class CharacterStats extends Component {
 
 			tippy(valueElem, {
 				content: tooltipContent,
-				allowHTML: true,
 			});
 		}
 	}
