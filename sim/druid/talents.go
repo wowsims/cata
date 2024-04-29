@@ -58,6 +58,7 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyNaturesMajesty()
 	druid.applyMoonglow()
 	druid.applyGenesis()
+	druid.applyGaleWinds()
 
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.AddStat(stats.Expertise, 5.0*float64(druid.Talents.PrimalPrecision)*core.ExpertisePerQuarterPercentReduction)
@@ -97,7 +98,7 @@ func (druid *Druid) applyBalanceOfPower() {
 	if druid.Talents.BalanceOfPower > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
-			ClassMask:  DruidArcaneSpells | DruidNatureSpells,
+			ClassMask:  DruidSpellsAll,
 			FloatValue: 0.01 * float64(druid.Talents.BalanceOfPower),
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
@@ -147,6 +148,16 @@ func (druid *Druid) applyGenesis() {
 
 		// TODO: periodic healing spells
 		// TODO: swiftmend
+	}
+}
+
+func (druid *Druid) applyGaleWinds() {
+	if druid.Talents.GaleWinds > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidSpellTyphoon | DruidSpellHurricane,
+			FloatValue: float64(0.15 * float64(druid.Talents.GaleWinds)),
+			Kind:       core.SpellMod_DamageDone_Flat,
+		})
 	}
 }
 

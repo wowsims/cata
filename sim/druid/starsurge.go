@@ -15,7 +15,7 @@ func (druid *Druid) registerStarsurgeSpell() {
 		ActionID:       core.ActionID{SpellID: 78674},
 		SpellSchool:    core.SpellSchoolArcane | core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: DruidSpellStarsurge | DruidArcaneSpells | DruidNatureSpells,
+		ClassSpellMask: DruidSpellStarsurge,
 		Flags:          SpellFlagOmenTrigger | core.SpellFlagAPL,
 
 		DamageMultiplier:         1,

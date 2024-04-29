@@ -8,10 +8,8 @@ import (
 )
 
 func (druid *Druid) registerMoonfireSpell() {
-	// TODO: Genesis increase to Moonfire duration
 	// TODO: Shooting stars proc on periodic damage
 	// TODO: Glyph of Moonfire increase to periodic damage
-	// TODO: Calculate ticks based on haste
 	numTicks := druid.moonfireTicks()
 	//hasMoonfireGlyph := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfMoonfire)
 	//bonusPeriodicDamageMultiplier := core.TernaryFloat64(hasMoonfireGlyph, 0.2, 0)
@@ -20,7 +18,7 @@ func (druid *Druid) registerMoonfireSpell() {
 		ActionID:       core.ActionID{SpellID: 8921},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: DruidSpellMoonfire | DruidArcaneSpells | DruidSpellDoT,
+		ClassSpellMask: DruidSpellMoonfire,
 		Flags:          SpellFlagNaturesGrace | SpellFlagOmenTrigger | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
@@ -42,15 +40,10 @@ func (druid *Druid) registerMoonfireSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Moonfire",
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-
-				},
 			},
-			NumberOfTicks: druid.moonfireTicks(),
-			TickLength:    time.Second * 2,
+			NumberOfTicks:       druid.moonfireTicks(),
+			TickLength:          time.Second * 2,
+			AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				// dot.Spell.DamageMultiplier = baseDamageMultiplier + bonusPeriodicDamageMultiplier

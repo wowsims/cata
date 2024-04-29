@@ -38,7 +38,7 @@ func (druid *Druid) registerStarfallSpell() {
 		Flags:       core.SpellFlagAPL | SpellFlagOmenTrigger,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.35,
-			Multiplier: 1 - 0.03*float64(druid.Talents.Moonglow),
+			Multiplier: 1,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

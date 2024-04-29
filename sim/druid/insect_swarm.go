@@ -14,7 +14,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 		ActionID:       core.ActionID{SpellID: 5570},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: DruidSpellInsectSwarm | DruidNatureSpells | DruidSpellDoT,
+		ClassSpellMask: DruidSpellInsectSwarm,
 		Flags:          SpellFlagNaturesGrace | SpellFlagOmenTrigger | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
@@ -41,8 +41,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 			BonusCoefficient:    0.13,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.138, 0)
-				baseDamage := sim.Roll(min, max)
+				baseDamage := core.CalcScalingSpellAverageEffect(proto.Class_ClassDruid, 0.138)
 				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -62,8 +61,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 		},
 
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
-			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.138, 0)
-			baseDamage := sim.Roll(min, max)
+			baseDamage := core.CalcScalingSpellAverageEffect(proto.Class_ClassDruid, 0.138)
 			return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 		},
 	})
