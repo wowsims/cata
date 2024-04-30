@@ -6,9 +6,27 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
+func (mage *Mage) OutcomeArcaneMissiles(sim *core.Simulation, result *core.SpellResult, attackTable *core.AttackTable) {
+	spell := mage.arcaneMissilesTickSpell
+	if spell.MagicHitCheck(sim, attackTable) {
+		if sim.RandomFloat("Magical Crit Roll") < mage.arcaneMissileCritSnapshot {
+			result.Outcome = core.OutcomeCrit
+			result.Damage *= spell.CritMultiplier
+			spell.SpellMetrics[result.Target.UnitIndex].Crits++
+		} else {
+			result.Outcome = core.OutcomeHit
+			spell.SpellMetrics[result.Target.UnitIndex].Hits++
+		}
+	} else {
+		result.Outcome = core.OutcomeMiss
+		result.Damage = 0
+		spell.SpellMetrics[result.Target.UnitIndex].Misses++
+	}
+}
+
 func (mage *Mage) registerArcaneMissilesSpell() {
 
-	arcaneMissilesTickSpell := mage.GetOrRegisterSpell(core.SpellConfig{
+	mage.arcaneMissilesTickSpell = mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7268},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
@@ -22,7 +40,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 		BonusCoefficient: 0.278,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := 0.432 * mage.ClassSpellScaling
-			result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, damage, mage.OutcomeArcaneMissiles)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
@@ -64,14 +82,17 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 			HasteAffectsDuration: true,
 			AffectedByCastSpeed:  true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				arcaneMissilesTickSpell.Cast(sim, target)
+				mage.arcaneMissilesTickSpell.Cast(sim, target)
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
-				spell.Dot(target).Apply(sim)
-				spell.Dot(target).TickOnce(sim)
+				// Snapshot crit chance
+				mage.arcaneMissileCritSnapshot = mage.arcaneMissilesTickSpell.SpellCritChance(target)
+				dot := spell.Dot(target)
+				dot.Apply(sim)
+				dot.TickOnce(sim)
 			}
 			//spell.DealOutcome(sim, result)
 		},

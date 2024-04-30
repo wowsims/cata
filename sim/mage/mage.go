@@ -19,6 +19,9 @@ var TalentTreeSizes = [3]int{21, 21, 19}
 type Mage struct {
 	core.Character
 
+	arcaneMissilesTickSpell   *core.Spell
+	arcaneMissileCritSnapshot float64
+
 	arcanePowerCostMod *core.SpellMod
 	arcanePowerDmgMod  *core.SpellMod
 	arcanePowerGCDmod  *core.SpellMod
