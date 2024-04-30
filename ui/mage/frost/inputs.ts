@@ -20,12 +20,12 @@ export const MageRotationConfig = {
 		// ********************************************************
 		//                       FROST INPUTS
 		// ********************************************************
-		InputHelpers.makeRotationBooleanInput<Spec.SpecFrostMage>({
-			fieldName: 'useIceLance',
-			label: 'Use Ice Lance',
-			labelTooltip: 'Casts Ice Lance at the end of Fingers of Frost, after using Deep Freeze.',
-			showWhen: (player: Player<Spec.SpecFrostMage>) => player.getTalentTree() == 2,
-			changeEmitter: (player: Player<Spec.SpecFrostMage>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
+		// InputHelpers.makeRotationBooleanInput<Spec.SpecFrostMage>({
+		// 	fieldName: 'useIceLance',
+		// 	label: 'Use Ice Lance',
+		// 	labelTooltip: 'Casts Ice Lance at the end of Fingers of Frost, after using Deep Freeze.',
+		// 	showWhen: (player: Player<Spec.SpecFrostMage>) => player.getTalentTree() == 2,
+		// 	changeEmitter: (player: Player<Spec.SpecFrostMage>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+		// }),
 	],
 };
