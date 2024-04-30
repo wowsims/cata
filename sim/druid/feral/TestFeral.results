@@ -372,8 +372,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 21973.27489
-  tps: 15604.53164
+  dps: 21973.27408
+  tps: 15604.52415
  }
 }
 dps_results: {
@@ -450,7 +450,7 @@ dps_results: {
  key: "TestFeral-AllItems-ElectrosparkHeartstarter-67118"
  value: {
   dps: 21633.67611
-  tps: 15391.46675
+  tps: 15391.34758
  }
 }
 dps_results: {
