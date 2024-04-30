@@ -16,9 +16,9 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		Kind:       core.SpellMod_DamageDone_Flat,
 	})
 	abCostMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellArcaneBlast | MageSpellArcaneExplosion,
+		ClassMask:  MageSpellArcaneBlast,
 		FloatValue: 1.5,
-		Kind:       core.SpellMod_PowerCost_Flat,
+		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 	abCastMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask: MageSpellArcaneBlast,
@@ -55,12 +55,12 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		Flags:          SpellFlagMage | ArcaneMissileSpells | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellArcaneBlast,
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.07,
+			BaseCost: 0.05,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2500,
+				CastTime: time.Millisecond * 2000,
 			},
 		},
 
