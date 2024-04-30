@@ -127,12 +127,15 @@ func (mage *Mage) applyHotStreak() {
 	})
 
 	// Improved Hotstreak Crit Stacking Aura
-	mage.hotStreakCritAura = mage.RegisterAura(core.Aura{
+	hotStreakCritAura := mage.RegisterAura(core.Aura{
 		Label:     "Hot Streak Proc Aura",
 		ActionID:  core.ActionID{SpellID: 44448}, //, Tag: 1}, Removing Tag gets rid of the (??) in Timeline
 		MaxStacks: 2,
 		Duration:  time.Hour,
 	})
+
+	const hotStreakSpells = MageSpellPyroblast | MageSpellFireBlast | MageSpellFireball |
+		MageSpellFlameOrb | MageSpellFrostfireBolt | MageSpellScorch
 
 	// Aura to allow the character to track crits
 	mage.RegisterAura(core.Aura{
@@ -142,7 +145,7 @@ func (mage *Mage) applyHotStreak() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(HotStreakSpells) {
+			if spell.ClassSpellMask&hotStreakSpells == 0 {
 				return
 			}
 
@@ -153,34 +156,27 @@ func (mage *Mage) applyHotStreak() {
 				return
 			}
 			// Hot Streak Base Talent Proc
-			if result.DidCrit() && spell.Flags.Matches(HotStreakSpells) {
+			if result.DidCrit() {
 				if sim.Proc(BaseHotStreakProcChance, "Hot Streak") {
-					if mage.HotStreakAura.IsActive() {
-						mage.HotStreakAura.Refresh(sim)
-					} else {
-						mage.HotStreakAura.Activate(sim)
-					}
+					mage.HotStreakAura.Activate(sim)
 				}
-
 			}
 
 			// Improved Hot Streak
 			if mage.Talents.ImprovedHotStreak > 0 {
-
 				// If you didn't crit, reset your crit counter
-
 				if !result.DidCrit() {
-					mage.hotStreakCritAura.SetStacks(sim, 0)
-					mage.hotStreakCritAura.Deactivate(sim)
+					hotStreakCritAura.SetStacks(sim, 0)
+					hotStreakCritAura.Deactivate(sim)
 					return
 				}
 
 				// If you did crit, check against talents to see if you proc
 				// If you proc and had 1 stack, set crit counter to 0 and give hot streak.
-				if mage.hotStreakCritAura.GetStacks() == 1 {
+				if hotStreakCritAura.GetStacks() == 1 {
 					if sim.Proc(ImprovedHotStreakProcChance, "Improved Hot Streak") {
-						mage.hotStreakCritAura.SetStacks(sim, 0)
-						mage.hotStreakCritAura.Deactivate(sim)
+						hotStreakCritAura.SetStacks(sim, 0)
+						hotStreakCritAura.Deactivate(sim)
 
 						mage.HotStreakAura.Activate(sim)
 					}
@@ -192,8 +188,8 @@ func (mage *Mage) applyHotStreak() {
 					// will go 2 out of 2 points, but worth researching.
 					// If it checks 1st crit as well, can add a proc check to this too
 				} else {
-					mage.hotStreakCritAura.Activate(sim)
-					mage.hotStreakCritAura.AddStack(sim)
+					hotStreakCritAura.Activate(sim)
+					hotStreakCritAura.AddStack(sim)
 				}
 			}
 		},
@@ -211,7 +207,7 @@ func (mage *Mage) applyPyromaniac() {
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
 
-	mage.PyromaniacAura = mage.RegisterAura(core.Aura{
+	mage.RegisterAura(core.Aura{
 		Label:    "Pyromaniac Trackers",
 		ActionID: core.ActionID{SpellID: 83582},
 		Duration: core.NeverExpires,
@@ -320,7 +316,7 @@ func (mage *Mage) applyIgnite() {
 		ActionID:       actionId,
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskProc,
-		Flags:          SpellFlagMage | core.SpellFlagIgnoreModifiers,
+		Flags:          core.SpellFlagIgnoreModifiers,
 		ClassSpellMask: MageSpellIgnite,
 
 		DamageMultiplier: 1,
@@ -402,7 +398,7 @@ func (mage *Mage) applyImpact() {
 	// TODO make this work :)
 	// Currently casts a fresh set of DoTs
 	// afaik it should spread exact copies of the DoTs
-	mage.ImpactAura = mage.RegisterAura(core.Aura{
+	impactAura := mage.RegisterAura(core.Aura{
 		Label:    "Impact",
 		ActionID: core.ActionID{SpellID: 64343},
 		Duration: time.Second * 10,
@@ -438,7 +434,7 @@ func (mage *Mage) applyImpact() {
 		ProcChance:     0.05 * float64(mage.Talents.Impact),
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			mage.FireBlast.CD.Reset()
-			mage.ImpactAura.Activate(sim)
+			impactAura.Activate(sim)
 		},
 	})
 }

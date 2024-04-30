@@ -12,7 +12,7 @@ func (mage *Mage) registerFreezeSpell() {
 		ActionID:       core.ActionID{SpellID: 33395},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFreeze,
 
 		Cast: core.CastConfig{

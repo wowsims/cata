@@ -19,7 +19,7 @@ func (mage *Mage) registerFlameOrbSpell() {
 		ActionID:       core.ActionID{SpellID: 82731},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty, //tbd
-		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFlameOrb,
 
 		ManaCost: core.ManaCostOptions{
@@ -52,7 +52,6 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 		ActionID:       core.ActionID{SpellID: 83619},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          SpellFlagMage, // | HotStreakSpell (unlikely based on videos)
 		ClassSpellMask: MageSpellFlameOrb,
 
 		DamageMultiplier: 1,
@@ -129,7 +128,7 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 		ActionID:       core.ActionID{SpellID: 82739},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          SpellFlagMage | core.SpellFlagNoLogs | HotStreakSpells,
+		Flags:          core.SpellFlagNoLogs,
 		ClassSpellMask: MageSpellFlameOrb,
 
 		Cast: core.CastConfig{

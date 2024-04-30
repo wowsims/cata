@@ -11,7 +11,7 @@ func (mage *Mage) registerFireBlastSpell() {
 		ActionID:       core.ActionID{SpellID: 2136},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFireBlast,
 
 		ManaCost: core.ManaCostOptions{
