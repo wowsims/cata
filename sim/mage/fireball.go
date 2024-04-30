@@ -12,7 +12,7 @@ func (mage *Mage) registerFireballSpell() {
 		ActionID:       core.ActionID{SpellID: 133},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          HotStreakSpells | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFireball,
 		MissileSpeed:   24,
 
