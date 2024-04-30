@@ -1,8 +1,7 @@
-import { Tooltip } from 'bootstrap';
 import tippy from 'tippy.js';
 
 import { DistributionMetrics as DistributionMetricsProto, ProgressMetrics, Raid as RaidProto } from '../proto/api.js';
-import { Encounter as EncounterProto } from '../proto/common.js';
+import { Encounter as EncounterProto, Spec } from '../proto/common.js';
 import { SimRunData } from '../proto/ui.js';
 import { ActionMetrics, SimResult, SimResultFilter } from '../proto_utils/sim_result.js';
 import { SimUI } from '../sim_ui.js';
@@ -161,7 +160,7 @@ export class RaidSimResultsManager {
 		const setResultTooltip = (cssClass: string, tooltip: string) => {
 			const resultDivElem = this.simUI.resultsViewer.contentElem.getElementsByClassName(cssClass)[0] as HTMLElement | undefined;
 			if (resultDivElem) {
-				Tooltip.getOrCreateInstance(resultDivElem, { title: tooltip, html: true, placement: 'right' });
+				tippy(resultDivElem, { content: tooltip, placement: 'right' });
 			}
 		};
 		setResultTooltip('results-sim-dps', 'Damage Per Second');
@@ -207,10 +206,10 @@ export class RaidSimResultsManager {
 			this.referenceChangeEmitter.emit(TypedEvent.nextEventID());
 			this.updateReference();
 		});
-		Tooltip.getOrCreateInstance(simReferenceSetButton, { title: 'Use as reference' });
+		tippy(simReferenceSetButton, { content: 'Use as reference' });
 
 		const simReferenceSwapButton = this.simUI.resultsViewer.contentElem.getElementsByClassName('results-sim-reference-swap')[0] as HTMLSpanElement;
-		simReferenceSwapButton.addEventListener('click', event => {
+		simReferenceSwapButton.addEventListener('click', () => {
 			TypedEvent.freezeAllAndDo(() => {
 				if (this.currentData && this.referenceData) {
 					const swapEventID = TypedEvent.nextEventID();
@@ -233,7 +232,7 @@ export class RaidSimResultsManager {
 		});
 
 		const simReferenceDeleteButton = this.simUI.resultsViewer.contentElem.getElementsByClassName('results-sim-reference-delete')[0] as HTMLSpanElement;
-		simReferenceDeleteButton.addEventListener('click', event => {
+		simReferenceDeleteButton.addEventListener('click', () => {
 			this.referenceData = null;
 			this.referenceChangeEmitter.emit(TypedEvent.nextEventID());
 			this.updateReference();
@@ -407,6 +406,15 @@ export class RaidSimResultsManager {
 					stdev: dtpsMetrics.stdev,
 					classes: this.getResultsLineClasses('dtps'),
 				}).outerHTML;
+
+				if (players[0].spec?.specID == Spec.SpecBloodDeathKnight) {
+					content += this.buildResultsLine({
+						average: playerMetrics.hps.avg,
+						stdev: playerMetrics.hps.stdev,
+						classes: this.getResultsLineClasses('hps'),
+					}).outerHTML;
+				}
+
 				content += this.buildResultsLine({
 					average: tmiMetrics.avg,
 					stdev: tmiMetrics.stdev,
@@ -438,18 +446,28 @@ export class RaidSimResultsManager {
 						classes: this.getResultsLineClasses('dtps'),
 					}).outerHTML;
 				}
+
+				if (players[0].spec?.specID == Spec.SpecBloodDeathKnight) {
+					content += this.buildResultsLine({
+						average: playerMetrics.hps.avg,
+						stdev: playerMetrics.hps.stdev,
+						classes: this.getResultsLineClasses('hps'),
+					}).outerHTML;
+				}
 			}
 
-			content += this.buildResultsLine({
-				average: playerMetrics.tto.avg,
-				stdev: playerMetrics.tto.stdev,
-				classes: this.getResultsLineClasses('tto'),
-			}).outerHTML;
-			content += this.buildResultsLine({
-				average: playerMetrics.hps.avg,
-				stdev: playerMetrics.hps.stdev,
-				classes: this.getResultsLineClasses('hps'),
-			}).outerHTML;
+			if (players[0].spec?.specID != Spec.SpecBloodDeathKnight) {
+				content += this.buildResultsLine({
+					average: playerMetrics.tto.avg,
+					stdev: playerMetrics.tto.stdev,
+					classes: this.getResultsLineClasses('tto'),
+				}).outerHTML;
+				content += this.buildResultsLine({
+					average: playerMetrics.hps.avg,
+					stdev: playerMetrics.hps.stdev,
+					classes: this.getResultsLineClasses('hps'),
+				}).outerHTML;
+			}
 		} else {
 			const dpsMetrics = simResult.raidMetrics.dps;
 			content += this.buildResultsLine({

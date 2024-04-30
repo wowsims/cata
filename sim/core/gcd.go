@@ -33,43 +33,77 @@ func (unit *Unit) newHardcastAction(sim *Simulation) {
 }
 
 func (unit *Unit) NextGCDAt() time.Duration {
-	return unit.gcdAction.NextActionAt
+	return unit.GCD.ReadyAt()
+}
+
+func (unit *Unit) NextRotationActionAt() time.Duration {
+	return unit.RotationTimer.ReadyAt()
 }
 
 func (unit *Unit) SetGCDTimer(sim *Simulation, gcdReadyAt time.Duration) {
-	if unit.gcdAction == nil {
+	if unit.rotationAction == nil {
 		return
 	}
 
 	unit.GCD.Set(gcdReadyAt)
+	unit.SetRotationTimer(sim, gcdReadyAt)
+}
 
-	if unit.gcdAction.consumed {
-		unit.gcdAction.cancelled = false
-		unit.gcdAction.NextActionAt = gcdReadyAt
+func (unit *Unit) SetRotationTimer(sim *Simulation, rotationReadyAt time.Duration) {
+	if unit.rotationAction == nil {
+		return
+	}
+
+	unit.RotationTimer.Set(rotationReadyAt)
+
+	if unit.rotationAction.consumed {
+		unit.rotationAction.cancelled = false
+		unit.rotationAction.NextActionAt = rotationReadyAt
 	} else {
-		unit.gcdAction.Cancel(sim)
-		oldAction := unit.gcdAction.OnAction
-		unit.gcdAction = &PendingAction{
-			NextActionAt: gcdReadyAt,
+		unit.rotationAction.Cancel(sim)
+		oldAction := unit.rotationAction.OnAction
+		unit.rotationAction = &PendingAction{
+			NextActionAt: rotationReadyAt,
 			Priority:     ActionPriorityGCD,
 			OnAction:     oldAction,
 		}
 	}
-	sim.AddPendingAction(unit.gcdAction)
+	sim.AddPendingAction(unit.rotationAction)
+}
+
+// Call this when reacting to events that occur before the next scheduled rotation action
+func (unit *Unit) ReactToEvent(sim *Simulation) {
+	// If the next rotation action was already scheduled for this timestep then execute it now
+	unit.Rotation.DoNextAction(sim)
+
+	// Otherwise schedule an evaluation based on reaction time
+	if unit.NextRotationActionAt() > sim.CurrentTime+unit.ReactionTime {
+		unit.SetRotationTimer(sim, sim.CurrentTime+unit.ReactionTime)
+	}
 }
 
 // Call this to stop the GCD loop for a unit.
 // This is mostly used for pets that get summoned / expire.
 func (unit *Unit) CancelGCDTimer(sim *Simulation) {
-	unit.gcdAction.Cancel(sim)
+	unit.rotationAction.Cancel(sim)
 }
 
 func (unit *Unit) WaitUntil(sim *Simulation, readyTime time.Duration) {
 	if readyTime < sim.CurrentTime {
 		panic(unit.Label + ": cannot wait negative time")
 	}
+	unit.SetRotationTimer(sim, readyTime)
+	if sim.Log != nil && readyTime > sim.CurrentTime {
+		unit.Log(sim, "Pausing rotation for %s due to resources / CDs.", readyTime-sim.CurrentTime)
+	}
+}
+
+func (unit *Unit) ExtendGCDUntil(sim *Simulation, readyTime time.Duration) {
+	if readyTime < sim.CurrentTime {
+		panic(unit.Label + ": cannot wait negative time")
+	}
 	unit.SetGCDTimer(sim, readyTime)
 	if sim.Log != nil && readyTime > sim.CurrentTime {
-		unit.Log(sim, "Pausing GCD for %s due to rotation / CDs.", readyTime-sim.CurrentTime)
+		unit.Log(sim, "Extending GCD for %s due to rotation / CDs.", readyTime-sim.CurrentTime)
 	}
 }

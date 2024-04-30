@@ -10,10 +10,9 @@ export const ShamanImbueOH = InputHelpers.makeSpecOptionsEnumIconInput<Spec.Spec
 	fieldName: 'imbueOh',
 	values: [
 		{ value: ShamanImbue.NoImbue, tooltip: 'No Off Hand Enchant' },
-		{ actionId: ActionId.fromSpellId(58804), value: ShamanImbue.WindfuryWeapon },
-		{ actionId: ActionId.fromSpellId(58790), value: ShamanImbue.FlametongueWeapon, text: 'R10' },
-		{ actionId: ActionId.fromSpellId(58789), value: ShamanImbue.FlametongueWeaponDownrank, text: 'R9' },
-		{ actionId: ActionId.fromSpellId(58796), value: ShamanImbue.FrostbrandWeapon },
+		{ actionId: ActionId.fromSpellId(8232), value: ShamanImbue.WindfuryWeapon },
+		{ actionId: ActionId.fromSpellId(8024), value: ShamanImbue.FlametongueWeapon },
+		{ actionId: ActionId.fromSpellId(8033), value: ShamanImbue.FrostbrandWeapon },
 	],
 });
 

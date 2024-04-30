@@ -55,7 +55,7 @@ func (hb *healthBar) GainHealth(sim *Simulation, amount float64, metrics *Resour
 	metrics.AddEvent(amount, newHealth-oldHealth)
 
 	if sim.Log != nil {
-		hb.unit.Log(sim, "Gained %0.3f health from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, oldHealth, newHealth)
+		hb.unit.Log(sim, "Gained %0.3f health from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, oldHealth, newHealth, hb.MaxHealth())
 	}
 
 	hb.currentHealth = newHealth
@@ -81,10 +81,21 @@ func (hb *healthBar) RemoveHealth(sim *Simulation, amount float64) {
 	}
 
 	if sim.Log != nil {
-		hb.unit.Log(sim, "Spent %0.3f health from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, oldHealth, newHealth)
+		hb.unit.Log(sim, "Spent %0.3f health from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, oldHealth, newHealth, hb.MaxHealth())
 	}
 
 	hb.currentHealth = newHealth
+}
+
+// Used for dynamic updates to maximum health from "Last Stand" effects
+func (hb *healthBar) UpdateMaxHealth(sim *Simulation, bonusHealth float64, metrics *ResourceMetrics) {
+	hb.unit.AddStatsDynamic(sim, stats.Stats{stats.Health: bonusHealth})
+
+	if bonusHealth >= 0 {
+		hb.GainHealth(sim, bonusHealth, metrics)
+	} else {
+		hb.RemoveHealth(sim, max(0, min(-bonusHealth, hb.currentHealth-1))) // Last Stand effects always leave the player with at least 1 HP when they expire
+	}
 }
 
 var ChanceOfDeathAuraLabel = "Chance of Death"
@@ -117,10 +128,18 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 				aura.Unit.RemoveHealth(sim, result.Damage)
 
 				if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
-					aura.Unit.Metrics.Died = true
-					if sim.Log != nil {
-						character.Log(sim, "Dead")
-					}
+					// Queue a pending action to let shield effects give health
+					StartDelayedAction(sim, DelayedActionOptions{
+						DoAt: sim.CurrentTime,
+						OnAction: func(s *Simulation) {
+							if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
+								aura.Unit.Metrics.Died = true
+								if sim.Log != nil {
+									character.Log(sim, "Dead")
+								}
+							}
+						},
+					})
 				}
 			}
 		},
@@ -159,7 +178,7 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 	character.RegisterResetEffect(func(sim *Simulation) {
 		// Hack since we don't have OnHealingReceived aura handlers yet.
 		//ardentDefenderAura := character.GetAura("Ardent Defender")
-		willOfTheNecropolisAura := character.GetAura("Will of The Necropolis")
+		//willOfTheNecropolisAura := character.GetAura("Will of The Necropolis")
 
 		// Initialize randomized cadence model
 		timeToNextHeal := DurationFromSeconds(0.0)
@@ -180,9 +199,9 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 			//	ardentDefenderAura.Deactivate(sim)
 			//}
 
-			if willOfTheNecropolisAura != nil && character.CurrentHealthPercent() > 0.35 {
-				willOfTheNecropolisAura.Deactivate(sim)
-			}
+			// if willOfTheNecropolisAura != nil && character.CurrentHealthPercent() > 0.35 {
+			// 	willOfTheNecropolisAura.Deactivate(sim)
+			// }
 
 			// Random roll for time to next heal. In the case where CadenceVariation exceeds CadenceSeconds, then
 			// CadenceSeconds is treated as the median, with two separate uniform distributions to the left and right

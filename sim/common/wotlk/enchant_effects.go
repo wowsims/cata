@@ -313,7 +313,7 @@ func init() {
 
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolMagic,
+			SpellSchool: core.SpellSchoolPhysical,
 			Flags:       core.SpellFlagNoOnCastComplete,
 
 			Cast: core.CastConfig{

@@ -30,6 +30,10 @@ type ArmsWarrior struct {
 	*warrior.Warrior
 
 	Options *proto.ArmsWarrior_Options
+
+	mortalStrike *core.Spell
+	slaughter    *core.Aura
+	wreckingCrew *core.Aura
 }
 
 func NewArmsWarrior(character *core.Character, options *proto.Player) *ArmsWarrior {
@@ -70,7 +74,6 @@ func (war *ArmsWarrior) RegisterSpecializationEffects() {
 			Period: time.Second * 3,
 			OnAction: func(sim *core.Simulation) {
 				war.AddRage(sim, 1, rageMetrics)
-				war.LastAMTick = sim.CurrentTime
 			},
 		})
 	})
@@ -88,39 +91,43 @@ func (war *ArmsWarrior) GetMasteryProcChance() float64 {
 }
 
 func (war *ArmsWarrior) RegisterMastery() {
-	// TODO:
-	//	test what things the extra attack can proc
-	//	does the extra attack use the same hit table
-	//  can it proc off of missed/dodged/parried attacks
-	//
-	// 4.3.3 simcraft implements SoO as a standard autoattack with a 0.5s ICD
-	procAttackConfig := *war.AutoAttacks.MHConfig()
-	procAttackConfig.ActionID = core.ActionID{SpellID: StrikesOfOpportunityHitID, Tag: procAttackConfig.ActionID.Tag}
-	procAttack := war.RegisterSpell(procAttackConfig)
+	// TODO: can it proc off of missed/dodged/parried attacks - seems like no, need more data
+	procAttackConfig := core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: StrikesOfOpportunityHitID},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskMeleeSpecial,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
-	icd := core.Cooldown{
-		Timer:    war.NewTimer(),
-		Duration: time.Millisecond * 500,
+		DamageMultiplier:         1.0,
+		DamageMultiplierAdditive: 1.0,
+		CritMultiplier:           war.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier:         1.0,
+
+		BonusCoefficient: 1.0,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+		},
 	}
 
-	core.MakePermanent(war.RegisterAura(core.Aura{
-		Label: "Strikes of Opportunity",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ActionID.IsOtherAction(proto.OtherAction_OtherActionAttack) {
-				return
-			}
+	procAttack := war.RegisterSpell(procAttackConfig)
 
-			if !icd.IsReady(sim) {
-				return
-			}
-
-			proc := war.GetMasteryProcChance()
-			if sim.RandomFloat(aura.Label) < proc {
-				icd.Use(sim)
-				procAttack.Cast(sim, result.Target)
-			}
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:     "Strikes of Opportunity",
+		ActionID: procAttackConfig.ActionID,
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee,
+		ICD:      500 * time.Millisecond,
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			// Implement the proc in here so we can get the most up to date proc chance from mastery
+			return sim.Proc(war.GetMasteryProcChance(), "Strikes of Opportunity")
 		},
-	}))
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procAttack.Cast(sim, result.Target)
+		},
+	})
 }
 
 func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {
@@ -130,20 +137,9 @@ func (war *ArmsWarrior) GetWarrior() *warrior.Warrior {
 func (war *ArmsWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.RegisterSpecializationEffects()
-
-	// if war.Options.UseRecklessness {
-	// 	war.RegisterRecklessnessCD()
-	// }
-
-	// if war.Options.ClassOptions.UseShatteringThrow {
-	// 	war.RegisterShatteringThrowCD()
-	// }
-
-	// war.BattleStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
+	war.RegisterMortalStrike()
 }
 
-// func (war *ArmsWarrior) Reset(sim *core.Simulation) {
-// 	war.Warrior.Reset(sim)
-// 	war.BattleStanceAura.Activate(sim)
-// 	war.Stance = warrior.BattleStance
-// }
+func (war *ArmsWarrior) Reset(sim *core.Simulation) {
+	war.Warrior.Reset(sim)
+}

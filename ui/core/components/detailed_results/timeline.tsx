@@ -1,10 +1,10 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment } from 'tsx-vanilla';
 
 import { ResourceType } from '../../proto/api.js';
 import { OtherAction } from '../../proto/common.js';
-import { ActionId, resourceTypeToIcon } from '../../proto_utils/action_id.js';
+import { ActionId, buffAuraToSpellIdMap, resourceTypeToIcon } from '../../proto_utils/action_id.js';
 import { AuraUptimeLog, CastLog, DpsLog, ResourceChangedLogGroup, SimLog, ThreatLogGroup } from '../../proto_utils/logs_parser.js';
 import { resourceNames } from '../../proto_utils/names.js';
 import { UnitMetrics } from '../../proto_utils/sim_result.js';
@@ -626,11 +626,10 @@ export class Timeline extends ResultComponent {
 			}
 			this.hiddenIdsChangeEmitter.emit(TypedEvent.nextEventID());
 		});
-		Tooltip.getOrCreateInstance(hideElem, {
-			customClass: 'timeline-tooltip',
-			html: true,
+		tippy(hideElem, {
+			theme: 'timeline-tooltip',
 			placement: 'bottom',
-			title: isHiddenLabel ? 'Show Row' : 'Hide Row',
+			content: isHiddenLabel ? 'Show Row' : 'Hide Row',
 		});
 		const updateHidden = () => {
 			if (isHiddenLabel == Boolean(this.hiddenIds.find(hiddenId => hiddenId.equals(actionId)))) {
@@ -702,7 +701,13 @@ export class Timeline extends ResultComponent {
 		if (resourceLogs.length == 0) {
 			return;
 		}
-		const startValue = resourceLogs[0].valueBefore;
+		const startValue = function (group: ResourceChangedLogGroup): number {
+			if (group.maxValue == null) {
+				return resourceLogs[0].valueBefore;
+			}
+
+			return group.maxValue;
+		};
 		const labelElem = (
 			<div className="rotation-label rotation-row">
 				<a
@@ -736,13 +741,18 @@ export class Timeline extends ResultComponent {
 			);
 
 			if (percentageResources.includes(resourceType)) {
-				resourceElem.textContent = ((resourceLogGroup.valueAfter / startValue) * 100).toFixed(0) + '%';
+				resourceElem.textContent = ((resourceLogGroup.valueAfter / startValue(resourceLogGroup)) * 100).toFixed(0) + '%';
 			} else {
-				if (resourceType == ResourceType.ResourceTypeEnergy || resourceType == ResourceType.ResourceTypeFocus) {
+				if (
+					resourceType == ResourceType.ResourceTypeEnergy ||
+					resourceType == ResourceType.ResourceTypeFocus ||
+					resourceType == ResourceType.ResourceTypeSolarEnergy ||
+					resourceType == ResourceType.ResourceTypeLunarEnergy
+				) {
 					const bgElem = document.createElement('div');
 					bgElem.classList.add('rotation-timeline-resource-fill');
 					bgElem.classList.add(cNames);
-					bgElem.style.height = ((resourceLogGroup.valueAfter / startValue) * 100).toFixed(0) + '%';
+					bgElem.style.height = ((resourceLogGroup.valueAfter / startValue(resourceLogGroup)) * 100).toFixed(0) + '%';
 					resourceElem.appendChild(bgElem);
 				} else {
 					resourceElem.textContent = Math.floor(resourceLogGroup.valueAfter).toFixed(0);
@@ -750,10 +760,9 @@ export class Timeline extends ResultComponent {
 			}
 			rowElem.appendChild(resourceElem);
 
-			Tooltip.getOrCreateInstance(resourceElem, {
-				html: true,
+			tippy(resourceElem, {
 				placement: 'bottom',
-				title: this.resourceTooltipElem(resourceLogGroup, startValue, false),
+				content: this.resourceTooltipElem(resourceLogGroup, startValue(resourceLogGroup), false),
 			});
 		});
 		this.rotationTimeline.appendChild(rowElem);
@@ -828,10 +837,9 @@ export class Timeline extends ResultComponent {
 				</div>
 			);
 
-			Tooltip.getOrCreateInstance(castElem, {
-				html: true,
+			tippy(castElem, {
 				placement: 'bottom',
-				title: tt.outerHTML,
+				content: tt.outerHTML,
 			});
 
 			castLog.damageDealtLogs
@@ -851,17 +859,16 @@ export class Timeline extends ResultComponent {
 						</div>
 					);
 
-					Tooltip.getOrCreateInstance(tickElem, {
-						html: true,
+					tippy(tickElem, {
 						placement: 'bottom',
-						title: tt.outerHTML,
+						content: tt.outerHTML,
 					});
 				});
 		});
 
 		// If there are any auras that correspond to this cast, visualize them in the same row.
 		aurasById
-			.filter(auraUptimeLogs => auraUptimeLogs[0].actionId!.equalsIgnoringTag(actionId))
+			.filter(auraUptimeLogs => actionId.equalsIgnoringTag(buffAuraToSpellIdMap[auraUptimeLogs[0].actionId!.spellId] ?? auraUptimeLogs[0].actionId!))
 			.forEach(auraUptimeLogs => this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem));
 
 		this.rotationTimeline.appendChild(rowElem);
@@ -894,10 +901,9 @@ export class Timeline extends ResultComponent {
 				</div>
 			);
 
-			Tooltip.getOrCreateInstance(auraElem, {
-				html: true,
+			tippy(auraElem, {
 				placement: 'bottom',
-				title: tt.outerHTML,
+				content: tt.outerHTML,
 			});
 
 			aul.stacksChange.forEach((scl, i) => {
@@ -1205,9 +1211,9 @@ const idToCategoryMap: Record<number, number> = {
 	[57968]: SPELL_ACTION_CATEGORY + 0.2, // Instant Poison
 
 	// Shaman
-	[58804]: 0.11, // Windfury Weapon
-	[58790]: 0.12, // Flametongue Weapon
-	[58796]: 0.12, // Frostbrand Weapon
+	[8232]: 0.11, // Windfury Weapon
+	[8024]: 0.12, // Flametongue Weapon
+	[8033]: 0.12, // Frostbrand Weapon
 	[17364]: MELEE_ACTION_CATEGORY + 0.1, // Stormstrike
 	[60103]: MELEE_ACTION_CATEGORY + 0.2, // Lava Lash
 	[49233]: SPELL_ACTION_CATEGORY + 0.21, // Flame Shock

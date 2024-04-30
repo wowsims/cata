@@ -117,21 +117,18 @@
 // 		raidBuffs: RaidBuffs.create({
 // 			powerWordFortitude: TristateEffect.TristateEffectImproved,
 // 			shadowProtection: true,
-// 			giftOfTheWild: TristateEffect.TristateEffectImproved,
+// 			markOfTheWild: true,
 // 			thorns: TristateEffect.TristateEffectImproved,
 // 			bloodlust: true,
-// 			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+// 			strengthOfEarthTotem: true,
 // 			battleShout: TristateEffect.TristateEffectImproved,
-// 			unleashedRage: true,
-// 			windfuryTotem: TristateEffect.TristateEffectImproved,
+// 			unleashedRage: TristateEffect.TristateEffectImproved,
+// 			windfuryTotem: true,
 // 			arcaneEmpowerment: true,
 // 			moonkinAura: TristateEffect.TristateEffectImproved,
 // 		}),
-// 		partyBuffs: PartyBuffs.create({
-// 			heroicPresence: true,
-// 		}),
 // 		individualBuffs: IndividualBuffs.create({
-// 			blessingOfKings: true,
+//
 // 			blessingOfMight: TristateEffect.TristateEffectImproved,
 // 			renewedHope: true,
 // 		}),
@@ -164,6 +161,7 @@
 // 	// Inputs to include in the 'Other' section on the settings tab.
 // 	otherInputs: {
 // 		inputs: [
+// 			OtherInputs.InputDelay,
 // 			OtherInputs.TankAssignment,
 // 			OtherInputs.IncomingHps,
 // 			OtherInputs.HealingCadence,

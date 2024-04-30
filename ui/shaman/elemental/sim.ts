@@ -1,3 +1,4 @@
+import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/other_inputs.js';
 import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
@@ -36,7 +37,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit,  Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -45,15 +46,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
+		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 	// modifyDisplayStats: (player: Player<Spec.SpecElementalShaman>) => {
 	// 	let stats = new Stats();
-	// 	stats = stats.addStat(Stat.StatSpellHit, player.getTalents().elementalPrecision * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
 	// 	stats = stats.addStat(Stat.StatSpellCrit, player.getTalents().tidalMastery * 1 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
 	// 	return {
 	// 		talents: stats,
@@ -62,55 +63,62 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET_HORDE.gear,
+		gear: Presets.P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.22,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.67,
 			[Stat.StatSpellHaste]: 1.29,
-			[Stat.StatMP5]: 0.08,
+			[Stat.StatSpellHit]: 0.00,
+			[Stat.StatSpirit]: 0.00,
+			[Stat.StatMastery]: 0.00
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.StandardTalents.data,
+		talents: Presets.TalentsTotemDuration.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
-			divineSpirit: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			moonkinAura: TristateEffect.TristateEffectImproved,
-			sanctifiedRetribution: true,
-			demonicPactSp: 500,
+			bloodlust: true,
+			markOfTheWild: true,
+			icyTalons: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
 			wrathOfAirTotem: true,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: 2,
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			faerieFire: TristateEffect.TristateEffectImproved,
-			judgementOfWisdom: true,
-			misery: true,
+			judgement: true,
 			curseOfElements: true,
-			shadowMastery: true,
-			heartOfTheCrusader: true,
+			shadowAndFlame: true,
 		}),
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [ShamanInputs.ShamanShieldInput()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [],
+	includeBuffDebuffInputs: [
+		BuffDebuffInputs.MP5Buff,
+		BuffDebuffInputs.ReplenishmentBuff,
+	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [ElementalInputs.InThunderstormRange, OtherInputs.TankAssignment],
+		inputs: [ElementalInputs.InThunderstormRange, OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.DistanceFromTarget],
 	},
 	customSections: [ShamanInputs.TotemsSection],
 	encounterPicker: {
@@ -120,11 +128,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.StandardTalents],
+		talents: [Presets.TalentsTotemDuration, Presets.TalentsImprovedShields],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_ADVANCED],
+		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET_ALLI, Presets.P3_PRESET_HORDE, Presets.P4_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecElementalShaman>): APLRotation => {
@@ -134,7 +142,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecElementalShaman,
-			talents: Presets.StandardTalents.data,
+			talents: Presets.TalentsTotemDuration.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -146,17 +154,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET_ALLI.gear,
-					4: Presets.P4_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET_HORDE.gear,
-					4: Presets.P4_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });

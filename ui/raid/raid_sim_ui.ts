@@ -143,14 +143,11 @@ export class RaidSimUI extends SimUI {
 					return;
 				}
 
+				// TODO: No longer needed per-player
 				if (paladin.blessings[spec] == Blessings.BlessingOfKings) {
-					playerProtos.forEach(playerProto => (playerProto.buffs!.blessingOfKings = true));
+					playerProtos.forEach(playerProto => (raidProto.buffs!.blessingOfKings = true));
 				} else if (paladin.blessings[spec] == Blessings.BlessingOfMight) {
-					playerProtos.forEach(playerProto => (playerProto.buffs!.blessingOfMight = TristateEffect.TristateEffectImproved));
-				} else if (paladin.blessings[spec] == Blessings.BlessingOfWisdom) {
-					playerProtos.forEach(playerProto => (playerProto.buffs!.blessingOfWisdom = TristateEffect.TristateEffectImproved));
-				} else if (paladin.blessings[spec] == Blessings.BlessingOfSanctuary) {
-					playerProtos.forEach(playerProto => (playerProto.buffs!.blessingOfSanctuary = true));
+					playerProtos.forEach(playerProto => (raidProto.buffs!.blessingOfMight = true));
 				}
 			});
 		});

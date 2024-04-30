@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 const (
@@ -17,15 +18,21 @@ var TalentTreeSizes = [3]int{20, 22, 21}
 type Druid struct {
 	core.Character
 	SelfBuffs
+	eclipseEnergyBar
 	Talents *proto.DruidTalents
 
-	// StartingForm DruidForm
+	ClassSpellScaling float64
+
+	StartingForm DruidForm
 
 	RebirthUsed       bool
 	RebirthTiming     float64
 	BleedsActive      int
 	AssumeBleedActive bool
+	LeatherSpecActive bool
+	RipTfSnapshot     bool
 
+	MHAutoSpell       *core.Spell
 	ReplaceBearMHFunc core.ReplaceMHSwing
 
 	Barkskin             *DruidSpell
@@ -47,6 +54,7 @@ type Druid struct {
 	Maul                 *DruidSpell
 	MaulQueueSpell       *DruidSpell
 	Moonfire             *DruidSpell
+	Pulverize            *DruidSpell
 	Rebirth              *DruidSpell
 	Rake                 *DruidSpell
 	Rip                  *DruidSpell
@@ -54,11 +62,13 @@ type Druid struct {
 	Shred                *DruidSpell
 	Starfire             *DruidSpell
 	Starfall             *DruidSpell
-	StarfallSplash       *DruidSpell
+	Starsurge            *DruidSpell
+	Sunfire              *DruidSpell
 	SurvivalInstincts    *DruidSpell
 	SwipeBear            *DruidSpell
 	SwipeCat             *DruidSpell
 	TigersFury           *DruidSpell
+	Thrash               *DruidSpell
 	Typhoon              *DruidSpell
 	Wrath                *DruidSpell
 
@@ -68,6 +78,7 @@ type Druid struct {
 	BarkskinAura             *core.Aura
 	BearFormAura             *core.Aura
 	BerserkAura              *core.Aura
+	BerserkProcAura          *core.Aura
 	CatFormAura              *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
@@ -78,6 +89,8 @@ type Druid struct {
 	MoonkinT84PCAura         *core.Aura
 	NaturesGraceProcAura     *core.Aura
 	PredatoryInstinctsAura   *core.Aura
+	PrimalMadnessAura        *core.Aura
+	PulverizeAura            *core.Aura
 	SavageDefenseAura        *core.Aura
 	SurvivalInstinctsAura    *core.Aura
 	TigersFuryAura           *core.Aura
@@ -88,6 +101,7 @@ type Druid struct {
 
 	BleedCategories core.ExclusiveCategoryArray
 
+	PrimalMadnessRageMetrics       *core.ResourceMetrics
 	PrimalPrecisionRecoveryMetrics *core.ResourceMetrics
 	SavageRoarDurationTable        [6]time.Duration
 
@@ -100,9 +114,52 @@ type Druid struct {
 	// Treant2                 *TreantPet
 	// Treant3                 *TreantPet
 
-	// form         DruidForm
+	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
 }
+
+const (
+	DruidSpellFlagNone int64 = 0
+	DruidSpellBarkskin int64 = 1 << iota
+	DruidSpellCyclone
+	DruidSpellEntanglingRoots
+	DruidSpellFearieFire
+	DruidSpellHibernate
+	DruidSpellHurricane
+	DruidSpellInnervate
+	DruidSpellInsectSwarm
+	DruidSpellMoonfire
+	DruidSpellNaturesGrasp
+	DruidSpellStarfall
+	DruidSpellStarfire
+	DruidSpellStarsurge
+	DruidSpellSunfire
+	DruidSpellThorns
+	DruidSpellTyphoon
+	DruidSpellWildMushroom
+	DruidSpellWildMushroomDetonate
+	DruidSpellWrath
+
+	DruidSpellHealingTouch
+	DruidSpellRegrowth
+	DruidSpellLifebloom
+	DruidSpellRejuvenation
+	DruidSpellNourish
+	DruidSpellTranquility
+	DruidSpellMarkOfTheWild
+	DruidSpellSwiftmend
+	DruidSpellWildGrowth
+
+	DruidSpellLast
+	DruidSpellsAll      = DruidSpellLast<<1 - 1
+	DruidSpellDoT       = DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellSunfire
+	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
+	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
+	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
+	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellTyphoon | DruidSpellHurricane
+	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
+	DruidDamagingSpells = DruidArcaneSpells | DruidNatureSpells
+)
 
 type SelfBuffs struct {
 	InnervateTarget *proto.UnitReference
@@ -130,30 +187,25 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	// 		raidBuffs.MoonkinAura = proto.TristateEffect_TristateEffectImproved
 	// 	}
 	// }
-	// if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
-	// 	raidBuffs.LeaderOfThePack = max(raidBuffs.LeaderOfThePack, proto.TristateEffect_TristateEffectRegular)
-	// 	if druid.Talents.ImprovedLeaderOfThePack > 0 {
-	// 		raidBuffs.LeaderOfThePack = proto.TristateEffect_TristateEffectImproved
-	// 	}
-	// }
+	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
+		raidBuffs.LeaderOfThePack = true
+	}
+
+	raidBuffs.MarkOfTheWild = true
 }
 
-// func (druid *Druid) BalanceCritMultiplier() float64 {
-// 	return druid.SpellCritMultiplier(1, 0.2*float64(druid.Talents.Vengeance))
-// }
+func (druid *Druid) BalanceCritMultiplier() float64 {
+	return druid.SpellCritMultiplier(1, 0)
+}
 
-// func (druid *Druid) MeleeCritMultiplier(castedForm DruidForm) float64 {
-// 	// Assumes that Predatory Instincts is a primary rather than secondary modifier for now, but this needs to confirmed!
-// 	primaryModifier := 1.0
-// 	if castedForm.Matches(Cat) {
-// 		primaryModifier = []float64{1, 1.03, 1.07, 1.10}[druid.Talents.PredatoryInstincts]
-// 	}
-// 	return druid.Character.MeleeCritMultiplier(primaryModifier, 0)
-// }
+func (druid *Druid) HasPrimeGlyph(glyph proto.DruidPrimeGlyph) bool {
+	return druid.HasGlyph(int32(glyph))
+}
 
 func (druid *Druid) HasMajorGlyph(glyph proto.DruidMajorGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
+
 func (druid *Druid) HasMinorGlyph(glyph proto.DruidMinorGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
@@ -162,77 +214,86 @@ func (druid *Druid) HasMinorGlyph(glyph proto.DruidMinorGlyph) bool {
 // 	return druid.MaulReplaceMH(sim, mhSwingSpell)
 // }
 
-// func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *DruidSpell {
-// 	prev := config.ExtraCastCondition
-// 	prevModify := config.Cast.ModifyCast
+func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *DruidSpell {
+	prev := config.ExtraCastCondition
+	prevModify := config.Cast.ModifyCast
 
-// 	ds := &DruidSpell{FormMask: formMask}
-// 	config.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-// 		// Check if we're in allowed form to cast
-// 		// Allow 'humanoid' auto unshift casts
-// 		if (ds.FormMask != Any && !druid.InForm(ds.FormMask)) && !ds.FormMask.Matches(Humanoid) {
-// 			if sim.Log != nil {
-// 				sim.Log("Failed cast to spell %s, wrong form", ds.ActionID)
-// 			}
-// 			return false
-// 		}
-// 		return prev == nil || prev(sim, target)
-// 	}
-// 	config.Cast.ModifyCast = func(sim *core.Simulation, s *core.Spell, c *core.Cast) {
-// 		if !druid.InForm(ds.FormMask) && ds.FormMask.Matches(Humanoid) {
-// 			druid.ClearForm(sim)
-// 		}
-// 		if prevModify != nil {
-// 			prevModify(sim, s, c)
-// 		}
-// 	}
+	ds := &DruidSpell{FormMask: formMask}
+	config.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
+		// Check if we're in allowed form to cast
+		// Allow 'humanoid' auto unshift casts
+		if (ds.FormMask != Any && !druid.InForm(ds.FormMask)) && !ds.FormMask.Matches(Humanoid) {
+			if sim.Log != nil {
+				sim.Log("Failed cast to spell %s, wrong form", ds.ActionID)
+			}
+			return false
+		}
+		return prev == nil || prev(sim, target)
+	}
+	config.Cast.ModifyCast = func(sim *core.Simulation, s *core.Spell, c *core.Cast) {
+		if !druid.InForm(ds.FormMask) && ds.FormMask.Matches(Humanoid) {
+			druid.ClearForm(sim)
+		}
+		if prevModify != nil {
+			prevModify(sim, s, c)
+		}
+	}
 
-// 	ds.Spell = druid.Unit.RegisterSpell(config)
+	ds.Spell = druid.Unit.RegisterSpell(config)
 
-// 	return ds
-// }
+	return ds
+}
 
 func (druid *Druid) Initialize() {
-	// druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
+	druid.LeatherSpecActive = druid.MeetsArmorSpecializationRequirement(proto.ArmorType_ArmorTypeLeather)
+	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
+
+	druid.Env.RegisterPostFinalizeEffect(func() {
+		druid.MHAutoSpell = druid.AutoAttacks.MHAuto()
+	})
 
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.PrimalPrecisionRecoveryMetrics = druid.NewEnergyMetrics(core.ActionID{SpellID: 48410})
 	// }
-	// druid.registerFaerieFireSpell()
+	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	// druid.registerInnervateCD()
 	// druid.registerFakeGotw()
+	druid.applyOmenOfClarity()
 }
 
-// func (druid *Druid) RegisterBalanceSpells() {
-// 	druid.registerHurricaneSpell()
-// 	druid.registerInsectSwarmSpell()
-// 	druid.registerMoonfireSpell()
-// 	druid.registerStarfireSpell()
-// 	druid.registerWrathSpell()
-// 	druid.registerStarfallSpell()
-// 	druid.registerTyphoonSpell()
-// 	druid.registerForceOfNatureCD()
-// }
+func (druid *Druid) RegisterBalanceSpells() {
+	//druid.registerHurricaneSpell()
+	druid.registerInsectSwarmSpell()
+	druid.registerMoonfireSpell()
+	druid.registerStarfireSpell()
+	druid.registerWrathSpell()
+	druid.registerStarfallSpell()
+	druid.registerTyphoonSpell()
+	//druid.registerForceOfNatureCD()
+	druid.registerStarsurgeSpell()
+}
 
-// func (druid *Druid) RegisterFeralCatSpells() {
-// 	druid.registerBerserkCD()
-// 	druid.registerCatFormSpell()
-// 	druid.registerBearFormSpell()
-// 	druid.registerEnrageSpell()
-// 	druid.registerFerociousBiteSpell()
-// 	druid.registerMangleBearSpell()
-// 	druid.registerMangleCatSpell()
-// 	druid.registerMaulSpell()
-// 	druid.registerLacerateSpell()
-// 	druid.registerRakeSpell()
-// 	druid.registerRipSpell()
-// 	druid.registerSavageRoarSpell()
-// 	druid.registerShredSpell()
-// 	druid.registerSwipeBearSpell()
-// 	druid.registerSwipeCatSpell()
-// 	druid.registerTigersFurySpell()
-// }
+func (druid *Druid) RegisterFeralCatSpells() {
+	druid.registerBerserkCD()
+	druid.registerCatFormSpell()
+
+	// 	druid.registerBearFormSpell()
+	// 	druid.registerEnrageSpell()
+	druid.registerFerociousBiteSpell()
+	// 	druid.registerMangleBearSpell()
+	druid.registerMangleCatSpell()
+	// 	druid.registerMaulSpell()
+	druid.registerLacerateSpell()
+	druid.registerRakeSpell()
+	druid.registerRipSpell()
+	druid.registerSavageRoarSpell()
+	druid.registerShredSpell()
+	// 	druid.registerSwipeBearSpell()
+	// 	druid.registerSwipeCatSpell()
+	druid.registerTigersFurySpell()
+	druid.registerThrashBearSpell()
+}
 
 // func (druid *Druid) RegisterFeralTankSpells() {
 // 	druid.registerBarkskinCD()
@@ -249,9 +310,12 @@ func (druid *Druid) Initialize() {
 // 	druid.registerSavageDefensePassive()
 // 	druid.registerSurvivalInstinctsCD()
 // 	druid.registerSwipeBearSpell()
+//  druid.registerThrashBearSpell()
 // }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
+
+	druid.eclipseEnergyBar.reset()
 	// druid.BleedsActive = 0
 	// druid.form = druid.StartingForm
 	// druid.disabledMCDs = []*core.MajorCooldown{}
@@ -262,26 +326,28 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 
 func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {
 	druid := &Druid{
-		Character: *char,
-		SelfBuffs: selfBuffs,
-		Talents:   &proto.DruidTalents{},
-		//StartingForm: form,
-		//form:         form,
+		Character:         *char,
+		SelfBuffs:         selfBuffs,
+		Talents:           &proto.DruidTalents{},
+		StartingForm:      form,
+		form:              form,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassDruid),
 	}
-	// 	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
-	// 	// druid.EnableManaBar()
 
-	// 	// druid.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	// 	// druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-	// 	// druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[char.Class]*core.CritRatingPerCritChance)
+	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	druid.EnableManaBar()
+
+	druid.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
+	druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[char.Class]*core.CritRatingPerCritChance)
 	// 	// // Druid get 0.0209 dodge per agi (before dr), roughly 1 per 47.846
 	// 	// druid.AddStatDependency(stats.Agility, stats.Dodge, (0.0209)*core.DodgeRatingPerDodgeChance)
 
 	// 	// // Druids get extra melee haste
 	// 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-	// 	// // Base dodge is unaffected by Diminishing Returns
-	// 	// druid.PseudoStats.BaseDodge += 0.056097
+	// Base dodge is unaffected by Diminishing Returns
+	druid.PseudoStats.BaseDodge += 0.056097 // TODO: Check if this is different in Cata
 
 	// 	// if druid.Talents.ForceOfNature {
 	// 	// 	druid.Treant1 = druid.NewTreant()
@@ -294,29 +360,29 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 
 type DruidSpell struct {
 	*core.Spell
-	//FormMask DruidForm
+	FormMask DruidForm
 }
 
-// func (ds *DruidSpell) IsReady(sim *core.Simulation) bool {
-// 	if ds == nil {
-// 		return false
-// 	}
-// 	return ds.Spell.IsReady(sim)
-// }
+func (ds *DruidSpell) IsReady(sim *core.Simulation) bool {
+	if ds == nil {
+		return false
+	}
+	return ds.Spell.IsReady(sim)
+}
 
-// func (ds *DruidSpell) CanCast(sim *core.Simulation, target *core.Unit) bool {
-// 	if ds == nil {
-// 		return false
-// 	}
-// 	return ds.Spell.CanCast(sim, target)
-// }
+func (ds *DruidSpell) CanCast(sim *core.Simulation, target *core.Unit) bool {
+	if ds == nil {
+		return false
+	}
+	return ds.Spell.CanCast(sim, target)
+}
 
-// func (ds *DruidSpell) IsEqual(s *core.Spell) bool {
-// 	if ds == nil || s == nil {
-// 		return false
-// 	}
-// 	return ds.Spell == s
-// }
+func (ds *DruidSpell) IsEqual(s *core.Spell) bool {
+	if ds == nil || s == nil {
+		return false
+	}
+	return ds.Spell == s
+}
 
 // Agent is a generic way to access underlying druid on any of the agents (for example balance druid.)
 type DruidAgent interface {

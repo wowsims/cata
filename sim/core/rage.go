@@ -66,9 +66,11 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 				return
 			}
 
-			if result.Outcome.Matches(OutcomeCrit) {
-				hitFactor *= 2
-			}
+			// Currently, rage does not get doubled for crits in cataclysm
+			// Leaving the code here for reference with a note.
+			//if result.Outcome.Matches(OutcomeCrit) {
+			//	hitFactor *= 2
+			//}
 
 			// TODO: Cataclysm dodge/parry behavior
 			// damage := result.Damage
@@ -141,12 +143,12 @@ func (rb *rageBar) AddRage(sim *Simulation, amount float64, metrics *ResourceMet
 	metrics.AddEvent(amount, newRage-rb.currentRage)
 
 	if sim.Log != nil {
-		rb.unit.Log(sim, "Gained %0.3f rage from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, rb.currentRage, newRage)
+		rb.unit.Log(sim, "Gained %0.3f rage from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rb.currentRage, newRage, 100.0)
 	}
 
 	rb.currentRage = newRage
 	if !sim.Options.Interactive {
-		rb.unit.Rotation.DoNextAction(sim)
+		rb.unit.ReactToEvent(sim)
 	}
 }
 
@@ -159,7 +161,7 @@ func (rb *rageBar) SpendRage(sim *Simulation, amount float64, metrics *ResourceM
 	metrics.AddEvent(-amount, -amount)
 
 	if sim.Log != nil {
-		rb.unit.Log(sim, "Spent %0.3f rage from %s (%0.3f --> %0.3f).", amount, metrics.ActionID, rb.currentRage, newRage)
+		rb.unit.Log(sim, "Spent %0.3f rage from %s (%0.3f --> %0.3f) of %0.0f total.", amount, metrics.ActionID, rb.currentRage, newRage, 100.0)
 	}
 
 	rb.currentRage = newRage
@@ -225,7 +227,7 @@ func newRageCost(spell *Spell, options RageCostOptions) *RageCost {
 	}
 
 	return &RageCost{
-		Refund:          options.Refund * options.Cost,
+		Refund:          options.Refund,
 		RefundMetrics:   options.RefundMetrics,
 		ResourceMetrics: spell.Unit.NewRageMetrics(spell.ActionID),
 	}
@@ -244,7 +246,7 @@ func (rc *RageCost) SpendCost(sim *Simulation, spell *Spell) {
 	}
 }
 func (rc *RageCost) IssueRefund(sim *Simulation, spell *Spell) {
-	if rc.Refund > 0 {
-		spell.Unit.AddRage(sim, rc.Refund, rc.RefundMetrics)
+	if rc.Refund > 0 && spell.CurCast.Cost > 0 {
+		spell.Unit.AddRage(sim, rc.Refund*spell.CurCast.Cost, rc.RefundMetrics)
 	}
 }

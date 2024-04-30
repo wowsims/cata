@@ -11,13 +11,15 @@ func (hunter *Hunter) registerCobraShotSpell() {
 	csMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 77767})
 
 	hunter.CobraShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 77767},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 77767},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		ClassSpellMask: HunterSpellCobraShot,
+		Flags:          core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},
+		MissileSpeed: 40,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      time.Second,
@@ -37,16 +39,21 @@ func (hunter *Hunter) registerCobraShotSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (277.21 + spell.RangedAttackPower(target)*0.017)
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) + (276.806 + spell.RangedAttackPower(target)*0.017)
 			focus := 9.0
 			if hunter.Talents.Termination != 0 && sim.IsExecutePhase25() {
 				focus = float64(hunter.Talents.Termination) * 3
 			}
 			hunter.AddFocus(sim, focus, csMetrics)
 			if hunter.SerpentSting.Dot(target).IsActive() {
-				hunter.SerpentSting.Dot(target).Rollover(sim)
+				hunter.SerpentSting.Dot(target).Apply(sim) // Refresh to cause new total snapshot
 			}
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
+
 		},
 	})
 }

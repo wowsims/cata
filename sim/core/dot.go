@@ -21,10 +21,13 @@ type DotConfig struct {
 	TickLength    time.Duration // time between each tick
 
 	// If true, tick length will be shortened based on casting speed.
-	AffectedByCastSpeed bool
+	AffectedByCastSpeed  bool
+	HasteAffectsDuration bool
 
 	OnSnapshot OnSnapshot
 	OnTick     OnTick
+
+	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 }
 
 type Dot struct {
@@ -34,10 +37,12 @@ type Dot struct {
 	*Aura
 
 	NumberOfTicks int32         // number of ticks over the whole duration
+	BaseTickCount int32         // base tick count without haste applied
 	TickLength    time.Duration // time between each tick
 
 	// If true, tick length will be shortened based on casting speed.
-	AffectedByCastSpeed bool
+	AffectedByCastSpeed  bool
+	HasteAffectsDuration bool
 
 	OnSnapshot OnSnapshot
 	OnTick     OnTick
@@ -54,6 +59,8 @@ type Dot struct {
 
 	lastTickTime time.Duration
 	isChanneled  bool
+
+	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 }
 
 // TickPeriod is how fast the snapshot dot ticks.
@@ -73,10 +80,10 @@ func (dot *Dot) MaxTicksRemaining() int32 {
 	return dot.NumberOfTicks - dot.TickCount
 }
 
-func (dot *Dot) NumTicksRemaining(sim *Simulation) int {
+func (dot *Dot) NumTicksRemaining(sim *Simulation) int32 {
 	maxTicksRemaining := dot.MaxTicksRemaining()
 	finalTickAt := dot.lastTickTime + dot.tickPeriod*time.Duration(maxTicksRemaining)
-	return max(0, int((finalTickAt-sim.CurrentTime)/dot.tickPeriod)+1)
+	return max(0, int32((finalTickAt-sim.CurrentTime)/dot.tickPeriod)+1)
 }
 
 // Roll over = gets carried over with everlasting refresh and doesn't get applied if triggered when the spell is already up.
@@ -124,12 +131,41 @@ func (dot *Dot) RescheduleNextTick(sim *Simulation) {
 	sim.AddPendingAction(dot.tickAction)
 }
 
+// Snapshots and activates the Dot
+// If the Dot is running it's duration will be refreshed and
+// if there was a next Dot happening this will carry over to the new Dot
 func (dot *Dot) Apply(sim *Simulation) {
+
 	dot.TakeSnapshot(sim, false)
 
-	dot.Cancel(sim)
 	dot.TickCount = 0
-	dot.RecomputeAuraDuration()
+
+	// we a have running dot tick
+	// the next tick never get's clipped and is added onto the dot's time for hasted dots
+	// see: https://github.com/wowsims/cata/issues/50git
+	if dot.tickAction != nil && !dot.tickAction.cancelled {
+
+		// save next tick timer as timer is computed based on tick time
+		// which we update in RecomputeAuraDuration
+		nextTick := dot.TimeUntilNextTick(sim)
+		dot.RecomputeAuraDuration()
+		dot.Aura.Duration += nextTick
+
+		// add extra tick
+		dot.TickCount--
+
+		// update tick action to work with new tick rate, but set next tick to still occur
+		oldNextAction := dot.tickAction.NextActionAt
+		dot.tickAction.Cancel(sim)
+		periodicOptions := dot.basePeriodicOptions()
+		periodicOptions.Period = dot.tickPeriod
+		dot.tickAction = NewPeriodicAction(sim, periodicOptions)
+		dot.tickAction.NextActionAt = oldNextAction
+		sim.AddPendingAction(dot.tickAction)
+	} else {
+		dot.RecomputeAuraDuration()
+	}
+
 	dot.Aura.Activate(sim)
 }
 
@@ -160,15 +196,6 @@ func (dot *Dot) ApplyOrReset(sim *Simulation) {
 	sim.AddPendingAction(dot.tickAction)
 }
 
-// Like Apply(), but does not reset the tick timer.
-func (dot *Dot) ApplyOrRefresh(sim *Simulation) {
-	dot.TakeSnapshot(sim, false)
-
-	dot.TickCount = 0
-	dot.RecomputeAuraDuration()
-	dot.Aura.Activate(sim)
-}
-
 func (dot *Dot) Cancel(sim *Simulation) {
 	if dot.Aura.IsActive() {
 		dot.Aura.Deactivate(sim)
@@ -179,11 +206,28 @@ func (dot *Dot) Cancel(sim *Simulation) {
 func (dot *Dot) RecomputeAuraDuration() {
 	if dot.AffectedByCastSpeed {
 		dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.TickLength, dot.Spell)
+
+		// cata haste logic here for dots
+		// channels seem not to be affected by the same logic
+		// see: https://youtu.be/Rr4YyKaU7Ik?si=Isuce7Z1bQWMWpMi&t=53
+		if !dot.isChanneled && !dot.HasteAffectsDuration {
+			dot.NumberOfTicks = int32(round(float64(dot.GetBaseDuration()) / float64(dot.tickPeriod)))
+		}
+
 		dot.Aura.Duration = dot.tickPeriod * time.Duration(dot.NumberOfTicks)
 	} else {
 		dot.tickPeriod = dot.TickLength
 		dot.Aura.Duration = dot.tickPeriod * time.Duration(dot.NumberOfTicks)
 	}
+}
+
+func (dot *Dot) AddTicks(num int32) {
+	dot.BaseTickCount += num
+	dot.NumberOfTicks += num
+}
+
+func (dot *Dot) GetBaseDuration() time.Duration {
+	return time.Duration(dot.BaseTickCount) * dot.TickLength
 }
 
 // Takes a new snapshot of this Dot's effects.
@@ -303,14 +347,18 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 	dot := Dot{
 		Spell: config.Spell,
 
-		NumberOfTicks:       config.NumberOfTicks,
-		TickLength:          config.TickLength,
-		AffectedByCastSpeed: config.AffectedByCastSpeed,
+		NumberOfTicks:        config.NumberOfTicks,
+		BaseTickCount:        config.NumberOfTicks,
+		TickLength:           config.TickLength,
+		AffectedByCastSpeed:  config.AffectedByCastSpeed,
+		HasteAffectsDuration: config.HasteAffectsDuration,
 
 		OnSnapshot: config.OnSnapshot,
 		OnTick:     config.OnTick,
 
 		isChanneled: config.Spell.Flags.Matches(SpellFlagChanneled),
+
+		BonusCoefficient: config.BonusCoefficient,
 	}
 
 	auraConfig := config.Aura

@@ -126,10 +126,11 @@ message RogueOptions {
 	}
 	PoisonImbue mh_imbue = 2;
 	PoisonImbue oh_imbue = 3;
-	int32 starting_overkill_duration = 4;
-	bool apply_poisons_manually = 5;
-	bool assume_bleed_active = 6;
-	float vanish_break_time = 7;
+	PoisonImbue th_imbue = 4;
+	int32 starting_overkill_duration = 5;
+	bool apply_poisons_manually = 6;
+	bool assume_bleed_active = 7;
+	float vanish_break_time = 8;
 }
 
 message AssassinationRogue {

@@ -4,6 +4,7 @@ import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class BeastMasteryHunter extends PlayerSpec<Spec.SpecBeastMasteryHunter> {
+	static specIndex = 0;
 	static specID = Spec.SpecBeastMasteryHunter as Spec.SpecBeastMasteryHunter;
 	static classID = Class.ClassHunter as Class.ClassHunter;
 	static friendlyName = 'Beast Mastery';
@@ -16,6 +17,7 @@ export class BeastMasteryHunter extends PlayerSpec<Spec.SpecBeastMasteryHunter> 
 
 	static canDualWield = true;
 
+	readonly specIndex = BeastMasteryHunter.specIndex;
 	readonly specID = BeastMasteryHunter.specID;
 	readonly classID = BeastMasteryHunter.classID;
 	readonly friendlyName = BeastMasteryHunter.friendlyName;
@@ -38,6 +40,7 @@ export class BeastMasteryHunter extends PlayerSpec<Spec.SpecBeastMasteryHunter> 
 }
 
 export class MarksmanshipHunter extends PlayerSpec<Spec.SpecMarksmanshipHunter> {
+	static specIndex = 1;
 	static specID = Spec.SpecMarksmanshipHunter as Spec.SpecMarksmanshipHunter;
 	static classID = Class.ClassHunter as Class.ClassHunter;
 	static friendlyName = 'Marksmanship';
@@ -50,6 +53,7 @@ export class MarksmanshipHunter extends PlayerSpec<Spec.SpecMarksmanshipHunter> 
 
 	static canDualWield = true;
 
+	readonly specIndex = MarksmanshipHunter.specIndex;
 	readonly specID = MarksmanshipHunter.specID;
 	readonly classID = MarksmanshipHunter.classID;
 	readonly friendlyName = MarksmanshipHunter.friendlyName;
@@ -72,6 +76,7 @@ export class MarksmanshipHunter extends PlayerSpec<Spec.SpecMarksmanshipHunter> 
 }
 
 export class SurvivalHunter extends PlayerSpec<Spec.SpecSurvivalHunter> {
+	static specIndex = 2;
 	static specID = Spec.SpecSurvivalHunter as Spec.SpecSurvivalHunter;
 	static classID = Class.ClassHunter as Class.ClassHunter;
 	static friendlyName = 'Survival';
@@ -84,6 +89,7 @@ export class SurvivalHunter extends PlayerSpec<Spec.SpecSurvivalHunter> {
 
 	static canDualWield = true;
 
+	readonly specIndex = SurvivalHunter.specIndex;
 	readonly specID = SurvivalHunter.specID;
 	readonly classID = SurvivalHunter.classID;
 	readonly friendlyName = SurvivalHunter.friendlyName;

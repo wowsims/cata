@@ -7,11 +7,13 @@
 
 	.link-exporter-pickers {
 		display: grid;
-		grid-template-columns: repeat(3,1fr);
+		grid-template-columns: repeat(3, 1fr);
 		column-gap: 1.25rem;
 	}
 
-	button {
-		width: 12rem;
+	.modal-footer {
+		.btn {
+			width: 12rem;
+		}
 	}
 }

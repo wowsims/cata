@@ -1765,7 +1765,7 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 
 	if (enchant.enchantType == EnchantType.EnchantTypeStaff && item.weaponType != WeaponType.WeaponTypeStaff) return false;
 
-	if (item.weaponType == WeaponType.WeaponTypeOffHand) return false;
+	if ((item.weaponType == WeaponType.WeaponTypeOffHand) != (enchant.enchantType == EnchantType.EnchantTypeOffHand)) return false;
 
 	if (sharedSlots.includes(ItemSlot.ItemSlotRanged)) {
 		if (
@@ -1811,11 +1811,11 @@ export function makeBlankBlessingsAssignments(numPaladins: number): BlessingsAss
 	return assignments;
 }
 
-export function makeBlessingsAssignments(numPaladins: number, data: Array<{ spec: Spec; blessings: Array<Blessings> }>): BlessingsAssignments {
+export function makeBlessingsAssignments(numPaladins: number): BlessingsAssignments {
 	const assignments = makeBlankBlessingsAssignments(numPaladins);
-	for (let i = 0; i < data.length; i++) {
-		const spec = data[i].spec;
-		const blessings = data[i].blessings;
+	for (let i = 1; i < Object.keys(Spec).length; i++) {
+		const spec = i;
+		const blessings = [Blessings.BlessingOfKings, Blessings.BlessingOfMight]
 		for (let j = 0; j < blessings.length; j++) {
 			if (j >= assignments.paladins.length) {
 				// Can't assign more blessings since we ran out of paladins
@@ -1829,138 +1829,7 @@ export function makeBlessingsAssignments(numPaladins: number, data: Array<{ spec
 
 // Default blessings settings in the raid sim UI.
 export function makeDefaultBlessings(numPaladins: number): BlessingsAssignments {
-	return makeBlessingsAssignments(numPaladins, [
-		// Death Knight
-		{
-			spec: Spec.SpecBloodDeathKnight,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight, Blessings.BlessingOfSanctuary],
-		},
-		{
-			spec: Spec.SpecFrostDeathKnight,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight],
-		},
-		{
-			spec: Spec.SpecUnholyDeathKnight,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight],
-		},
-		// Druid
-		{
-			spec: Spec.SpecBalanceDruid,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecFeralDruid,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight, Blessings.BlessingOfWisdom, Blessings.BlessingOfSanctuary],
-		},
-		{
-			spec: Spec.SpecRestorationDruid,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		// Hunter
-		{
-			spec: Spec.SpecBeastMasteryHunter,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecMarksmanshipHunter,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecSurvivalHunter,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight, Blessings.BlessingOfWisdom],
-		},
-		// Mage
-		{
-			spec: Spec.SpecArcaneMage,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecFireMage,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecFrostMage,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		// Paladin
-		{
-			spec: Spec.SpecHolyPaladin,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecProtectionPaladin,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfSanctuary, Blessings.BlessingOfWisdom, Blessings.BlessingOfMight],
-		},
-		{
-			spec: Spec.SpecRetributionPaladin,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight, Blessings.BlessingOfWisdom],
-		},
-		// Priest
-		{
-			spec: Spec.SpecDisciplinePriest,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecHolyPriest,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecShadowPriest,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		// Rogue
-		{
-			spec: Spec.SpecAssassinationRogue,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight],
-		},
-		{
-			spec: Spec.SpecCombatRogue,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight],
-		},
-		{
-			spec: Spec.SpecSubtletyRogue,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight],
-		},
-		// Shaman
-		{
-			spec: Spec.SpecElementalShaman,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecEnhancementShaman,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecRestorationShaman,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		// Warlock
-		{
-			spec: Spec.SpecAfflictionWarlock,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecDemonologyWarlock,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		{
-			spec: Spec.SpecDestructionWarlock,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfWisdom],
-		},
-		// Warrior
-		{
-			spec: Spec.SpecArmsWarrior,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight],
-		},
-		{
-			spec: Spec.SpecFuryWarrior,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight],
-		},
-		{
-			spec: Spec.SpecProtectionWarrior,
-			blessings: [Blessings.BlessingOfKings, Blessings.BlessingOfMight, Blessings.BlessingOfSanctuary],
-		},
-	]);
+	return makeBlessingsAssignments(numPaladins);
 }
 
 export const orderedResourceTypes: Array<ResourceType> = [
@@ -1975,6 +1844,8 @@ export const orderedResourceTypes: Array<ResourceType> = [
 	ResourceType.ResourceTypeFrostRune,
 	ResourceType.ResourceTypeUnholyRune,
 	ResourceType.ResourceTypeDeathRune,
+	ResourceType.ResourceTypeLunarEnergy,
+	ResourceType.ResourceTypeSolarEnergy,
 ];
 
 export const AL_CATEGORY_HARD_MODE = 'Hard Mode';

@@ -1,8 +1,11 @@
 package elemental
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/shaman"
 )
 
@@ -40,27 +43,52 @@ func NewElementalShaman(character *core.Character, options *proto.Player) *Eleme
 		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, inRange),
 	}
 
-	// if mh := ele.GetMHWeapon(); mh != nil {
-	// 	ele.ApplyFlametongueImbueToItem(mh, false)
-	// }
-
-	// if oh := ele.GetOHWeapon(); oh != nil {
-	// 	ele.ApplyFlametongueImbueToItem(oh, false)
-	// }
-
-	// if ele.Talents.FeralSpirit {
-	// 	// Enable Auto Attacks but don't enable auto swinging
-	// 	ele.EnableAutoAttacks(ele, core.AutoAttackOptions{
-	// 		MainHand: ele.WeaponFromMainHand(ele.DefaultMeleeCritMultiplier()),
-	// 		OffHand:  ele.WeaponFromOffHand(ele.DefaultMeleeCritMultiplier()),
-	// 	})
-	// 	// ele.SpiritWolves = &shaman.SpiritWolves{
-	// 	// 	SpiritWolf1: ele.NewSpiritWolf(1),
-	// 	// 	SpiritWolf2: ele.NewSpiritWolf(2),
-	// 	// }
-	// }
+	if mh := ele.GetMHWeapon(); mh != nil {
+		ele.ApplyFlametongueImbueToItem(mh)
+		ele.SelfBuffs.ImbueMH = proto.ShamanImbue_FlametongueWeapon
+	}
 
 	return ele
+}
+
+func (eleShaman *ElementalShaman) Initialize() {
+	eleShaman.Shaman.Initialize()
+
+	eleShaman.registerThunderstormSpell()
+
+	// Shamanism
+	eleShaman.AddStaticMod(core.SpellModConfig{
+		ClassMask: shaman.SpellMaskLavaBurst | shaman.SpellMaskChainLightning | shaman.SpellMaskLightningBolt,
+		Kind:      core.SpellMod_CastTime_Flat,
+		TimeValue: time.Millisecond * -500,
+	})
+
+	eleShaman.AddStaticMod(core.SpellModConfig{
+		ClassMask: shaman.SpellMaskLavaBurst | shaman.SpellMaskChainLightning | shaman.SpellMaskLightningBolt |
+			shaman.SpellMaskLightningBoltOverload | shaman.SpellMaskChainLightningOverload | shaman.SpellMaskLavaBurstOverload,
+		Kind:       core.SpellMod_BonusCoeffecient_Flat,
+		FloatValue: 0.36,
+	})
+
+	// Elemental Fury
+	eleShaman.AddStaticMod(core.SpellModConfig{
+		// Lava Burst handled separately due to Lava Flows
+		ClassMask: shaman.SpellMaskFire & ^shaman.SpellMaskLavaBurst & ^shaman.SpellMaskLavaBurstOverload | shaman.SpellMaskNature |
+			shaman.SpellMaskFrost | shaman.SpellMaskMagmaTotem | shaman.SpellMaskSearingTotem | shaman.SpellMaskEarthquake,
+		Kind:       core.SpellMod_CritMultiplier_Pct,
+		FloatValue: 1.0,
+	})
+
+	eleShaman.AddStaticMod(core.SpellModConfig{
+		ClassMask: shaman.SpellMaskChainLightning,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: time.Second * -3,
+	})
+}
+
+func (ele *ElementalShaman) ApplyTalents() {
+	ele.Shaman.ApplyTalents()
+	ele.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeMail)
 }
 
 type ElementalShaman struct {

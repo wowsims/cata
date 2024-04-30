@@ -30,10 +30,11 @@ func (hunter *Hunter) registerRaptorStrikeSpell() {
 		CritMultiplier:   hunter.CritMultiplier(false, false, false),
 		ThreatMultiplier: 1,
 
+		BonusCoefficient: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 335 +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},

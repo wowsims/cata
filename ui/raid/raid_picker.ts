@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 
 import { BaseModal } from '../core/components/base_modal.js';
 import { Component } from '../core/components/component.js';
@@ -9,6 +9,7 @@ import { PlayerClasses } from '../core/player_classes';
 import { PlayerSpecs } from '../core/player_specs';
 import { Player as PlayerProto } from '../core/proto/api.js';
 import { Class, Faction, Glyphs, Profession, Spec } from '../core/proto/common.js';
+import { UnholyDeathKnight_Options } from '../core/proto/death_knight';
 import { BalanceDruid_Options as BalanceDruidOptions } from '../core/proto/druid.js';
 import { ArcaneMage_Options } from '../core/proto/mage';
 import { getPlayerSpecFromPlayer, newUnitReference } from '../core/proto_utils/utils.js';
@@ -64,7 +65,6 @@ export class RaidPicker extends Component {
 				{ name: '5', value: 1 },
 				{ name: '10', value: 2 },
 				{ name: '25', value: 5 },
-				{ name: '40', value: 8 },
 			],
 			changedEvent: (raid: Raid) => raid.numActivePartiesChangeEmitter,
 			getValue: (raid: Raid) => raid.getNumActiveParties(),
@@ -108,11 +108,23 @@ export class RaidPicker extends Component {
 		this.partyPickers = this.raid.getParties().map((party, i) => new PartyPicker(partiesContainer, party, i, this));
 
 		const updateActiveParties = () => {
+			if (this.raidSimUI.sim.raid.getNumActiveParties() == 1) {
+				partiesContainer.classList.remove('parties-container-small');
+				partiesContainer.classList.remove('parties-container-full');
+			} else if (this.raidSimUI.sim.raid.getNumActiveParties() <= 2) {
+				partiesContainer.classList.add('parties-container-small');
+				partiesContainer.classList.remove('parties-container-full');
+			} else {
+				partiesContainer.classList.remove('parties-container-small');
+				partiesContainer.classList.add('parties-container-full');
+			}
 			this.partyPickers.forEach(partyPicker => {
 				if (partyPicker.index < this.raidSimUI.sim.raid.getNumActiveParties()) {
 					partyPicker.rootElem.classList.add('active');
+					partyPicker.rootElem.classList.remove('hide');
 				} else {
 					partyPicker.rootElem.classList.remove('active');
+					partyPicker.rootElem.classList.add('hide');
 				}
 			});
 		};
@@ -489,8 +501,7 @@ export class PlayerPicker extends Component {
 						href="javascript:void(0)"
 						class="player-edit"
 						role="button"
-						data-bs-toggle="tooltip"
-						data-bs-title="Click to Edit"
+						data-tippy-content="Click to Edit"
 					>
 						<i class="fa fa-edit fa-lg"></i>
 					</a>
@@ -499,8 +510,7 @@ export class PlayerPicker extends Component {
 						class="player-copy link-warning"
 						role="button"
 						draggable="true"
-						data-bs-toggle="tooltip"
-						data-bs-title="Drag to Copy"
+						data-tippy-content="Drag to Copy"
 					>
 						<i class="fa fa-copy fa-lg"></i>
 					</a>
@@ -508,8 +518,7 @@ export class PlayerPicker extends Component {
 						href="javascript:void(0)"
 						class="player-delete link-danger"
 						role="button"
-						data-bs-toggle="tooltip"
-						data-bs-title="Click to Delete"
+						data-tippy-content="Click to Delete"
 					>
 						<i class="fa fa-times fa-lg"></i>
 					</a>
@@ -569,9 +578,9 @@ export class PlayerPicker extends Component {
 		const copyElem = this.rootElem.querySelector('.player-copy') as HTMLElement;
 		const deleteElem = this.rootElem.querySelector('.player-delete') as HTMLElement;
 
-		const _editTooltip = Tooltip.getOrCreateInstance(editElem);
-		const _copyTooltip = Tooltip.getOrCreateInstance(copyElem);
-		const deleteTooltip = Tooltip.getOrCreateInstance(deleteElem);
+		const _editTooltip = tippy(editElem);
+		const _copyTooltip = tippy(copyElem);
+		const deleteTooltip = tippy(deleteElem);
 
 		(this.iconElem as HTMLElement).ondragstart = event => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
@@ -593,7 +602,10 @@ export class PlayerPicker extends Component {
 
 class PlayerEditorModal<SpecType extends Spec> extends BaseModal {
 	constructor(player: Player<SpecType>) {
-		super(document.body, 'player-editor-modal', { header: false });
+		super(document.body, 'player-editor-modal', {
+			closeButton: { fixed: true },
+			header: false,
+		});
 
 		this.rootElem.id = 'playerEditorModal';
 		this.body.insertAdjacentHTML(
@@ -640,17 +652,15 @@ class NewPlayerPicker extends Component {
 						href="javascript:void(0)"
 						role="button"
 						draggable="true"
-						data-bs-toggle="tooltip"
-						data-bs-title="${matchingPreset.tooltip ?? PlayerSpecs.getFullSpecName(playerSpec)}"
-						data-bs-html="true"
+						data-tippy-content="${matchingPreset.tooltip ?? PlayerSpecs.getFullSpecName(playerSpec)}"
 					>
-						<img class="preset-picker-icon player-icon" src="${matchingPreset ?? playerSpec.getIcon('medium')}"/>
+						<img class="preset-picker-icon player-icon" src="${playerSpec.getIcon('medium')}"/>
 					</a>
 				`;
 				const presetElem = presetElemFragment.children[0] as HTMLElement;
 				classPresetsContainer.appendChild(presetElem);
 
-				Tooltip.getOrCreateInstance(presetElem);
+				tippy(presetElem);
 
 				presetElem.ondragstart = event => {
 					const eventID = TypedEvent.nextEventID();
@@ -711,6 +721,10 @@ function applyNewPlayerAssignments(eventID: EventID, newPlayer: Player<any>, rai
 	} else if (newPlayer.getSpec() == Spec.SpecArcaneMage) {
 		const newOptions = newPlayer.getSpecOptions() as ArcaneMage_Options;
 		newOptions.focusMagicTarget = newUnitReference(newPlayer.getRaidIndex());
+		newPlayer.setSpecOptions(eventID, newOptions);
+	} else if (newPlayer.getSpec() == Spec.SpecUnholyDeathKnight) {
+		const newOptions = newPlayer.getSpecOptions() as UnholyDeathKnight_Options;
+		newOptions.unholyFrenzyTarget = newUnitReference(newPlayer.getRaidIndex());
 		newPlayer.setSpecOptions(eventID, newOptions);
 	}
 }

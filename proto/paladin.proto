@@ -120,10 +120,6 @@ enum Blessings {
 	BlessingUnknown = 0;
 	BlessingOfKings = 1;
 	BlessingOfMight = 2;
-	BlessingOfSalvation = 3;
-	BlessingOfWisdom = 4;
-	BlessingOfSanctuary = 5;
-	BlessingOfLight = 6;
 }
 
 enum PaladinAura {

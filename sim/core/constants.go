@@ -8,6 +8,7 @@ const CharacterLevel = 85
 
 const GCDMin = time.Second * 1
 const GCDDefault = time.Millisecond * 1500
+const MaxSpellQueueWindow = time.Millisecond * 400
 
 const DefaultAttackPowerPerDPS = 14.0
 const ArmorPenPerPercentArmor = 13.99
@@ -38,3 +39,5 @@ type Hand bool
 
 const MainHand Hand = true
 const OffHand Hand = false
+
+const CombatTableCoverageCap = 1.024 // 102.4% chance to avoid an attack

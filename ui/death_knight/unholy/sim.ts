@@ -33,16 +33,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	epStats: [
 		Stat.StatStrength,
 		Stat.StatArmor,
-		Stat.StatAgility,
 		Stat.StatAttackPower,
 		Stat.StatExpertise,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -52,31 +50,28 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		Stat.StatHealth,
 		Stat.StatArmor,
 		Stat.StatStrength,
-		Stat.StatAgility,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatExpertise,
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P2_UNHOLY_DW_PRESET.gear,
+		gear: Presets.P1_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
 				[Stat.StatStrength]: 3.22,
-				[Stat.StatAgility]: 0.62,
 				[Stat.StatArmor]: 0.01,
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatExpertise]: 1.13,
 				[Stat.StatMeleeHaste]: 1.85,
 				[Stat.StatMeleeHit]: 1.92,
 				[Stat.StatMeleeCrit]: 0.76,
-				[Stat.StatArmorPenetration]: 0.77,
 				[Stat.StatSpellHit]: 0.8,
 				[Stat.StatSpellCrit]: 0.34,
 			},
@@ -85,56 +80,42 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 				[PseudoStat.PseudoStatOffHandDps]: 1.79,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.UnholyDualWieldTalents.data,
+		talents: Presets.SingleTargetTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultUnholyOptions,
+		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			swiftRetribution: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
-			icyTalons: true,
-			abominationsMight: true,
-			leaderOfThePack: TristateEffect.TristateEffectRegular,
-			sanctifiedRetribution: true,
+			devotionAura: true,
 			bloodlust: true,
-			devotionAura: TristateEffect.TristateEffectImproved,
-			stoneskinTotem: TristateEffect.TristateEffectImproved,
-			moonkinAura: TristateEffect.TristateEffectRegular,
-			wrathOfAirTotem: true,
-			powerWordFortitude: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
+			icyTalons: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			hornOfWinter: true,
+			abominationsMight: true,
+			arcaneTactics: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-			heroicPresence: false,
-		}),
+		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
 		debuffs: Debuffs.create({
-			bloodFrenzy: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
 			sunderArmor: true,
+			brittleBones: true,
 			ebonPlaguebringer: true,
-			mangle: true,
-			heartOfTheCrusader: true,
-			shadowMastery: true,
+			shadowAndFlame: true
 		}),
 	},
 
 	autoRotation: (player: Player<Spec.SpecUnholyDeathKnight>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 1) {
-			return Presets.UNHOLY_DND_AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		} else {
-			if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)!.item.handType == HandType.HandTypeTwoHand) {
-				return Presets.UNHOLY_2H_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-			} else {
-				return Presets.UNHOLY_DW_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-			}
+			return Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 
@@ -142,8 +123,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	playerIconInputs: [],
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.StaminaBuff],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.AttackPowerDebuff, BuffDebuffInputs.DamageReductionPercentBuff, BuffDebuffInputs.MeleeAttackSpeedDebuff],
+	includeBuffDebuffInputs: [
+		BuffDebuffInputs.SpellDamageDebuff
+	],
+	excludeBuffDebuffInputs: [
+		BuffDebuffInputs.DamageReduction,
+		BuffDebuffInputs.MeleeAttackSpeedDebuff,
+		BuffDebuffInputs.BleedDebuff
+	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -153,9 +140,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			// UnholyInputs.UseAMSInput,
 			// UnholyInputs.AvgAMSSuccessRateInput,
 			// UnholyInputs.AvgAMSHitInput,
-
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InputDelay,
+			OtherInputs.DarkIntentUptime
 		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
@@ -166,50 +154,45 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.UnholyDualWieldTalents, Presets.UnholyDualWieldSSTalents, Presets.Unholy2HTalents, Presets.UnholyAoeTalents],
+		talents: [
+			Presets.SingleTargetTalents,
+			//Presets.AoeTalents,
+		],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.UNHOLY_DW_ROTATION_PRESET_DEFAULT, Presets.UNHOLY_2H_ROTATION_PRESET_DEFAULT, Presets.UNHOLY_DND_AOE_ROTATION_PRESET_DEFAULT],
+		rotations: [
+			Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT,
+			//Presets.AOE_ROTATION_PRESET_DEFAULT,
+		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.P1_UNHOLY_DW_PRESET,
-			Presets.P2_UNHOLY_DW_PRESET,
-			Presets.P3_UNHOLY_DW_PRESET,
-			Presets.P4_UNHOLY_DW_PRESET,
-			Presets.P4_UNHOLY_2H_PRESET,
-			// Not needed anymore just filling ui Space
-			// Disabled on purpose
-			//Presets.P1_FROSTSUBUNH_PRESET,
-			//Presets.P1_FROST_PRE_BIS_PRESET,
-			//Presets.PRERAID_UNHOLY_DW_PRESET,
-			//Presets.PRERAID_UNHOLY_2H_PRESET,
-			//Presets.P1_UNHOLY_2H_PRESET,
+			Presets.P1_GEAR_PRESET,
 		],
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecUnholyDeathKnight,
-			talents: Presets.UnholyDualWieldTalents.data,
-			specOptions: Presets.DefaultUnholyOptions,
+			talents: Presets.SingleTargetTalents.data,
+			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Alliance]: Race.RaceWorgen,
 				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_UNHOLY_DW_PRESET.gear,
-					2: Presets.P2_UNHOLY_DW_PRESET.gear,
-					3: Presets.P3_UNHOLY_DW_PRESET.gear,
-					4: Presets.P4_UNHOLY_DW_PRESET.gear,
+					1: Presets.P1_GEAR_PRESET.gear,
+					2: Presets.P1_GEAR_PRESET.gear,
+					3: Presets.P1_GEAR_PRESET.gear,
+					4: Presets.P1_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_UNHOLY_DW_PRESET.gear,
-					2: Presets.P2_UNHOLY_DW_PRESET.gear,
-					3: Presets.P3_UNHOLY_DW_PRESET.gear,
-					4: Presets.P4_UNHOLY_DW_PRESET.gear,
+					1: Presets.P1_GEAR_PRESET.gear,
+					2: Presets.P1_GEAR_PRESET.gear,
+					3: Presets.P1_GEAR_PRESET.gear,
+					4: Presets.P1_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

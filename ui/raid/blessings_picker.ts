@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 
 import { Component } from '../core/components/component';
 import { IconEnumPicker } from '../core/components/icon_enum_picker';
@@ -54,16 +54,8 @@ export class BlessingsPicker extends Component {
 					numColumns: 1,
 					values: [
 						{ color: Paladin.hexColor, value: Blessings.BlessingUnknown },
-						{ actionId: ActionId.fromSpellId(25898), value: Blessings.BlessingOfKings },
-						{ actionId: ActionId.fromSpellId(48934), value: Blessings.BlessingOfMight },
-						{
-							actionId: ActionId.fromSpellId(48938),
-							value: Blessings.BlessingOfWisdom,
-						},
-						{
-							actionId: ActionId.fromSpellId(25899),
-							value: Blessings.BlessingOfSanctuary,
-						},
+						{ actionId: ActionId.fromSpellId(20217), value: Blessings.BlessingOfKings },
+						{ actionId: ActionId.fromSpellId(19740), value: Blessings.BlessingOfMight },
 					],
 					equals: (a: Blessings, b: Blessings) => a == b,
 					zeroValue: Blessings.BlessingUnknown,
@@ -110,7 +102,7 @@ export class BlessingsPicker extends Component {
 		`;
 
 		const icon = fragment.querySelector('.blessings-spec-icon') as HTMLElement;
-		Tooltip.getOrCreateInstance(icon, { title: spec.friendlyName });
+		tippy(icon, { content: spec.friendlyName });
 
 		return fragment.children[0] as HTMLElement;
 	}

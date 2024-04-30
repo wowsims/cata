@@ -41,13 +41,14 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 21
+// NextIndex: 22
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
     oneof action {
         // Casting
         APLActionCastSpell cast_spell = 3;
+		APLActionCastFriendlySpell cast_friendly_spell = 20;
         APLActionChannelSpell channel_spell = 16;
         APLActionMultidot multidot = 8;
         APLActionMultishield multishield = 12;
@@ -75,11 +76,11 @@ message APLAction {
         APLActionCatOptimalRotationAction cat_optimal_rotation_action = 19;
 
         // Internal use only, not exposed in UI.
-        APLActionCustomRotation custom_rotation = 20;
+        APLActionCustomRotation custom_rotation = 21;
     }
 }
 
-// NextIndex: 68
+// NextIndex: 72
 message APLValue {
     oneof value {
         // Operators
@@ -114,9 +115,11 @@ message APLValue {
         APLValueCurrentFocus current_focus = 66;
         APLValueCurrentComboPoints current_combo_points = 16;
         APLValueCurrentRunicPower current_runic_power = 25;
+        APLValueCurrentSolarEnergy current_solar_energy = 68;
+        APLValueCurrentLunarEnergy current_lunar_energy = 69;
 
 		// Unit values
-		APLValueUnitIsMoving unit_is_moving = 67;
+		APLValueUnitIsMoving unit_is_moving = 71;
 
         // Rune Resource values
         APLValueCurrentRuneCount current_rune_count = 29;
@@ -126,8 +129,6 @@ message APLValue {
         APLValueRuneCooldown rune_cooldown = 32;
         APLValueNextRuneCooldown next_rune_cooldown = 33;
         APLValueRuneSlotCooldown rune_slot_cooldown = 53;
-        APLValueRuneGrace rune_grace = 54;
-        APLValueRuneSlotGrace rune_slot_grace = 55;
 
         // GCD values
         APLValueGCDIsReady gcd_is_ready = 17;
@@ -159,6 +160,7 @@ message APLValue {
         // Dot values
         APLValueDotIsActive dot_is_active = 6;
         APLValueDotRemainingTime dot_remaining_time = 13;
+        APLValueDotTickFrequency dot_tick_frequency = 67;
 
         // Sequence values
         APLValueSequenceIsComplete sequence_is_complete = 44;
@@ -175,6 +177,7 @@ message APLValue {
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
         APLValueWarlockShouldRecastDrainSoul warlock_should_recast_drain_soul = 59;
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
+        APLValueCurrentEclipsePhase druid_current_eclipse_phase = 70;
     }
 }
 
@@ -183,6 +186,11 @@ message APLValue {
 ///////////////////////////////////////////////////////////////////////////
 
 message APLActionCastSpell {
+    ActionID spell_id = 1;
+    UnitReference target = 2;
+}
+
+message APLActionCastFriendlySpell {
     ActionID spell_id = 1;
     UnitReference target = 2;
 }
@@ -268,14 +276,14 @@ message APLActionItemSwap {
 
 message APLActionCatOptimalRotationAction {
     FeralDruid.Rotation.AplType rotation_type = 1;
+    bool maintain_faerie_fire = 3;
     bool manual_params = 2;
-    float max_ff_delay = 3;
     float min_roar_offset = 4;
     int32 rip_leeway = 5;
     bool use_rake = 6;
     bool use_bite = 7;
     float bite_time = 8;
-    bool flower_weave = 9;
+    bool bite_during_execute = 9;
 }
 
 message APLActionMove {
@@ -357,6 +365,7 @@ message APLValueIsExecutePhase {
         E20 = 1;
         E25 = 2;
         E35 = 3;
+		E90 = 4;
     }
     ExecutePhaseThreshold threshold = 1;
 }
@@ -390,6 +399,8 @@ message APLValueCurrentEnergy {}
 message APLValueCurrentFocus {}
 message APLValueCurrentComboPoints {}
 message APLValueCurrentRunicPower {}
+message APLValueCurrentSolarEnergy {}
+message APLValueCurrentLunarEnergy {}
 
 enum APLValueRuneType {
     RuneUnknown = 0;
@@ -429,11 +440,16 @@ message APLValueNextRuneCooldown{
 message APLValueRuneSlotCooldown{
     APLValueRuneSlot rune_slot = 1;
 }
-message APLValueRuneGrace{
-    APLValueRuneType rune_type = 1;
+
+enum APLValueEclipsePhase {
+    UnknownPhase = 0;
+    NeutralPhase = 1;
+    SolarPhase = 2;
+    LunarPhase = 3;
 }
-message APLValueRuneSlotGrace{
-    APLValueRuneType rune_slot = 1;
+
+message APLValueCurrentEclipsePhase {
+    APLValueEclipsePhase eclipse_phase = 1;
 }
 
 message APLValueGCDIsReady {}
@@ -509,6 +525,10 @@ message APLValueDotIsActive {
     ActionID spell_id = 1;
 }
 message APLValueDotRemainingTime {
+    UnitReference target_unit = 2;
+    ActionID spell_id = 1;
+}
+message APLValueDotTickFrequency {
     UnitReference target_unit = 2;
     ActionID spell_id = 1;
 }

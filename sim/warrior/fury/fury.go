@@ -67,6 +67,10 @@ func (war *FuryWarrior) RegisterSpecializationEffects() {
 	// The actual effects of Unshackled Fury need to be handled by specific spells
 	// as it modifies the "benefit" of them (e.g. it both increases Raging Blow's damage
 	// and Enrage's damage bonus)
+	war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier()
+	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
+		war.EnrageEffectMultiplier = war.GetMasteryBonusMultiplier()
+	})
 
 	// Dual Wield specialization
 	war.AutoAttacks.OHConfig().DamageMultiplier *= 1.25
@@ -86,20 +90,9 @@ func (war *FuryWarrior) GetWarrior() *warrior.Warrior {
 func (war *FuryWarrior) Initialize() {
 	war.Warrior.Initialize()
 	war.RegisterSpecializationEffects()
-
-	// if war.Options.UseRecklessness {
-	// 	war.RegisterRecklessnessCD()
-	// }
-
-	// if war.Options.ClassOptions.UseShatteringThrow {
-	// 	war.RegisterShatteringThrowCD()
-	// }
-
-	// war.BerserkerStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
+	war.RegisterBloodthirst()
 }
 
 func (war *FuryWarrior) Reset(sim *core.Simulation) {
-	// war.Warrior.Reset(sim)
-	// war.BerserkerStanceAura.Activate(sim)
-	// war.Stance = warrior.BerserkerStance
+	war.Warrior.Reset(sim)
 }

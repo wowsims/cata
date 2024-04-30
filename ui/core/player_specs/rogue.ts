@@ -4,6 +4,7 @@ import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class AssassinationRogue extends PlayerSpec<Spec.SpecAssassinationRogue> {
+	static specIndex = 0;
 	static specID = Spec.SpecAssassinationRogue as Spec.SpecAssassinationRogue;
 	static classID = Class.ClassRogue as Class.ClassRogue;
 	static friendlyName = 'Assassination';
@@ -16,6 +17,7 @@ export class AssassinationRogue extends PlayerSpec<Spec.SpecAssassinationRogue> 
 
 	static canDualWield = true;
 
+	readonly specIndex = AssassinationRogue.specIndex;
 	readonly specID = AssassinationRogue.specID;
 	readonly classID = AssassinationRogue.classID;
 	readonly friendlyName = AssassinationRogue.friendlyName;
@@ -38,6 +40,7 @@ export class AssassinationRogue extends PlayerSpec<Spec.SpecAssassinationRogue> 
 }
 
 export class CombatRogue extends PlayerSpec<Spec.SpecCombatRogue> {
+	static specIndex = 1;
 	static specID = Spec.SpecCombatRogue as Spec.SpecCombatRogue;
 	static classID = Class.ClassRogue as Class.ClassRogue;
 	static friendlyName = 'Combat';
@@ -50,6 +53,7 @@ export class CombatRogue extends PlayerSpec<Spec.SpecCombatRogue> {
 
 	static canDualWield = true;
 
+	readonly specIndex = CombatRogue.specIndex;
 	readonly specID = CombatRogue.specID;
 	readonly classID = CombatRogue.classID;
 	readonly friendlyName = CombatRogue.friendlyName;
@@ -72,6 +76,7 @@ export class CombatRogue extends PlayerSpec<Spec.SpecCombatRogue> {
 }
 
 export class SubtletyRogue extends PlayerSpec<Spec.SpecSubtletyRogue> {
+	static specIndex = 2;
 	static specID = Spec.SpecSubtletyRogue as Spec.SpecSubtletyRogue;
 	static classID = Class.ClassRogue as Class.ClassRogue;
 	static friendlyName = 'Subtlety';
@@ -84,6 +89,7 @@ export class SubtletyRogue extends PlayerSpec<Spec.SpecSubtletyRogue> {
 
 	static canDualWield = true;
 
+	readonly specIndex = SubtletyRogue.specIndex;
 	readonly specID = SubtletyRogue.specID;
 	readonly classID = SubtletyRogue.classID;
 	readonly friendlyName = SubtletyRogue.friendlyName;

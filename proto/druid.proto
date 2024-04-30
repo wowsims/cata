@@ -92,7 +92,7 @@ enum DruidPrimeGlyph {
 	GlyphOfStarfire = 40916;
 	GlyphOfStarsurge = 45603;
 	GlyphOfSwiftmend = 40906;
-	GlyphOfTigerSFury = 67487;
+	GlyphOfTigersFury = 67487;
 	GlyphOfWrath = 40922;
 }
 enum DruidMajorGlyph {
@@ -166,27 +166,19 @@ message FeralDruid {
 	bool mangle_spam = 6;
 	float bite_time = 7;
 	int32 min_combos_for_bite = 8;
-	int32 berserk_bite_thresh = 9;
-	int32 berserk_ff_thresh = 18;
+	bool bite_during_execute = 13;
 	int32 rip_leeway = 19;
 	bool powerbear = 10;
 	float min_roar_offset = 11;
 	BiteModeType bite_mode_type = 12;
-	float hot_uptime = 13;
 	bool snek_weave = 14;
-	bool flower_weave = 15;
-	int32 raid_targets = 16;
 	bool manual_params = 17;
-	float max_ff_delay = 20;
 	AplType rotation_type = 21;
-	bool pre_pop_berserk = 22;
-	bool pre_pop_ooc = 23;
   }
   Rotation rotation = 1;
 
   message Options {
     DruidOptions class_options = 1;
-    int32 latency_ms = 2;
     bool assume_bleed_active = 4;
   }
   Options options = 3;

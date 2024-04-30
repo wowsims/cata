@@ -99,7 +99,7 @@ enum Profession {
 }
 
 // Keep in sync with sim/core/stats/stats.go.
-// NextIndex: 33;
+// NextIndex: 34;
 enum Stat {
 	StatStrength = 0;
 	StatAgility = 1;
@@ -217,12 +217,9 @@ enum RangedWeaponType {
 	RangedWeaponTypeBow = 1;
 	RangedWeaponTypeCrossbow = 2;
 	RangedWeaponTypeGun = 3;
-	RangedWeaponTypeIdol = 4;
-	RangedWeaponTypeLibram = 5;
-	RangedWeaponTypeThrown = 6;
-	RangedWeaponTypeTotem = 7;
-	RangedWeaponTypeWand = 8;
-	RangedWeaponTypeSigil = 9;
+	RangedWeaponTypeRelic = 4;
+	RangedWeaponTypeThrown = 5;
+	RangedWeaponTypeWand = 6;
 }
 
 // All slots on the gear menu where a single item can be worn.
@@ -267,6 +264,7 @@ enum GemColor {
 	GemColorOrange = 6;
 	GemColorPurple = 7;
 	GemColorPrismatic = 8;
+	GemColorCogwheel = 9;
 }
 
 enum SpellSchool {
@@ -289,6 +287,15 @@ enum Explosive {
 	ExplosiveUnknown = 0;
 	ExplosiveSaroniteBomb = 1;
 	ExplosiveCobaltFragBomb = 2;
+}
+
+enum TinkerHands {
+	TinkerHandsNone = 0;
+	TinkerHandsSynapseSprings = 1;
+	TinkerHandsTazikShocker = 2;
+	TinkerHandsQuickflipDeflectionPlates = 3;
+	TinkerHandsSpinalHealingInjector = 4;
+	TinkerHandsZ50ManaGulper = 8;
 }
 
 enum Potions {
@@ -322,14 +329,15 @@ enum Flask {
 	FlaskOfTheWinds = 2;
 	FlaskOfSteelskin = 3;
 	FlaskOfFlowingWater = 4;
+	FlaskOfTheDraconicMind = 5;
 
 	// Wotlk
-	FlaskOfTheFrostWyrm = 5;
-	FlaskOfEndlessRage = 6;
-	FlaskOfPureMojo = 7;
-	FlaskOfStoneblood = 8;
-	LesserFlaskOfToughness = 9;
-	LesserFlaskOfResistance = 10;
+	FlaskOfTheFrostWyrm = 6;
+	FlaskOfEndlessRage = 7;
+	FlaskOfPureMojo = 8;
+	FlaskOfStoneblood = 9;
+	LesserFlaskOfToughness = 10;
+	LesserFlaskOfResistance = 11;
 }
 
 enum BattleElixir {
@@ -369,9 +377,6 @@ enum GuardianElixir {
 	ElixirOfMightyThoughts = 6;
 	ElixirOfProtection = 7;
 	ElixirOfSpirit = 8;
-
-	// TBC
-	GiftOfArthas = 9;
 }
 
 enum Food {
@@ -398,6 +403,21 @@ enum Food {
 	FoodSkullfishSoup = 18;
 	FoodSpicyHotTalbuk = 19;
 	FoodFishermansFeast = 20;
+
+	// Cata
+	FoodSeafoodFeast = 21;
+	FoodFortuneCookie = 22;
+	FoodSeveredSagefish = 23;
+	FoodBeerBasedCrocolisk = 24;
+	FoodSkeweredEel = 25;
+	FoodDeliciousSagefishTail = 26;
+	FoodBasiliskLiverdog = 27;
+	FoodBakedRockfish = 28;
+	FoodCrocoliskAuGratin = 29;
+	FoodGrilledDragon = 30;
+	FoodLavascaleMinestrone = 31;
+	FoodBlackbellySushi = 32;
+	FoodMushroomSauceMudfish = 33;
 }
 
 enum PetFood {
@@ -408,144 +428,168 @@ enum PetFood {
 }
 
 // Buffs that affect the entire raid.
+// TODO: Reindex
+// next index: 46
 message RaidBuffs {
-	// +Stats
-	TristateEffect gift_of_the_wild = 1;
+	// +5% Base Stats and Spell Resistances
+	bool mark_of_the_wild = 1;
+	bool blessing_of_kings = 2;
+	bool drums_of_the_burning_wild = 3;
 
-	// +Stam
-	TristateEffect power_word_fortitude = 2;
+	// +Spell Resistances
+	bool elemental_resistance_totem = 4;
+	bool resistance_aura = 5;
+	bool shadow_protection = 6;
+	bool aspect_of_the_wild = 7;
 
-	// +Health
-	TristateEffect commanding_shout = 3;
-	TristateEffect blood_pact = 4;
+	// +Stamina
+	bool power_word_fortitude = 8;
+	bool commanding_shout = 9;
+	bool blood_pact = 10;
 
-	// + Agi and Str
-	bool horn_of_winter = 5;
-	TristateEffect strength_of_earth_totem = 6; // none, normal, 15% improved
+	// +Stength and Agility
+	bool battle_shout = 11;
+	bool horn_of_winter = 12;
+	bool strength_of_earth_totem = 13;
 
-	// +Intell and/or Spi
-	bool arcane_brilliance = 7;
-	TristateEffect fel_intelligence = 8;
-	bool divine_spirit = 9;
+	// +10% Attack Power
+	bool trueshot_aura = 14;
+	bool unleashed_rage = 15;
+	bool abominations_might = 16;
+	bool blessing_of_might = 17;
 
-	// +AP
-	TristateEffect battle_shout = 10;
+	// +10% Melee Speed
+	bool windfury_totem = 18;
+	bool icy_talons = 19;
+	bool hunting_party = 20;
 
-	// 10% AP
-	bool trueshot_aura = 11;
-	bool unleashed_rage = 12;
-	bool abominations_might = 13;
+	// +Mana
+	bool arcane_brilliance = 21; // Also +Mp5
+	bool fel_intelligence = 22; // Also +6% SP
 
-	// 5% phy crit
-	TristateEffect leader_of_the_pack = 14;
-	bool rampage = 15;
-
-	// 20% Melee Haste
-	bool icy_talons = 16;
-	TristateEffect windfury_totem = 17; // none, 16%, 20%
+	// +Mana Regen
+	bool mana_spring_totem = 23;
 
 	// +Spell Power
-	bool totem_of_wrath = 18;
-	bool flametongue_totem = 19;
-	int32 demonic_pact_sp = 44; // SP buff NEW CORRECT
+	bool demonic_pact = 24;
+	bool totemic_wrath = 25;
+	bool flametongue_totem = 26; // 6% SP
 
-	// +5% Spell Crit and/or +3% Haste
-	bool swift_retribution = 21; //haste only
-	TristateEffect moonkin_aura = 22; //both crit and haste
-	bool elemental_oath = 23; //crit only
+	// +5% Spell haste
+	bool moonkin_form = 27;
+	bool shadow_form = 28;
+	bool wrath_of_air_totem = 29;
 
-	// 5% spell haste
-	bool wrath_of_air_totem = 24;
+	// +3% All Damage
+	bool arcane_tactics = 30;
+	bool ferocious_inspiration = 31;
+	bool communion = 32;
 
-	// 3% dmg
-	bool ferocious_inspiration = 25;
-	bool sanctified_retribution = 26;
-	bool arcane_empowerment = 27;
+	// +5% All Crit
+	bool leader_of_the_pack = 33;
+	bool elemental_oath = 34;
+	bool honor_among_thieves = 35;
+	bool rampage = 36;
+	bool terrifying_roar = 37;
+	bool furious_howl = 45;
 
-	// mp5
-	TristateEffect mana_spring_totem = 28;
+	// Major Haste
+	bool bloodlust = 38;
+	bool heroism = 39;
+	bool time_warp = 40;
 
-	// Resistances
-	bool shadow_protection = 33;
-	bool nature_resistance_totem = 45;
-	bool aspect_of_the_wild = 46;
-	bool frost_resistance_aura = 47;
-	bool frost_resistance_totem = 48;
+	// Major Mana Replenishment
+	int32 mana_tide_totem_count = 41;
+
+	// +Armor
+	bool devotion_aura = 42;
+	bool stoneskin_totem = 43;
 
 	// Miscellaneous
-	bool bloodlust = 29;
-	TristateEffect thorns = 30;
-	TristateEffect devotion_aura = 31;
-	TristateEffect stoneskin_totem = 42;
-	bool retribution_aura = 32;
-	bool strength_of_wrynn = 49;
-
-	// Drums
-	bool drums_of_forgotten_kings = 34;
-	bool drums_of_the_wild = 35;
-
-	// Scroll
-	bool scroll_of_protection = 36;
-	bool scroll_of_stamina = 37;
-	bool scroll_of_strength = 38;
-	bool scroll_of_agility = 39;
-	bool scroll_of_intellect = 40;
-	bool scroll_of_spirit = 41;
+	bool retribution_aura = 44;
 }
 
 // Buffs that affect a single party.
 message PartyBuffs {
-	// Item Buffs
-	int32 atiesh_mage = 1;
-	int32 atiesh_warlock = 2;
-
-	bool braided_eternium_chain = 3;
-	bool eye_of_the_night = 4;
-	bool chain_of_the_twilight_owl = 5;
-
-	// Group buffs
-	int32 mana_tide_totems = 6;
-	bool heroic_presence = 7;
 }
 
 // These are usually individual actions taken by other Characters.
 message IndividualBuffs {
-	// 10% Stats
-	bool blessing_of_kings = 1;
-	TristateEffect blessing_of_wisdom = 2;
-	TristateEffect blessing_of_might = 3;
-	bool blessing_of_sanctuary = 4;
-	bool vigilance = 5;
-	bool renewed_hope = 6;
 	// Only used in individual sims
-	//   as the class that provides these would cast them in raid sim
+	// as the class that provides these would cast them in raid sim
 
+	// Major Mana Replenishment
 	// How many of each of these buffs the player will be receiving.
-	int32 hymn_of_hope = 7;
-	int32 hand_of_salvation = 8;
-	int32 rapture = 9;
-	int32 innervates = 10;
-	int32 power_infusions = 11;
-	int32 unholy_frenzy = 12;
-	int32 revitalize_rejuvination = 13;
-	int32 revitalize_wild_growth = 21;
-	int32 tricks_of_the_trades = 19;
-	int32 divine_guardians = 23;
-	int32 pain_suppressions = 24;
-	int32 hand_of_sacrifices = 25;
-	int32 guardian_spirits = 26;
+	int32 innervate_count = 10;
+	int32 hymn_of_hope_count = 7;
 
-	// Technically a debuff, but only used by individual sims.
-	int32 shattering_throws = 20;
-
-	// Replenishment
+	// Minor Mana Replenishment
 	bool vampiric_touch = 14;
-	bool hunting_party = 15;
-	bool judgements_of_the_wise = 16;
-	bool improved_soul_leech = 17;
 	bool enduring_winter = 18;
+	bool soul_leach = 16;
+	bool revitalize = 17;
+	bool communion = 100;
 
+	// Other Buffs
+	int32 power_infusion_count = 11;
+	int32 unholy_frenzy_count = 12;
+	int32 tricks_of_the_trade_count = 19;
+	int32 divine_guardian_count = 23;
+	int32 pain_suppression_count = 24;
+	int32 hand_of_sacrifice_count = 25;
+	int32 guardian_spirit_count = 26;
 	bool focus_magic = 22;
+	bool dark_intent = 27;
+}
+
+message Debuffs {
+	// 8% spell damage
+	bool curse_of_elements = 1;
+	bool ebon_plaguebringer = 2;
+	bool earth_and_moon = 3;
+	bool master_poisoner = 4;
+	bool fire_breath = 5;
+	bool lightning_breath = 6;
+
+	// 5% spell crit
+	bool critical_mass = 7;
+	bool shadow_and_flame = 8;
+
+	// 30% bleed damage
+	bool blood_frenzy = 9;
+	bool hemorrhage = 10;
+	bool mangle = 11;
+	bool stampede = 12;
+
+	// Major armor
+	bool expose_armor = 13;
+	bool sunder_armor = 14;
+	bool faerie_fire = 15;
+	bool corrosive_spit = 16;
+
+	// 4% physical dmg
+	bool savage_combat = 17;
+	bool brittle_bones = 18;
+	bool acid_spit = 19;
+
+	// -dmg %
+	bool curse_of_weakness = 20;
+	bool demoralizing_roar = 21;
+	bool demoralizing_shout = 22;
+	bool vindication = 23;
+	bool scarlet_fever = 24;
+	bool demoralizing_screech = 25;
+
+	// -attack speed
+	bool thunder_clap = 26;
+	bool frost_fever = 27;
+	bool infected_wounds = 28;
+	bool judgements_of_the_just = 29;
+	bool dust_cloud = 30;
+	bool earth_shock = 31;
+
+	// health on hit
+	bool judgement = 32;
 }
 
 message Consumes {
@@ -566,68 +610,8 @@ message Consumes {
 	bool thermal_sapper = 15;
 	bool explosive_decoy = 16;
 	Explosive filler_explosive = 17;
-}
 
-message Debuffs {
-	bool judgement_of_wisdom = 1;
-	bool judgement_of_light = 2;
-
-	bool misery = 3;
-	TristateEffect faerie_fire = 4;
-
-	// 13% bonus spell damage
-	bool curse_of_elements = 5;
-	bool ebon_plaguebringer = 6;
-	bool earth_and_moon = 7;
-
-	// +3% to crit against target
-	bool heart_of_the_crusader = 8;
-	bool master_poisoner = 9;
-	bool totem_of_wrath = 10;
-
-	// 5% spell crit
-	bool shadow_mastery = 11;
-	bool improved_scorch = 12;
-	bool winters_chill = 13;
-
-	bool blood_frenzy = 14;
-	bool savage_combat = 15;
-
-	// TODO: validate these
-	bool gift_of_arthas = 16;
-
-	// Bleed %
-	bool mangle = 17;
-	bool trauma = 18;
-	bool stampede = 19;
-
-	// Major armor
-	bool expose_armor = 20;
-	bool sunder_armor = 21;
-	bool acid_spit = 22;
-
-	TristateEffect curse_of_weakness = 23;
-	bool sting = 24;
-	bool spore_cloud = 37;
-
-	TristateEffect demoralizing_roar = 25;
-	TristateEffect demoralizing_shout = 26;
-	bool vindication = 36;
-	bool demoralizing_screech = 34;
-
-	TristateEffect thunder_clap = 27;
-	TristateEffect frost_fever = 28;
-	bool infected_wounds = 29;
-	bool judgements_of_the_just = 30;
-
-	bool insect_swarm = 31;
-	bool scorpid_sting = 32;
-	bool shadow_embrace = 33;
-
-	// 1 = normal, 2 = talented, 3 = talented+glyphed
-	int32 hunters_mark = 35;
-
-	bool crystal_yield = 38;
+	TinkerHands tinker_hands = 18;
 }
 
 enum MobType {
@@ -700,11 +684,15 @@ message Encounter {
 	// Same as execute_proportion but for 35%.
 	double execute_proportion_35 = 4;
 
+	// Same as execute_proportion but for > 90%.
+	double execute_proportion_90 = 8;
+
 	// If set, will use the targets health value instead of a duration for fight length.
 	bool use_health = 5;
 
 	// If type != Simple or Custom, then this may be empty.
 	repeated Target targets = 6;
+
 }
 
 message PresetTarget {
@@ -716,8 +704,15 @@ message PresetEncounter {
 	repeated PresetTarget targets = 2;
 }
 
+message ItemRandomSuffix {
+	int32 id = 1;
+	string name = 2;
+	repeated double stats = 3;
+}
+
 message ItemSpec {
 	int32 id = 2;
+	int32 random_suffix = 6;
 	int32 enchant = 3;
 	repeated int32 gems = 4;
 	int32 reforging = 5; //reforging id
@@ -729,6 +724,7 @@ message EquipmentSpec {
 
 message SimDatabase {
 	repeated SimItem items = 1;
+	repeated ItemRandomSuffix random_suffixes = 5;
 	repeated SimEnchant enchants = 2;
 	repeated SimGem gems = 3;
 	repeated ReforgeStat reforge_stats = 6;
@@ -754,7 +750,7 @@ message SimItem {
 	double weapon_speed = 13;
 
 	string set_name = 14;
-
+	int32 rand_prop_points = 15;
 }
 
 // Extra enum for describing which items are eligible for an enchant, when
@@ -765,6 +761,7 @@ enum EnchantType {
 	EnchantTypeShield = 2;
 	EnchantTypeKit = 3;
 	EnchantTypeStaff = 4;
+	EnchantTypeOffHand = 5;
 }
 
 // Contains only the Enchant info needed by the sim.
@@ -824,6 +821,8 @@ enum OtherAction {
 	OtherActionDeathRuneGain  = 16; // Indicates healing received from healing model.
 	OtherActionPotion = 17; // Used by APL to generically refer to either the prepull or combat potion.
 	OtherActionMove = 18; // Used by movement to be able to show it in timeline
+	OtherActionSolarEnergyGain = 19; // For balance druid solar energy
+	OtherActionLunarEnergyGain = 20; // For balance druid lunar energy
 }
 
 message ActionID {

@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/shaman"
 )
 
@@ -43,29 +44,28 @@ func NewEnhancementShaman(character *core.Character, options *proto.Player) *Enh
 		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, true),
 	}
 
-	// // Enable Auto Attacks for this spec
-	// enh.EnableAutoAttacks(enh, core.AutoAttackOptions{
-	// 	MainHand:       enh.WeaponFromMainHand(enh.DefaultMeleeCritMultiplier()),
-	// 	OffHand:        enh.WeaponFromOffHand(enh.DefaultMeleeCritMultiplier()),
-	// 	AutoSwingMelee: true,
-	// })
+	// Enable Auto Attacks for this spec
+	enh.EnableAutoAttacks(enh, core.AutoAttackOptions{
+		MainHand:       enh.WeaponFromMainHand(enh.DefaultMeleeCritMultiplier()),
+		OffHand:        enh.WeaponFromOffHand(enh.DefaultMeleeCritMultiplier()),
+		AutoSwingMelee: true,
+	})
 
-	// enh.ApplySyncType(enhOptions.SyncType)
-	// enh.ApplyFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon), false)
-	// enh.ApplyFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeaponDownrank), true)
+	enh.ApplySyncType(enhOptions.SyncType)
+	enh.ApplyFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
 
-	// if !enh.HasMHWeapon() {
-	// 	enh.SelfBuffs.ImbueMH = proto.ShamanImbue_NoImbue
-	// }
+	if !enh.HasMHWeapon() {
+		enh.SelfBuffs.ImbueMH = proto.ShamanImbue_NoImbue
+	}
 
-	// if !enh.HasOHWeapon() {
-	// 	enh.SelfBuffs.ImbueOH = proto.ShamanImbue_NoImbue
-	// }
+	if !enh.HasOHWeapon() {
+		enh.SelfBuffs.ImbueOH = proto.ShamanImbue_NoImbue
+	}
 
-	// enh.SpiritWolves = &shaman.SpiritWolves{
-	// 	SpiritWolf1: enh.NewSpiritWolf(1),
-	// 	SpiritWolf2: enh.NewSpiritWolf(2),
-	// }
+	enh.SpiritWolves = &shaman.SpiritWolves{
+		SpiritWolf1: enh.NewSpiritWolf(1),
+		SpiritWolf2: enh.NewSpiritWolf(2),
+	}
 
 	return enh
 }
@@ -89,23 +89,81 @@ func (enh *EnhancementShaman) GetShaman() *shaman.Shaman {
 	return enh.Shaman
 }
 
+func (enh *EnhancementShaman) ApplyTalents() {
+	enh.Shaman.ApplyTalents()
+	enh.ApplyArmorSpecializationEffect(stats.Agility, proto.ArmorType_ArmorTypeMail)
+}
+
 func (enh *EnhancementShaman) Initialize() {
 	enh.Shaman.Initialize()
-	// // In the Initialize due to frost brand adding the aura to the enemy
-	// enh.RegisterFrostbrandImbue(enh.getImbueProcMask(proto.ShamanImbue_FrostbrandWeapon))
-	// enh.RegisterFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon), false)
-	// enh.RegisterFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeaponDownrank), true)
-	// enh.RegisterWindfuryImbue(enh.getImbueProcMask(proto.ShamanImbue_WindfuryWeapon))
+	// In the Initialize due to frost brand adding the aura to the enemy
+	enh.RegisterFrostbrandImbue(enh.getImbueProcMask(proto.ShamanImbue_FrostbrandWeapon))
+	enh.RegisterFlametongueImbue(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
+	enh.RegisterWindfuryImbue(enh.getImbueProcMask(proto.ShamanImbue_WindfuryWeapon))
 
-	// if enh.ItemSwap.IsEnabled() {
-	// 	mh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
-	// 	enh.ApplyFlametongueImbueToItem(mh, true)
-	// 	oh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
-	// 	enh.ApplyFlametongueImbueToItem(oh, false)
-	// 	enh.RegisterOnItemSwap(func(_ *core.Simulation) {
-	// 		enh.ApplySyncType(proto.ShamanSyncType_Auto)
-	// 	})
-	// }
+	if enh.ItemSwap.IsEnabled() {
+		mh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
+		enh.ApplyFlametongueImbueToItem(mh)
+		oh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
+		enh.ApplyFlametongueImbueToItem(oh)
+		enh.RegisterOnItemSwap(func(_ *core.Simulation) {
+			enh.ApplySyncType(proto.ShamanSyncType_Auto)
+		})
+	}
+
+	enh.GetSpellPowerValue = func(spell *core.Spell) float64 {
+		return spell.MeleeAttackPower() * 0.55
+	}
+
+	// Mastery: Enhanced Elements
+	masteryMod := enh.AddDynamicMod(core.SpellModConfig{
+		Kind:   core.SpellMod_DamageDone_Pct,
+		School: core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature,
+	})
+
+	enh.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		masteryMod.UpdateFloatValue(enh.getMasteryBonus())
+	})
+
+	core.MakePermanent(enh.GetOrRegisterAura(core.Aura{
+		Label:    "Mastery: Enhanced Elements",
+		ActionID: core.ActionID{SpellID: 77223},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.UpdateFloatValue(enh.getMasteryBonus())
+			masteryMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.Deactivate()
+		},
+	}))
+
+	enh.applyPrimalWisdom()
+	enh.registerLavaLashSpell()
+}
+
+func (enh EnhancementShaman) getMasteryBonus() float64 {
+	return 0.2 + 0.025*enh.GetMasteryPoints()
+}
+
+func (enh *EnhancementShaman) applyPrimalWisdom() {
+	manaMetrics := enh.NewManaMetrics(core.ActionID{SpellID: 63375})
+
+	enh.RegisterAura(core.Aura{
+		Label:    "Primal Wisdom",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
+
+			if sim.RandomFloat("Primal Wisdom") < 0.4 {
+				enh.AddMana(sim, 0.05*enh.BaseMana, manaMetrics)
+			}
+		},
+	})
 }
 
 func (enh *EnhancementShaman) Reset(sim *core.Simulation) {

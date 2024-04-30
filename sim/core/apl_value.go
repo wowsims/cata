@@ -135,10 +135,6 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueNextRuneCooldown(config.GetNextRuneCooldown())
 	case *proto.APLValue_RuneSlotCooldown:
 		return rot.newValueRuneSlotCooldown(config.GetRuneSlotCooldown())
-	case *proto.APLValue_RuneGrace:
-		return rot.newValueRuneGrace(config.GetRuneGrace())
-	case *proto.APLValue_RuneSlotGrace:
-		return rot.newValueRuneSlotGrace(config.GetRuneSlotGrace())
 
 	//Unit
 	case *proto.APLValue_UnitIsMoving:
@@ -193,6 +189,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueDotIsActive(config.GetDotIsActive())
 	case *proto.APLValue_DotRemainingTime:
 		return rot.newValueDotRemainingTime(config.GetDotRemainingTime())
+	case *proto.APLValue_DotTickFrequency:
+		return rot.newValueDotTickFrequency(config.GetDotTickFrequency())
 
 	// Sequences
 	case *proto.APLValue_SequenceIsComplete:

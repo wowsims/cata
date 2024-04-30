@@ -5,6 +5,7 @@ import {
 	HunterMinorGlyph as MinorGlyph,
 	HunterOptions_Ammo as Ammo,
 	HunterOptions_PetType as PetType,
+	HunterPrimeGlyph as PrimeGlyph,
 	HunterStingType,
 	SurvivalHunter_Options as HunterOptions,
 	SurvivalHunter_Rotation as HunterRotation,
@@ -15,10 +16,6 @@ import AoeApl from './apls/aoe.apl.json';
 import SvApl from './apls/sv.apl.json';
 import SvAdvApl from './apls/sv_advanced.apl.json';
 import P1SVGear from './gear_sets/p1_sv.gear.json';
-import P2SVGear from './gear_sets/p2_sv.gear.json';
-import P3SVGear from './gear_sets/p3_sv.gear.json';
-import P4SVGear from './gear_sets/p4_sv.gear.json';
-import P5SVGear from './gear_sets/p5_sv.gear.json';
 import PreraidSVGear from './gear_sets/preraid_sv.gear.json';
 
 // Preset options for this spec.
@@ -27,17 +24,10 @@ import PreraidSVGear from './gear_sets/preraid_sv.gear.json';
 
 export const SV_PRERAID_PRESET = PresetUtils.makePresetGear('SV PreRaid Preset', PreraidSVGear);
 export const SV_P1_PRESET = PresetUtils.makePresetGear('SV P1 Preset', P1SVGear);
-export const SV_P2_PRESET = PresetUtils.makePresetGear('SV P2 Preset', P2SVGear);
-export const SV_P3_PRESET = PresetUtils.makePresetGear('SV P3 Preset', P3SVGear);
-export const SV_P4_PRESET = PresetUtils.makePresetGear('SV P4 Preset', P4SVGear);
-export const SV_P5_PRESET = PresetUtils.makePresetGear('SV P5 Preset', P5SVGear);
-
 export const DefaultSimpleRotation = HunterRotation.create({
 	type: RotationType.SingleTarget,
 	sting: HunterStingType.SerpentSting,
-	trapWeave: true,
 	multiDotSerpentSting: true,
-	allowExplosiveShotDownrank: true,
 });
 
 export const ROTATION_PRESET_SIMPLE_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecSurvivalHunter, DefaultSimpleRotation);
@@ -51,33 +41,32 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeA
 export const SurvivalTalents = {
 	name: 'Survival',
 	data: SavedTalents.create({
-		// talentsString: '-005305101-5000032500033330531135301331',
-		// glyphs: Glyphs.create({
-		// 	major1: MajorGlyph.GlyphOfSerpentSting,
-		// 	major2: MajorGlyph.GlyphOfExplosiveTrap,
-		// 	major3: MajorGlyph.GlyphOfKillShot,
-		// 	minor1: MinorGlyph.GlyphOfFeignDeath,
-		// 	minor2: MinorGlyph.GlyphOfRevivePet,
-		// 	minor3: MinorGlyph.GlyphOfMendPet,
-		// }),
+		talentsString: '03-2302-23203003023022121311',
+		glyphs: Glyphs.create({
+			prime1: PrimeGlyph.GlyphOfExplosiveShot,
+			prime2: PrimeGlyph.GlyphOfKillShot,
+			prime3: PrimeGlyph.GlyphOfSerpentSting,
+		}),
 	}),
 };
 
 export const SVDefaultOptions = HunterOptions.create({
 	classOptions: {
-		ammo: Ammo.SaroniteRazorheads,
 		useHuntersMark: true,
 		petType: PetType.Wolf,
 		petTalents: ferocityDefault,
 		petUptime: 1,
-		timeToTrapWeaveMs: 2000,
 	},
 	sniperTrainingUptime: 0.9,
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfSpeed,
-	flask: Flask.FlaskOfEndlessRage,
+	defaultPotion: Potions.PotionOfTheTolvir,
+	prepopPotion: Potions.PotionOfTheTolvir,
+	flask: Flask.FlaskOfTheWinds,
 	food: Food.FoodFishFeast,
-	petFood: PetFood.PetFoodSpicedMammothTreats,
 });
+
+export const OtherDefaults = {
+	distanceFromTarget: 24
+}

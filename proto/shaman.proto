@@ -119,6 +119,7 @@ enum EarthTotem {
 	StrengthOfEarthTotem = 1;
 	TremorTotem = 2;
 	StoneskinTotem = 3;
+	EarthElementalTotem = 4;
 }
 
 enum AirTotem {
@@ -131,14 +132,16 @@ enum FireTotem {
 	NoFireTotem = 0;
 	MagmaTotem = 1;
 	SearingTotem = 2;
-	TotemOfWrath = 3;
-	FlametongueTotem = 4;
+	FlametongueTotem = 3;
+	FireElementalTotem = 4;
 }
 
 enum WaterTotem {
 	NoWaterTotem = 0;
 	ManaSpringTotem = 1;
 	HealingStreamTotem = 2;
+	TotemOfTranquilMind = 3;
+	ElementalResistanceTotem = 4;
 }
 
 message ShamanTotems {
@@ -177,8 +180,8 @@ enum ShamanImbue {
     NoImbue = 0;
     WindfuryWeapon = 1;
     FlametongueWeapon = 2;
-    FlametongueWeaponDownrank = 3;
-    FrostbrandWeapon = 4;
+    FrostbrandWeapon = 3;
+	EarthlivingWeapon = 4;
 }
 
 enum ShamanSyncType {
@@ -227,7 +230,7 @@ message EnhancementShaman {
 enum ShamanHealSpell {
 	AutoHeal = 0;
 	HealingWave = 1;
-	LesserHealingWave = 2;
+	HealingSurge = 2;
 	ChainHeal = 3;
 }
 

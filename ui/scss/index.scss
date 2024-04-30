@@ -1,47 +1,48 @@
 // Bootstrap functions & variables
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
 
 // Custom Bootstrap variable overrides
-@import "shared/variables";
+@import 'shared/variables';
 
 // Bootstrap configuration
-@import "bootstrap/scss/maps";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
 
 // Bootstrap layout & components
-@import "bootstrap/scss/root";
-@import "bootstrap/scss/reboot";
-@import "bootstrap/scss/type";
-@import "bootstrap/scss/containers";
-@import "bootstrap/scss/grid";
-@import "bootstrap/scss/forms";
-@import "bootstrap/scss/buttons";
-@import "bootstrap/scss/transitions";
-@import "bootstrap/scss/dropdown";
-@import "bootstrap/scss/nav";
-@import "bootstrap/scss/navbar";
-@import "bootstrap/scss/badge";
-@import "bootstrap/scss/alert";
-@import "bootstrap/scss/modal";
-@import "bootstrap/scss/tooltip";
-@import "bootstrap/scss/popover";
-@import "bootstrap/scss/carousel";
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/transitions';
+@import 'bootstrap/scss/dropdown';
+@import 'bootstrap/scss/nav';
+@import 'bootstrap/scss/navbar';
+@import 'bootstrap/scss/badge';
+@import 'bootstrap/scss/alert';
+@import 'bootstrap/scss/close';
+@import 'bootstrap/scss/modal';
+@import 'bootstrap/scss/carousel';
 
-@import "bootstrap/scss/helpers";
+@import 'bootstrap/scss/helpers';
 
 // Bootstrap Utilities API
-@import "./bootstrap/scss/utilities/api";
+@import './bootstrap/scss/utilities/api';
 
 // Custom shared styles
-@import "shared/mixins";
-@import "shared/global";
-@import "shared/global_old";
-@import "shared/modal";
+@import 'shared/mixins';
+@import 'shared/global';
+@import 'shared/global_old';
+@import 'shared/modal';
 
 // Custom Bootstrap style overrides
-@import "shared/bootstrap_style_overrides";
+@import 'shared/bootstrap_style_overrides';
 
 // Import other plugin styles
-@import "tippy.js/dist/tippy";
+@import 'tippy.js/dist/tippy';
+@import 'shared/tippy_style_overrides';

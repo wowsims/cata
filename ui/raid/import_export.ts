@@ -104,7 +104,7 @@ export class RaidWCLImporter extends Importer {
 					<li>Race: Inferred from Race-specific abilties used in any fight if possible, or defaults to Spec-specific Race.</li>
 					<li>Professions: Inferred from profession-locked items/enchants/gems.</li>
 					<li>Buff assignments (Innervate, Unholy Frenzy, etc): Inferred from casts.</li>
-					<li>Party Composition: Inferred from party-only effects, such as Heroic Presence, Prayer of Healing, or Vampiric Touch.</li>
+					<li>Party Composition: Inferred from party-only effects, such as Prayer of Healing, or Vampiric Touch.</li>
 				</ul>
 
 				The following are not imported, and instead use spec-specific defaults:

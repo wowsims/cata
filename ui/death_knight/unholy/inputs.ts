@@ -24,6 +24,20 @@ import { EventID, TypedEvent } from '../../core/typed_event';
 // 	changeEmitter: (player: Player<Spec.SpecUnholyDeathKnight>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
 // });
 
+// export const StartingRunicPower = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecUnholyDeathKnight>({
+// 	fieldName: 'startingRunicPower',
+// 	label: 'Starting Runic Power',
+// 	labelTooltip: 'Initial RP at the start of each iteration.',
+// });
+
+// export const PetUptime = InputHelpers.makeSpecOptionsNumberInput<Spec.SpecDeathknight>({
+// 	fieldName: 'petUptime',
+// 	label: 'Ghoul Uptime (%)',
+// 	labelTooltip: 'Percent of the fight duration for which your ghoul will be on target.',
+// 	percent: true,
+// 	showWhen: (player: Player<Spec.SpecDeathknight>) => player.getTalents().masterOfGhouls,
+// });
+
 export const UseAMSInput = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecUnholyDeathKnight>({
 	fieldName: 'useAms',
 	label: 'Use AMS',

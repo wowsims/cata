@@ -20,16 +20,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	epStats: [
 		Stat.StatStrength,
 		Stat.StatArmor,
-		Stat.StatAgility,
 		Stat.StatAttackPower,
 		Stat.StatExpertise,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -39,31 +37,28 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		Stat.StatHealth,
 		Stat.StatArmor,
 		Stat.StatStrength,
-		Stat.StatAgility,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatExpertise,
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_FROST_PRESET.gear,
+		gear: Presets.P1_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
 				[Stat.StatStrength]: 3.22,
-				[Stat.StatAgility]: 0.62,
 				[Stat.StatArmor]: 0.01,
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatExpertise]: 1.13,
 				[Stat.StatMeleeHaste]: 1.85,
 				[Stat.StatMeleeHit]: 1.92,
 				[Stat.StatMeleeCrit]: 0.76,
-				[Stat.StatArmorPenetration]: 0.77,
 				[Stat.StatSpellHit]: 0.8,
 				[Stat.StatSpellCrit]: 0.34,
 			},
@@ -72,53 +67,43 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 				[PseudoStat.PseudoStatOffHandDps]: 1.79,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.FrostTalents.data,
+		talents: Presets.SingleTargetTalents.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultFrostOptions,
+		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			swiftRetribution: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
-			icyTalons: true,
-			abominationsMight: true,
-			leaderOfThePack: TristateEffect.TristateEffectRegular,
-			sanctifiedRetribution: true,
+			devotionAura: true,
 			bloodlust: true,
-			devotionAura: TristateEffect.TristateEffectImproved,
-			stoneskinTotem: TristateEffect.TristateEffectImproved,
-			moonkinAura: TristateEffect.TristateEffectRegular,
-			wrathOfAirTotem: true,
-			powerWordFortitude: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
+			icyTalons: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			hornOfWinter: true,
+			abominationsMight: true,
+			arcaneTactics: true,
 		}),
 		partyBuffs: PartyBuffs.create({
 			heroicPresence: false,
 		}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			bloodFrenzy: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
 			sunderArmor: true,
+			brittleBones: true,
 			ebonPlaguebringer: true,
-			mangle: true,
-			heartOfTheCrusader: true,
-			shadowMastery: true,
+			shadowAndFlame: true,
 		}),
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
-		const talentPoints = player.getTalentTreePoints();
-		// TODO: Add Frost AOE rotation
-		if (talentPoints[0] > talentPoints[2]) {
-			return Presets.FROST_BL_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		const numTargets = player.sim.encounter.targets.length;
+		if (numTargets > 1) {
+			return Presets.AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		} else {
-			return Presets.FROST_UH_PESTI_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 
@@ -126,8 +111,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	playerIconInputs: [],
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.StaminaBuff],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.AttackPowerDebuff, BuffDebuffInputs.DamageReductionPercentBuff, BuffDebuffInputs.MeleeAttackSpeedDebuff],
+	includeBuffDebuffInputs: [
+		BuffDebuffInputs.SpellDamageDebuff
+	],
+	excludeBuffDebuffInputs: [
+		BuffDebuffInputs.DamageReduction,
+		BuffDebuffInputs.MeleeAttackSpeedDebuff,
+		BuffDebuffInputs.BleedDebuff
+	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -136,50 +127,53 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			// FrostInputs.UseAMSInput,
 			// FrostInputs.AvgAMSSuccessRateInput,
 			// FrostInputs.AvgAMSHitInput,
-
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InputDelay,
+			OtherInputs.DarkIntentUptime,
 		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
 	encounterPicker: {
-		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
 	},
 
 	presets: {
-		// Preset talents that the user can quickly select.
-		talents: [],
-		// Preset rotations that the user can quickly select.
-		rotations: [],
-		// Preset gear configurations that the user can quickly select.
-		gear: [],
+		talents: [
+			Presets.SingleTargetTalents,
+			//Presets.AoeTalents,
+		],
+		rotations: [
+			Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT,
+			//Presets.AOE_ROTATION_PRESET_DEFAULT,
+		],
+		gear: [Presets.P1_GEAR_PRESET],
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFrostDeathKnight,
-			talents: Presets.FrostTalents.data,
-			specOptions: Presets.DefaultFrostOptions,
+			talents: Presets.SingleTargetTalents.data,
+			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Alliance]: Race.RaceWorgen,
 				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_FROST_PRESET.gear,
-					2: Presets.P2_FROST_PRESET.gear,
-					3: Presets.P3_FROST_PRESET.gear,
-					4: Presets.P4_FROST_PRESET.gear,
+					1: Presets.P1_GEAR_PRESET.gear,
+					2: Presets.P1_GEAR_PRESET.gear,
+					3: Presets.P1_GEAR_PRESET.gear,
+					4: Presets.P1_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_FROST_PRESET.gear,
-					2: Presets.P2_FROST_PRESET.gear,
-					3: Presets.P3_FROST_PRESET.gear,
-					4: Presets.P4_FROST_PRESET.gear,
+					1: Presets.P1_GEAR_PRESET.gear,
+					2: Presets.P1_GEAR_PRESET.gear,
+					3: Presets.P1_GEAR_PRESET.gear,
+					4: Presets.P1_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

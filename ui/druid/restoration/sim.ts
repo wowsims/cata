@@ -16,7 +16,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationDruid, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5, Stat.StatMastery],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -30,6 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationDruid, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 
 	defaults: {
@@ -69,7 +70,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationDruid, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.TankAssignment],
+		inputs: [OtherInputs.InputDelay, OtherInputs.TankAssignment],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

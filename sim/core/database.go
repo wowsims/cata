@@ -13,6 +13,7 @@ var WITH_DB = false
 
 var ItemsByID = map[int32]Item{}
 var GemsByID = map[int32]Gem{}
+var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
 var ReforgeStatsByID = map[int32]ReforgeStat{}
 
@@ -20,6 +21,12 @@ func addToDatabase(newDB *proto.SimDatabase) {
 	for _, v := range newDB.Items {
 		if _, ok := ItemsByID[v.Id]; !ok {
 			ItemsByID[v.Id] = ItemFromProto(v)
+		}
+	}
+
+	for _, v := range newDB.RandomSuffixes {
+		if _, ok := RandomSuffixesByID[v.Id]; !ok {
+			RandomSuffixesByID[v.Id] = RandomSuffixFromProto(v)
 		}
 	}
 
@@ -81,18 +88,20 @@ type Item struct {
 	WeaponDamageMax  float64
 	SwingSpeed       float64
 
-	Name    string
-	Stats   stats.Stats // Stats applied to wearer
-	Quality proto.ItemQuality
-	SetName string // Empty string if not part of a set.
+	Name             string
+	Stats            stats.Stats // Stats applied to wearer
+	Quality          proto.ItemQuality
+	SetName          string // Empty string if not part of a set.
+	RandomPropPoints int32  // Used to rescale random suffix stats
 
 	GemSockets  []proto.GemColor
 	SocketBonus stats.Stats
 
 	// Modified for each instance of the item.
-	Gems      []Gem
-	Enchant   Enchant
-	Reforging *ReforgeStat
+	RandomSuffix RandomSuffix
+	Gems         []Gem
+	Enchant      Enchant
+	Reforging    *ReforgeStat
 
 	//Internal use
 	TempEnchant int32
@@ -114,14 +123,16 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		GemSockets:       pData.GemSockets,
 		SocketBonus:      stats.FromFloatArray(pData.SocketBonus),
 		SetName:          pData.SetName,
+		RandomPropPoints: pData.RandPropPoints,
 	}
 }
 
 func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 	itemSpec := &proto.ItemSpec{
-		Id:      item.ID,
-		Enchant: item.Enchant.EffectID,
-		Gems:    MapSlice(item.Gems, func(gem Gem) int32 { return gem.ID }),
+		Id:           item.ID,
+		RandomSuffix: item.RandomSuffix.ID,
+		Enchant:      item.Enchant.EffectID,
+		Gems:         MapSlice(item.Gems, func(gem Gem) int32 { return gem.ID }),
 	}
 
 	// Check if Reforging is not nil before accessing ID
@@ -133,6 +144,20 @@ func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 	}
 
 	return itemSpec
+}
+
+type RandomSuffix struct {
+	ID    int32
+	Name  string
+	Stats stats.Stats
+}
+
+func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
+	return RandomSuffix{
+		ID:    pData.Id,
+		Name:  pData.Name,
+		Stats: stats.FromFloatArray(pData.Stats),
+	}
 }
 
 type Enchant struct {
@@ -164,10 +189,11 @@ func GemFromProto(pData *proto.SimGem) Gem {
 }
 
 type ItemSpec struct {
-	ID        int32
-	Enchant   int32
-	Gems      []int32
-	Reforging int32
+	ID           int32
+	RandomSuffix int32
+	Enchant      int32
+	Gems         []int32
+	Reforging    int32
 }
 
 type Equipment [proto.ItemSlot_ItemSlotRanged + 1]Item
@@ -188,12 +214,36 @@ func (equipment *Equipment) Head() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotHead]
 }
 
+func (equipment *Equipment) Neck() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotNeck]
+}
+
+func (equipment *Equipment) Shoulder() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotShoulder]
+}
+
+func (equipment *Equipment) Chest() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotChest]
+}
+
+func (equipment *Equipment) Wrist() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotWrist]
+}
+
 func (equipment *Equipment) Hands() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotHands]
 }
 
-func (equipment *Equipment) Neck() *Item {
-	return &equipment[proto.ItemSlot_ItemSlotNeck]
+func (equipment *Equipment) Waist() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotWaist]
+}
+
+func (equipment *Equipment) Legs() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotLegs]
+}
+
+func (equipment *Equipment) Feet() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotFeet]
 }
 
 func (equipment *Equipment) Trinket1() *Item {
@@ -259,10 +309,11 @@ func ProtoToEquipmentSpec(es *proto.EquipmentSpec) EquipmentSpec {
 	var coreEquip EquipmentSpec
 	for i, item := range es.Items {
 		coreEquip[i] = ItemSpec{
-			ID:        item.Id,
-			Enchant:   item.Enchant,
-			Gems:      item.Gems,
-			Reforging: item.Reforging,
+			ID:           item.Id,
+			RandomSuffix: item.RandomSuffix,
+			Enchant:      item.Enchant,
+			Gems:         item.Gems,
+			Reforging:    item.Reforging,
 		}
 	}
 	return coreEquip
@@ -276,6 +327,14 @@ func NewItem(itemSpec ItemSpec) Item {
 		panic(fmt.Sprintf("No item with id: %d", itemSpec.ID))
 	}
 
+	if itemSpec.RandomSuffix != 0 {
+		if randomSuffix, ok := RandomSuffixesByID[itemSpec.RandomSuffix]; ok {
+			item.RandomSuffix = randomSuffix
+		} else {
+			panic(fmt.Sprintf("No random suffix with id: %d", itemSpec.RandomSuffix))
+		}
+	}
+
 	if itemSpec.Enchant != 0 {
 		if enchant, ok := EnchantsByEffectID[itemSpec.Enchant]; ok {
 			item.Enchant = enchant
@@ -287,6 +346,7 @@ func NewItem(itemSpec ItemSpec) Item {
 
 	if itemSpec.Reforging > 112 { // There is no id below 113
 		reforge := ReforgeStatsByID[itemSpec.Reforging]
+
 		if validateReforging(&item, reforge) {
 			item.Reforging = &reforge
 		} else {
@@ -317,10 +377,15 @@ func NewItem(itemSpec ItemSpec) Item {
 
 func validateReforging(item *Item, reforging ReforgeStat) bool {
 	// Validate that the item can reforge these to stats
+	stats := stats.Stats{}
+	if item.RandomSuffix.ID != 0 {
+		stats = stats.Add(item.RandomSuffix.Stats.Multiply(float64(item.RandomPropPoints) / 10000.))
+	} else {
+		stats = stats.Add(item.Stats)
+	}
 	fromStatValid := false
 	for _, fromStat := range reforging.FromStat {
-		if item.Stats[fromStat] > 0 {
-			println("hello")
+		if stats[fromStat] > 0 {
 			fromStatValid = true
 			break
 		}
@@ -331,8 +396,7 @@ func validateReforging(item *Item, reforging ReforgeStat) bool {
 
 	toStatValid := false
 	for _, toStat := range reforging.ToStat {
-		if item.Stats[toStat] == 0 {
-			println("hello2")
+		if stats[toStat] == 0 {
 			toStatValid = true
 			break
 		}
@@ -375,48 +439,62 @@ func (equipment *Equipment) Stats() stats.Stats {
 	equipStats := stats.Stats{}
 
 	for _, item := range equipment {
-
-		equipStats = equipStats.Add(item.Stats)
-
-		// Apply reforging
-		if item.Reforging != nil {
-			reforgingChanges := stats.Stats{}
-			for _, fromStat := range item.Reforging.FromStat {
-				if equipStats[fromStat] > 0 {
-					reduction := math.Floor(equipStats[fromStat] * item.Reforging.Multiplier)
-					reforgingChanges[fromStat] = -reduction
-				}
-			}
-			for _, toStat := range item.Reforging.FromStat {
-				if equipStats[toStat] > 0 {
-					increase := math.Floor(equipStats[toStat] * item.Reforging.Multiplier)
-					reforgingChanges[toStat] = +increase
-				}
-			}
-			equipStats = equipStats.Add(reforgingChanges)
-		}
-
-		equipStats = equipStats.Add(item.Enchant.Stats)
-
-		for _, gem := range item.Gems {
-			equipStats = equipStats.Add(gem.Stats)
-		}
-		// Check socket bonus
-		if len(item.GemSockets) > 0 && len(item.Gems) >= len(item.GemSockets) {
-			allMatch := true
-			for gemIndex, socketColor := range item.GemSockets {
-				if !ColorIntersects(socketColor, item.Gems[gemIndex].Color) {
-					allMatch = false
-					break
-				}
-			}
-
-			if allMatch {
-				equipStats = equipStats.Add(item.SocketBonus)
-			}
-		}
-
+		equipStats = equipStats.Add(ItemEquipmentStats(item))
 	}
+	return equipStats
+}
+
+func ItemEquipmentStats(item Item) stats.Stats {
+	equipStats := stats.Stats{}
+
+	if item.ID == 0 {
+		return equipStats
+	}
+
+	equipStats = equipStats.Add(item.Stats)
+
+	// TODO: Verify that random suffix stats can be re-forged (current implementation assumes yes)
+	rawSuffixStats := item.RandomSuffix.Stats
+	equipStats = equipStats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.))
+
+	// Apply reforging
+	if item.Reforging != nil {
+		itemStats := item.Stats.Add(rawSuffixStats.Multiply(float64(item.RandomPropPoints) / 10000.))
+
+		reforgingChanges := stats.Stats{}
+		for _, fromStat := range item.Reforging.FromStat {
+			if itemStats[fromStat] > 0 {
+				reduction := math.Floor(itemStats[fromStat] * item.Reforging.Multiplier)
+				reforgingChanges[fromStat] = -reduction
+				for _, toStat := range item.Reforging.ToStat {
+					reforgingChanges[toStat] = reduction
+				}
+			}
+		}
+
+		equipStats = equipStats.Add(reforgingChanges)
+	}
+
+	equipStats = equipStats.Add(item.Enchant.Stats)
+
+	for _, gem := range item.Gems {
+		equipStats = equipStats.Add(gem.Stats)
+	}
+	// Check socket bonus
+	if len(item.GemSockets) > 0 && len(item.Gems) >= len(item.GemSockets) {
+		allMatch := true
+		for gemIndex, socketColor := range item.GemSockets {
+			if !ColorIntersects(socketColor, item.Gems[gemIndex].Color) {
+				allMatch = false
+				break
+			}
+		}
+
+		if allMatch {
+			equipStats = equipStats.Add(item.SocketBonus)
+		}
+	}
+
 	return equipStats
 }
 

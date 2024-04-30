@@ -53,7 +53,7 @@ package sim
 // 						Totems: &proto.ShamanTotems{
 // 							Earth: proto.EarthTotem_TremorTotem,
 // 							Air:   proto.AirTotem_WrathOfAirTotem,
-// 							Fire:  proto.FireTotem_TotemOfWrath,
+// 							Fire:  proto.FireTotem_FlametongueTotem,
 // 							Water: proto.WaterTotem_ManaSpringTotem,
 // 						},
 // 					},
@@ -182,7 +182,7 @@ package sim
 // 										Totems: &proto.ShamanTotems{
 // 											Earth: proto.EarthTotem_TremorTotem,
 // 											Air:   proto.AirTotem_WrathOfAirTotem,
-// 											Fire:  proto.FireTotem_TotemOfWrath,
+// 											Fire:  proto.FireTotem_FlametongueTotem,
 // 											Water: proto.WaterTotem_ManaSpringTotem,
 // 										},
 // 									},
@@ -202,7 +202,7 @@ package sim
 // 				ArcaneBrilliance: true,
 // 				Bloodlust:        true,
 // 				WrathOfAirTotem:  true,
-// 				ManaSpringTotem:  proto.TristateEffect_TristateEffectImproved,
+// 				ManaSpringTotem:  true,
 // 			},
 // 			Debuffs: &proto.Debuffs{
 // 				JudgementOfWisdom: true,

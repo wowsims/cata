@@ -5,6 +5,7 @@ import {
 	APLActionActivateAura,
 	APLActionAutocastOtherCooldowns,
 	APLActionCancelAura,
+	APLActionCastFriendlySpell,
 	APLActionCastSpell,
 	APLActionCatOptimalRotationAction,
 	APLActionChangeTarget,
@@ -332,7 +333,20 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		label: 'Cast',
 		shortDescription: 'Casts the spell if possible, i.e. resource/cooldown/GCD/etc requirements are all met.',
 		newValue: APLActionCastSpell.create,
-		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', ''), AplHelpers.unitFieldConfig('target', 'targets')],
+		fields: [
+			AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', ''),
+			AplHelpers.unitFieldConfig('target', 'targets')
+		],
+	}),
+	['castFriendlySpell']: inputBuilder({
+		label: 'Cast at Player',
+		shortDescription: 'Casts a friendly spell if possible, i.e. resource/cooldown/GCD/etc requirements are all met.',
+		newValue: APLActionCastFriendlySpell.create,
+		fields: [
+			AplHelpers.actionIdFieldConfig('spellId', 'friendly_spells', ''),
+			AplHelpers.unitFieldConfig('target', 'players')
+		],
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getRaid()!.size() > 1,
 	}),
 	['multidot']: inputBuilder({
 		label: 'Multi Dot',
@@ -585,28 +599,27 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 	['catOptimalRotationAction']: inputBuilder({
 		label: 'Optimal Rotation Action',
 		submenu: ['Feral Druid'],
-		shortDescription: 'Executes optimized Feral DPS rotation using hardcoded legacy algorithm.',
+		shortDescription: 'Executes optimized Feral DPS rotation using hardcoded algorithm.',
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecFeralDruid,
 		newValue: () =>
 			APLActionCatOptimalRotationAction.create({
 				rotationType: FeralDruid_Rotation_AplType.SingleTarget,
+				maintainFaerieFire: true,
 				manualParams: true,
-				maxFfDelay: 0.1,
-				minRoarOffset: 25.0,
+				minRoarOffset: 12.0,
 				ripLeeway: 4,
 				useRake: true,
 				useBite: true,
-				biteTime: 4.0,
-				flowerWeave: false,
+				biteTime: 10.0,
+				biteDuringExecute: true,
 			}),
 		fields: [
 			AplHelpers.rotationTypeFieldConfig('rotationType'),
+			AplHelpers.booleanFieldConfig('maintainFaerieFire', 'Maintain Faerie Fire', {
+				labelTooltip: 'Maintain Faerie Fire debuff. Overwrites any external Sunder effects specified in settings.',
+			}),
 			AplHelpers.booleanFieldConfig('manualParams', 'Manual Advanced Parameters', {
 				labelTooltip: 'Manually specify advanced parameters, otherwise will use preset defaults.',
-			}),
-			AplHelpers.numberFieldConfig('maxFfDelay', true, {
-				label: 'Max FF Delay',
-				labelTooltip: 'Max allowed FF delay to fit in damage casts. Ignored if not using manual advanced parameters.',
 			}),
 			AplHelpers.numberFieldConfig('minRoarOffset', true, {
 				label: 'Roar Offset',
@@ -627,9 +640,9 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				label: 'Bite Time',
 				labelTooltip: 'Min seconds remaining on Rip/Roar to allow a Bite. Ignored if not Biting during rotation.',
 			}),
-			AplHelpers.booleanFieldConfig('flowerWeave', 'Flower Weave', {
+			AplHelpers.booleanFieldConfig('biteDuringExecute', 'Bite during Execute phase', {
 				labelTooltip:
-					'Fish for Clearcasting procs during AOE rotation with GotW. Ignored for Single Target rotation or if not using manual advanced parameters.',
+					'Bite aggressively during Execute phase. Ignored if Blood in the Water is not talented, or if not using manual advanced parameters.',
 			}),
 		],
 	}),

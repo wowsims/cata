@@ -6,12 +6,21 @@
 	text-align: center !important;
 }
 
+.name-cell {
+	width: 250px;
+}
+
+.dps-cell {
+	max-width: 250px;
+	min-width: 80px;
+}
+
 .amount-cell {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	height: 35px;
-	width: 600px;
+	width: auto;
 	margin: auto;
 }
 

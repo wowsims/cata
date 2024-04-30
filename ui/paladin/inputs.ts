@@ -12,7 +12,7 @@ export const AuraSelection = <SpecType extends PaladinSpecs>() =>
 		fieldName: 'aura',
 		values: [
 			{ value: PaladinAura.NoPaladinAura, tooltip: 'No Aura' },
-			{ actionId: ActionId.fromSpellId(54043), value: PaladinAura.RetributionAura },
+			{ actionId: ActionId.fromSpellId(7294), value: PaladinAura.RetributionAura },
 		],
 	});
 

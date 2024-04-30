@@ -78,6 +78,7 @@ func main() {
 
 	// Todo: https://web.archive.org/web/20120201045249js_/http://www.wowhead.com/data=item-scaling
 	reforgeStats := database.ParseWowheadReforgeStats(tools.ReadFile(fmt.Sprintf("%s/wowhead_reforge_stats.json", inputsDir)))
+	randomPropAllocations := database.ParseRandPropPointsTable(tools.ReadFile(fmt.Sprintf("%s/RandPropPoints.json", inputsDir)))
 
 	db := database.NewWowDatabase()
 	db.Encounters = core.PresetEncounters
@@ -137,6 +138,16 @@ func main() {
 			if crafted := source.GetCrafted(); crafted != nil {
 				db.AddSpellIcon(crafted.SpellId, spellTooltips)
 			}
+		}
+
+		for _, randomSuffixID := range item.RandomSuffixOptions {
+			if _, exists := db.RandomSuffixes[randomSuffixID]; !exists {
+				db.RandomSuffixes[randomSuffixID] = wowheadDB.RandomSuffixes[strconv.Itoa(int(randomSuffixID))].ToProto()
+			}
+		}
+
+		if len(item.RandomSuffixOptions) > 0 {
+			item.RandPropPoints = randomPropAllocations.CalcItemAllocation(item)
 		}
 	}
 

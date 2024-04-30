@@ -4,32 +4,24 @@ import {
 	BeastMasteryHunter_Options as BeastMasteryOptions,
 	BeastMasteryHunter_Rotation as BeastMasteryRotation,
 	HunterMajorGlyph as MajorGlyph,
-	HunterMinorGlyph as MinorGlyph,
 	HunterOptions_Ammo as Ammo,
 	HunterOptions_PetType as PetType,
+	HunterPrimeGlyph as PrimeGlyph,
 	HunterStingType as StingType,
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
 import { ferocityBMDefault } from '../../core/talents/hunter_pet';
 import AoeApl from './apls/aoe.apl.json';
 import BmApl from './apls/bm.apl.json';
-import P1MMGear from './gear_sets/p1_mm.gear.json';
-import P2MMGear from './gear_sets/p2_mm.gear.json';
-import P3MMGear from './gear_sets/p3_mm.gear.json';
-import P4MMGear from './gear_sets/p4_mm.gear.json';
-import P5MMGear from './gear_sets/p5_mm.gear.json';
-import PreraidMMGear from './gear_sets/preraid_mm.gear.json';
+import P1BMGear from './gear_sets/p1_bm.gear.json';
+import PreraidBMGear from './gear_sets/preraid_bm.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const BM_PRERAID_PRESET = PresetUtils.makePresetGear('BM PreRaid Preset', PreraidMMGear);
-export const BM_P1_PRESET = PresetUtils.makePresetGear('BM P1 Preset', P1MMGear);
-export const BM_P2_PRESET = PresetUtils.makePresetGear('BM P2 Preset', P2MMGear);
-export const BM_P3_PRESET = PresetUtils.makePresetGear('BM P3 Preset', P3MMGear);
-export const BM_P4_PRESET = PresetUtils.makePresetGear('BM P4 Preset', P4MMGear);
-export const BM_P5_PRESET = PresetUtils.makePresetGear('BM P5 Preset', P5MMGear);
+export const BM_PRERAID_PRESET = PresetUtils.makePresetGear('BM PreRaid Preset', PreraidBMGear);
+export const BM_P1_PRESET = PresetUtils.makePresetGear('BM P1 Preset', P1BMGear);
 
 export const DefaultSimpleRotation = BeastMasteryRotation.create({
 	type: RotationType.SingleTarget,
@@ -49,32 +41,43 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeA
 export const BeastMasteryTalents = {
 	name: 'Beast Mastery',
 	data: SavedTalents.create({
-		// talentsString: '51200201505112243120531251-025305101',
-		// glyphs: Glyphs.create({
-		// 	major1: MajorGlyph.GlyphOfBestialWrath,
-		// 	major2: MajorGlyph.GlyphOfSteadyShot,
-		// 	major3: MajorGlyph.GlyphOfSerpentSting,
-		// 	minor1: MinorGlyph.GlyphOfFeignDeath,
-		// 	minor2: MinorGlyph.GlyphOfRevivePet,
-		// 	minor3: MinorGlyph.GlyphOfMendPet,
-		// }),
+		talentsString: '2330230311320112121-2302-03',
+		glyphs: Glyphs.create({
+			prime1: PrimeGlyph.GlyphOfArcaneShot,
+			prime2: PrimeGlyph.GlyphOfKillCommand,
+			prime3: PrimeGlyph.GlyphOfKillShot,
+			major1: MajorGlyph.GlyphOfBestialWrath,
+		}),
 	}),
 };
 
 export const BMDefaultOptions = BeastMasteryOptions.create({
 	classOptions: {
-		ammo: Ammo.SaroniteRazorheads,
 		useHuntersMark: true,
 		petType: PetType.Wolf,
-		petTalents: ferocityBMDefault,
-		petUptime: 1,
-		timeToTrapWeaveMs: 2000,
+		petTalents: {
+			serpentSwiftness: 2,
+			dash: true,
+			bloodthirsty: 2,
+			spikedCollar: 3,
+			cullingTheHerd: 3,
+			charge: true,
+			spidersBite: 3,
+			rabid: true,
+			callOfTheWild: true,
+			sharkAttack: 2,
+			wildHunt: 2,
+		},
 	},
 });
 
 export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.PotionOfSpeed,
-	flask: Flask.FlaskOfEndlessRage,
+	defaultPotion: Potions.PotionOfTheTolvir,
+	prepopPotion: Potions.PotionOfTheTolvir,
+	flask: Flask.FlaskOfTheWinds,
 	food: Food.FoodFishFeast,
-	petFood: PetFood.PetFoodSpicedMammothTreats,
 });
+
+export const OtherDefaults = {
+	distanceFromTarget: 24
+}

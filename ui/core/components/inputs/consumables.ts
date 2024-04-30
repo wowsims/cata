@@ -1,5 +1,5 @@
 import { Player } from '../../player';
-import { BattleElixir, Class, Conjured, Consumes, Explosive, Flask, Food, GuardianElixir, PetFood, Potions, Spec, Stat } from '../../proto/common';
+import { BattleElixir, Class, Conjured, Consumes, Explosive, Flask, Food, GuardianElixir, PetFood, Potions, Profession, Spec, Stat, TinkerHands } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import { EventID, TypedEvent } from '../../typed_event';
 import { IconEnumValueConfig } from '../icon_enum_picker';
@@ -45,7 +45,7 @@ function makeConsumeInputFactory<T extends number, SpecType extends Spec>(
 			),
 			equals: (a: T, b: T) => a == b,
 			zeroValue: 0 as T,
-			changedEvent: (player: Player<any>) => TypedEvent.onAny([player.consumesChangeEmitter, player.gearChangeEmitter]),
+			changedEvent: (player: Player<any>) => TypedEvent.onAny([player.consumesChangeEmitter, player.gearChangeEmitter, player.professionChangeEmitter]),
 			showWhen: (player: Player<any>) => !args.showWhen || args.showWhen(player),
 			getValue: (player: Player<any>) => player.getConsumes()[args.consumesFieldName] as T,
 			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
@@ -118,15 +118,56 @@ export const EXPLOSIVES_CONFIG = [
 
 export const makeExplosivesInput = makeConsumeInputFactory({
 	consumesFieldName: 'fillerExplosive',
+	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
 
 export const ThermalSapper = makeBooleanConsumeInput({
 	actionId: ActionId.fromItemId(42641),
 	fieldName: 'thermalSapper',
+	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
 export const ExplosiveDecoy = makeBooleanConsumeInput({
 	actionId: ActionId.fromItemId(40536),
 	fieldName: 'explosiveDecoy',
+	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
+});
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Tinkers
+///////////////////////////////////////////////////////////////////////////
+
+export const TinkerHandsSynapseSprings = {
+	actionId: ActionId.fromSpellId(82174),
+	value: TinkerHands.TinkerHandsSynapseSprings,
+};
+export const TinkerHandsQuickflipDeflectionPlates = {
+	actionId: ActionId.fromSpellId(82176),
+	value: TinkerHands.TinkerHandsQuickflipDeflectionPlates,
+};
+export const TinkerHandsTazikShocker = {
+	actionId: ActionId.fromSpellId(82179),
+	value: TinkerHands.TinkerHandsTazikShocker,
+};
+export const TinkerHandsSpinalHealingInjector = {
+	actionId: ActionId.fromSpellId(82184),
+	value: TinkerHands.TinkerHandsSpinalHealingInjector,
+};
+export const TinkerHandsZ50ManaGulper = {
+	actionId: ActionId.fromSpellId(82186),
+	value: TinkerHands.TinkerHandsZ50ManaGulper,
+};
+
+export const TINKERS_HANDS_CONFIG = [
+	{ config: TinkerHandsSynapseSprings, stats: [] },
+	{ config: TinkerHandsQuickflipDeflectionPlates, stats: [] },
+	{ config: TinkerHandsTazikShocker, stats: [] },
+	{ config: TinkerHandsSpinalHealingInjector, stats: [] },
+	{ config: TinkerHandsZ50ManaGulper, stats: [] },
+] as ConsumableStatOption<TinkerHands>[];
+
+export const makeTinkerHandsInput = makeConsumeInputFactory({
+	consumesFieldName: 'tinkerHands',
+	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -152,6 +193,11 @@ export const FlaskOfSteelskin = {
 export const FlaskOfFlowingWater = {
 	actionId: ActionId.fromItemId(67438), // Use the correct item ID
 	value: Flask.FlaskOfFlowingWater,
+};
+
+export const FlaskOfTheDraconicMind = {
+	actionId: ActionId.fromItemId(58086), // Use the correct item ID
+	value: Flask.FlaskOfTheDraconicMind,
 };
 
 export const FlaskOfTheFrostWyrm = {
@@ -180,6 +226,11 @@ export const LesserFlaskOfResistance = {
 };
 
 export const FLASKS_CONFIG = [
+	{ config: FlaskOfTheDraconicMind, stats: [Stat.StatSpellPower] },
+	{ config: FlaskOfTitanicStrength, stats: [Stat.StatStrength] },
+	{ config: FlaskOfTheWinds, stats: [Stat.StatAgility] },
+	{ config: FlaskOfSteelskin, stats: [Stat.StatStamina] },
+	{ config: FlaskOfFlowingWater, stats: [Stat.StatSpirit] },
 	{ config: FlaskOfTheFrostWyrm, stats: [Stat.StatSpellPower] },
 	{ config: FlaskOfEndlessRage, stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower] },
 	{ config: FlaskOfPureMojo, stats: [Stat.StatMP5] },
@@ -189,10 +240,6 @@ export const FLASKS_CONFIG = [
 		config: LesserFlaskOfResistance,
 		stats: [Stat.StatArcaneResistance, Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatNatureResistance, Stat.StatShadowResistance],
 	},
-	{ config: FlaskOfTitanicStrength, stats: [Stat.StatStrength] },
-	{ config: FlaskOfTheWinds, stats: [Stat.StatAgility] },
-	{ config: FlaskOfSteelskin, stats: [Stat.StatStamina] },
-	{ config: FlaskOfFlowingWater, stats: [Stat.StatSpirit] },
 ] as ConsumableStatOption<Flask>[];
 
 export const makeFlasksInput = makeConsumeInputFactory({
@@ -316,7 +363,7 @@ export const makeBattleElixirsInput = makeConsumeInputFactory({
 
 // Guardian Elixirs
 export const ElixirOfDeepEarth = {
-	actionId: ActionId.fromItemId(80488),
+	actionId: ActionId.fromItemId(58093),
 	value: GuardianElixir.ElixirOfDeepEarth,
 };
 export const PrismaticElixir = {
@@ -347,10 +394,6 @@ export const ElixirOfSpirit = {
 	actionId: ActionId.fromItemId(40072),
 	value: GuardianElixir.ElixirOfSpirit,
 };
-export const GiftOfArthas = {
-	actionId: ActionId.fromItemId(9088),
-	value: GuardianElixir.GiftOfArthas,
-};
 
 export const GUARDIAN_ELIXIRS_CONFIG = [
 	{ config: ElixirOfDeepEarth, stats: [Stat.StatArmor] },
@@ -364,7 +407,6 @@ export const GUARDIAN_ELIXIRS_CONFIG = [
 	{ config: ElixirOfMightyThoughts, stats: [Stat.StatIntellect] },
 	{ config: ElixirOfProtection, stats: [Stat.StatArmor] },
 	{ config: ElixirOfSpirit, stats: [Stat.StatSpirit] },
-	{ config: GiftOfArthas, stats: [Stat.StatStamina] },
 ] as ConsumableStatOption<GuardianElixir>[];
 
 export const makeGuardianElixirsInput = makeConsumeInputFactory({
@@ -454,8 +496,76 @@ export const FoodFishermansFeast = {
 	actionId: ActionId.fromItemId(33052),
 	value: Food.FoodFishermansFeast,
 };
+export const FoodSeafoodMagnifiqueFeast = {
+	actionId: ActionId.fromItemId(62290),
+	value: Food.FoodSeafoodFeast,
+};
+export const FoodFortuneCookie = {
+	actionId: ActionId.fromItemId(62649),
+	value: Food.FoodFortuneCookie,
+};
+export const FoodSeveredSagefishHead = {
+	actionId: ActionId.fromItemId(62671),
+	value: Food.FoodSeveredSagefish,
+};
+export const FoodBeerBastedCrocolisk = {
+	actionId: ActionId.fromItemId(62670),
+	value: Food.FoodBeerBasedCrocolisk,
+};
+export const FoodBakedRockfish = {
+	actionId: ActionId.fromItemId(62661),
+	value: Food.FoodBakedRockfish,
+};
+export const FoodBasiliskLiverdog = {
+	actionId: ActionId.fromItemId(62665),
+	value: Food.FoodBasiliskLiverdog,
+};
+export const FoodBlackbellySushi = {
+	actionId: ActionId.fromItemId(62668),
+	value: Food.FoodBlackbellySushi,
+};
+export const FoodSkeweredEll = {
+	actionId: ActionId.fromItemId(62669),
+	value: Food.FoodSkeweredEel,
+};
+export const FoodCrocoliskAuGratin = {
+	actionId: ActionId.fromItemId(62664),
+	value: Food.FoodCrocoliskAuGratin,
+};
+export const FoodDeliciousSagefishTail = {
+	actionId: ActionId.fromItemId(62666),
+	value: Food.FoodDeliciousSagefishTail,
+};
+export const FoodMushroomSauceMudfish = {
+	actionId: ActionId.fromItemId(62667),
+	value: Food.FoodMushroomSauceMudfish,
+};
+export const FoodGrilledDragon = {
+	actionId: ActionId.fromItemId(62662),
+	value: Food.FoodGrilledDragon,
+};
+export const FoodLavascaleMinestrone = {
+	actionId: ActionId.fromItemId(62663),
+	value: Food.FoodLavascaleMinestrone,
+};
 
 export const FOOD_CONFIG = [
+	{
+		config: FoodSeafoodMagnifiqueFeast,
+		stats: [Stat.StatStamina, Stat.StatStrength, Stat.StatIntellect, Stat.StatAgility],
+	},
+	{ config: FoodFortuneCookie, stats: [Stat.StatAgility, Stat.StatStamina, Stat.StatStrength, Stat.StatAgility] },
+	{ config: FoodSeveredSagefishHead, stats: [Stat.StatIntellect] },
+	{ config: FoodBeerBastedCrocolisk, stats: [Stat.StatStrength] },
+	{ config: FoodSkeweredEll, stats: [Stat.StatAgility] },
+	{ config: FoodDeliciousSagefishTail, stats: [Stat.StatSpirit] },
+	{ config: FoodBakedRockfish, stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit] },
+	{ config: FoodBasiliskLiverdog, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
+	{ config: FoodLavascaleMinestrone, stats: [Stat.StatMastery] },
+	{ config: FoodGrilledDragon, stats: [Stat.StatMeleeHit, Stat.StatSpellHit] },
+	{ config: FoodCrocoliskAuGratin, stats: [Stat.StatExpertise] },
+	{ config: FoodMushroomSauceMudfish, stats: [Stat.StatDodge] },
+	{ config: FoodBlackbellySushi, stats: [Stat.StatParry] },
 	{
 		config: FoodFishFeast,
 		stats: [Stat.StatStamina, Stat.StatAttackPower, Stat.StatRangedAttackPower, Stat.StatSpellPower],
@@ -468,7 +578,7 @@ export const FOOD_CONFIG = [
 	{ config: FoodDragonfinFilet, stats: [Stat.StatStrength] },
 	{ config: FoodCuttlesteak, stats: [Stat.StatSpirit] },
 	{ config: FoodMegaMammothMeal, stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower] },
-	{ config: FoodHeartyRhino, stats: [Stat.StatArmorPenetration] },
+	{ config: FoodHeartyRhino, stats: [Stat.StatMeleeCrit, Stat.StatSpellCrit] },
 	{ config: FoodRhinoliciousWormsteak, stats: [Stat.StatExpertise] },
 	{ config: FoodFirecrackerSalmon, stats: [Stat.StatSpellPower] },
 	{ config: FoodSnapperExtreme, stats: [Stat.StatMeleeHit, Stat.StatSpellHit] },

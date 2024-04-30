@@ -81,6 +81,8 @@ $energy-color: #ffd700;
 $rage-color: #ff0000;
 $focus-color: #cd853f;
 $combo-points-color: #ffa07a;
+$lunar-energy-color: #4a8aff;
+$solar-energy-color: #d2952b;
 
 $resource-colors: (
 	combo-points: $combo-points-color,
@@ -142,6 +144,10 @@ $link-hover-color: white;
 $link-transition: color 0.15s ease-in-out;
 
 // Component variable overrides
+$btn-close-color: $link-color;
+$btn-close-focus-shadow: none;
+$btn-close-hover-opacity: 1;
+$btn-close-opacity: 1;
 $btn-hover-bg-shade-amount: 30%;
 $btn-font-size: 0.875rem;
 $btn-padding-y: 0.5rem;
@@ -211,13 +217,12 @@ $nav-tabs-border-color: $border-color;
 $nav-tabs-link-active-bg: transparent;
 $nav-tabs-link-active-color: white;
 
-$popover-bg: #424557;
-$popover-body-color: white;
-$popover-body-padding-x: map-get($spacers, 2);
-$popover-body-padding-y: map-get($spacers, 2);
 
-$tooltip-bg: $popover-bg;
-$tooltip-color: white;
+$tooltip-bg: #424557;
+$tooltip-border: $link-color;
+$tooltip-body-color: white;
 $tooltip-max-width: 15vw;
 $tooltip-max-width-lg: 25vw;
 $tooltip-max-width-sm: 75vw;
+$tooltip-body-padding-x: map-get($spacers, 2);
+$tooltip-body-padding-y: map-get($spacers, 2);

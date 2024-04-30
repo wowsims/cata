@@ -123,7 +123,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || spell.SpellSchool != core.SpellSchoolPhysical {
+				if !result.Landed() || !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
 					return
 				}
 				if !icd.IsReady(sim) {
@@ -225,8 +225,10 @@ func init() {
 			CritMultiplier:   character.DefaultSpellCritMultiplier(),
 			ThreatMultiplier: 1,
 
+			BonusCoefficient: 1,
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(48, 54) + spell.SpellPower()
+				baseDamage := sim.Roll(48, 54)
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			},
 		})
@@ -308,7 +310,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell.SpellSchool == core.SpellSchoolPhysical && sim.RandomFloat("Bulwark of Azzinoth") < procChance {
+				if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolPhysical) && sim.RandomFloat("Bulwark of Azzinoth") < procChance {
 					procAura.Activate(sim)
 				}
 			},

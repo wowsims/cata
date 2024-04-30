@@ -1,20 +1,20 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
+import { element, fragment, ref } from 'tsx-vanilla';
+
 import { Component } from './component.js';
 
-import { element, fragment } from 'tsx-vanilla';
-
 export interface ContentBlockHeaderConfig {
-	title: string,
-	extraCssClasses?: Array<string>,
-	titleTag?: string,
-	tooltip?: string,
+	title: string;
+	extraCssClasses?: Array<string>;
+	titleTag?: string;
+	tooltip?: string;
 }
 
 export interface ContentBlockConfig {
-	bodyClasses?: Array<string>,
-	extraCssClasses?: Array<string>,
-	rootElem?: HTMLElement,
-	header?: ContentBlockHeaderConfig,
+	bodyClasses?: Array<string>;
+	extraCssClasses?: Array<string>;
+	rootElem?: HTMLElement;
+	header?: ContentBlockHeaderConfig;
 }
 
 export class ContentBlock extends Component {
@@ -34,17 +34,18 @@ export class ContentBlock extends Component {
 
 		this.headerElement = this.buildHeader();
 		this.bodyElement = this.buildBody();
-		config.bodyClasses?.forEach((cl) => {
+		config.bodyClasses?.forEach(cl => {
 			this.bodyElement.classList.add(cl);
-		})
+		});
 	}
 
 	private buildHeader(): HTMLElement | null {
 		if (this.config.header && Object.keys(this.config.header).length) {
-			let TitleTag = this.config.header.titleTag || 'h6';
-			let header =(
+			const TitleTag = this.config.header.titleTag || 'h6';
+			const titleRef = ref<HTMLElement>();
+			const header = (
 				<div className="content-block-header">
-					<TitleTag className="content-block-title">
+					<TitleTag ref={titleRef} className="content-block-title">
 						{this.config.header.title}
 					</TitleTag>
 				</div>
@@ -55,9 +56,8 @@ export class ContentBlock extends Component {
 			}
 
 			if (this.config.header.tooltip)
-				Tooltip.getOrCreateInstance(header.querySelector('.content-block-title') as HTMLElement,  {
-					html: true,
-					title: this.config.header.tooltip
+				tippy(titleRef.value!, {
+					content: this.config.header.tooltip,
 				});
 
 			this.rootElem.appendChild(header);
@@ -69,11 +69,10 @@ export class ContentBlock extends Component {
 	}
 
 	private buildBody(): HTMLElement {
-		let bodyElem = document.createElement('div');
-		bodyElem.classList.add('content-block-body');
+		const bodyElem = <div className="content-block-body"></div>;
 
 		this.rootElem.appendChild(bodyElem);
 
-		return bodyElem;
+		return bodyElem as HTMLElement;
 	}
 }

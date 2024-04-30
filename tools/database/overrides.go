@@ -308,6 +308,12 @@ var ItemDenyList = map[int32]struct{}{
 	48897: {}, // DK's Tier 9 Duplicates
 	48898: {}, // DK's Tier 9 Duplicates
 	48899: {}, // DK's Tier 9 Duplicates
+	68710: {}, // Stump of Time Duplicate (Not available ingame)
+	68711: {}, // Mandala of Stirring Patterns Duplicate
+	68712: {}, // Impatience of Youth Duplicate
+	68713: {}, // Mirror of Broken Images Duplicate
+	65104: {}, // DONTUSEUnheeded Warning
+	65015: {}, // DONTUSEFury of Angerforge
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
@@ -344,6 +350,19 @@ var ExtraItemIcons = []int32{
 	42999,
 	43000,
 	43015,
+	62290,
+	62649,
+	62671,
+	62670,
+	62661,
+	62665,
+	62668,
+	62669,
+	62664,
+	62666,
+	62667,
+	62662,
+	62663,
 
 	// Flask IDs
 	13512,
@@ -475,13 +494,13 @@ var SharedSpellsIcons = []int32{
 
 	48942,
 	20140,
-	58753,
+	8071,
 	16293,
 
 	48161,
 	14767,
 
-	58643,
+	8075,
 	52456,
 	57623,
 
@@ -492,7 +511,7 @@ var SharedSpellsIcons = []int32{
 	47436,
 
 	53138,
-	30809,
+	30808,
 	19506,
 
 	31869,
@@ -511,7 +530,7 @@ var SharedSpellsIcons = []int32{
 
 	48938,
 	20245,
-	58774,
+	5675,
 	16206,
 
 	17007,
@@ -519,7 +538,7 @@ var SharedSpellsIcons = []int32{
 	29801,
 
 	55610,
-	65990,
+	8512,
 	29193,
 
 	48160,
@@ -535,7 +554,7 @@ var SharedSpellsIcons = []int32{
 	3738,
 	47240,
 	57722,
-	58656,
+	8227,
 
 	54043,
 	48170,
@@ -568,7 +587,7 @@ var SharedSpellsIcons = []int32{
 
 	48566,
 	46855,
-	57393,
+	57386,
 
 	30706,
 	20337,

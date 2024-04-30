@@ -30,11 +30,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
 		Stat.StatSpellHaste,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -50,13 +50,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
-		Stat.StatArmorPenetration,
 		Stat.StatSpellHaste,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
 		Stat.StatMana,
 		Stat.StatHealth,
+		Stat.StatMastery,
 	],
 	// modifyDisplayStats: (player: Player<Spec.SpecRetributionPaladin>) => {
 	// 	let stats = new Stats();
@@ -93,7 +93,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 				[Stat.StatMeleeHit]: 1.96,
 				[Stat.StatMeleeCrit]: 1.16,
 				[Stat.StatMeleeHaste]: 1.44,
-				[Stat.StatArmorPenetration]: 0.76,
 				[Stat.StatExpertise]: 1.8,
 			},
 			{
@@ -109,45 +108,32 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
-			divineSpirit: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
 			bloodlust: true,
-			manaSpringTotem: TristateEffect.TristateEffectRegular,
-			hornOfWinter: true,
-			battleShout: TristateEffect.TristateEffectImproved,
-			sanctifiedRetribution: true,
-			swiftRetribution: true,
-			elementalOath: true,
-			rampage: true,
-			trueshotAura: true,
+			markOfTheWild: true,
 			icyTalons: true,
-			totemOfWrath: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
 			wrathOfAirTotem: true,
-			demonicPactSp: 500,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-			judgementsOfTheWise: true,
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
-			shadowMastery: true,
-			totemOfWrath: true,
-			judgementOfWisdom: true,
-			judgementOfLight: true,
-			misery: true,
-			curseOfElements: true,
-			bloodFrenzy: true,
 			exposeArmor: true,
-			sunderArmor: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
-			curseOfWeakness: TristateEffect.TristateEffectRegular,
+			bloodFrenzy: true,
 		}),
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.JudgementSelection(), 
+	playerIconInputs: [
+		PaladinInputs.AuraSelection(),
+		PaladinInputs.JudgementSelection(),
 		//PaladinInputs.StartingSealSelection()
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
@@ -155,7 +141,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

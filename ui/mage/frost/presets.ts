@@ -2,10 +2,8 @@ import * as PresetUtils from '../../core/preset_utils';
 import { Conjured, Consumes, Faction, Flask, Food, Glyphs, Potions, Profession, Spec } from '../../core/proto/common';
 import {
 	FrostMage_Options as MageOptions,
-	FrostMage_Rotation as MageRotation,
 	MageMajorGlyph,
 	MageMinorGlyph,
-	MageOptions_ArmorType as ArmorType,
 } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
 import FrostApl from './apls/frost.apl.json';
@@ -23,11 +21,6 @@ export const FROST_P2_PRESET = PresetUtils.makePresetGear('Frost P2 Preset', P2F
 export const FROST_P3_PRESET_ALLIANCE = PresetUtils.makePresetGear('Frost P3 Preset [A]', P3FrostAllianceGear, { talentTree: 2, faction: Faction.Alliance });
 export const FROST_P3_PRESET_HORDE = PresetUtils.makePresetGear('Frost P3 Preset [H]', P3FrostHordeGear, { talentTree: 2, faction: Faction.Horde });
 
-export const DefaultSimpleRotation = MageRotation.create({
-	useIceLance: false,
-});
-
-export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFrostMage, DefaultSimpleRotation);
 export const FROST_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Frost', FrostApl, { talentTree: 2 });
 export const FROST_ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Frost AOE', FrostAoeApl, { talentTree: 2 });
 
@@ -51,7 +44,6 @@ export const FrostTalents = {
 
 export const DefaultFrostOptions = MageOptions.create({
 	classOptions: {
-		armor: ArmorType.MoltenArmor,
 	},
 	waterElementalDisobeyChance: 0.1,
 });

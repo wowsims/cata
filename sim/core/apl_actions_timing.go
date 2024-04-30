@@ -41,7 +41,7 @@ func (action *APLActionWait) Execute(sim *Simulation) {
 
 	pa := &PendingAction{
 		Priority:     ActionPriorityLow,
-		OnAction:     action.unit.gcdAction.OnAction,
+		OnAction:     action.unit.rotationAction.OnAction,
 		NextActionAt: action.curWaitTime,
 	}
 	sim.AddPendingAction(pa)

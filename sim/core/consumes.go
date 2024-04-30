@@ -33,6 +33,10 @@ func applyConsumeEffects(agent Agent) {
 			character.AddStats(stats.Stats{
 				stats.Spirit: 300 + alchemyFlaskBonus,
 			})
+		case proto.Flask_FlaskOfTheDraconicMind:
+			character.AddStats(stats.Stats{
+				stats.Intellect: 300 + alchemyFlaskBonus,
+			})
 		case proto.Flask_FlaskOfTheFrostWyrm:
 			character.AddStats(stats.Stats{
 				stats.SpellPower: 125,
@@ -134,7 +138,9 @@ func applyConsumeEffects(agent Agent) {
 			})
 		case proto.BattleElixir_ElixirOfArmorPiercing:
 			character.AddStats(stats.Stats{
-				stats.ArmorPenetration: 45,
+				stats.Agility:   25,
+				stats.MeleeCrit: 25,
+				stats.SpellCrit: 25,
 			})
 		case proto.BattleElixir_ElixirOfDeadlyStrikes:
 			character.AddStats(stats.Stats{
@@ -223,42 +229,6 @@ func applyConsumeEffects(agent Agent) {
 			character.AddStats(stats.Stats{
 				stats.Spirit: 50,
 			})
-		case proto.GuardianElixir_GiftOfArthas:
-			character.AddStats(stats.Stats{
-				stats.ShadowResistance: 10,
-			})
-
-			debuffAuras := (&character.Unit).NewEnemyAuraArray(GiftOfArthasAura)
-
-			actionID := ActionID{SpellID: 11374}
-			goaProc := character.RegisterSpell(SpellConfig{
-				ActionID:    actionID,
-				SpellSchool: SpellSchoolNature,
-				ProcMask:    ProcMaskEmpty,
-
-				ThreatMultiplier: 1,
-				FlatThreatBonus:  90,
-
-				ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-					debuffAuras.Get(target).Activate(sim)
-					spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
-				},
-			})
-
-			character.RegisterAura(Aura{
-				Label:    "Gift of Arthas",
-				Duration: NeverExpires,
-				OnReset: func(aura *Aura, sim *Simulation) {
-					aura.Activate(sim)
-				},
-				OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-					if result.Landed() &&
-						spell.SpellSchool == SpellSchoolPhysical &&
-						sim.RandomFloat("Gift of Arthas") < 0.3 {
-						goaProc.Cast(sim, spell.Unit)
-					}
-				},
-			})
 		}
 	}
 
@@ -284,8 +254,9 @@ func applyConsumeEffects(agent Agent) {
 		})
 	case proto.Food_FoodHeartyRhino:
 		character.AddStats(stats.Stats{
-			stats.ArmorPenetration: 40,
-			stats.Stamina:          40,
+			stats.MeleeCrit: 40,
+			stats.SpellCrit: 40,
+			stats.Stamina:   40,
 		})
 	case proto.Food_FoodMegaMammothMeal:
 		character.AddStats(stats.Stats{
@@ -372,11 +343,88 @@ func applyConsumeEffects(agent Agent) {
 			stats.Stamina: 30,
 			stats.Spirit:  20,
 		})
+	case proto.Food_FoodSeafoodFeast:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+		})
+		character.AddHighestStat(stats.Stats{
+			stats.Strength:  90,
+			stats.Agility:   90,
+			stats.Intellect: 90,
+		})
+	case proto.Food_FoodFortuneCookie:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+		})
+		character.AddHighestStat(stats.Stats{
+			stats.Strength:  90,
+			stats.Agility:   90,
+			stats.Intellect: 90,
+		})
+	case proto.Food_FoodSeveredSagefish:
+		character.AddStats(stats.Stats{
+			stats.Stamina:   90,
+			stats.Intellect: 90,
+		})
+	case proto.Food_FoodBeerBasedCrocolisk:
+		character.AddStats(stats.Stats{
+			stats.Stamina:  90,
+			stats.Strength: 90,
+		})
+	case proto.Food_FoodSkeweredEel:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+			stats.Agility: 90,
+		})
+	case proto.Food_FoodDeliciousSagefishTail:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+			stats.Spirit:  90,
+		})
+	case proto.Food_FoodBasiliskLiverdog:
+		character.AddStats(stats.Stats{
+			stats.Stamina:    90,
+			stats.MeleeHaste: 90,
+			stats.SpellHaste: 90,
+		})
+	case proto.Food_FoodBakedRockfish:
+		character.AddStats(stats.Stats{
+			stats.Stamina:   90,
+			stats.MeleeCrit: 90,
+			stats.SpellCrit: 90,
+		})
+	case proto.Food_FoodCrocoliskAuGratin:
+		character.AddStats(stats.Stats{
+			stats.Stamina:   90,
+			stats.Expertise: 90,
+		})
+	case proto.Food_FoodGrilledDragon:
+		character.AddStats(stats.Stats{
+			stats.Stamina:  90,
+			stats.MeleeHit: 90,
+			stats.SpellHit: 90,
+		})
+	case proto.Food_FoodLavascaleMinestrone:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+			stats.Mastery: 90,
+		})
+	case proto.Food_FoodBlackbellySushi:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+			stats.Parry:   90,
+		})
+	case proto.Food_FoodMushroomSauceMudfish:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 90,
+			stats.Dodge:   90,
+		})
 	}
 
 	registerPotionCD(agent, consumes)
 	registerConjuredCD(agent, consumes)
 	registerExplosivesCD(agent, consumes)
+	registerTinkerHandsCD(agent, consumes)
 }
 
 func ApplyPetConsumeEffects(pet *Character, ownerConsumes *proto.Consumes) {
@@ -500,7 +548,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 			Type: CooldownTypeMana,
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
-				totalRegen := character.ManaRegenPerSecondWhileCasting() * 5
+				totalRegen := character.ManaRegenPerSecondWhileCombat() * 5
 				manaGain := 10750.0
 				if alchStoneEquipped && potionType == proto.Potions_MythicalManaPotion {
 					manaGain *= 1.4
@@ -522,7 +570,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}
 	} else if potionType == proto.Potions_GolembloodPotion {
 		actionID := ActionID{ItemID: 58146}
-		aura := character.NewTemporaryStatsAura("Golemblood Potion", actionID, stats.Stats{stats.Strength: 1200}, time.Second*15)
+		aura := character.NewTemporaryStatsAura("Golemblood Potion", actionID, stats.Stats{stats.Strength: 1200}, time.Second*25)
 		return MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -536,7 +584,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		}
 	} else if potionType == proto.Potions_PotionOfTheTolvir {
 		actionID := ActionID{ItemID: 58145}
-		aura := character.NewTemporaryStatsAura("Potion of the Tol'vir", actionID, stats.Stats{stats.Agility: 1200}, time.Second*15)
+		aura := character.NewTemporaryStatsAura("Potion of the Tol'vir", actionID, stats.Stats{stats.Agility: 1200}, time.Second*25)
 		return MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -554,7 +602,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 		// Not sure about exact functionality
 	} else if potionType == proto.Potions_VolcanicPotion {
 		actionID := ActionID{ItemID: 58091}
-		aura := character.NewTemporaryStatsAura("Volcanic Potion", actionID, stats.Stats{stats.Intellect: 1200}, time.Second*15)
+		aura := character.NewTemporaryStatsAura("Volcanic Potion", actionID, stats.Stats{stats.Intellect: 1200}, time.Second*25)
 		return MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -589,7 +637,7 @@ func makePotionActivationInternal(potionType proto.Potions, character *Character
 			Type: CooldownTypeSurvival,
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
-				totalRegen := character.ManaRegenPerSecondWhileCasting() * 5
+				totalRegen := character.ManaRegenPerSecondWhileCombat() * 5
 				manaGain := 11000.0
 				if alchStoneEquipped && potionType == proto.Potions_MythicalManaPotion {
 					manaGain *= 1.4
@@ -709,7 +757,7 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 			Type:  CooldownTypeMana,
 			ShouldActivate: func(sim *Simulation, character *Character) bool {
 				// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
-				totalRegen := character.ManaRegenPerSecondWhileCasting() * 5
+				totalRegen := character.ManaRegenPerSecondWhileCombat() * 5
 				return character.MaxMana()-(character.CurrentMana()+totalRegen) >= 1500
 			},
 		})
@@ -906,4 +954,192 @@ func (character *Character) newSaroniteBombSpell(sharedTimer *Timer) *Spell {
 }
 func (character *Character) newCobaltFragBombSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, CobaltFragBombActionID, SpellSchoolFire, 750, 1000, Cooldown{}, 0, 0))
+}
+
+func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
+	if consumes.TinkerHands == proto.TinkerHands_TinkerHandsNone {
+		return
+	}
+	character := agent.GetCharacter()
+	if !character.HasProfession(proto.Profession_Engineering) {
+		return
+	}
+
+	switch consumes.TinkerHands {
+	case proto.TinkerHands_TinkerHandsSynapseSprings:
+		// Enchant: 4179, Spell: 82174 - Synapse Springs
+		intStat := character.GetStat(stats.Intellect)
+		strStat := character.GetStat(stats.Strength)
+		agiStat := character.GetStat(stats.Agility)
+
+		var aura *Aura
+		if intStat > strStat && intStat > agiStat {
+			aura = character.NewTemporaryStatsAura(
+				"Synapse Springs - Int",
+				ActionID{SpellID: 96230},
+				stats.Stats{stats.Intellect: 480},
+				time.Second*10,
+			)
+		} else if agiStat > intStat && agiStat > strStat {
+			aura = character.NewTemporaryStatsAura(
+				"Synapse Springs - Agi",
+				ActionID{SpellID: 96228},
+				stats.Stats{stats.Agility: 480},
+				time.Second*10,
+			)
+		} else {
+			aura = character.NewTemporaryStatsAura(
+				"Synapse Springs - Str",
+				ActionID{SpellID: 96229},
+				stats.Stats{stats.Strength: 480},
+				time.Second*10,
+			)
+		}
+
+		spell := character.GetOrRegisterSpell(SpellConfig{
+			ActionID:    ActionID{SpellID: 82174},
+			SpellSchool: SpellSchoolPhysical,
+			Flags:       SpellFlagNoOnCastComplete,
+
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 60,
+				},
+			},
+
+			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+				aura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(MajorCooldown{
+			Spell:    spell,
+			Priority: CooldownPriorityLow,
+			Type:     CooldownTypeDPS,
+		})
+	case proto.TinkerHands_TinkerHandsQuickflipDeflectionPlates:
+		// Enchant: 4180, Spell: 82176 - Quickflip Deflection Plates
+		statAura := character.NewTemporaryStatsAura(
+			"Quickflip Deflection Plates Buff",
+			ActionID{SpellID: 82176},
+			stats.Stats{stats.Armor: 1500},
+			time.Second*12,
+		)
+
+		spell := character.GetOrRegisterSpell(SpellConfig{
+			ActionID:    ActionID{SpellID: 82176},
+			SpellSchool: SpellSchoolPhysical,
+			Flags:       SpellFlagNoOnCastComplete,
+
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 60,
+				},
+			},
+
+			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
+				statAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(MajorCooldown{
+			Spell:    spell,
+			Priority: CooldownPriorityLow,
+			Type:     CooldownTypeSurvival,
+		})
+	case proto.TinkerHands_TinkerHandsTazikShocker:
+		// Enchant: 4181, Spell: 82180 - Tazik Shocker
+		spell := character.GetOrRegisterSpell(SpellConfig{
+			ActionID:    ActionID{SpellID: 82179},
+			SpellSchool: SpellSchoolNature,
+			Flags:       SpellFlagNoOnCastComplete,
+
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 120,
+				},
+			},
+
+			ApplyEffects: func(sim *Simulation, unit *Unit, spell *Spell) {
+				// Benerfits from enhancement mastery
+				// Ele crit dmg multi
+				// Moonkin eclipse, so basically everything
+				spell.CalcAndDealDamage(sim, unit, sim.Roll(4320, 961), spell.OutcomeMagicHitAndCrit)
+			},
+		})
+
+		character.AddMajorCooldown(MajorCooldown{
+			Spell:    spell,
+			Priority: CooldownPriorityLow,
+			Type:     CooldownTypeDPS,
+		})
+	case proto.TinkerHands_TinkerHandsSpinalHealingInjector:
+		// Enchant: 4182, Spell: 82184 - Spinal Healing Injector
+		healthMetric := character.NewHealthMetrics(ActionID{SpellID: 82184})
+		spell := character.GetOrRegisterSpell(SpellConfig{
+			ActionID:    ActionID{SpellID: 82184},
+			SpellSchool: SpellSchoolPhysical,
+			Flags:       SpellFlagNoOnCastComplete | SpellFlagCombatPotion,
+
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 60,
+				},
+			},
+
+			ApplyEffects: func(sim *Simulation, unit *Unit, spell *Spell) {
+				result := sim.Roll(27000, 33000)
+				if character.HasAlchStone() {
+					result *= 1.4
+				}
+
+				character.GainHealth(sim, result, healthMetric)
+			},
+		})
+
+		character.AddMajorCooldown(MajorCooldown{
+			Spell:    spell,
+			Priority: CooldownPriorityLow,
+			Type:     CooldownTypeSurvival,
+		})
+	case proto.TinkerHands_TinkerHandsZ50ManaGulper:
+		// Enchant: 4183, Spell: 82186 - Z50 Mana Gulper
+		manaMetric := character.NewManaMetrics(ActionID{SpellID: 82186})
+		spell := character.GetOrRegisterSpell(SpellConfig{
+			ActionID:    ActionID{SpellID: 82186},
+			SpellSchool: SpellSchoolPhysical,
+			Flags:       SpellFlagNoOnCastComplete | SpellFlagPotion,
+
+			// TODO: In theory those ingi on-use enchants share a CD with potions
+			// The potion CD timer is not available right now
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 60,
+				},
+			},
+
+			ApplyEffects: func(sim *Simulation, unit *Unit, spell *Spell) {
+				mana := sim.Roll(10730, 12470)
+				if character.HasAlchStone() {
+					mana *= 1.4
+				}
+
+				character.AddMana(sim, mana, manaMetric)
+			},
+		})
+
+		character.AddMajorCooldown(MajorCooldown{
+			ShouldActivate: func(s *Simulation, c *Character) bool {
+				return c.HasManaBar() && (c.MaxMana()-c.CurrentMana()) > 10730
+			},
+			Spell:    spell,
+			Priority: CooldownPriorityLow,
+			Type:     CooldownTypeMana,
+		})
+	}
 }

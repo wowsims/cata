@@ -5,8 +5,8 @@ $player-editor-modal-height: calc(100vh - (2 * #{$modal-dialog-margin-y-sm-up}))
 
 // We're using direct child selectors to avoid affecting modals within the individual sims
 .player-editor-modal {
-	max-width: $player-editor-modal-width;
-	width: $player-editor-modal-width;
+	max-width: $player-editor-modal-width !important;
+	width: $player-editor-modal-width !important;
 
 	&> .modal-content {
 		height: $player-editor-modal-height;

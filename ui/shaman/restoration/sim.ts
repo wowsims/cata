@@ -18,7 +18,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	warnings: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5, Stat.StatMastery],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -32,6 +32,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 	// modifyDisplayStats: (player: Player<Spec.SpecRestorationShaman>) => {
 	// 	let stats = new Stats();
@@ -62,23 +63,28 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
-			divineSpirit: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			moonkinAura: TristateEffect.TristateEffectImproved,
-			sanctifiedRetribution: true,
+			bloodlust: true,
+			markOfTheWild: true,
+			icyTalons: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: 2,
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			faerieFire: TristateEffect.TristateEffectImproved,
-			judgementOfWisdom: true,
-			misery: true,
+			judgement: true,
 			curseOfElements: true,
-			shadowMastery: true,
+			shadowAndFlame: true,
 		}),
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -89,8 +95,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			// RestorationInputs.TriggerEarthShield, 
+			// RestorationInputs.TriggerEarthShield,
 			// OtherInputs.TankAssignment
+			OtherInputs.InputDelay,
 		],
 	},
 	customSections: [ShamanInputs.TotemsSection],

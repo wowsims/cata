@@ -28,16 +28,17 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 	wqSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskRangedAuto,
+		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 0.8, // Wowwiki says it remains 80%
 		CritMultiplier:   hunter.CritMultiplier(false, false, false),
 		ThreatMultiplier: 1,
 
+		BonusCoefficient: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
-				spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	})
@@ -49,10 +50,9 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != hunter.AutoAttacks.RangedAuto() {
+			if spell != hunter.AutoAttacks.RangedAuto() && spell.ProcMask != core.ProcMaskRangedSpecial {
 				return
 			}
-
 			procChance := 0.168 + (hunter.CalculateMasteryPoints() * 0.021) // Todo: Is this right scaling?
 			if sim.RandomFloat("Wild Quiver") < procChance {
 				wqSpell.Cast(sim, result.Target)
@@ -71,6 +71,12 @@ func NewMarksmanshipHunter(character *core.Character, options *proto.Player) *Ma
 }
 func (mmHunter *MarksmanshipHunter) Initialize() {
 	mmHunter.Hunter.Initialize()
+	// MM Hunter Spec Bonus
+	mmHunter.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ProcMask:   core.ProcMaskRangedAuto,
+		FloatValue: 0.15,
+	})
 
 	mmHunter.registerAimedShotSpell()
 	mmHunter.registerChimeraShotSpell()
@@ -79,8 +85,6 @@ func (mmHunter *MarksmanshipHunter) Initialize() {
 
 type MarksmanshipHunter struct {
 	*hunter.Hunter
-
-	aimedShotTimer *core.Timer
 }
 
 func (mmHunter *MarksmanshipHunter) GetHunter() *hunter.Hunter {

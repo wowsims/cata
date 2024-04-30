@@ -163,7 +163,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatExpertise,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
@@ -181,13 +181,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		Stat.StatMeleeCrit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatExpertise,
 	],
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET_HEMO_SUB.gear,
+		gear: Presets.P1_PRESET_SUB.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -199,7 +199,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 				[Stat.StatMeleeHit]: 1.39,
 				[Stat.StatMeleeCrit]: 1.32,
 				[Stat.StatMeleeHaste]: 1.48,
-				[Stat.StatArmorPenetration]: 0.84,
+				[Stat.StatMastery]: 0.0,
 				[Stat.StatExpertise]: 0.98,
 			},
 			{
@@ -210,32 +210,33 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.HemoSubtletyTalents.data,
+		talents: Presets.SubtletyTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			arcaneBrilliance: true,
 			bloodlust: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			icyTalons: true,
-			leaderOfThePack: TristateEffect.TristateEffectImproved,
-			abominationsMight: true,
-			swiftRetribution: true,
-			elementalOath: true,
-			sanctifiedRetribution: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
 		debuffs: Debuffs.create({
-			heartOfTheCrusader: true,
 			mangle: true,
 			sunderArmor: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
-			shadowMastery: true,
+			shadowAndFlame: true,
 			earthAndMoon: true,
 			bloodFrenzy: true,
 		}),
@@ -245,13 +246,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		inputs: [RogueInputs.ApplyPoisonsManually()],
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [RogueInputs.MainHandImbue(), RogueInputs.OffHandImbue()],
+	playerIconInputs: [RogueInputs.MainHandImbue(), RogueInputs.OffHandImbue(), RogueInputs.ThrownImbue()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellCritBuff,
+		BuffDebuffInputs.CritBuff,
 		BuffDebuffInputs.SpellCritDebuff,
-		BuffDebuffInputs.SpellHitDebuff,
 		BuffDebuffInputs.SpellDamageDebuff,
+		BuffDebuffInputs.MajorArmorDebuff,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
@@ -263,6 +264,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 			// SubInputs.HonorAmongThievesCritRate,
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InputDelay,
 		],
 	},
 	encounterPicker: {
@@ -272,27 +274,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.SubtletyTalents, Presets.HemoSubtletyTalents],
+		talents: [Presets.SubtletyTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_AOE],
+		rotations: [Presets.ROTATION_PRESET_SUBTLETY],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_PRESET_HEMO_SUB, Presets.P2_PRESET_HEMO_SUB, Presets.P3_PRESET_HEMO_SUB, Presets.P3_PRESET_DANCE_SUB],
+		gear: [Presets.P1_PRESET_SUB],
 	},
 
 	autoRotation: (player: Player<Spec.SpecSubtletyRogue>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets >= 5) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_SUBTLETY.rotation.rotation!;
 		} else {
 			// TODO: Need a sub rotation here
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_SUBTLETY.rotation.rotation!;
 		}
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecSubtletyRogue,
-			talents: Presets.HemoSubtletyTalents.data,
+			talents: Presets.SubtletyTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -303,14 +305,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PRESET_HEMO_SUB.gear,
-					2: Presets.P2_PRESET_HEMO_SUB.gear,
-					3: Presets.P3_PRESET_DANCE_SUB.gear,
+					1: Presets.P1_PRESET_SUB.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PRESET_HEMO_SUB.gear,
-					2: Presets.P2_PRESET_HEMO_SUB.gear,
-					3: Presets.P3_PRESET_DANCE_SUB.gear,
+					1: Presets.P1_PRESET_SUB.gear,
 				},
 			},
 		},

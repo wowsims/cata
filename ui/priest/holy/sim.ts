@@ -17,7 +17,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPriest, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
+	epStats: [
+		Stat.StatIntellect,
+		Stat.StatSpirit,
+		Stat.StatSpellPower,
+		Stat.StatSpellHit,
+		Stat.StatSpellCrit,
+		Stat.StatSpellHaste,
+		Stat.StatMP5,
+		Stat.StatMastery,
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -32,6 +41,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPriest, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 	// modifyDisplayStats: (player: Player<Spec.SpecHolyPriest>) => {
 	// 	let stats = new Stats();
@@ -79,16 +89,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPriest, {
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.ReplenishmentBuff,
 		BuffDebuffInputs.MeleeHasteBuff,
-		BuffDebuffInputs.MeleeCritBuff,
+		BuffDebuffInputs.CritBuff,
 		BuffDebuffInputs.MP5Buff,
 		BuffDebuffInputs.AttackPowerPercentBuff,
-		BuffDebuffInputs.AttackPowerBuff,
 		BuffDebuffInputs.StaminaBuff,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.TankAssignment, OtherInputs.ChannelClipDelay],
+		inputs: [OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.ChannelClipDelay],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

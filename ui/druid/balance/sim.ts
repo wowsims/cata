@@ -17,12 +17,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
+	epStats: [
+		Stat.StatIntellect,
+		Stat.StatSpirit,
+		Stat.StatSpellPower,
+		Stat.StatSpellHit,
+		Stat.StatSpellCrit,
+		Stat.StatSpellHaste,
+		Stat.StatMastery,
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		Stat.StatHealth,
+		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
@@ -30,12 +39,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET_HORDE.gear,
+		gear: Presets.PreraidPresetGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.43,
@@ -43,12 +52,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.82,
 			[Stat.StatSpellHaste]: 0.8,
-			[Stat.StatMP5]: 0.0,
+			[Stat.StatMastery]: 0.0,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.Phase3Talents.data,
+		talents: Presets.StandardTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -64,17 +73,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.MeleeHasteBuff,
-		BuffDebuffInputs.MeleeCritBuff,
+		BuffDebuffInputs.CritBuff,
 		BuffDebuffInputs.AttackPowerPercentBuff,
-		BuffDebuffInputs.AttackPowerBuff,
 		BuffDebuffInputs.MajorArmorDebuff,
-		BuffDebuffInputs.MinorArmorDebuff,
 		BuffDebuffInputs.PhysicalDamageDebuff,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [BalanceInputs.OkfUptime, OtherInputs.TankAssignment, OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget],
+		inputs: [BalanceInputs.OkfUptime, OtherInputs.TankAssignment, OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.DarkIntentUptime],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -83,28 +90,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.Phase1Talents, Presets.Phase2Talents, Presets.Phase3Talents, Presets.Phase4Talents],
-		rotations: [Presets.ROTATION_PRESET_P3_APL, Presets.ROTATION_PRESET_P4_FOCUS_APL, Presets.ROTATION_PRESET_P4_STARFIRE_APL],
+		talents: [Presets.StandardTalents],
+		rotations: [Presets.PresetRotationDefault],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_PRESET,
-			Presets.P1_PRESET,
-			Presets.P2_PRESET,
-			Presets.P3_PRESET_HORDE,
-			Presets.P3_PRESET_ALLI,
-			Presets.P4_PRESET_HORDE,
-			Presets.P4_PRESET_ALLI,
-		],
+		gear: [ Presets.PreraidPresetGear]
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {
-		return Presets.ROTATION_PRESET_P3_APL.rotation.rotation!;
+		return Presets.PresetRotationDefault.rotation.rotation!;
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecBalanceDruid,
-			talents: Presets.Phase2Talents.data,
+			talents: Presets.StandardTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			otherDefaults: Presets.OtherDefaults,
@@ -116,16 +115,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET_ALLI.gear,
-					4: Presets.P4_PRESET_ALLI.gear,
+					1: Presets.PreraidPresetGear.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET_HORDE.gear,
-					4: Presets.P4_PRESET_HORDE.gear,
+					1: Presets.PreraidPresetGear.gear,
 				},
 			},
 		},

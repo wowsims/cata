@@ -1,4 +1,4 @@
-import { CharacterStats, StatMods } from './components/character_stats';
+import { CharacterStats, StatMods, StatWrites } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
 import { EmbeddedDetailedResults } from './components/detailed_results';
 import { EncounterPickerConfig } from './components/encounter_picker';
@@ -14,14 +14,15 @@ import * as InputHelpers from './components/input_helpers';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
 import { addStatWeightsAction } from './components/stat_weights_action';
-import * as Mechanics from './constants/mechanics';
 import * as Tooltips from './constants/tooltips';
 import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
 import { PlayerSpecs } from './player_specs';
 import { PresetGear, PresetRotation } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
+import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
+	Class,
 	Consumes,
 	Debuffs,
 	Encounter as EncounterProto,
@@ -41,9 +42,9 @@ import {
 } from './proto/common';
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
-import { professionNames } from './proto_utils/names';
+import { armorTypeNames, professionNames } from './proto_utils/names';
 import { Stats } from './proto_utils/stats';
-import { getTalentPoints, SpecOptions } from './proto_utils/utils';
+import { getTalentPoints, SpecOptions, SpecRotation } from './proto_utils/utils';
 import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
 import { MAX_POINTS_PLAYER } from './talents/talents_picker';
@@ -69,6 +70,7 @@ export interface OtherDefaults {
 	profession2?: Profession;
 	distanceFromTarget?: number;
 	channelClipDelay?: number;
+	darkIntentUptime?: number;
 }
 
 export interface RaidSimPreset<SpecType extends Spec> {
@@ -100,6 +102,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	epReferenceStat: Stat;
 	displayStats: Array<Stat>;
 	modifyDisplayStats?: (player: Player<SpecType>) => StatMods;
+	overwriteDisplayStats?: (player: Player<SpecType>) => StatWrites;
 
 	defaults: {
 		gear: EquipmentSpec;
@@ -113,6 +116,9 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		individualBuffs: IndividualBuffs;
 
 		debuffs: Debuffs;
+
+		rotationType?: APLRotationType;
+		simpleRotation?: SpecRotation<SpecType>;
 
 		other?: OtherDefaults;
 	};
@@ -181,6 +187,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			spec: player.getPlayerSpec(),
 			knownIssues: config.knownIssues,
 			simStatus: simLaunchStatuses[player.getSpec()],
+			noticeText: 'WoWSims - Cataclysm is still in the very early stages of development and all sims are considered non-functional at this time.',
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;
@@ -238,6 +245,35 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 					return 'Unspent talent points.';
 				} else if (talentPoints > MAX_POINTS_PLAYER) {
 					return 'More than maximum talent points spent.';
+				} else {
+					return '';
+				}
+			},
+		});
+		this.addWarning({
+			updateOn: this.player.gearChangeEmitter,
+			getContent: () => {
+				const playerClass = this.player.getPlayerClass();
+				// We always pick the first entry since this is always the preffered armor type
+				const armorSpecializationArmorType = playerClass.armorTypes[0];
+
+				if (!armorSpecializationArmorType || playerClass.classID === Class.ClassDruid) {
+					return '';
+				}
+
+				if (
+					[
+						ItemSlot.ItemSlotHead,
+						ItemSlot.ItemSlotShoulder,
+						ItemSlot.ItemSlotChest,
+						ItemSlot.ItemSlotWrist,
+						ItemSlot.ItemSlotHands,
+						ItemSlot.ItemSlotWaist,
+						ItemSlot.ItemSlotLegs,
+						ItemSlot.ItemSlotFeet,
+					].some(itemSlot => this.player.getEquippedItem(itemSlot)?.item.armorType !== armorSpecializationArmorType)
+				) {
+					return `Equip ${armorTypeNames.get(armorSpecializationArmorType)} gear in each slot for the Armor Specialization (5% primary stat) effect.`;
 				} else {
 					return '';
 				}
@@ -332,6 +368,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player,
 			this.individualConfig.displayStats,
 			this.individualConfig.modifyDisplayStats,
+			this.individualConfig.overwriteDisplayStats,
 		);
 	}
 
@@ -392,20 +429,35 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.simHeader.addExportLink('CLI', _parent => new Exporters.IndividualCLIExporter(this.rootElem, this), true);
 	}
 
+	applyDefaultRotation(eventID: EventID) {
+		TypedEvent.freezeAllAndDo(() => {
+			const defaultRotationType = this.individualConfig.defaults.rotationType || APLRotationType.TypeAuto;
+			this.player.setAplRotation(
+				eventID,
+				APLRotation.create({
+					type: defaultRotationType,
+				}),
+			);
+
+			if (!this.individualConfig.defaults.simpleRotation) {
+				return;
+			}
+
+			const defaultSimpleRotation = this.individualConfig.defaults.simpleRotation || this.player.specTypeFunctions.rotationCreate();
+			this.player.setSimpleRotation(eventID, defaultSimpleRotation);
+		});
+	}
+
 	applyDefaults(eventID: EventID) {
 		TypedEvent.freezeAllAndDo(() => {
 			const tankSpec = this.player.getPlayerSpec().isTankSpec;
 			const healingSpec = this.player.getPlayerSpec().isHealingSpec;
 
-			//Special case for Totem of Wrath keeps buff and debuff sync'd
-			const towEnabled = this.individualConfig.defaults.raidBuffs.totemOfWrath || this.individualConfig.defaults.debuffs.totemOfWrath;
-			this.individualConfig.defaults.raidBuffs.totemOfWrath = towEnabled;
-			this.individualConfig.defaults.debuffs.totemOfWrath = towEnabled;
-
 			this.player.applySharedDefaults(eventID);
 			this.player.setRace(eventID, this.player.getPlayerClass().races[0]);
 			this.player.setGear(eventID, this.sim.db.lookupEquipmentSpec(this.individualConfig.defaults.gear));
 			this.player.setConsumes(eventID, this.individualConfig.defaults.consumes);
+			this.applyDefaultRotation(eventID);
 			this.player.setTalentsString(eventID, this.individualConfig.defaults.talents.talentsString);
 			this.player.setGlyphs(eventID, this.individualConfig.defaults.talents.glyphs || Glyphs.create());
 			this.player.setSpecOptions(eventID, this.individualConfig.defaults.specOptions);
@@ -419,6 +471,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.setProfession2(eventID, this.individualConfig.defaults.other?.profession2 || Profession.Jewelcrafting);
 			this.player.setDistanceFromTarget(eventID, this.individualConfig.defaults.other?.distanceFromTarget || 0);
 			this.player.setChannelClipDelay(eventID, this.individualConfig.defaults.other?.channelClipDelay || 0);
+			this.player.setDarkIntentUptime(eventID, this.individualConfig.defaults.other?.darkIntentUptime || 100);
 
 			if (this.isWithinRaidSim) {
 				this.sim.raid.setTargetDummies(eventID, 0);

@@ -29,7 +29,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		Stat.StatMeleeHaste,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
-		Stat.StatArmorPenetration,
 		Stat.StatDefense,
 		Stat.StatBlock,
 		Stat.StatBlockValue,
@@ -39,6 +38,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -56,7 +56,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatDefense,
 		Stat.StatBlock,
 		Stat.StatBlockValue,
@@ -66,11 +65,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
+		Stat.StatMastery,
 	],
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET.gear,
+		gear: Presets.P1_BALANCED_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -84,17 +84,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 				[Stat.StatMeleeHit]: 1.432,
 				[Stat.StatMeleeCrit]: 0.925,
 				[Stat.StatMeleeHaste]: 0.431,
-				[Stat.StatArmorPenetration]: 1.055,
 				[Stat.StatBlock]: 1.32,
 				[Stat.StatBlockValue]: 1.373,
 				[Stat.StatDodge]: 2.606,
 				[Stat.StatParry]: 2.649,
 				[Stat.StatDefense]: 3.305,
+				// @todo: Calculate actual weights
+				// This probably applies for all weights
+				[Stat.StatMastery]: 0,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 6.081,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -103,48 +106,44 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			powerWordFortitude: TristateEffect.TristateEffectImproved,
-			abominationsMight: true,
-			swiftRetribution: true,
+			arcaneBrilliance: true,
 			bloodlust: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
-			leaderOfThePack: TristateEffect.TristateEffectImproved,
-			sanctifiedRetribution: true,
-			devotionAura: TristateEffect.TristateEffectImproved,
-			stoneskinTotem: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			icyTalons: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
+			devotionAura: true,
 			retributionAura: true,
-			thorns: TristateEffect.TristateEffectImproved,
-			shadowProtection: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-			blessingOfSanctuary: true,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			sunderArmor: true,
 			mangle: true,
 			vindication: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
-			insectSwarm: true,
 			bloodFrenzy: true,
-			judgementOfLight: true,
-			heartOfTheCrusader: true,
-			frostFever: TristateEffect.TristateEffectImproved,
+			judgement: true,
+			frostFever: true,
 		}),
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [ProtectionWarriorInputs.ShoutPicker(), ProtectionWarriorInputs.ShatteringThrow()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.HealthBuff],
+	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.IncomingHps,
 			OtherInputs.HealingCadence,
@@ -163,57 +162,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.StandardTalents, Presets.UATalents],
+		talents: [Presets.StandardTalents, Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_DEFAULT, Presets.ROTATION_PRESET_SIMPLE],
+		rotations: [Presets.ROTATION_DEFAULT, Presets.ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.PRERAID_BALANCED_PRESET,
-			Presets.P4_PRERAID_PRESET,
 			Presets.P1_BALANCED_PRESET,
-			Presets.P2_SURVIVAL_PRESET,
-			Presets.P3_PRESET,
-			Presets.P4_PRESET,
 		],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionWarrior>): APLRotation => {
 		return Presets.ROTATION_DEFAULT.rotation.rotation!;
-	},
-
-	simpleRotation: (player: Player<Spec.SpecProtectionWarrior>, simple: ProtectionWarriorRotation, cooldowns: Cooldowns): APLRotation => {
-		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
-
-		const preShout = APLPrepullAction.fromJsonString(`{"action":{"castSpell":{"spellId":{"spellId":47440}}},"doAtValue":{"const":{"val":"-10s"}}}`);
-
-		const heroicStrike = APLAction.fromJsonString(
-			`{"condition":{"cmp":{"op":"OpGe","lhs":{"currentRage":{}},"rhs":{"const":{"val":"30"}}}},"castSpell":{"spellId":{"tag":1,"spellId":47450}}}`,
-		);
-		const shieldSlam = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":47488}}}`);
-		const revenge = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":57823}}}`);
-		const refreshShout = APLAction.fromJsonString(
-			`{"condition":{"auraShouldRefresh":{"sourceUnit":{"type":"Self"},"auraId":{"spellId":47440},"maxOverlap":{"const":{"val":"3s"}}}},"castSpell":{"spellId":{"spellId":47440}}}`,
-		);
-		const refreshTclap = APLAction.fromJsonString(
-			`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":47502},"maxOverlap":{"const":{"val":"2s"}}}},"castSpell":{"spellId":{"spellId":47502}}}`,
-		);
-		const refreshDemo = APLAction.fromJsonString(
-			`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":47437},"maxOverlap":{"const":{"val":"2s"}}}},"castSpell":{"spellId":{"spellId":25203}}}`,
-		);
-		const devastate = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":47498}}}`);
-
-		prepullActions.push(preShout);
-
-		actions.push(...([heroicStrike, shieldSlam, revenge, refreshShout, refreshTclap, refreshDemo, devastate].filter(a => a) as Array<APLAction>));
-
-		return APLRotation.create({
-			prepullActions: prepullActions,
-			priorityList: actions.map(action =>
-				APLListItem.create({
-					action: action,
-				}),
-			),
-		});
 	},
 
 	raidSimPresets: [
@@ -231,17 +191,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_BALANCED_PRESET.gear,
-					2: Presets.P2_SURVIVAL_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
-					4: Presets.P4_PRESET.gear,
+					2: Presets.PRERAID_BALANCED_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_BALANCED_PRESET.gear,
-					2: Presets.P2_SURVIVAL_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
-					4: Presets.P4_PRESET.gear,
+					2: Presets.PRERAID_BALANCED_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });

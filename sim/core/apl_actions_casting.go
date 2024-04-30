@@ -27,13 +27,43 @@ func (rot *APLRotation) newActionCastSpell(config *proto.APLActionCastSpell) APL
 	}
 }
 func (action *APLActionCastSpell) IsReady(sim *Simulation) bool {
-	return action.spell.CanCast(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim))
+	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim))
 }
 func (action *APLActionCastSpell) Execute(sim *Simulation) {
-	action.spell.Cast(sim, action.target.Get())
+	action.spell.CastOrQueue(sim, action.target.Get())
 }
 func (action *APLActionCastSpell) String() string {
 	return fmt.Sprintf("Cast Spell(%s)", action.spell.ActionID)
+}
+
+type APLActionCastFriendlySpell struct {
+	defaultAPLActionImpl
+	spell  *Spell
+	target UnitReference
+}
+
+func (rot *APLRotation) newActionCastFriendlySpell(config *proto.APLActionCastFriendlySpell) APLActionImpl {
+	spell := rot.GetAPLSpell(config.SpellId)
+	if spell == nil {
+		return nil
+	}
+	target := rot.GetTargetUnit(config.Target)
+	if target.Get() == nil {
+		return nil
+	}
+	return &APLActionCastFriendlySpell{
+		spell:  spell,
+		target: target,
+	}
+}
+func (action *APLActionCastFriendlySpell) IsReady(sim *Simulation) bool {
+	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim))
+}
+func (action *APLActionCastFriendlySpell) Execute(sim *Simulation) {
+	action.spell.CastOrQueue(sim, action.target.Get())
+}
+func (action *APLActionCastFriendlySpell) String() string {
+	return fmt.Sprintf("Cast Friendly Spell(%s)", action.spell.ActionID)
 }
 
 type APLActionChannelSpell struct {
@@ -77,10 +107,10 @@ func (action *APLActionChannelSpell) GetAPLValues() []APLValue {
 	return []APLValue{action.interruptIf}
 }
 func (action *APLActionChannelSpell) IsReady(sim *Simulation) bool {
-	return action.spell.CanCast(sim, action.target.Get())
+	return action.spell.CanCastOrQueue(sim, action.target.Get())
 }
 func (action *APLActionChannelSpell) Execute(sim *Simulation) {
-	action.spell.Cast(sim, action.target.Get())
+	action.spell.CastOrQueue(sim, action.target.Get())
 	action.spell.Unit.Rotation.interruptChannelIf = action.interruptIf
 	action.spell.Unit.Rotation.allowChannelRecastOnInterrupt = action.allowRecast
 }
@@ -139,7 +169,7 @@ func (action *APLActionMultidot) IsReady(sim *Simulation) bool {
 		for i := int32(0); i < action.maxDots; i++ {
 			target := sim.Raid.AllPlayerUnits[i]
 			dot := action.spell.Dot(target)
-			if (!dot.IsActive() || dot.RemainingDuration(sim) < maxOverlap) && action.spell.CanCast(sim, target) {
+			if (!dot.IsActive() || dot.RemainingDuration(sim) < maxOverlap) && action.spell.CanCastOrQueue(sim, target) {
 				action.nextTarget = target
 				return true
 			}
@@ -148,7 +178,7 @@ func (action *APLActionMultidot) IsReady(sim *Simulation) bool {
 		for i := int32(0); i < action.maxDots; i++ {
 			target := sim.Encounter.TargetUnits[i]
 			dot := action.spell.Dot(target)
-			if (!dot.IsActive() || dot.RemainingDuration(sim) < maxOverlap) && action.spell.CanCast(sim, target) {
+			if (!dot.IsActive() || dot.RemainingDuration(sim) < maxOverlap) && action.spell.CanCastOrQueue(sim, target) {
 				action.nextTarget = target
 				return true
 			}
@@ -157,7 +187,7 @@ func (action *APLActionMultidot) IsReady(sim *Simulation) bool {
 	return false
 }
 func (action *APLActionMultidot) Execute(sim *Simulation) {
-	action.spell.Cast(sim, action.nextTarget)
+	action.spell.CastOrQueue(sim, action.nextTarget)
 }
 func (action *APLActionMultidot) String() string {
 	return fmt.Sprintf("Multidot(%s)", action.spell.ActionID)
@@ -210,7 +240,7 @@ func (action *APLActionMultishield) IsReady(sim *Simulation) bool {
 	for i := int32(0); i < action.maxShields; i++ {
 		target := sim.Raid.AllPlayerUnits[i]
 		shield := action.spell.Shield(target)
-		if (!shield.IsActive() || shield.RemainingDuration(sim) < maxOverlap) && action.spell.CanCast(sim, target) {
+		if (!shield.IsActive() || shield.RemainingDuration(sim) < maxOverlap) && action.spell.CanCastOrQueue(sim, target) {
 			action.nextTarget = target
 			return true
 		}
@@ -218,7 +248,7 @@ func (action *APLActionMultishield) IsReady(sim *Simulation) bool {
 	return false
 }
 func (action *APLActionMultishield) Execute(sim *Simulation) {
-	action.spell.Cast(sim, action.nextTarget)
+	action.spell.CastOrQueue(sim, action.nextTarget)
 }
 func (action *APLActionMultishield) String() string {
 	return fmt.Sprintf("Multishield(%s)", action.spell.ActionID)

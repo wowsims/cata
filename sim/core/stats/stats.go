@@ -3,7 +3,6 @@ package stats
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
 )
@@ -280,8 +279,7 @@ type PseudoStats struct {
 	MeleeSpeedMultiplier  float64
 	RangedSpeedMultiplier float64
 
-	FiveSecondRuleRefreshTime time.Duration // last time a spell was cast
-	SpiritRegenRateCasting    float64       // percentage of spirit regen allowed during casting
+	SpiritRegenRateCombat float64 // percentage of spirit regen allowed during combat
 
 	// Both of these are currently only used for innervate.
 	ForceFullSpiritRegen  bool    // If set, automatically uses full spirit regen regardless of FSR refresh time.
@@ -309,9 +307,7 @@ type PseudoStats struct {
 
 	DamageDealtMultiplier       float64            // All damage
 	SchoolDamageDealtMultiplier [SchoolLen]float64 // For specific spell schools (arcane, fire, shadow, etc).
-
-	// Treat melee haste as a pseudostat so that shamans, death knights, paladins, and druids can get the correct scaling
-	MeleeHasteRatingPerHastePercent float64
+	DotDamageMultiplierAdditive float64            // All periodic damage
 
 	// Important when unit is attacker or target
 	BlockValueMultiplier float64
@@ -376,8 +372,7 @@ func NewPseudoStats() PseudoStats {
 
 		DamageDealtMultiplier:       1,
 		SchoolDamageDealtMultiplier: NewSchoolFloatArray(),
-
-		MeleeHasteRatingPerHastePercent: 32.79,
+		DotDamageMultiplierAdditive: 1,
 
 		BlockValueMultiplier: 1,
 

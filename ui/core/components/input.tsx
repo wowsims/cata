@@ -1,41 +1,40 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
+import { element, fragment } from 'tsx-vanilla';
+
 import { EventID, TypedEvent } from '../typed_event.js';
-
 import { Component } from './component.js';
-
-import { element, fragment } from 'tsx-vanilla'
 
 /**
  * Data for creating a new input UI element.
  */
 export interface InputConfig<ModObject, T, V = T> {
-	label?: string,
-	labelTooltip?: string,
-	inline?: boolean,
-	extraCssClasses?: Array<string>,
+	label?: string;
+	labelTooltip?: string;
+	inline?: boolean;
+	extraCssClasses?: Array<string>;
 
-	defaultValue?: T,
+	defaultValue?: T;
 
 	// Returns the event indicating the mapped value has changed.
-	changedEvent: (obj: ModObject) => TypedEvent<any>,
+	changedEvent: (obj: ModObject) => TypedEvent<any>;
 
 	// Get and set the mapped value.
-	getValue: (obj: ModObject) => T,
-	setValue: (eventID: EventID, obj: ModObject, newValue: T) => void,
+	getValue: (obj: ModObject) => T;
+	setValue: (eventID: EventID, obj: ModObject, newValue: T) => void;
 
 	// If set, will automatically disable the input when this evaluates to false.
-	enableWhen?: (obj: ModObject) => boolean,
+	enableWhen?: (obj: ModObject) => boolean;
 
 	// If set, will automatically hide the input when this evaluates to false.
-	showWhen?: (obj: ModObject) => boolean,
+	showWhen?: (obj: ModObject) => boolean;
 
 	// Overrides the default root element (new div).
-	rootElem?: HTMLElement,
+	rootElem?: HTMLElement;
 
 	// Convert between source value and input value types. In most cases this is not needed
 	// because source and input use the same type. These functions must be set if T != V.
-	sourceToValue?: (src: T) => V,
-	valueToSource?: (val: V) => T,
+	sourceToValue?: (src: T) => V;
+	valueToSource?: (val: V) => T;
 }
 
 // Shared logic for UI elements that are mapped to a value for some modifiable object.
@@ -43,7 +42,7 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	private readonly inputConfig: InputConfig<ModObject, T, V>;
 	readonly modObject: ModObject;
 
-	protected enabled: boolean = true;
+	protected enabled = true;
 
 	readonly changeEmitter = new TypedEvent<void>();
 
@@ -57,25 +56,20 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 		if (config.extraCssClasses) this.rootElem.classList.add(...config.extraCssClasses);
 		if (config.label) this.rootElem.appendChild(this.buildLabel(config));
 
-		config.changedEvent(this.modObject).on(eventID => {
+		config.changedEvent(this.modObject).on(() => {
 			this.setInputValue(this.getSourceValue());
 			this.update();
 		});
 	}
 
 	private buildLabel(config: InputConfig<ModObject, T, V>): JSX.Element {
-		let dataset = {};
+		const dataset = {};
 
-		let label = (
-			<label className="form-label">
-				{config.label}
-			</label>
-		);
+		const label = <label className="form-label">{config.label}</label>;
 
 		if (config.labelTooltip)
-			new Tooltip(label, {
-				title: config.labelTooltip,
-				html: true,
+			tippy(label, {
+				content: config.labelTooltip,
 			});
 
 		return label;
@@ -123,10 +117,10 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	}
 
 	protected sourceToValue(src: T): V {
-		return this.inputConfig.sourceToValue ? this.inputConfig.sourceToValue(src) : src as unknown as V;
+		return this.inputConfig.sourceToValue ? this.inputConfig.sourceToValue(src) : (src as unknown as V);
 	}
 	protected valueToSource(val: V): T {
-		return this.inputConfig.valueToSource ? this.inputConfig.valueToSource(val) : val as unknown as T;
+		return this.inputConfig.valueToSource ? this.inputConfig.valueToSource(val) : (val as unknown as T);
 	}
 
 	// Child classes should call this method when the value in the input element changes.
@@ -141,7 +135,7 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	}
 
 	static newGroupContainer(): HTMLElement {
-		let group = document.createElement('div');
+		const group = document.createElement('div');
 		group.classList.add('picker-group');
 		return group;
 	}

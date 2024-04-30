@@ -32,15 +32,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		Stat.StatHealth,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
-		Stat.StatArmorPenetration,
-		Stat.StatDefense,
 		Stat.StatDodge,
 		Stat.StatParry,
-		Stat.StatResilience,
 		Stat.StatSpellHit,
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -49,7 +47,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	displayStats: [
 		Stat.StatHealth,
 		Stat.StatArmor,
-		Stat.StatBonusArmor,
 		Stat.StatStamina,
 		Stat.StatStrength,
 		Stat.StatAgility,
@@ -60,18 +57,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatDefense,
 		Stat.StatDodge,
 		Stat.StatParry,
-		Stat.StatResilience,
-		Stat.StatNatureResistance,
-		Stat.StatShadowResistance,
-		Stat.StatFrostResistance,
+		Stat.StatMastery,
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P2_BLOOD_PRESET.gear,
+		gear: Presets.P1_BLOOD_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -85,18 +77,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 				[Stat.StatMeleeHit]: 0.67,
 				[Stat.StatMeleeCrit]: 0.28,
 				[Stat.StatMeleeHaste]: 0.21,
-				[Stat.StatArmorPenetration]: 0.19,
-				[Stat.StatBlock]: 0.35,
-				[Stat.StatBlockValue]: 0.59,
 				[Stat.StatDodge]: 0.7,
 				[Stat.StatParry]: 0.58,
-				[Stat.StatDefense]: 0.8,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 3.1,
 				[PseudoStat.PseudoStatOffHandDps]: 0.0,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -106,36 +95,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			retributionAura: true,
-			powerWordFortitude: TristateEffect.TristateEffectImproved,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			swiftRetribution: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+			powerWordFortitude: true,
+			markOfTheWild: true,
 			icyTalons: true,
+			hornOfWinter: true,
 			abominationsMight: true,
-			leaderOfThePack: TristateEffect.TristateEffectRegular,
-			sanctifiedRetribution: true,
+			leaderOfThePack: true,
 			bloodlust: true,
-			devotionAura: TristateEffect.TristateEffectImproved,
-			stoneskinTotem: TristateEffect.TristateEffectImproved,
+			arcaneTactics: true,
+			devotionAura: true,
+			resistanceAura: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
-			blessingOfSanctuary: true,
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			bloodFrenzy: true,
-			faerieFire: TristateEffect.TristateEffectRegular,
 			sunderArmor: true,
-			misery: true,
 			ebonPlaguebringer: true,
-			mangle: true,
-			heartOfTheCrusader: true,
-			demoralizingShout: TristateEffect.TristateEffectImproved,
-			frostFever: TristateEffect.TristateEffectImproved,
-			insectSwarm: true,
-			judgementOfLight: true,
+			criticalMass: true,
+			vindication: true,
+			frostFever: true,
+			judgement: true,
 		}),
 	},
 
@@ -144,11 +124,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: BloodInputs.BloodDeathKnightRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
-	excludeBuffDebuffInputs: [],
+	includeBuffDebuffInputs: [
+		BuffDebuffInputs.SpellDamageDebuff
+	],
+	excludeBuffDebuffInputs: [
+		BuffDebuffInputs.SpellHasteBuff,
+		BuffDebuffInputs.BleedDebuff,
+	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.IncomingHps,
@@ -158,6 +144,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
 			DeathKnightInputs.StartingRunicPower(),
+			OtherInputs.DarkIntentUptime
 		],
 	},
 	encounterPicker: {
@@ -167,15 +154,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 
 	presets: {
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.BLOOD_IT_SPAM_ROTATION_PRESET_DEFAULT, Presets.BLOOD_AGGRO_ROTATION_PRESET_DEFAULT],
+		rotations: [
+			Presets.BLOOD_P1_ROTATION_PRESET_DEFAULT
+		],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.BloodTalents, Presets.BloodAggroTalents, Presets.DoubleBuffBloodTalents],
+		talents: [
+			Presets.BloodTalents
+		],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.P1_BLOOD_PRESET, Presets.P2_BLOOD_PRESET, Presets.P3_BLOOD_PRESET, Presets.P4_BLOOD_PRESET],
+		gear: [
+			Presets.P1_BLOOD_PRESET
+		],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBloodDeathKnight>): APLRotation => {
-		return Presets.BLOOD_IT_SPAM_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		return Presets.BLOOD_P1_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -186,24 +179,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Alliance]: Race.RaceWorgen,
 				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_BLOOD_PRESET.gear,
-					2: Presets.P2_BLOOD_PRESET.gear,
-					3: Presets.P3_BLOOD_PRESET.gear,
-					4: Presets.P4_BLOOD_PRESET.gear,
+					2: Presets.P1_BLOOD_PRESET.gear,
+					3: Presets.P1_BLOOD_PRESET.gear,
+					4: Presets.P1_BLOOD_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_BLOOD_PRESET.gear,
-					2: Presets.P2_BLOOD_PRESET.gear,
-					3: Presets.P3_BLOOD_PRESET.gear,
-					4: Presets.P4_BLOOD_PRESET.gear,
+					2: Presets.P1_BLOOD_PRESET.gear,
+					3: Presets.P1_BLOOD_PRESET.gear,
+					4: Presets.P1_BLOOD_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });

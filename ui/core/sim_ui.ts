@@ -61,7 +61,7 @@ export abstract class SimUI extends Component {
 		this.rootElem.innerHTML = `
 			<div class="sim-root">
 				<div class="sim-bg"></div>
-				${config.noticeText ? `<div class="notices-banner alert border-bottom mb-0 text-center">${config.noticeText}</div>` : ''}
+				${config.noticeText ? `<div class="notices-banner alert border-bottom mb-0 text-center within-raid-sim-hide">${config.noticeText}</div>` : ''}
 				<div class="sim-container">
 					<aside class="sim-sidebar">
 						<div class="sim-title"></div>

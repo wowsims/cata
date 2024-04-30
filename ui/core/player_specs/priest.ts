@@ -4,6 +4,7 @@ import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class DisciplinePriest extends PlayerSpec<Spec.SpecDisciplinePriest> {
+	static specIndex = 0;
 	static specID = Spec.SpecDisciplinePriest as Spec.SpecDisciplinePriest;
 	static classID = Class.ClassPriest as Class.ClassPriest;
 	static friendlyName = 'Discipline';
@@ -16,6 +17,7 @@ export class DisciplinePriest extends PlayerSpec<Spec.SpecDisciplinePriest> {
 
 	static canDualWield = false;
 
+	readonly specIndex = DisciplinePriest.specIndex;
 	readonly specID = DisciplinePriest.specID;
 	readonly classID = DisciplinePriest.classID;
 	readonly friendlyName = DisciplinePriest.friendlyName;
@@ -38,6 +40,7 @@ export class DisciplinePriest extends PlayerSpec<Spec.SpecDisciplinePriest> {
 }
 
 export class HolyPriest extends PlayerSpec<Spec.SpecHolyPriest> {
+	static specIndex = 1;
 	static specID = Spec.SpecHolyPriest as Spec.SpecHolyPriest;
 	static classID = Class.ClassPriest as Class.ClassPriest;
 	static friendlyName = 'Holy';
@@ -50,6 +53,7 @@ export class HolyPriest extends PlayerSpec<Spec.SpecHolyPriest> {
 
 	static canDualWield = false;
 
+	readonly specIndex = HolyPriest.specIndex;
 	readonly specID = HolyPriest.specID;
 	readonly classID = HolyPriest.classID;
 	readonly friendlyName = HolyPriest.friendlyName;
@@ -72,6 +76,7 @@ export class HolyPriest extends PlayerSpec<Spec.SpecHolyPriest> {
 }
 
 export class ShadowPriest extends PlayerSpec<Spec.SpecShadowPriest> {
+	static specIndex = 2;
 	static specID = Spec.SpecShadowPriest as Spec.SpecShadowPriest;
 	static classID = Class.ClassPriest as Class.ClassPriest;
 	static friendlyName = 'Shadow';
@@ -84,6 +89,7 @@ export class ShadowPriest extends PlayerSpec<Spec.SpecShadowPriest> {
 
 	static canDualWield = false;
 
+	readonly specIndex = ShadowPriest.specIndex;
 	readonly specID = ShadowPriest.specID;
 	readonly classID = ShadowPriest.classID;
 	readonly friendlyName = ShadowPriest.friendlyName;

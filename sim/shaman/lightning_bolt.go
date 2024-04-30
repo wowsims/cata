@@ -1,0 +1,34 @@
+package shaman
+
+import (
+	"time"
+
+	"github.com/wowsims/cata/sim/core"
+)
+
+func (shaman *Shaman) registerLightningBoltSpell() {
+	shaman.LightningBolt = shaman.RegisterSpell(shaman.newLightningBoltSpellConfig(false))
+	shaman.LightningBoltOverload = shaman.RegisterSpell(shaman.newLightningBoltSpellConfig(true))
+}
+
+func (shaman *Shaman) newLightningBoltSpellConfig(isElementalOverload bool) core.SpellConfig {
+	spellConfig := shaman.newElectricSpellConfig(core.ActionID{SpellID: 403}, 0.06, time.Millisecond*2500, isElementalOverload, 0.714)
+
+	spellConfig.ClassSpellMask = core.TernaryInt64(isElementalOverload, SpellMaskLightningBoltOverload, SpellMaskLightningBolt)
+	spellConfig.MissileSpeed = core.TernaryFloat64(isElementalOverload, 20, 35)
+
+	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		baseDamage := shaman.ClassSpellScaling * 0.76700001955
+		result := shaman.calcDamageStormstrikeCritChance(sim, target, baseDamage, spell)
+
+		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+			if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance(), "Lightning Bolt Elemental Overload") {
+				shaman.LightningBoltOverload.Cast(sim, target)
+			}
+
+			spell.DealDamage(sim, result)
+		})
+	}
+
+	return spellConfig
+}

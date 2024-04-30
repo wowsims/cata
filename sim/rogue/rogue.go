@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 const (
@@ -20,13 +21,16 @@ const RogueBleedTag = "RogueBleed"
 type Rogue struct {
 	core.Character
 
+	ClassSpellScaling float64
+
 	Talents              *proto.RogueTalents
 	Options              *proto.RogueOptions
 	AssassinationOptions *proto.AssassinationRogue_Options
 	CombatOptions        *proto.CombatRogue_Options
 	SubtletyOptions      *proto.SubtletyRogue_Options
 
-	bleedCategory *core.ExclusiveCategory
+	SliceAndDiceBonus        float64
+	AdditiveEnergyRegenBonus float64
 
 	sliceAndDiceDurations [6]time.Duration
 	exposeArmorDurations  [6]time.Duration
@@ -41,8 +45,8 @@ type Rogue struct {
 	Hemorrhage       *core.Spell
 	GhostlyStrike    *core.Spell
 	HungerForBlood   *core.Spell
-	InstantPoison    [3]*core.Spell
-	WoundPoison      [3]*core.Spell
+	InstantPoison    [4]*core.Spell
+	WoundPoison      [4]*core.Spell
 	Mutilate         *core.Spell
 	MutilateMH       *core.Spell
 	MutilateOH       *core.Spell
@@ -55,12 +59,19 @@ type Rogue struct {
 	ShadowDance      *core.Spell
 	ColdBlood        *core.Spell
 	Vanish           *core.Spell
+	VenomousWounds   *core.Spell
+	Vendetta         *core.Spell
+	RevealingStrike  *core.Spell
+	KillingSpree     *core.Spell
+	AdrenalineRush   *core.Spell
+	Gouge            *core.Spell
 
 	Envenom      *core.Spell
 	Eviscerate   *core.Spell
 	ExposeArmor  *core.Spell
 	Rupture      *core.Spell
 	SliceAndDice *core.Spell
+	Recuperate   *core.Spell
 
 	lastDeadlyPoisonProcMask core.ProcMask
 
@@ -76,20 +87,21 @@ type Rogue struct {
 	KillingSpreeAura     *core.Aura
 	OverkillAura         *core.Aura
 	SliceAndDiceAura     *core.Aura
+	RecuperateAura       *core.Aura
 	MasterOfSubtletyAura *core.Aura
 	ShadowstepAura       *core.Aura
 	ShadowDanceAura      *core.Aura
 	DirtyDeedsAura       *core.Aura
 	HonorAmongThieves    *core.Aura
 	StealthAura          *core.Aura
+	BanditsGuileAura     *core.Aura
+	RestlessBladesAura   *core.Aura
 
-	masterPoisonerDebuffAuras core.AuraArray
-	savageCombatDebuffAuras   core.AuraArray
-	woundPoisonDebuffAuras    core.AuraArray
+	MasterPoisonerDebuffAuras core.AuraArray
+	SavageCombatDebuffAuras   core.AuraArray
+	WoundPoisonDebuffAuras    core.AuraArray
 
-	QuickRecoveryMetrics *core.ResourceMetrics
-
-	costModifier               func(float64) float64
+	generatorCostModifier      func(float64) float64
 	finishingMoveEffectApplier func(sim *core.Simulation, numPoints int32)
 }
 
@@ -104,19 +116,15 @@ func (rogue *Rogue) GetRogue() *Rogue {
 func (rogue *Rogue) AddRaidBuffs(_ *proto.RaidBuffs)   {}
 func (rogue *Rogue) AddPartyBuffs(_ *proto.PartyBuffs) {}
 
-// func (rogue *Rogue) finisherFlags() core.SpellFlag {
-// 	flags := SpellFlagFinisher
-// 	if rogue.Talents.SurpriseAttacks {
-// 		flags |= core.SpellFlagCannotBeDodged
-// 	}
-// 	return flags
-// }
-
 // Apply the effect of successfully casting a finisher to combo points
 func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
 	numPoints := rogue.ComboPoints()
 	rogue.SpendComboPoints(sim, spell.ComboPointMetrics())
 	rogue.finishingMoveEffectApplier(sim, numPoints)
+}
+
+func (rogue *Rogue) HasPrimeGlyph(glyph proto.RoguePrimeGlyph) bool {
+	return rogue.HasGlyph(int32(glyph))
 }
 
 func (rogue *Rogue) HasMajorGlyph(glyph proto.RogueMajorGlyph) bool {
@@ -127,110 +135,119 @@ func (rogue *Rogue) HasMinorGlyph(glyph proto.RogueMinorGlyph) bool {
 	return rogue.HasGlyph(int32(glyph))
 }
 
-func (rogue *Rogue) Initialize() {
-	// // Update auto crit multipliers now that we have the targets.
-	// rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
-	// rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
-
-	// if rogue.Talents.QuickRecovery > 0 {
-	// 	rogue.QuickRecoveryMetrics = rogue.NewEnergyMetrics(core.ActionID{SpellID: 31245})
-	// }
-
-	// rogue.costModifier = rogue.makeCostModifier()
-
-	// rogue.registerStealthAura()
-	// rogue.registerBackstabSpell()
-	// rogue.registerDeadlyPoisonSpell()
-	// rogue.registerPoisonAuras()
-	// rogue.registerEviscerate()
-	// rogue.registerExposeArmorSpell()
-	// rogue.registerFanOfKnives()
-	// rogue.registerFeintSpell()
-	// rogue.registerGarrote()
-	// rogue.registerHemorrhageSpell()
-	// rogue.registerInstantPoisonSpell()
-	// rogue.registerWoundPoisonSpell()
-	// rogue.registerMutilateSpell()
-	// rogue.registerRupture()
-	// rogue.registerShivSpell()
-	// rogue.registerSinisterStrikeSpell()
-	// rogue.registerSliceAndDice()
-	// rogue.registerThistleTeaCD()
-	// rogue.registerTricksOfTheTradeSpell()
-	// rogue.registerAmbushSpell()
-	// rogue.registerEnvenom()
-	// rogue.registerVanishSpell()
-
-	// rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
+func (rogue *Rogue) GetGeneratorCostModifier(cost float64) float64 {
+	return rogue.generatorCostModifier(cost)
 }
 
-func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {
-	rogue.EnergyTickMultiplier += multiplier
+func (rogue *Rogue) Initialize() {
+	// Update auto crit multipliers now that we have the targets.
+	rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
+	rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
+	rogue.AutoAttacks.RangedConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
+
+	rogue.generatorCostModifier = rogue.makeGeneratorCostModifier()
+
+	rogue.registerStealthAura()
+	rogue.registerVanishSpell()
+	rogue.registerFeintSpell()
+	rogue.registerAmbushSpell()
+	rogue.registerGarrote()
+	rogue.registerSinisterStrikeSpell()
+	rogue.registerBackstabSpell()
+	rogue.registerRupture()
+	rogue.registerSliceAndDice()
+	rogue.registerEviscerate()
+	rogue.registerEnvenom()
+	rogue.registerExposeArmorSpell()
+	rogue.registerRecuperate()
+	rogue.registerFanOfKnives()
+	rogue.registerTricksOfTheTradeSpell()
+	rogue.registerDeadlyPoisonSpell()
+	rogue.registerInstantPoisonSpell()
+	rogue.registerWoundPoisonSpell()
+	rogue.registerPoisonAuras()
+	rogue.registerShivSpell()
+	rogue.registerThistleTeaCD()
+	rogue.registerGougeSpell()
+
+	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
+
+	rogue.SliceAndDiceBonus = 0.4
+}
+
+func (rogue *Rogue) ApplyAdditiveEnergyRegenBonus(sim *core.Simulation, increment float64) {
+	oldBonus := rogue.AdditiveEnergyRegenBonus
+	newBonus := oldBonus + increment
+	rogue.AdditiveEnergyRegenBonus = newBonus
+	rogue.MultiplyEnergyRegenSpeed(sim, (1.0+newBonus)/(1.0+oldBonus))
 }
 
 func (rogue *Rogue) Reset(sim *core.Simulation) {
 	for _, mcd := range rogue.GetMajorCooldowns() {
 		mcd.Disable()
 	}
+
+	rogue.MultiplyEnergyRegenSpeed(sim, 1.0+rogue.AdditiveEnergyRegenBonus)
 }
 
-// func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {
-// 	primaryModifier := rogue.preyOnTheWeakMultiplier(rogue.CurrentTarget)
-// 	var secondaryModifier float64
-// 	if applyLethality {
-// 		secondaryModifier += 0.06 * float64(rogue.Talents.Lethality)
-// 	}
-// 	return rogue.Character.MeleeCritMultiplier(primaryModifier, secondaryModifier)
-// }
-// func (rogue *Rogue) SpellCritMultiplier() float64 {
-// 	primaryModifier := rogue.preyOnTheWeakMultiplier(rogue.CurrentTarget)
-// 	return rogue.Character.SpellCritMultiplier(primaryModifier, 0)
-// }
-
-func NewRogue(character *core.Character, talents string) *Rogue {
-	rogue := &Rogue{
-		Character: *character,
-		Talents:   &proto.RogueTalents{},
+func (rogue *Rogue) MeleeCritMultiplier(applyLethality bool) float64 {
+	secondaryModifier := 0.0
+	if applyLethality {
+		secondaryModifier += 0.1 * float64(rogue.Talents.Lethality)
 	}
-	// core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	return rogue.Character.MeleeCritMultiplier(1.0, secondaryModifier)
+}
+func (rogue *Rogue) SpellCritMultiplier() float64 {
+	return rogue.Character.SpellCritMultiplier(1, 0)
+}
 
-	// // Passive rogue threat reduction: https://wotlk.wowhead.com/spell=21184/rogue-passive-dnd
-	// rogue.PseudoStats.ThreatMultiplier *= 0.71
-	// rogue.PseudoStats.CanParry = true
+func NewRogue(character *core.Character, options *proto.RogueOptions, talents string) *Rogue {
+	rogue := &Rogue{
+		Character:         *character,
+		Talents:           &proto.RogueTalents{},
+		Options:           options,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassRogue),
+	}
 
-	// maxEnergy := 100.0
-	// if rogue.Talents.Vigor {
-	// 	maxEnergy += 10
-	// }
-	// if rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfVigor) {
-	// 	maxEnergy += 10
-	// }
-	// if rogue.HasSetBonus(Arena, 4) {
-	// 	maxEnergy += 10
-	// }
-	// rogue.EnableEnergyBar(maxEnergy)
-	// rogue.ApplyEnergyTickMultiplier([]float64{0, 0.08, 0.16, 0.25}[rogue.Talents.Vitality])
+	core.FillTalentsProto(rogue.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
-	// rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{
-	// 	MainHand:       rogue.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
-	// 	OffHand:        rogue.WeaponFromOffHand(0),  // Set crit multiplier later when we have targets.
-	// 	AutoSwingMelee: true,
-	// })
-	// rogue.applyPoisons()
+	// Passive rogue threat reduction: https://wotlk.wowhead.com/spell=21184/rogue-passive-dnd
+	rogue.PseudoStats.ThreatMultiplier *= 0.71
+	rogue.PseudoStats.CanParry = true
 
-	// rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
-	// rogue.AddStatDependency(stats.Agility, stats.AttackPower, 1)
-	// rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+	maxEnergy := 100.0
+	if rogue.HasSetBonus(Arena, 4) {
+		maxEnergy += 10
+	}
+	if rogue.Spec == proto.Spec_SpecAssassinationRogue &&
+		rogue.GetMHWeapon() != nil &&
+		rogue.GetMHWeapon().WeaponType == proto.WeaponType_WeaponTypeDagger {
+		maxEnergy += 20
+	}
+	rogue.EnableEnergyBar(maxEnergy)
+
+	rogue.EnableAutoAttacks(rogue, core.AutoAttackOptions{
+		MainHand:       rogue.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
+		OffHand:        rogue.WeaponFromOffHand(0),  // Set crit multiplier later when we have targets.
+		Ranged:         rogue.WeaponFromRanged(0),
+		AutoSwingMelee: true,
+	})
+	rogue.applyPoisons()
+
+	rogue.AddStatDependency(stats.Strength, stats.AttackPower, 1)
+	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 2)
+	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
 
 	return rogue
 }
 
 // Apply the effects of the Cut to the Chase talent
 // TODO: Put a fresh instance of SnD rather than use the original as per client
+// TODO (TheBackstabi, 3/16/2024) - Assassination only talent, to be moved?
 func (rogue *Rogue) ApplyCutToTheChase(sim *core.Simulation) {
 	if rogue.Talents.CutToTheChase > 0 && rogue.SliceAndDiceAura.IsActive() {
-		procChance := float64(rogue.Talents.CutToTheChase) * 0.2
-		if sim.Proc(procChance, "Cut to the Chase") {
+		procChance := []float64{0.0, 0.33, 0.67, 1.0}[rogue.Talents.CutToTheChase]
+		if procChance == 1 || sim.Proc(procChance, "Cut to the Chase") {
 			rogue.SliceAndDiceAura.Duration = rogue.sliceAndDiceDurations[5]
 			rogue.SliceAndDiceAura.Activate(sim)
 		}
@@ -251,6 +268,11 @@ func (rogue *Rogue) HasDagger(hand core.Hand) bool {
 		return rogue.MainHand().WeaponType == proto.WeaponType_WeaponTypeDagger
 	}
 	return rogue.OffHand().WeaponType == proto.WeaponType_WeaponTypeDagger
+}
+
+// Does the rogue have a thrown weapon equipped in the ranged slot?
+func (rogue *Rogue) HasThrown() bool {
+	return rogue.Ranged().RangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeThrown
 }
 
 // Check if the rogue is considered in "stealth" for the purpose of casting abilities

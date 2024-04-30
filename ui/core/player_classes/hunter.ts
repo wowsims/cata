@@ -1,6 +1,6 @@
 import { EligibleWeaponType, IconSize, PlayerClass } from '../player_class';
 import { PlayerSpec } from '../player_spec';
-import { PlayerSpecs } from '../player_specs';
+import { BeastMasteryHunter, MarksmanshipHunter, SurvivalHunter } from '../player_specs/hunter';
 import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/common';
 import { HunterSpecs } from '../proto_utils/utils';
 
@@ -9,9 +9,9 @@ export class Hunter extends PlayerClass<Class.ClassHunter> {
 	static friendlyName = 'Hunter';
 	static hexColor = '#abd473';
 	static specs: Record<string, PlayerSpec<HunterSpecs>> = {
-		[PlayerSpecs.BeastMasteryHunter.friendlyName]: PlayerSpecs.BeastMasteryHunter,
-		[PlayerSpecs.MarksmanshipHunter.friendlyName]: PlayerSpecs.MarksmanshipHunter,
-		[PlayerSpecs.SurvivalHunter.friendlyName]: PlayerSpecs.SurvivalHunter,
+		[BeastMasteryHunter.friendlyName]: BeastMasteryHunter,
+		[MarksmanshipHunter.friendlyName]: MarksmanshipHunter,
+		[SurvivalHunter.friendlyName]: SurvivalHunter,
 	};
 	static races: Race[] = [
 		// [A]
@@ -19,6 +19,7 @@ export class Hunter extends PlayerClass<Class.ClassHunter> {
 		Race.RaceDwarf,
 		Race.RaceNightElf,
 		Race.RaceDraenei,
+		Race.RaceWorgen,
 		// [H]
 		Race.RaceOrc,
 		Race.RaceUndead,

@@ -77,7 +77,7 @@ export const druidGlyphsConfig: GlyphsConfig = {
 			description: 'Your Swiftmend ability no longer consumes a Rejuvenation or Regrowth effect from the target.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/inv_relics_idolofrejuvenation.jpg',
 		},
-		[DruidPrimeGlyph.GlyphOfTigerSFury]: {
+		[DruidPrimeGlyph.GlyphOfTigersFury]: {
 			name: 'Glyph of Tiger\'s Fury',
 			description: 'Reduces the cooldown of your Tiger\'s Fury ability by 3 sec.',
 			iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_mount_jungletiger.jpg',

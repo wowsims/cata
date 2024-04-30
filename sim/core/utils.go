@@ -72,6 +72,14 @@ func TernaryInt32(condition bool, val1 int32, val2 int32) int32 {
 	}
 }
 
+func TernaryInt64(condition bool, val1 int64, val2 int64) int64 {
+	if condition {
+		return val1
+	} else {
+		return val2
+	}
+}
+
 func TernaryFloat64(condition bool, val1 float64, val2 float64) float64 {
 	if condition {
 		return val1
@@ -160,6 +168,30 @@ func Flatten[T any](src [][]T) []T {
 
 func MasteryRatingToMasteryPoints(masteryRating float64) float64 {
 	return masteryRating / MasteryRatingPerMasteryPoint
+}
+
+// Gets the spell scaling coefficient associated with a given class
+// Retrieved from https://wago.tools/api/casc/1391660?download&branch=wow_classic_beta
+func GetClassSpellScalingCoefficient(class proto.Class) float64 {
+	return ClassBaseScaling[class]
+}
+
+// spellEffectCoefficient is the value in the "Coefficient" column of the SpellEffect DB2 table
+func CalcScalingSpellAverageEffect(class proto.Class, spellEffectCoefficient float64) float64 {
+	return GetClassSpellScalingCoefficient(class) * spellEffectCoefficient
+}
+
+// spellEffectCoefficient is the value in the "Coefficient" column of the SpellEffect DB2 table
+// spellEffectVariance is the value in the "Variance" column of the SpellEffect DB2 table
+func CalcScalingSpellEffectVarianceMinMax(class proto.Class, spellEffectCoefficient float64, spellEffectVariance float64) (float64, float64) {
+	avgEffect := CalcScalingSpellAverageEffect(class, spellEffectCoefficient)
+	return ApplyVarianceMinMax(avgEffect, spellEffectVariance)
+}
+
+func ApplyVarianceMinMax(avgEffect float64, variance float64) (float64, float64) {
+	min := avgEffect * (1 - variance/2.0)
+	max := avgEffect * (1 + variance/2.0)
+	return min, max
 }
 
 type aggregator struct {

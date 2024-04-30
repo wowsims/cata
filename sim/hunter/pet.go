@@ -47,14 +47,37 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	// base_focus_regen_per_second *= 1.0 + o -> talents.bestial_discipline -> effect1().percent();
 	baseFocusPerSecond := 24.5 / 4.0
 	baseFocusPerSecond *= 1.0 + (0.10 * float64(hunter.Talents.BestialDiscipline))
-	hp.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), baseFocusPerSecond, false)
 
-	atkSpd := 2 / (1 + 0.5*float64(hp.Talents().SerpentSwiftness))
+	WHFocusIncreaseMod := hp.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Flat,
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		FloatValue: float64(hp.Talents().WildHunt) * 12.5,
+	})
+
+	WHDamageMod := hp.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		FloatValue: float64(hp.Talents().WildHunt) * 0.6,
+	})
+
+	hp.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), baseFocusPerSecond, false, func(sim *core.Simulation, focus float64) {
+		if hp.Talents().WildHunt > 0 {
+			if focus >= 50 {
+				WHFocusIncreaseMod.Activate()
+				WHDamageMod.Activate()
+			} else {
+				WHFocusIncreaseMod.Deactivate()
+				WHDamageMod.Deactivate()
+			}
+		}
+	})
+
+	atkSpd := 2 / (1 + 0.05*float64(hp.Talents().SerpentSwiftness))
 	// Todo: Change for Cataclysm
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  50,
-			BaseDamageMax:  78,
+			BaseDamageMin:  73,
+			BaseDamageMax:  110,
 			SwingSpeed:     atkSpd,
 			CritMultiplier: 2,
 		},
@@ -63,14 +86,15 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 	// Happiness
 	// Todo:
-	//hp.PseudoStats.DamageDealtMultiplier *= 1.25
+	hp.PseudoStats.DamageDealtMultiplier *= 1.25
 
 	// Pet family bonus is now the same for all pets.
 	//Todo: Should this stay?
 	hp.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
 
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/(0.01/243.6))
+	hp.AddStatDependency(stats.Strength, stats.RangedAttackPower, 2)
+	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/324.72)
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
 
 	hunter.AddPet(hp)
@@ -145,23 +169,27 @@ var hunterPetBaseStats = stats.Stats{
 const PetExpertiseScale = 3.25
 
 func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
-	hvw := hunter.Talents.HunterVsWild
 
 	return func(ownerStats stats.Stats) stats.Stats {
 		// EJ posts claim this value is passed through math.Floor, but in-game testing
 		// shows pets benefit from each point of owner hit rating in WotLK Classic.
 		// https://web.archive.org/web/20120112003252/http://elitistjerks.com/f80/t100099-demonology_releasing_demon_you
-		ownerHitChance := ownerStats[stats.MeleeHit] / core.MeleeHitRatingPerHitChance
-		hitRatingFromOwner := ownerHitChance * core.MeleeHitRatingPerHitChance
 
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
-			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.RangedAttackPower]*0.22 + ownerStats[stats.Stamina]*0.1*float64(hvw),
+			stats.Stamina:           ownerStats[stats.Stamina] * 0.3,
+			stats.Armor:             ownerStats[stats.Armor] * 0.35,
+			stats.AttackPower:       ownerStats[stats.RangedAttackPower] * 0.425,
+			stats.RangedAttackPower: ownerStats[stats.RangedAttackPower] * 0.40,
 
-			stats.MeleeHit:  hitRatingFromOwner,
-			stats.SpellHit:  hitRatingFromOwner * 2,
-			stats.Expertise: ownerHitChance * PetExpertiseScale * core.ExpertisePerQuarterPercentReduction,
+			stats.MeleeHit:  ownerStats[stats.MeleeHit],
+			stats.Expertise: ownerStats[stats.MeleeHit] * PetExpertiseScale,
+			stats.SpellHit:  ownerStats[stats.MeleeHit],
+
+			stats.MeleeCrit: ownerStats[stats.MeleeCrit],
+			stats.SpellCrit: ownerStats[stats.MeleeCrit],
+
+			stats.MeleeHaste: ownerStats[stats.MeleeHaste],
+			stats.SpellHaste: ownerStats[stats.MeleeHaste],
 		}
 	}
 }

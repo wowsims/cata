@@ -24,6 +24,7 @@ socketToMatchingColors.set(GemColor.GemColorPrismatic, [
 	GemColor.GemColorPurple,
 	GemColor.GemColorPrismatic,
 ]);
+socketToMatchingColors.set(GemColor.GemColorCogwheel, [GemColor.GemColorCogwheel]);
 
 export function gemColorMatchesSocket(gemColor: GemColor, socketColor: GemColor) {
 	return gemColor == socketColor || (socketToMatchingColors.has(socketColor) && socketToMatchingColors.get(socketColor)!.includes(gemColor));
@@ -36,7 +37,14 @@ export function gemMatchesSocket(gem: Gem, socketColor: GemColor) {
 
 // Whether the gem is capable of slotting into a socket of the given color.
 export function gemEligibleForSocket(gem: Gem, socketColor: GemColor) {
-	return (gem.color == GemColor.GemColorMeta) == (socketColor == GemColor.GemColorMeta);
+	switch (socketColor) {
+		case GemColor.GemColorMeta:
+			return gem.color == GemColor.GemColorMeta;
+		case GemColor.GemColorCogwheel:
+			return gem.color == GemColor.GemColorCogwheel;
+		default:
+			return gem.color != GemColor.GemColorMeta && gem.color != GemColor.GemColorCogwheel;
+	}
 }
 
 export function isUnrestrictedGem(gem: Gem, phase?: number): boolean {
@@ -140,6 +148,24 @@ export function getMetaGemConditionDescription(metaGem: Gem): string {
 }
 
 // Keep these lists in order by item ID.
+export const FLEET_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52289, 'Requires at least 2 Yellow Gems.', 0, 2, 0);
+export const CHAOTIC_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52291, 'Requires at least 3 Red Gems.', 3, 0, 0);
+export const BRACING_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52292, 'Requires at least 1 Blue Gem and 1 Yellow Gem.', 0, 1, 1);	
+export const ETERNAL_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52293, 'Requires at least 3 Blue Gems.', 0, 0, 0);
+export const AUSTERE_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52294, 'Requries at least 2 Yellow Gems.', 0, 2, 0);	
+export const EFFULGENT_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52295, 'Requires at least 1 Red Gem and 1 Yellow Gem.', 1, 1, 0);
+export const EMBER_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52296, 'Requires at least 2 Yellow Gems.', 0, 2, 0);
+export const REVITALIzING_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52297, 'Requires at least 1 Blue Gem and 1 Yellow Gem.', 0, 1, 1);
+export const DESTRUCTIVE_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52298, 'Requires at least 2 Red Gems.', 2, 0, 0);
+export const POWERFUL_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52299, 'Requires at least 2 Blue Gems.', 0, 0, 2);
+export const ENIGMATIC_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52300, 'Requires at least 1 Blue Gem and 1 Yellow Gem.', 0, 1, 1);
+export const IMPASSIVE_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52301, 'Requires at least 1 Blue Gem and 1 Yellow Gem.', 0, 1, 1);
+export const FORLORN_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52302, 'Requires at least 1 Blue Gem and 1 Yellwo Gem.', 0, 1, 1);	
+export const AGILE_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(68778, 'Requires at least 3 Red Gems.', 3, 0, 0);
+export const REVERBERATING_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(68779, 'Requires at least 3 Red Gems.', 3, 0, 0);
+export const BURNING_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(68780, 'Requires at least 3 Red Gems.', 3, 0, 0);
+
+// WOTLK GEMS
 export const CHAOTIC_SKYFLARE_DIAMOND = MetaGemCondition.fromMinColors(41285, 'Requires at least 2 Blue Gems.', 0, 0, 2);
 export const DESTRUCTIVE_SKYFLARE_DIAMOND = MetaGemCondition.fromMinColors(41307, 'Requires at least 1 Red Gem, at least 1 Yellow Gem, and at least 1 Blue Gem.', 1, 1, 1);
 export const EMBER_SKYFLARE_DIAMOND = MetaGemCondition.fromMinColors(41333, 'Requires at least 3 Red Gems.', 3, 0, 0);
@@ -198,6 +224,7 @@ const emptyGemSocketIcons: Partial<Record<GemColor, string>> = {
 	[GemColor.GemColorRed]: 'https://wow.zamimg.com/images/icons/socket-red.gif',
 	[GemColor.GemColorYellow]: 'https://wow.zamimg.com/images/icons/socket-yellow.gif',
 	[GemColor.GemColorPrismatic]: 'https://wow.zamimg.com/images/icons/socket-prismatic.gif',
+	[GemColor.GemColorCogwheel]: 'https://wow.zamimg.com/images/icons/socket-cogwheel.gif',
 };
 export function getEmptyGemSocketIconUrl(color: GemColor): string {
 	if (emptyGemSocketIcons[color])

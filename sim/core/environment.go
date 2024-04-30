@@ -190,6 +190,13 @@ func (env *Environment) finalize(raidProto *proto.Raid, _ *proto.Encounter, raid
 
 	env.State = Finalized
 
+	for partyIdx, party := range env.Raid.Parties {
+		for _, player := range party.Players {
+			character := player.GetCharacter()
+			character.FillPlayerStats(raidStats.Parties[partyIdx].Players[character.PartyIndex])
+		}
+	}
+
 	if runFakePrepull {
 		// Runs prepull only, for a single iteration. This lets us detect misconfigured
 		// prepull spells (e.g. GCD not available) in APL.
@@ -199,13 +206,6 @@ func (env *Environment) finalize(raidProto *proto.Raid, _ *proto.Encounter, raid
 		sim.reset()
 		sim.PrePull()
 		sim.Cleanup()
-	}
-
-	for partyIdx, party := range env.Raid.Parties {
-		for _, player := range party.Players {
-			character := player.GetCharacter()
-			character.FillPlayerStats(raidStats.Parties[partyIdx].Players[character.PartyIndex])
-		}
 	}
 }
 

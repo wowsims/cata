@@ -4,6 +4,7 @@ import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class ArcaneMage extends PlayerSpec<Spec.SpecArcaneMage> {
+	static specIndex = 0;
 	static specID = Spec.SpecArcaneMage as Spec.SpecArcaneMage;
 	static classID = Class.ClassMage as Class.ClassMage;
 	static friendlyName = 'Arcane';
@@ -16,6 +17,7 @@ export class ArcaneMage extends PlayerSpec<Spec.SpecArcaneMage> {
 
 	static canDualWield = false;
 
+	readonly specIndex = ArcaneMage.specIndex;
 	readonly specID = ArcaneMage.specID;
 	readonly classID = ArcaneMage.classID;
 	readonly friendlyName = ArcaneMage.friendlyName;
@@ -38,6 +40,7 @@ export class ArcaneMage extends PlayerSpec<Spec.SpecArcaneMage> {
 }
 
 export class FireMage extends PlayerSpec<Spec.SpecFireMage> {
+	static specIndex = 1;
 	static specID = Spec.SpecFireMage as Spec.SpecFireMage;
 	static classID = Class.ClassMage as Class.ClassMage;
 	static friendlyName = 'Fire';
@@ -50,6 +53,7 @@ export class FireMage extends PlayerSpec<Spec.SpecFireMage> {
 
 	static canDualWield = false;
 
+	readonly specIndex = FireMage.specIndex;
 	readonly specID = FireMage.specID;
 	readonly classID = FireMage.classID;
 	readonly friendlyName = FireMage.friendlyName;
@@ -72,6 +76,7 @@ export class FireMage extends PlayerSpec<Spec.SpecFireMage> {
 }
 
 export class FrostMage extends PlayerSpec<Spec.SpecFrostMage> {
+	static specIndex = 2;
 	static specID = Spec.SpecFrostMage as Spec.SpecFrostMage;
 	static classID = Class.ClassMage as Class.ClassMage;
 	static friendlyName = 'Frost';
@@ -84,6 +89,7 @@ export class FrostMage extends PlayerSpec<Spec.SpecFrostMage> {
 
 	static canDualWield = false;
 
+	readonly specIndex = FrostMage.specIndex;
 	readonly specID = FrostMage.specID;
 	readonly classID = FrostMage.classID;
 	readonly friendlyName = FrostMage.friendlyName;

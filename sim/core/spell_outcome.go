@@ -504,11 +504,11 @@ func (result *SpellResult) applyAttackTableHit(spell *Spell) {
 }
 
 func (result *SpellResult) applyEnemyAttackTableMiss(spell *Spell, attackTable *AttackTable, roll float64, chance *float64) bool {
-	missChance := attackTable.BaseMissChance + spell.Unit.PseudoStats.IncreasedMissChance + result.Target.GetDiminishedMissChance() + result.Target.PseudoStats.ReducedPhysicalHitTakenChance
+	missChance := result.Target.GetTotalChanceToBeMissedAsDefender(attackTable) + spell.Unit.PseudoStats.IncreasedMissChance
 	if spell.Unit.AutoAttacks.IsDualWielding && !spell.Unit.PseudoStats.DisableDWMissPenalty {
 		missChance += 0.19
 	}
-	*chance = max(0, missChance)
+	*chance += max(0, missChance)
 
 	if roll < *chance {
 		result.Outcome = OutcomeMiss
@@ -524,10 +524,7 @@ func (result *SpellResult) applyEnemyAttackTableBlock(spell *Spell, attackTable 
 		return false
 	}
 
-	blockChance := attackTable.BaseBlockChance +
-		result.Target.stats[stats.Block]/BlockRatingPerBlockChance/100 +
-		result.Target.stats[stats.Defense]*DefenseRatingToChanceReduction
-	*chance += max(0, blockChance)
+	*chance += result.Target.GetTotalBlockChanceAsDefender(attackTable)
 
 	if roll < *chance {
 		result.Outcome |= OutcomeBlock
@@ -543,11 +540,7 @@ func (result *SpellResult) applyEnemyAttackTableDodge(spell *Spell, attackTable 
 		return false
 	}
 
-	dodgeChance := attackTable.BaseDodgeChance +
-		result.Target.PseudoStats.BaseDodge +
-		result.Target.GetDiminishedDodgeChance() -
-		spell.Unit.PseudoStats.DodgeReduction
-	*chance += max(0, dodgeChance)
+	*chance += max(result.Target.GetTotalDodgeChanceAsDefender(attackTable)-spell.Unit.PseudoStats.DodgeReduction, 0.0)
 
 	if roll < *chance {
 		result.Outcome = OutcomeDodge
@@ -563,10 +556,7 @@ func (result *SpellResult) applyEnemyAttackTableParry(spell *Spell, attackTable 
 		return false
 	}
 
-	parryChance := attackTable.BaseParryChance +
-		result.Target.PseudoStats.BaseParry +
-		result.Target.GetDiminishedParryChance()
-	*chance += max(0, parryChance)
+	*chance += result.Target.GetTotalParryChanceAsDefender(attackTable)
 
 	if roll < *chance {
 		result.Outcome = OutcomeParry

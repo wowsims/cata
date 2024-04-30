@@ -1,11 +1,10 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/other_inputs';
-import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
 import * as WarriorInputs from '../inputs';
 import * as Presets from './presets';
@@ -25,8 +24,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatArmor,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -42,8 +40,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatArmor,
+		Stat.StatMastery,
 	],
 	// modifyDisplayStats: (player: Player<Spec.SpecFuryWarrior>) => {
 	// 	//let stats = new Stats();
@@ -58,7 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_FURY_PRESET_ALLIANCE.gear,
+		gear: Presets.P1_FURY_SMF_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -69,47 +66,46 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 				[Stat.StatMeleeHit]: 0.79,
 				[Stat.StatMeleeCrit]: 2.12,
 				[Stat.StatMeleeHaste]: 1.72,
-				[Stat.StatArmorPenetration]: 2.17,
-				[Stat.StatArmor]: 0.03,
+				// @todo: Calculate actual weights
+				// This probably applies for all weights
+				[Stat.StatMastery]: 0,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 6.29,
 				[PseudoStat.PseudoStatOffHandDps]: 3.58,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.FuryTalents.data,
+		talents: Presets.FurySMFTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			swiftRetribution: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
-			icyTalons: true,
-			abominationsMight: true,
-			leaderOfThePack: TristateEffect.TristateEffectRegular,
-			sanctifiedRetribution: true,
+			arcaneBrilliance: true,
 			bloodlust: true,
-			devotionAura: TristateEffect.TristateEffectImproved,
-			stoneskinTotem: TristateEffect.TristateEffectImproved,
-		}),
-		partyBuffs: PartyBuffs.create({
-			heroicPresence: false,
-		}),
-		individualBuffs: IndividualBuffs.create({
+			markOfTheWild: true,
+			icyTalons: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
 			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
+			blessingOfMight: true,
+			communion: true,
 		}),
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			bloodFrenzy: true,
-			heartOfTheCrusader: true,
 			mangle: true,
 			sunderArmor: true,
-			curseOfWeakness: TristateEffect.TristateEffectRegular,
-			faerieFire: TristateEffect.TristateEffectImproved,
+			curseOfElements: true,
 			ebonPlaguebringer: true,
 		}),
 	},
@@ -120,7 +116,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 	includeBuffDebuffInputs: [
 		// just for Bryntroll
 		BuffDebuffInputs.SpellDamageDebuff,
-		BuffDebuffInputs.SpellHitDebuff,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
@@ -129,6 +124,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			WarriorInputs.StartingRage(),
 			WarriorInputs.StanceSnapshot(),
 			WarriorInputs.DisableExpertiseGemming(),
+			OtherInputs.InputDelay,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 		],
@@ -140,18 +136,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.FuryTalents],
+		talents: [Presets.FurySMFTalents, Presets.FuryTGTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_FURY, Presets.ROTATION_FURY_SUNDER],
+		rotations: [Presets.ROTATION_FURY],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.PRERAID_FURY_PRESET,
-			Presets.P1_FURY_PRESET,
-			Presets.P2_FURY_PRESET,
-			Presets.P3_FURY_PRESET_ALLIANCE,
-			Presets.P3_FURY_PRESET_HORDE,
-			Presets.P4_FURY_PRESET_ALLIANCE,
-			Presets.P4_FURY_PRESET_HORDE,
+			Presets.PRERAID_FURY_SMF_PRESET,
+			Presets.PRERAID_FURY_TG_PRESET,
+			Presets.P1_FURY_SMF_PRESET,
+			Presets.P1_FURY_TG_PRESET,
 		],
 	},
 
@@ -162,7 +155,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFuryWarrior,
-			talents: Presets.FuryTalents.data,
+			talents: Presets.FurySMFTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -173,18 +166,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_FURY_PRESET.gear,
-					2: Presets.P2_FURY_PRESET.gear,
-					3: Presets.P3_FURY_PRESET_ALLIANCE.gear,
-					4: Presets.P4_FURY_PRESET_ALLIANCE.gear,
+					1: Presets.P1_FURY_SMF_PRESET.gear,
+					2: Presets.P1_FURY_TG_PRESET.gear,
+					3: Presets.PRERAID_FURY_SMF_PRESET.gear,
+					4: Presets.PRERAID_FURY_TG_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_FURY_PRESET.gear,
-					2: Presets.P2_FURY_PRESET.gear,
-					3: Presets.P3_FURY_PRESET_HORDE.gear,
-					4: Presets.P4_FURY_PRESET_HORDE.gear,
+					1: Presets.P1_FURY_SMF_PRESET.gear,
+					2: Presets.P1_FURY_TG_PRESET.gear,
+					3: Presets.PRERAID_FURY_SMF_PRESET.gear,
+					4: Presets.PRERAID_FURY_TG_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });

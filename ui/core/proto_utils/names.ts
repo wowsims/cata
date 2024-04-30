@@ -1,6 +1,6 @@
 import { ResourceType } from '../proto/api.js';
-import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Stat, WeaponType } from '../proto/common.js';
-import { DungeonDifficulty, RaidFilterOption, SourceFilterOption } from '../proto/ui.js';
+import { ArmorType, Class, ItemSlot, Profession, PseudoStat, Race, RangedWeaponType, Spec, Stat, WeaponType } from '../proto/common.js';
+import { DungeonDifficulty, RaidFilterOption, RepFaction, RepLevel, SourceFilterOption } from '../proto/ui.js';
 
 export const armorTypeNames: Map<ArmorType, string> = new Map([
 	[ArmorType.ArmorTypeUnknown, 'Unknown'],
@@ -28,11 +28,8 @@ export const rangedWeaponTypeNames: Map<RangedWeaponType, string> = new Map([
 	[RangedWeaponType.RangedWeaponTypeBow, 'Bow'],
 	[RangedWeaponType.RangedWeaponTypeCrossbow, 'Crossbow'],
 	[RangedWeaponType.RangedWeaponTypeGun, 'Gun'],
-	[RangedWeaponType.RangedWeaponTypeIdol, 'Idol'],
-	[RangedWeaponType.RangedWeaponTypeLibram, 'Libram'],
-	[RangedWeaponType.RangedWeaponTypeSigil, 'Sigil'],
+	[RangedWeaponType.RangedWeaponTypeRelic, 'Relic'],
 	[RangedWeaponType.RangedWeaponTypeThrown, 'Thrown'],
-	[RangedWeaponType.RangedWeaponTypeTotem, 'Totem'],
 	[RangedWeaponType.RangedWeaponTypeWand, 'Wand'],
 ]);
 
@@ -42,12 +39,14 @@ export const raceNames: Map<Race, string> = new Map([
 	[Race.RaceDraenei, 'Draenei'],
 	[Race.RaceDwarf, 'Dwarf'],
 	[Race.RaceGnome, 'Gnome'],
+	[Race.RaceGoblin, 'Goblin'],
 	[Race.RaceHuman, 'Human'],
 	[Race.RaceNightElf, 'Night Elf'],
 	[Race.RaceOrc, 'Orc'],
 	[Race.RaceTauren, 'Tauren'],
 	[Race.RaceTroll, 'Troll'],
 	[Race.RaceUndead, 'Undead'],
+	[Race.RaceWorgen, 'Worgen'],
 ]);
 
 export function nameToRace(name: string): Race {
@@ -132,6 +131,7 @@ export const statOrder: Array<Stat> = [
 	Stat.StatMeleeHaste,
 	Stat.StatArmorPenetration,
 	Stat.StatExpertise,
+	Stat.StatMastery,
 	Stat.StatDefense,
 	Stat.StatBlock,
 	Stat.StatBlockValue,
@@ -162,6 +162,7 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatMeleeCrit, 'Melee Crit'],
 	[Stat.StatMeleeHaste, 'Melee Haste'],
 	[Stat.StatArmorPenetration, 'Armor Pen'],
+	[Stat.StatMastery, 'Mastery'],
 	[Stat.StatExpertise, 'Expertise'],
 	[Stat.StatMana, 'Mana'],
 	[Stat.StatArmor, 'Armor'],
@@ -179,6 +180,24 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatNatureResistance, 'Nature Resistance'],
 	[Stat.StatShadowResistance, 'Shadow Resistance'],
 	[Stat.StatBonusArmor, 'Bonus Armor'],
+	[Stat.StatMastery, 'Mastery'],
+]);
+
+export const shortSecondaryStatNames: Map<Stat, string> = new Map([
+	[Stat.StatSpirit, 'Spirit'],
+	[Stat.StatSpellHit, 'Hit'],
+	[Stat.StatSpellCrit, 'Crit'],
+	[Stat.StatSpellHaste, 'Haste'],
+	[Stat.StatMeleeHit, 'Hit'],
+	[Stat.StatMeleeCrit, 'Crit'],
+	[Stat.StatMeleeHaste, 'Haste'],
+	[Stat.StatExpertise, 'Expertise'],
+	[Stat.StatMastery, 'Mastery'],
+	[Stat.StatDefense, 'Defense'],
+	[Stat.StatBlock, 'Block'],
+	[Stat.StatBlockValue, 'Block Value'],
+	[Stat.StatDodge, 'Dodge'],
+	[Stat.StatParry, 'Parry'],
 ]);
 
 export const pseudoStatOrder: Array<PseudoStat> = [
@@ -239,6 +258,8 @@ export const resourceNames: Map<ResourceType, string> = new Map([
 	[ResourceType.ResourceTypeFrostRune, 'Frost Rune'],
 	[ResourceType.ResourceTypeUnholyRune, 'Unholy Rune'],
 	[ResourceType.ResourceTypeDeathRune, 'Death Rune'],
+	[ResourceType.ResourceTypeSolarEnergy, 'Solar Energy'],
+	[ResourceType.ResourceTypeLunarEnergy, 'Lunar Energy'],
 ]);
 
 export const resourceColors: Map<ResourceType, string> = new Map([
@@ -254,6 +275,8 @@ export const resourceColors: Map<ResourceType, string> = new Map([
 	[ResourceType.ResourceTypeFrostRune, '#0000ff'],
 	[ResourceType.ResourceTypeUnholyRune, '#00ff00'],
 	[ResourceType.ResourceTypeDeathRune, '#8b008b'],
+	[ResourceType.ResourceTypeSolarEnergy, '#d2952b'],
+	[ResourceType.ResourceTypeLunarEnergy, '#2c4f8f'],
 ]);
 
 export function stringToResourceType(str: string): ResourceType {
@@ -303,4 +326,86 @@ export const difficultyNames: Map<DungeonDifficulty, string> = new Map([
 	[DungeonDifficulty.DifficultyRaid10H, '10H'],
 	[DungeonDifficulty.DifficultyRaid25, '25N'],
 	[DungeonDifficulty.DifficultyRaid25H, '25H'],
+]);
+
+export const REP_LEVEL_NAMES: Record<RepLevel, string> = {
+	[RepLevel.RepLevelUnknown]: 'Unknown',
+	[RepLevel.RepLevelHated]: 'Hated',
+	[RepLevel.RepLevelHostile]: 'Hostile',
+	[RepLevel.RepLevelUnfriendly]: 'Unfriendly',
+	[RepLevel.RepLevelNeutral]: 'Neutral',
+	[RepLevel.RepLevelFriendly]: 'Friendly',
+	[RepLevel.RepLevelHonored]: 'Honored',
+	[RepLevel.RepLevelRevered]: 'Revered',
+	[RepLevel.RepLevelExalted]: 'Exalted',
+};
+
+export const REP_FACTION_NAMES: Record<RepFaction, string> = {
+	[RepFaction.RepFactionUnknown]: 'Unknown',
+};
+
+export const masterySpellNames: Map<Spec, string> = new Map([
+	[Spec.SpecAssassinationRogue, 'Potent Poisons'],
+	[Spec.SpecCombatRogue, 'Main Gauche'],
+	[Spec.SpecSubtletyRogue, 'Executioner'],
+	[Spec.SpecBloodDeathKnight, 'Blood Shield'],
+	[Spec.SpecFrostDeathKnight, 'Frozen Heart'],
+	[Spec.SpecUnholyDeathKnight, 'Dreadblade'],
+	[Spec.SpecBalanceDruid, 'Total Eclipse'],
+	[Spec.SpecFeralDruid, 'Razor Claws'],
+	[Spec.SpecRestorationDruid, 'Harmony'],
+	[Spec.SpecHolyPaladin, 'Illuminated Healing'],
+	[Spec.SpecProtectionPaladin, 'Divine Bulwark'],
+	[Spec.SpecRetributionPaladin, 'Hand of Light'],
+	[Spec.SpecElementalShaman, 'Elemental Overload'],
+	[Spec.SpecEnhancementShaman, 'Enhanced Elements'],
+	[Spec.SpecRestorationShaman, 'Deep Healing'],
+	[Spec.SpecBeastMasteryHunter, 'Master of Beasts'],
+	[Spec.SpecMarksmanshipHunter, 'Wild Quiver'],
+	[Spec.SpecSurvivalHunter, 'Essence of the Viper'],
+	[Spec.SpecArmsWarrior, 'Strikes of Opportunity'],
+	[Spec.SpecFuryWarrior, 'Unshackled Fury'],
+	[Spec.SpecProtectionWarrior, 'Critical Block'],
+	[Spec.SpecArcaneMage, 'Mana Adept'],
+	[Spec.SpecFireMage, 'Flashburn'],
+	[Spec.SpecFrostMage, 'Frostburn'],
+	[Spec.SpecDisciplinePriest, 'Shield Discipline'],
+	[Spec.SpecHolyPriest, 'Echo of Light'],
+	[Spec.SpecShadowPriest, 'Shadow Orb Power'],
+	[Spec.SpecAfflictionWarlock, 'Potent Afflictions'],
+	[Spec.SpecDemonologyWarlock, 'Master Demonologist'],
+	[Spec.SpecDestructionWarlock, 'Fiery Apocalypse'],
+]);
+
+export const masterySpellIDs: Map<Spec, number> = new Map([
+	[Spec.SpecAssassinationRogue, 76803],
+	[Spec.SpecCombatRogue, 76806],
+	[Spec.SpecSubtletyRogue, 76808],
+	[Spec.SpecBloodDeathKnight, 77513],
+	[Spec.SpecFrostDeathKnight, 77514],
+	[Spec.SpecUnholyDeathKnight, 77515],
+	[Spec.SpecBalanceDruid, 77492],
+	[Spec.SpecFeralDruid, 77493],
+	[Spec.SpecRestorationDruid, 77495],
+	[Spec.SpecHolyPaladin, 76669],
+	[Spec.SpecProtectionPaladin, 76671],
+	[Spec.SpecRetributionPaladin, 76672],
+	[Spec.SpecElementalShaman, 77222],
+	[Spec.SpecEnhancementShaman, 77223],
+	[Spec.SpecRestorationShaman, 77226],
+	[Spec.SpecBeastMasteryHunter, 76657],
+	[Spec.SpecMarksmanshipHunter, 76659],
+	[Spec.SpecSurvivalHunter, 76658],
+	[Spec.SpecArmsWarrior, 76838],
+	[Spec.SpecFuryWarrior, 76856],
+	[Spec.SpecProtectionWarrior, 76857],
+	[Spec.SpecArcaneMage, 76547],
+	[Spec.SpecFireMage, 76595],
+	[Spec.SpecFrostMage, 76613],
+	[Spec.SpecDisciplinePriest, 77484],
+	[Spec.SpecHolyPriest, 77485],
+	[Spec.SpecShadowPriest, 77486],
+	[Spec.SpecAfflictionWarlock, 77215],
+	[Spec.SpecDemonologyWarlock, 77219],
+	[Spec.SpecDestructionWarlock, 77220],
 ]);

@@ -1,12 +1,9 @@
 import * as OtherInputs from '../../core/components/other_inputs';
-import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl';
-import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
-import { FrostMage_Rotation } from '../../core/proto/mage';
-import * as AplUtils from '../../core/proto_utils/apl_utils';
+import { APLRotation } from '../../core/proto/apl';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
 import * as MageInputs from '../inputs';
 import * as FrostInputs from './inputs';
@@ -19,7 +16,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
+	epStats: [
+		Stat.StatIntellect,
+		Stat.StatSpirit,
+		Stat.StatSpellPower,
+		Stat.StatSpellHit,
+		Stat.StatSpellCrit,
+		Stat.StatSpellHaste,
+		Stat.StatMP5,
+		Stat.StatMastery,
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -34,6 +40,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 	// modifyDisplayStats: (player: Player<Spec.SpecFrostMage>) => {
 	// 	let stats = new Stats();
@@ -69,38 +76,38 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
-			bloodlust: true,
-			manaSpringTotem: TristateEffect.TristateEffectImproved,
-			wrathOfAirTotem: true,
-			divineSpirit: true,
-			swiftRetribution: true,
-			sanctifiedRetribution: true,
-			demonicPactSp: 500,
-			moonkinAura: TristateEffect.TristateEffectImproved,
 			arcaneBrilliance: true,
+			bloodlust: true,
+			markOfTheWild: true,
+			icyTalons: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({
 			manaTideTotems: 1,
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: TristateEffect.TristateEffectImproved,
-			innervates: 0,
+			innervateCount: 0,
 			vampiricTouch: true,
 			focusMagic: true,
 		}),
 		debuffs: Debuffs.create({
-			judgementOfWisdom: true,
-			misery: true,
+			judgement: true,
 			ebonPlaguebringer: true,
-			shadowMastery: true,
-			heartOfTheCrusader: true,
+			shadowAndFlame: true,
 		}),
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [MageInputs.ArmorInput()],
+	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: FrostInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
@@ -111,8 +118,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
-			//FrostInputs.WaterElementalDisobeyChance, 
-			OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
+			//FrostInputs.WaterElementalDisobeyChance,
+			OtherInputs.InputDelay,
+			OtherInputs.DistanceFromTarget,
+			OtherInputs.TankAssignment,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -121,7 +131,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 
 	presets: {
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.FROST_ROTATION_PRESET_DEFAULT, Presets.FROST_ROTATION_PRESET_AOE],
+		rotations: [Presets.FROST_ROTATION_PRESET_DEFAULT, Presets.FROST_ROTATION_PRESET_AOE],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FrostTalents],
 		// Preset gear configurations that the user can quickly select.
@@ -137,59 +147,59 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		}
 	},
 
-	simpleRotation: (player: Player<Spec.SpecFrostMage>, simple: FrostMage_Rotation, cooldowns: Cooldowns): APLRotation => {
-		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
+	// simpleRotation: (player: Player<Spec.SpecFrostMage>, simple: FrostMage_Rotation, cooldowns: Cooldowns): APLRotation => {
+	// 	const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
-		const prepullMirrorImage = APLPrepullAction.fromJsonString(
-			`{"action":{"castSpell":{"spellId":{"spellId":55342}}},"doAtValue":{"const":{"val":"-2s"}}}`,
-		);
+	// 	const prepullMirrorImage = APLPrepullAction.fromJsonString(
+	// 		`{"action":{"castSpell":{"spellId":{"spellId":55342}}},"doAtValue":{"const":{"val":"-2s"}}}`,
+	// 	);
 
-		const berserking = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":26297}}}`,
-		);
-		const hyperspeedAcceleration = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":54758}}}`,
-		);
-		const combatPot = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}}`,
-		);
-		const evocation = APLAction.fromJsonString(
-			`{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"25%"}}}},"castSpell":{"spellId":{"spellId":12051}}}`,
-		);
+	// 	const berserking = APLAction.fromJsonString(
+	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":26297}}}`,
+	// 	);
+	// 	const hyperspeedAcceleration = APLAction.fromJsonString(
+	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":54758}}}`,
+	// 	);
+	// 	const combatPot = APLAction.fromJsonString(
+	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}}`,
+	// 	);
+	// 	const evocation = APLAction.fromJsonString(
+	// 		`{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"25%"}}}},"castSpell":{"spellId":{"spellId":12051}}}`,
+	// 	);
 
-		const deepFreeze = APLAction.fromJsonString(`{"condition":{"auraIsActive":{"auraId":{"spellId":44545}}},"castSpell":{"spellId":{"spellId":44572}}}`);
-		const frostfireBoltWithBrainFreeze = APLAction.fromJsonString(
-			`{"condition":{"auraIsActiveWithReactionTime":{"auraId":{"spellId":44549}}},"castSpell":{"spellId":{"spellId":47610}}}`,
-		);
-		const frostbolt = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":42842}}}`);
-		const iceLance = APLAction.fromJsonString(
-			`{"condition":{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":44545}}},"rhs":{"const":{"val":"1"}}}},"castSpell":{"spellId":{"spellId":42914}}}`,
-		);
+	// 	const deepFreeze = APLAction.fromJsonString(`{"condition":{"auraIsActive":{"auraId":{"spellId":44545}}},"castSpell":{"spellId":{"spellId":44572}}}`);
+	// 	const frostfireBoltWithBrainFreeze = APLAction.fromJsonString(
+	// 		`{"condition":{"auraIsActiveWithReactionTime":{"auraId":{"spellId":44549}}},"castSpell":{"spellId":{"spellId":47610}}}`,
+	// 	);
+	// 	const frostbolt = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":42842}}}`);
+	// 	const iceLance = APLAction.fromJsonString(
+	// 		`{"condition":{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":44545}}},"rhs":{"const":{"val":"1"}}}},"castSpell":{"spellId":{"spellId":42914}}}`,
+	// 	);
 
-		prepullActions.push(prepullMirrorImage);
+	// 	prepullActions.push(prepullMirrorImage);
 
-		actions.push(
-			...([
-				berserking,
-				hyperspeedAcceleration,
-				combatPot,
-				evocation,
-				deepFreeze,
-				frostfireBoltWithBrainFreeze,
-				simple.useIceLance ? iceLance : null,
-				frostbolt,
-			].filter(a => a) as Array<APLAction>),
-		);
+	// 	actions.push(
+	// 		...([
+	// 			berserking,
+	// 			hyperspeedAcceleration,
+	// 			combatPot,
+	// 			evocation,
+	// 			deepFreeze,
+	// 			frostfireBoltWithBrainFreeze,
+	// 			//simple.useIceLance ? iceLance : null,
+	// 			frostbolt,
+	// 		].filter(a => a) as Array<APLAction>),
+	// 	);
 
-		return APLRotation.create({
-			prepullActions: prepullActions,
-			priorityList: actions.map(action =>
-				APLListItem.create({
-					action: action,
-				}),
-			),
-		});
-	},
+	// 	return APLRotation.create({
+	// 		prepullActions: prepullActions,
+	// 		priorityList: actions.map(action =>
+	// 			APLListItem.create({
+	// 				action: action,
+	// 			}),
+	// 		),
+	// 	});
+	// },
 
 	raidSimPresets: [
 		{

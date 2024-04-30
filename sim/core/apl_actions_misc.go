@@ -153,11 +153,7 @@ func (action *APLActionItemSwap) Execute(sim *Simulation) {
 		action.character.Log(sim, "Item Swap to set %s", action.swapSet)
 	}
 
-	if action.swapSet == proto.APLActionItemSwap_Main {
-		action.character.ItemSwap.reset(sim)
-	} else {
-		action.character.ItemSwap.SwapItems(sim, action.character.ItemSwap.slots)
-	}
+	action.character.ItemSwap.SwapItems(sim, action.character.ItemSwap.slots)
 }
 func (action *APLActionItemSwap) String() string {
 	return fmt.Sprintf("Item Swap(%s)", action.swapSet)

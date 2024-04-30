@@ -54,7 +54,7 @@ func init() {
 // 			},
 // 			ArmorType: proto.ArmorType_ArmorTypeLeather,
 // 			RangedWeaponTypes: []proto.RangedWeaponType{
-// 				proto.RangedWeaponType_RangedWeaponTypeIdol,
+// 				proto.RangedWeaponType_RangedWeaponTypeRelic,
 // 			},
 // 		},
 // 	}))
@@ -94,6 +94,6 @@ func init() {
 // 	},
 // 	ArmorType: proto.ArmorType_ArmorTypeLeather,
 // 	RangedWeaponTypes: []proto.RangedWeaponType{
-// 		proto.RangedWeaponType_RangedWeaponTypeIdol,
+// 		proto.RangedWeaponType_RangedWeaponTypeRelic,
 // 	},
 // }

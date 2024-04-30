@@ -16,8 +16,10 @@
 
 			.character-stats-table-label,
 			.character-stats-table-value {
+				width: 50%;
 				padding-top: map-get($spacers, 2);
 				padding-bottom: map-get($spacers, 2);
+				line-height: 20px;
 			}
 
 			.character-stats-table-label {
@@ -29,12 +31,17 @@
 				padding-left: map-get($spacers, 2);
 				font-weight: bold;
 				text-align: right;
+
+				.stat-value-link-container {
+					display: inline-flex;
+					flex-direction: column;
+				}
 			}
 		}
 	}
 }
 
-.bonus-stats-popover {
+.tippy-box[data-theme='bonus-stats-popover'] {
 	.number-picker-root {
 		flex-direction: column;
 

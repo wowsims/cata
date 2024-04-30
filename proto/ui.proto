@@ -11,6 +11,7 @@ import "paladin.proto";
 // Holds all WoW data for the UI.
 message UIDatabase {
 	repeated UIItem items = 1;
+	repeated ItemRandomSuffix random_suffixes = 11;
 	repeated UIEnchant enchants = 2;
 	repeated UIGem gems = 3;
 	repeated PresetEncounter encounters = 6;
@@ -40,7 +41,7 @@ message UINPC {
 // Contains all information about an Item needed by the UI.
 // Generally this will include everything needed by the sim, plus some
 // additional data for displaying / filtering.
-// Next tag: 26.
+// Next tag: 28.
 message UIItem {
 	int32 id = 1;
 	string name = 2;
@@ -55,6 +56,7 @@ message UIItem {
 	repeated double stats = 9;
 	repeated GemColor gem_sockets = 10;
 	repeated double socketBonus = 11;
+	repeated int32 random_suffix_options = 26;
 
 	// Weapon stats, needed for computing proper EP for melee weapons
 	double weapon_damage_min = 12;
@@ -66,6 +68,7 @@ message UIItem {
 	ItemQuality quality = 17;
 	bool unique = 18;
 	bool heroic = 19;
+	int32 rand_prop_points = 27;
 
 	// Classes that are allowed to use the item. Empty indicates no special class restrictions.
 	repeated Class class_allowlist = 20;
@@ -105,12 +108,31 @@ enum DungeonDifficulty {
 	DifficultyRaid25H = 6;
 }
 
+enum RepLevel {
+	RepLevelUnknown 	= 0;
+	RepLevelHated 		= 1;
+	RepLevelHostile 	= 2;
+	RepLevelUnfriendly 	= 3;
+	RepLevelNeutral 	= 4;
+	RepLevelFriendly 	= 5;
+	RepLevelHonored 	= 6;
+	RepLevelRevered 	= 7;
+	RepLevelExalted 	= 8;
+}
+
+// TODO: Cata Rep Factions
+// Use the faction ID for the field index
+enum RepFaction {
+	RepFactionUnknown = 0;
+}
+
 message UIItemSource {
 	oneof source {
 		CraftedSource crafted = 1;
 		DropSource drop = 2;
 		QuestSource quest = 3;
 		SoldBySource sold_by = 4;
+		RepSource rep = 5;
 	}
 }
 message CraftedSource {
@@ -132,6 +154,11 @@ message SoldBySource {
 	int32 npc_id = 1;
 	string npc_name = 2;
 	int32 zone_id = 3;
+}
+message RepSource {
+	RepFaction rep_faction_id = 1;
+	RepLevel rep_level = 2;
+	Faction faction_id = 3;
 }
 
 message UIEnchant {
@@ -250,6 +277,7 @@ message SimSettings {
 	bool show_threat_metrics = 4;
 	bool show_healing_metrics = 7;
 	bool show_experimental = 5;
+	bool show_quick_swap = 12;
 	bool show_ep_values = 11;
 	string language = 9;
 	Faction faction = 6;
@@ -296,6 +324,7 @@ message SavedSettings {
 	bool in_front_of_target = 11;
 	double distance_from_target = 12;
 	HealingModel healing_model = 13;
+	double dark_intent_uptime = 19;
 }
 
 message SavedTalents {

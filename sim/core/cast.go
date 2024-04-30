@@ -47,11 +47,14 @@ type Cast struct {
 	// The amount of time between the call to spell.Cast() and when the spell
 	// effects are invoked.
 	CastTime time.Duration
+
+	// A dummy value to give 0gcd casts a non empty struct
+	NonEmpty bool
 }
 
 func (cast *Cast) EffectiveTime() time.Duration {
-	gcd := cast.GCD
-	if cast.GCD != 0 {
+	gcd := max(0, cast.GCD)
+	if cast.GCD > 0 {
 		// TODO: isn't this wrong for spells like shadowfury, that have a reduced GCD?
 		gcd = max(GCDMin, gcd)
 	}
@@ -99,7 +102,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		if !config.IgnoreHaste {
-			spell.CurCast.GCD = spell.Unit.ApplyCastSpeed(spell.CurCast.GCD)
+			spell.CurCast.GCD = max(0, spell.Unit.ApplyCastSpeed(spell.CurCast.GCD))
 			spell.CurCast.CastTime = spell.Unit.ApplyCastSpeedForSpell(spell.CurCast.CastTime, spell)
 		}
 
@@ -108,7 +111,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			if !spell.CD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on cooldown for %s, curTime = %s", spell.CD.TimeToReady(sim), sim.CurrentTime)
 			}
-			spell.CD.Set(sim.CurrentTime + spell.CurCast.CastTime + spell.CD.Duration)
+			spell.CD.Set(sim.CurrentTime + spell.CurCast.CastTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
 		}
 
 		if config.SharedCD.Timer != nil {
@@ -116,11 +119,11 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			if !spell.SharedCD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on shared cooldown for %s, curTime = %s", spell.SharedCD.TimeToReady(sim), sim.CurrentTime)
 			}
-			spell.SharedCD.Set(sim.CurrentTime + spell.CurCast.CastTime + spell.SharedCD.Duration)
+			spell.SharedCD.Set(sim.CurrentTime + spell.CurCast.CastTime + time.Duration(float64(spell.SharedCD.Duration)*spell.CdMultiplier))
 		}
 
 		// By panicking if spell is on CD, we force each sim to properly check for their own CDs.
-		if spell.CurCast.GCD != 0 && !spell.Unit.GCD.IsReady(sim) {
+		if spell.CurCast.GCD > 0 && !spell.Unit.GCD.IsReady(sim) {
 			return spell.castFailureHelper(sim, "GCD on cooldown for %s, curTime = %s", spell.Unit.GCD.TimeToReady(sim), sim.CurrentTime)
 		}
 
@@ -161,10 +164,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 				Target: target,
 			}
 
-			if spell.Unit.Hardcast.Expires != spell.Unit.NextGCDAt() {
-				spell.Unit.newHardcastAction(sim)
-			}
-
+			spell.Unit.newHardcastAction(sim)
 			return true
 		}
 
@@ -202,7 +202,7 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 				return spell.castFailureHelper(sim, "still on cooldown for %s, curTime = %s", spell.CD.TimeToReady(sim), sim.CurrentTime)
 			}
 
-			spell.CD.Set(sim.CurrentTime + spell.CD.Duration)
+			spell.CD.Set(sim.CurrentTime + time.Duration(float64(spell.CD.Duration)*spell.CdMultiplier))
 		}
 
 		if spell.SharedCD.Timer != nil {
@@ -211,7 +211,7 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 				return spell.castFailureHelper(sim, "still on shared cooldown for %s, curTime = %s", spell.SharedCD.TimeToReady(sim), sim.CurrentTime)
 			}
 
-			spell.SharedCD.Set(sim.CurrentTime + spell.SharedCD.Duration)
+			spell.SharedCD.Set(sim.CurrentTime + time.Duration(float64(spell.SharedCD.Duration)*spell.CdMultiplier))
 		}
 
 		if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {

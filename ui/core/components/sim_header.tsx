@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy, { ReferenceElement as TippyReferenceElement } from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element } from 'tsx-vanilla';
 
@@ -23,7 +23,7 @@ export class SimHeader extends Component {
 
 	private simTabsContainer: HTMLElement;
 	private simToolbar: HTMLElement;
-	private knownIssuesLink: HTMLElement;
+	private knownIssuesLink: TippyReferenceElement<HTMLElement>;
 	private knownIssuesContent: HTMLElement;
 
 	constructor(parentElem: HTMLElement, simUI: SimUI) {
@@ -131,29 +131,28 @@ export class SimHeader extends Component {
 		}
 
 		if (args.tooltip) {
-			new Tooltip(link, {
+			tippy(link, {
+				content: args.tooltip,
 				placement: 'bottom',
-				title: args.tooltip,
-				html: true,
 			});
 		}
 
 		return args.parent.appendChild(item) as HTMLElement;
 	}
 
-	private addKnownIssuesLink(): HTMLElement {
+	private addKnownIssuesLink() {
 		return this.addToolbarLink({
 			parent: this.simToolbar,
 			text: 'Known Issues',
 			tooltip: this.knownIssuesContent,
 			classes: 'known-issues link-danger hide',
-		}).children[0] as HTMLElement;
+		}).children[0] as TippyReferenceElement<HTMLElement>;
 	}
 
 	addKnownIssue(issue: string) {
 		this.knownIssuesContent.appendChild(<li>{issue}</li>);
 		this.knownIssuesLink.classList.remove('hide');
-		Tooltip.getInstance(this.knownIssuesLink)?.setContent({ '.tooltip-inner': this.knownIssuesContent });
+		this.knownIssuesLink._tippy?.setContent(this.knownIssuesContent);
 	}
 
 	private addBugReportLink() {

@@ -1,26 +1,42 @@
 $dps-color: #ed5653;
 $threat-color: #b56d07;
 
-.threat .series-color, .threat.series-color {
+.threat .series-color,
+.threat.series-color {
 	color: $threat-color;
 }
-.health .series-color, .health.series-color {
+.health .series-color,
+.health.series-color {
 	color: $health-color;
 }
-.mana .series-color, .mana.series-color {
+.mana .series-color,
+.mana.series-color {
 	color: $mana-color;
 }
-.energy .series-color, .energy.series-color {
+.energy .series-color,
+.energy.series-color {
 	color: $energy-color;
 }
-.rage .series-color, .rage.series-color {
+.rage .series-color,
+.rage.series-color {
 	color: $rage-color;
 }
-.focus .series-color, .focus.series-color {
+.focus .series-color,
+.focus.series-color {
 	color: $focus-color;
 }
-.combo-points .series-color, .combo-points.series-color {
+.combo-points .series-color,
+.combo-points.series-color {
 	color: $combo-points-color;
+}
+.solar-energy .series-color,
+.solar-energy.series-color {
+	color: $solar-energy-color;
+}
+
+.lunar-energy .series-color,
+.lunar-energy.series-color {
+	color: $lunar-energy-color;
 }
 
 .timeline-root {
@@ -66,12 +82,6 @@ $threat-color: #b56d07;
 	}
 }
 
-.timeline-tooltip {
-	text-align: start;
-	background: $tooltip-bg;
-	padding: $tooltip-padding-y $tooltip-padding-x;
-}
-
 .timeline-tooltip-header {
 	border-bottom: 1px solid white;
 	margin-bottom: 5px;
@@ -105,7 +115,7 @@ $threat-color: #b56d07;
 }
 .rotation-row {
 	height: 28px;
-	margin: .25rem;
+	margin: 0.25rem;
 }
 .rotation-labels {
 	display: inline-block;
@@ -140,7 +150,8 @@ $threat-color: #b56d07;
 .rotation-label-text {
 	margin: 2px;
 }
-.rotation-label-header, .rotation-timeline-header {
+.rotation-label-header,
+.rotation-timeline-header {
 	height: 30px;
 }
 .rotation-timeline {
@@ -167,23 +178,34 @@ $threat-color: #b56d07;
 	left: 0;
 	width: 10px;
 	&.focus {
-		background-color: #FF8040;
+		background-color: #ff8040;
 	}
 
 	&.energy {
 		background-color: yellow;
 	}
+
+	&.lunar-energy {
+		background-color: $lunar-energy-color;
+		width: 24px;
+	}
+
+	&.solar-energy {
+		background-color: $solar-energy-color;
+		top: 0;
+		width: 24px;
+	}
 }
 .rotation-timeline-cast {
 	position: absolute;
-	background-color: #e5cc80;
+	background-color: rgb(229, 204, 128, 0.7);
 	z-index: 1;
 	display: flex;
 }
 .rotation-timeline-travel-time {
 	position: absolute;
 	height: 24px;
-	background-color: #f9c0ff;
+	background-color: rgb(249, 192, 255, 0.6);
 }
 .rotation-timeline-tick {
 	position: absolute;
@@ -195,7 +217,7 @@ $threat-color: #b56d07;
 }
 .rotation-timeline-aura {
 	position: absolute;
-	background-color: blue;
+	background-color: rgba(0, 0, 255, 0.52);
 	opacity: 0.5;
 	height: 20px;
 	top: 2px;
@@ -221,7 +243,7 @@ $threat-color: #b56d07;
 	@include wowhead-background-icon;
 	height: 24px;
 	width: 24px;
-	border: 1px solid grey;
+	border-bottom: 3px solid grey;
 }
 .rotation-timeline-cast.outcome-miss .rotation-timeline-cast-icon {
 	border-color: red;

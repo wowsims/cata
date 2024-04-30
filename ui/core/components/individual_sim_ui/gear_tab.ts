@@ -4,10 +4,11 @@ import { EquipmentSpec, UnitStats } from '../../proto/common';
 import { SavedGearSet } from '../../proto/ui';
 import { Stats } from '../../proto_utils/stats';
 import { EventID, TypedEvent } from '../../typed_event';
-import { GearPicker } from '../gear_picker';
+import { GearPicker } from '../gear_picker/gear_picker';
 import { SavedDataManager } from '../saved_data_manager';
 import { SimTab } from '../sim_tab';
 import { GemSummary } from './gem_summary';
+import { ReforgeSummary } from './reforge_summary';
 
 export class GearTab extends SimTab {
 	protected simUI: IndividualSimUI<any>;
@@ -33,16 +34,21 @@ export class GearTab extends SimTab {
 
 	protected buildTabContent() {
 		this.buildGearPickers();
-		this.buildGemSummary();
+		this.buildSummaryTablesContainer();
 		this.buildSavedGearsetPicker();
+	}
+
+	private buildSummaryTablesContainer() {
+		const container = document.createElement('div');
+		container.classList.add('summary-tables-container');
+		this.leftPanel.appendChild(container);
+
+		new GemSummary(container, this.simUI, this.simUI.player);
+		new ReforgeSummary(container, this.simUI, this.simUI.player);
 	}
 
 	private buildGearPickers() {
 		new GearPicker(this.leftPanel, this.simUI, this.simUI.player);
-	}
-
-	private buildGemSummary() {
-		new GemSummary(this.leftPanel, this.simUI, this.simUI.player);
 	}
 
 	private buildSavedGearsetPicker() {

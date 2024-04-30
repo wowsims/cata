@@ -14,10 +14,11 @@ func init() {
 	WITH_DB = true
 
 	simDB := &proto.SimDatabase{
-		Items:        make([]*proto.SimItem, len(db.Items)),
-		Enchants:     make([]*proto.SimEnchant, len(db.Enchants)),
-		Gems:         make([]*proto.SimGem, len(db.Gems)),
-		ReforgeStats: make([]*proto.ReforgeStat, len(db.ReforgeStats)),
+		Items:          make([]*proto.SimItem, len(db.Items)),
+		Enchants:       make([]*proto.SimEnchant, len(db.Enchants)),
+		Gems:           make([]*proto.SimGem, len(db.Gems)),
+		ReforgeStats:   make([]*proto.ReforgeStat, len(db.ReforgeStats)),
+		RandomSuffixes: make([]*proto.ItemRandomSuffix, len(db.RandomSuffixes)),
 	}
 
 	for i, item := range db.Items {
@@ -36,6 +37,15 @@ func init() {
 			WeaponDamageMax:  item.WeaponDamageMax,
 			WeaponSpeed:      item.WeaponSpeed,
 			SetName:          item.SetName,
+			RandPropPoints:   item.RandPropPoints,
+		}
+	}
+
+	for i, suffix := range db.RandomSuffixes {
+		simDB.RandomSuffixes[i] = &proto.ItemRandomSuffix{
+			Id:    suffix.Id,
+			Name:  suffix.Name,
+			Stats: suffix.Stats,
 		}
 	}
 

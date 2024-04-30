@@ -18,7 +18,6 @@ import {
 	RotationType,
 	Spec,
 	Stat,
-	TristateEffect,
 } from '../../core/proto/common';
 import { HunterStingType, MarksmanshipHunter_Rotation } from '../../core/proto/hunter';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
@@ -43,8 +42,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
 		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatRangedDps],
 	// Reference stat against which to calculate EP.
@@ -54,13 +53,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		Stat.StatHealth,
 		Stat.StatStamina,
 		Stat.StatAgility,
-		Stat.StatIntellect,
 		Stat.StatRangedAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatMP5,
+		Stat.StatMastery,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecMarksmanshipHunter>) => {
 		let stats = new Stats();
@@ -84,7 +81,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.MM_P4_PRESET.gear,
+		gear: Presets.MM_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -95,12 +92,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 				[Stat.StatMeleeHit]: 2,
 				[Stat.StatMeleeCrit]: 1.5,
 				[Stat.StatMeleeHaste]: 1.39,
-				[Stat.StatArmorPenetration]: 1.32,
 			},
 			{
 				[PseudoStat.PseudoStatRangedDps]: 6.32,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -110,31 +107,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
-			powerWordFortitude: TristateEffect.TristateEffectImproved,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
 			bloodlust: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
-			windfuryTotem: TristateEffect.TristateEffectImproved,
-			battleShout: TristateEffect.TristateEffectImproved,
-			leaderOfThePack: TristateEffect.TristateEffectImproved,
-			sanctifiedRetribution: true,
-			unleashedRage: true,
-			moonkinAura: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
+			icyTalons: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfWisdom: 2,
-			blessingOfMight: 2,
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
 			sunderArmor: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
-			judgementOfWisdom: true,
+			faerieFire: true,
 			curseOfElements: true,
-			heartOfTheCrusader: true,
 			savageCombat: true,
+			bloodFrenzy: true,
 		}),
 	},
 
@@ -148,20 +144,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [HunterInputs.PetUptime(), HunterInputs.TimeToTrapWeaveMs(), OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [
+			HunterInputs.PetUptime(),
+			HunterInputs.TimeToTrapWeaveMs(),
+			OtherInputs.InputDelay,
+			OtherInputs.TankAssignment,
+			OtherInputs.InFrontOfTarget,
+			OtherInputs.DarkIntentUptime,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
-		showExecuteProportion: false,
+		showExecuteProportion: true,
 	},
 
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.MarksmanTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_MM, Presets.ROTATION_PRESET_MM_ADVANCED, Presets.ROTATION_PRESET_AOE],
+		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_MM, Presets.ROTATION_PRESET_MM_ADVANCED],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.MM_PRERAID_PRESET, Presets.MM_P1_PRESET, Presets.MM_P2_PRESET, Presets.MM_P3_PRESET, Presets.MM_P4_PRESET, Presets.MM_P5_PRESET],
+		gear: [Presets.MM_PRERAID_PRESET, Presets.MM_P1_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecMarksmanshipHunter>): APLRotation => {
@@ -253,17 +256,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.MM_P1_PRESET.gear,
-					2: Presets.MM_P2_PRESET.gear,
-					3: Presets.MM_P3_PRESET.gear,
-					4: Presets.MM_P4_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.MM_P1_PRESET.gear,
-					2: Presets.MM_P2_PRESET.gear,
-					3: Presets.MM_P3_PRESET.gear,
-					4: Presets.MM_P4_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });

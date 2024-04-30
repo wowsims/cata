@@ -1,5 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -16,7 +16,6 @@ import {
 	Spec,
 	Stat,
 	TristateEffect,
-	WeaponType,
 } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { Stats } from '../../core/proto_utils/stats';
@@ -163,7 +162,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatExpertise,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
@@ -181,13 +180,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		Stat.StatMeleeCrit,
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
+		Stat.StatMastery,
 		Stat.StatExpertise,
 	],
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PRERAID_PRESET_ASSASSINATION.gear,
+		gear: Presets.P1_PRESET_ASSASSINATION.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -199,7 +198,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 				[Stat.StatMeleeHit]: 1.39,
 				[Stat.StatMeleeCrit]: 1.32,
 				[Stat.StatMeleeHaste]: 1.48,
-				[Stat.StatArmorPenetration]: 0.84,
+				[Stat.StatMastery]: 0.84,
 				[Stat.StatExpertise]: 0.98,
 			},
 			{
@@ -210,34 +209,35 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.AssassinationTalents137.data,
+		talents: Presets.AssassinationTalentsDefault.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			arcaneBrilliance: true,
 			bloodlust: true,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
 			icyTalons: true,
-			leaderOfThePack: TristateEffect.TristateEffectImproved,
-			abominationsMight: true,
-			swiftRetribution: true,
-			elementalOath: true,
-			sanctifiedRetribution: true,
+			moonkinForm: true,
+			leaderOfThePack: true,
+			powerWordFortitude: true,
+			strengthOfEarthTotem: true,
+			trueshotAura: true,
+			wrathOfAirTotem: true,
+			demonicPact: true,
+			blessingOfKings: true,
+			blessingOfMight: true,
+			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
 		debuffs: Debuffs.create({
-			heartOfTheCrusader: true,
 			mangle: true,
 			sunderArmor: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
-			shadowMastery: true,
 			earthAndMoon: true,
 			bloodFrenzy: true,
+			shadowAndFlame: true,
 		}),
 	},
 
@@ -245,13 +245,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		inputs: [RogueInputs.ApplyPoisonsManually()],
 	},
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [RogueInputs.MainHandImbue(), RogueInputs.OffHandImbue()],
+	playerIconInputs: [RogueInputs.MainHandImbue(), RogueInputs.OffHandImbue(), RogueInputs.ThrownImbue()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellCritBuff,
+		BuffDebuffInputs.CritBuff,
 		BuffDebuffInputs.SpellCritDebuff,
-		BuffDebuffInputs.SpellHitDebuff,
 		BuffDebuffInputs.SpellDamageDebuff,
+		BuffDebuffInputs.MajorArmorDebuff,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
@@ -262,6 +262,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			// RogueInputs.AssumeBleedActive(),
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
+			OtherInputs.InputDelay,
 		],
 	},
 	encounterPicker: {
@@ -271,39 +272,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.AssassinationTalents137, Presets.AssassinationTalents182, Presets.AssassinationTalentsBF],
+		talents: [Presets.AssassinationTalentsDefault],
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			Presets.ROTATION_PRESET_MUTILATE,
-			Presets.ROTATION_PRESET_MUTILATE_EXPOSE,
-			Presets.ROTATION_PRESET_RUPTURE_MUTILATE,
-			Presets.ROTATION_PRESET_RUPTURE_MUTILATE_EXPOSE,
-			Presets.ROTATION_PRESET_AOE,
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.PRERAID_PRESET_ASSASSINATION,
 			Presets.P1_PRESET_ASSASSINATION,
-			Presets.P2_PRESET_ASSASSINATION,
-			Presets.P3_PRESET_ASSASSINATION,
-			Presets.P4_PRESET_ASSASSINATION,
-			Presets.P5_PRESET_ASSASSINATION,
 		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecAssassinationRogue>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets >= 5) {
-			return Presets.ROTATION_PRESET_AOE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_MUTILATE.rotation.rotation!;
 		} else {
-			return Presets.ROTATION_PRESET_MUTILATE_EXPOSE.rotation.rotation!;
+			return Presets.ROTATION_PRESET_MUTILATE.rotation.rotation!;
 		}
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecAssassinationRogue,
-			talents: Presets.AssassinationTalents137.data,
+			talents: Presets.AssassinationTalentsDefault.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -315,15 +307,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.P1_PRESET_ASSASSINATION.gear,
-					2: Presets.P2_PRESET_ASSASSINATION.gear,
-					3: Presets.P3_PRESET_ASSASSINATION.gear,
-					4: Presets.P4_PRESET_ASSASSINATION.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.P1_PRESET_ASSASSINATION.gear,
-					2: Presets.P2_PRESET_ASSASSINATION.gear,
-					3: Presets.P3_PRESET_ASSASSINATION.gear,
-					4: Presets.P4_PRESET_ASSASSINATION.gear,
 				},
 			},
 		},

@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
@@ -121,8 +121,6 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 		this.trees.forEach(tree => tree.talents.forEach(talent => talent.setPoints(0, false)));
 
 		if (!this.isHunterPet()) {
-			this.disableSecondaryPlayerTrees();
-
 			let carouselitemIdx = 0;
 			const slidePrev = () => {
 				if (carouselitemIdx >= 1) return;
@@ -148,6 +146,7 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 		}
 
 		this.init();
+		this.updatePlayerTrees();
 	}
 
 	getInputElem(): HTMLElement {
@@ -165,18 +164,6 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 		const parts = newValue.split('-');
 		this.trees.forEach((tree, idx) => tree.setTalentsString(parts[idx] || ''));
 		this.updateTrees();
-
-		// Disable other player trees if the first tree is not filled to 31 points
-		if (this.isPlayer()) {
-			const pointsSpent = getTalentTreePoints(newValue)[this.modObject.getTalentTree()];
-
-			// trying to use the bare minimum number of updates. 0 covers resetting the tree, -1 removing the 31st point
-			if (pointsSpent == 0 || pointsSpent == PLAYER_TREES_UNLOCK_POINT_THRESHOLD - 1) {
-				this.disableSecondaryPlayerTrees();
-			} else if (pointsSpent == PLAYER_TREES_UNLOCK_POINT_THRESHOLD) {
-				this.enableSecondaryPlayerTrees();
-			}
-		}
 	}
 
 	updateTrees() {
@@ -186,6 +173,9 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 			this.rootElem.classList.remove('talents-full');
 		}
 		this.trees.forEach(tree => tree.update());
+
+		// Disable other player trees if the first tree is not filled to 31 points
+		this.updatePlayerTrees();
 	}
 
 	get numPoints() {
@@ -211,16 +201,24 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 		return !this.isPlayer();
 	}
 
-	private disableSecondaryPlayerTrees() {
-		const specNumber = this.modObject.getTalentTree();
-		[0, 1, 2]
-			.filter(i => ![specNumber].includes(i))
-			.forEach(i => {
-				this.trees[i].rootElem.classList.add('disabled');
-				this.trees[i].resetPoints();
-			});
+	private updatePlayerTrees() {
+		if (this.isPlayer()) {
+			const specNumber = this.modObject.getPlayerSpec().specIndex;
+			const pointsSpent = this.trees[specNumber].numPoints;
 
-		this.trees;
+			if (pointsSpent < PLAYER_TREES_UNLOCK_POINT_THRESHOLD) {
+				[0, 1, 2].forEach(i => {
+					if (![specNumber].includes(i)) {
+						this.trees[i].rootElem.classList.add('disabled');
+						this.trees[i].resetPoints();
+					} else {
+						this.trees[i].rootElem.classList.remove('disabled');
+					}
+				});
+			} else {
+				this.enableSecondaryPlayerTrees();
+			}
+		}
 	}
 
 	private enableSecondaryPlayerTrees() {
@@ -244,7 +242,7 @@ class TalentTreePicker<TalentsProto> extends Component {
 		this.config = config;
 		this.numPoints = 0;
 		this.picker = picker;
-		
+
 		this.rootElem.appendChild(
 			<>
 				<div className="talent-tree-header">
@@ -301,7 +299,7 @@ class TalentTreePicker<TalentsProto> extends Component {
 			recurseCalcIdx(t, 20);
 		}
 		const resetBtn = this.rootElem.querySelector('.talent-tree-reset') as HTMLElement;
-		new Tooltip(resetBtn, { title: 'Reset talent points' });
+		tippy(resetBtn, { content: 'Reset talent points' });
 		resetBtn.addEventListener('click', _event => this.resetPoints());
 	}
 

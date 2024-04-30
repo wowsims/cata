@@ -31,7 +31,89 @@ $favorite-cell-width: 2rem;
 	.gear-picker-right {
 		.item-picker-root {
 			flex-direction: row-reverse;
-			text-align: right;
+
+			.item-picker-labels-container {
+				align-items: flex-end;
+			}
+		}
+	}
+}
+
+.item-picker-root {
+	display: flex;
+
+	&:not(:last-child) {
+		margin-bottom: $block-spacer;
+	}
+
+	.item-picker-icon-wrapper {
+		position: relative;
+		width: 4rem;
+		height: 4rem;
+		border: $border-default;
+	}
+
+	.item-picker-icon {
+		@include wowhead-background-icon;
+		height: 100%;
+		width: 100%;
+	}
+
+	.item-picker-sockets-container {
+		@include vertical-bottom;
+		@include horizontal-center;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+
+	.item-picker-labels-container {
+		padding: map-get($spacers, 2);
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+
+		.item-picker-name {
+			color: white;
+			font-size: map-get($font-sizes, 6);
+			letter-spacing: normal;
+		}
+		.item-picker-reforge {
+			color: $item-quality-uncommon;
+			font-size: $content-font-size;
+			letter-spacing: normal;
+		}
+		.item-picker-enchant {
+			color: $item-quality-uncommon;
+			font-size: $content-font-size;
+			letter-spacing: normal;
+		}
+	}
+}
+
+@include media-breakpoint-down(xl) {
+	.gear-picker-right {
+		margin-bottom: 2 * map.get($spacers, 3);
+	}
+}
+
+@include media-breakpoint-down(md) {
+	.gear-picker-root {
+		.gear-picker-left {
+			.item-picker-root:last-child {
+				margin-bottom: map.get($spacers, 5);
+			}
+		}
+
+		.gear-picker-right {
+			.item-picker-root {
+				flex-direction: row;
+
+				.item-picker-labels-container {
+					align-items: flex-start;
+				}
+			}
 		}
 	}
 }
@@ -61,91 +143,6 @@ $favorite-cell-width: 2rem;
 
 				.gem-socket-container {
 					--gem-width: 2rem;
-				}
-			}
-		}
-	}
-}
-
-.item-picker-root {
-	display: flex;
-
-	&:not(:last-child) {
-		margin-bottom: $block-spacer;
-	}
-
-	.item-picker-icon {
-		@include wowhead-background-icon;
-		width: 4rem;
-		height: 4rem;
-		border: $border-default;
-
-		.item-picker-sockets-container {
-			@include vertical-bottom;
-			@include horizontal-center;
-			width: 100%;
-			display: flex;
-			justify-content: center;
-		}
-	}
-
-	.item-picker-labels-container {
-		padding: map-get($spacers, 2);
-		flex: 1;
-
-		.item-picker-name {
-			color: white;
-			font-size: map-get($font-sizes, 6);
-			letter-spacing: normal;
-		}
-
-		.item-picker-enchant {
-			color: $item-quality-uncommon;
-			font-size: $content-font-size;
-			letter-spacing: normal;
-		}
-	}
-}
-
-@include media-breakpoint-down(md) {
-	.gear-picker-root {
-		flex-direction: column;
-
-		.gear-picker-left,
-		.gear-picker-right {
-			width: 100%;
-			margin-right: 0;
-		}
-
-		.gear-picker-right {
-			.item-picker-root {
-				flex-direction: row;
-				text-align: left;
-			}
-		}
-	}
-}
-
-@include media-breakpoint-down(xl) {
-	.gear-picker-root {
-		.gear-picker-left {
-			.item-picker-root {
-				// Increase the spacing to help separate the weapons/bonus item slots
-				&:nth-child(6) {
-					margin-bottom: calc($container-padding * 2);
-				}
-			}
-		}
-	}
-}
-
-@include media-breakpoint-down(md) {
-	.gear-picker-root {
-		.gear-picker-left {
-			.item-picker-root {
-				// Increase the spacing to help separate the weapons/bonus item slots
-				&:last-child {
-					margin-bottom: calc($container-padding * 2);
 				}
 			}
 		}
@@ -197,6 +194,7 @@ $favorite-cell-width: 2rem;
 	margin-right: map-get($spacers, 3);
 	margin-bottom: map-get($spacers, 2);
 	font-size: 1.125rem;
+	justify-content: space-between; // Ensures labels are evenly spaced
 
 	label {
 		font-weight: normal;
@@ -210,7 +208,10 @@ $favorite-cell-width: 2rem;
 		width: $source-cell-width;
 		margin-left: map-get($spacers, 3);
 	}
-
+	.reforge-label {
+		flex-grow: 1; // Allows it to stay centered by taking more space
+		justify-content: center; // Centers the content inside the label
+	}
 	.ep-label {
 		width: $ep-cell-width;
 		margin-left: map-get($spacers, 3);
@@ -264,7 +265,38 @@ $favorite-cell-width: 2rem;
 			outline: 2px solid $success;
 		}
 	}
+	&.reforge {
+		display: flex;
+		justify-content: space-between; /* Adjusts children to start and end */
+		width: 100%; /* Ensure it fills its container */
+		color: green;
 
+		.loss,
+		.gain {
+			flex-shrink: 0; /* Prevents shrinking */
+		}
+
+		.loss {
+			color: red;
+		}
+
+		.gain {
+			margin-left: 5px;
+			color: green;
+		}
+
+		.ep {
+			margin-left: auto; /* Pushes the EP to the far right */
+			padding-left: 20px; /* Ensures some space between it and any preceding content */
+			color: blue; /* Example color */
+		}
+	}
+
+	&.reforge.selected {
+		// Style for the selected reforge item
+		opacity: 1; // Reset opacity to full for visibility
+		border: 1px solid #f0f0f0; // Off-white border
+	}
 	.selector-modal-list-item-link {
 		display: flex;
 		align-items: center;

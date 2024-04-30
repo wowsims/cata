@@ -5,21 +5,25 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/hunter"
 )
 
-func (hunter *MarksmanshipHunter) registerChimeraShotSpell() {
-	if !hunter.Talents.ChimeraShot {
+func (mmHunter *MarksmanshipHunter) registerChimeraShotSpell() {
+	if !mmHunter.Talents.ChimeraShot {
 		return
 	}
 
-	hunter.ChimeraShot = hunter.RegisterSpell(core.SpellConfig{
+	mmHunter.ChimeraShot = mmHunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 53209},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+
+		ClassSpellMask: hunter.HunterSpellChimeraShot,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		MissileSpeed:   40,
 
 		FocusCost: core.FocusCostOptions{
-			Cost: 50 - (float64(hunter.Talents.Efficiency) * 2),
+			Cost: 50,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -27,26 +31,29 @@ func (hunter *MarksmanshipHunter) registerChimeraShotSpell() {
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
-				Timer:    hunter.NewTimer(),
-				Duration: time.Second*10 - core.TernaryDuration(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfChimeraShot), time.Second*1, 0),
+				Timer:    mmHunter.NewTimer(),
+				Duration: time.Second*10 - core.TernaryDuration(mmHunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfChimeraShot), time.Second*1, 0),
 			},
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   hunter.CritMultiplier(true, true, false),
+		CritMultiplier:   mmHunter.CritMultiplier(true, true, false),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			wepDmg := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
-			baseDamage := 0.732*spell.RangedAttackPower(target) + 1620
+			wepDmg := mmHunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
+			baseDamage := 0.732*spell.RangedAttackPower(target) + 1620.33
 
 			result := spell.CalcDamage(sim, target, wepDmg+baseDamage, spell.OutcomeRangedHitAndCrit)
-			if result.Landed() {
-				if hunter.SerpentSting.Dot(target).IsActive() {
-					hunter.SerpentSting.Dot(target).Rollover(sim)
+
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				if result.Landed() {
+					if mmHunter.SerpentSting.Dot(target).IsActive() {
+						mmHunter.SerpentSting.Dot(target).Rollover(sim)
+					}
 				}
-			}
-			spell.DealDamage(sim, result)
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }

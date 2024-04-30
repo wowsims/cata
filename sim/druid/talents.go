@@ -1,5 +1,23 @@
 package druid
 
+import (
+	"time"
+
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
+)
+
+func (druid *Druid) RazorClawsMultiplier(masteryRating float64) float64 {
+	razorClawsMulti := 1.0
+
+	if druid.Spec == proto.Spec_SpecFeralDruid {
+		razorClawsMulti += 0.25 + 0.03125*core.MasteryRatingToMasteryPoints(masteryRating)
+	}
+
+	return razorClawsMulti
+}
+
 func (druid *Druid) ThickHideMultiplier() float64 {
 	thickHideMulti := 1.0
 
@@ -10,58 +28,35 @@ func (druid *Druid) ThickHideMultiplier() float64 {
 	return thickHideMulti
 }
 
-// func (druid *Druid) BearArmorMultiplier() float64 {
-// 	sotfMulti := 1.0 + 0.33/3.0*float64(druid.Talents.SurvivalOfTheFittest)
-// 	return 4.7 * sotfMulti
-// }
+func (druid *Druid) BearArmorMultiplier() float64 {
+	thickHideBearMulti := 1.0 + 0.26*float64(druid.Talents.ThickHide) // This is a bear-specific multiplier that stacks with the generic multiplier calculated above.
+	return 2.2 * thickHideBearMulti
+}
 
 func (druid *Druid) ApplyTalents() {
-	// druid.AddStat(stats.SpellHit, float64(druid.Talents.BalanceOfPower)*2*core.SpellHitRatingPerHitChance)
-	// druid.AddStat(stats.SpellCrit, float64(druid.Talents.NaturalPerfection)*1*core.CritRatingPerCritChance)
-	// druid.PseudoStats.CastSpeedMultiplier *= 1 + (float64(druid.Talents.CelestialFocus) * 0.01)
-	// druid.PseudoStats.DamageDealtMultiplier *= 1 + (float64(druid.Talents.EarthAndMoon) * 0.02)
-	// druid.PseudoStats.SpiritRegenRateCasting = float64(druid.Talents.Intensity) * (0.5 / 3)
-	// druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(druid.Talents.Naturalist)
-	// druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
-
-	// if druid.Talents.LunarGuidance > 0 {
-	// 	bonus := 0.04 * float64(druid.Talents.LunarGuidance)
-	// 	druid.AddStatDependency(stats.Intellect, stats.SpellPower, bonus)
-	// }
+	druid.MultiplyStat(stats.Mana, 1.0+0.05*float64(druid.Talents.Furor))
+	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
+	druid.PseudoStats.ReducedCritTakenChance += 0.02 * float64(druid.Talents.ThickHide)
 
 	// if druid.Talents.Dreamstate > 0 {
 	// 	bonus := 0.04 * float64(druid.Talents.Dreamstate)
 	// 	druid.AddStatDependency(stats.Intellect, stats.MP5, bonus)
 	// }
 
-	// if druid.Talents.HeartOfTheWild > 0 {
-	// 	bonus := 0.04 * float64(druid.Talents.HeartOfTheWild)
-	// 	druid.MultiplyStat(stats.Intellect, 1.0+bonus)
-	// }
+	if druid.Talents.HeartOfTheWild > 0 {
+		bonus := 0.02 * float64(druid.Talents.HeartOfTheWild)
+		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
+	}
 
-	// if druid.Talents.ImprovedFaerieFire > 0 && druid.CurrentTarget.HasAuraWithTag(core.FaerieFireAuraTag) {
-	// 	druid.AddStat(stats.SpellCrit, float64(druid.Talents.ImprovedFaerieFire)*1*core.CritRatingPerCritChance)
-	// }
-
-	// if druid.Talents.SurvivalOfTheFittest > 0 {
-	// 	bonus := 0.02 * float64(druid.Talents.SurvivalOfTheFittest)
-	// 	druid.MultiplyStat(stats.Stamina, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Strength, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Agility, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Intellect, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Spirit, 1.0+bonus)
-	// 	druid.PseudoStats.ReducedCritTakenChance += 0.02 * float64(druid.Talents.SurvivalOfTheFittest)
-	// }
-
-	// if druid.Talents.ImprovedMarkOfTheWild > 0 {
-	// 	bonus := 0.01 * float64(druid.Talents.ImprovedMarkOfTheWild)
-	// 	druid.MultiplyStat(stats.Stamina, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Strength, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Agility, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Intellect, 1.0+bonus)
-	// 	druid.MultiplyStat(stats.Spirit, 1.0+bonus)
-	// }
-
+	// Balance
+	druid.applyNaturesGrace()
+	druid.applyStarlightWrath()
+	druid.applyBalanceOfPower()
+	druid.applyNaturesMajesty()
+	druid.applyMoonglow()
+	druid.applyGenesis()
+	druid.applyGaleWinds()
+	druid.applyEarthAndMoon()
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.AddStat(stats.Expertise, 5.0*float64(druid.Talents.PrimalPrecision)*core.ExpertisePerQuarterPercentReduction)
 	// }
@@ -71,55 +66,148 @@ func (druid *Druid) ApplyTalents() {
 	// 	druid.MultiplyStat(stats.Spirit, 1.0+bonus)
 	// }
 
+	if druid.Talents.Perseverance > 0 {
+		multiplier := 1.0 - 0.02*float64(druid.Talents.Perseverance)
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= multiplier
+		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= multiplier
+	}
+
 	// druid.setupNaturesGrace()
 	// druid.registerNaturesSwiftnessCD()
 	// druid.applyEarthAndMoon()
 	// druid.applyMoonkinForm()
-	// druid.applyPrimalFury()
-	// druid.applyOmenOfClarity()
+	druid.applyPrimalFury()
 	// druid.applyEclipse()
-	// druid.applyImprovedLotp()
+	druid.applyLotp()
 	// druid.applyPredatoryInstincts()
-	// druid.applyNaturalReaction()
+	druid.applyNaturalReaction()
 	// druid.applyOwlkinFrenzy()
 	// druid.applyInfectedWounds()
+	druid.applyFurySwipes()
+	druid.applyPrimalMadness()
 }
 
-// func (druid *Druid) setupNaturesGrace() {
-// 	if druid.Talents.NaturesGrace == 0 {
-// 		return
-// 	}
+func (druid *Druid) applyNaturesGrace() {
+	if druid.Talents.NaturesGrace == 0 {
+		return
+	}
 
-// 	druid.NaturesGraceProcAura = druid.RegisterAura(core.Aura{
-// 		Label:    "Natures Grace Proc",
-// 		ActionID: core.ActionID{SpellID: 16886},
-// 		Duration: time.Second * 3,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			druid.MultiplyCastSpeed(1.2)
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			druid.MultiplyCastSpeed(1 / 1.2)
-// 		},
-// 	})
+	ngAuraSpellId := []int32{0, 16880, 61345, 61345}[druid.Talents.NaturesGrace]
+	ngAuraSpellHastePct := []float64{0, 0.05, 0.1, 0.15}[druid.Talents.NaturesGrace]
 
-// 	procChance := []float64{0, .33, .66, 1}[druid.Talents.NaturesGrace]
+	ngAura := druid.RegisterAura(core.Aura{
+		Label:    "Natures Grace Proc",
+		ActionID: core.ActionID{SpellID: ngAuraSpellId},
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MultiplyCastSpeed(1 + ngAuraSpellHastePct)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MultiplyCastSpeed(1 / (1 + ngAuraSpellHastePct))
+		},
+	})
 
-// 	druid.RegisterAura(core.Aura{
-// 		Label:    "Natures Grace",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.Outcome.Matches(core.OutcomeCrit) {
-// 				return
-// 			}
-// 			if spell.Flags.Matches(SpellFlagNaturesGrace) && sim.Proc(procChance, "Natures Grace") {
-// 				druid.NaturesGraceProcAura.Activate(sim)
-// 			}
-// 		},
-// 	})
-// }
+	ngTrigger := core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:           "Natures Grace (Talent)",
+		Callback:       core.CallbackOnSpellHitDealt,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: DruidSpellMoonfire | DruidSpellInsectSwarm,
+		ICD:            time.Second * 60,
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			ngAura.Activate(sim)
+		},
+	})
+
+	if druid.HasEclipseBar() {
+		druid.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
+			if gained {
+				ngTrigger.Icd.Reset()
+			}
+		})
+	}
+}
+
+func (druid *Druid) applyBalanceOfPower() {
+	if druid.Talents.BalanceOfPower > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
+			ClassMask:  DruidSpellsAll,
+			FloatValue: 0.01 * float64(druid.Talents.BalanceOfPower),
+			Kind:       core.SpellMod_DamageDone_Pct,
+		})
+
+		druid.AddStats(stats.Stats{stats.SpellHit: -0.5 * float64(druid.Talents.BalanceOfPower) * druid.GetBaseStats()[stats.Spirit]})
+		druid.AddStatDependency(stats.Spirit, stats.SpellHit, []float64{0.0, 0.5, 1.0}[druid.Talents.BalanceOfPower])
+	}
+}
+
+func (druid *Druid) applyStarlightWrath() {
+	if druid.Talents.StarlightWrath > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask: DruidSpellStarfire | DruidSpellWrath,
+			TimeValue: time.Millisecond * time.Duration([]int{0, -150, -250, -500}[druid.Talents.StarlightWrath]),
+			Kind:      core.SpellMod_CastTime_Flat,
+		})
+	}
+}
+
+func (druid *Druid) applyNaturesMajesty() {
+	if druid.Talents.NaturesMajesty > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidSpellsAll,
+			FloatValue: 0.02 * float64(druid.Talents.NaturesMajesty),
+			Kind:       core.SpellMod_CritMultiplier_Pct,
+		})
+	}
+}
+
+func (druid *Druid) applyMoonglow() {
+	if druid.Talents.Moonglow > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidDamagingSpells | DruidHealingSpells,
+			FloatValue: -0.03 * float64(druid.Talents.Moonglow),
+			Kind:       core.SpellMod_PowerCost_Pct,
+		})
+	}
+}
+
+func (druid *Druid) applyGenesis() {
+	if druid.Talents.Genesis > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask: DruidSpellMoonfire | DruidSpellSunfire | DruidSpellInsectSwarm,
+			IntValue:  int64(1 * druid.Talents.Genesis),
+			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
+		})
+
+		// TODO: periodic healing spells
+		// TODO: swiftmend
+	}
+}
+
+func (druid *Druid) applyGaleWinds() {
+	if druid.Talents.GaleWinds > 0 {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidSpellTyphoon | DruidSpellHurricane,
+			FloatValue: float64(0.15 * float64(druid.Talents.GaleWinds)),
+			Kind:       core.SpellMod_DamageDone_Flat,
+		})
+	}
+}
+
+func (druid *Druid) applyEarthAndMoon() {
+	if druid.Talents.EarthAndMoon {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidDamagingSpells,
+			FloatValue: 0.02,
+			Kind:       core.SpellMod_DamageDone_Pct,
+		})
+	}
+}
 
 // func (druid *Druid) registerNaturesSwiftnessCD() {
 // 	if !druid.Talents.NaturesSwiftness {
@@ -224,216 +312,129 @@ func (druid *Druid) ApplyTalents() {
 // 	})
 // }
 
-// func (druid *Druid) applyPrimalFury() {
-// 	if druid.Talents.PrimalFury == 0 {
-// 		return
-// 	}
+func (druid *Druid) applyFurySwipes() {
+	if druid.Talents.FurySwipes == 0 {
+		return
+	}
 
-// 	procChance := []float64{0, 0.5, 1}[druid.Talents.PrimalFury]
-// 	actionID := core.ActionID{SpellID: 37117}
-// 	rageMetrics := druid.NewRageMetrics(actionID)
-// 	cpMetrics := druid.NewComboPointMetrics(actionID)
+	furySwipesSpell := druid.RegisterSpell(Cat|Bear, core.SpellConfig{
+		ActionID:         core.ActionID{SpellID: 80861},
+		SpellSchool:      core.SpellSchoolPhysical,
+		ProcMask:         core.ProcMaskMeleeMHSpecial,
+		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		DamageMultiplier: 3.1,
+		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
-// 	druid.RegisterAura(core.Aura{
-// 		Label:    "Primal Fury",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if druid.InForm(Bear) {
-// 				if result.Outcome.Matches(core.OutcomeCrit) {
-// 					if sim.Proc(procChance, "Primal Fury") {
-// 						druid.AddRage(sim, 5, rageMetrics)
-// 					}
-// 				}
-// 			} else if druid.InForm(Cat) {
-// 				if druid.IsMangle(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) {
-// 					if result.Outcome.Matches(core.OutcomeCrit) {
-// 						if sim.Proc(procChance, "Primal Fury") {
-// 							druid.AddComboPoints(sim, 1, cpMetrics)
-// 						}
-// 					}
-// 				}
-// 			}
-// 		},
-// 	})
-// }
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()), spell.OutcomeMeleeSpecialHitAndCrit)
+		},
+	})
 
-// // Modifies the Bleed aura to apply the bonus.
-// func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
-// 	if druid.FerociousBite == nil || druid.Talents.RendAndTear == 0 || druid.AssumeBleedActive {
-// 		return aura
-// 	}
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:       "Fury Swipes Trigger",
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		Harmful:    true,
+		ProcChance: 0.05 * float64(druid.Talents.FurySwipes),
+		ICD:        time.Second * 3,
 
-// 	bonusCrit := 5.0 * float64(druid.Talents.RendAndTear) * core.CritRatingPerCritChance
+		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+			if druid.InForm(Cat | Bear) {
+				furySwipesSpell.Cast(sim, druid.CurrentTarget)
+			}
+		},
+	})
+}
 
-// 	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-// 		if druid.BleedsActive == 0 {
-// 			druid.FerociousBite.BonusCritRating += bonusCrit
-// 		}
-// 		druid.BleedsActive++
-// 	})
-// 	aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-// 		druid.BleedsActive--
-// 		if druid.BleedsActive == 0 {
-// 			druid.FerociousBite.BonusCritRating -= bonusCrit
-// 		}
-// 	})
+func (druid *Druid) applyPrimalFury() {
+	if druid.Talents.PrimalFury == 0 {
+		return
+	}
 
-// 	return aura
-// }
+	procChance := []float64{0, 0.5, 1}[druid.Talents.PrimalFury]
+	actionID := core.ActionID{SpellID: 37117}
+	rageMetrics := druid.NewRageMetrics(actionID)
+	cpMetrics := druid.NewComboPointMetrics(actionID)
 
-// func (druid *Druid) applyOmenOfClarity() {
-// 	// Feral 2p needs clearcasting aura
-// 	if !druid.Talents.OmenOfClarity && !druid.HasSetBonus(ItemSetNightsongBattlegear, 2) {
-// 		return
-// 	}
+	druid.RegisterAura(core.Aura{
+		Label:    "Primal Fury",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if druid.InForm(Bear) {
+				if result.Outcome.Matches(core.OutcomeCrit) {
+					if sim.Proc(procChance, "Primal Fury") {
+						druid.AddRage(sim, 5, rageMetrics)
+					}
+				}
+			} else if druid.InForm(Cat) {
+				if druid.IsMangle(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) {
+					if result.Outcome.Matches(core.OutcomeCrit) {
+						if sim.Proc(procChance, "Primal Fury") {
+							druid.AddComboPoints(sim, 1, cpMetrics)
+						}
+					}
+				}
+			}
+		},
+	})
+}
 
-// 	// T10-2P
-// 	var lasherweave2P *core.Aura
-// 	if druid.HasSetBonus(ItemSetLasherweaveRegalia, 2) {
-// 		lasherweave2P = druid.RegisterAura(core.Aura{
-// 			Label:    "T10-2P proc",
-// 			ActionID: core.ActionID{SpellID: 70718},
-// 			Duration: time.Second * 6,
-// 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 				druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1.15
-// 				druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.15
-// 			},
-// 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 				druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] /= 1.15
-// 				druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] /= 1.15
-// 			},
-// 		})
-// 	}
+func (druid *Druid) applyPrimalMadness() {
+	if (druid.Talents.PrimalMadness == 0) || !druid.InForm(Cat|Bear) {
+		return
+	}
 
-// 	var affectedSpells []*DruidSpell
-// 	druid.ClearcastingAura = druid.RegisterAura(core.Aura{
-// 		Label:    "Clearcasting",
-// 		ActionID: core.ActionID{SpellID: 16870},
-// 		Duration: time.Second * 15,
-// 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-// 			affectedSpells = core.FilterSlice([]*DruidSpell{
-// 				// Balance
-// 				druid.Hurricane,
-// 				druid.InsectSwarm,
-// 				druid.Moonfire,
-// 				// TODO druid.Starfall, not sure how the proc chance is affected.
-// 				druid.Starfire,
-// 				druid.Typhoon,
-// 				druid.Wrath,
+	actionID := core.ActionID{SpellID: 80315 + druid.Talents.PrimalMadness}
+	druid.PrimalMadnessRageMetrics = druid.NewRageMetrics(actionID)
 
-// 				// Feral
-// 				druid.DemoralizingRoar,
-// 				druid.FerociousBite,
-// 				druid.Lacerate,
-// 				druid.MangleBear,
-// 				druid.MangleCat,
-// 				druid.Maul,
-// 				druid.Rake,
-// 				druid.Rip,
-// 				druid.Shred,
-// 				druid.SwipeBear,
-// 				druid.SwipeCat,
-// 			}, func(spell *DruidSpell) bool { return spell != nil })
-// 		},
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			for _, spell := range affectedSpells {
-// 				spell.CostMultiplier -= 1
-// 			}
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			for _, spell := range affectedSpells {
-// 				spell.CostMultiplier += 1
-// 			}
-// 		},
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if aura.RemainingDuration(sim) == aura.Duration {
-// 				// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate
-// 				// if it was just activated.
-// 				return
-// 			}
+	if !druid.InForm(Cat) {
+		return
+	}
 
-// 			for _, as := range affectedSpells {
-// 				if as.IsEqual(spell) {
-// 					aura.Deactivate(sim)
-// 					break
-// 				}
-// 			}
-// 		},
-// 	})
+	energyMetrics := druid.NewEnergyMetrics(actionID)
+	energyGain := 10.0 * float64(druid.Talents.PrimalMadness)
 
-// 	if !druid.Talents.OmenOfClarity {
-// 		return
-// 	}
+	druid.PrimalMadnessAura = druid.RegisterAura(core.Aura{
+		Label:    "Primal Madness",
+		ActionID: actionID,
+		Duration: core.NeverExpires, // duration is tied to Tiger's Fury / Berserk durations
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.UpdateMaxEnergy(sim, energyGain, energyMetrics)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.UpdateMaxEnergy(sim, -energyGain, energyMetrics)
+		},
+	})
+}
 
-// 	druid.ProcOoc = func(sim *core.Simulation) {
-// 		druid.ClearcastingAura.Activate(sim)
-// 		if lasherweave2P != nil {
-// 			lasherweave2P.Activate(sim)
-// 		}
-// 	}
+// Modifies the Bleed aura to apply the bonus.
+func (druid *Druid) applyRendAndTear(aura core.Aura) core.Aura {
+	if druid.FerociousBite == nil || druid.Talents.RendAndTear == 0 || druid.AssumeBleedActive {
+		return aura
+	}
 
-// 	hasOocGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfOmenOfClarity)
+	bonusCrit := []float64{0.0, 8.0, 17.0, 25.0}[druid.Talents.RendAndTear] * core.CritRatingPerCritChance
 
-// 	druid.RegisterAura(core.Aura{
-// 		Label:    "Omen of Clarity",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.Landed() {
-// 				return
-// 			}
+	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+		if druid.BleedsActive == 0 {
+			druid.FerociousBite.BonusCritRating += bonusCrit
+		}
+		druid.BleedsActive++
+	})
+	aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+		druid.BleedsActive--
+		if druid.BleedsActive == 0 {
+			druid.FerociousBite.BonusCritRating -= bonusCrit
+		}
+	})
 
-// 			// https://github.com/JamminL/wotlk-classic-bugs/issues/66#issuecomment-1182017571
-// 			if druid.HurricaneTickSpell.IsEqual(spell) {
-// 				curCastTickSpeed := spell.CurDot().TickPeriod().Seconds() / 10
-// 				hurricaneCoeff := 1.0 - (7.0 / 9.0)
-// 				spellCoeff := hurricaneCoeff * curCastTickSpeed
-// 				chanceToProc := ((1.5 / 60) * 3.5) * spellCoeff
-// 				if sim.RandomFloat("Clearcasting") < chanceToProc {
-// 					druid.ProcOoc(sim)
-// 				}
-// 			} else if druid.AutoAttacks.PPMProc(sim, 3.5, core.ProcMaskMeleeWhiteHit, "Omen of Clarity", spell) { // Melee
-// 				druid.ProcOoc(sim)
-// 			} else if spell.Flags.Matches(SpellFlagOmenTrigger) { // Spells
-// 				// Heavily based on comment here
-// 				// https://github.com/JamminL/wotlk-classic-bugs/issues/66#issuecomment-1182017571
-// 				// Instants are treated as 1.5
-// 				// Uses current cast time rather than default cast time (PPM is constant with haste)
-// 				castTime := spell.CurCast.CastTime.Seconds()
-// 				if castTime == 0 {
-// 					castTime = 1.5
-// 				}
-
-// 				chanceToProc := (castTime / 60) * 3.5
-// 				if druid.Typhoon.IsEqual(spell) { // Add Typhoon
-// 					chanceToProc *= 0.25
-// 				} else if druid.Moonfire.IsEqual(spell) { // Add Moonfire
-// 					chanceToProc *= 0.076
-// 				} else if druid.GiftOfTheWild.IsEqual(spell) { // Add Gift of the Wild
-// 					// the above comment says it's 0.0875 * (1-0.924) which apparently is out-dated,
-// 					// there is no longer an instant suppression factor
-// 					// we assume 30 targets (25man + pets)
-// 					chanceToProc = 1 - math.Pow(1-chanceToProc, 30)
-// 				} else {
-// 					chanceToProc *= 0.666
-// 				}
-// 				if sim.RandomFloat("Clearcasting") < chanceToProc {
-// 					druid.ProcOoc(sim)
-// 				}
-// 			}
-// 		},
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if druid.FaerieFire.IsEqual(spell) && druid.InForm(Cat|Bear) && hasOocGlyph {
-// 				druid.ProcOoc(sim)
-// 			}
-// 		},
-// 	})
-// }
+	return aura
+}
 
 // func (druid *Druid) applyEclipse() {
 // 	druid.SolarICD = core.Cooldown{Timer: druid.NewTimer(), Duration: 0}
@@ -550,45 +551,48 @@ func (druid *Druid) ApplyTalents() {
 // 	})
 // }
 
-// func (druid *Druid) applyImprovedLotp() {
-// 	if druid.Talents.ImprovedLeaderOfThePack == 0 {
-// 		return
-// 	}
+func (druid *Druid) applyLotp() {
+	if !druid.Talents.LeaderOfThePack {
+		return
+	}
 
-// 	actionID := core.ActionID{SpellID: 34300}
-// 	manaMetrics := druid.NewManaMetrics(actionID)
-// 	healthMetrics := druid.NewHealthMetrics(actionID)
-// 	manaRestore := float64(druid.Talents.ImprovedLeaderOfThePack) * 0.04
-// 	healthRestore := 0.5 * manaRestore
+	actionID := core.ActionID{SpellID: 17007}
+	manaMetrics := druid.NewManaMetrics(actionID)
+	healthMetrics := druid.NewHealthMetrics(actionID)
+	manaRestore := 0.08
+	healthRestore := 0.05
 
-// 	icd := core.Cooldown{
-// 		Timer:    druid.NewTimer(),
-// 		Duration: time.Second * 6,
-// 	}
+	icd := core.Cooldown{
+		Timer:    druid.NewTimer(),
+		Duration: time.Second * 6,
+	}
 
-// 	druid.RegisterAura(core.Aura{
-// 		Icd:      &icd,
-// 		Label:    "Improved Leader of the Pack",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if !result.Landed() {
-// 				return
-// 			}
-// 			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.Outcome.Matches(core.OutcomeCrit) {
-// 				return
-// 			}
-// 			if !icd.IsReady(sim) {
-// 				return
-// 			}
-// 			icd.Use(sim)
-// 			druid.AddMana(sim, druid.MaxMana()*manaRestore, manaMetrics)
-// 			druid.GainHealth(sim, druid.MaxHealth()*healthRestore, healthMetrics)
-// 		},
-// 	})
-// }
+	druid.RegisterAura(core.Aura{
+		Icd:      &icd,
+		Label:    "Improved Leader of the Pack",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() {
+				return
+			}
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) || !result.Outcome.Matches(core.OutcomeCrit) {
+				return
+			}
+			if !icd.IsReady(sim) {
+				return
+			}
+			if !druid.InForm(Cat | Bear) {
+				return
+			}
+			icd.Use(sim)
+			druid.AddMana(sim, druid.MaxMana()*manaRestore, manaMetrics)
+			druid.GainHealth(sim, druid.MaxHealth()*healthRestore, healthMetrics)
+		},
+	})
+}
 
 // func (druid *Druid) applyPredatoryInstincts() {
 // 	if druid.Talents.PredatoryInstincts == 0 {
@@ -614,26 +618,26 @@ func (druid *Druid) ApplyTalents() {
 // 	})
 // }
 
-// func (druid *Druid) applyNaturalReaction() {
-// 	if druid.Talents.NaturalReaction == 0 {
-// 		return
-// 	}
+func (druid *Druid) applyNaturalReaction() {
+	if druid.Talents.NaturalReaction == 0 {
+		return
+	}
 
-// 	actionID := core.ActionID{SpellID: 59072}
-// 	rageMetrics := druid.NewRageMetrics(actionID)
-// 	rageAdded := float64(druid.Talents.NaturalReaction)
+	actionID := core.ActionID{SpellID: 59071}
+	rageMetrics := druid.NewRageMetrics(actionID)
+	rageAdded := 1.0 + 2.0*float64(druid.Talents.NaturalReaction-1)
 
-// 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
-// 		Name:     "Natural Reaction Trigger",
-// 		Callback: core.CallbackOnSpellHitTaken,
-// 		ProcMask: core.ProcMaskMelee,
-// 		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
-// 			if druid.InForm(Bear) && result.Outcome.Matches(core.OutcomeDodge) {
-// 				druid.AddRage(sim, rageAdded, rageMetrics)
-// 			}
-// 		},
-// 	})
-// }
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:     "Natural Reaction Trigger",
+		Callback: core.CallbackOnSpellHitTaken,
+		ProcMask: core.ProcMaskMelee,
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			if druid.InForm(Bear) && result.Outcome.Matches(core.OutcomeDodge) {
+				druid.AddRage(sim, rageAdded, rageMetrics)
+			}
+		},
+	})
+}
 
 // func (druid *Druid) applyInfectedWounds() {
 // 	if druid.Talents.InfectedWounds == 0 {

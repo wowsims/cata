@@ -1,7 +1,7 @@
 import { getWowheadLanguagePrefix } from '../constants/lang.js';
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { ResourceType } from '../proto/api.js';
-import { ActionID as ActionIdProto, OtherAction } from '../proto/common.js';
+import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction } from '../proto/common.js';
 import { IconData, UIItem as Item } from '../proto/ui.js';
 import { Database } from './database.js';
 
@@ -11,6 +11,7 @@ export const USE_WOTLK_DB = false;
 // Uniquely identifies a specific item / spell / thing in WoW. This object is immutable.
 export class ActionId {
 	readonly itemId: number;
+	readonly randomSuffixId: number;
 	readonly spellId: number;
 	readonly otherId: OtherAction;
 	readonly tag: number;
@@ -19,8 +20,18 @@ export class ActionId {
 	readonly name: string;
 	readonly iconUrl: string;
 
-	private constructor(itemId: number, spellId: number, otherId: OtherAction, tag: number, baseName: string, name: string, iconUrl: string) {
+	private constructor(
+		itemId: number,
+		spellId: number,
+		otherId: OtherAction,
+		tag: number,
+		baseName: string,
+		name: string,
+		iconUrl: string,
+		randomSuffixId?: number,
+	) {
 		this.itemId = itemId;
+		this.randomSuffixId = randomSuffixId || 0;
 		this.spellId = spellId;
 		this.otherId = otherId;
 		this.tag = tag;
@@ -36,9 +47,9 @@ export class ActionId {
 				name = 'Mana Tick';
 				iconUrl = resourceTypeToIcon[ResourceType.ResourceTypeMana];
 				if (tag == 1) {
-					name += ' (Casting)';
+					name += ' (In Combat)';
 				} else if (tag == 2) {
-					name += ' (Not Casting)';
+					name += ' (Out of Combat)';
 				}
 				break;
 			case OtherAction.OtherActionEnergyRegen:
@@ -119,7 +130,7 @@ export class ActionId {
 	}
 
 	equalsIgnoringTag(other: ActionId): boolean {
-		return this.itemId == other.itemId && this.spellId == other.spellId && this.otherId == other.otherId;
+		return this.itemId == other.itemId && this.randomSuffixId == other.randomSuffixId && this.spellId == other.spellId && this.otherId == other.otherId;
 	}
 
 	setBackground(elem: HTMLElement) {
@@ -128,13 +139,9 @@ export class ActionId {
 		}
 	}
 
-	static makeItemUrl(id: number): string {
+	static makeItemUrl(id: number, randomSuffixId?: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		if (USE_WOTLK_DB) {
-			return 'https://wotlkdb.com/?item=' + id;
-		} else {
-			return `https://wowhead.com/cata/${langPrefix}item=${id}?lvl=${CHARACTER_LEVEL}`;
-		}
+		return `https://wowhead.com/cata/${langPrefix}item=${id}?lvl=${CHARACTER_LEVEL}?rand=${randomSuffixId || 0}`;
 	}
 	static makeSpellUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
@@ -171,7 +178,7 @@ export class ActionId {
 
 	setWowheadHref(elem: HTMLAnchorElement) {
 		if (this.itemId) {
-			elem.href = ActionId.makeItemUrl(this.itemId);
+			elem.href = ActionId.makeItemUrl(this.itemId, this.randomSuffixId);
 		} else if (this.spellId) {
 			elem.href = ActionId.makeSpellUrl(this.spellId);
 		}
@@ -288,14 +295,17 @@ export class ActionId {
 			case 'Expose Armor':
 			case 'Rupture':
 			case 'Slice and Dice':
+			case 'Recuperate':
 				if (this.tag) name += ` (${this.tag} CP)`;
 				break;
-			case 'Instant Poison IX':
-			case 'Wound Poison VII':
+			case 'Instant Poison':
+			case 'Wound Poison':
 				if (this.tag == 1) {
 					name += ' (Deadly)';
 				} else if (this.tag == 2) {
 					name += ' (Shiv)';
+				} else if (this.tag == 3) {
+					name += ' (Fan of Knives)';
 				}
 				break;
 			case 'Fan of Knives':
@@ -311,12 +321,32 @@ export class ActionId {
 					name += ' (Not Self)';
 				}
 				break;
+			case 'Mutilate':
+				if (this.tag == 0) {
+					name += ' (Cast)';
+				} else if (this.tag == 1) {
+					name += ' (Main Hand)';
+				} else if (this.tag == 2) {
+					name += ' (Off Hand)';
+				}
+				break;
+			case 'Hemorrhage':
+				if (this.spellId == 89775) {
+					name += ' (DoT)';
+				}
+				break;
 			case 'Chain Lightning':
 			case 'Lightning Bolt':
+			case 'Lava Burst':
 				if (this.tag == 6) {
-					name += ' (LO)';
+					name += ' (Overload)';
 				} else if (this.tag) {
 					name += ` (${this.tag} MW)`;
+				}
+				break;
+			case 'Flame Shock':
+				if (this.tag == 1) {
+					name += ' (DoT)'
 				}
 				break;
 			case 'Holy Shield':
@@ -344,6 +374,7 @@ export class ActionId {
 			case 'Innervate':
 			case 'Focus Magic':
 			case 'Mana Tide Totem':
+			case 'Unholy Frenzy':
 			case 'Power Infusion':
 				if (this.tag != -1) {
 					if (this.tag === playerIndex || playerIndex == undefined) {
@@ -395,9 +426,10 @@ export class ActionId {
 			case 'Frost Strike':
 			case 'Plague Strike':
 			case 'Blood Strike':
-			case 'Death Strike':
 			case 'Obliterate':
 			case 'Blood-Caked Strike':
+			case 'Festering Strike':
+			case 'Razor Frost':
 			case 'Lightning Speed':
 			case 'Windfury Weapon':
 			case 'Berserk':
@@ -405,6 +437,15 @@ export class ActionId {
 					name += ' (Main Hand)';
 				} else if (this.tag == 2) {
 					name += ' (Off Hand)';
+				}
+				break;
+			case 'Death Strike':
+				if (this.tag == 1) {
+					name += ' (Main Hand)';
+				} else if (this.tag == 2) {
+					name += ' (Off Hand)';
+				} else if (this.tag == 3) {
+					name += ' (Heal)';
 				}
 				break;
 			case 'Battle Shout':
@@ -438,6 +479,18 @@ export class ActionId {
 					name += ' (MT)';
 				}
 				break;
+			case 'Devouring Plague':
+				if (this.tag == 1) {
+					name += ' (Improved)';
+					break;
+				}
+			case 'Improved Steady Shot':
+				if (this.tag == 2) {
+					name += ' (pre)';
+				}
+				break;
+			case 'Opportunity Strike':
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';
@@ -454,7 +507,7 @@ export class ActionId {
 			iconUrl = ActionId.makeIconUrl(overrideTooltipData['icon']);
 		}
 
-		return new ActionId(this.itemId, this.spellId, this.otherId, this.tag, baseName, name, iconUrl);
+		return new ActionId(this.itemId, this.spellId, this.otherId, this.tag, baseName, name, iconUrl, this.randomSuffixId);
 	}
 
 	toString(): string {
@@ -503,15 +556,15 @@ export class ActionId {
 	}
 
 	withoutTag(): ActionId {
-		return new ActionId(this.itemId, this.spellId, this.otherId, 0, this.baseName, this.baseName, this.iconUrl);
+		return new ActionId(this.itemId, this.spellId, this.otherId, 0, this.baseName, this.baseName, this.iconUrl, this.randomSuffixId);
 	}
 
 	static fromEmpty(): ActionId {
 		return new ActionId(0, 0, OtherAction.OtherActionNone, 0, '', '', '');
 	}
 
-	static fromItemId(itemId: number, tag?: number): ActionId {
-		return new ActionId(itemId, 0, OtherAction.OtherActionNone, tag || 0, '', '', '');
+	static fromItemId(itemId: number, tag?: number, randomSuffixId?: number): ActionId {
+		return new ActionId(itemId, 0, OtherAction.OtherActionNone, tag || 0, '', '', '', randomSuffixId || 0);
 	}
 
 	static fromSpellId(spellId: number, tag?: number): ActionId {
@@ -528,6 +581,10 @@ export class ActionId {
 
 	static fromItem(item: Item): ActionId {
 		return ActionId.fromItemId(item.id);
+	}
+
+	static fromRandomSuffix(item: Item, randomSuffix: ItemRandomSuffix): ActionId {
+		return ActionId.fromItemId(item.id, 0, randomSuffix.id);
 	}
 
 	static fromProto(protoId: ActionIdProto): ActionId {
@@ -693,4 +750,13 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeFrostRune]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_frostpresence.jpg',
 	[ResourceType.ResourceTypeUnholyRune]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_deathknight_unholypresence.jpg',
 	[ResourceType.ResourceTypeDeathRune]: '/cata/assets/img/death_rune.png',
+	[ResourceType.ResourceTypeSolarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipseorange.jpg',
+	[ResourceType.ResourceTypeLunarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipse.jpg',
 };
+
+// Use this to connect a buff row to a cast row in the timeline view
+export const buffAuraToSpellIdMap: Record<number, ActionId> = {
+	96228: ActionId.fromSpellId(82174), // Synapse Springs - Agi
+	96229: ActionId.fromSpellId(82174), // Synapse Springs - Str
+	96230: ActionId.fromSpellId(82174), // Synapse Springs - Int
+}

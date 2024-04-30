@@ -3,6 +3,7 @@ package restoration
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/shaman"
 )
 
@@ -39,12 +40,9 @@ func NewRestorationShaman(character *core.Character, options *proto.Player) *Res
 		Shaman: shaman.NewShaman(character, options.TalentsString, totems, selfBuffs, false),
 	}
 
-	// if resto.HasMHWeapon() {
-	// 	resto.ApplyEarthlivingImbueToItem(resto.GetMHWeapon())
-	// }
-	// if resto.HasOHWeapon() {
-	// 	resto.ApplyEarthlivingImbueToItem(resto.GetOHWeapon())
-	// }
+	if resto.HasMHWeapon() {
+		resto.ApplyEarthlivingImbueToItem(resto.GetMHWeapon())
+	}
 
 	return resto
 }
@@ -85,4 +83,9 @@ func (resto *RestorationShaman) Initialize() {
 
 	resto.Shaman.Initialize()
 	resto.Shaman.RegisterHealingSpells()
+}
+
+func (resto *RestorationShaman) ApplyTalents() {
+	resto.Shaman.ApplyTalents()
+	resto.ApplyArmorSpecializationEffect(stats.Intellect, proto.ArmorType_ArmorTypeMail)
 }

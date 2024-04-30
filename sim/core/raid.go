@@ -139,6 +139,16 @@ func (raid *Raid) GetActiveUnits() []*Unit {
 	return activeUnits
 }
 
+func (raid *Raid) GetActiveAllyUnits() []*Unit {
+	activeAllyUnits := []*Unit{}
+	for _, unit := range raid.AllUnits {
+		if unit.IsActive() && unit.Type != EnemyUnit {
+			activeAllyUnits = append(activeAllyUnits, unit)
+		}
+	}
+	return activeAllyUnits
+}
+
 // Makes a new raid.
 func NewRaid(raidConfig *proto.Raid) *Raid {
 	numParties := int(raidConfig.NumActiveParties)

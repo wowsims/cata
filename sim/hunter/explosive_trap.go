@@ -10,10 +10,11 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 	bonusPeriodicDamageMultiplier := .10 * float64(hunter.Talents.TrapMastery)
 
 	hunter.ExplosiveTrap = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 13812},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 13812},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: HunterSpellExplosiveTrap,
+		Flags:          core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 0, // Todo: Verify focus cost https://warcraft.wiki.gg/index.php?title=Explosive_Trap&oldid=2963725
@@ -24,12 +25,12 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			},
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second*30 - time.Second*2*time.Duration(hunter.Talents.Resourcefulness),
+				Duration: time.Second * 30,
 			},
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           hunter.CritMultiplier(false, false, false),
+		CritMultiplier:           hunter.SpellCritMultiplier(1, 0),
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
@@ -41,10 +42,10 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 			TickLength:    time.Second * 2,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := 90 + 0.1*dot.Spell.RangedAttackPower(target) // Todo: Change this to use Cata calculations
+				baseDamage := 296 + 0.546*dot.Spell.RangedAttackPower(target)
 				dot.Spell.DamageMultiplierAdditive += bonusPeriodicDamageMultiplier
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeRangedHitAndCritNoBlock)
+					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage/10, dot.Spell.OutcomeRangedHitAndCritNoBlock)
 				}
 				dot.Spell.DamageMultiplierAdditive -= bonusPeriodicDamageMultiplier
 			},
@@ -63,7 +64,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 					DoAt: 0,
 					OnAction: func(sim *core.Simulation) {
 						for _, aoeTarget := range sim.Encounter.TargetUnits {
-							baseDamage := sim.Roll(523, 671) + 0.1*spell.RangedAttackPower(aoeTarget) // Todo: Change this to use Cata calculations
+							baseDamage := 223 + 0.0546*spell.RangedAttackPower(aoeTarget)
 							baseDamage *= sim.Encounter.AOECapMultiplier()
 							spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
 						}
@@ -72,7 +73,7 @@ func (hunter *Hunter) registerExplosiveTrapSpell(timer *core.Timer) {
 				})
 			} else {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					baseDamage := sim.Roll(523, 671) + 0.1*spell.RangedAttackPower(aoeTarget) // Todo: Change this to use Cata calculations
+					baseDamage := 223 + 0.0546*spell.RangedAttackPower(aoeTarget)
 					baseDamage *= sim.Encounter.AOECapMultiplier()
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeRangedHitAndCritNoBlock)
 				}

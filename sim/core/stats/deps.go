@@ -30,6 +30,7 @@ var safeDepsOrder = []Stat{
 	BlockValue,
 	Dodge,
 	Parry,
+	SpellHit,
 }
 
 func isSafeDep(s Stat) bool {

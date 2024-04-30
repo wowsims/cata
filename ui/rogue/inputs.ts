@@ -1,5 +1,4 @@
 import * as InputHelpers from '../core/components/input_helpers.js';
-import { Player } from '../core/player.js';
 import { RogueOptions_PoisonImbue as Poison } from '../core/proto/rogue.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { RogueSpecs } from '../core/proto_utils/utils';
@@ -13,9 +12,9 @@ export const MainHandImbue = <SpecType extends RogueSpecs>() =>
 		numColumns: 1,
 		values: [
 			{ value: Poison.NoPoison, tooltip: 'No Main Hand Poison' },
-			{ actionId: ActionId.fromItemId(43233), value: Poison.DeadlyPoison },
-			{ actionId: ActionId.fromItemId(43231), value: Poison.InstantPoison },
-			{ actionId: ActionId.fromItemId(43235), value: Poison.WoundPoison },
+			{ actionId: ActionId.fromItemId(2892), value: Poison.DeadlyPoison },
+			{ actionId: ActionId.fromItemId(6947), value: Poison.InstantPoison },
+			{ actionId: ActionId.fromItemId(10918), value: Poison.WoundPoison },
 		],
 	});
 
@@ -25,9 +24,21 @@ export const OffHandImbue = <SpecType extends RogueSpecs>() =>
 		numColumns: 1,
 		values: [
 			{ value: Poison.NoPoison, tooltip: 'No Off Hand Poison' },
-			{ actionId: ActionId.fromItemId(43233), value: Poison.DeadlyPoison },
-			{ actionId: ActionId.fromItemId(43231), value: Poison.InstantPoison },
-			{ actionId: ActionId.fromItemId(43235), value: Poison.WoundPoison },
+			{ actionId: ActionId.fromItemId(2892), value: Poison.DeadlyPoison },
+			{ actionId: ActionId.fromItemId(6947), value: Poison.InstantPoison },
+			{ actionId: ActionId.fromItemId(10918), value: Poison.WoundPoison },
+		],
+	});
+
+export const ThrownImbue = <SpecType extends RogueSpecs>() =>
+	InputHelpers.makeClassOptionsEnumIconInput<SpecType, Poison>({
+		fieldName: 'thImbue',
+		numColumns: 1,
+		values: [
+			{ value: Poison.NoPoison, tooltip: 'No Thrown Poison' },
+			{ actionId: ActionId.fromItemId(2892), value: Poison.DeadlyPoison },
+			{ actionId: ActionId.fromItemId(6947), value: Poison.InstantPoison },
+			{ actionId: ActionId.fromItemId(10918), value: Poison.WoundPoison },
 		],
 	});
 

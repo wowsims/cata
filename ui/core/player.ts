@@ -1,3 +1,4 @@
+import { ReforgeData } from './components/gear_picker/gear_picker';
 import { getLanguageCode } from './constants/lang';
 import * as Mechanics from './constants/mechanics';
 import { MAX_PARTY_SIZE, Party } from './party';
@@ -23,10 +24,12 @@ import {
 	HandType,
 	HealingModel,
 	IndividualBuffs,
+	ItemRandomSuffix,
 	ItemSlot,
 	Profession,
 	PseudoStat,
 	Race,
+	ReforgeStat,
 	SimDatabase,
 	Spec,
 	Stat,
@@ -180,7 +183,6 @@ export interface MeleeCritCapInfo {
 	expertise: number;
 	suppression: number;
 	glancing: number;
-	debuffCrit: number;
 	hasOffhandWeapon: boolean;
 	meleeHitCap: number;
 	expertiseCap: number;
@@ -245,6 +247,7 @@ export class Player<SpecType extends Spec> {
 	private channelClipDelay = 0;
 	private inFrontOfTarget = false;
 	private distanceFromTarget = 0;
+	private darkIntentUptime = 100;
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
 
@@ -253,6 +256,7 @@ export class Player<SpecType extends Spec> {
 
 	private itemEPCache = new Array<Map<number, number>>();
 	private gemEPCache = new Map<number, number>();
+	private randomSuffixEPCache = new Map<number, number>();
 	private enchantEPCache = new Map<number, number>();
 	private talents: SpecTalents<SpecType> | null = null;
 
@@ -426,6 +430,22 @@ export class Player<SpecType extends Spec> {
 		return this.sim.db.getItems(slot).filter(item => canEquipItem(item, this.playerSpec, slot));
 	}
 
+	// Returns all random suffixes that this player would be interested in for the given base item.
+	getRandomSuffixes(item: Item): Array<ItemRandomSuffix> {
+		const allSuffixes = item.randomSuffixOptions.map(id => this.sim.db.getRandomSuffixById(id)!);
+		return allSuffixes.filter(suffix => this.computeRandomSuffixEP(suffix) > 0);
+	}
+
+	// Returns all reforgings that are valid with a given item
+	getAvailableReforgings(item: Item): ReforgeStat[] | undefined {
+		return this.sim.db.getAvailableReforges(item);
+	}
+
+	// Returns reforge given an id
+	getReforge(id: number): ReforgeStat | undefined {
+		return this.sim.db.getReforge(id);
+	}
+
 	// Returns all enchants that this player can wear in the given slot.
 	getEnchants(slot: ItemSlot): Array<Enchant> {
 		return this.sim.db.getEnchants(slot).filter(enchant => canEquipEnchant(enchant, this.playerSpec));
@@ -446,6 +466,7 @@ export class Player<SpecType extends Spec> {
 
 		this.gemEPCache = new Map();
 		this.enchantEPCache = new Map();
+		this.randomSuffixEPCache = new Map();
 		for (let i = 0; i < ItemSlot.ItemSlotRanged + 1; ++i) {
 			this.itemEPCache[i] = new Map();
 		}
@@ -460,6 +481,10 @@ export class Player<SpecType extends Spec> {
 			// By default value TPS and DTPS EP equally for tanking spec
 			defaultRatios[2] = 1;
 			defaultRatios[3] = 1;
+			if (this.getSpec() == Spec.SpecBloodDeathKnight) {
+				// Add healing EPs for BDKs
+				defaultRatios[1] = 1;
+			}
 		} else {
 			// By default only value DPS EP
 			defaultRatios[0] = 1;
@@ -713,15 +738,8 @@ export class Player<SpecType extends Spec> {
 			specSpecificOffset = 3.0 * ranks;
 		}
 
-		let debuffCrit = 0.0;
-
-		const debuffs = this.sim.raid.getDebuffs();
-		if (debuffs.totemOfWrath || debuffs.heartOfTheCrusader || debuffs.masterPoisoner) {
-			debuffCrit = 3.0;
-		}
-
 		const baseCritCap = 100.0 - glancing + suppression - remainingMeleeHitCap - remainingExpertiseCap - specSpecificOffset;
-		const playerCritCapDelta = meleeCrit - baseCritCap + debuffCrit;
+		const playerCritCapDelta = meleeCrit - baseCritCap;
 
 		return {
 			meleeCrit,
@@ -729,7 +747,6 @@ export class Player<SpecType extends Spec> {
 			expertise,
 			suppression,
 			glancing,
-			debuffCrit,
 			hasOffhandWeapon,
 			meleeHitCap,
 			expertiseCap,
@@ -930,6 +947,17 @@ export class Player<SpecType extends Spec> {
 		this.miscOptionsChangeEmitter.emit(eventID);
 	}
 
+	getDarkIntentUptime(): number {
+		return this.darkIntentUptime;
+	}
+
+	setDarkIntentUptime(eventID: EventID, newDarkIntentUptime: number) {
+		if (newDarkIntentUptime == this.darkIntentUptime) return;
+
+		this.darkIntentUptime = newDarkIntentUptime;
+		this.miscOptionsChangeEmitter.emit(eventID);
+	}
+
 	getInFrontOfTarget(): boolean {
 		return this.inFrontOfTarget;
 	}
@@ -1030,6 +1058,27 @@ export class Player<SpecType extends Spec> {
 		return ep;
 	}
 
+	computeRandomSuffixEP(randomSuffix: ItemRandomSuffix): number {
+		if (this.randomSuffixEPCache.has(randomSuffix.id)) {
+			return this.randomSuffixEPCache.get(randomSuffix.id)!;
+		}
+
+		const ep = this.computeStatsEP(new Stats(randomSuffix.stats));
+		this.randomSuffixEPCache.set(randomSuffix.id, ep);
+		return ep;
+	}
+
+	computeReforgingEP(reforging: ReforgeData): number {
+		let stats = new Stats([]);
+		reforging.fromStat.forEach(stat => {
+			stats = stats.addStat(stat, reforging.fromAmount);
+		});
+		reforging.toStat.forEach(stat => {
+			stats = stats.addStat(stat, reforging.toAmount);
+		});
+		return this.computeStatsEP(stats);
+	}
+
 	computeItemEP(item: Item, slot: ItemSlot): number {
 		if (item == null) return 0;
 
@@ -1048,7 +1097,15 @@ export class Player<SpecType extends Spec> {
 			}
 		}
 
-		let ep = itemStats.computeEP(this.epWeights);
+		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
+		let maxSuffixEP = 0;
+
+		if (item.randomSuffixOptions.length > 0) {
+			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)!));
+			maxSuffixEP = (Math.max(...suffixEPs) * item.randPropPoints) / 10000;
+		}
+
+		let ep = itemStats.computeEP(this.epWeights) + maxSuffixEP;
 
 		// unique items are slightly worse than non-unique because you can have only one.
 		if (item.unique) {
@@ -1106,6 +1163,9 @@ export class Player<SpecType extends Spec> {
 		}
 		if (equippedItem.enchant != null) {
 			parts.push('ench=' + equippedItem.enchant.effectId);
+		}
+		if (equippedItem.reforging > 0) {
+			parts.push('forg=' + equippedItem.reforging);
 		}
 		parts.push(
 			'pcs=' +
@@ -1322,8 +1382,8 @@ export class Player<SpecType extends Spec> {
 	}
 
 	private toDatabase(): SimDatabase {
-		const dbGear = this.getGear().toDatabase();
-		const dbItemSwapGear = this.getItemSwapGear().toDatabase();
+		const dbGear = this.getGear().toDatabase(this.sim.db);
+		const dbItemSwapGear = this.getItemSwapGear().toDatabase(this.sim.db);
 		return Database.mergeSimDatabases(dbGear, dbItemSwapGear);
 	}
 
@@ -1375,6 +1435,7 @@ export class Player<SpecType extends Spec> {
 				inFrontOfTarget: this.getInFrontOfTarget(),
 				distanceFromTarget: this.getDistanceFromTarget(),
 				healingModel: this.getHealingModel(),
+				darkIntentUptime: this.getDarkIntentUptime(),
 			});
 			player = withSpec(this.getSpec(), player, this.getSpecOptions());
 		}
@@ -1424,6 +1485,7 @@ export class Player<SpecType extends Spec> {
 				this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
 				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
 				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
+				this.setDarkIntentUptime(eventID, proto.darkIntentUptime);
 			}
 			if (loadCategory(SimSettingCategories.External)) {
 				this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());
@@ -1441,7 +1503,7 @@ export class Player<SpecType extends Spec> {
 		TypedEvent.freezeAllAndDo(() => {
 			this.setEnableItemSwap(eventID, false);
 			this.setItemSwapGear(eventID, new ItemSwapGear({}));
-			this.setReactionTime(eventID, 200);
+			this.setReactionTime(eventID, 100);
 			this.setInFrontOfTarget(eventID, this.playerSpec.isTankSpec);
 			this.setHealingModel(
 				eventID,
@@ -1456,13 +1518,20 @@ export class Player<SpecType extends Spec> {
 				}),
 			);
 			this.setBonusStats(eventID, new Stats());
-
-			this.setAplRotation(
-				eventID,
-				APLRotation.create({
-					type: APLRotationType.TypeAuto,
-				}),
-			);
 		});
+	}
+
+	getBaseMastery(): number {
+		switch (this.playerSpec.specID) {
+			case Spec.SpecFrostMage:
+			case Spec.SpecFuryWarrior:
+				return 2;
+			default:
+				return 8;
+		}
+	}
+
+	getMasteryPerPointModifier(): number {
+		return Mechanics.masteryPercentPerPoint.get(this.getSpec()) || 0;
 	}
 }

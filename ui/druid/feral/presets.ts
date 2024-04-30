@@ -1,8 +1,9 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Spec } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, Potions, Spec, TinkerHands } from '../../core/proto/common';
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
+	DruidPrimeGlyph,
 	FeralDruid_Options as FeralDruidOptions,
 	FeralDruid_Rotation as FeralDruidRotation,
 	FeralDruid_Rotation_AplType,
@@ -32,28 +33,21 @@ export const APL_ROTATION_CUSTOM_EXAMPLE = PresetUtils.makePresetAPLRotation('Cu
 
 export const DefaultRotation = FeralDruidRotation.create({
 	rotationType: FeralDruid_Rotation_AplType.SingleTarget,
-
 	bearWeaveType: FeralDruid_Rotation_BearweaveType.None,
 	minCombosForRip: 5,
 	minCombosForBite: 5,
-
 	useRake: true,
 	useBite: true,
 	mangleSpam: false,
 	biteModeType: FeralDruid_Rotation_BiteModeType.Emperical,
-	biteTime: 4.0,
-	berserkBiteThresh: 25.0,
-	berserkFfThresh: 15.0,
+	biteTime: 11.0,
 	powerbear: false,
-	minRoarOffset: 12.0,
-	ripLeeway: 3.0,
+	minRoarOffset: 29.0,
+	ripLeeway: 1.0,
 	maintainFaerieFire: true,
-	hotUptime: 0.0,
 	snekWeave: false,
-	flowerWeave: false,
-	raidTargets: 30,
-	maxFfDelay: 0.1,
-	prePopOoc: true,
+	manualParams: true,
+	biteDuringExecute: true,
 });
 
 export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFeralDruid, DefaultRotation);
@@ -61,27 +55,53 @@ export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Sim
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const StandardTalents = {
-	name: 'Standard',
+	name: 'Mono-Cat',
 	data: SavedTalents.create({
-		// talentsString: '-543202132322010053120030310511-203503012',
-		// glyphs: Glyphs.create({
-		// 	major1: DruidMajorGlyph.GlyphOfOmenOfClarity,
-		// 	major2: DruidMajorGlyph.GlyphOfSavageRoar,
-		// 	major3: DruidMajorGlyph.GlyphOfShred,
-		// 	minor1: DruidMinorGlyph.GlyphOfDash,
-		// 	minor2: DruidMinorGlyph.GlyphOfTheWild,
-		// 	minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
-		// }),
+		talentsString: '-2320322312012121202301-020301',
+		glyphs: Glyphs.create({
+			prime1: DruidPrimeGlyph.GlyphOfRip,
+			prime2: DruidPrimeGlyph.GlyphOfBloodletting,
+			prime3: DruidPrimeGlyph.GlyphOfBerserk,
+			major1: DruidMajorGlyph.GlyphOfThorns,
+			major2: DruidMajorGlyph.GlyphOfFeralCharge,
+			major3: DruidMajorGlyph.GlyphOfRebirth,
+			minor1: DruidMinorGlyph.GlyphOfDash,
+			minor2: DruidMinorGlyph.GlyphOfMarkOfTheWild,
+			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		}),
+	}),
+};
+
+export const HybridTalents = {
+	name: 'Hybrid',
+	data: SavedTalents.create({
+		talentsString: '-2300322312310001220311-020331',
+		glyphs: Glyphs.create({
+			prime1: DruidPrimeGlyph.GlyphOfRip,
+			prime2: DruidPrimeGlyph.GlyphOfBloodletting,
+			prime3: DruidPrimeGlyph.GlyphOfBerserk,
+			major1: DruidMajorGlyph.GlyphOfFrenziedRegeneration,
+			major2: DruidMajorGlyph.GlyphOfMaul,
+			major3: DruidMajorGlyph.GlyphOfRebirth,
+			minor1: DruidMinorGlyph.GlyphOfDash,
+			minor2: DruidMinorGlyph.GlyphOfChallengingRoar,
+			minor3: DruidMinorGlyph.GlyphOfUnburdenedRebirth,
+		}),
 	}),
 };
 
 export const DefaultOptions = FeralDruidOptions.create({
-	latencyMs: 100,
 	assumeBleedActive: true,
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfEndlessRage,
-	food: Food.FoodDragonfinFilet,
-	defaultPotion: Potions.PotionOfSpeed,
+	flask: Flask.FlaskOfTheWinds,
+	food: Food.FoodSkeweredEel,
+	defaultPotion: Potions.PotionOfTheTolvir,
+	prepopPotion: Potions.PotionOfTheTolvir,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
+
+export const OtherDefaults = {
+	distanceFromTarget: 5
+}

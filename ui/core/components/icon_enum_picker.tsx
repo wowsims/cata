@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment } from 'tsx-vanilla';
 
@@ -71,9 +71,8 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 		});
 
 		if (config.tooltip) {
-			Tooltip.getOrCreateInstance(this.rootElem, {
-				html: true,
-				title: config.tooltip,
+			tippy(this.rootElem, {
+				content: config.tooltip,
 			});
 		}
 
@@ -111,6 +110,7 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 
 			const option = document.createElement('a');
 			option.classList.add('icon-picker-button');
+			option.dataset.whtticon = 'false';
 			option.dataset.disableWowheadTouchTooltip = 'true';
 			optionContainer.appendChild(option);
 
@@ -139,9 +139,8 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			});
 
 			if (valueConfig.tooltip) {
-				Tooltip.getOrCreateInstance(option, {
-					html: true,
-					title: valueConfig.tooltip,
+				tippy(option, {
+					content: valueConfig.tooltip,
 				});
 			}
 		});

@@ -264,7 +264,7 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 
 	if wa.replaceSwing != nil {
 		// Need to check APL here to allow last-moment HS queue casts.
-		wa.unit.Rotation.DoNextAction(sim)
+		wa.unit.ReactToEvent(sim)
 
 		// Need to check this again in case the DoNextAction call swapped items.
 		if wa.replaceSwing != nil {
@@ -279,7 +279,7 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 	attackSpell.Cast(sim, wa.unit.CurrentTarget)
 
 	if !sim.Options.Interactive && wa.unit.Rotation != nil {
-		wa.unit.Rotation.DoNextAction(sim)
+		wa.unit.ReactToEvent(sim)
 	}
 
 	return wa.swingAt
@@ -357,13 +357,15 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ProcMask:    ProcMaskMeleeMHAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: 1,
-		CritMultiplier:   options.MainHand.CritMultiplier,
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           options.MainHand.CritMultiplier,
+		ThreatMultiplier:         1,
+
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
 		},
@@ -375,31 +377,36 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ProcMask:    ProcMaskMeleeOHAuto,
 		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage | SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: 1,
-		CritMultiplier:   options.OffHand.CritMultiplier,
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           options.OffHand.CritMultiplier,
+		ThreatMultiplier:         1,
+
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
 		},
 	}
 
 	unit.AutoAttacks.ranged.config = SpellConfig{
-		ActionID:    ActionID{OtherID: proto.OtherAction_OtherActionShoot},
-		SpellSchool: options.Ranged.GetSpellSchool(),
-		ProcMask:    ProcMaskRangedAuto,
-		Flags:       SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
+		ActionID:     ActionID{OtherID: proto.OtherAction_OtherActionShoot},
+		SpellSchool:  options.Ranged.GetSpellSchool(),
+		ProcMask:     ProcMaskRangedAuto,
+		Flags:        SpellFlagMeleeMetrics | SpellFlagIncludeTargetBonusDamage,
+		MissileSpeed: 40,
 
-		DamageMultiplier: 1,
-		CritMultiplier:   options.Ranged.CritMultiplier,
-		ThreatMultiplier: 1,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           options.Ranged.CritMultiplier,
+		ThreatMultiplier:         1,
+
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
-				spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
 	}
@@ -484,13 +491,34 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 	aa.enabled = true
 
 	if aa.AutoSwingMelee {
-		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
+		if aa.mh.swingAt == NeverExpires {
+			aa.mh.swingAt = 0
+		}
+
 		if aa.IsDualWielding {
+			if aa.oh.swingAt == NeverExpires {
+				aa.oh.swingAt = 0
+
+				// Apply random delay of 0 - 50% swing time, to one of the weapons if dual wielding
+				if aa.oh.unit.Type == EnemyUnit {
+					aa.oh.swingAt = DurationFromSeconds(aa.mh.SwingSpeed / 2)
+				} else {
+					if sim.RandomFloat("SwingResetWeapon") < 0.5 {
+						aa.mh.swingAt = DurationFromSeconds(sim.RandomFloat("SwingResetDelay") * aa.mh.SwingSpeed / 2)
+					} else {
+						aa.oh.swingAt = DurationFromSeconds(sim.RandomFloat("SwingResetDelay") * aa.mh.SwingSpeed / 2)
+					}
+				}
+			}
 			aa.oh.addWeaponAttack(sim, aa.mh.curSwingSpeed)
 		}
+		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 	}
 
 	if aa.AutoSwingRanged {
+		if aa.ranged.swingAt == NeverExpires {
+			aa.ranged.swingAt = 0
+		}
 		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 	}
 }
@@ -620,6 +648,14 @@ func (aa *AutoAttacks) StopMeleeUntil(sim *Simulation, readyAt time.Duration, de
 		sim.rescheduleWeaponAttack(aa.oh.swingAt)
 	}
 }
+func (aa *AutoAttacks) StopRangedUntil(sim *Simulation, readyAt time.Duration) {
+	if !aa.AutoSwingRanged { // if not auto swinging, don't auto restart.
+		return
+	}
+
+	aa.ranged.swingAt = readyAt + aa.ranged.curSwingDuration
+	sim.rescheduleWeaponAttack(aa.ranged.swingAt)
+}
 
 // Delays all swing timers for the specified amount. Only used by Slam.
 func (aa *AutoAttacks) DelayMeleeBy(sim *Simulation, delay time.Duration) {
@@ -632,6 +668,26 @@ func (aa *AutoAttacks) DelayMeleeBy(sim *Simulation, delay time.Duration) {
 
 	if aa.IsDualWielding {
 		aa.oh.swingAt += delay
+		sim.rescheduleWeaponAttack(aa.oh.swingAt)
+	}
+}
+
+// PauseMeleeBy will prevent any swing from completing for the specified time.
+// This replicates a /stopattack and /startattack with a brief "pause" in the middle.
+// It's possible that no swing time is lost if the pauseTime is less than the remaining swing time.
+// Used by Rogue Gouge
+func (aa *AutoAttacks) PauseMeleeBy(sim *Simulation, pauseTime time.Duration) {
+	if !aa.AutoSwingMelee {
+		return
+	}
+
+	timeToResume := sim.CurrentTime + pauseTime
+	if aa.mh.swingAt < timeToResume {
+		aa.mh.swingAt = timeToResume
+		sim.rescheduleWeaponAttack(aa.mh.swingAt)
+	}
+	if aa.IsDualWielding && aa.oh.swingAt < timeToResume {
+		aa.oh.swingAt = timeToResume
 		sim.rescheduleWeaponAttack(aa.oh.swingAt)
 	}
 }

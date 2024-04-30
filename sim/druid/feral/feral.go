@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/druid"
 )
 
@@ -30,8 +31,7 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	selfBuffs := druid.SelfBuffs{}
 
 	cat := &FeralDruid{
-		Druid:   druid.New(character, druid.Cat, selfBuffs, options.TalentsString),
-		latency: time.Duration(max(feralOptions.Options.LatencyMs, 1)) * time.Millisecond,
+		Druid: druid.New(character, druid.Cat, selfBuffs, options.TalentsString),
 	}
 
 	// cat.SelfBuffs.InnervateTarget = &proto.UnitReference{}
@@ -39,18 +39,17 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 	// 	cat.SelfBuffs.InnervateTarget = feralOptions.Options.ClassOptions.InnervateTarget
 	// }
 
-	// cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
-	// //cat.maxRipTicks = cat.MaxRipTicks()
+	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
+	cat.maxRipTicks = cat.MaxRipTicks()
 
-	// cat.EnableEnergyBar(100.0)
+	cat.EnableEnergyBar(100.0)
+	cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1, MHSwingSpeed: 2.5})
 
-	// cat.EnableRageBar(core.RageBarOptions{RageMultiplier: 1, MHSwingSpeed: 2.5})
-
-	// cat.EnableAutoAttacks(cat, core.AutoAttackOptions{
-	// 	// Base paw weapon.
-	// 	//MainHand:       cat.GetCatWeapon(),
-	// 	AutoSwingMelee: true,
-	// })
+	cat.EnableAutoAttacks(cat, core.AutoAttackOptions{
+		// Base paw weapon.
+		MainHand:       cat.GetCatWeapon(),
+		AutoSwingMelee: true,
+	})
 	// cat.ReplaceBearMHFunc = func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
 	// 	return cat.checkReplaceMaul(sim, mhSwingSpell)
 	// }
@@ -61,46 +60,40 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 type FeralDruid struct {
 	*druid.Druid
 
-	// Rotation FeralDruidRotation
+	Rotation FeralDruidRotation
 
-	prepopOoc         bool
-	missChance        float64
-	readyToShift      bool
-	readyToGift       bool
-	waitingForTick    bool
-	latency           time.Duration
-	maxRipTicks       int32
-	berserkUsed       bool
-	bleedAura         *core.Aura
-	lastShift         time.Duration
-	ripRefreshPending bool
-	usingHardcodedAPL bool
-
-	rotationAction *core.PendingAction
+	readyToShift       bool
+	readyToGift        bool
+	waitingForTick     bool
+	maxRipTicks        int32
+	berserkUsed        bool
+	bleedAura          *core.Aura
+	lastShift          time.Duration
+	cachedRipEndThresh time.Duration
+	nextActionAt       time.Duration
+	usingHardcodedAPL  bool
 }
 
 func (cat *FeralDruid) GetDruid() *druid.Druid {
 	return cat.Druid
 }
 
-func (cat *FeralDruid) MissChance() float64 {
-	at := cat.AttackTables[cat.CurrentTarget.UnitIndex]
-	miss := at.BaseMissChance - cat.Shred.PhysicalHitChance(at)
-	dodge := at.BaseDodgeChance - cat.Shred.ExpertisePercentage() - cat.CurrentTarget.PseudoStats.DodgeReduction
-	return miss + dodge
-}
-
 func (cat *FeralDruid) Initialize() {
 	cat.Druid.Initialize()
-	//cat.RegisterFeralCatSpells()
+	cat.RegisterFeralCatSpells()
+}
+
+func (cat *FeralDruid) ApplyTalents() {
+	cat.Druid.ApplyTalents()
+	cat.MultiplyStat(stats.AttackPower, 1.25) // Aggression passive
 }
 
 func (cat *FeralDruid) Reset(sim *core.Simulation) {
 	cat.Druid.Reset(sim)
-	// cat.Druid.ClearForm(sim)
-	// cat.CatFormAura.Activate(sim)
-	// cat.readyToShift = false
-	// cat.waitingForTick = false
-	// cat.berserkUsed = false
-	// cat.rotationAction = nil
+	cat.Druid.ClearForm(sim)
+	cat.CatFormAura.Activate(sim)
+	cat.readyToShift = false
+	cat.waitingForTick = false
+	cat.berserkUsed = false
+	cat.nextActionAt = -core.NeverExpires
 }

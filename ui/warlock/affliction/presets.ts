@@ -87,52 +87,48 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
-	giftOfTheWild: TristateEffect.TristateEffectImproved,
-	powerWordFortitude: TristateEffect.TristateEffectImproved,
-	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
 	arcaneBrilliance: true,
-	divineSpirit: true,
-	trueshotAura: true,
-	leaderOfThePack: TristateEffect.TristateEffectImproved,
-	icyTalons: true,
-	totemOfWrath: true,
-	moonkinAura: TristateEffect.TristateEffectImproved,
-	wrathOfAirTotem: true,
-	sanctifiedRetribution: true,
 	bloodlust: true,
-	demonicPactSp: 500,
+	markOfTheWild: true,
+	icyTalons: true,
+	moonkinForm: true,
+	leaderOfThePack: true,
+	powerWordFortitude: true,
+	strengthOfEarthTotem: true,
+	trueshotAura: true,
+	wrathOfAirTotem: true,
+	demonicPact: true,
+	blessingOfKings: true,
+	blessingOfMight: true,
+	communion: true,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfKings: true,
-	blessingOfWisdom: TristateEffect.TristateEffectImproved,
-	blessingOfMight: TristateEffect.TristateEffectImproved,
-	vampiricTouch: true,
 });
 
 export const DestroIndividualBuffs = IndividualBuffs.create({
-	blessingOfKings: true,
-	blessingOfWisdom: TristateEffect.TristateEffectImproved,
-	blessingOfMight: TristateEffect.TristateEffectImproved,
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	sunderArmor: true,
-	faerieFire: TristateEffect.TristateEffectImproved,
 	bloodFrenzy: true,
+	sunderArmor: true,
 	ebonPlaguebringer: true,
-	heartOfTheCrusader: true,
-	judgementOfWisdom: true,
+	mangle: true,
+	criticalMass: true,
+	demoralizingShout: true,
+	frostFever: true,
+	judgement: true,
 });
 
 export const DestroDebuffs = Debuffs.create({
-	sunderArmor: true,
-	faerieFire: TristateEffect.TristateEffectImproved,
 	bloodFrenzy: true,
+	sunderArmor: true,
 	ebonPlaguebringer: true,
-	heartOfTheCrusader: true,
-	judgementOfWisdom: true,
-	shadowMastery: true,
+	mangle: true,
+	criticalMass: true,
+	demoralizingShout: true,
+	frostFever: true,
+	judgement: true,
 });
 
 export const OtherDefaults = {

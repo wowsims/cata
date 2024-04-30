@@ -4,7 +4,7 @@ import { PhysicalDPSGemOptimizer } from '../../core/components/suggest_gems_acti
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl.js';
+import { APLAction, APLListItem, APLPrepullAction, APLRotation , APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { FeralDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
@@ -26,10 +26,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatAgility,
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
+		Stat.StatExpertise,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatExpertise,
+		Stat.StatMastery,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -41,67 +41,59 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatAgility,
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
+		Stat.StatExpertise,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatArmorPenetration,
-		Stat.StatExpertise,
+		Stat.StatMastery,
 		Stat.StatMana,
 	],
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_PRESET.gear,
+		gear: Presets.PRERAID_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatStrength]: 2.4,
-				[Stat.StatAgility]: 2.39,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatMeleeHit]: 2.51,
-				[Stat.StatMeleeCrit]: 2.23,
-				[Stat.StatMeleeHaste]: 1.83,
-				[Stat.StatArmorPenetration]: 2.08,
-				[Stat.StatExpertise]: 2.44,
+				[Stat.StatStrength]: 0.38,
+				[Stat.StatAgility]: 1.0,
+				[Stat.StatAttackPower]: 0.37,
+				[Stat.StatMeleeHit]: 0.43,
+				[Stat.StatExpertise]: 0.43,
+				[Stat.StatMeleeCrit]: 0.40,
+				[Stat.StatMeleeHaste]: 0.41,
+				[Stat.StatMastery]: 0.58,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 16.5,
+				[PseudoStat.PseudoStatMainHandDps]: 1.55,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
+		// Default rotation settings.
+		rotationType: APLRotationType.TypeSimple,
+		simpleRotation: Presets.DefaultRotation,
 		// Default talents.
 		talents: Presets.StandardTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
-			arcaneBrilliance: true,
-			giftOfTheWild: TristateEffect.TristateEffectImproved,
+			markOfTheWild: true,
+			strengthOfEarthTotem: true,
+			abominationsMight: true,
+			windfuryTotem: true,
 			bloodlust: true,
-			manaSpringTotem: TristateEffect.TristateEffectRegular,
-			strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
-			battleShout: TristateEffect.TristateEffectImproved,
-			unleashedRage: true,
-			icyTalons: true,
-			swiftRetribution: true,
-			sanctifiedRetribution: true,
+			communion: true,
+			arcaneBrilliance: true,
+			manaSpringTotem: true,
 		}),
 		partyBuffs: PartyBuffs.create({
-			heroicPresence: true,
 		}),
 		individualBuffs: IndividualBuffs.create({
-			blessingOfKings: true,
-			blessingOfMight: TristateEffect.TristateEffectImproved,
 		}),
 		debuffs: Debuffs.create({
-			judgementOfWisdom: true,
-			bloodFrenzy: true,
-			giftOfArthas: true,
-			exposeArmor: true,
-			faerieFire: TristateEffect.TristateEffectImproved,
-			sunderArmor: true,
-			curseOfWeakness: TristateEffect.TristateEffectRegular,
-			heartOfTheCrusader: true,
+			savageCombat: true,
 		}),
 	},
 
@@ -110,20 +102,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: FeralInputs.FeralDruidRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.IntellectBuff, BuffDebuffInputs.MP5Buff, BuffDebuffInputs.JudgementOfWisdom],
+	includeBuffDebuffInputs: [BuffDebuffInputs.ManaBuff, BuffDebuffInputs.MP5Buff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [FeralInputs.LatencyMs, FeralInputs.AssumeBleedActive, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [FeralInputs.AssumeBleedActive, OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget, OtherInputs.DarkIntentUptime],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
-		showExecuteProportion: false,
+		showExecuteProportion: true,
 	},
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [Presets.StandardTalents],
+		talents: [Presets.StandardTalents, Presets.HybridTalents],
 		rotations: [Presets.SIMPLE_ROTATION_DEFAULT, Presets.APL_ROTATION_DEFAULT, Presets.APL_ROTATION_CUSTOM_EXAMPLE],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
@@ -136,18 +128,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	simpleRotation: (player: Player<Spec.SpecFeralDruid>, simple: DruidRotation, cooldowns: Cooldowns): APLRotation => {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
-		const preOmen = APLPrepullAction.fromJsonString(`{"action":{"activateAura":{"auraId":{"spellId":16870}}},"doAtValue":{"const":{"val":"-1s"}}}`);
-		const preZerk = APLPrepullAction.fromJsonString(`{"action":{"castSpell":{"spellId":{"spellId":50334}}},"doAtValue":{"const":{"val":"-1s"}}}`);
 		const blockZerk = APLAction.fromJsonString(`{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}`);
-		const doRotation = APLAction.fromJsonString(
-			`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maxFfDelay":${simple.maxFfDelay.toFixed(
-				2,
-			)},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${
-				simple.useBite
-			},"biteTime":${simple.biteTime.toFixed(2)},"flowerWeave":${simple.flowerWeave}}}`,
-		);
-
-		prepullActions.push(...([simple.prePopOoc ? preOmen : null, simple.prePopBerserk ? preZerk : null].filter(a => a) as Array<APLPrepullAction>));
+		const doRotation = APLAction.fromJsonString(`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maintainFaerieFire":${simple.maintainFaerieFire},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${simple.useBite},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)}}}`);
 
 		actions.push(...([blockZerk, doRotation].filter(a => a) as Array<APLAction>));
 
@@ -187,6 +169,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 					4: Presets.P4_PRESET.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });

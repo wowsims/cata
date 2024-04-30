@@ -4,6 +4,7 @@ import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class ElementalShaman extends PlayerSpec<Spec.SpecElementalShaman> {
+	static specIndex = 0;
 	static specID = Spec.SpecElementalShaman as Spec.SpecElementalShaman;
 	static classID = Class.ClassShaman as Class.ClassShaman;
 	static friendlyName = 'Elemental';
@@ -16,6 +17,7 @@ export class ElementalShaman extends PlayerSpec<Spec.SpecElementalShaman> {
 
 	static canDualWield = false;
 
+	readonly specIndex = ElementalShaman.specIndex;
 	readonly specID = ElementalShaman.specID;
 	readonly classID = ElementalShaman.classID;
 	readonly friendlyName = ElementalShaman.friendlyName;
@@ -38,6 +40,7 @@ export class ElementalShaman extends PlayerSpec<Spec.SpecElementalShaman> {
 }
 
 export class EnhancementShaman extends PlayerSpec<Spec.SpecEnhancementShaman> {
+	static specIndex = 1;
 	static specID = Spec.SpecEnhancementShaman as Spec.SpecEnhancementShaman;
 	static classID = Class.ClassShaman as Class.ClassShaman;
 	static friendlyName = 'Enhancement';
@@ -50,6 +53,7 @@ export class EnhancementShaman extends PlayerSpec<Spec.SpecEnhancementShaman> {
 
 	static canDualWield = true;
 
+	readonly specIndex = EnhancementShaman.specIndex;
 	readonly specID = EnhancementShaman.specID;
 	readonly classID = EnhancementShaman.classID;
 	readonly friendlyName = EnhancementShaman.friendlyName;
@@ -72,6 +76,7 @@ export class EnhancementShaman extends PlayerSpec<Spec.SpecEnhancementShaman> {
 }
 
 export class RestorationShaman extends PlayerSpec<Spec.SpecRestorationShaman> {
+	static specIndex = 2;
 	static specID = Spec.SpecRestorationShaman as Spec.SpecRestorationShaman;
 	static classID = Class.ClassShaman as Class.ClassShaman;
 	static friendlyName = 'Restoration';
@@ -84,6 +89,7 @@ export class RestorationShaman extends PlayerSpec<Spec.SpecRestorationShaman> {
 
 	static canDualWield = false;
 
+	readonly specIndex = RestorationShaman.specIndex;
 	readonly specID = RestorationShaman.specID;
 	readonly classID = RestorationShaman.classID;
 	readonly friendlyName = RestorationShaman.friendlyName;

@@ -110,3 +110,11 @@
 		}
 	}
 }
+
+@include media-breakpoint-down(sm) {
+	.advanced-encounter-picker-modal {
+		.encounter-picker {
+			width: 50%;
+		}
+	}
+}

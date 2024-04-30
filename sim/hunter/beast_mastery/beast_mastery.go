@@ -35,19 +35,34 @@ func NewBeastMasteryHunter(character *core.Character, options *proto.Player) *Be
 	return bmHunter
 }
 
-func (hunter *BeastMasteryHunter) Initialize() {
+func (bmHunter *BeastMasteryHunter) Initialize() {
 	// Initialize global Hunter spells
-	hunter.Hunter.Initialize()
+
+	bmHunter.Hunter.Initialize()
 
 	// Apply BM Hunter mastery
-	baseMastery := hunter.GetStat(stats.Mastery)
-
-	hunter.Pet.PseudoStats.DamageDealtMultiplier *= hunter.getMasteryBonus(baseMastery)
-
-	hunter.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
-		hunter.Pet.PseudoStats.DamageDealtMultiplier /= hunter.getMasteryBonus(oldMastery)
-		hunter.Pet.PseudoStats.DamageDealtMultiplier *= hunter.getMasteryBonus(newMastery)
+	baseMastery := bmHunter.GetStat(stats.Mastery)
+	kcMod := bmHunter.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  hunter.HunterSpellKillCommand,
+		FloatValue: bmHunter.getMasteryBonus(baseMastery),
 	})
+
+	if bmHunter.Pet != nil {
+		bmHunter.Pet.PseudoStats.DamageDealtMultiplier *= bmHunter.getMasteryBonus(baseMastery)
+		kcMod.Activate()
+	}
+
+	bmHunter.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		if bmHunter.Pet != nil {
+			bmHunter.Pet.PseudoStats.DamageDealtMultiplier /= bmHunter.getMasteryBonus(oldMastery)
+			bmHunter.Pet.PseudoStats.DamageDealtMultiplier *= bmHunter.getMasteryBonus(newMastery)
+			kcMod.UpdateFloatValue(bmHunter.getMasteryBonus(oldMastery))
+		}
+	})
+
+	// BM Hunter Spec Bonus
+	bmHunter.MultiplyStat(stats.AttackPower, 1.30)
 }
 func (hunter *BeastMasteryHunter) getMasteryBonus(mastery float64) float64 {
 	return 1.134 + ((mastery / core.MasteryRatingPerMasteryPoint) * 0.0167)

@@ -19,8 +19,8 @@ export const ShamanShieldInput = <SpecType extends ShamanSpecs>() =>
 		fieldName: 'shield',
 		values: [
 			{ value: ShamanShield.NoShield, tooltip: 'No Shield' },
-			{ actionId: ActionId.fromSpellId(57960), value: ShamanShield.WaterShield },
-			{ actionId: ActionId.fromSpellId(49281), value: ShamanShield.LightningShield },
+			{ actionId: ActionId.fromSpellId(52127), value: ShamanShield.WaterShield },
+			{ actionId: ActionId.fromSpellId(324), value: ShamanShield.LightningShield },
 		],
 	});
 
@@ -29,10 +29,9 @@ export const ShamanImbueMH = <SpecType extends ShamanSpecs>() =>
 		fieldName: 'imbueMh',
 		values: [
 			{ value: ShamanImbue.NoImbue, tooltip: 'No Main Hand Enchant' },
-			{ actionId: ActionId.fromSpellId(58804), value: ShamanImbue.WindfuryWeapon },
-			{ actionId: ActionId.fromSpellId(58790), value: ShamanImbue.FlametongueWeapon, text: 'R10' },
-			{ actionId: ActionId.fromSpellId(58789), value: ShamanImbue.FlametongueWeaponDownrank, text: 'R9' },
-			{ actionId: ActionId.fromSpellId(58796), value: ShamanImbue.FrostbrandWeapon },
+			{ actionId: ActionId.fromSpellId(8232), value: ShamanImbue.WindfuryWeapon },
+			{ actionId: ActionId.fromSpellId(8024), value: ShamanImbue.FlametongueWeapon },
+			{ actionId: ActionId.fromSpellId(8033), value: ShamanImbue.FrostbrandWeapon },
 		],
 	});
 
@@ -55,9 +54,10 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		numColumns: 1,
 		values: [
 			{ color: '#ffdfba', value: EarthTotem.NoEarthTotem },
-			{ actionId: ActionId.fromSpellId(58643), value: EarthTotem.StrengthOfEarthTotem },
-			{ actionId: ActionId.fromSpellId(58753), value: EarthTotem.StoneskinTotem },
+			{ actionId: ActionId.fromSpellId(8075), value: EarthTotem.StrengthOfEarthTotem },
+			{ actionId: ActionId.fromSpellId(8071), value: EarthTotem.StoneskinTotem },
 			{ actionId: ActionId.fromSpellId(8143), value: EarthTotem.TremorTotem },
+			{ actionId: ActionId.fromSpellId(2062), value: EarthTotem.EarthElementalTotem},
 		],
 		equals: (a: EarthTotem, b: EarthTotem) => a == b,
 		zeroValue: EarthTotem.NoEarthTotem,
@@ -76,8 +76,8 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		numColumns: 1,
 		values: [
 			{ color: '#bae1ff', value: WaterTotem.NoWaterTotem },
-			{ actionId: ActionId.fromSpellId(58774), value: WaterTotem.ManaSpringTotem },
-			{ actionId: ActionId.fromSpellId(58757), value: WaterTotem.HealingStreamTotem },
+			{ actionId: ActionId.fromSpellId(5675), value: WaterTotem.ManaSpringTotem },
+			{ actionId: ActionId.fromSpellId(5394), value: WaterTotem.HealingStreamTotem },
 		],
 		equals: (a: WaterTotem, b: WaterTotem) => a == b,
 		zeroValue: WaterTotem.NoWaterTotem,
@@ -91,31 +91,27 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		},
 	});
 
-	// const _fireTotemPicker = new IconEnumPicker(totemDropdownGroup, simUI.player, {
-	// 	extraCssClasses: ['fire-totem-picker'],
-	// 	numColumns: 1,
-	// 	values: [
-	// 		{ color: '#ffb3ba', value: FireTotem.NoFireTotem },
-	// 		{ actionId: ActionId.fromSpellId(58734), value: FireTotem.MagmaTotem },
-	// 		{ actionId: ActionId.fromSpellId(58704), value: FireTotem.SearingTotem },
-	// 		{
-	// 			actionId: ActionId.fromSpellId(57722),
-	// 			value: FireTotem.TotemOfWrath,
-	// 			showWhen: (player: Player<ShamanSpecs>) => player.getTalents().totemOfWrath,
-	// 		},
-	// 		{ actionId: ActionId.fromSpellId(58656), value: FireTotem.FlametongueTotem },
-	// 	],
-	// 	equals: (a: FireTotem, b: FireTotem) => a == b,
-	// 	zeroValue: FireTotem.NoFireTotem,
-	// 	changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
-	// 	getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().classOptions?.totems?.fire || FireTotem.NoFireTotem,
-	// 	setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
-	// 		const newOptions = player.getSpecOptions();
-	// 		if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
-	// 		newOptions.classOptions!.totems.fire = newValue;
-	// 		player.setSpecOptions(eventID, newOptions);
-	// 	},
-	// });
+	const _fireTotemPicker = new IconEnumPicker(totemDropdownGroup, simUI.player, {
+		extraCssClasses: ['fire-totem-picker'],
+		numColumns: 1,
+		values: [
+			{ color: '#ffb3ba', value: FireTotem.NoFireTotem },
+			{ actionId: ActionId.fromSpellId(78770), value: FireTotem.MagmaTotem },
+			{ actionId: ActionId.fromSpellId(3599), value: FireTotem.SearingTotem },
+			{ actionId: ActionId.fromSpellId(8227), value: FireTotem.FlametongueTotem },
+			{ actionId: ActionId.fromSpellId(2894), value: FireTotem.FireElementalTotem},
+		],
+		equals: (a: FireTotem, b: FireTotem) => a == b,
+		zeroValue: FireTotem.NoFireTotem,
+		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
+		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().classOptions?.totems?.fire || FireTotem.NoFireTotem,
+		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
+			const newOptions = player.getSpecOptions();
+			if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
+			newOptions.classOptions!.totems.fire = newValue;
+			player.setSpecOptions(eventID, newOptions);
+		},
+	});
 
 	const _airTotemPicker = new IconEnumPicker(totemDropdownGroup, simUI.player, {
 		extraCssClasses: ['air-totem-picker'],
