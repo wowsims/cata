@@ -149,7 +149,7 @@ func (mage *Mage) applyHotStreak() {
 			// Pyroblast! cannot trigger hot streak
 			// TODO can Pyroblast! *reset* hot streak crit streak? This implementation assumes no.
 			// If so, will need to envelope it around the hot streak checks
-			if spell == mage.Pyroblast && spell.CurCast.CastTime == 0 {
+			if spell.ClassSpellMask == MageSpellPyroblast && spell.CurCast.CastTime == 0 {
 				return
 			}
 			// Hot Streak Base Talent Proc
@@ -226,7 +226,7 @@ func (mage *Mage) applyPyromaniac() {
 			activeDotTargets := 0
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				for _, spells := range dotSpells {
-					if aoeTarget.GetAuraByID(spells.ActionID).IsActive() {
+					if spells.Dot(aoeTarget).IsActive() {
 						activeDotTargets++
 						break
 					}
@@ -408,7 +408,7 @@ func (mage *Mage) applyImpact() {
 		Duration: time.Second * 10,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 
-			if spell == mage.FireBlast {
+			if spell.ClassSpellMask == MageSpellFireBlast {
 				originalTarget := mage.CurrentTarget
 
 				duplicatableDots := map[*core.Spell]float64{

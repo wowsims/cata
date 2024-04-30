@@ -11,11 +11,11 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 
 	hasGlyph := mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfFrostfire)
 
-	mage.FrostfireBolt = mage.RegisterSpell(core.SpellConfig{
+	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44614},
 		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | ArcaneMissileSpells | HotStreakSpells | core.SpellFlagAPL,
+		Flags:          SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFrostfireBolt,
 		MissileSpeed:   28,
 
@@ -45,7 +45,7 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 			TickLength:       time.Second * 3,
 			BonusCoefficient: 0.00733,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dot.Snapshot(target, 0.00712*mage.ScalingBaseDamage)
+				dot.Snapshot(target, 0.00712*mage.ClassSpellScaling)
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -54,7 +54,7 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.949 * mage.ScalingBaseDamage
+			baseDamage := 0.949 * mage.ClassSpellScaling
 			// Not sure if double dipping exists in Cata. Removed for now.
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {

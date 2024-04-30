@@ -11,7 +11,7 @@ func (mage *Mage) registerDeepFreezeSpell() {
 		return
 	} */
 
-	mage.DeepFreeze = mage.RegisterSpell(core.SpellConfig{
+	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44572},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -37,7 +37,7 @@ func (mage *Mage) registerDeepFreezeSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1.392 * mage.ScalingBaseDamage
+			baseDamage := 1.392 * mage.ClassSpellScaling
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

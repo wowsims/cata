@@ -5,7 +5,7 @@ import (
 )
 
 func (mage *Mage) registerIceLanceSpell() {
-	mage.IceLance = mage.RegisterSpell(core.SpellConfig{
+	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30455},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -28,7 +28,7 @@ func (mage *Mage) registerIceLanceSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.432 * mage.ScalingBaseDamage
+			baseDamage := 0.432 * mage.ClassSpellScaling
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

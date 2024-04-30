@@ -39,7 +39,7 @@ func (mage *Mage) registerBlizzardSpell() {
 		BonusCoefficient: 0.162,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 0.542 * mage.ScalingBaseDamage
+			damage := 0.542 * mage.ClassSpellScaling
 			damage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
@@ -50,7 +50,7 @@ func (mage *Mage) registerBlizzardSpell() {
 		},
 	})
 
-	mage.Blizzard = mage.RegisterSpell(core.SpellConfig{
+	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 10},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,

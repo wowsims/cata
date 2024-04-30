@@ -72,7 +72,7 @@ func (mage *Mage) registerCombustionSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.429 * mage.ScalingBaseDamage
+			baseDamage := 0.429 * mage.ClassSpellScaling
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.DealDamage(sim, result)
