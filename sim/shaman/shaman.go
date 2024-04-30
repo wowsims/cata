@@ -13,6 +13,13 @@ var TalentTreeSizes = [3]int{19, 19, 20}
 // Start looking to refresh 5 minute totems at 4:55.
 const TotemRefreshTime5M = time.Second * 295
 
+// Damage Done By Caster setup
+const (
+	DDBC_T12P2 int = iota
+
+	DDBC_Total
+)
+
 const (
 	SpellFlagShock     = core.SpellFlagAgentReserved1
 	SpellFlagElectric  = core.SpellFlagAgentReserved2
@@ -329,6 +336,7 @@ const (
 	SpellMaskUnleashFrost
 	SpellMaskUnleashFlame
 	SpellMaskEarthquake
+	SpellMaskFlametongueWeapon
 
 	SpellMaskFlameShock = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
 	SpellMaskFire       = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame
