@@ -37,19 +37,15 @@ type Mage struct {
 	Flamestrike          *core.Spell
 	FrostfireOrb         *core.Spell
 	PyroblastDot         *core.Spell
-	PyroblastDotImpact   *core.Spell
+	PyroblastImpact      *core.Spell
 	SummonWaterElemental *core.Spell
 	IcyVeins             *core.Spell
 
 	ArcaneMissilesProcAura *core.Aura
 	ArcanePotencyAura      *core.Aura
 	FingersOfFrostAura     *core.Aura
-	HotStreakAura          *core.Aura
-	IgniteDamageTracker    *core.Aura
 
 	ClassSpellScaling float64
-
-	CritDebuffCategories core.ExclusiveCategoryArray
 }
 
 func (mage *Mage) GetCharacter() *core.Character {
@@ -73,11 +69,8 @@ func (mage *Mage) HasMinorGlyph(glyph proto.MageMinorGlyph) bool {
 
 func (mage *Mage) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.ArcaneBrilliance = true
-
-	// if mage.Talents.ArcaneEmpowerment == 3 {
-	// 	raidBuffs.ArcaneEmpowerment = true
-	// }
 }
+
 func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
