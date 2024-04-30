@@ -257,7 +257,7 @@ func (mage *Mage) applyArcanePotency() {
 				return
 			}
 
-			if spell.ClassSpellMask&(MageSpellsAllDamaging^MageSpellArcaneMissilesTick) == 0 {
+			if spell.ClassSpellMask&((MageSpellsAllDamaging^MageSpellArcaneMissilesTick)|MageSpellArcaneMissilesCast) == 0 {
 				return
 			}
 
