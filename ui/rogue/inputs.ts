@@ -1,4 +1,6 @@
 import * as InputHelpers from '../core/components/input_helpers.js';
+import { PlayerSpec } from '../core/player_spec';
+import { Player } from '../core/proto/api';
 import { RogueOptions_PoisonImbue as Poison } from '../core/proto/rogue.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { RogueSpecs } from '../core/proto_utils/utils';
@@ -59,14 +61,13 @@ export const ThrownImbue = <SpecType extends RogueSpecs>() =>
 // 		showWhen: (player: Player<SpecType>) => player.getTalents().overkill || player.getTalents().masterOfSubtlety > 0,
 // 	});
 
-// export const AssumeBleedActive = <SpecType extends RogueSpecs>() =>
-// 	InputHelpers.makeClassOptionsBooleanInput<SpecType>({
-// 		fieldName: 'assumeBleedActive',
-// 		label: 'Assume Bleed Always Active',
-// 		labelTooltip: "Assume bleed always exists for 'Hunger for Blood' activation. Otherwise will only calculate based on own garrote/rupture.",
-// 		extraCssClasses: ['within-raid-sim-hide'],
-// 		showWhen: (player: Player<SpecType>) => player.getTalents().hungerForBlood,
-// 	});
+export const AssumeBleedActive = <SpecType extends RogueSpecs>() =>
+	InputHelpers.makeClassOptionsBooleanInput<SpecType>({
+		fieldName: 'assumeBleedActive',
+		label: 'Assume Bleed Always Active',
+		labelTooltip: "Assume bleed always exists for 'Sanguinary Vein' activation. Otherwise will only calculate based on personal bleed effects.",
+		extraCssClasses: ['within-raid-sim-hide'],
+	});
 
 export const ApplyPoisonsManually = <SpecType extends RogueSpecs>() =>
 	InputHelpers.makeClassOptionsBooleanInput<SpecType>({

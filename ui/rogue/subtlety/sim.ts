@@ -15,8 +15,6 @@ import {
 	RaidBuffs,
 	Spec,
 	Stat,
-	TristateEffect,
-	WeaponType,
 } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { Stats } from '../../core/proto_utils/stats';
@@ -29,129 +27,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Rogue),
 	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: ['Rotations are not fully optimized, especially for non-standard setups.'],
-	// warnings: [
-	// 	(simUI: IndividualSimUI<Spec.SpecSubtletyRogue>) => {
-	// 		return {
-	// 			updateOn: simUI.sim.encounter.changeEmitter,
-	// 			getContent: () => {
-	// 				let hasNoArmor = false;
-	// 				for (const target of simUI.sim.encounter.targets) {
-	// 					if (new Stats(target.stats).getStat(Stat.StatArmor) <= 0) {
-	// 						hasNoArmor = true;
-	// 						break;
-	// 					}
-	// 				}
-	// 				if (hasNoArmor) {
-	// 					return 'One or more targets have no armor. Check advanced encounter settings.';
-	// 				} else {
-	// 					return '';
-	// 				}
-	// 			},
-	// 		};
-	// 	},
-	// 	(simUI: IndividualSimUI<Spec.SpecSubtletyRogue>) => {
-	// 		return {
-	// 			updateOn: simUI.player.changeEmitter,
-	// 			getContent: () => {
-	// 				if (
-	// 					simUI.player.getTalents().mutilate &&
-	// 					(simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType != WeaponType.WeaponTypeDagger ||
-	// 						simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType != WeaponType.WeaponTypeDagger)
-	// 				) {
-	// 					return '"Mutilate" talent selected, but daggers not equipped in both hands.';
-	// 				} else {
-	// 					return '';
-	// 				}
-	// 			},
-	// 		};
-	// 	},
-	// 	(simUI: IndividualSimUI<Spec.SpecSubtletyRogue>) => {
-	// 		return {
-	// 			updateOn: simUI.player.changeEmitter,
-	// 			getContent: () => {
-	// 				if (simUI.player.getTalents().hackAndSlash) {
-	// 					if (
-	// 						simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType == WeaponType.WeaponTypeSword ||
-	// 						simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType == WeaponType.WeaponTypeAxe ||
-	// 						simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType == WeaponType.WeaponTypeSword ||
-	// 						simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType == WeaponType.WeaponTypeAxe
-	// 					) {
-	// 						return '';
-	// 					} else {
-	// 						return '"Hack and Slash" talent selected, but swords or axes not equipped.';
-	// 					}
-	// 				} else {
-	// 					return '';
-	// 				}
-	// 			},
-	// 		};
-	// 	},
-	// 	(simUI: IndividualSimUI<Spec.SpecSubtletyRogue>) => {
-	// 		return {
-	// 			updateOn: simUI.player.changeEmitter,
-	// 			getContent: () => {
-	// 				if (simUI.player.getTalents().closeQuartersCombat) {
-	// 					if (
-	// 						simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType == WeaponType.WeaponTypeFist ||
-	// 						simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType == WeaponType.WeaponTypeDagger ||
-	// 						simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType == WeaponType.WeaponTypeFist ||
-	// 						simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType == WeaponType.WeaponTypeDagger
-	// 					) {
-	// 						return '';
-	// 					} else {
-	// 						return '"Close Quarters Combat" talent selected, but fists or daggers not equipped.';
-	// 					}
-	// 				} else {
-	// 					return '';
-	// 				}
-	// 			},
-	// 		};
-	// 	},
-	// 	(simUI: IndividualSimUI<Spec.SpecSubtletyRogue>) => {
-	// 		return {
-	// 			updateOn: simUI.player.changeEmitter,
-	// 			getContent: () => {
-	// 				if (simUI.player.getTalents().maceSpecialization) {
-	// 					if (
-	// 						simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponType == WeaponType.WeaponTypeMace ||
-	// 						simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponType == WeaponType.WeaponTypeMace
-	// 					) {
-	// 						return '';
-	// 					} else {
-	// 						return '"Mace Specialization" talent selected, but maces not equipped.';
-	// 					}
-	// 				} else {
-	// 					return '';
-	// 				}
-	// 			},
-	// 		};
-	// 	},
-	// 	(simUI: IndividualSimUI<Spec.SpecSubtletyRogue>) => {
-	// 		return {
-	// 			updateOn: simUI.player.changeEmitter,
-	// 			getContent: () => {
-	// 				const mhWeaponSpeed = simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.weaponSpeed;
-	// 				const ohWeaponSpeed = simUI.player.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed;
-	// 				const mhImbue = simUI.player.getSpecOptions().classOptions!.mhImbue;
-	// 				const ohImbue = simUI.player.getSpecOptions().classOptions!.ohImbue;
-	// 				if (
-	// 					typeof mhWeaponSpeed == 'undefined' ||
-	// 					typeof ohWeaponSpeed == 'undefined' ||
-	// 					!simUI.player.getSpecOptions().classOptions!.applyPoisonsManually
-	// 				) {
-	// 					return '';
-	// 				}
-	// 				if (mhWeaponSpeed < ohWeaponSpeed && ohImbue == RogueOptions_PoisonImbue.DeadlyPoison) {
-	// 					return 'Deadly poison applied to slower (off hand) weapon.';
-	// 				}
-	// 				if (ohWeaponSpeed < mhWeaponSpeed && mhImbue == RogueOptions_PoisonImbue.DeadlyPoison) {
-	// 					return 'Deadly poison applied to slower (main hand) weapon.';
-	// 				}
-	// 				return '';
-	// 			},
-	// 		};
-	// 	},
-	// ],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -260,8 +135,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		inputs: [
 			// RogueInputs.StartingOverkillDuration(),
 			// RogueInputs.VanishBreakTime(),
-			// RogueInputs.AssumeBleedActive(),
-			// SubInputs.HonorAmongThievesCritRate,
+			RogueInputs.AssumeBleedActive(),
+			SubInputs.HonorAmongThievesCritRate,
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
