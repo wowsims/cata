@@ -1,6 +1,5 @@
 import { Player } from '../../player';
-import { GemColor, ItemSlot } from '../../proto/common';
-import { UIGem as Gem } from '../../proto/ui.js';
+import { ItemSlot } from '../../proto/common';
 import { EquippedItem } from '../../proto_utils/equipped_item';
 import { TypedEvent } from '../../typed_event';
 import QuickSwapList from '../quick_swap';
@@ -22,16 +21,14 @@ export const addQuickGemPopover = (
 		},
 		item,
 		getItems: (currentItem: EquippedItem) => {
-			const favoriteGems = player.sim
-				.getFilters()
-				.favoriteGems?.map(id => player.sim.db.lookupGem(id))
-				.filter((gem): gem is Gem => {
-					if (!gem) return false;
-					return !(itemSlot !== ItemSlot.ItemSlotHead && gem?.color === GemColor.GemColorMeta);
-				})
+			const favoriteGems = player.sim.getFilters().favoriteGems;
+			const socketColor = currentItem.curSocketColors(player.isBlacksmithing())[socketIdx];
+			const eligibleFavoriteGems = player
+				.getGems(socketColor)
+				.filter(gem => favoriteGems.includes(gem.id))
 				.sort((a, b) => (a.color > b.color ? 1 : -1));
 
-			return favoriteGems.map(gem => ({
+			return eligibleFavoriteGems.map(gem => ({
 				item: gem,
 				active: currentItem.gems[socketIdx]?.id === gem.id,
 			}));
