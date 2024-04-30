@@ -48,11 +48,11 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		},
 	})
 
-	mage.ArcaneBlast = mage.RegisterSpell(core.SpellConfig{
+	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30451},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | ArcaneMissileSpells | core.SpellFlagAPL,
+		Flags:          SpellFlagMage | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellArcaneBlast,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.05,
@@ -70,7 +70,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1.933 * mage.ScalingBaseDamage
+			baseDamage := 1.933 * mage.ClassSpellScaling
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			mage.ArcaneBlastAura.Activate(sim)
 			mage.ArcaneBlastAura.AddStack(sim)

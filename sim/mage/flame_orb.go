@@ -15,7 +15,7 @@ func (mage *Mage) registerFlameOrbSpell() {
 		return
 	}
 
-	mage.FlameOrb = mage.RegisterSpell(core.SpellConfig{
+	flameOrb := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 82731},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty, //tbd
@@ -41,7 +41,7 @@ func (mage *Mage) registerFlameOrbSpell() {
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.FlameOrb,
+		Spell: flameOrb,
 		Type:  core.CooldownTypeDPS,
 	})
 }
@@ -61,7 +61,7 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 
-			damage := 1.318 * mage.ScalingBaseDamage
+			damage := 1.318 * mage.ClassSpellScaling
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
@@ -143,7 +143,7 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 		BonusCoefficient: 0.134,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 0.278 * fo.mageOwner.ScalingBaseDamage
+			damage := 0.278 * fo.mageOwner.ClassSpellScaling
 			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
 			spell.CalcAndDealDamage(sim, randomTarget, damage, spell.OutcomeMagicHitAndCrit)
 			fo.TickCount += 1
