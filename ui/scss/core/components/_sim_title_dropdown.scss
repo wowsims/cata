@@ -1,43 +1,47 @@
 .sim-title {
-  // Same as sim header
-  position: sticky;
-  top: -1px;
-  height: calc($sim-header-height + 1px);
+	// Same as sim header
+	position: sticky;
+	top: -1px;
+	height: calc($sim-header-height + 1px);
 	border-bottom: $border-default;
+	z-index: $sidebar-z-index + 1;
 
-  .sim-title-dropdown-root {
-    height: calc(#{$sim-header-height} - 1px);
+	.sim-title-dropdown-root {
+		height: calc(#{$sim-header-height} - 1px);
 
-    .sim-link-dropdown {
-      height: 100%;
+		.sim-link-dropdown {
+			height: 100%;
 
-      &> .dropdown-menu {
-        width: 100%;
-      }
-    }
-  }
+			& > .dropdown-menu {
+				width: 100%;
+			}
+		}
+	}
 
-  .dropdown-menu {
-    background: $dropdown-bg;
-    border: none;
-    z-index: 1500;
+	.dropdown-menu {
+		background: $dropdown-bg;
+		border: none;
+		z-index: 1500;
 
-    .dropdown-menu {
-      min-width: 300px;
-    }
-  }
+		.dropdown-menu {
+			min-width: 300px;
+		}
+	}
 
-  .sim-link {
-    background: $dropdown-bg;
-    height: 100%;
+	.sim-link {
+		background: $dropdown-bg;
+		height: 100%;
 
-    &:hover, &:focus, &.active, &.show {
-      background: $dropdown-link-hover-bg;
-    }
+		&:hover,
+		&:focus,
+		&.active,
+		&.show {
+			background: $dropdown-link-hover-bg;
+		}
 
-    .sim-link-content {
-      padding-left: $gap-width;
-      padding-right: $gap-width;
-    }
-  }
+		.sim-link-content {
+			padding-left: $gap-width;
+			padding-right: $gap-width;
+		}
+	}
 }
