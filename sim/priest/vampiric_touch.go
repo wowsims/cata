@@ -39,7 +39,7 @@ func (priest *Priest) registerVampiricTouchSpell() {
 			Aura: core.Aura{
 				Label: "VampiricTouch",
 				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.Landed() && spell == priest.MindBlast {
+					if result.Landed() && spell.ClassSpellMask == PriestSpellMindBlast {
 						priest.Env.Raid.ProcReplenishment(sim, replSrc)
 					}
 				},

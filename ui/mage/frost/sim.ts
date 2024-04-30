@@ -1,12 +1,9 @@
 import * as OtherInputs from '../../core/components/other_inputs';
-import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl';
-import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
-import { FrostMage_Rotation } from '../../core/proto/mage';
-import * as AplUtils from '../../core/proto_utils/apl_utils';
+import { APLRotation } from '../../core/proto/apl';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
 import * as MageInputs from '../inputs';
 import * as FrostInputs from './inputs';
@@ -110,7 +107,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [MageInputs.ArmorInput()],
+	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: FrostInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
@@ -134,7 +131,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 
 	presets: {
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.FROST_ROTATION_PRESET_DEFAULT, Presets.FROST_ROTATION_PRESET_AOE],
+		rotations: [Presets.FROST_ROTATION_PRESET_DEFAULT, Presets.FROST_ROTATION_PRESET_AOE],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FrostTalents],
 		// Preset gear configurations that the user can quickly select.
@@ -150,59 +147,59 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		}
 	},
 
-	simpleRotation: (player: Player<Spec.SpecFrostMage>, simple: FrostMage_Rotation, cooldowns: Cooldowns): APLRotation => {
-		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
+	// simpleRotation: (player: Player<Spec.SpecFrostMage>, simple: FrostMage_Rotation, cooldowns: Cooldowns): APLRotation => {
+	// 	const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
-		const prepullMirrorImage = APLPrepullAction.fromJsonString(
-			`{"action":{"castSpell":{"spellId":{"spellId":55342}}},"doAtValue":{"const":{"val":"-2s"}}}`,
-		);
+	// 	const prepullMirrorImage = APLPrepullAction.fromJsonString(
+	// 		`{"action":{"castSpell":{"spellId":{"spellId":55342}}},"doAtValue":{"const":{"val":"-2s"}}}`,
+	// 	);
 
-		const berserking = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":26297}}}`,
-		);
-		const hyperspeedAcceleration = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":54758}}}`,
-		);
-		const combatPot = APLAction.fromJsonString(
-			`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}}`,
-		);
-		const evocation = APLAction.fromJsonString(
-			`{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"25%"}}}},"castSpell":{"spellId":{"spellId":12051}}}`,
-		);
+	// 	const berserking = APLAction.fromJsonString(
+	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":26297}}}`,
+	// 	);
+	// 	const hyperspeedAcceleration = APLAction.fromJsonString(
+	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"spellId":54758}}}`,
+	// 	);
+	// 	const combatPot = APLAction.fromJsonString(
+	// 		`{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":12472}}}}},"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}}`,
+	// 	);
+	// 	const evocation = APLAction.fromJsonString(
+	// 		`{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"25%"}}}},"castSpell":{"spellId":{"spellId":12051}}}`,
+	// 	);
 
-		const deepFreeze = APLAction.fromJsonString(`{"condition":{"auraIsActive":{"auraId":{"spellId":44545}}},"castSpell":{"spellId":{"spellId":44572}}}`);
-		const frostfireBoltWithBrainFreeze = APLAction.fromJsonString(
-			`{"condition":{"auraIsActiveWithReactionTime":{"auraId":{"spellId":44549}}},"castSpell":{"spellId":{"spellId":47610}}}`,
-		);
-		const frostbolt = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":42842}}}`);
-		const iceLance = APLAction.fromJsonString(
-			`{"condition":{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":44545}}},"rhs":{"const":{"val":"1"}}}},"castSpell":{"spellId":{"spellId":42914}}}`,
-		);
+	// 	const deepFreeze = APLAction.fromJsonString(`{"condition":{"auraIsActive":{"auraId":{"spellId":44545}}},"castSpell":{"spellId":{"spellId":44572}}}`);
+	// 	const frostfireBoltWithBrainFreeze = APLAction.fromJsonString(
+	// 		`{"condition":{"auraIsActiveWithReactionTime":{"auraId":{"spellId":44549}}},"castSpell":{"spellId":{"spellId":47610}}}`,
+	// 	);
+	// 	const frostbolt = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":42842}}}`);
+	// 	const iceLance = APLAction.fromJsonString(
+	// 		`{"condition":{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":44545}}},"rhs":{"const":{"val":"1"}}}},"castSpell":{"spellId":{"spellId":42914}}}`,
+	// 	);
 
-		prepullActions.push(prepullMirrorImage);
+	// 	prepullActions.push(prepullMirrorImage);
 
-		actions.push(
-			...([
-				berserking,
-				hyperspeedAcceleration,
-				combatPot,
-				evocation,
-				deepFreeze,
-				frostfireBoltWithBrainFreeze,
-				simple.useIceLance ? iceLance : null,
-				frostbolt,
-			].filter(a => a) as Array<APLAction>),
-		);
+	// 	actions.push(
+	// 		...([
+	// 			berserking,
+	// 			hyperspeedAcceleration,
+	// 			combatPot,
+	// 			evocation,
+	// 			deepFreeze,
+	// 			frostfireBoltWithBrainFreeze,
+	// 			//simple.useIceLance ? iceLance : null,
+	// 			frostbolt,
+	// 		].filter(a => a) as Array<APLAction>),
+	// 	);
 
-		return APLRotation.create({
-			prepullActions: prepullActions,
-			priorityList: actions.map(action =>
-				APLListItem.create({
-					action: action,
-				}),
-			),
-		});
-	},
+	// 	return APLRotation.create({
+	// 		prepullActions: prepullActions,
+	// 		priorityList: actions.map(action =>
+	// 			APLListItem.create({
+	// 				action: action,
+	// 			}),
+	// 		),
+	// 	});
+	// },
 
 	raidSimPresets: [
 		{

@@ -24,9 +24,8 @@ func (mage *Mage) registerManaGemsCD() {
 			15*time.Second)
 	}
 
-	// Numbers may be different at 85, these are 80 values
-	minManaGain := 3330.0
-	maxManaGain := 3500.0
+	minManaGain := 11801.0
+	maxManaGain := 12405.0
 
 	var remainingManaGems int
 	mage.RegisterResetEffect(func(sim *core.Simulation) {
@@ -74,7 +73,7 @@ func (mage *Mage) registerManaGemsCD() {
 		Type:     core.CooldownTypeMana,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
 			// Only pop if we have less than the max mana provided by the gem minus 1mp5 tick.
-			totalRegen := character.ManaRegenPerSecondWhileCasting() * 5
+			totalRegen := character.ManaRegenPerSecondWhileCombat() * 5
 			return character.MaxMana()-(character.CurrentMana()+totalRegen) >= maxManaGain
 		},
 	})

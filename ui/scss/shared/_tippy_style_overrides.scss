@@ -1,0 +1,29 @@
+.tippy-box {
+	opacity: 0.9;
+	font-size: 0.875rem;
+	max-width: $tooltip-max-width;
+
+	@include media-breakpoint-down(xl) {
+		max-width: $tooltip-max-width-lg;
+	}
+
+	@include media-breakpoint-down(md) {
+		max-width: $tooltip-max-width-sm;
+	}
+}
+.tippy-tooltip {
+}
+
+.tippy-backdrop {
+}
+
+.tippy-arrow {
+	display: none;
+}
+
+.tippy-content {
+	background-color: $tooltip-bg;
+	border: $tooltip-border 1px solid;
+	color: $tooltip-body-color;
+	padding: $tooltip-body-padding-y $tooltip-body-padding-x;
+}

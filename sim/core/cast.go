@@ -164,10 +164,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 				Target: target,
 			}
 
-			if spell.Unit.Hardcast.Expires != spell.Unit.NextGCDAt() {
-				spell.Unit.newHardcastAction(sim)
-			}
-
+			spell.Unit.newHardcastAction(sim)
 			return true
 		}
 

@@ -47,9 +47,9 @@ export class ActionId {
 				name = 'Mana Tick';
 				iconUrl = resourceTypeToIcon[ResourceType.ResourceTypeMana];
 				if (tag == 1) {
-					name += ' (Casting)';
+					name += ' (In Combat)';
 				} else if (tag == 2) {
-					name += ' (Not Casting)';
+					name += ' (Out of Combat)';
 				}
 				break;
 			case OtherAction.OtherActionEnergyRegen:
@@ -252,7 +252,8 @@ export class ActionId {
 				if (this.tag) name += ' (DoT)';
 				break;
 			case 'Living Bomb':
-				if (this.spellId == 55362) name += ' (Explosion)';
+				if (this.tag == 1) name += ' (DoT)';
+				else if (this.tag == 2) name += ' (Explosion)';
 				break;
 			case 'Evocation':
 				if (this.tag == 1) {

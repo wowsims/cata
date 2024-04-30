@@ -15,11 +15,11 @@ func (mage *Mage) registerFlameOrbSpell() {
 		return
 	}
 
-	mage.FlameOrb = mage.RegisterSpell(core.SpellConfig{
+	flameOrb := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 82731},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty, //tbd
-		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFlameOrb,
 
 		ManaCost: core.ManaCostOptions{
@@ -41,7 +41,7 @@ func (mage *Mage) registerFlameOrbSpell() {
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.FlameOrb,
+		Spell: flameOrb,
 		Type:  core.CooldownTypeDPS,
 	})
 }
@@ -52,7 +52,6 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 		ActionID:       core.ActionID{SpellID: 83619},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          SpellFlagMage, // | HotStreakSpell (unlikely based on videos)
 		ClassSpellMask: MageSpellFlameOrb,
 
 		DamageMultiplier: 1,
@@ -61,7 +60,7 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 
-			damage := 1.318 * mage.ScalingBaseDamage
+			damage := 1.318 * mage.ClassSpellScaling
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
@@ -129,7 +128,7 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 		ActionID:       core.ActionID{SpellID: 82739},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          SpellFlagMage | core.SpellFlagNoLogs | HotStreakSpells,
+		Flags:          core.SpellFlagNoLogs,
 		ClassSpellMask: MageSpellFlameOrb,
 
 		Cast: core.CastConfig{
@@ -143,7 +142,7 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 		BonusCoefficient: 0.134,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 0.278 * fo.mageOwner.ScalingBaseDamage
+			damage := 0.278 * fo.mageOwner.ClassSpellScaling
 			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
 			spell.CalcAndDealDamage(sim, randomTarget, damage, spell.OutcomeMagicHitAndCrit)
 			fo.TickCount += 1
