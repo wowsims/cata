@@ -1,8 +1,7 @@
+import { UnitPicker, UnitValue,UnitValueConfig } from '../../components/unit_picker.js';
 import { UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
 import { SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
-import { UnitPicker, UnitValueConfig, UnitValue } from '../../components/unit_picker.js';
-
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 
 const ALL_UNITS = -1;
@@ -101,7 +100,7 @@ export class ResultsFilter extends ResultComponent {
 			const simResult = this.getLastSimResult();
 			const unit = ref.type == UnitType.Player
 				? simResult.result.getPlayerWithRaidIndex(ref.index)
-				: ref.type == UnitType.Target 
+				: ref.type == UnitType.Target
 					? simResult.result.getTargetWithEncounterIndex(ref.index)
 					: null;
 

@@ -1,5 +1,4 @@
 import { ActionMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
-
 import { ColumnSortType, MetricsTable } from './metrics_table.js';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 
@@ -11,6 +10,7 @@ export class DtpsMeleeMetricsTable extends MetricsTable<ActionMetrics> {
 				return {
 					name: metric.name,
 					actionId: metric.actionId,
+					metricType: metric.constructor?.name,
 				};
 			}),
 			{

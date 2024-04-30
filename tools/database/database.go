@@ -176,7 +176,7 @@ func (db *WowDatabase) AddSpellIcon(id int32, tooltips map[int32]WowheadItemResp
 		if tooltip.GetName() == "" || tooltip.GetIcon() == "" {
 			return
 		}
-		db.SpellIcons[id] = &proto.IconData{Id: id, Name: tooltip.GetName(), Icon: tooltip.GetIcon()}
+		db.SpellIcons[id] = &proto.IconData{Id: id, Name: tooltip.GetName(), Icon: tooltip.GetIcon(), HasBuff: tooltip.HasBuff()}
 	} else {
 		panic(fmt.Sprintf("No spell tooltip with id %d", id))
 	}

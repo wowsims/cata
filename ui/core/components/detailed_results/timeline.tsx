@@ -16,7 +16,7 @@ import { ResultComponent, ResultComponentConfig, SimResultData } from './result_
 
 declare let ApexCharts: any;
 
-type TooltipHandler = (dataPointIndex: number) => string;
+type TooltipHandler = (dataPointIndex: number) => Element;
 
 const dpsColor = '#ed5653';
 const manaColor = '#2E93fA';
@@ -604,7 +604,7 @@ export class Timeline extends ResultComponent {
 		return castsByAbility;
 	}
 
-	private makeLabelElem(actionId: ActionId, isHiddenLabel: boolean): JSX.Element {
+	private makeLabelElem(actionId: ActionId, isHiddenLabel: boolean, isAura?: boolean): JSX.Element {
 		const labelText = idsToGroupForRotation.includes(actionId.spellId) ? actionId.baseName : actionId.name;
 
 		const labelElem = (
@@ -642,6 +642,7 @@ export class Timeline extends ResultComponent {
 		updateHidden();
 		const labelIcon = labelElem.getElementsByClassName('rotation-label-icon')[0] as HTMLAnchorElement;
 		actionId.setBackgroundAndHref(labelIcon);
+		actionId.setWowheadDataset(labelIcon, { useBuffAura: isAura });
 		return labelElem;
 	}
 
@@ -822,7 +823,7 @@ export class Timeline extends ResultComponent {
 							{castLog.damageDealtLogs.map(ddl => (
 								<li>
 									<span>
-										{ddl.timestamp.toFixed(2)}s - {htmlDecode(ddl.resultString())}
+										{ddl.timestamp.toFixed(2)}s - {ddl.result()}
 									</span>
 									{ddl.source?.isTarget && <span className="threat-metrics"> ({ddl.threat.toFixed(1)} Threat)</span>}
 								</li>
@@ -853,7 +854,7 @@ export class Timeline extends ResultComponent {
 					const tt = (
 						<div className="timeline-tooltip">
 							<span>
-								{ddl.timestamp.toFixed(2)}s - {ddl.actionId!.name} {htmlDecode(ddl.resultString())}
+								{ddl.timestamp.toFixed(2)}s - {ddl.actionId!.name} {ddl.result()}
 							</span>
 							{ddl.source?.isTarget && <span className="threat-metrics"> ({ddl.threat.toFixed(1)} Threat)</span>}
 						</div>
@@ -878,8 +879,8 @@ export class Timeline extends ResultComponent {
 		const actionId = auraUptimeLogs[0].actionId!;
 
 		const rowElem = this.makeRowElem(actionId, duration);
-		this.rotationLabels.appendChild(this.makeLabelElem(actionId, false));
-		this.rotationHiddenIdsContainer.appendChild(this.makeLabelElem(actionId, true));
+		this.rotationLabels.appendChild(this.makeLabelElem(actionId, false, true));
+		this.rotationHiddenIdsContainer.appendChild(this.makeLabelElem(actionId, true, true));
 		this.rotationTimeline.appendChild(rowElem);
 
 		this.applyAuraUptimeLogsToRow(auraUptimeLogs, rowElem);
@@ -977,64 +978,61 @@ export class Timeline extends ResultComponent {
 		ctx.stroke();
 	}
 
-	private dpsTooltip(log: DpsLog, includeAuras: boolean, player: UnitMetrics, colorOverride: string): string {
+	private dpsTooltip(log: DpsLog, includeAuras: boolean, player: UnitMetrics, colorOverride: string) {
 		const showPlayerLabel = colorOverride != '';
-		return `
-			<div class="timeline-tooltip dps">
-				<div class="timeline-tooltip-header">
-					${
-						showPlayerLabel
-							? `
-					<img class="timeline-tooltip-icon" src="${player.iconUrl}">
-					<span class="" style="color: ${colorOverride}">${player.label}</span><span> - </span>
+		return (
+			<div className="timeline-tooltip dps">
+				<div className="timeline-tooltip-header">
+					{showPlayerLabel
+						? `
+					<img className="timeline-tooltip-icon" src="${player.iconUrl}">
+					<span className="" style="color: ${colorOverride}">${player.label}</span><span> - </span>
 					`
-							: ''
-					}
-					<span class="bold">${log.timestamp.toFixed(2)}s</span>
+						: ''}
+					<span className="bold">{log.timestamp.toFixed(2)}s</span>
 				</div>
-				<div class="timeline-tooltip-body">
-					<ul class="timeline-dps-events">
-						${log.damageLogs.map(damageLog => this.tooltipLogItem(damageLog, damageLog.resultString())).join('')}
-					</ul>
-					<div class="timeline-tooltip-body-row">
-						<span class="series-color">DPS: ${log.dps.toFixed(2)}</span>
+				<div className="timeline-tooltip-body">
+					<ul className="timeline-dps-events">{log.damageLogs.map(damageLog => this.tooltipLogItem(damageLog, damageLog.result())).join('')}</ul>
+					<div className="timeline-tooltip-body-row">
+						<span className="series-color">DPS: {log.dps.toFixed(2)}</span>
 					</div>
 				</div>
-				${this.tooltipAurasSection(log)}
+				{this.tooltipAurasSection(log)}
 			</div>
-		`;
+		);
 	}
 
-	private threatTooltip(log: ThreatLogGroup, includeAuras: boolean, player: UnitMetrics, colorOverride: string): string {
+	private threatTooltip(log: ThreatLogGroup, includeAuras: boolean, player: UnitMetrics, colorOverride: string) {
 		const showPlayerLabel = colorOverride != '';
-		return `<div class="timeline-tooltip threat">
-			<div class="timeline-tooltip-header">
-				${
-					showPlayerLabel
-						? `
-				<img class="timeline-tooltip-icon" src="${player.iconUrl}">
-				<span class="" style="color: ${colorOverride}">${player.label}</span></span> - </span>
-				`
-						: ''
-				}
-				<span class="bold">${log.timestamp.toFixed(2)}s</span>
-			</div>
-			<div class="timeline-tooltip-body">
-				<div class="timeline-tooltip-body-row">
-					<span class="series-color">Before: ${log.threatBefore.toFixed(1)}</span>
+		return (
+			<div className="timeline-tooltip threat">
+				<div className="timeline-tooltip-header">
+					{showPlayerLabel ? (
+						<>
+							<img className="timeline-tooltip-icon" src={player.iconUrl} />
+							<span className="" style={{ color: colorOverride }}>
+								{player.label}
+							</span>
+							<span> - </span>
+						</>
+					) : null}
+					<span className="bold">{log.timestamp.toFixed(2)}s</span>
 				</div>
-				<ul class="timeline-threat-events">
-					${log.logs.map(log => this.tooltipLogItem(log, `${log.threat.toFixed(1)} Threat`)).join('')}
-				</ul>
-				<div class="timeline-tooltip-body-row">
-					<span class="series-color">After: ${log.threatAfter.toFixed(1)}</span>
+				<div className="timeline-tooltip-body">
+					<div className="timeline-tooltip-body-row">
+						<span className="series-color">Before: {log.threatBefore.toFixed(1)}</span>
+					</div>
+					<ul className="timeline-threat-events">{log.logs.map(log => this.tooltipLogItem(log, <>{log.threat.toFixed(1)} Threat</>)).join('')}</ul>
+					<div className="timeline-tooltip-body-row">
+						<span className="series-color">After: {log.threatAfter.toFixed(1)}</span>
+					</div>
 				</div>
+				${includeAuras ? this.tooltipAurasSection(log) : null}
 			</div>
-			${includeAuras ? this.tooltipAurasSection(log) : ''}
-		</div>`;
+		);
 	}
 
-	private resourceTooltipElem(log: ResourceChangedLogGroup, maxValue: number, includeAuras: boolean): JSX.Element {
+	private resourceTooltipElem(log: ResourceChangedLogGroup, maxValue: number, includeAuras: boolean) {
 		const valToDisplayString = percentageResources.includes(log.resourceType)
 			? (val: number) => `${val.toFixed(1)} (${((val / maxValue) * 100).toFixed(0)}%)`
 			: (val: number) => `${val.toFixed(1)}`;
@@ -1049,7 +1047,7 @@ export class Timeline extends ResultComponent {
 						<span className="series-color">Before: {valToDisplayString(log.valueBefore)}</span>
 					</div>
 					<ul className="timeline-mana-events">
-						{log.logs.map(manaChangedLog => this.tooltipLogItemElem(manaChangedLog, manaChangedLog.resultString()))}
+						{log.logs.map(manaChangedLog => this.tooltipLogItemElem(manaChangedLog, <>{manaChangedLog.resultString()}</>))}
 					</ul>
 					<div className="timeline-tooltip-body-row">
 						<span className="series-color">After: {valToDisplayString(log.valueAfter)}</span>
@@ -1060,20 +1058,20 @@ export class Timeline extends ResultComponent {
 		);
 	}
 
-	private resourceTooltip(log: ResourceChangedLogGroup, maxValue: number, includeAuras: boolean): string {
-		return this.resourceTooltipElem(log, maxValue, includeAuras).outerHTML;
+	private resourceTooltip(log: ResourceChangedLogGroup, maxValue: number, includeAuras: boolean) {
+		return this.resourceTooltipElem(log, maxValue, includeAuras);
 	}
 
-	private tooltipLogItem(log: SimLog, value: string): string {
-		return this.tooltipLogItemElem(log, value).outerHTML;
+	private tooltipLogItem(log: SimLog, value: Element) {
+		return this.tooltipLogItemElem(log, value);
 	}
 
-	private tooltipLogItemElem(log: SimLog, value: string): JSX.Element {
+	private tooltipLogItemElem(log: SimLog, value: Element): JSX.Element {
 		return (
 			<li>
 				{log.actionId && log.actionId.iconUrl && <img className="timeline-tooltip-icon" src={log.actionId.iconUrl}></img>}
 				{log.actionId && <span>{log.actionId.name}</span>}
-				<span className="series-color">{htmlDecode(value)}</span>
+				<span className="series-color">{value}</span>
 			</li>
 		);
 	}
