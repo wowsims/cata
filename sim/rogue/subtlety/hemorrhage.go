@@ -27,7 +27,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 		Flags:       core.SpellFlagIgnoreAttackerModifiers, // From initial testing, Hemo DoT only benefits from debuffs on target, such as 30% bleed damage
 
 		ThreatMultiplier: 1,
-		CritMultiplier:   1,
+		CritMultiplier:   subRogue.MeleeCritMultiplier(false), // Per WoWHead data, Lethality does not boost the DoT directly,
 		DamageMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -41,9 +41,7 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
-				dot.SnapshotAttackerMultiplier = 1
+				dot.SnapshotPhysical(target, lastHemoDamage*.05)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -51,9 +49,8 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			dot := spell.Dot(target)
-			dot.SnapshotBaseDamage = lastHemoDamage * .05
-			dot.Apply(sim)
+			spell.Dot(target).Apply(sim)
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 		},
 	})
 
