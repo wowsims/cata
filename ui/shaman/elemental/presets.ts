@@ -72,7 +72,6 @@ export const DefaultOptions = ElementalShamanOptions.create({
 			air: AirTotem.WrathOfAirTotem,
 			fire: FireTotem.SearingTotem,
 			water: WaterTotem.ManaSpringTotem,
-			useFireElemental: true,
 		}),
 	},
 });

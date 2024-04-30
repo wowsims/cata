@@ -53,19 +53,17 @@ var StandardGlyphs = &proto.Glyphs{
 
 var NoTotems = &proto.ShamanTotems{}
 var TotemsBasic = &proto.ShamanTotems{
-	Earth:            proto.EarthTotem_TremorTotem,
-	Air:              proto.AirTotem_WrathOfAirTotem,
-	Water:            proto.WaterTotem_ManaSpringTotem,
-	Fire:             proto.FireTotem_SearingTotem,
-	UseFireElemental: true,
+	Earth: proto.EarthTotem_TremorTotem,
+	Air:   proto.AirTotem_WrathOfAirTotem,
+	Water: proto.WaterTotem_ManaSpringTotem,
+	Fire:  proto.FireTotem_SearingTotem,
 }
 
 var TotemsFireElemental = &proto.ShamanTotems{
-	Earth:            proto.EarthTotem_TremorTotem,
-	Air:              proto.AirTotem_WrathOfAirTotem,
-	Water:            proto.WaterTotem_ManaSpringTotem,
-	Fire:             proto.FireTotem_SearingTotem,
-	UseFireElemental: true,
+	Earth: proto.EarthTotem_TremorTotem,
+	Air:   proto.AirTotem_WrathOfAirTotem,
+	Water: proto.WaterTotem_ManaSpringTotem,
+	Fire:  proto.FireTotem_SearingTotem,
 }
 
 var PlayerOptionsFireElemental = &proto.Player_ElementalShaman{
