@@ -98,16 +98,11 @@ func (druid *Druid) applyNaturesGrace() {
 
 	ngAuraSpellId := []int32{0, 16880, 61345, 61345}[druid.Talents.NaturesGrace]
 	ngAuraSpellHastePct := []float64{0, 0.05, 0.1, 0.15}[druid.Talents.NaturesGrace]
-	ngCooldown := core.Cooldown{
-		Timer:    druid.NewTimer(),
-		Duration: time.Second * 60,
-	}
 
 	ngAura := druid.RegisterAura(core.Aura{
 		Label:    "Natures Grace Proc",
 		ActionID: core.ActionID{SpellID: ngAuraSpellId},
 		Duration: time.Second * 15,
-		Icd:      &ngCooldown,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.MultiplyCastSpeed(1 + ngAuraSpellHastePct)
 		},
@@ -116,16 +111,25 @@ func (druid *Druid) applyNaturesGrace() {
 		},
 	})
 
-	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+	ngTrigger := core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
 		Name:           "Natures Grace (Talent)",
-		Callback:       core.CallbackOnApplyEffects,
+		Callback:       core.CallbackOnSpellHitDealt,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Outcome:        core.OutcomeLanded,
 		ClassSpellMask: DruidSpellMoonfire | DruidSpellInsectSwarm,
+		ICD:            time.Second * 60,
 		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 			ngAura.Activate(sim)
 		},
 	})
+
+	if druid.HasEclipseBar() {
+		druid.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
+			if gained {
+				ngTrigger.Icd.Reset()
+			}
+		})
+	}
 }
 
 func (druid *Druid) applyBalanceOfPower() {
