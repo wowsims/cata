@@ -648,10 +648,10 @@ export class SelectorModal extends BaseModal {
 
 	private setActiveItemSlotTab(slot: ItemSlot) {
 		this.itemSlotTabElems.forEach(elem => {
-			if (elem.classList.contains('active')) {
-				elem.classList.remove('active');
-			} else if (elem.dataset.slot == slot.toString()) {
+			if (elem.dataset.slot == slot.toString()) {
 				elem.classList.add('active');
+			} else if (elem.classList.contains('active')) {
+				elem.classList.remove('active');
 			}
 		});
 	}
