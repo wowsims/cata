@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment } from 'tsx-vanilla';
 
@@ -626,11 +626,10 @@ export class Timeline extends ResultComponent {
 			}
 			this.hiddenIdsChangeEmitter.emit(TypedEvent.nextEventID());
 		});
-		Tooltip.getOrCreateInstance(hideElem, {
-			customClass: 'timeline-tooltip',
-			html: true,
+		tippy(hideElem, {
+			theme: 'timeline-tooltip',
 			placement: 'bottom',
-			title: isHiddenLabel ? 'Show Row' : 'Hide Row',
+			content: isHiddenLabel ? 'Show Row' : 'Hide Row',
 		});
 		const updateHidden = () => {
 			if (isHiddenLabel == Boolean(this.hiddenIds.find(hiddenId => hiddenId.equals(actionId)))) {
@@ -702,7 +701,7 @@ export class Timeline extends ResultComponent {
 		if (resourceLogs.length == 0) {
 			return;
 		}
-		const startValue = function(group: ResourceChangedLogGroup) : number {
+		const startValue = function (group: ResourceChangedLogGroup): number {
 			if (group.maxValue == null) {
 				return resourceLogs[0].valueBefore;
 			}
@@ -744,7 +743,12 @@ export class Timeline extends ResultComponent {
 			if (percentageResources.includes(resourceType)) {
 				resourceElem.textContent = ((resourceLogGroup.valueAfter / startValue(resourceLogGroup)) * 100).toFixed(0) + '%';
 			} else {
-				if (resourceType == ResourceType.ResourceTypeEnergy || resourceType == ResourceType.ResourceTypeFocus || resourceType == ResourceType.ResourceTypeSolarEnergy || resourceType == ResourceType.ResourceTypeLunarEnergy) {
+				if (
+					resourceType == ResourceType.ResourceTypeEnergy ||
+					resourceType == ResourceType.ResourceTypeFocus ||
+					resourceType == ResourceType.ResourceTypeSolarEnergy ||
+					resourceType == ResourceType.ResourceTypeLunarEnergy
+				) {
 					const bgElem = document.createElement('div');
 					bgElem.classList.add('rotation-timeline-resource-fill');
 					bgElem.classList.add(cNames);
@@ -756,10 +760,9 @@ export class Timeline extends ResultComponent {
 			}
 			rowElem.appendChild(resourceElem);
 
-			Tooltip.getOrCreateInstance(resourceElem, {
-				html: true,
+			tippy(resourceElem, {
 				placement: 'bottom',
-				title: this.resourceTooltipElem(resourceLogGroup, startValue(resourceLogGroup), false),
+				content: this.resourceTooltipElem(resourceLogGroup, startValue(resourceLogGroup), false),
 			});
 		});
 		this.rotationTimeline.appendChild(rowElem);
@@ -834,10 +837,9 @@ export class Timeline extends ResultComponent {
 				</div>
 			);
 
-			Tooltip.getOrCreateInstance(castElem, {
-				html: true,
+			tippy(castElem, {
 				placement: 'bottom',
-				title: tt.outerHTML,
+				content: tt.outerHTML,
 			});
 
 			castLog.damageDealtLogs
@@ -857,10 +859,9 @@ export class Timeline extends ResultComponent {
 						</div>
 					);
 
-					Tooltip.getOrCreateInstance(tickElem, {
-						html: true,
+					tippy(tickElem, {
 						placement: 'bottom',
-						title: tt.outerHTML,
+						content: tt.outerHTML,
 					});
 				});
 		});
@@ -900,10 +901,9 @@ export class Timeline extends ResultComponent {
 				</div>
 			);
 
-			Tooltip.getOrCreateInstance(auraElem, {
-				html: true,
+			tippy(auraElem, {
 				placement: 'bottom',
-				title: tt.outerHTML,
+				content: tt.outerHTML,
 			});
 
 			aul.stacksChange.forEach((scl, i) => {

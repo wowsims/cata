@@ -153,8 +153,8 @@ type Unit struct {
 	hardcastAction *PendingAction
 
 	// Cached mana return values per tick.
-	manaTickWhileCasting    float64
-	manaTickWhileNotCasting float64
+	manaTickWhileCombat    float64
+	manaTickWhileNotCombat float64
 
 	CastSpeed float64
 
@@ -163,6 +163,9 @@ type Unit struct {
 
 	// The currently-channeled DOT spell, otherwise nil.
 	ChanneledDot *Dot
+
+	// Data about the most recently queued spell, otherwise nil.
+	QueuedSpell *QueuedSpell
 
 	// Used for reacting to mastery stat changes if a spec needs it
 	OnMasteryStatChanged []OnMasteryStatChanged
@@ -540,6 +543,7 @@ func (unit *Unit) reset(sim *Simulation, _ Agent) {
 	unit.resetCDs(sim)
 	unit.Hardcast.Expires = startingCDTime
 	unit.ChanneledDot = nil
+	unit.QueuedSpell = nil
 	unit.Metrics.reset()
 	unit.ResetStatDeps()
 	unit.statsWithoutDeps = unit.initialStatsWithoutDeps

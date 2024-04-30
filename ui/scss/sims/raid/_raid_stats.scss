@@ -1,4 +1,4 @@
-@use "sass:map";
+@use 'sass:map';
 
 .raid-stats {
 	.raid-stats-section {
@@ -13,10 +13,10 @@
 			border: $border-default;
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
-			background-color: rgba(50,50,50,.5);
+			background-color: rgba(50, 50, 50, 0.5);
 
 			.raid-stats-category-root {
-				&:not(:nth-last-child(-n+4)) {
+				&:not(:nth-last-child(-n + 4)) {
 					margin-bottom: $block-spacer;
 				}
 
@@ -25,16 +25,16 @@
 					color: white;
 
 					.raid-stats-category-label {
-						filter: brightness(.4);
+						filter: brightness(0.4);
 					}
 
 					.raid-stats-category-counter,
 					&:hover .raid-stats-category-label {
-						filter: brightness(.6);
+						filter: brightness(0.6);
 					}
 
 					&.active .raid-stats-category-label {
-						filter: brightness(.8);
+						filter: brightness(0.8);
 					}
 
 					&.active .raid-stats-category-counter,
@@ -52,9 +52,10 @@
 	}
 }
 
-.raid-stats-category-tooltip {
-	.tooltip-inner {
-		max-width: unset;
+.tippy-box[data-theme='raid-stats-category-tooltip'] {
+	max-width: unset;
+
+	.tippy-content {
 		text-align: left;
 		font-weight: bold;
 	}
@@ -67,7 +68,7 @@
 			margin-bottom: map-get($spacers, 1);
 		}
 
-		&> :not(:last-child) {
+		& > :not(:last-child) {
 			margin-right: map-get($spacers, 1);
 		}
 

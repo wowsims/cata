@@ -73,7 +73,7 @@ func (war *ProtectionWarrior) applyImprovedRevenge() {
 
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskRevenge,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.3 * float64(war.Talents.ImprovedRevenge),
 	})
 
@@ -151,7 +151,7 @@ func (war *ProtectionWarrior) applyThunderstruck() {
 
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskRend | warrior.SpellMaskCleave | warrior.SpellMaskThunderClap,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.03 * float64(war.Talents.Thunderstruck),
 	})
 

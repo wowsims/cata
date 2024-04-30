@@ -1,0 +1,8 @@
+{
+	"type": "TypeAPL",
+	"priorityList": [
+		{"action":{"condition":{"or":{"vals":[{"druidCurrentEclipsePhase":{"eclipsePhase":"NeutralPhase"}},{}]}},"castSpell":{"spellId":{"spellId":2912}}}},
+		{"action":{"condition":{"or":{"vals":[{"druidCurrentEclipsePhase":{"eclipsePhase":"SolarPhase"}}]}},"castSpell":{"spellId":{"spellId":5176}}}},
+		{"action":{"condition":{"or":{"vals":[{"druidCurrentEclipsePhase":{"eclipsePhase":"LunarPhase"}}]}},"castSpell":{"spellId":{"spellId":2912}}}}
+	]
+}

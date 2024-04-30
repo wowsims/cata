@@ -122,7 +122,7 @@ func (aura *Aura) reset(sim *Simulation) {
 	aura.init(sim)
 
 	if aura.IsActive() {
-		panic("Active aura during reset: " + aura.Label)
+		panic("Active aura during reset: " + aura.Label + " on " + aura.Unit.Label)
 	}
 	if aura.stacks != 0 {
 		panic("Aura nonzero stacks during reset: " + aura.Label)
@@ -646,7 +646,13 @@ func (aura *Aura) Deactivate(sim *Simulation) {
 	}
 
 	if sim.Log != nil && !aura.ActionID.IsEmptyAction() {
-		aura.Unit.Log(sim, "Aura faded: %s", aura.ActionID)
+		// fix logging timestamps for lazy aura expiration
+		oldTime := sim.CurrentTime
+		sim.CurrentTime = min(sim.CurrentTime, aura.expires)
+		if sim.Log != nil {
+			aura.Unit.Log(sim, "Aura faded: %s", aura.ActionID)
+		}
+		sim.CurrentTime = oldTime
 	}
 
 	aura.expires = 0

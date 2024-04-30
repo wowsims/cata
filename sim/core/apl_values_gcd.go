@@ -20,7 +20,7 @@ func (value *APLValueGCDIsReady) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
 }
 func (value *APLValueGCDIsReady) GetBool(sim *Simulation) bool {
-	return value.unit.GCD.IsReady(sim)
+	return value.unit.GCD.IsReady(sim) || (value.unit.GCD.TimeToReady(sim) <= MaxSpellQueueWindow)
 }
 func (value *APLValueGCDIsReady) String() string {
 	return "GCD Is Ready"

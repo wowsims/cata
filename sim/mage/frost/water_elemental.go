@@ -133,7 +133,7 @@ func (we *WaterElemental) registerWaterboltSpell() {
 		BonusCoefficient: 0.833,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := .405 * we.mageOwner.ScalingBaseDamage
+			baseDamage := .405 * we.mageOwner.ClassSpellScaling
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

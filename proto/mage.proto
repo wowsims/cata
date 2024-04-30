@@ -118,21 +118,10 @@ enum MageMinorGlyph {
 }
 
 message MageOptions {
-	enum ArmorType {
-		NoArmor = 0;
-		MageArmor = 1;
-		MoltenArmor = 2;
-		FrostArmor = 3;
-	}
-	ArmorType armor = 1;
 }
 
 message ArcaneMage {
 	message Rotation {
-		double missile_barrage_below_mana_percent = 1;
-		double blast_without_missile_barrage_above_mana_percent = 2;
-		double only_3_arcane_blast_stacks_below_mana_percent = 3;
-		bool use_arcane_barrage = 4;
 	}
 
 	message Options {
@@ -145,13 +134,6 @@ message ArcaneMage {
 
 message FireMage {
 	message Rotation {
-		enum PrimaryFireSpell {
-			Fireball = 0;
-			FrostfireBolt = 1;
-			Scorch = 2;
-		}
-		PrimaryFireSpell primary_fire_spell = 1;
-		bool maintain_improved_scorch = 2;
 	}
 
 	message Options {
@@ -162,7 +144,6 @@ message FireMage {
 
 message FrostMage {
 	message Rotation {
-		bool use_ice_lance = 1;
 	}
 
 	message Options {

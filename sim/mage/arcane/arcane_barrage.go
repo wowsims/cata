@@ -7,13 +7,13 @@ import (
 	"github.com/wowsims/cata/sim/mage"
 )
 
-func (Mage *ArcaneMage) registerArcaneBarrageSpell() {
+func (arcane *ArcaneMage) registerArcaneBarrageSpell() {
 
-	Mage.ArcaneBarrage = Mage.RegisterSpell(core.SpellConfig{
+	arcane.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44425},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          mage.SpellFlagMage | mage.ArcaneMissileSpells | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: mage.MageSpellArcaneBarrage,
 		MissileSpeed:   24,
 
@@ -26,23 +26,22 @@ func (Mage *ArcaneMage) registerArcaneBarrageSpell() {
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
-				Timer:    Mage.NewTimer(),
+				Timer:    arcane.NewTimer(),
 				Duration: time.Second * 4,
 			},
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   Mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   arcane.DefaultSpellCritMultiplier(),
 		BonusCoefficient: 0.907,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1.413 * Mage.ScalingBaseDamage
+			baseDamage := 1.413 * arcane.ClassSpellScaling
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
-			Mage.ArcaneBlastAura.Deactivate(sim)
 		},
 	})
 }

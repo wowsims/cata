@@ -32,7 +32,7 @@ func (priest *Priest) registerDispersionSpell() {
 		},
 	})
 
-	priest.Dispersion = priest.RegisterSpell(core.SpellConfig{
+	spell := priest.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 47585},
 		ProcMask:       core.ProcMaskEmpty,
 		SpellSchool:    core.SpellSchoolShadow,
@@ -54,7 +54,7 @@ func (priest *Priest) registerDispersionSpell() {
 	})
 
 	priest.AddMajorCooldown(core.MajorCooldown{
-		Spell:    priest.Dispersion,
+		Spell:    spell,
 		Priority: 1,
 		Type:     core.CooldownTypeMana,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
