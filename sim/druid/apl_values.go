@@ -1,11 +1,11 @@
-package balance
+package druid
 
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (druid *BalanceDruid) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
+func (druid *Druid) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
 	switch config.Value.(type) {
 	case *proto.APLValue_CurrentSolarEnergy:
 		return druid.newValueCurrentSolarEnergy(config.GetCurrentSolarEnergy())
@@ -20,10 +20,10 @@ func (druid *BalanceDruid) NewAPLValue(rot *core.APLRotation, config *proto.APLV
 
 type APLValueCurrentSolarEnergy struct {
 	core.DefaultAPLValueImpl
-	druid *BalanceDruid
+	druid *Druid
 }
 
-func (druid *BalanceDruid) newValueCurrentSolarEnergy(_ *proto.APLValueCurrentSolarEnergy) core.APLValue {
+func (druid *Druid) newValueCurrentSolarEnergy(_ *proto.APLValueCurrentSolarEnergy) core.APLValue {
 	return &APLValueCurrentSolarEnergy{
 		druid: druid,
 	}
@@ -43,10 +43,10 @@ func (value *APLValueCurrentSolarEnergy) String() string {
 
 type APLValueCurrentLunarEnergy struct {
 	core.DefaultAPLValueImpl
-	druid *BalanceDruid
+	druid *Druid
 }
 
-func (druid *BalanceDruid) newValueCurrentLunarEnergy(_ *proto.APLValueCurrentLunarEnergy) core.APLValue {
+func (druid *Druid) newValueCurrentLunarEnergy(_ *proto.APLValueCurrentLunarEnergy) core.APLValue {
 	return &APLValueCurrentLunarEnergy{
 		druid: druid,
 	}
@@ -67,7 +67,7 @@ func (value *APLValueCurrentLunarEnergy) String() string {
 type APLValueCurrentEclipsePhase struct {
 	core.DefaultAPLValueImpl
 	phase proto.APLValueEclipsePhase
-	druid *BalanceDruid
+	druid *Druid
 }
 
 func (value *APLValueCurrentEclipsePhase) Type() proto.APLValueType {
@@ -90,7 +90,7 @@ func (value *APLValueCurrentEclipsePhase) String() string {
 	return "Current Eclipse Phase"
 }
 
-func (druid *BalanceDruid) newValueCurrentEclipsePhase(config *proto.APLValueCurrentEclipsePhase) core.APLValue {
+func (druid *Druid) newValueCurrentEclipsePhase(config *proto.APLValueCurrentEclipsePhase) core.APLValue {
 	return &APLValueCurrentEclipsePhase{
 		druid: druid,
 		phase: config.EclipsePhase,

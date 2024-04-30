@@ -1,4 +1,4 @@
-package balance
+package druid
 
 import (
 	"github.com/wowsims/cata/sim/core"
@@ -27,7 +27,7 @@ const (
 
 type EclipseCallback func(eclipse Eclipse, gained bool, sim *core.Simulation)
 type eclipseEnergyBar struct {
-	druid            *BalanceDruid
+	druid            *Druid
 	lunarEnergy      float64
 	solarEnergy      float64
 	currentEclipse   Eclipse
@@ -48,14 +48,56 @@ func (eb *eclipseEnergyBar) reset() {
 	eb.currentEclipse = NoEclipse
 }
 
-func (druid *BalanceDruid) EnableEclipseBar() {
+func (druid *Druid) EnableEclipseBar() {
 	druid.eclipseEnergyBar = eclipseEnergyBar{
 		druid:    druid,
 		gainMask: SolarEnergy | LunarEnergy,
 	}
 }
 
-func (druid *BalanceDruid) HasEclipseBar() bool {
+func (druid *Druid) RegisterEclipseAuras() {
+	lunarEclipse := druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 48518},
+		Label:    "Eclipse (Lunar)",
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			// Do stuff
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			// Do stuff
+		},
+	})
+
+	solarEclipse := druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 48517},
+		Label:    "Eclipse (Solar)",
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			// Do stuff
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			// Do stuff
+		},
+	})
+
+	druid.AddEclipseCallback(func(eclipse Eclipse, gained bool, sim *core.Simulation) {
+		if eclipse == LunarEclipse {
+			if gained {
+				lunarEclipse.Activate(sim)
+			} else {
+				lunarEclipse.Deactivate(sim)
+			}
+		} else {
+			if gained {
+				solarEclipse.Activate(sim)
+			} else {
+				solarEclipse.Deactivate(sim)
+			}
+		}
+	})
+}
+
+func (druid *Druid) HasEclipseBar() bool {
 	return druid.eclipseEnergyBar.druid != nil
 }
 
@@ -64,6 +106,9 @@ func (eb *eclipseEnergyBar) AddEclipseCallback(callback EclipseCallback) {
 }
 
 func (eb *eclipseEnergyBar) AddEclipseEnergy(amount float64, kind EclipseEnergy, sim *core.Simulation, metrics *core.ResourceMetrics) {
+	if eb.druid == nil {
+		return
+	}
 
 	// unit currently can not gain the specified energy
 	if kind&eb.gainMask == 0 {
@@ -86,6 +131,10 @@ func (eb *eclipseEnergyBar) CurrentSolarEnergy() int32 {
 
 func (eb *eclipseEnergyBar) CurrentLunarEnergy() int32 {
 	return int32(eb.lunarEnergy)
+}
+
+func (eb *eclipseEnergyBar) CanGainEnergy(kind EclipseEnergy) bool {
+	return eb.gainMask&kind > 0
 }
 
 // spends the given amount of energy and returns how much energy remains
@@ -206,10 +255,10 @@ func (eb *eclipseEnergyBar) addSolarEnergy(amount float64, sim *core.Simulation,
 	metrics.AddEvent(amount, gain)
 }
 
-func (unit *BalanceDruid) NewSolarEnergyMetric(actionID core.ActionID) *core.ResourceMetrics {
+func (unit *Druid) NewSolarEnergyMetric(actionID core.ActionID) *core.ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeSolarEnergy)
 }
 
-func (unit *BalanceDruid) NewLunarEnergyMetrics(actionID core.ActionID) *core.ResourceMetrics {
+func (unit *Druid) NewLunarEnergyMetrics(actionID core.ActionID) *core.ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeLunarEnergy)
 }
