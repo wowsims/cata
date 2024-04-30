@@ -10,7 +10,7 @@ func (mage *Mage) registerArcaneExplosionSpell() {
 		ActionID:       core.ActionID{SpellID: 1449},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellArcaneExplosion,
 
 		ManaCost: core.ManaCostOptions{
