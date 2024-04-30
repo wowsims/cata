@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
@@ -175,7 +175,7 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 		this.trees.forEach(tree => tree.update());
 
 		// Disable other player trees if the first tree is not filled to 31 points
-		this.updatePlayerTrees()
+		this.updatePlayerTrees();
 	}
 
 	get numPoints() {
@@ -203,7 +203,7 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 
 	private updatePlayerTrees() {
 		if (this.isPlayer()) {
-			const specNumber = this.modObject.getPlayerSpec().specIndex
+			const specNumber = this.modObject.getPlayerSpec().specIndex;
 			const pointsSpent = this.trees[specNumber].numPoints;
 
 			if (pointsSpent < PLAYER_TREES_UNLOCK_POINT_THRESHOLD) {
@@ -299,7 +299,7 @@ class TalentTreePicker<TalentsProto> extends Component {
 			recurseCalcIdx(t, 20);
 		}
 		const resetBtn = this.rootElem.querySelector('.talent-tree-reset') as HTMLElement;
-		new Tooltip(resetBtn, { title: 'Reset talent points' });
+		tippy(resetBtn, { content: 'Reset talent points' });
 		resetBtn.addEventListener('click', _event => this.resetPoints());
 	}
 

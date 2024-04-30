@@ -1,4 +1,4 @@
-import { Tooltip } from 'bootstrap';
+import tippy from 'tippy.js';
 
 import { BaseModal } from '../core/components/base_modal.js';
 import { Component } from '../core/components/component.js';
@@ -501,8 +501,7 @@ export class PlayerPicker extends Component {
 						href="javascript:void(0)"
 						class="player-edit"
 						role="button"
-						data-bs-toggle="tooltip"
-						data-bs-title="Click to Edit"
+						data-tippy-content="Click to Edit"
 					>
 						<i class="fa fa-edit fa-lg"></i>
 					</a>
@@ -511,8 +510,7 @@ export class PlayerPicker extends Component {
 						class="player-copy link-warning"
 						role="button"
 						draggable="true"
-						data-bs-toggle="tooltip"
-						data-bs-title="Drag to Copy"
+						data-tippy-content="Drag to Copy"
 					>
 						<i class="fa fa-copy fa-lg"></i>
 					</a>
@@ -520,8 +518,7 @@ export class PlayerPicker extends Component {
 						href="javascript:void(0)"
 						class="player-delete link-danger"
 						role="button"
-						data-bs-toggle="tooltip"
-						data-bs-title="Click to Delete"
+						data-tippy-content="Click to Delete"
 					>
 						<i class="fa fa-times fa-lg"></i>
 					</a>
@@ -581,9 +578,9 @@ export class PlayerPicker extends Component {
 		const copyElem = this.rootElem.querySelector('.player-copy') as HTMLElement;
 		const deleteElem = this.rootElem.querySelector('.player-delete') as HTMLElement;
 
-		const _editTooltip = Tooltip.getOrCreateInstance(editElem);
-		const _copyTooltip = Tooltip.getOrCreateInstance(copyElem);
-		const deleteTooltip = Tooltip.getOrCreateInstance(deleteElem);
+		const _editTooltip = tippy(editElem);
+		const _copyTooltip = tippy(copyElem);
+		const deleteTooltip = tippy(deleteElem);
 
 		(this.iconElem as HTMLElement).ondragstart = event => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
@@ -655,9 +652,7 @@ class NewPlayerPicker extends Component {
 						href="javascript:void(0)"
 						role="button"
 						draggable="true"
-						data-bs-toggle="tooltip"
-						data-bs-title="${matchingPreset.tooltip ?? PlayerSpecs.getFullSpecName(playerSpec)}"
-						data-bs-html="true"
+						data-tippy-content="${matchingPreset.tooltip ?? PlayerSpecs.getFullSpecName(playerSpec)}"
 					>
 						<img class="preset-picker-icon player-icon" src="${playerSpec.getIcon('medium')}"/>
 					</a>
@@ -665,7 +660,7 @@ class NewPlayerPicker extends Component {
 				const presetElem = presetElemFragment.children[0] as HTMLElement;
 				classPresetsContainer.appendChild(presetElem);
 
-				Tooltip.getOrCreateInstance(presetElem);
+				tippy(presetElem);
 
 				presetElem.ondragstart = event => {
 					const eventID = TypedEvent.nextEventID();

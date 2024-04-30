@@ -62,6 +62,19 @@ func (mage *Mage) ApplyFireTalents() {
 			FloatValue: 0.05 * float64(mage.Talents.CriticalMass),
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
+
+		criticalMassDebuff := mage.NewEnemyAuraArray(core.CriticalMassAura)
+
+		core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+			Name:           "Critical Mass Trigger",
+			Callback:       core.CallbackOnSpellHitDealt,
+			ClassSpellMask: MageSpellPyroblast | MageSpellScorch,
+			Outcome:        core.OutcomeLanded,
+			ProcChance:     float64(mage.Talents.CriticalMass) / 3.0,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				criticalMassDebuff.Get(result.Target).Activate(sim)
+			},
+		})
 	}
 }
 
@@ -276,7 +289,7 @@ func (mage *Mage) applyIgnite() {
 			}
 			// EJ post says combustion crits do not proc ignite
 			// https://web.archive.org/web/20120219014159/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/#post1824829
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) && result.DidCrit() && (spell != mage.Combustion || spell != mage.CombustionImpact) {
+			if spell.SpellSchool.Matches(core.SpellSchoolFire) && result.DidCrit() && spell != mage.Combustion {
 				mage.procIgnite(sim, result, mage.Ignite.Dot(mage.CurrentTarget).IsActive())
 			}
 		},
@@ -290,8 +303,10 @@ func (mage *Mage) applyIgnite() {
 		},
 	})
 
+	actionId := core.ActionID{SpellID: 12846}
+
 	mage.IgniteDamageTracker = core.MakePermanent(mage.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 413843},
+		ActionID:  actionId,
 		Label:     "Ignite Damage Tracker",
 		Duration:  core.NeverExpires,
 		MaxStacks: 1000000,
@@ -302,7 +317,7 @@ func (mage *Mage) applyIgnite() {
 
 	// The ignite dot
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 413843},
+		ActionID:       actionId,
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskProc,
 		Flags:          SpellFlagMage | core.SpellFlagIgnoreModifiers,
@@ -400,11 +415,10 @@ func (mage *Mage) applyImpact() {
 					mage.LivingBombImpact:   mage.LivingBomb.Dot(originalTarget).SnapshotBaseDamage,
 					mage.PyroblastDotImpact: mage.PyroblastDot.Dot(originalTarget).SnapshotBaseDamage,
 					mage.Ignite:             mage.Ignite.Dot(originalTarget).SnapshotBaseDamage,
-					mage.CombustionImpact:   mage.Combustion.Dot(originalTarget).SnapshotBaseDamage,
+					mage.Combustion:         mage.Combustion.Dot(originalTarget).SnapshotBaseDamage,
 				}
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					mage.CurrentTarget = aoeTarget
-					if mage.CurrentTarget == originalTarget {
+					if aoeTarget == originalTarget {
 						continue
 					}
 					for spell, damage := range duplicatableDots {
@@ -412,7 +426,6 @@ func (mage *Mage) applyImpact() {
 						spell.Dot(aoeTarget).Apply(sim)
 					}
 				}
-				mage.CurrentTarget = originalTarget // reset to original target
 				aura.Deactivate(sim)
 			}
 		},
@@ -422,7 +435,7 @@ func (mage *Mage) applyImpact() {
 		Name:           "Impact Trigger",
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: MageSpellsAll,
-		ProcChance:     float64(0.05) * float64(mage.Talents.Impact),
+		ProcChance:     0.05 * float64(mage.Talents.Impact),
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			mage.FireBlast.CD.Reset()
 			mage.ImpactAura.Activate(sim)

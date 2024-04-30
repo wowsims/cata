@@ -3,7 +3,6 @@ package stats
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
 )
@@ -280,8 +279,7 @@ type PseudoStats struct {
 	MeleeSpeedMultiplier  float64
 	RangedSpeedMultiplier float64
 
-	FiveSecondRuleRefreshTime time.Duration // last time a spell was cast
-	SpiritRegenRateCasting    float64       // percentage of spirit regen allowed during casting
+	SpiritRegenRateCombat float64 // percentage of spirit regen allowed during combat
 
 	// Both of these are currently only used for innervate.
 	ForceFullSpiritRegen  bool    // If set, automatically uses full spirit regen regardless of FSR refresh time.

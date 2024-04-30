@@ -31,6 +31,9 @@ func (priest *Priest) registerPowerInfusionSpell() {
 				Timer:    priest.NewTimer(),
 				Duration: core.PowerInfusionCD,
 			},
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {

@@ -17,7 +17,7 @@ func (warrior *Warrior) ApplyCommonTalents() {
 }
 
 func (warrior *Warrior) applyArmsCommonTalents() {
-	warrior.applyWarMachine()
+	warrior.applyWarAcademy()
 	warrior.RegisterDeepWounds()
 }
 
@@ -37,7 +37,7 @@ func (warrior *Warrior) applyProtectionCommonTalents() {
 	warrior.applyGagOrder()
 }
 
-func (warrior *Warrior) applyWarMachine() {
+func (warrior *Warrior) applyWarAcademy() {
 	if warrior.Talents.WarAcademy == 0 {
 		return
 	}
@@ -48,7 +48,7 @@ func (warrior *Warrior) applyWarMachine() {
 			SpellMaskDevastate |
 			SpellMaskVictoryRush |
 			SpellMaskSlam,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: (0.05 * float64(warrior.Talents.WarAcademy)),
 	})
 }
