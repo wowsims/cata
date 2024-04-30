@@ -129,9 +129,10 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 // TODO: Not sure on the base damage here wowhead does not seem to be correct. in testing with 1.3 weapon and 129 sp it was 109 damage
 func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 	return shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(8024)},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskWeaponProc,
+		ActionID:       core.ActionID{SpellID: int32(8024)},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskWeaponProc,
+		ClassSpellMask: SpellMaskFlametongueWeapon,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
