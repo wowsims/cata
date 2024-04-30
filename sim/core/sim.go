@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/wowsims/cata/sim/core/dbc"
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
@@ -59,6 +60,8 @@ type Simulation struct {
 
 	minTaskTime time.Duration
 	tasks       []Task
+
+	dbc *dbc.DBC
 }
 
 func (sim *Simulation) rescheduleTracker(trackerTime time.Duration) {
@@ -200,6 +203,8 @@ func newSimWithEnv(env *Environment, simOptions *proto.SimOptions) *Simulation {
 
 		isTest:    simOptions.IsTest,
 		testRands: make(map[string]Rand),
+
+		dbc: dbc.NewDBC(),
 	}
 }
 
