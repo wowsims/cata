@@ -125,6 +125,7 @@ func (war *ArmsWarrior) TriggerSlaughter(sim *core.Simulation, target *core.Unit
 
 	if !war.slaughter.IsActive() {
 		war.slaughter.Activate(sim)
+		war.slaughter.AddStack(sim)
 	} else {
 		war.slaughter.Refresh(sim)
 		war.slaughter.AddStack(sim)
