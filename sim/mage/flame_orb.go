@@ -128,7 +128,7 @@ func (fo *FlameOrb) registerFlameOrbTickSpell() {
 		ActionID:       core.ActionID{SpellID: 82739},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          core.SpellFlagNoLogs | HotStreakSpells,
+		Flags:          core.SpellFlagNoLogs,
 		ClassSpellMask: MageSpellFlameOrb,
 
 		Cast: core.CastConfig{

@@ -12,7 +12,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 		ActionID:       core.ActionID{SpellID: 11366},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          mage.HotStreakSpells | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: mage.MageSpellPyroblast,
 		MissileSpeed:   24,
 

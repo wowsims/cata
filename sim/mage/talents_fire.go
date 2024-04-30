@@ -134,6 +134,9 @@ func (mage *Mage) applyHotStreak() {
 		Duration:  time.Hour,
 	})
 
+	const hotStreakSpells = MageSpellPyroblast | MageSpellFireBlast | MageSpellFireball |
+		MageSpellFlameOrb | MageSpellFrostfireBolt | MageSpellScorch
+
 	// Aura to allow the character to track crits
 	mage.RegisterAura(core.Aura{
 		Label:    "Hot Streak Trigger",
@@ -142,7 +145,7 @@ func (mage *Mage) applyHotStreak() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(HotStreakSpells) {
+			if spell.ClassSpellMask&hotStreakSpells == 0 {
 				return
 			}
 

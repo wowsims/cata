@@ -8,11 +8,6 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-const (
-	HotStreakSpells   = core.SpellFlagAgentReserved3
-	BrainFreezeSpells = core.SpellFlagAgentReserved4
-)
-
 var TalentTreeSizes = [3]int{21, 21, 19}
 
 type Mage struct {
