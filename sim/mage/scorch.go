@@ -7,17 +7,6 @@ import (
 )
 
 func (mage *Mage) registerScorchSpell() {
-
-	/* 	implement when debuffs updated
-	   	var CMProcChance float64
-	   	if mage.Talents.CriticalMass > 0 {
-	   		CMProcChance := float64(mage.Talents.CriticalMass) / 3.0
-	   		//TODO double check how this works
-	   		mage.CriticalMassAuras = mage.NewEnemyAuraArray(core.CriticalMassAura)
-	   		mage.CritDebuffCategories = mage.GetEnemyExclusiveCategories(core.SpellCritEffectCategory)
-	   		mage.Scorch.RelatedAuras = append(mage.Scorch.RelatedAuras, mage.CriticalMassAuras)
-	   	} */
-
 	mage.Scorch = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 2948},
 		SpellSchool:    core.SpellSchoolFire,

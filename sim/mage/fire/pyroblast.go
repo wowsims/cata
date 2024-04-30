@@ -8,17 +8,6 @@ import (
 )
 
 func (Mage *FireMage) registerPyroblastSpell() {
-
-	/* TODO implement for CM Maintenance settings with scorch
-	var CMProcChance float64
-	if mage.Talents.CriticalMass > 0 {
-		CMProcChance = float64(mage.Talents.CriticalMass) / 3.0
-		//TODO double check how this works
-		mage.CriticalMassAuras = mage.NewEnemyAuraArray(core.CriticalMassAura)
-		mage.CritDebuffCategories = mage.GetEnemyExclusiveCategories(core.SpellCritEffectCategory)
-		mage.Pyroblast.RelatedAuras = append(mage.Pyroblast.RelatedAuras, mage.CriticalMassAuras)
-	} */
-
 	Mage.Pyroblast = Mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11366},
 		SpellSchool:    core.SpellSchoolFire,
