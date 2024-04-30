@@ -41,10 +41,10 @@ func (dk *DeathKnight) registerUnholyFrenzySpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
-			if target.Type == core.PlayerUnit {
-				unholyFrenzyAuras.Get(target).Activate(sim)
-			} else {
+			if unholyFrenzyTarget != nil {
 				unholyFrenzyAuras.Get(unholyFrenzyTarget).Activate(sim)
+			} else if target.Type == core.PlayerUnit {
+				unholyFrenzyAuras.Get(target).Activate(sim)
 			}
 		},
 	})

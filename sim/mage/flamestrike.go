@@ -12,7 +12,7 @@ func (mage *Mage) registerFlamestrikeSpell() {
 		ActionID:       core.ActionID{SpellID: 2120},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFlamestrike,
 
 		ManaCost: core.ManaCostOptions{
@@ -39,7 +39,7 @@ func (mage *Mage) registerFlamestrikeSpell() {
 			TickLength:    time.Second * 2,
 			OnSnapshot: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot, _ bool) {
 				target := mage.CurrentTarget
-				dot.SnapshotBaseDamage = 0.103 * mage.ScalingBaseDamage
+				dot.SnapshotBaseDamage = 0.103 * mage.ClassSpellScaling
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -52,7 +52,7 @@ func (mage *Mage) registerFlamestrikeSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := 0.662 * mage.ScalingBaseDamage
+				baseDamage := 0.662 * mage.ClassSpellScaling
 				baseDamage *= sim.Encounter.AOECapMultiplier()
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}

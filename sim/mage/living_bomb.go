@@ -24,7 +24,6 @@ func (mage *Mage) registerLivingBombSpell() {
 		ActionID:       core.ActionID{SpellID: 44461},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage,
 		ClassSpellMask: MageSpellLivingBombExplosion,
 
 		DamageMultiplierAdditive: 1,
@@ -33,7 +32,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.5 * mage.ScalingBaseDamage
+			baseDamage := 0.5 * mage.ClassSpellScaling
 			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
@@ -46,7 +45,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		ActionID:       core.ActionID{SpellID: 44457},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellLivingBombDot,
 
 		ManaCost: core.ManaCostOptions{
@@ -81,7 +80,7 @@ func (mage *Mage) registerLivingBombSpell() {
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.258,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, 0.25*mage.ScalingBaseDamage)
+				dot.Snapshot(target, 0.25*mage.ClassSpellScaling)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -112,7 +111,6 @@ func (mage *Mage) registerLivingBombSpell() {
 		ActionID:       core.ActionID{SpellID: 44457},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellLivingBombDot,
 
 		ManaCost: core.ManaCostOptions{

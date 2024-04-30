@@ -7,11 +7,11 @@ import (
 )
 
 func (mage *Mage) registerScorchSpell() {
-	mage.Scorch = mage.RegisterSpell(core.SpellConfig{
+	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 2948},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | HotStreakSpells | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellScorch,
 
 		ManaCost: core.ManaCostOptions{
@@ -34,7 +34,7 @@ func (mage *Mage) registerScorchSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.781 * mage.ScalingBaseDamage
+			baseDamage := 0.781 * mage.ClassSpellScaling
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			/*implement when debuffs updated
 			if sim.Proc(CMProcChance, "Critical Mass") {
