@@ -1,8 +1,6 @@
 package arcane
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/mage"
@@ -54,39 +52,6 @@ func (arcaneMage *ArcaneMage) Initialize() {
 	arcaneMage.Mage.Initialize()
 
 	arcaneMage.registerArcaneBarrageSpell()
-	arcaneMage.applyArcaneMissileProc()
-}
-
-func (arcane *ArcaneMage) applyArcaneMissileProc() {
-	// Aura for when proc is successful
-	arcane.ArcaneMissilesProcAura = arcane.RegisterAura(core.Aura{
-		Label:    "Arcane Missiles Proc",
-		ActionID: core.ActionID{SpellID: 79683},
-		Duration: time.Second * 20,
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask == mage.MageSpellArcaneMissilesCast {
-				aura.Deactivate(sim)
-			}
-		},
-	})
-
-	procChance := 0.4
-
-	const MageSpellsArcaneMissilesNow = mage.MageSpellArcaneBarrage | mage.MageSpellArcaneBlast |
-		mage.MageSpellFireball | mage.MageSpellFrostbolt | mage.MageSpellFrostfireBolt | mage.MageSpellFrostfireOrb
-
-	// Listener for procs
-	core.MakePermanent(arcane.RegisterAura(core.Aura{
-		Label: "Arcane Missiles Activation",
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&MageSpellsArcaneMissilesNow == 0 {
-				return
-			}
-			if sim.Proc(procChance, "Arcane Missiles") {
-				arcane.ArcaneMissilesProcAura.Activate(sim)
-			}
-		},
-	}))
 }
 
 func (arcaneMage *ArcaneMage) ApplyTalents() {
