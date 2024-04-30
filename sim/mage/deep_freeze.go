@@ -15,7 +15,7 @@ func (mage *Mage) registerDeepFreezeSpell() {
 		ActionID:       core.ActionID{SpellID: 44572},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellDeepFreeze,
 
 		ManaCost: core.ManaCostOptions{

@@ -9,7 +9,6 @@ import (
 )
 
 const (
-	SpellFlagMage     = core.SpellFlagAgentReserved1
 	HotStreakSpells   = core.SpellFlagAgentReserved3
 	BrainFreezeSpells = core.SpellFlagAgentReserved4
 )
@@ -22,9 +21,7 @@ type Mage struct {
 	arcaneMissilesTickSpell   *core.Spell
 	arcaneMissileCritSnapshot float64
 
-	arcanePowerCostMod *core.SpellMod
-	arcanePowerDmgMod  *core.SpellMod
-	arcanePowerGCDmod  *core.SpellMod
+	arcanePowerGCDmod *core.SpellMod
 
 	Talents       *proto.MageTalents
 	Options       *proto.MageOptions
@@ -47,26 +44,13 @@ type Mage struct {
 	PyroblastDot         *core.Spell
 	PyroblastDotImpact   *core.Spell
 	SummonWaterElemental *core.Spell
-	Scorch               *core.Spell
-	MirrorImage          *core.Spell
-	BlastWave            *core.Spell
-	DragonsBreath        *core.Spell
 	IcyVeins             *core.Spell
 
-	ArcaneBlastAura        *core.Aura
 	ArcaneMissilesProcAura *core.Aura
 	ArcanePotencyAura      *core.Aura
-	ArcanePowerAura        *core.Aura
-	BrainFreezeAura        *core.Aura
-	ClearcastingAura       *core.Aura
 	FingersOfFrostAura     *core.Aura
-	FrostArmorAura         *core.Aura
-	GlyphedFrostArmorPA    *core.PendingAction
-	hotStreakCritAura      *core.Aura
 	HotStreakAura          *core.Aura
 	IgniteDamageTracker    *core.Aura
-	ImpactAura             *core.Aura
-	PyromaniacAura         *core.Aura
 
 	ClassSpellScaling float64
 

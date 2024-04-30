@@ -24,7 +24,6 @@ func (mage *Mage) registerLivingBombSpell() {
 		ActionID:       core.ActionID{SpellID: 44461},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage,
 		ClassSpellMask: MageSpellLivingBombExplosion,
 
 		DamageMultiplierAdditive: 1,
@@ -46,7 +45,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		ActionID:       core.ActionID{SpellID: 44457},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellLivingBombDot,
 
 		ManaCost: core.ManaCostOptions{
@@ -112,7 +111,6 @@ func (mage *Mage) registerLivingBombSpell() {
 		ActionID:       core.ActionID{SpellID: 44457},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage,
 		ClassSpellMask: MageSpellLivingBombDot,
 
 		ManaCost: core.ManaCostOptions{

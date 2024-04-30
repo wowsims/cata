@@ -206,7 +206,7 @@ func (mage *Mage) applyBrainFreeze() {
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
 
-	mage.BrainFreezeAura = mage.GetOrRegisterAura(core.Aura{
+	brainFreezeAura := mage.GetOrRegisterAura(core.Aura{
 		Label:    "Brain Freeze Proc",
 		ActionID: core.ActionID{SpellID: 57761},
 		Duration: time.Second * 15,
@@ -233,7 +233,7 @@ func (mage *Mage) applyBrainFreeze() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if mage.hasChillEffect(spell) && sim.Proc(procChance, "Brain Freeze") {
-				mage.BrainFreezeAura.Activate(sim)
+				brainFreezeAura.Activate(sim)
 			}
 		},
 	})
