@@ -18,6 +18,7 @@ var TalentTreeSizes = [3]int{20, 22, 21}
 type Druid struct {
 	core.Character
 	SelfBuffs
+	eclipseEnergyBar
 	Talents *proto.DruidTalents
 
 	ClassSpellScaling float64
@@ -61,7 +62,8 @@ type Druid struct {
 	Shred                *DruidSpell
 	Starfire             *DruidSpell
 	Starfall             *DruidSpell
-	StarfallSplash       *DruidSpell
+	Starsurge            *DruidSpell
+	Sunfire              *DruidSpell
 	SurvivalInstincts    *DruidSpell
 	SwipeBear            *DruidSpell
 	SwipeCat             *DruidSpell
@@ -116,6 +118,49 @@ type Druid struct {
 	disabledMCDs []*core.MajorCooldown
 }
 
+const (
+	DruidSpellFlagNone int64 = 0
+	DruidSpellBarkskin int64 = 1 << iota
+	DruidSpellCyclone
+	DruidSpellEntanglingRoots
+	DruidSpellFearieFire
+	DruidSpellHibernate
+	DruidSpellHurricane
+	DruidSpellInnervate
+	DruidSpellInsectSwarm
+	DruidSpellMoonfire
+	DruidSpellNaturesGrasp
+	DruidSpellStarfall
+	DruidSpellStarfire
+	DruidSpellStarsurge
+	DruidSpellSunfire
+	DruidSpellThorns
+	DruidSpellTyphoon
+	DruidSpellWildMushroom
+	DruidSpellWildMushroomDetonate
+	DruidSpellWrath
+
+	DruidSpellHealingTouch
+	DruidSpellRegrowth
+	DruidSpellLifebloom
+	DruidSpellRejuvenation
+	DruidSpellNourish
+	DruidSpellTranquility
+	DruidSpellMarkOfTheWild
+	DruidSpellSwiftmend
+	DruidSpellWildGrowth
+
+	DruidSpellLast
+	DruidSpellsAll      = DruidSpellLast<<1 - 1
+	DruidSpellDoT       = DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellSunfire
+	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
+	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
+	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
+	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellTyphoon | DruidSpellHurricane
+	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
+	DruidDamagingSpells = DruidArcaneSpells | DruidNatureSpells
+)
+
 type SelfBuffs struct {
 	InnervateTarget *proto.UnitReference
 }
@@ -149,16 +194,18 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.MarkOfTheWild = true
 }
 
-// func (druid *Druid) BalanceCritMultiplier() float64 {
-// 	return druid.SpellCritMultiplier(1, 0.2*float64(druid.Talents.Vengeance))
-// }
+func (druid *Druid) BalanceCritMultiplier() float64 {
+	return druid.SpellCritMultiplier(1, 0)
+}
 
 func (druid *Druid) HasPrimeGlyph(glyph proto.DruidPrimeGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
+
 func (druid *Druid) HasMajorGlyph(glyph proto.DruidMajorGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
+
 func (druid *Druid) HasMinorGlyph(glyph proto.DruidMinorGlyph) bool {
 	return druid.HasGlyph(int32(glyph))
 }
@@ -215,20 +262,22 @@ func (druid *Druid) Initialize() {
 	druid.applyOmenOfClarity()
 }
 
-// func (druid *Druid) RegisterBalanceSpells() {
-// 	druid.registerHurricaneSpell()
-// 	druid.registerInsectSwarmSpell()
-// 	druid.registerMoonfireSpell()
-// 	druid.registerStarfireSpell()
-// 	druid.registerWrathSpell()
-// 	druid.registerStarfallSpell()
-// 	druid.registerTyphoonSpell()
-// 	druid.registerForceOfNatureCD()
-// }
+func (druid *Druid) RegisterBalanceSpells() {
+	//druid.registerHurricaneSpell()
+	druid.registerInsectSwarmSpell()
+	druid.registerMoonfireSpell()
+	druid.registerStarfireSpell()
+	druid.registerWrathSpell()
+	druid.registerStarfallSpell()
+	druid.registerTyphoonSpell()
+	//druid.registerForceOfNatureCD()
+	druid.registerStarsurgeSpell()
+}
 
 func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerBerserkCD()
 	druid.registerCatFormSpell()
+
 	// 	druid.registerBearFormSpell()
 	// 	druid.registerEnrageSpell()
 	druid.registerFerociousBiteSpell()
@@ -265,6 +314,8 @@ func (druid *Druid) RegisterFeralCatSpells() {
 // }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
+
+	druid.eclipseEnergyBar.reset()
 	// druid.BleedsActive = 0
 	// druid.form = druid.StartingForm
 	// druid.disabledMCDs = []*core.MajorCooldown{}

@@ -48,7 +48,6 @@ type BalanceOnUseTrinket struct {
 
 type BalanceDruid struct {
 	*druid.Druid
-	eclipseEnergyBar
 	Options *proto.BalanceDruid_Options
 }
 
@@ -58,10 +57,11 @@ func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
 
 func (moonkin *BalanceDruid) Initialize() {
 	moonkin.Druid.Initialize()
-	moonkin.EnableEclipseBar()
 
-	moonkin.RegisterTestSpells()
-	//moonkin.RegisterBalanceSpells()
+	moonkin.EnableEclipseBar()
+	moonkin.RegisterEclipseAuras()
+
+	moonkin.RegisterBalanceSpells()
 
 	// if moonkin.OwlkinFrenzyAura != nil && moonkin.Options.OkfUptime > 0 {
 	// 	moonkin.Env.RegisterPreFinalizeEffect(func() {
@@ -72,6 +72,5 @@ func (moonkin *BalanceDruid) Initialize() {
 
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
 	moonkin.Druid.Reset(sim)
-	moonkin.eclipseEnergyBar.reset()
 	//moonkin.RebirthTiming = moonkin.Env.BaseDuration.Seconds() * sim.RandomFloat("Rebirth Timing")
 }

@@ -116,21 +116,6 @@ func (mage *Mage) applyGlyphs() {
 		})
 	}
 
-	if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfFrostArmor) && mage.Options.Armor == proto.MageOptions_FrostArmor {
-		mage.FrostArmorAura = core.MakePermanent(mage.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 7302},
-			Label:    "Frost Armor",
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				mage.GlyphedFrostArmorPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-					Period: time.Second * 1,
-					OnAction: func(sim *core.Simulation) {
-						mage.AddMana(sim, 0.02*mage.MaxMana(), mage.NewManaMetrics(core.ActionID{SpellID: 6117}))
-					},
-				})
-			},
-		}))
-	}
-
 	// Minors
 
 	// Mirror Images added inside pet's rotation

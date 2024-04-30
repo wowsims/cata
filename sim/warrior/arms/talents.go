@@ -125,6 +125,7 @@ func (war *ArmsWarrior) TriggerSlaughter(sim *core.Simulation, target *core.Unit
 
 	if !war.slaughter.IsActive() {
 		war.slaughter.Activate(sim)
+		war.slaughter.AddStack(sim)
 	} else {
 		war.slaughter.Refresh(sim)
 		war.slaughter.AddStack(sim)
@@ -167,13 +168,13 @@ func (war *ArmsWarrior) applyWreckingCrew() {
 	effect := 1.0 + (0.05 * float64(war.Talents.WreckingCrew))
 	war.wreckingCrew = war.RegisterAura(core.Aura{
 		Label:    "Wrecking Crew",
-		ActionID: core.ActionID{SpellID: 56611},
+		ActionID: core.ActionID{SpellID: 57519},
 		Duration: time.Second * 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			war.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] *= effect
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= effect
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			war.PseudoStats.SchoolDamageDealtMultiplier[core.SpellSchoolPhysical] /= effect
+			war.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= effect
 		},
 	})
 

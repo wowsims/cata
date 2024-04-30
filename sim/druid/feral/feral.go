@@ -70,9 +70,8 @@ type FeralDruid struct {
 	bleedAura          *core.Aura
 	lastShift          time.Duration
 	cachedRipEndThresh time.Duration
+	nextActionAt       time.Duration
 	usingHardcodedAPL  bool
-
-	customRotationAction *core.PendingAction
 }
 
 func (cat *FeralDruid) GetDruid() *druid.Druid {
@@ -96,5 +95,5 @@ func (cat *FeralDruid) Reset(sim *core.Simulation) {
 	cat.readyToShift = false
 	cat.waitingForTick = false
 	cat.berserkUsed = false
-	cat.customRotationAction = nil
+	cat.nextActionAt = -core.NeverExpires
 }
