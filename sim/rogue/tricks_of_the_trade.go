@@ -52,7 +52,7 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 			rogue.UpdateMajorCooldowns()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.TricksOfTheTrade.CD.Set(sim.CurrentTime + time.Second*time.Duration(30))
+			rogue.TricksOfTheTrade.CD.Set(sim.CurrentTime + time.Second*30)
 			rogue.UpdateMajorCooldowns()
 		},
 	})
@@ -71,7 +71,7 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second * time.Duration(30), // CD is handled by application aura
+				Duration: time.Second * 30, // CD is handled by application aura
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
