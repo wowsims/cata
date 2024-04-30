@@ -291,9 +291,9 @@ export class SimLog {
 	}
 
 	cacheOutput(cacheKey: string | number | boolean, fn: () => Element) {
-		if (this.cachedHTML[String(cacheKey)]) return this.cachedHTML[String(cacheKey)]?.cloneNode(true) as Element;
+		if (this.cachedHTML[String(cacheKey)]) return this.cachedHTML[String(cacheKey)] as Element;
 		this.cachedHTML[String(cacheKey)] = fn();
-		return this.cachedHTML[String(cacheKey)]!.cloneNode(true);
+		return this.cachedHTML[String(cacheKey)]! as Element;
 	}
 }
 
