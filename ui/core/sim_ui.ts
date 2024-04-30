@@ -305,7 +305,7 @@ export abstract class SimUI extends Component {
 								issueBody += '...';
 								// The raid links are too large and will always cause truncation.
 								// Prompt the user to add more information to the issue.
-								new CrashModal(this.rootElem, link);
+								new CrashModal(this.rootElem, link).open();
 							}
 							window.open(base + issueBody, '_blank');
 						}

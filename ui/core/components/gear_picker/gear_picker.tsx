@@ -349,7 +349,7 @@ export class ItemPicker extends Component {
 
 	private addQuickGemHelpers() {
 		if (!this._equippedItem) return;
-		const openGemDetailTab = (socketIdx: number) => this.openSelectorModal(`Gem ${socketIdx + 1}` as SelectorModalTabs);
+		const openGemDetailTab = (socketIdx: number) => this.openSelectorModal(`Gem${socketIdx + 1}` as SelectorModalTabs);
 		this.itemElem.socketsElem?.forEach(element => {
 			const socketIdx = Number(element.dataset.socketIdx) || 0;
 			element.addEventListener('click', event => {
@@ -453,7 +453,7 @@ export enum SelectorModalTabs {
 export class SelectorModal extends BaseModal {
 	private readonly simUI: SimUI;
 	private player: Player<any>;
-	private gearPicker: GearPicker;
+	private gearPicker: GearPicker | undefined;
 	private ilists: ItemList<any>[] = [];
 	private updateReforgeList: (newReforgeData: Array<ReforgeData & { ep: number }>) => void;
 
@@ -464,7 +464,7 @@ export class SelectorModal extends BaseModal {
 	private currentSlot: ItemSlot = ItemSlot.ItemSlotHead;
 	private currentTab: SelectorModalTabs = SelectorModalTabs.Items;
 
-	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, gearPicker: GearPicker) {
+	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, gearPicker?: GearPicker) {
 		super(parent, 'selector-modal');
 
 		this.simUI = simUI;
@@ -506,15 +506,28 @@ export class SelectorModal extends BaseModal {
 	private setData(selectedSlot: ItemSlot, selectedTab: SelectorModalTabs, gearData: GearData) {
 		this.tabsElem.innerText = '';
 		this.contentElem.innerText = '';
-
 		this.ilists = [];
-
-		this.currentSlot = selectedSlot;
-		this.currentTab = selectedTab;
 
 		const eligibleItems = this.player.getItems(selectedSlot);
 		const eligibleEnchants = this.player.getEnchants(selectedSlot);
 		const equippedItem = this.player.getEquippedItem(selectedSlot);
+
+		this.currentSlot = selectedSlot;
+
+		// If the enchant tab is selected but the item has no eligible enchants, default to items
+		if (selectedTab == SelectorModalTabs.Enchants && eligibleEnchants.length == 0) {
+			selectedTab = SelectorModalTabs.Items;
+		}
+
+		// If a gem tab is selected but the item has no eligible sockets, default to items
+		if (
+			[SelectorModalTabs.Gem1, SelectorModalTabs.Gem2, SelectorModalTabs.Gem3].includes(selectedTab) &&
+			equippedItem?.numSockets(this.player.isBlacksmithing()) == 0
+		) {
+			selectedTab = SelectorModalTabs.Items;
+		}
+
+		this.currentTab = selectedTab;
 
 		this.addTab<Item>(
 			SelectorModalTabs.Items,
@@ -587,6 +600,10 @@ export class SelectorModal extends BaseModal {
 	}
 
 	private addItemSlotTabs() {
+		if (!this.gearPicker) {
+			return;
+		}
+
 		this.dialog.prepend(
 			<div className="gear-picker-modal-slots">
 				{this.gearPicker.itemPickers.map(picker => {
@@ -606,6 +623,7 @@ export class SelectorModal extends BaseModal {
 					) as HTMLAnchorElement;
 					picker.onUpdate(() => {
 						if (picker.item) {
+							this.player.setWowheadData(picker.item, anchor);
 							picker.item
 								.asActionId()
 								.fill()
@@ -646,7 +664,7 @@ export class SelectorModal extends BaseModal {
 		const socketBonusEP = this.player.computeStatsEP(new Stats(equippedItem.item.socketBonus)) / (equippedItem.item.gemSockets.length || 1);
 		equippedItem.curSocketColors(this.player.isBlacksmithing()).forEach((socketColor, socketIdx) => {
 			this.addTab<Gem>(
-				SelectorModalTabs[('Gem' + (socketIdx + 1)) as keyof typeof SelectorModalTabs],
+				SelectorModalTabs[`Gem${socketIdx + 1}` as keyof typeof SelectorModalTabs],
 				gearData,
 				this.player.getGems(socketColor).map((gem: Gem) => {
 					return {

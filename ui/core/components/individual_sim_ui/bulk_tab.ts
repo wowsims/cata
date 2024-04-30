@@ -13,7 +13,7 @@ import { BaseModal } from '../base_modal';
 import { BooleanPicker } from '../boolean_picker';
 import { Component } from '../component';
 import { ContentBlock } from '../content_block';
-import { ItemData, ItemList, ItemRenderer, SelectorModal, SelectorModalTabs } from '../gear_picker/gear_picker';
+import { GearData, ItemData, ItemList, ItemRenderer, SelectorModal, SelectorModalTabs } from '../gear_picker/gear_picker';
 import { Importer } from '../importers';
 import { ResultsViewer } from '../results_viewer';
 import { SimTab } from '../sim_tab';
@@ -132,6 +132,8 @@ class BulkSimResultRenderer {
 
 export class BulkItemPicker extends Component {
 	private readonly itemElem: ItemRenderer;
+	private readonly selectorModal: SelectorModal;
+
 	readonly simUI: IndividualSimUI<any>;
 	readonly bulkUI: BulkTab;
 	readonly index: number;
@@ -145,6 +147,7 @@ export class BulkItemPicker extends Component {
 		this.index = index;
 		this.item = item;
 		this.itemElem = new ItemRenderer(parent, this.rootElem, simUI.player);
+		this.selectorModal = new SelectorModal(this.bulkUI.rootElem, this.simUI, this.simUI.player);
 
 		this.simUI.sim.waitForInit().then(() => {
 			this.setItem(item);
@@ -152,32 +155,11 @@ export class BulkItemPicker extends Component {
 			const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
 			const openEnchantGemSelector = (event: Event) => {
 				event.preventDefault();
-				const changeEvent = new TypedEvent<void>();
-				const modal = new SelectorModal(this.bulkUI.rootElem, this.simUI, this.simUI.player, {
-					selectedTab: SelectorModalTabs.Enchants,
-					slot: slot,
-					equippedItem: this.item,
-					eligibleItems: new Array<UIItem>(),
-					eligibleEnchants: eligibleEnchants,
-					gearData: {
-						equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
-							if (equippedItem) {
-								const allItems = this.bulkUI.getItems();
-								allItems[this.index] = equippedItem.asSpec();
-								this.item = equippedItem;
-								this.bulkUI.setItems(allItems);
-								changeEvent.emit(TypedEvent.nextEventID());
-							}
-						},
-						getEquippedItem: () => this.item,
-						changeEvent: changeEvent,
-					},
-				});
 
 				if (eligibleEnchants.length > 0) {
-					modal.openTabName('Enchants');
+					this.selectorModal.openTab(slot, SelectorModalTabs.Enchants, this.createGearData());
 				} else if (this.item._gems.length > 0) {
-					modal.openTabName('Gem1');
+					this.selectorModal.openTab(slot, SelectorModalTabs.Gem1, this.createGearData());
 				}
 
 				const destroyItemButton = document.createElement('button');
@@ -189,11 +171,11 @@ export class BulkItemPicker extends Component {
 							return idx != this.index;
 						}),
 					);
-					modal.close();
+					this.selectorModal.close();
 				};
-				const closeX = modal.header?.querySelector('.close-button');
+				const closeX = this.selectorModal.header?.querySelector('.close-button');
 				if (closeX != undefined) {
-					modal.header?.insertBefore(destroyItemButton, closeX);
+					this.selectorModal.header?.insertBefore(destroyItemButton, closeX);
 				}
 			};
 
@@ -214,6 +196,23 @@ export class BulkItemPicker extends Component {
 			this.itemElem.nameElem.textContent = 'Add new item (not implemented)';
 			this.itemElem.rootElem.style.alignItems = 'center';
 		}
+	}
+
+	private createGearData(): GearData {
+		const changeEvent = new TypedEvent<void>();
+		return {
+			equipItem: (eventID: EventID, equippedItem: EquippedItem | null) => {
+				if (equippedItem) {
+					const allItems = this.bulkUI.getItems();
+					allItems[this.index] = equippedItem.asSpec();
+					this.item = equippedItem;
+					this.bulkUI.setItems(allItems);
+					changeEvent.emit(TypedEvent.nextEventID());
+				}
+			},
+			getEquippedItem: () => this.item,
+			changeEvent: changeEvent,
+		};
 	}
 }
 
@@ -924,22 +923,17 @@ class GemSelectorModal extends BaseModal {
 			this.ilist = new ItemList<UIGem>(
 				this.body,
 				this.simUI,
-				{
-					selectedTab: SelectorModalTabs.Gem1,
-					slot: ItemSlot.ItemSlotHead,
-					equippedItem: null,
-					eligibleItems: new Array<UIItem>(),
-					eligibleEnchants: new Array<UIEnchant>(),
-					gearData: {
-						equipItem: (_eventID: EventID, _equippedItem: EquippedItem | null) => {
-							return;
-						},
-						getEquippedItem: () => null,
-						changeEvent: new TypedEvent(), // FIXME
-					},
-				},
+				ItemSlot.ItemSlotHead,
+				SelectorModalTabs.Gem1,
 				this.simUI.player,
 				'Gem1',
+				{
+					equipItem: (_eventID: EventID, _equippedItem: EquippedItem | null) => {
+						return;
+					},
+					getEquippedItem: () => null,
+					changeEvent: new TypedEvent(), // FIXME
+				},
 				this.simUI.player.getGems(this.socketColor).map((gem: UIGem) => {
 					return {
 						item: gem,
