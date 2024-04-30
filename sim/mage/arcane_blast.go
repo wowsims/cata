@@ -50,6 +50,12 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			if spell.ClassSpellMask&(MageSpellArcaneBlast|MageSpellArcaneExplosion) > 0 {
 				return
 			}
+			if !spell.SpellSchool.Matches(core.SpellSchoolArcane) {
+				return
+			}
+			if spell.ProcMask != core.ProcMaskSpellDamage {
+				return
+			}
 			aura.Deactivate(sim)
 		},
 	})
