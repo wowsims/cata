@@ -451,7 +451,7 @@ func (spell *Spell) WaitTravelTime(sim *Simulation, callback func(*Simulation)) 
 
 // Returns the combined attacker modifiers.
 func (spell *Spell) AttackerDamageMultiplier(attackTable *AttackTable, isDot bool) float64 {
-	damageMultiplierAdditive := TernaryFloat64(isDot && !spell.Flags.Matches(SpellFlagIgnoreAttackerModifiers),
+	damageMultiplierAdditive := TernaryFloat64(isDot,
 		spell.DamageMultiplierAdditive+spell.Unit.PseudoStats.DotDamageMultiplierAdditive-1,
 		spell.DamageMultiplierAdditive)
 

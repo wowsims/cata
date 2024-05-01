@@ -19,7 +19,7 @@ func (mage *Mage) registerBlizzardSpell() {
 		iceShardsProcApplication = mage.RegisterSpell(core.SpellConfig{
 			ActionID:       core.ActionID{SpellID: 12488},
 			ProcMask:       core.ProcMaskProc,
-			Flags:          core.SpellFlagNoLogs,
+			Flags:          SpellFlagMage | core.SpellFlagNoLogs,
 			ClassSpellMask: MageSpellChill,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				auras.Get(target).Activate(sim)
@@ -31,6 +31,7 @@ func (mage *Mage) registerBlizzardSpell() {
 		ActionID:       core.ActionID{SpellID: 42208},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagMage,
 		ClassSpellMask: MageSpellBlizzard,
 
 		DamageMultiplier: 1,
@@ -53,7 +54,7 @@ func (mage *Mage) registerBlizzardSpell() {
 		ActionID:       core.ActionID{SpellID: 10},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
+		Flags:          SpellFlagMage | core.SpellFlagChanneled | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellBlizzard,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.74,

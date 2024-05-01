@@ -16,6 +16,7 @@ func (mage *Mage) registerCombustionSpell() {
 		ActionID:       core.ActionID{SpellID: 11129},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty, // application burst might have a proc that might necessitate separating
+		Flags:          SpellFlagMage,
 		ClassSpellMask: MageSpellCombustion,
 
 		Cast: core.CastConfig{

@@ -42,7 +42,6 @@ import {
 	APLValueFrontOfTarget,
 	APLValueGCDIsReady,
 	APLValueGCDTimeToReady,
-	APLValueInputDelay,
 	APLValueIsExecutePhase,
 	APLValueIsExecutePhase_ExecutePhaseThreshold as ExecutePhaseThreshold,
 	APLValueMath,
@@ -820,13 +819,6 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Spell'],
 		shortDescription: 'The amount of time specified by the <b>Channel Clip Delay</b> setting.',
 		newValue: APLValueChannelClipDelay.create,
-		fields: [],
-	}),
-	inputDelay: inputBuilder({
-		label: 'Input Delay',
-		submenu: ['Spell'],
-		shortDescription: 'The amount of time specified by the <b>Input Dleay</b> setting.',
-		newValue: APLValueInputDelay.create,
 		fields: [],
 	}),
 

@@ -30,6 +30,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 		ActionID:       core.ActionID{SpellID: 7268},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
+		Flags:          SpellFlagMage,
 		ClassSpellMask: MageSpellArcaneMissilesTick,
 		MissileSpeed:   20,
 
@@ -50,7 +51,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 		ActionID:       core.ActionID{SpellID: 7268},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
+		Flags:          SpellFlagMage | core.SpellFlagChanneled | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellArcaneMissilesCast,
 
 		Cast: core.CastConfig{
@@ -64,7 +65,17 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "ArcaneMissiles" + mage.Label,
+				Label: "ArcaneMissiles",
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					// Make sure the arcane blast deactivation happens after last tick
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						Priority: core.ActionPriorityDOT - 1,
+						DoAt:     sim.CurrentTime,
+						OnAction: func(sim *core.Simulation) {
+							mage.ArcaneBlastAura.Deactivate(sim)
+						},
+					})
+				},
 			},
 			NumberOfTicks:        3 - 1, // subtracting 1 due to force tick after apply
 			TickLength:           time.Millisecond * 700,

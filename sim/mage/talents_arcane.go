@@ -95,41 +95,6 @@ func (mage *Mage) applyArcaneConcentration() {
 	var procSpell *core.Spell
 	procChance := []float64{0, 0.03, 0.06, 0.1}[mage.Talents.ArcaneConcentration]
 
-	clearCastingMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAllDamaging,
-		FloatValue: -1,
-		Kind:       core.SpellMod_PowerCost_Pct,
-	})
-
-	// The Clearcasting proc
-	clearcastingAura := mage.RegisterAura(core.Aura{
-		Label:    "Clearcasting",
-		ActionID: core.ActionID{SpellID: 12536},
-		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if mage.ArcanePotencyAura != nil {
-				mage.ArcanePotencyAura.Activate(sim)
-			}
-			clearCastingMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			clearCastingMod.Deactivate()
-		},
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&MageSpellsAllDamaging == 0 {
-				return
-			}
-			if spell.DefaultCast.Cost == 0 {
-				return
-			}
-			if procCheckAt == sim.CurrentTime && procSpell == spell {
-				// Means this is another hit from the same cast that procced CC.
-				return
-			}
-			aura.Deactivate(sim)
-		},
-	})
-
 	// Tracks if Clearcasting should proc
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Arcane Concentration",
@@ -158,9 +123,43 @@ func (mage *Mage) applyArcaneConcentration() {
 				return
 			}
 
-			clearcastingAura.Activate(sim)
+			mage.ClearcastingAura.Activate(sim)
 		},
 	}))
+
+	clearCastingMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellsAllDamaging,
+		FloatValue: -1,
+		Kind:       core.SpellMod_PowerCost_Pct,
+	})
+	// The Clearcasting proc
+	mage.ClearcastingAura = mage.RegisterAura(core.Aura{
+		Label:    "Clearcasting",
+		ActionID: core.ActionID{SpellID: 12536},
+		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if mage.ArcanePotencyAura != nil {
+				mage.ArcanePotencyAura.Activate(sim)
+			}
+			clearCastingMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			clearCastingMod.Deactivate()
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask&MageSpellsAllDamaging == 0 {
+				return
+			}
+			if spell.DefaultCast.Cost == 0 {
+				return
+			}
+			if procCheckAt == sim.CurrentTime && procSpell == spell {
+				// Means this is another hit from the same cast that procced CC.
+				return
+			}
+			aura.Deactivate(sim)
+		},
+	})
 }
 
 func (mage *Mage) registerPresenceOfMindCD() {
@@ -275,19 +274,19 @@ func (mage *Mage) registerArcanePowerCD() {
 
 	actionID := core.ActionID{SpellID: 12042}
 
-	arcanePowerCostMod := mage.AddDynamicMod(core.SpellModConfig{
+	mage.arcanePowerCostMod = mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAll,
 		FloatValue: 0.1,
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 
-	arcanePowerDmgMod := mage.AddDynamicMod(core.SpellModConfig{
+	mage.arcanePowerDmgMod = mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAll,
 		FloatValue: 0.2,
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
 
-	arcanePowerAura := mage.RegisterAura(core.Aura{
+	mage.ArcanePowerAura = mage.RegisterAura(core.Aura{
 		Label:    "Arcane Power Aura",
 		ActionID: actionID,
 		Duration: time.Second * 15,
@@ -295,15 +294,15 @@ func (mage *Mage) registerArcanePowerCD() {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Activate()
 			}
-			arcanePowerCostMod.Activate()
-			arcanePowerDmgMod.Activate()
+			mage.arcanePowerCostMod.Activate()
+			mage.arcanePowerDmgMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Deactivate()
 			}
-			arcanePowerCostMod.Deactivate()
-			arcanePowerDmgMod.Deactivate()
+			mage.arcanePowerCostMod.Deactivate()
+			mage.arcanePowerDmgMod.Deactivate()
 		},
 	})
 
@@ -317,7 +316,7 @@ func (mage *Mage) registerArcanePowerCD() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			arcanePowerAura.Activate(sim)
+			mage.ArcanePowerAura.Activate(sim)
 		},
 		/*ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return !mage.ArcanePotencyAura.IsActive()

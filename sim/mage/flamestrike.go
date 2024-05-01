@@ -12,7 +12,7 @@ func (mage *Mage) registerFlamestrikeSpell() {
 		ActionID:       core.ActionID{SpellID: 2120},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          SpellFlagMage | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFlamestrike,
 
 		ManaCost: core.ManaCostOptions{

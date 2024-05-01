@@ -13,7 +13,7 @@ func (arcane *ArcaneMage) registerArcaneBarrageSpell() {
 		ActionID:       core.ActionID{SpellID: 44425},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          mage.SpellFlagMage | core.SpellFlagAPL,
 		ClassSpellMask: mage.MageSpellArcaneBarrage,
 		MissileSpeed:   24,
 
@@ -42,6 +42,7 @@ func (arcane *ArcaneMage) registerArcaneBarrageSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
+			arcane.ArcaneBlastAura.Deactivate(sim)
 		},
 	})
 }

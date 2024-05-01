@@ -199,8 +199,6 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 	// Properties
 	case *proto.APLValue_ChannelClipDelay:
 		return rot.newValueChannelClipDelay(config.GetChannelClipDelay())
-	case *proto.APLValue_InputDelay:
-		return rot.newValueInputDelay(config.GetInputDelay())
 
 	default:
 		return nil

@@ -16,7 +16,7 @@ func (mage *Mage) registerFrostfireOrbSpell() {
 		ActionID:    core.ActionID{SpellID: 92283},
 		SpellSchool: core.SpellSchoolFrost | core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
@@ -107,7 +107,7 @@ func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
 		ActionID:       core.ActionID{SpellID: 95969},
 		SpellSchool:    core.SpellSchoolFrost | core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          core.SpellFlagNoLogs,
+		Flags:          SpellFlagMage | core.SpellFlagNoLogs,
 		ClassSpellMask: MageSpellFrostfireOrb,
 
 		Cast: core.CastConfig{

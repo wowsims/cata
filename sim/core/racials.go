@@ -139,7 +139,6 @@ func applyRaceEffects(agent Agent) {
 
 		switch character.Class {
 		case proto.Class_ClassMage:
-			spBonus = 584.5
 		case proto.Class_ClassWarlock:
 			spBonus = 584.5
 		case proto.Class_ClassShaman:
