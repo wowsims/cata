@@ -4,8 +4,8 @@ import { element, fragment, ref } from 'tsx-vanilla';
 
 import { setItemQualityCssClass } from '../../css_utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
-import { Player } from '../../player';
-import { Class, GemColor, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec, ItemType, ReforgeStat, Stat } from '../../proto/common';
+import { Player, ReforgeData } from '../../player';
+import { Class, GemColor, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec, ItemType } from '../../proto/common';
 import { DatabaseFilters, RepFaction, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UIItem_FactionRestriction } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEnchantDescription, getUniqueEnchantString } from '../../proto_utils/enchants';
@@ -177,13 +177,10 @@ export class ItemRenderer extends Component {
 			this.nameElem.querySelector('.heroic-label')?.remove();
 		}
 
-		if (newItem._reforging !== 0) {
-			const reforge = this.player.getReforge(newItem.reforging);
-			if (reforge) {
-				this.reforgeElem.innerText = `Reforged ${shortSecondaryStatNames.get(reforge?.fromStat[0])} > ${shortSecondaryStatNames.get(
-					reforge?.toStat[0],
-				)}`;
-			}
+		if (newItem.reforge) {
+			const fromText = shortSecondaryStatNames.get(newItem.reforge?.fromStat[0]);
+			const toText = shortSecondaryStatNames.get(newItem.reforge?.toStat[0]);
+			this.reforgeElem.innerText = `Reforged ${fromText} > ${toText}`;
 		} else {
 			this.reforgeElem.innerText = '';
 		}
@@ -380,11 +377,7 @@ export class IconItemSwapPicker extends Component {
 	private readonly player: Player<any>;
 	private readonly slot: ItemSlot;
 
-	// All items and enchants that are eligible for this slot
-	private _items: Array<Item> = [];
-	private _enchants: Array<Enchant> = [];
-
-	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, slot: ItemSlot, gearPicker: GearPicker) {
+	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, slot: ItemSlot) {
 		super(parent, 'icon-picker-root');
 		this.rootElem.classList.add('icon-picker');
 		this.player = player;
@@ -399,12 +392,12 @@ export class IconItemSwapPicker extends Component {
 		this.socketsContainerElem.classList.add('item-picker-sockets-container');
 		this.iconAnchor.appendChild(this.socketsContainerElem);
 
+		const selectorModal = new SelectorModal(simUI.rootElem, simUI, this.player);
+
 		player.sim.waitForInit().then(() => {
-			this._items = this.player.getItems(slot);
-			this._enchants = this.player.getEnchants(slot);
 			this.iconAnchor.addEventListener('click', (event: Event) => {
 				event.preventDefault();
-				new SelectorModal(simUI.rootElem, simUI, this.player, gearPicker);
+				selectorModal.openTab(this.slot, SelectorModalTabs.Items, this.createGearData());
 			});
 		});
 
@@ -432,6 +425,16 @@ export class IconItemSwapPicker extends Component {
 			this.iconAnchor.classList.remove('active');
 		}
 	}
+
+	private createGearData(): GearData {
+		return {
+			equipItem: (eventID: EventID, newItem: EquippedItem | null) => {
+				this.player.equipItemSwapitem(eventID, this.slot, newItem);
+			},
+			getEquippedItem: () => this.player.getItemSwapItem(this.slot),
+			changeEvent: this.player.itemSwapChangeEmitter,
+		};
+	}
 }
 
 export interface GearData {
@@ -442,7 +445,7 @@ export interface GearData {
 
 export enum SelectorModalTabs {
 	Items = 'Items',
-	RandomSuffixes = 'Random Suffixes',
+	RandomSuffixes = 'Random Suffix',
 	Enchants = 'Enchants',
 	Reforging = 'Reforging',
 	Gem1 = 'Gem1',
@@ -455,7 +458,7 @@ export class SelectorModal extends BaseModal {
 	private player: Player<any>;
 	private gearPicker: GearPicker | undefined;
 	private ilists: ItemList<any>[] = [];
-	private updateReforgeList: (newReforgeData: Array<ReforgeData & { ep: number }>) => void;
+	// private updateReforgeList: (newReforgeData: Array<ReforgeData & { ep: number }>) => void;
 
 	private readonly itemSlotTabElems: HTMLElement[] = [];
 	private readonly tabsElem: HTMLElement;
@@ -470,9 +473,9 @@ export class SelectorModal extends BaseModal {
 		this.simUI = simUI;
 		this.player = player;
 		this.gearPicker = gearPicker;
-		this.updateReforgeList = (_newReforgeData: Array<ReforgeData & { ep: number }>) => {
-			return;
-		};
+		// this.updateReforgeList = (_newReforgeData: Array<ReforgeData & { ep: number }>) => {
+		// 	return;
+		// };
 
 		this.addItemSlotTabs();
 
@@ -529,10 +532,10 @@ export class SelectorModal extends BaseModal {
 
 		this.currentTab = selectedTab;
 
-		this.addTab<Item>(
-			SelectorModalTabs.Items,
+		this.addTab<Item>({
+			label: SelectorModalTabs.Items,
 			gearData,
-			eligibleItems.map(item => {
+			itemData: eligibleItems.map(item => {
 				return {
 					item: item,
 					id: item.id,
@@ -543,7 +546,7 @@ export class SelectorModal extends BaseModal {
 					phase: item.phase,
 					baseEP: this.player.computeItemEP(item, selectedSlot),
 					ignoreEPFilter: false,
-					onEquip: (eventID, item: Item) => {
+					onEquip: (eventID: number, item: Item) => {
 						const equippedItem = gearData.getEquippedItem();
 						if (equippedItem) {
 							gearData.equipItem(eventID, equippedItem.withItem(item));
@@ -553,20 +556,20 @@ export class SelectorModal extends BaseModal {
 					},
 				};
 			}),
-			item => this.player.computeItemEP(item, selectedSlot),
-			equippedItem => equippedItem?.item,
-			GemColor.GemColorUnknown,
-			eventID => {
+			computeEP: (item: Item) => this.player.computeItemEP(item, selectedSlot),
+			equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.item,
+			onRemove: (eventID: number) => {
 				gearData.equipItem(eventID, null);
 				this.removeTabs('Gem');
-				this.removeTabs('Random Suffixes');
+				this.removeTabs('Random Suffix');
 			},
-		);
+			showSource: true,
+		});
 
-		this.addTab<Enchant>(
-			SelectorModalTabs.Enchants,
+		this.addTab<Enchant>({
+			label: SelectorModalTabs.Enchants,
 			gearData,
-			eligibleEnchants.map(enchant => {
+			itemData: eligibleEnchants.map(enchant => {
 				return {
 					item: enchant,
 					id: enchant.effectId,
@@ -577,20 +580,19 @@ export class SelectorModal extends BaseModal {
 					baseEP: this.player.computeStatsEP(new Stats(enchant.stats)),
 					ignoreEPFilter: true,
 					heroic: false,
-					onEquip: (eventID, enchant: Enchant) => {
+					onEquip: (eventID: number, enchant: Enchant) => {
 						const equippedItem = gearData.getEquippedItem();
 						if (equippedItem) gearData.equipItem(eventID, equippedItem.withEnchant(enchant));
 					},
 				};
 			}),
-			enchant => this.player.computeEnchantEP(enchant),
-			equippedItem => equippedItem?.enchant,
-			GemColor.GemColorUnknown,
-			eventID => {
+			computeEP: (enchant: Enchant) => this.player.computeEnchantEP(enchant),
+			equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.enchant,
+			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
 				if (equippedItem) gearData.equipItem(eventID, equippedItem.withEnchant(null));
 			},
-		);
+		});
 
 		this.addRandomSuffixTab(equippedItem, gearData);
 		this.addReforgingTab(gearData.getEquippedItem(), gearData);
@@ -663,10 +665,10 @@ export class SelectorModal extends BaseModal {
 
 		const socketBonusEP = this.player.computeStatsEP(new Stats(equippedItem.item.socketBonus)) / (equippedItem.item.gemSockets.length || 1);
 		equippedItem.curSocketColors(this.player.isBlacksmithing()).forEach((socketColor, socketIdx) => {
-			this.addTab<Gem>(
-				SelectorModalTabs[`Gem${socketIdx + 1}` as keyof typeof SelectorModalTabs],
+			this.addTab<Gem>({
+				label: SelectorModalTabs[`Gem${socketIdx + 1}` as keyof typeof SelectorModalTabs],
 				gearData,
-				this.player.getGems(socketColor).map((gem: Gem) => {
+				itemData: this.player.getGems(socketColor).map((gem: Gem) => {
 					return {
 						item: gem,
 						id: gem.id,
@@ -677,26 +679,25 @@ export class SelectorModal extends BaseModal {
 						heroic: false,
 						baseEP: this.player.computeStatsEP(new Stats(gem.stats)),
 						ignoreEPFilter: true,
-						onEquip: (eventID, gem: Gem) => {
+						onEquip: (eventID: number, gem: Gem) => {
 							const equippedItem = gearData.getEquippedItem();
 							if (equippedItem) gearData.equipItem(eventID, equippedItem.withGem(gem, socketIdx));
 						},
 					};
 				}),
-				gem => {
+				computeEP: (gem: Gem) => {
 					let gemEP = this.player.computeGemEP(gem);
 					if (gemMatchesSocket(gem, socketColor)) {
 						gemEP += socketBonusEP;
 					}
 					return gemEP;
 				},
-				equippedItem => equippedItem?.gems[socketIdx],
-				socketColor,
-				eventID => {
+				equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.gems[socketIdx],
+				onRemove: (eventID: number) => {
 					const equippedItem = gearData.getEquippedItem();
 					if (equippedItem) gearData.equipItem(eventID, equippedItem.withGem(null, socketIdx));
 				},
-				tabAnchor => {
+				setTabContent: (tabAnchor: HTMLAnchorElement) => {
 					const gemContainer = createGemContainer(socketColor, null, socketIdx);
 					tabAnchor.appendChild(gemContainer);
 					tabAnchor.classList.add('selector-modal-tab-gem');
@@ -725,7 +726,8 @@ export class SelectorModal extends BaseModal {
 					this.addOnDisposeCallback(() => gearData.changeEvent.off(updateGemIcon));
 					updateGemIcon();
 				},
-			);
+				socketColor,
+			});
 		});
 	}
 
@@ -736,10 +738,10 @@ export class SelectorModal extends BaseModal {
 
 		const itemProto = equippedItem.item;
 
-		this.addTab<ItemRandomSuffix>(
-			SelectorModalTabs.RandomSuffixes,
+		this.addTab<ItemRandomSuffix>({
+			label: SelectorModalTabs.RandomSuffixes,
 			gearData,
-			this.player.getRandomSuffixes(itemProto).map((randomSuffix: ItemRandomSuffix) => {
+			itemData: this.player.getRandomSuffixes(itemProto).map((randomSuffix: ItemRandomSuffix) => {
 				return {
 					item: randomSuffix,
 					id: randomSuffix.id,
@@ -750,47 +752,46 @@ export class SelectorModal extends BaseModal {
 					heroic: false,
 					baseEP: this.player.computeRandomSuffixEP(randomSuffix),
 					ignoreEPFilter: true,
-					onEquip: (eventID, randomSuffix: ItemRandomSuffix) => {
+					onEquip: (eventID: number, randomSuffix: ItemRandomSuffix) => {
 						const equippedItem = gearData.getEquippedItem();
 
 						if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(randomSuffix));
 					},
 				};
 			}),
-			randomSuffix => this.player.computeRandomSuffixEP(randomSuffix),
-			equippedItem => equippedItem?.randomSuffix,
-			GemColor.GemColorUnknown,
-			eventID => {
+			computeEP: (randomSuffix: ItemRandomSuffix) => this.player.computeRandomSuffixEP(randomSuffix),
+			equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.randomSuffix,
+			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
 				if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(null));
 			},
-		);
+		});
 	}
 
-	private prepareReforgeData(reforge: ReforgeStat, item: EquippedItem): ReforgeData & { ep: number } {
-		const itemProto = item.item;
+	// private prepareReforgeData(reforge: ReforgeStat, item: EquippedItem): ReforgeData & { ep: number } {
+	// 	const itemProto = item.item;
 
-		const fromAmount = Math.ceil(-itemProto.stats[reforge.fromStat[0]] * reforge.multiplier);
-		const toAmount = Math.floor(itemProto.stats[reforge.fromStat[0]] * reforge.multiplier);
-		const forge = {
-			reforge,
-			item,
-			fromStat: reforge.fromStat,
-			toAmount,
-			toStat: reforge.toStat,
-			reforgeId: reforge.id,
-			fromAmount,
-		};
+	// 	const fromAmount = Math.ceil(-itemProto.stats[reforge.fromStat[0]] * reforge.multiplier);
+	// 	const toAmount = Math.floor(itemProto.stats[reforge.fromStat[0]] * reforge.multiplier);
+	// 	const forge = {
+	// 		reforge,
+	// 		item,
+	// 		fromStat: reforge.fromStat,
+	// 		toAmount,
+	// 		toStat: reforge.toStat,
+	// 		reforgeId: reforge.id,
+	// 		fromAmount,
+	// 	};
 
-		const ep = this.player.computeReforgingEP(forge);
-		return {
-			...forge,
-			ep,
-		};
-	}
+	// 	const ep = this.player.computeReforgingEP(forge);
+	// 	return {
+	// 		...forge,
+	// 		ep,
+	// 	};
+	// }
 
 	private addReforgingTab(equippedItem: EquippedItem | null, gearData: GearData) {
-		if (equippedItem == undefined) {
+		if (!equippedItem) {
 			return;
 		}
 		if (equippedItem.randomSuffix !== null) {
@@ -800,124 +801,161 @@ export class SelectorModal extends BaseModal {
 		}
 		const itemProto = equippedItem.item;
 
-		this.player.gearChangeEmitter.on(() => {
-			const newItem = this.player.getGear().getEquippedItem(this.currentSlot);
+		// this.player.gearChangeEmitter.on(() => {
+		// 	const newItem = this.player.getGear().getEquippedItem(this.currentSlot);
 
-			if (newItem !== null) {
-				if (newItem.randomSuffix !== null) {
-					newItem._item.stats = newItem.randomSuffix.stats.map(stat => (stat > 0 ? Math.floor((stat * newItem._item.randPropPoints) / 10000) : stat));
-				}
-				const reforgings = this.player.getAvailableReforgings(newItem._item) ?? [];
+		// 	if (newItem !== null) {
+		// 		if (newItem.randomSuffix !== null) {
+		// 			newItem._item.stats = newItem.randomSuffix.stats.map(stat => (stat > 0 ? Math.floor((stat * newItem._item.randPropPoints) / 10000) : stat));
+		// 		}
+		// 		const reforgings = this.player.getAvailableReforgings(newItem._item) ?? [];
 
-				this.updateReforgeList(
-					reforgings
-						?.map(reforge => {
-							return this.prepareReforgeData(reforge, newItem);
-						})
-						.sort((a, b) => b.ep - a.ep) ?? [],
-				);
-			}
-		});
-		const reforgings = this.player.getAvailableReforgings(itemProto);
-		this.addReforgeTabs(
-			SelectorModalTabs.Reforging,
-			reforgings
-				?.map(reforge => {
-					return this.prepareReforgeData(reforge, equippedItem);
-				})
-				.sort((a, b) => b.ep - a.ep) ?? [],
-			(item, id) => {
-				gearData.equipItem(id, item);
-				return;
+		// 		this.updateReforgeList(
+		// 			reforgings
+		// 				?.map(reforge => {
+		// 					return this.prepareReforgeData(reforge, newItem);
+		// 				})
+		// 				.sort((a, b) => b.ep - a.ep) ?? [],
+		// 		);
+		// 	}
+		// });
+		// this.addReforgeTabs(
+		// 	SelectorModalTabs.Reforging,
+		// 	reforgings
+		// 		?.map(reforge => {
+		// 			return this.prepareReforgeData(reforge, equippedItem);
+		// 		})
+		// 		.sort((a, b) => b.ep - a.ep) ?? [],
+		// 	(item, id) => {
+		// 		gearData.equipItem(id, item);
+		// 		return;
+		// 	},
+		// );
+
+		this.addTab<ReforgeData>({
+			label: SelectorModalTabs.Reforging,
+			gearData,
+			itemData: this.player.getAvailableReforgings(itemProto).map(reforgeData => {
+				return {
+					item: reforgeData,
+					id: reforgeData.reforgeId,
+					actionId: ActionId.fromReforge(itemProto, reforgeData.reforge),
+					name: (
+						<>
+							<span className="reforge-value negative">{`${reforgeData.fromAmount} ${shortSecondaryStatNames.get(
+								reforgeData.fromStat[0],
+							)}`}</span>
+							<span className="reforge-value positive">+{`${reforgeData.toAmount} ${shortSecondaryStatNames.get(reforgeData.toStat[0])}`}</span>
+						</>
+					) as HTMLElement,
+					quality: ItemQuality.ItemQualityCommon,
+					phase: itemProto.phase,
+					heroic: false,
+					baseEP: this.player.computeReforgingEP(reforgeData),
+					ignoreEPFilter: true,
+					onEquip: (eventID, reforgeData: ReforgeData) => {
+						const equippedItem = gearData.getEquippedItem();
+
+						if (equippedItem) gearData.equipItem(eventID, equippedItem.withReforge(reforgeData.reforge));
+					},
+				};
+			}),
+			computeEP: (reforge: ReforgeData) => this.player.computeReforgingEP(reforge),
+			equippedToItemFn: (equippedItem: EquippedItem | null) =>
+				equippedItem && equippedItem.reforge ? this.player.getReforgeData(equippedItem.item, equippedItem.reforge) : null,
+			onRemove: (eventID: number) => {
+				const equippedItem = gearData.getEquippedItem();
+				if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(null));
 			},
-		);
+			itemLabel: 'Reforge',
+		});
 	}
-	private addReforgeTabs(label: string, reforgeData: Array<ReforgeData>, onAdd: (item: EquippedItem, EventId: EventID) => void) {
-		if (reforgeData.length == 0) {
-			//return;
-		}
+	// private addReforgeTabs(label: string, reforgeData: Array<ReforgeData>, onAdd: (item: EquippedItem, EventId: EventID) => void) {
+	// 	if (reforgeData.length == 0) {
+	// 		//return;
+	// 	}
 
-		const tabContentId = (label + '-tab').split(' ').join('');
-		const selected = label === this.currentTab;
-		const tabAnchor = ref<HTMLAnchorElement>();
-		this.tabsElem.appendChild(
-			<li className="nav-item">
-				<a
-					ref={tabAnchor}
-					className={`nav-link selector-modal-item-tab ${selected ? 'active' : ''}`}
-					dataset={{
-						label: label,
-						contentId: tabContentId,
-						bsToggle: 'tab',
-						bsTarget: `#${tabContentId}`,
-					}}
-					attributes={{
-						role: 'tab',
-						'aria-selected': selected,
-					}}
-					type="button"></a>
-			</li>,
-		);
-		tabAnchor.value!.textContent = label;
-		// Tab content for Reforges
-		const tabContent = (
-			<div id={tabContentId} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
-				<div className="selector-modal-list-labels">
-					<label className="item-label">
-						<small>Reforge</small>
-					</label>
-					<label className="reforge-label">
-						<small>To</small>
-					</label>
-					<label className="ep-label">
-						<small>EP</small>
-					</label>
-				</div>
-				<ul className="selector-modal-list"></ul>
-			</div>
-		);
-		const updateReforgeList = (newReforgeData: ReforgeData[]) => {
-			const listElement = document.querySelector(`#${tabContentId} .selector-modal-list`);
-			if (listElement) {
-				// Clear the current list
-				listElement.innerHTML = '';
-				newReforgeData.forEach(data => {
-					const listItem = document.createElement('li');
-					listItem.className = `selector-modal-list-item reforge ${data.reforgeId == data.item.reforging ? 'selected' : ''}`;
-					listItem.setAttribute('data-reforge-id', data.reforgeId.toString());
-					listItem.onclick = () => {
-						if (data.item.reforging !== data.reforgeId) {
-							onAdd(data.item.withReforge(data.reforgeId), TypedEvent.nextEventID());
-						} else {
-							onAdd(data.item.withItem(data.item.item), TypedEvent.nextEventID());
-						}
-					};
+	// 	const tabContentId = (label + '-tab').split(' ').join('');
+	// 	const selected = label === this.currentTab;
+	// 	const tabAnchor = ref<HTMLAnchorElement>();
+	// 	this.tabsElem.appendChild(
+	// 		<li className="nav-item">
+	// 			<a
+	// 				ref={tabAnchor}
+	// 				className={`nav-link selector-modal-item-tab ${selected ? 'active' : ''}`}
+	// 				dataset={{
+	// 					label: label,
+	// 					contentId: tabContentId,
+	// 					bsToggle: 'tab',
+	// 					bsTarget: `#${tabContentId}`,
+	// 				}}
+	// 				attributes={{
+	// 					role: 'tab',
+	// 					'aria-selected': selected,
+	// 				}}
+	// 				type="button"></a>
+	// 		</li>,
+	// 	);
+	// 	tabAnchor.value!.textContent = label;
+	// 	// Tab content for Reforges
+	// 	const tabContent = (
+	// 		<div id={tabContentId} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
+	// 			<div className="selector-modal-list-labels">
+	// 				<label className="item-label">
+	// 					<small>Reforge</small>
+	// 				</label>
+	// 				<label className="reforge-label">
+	// 					<small>To</small>
+	// 				</label>
+	// 				<label className="ep-label">
+	// 					<small>EP</small>
+	// 				</label>
+	// 			</div>
+	// 			<ul className="selector-modal-list"></ul>
+	// 		</div>
+	// 	);
+	// 	const updateReforgeList = (newReforgeData: ReforgeData[]) => {
+	// 		const listElement = document.querySelector(`#${tabContentId} .selector-modal-list`);
+	// 		if (listElement) {
+	// 			// Clear the current list
+	// 			listElement.innerHTML = '';
+	// 			newReforgeData.forEach(data => {
+	// 				const listItem = document.createElement('li');
+	// 				listItem.className = `selector-modal-list-item reforge ${data.reforgeId == data.item.reforging ? 'selected' : ''}`;
+	// 				listItem.setAttribute('data-reforge-id', data.reforgeId.toString());
+	// 				listItem.onclick = () => {
+	// 					if (data.item.reforging !== data.reforgeId) {
+	// 						onAdd(data.item.withReforge(data.reforgeId), TypedEvent.nextEventID());
+	// 					} else {
+	// 						onAdd(data.item.withItem(data.item.item), TypedEvent.nextEventID());
+	// 					}
+	// 				};
 
-					const lossSpan = document.createElement('span');
-					lossSpan.className = 'loss';
-					lossSpan.textContent = `${data.fromAmount} ${shortSecondaryStatNames.get(data.fromStat[0])}`;
-					listItem.appendChild(lossSpan);
+	// 				const lossSpan = document.createElement('span');
+	// 				lossSpan.className = 'loss';
+	// 				lossSpan.textContent = `${data.fromAmount} ${shortSecondaryStatNames.get(data.fromStat[0])}`;
+	// 				listItem.appendChild(lossSpan);
 
-					const gainSpan = document.createElement('span');
-					gainSpan.className = 'gain';
-					gainSpan.textContent = `+${data.toAmount} ${shortSecondaryStatNames.get(data.toStat[0])}`;
-					listItem.appendChild(gainSpan);
-					const ep = this.player.computeReforgingEP(data);
-					const epSpan = document.createElement('span');
-					epSpan.className = `selector-modal-list-item-ep ${ep < 0 ? 'loss' : 'gain'}`;
-					epSpan.textContent = `${ep > 0 ? '+' : ''}${Number(ep.toFixed(2)).toString()}`;
-					listItem.appendChild(epSpan);
+	// 				const gainSpan = document.createElement('span');
+	// 				gainSpan.className = 'gain';
+	// 				gainSpan.textContent = `+${data.toAmount} ${shortSecondaryStatNames.get(data.toStat[0])}`;
+	// 				listItem.appendChild(gainSpan);
+	// 				const ep = this.player.computeReforgingEP(data);
+	// 				const epSpan = document.createElement('span');
+	// 				epSpan.className = `selector-modal-list-item-ep ${ep < 0 ? 'loss' : 'gain'}`;
+	// 				epSpan.textContent = `${ep > 0 ? '+' : ''}${Number(ep.toFixed(2)).toString()}`;
+	// 				listItem.appendChild(epSpan);
 
-					listElement.appendChild(listItem);
-				});
-			}
-		};
-		this.contentElem.appendChild(tabContent);
-		this.updateReforgeList = updateReforgeList;
+	// 				listElement.appendChild(listItem);
+	// 			});
+	// 		}
+	// 	};
+	// 	this.contentElem.appendChild(tabContent);
+	// 	this.updateReforgeList = updateReforgeList;
 
-		// Initial
-		updateReforgeList(reforgeData);
-	}
+	// 	// Initial
+	// 	updateReforgeList(reforgeData);
+	// }
 
 	/**
 	 * Adds one of the tabs for the item selector menu.
@@ -925,16 +963,29 @@ export class SelectorModal extends BaseModal {
 	 * T is expected to be Item, Enchant, or Gem. Tab menus for all 3 looks extremely
 	 * similar so this function uses extra functions to do it generically.
 	 */
-	private addTab<T>(
-		label: SelectorModalTabs,
-		gearData: GearData,
-		itemData: Array<ItemData<T>>,
-		computeEP: (item: T) => number,
-		equippedToItemFn: (equippedItem: EquippedItem | null) => T | null | undefined,
-		socketColor: GemColor,
-		onRemove: (eventID: EventID) => void,
-		setTabContent?: (tabElem: HTMLAnchorElement) => void,
-	) {
+	private addTab<T>({
+		label,
+		gearData,
+		itemData,
+		computeEP,
+		equippedToItemFn,
+		onRemove,
+		setTabContent,
+		socketColor,
+		itemLabel,
+		showSource,
+	}: {
+		label: SelectorModalTabs;
+		gearData: GearData;
+		itemData: Array<ItemData<T>>;
+		computeEP: (item: T) => number;
+		equippedToItemFn: (equippedItem: EquippedItem | null) => T | null | undefined;
+		onRemove: (eventID: EventID) => void;
+		setTabContent?: (tabElem: HTMLAnchorElement) => void;
+		socketColor?: GemColor;
+		itemLabel?: string;
+		showSource?: boolean;
+	}) {
 		if (itemData.length == 0) {
 			return;
 		}
@@ -982,9 +1033,9 @@ export class SelectorModal extends BaseModal {
 			label,
 			gearData,
 			itemData,
+			socketColor || GemColor.GemColorUnknown,
 			computeEP,
 			equippedToItemFn,
-			socketColor,
 			onRemove,
 			(itemData: ItemData<T>) => {
 				const item = itemData.item;
@@ -992,13 +1043,17 @@ export class SelectorModal extends BaseModal {
 
 				// If the item changes, then gem slots and random suffix options will also change, so remove and recreate these tabs.
 				if (Item.is(item)) {
-					this.removeTabs('Random Suffixes');
+					this.removeTabs('Random Suffix');
 					this.addRandomSuffixTab(gearData.getEquippedItem(), gearData);
 					this.removeTabs('Gem');
 					this.addGemTabs(this.currentSlot, gearData.getEquippedItem(), gearData);
 					this.removeTabs('Reforging');
 					this.addReforgingTab(gearData.getEquippedItem(), gearData);
 				}
+			},
+			{
+				itemLabel,
+				showSource,
 			},
 		);
 
@@ -1050,7 +1105,7 @@ export class SelectorModal extends BaseModal {
 
 export interface ItemData<T> {
 	item: T;
-	name: string;
+	name: string | HTMLElement;
 	id: number;
 	actionId: ActionId;
 	quality: ItemQuality;
@@ -1059,15 +1114,6 @@ export interface ItemData<T> {
 	ignoreEPFilter: boolean;
 	heroic: boolean;
 	onEquip: (eventID: EventID, item: T) => void;
-}
-export interface ReforgeData {
-	item: EquippedItem;
-	reforge: ReforgeStat;
-	fromStat: Stat[];
-	toStat: Stat[];
-	fromAmount: number;
-	toAmount: number;
-	reforgeId: number;
 }
 
 interface ItemDataWithIdx<T> {
@@ -1098,6 +1144,21 @@ export function getEmptySlotIconUrl(slot: ItemSlot): string {
 	return emptySlotIcons[slot];
 }
 
+export interface ItemListOptions {
+	itemLabel?: string;
+	showSource?: boolean;
+}
+
+interface ItemListConfig {
+	itemLabel: string;
+	showSource: boolean;
+}
+
+const DEFAULT_ITEM_LIST_OPTIONS: ItemListConfig = {
+	itemLabel: 'Item',
+	showSource: false,
+};
+
 export class ItemList<T> {
 	private listElem: HTMLElement;
 	private readonly player: Player<any>;
@@ -1115,6 +1176,8 @@ export class ItemList<T> {
 	private onItemClick: (itemData: ItemData<T>) => void;
 	private scroller: Clusterize;
 
+	private config: ItemListConfig;
+
 	constructor(
 		parent: HTMLElement,
 		simUI: SimUI,
@@ -1124,11 +1187,12 @@ export class ItemList<T> {
 		label: string,
 		gearData: GearData,
 		itemData: Array<ItemData<T>>,
+		socketColor: GemColor,
 		computeEP: (item: T) => number,
 		equippedToItemFn: (equippedItem: EquippedItem | null) => T | null | undefined,
-		socketColor: GemColor,
 		onRemove: (eventID: EventID) => void,
 		onItemClick: (itemData: ItemData<T>) => void,
+		options: ItemListOptions = DEFAULT_ITEM_LIST_OPTIONS,
 	) {
 		this.label = label;
 		this.player = player;
@@ -1137,6 +1201,11 @@ export class ItemList<T> {
 		this.computeEP = computeEP;
 		this.equippedToItemFn = equippedToItemFn;
 		this.onItemClick = onItemClick;
+
+		this.config = {
+			...DEFAULT_ITEM_LIST_OPTIONS,
+			...Object.fromEntries(Object.entries(options).filter(([_, v]) => !!v)),
+		};
 
 		this.slot = currentSlot;
 		this.gearData = gearData;
@@ -1161,11 +1230,13 @@ export class ItemList<T> {
 				</div>
 				<div className="selector-modal-list-labels">
 					<label className="item-label">
-						<small>Item</small>
+						<small>{this.config.itemLabel}</small>
 					</label>
-					<label className="source-label">
-						<small>Source</small>
-					</label>
+					{this.config.showSource && (
+						<label className="source-label">
+							<small>Source</small>
+						</label>
+					)}
 					<label className="ep-label">
 						<small>EP</small>
 						<i className="fa-solid fa-plus-minus fa-2xs"></i>
@@ -1360,7 +1431,10 @@ export class ItemList<T> {
 					.toLowerCase()
 					.replaceAll(/[^a-zA-Z0-9\s]/g, '')
 					.split(' ');
-				const name = listItemData.name.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '');
+				const name = listItemData.name
+					.toString()
+					.toLowerCase()
+					.replaceAll(/[^a-zA-Z0-9\s]/g, '');
 
 				let include = true;
 				searchQuery.forEach(v => {
@@ -1447,7 +1521,7 @@ export class ItemList<T> {
 			</li>
 		);
 
-		if (this.label == 'Items') {
+		if (this.config.showSource) {
 			listItemElem.appendChild(
 				<div className="selector-modal-list-item-source-container">{this.getSourceInfo(itemData.item as unknown as Item, this.player.sim)}</div>,
 			);

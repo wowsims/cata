@@ -1,4 +1,4 @@
-import { GemColor, ItemRandomSuffix, ItemSpec, ItemType, Profession } from '../proto/common.js';
+import { GemColor, ItemRandomSuffix, ItemSpec, ItemType, Profession, ReforgeStat, Stat } from '../proto/common.js';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { distinct } from '../utils.js';
 import { ActionId } from './action_id.js';
@@ -18,18 +18,18 @@ export function getWeaponDPS(item: Item): number {
 export class EquippedItem {
 	readonly _item: Item;
 	readonly _randomSuffix: ItemRandomSuffix | null;
+	readonly _reforge: ReforgeStat | null;
 	readonly _enchant: Enchant | null;
 	readonly _gems: Array<Gem | null>;
-	readonly _reforging: number;
 
 	readonly numPossibleSockets: number;
 
-	constructor(item: Item, enchant?: Enchant | null, gems?: Array<Gem | null>, randomSuffix?: ItemRandomSuffix | null, reforging?: number) {
+	constructor(item: Item, enchant?: Enchant | null, gems?: Array<Gem | null>, randomSuffix?: ItemRandomSuffix | null, reforge?: ReforgeStat | null) {
 		this._item = item;
 		this._enchant = enchant || null;
 		this._gems = gems || [];
 		this._randomSuffix = randomSuffix || null;
-		this._reforging = reforging || 0;
+		this._reforge = reforge || null;
 
 		this.numPossibleSockets = this.numSockets(true);
 
@@ -56,8 +56,8 @@ export class EquippedItem {
 		// Make a defensive copy
 		return this._enchant ? Enchant.clone(this._enchant) : null;
 	}
-	get reforging(): number {
-		return this._reforging;
+	get reforge(): ReforgeStat | null {
+		return this._reforge ? ReforgeStat.clone(this._reforge) : null;
 	}
 	get gems(): Array<Gem | null> {
 		// Make a defensive copy
@@ -71,11 +71,9 @@ export class EquippedItem {
 
 		if (this._randomSuffix && other.randomSuffix && !ItemRandomSuffix.equals(this._randomSuffix, other.randomSuffix)) return false;
 
-		if ((this._enchant == null) != (other.enchant == null)) return false;
+		if (this._reforge && other.reforge && !ReforgeStat.equals(this._reforge, other.reforge)) return false;
 
-		if (this._reforging != other._reforging || this._reforging !== 0) {
-			return false;
-		}
+		if ((this._enchant == null) != (other.enchant == null)) return false;
 
 		if (this._enchant && other.enchant && !Enchant.equals(this._enchant, other.enchant)) return false;
 
@@ -126,13 +124,13 @@ export class EquippedItem {
 	 * Returns a new EquippedItem with the given enchant applied.
 	 */
 	withEnchant(enchant: Enchant | null): EquippedItem {
-		return new EquippedItem(this._item, enchant, this._gems, this._randomSuffix, this._reforging);
+		return new EquippedItem(this._item, enchant, this._gems, this._randomSuffix, this._reforge);
 	}
 
 	/**
-	 * Returns a new EquippedItem with the given enchant applied.
+	 * Returns a new EquippedItem with the given reforge applied.
 	 */
-	withReforge(reforge: number): EquippedItem {
+	withReforge(reforge: ReforgeStat): EquippedItem {
 		return new EquippedItem(this._item, this._enchant, this._gems, this._randomSuffix, reforge);
 	}
 
@@ -147,7 +145,7 @@ export class EquippedItem {
 		const newGems = this._gems.slice();
 		newGems[socketIdx] = gem;
 
-		return new EquippedItem(this._item, this._enchant, newGems, this._randomSuffix, this._reforging);
+		return new EquippedItem(this._item, this._enchant, newGems, this._randomSuffix, this._reforge);
 	}
 
 	/**
@@ -187,7 +185,7 @@ export class EquippedItem {
 	}
 
 	withRandomSuffix(randomSuffix: ItemRandomSuffix | null): EquippedItem {
-		return new EquippedItem(this._item, this._enchant, this._gems, randomSuffix, this._reforging);
+		return new EquippedItem(this._item, this._enchant, this._gems, randomSuffix, this._reforge);
 	}
 
 	asActionId(): ActionId {
@@ -202,7 +200,7 @@ export class EquippedItem {
 			randomSuffix: this._randomSuffix?.id,
 			enchant: this._enchant?.effectId,
 			gems: this._gems.map(gem => gem?.id || 0),
-			reforging: this._reforging,
+			reforging: this._reforge?.id,
 		});
 	}
 

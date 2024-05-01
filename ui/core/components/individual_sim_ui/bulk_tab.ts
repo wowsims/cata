@@ -950,13 +950,13 @@ class GemSelectorModal extends BaseModal {
 						},
 					};
 				}),
+				this.socketColor,
 				gem => {
 					return this.simUI.player.computeGemEP(gem);
 				},
 				() => {
 					return null;
 				},
-				this.socketColor,
 				() => {
 					return;
 				},

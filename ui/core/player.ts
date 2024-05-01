@@ -1,4 +1,3 @@
-import { ReforgeData } from './components/gear_picker/gear_picker';
 import { getLanguageCode } from './constants/lang';
 import * as Mechanics from './constants/mechanics';
 import { MAX_PARTY_SIZE, Party } from './party';
@@ -219,6 +218,16 @@ export function getSpecConfig<SpecType extends Spec>(spec: SpecType): PlayerConf
 	return config;
 }
 
+export interface ReforgeData {
+	item: Item;
+	reforge: ReforgeStat;
+	fromStat: Stat[];
+	toStat: Stat[];
+	fromAmount: number;
+	toAmount: number;
+	reforgeId: number;
+}
+
 // Manages all the gear / consumes / other settings for a single Player.
 export class Player<SpecType extends Spec> {
 	readonly sim: Sim;
@@ -437,13 +446,30 @@ export class Player<SpecType extends Spec> {
 	}
 
 	// Returns all reforgings that are valid with a given item
-	getAvailableReforgings(item: Item): ReforgeStat[] | undefined {
-		return this.sim.db.getAvailableReforges(item);
+	getAvailableReforgings(item: Item): Array<ReforgeData> {
+		return this.sim.db.getAvailableReforges(item).map(reforge => {
+			return this.getReforgeData(item, reforge);
+		});
 	}
 
 	// Returns reforge given an id
 	getReforge(id: number): ReforgeStat | undefined {
-		return this.sim.db.getReforge(id);
+		return this.sim.db.getReforgeById(id);
+	}
+
+	getReforgeData(item: Item, reforge: ReforgeStat): ReforgeData {
+		const fromAmount = Math.ceil(-item.stats[reforge.fromStat[0]] * reforge.multiplier);
+		const toAmount = Math.floor(item.stats[reforge.fromStat[0]] * reforge.multiplier);
+
+		return {
+			reforge: reforge,
+			item: item,
+			fromStat: reforge.fromStat,
+			fromAmount: fromAmount,
+			toStat: reforge.toStat,
+			toAmount,
+			reforgeId: reforge.id,
+		};
 	}
 
 	// Returns all enchants that this player can wear in the given slot.
@@ -1164,8 +1190,8 @@ export class Player<SpecType extends Spec> {
 		if (equippedItem.enchant != null) {
 			parts.push('ench=' + equippedItem.enchant.effectId);
 		}
-		if (equippedItem.reforging > 0) {
-			parts.push('forg=' + equippedItem.reforging);
+		if (equippedItem.reforge) {
+			parts.push('forg=' + equippedItem.reforge.id);
 		}
 		parts.push(
 			'pcs=' +

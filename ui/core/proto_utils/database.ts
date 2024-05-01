@@ -153,12 +153,12 @@ export class Database {
 		return this.randomSuffixes.get(id);
 	}
 
-	getReforge(id: number): ReforgeStat | undefined {
+	getReforgeById(id: number): ReforgeStat | undefined {
 		return this.reforgeStats.get(id);
 	}
 
-	getAvailableReforges(item: Item): ReforgeStat[] | undefined {
-		const availableReforges = Array.from(this.reforgeStats.values()).filter(reforgeStat => {
+	getAvailableReforges(item: Item): ReforgeStat[] {
+		return Array.from(this.reforgeStats.values()).filter(reforgeStat => {
 			for (let i = 0; i < reforgeStat.fromStat.length; i++) {
 				const statIndex = reforgeStat.fromStat[i];
 				if (item.stats[statIndex] > 0 && item.stats[reforgeStat.toStat[0]] <= 0) {
@@ -167,8 +167,6 @@ export class Database {
 			}
 			return false;
 		});
-
-		return availableReforges.length > 0 ? availableReforges : undefined;
 	}
 
 	getEnchants(slot: ItemSlot): Array<Enchant> {
@@ -228,7 +226,12 @@ export class Database {
 			randomSuffix = this.getRandomSuffixById(itemSpec.randomSuffix)!;
 		}
 
-		return new EquippedItem(item, enchant, gems, randomSuffix, itemSpec.reforging);
+		let reforge: ReforgeStat | null = null;
+		if (itemSpec.reforging && !!this.getReforgeById(itemSpec.reforging)) {
+			reforge = this.getReforgeById(itemSpec.randomSuffix)!;
+		}
+
+		return new EquippedItem(item, enchant, gems, randomSuffix, reforge);
 	}
 
 	lookupEquipmentSpec(equipSpec: EquipmentSpec): Gear {

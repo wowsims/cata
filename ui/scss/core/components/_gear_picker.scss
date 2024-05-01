@@ -388,6 +388,11 @@ $favorite-cell-width: 2rem;
 	color: $item-quality-uncommon;
 }
 
+.reforge-value {
+	display: inline-block;
+	width: 10rem;
+}
+
 @include media-breakpoint-down(lg) {
 	.item-picker-icon {
 		width: 3rem;
