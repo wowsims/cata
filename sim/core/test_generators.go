@@ -174,7 +174,7 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 				Profession1:        proto.Profession_Engineering,
 				Cooldowns:          combos.Cooldowns,
 				Rotation:           rotationsCombo.Rotation,
-				DistanceFromTarget: 30,
+				DistanceFromTarget: 0,
 				ReactionTimeMs:     100,
 				ChannelClipDelayMs: 50,
 			}, specOptionsCombo.SpecOptions),
@@ -446,8 +446,7 @@ type CharacterSuiteConfig struct {
 	StatsToWeigh    []proto.Stat
 	EPReferenceStat proto.Stat
 
-	Cooldowns *proto.Cooldowns
-
+	Cooldowns          *proto.Cooldowns
 	DistanceFromTarget float64
 }
 
