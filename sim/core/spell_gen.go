@@ -2,6 +2,7 @@ package core
 
 import (
 	"sync"
+	"time"
 
 	"github.com/wowsims/cata/sim/core/dbc"
 )
@@ -20,6 +21,49 @@ func GetInstance() *SpellGen {
 		instance = &SpellGen{}
 	})
 	return instance
+}
+func (sc *SpellConfig) SetResourceCost(spell *dbc.SpellData) {
+	if spell.PowerCount != 0 {
+		for i := 0; i < int(spell.PowerCount); i++ {
+			power := spell.Power[i]
+			cost := power.GetCost()
+			switch power.PowerType {
+			case dbc.POWER_MANA:
+				sc.ManaCost = ManaCostOptions{
+					BaseCost: cost,
+				}
+			case dbc.POWER_RAGE:
+				sc.RageCost = RageCostOptions{
+					Cost: cost,
+				}
+			case dbc.POWER_FOCUS:
+				sc.FocusCost = FocusCostOptions{
+					Cost: cost,
+				}
+			case dbc.POWER_ENERGY:
+				sc.EnergyCost = EnergyCostOptions{
+					Cost: cost,
+				}
+			case dbc.POWER_COMBO_POINT:
+				// Combo points are set where?
+			case dbc.POWER_RUNIC_POWER:
+				// todo: probably need to instantiate this? but cant check if null
+				sc.RuneCost.RunicPowerCost = cost
+			case dbc.POWER_BLOOD_RUNE:
+				sc.RuneCost.BloodRuneCost = int8(cost)
+			case dbc.POWER_FROST_RUNE:
+				sc.RuneCost.BloodRuneCost = int8(cost)
+			case dbc.POWER_UNHOLY_RUNE:
+				sc.RuneCost.BloodRuneCost = int8(cost)
+			case dbc.POWER_SOUL_SHARDS:
+				// Where is this set?
+			case dbc.POWER_HOLY_POWER:
+				// Same here
+			default:
+			}
+		}
+
+	}
 }
 
 func (s *SpellGen) GetDBC() *dbc.DBC {
@@ -40,6 +84,7 @@ func (sg *SpellGen) ParseSpellData(spellId uint, unit *Unit) *SpellConfig {
 	s.MissileSpeed = dbcSpell.PrjSpeed
 	s.SpellSchool = SpellSchool(dbcSpell.School) // Todo? Does this match 1 to 1?
 	//s.TicksCanCrit = dbcSpell.Flags()
+
 	s.Cast = CastConfig{
 		DefaultCast: Cast{
 			GCD:      dbcSpell.GCD,
@@ -54,7 +99,11 @@ func (sg *SpellGen) ParseSpellData(spellId uint, unit *Unit) *SpellConfig {
 		//
 	}
 	if dbcSpell.HasPeriodicDamageEffect() {
-		s.Dot = DotConfig{}
+		s.Dot = DotConfig{
+			HasteAffectsDuration: dbcSpell.Flags(SX_DURATION_HASTED), // or SX_DOT_HASTED
+			AffectedByCastSpeed:  dbcSpell.Flags(SX_DOT_HASTED),      // POssible, need verification
+
+		}
 	}
 	return &s
 }
@@ -62,11 +111,12 @@ func (sg *SpellGen) ParseEffects(dbcSpell *dbc.SpellData, spellConfig *SpellConf
 	effects := dbcSpell.Effects
 	for i := 0; i < int(dbcSpell.EffectsCount); i++ {
 		effect := effects[i]
+
 		switch effect.Type {
 		case dbc.E_SCHOOL_DAMAGE:
 		case dbc.E_HEALTH_LEECH:
 			//parse direct dmg mod
-			break
+			continue
 		case dbc.E_NORMALIZED_WEAPON_DMG:
 			//set normalised wpn dmg
 		case dbc.E_WEAPON_DAMAGE:
@@ -82,6 +132,8 @@ func (sg *SpellGen) ParseEffects(dbcSpell *dbc.SpellData, spellConfig *SpellConf
 			case dbc.A_PERIODIC_LEECH:
 				//parse effect periodic mods
 				//keep going
+				spellConfig.Dot.TickLength = time.Duration(effect.Amplitude) * time.Millisecond
+				spellConfig.BonusCoefficient = effect.SPCoeff
 			}
 
 		}

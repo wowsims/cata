@@ -17,10 +17,6 @@ type Character interface {
 const (
 	NUM_SPELL_FLAGS        = 15
 	NUM_CLASS_FAMILY_FLAGS = 4
-	POWER_MANA             = 0
-	POWER_INSANITY         = 1
-	POWER_RAGE             = 2
-	// Additional power types...
 )
 
 // Struct Definitions

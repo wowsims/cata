@@ -18,6 +18,9 @@ var spellEffectDataJson string
 //go:embed generated/data/spell_data.json
 var spellDataJson string
 
+//go:embed generated/data/spell_power_data.json
+var spellPowerDataJson string
+
 //go:embed generated/GameTables/SpellScaling.txt
 var spellScalingFile string
 
@@ -318,6 +321,8 @@ func (dbc *DBC) loadSpellData() error {
 		spell.PowerID = uint(raw[38].(float64))
 		spell.EssenceID = uint(raw[39].(float64))
 		spell.Effects = make([]*SpellEffectData, 0)
+		spell.Power = make([]*SpellPowerData, 0)
+		spell.PowerCount = 0
 		spell.EffectsCount = 0
 
 		// Cache the spell
@@ -333,9 +338,68 @@ func (dbc *DBC) loadSpellData() error {
 		if spell.Category != 0 {
 			dbc.categoryMapping.AddSpell(spell.Category, spell)
 		}
+		var rawJson [][]interface{} // To accommodate the large array of arrays
+		if err := json.Unmarshal([]byte(spellPowerDataJson), &rawJson); err != nil {
+			log.Fatal(err)
+		}
+
+		// Assuming the first item in rawJson is the large array of SpellPowerData arrays
+		for _, item := range rawJson[0] {
+			entry := item.([]interface{}) // Each item is an array representing one SpellPowerData
+			spellPowerData := SpellPowerData{
+				ID:             uint(entry[0].(float64)),
+				SpellID:        uint(entry[1].(float64)),
+				AuraID:         uint(entry[2].(float64)),
+				PowerType:      int(entry[3].(float64)),
+				Cost:           int(entry[4].(float64)),
+				CostMax:        int(entry[5].(float64)),
+				CostPerTick:    int(entry[6].(float64)),
+				PctCost:        entry[7].(float64),
+				PctCostMax:     entry[8].(float64),
+				PctCostPerTick: entry[9].(float64),
+			}
+			if dbc.spellIndex[spellPowerData.SpellID] != nil {
+				dbc.spellIndex[spellPowerData.SpellID].Power = append(dbc.spellIndex[spellPowerData.SpellID].Power, &spellPowerData)
+				dbc.spellIndex[spellPowerData.SpellID].PowerCount += 1
+			}
+		}
 	}
 
 	return nil
+}
+func (sd *SpellPowerData) GetMaxCost() float64 {
+	if sd.CostMax != 0 {
+		return float64(sd.CostMax) / sd.costDivisor(!(sd.Cost != 0))
+	}
+	return float64(sd.PctCostMax) / sd.costDivisor(!(sd.Cost != 0))
+}
+
+func (sd *SpellPowerData) GetCostPerTick() float64 {
+	return float64(sd.CostPerTick) / sd.costDivisor(!(sd.Cost != 0))
+}
+
+func (sd *SpellPowerData) GetCost() float64 {
+	cost := 0.0
+	if sd.Cost != 0 {
+		cost = float64(sd.Cost)
+	} else {
+		cost = sd.PctCost
+	}
+	return cost / sd.costDivisor(!(sd.Cost != 0))
+}
+func (sd *SpellPowerData) costDivisor(percentage bool) float64 {
+	switch sd.PowerType {
+	case POWER_MANA:
+		if percentage {
+			return 100.0
+		}
+		return 1.0
+	case POWER_RAGE, POWER_RUNIC_POWER, POWER_ASTRAL_POWER, POWER_SOUL_SHARDS:
+		return 10.0
+	default:
+		return 1.0
+	}
+
 }
 
 // FetchSpellEffect retrieves a spell effect based on an ID.
@@ -550,3 +614,33 @@ func (data *SpellData) classFlag(index uint) uint32 {
 	// Ensure the operation is performed within uint32 context
 	return uint32(data.ClassFlags[index/32]) & (1 << (index % 32))
 }
+
+type Power int
+
+const (
+	POWER_HEALTH       Power = -2
+	POWER_MANA               = 0
+	POWER_RAGE               = 1
+	POWER_FOCUS              = 2
+	POWER_ENERGY             = 3
+	POWER_HAPPINESS          = 4
+	POWER_RUNE               = 5
+	POWER_RUNIC_POWER        = 6
+	POWER_SOUL_SHARDS        = 7
+	POWER_ASTRAL_POWER       = 8
+	POWER_HOLY_POWER         = 9
+	POWER_MAELSTROM          = 11
+	POWER_CHI                = 12
+	POWER_INSANITY           = 13
+	POWER_COMBO_POINT        = 14
+	POWER_DEMONIC_FURY       = 15
+	POWER_FURY               = 17
+	POWER_PAIN               = 18
+	POWER_ESSENSE            = 19
+	POWER_BLOOD_RUNE         = 20
+	POWER_FROST_RUNE         = 21
+	POWER_UNHOLY_RUNE        = 22
+	POWER_MAX                = 23
+	POWER_NONE         Power = 0xFFFFFFFF // To handle the 0xFFFFFFFF value
+	POWER_OFFSET             = 2
+)
