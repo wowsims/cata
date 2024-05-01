@@ -15,7 +15,7 @@ type MovementAction struct {
 }
 
 func (action *MovementAction) GetCurrentPosition(sim *Simulation) float64 {
-	return action.srcPosition + float64(sim.CurrentTime-action.startTime)*action.speed
+	return action.srcPosition + float64(sim.CurrentTime-action.startTime)*action.speed/float64(time.Second)
 }
 
 func (unit *Unit) initMovement() {
