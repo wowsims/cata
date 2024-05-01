@@ -1118,25 +1118,21 @@ export class Timeline extends ResultComponent {
 					<span className="bold">Active Auras</span>
 				</div>
 				<ul className="timeline-active-auras">
-					{log.activeAuras.map(auraLog => {
-						return (
-							<li>
-								{auraLog.actionId!.iconUrl && <img className="timeline-tooltip-icon" src={auraLog.actionId!.iconUrl}></img>}
-								<span>{auraLog.actionId!.name}</span>
-							</li>
-						);
-					})}
+					{log.activeAuras.map(auraLog => (
+						<li>
+							{auraLog.actionId!.iconUrl && <img className="timeline-tooltip-icon" src={auraLog.actionId!.iconUrl}></img>}
+							<span>{auraLog.actionId!.name}</span>
+						</li>
+					))}
 				</ul>
 			</div>
 		);
 	}
 
 	render() {
-		setTimeout(() => {
-			this.dpsResourcesPlot.render();
-			this.rendered = true;
-			this.updatePlot();
-		}, 300);
+		this.dpsResourcesPlot.render();
+		this.rendered = true;
+		this.updatePlot();
 	}
 }
 
