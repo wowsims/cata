@@ -246,11 +246,16 @@
 	--bs-toast-box-shadow: #{$toast-box-shadow};
 	--bs-toast-header-color: var(--bs-toast-color);
 	--bs-toast-header-bg: var(--bs-toast-bg);
-	--bs-toast-header-border-color: #{lighten($body-bg, 10%)};
+	--bs-toast-header-border-color: transparent;
 
 	i {
 		line-height: 1;
 		color: var(--icon-color);
+	}
+
+	.toast-header {
+		border-bottom: 0;
+		padding-bottom: 0;
 	}
 
 	.btn-close {
