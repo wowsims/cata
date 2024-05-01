@@ -141,40 +141,66 @@ func (action *APLActionStrictSequence) Finalize(rot *APLRotation) {
 }
 func (action *APLActionStrictSequence) Reset(*Simulation) {
 	action.curIdx = 0
+	action.unit.Rotation.inSequence = false
 }
 func (action *APLActionStrictSequence) IsReady(sim *Simulation) bool {
-	if !action.unit.GCD.IsReady(sim) {
+	action.unit.Rotation.inSequence = true
+
+	if action.unit.GCD.TimeToReady(sim) > MaxSpellQueueWindow {
+		action.unit.Rotation.inSequence = false
 		return false
 	}
 	if !action.subactions[0].IsReady(sim) {
+		action.unit.Rotation.inSequence = false
 		return false
 	}
 	for _, spell := range action.subactionSpells {
 		if !spell.IsReady(sim) {
+			action.unit.Rotation.inSequence = false
 			return false
 		}
 	}
+
 	return true
 }
 func (action *APLActionStrictSequence) Execute(sim *Simulation) {
 	action.unit.Rotation.pushControllingAction(action)
 }
+func (action *APLActionStrictSequence) relinquishControl() {
+	action.curIdx = 0
+	action.unit.Rotation.inSequence = false
+	action.unit.Rotation.popControllingAction(action)
+}
+func (action *APLActionStrictSequence) advanceSequence() {
+	action.curIdx++
+	if action.curIdx == len(action.subactions) {
+		action.relinquishControl()
+	}
+}
 func (action *APLActionStrictSequence) GetNextAction(sim *Simulation) *APLAction {
 	if action.subactions[action.curIdx].IsReady(sim) {
 		nextAction := action.subactions[action.curIdx]
 
-		action.curIdx++
-		if action.curIdx == len(action.subactions) {
-			action.curIdx = 0
-			action.unit.Rotation.popControllingAction(action)
+		if action.unit.GCD.IsReady(sim) {
+			action.advanceSequence()
+		} else {
+			pa := &PendingAction{
+				NextActionAt: action.unit.NextGCDAt(),
+				Priority:     ActionPriorityLow,
+
+				OnAction: func(sim *Simulation) {
+					action.advanceSequence()
+				},
+			}
+			sim.AddPendingAction(pa)
+			action.unit.SetRotationTimer(sim, pa.NextActionAt + time.Duration(1))
 		}
 
 		return nextAction
-	} else if action.unit.GCD.IsReady(sim) {
+	} else if action.unit.GCD.TimeToReady(sim) <= MaxSpellQueueWindow {
 		// If the GCD is ready when the next subaction isn't, it means the sequence is bad
 		// so reset and exit the sequence.
-		action.curIdx = 0
-		action.unit.Rotation.popControllingAction(action)
+		action.relinquishControl()
 		return action.unit.Rotation.getNextAction(sim)
 	} else {
 		// Return nil to wait for the GCD to become ready.
