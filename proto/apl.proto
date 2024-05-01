@@ -81,7 +81,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 72
+// NextIndex: 73
 message APLValue {
     oneof value {
         // Operators
@@ -120,7 +120,7 @@ message APLValue {
         APLValueCurrentLunarEnergy current_lunar_energy = 69;
 
 		// Unit values
-		APLValueUnitIsMoving unit_is_moving = 71;
+		APLValueUnitIsMoving unit_is_moving = 72;
 
         // Rune Resource values
         APLValueCurrentRuneCount current_rune_count = 29;
