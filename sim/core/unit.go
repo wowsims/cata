@@ -66,8 +66,10 @@ type Unit struct {
 	StartDistanceFromTarget float64
 	DistanceFromTarget      float64
 	Moving                  bool
+	movementCallbacks       []MovementCallback
 	moveAura                *Aura
 	moveSpell               *Spell
+	movementAction          *MovementAction
 
 	// How much uptime of Dark Intent the unit will have
 	DarkIntentUptimePercent float64
@@ -493,68 +495,6 @@ func (unit *Unit) AddBonusRangedCritRating(amount float64) {
 	})
 }
 
-func (unit *Unit) initMovement() {
-	unit.moveAura = unit.GetOrRegisterAura(Aura{
-		Label:     "Movement",
-		ActionID:  ActionID{OtherID: proto.OtherAction_OtherActionMove},
-		Duration:  NeverExpires,
-		MaxStacks: 30,
-
-		OnGain: func(aura *Aura, sim *Simulation) {
-			unit.AutoAttacks.CancelAutoSwing(sim)
-			unit.Moving = true
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			unit.Moving = false
-			unit.AutoAttacks.EnableAutoSwing(sim)
-
-			// Simulate the delay from starting attack
-			unit.AutoAttacks.DelayMeleeBy(sim, time.Millisecond*50)
-		},
-	})
-
-	unit.moveSpell = unit.GetOrRegisterSpell(SpellConfig{
-		ActionID: ActionID{OtherID: proto.OtherAction_OtherActionMove},
-		Flags:    SpellFlagMeleeMetrics,
-
-		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			unit.moveAura.Activate(sim)
-			unit.moveAura.SetStacks(sim, int32(unit.DistanceFromTarget))
-		},
-	})
-}
-
-func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
-	if moveRange == unit.DistanceFromTarget {
-		return
-	}
-
-	tickPeriod := 0.5
-
-	moveDistance := moveRange - unit.DistanceFromTarget
-	moveSpeed := 2.0
-	timeToMove := math.Abs(moveDistance) / moveSpeed
-	moveTicks := timeToMove / tickPeriod
-	moveInterval := moveDistance / float64(moveTicks)
-
-	unit.moveSpell.Cast(sim, unit.CurrentTarget)
-
-	sim.AddPendingAction(NewPeriodicAction(sim, PeriodicActionOptions{
-		Period:          time.Millisecond * 500,
-		NumTicks:        int(moveTicks),
-		TickImmediately: false,
-
-		OnAction: func(sim *Simulation) {
-			unit.DistanceFromTarget += moveInterval
-			unit.moveAura.SetStacks(sim, int32(unit.DistanceFromTarget))
-
-			if unit.DistanceFromTarget == moveRange {
-				unit.moveAura.Deactivate(sim)
-			}
-		},
-	}))
-}
-
 func (unit *Unit) SetCurrentPowerBar(bar PowerBarType) {
 	unit.currentPowerBar = bar
 }
@@ -752,4 +692,17 @@ func (unit *Unit) GetTotalAvoidanceChance(atkTable *AttackTable) float64 {
 	parry := unit.GetTotalParryChanceAsDefender(atkTable)
 	block := unit.GetTotalBlockChanceAsDefender(atkTable)
 	return miss + dodge + parry + block
+}
+
+func (unit *Unit) MultiplyMovementSpeed(sim *Simulation, amount float64) {
+	unit.PseudoStats.MovementSpeedMultiplier *= amount
+}
+
+// Returns the units current movement speed in yards / second
+func (unit *Unit) GetMovementSpeed() float64 {
+	if unit.Type == PlayerUnit {
+		return 7. * unit.PseudoStats.MovementSpeedMultiplier
+	}
+
+	return 8. * unit.PseudoStats.MovementSpeedMultiplier
 }

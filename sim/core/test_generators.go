@@ -447,6 +447,8 @@ type CharacterSuiteConfig struct {
 	EPReferenceStat proto.Stat
 
 	Cooldowns *proto.Cooldowns
+
+	DistanceFromTarget float64
 }
 
 func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator {
@@ -474,7 +476,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 			Cooldowns:     config.Cooldowns,
 
 			InFrontOfTarget:    config.InFrontOfTarget,
-			DistanceFromTarget: 30,
+			DistanceFromTarget: config.DistanceFromTarget,
 			ReactionTimeMs:     100,
 			ChannelClipDelayMs: 50,
 		},

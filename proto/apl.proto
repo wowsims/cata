@@ -41,7 +41,7 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 22
+// NextIndex: 23
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
@@ -71,6 +71,7 @@ message APLAction {
         APLActionTriggerICD trigger_icd = 11;
         APLActionItemSwap item_swap = 17;
 		APLActionMove move = 18;
+        APLActionMoveDuration move_duration = 22;
 
         // Class or Spec-specific actions
         APLActionCatOptimalRotationAction cat_optimal_rotation_action = 19;
@@ -288,6 +289,10 @@ message APLActionCatOptimalRotationAction {
 
 message APLActionMove {
     APLValue range_from_target = 1;
+}
+
+message APLActionMoveDuration {
+    APLValue duration = 1;
 }
 
 message APLActionCustomRotation {

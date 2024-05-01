@@ -356,7 +356,8 @@ type PseudoStats struct {
 	ReducedNatureHitTakenChance   float64
 	ReducedShadowHitTakenChance   float64
 
-	HealingTakenMultiplier float64
+	HealingTakenMultiplier  float64
+	MovementSpeedMultiplier float64 // Multiplier for movement speed, default to 1. Player base movement 7 yards/s. All effects affecting movements are multipliers.
 }
 
 func NewPseudoStats() PseudoStats {
@@ -387,7 +388,8 @@ func NewPseudoStats() PseudoStats {
 
 		ArmorMultiplier: 1,
 
-		HealingTakenMultiplier: 1,
+		HealingTakenMultiplier:  1,
+		MovementSpeedMultiplier: 1,
 	}
 }
 

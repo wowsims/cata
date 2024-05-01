@@ -369,6 +369,11 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
 		},
+
+		ExtraCastCondition: func(sim *Simulation, target *Unit) bool {
+			// Melee range = 5 yards
+			return unit.DistanceFromTarget <= 5
+		},
 	}
 
 	unit.AutoAttacks.oh.config = SpellConfig{
@@ -388,6 +393,10 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
+		},
+		ExtraCastCondition: func(sim *Simulation, target *Unit) bool {
+			// Melee range = 5 yards
+			return unit.DistanceFromTarget <= 5
 		},
 	}
 
@@ -409,6 +418,16 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 		},
+
+		ExtraCastCondition: func(sim *Simulation, target *Unit) bool {
+			// ranged has minimum range of 5
+			return unit.DistanceFromTarget > 5
+		},
+	}
+
+	// set character at ranged if primary attack is ranged
+	if options.AutoSwingRanged && unit.DistanceFromTarget == 0 {
+		unit.DistanceFromTarget = 5.1
 	}
 
 	if unit.Type == EnemyUnit {

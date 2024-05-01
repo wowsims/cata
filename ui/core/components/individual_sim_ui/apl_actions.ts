@@ -24,6 +24,7 @@ import {
 	APLActionWait,
 	APLActionWaitUntil,
 	APLValue,
+	APLActionMoveDuration,
 } from '../../proto/apl.js';
 import { Spec } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
@@ -585,6 +586,18 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				labelTooltip: 'Desired range from target.',
 			}),
 		],
+	}),
+	['moveDuration']: inputBuilder({
+		label: 'Move duration',
+		submenu: ['Misc'],
+		shortDescription: 'The characters moves for the given duration.',
+		newValue: () => APLActionMoveDuration.create(),
+		fields: [
+			AplValues.valueFieldConfig('duration', {
+				label: 'Duration',
+				labelTooltip: 'Amount of time the character should move.',
+			})
+		]
 	}),
 	['customRotation']: inputBuilder({
 		label: 'Custom Rotation',
