@@ -57,7 +57,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 				[Stat.StatRangedAttackPower]: 1.0,
 				[Stat.StatMeleeHit]: 2,
 				[Stat.StatMeleeCrit]: 1.5,
-				[Stat.StatMeleeHaste]: 1.39
+				[Stat.StatMeleeHaste]: 1.39,
 			},
 			{
 				[PseudoStat.PseudoStatRangedDps]: 6.32,
@@ -114,6 +114,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 			HunterInputs.PetUptime(),
 			HunterInputs.TimeToTrapWeaveMs(),
 			OtherInputs.InputDelay,
+			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 			OtherInputs.DarkIntentUptime,
