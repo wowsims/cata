@@ -64,8 +64,8 @@ export abstract class Importer extends BaseModal {
 		this.importButton.addEventListener('click', async _event => {
 			try {
 				await this.onImport(this.textElem.value || '');
-			} catch (error) {
-				new Toast({ variant: 'error', body: `Import error: ${error}` });
+			} catch (error: any) {
+				new Toast({ variant: 'error', body: `Import error: ${error?.message || error}` });
 			}
 		});
 	}
