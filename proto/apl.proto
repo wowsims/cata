@@ -79,7 +79,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 71
+// NextIndex: 72
 message APLValue {
     oneof value {
         // Operators
@@ -165,6 +165,7 @@ message APLValue {
 
         // Properties
         APLValueChannelClipDelay channel_clip_delay = 58;
+        APLValueInputDelay input_delay = 71;
         APLValueFrontOfTarget front_of_target = 63;
 
         // Class or Spec-specific values
@@ -460,6 +461,8 @@ message APLValueSpellCastTime {
     ActionID spell_id = 1;
 }
 message APLValueChannelClipDelay {
+}
+message APLValueInputDelay {
 }
 message APLValueFrontOfTarget {
 }

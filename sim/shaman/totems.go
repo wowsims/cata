@@ -157,7 +157,7 @@ func (shaman *Shaman) registerTotemCall(spellID int32, totemSet *proto.TotemSet)
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Save GCD timer value, so we can safely reset it between each totem cast.
-			nextGcdAt := shaman.GCD.ReadyAt()
+			nextGcdAt := shaman.NextGCDAt()
 
 			if airTotem != nil {
 				shaman.GCD.Set(sim.CurrentTime)
@@ -176,7 +176,7 @@ func (shaman *Shaman) registerTotemCall(spellID int32, totemSet *proto.TotemSet)
 				waterTotem.Cast(sim, target)
 			}
 
-			shaman.GCD.Set(nextGcdAt)
+			shaman.SetGCDTimer(sim, nextGcdAt)
 		},
 	})
 }

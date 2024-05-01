@@ -435,8 +435,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-AllItems-Deathbringer'sWill-50362"
  value: {
-  dps: 27561.46285
-  tps: 19568.63862
+  dps: 27534.45243
+  tps: 19549.46122
  }
 }
 dps_results: {
@@ -729,8 +729,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-AllItems-Gladiator'sVestments"
  value: {
-  dps: 22865.4992
-  tps: 16234.50443
+  dps: 22887.57921
+  tps: 16250.18124
  }
 }
 dps_results: {
@@ -1003,8 +1003,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-AllItems-LadyLa-La'sSingingShell-67152"
  value: {
-  dps: 27046.00569
-  tps: 19202.66404
+  dps: 27046.30142
+  tps: 19202.87401
  }
 }
 dps_results: {
@@ -1927,8 +1927,8 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Average-Default"
  value: {
-  dps: 28808.35382
-  tps: 20453.93121
+  dps: 28809.67615
+  tps: 20454.87007
  }
 }
 dps_results: {
