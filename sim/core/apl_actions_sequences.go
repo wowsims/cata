@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
 )
@@ -42,11 +43,31 @@ func (action *APLActionSequence) Reset(*Simulation) {
 	action.curIdx = 0
 }
 func (action *APLActionSequence) IsReady(sim *Simulation) bool {
-	return action.curIdx < len(action.subactions) && action.subactions[action.curIdx].IsReady(sim)
+	action.unit.Rotation.inSequence = true
+	isReady := (action.curIdx < len(action.subactions)) && action.subactions[action.curIdx].IsReady(sim)
+	action.unit.Rotation.inSequence = false
+	return isReady
 }
 func (action *APLActionSequence) Execute(sim *Simulation) {
+	action.unit.Rotation.inSequence = true
 	action.subactions[action.curIdx].Execute(sim)
-	action.curIdx++
+
+	if action.unit.CanQueueSpell(sim) {
+		// Only advance to the next step in the sequence if we actually cast a spell rather than simply queueing one up.
+		action.curIdx++
+	} else {
+		// If we did queue up a spell, then modify the queue action to advance the sequence when it fires.
+		queueAction := action.unit.QueuedSpell.queueAction
+		oldFunc := queueAction.OnAction
+		queueAction.OnAction = func(sim *Simulation) {
+			oldFunc(sim)
+			action.curIdx++
+			queueAction.OnAction = oldFunc
+		}
+		action.unit.SetRotationTimer(sim, queueAction.NextActionAt + time.Duration(1))
+	}
+
+	action.unit.Rotation.inSequence = false
 }
 func (action *APLActionSequence) String() string {
 	return "Sequence(" + strings.Join(MapSlice(action.subactions, func(subaction *APLAction) string { return fmt.Sprintf("(%s)", subaction) }), "+") + ")"
