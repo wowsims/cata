@@ -91,50 +91,18 @@ func (mage *Mage) applyArcaneConcentration() {
 	}
 
 	// The result that caused the proc. Used to check we don't deactivate from the same proc.
-	var proccedAt time.Duration
-	var proccedSpell *core.Spell
-
-	// Tracks if Clearcasting should proc
-	mage.RegisterAura(core.Aura{
-		Label:    "Arcane Concentration",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(SpellFlagMage) || spell == mage.ArcaneMissiles {
-				return
-			}
-			if !result.Landed() {
-				return
-			}
-
-			procChance := []float64{0, 0.03, 0.06, 0.1}[mage.Talents.ArcaneConcentration]
-			// Arcane Missile ticks can proc CC, just at a low rate of about 1.5% with 5/5 Arcane Concentration
-			if spell == mage.ArcaneMissilesTickSpell {
-				procChance *= 0.15
-			}
-			if !sim.Proc(procChance, "Arcane Concentration") {
-				return
-			}
-			proccedAt = sim.CurrentTime
-			proccedSpell = spell
-
-			if !mage.ClearcastingAura.IsActive() {
-				mage.ClearcastingAura.Activate(sim)
-			}
-
-			mage.ArcaneBlastAura.GetStacks()
-		},
-	})
+	var procCheckAt time.Duration
+	var procSpell *core.Spell
+	procChance := []float64{0, 0.03, 0.06, 0.1}[mage.Talents.ArcaneConcentration]
 
 	clearCastingMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAllDamaging,
 		FloatValue: -1,
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
+
 	// The Clearcasting proc
-	mage.ClearcastingAura = mage.RegisterAura(core.Aura{
+	clearcastingAura := mage.RegisterAura(core.Aura{
 		Label:    "Clearcasting",
 		ActionID: core.ActionID{SpellID: 12536},
 		Duration: time.Second * 15,
@@ -148,22 +116,51 @@ func (mage *Mage) applyArcaneConcentration() {
 			clearCastingMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Flags.Matches(SpellFlagMage) {
+			if spell.ClassSpellMask&MageSpellsAllDamaging == 0 {
 				return
 			}
 			if spell.DefaultCast.Cost == 0 {
 				return
 			}
-			if spell == mage.ArcaneMissiles && mage.ArcaneMissilesProcAura.IsActive() {
-				return
-			}
-			if proccedAt == sim.CurrentTime && proccedSpell == spell {
+			if procCheckAt == sim.CurrentTime && procSpell == spell {
 				// Means this is another hit from the same cast that procced CC.
 				return
 			}
 			aura.Deactivate(sim)
 		},
 	})
+
+	// Tracks if Clearcasting should proc
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Arcane Concentration",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask&MageSpellsAllDamaging == 0 {
+				return
+			}
+			if !result.Landed() {
+				return
+			}
+			// Arcane Concentration does 1 roll for aoe spells as long as one target is hit
+			if procCheckAt == sim.CurrentTime {
+				return
+			}
+
+			procCheckAt = sim.CurrentTime
+			procSpell = spell
+
+			curProcChance := procChance
+			// Arcane Missile ticks can proc CC, just at a low rate of about 1.5% with 5/5 Arcane Concentration
+			if spell.ClassSpellMask == MageSpellArcaneMissilesTick {
+				curProcChance *= 0.15
+			}
+
+			if !sim.Proc(curProcChance, "Arcane Concentration") {
+				return
+			}
+
+			clearcastingAura.Activate(sim)
+		},
+	}))
 }
 
 func (mage *Mage) registerPresenceOfMindCD() {
@@ -171,30 +168,34 @@ func (mage *Mage) registerPresenceOfMindCD() {
 		return
 	}
 
-	mage.PresenceOfMindMod = mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAllDamaging,
+	presenceOfMindMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  MageSpellsAll ^ MageSpellInstantCast,
 		FloatValue: -1,
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
 
-	mage.PresenceOfMindAura = mage.RegisterAura(core.Aura{
+	var pomSpell *core.Spell
+
+	presenceOfMindAura := mage.RegisterAura(core.Aura{
 		Label:    "Presence of Mind",
 		ActionID: core.ActionID{SpellID: 12043},
 		Duration: time.Hour,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.PresenceOfMindMod.Activate()
+			presenceOfMindMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.PresenceOfMindMod.Deactivate()
+			presenceOfMindMod.Deactivate()
+			pomSpell.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask == MageSpellArcaneBlast {
-				aura.Deactivate(sim)
+			if spell.ClassSpellMask&(MageSpellsAll^MageSpellInstantCast) == 0 {
+				return
 			}
+			aura.Deactivate(sim)
 		},
 	})
 
-	mage.PresenceOfMind = mage.RegisterSpell(core.SpellConfig{
+	pomSpell = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 12043},
 		Flags:          core.SpellFlagNoOnCastComplete,
 		ClassSpellMask: MageSpellPresenceOfMind,
@@ -202,7 +203,6 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			DefaultCast: core.Cast{
 				NonEmpty: true,
 			},
-			// TODO don't start the cooldown until aura removed
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
 				Duration: time.Second * 120,
@@ -216,12 +216,12 @@ func (mage *Mage) registerPresenceOfMindCD() {
 				mage.ArcanePotencyAura.Activate(sim)
 				mage.ArcanePotencyAura.SetStacks(sim, 2)
 			}
-			mage.PresenceOfMindAura.Activate(sim)
+			presenceOfMindAura.Activate(sim)
 		},
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.PresenceOfMind,
+		Spell: pomSpell,
 		Type:  core.CooldownTypeDPS,
 	})
 }
@@ -238,7 +238,6 @@ func (mage *Mage) applyArcanePotency() {
 	})
 
 	var procTime time.Duration
-	const ArcanePotencyClassMask = MageSpellArcaneBlast | MageSpellArcaneBarrage | MageSpellArcaneMissilesCast | MageSpellArcaneExplosion
 	mage.ArcanePotencyAura = mage.RegisterAura(core.Aura{
 		Label:     "Arcane Potency",
 		ActionID:  core.ActionID{SpellID: 57531},
@@ -259,26 +258,11 @@ func (mage *Mage) applyArcanePotency() {
 				return
 			}
 
-			if spell.ClassSpellMask&ArcanePotencyClassMask == 0 {
+			if spell.ClassSpellMask&((MageSpellsAllDamaging^MageSpellArcaneMissilesTick)|MageSpellArcaneMissilesCast) == 0 {
 				return
 			}
 
-			if spell != mage.ArcaneMissilesTickSpell && spell != mage.ArcaneMissiles {
-				if aura != nil && aura.GetStacks() != 0 {
-					aura.RemoveStack(sim)
-				}
-			}
-			// To allow arcane missile ticks to benefit from crit, delay the removal
-			if spell == mage.ArcaneMissiles {
-				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + spell.Dot(mage.CurrentTarget).Duration,
-					OnAction: func(s *core.Simulation) {
-						if aura != nil && aura.GetStacks() != 0 {
-							aura.RemoveStack(sim)
-						}
-					},
-				})
-			}
+			aura.RemoveStack(sim)
 		},
 	})
 
@@ -291,19 +275,19 @@ func (mage *Mage) registerArcanePowerCD() {
 
 	actionID := core.ActionID{SpellID: 12042}
 
-	mage.arcanePowerCostMod = mage.AddDynamicMod(core.SpellModConfig{
+	arcanePowerCostMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAll,
 		FloatValue: 0.1,
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 
-	mage.arcanePowerDmgMod = mage.AddDynamicMod(core.SpellModConfig{
+	arcanePowerDmgMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAll,
 		FloatValue: 0.2,
 		Kind:       core.SpellMod_DamageDone_Pct,
 	})
 
-	mage.ArcanePowerAura = mage.RegisterAura(core.Aura{
+	arcanePowerAura := mage.RegisterAura(core.Aura{
 		Label:    "Arcane Power Aura",
 		ActionID: actionID,
 		Duration: time.Second * 15,
@@ -311,19 +295,19 @@ func (mage *Mage) registerArcanePowerCD() {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Activate()
 			}
-			mage.arcanePowerCostMod.Activate()
-			mage.arcanePowerDmgMod.Activate()
+			arcanePowerCostMod.Activate()
+			arcanePowerDmgMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if mage.arcanePowerGCDmod != nil {
 				mage.arcanePowerGCDmod.Deactivate()
 			}
-			mage.arcanePowerCostMod.Deactivate()
-			mage.arcanePowerDmgMod.Deactivate()
+			arcanePowerCostMod.Deactivate()
+			arcanePowerDmgMod.Deactivate()
 		},
 	})
 
-	mage.ArcanePower = mage.RegisterSpell(core.SpellConfig{
+	arcanePower := mage.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
@@ -333,14 +317,14 @@ func (mage *Mage) registerArcanePowerCD() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mage.ArcanePowerAura.Activate(sim)
+			arcanePowerAura.Activate(sim)
 		},
 		/*ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return !mage.ArcanePotencyAura.IsActive()
 		}, */
 	})
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.ArcanePower,
+		Spell: arcanePower,
 		Type:  core.CooldownTypeDPS,
 	})
 }

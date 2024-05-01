@@ -9,12 +9,30 @@ import (
 
 var StormstrikeActionID = core.ActionID{SpellID: 17364}
 
+func Tier12StormstrikeBonus(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
+	if spell.ClassSpellMask&(SpellMaskFireNova|SpellMaskFlameShock|SpellMaskLavaBurst|SpellMaskUnleashFlame|SpellMaskFlametongueWeapon) > 0 {
+		return 1.06
+	}
+	return 1.0
+}
+
 // TODO: Confirm how this affects lightning shield
 func (shaman *Shaman) StormstrikeDebuffAura(target *core.Unit) *core.Aura {
+	hasT12P4 := false // todo
 	return target.GetOrRegisterAura(core.Aura{
 		Label:    "Stormstrike-" + shaman.Label,
 		ActionID: StormstrikeActionID,
 		Duration: time.Second * 15,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if hasT12P4 {
+				core.EnableDamageDoneByCaster(DDBC_T12P2, DDBC_Total, shaman.AttackTables[aura.Unit.UnitIndex], Tier12StormstrikeBonus)
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if hasT12P4 {
+				core.DisableDamageDoneByCaster(DDBC_T12P2, shaman.AttackTables[aura.Unit.UnitIndex])
+			}
+		},
 	})
 }
 

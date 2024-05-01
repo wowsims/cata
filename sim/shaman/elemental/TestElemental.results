@@ -94,6 +94,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-BattlegearoftheRagingElements"
+ value: {
+  dps: 18845.01189
+  tps: 389.9964
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-BaubleofTrueBlood-50354"
  value: {
   dps: 25488.37145

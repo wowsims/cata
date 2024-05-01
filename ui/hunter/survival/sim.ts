@@ -141,6 +141,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			HunterInputs.TimeToTrapWeaveMs(),
 			SVInputs.SniperTrainingUptime,
 			OtherInputs.InputDelay,
+			OtherInputs.DistanceFromTarget,
 			OtherInputs.TankAssignment,
 			OtherInputs.InFrontOfTarget,
 			OtherInputs.DarkIntentUptime,

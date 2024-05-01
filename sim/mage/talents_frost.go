@@ -43,7 +43,7 @@ func (mage *Mage) ApplyFrostTalents() {
 					aura.Icd.Use(sim)
 					earlyFrostMod.Activate()
 				}
-				if spell == mage.Frostbolt && earlyFrostMod.IsActive {
+				if spell.ClassSpellMask == MageSpellFrostfireBolt && earlyFrostMod.IsActive {
 					core.StartDelayedAction(sim, core.DelayedActionOptions{
 						DoAt: sim.CurrentTime + 10*time.Millisecond,
 						OnAction: func(sim *core.Simulation) {
@@ -166,7 +166,7 @@ func (mage *Mage) applyFingersOfFrost() {
 			fingersOfFrostIceLanceDamageMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell == mage.IceLance || spell == mage.DeepFreeze {
+			if spell.ClassSpellMask&(MageSpellIceLance|MageSpellDeepFreeze) > 0 {
 				aura.RemoveStack(sim)
 			}
 		},
@@ -206,7 +206,7 @@ func (mage *Mage) applyBrainFreeze() {
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
 
-	mage.BrainFreezeAura = mage.GetOrRegisterAura(core.Aura{
+	brainFreezeAura := mage.GetOrRegisterAura(core.Aura{
 		Label:    "Brain Freeze Proc",
 		ActionID: core.ActionID{SpellID: 57761},
 		Duration: time.Second * 15,
@@ -219,7 +219,7 @@ func (mage *Mage) applyBrainFreeze() {
 			brainFreezeCastMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell == mage.FrostfireBolt || spell == mage.Fireball {
+			if spell.ClassSpellMask&(MageSpellFrostfireBolt|MageSpellFireball) > 0 {
 				aura.Deactivate(sim)
 			}
 		},
@@ -233,7 +233,7 @@ func (mage *Mage) applyBrainFreeze() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if mage.hasChillEffect(spell) && sim.Proc(procChance, "Brain Freeze") {
-				mage.BrainFreezeAura.Activate(sim)
+				brainFreezeAura.Activate(sim)
 			}
 		},
 	})

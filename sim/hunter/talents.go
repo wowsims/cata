@@ -321,7 +321,7 @@ func (hunter *Hunter) applyImprovedSteadyShot() {
 		Label:     "Imp SS Counter",
 		ActionID:  core.ActionID{SpellID: 53221, Tag: 2},
 		MaxStacks: 2,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if spell.ProcMask.Matches(core.ProcMaskRangedAuto) || spell.ActionID.SpellID == 0 || !spell.Flags.Matches(core.SpellFlagAPL) {
 				return
 			}

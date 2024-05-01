@@ -26,7 +26,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		Kind:      core.SpellMod_CastTime_Flat,
 	})
 
-	mage.ArcaneBlastAura = mage.GetOrRegisterAura(core.Aura{
+	arcaneBlastAura := mage.GetOrRegisterAura(core.Aura{
 		Label:     "Arcane Blast Debuff",
 		ActionID:  core.ActionID{SpellID: 36032},
 		Duration:  time.Second * 6,
@@ -46,13 +46,25 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			abCostMod.UpdateFloatValue(1.5 * float64(newStacks))
 			abCastMod.UpdateTimeValue(time.Millisecond * time.Duration(-100*newStacks))
 		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask&(MageSpellArcaneBlast|MageSpellArcaneExplosion) > 0 {
+				return
+			}
+			if !spell.SpellSchool.Matches(core.SpellSchoolArcane) {
+				return
+			}
+			if spell.ProcMask != core.ProcMaskSpellDamage {
+				return
+			}
+			aura.Deactivate(sim)
+		},
 	})
 
-	mage.ArcaneBlast = mage.RegisterSpell(core.SpellConfig{
+	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30451},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | ArcaneMissileSpells | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellArcaneBlast,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.05,
@@ -70,10 +82,10 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 1.933 * mage.ScalingBaseDamage
+			baseDamage := 1.933 * mage.ClassSpellScaling
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			mage.ArcaneBlastAura.Activate(sim)
-			mage.ArcaneBlastAura.AddStack(sim)
+			arcaneBlastAura.Activate(sim)
+			arcaneBlastAura.AddStack(sim)
 		},
 	})
 }
