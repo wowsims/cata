@@ -231,3 +231,38 @@
 		}
 	}
 }
+
+.toast {
+	--icon-color: var(--bs-warning);
+	--bs-toast-padding-x: #{map-get($spacers, 3)};
+	--bs-toast-padding-y: #{map-get($spacers, 3)};
+	--bs-toast-spacing: #{$toast-spacing};
+	--bs-toast-max-width: #{$toast-max-width};
+	--bs-toast-color: #{$body-color};
+	--bs-toast-bg: #{$body-bg};
+	--bs-toast-border-color: #{lighten($body-bg, 20%)};
+	--bs-toast-border-width: #{$toast-border-width};
+	--bs-toast-border-radius: 0;
+	--bs-toast-box-shadow: #{$toast-box-shadow};
+	--bs-toast-header-color: var(--bs-toast-color);
+	--bs-toast-header-bg: var(--bs-toast-bg);
+	--bs-toast-header-border-color: #{lighten($body-bg, 10%)};
+
+	i {
+		line-height: 1;
+		color: var(--icon-color);
+	}
+
+	.btn-close {
+		i {
+			color: var(--bs-toast-color);
+		}
+	}
+}
+
+.toast--success {
+	--icon-color: var(--bs-success);
+}
+.toast--error {
+	--icon-color: var(--bs-danger);
+}

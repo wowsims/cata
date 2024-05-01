@@ -1,4 +1,5 @@
 import { hasTouch } from '../shared/bootstrap_overrides';
+import Toast from './components/toast';
 import { getBrowserLanguageCode, setLanguageCode } from './constants/lang.js';
 import * as OtherConstants from './constants/other.js';
 import { Encounter } from './encounter.js';
@@ -34,7 +35,7 @@ import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
 import { EventID, TypedEvent } from './typed_event.js';
 import { getEnumValues } from './utils.js';
-import { WorkerPool } from './worker_pool.js';
+import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
 	request: RaidSimRequest;
@@ -210,7 +211,7 @@ export class Sim {
 		});
 	}
 
-	async runBulkSim(bulkSettings: BulkSettings, bulkItemsDb: SimDatabase, onProgress: Function): Promise<BulkSimResult> {
+	async runBulkSim(bulkSettings: BulkSettings, bulkItemsDb: SimDatabase, onProgress: WorkerProgressCallback): Promise<BulkSimResult | null> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
@@ -240,52 +241,62 @@ export class Sim {
 
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
-		const result = await this.workerPool.bulkSimAsync(request, onProgress);
-		if (result.errorResult != '') {
-			throw new SimError(result.errorResult);
-		}
+		try {
+			const result = await this.workerPool.bulkSimAsync(request, onProgress);
+			if (result.errorResult != '') {
+				throw new SimError(result.errorResult);
+			}
 
-		this.bulkSimResultEmitter.emit(TypedEvent.nextEventID(), result);
-		return result;
+			this.bulkSimResultEmitter.emit(TypedEvent.nextEventID(), result);
+			return result;
+		} catch {
+			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
+		}
 	}
 
-	async runRaidSim(eventID: EventID, onProgress: Function): Promise<SimResult> {
+	async runRaidSim(eventID: EventID, onProgress: WorkerProgressCallback): Promise<SimResult | null> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
 			throw new Error('Encounter has no targets! Try adding some targets first.');
 		}
+		try {
+			await this.waitForInit();
 
-		await this.waitForInit();
+			const request = this.makeRaidSimRequest(false);
 
-		const request = this.makeRaidSimRequest(false);
-
-		const result = await this.workerPool.raidSimAsync(request, onProgress);
-		if (result.errorResult != '') {
-			throw new SimError(result.errorResult);
+			const result = await this.workerPool.raidSimAsync(request, onProgress);
+			if (result.errorResult != '') {
+				throw new SimError(result.errorResult);
+			}
+			const simResult = await SimResult.makeNew(request, result);
+			this.simResultEmitter.emit(eventID, simResult);
+			return simResult;
+		} catch {
+			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		}
-		const simResult = await SimResult.makeNew(request, result);
-		this.simResultEmitter.emit(eventID, simResult);
-		return simResult;
 	}
 
-	async runRaidSimWithLogs(eventID: EventID): Promise<SimResult> {
+	async runRaidSimWithLogs(eventID: EventID): Promise<SimResult | null> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
 			throw new Error('Encounter has no targets! Try adding some targets first.');
 		}
+		try {
+			await this.waitForInit();
 
-		await this.waitForInit();
-
-		const request = this.makeRaidSimRequest(true);
-		const result = await this.workerPool.raidSimAsync(request, () => {});
-		if (result.errorResult != '') {
-			throw new SimError(result.errorResult);
+			const request = this.makeRaidSimRequest(true);
+			const result = await this.workerPool.raidSimAsync(request, () => {});
+			if (result.errorResult != '') {
+				throw new SimError(result.errorResult);
+			}
+			const simResult = await SimResult.makeNew(request, result);
+			this.simResultEmitter.emit(eventID, simResult);
+			return simResult;
+		} catch {
+			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		}
-		const simResult = await SimResult.makeNew(request, result);
-		this.simResultEmitter.emit(eventID, simResult);
-		return simResult;
 	}
 
 	// This should be invoked internally whenever stats might have changed.
@@ -306,6 +317,7 @@ export class Sim {
 			raid: this.getModifiedRaidProto(),
 			encounter: this.encounter.toProto(),
 		});
+
 		const result = await this.workerPool.computeStats(req);
 
 		if (result.errorResult != '') {
@@ -343,8 +355,8 @@ export class Sim {
 		epStats: Array<Stat>,
 		epPseudoStats: Array<PseudoStat>,
 		epReferenceStat: Stat,
-		onProgress: Function,
-	): Promise<StatWeightsResult> {
+		onProgress: WorkerProgressCallback,
+	): Promise<StatWeightsResult | null> {
 		if (this.raid.isEmpty()) {
 			throw new Error('Raid is empty! Try adding some players first.');
 		} else if (this.encounter.targets.length < 1) {
@@ -380,8 +392,12 @@ export class Sim {
 				pseudoStatsToWeigh: epPseudoStats,
 				epReferenceStat: epReferenceStat,
 			});
-			const result = await this.workerPool.statWeightsAsync(request, onProgress);
-			return result;
+			try {
+				const result = await this.workerPool.statWeightsAsync(request, onProgress);
+				return result;
+			} catch {
+				throw new Error('Something went wrong calculating your stat weights. Reload the page and try again.');
+			}
 		}
 	}
 
