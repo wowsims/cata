@@ -12,6 +12,7 @@ import { GlyphConfig } from '../talents/glyphs_picker';
 import { TypedEvent } from '../typed_event';
 import { buf2hex, getEnumValues } from '../utils';
 import { BaseModal } from './base_modal';
+import Toast from './toast';
 
 declare let pako: any;
 
@@ -60,16 +61,16 @@ export abstract class Importer extends BaseModal {
 		}
 
 		this.importButton = this.rootElem.getElementsByClassName('import-button')[0] as HTMLButtonElement;
-		this.importButton.addEventListener('click', _event => {
+		this.importButton.addEventListener('click', async _event => {
 			try {
-				this.onImport(this.textElem.value || '');
+				await this.onImport(this.textElem.value || '');
 			} catch (error) {
-				alert('Import error: ' + error);
+				new Toast({ variant: 'error', body: `Import error: ${error}` });
 			}
 		});
 	}
 
-	abstract onImport(data: string): void;
+	abstract onImport(data: string): Promise<void>;
 
 	protected async finishIndividualImport<SpecType extends Spec>(
 		simUI: IndividualSimUI<SpecType>,
@@ -115,13 +116,15 @@ export abstract class Importer extends BaseModal {
 		this.close();
 
 		if (missingItems.length == 0 && missingEnchants.length == 0) {
-			alert('Import successful!');
+			new Toast({ variant: 'success', body: `Import successful!` });
 		} else {
-			alert(
-				'Import successful, but the following IDs were not found in the sim database:' +
+			new Toast({
+				variant: 'info',
+				body:
+					'Import successful, but the following IDs were not found in the sim database:' +
 					(missingItems.length == 0 ? '' : '\n\nItems: ' + missingItems.join(', ')) +
 					(missingEnchants.length == 0 ? '' : '\n\nEnchants: ' + missingEnchants.join(', ')),
-			);
+			});
 		}
 	}
 }
@@ -198,7 +201,12 @@ export class IndividualJsonImporter<SpecType extends Spec> extends Importer {
 	}
 
 	async onImport(data: string) {
-		const proto = IndividualSimSettings.fromJsonString(data, { ignoreUnknownFields: true });
+		let proto: ReturnType<typeof IndividualSimSettings.fromJsonString> | null = null;
+		try {
+			proto = IndividualSimSettings.fromJsonString(data, { ignoreUnknownFields: true });
+		} catch {
+			throw new Error('Please use a valid JSON object.');
+		}
 		if (proto.player?.equipment) {
 			await Database.loadLeftoversIfNecessary(proto.player.equipment);
 		}
@@ -232,8 +240,13 @@ export class Individual80UImporter<SpecType extends Spec> extends Importer {
 		`;
 	}
 
-	onImport(data: string) {
-		const importJson = JSON.parse(data);
+	async onImport(data: string) {
+		let importJson: any | null;
+		try {
+			importJson = JSON.parse(data);
+		} catch {
+			throw new Error('Please use a valid 80U export.');
+		}
 
 		// Parse all the settings.
 		const charClass = nameToClass((importJson?.character?.gameClass as string) || '');
@@ -265,7 +278,7 @@ export class Individual80UImporter<SpecType extends Spec> extends Importer {
 			equipmentSpec.items.push(itemSpec);
 		});
 
-		const gear = this.simUI.sim.db.lookupEquipmentSpec(equipmentSpec);
+		this.simUI.sim.db.lookupEquipmentSpec(equipmentSpec);
 
 		this.finishIndividualImport(this.simUI, charClass, race, equipmentSpec, talentsStr, null, []);
 	}
@@ -290,7 +303,7 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 		`;
 	}
 
-	onImport(url: string) {
+	async onImport(url: string) {
 		const match = url.match(/www\.wowhead\.com\/cata\/gear-planner\/([a-z\-]+)\/([a-z\-]+)\/([a-zA-Z0-9_\-]+)/);
 		if (!match) {
 			throw new Error(`Invalid WCL URL ${url}, must look like "https://www.wowhead.com/cata/gear-planner/CLASS/RACE/XXXX"`);
@@ -477,7 +490,12 @@ export class IndividualAddonImporter<SpecType extends Spec> extends Importer {
 	}
 
 	async onImport(data: string) {
-		const importJson = JSON.parse(data);
+		let importJson: any | null;
+		try {
+			importJson = JSON.parse(data);
+		} catch {
+			throw new Error('Please use a valid Addon export.');
+		}
 
 		// Parse all the settings.
 		const charClass = nameToClass((importJson['class'] as string) || '');
