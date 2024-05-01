@@ -27,7 +27,7 @@ func (rot *APLRotation) newActionCastSpell(config *proto.APLActionCastSpell) APL
 	}
 }
 func (action *APLActionCastSpell) IsReady(sim *Simulation) bool {
-	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim))
+	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim) || action.spell.Unit.Rotation.inSequence)
 }
 func (action *APLActionCastSpell) Execute(sim *Simulation) {
 	action.spell.CastOrQueue(sim, action.target.Get())
@@ -57,7 +57,7 @@ func (rot *APLRotation) newActionCastFriendlySpell(config *proto.APLActionCastFr
 	}
 }
 func (action *APLActionCastFriendlySpell) IsReady(sim *Simulation) bool {
-	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim))
+	return action.spell.CanCastOrQueue(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim) || action.spell.Unit.Rotation.inSequence)
 }
 func (action *APLActionCastFriendlySpell) Execute(sim *Simulation) {
 	action.spell.CastOrQueue(sim, action.target.Get())
