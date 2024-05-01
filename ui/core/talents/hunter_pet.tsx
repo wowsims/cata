@@ -125,14 +125,14 @@ export const cunningDefault: HunterPetTalents = HunterPetTalents.create({
 });
 export const ferocityDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
-	dive: true,
+	dash: true,
 	spikedCollar: 3,
 	bloodthirsty: 1,
 	cullingTheHerd: 3,
 	spidersBite: 3,
 	rabid: true,
 	callOfTheWild: true,
-	sharkAttack: 2,
+	wildHunt: 2,
 });
 export const tenacityDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
