@@ -265,7 +265,8 @@ export class ActionId {
 				if (this.tag) name += ' (DoT)';
 				break;
 			case 'Living Bomb':
-				if (this.spellId == 55362) name += ' (Explosion)';
+				if (this.tag == 1) name += ' (DoT)';
+				else if (this.tag == 2) name += ' (Explosion)';
 				break;
 			case 'Evocation':
 				if (this.tag == 1) {

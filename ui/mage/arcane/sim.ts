@@ -1,13 +1,10 @@
 import * as OtherInputs from '../../core/components/other_inputs';
-import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { Mage } from '../../core/player_classes/mage';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl';
-import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
-import { ArcaneMage_Rotation } from '../../core/proto/mage';
-import * as AplUtils from '../../core/proto_utils/apl_utils';
+import { APLRotation } from '../../core/proto/apl';
+import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
 import * as MageInputs from '../inputs';
 import * as ArcaneInputs from './inputs';
@@ -89,7 +86,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [MageInputs.ArmorInput()],
+	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: ArcaneInputs.MageRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.

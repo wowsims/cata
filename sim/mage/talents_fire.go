@@ -119,70 +119,91 @@ func (mage *Mage) applyHotStreak() {
 	ImprovedHotStreakProcChance := float64(mage.Talents.ImprovedHotStreak) * 0.5
 	BaseHotStreakProcChance := float64(-2.7*(mage.GetStat(stats.SpellCrit)/core.CritRatingPerCritChance)/100 + 0.9) // EJ settled on -2.7*critChance+0.9
 
+	hotStreakCostMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		FloatValue: -1,
+		ClassMask:  MageSpellPyroblast,
+	})
+
+	hotStreakCastTimeMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		FloatValue: -1,
+		ClassMask:  MageSpellPyroblast,
+	})
+
 	// Unimproved Hot Streak Proc Aura
-	mage.HotStreakAura = mage.RegisterAura(core.Aura{
+	hotStreakAura := mage.RegisterAura(core.Aura{
 		Label:    "Hot Streak",
 		ActionID: core.ActionID{SpellID: 48108},
 		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			hotStreakCostMod.Activate()
+			hotStreakCastTimeMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hotStreakCostMod.Deactivate()
+			hotStreakCastTimeMod.Deactivate()
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask != MageSpellPyroblast {
+				return
+			}
+			if spell.CurCast.Cost > 0 || spell.CurCast.CastTime > 0 {
+				return
+			}
+			aura.Deactivate(sim)
+		},
 	})
 
 	// Improved Hotstreak Crit Stacking Aura
-	mage.hotStreakCritAura = mage.RegisterAura(core.Aura{
+	hotStreakCritAura := mage.RegisterAura(core.Aura{
 		Label:     "Hot Streak Proc Aura",
 		ActionID:  core.ActionID{SpellID: 44448}, //, Tag: 1}, Removing Tag gets rid of the (??) in Timeline
 		MaxStacks: 2,
-		Duration:  time.Hour,
+		Duration:  core.NeverExpires,
 	})
 
+	const hotStreakSpells = MageSpellPyroblast | MageSpellFireBlast | MageSpellFireball |
+		MageSpellFlameOrb | MageSpellFrostfireBolt | MageSpellScorch
+
 	// Aura to allow the character to track crits
-	mage.RegisterAura(core.Aura{
-		Label:    "Hot Streak Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Hot Streak Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Flags.Matches(HotStreakSpells) {
+			if spell.ClassSpellMask&hotStreakSpells == 0 {
 				return
 			}
 
 			// Pyroblast! cannot trigger hot streak
 			// TODO can Pyroblast! *reset* hot streak crit streak? This implementation assumes no.
 			// If so, will need to envelope it around the hot streak checks
-			if spell == mage.Pyroblast && spell.CurCast.CastTime == 0 {
+			if spell.ClassSpellMask == MageSpellPyroblast && spell.CurCast.CastTime == 0 {
 				return
 			}
 			// Hot Streak Base Talent Proc
-			if result.DidCrit() && spell.Flags.Matches(HotStreakSpells) {
+			if result.DidCrit() {
 				if sim.Proc(BaseHotStreakProcChance, "Hot Streak") {
-					if mage.HotStreakAura.IsActive() {
-						mage.HotStreakAura.Refresh(sim)
-					} else {
-						mage.HotStreakAura.Activate(sim)
-					}
+					hotStreakAura.Activate(sim)
 				}
-
 			}
 
 			// Improved Hot Streak
 			if mage.Talents.ImprovedHotStreak > 0 {
-
 				// If you didn't crit, reset your crit counter
-
 				if !result.DidCrit() {
-					mage.hotStreakCritAura.SetStacks(sim, 0)
-					mage.hotStreakCritAura.Deactivate(sim)
+					hotStreakCritAura.SetStacks(sim, 0)
+					hotStreakCritAura.Deactivate(sim)
 					return
 				}
 
 				// If you did crit, check against talents to see if you proc
 				// If you proc and had 1 stack, set crit counter to 0 and give hot streak.
-				if mage.hotStreakCritAura.GetStacks() == 1 {
+				if hotStreakCritAura.GetStacks() == 1 {
 					if sim.Proc(ImprovedHotStreakProcChance, "Improved Hot Streak") {
-						mage.hotStreakCritAura.SetStacks(sim, 0)
-						mage.hotStreakCritAura.Deactivate(sim)
+						hotStreakCritAura.SetStacks(sim, 0)
+						hotStreakCritAura.Deactivate(sim)
 
-						mage.HotStreakAura.Activate(sim)
+						hotStreakAura.Activate(sim)
 					}
 
 					// If you proc and had 0 stacks of crits, add to your crit counter.
@@ -192,12 +213,12 @@ func (mage *Mage) applyHotStreak() {
 					// will go 2 out of 2 points, but worth researching.
 					// If it checks 1st crit as well, can add a proc check to this too
 				} else {
-					mage.hotStreakCritAura.Activate(sim)
-					mage.hotStreakCritAura.AddStack(sim)
+					hotStreakCritAura.Activate(sim)
+					hotStreakCritAura.AddStack(sim)
 				}
 			}
 		},
-	})
+	}))
 }
 
 func (mage *Mage) applyPyromaniac() {
@@ -211,7 +232,7 @@ func (mage *Mage) applyPyromaniac() {
 		Kind:       core.SpellMod_CastTime_Pct,
 	})
 
-	mage.PyromaniacAura = mage.RegisterAura(core.Aura{
+	mage.RegisterAura(core.Aura{
 		Label:    "Pyromaniac Trackers",
 		ActionID: core.ActionID{SpellID: 83582},
 		Duration: core.NeverExpires,
@@ -226,7 +247,7 @@ func (mage *Mage) applyPyromaniac() {
 			activeDotTargets := 0
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				for _, spells := range dotSpells {
-					if aoeTarget.GetAuraByID(spells.ActionID).IsActive() {
+					if spells.Dot(aoeTarget).IsActive() {
 						activeDotTargets++
 						break
 					}
@@ -268,7 +289,6 @@ func (mage *Mage) applyMoltenFury() {
 }
 
 func (mage *Mage) applyIgnite() {
-
 	if mage.Talents.Ignite == 0 {
 		return
 	}
@@ -277,12 +297,8 @@ func (mage *Mage) applyIgnite() {
 	//const IgniteTicksRefresh = 3
 
 	// Ignite proc listener
-	mage.RegisterAura(core.Aura{
-		Label:    "Ignite Talent",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Ignite Talent",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
 				return
@@ -290,7 +306,7 @@ func (mage *Mage) applyIgnite() {
 			// EJ post says combustion crits do not proc ignite
 			// https://web.archive.org/web/20120219014159/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/#post1824829
 			if spell.SpellSchool.Matches(core.SpellSchoolFire) && result.DidCrit() && spell != mage.Combustion {
-				mage.procIgnite(sim, result, mage.Ignite.Dot(mage.CurrentTarget).IsActive())
+				mage.procIgnite(sim, result)
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -298,29 +314,17 @@ func (mage *Mage) applyIgnite() {
 				return
 			}
 			if mage.LivingBomb != nil && result.DidCrit() {
-				mage.procIgnite(sim, result, mage.Ignite.Dot(mage.CurrentTarget).IsActive())
+				mage.procIgnite(sim, result)
 			}
-		},
-	})
-
-	actionId := core.ActionID{SpellID: 12846}
-
-	mage.IgniteDamageTracker = core.MakePermanent(mage.RegisterAura(core.Aura{
-		ActionID:  actionId,
-		Label:     "Ignite Damage Tracker",
-		Duration:  core.NeverExpires,
-		MaxStacks: 1000000,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
 		},
 	}))
 
 	// The ignite dot
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       actionId,
+		ActionID:       core.ActionID{SpellID: 12846},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskProc,
-		Flags:          SpellFlagMage | core.SpellFlagIgnoreModifiers,
+		Flags:          core.SpellFlagIgnoreModifiers,
 		ClassSpellMask: MageSpellIgnite,
 
 		DamageMultiplier: 1,
@@ -328,8 +332,9 @@ func (mage *Mage) applyIgnite() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Ignite",
-				Tag:   "IgniteDot",
+				Label:     "Ignite",
+				Tag:       "IgniteDot",
+				MaxStacks: 1000000,
 			},
 			NumberOfTicks: IgniteTicksFresh,
 			TickLength:    time.Second * 2,
@@ -348,11 +353,12 @@ func (mage *Mage) applyIgnite() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.SpellMetrics[target.UnitIndex].Hits++
 			spell.Dot(target).ApplyOrReset(sim)
+			spell.Dot(target).Aura.SetStacks(sim, int32(spell.Dot(target).SnapshotBaseDamage))
 		},
 	})
 }
 
-func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult, isActive bool) {
+func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 	const IgniteTicksFresh = 2
 	//const IgniteTicksRefresh = 3
 	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
@@ -388,9 +394,6 @@ func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult, isA
 	// Add the remaining damage to the new ignite proc, divide it over 2 ticks
 	dot.SnapshotBaseDamage = ((outstandingDamage + newDamage) / float64(IgniteTicksFresh))
 	mage.Ignite.Cast(sim, result.Target)
-	if mage.IgniteDamageTracker.IsActive() {
-		mage.IgniteDamageTracker.SetStacks(sim, int32(dot.SnapshotBaseDamage))
-	}
 }
 
 func (mage *Mage) applyImpact() {
@@ -402,30 +405,30 @@ func (mage *Mage) applyImpact() {
 	// TODO make this work :)
 	// Currently casts a fresh set of DoTs
 	// afaik it should spread exact copies of the DoTs
-	mage.ImpactAura = mage.RegisterAura(core.Aura{
+	impactAura := mage.RegisterAura(core.Aura{
 		Label:    "Impact",
 		ActionID: core.ActionID{SpellID: 64343},
 		Duration: time.Second * 10,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 
-			if spell == mage.FireBlast {
-				originalTarget := mage.CurrentTarget
-
-				duplicatableDots := map[*core.Spell]float64{
-					mage.LivingBombImpact:   mage.LivingBomb.Dot(originalTarget).SnapshotBaseDamage,
-					mage.PyroblastDotImpact: mage.PyroblastDot.Dot(originalTarget).SnapshotBaseDamage,
-					mage.Ignite:             mage.Ignite.Dot(originalTarget).SnapshotBaseDamage,
-					mage.Combustion:         mage.Combustion.Dot(originalTarget).SnapshotBaseDamage,
-				}
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					if aoeTarget == originalTarget {
-						continue
-					}
-					for spell, damage := range duplicatableDots {
-						spell.Dot(aoeTarget).Snapshot(aoeTarget, damage)
-						spell.Dot(aoeTarget).Apply(sim)
-					}
-				}
+			if spell.ClassSpellMask == MageSpellFireBlast {
+				// TODO:
+				// originalTarget := mage.CurrentTarget
+				// duplicatableDots := map[*core.Spell]float64{
+				// 	mage.LivingBombImpact:   mage.LivingBomb.Dot(originalTarget).SnapshotBaseDamage,
+				// 	mage.PyroblastDotImpact: mage.PyroblastDot.Dot(originalTarget).SnapshotBaseDamage,
+				// 	mage.Ignite:             mage.Ignite.Dot(originalTarget).SnapshotBaseDamage,
+				// 	mage.Combustion:         mage.Combustion.Dot(originalTarget).SnapshotBaseDamage,
+				// }
+				// for _, aoeTarget := range sim.Encounter.TargetUnits {
+				// 	if aoeTarget == originalTarget {
+				// 		continue
+				// 	}
+				// 	for spell, damage := range duplicatableDots {
+				// 		spell.Dot(aoeTarget).Snapshot(aoeTarget, damage)
+				// 		spell.Dot(aoeTarget).Apply(sim)
+				// 	}
+				// }
 				aura.Deactivate(sim)
 			}
 		},
@@ -438,7 +441,7 @@ func (mage *Mage) applyImpact() {
 		ProcChance:     0.05 * float64(mage.Talents.Impact),
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			mage.FireBlast.CD.Reset()
-			mage.ImpactAura.Activate(sim)
+			impactAura.Activate(sim)
 		},
 	})
 }

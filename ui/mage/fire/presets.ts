@@ -2,11 +2,8 @@ import * as PresetUtils from '../../core/preset_utils';
 import { Conjured, Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec } from '../../core/proto/common';
 import {
 	FireMage_Options as MageOptions,
-	FireMage_Rotation as MageRotation,
-	FireMage_Rotation_PrimaryFireSpell as PrimaryFireSpell,
 	MageMajorGlyph as MajorGlyph,
 	MageMinorGlyph as MinorGlyph,
-	MageOptions_ArmorType as ArmorType,
 	MagePrimeGlyph as PrimeGlyph,
 } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
@@ -51,7 +48,6 @@ export const FireTalents = {
 
 export const DefaultFireOptions = MageOptions.create({
 	classOptions: {
-		armor: ArmorType.MoltenArmor,
 	},
 });
 

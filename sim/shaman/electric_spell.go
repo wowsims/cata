@@ -40,6 +40,10 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				spell.SetMetricsSplit(shaman.MaelstromWeaponAura.GetStacks())
+				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
+				if sim.CurrentTime+castTime > shaman.AutoAttacks.NextAttackAt() {
+					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+				}
 			},
 		},
 

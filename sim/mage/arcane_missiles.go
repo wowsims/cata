@@ -6,13 +6,30 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
+func (mage *Mage) OutcomeArcaneMissiles(sim *core.Simulation, result *core.SpellResult, attackTable *core.AttackTable) {
+	spell := mage.arcaneMissilesTickSpell
+	if spell.MagicHitCheck(sim, attackTable) {
+		if sim.RandomFloat("Magical Crit Roll") < mage.arcaneMissileCritSnapshot {
+			result.Outcome = core.OutcomeCrit
+			result.Damage *= spell.CritMultiplier
+			spell.SpellMetrics[result.Target.UnitIndex].Crits++
+		} else {
+			result.Outcome = core.OutcomeHit
+			spell.SpellMetrics[result.Target.UnitIndex].Hits++
+		}
+	} else {
+		result.Outcome = core.OutcomeMiss
+		result.Damage = 0
+		spell.SpellMetrics[result.Target.UnitIndex].Misses++
+	}
+}
+
 func (mage *Mage) registerArcaneMissilesSpell() {
 
-	mage.ArcaneMissilesTickSpell = mage.GetOrRegisterSpell(core.SpellConfig{
+	mage.arcaneMissilesTickSpell = mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7268},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          SpellFlagMage,
 		ClassSpellMask: MageSpellArcaneMissilesTick,
 		MissileSpeed:   20,
 
@@ -21,22 +38,21 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.278,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 0.432 * mage.ScalingBaseDamage
-			result := spell.CalcDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			damage := 0.432 * mage.ClassSpellScaling
+			result := spell.CalcDamage(sim, target, damage, mage.OutcomeArcaneMissiles)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})
 		},
 	})
 
-	var numTicks int32 = 3
-	TickLengthBase := time.Millisecond * time.Duration(700-100*mage.Talents.MissileBarrage)
-	mage.ArcaneMissiles = mage.RegisterSpell(core.SpellConfig{
+	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 7268},
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | core.SpellFlagChanneled | core.SpellFlagAPL,
+		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
 		ClassSpellMask: MageSpellArcaneMissilesCast,
+
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -45,42 +61,27 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return mage.ArcaneMissilesProcAura.IsActive()
 		},
+
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "ArcaneMissiles",
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					// Force cast a missile right away
-					mage.ArcaneMissilesTickSpell.Cast(sim, mage.CurrentTarget)
-					mage.ArcaneMissilesProcAura.Deactivate(sim)
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					if mage.ArcaneMissilesProcAura.IsActive() {
-						mage.ArcaneMissilesProcAura.Deactivate(sim)
-					}
-
-					// TODO: This check is necessary to ensure the final tick occurs before
-					// Arcane Blast stacks are dropped. To fix this, ticks need to reliably
-					// occur before aura expirations.
-					dot := mage.ArcaneMissiles.Dot(aura.Unit)
-					if dot.TickCount < dot.NumberOfTicks {
-						dot.TickCount++
-						dot.TickOnce(sim)
-					}
-					mage.ArcaneBlastAura.Deactivate(sim)
-				},
+				Label: "ArcaneMissiles" + mage.Label,
 			},
-			NumberOfTicks:        numTicks - 1, // subtracting 1 due to autocasting one OnGain
-			TickLength:           TickLengthBase,
+			NumberOfTicks:        3 - 1, // subtracting 1 due to force tick after apply
+			TickLength:           time.Millisecond * 700,
 			HasteAffectsDuration: true,
 			AffectedByCastSpeed:  true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				mage.ArcaneMissilesTickSpell.Cast(sim, target)
+				mage.arcaneMissilesTickSpell.Cast(sim, target)
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
-				spell.Dot(target).Apply(sim)
+				// Snapshot crit chance
+				mage.arcaneMissileCritSnapshot = mage.arcaneMissilesTickSpell.SpellCritChance(target)
+				dot := spell.Dot(target)
+				dot.Apply(sim)
+				dot.TickOnce(sim)
 			}
 			//spell.DealOutcome(sim, result)
 		},

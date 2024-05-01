@@ -156,6 +156,35 @@ var ItemSetSpiritwalkersRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// T11 enh
+// (2) Set: Increases damage done by your Lava Lash and Stormstrike abilities by 10%.
+// (4) Set: Increases the critical strike chance of your Lightning Bolt spell by 10%.
+var ItemSetRagingElementsBattlegear = core.NewItemSet(core.ItemSet{
+	Name: "Battlegear of the Raging Elements",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Flat,
+				FloatValue: .10,
+				ClassMask:  SpellMaskLavaLash | SpellMaskStormstrike,
+			})
+		},
+		4: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_BonusCrit_Rating,
+				FloatValue: 10 * core.CritRatingPerCritChance,
+				ClassMask:  SpellMaskLightningBolt,
+			})
+		},
+	},
+})
+
+// T12 enh
+// (2) Set: Your Lava Lash gains an additional 5% damage increase per application of Searing Flames on the target.
+// (4) Set: Your Stormstrike ability also causes the target to take 6% increased damage from your Fire Nova, Flame Shock, Flametongue Weapon, Lava Burst, Lava Lash, and Unleash Flame abilities.
+
 func init() {
 	core.NewItemEffect(33506, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
