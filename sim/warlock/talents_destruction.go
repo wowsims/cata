@@ -1,7 +1,6 @@
 package warlock
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -190,6 +189,7 @@ func (warlock *Warlock) registerBurningEmbers() {
 	damageGainPerHit := 0.25 * float64(warlock.Talents.BurningEmbers)
 	spellPowerMultiplier := 0.7 * float64(warlock.Talents.BurningEmbers)
 	additionalDamage := warlock.ClassSpellScaling * []float64{0.0, Coefficient_BurningEmbers_1, Coefficient_BurningEmbers_2}[warlock.Talents.BurningEmbers]
+	var burningEmberTicks int32 = 7
 
 	burningEmbers := warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 85112},
@@ -205,7 +205,7 @@ func (warlock *Warlock) registerBurningEmbers() {
 			Aura: core.Aura{
 				Label: "Burning Embers",
 			},
-			NumberOfTicks: 7,
+			NumberOfTicks: burningEmberTicks,
 			TickLength:    time.Second * 1,
 			//?AffectedByCastSpeed: true,
 
@@ -233,13 +233,10 @@ func (warlock *Warlock) registerBurningEmbers() {
 			// Max damage is based on the formula which changes per talent point where x is based off of:
 			//1: [(Spell power * 0.7 + x) / 7]
 			//2: [(Spell power * 1.4 + x) / 7]
-			maxDamagePerTick := ((dot.Spell.SpellPower() * spellPowerMultiplier) + additionalDamage) / 7
-			fmt.Println("dot.Spell.SpellPower()", dot.Spell.SpellPower())
-			fmt.Println("maxDamagePerTick", maxDamagePerTick)
-			fmt.Println("dot.SnapshotBaseDamage", dot.SnapshotBaseDamage)
+			maxDamagePerTick := ((dot.Spell.SpellPower() * spellPowerMultiplier) + additionalDamage) / float64(burningEmberTicks)
 
 			// The damage per tick gain is then based off the damage of the Imp Firebolt or Soulfire that just hit
-			dot.SnapshotBaseDamage = min(dot.SnapshotBaseDamage+result.Damage*damageGainPerHit, maxDamagePerTick)
+			dot.SnapshotBaseDamage = min(dot.SnapshotBaseDamage+result.Damage/float64(burningEmberTicks)*damageGainPerHit, maxDamagePerTick)
 			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[result.Target.UnitIndex], true)
 			burningEmbers.Cast(sim, result.Target)
 		},

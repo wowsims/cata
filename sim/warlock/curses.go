@@ -146,6 +146,7 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 		},
 
 		DamageMultiplierAdditive: 1,
+		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
@@ -216,7 +217,8 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 				dot.Snapshot(target, warlock.ScalingBaseDamage*Coefficient_BaneOfDoom)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				//TODO: Can this crit?
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				if sim.Proc(0.2+ebonImpBonusSummon, "Ebon Imp") {
 					warlock.EbonImp.EnableWithTimeout(sim, warlock.EbonImp, time.Second*15)
 				}

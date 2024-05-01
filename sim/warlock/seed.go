@@ -57,6 +57,7 @@ func (warlock *Warlock) registerSeedSpell() {
 			},
 		},
 
+		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
 

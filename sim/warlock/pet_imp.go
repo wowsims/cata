@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -41,19 +42,23 @@ type ImpPet struct {
 
 func (warlock *Warlock) NewImpPet() *ImpPet {
 	baseStats := stats.Stats{
-		stats.Strength:  297,
-		stats.Agility:   79,
-		stats.Stamina:   118,
-		stats.Intellect: 369,
-		stats.Spirit:    367,
-		stats.Mana:      1174,
-		stats.MP5:       270, // rough guess, unclear if it's affected by other stats
-		stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
-		stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+		stats.Health: 40962,
+		stats.Mana:   32251,
+		//EnableManaBarWithModifier is subtracting 10... we don't want that.
+		stats.SpellPower:  10,
+		stats.AttackPower: 0,
+		stats.Agility:     0,
+		stats.Stamina:     0,
+		stats.Intellect:   0,
+		stats.Strength:    0,
+		stats.Spirit:      0,
+		stats.MP5:         0, // rough guess, unclear if it's affected by other stats
+		stats.MeleeCrit:   3.454 * core.CritRatingPerCritChance,
+		stats.SpellCrit:   0.9075 * core.CritRatingPerCritChance,
 	}
 
 	imp := &ImpPet{
-		Pet: core.NewPet(PetImp, &warlock.Character, baseStats, warlock.MakeStatInheritance(), false, false),
+		Pet: core.NewPet(PetImp, &warlock.Character, baseStats, makeStatInheritance(), false, false),
 	}
 
 	imp.EnableManaBarWithModifier(0.33)
@@ -66,6 +71,19 @@ func (warlock *Warlock) NewImpPet() *ImpPet {
 	warlock.AddPet(imp)
 
 	return imp
+}
+
+func makeStatInheritance() core.PetStatInheritance {
+	return func(ownerStats stats.Stats) stats.Stats {
+		//starting with wotlk stats and adjusting from there
+		return stats.Stats{
+			stats.Stamina:     ownerStats[stats.Stamina] * 0.75,
+			stats.Armor:       ownerStats[stats.Armor] * 1.0,
+			stats.AttackPower: ownerStats[stats.SpellPower] * 0.57,
+			stats.SpellPower:  ownerStats[stats.SpellPower] * 0.15,
+			stats.SpellHit:    math.Floor(ownerStats[stats.SpellHit] / 12.0 * 17.0),
+		}
+	}
 }
 
 func (imp *ImpPet) GetPet() *core.Pet {
@@ -105,7 +123,8 @@ func (imp *ImpPet) registerFireboltSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 146 + (0.657 * (0.5 * spell.SpellPower()))
+			// The .5 seems to be based on the spellpower of the owner. So dividing this by .15 ratio of imp to owner spell power.
+			baseDamage := 124 + (0.657 * (0.5 / .15 * spell.SpellPower()))
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

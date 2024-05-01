@@ -32,10 +32,10 @@ func (warlock *Warlock) registerIncinerateSpell() {
 		BonusCoefficient:         0.53899997473,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 645.0
+			baseDamage := warlock.CalcBaseDamageWithVariance(sim, Coefficient_Incinerate, Variance_Incinerate)
 
 			if warlock.ImmolateDot.Dot(target).IsActive() {
-				baseDamage += 645.0
+				baseDamage += baseDamage / 6
 			}
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)

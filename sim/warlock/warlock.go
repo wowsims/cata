@@ -251,11 +251,13 @@ const Coefficient_ChaosBolt float64 = 1.547
 const Coefficient_Infernal float64 = 0.485
 const Coefficient_ShadowBolt float64 = 0.62
 const Coefficient_HandOfGuldan float64 = 1.593
+const Coefficient_Incinerate float64 = 0.573
 
 const Variance_ChaosBolt float64 = 0.238
 const Variance_ShadowBolt float64 = 0.1099999994
 const Variance_HandOfGuldan float64 = 0.166
 const Variance_Infernal float64 = 0.119
+const Variance_Incinerate float64 = 0.15
 const PetFelhunter string = "Felhunter"
 const PetFelguard string = "Felguard"
 const PetSuccubus string = "Succubus"
@@ -350,3 +352,7 @@ func (warlock *Warlock) ChangeActivePet(sim *core.Simulation, newPet string) {
 // 		warlock.ActivePet = newPet
 // 		warlock.ActivePet.Enable(sim, warlock.ActivePet.Pet)
 // 	}
+
+func (warlock *Warlock) DefaultSpellCritMultiplier() float64 {
+	return warlock.SpellCritMultiplier(1.33, 0.0)
+}

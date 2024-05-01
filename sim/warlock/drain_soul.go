@@ -55,6 +55,7 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,
+		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
