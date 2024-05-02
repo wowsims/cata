@@ -3,6 +3,7 @@ import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { ResourceType } from '../proto/api.js';
 import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction } from '../proto/common.js';
 import { IconData, UIItem as Item } from '../proto/ui.js';
+import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
 import { Database } from './database.js';
 
 // If true uses wotlkdb.com, else uses wowhead.com.
@@ -150,10 +151,16 @@ export class ActionId {
 	static makeSpellUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
 		if (USE_WOTLK_DB) {
-			return 'https://wotlkdb.com/?spell=' + id;
+			return `https://wotlkdb.com/?spell=${id}`;
 		} else {
 			return `https://wowhead.com/cata/${langPrefix}spell=${id}`;
 		}
+	}
+	static async makeItemTooltipData(id: number, params?: Omit<WowheadTooltipItemParams, 'itemId'>) {
+		return buildWowheadTooltipDataset({ itemId: id, ...params });
+	}
+	static async makeSpellTooltipData(id: number, params?: Omit<WowheadTooltipSpellParams, 'spellId'>) {
+		return buildWowheadTooltipDataset({ spellId: id, ...params });
 	}
 	static makeQuestUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
@@ -186,6 +193,12 @@ export class ActionId {
 		} else if (this.spellId) {
 			elem.href = ActionId.makeSpellUrl(this.spellId);
 		}
+	}
+
+	async setWowheadDataset(elem: HTMLElement, params?: Omit<WowheadTooltipItemParams, 'itemId'> | Omit<WowheadTooltipSpellParams, 'spellId'>) {
+		(this.itemId ? ActionId.makeItemTooltipData(this.itemId, params) : ActionId.makeSpellTooltipData(this.spellId, params)).then(url => {
+			if (elem) elem.dataset.wowhead = url;
+		});
 	}
 
 	setBackgroundAndHref(elem: HTMLAnchorElement) {
@@ -351,7 +364,7 @@ export class ActionId {
 				break;
 			case 'Flame Shock':
 				if (this.tag == 1) {
-					name += ' (DoT)'
+					name += ' (DoT)';
 				}
 				break;
 			case 'Holy Shield':
@@ -764,4 +777,4 @@ export const buffAuraToSpellIdMap: Record<number, ActionId> = {
 	96228: ActionId.fromSpellId(82174), // Synapse Springs - Agi
 	96229: ActionId.fromSpellId(82174), // Synapse Springs - Str
 	96230: ActionId.fromSpellId(82174), // Synapse Springs - Int
-}
+};

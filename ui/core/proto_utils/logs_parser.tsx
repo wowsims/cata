@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element } from 'tsx-vanilla';
+import { element, fragment } from 'tsx-vanilla';
 
 import { RaidSimResult, ResourceType } from '../proto/api.js';
 import { bucket, getEnumValues, stringComparator, sum } from '../utils.js';
@@ -39,13 +39,19 @@ export class Entity {
 		}
 	}
 
-	toHTMLString(): string {
+	toHTML() {
 		if (this.isTarget) {
-			return `<span class="text-danger">[Target ${this.index + 1}]</span>`;
+			return <span className="text-danger">[Target {this.index + 1}]</span>;
 		} else if (this.isPet) {
-			return `<span class="text-primary">[${this.ownerName} ${this.index + 1}]</span> - ${this.name}`;
+			return (
+				<>
+					<span className="text-primary">{`[${this.ownerName} ${this.index + 1}]`}</span>
+					{` - `}
+					{this.name}
+				</>
+			);
 		} else {
-			return `<span class="text-primary">[${this.name} ${this.index + 1}]</span>`;
+			return <span className="text-primary">{`[${this.name} ${this.index + 1}]`}</span>;
 		}
 	}
 
@@ -102,6 +108,8 @@ export class SimLog {
 	// This is only filled if populateActiveAuras() is called.
 	activeAuras: Array<AuraUptimeLog>;
 
+	cachedHTML: Record<string | number, Element | null> = {};
+
 	constructor(params: SimLogParams) {
 		this.raw = params.raw;
 		this.logIndex = params.logIndex;
@@ -113,40 +121,45 @@ export class SimLog {
 		this.activeAuras = [];
 	}
 
-	toString(includeTimestamp = true): string {
-		let str = this.raw;
-		// Base logs already have the timestamp appended by default
-		if (!includeTimestamp) {
-			const regexp = /(\[[0-9.-]+\]) (\[[0-9a-zA-Z\s\-()#]+\])?(.*)/;
-			if (this.raw.match(regexp)) {
-				// TypeScript doesn't handle regex capture typing well
-				const captureArr = regexp.exec(this.raw);
-				// const timestamp = captureArr[1];
-				// const source = captureArr[2];
+	toHTML(includeTimestamp = true) {
+		return this.cacheOutput(includeTimestamp, () => {
+			let html = <>{this.raw}</>;
+			// Base logs already have the timestamp appended by default
+			if (!includeTimestamp) {
+				const regexp = /(\[[0-9.-]+\]) (\[[0-9a-zA-Z\s\-()#]+\])?(.*)/;
+				if (this.raw.match(regexp)) {
+					// TypeScript doesn't handle regex capture typing well
+					const captureArr = regexp.exec(this.raw);
 
-				if (captureArr && captureArr.length == 4) {
-					str = captureArr[3];
+					if (captureArr && captureArr.length == 4) {
+						html = <>{captureArr[3]}</>;
+					}
 				}
 			}
-		}
 
-		if (this.source) {
-			str = `${this.source.toHTMLString()} ${str}`;
-		}
-
-		return str;
+			if (this.source) {
+				html = (
+					<>
+						{this.source.toHTML()} {html}
+					</>
+				);
+			}
+			return html;
+		});
 	}
 
-	toStringPrefix(includeTimestamp = true): string {
+	toPrefix(includeTimestamp = true) {
 		let prefix = '';
 		if (includeTimestamp) {
 			prefix = `[${this.timestamp.toFixed(2)}]`;
 		}
-		if (this.source) {
-			prefix = `${prefix} ${this.source.toHTMLString()}`;
-		}
 
-		return prefix;
+		return (
+			<>
+				{prefix}
+				{this.source?.toHTML()}
+			</>
+		);
 	}
 
 	formattedTimestamp(): string {
@@ -162,7 +175,7 @@ export class SimLog {
 		return formatted;
 	}
 
-	protected newActionIdLink(): string {
+	protected newActionIdLink(isAura?: boolean) {
 		const iconElem = <span className="icon icon-sm"></span>;
 		const actionAnchor = (
 			<a className="log-action" target="_blank">
@@ -173,12 +186,12 @@ export class SimLog {
 		);
 		this.actionId?.setBackground(iconElem as HTMLAnchorElement);
 		this.actionId?.setWowheadHref(actionAnchor as HTMLAnchorElement);
-		return actionAnchor.outerHTML;
+		this.actionId?.setWowheadDataset(actionAnchor as HTMLAnchorElement, { useBuffAura: isAura });
+		return actionAnchor;
 	}
 
-	static async parseAll(result: RaidSimResult): Promise<Array<SimLog>> {
+	static async parseAll(result: RaidSimResult): Promise<SimLog[]> {
 		const lines = result.logs.split('\n');
-
 		return Promise.all(
 			lines.map((line, lineIndex) => {
 				const params: SimLogParams = {
@@ -276,6 +289,12 @@ export class SimLog {
 
 		return grouped;
 	}
+
+	cacheOutput(cacheKey: string | number | boolean, fn: () => Element) {
+		if (this.cachedHTML[String(cacheKey)]) return this.cachedHTML[String(cacheKey)] as Element;
+		this.cachedHTML[String(cacheKey)] = fn();
+		return this.cachedHTML[String(cacheKey)]! as Element;
+	}
 }
 
 export class DamageDealtLog extends SimLog {
@@ -339,53 +358,63 @@ export class DamageDealtLog extends SimLog {
 		return this.type == 'shielding';
 	}
 
-	resultString(): string {
-		let result = '';
-
-		if (this.isHealing()) {
-			result += 'Heal ';
-		} else if (this.isShielding()) {
-			result += 'Shield ';
-		}
-
-		result += this.miss
-			? 'Miss'
-			: this.dodge
-			? 'Dodge'
-			: this.parry
-			? 'Parry'
-			: this.glance
-			? 'Glance'
-			: this.block
-			? this.crit
-				? 'Critical Block'
-				: 'Block'
-			: this.crit
-			? 'Crit'
-			: this.crush
-			? 'Crush'
-			: this.tick
-			? 'Tick'
-			: 'Hit';
-
-		result += ' ' + this.target?.toHTMLString();
-		if (!this.miss && !this.dodge && !this.parry) {
-			result += ` for <strong class="text-danger">${this.amount.toFixed(2)} damage</strong>`;
-			if (this.partialResist1_4) {
-				result += ' (10% Resist)';
-			} else if (this.partialResist2_4) {
-				result += ' (20% Resist)';
-			} else if (this.partialResist3_4) {
-				result += ' (30% Resist)';
-			}
-			result += '.';
-		}
-		return result;
+	result() {
+		return (
+			<>
+				{this.isHealing() ? `Heal ` : ''}
+				{this.isShielding() ? `Shield ` : ''}
+				{this.miss
+					? 'Miss'
+					: this.dodge
+					? 'Dodge'
+					: this.parry
+					? 'Parry'
+					: this.glance
+					? 'Glance'
+					: this.block
+					? this.crit
+						? 'Critical Block'
+						: 'Block'
+					: this.crit
+					? 'Crit'
+					: this.crush
+					? 'Crush'
+					: this.tick
+					? 'Tick'
+					: 'Hit'}
+				{` `}
+				{this.target?.toHTML() || ''}
+				{!this.miss && !this.dodge && !this.parry ? (
+					<>
+						for <strong className="text-danger">{this.amount.toFixed(2)} damage</strong>
+						{this.partialResist1_4 ? (
+							<> (10% Resist)</>
+						) : this.partialResist2_4 ? (
+							<> (20% Resist)</>
+						) : this.partialResist3_4 ? (
+							<> (30% Resist)</>
+						) : (
+							''
+						)}
+						.
+					</>
+				) : (
+					''
+				)}
+			</>
+		);
 	}
 
-	toString(includeTimestamp = true): string {
-		const threatPostfix = this.source?.isTarget ? '' : ` (${this.threat.toFixed(2)} Threat)`;
-		return `${this.toStringPrefix(includeTimestamp)} ${this.newActionIdLink()} ${this.resultString()}${threatPostfix}`;
+	toHTML(includeTimestamp = true) {
+		return this.cacheOutput(includeTimestamp, () => {
+			const threatPostfix = this.source?.isTarget ? '' : ` (${this.threat.toFixed(2)} Threat)`;
+			return (
+				<>
+					{this.toPrefix(includeTimestamp)} {this.newActionIdLink()} {this.result()}
+					{threatPostfix}
+				</>
+			);
+		});
 	}
 
 	static parse(params: SimLogParams): Promise<DamageDealtLog> | null {
@@ -534,8 +563,14 @@ export class AuraEventLog extends SimLog {
 		this.isRefreshed = isRefreshed;
 	}
 
-	toString(includeTimestamp = true): string {
-		return `${this.toStringPrefix(includeTimestamp)} Aura ${this.isGained ? 'gained' : this.isFaded ? 'faded' : 'refreshed'}: ${this.newActionIdLink()}.`;
+	toHTML(includeTimestamp = true) {
+		return this.cacheOutput(includeTimestamp, () => (
+			<>
+				{this.toPrefix(includeTimestamp)}
+				{`  Aura  `}
+				{this.isGained ? 'gained' : this.isFaded ? 'faded' : 'refreshed'}: {this.newActionIdLink(true)}.
+			</>
+		));
 	}
 
 	static parse(params: SimLogParams): Promise<AuraEventLog> | null {
@@ -564,8 +599,12 @@ export class AuraStacksChangeLog extends SimLog {
 		this.newStacks = newStacks;
 	}
 
-	toString(includeTimestamp = true): string {
-		return `${this.toStringPrefix(includeTimestamp)} ${this.newActionIdLink()} stacks: ${this.oldStacks} &rarr; ${this.newStacks}.`;
+	toHTML(includeTimestamp = true) {
+		return this.cacheOutput(includeTimestamp, () => (
+			<>
+				{this.toPrefix(includeTimestamp)} {this.newActionIdLink(true)} stacks: {this.oldStacks} &rarr; {this.newStacks}.
+			</>
+		));
 	}
 
 	static parse(params: SimLogParams): Promise<AuraStacksChangeLog> | null {
@@ -710,17 +749,25 @@ export class ResourceChangedLog extends SimLog {
 		this.total = total;
 	}
 
-	toString(includeTimestamp = true): string {
-		const signedDiff = (this.valueAfter - this.valueBefore) * (this.isSpend ? -1 : 1);
+	toHTML(includeTimestamp = true) {
+		return this.cacheOutput(includeTimestamp, () => {
+			const signedDiff = (this.valueAfter - this.valueBefore) * (this.isSpend ? -1 : 1);
+			const isHealth = this.resourceType == ResourceType.ResourceTypeHealth;
+			const verb = isHealth ? (this.isSpend ? 'Lost' : 'Recovered') : this.isSpend ? 'Spent' : 'Gained';
+			const resourceName = resourceNames.get(this.resourceType)!;
+			const resourceClass = `resource-${resourceName.replace(/\s/g, '-').toLowerCase()}`;
 
-		const isHealth = this.resourceType == ResourceType.ResourceTypeHealth;
-		const verb = isHealth ? (this.isSpend ? 'Lost' : 'Recovered') : this.isSpend ? 'Spent' : 'Gained';
-		const resourceName = resourceNames.get(this.resourceType)!;
-		const resourceKlass = `resource-${resourceName.replace(/\s/g, '-').toLowerCase()}`;
-
-		return `${this.toStringPrefix(includeTimestamp)} ${verb} <strong class="${resourceKlass}">${signedDiff.toFixed(
-			1,
-		)} ${resourceName}</strong> from ${this.newActionIdLink()}. (${this.valueBefore.toFixed(1)} &rarr; ${this.valueAfter.toFixed(1)})`;
+			return (
+				<>
+					{this.toPrefix(includeTimestamp)} {verb}{' '}
+					<strong className={resourceClass}>
+						{signedDiff.toFixed(1)} {resourceName}
+					</strong>
+					{` from `}
+					{this.newActionIdLink()}. ({this.valueBefore.toFixed(1)} &rarr; {this.valueAfter.toFixed(1)})
+				</>
+			);
+		});
 	}
 
 	resultString(): string {
@@ -738,7 +785,7 @@ export class ResourceChangedLog extends SimLog {
 		);
 		if (match) {
 			const resourceType = stringToResourceType(match[4]);
-			const total = match[22] !== undefined ? parseFloat(match[22]) : 0
+			const total = match[22] !== undefined ? parseFloat(match[22]) : 0;
 			return ActionId.fromLogString(match[18])
 				.fill(params.source?.index)
 				.then(cause => {
@@ -767,23 +814,26 @@ export class ResourceChangedLogGroup extends SimLog {
 		this.logs = logs;
 	}
 
-	toString(includeTimestamp = true): string {
-		return `${this.toStringPrefix(includeTimestamp)} ${resourceNames.get(this.resourceType)}: ${this.valueBefore.toFixed(
-			1,
-		)} &rarr; ${this.valueAfter.toFixed(1)}`;
+	toHTML(includeTimestamp = true) {
+		return this.cacheOutput(includeTimestamp, () => (
+			<>
+				{this.toPrefix(includeTimestamp)} {resourceNames.get(this.resourceType)}: {this.valueBefore.toFixed(1)} &rarr; {this.valueAfter.toFixed(1)}
+			</>
+		));
 	}
 
 	static fromLogs(logs: Array<SimLog>): Record<ResourceType, Array<ResourceChangedLogGroup>> {
 		const allResourceChangedLogs = logs.filter((log): log is ResourceChangedLog => log.isResourceChanged());
 
-		const maxResource = function(logs: ResourceChangedLog[]) {
-			let max : number = 0
+		const maxResource = function (logs: ResourceChangedLog[]) {
+			let max = 0;
 			logs.forEach(l => {
 				if (l.total > max) {
-					max = l.total
-				}})
+					max = l.total;
+				}
+			});
 			return max;
-		}
+		};
 		const results: Partial<Record<ResourceType, Array<ResourceChangedLogGroup>>> = {};
 		const resourceTypes = (getEnumValues(ResourceType) as Array<ResourceType>).filter(val => val != ResourceType.ResourceTypeNone);
 		resourceTypes.forEach(resourceType => {
@@ -820,8 +870,12 @@ export class MajorCooldownUsedLog extends SimLog {
 		super(params);
 	}
 
-	toString(includeTimestamp = true): string {
-		return `${this.toStringPrefix(includeTimestamp)} Major cooldown used: ${this.newActionIdLink()}.`;
+	toHTML(includeTimestamp = true) {
+		return this.cacheOutput(includeTimestamp, () => (
+			<>
+				{this.toPrefix(includeTimestamp)} Major cooldown used: {this.newActionIdLink()}.
+			</>
+		));
 	}
 
 	static parse(params: SimLogParams): Promise<MajorCooldownUsedLog> | null {
@@ -851,10 +905,13 @@ export class CastBeganLog extends SimLog {
 		this.effectiveTime = effectiveTime;
 	}
 
-	toString(includeTimestamp = true): string {
-		return `${this.toStringPrefix(includeTimestamp)} Casting ${this.newActionIdLink()} (Cast time: ${this.castTime.toFixed(
-			2,
-		)}s, Cost: ${this.manaCost.toFixed(1)} Mana).`;
+	toHTML(includeTimestamp = true) {
+		return this.cacheOutput(includeTimestamp, () => (
+			<>
+				{this.toPrefix(includeTimestamp)} Casting {this.newActionIdLink()} (Cast time: {this.castTime.toFixed(2)}s, Cost: {this.manaCost.toFixed(1)}{' '}
+				Mana).
+			</>
+		));
 	}
 
 	static parse(params: SimLogParams): Promise<CastBeganLog> | null {
@@ -885,8 +942,12 @@ export class CastCompletedLog extends SimLog {
 		super(params);
 	}
 
-	toString(includeTimestamp = true): string {
-		return `${this.toStringPrefix(includeTimestamp)} Completed cast ${this.actionId!.name}.`;
+	toHTML(includeTimestamp = true) {
+		return this.cacheOutput(includeTimestamp, () => (
+			<>
+				{this.toPrefix(includeTimestamp)} Completed cast {this.actionId!.name}.
+			</>
+		));
 	}
 
 	static parse(params: SimLogParams): Promise<CastCompletedLog> | null {
@@ -935,7 +996,6 @@ export class CastLog extends SimLog {
 			this.castTime = this.castCompletedLog.timestamp - this.castBeganLog.timestamp;
 			this.effectiveTime = this.castCompletedLog.timestamp - this.castBeganLog.timestamp;
 		}
-
 		if (
 			this.castCompletedLog &&
 			this.damageDealtLogs.length == 1 &&
@@ -948,8 +1008,12 @@ export class CastLog extends SimLog {
 		}
 	}
 
-	toString(includeTimestamp = true): string {
-		return `${this.toStringPrefix(includeTimestamp)} Casting ${this.actionId!.name} (Cast time = ${this.castTime.toFixed(2)}s).`;
+	toHTML(includeTimestamp = true) {
+		return this.cacheOutput(includeTimestamp, () => (
+			<>
+				{this.toPrefix(includeTimestamp)} Casting {this.actionId!.name} (Cast time = {this.castTime.toFixed(2)}s).
+			</>
+		));
 	}
 
 	totalDamage(): number {
@@ -1020,12 +1084,22 @@ export class StatChangeLog extends SimLog {
 		this.stats = stats;
 	}
 
-	toString(includeTimestamp = true): string {
-		if (this.isGain) {
-			return `${this.toStringPrefix(includeTimestamp)} Gained ${this.stats} from ${this.newActionIdLink()}.`;
-		} else {
-			return `${this.toStringPrefix(includeTimestamp)} Lost ${this.stats} from fading ${this.newActionIdLink()}.`;
-		}
+	toHTML(includeTimestamp = true) {
+		return this.cacheOutput(includeTimestamp, () => {
+			if (this.isGain) {
+				return (
+					<>
+						{this.toPrefix(includeTimestamp)} Gained {this.stats} from {this.newActionIdLink()}.
+					</>
+				);
+			} else {
+				return (
+					<>
+						{this.toPrefix(includeTimestamp)} Lost {this.stats} from fading {this.newActionIdLink()}.
+					</>
+				);
+			}
+		});
 	}
 
 	static parse(params: SimLogParams): Promise<StatChangeLog> | null {

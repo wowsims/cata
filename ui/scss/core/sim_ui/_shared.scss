@@ -46,6 +46,15 @@ th {
 	}
 }
 
+.sim-toast-container {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	z-index: $toast-z-index;
+	display: grid;
+	grid-gap: map-get($spacers, 2);
+}
+
 .sim-bg {
 	position: fixed;
 	// These allow the background to fill the page and not be adjusted by browser scrollbars

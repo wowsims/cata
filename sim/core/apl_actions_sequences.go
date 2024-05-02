@@ -64,7 +64,7 @@ func (action *APLActionSequence) Execute(sim *Simulation) {
 			action.curIdx++
 			queueAction.OnAction = oldFunc
 		}
-		action.unit.SetRotationTimer(sim, queueAction.NextActionAt + time.Duration(1))
+		action.unit.SetRotationTimer(sim, queueAction.NextActionAt+time.Duration(1))
 	}
 
 	action.unit.Rotation.inSequence = false
@@ -189,11 +189,13 @@ func (action *APLActionStrictSequence) GetNextAction(sim *Simulation) *APLAction
 				Priority:     ActionPriorityLow,
 
 				OnAction: func(sim *Simulation) {
-					action.advanceSequence()
+					if action.unit.Rotation.inSequence {
+						action.advanceSequence()
+					}
 				},
 			}
 			sim.AddPendingAction(pa)
-			action.unit.SetRotationTimer(sim, pa.NextActionAt + time.Duration(1))
+			action.unit.SetRotationTimer(sim, pa.NextActionAt+time.Duration(1))
 		}
 
 		return nextAction
