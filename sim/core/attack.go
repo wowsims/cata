@@ -369,6 +369,11 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
 		},
+
+		ExpectedInitialDamage: func(sim *Simulation, target *Unit, spell *Spell, _ bool) *SpellResult {
+			baseDamage := spell.Unit.AutoAttacks.MH().CalculateAverageWeaponDamage(spell.MeleeAttackPower())
+			return spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMeleeWhite)
+		},
 	}
 
 	unit.AutoAttacks.oh.config = SpellConfig{
