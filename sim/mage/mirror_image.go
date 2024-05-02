@@ -16,7 +16,7 @@ if a frost bolt is mid-air when mirror images expire, frostbolt does not land
 
 func (mage *Mage) registerMirrorImageCD() {
 
-	mage.MirrorImage = mage.RegisterSpell(core.SpellConfig{
+	spell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 55342},
 		SpellSchool:    core.SpellSchoolArcane,
 		Flags:          core.SpellFlagAPL,
@@ -40,7 +40,7 @@ func (mage *Mage) registerMirrorImageCD() {
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.MirrorImage,
+		Spell: spell,
 		Type:  core.CooldownTypeDPS,
 	})
 }

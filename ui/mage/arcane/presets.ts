@@ -2,10 +2,8 @@ import * as PresetUtils from '../../core/preset_utils';
 import { Conjured, Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, UnitReference} from '../../core/proto/common';
 import {
 	ArcaneMage_Options as MageOptions,
-	ArcaneMage_Rotation as MageRotation,
 	MageMajorGlyph as MajorGlyph,
 	MageMinorGlyph as MinorGlyph,
-	MageOptions_ArmorType as ArmorType,
 	MagePrimeGlyph as PrimeGlyph,
 } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
@@ -45,7 +43,6 @@ export const ArcaneTalents = {
 
 export const DefaultArcaneOptions = MageOptions.create({
 	classOptions: {
-		armor: ArmorType.MageArmor,
 	},
 	focusMagicPercentUptime: 99,
 	focusMagicTarget: UnitReference.create(),

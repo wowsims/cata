@@ -18,30 +18,30 @@ export const MageRotationConfig = {
 		// ********************************************************
 		//                      ARCANE INPUTS
 		// ********************************************************
-		InputHelpers.makeRotationNumberInput<Spec.SpecArcaneMage>({
-			fieldName: 'only3ArcaneBlastStacksBelowManaPercent',
-			percent: true,
-			label: 'Stack Arcane Blast to 3 below mana %',
-			labelTooltip: 'When below this mana %, AM/ABarr will be used at 3 stacks of AB instead of 4.',
-			showWhen: (player: Player<Spec.SpecArcaneMage>) => player.getTalentTree() == 0,
-			changeEmitter: (player: Player<Spec.SpecArcaneMage>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
-		InputHelpers.makeRotationNumberInput<Spec.SpecArcaneMage>({
-			fieldName: 'blastWithoutMissileBarrageAboveManaPercent',
-			percent: true,
-			label: 'AB without Missile Barrage above mana %',
-			labelTooltip: 'When above this mana %, spam AB until a Missile Barrage proc occurs.',
-			showWhen: (player: Player<Spec.SpecArcaneMage>) => player.getTalentTree() == 0,
-			changeEmitter: (player: Player<Spec.SpecArcaneMage>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
-		InputHelpers.makeRotationNumberInput<Spec.SpecArcaneMage>({
-			fieldName: 'missileBarrageBelowManaPercent',
-			percent: true,
-			label: 'Use Missile Barrage ASAP below mana %',
-			labelTooltip: 'When below this mana %, use Missile Barrage proc as soon as possible. Can be useful to conserve mana.',
-			showWhen: (player: Player<Spec.SpecArcaneMage>) => player.getTalentTree() == 0,
-			changeEmitter: (player: Player<Spec.SpecArcaneMage>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
+		// InputHelpers.makeRotationNumberInput<Spec.SpecArcaneMage>({
+		// 	fieldName: 'only3ArcaneBlastStacksBelowManaPercent',
+		// 	percent: true,
+		// 	label: 'Stack Arcane Blast to 3 below mana %',
+		// 	labelTooltip: 'When below this mana %, AM/ABarr will be used at 3 stacks of AB instead of 4.',
+		// 	showWhen: (player: Player<Spec.SpecArcaneMage>) => player.getTalentTree() == 0,
+		// 	changeEmitter: (player: Player<Spec.SpecArcaneMage>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+		// }),
+		// InputHelpers.makeRotationNumberInput<Spec.SpecArcaneMage>({
+		// 	fieldName: 'blastWithoutMissileBarrageAboveManaPercent',
+		// 	percent: true,
+		// 	label: 'AB without Missile Barrage above mana %',
+		// 	labelTooltip: 'When above this mana %, spam AB until a Missile Barrage proc occurs.',
+		// 	showWhen: (player: Player<Spec.SpecArcaneMage>) => player.getTalentTree() == 0,
+		// 	changeEmitter: (player: Player<Spec.SpecArcaneMage>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+		// }),
+		// InputHelpers.makeRotationNumberInput<Spec.SpecArcaneMage>({
+		// 	fieldName: 'missileBarrageBelowManaPercent',
+		// 	percent: true,
+		// 	label: 'Use Missile Barrage ASAP below mana %',
+		// 	labelTooltip: 'When below this mana %, use Missile Barrage proc as soon as possible. Can be useful to conserve mana.',
+		// 	showWhen: (player: Player<Spec.SpecArcaneMage>) => player.getTalentTree() == 0,
+		// 	changeEmitter: (player: Player<Spec.SpecArcaneMage>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+		// }),
 	// 	InputHelpers.makeRotationBooleanInput<Spec.SpecArcaneMage>({
 	// 		fieldName: 'useArcaneBarrage',
 	// 		label: 'Use Arcane Barrage',

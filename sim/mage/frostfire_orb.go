@@ -16,7 +16,7 @@ func (mage *Mage) registerFrostfireOrbSpell() {
 		ActionID:    core.ActionID{SpellID: 92283},
 		SpellSchool: core.SpellSchoolFrost | core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
@@ -107,7 +107,7 @@ func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
 		ActionID:       core.ActionID{SpellID: 95969},
 		SpellSchool:    core.SpellSchoolFrost | core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage | core.ProcMaskNotInSpellbook,
-		Flags:          SpellFlagMage | ArcaneMissileSpells | core.SpellFlagNoLogs,
+		Flags:          core.SpellFlagNoLogs,
 		ClassSpellMask: MageSpellFrostfireOrb,
 
 		Cast: core.CastConfig{
@@ -121,7 +121,7 @@ func (ffo *FrostfireOrb) registerFrostfireOrbTickSpell() {
 		BonusCoefficient: 0.134,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 0.278 * ffo.mageOwner.ScalingBaseDamage
+			damage := 0.278 * ffo.mageOwner.ClassSpellScaling
 			randomTarget := sim.Encounter.TargetUnits[int(sim.Roll(0, float64(len(sim.Encounter.TargetUnits))))]
 			spell.CalcAndDealDamage(sim, randomTarget, damage, spell.OutcomeMagicHitAndCrit)
 			ffo.TickCount += 1
