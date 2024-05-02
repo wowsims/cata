@@ -281,6 +281,7 @@ message APLActionCatOptimalRotationAction {
     bool use_bite = 7;
     float bite_time = 8;
     bool bite_during_execute = 9;
+    bool allow_aoe_berserk = 10;
 }
 
 message APLActionCustomRotation {
