@@ -148,6 +148,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	action.lastAction = sim.CurrentTime
 
 	if !cat.GCD.IsReady(sim) {
+		cat.WaitUntil(sim, cat.NextGCDAt())
 		return
 	}
 
