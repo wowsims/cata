@@ -27,6 +27,7 @@ var safeDepsOrder = []Stat{
 	MeleeCrit,
 	Defense,
 	Block,
+	BlockValue,
 	Dodge,
 	Parry,
 	SpellHit,

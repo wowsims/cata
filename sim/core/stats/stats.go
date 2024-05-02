@@ -38,7 +38,7 @@ const (
 	RangedAttackPower
 	Defense
 	Block
-	//BlockValue
+	BlockValue
 	Dodge
 	Parry
 	Resilience
@@ -136,6 +136,8 @@ func (s Stat) StatName() string {
 		return "Defense"
 	case Block:
 		return "Block"
+	case BlockValue:
+		return "BlockValue"
 	case Dodge:
 		return "Dodge"
 	case Parry:

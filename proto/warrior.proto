@@ -157,6 +157,7 @@ message ProtectionWarrior {
 
 	message Options {
 		WarriorOptions class_options = 1;
+		bool use_recklessness = 2;
 	}
 	Options options = 1;
 }

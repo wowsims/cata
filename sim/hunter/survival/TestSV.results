@@ -2193,7 +2193,7 @@ dps_results: {
 dps_results: {
  key: "TestSV-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 24609.65843
-  tps: 22343.9505
+  dps: 24277.6297
+  tps: 22039.04632
  }
 }

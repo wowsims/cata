@@ -2109,7 +2109,7 @@ dps_results: {
 dps_results: {
  key: "TestMM-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 21443.99598
-  tps: 19340.57471
+  dps: 21142.62178
+  tps: 19064.36421
  }
 }
