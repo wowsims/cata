@@ -66,20 +66,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatAgility]: 1.86,
-				[Stat.StatStrength]: 1.14,
+				[Stat.StatAgility]: 3.70,
+				[Stat.StatStrength]: 1.05,
 				[Stat.StatAttackPower]: 1,
-				[Stat.StatSpellCrit]: 0.28,
-				[Stat.StatSpellHit]: 0.08,
-				[Stat.StatMeleeHit]: 1.39,
-				[Stat.StatMeleeCrit]: 1.32,
-				[Stat.StatMeleeHaste]: 1.48,
-				[Stat.StatMastery]: 0.0,
-				[Stat.StatExpertise]: 0.98,
+				[Stat.StatSpellCrit]: 0.06,
+				[Stat.StatSpellHit]: 0.36,
+				[Stat.StatMeleeHit]: 0.77,
+				[Stat.StatMeleeCrit]: 1.04,
+				[Stat.StatMeleeHaste]: 1.27,
+				[Stat.StatMastery]: 0.79,
+				[Stat.StatExpertise]: 1.33,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 2.94,
-				[PseudoStat.PseudoStatOffHandDps]: 2.45,
+				[PseudoStat.PseudoStatMainHandDps]: 7.00,
+				[PseudoStat.PseudoStatOffHandDps]: 1.00,
 			},
 		),
 		// Default consumes settings.

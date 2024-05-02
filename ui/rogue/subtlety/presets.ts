@@ -9,7 +9,7 @@ import P1SubtletyGear from './gear_sets/p1_subtlety.gear.json'
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const P1_PRESET_SUB = PresetUtils.makePresetGear('P1 Hemo Sub', P1SubtletyGear, { talentTree: 1 });
+export const P1_PRESET_SUB = PresetUtils.makePresetGear('P1 Sub', P1SubtletyGear);
 
 export const ROTATION_PRESET_SUBTLETY = PresetUtils.makePresetAPLRotation('Subtlety', SubtletyApl);
 
