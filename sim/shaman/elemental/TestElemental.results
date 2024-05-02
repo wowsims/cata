@@ -2080,7 +2080,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 26961.44459
+  dps: 26927.47464
   tps: 538.15256
  }
 }
