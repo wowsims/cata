@@ -38,7 +38,7 @@ const (
 	RangedAttackPower
 	Defense
 	Block
-	BlockValue
+	//BlockValue
 	Dodge
 	Parry
 	Resilience
@@ -136,8 +136,6 @@ func (s Stat) StatName() string {
 		return "Defense"
 	case Block:
 		return "Block"
-	case BlockValue:
-		return "BlockValue"
 	case Dodge:
 		return "Dodge"
 	case Parry:
@@ -311,6 +309,7 @@ type PseudoStats struct {
 
 	// Important when unit is attacker or target
 	BlockValueMultiplier float64
+	BlockDamageReduction float64
 
 	// Only used for NPCs, governs variance in enemy auto-attack damage
 	DamageSpread float64
@@ -375,6 +374,7 @@ func NewPseudoStats() PseudoStats {
 		DotDamageMultiplierAdditive: 1,
 
 		BlockValueMultiplier: 1,
+		BlockDamageReduction: 0.3,
 
 		DamageSpread: 0.3333,
 

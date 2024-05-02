@@ -23,7 +23,6 @@ func addAnub25H(bossPrefix string) {
 				stats.Health:      27_192_750,
 				stats.Armor:       10643,
 				stats.AttackPower: 805,
-				stats.BlockValue:  76,
 			}.ToFloatArray(),
 
 			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,

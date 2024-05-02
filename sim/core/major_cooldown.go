@@ -350,7 +350,7 @@ func RegisterTemporaryStatsOnUseCD(character *Character, auraLabel string, tempS
 	aura := character.NewTemporaryStatsAura(auraLabel, config.ActionID, tempStats, duration)
 
 	cdType := CooldownTypeUnknown
-	if tempStats.DotProduct(stats.Stats{stats.Armor: 1, stats.Block: 1, stats.BlockValue: 1, stats.Dodge: 1, stats.Parry: 1, stats.Health: 1}).Equals(stats.Stats{}) {
+	if tempStats.DotProduct(stats.Stats{stats.Armor: 1, stats.Block: 1, stats.Dodge: 1, stats.Parry: 1, stats.Health: 1}).Equals(stats.Stats{}) {
 		cdType |= CooldownTypeDPS
 	} else {
 		cdType |= CooldownTypeSurvival

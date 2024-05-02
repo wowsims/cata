@@ -366,7 +366,7 @@ func (spell *Spell) OutcomeEnemyMeleeWhite(sim *Simulation, result *SpellResult,
 	if !result.applyEnemyAttackTableMiss(spell, attackTable, roll, &chance) &&
 		!result.applyEnemyAttackTableDodge(spell, attackTable, roll, &chance) &&
 		!result.applyEnemyAttackTableParry(spell, attackTable, roll, &chance) &&
-		!result.applyEnemyAttackTableBlock(spell, attackTable, roll, &chance) &&
+		!result.applyEnemyAttackTableBlock(sim, spell, attackTable, roll, &chance) &&
 		!result.applyEnemyAttackTableCrit(spell, attackTable, roll, &chance) {
 		result.applyAttackTableHit(spell)
 	}
@@ -411,7 +411,9 @@ func (result *SpellResult) applyAttackTableBlock(spell *Spell, attackTable *Atta
 	if roll < *chance {
 		result.Outcome |= OutcomeBlock
 		spell.SpellMetrics[result.Target.UnitIndex].Blocks++
-		result.Damage = max(0, result.Damage-result.Target.BlockValue())
+		damageReduced := result.Damage * (1 - result.Target.BlockDamageReduction())
+		result.Damage = max(0, damageReduced)
+
 		return true
 	}
 	return false
@@ -519,7 +521,7 @@ func (result *SpellResult) applyEnemyAttackTableMiss(spell *Spell, attackTable *
 	return false
 }
 
-func (result *SpellResult) applyEnemyAttackTableBlock(spell *Spell, attackTable *AttackTable, roll float64, chance *float64) bool {
+func (result *SpellResult) applyEnemyAttackTableBlock(sim *Simulation, spell *Spell, attackTable *AttackTable, roll float64, chance *float64) bool {
 	if !result.Target.PseudoStats.CanBlock || result.Target.PseudoStats.Stunned {
 		return false
 	}
@@ -529,7 +531,14 @@ func (result *SpellResult) applyEnemyAttackTableBlock(spell *Spell, attackTable 
 	if roll < *chance {
 		result.Outcome |= OutcomeBlock
 		spell.SpellMetrics[result.Target.UnitIndex].Blocks++
-		result.Damage = max(0, result.Damage-result.Target.BlockValue())
+
+		if result.Target.Blockhandler != nil {
+			result.Target.Blockhandler(sim, spell, result)
+			return true
+		}
+
+		result.Damage = max(0, result.Damage*(1-result.Target.BlockDamageReduction()))
+
 		return true
 	}
 	return false

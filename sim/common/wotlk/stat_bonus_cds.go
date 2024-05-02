@@ -124,7 +124,7 @@ func init() {
 	newBlockValueActive := testFirstOnly(func(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
 		//core.NewSimpleStatDefensiveTrinketEffect(itemID, stats.Stats{stats.BlockValue: bonus}, duration, cooldown)
 		// Hack for Lavanthor's Talisman Shared CD being shorter than its effect
-		core.NewSimpleStatItemActiveEffect(itemID, stats.Stats{stats.BlockValue: bonus}, duration, cooldown, func(character *core.Character) core.Cooldown {
+		core.NewSimpleStatItemActiveEffect(itemID, stats.Stats{stats.Dodge: bonus}, duration, cooldown, func(character *core.Character) core.Cooldown {
 			return core.Cooldown{
 				Timer:    character.GetDefensiveTrinketCD(),
 				Duration: time.Second * 20,
