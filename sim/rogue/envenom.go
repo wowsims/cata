@@ -7,6 +7,11 @@ import (
 )
 
 func (rogue *Rogue) registerEnvenom() {
+	coefficient := 0.21400000155
+	apScalingPerComboPoint := 0.09
+
+	baseDamage := coefficient * rogue.ClassSpellScaling
+
 	rogue.EnvenomAura = rogue.RegisterAura(core.Aura{
 		Label:    "Envenom",
 		ActionID: core.ActionID{SpellID: 32645},
@@ -67,7 +72,8 @@ func (rogue *Rogue) registerEnvenom() {
 			// - 215 base is scaled by consumed doses (<= comboPoints)
 			// - apRatio is independent of consumed doses (== comboPoints)
 			consumed := min(dp.GetStacks(), comboPoints)
-			baseDamage := 241*float64(consumed) + 0.09*float64(comboPoints)*spell.MeleeAttackPower()
+			baseDamage := baseDamage*float64(consumed) +
+				apScalingPerComboPoint*float64(comboPoints)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

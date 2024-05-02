@@ -13,6 +13,7 @@ func (sinRogue *AssassinationRogue) registerColdBloodCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 14177}
+	cbEnergyMetric := sinRogue.NewEnergyMetrics(actionID)
 
 	coldBloodAura := sinRogue.RegisterAura(core.Aura{
 		Label:    "Cold Blood",
@@ -46,12 +47,13 @@ func (sinRogue *AssassinationRogue) registerColdBloodCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    sinRogue.NewTimer(),
-				Duration: time.Minute * 3,
+				Duration: time.Minute * 2,
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			coldBloodAura.Activate(sim)
+			sinRogue.AddEnergy(sim, 25, cbEnergyMetric)
 		},
 	})
 
