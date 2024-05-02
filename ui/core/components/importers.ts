@@ -567,10 +567,6 @@ function glyphToID(glyph: string | JsonObject, db: Database, glyphsConfig: Recor
 		return glyphNameToID(glyph, glyphsConfig);
 	}
 
-	// Cata version exports glyph information in a table that includes the glyph itemID.
-	// @todo: Need to update glyph_id_map.json in a future revision with all the new Cata spellIDs
-	if (glyph.itemID) return db.glyphSpellToItemId(glyph.itemID as number);
-
-	// Wotlk version exports glyph information in a table that includes the name and the glyph spell ID.
+	// Cata version exports glyph information in a table that includes the name and the glyph spell ID.
 	return db.glyphSpellToItemId(glyph.spellID as number);
 }
