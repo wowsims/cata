@@ -50,7 +50,6 @@ func (war *ArmsWarrior) applyTasteForBlood() {
 		ActionID: actionID,
 		Duration: time.Second * 9,
 		Tag:      warrior.EnableOverpowerTag,
-		Icd:      &core.Cooldown{Duration: time.Second * 6},
 	})
 
 	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
@@ -60,7 +59,7 @@ func (war *ArmsWarrior) applyTasteForBlood() {
 		ClassSpellMask: warrior.SpellMaskRend,
 		ICD:            5 * time.Second,
 		ProcChance:     procChance,
-		SpellFlags:     core.SpellFlagAPL,
+
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			tfbAura.Activate(sim)
 		},
