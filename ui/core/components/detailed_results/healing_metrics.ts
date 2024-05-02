@@ -10,6 +10,7 @@ export class HealingMetricsTable extends MetricsTable<ActionMetrics> {
 				return {
 					name: metric.name,
 					actionId: metric.actionId,
+					metricType: metric.constructor?.name,
 				};
 			}),
 			{

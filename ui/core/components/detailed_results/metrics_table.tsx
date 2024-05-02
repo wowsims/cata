@@ -3,7 +3,7 @@ import tippy from 'tippy.js';
 import { element, fragment, ref } from 'tsx-vanilla';
 
 import { ActionId } from '../../proto_utils/action_id.js';
-import { UnitMetrics } from '../../proto_utils/sim_result.js';
+import { UnitMetrics } from '../../proto_utils/sim_result';
 import { TypedEvent } from '../../typed_event.js';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 
@@ -140,7 +140,7 @@ export abstract class MetricsTable<T> extends ResultComponent {
 
 		let expand = true;
 		parentRow.classList.add('parent-metric', 'expand');
-		parentRow.addEventListener('click', event => {
+		parentRow.addEventListener('click', () => {
 			expand = !expand;
 			if (expand) {
 				childRows.forEach(row => row.classList.remove('hide'));
@@ -187,7 +187,13 @@ export abstract class MetricsTable<T> extends ResultComponent {
 	// Returns grouped metrics to display.
 	abstract getGroupedMetrics(resultData: SimResultData): Array<Array<T>>;
 
-	static nameCellConfig<T>(getData: (metric: T) => { name: string; actionId: ActionId }): MetricsColumnConfig<T> {
+	static nameCellConfig<T>(
+		getData: (metric: T) => {
+			name: string;
+			actionId: ActionId;
+			metricType: string;
+		},
+	): MetricsColumnConfig<T> {
 		return {
 			name: 'Name',
 			fillCell: (metric: T, cellElem: HTMLElement, rowElem: HTMLElement) => {
@@ -201,7 +207,12 @@ export abstract class MetricsTable<T> extends ResultComponent {
 						<span className="expand-toggle fa fa-caret-right"></span>
 					</>,
 				);
-				data.actionId.setBackgroundAndHref(iconElem.value!);
+				if (iconElem.value) {
+					data.actionId.setBackgroundAndHref(iconElem.value);
+					data.actionId.setWowheadDataset(iconElem.value, {
+						useBuffAura: data.metricType === 'AuraMetrics',
+					});
+				}
 			},
 		};
 	}
