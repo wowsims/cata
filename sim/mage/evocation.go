@@ -27,14 +27,15 @@ func (mage *Mage) registerEvocation() {
 			},
 		},
 
-		Dot: core.DotConfig{
+		Hot: core.DotConfig{
 			SelfOnly: true,
 			Aura: core.Aura{
 				Label: "Evocation",
 			},
-			NumberOfTicks:       maxTicks,
-			TickLength:          time.Second * 2,
-			AffectedByCastSpeed: true,
+			NumberOfTicks:        maxTicks,
+			TickLength:           time.Second * 2,
+			AffectedByCastSpeed:  true,
+			HasteAffectsDuration: true,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				mage.AddMana(sim, manaPerTick, manaMetrics)

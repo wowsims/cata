@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Faction, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common';
+import { Consumes, Faction, Flask, Food, Glyphs, Potions, Profession, Race, TinkerHands } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import { ArmsWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph, WarriorShout } from '../../core/proto/warrior';
 import ArmsApl from './apls/arms.apl.json';
@@ -21,7 +21,7 @@ export const ROTATION_ARMS = PresetUtils.makePresetAPLRotation('Arms', ArmsApl);
 export const ArmsTalents = {
 	name: 'Arms',
 	data: SavedTalents.create({
-		talentsString: '30220313120212312201-0322-3',
+		talentsString: '30220303120212312211-0322-3',
 		glyphs: Glyphs.create({
 			prime1: WarriorPrimeGlyph.GlyphOfMortalStrike,
 			prime2: WarriorPrimeGlyph.GlyphOfOverpower,
@@ -31,7 +31,7 @@ export const ArmsTalents = {
 			major3: WarriorMajorGlyph.GlyphOfThunderClap,
 			minor1: WarriorMinorGlyph.GlyphOfBerserkerRage,
 			minor2: WarriorMinorGlyph.GlyphOfCommand,
-			minor3: WarriorMinorGlyph.GlyphOfShatteringThrow,
+			minor3: WarriorMinorGlyph.GlyphOfBattle,
 		}),
 	}),
 };

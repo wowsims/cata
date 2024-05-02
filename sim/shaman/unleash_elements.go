@@ -29,7 +29,7 @@ func (shaman *Shaman) registerUnleashFlame() {
 			unleashFlameMod.Deactivate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spellMask&spell.ClassSpellMask > 0 {
+			if spellMask&spell.ClassSpellMask > 0 && aura.StartedAt() < (sim.CurrentTime-spell.TravelTime()) {
 				aura.Deactivate(sim)
 			}
 		},

@@ -1,6 +1,4 @@
-import { ActionId } from '../../proto_utils/action_id';
 import { AuraMetrics, SimResult, SimResultFilter } from '../../proto_utils/sim_result';
-
 import { ColumnSortType, MetricsTable } from './metrics_table';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component';
 
@@ -18,6 +16,7 @@ export class AuraMetricsTable extends MetricsTable<AuraMetrics> {
 				return {
 					name: metric.name,
 					actionId: metric.actionId,
+					metricType: metric?.constructor?.name,
 				};
 			}),
 			{

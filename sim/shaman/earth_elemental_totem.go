@@ -8,9 +8,6 @@ import (
 )
 
 func (shaman *Shaman) registerEarthElementalTotem() {
-	/*if !shaman.Totems.UseEarthElemental {
-		return
-	}*/
 
 	actionID := core.ActionID{SpellID: 2062}
 
@@ -24,6 +21,7 @@ func (shaman *Shaman) registerEarthElementalTotem() {
 
 	shaman.EarthElementalTotem = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskEarthElementalTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.24,

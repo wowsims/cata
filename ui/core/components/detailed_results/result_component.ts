@@ -11,7 +11,7 @@ export interface SimResultData {
 export interface ResultComponentConfig {
 	parent: HTMLElement,
 	rootCssClass?: string,
-	cssScheme?: String | null,
+	cssScheme?: string | null,
 	resultsEmitter: TypedEvent<SimResultData | null>,
 };
 
@@ -22,7 +22,7 @@ export abstract class ResultComponent extends Component {
 		super(config.parent, config.rootCssClass || 'result-component');
 		this.lastSimResult = null;
 
-		config.resultsEmitter.on((eventID, resultData) => {
+		config.resultsEmitter.on((_, resultData) => {
 			if (!resultData)
 				return;
 
