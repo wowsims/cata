@@ -30,6 +30,7 @@ func (unit *Unit) initMovement() {
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			unit.Moving = false
+			unit.movementAction = nil
 		},
 	})
 
@@ -42,11 +43,6 @@ func (unit *Unit) initMovement() {
 			unit.moveAura.SetStacks(sim, max(int32(unit.DistanceFromTarget), 1))
 		},
 	})
-
-	unit.RegisterResetEffect(func(s *Simulation) {
-		unit.Moving = false
-		unit.movementAction = nil
-	})
 }
 
 func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
@@ -54,6 +50,7 @@ func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
 		return
 	}
 
+	unit.UpdatePosition(sim)
 	moveDistance := moveRange - unit.DistanceFromTarget
 	timeToMove := time.Duration(math.Abs(moveDistance)/unit.GetMovementSpeed()*1000) * time.Millisecond
 	registerMovementAction(unit, sim, unit.GetMovementSpeed()*TernaryFloat64(moveDistance < 0, -1., 1.), sim.CurrentTime+timeToMove)
@@ -64,6 +61,7 @@ func (unit *Unit) MoveDuration(duration time.Duration, sim *Simulation) {
 		return
 	}
 
+	unit.UpdatePosition(sim)
 	registerMovementAction(unit, sim, 0., sim.CurrentTime+duration)
 }
 
@@ -72,8 +70,30 @@ func (unit *Unit) UpdatePosition(sim *Simulation) {
 		return
 	}
 
+	oldDist := unit.DistanceFromTarget
 	unit.DistanceFromTarget = unit.movementAction.GetCurrentPosition(sim)
+	if oldDist == unit.DistanceFromTarget {
+		return
+	}
+
 	unit.OnMovement(unit.DistanceFromTarget, MovementUpdate)
+
+	// update auto attack state
+	if unit.AutoAttacks.mh.enabled != unit.AutoAttacks.mh.IsInRange() {
+		if unit.AutoAttacks.mh.IsInRange() {
+			unit.AutoAttacks.EnableAutoSwing(sim)
+		} else {
+			unit.AutoAttacks.CancelMeleeSwing(sim)
+		}
+	}
+
+	if unit.AutoAttacks.ranged.enabled != unit.AutoAttacks.ranged.IsInRange() {
+		if unit.AutoAttacks.ranged.IsInRange() {
+			unit.AutoAttacks.EnableAutoSwing(sim)
+		} else {
+			unit.AutoAttacks.CancelRangedSwing(sim)
+		}
+	}
 
 	yards := max(int32(unit.DistanceFromTarget), 1) // never set to 0 yards as we deactivate the aura
 	if yards != unit.moveAura.GetStacks() {
@@ -87,7 +107,6 @@ func (unit *Unit) FinalizeMovement(sim *Simulation) {
 	}
 
 	unit.UpdatePosition(sim)
-	unit.movementAction = nil
 	unit.moveAura.Deactivate(sim)
 
 	unit.OnMovement(unit.DistanceFromTarget, MovementEnd)
@@ -95,9 +114,7 @@ func (unit *Unit) FinalizeMovement(sim *Simulation) {
 
 func registerMovementAction(unit *Unit, sim *Simulation, speed float64, endTime time.Duration) {
 	if unit.movementAction != nil {
-		unit.UpdatePosition(sim)
 		unit.movementAction.Cancel(sim)
-		unit.movementAction = nil
 	} else {
 		unit.moveSpell.Cast(sim, unit.CurrentTarget)
 	}
@@ -136,4 +153,23 @@ func (unit *Unit) OnMovement(position float64, kind MovementUpdateType) {
 	for _, movementCallback := range unit.movementCallbacks {
 		movementCallback(position, kind)
 	}
+}
+
+func (unit *Unit) MultiplyMovementSpeed(sim *Simulation, amount float64) {
+	unit.PseudoStats.MovementSpeedMultiplier *= amount
+
+	// we have a pending movement action that depends on our movement speed
+	if unit.movementAction != nil && unit.movementAction.speed != 0 {
+		dest := unit.movementAction.speed * float64(unit.movementAction.NextActionAt-unit.movementAction.startTime) / float64(time.Second)
+		unit.MoveTo(dest, sim)
+	}
+}
+
+// Returns the units current movement speed in yards / second
+func (unit *Unit) GetMovementSpeed() float64 {
+	if unit.Type == PlayerUnit {
+		return 7. * unit.PseudoStats.MovementSpeedMultiplier
+	}
+
+	return 8. * unit.PseudoStats.MovementSpeedMultiplier
 }

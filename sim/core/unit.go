@@ -693,16 +693,3 @@ func (unit *Unit) GetTotalAvoidanceChance(atkTable *AttackTable) float64 {
 	block := unit.GetTotalBlockChanceAsDefender(atkTable)
 	return miss + dodge + parry + block
 }
-
-func (unit *Unit) MultiplyMovementSpeed(sim *Simulation, amount float64) {
-	unit.PseudoStats.MovementSpeedMultiplier *= amount
-}
-
-// Returns the units current movement speed in yards / second
-func (unit *Unit) GetMovementSpeed() float64 {
-	if unit.Type == PlayerUnit {
-		return 7. * unit.PseudoStats.MovementSpeedMultiplier
-	}
-
-	return 8. * unit.PseudoStats.MovementSpeedMultiplier
-}

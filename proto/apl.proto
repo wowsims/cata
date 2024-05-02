@@ -70,14 +70,14 @@ message APLAction {
         APLActionCancelAura cancel_aura = 10;
         APLActionTriggerICD trigger_icd = 11;
         APLActionItemSwap item_swap = 17;
-		APLActionMove move = 18;
+        APLActionMove move = 21;
         APLActionMoveDuration move_duration = 22;
 
         // Class or Spec-specific actions
-        APLActionCatOptimalRotationAction cat_optimal_rotation_action = 19;
+        APLActionCatOptimalRotationAction cat_optimal_rotation_action = 18;
 
         // Internal use only, not exposed in UI.
-        APLActionCustomRotation custom_rotation = 21;
+        APLActionCustomRotation custom_rotation = 19;
     }
 }
 
