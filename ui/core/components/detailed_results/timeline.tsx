@@ -848,7 +848,7 @@ export class Timeline extends ResultComponent {
 
 			tippy(castElem, {
 				placement: 'bottom',
-				content: tt.outerHTML,
+				content: tt,
 			});
 
 			castLog.damageDealtLogs
@@ -875,7 +875,7 @@ export class Timeline extends ResultComponent {
 
 					tippy(tickElem, {
 						placement: 'bottom',
-						content: tt.outerHTML,
+						content: tt,
 					});
 				});
 		});
@@ -922,7 +922,7 @@ export class Timeline extends ResultComponent {
 
 			tippy(auraElem, {
 				placement: 'bottom',
-				content: tt.outerHTML,
+				content: tt,
 			});
 
 			aul.stacksChange.forEach((scl, i) => {
@@ -1100,11 +1100,11 @@ export class Timeline extends ResultComponent {
 		);
 	}
 
-	private tooltipAurasSection(log: SimLog): string {
+	private tooltipAurasSection(log: SimLog) {
 		if (log.activeAuras.length == 0) {
 			return '';
 		}
-		return this.tooltipAurasSectionElem(log).outerHTML;
+		return this.tooltipAurasSectionElem(log);
 	}
 
 	private tooltipAurasSectionElem(log: SimLog): JSX.Element {
