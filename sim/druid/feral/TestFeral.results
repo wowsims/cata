@@ -1850,15 +1850,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-Default-NoBleed-aoe-FullBuffs-LongSingleTarget"
  value: {
-  dps: 13904.18744
-  tps: 9873.16967
+  dps: 13924.84412
+  tps: 9887.83591
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-Default-NoBleed-aoe-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 17157.24885
-  tps: 12187.62962
+  dps: 17174.77954
+  tps: 12200.07641
  }
 }
 dps_results: {
@@ -1871,15 +1871,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-Default-NoBleed-aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 8834.82636
-  tps: 6275.41904
+  dps: 8857.57925
+  tps: 6291.57359
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-Default-NoBleed-aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 9478.40922
-  tps: 6737.14922
+  dps: 9479.51916
+  tps: 6737.93727
  }
 }
 dps_results: {
@@ -1934,15 +1934,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-Default-aoe-FullBuffs-LongSingleTarget"
  value: {
-  dps: 13904.18744
-  tps: 9873.16967
+  dps: 13924.84412
+  tps: 9887.83591
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-Default-aoe-FullBuffs-ShortSingleTarget"
  value: {
-  dps: 17157.24885
-  tps: 12187.62962
+  dps: 17174.77954
+  tps: 12200.07641
  }
 }
 dps_results: {
@@ -1955,15 +1955,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-Default-aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 8834.82636
-  tps: 6275.41904
+  dps: 8857.57925
+  tps: 6291.57359
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-Default-aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 9478.40922
-  tps: 6737.14922
+  dps: 9479.51916
+  tps: 6737.93727
  }
 }
 dps_results: {

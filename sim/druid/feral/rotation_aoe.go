@@ -144,7 +144,27 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentSwipeCatCost() - curEnergy) / regenRate)
 	}
 
-	// Model in latency when waiting on Energy for our next action
+	// Schedule next action based on any upcoming timers
 	nextAction := sim.CurrentTime + timeToNextAction
+
+	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain - cat.ReactionTime) && (curCp >= 1)
+	if roarRefreshPending {
+		nextAction = min(nextAction, cat.SavageRoarAura.ExpiresAt())
+	}
+
+	for _, aoeTarget := range sim.Encounter.TargetUnits {
+		rakeDot = cat.Rake.Dot(aoeTarget)
+		rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain - rakeDot.TickLength)
+
+		if rakeRefreshPending && (rakeDot.RemainingDuration(sim) > rakeDot.TickLength) {
+			nextAction = min(nextAction, rakeDot.ExpiresAt() - rakeDot.TickLength)
+			bleedAura = aoeTarget.GetExclusiveEffectCategory(core.BleedEffectCategory).GetActiveAura()
+
+			if bleedAura.IsActive() && (bleedAura.RemainingDuration(sim) < simTimeRemain - time.Second) {
+				nextAction = min(nextAction, bleedAura.ExpiresAt())
+			}
+		}
+	}
+
 	return true, nextAction
 }
