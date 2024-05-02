@@ -94,7 +94,7 @@ var BMGlyphs = &proto.Glyphs{
 }
 var FerocityTalents = &proto.HunterPetTalents{
 	SerpentSwiftness: 2,
-	Dive:             true,
+	Dash:             true,
 	SpikedCollar:     3,
 	Bloodthirsty:     1,
 	CullingTheHerd:   3,

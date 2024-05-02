@@ -123,7 +123,7 @@ func (spell *Spell) CastOrQueue(sim *Simulation, target *Unit) {
 		// Determine which timer the spell is waiting on
 		queueTime := max(spell.Unit.Hardcast.Expires, BothTimersReadyAt(spell.CD.Timer, spell.SharedCD.Timer))
 
-		if spell.DefaultCast.GCD > 0 {
+		if (spell.DefaultCast.GCD > 0) || spell.Flags.Matches(SpellFlagMCD) {
 			queueTime = max(queueTime, spell.Unit.GCD.ReadyAt())
 		}
 

@@ -653,9 +653,8 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 			},
 		});
 		new NumberPicker(executeGroup, encounter, {
-			label: 'Execute Duration 90 (%)',
-			labelTooltip:
-				'Percentage of the total encounter duration, for which the targets will be considered to be in range (>= 90% HP) for the purpose of effects like Hunter Careful Aim',
+			label: 'Duration spent below 90 (%)',
+			labelTooltip: 'Percentage of the total encounter duration, for which the targets are considered out of range (<90% HP), like Hunters Careful Aim',
 			changedEvent: (encounter: Encounter) => encounter.changeEmitter,
 			getValue: (encounter: Encounter) => encounter.getExecuteProportion90() * 100,
 			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {

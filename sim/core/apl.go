@@ -29,6 +29,9 @@ type APLRotation struct {
 	// Used to avoid recursive APL loops.
 	inLoop bool
 
+	// Used to override MCD restrictions within sequences.
+	inSequence bool
+
 	// Validation warnings that occur during proto parsing.
 	// We return these back to the user for display in the UI.
 	curWarnings          []string
