@@ -501,10 +501,14 @@ export class IndividualAddonImporter<SpecType extends Spec> extends Importer {
 		const glyphsConfig = classGlyphsConfig[charClass];
 
 		const db = await Database.get();
+		const primeGlyphIDs = (importJson['glyphs']['prime'] as Array<string | JsonObject>).map(g => glyphToID(g, db, glyphsConfig.primeGlyphs));
 		const majorGlyphIDs = (importJson['glyphs']['major'] as Array<string | JsonObject>).map(g => glyphToID(g, db, glyphsConfig.majorGlyphs));
 		const minorGlyphIDs = (importJson['glyphs']['minor'] as Array<string | JsonObject>).map(g => glyphToID(g, db, glyphsConfig.minorGlyphs));
 
 		const glyphs = Glyphs.create({
+			prime1: primeGlyphIDs[0] || 0,
+			prime2: primeGlyphIDs[1] || 0,
+			prime3: primeGlyphIDs[2] || 0,
 			major1: majorGlyphIDs[0] || 0,
 			major2: majorGlyphIDs[1] || 0,
 			major3: majorGlyphIDs[2] || 0,
@@ -544,6 +548,9 @@ function glyphToID(glyph: string | JsonObject, db: Database, glyphsConfig: Recor
 		// Legacy version: AddOn exports Glyphs by name (string) only. Names must be in English.
 		return glyphNameToID(glyph, glyphsConfig);
 	}
-	// New version exports glyph information in a table that includes the name and the glyph spell ID.
-	return db.glyphSpellToItemId(glyph['spellID'] as number);
+	// Cata version exports glyph information in a table that includes the glyph itemID.
+	if (glyph.itemID) return glyph.itemID as number;
+
+	// Wotlk version exports glyph information in a table that includes the name and the glyph spell ID.
+	return db.glyphSpellToItemId(glyph.spellID as number);
 }
