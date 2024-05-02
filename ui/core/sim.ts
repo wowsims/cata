@@ -411,7 +411,7 @@ export class Sim {
 		return this.phase;
 	}
 	setPhase(eventID: EventID, newPhase: number) {
-		if (newPhase != this.phase && newPhase > 0) {
+		if (newPhase != this.phase) {
 			this.phase = newPhase;
 			this.phaseChangeEmitter.emit(eventID);
 		}
