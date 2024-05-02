@@ -145,9 +145,10 @@ enum WaterTotem {
 }
 
 enum CallTotem {
-	Elements = 0;
-	Ancestors = 1;
-	Spirits = 2;
+	NoCall = 0;
+	Elements = 1;
+	Ancestors = 2;
+	Spirits = 3;
 }
 
 message TotemSet {
