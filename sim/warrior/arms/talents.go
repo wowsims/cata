@@ -59,6 +59,7 @@ func (war *ArmsWarrior) applyTasteForBlood() {
 		ClassSpellMask: warrior.SpellMaskRend,
 		ICD:            5 * time.Second,
 		ProcChance:     procChance,
+
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			tfbAura.Activate(sim)
 		},

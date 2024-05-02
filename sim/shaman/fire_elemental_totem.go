@@ -8,9 +8,6 @@ import (
 )
 
 func (shaman *Shaman) registerFireElementalTotem() {
-	if !shaman.Totems.UseFireElemental {
-		return
-	}
 
 	actionID := core.ActionID{SpellID: 2894}
 
@@ -24,6 +21,7 @@ func (shaman *Shaman) registerFireElementalTotem() {
 
 	shaman.FireElementalTotem = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskFireElementalTotem,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.23,
@@ -56,8 +54,8 @@ func (shaman *Shaman) registerFireElementalTotem() {
 		},
 	})
 
-	shaman.AddMajorCooldown(core.MajorCooldown{
+	/*shaman.AddMajorCooldown(core.MajorCooldown{
 		Spell: shaman.FireElementalTotem,
 		Type:  core.CooldownTypeDPS,
-	})
+	})*/
 }

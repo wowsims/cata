@@ -9,18 +9,14 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-// Variables that control the Fire Elemental.
-const (
-	// 7.5 CPM
-	maxFireBlastCasts = 15
-	maxFireNovaCasts  = 15
-)
-
 type FireElemental struct {
 	core.Pet
 
 	FireBlast *core.Spell
 	FireNova  *core.Spell
+
+	maxFireBlastCasts int32
+	maxFireNovaCasts  int32
 
 	FireShieldAura *core.Aura
 
@@ -29,8 +25,10 @@ type FireElemental struct {
 
 func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 	fireElemental := &FireElemental{
-		Pet:         core.NewPet("Greater Fire Elemental", &shaman.Character, fireElementalPetBaseStats, shaman.fireElementalStatInheritance(), false, true),
-		shamanOwner: shaman,
+		Pet:               core.NewPet("Greater Fire Elemental", &shaman.Character, fireElementalPetBaseStats, shaman.fireElementalStatInheritance(), false, true),
+		shamanOwner:       shaman,
+		maxFireBlastCasts: 15,
+		maxFireNovaCasts:  15,
 	}
 	fireElemental.EnableManaBar()
 	fireElemental.EnableAutoAttacks(fireElemental, core.AutoAttackOptions{
@@ -97,7 +95,7 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 	fireBlastCasts := fireElemental.FireBlast.SpellMetrics[0].Casts
 	fireNovaCasts := fireElemental.FireNova.SpellMetrics[0].Casts
 
-	if fireBlastCasts == maxFireBlastCasts && fireNovaCasts == maxFireNovaCasts {
+	if fireBlastCasts == fireElemental.maxFireBlastCasts && fireNovaCasts == fireElemental.maxFireNovaCasts {
 		return
 	}
 
@@ -109,12 +107,12 @@ func (fireElemental *FireElemental) ExecuteCustomRotation(sim *core.Simulation) 
 
 	//Melee the other 30%
 	if random >= .65 {
-		if !fireElemental.TryCast(sim, target, fireElemental.FireNova, maxFireNovaCasts) {
-			fireElemental.TryCast(sim, target, fireElemental.FireBlast, maxFireBlastCasts)
+		if !fireElemental.TryCast(sim, target, fireElemental.FireNova, fireElemental.maxFireNovaCasts) {
+			fireElemental.TryCast(sim, target, fireElemental.FireBlast, fireElemental.maxFireBlastCasts)
 		}
 	} else if random >= .35 {
-		if !fireElemental.TryCast(sim, target, fireElemental.FireBlast, maxFireBlastCasts) {
-			fireElemental.TryCast(sim, target, fireElemental.FireNova, maxFireNovaCasts)
+		if !fireElemental.TryCast(sim, target, fireElemental.FireBlast, fireElemental.maxFireBlastCasts) {
+			fireElemental.TryCast(sim, target, fireElemental.FireNova, fireElemental.maxFireNovaCasts)
 		}
 	}
 
