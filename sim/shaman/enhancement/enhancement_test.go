@@ -60,6 +60,24 @@ var FullConsumes = &proto.Consumes{
 }
 
 var TotemsBasic = &proto.ShamanTotems{
+	Elements: &proto.TotemSet{
+		Earth: proto.EarthTotem_StrengthOfEarthTotem,
+		Air:   proto.AirTotem_WindfuryTotem,
+		Water: proto.WaterTotem_ManaSpringTotem,
+		Fire:  proto.FireTotem_SearingTotem,
+	},
+	Ancestors: &proto.TotemSet{
+		Earth: proto.EarthTotem_StrengthOfEarthTotem,
+		Air:   proto.AirTotem_WindfuryTotem,
+		Water: proto.WaterTotem_ManaSpringTotem,
+		Fire:  proto.FireTotem_SearingTotem,
+	},
+	Spirits: &proto.TotemSet{
+		Earth: proto.EarthTotem_StrengthOfEarthTotem,
+		Air:   proto.AirTotem_WindfuryTotem,
+		Water: proto.WaterTotem_ManaSpringTotem,
+		Fire:  proto.FireTotem_SearingTotem,
+	},
 	Earth: proto.EarthTotem_StrengthOfEarthTotem,
 	Air:   proto.AirTotem_WindfuryTotem,
 	Water: proto.WaterTotem_ManaSpringTotem,

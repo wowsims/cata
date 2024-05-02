@@ -105,6 +105,7 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.applyFlurry()
 	shaman.applyMaelstromWeapon()
 	shaman.applySearingFlames()
+	shaman.applyTotemicFocus()
 
 	if shaman.Talents.FeralSpirit {
 		shaman.registerFeralSpirit()
@@ -645,6 +646,15 @@ func (shaman *Shaman) applySearingFlames() {
 		},
 	})
 
+}
+
+func (shaman *Shaman) applyTotemicFocus() {
+	if shaman.Talents.TotemicFocus == 0 {
+		return
+	}
+
+	shaman.FireElemental.maxFireBlastCasts = int32(float64(shaman.FireElemental.maxFireBlastCasts) * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus)))
+	shaman.FireElemental.maxFireNovaCasts = int32(float64(shaman.FireElemental.maxFireNovaCasts) * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus)))
 }
 
 func (shaman *Shaman) registerManaTideTotemCD() {

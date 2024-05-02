@@ -2,7 +2,6 @@ package shaman
 
 import (
 	"math"
-	"time"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
@@ -73,7 +72,7 @@ func (earthElemental *EarthElemental) Reset(_ *core.Simulation) {
 }
 
 func (earthElemental *EarthElemental) ExecuteCustomRotation(sim *core.Simulation) {
-	earthElemental.ExtendGCDUntil(sim, sim.CurrentTime+time.Second)
+
 }
 
 var earthElementalPetBaseStats = stats.Stats{
