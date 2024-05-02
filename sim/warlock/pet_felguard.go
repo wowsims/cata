@@ -45,7 +45,6 @@ func (warlock *Warlock) NewFelguardPet() *FelguardPet {
 	felguard.AddStat(stats.AttackPower, -20)
 	felguard.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
 	felguard.EnableAutoAttacks(felguard, *autoAttackOptions)
-	core.ApplyPetConsumeEffects(&warlock.Character, warlock.Consumes)
 	warlock.AddPet(felguard)
 	return felguard
 }

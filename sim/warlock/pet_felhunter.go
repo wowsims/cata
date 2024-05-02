@@ -74,7 +74,6 @@ func (warlock *Warlock) NewFelhunterPet() *FelhunterPet {
 	felhunter.AddStat(stats.AttackPower, -20)
 	felhunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
 	felhunter.EnableAutoAttacks(felhunter, autoAttackOptions)
-	core.ApplyPetConsumeEffects(&warlock.Character, warlock.Consumes)
 	warlock.AddPet(felhunter)
 
 	return felhunter
