@@ -118,7 +118,7 @@ func (felhunter *FelhunterPet) registerShadowBiteSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   1.5,
+		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
