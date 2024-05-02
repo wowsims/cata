@@ -58,6 +58,8 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 		return hp.newBite()
 	case Claw:
 		return hp.newClaw()
+	case Rake:
+		return nil
 	case DemoralizingScreech:
 		return hp.newDemoralizingScreech()
 	case FireBreath:

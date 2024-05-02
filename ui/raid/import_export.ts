@@ -51,7 +51,7 @@ export class RaidJsonImporter extends Importer {
 		`;
 	}
 
-	onImport(data: string) {
+	async onImport(data: string) {
 		const settings = RaidSimSettings.fromJsonString(data, { ignoreUnknownFields: true });
 		this.simUI.fromProto(TypedEvent.nextEventID(), settings);
 		this.close();

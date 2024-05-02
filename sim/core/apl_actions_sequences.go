@@ -189,7 +189,9 @@ func (action *APLActionStrictSequence) GetNextAction(sim *Simulation) *APLAction
 				Priority:     ActionPriorityLow,
 
 				OnAction: func(sim *Simulation) {
-					action.advanceSequence()
+					if action.unit.Rotation.inSequence {
+						action.advanceSequence()
+					}
 				},
 			}
 			sim.AddPendingAction(pa)

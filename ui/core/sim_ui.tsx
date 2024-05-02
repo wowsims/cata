@@ -1,13 +1,16 @@
-import { BaseModal } from './components/base_modal.js';
+import { element, fragment } from 'tsx-vanilla';
+
+import { BaseModal } from './components/base_modal.jsx';
 import { Component } from './components/component.js';
 import { NumberPicker } from './components/number_picker.js';
-import { ResultsViewer } from './components/results_viewer.js';
-import { SimHeader } from './components/sim_header';
+import { ResultsViewer } from './components/results_viewer.jsx';
+import { SimHeader } from './components/sim_header.jsx';
 import { SimTab } from './components/sim_tab.js';
 import { SimTitleDropdown } from './components/sim_title_dropdown.js';
-import { SocialLinks } from './components/social_links';
+import { SocialLinks } from './components/social_links.jsx';
+import Toast from './components/toast';
 import { LaunchStatus, SimStatus } from './launched_sims.js';
-import { PlayerSpec } from './player_spec';
+import { PlayerSpec } from './player_spec.js';
 import { ActionId } from './proto_utils/action_id.js';
 import { Sim, SimError } from './sim.js';
 import { EventID, TypedEvent } from './typed_event.js';
@@ -58,24 +61,32 @@ export abstract class SimUI extends Component {
 		this.cssClass = config.cssClass;
 		this.cssScheme = config.cssScheme;
 		this.isWithinRaidSim = this.rootElem.closest('.within-raid-sim') != null;
-		this.rootElem.innerHTML = `
-			<div class="sim-root">
-				<div class="sim-bg"></div>
-				${config.noticeText ? `<div class="notices-banner alert border-bottom mb-0 text-center within-raid-sim-hide">${config.noticeText}</div>` : ''}
-				<div class="sim-container">
-					<aside class="sim-sidebar">
-						<div class="sim-title"></div>
-						<div class="sim-sidebar-content">
-							<div class="sim-sidebar-actions within-raid-sim-hide"></div>
-							<div class="sim-sidebar-results within-raid-sim-hide"></div>
-							<div class="sim-sidebar-stats"></div>
-							<div class="sim-sidebar-socials"></div>
-						</div>
-					</aside>
-					<div class="sim-content container-fluid"></div>
+		const container = (
+			<>
+				<div className="sim-root">
+					<div className="sim-bg"></div>
+					{config.noticeText ? (
+						<div className="notices-banner alert border-bottom mb-0 text-center within-raid-sim-hide">{config.noticeText}</div>
+					) : null}
+					<div className="sim-container">
+						<aside className="sim-sidebar">
+							<div className="sim-title"></div>
+							<div className="sim-sidebar-content">
+								<div className="sim-sidebar-actions within-raid-sim-hide"></div>
+								<div className="sim-sidebar-results within-raid-sim-hide"></div>
+								<div className="sim-sidebar-stats"></div>
+								<div className="sim-sidebar-socials"></div>
+							</div>
+						</aside>
+						<div className="sim-content container-fluid"></div>
+					</div>
 				</div>
-			</div>
-		`;
+				<div className="sim-toast-container p-3 bottom-0 right-0" id="toastContainer"></div>
+			</>
+		);
+
+		this.rootElem.appendChild(container);
+
 		this.simContentContainer = this.rootElem.querySelector('.sim-content') as HTMLElement;
 		this.simHeader = new SimHeader(this.simContentContainer, this);
 		this.simMain = document.createElement('main');
@@ -265,7 +276,14 @@ export abstract class SimUI extends Component {
 
 	async handleCrash(error: any): Promise<void> {
 		if (!(error instanceof SimError)) {
-			alert(error);
+			if (error.message) {
+				new Toast({
+					variant: 'error',
+					body: error.message,
+				});
+			} else {
+				alert(error);
+			}
 			return;
 		}
 

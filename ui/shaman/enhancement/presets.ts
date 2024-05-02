@@ -13,6 +13,7 @@ import {
 	ShamanSyncType,
 	ShamanTotems,
 	WaterTotem,
+	TotemSet,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import DefaultApl from './apls/default.apl.json';
@@ -52,10 +53,28 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 	classOptions: {
 		shield: ShamanShield.LightningShield,
 		totems: ShamanTotems.create({
-			earth: EarthTotem.StoneskinTotem,
+			elements: TotemSet.create({
+				earth: EarthTotem.StrengthOfEarthTotem,
+				air: AirTotem.WrathOfAirTotem,
+				fire: FireTotem.SearingTotem,
+				water: WaterTotem.ManaSpringTotem,
+			}),
+			ancestors: TotemSet.create({
+				earth: EarthTotem.StrengthOfEarthTotem,
+				air: AirTotem.WrathOfAirTotem,
+				fire: FireTotem.SearingTotem,
+				water: WaterTotem.ManaSpringTotem,
+			}),
+			spirits: TotemSet.create({
+				earth: EarthTotem.StrengthOfEarthTotem,
+				air: AirTotem.WrathOfAirTotem,
+				fire: FireTotem.SearingTotem,
+				water: WaterTotem.ManaSpringTotem,
+			}),
+			earth: EarthTotem.StrengthOfEarthTotem,
+			air: AirTotem.WrathOfAirTotem,
 			fire: FireTotem.SearingTotem,
-			water: WaterTotem.HealingStreamTotem,
-			air: AirTotem.WindfuryTotem,
+			water: WaterTotem.ManaSpringTotem,
 		}),
 		imbueMh: ShamanImbue.WindfuryWeapon,
 	},

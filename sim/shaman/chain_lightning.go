@@ -30,28 +30,31 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 	baseDamage := shaman.ClassSpellScaling * 1.08800005913
 	numHits := int32(3)
 	if shaman.HasMajorGlyph(proto.ShamanMajorGlyph_GlyphOfChainLightning) {
-		baseDamage *= 0.90
+		spellConfig.DamageMultiplier *= 0.90
 		numHits += 2
 	}
 	numHits = min(numHits, shaman.Env.GetNumTargets())
 
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		bounceReduction := 1.0
+		bounceReduction := 0.7
 		curTarget := target
+		results := make([]*core.SpellResult, numHits)
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-			totalDamage := baseDamage * bounceReduction
 
-			//TODO : damage reduction from glyph need to be applied to spell power part of the damage also
-			result := shaman.calcDamageStormstrikeCritChance(sim, curTarget, totalDamage, spell)
+			spell.DamageMultiplier *= bounceReduction
 
-			if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
-				shaman.ChainLightningOverloads[hitIndex].Cast(sim, curTarget)
+			results[hitIndex] = shaman.calcDamageStormstrikeCritChance(sim, curTarget, baseDamage, spell)
+			curTarget = sim.Environment.NextTargetUnit(curTarget)
+
+		}
+
+		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+			if !isElementalOverload && results[hitIndex].Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
+				shaman.ChainLightningOverloads[hitIndex].Cast(sim, results[hitIndex].Target)
 			}
 
-			spell.DealDamage(sim, result)
-
-			bounceReduction *= 0.7
-			curTarget = sim.Environment.NextTargetUnit(curTarget)
+			spell.DealDamage(sim, results[hitIndex])
+			spell.DamageMultiplier /= bounceReduction
 		}
 	}
 
