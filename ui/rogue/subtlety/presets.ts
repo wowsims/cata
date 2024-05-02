@@ -22,7 +22,7 @@ export const SubtletyTalents = {
 		talentsString: '023003-002-0332031321310012321',
 		glyphs: Glyphs.create({
 			prime1: RoguePrimeGlyph.GlyphOfBackstab,
-			prime2: RoguePrimeGlyph.GlyphOfShadowDance,
+			prime2: RoguePrimeGlyph.GlyphOfHemorrhage,
 			prime3: RoguePrimeGlyph.GlyphOfSliceAndDice,
 			major1: RogueMajorGlyph.GlyphOfTricksOfTheTrade,
 			major2: RogueMajorGlyph.GlyphOfSprint,
