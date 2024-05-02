@@ -1,4 +1,5 @@
 import { ReforgeData } from './components/gear_picker/gear_picker';
+import Toast from './components/toast';
 import { getLanguageCode } from './constants/lang';
 import * as Mechanics from './constants/mechanics';
 import { MAX_PARTY_SIZE, Party } from './party';
@@ -508,9 +509,17 @@ export class Player<SpecType extends Spec> {
 		epPseudoStats: Array<PseudoStat>,
 		epReferenceStat: Stat,
 		onProgress: (_: any) => void,
-	): Promise<StatWeightsResult> {
-		const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
-		return result;
+	): Promise<StatWeightsResult | null> {
+		try {
+			const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
+			return result;
+		} catch (error: any) {
+			new Toast({
+				variant: 'error',
+				body: error?.message || 'Something went wrong calculating your stat weights. Reload the page and try again.',
+			});
+			return null;
+		}
 	}
 
 	getCurrentStats(): PlayerStats {
