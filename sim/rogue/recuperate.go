@@ -34,9 +34,10 @@ func (rogue *Rogue) registerRecuperate() {
 		},
 		Hot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Recuperate",
+				Label:    "Recuperate",
+				Duration: 30 * time.Second, // Set at activation, but default to maximum value for pre-pull
 			},
-			NumberOfTicks:       0, // Decided at cast time
+			NumberOfTicks:       10, // Decided at cast time
 			TickLength:          time.Second * 3,
 			AffectedByCastSpeed: false,
 			BonusCoefficient:    1,
