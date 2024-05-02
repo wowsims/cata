@@ -118,6 +118,7 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 		MinRoarOffset:      config.MinRoarOffset,
 		RipLeeway:          config.RipLeeway,
 		ManualParams:       config.ManualParams,
+		AllowAoeBerserk:    config.AllowAoeBerserk,
 	}
 
 	cat.setupRotation(rotationOptions)

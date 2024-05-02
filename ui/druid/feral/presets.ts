@@ -48,6 +48,7 @@ export const DefaultRotation = FeralDruidRotation.create({
 	snekWeave: false,
 	manualParams: true,
 	biteDuringExecute: true,
+	allowAoeBerserk: false,
 });
 
 export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFeralDruid, DefaultRotation);
