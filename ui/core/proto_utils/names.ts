@@ -134,7 +134,6 @@ export const statOrder: Array<Stat> = [
 	Stat.StatMastery,
 	Stat.StatDefense,
 	Stat.StatBlock,
-	Stat.StatBlockValue,
 	Stat.StatDodge,
 	Stat.StatParry,
 	Stat.StatResilience,
@@ -169,7 +168,6 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatRangedAttackPower, 'Ranged AP'],
 	[Stat.StatDefense, 'Defense'],
 	[Stat.StatBlock, 'Block'],
-	[Stat.StatBlockValue, 'Block Value'],
 	[Stat.StatDodge, 'Dodge'],
 	[Stat.StatParry, 'Parry'],
 	[Stat.StatResilience, 'Resilience'],
@@ -195,7 +193,6 @@ export const shortSecondaryStatNames: Map<Stat, string> = new Map([
 	[Stat.StatMastery, 'Mastery'],
 	[Stat.StatDefense, 'Defense'],
 	[Stat.StatBlock, 'Block'],
-	[Stat.StatBlockValue, 'Block Value'],
 	[Stat.StatDodge, 'Dodge'],
 	[Stat.StatParry, 'Parry'],
 ]);
@@ -204,13 +201,13 @@ export const pseudoStatOrder: Array<PseudoStat> = [
 	PseudoStat.PseudoStatMainHandDps,
 	PseudoStat.PseudoStatOffHandDps,
 	PseudoStat.PseudoStatRangedDps,
-	PseudoStat.PseudoStatBlockValueMultiplier,
 ];
 export const pseudoStatNames: Map<PseudoStat, string> = new Map([
 	[PseudoStat.PseudoStatMainHandDps, 'Main Hand DPS'],
 	[PseudoStat.PseudoStatOffHandDps, 'Off Hand DPS'],
 	[PseudoStat.PseudoStatRangedDps, 'Ranged DPS'],
 	[PseudoStat.PseudoStatBlockValueMultiplier, 'Block Value Multiplier'],
+
 	[PseudoStat.PseudoStatDodge, 'Dodge Chance'],
 	[PseudoStat.PseudoStatParry, 'Parry Chance'],
 ]);

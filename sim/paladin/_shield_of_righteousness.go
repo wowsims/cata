@@ -7,11 +7,25 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+// TODO: Fix spell correctly splitting Spell and item effects
 func (paladin *Paladin) registerShieldOfRighteousnessSpell() {
-	var aegisPlateProcAura *core.Aura
+
+	let aegisProcAura: core.Aura = nil
+
 	if paladin.HasSetBonus(ItemSetAegisPlate, 4) {
-		aegisPlateProcAura = paladin.NewTemporaryStatsAura("Aegis", core.ActionID{SpellID: 64883}, stats.Stats{stats.BlockValue: 225}, time.Second*6)
+		aegisProcAura = paladin.RegisterAura(core.Aura{
+			ID:      64883,
+			Label:   "Aegis Aura",
+			Duration: time.Second * 6,
+			ApplyEffects: func(sim *core.Simulation, aura *core.Aura) {
+				paladin.BlockDamageReduction += 0.05
+			},
+			RemoveEffects: func(sim *core.Simulation, aura *core.Aura) {
+				paladin.BlockDamageReduction -= 0.05
+			}
+		})
 	}
+
 
 	paladin.ShieldOfRighteousness = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 61411},
@@ -45,13 +59,13 @@ func (paladin *Paladin) registerShieldOfRighteousnessSpell() {
 
 			var baseDamage float64
 			// TODO: Derive or find accurate source for DR curve
-			bv := paladin.BlockValue()
-			if bv <= 2400.0 {
-				baseDamage = 520.0 + bv
-			} else {
-				bv = 2400.0 + (bv-2400.0)/2
-				baseDamage = 520.0 + core.TernaryFloat64(bv > 2760.0, 2760.0, bv)
-			}
+			// bv := paladin.BlockValue()
+			// if bv <= 2400.0 {
+			// 	baseDamage = 520.0 + bv
+			// } else {
+			// 	bv = 2400.0 + (bv-2400.0)/2
+			// 	baseDamage = 520.0 + core.TernaryFloat64(bv > 2760.0, 2760.0, bv)
+			// }
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},

@@ -285,9 +285,7 @@ export class CharacterStats extends Component {
 	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat, includeBase?: boolean): string {
 		let rawValue = deltaStats.getStat(stat);
 
-		if (stat == Stat.StatBlockValue) {
-			rawValue *= stats.getPseudoStat(PseudoStat.PseudoStatBlockValueMultiplier) || 1;
-		}
+		rawValue *=  1;
 
 		let displayStr = String(Math.round(rawValue));
 

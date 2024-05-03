@@ -43,7 +43,6 @@ func init() {
 // 			proto.Stat_StatAttackPower,
 // 			proto.Stat_StatArmor,
 // 			proto.Stat_StatDodge,
-// 			proto.Stat_StatBlockValue,
 // 		},
 // 	}))
 // }

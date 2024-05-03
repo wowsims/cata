@@ -709,7 +709,6 @@ const ALL_TARGET_STATS: Array<{ stat: Stat; tooltip: string; extraCssClasses: Ar
 	{ stat: Stat.StatNatureResistance, tooltip: '', extraCssClasses: [] },
 	{ stat: Stat.StatShadowResistance, tooltip: '', extraCssClasses: [] },
 	{ stat: Stat.StatAttackPower, tooltip: '', extraCssClasses: ['threat-metrics'] },
-	{ stat: Stat.StatBlockValue, tooltip: '', extraCssClasses: ['threat-metrics'] },
 ];
 
 const mobTypeEnumValues = [
