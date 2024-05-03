@@ -28,8 +28,8 @@ func TestSV(t *testing.T) {
 			core.GetAplRotation("../../../ui/hunter/survival/apls", "sv_advanced"),
 			core.GetAplRotation("../../../ui/hunter/survival/apls", "aoe"),
 		},
-
-		ItemFilter: ItemFilter,
+		DistanceFromTarget: 5.1,
+		ItemFilter:         ItemFilter,
 	}))
 }
 

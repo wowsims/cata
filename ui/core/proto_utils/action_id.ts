@@ -116,6 +116,10 @@ export class ActionId {
 				baseName = 'Potion';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_alchemy_elixir_04.jpg';
 				break;
+			case OtherAction.OtherActionMove:
+				baseName = 'Moving';
+				iconUrl = 'https://wow.zamimg.com/images/wow/icons/medium/inv_boots_cloth_03.jpg';
+				break;
 		}
 		this.baseName = baseName;
 		this.name = name || baseName;

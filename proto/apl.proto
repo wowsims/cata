@@ -41,7 +41,7 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 21
+// NextIndex: 23
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
@@ -70,6 +70,8 @@ message APLAction {
         APLActionCancelAura cancel_aura = 10;
         APLActionTriggerICD trigger_icd = 11;
         APLActionItemSwap item_swap = 17;
+        APLActionMove move = 21;
+        APLActionMoveDuration move_duration = 22;
 
         // Class or Spec-specific actions
         APLActionCatOptimalRotationAction cat_optimal_rotation_action = 18;
@@ -79,7 +81,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 72
+// NextIndex: 73
 message APLValue {
     oneof value {
         // Operators
@@ -116,6 +118,9 @@ message APLValue {
         APLValueCurrentRunicPower current_runic_power = 25;
         APLValueCurrentSolarEnergy current_solar_energy = 68;
         APLValueCurrentLunarEnergy current_lunar_energy = 69;
+
+		// Unit values
+		APLValueUnitIsMoving unit_is_moving = 72;
 
         // Rune Resource values
         APLValueCurrentRuneCount current_rune_count = 29;
@@ -284,6 +289,14 @@ message APLActionCatOptimalRotationAction {
     bool allow_aoe_berserk = 10;
 }
 
+message APLActionMove {
+    APLValue range_from_target = 1;
+}
+
+message APLActionMoveDuration {
+    APLValue duration = 1;
+}
+
 message APLActionCustomRotation {
 }
 
@@ -373,7 +386,9 @@ message APLValueBossSpellIsCasting {
     UnitReference target_unit = 1;
     ActionID spell_id = 2;
 }
-
+message APLValueUnitIsMoving {
+    UnitReference source_unit = 1;
+}
 message APLValueCurrentHealth {
     UnitReference source_unit = 1;
 }

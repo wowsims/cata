@@ -297,6 +297,11 @@ func (unit *Unit) NewFocusMetrics(actionID ActionID) *ResourceMetrics {
 func (unitMetrics *UnitMetrics) addSpellMetrics(spell *Spell, actionID ActionID, spellMetrics []SpellMetrics) {
 	actionMetrics, ok := unitMetrics.actions[actionID]
 
+	// no targets, nothing to add here
+	if len(spell.Unit.AttackTables) == 0 {
+		return
+	}
+
 	if !ok {
 		actionMetrics = &ActionMetrics{IsMelee: spell.Flags.Matches(SpellFlagMeleeMetrics)}
 		unitMetrics.actions[actionID] = actionMetrics
