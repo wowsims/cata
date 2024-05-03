@@ -59,7 +59,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:           mage.DefaultMageCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{

@@ -15,8 +15,7 @@ func (mage *Mage) registerScorchSpell() {
 		ClassSpellMask: MageSpellScorch,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.08 -
-				0.04*float64(mage.Talents.ImprovedScorch),
+			BaseCost: 0.08,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -29,7 +28,7 @@ func (mage *Mage) registerScorchSpell() {
 
 		DamageMultiplierAdditive: 1,
 
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.DefaultMageCritMultiplier(),
 		BonusCoefficient: 0.512,
 		ThreatMultiplier: 1,
 

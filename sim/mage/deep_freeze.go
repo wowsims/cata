@@ -32,7 +32,7 @@ func (mage *Mage) registerDeepFreezeSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.DefaultMageCritMultiplier(),
 		BonusCoefficient: 2.058,
 		ThreatMultiplier: 1,
 
