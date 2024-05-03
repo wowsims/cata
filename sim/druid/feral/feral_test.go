@@ -40,6 +40,9 @@ func TestFeral(t *testing.T) {
 			{Label: "Default-NoBleed", SpecOptions: PlayerOptionsMonoCatNoBleed},
 		},
 		Rotation:   core.GetAplRotation("../../../ui/druid/feral/apls", "default"),
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/druid/feral/apls", "aoe"),
+		},
 		ItemFilter: FeralItemFilter,
 	}))
 }

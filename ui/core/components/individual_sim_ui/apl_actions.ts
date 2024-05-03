@@ -600,11 +600,15 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				useBite: true,
 				biteTime: 10.0,
 				biteDuringExecute: true,
+				allowAoeBerserk: false,
 			}),
 		fields: [
 			AplHelpers.rotationTypeFieldConfig('rotationType'),
 			AplHelpers.booleanFieldConfig('maintainFaerieFire', 'Maintain Faerie Fire', {
 				labelTooltip: 'Maintain Faerie Fire debuff. Overwrites any external Sunder effects specified in settings.',
+			}),
+			AplHelpers.booleanFieldConfig('allowAoeBerserk', 'Allow AoE Berserk', {
+				labelTooltip: 'Allow Berserk usage in AoE rotation. Ignored for single target rotation.',
 			}),
 			AplHelpers.booleanFieldConfig('manualParams', 'Manual Advanced Parameters', {
 				labelTooltip: 'Manually specify advanced parameters, otherwise will use preset defaults.',
@@ -629,8 +633,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				labelTooltip: 'Min seconds remaining on Rip/Roar to allow a Bite. Ignored if not Biting during rotation.',
 			}),
 			AplHelpers.booleanFieldConfig('biteDuringExecute', 'Bite during Execute phase', {
-				labelTooltip:
-					'Bite aggressively during Execute phase. Ignored if Blood in the Water is not talented, or if not using manual advanced parameters.',
+				labelTooltip: 'Bite aggressively during Execute phase. Ignored if Blood in the Water is not talented, or if not using manual advanced parameters.',
 			}),
 		],
 	}),

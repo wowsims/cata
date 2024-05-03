@@ -169,7 +169,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 	}
 
 	presenceOfMindMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll ^ MageSpellInstantCast,
+		ClassMask:  MageSpellsAll ^ MageSpellInstantCast ^ MageSpellEvocation,
 		FloatValue: -1,
 		Kind:       core.SpellMod_CastTime_Pct,
 	})

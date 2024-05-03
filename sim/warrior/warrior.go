@@ -33,6 +33,7 @@ const (
 	SpellMaskShieldWall
 	SpellMaskLastStand
 	SpellMaskDeadlyCalm
+	SpellMaskCharge
 
 	// Abilities that cost rage but aren't attacks
 	SpellMaskDemoShout
@@ -103,6 +104,7 @@ type Warrior struct {
 	ThunderClap       *core.Spell
 	Whirlwind         *core.Spell
 	DeepWounds        *core.Spell
+	Charge            *core.Spell
 
 	recklessnessDeadlyCalmCD *core.Timer
 	hsCleaveCD               *core.Timer
@@ -165,6 +167,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.RegisterSunderArmor()
 	warrior.RegisterThunderClapSpell()
 	warrior.RegisterWhirlwindSpell()
+	warrior.RegisterCharge()
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {

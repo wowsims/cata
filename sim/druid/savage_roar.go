@@ -7,14 +7,14 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (druid *Druid) getSavageRoarMultiplier() float64 {
+func (druid *Druid) GetSavageRoarMultiplier() float64 {
 	return 1.8 + core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfSavageRoar), 0.05, 0)
 }
 
 func (druid *Druid) registerSavageRoarSpell() {
 	actionID := core.ActionID{SpellID: 52610}
 
-	srm := druid.getSavageRoarMultiplier()
+	srm := druid.GetSavageRoarMultiplier()
 	durBonus := core.DurationFromSeconds(4.0 * float64(druid.Talents.EndlessCarnage))
 	druid.SavageRoarDurationTable = [6]time.Duration{
 		0,
