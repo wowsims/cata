@@ -29,6 +29,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 
 		DamageMultiplier: 1 + core.TernaryFloat64(hasGlyph, 0.3, 0),
 		ThreatMultiplier: 1,
+		CritMultiplier:   druid.BalanceCritMultiplier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -45,7 +46,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
