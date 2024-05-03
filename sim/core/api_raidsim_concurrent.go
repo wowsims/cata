@@ -263,9 +263,13 @@ func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.Progre
 				continue
 			}
 
-			if csd.UpdateProgress(i, val.Interface().(*proto.ProgressMetrics)) {
-				// TODO: Handle error results here
-				// TODO: cancel still running routines on error of one routine
+			msg := val.Interface().(*proto.ProgressMetrics)
+			if csd.UpdateProgress(i, msg) {
+				if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
+					progress <- msg
+					// TODO: cancel still running routines on error?
+					return
+				}
 				continue
 			}
 
@@ -276,6 +280,8 @@ func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.Progre
 				Hps:                 csd.GetHpsAvg(),
 			}
 		}
+
+		log.Printf("All %d sims finished successfully.", csd.Concurrency)
 
 		progress <- &proto.ProgressMetrics{
 			TotalIterations:     csd.IterationsTotal,
