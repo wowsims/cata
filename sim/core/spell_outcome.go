@@ -648,7 +648,7 @@ func (spell *Spell) OutcomeExpectedMeleeWhite(_ *Simulation, result *SpellResult
 	critChance := min(spell.PhysicalCritChance(attackTable), whiteCritCap)
 	averageMultiplier := 1.0 - missChance - dodgeChance - parryChance + (spell.CritMultiplier-1)*critChance - glanceChance*(1.0-attackTable.GlanceMultiplier)
 	result.Damage *= averageMultiplier
-	result.Damage -= blockChance * result.Target.BlockDamageReduction()
+	result.Damage -= blockChance * result.Damage * result.Target.BlockDamageReduction()
 }
 
 func (spell *Spell) OutcomeExpectedMeleeWeaponSpecialHitAndCrit(_ *Simulation, result *SpellResult, attackTable *AttackTable) {
@@ -660,7 +660,7 @@ func (spell *Spell) OutcomeExpectedMeleeWeaponSpecialHitAndCrit(_ *Simulation, r
 	averageMultiplier := (1.0 - missChance - dodgeChance - parryChance) * (1.0 + (spell.CritMultiplier-1)*critChance)
 	averageMultiplier -= (spell.CritMultiplier - 1) * blockChance * critChance
 	result.Damage *= averageMultiplier
-	result.Damage -= blockChance * result.Target.BlockDamageReduction()
+	result.Damage -= blockChance * result.Damage * result.Target.BlockDamageReduction()
 }
 
 func (dot *Dot) OutcomeExpectedMagicSnapshotCrit(_ *Simulation, result *SpellResult, _ *AttackTable) {
