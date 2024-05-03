@@ -25,22 +25,65 @@ func RegisterAfflictionWarlock() {
 
 func NewAfflictionWarlock(character *core.Character, options *proto.Player) *AfflictionWarlock {
 	affOptions := options.GetAfflictionWarlock().Options
-
-	affLock := &AfflictionWarlock{
+	affliction := &AfflictionWarlock{
 		Warlock: warlock.NewWarlock(character, options, affOptions.ClassOptions),
 	}
 
-	return affLock
+	return affliction
 }
 
 type AfflictionWarlock struct {
 	*warlock.Warlock
 }
 
-func (affLock *AfflictionWarlock) GetWarlock() *warlock.Warlock {
-	return affLock.Warlock
+func (affliction AfflictionWarlock) getMasteryBonus() float64 {
+	return 0.13 + 0.0163*affliction.GetMasteryPoints()
 }
 
-func (affLock *AfflictionWarlock) Reset(sim *core.Simulation) {
-	affLock.Warlock.Reset(sim)
+func (affliction *AfflictionWarlock) GetWarlock() *warlock.Warlock {
+	return affliction.Warlock
+}
+
+func (affliction *AfflictionWarlock) Initialize() {
+	affliction.Warlock.Initialize()
+
+	affliction.registerHauntSpell()
+	affliction.registerUnstableAfflictionSpell()
+}
+
+func (affliction *AfflictionWarlock) ApplyTalents() {
+	affliction.Warlock.ApplyTalents()
+
+	// Mastery: Potent Afflictions
+	masteryMod := affliction.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Pct,
+		ClassMask: warlock.WarlockPeriodicShadowDamage,
+	})
+
+	affliction.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+		masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
+	})
+
+	core.MakePermanent(affliction.GetOrRegisterAura(core.Aura{
+		Label:    "Mastery: Potent Afflictions",
+		ActionID: core.ActionID{SpellID: 77215},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
+			masteryMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			masteryMod.Deactivate()
+		},
+	}))
+
+	// Shadow Mastery
+	affliction.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  warlock.WarlockShadowDamage,
+		FloatValue: 0.30,
+	})
+}
+
+func (affliction *AfflictionWarlock) Reset(sim *core.Simulation) {
+	affliction.Warlock.Reset(sim)
 }

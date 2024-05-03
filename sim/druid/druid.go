@@ -290,7 +290,7 @@ func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerSavageRoarSpell()
 	druid.registerShredSpell()
 	// 	druid.registerSwipeBearSpell()
-	// 	druid.registerSwipeCatSpell()
+	druid.registerSwipeCatSpell()
 	druid.registerTigersFurySpell()
 	druid.registerThrashBearSpell()
 }

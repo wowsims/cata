@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/warrior"
 )
 
@@ -16,6 +17,10 @@ func (war *ProtectionWarrior) ApplyGlyphs() {
 }
 
 func (war *ProtectionWarrior) applyGlyphOfDevastate() {
+	if !war.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfDevastate) {
+		return
+	}
+
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskDevastate,
 		Kind:       core.SpellMod_BonusCrit_Rating,
@@ -24,6 +29,10 @@ func (war *ProtectionWarrior) applyGlyphOfDevastate() {
 }
 
 func (war *ProtectionWarrior) applyGlyphOfShieldSlam() {
+	if !war.HasPrimeGlyph(proto.WarriorPrimeGlyph_GlyphOfShieldSlam) {
+		return
+	}
+
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask:  warrior.SpellMaskShieldSlam,
 		Kind:       core.SpellMod_DamageDone_Flat,
@@ -32,6 +41,10 @@ func (war *ProtectionWarrior) applyGlyphOfShieldSlam() {
 }
 
 func (war *ProtectionWarrior) applyGlyphofShockwave() {
+	if !war.HasMajorGlyph(proto.WarriorMajorGlyph_GlyphOfShockwave) {
+		return
+	}
+
 	war.AddStaticMod(core.SpellModConfig{
 		ClassMask: warrior.SpellMaskShockwave,
 		Kind:      core.SpellMod_Cooldown_Flat,

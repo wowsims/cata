@@ -124,6 +124,9 @@ func (shaman *Shaman) applyElementalFocus() {
 		return
 	}
 
+	var triggeringSpell *core.Spell
+	var triggerTime time.Duration
+
 	affectedSpells := SpellMaskLightningBolt | SpellMaskChainLightning | SpellMaskLavaBurst | SpellMaskFireNova | SpellMaskEarthShock | SpellMaskFlameShock | SpellMaskFrostShock
 	costReductionMod := shaman.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
@@ -165,6 +168,9 @@ func (shaman *Shaman) applyElementalFocus() {
 			if !spell.Flags.Matches(SpellFlagShock|SpellFlagFocusable) || (spell.ClassSpellMask&(SpellMaskOverload|SpellMaskThunderstorm) != 0) {
 				return
 			}
+			if spell == triggeringSpell && sim.CurrentTime == triggerTime {
+				return
+			}
 			aura.RemoveStack(sim)
 		},
 	})
@@ -182,6 +188,8 @@ func (shaman *Shaman) applyElementalFocus() {
 			if !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
+			triggeringSpell = spell
+			triggerTime = sim.CurrentTime
 			clearcastingAura.Activate(sim)
 			clearcastingAura.SetStacks(sim, maxStacks)
 		},

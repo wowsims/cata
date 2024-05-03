@@ -70,6 +70,7 @@ import {
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
 	APLValueTotemRemainingTime,
+	APLValueUnitIsMoving,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
 } from '../../proto/apl.js';
@@ -573,6 +574,15 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: '',
 		newValue: APLValueBossSpellTimeToReady.create,
 		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'spells', 'targetUnit', 'currentTarget')],
+	}),
+
+	// Unit
+	unitIsMoving: inputBuilder({
+		label: 'Is moving',
+		submenu: ['Unit'],
+		shortDescription: '',
+		newValue: APLValueUnitIsMoving.create,
+		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources')],
 	}),
 
 	// Resources

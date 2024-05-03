@@ -229,6 +229,7 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 	i := 0
 	apl.inLoop = true
 
+	apl.unit.UpdatePosition(sim)
 	for nextAction := apl.getNextAction(sim); nextAction != nil; i, nextAction = i+1, apl.getNextAction(sim) {
 		if i > 1000 {
 			panic(fmt.Sprintf("[USER_ERROR] Infinite loop detected, current action:\n%s", nextAction))
@@ -244,7 +245,7 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 
 	// Schedule the next rotation evaluation based on either the GCD or reaction time
 	if apl.unit.RotationTimer.IsReady(sim) {
-		nextEvaluation := max(apl.unit.NextGCDAt(), sim.CurrentTime + apl.unit.ReactionTime)
+		nextEvaluation := max(apl.unit.NextGCDAt(), sim.CurrentTime+apl.unit.ReactionTime)
 		apl.unit.WaitUntil(sim, nextEvaluation)
 	}
 }

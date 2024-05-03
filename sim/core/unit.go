@@ -63,7 +63,13 @@ type Unit struct {
 
 	// How far this unit is from its target(s). Measured in yards, this is used
 	// for calculating spell travel time for certain spells.
-	DistanceFromTarget float64
+	StartDistanceFromTarget float64
+	DistanceFromTarget      float64
+	Moving                  bool
+	movementCallbacks       []MovementCallback
+	moveAura                *Aura
+	moveSpell               *Spell
+	movementAction          *MovementAction
 
 	// How much uptime of Dark Intent the unit will have
 	DarkIntentUptimePercent float64
@@ -514,6 +520,7 @@ func (unit *Unit) finalize() {
 	unit.defaultTarget = unit.CurrentTarget
 	unit.applyParryHaste()
 	unit.updateCastSpeed()
+	unit.initMovement()
 
 	// All stats added up to this point are part of the 'initial' stats.
 	unit.initialStatsWithoutDeps = unit.stats
