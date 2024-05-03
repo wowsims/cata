@@ -8,6 +8,12 @@ import (
 )
 
 func (druid *Druid) registerRakeSpell() {
+	// Raw parameters from spell database
+	coefficient := 0.05700000003
+
+	// Scaled parameters for spell code
+	flatBaseDamage := coefficient * druid.ClassSpellScaling // ~56
+
 	druid.Rake = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1822},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -37,7 +43,7 @@ func (druid *Druid) registerRakeSpell() {
 			NumberOfTicks: 3 + druid.Talents.EndlessCarnage,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = 336 + 0.147*dot.Spell.MeleeAttackPower()
+				dot.SnapshotBaseDamage = flatBaseDamage + 0.147*dot.Spell.MeleeAttackPower()
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
@@ -48,7 +54,7 @@ func (druid *Druid) registerRakeSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 336 + 0.147*spell.MeleeAttackPower()
+			baseDamage := flatBaseDamage + 0.147*spell.MeleeAttackPower()
 			if druid.BleedCategories.Get(target).AnyActive() {
 				baseDamage *= 1.3
 			}
@@ -64,7 +70,7 @@ func (druid *Druid) registerRakeSpell() {
 		},
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := 336 + 0.147*spell.MeleeAttackPower()
+			baseDamage := flatBaseDamage + 0.147*spell.MeleeAttackPower()
 			initial := spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
@@ -74,7 +80,7 @@ func (druid *Druid) registerRakeSpell() {
 			return initial
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			tickBase := (336 + 0.147*spell.MeleeAttackPower())
+			tickBase := flatBaseDamage + 0.147*spell.MeleeAttackPower()
 			ticks := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]
