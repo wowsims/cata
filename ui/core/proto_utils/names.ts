@@ -206,8 +206,6 @@ export const pseudoStatNames: Map<PseudoStat, string> = new Map([
 	[PseudoStat.PseudoStatMainHandDps, 'Main Hand DPS'],
 	[PseudoStat.PseudoStatOffHandDps, 'Off Hand DPS'],
 	[PseudoStat.PseudoStatRangedDps, 'Ranged DPS'],
-	[PseudoStat.PseudoStatBlockValueMultiplier, 'Block Value Multiplier'],
-
 	[PseudoStat.PseudoStatDodge, 'Dodge Chance'],
 	[PseudoStat.PseudoStatParry, 'Parry Chance'],
 ]);
