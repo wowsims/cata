@@ -249,9 +249,13 @@ func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.Progre
 				go RunSim(request, substituteChannels[i])
 			}
 
-			// Wait for first msg to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
-			// First msg has no important data and can be ignored.
-			<-substituteChannels[i]
+			// Wait for first message to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
+			msg := <-substituteChannels[i]
+			// First message may be due to an immediate error, otherwise it can be ignored.
+			if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
+				progress <- msg
+				return
+			}
 		}
 
 		for running > 0 {
