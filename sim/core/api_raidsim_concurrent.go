@@ -3,11 +3,12 @@
 package core
 
 import (
+	"log"
 	"reflect"
 	"runtime"
-	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	googleProto "google.golang.org/protobuf/proto"
 )
 
 type simResultCombiner struct {
@@ -233,7 +234,26 @@ func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.Progre
 		substituteCases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(substituteChannels[i])}
 	}
 
+	log.Printf("Running %d iterations on %d concurrent sims.", csd.IterationsTotal, csd.Concurrency)
+
 	go func() {
+		remainder := request.SimOptions.Iterations % int32(concurrency)
+		request.SimOptions.Iterations /= int32(concurrency)
+
+		for i := 0; i < concurrency; i++ {
+			if i == 0 && remainder > 0 {
+				requestRemainderIterations := googleProto.Clone(request).(*proto.RaidSimRequest)
+				requestRemainderIterations.SimOptions.Iterations += remainder
+				go RunSim(requestRemainderIterations, substituteChannels[i])
+			} else {
+				go RunSim(request, substituteChannels[i])
+			}
+
+			// Wait for first msg to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
+			// First msg has no important data and can be ignored.
+			<-substituteChannels[i]
+		}
+
 		for running > 0 {
 			i, val, ok := reflect.Select(substituteCases)
 
@@ -265,12 +285,4 @@ func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.Progre
 			FinalRaidResult:     csd.GetFinalResult(),
 		}
 	}()
-
-	// TODO: Handle remainder
-	request.SimOptions.Iterations /= int32(concurrency)
-
-	for i := 0; i < concurrency; i++ {
-		go RunSim(request, substituteChannels[i])
-		time.Sleep(25 * time.Millisecond)
-	}
 }
