@@ -8,6 +8,15 @@ import (
 )
 
 func (rogue *Rogue) registerEviscerate() {
+	coefficient := 0.32600000501
+	resourceCoefficient := 0.47600001097
+	apScalingPerComboPoint := 0.091
+
+	avgBaseDamage := coefficient * rogue.ClassSpellScaling
+	damagePerComboPoint := resourceCoefficient * rogue.ClassSpellScaling
+	baseMinDamage := avgBaseDamage * 0.5
+	baseMaxDamage := avgBaseDamage * 1.5
+
 	rogue.Eviscerate = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 2098},
 		SpellSchool:  core.SpellSchoolPhysical,
@@ -46,14 +55,12 @@ func (rogue *Rogue) registerEviscerate() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			comboPoints := rogue.ComboPoints()
-			flatBaseDamage := 354 + 517*float64(comboPoints)
-			// tooltip implies 3..7% AP scaling, but testing shows it's fixed at 7% (3.4.0.46158)
-			apRatio := 0.091 * float64(comboPoints)
 
-			baseDamage := flatBaseDamage +
-				// 254.0*sim.RandomFloat("Eviscerate") + TODO: Thebackstabi 3/18/2024 - Cataclysm has no spell variance ATM, unsure on damage range
-				apRatio*spell.MeleeAttackPower()
+			comboPoints := float64(rogue.ComboPoints())
+			baseDamage := baseMinDamage +
+				sim.RandomFloat("Eviscerate")*baseMaxDamage +
+				damagePerComboPoint*comboPoints +
+				apScalingPerComboPoint*comboPoints*spell.MeleeAttackPower()
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
@@ -63,8 +70,6 @@ func (rogue *Rogue) registerEviscerate() {
 			} else {
 				spell.IssueRefund(sim)
 			}
-
-			//spell.DealDamage(sim, result)
 		},
 	})
 }

@@ -35,7 +35,7 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 				}
 			},
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				if isApplied {
+				if isApplied && !subRogue.Options.AssumeBleedActive {
 					isApplied = false
 					subRogue.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= svBonus
 				}
@@ -49,6 +49,16 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 		}
 		if subRogue.Hemorrhage != nil && hasGlyph {
 			subRogue.Hemorrhage.RelatedAuras = append(subRogue.Hemorrhage.RelatedAuras, svDebuffArray)
+		}
+	})
+
+	subRogue.RegisterPrepullAction(-1, func(sim *core.Simulation) {
+		if subRogue.Options.AssumeBleedActive {
+			for _, target := range subRogue.Env.Encounter.TargetUnits {
+				aura := svDebuffArray.Get(target)
+				aura.Duration = core.NeverExpires
+				aura.Activate(sim)
+			}
 		}
 	})
 
