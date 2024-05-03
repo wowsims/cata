@@ -28,8 +28,8 @@ export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 import DefaultApl from './apls/default.apl.json';
 export const APL_ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
 
-import CustomExampleApl from './apls/custom_apl_example.apl.json';
-export const APL_ROTATION_CUSTOM_EXAMPLE = PresetUtils.makePresetAPLRotation('Custom APL Example', CustomExampleApl);
+import AoeApl from './apls/aoe.apl.json';
+export const APL_ROTATION_AOE = PresetUtils.makePresetAPLRotation('APL AoE', AoeApl);
 
 export const DefaultRotation = FeralDruidRotation.create({
 	rotationType: FeralDruid_Rotation_AplType.SingleTarget,
@@ -48,6 +48,7 @@ export const DefaultRotation = FeralDruidRotation.create({
 	snekWeave: false,
 	manualParams: true,
 	biteDuringExecute: true,
+	allowAoeBerserk: false,
 });
 
 export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFeralDruid, DefaultRotation);
