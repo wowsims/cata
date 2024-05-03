@@ -39,7 +39,7 @@ func TestFeral(t *testing.T) {
 		OtherSpecOptions: []core.SpecOptionsCombo{
 			{Label: "Default-NoBleed", SpecOptions: PlayerOptionsMonoCatNoBleed},
 		},
-		Rotation:   core.GetAplRotation("../../../ui/druid/feral/apls", "default"),
+		Rotation: core.GetAplRotation("../../../ui/druid/feral/apls", "default"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/druid/feral/apls", "aoe"),
 		},

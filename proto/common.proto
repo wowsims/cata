@@ -821,6 +821,7 @@ enum OtherAction {
 	OtherActionPotion = 17; // Used by APL to generically refer to either the prepull or combat potion.
 	OtherActionSolarEnergyGain = 18; // For balance druid solar energy
 	OtherActionLunarEnergyGain = 19; // For balance druid lunar energy
+	OtherActionMove = 20; // Used by movement to be able to show it in timeline
 }
 
 message ActionID {

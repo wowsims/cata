@@ -24,6 +24,7 @@ func (war *ArmsWarrior) ApplyTalents() {
 	war.applySuddenDeath()
 	war.applyTasteForBlood()
 	war.applyWreckingCrew()
+	war.applyJuggernaut()
 
 	// Apply glyphs after talents so we can modify spells added from talents
 	war.ApplyGlyphs()
@@ -191,4 +192,54 @@ func (war *ArmsWarrior) TriggerWreckingCrew(sim *core.Simulation) {
 	if sim.Proc(procChance, "Wrecking Crew") {
 		war.wreckingCrew.Activate(sim)
 	}
+}
+
+func (war *ArmsWarrior) applyJuggernaut() {
+	if !war.Talents.Juggernaut {
+		return
+	}
+	// Charge cooldown is sharded with intercept, but as intercept is not implemented will ignore that for now
+	war.AddStaticMod(core.SpellModConfig{
+		ClassMask: warrior.SpellMaskCharge,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -2 * time.Second,
+	})
+
+	modJuggernaut := war.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Rating,
+		FloatValue: 25 * core.CritRatingPerCritChance,
+		ClassMask:  warrior.SpellMaskMortalStrike | warrior.SpellMaskSlam,
+	})
+	actionId := core.ActionID{SpellID: 65156}
+	auraJugg := war.RegisterAura(core.Aura{
+		Label:    "Juggernaut",
+		ActionID: actionId,
+		Duration: 10 * time.Second,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			modJuggernaut.Activate()
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if (spell.ClassSpellMask&warrior.SpellMaskSlam) != 0 || (spell.ClassSpellMask&warrior.SpellMaskMortalStrike) != 0 {
+				aura.Deactivate(sim)
+			}
+		},
+
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			modJuggernaut.Deactivate()
+		},
+	})
+
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+		Name:           "Juggernaut Trigger",
+		ActionID:       core.ActionID{SpellID: 65156},
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: warrior.SpellMaskCharge,
+
+		ProcChance: 1.0,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			auraJugg.Activate(sim)
+		},
+	})
 }

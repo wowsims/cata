@@ -11,10 +11,11 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 
 	actionID := core.ActionID{SpellID: 85288, Tag: 0}
 	rbOffhand := war.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID.WithTag(1),
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		ActionID:       actionID.WithTag(1),
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskEmpty,
+		ClassSpellMask: warrior.SpellMaskRagingBlow | warrior.SpellMaskSpecialAttack,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1.0,
 		CritMultiplier:   war.DefaultMeleeCritMultiplier(),

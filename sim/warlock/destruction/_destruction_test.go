@@ -91,7 +91,6 @@ func init() {
 // var defaultDestroOptions = &proto.Warlock_Options{
 // 	Armor:        proto.Warlock_Options_FelArmor,
 // 	Summon:       proto.Warlock_Options_Imp,
-// 	WeaponImbue:  proto.Warlock_Options_GrandFirestone,
 // 	DetonateSeed: true,
 // }
 
@@ -111,7 +110,6 @@ func init() {
 // var defaultAfflictionOptions = &proto.Warlock_Options{
 // 	Armor:        proto.Warlock_Options_FelArmor,
 // 	Summon:       proto.Warlock_Options_Felhunter,
-// 	WeaponImbue:  proto.Warlock_Options_GrandSpellstone,
 // 	DetonateSeed: true,
 // }
 
@@ -125,7 +123,6 @@ func init() {
 // var defaultDemonologyOptions = &proto.Warlock_Options{
 // 	Armor:        proto.Warlock_Options_FelArmor,
 // 	Summon:       proto.Warlock_Options_Felguard,
-// 	WeaponImbue:  proto.Warlock_Options_GrandSpellstone,
 // 	DetonateSeed: true,
 // }
 

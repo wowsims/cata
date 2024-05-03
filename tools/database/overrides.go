@@ -322,10 +322,6 @@ var ExtraItemIcons = []int32{
 	33874,
 	43005,
 
-	// Spellstones
-	41174,
-	41196,
-
 	// Demonic Rune
 	12662,
 
@@ -573,7 +569,7 @@ var SharedSpellsIcons = []int32{
 
 	770,
 	33602,
-	50511,
+	702,
 	18180,
 	56631,
 	53598,
@@ -613,7 +609,7 @@ var SharedSpellsIcons = []int32{
 	33198,
 	51161,
 	48511,
-	47865,
+	1490,
 
 	20271,
 	53408,

@@ -40,8 +40,8 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 	if roarNow {
 		// Compare DPE versus Swipe to see if it's worth casting
 		baseAutoDamage := cat.MHAutoSpell.ExpectedInitialDamage(sim, cat.CurrentTarget)
-		buffEnd := min(sim.Duration, sim.CurrentTime + cat.SavageRoarDurationTable[curCp])
-		numBuffedAutos := 1 + int32((buffEnd - cat.AutoAttacks.NextAttackAt()) / cat.AutoAttacks.MainhandSwingSpeed())
+		buffEnd := min(sim.Duration, sim.CurrentTime+cat.SavageRoarDurationTable[curCp])
+		numBuffedAutos := 1 + int32((buffEnd-cat.AutoAttacks.NextAttackAt())/cat.AutoAttacks.MainhandSwingSpeed())
 		roarDPE := (cat.GetSavageRoarMultiplier() - 1) * baseAutoDamage * float64(numBuffedAutos) / cat.SavageRoar.DefaultCast.Cost
 		_, swipeDPE := cat.calcExpectedSwipeDamage(sim)
 
@@ -70,8 +70,8 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 
 	if rakeNow && !roarNow {
 		// Compare DPE versus Swipe to see if it's worth casting
-		potentialRakeTicks := min(rakeDot.NumberOfTicks, int32(simTimeRemain / rakeDot.TickLength))
-		expectedRakeDamage := cat.Rake.ExpectedInitialDamage(sim, rakeTarget) + cat.Rake.ExpectedTickDamage(sim, rakeTarget) * float64(potentialRakeTicks)
+		potentialRakeTicks := min(rakeDot.NumberOfTicks, int32(simTimeRemain/rakeDot.TickLength))
+		expectedRakeDamage := cat.Rake.ExpectedInitialDamage(sim, rakeTarget) + cat.Rake.ExpectedTickDamage(sim, rakeTarget)*float64(potentialRakeTicks)
 		rakeDPE := expectedRakeDamage / cat.Rake.DefaultCast.Cost
 		expectedSwipeDamage, swipeDPE := cat.calcExpectedSwipeDamage(sim)
 
@@ -101,9 +101,9 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 
 	if mangleNow && !roarNow && !rakeNow {
 		// Compare Swipe damage to 30% of the max Rake ticks possible on this target before it dies
-		currentRakeTicksRemaining := min(rakeDot.NumTicksRemaining(sim), int32(simTimeRemain / rakeDot.TickLength))
-		newRakesPossible := max(0, int32((simTimeRemain - rakeDot.RemainingDuration(sim)) / rakeDot.Duration))
-		mangleRakeContribution := 0.3 * cat.Rake.ExpectedTickDamage(sim, mangleTarget) * float64(currentRakeTicksRemaining + newRakesPossible * (rakeDot.NumberOfTicks + 1))
+		currentRakeTicksRemaining := min(rakeDot.NumTicksRemaining(sim), int32(simTimeRemain/rakeDot.TickLength))
+		newRakesPossible := max(0, int32((simTimeRemain-rakeDot.RemainingDuration(sim))/rakeDot.Duration))
+		mangleRakeContribution := 0.3 * cat.Rake.ExpectedTickDamage(sim, mangleTarget) * float64(currentRakeTicksRemaining+newRakesPossible*(rakeDot.NumberOfTicks+1))
 		rawMangleDamage := cat.MangleCat.ExpectedInitialDamage(sim, mangleTarget)
 		expectedMangleDamage := rawMangleDamage + mangleRakeContribution
 		mangleDPE := expectedMangleDamage / cat.MangleCat.DefaultCast.Cost
@@ -147,20 +147,20 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 	// Schedule next action based on any upcoming timers
 	nextAction := sim.CurrentTime + timeToNextAction
 
-	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain - cat.ReactionTime) && (curCp >= 1)
+	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain-cat.ReactionTime) && (curCp >= 1)
 	if roarRefreshPending {
 		nextAction = min(nextAction, cat.SavageRoarAura.ExpiresAt())
 	}
 
 	for _, aoeTarget := range sim.Encounter.TargetUnits {
 		rakeDot = cat.Rake.Dot(aoeTarget)
-		rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain - rakeDot.TickLength)
+		rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.TickLength)
 
 		if rakeRefreshPending && (rakeDot.RemainingDuration(sim) > rakeDot.TickLength) {
-			nextAction = min(nextAction, rakeDot.ExpiresAt() - rakeDot.TickLength)
+			nextAction = min(nextAction, rakeDot.ExpiresAt()-rakeDot.TickLength)
 			bleedAura = aoeTarget.GetExclusiveEffectCategory(core.BleedEffectCategory).GetActiveAura()
 
-			if bleedAura.IsActive() && (bleedAura.RemainingDuration(sim) < simTimeRemain - time.Second) {
+			if bleedAura.IsActive() && (bleedAura.RemainingDuration(sim) < simTimeRemain-time.Second) {
 				nextAction = min(nextAction, bleedAura.ExpiresAt())
 			}
 		}

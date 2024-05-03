@@ -20,8 +20,8 @@ func (mage *Mage) ApplyArcaneTalents() {
 	// Netherwind Presence
 	if mage.Talents.NetherwindPresence > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellArcaneBarrage,
-			FloatValue: -0.01 * float64(mage.Talents.NetherwindPresence) * core.HasteRatingPerHastePercent,
+			ClassMask:  MageSpellsAll,
+			FloatValue: -0.01 * float64(mage.Talents.NetherwindPresence),
 			Kind:       core.SpellMod_CastTime_Pct,
 		})
 	}
