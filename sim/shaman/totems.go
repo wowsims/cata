@@ -118,6 +118,9 @@ func (shaman *Shaman) registerStoneskinTotemSpell() {
 }
 
 func (shaman *Shaman) registerTotemCall(spellID int32, totemSet *proto.TotemSet) {
+	if totemSet == nil {
+		return
+	}
 	airTotem := shaman.getAirTotemSpell(totemSet.Air)
 	earthTotem := shaman.getEarthTotemSpell(totemSet.Earth)
 	fireTotem := shaman.getFireTotemSpell(totemSet.Fire)
