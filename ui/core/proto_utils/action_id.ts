@@ -503,6 +503,11 @@ export class ActionId {
 					name += ' (pre)';
 				}
 				break;
+			case 'Immolate':
+				if (this.tag == 1) {
+					name += ' (DoT)'
+				}
+				break;
 			case 'Opportunity Strike':
 				break;
 			default:
