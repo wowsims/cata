@@ -66,7 +66,7 @@ func (mage *Mage) registerCombustionSpell() {
 			},
 		},
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:           mage.DefaultMageCritMultiplier(),
 		BonusCoefficient:         1.113,
 		ThreatMultiplier:         1,
 

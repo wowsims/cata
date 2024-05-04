@@ -274,6 +274,10 @@ func (mage *Mage) hasChillEffect(spell *core.Spell) bool {
 	return spell.ClassSpellMask&MageSpellChill > 0 || (spell.ClassSpellMask == MageSpellBlizzard && mage.Talents.IceShards > 0)
 }
 
+func (mage *Mage) DefaultMageCritMultiplier() float64 {
+	return mage.SpellCritMultiplier(1.33, 0)
+}
+
 const (
 	MageSpellFlagNone      int64 = 0
 	MageSpellArcaneBarrage int64 = 1 << iota

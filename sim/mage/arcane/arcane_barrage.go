@@ -32,7 +32,7 @@ func (arcane *ArcaneMage) registerArcaneBarrageSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   arcane.DefaultSpellCritMultiplier(),
+		CritMultiplier:   arcane.DefaultMageCritMultiplier(),
 		BonusCoefficient: 0.907,
 		ThreatMultiplier: 1,
 

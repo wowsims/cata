@@ -26,7 +26,7 @@ func (mage *Mage) registerFreezeSpell() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:           mage.DefaultMageCritMultiplier(),
 		BonusCoefficient:         0.029,
 		ThreatMultiplier:         1,
 
