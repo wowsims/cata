@@ -77,8 +77,8 @@ func (unit *Unit) ReactToEvent(sim *Simulation) {
 	unit.Rotation.DoNextAction(sim)
 
 	// Otherwise schedule an evaluation based on reaction time
-	if unit.NextRotationActionAt() > sim.CurrentTime + unit.ReactionTime {
-		unit.SetRotationTimer(sim, sim.CurrentTime + unit.ReactionTime)
+	if unit.NextRotationActionAt() > sim.CurrentTime+unit.ReactionTime {
+		unit.SetRotationTimer(sim, sim.CurrentTime+unit.ReactionTime)
 	}
 }
 

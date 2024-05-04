@@ -28,7 +28,7 @@ func (mage *Mage) registerFireballSpell() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:           mage.DefaultMageCritMultiplier(),
 		BonusCoefficient:         1.236,
 		ThreatMultiplier:         1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

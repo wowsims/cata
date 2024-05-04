@@ -37,7 +37,6 @@ var DefaultTargetProto = &proto.Target{
 	Stats: stats.Stats{
 		stats.Armor:       11977,
 		stats.AttackPower: 320,
-		stats.BlockValue:  54,
 	}.ToFloatArray(),
 	MobType: proto.MobType_MobTypeDemon,
 

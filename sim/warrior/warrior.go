@@ -84,6 +84,7 @@ type Warrior struct {
 	Stance                 Stance
 	EnrageEffectMultiplier float64
 	CriticalBlockChance    float64 // Can be gained as non-prot via certain talents and spells
+	BlockDamageReduction   float64
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
@@ -145,6 +146,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerStances()
 	warrior.EnrageEffectMultiplier = 1.0
 	warrior.hsCleaveCD = warrior.NewTimer()
+	warrior.BlockDamageReduction = 0.3
 
 	warrior.RegisterBerserkerRageSpell()
 	warrior.RegisterColossusSmash()
@@ -185,9 +187,10 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	warrior.PseudoStats.CanParry = true
 
 	warrior.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
-	warrior.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/84.746)
+	// Dodge no longer granted from agility
+	//warrior.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/84.746)
 	warrior.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	warrior.AddStatDependency(stats.Strength, stats.BlockValue, .5) // 50% block from str
+	warrior.AddStatDependency(stats.Strength, stats.Parry, 0.25) // Change from block to pary in cata
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	// Base dodge unaffected by Diminishing Returns

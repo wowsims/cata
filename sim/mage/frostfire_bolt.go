@@ -31,7 +31,7 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.DefaultMageCritMultiplier(),
 		BonusCoefficient: 0.977,
 		ThreatMultiplier: 1,
 

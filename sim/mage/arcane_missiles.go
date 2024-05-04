@@ -34,7 +34,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 		MissileSpeed:   20,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:   mage.DefaultMageCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.278,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

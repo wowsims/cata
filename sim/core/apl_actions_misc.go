@@ -159,6 +159,34 @@ func (action *APLActionItemSwap) String() string {
 	return fmt.Sprintf("Item Swap(%s)", action.swapSet)
 }
 
+type APLActionMove struct {
+	defaultAPLActionImpl
+	unit      *Unit
+	moveRange APLValue
+}
+
+func (rot *APLRotation) newActionMove(config *proto.APLActionMove) APLActionImpl {
+	return &APLActionMove{
+		unit:      rot.unit,
+		moveRange: rot.newAPLValue(config.RangeFromTarget),
+	}
+}
+func (action *APLActionMove) IsReady(sim *Simulation) bool {
+	isPrepull := sim.CurrentTime < 0
+	return !action.unit.Moving && (action.moveRange.GetFloat(sim) != action.unit.DistanceFromTarget || isPrepull) && action.unit.Hardcast.Expires < sim.CurrentTime
+}
+func (action *APLActionMove) Execute(sim *Simulation) {
+	moveRange := action.moveRange.GetFloat(sim)
+	if sim.Log != nil {
+		action.unit.Log(sim, "Moving to %s", moveRange)
+	}
+
+	action.unit.MoveTo(moveRange, sim)
+}
+func (action *APLActionMove) String() string {
+	return fmt.Sprintf("Move(%s)", action.moveRange)
+}
+
 type APLActionCustomRotation struct {
 	defaultAPLActionImpl
 	unit  *Unit
@@ -191,4 +219,40 @@ func (action *APLActionCustomRotation) Execute(sim *Simulation) {
 }
 func (action *APLActionCustomRotation) String() string {
 	return "Custom Rotation()"
+}
+
+type APLActionMoveDuration struct {
+	defaultAPLActionImpl
+	unit         *Unit
+	moveDuration APLValue
+}
+
+func (rot *APLRotation) newActionMoveDuration(config *proto.APLActionMoveDuration) APLActionImpl {
+	return &APLActionMoveDuration{
+		unit:         rot.unit,
+		moveDuration: rot.newAPLValue(config.Duration),
+	}
+}
+
+func (action *APLActionMoveDuration) Execute(sim *Simulation) {
+	action.unit.MoveDuration(action.moveDuration.GetDuration(sim), sim)
+}
+
+func (action *APLActionMoveDuration) IsReady(sim *Simulation) bool {
+
+	// only alow us to move if we're not already moving or movement action is running out this step
+	if action.unit.Moving && action.unit.movementAction.NextActionAt != sim.CurrentTime {
+		return false
+	}
+
+	if action.moveDuration.GetDuration(sim) == time.Duration(0) {
+		return false
+	}
+
+	// check current casting state
+	return (action.unit.Hardcast.Expires < sim.CurrentTime || action.unit.Hardcast.CanMove) && action.unit.ChanneledDot == nil
+}
+
+func (action *APLActionMoveDuration) String() string {
+	return "MoveDuration()"
 }

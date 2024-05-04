@@ -624,10 +624,9 @@ func (character *Character) doneIteration(sim *Simulation) {
 
 func (character *Character) GetPseudoStatsProto() []float64 {
 	return []float64{
-		proto.PseudoStat_PseudoStatMainHandDps:          character.AutoAttacks.MH().DPS(),
-		proto.PseudoStat_PseudoStatOffHandDps:           character.AutoAttacks.OH().DPS(),
-		proto.PseudoStat_PseudoStatRangedDps:            character.AutoAttacks.Ranged().DPS(),
-		proto.PseudoStat_PseudoStatBlockValueMultiplier: character.PseudoStats.BlockValueMultiplier,
+		proto.PseudoStat_PseudoStatMainHandDps: character.AutoAttacks.MH().DPS(),
+		proto.PseudoStat_PseudoStatOffHandDps:  character.AutoAttacks.OH().DPS(),
+		proto.PseudoStat_PseudoStatRangedDps:   character.AutoAttacks.Ranged().DPS(),
 		// Base values are modified by Enemy attackTables, but we display for LVL 80 enemy as paperdoll default
 		proto.PseudoStat_PseudoStatDodge: character.PseudoStats.BaseDodge + character.GetDiminishedDodgeChance(),
 		proto.PseudoStat_PseudoStatParry: character.PseudoStats.BaseParry + character.GetDiminishedParryChance(),

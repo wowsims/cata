@@ -139,10 +139,10 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	// next player decision based on latency.
 	ccRefreshTime := cat.ClearcastingAura.ExpiresAt() - cat.ClearcastingAura.Duration
 
-	if ccRefreshTime >= sim.CurrentTime - cat.ReactionTime {
+	if ccRefreshTime >= sim.CurrentTime-cat.ReactionTime {
 		// Kick gcd loop, also need to account for any gcd 'left'
 		// otherwise it breaks gcd logic
-		kickTime := max(cat.NextGCDAt(), ccRefreshTime + cat.ReactionTime)
+		kickTime := max(cat.NextGCDAt(), ccRefreshTime+cat.ReactionTime)
 		cat.NextRotationAction(sim, kickTime)
 	}
 

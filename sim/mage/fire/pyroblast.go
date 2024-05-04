@@ -57,7 +57,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   fire.DefaultSpellCritMultiplier(),
+		CritMultiplier:   fire.DefaultMageCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
