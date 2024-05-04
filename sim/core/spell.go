@@ -468,6 +468,14 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 		return false
 	}
 
+	// While moving only instant casts are possible
+	if spell.Flags&SpellFlagCanCastWhileMoving == 0 && spell.DefaultCast.CastTime > 0 && spell.Unit.Moving {
+		//if sim.Log != nil {
+		//	sim.Log("Cant cast because moving")
+		//}
+		return false
+	}
+
 	// While casting or channeling, no other action is possible
 	if spell.Unit.Hardcast.Expires > sim.CurrentTime {
 		//if sim.Log != nil {
@@ -476,7 +484,7 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 		return false
 	}
 
-	if spell.DefaultCast.GCD > 0 && !spell.Unit.GCD.IsReady(sim) {
+	if ((spell.DefaultCast.GCD > 0) || (spell.Flags.Matches(SpellFlagMCD) && spell.Unit.Rotation.inSequence)) && !spell.Unit.GCD.IsReady(sim) {
 		//if sim.Log != nil {
 		//	sim.Log("Cant cast because of GCD")
 		//}
@@ -505,6 +513,9 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 }
 
 func (spell *Spell) Cast(sim *Simulation, target *Unit) bool {
+	if spell.DefaultCast.EffectiveTime() > 0 {
+		spell.Unit.CancelQueuedSpell(sim)
+	}
 	if target == nil {
 		target = spell.Unit.CurrentTarget
 	}

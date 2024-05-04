@@ -37,20 +37,12 @@ func (dk *DeathKnight) registerSummonGargoyleSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			dk.Gargoyle.EnableWithTimeout(sim, dk.Gargoyle, time.Second*30)
-			dk.Gargoyle.CancelGCDTimer(sim)
-
 			trackingAura.Activate(sim)
 
+			dk.Gargoyle.expireTime = sim.CurrentTime + time.Second*30
+			dk.Gargoyle.EnableWithTimeout(sim, dk.Gargoyle, time.Second*30)
 			// Start casting after a 2.5s delay to simulate the summon animation
-			pa := core.PendingAction{
-				NextActionAt: sim.CurrentTime + time.Millisecond*2500,
-				Priority:     core.ActionPriorityAuto,
-				OnAction: func(s *core.Simulation) {
-					dk.Gargoyle.GargoyleStrike.Cast(sim, dk.CurrentTarget)
-				},
-			}
-			sim.AddPendingAction(&pa)
+			dk.Gargoyle.SetGCDTimer(sim, sim.CurrentTime+time.Millisecond*2500)
 		},
 	})
 
@@ -63,7 +55,8 @@ func (dk *DeathKnight) registerSummonGargoyleSpell() {
 type GargoylePet struct {
 	core.Pet
 
-	dkOwner *DeathKnight
+	expireTime time.Duration
+	dkOwner    *DeathKnight
 
 	GargoyleStrike *core.Spell
 }
@@ -74,7 +67,7 @@ func (dk *DeathKnight) NewGargoyle() *GargoylePet {
 			stats.Stamina: 1000,
 		}, func(ownerStats stats.Stats) stats.Stats {
 			return stats.Stats{
-				stats.SpellPower: ownerStats[stats.AttackPower],
+				stats.SpellPower: ownerStats[stats.AttackPower] * 0.7,
 				stats.SpellHit:   ownerStats[stats.MeleeHit] * PetSpellHitScale,
 				stats.SpellHaste: ownerStats[stats.MeleeHaste],
 				stats.SpellCrit:  ownerStats[stats.SpellCrit],
@@ -87,17 +80,18 @@ func (dk *DeathKnight) NewGargoyle() *GargoylePet {
 		gargoyle.PseudoStats.CastSpeedMultiplier = 1 // guardians are not affected by raid buffs
 		gargoyle.MultiplyCastSpeed(dk.PseudoStats.MeleeSpeedMultiplier)
 
-		gargoyle.EnableDynamicMeleeSpeed(func(amount float64) {
-			gargoyle.MultiplyCastSpeed(amount)
-		})
+		// No longer updates dynamically
+		// gargoyle.EnableDynamicMeleeSpeed(func(amount float64) {
+		// 	gargoyle.MultiplyCastSpeed(amount)
+		// })
 
-		gargoyle.EnableDynamicStats(func(ownerStats stats.Stats) stats.Stats {
-			return stats.Stats{
-				stats.SpellHaste: ownerStats[stats.MeleeHaste],
-				stats.SpellHit:   ownerStats[stats.MeleeHit] * PetSpellHitScale,
-				stats.SpellCrit:  ownerStats[stats.SpellCrit],
-			}
-		})
+		// gargoyle.EnableDynamicStats(func(ownerStats stats.Stats) stats.Stats {
+		// 	return stats.Stats{
+		// 		stats.SpellHaste: ownerStats[stats.MeleeHaste],
+		// 		stats.SpellHit:   ownerStats[stats.MeleeHit] * PetSpellHitScale,
+		// 		stats.SpellCrit:  ownerStats[stats.SpellCrit],
+		// 	}
+		// })
 	}
 
 	dk.AddPet(gargoyle)
@@ -116,7 +110,16 @@ func (garg *GargoylePet) Initialize() {
 func (garg *GargoylePet) Reset(_ *core.Simulation) {
 }
 
-func (garg *GargoylePet) ExecuteCustomRotation(_ *core.Simulation) {
+func (garg *GargoylePet) ExecuteCustomRotation(sim *core.Simulation) {
+	gargCastTime := garg.ApplyCastSpeedForSpell(garg.GargoyleStrike.DefaultCast.CastTime, garg.GargoyleStrike)
+	if sim.CurrentTime+gargCastTime > garg.expireTime {
+		// If the cast wont finish before expiration time just dont cast
+		return
+	}
+
+	if garg.GargoyleStrike.CanCast(sim, garg.CurrentTarget) {
+		garg.GargoyleStrike.Cast(sim, garg.CurrentTarget)
+	}
 }
 
 func (garg *GargoylePet) registerGargoyleStrikeSpell() {
@@ -127,7 +130,13 @@ func (garg *GargoylePet) registerGargoyleStrikeSpell() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
+				GCD:      core.GCDDefault,
 				CastTime: time.Millisecond * 2000,
+			},
+			IgnoreHaste: true,
+			// Custom modify cast to not lower GCD
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				cast.CastTime = spell.Unit.ApplyCastSpeedForSpell(spell.DefaultCast.CastTime, spell)
 			},
 		},
 
@@ -135,14 +144,12 @@ func (garg *GargoylePet) registerGargoyleStrikeSpell() {
 		CritMultiplier:   1.5,
 		ThreatMultiplier: 1,
 
-		BonusCoefficient: 0.317,
+		BonusCoefficient: 0.453,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 291.0
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)
-
-			garg.GargoyleStrike.Cast(sim, garg.CurrentTarget)
 		},
 	})
 }

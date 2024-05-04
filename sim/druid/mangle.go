@@ -96,7 +96,7 @@ func (druid *Druid) registerMangleCatSpell() {
 			baseDamage := 302.0/5.4 +
 				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
@@ -109,6 +109,11 @@ func (druid *Druid) registerMangleCatSpell() {
 			} else {
 				spell.IssueRefund(sim)
 			}
+		},
+
+		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
+			baseDamage := 302.0/5.4 + spell.Unit.AutoAttacks.MH().CalculateAverageWeaponDamage(spell.MeleeAttackPower())
+			return spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMeleeWeaponSpecialHitAndCrit)
 		},
 
 		RelatedAuras: []core.AuraArray{mangleAuras},

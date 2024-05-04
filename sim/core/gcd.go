@@ -73,8 +73,13 @@ func (unit *Unit) SetRotationTimer(sim *Simulation, rotationReadyAt time.Duratio
 
 // Call this when reacting to events that occur before the next scheduled rotation action
 func (unit *Unit) ReactToEvent(sim *Simulation) {
-	unit.RotationTimer.Reset()
+	// If the next rotation action was already scheduled for this timestep then execute it now
 	unit.Rotation.DoNextAction(sim)
+
+	// Otherwise schedule an evaluation based on reaction time
+	if unit.NextRotationActionAt() > sim.CurrentTime+unit.ReactionTime {
+		unit.SetRotationTimer(sim, sim.CurrentTime+unit.ReactionTime)
+	}
 }
 
 // Call this to stop the GCD loop for a unit.

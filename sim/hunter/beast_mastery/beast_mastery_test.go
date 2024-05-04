@@ -28,7 +28,8 @@ func TestBM(t *testing.T) {
 			core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm_advanced"),
 		},
 
-		ItemFilter: ItemFilter,
+		ItemFilter:         ItemFilter,
+		DistanceFromTarget: 5.1,
 	}))
 }
 
@@ -94,7 +95,7 @@ var BMGlyphs = &proto.Glyphs{
 }
 var FerocityTalents = &proto.HunterPetTalents{
 	SerpentSwiftness: 2,
-	Dive:             true,
+	Dash:             true,
 	SpikedCollar:     3,
 	Bloodthirsty:     1,
 	CullingTheHerd:   3,

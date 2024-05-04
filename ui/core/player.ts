@@ -1,4 +1,4 @@
-import { getLanguageCode } from './constants/lang';
+import Toast from './components/toast';
 import * as Mechanics from './constants/mechanics';
 import { MAX_PARTY_SIZE, Party } from './party';
 import { PlayerClass } from './player_class';
@@ -77,6 +77,7 @@ import { Sim, SimSettingCategories } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
 import { stringComparator, sum } from './utils';
+import { buildWowheadTooltipDataset } from './wowhead';
 
 export interface AuraStats {
 	data: AuraStatsProto;
@@ -533,9 +534,17 @@ export class Player<SpecType extends Spec> {
 		epPseudoStats: Array<PseudoStat>,
 		epReferenceStat: Stat,
 		onProgress: (_: any) => void,
-	): Promise<StatWeightsResult> {
-		const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
-		return result;
+	): Promise<StatWeightsResult | null> {
+		try {
+			const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
+			return result;
+		} catch (error: any) {
+			new Toast({
+				variant: 'error',
+				body: error?.message || 'Something went wrong calculating your stat weights. Reload the page and try again.',
+			});
+			return null;
+		}
 	}
 
 	getCurrentStats(): PlayerStats {
@@ -1170,43 +1179,21 @@ export class Player<SpecType extends Spec> {
 		return ep;
 	}
 
-	setWowheadData(equippedItem: EquippedItem, elem: HTMLElement) {
-		const parts = [];
-
-		const lang = getLanguageCode();
-		const langPrefix = lang ? lang + '.' : '';
-		parts.push(`domain=${langPrefix}cata`);
-
+	async setWowheadData(equippedItem: EquippedItem, elem: HTMLElement) {
 		const isBlacksmithing = this.hasProfession(Profession.Blacksmithing);
-		if (equippedItem.gems.length > 0) {
-			parts.push(
-				'gems=' +
-					equippedItem
-						.curGems(isBlacksmithing)
-						.map(gem => (gem ? gem.id : 0))
-						.join(':'),
-			);
-		}
-		if (equippedItem.enchant != null) {
-			parts.push('ench=' + equippedItem.enchant.effectId);
-		}
-		if (equippedItem.reforge) {
-			parts.push('forg=' + equippedItem.reforge.id);
-		}
-		parts.push(
-			'pcs=' +
-				this.gear
-					.asArray()
-					.filter(ei => ei != null)
-					.map(ei => ei!.item.id)
-					.join(':'),
-		);
+		const gemIds = equippedItem.gems.length ? equippedItem.curGems(isBlacksmithing).map(gem => (gem ? gem.id : 0)) : [];
 
-		if (equippedItem.hasExtraSocket(isBlacksmithing)) {
-			parts.push('sock');
-		}
-		parts.push('dataEnv=11');
-		elem.dataset.wowhead = parts.join('&');
+		equippedItem.asActionId().setWowheadDataset(elem, {
+			gemIds,
+			enchantId: equippedItem.enchant?.effectId,
+			reforgeId: equippedItem.reforge?.id,
+			setPieceIds: this.gear
+				.asArray()
+				.filter(ei => ei != null)
+				.map(ei => ei!.item.id),
+			hasExtraSocket: equippedItem.hasExtraSocket(isBlacksmithing),
+		});
+
 		elem.dataset.whtticon = 'false';
 	}
 

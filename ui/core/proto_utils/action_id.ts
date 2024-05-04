@@ -3,6 +3,7 @@ import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { ResourceType } from '../proto/api.js';
 import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction, ReforgeStat } from '../proto/common.js';
 import { IconData, UIItem as Item } from '../proto/ui.js';
+import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
 import { Database } from './database.js';
 
 // If true uses wotlkdb.com, else uses wowhead.com.
@@ -115,6 +116,10 @@ export class ActionId {
 				baseName = 'Potion';
 				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_alchemy_elixir_04.jpg';
 				break;
+			case OtherAction.OtherActionMove:
+				baseName = 'Moving';
+				iconUrl = 'https://wow.zamimg.com/images/wow/icons/medium/inv_boots_cloth_03.jpg';
+				break;
 		}
 		this.baseName = baseName;
 		this.name = name || baseName;
@@ -146,10 +151,16 @@ export class ActionId {
 	static makeSpellUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
 		if (USE_WOTLK_DB) {
-			return 'https://wotlkdb.com/?spell=' + id;
+			return `https://wotlkdb.com/?spell=${id}`;
 		} else {
 			return `https://wowhead.com/cata/${langPrefix}spell=${id}`;
 		}
+	}
+	static async makeItemTooltipData(id: number, params?: Omit<WowheadTooltipItemParams, 'itemId'>) {
+		return buildWowheadTooltipDataset({ itemId: id, ...params });
+	}
+	static async makeSpellTooltipData(id: number, params?: Omit<WowheadTooltipSpellParams, 'spellId'>) {
+		return buildWowheadTooltipDataset({ spellId: id, ...params });
 	}
 	static makeQuestUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
@@ -182,6 +193,12 @@ export class ActionId {
 		} else if (this.spellId) {
 			elem.href = ActionId.makeSpellUrl(this.spellId);
 		}
+	}
+
+	async setWowheadDataset(elem: HTMLElement, params?: Omit<WowheadTooltipItemParams, 'itemId'> | Omit<WowheadTooltipSpellParams, 'spellId'>) {
+		(this.itemId ? ActionId.makeItemTooltipData(this.itemId, params) : ActionId.makeSpellTooltipData(this.spellId, params)).then(url => {
+			if (elem) elem.dataset.wowhead = url;
+		});
 	}
 
 	setBackgroundAndHref(elem: HTMLAnchorElement) {
@@ -252,7 +269,8 @@ export class ActionId {
 				if (this.tag) name += ' (DoT)';
 				break;
 			case 'Living Bomb':
-				if (this.spellId == 55362) name += ' (Explosion)';
+				if (this.tag == 1) name += ' (DoT)';
+				else if (this.tag == 2) name += ' (Explosion)';
 				break;
 			case 'Evocation':
 				if (this.tag == 1) {
@@ -487,6 +505,11 @@ export class ActionId {
 			case 'Improved Steady Shot':
 				if (this.tag == 2) {
 					name += ' (pre)';
+				}
+				break;
+			case 'Immolate':
+				if (this.tag == 1) {
+					name += ' (DoT)'
 				}
 				break;
 			case 'Opportunity Strike':

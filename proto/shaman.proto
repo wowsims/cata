@@ -144,6 +144,20 @@ enum WaterTotem {
 	ElementalResistanceTotem = 4;
 }
 
+enum CallTotem {
+	NoCall = 0;
+	Elements = 1;
+	Ancestors = 2;
+	Spirits = 3;
+}
+
+message TotemSet {
+	EarthTotem earth = 1;
+	AirTotem air = 2;
+	FireTotem fire = 3;
+	WaterTotem water = 4;
+}
+
 message ShamanTotems {
 	// Not used here, but used by APL
 	enum TotemType {
@@ -154,20 +168,24 @@ message ShamanTotems {
 		Water = 4;
 	}
 
-	EarthTotem earth = 1;
-	AirTotem air = 2;
-	FireTotem fire = 3;
-	WaterTotem water = 4;
+	TotemSet elements = 5;
+	TotemSet ancestors = 6;
+	TotemSet spirits = 7;
+
+	EarthTotem earth = 8;
+	AirTotem air = 9;
+	FireTotem fire = 10;
+	WaterTotem water = 11;
 
 	// If set, will use fire elemental totem at the start and revert to regular
 	// fire totems when it expires.
-	bool use_fire_elemental = 6;
+	bool use_fire_elemental = 12;
 
 	// Bonus spell power for fire elemental snapshotting.
-	int32 bonus_spellpower = 10;
+	int32 bonus_spellpower = 13;
 
 	// Snapshot fire elemental using Tier 10 4 set bonus.
-	bool enh_tier_ten_bonus = 11;
+	bool enh_tier_ten_bonus = 14;
 }
 
 enum ShamanShield {
@@ -194,7 +212,8 @@ enum ShamanSyncType {
 message ShamanOptions {
 	ShamanShield shield = 1;
 	ShamanTotems totems = 2;
-	ShamanImbue imbue_mh = 3;
+	CallTotem call = 3;
+	ShamanImbue imbue_mh = 4;
 }
 
 message ElementalShaman {

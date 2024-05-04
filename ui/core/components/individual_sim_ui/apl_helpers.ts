@@ -248,12 +248,13 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 			equals: (a, b) => (a == null) == (b == null) && (!a || a.equals(b!)),
 			setOptionContent: (button, valueConfig) => {
 				const actionId = valueConfig.value;
-
 				const iconElem = document.createElement('a');
+				const isAuraType = ['auras', 'stackable_auras', 'icd_auras', 'exclusive_effect_auras'].includes(config.actionIdSet);
 				iconElem.classList.add('apl-actionid-item-icon');
 				iconElem.dataset.whtticon = 'false';
-				iconElem.classList.add('apl-actionid-item-icon');
+
 				actionId.setBackgroundAndHref(iconElem);
+				actionId.setWowheadDataset(iconElem, { useBuffAura: isAuraType });
 				button.appendChild(iconElem);
 
 				const textElem = document.createTextNode(actionId.name);
@@ -266,11 +267,9 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 					});
 				}
 
-				return value.fill().then(filledId => {
-					return {
-						value: filledId,
-					};
-				});
+				return value.fill().then(filledId => ({
+					value: filledId,
+				}));
 			},
 			values: [],
 		});
@@ -311,7 +310,10 @@ const unitSets: Record<
 					.asList()
 					.map((petMetadata, i) => UnitReference.create({ type: UnitType.Pet, index: i, owner: UnitReference.create({ type: UnitType.Self }) })),
 				UnitReference.create({ type: UnitType.CurrentTarget }),
-				player.sim.raid.getActivePlayers().filter(filter => filter != player).map(mapPlayer => UnitReference.create({ type: UnitType.Player, index: mapPlayer.getRaidIndex() })),
+				player.sim.raid
+					.getActivePlayers()
+					.filter(filter => filter != player)
+					.map(mapPlayer => UnitReference.create({ type: UnitType.Player, index: mapPlayer.getRaidIndex() })),
 				player.sim.encounter.targetsMetadata.asList().map((targetMetadata, i) => UnitReference.create({ type: UnitType.Target, index: i })),
 			].flat();
 		},

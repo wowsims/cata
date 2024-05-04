@@ -40,17 +40,8 @@ func (cat *FeralDruid) OnGCDReady(sim *core.Simulation) {
 }
 
 func (cat *FeralDruid) NextRotationAction(sim *core.Simulation, kickAt time.Duration) {
-	if cat.customRotationAction != nil {
-		cat.customRotationAction.Cancel(sim)
-	}
-
-	cat.customRotationAction = &core.PendingAction{
-		Priority:     core.ActionPriorityGCD,
-		OnAction:     cat.OnGCDReady,
-		NextActionAt: kickAt,
-	}
-
-	sim.AddPendingAction(cat.customRotationAction)
+	cat.nextActionAt = kickAt
+	cat.WaitUntil(sim, kickAt)
 }
 
 func (cat *FeralDruid) checkReplaceMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
@@ -255,7 +246,7 @@ func (cat *FeralDruid) TryBerserk(sim *core.Simulation) {
 	simTimeRemain := sim.GetRemainingDuration()
 	waitForTf := cat.Talents.Berserk && (cat.TigersFury.ReadyAt() <= cat.BerserkAura.Duration) && (cat.TigersFury.ReadyAt()+cat.ReactionTime < simTimeRemain-cat.BerserkAura.Duration)
 	isClearcast := cat.ClearcastingAura.IsActive()
-	berserkNow := cat.Berserk.IsReady(sim) && !waitForTf && !isClearcast
+	berserkNow := cat.Rotation.UseBerserk && cat.Berserk.IsReady(sim) && !waitForTf && !isClearcast
 
 	// Additionally, for Lacerateweave rotation, postpone the final Berserk
 	// of the fight to as late as possible so as to minimize the impact of
@@ -721,15 +712,12 @@ type FeralDruidRotation struct {
 	LacerateTime       time.Duration
 	SnekWeave          bool
 	RakeDpeCheck       bool
-
-	AoeMangleBuilder bool
+	UseBerserk         bool
 }
 
 func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 	// Force reset params that aren't customizable, or removed from ui
 	rotation.BearWeaveType = proto.FeralDruid_Rotation_None
-
-	equipedIdol := cat.Ranged().ID
 
 	cat.Rotation = FeralDruidRotation{
 		RotationType:       rotation.RotationType,
@@ -747,9 +735,8 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 		RipLeeway:          time.Duration(float64(rotation.RipLeeway) * float64(time.Second)),
 		LacerateTime:       8.0 * time.Second,
 		SnekWeave:          core.Ternary(rotation.BearWeaveType == proto.FeralDruid_Rotation_None, false, rotation.SnekWeave),
-		// Use mangle if idol of corruptor or mutilation equipped
-		AoeMangleBuilder: equipedIdol == 45509 || equipedIdol == 47668,
-		RakeDpeCheck:     equipedIdol != 50456,
+		RakeDpeCheck:       true,
+		UseBerserk:         cat.Talents.Berserk && ((rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget) || rotation.AllowAoeBerserk),
 	}
 
 	// Use automatic values unless specified

@@ -189,6 +189,7 @@ export class ItemRenderer extends Component {
 
 		this.player.setWowheadData(newItem, this.iconElem);
 		this.player.setWowheadData(newItem, this.nameElem);
+
 		newItem
 			.asActionId()
 			.fill()
@@ -204,10 +205,14 @@ export class ItemRenderer extends Component {
 			// Make enchant text hover have a tooltip.
 			if (newItem.enchant.spellId) {
 				this.enchantElem.href = ActionId.makeSpellUrl(newItem.enchant.spellId);
-				this.enchantElem.dataset.wowhead = `domain=cata&spell=${newItem.enchant.spellId}`;
+				ActionId.makeSpellTooltipData(newItem.enchant.spellId).then(url => {
+					this.enchantElem.dataset.wowhead = url;
+				});
 			} else {
 				this.enchantElem.href = ActionId.makeItemUrl(newItem.enchant.itemId);
-				this.enchantElem.dataset.wowhead = `domain=cata&item=${newItem.enchant.itemId}`;
+				ActionId.makeItemTooltipData(newItem.enchant.itemId).then(url => {
+					this.enchantElem.dataset.wowhead = url;
+				});
 			}
 			this.enchantElem.dataset.whtticon = 'false';
 		}

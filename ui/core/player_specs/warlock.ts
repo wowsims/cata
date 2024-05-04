@@ -4,7 +4,7 @@ import { Class, Spec } from '../proto/common';
 import { getSpecSiteUrl } from '../proto_utils/utils';
 
 export class AfflictionWarlock extends PlayerSpec<Spec.SpecAfflictionWarlock> {
-	static specIndex = 1;
+	static specIndex = 0;
 	static specID = Spec.SpecAfflictionWarlock as Spec.SpecAfflictionWarlock;
 	static classID = Class.ClassWarlock as Class.ClassWarlock;
 	static friendlyName = 'Affliction';

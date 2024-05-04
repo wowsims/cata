@@ -118,6 +118,7 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 		MinRoarOffset:      config.MinRoarOffset,
 		RipLeeway:          config.RipLeeway,
 		ManualParams:       config.ManualParams,
+		AllowAoeBerserk:    config.AllowAoeBerserk,
 	}
 
 	cat.setupRotation(rotationOptions)
@@ -136,24 +137,29 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 
 	// If a melee swing resulted in an Omen proc, then schedule the
 	// next player decision based on latency.
-	if cat.ClearcastingAura.RemainingDuration(sim) == cat.ClearcastingAura.Duration {
+	ccRefreshTime := cat.ClearcastingAura.ExpiresAt() - cat.ClearcastingAura.Duration
+
+	if ccRefreshTime >= sim.CurrentTime-cat.ReactionTime {
 		// Kick gcd loop, also need to account for any gcd 'left'
 		// otherwise it breaks gcd logic
-		kickTime := max(cat.NextRotationActionAt(), sim.CurrentTime+cat.ReactionTime)
+		kickTime := max(cat.NextGCDAt(), ccRefreshTime+cat.ReactionTime)
 		cat.NextRotationAction(sim, kickTime)
 	}
 
 	action.lastAction = sim.CurrentTime
 
 	if !cat.GCD.IsReady(sim) {
+		cat.WaitUntil(sim, cat.NextGCDAt())
 		return
 	}
 
 	cat.TryTigersFury(sim)
 	cat.TryBerserk(sim)
 
-	if cat.customRotationAction == nil || sim.CurrentTime >= cat.customRotationAction.NextActionAt {
+	if sim.CurrentTime >= cat.nextActionAt {
 		cat.OnGCDReady(sim)
+	} else {
+		cat.WaitUntil(sim, cat.nextActionAt)
 	}
 }
 

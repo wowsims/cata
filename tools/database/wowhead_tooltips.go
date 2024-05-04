@@ -47,6 +47,7 @@ type ItemResponse interface {
 	GetName() string
 	GetQuality() int
 	GetIcon() string
+	HasBuff() bool
 	TooltipWithoutSetBonus() string
 	GetTooltipRegexString(pattern *regexp.Regexp, matchIdx int) string
 	GetTooltipRegexValue(pattern *regexp.Regexp, matchIdx int) int
@@ -78,6 +79,7 @@ type WowheadItemResponse struct {
 	Quality int    `json:"quality"`
 	Icon    string `json:"icon"`
 	Tooltip string `json:"tooltip"`
+	Buff    string `json:"buff"`
 }
 
 func NewWowheadItemResponse(id int32, tooltip string) WowheadItemResponse {
@@ -99,6 +101,9 @@ func (item WowheadItemResponse) GetQuality() int {
 }
 func (item WowheadItemResponse) GetIcon() string {
 	return item.Icon
+}
+func (item WowheadItemResponse) HasBuff() bool {
+	return item.Buff != ""
 }
 
 func GetRegexStringValue(srcStr string, pattern *regexp.Regexp, matchIdx int) string {

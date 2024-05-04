@@ -319,7 +319,7 @@ class EpWeightsMenu extends BaseModal {
 			optimizeGemsButton.classList.remove('disabled');
 		});
 
-		const calcButton = this.rootElem.getElementsByClassName('calc-weights')[0] as HTMLElement;
+		const calcButton = this.rootElem.querySelector<HTMLElement>('.calc-weights')!;
 		calcButton.addEventListener('click', async () => {
 			const previousContents = calcButton.innerHTML;
 			calcButton.classList.add('disabled');
@@ -342,6 +342,7 @@ class EpWeightsMenu extends BaseModal {
 			this.resultsViewer.hideAll();
 			calcButton.innerHTML = previousContents;
 			calcButton.classList.remove('disabled');
+			if (!result) return;
 			this.simUI.prevEpIterations = iterations;
 			this.simUI.prevEpSimResult = this.calculateEp(result);
 			this.updateTable();

@@ -14,11 +14,11 @@ func (mage *Mage) registerFrostboltSpell() {
 		replSrc = mage.Env.Raid.NewReplenishmentSource(core.ActionID{SpellID: 86508})
 	}
 
-	mage.Frostbolt = mage.RegisterSpell(core.SpellConfig{
+	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 116},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagMage | ArcaneMissileSpells | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: MageSpellFrostbolt,
 		MissileSpeed:   28,
 
@@ -38,7 +38,7 @@ func (mage *Mage) registerFrostboltSpell() {
 		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.884 * mage.ScalingBaseDamage
+			baseDamage := 0.884 * mage.ClassSpellScaling
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

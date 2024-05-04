@@ -360,7 +360,7 @@ func init() {
 		statAura := character.NewTemporaryStatsAura(
 			"Lightweave Embroidery Proc",
 			core.ActionID{SpellID: 75170},
-			stats.Stats{stats.Intellect: 480},
+			stats.Stats{stats.Intellect: 580},
 			time.Second*15,
 		)
 
@@ -370,8 +370,8 @@ func init() {
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
 			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 			Outcome:    core.OutcomeLanded,
-			ICD:        time.Second * 60,
-			ProcChance: 0.35,
+			ICD:        time.Second * 64,
+			ProcChance: 0.25,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				statAura.Activate(sim)
 			},
@@ -384,14 +384,14 @@ func init() {
 
 		statAura := character.NewTemporaryStatsAura(
 			"Darkglow Embroidery Cata",
-			core.ActionID{SpellID: 75175},
-			stats.Stats{stats.Spirit: 480},
+			core.ActionID{SpellID: 75173},
+			stats.Stats{stats.Spirit: 580},
 			time.Second*15,
 		)
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Darkglow Embroidery Cata",
-			ActionID:   core.ActionID{SpellID: 75173},
+			ActionID:   core.ActionID{SpellID: 75174},
 			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt | core.CallbackOnHealDealt,
 			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 			Outcome:    core.OutcomeLanded,

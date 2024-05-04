@@ -118,6 +118,7 @@ $icon-size-md: 2.5rem;
 // Z-index variables
 $header-z-index: 100;
 $sidebar-z-index: 200;
+$toast-z-index: 9999;
 
 /////////////////////////////////////////////
 //// Global Bootstrap variable overrides ////
@@ -216,7 +217,6 @@ $nav-link-transition: $link-transition;
 $nav-tabs-border-color: $border-color;
 $nav-tabs-link-active-bg: transparent;
 $nav-tabs-link-active-color: white;
-
 
 $tooltip-bg: #424557;
 $tooltip-border: $link-color;

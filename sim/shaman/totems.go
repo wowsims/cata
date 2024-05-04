@@ -93,6 +93,7 @@ func (shaman *Shaman) registerFlametongueTotemSpell() {
 func (shaman *Shaman) registerStrengthOfEarthTotemSpell() {
 	config := shaman.newTotemSpellConfig(0.1, 8075)
 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+		shaman.EarthElemental.Disable(sim)
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + time.Second*300
 	}
 	shaman.StrengthOfEarthTotem = shaman.RegisterSpell(config)
@@ -101,6 +102,7 @@ func (shaman *Shaman) registerStrengthOfEarthTotemSpell() {
 func (shaman *Shaman) registerTremorTotemSpell() {
 	config := shaman.newTotemSpellConfig(0.02, 8143)
 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+		shaman.EarthElemental.Disable(sim)
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + time.Second*300
 	}
 	shaman.TremorTotem = shaman.RegisterSpell(config)
@@ -109,16 +111,20 @@ func (shaman *Shaman) registerTremorTotemSpell() {
 func (shaman *Shaman) registerStoneskinTotemSpell() {
 	config := shaman.newTotemSpellConfig(0.1, 8071)
 	config.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+		shaman.EarthElemental.Disable(sim)
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + time.Second*300
 	}
 	shaman.StoneskinTotem = shaman.RegisterSpell(config)
 }
 
-func (shaman *Shaman) registerCallOfTheElements() {
-	airTotem := shaman.getAirTotemSpell(shaman.Totems.Air)
-	earthTotem := shaman.getEarthTotemSpell(shaman.Totems.Earth)
-	fireTotem := shaman.getFireTotemSpell(shaman.Totems.Fire)
-	waterTotem := shaman.getWaterTotemSpell(shaman.Totems.Water)
+func (shaman *Shaman) registerTotemCall(spellID int32, totemSet *proto.TotemSet) {
+	if totemSet == nil {
+		return
+	}
+	airTotem := shaman.getAirTotemSpell(totemSet.Air)
+	earthTotem := shaman.getEarthTotemSpell(totemSet.Earth)
+	fireTotem := shaman.getFireTotemSpell(totemSet.Fire)
+	waterTotem := shaman.getWaterTotemSpell(totemSet.Water)
 
 	totalManaCost := 0.0
 	anyTotems := false
@@ -140,7 +146,7 @@ func (shaman *Shaman) registerCallOfTheElements() {
 	}
 
 	shaman.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 66842},
+		ActionID: core.ActionID{SpellID: spellID},
 		Flags:    core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
@@ -154,7 +160,7 @@ func (shaman *Shaman) registerCallOfTheElements() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Save GCD timer value, so we can safely reset it between each totem cast.
-			nextGcdAt := shaman.GCD.ReadyAt()
+			nextGcdAt := shaman.NextGCDAt()
 
 			if airTotem != nil {
 				shaman.GCD.Set(sim.CurrentTime)
@@ -173,9 +179,21 @@ func (shaman *Shaman) registerCallOfTheElements() {
 				waterTotem.Cast(sim, target)
 			}
 
-			shaman.GCD.Set(nextGcdAt)
+			shaman.SetGCDTimer(sim, nextGcdAt)
 		},
 	})
+}
+
+func (shaman *Shaman) registerCallOfTheElements() {
+	shaman.registerTotemCall(66842, shaman.TotemElements)
+}
+
+func (shaman *Shaman) registerCallOfTheAncestors() {
+	shaman.registerTotemCall(66843, shaman.TotemsAncestors)
+}
+
+func (shaman *Shaman) registerCallOfTheSpirits() {
+	shaman.registerTotemCall(66844, shaman.TotemsSpirits)
 }
 
 func (shaman *Shaman) getAirTotemSpell(totemType proto.AirTotem) *core.Spell {

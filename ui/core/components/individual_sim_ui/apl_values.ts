@@ -42,6 +42,7 @@ import {
 	APLValueFrontOfTarget,
 	APLValueGCDIsReady,
 	APLValueGCDTimeToReady,
+	APLValueInputDelay,
 	APLValueIsExecutePhase,
 	APLValueIsExecutePhase_ExecutePhaseThreshold as ExecutePhaseThreshold,
 	APLValueMath,
@@ -69,6 +70,7 @@ import {
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
 	APLValueTotemRemainingTime,
+	APLValueUnitIsMoving,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
 } from '../../proto/apl.js';
@@ -574,6 +576,15 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets'), AplHelpers.actionIdFieldConfig('spellId', 'spells', 'targetUnit', 'currentTarget')],
 	}),
 
+	// Unit
+	unitIsMoving: inputBuilder({
+		label: 'Is moving',
+		submenu: ['Unit'],
+		shortDescription: '',
+		newValue: APLValueUnitIsMoving.create,
+		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources')],
+	}),
+
 	// Resources
 	currentHealth: inputBuilder({
 		label: 'Health',
@@ -819,6 +830,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Spell'],
 		shortDescription: 'The amount of time specified by the <b>Channel Clip Delay</b> setting.',
 		newValue: APLValueChannelClipDelay.create,
+		fields: [],
+	}),
+	inputDelay: inputBuilder({
+		label: 'Input Delay',
+		submenu: ['Spell'],
+		shortDescription: 'The amount of time specified by the <b>Input Dleay</b> setting.',
+		newValue: APLValueInputDelay.create,
 		fields: [],
 	}),
 

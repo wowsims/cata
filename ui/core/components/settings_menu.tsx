@@ -10,6 +10,7 @@ import { BaseModal } from './base_modal.jsx';
 import { BooleanPicker } from './boolean_picker.js';
 import { EnumPicker } from './enum_picker.js';
 import { NumberPicker } from './number_picker.js';
+import Toast from './toast';
 
 export class SettingsMenu extends BaseModal {
 	private readonly simUI: SimUI;
@@ -65,6 +66,10 @@ export class SettingsMenu extends BaseModal {
 			});
 			restoreDefaultsButton.value.addEventListener('click', () => {
 				this.simUI.applyDefaults(TypedEvent.nextEventID());
+				new Toast({
+					variant: 'success',
+					body: 'Restored to default settings.',
+				});
 			});
 		}
 

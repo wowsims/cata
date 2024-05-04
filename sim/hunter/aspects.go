@@ -41,9 +41,19 @@ func (hunter *Hunter) registerAspectOfTheFoxSpell() {
 	// 	restoreFocus += 1 * float64(hunter.Talents.OneWithNature)
 	// }
 
+	foxMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_AllowCastWhileMoving,
+		ClassMask: HunterSpellCobraShot | HunterSpellSteadyShot,
+	})
 	hunter.AspectOfTheFoxAura = core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
 		ActionID: actionID,
 		Label:    "Aspect of the Fox",
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			foxMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			foxMod.Deactivate()
+		},
 	}))
 
 	hunter.applySharedAspectConfig(true, hunter.AspectOfTheFoxAura)

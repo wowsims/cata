@@ -26,6 +26,26 @@ func (value *APLValueChannelClipDelay) String() string {
 	return "Channel Clip Delay()"
 }
 
+type APLValueInputDelay struct {
+	DefaultAPLValueImpl
+	unit *Unit
+}
+
+func (rot *APLRotation) newValueInputDelay(config *proto.APLValueInputDelay) APLValue {
+	return &APLValueInputDelay{
+		unit: rot.unit,
+	}
+}
+func (value *APLValueInputDelay) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeDuration
+}
+func (value *APLValueInputDelay) GetDuration(sim *Simulation) time.Duration {
+	return value.unit.ReactionTime
+}
+func (value *APLValueInputDelay) String() string {
+	return "Channel Clip Delay()"
+}
+
 type APLValueFrontOfTarget struct {
 	DefaultAPLValueImpl
 	unit *Unit

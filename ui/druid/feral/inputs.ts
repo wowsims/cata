@@ -41,6 +41,13 @@ export const FeralDruidRotationConfig = {
 			labelTooltip: 'Maintain Faerie Fire debuff. Overwrites any external Sunder effects specified in settings.',
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
+			fieldName: 'allowAoeBerserk',
+			label: 'Allow AoE Berserk',
+			labelTooltip: 'Allow Berserk usage in AoE rotation',
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				player.getSimpleRotation().rotationType == AplType.Aoe,
+		}),
+		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'manualParams',
 			label: 'Manual Advanced Parameters',
 			labelTooltip: 'Manually specify advanced parameters, otherwise will use preset defaults',

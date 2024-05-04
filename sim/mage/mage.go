@@ -8,22 +8,15 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-const (
-	SpellFlagMage       = core.SpellFlagAgentReserved1
-	ArcaneMissileSpells = core.SpellFlagAgentReserved2
-	HotStreakSpells     = core.SpellFlagAgentReserved3
-	BrainFreezeSpells   = core.SpellFlagAgentReserved4
-)
-
 var TalentTreeSizes = [3]int{21, 21, 19}
 
 type Mage struct {
 	core.Character
 
-	PresenceOfMindMod  *core.SpellMod
-	arcanePowerCostMod *core.SpellMod
-	arcanePowerDmgMod  *core.SpellMod
-	arcanePowerGCDmod  *core.SpellMod
+	arcaneMissilesTickSpell   *core.Spell
+	arcaneMissileCritSnapshot float64
+
+	arcanePowerGCDmod *core.SpellMod
 
 	Talents       *proto.MageTalents
 	Options       *proto.MageOptions
@@ -35,62 +28,24 @@ type Mage struct {
 	flameOrb     *FlameOrb
 	frostfireOrb *FrostfireOrb
 
-	ArcaneBarrage           *core.Spell
-	ArcaneBlast             *core.Spell
-	ArcaneExplosion         *core.Spell
-	ArcaneMissiles          *core.Spell
-	ArcaneMissilesTickSpell *core.Spell
-	ArcanePower             *core.Spell
-	Blizzard                *core.Spell
-	Combustion              *core.Spell
-	CombustionImpact        *core.Spell
-	DeepFreeze              *core.Spell
-	Ignite                  *core.Spell
-	IgniteImpact            *core.Spell
-	LivingBomb              *core.Spell
-	LivingBombImpact        *core.Spell
-	Fireball                *core.Spell
-	FireBlast               *core.Spell
-	FlameOrb                *core.Spell
-	FlameOrbExplode         *core.Spell
-	Flamestrike             *core.Spell
-	Freeze                  *core.Spell
-	Frostbolt               *core.Spell
-	FrostfireBolt           *core.Spell
-	FrostfireOrb            *core.Spell
-	FrostfireOrbTickSpell   *core.Spell
-	IceLance                *core.Spell
-	PresenceOfMind          *core.Spell
-	Pyroblast               *core.Spell
-	PyroblastDot            *core.Spell
-	PyroblastDotImpact      *core.Spell
-	SummonWaterElemental    *core.Spell
-	Scorch                  *core.Spell
-	MirrorImage             *core.Spell
-	BlastWave               *core.Spell
-	DragonsBreath           *core.Spell
-	IcyVeins                *core.Spell
+	Combustion           *core.Spell
+	Ignite               *core.Spell
+	LivingBomb           *core.Spell
+	LivingBombImpact     *core.Spell
+	FireBlast            *core.Spell
+	FlameOrbExplode      *core.Spell
+	Flamestrike          *core.Spell
+	FrostfireOrb         *core.Spell
+	PyroblastDot         *core.Spell
+	PyroblastImpact      *core.Spell
+	SummonWaterElemental *core.Spell
+	IcyVeins             *core.Spell
 
-	ArcaneBlastAura        *core.Aura
 	ArcaneMissilesProcAura *core.Aura
 	ArcanePotencyAura      *core.Aura
-	ArcanePowerAura        *core.Aura
-	BrainFreezeAura        *core.Aura
-	ClearcastingAura       *core.Aura
-	CriticalMassAuras      core.AuraArray
 	FingersOfFrostAura     *core.Aura
-	FrostArmorAura         *core.Aura
-	GlyphedFrostArmorPA    *core.PendingAction
-	hotStreakCritAura      *core.Aura
-	HotStreakAura          *core.Aura
-	IgniteDamageTracker    *core.Aura
-	ImpactAura             *core.Aura
-	PresenceOfMindAura     *core.Aura
-	PyromaniacAura         *core.Aura
 
-	ScalingBaseDamage float64
-
-	CritDebuffCategories core.ExclusiveCategoryArray
+	ClassSpellScaling float64
 }
 
 func (mage *Mage) GetCharacter() *core.Character {
@@ -114,11 +69,8 @@ func (mage *Mage) HasMinorGlyph(glyph proto.MageMinorGlyph) bool {
 
 func (mage *Mage) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	raidBuffs.ArcaneBrilliance = true
-
-	// if mage.Talents.ArcaneEmpowerment == 3 {
-	// 	raidBuffs.ArcaneEmpowerment = true
-	// }
 }
+
 func (mage *Mage) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 }
 
@@ -161,7 +113,42 @@ func (mage *Mage) Initialize() {
 	// mage.registerSummonWaterElementalCD()
 
 	mage.applyArcaneMissileProc()
-	mage.ScalingBaseDamage = 937.330078125
+}
+
+func (mage *Mage) applyArcaneMissileProc() {
+	if mage.Talents.HotStreak || mage.Talents.BrainFreeze > 0 {
+		return
+	}
+
+	// Aura for when proc is successful
+	mage.ArcaneMissilesProcAura = mage.RegisterAura(core.Aura{
+		Label:    "Arcane Missiles Proc",
+		ActionID: core.ActionID{SpellID: 79683},
+		Duration: time.Second * 20,
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask == MageSpellArcaneMissilesCast {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	procChance := 0.4
+
+	const MageSpellsArcaneMissilesNow = MageSpellArcaneBarrage | MageSpellArcaneBlast |
+		MageSpellFireball | MageSpellFrostbolt | MageSpellFrostfireBolt | MageSpellFrostfireOrb
+
+	// Listener for procs
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Arcane Missiles Activation",
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask&MageSpellsArcaneMissilesNow == 0 {
+				return
+			}
+			if sim.Proc(procChance, "Arcane Missiles") {
+				mage.ArcaneMissilesProcAura.Activate(sim)
+			}
+		},
+	}))
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
@@ -169,9 +156,10 @@ func (mage *Mage) Reset(sim *core.Simulation) {
 
 func NewMage(character *core.Character, options *proto.Player, mageOptions *proto.MageOptions) *Mage {
 	mage := &Mage{
-		Character: *character,
-		Talents:   &proto.MageTalents{},
-		Options:   mageOptions,
+		Character:         *character,
+		Talents:           &proto.MageTalents{},
+		Options:           mageOptions,
+		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassMage),
 	}
 
 	core.FillTalentsProto(mage.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
@@ -186,7 +174,6 @@ func NewMage(character *core.Character, options *proto.Player, mageOptions *prot
 func (mage *Mage) applyArmorSpells() {
 	// Molten Armor
 	// +3% spell crit, +5% with glyph
-
 	critToAdd := 3 * core.CritRatingPerCritChance
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfMoltenArmor) {
 		critToAdd = 5 * core.CritRatingPerCritChance
@@ -273,6 +260,9 @@ func (mage *Mage) applyArmorSpells() {
 			mageArmor.Activate(sim)
 		},
 	})
+
+	// Frost Armor
+	// TODO:
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.
@@ -280,45 +270,8 @@ type MageAgent interface {
 	GetMage() *Mage
 }
 
-func (mage *Mage) applyArcaneMissileProc() {
-	if mage.Talents.HotStreak || mage.Talents.BrainFreeze > 0 {
-		return
-	}
-
-	// Aura for when proc is successful
-	mage.ArcaneMissilesProcAura = mage.RegisterAura(core.Aura{
-		Label:    "Arcane Missiles Proc",
-		ActionID: core.ActionID{SpellID: 79683},
-		Duration: time.Second * 20,
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell == mage.ArcaneMissiles {
-				aura.Deactivate(sim)
-			}
-		},
-	})
-
-	procChance := 0.4
-
-	// Listener for procs
-	mage.RegisterAura(core.Aura{
-		Label:    "Arcane Missiles Activation",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Flags.Matches(ArcaneMissileSpells) {
-				return
-			}
-			if sim.Proc(procChance, "Arcane Missiles") {
-				mage.ArcaneMissilesProcAura.Activate(sim)
-			}
-		},
-	})
-}
-
 func (mage *Mage) hasChillEffect(spell *core.Spell) bool {
-	return spell == mage.Frostbolt || spell == mage.FrostfireBolt || (spell == mage.Blizzard && mage.Talents.IceShards > 0)
+	return spell.ClassSpellMask&MageSpellChill > 0 || (spell.ClassSpellMask == MageSpellBlizzard && mage.Talents.IceShards > 0)
 }
 
 const (

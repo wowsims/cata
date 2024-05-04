@@ -5,7 +5,6 @@ import { BaseModal } from '../components/base_modal.js';
 import { Component } from '../components/component.js';
 import { ContentBlock } from '../components/content_block.js';
 import { Input } from '../components/input.js';
-import { getLanguageCode } from '../constants/lang';
 import { setItemQualityCssClass } from '../css_utils.js';
 import { Player } from '../player.js';
 import { Glyphs, ItemQuality } from '../proto/common.js';
@@ -173,15 +172,13 @@ class GlyphPicker extends Input<Player<any>, number> {
 		this.selectedGlyph = this.glyphOptions.find(glyphData => glyphData.id == newValue);
 
 		if (this.selectedGlyph) {
-			const lang = getLanguageCode();
-			const langPrefix = lang ? `${lang}.` : '';
-
 			this.anchorElem.href = ActionId.makeItemUrl(this.selectedGlyph.id);
-			this.anchorElem.dataset.wowhead = `domain=${langPrefix}cata&dataEnv=11`;
-			this.anchorElem.dataset.whtticon = 'false';
+			ActionId.makeItemTooltipData(this.selectedGlyph.id).then(url => {
+				this.anchorElem.dataset.wowhead = url;
+				this.anchorElem.dataset.whtticon = 'false';
+			});
 
 			this.iconElem.src = this.selectedGlyph.iconUrl;
-
 			this.nameElem.textContent = this.selectedGlyph.name;
 		} else {
 			this.clear();

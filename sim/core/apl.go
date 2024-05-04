@@ -29,6 +29,9 @@ type APLRotation struct {
 	// Used to avoid recursive APL loops.
 	inLoop bool
 
+	// Used to override MCD restrictions within sequences.
+	inSequence bool
+
 	// Validation warnings that occur during proto parsing.
 	// We return these back to the user for display in the UI.
 	curWarnings          []string
@@ -226,6 +229,7 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 	i := 0
 	apl.inLoop = true
 
+	apl.unit.UpdatePosition(sim)
 	for nextAction := apl.getNextAction(sim); nextAction != nil; i, nextAction = i+1, apl.getNextAction(sim) {
 		if i > 1000 {
 			panic(fmt.Sprintf("[USER_ERROR] Infinite loop detected, current action:\n%s", nextAction))
@@ -239,9 +243,10 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 		apl.unit.Log(sim, "No available actions!")
 	}
 
-	gcdReady := apl.unit.GCD.IsReady(sim)
-	if gcdReady {
-		apl.unit.WaitUntil(sim, sim.CurrentTime+apl.unit.ReactionTime)
+	// Schedule the next rotation evaluation based on either the GCD or reaction time
+	if apl.unit.RotationTimer.IsReady(sim) {
+		nextEvaluation := max(apl.unit.NextGCDAt(), sim.CurrentTime+apl.unit.ReactionTime)
+		apl.unit.WaitUntil(sim, nextEvaluation)
 	}
 }
 

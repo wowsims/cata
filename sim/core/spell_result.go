@@ -96,7 +96,8 @@ func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
 func (spell *Spell) PhysicalCritChance(attackTable *AttackTable) float64 {
 	critRating := spell.Unit.stats[stats.MeleeCrit] +
 		spell.BonusCritRating +
-		attackTable.Defender.PseudoStats.BonusCritRatingTaken
+		attackTable.Defender.PseudoStats.BonusCritRatingTaken +
+		attackTable.BonusCritRating
 	return critRating/(CritRatingPerCritChance*100) - attackTable.MeleeCritSuppression
 }
 func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable) bool {
@@ -140,7 +141,9 @@ func (spell *Spell) spellCritRating(target *Unit) float64 {
 		target.PseudoStats.BonusSpellCritRatingTaken
 }
 func (spell *Spell) SpellCritChance(target *Unit) float64 {
-	return spell.spellCritRating(target)/(CritRatingPerCritChance*100) - spell.Unit.AttackTables[target.UnitIndex].SpellCritSuppression
+	return spell.spellCritRating(target)/(CritRatingPerCritChance*100) -
+		spell.Unit.AttackTables[target.UnitIndex].SpellCritSuppression +
+		spell.Unit.AttackTables[target.UnitIndex].BonusCritRating
 }
 func (spell *Spell) MagicCritCheck(sim *Simulation, target *Unit) bool {
 	critChance := spell.SpellCritChance(target)
@@ -451,7 +454,7 @@ func (spell *Spell) WaitTravelTime(sim *Simulation, callback func(*Simulation)) 
 
 // Returns the combined attacker modifiers.
 func (spell *Spell) AttackerDamageMultiplier(attackTable *AttackTable, isDot bool) float64 {
-	damageMultiplierAdditive := TernaryFloat64(isDot,
+	damageMultiplierAdditive := TernaryFloat64(isDot && !spell.Flags.Matches(SpellFlagIgnoreAttackerModifiers),
 		spell.DamageMultiplierAdditive+spell.Unit.PseudoStats.DotDamageMultiplierAdditive-1,
 		spell.DamageMultiplierAdditive)
 

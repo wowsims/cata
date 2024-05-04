@@ -6,7 +6,6 @@ import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
-import { PaladinMajorGlyph, PaladinSeal } from '../../core/proto/paladin.js';
 import { Stats } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
@@ -77,7 +76,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_PRESET.gear,
+		gear: Presets.PRERAID_RET_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -102,7 +101,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.AuraMasteryTalents.data,
+		talents: Presets.RetTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -127,6 +126,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		debuffs: Debuffs.create({
 			exposeArmor: true,
 			bloodFrenzy: true,
+			mangle: true,
+			ebonPlaguebringer: true,
+			criticalMass: true,
 		}),
 	},
 
@@ -151,9 +153,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	presets: {
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
-		talents: [Presets.AuraMasteryTalents, Presets.DivineSacTalents],
+		talents: [Presets.RetTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET, Presets.P5_PRESET],
+		gear: [
+			Presets.PRERAID_RET_PRESET,
+			Presets.P1_NONHC_RET_PRESET,
+			Presets.P1_BIS_RET_PRESET,
+		],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
@@ -163,7 +169,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecRetributionPaladin,
-			talents: Presets.AuraMasteryTalents.data,
+			talents: Presets.RetTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -174,18 +180,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
-					4: Presets.P4_PRESET.gear,
-					5: Presets.P5_PRESET.gear,
+					1: Presets.PRERAID_RET_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
-					4: Presets.P4_PRESET.gear,
-					5: Presets.P5_PRESET.gear,
+					1: Presets.PRERAID_RET_PRESET.gear,
 				},
 			},
 		},

@@ -17,6 +17,7 @@ type Hardcast struct {
 	ActionID   ActionID
 	OnComplete func(*Simulation, *Unit)
 	Target     *Unit
+	CanMove    bool
 }
 
 // Input for constructing the CastSpell function for a spell.
@@ -136,6 +137,10 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			spell.Unit.SetGCDTimer(sim, sim.CurrentTime+effectiveTime)
 		}
 
+		if (spell.Flags&SpellFlagCanCastWhileMoving == 0) && (spell.CurCast.CastTime > 0) && spell.Unit.Moving {
+			return spell.castFailureHelper(sim, "casting/channeling while moving not allowed!")
+		}
+
 		// Hardcasts
 		if spell.CurCast.CastTime > 0 {
 			if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
@@ -161,13 +166,11 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 						spell.Unit.OnCastComplete(sim, spell)
 					}
 				},
-				Target: target,
+				Target:  target,
+				CanMove: spell.Flags&SpellFlagCanCastWhileMoving > 0,
 			}
 
-			if spell.Unit.Hardcast.Expires != spell.Unit.NextGCDAt() {
-				spell.Unit.newHardcastAction(sim)
-			}
-
+			spell.Unit.newHardcastAction(sim)
 			return true
 		}
 

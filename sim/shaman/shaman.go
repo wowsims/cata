@@ -13,6 +13,13 @@ var TalentTreeSizes = [3]int{19, 19, 20}
 // Start looking to refresh 5 minute totems at 4:55.
 const TotemRefreshTime5M = time.Second * 295
 
+// Damage Done By Caster setup
+const (
+	DDBC_T12P2 int = iota
+
+	DDBC_Total
+)
+
 const (
 	SpellFlagShock     = core.SpellFlagAgentReserved1
 	SpellFlagElectric  = core.SpellFlagAgentReserved2
@@ -25,6 +32,9 @@ func NewShaman(character *core.Character, talents string, totems *proto.ShamanTo
 		Character:           *character,
 		Talents:             &proto.ShamanTalents{},
 		Totems:              totems,
+		TotemElements:       totems.Elements,
+		TotemsAncestors:     totems.Ancestors,
+		TotemsSpirits:       totems.Spirits,
 		SelfBuffs:           selfBuffs,
 		ThunderstormInRange: thunderstormRange,
 		ClassSpellScaling:   core.GetClassSpellScalingCoefficient(proto.Class_ClassShaman),
@@ -82,7 +92,10 @@ type Shaman struct {
 	Talents   *proto.ShamanTalents
 	SelfBuffs SelfBuffs
 
-	Totems *proto.ShamanTotems
+	Totems          *proto.ShamanTotems
+	TotemElements   *proto.TotemSet
+	TotemsAncestors *proto.TotemSet
+	TotemsSpirits   *proto.TotemSet
 
 	// The expiration time of each totem (earth, air, fire, water).
 	TotemExpirations [4]time.Duration
@@ -243,6 +256,8 @@ func (shaman *Shaman) Initialize() {
 
 	// // This registration must come after all the totems are registered
 	shaman.registerCallOfTheElements()
+	shaman.registerCallOfTheAncestors()
+	shaman.registerCallOfTheSpirits()
 
 	shaman.registerBloodlustCD()
 	// shaman.NewTemporaryStatsAura("DC Pre-Pull SP Proc", core.ActionID{SpellID: 60494}, stats.Stats{stats.SpellPower: 765}, time.Second*10)
@@ -329,6 +344,7 @@ const (
 	SpellMaskUnleashFrost
 	SpellMaskUnleashFlame
 	SpellMaskEarthquake
+	SpellMaskFlametongueWeapon
 
 	SpellMaskFlameShock = SpellMaskFlameShockDirect | SpellMaskFlameShockDot
 	SpellMaskFire       = SpellMaskFlameShock | SpellMaskLavaBurst | SpellMaskLavaBurstOverload | SpellMaskLavaLash | SpellMaskFireNova | SpellMaskUnleashFlame

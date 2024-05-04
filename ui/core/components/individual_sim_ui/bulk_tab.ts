@@ -9,6 +9,7 @@ import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { canEquipItem, getEligibleItemSlots } from '../../proto_utils/utils';
 import { TypedEvent } from '../../typed_event';
 import { EventID } from '../../typed_event.js';
+import { WorkerProgressCallback } from '../../worker_pool';
 import { BaseModal } from '../base_modal';
 import { BooleanPicker } from '../boolean_picker';
 import { Component } from '../component';
@@ -401,7 +402,7 @@ export class BulkTab extends SimTab {
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
-	protected async runBulkSim(onProgress: (_?: any) => void) {
+	protected async runBulkSim(onProgress: WorkerProgressCallback) {
 		this.pendingResults.setPending();
 
 		try {
@@ -498,8 +499,6 @@ export class BulkTab extends SimTab {
 			let combinations = 0;
 
 			this.runBulkSim((progressMetrics: ProgressMetrics) => {
-				console.log(progressMetrics);
-
 				const msSinceStart = new Date().getTime() - simStart;
 				const iterPerSecond = progressMetrics.completedIterations / (msSinceStart / 1000);
 
