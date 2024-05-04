@@ -1762,6 +1762,7 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 	if (enchant.enchantType == EnchantType.EnchantTypeTwoHand && item.handType != HandType.HandTypeTwoHand) return false;
 
 	if (
+		// All off-hand enchants can be applied to shields as well
 		(enchant.enchantType == EnchantType.EnchantTypeShield || enchant.enchantType == EnchantType.EnchantTypeOffHand) !==
 		(item.weaponType == WeaponType.WeaponTypeShield)
 	)
