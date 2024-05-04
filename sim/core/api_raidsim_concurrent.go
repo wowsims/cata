@@ -300,6 +300,10 @@ func (csd *concurrentSimData) UpdateProgress(idx int, msg *proto.ProgressMetrics
 }
 
 func (csd *concurrentSimData) GetFinalResult() *proto.RaidSimResult {
+	if csd.Concurrency == 1 {
+		return csd.FinalResults[0]
+	}
+
 	comb := simResultCombiner{
 		count:   csd.Concurrency,
 		results: csd.FinalResults,
@@ -332,15 +336,17 @@ func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.Progre
 	go func() {
 		remainder := request.SimOptions.Iterations % int32(concurrency)
 		request.SimOptions.Iterations /= int32(concurrency)
+		nextStartSeed := request.SimOptions.RandomSeed // Sims increment their seed each iteration.
 
 		for i := 0; i < concurrency; i++ {
-			if i == 0 && remainder > 0 {
-				requestRemainderIterations := googleProto.Clone(request).(*proto.RaidSimRequest)
-				requestRemainderIterations.SimOptions.Iterations += remainder
-				go RunSim(requestRemainderIterations, substituteChannels[i])
-			} else {
-				go RunSim(request, substituteChannels[i])
+			requestCopy := googleProto.Clone(request).(*proto.RaidSimRequest)
+			if i == 0 {
+				requestCopy.SimOptions.Iterations += remainder
 			}
+			requestCopy.SimOptions.RandomSeed = nextStartSeed
+			nextStartSeed += int64(requestCopy.SimOptions.Iterations)
+
+			go RunSim(requestCopy, substituteChannels[i])
 
 			// Wait for first message to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
 			msg := <-substituteChannels[i]
