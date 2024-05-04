@@ -847,10 +847,12 @@ export class SelectorModal extends BaseModal {
 					actionId: ActionId.fromReforge(itemProto, reforgeData.reforge),
 					name: (
 						<>
-							<span className="reforge-value negative">{`${reforgeData.fromAmount} ${shortSecondaryStatNames.get(
-								reforgeData.fromStat[0],
-							)}`}</span>
-							<span className="reforge-value positive">+{`${reforgeData.toAmount} ${shortSecondaryStatNames.get(reforgeData.toStat[0])}`}</span>
+							<span className="reforge-value negative">
+								{reforgeData.fromAmount} {shortSecondaryStatNames.get(reforgeData.fromStat[0])}
+							</span>
+							<span className="reforge-value positive">
+								+{reforgeData.toAmount} {shortSecondaryStatNames.get(reforgeData.toStat[0])}
+							</span>
 						</>
 					) as HTMLElement,
 					quality: ItemQuality.ItemQualityCommon,
@@ -860,14 +862,13 @@ export class SelectorModal extends BaseModal {
 					ignoreEPFilter: true,
 					onEquip: (eventID, reforgeData: ReforgeData) => {
 						const equippedItem = gearData.getEquippedItem();
-
 						if (equippedItem) gearData.equipItem(eventID, equippedItem.withReforge(reforgeData.reforge));
 					},
 				};
 			}),
 			computeEP: (reforge: ReforgeData) => this.player.computeReforgingEP(reforge),
 			equippedToItemFn: (equippedItem: EquippedItem | null) =>
-				equippedItem && equippedItem.reforge ? this.player.getReforgeData(equippedItem.item, equippedItem.reforge) : null,
+				equippedItem?.reforge ? this.player.getReforgeData(equippedItem.item, equippedItem.reforge) : null,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
 				if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(null));
@@ -1043,9 +1044,10 @@ export class SelectorModal extends BaseModal {
 			equippedToItemFn,
 			onRemove,
 			(itemData: ItemData<T>) => {
-				const item = itemData.item;
-				itemData.onEquip(TypedEvent.nextEventID(), item);
+				const item = itemData;
+				itemData.onEquip(TypedEvent.nextEventID(), item.item);
 
+				console.log('Item', itemData);
 				// If the item changes, then gem slots and random suffix options will also change, so remove and recreate these tabs.
 				if (Item.is(item)) {
 					this.removeTabs('Random Suffix');
