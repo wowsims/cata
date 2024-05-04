@@ -23,7 +23,7 @@ func init() {
 
 	// Eternal Shadowspirit Diamond
 	core.NewItemEffect(52293, func(agent core.Agent) {
-		agent.GetCharacter().PseudoStats.BlockValueMultiplier += 0.01
+		agent.GetCharacter().PseudoStats.BlockDamageReduction += 0.01
 	})
 
 	// Austere Shadowspirit Diamond

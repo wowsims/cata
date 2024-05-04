@@ -24,7 +24,6 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
   final_stats: 1579.17548
   final_stats: 0
   final_stats: 140038.64519
@@ -1962,7 +1961,7 @@ dps_results: {
 dps_results: {
  key: "TestFrost-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 28008.91512
-  tps: 26308.02241
+  dps: 27802.45605
+  tps: 26120.95398
  }
 }

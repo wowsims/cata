@@ -187,9 +187,6 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	// // Paladins get more melee haste from haste than other classes
 	// paladin.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-	// // Paladins get 1 block value per 2 str
-	// paladin.AddStatDependency(stats.Strength, stats.BlockValue, .5)
-
 	// // Bonus Armor and Armor are treated identically for Paladins
 	// paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 

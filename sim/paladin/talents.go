@@ -124,8 +124,6 @@ func (paladin *Paladin) ApplyTalents() {
 
 // 	actionID := core.ActionID{SpellID: 20132}
 
-// 	paladin.PseudoStats.BlockValueMultiplier += 0.10 * float64(paladin.Talents.Redoubt)
-
 // 	bonusBlockRating := 10 * core.BlockRatingPerBlockChance * float64(paladin.Talents.Redoubt)
 
 // 	procAura := paladin.RegisterAura(core.Aura{

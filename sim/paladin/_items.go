@@ -434,60 +434,7 @@ func init() {
 			},
 		})
 	})
-
-	core.NewItemEffect(32368, func(agent core.Agent) {
-		paladin := agent.(PaladinAgent).GetPaladin()
-		procAura := paladin.NewTemporaryStatsAura("Tome of the Lightbringer Proc", core.ActionID{SpellID: 41042}, stats.Stats{stats.BlockValue: 186}, time.Second*10)
-
-		paladin.RegisterAura(core.Aura{
-			Label:    "Tome of the Lightbringer",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(SpellFlagPrimaryJudgement) {
-					procAura.Activate(sim)
-				}
-			},
-		})
-	})
-
-	core.NewItemEffect(40707, func(agent core.Agent) {
-		paladin := agent.(PaladinAgent).GetPaladin()
-		procAura := paladin.NewTemporaryStatsAura("Libram of Obstruction Proc", core.ActionID{SpellID: 60794}, stats.Stats{stats.BlockValue: 352}, time.Second*10)
-
-		paladin.RegisterAura(core.Aura{
-			Label:    "Libram of Obstruction",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(SpellFlagPrimaryJudgement) {
-					procAura.Activate(sim)
-				}
-			},
-		})
-	})
-
-	core.NewItemEffect(45145, func(agent core.Agent) {
-		paladin := agent.(PaladinAgent).GetPaladin()
-		procAura := paladin.NewTemporaryStatsAura("Libram of the Sacred Shield Proc", core.ActionID{SpellID: 65182}, stats.Stats{stats.BlockValue: 450}, time.Second*20)
-
-		paladin.RegisterAura(core.Aura{
-			Label:    "Libram of the Sacred Shield",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.SpellID == paladin.HolyShield.SpellID {
-					procAura.Activate(sim)
-				}
-			},
-		})
-	})
+	// Removed in Cata Libram have no procs
 
 	core.NewItemEffect(32489, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()

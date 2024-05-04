@@ -24,7 +24,6 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
   final_stats: 2025.09443
   final_stats: 0
   final_stats: 141229.34519
@@ -1962,7 +1961,7 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 31933.86701
-  tps: 23052.6471
+  dps: 31652.90377
+  tps: 22880.22761
  }
 }

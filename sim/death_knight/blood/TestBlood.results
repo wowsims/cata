@@ -23,7 +23,6 @@ character_stats_results: {
   final_stats: 0
   final_stats: 16
   final_stats: 0
-  final_stats: 0
   final_stats: 1278.0448
   final_stats: 1898.20071
   final_stats: 0
@@ -2232,8 +2231,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 12968.95239
-  tps: 65538.77565
+  dps: 12832.94597
+  tps: 64961.22718
   hps: 4187.57073
  }
 }

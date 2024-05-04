@@ -26,7 +26,6 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
   final_stats: 125133.73
   final_stats: 0
   final_stats: 42
@@ -2011,7 +2010,7 @@ dps_results: {
 dps_results: {
  key: "TestFeral-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 19623.55419
-  tps: 13933.92006
+  dps: 19462.02901
+  tps: 13819.23718
  }
 }

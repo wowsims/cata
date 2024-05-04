@@ -26,7 +26,6 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
   final_stats: 133271.57544
   final_stats: 0
   final_stats: 0
@@ -2123,7 +2122,7 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 28511.37922
-  tps: 18957.16973
+  dps: 28336.82278
+  tps: 18797.54731
  }
 }

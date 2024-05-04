@@ -143,6 +143,7 @@ type Unit struct {
 
 	AttackTables                []*AttackTable
 	DynamicDamageTakenModifiers []DynamicDamageTakenModifier
+	Blockhandler                func(sim *Simulation, spell *Spell, result *SpellResult)
 
 	GCD *Timer
 
@@ -431,8 +432,8 @@ func (unit *Unit) Armor() float64 {
 	return unit.PseudoStats.ArmorMultiplier * unit.stats[stats.Armor]
 }
 
-func (unit *Unit) BlockValue() float64 {
-	return unit.PseudoStats.BlockValueMultiplier * unit.stats[stats.BlockValue]
+func (unit *Unit) BlockDamageReduction() float64 {
+	return unit.PseudoStats.BlockDamageReduction
 }
 
 func (unit *Unit) ArmorPenetrationPercentage(armorPenRating float64) float64 {

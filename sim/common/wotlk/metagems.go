@@ -74,7 +74,7 @@ func init() {
 
 	// Eternal Earthsiege
 	core.NewItemEffect(41396, func(agent core.Agent) {
-		agent.GetCharacter().PseudoStats.BlockValueMultiplier += 0.05
+		agent.GetCharacter().PseudoStats.BlockDamageReduction += 0.01
 	})
 
 	core.NewItemEffect(41400, func(agent core.Agent) {

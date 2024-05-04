@@ -26,7 +26,6 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
   final_stats: 130381.35552
   final_stats: 0
   final_stats: 0
@@ -2080,7 +2079,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 27227.64991
+  dps: 27193.67996
   tps: 555.14734
  }
 }
