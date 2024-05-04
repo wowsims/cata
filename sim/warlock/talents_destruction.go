@@ -32,9 +32,15 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 
 	// Emberstorm
 	warlock.AddStaticMod(core.SpellModConfig{
-		ClassMask: WarlockSpellSoulFire | WarlockSpellIncinerate,
+		ClassMask: WarlockSpellSoulFire,
 		Kind:      core.SpellMod_CastTime_Flat,
 		TimeValue: time.Millisecond * time.Duration(-500*warlock.Talents.Emberstorm),
+	})
+
+	warlock.AddStaticMod(core.SpellModConfig{
+		ClassMask: WarlockSpellIncinerate,
+		Kind:      core.SpellMod_CastTime_Flat,
+		TimeValue: time.Millisecond * time.Duration([]float64{0, -130, -250}[warlock.Talents.Emberstorm]),
 	})
 
 	warlock.registerImprovedSearingPain()
