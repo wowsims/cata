@@ -462,7 +462,7 @@ export class SelectorModal extends BaseModal {
 	private readonly simUI: SimUI;
 	private player: Player<any>;
 	private gearPicker: GearPicker | undefined;
-	private ilists: ItemList<any>[] = [];
+	private ilists: ItemList<ItemListType>[] = [];
 	// private updateReforgeList: (newReforgeData: Array<ReforgeData & { ep: number }>) => void;
 
 	private readonly itemSlotTabElems: HTMLElement[] = [];
@@ -473,14 +473,11 @@ export class SelectorModal extends BaseModal {
 	private currentTab: SelectorModalTabs = SelectorModalTabs.Items;
 
 	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, gearPicker?: GearPicker) {
-		super(parent, 'selector-modal');
+		super(parent, 'selector-modal', { disposeOnClose: false });
 
 		this.simUI = simUI;
 		this.player = player;
 		this.gearPicker = gearPicker;
-		// this.updateReforgeList = (_newReforgeData: Array<ReforgeData & { ep: number }>) => {
-		// 	return;
-		// };
 
 		this.addItemSlotTabs();
 
@@ -551,7 +548,7 @@ export class SelectorModal extends BaseModal {
 					phase: item.phase,
 					baseEP: this.player.computeItemEP(item, selectedSlot),
 					ignoreEPFilter: false,
-					onEquip: (eventID: number, item: Item) => {
+					onEquip: (eventID, item) => {
 						const equippedItem = gearData.getEquippedItem();
 						if (equippedItem) {
 							gearData.equipItem(eventID, equippedItem.withItem(item));
@@ -566,7 +563,7 @@ export class SelectorModal extends BaseModal {
 			onRemove: (eventID: number) => {
 				gearData.equipItem(eventID, null);
 				this.removeTabs('Gem');
-				this.removeTabs('Random Suffix');
+				this.removeTabs(SelectorModalTabs.RandomSuffixes);
 			},
 			showSource: true,
 		});
@@ -585,7 +582,7 @@ export class SelectorModal extends BaseModal {
 					baseEP: this.player.computeStatsEP(new Stats(enchant.stats)),
 					ignoreEPFilter: true,
 					heroic: false,
-					onEquip: (eventID: number, enchant: Enchant) => {
+					onEquip: (eventID, enchant) => {
 						const equippedItem = gearData.getEquippedItem();
 						if (equippedItem) gearData.equipItem(eventID, equippedItem.withEnchant(enchant));
 					},
@@ -684,7 +681,7 @@ export class SelectorModal extends BaseModal {
 						heroic: false,
 						baseEP: this.player.computeStatsEP(new Stats(gem.stats)),
 						ignoreEPFilter: true,
-						onEquip: (eventID: number, gem: Gem) => {
+						onEquip: (eventID, gem) => {
 							const equippedItem = gearData.getEquippedItem();
 							if (equippedItem) gearData.equipItem(eventID, equippedItem.withGem(gem, socketIdx));
 						},
@@ -757,7 +754,7 @@ export class SelectorModal extends BaseModal {
 					heroic: false,
 					baseEP: this.player.computeRandomSuffixEP(randomSuffix),
 					ignoreEPFilter: true,
-					onEquip: (eventID: number, randomSuffix: ItemRandomSuffix) => {
+					onEquip: (eventID, randomSuffix) => {
 						const equippedItem = gearData.getEquippedItem();
 
 						if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(randomSuffix));
@@ -825,7 +822,7 @@ export class SelectorModal extends BaseModal {
 		// 	}
 		// });
 		// this.addReforgeTabs(
-		// 	SelectorModalTabs.Reforging,
+		// 	SelectorModalTabs.reforge,
 		// 	reforgings
 		// 		?.map(reforge => {
 		// 			return this.prepareReforgeData(reforge, equippedItem);
@@ -860,7 +857,7 @@ export class SelectorModal extends BaseModal {
 					heroic: false,
 					baseEP: this.player.computeReforgingEP(reforgeData),
 					ignoreEPFilter: true,
-					onEquip: (eventID, reforgeData: ReforgeData) => {
+					onEquip: (eventID, reforgeData) => {
 						const equippedItem = gearData.getEquippedItem();
 						if (equippedItem) gearData.equipItem(eventID, equippedItem.withReforge(reforgeData.reforge));
 					},
@@ -876,92 +873,6 @@ export class SelectorModal extends BaseModal {
 			itemLabel: 'Reforge',
 		});
 	}
-	// private addReforgeTabs(label: string, reforgeData: Array<ReforgeData>, onAdd: (item: EquippedItem, EventId: EventID) => void) {
-	// 	if (reforgeData.length == 0) {
-	// 		//return;
-	// 	}
-
-	// 	const tabContentId = (label + '-tab').split(' ').join('');
-	// 	const selected = label === this.currentTab;
-	// 	const tabAnchor = ref<HTMLAnchorElement>();
-	// 	this.tabsElem.appendChild(
-	// 		<li className="nav-item">
-	// 			<a
-	// 				ref={tabAnchor}
-	// 				className={`nav-link selector-modal-item-tab ${selected ? 'active' : ''}`}
-	// 				dataset={{
-	// 					label: label,
-	// 					contentId: tabContentId,
-	// 					bsToggle: 'tab',
-	// 					bsTarget: `#${tabContentId}`,
-	// 				}}
-	// 				attributes={{
-	// 					role: 'tab',
-	// 					'aria-selected': selected,
-	// 				}}
-	// 				type="button"></a>
-	// 		</li>,
-	// 	);
-	// 	tabAnchor.value!.textContent = label;
-	// 	// Tab content for Reforges
-	// 	const tabContent = (
-	// 		<div id={tabContentId} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
-	// 			<div className="selector-modal-list-labels">
-	// 				<label className="item-label">
-	// 					<small>Reforge</small>
-	// 				</label>
-	// 				<label className="reforge-label">
-	// 					<small>To</small>
-	// 				</label>
-	// 				<label className="ep-label">
-	// 					<small>EP</small>
-	// 				</label>
-	// 			</div>
-	// 			<ul className="selector-modal-list"></ul>
-	// 		</div>
-	// 	);
-	// 	const updateReforgeList = (newReforgeData: ReforgeData[]) => {
-	// 		const listElement = document.querySelector(`#${tabContentId} .selector-modal-list`);
-	// 		if (listElement) {
-	// 			// Clear the current list
-	// 			listElement.innerHTML = '';
-	// 			newReforgeData.forEach(data => {
-	// 				const listItem = document.createElement('li');
-	// 				listItem.className = `selector-modal-list-item reforge ${data.reforgeId == data.item.reforging ? 'selected' : ''}`;
-	// 				listItem.setAttribute('data-reforge-id', data.reforgeId.toString());
-	// 				listItem.onclick = () => {
-	// 					if (data.item.reforging !== data.reforgeId) {
-	// 						onAdd(data.item.withReforge(data.reforgeId), TypedEvent.nextEventID());
-	// 					} else {
-	// 						onAdd(data.item.withItem(data.item.item), TypedEvent.nextEventID());
-	// 					}
-	// 				};
-
-	// 				const lossSpan = document.createElement('span');
-	// 				lossSpan.className = 'loss';
-	// 				lossSpan.textContent = `${data.fromAmount} ${shortSecondaryStatNames.get(data.fromStat[0])}`;
-	// 				listItem.appendChild(lossSpan);
-
-	// 				const gainSpan = document.createElement('span');
-	// 				gainSpan.className = 'gain';
-	// 				gainSpan.textContent = `+${data.toAmount} ${shortSecondaryStatNames.get(data.toStat[0])}`;
-	// 				listItem.appendChild(gainSpan);
-	// 				const ep = this.player.computeReforgingEP(data);
-	// 				const epSpan = document.createElement('span');
-	// 				epSpan.className = `selector-modal-list-item-ep ${ep < 0 ? 'loss' : 'gain'}`;
-	// 				epSpan.textContent = `${ep > 0 ? '+' : ''}${Number(ep.toFixed(2)).toString()}`;
-	// 				listItem.appendChild(epSpan);
-
-	// 				listElement.appendChild(listItem);
-	// 			});
-	// 		}
-	// 	};
-	// 	this.contentElem.appendChild(tabContent);
-	// 	this.updateReforgeList = updateReforgeList;
-
-	// 	// Initial
-	// 	updateReforgeList(reforgeData);
-	// }
 
 	/**
 	 * Adds one of the tabs for the item selector menu.
@@ -969,7 +880,7 @@ export class SelectorModal extends BaseModal {
 	 * T is expected to be Item, Enchant, or Gem. Tab menus for all 3 looks extremely
 	 * similar so this function uses extra functions to do it generically.
 	 */
-	private addTab<T>({
+	private addTab<T extends ItemListType>({
 		label,
 		gearData,
 		itemData,
@@ -983,7 +894,7 @@ export class SelectorModal extends BaseModal {
 	}: {
 		label: SelectorModalTabs;
 		gearData: GearData;
-		itemData: Array<ItemData<T>>;
+		itemData: ItemData<T>[];
 		computeEP: (item: T) => number;
 		equippedToItemFn: (equippedItem: EquippedItem | null) => T | null | undefined;
 		onRemove: (eventID: EventID) => void;
@@ -1025,12 +936,7 @@ export class SelectorModal extends BaseModal {
 			tabAnchor.value!.textContent = label;
 		}
 
-		// TODO: do we need this check here?
-		if (itemData.length == 0) {
-			return;
-		}
-
-		const ilist = new ItemList<T>(
+		const ilist = new ItemList(
 			this.contentElem,
 			this.simUI,
 			this.currentSlot,
@@ -1043,18 +949,19 @@ export class SelectorModal extends BaseModal {
 			computeEP,
 			equippedToItemFn,
 			onRemove,
-			(itemData: ItemData<T>) => {
+			itemData => {
 				const item = itemData;
 				itemData.onEquip(TypedEvent.nextEventID(), item.item);
 
-				console.log('Item', itemData);
 				// If the item changes, then gem slots and random suffix options will also change, so remove and recreate these tabs.
-				if (Item.is(item)) {
-					this.removeTabs('Random Suffix');
+				if (Item.is(item.item)) {
+					this.removeTabs(SelectorModalTabs.RandomSuffixes);
 					this.addRandomSuffixTab(gearData.getEquippedItem(), gearData);
+
 					this.removeTabs('Gem');
 					this.addGemTabs(this.currentSlot, gearData.getEquippedItem(), gearData);
-					this.removeTabs('Reforging');
+
+					this.removeTabs(SelectorModalTabs.Reforging);
 					this.addReforgingTab(gearData.getEquippedItem(), gearData);
 				}
 			},
@@ -1095,7 +1002,7 @@ export class SelectorModal extends BaseModal {
 			ilist.sizeRefresh();
 		});
 
-		this.ilists.push(ilist);
+		this.ilists.push(ilist as unknown as ItemList<ItemListType>);
 	}
 
 	private removeTabs(labelSubstring: string) {
@@ -1110,7 +1017,7 @@ export class SelectorModal extends BaseModal {
 	}
 }
 
-export interface ItemData<T> {
+export interface ItemData<T extends ItemListType> {
 	item: T;
 	name: string | HTMLElement;
 	id: number;
@@ -1123,7 +1030,7 @@ export interface ItemData<T> {
 	onEquip: (eventID: EventID, item: T) => void;
 }
 
-interface ItemDataWithIdx<T> {
+interface ItemDataWithIdx<T extends ItemListType> {
 	idx: number;
 	data: ItemData<T>;
 }
@@ -1166,7 +1073,9 @@ const DEFAULT_ITEM_LIST_OPTIONS: ItemListConfig = {
 	showSource: false,
 };
 
-export class ItemList<T> {
+type ItemListType = Item | Enchant | Gem | ReforgeData | ItemRandomSuffix;
+
+export class ItemList<T extends ItemListType> {
 	private listElem: HTMLElement;
 	private readonly player: Player<any>;
 	public label: string;
@@ -1383,16 +1292,43 @@ export class ItemList<T> {
 		this.scroller.dispose();
 	}
 
+	private getUpdateType(item: ItemListType | null | undefined) {
+		if (!item) return null;
+		const itemProperties = Object.keys(item);
+		if ('reforge' in item && !!item.reforge) return 'reforge';
+		else if ('enchantType' in item) return 'enchant';
+		else if ('color' in item) return 'gem';
+		else if (itemProperties.length === 3 && 'name' in item && item.id && item.name && item.stats) return 'randomSuffix';
+		else return 'item';
+	}
+
+	private getItemIdByUpdateType(item: ItemListType | null | undefined) {
+		if (!item) return null;
+		const updateType = this.getUpdateType(item);
+		switch (updateType) {
+			case 'reforge':
+				return (item as ReforgeData).reforge!.id;
+			case 'enchant':
+				return (item as Enchant).effectId;
+			case 'item':
+			case 'gem':
+			case 'randomSuffix':
+				return (item as Item | Gem | ItemRandomSuffix).id;
+			default:
+				return null;
+		}
+	}
+
 	public updateSelected() {
 		const newEquippedItem = this.gearData.getEquippedItem();
 		const newItem = this.equippedToItemFn(newEquippedItem);
-
-		const newItemId = newItem ? (this.label == 'Enchants' ? (newItem as unknown as Enchant).effectId : (newItem as unknown as Item | Gem).id) : 0;
+		const newItemId = this.getItemIdByUpdateType(newItem);
 		const newEP = newItem ? this.computeEP(newItem) : 0;
 
 		this.scroller.elementUpdate(item => {
 			const idx = (item as HTMLElement).dataset.idx!;
 			const itemData = this.itemData[parseFloat(idx)];
+
 			if (itemData.id == newItemId) item.classList.add('active');
 			else item.classList.remove('active');
 
@@ -1417,13 +1353,19 @@ export class ItemList<T> {
 		}
 
 		const currentEquippedItem = this.player.getEquippedItem(this.slot);
+		const newItem = this.equippedToItemFn(currentEquippedItem);
+		const type = this.getUpdateType(newItem);
 
-		if (this.label == 'Items') {
-			itemIdxs = this.player.filterItemData(itemIdxs, i => this.itemData[i].item as unknown as Item, this.slot);
-		} else if (this.label == 'Enchants') {
-			itemIdxs = this.player.filterEnchantData(itemIdxs, i => this.itemData[i].item as unknown as Enchant, this.slot, currentEquippedItem);
-		} else if (this.label.startsWith('Gem')) {
-			itemIdxs = this.player.filterGemData(itemIdxs, i => this.itemData[i].item as unknown as Gem, this.slot, this.socketColor);
+		switch (type) {
+			case 'item':
+				itemIdxs = this.player.filterItemData(itemIdxs, i => this.itemData[i].item as unknown as Item, this.slot);
+				break;
+			case 'enchant':
+				itemIdxs = this.player.filterEnchantData(itemIdxs, i => this.itemData[i].item as unknown as Enchant, this.slot, currentEquippedItem);
+				break;
+			case 'gem':
+				itemIdxs = this.player.filterGemData(itemIdxs, i => this.itemData[i].item as unknown as Gem, this.slot, this.socketColor);
+				break;
 		}
 
 		itemIdxs = itemIdxs.filter(i => {
@@ -1434,17 +1376,13 @@ export class ItemList<T> {
 			}
 
 			if (this.searchInput.value.length > 0) {
-				const searchQuery = this.searchInput.value
-					.toLowerCase()
-					.replaceAll(/[^a-zA-Z0-9\s]/g, '')
-					.split(' ');
-				const name = listItemData.name
-					.toString()
-					.toLowerCase()
-					.replaceAll(/[^a-zA-Z0-9\s]/g, '');
+				const formatQuery = (value: string) => value.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '');
+
+				const searchQuery = formatQuery(this.searchInput.value).split(' ');
+				const name = formatQuery(listItemData.name.toString());
 
 				let include = true;
-				searchQuery.forEach(v => {
+				searchQuery.some(v => {
 					if (!name.includes(v)) include = false;
 				});
 				if (!include) {

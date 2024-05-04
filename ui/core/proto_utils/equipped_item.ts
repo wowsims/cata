@@ -71,6 +71,8 @@ export class EquippedItem {
 
 		if (this._randomSuffix && other.randomSuffix && !ItemRandomSuffix.equals(this._randomSuffix, other.randomSuffix)) return false;
 
+		if ((this._reforge == null) != (other.reforge == null)) return false;
+
 		if (this._reforge && other.reforge && !ReforgeStat.equals(this._reforge, other.reforge)) return false;
 
 		if ((this._enchant == null) != (other.enchant == null)) return false;

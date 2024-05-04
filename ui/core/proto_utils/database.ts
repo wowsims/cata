@@ -228,8 +228,8 @@ export class Database {
 		}
 
 		let reforge: ReforgeStat | null = null;
-		if (itemSpec.reforging && !!this.getReforgeById(itemSpec.reforging)) {
-			reforge = this.getReforgeById(itemSpec.randomSuffix)!;
+		if (itemSpec.reforging) {
+			reforge = this.getReforgeById(itemSpec.reforging) || null;
 		}
 
 		return new EquippedItem(item, enchant, gems, randomSuffix, reforge);

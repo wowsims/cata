@@ -9,7 +9,6 @@ import { Player } from '../player.js';
 import { PlayerClasses } from '../player_classes';
 import { Class, Spec } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
-import { getTalentTreePoints } from '../proto_utils/utils';
 import { TypedEvent } from '../typed_event.js';
 import { isRightClick, sum } from '../utils.js';
 import { classGlyphsConfig } from './factory';
@@ -23,7 +22,7 @@ const MAX_POINTS_HUNTER_PET_BM = 21;
 const PLAYER_TREES_UNLOCK_POINT_THRESHOLD = 31;
 
 export interface TalentsPickerConfig<ModObject, TalentsProto> extends InputConfig<ModObject, string> {
-	klass: Class;
+	playerClass: Class;
 	pointsPerRow: number;
 	trees: TalentsConfig<TalentsProto>;
 }
@@ -116,7 +115,7 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 			// Set middle talents active by default for mobile slider
 			if (i === 1) carouselItem.classList.add('active');
 
-			return new TalentTreePicker(carouselItem, treeConfig, this, config.klass, i);
+			return new TalentTreePicker(carouselItem, treeConfig, this, config.playerClass, i);
 		});
 		this.trees.forEach(tree => tree.talents.forEach(talent => talent.setPoints(0, false)));
 
