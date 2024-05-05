@@ -373,6 +373,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	regenRate := cat.EnergyRegenPerSecond()
 	isExecutePhase := rotation.BiteDuringExecute && sim.IsExecutePhase25()
 	tfActive := cat.TigersFuryAura.IsActive()
+	t11Active := cat.StrengthOfThePantherAura.IsActive()
 
 	// Prioritize using Rip with omen procs if bleed isnt active
 	ripCcCheck := core.Ternary(isBleedActive, !isClearcast, true)
@@ -406,11 +407,14 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	// Clip Mangle if it won't change the total number of Mangles we have to
 	// cast before the fight ends.
-	mangleRefreshNow := !cat.bleedAura.IsActive() && simTimeRemain > time.Second
-	mangleRefreshPending := cat.bleedAura.IsActive() && cat.bleedAura.RemainingDuration(sim) < (simTimeRemain-time.Second)
+	t11BuildNow := (cat.StrengthOfThePantherAura != nil) && (cat.StrengthOfThePantherAura.GetStacks() < 3)
+	t11RefreshNow := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second + cat.ReactionTime) && (simTimeRemain > time.Second)
+	t11RefreshNext := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second*2 + cat.ReactionTime) && (simTimeRemain > time.Second*2)
+	mangleRefreshNow := !cat.bleedAura.IsActive() && (simTimeRemain > time.Second)
+	mangleRefreshPending := (!t11RefreshNow && !mangleRefreshNow) && ((cat.bleedAura.IsActive() && cat.bleedAura.RemainingDuration(sim) < (simTimeRemain-time.Second)) || (t11Active && (cat.StrengthOfThePantherAura.GetStacks() == 3) && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < simTimeRemain - time.Second)))
 	clipMangle := false
 
-	if mangleRefreshPending {
+	if mangleRefreshPending && !t11Active {
 		numManglesRemaining := 1 + int32((sim.Duration-time.Second-cat.bleedAura.ExpiresAt())/time.Minute)
 		earliestMangle := sim.Duration - time.Duration(numManglesRemaining)*time.Minute
 		clipMangle = sim.CurrentTime >= earliestMangle
@@ -423,7 +427,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	// Ignore minimum CP enforcement during Execute phase if Rip is about to fall off
 	emergencyBiteNow := isExecutePhase && ripDot.IsActive() && (ripDot.RemainingDuration(sim) < ripDot.TickLength) && (curCp >= 1)
-	biteNow = biteNow || emergencyBiteNow
+	biteNow = (biteNow || emergencyBiteNow) && !t11RefreshNext
 
 	// Rake calcs
 	rakeNow := rotation.UseRake && (!rakeDot.IsActive() || (rakeDot.RemainingDuration(sim) < rakeDot.TickLength)) && (simTimeRemain > rakeDot.TickLength) && rakeCcCheck
@@ -472,8 +476,12 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		pendingPool.addAction(rakeRefreshTime, rakeCost)
 	}
 	if mangleRefreshPending {
-		mangleCost := core.Ternary(cat.berserkExpectedAt(sim, cat.bleedAura.ExpiresAt()), cat.MangleCat.DefaultCast.Cost*0.5, cat.MangleCat.DefaultCast.Cost)
-		pendingPool.addAction(cat.bleedAura.ExpiresAt(), mangleCost)
+		mangleRefreshTime := cat.bleedAura.ExpiresAt()
+		if t11Active {
+			mangleRefreshTime = cat.StrengthOfThePantherAura.ExpiresAt() - cat.ReactionTime*2
+		}
+		mangleCost := core.Ternary(cat.berserkExpectedAt(sim, mangleRefreshTime), cat.MangleCat.DefaultCast.Cost*0.5, cat.MangleCat.DefaultCast.Cost)
+		pendingPool.addAction(mangleRefreshTime, mangleCost)
 	}
 	if roarRefreshPending {
 		roarCost := core.Ternary(cat.berserkExpectedAt(sim, cat.SavageRoarAura.ExpiresAt()), cat.SavageRoar.DefaultCast.Cost*0.5, cat.SavageRoar.DefaultCast.Cost)
@@ -604,6 +612,12 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		}
 	} else if emergencyBearweave {
 		cat.readyToShift = true
+	} else if t11RefreshNow {
+		if cat.MangleCat.CanCast(sim, cat.CurrentTarget) {
+			cat.MangleCat.Cast(sim, cat.CurrentTarget)
+			return false, 0
+		}
+		timeToNextAction = core.DurationFromSeconds((cat.CurrentMangleCatCost() - curEnergy) / regenRate)
 	} else if ffNow {
 		cat.FaerieFire.Cast(sim, cat.CurrentTarget)
 		return false, 0
@@ -637,6 +651,12 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			return false, 0
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentRakeCost() - curEnergy) / regenRate)
+	} else if t11BuildNow {
+		if cat.MangleCat.CanCast(sim, cat.CurrentTarget) {
+			cat.MangleCat.Cast(sim, cat.CurrentTarget)
+			return false, 0
+		}
+		timeToNextAction = core.DurationFromSeconds((cat.CurrentMangleCatCost() - curEnergy) / regenRate)
 	} else if bearweaveNow {
 		cat.readyToShift = true
 	} else if (rotation.MangleSpam && !isClearcast) || cat.PseudoStats.InFrontOfTarget {
