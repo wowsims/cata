@@ -19,7 +19,7 @@ func (druid *Druid) registerSurvivalInstinctsCD() {
 	druid.SurvivalInstinctsAura = druid.RegisterAura(core.Aura{
 		Label:    "Survival Instincts",
 		ActionID: actionID,
-		Duration: time.Second * 12,
+		Duration: core.TernaryDuration(druid.HasSetBonus(ItemSetStormridersBattlegarb, 4), time.Second * 18, time.Second * 12),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.DamageTakenMultiplier *= 0.5
 		},

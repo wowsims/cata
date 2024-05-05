@@ -32,6 +32,9 @@ func TestFeral(t *testing.T) {
 		Race:  proto.Race_RaceTauren,
 
 		GearSet:     core.GetGearSet("../../../ui/druid/feral/gear_sets", "preraid"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/druid/feral/gear_sets", "p1"),
+		},
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,

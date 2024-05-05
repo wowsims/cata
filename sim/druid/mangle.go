@@ -106,6 +106,19 @@ func (druid *Druid) registerMangleCatSpell() {
 				if hasBloodletting {
 					druid.ApplyBloodletting(target)
 				}
+
+				// 4pT11
+				if druid.StrengthOfThePantherAura != nil {
+					aura := druid.StrengthOfThePantherAura
+
+					if aura.IsActive() {
+						aura.Refresh(sim)
+						aura.AddStack(sim)
+					} else {
+						aura.Activate(sim)
+						aura.SetStacks(sim, 1)
+					}
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}
