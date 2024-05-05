@@ -104,7 +104,6 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 	shadowfiend.AutoAttacks.MHConfig().BonusCoefficient = 0
 
 	shadowfiend.EnableManaBar()
-	core.ApplyPetConsumeEffects(&shadowfiend.Character, priest.Consumes)
 	priest.AddPet(shadowfiend)
 
 	return shadowfiend

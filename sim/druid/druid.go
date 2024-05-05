@@ -85,19 +85,20 @@ type Druid struct {
 	EnrageAura               *core.Aura
 	FaerieFireAuras          core.AuraArray
 	FrenziedRegenerationAura *core.Aura
+	LunarEclipseProcAura     *core.Aura
 	MaulQueueAura            *core.Aura
 	MoonkinT84PCAura         *core.Aura
 	NaturesGraceProcAura     *core.Aura
+	OwlkinFrenzyAura         *core.Aura
 	PredatoryInstinctsAura   *core.Aura
 	PrimalMadnessAura        *core.Aura
 	PulverizeAura            *core.Aura
 	SavageDefenseAura        *core.Aura
 	SurvivalInstinctsAura    *core.Aura
+	StrengthOfThePantherAura *core.Aura
 	TigersFuryAura           *core.Aura
 	SavageRoarAura           *core.Aura
 	SolarEclipseProcAura     *core.Aura
-	LunarEclipseProcAura     *core.Aura
-	OwlkinFrenzyAura         *core.Aura
 
 	BleedCategories core.ExclusiveCategoryArray
 

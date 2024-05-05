@@ -118,7 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		talents: [Presets.StandardTalents, Presets.HybridTalents],
 		rotations: [Presets.SIMPLE_ROTATION_DEFAULT, Presets.APL_ROTATION_DEFAULT, Presets.APL_ROTATION_AOE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecFeralDruid>): APLRotation => {

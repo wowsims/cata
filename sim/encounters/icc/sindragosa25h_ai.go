@@ -23,7 +23,6 @@ func addSindragosa25H(bossPrefix string) {
 				stats.Health:      46_018_500,
 				stats.Armor:       10643,
 				stats.AttackPower: 805,
-				stats.BlockValue:  76,
 			}.ToFloatArray(),
 
 			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,

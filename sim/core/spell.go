@@ -468,6 +468,14 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 		return false
 	}
 
+	// While moving only instant casts are possible
+	if spell.Flags&SpellFlagCanCastWhileMoving == 0 && spell.DefaultCast.CastTime > 0 && spell.Unit.Moving {
+		//if sim.Log != nil {
+		//	sim.Log("Cant cast because moving")
+		//}
+		return false
+	}
+
 	// While casting or channeling, no other action is possible
 	if spell.Unit.Hardcast.Expires > sim.CurrentTime {
 		//if sim.Log != nil {

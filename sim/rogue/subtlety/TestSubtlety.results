@@ -26,7 +26,6 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
   final_stats: 135031.65183
   final_stats: 0
   final_stats: 0
@@ -2218,7 +2217,7 @@ dps_results: {
 dps_results: {
  key: "TestSubtlety-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 19336.62072
-  tps: 13729.00071
+  dps: 19167.49679
+  tps: 13608.92272
  }
 }

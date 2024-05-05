@@ -32,6 +32,9 @@ func TestFeral(t *testing.T) {
 		Race:  proto.Race_RaceTauren,
 
 		GearSet:     core.GetGearSet("../../../ui/druid/feral/gear_sets", "preraid"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/druid/feral/gear_sets", "p1"),
+		},
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,
@@ -39,7 +42,7 @@ func TestFeral(t *testing.T) {
 		OtherSpecOptions: []core.SpecOptionsCombo{
 			{Label: "Default-NoBleed", SpecOptions: PlayerOptionsMonoCatNoBleed},
 		},
-		Rotation:   core.GetAplRotation("../../../ui/druid/feral/apls", "default"),
+		Rotation: core.GetAplRotation("../../../ui/druid/feral/apls", "default"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/druid/feral/apls", "aoe"),
 		},

@@ -103,17 +103,18 @@ type EncounterCombo struct {
 	Encounter *proto.Encounter
 }
 type SettingsCombos struct {
-	Class       proto.Class
-	Races       []proto.Race
-	GearSets    []GearSetCombo
-	TalentSets  []TalentsCombo
-	SpecOptions []SpecOptionsCombo
-	Rotations   []RotationCombo
-	Buffs       []BuffsCombo
-	Encounters  []EncounterCombo
-	SimOptions  *proto.SimOptions
-	IsHealer    bool
-	Cooldowns   *proto.Cooldowns
+	Class              proto.Class
+	Races              []proto.Race
+	GearSets           []GearSetCombo
+	TalentSets         []TalentsCombo
+	SpecOptions        []SpecOptionsCombo
+	Rotations          []RotationCombo
+	Buffs              []BuffsCombo
+	Encounters         []EncounterCombo
+	SimOptions         *proto.SimOptions
+	IsHealer           bool
+	DistanceFromTarget float64
+	Cooldowns          *proto.Cooldowns
 }
 
 func (combos *SettingsCombos) NumTests() int {
@@ -174,7 +175,7 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 				Profession1:        proto.Profession_Engineering,
 				Cooldowns:          combos.Cooldowns,
 				Rotation:           rotationsCombo.Rotation,
-				DistanceFromTarget: 30,
+				DistanceFromTarget: combos.DistanceFromTarget,
 				ReactionTimeMs:     100,
 				ChannelClipDelayMs: 50,
 			}, specOptionsCombo.SpecOptions),
@@ -446,7 +447,8 @@ type CharacterSuiteConfig struct {
 	StatsToWeigh    []proto.Stat
 	EPReferenceStat proto.Stat
 
-	Cooldowns *proto.Cooldowns
+	Cooldowns          *proto.Cooldowns
+	DistanceFromTarget float64
 }
 
 func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator {
@@ -474,7 +476,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 			Cooldowns:     config.Cooldowns,
 
 			InFrontOfTarget:    config.InFrontOfTarget,
-			DistanceFromTarget: 30,
+			DistanceFromTarget: config.DistanceFromTarget,
 			ReactionTimeMs:     100,
 			ChannelClipDelayMs: 50,
 		},
@@ -521,10 +523,11 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 							Consumes: config.Consumes,
 						},
 					},
-					IsHealer:   config.IsHealer,
-					Encounters: MakeDefaultEncounterCombos(),
-					SimOptions: DefaultSimTestOptions,
-					Cooldowns:  config.Cooldowns,
+					IsHealer:           config.IsHealer,
+					Encounters:         MakeDefaultEncounterCombos(),
+					SimOptions:         DefaultSimTestOptions,
+					Cooldowns:          config.Cooldowns,
+					DistanceFromTarget: config.DistanceFromTarget,
 				},
 			},
 			{
