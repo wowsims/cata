@@ -66,7 +66,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 			Aura: core.Aura{
 				Label: "ArcaneMissiles" + mage.Label,
 			},
-			NumberOfTicks:        3 - 1, // subtracting 1 due to force tick after apply
+			NumberOfTicks:        3,
 			TickLength:           time.Millisecond * 700,
 			HasteAffectsDuration: true,
 			AffectedByCastSpeed:  true,
@@ -81,9 +81,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 				mage.arcaneMissileCritSnapshot = mage.arcaneMissilesTickSpell.SpellCritChance(target)
 				dot := spell.Dot(target)
 				dot.Apply(sim)
-				dot.TickOnce(sim)
 			}
-			//spell.DealOutcome(sim, result)
 		},
 	})
 }
