@@ -39,7 +39,7 @@ func (rsrc *raidSimResultCombiner) newUnitMetrics(baseUnit *proto.UnitMetrics) *
 		Actions:   make([]*proto.ActionMetrics, 0, len(baseUnit.Actions)),
 		Auras:     make([]*proto.AuraMetrics, 0, len(baseUnit.Auras)),
 		Resources: make([]*proto.ResourceMetrics, 0, len(baseUnit.Resources)),
-		Pets:      make([]*proto.UnitMetrics, 0, len(baseUnit.Pets)),
+		Pets:      make([]*proto.UnitMetrics, len(baseUnit.Pets)),
 	}
 
 	for i, pet := range baseUnit.Pets {
@@ -325,8 +325,8 @@ func (csd *concurrentSimData) GetCombinedFinalResult() *proto.RaidSimResult {
 }
 
 // Run sim on multiple threads concurrently by splitting interations over multiple sims, transparently combining results into the progress channel.
-func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
-	concurrency := runtime.NumCPU()
+func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
+	concurrency := TernaryInt(request.SimOptions.IsTest, 3, runtime.NumCPU())
 	substituteChannels := make([]chan *proto.ProgressMetrics, concurrency)
 	substituteCases := make([]reflect.SelectCase, concurrency)
 	running := concurrency
@@ -344,18 +344,25 @@ func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.Progre
 		substituteCases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(substituteChannels[i])}
 	}
 
-	log.Printf("Running %d iterations on %d concurrent sims.", csd.IterationsTotal, csd.Concurrency)
+	if !request.SimOptions.IsTest {
+		log.Printf("Running %d iterations on %d concurrent sims.", csd.IterationsTotal, csd.Concurrency)
+	}
 
 	go func() {
-		remainder := request.SimOptions.Iterations % int32(concurrency)
-		request.SimOptions.Iterations /= int32(concurrency)
+		defer func() {
+			close(progress)
+		}()
+
 		nextStartSeed := request.SimOptions.RandomSeed // Sims increment their seed each iteration.
 
 		for i := 0; i < concurrency; i++ {
 			requestCopy := googleProto.Clone(request).(*proto.RaidSimRequest)
+
+			requestCopy.SimOptions.Iterations /= int32(concurrency)
 			if i == 0 {
-				requestCopy.SimOptions.Iterations += remainder
+				requestCopy.SimOptions.Iterations += request.SimOptions.Iterations % int32(concurrency)
 			}
+
 			requestCopy.SimOptions.RandomSeed = nextStartSeed
 			nextStartSeed += int64(requestCopy.SimOptions.Iterations)
 
@@ -386,6 +393,8 @@ func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.Progre
 					// TODO: cancel still running routines on error?
 					return
 				}
+				substituteCases[i].Chan = reflect.ValueOf(nil)
+				running -= 1
 				continue
 			}
 
@@ -397,7 +406,21 @@ func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.Progre
 			}
 		}
 
-		log.Printf("All %d sims finished successfully.", csd.Concurrency)
+		for _, res := range csd.FinalResults {
+			if res == nil {
+				progress <- &proto.ProgressMetrics{
+					FinalRaidResult: &proto.RaidSimResult{
+						ErrorResult: "Missing one or more final sim result(s)!",
+					},
+				}
+				log.Print("Missing one or more final sim result(s)!")
+				return
+			}
+		}
+
+		if !request.SimOptions.IsTest {
+			log.Printf("All %d sims finished successfully.", csd.Concurrency)
+		}
 
 		progress <- &proto.ProgressMetrics{
 			TotalIterations:     csd.IterationsTotal,
@@ -407,4 +430,17 @@ func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.Progre
 			FinalRaidResult:     csd.GetCombinedFinalResult(),
 		}
 	}()
+}
+
+// Run a concurrent sim and wait for final result
+func RunConcurrentRaidSimSync(request *proto.RaidSimRequest) *proto.RaidSimResult {
+	progress := make(chan *proto.ProgressMetrics, 10)
+	RunConcurrentRaidSimAsync(request, progress)
+	var rsr *proto.RaidSimResult
+	for msg := range progress {
+		if msg.FinalRaidResult != nil {
+			rsr = msg.FinalRaidResult
+		}
+	}
+	return rsr
 }
