@@ -66,8 +66,6 @@ func (warlock *Warlock) NewImpPet() *ImpPet {
 	imp.AddStat(stats.AttackPower, -20)
 	imp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
 
-	core.ApplyPetConsumeEffects(&warlock.Character, warlock.Consumes)
-
 	warlock.AddPet(imp)
 
 	return imp
