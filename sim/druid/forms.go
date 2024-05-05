@@ -169,6 +169,10 @@ func (druid *Druid) registerCatFormSpell() {
 				if druid.PredatoryInstinctsAura != nil {
 					druid.PredatoryInstinctsAura.Deactivate(sim)
 				}
+
+				if druid.StrengthOfThePantherAura.IsActive() {
+					druid.StrengthOfThePantherAura.Deactivate(sim)
+				}
 			}
 		},
 	})

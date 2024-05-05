@@ -1877,15 +1877,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 10531.55883
-  tps: 7480.17388
+  dps: 10570.04305
+  tps: 7507.49767
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 10520.01499
-  tps: 7476.68931
+  dps: 10560.16065
+  tps: 7505.19273
  }
 }
 dps_results: {
@@ -1912,22 +1912,22 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-default-NoBuffs-LongMultiTarget"
  value: {
-  dps: 17834.59041
-  tps: 12665.3263
+  dps: 17901.55963
+  tps: 12712.87444
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-default-NoBuffs-LongSingleTarget"
  value: {
-  dps: 17834.59041
-  tps: 12665.3263
+  dps: 17901.55963
+  tps: 12712.87444
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-default-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 19887.3442
-  tps: 14127.49305
+  dps: 19970.68308
+  tps: 14186.66366
  }
 }
 dps_results: {
@@ -1961,15 +1961,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-Default-aoe-NoBuffs-LongSingleTarget"
  value: {
-  dps: 10531.55883
-  tps: 7480.17388
+  dps: 10570.04305
+  tps: 7507.49767
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-Default-aoe-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 10520.01499
-  tps: 7476.68931
+  dps: 10560.16065
+  tps: 7505.19273
  }
 }
 dps_results: {
@@ -1996,22 +1996,22 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-Default-default-NoBuffs-LongMultiTarget"
  value: {
-  dps: 17834.59041
-  tps: 12665.3263
+  dps: 17901.55963
+  tps: 12712.87444
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-Default-default-NoBuffs-LongSingleTarget"
  value: {
-  dps: 17834.59041
-  tps: 12665.3263
+  dps: 17901.55963
+  tps: 12712.87444
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-Default-default-NoBuffs-ShortSingleTarget"
  value: {
-  dps: 19887.3442
-  tps: 14127.49305
+  dps: 19970.68308
+  tps: 14186.66366
  }
 }
 dps_results: {
