@@ -204,6 +204,7 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		DamageMultiplierAdditive: 1,
+		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
 		FlatThreatBonus:          160,
 

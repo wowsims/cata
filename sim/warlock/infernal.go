@@ -116,8 +116,6 @@ func (warlock *Warlock) NewInfernalPet() *InfernalPet {
 	})
 	infernal.AutoAttacks.MHConfig().DamageMultiplier *= 3.2
 
-	core.ApplyPetConsumeEffects(&infernal.Character, warlock.Consumes)
-
 	warlock.AddPet(infernal)
 
 	return infernal

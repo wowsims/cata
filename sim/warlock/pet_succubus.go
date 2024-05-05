@@ -74,8 +74,6 @@ func (warlock *Warlock) NewSuccubusPet() *SuccubusPet {
 
 	succubus.EnableAutoAttacks(succubus, autoAttackOptions)
 
-	core.ApplyPetConsumeEffects(&succubus.Character, warlock.Consumes)
-
 	warlock.AddPet(succubus)
 
 	return succubus

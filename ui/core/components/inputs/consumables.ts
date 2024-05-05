@@ -1,5 +1,5 @@
 import { Player } from '../../player';
-import { BattleElixir, Class, Conjured, Consumes, Explosive, Flask, Food, GuardianElixir, PetFood, Potions, Profession, Spec, Stat, TinkerHands } from '../../proto/common';
+import { BattleElixir, Class, Conjured, Consumes, Explosive, Flask, Food, GuardianElixir, Potions, Profession, Spec, Stat, TinkerHands } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import { EventID, TypedEvent } from '../../typed_event';
 import { IconEnumValueConfig } from '../icon_enum_picker';
@@ -593,11 +593,6 @@ export const makeFoodInput = makeConsumeInputFactory({ consumesFieldName: 'food'
 //                                 PET
 ///////////////////////////////////////////////////////////////////////////
 
-export const SpicedMammothTreats = makeBooleanConsumeInput({
-	actionId: ActionId.fromItemId(43005),
-	fieldName: 'petFood',
-	value: PetFood.PetFoodSpicedMammothTreats,
-});
 export const PetScrollOfAgilityV = makeBooleanConsumeInput({
 	actionId: ActionId.fromItemId(27498),
 	fieldName: 'petScrollOfAgility',
