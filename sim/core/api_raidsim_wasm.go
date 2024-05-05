@@ -6,6 +6,6 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
+func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
 	go RunSim(request, progress)
 }
