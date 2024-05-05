@@ -8,11 +8,11 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/death_knight/blood"
+	"github.com/wowsims/cata/sim/druid/feral"
 	"github.com/wowsims/cata/sim/hunter/marksmanship"
 )
 
-// MM hunter
-func getTestPlayer1() *proto.Player {
+func getTestPlayerMM() *proto.Player {
 	var FullConsumes = &proto.Consumes{
 		Flask:         proto.Flask_FlaskOfTheWinds,
 		DefaultPotion: proto.Potions_PotionOfTheTolvir,
@@ -65,7 +65,7 @@ func getTestPlayer1() *proto.Player {
 	}
 }
 
-func getTestPlayer2() *proto.Player {
+func getTestPlayerBloodDk() *proto.Player {
 	var BloodTalents = "03323203132212311321--003"
 	var BloodDefaultGlyphs = &proto.Glyphs{
 		Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfDeathStrike),
@@ -107,6 +107,48 @@ func getTestPlayer2() *proto.Player {
 	}
 }
 
+func getTestPlayerFeralCat() *proto.Player {
+	var StandardTalents = "-2320322312012121202301-020301"
+	var StandardGlyphs = &proto.Glyphs{
+		Prime1: int32(proto.DruidPrimeGlyph_GlyphOfRip),
+		Prime2: int32(proto.DruidPrimeGlyph_GlyphOfBloodletting),
+		Prime3: int32(proto.DruidPrimeGlyph_GlyphOfBerserk),
+		Major1: int32(proto.DruidMajorGlyph_GlyphOfThorns),
+		Major2: int32(proto.DruidMajorGlyph_GlyphOfFeralCharge),
+		Major3: int32(proto.DruidMajorGlyph_GlyphOfRebirth),
+	}
+
+	var PlayerOptionsMonoCat = &proto.Player_FeralDruid{
+		FeralDruid: &proto.FeralDruid{
+			Options: &proto.FeralDruid_Options{
+				AssumeBleedActive: true,
+			},
+		},
+	}
+
+	var FullConsumes = &proto.Consumes{
+		Flask:         proto.Flask_FlaskOfTheWinds,
+		Food:          proto.Food_FoodSkeweredEel,
+		DefaultPotion: proto.Potions_PotionOfTheTolvir,
+		PrepopPotion:  proto.Potions_PotionOfTheTolvir,
+	}
+
+	feral.RegisterFeralDruid()
+
+	return &proto.Player{
+		Race:           proto.Race_RaceTauren,
+		Class:          proto.Class_ClassDruid,
+		Equipment:      core.GetGearSet("../../ui/druid/feral/gear_sets", "preraid").GearSet,
+		Rotation:       core.GetAplRotation("../../ui/druid/feral/apls", "default").Rotation,
+		Consumes:       FullConsumes,
+		Spec:           PlayerOptionsMonoCat,
+		Glyphs:         StandardGlyphs,
+		TalentsString:  StandardTalents,
+		Buffs:          core.FullIndividualBuffs,
+		ReactionTimeMs: 100,
+	}
+}
+
 func makeTestCase(player *proto.Player) *proto.RaidSimRequest {
 	return &proto.RaidSimRequest{
 		Raid: core.SinglePlayerRaidProto(
@@ -129,24 +171,55 @@ func makeTestCase(player *proto.Player) *proto.RaidSimRequest {
 	}
 }
 
+type testResult struct {
+	Dps  float64
+	Tps  float64
+	Dtps float64
+	Hps  float64
+}
+
+func getResults(result *proto.RaidSimResult) testResult {
+	return testResult{
+		Dps:  result.RaidMetrics.Dps.Avg,
+		Tps:  result.RaidMetrics.Parties[0].Players[0].Threat.Avg,
+		Dtps: result.RaidMetrics.Parties[0].Players[0].Dtps.Avg,
+		Hps:  result.RaidMetrics.Parties[0].Players[0].Hps.Avg,
+	}
+}
+
 func TestConcurrentRaidSim(t *testing.T) {
 	testCases := []*proto.RaidSimRequest{
-		makeTestCase(getTestPlayer1()),
-		makeTestCase(getTestPlayer2()),
+		makeTestCase(getTestPlayerMM()),
+		makeTestCase(getTestPlayerBloodDk()),
+		makeTestCase(getTestPlayerFeralCat()),
 	}
 
 	for i, rsr := range testCases {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
-			defaultResult := core.RunRaidSim(rsr)
-			concurrentResult := core.RunConcurrentRaidSimSync(rsr)
+			stRes := getResults(core.RunRaidSim(rsr))
+			mtRes := getResults(core.RunConcurrentRaidSimSync(rsr))
 
-			dpsDefault := defaultResult.RaidMetrics.Dps.Avg
-			dpsConcurrent := concurrentResult.RaidMetrics.Dps.Avg
+			dpsDiff := math.Abs(stRes.Dps - mtRes.Dps)
+			if dpsDiff > 0.0001 {
+				t.Logf("DPS expected %0.03f but was %0.03f for multi threaded sim!", stRes.Dps, mtRes.Dps)
+				t.Fail()
+			}
 
-			diff := math.Abs(dpsDefault - dpsConcurrent)
+			hpsDiff := math.Abs(stRes.Hps - mtRes.Hps)
+			if hpsDiff > 0.0001 {
+				t.Logf("HPS expected %0.03f but was %0.03f for multi threaded sim!", stRes.Hps, mtRes.Hps)
+				t.Fail()
+			}
 
-			if diff > 0.0001 {
-				t.Logf("DPS expected %0.03f but was %0.03f!", dpsDefault, dpsConcurrent)
+			tpsDiff := math.Abs(stRes.Tps - mtRes.Tps)
+			if tpsDiff > 0.0001 {
+				t.Logf("TPS expected %0.03f but was %0.03f for multi threaded sim!", stRes.Tps, mtRes.Tps)
+				t.Fail()
+			}
+
+			dtpsDiff := math.Abs(stRes.Dtps - mtRes.Dtps)
+			if dtpsDiff > 0.0001 {
+				t.Logf("DTPS expected %0.03f but was %0.03f for multi threaded sim!", stRes.Dtps, mtRes.Dtps)
 				t.Fail()
 			}
 		})
