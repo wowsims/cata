@@ -12,22 +12,61 @@ import (
 	googleProto "google.golang.org/protobuf/proto"
 )
 
-type simResultCombiner struct {
-	count   int32
-	results []*proto.RaidSimResult
+type raidSimResultCombiner struct {
+	resultWeight float64 // 1 / resultCount
+	combined     *proto.RaidSimResult
 }
 
-func (comb simResultCombiner) addDistMetrics(base *proto.DistributionMetrics, add *proto.DistributionMetrics, isLast bool) *proto.DistributionMetrics {
-	if base == nil {
-		base = &proto.DistributionMetrics{
-			Min:     math.MaxFloat64,
-			MinSeed: math.MaxInt64,
-			Hist:    make(map[int32]int32),
-		}
+func (rsrc *raidSimResultCombiner) newDistMetrics() *proto.DistributionMetrics {
+	return &proto.DistributionMetrics{
+		Min:       math.MaxFloat64,
+		MinSeed:   math.MaxInt64,
+		Hist:      make(map[int32]int32),
+		AllValues: make([]float64, 0),
+	}
+}
+
+func (rsrc *raidSimResultCombiner) newUnitMetrics(baseUnit *proto.UnitMetrics) *proto.UnitMetrics {
+	newUm := &proto.UnitMetrics{
+		Name:      baseUnit.Name,
+		UnitIndex: baseUnit.UnitIndex,
+		Dps:       rsrc.newDistMetrics(),
+		Dpasp:     rsrc.newDistMetrics(),
+		Threat:    rsrc.newDistMetrics(),
+		Dtps:      rsrc.newDistMetrics(),
+		Tmi:       rsrc.newDistMetrics(),
+		Hps:       rsrc.newDistMetrics(),
+		Tto:       rsrc.newDistMetrics(),
+		Actions:   make([]*proto.ActionMetrics, 0, len(baseUnit.Actions)),
+		Auras:     make([]*proto.AuraMetrics, 0, len(baseUnit.Auras)),
+		Resources: make([]*proto.ResourceMetrics, 0, len(baseUnit.Resources)),
+		Pets:      make([]*proto.UnitMetrics, 0, len(baseUnit.Pets)),
 	}
 
-	base.Avg += add.Avg / float64(comb.count)
-	base.Stdev += (add.Stdev * add.Stdev) / float64(comb.count)
+	for i, pet := range baseUnit.Pets {
+		newUm.Pets[i] = rsrc.newUnitMetrics(pet)
+	}
+
+	return newUm
+}
+
+func (rsrc *raidSimResultCombiner) newPartyMetrics(baseParty *proto.PartyMetrics) *proto.PartyMetrics {
+	newPm := &proto.PartyMetrics{
+		Dps:     rsrc.newDistMetrics(),
+		Hps:     rsrc.newDistMetrics(),
+		Players: make([]*proto.UnitMetrics, len(baseParty.Players)),
+	}
+
+	for i, player := range baseParty.Players {
+		newPm.Players[i] = rsrc.newUnitMetrics(player)
+	}
+
+	return newPm
+}
+
+func (rsrc *raidSimResultCombiner) combineDistMetrics(base *proto.DistributionMetrics, add *proto.DistributionMetrics, isLast bool) {
+	base.Avg += add.Avg * rsrc.resultWeight
+	base.Stdev += (add.Stdev * add.Stdev) * rsrc.resultWeight
 	if isLast {
 		base.Stdev = math.Sqrt(base.Stdev)
 	}
@@ -43,11 +82,9 @@ func (comb simResultCombiner) addDistMetrics(base *proto.DistributionMetrics, ad
 	}
 
 	base.AllValues = append(base.AllValues, add.AllValues...)
-
-	return base
 }
 
-func (comb simResultCombiner) addctionMetrics(unit *proto.UnitMetrics, add *proto.ActionMetrics) {
+func (rsrc *raidSimResultCombiner) addActionMetrics(unit *proto.UnitMetrics, add *proto.ActionMetrics) {
 	var am *proto.ActionMetrics
 
 	addKey := add.Id.String()
@@ -93,7 +130,7 @@ func (comb simResultCombiner) addctionMetrics(unit *proto.UnitMetrics, add *prot
 	}
 }
 
-func (comb simResultCombiner) addAuraMetrics(unit *proto.UnitMetrics, add *proto.AuraMetrics, isLast bool) {
+func (rsrc *raidSimResultCombiner) addAuraMetrics(unit *proto.UnitMetrics, add *proto.AuraMetrics, isLast bool) {
 	var am *proto.AuraMetrics
 
 	addKey := add.Id.String()
@@ -111,15 +148,15 @@ func (comb simResultCombiner) addAuraMetrics(unit *proto.UnitMetrics, add *proto
 		unit.Auras = append(unit.Auras, am)
 	}
 
-	am.UptimeSecondsAvg += add.UptimeSecondsAvg / float64(comb.count)
-	am.ProcsAvg += add.ProcsAvg / float64(comb.count)
-	am.UptimeSecondsStdev += (add.UptimeSecondsStdev * add.UptimeSecondsStdev) / float64(comb.count)
+	am.UptimeSecondsAvg += add.UptimeSecondsAvg * rsrc.resultWeight
+	am.ProcsAvg += add.ProcsAvg * rsrc.resultWeight
+	am.UptimeSecondsStdev += (add.UptimeSecondsStdev * add.UptimeSecondsStdev) * rsrc.resultWeight
 	if isLast {
 		am.UptimeSecondsStdev = math.Sqrt(am.UptimeSecondsStdev)
 	}
 }
 
-func (comb simResultCombiner) addResourceMetrics(unit *proto.UnitMetrics, add *proto.ResourceMetrics) {
+func (rsrc *raidSimResultCombiner) addResourceMetrics(unit *proto.UnitMetrics, add *proto.ResourceMetrics) {
 	var rm *proto.ResourceMetrics
 
 	addKey := add.Id.String()
@@ -143,112 +180,86 @@ func (comb simResultCombiner) addResourceMetrics(unit *proto.UnitMetrics, add *p
 	rm.ActualGain += add.ActualGain
 }
 
-func (comb simResultCombiner) addUnitMetrics(base *proto.UnitMetrics, add *proto.UnitMetrics, isLast bool) *proto.UnitMetrics {
-	if base == nil {
-		base = &proto.UnitMetrics{
-			Name:      add.Name,
-			UnitIndex: add.UnitIndex,
-			Pets:      make([]*proto.UnitMetrics, len(add.Pets)),
-		}
-	}
-
+func (rsrc *raidSimResultCombiner) combineUnitMetrics(base *proto.UnitMetrics, add *proto.UnitMetrics, isLast bool) {
 	if base.Name != add.Name {
 		panic("Names do not match?!")
 	}
 
-	base.Dps = comb.addDistMetrics(base.Dps, add.Dps, isLast)
-	base.Dpasp = comb.addDistMetrics(base.Dpasp, add.Dpasp, isLast)
-	base.Threat = comb.addDistMetrics(base.Threat, add.Threat, isLast)
-	base.Dtps = comb.addDistMetrics(base.Dtps, add.Dtps, isLast)
-	base.Tmi = comb.addDistMetrics(base.Tmi, add.Tmi, isLast)
-	base.Hps = comb.addDistMetrics(base.Hps, add.Hps, isLast)
-	base.Tto = comb.addDistMetrics(base.Tto, add.Tto, isLast)
-
-	base.SecondsOomAvg += add.SecondsOomAvg / float64(comb.count)
-	base.ChanceOfDeath += add.ChanceOfDeath / float64(comb.count)
-
-	if base.Actions == nil {
-		base.Actions = make([]*proto.ActionMetrics, 0, len(add.Actions))
+	if base.UnitIndex != add.UnitIndex {
+		panic("UnitIndices do not match?!")
 	}
+
+	rsrc.combineDistMetrics(base.Dps, add.Dps, isLast)
+	rsrc.combineDistMetrics(base.Dpasp, add.Dpasp, isLast)
+	rsrc.combineDistMetrics(base.Threat, add.Threat, isLast)
+	rsrc.combineDistMetrics(base.Dtps, add.Dtps, isLast)
+	rsrc.combineDistMetrics(base.Tmi, add.Tmi, isLast)
+	rsrc.combineDistMetrics(base.Hps, add.Hps, isLast)
+	rsrc.combineDistMetrics(base.Tto, add.Tto, isLast)
+
+	base.SecondsOomAvg += add.SecondsOomAvg * rsrc.resultWeight
+	base.ChanceOfDeath += add.ChanceOfDeath * rsrc.resultWeight
+
 	for _, addAction := range add.Actions {
-		comb.addctionMetrics(base, addAction)
+		rsrc.addActionMetrics(base, addAction)
 	}
 
-	if base.Auras == nil {
-		base.Auras = make([]*proto.AuraMetrics, 0, len(add.Auras))
-	}
 	for _, addAura := range add.Auras {
-		comb.addAuraMetrics(base, addAura, isLast)
+		rsrc.addAuraMetrics(base, addAura, isLast)
 	}
 
-	if base.Resources == nil {
-		base.Resources = make([]*proto.ResourceMetrics, 0, len(add.Resources))
-	}
 	for _, addResource := range add.Resources {
-		comb.addResourceMetrics(base, addResource)
+		rsrc.addResourceMetrics(base, addResource)
 	}
 
 	for i, addPet := range add.Pets {
-		base.Pets[i] = comb.addUnitMetrics(base.Pets[i], addPet, isLast)
-	}
-
-	return base
-}
-
-func (comb simResultCombiner) addRaidMetrics(finalRsr *proto.RaidSimResult, add *proto.RaidMetrics, isLast bool) {
-	if finalRsr.RaidMetrics == nil {
-		finalRsr.RaidMetrics = &proto.RaidMetrics{
-			Parties: make([]*proto.PartyMetrics, len(add.Parties)),
-		}
-	}
-
-	finalRsr.RaidMetrics.Dps = comb.addDistMetrics(finalRsr.RaidMetrics.Dps, add.Dps, isLast)
-	finalRsr.RaidMetrics.Hps = comb.addDistMetrics(finalRsr.RaidMetrics.Hps, add.Hps, isLast)
-
-	for i, addParty := range add.Parties {
-		if finalRsr.RaidMetrics.Parties[i] == nil {
-			finalRsr.RaidMetrics.Parties[i] = &proto.PartyMetrics{
-				Players: make([]*proto.UnitMetrics, len(addParty.Players)),
-			}
-		}
-
-		base := finalRsr.RaidMetrics.Parties[i]
-
-		base.Dps = comb.addDistMetrics(base.Dps, add.Dps, isLast)
-		base.Hps = comb.addDistMetrics(base.Hps, add.Hps, isLast)
-
-		for i, addPlayer := range addParty.Players {
-			base.Players[i] = comb.addUnitMetrics(base.Players[i], addPlayer, isLast)
-		}
+		rsrc.combineUnitMetrics(base.Pets[i], addPet, isLast)
 	}
 }
 
-func (comb simResultCombiner) addEncounterMetrics(finalRsr *proto.RaidSimResult, add *proto.EncounterMetrics, isLast bool) {
-	if finalRsr.EncounterMetrics == nil {
-		finalRsr.EncounterMetrics = &proto.EncounterMetrics{
-			Targets: make([]*proto.UnitMetrics, len(add.Targets)),
+func (rsrc *raidSimResultCombiner) addResult(result *proto.RaidSimResult, isLast bool) {
+	rsrc.combineDistMetrics(rsrc.combined.RaidMetrics.Dps, result.RaidMetrics.Dps, isLast)
+	rsrc.combineDistMetrics(rsrc.combined.RaidMetrics.Hps, result.RaidMetrics.Hps, isLast)
+
+	for partyIdx, party := range result.RaidMetrics.Parties {
+		baseParty := rsrc.combined.RaidMetrics.Parties[partyIdx]
+		rsrc.combineDistMetrics(baseParty.Dps, party.Dps, isLast)
+		rsrc.combineDistMetrics(baseParty.Hps, party.Hps, isLast)
+		for playerIdx, player := range party.Players {
+			rsrc.combineUnitMetrics(baseParty.Players[playerIdx], player, isLast)
 		}
 	}
 
-	for i, addTarget := range add.Targets {
-		finalRsr.EncounterMetrics.Targets[i] = comb.addUnitMetrics(finalRsr.EncounterMetrics.Targets[i], addTarget, isLast)
+	for i, tar := range result.EncounterMetrics.Targets {
+		rsrc.combineUnitMetrics(rsrc.combined.EncounterMetrics.Targets[i], tar, isLast)
 	}
+
+	rsrc.combined.AvgIterationDuration += result.AvgIterationDuration * rsrc.resultWeight
 }
 
-func (comb simResultCombiner) Combine() *proto.RaidSimResult {
-	finalResult := &proto.RaidSimResult{
-		Logs:                   comb.results[0].Logs,
-		FirstIterationDuration: comb.results[0].FirstIterationDuration,
+func (rsrc *raidSimResultCombiner) setBaseResult(baseRsr *proto.RaidSimResult) {
+	newRsr := &proto.RaidSimResult{
+		RaidMetrics: &proto.RaidMetrics{
+			Dps:     rsrc.newDistMetrics(),
+			Hps:     rsrc.newDistMetrics(),
+			Parties: make([]*proto.PartyMetrics, len(baseRsr.RaidMetrics.Parties)),
+		},
+		EncounterMetrics: &proto.EncounterMetrics{
+			Targets: make([]*proto.UnitMetrics, len(baseRsr.EncounterMetrics.Targets)),
+		},
+		Logs:                   baseRsr.Logs,
+		FirstIterationDuration: baseRsr.FirstIterationDuration,
 	}
 
-	for i, addResult := range comb.results {
-		isLast := i+1 == int(comb.count)
-		comb.addRaidMetrics(finalResult, addResult.RaidMetrics, isLast)
-		comb.addEncounterMetrics(finalResult, addResult.EncounterMetrics, isLast)
-		finalResult.AvgIterationDuration += addResult.AvgIterationDuration / float64(comb.count)
+	for i, party := range baseRsr.RaidMetrics.Parties {
+		newRsr.RaidMetrics.Parties[i] = rsrc.newPartyMetrics(party)
 	}
 
-	return finalResult
+	for i, tar := range baseRsr.EncounterMetrics.Targets {
+		newRsr.EncounterMetrics.Targets[i] = rsrc.newUnitMetrics(tar)
+	}
+
+	rsrc.combined = newRsr
 }
 
 type concurrentSimData struct {
@@ -262,7 +273,7 @@ type concurrentSimData struct {
 	FinalResults []*proto.RaidSimResult
 }
 
-func (csd concurrentSimData) GetIterationsDone() int32 {
+func (csd *concurrentSimData) GetIterationsDone() int32 {
 	var total int32 = 0
 	for _, done := range csd.IterationsDone {
 		total += done
@@ -270,20 +281,20 @@ func (csd concurrentSimData) GetIterationsDone() int32 {
 	return total
 }
 
-func (csd concurrentSimData) GetDpsAvg() float64 {
+func (csd *concurrentSimData) GetDpsAvg() float64 {
 	total := 0.0
 	for _, done := range csd.DpsValues {
 		total += done
 	}
-	return total / float64(len(csd.DpsValues))
+	return total / float64(csd.Concurrency)
 }
 
-func (csd concurrentSimData) GetHpsAvg() float64 {
+func (csd *concurrentSimData) GetHpsAvg() float64 {
 	total := 0.0
 	for _, done := range csd.HpsValues {
 		total += done
 	}
-	return total / float64(len(csd.HpsValues))
+	return total / float64(csd.Concurrency)
 }
 
 func (csd *concurrentSimData) UpdateProgress(idx int, msg *proto.ProgressMetrics) bool {
@@ -299,25 +310,31 @@ func (csd *concurrentSimData) UpdateProgress(idx int, msg *proto.ProgressMetrics
 	return false
 }
 
-func (csd *concurrentSimData) GetFinalResult() *proto.RaidSimResult {
+func (csd *concurrentSimData) GetCombinedFinalResult() *proto.RaidSimResult {
 	if csd.Concurrency == 1 {
 		return csd.FinalResults[0]
 	}
 
-	comb := simResultCombiner{
-		count:   csd.Concurrency,
-		results: csd.FinalResults,
+	rsrc := raidSimResultCombiner{
+		resultWeight: 1 / float64(len(csd.FinalResults)),
 	}
-	finalRes := comb.Combine()
-	return finalRes
+
+	rsrc.setBaseResult(csd.FinalResults[0])
+
+	for i, result := range csd.FinalResults {
+		rsrc.addResult(result, i == len(csd.FinalResults)-1)
+	}
+
+	return rsrc.combined
 }
 
+// Run sim on multiple threads concurrently by splitting interations over multiple sims, transparently combining results into the progress channel.
 func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
 	concurrency := runtime.NumCPU()
 	substituteChannels := make([]chan *proto.ProgressMetrics, concurrency)
 	substituteCases := make([]reflect.SelectCase, concurrency)
 	running := concurrency
-	csd := &concurrentSimData{
+	csd := concurrentSimData{
 		Concurrency:     int32(concurrency),
 		IterationsTotal: request.SimOptions.Iterations,
 		IterationsDone:  make([]int32, concurrency),
@@ -391,7 +408,7 @@ func runConcurrentSim(request *proto.RaidSimRequest, progress chan *proto.Progre
 			CompletedIterations: csd.GetIterationsDone(),
 			Dps:                 csd.GetDpsAvg(),
 			Hps:                 csd.GetHpsAvg(),
-			FinalRaidResult:     csd.GetFinalResult(),
+			FinalRaidResult:     csd.GetCombinedFinalResult(),
 		}
 	}()
 }
