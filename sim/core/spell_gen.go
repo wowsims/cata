@@ -1,8 +1,8 @@
 package core
 
 import (
+	"fmt"
 	"sync"
-	"time"
 
 	"github.com/wowsims/cata/sim/core/dbc"
 )
@@ -16,13 +16,13 @@ type SpellGen struct {
 	dbc *dbc.DBC
 }
 
-func GetInstance() *SpellGen {
+func CurrentSpellGen() *SpellGen {
 	once.Do(func() {
 		instance = &SpellGen{}
 	})
 	return instance
 }
-func (sc *SpellConfig) SetResourceCost(spell *dbc.SpellData) {
+func (sc *SpellConfig) SetResourceCost(spell *dbc.SpellData) *SpellConfig {
 	if spell.PowerCount != 0 {
 		for i := 0; i < int(spell.PowerCount); i++ {
 			power := spell.Power[i]
@@ -64,6 +64,7 @@ func (sc *SpellConfig) SetResourceCost(spell *dbc.SpellData) {
 		}
 
 	}
+	return sc
 }
 
 func (s *SpellGen) GetDBC() *dbc.DBC {
@@ -73,14 +74,15 @@ func (s *SpellGen) GetDBC() *dbc.DBC {
 	return s.dbc
 }
 
-func (sg *SpellGen) ParseSpellData(spellId uint, unit *Unit) *SpellConfig {
+func (sg *SpellGen) ParseSpellData(spellId uint, unit *Unit, actionID *ActionID) *SpellConfig {
 	dbc := sg.GetDBC()
-	dbcSpell := dbc.FetchSpell(spellId)
+	dbcSpell, _ := dbc.FetchSpell(spellId)
 	s := SpellConfig{}
-	if !dbcSpell.Ok() {
+	if !dbcSpell.IsValid() {
 		return nil
 	}
 	s.SpellID = int32(dbcSpell.ID)
+	s.ActionID = *actionID
 	s.MissileSpeed = dbcSpell.PrjSpeed
 	s.SpellSchool = SpellSchool(dbcSpell.School) // Todo? Does this match 1 to 1?
 	//s.TicksCanCrit = dbcSpell.Flags()
@@ -95,36 +97,54 @@ func (sg *SpellGen) ParseSpellData(spellId uint, unit *Unit) *SpellConfig {
 			Timer:    unit.NewTimer(),   // ??
 		},
 	}
-	if dbcSpell.HasDirectDamageEffect() {
-		//
-	}
+	// if dbcSpell.HasDirectDamageEffect() {
+	// 	//
+	// }
 	if dbcSpell.HasPeriodicDamageEffect() {
 		s.Dot = DotConfig{
-			HasteAffectsDuration: dbcSpell.Flags(SX_DURATION_HASTED), // or SX_DOT_HASTED
-			AffectedByCastSpeed:  dbcSpell.Flags(SX_DOT_HASTED),      // POssible, need verification
+			HasteAffectsDuration: dbcSpell.HasAttributeFlag(SX_DURATION_HASTED), // or SX_DOT_HASTED
+			AffectedByCastSpeed:  dbcSpell.HasAttributeFlag(SX_DOT_HASTED),      // POssible, need verification
 
 		}
 	}
+	s.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
+		// min, max, normalized, multi := sg.ParseEffects(&spell.SpellData, unit)
+		// Todo: build the thing here?
+	}
 	return &s
 }
-func (sg *SpellGen) ParseEffects(dbcSpell *dbc.SpellData, spellConfig *SpellConfig, unit *Unit) {
+func (sg *SpellGen) ParseEffects(dbcSpell *dbc.SpellData, unit *Unit) (float64, float64, bool, float64) {
 	effects := dbcSpell.Effects
+
+	base_dd_min := 0.0
+	base_dd_max := 0.0
+	normalized := false
+	attack_multiplier := 0.0
 	for i := 0; i < int(dbcSpell.EffectsCount); i++ {
 		effect := effects[i]
-
 		switch effect.Type {
 		case dbc.E_SCHOOL_DAMAGE:
 		case dbc.E_HEALTH_LEECH:
-			//parse direct dmg mod
+			// var coeff, _, _, _, _ = sg.ParseDirectEffect(effect, unit)
+			// spellConfig.BonusCoefficient = coeff
+			fmt.Println("DAMAGE EFFECT")
 			continue
 		case dbc.E_NORMALIZED_WEAPON_DMG:
 			//set normalised wpn dmg
+			base_dd_max = effect.Max(sg.GetDBC(), 85, 85)
+			base_dd_min = effect.Min(sg.GetDBC(), 85, 85)
+
+			normalized = true
 		case dbc.E_WEAPON_DAMAGE:
 			// normal wpn dmg
+			base_dd_max = effect.Max(sg.GetDBC(), 85, 85)
+			base_dd_min = effect.Min(sg.GetDBC(), 85, 85)
 		case dbc.E_WEAPON_PERCENT_DAMAGE:
 			// wpn prct dmg
+			attack_multiplier = effect.Min(sg.GetDBC(), 85, 85)
 		case dbc.E_PERSISTENT_AREA_AURA:
 			//
+
 		case dbc.E_APPLY_AURA:
 			//
 			switch effect.Subtype {
@@ -132,24 +152,36 @@ func (sg *SpellGen) ParseEffects(dbcSpell *dbc.SpellData, spellConfig *SpellConf
 			case dbc.A_PERIODIC_LEECH:
 				//parse effect periodic mods
 				//keep going
-				spellConfig.Dot.TickLength = time.Duration(effect.Amplitude) * time.Millisecond
-				spellConfig.BonusCoefficient = effect.SPCoeff
+				// spellConfig.Dot.TickLength = time.Duration(effect.Amplitude) * time.Millisecond
+				// spellConfig.BonusCoefficient = effect.SPCoeff
 			}
 
 		}
 	}
+	return base_dd_max, base_dd_min, normalized, attack_multiplier
 }
-func (sg *SpellGen) ParseDirectEffect(effect *dbc.SpellEffectData, spellConfig *SpellConfig, unit *Unit) {
 
-	// spCoeff := effect.SPCoeff
-	// apCoeff := effect.APCoeff
-	// delta := effect.MDelta
+// ParseDirectEffect calculates direct damage effects.
+// Returns the first non-zero coefficient (SPCoeff or APCoeff), Delta, Minimum value,
+// Maximum value, and Maximum Radius of the effect.
+func (sg *SpellGen) ParseDirectEffect(effect *dbc.SpellEffectData, unit *Unit) (float64, float64, float64, float64, float64) {
+	spCoeff := effect.SPCoeff
+	apCoeff := effect.APCoeff
 
-	// min := effect.Min(sg.GetDBC(), 85, 85)
-	// max := effect.Max(sg.GetDBC(), 85, 85)
-	// maxRadius := effect.GetRadiusMax()
-	//Todo: Need a way to apply these to the spell
+	// Return the first non-zero coefficient between spCoeff and apCoeff
+	var coeff float64
+	if spCoeff != 0 {
+		coeff = spCoeff
+	} else {
+		coeff = apCoeff
+	}
 
+	delta := effect.MDelta
+	min := effect.Min(sg.GetDBC(), 85, 85)
+	max := effect.Max(sg.GetDBC(), 85, 85)
+	maxRadius := effect.GetRadiusMax() // Todo: Probably relevant for possibility of advanced AI later on
+
+	return coeff, delta, min, max, maxRadius
 }
 
 func (sg *SpellGen) ParsePeriodicEffect(effect *dbc.SpellEffectData, spellConfig *SpellConfig, unit *Unit) {

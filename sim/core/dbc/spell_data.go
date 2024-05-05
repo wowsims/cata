@@ -2,21 +2,7 @@ package dbc
 
 import (
 	"fmt"
-	"math"
 	"time"
-
-	"github.com/wowsims/cata/sim/core/proto"
-)
-
-type Character interface {
-	GetLevel() int
-	// other methods needed by dbc
-}
-
-// Enums and constants
-const (
-	NUM_SPELL_FLAGS        = 15
-	NUM_CLASS_FAMILY_FLAGS = 4
 )
 
 // Struct Definitions
@@ -24,23 +10,6 @@ type SpellLabelData struct {
 	ID      uint
 	SpellID uint
 	Label   int16
-}
-
-type SpellPowerData struct {
-	ID             uint
-	SpellID        uint
-	AuraID         uint
-	PowerType      int
-	Cost           int
-	CostMax        int
-	CostPerTick    int
-	PctCost        float64
-	PctCostMax     float64
-	PctCostPerTick float64
-}
-
-func (s *SpellEffectData) GetRadiusMax() float64 {
-	return math.Max(s.RadiusMax, s.Radius)
 }
 
 type SpellData struct {
@@ -94,12 +63,12 @@ type SpellData struct {
 	LabelsCount          uint8
 }
 
-func (s *SpellData) Ok() bool {
+func (s *SpellData) IsValid() bool {
 	return s.ID != 0 // assuming an ID of 0 means uninitialized or invalid data
 }
 
 // Flags checks for specific attributes
-func (s *SpellData) Flags(attr uint) bool {
+func (s *SpellData) HasAttributeFlag(attr uint) bool {
 	bit := attr % 32
 	index := attr / 32
 	if index >= uint(len(s.Attributes)) {
@@ -107,6 +76,7 @@ func (s *SpellData) Flags(attr uint) bool {
 	}
 	return (s.Attributes[index] & (1 << bit)) != 0
 }
+
 func (s *SpellData) HasDirectDamageEffect() bool {
 	for _, effect := range s.Effects {
 		if effect.IsDirectDamageEffect() {
@@ -130,160 +100,24 @@ func (s *SpellData) CooldownMillis() time.Duration {
 }
 
 func (sd *SpellData) EffectN(idx int) (*SpellEffectData, error) {
+	if sd == nil {
+		return nil, fmt.Errorf("spell data is nil")
+	}
 	if idx <= 0 {
 		return nil, fmt.Errorf("effect index must not be zero or less")
 	}
-
-	if sd == nil {
-		return nil, fmt.Errorf("spell data is nil or not found")
-	}
-
 	if idx > int(sd.EffectsCount) {
-		return nil, fmt.Errorf("effect index out of bound")
+		return nil, fmt.Errorf("effect index out of bounds")
 	}
-
 	return sd.Effects[idx-1], nil
 }
 
-// Method to calculate delta for a player
-func (s *SpellEffectData) Delta(dbc *DBC, pLevel int, level int) float64 {
-	if level > 85 {
-		level = 85
+// Helper function to extract a specific flag from SpellData's ClassFlags
+func (data *SpellData) classFlag(index uint) (uint32, error) {
+	if index/32 >= uint(len(data.ClassFlags)) {
+		return 0, fmt.Errorf("index out of range")
 	}
-
-	var mScale float64
-	spell := s.GetSpell(dbc)
-	if s.MDelta != 0 && s.ScalingClass() != 0 {
-		scalingLevel := level
-		if scalingLevel == 0 {
-			scalingLevel = pLevel
-		}
-		if spell.MaxScalingLevel > 0 {
-			scalingLevel = min(scalingLevel, spell.MaxScalingLevel)
-		}
-		mScale = dbc.SpellScaling(s.ScalingClass(), scalingLevel)
-	}
-
-	return s.scaledDelta(mScale)
-}
-
-// Bonus method for a player
-func (s *SpellEffectData) Bonus(dbc *DBC, pLevel int, level int) float64 {
-	if level == 0 {
-		level = pLevel
-	}
-	return dbc.EffectBonusById(s.GetSpell(dbc).ID, level)
-}
-
-// Minimum value calculation for player
-func (s *SpellEffectData) Min(dbc *DBC, pLevel int, level int) float64 {
-	return s.scaledMin(s.Average(dbc, pLevel, level), s.Delta(dbc, pLevel, level))
-}
-
-// Minimum value calculation for item
-// func (s *SpellEffectData) MinItem(item *core.Item) float64 {
-// 	return s.scaledMin(s.AverageItem(item), s.DeltaItem(item))
-// }
-
-// Maximum value calculation for player
-func (s *SpellEffectData) Max(dbc *DBC, pLevel int, level int) float64 {
-	return s.scaledMax(s.Average(dbc, pLevel, level), s.Delta(dbc, pLevel, level))
-}
-
-// Maximum value calculation for item
-//
-//	func (s *SpellEffectData) MaxItem(item *Item) float64 {
-//		return s.scaledMax(s.AverageItem(item), s.DeltaItem(item))
-//	}
-func (s *SpellEffectData) GetSpell(dbc *DBC) *SpellData {
-	return dbc.spellIndex[s.SpellID]
-}
-
-// Average calculation for a player
-func (s *SpellEffectData) Average(dbc *DBC, pLevel int, level int) float64 {
-	if level == 0 {
-		level = pLevel
-	}
-
-	scale := s.ScalingClass()
-	//Todo: DF stuff_
-	// if scale == proto.Class_ClassUnknown && s.Spell.MaxScalingLevel > 0 {
-	// 	scale = PLAYER_SPECIAL_SCALE8
-	// }
-	spell := s.GetSpell(dbc)
-
-	if s.MCoeff != 0 && scale != proto.Class_ClassUnknown {
-		if spell.MaxScalingLevel > 0 {
-			level = min(level, spell.MaxScalingLevel)
-		}
-		scaler := dbc.SpellScaling(scale, level)
-		value := s.MCoeff * scaler
-		//todo: df stuff?
-		// if scale == PLAYER_SPECIAL_SCALE7 {
-		// 	value = itemDatabase.ApplyCombatRatingMultiplier(p, CR_MULTIPLIER_ARMOR, 1, value)
-		// }
-		return value
-	} else if s.RealPPL != 0 {
-		if spell.MaxLevel > 0 {
-			return s.BaseValue + float64(min(level, spell.MaxLevel)-spell.SpellLevel)*s.RealPPL
-		}
-		return s.BaseValue + float64(level-spell.SpellLevel)*s.RealPPL
-	}
-	return s.BaseValue
-}
-
-// Average calculation for an item
-// func (s *SpellEffectData) AverageItem(item *core.Item) float64 {
-// 	if item == nil {
-// 		return 0
-// 	}
-
-// 	budget := item.Budget()
-// 	if s.ScalingClass() == PLAYER_SPECIAL_SCALE7 {
-// 		budget = itemDatabase.ApplyCombatRatingMultiplier(*item, budget)
-// 	} else if s.ScalingClass() == PLAYER_SPECIAL_SCALE8 {
-// 		props := item.Player.RandomProperty(item.ItemLevel())
-// 		budget = props.DamageReplaceStat
-// 	} else if (s.ScalingClass() == PLAYER_NONE || s.ScalingClass() == PLAYER_SPECIAL_SCALE9) && s.Spell.Flags(SX_SCALE_ILEVEL) {
-// 		props := item.Player.RandomProperty(item.ItemLevel())
-// 		budget = props.DamageSecondary
-// 	}
-
-// 	return s.MCoeff * budget
-// }
-
-// Scaled delta calculation
-func (s *SpellEffectData) scaledDelta(budget float64) float64 {
-	if s.MDelta != 0 && budget > 0 {
-		return s.MCoeff * s.MDelta * budget
-	}
-	return 0
-}
-
-// Scaled minimum calculation
-func (s *SpellEffectData) scaledMin(avg, delta float64) float64 {
-	result := avg - delta/2
-	if s.Type == E_WEAPON_PERCENT_DAMAGE {
-		result *= 0.01
-	}
-	return result
-}
-
-// Scaled maximum calculation
-func (s *SpellEffectData) scaledMax(avg, delta float64) float64 {
-	result := avg + delta/2
-	if s.Type == E_WEAPON_PERCENT_DAMAGE {
-		result *= 0.01
-	}
-	return result
-}
-
-// Helper function to get the minimum of two integers
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
+	return uint32(data.ClassFlags[index/32]) & (1 << (index % 32)), nil
 }
 
 func (s *SpellData) AffectedByAll(effect *SpellEffectData) bool {

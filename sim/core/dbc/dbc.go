@@ -4,6 +4,7 @@ import (
 	"bufio"
 	_ "embed"
 	"encoding/json"
+	"fmt"
 	"log"
 	"strconv"
 	"strings"
@@ -151,15 +152,6 @@ func (dbc *DBC) initSpells() {
 	log.Println("Spell scaling loaded successfully.")
 }
 
-var effectSubtypes = []uint{
-	A_MODIFY_CATEGORY_COOLDOWN,
-	A_MOD_MAX_CHARGES,
-	A_MOD_RECHARGE_TIME,
-	A_MOD_RECHARGE_MULTIPLIER,
-	A_HASTED_CATEGORY,
-	A_MOD_RECHARGE_RATE_CATEGORY,
-}
-
 func (dbc *DBC) loadSpellEffectData() error {
 	var rawEffects [][]interface{}
 	if err := json.Unmarshal([]byte(spellEffectDataJson), &rawEffects); err != nil {
@@ -216,17 +208,7 @@ func (dbc *DBC) loadSpellEffectData() error {
 
 	return nil
 }
-func effectCategorySubtypes() []uint {
-	return effectSubtypes
-}
-func contains(subtype uint) bool {
-	for _, s := range effectCategorySubtypes() {
-		if s == subtype {
-			return true
-		}
-	}
-	return false
-}
+
 func (dbc *DBC) loadSpellData() error {
 	var rawSpells [][]interface{}
 	if err := json.Unmarshal([]byte(spellDataJson), &rawSpells); err != nil {
@@ -338,80 +320,48 @@ func (dbc *DBC) loadSpellData() error {
 		if spell.Category != 0 {
 			dbc.categoryMapping.AddSpell(spell.Category, spell)
 		}
-		var rawJson [][]interface{} // To accommodate the large array of arrays
-		if err := json.Unmarshal([]byte(spellPowerDataJson), &rawJson); err != nil {
-			log.Fatal(err)
-		}
-
-		// Assuming the first item in rawJson is the large array of SpellPowerData arrays
-		for _, item := range rawJson[0] {
-			entry := item.([]interface{}) // Each item is an array representing one SpellPowerData
-			spellPowerData := SpellPowerData{
-				ID:             uint(entry[0].(float64)),
-				SpellID:        uint(entry[1].(float64)),
-				AuraID:         uint(entry[2].(float64)),
-				PowerType:      int(entry[3].(float64)),
-				Cost:           int(entry[4].(float64)),
-				CostMax:        int(entry[5].(float64)),
-				CostPerTick:    int(entry[6].(float64)),
-				PctCost:        entry[7].(float64),
-				PctCostMax:     entry[8].(float64),
-				PctCostPerTick: entry[9].(float64),
-			}
-			if dbc.spellIndex[spellPowerData.SpellID] != nil {
-				dbc.spellIndex[spellPowerData.SpellID].Power = append(dbc.spellIndex[spellPowerData.SpellID].Power, &spellPowerData)
-				dbc.spellIndex[spellPowerData.SpellID].PowerCount += 1
-			}
-		}
 	}
 
+	var rawJson [][]interface{} // To accommodate the large array of arrays
+	if err := json.Unmarshal([]byte(spellPowerDataJson), &rawJson); err != nil {
+		log.Fatal(err)
+	}
+
+	// Assuming the first item in rawJson is the large array of SpellPowerData arrays
+	for _, item := range rawJson[0] {
+		entry := item.([]interface{}) // Each item is an array representing one SpellPowerData
+		spellPowerData := SpellPowerData{
+			ID:             uint(entry[0].(float64)),
+			SpellID:        uint(entry[1].(float64)),
+			AuraID:         uint(entry[2].(float64)),
+			PowerType:      int(entry[3].(float64)),
+			Cost:           int(entry[4].(float64)),
+			CostMax:        int(entry[5].(float64)),
+			CostPerTick:    int(entry[6].(float64)),
+			PctCost:        entry[7].(float64),
+			PctCostMax:     entry[8].(float64),
+			PctCostPerTick: entry[9].(float64),
+		}
+		if dbc.spellIndex[spellPowerData.SpellID] != nil {
+			dbc.spellIndex[spellPowerData.SpellID].Power = append(dbc.spellIndex[spellPowerData.SpellID].Power, &spellPowerData)
+			dbc.spellIndex[spellPowerData.SpellID].PowerCount += 1
+		}
+	}
 	return nil
-}
-func (sd *SpellPowerData) GetMaxCost() float64 {
-	if sd.CostMax != 0 {
-		return float64(sd.CostMax) / sd.costDivisor(!(sd.Cost != 0))
-	}
-	return float64(sd.PctCostMax) / sd.costDivisor(!(sd.Cost != 0))
-}
-
-func (sd *SpellPowerData) GetCostPerTick() float64 {
-	return float64(sd.CostPerTick) / sd.costDivisor(!(sd.Cost != 0))
-}
-
-func (sd *SpellPowerData) GetCost() float64 {
-	cost := 0.0
-	if sd.Cost != 0 {
-		cost = float64(sd.Cost)
-	} else {
-		cost = sd.PctCost
-	}
-	return cost / sd.costDivisor(!(sd.Cost != 0))
-}
-func (sd *SpellPowerData) costDivisor(percentage bool) float64 {
-	switch sd.PowerType {
-	case POWER_MANA:
-		if percentage {
-			return 100.0
-		}
-		return 1.0
-	case POWER_RAGE, POWER_RUNIC_POWER, POWER_ASTRAL_POWER, POWER_SOUL_SHARDS:
-		return 10.0
-	default:
-		return 1.0
-	}
-
 }
 
 // FetchSpellEffect retrieves a spell effect based on an ID.
 func (dbc *DBC) FetchSpellEffect(effectID uint) *SpellEffectData {
-	// This would be a fetch from a database in a real scenario.
 	return dbc.spellEffectIndex[effectID]
 }
 
-// FetchSpell retrieves a spell based on an ID.
-func (dbc *DBC) FetchSpell(spellID uint) *SpellData {
-	// This would be a fetch from a database in a real scenario.
-	return dbc.spellIndex[spellID]
+// FetchSpell retrieves a spell based on an ID. It returns nil and an error if no spell is found.
+func (dbc *DBC) FetchSpell(spellID uint) (*SpellData, error) {
+	spell, found := dbc.spellIndex[spellID]
+	if !found {
+		return nil, fmt.Errorf("no spell found with ID %d", spellID)
+	}
+	return spell, nil
 }
 
 // EffectAverage calculates the average value of an effect at a given level.
@@ -507,16 +457,6 @@ func (dbc *DBC) EffectMax(e *SpellEffectData, level int) float64 {
 	return result
 }
 
-// Utility function to check if an item exists in a slice of SpellEffectData pointers
-func containsEffect(effects []*SpellEffectData, effect *SpellEffectData) bool {
-	for _, e := range effects {
-		if e.ID == effect.ID {
-			return true
-		}
-	}
-	return false
-}
-
 // Returns effects affecting spells by checking class family flags
 func (dbc *DBC) EffectAffectsSpells(family uint, effect *SpellEffectData) []*SpellData {
 	var affectedSpells []*SpellData
@@ -602,45 +542,3 @@ func (dbc *DBC) EffectsAffectingSpell(spell *SpellData) []*SpellEffectData {
 	}
 	return affectingEffects
 }
-
-// Helper function to check class flag in an effect or spell
-func (data *SpellEffectData) classFlag(index uint) uint32 {
-	// Ensure the operation is performed within uint32 context
-	return uint32(data.ClassFlags[index/32]) & (1 << (index % 32))
-}
-
-// Helper function to extract a specific flag from SpellData's ClassFlags
-func (data *SpellData) classFlag(index uint) uint32 {
-	// Ensure the operation is performed within uint32 context
-	return uint32(data.ClassFlags[index/32]) & (1 << (index % 32))
-}
-
-type Power int
-
-const (
-	POWER_HEALTH       Power = -2
-	POWER_MANA               = 0
-	POWER_RAGE               = 1
-	POWER_FOCUS              = 2
-	POWER_ENERGY             = 3
-	POWER_HAPPINESS          = 4
-	POWER_RUNE               = 5
-	POWER_RUNIC_POWER        = 6
-	POWER_SOUL_SHARDS        = 7
-	POWER_ASTRAL_POWER       = 8
-	POWER_HOLY_POWER         = 9
-	POWER_MAELSTROM          = 11
-	POWER_CHI                = 12
-	POWER_INSANITY           = 13
-	POWER_COMBO_POINT        = 14
-	POWER_DEMONIC_FURY       = 15
-	POWER_FURY               = 17
-	POWER_PAIN               = 18
-	POWER_ESSENSE            = 19
-	POWER_BLOOD_RUNE         = 20
-	POWER_FROST_RUNE         = 21
-	POWER_UNHOLY_RUNE        = 22
-	POWER_MAX                = 23
-	POWER_NONE         Power = 0xFFFFFFFF // To handle the 0xFFFFFFFF value
-	POWER_OFFSET             = 2
-)
