@@ -449,6 +449,23 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		rakeNow = remainingExt == 0 || (maxShredsPossible > float64(remainingExt))
 	}
 
+	// Apply same TF Rip delay logic to Rake as well
+	if rakeNow && !tfActive {
+		finalRakeTickLeeway := core.TernaryDuration(rakeDot.IsActive(), rakeDot.TimeUntilNextTick(sim), 0)
+		buffedTickCount := min(rakeDot.NumberOfTicks, int32((simTimeRemain-finalRakeTickLeeway)/rakeDot.TickLength))
+		delayBreakpoint := finalRakeTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*rakeDot.TickLength.Seconds())
+
+		if cat.tfExpectedBefore(sim, sim.CurrentTime+delayBreakpoint) {
+			delaySeconds := delayBreakpoint.Seconds()
+			energyToDump := curEnergy + delaySeconds*regenRate - cat.calcTfEnergyThresh(cat.ReactionTime)
+			secondsToDump := math.Ceil(energyToDump / cat.Shred.DefaultCast.Cost)
+
+			if secondsToDump < delaySeconds {
+				rakeNow = false
+			}
+		}
+	}
+
 	// Disable Energy pooling for Rake in weaving rotations, since these
 	// rotations prioritize weave cpm over Rake uptime.
 	poolForRake := (rotation.BearweaveType == proto.FeralDruid_Rotation_None)
