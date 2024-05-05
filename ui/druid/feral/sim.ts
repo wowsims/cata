@@ -93,7 +93,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		individualBuffs: IndividualBuffs.create({
 		}),
 		debuffs: Debuffs.create({
-			savageCombat: true,
+			bloodFrenzy: true,
 		}),
 	},
 
