@@ -417,7 +417,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	if mangleRefreshPending && !t11Active {
 		numManglesRemaining := 1 + int32((sim.Duration-time.Second-cat.bleedAura.ExpiresAt())/time.Minute)
 		earliestMangle := sim.Duration - time.Duration(numManglesRemaining)*time.Minute
-		clipMangle = sim.CurrentTime >= earliestMangle
+		clipMangle = (sim.CurrentTime >= earliestMangle) && !isClearcast
 	}
 
 	mangleNow := cat.MangleCat != nil && (mangleRefreshNow || clipMangle)
