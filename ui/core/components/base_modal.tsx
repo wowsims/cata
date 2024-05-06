@@ -23,8 +23,6 @@ type BaseModalConfig = {
 	size?: ModalSize;
 	// A title for the modal
 	title?: string | null;
-	// Should the modal be disposed on close?
-	disposeOnClose?: boolean;
 };
 
 const DEFAULT_CONFIG = {
@@ -44,7 +42,7 @@ export class BaseModal extends Component {
 	readonly body: HTMLElement;
 	readonly footer: HTMLElement | undefined;
 
-	constructor(parent: HTMLElement, cssClass: string, config: BaseModalConfig = { disposeOnClose: true }) {
+	constructor(parent: HTMLElement, cssClass: string, config: BaseModalConfig = {}) {
 		super(parent, 'modal');
 		this.modalConfig = { ...DEFAULT_CONFIG, ...config };
 
@@ -81,13 +79,6 @@ export class BaseModal extends Component {
 		this.footer = footerRef.value!;
 
 		this.modal = new Modal(this.rootElem, { keyboard: true });
-
-		if (this.modalConfig.disposeOnClose) {
-			this.rootElem.addEventListener('hidden.bs.modal', _ => {
-				this.rootElem.remove();
-				this.dispose();
-			});
-		}
 	}
 
 	protected onShow(_e: Event) {

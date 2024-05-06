@@ -232,7 +232,7 @@ class GlyphSelectorModal extends BaseModal {
 	glyphOptions: GlyphData[] = [];
 	glyphPicker: GlyphPicker | null = null;
 	constructor(parent: HTMLElement) {
-		super(parent, 'glyph-modal', { title: 'Glyphs', disposeOnClose: false });
+		super(parent, 'glyph-modal', { title: 'Glyphs' });
 
 		const list = ref<HTMLUListElement>();
 		const search = ref<HTMLInputElement>();

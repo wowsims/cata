@@ -156,6 +156,7 @@ export class EquippedItem {
 	 * Also ensures validity of the item on its own. Currently this just means enforcing unique gems.
 	 */
 	withGem(gem: Gem | null, socketIdx: number): EquippedItem {
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		let curItem: EquippedItem | null = this;
 
 		if (gem && gem.unique) {
@@ -166,6 +167,7 @@ export class EquippedItem {
 	}
 
 	removeGemsWithId(gemId: number): EquippedItem {
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		let curItem: EquippedItem | null = this;
 		// Remove any currently socketed identical gems.
 		for (let i = 0; i < curItem._gems.length; i++) {
@@ -177,6 +179,7 @@ export class EquippedItem {
 	}
 
 	removeAllGems(): EquippedItem {
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		let curItem: EquippedItem | null = this;
 
 		for (let i = 0; i < curItem._gems.length; i++) {

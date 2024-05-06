@@ -124,15 +124,19 @@ $favorite-cell-width: 2rem;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
+	margin-right: -1px;
+	z-index: 1;
 
 	.item-picker-icon-wrapper {
 		width: $icon-size-md;
 		height: $icon-size-md;
+		border-color: var(--bs-modal-border-color);
 
 		&.active {
 			width: calc($icon-size-md + map-get($spacers, 2));
 			height: calc($icon-size-md + map-get($spacers, 2));
-			border: 2px solid $success;
+			border-width: 2px;
+			border-right: 0;
 		}
 
 		&:nth-child(6),
@@ -140,10 +144,18 @@ $favorite-cell-width: 2rem;
 			// Spacing between ragdoll sections
 			margin-bottom: map-get($spacers, 3);
 		}
+
+		&:not(:first-child) {
+			margin-top: -1px;
+		}
 	}
 }
 
 .selector-modal {
+	.selector-modal-title {
+		margin-bottom: 0;
+	}
+
 	.modal-header {
 		padding-bottom: 0;
 

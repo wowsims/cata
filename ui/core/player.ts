@@ -220,13 +220,13 @@ export function getSpecConfig<SpecType extends Spec>(spec: SpecType): PlayerConf
 }
 
 export interface ReforgeData {
+	id: number;
 	item: Item;
 	reforge: ReforgeStat;
 	fromStat: Stat[];
 	toStat: Stat[];
 	fromAmount: number;
 	toAmount: number;
-	reforgeId: number;
 }
 
 // Manages all the gear / consumes / other settings for a single Player.
@@ -463,13 +463,13 @@ export class Player<SpecType extends Spec> {
 		const toAmount = Math.floor(item.stats[reforge.fromStat[0]] * reforge.multiplier);
 
 		return {
+			id: reforge.id,
 			reforge: reforge,
 			item: item,
 			fromStat: reforge.fromStat,
 			fromAmount: fromAmount,
 			toStat: reforge.toStat,
 			toAmount,
-			reforgeId: reforge.id,
 		};
 	}
 
