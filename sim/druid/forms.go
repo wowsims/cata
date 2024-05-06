@@ -55,7 +55,7 @@ func (druid *Druid) GetCatWeapon() core.Weapon {
 		NormalizedSwingSpeed: 1.0,
 		CritMultiplier:       druid.DefaultMeleeCritMultiplier(),
 		AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
-		MaxRange:             5.0,
+		MaxRange:             core.MaxMeleeRange,
 	}
 }
 
@@ -68,7 +68,7 @@ func (druid *Druid) GetBearWeapon() core.Weapon {
 		NormalizedSwingSpeed: 2.5,
 		CritMultiplier:       druid.DefaultMeleeCritMultiplier(),
 		AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
-		MaxRange:             5.0,
+		MaxRange:             core.MaxMeleeRange,
 	}
 }
 

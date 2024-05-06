@@ -68,7 +68,7 @@ func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritanc
 
 				ReactionTime: owner.ReactionTime,
 
-				DistanceFromTarget: 5,
+				StartDistanceFromTarget: MaxMeleeRange, // TODO: Match to owner and add movement logic to pet rotations
 			},
 			Name:       name,
 			Party:      owner.Party,

@@ -43,7 +43,7 @@ func newWeaponFromUnarmed(critMultiplier float64) Weapon {
 		NormalizedSwingSpeed: 1,
 		CritMultiplier:       critMultiplier,
 		AttackPowerPerDPS:    DefaultAttackPowerPerDPS,
-		MaxRange:             5,
+		MaxRange:             MaxMeleeRange,
 	}
 }
 
@@ -63,7 +63,7 @@ func getWeaponMinRange(item *Item) float64 {
 func getWeaponMaxRange(item *Item) float64 {
 	switch item.RangedWeaponType {
 	case proto.RangedWeaponType_RangedWeaponTypeUnknown:
-		return 5
+		return MaxMeleeRange
 	case proto.RangedWeaponType_RangedWeaponTypeWand:
 	case proto.RangedWeaponType_RangedWeaponTypeThrown:
 		return 30

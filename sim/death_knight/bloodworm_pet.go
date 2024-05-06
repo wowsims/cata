@@ -78,7 +78,7 @@ func (bloodworm *BloodwormPet) Initialize() {
 					continue
 				}
 
-				if target.DistanceFromTarget > 5 {
+				if target.DistanceFromTarget > core.MaxMeleeRange {
 					continue
 				}
 
