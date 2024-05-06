@@ -1448,6 +1448,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-Stormrider'sBattlegarb"
+ value: {
+  dps: 21944.9741
+  tps: 15582.20298
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-StumpofTime-62465"
  value: {
   dps: 21430.75927
@@ -1837,6 +1844,174 @@ dps_results: {
  value: {
   dps: 22853.26523
   tps: 16227.09907
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-aoe-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 57766.29981
+  tps: 41043.83796
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-aoe-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 16327.7542
+  tps: 11593.97686
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-aoe-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 18742.85769
+  tps: 13313.78582
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-aoe-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 39005.69389
+  tps: 27725.15391
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-aoe-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 10570.04305
+  tps: 7507.49767
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-aoe-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 10560.16065
+  tps: 7505.19273
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-default-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 27519.54073
+  tps: 19540.14529
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-default-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 27519.54073
+  tps: 19540.14529
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-default-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 34168.51921
+  tps: 24266.00551
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-default-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 18054.97164
+  tps: 12821.79697
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-default-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 18054.97164
+  tps: 12821.79697
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-NoBleed-default-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 19863.14866
+  tps: 14110.31421
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-aoe-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 57766.29981
+  tps: 41043.83796
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-aoe-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 16327.7542
+  tps: 11593.97686
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-aoe-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 18742.85769
+  tps: 13313.78582
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-aoe-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 39005.69389
+  tps: 27725.15391
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-aoe-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 10570.04305
+  tps: 7507.49767
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-aoe-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 10560.16065
+  tps: 7505.19273
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-default-FullBuffs-LongMultiTarget"
+ value: {
+  dps: 27519.54073
+  tps: 19540.14529
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-default-FullBuffs-LongSingleTarget"
+ value: {
+  dps: 27519.54073
+  tps: 19540.14529
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-default-FullBuffs-ShortSingleTarget"
+ value: {
+  dps: 34168.51921
+  tps: 24266.00551
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-default-NoBuffs-LongMultiTarget"
+ value: {
+  dps: 18054.97164
+  tps: 12821.79697
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-default-NoBuffs-LongSingleTarget"
+ value: {
+  dps: 18054.97164
+  tps: 12821.79697
+ }
+}
+dps_results: {
+ key: "TestFeral-Settings-Tauren-p1-Default-default-NoBuffs-ShortSingleTarget"
+ value: {
+  dps: 19863.14866
+  tps: 14110.31421
  }
 }
 dps_results: {

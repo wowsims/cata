@@ -16,7 +16,7 @@ func (druid *Druid) registerLacerateSpell() {
 	}
 
 	initialDamageMul := 1.0
-	tickDamageMul := 1.0
+	tickDamageMul := core.TernaryFloat64(druid.HasSetBonus(ItemSetStormridersBattlegarb, 2), 1.1, 1)
 
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48568},
