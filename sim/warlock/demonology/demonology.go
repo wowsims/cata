@@ -161,7 +161,7 @@ func (demonology *DemonologyWarlock) registerSummonFelguardSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//warlock.ChangeActivePet(sim, warlock.Imp.WarlockPet)
+			demonology.SoulBurnAura.Deactivate(sim)
 			demonology.ChangeActivePet(sim, warlock.PetFelguard)
 		},
 	})

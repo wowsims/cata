@@ -31,6 +31,7 @@ func (warlock *Warlock) registerSoulFireSpell() {
 		ThreatMultiplier:         1,
 		BonusCoefficient:         0.726,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			warlock.SoulBurnAura.Deactivate(sim)
 			result := spell.CalcDamage(sim, target, 2862, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

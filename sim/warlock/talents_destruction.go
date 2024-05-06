@@ -46,10 +46,7 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 	warlock.registerImprovedSearingPain()
 	warlock.registerImprovedSoulFire()
 	warlock.registerBackdraft()
-
-	if warlock.Talents.ChaosBolt {
-		warlock.registerShadowBurnSpell()
-	}
+	warlock.registerShadowBurnSpell()
 
 	warlock.registerBurningEmbers()
 
