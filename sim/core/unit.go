@@ -552,6 +552,7 @@ func (unit *Unit) reset(sim *Simulation, _ Agent) {
 	unit.Hardcast.Expires = startingCDTime
 	unit.ChanneledDot = nil
 	unit.QueuedSpell = nil
+	unit.DistanceFromTarget = unit.StartDistanceFromTarget
 	unit.Metrics.reset()
 	unit.ResetStatDeps()
 	unit.statsWithoutDeps = unit.initialStatsWithoutDeps
