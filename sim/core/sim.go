@@ -221,7 +221,7 @@ func (sim *Simulation) labelRand(label string) Rand {
 	labelRng, ok := sim.testRands[label]
 	if !ok {
 		// Add rseed to the label, so we still have run-run variance for stat weights.
-		labelRng = NewSplitMix(uint64(makeTestRandSeed(sim.rseed, label)))
+		labelRng = NewSplitMix(uint64(makeTestRandSeed(sim.rand.GetSeed(), label)))
 		sim.testRands[label] = labelRng
 	}
 	return labelRng

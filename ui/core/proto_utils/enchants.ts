@@ -1,6 +1,4 @@
-import {
-	UIEnchant as Enchant,
-} from '../proto/ui.js';
+import { UIEnchant as Enchant } from '../proto/ui.js';
 
 let descriptionsPromise: Promise<Record<number, string>> | null = null;
 function fetchEnchantDescriptions(): Promise<Record<number, string>> {
@@ -9,7 +7,7 @@ function fetchEnchantDescriptions(): Promise<Record<number, string>> {
 			.then(response => response.json())
 			.then(json => {
 				const descriptionsMap: Record<number, string> = {};
-				for (let idStr in json) {
+				for (const idStr in json) {
 					descriptionsMap[parseInt(idStr)] = json[idStr];
 				}
 				return descriptionsMap;

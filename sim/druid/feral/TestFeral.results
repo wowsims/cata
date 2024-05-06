@@ -9,7 +9,7 @@ character_stats_results: {
   final_stats: 199.5796
   final_stats: 1257.75
   final_stats: 734
-  final_stats: 2238.22689
+  final_stats: 2236.81817
   final_stats: 1407.8358
   final_stats: 0
   final_stats: 20885.49334
@@ -371,8 +371,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 21585.62734
-  tps: 15329.36975
+  dps: 21585.64865
+  tps: 15329.38489
  }
 }
 dps_results: {
@@ -1660,8 +1660,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 21328.29866
-  tps: 15144.513
+  dps: 21266.13729
+  tps: 15100.37842
  }
 }
 dps_results: {

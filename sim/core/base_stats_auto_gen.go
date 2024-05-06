@@ -34,6 +34,19 @@ var CritPerAgiMaxLevel = map[proto.Class]float64{
 	proto.Class_ClassWarlock:     0.0051,
 	proto.Class_ClassDruid:       0.0031,
 }
+var CritPerIntMaxLevel = map[proto.Class]float64{
+	proto.Class_ClassUnknown:     0.0,
+	proto.Class_ClassWarrior:     0.0000,
+	proto.Class_ClassPaladin:     0.0015,
+	proto.Class_ClassHunter:      0.0000,
+	proto.Class_ClassRogue:       0.0000,
+	proto.Class_ClassPriest:      0.0015,
+	proto.Class_ClassDeathKnight: 0.0000,
+	proto.Class_ClassShaman:      0.0015,
+	proto.Class_ClassMage:        0.0015,
+	proto.Class_ClassWarlock:     0.0015,
+	proto.Class_ClassDruid:       0.0015,
+}
 var ExtraClassBaseStats = map[proto.Class]stats.Stats{
 	proto.Class_ClassUnknown: {},
 	proto.Class_ClassWarrior: {
