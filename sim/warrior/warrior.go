@@ -84,7 +84,6 @@ type Warrior struct {
 	Stance                 Stance
 	EnrageEffectMultiplier float64
 	CriticalBlockChance    float64 // Can be gained as non-prot via certain talents and spells
-	BlockDamageReduction   float64
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
@@ -146,7 +145,6 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerStances()
 	warrior.EnrageEffectMultiplier = 1.0
 	warrior.hsCleaveCD = warrior.NewTimer()
-	warrior.BlockDamageReduction = 0.3
 
 	warrior.RegisterBerserkerRageSpell()
 	warrior.RegisterColossusSmash()
