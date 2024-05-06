@@ -57,7 +57,7 @@ func (bmHunter *BeastMasteryHunter) Initialize() {
 		if bmHunter.Pet != nil {
 			bmHunter.Pet.PseudoStats.DamageDealtMultiplier /= bmHunter.getMasteryBonus(oldMastery)
 			bmHunter.Pet.PseudoStats.DamageDealtMultiplier *= bmHunter.getMasteryBonus(newMastery)
-			kcMod.UpdateFloatValue(bmHunter.getMasteryBonus(oldMastery))
+			kcMod.UpdateFloatValue(bmHunter.getMasteryBonus(newMastery))
 		}
 	})
 
