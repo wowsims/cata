@@ -293,9 +293,8 @@ func (mage *Mage) applyIgnite() {
 	if mage.Talents.Ignite == 0 {
 		return
 	}
-
 	const IgniteTicksFresh = 2
-
+	var currentMastery float64
 	// Ignite proc listener
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Ignite Talent",
@@ -332,14 +331,13 @@ func (mage *Mage) applyIgnite() {
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: false,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-
+				currentMastery = 1.224 + 0.028*mage.GetMasteryPoints()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				currentMastery := 1.224 + 0.028*mage.GetMasteryPoints()
-				fmt.Println("Pre-result snapshotbasedamage * Mastery: ", dot.SnapshotBaseDamage*currentMastery)
+				//currentMastery := 1.224 + 0.028*mage.GetMasteryPoints()
+
 				result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage*currentMastery, dot.OutcomeTick)
 				dot.Spell.DealPeriodicDamage(sim, result)
-				fmt.Println("Post-calculation tick damage: ", result.Damage)
 			},
 		},
 
@@ -358,9 +356,6 @@ func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
 	newDamage := result.Damage * igniteDamageMultiplier
 	dot := mage.Ignite.Dot(result.Target)
-
-	// if ignite was still active, we store up the remaining damage to be added to the next application
-	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 	dot.SnapshotAttackerMultiplier = 1
 
 	// Cata Ignite
@@ -368,17 +363,18 @@ func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 	// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
 	// Do not refresh ignites duration if there is more than 4s left on duration.
 	if dot.IsActive() {
-		if dot.RemainingDuration(sim) > time.Millisecond*4000 {
-			dot.SnapshotBaseDamage = ((outstandingDamage + newDamage) / float64(IgniteTicksRefresh))
-			return
-		}
+		//only calc outstanding damage if dot is active
+
+		outstandingDamage := dot.SnapshotBaseDamage * float64(dot.NumTicksRemaining(sim))
+		fmt.Println(sim.CurrentTime, "...num ticks remaining: ", dot.NumTicksRemaining(sim), ".....SnapshotDam: ", dot.SnapshotBaseDamage, ".....Leftover Dam: ", outstandingDamage)
+		//if dot.RemainingDuration(sim) > time.Millisecond*4000 {
+		//	dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(IgniteTicksRefresh)
+		//	return
+		//}
 		dot.SnapshotBaseDamage = ((outstandingDamage + newDamage) / float64(IgniteTicksRefresh))
 		dot.Apply(sim)
 	} else {
-		fmt.Println("-------")
-		fmt.Println("Incoming Crit: ", result.Damage)
-		dot.NumberOfTicks = IgniteTicksFresh
-		dot.SnapshotBaseDamage = newDamage / float64(IgniteTicksFresh)
+		dot.SnapshotBaseDamage = newDamage / IgniteTicksFresh
 		mage.Ignite.Cast(sim, result.Target)
 	}
 }
