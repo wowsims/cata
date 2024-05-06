@@ -56,6 +56,10 @@ func (comRogue *CombatRogue) registerBanditsGuile() {
 		ActionID:  core.ActionID{SpellID: 84654},
 		Duration:  core.NeverExpires,
 		MaxStacks: 4,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			currentInsightIndex = -1
+			attackCounter = 0
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if currentInsightIndex < 2 && result.Landed() && (spell == comRogue.SinisterStrike || spell == comRogue.RevealingStrike) {
 				if lastAttacked != result.Target {
