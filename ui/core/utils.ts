@@ -295,6 +295,7 @@ export function htmlDecode(input: string) {
 	return doc.documentElement.textContent;
 }
 
+// JavaScript's built in modulo (%) has several issues. This is a fix that works similar to the intuitive way modulo works in most languages
 export const mod = (n: number, m: number): number => {
 	return ((n % m) + m) % m;
 };
