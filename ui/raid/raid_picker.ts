@@ -586,8 +586,9 @@ export class PlayerPicker extends Component {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
 			dragStart(event, DragType.Swap);
 		};
+		const playerEditorModal = new PlayerEditorModal(this.player as Player<any>);
 		editElem.onclick = _event => {
-			new PlayerEditorModal(this.player as Player<any>);
+			playerEditorModal.open();
 		};
 		copyElem.ondragstart = event => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);

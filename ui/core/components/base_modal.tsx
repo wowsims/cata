@@ -79,12 +79,6 @@ export class BaseModal extends Component {
 		this.footer = footerRef.value!;
 
 		this.modal = new Modal(this.rootElem, { keyboard: true });
-		this.open();
-
-		this.rootElem.addEventListener('hidden.bs.modal', _ => {
-			this.rootElem.remove();
-			this.dispose();
-		});
 	}
 
 	protected onShow(_e: Event) {
