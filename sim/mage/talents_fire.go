@@ -316,7 +316,7 @@ func (mage *Mage) applyIgnite() {
 		ActionID:       core.ActionID{SpellID: 12846},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskProc,
-		Flags:          core.SpellFlagIgnoreModifiers,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods,
 		ClassSpellMask: MageSpellIgnite,
 
 		DamageMultiplier: 1,
