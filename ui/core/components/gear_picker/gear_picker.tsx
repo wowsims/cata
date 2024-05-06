@@ -1126,8 +1126,9 @@ export class ItemList<T extends ItemListType> {
 		makePhaseSelector(this.tabContent.getElementsByClassName('selector-modal-phase-selector')[0] as HTMLElement, player.sim);
 
 		if (label == 'Items') {
+			const filtersMenu = new FiltersMenu(parent, player, currentSlot);
 			const filtersButton = this.tabContent.getElementsByClassName('selector-modal-filters-button')[0] as HTMLElement;
-			filtersButton.addEventListener('click', () => new FiltersMenu(parent, player, currentSlot));
+			filtersButton.addEventListener('click', () => filtersMenu.open());
 		}
 
 		this.listElem = this.tabContent.getElementsByClassName('selector-modal-list')[0] as HTMLElement;
