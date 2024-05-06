@@ -16,7 +16,7 @@ import { Stats } from '../../proto_utils/stats';
 import { Sim } from '../../sim';
 import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
-import { formatDeltaTextElem } from '../../utils';
+import { formatDeltaTextElem, mod } from '../../utils';
 import { BaseModal } from '../base_modal';
 import { Component } from '../component';
 import { FiltersMenu } from '../filters_menu';
@@ -463,7 +463,6 @@ export class SelectorModal extends BaseModal {
 	private player: Player<any>;
 	private gearPicker: GearPicker | undefined;
 	private ilists: ItemList<ItemListType>[] = [];
-	// private updateReforgeList: (newReforgeData: Array<ReforgeData & { ep: number }>) => void;
 
 	private readonly itemSlotTabElems: HTMLElement[] = [];
 	private readonly titleElem: HTMLElement;
@@ -472,6 +471,7 @@ export class SelectorModal extends BaseModal {
 
 	private currentSlot: ItemSlot = ItemSlot.ItemSlotHead;
 	private currentTab: SelectorModalTabs = SelectorModalTabs.Items;
+	private gearData: GearData | undefined;
 
 	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, gearPicker?: GearPicker) {
 		super(parent, 'selector-modal', {});
@@ -517,6 +517,16 @@ export class SelectorModal extends BaseModal {
 		this.open();
 	}
 
+	onShow() {
+		document.addEventListener('keydown', event => this.switchPreviousItemSlotTab(event));
+		document.addEventListener('keydown', event => this.switchNextItemSlotTab(event));
+	}
+
+	onHide() {
+		document.removeEventListener('keydown', this.switchPreviousItemSlotTab);
+		document.removeEventListener('keydown', this.switchNextItemSlotTab);
+	}
+
 	private setData(selectedSlot: ItemSlot, selectedTab: SelectorModalTabs, gearData: GearData) {
 		this.tabsElem.innerText = '';
 		this.contentElem.innerText = '';
@@ -527,8 +537,6 @@ export class SelectorModal extends BaseModal {
 		const eligibleItems = this.player.getItems(selectedSlot);
 		const eligibleEnchants = this.player.getEnchants(selectedSlot);
 		const eligibleReforges = equippedItem?.item ? this.player.getAvailableReforgings(equippedItem.item) : [];
-
-		this.currentSlot = selectedSlot;
 
 		// If the enchant tab is selected but the item has no eligible enchants, default to items
 		// If the reforge tab is selected but the item has no eligible reforges, default to items
@@ -543,6 +551,8 @@ export class SelectorModal extends BaseModal {
 		}
 
 		this.currentTab = selectedTab;
+		this.currentSlot = selectedSlot;
+		this.gearData = gearData;
 
 		this.addTab<Item>({
 			label: SelectorModalTabs.Items,
@@ -667,6 +677,20 @@ export class SelectorModal extends BaseModal {
 				elem.classList.remove('active');
 			}
 		});
+	}
+
+	private switchPreviousItemSlotTab(event: KeyboardEvent) {
+		if (event.key == 'ArrowUp') {
+			event.preventDefault();
+			this.openTab(mod(this.currentSlot - 1, Object.keys(ItemSlot).length / 2) as unknown as ItemSlot, this.currentTab, this.gearData!);
+		}
+	}
+
+	private switchNextItemSlotTab(event: KeyboardEvent) {
+		if (event.key == 'ArrowDown') {
+			event.preventDefault();
+			this.openTab(mod(this.currentSlot + 1, Object.keys(ItemSlot).length / 2) as unknown as ItemSlot, this.currentTab, this.gearData!);
+		}
 	}
 
 	private addGemTabs(_slot: ItemSlot, equippedItem: EquippedItem | null, gearData: GearData) {
