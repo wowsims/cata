@@ -44,7 +44,7 @@ func (druid *Druid) registerPulverizeSpell() {
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
-		MaxRange:         5,
+		MaxRange:         core.MaxMeleeRange,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			lacerateDot := druid.Lacerate.Dot(target)
