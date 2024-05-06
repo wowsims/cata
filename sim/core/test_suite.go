@@ -11,6 +11,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 	"google.golang.org/protobuf/encoding/prototext"
+	googleProto "google.golang.org/protobuf/proto"
 )
 
 // Precise enough to detect very small changes to test results, but truncated
@@ -71,6 +72,41 @@ func (testSuite *IndividualTestSuite) TestDPS(testName string, rsr *proto.RaidSi
 		Tps:  toFixed(result.RaidMetrics.Parties[0].Players[0].Threat.Avg, storagePrecision),
 		Dtps: toFixed(result.RaidMetrics.Parties[0].Players[0].Dtps.Avg, storagePrecision),
 		Hps:  toFixed(result.RaidMetrics.Parties[0].Players[0].Hps.Avg, storagePrecision),
+	}
+}
+
+type ResetTestResult struct {
+	BaseDps   float64
+	BaseHps   float64
+	BaseTps   float64
+	BaseDtps  float64
+	SplitDps  float64
+	SplitHps  float64
+	SplitTps  float64
+	SplitDtps float64
+}
+
+func (testSuite *IndividualTestSuite) TestResetLeakage(testName string, rsr *proto.RaidSimRequest) ResetTestResult {
+	testSuite.testNames = append(testSuite.testNames, testName)
+
+	rsrCopy := googleProto.Clone(rsr).(*proto.RaidSimRequest)
+	rsrCopy.SimOptions.Iterations = 4
+	resultBase := RunRaidSim(rsrCopy)
+
+	rsrCopy.SimOptions.Iterations = 2
+	resultSplit1 := RunRaidSim(rsrCopy)
+	rsrCopy.SimOptions.RandomSeed += 2
+	resultSplit2 := RunRaidSim(rsrCopy)
+
+	return ResetTestResult{
+		BaseDps:   toFixed(resultBase.RaidMetrics.Dps.Avg, storagePrecision),
+		BaseTps:   toFixed(resultBase.RaidMetrics.Parties[0].Players[0].Threat.Avg, storagePrecision),
+		BaseDtps:  toFixed(resultBase.RaidMetrics.Parties[0].Players[0].Dtps.Avg, storagePrecision),
+		BaseHps:   toFixed(resultBase.RaidMetrics.Parties[0].Players[0].Hps.Avg, storagePrecision),
+		SplitDps:  toFixed((resultSplit1.RaidMetrics.Dps.Avg+resultSplit2.RaidMetrics.Dps.Avg)/2, storagePrecision),
+		SplitTps:  toFixed((resultSplit1.RaidMetrics.Parties[0].Players[0].Threat.Avg+resultSplit2.RaidMetrics.Parties[0].Players[0].Threat.Avg)/2, storagePrecision),
+		SplitDtps: toFixed((resultSplit1.RaidMetrics.Parties[0].Players[0].Dtps.Avg+resultSplit2.RaidMetrics.Parties[0].Players[0].Dtps.Avg)/2, storagePrecision),
+		SplitHps:  toFixed((resultSplit1.RaidMetrics.Parties[0].Players[0].Hps.Avg+resultSplit2.RaidMetrics.Parties[0].Players[0].Hps.Avg)/2, storagePrecision),
 	}
 }
 
@@ -276,6 +312,28 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 				panic("No test request provided")
 			}
 		})
+		if rsr != nil {
+			resetTestName := suiteName + "-" + testName + "/ResetTest"
+			t.Run(resetTestName, func(t *testing.T) {
+				res := testSuite.TestResetLeakage(resetTestName, rsr)
+				if math.Abs(res.BaseDps-res.SplitDps) > tolerance {
+					t.Logf("DPS did not match! Base was %0.03f and split was %0.03f!.", res.BaseDps, res.SplitDps)
+					t.Fail()
+				}
+				if math.Abs(res.BaseHps-res.SplitHps) > tolerance {
+					t.Logf("HPS did not match! Base was %0.03f and split was %0.03f!.", res.BaseHps, res.SplitHps)
+					t.Fail()
+				}
+				if math.Abs(res.BaseTps-res.SplitTps) > tolerance {
+					t.Logf("TPS did not match! Base was %0.03f and split was %0.03f!.", res.BaseTps, res.SplitTps)
+					t.Fail()
+				}
+				if math.Abs(res.BaseDtps-res.SplitDtps) > tolerance {
+					t.Logf("DTPS did not match! Base was %0.03f and split was %0.03f!.", res.BaseDtps, res.SplitDtps)
+					t.Fail()
+				}
+			})
+		}
 	}
 
 	testSuite.Done(t)
