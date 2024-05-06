@@ -148,6 +148,16 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 
 	action.lastAction = sim.CurrentTime
 
+	// Handle movement before any rotation logic
+	if cat.Moving {
+		return
+	}
+	if cat.DistanceFromTarget > 5 {
+		// Charge logic will go here before defaulting to manual movement
+		cat.MoveTo(4, sim) // movement aura is discretized in 1 yard intervals, so need to overshoot to guarantee melee range
+		return
+	}
+
 	if !cat.GCD.IsReady(sim) {
 		cat.WaitUntil(sim, cat.NextGCDAt())
 		return
