@@ -38,14 +38,13 @@ func TestFeral(t *testing.T) {
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsMonoCat},
-		OtherSpecOptions: []core.SpecOptionsCombo{
-			{Label: "Default-NoBleed", SpecOptions: PlayerOptionsMonoCatNoBleed},
-		},
+		SpecOptions: core.SpecOptionsCombo{Label: "ExternalBleed", SpecOptions: PlayerOptionsMonoCat},
 		Rotation: core.GetAplRotation("../../../ui/druid/feral/apls", "default"),
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/druid/feral/apls", "aoe"),
 		},
+		StartingDistance: core.MaxMeleeRange,
+		OtherStartingDistances: []float64{25},
 		ItemFilter: FeralItemFilter,
 	}))
 }

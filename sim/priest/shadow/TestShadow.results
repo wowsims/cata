@@ -1916,126 +1916,126 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-p1-Basic-default-FullBuffs-LongMultiTarget"
+ key: "TestShadow-Settings-Draenei-p1-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 28292.94768
   tps: 37859.35425
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-p1-Basic-default-FullBuffs-LongSingleTarget"
+ key: "TestShadow-Settings-Draenei-p1-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 28292.94768
   tps: 26785.54207
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-p1-Basic-default-FullBuffs-ShortSingleTarget"
+ key: "TestShadow-Settings-Draenei-p1-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 36932.38832
   tps: 33796.538
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-p1-Basic-default-NoBuffs-LongMultiTarget"
+ key: "TestShadow-Settings-Draenei-p1-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 15750.78055
   tps: 24389.68413
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-p1-Basic-default-NoBuffs-LongSingleTarget"
+ key: "TestShadow-Settings-Draenei-p1-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 15750.78055
   tps: 15291.39655
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Draenei-p1-Basic-default-NoBuffs-ShortSingleTarget"
+ key: "TestShadow-Settings-Draenei-p1-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 18559.06779
   tps: 17415.34102
  }
 }
 dps_results: {
- key: "TestShadow-Settings-NightElf-p1-Basic-default-FullBuffs-LongMultiTarget"
+ key: "TestShadow-Settings-NightElf-p1-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 28292.94768
   tps: 37859.35425
  }
 }
 dps_results: {
- key: "TestShadow-Settings-NightElf-p1-Basic-default-FullBuffs-LongSingleTarget"
+ key: "TestShadow-Settings-NightElf-p1-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 28292.94768
   tps: 26785.54207
  }
 }
 dps_results: {
- key: "TestShadow-Settings-NightElf-p1-Basic-default-FullBuffs-ShortSingleTarget"
+ key: "TestShadow-Settings-NightElf-p1-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 36932.38832
   tps: 33796.538
  }
 }
 dps_results: {
- key: "TestShadow-Settings-NightElf-p1-Basic-default-NoBuffs-LongMultiTarget"
+ key: "TestShadow-Settings-NightElf-p1-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 15750.78055
   tps: 24389.68413
  }
 }
 dps_results: {
- key: "TestShadow-Settings-NightElf-p1-Basic-default-NoBuffs-LongSingleTarget"
+ key: "TestShadow-Settings-NightElf-p1-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 15750.78055
   tps: 15291.39655
  }
 }
 dps_results: {
- key: "TestShadow-Settings-NightElf-p1-Basic-default-NoBuffs-ShortSingleTarget"
+ key: "TestShadow-Settings-NightElf-p1-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 18559.06779
   tps: 17415.34102
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Troll-p1-Basic-default-FullBuffs-LongMultiTarget"
+ key: "TestShadow-Settings-Troll-p1-Basic-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 28740.83888
   tps: 38395.43135
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Troll-p1-Basic-default-FullBuffs-LongSingleTarget"
+ key: "TestShadow-Settings-Troll-p1-Basic-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 28740.83888
   tps: 27258.47767
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Troll-p1-Basic-default-FullBuffs-ShortSingleTarget"
+ key: "TestShadow-Settings-Troll-p1-Basic-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 38168.88181
   tps: 34983.27894
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Troll-p1-Basic-default-NoBuffs-LongMultiTarget"
+ key: "TestShadow-Settings-Troll-p1-Basic-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 16813.2067
   tps: 25901.13393
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Troll-p1-Basic-default-NoBuffs-LongSingleTarget"
+ key: "TestShadow-Settings-Troll-p1-Basic-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 16813.2067
   tps: 16337.99637
  }
 }
 dps_results: {
- key: "TestShadow-Settings-Troll-p1-Basic-default-NoBuffs-ShortSingleTarget"
+ key: "TestShadow-Settings-Troll-p1-Basic-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 19468.90593
   tps: 18254.6834

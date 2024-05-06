@@ -29,7 +29,7 @@ func TestBM(t *testing.T) {
 		},
 
 		ItemFilter:         ItemFilter,
-		DistanceFromTarget: 5.1,
+		StartingDistance:   5.1,
 	}))
 }
 

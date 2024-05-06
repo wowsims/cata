@@ -39,6 +39,7 @@ func (druid *Druid) registerLacerateSpell() {
 		DamageMultiplier: initialDamageMul,
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 0.5,
+		MaxRange:         core.MaxMeleeRange,
 		// FlatThreatBonus:  515.5, // Handled below
 
 		Dot: core.DotConfig{
