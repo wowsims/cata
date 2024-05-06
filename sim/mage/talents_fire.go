@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -294,7 +293,7 @@ func (mage *Mage) applyIgnite() {
 		return
 	}
 	const IgniteTicksFresh = 2
-	var currentMastery float64
+
 	// Ignite proc listener
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Ignite Talent",
@@ -331,12 +330,10 @@ func (mage *Mage) applyIgnite() {
 			TickLength:          time.Second * 2,
 			AffectedByCastSpeed: false,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				currentMastery = 1.224 + 0.028*mage.GetMasteryPoints()
+
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				//currentMastery := 1.224 + 0.028*mage.GetMasteryPoints()
-
-				result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage*currentMastery, dot.OutcomeTick)
+				result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
 				dot.Spell.DealPeriodicDamage(sim, result)
 			},
 		},
@@ -352,25 +349,18 @@ func (mage *Mage) applyIgnite() {
 func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 	const IgniteTicksFresh = 2
 	const IgniteTicksRefresh = 3
+	var currentMastery float64 = 1.224 + 0.028*mage.GetMasteryPoints()
 
 	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
-	newDamage := result.Damage * igniteDamageMultiplier
+	newDamage := result.Damage * igniteDamageMultiplier * currentMastery
 	dot := mage.Ignite.Dot(result.Target)
 	dot.SnapshotAttackerMultiplier = 1
 
 	// Cata Ignite
 	// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
 	// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
-	// Do not refresh ignites duration if there is more than 4s left on duration.
 	if dot.IsActive() {
-		//only calc outstanding damage if dot is active
-
 		outstandingDamage := dot.SnapshotBaseDamage * float64(dot.NumTicksRemaining(sim))
-		fmt.Println(sim.CurrentTime, "...num ticks remaining: ", dot.NumTicksRemaining(sim), ".....SnapshotDam: ", dot.SnapshotBaseDamage, ".....Leftover Dam: ", outstandingDamage)
-		//if dot.RemainingDuration(sim) > time.Millisecond*4000 {
-		//	dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(IgniteTicksRefresh)
-		//	return
-		//}
 		dot.SnapshotBaseDamage = ((outstandingDamage + newDamage) / float64(IgniteTicksRefresh))
 		dot.Apply(sim)
 	} else {
