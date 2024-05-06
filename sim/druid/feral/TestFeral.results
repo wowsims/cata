@@ -9,7 +9,7 @@ character_stats_results: {
   final_stats: 199.5796
   final_stats: 1257.75
   final_stats: 734
-  final_stats: 2.288262116215e+07
+  final_stats: 2236.81817
   final_stats: 1407.8358
   final_stats: 0
   final_stats: 20885.49334
@@ -88,8 +88,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Bandit'sInsignia-40371"
  value: {
-  dps: 21498.28889
-  tps: 15265.05648
+  dps: 21478.52511
+  tps: 15251.0242
  }
 }
 dps_results: {
@@ -97,7 +97,7 @@ dps_results: {
  value: {
   dps: 21200.49713
   tps: 15053.54955
-  hps: 123.10154
+  hps: 84.91645
  }
 }
 dps_results: {
@@ -105,7 +105,7 @@ dps_results: {
  value: {
   dps: 21200.49713
   tps: 15053.54955
-  hps: 123.10154
+  hps: 84.91645
  }
 }
 dps_results: {
@@ -329,8 +329,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-DarkmoonCard:Death-42990"
  value: {
-  dps: 21368.32841
-  tps: 15172.85933
+  dps: 21347.69177
+  tps: 15158.20732
  }
 }
 dps_results: {
@@ -371,8 +371,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 21528.16042
-  tps: 15288.49345
+  dps: 21527.5878
+  tps: 15288.08689
  }
 }
 dps_results: {
@@ -532,8 +532,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ExtractofNecromanticPower-40373"
  value: {
-  dps: 21366.30986
-  tps: 15171.27659
+  dps: 21348.99629
+  tps: 15158.98396
  }
 }
 dps_results: {
@@ -707,8 +707,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-GnomishLightningGenerator-41121"
  value: {
-  dps: 21341.16599
-  tps: 15153.57401
+  dps: 21328.11921
+  tps: 15144.3108
  }
 }
 dps_results: {
@@ -728,8 +728,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-HarmlightToken-63839"
  value: {
-  dps: 21209.27697
-  tps: 15059.78323
+  dps: 21206.78161
+  tps: 15058.01153
  }
 }
 dps_results: {
@@ -905,7 +905,7 @@ dps_results: {
  value: {
   dps: 22185.35706
   tps: 15752.8001
-  hps: 87.59361
+  hps: 60.89842
  }
 }
 dps_results: {
@@ -1660,8 +1660,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 21213.84649
-  tps: 15063.17717
+  dps: 21210.40527
+  tps: 15060.7339
  }
 }
 dps_results: {
