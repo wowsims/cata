@@ -1761,11 +1761,22 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 
 	if (enchant.enchantType == EnchantType.EnchantTypeTwoHand && item.handType != HandType.HandTypeTwoHand) return false;
 
-	if ((enchant.enchantType == EnchantType.EnchantTypeShield) != (item.weaponType == WeaponType.WeaponTypeShield)) return false;
+	if (
+		// All off-hand enchants can be applied to shields as well
+		(enchant.enchantType == EnchantType.EnchantTypeShield || enchant.enchantType == EnchantType.EnchantTypeOffHand) !==
+		(item.weaponType == WeaponType.WeaponTypeShield)
+	)
+		return false;
 
 	if (enchant.enchantType == EnchantType.EnchantTypeStaff && item.weaponType != WeaponType.WeaponTypeStaff) return false;
 
-	if ((item.weaponType == WeaponType.WeaponTypeOffHand) != (enchant.enchantType == EnchantType.EnchantTypeOffHand)) return false;
+	if (
+		(enchant.enchantType == EnchantType.EnchantTypeOffHand) !==
+		(item.weaponType == WeaponType.WeaponTypeOffHand ||
+			// All off-hand enchants can be applied to shields as well
+			(item.weaponType == WeaponType.WeaponTypeShield && enchant.enchantType == EnchantType.EnchantTypeOffHand))
+	)
+		return false;
 
 	if (sharedSlots.includes(ItemSlot.ItemSlotRanged)) {
 		if (
@@ -1815,7 +1826,7 @@ export function makeBlessingsAssignments(numPaladins: number): BlessingsAssignme
 	const assignments = makeBlankBlessingsAssignments(numPaladins);
 	for (let i = 1; i < Object.keys(Spec).length; i++) {
 		const spec = i;
-		const blessings = [Blessings.BlessingOfKings, Blessings.BlessingOfMight]
+		const blessings = [Blessings.BlessingOfKings, Blessings.BlessingOfMight];
 		for (let j = 0; j < blessings.length; j++) {
 			if (j >= assignments.paladins.length) {
 				// Can't assign more blessings since we ran out of paladins
