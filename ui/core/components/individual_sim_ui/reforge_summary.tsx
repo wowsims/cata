@@ -37,8 +37,8 @@ export class ReforgeSummary extends Component {
 		const totals: ReforgeSummaryTotal = {};
 		gear.getItemSlots().forEach(itemSlot => {
 			const item = gear.getEquippedItem(itemSlot);
-			if (item && item._reforging !== 0) {
-				const reforge = this.player.getReforge(item.reforging);
+			if (item?.reforge && item.reforge?.id !== 0) {
+				const reforge = this.player.getReforge(item.reforge.id);
 				if (reforge) {
 					const fromStat = reforge.fromStat[0];
 					const toStat = reforge.toStat[0];

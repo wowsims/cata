@@ -55,9 +55,9 @@ func (character *Character) EnableManaBarWithModifier(modifier float64) {
 	character.AddStat(stats.SpellPower, -10)
 
 	if character.Unit.Type == PlayerUnit {
-		// Every caster gains 1% crit per 648.91
-		// Pets have different scaling so let them handle their scaling
-		character.AddStatDependency(stats.Intellect, stats.SpellCrit, 1.0/648.91*CritRatingPerCritChance)
+		// Pets might have different scaling so let them handle their scaling
+		character.AddStatDependency(stats.Intellect, stats.SpellCrit,
+			CritPerIntMaxLevel[character.Class]*CritRatingPerCritChance)
 	}
 
 	// Not a real spell, just holds metrics from mana gain threat.

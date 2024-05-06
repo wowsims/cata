@@ -1,7 +1,7 @@
 import { getWowheadLanguagePrefix } from '../constants/lang.js';
 import { CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { ResourceType } from '../proto/api.js';
-import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction } from '../proto/common.js';
+import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction, ReforgeStat } from '../proto/common.js';
 import { IconData, UIItem as Item } from '../proto/ui.js';
 import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
 import { Database } from './database.js';
@@ -608,6 +608,10 @@ export class ActionId {
 
 	static fromRandomSuffix(item: Item, randomSuffix: ItemRandomSuffix): ActionId {
 		return ActionId.fromItemId(item.id, 0, randomSuffix.id);
+	}
+
+	static fromReforge(item: Item, reforge: ReforgeStat): ActionId {
+		return ActionId.fromItemId(item.id, 0, reforge.id);
 	}
 
 	static fromProto(protoId: ActionIdProto): ActionId {

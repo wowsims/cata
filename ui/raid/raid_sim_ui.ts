@@ -98,10 +98,10 @@ export class RaidSimUI extends SimUI {
 	}
 
 	private addTopbarComponents() {
-		this.simHeader.addImportLink('JSON', _parent => new ImportExport.RaidJsonImporter(this.rootElem, this));
-		this.simHeader.addImportLink('WCL', _parent => new ImportExport.RaidWCLImporter(this.rootElem, this));
+		this.simHeader.addImportLink('JSON', new ImportExport.RaidJsonImporter(this.rootElem, this));
+		this.simHeader.addImportLink('WCL', new ImportExport.RaidWCLImporter(this.rootElem, this));
 
-		this.simHeader.addExportLink('JSON', _parent => new ImportExport.RaidJsonExporter(this.rootElem, this));
+		this.simHeader.addExportLink('JSON', new ImportExport.RaidJsonExporter(this.rootElem, this));
 	}
 
 	private addRaidTab() {

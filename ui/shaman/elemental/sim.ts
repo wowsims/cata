@@ -37,7 +37,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit,  Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -70,9 +70,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.67,
 			[Stat.StatSpellHaste]: 1.29,
-			[Stat.StatSpellHit]: 0.00,
-			[Stat.StatSpirit]: 0.00,
-			[Stat.StatMastery]: 0.00
+			[Stat.StatSpellHit]: 0.0,
+			[Stat.StatSpirit]: 0.0,
+			[Stat.StatMastery]: 0.0,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -111,10 +111,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [ShamanInputs.ShamanShieldInput()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.MP5Buff,
-		BuffDebuffInputs.ReplenishmentBuff,
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.MP5Buff, BuffDebuffInputs.ReplenishmentBuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
