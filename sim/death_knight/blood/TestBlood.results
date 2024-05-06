@@ -1439,16 +1439,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-ReignoftheDead-47316"
  value: {
-  dps: 13786.50982
-  tps: 69370.06273
+  dps: 13786.5421
+  tps: 69370.22409
   hps: 4688.68612
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-ReignoftheDead-47477"
  value: {
-  dps: 13786.83716
-  tps: 69371.91665
+  dps: 13786.87333
+  tps: 69372.09747
   hps: 4688.68612
  }
 }
