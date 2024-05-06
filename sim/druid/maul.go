@@ -32,6 +32,7 @@ func (druid *Druid) registerMaulSpell() {
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  424,
 		BonusCoefficient: 1,
+		MaxRange:         5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Need to specially deactivate CC here in case maul is cast simultaneously with another spell.

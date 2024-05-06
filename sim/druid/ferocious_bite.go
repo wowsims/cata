@@ -44,6 +44,7 @@ func (druid *Druid) registerFerociousBiteSpell() {
 		DamageMultiplier: 1 + 0.05*float64(druid.Talents.FeralAggression),
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
+		MaxRange:         5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			comboPoints := float64(druid.ComboPoints())

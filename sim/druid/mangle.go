@@ -36,6 +36,7 @@ func (druid *Druid) registerMangleBearSpell() {
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
+		MaxRange:         5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 3306.0/1.9 +
@@ -91,6 +92,7 @@ func (druid *Druid) registerMangleCatSpell() {
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
+		MaxRange:         5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 302.0/5.4 +

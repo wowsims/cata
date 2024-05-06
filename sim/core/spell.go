@@ -32,6 +32,10 @@ type SpellConfig struct {
 	Cast               CastConfig
 	ExtraCastCondition CanCastCondition
 
+	// Optional range constraints. If supplied, these are used to modify the ExtraCastCondition above to additionally check for DistanceFromTarget.
+	MinRange float64
+	MaxRange float64
+
 	BonusHitRating       float64
 	BonusCritRating      float64
 	BonusSpellPower      float64
@@ -288,6 +292,24 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 	if spell.ApplyEffects == nil {
 		spell.ApplyEffects = func(*Simulation, *Unit, *Spell) {}
+	}
+
+	// Apply range constraints if requested
+	if (config.MinRange != 0) || (config.MaxRange != 0) {
+		oldExtraCastCondition := spell.ExtraCastCondition
+		minRange := config.MinRange
+		maxRange := config.MaxRange
+		spell.ExtraCastCondition = func(sim *Simulation, target *Unit) bool {
+			if ((minRange != 0) && (spell.Unit.DistanceFromTarget < minRange)) || ((maxRange != 0) && (spell.Unit.DistanceFromTarget > maxRange)) {
+				if sim.Log != nil {
+					sim.Log("Failed to cast spell %s, out of range!", spell.ActionID)
+				}
+
+				return false
+			}
+
+			return (oldExtraCastCondition == nil) || oldExtraCastCondition(sim, target)
+		}
 	}
 
 	unit.Spellbook = append(unit.Spellbook, spell)
