@@ -100,6 +100,10 @@ type Spell struct {
 	SharedCD           Cooldown
 	ExtraCastCondition CanCastCondition
 
+	// Optional range constraints. If supplied, these are used to modify the ExtraCastCondition above to additionally check for DistanceFromTarget.
+	MinRange float64
+	MaxRange float64
+
 	castTimeFn func(spell *Spell) time.Duration // allows to override CastTime()
 
 	// Performs a cast of this spell.
@@ -294,15 +298,17 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		spell.ApplyEffects = func(*Simulation, *Unit, *Spell) {}
 	}
 
-	// Apply range constraints if requested
+	// Apply range constraints if requested. This is done after generating the castFn
+	// for performance reasons, so that auto-attacks can be managed separately during
+	// movement actions rather than constantly polling range checks.
 	if (config.MinRange != 0) || (config.MaxRange != 0) {
+		spell.MinRange = config.MinRange
+		spell.MaxRange = config.MaxRange
 		oldExtraCastCondition := spell.ExtraCastCondition
-		minRange := config.MinRange
-		maxRange := config.MaxRange
 		spell.ExtraCastCondition = func(sim *Simulation, target *Unit) bool {
-			if ((minRange != 0) && (spell.Unit.DistanceFromTarget < minRange)) || ((maxRange != 0) && (spell.Unit.DistanceFromTarget > maxRange)) {
+			if ((spell.MinRange != 0) && (spell.Unit.DistanceFromTarget < spell.MinRange)) || ((spell.MaxRange != 0) && (spell.Unit.DistanceFromTarget > spell.MaxRange)) {
 				if sim.Log != nil {
-					sim.Log("Failed to cast spell %s, out of range!", spell.ActionID)
+					sim.Log("Cannot cast spell %s, out of range!", spell.ActionID)
 				}
 
 				return false
