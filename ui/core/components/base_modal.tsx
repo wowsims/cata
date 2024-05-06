@@ -36,6 +36,8 @@ const DEFAULT_CONFIG = {
 export class BaseModal extends Component {
 	readonly modalConfig: BaseModalConfig;
 
+	isOpen: boolean;
+
 	readonly modal: Modal;
 	readonly dialog: HTMLElement;
 	readonly header: HTMLElement | undefined;
@@ -45,6 +47,7 @@ export class BaseModal extends Component {
 	constructor(parent: HTMLElement, cssClass: string, config: BaseModalConfig = {}) {
 		super(parent, 'modal');
 		this.modalConfig = { ...DEFAULT_CONFIG, ...config };
+		this.isOpen = false;
 
 		const dialogRef = ref<HTMLDivElement>();
 		const headerRef = ref<HTMLDivElement>();
@@ -81,15 +84,12 @@ export class BaseModal extends Component {
 		this.modal = new Modal(this.rootElem, { keyboard: true });
 	}
 
-	protected onShow(_e: Event) {
-		return;
-	}
-
 	open() {
 		this.rootElem.addEventListener('show.bs.modal', this.showBSFn.bind(this));
 		this.rootElem.addEventListener('hide.bs.modal', this.hideBSFn.bind(this));
 		this.rootElem.addEventListener('hidden.bs.modal', this.hiddenBSFn.bind(this));
 		this.modal.show();
+		this.isOpen = true;
 	}
 
 	close() {
@@ -97,6 +97,16 @@ export class BaseModal extends Component {
 		this.rootElem.removeEventListener('show.bs.modal', this.showBSFn.bind(this));
 		this.rootElem.removeEventListener('hide.bs.modal', this.hideBSFn.bind(this));
 		this.rootElem.removeEventListener('hidden.bs.modal', this.hiddenBSFn.bind(this));
+		this.isOpen = false;
+	}
+
+	// Callbacks for on show and on hide
+	protected onShow(_e: Event) {
+		return;
+	}
+
+	protected onHide(_e: Event) {
+		return;
 	}
 
 	// Hacks for better looking multi modals
@@ -121,6 +131,7 @@ export class BaseModal extends Component {
 	private hideBSFn(event: Event) {
 		// Prevent the event from bubbling up to parent modals
 		event.stopImmediatePropagation();
+		this.onHide(event);
 	}
 
 	private hiddenBSFn(event: Event) {
