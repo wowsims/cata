@@ -341,7 +341,6 @@ func (mage *Mage) applyIgnite() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.SpellMetrics[target.UnitIndex].Hits++
 			spell.Dot(target).ApplyOrReset(sim)
-			spell.Dot(target).Aura.SetStacks(sim, int32(spell.Dot(target).SnapshotBaseDamage))
 		},
 	})
 }
@@ -367,6 +366,7 @@ func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 		dot.SnapshotBaseDamage = newDamage / IgniteTicksFresh
 		mage.Ignite.Cast(sim, result.Target)
 	}
+	dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 }
 
 func (mage *Mage) applyImpact() {
