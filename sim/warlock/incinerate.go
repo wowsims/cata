@@ -7,6 +7,8 @@ import (
 )
 
 func (warlock *Warlock) registerIncinerateSpell() {
+	shadowAndFlameProcChance := []float64{0.0, 0.33, 0.66, 1.0}[warlock.Talents.ShadowAndFlame]
+
 	warlock.Incinerate = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 29722},
 		SpellSchool:    core.SpellSchoolFire,
@@ -41,6 +43,9 @@ func (warlock *Warlock) registerIncinerateSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
+				if result.Landed() && sim.Proc(shadowAndFlameProcChance, "S&F Proc") {
+					core.ShadowAndFlameAura(target).Activate(sim)
+				}
 			})
 		},
 	})
