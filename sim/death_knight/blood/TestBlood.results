@@ -2133,7 +2133,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Goblin-p1-Basic-p1-FullBuffs-LongMultiTarget"
+ key: "TestBlood-Settings-Goblin-p1-Basic-p1-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 17925.94555
   tps: 89411.20955
@@ -2141,7 +2141,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Goblin-p1-Basic-p1-FullBuffs-LongSingleTarget"
+ key: "TestBlood-Settings-Goblin-p1-Basic-p1-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 13799.87055
   tps: 69388.51826
@@ -2149,7 +2149,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Goblin-p1-Basic-p1-FullBuffs-ShortSingleTarget"
+ key: "TestBlood-Settings-Goblin-p1-Basic-p1-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 17685.42156
   tps: 81743.03042
@@ -2157,7 +2157,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Goblin-p1-Basic-p1-NoBuffs-LongMultiTarget"
+ key: "TestBlood-Settings-Goblin-p1-Basic-p1-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 13457.62497
   tps: 67343.77441
@@ -2165,7 +2165,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Goblin-p1-Basic-p1-NoBuffs-LongSingleTarget"
+ key: "TestBlood-Settings-Goblin-p1-Basic-p1-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 10461.64752
   tps: 52860.36424
@@ -2173,7 +2173,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Goblin-p1-Basic-p1-NoBuffs-ShortSingleTarget"
+ key: "TestBlood-Settings-Goblin-p1-Basic-p1-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 11150.44523
   tps: 51619.18885
@@ -2181,7 +2181,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Worgen-p1-Basic-p1-FullBuffs-LongMultiTarget"
+ key: "TestBlood-Settings-Worgen-p1-Basic-p1-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 17975.21354
   tps: 89712.00937
@@ -2189,7 +2189,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Worgen-p1-Basic-p1-FullBuffs-LongSingleTarget"
+ key: "TestBlood-Settings-Worgen-p1-Basic-p1-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 13783.54362
   tps: 69351.72475
@@ -2197,7 +2197,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Worgen-p1-Basic-p1-FullBuffs-ShortSingleTarget"
+ key: "TestBlood-Settings-Worgen-p1-Basic-p1-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 17761.08687
   tps: 82138.43393
@@ -2205,7 +2205,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Worgen-p1-Basic-p1-NoBuffs-LongMultiTarget"
+ key: "TestBlood-Settings-Worgen-p1-Basic-p1-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 13463.70782
   tps: 67193.91582
@@ -2213,7 +2213,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Worgen-p1-Basic-p1-NoBuffs-LongSingleTarget"
+ key: "TestBlood-Settings-Worgen-p1-Basic-p1-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 10403.1618
   tps: 52527.46197
@@ -2221,7 +2221,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBlood-Settings-Worgen-p1-Basic-p1-NoBuffs-ShortSingleTarget"
+ key: "TestBlood-Settings-Worgen-p1-Basic-p1-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 11305.85591
   tps: 52430.88301

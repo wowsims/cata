@@ -1994,126 +1994,126 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Draenei-p1-Standard-default-FullBuffs-LongMultiTarget"
+ key: "TestEnhancement-Settings-Draenei-p1-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 31139.82792
   tps: 25204.73346
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Draenei-p1-Standard-default-FullBuffs-LongSingleTarget"
+ key: "TestEnhancement-Settings-Draenei-p1-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 30579.34207
   tps: 20765.29665
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Draenei-p1-Standard-default-FullBuffs-ShortSingleTarget"
+ key: "TestEnhancement-Settings-Draenei-p1-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 34589.49576
   tps: 23049.62408
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Draenei-p1-Standard-default-NoBuffs-LongMultiTarget"
+ key: "TestEnhancement-Settings-Draenei-p1-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 23979.22664
   tps: 20646.07194
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Draenei-p1-Standard-default-NoBuffs-LongSingleTarget"
+ key: "TestEnhancement-Settings-Draenei-p1-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 23475.84573
   tps: 16129.98701
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Draenei-p1-Standard-default-NoBuffs-ShortSingleTarget"
+ key: "TestEnhancement-Settings-Draenei-p1-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 25811.64685
   tps: 17435.10942
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-LongMultiTarget"
+ key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 31655.99582
   tps: 25615.46353
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-LongSingleTarget"
+ key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 31131.1334
   tps: 21084.57221
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-ShortSingleTarget"
+ key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 35591.03696
   tps: 23732.79037
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-LongMultiTarget"
+ key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 24477.63757
   tps: 21013.7196
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-LongSingleTarget"
+ key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 23962.12773
   tps: 16482.26574
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-ShortSingleTarget"
+ key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 26344.33298
   tps: 17779.68351
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Troll-p1-Standard-default-FullBuffs-LongMultiTarget"
+ key: "TestEnhancement-Settings-Troll-p1-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 31298.30053
   tps: 25277.1922
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Troll-p1-Standard-default-FullBuffs-LongSingleTarget"
+ key: "TestEnhancement-Settings-Troll-p1-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 30660.98194
   tps: 20766.82856
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Troll-p1-Standard-default-FullBuffs-ShortSingleTarget"
+ key: "TestEnhancement-Settings-Troll-p1-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 35079.62202
   tps: 23349.25582
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Troll-p1-Standard-default-NoBuffs-LongMultiTarget"
+ key: "TestEnhancement-Settings-Troll-p1-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 24153.7303
   tps: 20796.86482
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Troll-p1-Standard-default-NoBuffs-LongSingleTarget"
+ key: "TestEnhancement-Settings-Troll-p1-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 23509.79159
   tps: 16112.38012
  }
 }
 dps_results: {
- key: "TestEnhancement-Settings-Troll-p1-Standard-default-NoBuffs-ShortSingleTarget"
+ key: "TestEnhancement-Settings-Troll-p1-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 25756.87684
   tps: 17386.59878

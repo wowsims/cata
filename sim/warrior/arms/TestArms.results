@@ -1896,84 +1896,84 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-FullBuffs-LongMultiTarget"
+ key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 55219.1154
   tps: 29681.00394
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-FullBuffs-LongSingleTarget"
+ key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 26334.02238
   tps: 18128.47647
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-FullBuffs-ShortSingleTarget"
+ key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 30882.05336
   tps: 21479.73889
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-NoBuffs-LongMultiTarget"
+ key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 35674.46206
   tps: 18190.8899
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-NoBuffs-LongSingleTarget"
+ key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 16640.26476
   tps: 11259.47337
  }
 }
 dps_results: {
- key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-NoBuffs-ShortSingleTarget"
+ key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 18115.34356
   tps: 12286.12569
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-FullBuffs-LongMultiTarget"
+ key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 55106.92249
   tps: 29476.13744
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-FullBuffs-LongSingleTarget"
+ key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 26321.61982
   tps: 18055.72057
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-FullBuffs-ShortSingleTarget"
+ key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 30462.12134
   tps: 21124.78586
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-NoBuffs-LongMultiTarget"
+ key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 35636.63961
   tps: 17991.91728
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-NoBuffs-LongSingleTarget"
+ key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 16554.68901
   tps: 11178.36328
  }
 }
 dps_results: {
- key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-NoBuffs-ShortSingleTarget"
+ key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 17966.62751
   tps: 12154.12515
