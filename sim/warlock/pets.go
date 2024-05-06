@@ -1,7 +1,6 @@
 package warlock
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -17,46 +16,29 @@ type WarlockPet struct {
 
 func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		// based on testing for WotLK Classic the following is true:
-		// - pets are meele hit capped if and only if the warlock has 210 (8%) spell hit rating or more
-		//   - this is unaffected by suppression and by magic hit debuffs like FF
-		// - pets gain expertise from 0% to 6.5% relative to the owners hit, reaching cap at 17% spell hit
-		//   - this is also unaffected by suppression and by magic hit debuffs like FF
-		//   - this is continious, i.e. not restricted to 0.25 intervals
-		// - pets gain spell hit from 0% to 17% relative to the owners hit, reaching cap at 12% spell hit
-		// spell hit rating is floor'd
-		//   - affected by suppression and ff, but in weird ways:
-		// 3/3 suppression => 262 hit  (9.99%) results in misses, 263 (10.03%) no misses
-		// 2/3 suppression => 278 hit (10.60%) results in misses, 279 (10.64%) no misses
-		// 1/3 suppression => 288 hit (10.98%) results in misses, 289 (11.02%) no misses
-		// 0/3 suppression => 314 hit (11.97%) results in misses, 315 (12.01%) no misses
-		// 3/3 suppression + FF => 209 hit (7.97%) results in misses, 210 (8.01%) no misses
-		// 2/3 suppression + FF => 222 hit (8.46%) results in misses, 223 (8.50%) no misses
-		//
-		// the best approximation of this behaviour is that we scale the warlock's spell hit by `1/12*17` floor
-		// the result and then add the hit percent from suppression/ff
+		const petExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
+		const scalingFactor = 0.53153153153153 // TODO: changes from 80 (where it's 0.5) -> 85, clearly there's more to it..
 
-		// does correctly not include ff/misery
-		ownerHitChance := ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance
-
-		// TODO: Account for sunfire/soulfrost
 		return stats.Stats{
-			stats.Stamina:          ownerStats[stats.Stamina] * 0.75,
-			stats.Intellect:        ownerStats[stats.Intellect] * 0.3,
-			stats.Armor:            ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower:      ownerStats[stats.SpellPower] * 0.57,
-			stats.SpellPower:       ownerStats[stats.SpellPower] * 0.15,
-			stats.SpellPenetration: ownerStats[stats.SpellPenetration],
-			//With demonic tactics gone is there any crit inheritance?
-			//stats.SpellCrit:        improvedDemonicTactics * 0.1 * ownerStats[stats.SpellCrit],
-			//stats.MeleeCrit:        improvedDemonicTactics * 0.1 * ownerStats[stats.SpellCrit],
-			stats.MeleeHit: ownerHitChance * core.MeleeHitRatingPerHitChance,
-			stats.SpellHit: math.Floor(ownerStats[stats.SpellHit] / 12.0 * 17.0),
-			// TODO: revisit
-			stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) *
-				PetExpertiseScale * core.ExpertisePerQuarterPercentReduction,
+			stats.Mana:  ownerStats[stats.Mana] / scalingFactor,
+			stats.Armor: ownerStats[stats.Armor],
 
-			// Resists, 40%
+			stats.SpellPower:  ownerStats[stats.SpellPower] * scalingFactor,
+			stats.AttackPower: ownerStats[stats.SpellPower] * scalingFactor * 2, // might also simply be pet SP * 2
+
+			// almost certainly wrong, needs more testing
+			stats.SpellCrit: ownerStats[stats.SpellCrit],
+			stats.MeleeCrit: ownerStats[stats.MeleeCrit],
+
+			// pets inherit haste rating directly, evidenced by:
+			// 1. haste staying the same if the warlock has windfury totem while the pet doesn't
+			// 2. haste staying the same if warlock benefits from wrath of air (pet doesn't get this buff regardless)
+			stats.MeleeHaste: ownerStats[stats.SpellHaste],
+
+			// unclear what exactly the scaling is here, but at hit cap they should definitely all be capped
+			stats.SpellHit:  ownerStats[stats.SpellHit],
+			stats.MeleeHit:  ownerStats[stats.SpellHit],
+			stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * petExpertiseScale,
 		}
 	}
 }
@@ -72,7 +54,10 @@ func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStat
 	pet.EnableManaBarWithModifier(powerModifier)
 	pet.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	pet.AddStat(stats.AttackPower, -20)
-	pet.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
+	pet.AddStatDependency(stats.Agility, stats.MeleeCrit,
+		core.CritPerAgiMaxLevel[proto.Class_ClassPaladin]*core.CritRatingPerCritChance)
+	pet.AddStatDependency(stats.Intellect, stats.SpellCrit,
+		core.CritPerIntMaxLevel[proto.Class_ClassPaladin]*core.CritRatingPerCritChance)
 	if attackOptions != nil {
 		pet.EnableAutoAttacks(pet, *attackOptions)
 	}
@@ -83,8 +68,8 @@ func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStat
 func (warlock *Warlock) registerPets() {
 	autoAttackOptions := &core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  88.8,
-			BaseDamageMax:  133.3,
+			BaseDamageMin:  741.13,
+			BaseDamageMax:  1111.62,
 			SwingSpeed:     2,
 			CritMultiplier: 2,
 		},
@@ -97,8 +82,15 @@ func (warlock *Warlock) registerPets() {
 		stats.Intellect: 159,
 		stats.Spirit:    225,
 
-		stats.Mana:      1559,
-		stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
+		stats.Mana: 23420, // x / 0.05 = 1171, x / 0.03 = 702; x ~= 23420
+
+		// determined "base" crit chance with GetCritChanceFrom{Agility,Int}("pet") and then subtracted
+		// the calculated amount of crit from agi/int.
+		//
+		// To calculate crit per agi/int the following two spells where used:
+		// Rabies (3150) -5 int
+		// Corrupted Agility (6817) -10 agi
+		stats.MeleeCrit: 0.652 * core.CritRatingPerCritChance,
 		stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
 	}
 	impBaseStats := stats.Stats{
@@ -108,9 +100,10 @@ func (warlock *Warlock) registerPets() {
 		stats.Intellect: 391,
 		stats.Spirit:    395,
 
-		stats.Mana:      1559,
-		stats.MeleeCrit: 3.2685 * core.CritRatingPerCritChance,
-		stats.SpellCrit: 3.3355 * core.CritRatingPerCritChance,
+		stats.Mana: 17415, // x / 0.16 = 2786, x / 0.02 = 348; x ~= 17415
+
+		stats.MeleeCrit: 0.652 * core.CritRatingPerCritChance,
+		stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
 	}
 
 	inheritance := warlock.MakeStatInheritance()
