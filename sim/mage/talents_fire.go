@@ -372,7 +372,6 @@ func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 			dot.SnapshotBaseDamage = ((outstandingDamage + newDamage) / float64(IgniteTicksRefresh))
 			return
 		}
-		dot.NumberOfTicks = IgniteTicksRefresh
 		dot.SnapshotBaseDamage = ((outstandingDamage + newDamage) / float64(IgniteTicksRefresh))
 		dot.Apply(sim)
 	} else {
