@@ -7,7 +7,6 @@ import {
 	Food,
 	Glyphs,
 	IndividualBuffs,
-	PetFood,
 	Potions,
 	Profession,
 	RaidBuffs,
@@ -20,15 +19,12 @@ import {
 	WarlockMinorGlyph as MinorGlyph,
 	WarlockOptions_Armor as Armor,
 	WarlockOptions_Summon as Summon,
-	WarlockOptions_WeaponImbue as WeaponImbue,
+	WarlockPrimeGlyph as PrimeGlyph,
 } from '../../core/proto/warlock';
-import AfflictionApl from './apls/affliction.apl.json';
-import P1AfflictionGear from './gear_sets/p1_affliction.gear.json';
-import P2AfflictionGear from './gear_sets/p2_affliction.gear.json';
-import P3AfflictionAllianceGear from './gear_sets/p3_affliction_alliance.gear.json';
-import P3AfflictionHordeGear from './gear_sets/p3_affliction_horde.gear.json';
-import P4AfflictionGear from './gear_sets/p4_affliction.gear.json';
-import PreraidAfflictionGear from './gear_sets/preraid_affliction.gear.json';
+import DefaultApl from './apls/default.apl.json';
+import P1Gear from './gear_sets/p1.gear.json';
+import P4WrathGear from './gear_sets/p4_wrath.gear.json';
+import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -36,20 +32,11 @@ import PreraidAfflictionGear from './gear_sets/preraid_affliction.gear.json';
 
 export const BIS_TOOLTIP = "This gear preset is inspired from Zephan's Affliction guide: https://www.warcrafttavern.com/wotlk/guides/pve-affliction-warlock/";
 
-export const PRERAID_AFFLICTION_PRESET = PresetUtils.makePresetGear('Preraid Affliction', PreraidAfflictionGear, { tooltip: BIS_TOOLTIP });
-export const P1_AFFLICTION_PRESET = PresetUtils.makePresetGear('P1 Affliction', P1AfflictionGear, { tooltip: BIS_TOOLTIP });
-export const P2_AFFLICTION_PRESET = PresetUtils.makePresetGear('P2 Affliction', P2AfflictionGear, { tooltip: BIS_TOOLTIP });
-export const P3_AFFLICTION_ALLIANCE_PRESET = PresetUtils.makePresetGear('P3 Affliction [A]', P3AfflictionAllianceGear, {
-	tooltip: BIS_TOOLTIP,
-	faction: Faction.Alliance,
-});
-export const P3_AFFLICTION_HORDE_PRESET = PresetUtils.makePresetGear('P3 Affliction [H]', P3AfflictionHordeGear, {
-	tooltip: BIS_TOOLTIP,
-	faction: Faction.Horde,
-});
-export const P4_AFFLICTION_PRESET = PresetUtils.makePresetGear('P4 Affliction', P4AfflictionGear, { tooltip: BIS_TOOLTIP });
+export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
+export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear,);
+export const P4_WOTLK_PRESET = PresetUtils.makePresetGear('P4 Wrath', P4WrathGear, { tooltip: BIS_TOOLTIP });
 
-export const APL_Affliction_Default = PresetUtils.makePresetAPLRotation('Affliction', AfflictionApl);
+export const APL_Default = PresetUtils.makePresetAPLRotation('Affliction', DefaultApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
@@ -69,21 +56,19 @@ export const AfflictionTalents = {
 	}),
 };
 
-export const AfflictionOptions = WarlockOptions.create({
+export const DefaultOptions = WarlockOptions.create({
 	classOptions: {
 		armor: Armor.FelArmor,
 		summon: Summon.Felhunter,
-		weaponImbue: WeaponImbue.GrandSpellstone,
 		detonateSeed: true,
 	},
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheFrostWyrm,
-	food: Food.FoodFishFeast,
-	petFood: PetFood.PetFoodSpicedMammothTreats,
 	defaultPotion: Potions.VolcanicPotion,
 	prepopPotion: Potions.VolcanicPotion,
+	flask: Flask.FlaskOfTheDraconicMind,
+	food: Food.FoodSeafoodFeast,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -104,23 +89,10 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-});
-
-export const DestroIndividualBuffs = IndividualBuffs.create({
+	vampiricTouch: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	bloodFrenzy: true,
-	sunderArmor: true,
-	ebonPlaguebringer: true,
-	mangle: true,
-	criticalMass: true,
-	demoralizingShout: true,
-	frostFever: true,
-	judgement: true,
-});
-
-export const DestroDebuffs = Debuffs.create({
 	bloodFrenzy: true,
 	sunderArmor: true,
 	ebonPlaguebringer: true,

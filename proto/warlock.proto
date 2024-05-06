@@ -128,15 +128,8 @@ message WarlockOptions {
 		DemonArmor = 2;
 	}
 
-	enum WeaponImbue {
-		NoWeaponImbue = 0;
-		GrandSpellstone = 1;
-		GrandFirestone = 2;
-	}
-
 	Armor armor = 1;
 	Summon summon = 2;
-	WeaponImbue weaponImbue = 3;
 	bool detonate_seed = 5;
 }
 

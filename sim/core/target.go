@@ -207,7 +207,8 @@ type AttackTable struct {
 	NatureDamageTakenMultiplier  float64
 	HauntSEDamageTakenMultiplier float64
 	HealingDealtMultiplier       float64
-	IgnoreArmor                  bool // Ignore defender's armor for specifically this attacker's attacks
+	IgnoreArmor                  bool    // Ignore defender's armor for specifically this attacker's attacks
+	BonusCritRating              float64 // crit rating modifier
 
 	// This is for "Apply Aura: Mod Damage Done By Caster" effects.
 	// If set, the damage taken multiplier is multiplied by the callbacks result.

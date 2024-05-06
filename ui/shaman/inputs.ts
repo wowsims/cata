@@ -54,7 +54,7 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 			{ actionId: ActionId.fromSpellId(66844), value: CallTotem.Spirits },
 		],
 		equals: (a: CallTotem, b: CallTotem) => a == b,
-		zeroValue: CallTotem.Elements,
+		zeroValue: CallTotem.NoCall,
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
 		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().classOptions?.call || CallTotem.Elements,
 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {

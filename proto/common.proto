@@ -123,18 +123,17 @@ enum Stat {
 	StatRangedAttackPower = 19;
 	StatDefense = 20;
 	StatBlock = 21;
-	StatBlockValue = 22;
-	StatDodge = 23;
-	StatParry = 24;
-	StatResilience = 25;
-	StatHealth = 26;
-	StatArcaneResistance = 27;
-	StatFireResistance = 28;
-	StatFrostResistance = 29;
-	StatNatureResistance = 30;
-	StatShadowResistance = 31;
-	StatBonusArmor = 32;
-	StatMastery = 33;
+	StatDodge = 22;
+	StatParry = 23;
+	StatResilience = 24;
+	StatHealth = 25;
+	StatArcaneResistance = 26;
+	StatFireResistance = 27;
+	StatFrostResistance = 28;
+	StatNatureResistance = 29;
+	StatShadowResistance = 30;
+	StatBonusArmor = 31;
+	StatMastery = 32;
 
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
@@ -148,7 +147,7 @@ enum PseudoStat {
 	PseudoStatMainHandDps = 0;
 	PseudoStatOffHandDps = 1;
 	PseudoStatRangedDps = 2;
-	PseudoStatBlockValueMultiplier = 3;
+	PseudoStatBlockDamageReduction = 3;
 	PseudoStatDodge = 4;
 	PseudoStatParry = 5;
 }
@@ -420,13 +419,6 @@ enum Food {
 	FoodMushroomSauceMudfish = 33;
 }
 
-enum PetFood {
-	PetFoodUnknown = 0;
-	PetFoodSpicedMammothTreats = 1;
-	// TBC
-	PetFoodKiblersBits = 2;
-}
-
 // Buffs that affect the entire raid.
 // TODO: Reindex
 // next index: 46
@@ -598,7 +590,7 @@ message Consumes {
 	GuardianElixir guardian_elixir = 3;
 
 	Food food = 6;
-	PetFood pet_food = 7;
+	reserved 7; // deprecated petfood
 
 	int32 pet_scroll_of_agility = 8;
 	int32 pet_scroll_of_strength = 9;
@@ -822,6 +814,7 @@ enum OtherAction {
 	OtherActionPotion = 17; // Used by APL to generically refer to either the prepull or combat potion.
 	OtherActionSolarEnergyGain = 18; // For balance druid solar energy
 	OtherActionLunarEnergyGain = 19; // For balance druid lunar energy
+	OtherActionMove = 20; // Used by movement to be able to show it in timeline
 }
 
 message ActionID {

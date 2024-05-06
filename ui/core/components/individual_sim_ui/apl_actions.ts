@@ -13,6 +13,7 @@ import {
 	APLActionCustomRotation,
 	APLActionItemSwap,
 	APLActionItemSwap_SwapSet as ItemSwapSet,
+	APLActionMove,
 	APLActionMultidot,
 	APLActionMultishield,
 	APLActionResetSequence,
@@ -23,6 +24,7 @@ import {
 	APLActionWait,
 	APLActionWaitUntil,
 	APLValue,
+	APLActionMoveDuration,
 } from '../../proto/apl.js';
 import { Spec } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
@@ -573,7 +575,30 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		newValue: () => APLActionItemSwap.create(),
 		fields: [itemSwapSetFieldConfig('swapSet')],
 	}),
-
+	['move']: inputBuilder({
+		label: 'Move',
+		submenu: ['Misc'],
+		shortDescription: 'Starts a move to the desired range from target.',
+		newValue: () => APLActionMove.create(),
+		fields: [
+			AplValues.valueFieldConfig('rangeFromTarget', {
+				label: 'to Range',
+				labelTooltip: 'Desired range from target.',
+			}),
+		],
+	}),
+	['moveDuration']: inputBuilder({
+		label: 'Move duration',
+		submenu: ['Misc'],
+		shortDescription: 'The characters moves for the given duration.',
+		newValue: () => APLActionMoveDuration.create(),
+		fields: [
+			AplValues.valueFieldConfig('duration', {
+				label: 'Duration',
+				labelTooltip: 'Amount of time the character should move.',
+			})
+		]
+	}),
 	['customRotation']: inputBuilder({
 		label: 'Custom Rotation',
 		//submenu: ['Misc'],

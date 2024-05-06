@@ -29,12 +29,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		Stat.StatMeleeHaste,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
-		Stat.StatDefense,
 		Stat.StatBlock,
-		Stat.StatBlockValue,
 		Stat.StatDodge,
 		Stat.StatParry,
-		Stat.StatResilience,
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
@@ -56,12 +53,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatDefense,
 		Stat.StatBlock,
-		Stat.StatBlockValue,
 		Stat.StatDodge,
 		Stat.StatParry,
-		Stat.StatResilience,
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
@@ -85,10 +79,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 				[Stat.StatMeleeCrit]: 0.925,
 				[Stat.StatMeleeHaste]: 0.431,
 				[Stat.StatBlock]: 1.32,
-				[Stat.StatBlockValue]: 1.373,
 				[Stat.StatDodge]: 2.606,
 				[Stat.StatParry]: 2.649,
-				[Stat.StatDefense]: 3.305,
 				// @todo: Calculate actual weights
 				// This probably applies for all weights
 				[Stat.StatMastery]: 0,
@@ -136,7 +128,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [ProtectionWarriorInputs.ShoutPicker(), ProtectionWarriorInputs.ShatteringThrow()],
+	playerIconInputs: [ProtectionWarriorInputs.ShoutPicker(), ProtectionWarriorInputs.ShatteringThrow(),ProtectionWarriorInputs.Recklessness()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff],
 	excludeBuffDebuffInputs: [],

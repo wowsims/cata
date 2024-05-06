@@ -7,7 +7,6 @@ import {
 	Food,
 	Glyphs,
 	IndividualBuffs,
-	PetFood,
 	Potions,
 	Profession,
 	RaidBuffs,
@@ -20,14 +19,12 @@ import {
 	WarlockMinorGlyph as MinorGlyph,
 	WarlockOptions_Armor as Armor,
 	WarlockOptions_Summon as Summon,
-	WarlockOptions_WeaponImbue as WeaponImbue,
+	WarlockPrimeGlyph as PrimeGlyph,
 } from '../../core/proto/warlock';
-import DemoApl from './apls/demo.apl.json';
-import P1DemoDestroGear from './gear_sets/p1_demodestro.gear.json';
-import P2DemoDestroGear from './gear_sets/p2_demodestro.gear.json';
-import P3DemoAllianceGear from './gear_sets/p3_demo_alliance.gear.json';
-import P3DemoHordeGear from './gear_sets/p3_demo_horde.gear.json';
-import P4DemoGear from './gear_sets/p4_demo.gear.json';
+import DefaultApl from './apls/default.apl.json';
+import P1Gear from './gear_sets/p1.gear.json';
+import P4WrathGear from './gear_sets/p4_wrath.gear.json';
+import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -35,16 +32,11 @@ import P4DemoGear from './gear_sets/p4_demo.gear.json';
 
 export const BIS_TOOLTIP = "This gear preset is inspired from Zephan's Affliction guide: https://www.warcrafttavern.com/wotlk/guides/pve-affliction-warlock/";
 
-export const P1_DEMODESTRO_PRESET = PresetUtils.makePresetGear('P1 Demo/Destro', P1DemoDestroGear, { tooltip: BIS_TOOLTIP });
-export const P2_DEMODESTRO_PRESET = PresetUtils.makePresetGear('P2 Demo/Destro', P2DemoDestroGear, { tooltip: BIS_TOOLTIP });
-export const P3_DEMO_ALLIANCE_PRESET = PresetUtils.makePresetGear('P3 Demo [A]', P3DemoAllianceGear, {
-	tooltip: BIS_TOOLTIP,
-	faction: Faction.Alliance,
-});
-export const P3_DEMO_HORDE_PRESET = PresetUtils.makePresetGear('P3 Demo [H]', P3DemoHordeGear, { tooltip: BIS_TOOLTIP, faction: Faction.Horde });
-export const P4_DEMO_PRESET = PresetUtils.makePresetGear('P4 Demo', P4DemoGear, { tooltip: BIS_TOOLTIP });
+export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
+export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear,);
+export const P4_WOTLK_PRESET = PresetUtils.makePresetGear('P4 Wrath', P4WrathGear, { tooltip: BIS_TOOLTIP });
 
-export const APL_Demo_Default = PresetUtils.makePresetAPLRotation('Demo', DemoApl);
+export const APL_Default = PresetUtils.makePresetAPLRotation('Demo', DefaultApl);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
@@ -64,21 +56,19 @@ export const DemonologyTalents = {
 	}),
 };
 
-export const DemonologyOptions = WarlockOptions.create({
+export const DefaultOptions = WarlockOptions.create({
 	classOptions: {
 		armor: Armor.FelArmor,
 		summon: Summon.Felguard,
-		weaponImbue: WeaponImbue.GrandSpellstone,
 		detonateSeed: true,
 	},
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskOfTheFrostWyrm,
-	food: Food.FoodFishFeast,
-	petFood: PetFood.PetFoodSpicedMammothTreats,
 	defaultPotion: Potions.VolcanicPotion,
 	prepopPotion: Potions.VolcanicPotion,
+	flask: Flask.FlaskOfTheDraconicMind,
+	food: Food.FoodSeafoodFeast,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -102,21 +92,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	vampiricTouch: true,
 });
 
-export const DestroIndividualBuffs = IndividualBuffs.create({
-});
-
 export const DefaultDebuffs = Debuffs.create({
-	bloodFrenzy: true,
-	sunderArmor: true,
-	ebonPlaguebringer: true,
-	mangle: true,
-	criticalMass: true,
-	demoralizingShout: true,
-	frostFever: true,
-	judgement: true,
-});
-
-export const DestroDebuffs = Debuffs.create({
 	bloodFrenzy: true,
 	sunderArmor: true,
 	ebonPlaguebringer: true,

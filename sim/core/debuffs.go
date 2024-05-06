@@ -207,7 +207,7 @@ func JudgementOfLightAura(target *Unit) *Aura {
 func CurseOfElementsAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Elements",
-		ActionID: ActionID{SpellID: 47865},
+		ActionID: ActionID{SpellID: 1490},
 		Duration: time.Minute * 5,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: -215, stats.FireResistance: -215, stats.FrostResistance: -215, stats.ShadowResistance: -215, stats.NatureResistance: -215})

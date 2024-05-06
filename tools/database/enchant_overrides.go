@@ -321,7 +321,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 1952, SpellId: 44489, Name: "Defense", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Defense: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
 	{EffectId: 1128, SpellId: 60653, Name: "Greater Intellect", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Intellect: 25}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
 	{EffectId: 3748, ItemId: 42500, SpellId: 56353, Name: "Titanium Shield Spike", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
-	{EffectId: 3849, ItemId: 44936, SpellId: 62201, Name: "Titanium Plating", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.BlockValue: 81}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
+	{EffectId: 3849, ItemId: 44936, SpellId: 62201, Name: "Titanium Plating", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.Parry: 26}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
 
 	// Ring
 	{EffectId: 3839, SpellId: 44645, Name: "Assault", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.AttackPower: 40, stats.RangedAttackPower: 40}.ToFloatArray(), Type: proto.ItemType_ItemTypeFinger, RequiredProfession: proto.Profession_Enchanting},

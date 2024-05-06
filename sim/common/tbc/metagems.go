@@ -99,7 +99,7 @@ func init() {
 
 	// Eternal Earthstorm
 	core.NewItemEffect(35501, func(agent core.Agent) {
-		agent.GetCharacter().PseudoStats.BlockValueMultiplier += 0.05
+		agent.GetCharacter().PseudoStats.BlockDamageReduction += 0.01
 	})
 
 	core.NewItemEffect(35503, func(agent core.Agent) {

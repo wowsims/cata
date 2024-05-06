@@ -32,7 +32,7 @@ export const ShatteringThrow = <SpecType extends WarriorSpecs>() =>
 
 // Arms/Fury only
 
-export const Recklessness = <SpecType extends Spec.SpecArmsWarrior | Spec.SpecFuryWarrior>() =>
+export const Recklessness = <SpecType extends Spec.SpecArmsWarrior | Spec.SpecFuryWarrior | Spec.SpecProtectionWarrior>() =>
 	InputHelpers.makeSpecOptionsBooleanIconInput<SpecType>({
 		fieldName: 'useRecklessness',
 		id: ActionId.fromSpellId(1719),

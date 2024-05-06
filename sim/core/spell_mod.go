@@ -236,6 +236,9 @@ const (
 	// Add/subtract bonus coefficient
 	// Uses: FloatValue
 	SpellMod_BonusCoeffecient_Flat
+
+	// Enables casting while moving
+	SpellMod_AllowCastWhileMoving
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -316,6 +319,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_BonusCoeffecient_Flat: {
 		Apply:  applyBonusCoefficientFlat,
 		Remove: removeBonusCoefficientFlat,
+	},
+
+	SpellMod_AllowCastWhileMoving: {
+		Apply:  applyAllowCastWhileMoving,
+		Remove: removeAllowCastWhileMoving,
 	},
 }
 
@@ -485,4 +493,12 @@ func applyBonusCoefficientFlat(mod *SpellMod, spell *Spell) {
 
 func removeBonusCoefficientFlat(mod *SpellMod, spell *Spell) {
 	spell.BonusCoefficient -= mod.floatValue
+}
+
+func applyAllowCastWhileMoving(mod *SpellMod, spell *Spell) {
+	spell.Flags |= SpellFlagCanCastWhileMoving
+}
+
+func removeAllowCastWhileMoving(mod *SpellMod, spell *Spell) {
+	spell.Flags ^= SpellFlagCanCastWhileMoving
 }

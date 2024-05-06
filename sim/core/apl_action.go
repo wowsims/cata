@@ -179,7 +179,10 @@ func (rot *APLRotation) newAPLActionImpl(config *proto.APLAction) APLActionImpl 
 		return rot.newActionTriggerICD(config.GetTriggerIcd())
 	case *proto.APLAction_ItemSwap:
 		return rot.newActionItemSwap(config.GetItemSwap())
-
+	case *proto.APLAction_Move:
+		return rot.newActionMove(config.GetMove())
+	case *proto.APLAction_MoveDuration:
+		return rot.newActionMoveDuration(config.GetMoveDuration())
 	case *proto.APLAction_CustomRotation:
 		return rot.newActionCustomRotation(config.GetCustomRotation())
 

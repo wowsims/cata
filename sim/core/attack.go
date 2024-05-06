@@ -23,6 +23,8 @@ type Weapon struct {
 	NormalizedSwingSpeed float64
 	CritMultiplier       float64
 	SpellSchool          SpellSchool
+	MinRange             float64
+	MaxRange             float64
 }
 
 func (weapon *Weapon) DPS() float64 {
@@ -41,7 +43,35 @@ func newWeaponFromUnarmed(critMultiplier float64) Weapon {
 		NormalizedSwingSpeed: 1,
 		CritMultiplier:       critMultiplier,
 		AttackPowerPerDPS:    DefaultAttackPowerPerDPS,
+		MaxRange:             5,
 	}
+}
+
+func getWeaponMinRange(item *Item) float64 {
+	switch item.RangedWeaponType {
+	case proto.RangedWeaponType_RangedWeaponTypeThrown:
+	case proto.RangedWeaponType_RangedWeaponTypeUnknown:
+	case proto.RangedWeaponType_RangedWeaponTypeWand:
+		return 0.
+	default:
+		return 5
+	}
+
+	return 0
+}
+
+func getWeaponMaxRange(item *Item) float64 {
+	switch item.RangedWeaponType {
+	case proto.RangedWeaponType_RangedWeaponTypeUnknown:
+		return 5
+	case proto.RangedWeaponType_RangedWeaponTypeWand:
+	case proto.RangedWeaponType_RangedWeaponTypeThrown:
+		return 30
+	default:
+		return 40
+	}
+
+	return 40
 }
 
 func newWeaponFromItem(item *Item, critMultiplier float64, bonusDps float64) Weapon {
@@ -61,6 +91,8 @@ func newWeaponFromItem(item *Item, critMultiplier float64, bonusDps float64) Wea
 		NormalizedSwingSpeed: normalizedWeaponSpeed,
 		CritMultiplier:       critMultiplier,
 		AttackPowerPerDPS:    DefaultAttackPowerPerDPS,
+		MinRange:             getWeaponMinRange(item),
+		MaxRange:             getWeaponMaxRange(item),
 	}
 }
 
@@ -239,6 +271,7 @@ type WeaponAttack struct {
 
 	curSwingSpeed    float64
 	curSwingDuration time.Duration
+	enabled          bool
 }
 
 func (wa *WeaponAttack) getWeapon() *Weapon {
@@ -291,6 +324,10 @@ func (wa *WeaponAttack) updateSwingDuration(curSwingSpeed float64) {
 }
 
 func (wa *WeaponAttack) addWeaponAttack(sim *Simulation, swingSpeed float64) {
+	if !wa.enabled {
+		return
+	}
+
 	wa.updateSwingDuration(swingSpeed)
 	sim.addWeaponAttack(wa)
 	sim.rescheduleWeaponAttack(wa.swingAt)
@@ -305,8 +342,6 @@ type AutoAttacks struct {
 	mh     WeaponAttack
 	oh     WeaponAttack
 	ranged WeaponAttack
-
-	enabled bool
 }
 
 // Options for initializing auto attacks.
@@ -444,12 +479,18 @@ func (aa *AutoAttacks) finalize() {
 	}
 }
 
+func (aa *AutoAttacks) anyEnabled() bool {
+	return aa.mh.enabled || aa.oh.enabled || aa.ranged.enabled
+}
+
 func (aa *AutoAttacks) reset(sim *Simulation) {
 	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
 		return
 	}
 
-	aa.enabled = false
+	aa.mh.enabled = false
+	aa.oh.enabled = false
+	aa.ranged.enabled = false
 
 	aa.mh.swingAt = NeverExpires
 	aa.oh.swingAt = NeverExpires
@@ -489,11 +530,9 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 		return
 	}
 
-	if aa.enabled {
+	if aa.anyEnabled() {
 		return
 	}
-
-	aa.enabled = true
 
 	if aa.AutoSwingMelee {
 		if aa.mh.swingAt == NeverExpires {
@@ -515,69 +554,103 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 					}
 				}
 			}
-			aa.oh.addWeaponAttack(sim, aa.mh.curSwingSpeed)
+			if aa.oh.IsInRange() {
+				aa.oh.enabled = true
+				aa.oh.addWeaponAttack(sim, aa.mh.curSwingSpeed)
+			}
+
 		}
-		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
+
+		if aa.mh.IsInRange() {
+			aa.mh.enabled = true
+			aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
+		}
 	}
 
 	if aa.AutoSwingRanged {
 		if aa.ranged.swingAt == NeverExpires {
 			aa.ranged.swingAt = 0
 		}
-		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
+		if aa.ranged.IsInRange() {
+			aa.ranged.enabled = true
+			aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
+		}
+
 	}
+}
+
+func (wa *WeaponAttack) IsInRange() bool {
+	return (wa.MinRange == 0. || wa.MinRange < wa.unit.DistanceFromTarget) && (wa.MaxRange == 0. || wa.MaxRange >= wa.unit.DistanceFromTarget)
 }
 
 // Stops the auto swing action for the rest of the iteration. Used for pets
 // after being disabled.
 func (aa *AutoAttacks) CancelAutoSwing(sim *Simulation) {
-	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
-		return
-	}
-
-	if !aa.enabled {
-		return
-	}
-
-	aa.enabled = false
-
-	if aa.AutoSwingMelee {
-		sim.removeWeaponAttack(&aa.mh)
-		if aa.IsDualWielding {
-			sim.removeWeaponAttack(&aa.oh)
-		}
-	}
-
-	if aa.AutoSwingRanged {
-		sim.removeWeaponAttack(&aa.ranged)
-	}
+	aa.CancelMeleeSwing(sim)
+	aa.CancelRangedSwing(sim)
 }
 
 // Re-enables the auto swing action for the iteration
 func (aa *AutoAttacks) EnableAutoSwing(sim *Simulation) {
-	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
+	aa.EnableMeleeSwing(sim)
+	aa.EnableRangedSwing(sim)
+}
+
+func (aa *AutoAttacks) EnableMeleeSwing(sim *Simulation) {
+	if !aa.AutoSwingMelee {
 		return
 	}
 
-	if aa.enabled {
-		return
-	}
-
-	aa.enabled = true
-
-	if aa.AutoSwingMelee {
-		aa.mh.swingAt = max(aa.mh.swingAt, sim.CurrentTime, 0)
+	aa.mh.swingAt = max(aa.mh.swingAt, sim.CurrentTime, 0)
+	if aa.mh.IsInRange() && !aa.mh.enabled {
+		aa.mh.enabled = true
 		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
-		if aa.IsDualWielding {
-			aa.oh.swingAt = max(aa.oh.swingAt, sim.CurrentTime, 0)
+	}
+
+	if aa.IsDualWielding && !aa.oh.enabled {
+		aa.oh.swingAt = max(aa.oh.swingAt, sim.CurrentTime, 0)
+		if aa.oh.IsInRange() {
+			aa.oh.enabled = true
 			aa.oh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 		}
 	}
+}
 
-	if aa.AutoSwingRanged {
-		aa.ranged.swingAt = max(aa.ranged.swingAt, sim.CurrentTime, 0)
+func (aa *AutoAttacks) EnableRangedSwing(sim *Simulation) {
+	if !aa.AutoSwingRanged || aa.ranged.enabled {
+		return
+	}
+
+	aa.ranged.swingAt = max(aa.ranged.swingAt, sim.CurrentTime, 0)
+	if aa.ranged.IsInRange() {
+		aa.ranged.enabled = true
 		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 	}
+}
+
+func (aa *AutoAttacks) CancelMeleeSwing(sim *Simulation) {
+	if !aa.AutoSwingMelee {
+		return
+	}
+
+	if aa.AutoSwingMelee && aa.mh.enabled {
+		sim.removeWeaponAttack(&aa.mh)
+		aa.mh.enabled = false
+	}
+
+	if aa.IsDualWielding && aa.oh.enabled {
+		aa.oh.enabled = false
+		sim.removeWeaponAttack(&aa.oh)
+	}
+}
+
+func (aa *AutoAttacks) CancelRangedSwing(sim *Simulation) {
+	if !aa.AutoSwingRanged || !aa.ranged.enabled {
+		return
+	}
+
+	aa.ranged.enabled = false
+	sim.removeWeaponAttack(&aa.ranged)
 }
 
 // The amount of time between two MH swings.
@@ -602,16 +675,16 @@ func (aa *AutoAttacks) MaybeReplaceMHSwing(sim *Simulation, mhSwingSpell *Spell)
 }
 
 func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
-	if !aa.enabled {
+	if !aa.anyEnabled() {
 		return
 	}
 
-	if aa.AutoSwingRanged {
+	if aa.AutoSwingRanged && aa.ranged.enabled {
 		aa.ranged.updateSwingDuration(aa.ranged.unit.RangedSwingSpeed())
 		// ranged attack speed changes aren't applied mid-"swing"
 	}
 
-	if aa.AutoSwingMelee {
+	if aa.AutoSwingMelee && aa.mh.enabled {
 		oldSwingSpeed := aa.mh.curSwingSpeed
 		aa.mh.updateSwingDuration(aa.mh.unit.SwingSpeed())
 		f := oldSwingSpeed / aa.mh.curSwingSpeed
@@ -622,7 +695,7 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 
 		sim.rescheduleWeaponAttack(aa.mh.swingAt)
 
-		if aa.IsDualWielding {
+		if aa.IsDualWielding && aa.oh.enabled {
 			aa.oh.updateSwingDuration(aa.mh.curSwingSpeed)
 
 			if remainingSwingTime := aa.oh.swingAt - sim.CurrentTime; remainingSwingTime > 0 {

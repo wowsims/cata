@@ -12,6 +12,7 @@ import {
 	ShamanTotems,
 	WaterTotem,
 	TotemSet,
+	CallTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import DefaultApl from './apls/default.apl.json';
@@ -68,6 +69,7 @@ export const TalentsImprovedShields = {
 export const DefaultOptions = ElementalShamanOptions.create({
 	classOptions: {
 		shield: ShamanShield.LightningShield,
+		call: CallTotem.Elements,
 		totems: ShamanTotems.create({
 			elements: TotemSet.create({
 				earth: EarthTotem.StrengthOfEarthTotem,

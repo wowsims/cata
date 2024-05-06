@@ -59,7 +59,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		},
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:           mage.DefaultMageCritMultiplier(),
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
@@ -82,7 +82,7 @@ func (mage *Mage) registerLivingBombSpell() {
 				dot.Snapshot(target, 0.25*mage.ClassSpellScaling)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 

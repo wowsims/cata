@@ -665,10 +665,16 @@ func (priest *Priest) applyShadowyApparition() {
 		Name:           "Shadowy Apparition Aura",
 		Callback:       core.CallbackOnPeriodicDamageDealt,
 		Outcome:        core.OutcomeLanded,
-		ProcChance:     0.04 * float64(priest.Talents.ShadowyApparition),
 		ClassSpellMask: PriestSpellShadowWordPain,
 		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
-			spell.Cast(sim, result.Target)
+			procChance := 0.04 * float64(priest.Talents.ShadowyApparition)
+			if priest.Moving {
+				procChance *= 5
+			}
+
+			if sim.Proc(procChance, "Shadowy Apparition Aura") {
+				spell.Cast(sim, result.Target)
+			}
 		},
 	})
 }

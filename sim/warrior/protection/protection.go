@@ -64,6 +64,7 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 		AutoSwingMelee: true,
 	})
 
+	war.PseudoStats.BlockDamageReduction = 0.3
 	//healingModel := options.HealingModel
 	//if healingModel != nil {
 	//	if healingModel.InspirationUptime > 0.0 {
@@ -87,22 +88,27 @@ func (war *ProtectionWarrior) RegisterSpecializationEffects() {
 }
 
 func (war *ProtectionWarrior) RegisterMastery() {
+
 	dummyCriticalBlockSpell := war.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 76857}, // Doesn't seem like there's an actual spell ID for the block itself, so use the mastery ID
 		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 	})
 
-	// Seems to work pretty much the same as WotLK critical block
-	war.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if result.Outcome.Matches(core.OutcomeBlock) && !result.Outcome.Matches(core.OutcomeMiss) && !result.Outcome.Matches(core.OutcomeParry) && !result.Outcome.Matches(core.OutcomeDodge) {
-			procChance := war.CriticalBlockChance // Use the member and not GetCriticalBlockChance as Hold the Line may have been applied from the baseline warrior impl
-			if sim.Proc(procChance, "Critical Block Roll") {
-				blockValue := war.BlockValue()
-				result.Damage = max(0, result.Damage-blockValue)
-				dummyCriticalBlockSpell.Cast(sim, spell.Unit)
-			}
+	war.Blockhandler = func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		if !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
+			return
 		}
-	})
+
+		if result.Outcome.Matches(core.OutcomeBlock) && !result.Outcome.Matches(core.OutcomeMiss) && !result.Outcome.Matches(core.OutcomeParry) && !result.Outcome.Matches(core.OutcomeDodge) {
+			procChance := war.CriticalBlockChance
+			if sim.Proc(procChance, "Critical Block Roll") {
+				result.Damage = result.Damage * (1 - war.BlockDamageReduction*2)
+				dummyCriticalBlockSpell.Cast(sim, spell.Unit)
+				return
+			}
+			result.Damage = result.Damage * (1 - war.BlockDamageReduction)
+		}
+	}
 
 	// Crit block mastery also applies an equal amount to regular block
 	// set initial block rating from stats
@@ -117,6 +123,7 @@ func (war *ProtectionWarrior) RegisterMastery() {
 		war.AddStatDynamic(sim, stats.Block, -oldBlockRating+newBlockRating)
 		war.CriticalBlockChance = war.GetCriticalBlockChance()
 	})
+
 }
 
 func CalcMasteryPercent(points float64) float64 {
