@@ -361,6 +361,8 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 			requestCopy.SimOptions.Iterations /= int32(concurrency)
 			if i == 0 {
 				requestCopy.SimOptions.Iterations += request.SimOptions.Iterations % int32(concurrency)
+			} else {
+				requestCopy.SimOptions.DebugFirstIteration = false
 			}
 
 			requestCopy.SimOptions.RandomSeed = nextStartSeed
