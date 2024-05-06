@@ -492,9 +492,9 @@ export class SelectorModal extends BaseModal {
 
 		this.body.appendChild(<div className="tab-content selector-modal-tab-content"></div>);
 
-		this.titleElem = this.rootElem.querySelector('.selector-modal-title') as HTMLElement;
-		this.tabsElem = this.rootElem.querySelector('.selector-modal-tabs') as HTMLElement;
-		this.contentElem = this.rootElem.querySelector('.selector-modal-tab-content') as HTMLElement;
+		this.titleElem = this.rootElem.querySelector<HTMLElement>('.selector-modal-title')!;
+		this.tabsElem = this.rootElem.querySelector<HTMLElement>('.selector-modal-tabs')!;
+		this.contentElem = this.rootElem.querySelector<HTMLElement>('.selector-modal-tab-content')!;
 
 		this.body.appendChild(
 			<div className="d-flex align-items-center form-text mt-3">
@@ -713,7 +713,7 @@ export class SelectorModal extends BaseModal {
 					tabAnchor.appendChild(gemContainer);
 					tabAnchor.classList.add('selector-modal-tab-gem');
 
-					const gemElem = tabAnchor.querySelector('.gem-icon') as HTMLElement;
+					const gemElem = tabAnchor.querySelector<HTMLElement>('.gem-icon')!;
 					const emptySocketUrl = getEmptyGemSocketIconUrl(socketColor);
 
 					const updateGemIcon = () => {
@@ -1053,14 +1053,7 @@ export class ItemList<T extends ItemListType> {
 
 		const tabContentId = (label + '-tab').split(' ').join('');
 		const selected = label === currentTab;
-
-		let itemLabel = 'Item';
-
-		switch (label) {
-			case SelectorModalTabs.Reforging:
-				itemLabel = 'Reforge';
-				break;
-		}
+		const itemLabel = label == SelectorModalTabs.Reforging ? 'Reforge' : 'Item';
 
 		const epButton = ref<HTMLButtonElement>();
 		this.tabContent = (
@@ -1104,16 +1097,20 @@ export class ItemList<T extends ItemListType> {
 			content: EP_TOOLTIP,
 		});
 
-		makeShow1hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement, player.sim);
-		makeShow2hWeaponsSelector(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement, player.sim);
+		const show1HCheckbox = this.tabContent.querySelector<HTMLElement>('.selector-modal-show-1h-weapons')!;
+		const show2HCheckbox = this.tabContent.querySelector<HTMLElement>('.selector-modal-show-2h-weapons')!;
+
+		makeShow1hWeaponsSelector(show1HCheckbox, player.sim);
+		makeShow2hWeaponsSelector(show2HCheckbox, player.sim);
+
 		if (
 			!(
-				label == 'Items' &&
+				label == SelectorModalTabs.Items &&
 				(currentSlot == ItemSlot.ItemSlotMainHand || (currentSlot == ItemSlot.ItemSlotOffHand && player.getClass() == Class.ClassWarrior))
 			)
 		) {
-			(this.tabContent.getElementsByClassName('selector-modal-show-1h-weapons')[0] as HTMLElement).style.display = 'none';
-			(this.tabContent.getElementsByClassName('selector-modal-show-2h-weapons')[0] as HTMLElement).style.display = 'none';
+			show1HCheckbox.style.display = 'none';
+			show2HCheckbox.style.display = 'none';
 		}
 
 		makeShowEPValuesSelector(this.tabContent.getElementsByClassName('selector-modal-show-ep-values')[0] as HTMLElement, player.sim);
@@ -1125,7 +1122,7 @@ export class ItemList<T extends ItemListType> {
 
 		makePhaseSelector(this.tabContent.getElementsByClassName('selector-modal-phase-selector')[0] as HTMLElement, player.sim);
 
-		if (label == 'Items') {
+		if (label == SelectorModalTabs.Items) {
 			const filtersMenu = new FiltersMenu(parent, player, currentSlot);
 			const filtersButton = this.tabContent.getElementsByClassName('selector-modal-filters-button')[0] as HTMLElement;
 			filtersButton.addEventListener('click', () => filtersMenu.open());
@@ -1186,7 +1183,7 @@ export class ItemList<T extends ItemListType> {
 		this.searchInput.addEventListener('input', () => this.applyFilters());
 
 		const simAllButton = this.tabContent.getElementsByClassName('selector-modal-simall-button')[0] as HTMLButtonElement;
-		if (label == 'Items') {
+		if (label == SelectorModalTabs.Items) {
 			simAllButton.hidden = !player.sim.getShowExperimental();
 			player.sim.showExperimentalChangeEmitter.on(() => {
 				simAllButton.hidden = !player.sim.getShowExperimental();
@@ -1456,7 +1453,7 @@ export class ItemList<T extends ItemListType> {
 
 		const setFavorite = (isFavorite: boolean) => {
 			const filters = this.player.sim.getFilters();
-			if (this.label == 'Items') {
+			if (this.label == SelectorModalTabs.Items) {
 				const favId = itemData.id;
 				if (isFavorite) {
 					filters.favoriteItems.push(favId);
@@ -1508,7 +1505,7 @@ export class ItemList<T extends ItemListType> {
 	}
 
 	private isItemFavorited(itemData: ItemData<T>): boolean {
-		if (this.label == 'Items') {
+		if (this.label == SelectorModalTabs.Items) {
 			return this.currentFilters.favoriteItems.includes(itemData.id);
 		} else if (this.label == 'Enchants') {
 			return this.currentFilters.favoriteEnchants.includes(getUniqueEnchantString(itemData.item as unknown as Enchant));
