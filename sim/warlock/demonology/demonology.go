@@ -42,7 +42,7 @@ type DemonologyWarlock struct {
 }
 
 func (demonology DemonologyWarlock) getMasteryBonus() float64 {
-	return 0.18 + 0.023*demonology.GetMasteryPoints()
+	return 0.184 + 0.023*demonology.GetMasteryPoints()
 }
 
 func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
