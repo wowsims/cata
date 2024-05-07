@@ -94,6 +94,9 @@ func (felguard *FelguardPet) registerFelstormSpell() {
 				Duration: time.Second * 45,
 			},
 			IgnoreHaste: true,
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				felguard.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+time.Second*6, false)
+			},
 		},
 
 		DamageMultiplier: 1.0,

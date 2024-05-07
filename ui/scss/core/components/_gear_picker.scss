@@ -10,13 +10,15 @@ $favorite-cell-width: 2rem;
 	display: flex;
 	flex-wrap: wrap;
 	width: 100%;
-
-	.gear-picker-left,
-	.gear-picker-right {
-		width: 50%;
+	@include media-breakpoint-down(sm) {
+		flex-wrap: unset;
+		flex-direction: column;
 	}
 
 	.gear-picker-left {
+		@include media-breakpoint-down(sm) {
+			margin-right: 0 !important;
+		}
 		.item-picker-root {
 			flex-direction: row;
 			text-align: left;
@@ -47,6 +49,7 @@ $favorite-cell-width: 2rem;
 
 			.item-picker-labels-container {
 				align-items: flex-end;
+				text-align: right;
 				@include media-breakpoint-down(md) {
 					align-items: flex-start;
 				}
@@ -72,6 +75,7 @@ $favorite-cell-width: 2rem;
 
 	.item-picker-labels-container {
 		padding: map-get($spacers, 2);
+		padding-bottom: 0;
 		flex: 1;
 		display: flex;
 		flex-direction: column;
@@ -110,6 +114,11 @@ $favorite-cell-width: 2rem;
 	@include media-breakpoint-down(lg) {
 		width: 3rem;
 		height: 3rem;
+	}
+
+	.item-picker-labels-container {
+		align-items: flex-start;
+		text-align: left;
 	}
 }
 

@@ -137,9 +137,9 @@ func (fireElemental *FireElemental) TryCast(sim *core.Simulation, target *core.U
 }
 
 var fireElementalPetBaseStats = stats.Stats{
-	stats.Mana:        8893, //Estimated from beta testing
+	stats.Mana:        6803,
 	stats.Health:      4903, //Estimated from beta testing
-	stats.Intellect:   0,
+	stats.Intellect:   157,
 	stats.Stamina:     0,
 	stats.SpellPower:  0, //Estimated
 	stats.AttackPower: 0, //Estimated
@@ -166,8 +166,9 @@ func (shaman *Shaman) fireElementalStatInheritance() core.PetStatInheritance {
 			/*
 				TODO working on figuring this out, getting close need more trials. will need to remove specific buffs,
 				ie does not gain the benefit from draenei buff.
+				Scaled linearly to reach Expertise Soft Cap (26) when Shaman is at 17% Spell Hit Cap
 			*/
-			stats.Expertise: math.Floor(spellHitRatingFromOwner * 27 / 16),
+			stats.Expertise: math.Floor(ownerSpellHitChance / 17 * 26 * core.ExpertisePerQuarterPercentReduction),
 		}
 	}
 }

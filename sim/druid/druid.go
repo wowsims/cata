@@ -54,6 +54,7 @@ type Druid struct {
 	Maul                 *DruidSpell
 	MaulQueueSpell       *DruidSpell
 	Moonfire             *DruidSpell
+	MoonfireDoT          *DruidSpell
 	Pulverize            *DruidSpell
 	Rebirth              *DruidSpell
 	Rake                 *DruidSpell
@@ -64,6 +65,7 @@ type Druid struct {
 	Starfall             *DruidSpell
 	Starsurge            *DruidSpell
 	Sunfire              *DruidSpell
+	SunfireDoT           *DruidSpell
 	SurvivalInstincts    *DruidSpell
 	SwipeBear            *DruidSpell
 	SwipeCat             *DruidSpell
@@ -130,11 +132,13 @@ const (
 	DruidSpellInnervate
 	DruidSpellInsectSwarm
 	DruidSpellMoonfire
+	DruidSpellMoonfireDoT
 	DruidSpellNaturesGrasp
 	DruidSpellStarfall
 	DruidSpellStarfire
 	DruidSpellStarsurge
 	DruidSpellSunfire
+	DruidSpellSunfireDoT
 	DruidSpellThorns
 	DruidSpellTyphoon
 	DruidSpellWildMushroom
@@ -153,11 +157,11 @@ const (
 
 	DruidSpellLast
 	DruidSpellsAll      = DruidSpellLast<<1 - 1
-	DruidSpellDoT       = DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellSunfire
+	DruidSpellDoT       = DruidSpellInsectSwarm | DruidSpellMoonfireDoT | DruidSpellSunfireDoT
 	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
 	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
-	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
-	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellTyphoon | DruidSpellHurricane
+	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellMoonfireDoT | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
+	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellMoonfireDoT | DruidSpellTyphoon | DruidSpellHurricane
 	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
 	DruidDamagingSpells = DruidArcaneSpells | DruidNatureSpells
 )
@@ -267,6 +271,7 @@ func (druid *Druid) RegisterBalanceSpells() {
 	//druid.registerHurricaneSpell()
 	druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
+	druid.registerSunfireSpell()
 	druid.registerStarfireSpell()
 	druid.registerWrathSpell()
 	druid.registerStarfallSpell()
