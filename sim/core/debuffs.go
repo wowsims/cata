@@ -623,10 +623,10 @@ func PhysDamageReductionEffect(aura *Aura, dmgReduction float64) *ExclusiveEffec
 	return aura.NewExclusiveEffect("PhysDamageReduction", false, ExclusiveEffect{
 		Priority: dmgReduction,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[SpellSchoolPhysical] *= reductionMult
+			ee.Aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= reductionMult
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[SpellSchoolPhysical] /= reductionMult
+			ee.Aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= reductionMult
 		},
 	})
 }
