@@ -28,7 +28,7 @@ func (warlock *Warlock) registerSummonImpSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//warlock.ChangeActivePet(sim, &warlock.Imp.WarlockPet)
+			warlock.SoulBurnAura.Deactivate(sim)
 			warlock.ChangeActivePet(sim, PetImp)
 		},
 	})

@@ -1,22 +1,12 @@
 import * as InputHelpers from '../core/components/input_helpers.js';
 import { Player } from '../core/player.js';
 import { Spec } from '../core/proto/common.js';
-import { WarlockOptions_Armor as Armor, WarlockOptions_Summon as Summon, } from '../core/proto/warlock.js';
+import { WarlockOptions_Summon as Summon, } from '../core/proto/warlock.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { WarlockSpecs } from '../core/proto_utils/utils';
 
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
-
-export const ArmorInput = <SpecType extends WarlockSpecs>() =>
-	InputHelpers.makeClassOptionsEnumIconInput<SpecType, Armor>({
-		fieldName: 'armor',
-		values: [
-			{ value: Armor.NoArmor, tooltip: 'No Armor' },
-			{ actionId: ActionId.fromSpellId(28176), value: Armor.FelArmor },
-			{ actionId: ActionId.fromSpellId(687), value: Armor.DemonArmor },
-		],
-	});
 
 export const PetInput = <SpecType extends WarlockSpecs>() =>
 	InputHelpers.makeClassOptionsEnumIconInput<SpecType, Summon>({

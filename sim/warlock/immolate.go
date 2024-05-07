@@ -44,7 +44,6 @@ func (warlock *Warlock) registerImmolateSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 			spell.Dot(target).Apply(sim)
 		},
 	})

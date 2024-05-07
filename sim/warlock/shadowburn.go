@@ -12,10 +12,11 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 	}
 
 	warlock.Shadowburn = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 17877},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 17877},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: WarlockSpellShadowBurn,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.15,
@@ -34,12 +35,15 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 			return sim.IsExecutePhase20()
 		},
 
-		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
-		ThreatMultiplier: 1,
-		BonusCoefficient: 1.056,
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
+		ThreatMultiplier:         1,
+		BonusCoefficient:         1.056,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, 804, spell.OutcomeMagicHitAndCrit)
+			baseDamage := warlock.CalcBaseDamageWithVariance(sim, Coefficient_Shadowburn, Variance_Shadowburn)
+
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }

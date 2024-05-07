@@ -15,11 +15,10 @@ import {
 import { SavedTalents } from '../../core/proto/ui';
 import {
 	DestructionWarlock_Options as WarlockOptions,
+	WarlockPrimeGlyph as PrimeGlyph,
 	WarlockMajorGlyph as MajorGlyph,
 	WarlockMinorGlyph as MinorGlyph,
-	WarlockOptions_Armor as Armor,
-	WarlockOptions_Summon as Summon,
-	WarlockPrimeGlyph as PrimeGlyph,
+	WarlockOptions_Summon as Summon,	
 } from '../../core/proto/warlock';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
@@ -58,7 +57,6 @@ export const DestructionTalents = {
 
 export const DefaultOptions = WarlockOptions.create({
 	classOptions: {
-		armor: Armor.FelArmor,
 		summon: Summon.Imp,
 		detonateSeed: true,
 	},
