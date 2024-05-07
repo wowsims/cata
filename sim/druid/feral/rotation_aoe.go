@@ -17,22 +17,11 @@ func (cat *FeralDruid) calcExpectedSwipeDamage(sim *core.Simulation) (float64, f
 
 func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration) {
 	// Store state variables for re-use
-	rotation := &cat.Rotation
 	curEnergy := cat.CurrentEnergy()
 	curCp := cat.ComboPoints()
 	isClearcast := cat.ClearcastingAura.IsActive()
 	simTimeRemain := sim.GetRemainingDuration()
 	regenRate := cat.EnergyRegenPerSecond()
-
-	// Keep up Sunder debuff if not provided externally
-	if rotation.MaintainFaerieFire {
-		for _, aoeTarget := range sim.Encounter.TargetUnits {
-			if cat.ShouldFaerieFire(sim, aoeTarget) {
-				cat.FaerieFire.Cast(sim, aoeTarget)
-				return false, 0
-			}
-		}
-	}
 
 	// Roar check
 	roarNow := (curCp >= 1) && !cat.SavageRoarAura.IsActive()

@@ -100,6 +100,15 @@ proto.Class_ClassUnknown: 0.0,'''
         output += f"\nproto.Class_Class{cName}: {mc:.4f},"
     output += "\n}\n"
 
+    output += '''var CritPerIntMaxLevel = map[proto.Class]float64{
+proto.Class_ClassUnknown: 0.0,'''
+    for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Druid"]:
+        cName = c.split()
+        cName = ''.join(cName)
+        mc = float(cs.SCrit[str(BASE_LEVEL)][Offs[c]])*100
+        output += f"\nproto.Class_Class{cName}: {mc:.4f},"
+    output += "\n}\n"
+
     output += '''var ExtraClassBaseStats = map[proto.Class]stats.Stats{
 proto.Class_ClassUnknown: {},'''
     for c in ["Warrior", "Paladin", "Hunter", "Rogue", "Priest", "Death Knight", "Shaman", "Mage", "Warlock", "Druid"]:

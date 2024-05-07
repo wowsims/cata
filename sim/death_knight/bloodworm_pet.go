@@ -50,7 +50,7 @@ func (bloodworm *BloodwormPet) Initialize() {
 		Label:     "Blood Gorged Proc",
 		ActionID:  core.ActionID{SpellID: 81277},
 		Duration:  core.NeverExpires,
-		MaxStacks: 10,
+		MaxStacks: 12,
 	})
 
 	healSpell := bloodworm.dkOwner.GetOrRegisterSpell(core.SpellConfig{
@@ -78,7 +78,7 @@ func (bloodworm *BloodwormPet) Initialize() {
 					continue
 				}
 
-				if target.DistanceFromTarget > 5 {
+				if target.DistanceFromTarget > core.MaxMeleeRange {
 					continue
 				}
 
@@ -89,19 +89,22 @@ func (bloodworm *BloodwormPet) Initialize() {
 		},
 	})
 
+	explodeChances := []float64{0, 0, 0, 0.005, 0.005, 0.11, 0.18, 0.27, 0.36, 0.49, 0.75, 0.85, 1}
 	core.MakeProcTriggerAura(&bloodworm.Unit, core.ProcTrigger{
 		Name:     "Blood Gorged",
 		Callback: core.CallbackOnSpellHitDealt,
 		Outcome:  core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if bloodworm.stackAura.IsActive() && bloodworm.stackAura.GetStacks() >= 3 {
+				explodeChance := explodeChances[bloodworm.stackAura.GetStacks()]
+				if sim.Proc(explodeChance, "Blood Burst") {
+					explosion.Cast(sim, &bloodworm.Unit)
+					return
+				}
+			}
+
 			bloodworm.stackAura.Activate(sim)
 			bloodworm.stackAura.AddStack(sim)
-
-			explodeChance := float64(bloodworm.stackAura.GetStacks()*bloodworm.stackAura.GetStacks()) * 0.01
-
-			if sim.Proc(explodeChance, "Blood Burst") {
-				explosion.Cast(sim, &bloodworm.Unit)
-			}
 		},
 	})
 }

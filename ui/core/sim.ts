@@ -249,7 +249,8 @@ export class Sim {
 
 			this.bulkSimResultEmitter.emit(TypedEvent.nextEventID(), result);
 			return result;
-		} catch {
+		} catch (error) {
+			if (error instanceof SimError) throw error;
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		}
 	}
@@ -272,7 +273,8 @@ export class Sim {
 			const simResult = await SimResult.makeNew(request, result);
 			this.simResultEmitter.emit(eventID, simResult);
 			return simResult;
-		} catch {
+		} catch (error) {
+			if (error instanceof SimError) throw error;
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		}
 	}
@@ -294,7 +296,8 @@ export class Sim {
 			const simResult = await SimResult.makeNew(request, result);
 			this.simResultEmitter.emit(eventID, simResult);
 			return simResult;
-		} catch {
+		} catch (error) {
+			if (error instanceof SimError) throw error;
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		}
 	}

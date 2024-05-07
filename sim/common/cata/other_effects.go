@@ -156,6 +156,9 @@ func init() {
 		core.MakePermanent(character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{ItemID: 64645},
 			Label:    "Tyrande's Favorite Doll (Mana)",
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				storedMana = 0.0
+			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				// Only Mana is converted
 				if !character.HasManaBar() {

@@ -2,7 +2,7 @@
 
 :root {
 	--bs-body-font-size: 14px;
-	--container-padding: #{$gap-width};
+	--container-padding: #{$gap-width-sm};
 	font-size: var(--bs-body-font-size);
 }
 
@@ -83,6 +83,15 @@ hr {
 }
 
 label {
+	font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	font-weight: bold;
 }
 
