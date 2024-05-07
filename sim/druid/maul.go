@@ -32,6 +32,7 @@ func (druid *Druid) registerMaulSpell() {
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  424,
 		BonusCoefficient: 1,
+		MaxRange:         core.MaxMeleeRange,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Need to specially deactivate CC here in case maul is cast simultaneously with another spell.
@@ -54,7 +55,7 @@ func (druid *Druid) registerMaulSpell() {
 					modifier *= 0.5
 				}
 
-				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage * modifier, spell.OutcomeMeleeSpecialHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage*modifier, spell.OutcomeMeleeSpecialHitAndCrit)
 
 				if !result.Landed() {
 					spell.IssueRefund(sim)

@@ -288,6 +288,11 @@ export abstract class SimUI extends Component {
 			return;
 		}
 
+		new Toast({
+			variant: 'error',
+			body: 'The Simulation failed. Generated an error report.',
+		});
+
 		const errorStr = (error as SimError).errorStr;
 		if (errorStr.startsWith('[USER_ERROR] ')) {
 			let alertStr = errorStr.substring('[USER_ERROR] '.length);
@@ -324,7 +329,7 @@ export abstract class SimUI extends Component {
 								issueBody += '...';
 								// The raid links are too large and will always cause truncation.
 								// Prompt the user to add more information to the issue.
-								new CrashModal(this.rootElem, link);
+								new CrashModal(this.rootElem, link).open();
 							}
 							window.open(base + issueBody, '_blank');
 						}

@@ -35,10 +35,11 @@ func (druid *Druid) registerLacerateSpell() {
 			IgnoreHaste: true,
 		},
 
-		BonusCritRating:  core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfLacerate), 5.0 * core.CritRatingPerCritChance, 0),
+		BonusCritRating:  core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfLacerate), 5.0*core.CritRatingPerCritChance, 0),
 		DamageMultiplier: initialDamageMul,
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 0.5,
+		MaxRange:         core.MaxMeleeRange,
 		// FlatThreatBonus:  515.5, // Handled below
 
 		Dot: core.DotConfig{

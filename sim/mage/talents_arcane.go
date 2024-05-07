@@ -19,17 +19,13 @@ func (mage *Mage) ApplyArcaneTalents() {
 
 	// Netherwind Presence
 	if mage.Talents.NetherwindPresence > 0 {
-		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellsAll,
-			FloatValue: -0.01 * float64(mage.Talents.NetherwindPresence),
-			Kind:       core.SpellMod_CastTime_Pct,
-		})
+		mage.PseudoStats.CastSpeedMultiplier *= 1 + (0.01 * float64(mage.Talents.NetherwindPresence))
 	}
 
 	// Torment the Weak
 	if mage.Talents.TormentTheWeak > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion, //| MageSpellArcaneMissiles,
+			ClassMask:  MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | MageSpellArcaneMissilesTick,
 			FloatValue: 0.02 * float64(mage.Talents.TormentTheWeak),
 			Kind:       core.SpellMod_DamageDone_Flat,
 		})

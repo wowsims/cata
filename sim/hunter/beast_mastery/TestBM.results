@@ -791,8 +791,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Harrison'sInsigniaofPanache-65803"
  value: {
-  dps: 19264.23244
-  tps: 16254.14924
+  dps: 19149.52994
+  tps: 16139.44673
  }
 }
 dps_results: {
@@ -1114,15 +1114,15 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-MarkofKhardros-56132"
  value: {
-  dps: 19324.47222
-  tps: 16284.3158
+  dps: 19209.77117
+  tps: 16169.61476
  }
 }
 dps_results: {
  key: "TestBM-AllItems-MarkofKhardros-56458"
  value: {
-  dps: 19354.36781
-  tps: 16306.07638
+  dps: 19224.64638
+  tps: 16176.35496
  }
 }
 dps_results: {
@@ -1163,8 +1163,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-MoonwellChalice-70142"
  value: {
-  dps: 19402.33206
-  tps: 16335.65668
+  dps: 19260.95134
+  tps: 16194.27596
  }
 }
 dps_results: {
@@ -1226,15 +1226,15 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-PorcelainCrab-55237"
  value: {
-  dps: 19261.76591
-  tps: 16255.11574
+  dps: 19144.74119
+  tps: 16138.09102
  }
 }
 dps_results: {
  key: "TestBM-AllItems-PorcelainCrab-56280"
  value: {
-  dps: 19403.31575
-  tps: 16375.16777
+  dps: 19181.56763
+  tps: 16153.41965
  }
 }
 dps_results: {
@@ -1359,8 +1359,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
-  dps: 19842.64636
-  tps: 16733.75555
+  dps: 19721.95029
+  tps: 16613.05948
  }
 }
 dps_results: {
@@ -1429,15 +1429,15 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Skardyn'sGrace-56115"
  value: {
-  dps: 19960.58523
-  tps: 16808.40554
+  dps: 19851.50199
+  tps: 16699.32229
  }
 }
 dps_results: {
  key: "TestBM-AllItems-Skardyn'sGrace-56440"
  value: {
-  dps: 20069.07168
-  tps: 16895.06852
+  dps: 19945.21646
+  tps: 16771.2133
  }
 }
 dps_results: {
@@ -1905,15 +1905,15 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Za'brox'sLuckyTooth-63742"
  value: {
-  dps: 19294.57663
-  tps: 16262.55523
+  dps: 19194.89596
+  tps: 16162.87456
  }
 }
 dps_results: {
  key: "TestBM-AllItems-Za'brox'sLuckyTooth-63745"
  value: {
-  dps: 19294.57663
-  tps: 16262.55523
+  dps: 19194.89596
+  tps: 16162.87456
  }
 }
 dps_results: {
@@ -1938,168 +1938,168 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-FullBuffs-LongMultiTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 19954.49503
   tps: 16942.75481
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-FullBuffs-LongSingleTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 19954.49503
   tps: 16942.75481
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-FullBuffs-ShortSingleTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 23788.31077
   tps: 20021.92092
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-NoBuffs-LongMultiTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 13538.96709
   tps: 11518.83237
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-NoBuffs-LongSingleTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 13538.96709
   tps: 11518.83237
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-NoBuffs-ShortSingleTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 14186.89388
   tps: 12088.11873
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-FullBuffs-LongMultiTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 19954.49503
   tps: 16942.75481
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-FullBuffs-LongSingleTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 19954.49503
   tps: 16942.75481
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-FullBuffs-ShortSingleTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 23788.31077
   tps: 20021.92092
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-NoBuffs-LongMultiTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 13538.96709
   tps: 11518.83237
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-NoBuffs-LongSingleTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 13538.96709
   tps: 11518.83237
  }
 }
 dps_results: {
- key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-NoBuffs-ShortSingleTarget"
+ key: "TestBM-Settings-Dwarf-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 14186.89388
   tps: 12088.11873
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-FullBuffs-LongMultiTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-FullBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 20287.29846
   tps: 17093.18035
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-FullBuffs-LongSingleTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-FullBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 20287.29846
   tps: 17093.18035
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-FullBuffs-ShortSingleTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 24360.12007
   tps: 20328.57259
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-NoBuffs-LongMultiTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-NoBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 13774.40658
   tps: 11631.59639
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-NoBuffs-LongSingleTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-NoBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 13774.40658
   tps: 11631.59639
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-NoBuffs-ShortSingleTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm-NoBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 14538.33171
   tps: 12291.1326
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-FullBuffs-LongMultiTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 20287.29846
   tps: 17093.18035
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-FullBuffs-LongSingleTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 20287.29846
   tps: 17093.18035
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-FullBuffs-ShortSingleTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 24360.12007
   tps: 20328.57259
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-NoBuffs-LongMultiTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 13774.40658
   tps: 11631.59639
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-NoBuffs-LongSingleTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 13774.40658
   tps: 11631.59639
  }
 }
 dps_results: {
- key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-NoBuffs-ShortSingleTarget"
+ key: "TestBM-Settings-Orc-preraid_bm-Basic-bm_advanced-NoBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 14538.33171
   tps: 12291.1326

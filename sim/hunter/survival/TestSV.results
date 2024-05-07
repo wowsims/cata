@@ -1938,252 +1938,252 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-FullBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 58436.74814
   tps: 56655.99301
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-FullBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 18318.37691
   tps: 16540.86603
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-FullBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 22282.7691
   tps: 20038.35786
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-NoBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 38278.89407
   tps: 37080.93424
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-NoBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 11944.70035
   tps: 10743.90271
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-NoBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 12618.90763
   tps: 11332.43433
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-FullBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 26923.23849
   tps: 24798.50723
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-FullBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 24534.1148
   tps: 22407.24129
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-FullBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 30410.71139
   tps: 27735.62343
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-NoBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 17856.05198
   tps: 16384.86575
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-NoBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 16540.114
   tps: 15066.48922
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-NoBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 18159.65391
   tps: 16576.77941
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-FullBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-FullBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 26923.23849
   tps: 24798.50723
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-FullBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-FullBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 24534.1148
   tps: 22407.24129
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-FullBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 30410.71139
   tps: 27735.62343
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-NoBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-NoBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 17856.05198
   tps: 16384.86575
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-NoBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-NoBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 16540.114
   tps: 15066.48922
  }
 }
 dps_results: {
- key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-NoBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-NoBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 18159.65391
   tps: 16576.77941
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-FullBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 59130.62831
   tps: 57238.40623
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-FullBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 18610.42481
   tps: 16721.482
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-FullBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 22816.58218
   tps: 20411.68645
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-NoBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 38795.11531
   tps: 37522.12462
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-NoBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-NoBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 12154.05737
   tps: 10877.07803
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-NoBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-NoBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 12962.23931
   tps: 11582.10531
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-FullBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-FullBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 27353.06649
   tps: 25099.36127
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-FullBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-FullBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 24856.93533
   tps: 22601.52631
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-FullBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 31008.16343
   tps: 28151.97942
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-NoBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-NoBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 18167.59818
   tps: 16605.95072
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-NoBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-NoBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 16773.47332
   tps: 15209.39797
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-NoBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv-NoBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 18547.95851
   tps: 16853.78744
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-FullBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-FullBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 27353.06649
   tps: 25099.36127
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-FullBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-FullBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 24856.93533
   tps: 22601.52631
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-FullBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 31008.16343
   tps: 28151.97942
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-NoBuffs-LongMultiTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-NoBuffs-5.1yards-LongMultiTarget"
  value: {
   dps: 18167.59818
   tps: 16605.95072
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-NoBuffs-LongSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-NoBuffs-5.1yards-LongSingleTarget"
  value: {
   dps: 16773.47332
   tps: 15209.39797
  }
 }
 dps_results: {
- key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-NoBuffs-ShortSingleTarget"
+ key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-NoBuffs-5.1yards-ShortSingleTarget"
  value: {
   dps: 18547.95851
   tps: 16853.78744

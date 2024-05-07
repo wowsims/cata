@@ -9,6 +9,7 @@ import (
 type Stance uint8
 
 const (
+	StanceNone          = 0
 	BattleStance Stance = 1 << iota
 	DefensiveStance
 	BerserkerStance

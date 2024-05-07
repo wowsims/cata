@@ -408,16 +408,16 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	// Clip Mangle if it won't change the total number of Mangles we have to
 	// cast before the fight ends.
 	t11BuildNow := (cat.StrengthOfThePantherAura != nil) && (cat.StrengthOfThePantherAura.GetStacks() < 3)
-	t11RefreshNow := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second + cat.ReactionTime) && (simTimeRemain > time.Second)
-	t11RefreshNext := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second*2 + cat.ReactionTime) && (simTimeRemain > time.Second*2)
+	t11RefreshNow := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second+cat.ReactionTime) && (simTimeRemain > time.Second)
+	t11RefreshNext := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second*2+cat.ReactionTime) && (simTimeRemain > time.Second*2)
 	mangleRefreshNow := !cat.bleedAura.IsActive() && (simTimeRemain > time.Second)
-	mangleRefreshPending := (!t11RefreshNow && !mangleRefreshNow) && ((cat.bleedAura.IsActive() && cat.bleedAura.RemainingDuration(sim) < (simTimeRemain-time.Second)) || (t11Active && (cat.StrengthOfThePantherAura.GetStacks() == 3) && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < simTimeRemain - time.Second)))
+	mangleRefreshPending := (!t11RefreshNow && !mangleRefreshNow) && ((cat.bleedAura.IsActive() && cat.bleedAura.RemainingDuration(sim) < (simTimeRemain-time.Second)) || (t11Active && (cat.StrengthOfThePantherAura.GetStacks() == 3) && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < simTimeRemain-time.Second)))
 	clipMangle := false
 
 	if mangleRefreshPending && !t11Active {
 		numManglesRemaining := 1 + int32((sim.Duration-time.Second-cat.bleedAura.ExpiresAt())/time.Minute)
 		earliestMangle := sim.Duration - time.Duration(numManglesRemaining)*time.Minute
-		clipMangle = sim.CurrentTime >= earliestMangle
+		clipMangle = (sim.CurrentTime >= earliestMangle) && !isClearcast
 	}
 
 	mangleNow := cat.MangleCat != nil && (mangleRefreshNow || clipMangle)
@@ -449,14 +449,28 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		rakeNow = remainingExt == 0 || (maxShredsPossible > float64(remainingExt))
 	}
 
+	// Apply same TF Rip delay logic to Rake as well
+	if rakeNow && !tfActive {
+		finalRakeTickLeeway := core.TernaryDuration(rakeDot.IsActive(), rakeDot.TimeUntilNextTick(sim), 0)
+		buffedTickCount := min(rakeDot.NumberOfTicks, int32((simTimeRemain-finalRakeTickLeeway)/rakeDot.TickLength))
+		delayBreakpoint := finalRakeTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*rakeDot.TickLength.Seconds())
+
+		if cat.tfExpectedBefore(sim, sim.CurrentTime+delayBreakpoint) {
+			delaySeconds := delayBreakpoint.Seconds()
+			energyToDump := curEnergy + delaySeconds*regenRate - cat.calcTfEnergyThresh(cat.ReactionTime)
+			secondsToDump := math.Ceil(energyToDump / cat.Shred.DefaultCast.Cost)
+
+			if secondsToDump < delaySeconds {
+				rakeNow = false
+			}
+		}
+	}
+
 	// Disable Energy pooling for Rake in weaving rotations, since these
 	// rotations prioritize weave cpm over Rake uptime.
 	poolForRake := (rotation.BearweaveType == proto.FeralDruid_Rotation_None)
 
 	roarNow := curCp >= 1 && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim, isExecutePhase))
-
-	// Keep up Sunder debuff if not provided externally
-	ffNow := rotation.MaintainFaerieFire && cat.ShouldFaerieFire(sim, cat.CurrentTarget)
 
 	// Pooling calcs
 	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain-baseEndThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))
@@ -618,9 +632,6 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			return false, 0
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentMangleCatCost() - curEnergy) / regenRate)
-	} else if ffNow {
-		cat.FaerieFire.Cast(sim, cat.CurrentTarget)
-		return false, 0
 	} else if ripNow {
 		if cat.Rip.CanCast(sim, cat.CurrentTarget) {
 			cat.Rip.Cast(sim, cat.CurrentTarget)

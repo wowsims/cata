@@ -18,7 +18,8 @@ import { ResultsViewer } from './results_viewer.js';
 
 export function addStatWeightsAction(simUI: IndividualSimUI<any>, epStats: Array<Stat>, epPseudoStats: Array<PseudoStat> | undefined, epReferenceStat: Stat) {
 	simUI.addAction('Stat Weights', 'ep-weights-action', () => {
-		new EpWeightsMenu(simUI, epStats, epPseudoStats || [], epReferenceStat);
+		// TODO: Make this so we can initialize the menu once outside of this function
+		new EpWeightsMenu(simUI, epStats, epPseudoStats || [], epReferenceStat).open();
 	});
 }
 
