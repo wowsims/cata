@@ -8,9 +8,6 @@ import (
 )
 
 func (druid *Druid) registerMoonfireSpell() {
-	// TODO: Shooting stars proc on periodic damage
-	// TODO: Glyph of Moonfire increase to periodic damage
-
 	druid.registerMoonfireDoTSpell()
 	druid.registerMoonfireImpactSpell()
 }
