@@ -1,3 +1,13 @@
+.summary-table-root {
+	@include media-breakpoint-down(xl) {
+		margin-bottom: $container-padding;
+	}
+
+	@include media-breakpoint-down(md) {
+		width: 100%;
+	}
+}
+
 .summary-tables-container {
 	margin-top: $section-spacer;
 	display: grid;
@@ -50,17 +60,5 @@
 	}
 	.negative {
 		color: red;
-	}
-}
-
-@include media-breakpoint-down(xl) {
-	.summary-table-root {
-		margin-bottom: $container-padding;
-	}
-}
-
-@include media-breakpoint-down(md) {
-	.summary-table-root {
-		width: 100%;
 	}
 }

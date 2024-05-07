@@ -17,25 +17,38 @@
 	display: flex;
 	flex-direction: column;
 
-	.homepage-header-container {
-		padding-top: $section-spacer;
-	}
-
-	.homepage-content-container {
-		padding-top: $container-padding;
-		padding-bottom: $container-padding;
+	.homepage-header-container,
+	.homepage-content-container,
+	.homepage-footer-container {
+		@include media-breakpoint-down(md) {
+			padding-top: map-get($spacers, 3);
+			padding-bottom: map-get($spacers, 3);
+		}
 	}
 
 	.homepage-header {
 		.homepage-header-container {
 			display: flex;
+			padding-top: $section-spacer;
+			@include media-breakpoint-down(md) {
+				display: flex;
+			}
 
 			.navbar-brand-container {
 				display: flex;
 
+				@include media-breakpoint-down(md) {
+					width: 100%;
+					justify-content: space-between;
+					align-items: flex-end;
+				}
+
 				.wowsims-logo {
 					width: 6rem;
 					margin-right: map-get($spacers, 3);
+					@include media-breakpoint-down(md) {
+						width: 48px;
+					}
 				}
 
 				.wowsims-title {
@@ -62,17 +75,28 @@
 	}
 
 	.homepage-content-container {
+		padding-top: $container-padding;
+		padding-bottom: $container-padding;
 		flex-direction: column;
+		@include media-breakpoint-down(md) {
+			margin-bottom: map-get($spacers, 3);
+		}
 
 		.info-container {
 			margin-bottom: $container-padding;
 			display: flex;
 			flex-direction: column;
+			@include media-breakpoint-down(md) {
+				margin-bottom: map-get($spacers, 3);
+			}
 
 			.wowsims-info {
 				@extend .fs-4;
 				width: 75%;
 				margin: 0;
+				@include media-breakpoint-down(lg) {
+					width: 100%;
+				}
 			}
 		}
 
@@ -80,101 +104,51 @@
 			display: flex;
 			flex-direction: column;
 
+			@include media-breakpoint-down(lg) {
+				margin-left: map-get($spacers, 3) * -1;
+				margin-right: map-get($spacers, 3) * -1;
+			}
+
 			.sim-links {
 				display: flex;
 				flex-wrap: wrap;
+				@include media-breakpoint-down(lg) {
+					margin-bottom: 0 !important;
+				}
 
 				&:not(:last-child) {
 					margin-bottom: map-get($spacers, 5);
 				}
 
-				& > .sim-link,
-				& > .sim-link-dropdown {
+				.sim-link,
+				.sim-link-dropdown {
 					max-width: 25%;
 					flex: 1 25%;
 					margin-right: 25%;
-				}
 
-				.raid-sim-link {
-					flex-grow: 0 !important;
-				}
-			}
-		}
-	}
-}
-
-@include media-breakpoint-down(lg) {
-	#homepage {
-		.homepage-content-container {
-			.info-container {
-				.wowsims-info {
-					width: 100%;
-				}
-			}
-
-			.sim-links-container {
-				margin-left: map-get($spacers, 3) * -1;
-				margin-right: map-get($spacers, 3) * -1;
-
-				.sim-links {
-					margin-bottom: 0 !important;
-
-					.sim-link,
-					.sim-link-dropdown {
+					@include media-breakpoint-down(lg) {
 						max-width: 50%;
 						flex: 1 50%;
 						margin-right: 0 !important;
 					}
 
-					.sim-link-dropdown {
-						.dropdown-menu {
+					@include media-breakpoint-down(md) {
+						flex: 1 100% !important;
+					}
+				}
+
+				.sim-link-dropdown {
+					.dropdown-menu {
+						@include media-breakpoint-down(lg) {
 							position: relative !important;
 							inset: 0 !important;
 							transform: none !important;
 						}
 					}
 				}
-			}
-		}
-	}
-}
 
-@include media-breakpoint-down(md) {
-	#homepage {
-		.homepage-header-container,
-		.homepage-content-container,
-		.homepage-footer-container {
-			padding-top: map-get($spacers, 3);
-			padding-bottom: map-get($spacers, 3);
-		}
-
-		.homepage-header {
-			.homepage-header-container {
-				display: flex;
-
-				.navbar-brand-container {
-					width: 100%;
-					justify-content: space-between;
-					align-items: flex-end;
-
-					.wowsims-logo {
-						width: 48px;
-					}
-				}
-			}
-		}
-
-		.homepage-content-container {
-			.info-container {
-				margin-bottom: map-get($spacers, 3);
-			}
-
-			.sim-links-container {
-				.sim-links {
-					.sim-link,
-					.sim-link-dropdown {
-						flex: 1 100% !important;
-					}
+				.raid-sim-link {
+					flex-grow: 0 !important;
 				}
 			}
 		}
