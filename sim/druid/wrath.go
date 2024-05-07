@@ -34,7 +34,7 @@ func (druid *Druid) registerWrathSpell() {
 
 		BonusCritRating: 1,
 
-		DamageMultiplier: 1 + core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfWrath), 0.1, 0),
+		DamageMultiplier: 1,
 
 		CritMultiplier: druid.BalanceCritMultiplier(),
 

@@ -22,4 +22,12 @@ func (druid *Druid) ApplyGlyphs() {
 			Kind:       core.SpellMod_DamageDone_Flat,
 		})
 	}
+
+	if druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfWrath) {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidSpellWrath,
+			FloatValue: 0.1,
+			Kind:       core.SpellMod_DamageDone_Flat,
+		})
+	}
 }
