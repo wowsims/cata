@@ -332,6 +332,7 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 				ErrorResult: "Iterations can't be 0!",
 			},
 		}
+		close(progress)
 		return
 	}
 
