@@ -14,6 +14,15 @@ $talent-full-color: #ffd100;
 	display: flex;
 	flex-direction: column;
 
+	@include media-breakpoint-down(xxxl) {
+		width: 100%;
+	}
+	@include media-breakpoint-down(xxl) {
+		margin-right: 0;
+	}
+
+	// DOkawODKAWODKAW
+
 	.talents-picker-header {
 		width: 100%;
 		margin-bottom: map-get($spacers, 1);
@@ -32,11 +41,22 @@ $talent-full-color: #ffd100;
 	#talents-carousel {
 		flex: 1;
 		margin-bottom: $section-spacer;
+		@include media-breakpoint-down(lg) {
+			width: calc(100vw - 2 * $container-padding);
+			display: flex;
+			justify-content: center;
+			overflow-x: hidden;
+		}
 
 		.carousel-inner {
 			display: flex;
 			overflow: unset;
 			transform: unset;
+			@include media-breakpoint-down(lg) {
+				width: unset;
+				min-width: unset;
+				transition: transform 0.15s ease-in-out;
+			}
 		}
 
 		.carousel-item {
@@ -44,10 +64,31 @@ $talent-full-color: #ffd100;
 			width: unset;
 			margin-right: unset;
 			float: unset;
+			@include media-breakpoint-down(xxxl) {
+				flex: 1;
+			}
+
+			@include media-breakpoint-down(lg) {
+				opacity: 0.5;
+				transition: opacity 0.15s ease-in-out;
+			}
+
+			&.active {
+				@include media-breakpoint-down(lg) {
+					opacity: 1;
+				}
+			}
 
 			// Offset to keep the border sizes consistent
 			&:not(:first-child) {
 				margin-left: -1px;
+			}
+		}
+
+		.carousel-control-prev,
+		.carousel-control-next {
+			@include media-breakpoint-up(lg) {
+				display: none;
 			}
 		}
 	}
@@ -115,6 +156,13 @@ $talent-full-color: #ffd100;
 		display: grid;
 		margin: $block-spacer 2vw;
 		z-index: 1;
+
+		@include media-breakpoint-down(xxxl) {
+			margin: $block-spacer auto;
+		}
+		@include media-breakpoint-down(lg) {
+			margin: $block-spacer $talent-icon-size;
+		}
 	}
 }
 
@@ -125,13 +173,21 @@ $talent-full-color: #ffd100;
 	margin: calc($talent-icon-size / 5);
 	border: 1px solid $talent-partial-color;
 	border-radius: 4px;
-}
 
-.talent-picker-root[data-points='0']:not(.talent-picker-can-add) {
-	filter: grayscale(100%);
-}
-.talent-picker-root.talent-full {
-	border-color: $talent-full-color;
+	&[data-points='0']:not(.talent-picker-can-add) {
+		filter: grayscale(100%);
+
+		.talent-picker-points {
+			filter: grayscale(100%);
+		}
+	}
+
+	&.talent-full {
+		border-color: $talent-full-color;
+		.talent-picker-points {
+			color: $talent-full-color;
+		}
+	}
 }
 
 .talent-picker-points {
@@ -144,18 +200,18 @@ $talent-full-color: #ffd100;
 	padding: 0px 2px;
 	border-radius: 2px;
 	font-size: 11px;
-}
 
-.talent-picker-root[data-points='0']:not(.talent-picker-can-add) .talent-picker-points {
-	filter: grayscale(100%);
-}
+	.talent-picker-root[data-points='0']:not(.talent-picker-can-add) & {
+		filter: grayscale(100%);
+	}
 
-.talent-picker-root.talent-full .talent-picker-points {
-	color: $talent-full-color;
-}
+	.talent-picker-root.talent-full & {
+		color: $talent-full-color;
+	}
 
-.talents-picker-root.talents-full .talent-picker-root[data-points='0'] .talent-picker-points {
-	display: none;
+	.talents-picker-root.talents-full .talent-picker-root[data-points='0'] & {
+		display: none;
+	}
 }
 
 .icon-input:not(.active),
@@ -268,72 +324,5 @@ $talent-full-color: #ffd100;
 
 	&[data-req-active] {
 		background-image: url('/cata/assets/talent_calc/right2.png');
-	}
-}
-
-@include media-breakpoint-up(lg) {
-	.talents-picker-root {
-		#talents-carousel {
-			.carousel-control-prev,
-			.carousel-control-next {
-				display: none;
-			}
-		}
-	}
-}
-
-@include media-breakpoint-down(xxxl) {
-	.talents-picker-root {
-		width: 100%;
-
-		#talents-carousel {
-			.carousel-item {
-				flex: 1;
-			}
-		}
-	}
-
-	.talent-tree-picker-root {
-		.talent-tree-main {
-			margin: $block-spacer auto;
-		}
-	}
-}
-
-@include media-breakpoint-down(xxl) {
-	.talents-picker-root {
-		margin-right: 0;
-	}
-}
-
-@include media-breakpoint-down(lg) {
-	.talents-picker-root {
-		#talents-carousel {
-			width: calc(100vw - 2 * $container-padding);
-			display: flex;
-			justify-content: center;
-			overflow-x: hidden;
-
-			.carousel-inner {
-				width: unset;
-				min-width: unset;
-				transition: transform 0.15s ease-in-out;
-			}
-
-			.carousel-item {
-				opacity: 0.5;
-				transition: opacity 0.15s ease-in-out;
-
-				&.active {
-					opacity: 1;
-				}
-			}
-		}
-	}
-
-	.talent-tree-picker-root {
-		.talent-tree-main {
-			margin: $block-spacer $talent-icon-size;
-		}
 	}
 }

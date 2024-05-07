@@ -73,7 +73,7 @@
 
 .dr-toolbar {
 	position: sticky;
-	top: $sim-header-height;
+	top: var(--sim-header-height);
 	padding-left: $container-padding;
 	padding-right: $container-padding;
 	margin-left: calc(-1 * $container-padding);
