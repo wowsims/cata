@@ -41,7 +41,6 @@ type Warlock struct {
 	HauntDebuffAuras   core.AuraArray
 
 	ActivePet string
-	//ActivePet *core.Pet
 	Felhunter *FelhunterPet
 	Felguard  *FelguardPet
 	Imp       *ImpPet
@@ -80,7 +79,6 @@ func (warlock *Warlock) Initialize() {
 
 	// base scaling value for a level 85 warlock
 	warlock.ScalingBaseDamage = 962.335630
-	warlock.SoulShards = 4
 	warlock.SummonGuardianTimer = warlock.NewTimer()
 
 	warlock.registerIncinerateSpell()
@@ -106,6 +104,12 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerShadowflame()
 	warlock.registerSoulburnSpell()
 
+	core.MakePermanent(
+		warlock.RegisterAura(core.Aura{
+			Label:    "Fel Armor",
+			ActionID: core.ActionID{SpellID: 28176},
+		}))
+
 	// warlock.registerBlackBook()
 
 	// Do this post-finalize so cast speed is updated with new stats
@@ -128,6 +132,8 @@ func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
+	warlock.SoulShards = 4
+
 	switch warlock.Options.Summon {
 	case proto.WarlockOptions_Felguard:
 		warlock.ChangeActivePet(sim, PetFelguard)
