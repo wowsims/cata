@@ -287,6 +287,11 @@ export abstract class SimUI extends Component {
 			return;
 		}
 
+		new Toast({
+			variant: 'error',
+			body: 'The Simulation failed. Generated an error report.',
+		});
+
 		const errorStr = (error as SimError).errorStr;
 		if (errorStr.startsWith('[USER_ERROR] ')) {
 			let alertStr = errorStr.substring('[USER_ERROR] '.length);
