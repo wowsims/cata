@@ -367,6 +367,11 @@ export class ActionId {
 					name += ' (DoT)';
 				}
 				break;
+			case 'Moonfire':
+				if (this.tag == 1) {
+					name += ' (DoT)'
+				}
+				break;
 			case 'Holy Shield':
 				if (this.tag == 1) {
 					name += ' (Proc)';

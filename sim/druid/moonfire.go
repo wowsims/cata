@@ -10,9 +10,55 @@ import (
 func (druid *Druid) registerMoonfireSpell() {
 	// TODO: Shooting stars proc on periodic damage
 	// TODO: Glyph of Moonfire increase to periodic damage
-	//hasMoonfireGlyph := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfMoonfire)
-	//bonusPeriodicDamageMultiplier := core.TernaryFloat64(hasMoonfireGlyph, 0.2, 0)
 
+	druid.registerMoonfireDoTSpell()
+	druid.registerMoonfireImpactSpell()
+}
+
+func (druid *Druid) registerMoonfireDoTSpell() {
+	druid.MoonfireDoT = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 8921, Tag: 1},
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: DruidSpellMoonfireDoT,
+		Flags:          core.SpellFlagAPL,
+
+		DamageMultiplier: 1,
+		CritMultiplier:   druid.BalanceCritMultiplier(),
+		ThreatMultiplier: 1,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Moonfire",
+			},
+			NumberOfTicks:       6,
+			TickLength:          time.Second * 2,
+			AffectedByCastSpeed: true,
+			BonusCoefficient:    0.18,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				baseDamage := core.CalcScalingSpellAverageEffect(proto.Class_ClassDruid, 0.095)
+				dot.Snapshot(target, baseDamage)
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHit)
+
+			if result.Landed() {
+				spell.SpellMetrics[target.UnitIndex].Hits--
+				spell.Dot(target).Apply(sim)
+			}
+
+			spell.DealOutcome(sim, result)
+		},
+	})
+}
+
+func (druid *Druid) registerMoonfireImpactSpell() {
 	druid.Moonfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 8921},
 		SpellSchool:    core.SpellSchoolArcane,
@@ -36,27 +82,6 @@ func (druid *Druid) registerMoonfireSpell() {
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.18,
 
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Moonfire",
-			},
-			NumberOfTicks:       6,
-			TickLength:          time.Second * 2,
-			AffectedByCastSpeed: true,
-
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				// dot.Spell.DamageMultiplier = baseDamageMultiplier + bonusPeriodicDamageMultiplier
-				// dot.SnapshotBaseDamage = 200 + 0.13*dot.Spell.SpellPower()
-				// attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
-				// dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				// dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
-				// dot.Spell.DamageMultiplier = baseDamageMultiplier - malusInitialDamageMultiplier
-			},
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-			},
-		},
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.221, 0.2)
 			baseDamage := sim.Roll(min, max)
@@ -64,8 +89,7 @@ func (druid *Druid) registerMoonfireSpell() {
 
 			if result.Landed() {
 				druid.ExtendingMoonfireStacks = 3
-				dot := spell.Dot(target)
-				dot.Apply(sim)
+				druid.MoonfireDoT.Cast(sim, target)
 			}
 
 			spell.DealDamage(sim, result)
