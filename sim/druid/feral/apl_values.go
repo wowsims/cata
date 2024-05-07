@@ -163,9 +163,13 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 		return
 	}
 	if cat.DistanceFromTarget > core.MaxMeleeRange {
-		// Charge logic will go here before defaulting to manual movement
-		cat.MoveTo(core.MaxMeleeRange - 1, sim) // movement aura is discretized in 1 yard intervals, so need to overshoot to guarantee melee range
-		return
+		// Try leaping first before defaulting to manual movement
+		if cat.CatCharge.CanCast(sim, cat.CurrentTarget) {
+			cat.CatCharge.Cast(sim, cat.CurrentTarget)
+		} else {
+			cat.MoveTo(core.MaxMeleeRange - 1, sim) // movement aura is discretized in 1 yard intervals, so need to overshoot to guarantee melee range
+			return
+		}
 	}
 
 	if !cat.GCD.IsReady(sim) {
