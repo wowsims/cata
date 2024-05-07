@@ -1,6 +1,6 @@
 var workerID = "";
 
-addEventListener('message', async (e) => {
+addEventListener('message', async e => {
 	const msg = e.data.msg;
 	const id = e.data.id;
 
@@ -60,5 +60,6 @@ addEventListener('message', async (e) => {
 
 // Let UI know worker is ready.
 postMessage({
-	msg: "ready"
+	msg: "ready",
+	workerType: "net"
 });

@@ -59,5 +59,6 @@ addEventListener('message', async e => {
 
 // Let UI know worker is ready.
 postMessage({
-	msg: "ready"
+	msg: "ready",
+	workerType: "local"
 });

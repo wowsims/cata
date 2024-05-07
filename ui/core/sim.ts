@@ -1,5 +1,4 @@
 import { hasTouch } from '../shared/bootstrap_overrides';
-import Toast from './components/toast';
 import { getBrowserLanguageCode, setLanguageCode } from './constants/lang.js';
 import * as OtherConstants from './constants/other.js';
 import { Encounter } from './encounter.js';
@@ -34,7 +33,7 @@ import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
 import { EventID, TypedEvent } from './typed_event.js';
-import { getEnumValues } from './utils.js';
+import { getEnumValues, noop } from './utils.js';
 import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
@@ -60,6 +59,7 @@ export enum SimSettingCategories {
 
 // Core Sim module which deals only with api types, no UI-related stuff.
 export class Sim {
+	private readonly concurrency: number;
 	private readonly workerPool: WorkerPool;
 
 	private iterations = 3000;
@@ -116,10 +116,11 @@ export class Sim {
 	private lastUsedRngSeed = 0;
 
 	// These callbacks are needed so we can apply BuffBot modifications automatically before sending requests.
-	private modifyRaidProto: (raidProto: RaidProto) => void = () => {};
+	private modifyRaidProto: (raidProto: RaidProto) => void = noop;
 
 	constructor() {
-		this.workerPool = new WorkerPool(1);
+		this.concurrency = navigator.hardwareConcurrency || 1;
+		this.workerPool = new WorkerPool(this.concurrency);
 		this._initPromise = Database.get().then(db => {
 			this.db_ = db;
 		});
@@ -212,11 +213,7 @@ export class Sim {
 	}
 
 	async runBulkSim(bulkSettings: BulkSettings, bulkItemsDb: SimDatabase, onProgress: WorkerProgressCallback): Promise<BulkSimResult | null> {
-		if (this.raid.isEmpty()) {
-			throw new Error('Raid is empty! Try adding some players first.');
-		} else if (this.encounter.targets.length < 1) {
-			throw new Error('Encounter has no targets! Try adding some targets first.');
-		}
+		this.validateBaseSimSettings();
 
 		await this.waitForInit();
 
@@ -255,39 +252,81 @@ export class Sim {
 	}
 
 	async runRaidSim(eventID: EventID, onProgress: WorkerProgressCallback): Promise<SimResult | null> {
-		if (this.raid.isEmpty()) {
-			throw new Error('Raid is empty! Try adding some players first.');
-		} else if (this.encounter.targets.length < 1) {
-			throw new Error('Encounter has no targets! Try adding some targets first.');
-		}
+		this.validateBaseSimSettings();
+
 		try {
 			await this.waitForInit();
-
 			const request = this.makeRaidSimRequest(false);
-
 			const result = await this.workerPool.raidSimAsync(request, onProgress);
+
 			if (result.errorResult != '') {
 				throw new SimError(result.errorResult);
 			}
 			const simResult = await SimResult.makeNew(request, result);
 			this.simResultEmitter.emit(eventID, simResult);
 			return simResult;
-		} catch {
+		} catch (error) {
+			console.log(error);
+			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
+		}
+	}
+
+	get isNetWorker(): boolean {
+		return this.workerPool.getWorkers().some(w => w.type == 'net');
+	}
+
+	async runRaidSimConcurrent(eventID: EventID, onProgress: WorkerProgressCallback): Promise<SimResult | null> {
+		this.validateBaseSimSettings();
+
+		try {
+			// If we're not using a net worker, use the native concurrent sim.
+			if (!this.isNetWorker) {
+				return this.runRaidSim(eventID, onProgress);
+			}
+
+			await this.waitForInit();
+			const request = this.makeRaidSimRequest(false);
+			const iterations = request.simOptions!.iterations || 0;
+			const concurrency = Math.min(iterations, this.concurrency);
+
+			let nextStartSeed = request.simOptions!.randomSeed;
+			const workerRequests = [...Array(concurrency).fill(undefined)].map((_, index): RaidSimRequest => {
+				let workerIterations = iterations / concurrency;
+				if (index === 0) workerIterations += iterations % concurrency;
+				const workerRequest = {
+					...request,
+					simOptions: {
+						...request.simOptions!,
+						randomSeed: nextStartSeed,
+						iterations: workerIterations,
+					},
+				};
+				nextStartSeed += BigInt(workerIterations);
+				return workerRequest;
+			});
+
+			const result = await this.workerPool.raidSimAsyncConcurrent(workerRequests, onProgress);
+
+			if (result.errorResult != '') {
+				throw new SimError(result.errorResult);
+			}
+			const simResult = await SimResult.makeNew(request, result);
+			this.simResultEmitter.emit(eventID, simResult);
+			return simResult;
+		} catch (error) {
+			console.log(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		}
 	}
 
 	async runRaidSimWithLogs(eventID: EventID): Promise<SimResult | null> {
-		if (this.raid.isEmpty()) {
-			throw new Error('Raid is empty! Try adding some players first.');
-		} else if (this.encounter.targets.length < 1) {
-			throw new Error('Encounter has no targets! Try adding some targets first.');
-		}
+		this.validateBaseSimSettings();
+
 		try {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(true);
-			const result = await this.workerPool.raidSimAsync(request, () => {});
+			const result = await this.workerPool.raidSimAsync(request, noop);
 			if (result.errorResult != '') {
 				throw new SimError(result.errorResult);
 			}
@@ -357,11 +396,7 @@ export class Sim {
 		epReferenceStat: Stat,
 		onProgress: WorkerProgressCallback,
 	): Promise<StatWeightsResult | null> {
-		if (this.raid.isEmpty()) {
-			throw new Error('Raid is empty! Try adding some players first.');
-		} else if (this.encounter.targets.length < 1) {
-			throw new Error('Encounter has no targets! Try adding some targets first.');
-		}
+		this.validateBaseSimSettings();
 
 		await this.waitForInit();
 
@@ -563,6 +598,14 @@ export class Sim {
 		if (newIterations != this.iterations) {
 			this.iterations = newIterations;
 			this.iterationsChangeEmitter.emit(eventID);
+		}
+	}
+
+	validateBaseSimSettings() {
+		if (this.raid.isEmpty()) {
+			throw new Error('Raid is empty! Try adding some players first.');
+		} else if (this.encounter.targets.length < 1) {
+			throw new Error('Encounter has no targets! Try adding some targets first.');
 		}
 	}
 

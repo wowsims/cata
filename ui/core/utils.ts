@@ -1,10 +1,13 @@
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+export const noop = () => {};
+
+export const lazyDeepClone = <T extends object>(value: T): T => JSON.parse(JSON.stringify(value));
+
 // Returns if the two items are equal, or if both are null / undefined.
 export function equalsOrBothNull<T>(a: T, b: T, comparator?: (_a: NonNullable<T>, _b: NonNullable<T>) => boolean): boolean {
-	if (a == null && b == null)
-		return true;
+	if (a == null && b == null) return true;
 
-	if (a == null || b == null)
-		return false;
+	if (a == null || b == null) return false;
 
 	return (comparator || ((_a: NonNullable<T>, _b: NonNullable<T>) => a == b))(a!, b!);
 }
@@ -26,8 +29,8 @@ export function sortByProperty(objArray: any[], prop: string) {
 	if (!Array.isArray(objArray)) throw new Error('FIRST ARGUMENT NOT AN ARRAY');
 	const clone = objArray.slice(0);
 	const direct = arguments.length > 2 ? arguments[2] : 1; //Default to ascending
-	const propPath = (prop.constructor === Array) ? prop : prop.split('.');
-	clone.sort(function(a, b) {
+	const propPath = prop.constructor === Array ? prop : prop.split('.');
+	clone.sort(function (a, b) {
 		for (const p in propPath) {
 			if (a[propPath[p]] && b[propPath[p]]) {
 				a = a[propPath[p]];
@@ -37,7 +40,7 @@ export function sortByProperty(objArray: any[], prop: string) {
 		// convert numeric strings to integers
 		a = a.toString().match(/^\d+$/) ? +a : a;
 		b = b.toString().match(/^\d+$/) ? +b : b;
-		return ((a < b) ? -1 * direct : ((a > b) ? 1 * direct : 0));
+		return a < b ? -1 * direct : a > b ? 1 * direct : 0;
 	});
 	return clone;
 }
@@ -48,7 +51,7 @@ export function sum(arr: Array<number>): number {
 
 // Returns the index of maximum value, or null if empty.
 export function maxIndex(arr: Array<number>): number | null {
-	return arr.reduce((cur, v, i, arr) => v > arr[cur] ? i : cur, 0);
+	return arr.reduce((cur, v, i, arr) => (v > arr[cur] ? i : cur), 0);
 }
 
 // Swaps two elements in the given array.
@@ -96,7 +99,7 @@ export function bucket<T>(arr: Array<T>, toString: (val: T) => string): Record<s
 }
 
 export function stDevToConf90(stDev: number, N: number) {
-	return 1.645 * stDev / Math.sqrt(N);
+	return (1.645 * stDev) / Math.sqrt(N);
 }
 
 export async function wait(ms: number): Promise<void> {
@@ -140,10 +143,10 @@ export function downloadJson(json: any, fileName: string) {
 	downloadString(JSON.stringify(json, null, 2), fileName);
 }
 export function downloadString(data: string, fileName: string) {
-	const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(data);
+	const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(data);
 	const downloadAnchorNode = document.createElement('a');
-	downloadAnchorNode.setAttribute("href", dataStr);
-	downloadAnchorNode.setAttribute("download", fileName);
+	downloadAnchorNode.setAttribute('href', dataStr);
+	downloadAnchorNode.setAttribute('download', fileName);
 	document.body.appendChild(downloadAnchorNode); // required for firefox
 	downloadAnchorNode.click();
 	downloadAnchorNode.remove();
@@ -176,12 +179,14 @@ export function permutations<T>(arr: Array<T>, k: number): Array<Array<T>> {
 	} else if (k == 1) {
 		return arr.map(v => [v]);
 	} else {
-		return arr.map((v, i) => {
-			const withoutThisElem = arr.slice();
-			withoutThisElem.splice(i, 1);
-			const permutationsWithoutThisElem = permutations(withoutThisElem, k - 1);
-			return permutationsWithoutThisElem.map(perm => [v].concat(perm));
-		}).flat();
+		return arr
+			.map((v, i) => {
+				const withoutThisElem = arr.slice();
+				withoutThisElem.splice(i, 1);
+				const permutationsWithoutThisElem = permutations(withoutThisElem, k - 1);
+				return permutationsWithoutThisElem.map(perm => [v].concat(perm));
+			})
+			.flat();
 	}
 }
 
@@ -190,7 +195,7 @@ export function combinations<T>(arr: Array<T>, k: number, comparator?: (_a: T, _
 	const perms = permutations(arr, k);
 	const sorted = perms.map(permutation => permutation.sort(comparator));
 
-	const equals: ((_a: T, _b: T) => boolean) = comparator ? ((a, b) => comparator(a, b) == 0) : ((a, b) => a == b);
+	const equals: (_a: T, _b: T) => boolean = comparator ? (a, b) => comparator(a, b) == 0 : (a, b) => a == b;
 	return distinct(sorted, (permutationA, permutationB) => permutationA.every((elem, i) => equals(elem, permutationB[i])));
 }
 
@@ -202,13 +207,15 @@ export function permutationsWithDups<T>(arr: Array<T>, k: number): Array<Array<T
 		return arr.map(v => [v]);
 	} else {
 		const smaller = permutationsWithDups(arr, k - 1);
-		return arr.map(v => {
-			return smaller.map(permutation => {
-				const newPerm = permutation.slice();
-				newPerm.push(v);
-				return newPerm;
-			});
-		}).flat();
+		return arr
+			.map(v => {
+				return smaller.map(permutation => {
+					const newPerm = permutation.slice();
+					newPerm.push(v);
+					return newPerm;
+				});
+			})
+			.flat();
 	}
 }
 
@@ -221,9 +228,7 @@ export function combinationsWithDups<T>(arr: Array<T>, k: number): Array<Array<T
 
 // Converts a Uint8Array into a hex string.
 export function buf2hex(data: Uint8Array): string {
-	return [...data]
-		.map(x => x.toString(16).padStart(2, '0'))
-		.join('');
+	return [...data].map(x => x.toString(16).padStart(2, '0')).join('');
 }
 
 const randomStringChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_+';
@@ -242,7 +247,12 @@ export function jsonStringifyCustom(value: any, indent: number, handler: (value:
 	const indentStr = ' '.repeat(indent);
 	return jsonStringifyCustomHelper(value, indentStr, [], handler);
 }
-function jsonStringifyCustomHelper(value: any, indentStr: string, path: Array<string>, handler: (value: any, path: Array<string>) => string | undefined | void): string {
+function jsonStringifyCustomHelper(
+	value: any,
+	indentStr: string,
+	path: Array<string>,
+	handler: (value: any, path: Array<string>) => string | undefined | void,
+): string {
 	const handlerResult = handler(value, path);
 	if (handlerResult != null) {
 		return handlerResult;
@@ -252,14 +262,28 @@ function jsonStringifyCustomHelper(value: any, indentStr: string, path: Array<st
 		return JSON.stringify(value);
 	} else if (value instanceof Array) {
 		let str = '[\n';
-		const lines = value.map((e, i) => `${indentStr.repeat(path.length + 1)}${jsonStringifyCustomHelper(e, indentStr, path.slice().concat([i + '']), handler)}${i == value.length - 1 ? '' : ','}\n`);
+		const lines = value.map(
+			(e, i) =>
+				`${indentStr.repeat(path.length + 1)}${jsonStringifyCustomHelper(e, indentStr, path.slice().concat([i + '']), handler)}${
+					i == value.length - 1 ? '' : ','
+				}\n`,
+		);
 		str += lines.join('');
 		str += indentStr.repeat(path.length) + ']';
 		return str;
-	} else { // Object
+	} else {
+		// Object
 		let str = '{\n';
 		const len = Object.keys(value).length;
-		const lines = Object.entries(value).map(([fieldKey, fieldValue], i) => `${indentStr.repeat(path.length + 1)}"${fieldKey}": ${jsonStringifyCustomHelper(fieldValue, indentStr, path.slice().concat([fieldKey]), handler)}${i == len - 1 ? '' : ','}\n`);
+		const lines = Object.entries(value).map(
+			([fieldKey, fieldValue], i) =>
+				`${indentStr.repeat(path.length + 1)}"${fieldKey}": ${jsonStringifyCustomHelper(
+					fieldValue,
+					indentStr,
+					path.slice().concat([fieldKey]),
+					handler,
+				)}${i == len - 1 ? '' : ','}\n`,
+		);
 		str += lines.join('');
 		str += indentStr.repeat(path.length) + '}';
 		return str;
@@ -268,10 +292,10 @@ function jsonStringifyCustomHelper(value: any, indentStr: string, path: Array<st
 
 // Pretty-prints the value in JSON form, but does not prettify (flattens) sub-values where handler returns true.
 export function jsonStringifyWithFlattenedPaths(value: any, indent: number, handler: (value: any, path: Array<string>) => boolean): string {
-	return jsonStringifyCustom(value, indent, (value, path) => handler(value, path) ? JSON.stringify(value) : undefined);
+	return jsonStringifyCustom(value, indent, (value, path) => (handler(value, path) ? JSON.stringify(value) : undefined));
 }
 
 export function htmlDecode(input: string) {
-	const doc = new DOMParser().parseFromString(input, "text/html");
+	const doc = new DOMParser().parseFromString(input, 'text/html');
 	return doc.documentElement.textContent;
 }
