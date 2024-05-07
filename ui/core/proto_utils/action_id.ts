@@ -353,6 +353,15 @@ export class ActionId {
 					name += ' (DoT)';
 				}
 				break;
+			case 'Stormstrike':
+				if (this.tag == 0) {
+					name += ' (Cast)';
+				} else if (this.tag == 1) {
+					name += ' (Main Hand)';
+				} else if (this.tag == 2) {
+					name += ' (Off Hand)';
+				}
+				break;
 			case 'Chain Lightning':
 			case 'Lightning Bolt':
 			case 'Lava Burst':
