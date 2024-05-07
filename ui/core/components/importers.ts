@@ -180,8 +180,6 @@ export class IndividualLinkImporter {
 				.map(e => e![0]);
 		}
 
-		console.log(urlParams, exportCategories);
-
 		return {
 			settings: settings,
 			categories: exportCategories,
