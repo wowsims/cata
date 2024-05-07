@@ -28,8 +28,8 @@ func TestBM(t *testing.T) {
 			core.GetAplRotation("../../../ui/hunter/beast_mastery/apls", "bm_advanced"),
 		},
 
-		ItemFilter:         ItemFilter,
-		StartingDistance:   5.1,
+		ItemFilter:       ItemFilter,
+		StartingDistance: 5.1,
 	}))
 }
 

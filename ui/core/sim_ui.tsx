@@ -14,6 +14,7 @@ import { PlayerSpec } from './player_spec.js';
 import { ActionId } from './proto_utils/action_id.js';
 import { Sim, SimError } from './sim.js';
 import { EventID, TypedEvent } from './typed_event.js';
+import { WorkerProgressCallback } from './worker_pool';
 
 const URLMAXLEN = 2048;
 const globalKnownIssues: Array<string> = [];
@@ -254,10 +255,10 @@ export abstract class SimUI extends Component {
 		return this.rootElem.classList.contains('individual-sim-ui');
 	}
 
-	async runSim(onProgress: (_?: any) => void) {
+	async runSim(onProgress: WorkerProgressCallback) {
 		this.resultsViewer.setPending();
 		try {
-			await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
+			await this.sim.runRaidSimConcurrent(TypedEvent.nextEventID(), onProgress);
 		} catch (e) {
 			this.resultsViewer.hideAll();
 			this.handleCrash(e);

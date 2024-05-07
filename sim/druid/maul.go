@@ -55,7 +55,7 @@ func (druid *Druid) registerMaulSpell() {
 					modifier *= 0.5
 				}
 
-				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage * modifier, spell.OutcomeMeleeSpecialHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage*modifier, spell.OutcomeMeleeSpecialHitAndCrit)
 
 				if !result.Landed() {
 					spell.IssueRefund(sim)

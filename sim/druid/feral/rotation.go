@@ -408,10 +408,10 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	// Clip Mangle if it won't change the total number of Mangles we have to
 	// cast before the fight ends.
 	t11BuildNow := (cat.StrengthOfThePantherAura != nil) && (cat.StrengthOfThePantherAura.GetStacks() < 3)
-	t11RefreshNow := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second + cat.ReactionTime) && (simTimeRemain > time.Second)
-	t11RefreshNext := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second*2 + cat.ReactionTime) && (simTimeRemain > time.Second*2)
+	t11RefreshNow := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second+cat.ReactionTime) && (simTimeRemain > time.Second)
+	t11RefreshNext := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second*2+cat.ReactionTime) && (simTimeRemain > time.Second*2)
 	mangleRefreshNow := !cat.bleedAura.IsActive() && (simTimeRemain > time.Second)
-	mangleRefreshPending := (!t11RefreshNow && !mangleRefreshNow) && ((cat.bleedAura.IsActive() && cat.bleedAura.RemainingDuration(sim) < (simTimeRemain-time.Second)) || (t11Active && (cat.StrengthOfThePantherAura.GetStacks() == 3) && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < simTimeRemain - time.Second)))
+	mangleRefreshPending := (!t11RefreshNow && !mangleRefreshNow) && ((cat.bleedAura.IsActive() && cat.bleedAura.RemainingDuration(sim) < (simTimeRemain-time.Second)) || (t11Active && (cat.StrengthOfThePantherAura.GetStacks() == 3) && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < simTimeRemain-time.Second)))
 	clipMangle := false
 
 	if mangleRefreshPending && !t11Active {
