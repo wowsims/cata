@@ -59,6 +59,7 @@ type Druid struct {
 	Pulverize            *DruidSpell
 	Rebirth              *DruidSpell
 	Rake                 *DruidSpell
+	Ravage               *DruidSpell
 	Rip                  *DruidSpell
 	SavageRoar           *DruidSpell
 	Shred                *DruidSpell
@@ -97,11 +98,13 @@ type Druid struct {
 	PrimalMadnessAura        *core.Aura
 	PulverizeAura            *core.Aura
 	SavageDefenseAura        *core.Aura
-	SurvivalInstinctsAura    *core.Aura
-	StrengthOfThePantherAura *core.Aura
-	TigersFuryAura           *core.Aura
 	SavageRoarAura           *core.Aura
 	SolarEclipseProcAura     *core.Aura
+	StampedeCatAura          *core.Aura
+	StampedeBearAura         *core.Aura
+	StrengthOfThePantherAura *core.Aura
+	SurvivalInstinctsAura    *core.Aura
+	TigersFuryAura           *core.Aura
 
 	BleedCategories core.ExclusiveCategoryArray
 
@@ -294,6 +297,7 @@ func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerMangleCatSpell()
 	// 	druid.registerMaulSpell()
 	druid.registerRakeSpell()
+	druid.registerRavageSpell()
 	druid.registerRipSpell()
 	druid.registerSavageRoarSpell()
 	druid.registerShredSpell()

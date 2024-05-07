@@ -43,8 +43,8 @@ func (druid *Druid) registerCatCharge() {
 			minAutoDelaySeconds := 0.150
 			autoDelaySpreadSeconds := 0.6
 			randomDelayTime := core.DurationFromSeconds(minAutoDelaySeconds + sim.RandomFloat("Cat Charge") * autoDelaySpreadSeconds)
-			druid.AutoAttacks.CancelMeleeSwing(sim)
 
+			druid.AutoAttacks.CancelMeleeSwing(sim)
 			pa := &core.PendingAction{
 				NextActionAt: sim.CurrentTime + travelTime + randomDelayTime,
 				Priority:     core.ActionPriorityDOT,
@@ -53,8 +53,11 @@ func (druid *Druid) registerCatCharge() {
 					druid.AutoAttacks.EnableMeleeSwing(sim)
 				},
 			}
-
 			sim.AddPendingAction(pa)
+
+			if druid.StampedeCatAura != nil {
+				druid.StampedeCatAura.Activate(sim)
+			}
 		},
 	})
 }

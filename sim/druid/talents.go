@@ -89,6 +89,7 @@ func (druid *Druid) ApplyTalents() {
 	// druid.applyInfectedWounds()
 	druid.applyFurySwipes()
 	druid.applyPrimalMadness()
+	druid.applyStampede()
 }
 
 func (druid *Druid) applyNaturesGrace() {
@@ -372,7 +373,7 @@ func (druid *Druid) applyPrimalFury() {
 					}
 				}
 			} else if druid.InForm(Cat) {
-				if druid.IsMangle(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) {
+				if druid.IsMangle(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) || druid.Ravage.IsEqual(spell) {
 					if result.Outcome.Matches(core.OutcomeCrit) {
 						if sim.Proc(procChance, "Primal Fury") {
 							druid.AddComboPoints(sim, 1, cpMetrics)
@@ -408,6 +409,46 @@ func (druid *Druid) applyPrimalMadness() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.UpdateMaxEnergy(sim, -energyGain, energyMetrics)
+		},
+	})
+}
+
+func (druid *Druid) applyStampede() {
+	if (druid.Talents.Stampede == 0) || !druid.InForm(Cat|Bear) {
+		return
+	}
+
+	bearHasteMod := 1.0 + 0.15 * float64(druid.Talents.Stampede)
+
+	druid.StampedeBearAura = druid.RegisterAura(core.Aura{
+		Label:    "Stampede (Bear)",
+		ActionID: core.ActionID{SpellID: 81015 + druid.Talents.Stampede},
+		Duration: time.Second*8,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MultiplyAttackSpeed(sim, bearHasteMod)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MultiplyAttackSpeed(sim, 1.0 / bearHasteMod)
+		},
+	})
+
+	if !druid.InForm(Cat) {
+		return
+	}
+
+	ravageCostMod := 0.5 * float64(druid.Talents.Stampede)
+
+	druid.StampedeCatAura = druid.RegisterAura(core.Aura{
+		Label:    "Stampede (Cat)",
+		ActionID: core.ActionID{SpellID: 81020 + druid.Talents.Stampede},
+		Duration: time.Second*10,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.Ravage.CostMultiplier -= ravageCostMod
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.Ravage.CostMultiplier += ravageCostMod
 		},
 	})
 }

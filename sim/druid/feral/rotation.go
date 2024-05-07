@@ -670,6 +670,9 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentMangleCatCost() - curEnergy) / regenRate)
 	} else if bearweaveNow {
 		cat.readyToShift = true
+	} else if cat.Ravage.CanCast(sim, cat.CurrentTarget) {
+		cat.Ravage.Cast(sim, cat.CurrentTarget)
+		return false, 0
 	} else if (rotation.MangleSpam && !isClearcast) || cat.PseudoStats.InFrontOfTarget {
 		if cat.MangleCat != nil && excessE >= cat.CurrentMangleCatCost() {
 			cat.MangleCat.Cast(sim, cat.CurrentTarget)
