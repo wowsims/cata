@@ -1,4 +1,5 @@
 import { JsonObject } from '@protobuf-ts/runtime';
+import { default as pako } from 'pako';
 
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Class, EquipmentSpec, Glyphs, ItemSlot, ItemSpec, Profession, Race, Spec } from '../proto/common';
@@ -13,8 +14,6 @@ import { TypedEvent } from '../typed_event';
 import { buf2hex, getEnumValues } from '../utils';
 import { BaseModal } from './base_modal';
 import Toast from './toast';
-
-declare let pako: any;
 
 export abstract class Importer extends BaseModal {
 	protected readonly textElem: HTMLTextAreaElement;
