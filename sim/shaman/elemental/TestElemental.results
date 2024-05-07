@@ -1993,84 +1993,84 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Orc-p1-Standard-default-FullBuffs-LongMultiTarget"
+ key: "TestElemental-Settings-Orc-p1-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 28849.75769
   tps: 9480.15064
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Orc-p1-Standard-default-FullBuffs-LongSingleTarget"
+ key: "TestElemental-Settings-Orc-p1-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 27362.33983
   tps: 555.64678
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Orc-p1-Standard-default-FullBuffs-ShortSingleTarget"
+ key: "TestElemental-Settings-Orc-p1-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 33264.02466
   tps: 724.35308
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Orc-p1-Standard-default-NoBuffs-LongMultiTarget"
+ key: "TestElemental-Settings-Orc-p1-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 22465.36364
   tps: 9026.15007
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Orc-p1-Standard-default-NoBuffs-LongSingleTarget"
+ key: "TestElemental-Settings-Orc-p1-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 20918.6321
   tps: 515.63761
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Orc-p1-Standard-default-NoBuffs-ShortSingleTarget"
+ key: "TestElemental-Settings-Orc-p1-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 24493.97497
   tps: 595.43574
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Troll-p1-Standard-default-FullBuffs-LongMultiTarget"
+ key: "TestElemental-Settings-Troll-p1-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 28818.90184
   tps: 9479.27795
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Troll-p1-Standard-default-FullBuffs-LongSingleTarget"
+ key: "TestElemental-Settings-Troll-p1-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 27216.50797
   tps: 555.22089
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Troll-p1-Standard-default-FullBuffs-ShortSingleTarget"
+ key: "TestElemental-Settings-Troll-p1-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 32762.73604
   tps: 709.67352
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Troll-p1-Standard-default-NoBuffs-LongMultiTarget"
+ key: "TestElemental-Settings-Troll-p1-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 22352.42936
   tps: 9080.53249
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Troll-p1-Standard-default-NoBuffs-LongSingleTarget"
+ key: "TestElemental-Settings-Troll-p1-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
   dps: 20860.55228
   tps: 513.32615
  }
 }
 dps_results: {
- key: "TestElemental-Settings-Troll-p1-Standard-default-NoBuffs-ShortSingleTarget"
+ key: "TestElemental-Settings-Troll-p1-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
   dps: 23835.07919
   tps: 581.42533

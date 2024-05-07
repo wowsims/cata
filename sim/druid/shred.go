@@ -36,6 +36,7 @@ func (druid *Druid) registerShredSpell() {
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
+		MaxRange:         core.MaxMeleeRange,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatDamageBonus +
