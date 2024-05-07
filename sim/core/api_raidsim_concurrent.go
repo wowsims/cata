@@ -3,6 +3,7 @@
 package core
 
 import (
+	"fmt"
 	"log"
 	"math"
 	"reflect"
@@ -37,9 +38,15 @@ func (rsrc *raidSimResultCombiner) newUnitMetrics(baseUnit *proto.UnitMetrics) *
 		Hps:       rsrc.newDistMetrics(),
 		Tto:       rsrc.newDistMetrics(),
 		Actions:   make([]*proto.ActionMetrics, 0, len(baseUnit.Actions)),
-		Auras:     make([]*proto.AuraMetrics, 0, len(baseUnit.Auras)),
+		Auras:     make([]*proto.AuraMetrics, len(baseUnit.Auras)),
 		Resources: make([]*proto.ResourceMetrics, 0, len(baseUnit.Resources)),
 		Pets:      make([]*proto.UnitMetrics, len(baseUnit.Pets)),
+	}
+
+	for i, aura := range baseUnit.Auras {
+		newUm.Auras[i] = &proto.AuraMetrics{
+			Id: aura.Id,
+		}
 	}
 
 	for i, pet := range baseUnit.Pets {
@@ -70,11 +77,17 @@ func (rsrc *raidSimResultCombiner) combineDistMetrics(base *proto.DistributionMe
 		base.Stdev = math.Sqrt(base.Stdev)
 	}
 
-	base.Max = max(base.Max, add.Max)
-	base.MaxSeed = max(base.MaxSeed, add.MaxSeed)
+	if add.Max > base.Max {
+		base.Max = add.Max
+		base.MaxSeed = add.MaxSeed
+	}
 
-	base.Min = min(base.Min, add.Min)
-	base.MinSeed = min(base.MinSeed, add.MinSeed)
+	if add.Min == 0 || add.Min < base.Min {
+		base.Min = add.Min
+		base.MinSeed = add.MinSeed
+	} else if add.Min == base.Min {
+		base.MinSeed = add.MinSeed
+	}
 
 	for idx, val := range add.Hist {
 		base.Hist[idx] += val
@@ -129,38 +142,24 @@ func (rsrc *raidSimResultCombiner) addActionMetrics(unit *proto.UnitMetrics, add
 	}
 }
 
-func (rsrc *raidSimResultCombiner) addAuraMetrics(unit *proto.UnitMetrics, add *proto.AuraMetrics, isLast bool, weight float64) {
-	var am *proto.AuraMetrics
-
-	addKey := add.Id.String()
-	for _, baseAura := range unit.Auras {
-		if baseAura.Id.String() == addKey {
-			am = baseAura
-			break
-		}
-	}
-
-	if am == nil {
-		am = &proto.AuraMetrics{
-			Id: add.Id,
-		}
-		unit.Auras = append(unit.Auras, am)
-	}
-
-	am.UptimeSecondsAvg += add.UptimeSecondsAvg * weight
-	am.ProcsAvg += add.ProcsAvg * weight
-	am.UptimeSecondsStdev += (add.UptimeSecondsStdev * add.UptimeSecondsStdev) * weight
+func (rsrc *raidSimResultCombiner) combineAuraMetrics(base *proto.AuraMetrics, add *proto.AuraMetrics, weight float64, isLast bool) {
+	base.UptimeSecondsAvg += add.UptimeSecondsAvg * weight
+	base.ProcsAvg += add.ProcsAvg * weight
+	base.UptimeSecondsStdev += (add.UptimeSecondsStdev * add.UptimeSecondsStdev) * weight
 	if isLast {
-		am.UptimeSecondsStdev = math.Sqrt(am.UptimeSecondsStdev)
+		base.UptimeSecondsStdev = math.Sqrt(base.UptimeSecondsStdev)
 	}
 }
 
 func (rsrc *raidSimResultCombiner) addResourceMetrics(unit *proto.UnitMetrics, add *proto.ResourceMetrics) {
 	var rm *proto.ResourceMetrics
 
-	addKey := add.Id.String()
+	rkey := func(r *proto.ResourceMetrics) string {
+		return fmt.Sprintf("%s-%d", r.Id.String(), r.Type)
+	}
+
 	for _, baseResource := range unit.Resources {
-		if baseResource.Id.String() == addKey {
+		if rkey(baseResource) == rkey(add) {
 			rm = baseResource
 			break
 		}
@@ -180,14 +179,6 @@ func (rsrc *raidSimResultCombiner) addResourceMetrics(unit *proto.UnitMetrics, a
 }
 
 func (rsrc *raidSimResultCombiner) combineUnitMetrics(base *proto.UnitMetrics, add *proto.UnitMetrics, isLast bool, weight float64) {
-	if base.Name != add.Name {
-		panic("Names do not match?!")
-	}
-
-	if base.UnitIndex != add.UnitIndex {
-		panic("UnitIndices do not match?!")
-	}
-
 	rsrc.combineDistMetrics(base.Dps, add.Dps, isLast, weight)
 	rsrc.combineDistMetrics(base.Dpasp, add.Dpasp, isLast, weight)
 	rsrc.combineDistMetrics(base.Threat, add.Threat, isLast, weight)
@@ -203,8 +194,8 @@ func (rsrc *raidSimResultCombiner) combineUnitMetrics(base *proto.UnitMetrics, a
 		rsrc.addActionMetrics(base, addAction)
 	}
 
-	for _, addAura := range add.Auras {
-		rsrc.addAuraMetrics(base, addAura, isLast, weight)
+	for i, addAura := range add.Auras {
+		rsrc.combineAuraMetrics(base.Auras[i], addAura, weight, isLast)
 	}
 
 	for _, addResource := range add.Resources {
