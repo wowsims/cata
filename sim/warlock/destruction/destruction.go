@@ -34,6 +34,8 @@ func NewDestructionWarlock(character *core.Character, options *proto.Player) *De
 
 type DestructionWarlock struct {
 	*warlock.Warlock
+
+	Conflagrate *core.Spell
 }
 
 func (destruction DestructionWarlock) getMasteryBonus() float64 {

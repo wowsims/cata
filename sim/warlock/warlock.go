@@ -16,6 +16,7 @@ type Warlock struct {
 	ShadowBolt           *core.Spell
 	Incinerate           *core.Spell
 	ImmolateDot          *core.Spell
+	Immolate             *core.Spell
 	UnstableAffliction   *core.Spell
 	Corruption           *core.Spell
 	Haunt                *core.Spell

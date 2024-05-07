@@ -8,7 +8,7 @@ import (
 )
 
 func (destruction *DestructionWarlock) registerConflagrateSpell() {
-	destruction.RegisterSpell(core.SpellConfig{
+	destruction.Conflagrate = destruction.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 17962},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,

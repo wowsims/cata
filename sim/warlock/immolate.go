@@ -48,7 +48,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 		},
 	})
 
-	warlock.RegisterSpell(core.SpellConfig{
+	warlock.Immolate = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 348},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -69,10 +69,10 @@ func (warlock *Warlock) registerImmolateSpell() {
 		DamageMultiplier: 1,
 		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.212,
+		BonusCoefficient: 0.21999999881,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcDamage(sim, target, warlock.CalcScalingSpellDmg(Coefficient_Immolate), spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, warlock.CalcScalingSpellDmg(0.69199997187), spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				warlock.ImmolateDot.Cast(sim, target)
 			}
