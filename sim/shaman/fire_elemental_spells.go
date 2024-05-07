@@ -8,7 +8,7 @@ import (
 
 func (fireElemental *FireElemental) registerFireBlast() {
 	fireElemental.FireBlast = fireElemental.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 13339},
+		ActionID:    core.ActionID{SpellID: 57984},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 
@@ -32,14 +32,14 @@ func (fireElemental *FireElemental) registerFireBlast() {
 		BonusCoefficient: 0.429,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// TODO these are approximation, from base SP
-			spell.CalcAndDealDamage(sim, target, sim.Roll(287, 335), spell.OutcomeMagicHitAndCrit) //Estimated from beta testing
+			spell.CalcAndDealDamage(sim, target, sim.Roll(220, 268), spell.OutcomeMagicHitAndCrit) //Estimated from beta testing
 		},
 	})
 }
 
 func (fireElemental *FireElemental) registerFireNova() {
 	fireElemental.FireNova = fireElemental.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 12470},
+		ActionID:    core.ActionID{SpellID: 424340},
 		SpellSchool: core.SpellSchoolFire,
 		ProcMask:    core.ProcMaskSpellDamage,
 
@@ -61,10 +61,11 @@ func (fireElemental *FireElemental) registerFireNova() {
 		DamageMultiplier: 1,
 		CritMultiplier:   2, //Estimated from beta testing
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1.00,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(1527, 1731) * sim.Encounter.AOECapMultiplier() //Estimated from beta testing
+				baseDamage := sim.Roll(1370, 1574) * sim.Encounter.AOECapMultiplier() //Estimated from beta testing
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
@@ -72,7 +73,7 @@ func (fireElemental *FireElemental) registerFireNova() {
 }
 
 func (fireElemental *FireElemental) registerFireShieldAura() {
-	actionID := core.ActionID{SpellID: 11350}
+	actionID := core.ActionID{SpellID: 13376}
 
 	//dummy spell
 	spell := fireElemental.RegisterSpell(core.SpellConfig{
@@ -83,21 +84,21 @@ func (fireElemental *FireElemental) registerFireShieldAura() {
 		DamageMultiplier: 1,
 		CritMultiplier:   2, //Estimated from beta testing
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.032,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
 				Label: "FireShield",
 			},
-			NumberOfTicks:    40,
-			TickLength:       time.Second * 3,
-			BonusCoefficient: 0.032,
+			NumberOfTicks: 40,
+			TickLength:    time.Second * 3,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				// TODO is this the right affect should it be Capped?
 				// TODO these are approximation, from base SP
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					//baseDamage *= sim.Encounter.AOECapMultiplier()
-					dot.Spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(107, 107), dot.Spell.OutcomeMagicCrit) //Estimated from beta testing
+					dot.Spell.CalcAndDealDamage(sim, aoeTarget, 102, dot.Spell.OutcomeMagicHitAndCrit) //Estimated from beta testing
 				}
 			},
 		},
