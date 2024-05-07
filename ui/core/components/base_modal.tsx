@@ -36,7 +36,8 @@ const DEFAULT_CONFIG = {
 export class BaseModal extends Component {
 	readonly modalConfig: BaseModalConfig;
 
-	isOpen: boolean;
+	isOpen = false;
+	onHideCallbacks: Array<() => void> = [];
 
 	readonly modal: Modal;
 	readonly dialog: HTMLElement;
@@ -47,7 +48,6 @@ export class BaseModal extends Component {
 	constructor(parent: HTMLElement, cssClass: string, config: BaseModalConfig = {}) {
 		super(parent, 'modal');
 		this.modalConfig = { ...DEFAULT_CONFIG, ...config };
-		this.isOpen = false;
 
 		const dialogRef = ref<HTMLDivElement>();
 		const headerRef = ref<HTMLDivElement>();
@@ -81,23 +81,37 @@ export class BaseModal extends Component {
 		this.body = bodyRef.value!;
 		this.footer = footerRef.value!;
 
-		this.modal = new Modal(this.rootElem, { keyboard: true });
+		this.modal = new Modal(this.rootElem);
 	}
 
 	open() {
-		this.rootElem.addEventListener('show.bs.modal', this.showBSFn.bind(this));
-		this.rootElem.addEventListener('hide.bs.modal', this.hideBSFn.bind(this));
-		this.rootElem.addEventListener('hidden.bs.modal', this.hiddenBSFn.bind(this));
+		const closeModalOnEscKey = this.closeModalOnEscKey.bind(this);
+		const showBSFn = this.showBSFn.bind(this);
+		const hideBSFn = this.hideBSFn.bind(this);
+		const hiddenBSFn = this.hiddenBSFn.bind(this);
+
+		document.addEventListener('keydown', closeModalOnEscKey);
+		this.rootElem.addEventListener('show.bs.modal', showBSFn);
+		this.rootElem.addEventListener('hide.bs.modal', hideBSFn);
+		this.rootElem.addEventListener('hidden.bs.modal', hiddenBSFn);
+
+		this.addOnHideCallback(() => document.removeEventListener('keydown', closeModalOnEscKey));
+		this.addOnHideCallback(() => this.rootElem.removeEventListener('show.bs.modal', showBSFn));
+		this.addOnHideCallback(() => this.rootElem.removeEventListener('hide.bs.modal', hideBSFn));
+		this.addOnHideCallback(() => this.rootElem.removeEventListener('hidden.bs.modal', hiddenBSFn));
+
 		this.modal.show();
 		this.isOpen = true;
 	}
 
 	close() {
 		this.modal.hide();
-		this.rootElem.removeEventListener('show.bs.modal', this.showBSFn.bind(this));
-		this.rootElem.removeEventListener('hide.bs.modal', this.hideBSFn.bind(this));
-		this.rootElem.removeEventListener('hidden.bs.modal', this.hiddenBSFn.bind(this));
 		this.isOpen = false;
+	}
+
+	// Allows you to add a callback that will be run when the modal is hidden. Primarily used for disposing of event listeners on hide
+	addOnHideCallback(fn: () => void) {
+		this.onHideCallbacks.push(fn);
 	}
 
 	// Callbacks for on show and on hide
@@ -106,6 +120,7 @@ export class BaseModal extends Component {
 	}
 
 	protected onHide(_e: Event) {
+		this.onHideCallbacks.forEach(callback => callback());
 		return;
 	}
 
@@ -139,5 +154,11 @@ export class BaseModal extends Component {
 		// Do not use stopImmediatePropagation here. It prevents Bootstrap from removing the modal,
 		// leading to other issues
 		event.stopPropagation();
+	}
+
+	private closeModalOnEscKey(event: KeyboardEvent) {
+		if (event.key == 'Escape') {
+			this.close();
+		}
 	}
 }
