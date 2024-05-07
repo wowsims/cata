@@ -25,15 +25,31 @@ $favorite-cell-width: 2rem;
 			&:nth-child(6) {
 				margin-bottom: 2 * map.get($spacers, 3);
 			}
+
+			&:last-child {
+				@include media-breakpoint-down(md) {
+					margin-bottom: map.get($spacers, 5);
+				}
+			}
 		}
 	}
 
 	.gear-picker-right {
+		@include media-breakpoint-down(xl) {
+			margin-bottom: 2 * map.get($spacers, 3);
+		}
+
 		.item-picker-root {
 			flex-direction: row-reverse;
+			@include media-breakpoint-down(md) {
+				flex-direction: row;
+			}
 
 			.item-picker-labels-container {
 				align-items: flex-end;
+				@include media-breakpoint-down(md) {
+					align-items: flex-start;
+				}
 			}
 		}
 	}
@@ -90,31 +106,10 @@ $favorite-cell-width: 2rem;
 	@include wowhead-background-icon;
 	height: 100%;
 	width: 100%;
-}
 
-@include media-breakpoint-down(xl) {
-	.gear-picker-right {
-		margin-bottom: 2 * map.get($spacers, 3);
-	}
-}
-
-@include media-breakpoint-down(md) {
-	.gear-picker-root {
-		.gear-picker-left {
-			.item-picker-root:last-child {
-				margin-bottom: map.get($spacers, 5);
-			}
-		}
-
-		.gear-picker-right {
-			.item-picker-root {
-				flex-direction: row;
-
-				.item-picker-labels-container {
-					align-items: flex-start;
-				}
-			}
-		}
+	@include media-breakpoint-down(lg) {
+		width: 3rem;
+		height: 3rem;
 	}
 }
 
@@ -403,11 +398,4 @@ $favorite-cell-width: 2rem;
 .reforge-value {
 	display: inline-block;
 	width: 10rem;
-}
-
-@include media-breakpoint-down(lg) {
-	.item-picker-icon {
-		width: 3rem;
-		height: 3rem;
-	}
 }

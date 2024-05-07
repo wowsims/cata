@@ -1,6 +1,11 @@
 @use 'sass:map';
+:root {
+	--sim-header-height: 4.5rem;
 
-$sim-header-height: 4.5rem;
+	@include media-breakpoint-down(lg) {
+		--sim-header-height: 65px;
+	}
+}
 
 td,
 th {
@@ -32,11 +37,28 @@ th {
 		display: flex;
 		flex-direction: column;
 
+		.sim-bg {
+			@include media-breakpoint-down(lg) {
+				left: 0;
+			}
+		}
+
 		.sim-container {
 			display: flex;
 			flex: 1;
+
+			@include media-breakpoint-down(lg) {
+				flex-direction: column;
+			}
 		}
 
+		.sim-sidebar,
+		.sim-content {
+			@include media-breakpoint-down(lg) {
+				width: 100%;
+				min-height: unset;
+			}
+		}
 		.sim-content {
 			padding-left: $container-padding;
 			padding-right: $container-padding;
@@ -97,25 +119,3 @@ th {
 	display: none !important;
 }
 // END TODO
-
-@include media-breakpoint-down(lg) {
-	$sim-header-height: 65px;
-
-	.sim-ui {
-		.sim-root {
-			.sim-bg {
-				left: 0;
-			}
-
-			.sim-container {
-				flex-direction: column;
-			}
-
-			.sim-sidebar,
-			.sim-content {
-				width: 100%;
-				min-height: unset;
-			}
-		}
-	}
-}
