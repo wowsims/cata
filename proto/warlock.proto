@@ -122,15 +122,8 @@ message WarlockOptions {
 		Felguard = 5;
 	}
 
-	enum Armor {
-		NoArmor = 0;
-		FelArmor = 1;
-		DemonArmor = 2;
-	}
-
-	Armor armor = 1;
-	Summon summon = 2;
-	bool detonate_seed = 5;
+	Summon summon = 1;
+	bool detonate_seed = 2;
 }
 
 message AfflictionWarlock {

@@ -41,7 +41,6 @@ type Warlock struct {
 	HauntDebuffAuras   core.AuraArray
 
 	ActivePet string
-	//ActivePet *core.Pet
 	Felhunter *FelhunterPet
 	Felguard  *FelguardPet
 	Imp       *ImpPet
@@ -53,6 +52,9 @@ type Warlock struct {
 	SummonGuardianTimer *core.Timer
 
 	ScalingBaseDamage float64
+
+	SoulShards   int32
+	SoulBurnAura *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -99,6 +101,14 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSummonFelHunterSpell()
 	warlock.registerSummonSuccubusSpell()
 	warlock.registerDemonSoulSpell()
+	warlock.registerShadowflame()
+	warlock.registerSoulburnSpell()
+
+	core.MakePermanent(
+		warlock.RegisterAura(core.Aura{
+			Label:    "Fel Armor",
+			ActionID: core.ActionID{SpellID: 28176},
+		}))
 
 	// warlock.registerBlackBook()
 
@@ -122,6 +132,8 @@ func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
+	warlock.SoulShards = 4
+
 	switch warlock.Options.Summon {
 	case proto.WarlockOptions_Felguard:
 		warlock.ChangeActivePet(sim, PetFelguard)
@@ -146,9 +158,8 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 
-	if warlock.Options.Armor == proto.WarlockOptions_FelArmor {
-		warlock.AddStat(stats.SpellPower, 638)
-	}
+	// Add Fel Armor SP by default
+	warlock.AddStat(stats.SpellPower, 638)
 
 	warlock.EbonImp = warlock.NewEbonImp()
 	warlock.Infernal = warlock.NewInfernalPet()
@@ -218,19 +229,22 @@ const (
 	WarlockSpellSummonSuccubus
 	WarlockSpellSuccubusLashOfPain
 	WarlockSpellDemonSoul
+	WarlockSpellShadowflame
+	WarlockSpellShadowflameDot
+	WarlockSpellSoulBurn
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
 		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony |
-		WarlockSpellShadowBolt | WarlockSpellSeedOfCorruptionExposion | WarlockSpellHandOfGuldan
+		WarlockSpellShadowBolt | WarlockSpellSeedOfCorruptionExposion | WarlockSpellHandOfGuldan | WarlockSpellShadowflame
 
 	WarlockPeriodicShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
 		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony
 
 	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire |
-		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot
+		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot | WarlockSpellShadowflameDot
 
 	WarlockDoT = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
-		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot
+		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot | WarlockSpellShadowflameDot
 )
 
 const (
@@ -252,12 +266,18 @@ const Coefficient_Infernal float64 = 0.485
 const Coefficient_ShadowBolt float64 = 0.62
 const Coefficient_HandOfGuldan float64 = 1.593
 const Coefficient_Incinerate float64 = 0.573
+const Coefficient_Shadowburn float64 = 0.714
+const Coefficient_Shadowflame float64 = 0.72699999809
+const Coefficient_ShadowflameDot float64 = 0.16899999976
 
 const Variance_ChaosBolt float64 = 0.238
 const Variance_ShadowBolt float64 = 0.1099999994
 const Variance_HandOfGuldan float64 = 0.166
 const Variance_Infernal float64 = 0.119
 const Variance_Incinerate float64 = 0.15
+const Variance_Shadowburn float64 = 0.1099999994
+const Variance_Shadowflame float64 = 0.09000000358
+
 const PetFelhunter string = "Felhunter"
 const PetFelguard string = "Felguard"
 const PetSuccubus string = "Succubus"
@@ -344,14 +364,6 @@ func (warlock *Warlock) ChangeActivePet(sim *core.Simulation, newPet string) {
 
 	warlock.ActivePet = newPet
 }
-
-// func (warlock *Warlock) ChangeActivePet(sim *core.Simulation, newPet *core.Pet) {
-// 		if warlock.ActivePet != nil {
-// 			warlock.ActivePet.Disable(sim)
-// 		}
-// 		warlock.ActivePet = newPet
-// 		warlock.ActivePet.Enable(sim, warlock.ActivePet.Pet)
-// 	}
 
 func (warlock *Warlock) DefaultSpellCritMultiplier() float64 {
 	return warlock.SpellCritMultiplier(1.33, 0.0)
