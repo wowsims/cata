@@ -104,6 +104,6 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const OtherDefaults = {
-	distanceFromTarget: 5,
+	distanceFromTarget: 25,
 	highHpThreshold: 0.8,
 }

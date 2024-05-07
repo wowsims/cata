@@ -44,8 +44,8 @@ func TestFeral(t *testing.T) {
 		OtherRotations: []core.RotationCombo{
 			core.GetAplRotation("../../../ui/druid/feral/apls", "aoe"),
 		},
-		StartingDistance: core.MaxMeleeRange,
-		OtherStartingDistances: []float64{25},
+		StartingDistance: 25,
+		OtherStartingDistances: []float64{core.MaxMeleeRange},
 		ItemFilter: FeralItemFilter,
 	}))
 }
