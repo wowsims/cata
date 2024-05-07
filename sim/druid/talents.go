@@ -89,6 +89,8 @@ func (druid *Druid) ApplyTalents() {
 	// druid.applyInfectedWounds()
 	druid.applyFurySwipes()
 	druid.applyPrimalMadness()
+
+	druid.ApplyGlyphs()
 }
 
 func (druid *Druid) applyNaturesGrace() {
@@ -160,8 +162,8 @@ func (druid *Druid) applyNaturesMajesty() {
 	if druid.Talents.NaturesMajesty > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
 			ClassMask:  DruidSpellsAll,
-			FloatValue: 0.02 * float64(druid.Talents.NaturesMajesty),
-			Kind:       core.SpellMod_CritMultiplier_Pct,
+			FloatValue: 2 * float64(druid.Talents.NaturesMajesty) * core.CritRatingPerCritChance,
+			Kind:       core.SpellMod_BonusCrit_Rating,
 		})
 	}
 }

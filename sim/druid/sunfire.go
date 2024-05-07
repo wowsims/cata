@@ -13,7 +13,7 @@ func (druid *Druid) registerSunfireSpell() {
 }
 
 func (druid *Druid) registerSunfireDoTSpell() {
-	druid.MoonfireDoT = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+	druid.SunfireDoT = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 93402, Tag: 1},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -54,7 +54,7 @@ func (druid *Druid) registerSunfireDoTSpell() {
 }
 
 func (druid *Druid) registerSunfireImpactSpell() {
-	druid.Moonfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+	druid.Sunfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 93402},
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -84,6 +84,7 @@ func (druid *Druid) registerSunfireImpactSpell() {
 
 			if result.Landed() {
 				druid.MoonfireDoT.Dot(target).Deactivate(sim)
+
 				druid.SunfireDoT.Cast(sim, target)
 			}
 
