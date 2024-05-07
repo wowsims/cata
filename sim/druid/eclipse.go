@@ -75,6 +75,7 @@ func (druid *Druid) RegisterEclipseAuras() {
 		Label:    "Eclipse (Lunar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			lunarSpellMod.UpdateFloatValue(0.16 + druid.GetMasteryPoints()*0.02)
 			lunarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -87,6 +88,7 @@ func (druid *Druid) RegisterEclipseAuras() {
 		Label:    "Eclipse (Solar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			solarSpellMod.UpdateFloatValue(0.16 + druid.GetMasteryPoints()*0.02)
 			solarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
