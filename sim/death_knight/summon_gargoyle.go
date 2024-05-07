@@ -111,13 +111,13 @@ func (garg *GargoylePet) Reset(_ *core.Simulation) {
 }
 
 func (garg *GargoylePet) ExecuteCustomRotation(sim *core.Simulation) {
-	gargCastTime := garg.ApplyCastSpeedForSpell(garg.GargoyleStrike.DefaultCast.CastTime, garg.GargoyleStrike)
-	if sim.CurrentTime+gargCastTime > garg.expireTime {
-		// If the cast wont finish before expiration time just dont cast
-		return
-	}
-
 	if garg.GargoyleStrike.CanCast(sim, garg.CurrentTarget) {
+		gargCastTime := garg.ApplyCastSpeedForSpell(garg.GargoyleStrike.DefaultCast.CastTime, garg.GargoyleStrike)
+		if sim.CurrentTime+gargCastTime > garg.expireTime {
+			// If the cast wont finish before expiration time just dont cast
+			return
+		}
+
 		garg.GargoyleStrike.Cast(sim, garg.CurrentTarget)
 	}
 }
@@ -141,7 +141,7 @@ func (garg *GargoylePet) registerGargoyleStrikeSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   1.5,
+		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
 		BonusCoefficient: 0.453,
