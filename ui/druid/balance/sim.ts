@@ -44,7 +44,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	],
 
 	modifyDisplayStats: (player: Player<Spec.SpecBalanceDruid>) => {
-		console.log("stayko")
 		let stats = new Stats();
 		stats = stats.addStat(Stat.StatSpellCrit, player.getTalents().naturesMajesty * 2 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
 
