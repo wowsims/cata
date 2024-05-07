@@ -34,7 +34,7 @@ func (war *ArmsWarrior) applyBloodFrenzy() {
 			war.AddRage(sim, 20, bfRageMetrics)
 		},
 	})
-	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+	aura := core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
 		Name:       "Blood Frenzy/Trauma Debuff Trigger",
 		Callback:   core.CallbackOnSpellHitDealt,
 		SpellFlags: warrior.SpellFlagBleed,
@@ -52,4 +52,14 @@ func (war *ArmsWarrior) applyBloodFrenzy() {
 			trauma.Activate(sim)
 		},
 	})
+	aura.OnReset = func(aura *core.Aura, sim *core.Simulation) {
+		bfAuras = war.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+			return core.BloodFrenzyAura(target, war.Talents.BloodFrenzy)
+		})
+
+		// Trauma is also applied by the Blood Frenzy talent in Cata
+		traumaAuras = war.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+			return core.TraumaAura(target, war.Talents.BloodFrenzy)
+		})
+	}
 }
