@@ -14,4 +14,12 @@ func (druid *Druid) ApplyGlyphs() {
 			Kind:       core.SpellMod_DamageDone_Flat,
 		})
 	}
+
+	if druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfInsectSwarm) {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidSpellInsectSwarm,
+			FloatValue: 0.3,
+			Kind:       core.SpellMod_DamageDone_Flat,
+		})
+	}
 }
