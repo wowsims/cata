@@ -518,13 +518,17 @@ export class SelectorModal extends BaseModal {
 	}
 
 	onShow() {
-		document.addEventListener('keydown', event => this.switchPreviousItemSlotTab(event));
-		document.addEventListener('keydown', event => this.switchNextItemSlotTab(event));
-	}
+		if (this.gearPicker) {
+			// Allow you to switch between gear picker slots with the up and down arrows
+			const switchToPreviousItemSlotTab = this.switchToPreviousItemSlotTab.bind(this);
+			const switchToNextItemSlotTab = this.switchToNextItemSlotTab.bind(this);
 
-	onHide() {
-		document.removeEventListener('keydown', this.switchPreviousItemSlotTab);
-		document.removeEventListener('keydown', this.switchNextItemSlotTab);
+			document.addEventListener('keydown', switchToPreviousItemSlotTab);
+			document.addEventListener('keydown', switchToNextItemSlotTab);
+
+			this.addOnHideCallback(() => document.removeEventListener('keydown', switchToPreviousItemSlotTab));
+			this.addOnHideCallback(() => document.removeEventListener('keydown', switchToNextItemSlotTab));
+		}
 	}
 
 	private setData(selectedSlot: ItemSlot, selectedTab: SelectorModalTabs, gearData: GearData) {
@@ -679,17 +683,19 @@ export class SelectorModal extends BaseModal {
 		});
 	}
 
-	private switchPreviousItemSlotTab(event: KeyboardEvent) {
-		if (event.key == 'ArrowUp') {
+	private switchToPreviousItemSlotTab(event: KeyboardEvent) {
+		if (event.key == 'ArrowUp' && this.gearPicker) {
 			event.preventDefault();
-			this.openTab(mod(this.currentSlot - 1, Object.keys(ItemSlot).length / 2) as unknown as ItemSlot, this.currentTab, this.gearData!);
+			const newSlot = mod(this.currentSlot - 1, Object.keys(ItemSlot).length / 2) as unknown as ItemSlot;
+			this.gearPicker.itemPickers[newSlot].openSelectorModal(this.currentTab);
 		}
 	}
 
-	private switchNextItemSlotTab(event: KeyboardEvent) {
-		if (event.key == 'ArrowDown') {
+	private switchToNextItemSlotTab(event: KeyboardEvent) {
+		if (event.key == 'ArrowDown' && this.gearPicker) {
 			event.preventDefault();
-			this.openTab(mod(this.currentSlot + 1, Object.keys(ItemSlot).length / 2) as unknown as ItemSlot, this.currentTab, this.gearData!);
+			const newSlot = mod(this.currentSlot + 1, Object.keys(ItemSlot).length / 2) as unknown as ItemSlot;
+			this.gearPicker.itemPickers[newSlot].openSelectorModal(this.currentTab);
 		}
 	}
 

@@ -72,7 +72,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 				dot.Snapshot(target, 0.175*fire.ClassSpellScaling)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 

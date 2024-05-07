@@ -105,8 +105,8 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		}, raid)
 	}
 
-	if debuffs.AcidSpit && targetIdx == 0 {
-		aura := AcidSpitAura(target)
+	if debuffs.CorrosiveSpit && targetIdx == 0 {
+		aura := CorrosiveSpitAura(target)
 		ScheduledMajorArmorAura(aura, PeriodicActionOptions{
 			Period:          time.Second * 10,
 			NumTicks:        3,
