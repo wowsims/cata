@@ -86,6 +86,7 @@ func (druid *Druid) registerMoonfireImpactSpell() {
 
 			if result.Landed() {
 				druid.ExtendingMoonfireStacks = 3
+				druid.SunfireDoT.Dot(target).Deactivate(sim)
 				druid.MoonfireDoT.Cast(sim, target)
 			}
 
