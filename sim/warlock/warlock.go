@@ -13,8 +13,6 @@ type Warlock struct {
 	Talents *proto.WarlockTalents
 	Options *proto.WarlockOptions
 
-	ClassSpellScaling float64
-
 	ShadowBolt           *core.Spell
 	Incinerate           *core.Spell
 	ImmolateDot          *core.Spell
@@ -49,8 +47,6 @@ type Warlock struct {
 
 	SummonGuardianTimer *core.Timer
 
-	ScalingBaseDamage float64
-
 	SoulShards   int32
 	SoulBurnAura *core.Aura
 }
@@ -74,9 +70,6 @@ func (warlock *Warlock) ApplyTalents() {
 }
 
 func (warlock *Warlock) Initialize() {
-
-	// base scaling value for a level 85 warlock
-	warlock.ScalingBaseDamage = 962.335630
 	warlock.SummonGuardianTimer = warlock.NewTimer()
 
 	warlock.registerIncinerateSpell()
@@ -137,10 +130,9 @@ func (warlock *Warlock) Reset(sim *core.Simulation) {
 
 func NewWarlock(character *core.Character, options *proto.Player, warlockOptions *proto.WarlockOptions) *Warlock {
 	warlock := &Warlock{
-		Character:         *character,
-		Talents:           &proto.WarlockTalents{},
-		Options:           warlockOptions,
-		ClassSpellScaling: core.GetClassSpellScalingCoefficient(proto.Class_ClassWarlock),
+		Character: *character,
+		Talents:   &proto.WarlockTalents{},
+		Options:   warlockOptions,
 	}
 	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 	warlock.EnableManaBar()
@@ -264,16 +256,6 @@ const Variance_Infernal float64 = 0.119
 const Variance_Incinerate float64 = 0.15
 const Variance_Shadowburn float64 = 0.1099999994
 const Variance_Shadowflame float64 = 0.09000000358
-
-func (warlock *Warlock) CalcBaseDamageWithVariance(sim *core.Simulation, coefficient float64, variance float64) float64 {
-	baseDamage := warlock.ScalingBaseDamage * coefficient
-	if variance > 0 {
-		delta := warlock.ScalingBaseDamage * variance * 0.5
-		baseDamage += sim.Roll(-delta, delta)
-	}
-
-	return baseDamage
-}
 
 func (warlock *Warlock) DefaultSpellCritMultiplier() float64 {
 	return warlock.SpellCritMultiplier(1.33, 0.0)

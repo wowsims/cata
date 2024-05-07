@@ -44,7 +44,8 @@ func (warlock *Warlock) registerSummonInfernalSpell(timer *core.Timer) {
 		BonusCoefficient: 0.765,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := warlock.CalcBaseDamageWithVariance(sim, Coefficient_Infernal, Variance_Infernal) * sim.Encounter.AOECapMultiplier()
+				baseDamage := sim.Encounter.AOECapMultiplier() *
+					warlock.CalcAndRollDamageRange(sim, Coefficient_Infernal, Variance_Infernal)
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 

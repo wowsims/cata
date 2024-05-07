@@ -155,7 +155,9 @@ func (warlock *Warlock) registerBurningEmbers() {
 
 	damageGainPerHit := 0.25 * float64(warlock.Talents.BurningEmbers)
 	spellPowerMultiplier := 0.7 * float64(warlock.Talents.BurningEmbers)
-	additionalDamage := warlock.ClassSpellScaling * []float64{0.0, Coefficient_BurningEmbers_1, Coefficient_BurningEmbers_2}[warlock.Talents.BurningEmbers]
+	additionalDamage := warlock.CalcScalingSpellDmg(
+		[]float64{0.0, Coefficient_BurningEmbers_1, Coefficient_BurningEmbers_2}[warlock.Talents.BurningEmbers])
+
 	var burningEmberTicks int32 = 7
 
 	burningEmbers := warlock.RegisterSpell(core.SpellConfig{
