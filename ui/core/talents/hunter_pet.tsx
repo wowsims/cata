@@ -268,7 +268,7 @@ export class HunterPetTalentsPicker<SpecType extends HunterSpecs> extends Compon
 
 				const talentsConfig = petTalentsConfig[i];
 				const picker = new TalentsPicker(pickerContainer, pet, {
-					klass: player.getClass(),
+					playerClass: player.getClass(),
 					trees: talentsConfig,
 					changedEvent: (pet: HunterPet<SpecType>) => pet.player.specOptionsChangeEmitter,
 					getValue: (pet: HunterPet<SpecType>) => pet.getTalentsString(),

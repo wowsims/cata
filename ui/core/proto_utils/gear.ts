@@ -1,7 +1,6 @@
 import { EquipmentSpec, GemColor, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimGem, SimItem } from '../proto/common.js';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
-import { Sim } from '../sim';
 import { distinct, equalsOrBothNull, getEnumValues } from '../utils.js';
 import { Database } from './database';
 import { EquippedItem } from './equipped_item.js';
@@ -109,7 +108,7 @@ abstract class BaseGear {
 		return SimDatabase.create({
 			items: distinct(equippedItems.map(ei => BaseGear.itemToDB(ei.item))),
 			randomSuffixes: distinct(equippedItems.filter(ei => ei.randomSuffix).map(ei => ei.randomSuffix!)),
-			reforgeStats: distinct(equippedItems.filter(ei => ei.reforging).map(ei => db.getReforge(ei.reforging) ?? {})),
+			reforgeStats: distinct(equippedItems.filter(ei => ei.reforge).map(ei => db.getReforgeById(ei.reforge!.id) ?? {})),
 			enchants: distinct(equippedItems.filter(ei => ei.enchant).map(ei => BaseGear.enchantToDB(ei.enchant!))),
 			gems: distinct(equippedItems.map(ei => (ei._gems.filter(g => g != null) as Array<Gem>).map(gem => BaseGear.gemToDB(gem))).flat()),
 		});

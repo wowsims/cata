@@ -173,6 +173,7 @@ func (warrior *Warrior) Initialize() {
 }
 
 func (warrior *Warrior) Reset(_ *core.Simulation) {
+	warrior.Stance = StanceNone
 }
 
 func NewWarrior(character *core.Character, talents string, inputs WarriorInputs) *Warrior {

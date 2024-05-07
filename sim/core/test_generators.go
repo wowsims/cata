@@ -113,12 +113,12 @@ type SettingsCombos struct {
 	Encounters         []EncounterCombo
 	SimOptions         *proto.SimOptions
 	IsHealer           bool
-	DistanceFromTarget float64
+	StartingDistances  []float64
 	Cooldowns          *proto.Cooldowns
 }
 
 func (combos *SettingsCombos) NumTests() int {
-	return len(combos.Races) * len(combos.GearSets) * len(combos.TalentSets) * len(combos.SpecOptions) * len(combos.Buffs) * len(combos.Encounters) * max(1, len(combos.Rotations))
+	return len(combos.Races) * len(combos.GearSets) * len(combos.TalentSets) * len(combos.SpecOptions) * len(combos.Buffs) * len(combos.Encounters) * max(1, len(combos.Rotations)) * len(combos.StartingDistances)
 }
 
 func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsRequest, *proto.StatWeightsRequest, *proto.RaidSimRequest) {
@@ -158,6 +158,11 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 	buffsCombo := combos.Buffs[buffsIdx]
 	testNameParts = append(testNameParts, buffsCombo.Label)
 
+	startingDistanceIdx := testIdx % len(combos.StartingDistances)
+	testIdx /= len(combos.StartingDistances)
+	startingDistance := combos.StartingDistances[startingDistanceIdx]
+	testNameParts = append(testNameParts, fmt.Sprintf("%.1fyards", startingDistance))
+
 	encounterIdx := testIdx % len(combos.Encounters)
 	encounterCombo := combos.Encounters[encounterIdx]
 	testNameParts = append(testNameParts, encounterCombo.Label)
@@ -175,7 +180,7 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 				Profession1:        proto.Profession_Engineering,
 				Cooldowns:          combos.Cooldowns,
 				Rotation:           rotationsCombo.Rotation,
-				DistanceFromTarget: combos.DistanceFromTarget,
+				DistanceFromTarget: startingDistance,
 				ReactionTimeMs:     100,
 				ChannelClipDelayMs: 50,
 			}, specOptionsCombo.SpecOptions),
@@ -424,12 +429,13 @@ func (generator *CombinedTestGenerator) GetTest(testIdx int) (string, *proto.Com
 type CharacterSuiteConfig struct {
 	Class proto.Class
 
-	Race        proto.Race
-	GearSet     GearSetCombo
-	SpecOptions SpecOptionsCombo
-	Glyphs      *proto.Glyphs
-	Talents     string
-	Rotation    RotationCombo
+	Race             proto.Race
+	GearSet          GearSetCombo
+	SpecOptions      SpecOptionsCombo
+	Glyphs           *proto.Glyphs
+	Talents          string
+	Rotation         RotationCombo
+	StartingDistance float64
 
 	Consumes *proto.Consumes
 
@@ -437,10 +443,11 @@ type CharacterSuiteConfig struct {
 	IsTank          bool
 	InFrontOfTarget bool
 
-	OtherRaces       []proto.Race
-	OtherGearSets    []GearSetCombo
-	OtherSpecOptions []SpecOptionsCombo
-	OtherRotations   []RotationCombo
+	OtherRaces             []proto.Race
+	OtherGearSets          []GearSetCombo
+	OtherSpecOptions       []SpecOptionsCombo
+	OtherRotations         []RotationCombo
+	OtherStartingDistances []float64
 
 	ItemFilter ItemFilter
 
@@ -448,7 +455,6 @@ type CharacterSuiteConfig struct {
 	EPReferenceStat proto.Stat
 
 	Cooldowns          *proto.Cooldowns
-	DistanceFromTarget float64
 }
 
 func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator {
@@ -461,6 +467,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 	}}
 	allSpecOptions := append(config.OtherSpecOptions, config.SpecOptions)
 	allRotations := append(config.OtherRotations, config.Rotation)
+	allStartingDistances := append(config.OtherStartingDistances, config.StartingDistance)
 
 	defaultPlayer := WithSpec(
 		&proto.Player{
@@ -476,7 +483,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 			Cooldowns:     config.Cooldowns,
 
 			InFrontOfTarget:    config.InFrontOfTarget,
-			DistanceFromTarget: config.DistanceFromTarget,
+			DistanceFromTarget: config.StartingDistance,
 			ReactionTimeMs:     100,
 			ChannelClipDelayMs: 50,
 		},
@@ -527,7 +534,7 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 					Encounters:         MakeDefaultEncounterCombos(),
 					SimOptions:         DefaultSimTestOptions,
 					Cooldowns:          config.Cooldowns,
-					DistanceFromTarget: config.DistanceFromTarget,
+					StartingDistances:  allStartingDistances,
 				},
 			},
 			{
