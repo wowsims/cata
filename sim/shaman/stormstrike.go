@@ -49,25 +49,39 @@ func (shaman *Shaman) calcDamageStormstrikeCritChance(sim *core.Simulation, targ
 	return result
 }
 
-func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) func(*core.Simulation, *core.Unit, *core.Spell) {
+func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 	var procMask core.ProcMask
+	var actionTag int32
 	if isMH {
 		procMask = core.ProcMaskMeleeMHSpecial
+		actionTag = 1
 	} else {
 		procMask = core.ProcMaskMeleeOHSpecial
+		actionTag = 2
 	}
 
-	return func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		var baseDamage float64
-		spell.ProcMask = procMask
-		if isMH {
-			baseDamage = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-		} else {
-			baseDamage = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
-		}
+	return shaman.RegisterSpell(core.SpellConfig{
+		ActionID:       StormstrikeActionID.WithTag(actionTag),
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       procMask,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ClassSpellMask: SpellMaskStormstrike,
 
-		spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-	}
+		ThreatMultiplier: 1,
+		DamageMultiplier: 2.25,
+		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			var baseDamage float64
+			if isMH {
+				baseDamage = spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			} else {
+				baseDamage = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
+			}
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			spell.SpellMetrics[target.UnitIndex].Casts--
+		},
+	})
 }
 
 func (shaman *Shaman) registerStormstrikeSpell() {
@@ -79,8 +93,8 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 	shaman.Stormstrike = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       StormstrikeActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
-		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskStormstrike,
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.08,
@@ -96,10 +110,6 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 			},
 		},
 
-		ThreatMultiplier: 1,
-		DamageMultiplier: 2.25,
-		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
@@ -107,11 +117,11 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 				ssDebuffAura.Activate(sim)
 
 				if shaman.HasMHWeapon() {
-					mhHit(sim, target, spell)
+					mhHit.Cast(sim, target)
 				}
 
 				if shaman.AutoAttacks.IsDualWielding && shaman.HasOHWeapon() {
-					ohHit(sim, target, spell)
+					ohHit.Cast(sim, target)
 				}
 
 				shaman.Stormstrike.SpellMetrics[target.UnitIndex].Hits--
