@@ -7,17 +7,17 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (druid *Druid) registerMoonfireSpell() {
-	druid.registerMoonfireDoTSpell()
-	druid.registerMoonfireImpactSpell()
+func (druid *Druid) registerSunfireSpell() {
+	druid.registerSunfireDoTSpell()
+	druid.registerSunfireImpactSpell()
 }
 
-func (druid *Druid) registerMoonfireDoTSpell() {
+func (druid *Druid) registerSunfireDoTSpell() {
 	druid.MoonfireDoT = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 8921, Tag: 1},
-		SpellSchool:    core.SpellSchoolArcane,
+		ActionID:       core.ActionID{SpellID: 93402, Tag: 1},
+		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: DruidSpellMoonfireDoT,
+		ClassSpellMask: DruidSpellSunfireDoT,
 		Flags:          core.SpellFlagAPL,
 
 		DamageMultiplier: 1,
@@ -26,7 +26,7 @@ func (druid *Druid) registerMoonfireDoTSpell() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Moonfire",
+				Label: "Sunfire",
 			},
 			NumberOfTicks:       6,
 			TickLength:          time.Second * 2,
@@ -53,12 +53,12 @@ func (druid *Druid) registerMoonfireDoTSpell() {
 	})
 }
 
-func (druid *Druid) registerMoonfireImpactSpell() {
+func (druid *Druid) registerSunfireImpactSpell() {
 	druid.Moonfire = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 8921},
-		SpellSchool:    core.SpellSchoolArcane,
+		ActionID:       core.ActionID{SpellID: 93402},
+		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: DruidSpellMoonfire,
+		ClassSpellMask: DruidSpellSunfire,
 		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
@@ -83,9 +83,8 @@ func (druid *Druid) registerMoonfireImpactSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				druid.ExtendingMoonfireStacks = 3
-				druid.SunfireDoT.Dot(target).Deactivate(sim)
-				druid.MoonfireDoT.Cast(sim, target)
+				druid.MoonfireDoT.Dot(target).Deactivate(sim)
+				druid.SunfireDoT.Cast(sim, target)
 			}
 
 			spell.DealDamage(sim, result)

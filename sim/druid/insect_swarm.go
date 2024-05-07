@@ -8,8 +8,6 @@ import (
 )
 
 func (druid *Druid) registerInsectSwarmSpell() {
-	hasGlyph := druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfInsectSwarm)
-
 	druid.InsectSwarm = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 5570},
 		SpellSchool:    core.SpellSchoolNature,
@@ -27,8 +25,9 @@ func (druid *Druid) registerInsectSwarmSpell() {
 			},
 		},
 
-		DamageMultiplier: 1 + core.TernaryFloat64(hasGlyph, 0.3, 0),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		CritMultiplier:   druid.BalanceCritMultiplier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -45,7 +44,7 @@ func (druid *Druid) registerInsectSwarmSpell() {
 				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
