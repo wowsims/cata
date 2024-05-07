@@ -130,7 +130,7 @@ func (demonology *DemonologyWarlock) ApplyTalents() {
 	}))
 
 	// Demonic Knowledge
-	demonology.AddDynamicMod(core.SpellModConfig{
+	demonology.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  warlock.WarlockShadowDamage | warlock.WarlockFireDamage,
 		FloatValue: 0.15,
