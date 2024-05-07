@@ -53,11 +53,8 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 	warlock.registerCremation()
 
 	if warlock.Talents.DemonicPact {
-		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.1
-		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.1
-		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1.1
-		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.1
-		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
+		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.02
+		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.02
 	}
 }
 
