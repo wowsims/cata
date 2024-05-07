@@ -27,7 +27,7 @@ func (warlock *Warlock) registerSummonSuccubusSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//warlock.ChangeActivePet(sim, &warlock.Succubus.WarlockPet)
+			warlock.SoulBurnAura.Deactivate(sim)
 			warlock.ChangeActivePet(sim, PetSuccubus)
 		},
 	})

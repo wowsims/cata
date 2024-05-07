@@ -378,6 +378,12 @@ export class ActionId {
 				break;
 			case 'Fulmination':
 				name += ` (${this.tag + 3})`
+			case 'Moonfire':
+			case 'Sunfire':
+				if (this.tag == 1) {
+					name += ' (DoT)'
+				}
+				break;
 			case 'Holy Shield':
 				if (this.tag == 1) {
 					name += ' (Proc)';

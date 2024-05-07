@@ -27,8 +27,8 @@ func (warlock *Warlock) registerSummonFelHunterSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//warlock.ChangeActivePet(sim, &warlock.Imp.WarlockPet)
-			warlock.ChangeActivePet(sim, PetImp)
+			warlock.SoulBurnAura.Deactivate(sim)
+			warlock.ChangeActivePet(sim, PetFelhunter)
 		},
 	})
 }
