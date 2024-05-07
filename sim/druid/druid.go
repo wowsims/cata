@@ -271,6 +271,7 @@ func (druid *Druid) RegisterBalanceSpells() {
 	//druid.registerHurricaneSpell()
 	druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
+	druid.registerSunfireSpell()
 	druid.registerStarfireSpell()
 	druid.registerWrathSpell()
 	druid.registerStarfallSpell()
