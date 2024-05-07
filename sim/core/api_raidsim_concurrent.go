@@ -326,7 +326,21 @@ func (csd *concurrentSimData) GetCombinedFinalResult() *proto.RaidSimResult {
 
 // Run sim on multiple threads concurrently by splitting interations over multiple sims, transparently combining results into the progress channel.
 func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
+	if request.SimOptions.Iterations == 0 {
+		progress <- &proto.ProgressMetrics{
+			FinalRaidResult: &proto.RaidSimResult{
+				ErrorResult: "Iterations can't be 0!",
+			},
+		}
+		return
+	}
+
 	concurrency := TernaryInt(request.SimOptions.IsTest, 3, runtime.NumCPU())
+
+	if concurrency > int(request.SimOptions.Iterations) {
+		concurrency = int(request.SimOptions.Iterations)
+	}
+
 	substituteChannels := make([]chan *proto.ProgressMetrics, concurrency)
 	substituteCases := make([]reflect.SelectCase, concurrency)
 	running := concurrency
