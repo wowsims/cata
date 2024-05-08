@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"math"
 	"time"
 )
 
@@ -256,6 +257,6 @@ func (spell *Spell) makeCastFuncAutosOrProcs() CastSuccessFunc {
 
 func (spell *Spell) ApplyCostModifiers(cost float64) float64 {
 	cost -= spell.Unit.PseudoStats.CostReduction
-	cost = max(0, cost*spell.Unit.PseudoStats.CostMultiplier)
-	return max(0, cost*spell.CostMultiplier)
+	cost = max(0, math.Floor(cost*spell.Unit.PseudoStats.CostMultiplier))
+	return max(0, math.Floor(cost*spell.CostMultiplier))
 }

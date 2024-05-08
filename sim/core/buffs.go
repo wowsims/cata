@@ -868,7 +868,7 @@ func FlametongueTotem(unit *Unit) *Aura {
 func DemonicPact(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
 		"Demonic Pact",
-		ActionID{SpellID: 47236},
+		ActionID{SpellID: 53646},
 		[]StatConfig{
 			{stats.SpellPower, 1.1, true},
 		}})
