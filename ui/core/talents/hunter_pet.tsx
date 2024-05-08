@@ -127,7 +127,7 @@ export const ferocityDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
 	dash: true,
 	spikedCollar: 3,
-	bloodthirsty: 1,
+	boarsSpeed: true,
 	cullingTheHerd: 3,
 	spidersBite: 3,
 	rabid: true,
