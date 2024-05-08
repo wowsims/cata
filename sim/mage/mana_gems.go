@@ -68,9 +68,9 @@ func (mage *Mage) registerManaGemsCD() {
 			mage.AddMana(sim, manaGain, manaMetrics)
 
 			remainingManaGems--
-			if remainingManaGems == 0 {
-				mage.GetMajorCooldown(actionID).Disable()
-			}
+			// if remainingManaGems == 0 {
+			// 	mage.GetMajorCooldown(actionID).Disable()
+			// }
 		},
 	})
 

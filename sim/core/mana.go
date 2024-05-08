@@ -307,14 +307,14 @@ type ManaCost struct {
 }
 
 func newManaCost(spell *Spell, options ManaCostOptions) *ManaCost {
-	baseCost := TernaryFloat64(options.FlatCost > 0, options.FlatCost, options.BaseCost*spell.Unit.BaseMana)
+	baseCost := TernaryFloat64(options.FlatCost > 0, options.FlatCost, math.Floor(options.BaseCost*spell.Unit.BaseMana))
 	if player := spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit); player != nil {
 		if player.GetCharacter().HasTrinketEquipped(45703) { // Spark of Hope
 			baseCost = max(0, baseCost-44)
 		}
 	}
 
-	spell.DefaultCast.Cost = baseCost * TernaryFloat64(options.Multiplier == 0, 1, options.Multiplier)
+	spell.DefaultCast.Cost = math.Floor(baseCost * TernaryFloat64(options.Multiplier == 0, 1, options.Multiplier))
 
 	return &ManaCost{
 		ResourceMetrics: spell.Unit.NewManaMetrics(spell.ActionID),

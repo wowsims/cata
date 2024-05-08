@@ -37,7 +37,7 @@ func (dk *DeathKnight) registerDancingRuneWeaponSpell() {
 
 	dancingRuneWeaponAura := dk.RegisterAura(core.Aura{
 		Label:    "Dancing Rune Weapon",
-		ActionID: core.ActionID{SpellID: 49028},
+		ActionID: core.ActionID{SpellID: 81256},
 		Duration: duration,
 		// Casts copy
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
