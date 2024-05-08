@@ -1,8 +1,9 @@
 import tippy, { ReferenceElement as TippyReferenceElement } from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element } from 'tsx-vanilla';
+import { element, ref } from 'tsx-vanilla';
 
 import { SimUI } from '../sim_ui';
+import { noop } from '../utils';
 import { Component } from './component';
 import { Exporter } from './exporters';
 import { Importer } from './importers';
@@ -26,15 +27,15 @@ export class SimHeader extends Component {
 	private simTabsContainer: HTMLElement;
 	private simToolbar: HTMLElement;
 	private knownIssuesLink: TippyReferenceElement<HTMLElement>;
-	private knownIssuesContent: HTMLElement;
+	private knownIssuesContent: HTMLUListElement;
 
 	constructor(parentElem: HTMLElement, simUI: SimUI) {
 		super(parentElem, 'sim-header');
 		this.simUI = simUI;
-		this.simTabsContainer = this.rootElem.querySelector('.sim-tabs') as HTMLElement;
-		this.simToolbar = this.rootElem.querySelector('.sim-toolbar') as HTMLElement;
+		this.simTabsContainer = this.rootElem.querySelector<HTMLElement>('.sim-tabs')!;
+		this.simToolbar = this.rootElem.querySelector<HTMLElement>('.sim-toolbar')!;
 
-		this.knownIssuesContent = (<ul className="text-start ps-3 mb-0"></ul>) as HTMLElement;
+		this.knownIssuesContent = (<ul className="text-start ps-3 mb-0"></ul>) as HTMLUListElement;
 		this.knownIssuesLink = this.addKnownIssuesLink();
 		this.addBugReportLink();
 		this.addDownloadBinaryLink();
@@ -52,9 +53,14 @@ export class SimHeader extends Component {
 	addTab(title: string, contentId: string) {
 		const isFirstTab = this.simTabsContainer.children.length == 0;
 
-		const classes = `${contentId} nav-item`;
-		const tab = (
-			<li className={classes} attributes={{ role: 'presentation' }}>
+		this.simTabsContainer.appendChild(
+			<li
+				className={`${contentId} nav-item`}
+				attributes={{
+					role: 'presentation',
+					// @ts-expect-error
+					'aria-controls': contentId,
+				}}>
 				<a
 					className={`nav-link ${isFirstTab && 'active'}`}
 					dataset={{
@@ -68,11 +74,8 @@ export class SimHeader extends Component {
 					type="button">
 					{title}
 				</a>
-			</li>
+			</li>,
 		);
-		tab.setAttribute('aria-controls', contentId);
-
-		this.simTabsContainer.appendChild(tab);
 	}
 
 	addSimTabLink(tab: SimTab) {
@@ -86,17 +89,20 @@ export class SimHeader extends Component {
 	}
 
 	addImportLink(label: string, importer: Importer, hideInRaidSim?: boolean) {
-		this.addImportExportLink('import-dropdown', label, importer, hideInRaidSim);
+		this.addImportExportLink('.import-dropdown', label, importer, hideInRaidSim);
 	}
 	addExportLink(label: string, exporter: Exporter, hideInRaidSim?: boolean) {
-		this.addImportExportLink('export-dropdown', label, exporter, hideInRaidSim);
+		this.addImportExportLink('.export-dropdown', label, exporter, hideInRaidSim);
 	}
 	private addImportExportLink(cssClass: string, label: string, importerExporter: Importer | Exporter, _hideInRaidSim?: boolean) {
-		const dropdownElem = this.rootElem.getElementsByClassName(cssClass)[0] as HTMLElement;
-		const menuElem = dropdownElem.getElementsByClassName('dropdown-menu')[0] as HTMLElement;
-		const itemElem = (
+		const dropdownElem = this.rootElem.querySelector<HTMLElement>(cssClass)!;
+		const menuElem = dropdownElem.querySelector<HTMLElement>('.dropdown-menu')!;
+		const linkRef = ref<HTMLAnchorElement>();
+
+		menuElem.appendChild(
 			<li>
 				<a
+					ref={linkRef}
 					href="javascript:void(0)"
 					className="dropdown-item"
 					attributes={{
@@ -104,41 +110,33 @@ export class SimHeader extends Component {
 					}}>
 					{label}
 				</a>
-			</li>
+			</li>,
 		);
-
-		const linkElem = itemElem.children[0];
-		linkElem.addEventListener('click', () => importerExporter.open());
-		menuElem.appendChild(itemElem);
+		linkRef.value?.addEventListener('click', () => importerExporter.open());
 	}
 
 	private addToolbarLink(args: ToolbarLinkArgs): HTMLElement {
-		const item = (
+		const linkRef = ref<HTMLAnchorElement>();
+
+		args.parent.appendChild(
 			<div className="sim-toolbar-item">
-				<a href={args.href ? args.href : 'javascript:void(0)'} className={args.classes} target={args.href ? '_blank' : '_self'}>
+				<a ref={linkRef} href={args.href ? args.href : 'javascript:void(0)'} className={args.classes || ''} target={args.href ? '_blank' : '_self'}>
 					{args.icon && <i className={args.icon}></i>}
 					{args.text ? ` ${args.text} ` : ''}
 				</a>
-			</div>
+			</div>,
 		);
 
-		const link = item.children[0];
+		if (linkRef.value) {
+			if (args.onclick) linkRef.value.addEventListener('click', args.onclick);
 
-		if (args.onclick) {
-			link.addEventListener('click', () => {
-				// Typescript is requiring this even though the condition is being done already above
-				if (args.onclick) args.onclick();
-			});
+			if (args.tooltip)
+				tippy(linkRef.value, {
+					content: args.tooltip,
+					placement: 'bottom',
+				});
 		}
-
-		if (args.tooltip) {
-			tippy(link, {
-				content: args.tooltip,
-				placement: 'bottom',
-			});
-		}
-
-		return args.parent.appendChild(item) as HTMLElement;
+		return linkRef.value!;
 	}
 
 	private addKnownIssuesLink() {
@@ -147,11 +145,15 @@ export class SimHeader extends Component {
 			text: 'Known Issues',
 			tooltip: this.knownIssuesContent,
 			classes: 'known-issues link-danger hide',
-		}).children[0] as TippyReferenceElement<HTMLElement>;
+		});
 	}
 
 	addKnownIssue(issue: string) {
-		this.knownIssuesContent.appendChild(<li>{issue}</li>);
+		const listItem = (<li></li>) as HTMLLIElement;
+		// Using innerHTML here because the issue text can contain stringified HTML
+		listItem.innerHTML = issue;
+		this.knownIssuesContent.appendChild(listItem);
+
 		this.knownIssuesLink.classList.remove('hide');
 		this.knownIssuesLink._tippy?.setContent(this.knownIssuesContent);
 	}
@@ -171,23 +173,25 @@ export class SimHeader extends Component {
 		const parent = this.simToolbar;
 
 		if (document.location.href.includes('localhost')) {
-			fetch('/version').then(resp => {
-				resp.json()
-					.then(versionInfo => {
-						if (versionInfo.outdated == 2) {
-							this.addToolbarLink({
-								href: href,
-								parent: parent,
-								icon: icon,
-								tooltip: 'Newer version of simulator available for download',
-								classes: 'downbin link-danger',
-							});
-						}
-					})
-					.catch(_error => {
-						console.warn('No version info found!');
-					});
-			});
+			fetch('/version')
+				.then(resp => {
+					resp.json()
+						.then(versionInfo => {
+							if (versionInfo.outdated == 2) {
+								this.addToolbarLink({
+									href: href,
+									parent: parent,
+									icon: icon,
+									tooltip: 'Newer version of simulator available for download',
+									classes: 'downbin link-danger',
+								});
+							}
+						})
+						.catch(_error => {
+							console.warn('No version info found!');
+						});
+				})
+				.catch(noop);
 		} else {
 			this.addToolbarLink({
 				href: href,
@@ -211,8 +215,7 @@ export class SimHeader extends Component {
 	}
 
 	private addSocialLinks() {
-		const container = document.createElement('div');
-		container.classList.add('sim-toolbar-socials');
+		const container = (<div className="sim-toolbar-socials" />) as HTMLElement;
 		this.simToolbar.appendChild(container);
 
 		this.addDiscordLink(container);
@@ -244,8 +247,7 @@ export class SimHeader extends Component {
 								className="import-link"
 								attributes={{ role: 'button', 'aria-expanded': 'false' }}
 								dataset={{ bsToggle: 'dropdown', bsDisplay: 'dynamic' }}>
-								<i className="fa fa-download"></i>
-								{' Import '}
+								<i className="fa fa-download"></i> Import
 							</a>
 							<ul className="dropdown-menu"></ul>
 						</div>
@@ -255,8 +257,7 @@ export class SimHeader extends Component {
 								className="export-link"
 								attributes={{ role: 'button', 'aria-expanded': 'false' }}
 								dataset={{ bsToggle: 'dropdown', bsDisplay: 'dynamic' }}>
-								<i className="fa fa-right-from-bracket"></i>
-								{' Export '}
+								<i className="fa fa-right-from-bracket"></i> Export
 							</a>
 							<ul className="dropdown-menu"></ul>
 						</div>

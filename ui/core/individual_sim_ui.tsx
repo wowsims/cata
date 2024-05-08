@@ -1,3 +1,5 @@
+import { element } from 'tsx-vanilla';
+
 import { CharacterStats, StatMods, StatWrites } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
 import { EmbeddedDetailedResults } from './components/detailed_results';
@@ -364,7 +366,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.raidSimResultsManager = addRaidSimAction(this);
 		addStatWeightsAction(this, this.individualConfig.epStats, this.individualConfig.epPseudoStats, this.individualConfig.epReferenceStat);
 
-		const _characterStats = new CharacterStats(
+		new CharacterStats(
 			this.rootElem.querySelector('.sim-sidebar-stats') as HTMLElement,
 			this.player,
 			this.individualConfig.displayStats,
@@ -400,20 +402,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	private addDetailedResultsTab() {
-		this.addTab(
-			'Results',
-			'detailed-results-tab',
-			`
-			<div class="detailed-results">
-			</div>
-		`,
-		);
+		const detailedResults = (<div className="detailed-results"></div>) as HTMLElement;
+		this.addTab('Results', 'detailed-results-tab', detailedResults);
 
-		const _detailedResults = new EmbeddedDetailedResults(
-			this.rootElem.getElementsByClassName('detailed-results')[0] as HTMLElement,
-			this,
-			this.raidSimResultsManager!,
-		);
+		new EmbeddedDetailedResults(detailedResults, this, this.raidSimResultsManager!);
 	}
 
 	private addTopbarComponents() {

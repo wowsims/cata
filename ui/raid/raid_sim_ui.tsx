@@ -1,21 +1,21 @@
 import { default as pako } from 'pako';
 
-import { EmbeddedDetailedResults } from '../core/components/detailed_results.js';
-import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action.js';
+import { EmbeddedDetailedResults } from '../core/components/detailed_results.jsx';
+import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action.jsx';
 import { raidSimStatus } from '../core/launched_sims.js';
 import { Player } from '../core/player.js';
 import { Raid as RaidProto } from '../core/proto/api.js';
 import { Class, Encounter as EncounterProto } from '../core/proto/common.js';
 import { Blessings } from '../core/proto/paladin.js';
 import { BlessingsAssignments, RaidSimSettings } from '../core/proto/ui.js';
-import { getPlayerSpecFromPlayer, makeDefaultBlessings } from '../core/proto_utils/utils';
+import { getPlayerSpecFromPlayer, makeDefaultBlessings } from '../core/proto_utils/utils.js';
 import { Sim } from '../core/sim.js';
-import { SimUI } from '../core/sim_ui.js';
+import { SimUI } from '../core/sim_ui.jsx';
 import { EventID, TypedEvent } from '../core/typed_event.js';
 import { BlessingsPicker } from './blessings_picker.js';
 import * as ImportExport from './import_export.js';
 import { implementedSpecs } from './presets.js';
-import { RaidPicker } from './raid_picker.js';
+import { RaidPicker } from './raid_picker.jsx';
 import { RaidTab } from './raid_tab.js';
 import { SettingsTab } from './settings_tab.js';
 export interface RaidSimConfig {
@@ -112,16 +112,10 @@ export class RaidSimUI extends SimUI {
 	}
 
 	private addDetailedResultsTab() {
-		this.addTab(
-			'Results',
-			'detailed-results-tab',
-			`
-			<div class="detailed-results">
-			</div>
-		`,
-		);
+		const detailedResults = (<div className="detailed-results"></div>) as HTMLElement;
+		this.addTab('Results', 'detailed-results-tab', detailedResults);
 
-		new EmbeddedDetailedResults(this.rootElem.getElementsByClassName('detailed-results')[0] as HTMLElement, this, this.raidSimResultsManager!);
+		new EmbeddedDetailedResults(detailedResults, this, this.raidSimResultsManager!);
 	}
 
 	private recomputeSettingsLayout() {

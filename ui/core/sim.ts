@@ -1,5 +1,4 @@
 import { hasTouch } from '../shared/bootstrap_overrides';
-import Toast from './components/toast';
 import { getBrowserLanguageCode, setLanguageCode } from './constants/lang.js';
 import * as OtherConstants from './constants/other.js';
 import { Encounter } from './encounter.js';
@@ -34,7 +33,7 @@ import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
 import { EventID, TypedEvent } from './typed_event.js';
-import { getEnumValues } from './utils.js';
+import { getEnumValues, noop } from './utils.js';
 import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
@@ -116,7 +115,7 @@ export class Sim {
 	private lastUsedRngSeed = 0;
 
 	// These callbacks are needed so we can apply BuffBot modifications automatically before sending requests.
-	private modifyRaidProto: (raidProto: RaidProto) => void = () => {};
+	private modifyRaidProto: (raidProto: RaidProto) => void = noop;
 
 	constructor() {
 		this.workerPool = new WorkerPool(1);
