@@ -1,112 +1,98 @@
-@use "sass:map";
+@use 'sass:map';
 
-@import "./consumes_picker";
-@import "./cooldowns_picker";
+@import './consumes_picker';
+@import './cooldowns_picker';
 
 .settings-tab {
-  .tab-pane-content-container {
-    .tab-panel-left {
-      .tab-panel-col {
-        flex: 2;
+	.tab-pane-content-container {
+		@include media-breakpoint-down(xxl) {
+			flex-direction: column;
+		}
 
-        &:last-child {
-          flex: 3;
-        }
-      }
-    }
-  }
+		.tab-panel-left {
+			@include media-breakpoint-down(xxl) {
+				margin-right: 0 !important;
+			}
 
-  .content-block {
-    .content-block-body {
-      &> .input-root:last-child {
-        margin-bottom: 0;
-      }
+			@include media-breakpoint-down(xl) {
+				flex-wrap: wrap;
+			}
 
-      &> .picker-group:last-child {
-        &> .input-root {
-          margin-bottom: 0;
-        }
-      }
-    }
-  }
+			.tab-panel-col {
+				flex: 2;
 
-  .rotation-settings,
-  .other-settings {
-    .input-root {
-      label {
-        width: 60%;
-        padding-right: .5rem;
-      }
+				@include media-breakpoint-down(xl) {
+					flex-basis: 100%;
+					margin-right: 0 !important;
+				}
 
-      input:not(.form-check-input),
-      select,
-      .picker-group {
-        min-width: 40%;
-      }
-    }
-  }
+				&:last-child {
+					flex: 3;
+				}
+			}
+		}
+	}
 
-  .cooldown-settings {
-    .cooldown-timings-picker {
-      min-width: 40%;
-      width: 40%;
-    }
-  }
+	.content-block {
+		.content-block-body {
+			& > .input-root:last-child {
+				margin-bottom: 0;
+			}
 
-  .buffs-settings,
-  .debuffs-settings {
-    .content-block-body {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+			& > .picker-group:last-child {
+				& > .input-root {
+					margin-bottom: 0;
 
-      &> .icon-picker {
-        margin-bottom: map-get($spacers, 1) !important;
+					&:not(:last-child) {
+						@include media-breakpoint-down(xl) {
+							margin-bottom: $block-spacer;
+						}
+					}
+				}
+			}
+		}
+	}
 
-        &:not(:nth-child(3n)) {
-          margin-right: map-get($spacers, 2);
-        }
+	.rotation-settings,
+	.other-settings {
+		.input-root {
+			label {
+				width: 60%;
+				padding-right: 0.5rem;
+			}
 
-        .form-label {
-          white-space: normal;
-        }
-      }
-    }
-  }
-}
+			input:not(.form-check-input),
+			select,
+			.picker-group {
+				min-width: 40%;
+			}
+		}
+	}
 
-@include media-breakpoint-down(xxl) {
-  .settings-tab {
-    .tab-pane-content-container {
-      flex-direction: column;
+	.cooldown-settings {
+		.cooldown-timings-picker {
+			min-width: 40%;
+			width: 40%;
+		}
+	}
 
-      .tab-panel-left {
-        margin-right: 0 !important;
-      }
-    }
-  }
-}
+	.buffs-settings,
+	.debuffs-settings {
+		.content-block-body {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 
-@include media-breakpoint-down(xl) {
-  .settings-tab {
-    .tab-pane-content-container {
-      .tab-panel-left {
-        flex-wrap: wrap;
+			& > .icon-picker {
+				margin-bottom: map-get($spacers, 1) !important;
 
-        .tab-panel-col {
-          flex-basis: 100%;
-          margin-right: 0 !important;
-        }
-      }
-    }
+				&:not(:nth-child(3n)) {
+					margin-right: map-get($spacers, 2);
+				}
 
-    .content-block {
-      .content-block-body {
-        &> .picker-group {
-          &> .input-root:not(:last-child) {
-            margin-bottom: $block-spacer;
-          }
-        }
-      }
-    }
-  }
+				.form-label {
+					white-space: normal;
+				}
+			}
+		}
+	}
 }

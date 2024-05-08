@@ -37,24 +37,22 @@
 	width: 100%;
 	display: flex;
 
+	@include media-breakpoint-down(xl) {
+		width: 100%;
+		flex-wrap: wrap;
+	}
+
 	& > * {
 		flex: 1;
 
-		&:not(:last-child) {
-			margin-right: map-get($spacers, 3);
-		}
-	}
-}
-
-@include media-breakpoint-down(xl) {
-	.picker-group {
-		width: 100%;
-		flex-wrap: wrap;
-
-		& > * {
-			&:nth-child(2n) {
+		&:nth-child(2n) {
+			@include media-breakpoint-down(xl) {
 				margin-right: 0 !important;
 			}
+		}
+
+		&:not(:last-child) {
+			margin-right: map-get($spacers, 3);
 		}
 	}
 }

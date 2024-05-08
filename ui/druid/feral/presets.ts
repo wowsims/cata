@@ -49,6 +49,7 @@ export const DefaultRotation = FeralDruidRotation.create({
 	manualParams: true,
 	biteDuringExecute: true,
 	allowAoeBerserk: false,
+	meleeWeave: true,
 });
 
 export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFeralDruid, DefaultRotation);
@@ -104,5 +105,6 @@ export const DefaultConsumes = Consumes.create({
 });
 
 export const OtherDefaults = {
-	distanceFromTarget: 5
+	distanceFromTarget: 25,
+	highHpThreshold: 0.8,
 }

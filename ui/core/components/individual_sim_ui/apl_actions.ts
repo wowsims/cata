@@ -626,11 +626,15 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				biteTime: 10.0,
 				biteDuringExecute: true,
 				allowAoeBerserk: false,
+				meleeWeave: true,
 			}),
 		fields: [
 			AplHelpers.rotationTypeFieldConfig('rotationType'),
 			AplHelpers.booleanFieldConfig('maintainFaerieFire', 'Maintain Faerie Fire', {
 				labelTooltip: 'Maintain Faerie Fire debuff. Overwrites any external Sunder effects specified in settings.',
+			}),
+			AplHelpers.booleanFieldConfig('meleeWeave', 'Enable melee-weaving', {
+				labelTooltip: 'Weave out of melee range for Stampede procs. Ignored for AoE rotation or if Stampede is not talented.',
 			}),
 			AplHelpers.booleanFieldConfig('allowAoeBerserk', 'Allow AoE Berserk', {
 				labelTooltip: 'Allow Berserk usage in AoE rotation. Ignored for single target rotation.',

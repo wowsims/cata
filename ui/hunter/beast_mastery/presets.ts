@@ -1,3 +1,4 @@
+import { ConjuredHealthstone } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
 import { Consumes, Flask, Food, Glyphs, Potions, RotationType, Spec } from '../../core/proto/common';
 import {
@@ -53,6 +54,7 @@ export const BeastMasteryTalents = {
 
 export const BMDefaultOptions = BeastMasteryOptions.create({
 	classOptions: {
+		petUptime: 1,
 		useHuntersMark: true,
 		petType: PetType.Wolf,
 		petTalents: {
@@ -75,9 +77,10 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.PotionOfTheTolvir,
 	prepopPotion: Potions.PotionOfTheTolvir,
 	flask: Flask.FlaskOfTheWinds,
+	defaultConjured: ConjuredHealthstone.value,
 	food: Food.FoodFishFeast,
 });
 
 export const OtherDefaults = {
-	distanceFromTarget: 24
-}
+	distanceFromTarget: 24,
+};

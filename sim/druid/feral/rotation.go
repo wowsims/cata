@@ -357,6 +357,36 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 	return core.TernaryDuration(energyEquivalent > cat.Rip.DefaultCast.Cost, latestPossibleSnapshot, standardRefreshTime)
 }
 
+func (cat *FeralDruid) canMeleeWeave(sim *core.Simulation, regenRate float64, currentEnergy float64, isClearcast bool, upcomingTimers *PoolingActions) bool {
+	if !cat.Rotation.MeleeWeave || !cat.CatCharge.IsReady(sim) || isClearcast || cat.BerserkAura.IsActive() {
+		return false
+	}
+
+	// Estimate time to run out and charge back in
+	runOutTime := core.DurationFromSeconds((cat.CatCharge.MinRange + 1 - cat.DistanceFromTarget) / cat.GetMovementSpeed()) + cat.ReactionTime
+	chargeInTime := core.DurationFromSeconds((cat.CatCharge.MinRange + 1) / 80) + cat.ReactionTime
+	weaveDuration := runOutTime + chargeInTime
+	weaveEnergy := 100.0 - weaveDuration.Seconds() * regenRate
+
+	if (currentEnergy > weaveEnergy) {
+		return false
+	}
+
+	// Prioritize all timers over weaving
+	weaveEnd := sim.CurrentTime + weaveDuration
+	isPooling, nextRefresh := upcomingTimers.nextRefreshTime()
+
+	if (isPooling && (nextRefresh < weaveEnd)) || cat.tfExpectedBefore(sim, weaveEnd) {
+		return false
+	}
+
+	// Also add an end-of-fight condition to make sure we can spend down our Energy
+	// post-weave before the encounter ends.
+	energyToDump := currentEnergy + weaveDuration.Seconds() * regenRate
+	timeToDump := core.DurationFromSeconds(math.Floor(energyToDump / cat.Shred.DefaultCast.Cost))
+	return weaveEnd + timeToDump < sim.Duration
+}
+
 func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	// Store state variables for re-use
 	rotation := &cat.Rotation
@@ -476,7 +506,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain-baseEndThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))
 	rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.TickLength)
 	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain-cat.ReactionTime) && (curCp >= 1)
-	pendingPool := PoolingActions{}
+	pendingPool := &PoolingActions{}
 	pendingPool.create(4)
 
 	if ripRefreshPending && (sim.CurrentTime < ripRefreshTime) {
@@ -506,6 +536,9 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	floatingEnergy := pendingPool.calcFloatingEnergy(cat, sim)
 	excessE := curEnergy - floatingEnergy
 	latencySecs := cat.ReactionTime.Seconds()
+
+	// Check melee-weaving conditions
+	meleeWeaveNow := cat.canMeleeWeave(sim, regenRate, curEnergy, isClearcast, pendingPool)
 
 	// Allow for bearweaving if the next pending action is >= 4.5s away
 	furorCap := min(100.0*float64(cat.Talents.Furor)/3.0, 85)
@@ -668,8 +701,13 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			return false, 0
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentMangleCatCost() - curEnergy) / regenRate)
+	} else if meleeWeaveNow {
+		cat.MoveTo(cat.CatCharge.MinRange + 1, sim)
 	} else if bearweaveNow {
 		cat.readyToShift = true
+	} else if cat.Ravage.CanCast(sim, cat.CurrentTarget) {
+		cat.Ravage.Cast(sim, cat.CurrentTarget)
+		return false, 0
 	} else if (rotation.MangleSpam && !isClearcast) || cat.PseudoStats.InFrontOfTarget {
 		if cat.MangleCat != nil && excessE >= cat.CurrentMangleCatCost() {
 			cat.MangleCat.Cast(sim, cat.CurrentTarget)
@@ -744,6 +782,7 @@ type FeralDruidRotation struct {
 	SnekWeave          bool
 	RakeDpeCheck       bool
 	UseBerserk         bool
+	MeleeWeave         bool
 }
 
 func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
@@ -768,6 +807,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 		SnekWeave:          core.Ternary(rotation.BearWeaveType == proto.FeralDruid_Rotation_None, false, rotation.SnekWeave),
 		RakeDpeCheck:       true,
 		UseBerserk:         cat.Talents.Berserk && ((rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget) || rotation.AllowAoeBerserk),
+		MeleeWeave:         rotation.MeleeWeave && (cat.Talents.Stampede > 0),
 	}
 
 	// Use automatic values unless specified

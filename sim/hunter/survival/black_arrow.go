@@ -49,10 +49,10 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 				// https://web.archive.org/web/20120207222124/http://elitistjerks.com/f74/t110306-hunter_faq_cataclysm_edition_read_before_asking_questions/
 				//  66.5% RAP + 2849 (total damage) - changed 6/28 in 4.2 (based off spell crit multiplier, modified by toxicology)
 				// https://wago.tools/db2/SpellEffect?build=4.4.0.53750&filter[SpellID]=exact%3A3674&page=1
-				baseDamage := 2852.0
+				baseDamage := 285.245
 				rap := dot.Spell.RangedAttackPower(target)
-				percentageOfRAP := 0.665
-				dot.SnapshotBaseDamage = (baseDamage + (percentageOfRAP * rap)) / 10
+				percentageOfRAP := 0.0665
+				dot.SnapshotBaseDamage = baseDamage + (percentageOfRAP * rap)
 				// SnapshotBaseDamage calculation for the DoT, divided by 10 to spread across all ticks
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)

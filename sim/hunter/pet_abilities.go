@@ -267,9 +267,6 @@ func (hp *HunterPet) newFireBreath() *core.Spell {
 		School:  core.SpellSchoolFire,
 
 		OnSpellHitDealt: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() {
-				spell.Dot(result.Target).Apply(sim)
-			}
 		},
 	})
 }

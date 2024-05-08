@@ -3,10 +3,17 @@
 .sim-tab {
 	.tab-pane-content-container {
 		display: flex;
+		@include media-breakpoint-down(xl) {
+			flex-direction: column;
+		}
 
 		.tab-panel-left {
 			display: flex;
 			flex: 4;
+
+			@include media-breakpoint-down(md) {
+				flex-direction: column;
+			}
 		}
 
 		.tab-panel-right {
@@ -14,43 +21,24 @@
 			display: flex;
 			flex-direction: column;
 			flex: 1.25;
-		}
-
-		.tab-panel-col {
-			flex: 1;
-
-			&:not(:last-child) {
-				margin-right: $section-spacer;
-			}
-		}
-
-		.tab-panel-col {
-			flex: 1;
-
-			&:not(:last-child) {
-				margin-right: $section-spacer;
-			}
-		}
-	}
-}
-
-@include media-breakpoint-down(xl) {
-	.sim-tab {
-		.tab-pane-content-container {
-			flex-direction: column;
-
-			.tab-panel-right {
+			@include media-breakpoint-down(xl) {
 				margin-left: 0;
 			}
 		}
-	}
-}
 
-@include media-breakpoint-down(md) {
-	.sim-tab {
-		.tab-pane-content-container {
-			.tab-panel-left {
-				flex-direction: column;
+		.tab-panel-col {
+			flex: 1;
+
+			&:not(:last-child) {
+				margin-right: $section-spacer;
+			}
+		}
+
+		.tab-panel-col {
+			flex: 1;
+
+			&:not(:last-child) {
+				margin-right: $section-spacer;
 			}
 		}
 	}

@@ -59,8 +59,8 @@ type Hunter struct {
 	CobraShot     *core.Spell
 
 	// Fake spells to encapsulate weaving logic.
-	TrapWeaveSpell *core.Spell
-
+	TrapWeaveSpell                *core.Spell
+	ImprovedSerpentSting          *core.Spell
 	AspectOfTheHawkAura           *core.Aura
 	AspectOfTheFoxAura            *core.Aura
 	ImprovedSteadyShotAura        *core.Aura
