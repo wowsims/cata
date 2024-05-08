@@ -341,6 +341,7 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 
 	substituteChannels := make([]chan *proto.ProgressMetrics, concurrency)
 	substituteCases := make([]reflect.SelectCase, concurrency)
+	quitChannels := make([]chan bool, concurrency)
 	running := concurrency
 	csd := concurrentSimData{
 		Concurrency:     int32(concurrency),
@@ -354,6 +355,7 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 	for i := 0; i < concurrency; i++ {
 		substituteChannels[i] = make(chan *proto.ProgressMetrics, cap(progress))
 		substituteCases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(substituteChannels[i])}
+		quitChannels[i] = make(chan bool)
 	}
 
 	if !request.SimOptions.IsTest {
@@ -363,6 +365,11 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 	go func() {
 		defer func() {
 			close(progress)
+			// Send quit signals to threads in case we returned due to an error.
+			for _, quitChan := range quitChannels {
+				quitChan <- true
+				close(quitChan)
+			}
 		}()
 
 		nextStartSeed := request.SimOptions.RandomSeed // Sims increment their seed each iteration.
@@ -380,13 +387,14 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 			requestCopy.SimOptions.RandomSeed = nextStartSeed
 			nextStartSeed += int64(requestCopy.SimOptions.Iterations)
 
-			go RunSim(requestCopy, substituteChannels[i])
+			go RunSim(requestCopy, substituteChannels[i], quitChannels[i])
 
 			// Wait for first message to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
 			msg := <-substituteChannels[i]
 			// First message may be due to an immediate error, otherwise it can be ignored.
 			if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
 				progress <- msg
+				log.Printf("Thread %d had an error. Cancelling all sims!", i)
 				return
 			}
 		}
@@ -404,7 +412,7 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 			if csd.UpdateProgress(i, msg) {
 				if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
 					progress <- msg
-					// TODO: cancel still running routines on error?
+					log.Printf("Thread %d had an error. Cancelling all sims!", i)
 					return
 				}
 				substituteCases[i].Chan = reflect.ValueOf(nil)
