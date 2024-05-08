@@ -39,10 +39,10 @@ type RuneMeta struct {
 type runicPowerBar struct {
 	unit *Unit
 
-	maxRunicPower     float64
-	startRunicPower   float64
-	currentRunicPower float64
-	runeCD            time.Duration
+	maxRunicPower      float64
+	startingRunicPower float64
+	currentRunicPower  float64
+	runeCD             time.Duration
 
 	// These flags are used to simplify pending action checks
 	// |DS|DS|DS|DS|DS|DS|
@@ -115,18 +115,18 @@ func (rp *runicPowerBar) reset(sim *Simulation) {
 		rp.runeStates |= isDeaths[i]
 	}
 
-	rp.currentRunicPower = rp.startRunicPower
+	rp.currentRunicPower = rp.startingRunicPower
 }
 
-func (unit *Unit) EnableRunicPowerBar(currentRunicPower float64, maxRunicPower float64, runeCD time.Duration,
+func (unit *Unit) EnableRunicPowerBar(startingRunicPower float64, maxRunicPower float64, runeCD time.Duration,
 	onRuneChange OnRuneChange, onRunicPowerGain OnRunicPowerGain) {
 	unit.SetCurrentPowerBar(RunicPower)
 	unit.runicPowerBar = runicPowerBar{
 		unit: unit,
 
 		maxRunicPower:        maxRunicPower,
-		startRunicPower:      currentRunicPower,
-		currentRunicPower:    currentRunicPower,
+		currentRunicPower:    startingRunicPower,
+		startingRunicPower:   startingRunicPower,
 		runeCD:               runeCD,
 		runeRegenMultiplier:  1.0,
 		runicRegenMultiplier: 1.0,
