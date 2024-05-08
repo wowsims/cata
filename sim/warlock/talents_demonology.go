@@ -115,7 +115,7 @@ func (warlock *Warlock) registerMoltenCore() {
 	moltenCoreDamageBonus := 0.06 * float64(warlock.Talents.MoltenCore)
 
 	damageMultiplierMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		ClassMask:  WarlockSpellIncinerate,
 		FloatValue: moltenCoreDamageBonus,
 	})
