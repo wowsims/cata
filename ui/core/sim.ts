@@ -60,6 +60,7 @@ export enum SimSettingCategories {
 // Core Sim module which deals only with api types, no UI-related stuff.
 export class Sim {
 	private readonly workerPool: WorkerPool;
+	private readonly abortControllers: Record<string, AbortController> = {};
 
 	private iterations = 3000;
 	private phase: number = OtherConstants.CURRENT_PHASE;
@@ -241,7 +242,10 @@ export class Sim {
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
 		try {
-			const result = await this.workerPool.bulkSimAsync(request, onProgress);
+			const actionName = 'bulkSimAsync';
+			this.cancelCurrentSim(actionName);
+			const signal = this.addSimAbortSignal(actionName);
+			const result = await this.workerPool.bulkSimAsync(request, onProgress, { signal });
 			if (result.errorResult != '') {
 				throw new SimError(result.errorResult);
 			}
@@ -264,8 +268,12 @@ export class Sim {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(false);
-
-			const result = await this.workerPool.raidSimAsync(request, onProgress);
+			const actionName = 'raidSimAsync';
+			this.cancelCurrentSim(actionName);
+			const signal = this.addSimAbortSignal(actionName);
+			const result = await this.workerPool.raidSimAsync(request, onProgress, {
+				signal,
+			});
 			if (result.errorResult != '') {
 				throw new SimError(result.errorResult);
 			}
@@ -273,6 +281,7 @@ export class Sim {
 			this.simResultEmitter.emit(eventID, simResult);
 			return simResult;
 		} catch (error) {
+			console.log('runRaidSim', error);
 			if (error instanceof SimError) throw error;
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		}
@@ -288,7 +297,10 @@ export class Sim {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(true);
-			const result = await this.workerPool.raidSimAsync(request, noop);
+			const actionName = 'raidSimAsync';
+			this.cancelCurrentSim(actionName);
+			const signal = this.addSimAbortSignal(actionName);
+			const result = await this.workerPool.raidSimAsync(request, noop, { signal });
 			if (result.errorResult != '') {
 				throw new SimError(result.errorResult);
 			}
@@ -319,8 +331,10 @@ export class Sim {
 			raid: this.getModifiedRaidProto(),
 			encounter: this.encounter.toProto(),
 		});
-
-		const result = await this.workerPool.computeStats(req);
+		const actionName = 'computeStats';
+		this.cancelCurrentSim(actionName);
+		const signal = this.addSimAbortSignal(actionName);
+		const result = await this.workerPool.computeStats(req, { signal });
 
 		if (result.errorResult != '') {
 			this.crashEmitter.emit(eventID, new SimError(result.errorResult));
@@ -395,7 +409,10 @@ export class Sim {
 				epReferenceStat: epReferenceStat,
 			});
 			try {
-				const result = await this.workerPool.statWeightsAsync(request, onProgress);
+				const actionName = 'statWeightsAsync';
+				this.cancelCurrentSim(actionName);
+				const signal = this.addSimAbortSignal(actionName);
+				const result = await this.workerPool.statWeightsAsync(request, onProgress, { signal });
 				return result;
 			} catch {
 				throw new Error('Something went wrong calculating your stat weights. Reload the page and try again.');
@@ -423,6 +440,16 @@ export class Sim {
 			return this.encounter.targetsMetadata.asList()[0];
 		}
 		return undefined;
+	}
+
+	addSimAbortSignal(simName: string) {
+		const abortController = new AbortController();
+		this.abortControllers[simName] = abortController;
+		return this.abortControllers[simName].signal;
+	}
+
+	cancelCurrentSim(simName: string) {
+		this.abortControllers[simName]?.abort();
 	}
 
 	getPhase(): number {
