@@ -17,7 +17,7 @@ const factionRestrictionsToLabels: Record<UIItem_FactionRestriction, string> = {
 
 export class FiltersMenu extends BaseModal {
 	constructor(rootElem: HTMLElement, player: Player<any>, slot: ItemSlot) {
-		super(rootElem, 'filters-menu', { size: 'md', title: 'Filters' });
+		super(rootElem, 'filters-menu', { size: 'md', title: 'Filters', disposeOnClose: false });
 
 		let section = this.newSection('Factions');
 

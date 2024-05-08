@@ -474,7 +474,7 @@ export class SelectorModal extends BaseModal {
 	private gearData: GearData | undefined;
 
 	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, gearPicker?: GearPicker) {
-		super(parent, 'selector-modal', {});
+		super(parent, 'selector-modal', { disposeOnClose: false });
 
 		this.simUI = simUI;
 		this.player = player;

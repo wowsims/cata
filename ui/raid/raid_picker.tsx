@@ -1,18 +1,19 @@
 import tippy, { Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
+import { element, ref } from 'tsx-vanilla';
 
-import { BaseModal } from '../core/components/base_modal.js';
+import { BaseModal } from '../core/components/base_modal.jsx';
 import { Component } from '../core/components/component.js';
 import { EnumPicker } from '../core/components/enum_picker.js';
 import { MAX_PARTY_SIZE, Party } from '../core/party.js';
 import { Player } from '../core/player.js';
-import { PlayerClasses } from '../core/player_classes';
-import { PlayerSpecs } from '../core/player_specs';
+import { PlayerClasses } from '../core/player_classes/index.js';
+import { PlayerSpecs } from '../core/player_specs/index.js';
 import { Player as PlayerProto } from '../core/proto/api.js';
 import { Class, Faction, Glyphs, Profession, Spec } from '../core/proto/common.js';
-import { UnholyDeathKnight_Options } from '../core/proto/death_knight';
+import { UnholyDeathKnight_Options } from '../core/proto/death_knight.js';
 import { BalanceDruid_Options as BalanceDruidOptions } from '../core/proto/druid.js';
-import { ArcaneMage_Options } from '../core/proto/mage';
-import { getPlayerSpecFromPlayer, newUnitReference } from '../core/proto_utils/utils.js';
+import { ArcaneMage_Options } from '../core/proto/mage.js';
+import { getPlayerSpecFromPlayer, newUnitReference, SpecClasses, SpecType } from '../core/proto_utils/utils.js';
 import { Raid } from '../core/raid.js';
 import { EventID, TypedEvent } from '../core/typed_event.js';
 import { formatDeltaTextElem, getEnumValues } from '../core/utils.js';
@@ -38,6 +39,7 @@ export class RaidPicker extends Component {
 	readonly raid: Raid;
 	readonly partyPickers: Array<PartyPicker>;
 	readonly newPlayerPicker: NewPlayerPicker;
+	readonly playerEditorModal: PlayerEditorModal<Spec>;
 
 	// Hold data about the player being dragged while the drag is happening.
 	currentDragPlayer: Player<any> | null = null;
@@ -57,6 +59,7 @@ export class RaidPicker extends Component {
 		this.rootElem.appendChild(raidControls);
 
 		this.newPlayerPicker = new NewPlayerPicker(this.rootElem, this);
+		this.playerEditorModal = new PlayerEditorModal();
 
 		const _activePartiesSelector = new EnumPicker<Raid>(raidControls, this.raidSimUI.sim.raid, {
 			label: 'Raid Size',
@@ -587,8 +590,6 @@ export class PlayerPicker extends Component {
 		const copyTooltip = tippy(copyElem);
 		const deleteTooltip = tippy(deleteElem);
 
-		const playerEditorModal = new PlayerEditorModal(this.player!);
-
 		const onIconDragStartHandler = (event: DragEvent) => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
 			dragStart(event, DragType.Swap);
@@ -596,7 +597,7 @@ export class PlayerPicker extends Component {
 		this.iconElem?.addEventListener('dragstart', onIconDragStartHandler);
 
 		const onEditClickHandler = () => {
-			playerEditorModal.open();
+			if (this.player) this.raidPicker.playerEditorModal.openEditor(this.player);
 		};
 		editElem.addEventListener('click', onEditClickHandler);
 
@@ -631,22 +632,31 @@ export class PlayerPicker extends Component {
 }
 
 class PlayerEditorModal<SpecType extends Spec> extends BaseModal {
-	constructor(player: Player<SpecType>) {
+	playerEditorRoot: HTMLDivElement;
+	constructor() {
 		super(document.body, 'player-editor-modal', {
 			closeButton: { fixed: true },
 			header: false,
+			disposeOnClose: false,
 		});
 
-		this.rootElem.id = 'playerEditorModal';
-		this.body.insertAdjacentHTML(
-			'beforeend',
-			`
-			<div class="player-editor within-raid-sim"></div>
-		`,
-		);
+		const playerEditorElemRef = ref<HTMLDivElement>();
+		const playerEditorElem = (<div ref={playerEditorElemRef} className="player-editor within-raid-sim"></div>) as HTMLDivElement;
 
-		const editorRoot = this.rootElem.getElementsByClassName('player-editor')[0] as HTMLElement;
-		specSimFactories[player.getSpec()]?.(editorRoot, player);
+		this.rootElem.id = 'playerEditorModal';
+		this.body.appendChild(playerEditorElem);
+
+		this.playerEditorRoot = playerEditorElemRef.value!;
+	}
+
+	openEditor(player: Player<SpecType>) {
+		this.setData(player);
+		super.open();
+	}
+
+	setData(player: Player<SpecType>) {
+		this.playerEditorRoot.innerHTML = '';
+		specSimFactories[player.getSpec()]?.(this.playerEditorRoot!, player);
 	}
 }
 
