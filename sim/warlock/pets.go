@@ -43,7 +43,7 @@ func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
 	}
 }
 
-func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStats stats.Stats, powerModifier float64,
+func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStats stats.Stats, meleeMod float64, powerModifier float64,
 	attackOptions *core.AutoAttackOptions, statInheritance core.PetStatInheritance) *WarlockPet {
 
 	pet := &WarlockPet{
@@ -58,6 +58,7 @@ func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStat
 		core.CritPerAgiMaxLevel[proto.Class_ClassPaladin]*core.CritRatingPerCritChance)
 	pet.AddStatDependency(stats.Intellect, stats.SpellCrit,
 		core.CritPerIntMaxLevel[proto.Class_ClassPaladin]*core.CritRatingPerCritChance)
+	pet.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= meleeMod
 	if attackOptions != nil {
 		pet.EnableAutoAttacks(pet, *attackOptions)
 	}
@@ -108,10 +109,11 @@ func (warlock *Warlock) registerPets() {
 
 	inheritance := warlock.MakeStatInheritance()
 
-	warlock.Felhunter = warlock.makePet(proto.WarlockOptions_Felhunter, baseStats, 0.77, autoAttackOptions, inheritance)
-	warlock.Felguard = warlock.makePet(proto.WarlockOptions_Felguard, baseStats, 0.77, autoAttackOptions, inheritance)
-	warlock.Imp = warlock.makePet(proto.WarlockOptions_Imp, impBaseStats, 1.0, nil, inheritance)
-	warlock.Succubus = warlock.makePet(proto.WarlockOptions_Succubus, baseStats, 0.77, autoAttackOptions, inheritance)
+	warlock.Felhunter = warlock.makePet(proto.WarlockOptions_Felhunter, baseStats, 0.8, 0.77, autoAttackOptions, inheritance)
+	warlock.Felguard = warlock.makePet(proto.WarlockOptions_Felguard, baseStats, 1.0, 0.77, autoAttackOptions, inheritance)
+	warlock.Imp = warlock.makePet(proto.WarlockOptions_Imp, impBaseStats, 1.0, 1.0, nil, inheritance)
+	// TODO: using the modifier for incubus for now, maybe the 1.025 from succubus is the correct one
+	warlock.Succubus = warlock.makePet(proto.WarlockOptions_Succubus, baseStats, 1.05, 0.77, autoAttackOptions, inheritance)
 }
 
 func (warlock *Warlock) registerPetAbilities() {
