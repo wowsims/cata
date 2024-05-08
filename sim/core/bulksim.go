@@ -22,7 +22,7 @@ const (
 )
 
 // raidSimRunner runs a standard raid simulation.
-type raidSimRunner func(*proto.RaidSimRequest, chan *proto.ProgressMetrics, bool) *proto.RaidSimResult
+type raidSimRunner func(*proto.RaidSimRequest, chan *proto.ProgressMetrics, bool, chan bool) *proto.RaidSimResult
 
 // bulkSimRunner runs a bulk simulation.
 type bulkSimRunner struct {
@@ -380,7 +380,7 @@ func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []sin
 				sub.req.SimOptions.Iterations = int32(iterations)
 				results <- &itemSubstitutionSimResult{
 					Request:      sub.req,
-					Result:       b.SingleRaidSimRunner(sub.req, singleSimProgress, false),
+					Result:       b.SingleRaidSimRunner(sub.req, singleSimProgress, false, nil),
 					Substitution: sub.eq,
 					ChangeLog:    sub.cl,
 				}

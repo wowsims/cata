@@ -46,7 +46,7 @@ func StatWeightsAsync(request *proto.StatWeightsRequest, progress chan *proto.Pr
  * Runs multiple iterations of the sim with a full raid.
  */
 func RunRaidSim(request *proto.RaidSimRequest) *proto.RaidSimResult {
-	return RunSim(request, nil)
+	return RunSim(request, nil, nil)
 }
 
 func RunRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {

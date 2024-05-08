@@ -91,7 +91,7 @@ func createEquipmentFromItems(items ...*itemWithSlot) *proto.EquipmentSpec {
 func TestBulkSim(t *testing.T) {
 	t.Skip("TODO: Implement")
 
-	fakeRunSim := func(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool) *proto.RaidSimResult {
+	fakeRunSim := func(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, quitChan chan bool) *proto.RaidSimResult {
 		return &proto.RaidSimResult{}
 	}
 
