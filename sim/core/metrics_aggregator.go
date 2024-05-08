@@ -67,6 +67,11 @@ func (distMetrics *DistributionMetrics) ToProto() *proto.DistributionMetrics {
 		MinSeed:   distMetrics.minSeed,
 		Hist:      distMetrics.hist,
 		AllValues: distMetrics.sample,
+
+		AggregatorData: &proto.AggregatorData{
+			N:     int32(distMetrics.n),
+			SumSq: distMetrics.sumSq,
+		},
 	}
 }
 
@@ -556,5 +561,10 @@ func (auraMetrics *AuraMetrics) ToProto() *proto.AuraMetrics {
 		UptimeSecondsAvg:   mean,
 		UptimeSecondsStdev: stdev,
 		ProcsAvg:           float64(auraMetrics.procsSum) / float64(auraMetrics.n),
+
+		AggregatorData: &proto.AggregatorData{
+			N:     int32(auraMetrics.n),
+			SumSq: auraMetrics.sumSq,
+		},
 	}
 }

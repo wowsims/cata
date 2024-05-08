@@ -19,10 +19,11 @@ type raidSimResultCombiner struct {
 
 func (rsrc *raidSimResultCombiner) newDistMetrics() *proto.DistributionMetrics {
 	return &proto.DistributionMetrics{
-		Min:       math.MaxFloat64,
-		MinSeed:   math.MaxInt64,
-		Hist:      make(map[int32]int32),
-		AllValues: make([]float64, 0),
+		Min:            math.MaxFloat64,
+		MinSeed:        math.MaxInt64,
+		Hist:           make(map[int32]int32),
+		AllValues:      make([]float64, 0),
+		AggregatorData: &proto.AggregatorData{},
 	}
 }
 
@@ -45,7 +46,8 @@ func (rsrc *raidSimResultCombiner) newUnitMetrics(baseUnit *proto.UnitMetrics) *
 
 	for i, aura := range baseUnit.Auras {
 		newUm.Auras[i] = &proto.AuraMetrics{
-			Id: aura.Id,
+			Id:             aura.Id,
+			AggregatorData: &proto.AggregatorData{},
 		}
 	}
 
@@ -72,10 +74,6 @@ func (rsrc *raidSimResultCombiner) newPartyMetrics(baseParty *proto.PartyMetrics
 
 func (rsrc *raidSimResultCombiner) combineDistMetrics(base *proto.DistributionMetrics, add *proto.DistributionMetrics, isLast bool, weight float64) {
 	base.Avg += add.Avg * weight
-	base.Stdev += (add.Stdev * add.Stdev) * weight
-	if isLast {
-		base.Stdev = math.Sqrt(base.Stdev)
-	}
 
 	if add.Max > base.Max {
 		base.Max = add.Max
@@ -94,6 +92,12 @@ func (rsrc *raidSimResultCombiner) combineDistMetrics(base *proto.DistributionMe
 	}
 
 	base.AllValues = append(base.AllValues, add.AllValues...)
+
+	base.AggregatorData.N += add.AggregatorData.N
+	base.AggregatorData.SumSq += add.AggregatorData.SumSq
+	if isLast {
+		base.Stdev = math.Sqrt(base.AggregatorData.SumSq/float64(base.AggregatorData.N) - base.Avg*base.Avg)
+	}
 }
 
 func (rsrc *raidSimResultCombiner) addActionMetrics(unit *proto.UnitMetrics, add *proto.ActionMetrics) {
@@ -145,9 +149,11 @@ func (rsrc *raidSimResultCombiner) addActionMetrics(unit *proto.UnitMetrics, add
 func (rsrc *raidSimResultCombiner) combineAuraMetrics(base *proto.AuraMetrics, add *proto.AuraMetrics, weight float64, isLast bool) {
 	base.UptimeSecondsAvg += add.UptimeSecondsAvg * weight
 	base.ProcsAvg += add.ProcsAvg * weight
-	base.UptimeSecondsStdev += (add.UptimeSecondsStdev * add.UptimeSecondsStdev) * weight
+
+	base.AggregatorData.N += add.AggregatorData.N
+	base.AggregatorData.SumSq += add.AggregatorData.SumSq
 	if isLast {
-		base.UptimeSecondsStdev = math.Sqrt(base.UptimeSecondsStdev)
+		base.UptimeSecondsStdev = math.Sqrt(base.AggregatorData.SumSq/float64(base.AggregatorData.N) - base.UptimeSecondsAvg*base.UptimeSecondsAvg)
 	}
 }
 

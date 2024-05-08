@@ -197,8 +197,10 @@ func compareValue(t *testing.T, loc string, vst reflect.Value, vmt reflect.Value
 		tolerance := 0.00001
 		if strings.Contains(loc, "CastTimeMs") {
 			tolerance = 2.2 // Castime is rounded in results and may be off 1ms per thread
+		} else if strings.Contains(loc, "SumSq") || strings.Contains(loc, "Stdev") {
+			tolerance = 0.001 // Squared sums can be off more, and as an extension also the stdevs
 		} else if strings.Contains(loc, "Resources") {
-			tolerance = 0.001 // Seems to do some rounding at some point?
+			tolerance = 0.0001 // Seems to do some rounding at some point?
 		}
 		if math.Abs(vst.Float()-vmt.Float()) > tolerance {
 			t.Logf("%s: Expected %f but is %f for multi threaded result!", loc, vst.Float(), vmt.Float())
@@ -359,6 +361,7 @@ func TestConcurrentRaidSim(t *testing.T) {
 
 	for i, rsr := range testCases {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			rsr.SimOptions.SaveAllValues = true
 			stRes := core.RunRaidSim(rsr)
 			mtRes := core.RunConcurrentRaidSimSync(rsr)
 			vst := reflect.ValueOf(stRes).Elem()
