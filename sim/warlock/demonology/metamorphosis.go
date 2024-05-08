@@ -83,8 +83,9 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 			return metamorphosisAura.IsActive()
 		},
 
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1,
+		ThreatMultiplier:         1,
+		BonusCoefficient:         0.53899997473,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -95,8 +96,8 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 			TickLength:          time.Second * 1,
 			AffectedByCastSpeed: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				// TODO: Base damage and spell power coeffecient updated. Not sure what 20*11.5 is?
-				baseDmg := (663 + 20*11.5 + 0.1*dot.Spell.SpellPower()) * sim.Encounter.AOECapMultiplier()
+				baseDmg := demonology.CalcScalingSpellDmg(0.58899998665) * sim.Encounter.AOECapMultiplier()
+
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, dot.Spell.OutcomeMagicHit)
 				}
