@@ -18,14 +18,14 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 	// Shadow And Flame
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask:  WarlockSpellShadowBolt | WarlockSpellIncinerate,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: []float64{0.0, 0.04, 0.08, 0.12}[warlock.Talents.ShadowAndFlame],
 	})
 
 	// Improved Immolate
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask:  WarlockSpellImmolate | WarlockSpellImmolateDot,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: []float64{0.0, 0.1, 0.2}[warlock.Talents.ImprovedImmolate],
 	})
 
@@ -155,7 +155,9 @@ func (warlock *Warlock) registerBurningEmbers() {
 
 	damageGainPerHit := 0.25 * float64(warlock.Talents.BurningEmbers)
 	spellPowerMultiplier := 0.7 * float64(warlock.Talents.BurningEmbers)
-	additionalDamage := warlock.ClassSpellScaling * []float64{0.0, Coefficient_BurningEmbers_1, Coefficient_BurningEmbers_2}[warlock.Talents.BurningEmbers]
+	additionalDamage := warlock.CalcScalingSpellDmg(
+		[]float64{0.0, Coefficient_BurningEmbers_1, Coefficient_BurningEmbers_2}[warlock.Talents.BurningEmbers])
+
 	var burningEmberTicks int32 = 7
 
 	burningEmbers := warlock.RegisterSpell(core.SpellConfig{

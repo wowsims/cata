@@ -126,7 +126,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 }
 
 func (warlock *Warlock) registerBaneOfAgonySpell() {
-	baseTickDmg := warlock.ScalingBaseDamage * Coefficient_BaneOfAgony / 12.0
+	baseTickDmg := warlock.CalcScalingSpellDmg(Coefficient_BaneOfAgony) / 12.0
 
 	warlock.BaneOfAgony = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 980},
@@ -215,7 +215,7 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 			TickLength:       time.Second * 15,
 			BonusCoefficient: 0.88,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.ScalingBaseDamage*Coefficient_BaneOfDoom)
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(Coefficient_BaneOfDoom))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				//TODO: Can this crit?

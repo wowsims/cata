@@ -111,14 +111,13 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			switch warlock.ActivePet {
-			case PetFelguard:
+			if warlock.Felguard.IsActive() {
 				demonSoulFelguard.Activate(sim)
-			case PetFelhunter:
+			} else if warlock.Felhunter.IsActive() {
 				demonSoulFelhunter.Activate(sim)
-			case PetImp:
+			} else if warlock.Imp.IsActive() {
 				demonSoulImp.Activate(sim)
-			case PetSuccubus:
+			} else if warlock.Succubus.IsActive() {
 				demonSoulSuccubus.Activate(sim)
 			}
 		},
