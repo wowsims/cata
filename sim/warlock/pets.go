@@ -28,7 +28,7 @@ func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
 
 			// almost certainly wrong, needs more testing
 			stats.SpellCrit: ownerStats[stats.SpellCrit],
-			stats.MeleeCrit: ownerStats[stats.MeleeCrit],
+			stats.MeleeCrit: ownerStats[stats.SpellCrit],
 
 			// pets inherit haste rating directly, evidenced by:
 			// 1. haste staying the same if the warlock has windfury totem while the pet doesn't
