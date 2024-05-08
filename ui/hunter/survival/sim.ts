@@ -239,19 +239,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 			spec: Spec.SpecSurvivalHunter,
 			talents: Presets.SurvivalTalents.data,
 			specOptions: Presets.SVDefaultOptions,
+
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceNightElf,
+				[Faction.Alliance]: Race.RaceWorgen,
 				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.SV_P1_PRESET.gear,
+					1: Presets.SV_PRERAID_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.SV_P1_PRESET.gear,
+					1: Presets.SV_PRERAID_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,
