@@ -89,10 +89,10 @@ func init() {
 	newSpellPowerActive(48724, 599, time.Second*20, time.Minute*2) // Talisman of Resurgence
 	newSpellPowerActive(50357, 716, time.Second*20, time.Minute*2) // Maghia's Misguided Quill
 
-	newArmorPenActive := testFirstOnly(func(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
-		core.NewSimpleStatOffensiveTrinketEffect(itemID, stats.Stats{stats.ArmorPenetration: bonus}, duration, cooldown)
+	newCritActive := testFirstOnly(func(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
+		core.NewSimpleStatOffensiveTrinketEffect(itemID, stats.Stats{stats.MeleeCrit: bonus, stats.SpellCrit: bonus}, duration, cooldown)
 	})
-	newArmorPenActive(37723, 291, time.Second*20, time.Minute*2) // Incisor Fragment
+	newCritActive(37723, 291, time.Second*20, time.Minute*2) // Incisor Fragment
 
 	newHealthActive := testFirstOnly(func(itemID int32, bonus float64, duration time.Duration, cooldown time.Duration) {
 		core.NewSimpleStatDefensiveTrinketEffect(itemID, stats.Stats{stats.Health: bonus}, duration, cooldown)
