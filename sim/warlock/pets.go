@@ -187,7 +187,7 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 				}
 			}
 
-			baseDamage *= 1 + 0.15*float64(activeDots)
+			baseDamage *= 1 + 0.3*float64(activeDots)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}))
