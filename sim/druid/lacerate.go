@@ -16,7 +16,7 @@ func (druid *Druid) registerLacerateSpell() {
 	}
 
 	initialDamageMul := 1.0
-	tickDamageMul := 1.0
+	tickDamageMul := core.TernaryFloat64(druid.HasSetBonus(ItemSetStormridersBattlegarb, 2), 1.1, 1)
 
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 48568},
@@ -39,6 +39,7 @@ func (druid *Druid) registerLacerateSpell() {
 		DamageMultiplier: initialDamageMul,
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 0.5,
+		MaxRange:         core.MaxMeleeRange,
 		// FlatThreatBonus:  515.5, // Handled below
 
 		Dot: core.DotConfig{

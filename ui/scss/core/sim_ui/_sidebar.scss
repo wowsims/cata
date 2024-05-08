@@ -13,10 +13,17 @@
 	z-index: $sidebar-z-index;
 
 	.sim-sidebar-content {
-		min-height: calc(100vh - $sim-header-height - 1px);
+		min-height: calc(100vh - var(--sim-header-height) - 1px);
 		padding: $gap-width;
 		display: flex;
 		flex-direction: column;
+		@include media-breakpoint-down(xxl) {
+			padding-left: $gap-width-sm * 2;
+			padding-right: $gap-width-sm * 2;
+		}
+		@include media-breakpoint-down(lg) {
+			padding: $gap-width-sm * 2 $gap-width-sm;
+		}
 
 		& > *:not(:last-child) {
 			margin-bottom: map.get($spacers, 4);
@@ -30,6 +37,10 @@
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			@include media-breakpoint-down(xxl) {
+				padding: 0;
+				margin: 0;
+			}
 
 			& > *:not(:last-child) {
 				margin-bottom: $block-spacer;
@@ -47,7 +58,6 @@
 		}
 
 		.sim-sidebar-results {
-			position: relative;
 			min-height: 25vh;
 			display: flex;
 			justify-content: center;
@@ -71,28 +81,6 @@
 	.warning-zone {
 		[data-tippy-root] {
 			width: 100%;
-		}
-	}
-}
-
-@include media-breakpoint-down(xxl) {
-	.sim-sidebar {
-		.sim-sidebar-content {
-			padding-left: $gap-width-sm * 2;
-			padding-right: $gap-width-sm * 2;
-
-			.sim-sidebar-actions {
-				padding: 0;
-				margin: 0;
-			}
-		}
-	}
-}
-
-@include media-breakpoint-down(lg) {
-	.sim-sidebar {
-		.sim-sidebar-content {
-			padding: $gap-width-sm * 2 $gap-width-sm;
 		}
 	}
 }

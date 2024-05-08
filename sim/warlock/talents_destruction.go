@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (warlock *Warlock) ApplyDestructionTalents() {
@@ -32,18 +31,20 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 
 	// Emberstorm
 	warlock.AddStaticMod(core.SpellModConfig{
-		ClassMask: WarlockSpellSoulFire | WarlockSpellIncinerate,
+		ClassMask: WarlockSpellSoulFire,
 		Kind:      core.SpellMod_CastTime_Flat,
 		TimeValue: time.Millisecond * time.Duration(-500*warlock.Talents.Emberstorm),
 	})
 
-	warlock.registerImprovedSearingPain()
-	warlock.registerImprovedSoulFire()
-	warlock.registerBackdraft()
+	warlock.AddStaticMod(core.SpellModConfig{
+		ClassMask: WarlockSpellIncinerate,
+		Kind:      core.SpellMod_CastTime_Flat,
+		TimeValue: time.Millisecond * time.Duration([]float64{0, -130, -250}[warlock.Talents.Emberstorm]),
+	})
 
-	if warlock.Talents.ChaosBolt {
-		warlock.registerShadowBurnSpell()
-	}
+	warlock.registerImprovedSearingPain()
+	warlock.registerBackdraft()
+	warlock.registerShadowBurnSpell()
 
 	warlock.registerBurningEmbers()
 
@@ -95,40 +96,6 @@ func (warlock *Warlock) registerImprovedSearingPain() {
 			}
 		})
 	})
-}
-
-func (warlock *Warlock) registerImprovedSoulFire() {
-	if warlock.Talents.ImprovedSoulFire <= 0 {
-		return
-	}
-
-	damageBonus := 1 + .04*float64(warlock.Talents.ImprovedSoulFire)
-
-	improvedSoulFire := warlock.RegisterAura(core.Aura{
-		Label:    "Improved Soul Fire",
-		ActionID: core.ActionID{SpellID: 18120},
-		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			//TODO: Add or mult?
-			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= damageBonus
-			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= damageBonus
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			//TODO: Add or mult?
-			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= damageBonus
-			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= damageBonus
-		},
-	})
-
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label: "Improved Soul Fire Hidden Aura",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell == warlock.SoulFire {
-					improvedSoulFire.Activate(sim)
-				}
-			},
-		}))
 }
 
 func (warlock *Warlock) registerBackdraft() {

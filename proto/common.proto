@@ -99,7 +99,7 @@ enum Profession {
 }
 
 // Keep in sync with sim/core/stats/stats.go.
-// NextIndex: 34;
+// NextIndex: 33;
 enum Stat {
 	StatStrength = 0;
 	StatAgility = 1;
@@ -419,13 +419,6 @@ enum Food {
 	FoodMushroomSauceMudfish = 33;
 }
 
-enum PetFood {
-	PetFoodUnknown = 0;
-	PetFoodSpicedMammothTreats = 1;
-	// TBC
-	PetFoodKiblersBits = 2;
-}
-
 // Buffs that affect the entire raid.
 // TODO: Reindex
 // next index: 46
@@ -597,7 +590,7 @@ message Consumes {
 	GuardianElixir guardian_elixir = 3;
 
 	Food food = 6;
-	PetFood pet_food = 7;
+	reserved 7; // deprecated petfood
 
 	int32 pet_scroll_of_agility = 8;
 	int32 pet_scroll_of_strength = 9;

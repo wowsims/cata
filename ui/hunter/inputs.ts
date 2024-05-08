@@ -16,11 +16,3 @@ export const PetUptime = <SpecType extends HunterSpecs>() =>
 		labelTooltip: 'Percent of the fight duration for which your pet will be alive.',
 		percent: true,
 	});
-
-export const TimeToTrapWeaveMs = <SpecType extends HunterSpecs>() =>
-	InputHelpers.makeClassOptionsNumberInput<SpecType>({
-		fieldName: 'timeToTrapWeaveMs',
-		label: 'Weave Time',
-		labelTooltip:
-			'Amount of time for Explosive Trap, in milliseconds, between when you start moving towards the boss and when you re-engage your ranged autos.',
-	});

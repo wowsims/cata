@@ -122,6 +122,10 @@ func (bdk *BloodDeathKnight) ApplyTalents() {
 	core.MakePermanent(bdk.GetOrRegisterAura(core.Aura{
 		Label:    "Mastery: Blood Shield",
 		ActionID: core.ActionID{SpellID: 77513},
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			shieldAmount = 0.0
+			currentShield = 0.0
+		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
 				return

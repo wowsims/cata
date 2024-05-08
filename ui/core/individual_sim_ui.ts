@@ -71,6 +71,7 @@ export interface OtherDefaults {
 	distanceFromTarget?: number;
 	channelClipDelay?: number;
 	darkIntentUptime?: number;
+	highHpThreshold?: number;
 }
 
 export interface RaidSimPreset<SpecType extends Spec> {
@@ -416,17 +417,17 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	private addTopbarComponents() {
-		this.simHeader.addImportLink('JSON', _parent => new Importers.IndividualJsonImporter(this.rootElem, this), true);
-		this.simHeader.addImportLink('80U', _parent => new Importers.Individual80UImporter(this.rootElem, this), true);
-		this.simHeader.addImportLink('WoWHead', _parent => new Importers.IndividualWowheadGearPlannerImporter(this.rootElem, this), false);
-		this.simHeader.addImportLink('Addon', _parent => new Importers.IndividualAddonImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('JSON', new Importers.IndividualJsonImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('80U', new Importers.Individual80UImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('WoWHead', new Importers.IndividualWowheadGearPlannerImporter(this.rootElem, this), false);
+		this.simHeader.addImportLink('Addon', new Importers.IndividualAddonImporter(this.rootElem, this), true);
 
-		this.simHeader.addExportLink('Link', _parent => new Exporters.IndividualLinkExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('JSON', _parent => new Exporters.IndividualJsonExporter(this.rootElem, this), true);
-		this.simHeader.addExportLink('WoWHead', _parent => new Exporters.IndividualWowheadGearPlannerExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('80U EP', _parent => new Exporters.Individual80UEPExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('Pawn EP', _parent => new Exporters.IndividualPawnEPExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('CLI', _parent => new Exporters.IndividualCLIExporter(this.rootElem, this), true);
+		this.simHeader.addExportLink('Link', new Exporters.IndividualLinkExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('JSON', new Exporters.IndividualJsonExporter(this.rootElem, this), true);
+		this.simHeader.addExportLink('WoWHead', new Exporters.IndividualWowheadGearPlannerExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('80U EP', new Exporters.Individual80UEPExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('Pawn EP', new Exporters.IndividualPawnEPExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('CLI', new Exporters.IndividualCLIExporter(this.rootElem, this), true);
 	}
 
 	applyDefaultRotation(eventID: EventID) {
@@ -478,6 +479,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			} else {
 				this.sim.raid.setTargetDummies(eventID, healingSpec ? 9 : 0);
 				this.sim.encounter.applyDefaults(eventID);
+				this.sim.encounter.setExecuteProportion90(eventID, this.individualConfig.defaults.other?.highHpThreshold || 0.9);
 				this.sim.raid.setDebuffs(eventID, this.individualConfig.defaults.debuffs);
 				this.sim.applyDefaults(eventID, tankSpec, healingSpec);
 

@@ -14,6 +14,9 @@ func (druid *Druid) registerRakeSpell() {
 	// Scaled parameters for spell code
 	flatBaseDamage := coefficient * druid.ClassSpellScaling // ~56
 
+	// Set bonuses can scale up the ticks relative to the initial hit
+	tickDamageMultiplier := core.TernaryFloat64(druid.HasSetBonus(ItemSetStormridersBattlegarb, 2), 1.1, 1)
+
 	druid.Rake = druid.RegisterSpell(Cat, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1822},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -34,6 +37,7 @@ func (druid *Druid) registerRakeSpell() {
 		DamageMultiplier: druid.RazorClawsMultiplier(druid.GetStat(stats.Mastery)),
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
+		MaxRange:         core.MaxMeleeRange,
 
 		Dot: core.DotConfig{
 			Aura: druid.applyRendAndTear(core.Aura{
@@ -43,7 +47,7 @@ func (druid *Druid) registerRakeSpell() {
 			NumberOfTicks: 3 + druid.Talents.EndlessCarnage,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = flatBaseDamage + 0.147*dot.Spell.MeleeAttackPower()
+				dot.SnapshotBaseDamage = (flatBaseDamage + 0.147*dot.Spell.MeleeAttackPower()) * tickDamageMultiplier
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
@@ -80,7 +84,7 @@ func (druid *Druid) registerRakeSpell() {
 			return initial
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			tickBase := flatBaseDamage + 0.147*spell.MeleeAttackPower()
+			tickBase := (flatBaseDamage + 0.147*spell.MeleeAttackPower()) * tickDamageMultiplier
 			ticks := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex]

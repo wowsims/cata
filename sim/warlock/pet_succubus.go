@@ -27,7 +27,7 @@ func (warlock *Warlock) registerSummonSuccubusSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//warlock.ChangeActivePet(sim, &warlock.Succubus.WarlockPet)
+			warlock.SoulBurnAura.Deactivate(sim)
 			warlock.ChangeActivePet(sim, PetSuccubus)
 		},
 	})
@@ -73,8 +73,6 @@ func (warlock *Warlock) NewSuccubusPet() *SuccubusPet {
 	succubus.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
 
 	succubus.EnableAutoAttacks(succubus, autoAttackOptions)
-
-	core.ApplyPetConsumeEffects(&succubus.Character, warlock.Consumes)
 
 	warlock.AddPet(succubus)
 

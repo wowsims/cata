@@ -45,7 +45,6 @@ func (warlock *Warlock) NewFelguardPet() *FelguardPet {
 	felguard.AddStat(stats.AttackPower, -20)
 	felguard.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
 	felguard.EnableAutoAttacks(felguard, *autoAttackOptions)
-	core.ApplyPetConsumeEffects(&warlock.Character, warlock.Consumes)
 	warlock.AddPet(felguard)
 	return felguard
 }
@@ -95,6 +94,9 @@ func (felguard *FelguardPet) registerFelstormSpell() {
 				Duration: time.Second * 45,
 			},
 			IgnoreHaste: true,
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				felguard.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+time.Second*6, false)
+			},
 		},
 
 		DamageMultiplier: 1.0,

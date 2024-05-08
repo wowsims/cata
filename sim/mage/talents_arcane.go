@@ -19,17 +19,13 @@ func (mage *Mage) ApplyArcaneTalents() {
 
 	// Netherwind Presence
 	if mage.Talents.NetherwindPresence > 0 {
-		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellsAll,
-			FloatValue: -0.01 * float64(mage.Talents.NetherwindPresence),
-			Kind:       core.SpellMod_CastTime_Pct,
-		})
+		mage.PseudoStats.CastSpeedMultiplier *= 1 + (0.01 * float64(mage.Talents.NetherwindPresence))
 	}
 
 	// Torment the Weak
 	if mage.Talents.TormentTheWeak > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion, //| MageSpellArcaneMissiles,
+			ClassMask:  MageSpellArcaneBarrage | MageSpellArcaneBlast | MageSpellArcaneExplosion | MageSpellArcaneMissilesTick,
 			FloatValue: 0.02 * float64(mage.Talents.TormentTheWeak),
 			Kind:       core.SpellMod_DamageDone_Flat,
 		})
@@ -97,7 +93,7 @@ func (mage *Mage) applyArcaneConcentration() {
 
 	clearCastingMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAllDamaging,
-		FloatValue: -1,
+		FloatValue: -10,
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 
@@ -188,7 +184,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			pomSpell.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&(MageSpellsAll^MageSpellInstantCast) == 0 {
+			if spell.ClassSpellMask&(MageSpellsAll^MageSpellInstantCast^MageSpellEvocation) == 0 {
 				return
 			}
 			aura.Deactivate(sim)

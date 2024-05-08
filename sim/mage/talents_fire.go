@@ -292,9 +292,7 @@ func (mage *Mage) applyIgnite() {
 	if mage.Talents.Ignite == 0 {
 		return
 	}
-
 	const IgniteTicksFresh = 2
-	//const IgniteTicksRefresh = 3
 
 	// Ignite proc listener
 	core.MakePermanent(mage.RegisterAura(core.Aura{
@@ -305,15 +303,7 @@ func (mage *Mage) applyIgnite() {
 			}
 			// EJ post says combustion crits do not proc ignite
 			// https://web.archive.org/web/20120219014159/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/#post1824829
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) && result.DidCrit() && spell != mage.Combustion {
-				mage.procIgnite(sim, result)
-			}
-		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
-				return
-			}
-			if mage.LivingBomb != nil && result.DidCrit() {
+			if spell.ClassSpellMask != MageSpellLivingBombDot && result.DidCrit() && spell != mage.Combustion {
 				mage.procIgnite(sim, result)
 			}
 		},
@@ -324,7 +314,7 @@ func (mage *Mage) applyIgnite() {
 		ActionID:       core.ActionID{SpellID: 12846},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskProc,
-		Flags:          core.SpellFlagIgnoreModifiers,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods,
 		ClassSpellMask: MageSpellIgnite,
 
 		DamageMultiplier: 1,
@@ -336,16 +326,14 @@ func (mage *Mage) applyIgnite() {
 				Tag:       "IgniteDot",
 				MaxStacks: 1000000,
 			},
-			NumberOfTicks: IgniteTicksFresh,
-			TickLength:    time.Second * 2,
+			NumberOfTicks:       IgniteTicksFresh,
+			TickLength:          time.Second * 2,
+			AffectedByCastSpeed: false,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				// Need to do mastery here
-				currentMastery := 1.22 + 0.028*mage.GetMasteryPoints()
-
-				result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage*currentMastery, dot.OutcomeTick)
+				result := dot.Spell.CalcPeriodicDamage(sim, target, dot.SnapshotBaseDamage, dot.OutcomeTick)
 				dot.Spell.DealPeriodicDamage(sim, result)
 			},
 		},
@@ -353,47 +341,32 @@ func (mage *Mage) applyIgnite() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.SpellMetrics[target.UnitIndex].Hits++
 			spell.Dot(target).ApplyOrReset(sim)
-			spell.Dot(target).Aura.SetStacks(sim, int32(spell.Dot(target).SnapshotBaseDamage))
 		},
 	})
 }
 
 func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 	const IgniteTicksFresh = 2
-	//const IgniteTicksRefresh = 3
+	const IgniteTicksRefresh = 3
+	var currentMastery float64 = 1.224 + 0.028*mage.GetMasteryPoints()
+
 	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
-
+	newDamage := result.Damage * igniteDamageMultiplier * currentMastery
 	dot := mage.Ignite.Dot(result.Target)
-
-	newDamage := result.Damage * igniteDamageMultiplier
-
-	// if ignite was still active, we store up the remaining damage to be added to the next application
-	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 	dot.SnapshotAttackerMultiplier = 1
 
-	// OG CATA VERSION
+	// Cata Ignite
 	// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
-	// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split over 3 ticks at 4s, 2s, 0s.
-	// Do not refresh ignites if there is more than 4s left on duration.
-	/*
-		if isActive {
-			if mage.Ignite.Dot(result.Target).RemainingDuration(sim) > time.Millisecond*4000 {
-				return
-			}
-			mage.Ignite.Dot(result.Target).NumberOfTicks = IgniteTicksRefresh
-			dot.SnapshotBaseDamage = ((outstandingDamage + newDamage) / float64(IgniteTicksRefresh))
-			mage.Ignite.Cast(sim, result.Target)
-		} else {
-			mage.Ignite.Dot(result.Target).NumberOfTicks = IgniteTicksFresh
-			dot.SnapshotBaseDamage = ((outstandingDamage + newDamage) / float64(IgniteTicksFresh))
-			mage.Ignite.Cast(sim, result.Target)
-		}
-	*/
-
-	// THIS IS THE VERSION CURRENTLY IN BETA aka old ignite
-	// Add the remaining damage to the new ignite proc, divide it over 2 ticks
-	dot.SnapshotBaseDamage = ((outstandingDamage + newDamage) / float64(IgniteTicksFresh))
-	mage.Ignite.Cast(sim, result.Target)
+	// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
+	if dot.IsActive() {
+		outstandingDamage := dot.SnapshotBaseDamage * float64(dot.NumTicksRemaining(sim))
+		dot.SnapshotBaseDamage = ((outstandingDamage + newDamage) / float64(IgniteTicksRefresh))
+		dot.Apply(sim)
+	} else {
+		dot.SnapshotBaseDamage = newDamage / IgniteTicksFresh
+		mage.Ignite.Cast(sim, result.Target)
+	}
+	dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 }
 
 func (mage *Mage) applyImpact() {

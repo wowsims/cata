@@ -2,12 +2,12 @@
 	// Same as sim header
 	position: sticky;
 	top: -1px;
-	height: calc($sim-header-height + 1px);
+	height: calc(var(--sim-header-height) + 1px);
 	border-bottom: $border-default;
 	z-index: $sidebar-z-index + 1;
 
 	.sim-title-dropdown-root {
-		height: calc(#{$sim-header-height} - 1px);
+		height: calc(var(--sim-header-height) - 1px);
 
 		.sim-link-dropdown {
 			height: 100%;

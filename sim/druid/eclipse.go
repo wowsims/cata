@@ -56,15 +56,30 @@ func (druid *Druid) EnableEclipseBar() {
 }
 
 func (druid *Druid) RegisterEclipseAuras() {
+	masteryBonus := 0.16 + druid.GetMasteryPoints()*0.02
+
+	lunarSpellMod := druid.AddDynamicMod(core.SpellModConfig{
+		School:     core.SpellSchoolArcane,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: masteryBonus,
+	})
+
+	solarSpellMod := druid.AddDynamicMod(core.SpellModConfig{
+		School:     core.SpellSchoolNature,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: masteryBonus,
+	})
+
 	lunarEclipse := druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 48518},
 		Label:    "Eclipse (Lunar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			// Do stuff
+			lunarSpellMod.UpdateFloatValue(0.16 + druid.GetMasteryPoints()*0.02)
+			lunarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			// Do stuff
+			lunarSpellMod.Deactivate()
 		},
 	})
 
@@ -73,10 +88,11 @@ func (druid *Druid) RegisterEclipseAuras() {
 		Label:    "Eclipse (Solar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			// Do stuff
+			solarSpellMod.UpdateFloatValue(0.16 + druid.GetMasteryPoints()*0.02)
+			solarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			// Do stuff
+			solarSpellMod.Deactivate()
 		},
 	})
 

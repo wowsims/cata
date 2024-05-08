@@ -41,6 +41,14 @@ export const FeralDruidRotationConfig = {
 			labelTooltip: 'Maintain Faerie Fire debuff. Overwrites any external Sunder effects specified in settings.',
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
+			fieldName: 'meleeWeave',
+			label: 'Enable melee-weaving',
+			labelTooltip: 'Weave out of melee range for Stampede procs',
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				player.getSimpleRotation().rotationType == AplType.SingleTarget && player.getTalents().stampede > 0,
+			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+		}),
+		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'allowAoeBerserk',
 			label: 'Allow AoE Berserk',
 			labelTooltip: 'Allow Berserk usage in AoE rotation',

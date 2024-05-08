@@ -1,5 +1,6 @@
+import { ConjuredHealthstone } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, PetFood, Potions, RotationType, Spec } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, Potions, RotationType, Spec } from '../../core/proto/common';
 import {
 	HunterMajorGlyph as MajorGlyph,
 	HunterMinorGlyph as MinorGlyph,
@@ -46,6 +47,7 @@ export const SurvivalTalents = {
 			prime1: PrimeGlyph.GlyphOfExplosiveShot,
 			prime2: PrimeGlyph.GlyphOfKillShot,
 			prime3: PrimeGlyph.GlyphOfSerpentSting,
+			major1: MajorGlyph.GlyphOfTrapLauncher,
 		}),
 	}),
 };
@@ -64,9 +66,10 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.PotionOfTheTolvir,
 	prepopPotion: Potions.PotionOfTheTolvir,
 	flask: Flask.FlaskOfTheWinds,
+	defaultConjured: ConjuredHealthstone.value,
 	food: Food.FoodFishFeast,
 });
 
 export const OtherDefaults = {
-	distanceFromTarget: 24
-}
+	distanceFromTarget: 24,
+};

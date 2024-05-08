@@ -357,6 +357,36 @@ func (cat *FeralDruid) calcRipRefreshTime(sim *core.Simulation, ripDot *core.Dot
 	return core.TernaryDuration(energyEquivalent > cat.Rip.DefaultCast.Cost, latestPossibleSnapshot, standardRefreshTime)
 }
 
+func (cat *FeralDruid) canMeleeWeave(sim *core.Simulation, regenRate float64, currentEnergy float64, isClearcast bool, upcomingTimers *PoolingActions) bool {
+	if !cat.Rotation.MeleeWeave || !cat.CatCharge.IsReady(sim) || isClearcast || cat.BerserkAura.IsActive() {
+		return false
+	}
+
+	// Estimate time to run out and charge back in
+	runOutTime := core.DurationFromSeconds((cat.CatCharge.MinRange + 1 - cat.DistanceFromTarget) / cat.GetMovementSpeed()) + cat.ReactionTime
+	chargeInTime := core.DurationFromSeconds((cat.CatCharge.MinRange + 1) / 80) + cat.ReactionTime
+	weaveDuration := runOutTime + chargeInTime
+	weaveEnergy := 100.0 - weaveDuration.Seconds() * regenRate
+
+	if (currentEnergy > weaveEnergy) {
+		return false
+	}
+
+	// Prioritize all timers over weaving
+	weaveEnd := sim.CurrentTime + weaveDuration
+	isPooling, nextRefresh := upcomingTimers.nextRefreshTime()
+
+	if (isPooling && (nextRefresh < weaveEnd)) || cat.tfExpectedBefore(sim, weaveEnd) {
+		return false
+	}
+
+	// Also add an end-of-fight condition to make sure we can spend down our Energy
+	// post-weave before the encounter ends.
+	energyToDump := currentEnergy + weaveDuration.Seconds() * regenRate
+	timeToDump := core.DurationFromSeconds(math.Floor(energyToDump / cat.Shred.DefaultCast.Cost))
+	return weaveEnd + timeToDump < sim.Duration
+}
+
 func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	// Store state variables for re-use
 	rotation := &cat.Rotation
@@ -373,6 +403,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	regenRate := cat.EnergyRegenPerSecond()
 	isExecutePhase := rotation.BiteDuringExecute && sim.IsExecutePhase25()
 	tfActive := cat.TigersFuryAura.IsActive()
+	t11Active := cat.StrengthOfThePantherAura.IsActive()
 
 	// Prioritize using Rip with omen procs if bleed isnt active
 	ripCcCheck := core.Ternary(isBleedActive, !isClearcast, true)
@@ -406,14 +437,17 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	// Clip Mangle if it won't change the total number of Mangles we have to
 	// cast before the fight ends.
-	mangleRefreshNow := !cat.bleedAura.IsActive() && simTimeRemain > time.Second
-	mangleRefreshPending := cat.bleedAura.IsActive() && cat.bleedAura.RemainingDuration(sim) < (simTimeRemain-time.Second)
+	t11BuildNow := (cat.StrengthOfThePantherAura != nil) && (cat.StrengthOfThePantherAura.GetStacks() < 3)
+	t11RefreshNow := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second + cat.ReactionTime) && (simTimeRemain > time.Second)
+	t11RefreshNext := t11Active && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < time.Second*2 + cat.ReactionTime) && (simTimeRemain > time.Second*2)
+	mangleRefreshNow := !cat.bleedAura.IsActive() && (simTimeRemain > time.Second)
+	mangleRefreshPending := (!t11RefreshNow && !mangleRefreshNow) && ((cat.bleedAura.IsActive() && cat.bleedAura.RemainingDuration(sim) < (simTimeRemain-time.Second)) || (t11Active && (cat.StrengthOfThePantherAura.GetStacks() == 3) && (cat.StrengthOfThePantherAura.RemainingDuration(sim) < simTimeRemain - time.Second)))
 	clipMangle := false
 
-	if mangleRefreshPending {
+	if mangleRefreshPending && !t11Active {
 		numManglesRemaining := 1 + int32((sim.Duration-time.Second-cat.bleedAura.ExpiresAt())/time.Minute)
 		earliestMangle := sim.Duration - time.Duration(numManglesRemaining)*time.Minute
-		clipMangle = sim.CurrentTime >= earliestMangle
+		clipMangle = (sim.CurrentTime >= earliestMangle) && !isClearcast
 	}
 
 	mangleNow := cat.MangleCat != nil && (mangleRefreshNow || clipMangle)
@@ -423,7 +457,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	// Ignore minimum CP enforcement during Execute phase if Rip is about to fall off
 	emergencyBiteNow := isExecutePhase && ripDot.IsActive() && (ripDot.RemainingDuration(sim) < ripDot.TickLength) && (curCp >= 1)
-	biteNow = biteNow || emergencyBiteNow
+	biteNow = (biteNow || emergencyBiteNow) && !t11RefreshNext
 
 	// Rake calcs
 	rakeNow := rotation.UseRake && (!rakeDot.IsActive() || (rakeDot.RemainingDuration(sim) < rakeDot.TickLength)) && (simTimeRemain > rakeDot.TickLength) && rakeCcCheck
@@ -445,20 +479,34 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		rakeNow = remainingExt == 0 || (maxShredsPossible > float64(remainingExt))
 	}
 
+	// Apply same TF Rip delay logic to Rake as well
+	if rakeNow && !tfActive {
+		finalRakeTickLeeway := core.TernaryDuration(rakeDot.IsActive(), rakeDot.TimeUntilNextTick(sim), 0)
+		buffedTickCount := min(rakeDot.NumberOfTicks, int32((simTimeRemain-finalRakeTickLeeway)/rakeDot.TickLength))
+		delayBreakpoint := finalRakeTickLeeway + core.DurationFromSeconds(0.15*float64(buffedTickCount)*rakeDot.TickLength.Seconds())
+
+		if cat.tfExpectedBefore(sim, sim.CurrentTime+delayBreakpoint) {
+			delaySeconds := delayBreakpoint.Seconds()
+			energyToDump := curEnergy + delaySeconds*regenRate - cat.calcTfEnergyThresh(cat.ReactionTime)
+			secondsToDump := math.Ceil(energyToDump / cat.Shred.DefaultCast.Cost)
+
+			if secondsToDump < delaySeconds {
+				rakeNow = false
+			}
+		}
+	}
+
 	// Disable Energy pooling for Rake in weaving rotations, since these
 	// rotations prioritize weave cpm over Rake uptime.
 	poolForRake := (rotation.BearweaveType == proto.FeralDruid_Rotation_None)
 
 	roarNow := curCp >= 1 && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim, isExecutePhase))
 
-	// Keep up Sunder debuff if not provided externally
-	ffNow := rotation.MaintainFaerieFire && cat.ShouldFaerieFire(sim, cat.CurrentTarget)
-
 	// Pooling calcs
 	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain-baseEndThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))
 	rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.TickLength)
 	roarRefreshPending := cat.SavageRoarAura.IsActive() && (cat.SavageRoarAura.RemainingDuration(sim) < simTimeRemain-cat.ReactionTime) && (curCp >= 1)
-	pendingPool := PoolingActions{}
+	pendingPool := &PoolingActions{}
 	pendingPool.create(4)
 
 	if ripRefreshPending && (sim.CurrentTime < ripRefreshTime) {
@@ -472,8 +520,12 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		pendingPool.addAction(rakeRefreshTime, rakeCost)
 	}
 	if mangleRefreshPending {
-		mangleCost := core.Ternary(cat.berserkExpectedAt(sim, cat.bleedAura.ExpiresAt()), cat.MangleCat.DefaultCast.Cost*0.5, cat.MangleCat.DefaultCast.Cost)
-		pendingPool.addAction(cat.bleedAura.ExpiresAt(), mangleCost)
+		mangleRefreshTime := cat.bleedAura.ExpiresAt()
+		if t11Active {
+			mangleRefreshTime = cat.StrengthOfThePantherAura.ExpiresAt() - cat.ReactionTime*2
+		}
+		mangleCost := core.Ternary(cat.berserkExpectedAt(sim, mangleRefreshTime), cat.MangleCat.DefaultCast.Cost*0.5, cat.MangleCat.DefaultCast.Cost)
+		pendingPool.addAction(mangleRefreshTime, mangleCost)
 	}
 	if roarRefreshPending {
 		roarCost := core.Ternary(cat.berserkExpectedAt(sim, cat.SavageRoarAura.ExpiresAt()), cat.SavageRoar.DefaultCast.Cost*0.5, cat.SavageRoar.DefaultCast.Cost)
@@ -484,6 +536,9 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	floatingEnergy := pendingPool.calcFloatingEnergy(cat, sim)
 	excessE := curEnergy - floatingEnergy
 	latencySecs := cat.ReactionTime.Seconds()
+
+	// Check melee-weaving conditions
+	meleeWeaveNow := cat.canMeleeWeave(sim, regenRate, curEnergy, isClearcast, pendingPool)
 
 	// Allow for bearweaving if the next pending action is >= 4.5s away
 	furorCap := min(100.0*float64(cat.Talents.Furor)/3.0, 85)
@@ -604,9 +659,12 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		}
 	} else if emergencyBearweave {
 		cat.readyToShift = true
-	} else if ffNow {
-		cat.FaerieFire.Cast(sim, cat.CurrentTarget)
-		return false, 0
+	} else if t11RefreshNow {
+		if cat.MangleCat.CanCast(sim, cat.CurrentTarget) {
+			cat.MangleCat.Cast(sim, cat.CurrentTarget)
+			return false, 0
+		}
+		timeToNextAction = core.DurationFromSeconds((cat.CurrentMangleCatCost() - curEnergy) / regenRate)
 	} else if ripNow {
 		if cat.Rip.CanCast(sim, cat.CurrentTarget) {
 			cat.Rip.Cast(sim, cat.CurrentTarget)
@@ -637,8 +695,19 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			return false, 0
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentRakeCost() - curEnergy) / regenRate)
+	} else if t11BuildNow {
+		if cat.MangleCat.CanCast(sim, cat.CurrentTarget) {
+			cat.MangleCat.Cast(sim, cat.CurrentTarget)
+			return false, 0
+		}
+		timeToNextAction = core.DurationFromSeconds((cat.CurrentMangleCatCost() - curEnergy) / regenRate)
+	} else if meleeWeaveNow {
+		cat.MoveTo(cat.CatCharge.MinRange + 1, sim)
 	} else if bearweaveNow {
 		cat.readyToShift = true
+	} else if cat.Ravage.CanCast(sim, cat.CurrentTarget) {
+		cat.Ravage.Cast(sim, cat.CurrentTarget)
+		return false, 0
 	} else if (rotation.MangleSpam && !isClearcast) || cat.PseudoStats.InFrontOfTarget {
 		if cat.MangleCat != nil && excessE >= cat.CurrentMangleCatCost() {
 			cat.MangleCat.Cast(sim, cat.CurrentTarget)
@@ -713,6 +782,7 @@ type FeralDruidRotation struct {
 	SnekWeave          bool
 	RakeDpeCheck       bool
 	UseBerserk         bool
+	MeleeWeave         bool
 }
 
 func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
@@ -737,6 +807,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 		SnekWeave:          core.Ternary(rotation.BearWeaveType == proto.FeralDruid_Rotation_None, false, rotation.SnekWeave),
 		RakeDpeCheck:       true,
 		UseBerserk:         cat.Talents.Berserk && ((rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget) || rotation.AllowAoeBerserk),
+		MeleeWeave:         rotation.MeleeWeave && (cat.Talents.Stampede > 0),
 	}
 
 	// Use automatic values unless specified

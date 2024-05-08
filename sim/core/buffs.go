@@ -938,6 +938,10 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	raidBuffs.Bloodlust = false
 	raidBuffs.Heroism = false
 	raidBuffs.TimeWarp = false
+	// Stam
+	raidBuffs.PowerWordFortitude = false
+	raidBuffs.CommandingShout = false
+	raidBuffs.BloodPact = false // does apply to the imp itself, but not to any other pet
 	// Str/Agi
 	raidBuffs.StrengthOfEarthTotem = false
 	raidBuffs.HornOfWinter = false
@@ -954,10 +958,17 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	raidBuffs.UnleashedRage = false
 	raidBuffs.AbominationsMight = false
 	raidBuffs.BlessingOfMight = false
+	// SP%
+	raidBuffs.ArcaneBrilliance = false
+	raidBuffs.DemonicPact = false
+	raidBuffs.TotemicWrath = false
+	raidBuffs.FlametongueTotem = false
 	// +5% Spell haste
 	raidBuffs.MoonkinForm = false
 	raidBuffs.ShadowForm = false
 	raidBuffs.WrathOfAirTotem = false
+	// Mana
+	raidBuffs.FelIntelligence = false // does apply to the fel hunter itself, but not to any other pet
 	// +Armor
 	raidBuffs.DevotionAura = false
 	raidBuffs.StoneskinTotem = false

@@ -37,6 +37,7 @@ type Druid struct {
 
 	Barkskin             *DruidSpell
 	Berserk              *DruidSpell
+	CatCharge            *DruidSpell
 	DemoralizingRoar     *DruidSpell
 	Enrage               *DruidSpell
 	FaerieFire           *DruidSpell
@@ -54,9 +55,11 @@ type Druid struct {
 	Maul                 *DruidSpell
 	MaulQueueSpell       *DruidSpell
 	Moonfire             *DruidSpell
+	MoonfireDoT          *DruidSpell
 	Pulverize            *DruidSpell
 	Rebirth              *DruidSpell
 	Rake                 *DruidSpell
+	Ravage               *DruidSpell
 	Rip                  *DruidSpell
 	SavageRoar           *DruidSpell
 	Shred                *DruidSpell
@@ -64,6 +67,7 @@ type Druid struct {
 	Starfall             *DruidSpell
 	Starsurge            *DruidSpell
 	Sunfire              *DruidSpell
+	SunfireDoT           *DruidSpell
 	SurvivalInstincts    *DruidSpell
 	SwipeBear            *DruidSpell
 	SwipeCat             *DruidSpell
@@ -85,19 +89,22 @@ type Druid struct {
 	EnrageAura               *core.Aura
 	FaerieFireAuras          core.AuraArray
 	FrenziedRegenerationAura *core.Aura
+	LunarEclipseProcAura     *core.Aura
 	MaulQueueAura            *core.Aura
 	MoonkinT84PCAura         *core.Aura
 	NaturesGraceProcAura     *core.Aura
+	OwlkinFrenzyAura         *core.Aura
 	PredatoryInstinctsAura   *core.Aura
 	PrimalMadnessAura        *core.Aura
 	PulverizeAura            *core.Aura
 	SavageDefenseAura        *core.Aura
-	SurvivalInstinctsAura    *core.Aura
-	TigersFuryAura           *core.Aura
 	SavageRoarAura           *core.Aura
 	SolarEclipseProcAura     *core.Aura
-	LunarEclipseProcAura     *core.Aura
-	OwlkinFrenzyAura         *core.Aura
+	StampedeCatAura          *core.Aura
+	StampedeBearAura         *core.Aura
+	StrengthOfThePantherAura *core.Aura
+	SurvivalInstinctsAura    *core.Aura
+	TigersFuryAura           *core.Aura
 
 	BleedCategories core.ExclusiveCategoryArray
 
@@ -129,11 +136,13 @@ const (
 	DruidSpellInnervate
 	DruidSpellInsectSwarm
 	DruidSpellMoonfire
+	DruidSpellMoonfireDoT
 	DruidSpellNaturesGrasp
 	DruidSpellStarfall
 	DruidSpellStarfire
 	DruidSpellStarsurge
 	DruidSpellSunfire
+	DruidSpellSunfireDoT
 	DruidSpellThorns
 	DruidSpellTyphoon
 	DruidSpellWildMushroom
@@ -152,11 +161,11 @@ const (
 
 	DruidSpellLast
 	DruidSpellsAll      = DruidSpellLast<<1 - 1
-	DruidSpellDoT       = DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellSunfire
+	DruidSpellDoT       = DruidSpellInsectSwarm | DruidSpellMoonfireDoT | DruidSpellSunfireDoT
 	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
 	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
-	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
-	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellTyphoon | DruidSpellHurricane
+	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellMoonfireDoT | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
+	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellMoonfireDoT | DruidSpellTyphoon | DruidSpellHurricane
 	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
 	DruidDamagingSpells = DruidArcaneSpells | DruidNatureSpells
 )
@@ -266,6 +275,7 @@ func (druid *Druid) RegisterBalanceSpells() {
 	//druid.registerHurricaneSpell()
 	druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
+	druid.registerSunfireSpell()
 	druid.registerStarfireSpell()
 	druid.registerWrathSpell()
 	druid.registerStarfallSpell()
@@ -276,23 +286,25 @@ func (druid *Druid) RegisterBalanceSpells() {
 
 func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerBerserkCD()
+	druid.registerCatCharge()
 	druid.registerCatFormSpell()
 
 	// 	druid.registerBearFormSpell()
 	// 	druid.registerEnrageSpell()
 	druid.registerFerociousBiteSpell()
+	druid.registerLacerateSpell()
 	// 	druid.registerMangleBearSpell()
 	druid.registerMangleCatSpell()
 	// 	druid.registerMaulSpell()
-	druid.registerLacerateSpell()
 	druid.registerRakeSpell()
+	druid.registerRavageSpell()
 	druid.registerRipSpell()
 	druid.registerSavageRoarSpell()
 	druid.registerShredSpell()
 	// 	druid.registerSwipeBearSpell()
 	druid.registerSwipeCatSpell()
-	druid.registerTigersFurySpell()
 	druid.registerThrashBearSpell()
+	druid.registerTigersFurySpell()
 }
 
 // func (druid *Druid) RegisterFeralTankSpells() {

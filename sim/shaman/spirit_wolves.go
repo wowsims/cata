@@ -32,13 +32,13 @@ func (SpiritWolves *SpiritWolves) CancelGCDTimer(sim *core.Simulation) {
 }
 
 var spiritWolfBaseStats = stats.Stats{
-	stats.Stamina:   361,
-	stats.Spirit:    109,
-	stats.Intellect: 65,
-	stats.Armor:     9616,
+	stats.Stamina:   389,
+	stats.Spirit:    116,
+	stats.Intellect: 69,
+	stats.Armor:     12310,
 
-	stats.Agility:     113,
-	stats.Strength:    331,
+	stats.Agility:     1218,
+	stats.Strength:    476,
 	stats.AttackPower: -20,
 
 	// Add 1.8% because pets aren't affected by that component of crit suppression.
@@ -53,8 +53,8 @@ func (shaman *Shaman) NewSpiritWolf(index int) *SpiritWolf {
 
 	spiritWolf.EnableAutoAttacks(spiritWolf, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:  246,
-			BaseDamageMax:  372,
+			BaseDamageMin:  583,
+			BaseDamageMax:  876,
 			SwingSpeed:     1.5,
 			CritMultiplier: 2,
 		},
@@ -62,8 +62,7 @@ func (shaman *Shaman) NewSpiritWolf(index int) *SpiritWolf {
 	})
 
 	spiritWolf.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	spiritWolf.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/83.3)
-	core.ApplyPetConsumeEffects(&spiritWolf.Character, shaman.Consumes)
+	spiritWolf.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*core.CritPerAgiMaxLevel[proto.Class_ClassWarrior])
 
 	shaman.AddPet(spiritWolf)
 
@@ -78,9 +77,9 @@ func (shaman *Shaman) makeStatInheritance() core.PetStatInheritance {
 		hitRatingFromOwner := math.Floor(ownerHitChance) * core.MeleeHitRatingPerHitChance
 
 		return stats.Stats{
-			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
+			stats.Stamina:     ownerStats[stats.Stamina] * 0.3189,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
-			stats.AttackPower: ownerStats[stats.AttackPower] * (core.TernaryFloat64(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFeralSpirit), 0.61, 0.31)),
+			stats.AttackPower: ownerStats[stats.AttackPower] * (core.TernaryFloat64(shaman.HasPrimeGlyph(proto.ShamanPrimeGlyph_GlyphOfFeralSpirit), 0.6296, 0.3296)),
 
 			stats.MeleeHit:  hitRatingFromOwner,
 			stats.Expertise: math.Floor(math.Floor(ownerHitChance)*PetExpertiseScale) * core.ExpertisePerQuarterPercentReduction,

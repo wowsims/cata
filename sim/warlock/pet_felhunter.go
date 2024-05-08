@@ -27,8 +27,8 @@ func (warlock *Warlock) registerSummonFelHunterSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//warlock.ChangeActivePet(sim, &warlock.Imp.WarlockPet)
-			warlock.ChangeActivePet(sim, PetImp)
+			warlock.SoulBurnAura.Deactivate(sim)
+			warlock.ChangeActivePet(sim, PetFelhunter)
 		},
 	})
 }
@@ -74,7 +74,6 @@ func (warlock *Warlock) NewFelhunterPet() *FelhunterPet {
 	felhunter.AddStat(stats.AttackPower, -20)
 	felhunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
 	felhunter.EnableAutoAttacks(felhunter, autoAttackOptions)
-	core.ApplyPetConsumeEffects(&warlock.Character, warlock.Consumes)
 	warlock.AddPet(felhunter)
 
 	return felhunter
@@ -118,7 +117,7 @@ func (felhunter *FelhunterPet) registerShadowBiteSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   1.5,
+		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -43,6 +43,7 @@ func (druid *Druid) registerRipSpell() {
 		DamageMultiplier: glyphMulti * druid.RazorClawsMultiplier(druid.GetStat(stats.Mastery)),
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
+		MaxRange:         core.MaxMeleeRange,
 
 		Dot: core.DotConfig{
 			Aura: druid.applyRendAndTear(core.Aura{

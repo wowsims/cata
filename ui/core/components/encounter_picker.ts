@@ -128,10 +128,11 @@ export class EncounterPicker extends Component {
 
 			makeTargetInputsPicker(this.rootElem, modEncounter, 0);
 
+			const advancedModal = new AdvancedEncounterModal(simUI.rootElem, simUI, modEncounter);
 			const advancedButton = document.createElement('button');
 			advancedButton.classList.add('advanced-button', 'btn', 'btn-primary');
 			advancedButton.textContent = 'Advanced';
-			advancedButton.addEventListener('click', () => new AdvancedEncounterModal(simUI.rootElem, simUI, modEncounter));
+			advancedButton.addEventListener('click', () => advancedModal.open());
 			this.rootElem.appendChild(advancedButton);
 		});
 	}
@@ -653,8 +654,8 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 			},
 		});
 		new NumberPicker(executeGroup, encounter, {
-			label: 'Duration spent below 90 (%)',
-			labelTooltip: 'Percentage of the total encounter duration, for which the targets are considered out of range (<90% HP), like Hunters Careful Aim',
+			label: 'Duration spent below high-HP regime (%)',
+			labelTooltip: 'Percentage of the total encounter duration, for which the targets are considered out of range for effects like Hunter Careful Aim (<90% HP) or Druid Predatory Strikes (<80% HP).',
 			changedEvent: (encounter: Encounter) => encounter.changeEmitter,
 			getValue: (encounter: Encounter) => encounter.getExecuteProportion90() * 100,
 			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {

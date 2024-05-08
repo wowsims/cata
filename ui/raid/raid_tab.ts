@@ -1,11 +1,11 @@
-import { SavedDataManager } from "../core/components/saved_data_manager";
-import { SimTab } from "../core/components/sim_tab";
-import { Raid as RaidProto } from "../core/proto/api";
-import { BlessingsAssignments, SavedRaid } from "../core/proto/ui";
-import { EventID, TypedEvent } from "../core/typed_event";
-import { RaidPicker } from "./raid_picker";
-import { RaidSimUI } from "./raid_sim_ui";
-import { RaidStats } from "./raid_stats";
+import { SavedDataManager } from '../core/components/saved_data_manager';
+import { SimTab } from '../core/components/sim_tab';
+import { Raid as RaidProto } from '../core/proto/api';
+import { BlessingsAssignments, SavedRaid } from '../core/proto/ui';
+import { EventID, TypedEvent } from '../core/typed_event';
+import { RaidPicker } from './raid_picker';
+import { RaidSimUI } from './raid_sim_ui';
+import { RaidStats } from './raid_stats';
 
 export class RaidTab extends SimTab {
 	protected simUI: RaidSimUI;
@@ -17,7 +17,7 @@ export class RaidTab extends SimTab {
 		super(parentElem, simUI, { identifier: 'raid-tab', title: 'Raid' });
 		this.simUI = simUI;
 
-		this.rootElem.classList.add('active', 'show')
+		this.rootElem.classList.add('active', 'show');
 
 		this.leftPanel = document.createElement('div');
 		this.leftPanel.classList.add('raid-tab-left', 'tab-panel-left');
@@ -39,16 +39,17 @@ export class RaidTab extends SimTab {
 			label: 'Raid',
 			header: { title: 'Saved Raid Groups' },
 			storageKey: this.simUI.getSavedRaidStorageKey(),
-			getData: (raidSimUI: RaidSimUI) => SavedRaid.create({
-				raid: this.simUI.sim.raid.toProto(),
-				blessings: this.simUI.blessingsPicker!.getAssignments(),
-				faction: this.simUI.sim.getFaction(),
-				phase: this.simUI.sim.getPhase(),
-			}),
-			setData: (eventID: EventID, raidSimUI: RaidSimUI, newRaid: SavedRaid) => {
+			getData: () =>
+				SavedRaid.create({
+					raid: this.simUI.sim.raid.toProto(),
+					blessings: this.simUI.blessingsPicker?.getAssignments(),
+					faction: this.simUI.sim.getFaction(),
+					phase: this.simUI.sim.getPhase(),
+				}),
+			setData: (eventID: EventID, _, newRaid: SavedRaid) => {
 				TypedEvent.freezeAllAndDo(() => {
 					this.simUI.sim.raid.fromProto(eventID, newRaid.raid || RaidProto.create());
-					this.simUI.blessingsPicker!.setAssignments(eventID, newRaid.blessings || BlessingsAssignments.create());
+					this.simUI.blessingsPicker?.setAssignments(eventID, newRaid.blessings || BlessingsAssignments.create());
 					if (newRaid.faction) this.simUI.sim.setFaction(eventID, newRaid.faction);
 					if (newRaid.phase) this.simUI.sim.setPhase(eventID, newRaid.phase);
 				});
@@ -59,8 +60,7 @@ export class RaidTab extends SimTab {
 			},
 			toJson: (a: SavedRaid) => SavedRaid.toJson(a),
 			fromJson: (obj: any) => SavedRaid.fromJson(obj),
-		}
-		);
+		});
 		this.simUI.sim.waitForInit().then(() => {
 			savedRaidManager.loadUserData();
 		});

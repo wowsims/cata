@@ -64,7 +64,6 @@ func NewProtectionWarrior(character *core.Character, options *proto.Player) *Pro
 		AutoSwingMelee: true,
 	})
 
-	war.PseudoStats.BlockDamageReduction = 0.3
 	//healingModel := options.HealingModel
 	//if healingModel != nil {
 	//	if healingModel.InspirationUptime > 0.0 {
@@ -102,11 +101,11 @@ func (war *ProtectionWarrior) RegisterMastery() {
 		if result.Outcome.Matches(core.OutcomeBlock) && !result.Outcome.Matches(core.OutcomeMiss) && !result.Outcome.Matches(core.OutcomeParry) && !result.Outcome.Matches(core.OutcomeDodge) {
 			procChance := war.CriticalBlockChance
 			if sim.Proc(procChance, "Critical Block Roll") {
-				result.Damage = result.Damage * (1 - war.BlockDamageReduction*2)
+				result.Damage = result.Damage * (1 - war.BlockDamageReduction()*2)
 				dummyCriticalBlockSpell.Cast(sim, spell.Unit)
 				return
 			}
-			result.Damage = result.Damage * (1 - war.BlockDamageReduction)
+			result.Damage = result.Damage * (1 - war.BlockDamageReduction())
 		}
 	}
 

@@ -427,24 +427,6 @@ func applyConsumeEffects(agent Agent) {
 	registerTinkerHandsCD(agent, consumes)
 }
 
-func ApplyPetConsumeEffects(pet *Character, ownerConsumes *proto.Consumes) {
-	switch ownerConsumes.PetFood {
-	case proto.PetFood_PetFoodSpicedMammothTreats:
-		pet.AddStats(stats.Stats{
-			stats.Strength: 30,
-			stats.Stamina:  30,
-		})
-	case proto.PetFood_PetFoodKiblersBits:
-		pet.AddStats(stats.Stats{
-			stats.Strength: 20,
-			stats.Stamina:  20,
-		})
-	}
-
-	pet.AddStat(stats.Agility, []float64{0, 5, 9, 13, 17, 20}[ownerConsumes.PetScrollOfAgility])
-	pet.AddStat(stats.Strength, []float64{0, 5, 9, 13, 17, 20}[ownerConsumes.PetScrollOfStrength])
-}
-
 var PotionAuraTag = "Potion"
 
 func registerPotionCD(agent Agent, consumes *proto.Consumes) {

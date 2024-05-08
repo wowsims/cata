@@ -36,6 +36,7 @@ func (druid *Druid) registerMangleBearSpell() {
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
+		MaxRange:         core.MaxMeleeRange,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 3306.0/1.9 +
@@ -91,6 +92,7 @@ func (druid *Druid) registerMangleCatSpell() {
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
+		MaxRange:         core.MaxMeleeRange,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 302.0/5.4 +
@@ -105,6 +107,19 @@ func (druid *Druid) registerMangleCatSpell() {
 				// Mangle (Cat) can also extend Rip in Cata
 				if hasBloodletting {
 					druid.ApplyBloodletting(target)
+				}
+
+				// 4pT11
+				if druid.StrengthOfThePantherAura != nil {
+					aura := druid.StrengthOfThePantherAura
+
+					if aura.IsActive() {
+						aura.Refresh(sim)
+						aura.AddStack(sim)
+					} else {
+						aura.Activate(sim)
+						aura.SetStacks(sim, 1)
+					}
 				}
 			} else {
 				spell.IssueRefund(sim)

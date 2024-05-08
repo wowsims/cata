@@ -28,7 +28,7 @@ func (warlock *Warlock) registerSummonImpSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//warlock.ChangeActivePet(sim, &warlock.Imp.WarlockPet)
+			warlock.SoulBurnAura.Deactivate(sim)
 			warlock.ChangeActivePet(sim, PetImp)
 		},
 	})
@@ -65,8 +65,6 @@ func (warlock *Warlock) NewImpPet() *ImpPet {
 	imp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	imp.AddStat(stats.AttackPower, -20)
 	imp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance*1/52.0833)
-
-	core.ApplyPetConsumeEffects(&warlock.Character, warlock.Consumes)
 
 	warlock.AddPet(imp)
 

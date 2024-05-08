@@ -119,6 +119,7 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 		RipLeeway:          config.RipLeeway,
 		ManualParams:       config.ManualParams,
 		AllowAoeBerserk:    config.AllowAoeBerserk,
+		MeleeWeave:         config.MeleeWeave,
 	}
 
 	cat.setupRotation(rotationOptions)
@@ -147,6 +148,30 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	}
 
 	action.lastAction = sim.CurrentTime
+
+	// Keep up Sunder debuff if not provided externally. Do this here since FF can be
+	// cast while moving.
+	if cat.Rotation.MaintainFaerieFire {
+		for _, aoeTarget := range sim.Encounter.TargetUnits {
+			if cat.ShouldFaerieFire(sim, aoeTarget) {
+				cat.FaerieFire.Cast(sim, aoeTarget)
+			}
+		}
+	}
+
+	// Handle movement before any rotation logic
+	if cat.Moving {
+		return
+	}
+	if cat.DistanceFromTarget > core.MaxMeleeRange {
+		// Try leaping first before defaulting to manual movement
+		if cat.CatCharge.CanCast(sim, cat.CurrentTarget) {
+			cat.CatCharge.Cast(sim, cat.CurrentTarget)
+		} else {
+			cat.MoveTo(core.MaxMeleeRange - 1, sim) // movement aura is discretized in 1 yard intervals, so need to overshoot to guarantee melee range
+			return
+		}
+	}
 
 	if !cat.GCD.IsReady(sim) {
 		cat.WaitUntil(sim, cat.NextGCDAt())

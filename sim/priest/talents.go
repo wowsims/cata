@@ -601,7 +601,7 @@ func (priest *Priest) applySinAndPunishment() {
 		return
 	}
 
-	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
+	aura := core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
 		Name:           "Sin And Punishment",
 		Callback:       core.CallbackOnPeriodicDamageDealt,
 		Outcome:        core.OutcomeCrit,
@@ -611,6 +611,9 @@ func (priest *Priest) applySinAndPunishment() {
 			priest.Shadowfiend.CD.Set(priest.Shadowfiend.CD.ReadyAt() - 5*time.Second)
 		},
 	})
+	aura.OnReset = func(aura *core.Aura, sim *core.Simulation) {
+		priest.Shadowfiend.CD.Reset()
+	}
 }
 
 func (priest *Priest) applyShadowyApparition() {

@@ -7,7 +7,6 @@ import {
 	Food,
 	Glyphs,
 	IndividualBuffs,
-	PetFood,
 	Potions,
 	Profession,
 	RaidBuffs,
@@ -19,13 +18,12 @@ import {
 	WarlockPrimeGlyph as PrimeGlyph,
 	WarlockMajorGlyph as MajorGlyph,
 	WarlockMinorGlyph as MinorGlyph,
-	WarlockOptions_Armor as Armor,
-	WarlockOptions_Summon as Summon,
+	WarlockOptions_Summon as Summon,	
 } from '../../core/proto/warlock';
 import DefaultApl from './apls/default.apl.json';
-import PreraidGear from './gear_sets/preraid.gear.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import P4WrathGear from './gear_sets/p4_wrath.gear.json';
+import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -59,7 +57,6 @@ export const DestructionTalents = {
 
 export const DefaultOptions = WarlockOptions.create({
 	classOptions: {
-		armor: Armor.FelArmor,
 		summon: Summon.Imp,
 		detonateSeed: true,
 	},
@@ -70,7 +67,6 @@ export const DefaultConsumes = Consumes.create({
 	prepopPotion: Potions.VolcanicPotion,
 	flask: Flask.FlaskOfTheDraconicMind,
 	food: Food.FoodSeafoodFeast,
-	petFood: PetFood.PetFoodSpicedMammothTreats,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({

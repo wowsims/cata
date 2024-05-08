@@ -1,3 +1,4 @@
+import { default as pako } from 'pako';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, ref } from 'tsx-vanilla';
 
@@ -16,8 +17,6 @@ import { BaseModal } from './base_modal';
 import { BooleanPicker } from './boolean_picker';
 import { CopyButton } from './copy_button';
 import { IndividualLinkImporter, IndividualWowheadGearPlannerImporter } from './importers';
-
-declare let pako: any;
 
 interface ExporterOptions {
 	title: string;
@@ -150,7 +149,10 @@ export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 				changedEvent: () => this.changedEvent,
 			});
 		});
+	}
 
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -169,6 +171,8 @@ export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 		const proto = simUI.toProto(exportCategories);
 
 		const protoBytes = IndividualSimSettings.toBinary(proto);
+		// @ts-ignore Pako did some weird stuff between versions and the @types package doesn't correctly support this syntax for version 2.0.4 but it's completely valid
+		// The syntax was removed in 2.1.0 and there were several complaints but the project seems to be largely abandoned now
 		const deflated = pako.deflate(protoBytes, { to: 'string' });
 		const encoded = btoa(String.fromCharCode(...deflated));
 
@@ -190,6 +194,10 @@ export class IndividualJsonExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'JSON Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -218,14 +226,18 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'Wowhead Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
 	getData(): string {
 		const player = this.simUI.player;
 
-		const classStr = player.getPlayerClass().friendlyName.replaceAll(/\s/, '-').toLowerCase();
-		const raceStr = raceNames.get(player.getRace())!.replaceAll(/\s/, '-').toLowerCase();
+		const classStr = player.getPlayerClass().friendlyName.replaceAll(/\s/g, '-').toLowerCase();
+		const raceStr = raceNames.get(player.getRace())!.replaceAll(/\s/g, '-').toLowerCase();
 		const url = `https://www.wowhead.com/cata/gear-planner/${classStr}/${raceStr}/`;
 
 		// See comments on the importer for how the binary formatting is structured.
@@ -327,6 +339,10 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: '80Upgrades EP Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -414,6 +430,10 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'Pawn EP Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
@@ -502,6 +522,10 @@ export class IndividualCLIExporter<SpecType extends Spec> extends Exporter {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'CLI Export', allowDownload: true });
 		this.simUI = simUI;
+	}
+
+	open() {
+		super.open();
 		this.init();
 	}
 
