@@ -1823,6 +1823,9 @@ func (raid *Raid) resetReplenishment(_ *Simulation) {
 }
 
 func (raid *Raid) ProcReplenishment(sim *Simulation, src ReplenishmentSource) {
+	if sim.GetRemainingDuration() <= 0 {
+		return
+	}
 	// If the raid is fully covered by one or more replenishment sources, we can
 	// skip the mana sorting.
 	if len(raid.curReplenishmentUnits)*10 >= len(raid.replenishmentUnits) {

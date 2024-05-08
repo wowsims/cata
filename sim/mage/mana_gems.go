@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (mage *Mage) registerManaGemsCD() {
@@ -13,15 +12,27 @@ func (mage *Mage) registerManaGemsCD() {
 	actionID := core.ActionID{ItemID: 36799} // this is the correct item ID for mana gem
 	manaMetrics := mage.NewManaMetrics(actionID)
 
-	//id for improved mana gem buff 83098
-	//id for "Replenish Mana" is 5405
-	//buff gives 2% of max mana as spell power for 15 seconds
-	var ImprovedManaGemAura *core.Aura
+	//buff gives points% of max mana as spell power for 15 seconds
+	var improvedManaGemAura *core.Aura
 	if mage.Talents.ImprovedManaGem > 0 {
-		ImprovedManaGemAura = mage.NewTemporaryStatsAura("Improved Mana Gem",
-			core.ActionID{SpellID: 83098},
-			stats.Stats{stats.SpellPower: 0.01 * float64(mage.Talents.ImprovedManaGem) * mage.MaxMana()},
-			15*time.Second)
+		spBonusMod := mage.AddDynamicMod(core.SpellModConfig{
+			Kind:      core.SpellMod_BonusSpellPower_Flat,
+			ClassMask: MageSpellsAll,
+		})
+
+		improvedManaGemAura = mage.GetOrRegisterAura(core.Aura{
+			Label:    "Improved Mana Gem",
+			ActionID: core.ActionID{SpellID: []int32{0, 31584, 31585}[mage.Talents.ImprovedManaGem]},
+			Duration: time.Second * 15,
+
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				spBonusMod.UpdateFloatValue(0.01 * float64(mage.Talents.ImprovedManaGem) * mage.MaxMana())
+				spBonusMod.Activate()
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				spBonusMod.Deactivate()
+			},
+		})
 	}
 
 	minManaGain := 11801.0
@@ -49,15 +60,11 @@ func (mage *Mage) registerManaGemsCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-
-			if remainingManaGems > 0 {
-				manaGain = sim.Roll(minManaGain, maxManaGain)
-			}
-
 			if mage.Talents.ImprovedManaGem > 0 {
-				ImprovedManaGemAura.Activate(sim)
+				improvedManaGemAura.Activate(sim)
 			}
 
+			manaGain = sim.Roll(minManaGain, maxManaGain)
 			mage.AddMana(sim, manaGain, manaMetrics)
 
 			remainingManaGems--
