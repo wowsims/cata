@@ -199,6 +199,11 @@ message TargetedActionMetrics {
 	double cast_time_ms = 14;
 }
 
+message AggregatorData {
+	int32 n = 1;
+	double sumSq = 2;
+}
+
 message AuraMetrics {
 	ActionID id = 1;
 
@@ -206,6 +211,8 @@ message AuraMetrics {
 	double uptime_seconds_stdev = 3;
 
 	double procs_avg = 4;
+
+	AggregatorData aggregator_data = 5;
 }
 
 enum ResourceType {
@@ -249,6 +256,7 @@ message DistributionMetrics {
 	int64 min_seed = 7;
 	map<int32, int32> hist = 4;
 	repeated double all_values = 8;
+	AggregatorData aggregator_data = 9;
 }
 
 // All the results for a single Unit (player, target, or pet).
