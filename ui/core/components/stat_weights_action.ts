@@ -61,7 +61,7 @@ class EpWeightsMenu extends BaseModal {
 	private showAllStats = false;
 
 	constructor(simUI: IndividualSimUI<any>, epStats: Array<Stat>, epPseudoStats: Array<PseudoStat>, epReferenceStat: Stat) {
-		super(simUI.rootElem, 'ep-weights-menu', getModalConfig(simUI));
+		super(simUI.rootElem, 'ep-weights-menu', { ...getModalConfig(simUI), disposeOnClose: false });
 		this.simUI = simUI;
 		this.statsType = 'ep';
 		this.epStats = epStats;

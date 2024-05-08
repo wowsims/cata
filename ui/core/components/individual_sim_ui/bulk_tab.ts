@@ -901,7 +901,7 @@ class GemSelectorModal extends BaseModal {
 	private onSelect: (itemData: ItemData<UIGem>) => void;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, socketColor: GemColor, onSelect: (itemData: ItemData<UIGem>) => void) {
-		super(parent, 'selector-modal', {});
+		super(parent, 'selector-modal', { disposeOnClose: false });
 
 		this.simUI = simUI;
 		this.onSelect = onSelect;

@@ -22,7 +22,7 @@ export abstract class Importer extends BaseModal {
 	private readonly includeFile: boolean;
 
 	constructor(parent: HTMLElement, simUI: SimUI, title: string, includeFile: boolean) {
-		super(parent, 'importer', { title: title, footer: true });
+		super(parent, 'importer', { title: title, footer: true, disposeOnClose: false });
 		this.includeFile = includeFile;
 		const uploadInputId = 'upload-input-' + title.toLowerCase().replaceAll(' ', '-');
 
