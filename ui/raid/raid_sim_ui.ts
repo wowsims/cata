@@ -8,7 +8,7 @@ import { Raid as RaidProto } from '../core/proto/api.js';
 import { Class, Encounter as EncounterProto } from '../core/proto/common.js';
 import { Blessings } from '../core/proto/paladin.js';
 import { BlessingsAssignments, RaidSimSettings } from '../core/proto/ui.js';
-import { getPlayerSpecFromPlayer } from '../core/proto_utils/utils';
+import { getPlayerSpecFromPlayer, makeDefaultBlessings } from '../core/proto_utils/utils';
 import { Sim } from '../core/sim.js';
 import { SimUI } from '../core/sim_ui.js';
 import { EventID, TypedEvent } from '../core/typed_event.js';
@@ -192,10 +192,11 @@ export class RaidSimUI extends SimUI {
 	}
 
 	toProto(): RaidSimSettings {
+		const numPaladins = this.sim.raid.getPlayers().filter(player => player?.getClass() === Class.ClassPaladin).length;
 		return RaidSimSettings.create({
 			settings: this.sim.toProto(),
 			raid: this.sim.raid.toProto(true),
-			blessings: this.blessingsPicker!.getAssignments(),
+			blessings: this.blessingsPicker?.getAssignments() ?? makeDefaultBlessings(numPaladins),
 			encounter: this.sim.encounter.toProto(),
 		});
 	}
@@ -223,7 +224,7 @@ export class RaidSimUI extends SimUI {
 			}
 			this.sim.raid.fromProto(eventID, settings.raid || RaidProto.create());
 			this.sim.encounter.fromProto(eventID, settings.encounter || EncounterProto.create());
-			this.blessingsPicker!.setAssignments(eventID, settings.blessings || BlessingsAssignments.create());
+			this.blessingsPicker?.setAssignments(eventID, settings.blessings || BlessingsAssignments.create());
 		});
 	}
 
