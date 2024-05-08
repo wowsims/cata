@@ -12,7 +12,7 @@ const presenceEffectCategory = "Presence"
 func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
 	threatMult := 5.0
 	armorScaling := 1.55
-	damageTakenMult := 1 / 1.08
+	damageTakenMult := 0.92
 	stamDep := dk.NewDynamicMultiplyStat(stats.Stamina, 1.08)
 	runicMulti := 1.0 + 0.02*float64(dk.Talents.ImprovedFrostPresence)
 	critReduction := 0.03 * float64(dk.Talents.ImprovedBloodPresence)
@@ -60,12 +60,7 @@ func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
 				Duration: time.Second,
 			},
 		},
-		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			presenceAura.Activate(sim)
-			if rp := dk.CurrentRunicPower(); rp > 0 {
-				dk.SpendRunicPower(sim, rp, rpMetrics)
-			}
-		},
+		ApplyEffects: dk.activatePresence(presenceAura, rpMetrics),
 	})
 }
 
@@ -108,12 +103,7 @@ func (dk *DeathKnight) registerFrostPresenceAura(timer *core.Timer) {
 				Duration: time.Second,
 			},
 		},
-		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			presenceAura.Activate(sim)
-			if rp := dk.CurrentRunicPower(); rp > 0 {
-				dk.SpendRunicPower(sim, rp, rpMetrics)
-			}
-		},
+		ApplyEffects: dk.activatePresence(presenceAura, rpMetrics),
 	})
 }
 
@@ -165,13 +155,17 @@ func (dk *DeathKnight) registerUnholyPresenceAura(timer *core.Timer) {
 				Duration: time.Second,
 			},
 		},
-		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-			presenceAura.Activate(sim)
-			if rp := dk.CurrentRunicPower(); rp > 0 {
-				dk.SpendRunicPower(sim, rp, rpMetrics)
-			}
-		},
+		ApplyEffects: dk.activatePresence(presenceAura, rpMetrics),
 	})
+}
+
+func (dk *DeathKnight) activatePresence(presence *core.Aura, rpMetrics *core.ResourceMetrics) core.ApplySpellResults {
+	return func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
+		presence.Activate(sim)
+		if rp := dk.CurrentRunicPower(); rp > 0 && sim.CurrentTime >= 0 {
+			dk.SpendRunicPower(sim, rp, rpMetrics)
+		}
+	}
 }
 
 func (dk *DeathKnight) registerPresences() {

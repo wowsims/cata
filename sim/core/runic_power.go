@@ -40,6 +40,7 @@ type runicPowerBar struct {
 	unit *Unit
 
 	maxRunicPower     float64
+	startRunicPower   float64
 	currentRunicPower float64
 	runeCD            time.Duration
 
@@ -113,6 +114,8 @@ func (rp *runicPowerBar) reset(sim *Simulation) {
 	for i := range rp.permanentDeaths {
 		rp.runeStates |= isDeaths[i]
 	}
+
+	rp.currentRunicPower = rp.startRunicPower
 }
 
 func (unit *Unit) EnableRunicPowerBar(currentRunicPower float64, maxRunicPower float64, runeCD time.Duration,
@@ -122,6 +125,7 @@ func (unit *Unit) EnableRunicPowerBar(currentRunicPower float64, maxRunicPower f
 		unit: unit,
 
 		maxRunicPower:        maxRunicPower,
+		startRunicPower:      currentRunicPower,
 		currentRunicPower:    currentRunicPower,
 		runeCD:               runeCD,
 		runeRegenMultiplier:  1.0,
@@ -167,7 +171,7 @@ func (rp *runicPowerBar) maybeFireChange(sim *Simulation, changeType RuneChangeT
 	}
 }
 
-func (rp *runicPowerBar) addRunicPowerInterval(sim *Simulation, amount float64, metrics *ResourceMetrics) {
+func (rp *runicPowerBar) addRunicPowerInternal(sim *Simulation, amount float64, metrics *ResourceMetrics) {
 	if amount < 0 {
 		panic("Trying to add negative runic power!")
 	}
@@ -184,7 +188,7 @@ func (rp *runicPowerBar) addRunicPowerInterval(sim *Simulation, amount float64, 
 }
 
 func (rp *runicPowerBar) AddRunicPower(sim *Simulation, amount float64, metrics *ResourceMetrics) {
-	rp.addRunicPowerInterval(sim, amount, metrics)
+	rp.addRunicPowerInternal(sim, amount, metrics)
 	if rp.onRunicPowerGain != nil {
 		rp.onRunicPowerGain(sim)
 	}
