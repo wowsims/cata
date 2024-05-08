@@ -45,19 +45,19 @@ func (character *Character) EnableManaBarWithModifier(modifier float64) {
 	character.AddStat(stats.Mana, 20-15*20*modifier)
 	character.AddStatDependency(stats.Intellect, stats.Mana, 15*modifier)
 
-	// Starting with cataclysm 1 intellect now provides 1 spell power
-	character.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
-
 	// Starting with cataclysm you get mp5 equal 5% of your base mana
 	character.AddStat(stats.MP5, character.baseStats[stats.Mana]*0.05)
-
-	// first 10 int should not count so remove them
-	character.AddStat(stats.SpellPower, -10)
 
 	if character.Unit.Type == PlayerUnit {
 		// Pets might have different scaling so let them handle their scaling
 		character.AddStatDependency(stats.Intellect, stats.SpellCrit,
 			CritPerIntMaxLevel[character.Class]*CritRatingPerCritChance)
+
+		// Starting with cataclysm 1 intellect now provides 1 spell power
+		character.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
+
+		// first 10 int should not count so remove them
+		character.AddStat(stats.SpellPower, -10)
 	}
 
 	// Not a real spell, just holds metrics from mana gain threat.

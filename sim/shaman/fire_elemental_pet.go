@@ -31,6 +31,8 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 		maxFireNovaCasts:  15,
 	}
 	fireElemental.EnableManaBar()
+	fireElemental.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
+	fireElemental.AddStat(stats.SpellPower, -10)
 	fireElemental.EnableAutoAttacks(fireElemental, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  429, //Estimated from beta testing
