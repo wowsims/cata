@@ -8,7 +8,6 @@ import (
 
 func (mage *Mage) registerEvocation() {
 	actionID := core.ActionID{SpellID: 12051}
-	var maxTicks int32 = 4
 	manaMetrics := mage.NewManaMetrics(actionID)
 	manaPerTick := 0.0
 
@@ -32,7 +31,7 @@ func (mage *Mage) registerEvocation() {
 			Aura: core.Aura{
 				Label: "Evocation",
 			},
-			NumberOfTicks:        maxTicks,
+			NumberOfTicks:        3,
 			TickLength:           time.Second * 2,
 			AffectedByCastSpeed:  true,
 			HasteAffectsDuration: true,
@@ -45,6 +44,7 @@ func (mage *Mage) registerEvocation() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			manaPerTick = mage.MaxMana() * 0.15
 			spell.SelfHot().Apply(sim)
+			spell.SelfHot().TickOnce(sim)
 		},
 	})
 

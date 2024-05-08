@@ -93,7 +93,7 @@ func (mage *Mage) applyArcaneConcentration() {
 
 	clearCastingMod := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  MageSpellsAllDamaging,
-		FloatValue: -1,
+		FloatValue: -10,
 		Kind:       core.SpellMod_PowerCost_Pct,
 	})
 
@@ -184,7 +184,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			pomSpell.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&(MageSpellsAll^MageSpellInstantCast) == 0 {
+			if spell.ClassSpellMask&(MageSpellsAll^MageSpellInstantCast^MageSpellEvocation) == 0 {
 				return
 			}
 			aura.Deactivate(sim)
