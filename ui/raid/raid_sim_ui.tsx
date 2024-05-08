@@ -1,23 +1,23 @@
 import { default as pako } from 'pako';
 
-import { EmbeddedDetailedResults } from '../core/components/detailed_results.jsx';
-import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action.jsx';
-import { raidSimStatus } from '../core/launched_sims.js';
-import { Player } from '../core/player.js';
-import { Raid as RaidProto } from '../core/proto/api.js';
-import { Class, Encounter as EncounterProto } from '../core/proto/common.js';
-import { Blessings } from '../core/proto/paladin.js';
-import { BlessingsAssignments, RaidSimSettings } from '../core/proto/ui.js';
-import { getPlayerSpecFromPlayer, makeDefaultBlessings } from '../core/proto_utils/utils.js';
-import { Sim } from '../core/sim.js';
-import { SimUI } from '../core/sim_ui.jsx';
-import { EventID, TypedEvent } from '../core/typed_event.js';
-import { BlessingsPicker } from './blessings_picker.js';
-import * as ImportExport from './import_export.js';
-import { implementedSpecs } from './presets.js';
-import { RaidPicker } from './raid_picker.jsx';
-import { RaidTab } from './raid_tab.js';
-import { SettingsTab } from './settings_tab.js';
+import { EmbeddedDetailedResults } from '../core/components/detailed_results';
+import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action';
+import { raidSimStatus } from '../core/launched_sims';
+import { Player } from '../core/player';
+import { Raid as RaidProto } from '../core/proto/api';
+import { Class, Encounter as EncounterProto } from '../core/proto/common';
+import { Blessings } from '../core/proto/paladin';
+import { BlessingsAssignments, RaidSimSettings } from '../core/proto/ui';
+import { getPlayerSpecFromPlayer, makeDefaultBlessings } from '../core/proto_utils/utils';
+import { Sim } from '../core/sim';
+import { SimUI } from '../core/sim_ui';
+import { EventID, TypedEvent } from '../core/typed_event';
+import { BlessingsPicker } from './blessings_picker';
+import * as ImportExport from './import_export';
+import { implementedSpecs } from './presets';
+import { RaidPicker } from './raid_picker';
+import { RaidTab } from './raid_tab';
+import { SettingsTab } from './settings_tab';
 export interface RaidSimConfig {
 	knownIssues?: Array<string>;
 }
