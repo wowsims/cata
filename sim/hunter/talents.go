@@ -646,9 +646,11 @@ func (hunter *Hunter) registerSicEm() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			sicEmMod.Activate()
 		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			sicEmMod.Deactivate()
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask == core.ProcMaskMeleeMHSpecial {
-				sicEmMod.Deactivate()
 				aura.Deactivate(sim)
 			}
 		},
