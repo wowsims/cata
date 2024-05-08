@@ -4,35 +4,24 @@
 	--bs-body-font-size: 14px;
 	--container-padding: #{$gap-width-sm};
 	font-size: var(--bs-body-font-size);
-}
-
-@include media-breakpoint-up(lg) {
-	:root {
+	@include media-breakpoint-up(lg) {
 		--container-padding: 3rem;
 	}
-}
 
-@include media-breakpoint-up(xxl) {
-	:root {
+	@include media-breakpoint-up(xxl) {
 		--container-padding: 4rem;
 	}
-}
 
-@include media-breakpoint-up(1080p) {
-	:root {
+	@include media-breakpoint-up(1080p) {
 		--bs-body-font-size: 16px;
 	}
-}
 
-// We want to apply only to 1440p monitors, NOT 1080p Ultrawide
-@media (min-width: map-get($grid-breakpoints, 1440p)) and (max-aspect-ratio: 16/9) {
-	:root {
+	// We want to apply only to 1440p monitors, NOT 1080p Ultrawide
+	@media (min-width: map-get($grid-breakpoints, 1440p)) and (max-aspect-ratio: 16/9) {
 		--bs-body-font-size: 24px;
 	}
-}
 
-@include media-breakpoint-up(4k) {
-	:root {
+	@include media-breakpoint-up(4k) {
 		--bs-body-font-size: 32px;
 	}
 }

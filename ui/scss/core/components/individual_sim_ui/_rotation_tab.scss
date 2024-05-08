@@ -75,17 +75,13 @@
 	.rotation-settings {
 		flex: 1;
 		margin-right: $section-spacer;
+
+		@include media-breakpoint-down(md) {
+			margin-right: 0;
+		}
 	}
 
 	.cooldown-settings {
 		flex: 1;
-	}
-}
-
-@include media-breakpoint-down(md) {
-	#rotation-tab {
-		.rotation-settings {
-			margin-right: 0;
-		}
 	}
 }

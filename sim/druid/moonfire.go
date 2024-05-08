@@ -83,8 +83,9 @@ func (druid *Druid) registerMoonfireImpactSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				druid.ExtendingMoonfireStacks = 3
 				druid.SunfireDoT.Dot(target).Deactivate(sim)
+
+				druid.ExtendingMoonfireStacks = 3
 				druid.MoonfireDoT.Cast(sim, target)
 			}
 

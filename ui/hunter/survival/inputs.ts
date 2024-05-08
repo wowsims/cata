@@ -36,16 +36,5 @@ export const SVRotationConfig = {
 			],
 			showWhen: (player: Player<Spec.SpecSurvivalHunter>) => player.getSimpleRotation().type == RotationType.SingleTarget,
 		}),
-		InputHelpers.makeRotationBooleanInput<Spec.SpecSurvivalHunter>({
-			fieldName: 'trapWeave',
-			label: 'Trap Weave',
-			labelTooltip: 'Uses Explosive Trap at appropriate times. Note that selecting this will disable Black Arrow because they share a CD.',
-		}),
-		InputHelpers.makeRotationBooleanInput<Spec.SpecSurvivalHunter>({
-			fieldName: 'multiDotSerpentSting',
-			label: 'Multi-Dot Serpent Sting',
-			labelTooltip: 'Casts Serpent Sting on multiple targets',
-			changeEmitter: (player: Player<Spec.SpecSurvivalHunter>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
-		}),
 	],
 };
