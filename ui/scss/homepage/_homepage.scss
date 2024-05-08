@@ -120,12 +120,15 @@
 					margin-bottom: map-get($spacers, 5);
 				}
 
-				.sim-link,
-				.sim-link-dropdown {
+				& > .sim-link,
+				& > .sim-link-dropdown {
 					max-width: 25%;
 					flex: 1 25%;
 					margin-right: 25%;
+				}
 
+				.sim-link,
+				.sim-link-dropdown {
 					@include media-breakpoint-down(lg) {
 						max-width: 50%;
 						flex: 1 50%;
