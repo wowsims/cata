@@ -112,7 +112,7 @@ func (warlock *Warlock) registerMoltenCore() {
 	}
 
 	castReduction := -0.06 * float64(warlock.Talents.MoltenCore)
-	moltenCoreDamageBonus := 1 + 0.06*float64(warlock.Talents.MoltenCore)
+	moltenCoreDamageBonus := 0.06 * float64(warlock.Talents.MoltenCore)
 
 	damageMultiplierMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
