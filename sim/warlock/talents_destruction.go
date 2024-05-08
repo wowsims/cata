@@ -18,7 +18,7 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 	// Shadow And Flame
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask:  WarlockSpellShadowBolt | WarlockSpellIncinerate,
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: []float64{0.0, 0.04, 0.08, 0.12}[warlock.Talents.ShadowAndFlame],
 	})
 
