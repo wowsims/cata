@@ -174,10 +174,13 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 166 + (1.228 * (0.5 * spell.SpellPower()))
+			// shadowbite is a weird spell that seems to get it's SP scaling via a secondary effect,
+			// so even though it has variance that only applies to the "base" damage
+			// the second "base" value of 182.5 is probably not correct
+			baseDamage := 182.5 + pet.Owner.CalcAndRollDamageRange(sim, 0.12600000203, 0.34999999404)
+			baseDamage += 1.228 * spell.SpellPower()
 
 			activeDots := 0
-
 			for _, spell := range pet.Owner.Spellbook {
 				if spell.ClassSpellMask&WarlockDoT > 0 && spell.Dot(target).IsActive() {
 					activeDots++
@@ -185,8 +188,7 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 			}
 
 			baseDamage *= 1 + 0.15*float64(activeDots)
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DealDamage(sim, result)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}))
 }
