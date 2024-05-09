@@ -10,13 +10,14 @@ func (mage *Mage) registerCombustionSpell() {
 	if !mage.Talents.Combustion {
 		return
 	}
-	var combustionDotDamage float64
 
-	mage.Combustion = mage.RegisterSpell(core.SpellConfig{
+	var combustionDotDamage float64
+	mage.CombustionImpact = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11129},
 		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskEmpty, // application burst might have a proc that might necessitate separating
-		ClassSpellMask: MageSpellCombustion,
+		ProcMask:       core.ProcMaskEmpty, // need to check proc mask for impact damage
+		ClassSpellMask: MageSpellCombustionApplication,
+		Flags:          core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -27,6 +28,39 @@ func (mage *Mage) registerCombustionSpell() {
 				Duration: time.Minute * 2,
 			},
 		},
+		DamageMultiplierAdditive: 1,
+		CritMultiplier:           mage.DefaultMageCritMultiplier(),
+		BonusCoefficient:         1.113,
+		ThreatMultiplier:         1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := 0.429 * mage.ClassSpellScaling
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if result.Landed() {
+				spell.DealDamage(sim, result)
+				mage.Combustion.Cast(sim, target)
+			}
+		},
+	})
+
+	var LBContribution float64
+	mage.Combustion = mage.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 83853},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskEmpty,
+		ClassSpellMask: MageSpellCombustion,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagIgnoreAttackerModifiers,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
+		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   mage.DefaultMageCritMultiplier(),
+		ThreatMultiplier: 1,
+
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Combustion Dot",
@@ -43,45 +77,48 @@ func (mage *Mage) registerCombustionSpell() {
 				var spellDPS float64
 				for _, spell := range dotSpells {
 					dots := spell.Dot(target)
-					// EJ states that combustion double dips on mastery for LB + Pyro, but not ignite
-					// https://web.archive.org/web/20120207223126/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/
-					if spell != mage.Ignite {
+					if spell == mage.LivingBomb {
 						if dots != nil && dots.IsActive() {
-							spellDPS = spell.Dot(target).CalcSnapshotDamage(sim, target, dots.OutcomeTick).Damage / 3
-							//fmt.Println(dots.Label, " snapped for : ", spellDPS)
+							// Living Bomb uses Critical Mass multiplicative in the combustion calculation
+							LBContribution = (234 + 0.258*spell.SpellPower()) * 1.25 * (1 + 0.01*float64(mage.Talents.FirePower)) * (1.224 + 0.028*mage.GetMasteryPoints()) * (1 + 0.05*float64(mage.Talents.CriticalMass))
+							LBContribution /= 3
+							spellDPS = LBContribution
+						} else {
+							spellDPS = 0
 						}
-					} else {
-						//This part is for ignite. The denominator will probably be variable if it works as intended in cata.
+					} else if spell == mage.Ignite {
+						//Ignite's Contribution. Multiply by mastery again.
 						if dots != nil && dots.IsActive() {
-							spellDPS = spell.Dot(target).SnapshotBaseDamage / 2
-							//fmt.Println(dots.Label, " snapped for : ", spellDPS)
+							spellDPS = spell.Dot(target).SnapshotBaseDamage / 2 * (1.224 + 0.028*mage.GetMasteryPoints())
+						} else {
+							spellDPS = 0
+						}
+					} else if spell == mage.PyroblastDot {
+						if dots != nil && dots.IsActive() {
+							spellDPS = dots.SnapshotBaseDamage * 1.25 * (1 + 0.01*float64(mage.Talents.FirePower)) * (1.224 + 0.028*mage.GetMasteryPoints())
+						} else {
+							spellDPS = 0
 						}
 					}
 					combustionDotDamage += spellDPS
 				}
 				dot.Snapshot(target, combustionDotDamage)
+				dot.SnapshotAttackerMultiplier = 1
+
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				dot.Spell.DealPeriodicDamage(sim, result)
 			},
 		},
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultMageCritMultiplier(),
-		BonusCoefficient:         1.113,
-		ThreatMultiplier:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 0.429 * mage.ClassSpellScaling
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
-			if result.Landed() {
-				spell.DealDamage(sim, result)
-				spell.Dot(target).Apply(sim)
-			}
+			mage.Combustion.Dot(target).Apply(sim)
 		},
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.Combustion,
+		Spell: mage.CombustionImpact,
 		Type:  core.CooldownTypeDPS,
 	})
 }

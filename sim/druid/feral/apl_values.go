@@ -168,7 +168,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 		if cat.CatCharge.CanCast(sim, cat.CurrentTarget) {
 			cat.CatCharge.Cast(sim, cat.CurrentTarget)
 		} else {
-			cat.MoveTo(core.MaxMeleeRange - 1, sim) // movement aura is discretized in 1 yard intervals, so need to overshoot to guarantee melee range
+			cat.MoveTo(core.MaxMeleeRange-1, sim) // movement aura is discretized in 1 yard intervals, so need to overshoot to guarantee melee range
 			return
 		}
 	}
