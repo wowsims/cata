@@ -170,7 +170,7 @@ func applyRaceEffects(agent Agent) {
 		})
 
 		// Axe specialization
-		applyWeaponSpecialization(character, 5*ExpertisePerQuarterPercentReduction,
+		applyWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
 			proto.WeaponType_WeaponTypeAxe, proto.WeaponType_WeaponTypeFist)
 	case proto.Race_RaceTauren:
 		character.PseudoStats.ReducedNatureHitTakenChance += 0.02
