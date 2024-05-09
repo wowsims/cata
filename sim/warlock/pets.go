@@ -28,7 +28,7 @@ func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
 
 			// almost certainly wrong, needs more testing
 			stats.SpellCrit: ownerStats[stats.SpellCrit],
-			stats.MeleeCrit: ownerStats[stats.MeleeCrit],
+			stats.MeleeCrit: ownerStats[stats.SpellCrit],
 
 			// pets inherit haste rating directly, evidenced by:
 			// 1. haste staying the same if the warlock has windfury totem while the pet doesn't
@@ -43,7 +43,7 @@ func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
 	}
 }
 
-func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStats stats.Stats, powerModifier float64,
+func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStats stats.Stats, meleeMod float64, powerModifier float64,
 	attackOptions *core.AutoAttackOptions, statInheritance core.PetStatInheritance) *WarlockPet {
 
 	pet := &WarlockPet{
@@ -58,6 +58,7 @@ func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStat
 		core.CritPerAgiMaxLevel[proto.Class_ClassPaladin]*core.CritRatingPerCritChance)
 	pet.AddStatDependency(stats.Intellect, stats.SpellCrit,
 		core.CritPerIntMaxLevel[proto.Class_ClassPaladin]*core.CritRatingPerCritChance)
+	pet.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= meleeMod
 	if attackOptions != nil {
 		pet.EnableAutoAttacks(pet, *attackOptions)
 	}
@@ -108,10 +109,11 @@ func (warlock *Warlock) registerPets() {
 
 	inheritance := warlock.MakeStatInheritance()
 
-	warlock.Felhunter = warlock.makePet(proto.WarlockOptions_Felhunter, baseStats, 0.77, autoAttackOptions, inheritance)
-	warlock.Felguard = warlock.makePet(proto.WarlockOptions_Felguard, baseStats, 0.77, autoAttackOptions, inheritance)
-	warlock.Imp = warlock.makePet(proto.WarlockOptions_Imp, impBaseStats, 1.0, nil, inheritance)
-	warlock.Succubus = warlock.makePet(proto.WarlockOptions_Succubus, baseStats, 0.77, autoAttackOptions, inheritance)
+	warlock.Felhunter = warlock.makePet(proto.WarlockOptions_Felhunter, baseStats, 0.8, 0.77, autoAttackOptions, inheritance)
+	warlock.Felguard = warlock.makePet(proto.WarlockOptions_Felguard, baseStats, 1.0, 0.77, autoAttackOptions, inheritance)
+	warlock.Imp = warlock.makePet(proto.WarlockOptions_Imp, impBaseStats, 1.0, 1.0, nil, inheritance)
+	// TODO: using the modifier for incubus for now, maybe the 1.025 from succubus is the correct one
+	warlock.Succubus = warlock.makePet(proto.WarlockOptions_Succubus, baseStats, 1.05, 0.77, autoAttackOptions, inheritance)
 }
 
 func (warlock *Warlock) registerPetAbilities() {
@@ -174,19 +176,21 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 166 + (1.228 * (0.5 * spell.SpellPower()))
+			// shadowbite is a weird spell that seems to get it's SP scaling via a secondary effect,
+			// so even though it has variance that only applies to the "base" damage
+			// the second "base" value of 182.5 is probably not correct
+			baseDamage := 182.5 + pet.Owner.CalcAndRollDamageRange(sim, 0.12600000203, 0.34999999404)
+			baseDamage += 1.228 * spell.SpellPower()
 
 			activeDots := 0
-
 			for _, spell := range pet.Owner.Spellbook {
 				if spell.ClassSpellMask&WarlockDoT > 0 && spell.Dot(target).IsActive() {
 					activeDots++
 				}
 			}
 
-			baseDamage *= 1 + 0.15*float64(activeDots)
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DealDamage(sim, result)
+			baseDamage *= 1 + 0.3*float64(activeDots)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}))
 }

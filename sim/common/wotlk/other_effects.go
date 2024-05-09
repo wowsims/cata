@@ -10,119 +10,119 @@ import (
 )
 
 func init() {
-	core.NewItemEffect(37220, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 37220}
+	// core.NewItemEffect(37220, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	actionID := core.ActionID{ItemID: 37220}
 
-		procAura := character.RegisterAura(core.Aura{
-			Label:    "Essence of Gossamer",
-			ActionID: actionID,
-			Duration: time.Second * 10,
-		})
+	// 	procAura := character.RegisterAura(core.Aura{
+	// 		Label:    "Essence of Gossamer",
+	// 		ActionID: actionID,
+	// 		Duration: time.Second * 10,
+	// 	})
 
-		character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if procAura.IsActive() {
-				result.Damage = max(0, result.Damage-140)
-			}
-		})
+	// 	character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	// 		if procAura.IsActive() {
+	// 			result.Damage = max(0, result.Damage-140)
+	// 		}
+	// 	})
 
-		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Essence of Gossamer Trigger",
-			Callback:   core.CallbackOnSpellHitTaken,
-			ProcMask:   core.ProcMaskMelee,
-			Harmful:    true,
-			ProcChance: 0.05,
-			ICD:        time.Second * 50,
-			ActionID:   actionID,
-			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				procAura.Activate(sim)
-			},
-		})
-		procAura.Icd = triggerAura.Icd
-	})
-	core.NewItemEffect(45507, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 45507}
+	// 	triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	// 		Name:       "Essence of Gossamer Trigger",
+	// 		Callback:   core.CallbackOnSpellHitTaken,
+	// 		ProcMask:   core.ProcMaskMelee,
+	// 		Harmful:    true,
+	// 		ProcChance: 0.05,
+	// 		ICD:        time.Second * 50,
+	// 		ActionID:   actionID,
+	// 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+	// 			procAura.Activate(sim)
+	// 		},
+	// 	})
+	// 	procAura.Icd = triggerAura.Icd
+	// })
+	// core.NewItemEffect(45507, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	actionID := core.ActionID{ItemID: 45507}
 
-		procAura := character.RegisterAura(core.Aura{
-			Label:    "The General's Heart",
-			ActionID: actionID,
-			Duration: time.Second * 10,
-		})
+	// 	procAura := character.RegisterAura(core.Aura{
+	// 		Label:    "The General's Heart",
+	// 		ActionID: actionID,
+	// 		Duration: time.Second * 10,
+	// 	})
 
-		character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if procAura.IsActive() {
-				result.Damage = max(0, result.Damage-205)
-			}
-		})
+	// 	character.AddDynamicDamageTakenModifier(func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	// 		if procAura.IsActive() {
+	// 			result.Damage = max(0, result.Damage-205)
+	// 		}
+	// 	})
 
-		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "The General's Heart Trigger",
-			Callback:   core.CallbackOnSpellHitTaken,
-			ProcMask:   core.ProcMaskMelee,
-			Harmful:    true,
-			ProcChance: 0.05,
-			ICD:        time.Second * 50,
-			ActionID:   actionID,
-			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				procAura.Activate(sim)
-			},
-		})
-		procAura.Icd = triggerAura.Icd
-	})
+	// 	triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	// 		Name:       "The General's Heart Trigger",
+	// 		Callback:   core.CallbackOnSpellHitTaken,
+	// 		ProcMask:   core.ProcMaskMelee,
+	// 		Harmful:    true,
+	// 		ProcChance: 0.05,
+	// 		ICD:        time.Second * 50,
+	// 		ActionID:   actionID,
+	// 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+	// 			procAura.Activate(sim)
+	// 		},
+	// 	})
+	// 	procAura.Icd = triggerAura.Icd
+	// })
 
-	core.NewItemEffect(37734, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 37734}
+	// core.NewItemEffect(37734, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	actionID := core.ActionID{ItemID: 37734}
 
-		procAuras := make([]*core.Aura, len(character.Env.AllUnits))
-		for _, target := range character.Env.AllUnits {
-			if !character.IsOpponent(target) {
-				procAuras[target.UnitIndex] = target.GetOrRegisterAura(core.Aura{
-					Label:     "Touched by a Troll",
-					ActionID:  core.ActionID{SpellID: 60518},
-					Duration:  time.Second * 10,
-					MaxStacks: 5,
-					OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-						aura.Unit.PseudoStats.BonusHealingTaken += 58 * float64(newStacks-oldStacks)
-					},
-				})
-			}
-		}
+	// 	procAuras := make([]*core.Aura, len(character.Env.AllUnits))
+	// 	for _, target := range character.Env.AllUnits {
+	// 		if !character.IsOpponent(target) {
+	// 			procAuras[target.UnitIndex] = target.GetOrRegisterAura(core.Aura{
+	// 				Label:     "Touched by a Troll",
+	// 				ActionID:  core.ActionID{SpellID: 60518},
+	// 				Duration:  time.Second * 10,
+	// 				MaxStacks: 5,
+	// 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+	// 					aura.Unit.PseudoStats.BonusHealingTaken += 58 * float64(newStacks-oldStacks)
+	// 				},
+	// 			})
+	// 		}
+	// 	}
 
-		activeAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Talisman of Troll Divinity",
-			ActionID: actionID,
-			Duration: time.Second * 20,
-			Callback: core.CallbackOnHealDealt,
-			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
-				procAuras[result.Target.UnitIndex].Activate(sim)
-			},
-		})
+	// 	activeAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	// 		Name:     "Talisman of Troll Divinity",
+	// 		ActionID: actionID,
+	// 		Duration: time.Second * 20,
+	// 		Callback: core.CallbackOnHealDealt,
+	// 		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+	// 			procAuras[result.Target.UnitIndex].Activate(sim)
+	// 		},
+	// 	})
 
-		spell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolPhysical,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete,
+	// 	spell := character.RegisterSpell(core.SpellConfig{
+	// 		ActionID:    actionID,
+	// 		SpellSchool: core.SpellSchoolPhysical,
+	// 		ProcMask:    core.ProcMaskEmpty,
+	// 		Flags:       core.SpellFlagNoOnCastComplete,
 
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 2,
-				},
-			},
+	// 		Cast: core.CastConfig{
+	// 			CD: core.Cooldown{
+	// 				Timer:    character.NewTimer(),
+	// 				Duration: time.Minute * 2,
+	// 			},
+	// 		},
 
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				activeAura.Activate(sim)
-			},
-		})
+	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	// 			activeAura.Activate(sim)
+	// 		},
+	// 	})
 
-		character.AddMajorCooldown(core.MajorCooldown{
-			Type:  core.CooldownTypeDPS,
-			Spell: spell,
-		})
-	})
+	// 	character.AddMajorCooldown(core.MajorCooldown{
+	// 		Type:  core.CooldownTypeDPS,
+	// 		Spell: spell,
+	// 	})
+	// })
 
 	NewItemEffectWithHeroic(func(isHeroic bool) {
 		name := "Deathbringer's Will"
@@ -203,102 +203,102 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(40258, func(agent core.Agent) {
-		character := agent.GetCharacter()
+	// core.NewItemEffect(40258, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
 
-		healSpell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{ItemID: 40258},
-			SpellSchool: core.SpellSchoolPhysical,
-			ProcMask:    core.ProcMaskSpellHealing,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagHelpful,
+	// 	healSpell := character.GetOrRegisterSpell(core.SpellConfig{
+	// 		ActionID:    core.ActionID{ItemID: 40258},
+	// 		SpellSchool: core.SpellSchoolPhysical,
+	// 		ProcMask:    core.ProcMaskSpellHealing,
+	// 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagHelpful,
 
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
+	// 		DamageMultiplier: 1,
+	// 		ThreatMultiplier: 1,
 
-			Hot: core.DotConfig{
-				Aura: core.Aura{
-					Label: "Forethought Talisman",
-				},
-				NumberOfTicks: 4,
-				TickLength:    time.Second * 3,
-				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-					dot.SnapshotBaseDamage = 3752.0 / 4
-					dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
-				},
-				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					dot.CalcAndDealPeriodicSnapshotHealing(sim, target, dot.OutcomeTick)
-				},
-			},
-		})
+	// 		Hot: core.DotConfig{
+	// 			Aura: core.Aura{
+	// 				Label: "Forethought Talisman",
+	// 			},
+	// 			NumberOfTicks: 4,
+	// 			TickLength:    time.Second * 3,
+	// 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
+	// 				dot.SnapshotBaseDamage = 3752.0 / 4
+	// 				dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
+	// 			},
+	// 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+	// 				dot.CalcAndDealPeriodicSnapshotHealing(sim, target, dot.OutcomeTick)
+	// 			},
+	// 		},
+	// 	})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Forethought Talisman",
-			Callback:   core.CallbackOnHealDealt,
-			Outcome:    core.OutcomeCrit,
-			ProcChance: 0.2,
-			ICD:        time.Second * 45,
-			ActionID:   core.ActionID{ItemID: 40258},
-			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
-				healSpell.Hot(result.Target).Apply(sim)
-			},
-		})
-	})
+	// 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	// 		Name:       "Forethought Talisman",
+	// 		Callback:   core.CallbackOnHealDealt,
+	// 		Outcome:    core.OutcomeCrit,
+	// 		ProcChance: 0.2,
+	// 		ICD:        time.Second * 45,
+	// 		ActionID:   core.ActionID{ItemID: 40258},
+	// 		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+	// 			healSpell.Hot(result.Target).Apply(sim)
+	// 		},
+	// 	})
+	// })
 
-	core.NewItemEffect(40382, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 40382}
-		manaMetrics := character.NewManaMetrics(actionID)
+	// core.NewItemEffect(40382, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	actionID := core.ActionID{ItemID: 40382}
+	// 	manaMetrics := character.NewManaMetrics(actionID)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Soul of the Dead",
-			Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			Outcome:    core.OutcomeCrit,
-			ProcChance: 0.25,
-			ICD:        time.Second * 45,
-			ActionID:   core.ActionID{ItemID: 40382},
-			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				character.AddMana(sim, 900, manaMetrics)
-			},
-		})
-	})
+	// 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	// 		Name:       "Soul of the Dead",
+	// 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+	// 		ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
+	// 		Outcome:    core.OutcomeCrit,
+	// 		ProcChance: 0.25,
+	// 		ICD:        time.Second * 45,
+	// 		ActionID:   core.ActionID{ItemID: 40382},
+	// 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+	// 			character.AddMana(sim, 900, manaMetrics)
+	// 		},
+	// 	})
+	// })
 
-	core.NewItemEffect(41121, func(agent core.Agent) { // Gnomish Lightning Generator
-		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 41121}
+	// core.NewItemEffect(41121, func(agent core.Agent) { // Gnomish Lightning Generator
+	// 	character := agent.GetCharacter()
+	// 	actionID := core.ActionID{ItemID: 41121}
 
-		spell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete,
+	// 	spell := character.GetOrRegisterSpell(core.SpellConfig{
+	// 		ActionID:    actionID,
+	// 		SpellSchool: core.SpellSchoolNature,
+	// 		ProcMask:    core.ProcMaskEmpty,
+	// 		Flags:       core.SpellFlagNoOnCastComplete,
 
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 1,
-				},
-				SharedCD: core.Cooldown{
-					Timer:    character.GetOffensiveTrinketCD(),
-					Duration: time.Second * 10,
-				},
-			},
+	// 		Cast: core.CastConfig{
+	// 			CD: core.Cooldown{
+	// 				Timer:    character.NewTimer(),
+	// 				Duration: time.Minute * 1,
+	// 			},
+	// 			SharedCD: core.Cooldown{
+	// 				Timer:    character.GetOffensiveTrinketCD(),
+	// 				Duration: time.Second * 10,
+	// 			},
+	// 		},
 
-			DamageMultiplier: 1,
-			CritMultiplier:   character.DefaultSpellCritMultiplier(),
-			ThreatMultiplier: 1,
+	// 		DamageMultiplier: 1,
+	// 		CritMultiplier:   character.DefaultSpellCritMultiplier(),
+	// 		ThreatMultiplier: 1,
 
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, sim.Roll(1530, 1870), spell.OutcomeMagicHitAndCrit)
-			},
-		})
+	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	// 			spell.CalcAndDealDamage(sim, target, sim.Roll(1530, 1870), spell.OutcomeMagicHitAndCrit)
+	// 		},
+	// 	})
 
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    spell,
-			Priority: core.CooldownPriorityLow, // Use low prio so other actives get used first.
-			Type:     core.CooldownTypeDPS,
-		})
-	})
+	// 	character.AddMajorCooldown(core.MajorCooldown{
+	// 		Spell:    spell,
+	// 		Priority: core.CooldownPriorityLow, // Use low prio so other actives get used first.
+	// 		Type:     core.CooldownTypeDPS,
+	// 	})
+	// })
 
 	core.NewItemEffect(46017, func(agent core.Agent) { // Val'anyr
 		character := agent.GetCharacter()
@@ -344,88 +344,88 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(50259, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 50259}
+	// core.NewItemEffect(50259, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	actionID := core.ActionID{ItemID: 50259}
 
-		activeAura := core.MakeStackingAura(character, core.StackingStatAura{
-			Aura: core.Aura{
-				Label:     "Nevermelting Ice Crystal",
-				ActionID:  actionID,
-				Duration:  time.Second * 20,
-				MaxStacks: 5,
-			},
-			BonusPerStack: stats.Stats{stats.MeleeCrit: 184, stats.SpellCrit: 184},
-		})
+	// 	activeAura := core.MakeStackingAura(character, core.StackingStatAura{
+	// 		Aura: core.Aura{
+	// 			Label:     "Nevermelting Ice Crystal",
+	// 			ActionID:  actionID,
+	// 			Duration:  time.Second * 20,
+	// 			MaxStacks: 5,
+	// 		},
+	// 		BonusPerStack: stats.Stats{stats.MeleeCrit: 184, stats.SpellCrit: 184},
+	// 	})
 
-		core.ApplyProcTriggerCallback(&character.Unit, activeAura, core.ProcTrigger{
-			Callback: core.CallbackOnSpellHitDealt,
-			ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc | core.ProcMaskSuppressedProc,
-			Outcome:  core.OutcomeCrit,
-			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				activeAura.RemoveStack(sim)
-			},
-		})
+	// 	core.ApplyProcTriggerCallback(&character.Unit, activeAura, core.ProcTrigger{
+	// 		Callback: core.CallbackOnSpellHitDealt,
+	// 		ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc | core.ProcMaskSuppressedProc,
+	// 		Outcome:  core.OutcomeCrit,
+	// 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+	// 			activeAura.RemoveStack(sim)
+	// 		},
+	// 	})
 
-		spell := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete,
+	// 	spell := character.GetOrRegisterSpell(core.SpellConfig{
+	// 		ActionID: actionID,
+	// 		Flags:    core.SpellFlagNoOnCastComplete,
 
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 3,
-				},
-				SharedCD: core.Cooldown{
-					Timer:    character.GetOffensiveTrinketCD(),
-					Duration: time.Second * 20,
-				},
-			},
+	// 		Cast: core.CastConfig{
+	// 			CD: core.Cooldown{
+	// 				Timer:    character.NewTimer(),
+	// 				Duration: time.Minute * 3,
+	// 			},
+	// 			SharedCD: core.Cooldown{
+	// 				Timer:    character.GetOffensiveTrinketCD(),
+	// 				Duration: time.Second * 20,
+	// 			},
+	// 		},
 
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				activeAura.Activate(sim)
-				activeAura.SetStacks(sim, 5)
-			},
-		})
+	// 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+	// 			activeAura.Activate(sim)
+	// 			activeAura.SetStacks(sim, 5)
+	// 		},
+	// 	})
 
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell: spell,
-			Type:  core.CooldownTypeDPS,
-		})
-	})
+	// 	character.AddMajorCooldown(core.MajorCooldown{
+	// 		Spell: spell,
+	// 		Type:  core.CooldownTypeDPS,
+	// 	})
+	// })
 
-	NewItemEffectWithHeroic(func(isHeroic bool) { // Sliver of Pure Ice
-		itemID := int32(50339)
-		amount := 1625.0
-		if isHeroic {
-			itemID = 50346
-			amount = 1830.0
-		}
+	// NewItemEffectWithHeroic(func(isHeroic bool) { // Sliver of Pure Ice
+	// 	itemID := int32(50339)
+	// 	amount := 1625.0
+	// 	if isHeroic {
+	// 		itemID = 50346
+	// 		amount = 1830.0
+	// 	}
 
-		core.NewItemEffect(itemID, func(agent core.Agent) {
-			character := agent.GetCharacter()
-			actionID := core.ActionID{ItemID: itemID}
-			manaMetrics := character.NewManaMetrics(actionID)
+	// 	core.NewItemEffect(itemID, func(agent core.Agent) {
+	// 		character := agent.GetCharacter()
+	// 		actionID := core.ActionID{ItemID: itemID}
+	// 		manaMetrics := character.NewManaMetrics(actionID)
 
-			spell := character.RegisterSpell(core.SpellConfig{
-				ActionID: actionID,
-				Flags:    core.SpellFlagNoOnCastComplete,
-				Cast: core.CastConfig{
-					CD: core.Cooldown{
-						Timer:    character.NewTimer(),
-						Duration: time.Minute * 2,
-					},
-				},
-				ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-					character.AddMana(sim, amount, manaMetrics)
-				},
-			})
-			character.AddMajorCooldown(core.MajorCooldown{
-				Type:  core.CooldownTypeMana,
-				Spell: spell,
-			})
-		})
-	})
+	// 		spell := character.RegisterSpell(core.SpellConfig{
+	// 			ActionID: actionID,
+	// 			Flags:    core.SpellFlagNoOnCastComplete,
+	// 			Cast: core.CastConfig{
+	// 				CD: core.Cooldown{
+	// 					Timer:    character.NewTimer(),
+	// 					Duration: time.Minute * 2,
+	// 				},
+	// 			},
+	// 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+	// 				character.AddMana(sim, amount, manaMetrics)
+	// 			},
+	// 		})
+	// 		character.AddMajorCooldown(core.MajorCooldown{
+	// 			Type:  core.CooldownTypeMana,
+	// 			Spell: spell,
+	// 		})
+	// 	})
+	// })
 
 	NewItemEffectWithHeroic(func(isHeroic bool) {
 		name := "Corpse Tongue Coin"
@@ -516,53 +516,53 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(42413, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{SpellID: 56186}
-		manaMetrics := character.NewManaMetrics(actionID)
+	// core.NewItemEffect(42413, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	actionID := core.ActionID{SpellID: 56186}
+	// 	manaMetrics := character.NewManaMetrics(actionID)
 
-		spell := character.RegisterSpell(core.SpellConfig{
-			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete,
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 5,
-				},
-			},
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-					NumTicks: 12,
-					Period:   time.Second * 1,
-					OnAction: func(sim *core.Simulation) {
-						character.AddMana(sim, 195, manaMetrics)
-					},
-				})
-			},
-		})
-		character.AddMajorCooldown(core.MajorCooldown{
-			Type:  core.CooldownTypeMana,
-			Spell: spell,
-		})
-	})
+	// 	spell := character.RegisterSpell(core.SpellConfig{
+	// 		ActionID: actionID,
+	// 		Flags:    core.SpellFlagNoOnCastComplete,
+	// 		Cast: core.CastConfig{
+	// 			CD: core.Cooldown{
+	// 				Timer:    character.NewTimer(),
+	// 				Duration: time.Minute * 5,
+	// 			},
+	// 		},
+	// 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+	// 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+	// 				NumTicks: 12,
+	// 				Period:   time.Second * 1,
+	// 				OnAction: func(sim *core.Simulation) {
+	// 					character.AddMana(sim, 195, manaMetrics)
+	// 				},
+	// 			})
+	// 		},
+	// 	})
+	// 	character.AddMajorCooldown(core.MajorCooldown{
+	// 		Type:  core.CooldownTypeMana,
+	// 		Spell: spell,
+	// 	})
+	// })
 
-	core.NewItemEffect(47215, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{SpellID: 67667}
-		manaMetrics := character.NewManaMetrics(actionID)
+	// core.NewItemEffect(47215, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	actionID := core.ActionID{SpellID: 67667}
+	// 	manaMetrics := character.NewManaMetrics(actionID)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Tears of the Vanquished Trigger",
-			Callback:   core.CallbackOnCastComplete,
-			SpellFlags: core.SpellFlagHelpful,
-			ProcChance: 0.25,
-			ICD:        time.Second * 45,
-			ActionID:   core.ActionID{ItemID: 47215},
-			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				character.AddMana(sim, 500, manaMetrics)
-			},
-		})
-	})
+	// 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	// 		Name:       "Tears of the Vanquished Trigger",
+	// 		Callback:   core.CallbackOnCastComplete,
+	// 		SpellFlags: core.SpellFlagHelpful,
+	// 		ProcChance: 0.25,
+	// 		ICD:        time.Second * 45,
+	// 		ActionID:   core.ActionID{ItemID: 47215},
+	// 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+	// 			character.AddMana(sim, 500, manaMetrics)
+	// 		},
+	// 	})
+	// })
 
 	NewItemEffectWithHeroic(func(isHeroic bool) {
 		name := "Heartpierce"
@@ -636,60 +636,60 @@ func init() {
 		})
 	})
 
-	core.NewSimpleStatOffensiveTrinketEffectWithOtherEffects(50260, stats.Stats{stats.MeleeHaste: 464, stats.SpellHaste: 464}, time.Second*20, time.Minute*2, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 50260}
-		manaMetrics := character.NewManaMetrics(actionID)
+	// core.NewSimpleStatOffensiveTrinketEffectWithOtherEffects(50260, stats.Stats{stats.MeleeHaste: 464, stats.SpellHaste: 464}, time.Second*20, time.Minute*2, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	actionID := core.ActionID{ItemID: 50260}
+	// 	manaMetrics := character.NewManaMetrics(actionID)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Ephemeral Snowflake",
-			Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
-			ICD:      time.Millisecond * 250,
-			ActionID: actionID,
-			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				character.AddMana(sim, 11, manaMetrics)
-			},
-		})
-	})
+	// 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	// 		Name:     "Ephemeral Snowflake",
+	// 		Callback: core.CallbackOnHealDealt | core.CallbackOnPeriodicHealDealt,
+	// 		ICD:      time.Millisecond * 250,
+	// 		ActionID: actionID,
+	// 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+	// 			character.AddMana(sim, 11, manaMetrics)
+	// 		},
+	// 	})
+	// })
 
-	core.NewItemEffect(50356, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{SpellID: 71586}
+	// core.NewItemEffect(50356, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	actionID := core.ActionID{SpellID: 71586}
 
-		spell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolHoly,
-			ProcMask:    core.ProcMaskSpellHealing,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagHelpful,
+	// 	spell := character.RegisterSpell(core.SpellConfig{
+	// 		ActionID:    actionID,
+	// 		SpellSchool: core.SpellSchoolHoly,
+	// 		ProcMask:    core.ProcMaskSpellHealing,
+	// 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagHelpful,
 
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 2,
-				},
-			},
+	// 		Cast: core.CastConfig{
+	// 			CD: core.Cooldown{
+	// 				Timer:    character.NewTimer(),
+	// 				Duration: time.Minute * 2,
+	// 			},
+	// 		},
 
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
+	// 		DamageMultiplier: 1,
+	// 		ThreatMultiplier: 1,
 
-			Shield: core.ShieldConfig{
-				SelfOnly: true,
-				Aura: core.Aura{
-					Label:    "Hardened Skin",
-					Duration: time.Second * 10,
-				},
-			},
+	// 		Shield: core.ShieldConfig{
+	// 			SelfOnly: true,
+	// 			Aura: core.Aura{
+	// 				Label:    "Hardened Skin",
+	// 				Duration: time.Second * 10,
+	// 			},
+	// 		},
 
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-				spell.SelfShield().Apply(sim, 6400)
-			},
-		})
+	// 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+	// 			spell.SelfShield().Apply(sim, 6400)
+	// 		},
+	// 	})
 
-		character.AddMajorCooldown(core.MajorCooldown{
-			Type:  core.CooldownTypeSurvival,
-			Spell: spell,
-		})
-	})
+	// 	character.AddMajorCooldown(core.MajorCooldown{
+	// 		Type:  core.CooldownTypeSurvival,
+	// 		Spell: spell,
+	// 	})
+	// })
 
 	NewItemEffectWithHeroic(func(isHeroic bool) {
 		name := "Bauble of True Blood"
@@ -1003,84 +1003,84 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(37111, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: 37111}
+	// core.NewItemEffect(37111, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	actionID := core.ActionID{ItemID: 37111}
 
-		if !character.HasManaBar() {
-			return
-		}
-		resourceMetricsMana := character.NewManaMetrics(actionID)
+	// 	if !character.HasManaBar() {
+	// 		return
+	// 	}
+	// 	resourceMetricsMana := character.NewManaMetrics(actionID)
 
-		procAura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Soul Preserver",
-			ActionID: actionID,
-			Duration: time.Second * 15,
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if !spell.ProcMask.Matches(core.ProcMaskSpellHealing) || spell.CurCast.Cost == 0 {
-					return
-				}
-				amount := spell.CurCast.Cost
-				if spell.CurCast.Cost > 800 {
-					amount = 800
-				}
-				spell.Unit.AddMana(sim, amount, resourceMetricsMana)
-				aura.Deactivate(sim)
-			},
-		})
+	// 	procAura := character.GetOrRegisterAura(core.Aura{
+	// 		Label:    "Soul Preserver",
+	// 		ActionID: actionID,
+	// 		Duration: time.Second * 15,
+	// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+	// 			if !spell.ProcMask.Matches(core.ProcMaskSpellHealing) || spell.CurCast.Cost == 0 {
+	// 				return
+	// 			}
+	// 			amount := spell.CurCast.Cost
+	// 			if spell.CurCast.Cost > 800 {
+	// 				amount = 800
+	// 			}
+	// 			spell.Unit.AddMana(sim, amount, resourceMetricsMana)
+	// 			aura.Deactivate(sim)
+	// 		},
+	// 	})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Soul Preserver Trigger",
-			Callback:   core.CallbackOnHealDealt,
-			ProcMask:   core.ProcMaskSpellHealing,
-			ProcChance: 0.02,
-			ActionID:   actionID,
-			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				procAura.Activate(sim)
-			},
-		})
-	})
+	// 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	// 		Name:       "Soul Preserver Trigger",
+	// 		Callback:   core.CallbackOnHealDealt,
+	// 		ProcMask:   core.ProcMaskSpellHealing,
+	// 		ProcChance: 0.02,
+	// 		ActionID:   actionID,
+	// 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+	// 			procAura.Activate(sim)
+	// 		},
+	// 	})
+	// })
 
-	core.NewItemEffect(21685, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		statBonusPerStack := stats.Stats{stats.ArcaneResistance: 10, stats.FireResistance: 10, stats.FrostResistance: 10, stats.NatureResistance: 10, stats.ShadowResistance: 10}
+	// core.NewItemEffect(21685, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+	// 	statBonusPerStack := stats.Stats{stats.ArcaneResistance: 10, stats.FireResistance: 10, stats.FrostResistance: 10, stats.NatureResistance: 10, stats.ShadowResistance: 10}
 
-		mercurialShieldAura := character.GetOrRegisterAura(core.Aura{
-			Label:     "Mercurial Shield",
-			ActionID:  core.ActionID{SpellID: 26464},
-			Duration:  time.Second * 60,
-			MaxStacks: 10,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.SetStacks(sim, 10)
-			},
-			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				character.AddStatsDynamic(sim, statBonusPerStack.Multiply(float64(newStacks-oldStacks)))
-			},
-			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Damage > 0 && !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
-					aura.RemoveStack(sim)
-				}
-			},
-		})
+	// 	mercurialShieldAura := character.GetOrRegisterAura(core.Aura{
+	// 		Label:     "Mercurial Shield",
+	// 		ActionID:  core.ActionID{SpellID: 26464},
+	// 		Duration:  time.Second * 60,
+	// 		MaxStacks: 10,
+	// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+	// 			aura.SetStacks(sim, 10)
+	// 		},
+	// 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+	// 			character.AddStatsDynamic(sim, statBonusPerStack.Multiply(float64(newStacks-oldStacks)))
+	// 		},
+	// 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	// 			if result.Damage > 0 && !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
+	// 				aura.RemoveStack(sim)
+	// 			}
+	// 		},
+	// 	})
 
-		petrifiedScarabActivation := character.RegisterSpell(core.SpellConfig{
-			ActionID: core.ActionID{ItemID: 21685},
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Second * 180,
-				},
-			},
-			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-				mercurialShieldAura.Activate(sim)
-			},
-		})
+	// 	petrifiedScarabActivation := character.RegisterSpell(core.SpellConfig{
+	// 		ActionID: core.ActionID{ItemID: 21685},
+	// 		Cast: core.CastConfig{
+	// 			CD: core.Cooldown{
+	// 				Timer:    character.NewTimer(),
+	// 				Duration: time.Second * 180,
+	// 			},
+	// 		},
+	// 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+	// 			mercurialShieldAura.Activate(sim)
+	// 		},
+	// 	})
 
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell: petrifiedScarabActivation,
-			Type:  core.CooldownTypeSurvival,
-		})
-	})
+	// 	character.AddMajorCooldown(core.MajorCooldown{
+	// 		Spell: petrifiedScarabActivation,
+	// 		Type:  core.CooldownTypeSurvival,
+	// 	})
+	// })
 
 	NewItemEffectWithHeroic(func(isHeroic bool) {
 		itemId := int32(50179)

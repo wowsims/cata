@@ -289,7 +289,7 @@ func (dk *DeathKnight) applyScentOfBlood() {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: 49509}
+	actionID := core.ActionID{SpellID: 50421}
 	procChance := 0.15
 
 	rpMetrics := dk.NewRunicPowerMetrics(actionID)
