@@ -44,11 +44,13 @@ func (mage *Mage) registerCombustionSpell() {
 		},
 	})
 
+	var LBContribution float64
 	mage.Combustion = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 83853},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
 		ClassSpellMask: MageSpellCombustion,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagIgnoreAttackerModifiers,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -76,47 +78,46 @@ func (mage *Mage) registerCombustionSpell() {
 				var spellDPS float64
 				for _, spell := range dotSpells {
 					dots := spell.Dot(target)
-					// EJ states that combustion double dips on mastery for LB + Pyro, but not ignite
-					// https://web.archive.org/web/20120207223126/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/
-					if spell != mage.Ignite {
+					if spell == mage.LivingBomb {
 						if dots != nil && dots.IsActive() {
-							spellDPS = spell.Dot(target).CalcSnapshotDamage(sim, target, dots.OutcomeTick).Damage / 3
-							fmt.Println(dots.Label, " snapped for : ", spellDPS)
+							// Living Bomb uses Critical Mass multiplicative in the combustion calculation
+							LBContribution = (234 + 0.258*spell.SpellPower()) * 1.25 * (1 + 0.01*float64(mage.Talents.FirePower)) * (1.224 + 0.028*mage.GetMasteryPoints()) * (1 + 0.05*float64(mage.Talents.CriticalMass))
+							LBContribution /= 3
+							spellDPS = LBContribution
 						} else {
 							spellDPS = 0
-							fmt.Println(dots.Label, " was not active.")
 						}
 					} else if spell == mage.Ignite {
-						//This part is for ignite. The denominator will probably be variable if it works as intended in cata.
+						//Ignite's Contribution. Multiply by mastery again.
 						if dots != nil && dots.IsActive() {
-							spellDPS = spell.Dot(target).SnapshotBaseDamage / 2
-							fmt.Println(dots.Label, " snapped for : ", spellDPS)
+							spellDPS = spell.Dot(target).SnapshotBaseDamage / 2 * (1.224 + 0.028*mage.GetMasteryPoints())
 						} else {
 							spellDPS = 0
-							fmt.Println(dots.Label, " was not active.")
 						}
-					} else {
-						spellDPS = 0
-						fmt.Println(dots.Label, " was not active.")
+					} else if spell == mage.PyroblastDot {
+						if dots != nil && dots.IsActive() {
+							spellDPS = dots.SnapshotBaseDamage * 1.25 * (1 + 0.01*float64(mage.Talents.FirePower)) * (1.224 + 0.028*mage.GetMasteryPoints())
+						} else {
+							spellDPS = 0
+						}
 					}
 					fmt.Println("Adding ", spellDPS, " damage to combustion from ", dots.Label)
 					combustionDotDamage += spellDPS
 				}
 				dot.Snapshot(target, combustionDotDamage)
+				dot.SnapshotAttackerMultiplier = 1
 				fmt.Println("Combustion SnapshotBaseDamage: ", combustionDotDamage)
 
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				fmt.Println("Tick Damage: ", result.Damage)
-
 				dot.Spell.DealPeriodicDamage(sim, result)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			mage.Combustion.Dot(target).Apply(sim)
-			fmt.Println("Combust applied at ", sim.CurrentTime)
 		},
 	})
 
