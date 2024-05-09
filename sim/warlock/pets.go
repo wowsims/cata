@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -39,6 +40,11 @@ func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
 			stats.SpellHit:  ownerStats[stats.SpellHit],
 			stats.MeleeHit:  ownerStats[stats.SpellHit],
 			stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * petExpertiseScale,
+
+			// for master demonologist; unfortunately mastery is only the *bonus* mastery and not the base value,
+			// so we add this manually here such that AddOnMasteryStatChanged() can calculate the correct values
+			// while still having 0 mastery = 0% dmg at the start
+			stats.Mastery: 8*core.MasteryRatingPerMasteryPoint + ownerStats[stats.Mastery],
 		}
 	}
 }
@@ -133,7 +139,18 @@ func (pet *WarlockPet) GetPet() *core.Pet {
 
 func (pet *WarlockPet) Reset(_ *core.Simulation) {}
 
-func (pet *WarlockPet) Initialize() {}
+func (pet *WarlockPet) Initialize() {
+	if pet.Owner.Spec == proto.Spec_SpecDemonologyWarlock {
+		masteryBonus := func(mastery float64) float64 {
+			return 1 + math.Floor(2.3*core.MasteryRatingToMasteryPoints(mastery))/100.0
+		}
+
+		pet.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+			pet.PseudoStats.DamageDealtMultiplier /= masteryBonus(oldMastery)
+			pet.PseudoStats.DamageDealtMultiplier *= masteryBonus(newMastery)
+		})
+	}
+}
 
 func (pet *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
 	waitUntil := time.Duration(1<<63 - 1)

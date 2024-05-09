@@ -13,18 +13,21 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 		return
 	}
 
+	metaDmgMod := 0.0
 	metamorphosisAura := demonology.RegisterAura(core.Aura{
 		Label:    "Metamorphosis Aura",
 		ActionID: core.ActionID{SpellID: 59672},
 		Duration: time.Second * (30 + 6*core.TernaryDuration(demonology.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 1, 0)),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.2
-			demonology.MasterDemonologistOwnerMod.UpdateFloatValue(demonology.getMasteryBonus())
-			demonology.MasterDemonologistOwnerMod.Activate()
+			metaDmgMod = 1.2 + demonology.getMasteryBonus()
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= metaDmgMod
+
+			if sim.Log != nil {
+				demonology.Log(sim, "[DEBUG]: meta damage mod: %v", metaDmgMod)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.2
-			demonology.MasterDemonologistOwnerMod.Deactivate()
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= metaDmgMod
 			demonology.ImmolationAura.AOEDot().Deactivate(sim)
 		},
 	})
