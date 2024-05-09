@@ -39,7 +39,10 @@ func (mage *Mage) registerCombustionSpell() {
 		},
 	})
 
-	var LBContribution float64
+	dotBase := map[int64]float64{
+		MageSpellLivingBombDot: 0.25 * mage.ClassSpellScaling,
+		MageSpellPyroblastDot:  0.175 * mage.ClassSpellScaling,
+	}
 	mage.Combustion = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11129}.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
@@ -60,29 +63,25 @@ func (mage *Mage) registerCombustionSpell() {
 			AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.PyroblastDot}
 				combustionDotDamage := 0.0
+				dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.PyroblastDot}
 				for _, spell := range dotSpells {
 					dot := spell.Dot(target)
 					if dot.IsActive() {
-						if spell == mage.LivingBomb {
-							// Living Bomb uses Critical Mass multiplicative in the combustion calculation
-							LBContribution = (234 + 0.258*spell.SpellPower()) * 1.25 * (1 + 0.01*float64(mage.Talents.FirePower)) * (1.224 + 0.028*mage.GetMasteryPoints()) * (1 + 0.05*float64(mage.Talents.CriticalMass))
-							LBContribution /= 3
-							combustionDotDamage += LBContribution
-						} else if spell == mage.Ignite {
+						if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellPyroblastDot) != 0 {
+							dps := dotBase[spell.ClassSpellMask] + dot.BonusCoefficient*dot.Spell.SpellPower()
+							dps *= spell.DamageMultiplier * spell.DamageMultiplierAdditive
+							combustionDotDamage += dps / dot.TickLength.Seconds()
+						} else {
 							//Ignite's Contribution. Multiply by mastery again.
 							combustionDotDamage += dot.SnapshotBaseDamage / 2 * (1.224 + 0.028*mage.GetMasteryPoints())
-						} else if spell == mage.PyroblastDot {
-							combustionDotDamage += dot.SnapshotBaseDamage * 1.25 * (1 + 0.01*float64(mage.Talents.FirePower)) * (1.224 + 0.028*mage.GetMasteryPoints())
 						}
 					}
 				}
 				dot.Snapshot(target, combustionDotDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				dot.Spell.DealPeriodicDamage(sim, result)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
