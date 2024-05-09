@@ -42,7 +42,7 @@ type DemonologyWarlock struct {
 }
 
 func (demonology DemonologyWarlock) getMasteryBonus() float64 {
-	return 0.18 + 0.023*demonology.GetMasteryPoints()
+	return 0.184 + 0.023*demonology.GetMasteryPoints()
 }
 
 func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
@@ -130,11 +130,15 @@ func (demonology *DemonologyWarlock) ApplyTalents() {
 	}))
 
 	// Demonic Knowledge
-	demonology.AddDynamicMod(core.SpellModConfig{
+	demonology.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  warlock.WarlockShadowDamage | warlock.WarlockFireDamage,
 		FloatValue: 0.15,
 	})
+}
+
+func (demonology *DemonologyWarlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	raidBuffs.DemonicPact = demonology.Talents.DemonicPact && demonology.Options.Summon != proto.WarlockOptions_NoSummon
 }
 
 func (demonology *DemonologyWarlock) Reset(sim *core.Simulation) {
@@ -162,7 +166,7 @@ func (demonology *DemonologyWarlock) registerSummonFelguardSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			demonology.SoulBurnAura.Deactivate(sim)
-			demonology.ChangeActivePet(sim, warlock.PetFelguard)
+			demonology.ChangeActivePet(sim, demonology.Warlock.Felguard)
 		},
 	})
 }

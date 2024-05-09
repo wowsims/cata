@@ -1,5 +1,6 @@
+import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, RotationType, Spec } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, RotationType, Spec } from '../../core/proto/common';
 import {
 	HunterMajorGlyph as MajorGlyph,
 	HunterMinorGlyph as MinorGlyph,
@@ -41,11 +42,14 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeA
 export const SurvivalTalents = {
 	name: 'Survival',
 	data: SavedTalents.create({
-		talentsString: '03-2302-23203003023022121311',
+		talentsString: '03-2302-03203023023022121311',
 		glyphs: Glyphs.create({
 			prime1: PrimeGlyph.GlyphOfExplosiveShot,
 			prime2: PrimeGlyph.GlyphOfKillShot,
-			prime3: PrimeGlyph.GlyphOfSerpentSting,
+			prime3: PrimeGlyph.GlyphOfArcaneShot,
+			major1: MajorGlyph.GlyphOfDisengage,
+			major2: MajorGlyph.GlyphOfRaptorStrike,
+			major3: MajorGlyph.GlyphOfTrapLauncher,
 		}),
 	}),
 };
@@ -64,9 +68,13 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.PotionOfTheTolvir,
 	prepopPotion: Potions.PotionOfTheTolvir,
 	flask: Flask.FlaskOfTheWinds,
-	food: Food.FoodFishFeast,
+	defaultConjured: ConjuredHealthstone.value,
+	food: Food.FoodSeafoodFeast,
+	tinkerHands: TinkerHandsSynapseSprings.value,
 });
 
 export const OtherDefaults = {
-	distanceFromTarget: 24
-}
+	distanceFromTarget: 24,
+	profession1: Profession.Engineering,
+	profession2: Profession.Alchemy,
+};

@@ -175,6 +175,7 @@ message FeralDruid {
 	bool manual_params = 17;
 	AplType rotation_type = 21;
 	bool allow_aoe_berserk = 9;
+	bool melee_weave = 15;
   }
   Rotation rotation = 1;
 

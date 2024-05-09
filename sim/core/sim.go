@@ -38,6 +38,7 @@ type Simulation struct {
 	NeedsInput     bool          // Sim is in interactive mode and needs input
 
 	ProgressReport func(*proto.ProgressMetrics)
+	QuitChannel    chan bool
 
 	Log func(string, ...interface{})
 
@@ -104,11 +105,11 @@ func (sim *Simulation) RemoveTask(task Task) {
 	}
 }
 
-func RunSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) *proto.RaidSimResult {
-	return runSim(rsr, progress, false)
+func RunSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, quitSignal chan bool) *proto.RaidSimResult {
+	return runSim(rsr, progress, false, quitSignal)
 }
 
-func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool) (result *proto.RaidSimResult) {
+func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, quitSignal chan bool) (result *proto.RaidSimResult) {
 	if !rsr.SimOptions.IsTest {
 		defer func() {
 			if err := recover(); err != nil {
@@ -137,6 +138,10 @@ func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, ski
 	}
 
 	sim := NewSim(rsr)
+
+	if quitSignal != nil {
+		sim.QuitChannel = quitSignal
+	}
 
 	if !skipPresim {
 		if progress != nil {
@@ -305,6 +310,20 @@ func (sim *Simulation) run() *proto.RaidSimResult {
 
 	var st time.Time
 	for i := int32(1); i < sim.Options.Iterations; i++ {
+		if sim.QuitChannel != nil {
+			select {
+			case <-sim.QuitChannel:
+				quitResult := &proto.RaidSimResult{
+					ErrorResult: "Canceled due to quit signal!",
+				}
+				if sim.ProgressReport != nil {
+					sim.ProgressReport(&proto.ProgressMetrics{FinalRaidResult: quitResult})
+				}
+				return quitResult
+			default:
+			}
+		}
+
 		// fmt.Printf("Iteration: %d\n", i)
 		if sim.ProgressReport != nil && time.Since(st) > time.Millisecond*100 {
 			metrics := sim.Raid.GetMetrics()

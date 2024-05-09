@@ -22,7 +22,7 @@
 		&.pending {
 			overflow: hidden;
 			margin: 0;
-			
+
 			.results-ep-table {
 				filter: blur(2px);
 			}
@@ -44,7 +44,7 @@
 
 		.results-ep-table {
 			width: 100%;
-			
+
 			&.stats-type-ep .type-weight,
 			&.stats-type-weight .type-ep {
 				display: none;
@@ -91,11 +91,11 @@
 
 			tbody {
 				tr:nth-child(even) {
-					background-color: $table-row-even-bg;	
+					background-color: $table-row-even-bg;
 				}
 
 				tr:nth-child(odd) {
-					background-color: $table-row-odd-bg;	
+					background-color: $table-row-odd-bg;
 				}
 
 				td {

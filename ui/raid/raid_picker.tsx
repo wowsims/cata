@@ -1,18 +1,19 @@
-import tippy from 'tippy.js';
+import tippy, { Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
+import { element, ref } from 'tsx-vanilla';
 
-import { BaseModal } from '../core/components/base_modal.js';
+import { BaseModal } from '../core/components/base_modal.jsx';
 import { Component } from '../core/components/component.js';
 import { EnumPicker } from '../core/components/enum_picker.js';
 import { MAX_PARTY_SIZE, Party } from '../core/party.js';
 import { Player } from '../core/player.js';
-import { PlayerClasses } from '../core/player_classes';
-import { PlayerSpecs } from '../core/player_specs';
+import { PlayerClasses } from '../core/player_classes/index.js';
+import { PlayerSpecs } from '../core/player_specs/index.js';
 import { Player as PlayerProto } from '../core/proto/api.js';
 import { Class, Faction, Glyphs, Profession, Spec } from '../core/proto/common.js';
-import { UnholyDeathKnight_Options } from '../core/proto/death_knight';
+import { UnholyDeathKnight_Options } from '../core/proto/death_knight.js';
 import { BalanceDruid_Options as BalanceDruidOptions } from '../core/proto/druid.js';
-import { ArcaneMage_Options } from '../core/proto/mage';
-import { getPlayerSpecFromPlayer, newUnitReference } from '../core/proto_utils/utils.js';
+import { ArcaneMage_Options } from '../core/proto/mage.js';
+import { getPlayerSpecFromPlayer, newUnitReference, SpecClasses, SpecType } from '../core/proto_utils/utils.js';
 import { Raid } from '../core/raid.js';
 import { EventID, TypedEvent } from '../core/typed_event.js';
 import { formatDeltaTextElem, getEnumValues } from '../core/utils.js';
@@ -38,6 +39,7 @@ export class RaidPicker extends Component {
 	readonly raid: Raid;
 	readonly partyPickers: Array<PartyPicker>;
 	readonly newPlayerPicker: NewPlayerPicker;
+	readonly playerEditorModal: PlayerEditorModal<Spec>;
 
 	// Hold data about the player being dragged while the drag is happening.
 	currentDragPlayer: Player<any> | null = null;
@@ -57,6 +59,7 @@ export class RaidPicker extends Component {
 		this.rootElem.appendChild(raidControls);
 
 		this.newPlayerPicker = new NewPlayerPicker(this.rootElem, this);
+		this.playerEditorModal = new PlayerEditorModal();
 
 		const _activePartiesSelector = new EnumPicker<Raid>(raidControls, this.raidSimUI.sim.raid, {
 			label: 'Raid Size',
@@ -309,6 +312,8 @@ export class PartyPicker extends Component {
 	}
 }
 
+const EMPTY_PLAYER_NAME = 'Unnamed';
+
 export class PlayerPicker extends Component {
 	// Index of this player within its party (0-4).
 	readonly index: number;
@@ -537,25 +542,28 @@ export class PlayerPicker extends Component {
 	}
 
 	private bindPlayerEvents() {
-		this.nameElem?.addEventListener('input', _event => {
+		const onNameSetHandler = () => {
 			this.player?.setName(TypedEvent.nextEventID(), this.nameElem?.value || '');
-		});
+		};
+		this.nameElem?.addEventListener('input', onNameSetHandler);
 
-		this.nameElem?.addEventListener('mousedown', _event => {
+		const onNameMouseDownHandler = () => {
 			this.partyPicker.rootElem.setAttribute('draggable', 'false');
-		});
+		};
+		this.nameElem?.addEventListener('mousedown', onNameMouseDownHandler);
 
-		this.nameElem?.addEventListener('mouseup', _event => {
+		const onNameMouseUpHandler = () => {
 			this.partyPicker.rootElem.setAttribute('draggable', 'true');
-		});
+		};
+		this.nameElem?.addEventListener('mouseup', onNameMouseUpHandler);
 
-		const emptyName = 'Unnamed';
-		this.nameElem?.addEventListener('focusout', _event => {
+		const onNameFocusOutHandler = () => {
 			if (this.nameElem && !this.nameElem.value) {
-				this.nameElem.value = emptyName;
-				this.player?.setName(TypedEvent.nextEventID(), emptyName);
+				this.nameElem.value = EMPTY_PLAYER_NAME;
+				this.player?.setName(TypedEvent.nextEventID(), this.nameElem.value);
 			}
-		});
+		};
+		this.nameElem?.addEventListener('focusout', onNameFocusOutHandler);
 
 		const dragStart = (event: DragEvent, type: DragType) => {
 			if (this.player == null) {
@@ -574,50 +582,81 @@ export class PlayerPicker extends Component {
 			this.raidPicker.setDragPlayer(this.player, this.raidIndex, type);
 		};
 
-		const editElem = this.rootElem.querySelector('.player-edit') as HTMLElement;
-		const copyElem = this.rootElem.querySelector('.player-copy') as HTMLElement;
-		const deleteElem = this.rootElem.querySelector('.player-delete') as HTMLElement;
+		const editElem = this.rootElem.querySelector<HTMLElement>('.player-edit')!;
+		const copyElem = this.rootElem.querySelector<HTMLElement>('.player-copy')!;
+		const deleteElem = this.rootElem.querySelector<HTMLElement>('.player-delete')!;
 
-		const _editTooltip = tippy(editElem);
-		const _copyTooltip = tippy(copyElem);
+		const editTooltip = tippy(editElem);
+		const copyTooltip = tippy(copyElem);
 		const deleteTooltip = tippy(deleteElem);
 
-		(this.iconElem as HTMLElement).ondragstart = event => {
+		const onIconDragStartHandler = (event: DragEvent) => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
 			dragStart(event, DragType.Swap);
 		};
-		const playerEditorModal = new PlayerEditorModal(this.player as Player<any>);
-		editElem.onclick = _event => {
-			playerEditorModal.open();
+		this.iconElem?.addEventListener('dragstart', onIconDragStartHandler);
+
+		const onEditClickHandler = () => {
+			if (this.player) this.raidPicker.playerEditorModal.openEditor(this.player);
 		};
-		copyElem.ondragstart = event => {
+		editElem.addEventListener('click', onEditClickHandler);
+
+		const onCopyDragStartHandler = (event: DragEvent) => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
 			dragStart(event, DragType.Copy);
 		};
-		deleteElem.onclick = _event => {
-			deleteTooltip.hide();
+		copyElem.addEventListener('dragstart', onCopyDragStartHandler);
+
+		const onDeleteClickHandler = () => {
 			this.setPlayer(TypedEvent.nextEventID(), null, DragType.None);
+			this.dispose();
 		};
+		deleteElem.addEventListener('click', onDeleteClickHandler);
+
+		this.addOnDisposeCallback(() => {
+			this.nameElem?.removeEventListener('input', onNameSetHandler);
+			this.nameElem?.removeEventListener('mousedown', onNameMouseDownHandler);
+			this.nameElem?.removeEventListener('mouseup', onNameMouseUpHandler);
+			this.nameElem?.removeEventListener('focusout', onNameFocusOutHandler);
+
+			this.iconElem?.removeEventListener('dragstart', onIconDragStartHandler);
+			editElem?.removeEventListener('click', onEditClickHandler);
+			copyElem?.removeEventListener('dragstart', onCopyDragStartHandler);
+			deleteElem?.removeEventListener('click', onDeleteClickHandler);
+
+			editTooltip?.destroy();
+			copyTooltip?.destroy();
+			deleteTooltip?.destroy();
+		});
 	}
 }
 
 class PlayerEditorModal<SpecType extends Spec> extends BaseModal {
-	constructor(player: Player<SpecType>) {
+	playerEditorRoot: HTMLDivElement;
+	constructor() {
 		super(document.body, 'player-editor-modal', {
 			closeButton: { fixed: true },
 			header: false,
+			disposeOnClose: false,
 		});
 
-		this.rootElem.id = 'playerEditorModal';
-		this.body.insertAdjacentHTML(
-			'beforeend',
-			`
-			<div class="player-editor within-raid-sim"></div>
-		`,
-		);
+		const playerEditorElemRef = ref<HTMLDivElement>();
+		const playerEditorElem = (<div ref={playerEditorElemRef} className="player-editor within-raid-sim"></div>) as HTMLDivElement;
 
-		const editorRoot = this.rootElem.getElementsByClassName('player-editor')[0] as HTMLElement;
-		const _individualSim = specSimFactories[player.getSpec()]!(editorRoot, player);
+		this.rootElem.id = 'playerEditorModal';
+		this.body.appendChild(playerEditorElem);
+
+		this.playerEditorRoot = playerEditorElemRef.value!;
+	}
+
+	openEditor(player: Player<SpecType>) {
+		this.setData(player);
+		super.open();
+	}
+
+	setData(player: Player<SpecType>) {
+		this.playerEditorRoot.innerHTML = '';
+		specSimFactories[player.getSpec()]?.(this.playerEditorRoot!, player);
 	}
 }
 

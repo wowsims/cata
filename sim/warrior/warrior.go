@@ -187,9 +187,9 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 
 	warrior.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
 	// Dodge no longer granted from agility
-	//warrior.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/84.746)
 	warrior.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	warrior.AddStatDependency(stats.Strength, stats.Parry, 0.25) // Change from block to pary in cata
+	warrior.AddStat(stats.Parry, -warrior.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
+	warrior.AddStatDependency(stats.Strength, stats.Parry, 0.27)               // Change from block to pary in cata (4.2 Changed from 25->27 percent)
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	// Base dodge unaffected by Diminishing Returns

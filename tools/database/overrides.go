@@ -171,90 +171,7 @@ var ItemOverrides = []*proto.UIItem{
 
 // Keep these sorted by item ID.
 var ItemAllowList = map[int32]struct{}{
-	11815: {}, // Hand of Justice
-	12590: {}, // Felstriker
-	15808: {}, // Fine Light Crossbow (for hunter testing).
-	18843: {},
-	18844: {},
-	18847: {},
-	18848: {},
-	19019: {}, // Thunderfury
-	19808: {}, // Rockhide Strongfish
-	20837: {}, // Sunstrider Axe
-	20966: {}, // Jade Pendant of Blasting
-	21625: {}, // Scarab Brooch
-	21685: {}, // Petrified Scarab
-	24114: {}, // Braided Eternium Chain
-	28572: {}, // Blade of the Unrequited
-	28830: {}, // Dragonspine Trophy
-	29383: {}, // Bloodlust Brooch
-	29387: {}, // Gnomeregan Auto-Blocker 600
-	29994: {}, // Thalassian Wildercloak
-	29996: {}, // Rod of the Sun King
-	30032: {}, // Red Belt of Battle
-	30627: {}, // Tsunami Talisman
-	30720: {}, // Serpent-Coil Braid
-	31193: {}, // Blade of Unquenched Thirst
-	32387: {}, // Idol of the Raven Goddess
-	32658: {}, // Badge of Tenacity
-	33135: {}, // Falling Star
-	33140: {}, // Blood of Amber
-	33143: {}, // Stone of Blades
-	33144: {}, // Facet of Eternity
-	33504: {}, // Libram of Divine Purpose
-	33506: {}, // Skycall Totem
-	33507: {}, // Stonebreaker's Totem
-	33508: {}, // Idol of Budding Life
-	33510: {}, // Unseen moon idol
-	33829: {}, // Hex Shrunken Head
-	33831: {}, // Berserkers Call
-	34472: {}, // Shard of Contempt
-	34473: {}, // Commendation of Kael'thas
-	37032: {}, // Edge of the Tuskarr
-	37574: {}, // Libram of Furious Blows
-	38072: {}, // Thunder Capacitor
-	38212: {}, // Death Knight's Anguish
-	38287: {}, // Empty Mug of Direbrew
-	38289: {}, // Coren's Lucky Coin
-	39208: {}, // Sigil of the Dark Rider
-	41752: {}, // Brunnhildar Axe
-	6360:  {}, // Steelscale Crushfish
-	8345:  {}, // Wolfshead Helm
-	9449:  {}, // Manual Crowd Pummeler
-
-	// Sets
-	27510: {}, // Tidefury Gauntlets
-	27802: {}, // Tidefury Shoulderguards
-	27909: {}, // Tidefury Kilt
-	28231: {}, // Tidefury Chestpiece
-	28349: {}, // Tidefury Helm
-
-	15056: {}, // Stormshroud Armor
-	15057: {}, // Stormshroud Pants
-	15058: {}, // Stormshroud Shoulders
-	21278: {}, // Stormshroud Gloves
-
-	// Undead Slaying Sets
-	// Plate
-	43068: {},
-	43069: {},
-	43070: {},
-	43071: {},
-	// Cloth
-	43072: {},
-	43073: {},
-	43074: {},
-	43075: {},
-	// Mail
-	43076: {},
-	43077: {},
-	43078: {},
-	43079: {},
-	//Leather
-	43080: {},
-	43081: {},
-	43082: {},
-	43083: {},
+	//11815: {}, // Hand of Justice
 }
 
 // Keep these sorted by item ID.
@@ -660,9 +577,9 @@ var GemOverrides = []*proto.UIGem{
 	{Id: 33131, Stats: stats.Stats{stats.AttackPower: 32, stats.RangedAttackPower: 32}.ToFloatArray()},
 }
 var GemAllowList = map[int32]struct{}{
-	22459: {}, // Void Sphere
-	36766: {}, // Bright Dragon's Eye
-	36767: {}, // Solid Dragon's Eye
+	//22459: {}, // Void Sphere
+	//36766: {}, // Bright Dragon's Eye
+	//36767: {}, // Solid Dragon's Eye
 }
 var GemDenyList = map[int32]struct{}{
 	// pvp non-unique gems not in game currently.
@@ -677,4 +594,6 @@ var GemDenyList = map[int32]struct{}{
 	38548: {},
 	38549: {},
 	38550: {},
+	63696: {},
+	63697: {},
 }

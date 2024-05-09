@@ -1,9 +1,10 @@
 import tippy from 'tippy.js';
+import { element, fragment, ref } from 'tsx-vanilla';
 
 import { Component } from '../core/components/component.js';
 import { Player } from '../core/player.js';
-import { PlayerClasses } from '../core/player_classes';
-import { PlayerSpecs } from '../core/player_specs';
+import { PlayerClasses } from '../core/player_classes/index.js';
+import { PlayerSpecs } from '../core/player_specs/index.js';
 import { Class, RaidBuffs, Spec } from '../core/proto/common.js';
 import { HunterOptions_PetType as HunterPetType } from '../core/proto/hunter.js';
 import { PaladinAura } from '../core/proto/paladin.js';
@@ -48,17 +49,19 @@ export class RaidStats extends Component {
 
 		const categories: Array<RaidStatsCategory> = [];
 		RAID_STATS_OPTIONS.sections.forEach(section => {
-			const sectionElem = document.createElement('div');
-			sectionElem.classList.add('raid-stats-section');
-			this.rootElem.appendChild(sectionElem);
-			sectionElem.innerHTML = `
-				<div class="raid-stats-section-header">
-					<label class="raid-stats-section-label form-label">${section.label}</label>
-				</div>
-				<div class="raid-stats-section-content"></div>
-			`;
-			const contentElem = sectionElem.getElementsByClassName('raid-stats-section-content')[0] as HTMLDivElement;
+			const contentElemRef = ref<HTMLDivElement>();
 
+			const sectionElem = (
+				<div className="raid-stats-section">
+					<div className="raid-stats-section-header">
+						<label className="raid-stats-section-label form-label">{section.label}</label>
+					</div>
+					<div ref={contentElemRef} className="raid-stats-section-content"></div>
+				</div>
+			);
+			this.rootElem.appendChild(sectionElem);
+
+			const contentElem = contentElemRef.value!;
 			section.categories.forEach(categoryOptions => {
 				categories.push(new RaidStatsCategory(contentElem, raidSimUI, categoryOptions));
 			});
@@ -81,23 +84,26 @@ class RaidStatsCategory extends Component {
 		this.raidSimUI = raidSimUI;
 		this.options = options;
 
-		this.rootElem.innerHTML = `
-			<a href="javascript:void(0)" role="button" class="raid-stats-category">
-				<span class="raid-stats-category-counter"></span>
-				<span class="raid-stats-category-label">${options.label}</span>
-			</a>
-		`;
+		const counterElemRef = ref<HTMLElement>();
+		const categoryElemRef = ref<HTMLAnchorElement>();
+		this.rootElem.appendChild(
+			<a ref={categoryElemRef} href="javascript:void(0)" className="raid-stats-category" attributes={{ role: 'button' }}>
+				<span ref={counterElemRef} className="raid-stats-category-counter"></span>
+				<span className="raid-stats-category-label">{options.label}</span>
+			</a>,
+		);
 
-		this.counterElem = this.rootElem.querySelector('.raid-stats-category-counter') as HTMLElement;
-		this.tooltipElem = document.createElement('div');
-		this.tooltipElem.innerHTML = `
-			<label class="raid-stats-category-label">${options.label}</label>
-		`;
+		this.counterElem = counterElemRef.value!;
+		this.tooltipElem = (
+			<div>
+				<label className="raid-stats-category-label">{options.label}</label>
+			</div>
+		) as HTMLElement;
 
 		this.effects = options.effects.map(opt => new RaidStatsEffect(this.tooltipElem, raidSimUI, opt));
 
 		if (options.effects.length != 1 || options.effects[0].playerData?.class) {
-			const statsLink = this.rootElem.querySelector('.raid-stats-category') as HTMLElement;
+			const statsLink = categoryElemRef.value!;
 
 			// Using the title option here because outerHTML sanitizes and filters out the img src options
 			tippy(statsLink, {
@@ -114,7 +120,7 @@ class RaidStatsCategory extends Component {
 		const total = sum(this.effects.map(effect => effect.count));
 		this.counterElem.textContent = String(total);
 
-		const statsLink = this.rootElem.querySelector('.raid-stats-category') as HTMLElement;
+		const statsLink = this.rootElem.querySelector<HTMLElement>('.raid-stats-category')!;
 
 		if (total == 0) {
 			statsLink?.classList.remove('active');
@@ -140,24 +146,30 @@ class RaidStatsEffect extends Component {
 		this.curPlayers = [];
 		this.count = 0;
 
-		this.rootElem.innerHTML = `
-			<span class="raid-stats-effect-counter"></span>
-			<img class="raid-stats-effect-icon"></img>
-			<span class="raid-stats-effect-label">${options.label}</span>
-		`;
-		this.counterElem = this.rootElem.querySelector('.raid-stats-effect-counter') as HTMLElement;
+		const counterElemRef = ref<HTMLElement>();
+		const labelElemRef = ref<HTMLElement>();
+		const iconElemRef = ref<HTMLImageElement>();
+		this.rootElem.appendChild(
+			<>
+				<span ref={counterElemRef} className="raid-stats-effect-counter"></span>
+				<img ref={iconElemRef} className="raid-stats-effect-icon"></img>
+				<span ref={labelElemRef} className="raid-stats-effect-label">
+					{options.label}
+				</span>
+			</>,
+		);
+
+		this.counterElem = counterElemRef.value!;
 
 		if (this.options.playerData?.class) {
-			const labelElem = this.rootElem.querySelector('.raid-stats-effect-label') as HTMLElement;
 			const playerCssClass = textCssClassForClass(PlayerClasses.fromProto(this.options.playerData.class));
-			labelElem.classList.add(playerCssClass);
+			labelElemRef.value!.classList.add(playerCssClass);
 		}
 
-		const iconElem = this.rootElem.querySelector('.raid-stats-effect-icon') as HTMLImageElement;
 		if (options.actionId) {
-			options.actionId.fill().then(actionId => (iconElem.src = actionId.iconUrl));
+			options.actionId.fill().then(actionId => (iconElemRef.value!.src = actionId.iconUrl));
 		} else {
-			iconElem.remove();
+			iconElemRef.value!.remove();
 		}
 	}
 
@@ -263,7 +275,9 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Tanks',
-							playerData: { condition: player => player.getSpec().isTankSpec },
+							playerData: {
+								condition: player => player.getPlayerSpec().isTankSpec,
+							},
 						},
 					],
 				},
@@ -272,7 +286,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Healers',
-							playerData: { condition: player => player.getSpec().isHealingSpec },
+							playerData: { condition: player => player.getPlayerSpec().isHealingSpec },
 						},
 					],
 				},
@@ -281,7 +295,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Melee',
-							playerData: { condition: player => player.getSpec().isMeleeDpsSpec },
+							playerData: { condition: player => player.getPlayerSpec().isMeleeDpsSpec },
 						},
 					],
 				},
@@ -290,7 +304,7 @@ const RAID_STATS_OPTIONS: RaidStatsOptions = {
 					effects: [
 						{
 							label: 'Ranged',
-							playerData: { condition: player => player.getSpec().isRangedDpsSpec },
+							playerData: { condition: player => player.getPlayerSpec().isRangedDpsSpec },
 						},
 					],
 				},

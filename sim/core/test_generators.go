@@ -103,18 +103,18 @@ type EncounterCombo struct {
 	Encounter *proto.Encounter
 }
 type SettingsCombos struct {
-	Class              proto.Class
-	Races              []proto.Race
-	GearSets           []GearSetCombo
-	TalentSets         []TalentsCombo
-	SpecOptions        []SpecOptionsCombo
-	Rotations          []RotationCombo
-	Buffs              []BuffsCombo
-	Encounters         []EncounterCombo
-	SimOptions         *proto.SimOptions
-	IsHealer           bool
-	StartingDistances  []float64
-	Cooldowns          *proto.Cooldowns
+	Class             proto.Class
+	Races             []proto.Race
+	GearSets          []GearSetCombo
+	TalentSets        []TalentsCombo
+	SpecOptions       []SpecOptionsCombo
+	Rotations         []RotationCombo
+	Buffs             []BuffsCombo
+	Encounters        []EncounterCombo
+	SimOptions        *proto.SimOptions
+	IsHealer          bool
+	StartingDistances []float64
+	Cooldowns         *proto.Cooldowns
 }
 
 func (combos *SettingsCombos) NumTests() int {
@@ -137,8 +137,10 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 	talentSetIdx := testIdx % len(combos.TalentSets)
 	testIdx /= len(combos.TalentSets)
 	talentSetCombo := combos.TalentSets[talentSetIdx]
-	// We never use more than 1 talent combo, so it just makes the names longer.
-	//testNameParts = append(testNameParts, talentSetCombo.Label)
+	// Don't append name here unless using more than 1 talent combo, since it just makes the names longer.
+	if len(combos.TalentSets) > 1 {
+		testNameParts = append(testNameParts, talentSetCombo.Label)
+	}
 
 	specOptionsIdx := testIdx % len(combos.SpecOptions)
 	testIdx /= len(combos.SpecOptions)
@@ -445,6 +447,7 @@ type CharacterSuiteConfig struct {
 
 	OtherRaces             []proto.Race
 	OtherGearSets          []GearSetCombo
+	OtherTalentSets        []TalentsCombo
 	OtherSpecOptions       []SpecOptionsCombo
 	OtherRotations         []RotationCombo
 	OtherStartingDistances []float64
@@ -454,17 +457,17 @@ type CharacterSuiteConfig struct {
 	StatsToWeigh    []proto.Stat
 	EPReferenceStat proto.Stat
 
-	Cooldowns          *proto.Cooldowns
+	Cooldowns *proto.Cooldowns
 }
 
 func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator {
 	allRaces := append(config.OtherRaces, config.Race)
 	allGearSets := append(config.OtherGearSets, config.GearSet)
-	allTalentSets := []TalentsCombo{{
-		Label:   "Talents",
+	allTalentSets := append(config.OtherTalentSets, TalentsCombo{
+		Label:   "DefaultTalents",
 		Talents: config.Talents,
 		Glyphs:  config.Glyphs,
-	}}
+	})
 	allSpecOptions := append(config.OtherSpecOptions, config.SpecOptions)
 	allRotations := append(config.OtherRotations, config.Rotation)
 	allStartingDistances := append(config.OtherStartingDistances, config.StartingDistance)
@@ -530,11 +533,11 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 							Consumes: config.Consumes,
 						},
 					},
-					IsHealer:           config.IsHealer,
-					Encounters:         MakeDefaultEncounterCombos(),
-					SimOptions:         DefaultSimTestOptions,
-					Cooldowns:          config.Cooldowns,
-					StartingDistances:  allStartingDistances,
+					IsHealer:          config.IsHealer,
+					Encounters:        MakeDefaultEncounterCombos(),
+					SimOptions:        DefaultSimTestOptions,
+					Cooldowns:         config.Cooldowns,
+					StartingDistances: allStartingDistances,
 				},
 			},
 			{

@@ -367,7 +367,7 @@ export const ElixirOfDeepEarth = {
 	value: GuardianElixir.ElixirOfDeepEarth,
 };
 export const PrismaticElixir = {
-	actionId: ActionId.fromItemId(80492),
+	actionId: ActionId.fromItemId(58143),
 	value: GuardianElixir.PrismaticElixir,
 };
 export const ElixirOfMightyDefense = {

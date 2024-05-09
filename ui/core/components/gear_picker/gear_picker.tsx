@@ -474,7 +474,7 @@ export class SelectorModal extends BaseModal {
 	private gearData: GearData | undefined;
 
 	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, gearPicker?: GearPicker) {
-		super(parent, 'selector-modal', {});
+		super(parent, 'selector-modal', { disposeOnClose: false });
 
 		this.simUI = simUI;
 		this.player = player;
@@ -854,7 +854,7 @@ export class SelectorModal extends BaseModal {
 				equippedItem?.reforge ? this.player.getReforgeData(equippedItem.item, equippedItem.reforge) : null,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
-				if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(null));
+				if (equippedItem) gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item));
 			},
 		});
 	}

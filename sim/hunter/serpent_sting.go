@@ -12,11 +12,25 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 
 	impSSCritChance := float64(hunter.Talents.ImprovedSerpentSting) * 5
 	impSSCritChance += core.TernaryFloat64(hunter.HasSetBonus(ItemSetLightningChargedBattleGear, 2), 5, 0)
+	hunter.ImprovedSerpentSting = hunter.RegisterSpell(core.SpellConfig{
+		ActionID:                 core.ActionID{SpellID: 82834},
+		SpellSchool:              core.SpellSchoolNature,
+		ProcMask:                 core.ProcMaskDirect,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		BonusCritRating:          impSSCritChance + core.TernaryFloat64(hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfSerpentSting), 6, 0)*core.CritRatingPerCritChance,
+		CritMultiplier:           hunter.MeleeCritMultiplier(1, float64(hunter.Talents.Toxicology)*0.5),
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := (460 * 5) + 0.40*spell.RangedAttackPower(target)
+			dmg := baseDamage * (float64(hunter.Talents.ImprovedSerpentSting) * 0.15)
+			spell.CalcAndDealDamage(sim, target, dmg, spell.OutcomeMeleeSpecialCritOnly)
+		},
+	})
 
 	hunter.SerpentSting = hunter.RegisterSpell(core.SpellConfig{
 		ActionID:     core.ActionID{SpellID: 1978},
 		SpellSchool:  core.SpellSchoolNature,
-		ProcMask:     core.ProcMaskEmpty,
+		ProcMask:     core.ProcMaskProc,
 		Flags:        core.SpellFlagAPL,
 		MissileSpeed: 40,
 		FocusCost: core.FocusCostOptions{
@@ -37,16 +51,28 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "SerpentStingDot",
-				Tag:   "SerpentSting",
+				ActionID: core.ActionID{SpellID: 1978},
+				Label:    "SerpentStingDot",
+				Tag:      "SerpentSting",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= noxiousStingsMultiplier
 
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= noxiousStingsMultiplier
+					if sim.GetRemainingDuration() > time.Millisecond*1 {
+						core.StartDelayedAction(sim, core.DelayedActionOptions{
+							Priority: core.ActionPriorityDOT - 1,
+							DoAt:     sim.CurrentTime + time.Millisecond*1,
+							OnAction: func(sim *core.Simulation) {
+								hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= noxiousStingsMultiplier
+							},
+						})
+					} else {
+						hunter.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= noxiousStingsMultiplier
+					}
 				},
 			},
+
 			NumberOfTicks: 5,
 			TickLength:    time.Second * 3,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -56,22 +82,19 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			var result *core.SpellResult
 
-			if hunter.Talents.ImprovedSerpentSting != 0 {
-				baseDamage := (460 * 5) + 0.40*spell.RangedAttackPower(target)
-				result = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-			} else {
-				result = spell.CalcOutcome(sim, target, spell.OutcomeRangedHitAndCrit)
-			}
+			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
-					//spell.SpellMetrics[target.UnitIndex].Hits--
+					spell.SpellMetrics[target.UnitIndex].Hits--
 					spell.Dot(target).Apply(sim)
-
-					spell.DealOutcome(sim, result)
+					if hunter.Talents.ImprovedSerpentSting > 0 {
+						hunter.ImprovedSerpentSting.Cast(sim, target)
+					}
 				}
+
+				spell.DealOutcome(sim, result)
 			})
 		},
 	})

@@ -37,6 +37,7 @@ type Druid struct {
 
 	Barkskin             *DruidSpell
 	Berserk              *DruidSpell
+	CatCharge            *DruidSpell
 	DemoralizingRoar     *DruidSpell
 	Enrage               *DruidSpell
 	FaerieFire           *DruidSpell
@@ -58,6 +59,7 @@ type Druid struct {
 	Pulverize            *DruidSpell
 	Rebirth              *DruidSpell
 	Rake                 *DruidSpell
+	Ravage               *DruidSpell
 	Rip                  *DruidSpell
 	SavageRoar           *DruidSpell
 	Shred                *DruidSpell
@@ -96,11 +98,13 @@ type Druid struct {
 	PrimalMadnessAura        *core.Aura
 	PulverizeAura            *core.Aura
 	SavageDefenseAura        *core.Aura
-	SurvivalInstinctsAura    *core.Aura
-	StrengthOfThePantherAura *core.Aura
-	TigersFuryAura           *core.Aura
 	SavageRoarAura           *core.Aura
 	SolarEclipseProcAura     *core.Aura
+	StampedeCatAura          *core.Aura
+	StampedeBearAura         *core.Aura
+	StrengthOfThePantherAura *core.Aura
+	SurvivalInstinctsAura    *core.Aura
+	TigersFuryAura           *core.Aura
 
 	BleedCategories core.ExclusiveCategoryArray
 
@@ -282,23 +286,25 @@ func (druid *Druid) RegisterBalanceSpells() {
 
 func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerBerserkCD()
+	druid.registerCatCharge()
 	druid.registerCatFormSpell()
 
 	// 	druid.registerBearFormSpell()
 	// 	druid.registerEnrageSpell()
 	druid.registerFerociousBiteSpell()
+	druid.registerLacerateSpell()
 	// 	druid.registerMangleBearSpell()
 	druid.registerMangleCatSpell()
 	// 	druid.registerMaulSpell()
-	druid.registerLacerateSpell()
 	druid.registerRakeSpell()
+	druid.registerRavageSpell()
 	druid.registerRipSpell()
 	druid.registerSavageRoarSpell()
 	druid.registerShredSpell()
 	// 	druid.registerSwipeBearSpell()
 	druid.registerSwipeCatSpell()
-	druid.registerTigersFurySpell()
 	druid.registerThrashBearSpell()
+	druid.registerTigersFurySpell()
 }
 
 // func (druid *Druid) RegisterFeralTankSpells() {

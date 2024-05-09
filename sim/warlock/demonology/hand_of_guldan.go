@@ -71,7 +71,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
 		BonusCoefficient: 0.968,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := demonology.CalcBaseDamageWithVariance(sim, warlock.Coefficient_HandOfGuldan, warlock.Variance_HandOfGuldan)
+			baseDamage := demonology.CalcAndRollDamageRange(sim, warlock.Coefficient_HandOfGuldan, warlock.Variance_HandOfGuldan)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 

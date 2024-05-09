@@ -17,30 +17,21 @@
 
 .gear-tab-columns {
 	display: flex;
+	@include media-breakpoint-down(xl) {
+		flex-flow: column;
+	}
 }
 
 .left-gear-panel {
 	min-width: calc(550px + 2vw);
 	flex: 3;
 	margin-right: $container-padding;
-}
 
-@include media-breakpoint-down(xl) {
-	.gear-tab-columns {
-		flex-flow: column;
-	}
-
-	.left-gear-panel {
+	@include media-breakpoint-down(xl) {
 		margin: 0;
 	}
 
-	.right-gear-panel {
-		margin-top: $gap-width;
-	}
-}
-
-@media only screen and (max-width: calc(800px + 1vw)) {
-	.left-gear-panel {
+	@media only screen and (max-width: calc(800px + 1vw)) {
 		min-width: calc(275px + 1vw);
 	}
 }
@@ -49,10 +40,12 @@
 	position: relative;
 	flex: 1.25;
 	min-width: 250px;
-}
 
-@media only screen and (max-width: calc(1050px + 2vw)) {
-	.right-gear-panel {
+	@include media-breakpoint-down(xl) {
+		margin-top: $gap-width;
+	}
+
+	@media only screen and (max-width: calc(1050px + 2vw)) {
 		min-width: 275px;
 	}
 }

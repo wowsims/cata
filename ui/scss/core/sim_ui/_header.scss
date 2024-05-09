@@ -4,7 +4,7 @@
 .sim-header {
 	position: sticky;
 	top: -1px;
-	height: $sim-header-height;
+	height: var(--sim-header-height);
 	padding-top: $gap-width;
 	padding-left: $container-padding;
 	padding-right: $container-padding;
@@ -13,6 +13,10 @@
 	white-space: nowrap;
 	transition: background-color 0.15s ease-in-out;
 	z-index: $header-z-index;
+
+	@include media-breakpoint-down(lg) {
+		padding-top: $gap-width-sm;
+	}
 
 	&::after {
 		content: ' ';
@@ -121,11 +125,5 @@
 		.dropdown-menu {
 			top: -2px;
 		}
-	}
-}
-
-@include media-breakpoint-down(lg) {
-	.sim-header {
-		padding-top: $gap-width-sm;
 	}
 }

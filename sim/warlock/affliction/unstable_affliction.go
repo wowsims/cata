@@ -38,7 +38,7 @@ func (affliction *AfflictionWarlock) registerUnstableAfflictionSpell() {
 			TickLength:       time.Second * 3,
 			BonusCoefficient: 0.2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				baseDamage := affliction.ScalingBaseDamage * warlock.Coefficient_UnstableAffliction / 5
+				baseDamage := affliction.CalcScalingSpellDmg(warlock.Coefficient_UnstableAffliction) / 5
 				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
