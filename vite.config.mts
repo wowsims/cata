@@ -26,7 +26,6 @@ function serveExternalAssets() {
 					const targetPath = workerMappings[url as keyof typeof workerMappings];
 					const assetsPath = path.resolve(__dirname, './dist/cata');
 					const requestedPath = path.join(assetsPath, targetPath.replace('/cata/', ''));
-					console.log('Requested path: ', targetPath, requestedPath);
 					serveFile(res, requestedPath);
 					return;
 				}
