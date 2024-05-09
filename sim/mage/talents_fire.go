@@ -321,7 +321,7 @@ func (mage *Mage) applyIgnite() {
 		ActionID:       core.ActionID{SpellID: 12846},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskProc,
-		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
 		ClassSpellMask: MageSpellIgnite,
 
 		DamageMultiplier: 1,
@@ -347,7 +347,7 @@ func (mage *Mage) applyIgnite() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.SpellMetrics[target.UnitIndex].Hits++
-			spell.Dot(target).ApplyOrReset(sim)
+			spell.Dot(target).Apply(sim)
 		},
 	})
 }
@@ -367,11 +367,10 @@ func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 	if dot.IsActive() {
 		outstandingDamage := dot.SnapshotBaseDamage * float64(dot.NumTicksRemaining(sim))
 		dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(IgniteTicksRefresh)
-		dot.Apply(sim)
 	} else {
 		dot.SnapshotBaseDamage = newDamage / IgniteTicksFresh
-		mage.Ignite.Cast(sim, result.Target)
 	}
+	mage.Ignite.Cast(sim, result.Target)
 	dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 }
 
