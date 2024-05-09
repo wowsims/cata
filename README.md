@@ -122,7 +122,7 @@ make rundevserver
 WATCH=1 make rundevserver
 
 
-# The same as rundevserver, recompiles  `wowsimcata` binary and runs it on port 3333. Instead of serving content from the dist folder, 
+# The same as rundevserver, recompiles  `wowsimcata` binary and runs it on port 3333. Instead of serving content from the dist folder,
 # this command also runs `vite serve` to start the Vite dev server on port 3174 (or similar) and automatically reloads the page on .ts changes in less than a second.
 # This allows for more rapid development, with sub second reloads on TS changes. This combines the benefits of `WATCH=1 make rundevserver` and `WATCH=1 make host`
 # to create something that allows you to work in any part of the code with ease and speed.
@@ -131,6 +131,13 @@ WATCH=1 make devmode
 
 # This is just the same as rundevserver currently
 make devmode
+
+# This command recompiles the workers in the /ui/worker folder for easier debugging/development
+# Can be used with or without WATCH command
+make webworkers
+
+# With file watch enabled
+WATCH=1 make webworkers
 
 # Creates the 'wowsimcata' binary that can host the UI and run simulations natively (instead of with wasm).
 # Builds the UI and the compiles it into the binary so that you can host the sim as a server instead of wasm on the client.
