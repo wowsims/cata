@@ -901,8 +901,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-AllItems-ShardofWoe-60233"
  value: {
-  dps: 22124.15441
-  tps: 15708.14963
+  dps: 22719.65495
+  tps: 30185.41834
  }
 }
 dps_results: {
@@ -1364,7 +1364,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 35321.22465
-  tps: 33231.41672
+  tps: 33231.47714
  }
 }
 dps_results: {
@@ -1385,7 +1385,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-default-FullBuffs-5.0yards-ShortSingleTarget"
  value: {
   dps: 34787.51322
-  tps: 31660.57849
+  tps: 31660.8462
  }
 }
 dps_results: {
@@ -1406,7 +1406,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 20402.37659
-  tps: 22492.012
+  tps: 22492.47033
  }
 }
 dps_results: {
@@ -1427,7 +1427,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-default-NoBuffs-5.0yards-ShortSingleTarget"
  value: {
   dps: 20253.40894
-  tps: 21906.18106
+  tps: 21906.41023
  }
 }
 dps_results: {
@@ -1532,7 +1532,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-p1-HybridTalents-ExternalBleed-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 34269.62854
-  tps: 32463.16376
+  tps: 32463.48251
  }
 }
 dps_results: {
@@ -1553,7 +1553,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-p1-HybridTalents-ExternalBleed-default-FullBuffs-5.0yards-ShortSingleTarget"
  value: {
   dps: 34012.54254
-  tps: 31958.21005
+  tps: 31958.60796
  }
 }
 dps_results: {
@@ -1574,7 +1574,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-p1-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 19715.13206
-  tps: 20435.43554
+  tps: 20435.66575
  }
 }
 dps_results: {
@@ -1595,7 +1595,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-p1-HybridTalents-ExternalBleed-default-NoBuffs-5.0yards-ShortSingleTarget"
  value: {
   dps: 19688.09655
-  tps: 20881.38792
+  tps: 20881.54938
  }
 }
 dps_results: {
@@ -1700,7 +1700,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-DefaultTalents-ExternalBleed-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 29358.16239
-  tps: 28262.47046
+  tps: 28262.63712
  }
 }
 dps_results: {
@@ -1721,7 +1721,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-DefaultTalents-ExternalBleed-default-FullBuffs-5.0yards-ShortSingleTarget"
  value: {
   dps: 28767.52804
-  tps: 27956.23794
+  tps: 27956.41919
  }
 }
 dps_results: {
@@ -1742,7 +1742,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 16770.14551
-  tps: 20314.14473
+  tps: 20314.43014
  }
 }
 dps_results: {
@@ -1763,7 +1763,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-DefaultTalents-ExternalBleed-default-NoBuffs-5.0yards-ShortSingleTarget"
  value: {
   dps: 16575.47739
-  tps: 20278.6357
+  tps: 20278.97007
  }
 }
 dps_results: {
@@ -1868,7 +1868,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-HybridTalents-ExternalBleed-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 28781.5136
-  tps: 27109.4962
+  tps: 27109.65141
  }
 }
 dps_results: {
@@ -1889,7 +1889,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-HybridTalents-ExternalBleed-default-FullBuffs-5.0yards-ShortSingleTarget"
  value: {
   dps: 28221.61857
-  tps: 27113.15161
+  tps: 27113.4912
  }
 }
 dps_results: {
@@ -1910,7 +1910,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
   dps: 16062.46112
-  tps: 18689.2035
+  tps: 18689.44309
  }
 }
 dps_results: {
@@ -1931,7 +1931,7 @@ dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-HybridTalents-ExternalBleed-default-NoBuffs-5.0yards-ShortSingleTarget"
  value: {
   dps: 16092.40186
-  tps: 20138.15674
+  tps: 20138.33278
  }
 }
 dps_results: {
