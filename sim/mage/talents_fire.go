@@ -283,6 +283,7 @@ func (mage *Mage) applyMoltenFury() {
 
 	moltenFuryAura := mage.GetOrRegisterAura(core.Aura{
 		Label:    "Molten Fury",
+		ActionID: core.ActionID{SpellID: 86880},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			moltenFuryMod.Activate()
