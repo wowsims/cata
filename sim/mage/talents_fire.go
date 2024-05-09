@@ -308,6 +308,9 @@ func (mage *Mage) applyIgnite() {
 			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
 				return
 			}
+			if !spell.SpellSchool.Matches(core.SpellSchoolFire) {
+				return
+			}
 			// EJ post says combustion crits do not proc ignite
 			// https://web.archive.org/web/20120219014159/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/#post1824829
 			if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellCombustion) == 0 && result.DidCrit() {
