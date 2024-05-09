@@ -35,10 +35,6 @@ func (mage *Mage) registerScorchSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.781 * mage.ClassSpellScaling
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			/*implement when debuffs updated
-			if sim.Proc(CMProcChance, "Critical Mass") {
-			  	mage.CriticalMassAura.Get(target).Activate(sim)
-			} */
 			spell.DealDamage(sim, result)
 		},
 	})

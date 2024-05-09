@@ -20,6 +20,10 @@ func (mage *Mage) registerLivingBombSpell() {
 	var activeLivingBombs []*core.Dot
 	const maxLivingBombs int = 3
 
+	mage.RegisterResetEffect(func(s *core.Simulation) {
+		activeLivingBombs = make([]*core.Dot, 0)
+	})
+
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 44457}.WithTag(2),
 		SpellSchool:    core.SpellSchoolFire,
