@@ -59,20 +59,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatStrength]: 2.72,
-				[Stat.StatAgility]: 1.82,
+				[Stat.StatStrength]: 2.20,
+				[Stat.StatAgility]: 0.59,
 				[Stat.StatAttackPower]: 1,
-				[Stat.StatExpertise]: 2.55,
-				[Stat.StatMeleeHit]: 0.79,
-				[Stat.StatMeleeCrit]: 2.12,
-				[Stat.StatMeleeHaste]: 1.72,
+				[Stat.StatExpertise]: 0,
+				[Stat.StatMeleeHit]: 1.30,
+				[Stat.StatMeleeCrit]: 0.71,
+				[Stat.StatMeleeHaste]: 0.70,
 				// @todo: Calculate actual weights
 				// This probably applies for all weights
-				[Stat.StatMastery]: 0,
+				[Stat.StatMastery]: 0.86,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 6.29,
-				[PseudoStat.PseudoStatOffHandDps]: 3.58,
+				[PseudoStat.PseudoStatMainHandDps]: 2.98,
+				[PseudoStat.PseudoStatOffHandDps]: 1.08,
 			},
 		),
 		other: Presets.OtherDefaults,
