@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -101,17 +100,14 @@ func (mage *Mage) registerCombustionSpell() {
 							spellDPS = 0
 						}
 					}
-					fmt.Println("Adding ", spellDPS, " damage to combustion from ", dots.Label)
 					combustionDotDamage += spellDPS
 				}
 				dot.Snapshot(target, combustionDotDamage)
 				dot.SnapshotAttackerMultiplier = 1
-				fmt.Println("Combustion SnapshotBaseDamage: ", combustionDotDamage)
 
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				fmt.Println("Tick Damage: ", result.Damage)
 				dot.Spell.DealPeriodicDamage(sim, result)
 			},
 		},
