@@ -107,7 +107,8 @@ var waterElementalStatInheritance = func(ownerStats stats.Stats) stats.Stats {
 		/* Results: owner 5% crit, Waterbolt 13% crit
 		owner 18% crit, waterbolt 18% crit
 		*/
-		stats.SpellCrit: ownerStats[stats.SpellCrit],
+		stats.SpellHaste: ownerStats[stats.SpellHaste],
+		stats.SpellCrit:  ownerStats[stats.SpellCrit],
 	}
 }
 
