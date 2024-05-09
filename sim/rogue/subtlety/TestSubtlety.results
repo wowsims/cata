@@ -894,6 +894,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-ShardofWoe-60233"
+ value: {
+  dps: 21398.14064
+  tps: 15192.67986
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 21646.57673

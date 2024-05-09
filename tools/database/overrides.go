@@ -171,7 +171,7 @@ var ItemOverrides = []*proto.UIItem{
 
 // Keep these sorted by item ID.
 var ItemAllowList = map[int32]struct{}{
-	//11815: {}, // Hand of Justice
+	45703: {}, // Shard of Woe
 }
 
 // Keep these sorted by item ID.

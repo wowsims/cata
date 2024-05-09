@@ -892,6 +892,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-ShardofWoe-60233"
+ value: {
+  dps: 27477.17569
+  tps: 19508.79474
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 27919.28498

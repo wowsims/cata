@@ -226,10 +226,16 @@ func (mage *Mage) applyPyromaniac() {
 		return
 	}
 
-	pyromaniacMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll,
-		FloatValue: -.05 * float64(mage.Talents.Pyromaniac),
-		Kind:       core.SpellMod_CastTime_Pct,
+	hasteBonus := .05 * float64(mage.Talents.Pyromaniac)
+	pyromaniacAura := mage.GetOrRegisterAura(core.Aura{
+		Label:    "Pyromaniac",
+		ActionID: core.ActionID{SpellID: 83582},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			mage.MultiplyCastSpeed(hasteBonus)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			mage.MultiplyCastSpeed(1 / hasteBonus)
+		},
 	})
 
 	mage.RegisterAura(core.Aura{
@@ -253,10 +259,10 @@ func (mage *Mage) applyPyromaniac() {
 					}
 				}
 			}
-			if activeDotTargets >= 3 && !pyromaniacMod.IsActive {
-				pyromaniacMod.Activate()
-			} else if activeDotTargets < 3 && pyromaniacMod.IsActive {
-				pyromaniacMod.Deactivate()
+			if activeDotTargets >= 3 && !pyromaniacAura.IsActive() {
+				pyromaniacAura.Activate(sim)
+			} else if activeDotTargets < 3 && pyromaniacAura.IsActive() {
+				pyromaniacAura.Deactivate(sim)
 			}
 		},
 	})
@@ -267,22 +273,29 @@ func (mage *Mage) applyMoltenFury() {
 		return
 	}
 
+	// For some reason Molten Fury doesn't apply to living bomb DoT, so cancel it out.
+	// 4/15/24 - Comment above was from before. Worth checking this out.
 	moltenFuryMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll,
+		ClassMask:  MageSpellsAll, //  ^ MageSpellLivingBombDot
 		FloatValue: .04 * float64(mage.Talents.MoltenFury),
 		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	moltenFuryAura := mage.GetOrRegisterAura(core.Aura{
+		Label:    "Molten Fury",
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			moltenFuryMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			moltenFuryMod.Deactivate()
+		},
 	})
 
 	mage.RegisterResetEffect(func(sim *core.Simulation) {
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 35 {
-				moltenFuryMod.Activate()
-
-				// For some reason Molten Fury doesn't apply to living bomb DoT, so cancel it out.
-				// 4/15/24 - Comment above was from before. Worth checking this out.
-				/*if mage.LivingBomb != nil {
-					mage.LivingBomb.DamageMultiplier /= multiplier
-				}*/
+				moltenFuryAura.Activate(sim)
 			}
 		})
 	})
