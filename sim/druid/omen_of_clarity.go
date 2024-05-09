@@ -35,6 +35,7 @@ func (druid *Druid) applyOmenOfClarity() {
 				druid.Shred,
 				druid.SwipeBear,
 				druid.SwipeCat,
+				druid.Thrash,
 			}, func(spell *DruidSpell) bool { return spell != nil })
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {

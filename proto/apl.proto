@@ -288,6 +288,7 @@ message APLActionCatOptimalRotationAction {
     bool bite_during_execute = 9;
     bool allow_aoe_berserk = 10;
     bool melee_weave = 11;
+    bool bear_weave = 12;
 }
 
 message APLActionMove {

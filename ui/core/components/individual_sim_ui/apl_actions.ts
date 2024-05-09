@@ -619,22 +619,26 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				rotationType: FeralDruid_Rotation_AplType.SingleTarget,
 				maintainFaerieFire: true,
 				manualParams: true,
-				minRoarOffset: 12.0,
-				ripLeeway: 4,
+				minRoarOffset: 29.0,
+				ripLeeway: 1,
 				useRake: true,
 				useBite: true,
-				biteTime: 10.0,
+				biteTime: 11.0,
 				biteDuringExecute: true,
 				allowAoeBerserk: false,
 				meleeWeave: true,
+				bearWeave: true,
 			}),
 		fields: [
 			AplHelpers.rotationTypeFieldConfig('rotationType'),
 			AplHelpers.booleanFieldConfig('maintainFaerieFire', 'Maintain Faerie Fire', {
 				labelTooltip: 'Maintain Faerie Fire debuff. Overwrites any external Sunder effects specified in settings.',
 			}),
-			AplHelpers.booleanFieldConfig('meleeWeave', 'Enable melee-weaving', {
+			AplHelpers.booleanFieldConfig('meleeWeave', 'Enable leave-weaving', {
 				labelTooltip: 'Weave out of melee range for Stampede procs. Ignored for AoE rotation or if Stampede is not talented.',
+			}),
+			AplHelpers.booleanFieldConfig('bearWeave', 'Enable bear-weaving', {
+				labelTooltip: 'Weave into Bear Form while pooling Energy. Ignored for AoE rotation.',
 			}),
 			AplHelpers.booleanFieldConfig('allowAoeBerserk', 'Allow AoE Berserk', {
 				labelTooltip: 'Allow Berserk usage in AoE rotation. Ignored for single target rotation.',
