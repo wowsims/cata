@@ -46,6 +46,9 @@ type Cast struct {
 	// The length of time the GCD will be on CD as a result of this cast.
 	GCD time.Duration
 
+	// The minimum length of time for the GCD. Can be left out to use the default of 1s
+	GCDMin time.Duration
+
 	// The amount of time between the call to spell.Cast() and when the spell
 	// effects are invoked.
 	CastTime time.Duration
@@ -57,8 +60,11 @@ type Cast struct {
 func (cast *Cast) EffectiveTime() time.Duration {
 	gcd := max(0, cast.GCD)
 	if cast.GCD > 0 {
-		// TODO: isn't this wrong for spells like shadowfury, that have a reduced GCD?
-		gcd = max(GCDMin, gcd)
+		if cast.GCDMin != 0 {
+			gcd = max(cast.GCDMin, gcd)
+		} else {
+			gcd = max(GCDMin, gcd)
+		}
 	}
 	return max(gcd, cast.CastTime)
 }

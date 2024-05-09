@@ -269,30 +269,27 @@ func (mage *Mage) applyMoltenFury() {
 		return
 	}
 
-	// For some reason Molten Fury doesn't apply to living bomb DoT, so cancel it out.
-	// 4/15/24 - Comment above was from before. Worth checking this out.
-	moltenFuryMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll, //  ^ MageSpellLivingBombDot
-		FloatValue: .04 * float64(mage.Talents.MoltenFury),
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
+	moltenFuryMulti := 1.0 + .04*float64(mage.Talents.MoltenFury)
 
-	moltenFuryAura := mage.GetOrRegisterAura(core.Aura{
-		Label:    "Molten Fury",
-		ActionID: core.ActionID{SpellID: 86880},
-		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			moltenFuryMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			moltenFuryMod.Deactivate()
-		},
+	moltenFuryAuras := mage.NewEnemyAuraArray(func(unit *core.Unit) *core.Aura {
+		return unit.GetOrRegisterAura(core.Aura{
+			Label:    "Molten Fury",
+			Duration: core.NeverExpires,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				mage.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= moltenFuryMulti
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				mage.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= moltenFuryMulti
+			},
+		})
 	})
 
 	mage.RegisterResetEffect(func(sim *core.Simulation) {
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 35 {
-				moltenFuryAura.Activate(sim)
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					moltenFuryAuras.Get(aoeTarget).Activate(sim)
+				}
 			}
 		})
 	})
