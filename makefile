@@ -54,10 +54,7 @@ $(OUT_DIR)/bundle/.dirstamp: \
   node_modules \
   tsconfig.json \
   ui/core/index.ts \
-  ui/core/proto/api.ts \
-  $(OUT_DIR)/net_worker.js \
-  $(OUT_DIR)/sim_worker.js \
-  $(OUT_DIR)/local_worker.js
+  ui/core/proto/api.ts
 	npx tsc --noEmit
 	npx tsx vite.build-workers.ts
 	npx vite build
