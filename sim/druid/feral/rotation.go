@@ -730,7 +730,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 		MangleSpam:         rotation.MangleSpam,
 		MinRoarOffset:      time.Duration(float64(rotation.MinRoarOffset) * float64(time.Second)),
 		RipLeeway:          time.Duration(float64(rotation.RipLeeway) * float64(time.Second)),
-		SnekWeave:          false,
+		SnekWeave:          rotation.SnekWeave,
 		RakeDpeCheck:       true,
 		UseBerserk:         cat.Talents.Berserk && ((rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget) || rotation.AllowAoeBerserk),
 		MeleeWeave:         rotation.MeleeWeave && (cat.Talents.Stampede > 0),

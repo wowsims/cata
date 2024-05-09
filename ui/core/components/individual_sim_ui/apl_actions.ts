@@ -628,6 +628,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				allowAoeBerserk: false,
 				meleeWeave: true,
 				bearWeave: true,
+				snekWeave: true,
 			}),
 		fields: [
 			AplHelpers.rotationTypeFieldConfig('rotationType'),
@@ -639,6 +640,9 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			}),
 			AplHelpers.booleanFieldConfig('bearWeave', 'Enable bear-weaving', {
 				labelTooltip: 'Weave into Bear Form while pooling Energy. Ignored for AoE rotation.',
+			}),
+			AplHelpers.booleanFieldConfig('snekWeave', 'Use Albino Snake', {
+				labelTooltip: 'Reset swing timer at the end of bear-weaves using Albino Snake pet. Ignored if not bear-weaving.',
 			}),
 			AplHelpers.booleanFieldConfig('allowAoeBerserk', 'Allow AoE Berserk', {
 				labelTooltip: 'Allow Berserk usage in AoE rotation. Ignored for single target rotation.',

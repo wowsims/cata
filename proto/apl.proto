@@ -289,6 +289,7 @@ message APLActionCatOptimalRotationAction {
     bool allow_aoe_berserk = 10;
     bool melee_weave = 11;
     bool bear_weave = 12;
+    bool snek_weave = 13;
 }
 
 message APLActionMove {

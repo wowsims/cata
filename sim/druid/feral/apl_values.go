@@ -120,6 +120,7 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 		AllowAoeBerserk:    config.AllowAoeBerserk,
 		MeleeWeave:         config.MeleeWeave,
 		BearWeave:          config.BearWeave,
+		SnekWeave:          config.SnekWeave,
 	}
 
 	cat.setupRotation(rotationOptions)

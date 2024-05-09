@@ -56,6 +56,13 @@ export const FeralDruidRotationConfig = {
 				player.getSimpleRotation().rotationType == AplType.SingleTarget,
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
+			fieldName: 'snekWeave',
+			label: 'Use Albino Snake',
+			labelTooltip: 'Reset swing timer at the end of bear-weaves using Albino Snake pet',
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				player.getSimpleRotation().bearWeave,
+		}),
+		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'allowAoeBerserk',
 			label: 'Allow AoE Berserk',
 			labelTooltip: 'Allow Berserk usage in AoE rotation',
