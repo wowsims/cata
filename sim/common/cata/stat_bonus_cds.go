@@ -8,9 +8,9 @@ import (
 )
 
 func init() {
-
 	// HASTE
-	shared.NewHasteActive(67152, 617, time.Second*20, time.Minute*2) // Lady La-La's Singing Shell
+	shared.NewHasteActive(67152, 617, time.Second*20, time.Minute*2)  // Lady La-La's Singing Shell
+	shared.NewHasteActive(60233, 1935, time.Second*10, time.Minute*1) // Shard of Woe
 
 	// CRIT
 	shared.NewCritActive(66879, 512, time.Second*20, time.Minute*2) // Bottled Lightning

@@ -10,7 +10,6 @@ import (
 //"github.com/wowsims/cata/sim/core/proto"
 
 func (mage *Mage) ApplyFireTalents() {
-
 	// Cooldowns/Special Implementations
 	mage.applyIgnite()
 	mage.applyImpact()
@@ -32,8 +31,9 @@ func (mage *Mage) ApplyFireTalents() {
 	if mage.Talents.FirePower > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
 			School:     core.SpellSchoolFire,
+			ClassMask:  MageSpellsAll,
 			FloatValue: 0.01 * float64(mage.Talents.FirePower),
-			Kind:       core.SpellMod_DamageDone_Flat,
+			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 	}
 
@@ -58,9 +58,9 @@ func (mage *Mage) ApplyFireTalents() {
 	// Critical Mass
 	if mage.Talents.CriticalMass > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			ClassMask:  MageSpellLivingBombDot | MageSpellLivingBombExplosion | MageSpellFlameOrb,
+			ClassMask:  MageSpellLivingBomb | MageSpellFlameOrb,
 			FloatValue: 0.05 * float64(mage.Talents.CriticalMass),
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 		})
 
 		criticalMassDebuff := mage.NewEnemyAuraArray(core.CriticalMassAura)
@@ -87,12 +87,8 @@ func (mage *Mage) applyMasterOfElements() {
 	refundCoeff := 0.15 * float64(mage.Talents.MasterOfElements)
 	manaMetrics := mage.NewManaMetrics(core.ActionID{SpellID: 29077})
 
-	mage.RegisterAura(core.Aura{
-		Label:    "Master of Elements",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Master of Elements",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
 				return
@@ -108,7 +104,7 @@ func (mage *Mage) applyMasterOfElements() {
 				}
 			}
 		},
-	})
+	}))
 }
 
 func (mage *Mage) applyHotStreak() {
@@ -226,10 +222,16 @@ func (mage *Mage) applyPyromaniac() {
 		return
 	}
 
-	pyromaniacMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll,
-		FloatValue: -.05 * float64(mage.Talents.Pyromaniac),
-		Kind:       core.SpellMod_CastTime_Pct,
+	hasteBonus := 1.0 + .05*float64(mage.Talents.Pyromaniac)
+	pyromaniacAura := mage.GetOrRegisterAura(core.Aura{
+		Label:    "Pyromaniac",
+		ActionID: core.ActionID{SpellID: 83582},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			mage.MultiplyCastSpeed(hasteBonus)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			mage.MultiplyCastSpeed(1 / hasteBonus)
+		},
 	})
 
 	mage.RegisterAura(core.Aura{
@@ -253,10 +255,10 @@ func (mage *Mage) applyPyromaniac() {
 					}
 				}
 			}
-			if activeDotTargets >= 3 && !pyromaniacMod.IsActive {
-				pyromaniacMod.Activate()
-			} else if activeDotTargets < 3 && pyromaniacMod.IsActive {
-				pyromaniacMod.Deactivate()
+			if activeDotTargets >= 3 && !pyromaniacAura.IsActive() {
+				pyromaniacAura.Activate(sim)
+			} else if activeDotTargets < 3 && pyromaniacAura.IsActive() {
+				pyromaniacAura.Deactivate(sim)
 			}
 		},
 	})
@@ -267,22 +269,30 @@ func (mage *Mage) applyMoltenFury() {
 		return
 	}
 
+	// For some reason Molten Fury doesn't apply to living bomb DoT, so cancel it out.
+	// 4/15/24 - Comment above was from before. Worth checking this out.
 	moltenFuryMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll,
+		ClassMask:  MageSpellsAll, //  ^ MageSpellLivingBombDot
 		FloatValue: .04 * float64(mage.Talents.MoltenFury),
 		Kind:       core.SpellMod_DamageDone_Pct,
+	})
+
+	moltenFuryAura := mage.GetOrRegisterAura(core.Aura{
+		Label:    "Molten Fury",
+		ActionID: core.ActionID{SpellID: 86880},
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			moltenFuryMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			moltenFuryMod.Deactivate()
+		},
 	})
 
 	mage.RegisterResetEffect(func(sim *core.Simulation) {
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 35 {
-				moltenFuryMod.Activate()
-
-				// For some reason Molten Fury doesn't apply to living bomb DoT, so cancel it out.
-				// 4/15/24 - Comment above was from before. Worth checking this out.
-				/*if mage.LivingBomb != nil {
-					mage.LivingBomb.DamageMultiplier /= multiplier
-				}*/
+				moltenFuryAura.Activate(sim)
 			}
 		})
 	})
@@ -353,14 +363,13 @@ func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 	igniteDamageMultiplier := []float64{0.0, 0.13, 0.26, 0.40}[mage.Talents.Ignite]
 	newDamage := result.Damage * igniteDamageMultiplier * currentMastery
 	dot := mage.Ignite.Dot(result.Target)
-	dot.SnapshotAttackerMultiplier = 1
 
 	// Cata Ignite
 	// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
 	// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
 	if dot.IsActive() {
 		outstandingDamage := dot.SnapshotBaseDamage * float64(dot.NumTicksRemaining(sim))
-		dot.SnapshotBaseDamage = ((outstandingDamage + newDamage) / float64(IgniteTicksRefresh))
+		dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(IgniteTicksRefresh)
 		dot.Apply(sim)
 	} else {
 		dot.SnapshotBaseDamage = newDamage / IgniteTicksFresh

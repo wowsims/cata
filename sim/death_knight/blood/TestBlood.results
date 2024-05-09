@@ -1045,6 +1045,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-ShardofWoe-60233"
+ value: {
+  dps: 14273.54425
+  tps: 70510.40258
+  hps: 4793.32333
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 14605.37208

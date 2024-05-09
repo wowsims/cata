@@ -266,6 +266,7 @@ export class ActionId {
 				}
 				break;
 			case 'Pyroblast':
+			case 'Combustion':
 				if (this.tag) name += ' (DoT)';
 				break;
 			case 'Living Bomb':

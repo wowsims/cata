@@ -11,7 +11,6 @@ func (mage *Mage) registerCombustionSpell() {
 		return
 	}
 
-	var combustionDotDamage float64
 	mage.CombustionImpact = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11129},
 		SpellSchool:    core.SpellSchoolFire,
@@ -45,17 +44,11 @@ func (mage *Mage) registerCombustionSpell() {
 
 	var LBContribution float64
 	mage.Combustion = mage.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 83853},
+		ActionID:       core.ActionID{SpellID: 11129}.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
 		ClassSpellMask: MageSpellCombustion,
-		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagIgnoreAttackerModifiers,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				NonEmpty: true,
-			},
-		},
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultMageCritMultiplier(),
@@ -70,41 +63,25 @@ func (mage *Mage) registerCombustionSpell() {
 			AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				combustionDotDamage = 0.0
-
 				dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.PyroblastDot}
-
-				var spellDPS float64
+				combustionDotDamage := 0.0
 				for _, spell := range dotSpells {
-					dots := spell.Dot(target)
-					if spell == mage.LivingBomb {
-						if dots != nil && dots.IsActive() {
+					dot := spell.Dot(target)
+					if dot.IsActive() {
+						if spell == mage.LivingBomb {
 							// Living Bomb uses Critical Mass multiplicative in the combustion calculation
 							LBContribution = (234 + 0.258*spell.SpellPower()) * 1.25 * (1 + 0.01*float64(mage.Talents.FirePower)) * (1.224 + 0.028*mage.GetMasteryPoints()) * (1 + 0.05*float64(mage.Talents.CriticalMass))
 							LBContribution /= 3
-							spellDPS = LBContribution
-						} else {
-							spellDPS = 0
-						}
-					} else if spell == mage.Ignite {
-						//Ignite's Contribution. Multiply by mastery again.
-						if dots != nil && dots.IsActive() {
-							spellDPS = spell.Dot(target).SnapshotBaseDamage / 2 * (1.224 + 0.028*mage.GetMasteryPoints())
-						} else {
-							spellDPS = 0
-						}
-					} else if spell == mage.PyroblastDot {
-						if dots != nil && dots.IsActive() {
-							spellDPS = dots.SnapshotBaseDamage * 1.25 * (1 + 0.01*float64(mage.Talents.FirePower)) * (1.224 + 0.028*mage.GetMasteryPoints())
-						} else {
-							spellDPS = 0
+							combustionDotDamage += LBContribution
+						} else if spell == mage.Ignite {
+							//Ignite's Contribution. Multiply by mastery again.
+							combustionDotDamage += dot.SnapshotBaseDamage / 2 * (1.224 + 0.028*mage.GetMasteryPoints())
+						} else if spell == mage.PyroblastDot {
+							combustionDotDamage += dot.SnapshotBaseDamage * 1.25 * (1 + 0.01*float64(mage.Talents.FirePower)) * (1.224 + 0.028*mage.GetMasteryPoints())
 						}
 					}
-					combustionDotDamage += spellDPS
 				}
 				dot.Snapshot(target, combustionDotDamage)
-				dot.SnapshotAttackerMultiplier = 1
-
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				result := dot.CalcSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -113,7 +90,7 @@ func (mage *Mage) registerCombustionSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			mage.Combustion.Dot(target).Apply(sim)
+			spell.Dot(target).Apply(sim)
 		},
 	})
 

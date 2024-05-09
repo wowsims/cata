@@ -920,6 +920,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-AllItems-ShardofWoe-60233"
+ value: {
+  dps: 27446.69253
+  tps: 19487.15169
+ }
+}
+dps_results: {
  key: "TestCombat-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 27779.46757

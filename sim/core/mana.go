@@ -311,6 +311,8 @@ func newManaCost(spell *Spell, options ManaCostOptions) *ManaCost {
 	if player := spell.Unit.Env.Raid.GetPlayerFromUnit(spell.Unit); player != nil {
 		if player.GetCharacter().HasTrinketEquipped(45703) { // Spark of Hope
 			baseCost = max(0, baseCost-44)
+		} else if player.GetCharacter().HasTrinketEquipped(60233) { // Shard of Woe
+			baseCost = max(0, baseCost-205)
 		}
 	}
 

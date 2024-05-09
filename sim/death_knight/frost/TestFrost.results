@@ -906,6 +906,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-ShardofWoe-60233"
+ value: {
+  dps: 28526.03059
+  tps: 26491.34477
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 29042.39764
