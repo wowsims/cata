@@ -48,7 +48,7 @@ func (mage *Mage) registerCombustionSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
 		ClassSpellMask: MageSpellCombustion,
-		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   mage.DefaultMageCritMultiplier(),
