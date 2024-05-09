@@ -28,7 +28,6 @@ addEventListener(
 			case SimRequest.statWeightsAsync:
 			case SimRequest.bulkSimAsync:
 				while (true) {
-					console.log({ msg, content });
 					const progressResponse = await fetch('/asyncProgress', {
 						...defaultRequestOptions,
 						body: content,
