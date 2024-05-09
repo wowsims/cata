@@ -82,7 +82,7 @@ func applyRaceEffects(agent Agent) {
 			character.AddBonusRangedCritRating(1 * CritRatingPerCritChance)
 		}
 
-		applyWeaponSpecialization(character, 5*ExpertisePerQuarterPercentReduction,
+		applyWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
 			proto.WeaponType_WeaponTypeMace)
 
 		actionID := ActionID{SpellID: 20594}
