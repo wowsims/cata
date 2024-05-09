@@ -920,6 +920,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-ShardofWoe-60233"
+ value: {
+  dps: 27894.05582
+  tps: 18373.51577
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 28284.50744
@@ -1342,43 +1349,43 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 30664.37794
-  tps: 24317.97713
+  dps: 30391.14291
+  tps: 24146.7874
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 29887.69446
-  tps: 19787.25249
+  dps: 29814.3187
+  tps: 19702.28506
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 34352.9351
-  tps: 22207.31164
+  dps: 34242.84954
+  tps: 22066.74294
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 23422.0071
-  tps: 19851.63842
+  dps: 23428.40588
+  tps: 19850.70179
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 23003.14373
-  tps: 15411.05667
+  dps: 23018.5276
+  tps: 15443.13178
  }
 }
 dps_results: {
  key: "TestEnhancement-Settings-Orc-p1-Standard-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25349.29612
-  tps: 16687.68314
+  dps: 25309.31443
+  tps: 16671.08823
  }
 }
 dps_results: {

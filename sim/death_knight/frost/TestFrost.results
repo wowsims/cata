@@ -906,6 +906,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-ShardofWoe-60233"
+ value: {
+  dps: 28526.03059
+  tps: 26491.34477
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 29042.39764
@@ -1272,8 +1279,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1-Basic-st-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 66561.18152
-  tps: 64860.44857
+  dps: 67367.56987
+  tps: 65666.83691
  }
 }
 dps_results: {
@@ -1293,8 +1300,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1-Basic-st-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 44532.54855
-  tps: 43063.55407
+  dps: 45091.8625
+  tps: 43622.86803
  }
 }
 dps_results: {
@@ -1314,8 +1321,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Orc-p1-Basic-st-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 67073.60573
-  tps: 65282.94804
+  dps: 67892.63905
+  tps: 66101.98135
  }
 }
 dps_results: {
@@ -1335,8 +1342,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Orc-p1-Basic-st-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 44856.18049
-  tps: 43264.35966
+  dps: 45416.39115
+  tps: 43824.57032
  }
 }
 dps_results: {

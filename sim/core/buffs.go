@@ -542,6 +542,15 @@ func StrengthOfEarthTotemAura(unit *Unit) *Aura {
 			{stats.Strength, 549.0, false},
 		}})
 }
+func RoarOfCourageAura(unit *Unit) *Aura {
+	return makeExclusiveBuff(unit, BuffConfig{
+		"Roar of Courage",
+		ActionID{SpellID: 93435},
+		[]StatConfig{
+			{stats.Agility, 549.0, false},
+			{stats.Strength, 549.0, false},
+		}})
+}
 
 // https://www.wowhead.com/cata/spell=57330/horn-of-winter
 func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
@@ -792,7 +801,7 @@ func TerrifyingRoar(unit *Unit) *Aura {
 
 func FuriousHowl(unit *Unit) *Aura {
 	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Terrifying Roar",
+		"Furious Howl",
 		ActionID{SpellID: 24604},
 		[]StatConfig{
 			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},

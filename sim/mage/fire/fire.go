@@ -53,14 +53,13 @@ func (fireMage *FireMage) Initialize() {
 }
 
 func (fireMage *FireMage) GetMasteryBonus() float64 {
-	return (0.22 + 0.028*fireMage.GetMasteryPoints())
+	return (0.224 + 0.028*fireMage.GetMasteryPoints())
 }
 
 func (fireMage *FireMage) ApplyTalents() {
-
 	fireMage.Mage.ApplyTalents()
 
-	// Fire  Specialization Bonus
+	// Fire Specialization Bonus
 	fireMage.AddStaticMod(core.SpellModConfig{
 		School:     core.SpellSchoolFire,
 		FloatValue: 0.25,

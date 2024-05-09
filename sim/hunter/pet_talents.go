@@ -176,10 +176,10 @@ func (hp *HunterPet) registerRoarOfRecoveryCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period:   time.Second * 9,
-				NumTicks: 9,
+				Period:   time.Second * 3,
+				NumTicks: 3,
 				OnAction: func(sim *core.Simulation) {
-					hunter.AddFocus(sim, 30/9, focusMetrics) // Todo: assume per second
+					hunter.AddFocus(sim, 10, focusMetrics)
 				},
 			})
 		},

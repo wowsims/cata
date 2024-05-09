@@ -899,6 +899,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-ShardofWoe-60233"
+ value: {
+  dps: 22124.15441
+  tps: 15708.14963
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-Shrine-CleansingPurifier-63838"
  value: {
   dps: 22965.2985
