@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -273,7 +274,19 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 				// If there are differences in results it hints towards state leaking into following iterations.
 				if rsr != nil {
 					mtResult := RunConcurrentRaidSimSync(rsr)
-					CompareConcurrentSimResultsTest(t, currentTestName, simResult, mtResult, 0.001)
+					failed := CompareConcurrentSimResultsTest(t, currentTestName, simResult, mtResult, 0.001)
+					if failed {
+						t.Log("You can debug the first failed comparison further by starting tests with DEBUG_FIRST_COMPARE=1")
+						debugFirstFail, err := strconv.ParseBool(os.Getenv("DEBUG_FIRST_COMPARE"))
+						if err == nil && debugFirstFail {
+							t.Log("Starting full log comparison...")
+							haveDiffs, log := DebugCompare(rsr, 5)
+							if haveDiffs {
+								t.Log(log)
+							}
+							t.FailNow()
+						}
+					}
 				}
 
 			} else if rsr != nil && strings.Contains(testName, "Casts") {

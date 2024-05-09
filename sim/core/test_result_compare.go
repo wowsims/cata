@@ -1,9 +1,11 @@
 package core
 
 import (
+	"bufio"
 	"fmt"
 	"math"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -190,13 +192,178 @@ func compareStruct(t *testing.T, loc string, vst reflect.Value, vmt reflect.Valu
 	}
 }
 
-func CompareConcurrentSimResultsTest(t *testing.T, testName string, singleThreadRes *proto.RaidSimResult, multiThreadRes *proto.RaidSimResult, baseFloatTolerance float64) {
+func CompareConcurrentSimResultsTest(t *testing.T, testName string, singleThreadRes *proto.RaidSimResult, multiThreadRes *proto.RaidSimResult, baseFloatTolerance float64) bool {
+	failed := false
 	t.Run(testName+"/CompareResults", func(t *testing.T) {
 		vst := reflect.ValueOf(singleThreadRes).Elem()
 		vmt := reflect.ValueOf(multiThreadRes).Elem()
 		compareStruct(t, "RaidSimResult", vst, vmt, baseFloatTolerance)
 		if t.Failed() {
 			t.Log("A fail here means that either the combination of results is broken, or there's a state leak between iterations!")
+			failed = true
 		}
 	})
+	return failed
+}
+
+type logReader struct {
+	Log           []string
+	I             int
+	Iteration     int
+	SimInstance   int
+	LastTimeStamp float64
+}
+
+func (lr *logReader) GetNextLine() (string, bool) {
+	for {
+		if lr.I+1 == len(lr.Log) {
+			return "", false
+		}
+
+		lr.I++
+		line := lr.Log[lr.I]
+
+		if line == "" {
+			continue
+		}
+
+		if strings.Contains(line, "SIMSTART") {
+			lr.SimInstance++
+			lr.Iteration = 0
+			continue
+		}
+
+		if strings.HasPrefix(line, "[") {
+			closingBracket := strings.Index(line, "]")
+			if closingBracket > -1 {
+				fstr := line[1:closingBracket]
+				ts, err := strconv.ParseFloat(fstr, 32)
+				if err == nil {
+					if ts < lr.LastTimeStamp && lr.LastTimeStamp > 0 {
+						lr.Iteration++
+					}
+					lr.LastTimeStamp = ts
+				}
+			}
+		}
+
+		return line, true
+	}
+}
+
+func (lr *logReader) PeakLine(offset int) string {
+	return lr.Log[lr.I+offset]
+}
+
+func newLogReader(log string, isSplitLog bool) *logReader {
+	toLines := func(s string) []string {
+		lines := make([]string, 0, 10000)
+		scanner := bufio.NewScanner(strings.NewReader(s))
+		for scanner.Scan() {
+			lines = append(lines, scanner.Text())
+		}
+		return lines
+	}
+
+	return &logReader{
+		Log:           toLines(log),
+		I:             -1,
+		Iteration:     0,
+		SimInstance:   TernaryInt(isSplitLog, 0, 1),
+		LastTimeStamp: -1000.0,
+	}
+}
+
+func DebugCompare(rsr *proto.RaidSimRequest, showCount int) (bool, string) {
+	outLog := ""
+	showBefore := 5
+	showAfter := 5
+
+	oldDebug := rsr.SimOptions.Debug
+	rsr.SimOptions.Debug = true
+	st := RunRaidSim(rsr)
+	mt := RunConcurrentRaidSimSync(rsr)
+	rsr.SimOptions.Debug = oldDebug
+
+	str := newLogReader(st.Logs, false)
+	mtr := newLogReader(mt.Logs, true)
+
+	stLine, haveStLine := str.GetNextLine()
+	mtLine, haveMtLine := mtr.GetNextLine()
+	lastMtInstance := 0
+
+	diffs := 0
+
+	outLog += fmt.Sprintf("Scanning for first %d differences...\n", showCount)
+
+	for {
+		if !haveStLine && !haveMtLine {
+			break
+		}
+
+		if stLine != mtLine {
+			if lastMtInstance != mtr.SimInstance {
+				if strings.Contains(stLine, "] Dynamic stat change: ") {
+					stLine, haveStLine = str.GetNextLine()
+					continue
+				}
+
+				if strings.Contains(mtLine, "] Dynamic stat change: ") {
+					mtLine, haveMtLine = mtr.GetNextLine()
+					continue
+				}
+
+				if str.LastTimeStamp > 0 {
+					lastMtInstance = mtr.SimInstance
+					continue
+				}
+			}
+
+			diffs++
+
+			outLog += fmt.Sprintln("====================================================")
+			outLog += fmt.Sprintf("==== Lines %d | %d do not match unexpectedly!\n", str.I+1, mtr.I+1)
+			outLog += fmt.Sprintf("ST state, Instance: %d, Iteration: %d\n", str.SimInstance, str.Iteration)
+			outLog += fmt.Sprintln("--- ST log ---")
+			for i := -showBefore; i <= showAfter; i++ {
+				if i == 0 {
+					outLog += fmt.Sprintf(">> %s\n", stLine)
+					continue
+				}
+				outLog += fmt.Sprintln(str.PeakLine(i))
+			}
+			outLog += fmt.Sprintln("--- MT log ---")
+			outLog += fmt.Sprintf("MT state, Instance: %d, Iteration: %d\n", mtr.SimInstance, mtr.Iteration)
+			for i := -showBefore; i <= showAfter; i++ {
+				if i == 0 {
+					outLog += fmt.Sprintf(">> %s\n", mtLine)
+					continue
+				}
+				outLog += fmt.Sprintln(mtr.PeakLine(i))
+			}
+
+			if str.PeakLine(1) == mtLine {
+				stLine, haveStLine = str.GetNextLine()
+				continue
+			}
+
+			if mtr.PeakLine(1) == stLine {
+				mtLine, haveMtLine = mtr.GetNextLine()
+				continue
+			}
+
+			if diffs >= showCount {
+				break
+			}
+		}
+
+		stLine, haveStLine = str.GetNextLine()
+		mtLine, haveMtLine = mtr.GetNextLine()
+	}
+
+	if diffs == 0 {
+		outLog += fmt.Sprintln("No differences found!")
+	}
+
+	return diffs > 0, outLog
 }
