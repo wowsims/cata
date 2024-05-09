@@ -312,12 +312,12 @@ enum Potions {
 	MightyRagePotion = 11;
 	RunicManaInjector = 12;
 	RunicHealingInjector = 13;
+	FlameCap = 14;
 }
 
 enum Conjured {
 	ConjuredUnknown = 0;
 	ConjuredDarkRune = 1;
-	ConjuredFlameCap = 2;
 	ConjuredHealthstone = 5;
 	ConjuredRogueThistleTea = 4;
 }
