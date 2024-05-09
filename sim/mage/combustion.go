@@ -19,9 +19,6 @@ func (mage *Mage) registerCombustionSpell() {
 		Flags:          core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
 				Duration: time.Minute * 2,
