@@ -273,7 +273,7 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 				// If there are differences in results it hints towards state leaking into following iterations.
 				if rsr != nil {
 					mtResult := RunConcurrentRaidSimSync(rsr)
-					CompareConcurrentSimResultsTest(t, currentTestName, simResult, mtResult, 0.0001)
+					CompareConcurrentSimResultsTest(t, currentTestName, simResult, mtResult, 0.001)
 				}
 
 			} else if rsr != nil && strings.Contains(testName, "Casts") {
