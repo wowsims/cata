@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"math"
 	"reflect"
-	"strconv"
 	"strings"
 	"testing"
 
@@ -192,18 +191,13 @@ func compareStruct(t *testing.T, loc string, vst reflect.Value, vmt reflect.Valu
 	}
 }
 
-func CompareConcurrentSimResultsTest(t *testing.T, testName string, singleThreadRes *proto.RaidSimResult, multiThreadRes *proto.RaidSimResult, baseFloatTolerance float64) bool {
-	failed := false
-	t.Run(testName+"/CompareResults", func(t *testing.T) {
-		vst := reflect.ValueOf(singleThreadRes).Elem()
-		vmt := reflect.ValueOf(multiThreadRes).Elem()
-		compareStruct(t, "RaidSimResult", vst, vmt, baseFloatTolerance)
-		if t.Failed() {
-			t.Log("A fail here means that either the combination of results is broken, or there's a state leak between iterations!")
-			failed = true
-		}
-	})
-	return failed
+func CompareConcurrentSimResultsTest(t *testing.T, testName string, singleThreadRes *proto.RaidSimResult, multiThreadRes *proto.RaidSimResult, baseFloatTolerance float64) {
+	vst := reflect.ValueOf(singleThreadRes).Elem()
+	vmt := reflect.ValueOf(multiThreadRes).Elem()
+	compareStruct(t, "RaidSimResult", vst, vmt, baseFloatTolerance)
+	if t.Failed() {
+		t.Log("A fail here means that either the combination of results is broken, or there's a state leak between iterations!")
+	}
 }
 
 type logReader struct {
@@ -233,18 +227,8 @@ func (lr *logReader) GetNextLine() (string, bool) {
 			continue
 		}
 
-		if strings.HasPrefix(line, "[") {
-			closingBracket := strings.Index(line, "]")
-			if closingBracket > -1 {
-				fstr := line[1:closingBracket]
-				ts, err := strconv.ParseFloat(fstr, 32)
-				if err == nil {
-					if ts < lr.LastTimeStamp && lr.LastTimeStamp > 0 {
-						lr.Iteration++
-					}
-					lr.LastTimeStamp = ts
-				}
-			}
+		if strings.HasPrefix(line, "[0.00] [Target 1] Dynamic stat change:") {
+			lr.Iteration++
 		}
 
 		return line, true
@@ -270,11 +254,11 @@ func newLogReader(log string, isSplitLog bool) *logReader {
 		I:             -1,
 		Iteration:     0,
 		SimInstance:   TernaryInt(isSplitLog, 0, 1),
-		LastTimeStamp: -1000.0,
+		LastTimeStamp: 99999999999.0,
 	}
 }
 
-func DebugCompare(rsr *proto.RaidSimRequest, showCount int) (bool, string) {
+func DebugCompareLogs(rsr *proto.RaidSimRequest, showCount int) (bool, string) {
 	outLog := ""
 	showBefore := 5
 	showAfter := 5
@@ -294,7 +278,7 @@ func DebugCompare(rsr *proto.RaidSimRequest, showCount int) (bool, string) {
 
 	diffs := 0
 
-	outLog += fmt.Sprintf("Scanning for first %d differences...\n", showCount)
+	outLog += fmt.Sprintf("Scanning for first %d differences with %d iterations...\n", showCount, rsr.SimOptions.Iterations)
 
 	for {
 		if !haveStLine && !haveMtLine {
@@ -364,6 +348,9 @@ func DebugCompare(rsr *proto.RaidSimRequest, showCount int) (bool, string) {
 	if diffs == 0 {
 		outLog += fmt.Sprintln("No differences found!")
 	}
+
+	//os.WriteFile("st", []byte(st.Logs), 0644)
+	//os.WriteFile("mt", []byte(mt.Logs), 0644)
 
 	return diffs > 0, outLog
 }

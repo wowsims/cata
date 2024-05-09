@@ -184,8 +184,13 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 		t.Fail()
 	}
 
+	stopTest := false
 	numTests := generator.NumTests()
 	for i := 0; i < numTests; i++ {
+		if stopTest {
+			break
+		}
+
 		testName, csr, swr, rsr := generator.GetTest(i)
 		if strings.Contains(testName, "Average") && testing.Short() {
 			continue
@@ -273,20 +278,27 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 				// but also to check if the sim resets everything properly between iterations.
 				// If there are differences in results it hints towards state leaking into following iterations.
 				if rsr != nil {
-					mtResult := RunConcurrentRaidSimSync(rsr)
-					failed := CompareConcurrentSimResultsTest(t, currentTestName, simResult, mtResult, 0.001)
-					if failed {
-						t.Log("You can debug the first failed comparison further by starting tests with DEBUG_FIRST_COMPARE=1")
-						debugFirstFail, err := strconv.ParseBool(os.Getenv("DEBUG_FIRST_COMPARE"))
-						if err == nil && debugFirstFail {
-							t.Log("Starting full log comparison...")
-							haveDiffs, log := DebugCompare(rsr, 5)
-							if haveDiffs {
-								t.Log(log)
+
+					t.Run(testName+"/CompareResults", func(t *testing.T) {
+						mtResult := RunConcurrentRaidSimSync(rsr)
+						CompareConcurrentSimResultsTest(t, currentTestName, simResult, mtResult, 0.001)
+						if t.Failed() {
+							t.Log("You can debug the first failed comparison further by starting tests with DEBUG_FIRST_COMPARE=1")
+							debugFirstFail, err := strconv.ParseBool(os.Getenv("DEBUG_FIRST_COMPARE"))
+							if err == nil && debugFirstFail {
+								t.Log("Starting full log comparison...")
+								haveDiffs, log := DebugCompareLogs(rsr, 5)
+								if haveDiffs {
+									t.Log(log)
+								} else {
+									t.Log("No differences found in logs.")
+								}
+								// Break loop, it can crash the test if there's errors in too many tests for this spec.
+								stopTest = true
+								t.FailNow()
 							}
-							t.FailNow()
 						}
-					}
+					})
 				}
 
 			} else if rsr != nil && strings.Contains(testName, "Casts") {
