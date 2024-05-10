@@ -418,7 +418,7 @@ func (cat *FeralDruid) terminateBearWeave(sim *core.Simulation, isClearcast bool
 	}
 
 	// Check timer leeway
-	earliestWeaveEnd := sim.CurrentTime + smallestWeaveExtension
+	earliestWeaveEnd := sim.CurrentTime + smallestWeaveExtension + core.GCDDefault
 	isPooling, nextRefresh := upcomingTimers.nextRefreshTime()
 
 	if isPooling && (nextRefresh < earliestWeaveEnd) {
@@ -427,7 +427,8 @@ func (cat *FeralDruid) terminateBearWeave(sim *core.Simulation, isClearcast bool
 
 	// Also add a condition to prevent extending a weave if we don't have enough time
 	// to spend the pooled Energy thus far.
-	timeToDump := earliestWeaveEnd + core.DurationFromSeconds(math.Floor(finalEnergy / cat.Shred.DefaultCast.Cost))
+	energyToDump := finalEnergy + 1.5 * regenRate // need to include Cat Form GCD here
+	timeToDump := earliestWeaveEnd + core.DurationFromSeconds(math.Floor(energyToDump / cat.Shred.DefaultCast.Cost))
 	return (timeToDump >= sim.Duration) || cat.tfExpectedBefore(sim, timeToDump)
 }
 
