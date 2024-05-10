@@ -206,10 +206,6 @@ func readAtlasLootFactionData(db *WowDatabase, srcUrl string) {
 		}
 
 		factionID, _ := strconv.Atoi(factionMatch[2])
-		// db.MergeZone(&proto.UIZone{
-		// 	Id:        int32(factionID),
-		// 	Expansion: expansion,
-		// })
 		contentType := factionMatch[3]
 		faction, ok := AtlasLootFactions[contentType]
 		if !ok {

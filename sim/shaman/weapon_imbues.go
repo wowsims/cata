@@ -210,31 +210,23 @@ func (shaman *Shaman) RegisterFlametongueImbue(procMask core.ProcMask) {
 	shaman.RegisterOnItemSwapWithImbue(int32(enchantID), &procMask, aura)
 }
 
+func (shaman *Shaman) frostbrandDDBCHandler(sim *core.Simulation, spell *core.Spell, attackTable *core.AttackTable) float64 {
+	if spell.ClassSpellMask&(SpellMaskLightningBolt|SpellMaskChainLightning|SpellMaskLavaLash|SpellMaskEarthShock|SpellMaskFlameShock|SpellMaskFrostShock) > 0 {
+		return 1 + 0.05*float64(shaman.Talents.FrozenPower)
+	}
+	return 1.0
+}
+
 func (shaman *Shaman) FrostbrandDebuffAura(target *core.Unit) *core.Aura {
-	multiplier := 1 + 0.05*float64(shaman.Talents.FrozenPower)
 	return target.GetOrRegisterAura(core.Aura{
 		Label:    "Frostbrand Attack-" + shaman.Label,
 		ActionID: core.ActionID{SpellID: 8034},
 		Duration: time.Second * 8,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.LightningBolt.DamageMultiplier *= multiplier
-			shaman.ChainLightning.DamageMultiplier *= multiplier
-			if shaman.LavaLash != nil {
-				shaman.LavaLash.DamageMultiplier *= multiplier
-			}
-			shaman.EarthShock.DamageMultiplier *= multiplier
-			shaman.FlameShock.DamageMultiplier *= multiplier
-			shaman.FrostShock.DamageMultiplier *= multiplier
+			core.EnableDamageDoneByCaster(0, 1, shaman.AttackTables[aura.Unit.UnitIndex], shaman.frostbrandDDBCHandler)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.LightningBolt.DamageMultiplier /= multiplier
-			shaman.ChainLightning.DamageMultiplier /= multiplier
-			if shaman.LavaLash != nil {
-				shaman.LavaLash.DamageMultiplier /= multiplier
-			}
-			shaman.EarthShock.DamageMultiplier /= multiplier
-			shaman.FlameShock.DamageMultiplier /= multiplier
-			shaman.FrostShock.DamageMultiplier /= multiplier
+			core.DisableDamageDoneByCaster(0, shaman.AttackTables[aura.Unit.UnitIndex])
 		},
 	})
 }

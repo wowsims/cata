@@ -109,14 +109,15 @@ export class ConsumesPicker extends Component {
 		const tinkerOptions = ConsumablesInputs.makeTinkerHandsInput(relevantStatOptions(ConsumablesInputs.TINKERS_HANDS_CONFIG, this.simUI), 'Gloves Tinkers');
 		const tinkerPicker = buildIconInput(engiConsumesElem, this.simUI.player, tinkerOptions);
 
-		const decoyPicker = buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.ExplosiveDecoy);
-		const sapperPicker = buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.ThermalSapper);
+		const explosivePicker = buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.ExplosiveBigDaddy);
+		const highpoweredBoltGunPicker = buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.HighpoweredBoltGun);
 
-		const explosiveOptions = ConsumablesInputs.makeExplosivesInput(relevantStatOptions(ConsumablesInputs.EXPLOSIVES_CONFIG, this.simUI), 'Explosives');
-		const explosivePicker = buildIconInput(engiConsumesElem, this.simUI.player, explosiveOptions);
+		// WOTLK Bombs
+		// const explosiveOptions = ConsumablesInputs.makeExplosivesInput(relevantStatOptions(ConsumablesInputs.EXPLOSIVES_CONFIG, this.simUI), 'Explosives');
+		// const explosivePicker = buildIconInput(engiConsumesElem, this.simUI.player, explosiveOptions);
 
-		TypedEvent.onAny([this.simUI.player.professionChangeEmitter]).on(() => this.updateRow(row, [decoyPicker, sapperPicker, explosivePicker, tinkerPicker]));
-		this.updateRow(row, [decoyPicker, sapperPicker, explosivePicker, tinkerPicker]);
+		TypedEvent.onAny([this.simUI.player.professionChangeEmitter]).on(() => this.updateRow(row, [explosivePicker, highpoweredBoltGunPicker, tinkerPicker]));
+		this.updateRow(row, [explosivePicker, highpoweredBoltGunPicker, tinkerPicker]);
 	}
 
 	private buildPetPicker() {
