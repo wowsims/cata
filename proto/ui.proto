@@ -94,6 +94,7 @@ enum Expansion {
 	ExpansionVanilla = 1;
 	ExpansionTbc = 2;
 	ExpansionWotlk = 3;
+	ExpansionCata = 4;
 }
 
 enum DungeonDifficulty {
@@ -120,10 +121,19 @@ enum RepLevel {
 	RepLevelExalted 	= 8;
 }
 
-// TODO: Cata Rep Factions
 // Use the faction ID for the field index
 enum RepFaction {
 	RepFactionUnknown = 0;
+	RepFactionTheEarthenRing = 1135;
+	RepFactionGuardiansOfHyjal = 1158;
+	RepFactionTherazane = 1171;
+	RepFactionDragonmawClan = 1172;
+	RepFactionRamkahen = 1173;
+	RepFactionWildhammerClan = 1174;
+	RepFactionBaradinsWardens = 1177;
+	RepFactionHellscreamsReach = 1178;
+	RepFactionAvengersOfHyjal = 1204;
+
 }
 
 message UIItemSource {
@@ -219,27 +229,20 @@ enum SourceFilterOption {
 	SourceQuest = 2;
 	SourceDungeon = 3;
 	SourceDungeonH = 4;
-	SourceDungeonTRA = 9;
-	SourceDungeonTRB = 10;
-	SourceRaid10 = 5;
-	SourceRaid10H = 6;
-	SourceRaid25 = 7;
-	SourceRaid25H = 8;
+	SourceRaid = 5;
+	SourceRaidH = 6;
 }
 
 enum RaidFilterOption {
 	RaidUnknown = 0;
-	RaidVanilla = 1;
-	RaidTbc = 2;
-	RaidNaxxramas = 3;
-	RaidEyeOfEternity = 4;
-	RaidObsidianSanctum = 5;
-	RaidVaultOfArchavon = 6;
-	RaidUlduar = 7;
-	RaidTrialOfTheCrusader = 8;
-	RaidOnyxiasLair = 9;
-	RaidIcecrownCitadel = 10;
-	RaidRubySanctum = 11;
+	RaidIcecrownCitadel = 1;
+	RaidRubySanctum = 2;
+	RaidBlackwingDescent = 3;
+	RaidTheBastionOfTwilight = 4;
+	RaidBaradinHold = 5;
+	RaidThroneOfTheFourWinds = 6;
+	RaidFirelands = 7;
+	RaidDragonSoul = 8;
 }
 
 // Next tag: 20.

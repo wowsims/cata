@@ -25,6 +25,10 @@ func ReadAtlasLootData() *WowDatabase {
 	readAtlasLootDungeonData(db, proto.Expansion_ExpansionTbc, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_DungeonsAndRaids/data-tbc.lua")
 	readAtlasLootDungeonData(db, proto.Expansion_ExpansionWotlk, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_DungeonsAndRaids/data-wrath.lua")
 
+	// Cata addon
+	readAtlasLootDungeonData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/master/AtlasLootClassic_DungeonsAndRaids/data-cata.lua")
+	readAtlasLootFactionData(db, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/master/AtlasLootClassic_Factions/data-cata.lua")
+
 	readZoneData(db)
 
 	return db
@@ -80,7 +84,7 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 	// Convert newline to '@@@' so we can do regexes on the whole file as 1 line.
 	srcTxt = strings.ReplaceAll(srcTxt, "\n", "@@@")
 
-	dungeonPattern := regexp.MustCompile(`data\["([^"]+)"] = {.*?\sMapID = (\d+),.*?items = {(.*?)@@@}@@@`)
+	dungeonPattern := regexp.MustCompile(`data\["([^"]+)"] = {.*?\sMapID = (\d+),.*?ContentType = ([^"]+),.*?items = {(.*?)@@@}@@@`)
 	npcNameAndIDPattern := regexp.MustCompile(`^[^@]*?AL\["(.*?)"\]\)?,(.*?(@@@\s*npcID = {?(\d+),))?`)
 	diffItemsPattern := regexp.MustCompile(`\[([A-Z0-9]+_DIFF)\] = (({.*?@@@\s*},?@@@)|(.*?@@@\s*\),?@@@))`)
 	itemsPattern := regexp.MustCompile(`@@@\s+{(.*?)},`)
@@ -92,8 +96,9 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 			Id:        int32(zoneID),
 			Expansion: expansion,
 		})
+		contentType := dungeonMatch[3]
 
-		npcSplits := strings.Split(dungeonMatch[3], "name = ")[1:]
+		npcSplits := strings.Split(dungeonMatch[4], "name = ")[1:]
 		for _, npcSplit := range npcSplits {
 			npcSplit = strings.ReplaceAll(npcSplit, "AtlasLoot:GetRetByFaction(", "")
 			npcMatch := npcNameAndIDPattern.FindStringSubmatch(npcSplit)
@@ -120,9 +125,13 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 			}
 
 			for _, difficultyMatch := range diffItemsPattern.FindAllStringSubmatch(npcSplit, -1) {
-				difficulty, ok := AtlasLootDifficulties[difficultyMatch[1]]
+				diffString := difficultyMatch[1]
+				if expansion == proto.Expansion_ExpansionCata && contentType == "RAID_CONTENT" {
+					diffString = AtlasLootDungeonToRaidDifficulty[diffString]
+				}
+				difficulty, ok := AtlasLootDifficulties[diffString]
 				if !ok {
-					log.Fatalf("Invalid difficulty for NPC %s: %s", npcName, difficultyMatch[1])
+					log.Fatalf("Invalid difficulty for NPC %s: %s", npcName, diffString)
 				}
 
 				curCategory := ""
@@ -177,6 +186,132 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 	}
 }
 
+func readAtlasLootFactionData(db *WowDatabase, srcUrl string) {
+	srcTxt, err := tools.ReadWeb(srcUrl)
+	if err != nil {
+		log.Fatalf("Error reading atlasloot file %s", err)
+	}
+
+	// Convert newline to '@@@' so we can do regexes on the whole file as 1 line.
+	srcTxt = strings.ReplaceAll(srcTxt, "\n", "@@@")
+
+	factionPattern := regexp.MustCompile(`data\["([^"]+)"] = {.*?\sFactionID = (\d+),.*?ContentType = ([^,]+),.*?items = {(.*?)@@@}`)
+	levelPattern := regexp.MustCompile(`^[^@]*?ALIL\["(.*?)"\]\)?,(.*?(@@@\s*npcID = {?(\d+),))?`)
+	diffItemsPattern := regexp.MustCompile(`\[([A-Z0-9]+_DIFF)\] = (({.*?@@@\s*},?@@@)|(.*?@@@\s*\),?@@@))`)
+	itemsPattern := regexp.MustCompile(`@@@\s+{(.*?)},`)
+	for _, factionMatch := range factionPattern.FindAllStringSubmatch(srcTxt, -1) {
+		fmt.Printf("Faction: %s\n", factionMatch[1])
+		if factionMatch[1] == "DUMMY" {
+			continue
+		}
+
+		factionID, _ := strconv.Atoi(factionMatch[2])
+		// db.MergeZone(&proto.UIZone{
+		// 	Id:        int32(factionID),
+		// 	Expansion: expansion,
+		// })
+		contentType := factionMatch[3]
+		faction, ok := AtlasLootFactions[contentType]
+		if !ok {
+			log.Fatalf("Invalid faction for Content Type %s", contentType)
+		}
+
+		npcSplits := strings.Split(factionMatch[4], "name = ")[1:]
+		for _, levelSplit := range npcSplits {
+			levelMatch := levelPattern.FindStringSubmatch(levelSplit)
+			if levelMatch == nil {
+				panic("No level match: " + levelSplit)
+			}
+			levelName := levelMatch[1]
+			fmt.Printf("Level: %s\n", levelName)
+
+			repLevel, ok := AtlasLootRepLevel[levelName]
+			if !ok {
+				log.Fatalf("Invalid Rep Level for %s", levelName)
+			}
+
+			for _, difficultyMatch := range diffItemsPattern.FindAllStringSubmatch(levelSplit, -1) {
+				for _, itemMatch := range itemsPattern.FindAllStringSubmatch(difficultyMatch[0], -1) {
+					itemParams := core.MapSlice(strings.Split(itemMatch[1], ","), strings.TrimSpace)
+
+					idStr := itemParams[1]
+					if idStr[0] == 'n' || idStr[0] == '"' { // nil or "xxx"
+					} else { // item ID
+						itemID, _ := strconv.Atoi(idStr)
+						fmt.Printf("Item: %d\n", itemID)
+						factionSource := &proto.RepSource{
+							FactionId:    faction,
+							RepFactionId: proto.RepFaction(factionID),
+							RepLevel:     repLevel,
+						}
+
+						item := &proto.UIItem{Id: int32(itemID), Sources: []*proto.UIItemSource{{
+							Source: &proto.UIItemSource_Rep{
+								Rep: factionSource,
+							},
+						}}}
+						db.MergeItem(item)
+					}
+				}
+			}
+		}
+	}
+}
+
+// func readAtlasLootCraftingData(db *WowDatabase, srcUrl string) {
+// 	srcTxt, err := tools.ReadWeb(srcUrl)
+// 	if err != nil {
+// 		log.Fatalf("Error reading atlasloot file %s", err)
+// 	}
+
+// 	// Convert newline to '@@@' so we can do regexes on the whole file as 1 line.
+// 	srcTxt = strings.ReplaceAll(srcTxt, "\n", "@@@")
+
+// 	craftingPattern := regexp.MustCompile(`data\["([^"]+)"] = {.*?\name = ALIL["(\d+)"],.*?ContentType = ([^,]+),.*?items = {(.*?)@@@}`)
+// 	diffItemsPattern := regexp.MustCompile(`\[([A-Z0-9]+_DIFF)\] = (({.*?@@@\s*},?@@@)|(.*?@@@\s*\),?@@@))`)
+// 	itemsPattern := regexp.MustCompile(`@@@\s+{(.*?)},`)
+// 	for _, craftingMatch := range craftingPattern.FindAllStringSubmatch(srcTxt, -1) {
+// 		fmt.Printf("Profession: %s\n", craftingMatch[1])
+
+// 		profession, ok := AtlasLootProfessionNames[craftingMatch[1]]
+// 		if !ok {
+// 			log.Fatalf("Invalid Profession for %s", craftingMatch[1])
+// 		}
+
+// 		npcSplits := strings.Split(craftingMatch[4], "name = ")[1:]
+// 		for _, levelSplit := range npcSplits {
+// 			for _, difficultyMatch := range diffItemsPattern.FindAllStringSubmatch(levelSplit, -1) {
+// 				for _, itemMatch := range itemsPattern.FindAllStringSubmatch(difficultyMatch[0], -1) {
+// 					itemParams := core.MapSlice(strings.Split(itemMatch[1], ","), strings.TrimSpace)
+
+// 					idStr := itemParams[1]
+// 					if idStr[0] == 'n' || idStr[0] == '"' { // nil or "xxx"
+// 					} else { // craft ID
+// 						craftID, _ := strconv.Atoi(idStr)
+// 						fmt.Printf("CraftID: %d\n", craftID)
+// 						craftedSource := &proto.CraftedSource{
+// 							Profession: profession,
+// 							SpellId: int32(craftID),
+// 						}
+
+// 						itemID := int32(0)
+
+// 						// Dont add new items from craft ids
+// 						if _, ok := db.Items[itemID]; ok {
+// 							item := &proto.UIItem{Id: int32(itemID), Sources: []*proto.UIItemSource{{
+// 								Source: &proto.UIItemSource_Crafted{
+// 									Crafted: craftedSource,
+// 								},
+// 							}}}
+// 							db.MergeItem(item)
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+
 func readZoneData(db *WowDatabase) {
 	zoneIDs := make([]int32, 0, len(db.Zones))
 	for zoneID := range db.Zones {
@@ -216,6 +351,17 @@ var AtlasLootProfessionIDs = map[int]proto.Profession{
 	17: proto.Profession_Jewelcrafting,
 	18: proto.Profession_Inscription,
 }
+var AtlasLootFactions = map[string]proto.Faction{
+	"FACTIONS_CONTENT":       proto.Faction_Unknown,
+	"FACTIONS_ALLI_CONTENT":  proto.Faction_Alliance,
+	"FACTIONS_HORDE_CONTENT": proto.Faction_Horde,
+}
+var AtlasLootRepLevel = map[string]proto.RepLevel{
+	"Exalted":  proto.RepLevel_RepLevelExalted,
+	"Revered":  proto.RepLevel_RepLevelRevered,
+	"Honored":  proto.RepLevel_RepLevelHonored,
+	"Friendly": proto.RepLevel_RepLevelFriendly,
+}
 var AtlasLootDifficulties = map[string]proto.DungeonDifficulty{
 	"NORMAL_DIFF":  proto.DungeonDifficulty_DifficultyNormal,
 	"HEROIC_DIFF":  proto.DungeonDifficulty_DifficultyHeroic,
@@ -225,4 +371,8 @@ var AtlasLootDifficulties = map[string]proto.DungeonDifficulty{
 	"RAID10H_DIFF": proto.DungeonDifficulty_DifficultyRaid10H,
 	"RAID25_DIFF":  proto.DungeonDifficulty_DifficultyRaid25,
 	"RAID25H_DIFF": proto.DungeonDifficulty_DifficultyRaid25H,
+}
+var AtlasLootDungeonToRaidDifficulty = map[string]string{
+	"NORMAL_DIFF": "RAID25_DIFF",
+	"HEROIC_DIFF": "RAID25H_DIFF",
 }

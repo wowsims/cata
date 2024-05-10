@@ -231,6 +231,7 @@ const (
 	HunterSpellExplosiveShot
 	HunterSpellExplosiveTrap
 	HunterSpellBlackArrow
+	HunterSpellMultiShot
 	HunterSpellAimedShot
 	HunterPetFocusDump
 )
