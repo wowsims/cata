@@ -255,10 +255,28 @@ func (cat *FeralDruid) preRotationCleanup(sim *core.Simulation) bool {
 	// the input delay is over.
 	if cat.readyToShift {
 		cat.shiftBearCat(sim, false)
+
 		// Reset swing timer from snek (or idol/weapon swap) when going into cat
 		if cat.InForm(druid.Cat) && cat.Rotation.SnekWeave {
 			cat.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
 		}
+
+		// Bundle a leave-weave with the Cat Form GCD if possible
+		if cat.InForm(druid.Cat) && cat.Rotation.MeleeWeave {
+			timeToMove := core.DurationFromSeconds((cat.CatCharge.MinRange + 1 - cat.DistanceFromTarget) / cat.GetMovementSpeed()) + cat.ReactionTime
+
+			if cat.CatCharge.TimeToReady(sim) < timeToMove {
+				cat.MoveTo(cat.CatCharge.MinRange + 1, sim)
+				cat.NextRotationAction(sim, sim.CurrentTime + cat.ReactionTime)
+			}
+		}
+
+		// To prep for the above, pre-position to max melee range during Bear Form GCD
+		if cat.InForm(druid.Bear) {
+			cat.MoveTo(core.MaxMeleeRange - 1, sim)
+			cat.NextRotationAction(sim, sim.CurrentTime + cat.ReactionTime)
+		}
+
 		return false
 	}
 
@@ -653,10 +671,10 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			return false, 0
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentMangleCatCost() - curEnergy) / regenRate)
-	} else if meleeWeaveNow {
-		cat.MoveTo(cat.CatCharge.MinRange + 1, sim)
 	} else if bearWeaveNow {
 		cat.readyToShift = true
+	} else if meleeWeaveNow {
+		cat.MoveTo(cat.CatCharge.MinRange + 1, sim)
 	} else if ravageNow {
 		cat.Ravage.Cast(sim, cat.CurrentTarget)
 		return false, 0
