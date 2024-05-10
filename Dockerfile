@@ -3,29 +3,29 @@
 FROM golang:1.21
 
 WORKDIR /cata
-COPY . .
-COPY gitconfig /etc/gitconfig
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-RUN apt-get update
-RUN apt-get install -y protobuf-compiler
-RUN go get -u google.golang.org/protobuf
-RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+COPY . .
+COPY gitconfig /etc/gitconfig
 
-ENV NODE_VERSION=20.11.1
+# Install all Go dependencies
+RUN apt-get update \
+	&& apt-get install -y protobuf-compiler \
+	&& go get -u google.golang.org/protobuf \
+	&& go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
+	&& curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(shell go env GOPATH)/bin
+
+ENV NODE_VERSION=20.13.1
 ENV NVM_DIR="/root/.nvm"
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash \
+# Install all Frontend dependencies
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash \
     && . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
     && nvm alias default $NODE_VERSION \
     && nvm use default
 
-#RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
-#RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
-#RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
-
 ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
-EXPOSE 8080/tcp
+EXPOSE 8080 3333 5173
