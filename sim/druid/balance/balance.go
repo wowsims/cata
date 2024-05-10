@@ -70,6 +70,37 @@ func (moonkin *BalanceDruid) Initialize() {
 	// }
 }
 
+func (moonkin *BalanceDruid) ApplyTalents() {
+	moonkin.Druid.ApplyTalents()
+
+	// Moonfury
+	moonkin.RegisterAura(
+		core.Aura{
+			Label:    "Moonfury",
+			Duration: core.NeverExpires,
+			ActionID: core.ActionID{
+				SpellID: 16913,
+			},
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+		},
+	)
+
+	moonkin.AddStaticMod(core.SpellModConfig{
+		ClassMask:  druid.DruidSpellWrath | druid.DruidSpellStarfire | druid.DruidSpellStarsurge | druid.DruidSpellStarfall | druid.DruidSpellDoT,
+		Kind:       core.SpellMod_CritMultiplier_Pct,
+		FloatValue: 1.0,
+	})
+
+	moonkin.AddStaticMod(core.SpellModConfig{
+		School:     core.SpellSchoolArcane | core.SpellSchoolNature,
+		ClassMask:  druid.DruidSpellsAll,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0.1,
+	})
+}
+
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {
 	moonkin.Druid.Reset(sim)
 	//moonkin.RebirthTiming = moonkin.Env.BaseDuration.Seconds() * sim.RandomFloat("Rebirth Timing")
