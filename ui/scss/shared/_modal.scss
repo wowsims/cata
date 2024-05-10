@@ -4,6 +4,16 @@
 	.modal-dialog {
 		max-height: calc(100vh - (2 * var(--bs-modal-margin)));
 		display: flex;
+
+		&.modal-overflow-scroll {
+			.modal-content {
+				max-height: calc(100vh - (2 * var(--bs-modal-margin)));
+			}
+
+			.modal-body {
+				overflow: auto;
+			}
+		}
 	}
 
 	.modal-scroll-table {

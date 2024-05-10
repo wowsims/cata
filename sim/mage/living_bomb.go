@@ -29,6 +29,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: MageSpellLivingBombExplosion,
+		Flags:          core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           mage.DefaultSpellCritMultiplier(),

@@ -269,30 +269,27 @@ func (mage *Mage) applyMoltenFury() {
 		return
 	}
 
-	// For some reason Molten Fury doesn't apply to living bomb DoT, so cancel it out.
-	// 4/15/24 - Comment above was from before. Worth checking this out.
-	moltenFuryMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  MageSpellsAll, //  ^ MageSpellLivingBombDot
-		FloatValue: .04 * float64(mage.Talents.MoltenFury),
-		Kind:       core.SpellMod_DamageDone_Pct,
-	})
+	moltenFuryMulti := 1.0 + .04*float64(mage.Talents.MoltenFury)
 
-	moltenFuryAura := mage.GetOrRegisterAura(core.Aura{
-		Label:    "Molten Fury",
-		ActionID: core.ActionID{SpellID: 86880},
-		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			moltenFuryMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			moltenFuryMod.Deactivate()
-		},
+	moltenFuryAuras := mage.NewEnemyAuraArray(func(unit *core.Unit) *core.Aura {
+		return unit.GetOrRegisterAura(core.Aura{
+			Label:    "Molten Fury",
+			Duration: core.NeverExpires,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				mage.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier *= moltenFuryMulti
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				mage.AttackTables[aura.Unit.UnitIndex].DamageTakenMultiplier /= moltenFuryMulti
+			},
+		})
 	})
 
 	mage.RegisterResetEffect(func(sim *core.Simulation) {
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 35 {
-				moltenFuryAura.Activate(sim)
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					moltenFuryAuras.Get(aoeTarget).Activate(sim)
+				}
 			}
 		})
 	})
@@ -311,6 +308,9 @@ func (mage *Mage) applyIgnite() {
 			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
 				return
 			}
+			if !spell.SpellSchool.Matches(core.SpellSchoolFire) {
+				return
+			}
 			// EJ post says combustion crits do not proc ignite
 			// https://web.archive.org/web/20120219014159/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/#post1824829
 			if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellCombustion) == 0 && result.DidCrit() {
@@ -324,7 +324,7 @@ func (mage *Mage) applyIgnite() {
 		ActionID:       core.ActionID{SpellID: 12846},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskProc,
-		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods,
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
 		ClassSpellMask: MageSpellIgnite,
 
 		DamageMultiplier: 1,
@@ -350,7 +350,7 @@ func (mage *Mage) applyIgnite() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.SpellMetrics[target.UnitIndex].Hits++
-			spell.Dot(target).ApplyOrReset(sim)
+			spell.Dot(target).Apply(sim)
 		},
 	})
 }
@@ -370,11 +370,10 @@ func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 	if dot.IsActive() {
 		outstandingDamage := dot.SnapshotBaseDamage * float64(dot.NumTicksRemaining(sim))
 		dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(IgniteTicksRefresh)
-		dot.Apply(sim)
 	} else {
 		dot.SnapshotBaseDamage = newDamage / IgniteTicksFresh
-		mage.Ignite.Cast(sim, result.Target)
 	}
+	mage.Ignite.Cast(sim, result.Target)
 	dot.Aura.SetStacks(sim, int32(dot.SnapshotBaseDamage))
 }
 
