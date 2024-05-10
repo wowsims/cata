@@ -40,4 +40,14 @@ func (druid *Druid) ApplyGlyphs() {
 			TimeValue: time.Second * -30,
 		})
 	}
+
+	if druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfFocus) {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  DruidSpellStarfall,
+			Kind:       core.SpellMod_DamageDone_Flat,
+			FloatValue: 0.1,
+		})
+
+		// range mod?
+	}
 }
