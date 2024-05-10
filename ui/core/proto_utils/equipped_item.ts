@@ -250,6 +250,10 @@ export class EquippedItem {
 		return numSockets;
 	}
 
+	hasRandomSuffixOptions() {
+		return !!this._item.randomSuffixOptions.length;
+	}
+
 	hasExtraGem(): boolean {
 		return this._gems.length > this.item.gemSockets.length;
 	}

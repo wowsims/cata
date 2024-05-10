@@ -621,7 +621,7 @@ export class SelectorModal extends BaseModal {
 		});
 
 		this.addRandomSuffixTab(equippedItem, gearData);
-		this.addReforgingTab(gearData.getEquippedItem(), gearData);
+		this.addReforgingTab(equippedItem, gearData);
 		this.addGemTabs(selectedSlot, equippedItem, gearData);
 
 		this.ilists.find(list => selectedTab === list.label)?.sizeRefresh();
@@ -796,8 +796,7 @@ export class SelectorModal extends BaseModal {
 					ignoreEPFilter: true,
 					onEquip: (eventID, randomSuffix) => {
 						const equippedItem = gearData.getEquippedItem();
-
-						if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(randomSuffix));
+						if (equippedItem) gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item).withRandomSuffix(randomSuffix));
 					},
 				};
 			}),
@@ -811,7 +810,7 @@ export class SelectorModal extends BaseModal {
 	}
 
 	private addReforgingTab(equippedItem: EquippedItem | null, gearData: GearData) {
-		if (!equippedItem) {
+		if (!equippedItem || (equippedItem.hasRandomSuffixOptions() && !equippedItem.randomSuffix)) {
 			return;
 		}
 		if (equippedItem.randomSuffix !== null) {
@@ -935,16 +934,20 @@ export class SelectorModal extends BaseModal {
 				const item = itemData;
 				itemData.onEquip(TypedEvent.nextEventID(), item.item);
 
+				const isItemChange = Item.is(item.item);
+				const isRandomSuffixChange = !!item.actionId.randomSuffixId;
 				// If the item changes, then gem slots and random suffix options will also change, so remove and recreate these tabs.
-				if (Item.is(item.item)) {
-					this.removeTabs(SelectorModalTabs.RandomSuffixes);
-					this.addRandomSuffixTab(gearData.getEquippedItem(), gearData);
-
-					this.removeTabs('Gem');
-					this.addGemTabs(this.currentSlot, gearData.getEquippedItem(), gearData);
+				if (isItemChange || isRandomSuffixChange) {
+					if (!isRandomSuffixChange) {
+						this.removeTabs(SelectorModalTabs.RandomSuffixes);
+						this.addRandomSuffixTab(gearData.getEquippedItem(), gearData);
+					}
 
 					this.removeTabs(SelectorModalTabs.Reforging);
 					this.addReforgingTab(gearData.getEquippedItem(), gearData);
+
+					this.removeTabs('Gem');
+					this.addGemTabs(this.currentSlot, gearData.getEquippedItem(), gearData);
 				}
 			},
 		);
