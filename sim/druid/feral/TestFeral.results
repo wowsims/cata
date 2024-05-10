@@ -1328,15 +1328,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 20631.16596
-  tps: 30948.83991
+  dps: 20867.16496
+  tps: 30916.43976
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 19112.61151
-  tps: 27191.84688
+  dps: 19158.03335
+  tps: 27005.92716
  }
 }
 dps_results: {
@@ -1454,15 +1454,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 20167.93705
-  tps: 29939.36463
+  dps: 20420.88132
+  tps: 31321.51527
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 18493.12138
-  tps: 26755.62014
+  dps: 18573.73114
+  tps: 26803.32619
  }
 }
 dps_results: {
@@ -1580,15 +1580,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 17304.54389
-  tps: 26295.42836
+  dps: 17165.43465
+  tps: 26219.50462
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 15558.92939
-  tps: 22606.51582
+  dps: 15717.44008
+  tps: 23010.45207
  }
 }
 dps_results: {
@@ -1706,15 +1706,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 16652.78406
-  tps: 25219.64439
+  dps: 16399.90832
+  tps: 24405.2504
  }
 }
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 15065.52099
-  tps: 22101.62275
+  dps: 15080.57312
+  tps: 21639.08232
  }
 }
 dps_results: {

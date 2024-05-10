@@ -28,7 +28,7 @@ func (druid *Druid) registerMangleBearSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Second*6,
+				Duration: time.Second * 6,
 			},
 		},
 
