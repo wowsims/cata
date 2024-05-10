@@ -272,7 +272,7 @@ func (druid *Druid) Initialize() {
 }
 
 func (druid *Druid) RegisterBalanceSpells() {
-	//druid.registerHurricaneSpell()
+	druid.registerHurricaneSpell()
 	druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
 	druid.registerSunfireSpell()
