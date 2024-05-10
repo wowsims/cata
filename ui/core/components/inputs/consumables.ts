@@ -649,7 +649,7 @@ export const MightyRagePotion = {
 };
 export const FlameCap = {
 	actionId: ActionId.fromItemId(22788),
-	value: Potions.FlameCape,
+	value: Potions.FlameCap,
 };
 
 export const POTIONS_CONFIG = [
