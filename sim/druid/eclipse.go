@@ -271,7 +271,7 @@ func (eb *eclipseEnergyBar) addSolarEnergy(amount float64, sim *core.Simulation,
 	metrics.AddEvent(amount, gain)
 }
 
-func (unit *Druid) NewSolarEnergyMetric(actionID core.ActionID) *core.ResourceMetrics {
+func (unit *Druid) NewSolarEnergyMetrics(actionID core.ActionID) *core.ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeSolarEnergy)
 }
 

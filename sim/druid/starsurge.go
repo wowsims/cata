@@ -8,7 +8,7 @@ import (
 )
 
 func (druid *Druid) registerStarsurgeSpell() {
-	solarMetric := druid.NewSolarEnergyMetric(core.ActionID{SpellID: 78674})
+	solarMetric := druid.NewSolarEnergyMetrics(core.ActionID{SpellID: 78674})
 	lunarMetric := druid.NewLunarEnergyMetrics(core.ActionID{SpellID: 78674})
 
 	druid.Starsurge = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
