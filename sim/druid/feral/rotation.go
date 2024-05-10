@@ -626,7 +626,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 			return false, 0
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentSavageRoarCost() - curEnergy) / regenRate)
-	} else if biteNow {
+	} else if biteNow && ((curEnergy >= cat.CurrentFerociousBiteCost()) || !bearWeaveNow) {
 		if cat.FerociousBite.CanCast(sim, cat.CurrentTarget) {
 			cat.FerociousBite.Cast(sim, cat.CurrentTarget)
 			return false, 0
