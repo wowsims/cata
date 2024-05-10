@@ -13,6 +13,7 @@ export const USE_WOTLK_DB = false;
 export class ActionId {
 	readonly itemId: number;
 	readonly randomSuffixId: number;
+	readonly reforgeId: number;
 	readonly spellId: number;
 	readonly otherId: OtherAction;
 	readonly tag: number;
@@ -30,9 +31,11 @@ export class ActionId {
 		name: string,
 		iconUrl: string,
 		randomSuffixId?: number,
+		reforgeId?: number,
 	) {
 		this.itemId = itemId;
 		this.randomSuffixId = randomSuffixId || 0;
+		this.reforgeId = reforgeId || 0;
 		this.spellId = spellId;
 		this.otherId = otherId;
 		this.tag = tag;
@@ -144,9 +147,13 @@ export class ActionId {
 		}
 	}
 
-	static makeItemUrl(id: number, randomSuffixId?: number): string {
+	static makeItemUrl(id: number, randomSuffixId?: number, reforgeId?: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		return `https://wowhead.com/cata/${langPrefix}item=${id}?lvl=${CHARACTER_LEVEL}?rand=${randomSuffixId || 0}`;
+		const url = new URL(`https://wowhead.com/cata/${langPrefix}item=${id}`);
+		url.searchParams.set('level', String(CHARACTER_LEVEL));
+		url.searchParams.set('rand', String(randomSuffixId || 0));
+		if (reforgeId) url.searchParams.set('forg', String(reforgeId));
+		return url.toString();
 	}
 	static makeSpellUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
@@ -189,7 +196,7 @@ export class ActionId {
 
 	setWowheadHref(elem: HTMLAnchorElement) {
 		if (this.itemId) {
-			elem.href = ActionId.makeItemUrl(this.itemId, this.randomSuffixId);
+			elem.href = ActionId.makeItemUrl(this.itemId, this.randomSuffixId, this.reforgeId);
 		} else if (this.spellId) {
 			elem.href = ActionId.makeSpellUrl(this.spellId);
 		}
@@ -604,8 +611,8 @@ export class ActionId {
 		return new ActionId(0, 0, OtherAction.OtherActionNone, 0, '', '', '');
 	}
 
-	static fromItemId(itemId: number, tag?: number, randomSuffixId?: number): ActionId {
-		return new ActionId(itemId, 0, OtherAction.OtherActionNone, tag || 0, '', '', '', randomSuffixId || 0);
+	static fromItemId(itemId: number, tag?: number, randomSuffixId?: number, reforgeId?: number): ActionId {
+		return new ActionId(itemId, 0, OtherAction.OtherActionNone, tag || 0, '', '', '', randomSuffixId, reforgeId);
 	}
 
 	static fromSpellId(spellId: number, tag?: number): ActionId {
@@ -629,7 +636,7 @@ export class ActionId {
 	}
 
 	static fromReforge(item: Item, reforge: ReforgeStat): ActionId {
-		return ActionId.fromItemId(item.id, 0, reforge.id);
+		return ActionId.fromItemId(item.id, 0, 0, reforge.id);
 	}
 
 	static fromProto(protoId: ActionIdProto): ActionId {
