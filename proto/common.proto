@@ -96,6 +96,7 @@ enum Profession {
 	Mining = 9;
 	Skinning = 10;
 	Tailoring = 11;
+	Archeology = 12;
 }
 
 // Keep in sync with sim/core/stats/stats.go.

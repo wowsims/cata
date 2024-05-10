@@ -1557,8 +1557,18 @@ export class ItemList<T extends ItemListType> {
 		if (!item.sources || item.sources.length == 0) {
 			if (item.randomSuffixOptions.length) {
 				return makeAnchor(`${ActionId.makeItemUrl(item.id)}#dropped-by`, 'World Drop');
+			} else if (item.name.includes('Gladiator')) {
+				const seasonName = item.name.substring(0, item.name.indexOf(' '))
+				const season = PvpSeasonFromName[seasonName]
+				return makeAnchor(
+					ActionId.makeItemUrl(item.id),
+					<span>
+						{season}
+						<br />
+						PVP
+					</span>,
+				);
 			}
-
 			return <></>;
 		}
 
@@ -1640,6 +1650,17 @@ export class ItemList<T extends ItemListType> {
 					<span>{REP_LEVEL_NAMES[src.repLevel]}</span>
 				</>,
 			);
+		} else if (item.name.includes('Gladiator')) {
+			const seasonName = item.name.substring(0, item.name.indexOf(' '))
+			const season = PvpSeasonFromName[seasonName]
+			return makeAnchor(
+				ActionId.makeItemUrl(item.id),
+				<span>
+					{season}
+					<br />
+					PVP
+				</span>,
+			);
 		} else if (source.source.oneofKind == 'soldBy') {
 			const src = source.source.soldBy;
 			return makeAnchor(
@@ -1653,4 +1674,12 @@ export class ItemList<T extends ItemListType> {
 		}
 		return <></>;
 	}
+}
+
+const PvpSeasonFromName: Record<string, string> = {
+	'Wrathful': 'Season 8',
+	'Bloodthirsty': 'Season 8.5',
+	'Vicious': 'Season 9',
+	'Ruthless': 'Season 10',
+	'Cataclysmic': 'Season 11',
 }

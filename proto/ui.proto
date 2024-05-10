@@ -227,10 +227,12 @@ enum SourceFilterOption {
 	SourceUnknown = 0;
 	SourceCrafting = 1;
 	SourceQuest = 2;
-	SourceDungeon = 3;
-	SourceDungeonH = 4;
-	SourceRaid = 5;
-	SourceRaidH = 6;
+	SourceReputation = 3;
+	SourcePvp = 4;
+	SourceDungeon = 5;
+	SourceDungeonH = 6;
+	SourceRaid = 7;
+	SourceRaidH = 8;
 }
 
 enum RaidFilterOption {

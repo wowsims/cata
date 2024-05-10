@@ -1254,6 +1254,12 @@ export class Player<SpecType extends Spec> {
 		if (!filters.sources.includes(SourceFilterOption.SourceQuest)) {
 			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'quest'));
 		}
+		if (!filters.sources.includes(SourceFilterOption.SourceReputation)) {
+			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'rep'));
+		}
+		if (!filters.sources.includes(SourceFilterOption.SourcePvp)) {
+			itemData = filterItems(itemData, item => !item.name.includes('Gladiator'));
+		}
 
 		for (const [srcOptionStr, difficulty] of Object.entries(Player.DIFFICULTY_SRCS)) {
 			const srcOption = parseInt(srcOptionStr) as SourceFilterOption;

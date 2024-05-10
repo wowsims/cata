@@ -239,6 +239,7 @@ var wowheadProfessionIds = map[int32]proto.Profession{
 	333: proto.Profession_Enchanting,
 	755: proto.Profession_Jewelcrafting,
 	773: proto.Profession_Inscription,
+	794: proto.Profession_Archeology,
 }
 
 func (wi WowheadItem) getFactionRstriction() proto.UIItem_FactionRestriction {
