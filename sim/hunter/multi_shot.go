@@ -9,10 +9,11 @@ import (
 func (hunter *Hunter) registerMultiShotSpell() {
 
 	hunter.MultiShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 2643},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 2643},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		ClassSpellMask: HunterSpellMultiShot,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 40,
