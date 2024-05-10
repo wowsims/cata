@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -227,8 +228,18 @@ func (lr *logReader) GetNextLine() (string, bool) {
 			continue
 		}
 
-		if strings.HasPrefix(line, "[0.00] [Target 1] Dynamic stat change:") {
-			lr.Iteration++
+		if strings.HasPrefix(line, "[") {
+			closingBracket := strings.Index(line, "]")
+			if closingBracket > -1 {
+				fstr := line[1:closingBracket]
+				ts, err := strconv.ParseFloat(fstr, 32)
+				if err == nil {
+					if ts <= 0 && lr.LastTimeStamp > 1 {
+						lr.Iteration++
+					}
+					lr.LastTimeStamp = ts
+				}
+			}
 		}
 
 		return line, true
