@@ -10,6 +10,7 @@ import {
 	StatWeightsRequest,
 	StatWeightsResult,
 } from './proto/api.js';
+import { noop } from './utils';
 
 const SIM_WORKER_URL = `/${REPO_NAME}/sim_worker.js`;
 
@@ -38,12 +39,16 @@ export class WorkerPool {
 		return ComputeStatsResult.fromBinary(result);
 	}
 
+	private getProgressName(id: string) {
+		return `${id}progress`;
+	}
+
 	async statWeightsAsync(request: StatWeightsRequest, onProgress: WorkerProgressCallback): Promise<StatWeightsResult> {
 		console.log('Stat weights request: ' + StatWeightsRequest.toJsonString(request));
 		const worker = this.getLeastBusyWorker();
 		const id = worker.makeTaskId();
 		// Add handler for the progress events
-		worker.addPromiseFunc(id + 'progress', this.newProgressHandler(id, worker, onProgress), () => {});
+		worker.addPromiseFunc(this.getProgressName(id), this.newProgressHandler(id, worker, onProgress), noop);
 
 		// Now start the async sim
 		const resultData = await worker.doApiCall('statWeightsAsync', StatWeightsRequest.toBinary(request), id);
@@ -57,7 +62,7 @@ export class WorkerPool {
 		const worker = this.getLeastBusyWorker();
 		const id = worker.makeTaskId();
 		// Add handler for the progress events
-		worker.addPromiseFunc(id + 'progress', this.newProgressHandler(id, worker, onProgress), () => {});
+		worker.addPromiseFunc(this.getProgressName(id), this.newProgressHandler(id, worker, onProgress), noop);
 
 		// Now start the async sim
 		const resultData = await worker.doApiCall('bulkSimAsync', BulkSimRequest.toBinary(request), id);
@@ -72,7 +77,7 @@ export class WorkerPool {
 		const worker = this.getLeastBusyWorker();
 		const id = worker.makeTaskId();
 		// Add handler for the progress events
-		worker.addPromiseFunc(id + 'progress', this.newProgressHandler(id, worker, onProgress), () => {});
+		worker.addPromiseFunc(this.getProgressName(id), this.newProgressHandler(id, worker, onProgress), noop);
 
 		// Now start the async sim
 		const resultData = await worker.doApiCall('raidSimAsync', RaidSimRequest.toBinary(request), id);
@@ -94,7 +99,7 @@ export class WorkerPool {
 				return;
 			}
 
-			worker.addPromiseFunc(id + 'progress', this.newProgressHandler(id, worker, onProgress), () => {});
+			worker.addPromiseFunc(this.getProgressName(id), this.newProgressHandler(id, worker, onProgress), noop);
 		};
 	}
 }
