@@ -389,7 +389,7 @@ func (cat *FeralDruid) canBearWeave(sim *core.Simulation, furorCap float64, rege
 	// Calculate effective Energy cap for out-of-form pooling
 	targetWeaveDuration := core.GCDDefault * 2 + cat.ReactionTime * 2
 
-	if cat.Talents.Furor == 3 {
+	if (cat.Talents.Furor == 3) && (!cat.Rotation.MeleeWeave || (cat.CatCharge.TimeToReady(sim) > targetWeaveDuration)) {
 		targetWeaveDuration += core.GCDDefault
 	}
 
@@ -423,6 +423,11 @@ func (cat *FeralDruid) canBearWeave(sim *core.Simulation, furorCap float64, rege
 func (cat *FeralDruid) terminateBearWeave(sim *core.Simulation, isClearcast bool, currentEnergy float64, furorCap float64, regenRate float64, upcomingTimers *PoolingActions) bool {
 	// Shift back early if a bear auto resulted in an Omen proc
 	if isClearcast {
+		return true
+	}
+
+	// Also terminate early if Feral Charge is off cooldown to avoid accumulating delays for Ravage opportunities
+	if cat.Rotation.MeleeWeave && cat.CatCharge.IsReady(sim) && (sim.CurrentTime - cat.lastShift > core.GCDDefault) {
 		return true
 	}
 
