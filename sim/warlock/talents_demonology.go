@@ -67,20 +67,21 @@ func (warlock *Warlock) registerManaFeed() {
 	manaMetrics := warlock.NewManaMetrics(actionID)
 	manaReturn := 0.02 * float64(warlock.Talents.ManaFeed)
 
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label:    "Mana Feed",
-			ActionID: actionID,
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.DidCrit() && (spell.ClassSpellMask == WarlockSpellImpFireBolt ||
-					spell.ClassSpellMask == WarlockSpellFelGuardLegionStrike ||
-					spell.ClassSpellMask == WarlockSpellSuccubusLashOfPain ||
-					spell.ClassSpellMask == WarlockSpellFelHunterShadowBite) {
-					restore := manaReturn * warlock.GetStat(stats.Mana)
-					warlock.AddMana(sim, restore, manaMetrics)
-				}
-			},
-		}))
+	aura := core.Aura{
+		Label:    "Mana Feed",
+		ActionID: actionID,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.DidCrit() && spell.ClassSpellMask&WarlockBasicPetSpells > 0 {
+				warlock.AddMana(sim, manaReturn*warlock.MaxMana(), manaMetrics)
+			}
+		},
+	}
+
+	for _, pet := range warlock.Pets {
+		if !pet.IsGuardian() {
+			core.MakePermanent(pet.RegisterAura(aura))
+		}
+	}
 }
 
 func (warlock *Warlock) registerImpendingDoom() {

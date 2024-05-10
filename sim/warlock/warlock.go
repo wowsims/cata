@@ -224,6 +224,9 @@ const (
 
 	WarlockDoT = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
 		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot | WarlockSpellShadowflameDot
+
+	WarlockBasicPetSpells = WarlockSpellFelGuardLegionStrike | WarlockSpellSuccubusLashOfPain |
+		WarlockSpellSuccubusLashOfPain | WarlockSpellFelHunterShadowBite
 )
 
 const (
