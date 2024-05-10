@@ -22,6 +22,7 @@ type HunterPet struct {
 	focusDump      *core.Spell
 
 	uptimePercent    float64
+	wolverineBite    *core.Spell
 	hasOwnerCooldown bool
 }
 
@@ -78,8 +79,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		MainHand: core.Weapon{
 			BaseDamageMin:  73,
 			BaseDamageMax:  110,
-			SwingSpeed:     atkSpd,
 			CritMultiplier: 2,
+			SwingSpeed:     atkSpd,
 		},
 		AutoSwingMelee: true,
 	})
@@ -135,6 +136,10 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	}
 
 	target := hp.CurrentTarget
+
+	if hp.wolverineBite.CanCast(sim, target) {
+		hp.wolverineBite.Cast(sim, target)
+	}
 
 	if hp.focusDump == nil {
 		hp.specialAbility.Cast(sim, target)
