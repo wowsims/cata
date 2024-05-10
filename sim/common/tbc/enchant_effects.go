@@ -154,7 +154,7 @@ func init() {
 		procMask := character.GetProcMaskForEnchant(3225)
 		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
-		procAura := character.NewTemporaryStatsAura("Executioner Proc", core.ActionID{SpellID: 42976}, stats.Stats{stats.ArmorPenetration: 120}, time.Second*15)
+		procAura := character.NewTemporaryStatsAura("Executioner Proc", core.ActionID{SpellID: 42976}, stats.Stats{stats.MeleeCrit: 120, stats.SpellCrit: 120}, time.Second*15)
 
 		aura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Executioner",

@@ -9,10 +9,11 @@ import (
 func (hunter *Hunter) registerMultiShotSpell() {
 
 	hunter.MultiShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 2643},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 2643},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		ClassSpellMask: HunterSpellMultiShot,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 40,
@@ -47,7 +48,12 @@ func (hunter *Hunter) registerMultiShotSpell() {
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					spell.DealDamage(sim, baseDamageArray[hitIndex])
-
+					if hunter.Talents.SerpentSpread > 0 {
+						ss := hunter.SerpentSting.Dot(curTarget)
+						ss.NumberOfTicks = (3 + (hunter.Talents.SerpentSpread * 3)) / 2
+						ss.Apply(sim)
+						hunter.ImprovedSerpentSting.Cast(sim, curTarget)
+					}
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			})

@@ -1,52 +1,49 @@
-@use "sass:map";
+@use 'sass:map';
 
 .sim-link {
-  display: flex;
+	display: flex;
 
-  &:hover, &.show {
-    background-color: rgba(0,0,0,0.5);
-  }
+	&:hover,
+	&.show {
+		background-color: rgba(0, 0, 0, 0.5);
+	}
 
-  .sim-link-content {
-    padding: map-get($spacers, 2);
-    display: flex;
-    align-items: center;
+	.sim-link-content {
+		padding: map-get($spacers, 2);
+		display: flex;
+		align-items: center;
 
-    .sim-link-icon {
-      width: 3rem;
-      height: 3rem;
-      margin-right: map-get($spacers, 2);
-	  border-width: 2px;
-	  border-style: solid;
-	  border-radius: 100%;
-    }
+		.sim-link-icon {
+			width: 3rem;
+			height: 3rem;
+			margin-right: map-get($spacers, 2);
+			border-width: 2px;
+			border-style: solid;
+			border-radius: 100%;
+		}
 
-    .sim-link-label, .launch-status-label {
-      font-size: .75rem;
-      font-weight: normal;
-      white-space: nowrap;
-    }
+		.sim-link-label,
+		.launch-status-label {
+			font-size: 0.75rem;
+			font-weight: normal;
+			white-space: nowrap;
+		}
 
-    .sim-link-title {
-      font-size: 1.25rem;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-  }
+		.sim-link-title {
+			font-size: 1.25rem;
+			font-weight: bold;
+			white-space: nowrap;
+		}
+	}
 }
 
 .sim-link-dropdown {
-  .dropdown-menu {
-    background: rgba(0,0,0,.5);
-  }
-}
-
-@include media-breakpoint-down(lg) {
-  .sim-link-dropdown {
-    .dropdown-menu {
-      position: relative !important;
-      inset: 0 !important;
-      transform: none !important;
-    }
-  }
+	.dropdown-menu {
+		background: rgba(0, 0, 0, 0.5);
+		@include media-breakpoint-down(lg) {
+			position: relative !important;
+			inset: 0 !important;
+			transform: none !important;
+		}
+	}
 }

@@ -59,8 +59,8 @@ type Hunter struct {
 	CobraShot     *core.Spell
 
 	// Fake spells to encapsulate weaving logic.
-	TrapWeaveSpell *core.Spell
-
+	TrapWeaveSpell                *core.Spell
+	ImprovedSerpentSting          *core.Spell
 	AspectOfTheHawkAura           *core.Aura
 	AspectOfTheFoxAura            *core.Aura
 	ImprovedSteadyShotAura        *core.Aura
@@ -170,6 +170,22 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 		raidBuffs.FerociousInspiration = true
 	}
 
+	if hunter.Options.PetType == proto.HunterOptions_CoreHound {
+		raidBuffs.Bloodlust = true
+	}
+
+	if hunter.Options.PetType == proto.HunterOptions_Silithid {
+		raidBuffs.BloodPact = true
+	}
+
+	if hunter.Options.PetType == proto.HunterOptions_ShaleSpider {
+		raidBuffs.BlessingOfKings = true
+	}
+
+	if hunter.Options.PetType == proto.HunterOptions_Wolf || hunter.Options.PetType == proto.HunterOptions_Devilsaur {
+		raidBuffs.FuriousHowl = true
+	}
+
 	if hunter.Talents.HuntingParty {
 		raidBuffs.HuntingParty = true
 	}
@@ -215,6 +231,7 @@ const (
 	HunterSpellExplosiveShot
 	HunterSpellExplosiveTrap
 	HunterSpellBlackArrow
+	HunterSpellMultiShot
 	HunterSpellAimedShot
 	HunterPetFocusDump
 )

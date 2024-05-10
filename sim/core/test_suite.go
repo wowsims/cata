@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"strconv"
 	"strings"
 	"testing"
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 	"google.golang.org/protobuf/encoding/prototext"
-	googleProto "google.golang.org/protobuf/proto"
 )
 
 // Precise enough to detect very small changes to test results, but truncated
@@ -57,7 +57,7 @@ func (testSuite *IndividualTestSuite) TestStatWeights(testName string, swr *prot
 	}
 }
 
-func (testSuite *IndividualTestSuite) TestDPS(testName string, rsr *proto.RaidSimRequest) {
+func (testSuite *IndividualTestSuite) TestDPS(testName string, rsr *proto.RaidSimRequest) *proto.RaidSimResult {
 	testSuite.testNames = append(testSuite.testNames, testName)
 
 	result := RunRaidSim(rsr)
@@ -73,6 +73,8 @@ func (testSuite *IndividualTestSuite) TestDPS(testName string, rsr *proto.RaidSi
 		Dtps: toFixed(result.RaidMetrics.Parties[0].Players[0].Dtps.Avg, storagePrecision),
 		Hps:  toFixed(result.RaidMetrics.Parties[0].Players[0].Hps.Avg, storagePrecision),
 	}
+
+	return result
 }
 
 type ResetTestResult struct {
@@ -84,43 +86,6 @@ type ResetTestResult struct {
 	SplitHps  float64
 	SplitTps  float64
 	SplitDtps float64
-}
-
-// The purpose of this test is to check if the sim resets everything properly between iterations.
-// It runs one normal sim with totalIterations, and then splits totalIterations over multiple sims and combines the results.
-// If everything works then both the "base" and "split" results should be the same.
-func (testSuite *IndividualTestSuite) TestResetLeakage(testName string, rsr *proto.RaidSimRequest, totalIterations int32, splits int32) ResetTestResult {
-	testSuite.testNames = append(testSuite.testNames, testName)
-
-	rsrCopy := googleProto.Clone(rsr).(*proto.RaidSimRequest)
-	results := ResetTestResult{}
-
-	rsrCopy.SimOptions.Iterations = totalIterations
-	resultBase := RunRaidSim(rsrCopy)
-	results.BaseDps = resultBase.RaidMetrics.Dps.Avg
-	results.BaseTps = resultBase.RaidMetrics.Parties[0].Players[0].Threat.Avg
-	results.BaseDtps = resultBase.RaidMetrics.Parties[0].Players[0].Dtps.Avg
-	results.BaseHps = resultBase.RaidMetrics.Parties[0].Players[0].Hps.Avg
-
-	nextStartSeed := rsrCopy.SimOptions.RandomSeed
-	for i := 0; i < int(splits); i++ {
-		rsrCopy.SimOptions.Iterations = totalIterations / splits
-		if i == 0 {
-			rsrCopy.SimOptions.Iterations += totalIterations % splits
-		}
-		rsrCopy.SimOptions.RandomSeed = nextStartSeed
-		nextStartSeed += int64(rsrCopy.SimOptions.Iterations)
-
-		resultSplit := RunRaidSim(rsrCopy)
-
-		weight := float64(rsrCopy.SimOptions.Iterations) / float64(totalIterations)
-		results.SplitDps += resultSplit.RaidMetrics.Dps.Avg * weight
-		results.SplitTps += resultSplit.RaidMetrics.Parties[0].Players[0].Threat.Avg * weight
-		results.SplitDtps += resultSplit.RaidMetrics.Parties[0].Players[0].Dtps.Avg * weight
-		results.SplitHps += resultSplit.RaidMetrics.Parties[0].Players[0].Hps.Avg * weight
-	}
-
-	return results
 }
 
 func (testSuite *IndividualTestSuite) TestCasts(testName string, rsr *proto.RaidSimRequest) {
@@ -219,8 +184,13 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 		t.Fail()
 	}
 
+	stopTest := false
 	numTests := generator.NumTests()
 	for i := 0; i < numTests; i++ {
+		if stopTest {
+			break
+		}
+
 		testName, csr, swr, rsr := generator.GetTest(i)
 		if strings.Contains(testName, "Average") && testing.Short() {
 			continue
@@ -266,7 +236,7 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 					t.Fail()
 				}
 			} else if rsr != nil && !strings.Contains(testName, "Casts") {
-				testSuite.TestDPS(fullTestName, rsr)
+				simResult := testSuite.TestDPS(fullTestName, rsr)
 				if actualDpsResult, ok := testSuite.testResults.DpsResults[fullTestName]; ok {
 					if expectedDpsResult, ok := expectedResults.DpsResults[fullTestName]; ok {
 						// Check whichever of DPS/HPS is larger first, so we get better test diff printouts.
@@ -303,6 +273,34 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 					t.Logf("Missing Result for test %s", fullTestName)
 					t.Fail()
 				}
+
+				// The purpose of this test is not only to confirm concurrency result combination to work,
+				// but also to check if the sim resets everything properly between iterations.
+				// If there are differences in results it hints towards state leaking into following iterations.
+				if rsr != nil {
+
+					t.Run(testName+"/CompareResults", func(t *testing.T) {
+						mtResult := RunConcurrentRaidSimSync(rsr)
+						CompareConcurrentSimResultsTest(t, currentTestName, simResult, mtResult, 0.001)
+						if t.Failed() {
+							t.Log("You can debug the first failed comparison further by starting tests with DEBUG_FIRST_COMPARE=1")
+							debugFirstFail, err := strconv.ParseBool(os.Getenv("DEBUG_FIRST_COMPARE"))
+							if err == nil && debugFirstFail {
+								t.Log("Starting full log comparison...")
+								haveDiffs, log := DebugCompareLogs(rsr, 5)
+								if haveDiffs {
+									t.Log(log)
+								} else {
+									t.Log("No differences found in logs.")
+								}
+								// Break loop, it can crash the test if there's errors in too many tests for this spec.
+								stopTest = true
+								t.FailNow()
+							}
+						}
+					})
+				}
+
 			} else if rsr != nil && strings.Contains(testName, "Casts") {
 				testSuite.TestCasts(fullTestName, rsr)
 				if actualCastsResult, ok := testSuite.testResults.CastsResults[fullTestName]; ok {
@@ -325,34 +323,6 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 				panic("No test request provided")
 			}
 		})
-		if rsr != nil {
-			resetTestName := suiteName + "-" + testName + "/ResetTest"
-			t.Run(resetTestName, func(t *testing.T) {
-				setups := [][]int32{
-					{4, 2},
-					{20, 3},
-				}
-				for _, setup := range setups {
-					res := testSuite.TestResetLeakage(resetTestName, rsr, setup[0], setup[1])
-					if math.Abs(res.BaseDps-res.SplitDps) > tolerance {
-						t.Logf("DPS did not match! Base was %0.03f and split was %0.03f!. Something probably doesn't reset correctly on sim reset!", res.BaseDps, res.SplitDps)
-						t.Fail()
-					}
-					if math.Abs(res.BaseHps-res.SplitHps) > tolerance {
-						t.Logf("HPS did not match! Base was %0.03f and split was %0.03f!. Something probably doesn't reset correctly on sim reset!", res.BaseHps, res.SplitHps)
-						t.Fail()
-					}
-					if math.Abs(res.BaseTps-res.SplitTps) > tolerance {
-						t.Logf("TPS did not match! Base was %0.03f and split was %0.03f!. Something probably doesn't reset correctly on sim reset!", res.BaseTps, res.SplitTps)
-						t.Fail()
-					}
-					if math.Abs(res.BaseDtps-res.SplitDtps) > tolerance {
-						t.Logf("DTPS did not match! Base was %0.03f and split was %0.03f!. Something probably doesn't reset correctly on sim reset!", res.BaseDtps, res.SplitDtps)
-						t.Fail()
-					}
-				}
-			})
-		}
 	}
 
 	testSuite.Done(t)

@@ -50,7 +50,7 @@ export const DefaultFrostOptions = MageOptions.create({
 
 export const DefaultFrostConsumes = Consumes.create({
 	defaultPotion: Potions.PotionOfSpeed,
-	defaultConjured: Conjured.ConjuredFlameCap,
+	defaultConjured: Conjured.ConjuredDarkRune,
 	flask: Flask.FlaskOfTheFrostWyrm,
 	food: Food.FoodFishFeast,
 });

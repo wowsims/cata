@@ -64,6 +64,39 @@ func (hunter *Hunter) ApplyTalents() {
 	hunter.registerReadinessCD()
 	hunter.applyMasterMarksman()
 	hunter.applyTermination()
+	hunter.applyBombardment()
+}
+
+func (hunter *Hunter) applyBombardment() {
+	if hunter.Talents.Bombardment == 0 {
+		return
+	}
+	costMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  HunterSpellMultiShot,
+		FloatValue: -(0.25 * float64(hunter.Talents.Bombardment)),
+	})
+
+	bombardmentAura := hunter.RegisterAura(core.Aura{
+		Label:    "Bombardment",
+		ActionID: core.ActionID{SpellID: 35110},
+		Duration: time.Second * 5,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			costMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			costMod.Deactivate()
+		},
+	})
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Bombardment Proc",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell == hunter.MultiShot && result.DidCrit() {
+				bombardmentAura.Activate(sim)
+			}
+		},
+	}))
 }
 func (hunter *Hunter) applyMasterMarksman() {
 	if hunter.Talents.MasterMarksman == 0 {
@@ -646,9 +679,11 @@ func (hunter *Hunter) registerSicEm() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			sicEmMod.Activate()
 		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			sicEmMod.Deactivate()
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask == core.ProcMaskMeleeMHSpecial {
-				sicEmMod.Deactivate()
 				aura.Deactivate(sim)
 			}
 		},

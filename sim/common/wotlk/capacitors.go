@@ -1,8 +1,6 @@
 package wotlk
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 )
 
@@ -80,84 +78,84 @@ func newCapacitorDamageEffect(config CapacitorDamageEffect) {
 func init() {
 	core.AddEffectsToTest = false
 
-	newCapacitorDamageEffect(CapacitorDamageEffect{
-		Name:      "Thunder Capacitor",
-		ID:        38072,
-		MaxStacks: 4,
-		Trigger: core.ProcTrigger{
-			Callback: core.CallbackOnSpellHitDealt,
-			ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc,
-			Outcome:  core.OutcomeCrit,
-			ICD:      time.Millisecond * 2500,
-			ActionID: core.ActionID{ItemID: 38072},
-		},
-		School: core.SpellSchoolNature,
-		MinDmg: 1181,
-		MaxDmg: 1371,
-	})
-	newCapacitorDamageEffect(CapacitorDamageEffect{
-		Name:      "Reign of the Unliving",
-		ID:        47182,
-		MaxStacks: 3,
-		Trigger: core.ProcTrigger{
-			Callback: core.CallbackOnSpellHitDealt,
-			ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc | core.ProcMaskSuppressedProc,
-			Outcome:  core.OutcomeCrit,
-			ICD:      time.Millisecond * 2000,
-			ActionID: core.ActionID{ItemID: 47182},
-		},
-		School: core.SpellSchoolFire,
-		MinDmg: 1741,
-		MaxDmg: 2023,
-	})
-	newCapacitorDamageEffect(CapacitorDamageEffect{
-		Name:      "Reign of the Unliving H",
-		ID:        47188,
-		MaxStacks: 3,
-		Trigger: core.ProcTrigger{
-			Callback: core.CallbackOnSpellHitDealt,
-			ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc | core.ProcMaskSuppressedProc,
-			Outcome:  core.OutcomeCrit,
-			ICD:      time.Millisecond * 2000,
-			ActionID: core.ActionID{ItemID: 47188},
-		},
-		School: core.SpellSchoolFire,
-		MinDmg: 1959,
-		MaxDmg: 2275,
-	})
+	// newCapacitorDamageEffect(CapacitorDamageEffect{
+	// 	Name:      "Thunder Capacitor",
+	// 	ID:        38072,
+	// 	MaxStacks: 4,
+	// 	Trigger: core.ProcTrigger{
+	// 		Callback: core.CallbackOnSpellHitDealt,
+	// 		ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc,
+	// 		Outcome:  core.OutcomeCrit,
+	// 		ICD:      time.Millisecond * 2500,
+	// 		ActionID: core.ActionID{ItemID: 38072},
+	// 	},
+	// 	School: core.SpellSchoolNature,
+	// 	MinDmg: 1181,
+	// 	MaxDmg: 1371,
+	// })
+	// newCapacitorDamageEffect(CapacitorDamageEffect{
+	// 	Name:      "Reign of the Unliving",
+	// 	ID:        47182,
+	// 	MaxStacks: 3,
+	// 	Trigger: core.ProcTrigger{
+	// 		Callback: core.CallbackOnSpellHitDealt,
+	// 		ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc | core.ProcMaskSuppressedProc,
+	// 		Outcome:  core.OutcomeCrit,
+	// 		ICD:      time.Millisecond * 2000,
+	// 		ActionID: core.ActionID{ItemID: 47182},
+	// 	},
+	// 	School: core.SpellSchoolFire,
+	// 	MinDmg: 1741,
+	// 	MaxDmg: 2023,
+	// })
+	// newCapacitorDamageEffect(CapacitorDamageEffect{
+	// 	Name:      "Reign of the Unliving H",
+	// 	ID:        47188,
+	// 	MaxStacks: 3,
+	// 	Trigger: core.ProcTrigger{
+	// 		Callback: core.CallbackOnSpellHitDealt,
+	// 		ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc | core.ProcMaskSuppressedProc,
+	// 		Outcome:  core.OutcomeCrit,
+	// 		ICD:      time.Millisecond * 2000,
+	// 		ActionID: core.ActionID{ItemID: 47188},
+	// 	},
+	// 	School: core.SpellSchoolFire,
+	// 	MinDmg: 1959,
+	// 	MaxDmg: 2275,
+	// })
 
 	core.AddEffectsToTest = true
 
-	newCapacitorDamageEffect(CapacitorDamageEffect{
-		Name:      "Reign of the Dead",
-		ID:        47316,
-		MaxStacks: 3,
-		Trigger: core.ProcTrigger{
-			Callback: core.CallbackOnSpellHitDealt,
-			ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc | core.ProcMaskSuppressedProc,
-			Outcome:  core.OutcomeCrit,
-			ICD:      time.Millisecond * 2000,
-			ActionID: core.ActionID{ItemID: 47316},
-		},
-		School: core.SpellSchoolFire,
-		MinDmg: 1741,
-		MaxDmg: 2023,
-	})
-	newCapacitorDamageEffect(CapacitorDamageEffect{
-		Name:      "Reign of the Dead H",
-		ID:        47477,
-		MaxStacks: 3,
-		Trigger: core.ProcTrigger{
-			Callback: core.CallbackOnSpellHitDealt,
-			ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc | core.ProcMaskSuppressedProc,
-			Outcome:  core.OutcomeCrit,
-			ICD:      time.Millisecond * 2000,
-			ActionID: core.ActionID{ItemID: 47477},
-		},
-		School: core.SpellSchoolFire,
-		MinDmg: 1959,
-		MaxDmg: 2275,
-	})
+	// newCapacitorDamageEffect(CapacitorDamageEffect{
+	// 	Name:      "Reign of the Dead",
+	// 	ID:        47316,
+	// 	MaxStacks: 3,
+	// 	Trigger: core.ProcTrigger{
+	// 		Callback: core.CallbackOnSpellHitDealt,
+	// 		ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc | core.ProcMaskSuppressedProc,
+	// 		Outcome:  core.OutcomeCrit,
+	// 		ICD:      time.Millisecond * 2000,
+	// 		ActionID: core.ActionID{ItemID: 47316},
+	// 	},
+	// 	School: core.SpellSchoolFire,
+	// 	MinDmg: 1741,
+	// 	MaxDmg: 2023,
+	// })
+	// newCapacitorDamageEffect(CapacitorDamageEffect{
+	// 	Name:      "Reign of the Dead H",
+	// 	ID:        47477,
+	// 	MaxStacks: 3,
+	// 	Trigger: core.ProcTrigger{
+	// 		Callback: core.CallbackOnSpellHitDealt,
+	// 		ProcMask: core.ProcMaskSpellOrProc | core.ProcMaskWeaponProc | core.ProcMaskSuppressedProc,
+	// 		Outcome:  core.OutcomeCrit,
+	// 		ICD:      time.Millisecond * 2000,
+	// 		ActionID: core.ActionID{ItemID: 47477},
+	// 	},
+	// 	School: core.SpellSchoolFire,
+	// 	MinDmg: 1959,
+	// 	MaxDmg: 2275,
+	// })
 
 	// see various posts around https://web.archive.org/web/20100530203708/http://elitistjerks.com/f78/t39136-combat_mutilate_spreadsheets_updated_3_3_a/p96/#post1518212
 	NewItemEffectWithHeroic(func(isHeroic bool) {

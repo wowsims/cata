@@ -1,4 +1,5 @@
 import { JsonObject } from '@protobuf-ts/runtime';
+import { default as pako } from 'pako';
 
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Class, EquipmentSpec, Glyphs, ItemSlot, ItemSpec, Profession, Race, Spec } from '../proto/common';
@@ -14,8 +15,6 @@ import { buf2hex, getEnumValues } from '../utils';
 import { BaseModal } from './base_modal';
 import Toast from './toast';
 
-declare let pako: any;
-
 export abstract class Importer extends BaseModal {
 	protected readonly textElem: HTMLTextAreaElement;
 	protected readonly descriptionElem: HTMLElement;
@@ -23,7 +22,7 @@ export abstract class Importer extends BaseModal {
 	private readonly includeFile: boolean;
 
 	constructor(parent: HTMLElement, simUI: SimUI, title: string, includeFile: boolean) {
-		super(parent, 'importer', { title: title, footer: true });
+		super(parent, 'importer', { title: title, footer: true, disposeOnClose: false });
 		this.includeFile = includeFile;
 		const uploadInputId = 'upload-input-' + title.toLowerCase().replaceAll(' ', '-');
 

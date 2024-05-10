@@ -53,11 +53,8 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 	warlock.registerCremation()
 
 	if warlock.Talents.DemonicPact {
-		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.1
-		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.1
-		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexArcane] *= 1.1
-		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.1
-		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
+		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.02
+		warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.02
 	}
 }
 
@@ -115,10 +112,10 @@ func (warlock *Warlock) registerMoltenCore() {
 	}
 
 	castReduction := -0.06 * float64(warlock.Talents.MoltenCore)
-	moltenCoreDamageBonus := 1 + 0.06*float64(warlock.Talents.MoltenCore)
+	moltenCoreDamageBonus := 0.06 * float64(warlock.Talents.MoltenCore)
 
 	damageMultiplierMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		ClassMask:  WarlockSpellIncinerate,
 		FloatValue: moltenCoreDamageBonus,
 	})

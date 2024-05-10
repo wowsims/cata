@@ -71,6 +71,7 @@ export interface OtherDefaults {
 	distanceFromTarget?: number;
 	channelClipDelay?: number;
 	darkIntentUptime?: number;
+	highHpThreshold?: number;
 }
 
 export interface RaidSimPreset<SpecType extends Spec> {
@@ -478,6 +479,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			} else {
 				this.sim.raid.setTargetDummies(eventID, healingSpec ? 9 : 0);
 				this.sim.encounter.applyDefaults(eventID);
+				this.sim.encounter.setExecuteProportion90(eventID, this.individualConfig.defaults.other?.highHpThreshold || 0.9);
 				this.sim.raid.setDebuffs(eventID, this.individualConfig.defaults.debuffs);
 				this.sim.applyDefaults(eventID, tankSpec, healingSpec);
 

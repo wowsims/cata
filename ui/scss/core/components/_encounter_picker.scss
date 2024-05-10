@@ -16,12 +16,20 @@
 
 	.advanced-button {
 		min-width: calc(50% - 0.5rem);
+
+		@include media-breakpoint-down(xxl) {
+			width: 100%;
+		}
 	}
 }
 
 .advanced-encounter-picker-modal {
 	.encounter-picker {
 		width: 33.33%;
+
+		@include media-breakpoint-down(sm) {
+			width: 50%;
+		}
 	}
 
 	.execute-group {
@@ -34,6 +42,10 @@
 		justify-content: flex-start;
 
 		.picker-group {
+			@include media-breakpoint-down(xl) {
+				width: 100% !important;
+			}
+
 			&:first-child {
 				width: 66%;
 			}
@@ -50,6 +62,11 @@
 
 		.target-picker-section {
 			width: 33.33%;
+
+			@include media-breakpoint-down(xl) {
+				width: 100%;
+				margin-right: 0;
+			}
 
 			&:not(:last-child) {
 				margin-right: map-get($spacers, 3);
@@ -69,52 +86,13 @@
 			display: block !important;
 			visibility: hidden;
 
+			@include media-breakpoint-down(xl) {
+				display: none !important;
+			}
+
 			.input-root {
 				display: none;
 			}
-		}
-	}
-}
-
-@include media-breakpoint-down(xxl) {
-	.encounter-picker-root {
-		.advanced-button {
-			width: 100%;
-		}
-	}
-}
-
-@include media-breakpoint-down(xl) {
-	.hide-threat-metrics {
-		.advanced-encounter-picker-modal {
-			// Hide this section instead on < smaller screens
-			.target-picker-section3.threat-metrics {
-				display: none !important;
-			}
-		}
-	}
-
-	.advanced-encounter-picker-modal {
-		.encounter-header {
-			.picker-group {
-				width: 100% !important;
-			}
-		}
-
-		.target-picker-root {
-			.target-picker-section {
-				width: 100%;
-
-				margin-right: 0;
-			}
-		}
-	}
-}
-
-@include media-breakpoint-down(sm) {
-	.advanced-encounter-picker-modal {
-		.encounter-picker {
-			width: 50%;
 		}
 	}
 }

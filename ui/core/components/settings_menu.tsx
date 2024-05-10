@@ -16,7 +16,7 @@ export class SettingsMenu extends BaseModal {
 	private readonly simUI: SimUI;
 
 	constructor(parent: HTMLElement, simUI: SimUI) {
-		super(parent, 'settings-menu', { title: 'Options', footer: true });
+		super(parent, 'settings-menu', { title: 'Options', footer: true, disposeOnClose: false });
 		this.simUI = simUI;
 
 		const restoreDefaultsButton = ref<HTMLButtonElement>();

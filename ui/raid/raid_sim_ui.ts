@@ -1,12 +1,14 @@
+import { default as pako } from 'pako';
+
 import { EmbeddedDetailedResults } from '../core/components/detailed_results.js';
 import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action.js';
 import { raidSimStatus } from '../core/launched_sims.js';
 import { Player } from '../core/player.js';
 import { Raid as RaidProto } from '../core/proto/api.js';
-import { Class, Encounter as EncounterProto, TristateEffect } from '../core/proto/common.js';
+import { Class, Encounter as EncounterProto } from '../core/proto/common.js';
 import { Blessings } from '../core/proto/paladin.js';
 import { BlessingsAssignments, RaidSimSettings } from '../core/proto/ui.js';
-import { getPlayerSpecFromPlayer } from '../core/proto_utils/utils';
+import { getPlayerSpecFromPlayer, makeDefaultBlessings } from '../core/proto_utils/utils';
 import { Sim } from '../core/sim.js';
 import { SimUI } from '../core/sim_ui.js';
 import { EventID, TypedEvent } from '../core/typed_event.js';
@@ -16,9 +18,6 @@ import { implementedSpecs } from './presets.js';
 import { RaidPicker } from './raid_picker.js';
 import { RaidTab } from './raid_tab.js';
 import { SettingsTab } from './settings_tab.js';
-
-declare let pako: any;
-
 export interface RaidSimConfig {
 	knownIssues?: Array<string>;
 }
@@ -145,9 +144,9 @@ export class RaidSimUI extends SimUI {
 
 				// TODO: No longer needed per-player
 				if (paladin.blessings[spec] == Blessings.BlessingOfKings) {
-					playerProtos.forEach(playerProto => (raidProto.buffs!.blessingOfKings = true));
+					playerProtos.forEach(() => (raidProto.buffs!.blessingOfKings = true));
 				} else if (paladin.blessings[spec] == Blessings.BlessingOfMight) {
-					playerProtos.forEach(playerProto => (raidProto.buffs!.blessingOfMight = true));
+					playerProtos.forEach(() => (raidProto.buffs!.blessingOfMight = true));
 				}
 			});
 		});
@@ -193,10 +192,11 @@ export class RaidSimUI extends SimUI {
 	}
 
 	toProto(): RaidSimSettings {
+		const numPaladins = this.sim.raid.getPlayers().filter(player => player?.getClass() === Class.ClassPaladin).length;
 		return RaidSimSettings.create({
 			settings: this.sim.toProto(),
 			raid: this.sim.raid.toProto(true),
-			blessings: this.blessingsPicker!.getAssignments(),
+			blessings: this.blessingsPicker?.getAssignments() ?? makeDefaultBlessings(numPaladins),
 			encounter: this.sim.encounter.toProto(),
 		});
 	}
@@ -207,6 +207,8 @@ export class RaidSimUI extends SimUI {
 		proto.settings = undefined;
 
 		const protoBytes = RaidSimSettings.toBinary(proto);
+		// @ts-ignore Pako did some weird stuff between versions and the @types package doesn't correctly support this syntax for version 2.0.4 but it's completely valid
+		// The syntax was removed in 2.1.0 and there were several complaints but the project seems to be largely abandoned now
 		const deflated = pako.deflate(protoBytes, { to: 'string' });
 		const encoded = btoa(String.fromCharCode(...deflated));
 
@@ -222,7 +224,7 @@ export class RaidSimUI extends SimUI {
 			}
 			this.sim.raid.fromProto(eventID, settings.raid || RaidProto.create());
 			this.sim.encounter.fromProto(eventID, settings.encounter || EncounterProto.create());
-			this.blessingsPicker!.setAssignments(eventID, settings.blessings || BlessingsAssignments.create());
+			this.blessingsPicker?.setAssignments(eventID, settings.blessings || BlessingsAssignments.create());
 		});
 	}
 

@@ -36,7 +36,7 @@ func runSim(json *C.char) *C.char {
 		log.Fatalf("failed to load input json file: %s", err)
 	}
 	sim.RegisterAll()
-	result := core.RunSim(input, nil)
+	result := core.RunSim(input, nil, nil)
 	out, err := protojson.Marshal(result)
 	if err != nil {
 		panic(err)

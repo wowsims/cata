@@ -236,7 +236,6 @@ export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput(
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(53696), fieldName: 'judgementsOfTheJust' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(48484), fieldName: 'infectedWounds' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(8042), fieldName: 'earthShock' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(50285), fieldName: 'dustCloud' }),
 	],
 	'Atk Speed',
 );
@@ -258,7 +257,6 @@ export const SpellDamageDebuff = InputHelpers.makeMultiIconInput(
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(1490), fieldName: 'curseOfElements' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(58410), fieldName: 'masterPoisoner' }),
 		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(34889), fieldName: 'fireBreath' }),
-		makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(24844), fieldName: 'lightningBreath' }),
 	],
 	'Spell Dmg',
 );

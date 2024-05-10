@@ -1,4 +1,4 @@
-import * as pako from 'pako';
+import { default as pako } from 'pako';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, ref } from 'tsx-vanilla';
 

@@ -59,7 +59,6 @@ func (mage *Mage) registerFlameOrbExplodeSpell() {
 		BonusCoefficient: 0.193,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
 			damage := 1.318 * mage.ClassSpellScaling
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -101,6 +100,7 @@ func (fo *FlameOrb) Initialize() {
 }
 
 func (fo *FlameOrb) Reset(_ *core.Simulation) {
+	fo.TickCount = 0
 }
 
 func (fo *FlameOrb) ExecuteCustomRotation(sim *core.Simulation) {

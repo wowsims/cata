@@ -111,14 +111,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	playerIconInputs: [],
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellDamageDebuff
-	],
-	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.DamageReduction,
-		BuffDebuffInputs.MeleeAttackSpeedDebuff,
-		BuffDebuffInputs.BleedDebuff
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.MeleeAttackSpeedDebuff, BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
