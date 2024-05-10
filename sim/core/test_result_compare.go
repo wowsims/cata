@@ -318,8 +318,9 @@ func DebugCompareLogs(rsr *proto.RaidSimRequest, showCount int) (bool, string) {
 
 			outLog += fmt.Sprintln("====================================================")
 			outLog += fmt.Sprintf("==== Lines %d | %d do not match unexpectedly!\n", str.I+1, mtr.I+1)
-			outLog += fmt.Sprintf("ST state, Instance: %d, Iteration: %d\n", str.SimInstance, str.Iteration)
-			outLog += fmt.Sprintln("--- ST log ---")
+			outLog += fmt.Sprintf("ST Iteration: %d\n", str.Iteration)
+			outLog += fmt.Sprintf("MT Instance: %d, Iteration: %d\n", mtr.SimInstance, mtr.Iteration)
+			outLog += fmt.Sprintln("--- ST log --------------------------------")
 			for i := -showBefore; i <= showAfter; i++ {
 				if i == 0 {
 					outLog += fmt.Sprintf(">> %s\n", stLine)
@@ -327,8 +328,7 @@ func DebugCompareLogs(rsr *proto.RaidSimRequest, showCount int) (bool, string) {
 				}
 				outLog += fmt.Sprintln(str.PeakLine(i))
 			}
-			outLog += fmt.Sprintln("--- MT log ---")
-			outLog += fmt.Sprintf("MT state, Instance: %d, Iteration: %d\n", mtr.SimInstance, mtr.Iteration)
+			outLog += fmt.Sprintln("--- MT log --------------------------------")
 			for i := -showBefore; i <= showAfter; i++ {
 				if i == 0 {
 					outLog += fmt.Sprintf(">> %s\n", mtLine)
