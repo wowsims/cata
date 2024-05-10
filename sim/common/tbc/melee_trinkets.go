@@ -138,7 +138,7 @@ func init() {
 
 	core.NewItemEffect(32505, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procAura := character.NewTemporaryStatsAura("Madness of the Betrayer Proc", core.ActionID{ItemID: 32505}, stats.Stats{stats.ArmorPenetration: 42}, time.Second*10)
+		procAura := character.NewTemporaryStatsAura("Madness of the Betrayer Proc", core.ActionID{ItemID: 32505}, stats.Stats{stats.MeleeCrit: 42, stats.SpellCrit: 42}, time.Second*10)
 
 		ppmm := character.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
 

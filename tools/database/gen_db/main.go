@@ -304,18 +304,15 @@ func simmableItemFilter(_ int32, item *proto.UIItem) bool {
 		return false
 	} else if item.Quality == proto.ItemQuality_ItemQualityArtifact {
 		return false
-	} else if item.Quality > proto.ItemQuality_ItemQualityHeirloom {
+	} else if item.Quality >= proto.ItemQuality_ItemQualityHeirloom {
 		return false
-	} else if item.Quality < proto.ItemQuality_ItemQualityEpic {
-		if item.Ilvl < 145 {
-			return false
-		}
-		if item.Ilvl < 149 && item.SetName == "" {
+	} else if item.Quality <= proto.ItemQuality_ItemQualityEpic {
+		if item.Ilvl < 277 {
 			return false
 		}
 	} else {
 		// Epic and legendary items might come from classic, so use a lower ilvl threshold.
-		if item.Quality != proto.ItemQuality_ItemQualityHeirloom && item.Ilvl < 140 {
+		if item.Ilvl <= 200 {
 			return false
 		}
 	}
@@ -330,13 +327,8 @@ func simmableGemFilter(_ int32, gem *proto.UIGem) bool {
 		return true
 	}
 
-	// Allow all meta gems
-	if gem.Color == proto.GemColor_GemColorMeta {
-		return true
-	}
-
 	// Arbitrary to filter out old gems
-	if gem.Id < 39900 {
+	if gem.Id < 46000 {
 		return false
 	}
 

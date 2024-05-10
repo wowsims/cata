@@ -123,7 +123,7 @@ export class SettingsTab extends SimTab {
 		const professionGroup = Input.newGroupContainer();
 		contentBlock.bodyElement.appendChild(professionGroup);
 
-		const professions = getEnumValues(Profession) as Array<Profession>;
+		const professions = getEnumValues(Profession).filter(proff => proff != Profession.Archeology) as Array<Profession>;
 		const _profession1Picker = new EnumPicker(professionGroup, this.simUI.player, {
 			label: 'Profession 1',
 			values: professions.map(p => {

@@ -45,7 +45,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				if shaman.FlameShock.Dot(aoeTarget).IsActive() {
+				if shaman.FlameShockDot.Dot(aoeTarget).IsActive() {
 					return true
 				}
 			}

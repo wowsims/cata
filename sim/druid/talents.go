@@ -419,18 +419,18 @@ func (druid *Druid) applyStampede() {
 		return
 	}
 
-	bearHasteMod := 1.0 + 0.15 * float64(druid.Talents.Stampede)
+	bearHasteMod := 1.0 + 0.15*float64(druid.Talents.Stampede)
 
 	druid.StampedeBearAura = druid.RegisterAura(core.Aura{
 		Label:    "Stampede (Bear)",
 		ActionID: core.ActionID{SpellID: 81015 + druid.Talents.Stampede},
-		Duration: time.Second*8,
+		Duration: time.Second * 8,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.MultiplyAttackSpeed(sim, bearHasteMod)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.MultiplyAttackSpeed(sim, 1.0 / bearHasteMod)
+			druid.MultiplyAttackSpeed(sim, 1.0/bearHasteMod)
 		},
 	})
 
@@ -443,7 +443,7 @@ func (druid *Druid) applyStampede() {
 	druid.StampedeCatAura = druid.RegisterAura(core.Aura{
 		Label:    "Stampede (Cat)",
 		ActionID: core.ActionID{SpellID: 81020 + druid.Talents.Stampede},
-		Duration: time.Second*10,
+		Duration: time.Second * 10,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.Ravage.CostMultiplier -= ravageCostMod

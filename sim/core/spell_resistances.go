@@ -71,10 +71,7 @@ func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
 	// Assume target > 80
 	armorConstant := float64(at.Attacker.Level)*2167.5 - 158167.5
 	defenderArmor := at.Defender.Armor()
-	reducibleArmor := min((defenderArmor+armorConstant)/3, defenderArmor)
-	armorPenRating := at.Attacker.stats[stats.ArmorPenetration] + spell.BonusArmorPenRating
-	effectiveArmor := defenderArmor - reducibleArmor*at.Attacker.ArmorPenetrationPercentage(armorPenRating)
-	return 1 - effectiveArmor/(effectiveArmor+armorConstant)
+	return 1 - defenderArmor/(defenderArmor+armorConstant)
 }
 
 /*

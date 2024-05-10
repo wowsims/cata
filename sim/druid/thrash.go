@@ -32,6 +32,10 @@ func (druid *Druid) registerThrashBearSpell() {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    druid.NewTimer(),
+				Duration: time.Second * 6,
+			},
 		},
 
 		DamageMultiplier: 1,

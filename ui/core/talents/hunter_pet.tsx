@@ -6,6 +6,7 @@ import { IconEnumPicker } from '../components/icon_enum_picker';
 import * as InputHelpers from '../components/input_helpers.js';
 import { SavedDataManager } from '../components/saved_data_manager.js';
 import { Player } from '../player.js';
+import { BeastMasteryHunter } from '../player_specs/hunter';
 import { Spec } from '../proto/common';
 import { HunterOptions_PetType as PetType, HunterPetTalents } from '../proto/hunter.js';
 import { ActionId } from '../proto_utils/action_id.js';
@@ -57,6 +58,8 @@ export function makePetTypeInputConfig<SpecType extends HunterSpecs>(): InputHel
 			{ actionId: ActionId.fromPetName('Wind Serpent'), tooltip: 'Wind Serpent', value: PetType.WindSerpent },
 			{ actionId: ActionId.fromPetName('Wolf'), tooltip: 'Wolf', value: PetType.Wolf },
 			{ actionId: ActionId.fromPetName('Worm'), tooltip: 'Worm (Exotic)', value: PetType.Worm },
+			{ actionId: ActionId.fromPetName('Fox'), tooltip: 'Fox', value: PetType.Fox },
+			{ actionId: ActionId.fromPetName('Shale Spider'), tooltip: 'Shale Spider (Exotic)', value: PetType.ShaleSpider },
 		],
 	});
 }
@@ -101,6 +104,8 @@ const petCategories: Record<PetType, PetCategory> = {
 	[PetType.WindSerpent]: PetCategory.Cunning,
 	[PetType.Wolf]: PetCategory.Ferocity,
 	[PetType.Worm]: PetCategory.Tenacity,
+	[PetType.ShaleSpider]: PetCategory.Tenacity,
+	[PetType.Fox]: PetCategory.Ferocity,
 };
 
 const categoryOrder = [PetCategory.Cunning, PetCategory.Ferocity, PetCategory.Tenacity];
@@ -127,7 +132,7 @@ export const ferocityDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
 	dash: true,
 	spikedCollar: 3,
-	bloodthirsty: 1,
+	boarsSpeed: true,
 	cullingTheHerd: 3,
 	spidersBite: 3,
 	rabid: true,
@@ -150,37 +155,44 @@ const defaultTalents = [cunningDefault, ferocityDefault, tenacityDefault];
 
 export const cunningBMDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
+	spikedCollar: 3,
+	boarsSpeed: true,
+	cullingTheHerd: 3,
+	wildHunt: 2,
 	dive: true,
 	owlsFocus: 2,
-	spikedCollar: 3,
-	cullingTheHerd: 3,
+	cornered: 2,
 	feedingFrenzy: 2,
-	roarOfRecovery: true,
 	wolverineBite: true,
-	wildHunt: 2,
+	roarOfRecovery: true,
+	bullheaded: true,
 });
 export const ferocityBMDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
-	dive: true,
+	dash: true,
+	bloodthirsty: 2,
 	spikedCollar: 3,
-	bloodthirsty: 1,
 	cullingTheHerd: 3,
+	charge: true,
 	spidersBite: 3,
 	rabid: true,
 	callOfTheWild: true,
 	sharkAttack: 2,
+	wildHunt: 2,
 });
 export const tenacityBMDefault: HunterPetTalents = HunterPetTalents.create({
 	serpentSwiftness: 2,
-	charge: true,
 	spikedCollar: 3,
 	boarsSpeed: true,
 	cullingTheHerd: 3,
+	charge: true,
+	greatResistance: 3,
+	wildHunt: 2,
 	thunderstomp: true,
 	graceOfTheMantis: 2,
+	lastStand: true,
 	roarOfSacrifice: true,
 	intervene: true,
-	wildHunt: 2,
 });
 const defaultBMTalents = [cunningBMDefault, ferocityBMDefault, tenacityBMDefault];
 
@@ -238,81 +250,80 @@ export class HunterPet<SpecType extends HunterSpecs> {
 export class HunterPetTalentsPicker<SpecType extends HunterSpecs> extends Component {
 	private readonly simUI: SimUI;
 	private readonly player: Player<SpecType>;
-	private curCategory: PetCategory | null;
+	private curCategory: PetCategory;
 	private curTalents: HunterPetTalents;
-
-	// Not saved to storage, just holds last-used values for this session.
 	private savedSets: Array<HunterPetTalents>;
+	private defaultSets: Array<HunterPetTalents>;
+	private talentsContainer: HTMLDivElement;
 
 	constructor(parent: HTMLElement, simUI: SimUI, player: Player<SpecType>) {
 		super(parent, 'hunter-pet-talents-picker');
 		this.simUI = simUI;
 		this.player = player;
-
 		this.curCategory = this.getCategoryFromPlayer();
 		this.curTalents = this.getPetTalentsFromPlayer();
-		this.savedSets = defaultTalents.slice();
-		this.savedSets[this.curCategory] = this.curTalents;
+		this.defaultSets = defaultTalents.slice();
+		this.savedSets = [];
 
+		this.talentsContainer = document.createElement('div');
+		this.talentsContainer.className = 'pet-talents-container';
+		this.rootElem.appendChild(this.talentsContainer);
 		this.rootElem.classList.add(categoryClasses[this.curCategory]);
 
-		const talentsContainer = <div className="pet-talents-container" />;
-		this.rootElem.appendChild(talentsContainer);
+		this.initializeTalentsPicker();
 
-		simUI.sim.waitForInit().then(() => {
-			const pet = new HunterPet(player);
-			categoryOrder.map((_category, i) => {
-				const pickerContainer = document.createElement('div');
-				pickerContainer.classList.add('hunter-pet-talents-' + categoryClasses[i]);
-				talentsContainer.appendChild(pickerContainer);
-
-				const talentsConfig = petTalentsConfig[i];
-				const picker = new TalentsPicker(pickerContainer, pet, {
-					playerClass: player.getClass(),
-					trees: talentsConfig,
-					changedEvent: (pet: HunterPet<SpecType>) => pet.player.specOptionsChangeEmitter,
-					getValue: (pet: HunterPet<SpecType>) => pet.getTalentsString(),
-					setValue: (eventID: EventID, pet: HunterPet<SpecType>, newValue: string) => {
-						pet.setTalentsString(eventID, newValue);
-						this.savedSets[i] = pet.getTalents();
-						this.curTalents = pet.getTalents();
-					},
-					pointsPerRow: 3,
-				});
-
-				return picker;
-			});
-		});
+		simUI.sim.waitForInit().then(() => this.initializeTalentsPicker());
 
 		new IconEnumPicker(this.rootElem, this.player, makePetTypeInputConfig());
 
 		player.specOptionsChangeEmitter.on(() => {
-			const petCategory = this.getCategoryFromPlayer();
-			const categoryIdx = categoryOrder.indexOf(petCategory);
-			console.log('should change pet talents', petCategory);
+			const newCategory = this.getCategoryFromPlayer();
+			if (newCategory !== this.curCategory) {
+				// Revert to the talents from last time the user was editing this category or default if not previously saved
+				const options = this.player.getClassOptions();
+				options.petTalents = this.savedSets[newCategory] || this.defaultSets[newCategory];
+				this.player.setClassOptions(TypedEvent.nextEventID(), options);
+				this.curTalents = options.petTalents;
 
-			if (petCategory != this.curCategory) {
-				this.curCategory = petCategory;
-				this.rootElem.classList.remove(...categoryClasses);
-				this.rootElem.classList.add(categoryClasses[categoryIdx]);
-
-				const curTalents = this.getPetTalentsFromPlayer();
-				console.log(curTalents);
-				if (!HunterPetTalents.equals(curTalents, this.curTalents)) {
-					// If the current talents have also changed, this was probably a load so we shouldn't switch sets.
-					this.curTalents = curTalents;
-					this.savedSets[this.curCategory] = this.curTalents;
-				} else {
-					// Revert to the talents from last time the user was editing this category.
-					const options = this.player.getClassOptions();
-					options.petTalents = this.savedSets[this.curCategory];
-					this.player.setClassOptions(TypedEvent.nextEventID(), options);
-					this.curTalents = options.petTalents;
-				}
+				this.switchCategory(newCategory);
 			}
 		});
 	}
 
+	initializeTalentsPicker() {
+		this.talentsContainer.innerHTML = ''; // Clear existing contents
+		if (this.curCategory !== null) {
+			const pet = new HunterPet(this.player);
+			const talentsConfig = petTalentsConfig[this.curCategory];
+			new TalentsPicker(this.talentsContainer, pet, {
+				playerClass: this.player.getClass(),
+				trees: talentsConfig,
+				changedEvent: (pet: HunterPet<SpecType>) => pet.player.specOptionsChangeEmitter,
+				getValue: (pet: HunterPet<SpecType>) => pet.getTalentsString(),
+				setValue: (eventID: EventID, pet: HunterPet<SpecType>, newValue: string) => {
+					pet.setTalentsString(eventID, newValue);
+					this.savedSets[this.curCategory] = pet.getTalents();
+					this.curTalents = pet.getTalents();
+				},
+				pointsPerRow: 3,
+			});
+		}
+	}
+
+	switchCategory(newCategory: PetCategory) {
+		this.curCategory = newCategory;
+		this.rootElem.classList.remove(...categoryClasses);
+		this.rootElem.classList.add(categoryClasses[categoryOrder.indexOf(newCategory)]);
+		this.talentsContainer.innerHTML = ''; // Clear existing contents
+		this.initializeTalentsPicker(); // Initialize new picker
+	}
+	getDefaultTalentsFromSpec(): Array<HunterPetTalents> {
+		if (this.player.isSpec(Spec.SpecBeastMasteryHunter)) {
+			return defaultBMTalents;
+		} else {
+			return defaultTalents;
+		}
+	}
 	getPetTalentsFromPlayer(): HunterPetTalents {
 		return this.player.getClassOptions().petTalents || HunterPetTalents.create();
 	}

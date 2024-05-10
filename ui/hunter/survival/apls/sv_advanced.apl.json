@@ -19,6 +19,19 @@
 				"condition": {
 					"or": {
 						"vals": [
+							{ "isExecutePhase": { "threshold": "E20" } },
+							{ "cmp": { "op": "OpLe", "lhs": { "remainingTime": {} }, "rhs": { "const": { "val": "25s" } } } }
+						]
+					}
+				},
+				"castSpell": { "spellId": { "itemId": 58145 } }
+			}
+		},
+		{
+			"action": {
+				"condition": {
+					"or": {
+						"vals": [
 							{
 								"cmp": {
 									"op": "OpLt",

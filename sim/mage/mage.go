@@ -29,6 +29,7 @@ type Mage struct {
 	frostfireOrb *FrostfireOrb
 
 	Combustion           *core.Spell
+	CombustionImpact     *core.Spell
 	Ignite               *core.Spell
 	LivingBomb           *core.Spell
 	LivingBombImpact     *core.Spell
@@ -41,8 +42,8 @@ type Mage struct {
 	SummonWaterElemental *core.Spell
 	IcyVeins             *core.Spell
 
-	ArcaneMissilesProcAura *core.Aura
-	ArcanePotencyAura      *core.Aura
+	arcaneMissilesProcAura *core.Aura
+	arcanePotencyAura      *core.Aura
 	FingersOfFrostAura     *core.Aura
 
 	ClassSpellScaling float64
@@ -121,7 +122,7 @@ func (mage *Mage) applyArcaneMissileProc() {
 	}
 
 	// Aura for when proc is successful
-	mage.ArcaneMissilesProcAura = mage.RegisterAura(core.Aura{
+	mage.arcaneMissilesProcAura = mage.RegisterAura(core.Aura{
 		Label:    "Arcane Missiles Proc",
 		ActionID: core.ActionID{SpellID: 79683},
 		Duration: time.Second * 20,
@@ -145,7 +146,7 @@ func (mage *Mage) applyArcaneMissileProc() {
 				return
 			}
 			if sim.Proc(procChance, "Arcane Missiles") {
-				mage.ArcaneMissilesProcAura.Activate(sim)
+				mage.arcaneMissilesProcAura.Activate(sim)
 			}
 		},
 	}))
@@ -288,7 +289,6 @@ const (
 	MageSpellArcaneMissilesTick
 	MageSpellBlastWave
 	MageSpellBlizzard
-	MageSpellCombustion
 	MageSpellConeOfCold
 	MageSpellDeepFreeze
 	MageSpellDragonsBreath
@@ -315,12 +315,13 @@ const (
 	MageSpellScorch
 	MageSpellMoltenArmor
 	MageSpellMageArmor
-
+	MageSpellCombustion
+	MageSpellCombustionApplication
 	MageSpellLast
 	MageSpellsAll        = MageSpellLast<<1 - 1
 	MageSpellLivingBomb  = MageSpellLivingBombDot | MageSpellLivingBombExplosion
 	MageSpellFireMastery = MageSpellLivingBombDot | MageSpellPyroblastDot | MageSpellCombustion // Ignite done manually in spell due to unique mechanic
-	MageSpellFire        = MageSpellBlastWave | MageSpellCombustion | MageSpellDragonsBreath | MageSpellFireball |
+	MageSpellFire        = MageSpellBlastWave | MageSpellCombustionApplication | MageSpellDragonsBreath | MageSpellFireball |
 		MageSpellFireBlast | MageSpellFlameOrb | MageSpellFlamestrike | MageSpellFrostfireBolt | MageSpellIgnite |
 		MageSpellLivingBomb | MageSpellPyroblast | MageSpellScorch
 	MageSpellChill        = MageSpellFrostbolt | MageSpellFrostfireBolt
@@ -329,7 +330,7 @@ const (
 		MageSpellDragonsBreath | MageSpellFireBlast | MageSpellFireball | MageSpellFlamestrike | MageSpellFlameOrb | MageSpellFrostbolt | MageSpellFrostfireBolt |
 		MageSpellFrostfireOrb | MageSpellIceLance | MageSpellLivingBombExplosion | MageSpellLivingBombDot | MageSpellPyroblast | MageSpellPyroblastDot | MageSpellScorch
 	MageSpellInstantCast = MageSpellArcaneBarrage | MageSpellArcaneMissilesCast | MageSpellArcaneMissilesTick | MageSpellFireBlast | MageSpellArcaneExplosion |
-		MageSpellBlastWave | MageSpellCombustion | MageSpellConeOfCold | MageSpellDeepFreeze | MageSpellDragonsBreath | MageSpellIceLance |
-		MageSpellManaGems | MageSpellMirrorImage | MageSpellPresenceOfMind | MageSpellMoltenArmor | MageSpellMageArmor
+		MageSpellBlastWave | MageSpellCombustionApplication | MageSpellConeOfCold | MageSpellDeepFreeze | MageSpellDragonsBreath | MageSpellIceLance |
+		MageSpellManaGems | MageSpellMirrorImage | MageSpellPresenceOfMind | MageSpellMoltenArmor | MageSpellMageArmor | MageSpellFlameOrb
 	MageSpellExtraResult = MageSpellLivingBombExplosion | MageSpellArcaneMissilesTick | MageSpellBlizzard
 )

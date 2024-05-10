@@ -542,6 +542,15 @@ func StrengthOfEarthTotemAura(unit *Unit) *Aura {
 			{stats.Strength, 549.0, false},
 		}})
 }
+func RoarOfCourageAura(unit *Unit) *Aura {
+	return makeExclusiveBuff(unit, BuffConfig{
+		"Roar of Courage",
+		ActionID{SpellID: 93435},
+		[]StatConfig{
+			{stats.Agility, 549.0, false},
+			{stats.Strength, 549.0, false},
+		}})
+}
 
 // https://www.wowhead.com/cata/spell=57330/horn-of-winter
 func HornOfWinterAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
@@ -650,6 +659,9 @@ func BlessingOfMightAura(unit *Unit) *Aura {
 ///////////////////////////////////////////////////////////////////////////
 
 func FelIntelligence(unit *Unit) *Aura {
+	if !unit.HasManaBar() {
+		return nil
+	}
 	return makeExclusiveBuff(unit, BuffConfig{
 		"Fel Intelligence",
 		ActionID{SpellID: 54424},
@@ -660,6 +672,9 @@ func FelIntelligence(unit *Unit) *Aura {
 }
 
 func ArcaneBrilliance(unit *Unit) *Aura {
+	if !unit.HasManaBar() {
+		return nil
+	}
 	return makeExclusiveBuff(unit, BuffConfig{
 		"Arcane Brilliance",
 		ActionID{SpellID: 1459},
@@ -792,7 +807,7 @@ func TerrifyingRoar(unit *Unit) *Aura {
 
 func FuriousHowl(unit *Unit) *Aura {
 	baseAura := makeExclusiveBuff(unit, BuffConfig{
-		"Terrifying Roar",
+		"Furious Howl",
 		ActionID{SpellID: 24604},
 		[]StatConfig{
 			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
@@ -868,7 +883,7 @@ func FlametongueTotem(unit *Unit) *Aura {
 func DemonicPact(unit *Unit) *Aura {
 	return makeExclusiveBuff(unit, BuffConfig{
 		"Demonic Pact",
-		ActionID{SpellID: 47236},
+		ActionID{SpellID: 53646},
 		[]StatConfig{
 			{stats.SpellPower, 1.1, true},
 		}})
@@ -1823,6 +1838,9 @@ func (raid *Raid) resetReplenishment(_ *Simulation) {
 }
 
 func (raid *Raid) ProcReplenishment(sim *Simulation, src ReplenishmentSource) {
+	if sim.GetRemainingDuration() <= 0 {
+		return
+	}
 	// If the raid is fully covered by one or more replenishment sources, we can
 	// skip the mana sorting.
 	if len(raid.curReplenishmentUnits)*10 >= len(raid.replenishmentUnits) {

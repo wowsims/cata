@@ -31,22 +31,22 @@ func TestFeral(t *testing.T) {
 		Class: proto.Class_ClassDruid,
 		Race:  proto.Race_RaceTauren,
 
-		GearSet:     core.GetGearSet("../../../ui/druid/feral/gear_sets", "preraid"),
+		GearSet: core.GetGearSet("../../../ui/druid/feral/gear_sets", "preraid"),
 		OtherGearSets: []core.GearSetCombo{
 			core.GetGearSet("../../../ui/druid/feral/gear_sets", "p1"),
 		},
-		Talents:     StandardTalents,
-		Glyphs:      StandardGlyphs,
+		Talents:         StandardTalents,
+		Glyphs:          StandardGlyphs,
 		OtherTalentSets: []core.TalentsCombo{{Label: "HybridTalents", Talents: HybridTalents, Glyphs: HybridGlyphs}},
-		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "ExternalBleed", SpecOptions: PlayerOptionsMonoCat},
-		Rotation: core.GetAplRotation("../../../ui/druid/feral/apls", "default"),
+		Consumes:        FullConsumes,
+		SpecOptions:     core.SpecOptionsCombo{Label: "ExternalBleed", SpecOptions: PlayerOptionsMonoCat},
+		Rotation:        core.GetAplRotation("../../../ui/druid/feral/apls", "default"),
 		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/druid/feral/apls", "monocat"),
 			core.GetAplRotation("../../../ui/druid/feral/apls", "aoe"),
 		},
 		StartingDistance: 25,
-		OtherStartingDistances: []float64{core.MaxMeleeRange},
-		ItemFilter: FeralItemFilter,
+		ItemFilter:       FeralItemFilter,
 	}))
 }
 
