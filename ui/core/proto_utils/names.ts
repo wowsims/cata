@@ -96,6 +96,7 @@ export const professionNames: Map<Profession, string> = new Map([
 	[Profession.Mining, 'Mining'],
 	[Profession.Skinning, 'Skinning'],
 	[Profession.Tailoring, 'Tailoring'],
+	[Profession.Archeology, 'Archeology'],
 ]);
 
 export function nameToProfession(name: string): Profession {
@@ -287,6 +288,8 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 	[SourceFilterOption.SourceUnknown, 'Unknown'],
 	[SourceFilterOption.SourceCrafting, 'Crafting'],
 	[SourceFilterOption.SourceQuest, 'Quest'],
+	[SourceFilterOption.SourceReputation, 'Reputation'],
+	[SourceFilterOption.SourcePvp, 'PVP'],
 	[SourceFilterOption.SourceDungeon, 'Dungeon'],
 	[SourceFilterOption.SourceDungeonH, 'Dungeon (H)'],
 	[SourceFilterOption.SourceRaid, 'Raid'],
