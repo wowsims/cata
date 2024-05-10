@@ -15,7 +15,7 @@ import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_a
 import { SavedDataConfig } from './components/saved_data_manager';
 import { addStatWeightsAction } from './components/stat_weights_action';
 import * as Tooltips from './constants/tooltips';
-import { simLaunchStatuses } from './launched_sims';
+import { LaunchStatus, simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
 import { PlayerSpecs } from './player_specs';
 import { PresetGear, PresetRotation } from './preset_utils';
@@ -361,8 +361,11 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	private addSidebarComponents() {
-		this.raidSimResultsManager = addRaidSimAction(this);
-		addStatWeightsAction(this, this.individualConfig.epStats, this.individualConfig.epPseudoStats, this.individualConfig.epReferenceStat);
+		// Disable SIM buttons for Unlaunched sims
+		if (!(!document.location.href.includes('localhost') && simLaunchStatuses[this.player.getSpec()].status == LaunchStatus.Unlaunched)) {
+			this.raidSimResultsManager = addRaidSimAction(this);
+			addStatWeightsAction(this, this.individualConfig.epStats, this.individualConfig.epPseudoStats, this.individualConfig.epReferenceStat);
+		}
 
 		const _characterStats = new CharacterStats(
 			this.rootElem.querySelector('.sim-sidebar-stats') as HTMLElement,
