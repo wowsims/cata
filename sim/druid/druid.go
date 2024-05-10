@@ -113,9 +113,9 @@ type Druid struct {
 	ExtendingMoonfireStacks int
 	LunarICD                core.Cooldown
 	SolarICD                core.Cooldown
-	// Treant1                 *TreantPet
-	// Treant2                 *TreantPet
-	// Treant3                 *TreantPet
+	Treant1                 *TreantPet
+	Treant2                 *TreantPet
+	Treant3                 *TreantPet
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
@@ -276,7 +276,7 @@ func (druid *Druid) RegisterBalanceSpells() {
 	druid.registerWrathSpell()
 	druid.registerStarfallSpell()
 	druid.registerTyphoonSpell()
-	//druid.registerForceOfNatureCD()
+	druid.registerForceOfNature()
 	druid.registerStarsurgeSpell()
 }
 
@@ -355,11 +355,11 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	// Base dodge is unaffected by Diminishing Returns
 	druid.PseudoStats.BaseDodge += 0.056097 // TODO: Check if this is different in Cata
 
-	// 	// if druid.Talents.ForceOfNature {
-	// 	// 	druid.Treant1 = druid.NewTreant()
-	// 	// 	druid.Treant2 = druid.NewTreant()
-	// 	// 	druid.Treant3 = druid.NewTreant()
-	// 	// }
+	if druid.Talents.ForceOfNature {
+		druid.Treant1 = druid.NewTreant()
+		druid.Treant2 = druid.NewTreant()
+		druid.Treant3 = druid.NewTreant()
+	}
 
 	return druid
 }
