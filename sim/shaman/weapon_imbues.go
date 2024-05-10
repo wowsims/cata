@@ -223,10 +223,10 @@ func (shaman *Shaman) FrostbrandDebuffAura(target *core.Unit) *core.Aura {
 		ActionID: core.ActionID{SpellID: 8034},
 		Duration: time.Second * 8,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.EnableDamageDoneByCaster(0, 1, shaman.AttackTables[aura.Unit.UnitIndex], shaman.frostbrandDDBCHandler)
+			core.EnableDamageDoneByCaster(DDBC_FrostbranWeapon, DDBC_Total, shaman.AttackTables[aura.Unit.UnitIndex], shaman.frostbrandDDBCHandler)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.DisableDamageDoneByCaster(0, shaman.AttackTables[aura.Unit.UnitIndex])
+			core.DisableDamageDoneByCaster(DDBC_FrostbranWeapon, shaman.AttackTables[aura.Unit.UnitIndex])
 		},
 	})
 }
