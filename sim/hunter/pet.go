@@ -20,8 +20,11 @@ type HunterPet struct {
 
 	specialAbility *core.Spell
 	focusDump      *core.Spell
+	exoticAbility  *core.Spell
 
 	uptimePercent    float64
+	wolverineBite    *core.Spell
+	frostStormBreath *core.Spell
 	hasOwnerCooldown bool
 }
 
@@ -78,8 +81,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		MainHand: core.Weapon{
 			BaseDamageMin:  73,
 			BaseDamageMax:  110,
-			SwingSpeed:     atkSpd,
 			CritMultiplier: 2,
+			SwingSpeed:     atkSpd,
 		},
 		AutoSwingMelee: true,
 	})
@@ -115,6 +118,7 @@ func (hp *HunterPet) Talents() *proto.HunterPetTalents {
 func (hp *HunterPet) Initialize() {
 	hp.specialAbility = hp.NewPetAbility(hp.config.SpecialAbility, true)
 	hp.focusDump = hp.NewPetAbility(hp.config.FocusDump, false)
+	hp.exoticAbility = hp.NewPetAbility(hp.config.ExoticAbility, false)
 }
 
 func (hp *HunterPet) Reset(_ *core.Simulation) {
@@ -135,6 +139,14 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	}
 
 	target := hp.CurrentTarget
+
+	if hp.frostStormBreath != nil && hp.frostStormBreath.CanCast(sim, target) && len(sim.Encounter.TargetUnits) > 4 {
+		hp.frostStormBreath.Cast(sim, target)
+	}
+
+	if hp.wolverineBite.CanCast(sim, target) {
+		hp.wolverineBite.Cast(sim, target)
+	}
 
 	if hp.focusDump == nil {
 		hp.specialAbility.Cast(sim, target)
@@ -198,6 +210,7 @@ type PetConfig struct {
 
 	SpecialAbility PetAbilityType
 	FocusDump      PetAbilityType
+	ExoticAbility  PetAbilityType
 
 	// Randomly select between abilities instead of using a prio.
 	RandomSelection bool
@@ -235,8 +248,9 @@ var PetConfigs = map[proto.HunterOptions_PetType]PetConfig{
 		SpecialAbility: RoarOfCourage,
 	},
 	proto.HunterOptions_Chimaera: {
-		Name:      "Chimaera",
-		FocusDump: Bite,
+		Name:          "Chimaera",
+		FocusDump:     Bite,
+		ExoticAbility: FrostStormBreath,
 	},
 	proto.HunterOptions_CoreHound: {
 		Name:      "Core Hound",

@@ -45,8 +45,8 @@ func TestFeral(t *testing.T) {
 			core.GetAplRotation("../../../ui/druid/feral/apls", "monocat"),
 			core.GetAplRotation("../../../ui/druid/feral/apls", "aoe"),
 		},
-		StartingDistance:       25,
-		ItemFilter:             FeralItemFilter,
+		StartingDistance: 25,
+		ItemFilter:       FeralItemFilter,
 	}))
 }
 

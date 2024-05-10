@@ -369,20 +369,20 @@ func (cat *FeralDruid) canBearWeave(sim *core.Simulation, furorCap float64, rege
 	}
 
 	// Calculate effective Energy cap for out-of-form pooling
-	targetWeaveDuration := core.GCDDefault * 2 + cat.ReactionTime * 2
+	targetWeaveDuration := core.GCDDefault*2 + cat.ReactionTime*2
 
 	if cat.Talents.Furor == 3 {
 		targetWeaveDuration += core.GCDDefault
 	}
 
-	weaveEnergy := furorCap - targetWeaveDuration.Seconds() * regenRate
+	weaveEnergy := furorCap - targetWeaveDuration.Seconds()*regenRate
 
-	if (currentEnergy > weaveEnergy) {
+	if currentEnergy > weaveEnergy {
 		return false
 	}
 
 	// Prioritize all timers over weaving
-	earliestWeaveEnd := sim.CurrentTime + core.GCDDefault * 3 + cat.ReactionTime * 2
+	earliestWeaveEnd := sim.CurrentTime + core.GCDDefault*3 + cat.ReactionTime*2
 	isPooling, nextRefresh := upcomingTimers.nextRefreshTime()
 
 	if isPooling && (nextRefresh < earliestWeaveEnd) {
@@ -390,15 +390,15 @@ func (cat *FeralDruid) canBearWeave(sim *core.Simulation, furorCap float64, rege
 	}
 
 	// Mana check
-	if cat.CurrentMana() < shiftCost * 2 {
+	if cat.CurrentMana() < shiftCost*2 {
 		cat.Metrics.MarkOOM(sim)
 		return false
 	}
 
 	// Also add a condition to make sure we can spend down our Energy post-weave before
 	// the encounter ends or TF is ready.
-	energyToDump := currentEnergy + (earliestWeaveEnd - sim.CurrentTime).Seconds() * regenRate
-	timeToDump := earliestWeaveEnd + core.DurationFromSeconds(math.Floor(energyToDump / cat.Shred.DefaultCast.Cost))
+	energyToDump := currentEnergy + (earliestWeaveEnd-sim.CurrentTime).Seconds()*regenRate
+	timeToDump := earliestWeaveEnd + core.DurationFromSeconds(math.Floor(energyToDump/cat.Shred.DefaultCast.Cost))
 	return (timeToDump < sim.Duration) && !cat.tfExpectedBefore(sim, timeToDump)
 }
 
@@ -411,7 +411,7 @@ func (cat *FeralDruid) terminateBearWeave(sim *core.Simulation, isClearcast bool
 	// Check Energy pooling leeway
 	nextGCDLength := core.TernaryDuration(cat.Thrash.CanCast(sim, cat.CurrentTarget) || cat.MangleBear.CanCast(sim, cat.CurrentTarget), core.GCDDefault, core.GCDMin)
 	smallestWeaveExtension := nextGCDLength + cat.ReactionTime
-	finalEnergy := currentEnergy + smallestWeaveExtension.Seconds() * regenRate
+	finalEnergy := currentEnergy + smallestWeaveExtension.Seconds()*regenRate
 
 	if finalEnergy > furorCap {
 		return true
@@ -427,7 +427,7 @@ func (cat *FeralDruid) terminateBearWeave(sim *core.Simulation, isClearcast bool
 
 	// Also add a condition to prevent extending a weave if we don't have enough time
 	// to spend the pooled Energy thus far.
-	timeToDump := earliestWeaveEnd + core.DurationFromSeconds(math.Floor(finalEnergy / cat.Shred.DefaultCast.Cost))
+	timeToDump := earliestWeaveEnd + core.DurationFromSeconds(math.Floor(finalEnergy/cat.Shred.DefaultCast.Cost))
 	return (timeToDump >= sim.Duration) || cat.tfExpectedBefore(sim, timeToDump)
 }
 
@@ -581,8 +581,8 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	meleeWeaveNow := cat.canMeleeWeave(sim, regenRate, curEnergy, isClearcast, pendingPool)
 
 	// Check bear-weaving conditions
-	furorCap := min(float64(100 * cat.Talents.Furor) / 3.0, 100.0 - 1.5 * regenRate)
-	bearWeaveNow := cat.canBearWeave(sim, furorCap,regenRate, curEnergy, pendingPool, shiftCost)
+	furorCap := min(float64(100*cat.Talents.Furor)/3.0, 100.0-1.5*regenRate)
+	bearWeaveNow := cat.canBearWeave(sim, furorCap, regenRate, curEnergy, pendingPool, shiftCost)
 	// Main  decision tree starts here
 	timeToNextAction := time.Duration(0)
 
@@ -651,7 +651,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentMangleCatCost() - curEnergy) / regenRate)
 	} else if meleeWeaveNow {
-		cat.MoveTo(cat.CatCharge.MinRange + 1, sim)
+		cat.MoveTo(cat.CatCharge.MinRange+1, sim)
 	} else if bearWeaveNow {
 		cat.readyToShift = true
 	} else if cat.Ravage.CanCast(sim, cat.CurrentTarget) {

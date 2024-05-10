@@ -361,7 +361,7 @@ func (hp *HunterPet) registerWolverineBite() {
 		},
 	})
 
-	wbSpell := hp.RegisterSpell(core.SpellConfig{
+	hp.wolverineBite = hp.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -369,7 +369,7 @@ func (hp *HunterPet) registerWolverineBite() {
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD: PetGCD,
 			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
@@ -381,7 +381,7 @@ func (hp *HunterPet) registerWolverineBite() {
 			return hp.IsEnabled() && wbValidUntil > sim.CurrentTime
 		},
 
-		//DamageMultiplier: 1 * hp.hunterOwner.markedForDeathMultiplier(),
+		DamageMultiplier: 1,
 		CritMultiplier:   2,
 		ThreatMultiplier: 1,
 
@@ -392,10 +392,5 @@ func (hp *HunterPet) registerWolverineBite() {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 			wbValidUntil = 0
 		},
-	})
-
-	hp.AddMajorCooldown(core.MajorCooldown{
-		Spell: wbSpell,
-		Type:  core.CooldownTypeDPS,
 	})
 }

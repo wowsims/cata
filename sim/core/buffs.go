@@ -659,6 +659,9 @@ func BlessingOfMightAura(unit *Unit) *Aura {
 ///////////////////////////////////////////////////////////////////////////
 
 func FelIntelligence(unit *Unit) *Aura {
+	if !unit.HasManaBar() {
+		return nil
+	}
 	return makeExclusiveBuff(unit, BuffConfig{
 		"Fel Intelligence",
 		ActionID{SpellID: 54424},
@@ -669,6 +672,9 @@ func FelIntelligence(unit *Unit) *Aura {
 }
 
 func ArcaneBrilliance(unit *Unit) *Aura {
+	if !unit.HasManaBar() {
+		return nil
+	}
 	return makeExclusiveBuff(unit, BuffConfig{
 		"Arcane Brilliance",
 		ActionID{SpellID: 1459},
