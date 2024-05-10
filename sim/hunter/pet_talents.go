@@ -368,7 +368,9 @@ func (hp *HunterPet) registerWolverineBite() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
 
 		Cast: core.CastConfig{
-
+			DefaultCast: core.Cast{
+				GCD: PetGCD,
+			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    hp.NewTimer(),
