@@ -286,8 +286,10 @@ func (shaman *Shaman) applyFulmination() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				CastTime: 0,
-				GCD:      0,
+				NonEmpty: true,
+			},
+			ModifyCast: func(s1 *core.Simulation, spell *core.Spell, c *core.Cast) {
+				spell.SetMetricsSplit(shaman.LightningShieldAura.GetStacks() - 3)
 			},
 		},
 		MetricSplits: 7,
@@ -295,7 +297,6 @@ func (shaman *Shaman) applyFulmination() {
 		DamageMultiplier: 1,
 		CritMultiplier:   shaman.DefaultSpellCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.SetMetricsSplit(shaman.LightningShieldAura.GetStacks() - 3)
 			totalDamage := (shaman.ClassSpellScaling*0.38899999857 + 0.267*spell.SpellPower()) * (float64(shaman.LightningShieldAura.GetStacks()) - 3)
 			result := spell.CalcDamage(sim, target, totalDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DealDamage(sim, result)

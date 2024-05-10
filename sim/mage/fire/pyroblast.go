@@ -49,6 +49,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: mage.MageSpellPyroblastDot,
+		Flags:          core.SpellFlagNoOnCastComplete,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

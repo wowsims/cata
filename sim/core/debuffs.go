@@ -808,21 +808,3 @@ func CrystalYieldAura(target *Unit) *Aura {
 		},
 	})
 }
-
-func SporeCloudAura(target *Unit) *Aura {
-	return target.GetOrRegisterAura(Aura{
-		Label:    "Spore Cloud",
-		ActionID: ActionID{SpellID: 53598},
-		Duration: time.Second * 10,
-	})
-}
-
-// TODO: Hunter Spec uses this but the ability no longer exists
-// Need to fixup pet abilities
-func StingAura(target *Unit) *Aura {
-	return target.GetOrRegisterAura(Aura{
-		Label:    "Sting",
-		ActionID: ActionID{SpellID: 56631},
-		Duration: time.Second * 10,
-	})
-}

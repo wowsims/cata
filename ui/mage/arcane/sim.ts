@@ -78,9 +78,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			manaTideTotems: 1,
 		}),
 		individualBuffs: IndividualBuffs.create({
-			innervateCount: 0,
 			vampiricTouch: true,
-			focusMagic: true,
 		}),
 		debuffs: Presets.DefaultDebuffs,
 	},

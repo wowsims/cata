@@ -68,6 +68,21 @@ th {
 	}
 }
 
+.sim-ui--is-unlaunched {
+	.sim-sidebar {
+		.sim-sidebar-actions > *:not(.sim-ui-unlaunched-container),
+		.sim-sidebar-results {
+			display: none !important;
+		}
+	}
+}
+
+.sim-ui-unlaunched-container {
+	i {
+		color: #dc3545;
+	}
+}
+
 .sim-toast-container {
 	position: fixed;
 	bottom: 0;

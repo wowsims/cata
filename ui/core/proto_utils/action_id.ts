@@ -13,6 +13,7 @@ export const USE_WOTLK_DB = false;
 export class ActionId {
 	readonly itemId: number;
 	readonly randomSuffixId: number;
+	readonly reforgeId: number;
 	readonly spellId: number;
 	readonly otherId: OtherAction;
 	readonly tag: number;
@@ -30,9 +31,11 @@ export class ActionId {
 		name: string,
 		iconUrl: string,
 		randomSuffixId?: number,
+		reforgeId?: number,
 	) {
 		this.itemId = itemId;
 		this.randomSuffixId = randomSuffixId || 0;
+		this.reforgeId = reforgeId || 0;
 		this.spellId = spellId;
 		this.otherId = otherId;
 		this.tag = tag;
@@ -144,9 +147,13 @@ export class ActionId {
 		}
 	}
 
-	static makeItemUrl(id: number, randomSuffixId?: number): string {
+	static makeItemUrl(id: number, randomSuffixId?: number, reforgeId?: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		return `https://wowhead.com/cata/${langPrefix}item=${id}?lvl=${CHARACTER_LEVEL}?rand=${randomSuffixId || 0}`;
+		const url = new URL(`https://wowhead.com/cata/${langPrefix}item=${id}`);
+		url.searchParams.set('level', String(CHARACTER_LEVEL));
+		url.searchParams.set('rand', String(randomSuffixId || 0));
+		if (reforgeId) url.searchParams.set('forg', String(reforgeId));
+		return url.toString();
 	}
 	static makeSpellUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
@@ -189,7 +196,7 @@ export class ActionId {
 
 	setWowheadHref(elem: HTMLAnchorElement) {
 		if (this.itemId) {
-			elem.href = ActionId.makeItemUrl(this.itemId, this.randomSuffixId);
+			elem.href = ActionId.makeItemUrl(this.itemId, this.randomSuffixId, this.reforgeId);
 		} else if (this.spellId) {
 			elem.href = ActionId.makeSpellUrl(this.spellId);
 		}
@@ -266,6 +273,7 @@ export class ActionId {
 				}
 				break;
 			case 'Pyroblast':
+			case 'Combustion':
 				if (this.tag) name += ' (DoT)';
 				break;
 			case 'Living Bomb':
@@ -377,11 +385,11 @@ export class ActionId {
 				}
 				break;
 			case 'Fulmination':
-				name += ` (${this.tag + 3})`
+				name += ` (${this.tag + 3})`;
 			case 'Moonfire':
 			case 'Sunfire':
 				if (this.tag == 1) {
-					name += ' (DoT)'
+					name += ' (DoT)';
 				}
 				break;
 			case 'Holy Shield':
@@ -526,7 +534,7 @@ export class ActionId {
 				break;
 			case 'Immolate':
 				if (this.tag == 1) {
-					name += ' (DoT)'
+					name += ' (DoT)';
 				}
 				break;
 			case 'Opportunity Strike':
@@ -603,8 +611,8 @@ export class ActionId {
 		return new ActionId(0, 0, OtherAction.OtherActionNone, 0, '', '', '');
 	}
 
-	static fromItemId(itemId: number, tag?: number, randomSuffixId?: number): ActionId {
-		return new ActionId(itemId, 0, OtherAction.OtherActionNone, tag || 0, '', '', '', randomSuffixId || 0);
+	static fromItemId(itemId: number, tag?: number, randomSuffixId?: number, reforgeId?: number): ActionId {
+		return new ActionId(itemId, 0, OtherAction.OtherActionNone, tag || 0, '', '', '', randomSuffixId, reforgeId);
 	}
 
 	static fromSpellId(spellId: number, tag?: number): ActionId {
@@ -628,7 +636,7 @@ export class ActionId {
 	}
 
 	static fromReforge(item: Item, reforge: ReforgeStat): ActionId {
-		return ActionId.fromItemId(item.id, 0, reforge.id);
+		return ActionId.fromItemId(item.id, 0, 0, reforge.id);
 	}
 
 	static fromProto(protoId: ActionIdProto): ActionId {
@@ -765,6 +773,7 @@ const petNameToIcon: Record<string, string> = {
 	Serpent: 'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_guardianward.jpg',
 	Silithid: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_silithid.jpg',
 	Spider: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_spider.jpg',
+	'Shale Spider': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_spider.jpg',
 	'Spirit Beast': 'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_primalprecision.jpg',
 	'Spore Bat': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_sporebat.jpg',
 	Succubus: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonsuccubus.jpg',
@@ -775,6 +784,7 @@ const petNameToIcon: Record<string, string> = {
 	'Wind Serpent': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_windserpent.jpg',
 	Wolf: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_wolf.jpg',
 	Worm: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_worm.jpg',
+	Fox: 'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_monstertail_07.jpg',
 };
 
 export function getPetIconFromName(name: string): string | ActionId | undefined {

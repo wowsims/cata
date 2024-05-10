@@ -72,7 +72,6 @@ export const DefaultFireConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheDraconicMind,
 	food: Food.FoodSeafoodFeast,
 	defaultPotion: Potions.VolcanicPotion,
-	defaultConjured: Conjured.ConjuredFlameCap,
 	prepopPotion: Potions.VolcanicPotion,
 });
 

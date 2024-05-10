@@ -210,6 +210,8 @@ message HunterOptions {
 		WindSerpent = 30;
 		Wolf = 31;
 		Worm = 32;
+		ShaleSpider = 33;
+		Fox = 34;
 	}
 	PetType pet_type = 2;
 

@@ -33,7 +33,7 @@ func (druid *Druid) registerCatCharge() {
 			// position to 0 instantaneously but introducing a GCD delay based
 			// on the distance traveled.
 			travelTime := core.DurationFromSeconds(druid.DistanceFromTarget / 80)
-			druid.ExtendGCDUntil(sim, max(druid.NextGCDAt(), sim.CurrentTime + travelTime))
+			druid.ExtendGCDUntil(sim, max(druid.NextGCDAt(), sim.CurrentTime+travelTime))
 			druid.DistanceFromTarget = 0
 
 			// Measurements from boЯsch indicate that while travel speed (and
@@ -42,7 +42,7 @@ func (druid *Druid) registerCatCharge() {
 			// likely due to the server needing to perform positional checks.
 			minAutoDelaySeconds := 0.150
 			autoDelaySpreadSeconds := 0.6
-			randomDelayTime := core.DurationFromSeconds(minAutoDelaySeconds + sim.RandomFloat("Cat Charge") * autoDelaySpreadSeconds)
+			randomDelayTime := core.DurationFromSeconds(minAutoDelaySeconds + sim.RandomFloat("Cat Charge")*autoDelaySpreadSeconds)
 
 			druid.AutoAttacks.CancelMeleeSwing(sim)
 			pa := &core.PendingAction{

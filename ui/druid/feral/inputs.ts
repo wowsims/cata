@@ -42,11 +42,25 @@ export const FeralDruidRotationConfig = {
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'meleeWeave',
-			label: 'Enable melee-weaving',
+			label: 'Enable leave-weaving',
 			labelTooltip: 'Weave out of melee range for Stampede procs',
 			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
 				player.getSimpleRotation().rotationType == AplType.SingleTarget && player.getTalents().stampede > 0,
 			changeEmitter: (player: Player<Spec.SpecFeralDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
+		}),
+		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
+			fieldName: 'bearWeave',
+			label: 'Enable bear-weaving',
+			labelTooltip: 'Weave into Bear Form while pooling Energy',
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				player.getSimpleRotation().rotationType == AplType.SingleTarget,
+		}),
+		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
+			fieldName: 'snekWeave',
+			label: 'Use Albino Snake',
+			labelTooltip: 'Reset swing timer at the end of bear-weaves using Albino Snake pet',
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				player.getSimpleRotation().bearWeave,
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'allowAoeBerserk',

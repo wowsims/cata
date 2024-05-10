@@ -96,6 +96,7 @@ export const professionNames: Map<Profession, string> = new Map([
 	[Profession.Mining, 'Mining'],
 	[Profession.Skinning, 'Skinning'],
 	[Profession.Tailoring, 'Tailoring'],
+	[Profession.Archeology, 'Archeology'],
 ]);
 
 export function nameToProfession(name: string): Profession {
@@ -287,28 +288,23 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 	[SourceFilterOption.SourceUnknown, 'Unknown'],
 	[SourceFilterOption.SourceCrafting, 'Crafting'],
 	[SourceFilterOption.SourceQuest, 'Quest'],
+	[SourceFilterOption.SourceReputation, 'Reputation'],
+	[SourceFilterOption.SourcePvp, 'PVP'],
 	[SourceFilterOption.SourceDungeon, 'Dungeon'],
 	[SourceFilterOption.SourceDungeonH, 'Dungeon (H)'],
-	[SourceFilterOption.SourceDungeonTRA, 'Dungeon (TRA)'],
-	[SourceFilterOption.SourceDungeonTRB, 'Dungeon (TRB)'],
-	[SourceFilterOption.SourceRaid10, 'Raid (10N)'],
-	[SourceFilterOption.SourceRaid10H, 'Raid (10H)'],
-	[SourceFilterOption.SourceRaid25, 'Raid (25N)'],
-	[SourceFilterOption.SourceRaid25H, 'Raid (25H)'],
+	[SourceFilterOption.SourceRaid, 'Raid'],
+	[SourceFilterOption.SourceRaidH, 'Raid (H)'],
 ]);
 export const raidNames: Map<RaidFilterOption, string> = new Map([
 	[RaidFilterOption.RaidUnknown, 'Unknown'],
-	[RaidFilterOption.RaidVanilla, 'Vanilla'],
-	[RaidFilterOption.RaidTbc, 'TBC'],
-	[RaidFilterOption.RaidNaxxramas, 'Naxxramas'],
-	[RaidFilterOption.RaidEyeOfEternity, 'Eye of Eternity'],
-	[RaidFilterOption.RaidObsidianSanctum, 'Obsidian Sanctum'],
-	[RaidFilterOption.RaidVaultOfArchavon, 'Vault of Archavon'],
-	[RaidFilterOption.RaidUlduar, 'Ulduar'],
-	[RaidFilterOption.RaidTrialOfTheCrusader, 'Trial of the Crusader'],
-	[RaidFilterOption.RaidOnyxiasLair, "Onyxia's Lair"],
 	[RaidFilterOption.RaidIcecrownCitadel, 'Icecrown Citadel'],
 	[RaidFilterOption.RaidRubySanctum, 'Ruby Sanctum'],
+	[RaidFilterOption.RaidBlackwingDescent, 'Blackwing Descent'],
+	[RaidFilterOption.RaidTheBastionOfTwilight, 'The Bastion of Twilight'],
+	[RaidFilterOption.RaidBaradinHold, 'Baradin Hold'],
+	[RaidFilterOption.RaidThroneOfTheFourWinds, 'Throne of the Four Winds'],
+	[RaidFilterOption.RaidFirelands, 'Firelands'],
+	[RaidFilterOption.RaidDragonSoul, 'Dragon Soul'],
 ]);
 
 export const difficultyNames: Map<DungeonDifficulty, string> = new Map([
@@ -319,8 +315,8 @@ export const difficultyNames: Map<DungeonDifficulty, string> = new Map([
 	[DungeonDifficulty.DifficultyTitanRuneBeta, 'TRB'],
 	[DungeonDifficulty.DifficultyRaid10, '10N'],
 	[DungeonDifficulty.DifficultyRaid10H, '10H'],
-	[DungeonDifficulty.DifficultyRaid25, '25N'],
-	[DungeonDifficulty.DifficultyRaid25H, '25H'],
+	[DungeonDifficulty.DifficultyRaid25, 'RN'],
+	[DungeonDifficulty.DifficultyRaid25H, 'RH'],
 ]);
 
 export const REP_LEVEL_NAMES: Record<RepLevel, string> = {
@@ -337,6 +333,15 @@ export const REP_LEVEL_NAMES: Record<RepLevel, string> = {
 
 export const REP_FACTION_NAMES: Record<RepFaction, string> = {
 	[RepFaction.RepFactionUnknown]: 'Unknown',
+	[RepFaction.RepFactionTheEarthenRing]: 'The Earthen Ring',
+	[RepFaction.RepFactionGuardiansOfHyjal]: 'Guardians of Hyjal',
+	[RepFaction.RepFactionTherazane]: 'Therazane',
+	[RepFaction.RepFactionDragonmawClan]: 'Dragonmaw Clan',
+	[RepFaction.RepFactionRamkahen]: 'Ramkahen',
+	[RepFaction.RepFactionWildhammerClan]: 'Wildhammer Clan',
+	[RepFaction.RepFactionBaradinsWardens]: 'Baradin\'s Wardens',
+	[RepFaction.RepFactionHellscreamsReach]: 'Hellscream\'s Reach',
+	[RepFaction.RepFactionAvengersOfHyjal]: 'Avengers of Hyjal',
 };
 
 export const masterySpellNames: Map<Spec, string> = new Map([

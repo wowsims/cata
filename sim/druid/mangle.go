@@ -12,7 +12,7 @@ func (druid *Druid) registerMangleBearSpell() {
 	glyphBonus := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfMangle), 1.1, 1.0)
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48564},
+		ActionID:    core.ActionID{SpellID: 33878},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
@@ -28,7 +28,7 @@ func (druid *Druid) registerMangleBearSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Duration(float64(time.Second) * 6),
+				Duration: time.Second * 6,
 			},
 		},
 
@@ -42,7 +42,7 @@ func (druid *Druid) registerMangleBearSpell() {
 			baseDamage := 3306.0/1.9 +
 				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
 				mangleAuras.Get(target).Activate(sim)

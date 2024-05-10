@@ -99,11 +99,8 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 			BaseCost:   0.15,
 			Multiplier: 1,
 		},
+
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2500,
-			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
 				Duration: time.Minute * 2,

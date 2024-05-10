@@ -44,8 +44,8 @@ go get -u -v google.golang.org/protobuf
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
 # Install node
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-nvm install 19.8.0
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install 20.13.1
 
 # Install the npm package dependencies using node
 npm install
@@ -64,6 +64,9 @@ docker run --rm -v $(pwd):/cata wowsims-cata npm install
 # Now you can run the commands as shown in the Commands sections, preceding everything with, "docker run --rm -it -p 8080:8080 -v $(pwd):/cata wowsims-cata".
 # For convenience, set this as an environment variable:
 CATA_CMD="docker run --rm -it -p 8080:8080 -v $(pwd):/cata wowsims-cata"
+
+#For the watch commands assign this environment variable:
+CATA_WATCH_CMD="docker run --rm -it -p 8080:8080 -p 3333:3333 -p 5173:5173 -e WATCH=1 -v $(pwd):/cata wowsims-cata"
 
 # ... do some coding on the sim ...
 
@@ -84,7 +87,7 @@ If you want to develop on Windows, we recommend setting up a Ubuntu virtual mach
 * You can also use the Ubuntu setup instructions as above to run natively, with a few modifications:
   * You may need a different Go installer if `go1.18.3.linux-amd64.tar.gz` is not compatible with your system's architecture; you can do the Go install manually from `https://go.dev/doc/install`.
   * OS X uses Homebrew instead of apt, so in order to install protobuf-compiler you’ll instead need to run `brew install protobuf-c` (note the package name is also a little different than in apt). You might need to first update or upgrade brew.
-  * The provided install script for Node will not included a precompiled binary for OS X, but it’s smart enough to compile one. Be ready for your CPU to melt on running `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash`.
+  * The provided install script for Node will not included a precompiled binary for OS X, but it’s smart enough to compile one. Be ready for your CPU to melt on running `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash`.
 
 # Commands
 We use a makefile for our build system. These commands will usually be all you need while developing for this project:
@@ -123,7 +126,7 @@ WATCH=1 make rundevserver
 
 
 # The same as rundevserver, recompiles  `wowsimcata` binary and runs it on port 3333. Instead of serving content from the dist folder,
-# this command also runs `vite serve` to start the Vite dev server on port 3174 (or similar) and automatically reloads the page on .ts changes in less than a second.
+# this command also runs `vite serve` to start the Vite dev server on port 5173 (or similar) and automatically reloads the page on .ts changes in less than a second.
 # This allows for more rapid development, with sub second reloads on TS changes. This combines the benefits of `WATCH=1 make rundevserver` and `WATCH=1 make host`
 # to create something that allows you to work in any part of the code with ease and speed.
 # This might get rolled into `WATCH=1 make rundevserver` at some point.

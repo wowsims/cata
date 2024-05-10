@@ -15,11 +15,12 @@ export class Hunter extends PlayerClass<Class.ClassHunter> {
 	};
 	static races: Race[] = [
 		// [A]
+
+		Race.RaceWorgen,
 		Race.RaceHuman,
 		Race.RaceDwarf,
 		Race.RaceNightElf,
 		Race.RaceDraenei,
-		Race.RaceWorgen,
 		// [H]
 		Race.RaceOrc,
 		Race.RaceUndead,
