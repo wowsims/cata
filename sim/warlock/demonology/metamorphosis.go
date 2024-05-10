@@ -13,18 +13,21 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 		return
 	}
 
+	metaDmgMod := 0.0
 	metamorphosisAura := demonology.RegisterAura(core.Aura{
 		Label:    "Metamorphosis Aura",
 		ActionID: core.ActionID{SpellID: 59672},
 		Duration: time.Second * (30 + 6*core.TernaryDuration(demonology.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 1, 0)),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.2
-			demonology.MasterDemonologistOwnerMod.UpdateFloatValue(demonology.getMasteryBonus())
-			demonology.MasterDemonologistOwnerMod.Activate()
+			metaDmgMod = 1.2 + demonology.getMasteryBonus()
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= metaDmgMod
+
+			if sim.Log != nil {
+				demonology.Log(sim, "[DEBUG]: meta damage mod: %v", metaDmgMod)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.2
-			demonology.MasterDemonologistOwnerMod.Deactivate()
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= metaDmgMod
 			demonology.ImmolationAura.AOEDot().Deactivate(sim)
 		},
 	})
@@ -83,8 +86,9 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 			return metamorphosisAura.IsActive()
 		},
 
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
+		DamageMultiplierAdditive: 1,
+		ThreatMultiplier:         1,
+		BonusCoefficient:         0.53899997473,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -95,8 +99,8 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 			TickLength:          time.Second * 1,
 			AffectedByCastSpeed: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				// TODO: Base damage and spell power coeffecient updated. Not sure what 20*11.5 is?
-				baseDmg := (663 + 20*11.5 + 0.1*dot.Spell.SpellPower()) * sim.Encounter.AOECapMultiplier()
+				baseDmg := demonology.CalcScalingSpellDmg(0.58899998665) * sim.Encounter.AOECapMultiplier()
+
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, dot.Spell.OutcomeMagicHit)
 				}

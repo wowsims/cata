@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { element } from 'tsx-vanilla';
+
 import { CharacterStats, StatMods, StatWrites } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
 import { EmbeddedDetailedResults } from './components/detailed_results';
@@ -13,9 +16,10 @@ import { TalentsTab } from './components/individual_sim_ui/talents_tab';
 import * as InputHelpers from './components/input_helpers';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
+import { SocialLinks } from './components/social_links';
 import { addStatWeightsAction } from './components/stat_weights_action';
 import * as Tooltips from './constants/tooltips';
-import { LaunchStatus, simLaunchStatuses } from './launched_sims';
+import { getSpecLaunchStatus, LaunchStatus, simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
 import { PlayerSpecs } from './player_specs';
 import { PresetGear, PresetRotation } from './preset_utils';
@@ -49,6 +53,7 @@ import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
 import { MAX_POINTS_PLAYER } from './talents/talents_picker';
 import { EventID, TypedEvent } from './typed_event';
+import { isExternal } from './utils';
 
 const SAVED_GEAR_STORAGE_KEY = '__savedGear__';
 const SAVED_ROTATION_STORAGE_KEY = '__savedRotation__';
@@ -362,17 +367,37 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private addSidebarComponents() {
 		// Disable SIM buttons for Unlaunched sims
-		if (!(!document.location.href.includes('localhost') && simLaunchStatuses[this.player.getSpec()].status == LaunchStatus.Unlaunched)) {
+		if (!(isExternal() && getSpecLaunchStatus(this.player) === LaunchStatus.Unlaunched)) {
 			this.raidSimResultsManager = addRaidSimAction(this);
 			addStatWeightsAction(this, this.individualConfig.epStats, this.individualConfig.epPseudoStats, this.individualConfig.epReferenceStat);
+		} else {
+			this.handleSimUnlaunched();
 		}
 
-		const _characterStats = new CharacterStats(
+		new CharacterStats(
 			this.rootElem.querySelector('.sim-sidebar-stats') as HTMLElement,
 			this.player,
 			this.individualConfig.displayStats,
 			this.individualConfig.modifyDisplayStats,
 			this.individualConfig.overwriteDisplayStats,
+		);
+	}
+
+	private handleSimUnlaunched() {
+		this.rootElem.classList.add('sim-ui--is-unlaunched');
+		this.simActionsContainer?.appendChild(
+			<div className="sim-ui-unlaunched-container d-flex flex-column align-items-center text-center mt-5">
+				<i className="fas fa-ban fa-3x"></i>
+				<p className="mt-4">
+					This sim is currently unlaunched.
+					<br />
+					We are working hard to get all sims working. Want to contribute? Make sure to join our{' '}
+					<a href="https://discord.gg/p3DgvmnDCS" target="_blank">
+						Discord
+					</a>
+					!
+				</p>
+			</div>,
 		);
 	}
 

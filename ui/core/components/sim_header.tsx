@@ -3,6 +3,7 @@ import tippy, { ReferenceElement as TippyReferenceElement } from 'tippy.js';
 import { element } from 'tsx-vanilla';
 
 import { SimUI } from '../sim_ui';
+import { isLocal } from '../utils';
 import { Component } from './component';
 import { Exporter } from './exporters';
 import { Importer } from './importers';
@@ -170,7 +171,7 @@ export class SimHeader extends Component {
 		const icon = 'fas fa-gauge-high fa-lg';
 		const parent = this.simToolbar;
 
-		if (document.location.href.includes('localhost')) {
+		if (isLocal()) {
 			fetch('/version').then(resp => {
 				resp.json()
 					.then(versionInfo => {
