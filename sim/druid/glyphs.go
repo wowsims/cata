@@ -1,6 +1,8 @@
 package druid
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 )
@@ -28,6 +30,14 @@ func (druid *Druid) ApplyGlyphs() {
 			ClassMask:  DruidSpellWrath,
 			FloatValue: 0.1,
 			Kind:       core.SpellMod_DamageDone_Flat,
+		})
+	}
+
+	if druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfStarfall) {
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask: DruidSpellStarfall,
+			Kind:      core.SpellMod_Cooldown_Flat,
+			TimeValue: time.Second * -30,
 		})
 	}
 }
