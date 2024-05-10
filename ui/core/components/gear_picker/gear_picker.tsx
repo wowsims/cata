@@ -13,6 +13,7 @@ import { EquippedItem } from '../../proto_utils/equipped_item';
 import { gemMatchesSocket, getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { difficultyNames, professionNames, REP_FACTION_NAMES, REP_LEVEL_NAMES, shortSecondaryStatNames, slotNames } from '../../proto_utils/names';
 import { Stats } from '../../proto_utils/stats';
+import { getPVPSeasonFromItem, isPVPItem } from '../../proto_utils/utils';
 import { Sim } from '../../sim';
 import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
@@ -1557,9 +1558,10 @@ export class ItemList<T extends ItemListType> {
 		if (!item.sources || item.sources.length == 0) {
 			if (item.randomSuffixOptions.length) {
 				return makeAnchor(`${ActionId.makeItemUrl(item.id)}#dropped-by`, 'World Drop');
-			} else if (item.name.includes('Gladiator')) {
-				const seasonName = item.name.substring(0, item.name.indexOf(' '))
-				const season = PvpSeasonFromName[seasonName]
+			} else if (isPVPItem(item)) {
+				const season = getPVPSeasonFromItem(item);
+				if (!season) return <></>;
+
 				return makeAnchor(
 					ActionId.makeItemUrl(item.id),
 					<span>
@@ -1650,9 +1652,10 @@ export class ItemList<T extends ItemListType> {
 					<span>{REP_LEVEL_NAMES[src.repLevel]}</span>
 				</>,
 			);
-		} else if (item.name.includes('Gladiator')) {
-			const seasonName = item.name.substring(0, item.name.indexOf(' '))
-			const season = PvpSeasonFromName[seasonName]
+		} else if (isPVPItem(item)) {
+			const season = getPVPSeasonFromItem(item);
+			if (!season) return <></>;
+
 			return makeAnchor(
 				ActionId.makeItemUrl(item.id),
 				<span>
@@ -1674,12 +1677,4 @@ export class ItemList<T extends ItemListType> {
 		}
 		return <></>;
 	}
-}
-
-const PvpSeasonFromName: Record<string, string> = {
-	'Wrathful': 'Season 8',
-	'Bloodthirsty': 'Season 8.5',
-	'Vicious': 'Season 9',
-	'Ruthless': 'Season 10',
-	'Cataclysmic': 'Season 11',
 }
