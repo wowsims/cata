@@ -1,3 +1,4 @@
+import { Player } from '../player';
 import { GemColor, ItemRandomSuffix, ItemSpec, ItemType, Profession, ReforgeStat, Stat } from '../proto/common.js';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { distinct } from '../utils.js';
@@ -248,6 +249,10 @@ export class EquippedItem {
 		}
 
 		return numSockets;
+	}
+
+	hasRandomSuffixOptions() {
+		return !!this._item.randomSuffixOptions.length;
 	}
 
 	hasExtraGem(): boolean {
