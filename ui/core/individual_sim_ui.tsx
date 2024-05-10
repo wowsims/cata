@@ -16,6 +16,7 @@ import { TalentsTab } from './components/individual_sim_ui/talents_tab';
 import * as InputHelpers from './components/input_helpers';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
+import { SocialLinks } from './components/social_links';
 import { addStatWeightsAction } from './components/stat_weights_action';
 import * as Tooltips from './constants/tooltips';
 import { getSpecLaunchStatus, LaunchStatus, simLaunchStatuses } from './launched_sims';
@@ -390,7 +391,11 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				<p className="mt-4">
 					This sim is currently unlaunched.
 					<br />
-					We are working hard to get this all sims working!
+					We are working hard to get all sims working. Want to contribute? Make sure to join our{' '}
+					<a href="https://discord.gg/p3DgvmnDCS" target="_blank">
+						Discord
+					</a>
+					!
 				</p>
 			</div>,
 		);
