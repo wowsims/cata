@@ -1307,8 +1307,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 32266.03991
-  tps: 47699.61168
+  dps: 32198.68962
+  tps: 47511.24484
  }
 }
 dps_results: {
@@ -1328,8 +1328,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 21535.81205
-  tps: 32332.73044
+  dps: 21570.89795
+  tps: 32402.00561
  }
 }
 dps_results: {
@@ -1349,8 +1349,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 27952.14246
-  tps: 19875.41231
+  dps: 27930.53871
+  tps: 19860.07365
  }
 }
 dps_results: {
@@ -1370,8 +1370,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-DefaultTalents-ExternalBleed-monocat-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 18312.9346
-  tps: 13033.14525
+  dps: 18312.50521
+  tps: 13032.91517
  }
 }
 dps_results: {
@@ -1433,8 +1433,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-HybridTalents-ExternalBleed-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 31712.74099
-  tps: 48118.38397
+  dps: 31616.30629
+  tps: 47762.63265
  }
 }
 dps_results: {
@@ -1454,8 +1454,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 21017.23676
-  tps: 31903.42382
+  dps: 20962.5343
+  tps: 31646.65522
  }
 }
 dps_results: {
@@ -1475,8 +1475,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-p1-HybridTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 27163.5492
-  tps: 19315.58588
+  dps: 27165.05286
+  tps: 19316.65348
  }
 }
 dps_results: {
@@ -1559,8 +1559,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-DefaultTalents-ExternalBleed-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 27048.07782
-  tps: 39841.06464
+  dps: 27046.52555
+  tps: 39840.40746
  }
 }
 dps_results: {
@@ -1580,8 +1580,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-DefaultTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 17738.58943
-  tps: 27116.41386
+  dps: 17765.53738
+  tps: 26999.55206
  }
 }
 dps_results: {
@@ -1601,8 +1601,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-DefaultTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 23047.42726
-  tps: 16393.21409
+  dps: 23075.25495
+  tps: 16412.97175
  }
 }
 dps_results: {
@@ -1622,8 +1622,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-DefaultTalents-ExternalBleed-monocat-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 14906.98238
-  tps: 10614.7696
+  dps: 14914.65132
+  tps: 10620.13976
  }
 }
 dps_results: {
@@ -1685,8 +1685,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-HybridTalents-ExternalBleed-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 26305.25698
-  tps: 39687.66412
+  dps: 26299.42377
+  tps: 39598.55218
  }
 }
 dps_results: {
@@ -1706,8 +1706,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-HybridTalents-ExternalBleed-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 17135.18688
-  tps: 26541.55286
+  dps: 17149.44175
+  tps: 26669.7308
  }
 }
 dps_results: {
@@ -1727,8 +1727,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-HybridTalents-ExternalBleed-monocat-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 22484.90223
-  tps: 15993.67174
+  dps: 22506.75029
+  tps: 16009.18387
  }
 }
 dps_results: {
@@ -1748,8 +1748,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Settings-Tauren-preraid-HybridTalents-ExternalBleed-monocat-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 14414.47718
-  tps: 10265.01612
+  dps: 14431.01226
+  tps: 10276.60645
  }
 }
 dps_results: {
