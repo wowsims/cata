@@ -37,7 +37,6 @@ import {
 } from './proto/common';
 import {
 	DungeonDifficulty,
-	Expansion,
 	RaidFilterOption,
 	SourceFilterOption,
 	UIEnchant as Enchant,
@@ -62,6 +61,7 @@ import {
 	getMetaGemEffectEP,
 	getTalentTree,
 	getTalentTreePoints,
+	isPVPItem,
 	newUnitReference,
 	raceToFaction,
 	SpecClasses,
@@ -77,7 +77,6 @@ import { Sim, SimSettingCategories } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
 import { stringComparator, sum } from './utils';
-import { buildWowheadTooltipDataset } from './wowhead';
 
 export interface AuraStats {
 	data: AuraStatsProto;
@@ -1258,7 +1257,7 @@ export class Player<SpecType extends Spec> {
 			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'rep'));
 		}
 		if (!filters.sources.includes(SourceFilterOption.SourcePvp)) {
-			itemData = filterItems(itemData, item => !item.name.includes('Gladiator'));
+			itemData = filterItems(itemData, item => !isPVPItem(item));
 		}
 
 		for (const [srcOptionStr, difficulty] of Object.entries(Player.DIFFICULTY_SRCS)) {

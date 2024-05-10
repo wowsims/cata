@@ -1667,6 +1667,21 @@ export function canEquipItem<SpecType extends Spec>(item: Item, playerSpec: Play
 	return playerClass.armorTypes[0] >= item.armorType;
 }
 
+const pvpSeasonFromName: Record<string, string> = {
+	Wrathful: 'Season 8',
+	Bloodthirsty: 'Season 8.5',
+	Vicious: 'Season 9',
+	Ruthless: 'Season 10',
+	Cataclysmic: 'Season 11',
+};
+
+export const isPVPItem = (item: Item) => item?.name?.includes('Gladiator') || false;
+
+export const getPVPSeasonFromItem = (item: Item) => {
+	const seasonName = item.name.substring(0, item.name.indexOf(' '));
+	return pvpSeasonFromName[seasonName] || undefined;
+};
+
 const itemTypeToSlotsMap: Partial<Record<ItemType, Array<ItemSlot>>> = {
 	[ItemType.ItemTypeUnknown]: [],
 	[ItemType.ItemTypeHead]: [ItemSlot.ItemSlotHead],
