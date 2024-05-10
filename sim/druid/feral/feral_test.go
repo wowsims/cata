@@ -42,10 +42,10 @@ func TestFeral(t *testing.T) {
 		SpecOptions:     core.SpecOptionsCombo{Label: "ExternalBleed", SpecOptions: PlayerOptionsMonoCat},
 		Rotation:        core.GetAplRotation("../../../ui/druid/feral/apls", "default"),
 		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/druid/feral/apls", "monocat"),
 			core.GetAplRotation("../../../ui/druid/feral/apls", "aoe"),
 		},
 		StartingDistance:       25,
-		OtherStartingDistances: []float64{core.MaxMeleeRange},
 		ItemFilter:             FeralItemFilter,
 	}))
 }

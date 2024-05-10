@@ -285,23 +285,22 @@ func (druid *Druid) RegisterBalanceSpells() {
 }
 
 func (druid *Druid) RegisterFeralCatSpells() {
+	druid.registerBearFormSpell()
 	druid.registerBerserkCD()
 	druid.registerCatCharge()
 	druid.registerCatFormSpell()
-
-	// 	druid.registerBearFormSpell()
-	// 	druid.registerEnrageSpell()
+	druid.registerEnrageSpell()
 	druid.registerFerociousBiteSpell()
 	druid.registerLacerateSpell()
-	// 	druid.registerMangleBearSpell()
+	druid.registerMangleBearSpell()
 	druid.registerMangleCatSpell()
-	// 	druid.registerMaulSpell()
+	druid.registerMaulSpell()
 	druid.registerRakeSpell()
 	druid.registerRavageSpell()
 	druid.registerRipSpell()
 	druid.registerSavageRoarSpell()
 	druid.registerShredSpell()
-	// 	druid.registerSwipeBearSpell()
+	druid.registerSwipeBearSpell()
 	druid.registerSwipeCatSpell()
 	druid.registerThrashBearSpell()
 	druid.registerTigersFurySpell()
@@ -328,10 +327,10 @@ func (druid *Druid) RegisterFeralCatSpells() {
 func (druid *Druid) Reset(_ *core.Simulation) {
 
 	druid.eclipseEnergyBar.reset()
-	// druid.BleedsActive = 0
-	// druid.form = druid.StartingForm
-	// druid.disabledMCDs = []*core.MajorCooldown{}
-	// druid.RebirthUsed = false
+	druid.BleedsActive = 0
+	druid.form = druid.StartingForm
+	druid.disabledMCDs = []*core.MajorCooldown{}
+	druid.RebirthUsed = false
 	// druid.LunarICD.Timer.Reset()
 	// druid.SolarICD.Timer.Reset()
 }
