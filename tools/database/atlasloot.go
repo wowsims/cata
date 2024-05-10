@@ -26,9 +26,6 @@ func ReadAtlasLootData() *WowDatabase {
 	readAtlasLootDungeonData(db, proto.Expansion_ExpansionWotlk, "https://raw.githubusercontent.com/Hoizame/AtlasLootClassic/master/AtlasLootClassic_DungeonsAndRaids/data-wrath.lua")
 
 	// Cata addon
-	// Data/source-cata.lua is missing from the new addon so we can't get profession data atm :(
-	//readAtlasLootSourceData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/master/AtlasLootClassic_Data/source-cata.lua")
-
 	readAtlasLootDungeonData(db, proto.Expansion_ExpansionCata, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/master/AtlasLootClassic_DungeonsAndRaids/data-cata.lua")
 	readAtlasLootFactionData(db, "https://raw.githubusercontent.com/snowflame0/AtlasLootClassic_Cata/master/AtlasLootClassic_Factions/data-cata.lua")
 
@@ -209,6 +206,10 @@ func readAtlasLootFactionData(db *WowDatabase, srcUrl string) {
 		}
 
 		factionID, _ := strconv.Atoi(factionMatch[2])
+		// db.MergeZone(&proto.UIZone{
+		// 	Id:        int32(factionID),
+		// 	Expansion: expansion,
+		// })
 		contentType := factionMatch[3]
 		faction, ok := AtlasLootFactions[contentType]
 		if !ok {
@@ -257,6 +258,60 @@ func readAtlasLootFactionData(db *WowDatabase, srcUrl string) {
 	}
 }
 
+// func readAtlasLootCraftingData(db *WowDatabase, srcUrl string) {
+// 	srcTxt, err := tools.ReadWeb(srcUrl)
+// 	if err != nil {
+// 		log.Fatalf("Error reading atlasloot file %s", err)
+// 	}
+
+// 	// Convert newline to '@@@' so we can do regexes on the whole file as 1 line.
+// 	srcTxt = strings.ReplaceAll(srcTxt, "\n", "@@@")
+
+// 	craftingPattern := regexp.MustCompile(`data\["([^"]+)"] = {.*?\name = ALIL["(\d+)"],.*?ContentType = ([^,]+),.*?items = {(.*?)@@@}`)
+// 	diffItemsPattern := regexp.MustCompile(`\[([A-Z0-9]+_DIFF)\] = (({.*?@@@\s*},?@@@)|(.*?@@@\s*\),?@@@))`)
+// 	itemsPattern := regexp.MustCompile(`@@@\s+{(.*?)},`)
+// 	for _, craftingMatch := range craftingPattern.FindAllStringSubmatch(srcTxt, -1) {
+// 		fmt.Printf("Profession: %s\n", craftingMatch[1])
+
+// 		profession, ok := AtlasLootProfessionNames[craftingMatch[1]]
+// 		if !ok {
+// 			log.Fatalf("Invalid Profession for %s", craftingMatch[1])
+// 		}
+
+// 		npcSplits := strings.Split(craftingMatch[4], "name = ")[1:]
+// 		for _, levelSplit := range npcSplits {
+// 			for _, difficultyMatch := range diffItemsPattern.FindAllStringSubmatch(levelSplit, -1) {
+// 				for _, itemMatch := range itemsPattern.FindAllStringSubmatch(difficultyMatch[0], -1) {
+// 					itemParams := core.MapSlice(strings.Split(itemMatch[1], ","), strings.TrimSpace)
+
+// 					idStr := itemParams[1]
+// 					if idStr[0] == 'n' || idStr[0] == '"' { // nil or "xxx"
+// 					} else { // craft ID
+// 						craftID, _ := strconv.Atoi(idStr)
+// 						fmt.Printf("CraftID: %d\n", craftID)
+// 						craftedSource := &proto.CraftedSource{
+// 							Profession: profession,
+// 							SpellId: int32(craftID),
+// 						}
+
+// 						itemID := int32(0)
+
+// 						// Dont add new items from craft ids
+// 						if _, ok := db.Items[itemID]; ok {
+// 							item := &proto.UIItem{Id: int32(itemID), Sources: []*proto.UIItemSource{{
+// 								Source: &proto.UIItemSource_Crafted{
+// 									Crafted: craftedSource,
+// 								},
+// 							}}}
+// 							db.MergeItem(item)
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+
 func readZoneData(db *WowDatabase) {
 	zoneIDs := make([]int32, 0, len(db.Zones))
 	for zoneID := range db.Zones {
@@ -295,20 +350,6 @@ var AtlasLootProfessionIDs = map[int]proto.Profession{
 	13: proto.Profession_Enchanting,
 	17: proto.Profession_Jewelcrafting,
 	18: proto.Profession_Inscription,
-}
-
-var AtlasLootProfessionNames = map[string]proto.Profession{
-	//"FirstAid": proto.Profession_FirstAid,
-	//"Cooking":        proto.Profession_Cooking,
-	"Blacksmithing":  proto.Profession_Blacksmithing,
-	"Leatherworking": proto.Profession_Leatherworking,
-	"Alchemy":        proto.Profession_Alchemy,
-	"Mining":         proto.Profession_Mining,
-	"Tailoring":      proto.Profession_Tailoring,
-	"Engineering":    proto.Profession_Engineering,
-	"Enchanting":     proto.Profession_Enchanting,
-	"Jewelcrafting":  proto.Profession_Jewelcrafting,
-	"Inscription":    proto.Profession_Inscription,
 }
 var AtlasLootFactions = map[string]proto.Faction{
 	"FACTIONS_CONTENT":       proto.Faction_Unknown,
