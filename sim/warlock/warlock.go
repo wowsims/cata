@@ -30,6 +30,7 @@ type Warlock struct {
 	BaneOfDoom           *core.Spell
 	Seed                 *core.Spell
 	SeedDamageTracker    []float64
+	FelFlame             *core.Spell
 
 	ShadowEmbraceAuras core.AuraArray
 	Metamorphosis      *core.Spell
@@ -94,6 +95,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerDemonSoulSpell()
 	warlock.registerShadowflame()
 	warlock.registerSoulburnSpell()
+	warlock.registerFelFlameSpell()
 
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
@@ -211,19 +213,23 @@ const (
 	WarlockSpellShadowflame
 	WarlockSpellShadowflameDot
 	WarlockSpellSoulBurn
+	WarlockSpellFelFlame
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
 		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony |
-		WarlockSpellShadowBolt | WarlockSpellSeedOfCorruptionExposion | WarlockSpellHandOfGuldan | WarlockSpellShadowflame
+		WarlockSpellShadowBolt | WarlockSpellSeedOfCorruptionExposion | WarlockSpellHandOfGuldan |
+		WarlockSpellShadowflame | WarlockSpellFelFlame
 
 	WarlockPeriodicShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
 		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony
 
 	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire |
-		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot | WarlockSpellShadowflameDot
+		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot |
+		WarlockSpellShadowflameDot | WarlockSpellFelFlame
 
 	WarlockDoT = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
-		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot | WarlockSpellShadowflameDot
+		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot |
+		WarlockSpellShadowflameDot
 
 	WarlockBasicPetSpells = WarlockSpellFelGuardLegionStrike | WarlockSpellSuccubusLashOfPain |
 		WarlockSpellSuccubusLashOfPain | WarlockSpellFelHunterShadowBite
