@@ -105,6 +105,9 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 				Timer:    warlock.NewTimer(),
 				Duration: time.Minute * 2,
 			},
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

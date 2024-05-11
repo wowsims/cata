@@ -11,7 +11,7 @@ import { ActionId } from '../../proto_utils/action_id';
 import { getEnchantDescription, getUniqueEnchantString } from '../../proto_utils/enchants';
 import { EquippedItem } from '../../proto_utils/equipped_item';
 import { gemMatchesSocket, getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
-import { difficultyNames, professionNames, REP_FACTION_NAMES, REP_LEVEL_NAMES, shortSecondaryStatNames, slotNames } from '../../proto_utils/names';
+import { difficultyNames, professionNames, REP_FACTION_NAMES, REP_FACTION_QUARTERMASTERS, REP_LEVEL_NAMES, shortSecondaryStatNames, slotNames } from '../../proto_utils/names';
 import { Stats } from '../../proto_utils/stats';
 import { getPVPSeasonFromItem, isPVPItem } from '../../proto_utils/utils';
 import { Sim } from '../../sim';
@@ -1637,8 +1637,9 @@ export class ItemList<T extends ItemListType> {
 					source.source.oneofKind == 'rep' ? REP_FACTION_NAMES[source.source.rep.repFactionId] : REP_FACTION_NAMES[RepFaction.RepFactionUnknown],
 				);
 			const src = source.source.rep;
+			const npcId = REP_FACTION_QUARTERMASTERS[src.repFactionId]
 			return makeAnchor(
-				ActionId.makeItemUrl(item.id),
+				ActionId.makeNpcUrl(npcId),
 				<>
 					{factionNames.map(name => (
 						<span>
