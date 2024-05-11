@@ -11,8 +11,9 @@ import { ActionId } from '../../proto_utils/action_id';
 import { getEnchantDescription, getUniqueEnchantString } from '../../proto_utils/enchants';
 import { EquippedItem } from '../../proto_utils/equipped_item';
 import { gemMatchesSocket, getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
-import { difficultyNames, professionNames, REP_FACTION_NAMES, REP_LEVEL_NAMES, shortSecondaryStatNames, slotNames } from '../../proto_utils/names';
+import { difficultyNames, professionNames, REP_FACTION_NAMES, REP_FACTION_QUARTERMASTERS, REP_LEVEL_NAMES, shortSecondaryStatNames, slotNames } from '../../proto_utils/names';
 import { Stats } from '../../proto_utils/stats';
+import { getPVPSeasonFromItem, isPVPItem } from '../../proto_utils/utils';
 import { Sim } from '../../sim';
 import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
@@ -620,7 +621,7 @@ export class SelectorModal extends BaseModal {
 		});
 
 		this.addRandomSuffixTab(equippedItem, gearData);
-		this.addReforgingTab(gearData.getEquippedItem(), gearData);
+		this.addReforgingTab(equippedItem, gearData);
 		this.addGemTabs(selectedSlot, equippedItem, gearData);
 
 		this.ilists.find(list => selectedTab === list.label)?.sizeRefresh();
@@ -795,8 +796,7 @@ export class SelectorModal extends BaseModal {
 					ignoreEPFilter: true,
 					onEquip: (eventID, randomSuffix) => {
 						const equippedItem = gearData.getEquippedItem();
-
-						if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(randomSuffix));
+						if (equippedItem) gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item).withRandomSuffix(randomSuffix));
 					},
 				};
 			}),
@@ -810,7 +810,7 @@ export class SelectorModal extends BaseModal {
 	}
 
 	private addReforgingTab(equippedItem: EquippedItem | null, gearData: GearData) {
-		if (!equippedItem) {
+		if (!equippedItem || (equippedItem.hasRandomSuffixOptions() && !equippedItem.randomSuffix)) {
 			return;
 		}
 		if (equippedItem.randomSuffix !== null) {
@@ -934,16 +934,20 @@ export class SelectorModal extends BaseModal {
 				const item = itemData;
 				itemData.onEquip(TypedEvent.nextEventID(), item.item);
 
+				const isItemChange = Item.is(item.item);
+				const isRandomSuffixChange = !!item.actionId.randomSuffixId;
 				// If the item changes, then gem slots and random suffix options will also change, so remove and recreate these tabs.
-				if (Item.is(item.item)) {
-					this.removeTabs(SelectorModalTabs.RandomSuffixes);
-					this.addRandomSuffixTab(gearData.getEquippedItem(), gearData);
-
-					this.removeTabs('Gem');
-					this.addGemTabs(this.currentSlot, gearData.getEquippedItem(), gearData);
+				if (isItemChange || isRandomSuffixChange) {
+					if (!isRandomSuffixChange) {
+						this.removeTabs(SelectorModalTabs.RandomSuffixes);
+						this.addRandomSuffixTab(gearData.getEquippedItem(), gearData);
+					}
 
 					this.removeTabs(SelectorModalTabs.Reforging);
 					this.addReforgingTab(gearData.getEquippedItem(), gearData);
+
+					this.removeTabs('Gem');
+					this.addGemTabs(this.currentSlot, gearData.getEquippedItem(), gearData);
 				}
 			},
 		);
@@ -1557,8 +1561,19 @@ export class ItemList<T extends ItemListType> {
 		if (!item.sources || item.sources.length == 0) {
 			if (item.randomSuffixOptions.length) {
 				return makeAnchor(`${ActionId.makeItemUrl(item.id)}#dropped-by`, 'World Drop');
-			}
+			} else if (isPVPItem(item)) {
+				const season = getPVPSeasonFromItem(item);
+				if (!season) return <></>;
 
+				return makeAnchor(
+					ActionId.makeItemUrl(item.id),
+					<span>
+						{season}
+						<br />
+						PVP
+					</span>,
+				);
+			}
 			return <></>;
 		}
 
@@ -1622,8 +1637,9 @@ export class ItemList<T extends ItemListType> {
 					source.source.oneofKind == 'rep' ? REP_FACTION_NAMES[source.source.rep.repFactionId] : REP_FACTION_NAMES[RepFaction.RepFactionUnknown],
 				);
 			const src = source.source.rep;
+			const npcId = REP_FACTION_QUARTERMASTERS[src.repFactionId]
 			return makeAnchor(
-				ActionId.makeItemUrl(item.id),
+				ActionId.makeNpcUrl(npcId),
 				<>
 					{factionNames.map(name => (
 						<span>
@@ -1639,6 +1655,18 @@ export class ItemList<T extends ItemListType> {
 					))}
 					<span>{REP_LEVEL_NAMES[src.repLevel]}</span>
 				</>,
+			);
+		} else if (isPVPItem(item)) {
+			const season = getPVPSeasonFromItem(item);
+			if (!season) return <></>;
+
+			return makeAnchor(
+				ActionId.makeItemUrl(item.id),
+				<span>
+					{season}
+					<br />
+					PVP
+				</span>,
 			);
 		} else if (source.source.oneofKind == 'soldBy') {
 			const src = source.source.soldBy;

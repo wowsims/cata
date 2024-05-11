@@ -30,6 +30,8 @@ export interface ListPickerConfig<ModObject, ItemType> extends InputConfig<ModOb
 	inlineMenuBar?: boolean;
 	hideUi?: boolean;
 	horizontalLayout?: boolean;
+	// if set, will remove the border and padding of the list items
+	isCompact?: boolean;
 	// If set, will disable the delete button if the list is at the minimum.
 	minimumItems?: number;
 	// If set, only actions included in the list are allowed. Otherwise, all actions are allowed.
@@ -66,6 +68,9 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 	private itemPickerPairs: Array<ItemPickerPair<ItemType>>;
 
 	constructor(parent: HTMLElement, modObject: ModObject, config: ListPickerConfig<ModObject, ItemType>) {
+
+		if (config.isCompact) config.extraCssClasses = [...(config.extraCssClasses || []), 'list-picker-compact'];
+
 		super(parent, 'list-picker-root', modObject, config);
 		this.config = { ...DEFAULT_CONFIG, ...config };
 		this.itemPickerPairs = [];
@@ -159,7 +164,6 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 
 		const itemHeader = document.createElement('div');
 		itemHeader.classList.add('list-picker-item-header');
-		const itemHTML = '<div class="list-picker-item"></div>';
 
 		if (this.config.inlineMenuBar) {
 			itemContainer.appendChild(itemElem);
@@ -177,7 +181,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 
 		const itemPicker = this.config.newItemPicker(itemElem, this, index, {
 			changedEvent: this.config.changedEvent,
-			getValue: (modObj: ModObject) => this.getSourceValue()[index],
+			getValue: () => this.getSourceValue()[index],
 			setValue: (eventID: EventID, modObj: ModObject, newValue: ItemType) => {
 				const newList = this.getSourceValue();
 				newList[index] = newValue;

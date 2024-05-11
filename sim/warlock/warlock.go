@@ -30,6 +30,7 @@ type Warlock struct {
 	BaneOfDoom           *core.Spell
 	Seed                 *core.Spell
 	SeedDamageTracker    []float64
+	FelFlame             *core.Spell
 
 	ShadowEmbraceAuras core.AuraArray
 	Metamorphosis      *core.Spell
@@ -94,6 +95,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerDemonSoulSpell()
 	warlock.registerShadowflame()
 	warlock.registerSoulburnSpell()
+	warlock.registerFelFlameSpell()
 
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
@@ -211,19 +213,26 @@ const (
 	WarlockSpellShadowflame
 	WarlockSpellShadowflameDot
 	WarlockSpellSoulBurn
+	WarlockSpellFelFlame
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
 		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony |
-		WarlockSpellShadowBolt | WarlockSpellSeedOfCorruptionExposion | WarlockSpellHandOfGuldan | WarlockSpellShadowflame
+		WarlockSpellShadowBolt | WarlockSpellSeedOfCorruptionExposion | WarlockSpellHandOfGuldan |
+		WarlockSpellShadowflame | WarlockSpellFelFlame
 
 	WarlockPeriodicShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
 		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony
 
 	WarlockFireDamage = WarlockSpellConflagrate | WarlockSpellImmolate | WarlockSpellIncinerate | WarlockSpellSoulFire |
-		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot | WarlockSpellShadowflameDot
+		WarlockSpellImmolationAura | WarlockSpellHandOfGuldan | WarlockSpellSearingPain | WarlockSpellImmolateDot |
+		WarlockSpellShadowflameDot | WarlockSpellFelFlame
 
 	WarlockDoT = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
-		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot | WarlockSpellShadowflameDot
+		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot |
+		WarlockSpellShadowflameDot
+
+	WarlockBasicPetSpells = WarlockSpellFelGuardLegionStrike | WarlockSpellSuccubusLashOfPain |
+		WarlockSpellSuccubusLashOfPain | WarlockSpellFelHunterShadowBite
 )
 
 const (
@@ -235,7 +244,7 @@ const Coefficient_UnstableAffliction float64 = 0.231
 const Coefficient_BaneOfAgony float64 = 0.133
 const Coefficient_BaneOfDoom float64 = 2.024
 const Coefficient_Immolate float64 = 0.692
-const Coefficient_ImmolateDot float64 = 0.439
+const Coefficient_ImmolateDot float64 = 0.43900001049
 const Coefficient_SeedExplosion float64 = 2.113
 const Coefficient_SeedDot float64 = 0.3024
 const Coefficient_BurningEmbers_1 float64 = 0.0734

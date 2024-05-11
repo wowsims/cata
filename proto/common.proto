@@ -96,6 +96,7 @@ enum Profession {
 	Mining = 9;
 	Skinning = 10;
 	Tailoring = 11;
+	Archeology = 12;
 }
 
 // Keep in sync with sim/core/stats/stats.go.
@@ -312,12 +313,12 @@ enum Potions {
 	MightyRagePotion = 11;
 	RunicManaInjector = 12;
 	RunicHealingInjector = 13;
+	FlameCap = 14;
 }
 
 enum Conjured {
 	ConjuredUnknown = 0;
 	ConjuredDarkRune = 1;
-	ConjuredFlameCap = 2;
 	ConjuredHealthstone = 5;
 	ConjuredRogueThistleTea = 4;
 }
@@ -599,9 +600,9 @@ message Consumes {
 	Potions prepop_potion = 11;
 	Conjured default_conjured = 12;
 
-	bool thermal_sapper = 15;
-	bool explosive_decoy = 16;
-	Explosive filler_explosive = 17;
+	bool explosive_big_daddy = 15;
+	bool highpowered_bolt_gun = 16;
+	reserved 17; // deprecated old explosive
 
 	TinkerHands tinker_hands = 18;
 }

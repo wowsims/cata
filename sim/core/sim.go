@@ -454,8 +454,12 @@ func (sim *Simulation) Cleanup() {
 	// The last event loop will leave CurrentTime at some value close to but not
 	// quite at the Duration. Explicitly set this so that accesses to CurrentTime
 	// during the doneIteration phase will return the Duration value, which is
-	// intuitive.
-	sim.CurrentTime = sim.Duration
+	// intuitive. When using Health sims use the actual end time
+	if sim.Encounter.EndFightAtHealth == 0 {
+		sim.CurrentTime = sim.Duration
+	} else {
+		sim.Duration = sim.CurrentTime
+	}
 
 	for _, pa := range sim.pendingActions {
 		if pa.CleanUp != nil {

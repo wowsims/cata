@@ -270,7 +270,7 @@ endif
 
 devmode: air devserver
 ifeq ($(WATCH), 1)
-	npx vite serve &
+	npx vite serve --host &
 	air -tmp_dir "/tmp" -build.include_ext "go,proto" -build.args_bin "--usefs=true --launch=false --wasm=false" -build.bin "./wowsimcata" -build.cmd "make devserver" -build.exclude_dir "assets,dist,node_modules,ui,tools"
 else
 	./wowsimcata --usefs=true --launch=false --host=":3333"

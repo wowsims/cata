@@ -31,6 +31,12 @@
 				}
 			}
 		}
+
+		.tab-panel-right {
+			@include media-breakpoint-down(xxl) {
+				margin-left: 0 !important;
+			}
+		}
 	}
 
 	.content-block {

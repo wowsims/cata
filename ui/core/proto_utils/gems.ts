@@ -1,9 +1,8 @@
-import { GemColor } from '../proto/common.js';
-import { Profession } from '../proto/common.js';
-import { getEnumValues } from '../utils.js';
+import { GemColor , Profession } from '../proto/common.js';
 import {
 	UIGem as Gem,
 } from '../proto/ui.js';
+import { getEnumValues } from '../utils.js';
 
 export const GEM_COLORS = (getEnumValues(GemColor) as Array<GemColor>).filter(color => color != GemColor.GemColorUnknown);
 export const PRIMARY_COLORS = [GemColor.GemColorRed, GemColor.GemColorYellow, GemColor.GemColorBlue];
@@ -150,9 +149,9 @@ export function getMetaGemConditionDescription(metaGem: Gem): string {
 // Keep these lists in order by item ID.
 export const FLEET_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52289, 'Requires at least 2 Yellow Gems.', 0, 2, 0);
 export const CHAOTIC_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52291, 'Requires at least 3 Red Gems.', 3, 0, 0);
-export const BRACING_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52292, 'Requires at least 1 Blue Gem and 1 Yellow Gem.', 0, 1, 1);	
-export const ETERNAL_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52293, 'Requires at least 3 Blue Gems.', 0, 0, 0);
-export const AUSTERE_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52294, 'Requries at least 2 Yellow Gems.', 0, 2, 0);	
+export const BRACING_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52292, 'Requires at least 1 Blue Gem and 1 Yellow Gem.', 0, 1, 1);
+export const ETERNAL_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52293, 'Requires at least 3 Blue Gems.', 0, 0, 3);
+export const AUSTERE_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52294, 'Requries at least 2 Yellow Gems.', 0, 2, 0);
 export const EFFULGENT_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52295, 'Requires at least 1 Red Gem and 1 Yellow Gem.', 1, 1, 0);
 export const EMBER_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52296, 'Requires at least 2 Yellow Gems.', 0, 2, 0);
 export const REVITALIzING_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52297, 'Requires at least 1 Blue Gem and 1 Yellow Gem.', 0, 1, 1);
@@ -160,7 +159,7 @@ export const DESTRUCTIVE_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(5
 export const POWERFUL_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52299, 'Requires at least 2 Blue Gems.', 0, 0, 2);
 export const ENIGMATIC_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52300, 'Requires at least 1 Blue Gem and 1 Yellow Gem.', 0, 1, 1);
 export const IMPASSIVE_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52301, 'Requires at least 1 Blue Gem and 1 Yellow Gem.', 0, 1, 1);
-export const FORLORN_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52302, 'Requires at least 1 Blue Gem and 1 Yellwo Gem.', 0, 1, 1);	
+export const FORLORN_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(52302, 'Requires at least 1 Blue Gem and 1 Yellwo Gem.', 0, 1, 1);
 export const AGILE_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(68778, 'Requires at least 3 Red Gems.', 3, 0, 0);
 export const REVERBERATING_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(68779, 'Requires at least 3 Red Gems.', 3, 0, 0);
 export const BURNING_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(68780, 'Requires at least 3 Red Gems.', 3, 0, 0);

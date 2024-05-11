@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -39,6 +40,9 @@ func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
 			stats.SpellHit:  ownerStats[stats.SpellHit],
 			stats.MeleeHit:  ownerStats[stats.SpellHit],
 			stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * petExpertiseScale,
+
+			// for master demonologist
+			stats.Mastery: ownerStats[stats.Mastery],
 		}
 	}
 }
@@ -133,7 +137,24 @@ func (pet *WarlockPet) GetPet() *core.Pet {
 
 func (pet *WarlockPet) Reset(_ *core.Simulation) {}
 
-func (pet *WarlockPet) Initialize() {}
+func (pet *WarlockPet) Initialize() {
+	if pet.Owner.Spec == proto.Spec_SpecDemonologyWarlock {
+		masteryBonus := func(mastery float64) float64 {
+			return 1 + math.Floor(2.3*core.MasteryRatingToMasteryPoints(mastery))/100.0
+		}
+
+		pet.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
+			pet.PseudoStats.DamageDealtMultiplier /= masteryBonus(oldMastery)
+			pet.PseudoStats.DamageDealtMultiplier *= masteryBonus(newMastery)
+		})
+
+		// unfortunately mastery is only the *bonus* mastery and not the base value, so we add
+		// this manually here such that AddOnMasteryStatChanged() can calculate the correct values
+		// while still having 0 mastery = 0% dmg at the start
+		pet.AddStats(stats.Stats{stats.Mastery: 8 * core.MasteryRatingPerMasteryPoint})
+		pet.PseudoStats.DamageDealtMultiplier *= masteryBonus(8 * core.MasteryRatingPerMasteryPoint)
+	}
+}
 
 func (pet *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
 	waitUntil := time.Duration(1<<63 - 1)
@@ -316,9 +337,7 @@ func (pet *WarlockPet) registerFireboltSpell() {
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellImpFireBolt,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.02,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.02},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -331,8 +350,11 @@ func (pet *WarlockPet) registerFireboltSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// The .5 seems to be based on the spellpower of the owner. So dividing this by .15 ratio of imp to owner spell power.
-			baseDamage := 124 + (0.657 * (0.5 / .15 * spell.SpellPower()))
+			// seems to function similar to shadowbite, i.e. variance that only applies to the "base" damage, a
+			// secondary "base" value of 182.5 (probably not entirely correct) and SP scaling via a secondary effect
+			baseDamage := 182.5 + pet.Owner.CalcAndRollDamageRange(sim, 0.1230000034, 0.1099999994)
+			baseDamage += 1.228 * spell.SpellPower()
+
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}))

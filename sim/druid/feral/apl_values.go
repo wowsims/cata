@@ -114,12 +114,13 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 		BiteTime:           config.BiteTime,
 		BiteDuringExecute:  config.BiteDuringExecute,
 		MangleSpam:         false,
-		Powerbear:          false,
 		MinRoarOffset:      config.MinRoarOffset,
 		RipLeeway:          config.RipLeeway,
 		ManualParams:       config.ManualParams,
 		AllowAoeBerserk:    config.AllowAoeBerserk,
 		MeleeWeave:         config.MeleeWeave,
+		BearWeave:          config.BearWeave,
+		SnekWeave:          config.SnekWeave,
 	}
 
 	cat.setupRotation(rotationOptions)
