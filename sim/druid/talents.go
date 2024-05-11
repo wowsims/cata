@@ -222,6 +222,7 @@ func (druid *Druid) applyEuphoria() {
 		ActionID: core.ActionID{SpellID: euphoriaSpellId},
 		Duration: core.NeverExpires,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+
 			aura.Deactivate(sim)
 		},
 	})
@@ -287,6 +288,7 @@ func (druid *Druid) applyShootingStars() {
 		Callback:       core.CallbackOnPeriodicDamageDealt,
 		Outcome:        core.OutcomeLanded,
 		ProcChance:     0.02 * float64(druid.Talents.ShootingStars),
+		ICD:            time.Second * 6,
 		ClassSpellMask: DruidSpellInsectSwarm | DruidSpellMoonfireDoT,
 		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 			ssAura.Activate(sim)
