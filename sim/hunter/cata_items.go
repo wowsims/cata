@@ -41,7 +41,7 @@ func (hunter *Hunter) addBloodthirstyGloves() {
 	switch hunter.Hands().ID {
 	case 64709: //Todo: Add more ids here when needed
 		hunter.AddStaticMod(core.SpellModConfig{
-			ClassMask: HunterSpellExplosiveTrap,
+			ClassMask: HunterSpellExplosiveTrap | HunterSpellBlackArrow,
 			Kind:      core.SpellMod_Cooldown_Flat,
 			TimeValue: -time.Second * 2,
 		})
