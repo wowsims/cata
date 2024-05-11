@@ -12,6 +12,7 @@ import { SimUI } from '../sim_ui.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { BaseModal } from './base_modal.js';
 import { Component } from './component.js';
+import { TextDropdownPicker, TextDropdownValueConfig } from './dropdown_picker';
 import { Input } from './input.js';
 
 export interface EncounterPickerConfig {
@@ -510,6 +511,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 
 	private boolPicker: Input<null, boolean> | null;
 	private numberPicker: Input<null, number> | null;
+	private enumPicker: TextDropdownPicker<null, number> | null;
 
 	private getTargetInput(): TargetInput {
 		return this.encounter.targets[this.targetIndex].targetInputs[this.targetInputIndex] || TargetInput.create();
@@ -529,6 +531,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 
 		this.boolPicker = null;
 		this.numberPicker = null;
+		this.enumPicker = null;
 		this.init();
 	}
 
@@ -539,6 +542,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 		return TargetInput.create({
 			boolValue: this.boolPicker ? this.boolPicker.getInputValue() : undefined,
 			numberValue: this.numberPicker ? this.numberPicker.getInputValue() : undefined,
+			enumValue: this.enumPicker ? this.enumPicker.getInputValue() : undefined,
 		});
 	}
 	setInputValue(newValue: TargetInput) {
@@ -549,6 +553,10 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 			if (this.boolPicker) {
 				this.boolPicker.rootElem.remove();
 				this.boolPicker = null;
+			}
+			if (this.enumPicker) {
+				this.enumPicker.rootElem.remove();
+				this.enumPicker = null;
 			}
 			this.numberPicker = new NumberPicker(this.rootElem, null, {
 				label: newValue.label,
@@ -565,6 +573,10 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 				this.numberPicker.rootElem.remove();
 				this.numberPicker = null;
 			}
+			if (this.enumPicker) {
+				this.enumPicker.rootElem.remove();
+				this.enumPicker = null;
+			}
 			this.boolPicker = new BooleanPicker(this.rootElem, null, {
 				label: newValue.label,
 				labelTooltip: newValue.tooltip,
@@ -572,6 +584,31 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 				getValue: () => this.getTargetInput().boolValue,
 				setValue: (eventID: EventID, _: null, newValue: boolean) => {
 					this.getTargetInput().boolValue = newValue;
+					this.encounter.targetsChangeEmitter.emit(eventID);
+				},
+			});
+		} else if (newValue.inputType == InputType.Enum) {
+			if (this.boolPicker) {
+				this.boolPicker.rootElem.remove();
+				this.boolPicker = null;
+			}
+			if (this.numberPicker) {
+				this.numberPicker.rootElem.remove();
+				this.numberPicker = null;
+			}
+			if (this.enumPicker) {
+				this.enumPicker.rootElem.remove();
+				this.enumPicker = null;
+			}
+			this.enumPicker = new TextDropdownPicker(this.rootElem, null, {
+				label: newValue.label,
+				defaultLabel: 'None',
+				equals: (a, b) => a == b,
+				values: newValue.enumOptions.map<TextDropdownValueConfig<number>>((option, index) => { return {value: index, label: option}} ),
+				changedEvent: () => this.encounter.targetsChangeEmitter,
+				getValue: () => this.getTargetInput().enumValue,
+				setValue: (eventID: EventID, _: null, newValue: number) => {
+					this.getTargetInput().enumValue = newValue;
 					this.encounter.targetsChangeEmitter.emit(eventID);
 				},
 			});
@@ -685,7 +722,8 @@ function makeTargetInputsPicker(parent: HTMLElement, encounter: Encounter, targe
 			index: number,
 			config: ListItemPickerConfig<Encounter, TargetInput>,
 		) => new TargetInputPicker(parent, encounter, targetIndex, index, config),
-		hideUi: true,
+		allowedActions: [],
+		inline: true,
 	});
 }
 
