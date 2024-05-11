@@ -58,9 +58,6 @@ func (moonkin *BalanceDruid) GetDruid() *druid.Druid {
 func (moonkin *BalanceDruid) Initialize() {
 	moonkin.Druid.Initialize()
 
-	moonkin.EnableEclipseBar()
-	moonkin.RegisterEclipseAuras()
-
 	moonkin.RegisterBalanceSpells()
 
 	// if moonkin.OwlkinFrenzyAura != nil && moonkin.Options.OkfUptime > 0 {
@@ -71,9 +68,11 @@ func (moonkin *BalanceDruid) Initialize() {
 }
 
 func (moonkin *BalanceDruid) ApplyTalents() {
-	moonkin.Druid.ApplyTalents()
 
-	// Moonfury
+	moonkin.EnableEclipseBar()
+	moonkin.RegisterEclipseAuras()
+
+	// Moonfury passive
 	moonkin.RegisterAura(
 		core.Aura{
 			Label:    "Moonfury",
@@ -99,6 +98,9 @@ func (moonkin *BalanceDruid) ApplyTalents() {
 		Kind:       core.SpellMod_DamageDone_Pct,
 		FloatValue: 0.1,
 	})
+
+	// Apply druid talents
+	moonkin.Druid.ApplyTalents()
 }
 
 func (moonkin *BalanceDruid) Reset(sim *core.Simulation) {

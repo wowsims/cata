@@ -199,17 +199,42 @@ func (druid *Druid) applyEuphoria() {
 		return
 	}
 
+	euphoriaSpellId := []int32{0, 81061, 81062}[druid.Talents.Euphoria]
+	euphoriaProcChancePct := []float64{0, 0.12, 0.24}[druid.Talents.Euphoria]
+	euphoriaManaGainPct := []float64{0, 0.08, 0.16}[druid.Talents.Euphoria]
+
+	// Mana return
 	manaMetrics := druid.NewManaMetrics(core.ActionID{
-		SpellID: []int32{0, 81061, 81062}[druid.Talents.Euphoria],
+		SpellID: euphoriaSpellId,
 	})
 
 	if druid.HasEclipseBar() {
 		druid.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
 			if gained {
-				druid.AddMana(sim, druid.MaxMana()*0.08*float64(druid.Talents.Euphoria), manaMetrics)
+				druid.AddMana(sim, druid.MaxMana()*euphoriaManaGainPct, manaMetrics)
 			}
 		})
 	}
+
+	// Double eclipse energy
+	euphoriaDummyAura := druid.GetOrRegisterAura(core.Aura{
+		Label:    "Euphoria Dummy Aura",
+		ActionID: core.ActionID{SpellID: euphoriaSpellId},
+		Duration: core.NeverExpires,
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			aura.Deactivate(sim)
+		},
+	})
+
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:           "Euphoria",
+		Callback:       core.CallbackOnApplyEffects,
+		ProcChance:     euphoriaProcChancePct,
+		ClassSpellMask: DruidSpellWrath | DruidSpellStarfire,
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			euphoriaDummyAura.Activate(sim)
+		},
+	})
 }
 
 func (druid *Druid) applyMoonkinForm() {
