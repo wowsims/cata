@@ -8,6 +8,7 @@ import (
 
 func (warlock *Warlock) registerShadowBoltSpell() {
 	shadowAndFlameProcChance := []float64{0.0, 0.33, 0.66, 1.0}[warlock.Talents.ShadowAndFlame]
+	shadowAndFlameAuras := warlock.NewEnemyAuraArray(core.ShadowAndFlameAura)
 
 	warlock.ShadowBolt = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 686},
@@ -39,7 +40,7 @@ func (warlock *Warlock) registerShadowBoltSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 				if result.Landed() && sim.Proc(shadowAndFlameProcChance, "S&F Proc") {
-					core.ShadowAndFlameAura(target).Activate(sim)
+					shadowAndFlameAuras.Get(result.Target).Activate(sim)
 				}
 			})
 		},
