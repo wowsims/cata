@@ -8,18 +8,20 @@ import (
 
 func (druid *Druid) registerHurricaneSpell() {
 	druid.HurricaneTickSpell = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 48466},
-		SpellSchool:    core.SpellSchoolNature,
-		ProcMask:       core.ProcMaskProc,
-		Flags:          SpellFlagOmenTrigger,
-		CritMultiplier: 1,
-		DamageMultiplier: 1 +
-			0.15*float64(druid.Talents.GaleWinds) +
-			0.01*float64(druid.Talents.Genesis),
+		ActionID:    core.ActionID{SpellID: 42231},
+		SpellSchool: core.SpellSchoolNature,
+		ProcMask:    core.ProcMaskProc,
+		Flags:       SpellFlagOmenTrigger,
+
+		CritMultiplier:   druid.BalanceCritMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.095,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := 451 + 0.129*spell.SpellPower()
+			damage := 0.327 * druid.ClassSpellScaling
 			damage *= sim.Encounter.AOECapMultiplier()
+
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 			}
@@ -27,10 +29,12 @@ func (druid *Druid) registerHurricaneSpell() {
 	})
 
 	druid.Hurricane = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48467},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagChanneled | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 16914},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
+		ClassSpellMask: DruidSpellHurricane,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.81,
 			Multiplier: 1,
