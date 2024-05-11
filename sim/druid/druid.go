@@ -117,7 +117,6 @@ type Druid struct {
 	ProcOoc func(sim *core.Simulation)
 
 	ExtendingMoonfireStacks int
-	MushroomsPlaced         int
 
 	Treant1 *TreantPet
 	Treant2 *TreantPet

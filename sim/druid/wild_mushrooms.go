@@ -9,6 +9,13 @@ import (
 
 func (druid *Druid) registerWildMushrooms() {
 
+	wildMushroomsStackAura := druid.GetOrRegisterAura(core.Aura{
+		Label:     "Wild Mushroom Stacks",
+		ActionID:  core.ActionID{SpellID: 88747},
+		Duration:  core.NeverExpires,
+		MaxStacks: 3,
+	})
+
 	druid.WildMushrooms = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 88747},
 		Flags:    core.SpellFlagAPL,
@@ -23,7 +30,8 @@ func (druid *Druid) registerWildMushrooms() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			druid.MushroomsPlaced += 1
+			wildMushroomsStackAura.Activate(sim)
+			wildMushroomsStackAura.AddStack(sim)
 		},
 	})
 
@@ -47,7 +55,8 @@ func (druid *Druid) registerWildMushrooms() {
 		BonusCoefficient: 0.6032,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for i := druid.MushroomsPlaced; i > 0; i-- {
+
+			for i := wildMushroomsStackAura.GetStacks(); i > 0; i-- {
 				min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.9464, 0.19)
 				baseDamage := sim.Roll(min, max)
 				baseDamage *= sim.Encounter.AOECapMultiplier()
@@ -55,9 +64,9 @@ func (druid *Druid) registerWildMushrooms() {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 				}
-			}
 
-			druid.MushroomsPlaced = 0
+				wildMushroomsStackAura.RemoveStack(sim)
+			}
 		},
 	})
 }
