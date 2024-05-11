@@ -41,10 +41,8 @@ func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
 			stats.MeleeHit:  ownerStats[stats.SpellHit],
 			stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * petExpertiseScale,
 
-			// for master demonologist; unfortunately mastery is only the *bonus* mastery and not the base value,
-			// so we add this manually here such that AddOnMasteryStatChanged() can calculate the correct values
-			// while still having 0 mastery = 0% dmg at the start
-			stats.Mastery: 8*core.MasteryRatingPerMasteryPoint + ownerStats[stats.Mastery],
+			// for master demonologist
+			stats.Mastery: ownerStats[stats.Mastery],
 		}
 	}
 }
@@ -149,6 +147,12 @@ func (pet *WarlockPet) Initialize() {
 			pet.PseudoStats.DamageDealtMultiplier /= masteryBonus(oldMastery)
 			pet.PseudoStats.DamageDealtMultiplier *= masteryBonus(newMastery)
 		})
+
+		// unfortunately mastery is only the *bonus* mastery and not the base value, so we add
+		// this manually here such that AddOnMasteryStatChanged() can calculate the correct values
+		// while still having 0 mastery = 0% dmg at the start
+		pet.AddStats(stats.Stats{stats.Mastery: 8 * core.MasteryRatingPerMasteryPoint})
+		pet.PseudoStats.DamageDealtMultiplier *= masteryBonus(8 * core.MasteryRatingPerMasteryPoint)
 	}
 }
 
