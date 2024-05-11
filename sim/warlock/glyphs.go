@@ -34,7 +34,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfImmolate) {
 		warlock.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellImmolateDot,
+			ClassMask:  WarlockSpellImmolateDot | WarlockSpellConflagrate,
 			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.10,
 		})

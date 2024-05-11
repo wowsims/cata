@@ -24,7 +24,7 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 
 	// Improved Immolate
 	warlock.AddStaticMod(core.SpellModConfig{
-		ClassMask:  WarlockSpellImmolate | WarlockSpellImmolateDot,
+		ClassMask:  WarlockSpellImmolate | WarlockSpellImmolateDot | WarlockSpellConflagrate,
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: []float64{0.0, 0.1, 0.2}[warlock.Talents.ImprovedImmolate],
 	})

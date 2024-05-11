@@ -310,6 +310,11 @@ export class PartyPicker extends Component {
 			this.raidPicker.clearDragParty();
 		};
 	}
+
+	getClosestEmptyIndex() {
+		const closestEmptyIndex = this.playerPickers.findIndex(pp => !pp.player);
+		return closestEmptyIndex !== -1 ? closestEmptyIndex : null;
+	}
 }
 
 const EMPTY_PLAYER_NAME = 'Unnamed';
@@ -451,17 +456,27 @@ export class PlayerPicker extends Component {
 		if (newPlayer == this.player) {
 			return;
 		}
-
 		TypedEvent.freezeAllAndDo(() => {
+			const closestEmptySlot = this.partyPicker.getClosestEmptyIndex();
+			// If there's empty slots before the current player, we should place the player there.
+			const placementIndex = closestEmptySlot && closestEmptySlot < this.index ? closestEmptySlot : this.index;
+
 			this.player = newPlayer;
+
 			if (newPlayer) {
-				this.partyPicker.party.setPlayer(eventID, this.index, newPlayer);
+				this.partyPicker.party.setPlayer(eventID, placementIndex, newPlayer);
 
 				if (dragType == DragType.New) {
 					applyNewPlayerAssignments(eventID, newPlayer, this.raidPicker.raid);
 				}
 			} else {
-				this.partyPicker.party.setPlayer(eventID, this.index, newPlayer);
+				// Updates the old player's index
+				this.partyPicker.party.setPlayer(eventID, placementIndex, newPlayer);
+				// If the player left a gap in the grouping, we need to shift the rest of the players up.
+				const remainingOptionsToMove = this.partyPicker.playerPickers.slice(this.index, 5).filter(pp => pp.player);
+				remainingOptionsToMove.forEach((pp, index) => {
+					if (placementIndex < pp.index) this.partyPicker.party.setPlayer(eventID, placementIndex + index, pp.player);
+				});
 				this.partyPicker.party.compChangeEmitter.emit(eventID);
 			}
 		});

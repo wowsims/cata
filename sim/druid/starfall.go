@@ -7,7 +7,6 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-// We register two spells to apply two different dot effects and get two entries in Damage/Detailed results
 func (druid *Druid) registerStarfallSpell() {
 	if !druid.Talents.Starfall {
 		return
@@ -17,15 +16,19 @@ func (druid *Druid) registerStarfallSpell() {
 	tickLength := time.Second
 
 	starfallTickSpell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 50286},
-		SpellSchool:      core.SpellSchoolArcane,
-		ProcMask:         core.ProcMaskSuppressedProc,
-		BonusCritRating:  2 * float64(druid.Talents.NaturesMajesty) * core.CritRatingPerCritChance,
-		DamageMultiplier: 1 * (1 + core.TernaryFloat64(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfFocus), 0.1, 0)),
+		ActionID:       core.ActionID{SpellID: 50288},
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskSuppressedProc,
+		ClassSpellMask: DruidSpellStarfall,
+
+		DamageMultiplier: 1,
 		CritMultiplier:   druid.BalanceCritMultiplier(),
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.247,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(563, 653) + 0.3*spell.SpellPower()
+			min, max := core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassDruid, 0.404, 0.15)
+			baseDamage := sim.Roll(min, max)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
@@ -45,7 +48,7 @@ func (druid *Druid) registerStarfallSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Second * (90 - core.TernaryDuration(druid.HasMajorGlyph(proto.DruidMajorGlyph_GlyphOfStarfall), 30, 0)),
+				Duration: time.Second * 90,
 			},
 		},
 		Dot: core.DotConfig{

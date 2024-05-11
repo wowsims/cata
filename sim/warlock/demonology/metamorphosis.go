@@ -88,7 +88,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
-		BonusCoefficient:         0.53899997473,
+		BonusCoefficient:         0.10000000149,
 
 		Dot: core.DotConfig{
 			IsAOE: true,

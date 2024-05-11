@@ -56,18 +56,18 @@ func (druid *Druid) EnableEclipseBar() {
 }
 
 func (druid *Druid) RegisterEclipseAuras() {
-	masteryBonus := 0.16 + druid.GetMasteryPoints()*0.02
+	baselineEclipsePct := 0.25
 
 	lunarSpellMod := druid.AddDynamicMod(core.SpellModConfig{
 		School:     core.SpellSchoolArcane,
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: masteryBonus,
+		FloatValue: baselineEclipsePct + (0.16 + druid.GetMasteryPoints()*0.02),
 	})
 
 	solarSpellMod := druid.AddDynamicMod(core.SpellModConfig{
 		School:     core.SpellSchoolNature,
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: masteryBonus,
+		FloatValue: baselineEclipsePct + (0.16 + druid.GetMasteryPoints()*0.02),
 	})
 
 	lunarEclipse := druid.RegisterAura(core.Aura{
@@ -75,7 +75,7 @@ func (druid *Druid) RegisterEclipseAuras() {
 		Label:    "Eclipse (Lunar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			lunarSpellMod.UpdateFloatValue(0.16 + druid.GetMasteryPoints()*0.02)
+			lunarSpellMod.UpdateFloatValue(baselineEclipsePct + (0.16 + druid.GetMasteryPoints()*0.02))
 			lunarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -88,7 +88,7 @@ func (druid *Druid) RegisterEclipseAuras() {
 		Label:    "Eclipse (Solar)",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			solarSpellMod.UpdateFloatValue(0.16 + druid.GetMasteryPoints()*0.02)
+			solarSpellMod.UpdateFloatValue(baselineEclipsePct + (0.16 + druid.GetMasteryPoints()*0.02))
 			solarSpellMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -271,7 +271,7 @@ func (eb *eclipseEnergyBar) addSolarEnergy(amount float64, sim *core.Simulation,
 	metrics.AddEvent(amount, gain)
 }
 
-func (unit *Druid) NewSolarEnergyMetric(actionID core.ActionID) *core.ResourceMetrics {
+func (unit *Druid) NewSolarEnergyMetrics(actionID core.ActionID) *core.ResourceMetrics {
 	return unit.Metrics.NewResourceMetrics(actionID, proto.ResourceType_ResourceTypeSolarEnergy)
 }
 
