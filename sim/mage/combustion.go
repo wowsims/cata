@@ -14,7 +14,7 @@ func (mage *Mage) registerCombustionSpell() {
 	mage.CombustionImpact = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11129},
 		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskEmpty, // need to check proc mask for impact damage
+		ProcMask:       core.ProcMaskSpellDamage, // need to check proc mask for impact damage
 		ClassSpellMask: MageSpellCombustionApplication,
 		Flags:          core.SpellFlagAPL,
 
