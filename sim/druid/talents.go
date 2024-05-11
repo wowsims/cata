@@ -228,13 +228,32 @@ func (druid *Druid) applyShootingStars() {
 		return
 	}
 
+	ssCastTimeMod := druid.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  DruidSpellStarsurge,
+		Kind:       core.SpellMod_CastTime_Pct,
+		FloatValue: -1,
+	})
+
 	ssAuraSpellId := []int32{0, 93398, 93399}[druid.Talents.ShootingStars]
 
 	ssAura := druid.RegisterAura(core.Aura{
 		Label:    "Shooting Stars Proc",
 		ActionID: core.ActionID{SpellID: ssAuraSpellId},
-		Duration: time.Second * 15,
+		Duration: time.Second * 12,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask != DruidSpellStarsurge {
+				return
+			}
+
+			ssCastTimeMod.Deactivate()
+			aura.Deactivate(sim)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			ssCastTimeMod.Activate()
+			druid.Starsurge.CD.Reset()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			ssCastTimeMod.Deactivate()
 		},
 	})
 
@@ -243,10 +262,8 @@ func (druid *Druid) applyShootingStars() {
 		Callback:       core.CallbackOnPeriodicDamageDealt,
 		Outcome:        core.OutcomeLanded,
 		ProcChance:     0.02 * float64(druid.Talents.ShootingStars),
-		ClassSpellMask: DruidSpellInsectSwarm | DruidSpellMoonfire,
+		ClassSpellMask: DruidSpellInsectSwarm | DruidSpellMoonfireDoT,
 		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
-			druid.Starsurge.CD.Reset()
-			//druid.Starsurge.Cast
 			ssAura.Activate(sim)
 		},
 	})
