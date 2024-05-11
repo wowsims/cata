@@ -13,7 +13,6 @@
 	{"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"3s"}}}},"castSpell":{"spellId":{"spellId":47541}}}},
 	{"action":{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"spellId":{"spellId":55095}}}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"3s"}}}}]}},"castSpell":{"spellId":{"spellId":45477}}}},
 	{"action":{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"spellId":{"spellId":55078}}}}},{"cmp":{"op":"OpLe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"3s"}}}}]}},"castSpell":{"spellId":{"spellId":45462,"tag":1}}}},
-	{"action":{"condition":{"cmp":{"op":"OpEq","lhs":{"currentTime":{}},"rhs":{"const":{"val":"5s"}}}},"castSpell":{"spellId":{"spellId":2825,"tag":-1}}}},
 	{"action":{"castSpell":{"spellId":{"spellId":63560}}}},
 	{"action":{"condition":{"auraIsActive":{"sourceUnit":{"type":"Pet","index":1,"owner":{"type":"Self"}},"auraId":{"spellId":63560}}},"castSpell":{"spellId":{"spellId":49016}}}},
 	{"action":{"condition":{"auraIsActive":{"sourceUnit":{"type":"Pet","index":1,"owner":{"type":"Self"}},"auraId":{"spellId":63560}}},"castSpell":{"spellId":{"spellId":82174}}}},
