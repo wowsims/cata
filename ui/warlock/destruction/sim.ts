@@ -16,7 +16,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	knownIssues: ['Drain Soul is currently disabled for APL rotations'],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery, Stat.StatStamina],
+	epStats: [
+		Stat.StatIntellect,
+		Stat.StatSpirit,
+		Stat.StatSpellPower,
+		Stat.StatSpellHit,
+		Stat.StatSpellCrit,
+		Stat.StatSpellHaste,
+		Stat.StatMastery,
+		Stat.StatStamina
+	],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -47,6 +56,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 			[Stat.StatSpellHit]: 0.93,
 			[Stat.StatSpellCrit]: 0.53,
 			[Stat.StatSpellHaste]: 0.81,
+			[Stat.StatMastery]: 1.0,
 			[Stat.StatStamina]: 0.01,
 		}),
 		// Default consumes settings.
@@ -71,7 +81,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
-		WarlockInputs.PetInput(), 
+		WarlockInputs.PetInput(),
 	],
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
