@@ -29,48 +29,43 @@ func (hunter *Hunter) registerKillShotSpell() {
 			},
 		})
 	}
+	spellData, _ := core.CurrentSpellGen().GetDBC().FetchSpell(53351)
+	eff2, _ := spellData.EffectN(2)
+	actionId := core.ActionID{SpellID: 53351}
+	spellConfig := core.CurrentSpellGen().ParseSpellData(53351, &hunter.Unit, &actionId)
+	spellConfig.ProcMask = core.ProcMaskRangedSpecial // Probably can get this for config as well
+	spellConfig.Flags = core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL
+	spellConfig.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
+		return sim.IsExecutePhase20()
+	}
+	spellConfig.BonusCritRating = 0 + 5*core.CritRatingPerCritChance*float64(hunter.Talents.SniperTraining)
+	spellConfig.DamageMultiplier = eff2.Min(core.CurrentSpellGen().GetDBC(), 85, 85)
+	spellConfig.CritMultiplier = hunter.CritMultiplier(true, true, false)
+	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		// (100% weapon dmg + 45% RAP + 543) * 150%
+		weaponDamage := 0.0
+		// Todo: Figure out a nice way to deal with this
+		// if spell.SpellData != nil {
+		// 	min, max, normalized, _ := core.CurrentSpellGen().ParseEffects(spell.SpellData, &hunter.Unit)
+		// 	if normalized {
+		// 		weaponDamage += hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
+		// 		weaponDamage += sim.Roll(min, max)
+		// 	}
+		// }
+		eff1, _ := spellData.EffectN(1)
+		weaponDamage += hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
+		weaponDamage += eff1.Average(core.CurrentSpellGen().GetDBC(), 85, 85)
 
-	hunter.KillShot = hunter.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 53351},
-		SpellSchool:  core.SpellSchoolPhysical,
-		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		MissileSpeed: 40,
+		// Todo: Figure out where exactly this part comes from, cant find an effect for it
+		rapBonusDamage := spell.RangedAttackPower(target) * (0.45 * eff2.Min(core.CurrentSpellGen().GetDBC(), 85, 85))
 
-		FocusCost: core.FocusCostOptions{
-			Cost: 0,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: time.Second,
-			},
-			IgnoreHaste: true,
-			CD: core.Cooldown{
-				Timer:    hunter.NewTimer(),
-				Duration: time.Second * 10,
-			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return sim.IsExecutePhase20()
-		},
+		baseDamage := weaponDamage + rapBonusDamage
+		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
-		BonusCritRating:  0 + 5*core.CritRatingPerCritChance*float64(hunter.Talents.SniperTraining),
-		DamageMultiplier: 1.5, //
-		CritMultiplier:   hunter.CritMultiplier(true, true, false),
-		ThreatMultiplier: 1,
-		// https://web.archive.org/web/20120207222124/http://elitistjerks.com/f74/t110306-hunter_faq_cataclysm_edition_read_before_asking_questions/
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// (100% weapon dmg + 45% RAP + 543) * 150%
-			normalizedWeaponDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target))
-			rapBonusDamage := spell.RangedAttackPower(target) * 0.45
-			flatBonus := 543.0
+		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+			spell.DealDamage(sim, result)
+		})
+	}
 
-			baseDamage := normalizedWeaponDamage + rapBonusDamage + flatBonus
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-				spell.DealDamage(sim, result)
-			})
-		},
-	})
+	hunter.KillShot = hunter.RegisterSpell(*spellConfig)
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/wowsims/cata/sim/core/dbc"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -153,6 +154,8 @@ type Spell struct {
 
 	// Per-target auras that are related to this spell, usually buffs or debuffs applied by the spell.
 	RelatedAuras []AuraArray
+
+	SpellData *dbc.SpellData
 }
 
 func (unit *Unit) OnSpellRegistered(handler SpellRegisteredHandler) {
@@ -326,6 +329,11 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 	if unit.Env != nil && unit.Env.IsFinalized() {
 		spell.finalize()
+	}
+	spellData, _ := CurrentSpellGen().GetDBC().FetchSpell(uint(spell.SpellID))
+	if spellData != nil {
+
+		spell.SpellData = spellData
 	}
 
 	return spell
