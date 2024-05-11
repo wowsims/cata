@@ -13,41 +13,44 @@ func addMagmaw(bossPrefix string) {
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
 			Id:        41570,
-			Name:      "Magmaw",
+			Name:      "Magmaw 10",
 			Level:     88,
 			MobType:   proto.MobType_MobTypeBeast,
 			TankIndex: 0,
 
 			Stats: stats.Stats{
-				stats.Health:      120_000_000,
+				stats.Health:      26_798_304,
 				stats.Armor:       11977,
 				stats.AttackPower: 650,
 			}.ToFloatArray(),
 
 			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
 			SwingSpeed:       2.5,
-			MinBaseDamage:    209609,
+			MinBaseDamage:    110000,
 			DamageSpread:     0.4,
 			SuppressDodge:    false,
 			ParryHaste:       false,
 			DualWield:        false,
 			DualWieldPenalty: false,
 			TargetInputs: []*proto.TargetInput{
-				{
-					Label:     "Raid Size",
-					Tooltip:   "The size of the Raid",
-					InputType: proto.InputType_Enum,
-					EnumValue: 1,
-					EnumOptions: []string{
-						"10", "25",
-					},
-				},
-				{
-					Label:     "Heroic",
-					Tooltip:   "Is the encounter in Heroic Mode",
-					InputType: proto.InputType_Bool,
-					BoolValue: true,
-				},
+				// TODO: Figure out how to make Size and Heroic
+				// pickable for a preset. Right now we have to
+				// make up to 4 presets per boss which sucks...
+				// {
+				// 	Label:     "Raid Size",
+				// 	Tooltip:   "The size of the Raid",
+				// 	InputType: proto.InputType_Enum,
+				// 	EnumValue: 1,
+				// 	EnumOptions: []string{
+				// 		"10", "25",
+				// 	},
+				// },
+				// {
+				// 	Label:     "Heroic",
+				// 	Tooltip:   "Is the encounter in Heroic Mode",
+				// 	InputType: proto.InputType_Bool,
+				// 	BoolValue: true,
+				// },
 				{
 					Label:       "Impale Reaction Time",
 					Tooltip:     "How long will the Raid take to Impale Head in Seconds. (After the initial 10s)",
@@ -57,12 +60,139 @@ func addMagmaw(bossPrefix string) {
 			},
 		},
 		AI: func() core.TargetAI {
-			return &MagmawAI{}
+			return makeMagmawAI(10, false)
 		},
 	})
-	core.AddPresetEncounter("Magmaw", []string{
-		bossPrefix + "/Magmaw",
+	core.AddPresetEncounter("Magmaw 10", []string{
+		bossPrefix + "/Magmaw 10",
 	})
+
+	core.AddPresetTarget(&core.PresetTarget{
+		PathPrefix: bossPrefix,
+		Config: &proto.Target{
+			Id:        41571,
+			Name:      "Magmaw 25",
+			Level:     88,
+			MobType:   proto.MobType_MobTypeBeast,
+			TankIndex: 0,
+
+			Stats: stats.Stats{
+				stats.Health:      81_082_048,
+				stats.Armor:       11977,
+				stats.AttackPower: 650,
+			}.ToFloatArray(),
+
+			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
+			SwingSpeed:       2.5,
+			MinBaseDamage:    150000,
+			DamageSpread:     0.4,
+			SuppressDodge:    false,
+			ParryHaste:       false,
+			DualWield:        false,
+			DualWieldPenalty: false,
+			TargetInputs: []*proto.TargetInput{
+				{
+					Label:       "Impale Reaction Time",
+					Tooltip:     "How long will the Raid take to Impale Head in Seconds. (After the initial 10s)",
+					InputType:   proto.InputType_Number,
+					NumberValue: 5.0,
+				},
+			},
+		},
+		AI: func() core.TargetAI {
+			return makeMagmawAI(25, false)
+		},
+	})
+	core.AddPresetEncounter("Magmaw 25", []string{
+		bossPrefix + "/Magmaw 25",
+	})
+
+	core.AddPresetTarget(&core.PresetTarget{
+		PathPrefix: bossPrefix,
+		Config: &proto.Target{
+			Id:        41572,
+			Name:      "Magmaw 10 H",
+			Level:     88,
+			MobType:   proto.MobType_MobTypeBeast,
+			TankIndex: 0,
+
+			Stats: stats.Stats{
+				stats.Health:      39_200_000,
+				stats.Armor:       11977,
+				stats.AttackPower: 650,
+			}.ToFloatArray(),
+
+			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
+			SwingSpeed:       2.5,
+			MinBaseDamage:    150000,
+			DamageSpread:     0.4,
+			SuppressDodge:    false,
+			ParryHaste:       false,
+			DualWield:        false,
+			DualWieldPenalty: false,
+			TargetInputs: []*proto.TargetInput{
+				{
+					Label:       "Impale Reaction Time",
+					Tooltip:     "How long will the Raid take to Impale Head in Seconds. (After the initial 10s)",
+					InputType:   proto.InputType_Number,
+					NumberValue: 5.0,
+				},
+			},
+		},
+		AI: func() core.TargetAI {
+			return makeMagmawAI(10, true)
+		},
+	})
+	core.AddPresetEncounter("Magmaw 10 H", []string{
+		bossPrefix + "/Magmaw 10 H",
+	})
+
+	core.AddPresetTarget(&core.PresetTarget{
+		PathPrefix: bossPrefix,
+		Config: &proto.Target{
+			Id:        41573,
+			Name:      "Magmaw 25 H",
+			Level:     88,
+			MobType:   proto.MobType_MobTypeBeast,
+			TankIndex: 0,
+
+			Stats: stats.Stats{
+				stats.Health:      120_016_403,
+				stats.Armor:       11977,
+				stats.AttackPower: 650,
+			}.ToFloatArray(),
+
+			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
+			SwingSpeed:       2.5,
+			MinBaseDamage:    210000,
+			DamageSpread:     0.4,
+			SuppressDodge:    false,
+			ParryHaste:       false,
+			DualWield:        false,
+			DualWieldPenalty: false,
+			TargetInputs: []*proto.TargetInput{
+				{
+					Label:       "Impale Reaction Time",
+					Tooltip:     "How long will the Raid take to Impale Head in Seconds. (After the initial 10s)",
+					InputType:   proto.InputType_Number,
+					NumberValue: 5.0,
+				},
+			},
+		},
+		AI: func() core.TargetAI {
+			return makeMagmawAI(25, true)
+		},
+	})
+	core.AddPresetEncounter("Magmaw 25 H", []string{
+		bossPrefix + "/Magmaw 25 H",
+	})
+}
+
+func makeMagmawAI(raidSize int, isHeroic bool) core.TargetAI {
+	return &MagmawAI{
+		raidSize: raidSize,
+		isHeroic: isHeroic,
+	}
 }
 
 type MagmawAI struct {
@@ -85,19 +215,21 @@ type MagmawAI struct {
 func (ai *MagmawAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.Target = target
 
-	if target.Env.Raid.Size() <= 1 {
-		// Individual Sims - use the input configuration
-		ai.raidSize = []int{10, 25}[config.TargetInputs[0].EnumValue]
-	} else {
-		// Raid sim - Set from number of players
-		ai.raidSize = 10
-		if target.Env.Raid.Size() > 10 {
-			ai.raidSize = 25
-		}
-	}
+	// if target.Env.Raid.Size() <= 1 {
+	// 	// Individual Sims - use the input configuration
+	// 	ai.raidSize = []int{10, 25}[config.TargetInputs[0].EnumValue]
+	// } else {
+	// 	// Raid sim - Set from number of players
+	// 	ai.raidSize = 10
+	// 	if target.Env.Raid.Size() > 10 {
+	// 		ai.raidSize = 25
+	// 	}
+	// }
 
-	ai.isHeroic = config.TargetInputs[1].BoolValue
-	ai.impaleDelay = config.TargetInputs[2].NumberValue
+	// ai.isHeroic = config.TargetInputs[1].BoolValue
+	// ai.impaleDelay = config.TargetInputs[2].NumberValue
+
+	ai.impaleDelay = config.TargetInputs[0].NumberValue
 
 	ai.registerSpells()
 }
@@ -116,6 +248,7 @@ func (ai *MagmawAI) ExecuteCustomRotation(sim *core.Simulation) {
 
 	target := ai.Target.CurrentTarget
 	if target == nil {
+		// For individual non tank sims we still want abilities to work
 		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
 	}
 
@@ -252,17 +385,17 @@ func (ai *MagmawAI) registerSpells() {
 	})
 
 	magmaSpitBase := []float64{
-		110463,
-		132556,
-		132556,
-		154648,
+		30624,
+		30624,
+		34999,
+		39374,
 	}[scalingIndex]
 
 	magmaSpitVariance := []float64{
-		17914,
-		21496,
-		21496,
-		25080,
+		8751,
+		8751,
+		10001,
+		11251,
 	}[scalingIndex]
 
 	magmaSpitDamageRoll := func(sim *core.Simulation) float64 {

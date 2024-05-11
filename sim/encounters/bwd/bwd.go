@@ -1,5 +1,5 @@
 package bwd
 
-func Register() {
+func init() {
 	addMagmaw("Blackwings Descent")
 }
