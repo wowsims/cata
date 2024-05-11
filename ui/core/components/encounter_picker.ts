@@ -118,7 +118,6 @@ export class EncounterPicker extends Component {
 			// Transfer Target Inputs from target Id if they dont match (possible when custom AI is selected)
 			const targetIndex = presetTargets.findIndex(pe => modEncounter.primaryTarget.id == pe.target?.id);
 			const targetInputs = presetTargets[targetIndex]?.target?.targetInputs || [];
-
 			if (
 				targetInputs.length != modEncounter.primaryTarget.targetInputs.length ||
 				modEncounter.primaryTarget.targetInputs.some((ti, i) => ti.label != targetInputs[i].label)
@@ -511,7 +510,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 
 	private boolPicker: Input<null, boolean> | null;
 	private numberPicker: Input<null, number> | null;
-	private enumPicker: TextDropdownPicker<null, number> | null;
+	private enumPicker: EnumPicker<null> | null;
 
 	private getTargetInput(): TargetInput {
 		return this.encounter.targets[this.targetIndex].targetInputs[this.targetInputIndex] || TargetInput.create();
@@ -580,6 +579,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 			this.boolPicker = new BooleanPicker(this.rootElem, null, {
 				label: newValue.label,
 				labelTooltip: newValue.tooltip,
+				extraCssClasses: ['input-inline'],
 				changedEvent: () => this.encounter.targetsChangeEmitter,
 				getValue: () => this.getTargetInput().boolValue,
 				setValue: (eventID: EventID, _: null, newValue: boolean) => {
@@ -600,11 +600,9 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 				this.enumPicker.rootElem.remove();
 				this.enumPicker = null;
 			}
-			this.enumPicker = new TextDropdownPicker(this.rootElem, null, {
+			this.enumPicker = new EnumPicker<null>(this.rootElem, null, {
 				label: newValue.label,
-				defaultLabel: 'None',
-				equals: (a, b) => a == b,
-				values: newValue.enumOptions.map<TextDropdownValueConfig<number>>((option, index) => { return {value: index, label: option}} ),
+				values: newValue.enumOptions.map((option, index) => { return {value: index, name: option}} ),
 				changedEvent: () => this.encounter.targetsChangeEmitter,
 				getValue: () => this.getTargetInput().enumValue,
 				setValue: (eventID: EventID, _: null, newValue: number) => {
@@ -692,7 +690,8 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 		});
 		new NumberPicker(executeGroup, encounter, {
 			label: 'Duration spent below high-HP regime (%)',
-			labelTooltip: 'Percentage of the total encounter duration, for which the targets are considered out of range for effects like Hunter Careful Aim (<90% HP) or Druid Predatory Strikes (<80% HP).',
+			labelTooltip:
+				'Percentage of the total encounter duration, for which the targets are considered out of range for effects like Hunter Careful Aim (<90% HP) or Druid Predatory Strikes (<80% HP).',
 			changedEvent: (encounter: Encounter) => encounter.changeEmitter,
 			getValue: (encounter: Encounter) => encounter.getExecuteProportion90() * 100,
 			setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
@@ -705,9 +704,12 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 	}
 }
 
-function makeTargetInputsPicker(parent: HTMLElement, encounter: Encounter, targetIndex: number): ListPicker<Encounter, TargetInput> {
+function makeTargetInputsPicker(parent: HTMLElement, encounter: Encounter, targetIndex: number) {
 	return new ListPicker<Encounter, TargetInput>(parent, encounter, {
+		allowedActions: [],
 		itemLabel: 'Target Input',
+		extraCssClasses: ['mt-2'],
+		isCompact: true,
 		changedEvent: (encounter: Encounter) => encounter.targetsChangeEmitter,
 		getValue: (encounter: Encounter) => encounter.targets[targetIndex].targetInputs,
 		setValue: (eventID: EventID, encounter: Encounter, newValue: Array<TargetInput>) => {
@@ -722,8 +724,6 @@ function makeTargetInputsPicker(parent: HTMLElement, encounter: Encounter, targe
 			index: number,
 			config: ListItemPickerConfig<Encounter, TargetInput>,
 		) => new TargetInputPicker(parent, encounter, targetIndex, index, config),
-		allowedActions: [],
-		inline: true,
 	});
 }
 

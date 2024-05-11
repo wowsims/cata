@@ -114,21 +114,27 @@ func (ai *MagmawAI) ExecuteCustomRotation(sim *core.Simulation) {
 		return
 	}
 
+	target := ai.Target.CurrentTarget
+	if target == nil {
+		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
+	}
+
 	// Mangle
-	if ai.mangle.CanCast(sim, ai.Target.CurrentTarget) {
-		ai.mangle.Cast(sim, ai.Target.CurrentTarget)
+	if ai.mangle.CanCast(sim, target) {
+		ai.mangle.Cast(sim, target)
 		return
 	}
 
 	// Lava Spew
-	if ai.lavaSpew.CanCast(sim, ai.Target.CurrentTarget) && sim.Proc(0.7, "Lava Spew Cast Roll") {
-		ai.lavaSpew.Cast(sim, ai.Target.CurrentTarget)
+	if ai.lavaSpew.CanCast(sim, target) && sim.Proc(0.7, "Lava Spew Cast Roll") {
+		ai.lavaSpew.Cast(sim, target)
 		return
 	}
 
 	// Magma Spit
-	if ai.magmaSpit.CanCast(sim, ai.Target.CurrentTarget) && sim.Proc(0.6, "Magma Spit Cast Roll") {
-		ai.magmaSpit.Cast(sim, ai.Target.CurrentTarget)
+	if ai.magmaSpit.CanCast(sim, target) && sim.Proc(0.6, "Magma Spit Cast Roll") {
+		ai.magmaSpit.Cast(sim, target)
+		ai.Target.WaitUntil(sim, sim.CurrentTime+BossGCD)
 		return
 	}
 
@@ -298,7 +304,7 @@ func (ai *MagmawAI) registerSpells() {
 					for idx := int32(0); idx < numTargets; idx++ {
 						targetRoll := int(sim.RandomFloat("Magma Spit Target Roll") * float64(len(validTargets)))
 						rolledTarget := validTargets[targetRoll]
-						hitTargets = append(hitTargets, int32(rolledTarget))
+						hitTargets = append(hitTargets, rolledTarget)
 
 						remove := func(s []int32, i int32) []int32 {
 							s[i] = s[len(s)-1]
@@ -330,6 +336,7 @@ func (ai *MagmawAI) registerSpells() {
 	// 	25080,
 	// }[scalingIndex]
 
+	var lastMangleTarget *core.Unit
 	ai.mangle = ai.Target.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 89773},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -355,6 +362,11 @@ func (ai *MagmawAI) registerSpells() {
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					// Activate Expose
 					ai.pointOfVulnerability.Activate(sim)
+
+					doDamage := !isIndividualSim || ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit.Metrics.IsTanking()
+					if doDamage {
+						ai.swelteringArmor.Get(lastMangleTarget).Activate(sim)
+					}
 				},
 			},
 
@@ -362,14 +374,21 @@ func (ai *MagmawAI) registerSpells() {
 			NumberOfTicks: 5 + int32(ai.impaleDelay/2.0), // Simulate Mangle Duration as 10s + Input Delay
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := mangleTick // + mangleVariance*sim.RandomFloat("Magmaw Mangle Tick")
-				dot.Spell.CalcAndDealPeriodicDamage(sim, target, baseDamage, dot.Spell.OutcomeAlwaysHit)
+				doDamage := !isIndividualSim || ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit.Metrics.IsTanking()
+				if doDamage {
+					baseDamage := mangleTick // + mangleVariance*sim.RandomFloat("Magmaw Mangle Tick")
+					dot.Spell.CalcAndDealPeriodicDamage(sim, target, baseDamage, dot.Spell.OutcomeAlwaysHit)
+				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 1.5
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
+			lastMangleTarget = target
+			doDamage := !isIndividualSim || ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit.Metrics.IsTanking()
+			if doDamage {
+				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 1.5
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
+			}
 			spell.Dot(target).Apply(sim)
 		},
 	})

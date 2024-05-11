@@ -220,7 +220,7 @@ func (shaman *Shaman) applyRollingThunder() {
 				// 	if spell == allowedSpell {
 				if sim.RandomFloat("Rolling Thunder") < 0.3*float64(shaman.Talents.RollingThunder) {
 					shaman.AddMana(sim, 0.02*shaman.MaxMana(), manaMetrics)
-					shaman.LightningShieldAura.Refresh(sim)
+					shaman.LightningShieldAura.Activate(sim)
 					shaman.LightningShieldAura.AddStack(sim)
 				}
 				//  }
