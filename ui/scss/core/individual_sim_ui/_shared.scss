@@ -60,3 +60,8 @@
 	flex-direction: column;
 	justify-content: center;
 }
+
+.consumes-battle-elixirs:has(.hide),
+.consumes-guardian-elixirs:has(.hide) {
+	display: none;
+}

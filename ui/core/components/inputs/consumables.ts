@@ -97,33 +97,45 @@ export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'd
 //                                 EXPLOSIVES
 ///////////////////////////////////////////////////////////////////////////
 
-export const ExplosiveSaroniteBomb = {
-	actionId: ActionId.fromItemId(41119),
-	value: Explosive.ExplosiveSaroniteBomb,
-};
-export const ExplosiveCobaltFragBomb = {
-	actionId: ActionId.fromItemId(40771),
-	value: Explosive.ExplosiveCobaltFragBomb,
-};
+// WOTLK BOMBS
+// export const ExplosiveSaroniteBomb = {
+// 	actionId: ActionId.fromItemId(41119),
+// 	value: Explosive.ExplosiveSaroniteBomb,
+// };
+// export const ExplosiveCobaltFragBomb = {
+// 	actionId: ActionId.fromItemId(40771),
+// 	value: Explosive.ExplosiveCobaltFragBomb,
+// };
 
-export const EXPLOSIVES_CONFIG = [
-	{ config: ExplosiveSaroniteBomb, stats: [] },
-	{ config: ExplosiveCobaltFragBomb, stats: [] },
-] as ConsumableStatOption<Explosive>[];
+// export const EXPLOSIVES_CONFIG = [
+// 	{ config: ExplosiveSaroniteBomb, stats: [] },
+// 	{ config: ExplosiveCobaltFragBomb, stats: [] },
+// ] as ConsumableStatOption<Explosive>[];
 
-export const makeExplosivesInput = makeConsumeInputFactory({
-	consumesFieldName: 'fillerExplosive',
+// export const makeExplosivesInput = makeConsumeInputFactory({
+// 	consumesFieldName: 'fillerExplosive',
+// 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
+// });
+
+// export const ThermalSapper = makeBooleanConsumeInput({
+// 	actionId: ActionId.fromItemId(42641),
+// 	fieldName: 'thermalSapper',
+// 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
+// });
+// export const ExplosiveDecoy = makeBooleanConsumeInput({
+// 	actionId: ActionId.fromItemId(40536),
+// 	fieldName: 'explosiveDecoy',
+// 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
+// });
+
+export const ExplosiveBigDaddy = makeBooleanConsumeInput({
+	actionId: ActionId.fromItemId(63396),
+	fieldName: 'explosiveBigDaddy',
 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
-
-export const ThermalSapper = makeBooleanConsumeInput({
-	actionId: ActionId.fromItemId(42641),
-	fieldName: 'thermalSapper',
-	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
-});
-export const ExplosiveDecoy = makeBooleanConsumeInput({
-	actionId: ActionId.fromItemId(40536),
-	fieldName: 'explosiveDecoy',
+export const HighpoweredBoltGun = makeBooleanConsumeInput({
+	actionId: ActionId.fromItemId(60223),
+	fieldName: 'highpoweredBoltGun',
 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
 

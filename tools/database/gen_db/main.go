@@ -278,7 +278,9 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 // AttachFactionInformation attaches faction information (faction restrictions) to the DB items.
 func AttachFactionInformation(db *database.WowDatabase, factionRestrictions map[int32]proto.UIItem_FactionRestriction) {
 	for _, item := range db.Items {
-		item.FactionRestriction = factionRestrictions[item.Id]
+		if item.FactionRestriction == proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED {
+			item.FactionRestriction = factionRestrictions[item.Id]
+		}
 	}
 }
 
