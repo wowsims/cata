@@ -44,10 +44,16 @@ func (warrior *Warrior) MakeShoutSpellHelper(actionID core.ActionID, spellMask i
 
 func (warrior *Warrior) RegisterShouts() {
 	warrior.BattleShout = warrior.MakeShoutSpellHelper(core.ActionID{SpellID: 6673}, SpellMaskBattleShout, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
+		if unit.Type == core.PetUnit {
+			return nil
+		}
 		return core.BattleShoutAura(unit, false, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfBattle))
 	}))
 
 	warrior.CommandingShout = warrior.MakeShoutSpellHelper(core.ActionID{SpellID: 469}, SpellMaskCommandingShout, warrior.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
+		if unit.Type == core.PetUnit {
+			return nil
+		}
 		return core.CommandingShoutAura(unit, false, warrior.HasMinorGlyph(proto.WarriorMinorGlyph_GlyphOfCommand))
 	}))
 }

@@ -34,7 +34,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := shaman.ClassSpellScaling * 0.78500002623
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				if shaman.FlameShock.Dot(aoeTarget).IsActive() {
+				if shaman.FlameShockDot.Dot(aoeTarget).IsActive() {
 					for _, newTarget := range sim.Encounter.TargetUnits {
 						if newTarget != aoeTarget {
 							spell.CalcAndDealDamage(sim, newTarget, baseDamage, spell.OutcomeMagicHitAndCrit)

@@ -25,7 +25,7 @@ func (druid *Druid) registerMaulSpell() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Second*3,
+				Duration: time.Second * 3,
 			},
 		},
 
@@ -37,7 +37,7 @@ func (druid *Druid) registerMaulSpell() {
 		MaxRange:         core.MaxMeleeRange,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := flatBaseDamage + 0.19 * spell.MeleeAttackPower()
+			baseDamage := flatBaseDamage + 0.19*spell.MeleeAttackPower()
 
 			curTarget := target
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
@@ -52,7 +52,7 @@ func (druid *Druid) registerMaulSpell() {
 					modifier *= 0.5
 				}
 
-				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage * modifier, spell.OutcomeMeleeSpecialHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage*modifier, spell.OutcomeMeleeSpecialHitAndCrit)
 
 				if !result.Landed() {
 					spell.IssueRefund(sim)

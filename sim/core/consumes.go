@@ -829,107 +829,92 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 	}
 }
 
-var ThermalSapperActionID = ActionID{ItemID: 42641}
-var ExplosiveDecoyActionID = ActionID{ItemID: 40536}
-var SaroniteBombActionID = ActionID{ItemID: 41119}
-var CobaltFragBombActionID = ActionID{ItemID: 40771}
+var BigDaddyActionID = ActionID{SpellID: 89637}
+var HighpoweredBoltGunActionID = ActionID{ItemID: 40771}
 
 func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	character := agent.GetCharacter()
-	hasFiller := consumes.FillerExplosive != proto.Explosive_ExplosiveUnknown
 	if !character.HasProfession(proto.Profession_Engineering) {
 		return
 	}
-	if !consumes.ThermalSapper && !consumes.ExplosiveDecoy && !hasFiller {
-		return
-	}
-	sharedTimer := character.NewTimer()
 
-	if consumes.ThermalSapper {
-		character.AddMajorCooldown(MajorCooldown{
-			Spell:    character.newThermalSapperSpell(sharedTimer),
-			Type:     CooldownTypeDPS | CooldownTypeExplosive,
-			Priority: CooldownPriorityLow + 30,
-		})
-	}
+	if consumes.ExplosiveBigDaddy {
+		bomb := character.GetOrRegisterSpell(SpellConfig{
+			ActionID:    BigDaddyActionID,
+			SpellSchool: SpellSchoolFire,
+			ProcMask:    ProcMaskEmpty,
 
-	if consumes.ExplosiveDecoy {
-		character.AddMajorCooldown(MajorCooldown{
-			Spell:    character.newExplosiveDecoySpell(sharedTimer),
-			Type:     CooldownTypeDPS | CooldownTypeExplosive,
-			Priority: CooldownPriorityLow + 20,
-			ShouldActivate: func(sim *Simulation, character *Character) bool {
-				// Decoy puts other explosives on 2m CD, so only use if there won't be enough
-				// time to use another explosive OR there is no filler explosive.
-				return sim.GetRemainingDuration() < time.Minute || !hasFiller
+			Cast: CastConfig{
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute,
+				},
+			},
+
+			// Explosives always have 1% resist chance, so just give them hit cap.
+			BonusHitRating:   100 * SpellHitRatingPerHitChance,
+			DamageMultiplier: 1,
+			CritMultiplier:   2,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+				baseDamage := 5006 * sim.Encounter.AOECapMultiplier()
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				}
 			},
 		})
-	}
-
-	if hasFiller {
-		var filler *Spell
-		switch consumes.FillerExplosive {
-		case proto.Explosive_ExplosiveSaroniteBomb:
-			filler = character.newSaroniteBombSpell(sharedTimer)
-		case proto.Explosive_ExplosiveCobaltFragBomb:
-			filler = character.newCobaltFragBombSpell(sharedTimer)
-		}
 
 		character.AddMajorCooldown(MajorCooldown{
-			Spell:    filler,
+			Spell:    bomb,
 			Type:     CooldownTypeDPS | CooldownTypeExplosive,
 			Priority: CooldownPriorityLow + 10,
 		})
 	}
-}
 
-// Creates a spell object for the common explosive case.
-func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, actionID ActionID, school SpellSchool, minDamage float64, maxDamage float64, cooldown Cooldown, _ float64, _ float64) SpellConfig {
-	dealSelfDamage := actionID.SameAction(ThermalSapperActionID)
+	if consumes.HighpoweredBoltGun {
+		boltGun := character.GetOrRegisterSpell(SpellConfig{
+			ActionID:    ActionID{SpellID: 82207},
+			SpellSchool: SpellSchoolFire,
+			ProcMask:    ProcMaskEmpty,
+			Flags:       SpellFlagNoOnCastComplete | SpellFlagCanCastWhileMoving,
 
-	return SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: school,
-		ProcMask:    ProcMaskEmpty,
-
-		Cast: CastConfig{
-			CD: cooldown,
-			SharedCD: Cooldown{
-				Timer:    sharedTimer,
-				Duration: TernaryDuration(actionID.SameAction(ExplosiveDecoyActionID), time.Minute*2, time.Minute),
+			Cast: CastConfig{
+				DefaultCast: Cast{
+					GCD:      GCDDefault,
+					CastTime: time.Second,
+				},
+				IgnoreHaste: true,
+				CD: Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: time.Second * 15,
+				},
 			},
-		},
 
-		// Explosives always have 1% resist chance, so just give them hit cap.
-		BonusHitRating:   100 * SpellHitRatingPerHitChance,
-		DamageMultiplier: 1,
-		CritMultiplier:   2,
-		ThreatMultiplier: 1,
+			// Explosives always have 1% resist chance, so just give them hit cap.
+			BonusHitRating:   100 * SpellHitRatingPerHitChance,
+			DamageMultiplier: 1,
+			CritMultiplier:   2,
+			ThreatMultiplier: 1,
 
-		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(minDamage, maxDamage) * sim.Encounter.AOECapMultiplier()
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
+			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+				spell.CalcAndDealDamage(sim, target, 8860, spell.OutcomeMagicHitAndCrit)
+			},
+		})
 
-			if dealSelfDamage {
-				baseDamage := sim.Roll(minDamage, maxDamage)
-				spell.CalcAndDealDamage(sim, &character.Unit, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
-		},
+		character.AddMajorCooldown(MajorCooldown{
+			Spell:    boltGun,
+			Type:     CooldownTypeDPS | CooldownTypeExplosive,
+			Priority: CooldownPriorityLow + 10,
+			ShouldActivate: func(s *Simulation, c *Character) bool {
+				return false // Intentionally not automatically used
+			},
+		})
 	}
-}
-func (character *Character) newThermalSapperSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, ThermalSapperActionID, SpellSchoolFire, 2188, 2812, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 2188, 2812))
-}
-func (character *Character) newExplosiveDecoySpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, ExplosiveDecoyActionID, SpellSchoolPhysical, 1440, 2160, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 2}, 0, 0))
-}
-func (character *Character) newSaroniteBombSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, SaroniteBombActionID, SpellSchoolFire, 1150, 1500, Cooldown{}, 0, 0))
-}
-func (character *Character) newCobaltFragBombSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, CobaltFragBombActionID, SpellSchoolFire, 750, 1000, Cooldown{}, 0, 0))
 }
 
 func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {

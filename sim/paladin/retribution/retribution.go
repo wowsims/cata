@@ -37,7 +37,7 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 	ret.PaladinAura = retOptions.Options.ClassOptions.Aura
 
 	ret.EnableAutoAttacks(ret, core.AutoAttackOptions{
-		MainHand:       ret.WeaponFromMainHand(0), // Set crit multiplier later when we have targets.
+		MainHand:       ret.WeaponFromMainHand(ret.DefaultMeleeCritMultiplier()),
 		AutoSwingMelee: true,
 	})
 

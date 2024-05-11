@@ -600,9 +600,9 @@ message Consumes {
 	Potions prepop_potion = 11;
 	Conjured default_conjured = 12;
 
-	bool thermal_sapper = 15;
-	bool explosive_decoy = 16;
-	Explosive filler_explosive = 17;
+	bool explosive_big_daddy = 15;
+	bool highpowered_bolt_gun = 16;
+	reserved 17; // deprecated old explosive
 
 	TinkerHands tinker_hands = 18;
 }

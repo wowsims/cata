@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+export const noop = () => {};
+
 // Returns if the two items are equal, or if both are null / undefined.
 export function equalsOrBothNull<T>(a: T, b: T, comparator?: (_a: NonNullable<T>, _b: NonNullable<T>) => boolean): boolean {
 	if (a == null && b == null) return true;
@@ -299,3 +302,14 @@ export function htmlDecode(input: string) {
 export const mod = (n: number, m: number): number => {
 	return ((n % m) + m) % m;
 };
+
+type Environments = 'local' | 'external';
+
+const hostname = window.location.hostname;
+export const getEnvironment = (): Environments => {
+	if (hostname.includes('localhost')) return 'local';
+	return 'external';
+};
+
+export const isLocal = () => getEnvironment() === 'local';
+export const isExternal = () => getEnvironment() === 'external';
