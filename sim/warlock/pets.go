@@ -337,9 +337,7 @@ func (pet *WarlockPet) registerFireboltSpell() {
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellImpFireBolt,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.02,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.02},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -352,8 +350,11 @@ func (pet *WarlockPet) registerFireboltSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// The .5 seems to be based on the spellpower of the owner. So dividing this by .15 ratio of imp to owner spell power.
-			baseDamage := 124 + (0.657 * (0.5 / .15 * spell.SpellPower()))
+			// seems to function similar to shadowbite, i.e. variance that only applies to the "base" damage, a
+			// secondary "base" value of 182.5 (probably not entirely correct) and SP scaling via a secondary effect
+			baseDamage := 182.5 + pet.Owner.CalcAndRollDamageRange(sim, 0.1230000034, 0.1099999994)
+			baseDamage += 1.228 * spell.SpellPower()
+
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	}))
