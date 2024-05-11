@@ -344,6 +344,19 @@ export const REP_FACTION_NAMES: Record<RepFaction, string> = {
 	[RepFaction.RepFactionAvengersOfHyjal]: 'Avengers of Hyjal',
 };
 
+export const REP_FACTION_QUARTERMASTERS: Record<RepFaction, number> = {
+	[RepFaction.RepFactionUnknown]: 0,
+	[RepFaction.RepFactionTheEarthenRing]: 50324,
+	[RepFaction.RepFactionGuardiansOfHyjal]: 50314,
+	[RepFaction.RepFactionTherazane]: 45408,
+	[RepFaction.RepFactionDragonmawClan]: 49387,
+	[RepFaction.RepFactionRamkahen]: 48617,
+	[RepFaction.RepFactionWildhammerClan]: 49386,
+	[RepFaction.RepFactionBaradinsWardens]: 47328,
+	[RepFaction.RepFactionHellscreamsReach]: 48531,
+	[RepFaction.RepFactionAvengersOfHyjal]: 54401,
+}
+
 export const masterySpellNames: Map<Spec, string> = new Map([
 	[Spec.SpecAssassinationRogue, 'Potent Poisons'],
 	[Spec.SpecCombatRogue, 'Main Gauche'],

@@ -16,6 +16,7 @@ const TotemRefreshTime5M = time.Second * 295
 // Damage Done By Caster setup
 const (
 	DDBC_T12P2 int = iota
+	DDBC_FrostbranWeapon
 
 	DDBC_Total
 )

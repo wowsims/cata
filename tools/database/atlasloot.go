@@ -206,10 +206,6 @@ func readAtlasLootFactionData(db *WowDatabase, srcUrl string) {
 		}
 
 		factionID, _ := strconv.Atoi(factionMatch[2])
-		// db.MergeZone(&proto.UIZone{
-		// 	Id:        int32(factionID),
-		// 	Expansion: expansion,
-		// })
 		contentType := factionMatch[3]
 		faction, ok := AtlasLootFactions[contentType]
 		if !ok {
@@ -245,7 +241,7 @@ func readAtlasLootFactionData(db *WowDatabase, srcUrl string) {
 							RepLevel:     repLevel,
 						}
 
-						item := &proto.UIItem{Id: int32(itemID), Sources: []*proto.UIItemSource{{
+						item := &proto.UIItem{Id: int32(itemID), FactionRestriction: AtlasLootFactionRestrictions[faction], Sources: []*proto.UIItemSource{{
 							Source: &proto.UIItemSource_Rep{
 								Rep: factionSource,
 							},
@@ -355,6 +351,11 @@ var AtlasLootFactions = map[string]proto.Faction{
 	"FACTIONS_CONTENT":       proto.Faction_Unknown,
 	"FACTIONS_ALLI_CONTENT":  proto.Faction_Alliance,
 	"FACTIONS_HORDE_CONTENT": proto.Faction_Horde,
+}
+var AtlasLootFactionRestrictions = map[proto.Faction]proto.UIItem_FactionRestriction{
+	proto.Faction_Unknown:  proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED,
+	proto.Faction_Alliance: proto.UIItem_FACTION_RESTRICTION_ALLIANCE_ONLY,
+	proto.Faction_Horde:    proto.UIItem_FACTION_RESTRICTION_HORDE_ONLY,
 }
 var AtlasLootRepLevel = map[string]proto.RepLevel{
 	"Exalted":  proto.RepLevel_RepLevelExalted,
