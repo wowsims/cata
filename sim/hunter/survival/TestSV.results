@@ -206,6 +206,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-BloodthirstyGladiator'sPursuit"
+ value: {
+  dps: 21785.59107
+  tps: 19727.61419
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-BottledLightning-66879"
  value: {
   dps: 22911.54337
