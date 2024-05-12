@@ -232,7 +232,7 @@ const (
 		WarlockSpellShadowflameDot
 
 	WarlockBasicPetSpells = WarlockSpellFelGuardLegionStrike | WarlockSpellSuccubusLashOfPain |
-		WarlockSpellSuccubusLashOfPain | WarlockSpellFelHunterShadowBite
+		WarlockSpellSuccubusLashOfPain | WarlockSpellFelHunterShadowBite | WarlockSpellImpFireBolt
 )
 
 const (
