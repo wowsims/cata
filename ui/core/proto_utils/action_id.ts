@@ -555,7 +555,7 @@ export class ActionId {
 			iconUrl = ActionId.makeIconUrl(overrideTooltipData['icon']);
 		}
 
-		return new ActionId(this.itemId, this.spellId, this.otherId, this.tag, baseName, name, iconUrl, this.randomSuffixId);
+		return new ActionId(this.itemId, this.spellId, this.otherId, this.tag, baseName, name, iconUrl, this.randomSuffixId, this.reforgeId);
 	}
 
 	toString(): string {
@@ -604,7 +604,7 @@ export class ActionId {
 	}
 
 	withoutTag(): ActionId {
-		return new ActionId(this.itemId, this.spellId, this.otherId, 0, this.baseName, this.baseName, this.iconUrl, this.randomSuffixId);
+		return new ActionId(this.itemId, this.spellId, this.otherId, 0, this.baseName, this.baseName, this.iconUrl, this.randomSuffixId, this.reforgeId);
 	}
 
 	static fromEmpty(): ActionId {
