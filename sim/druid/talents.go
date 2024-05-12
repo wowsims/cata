@@ -184,7 +184,7 @@ func (druid *Druid) applyMoonglow() {
 func (druid *Druid) applyGenesis() {
 	if druid.Talents.Genesis > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask: DruidSpellMoonfire | DruidSpellSunfire | DruidSpellInsectSwarm,
+			ClassMask: DruidSpellMoonfireDoT | DruidSpellSunfireDoT | DruidSpellInsectSwarm,
 			IntValue:  int64(1 * druid.Talents.Genesis),
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
 		})
