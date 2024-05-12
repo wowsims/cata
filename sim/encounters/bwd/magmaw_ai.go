@@ -402,6 +402,10 @@ func (ai *MagmawAI) registerSpells() {
 		return magmaSpitBase + magmaSpitVariance*sim.RandomFloat("Magma Spit Damage")
 	}
 
+	removeAt := func(s []int32, i int32) []int32 {
+		s[i] = s[len(s)-1]
+		return s[:len(s)-1]
+	}
 	numTargets := core.TernaryInt32(ai.raidSize == 10, 3, 8)
 	ai.magmaSpit = ai.Target.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 78359},
@@ -424,7 +428,7 @@ func (ai *MagmawAI) registerSpells() {
 					spell.CalcAndDealDamage(sim, target, magmaSpitDamageRoll(sim), spell.OutcomeAlwaysHit)
 				}
 			} else {
-				if numTargets >= sim.Environment.GetNumTargets() {
+				if int(numTargets) >= len(sim.Raid.AllPlayerUnits) {
 					for _, aoeTarget := range sim.Raid.AllPlayerUnits {
 						spell.CalcAndDealDamage(sim, aoeTarget, magmaSpitDamageRoll(sim), spell.OutcomeAlwaysHit)
 					}
@@ -435,15 +439,9 @@ func (ai *MagmawAI) registerSpells() {
 					}
 					hitTargets := make([]int32, 0)
 					for idx := int32(0); idx < numTargets; idx++ {
-						targetRoll := int(sim.RandomFloat("Magma Spit Target Roll") * float64(len(validTargets)))
-						rolledTarget := validTargets[targetRoll]
-						hitTargets = append(hitTargets, rolledTarget)
-
-						remove := func(s []int32, i int32) []int32 {
-							s[i] = s[len(s)-1]
-							return s[:len(s)-1]
-						}
-						validTargets = remove(validTargets, rolledTarget)
+						targetRoll := int32(sim.RandomFloat("Magma Spit Target Roll") * float64(len(validTargets)))
+						hitTargets = append(hitTargets, validTargets[targetRoll])
+						validTargets = removeAt(validTargets, targetRoll)
 					}
 
 					for idx := int32(0); idx < numTargets; idx++ {

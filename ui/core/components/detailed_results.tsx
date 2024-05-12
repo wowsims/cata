@@ -15,6 +15,7 @@ import { HealingMetricsTable } from './detailed_results/healing_metrics';
 import { LogRunner } from './detailed_results/log_runner';
 import { MeleeMetricsTable } from './detailed_results/melee_metrics';
 import { PlayerDamageMetricsTable } from './detailed_results/player_damage';
+import { PlayerDamageTakenMetricsTable } from './detailed_results/player_damage_taken';
 import { ResourceMetricsTable } from './detailed_results/resource_metrics';
 import { SimResultData } from './detailed_results/result_component';
 import { ResultsFilter } from './detailed_results/results_filter';
@@ -127,6 +128,9 @@ const layoutHTML = (
 				<div className="dr-row hps-histogram"></div>
 			</div>
 			<div id="damageTakenTab" className="tab-pane dr-tab-content damage-taken-content fade">
+				<div className="dr-row all-players-only">
+					<div className="player-damage-taken-metrics"></div>
+				</div>
 				<div className="dr-row single-player-only">
 					<div className="dtps-melee-metrics"></div>
 				</div>
@@ -232,6 +236,10 @@ export abstract class DetailedResults extends Component {
 		});
 		new PlayerDamageMetricsTable(
 			{ parent: this.rootElem.querySelector('.player-damage-metrics')!, resultsEmitter: this.resultsEmitter },
+			this.resultsFilter,
+		);
+		new PlayerDamageTakenMetricsTable(
+			{ parent: this.rootElem.querySelector('.player-damage-taken-metrics')!, resultsEmitter: this.resultsEmitter },
 			this.resultsFilter,
 		);
 		new AuraMetricsTable(

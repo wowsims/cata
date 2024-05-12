@@ -13,11 +13,9 @@ import (
 	"github.com/wowsims/cata/sim"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	_ "github.com/wowsims/cata/sim/encounters" // Needed for preset encounters.
 	"github.com/wowsims/cata/tools"
 	"github.com/wowsims/cata/tools/database"
-
-	_ "github.com/wowsims/cata/sim/encounters"     // Needed for preset encounters.
-	_ "github.com/wowsims/cata/sim/encounters/bwd" // Needed for preset encounters.
 )
 
 // To do a full re-scrape, delete the previous output file first.
