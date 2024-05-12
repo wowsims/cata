@@ -103,9 +103,6 @@ func (ai *MovementAI) Reset(sim *core.Simulation) {
 func (ai *MovementAI) ExecuteCustomRotation(sim *core.Simulation) {
 	players := sim.Raid.AllPlayerUnits
 
-	if !ai.ShouldMove(sim) {
-		return
-	}
 	for i := 0; i < len(players); i++ {
 		player := players[i]
 		duration := ai.TimeToMove(ai.MoveYards, player)
@@ -128,14 +125,9 @@ func (ai *MovementAI) ExecuteCustomRotation(sim *core.Simulation) {
 			player.MoveDuration(duration, sim)
 		}
 	}
+
+	ai.Target.WaitUntil(sim, sim.CurrentTime+ai.MoveInterval)
 }
 func (ai *MovementAI) TimeToMove(distance float64, unit *core.Unit) time.Duration {
 	return core.DurationFromSeconds(distance / unit.GetMovementSpeed())
-}
-func (ai *MovementAI) ShouldMove(sim *core.Simulation) bool {
-	if sim.CurrentTime-ai.LastMoveTime >= ai.MoveInterval {
-		ai.LastMoveTime = sim.CurrentTime
-		return true
-	}
-	return false
 }
