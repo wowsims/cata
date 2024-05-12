@@ -1,6 +1,6 @@
 .summary-table-root {
 	@include media-breakpoint-down(xl) {
-		margin-bottom: $container-padding;
+		margin-bottom: var(--container-padding);
 	}
 
 	@include media-breakpoint-down(md) {
@@ -9,9 +9,9 @@
 }
 
 .summary-tables-container {
-	margin-top: $section-spacer;
+	margin-top: var(--section-spacer);
 	display: grid;
-	grid-gap: $section-spacer;
+	grid-gap: var(--section-spacer);
 	grid-template-columns: repeat(2, 1fr);
 	grid-auto-flow: row;
 
@@ -20,11 +20,11 @@
 	}
 
 	.content-block-header {
-		grid-gap: map-get($spacers, 2);
+		grid-gap: var(--spacer-2);
 
 		.summary-table-reset-button {
 			margin-left: auto;
-			margin-bottom: map-get($spacers, 1);
+			margin-bottom: var(--spacer-1);
 		}
 	}
 }
@@ -33,9 +33,9 @@
 	.gem-icon {
 		--gem-width: 2rem;
 		position: unset;
-		margin-right: map-get($spacers, 1);
+		margin-right: var(--spacer-1);
 		border-radius: 0;
-		border: $border-default;
+		border: var(--border-default);
 	}
 
 	:last-child {
@@ -43,7 +43,7 @@
 	}
 
 	&:not(:last-child) {
-		margin-bottom: map-get($spacers, 1);
+		margin-bottom: var(--spacer-1);
 	}
 }
 
@@ -53,12 +53,12 @@
 }
 
 .summary-table-footer {
-	margin-top: map-get($spacers, 1);
+	margin-top: var(--spacer-1);
 
 	.positive {
-		color: green;
+		color: var(--bs-success);
 	}
 	.negative {
-		color: red;
+		color: var(--bs-danger);
 	}
 }

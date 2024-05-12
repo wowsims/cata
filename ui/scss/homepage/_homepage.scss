@@ -21,15 +21,15 @@
 	.homepage-content-container,
 	.homepage-footer-container {
 		@include media-breakpoint-down(md) {
-			padding-top: map-get($spacers, 3);
-			padding-bottom: map-get($spacers, 3);
+			padding-top: var(--spacer-3);
+			padding-bottom: var(--spacer-3);
 		}
 	}
 
 	.homepage-header {
 		.homepage-header-container {
 			display: flex;
-			padding-top: $section-spacer;
+			padding-top: var(--section-spacer);
 			@include media-breakpoint-down(md) {
 				display: flex;
 			}
@@ -45,7 +45,7 @@
 
 				.wowsims-logo {
 					width: 6rem;
-					margin-right: map-get($spacers, 3);
+					margin-right: var(--spacer-3);
 					@include media-breakpoint-down(md) {
 						width: 48px;
 					}
@@ -54,40 +54,40 @@
 				.wowsims-title {
 					@extend .display-1;
 					@extend .fw-bold;
-					color: $brand;
+					color: var(--bs-brand);
 					margin: 0;
 					line-height: 1;
 				}
 			}
 
 			.homepage-header-collapse {
-				padding-top: map-get($spacers, 3);
-				padding-bottom: map-get($spacers, 3);
+				padding-top: var(--spacer-3);
+				padding-bottom: var(--spacer-3);
 				align-items: flex-end;
 				justify-content: flex-end;
 			}
 		}
 
 		.expansion-title {
-			color: $cata-orange;
+			color: var(--bs-expansion);
 			margin: 0;
 		}
 	}
 
 	.homepage-content-container {
-		padding-top: $container-padding;
-		padding-bottom: $container-padding;
+		padding-top: var(--container-padding);
+		padding-bottom: var(--container-padding);
 		flex-direction: column;
 		@include media-breakpoint-down(md) {
-			margin-bottom: map-get($spacers, 3);
+			margin-bottom: var(--spacer-3);
 		}
 
 		.info-container {
-			margin-bottom: $container-padding;
+			margin-bottom: var(--container-padding);
 			display: flex;
 			flex-direction: column;
 			@include media-breakpoint-down(md) {
-				margin-bottom: map-get($spacers, 3);
+				margin-bottom: var(--spacer-3);
 			}
 
 			.wowsims-info {
@@ -105,8 +105,8 @@
 			flex-direction: column;
 
 			@include media-breakpoint-down(lg) {
-				margin-left: map-get($spacers, 3) * -1;
-				margin-right: map-get($spacers, 3) * -1;
+				margin-left: var(--spacer-3) * -1;
+				margin-right: var(--spacer-3) * -1;
 			}
 
 			.sim-links {
@@ -117,7 +117,7 @@
 				}
 
 				&:not(:last-child) {
-					margin-bottom: map-get($spacers, 5);
+					margin-bottom: var(--spacer-5);
 				}
 
 				& > .sim-link,

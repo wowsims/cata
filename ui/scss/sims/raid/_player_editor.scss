@@ -1,18 +1,19 @@
 // Styles for the player editor modal
-
-$player-editor-modal-width: 95vw;
-$player-editor-modal-height: calc(100vh - (2 * #{$modal-dialog-margin-y-sm-up}));
+:root {
+	--player-editor-modal-width: 95vw;
+	--player-editor-modal-height: calc(100vh - (2 * var(--bs-modal-dialog-margin-y-sm-up)));
+}
 
 // We're using direct child selectors to avoid affecting modals within the individual sims
 .player-editor-modal {
-	max-width: $player-editor-modal-width !important;
-	width: $player-editor-modal-width !important;
+	max-width: var(--player-editor-modal-width) !important;
+	width: var(--player-editor-modal-width) !important;
 
-	&> .modal-content {
-		height: $player-editor-modal-height;
+	& > .modal-content {
+		height: var(--player-editor-modal-height);
 		overflow: hidden;
 
-		&> .modal-body {
+		& > .modal-body {
 			padding: 0;
 		}
 	}
@@ -20,22 +21,22 @@ $player-editor-modal-height: calc(100vh - (2 * #{$modal-dialog-margin-y-sm-up}))
 	.sim-ui {
 		// Because of the placement of the modal we have to add an extra gap below to be able
 		// to view the full contents of the individual sim ui
-		padding-bottom: calc($modal-dialog-margin-y-sm-up + $gap-width)
+		padding-bottom: calc(var(--bs-modal-dialog-margin-y-sm-up) + var(--gap-width));
 	}
 
 	.sim-bg {
 		top: unset !important;
 		left: unset !important;
 		// Subtract 2 pixels for the borders of the modal
-		width: calc(#{$player-editor-modal-width} - 2px) !important;
-		height: calc(#{$player-editor-modal-height} - 2px) !important;
+		width: calc(var(--player-editor-modal-width) - 2px) !important;
+		height: calc(var(--player-editor-modal-height) - 2px) !important;
 		// The default -1 causes the background to be hidden within the modal
 		z-index: 0 !important;
 	}
 
-  .settings-tab {
-    .tab-panel-col {
-      flex: 1 !important;
-    }
-  }
+	.settings-tab {
+		.tab-panel-col {
+			flex: 1 !important;
+		}
+	}
 }

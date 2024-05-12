@@ -1,18 +1,18 @@
-@use "sass:map";
+@use 'sass:map';
 
 .ep-weights-menu {
 	.ep-weights-options {
-		margin-bottom: $block-spacer;
+		margin-bottom: var(--block-spacer);
 	}
 
 	.ep-reference-options {
-		margin-bottom: $block-spacer;
+		margin-bottom: var(--block-spacer);
 		span {
 			font-weight: bold;
 		}
 
 		p {
-			margin-top: $block-spacer;
+			margin-top: var(--block-spacer);
 		}
 	}
 
@@ -39,7 +39,7 @@
 			align-items: center;
 			justify-content: center;
 			z-index: 1;
-			background: rgba(0,0,0,0.5);
+			background: var(--bs-black-alpha-50);
 		}
 
 		.results-ep-table {
@@ -50,24 +50,25 @@
 				display: none;
 			}
 
-			th, td {
-				&[class*="type-"] {
+			th,
+			td {
+				&[class*='type-'] {
 					text-align: right;
 				}
 			}
 
 			th {
-				padding-top: map-get($spacers, 2);
-				padding-bottom: map-get($spacers, 2);
-				padding-right: map-get($spacers, 2);
+				padding-top: var(--spacer-2);
+				padding-bottom: var(--spacer-2);
+				padding-right: var(--spacer-2);
 				text-align: left;
 			}
 
 			.ep-ratios {
-				background-color: $table-row-even-bg;
+				background-color: var(--bs-table-row-even-bg);
 
 				td {
-					padding: $table-cell-padding;
+					padding: var(--table-cell-padding);
 				}
 
 				.input-root {
@@ -81,26 +82,30 @@
 
 				.compute-ep {
 					white-space: nowrap;
-					.not-tiny { display: inline; }
+					.not-tiny {
+						display: inline;
+					}
 					.fas {
 						display: inline;
-						vertical-align:middle;
+						vertical-align: middle;
 					}
 				}
 			}
 
 			tbody {
 				tr:nth-child(even) {
-					background-color: $table-row-even-bg;
+					background-color: var(--bs-table-row-even-bg);
 				}
 
 				tr:nth-child(odd) {
-					background-color: $table-row-odd-bg;
+					background-color: var(--bs-table-row-odd-bg);
 				}
 
 				td {
-					padding: $table-cell-padding;
-					.fas { display: inline; }
+					padding: var(--table-cell-padding);
+					.fas {
+						display: inline;
+					}
 				}
 			}
 
@@ -114,18 +119,18 @@
 			}
 
 			.results-stdev {
-				font-size: .625rem;
+				font-size: 0.625rem;
 			}
 
 			.col-action {
-				margin-left: map-get($spacers, 1);
+				margin-left: var(--spacer-1);
 			}
 		}
 	}
 }
 
 .unused-ep {
-	color: #B0B0B0 !important;
+	color: var(--bs-gray-500) !important;
 }
 
 // Style overrides for the EP UI in tank mode
@@ -134,7 +139,9 @@
 	@mixin compact-button {
 		.results-ep-table-container {
 			.results-ep-table {
-				.not-tiny { display: none !important; }
+				.not-tiny {
+					display: none !important;
+				}
 			}
 		}
 	}
@@ -161,23 +168,29 @@
 	}
 
 	// Shorten the compute EP button on very small devices
-	@media (max-width: 471px) { @include compact-button; }
+	@media (max-width: 471px) {
+		@include compact-button;
+	}
 
 	// More compact EP table on mobile viewports
 	@include media-breakpoint-only(xs) {
 		@include compact-table;
-		.ep-ratios { @include compact-input; }
+		.ep-ratios {
+			@include compact-input;
+		}
 	}
 
 	// Padding obscures part of the value on these sizes
-	@include media-breakpoint-between(sm,lg) {
-		.ep-ratios { @include compact-input; }
+	@include media-breakpoint-between(sm, lg) {
+		.ep-ratios {
+			@include compact-input;
+		}
 	}
 
 	// Avoid awkward line wrapping of table headers
 	@include media-breakpoint-down(lg) {
 		.results-ep-table {
-			th[class*="type-"] {
+			th[class*='type-'] {
 				text-align: center;
 			}
 		}
@@ -194,7 +207,9 @@
 		}
 		@include media-breakpoint-only(lg) {
 			.results-ep-table {
-				th { padding-right: 0; }
+				th {
+					padding-right: 0;
+				}
 			}
 		}
 	}

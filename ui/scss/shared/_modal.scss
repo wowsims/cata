@@ -23,7 +23,7 @@
 		th {
 			position: sticky;
 			top: 0;
-			background: $body-bg;
+			background: var(--bs-body-bg);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 .tippy-box[data-theme='tooltip-quick-swap'] {
 	opacity: 1;
 	width: 220px;
-	border: $border-default;
+	border: var(--border-default);
 	cursor: default;
 
 	.tippy-content {
@@ -17,11 +17,11 @@
 
 	li {
 		&:not(:last-child) {
-			border-bottom: $border-default;
+			border-bottom: var(--border-default);
 		}
 		&:nth-child(odd) {
 			.tooltip-quick-swap__anchor {
-				background-color: $table-row-odd-bg;
+				background-color: var(--bs-table-row-odd-bg);
 			}
 		}
 	}
@@ -29,7 +29,7 @@
 	.tooltip-quick-swap__icon {
 		--gem-width: 2.5rem;
 		position: unset;
-		margin-right: map-get($spacers, 1);
+		margin-right: var(--spacer-1);
 		border-radius: 0;
 	}
 }
@@ -37,14 +37,14 @@
 .tooltip-quick-swap__title,
 .tooltip-quick-swap__footer,
 .tooltip-quick-swap__empty {
-	padding-left: map-get($spacers, 2);
-	padding-right: map-get($spacers, 2);
+	padding-left: var(--spacer-2);
+	padding-right: var(--spacer-2);
 }
 
 .tooltip-quick-swap__title,
 .tooltip-quick-swap__footer {
-	padding-top: map-get($spacers, 2);
-	padding-bottom: map-get($spacers, 2);
+	padding-top: var(--spacer-2);
+	padding-bottom: var(--spacer-2);
 	margin-bottom: 0;
 }
 
@@ -55,19 +55,19 @@
 
 .tooltip-quick-swap__anchor {
 	cursor: pointer;
-	background-color: $table-row-even-bg;
-	transition: $link-transition;
+	background-color: var(--bs-table-row-even-bg);
+	transition: var(--link-transition);
 	border: 1px solid transparent;
 	transition-property: background-color, color, border;
 
 	@media (pointer: fine) {
 		&:hover {
-			background-color: lighten($table-row-even-bg, 10%) !important;
+			background-color: hsla(var(--bs-table-row-even-bg-hsl), .9) !important;
 		}
 	}
 
 	&.active {
-		border-color: $success;
+		border-color: var(--bs-success);
 	}
 }
 
@@ -79,5 +79,5 @@
 
 .tooltip-quick-swap__empty {
 	margin-bottom: 0;
-	color: $link-danger-color;
+	color: var(--bs-link-danger);
 }

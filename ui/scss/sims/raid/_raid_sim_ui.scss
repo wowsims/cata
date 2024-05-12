@@ -20,8 +20,8 @@
 
 	.settings-section-container {
 		position: absolute;
-		margin-bottom: $section-spacer;
-		margin-right: $section-spacer;
+		margin-bottom: var(--section-spacer);
+		margin-right: var(--section-spacer);
 
 		.raid-encounter-section {
 			.encounter-picker-root {

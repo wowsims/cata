@@ -1,11 +1,11 @@
 .filters-menu {
 	.menu-section:not(:last-child) {
-		margin-bottom: map-get($spacers, 3);
+		margin-bottom: var(--spacer-3);
 	}
 
 	[class*="filters-menu-section-"] {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		grid-column-gap: $modal-inner-padding;
+		grid-column-gap: var(--bs-modal-padding);
 	}
 }

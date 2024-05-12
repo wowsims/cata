@@ -1,28 +1,30 @@
 @use 'sass:map';
-
+:root{
+	--raid-stats-bg: var(--bs-gray-800-alpha-50)
+}
 .raid-stats {
 	.raid-stats-section {
-		margin-bottom: $block-spacer * 2;
+		margin-bottom: calc(var(--block-spacer) * 2);
 
 		.raid-stats-section-label {
 			font-weight: bold;
 		}
 
 		.raid-stats-section-content {
-			padding: map-get($spacers, 2);
-			border: $border-default;
+			padding: var(--spacer-2);
+			border: var(--border-default);
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
-			background-color: rgba(50, 50, 50, 0.5);
+			background-color: var(--raid-stats-bg);
 
 			.raid-stats-category-root {
 				&:not(:nth-last-child(-n + 4)) {
-					margin-bottom: $block-spacer;
+					margin-bottom: var(--block-spacer);
 				}
 
 				.raid-stats-category {
 					display: inline-flex;
-					color: white;
+					color: var(--bs-white);
 
 					.raid-stats-category-label {
 						filter: brightness(0.4);
@@ -65,11 +67,11 @@
 		align-items: center;
 
 		&:not(:last-child) {
-			margin-bottom: map-get($spacers, 1);
+			margin-bottom: var(--spacer-1);
 		}
 
 		& > :not(:last-child) {
-			margin-right: map-get($spacers, 1);
+			margin-right: var(--spacer-1);
 		}
 
 		.raid-stats-effect-counter {
@@ -78,8 +80,8 @@
 		}
 
 		.raid-stats-effect-icon {
-			width: $icon-size-sm;
-			height: $icon-size-sm;
+			width: var(--icon-size-sm);
+			height: var(--icon-size-sm);
 		}
 	}
 }

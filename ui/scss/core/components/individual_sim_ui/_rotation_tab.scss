@@ -74,7 +74,7 @@
 
 	.rotation-settings {
 		flex: 1;
-		margin-right: $section-spacer;
+		margin-right: var(--section-spacer);
 
 		@include media-breakpoint-down(md) {
 			margin-right: 0;

@@ -7,9 +7,9 @@
 	.raid-controls,
 	.new-player-picker-root,
 	.parties-container {
-		margin-bottom: $block-spacer * 2;
+		margin-bottom: calc(var(--block-spacer) * 2);
 		display: grid;
-		grid-gap: $block-spacer;
+		grid-gap: var(--block-spacer);
 	}
 
 	.raid-controls {
@@ -21,12 +21,12 @@
 	}
 
 	.new-player-picker-root {
-		margin-bottom: $block-spacer * 2;
+		margin-bottom: calc(var(--block-spacer) * 2);
 		grid-template-columns: repeat(5, 1fr);
 
 		.class-presets-container {
-			padding: map-get($spacers, 1) 0;
-			border-radius: map-get($spacers, 1);
+			padding: var(--spacer-1) 0;
+			border-radius: var(--spacer-1);
 			display: flex;
 			justify-content: space-evenly;
 		}
@@ -34,12 +34,12 @@
 
 	.parties-container-small {
 		grid-template-columns: repeat(2, 1fr);
-		grid-row-gap: $block-spacer * 2;
+		grid-row-gap: calc(var(--block-spacer) * 2);
 	}
 
 	.parties-container-full {
 		grid-template-columns: repeat(3, 1fr);
-		grid-row-gap: $block-spacer * 2;
+		grid-row-gap: calc(var(--block-spacer) * 2);
 	}
 }
 
@@ -60,7 +60,7 @@
 
 	.players-container {
 		display: grid;
-		grid-gap: map-get($spacers, 1);
+		grid-gap: var(--spacer-1);
 	}
 }
 
@@ -70,13 +70,13 @@
 		align-items: center;
 
 		&> :not(:last-child) {
-			margin-right: map-get($spacers, 1);
+			margin-right: var(--spacer-1);
 		}
 	}
 }
 
 .party-results {
-	margin-bottom: map-get($spacers, 1);
+	margin-bottom: var(--spacer-1);
 	line-height: 1rem;
 }
 
@@ -84,12 +84,12 @@
 .player-results {
 	display: flex;
 	align-items: flex-end;
-	font-size: $content-font-size;
+	font-size: var(--content-font-size);
 }
 
 .party-results-reference-delta,
 .player-results-reference-delta {
-	margin-left: map-get($spacers, 1);
+	margin-left: var(--spacer-1);
 	font-size: .75rem;
 	line-height: .875rem;
 }

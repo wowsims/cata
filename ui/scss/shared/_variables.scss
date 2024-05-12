@@ -9,6 +9,7 @@
 //////////////////////////
 
 // Custom theme color mapping
+$expansion: #f94119;
 $brand: #e0a335;
 $success: #1eff00;
 
@@ -24,24 +25,35 @@ $warlock: rgb(148, 130, 201);
 $warrior: rgb(199, 156, 110);
 
 $class-colors: (
-	'death-knight': $death-knight,
-	'druid': $druid,
-	'hunter': $hunter,
-	'mage': $mage,
-	'paladin': $paladin,
-	'priest': $priest,
-	'raid': $brand,
-	'rogue': $rogue,
-	'shaman': $shaman,
-	'warlock': $warlock,
-	'warrior': $warrior,
+	death-knight: $death-knight,
+	druid: $druid,
+	hunter: $hunter,
+	mage: $mage,
+	paladin: $paladin,
+	priest: $priest,
+	raid: $brand,
+	rogue: $rogue,
+	shaman: $shaman,
+	warlock: $warlock,
+	warrior: $warrior,
 );
+$theme-colors: map-merge($theme-colors, $class-colors);
 
 $custom-colors: (
-	'brand': $brand,
-	'primary': $primary,
-	'success': $success,
+	expansion: $expansion,
+	brand: $brand,
+	primary: $primary,
+	success: $success,
+	off-white: #f0f0f0,
 );
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+$custom-alpha: (
+	black-alpha-30: rgba($black, 0.3),
+	black-alpha-50: rgba($black, 0.5),
+	gray-800-alpha-50: rgba($gray-800, 0.5),
+);
+$theme-colors: map-merge($theme-colors, $custom-alpha);
 
 $custom-breakpoints: (
 	xxxl: 1600px,
@@ -50,11 +62,23 @@ $custom-breakpoints: (
 	4k: 3800px,
 );
 
-// Borders
-$border-color: dimgrey;
-$border-default: 1px solid $border-color;
+// Spacer variables
+:root {
+	--spacer-0: #{map-get($spacers, 0)};
+	--spacer-1: #{map-get($spacers, 1)};
+	--spacer-2: #{map-get($spacers, 2)};
+	--spacer-3: #{map-get($spacers, 3)};
+	--spacer-4: #{map-get($spacers, 4)};
+	--spacer-5: #{map-get($spacers, 5)};
+}
 
-// Colors
+// Borders
+$border-color: $gray-600;
+:root {
+	--border-default: 1px solid var(--bs-border-color);
+}
+
+// item qualites
 $item-quality-junk: #9d9d9d;
 $item-quality-common: #ffffff;
 $item-quality-uncommon: #1eff00;
@@ -64,7 +88,7 @@ $item-quality-legendary: #ff8000;
 $item-quality-artifact: #e5cc80;
 $item-quality-heirloom: #0cf;
 
-$item-qualities: (
+$item-quality-colors: (
 	junk: $item-quality-junk,
 	common: $item-quality-common,
 	uncommon: $item-quality-uncommon,
@@ -74,7 +98,9 @@ $item-qualities: (
 	artifact: $item-quality-artifact,
 	heirloom: $item-quality-heirloom,
 );
+$theme-colors: map-merge($theme-colors, $item-quality-colors);
 
+// Resources
 $health-color: #22ba00;
 $mana-color: #2e93fa;
 $energy-color: #ffd700;
@@ -92,45 +118,94 @@ $resource-colors: (
 	mana: $mana-color,
 	rage: $rage-color,
 );
+$theme-colors: map-merge($theme-colors, $resource-colors);
 
-$link-danger-color: #ef9eaa;
-$link-warning-color: #faf07f;
+// Damage types
+$damage-hit: green;
+$damage-crit: blue;
+$damage-partial: yellow;
+$damage-miss: red;
+$damage-dps: #ed5653;
+$damage-threat: #b56d07;
 
-$table-row-even-bg: #202128;
-$table-row-odd-bg: #2d2f35;
+$damage-colors: (
+	dps: $damage-dps,
+	threat: $damage-threat,
+	hit: $damage-hit,
+	crit: $damage-crit,
+	partial: $damage-partial,
+	miss: $damage-miss,
+);
+$theme-colors: map-merge($theme-colors, $damage-colors);
 
-$cata-orange: #f94119;
+// Talents
+$talent-colors: (
+	talent-full: #40bf40,
+	talent-partial: #ffd100,
+);
+
+$theme-colors: map-merge($theme-colors, $talent-colors);
+// Links
+$link-colors: (
+	link-danger: #ef9eaa,
+	link-warning: #faf07f,
+);
+
+$theme-colors: map-merge($theme-colors, $link-colors);
+
+// Tables
+$table-colors: (
+	table-row-even-bg: #202128,
+	table-row-odd-bg: #2d2f35,
+);
+
+$theme-colors: map-merge($theme-colors, $table-colors);
 
 // Spacers
-$container-padding: var(--container-padding);
-$section-spacer: calc(var(--container-padding) / 2);
 
-$block-spacer: 0.75rem;
-$table-cell-padding: 0.5rem;
-$gap-width: 1.5rem;
-$gap-width-sm: 0.5rem;
+:root {
+	--table-cell-padding: 0.5rem;
 
+	--container-padding-sm: var(--gap-width-sm);
+	--container-padding-lg: 3rem;
+	--container-padding-xxl: 4rem;
+	--container-padding: var(--gap-width-sm);
+	--section-spacer: calc(var(--container-padding) / 2);
+
+	--block-spacer: 0.75rem;
+	--gap-width: 1.5rem;
+	--gap-width-sm: 0.5rem;
+}
 // Sizing
-$content-font-size: 0.75rem;
-$icon-size-sm: 1rem;
-$icon-size-md: 2.5rem;
+:root {
+	// Make Bootstrap font sizes available as CSS vars
+	--h1-font-size: #{$h1-font-size};
+	--h2-font-size: #{$h2-font-size};
+	--h3-font-size: #{$h3-font-size};
+	--h4-font-size: #{$h4-font-size};
+	--h5-font-size: #{$h5-font-size};
+	--h6-font-size: #{$h6-font-size};
+
+	--content-font-size: 0.75rem;
+	--icon-size-sm: 1rem;
+	--icon-size-md: 2.5rem;
+}
 
 // Z-index variables
-$header-z-index: 100;
-$sidebar-z-index: 200;
-$toast-z-index: 9999;
+:root {
+	--header-z-index: 100;
+	--sidebar-z-index: 200;
+	--toast-z-index: 9999;
+}
 
 /////////////////////////////////////////////
 //// Global Bootstrap variable overrides ////
 /////////////////////////////////////////////
 
-// Map overrides
-$theme-colors: map-merge($theme-colors, $class-colors);
-$theme-colors: map-merge($theme-colors, $custom-colors);
 $grid-breakpoints: map-merge($grid-breakpoints, $custom-breakpoints);
 
 $body-bg: #15171e;
-$body-color: white;
+$body-color: $white;
 $font-size-root: 16px;
 $grid-gutter-width: 0.75rem;
 
@@ -141,10 +216,12 @@ $enable-rounded: false;
 
 $link-color: #a5b1d6;
 $link-decoration: none;
-$link-hover-color: white;
-$link-transition: color 0.15s ease-in-out;
+$link-hover-color: $white;
+:root {
+	--link-transition: color 0.15s ease-in-out;
+}
 
-// Component variable overrides
+// Button
 $btn-close-color: $link-color;
 $btn-close-focus-shadow: none;
 $btn-close-hover-opacity: 1;
@@ -153,15 +230,31 @@ $btn-hover-bg-shade-amount: 30%;
 $btn-font-size: 0.875rem;
 $btn-padding-y: 0.5rem;
 
+:root {
+	--btn-transition: #{$btn-transition};
+	// Add custom variable to reuse paddings
+	--btn-padding-y: #{$btn-padding-y};
+	--btn-padding-x: #{$btn-padding-x};
+	--btn-font-size: #{$btn-font-size};
+}
+
+// Input
+:root {
+	--input-padding-y: #{$input-padding-y};
+	--input-padding-x: #{$input-padding-x};
+}
+
+// Dropdown
 $dropdown-bg: $body-bg;
 $dropdown-border-width: 0;
-$dropdown-color: white;
+$dropdown-color: $white;
 $dropdown-link-active-bg: $dropdown-bg;
-$dropdown-link-color: white;
-$dropdown-link-hover-color: white;
+$dropdown-link-color: $white;
+$dropdown-link-hover-color: $white;
 $dropdown-link-hover-bg: darken($dropdown-bg, 3);
 $dropdown-padding-y: 0;
 
+// Form
 $form-check-input-bg: $link-color;
 $form-check-input-border: 1px solid lighten($body-bg, 20);
 $form-check-input-width: 2rem;
@@ -172,32 +265,34 @@ $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://w
 $form-check-input-checked-border-color: lighten($body-bg, 20);
 
 $form-label-margin-bottom: 0.25rem;
-$form-label-font-size: $content-font-size;
+$form-label-font-size: var(--content-font-size);
 $form-label-font-weight: normal;
 
 $form-select-bg: lighten($body-bg, 12);
 $form-select-border-color: lighten($body-bg, 20);
-$form-select-color: white;
+$form-select-color: $white;
 $form-select-disabled-bg: lighten($body-bg, 20);
 $form-select-focus-border-color: lighten($body-bg, 20);
 $form-select-focus-box-shadow: 0 0 0.25rem lighten($body-bg, 20);
-$form-select-font-size: $content-font-size;
+$form-select-font-size: var(--content-font-size);
 $form-select-indicator: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>");
 
-$form-text-color: dimgrey;
-$form-text-font-size: $content-font-size;
+$form-text-color: $gray-600;
+$form-text-font-size: var(--content-font-size);
 
+// Input
 $input-bg: lighten($body-bg, 12);
 $input-border-color: lighten($body-bg, 20);
-$input-color: white;
+$input-color: $white;
 $input-disabled-bg: lighten($body-bg, 20);
 $input-focus-bg: lighten($body-bg, 12);
 $input-focus-border-color: lighten($body-bg, 20);
 $input-focus-box-shadow: 0 0 0.25rem lighten($body-bg, 20);
-$input-focus-color: white;
-$input-font-size: $content-font-size;
+$input-focus-color: $white;
+$input-font-size: var(--content-font-size);
 $input-placeholder-color: $link-color;
 
+// Modal
 $modal-content-bg: $body-bg;
 $modal-content-border-color: $border-color;
 $modal-footer-margin-between: 0px;
@@ -205,24 +300,32 @@ $modal-header-border-color: $border-color;
 $modal-header-padding: 1.25rem;
 $modal-inner-padding: 1.25rem;
 
-$navbar-dark-color: white;
-$navbar-dark-hover-color: $primary;
-$navbar-dark-active-color: $primary;
-$navbar-padding-y: 0;
-
+// Nab
 $nav-link-font-size: 0.875rem;
-$nav-link-padding-y: map-get($spacers, 3);
-$nav-link-transition: $link-transition;
+$nav-link-padding-y: var(--spacer-3);
+$nav-link-transition: var(--link-transition);
 
 $nav-tabs-border-color: $border-color;
 $nav-tabs-link-active-bg: transparent;
-$nav-tabs-link-active-color: white;
+$nav-tabs-link-active-color: $white;
 
-$tooltip-bg: #424557;
+// Tooltip
+$tooltip-bg: $gray-800;
 $tooltip-border: $link-color;
-$tooltip-body-color: white;
+$tooltip-body-color: $white;
 $tooltip-max-width: 15vw;
 $tooltip-max-width-lg: 25vw;
 $tooltip-max-width-sm: 75vw;
-$tooltip-body-padding-x: map-get($spacers, 2);
-$tooltip-body-padding-y: map-get($spacers, 2);
+$tooltip-body-padding-x: var(--spacer-2);
+$tooltip-body-padding-y: var(--spacer-2);
+
+:root {
+	--bs-tooltip-bg: #{$tooltip-bg};
+	--bs-tooltip-border: #{$tooltip-border};
+	--bs-tooltip-body-color: #{$tooltip-body-color};
+	--bs-tooltip-max-width: #{$tooltip-max-width};
+	--bs-tooltip-max-width-lg: #{$tooltip-max-width-lg};
+	--bs-tooltip-max-width-sm: #{$tooltip-max-width-sm};
+	--bs-tooltip-body-padding-x: #{$tooltip-body-padding-x};
+	--bs-tooltip-body-padding-y: #{$tooltip-body-padding-y};
+}

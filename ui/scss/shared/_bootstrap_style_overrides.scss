@@ -11,6 +11,8 @@
 	font-weight: bold;
 }
 
+$gray-800: #323232;
+
 :root {
 	--bs-body-font-family: SimDefaultFont;
 	--bs-body-line-height: 1.25;
@@ -21,10 +23,10 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	transition: $link-transition;
+	transition: var(--link-transition);
 
 	&:hover {
-		color: white;
+		color: var(--bs-white);
 	}
 }
 
@@ -32,13 +34,13 @@
 	@include button-variant(
 		$background: transparent,
 		$border: transparent,
-		$color: $link-danger-color,
+		$color: map-get($link-colors, 'link-danger'),
 		$hover-background: transparent,
 		$hover-border: transparent,
 		$hover-color: $body-color,
 		$active-background: transparent,
 		$active-border: transparent,
-		$active-color: $link-danger-color,
+		$active-color: map-get($link-colors, 'link-danger'),
 		$disabled-background: transparent,
 		$disabled-border: transparent,
 		$disabled-color: rgba($body-color, 0.6)
@@ -75,7 +77,7 @@
 	}
 
 	.form-label {
-		margin-left: map-get($spacers, 2);
+		margin-left: var(--spacer-2);
 	}
 }
 
@@ -99,15 +101,15 @@
 }
 
 .link-warning {
-	color: $link-warning-color !important;
+	color: var(--bs-link-warning) !important;
 }
 
 .link-danger {
-	color: $link-danger-color !important;
+	color: var(--bs-link-danger) !important;
 }
 
 .link-success {
-	color: $success !important;
+	color: var(--bs-success) !important;
 }
 
 .modal {
@@ -133,12 +135,12 @@
 
 .modal-header {
 	.btn-close {
-		margin-right: -1 * map-get($spacers, 1);
+		margin-right: calc(-1 * var(--spacer-1));
 		z-index: 1000;
 
 		&.position-fixed {
-			top: calc(var(--bs-modal-margin) + 1px + $gap-width);
-			right: calc(2.5vw + 1px + $gap-width);
+			top: calc(var(--bs-modal-margin) + 1px + var(--gap-width));
+			right: calc(2.5vw + 1px + var(--gap-width));
 		}
 	}
 }
@@ -147,7 +149,7 @@
 	.navbar-toggler {
 		border: 0;
 		box-shadow: none;
-		color: white;
+		color: var(--bs-white);
 		@include media-breakpoint-down(md) {
 			position: absolute;
 			top: 0;
@@ -160,12 +162,12 @@
 		align-items: center;
 		white-space: nowrap;
 		@include media-breakpoint-down(md) {
-			padding-bottom: map-get($spacers, 3);
+			padding-bottom: var(--spacer-3);
 		}
 
 		&:first-of-type {
 			@include media-breakpoint-down(md) {
-				padding-top: map-get($spacers, 2);
+				padding-top: var(--spacer-2);
 			}
 		}
 	}
@@ -225,22 +227,22 @@
 @each $color, $value in $class-colors {
 	// Dampened class themes
 	.bg-#{$color}-dampened {
-		background: mix(black, $value, 75%);
+		background: mix($black, $value, 75%);
 	}
 }
 
 .toast {
 	--icon-color: var(--bs-warning);
-	--bs-toast-padding-x: #{map-get($spacers, 3)};
-	--bs-toast-padding-y: #{map-get($spacers, 3)};
-	--bs-toast-spacing: #{$toast-spacing};
-	--bs-toast-max-width: #{$toast-max-width};
-	--bs-toast-color: #{$body-color};
-	--bs-toast-bg: #{$body-bg};
-	--bs-toast-border-color: #{lighten($body-bg, 20%)};
-	--bs-toast-border-width: #{$toast-border-width};
+	--bs-toast-padding-x: var(--spacer-3);
+	--bs-toast-padding-y: var(--spacer-3);
+	// --bs-toast-spacing: default;
+	// --bs-toast-max-width: default;
+	--bs-toast-color: var(--bs-body-color);
+	--bs-toast-bg: var(--bs-body-bg);
+	--bs-toast-border-color: color-mix(in srgb, var(--bs-body-bg), white 20%);
+	// --bs-toast-border-width: default;
 	--bs-toast-border-radius: 0;
-	--bs-toast-box-shadow: #{$toast-box-shadow};
+	// --bs-toast-box-shadow: default;
 	--bs-toast-header-color: var(--bs-toast-color);
 	--bs-toast-header-bg: var(--bs-toast-bg);
 	--bs-toast-header-border-color: transparent;

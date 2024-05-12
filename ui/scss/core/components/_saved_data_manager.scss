@@ -1,7 +1,7 @@
 @use 'sass:map';
 
 .saved-data-manager-root {
-	margin-bottom: $block-spacer * 2;
+	margin-bottom: calc(var(--block-spacer) * 2);
 
 	.saved-data-container {
 		display: flex;
@@ -24,7 +24,7 @@
 		}
 
 		.saved-data-save-input {
-			margin-bottom: $block-spacer;
+			margin-bottom: var(--block-spacer);
 
 			@include media-breakpoint-down(xxl) {
 				width: 100%;
@@ -41,13 +41,13 @@
 
 .saved-data-set-chip {
 	padding: 0;
-	margin-bottom: $block-spacer;
-	margin-right: $block-spacer;
+	margin-bottom: var(--block-spacer);
+	margin-right: var(--block-spacer);
 	border: 1px solid var(--bs-primary);
 	display: flex;
-	font-size: $content-font-size;
+	font-size: var(--content-font-size);
 	font-weight: normal;
-	transition: $btn-transition;
+	transition: var(--btn-transition);
 
 	&.active {
 		background-color: var(--bs-primary);
@@ -67,13 +67,13 @@
 	}
 
 	.saved-data-set-name {
-		padding: map-get($spacers, 2);
-		color: $body-color;
+		padding: var(--spacer-2);
+		color: var(--bs-body-color);
 	}
 
 	.saved-data-set-delete {
-		padding: map-get($spacers, 2) 0;
-		margin-right: map-get($spacers, 2);
-		color: $body-color;
+		padding: var(--spacer-2) 0;
+		margin-right: var(--spacer-2);
+		color: var(--bs-body-color);
 	}
 }
