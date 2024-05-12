@@ -4,7 +4,7 @@
 	top: -1px;
 	height: calc(var(--sim-header-height) + 1px);
 	border-bottom: var(--border-default);
-	z-index: var(--sidebar-z-index) + 1;
+	z-index: calc(var(--sidebar-z-index) + 1);
 
 	.sim-title-dropdown-root {
 		height: calc(var(--sim-header-height) - 1px);
