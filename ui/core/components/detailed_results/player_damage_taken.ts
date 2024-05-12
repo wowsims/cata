@@ -11,6 +11,7 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 	private readonly resultsFilter: ResultsFilter;
 
 	// Cached values from most recent result.
+	private resultData: SimResultData | undefined;
 	private raidDtps: number;
 	private maxDtps: number;
 
@@ -29,7 +30,14 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 					const makeChart = () => {
 						const chartContainer = document.createElement('div');
 						rowElem.appendChild(chartContainer);
-						const sourceChart = new SourceChart(chartContainer, player.actions);
+						if (this.resultData) {
+							const targets = this.resultData.result.getTargets(this.resultData.filter);
+							const playerFilter = {
+								player: player.unitIndex,
+							}
+							const targetActions = targets.map(target => target.getMeleeActions().concat(target.getSpellActions()).map(action => action.forTarget(playerFilter))).flat();
+							const sourceChart = new SourceChart(chartContainer, targetActions);
+						}
 						return chartContainer;
 					};
 
@@ -80,9 +88,10 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 	}
 
 	getGroupedMetrics(resultData: SimResultData): Array<Array<UnitMetrics>> {
+		this.resultData = resultData;
 		const players = resultData.result.getPlayers(resultData.filter);
 
-		this.raidDtps = sum(players.map(player => player.dtps.avg));// resultData.result.raidMetrics.dtps.avg;
+		this.raidDtps = sum(players.map(player => player.dtps.avg));
 		const maxDpsIndex = maxIndex(players.map(player => player.dtps.avg))!;
 		this.maxDtps = players[maxDpsIndex].dtps.avg;
 

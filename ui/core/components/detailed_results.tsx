@@ -128,6 +128,7 @@ const layoutHTML = (
 				<div className="dr-row hps-histogram"></div>
 			</div>
 			<div id="damageTakenTab" className="tab-pane dr-tab-content damage-taken-content fade">
+				<div className="dr-row topline-results"></div>
 				<div className="dr-row all-players-only">
 					<div className="player-damage-taken-metrics"></div>
 				</div>
