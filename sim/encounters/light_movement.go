@@ -69,14 +69,8 @@ func (ai *LightMovementAI) ExecuteCustomRotation(sim *core.Simulation) {
 
 	for i := 0; i < len(players); i++ {
 		player := players[i]
-		moveOut := player.DistanceFromTarget + 10
-		moveIn := player.DistanceFromTarget - 10
 
-		if moveOut <= 40 && moveIn >= 5 {
-			player.MoveTo(moveOut, sim)
-		} else if moveIn >= 5 {
-			player.MoveTo(moveIn, sim)
-		}
+		player.MoveDuration(time.Second*2, sim)
 	}
 }
 
