@@ -142,18 +142,19 @@ func (warlock *Warlock) registerMoltenCore() {
 		},
 	})
 
+	procChance := 0.02 * float64(warlock.Talents.MoltenCore)
+	onHit := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		if spell.ClassSpellMask&(WarlockSpellImmolate|WarlockSpellImmolateDot) > 0 && sim.Proc(procChance, "Molten Core") {
+			moltenCoreAura.Activate(sim)
+			moltenCoreAura.SetStacks(sim, 3)
+		}
+	}
+
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
-			Label: "Molten Core Hidden Aura",
-			//TODO: Can this occur on the initial Immolate damage?
-			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == warlock.ImmolateDot {
-					if sim.Proc(0.02*float64(warlock.Talents.MoltenCore), "Molten Core") {
-						moltenCoreAura.Activate(sim)
-						moltenCoreAura.SetStacks(sim, 3)
-					}
-				}
-			},
+			Label:                 "Molten Core Hidden Aura",
+			OnSpellHitDealt:       onHit,
+			OnPeriodicDamageDealt: onHit,
 		}))
 }
 
