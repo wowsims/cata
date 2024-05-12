@@ -81,7 +81,7 @@ export class TypedResourceMetricsTable extends MetricsTable<ResourceMetrics> {
 	}
 
 	getGroupedMetrics(resultData: SimResultData): Array<Array<ResourceMetrics>> {
-		const players = resultData.result.getPlayers(resultData.filter);
+		const players = resultData.result.getRaidIndexedPlayers(resultData.filter);
 		if (players.length != 1) {
 			return [];
 		}
