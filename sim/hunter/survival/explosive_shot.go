@@ -18,6 +18,8 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		MissileSpeed:   40,
+		MinRange:       5,
+		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
 			Cost: 50,
 		},
@@ -56,7 +58,7 @@ func (svHunter *SurvivalHunter) registerExplosiveShotSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
 
-			spell.WaitTravelTime(sim, func(sim *core.Simulation) { // Is this the right way of doing this?
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
 					spell.SpellMetrics[target.UnitIndex].Hits--
 					dot := spell.Dot(target)

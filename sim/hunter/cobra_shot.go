@@ -20,6 +20,8 @@ func (hunter *Hunter) registerCobraShotSpell() {
 			Cost: 0,
 		},
 		MissileSpeed: 40,
+		MinRange:     5,
+		MaxRange:     40,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      time.Second,
