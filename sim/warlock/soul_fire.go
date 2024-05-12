@@ -51,10 +51,12 @@ func (warlock *Warlock) registerSoulFireSpell() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
-		BonusCoefficient:         0.726,
+		BonusCoefficient:         0.72600001097,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := warlock.CalcAndRollDamageRange(sim, 2.54299998283, 0.22499999404)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
 			warlock.SoulBurnAura.Deactivate(sim)
-			result := spell.CalcDamage(sim, target, 2862, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() && improvedSoulFire != nil {
 				improvedSoulFire.Activate(sim)
 			}
