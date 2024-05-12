@@ -198,7 +198,8 @@ func makeMagmawAI(raidSize int, isHeroic bool) core.TargetAI {
 type MagmawAI struct {
 	Target *core.Target
 
-	canAct bool
+	canAct           bool
+	lastMangleTarget *core.Unit
 
 	raidSize    int
 	isHeroic    bool
@@ -467,11 +468,11 @@ func (ai *MagmawAI) registerSpells() {
 	// 	25080,
 	// }[scalingIndex]
 
-	var lastMangleTarget *core.Unit
 	ai.mangle = ai.Target.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 89773},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagApplyArmorReduction,
 
 		DamageMultiplier: 1,
 
@@ -496,7 +497,7 @@ func (ai *MagmawAI) registerSpells() {
 
 					doDamage := !isIndividualSim || ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit.Metrics.IsTanking()
 					if doDamage {
-						ai.swelteringArmor.Get(lastMangleTarget).Activate(sim)
+						ai.swelteringArmor.Get(ai.lastMangleTarget).Activate(sim)
 					}
 				},
 			},
@@ -514,7 +515,7 @@ func (ai *MagmawAI) registerSpells() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			lastMangleTarget = target
+			ai.lastMangleTarget = target
 			doDamage := !isIndividualSim || ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit.Metrics.IsTanking()
 			if doDamage {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 1.5

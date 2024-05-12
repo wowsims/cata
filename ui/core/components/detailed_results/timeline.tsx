@@ -212,7 +212,7 @@ export class Timeline extends ResultComponent {
 			},
 		};
 
-		const players = this.resultData!.result.getPlayers(this.resultData!.filter);
+		const players = this.resultData!.result.getRaidIndexedPlayers(this.resultData!.filter);
 		if (players.length == 1) {
 			const player = players[0];
 

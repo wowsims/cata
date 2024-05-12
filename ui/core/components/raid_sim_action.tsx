@@ -7,7 +7,7 @@ import { SimRunData } from '../proto/ui.js';
 import { ActionMetrics, SimResult, SimResultFilter } from '../proto_utils/sim_result.js';
 import { SimUI } from '../sim_ui.jsx';
 import { EventID, TypedEvent } from '../typed_event.js';
-import { formatDeltaTextElem } from '../utils.js';
+import { formatDeltaTextElem, sum } from '../utils.js';
 
 export function addRaidSimAction(simUI: SimUI): RaidSimResultsManager {
 	simUI.addAction('Simulate', 'dps-action', async () =>
@@ -283,6 +283,13 @@ export class RaidSimResultsManager {
 				1,
 				true,
 			);
+		} else {
+			this.formatToplineResult(
+				`.${RaidSimResultsManager.resultMetricClasses['dtps']} .results-reference-diff`,
+				res => sum(res.getPlayers()!.map(player => player.dtps.avg))/res.getPlayers().length,
+				2,
+				true,
+			);
 		}
 	}
 
@@ -375,7 +382,7 @@ export class RaidSimResultsManager {
 	}
 
 	static makeToplineResultsContent(simResult: SimResult, filter?: SimResultFilter): HTMLElement {
-		const players = simResult.getPlayers(filter);
+		const players = simResult.getRaidIndexedPlayers(filter);
 		const content = (<></>) as HTMLElement;
 
 		if (players.length === 1) {
@@ -445,7 +452,7 @@ export class RaidSimResultsManager {
 					}),
 				);
 			} else {
-				const actions = simResult.getActionMetrics(filter);
+				const actions = simResult.getRaidIndexedActionMetrics(filter);
 				if (!!actions.length) {
 					const mergedActions = ActionMetrics.merge(actions);
 					content.appendChild(
@@ -462,7 +469,7 @@ export class RaidSimResultsManager {
 					);
 				}
 
-				const targetActions = simResult.getTargets(filter)[0].actions.map(action => action.forTarget(filter));
+				const targetActions = simResult.getTargets(filter).map(target => target.actions).flat().map(action => action.forTarget({player: playerMetrics.unitIndex}));
 				if (!!targetActions.length) {
 					const mergedTargetActions = ActionMetrics.merge(targetActions);
 					content.appendChild(
@@ -509,14 +516,26 @@ export class RaidSimResultsManager {
 					classes: this.getResultsLineClasses('dps'),
 				}),
 			);
-			// const hpsMetrics = simResult.raidMetrics.hps;
-			// content.appendChild(
-			// 	this.buildResultsLine({
-			// 		average: hpsMetrics.avg,
-			// 		stdev: hpsMetrics.stdev,
-			// 		classes: this.getResultsLineClasses('hps'),
-			// 	}),
-			// );
+
+			const targetActions = simResult.getTargets(filter).map(target => target.actions).flat().map(action => action.forTarget(filter));
+			if (!!targetActions.length) {
+				const mergedTargetActions = ActionMetrics.merge(targetActions);
+				content.appendChild(
+					this.buildResultsLine({
+						average: mergedTargetActions.dps,
+						classes: this.getResultsLineClasses('dtps'),
+					}),
+				);
+			}
+
+			const hpsMetrics = simResult.raidMetrics.hps;
+			content.appendChild(
+				this.buildResultsLine({
+					average: hpsMetrics.avg,
+					stdev: hpsMetrics.stdev,
+					classes: this.getResultsLineClasses('hps'),
+				}),
+			);
 		}
 
 		if (simResult.request.encounter?.useHealth) {

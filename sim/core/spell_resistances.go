@@ -91,16 +91,13 @@ func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
 func (unit *Unit) averageResist(school SpellSchool, attacker *Unit) float64 {
 	resistance := unit.GetStat(school.ResistanceStat()) - attacker.stats[stats.SpellPenetration]
 	if resistance <= 0 {
-
 		// https://wowpedia.fandom.com/wiki/Resistance?oldid=6512353
 		// With the release of cataclysm, level based resistances seem to have been removed
 		return 0
 	}
 
-	c := 5 * float64(attacker.Level)
-	if attacker.Type == EnemyUnit && attacker.Level-unit.Level >= 3 {
-		c = 510 // other values TBD, but not very useful in practice
-	}
+	level := float64(unit.Level)
+	c := 150 + (level-60)*(level-67.5)
 
 	return resistance / (c + resistance)
 }
