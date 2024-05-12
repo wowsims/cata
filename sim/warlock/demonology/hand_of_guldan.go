@@ -11,7 +11,7 @@ func (demonology *DemonologyWarlock) CurseOfGuldanDebuffAura(target *core.Unit) 
 	return target.GetOrRegisterAura(core.Aura{
 		Label:    "CurseOfGuldan-" + demonology.Label,
 		ActionID: core.ActionID{SpellID: 86000},
-		Duration: time.Second * 15,
+		Duration: 15 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			//TODO: Implement Crit rating for pet vs this target only
 		},
@@ -33,7 +33,7 @@ func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
 	// 	return target.GetOrRegisterAura(core.Aura{
 	// 		Label:    "Curse of Guldan",
 	// 		ActionID: core.ActionID{SpellID: 86000},
-	// 		Duration: time.Second * 15,
+	// 		Duration: 15 * time.Second,
 	// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 	// 			demonology.ActivePet.AttackTables[aura.Unit.UnitIndex].BonusCritRating += 10.0 * core.CritRatingPerCritChance
 	// 		},
@@ -57,11 +57,11 @@ func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 2,
+				CastTime: 2 * time.Second,
 			},
 			CD: core.Cooldown{
 				Timer:    demonology.NewTimer(),
-				Duration: time.Second * 12,
+				Duration: 12 * time.Second,
 			},
 		},
 

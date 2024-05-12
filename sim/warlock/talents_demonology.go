@@ -18,7 +18,7 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 		warlock.Imp.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellImpFireBolt,
 			Kind:      core.SpellMod_CastTime_Flat,
-			TimeValue: time.Millisecond * time.Duration(-250*warlock.Talents.DarkArts),
+			TimeValue: time.Duration(-250*warlock.Talents.DarkArts) * time.Millisecond,
 		})
 
 		//TODO: Add/Mult
@@ -99,7 +99,7 @@ func (warlock *Warlock) registerImpendingDoom() {
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell.ClassSpellMask&(WarlockSpellShadowBolt|WarlockSpellHandOfGuldan|WarlockSpellSoulFire|WarlockSpellIncinerate) > 0 {
 					if !warlock.Metamorphosis.CD.IsReady(sim) && sim.Proc(impendingDoomProcChance, "Impending Doom") {
-						warlock.Metamorphosis.CD.Reduce(time.Second * 15)
+						warlock.Metamorphosis.CD.Reduce(15 * time.Second)
 						warlock.UpdateMajorCooldowns()
 					}
 				}
@@ -130,7 +130,7 @@ func (warlock *Warlock) registerMoltenCore() {
 	moltenCoreAura := warlock.RegisterAura(core.Aura{
 		Label:     "Molten Core Proc Aura",
 		ActionID:  core.ActionID{SpellID: 71165},
-		Duration:  time.Second * 15,
+		Duration:  15 * time.Second,
 		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMultiplierMod.Activate()
@@ -173,7 +173,7 @@ func (warlock *Warlock) registerDecimation() {
 	decimationAura := warlock.RegisterAura(core.Aura{
 		Label:    "Decimation Proc Aura",
 		ActionID: core.ActionID{SpellID: 63167},
-		Duration: time.Second * 10,
+		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.SoulFire.CastTimeMultiplier -= decimationMod
 			warlock.SoulFire.DefaultCast.GCD = time.Duration(float64(warlock.SoulFire.DefaultCast.GCD) * (1 - decimationMod))

@@ -15,7 +15,7 @@ func (warlock *Warlock) registerSoulFireSpell() {
 		improvedSoulFire = warlock.RegisterAura(core.Aura{
 			Label:    "Improved Soul Fire",
 			ActionID: core.ActionID{SpellID: 18120},
-			Duration: time.Second * 20,
+			Duration: 20 * time.Second,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				//TODO: Add or mult?
 				warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= damageBonus
@@ -44,7 +44,7 @@ func (warlock *Warlock) registerSoulFireSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 4,
+				CastTime: 4 * time.Second,
 			},
 		},
 

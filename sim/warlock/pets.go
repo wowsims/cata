@@ -200,7 +200,7 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    pet.NewTimer(),
-				Duration: time.Second * 6,
+				Duration: 6 * time.Second,
 			},
 		},
 
@@ -249,7 +249,7 @@ func (pet *WarlockPet) registerFelstormSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    pet.NewTimer(),
-				Duration: time.Second * 45,
+				Duration: 45 * time.Second,
 			},
 			IgnoreHaste: true,
 		},
@@ -263,7 +263,7 @@ func (pet *WarlockPet) registerFelstormSpell() {
 				Label: "Felstorm",
 			},
 			NumberOfTicks: 6,
-			TickLength:    time.Second * 1,
+			TickLength:    1 * time.Second,
 			OnTick: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot) {
 				target := pet.CurrentTarget
 				spell := dot.Spell
@@ -313,7 +313,7 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    pet.NewTimer(),
-				Duration: time.Second * 6,
+				Duration: 6 * time.Second,
 			},
 		},
 

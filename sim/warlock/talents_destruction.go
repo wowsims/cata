@@ -33,13 +33,13 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask: WarlockSpellSoulFire,
 		Kind:      core.SpellMod_CastTime_Flat,
-		TimeValue: time.Millisecond * time.Duration(-500*warlock.Talents.Emberstorm),
+		TimeValue: time.Duration(-500*warlock.Talents.Emberstorm) * time.Millisecond,
 	})
 
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask: WarlockSpellIncinerate,
 		Kind:      core.SpellMod_CastTime_Flat,
-		TimeValue: time.Millisecond * time.Duration([]float64{0, -130, -250}[warlock.Talents.Emberstorm]),
+		TimeValue: time.Duration([]float64{0, -130, -250}[warlock.Talents.Emberstorm]) * time.Millisecond,
 	})
 
 	warlock.registerImprovedSearingPain()
@@ -114,7 +114,7 @@ func (warlock *Warlock) registerBackdraft() {
 	backdraft := warlock.RegisterAura(core.Aura{
 		Label:     "Backdraft",
 		ActionID:  core.ActionID{SpellID: 47260},
-		Duration:  time.Second * 15,
+		Duration:  15 * time.Second,
 		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Activate()
@@ -175,7 +175,7 @@ func (warlock *Warlock) registerBurningEmbers() {
 				Label: "Burning Embers",
 			},
 			NumberOfTicks: burningEmberTicks,
-			TickLength:    time.Second * 1,
+			TickLength:    1 * time.Second,
 			//?AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -270,7 +270,7 @@ func (warlock *Warlock) registerEmpoweredImp() {
 	empoweredImpAura := warlock.RegisterAura(core.Aura{
 		Label:    "Empowered Imp",
 		ActionID: core.ActionID{SpellID: 47221},
-		Duration: time.Second * 8,
+		Duration: 8 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Activate()
 		},

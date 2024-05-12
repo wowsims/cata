@@ -33,7 +33,7 @@ func (warlock *Warlock) registerCorruptionSpell() {
 				Label: "Corruption",
 			},
 			NumberOfTicks:       6,
-			TickLength:          time.Second * 3,
+			TickLength:          3 * time.Second,
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.176,
 

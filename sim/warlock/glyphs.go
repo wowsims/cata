@@ -12,7 +12,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 		warlock.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellConflagrate,
 			Kind:      core.SpellMod_Cooldown_Flat,
-			TimeValue: time.Second * -2,
+			TimeValue: -2 * time.Second,
 		})
 	}
 
@@ -20,7 +20,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 		warlock.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellChaosBolt,
 			Kind:      core.SpellMod_Cooldown_Flat,
-			TimeValue: time.Second * -2,
+			TimeValue: -2 * time.Second,
 		})
 	}
 
@@ -68,7 +68,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 		warlock.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellUnstableAffliction,
 			Kind:      core.SpellMod_CastTime_Flat,
-			TimeValue: time.Millisecond * 200,
+			TimeValue: 200 * time.Millisecond,
 		})
 	}
 
@@ -102,7 +102,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 
 			Icd: &core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 6,
+				Duration: 6 * time.Second,
 			},
 
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
