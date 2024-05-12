@@ -243,9 +243,8 @@ var PetConfigs = map[proto.HunterOptions_PetType]PetConfig{
 		FocusDump: Bite,
 	},
 	proto.HunterOptions_Cat: {
-		Name:           "Cat",
-		FocusDump:      Claw,
-		SpecialAbility: RoarOfCourage,
+		Name:      "Cat",
+		FocusDump: Claw,
 	},
 	proto.HunterOptions_Chimaera: {
 		Name:          "Chimaera",
