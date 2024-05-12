@@ -48,14 +48,22 @@ func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
 	}
 }
 
-func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStats stats.Stats, meleeMod float64, powerModifier float64,
-	attackOptions *core.AutoAttackOptions, statInheritance core.PetStatInheritance) *WarlockPet {
+func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStats stats.Stats, meleeMod float64,
+	powerModifier float64, aaOptions *core.AutoAttackOptions, statInheritance core.PetStatInheritance) *WarlockPet {
 
-	pet := &WarlockPet{
-		Pet: core.NewPet(proto.WarlockOptions_Summon_name[int32(summonType)], &warlock.Character, baseStats,
-			statInheritance, summonType == warlock.Options.Summon, false),
-	}
+	name := proto.WarlockOptions_Summon_name[int32(summonType)]
+	enabledOnStart := summonType == warlock.Options.Summon
+	pet := &WarlockPet{Pet: core.NewPet(name, &warlock.Character, baseStats, statInheritance, enabledOnStart, false)}
 
+	warlock.setPetOptions(pet, meleeMod, powerModifier, aaOptions)
+
+	return pet
+}
+
+func (warlock *Warlock) setPetOptions(petAgent core.PetAgent, meleeMod float64, powerModifier float64,
+	aaOptions *core.AutoAttackOptions) {
+
+	pet := petAgent.GetPet()
 	pet.EnableManaBarWithModifier(powerModifier)
 	pet.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	pet.AddStat(stats.AttackPower, -20)
@@ -64,15 +72,14 @@ func (warlock *Warlock) makePet(summonType proto.WarlockOptions_Summon, baseStat
 	pet.AddStatDependency(stats.Intellect, stats.SpellCrit,
 		core.CritPerIntMaxLevel[proto.Class_ClassPaladin]*core.CritRatingPerCritChance)
 	pet.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= meleeMod
-	if attackOptions != nil {
-		pet.EnableAutoAttacks(pet, *attackOptions)
+	if aaOptions != nil {
+		pet.EnableAutoAttacks(petAgent, *aaOptions)
 	}
-	warlock.AddPet(pet)
-	return pet
+	warlock.AddPet(petAgent)
 }
 
 func (warlock *Warlock) registerPets() {
-	autoAttackOptions := &core.AutoAttackOptions{
+	aaOptions := &core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  741.13,
 			BaseDamageMax:  1111.62,
@@ -114,11 +121,11 @@ func (warlock *Warlock) registerPets() {
 
 	inheritance := warlock.MakeStatInheritance()
 
-	warlock.Felhunter = warlock.makePet(proto.WarlockOptions_Felhunter, baseStats, 0.8, 0.77, autoAttackOptions, inheritance)
-	warlock.Felguard = warlock.makePet(proto.WarlockOptions_Felguard, baseStats, 1.0, 0.77, autoAttackOptions, inheritance)
+	warlock.Felhunter = warlock.makePet(proto.WarlockOptions_Felhunter, baseStats, 0.8, 0.77, aaOptions, inheritance)
+	warlock.Felguard = warlock.makePet(proto.WarlockOptions_Felguard, baseStats, 1.0, 0.77, aaOptions, inheritance)
 	warlock.Imp = warlock.makePet(proto.WarlockOptions_Imp, impBaseStats, 1.0, 1.0, nil, inheritance)
 	// TODO: using the modifier for incubus for now, maybe the 1.025 from succubus is the correct one
-	warlock.Succubus = warlock.makePet(proto.WarlockOptions_Succubus, baseStats, 1.05, 0.77, autoAttackOptions, inheritance)
+	warlock.Succubus = warlock.makePet(proto.WarlockOptions_Succubus, baseStats, 1.05, 0.77, aaOptions, inheritance)
 }
 
 func (warlock *Warlock) registerPetAbilities() {
@@ -138,7 +145,7 @@ func (pet *WarlockPet) GetPet() *core.Pet {
 
 func (pet *WarlockPet) Reset(_ *core.Simulation) {}
 
-func (pet *WarlockPet) Initialize() {
+func petMasteryHelper(pet *core.Pet) {
 	if pet.Owner.Spec == proto.Spec_SpecDemonologyWarlock {
 		masteryBonus := func(mastery float64) float64 {
 			return 1 + math.Floor(2.3*core.MasteryRatingToMasteryPoints(mastery))/100.0
@@ -155,6 +162,10 @@ func (pet *WarlockPet) Initialize() {
 		pet.AddStats(stats.Stats{stats.Mastery: 8 * core.MasteryRatingPerMasteryPoint})
 		pet.PseudoStats.DamageDealtMultiplier *= masteryBonus(8 * core.MasteryRatingPerMasteryPoint)
 	}
+}
+
+func (pet *WarlockPet) Initialize() {
+	petMasteryHelper(&pet.Pet)
 }
 
 func (pet *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
