@@ -211,7 +211,6 @@ type AttackTable struct {
 
 	DamageDealtMultiplier        float64 // attacker buff, applied in applyAttackerModifiers()
 	DamageTakenMultiplier        float64 // defender debuff, applied in applyTargetModifiers()
-	NatureDamageTakenMultiplier  float64
 	HauntSEDamageTakenMultiplier float64
 	HealingDealtMultiplier       float64
 	IgnoreArmor                  bool    // Ignore defender's armor for specifically this attacker's attacks
@@ -233,7 +232,6 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 
 		DamageDealtMultiplier:        1,
 		DamageTakenMultiplier:        1,
-		NatureDamageTakenMultiplier:  1,
 		HauntSEDamageTakenMultiplier: 1,
 		HealingDealtMultiplier:       1,
 	}
