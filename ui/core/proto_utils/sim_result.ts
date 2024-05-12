@@ -436,6 +436,10 @@ export class UnitMetrics {
 		return this.dps.avg * this.duration;
 	}
 
+	get totalDamageTaken() {
+		return this.dtps.avg * this.duration;
+	}
+
 	getPlayerAndPetActions(): Array<ActionMetrics> {
 		return this.actions.concat(this.pets.map(pet => pet.getPlayerAndPetActions()).flat());
 	}

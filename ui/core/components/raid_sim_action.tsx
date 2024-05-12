@@ -165,6 +165,7 @@ export class RaidSimResultsManager {
 		setResultTooltip('.results-sim-hps', 'Healing+Shielding Per Second, including overhealing.');
 		setResultTooltip('.results-sim-tps', 'Threat Per Second');
 		setResultTooltip('.results-sim-dtps', 'Damage Taken Per Second');
+		setResultTooltip('.results-sim-dur', 'Average Fight Duration');
 		setResultTooltip(
 			'.results-sim-tmi',
 			<>
