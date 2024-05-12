@@ -365,7 +365,7 @@ func (pet *WarlockPet) registerFireboltSpell() {
 			// seems to function similar to shadowbite, i.e. variance that only applies to the "base" damage, a
 			// secondary "base" value of 182.5 (probably not entirely correct) and SP scaling via a secondary effect
 			baseDamage := 182.5 + pet.Owner.CalcAndRollDamageRange(sim, 0.1230000034, 0.1099999994)
-			baseDamage += 1.228 * spell.SpellPower()
+			baseDamage += 0.657 * spell.SpellPower()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
