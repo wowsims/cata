@@ -280,7 +280,7 @@ func RunTestSuite(t *testing.T, suiteName string, generator TestGenerator) {
 				if rsr != nil {
 
 					t.Run(testName+"/CompareResults", func(t *testing.T) {
-						mtResult := RunConcurrentRaidSimSync(rsr)
+						mtResult := RunRaidSimConcurrent(rsr)
 						CompareConcurrentSimResultsTest(t, currentTestName, simResult, mtResult, 0.001)
 						if t.Failed() {
 							t.Log("You can debug the first failed comparison further by starting tests with DEBUG_FIRST_COMPARE=1")

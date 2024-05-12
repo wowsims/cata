@@ -1,5 +1,3 @@
-//go:build !wasm
-
 package core
 
 import (
@@ -332,15 +330,25 @@ func (csd *concurrentSimData) GetCombinedFinalResult() *proto.RaidSimResult {
 }
 
 // Run sim on multiple threads concurrently by splitting interations over multiple sims, transparently combining results into the progress channel.
-func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
-	if request.SimOptions.Iterations == 0 {
-		progress <- &proto.ProgressMetrics{
-			FinalRaidResult: &proto.RaidSimResult{
-				ErrorResult: "Iterations can't be 0!",
-			},
+func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) *proto.RaidSimResult {
+	defer func() {
+		if progress != nil {
+			close(progress)
 		}
-		close(progress)
-		return
+	}()
+
+	if request.SimOptions.Iterations == 0 {
+		rsr := &proto.RaidSimResult{
+			ErrorResult: "Iterations can't be 0!",
+		}
+
+		if progress != nil {
+			progress <- &proto.ProgressMetrics{
+				FinalRaidResult: rsr,
+			}
+		}
+
+		return rsr
 	}
 
 	concurrency := TernaryInt(request.SimOptions.IsTest, 3, runtime.NumCPU())
@@ -364,116 +372,122 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 	}
 
 	for i := 0; i < concurrency; i++ {
-		substituteChannels[i] = make(chan *proto.ProgressMetrics, cap(progress))
+		substituteChannels[i] = make(chan *proto.ProgressMetrics, 20)
 		substituteCases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(substituteChannels[i])}
-		quitChannels[i] = make(chan bool)
+		quitChannels[i] = make(chan bool, 1)
 	}
 
 	if !request.SimOptions.IsTest {
 		log.Printf("Running %d iterations on %d concurrent sims.", csd.IterationsTotal, csd.Concurrency)
 	}
 
-	go func() {
-		defer func() {
-			close(progress)
-			// Send quit signals to threads in case we returned due to an error.
-			for _, quitChan := range quitChannels {
-				quitChan <- true
-				close(quitChan)
-			}
-		}()
+	defer func() {
+		// Send quit signals to threads in case we returned due to an error.
+		for _, quitChan := range quitChannels {
+			quitChan <- true
+			close(quitChan)
+		}
+	}()
 
-		nextStartSeed := request.SimOptions.RandomSeed // Sims increment their seed each iteration.
+	nextStartSeed := request.SimOptions.RandomSeed // Sims increment their seed each iteration.
 
-		for i := 0; i < concurrency; i++ {
-			requestCopy := googleProto.Clone(request).(*proto.RaidSimRequest)
+	for i := 0; i < concurrency; i++ {
+		requestCopy := googleProto.Clone(request).(*proto.RaidSimRequest)
 
-			requestCopy.SimOptions.Iterations /= int32(concurrency)
-			if i == 0 {
-				requestCopy.SimOptions.Iterations += request.SimOptions.Iterations % int32(concurrency)
-			} else {
-				requestCopy.SimOptions.DebugFirstIteration = false
-			}
+		requestCopy.SimOptions.Iterations /= int32(concurrency)
+		if i == 0 {
+			requestCopy.SimOptions.Iterations += request.SimOptions.Iterations % int32(concurrency)
+		} else {
+			requestCopy.SimOptions.DebugFirstIteration = false
+		}
 
-			requestCopy.SimOptions.RandomSeed = nextStartSeed
-			nextStartSeed += int64(requestCopy.SimOptions.Iterations)
+		requestCopy.SimOptions.RandomSeed = nextStartSeed
+		nextStartSeed += int64(requestCopy.SimOptions.Iterations)
 
-			go RunSim(requestCopy, substituteChannels[i], quitChannels[i])
+		go RunSim(requestCopy, substituteChannels[i], quitChannels[i])
 
-			// Wait for first message to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
-			msg := <-substituteChannels[i]
-			// First message may be due to an immediate error, otherwise it can be ignored.
-			if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
+		// Wait for first message to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
+		msg := <-substituteChannels[i]
+		// First message may be due to an immediate error, otherwise it can be ignored.
+		if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
+			if progress != nil {
 				progress <- msg
-				log.Printf("Thread %d had an error. Cancelling all sims!", i)
-				return
 			}
+			log.Printf("Thread %d had an error. Cancelling all sims!", i)
+			return msg.FinalRaidResult
+		}
+	}
+
+	progressCounter := 0
+
+	for running > 0 {
+		i, val, ok := reflect.Select(substituteCases)
+
+		if !ok {
+			substituteCases[i].Chan = reflect.ValueOf(nil)
+			running -= 1
+			continue
 		}
 
-		for running > 0 {
-			i, val, ok := reflect.Select(substituteCases)
-
-			if !ok {
-				substituteCases[i].Chan = reflect.ValueOf(nil)
-				running -= 1
-				continue
-			}
-
-			msg := val.Interface().(*proto.ProgressMetrics)
-			if csd.UpdateProgress(i, msg) {
-				if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
+		msg := val.Interface().(*proto.ProgressMetrics)
+		if csd.UpdateProgress(i, msg) {
+			if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
+				if progress != nil {
 					progress <- msg
-					log.Printf("Thread %d had an error. Cancelling all sims!", i)
-					return
 				}
-				substituteCases[i].Chan = reflect.ValueOf(nil)
-				running -= 1
-				continue
+				log.Printf("Thread %d had an error. Cancelling all sims!", i)
+				return msg.FinalRaidResult
 			}
-
-			progress <- &proto.ProgressMetrics{
-				TotalIterations:     csd.IterationsTotal,
-				CompletedIterations: csd.GetIterationsDone(),
-				Dps:                 csd.GetDpsAvg(),
-				Hps:                 csd.GetHpsAvg(),
-			}
+			substituteCases[i].Chan = reflect.ValueOf(nil)
+			running -= 1
+			continue
 		}
 
-		for _, res := range csd.FinalResults {
-			if res == nil {
+		if progress != nil {
+			progressCounter++
+			if progressCounter%concurrency == 0 {
 				progress <- &proto.ProgressMetrics{
-					FinalRaidResult: &proto.RaidSimResult{
-						ErrorResult: "Missing one or more final sim result(s)!",
-					},
+					TotalIterations:     csd.IterationsTotal,
+					CompletedIterations: csd.GetIterationsDone(),
+					Dps:                 csd.GetDpsAvg(),
+					Hps:                 csd.GetHpsAvg(),
 				}
-				log.Print("Missing one or more final sim result(s)!")
-				return
 			}
 		}
+	}
 
-		if !request.SimOptions.IsTest {
-			log.Printf("All %d sims finished successfully.", csd.Concurrency)
+	for _, res := range csd.FinalResults {
+		if res == nil {
+			rsr := &proto.RaidSimResult{
+				ErrorResult: "Missing one or more final sim result(s)!",
+			}
+
+			if progress != nil {
+				progress <- &proto.ProgressMetrics{
+					FinalRaidResult: rsr,
+				}
+			}
+
+			log.Print("Missing one or more final sim result(s)!")
+			return rsr
 		}
+	}
 
+	if !request.SimOptions.IsTest {
+		log.Printf("All %d sims finished successfully.", csd.Concurrency)
+	}
+
+	final := csd.GetCombinedFinalResult()
+
+	if progress != nil {
 		progress <- &proto.ProgressMetrics{
 			TotalIterations:     csd.IterationsTotal,
 			CompletedIterations: csd.GetIterationsDone(),
 			Dps:                 csd.GetDpsAvg(),
 			Hps:                 csd.GetHpsAvg(),
-			FinalRaidResult:     csd.GetCombinedFinalResult(),
-		}
-	}()
-}
-
-// Run a concurrent sim and wait for final result
-func RunConcurrentRaidSimSync(request *proto.RaidSimRequest) *proto.RaidSimResult {
-	progress := make(chan *proto.ProgressMetrics, 10)
-	RunConcurrentRaidSimAsync(request, progress)
-	var rsr *proto.RaidSimResult
-	for msg := range progress {
-		if msg.FinalRaidResult != nil {
-			rsr = msg.FinalRaidResult
+			FinalRaidResult:     final,
 		}
 	}
-	return rsr
+
+	return final
 }

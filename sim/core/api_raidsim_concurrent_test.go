@@ -181,7 +181,7 @@ func TestConcurrentRaidSim(t *testing.T) {
 	for i, player := range players {
 		rsr := makeTestCase(player)
 		stRes := core.RunRaidSim(rsr)
-		mtRes := core.RunConcurrentRaidSimSync(rsr)
+		mtRes := core.RunRaidSimConcurrent(rsr)
 		core.CompareConcurrentSimResultsTest(t, strconv.Itoa(i), stRes, mtRes, 0.00001)
 	}
 }

@@ -50,7 +50,15 @@ func RunRaidSim(request *proto.RaidSimRequest) *proto.RaidSimResult {
 }
 
 func RunRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
-	RunConcurrentRaidSimAsync(request, progress)
+	go RunSim(request, progress, nil)
+}
+
+func RunRaidSimConcurrent(request *proto.RaidSimRequest) *proto.RaidSimResult {
+	return runSimConcurrent(request, nil)
+}
+
+func RunRaidSimConcurrentAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
+	go runSimConcurrent(request, progress)
 }
 
 func RunBulkSim(request *proto.BulkSimRequest) *proto.BulkSimResult {
