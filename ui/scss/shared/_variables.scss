@@ -267,24 +267,24 @@ $dropdown-padding-y: 0;
 
 // Form
 $form-check-input-bg: $link-color;
-$form-check-input-border: 1px solid lighten($body-bg, 20);
+$form-check-input-border: 1px solid color-mix(in srgb, $body-bg, $white 20%);
 $form-check-input-width: 2rem;
-$form-check-input-focus-border: lighten($body-bg, 20);
+$form-check-input-focus-border: color-mix(in srgb, $body-bg, $white 20%);
 $form-check-input-focus-box-shadow: 0 0 0.25rem $primary;
 $form-check-input-checked-bg-color: $primary;
 $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{color-contrast($primary)}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>");
-$form-check-input-checked-border-color: lighten($body-bg, 20);
+$form-check-input-checked-border-color: color-mix(in srgb, $body-bg, $white 20%);
 
 $form-label-margin-bottom: 0.25rem;
 $form-label-font-size: var(--content-font-size);
 $form-label-font-weight: normal;
 
-$form-select-bg: lighten($body-bg, 12);
-$form-select-border-color: lighten($body-bg, 20);
+$form-select-bg: color-mix(in srgb, $body-bg, $white 10%);
+$form-select-border-color: color-mix(in srgb, $body-bg, $white 20%);
 $form-select-color: $white;
-$form-select-disabled-bg: lighten($body-bg, 20);
-$form-select-focus-border-color: lighten($body-bg, 20);
-$form-select-focus-box-shadow: 0 0 0.25rem lighten($body-bg, 20);
+$form-select-disabled-bg: color-mix(in srgb, $body-bg, $white 20%);
+$form-select-focus-border-color: color-mix(in srgb, $body-bg, $white 20%);
+$form-select-focus-box-shadow: 0 0 0.25rem color-mix(in srgb, $body-bg, $white 20%);
 $form-select-font-size: var(--content-font-size);
 $form-select-indicator: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>");
 
@@ -292,13 +292,13 @@ $form-text-color: $gray-600;
 $form-text-font-size: var(--content-font-size);
 
 // Input
-$input-bg: lighten($body-bg, 12);
-$input-border-color: lighten($body-bg, 20);
+$input-bg: color-mix(in srgb, $body-bg, $white 10%);
+$input-border-color: color-mix(in srgb, $body-bg, $white 20%);
 $input-color: $white;
-$input-disabled-bg: lighten($body-bg, 20);
-$input-focus-bg: lighten($body-bg, 12);
-$input-focus-border-color: lighten($body-bg, 20);
-$input-focus-box-shadow: 0 0 0.25rem lighten($body-bg, 20);
+$input-disabled-bg: color-mix(in srgb, $body-bg, $white 20%);
+$input-focus-bg: color-mix(in srgb, $body-bg, $white 10%);
+$input-focus-border-color: color-mix(in srgb, $body-bg, $white 20%);
+$input-focus-box-shadow: 0 0 0.25rem color-mix(in srgb, $body-bg, $white 20%);
 $input-focus-color: $white;
 $input-font-size: var(--content-font-size);
 $input-placeholder-color: $link-color;
