@@ -171,11 +171,9 @@ func (warlock *Warlock) registerDecimation() {
 		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.SoulFire.CastTimeMultiplier -= decimationMod
-			warlock.SoulFire.DefaultCast.GCD = time.Duration(float64(warlock.SoulFire.DefaultCast.GCD) * (1 - decimationMod))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.SoulFire.CastTimeMultiplier += decimationMod
-			warlock.SoulFire.DefaultCast.GCD = time.Duration(float64(warlock.SoulFire.DefaultCast.GCD) / (1 - decimationMod))
 		},
 	})
 
