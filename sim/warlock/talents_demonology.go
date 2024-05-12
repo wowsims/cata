@@ -13,7 +13,7 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 		warlock.MultiplyStat(stats.Stamina, []float64{1.0, 1.04, 1.07, 1.10}[warlock.Talents.DemonicEmbrace])
 	}
 
-	//Dark Arts
+	// Dark Arts
 	if warlock.Talents.DarkArts > 0 {
 		warlock.Imp.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellImpFireBolt,
@@ -21,17 +21,15 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 			TimeValue: time.Duration(-250*warlock.Talents.DarkArts) * time.Millisecond,
 		})
 
-		//TODO: Add/Mult
 		warlock.Felguard.AddStaticMod(core.SpellModConfig{
 			ClassMask:  WarlockSpellFelGuardLegionStrike,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: .05 * float64(warlock.Talents.DarkArts),
 		})
 
-		//TODO: Add/Mult
 		warlock.Felhunter.AddStaticMod(core.SpellModConfig{
 			ClassMask:  WarlockSpellFelHunterShadowBite,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: .05 * float64(warlock.Talents.DarkArts),
 		})
 	}
