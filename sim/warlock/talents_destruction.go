@@ -103,30 +103,22 @@ func (warlock *Warlock) registerBackdraft() {
 		return
 	}
 
-	castReduction := -0.10 * float64(warlock.Talents.Backdraft)
-
 	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
 		ClassMask:  WarlockSpellShadowBolt | WarlockSpellIncinerate | WarlockSpellChaosBolt,
-		FloatValue: castReduction,
+		FloatValue: -0.10 * float64(warlock.Talents.Backdraft),
 	})
 
 	backdraft := warlock.RegisterAura(core.Aura{
 		Label:     "Backdraft",
-		ActionID:  core.ActionID{SpellID: 47260},
+		ActionID:  core.ActionID{SpellID: 54277},
 		Duration:  15 * time.Second,
 		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Activate()
-			warlock.ShadowBolt.DefaultCast.GCD = time.Duration(float64(warlock.ShadowBolt.DefaultCast.GCD) * (1 - castReduction))
-			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) * (1 - castReduction))
-			warlock.ChaosBolt.DefaultCast.GCD = time.Duration(float64(warlock.ChaosBolt.DefaultCast.GCD) * (1 - castReduction))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Deactivate()
-			warlock.ShadowBolt.DefaultCast.GCD = time.Duration(float64(warlock.ShadowBolt.DefaultCast.GCD) / (1 - castReduction))
-			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) / (1 - castReduction))
-			warlock.ChaosBolt.DefaultCast.GCD = time.Duration(float64(warlock.ChaosBolt.DefaultCast.GCD) / (1 - castReduction))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask&(WarlockSpellShadowBolt|WarlockSpellIncinerate|WarlockSpellChaosBolt) > 0 {
