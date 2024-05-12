@@ -34,6 +34,7 @@ func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
 			// pets inherit haste rating directly, evidenced by:
 			// 1. haste staying the same if the warlock has windfury totem while the pet doesn't
 			// 2. haste staying the same if warlock benefits from wrath of air (pet doesn't get this buff regardless)
+			stats.SpellHaste: ownerStats[stats.SpellHaste],
 			stats.MeleeHaste: ownerStats[stats.SpellHaste],
 
 			// unclear what exactly the scaling is here, but at hit cap they should definitely all be capped
