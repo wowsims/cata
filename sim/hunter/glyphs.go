@@ -46,14 +46,14 @@ func (hunter *Hunter) ApplyGlyphs() {
 	}
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfAimedShot) {
 		focusMetrics := hunter.NewFocusMetrics(core.ActionID{SpellID: 42897})
-		hunter.RegisterAura(core.Aura{
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
 			Label: "Glyph of Aimed Shot",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell == hunter.AimedShot && result.DidCrit() {
 					hunter.AddFocus(sim, 5, focusMetrics)
 				}
 			},
-		})
+		}))
 	}
 	if hunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfKillShot) {
 		icd := core.Cooldown{
