@@ -31,7 +31,7 @@ func (warlock *Warlock) registerSummonFelHunterSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 6,
+				CastTime: 6 * time.Second,
 			},
 		},
 
@@ -57,7 +57,7 @@ func (warlock *Warlock) registerSummonImpSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 6,
+				CastTime: 6 * time.Second,
 			},
 		},
 
@@ -83,7 +83,7 @@ func (warlock *Warlock) registerSummonSuccubusSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 6,
+				CastTime: 6 * time.Second,
 			},
 		},
 
