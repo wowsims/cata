@@ -53,6 +53,7 @@ func (druid *Druid) ApplyGlyphs() {
 
 	if druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfStarsurge) {
 		druid.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 62971},
 			Label:    "Glyph of Starsurge",
 			Duration: core.NeverExpires,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
