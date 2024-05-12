@@ -21,7 +21,6 @@ const (
 	Smack
 	Stampede
 	CorrosiveSpit
-	RoarOfCourage
 	TailSpin
 	FrostStormBreath
 )
@@ -44,9 +43,6 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 		return hp.newFrostStormBreath()
 	case DemoralizingScreech:
 		return hp.newDemoralizingScreech()
-		//return nil
-	case RoarOfCourage: // Agi/Str Buff
-		return hp.newRoarOfCourage()
 		//return nil
 	case FireBreath: // 8% Spell Damage Taken
 		return hp.newPetDebuff(PetDebuffSpellConfig{
@@ -232,26 +228,6 @@ func (hp *HunterPet) newSpecialAbility(config PetSpecialAbilityConfig) *core.Spe
 			},
 		},
 		ApplyEffects: applyEffects,
-	})
-}
-
-func (hp *HunterPet) newRoarOfCourage() *core.Spell {
-	actionID := core.ActionID{SpellID: 24604}
-	return hp.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-
-		Cast: core.CastConfig{
-			CD: core.Cooldown{
-				Timer:    hp.NewTimer(),
-				Duration: hp.hunterOwner.applyLongevity(time.Second * 45),
-			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hp.IsEnabled()
-		},
-		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, _ *core.Spell) {
-			core.RoarOfCourageAura(unit).Activate(sim)
-		},
 	})
 }
 
