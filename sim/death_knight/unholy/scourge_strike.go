@@ -13,7 +13,7 @@ func (dk *UnholyDeathKnight) registerScourgeStrikeShadowDamageSpell() *core.Spel
 		ActionID:       scourgeStrikeActionID.WithTag(2),
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellOrProc,
-		Flags:          core.SpellFlagMeleeMetrics,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreModifiers,
 		ClassSpellMask: death_knight.DeathKnightSpellScourgeStrikeShadow,
 
 		DamageMultiplierAdditive: 1,
