@@ -45,8 +45,7 @@ export class PlayerDamageMetricsTable extends MetricsTable<UnitMetrics> {
 						},
 					});
 
-					const playerActions = player.getPlayerAndPetActions().map(action => action.forTarget(this.resultsFilter.getFilter())).flat();
-					const playerDps = sum(playerActions.map(action => action.dps))
+					const playerDps = this.getPlayerDps(player)
 					cellElem.innerHTML = `
 						<div class="player-damage-percent">
 							<span>${(playerDps / this.raidDps * 100).toFixed(2)}%</span>
@@ -65,21 +64,19 @@ export class PlayerDamageMetricsTable extends MetricsTable<UnitMetrics> {
 				tooltip: 'Damage / Encounter Duration',
 				columnClass: 'dps-cell',
 				sort: ColumnSortType.Descending,
-				getValue: (player: UnitMetrics) => {
-					const playerActions = player.getPlayerAndPetActions().map(action => action.forTarget(this.resultsFilter.getFilter())).flat();
-					const playerDps = sum(playerActions.map(action => action.dps))
-					return playerDps
-				},
-				getDisplayString: (player: UnitMetrics) => {
-					const playerActions = player.getPlayerAndPetActions().map(action => action.forTarget(this.resultsFilter.getFilter())).flat();
-					const playerDps = sum(playerActions.map(action => action.dps))
-					return playerDps.toFixed(1)
-				},
+				getValue: (player: UnitMetrics) => this.getPlayerDps(player),
+				getDisplayString: (player: UnitMetrics) => this.getPlayerDps(player).toFixed(1),
 			},
 		]);
 		this.resultsFilter = resultsFilter;
 		this.raidDps = 0;
 		this.maxDps = 0;
+	}
+
+	private getPlayerDps(player:UnitMetrics): number {
+		const playerActions = player.getPlayerAndPetActions().map(action => action.forTarget(this.resultsFilter.getFilter())).flat();
+		const playerDps = sum(playerActions.map(action => action.dps))
+		return playerDps
 	}
 
 	customizeRowElem(player: UnitMetrics, rowElem: HTMLElement) {
@@ -91,10 +88,6 @@ export class PlayerDamageMetricsTable extends MetricsTable<UnitMetrics> {
 
 	getGroupedMetrics(resultData: SimResultData): Array<Array<UnitMetrics>> {
 		const players = resultData.result.getPlayers(resultData.filter);
-
-		//this.raidDps = resultData.result.raidMetrics.dps.avg;
-		//const maxDpsIndex = maxIndex(players.map(player => player.dps.avg))!;
-		//this.maxDps = players[maxDpsIndex].dps.avg;
 
 		const targetActions = players.map(player => player.getPlayerAndPetActions().map(action => action.forTarget(resultData.filter))).flat();
 
