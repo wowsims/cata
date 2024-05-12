@@ -351,9 +351,14 @@ func (pet *WarlockPet) registerFireboltSpell() {
 
 		ManaCost: core.ManaCostOptions{BaseCost: 0.02},
 		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				// emulate the imp 1.5s GCD that does not change with haste
+				Timer:    pet.NewTimer(),
+				Duration: 1500 * time.Millisecond,
+			},
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2500,
+				CastTime: 2500 * time.Millisecond,
 			},
 		},
 
