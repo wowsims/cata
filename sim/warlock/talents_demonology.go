@@ -110,7 +110,6 @@ func (warlock *Warlock) registerMoltenCore() {
 		return
 	}
 
-	castReduction := -0.06 * float64(warlock.Talents.MoltenCore)
 	moltenCoreDamageBonus := 0.06 * float64(warlock.Talents.MoltenCore)
 
 	damageMultiplierMod := warlock.AddDynamicMod(core.SpellModConfig{
@@ -122,7 +121,7 @@ func (warlock *Warlock) registerMoltenCore() {
 	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
 		ClassMask:  WarlockSpellIncinerate,
-		FloatValue: castReduction,
+		FloatValue: -0.06 * float64(warlock.Talents.MoltenCore),
 	})
 
 	moltenCoreAura := warlock.RegisterAura(core.Aura{
@@ -133,12 +132,10 @@ func (warlock *Warlock) registerMoltenCore() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMultiplierMod.Activate()
 			castTimeMod.Activate()
-			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) * (1 - castReduction))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			damageMultiplierMod.Deactivate()
 			castTimeMod.Deactivate()
-			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) / (1 - castReduction))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell == warlock.Incinerate {
