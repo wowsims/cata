@@ -66,4 +66,5 @@ func (ai *DefaultAI) ExecuteCustomRotation(sim *core.Simulation) {
 			ability.Spell.Cast(sim, ai.Target.CurrentTarget)
 		}
 	}
+
 }
