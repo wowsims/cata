@@ -110,18 +110,16 @@ func (warlock *Warlock) registerMoltenCore() {
 		return
 	}
 
-	moltenCoreDamageBonus := 0.06 * float64(warlock.Talents.MoltenCore)
-
 	damageMultiplierMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Flat,
 		ClassMask:  WarlockSpellIncinerate,
-		FloatValue: moltenCoreDamageBonus,
+		FloatValue: 0.06 * float64(warlock.Talents.MoltenCore),
 	})
 
 	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
 		ClassMask:  WarlockSpellIncinerate,
-		FloatValue: -0.06 * float64(warlock.Talents.MoltenCore),
+		FloatValue: -0.1 * float64(warlock.Talents.MoltenCore),
 	})
 
 	moltenCoreAura := warlock.RegisterAura(core.Aura{
