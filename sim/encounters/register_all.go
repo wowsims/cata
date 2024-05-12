@@ -9,7 +9,7 @@ import (
 
 func init() {
 	AddDefaultPresetEncounter()
-	addLightMovementAI()
+	addMovementAI()
 	bwd.Register()
 
 }
