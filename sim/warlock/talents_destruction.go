@@ -139,8 +139,8 @@ func (warlock *Warlock) registerBackdraft() {
 		warlock.RegisterAura(core.Aura{
 			Label:    "Backdraft Hidden Aura",
 			ActionID: core.ActionID{SpellID: 47260},
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.ClassSpellMask == WarlockSpellConflagrate {
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ClassSpellMask == WarlockSpellConflagrate && result.Landed() {
 					backdraft.Activate(sim)
 					backdraft.SetStacks(sim, 3)
 				}
