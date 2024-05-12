@@ -60,12 +60,8 @@ func (hunter *Hunter) ApplyGlyphs() {
 			Timer:    hunter.NewTimer(),
 			Duration: time.Second * 6,
 		}
-		hunter.RegisterAura(core.Aura{
-			Label:    "Kill Shot Glyph",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			Label: "Kill Shot Glyph",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell == hunter.KillShot {
 					if icd.IsReady(sim) {
@@ -74,7 +70,7 @@ func (hunter *Hunter) ApplyGlyphs() {
 					}
 				}
 			},
-		})
+		}))
 	}
 	// Major Glyphs
 	if hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfBestialWrath) && hunter.Talents.BestialWrath {
