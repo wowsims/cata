@@ -35,6 +35,9 @@
 	.results-sim-cod .topline-result-avg:after {
 		content: "% Chance of Death";
 	}
+	.results-sim-dur .topline-result-avg:after {
+		content: " Duration";
+	}
 
 	.results-sim-percent-oom .topline-result-avg:after {
 		content: " spent OOM";

@@ -735,7 +735,7 @@ func (aa *AutoAttacks) StopRangedUntil(sim *Simulation, readyAt time.Duration) {
 	sim.rescheduleWeaponAttack(aa.ranged.swingAt)
 }
 
-// Delays all swing timers for the specified amount. Only used by Slam.
+// Delays all swing timers for the specified amount.
 func (aa *AutoAttacks) DelayMeleeBy(sim *Simulation, delay time.Duration) {
 	if delay <= 0 {
 		return

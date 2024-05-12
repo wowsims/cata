@@ -263,18 +263,18 @@ func (cat *FeralDruid) preRotationCleanup(sim *core.Simulation) bool {
 
 		// Bundle a leave-weave with the Cat Form GCD if possible
 		if cat.InForm(druid.Cat) && cat.Rotation.MeleeWeave {
-			timeToMove := core.DurationFromSeconds((cat.CatCharge.MinRange + 1 - cat.DistanceFromTarget) / cat.GetMovementSpeed()) + cat.ReactionTime
+			timeToMove := core.DurationFromSeconds((cat.CatCharge.MinRange+1-cat.DistanceFromTarget)/cat.GetMovementSpeed()) + cat.ReactionTime
 
 			if cat.CatCharge.TimeToReady(sim) < timeToMove {
-				cat.MoveTo(cat.CatCharge.MinRange + 1, sim)
-				cat.NextRotationAction(sim, sim.CurrentTime + cat.ReactionTime)
+				cat.MoveTo(cat.CatCharge.MinRange+1, sim)
+				cat.NextRotationAction(sim, sim.CurrentTime+cat.ReactionTime)
 			}
 		}
 
 		// To prep for the above, pre-position to max melee range during Bear Form GCD
 		if cat.InForm(druid.Bear) {
-			cat.MoveTo(core.MaxMeleeRange - 1, sim)
-			cat.NextRotationAction(sim, sim.CurrentTime + cat.ReactionTime)
+			cat.MoveTo(core.MaxMeleeRange-1, sim)
+			cat.NextRotationAction(sim, sim.CurrentTime+cat.ReactionTime)
 		}
 
 		return false
@@ -427,7 +427,7 @@ func (cat *FeralDruid) terminateBearWeave(sim *core.Simulation, isClearcast bool
 	}
 
 	// Also terminate early if Feral Charge is off cooldown to avoid accumulating delays for Ravage opportunities
-	if cat.Rotation.MeleeWeave && cat.CatCharge.IsReady(sim) && (sim.CurrentTime - cat.lastShift > core.GCDDefault) {
+	if cat.Rotation.MeleeWeave && cat.CatCharge.IsReady(sim) && (sim.CurrentTime-cat.lastShift > core.GCDDefault) {
 		return true
 	}
 
@@ -450,8 +450,8 @@ func (cat *FeralDruid) terminateBearWeave(sim *core.Simulation, isClearcast bool
 
 	// Also add a condition to prevent extending a weave if we don't have enough time
 	// to spend the pooled Energy thus far.
-	energyToDump := finalEnergy + 1.5 * regenRate // need to include Cat Form GCD here
-	timeToDump := earliestWeaveEnd + core.DurationFromSeconds(math.Floor(energyToDump / cat.Shred.DefaultCast.Cost))
+	energyToDump := finalEnergy + 1.5*regenRate // need to include Cat Form GCD here
+	timeToDump := earliestWeaveEnd + core.DurationFromSeconds(math.Floor(energyToDump/cat.Shred.DefaultCast.Cost))
 	return (timeToDump >= sim.Duration) || cat.tfExpectedBefore(sim, timeToDump)
 }
 
@@ -567,7 +567,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	roarNow := curCp >= 1 && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim, isExecutePhase))
 
 	// Ravage calc
-	ravageNow := cat.Ravage.CanCast(sim, cat.CurrentTarget) && !isClearcast && (curEnergy + regenRate < cat.MaximumEnergy())
+	ravageNow := cat.Ravage.CanCast(sim, cat.CurrentTarget) && !isClearcast && (curEnergy+regenRate < cat.MaximumEnergy())
 
 	// Pooling calcs
 	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain-baseEndThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))
@@ -680,7 +680,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	} else if bearWeaveNow {
 		cat.readyToShift = true
 	} else if meleeWeaveNow {
-		cat.MoveTo(cat.CatCharge.MinRange + 1, sim)
+		cat.MoveTo(cat.CatCharge.MinRange+1, sim)
 	} else if ravageNow {
 		cat.Ravage.Cast(sim, cat.CurrentTarget)
 		return false, 0
