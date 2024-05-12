@@ -622,6 +622,7 @@ enum MobType {
 enum InputType {
 	Bool = 0;
 	Number = 1;
+	Enum = 2;
 }
 
 message TargetInput {
@@ -631,6 +632,9 @@ message TargetInput {
 
 	bool bool_value = 3;
 	double number_value = 4;
+
+	int32 enum_value = 6;
+	repeated string enum_options = 7;
 }
 
 message Target {

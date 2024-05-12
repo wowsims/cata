@@ -43,16 +43,6 @@ func NewEncounter(options *proto.Encounter) Encounter {
 		ExecuteProportion_90: max(options.ExecuteProportion_90, 0),
 		Targets:              []*Target{},
 	}
-	// If UseHealth is set, we use the sum of targets health.
-	if options.UseHealth {
-		for _, t := range options.Targets {
-			encounter.EndFightAtHealth += t.Stats[stats.Health]
-		}
-		if encounter.EndFightAtHealth == 0 {
-			encounter.EndFightAtHealth = 1 // default to something so we don't instantly end without anything.
-		}
-	}
-
 	for targetIndex, targetOptions := range options.Targets {
 		target := NewTarget(targetOptions, int32(targetIndex))
 		encounter.Targets = append(encounter.Targets, target)
@@ -64,6 +54,16 @@ func NewEncounter(options *proto.Encounter) Encounter {
 		target := NewTarget(&proto.Target{}, 0)
 		encounter.Targets = append(encounter.Targets, target)
 		encounter.TargetUnits = append(encounter.TargetUnits, &target.Unit)
+	}
+
+	// If UseHealth is set, we use the sum of targets health. After creating the targets to make sure stat modifications are done
+	if options.UseHealth {
+		for _, t := range options.Targets {
+			encounter.EndFightAtHealth += t.Stats[stats.Health]
+		}
+		if encounter.EndFightAtHealth == 0 {
+			encounter.EndFightAtHealth = 1 // default to something so we don't instantly end without anything.
+		}
 	}
 
 	if encounter.EndFightAtHealth > 0 {
