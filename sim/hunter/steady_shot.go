@@ -18,6 +18,8 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
 		MissileSpeed:   40,
+		MinRange:       5,
+		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
 
 			Cost: 0,

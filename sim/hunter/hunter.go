@@ -238,6 +238,10 @@ const (
 	HunterSpellBlackArrow
 	HunterSpellMultiShot
 	HunterSpellAimedShot
+	HunterSpellSerpentSting
+	HunterSpellKillShot
+	HunterSpellRapidFire
+	HunterSpellBestialWrath
 	HunterPetFocusDump
 )
 
