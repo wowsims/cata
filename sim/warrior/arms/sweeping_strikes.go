@@ -34,7 +34,7 @@ func (war *ArmsWarrior) RegisterSweepingStrikes() {
 		ActionID: actionID,
 		Duration: time.Second * 10,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Damage <= 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) || len(war.Env.Encounter.Targets) < 2 {
+			if result.Damage <= 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) || war.Env.GetNumTargets() < 2 {
 				return
 			}
 

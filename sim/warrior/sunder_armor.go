@@ -45,8 +45,8 @@ func (warrior *Warrior) RegisterSunderArmor() *core.Spell {
 			warrior.TryApplySunderArmorEffect(sim, target)
 			// https://www.wowhead.com/cata/item=43427/glyph-of-sunder-armor - also applies to devastate in cata
 			if hasGlyph && numTargets > 1 {
-				nextTarget := warrior.Env.NextTarget(target)
-				warrior.TryApplySunderArmorEffect(sim, &nextTarget.Unit)
+				nextTarget := warrior.Env.NextTargetUnit(target)
+				warrior.TryApplySunderArmorEffect(sim, nextTarget)
 			}
 		} else {
 			spell.IssueRefund(sim)

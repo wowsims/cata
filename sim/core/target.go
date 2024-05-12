@@ -12,6 +12,7 @@ type Encounter struct {
 	Duration          time.Duration
 	DurationVariation time.Duration
 	Targets           []*Target
+	ActiveTargets     []*Target
 	TargetUnits       []*Unit
 
 	ExecuteProportion_20 float64
@@ -42,10 +43,12 @@ func NewEncounter(options *proto.Encounter) Encounter {
 		ExecuteProportion_35: max(options.ExecuteProportion_35, 0),
 		ExecuteProportion_90: max(options.ExecuteProportion_90, 0),
 		Targets:              []*Target{},
+		ActiveTargets:        []*Target{},
 	}
 	for targetIndex, targetOptions := range options.Targets {
 		target := NewTarget(targetOptions, int32(targetIndex))
 		encounter.Targets = append(encounter.Targets, target)
+		encounter.ActiveTargets = append(encounter.ActiveTargets, target)
 		encounter.TargetUnits = append(encounter.TargetUnits, &target.Unit)
 	}
 	if len(encounter.Targets) == 0 {
@@ -53,6 +56,7 @@ func NewEncounter(options *proto.Encounter) Encounter {
 		// computing character stats, and targets won't matter there.
 		target := NewTarget(&proto.Target{}, 0)
 		encounter.Targets = append(encounter.Targets, target)
+		encounter.ActiveTargets = append(encounter.ActiveTargets, target)
 		encounter.TargetUnits = append(encounter.TargetUnits, &target.Unit)
 	}
 
@@ -109,6 +113,8 @@ func (encounter *Encounter) GetMetricsProto() *proto.EncounterMetrics {
 type Target struct {
 	Unit
 
+	IsActive bool
+
 	AI TargetAI
 }
 
@@ -133,6 +139,7 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 			StatDependencyManager: stats.NewStatDependencyManager(),
 			ReactionTime:          time.Millisecond * 1620,
 		},
+		IsActive: true,
 	}
 	defaultRaidBossLevel := int32(CharacterLevel + 3)
 	target.GCD = target.NewTimer()

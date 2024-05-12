@@ -246,7 +246,11 @@ func (env *Environment) GetMaxDuration() time.Duration {
 }
 
 func (env *Environment) GetNumTargets() int32 {
-	return int32(len(env.Encounter.Targets))
+	return int32(len(env.Encounter.ActiveTargets))
+}
+
+func (env *Environment) ActiveTargetUnits() []*Target {
+	return env.Encounter.ActiveTargets
 }
 
 func (env *Environment) GetTarget(index int32) *Target {
