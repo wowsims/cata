@@ -11,6 +11,7 @@ import (
 
 	"github.com/wowsims/cata/sim"
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/concurrency"
 	proto "github.com/wowsims/cata/sim/core/proto"
 	protojson "google.golang.org/protobuf/encoding/protojson"
 	googleProto "google.golang.org/protobuf/proto"
@@ -28,6 +29,8 @@ func main() {
 	js.Global().Set("raidSim", js.FuncOf(raidSim))
 	js.Global().Set("raidSimJson", js.FuncOf(raidSimJson))
 	js.Global().Set("raidSimAsync", js.FuncOf(raidSimAsync))
+	js.Global().Set("raidSimRequestSplit", js.FuncOf(raidSimRequestSplit))
+	js.Global().Set("raidSimResultCombination", js.FuncOf(raidSimResultCombination))
 	js.Global().Set("statWeights", js.FuncOf(statWeights))
 	js.Global().Set("statWeightsAsync", js.FuncOf(statWeightsAsync))
 	js.Global().Set("bulkSimAsync", js.FuncOf(bulkSimAsync))
@@ -215,6 +218,46 @@ func bulkSimAsync(this js.Value, args []js.Value) interface{} {
 
 	result := processAsyncProgress(args[1], reporter)
 	return result
+}
+
+func raidSimRequestSplit(this js.Value, args []js.Value) interface{} {
+	splitRequest := &proto.RaidSimRequestSplitRequest{}
+	if err := googleProto.Unmarshal(getArgsBinary(args[0]), splitRequest); err != nil {
+		log.Printf("Failed to parse RaidSimRequestSplitRequest: %s", err)
+		return nil
+	}
+
+	splitRes := concurrency.SplitRequestForConcurrency(splitRequest.Request, splitRequest.SplitCount)
+
+	outbytes, err := googleProto.Marshal(splitRes)
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal RaidSimRequestSplitResult: %s", err.Error())
+		return nil
+	}
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
+}
+
+func raidSimResultCombination(this js.Value, args []js.Value) interface{} {
+	combRequest := &proto.RaidSimResultCombinationRequest{}
+	if err := googleProto.Unmarshal(getArgsBinary(args[0]), combRequest); err != nil {
+		log.Printf("Failed to parse RaidSimResultCombinationRequest: %s", err)
+		return nil
+	}
+
+	combineRes := concurrency.CombineConcurrentResultsAsProto(combRequest.Results, false)
+
+	outbytes, err := googleProto.Marshal(combineRes)
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal RaidSimResultCombinationResult: %s", err.Error())
+		return nil
+	}
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
 }
 
 // Assumes args[0] is a Uint8Array

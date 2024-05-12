@@ -3,6 +3,7 @@ package concurrency
 import (
 	"fmt"
 	"math"
+	"runtime/debug"
 
 	"github.com/wowsims/cata/sim/core/proto"
 )
@@ -226,6 +227,7 @@ func (rsrc *raidSimResultCombiner) AddResult(result *proto.RaidSimResult, isLast
 	}
 
 	rsrc.Combined.AvgIterationDuration += result.AvgIterationDuration * weight
+	rsrc.Combined.IterationsDone += result.IterationsDone
 
 	if rsrc.Debug {
 		rsrc.Combined.Logs += "-SIMSTART-\n" + result.Logs
@@ -260,15 +262,11 @@ func (rsrc *raidSimResultCombiner) SetBaseResult(baseRsr *proto.RaidSimResult) {
 	rsrc.Combined = newRsr
 }
 
-func CombineConcurrentResults(requests []*proto.RaidSimRequest, results []*proto.RaidSimResult) *proto.RaidSimResult {
+func CombineConcurrentResults(results []*proto.RaidSimResult, isDebug bool) *proto.RaidSimResult {
 	numResults := len(results)
 
 	if numResults == 0 {
 		panic("Result set is empty!")
-	}
-
-	if numResults != len(requests) {
-		panic("Result count doesn't match request count!")
 	}
 
 	if numResults == 1 {
@@ -276,16 +274,34 @@ func CombineConcurrentResults(requests []*proto.RaidSimRequest, results []*proto
 	}
 
 	var totalIterations int32 = 0
-	for _, req := range requests {
-		totalIterations += req.SimOptions.Iterations
+	for _, req := range results {
+		totalIterations += req.IterationsDone
 	}
 
-	rsrc := raidSimResultCombiner{Debug: requests[0].SimOptions.Debug}
+	rsrc := raidSimResultCombiner{Debug: isDebug}
 	rsrc.SetBaseResult(results[0])
 	for i, result := range results {
-		resultWeight := float64(requests[i].SimOptions.Iterations) / float64(totalIterations)
+		resultWeight := float64(results[i].IterationsDone) / float64(totalIterations)
 		rsrc.AddResult(result, i == numResults-1, resultWeight)
 	}
 
 	return rsrc.Combined
+}
+
+func CombineConcurrentResultsAsProto(results []*proto.RaidSimResult, isDebug bool) (rsrCombResult *proto.RaidSimResultCombinationResult) {
+	defer func() {
+		if err := recover(); err != nil {
+			errStr := ""
+			switch errt := err.(type) {
+			case string:
+				errStr = errt
+			case error:
+				errStr = errt.Error()
+			}
+			errStr += "\nStack Trace:\n" + string(debug.Stack())
+			rsrCombResult = &proto.RaidSimResultCombinationResult{ErrorResult: errStr}
+		}
+	}()
+	rsrCombResult = &proto.RaidSimResultCombinationResult{CombinedResult: CombineConcurrentResults(results, isDebug)}
+	return rsrCombResult
 }

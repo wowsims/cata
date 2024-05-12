@@ -7,13 +7,17 @@ import (
 
 // Will split into min(splitCount, iterations) requests.
 // 2nd return value will contain the number of splits.
-func SplitRequestForConcurrency(request *proto.RaidSimRequest, splitCount int32) ([]*proto.RaidSimRequest, int32) {
+func SplitRequestForConcurrency(request *proto.RaidSimRequest, splitCount int32) *proto.RaidSimRequestSplitResult {
+	res := &proto.RaidSimRequestSplitResult{}
+
 	if splitCount <= 0 {
-		panic("Split count can't be 0 or negative!")
+		res.ErrorResult = "Split count can't be 0 or negative!"
+		return res
 	}
 
 	if request.SimOptions.Iterations <= 0 {
-		panic("Iterations can't be 0 or negative!")
+		res.ErrorResult = "Iterations can't be 0 or negative!"
+		return res
 	}
 
 	splitCount = min(splitCount, request.SimOptions.Iterations)
@@ -35,5 +39,7 @@ func SplitRequestForConcurrency(request *proto.RaidSimRequest, splitCount int32)
 		nextStartSeed += int64(split[i].SimOptions.Iterations)
 	}
 
-	return split, splitCount
+	res.SplitsDone = splitCount
+	res.Requests = split
+	return res
 }

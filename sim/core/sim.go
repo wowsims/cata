@@ -349,6 +349,7 @@ func (sim *Simulation) run() *proto.RaidSimResult {
 		Logs:                   logsBuffer.String(),
 		FirstIterationDuration: firstIterationDuration.Seconds(),
 		AvgIterationDuration:   totalDuration.Seconds() / float64(sim.Options.Iterations),
+		IterationsDone:         sim.Options.Iterations,
 	}
 
 	// Final progress report

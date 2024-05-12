@@ -325,6 +325,29 @@ message RaidSimResult {
 	double avg_iteration_duration = 6;
 
 	string error_result = 5;
+
+	int32 iterations_done = 7;
+}
+
+message RaidSimRequestSplitRequest {
+	int32 split_count = 1;
+	RaidSimRequest request = 2;
+}
+
+message RaidSimRequestSplitResult {
+	// The actual split amount made
+	int32 splits_done = 1;
+	repeated RaidSimRequest requests = 2;
+	string error_result = 3;
+}
+
+message RaidSimResultCombinationRequest {
+	repeated RaidSimResult results = 1;
+}
+
+message RaidSimResultCombinationResult {
+	RaidSimResult combined_result = 1;
+	string error_result = 2;
 }
 
 // RPC ComputeStats

@@ -19,8 +19,6 @@ type concurrentSimData struct {
 	HpsValues []float64
 
 	FinalResults []*proto.RaidSimResult
-
-	Debug bool
 }
 
 func (csd *concurrentSimData) GetIterationsDone() int32 {
@@ -97,7 +95,13 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 	}()
 
 	threads := TernaryInt32(request.SimOptions.IsTest, 3, int32(runtime.NumCPU()))
-	splitRequests, threads := concurrency.SplitRequestForConcurrency(request, threads)
+
+	splitRes := concurrency.SplitRequestForConcurrency(request, threads)
+	if splitRes.ErrorResult != "" {
+		panic(splitRes.ErrorResult)
+	}
+	threads = splitRes.SplitsDone
+
 	substituteChannels := make([]chan *proto.ProgressMetrics, threads)
 	substituteCases := make([]reflect.SelectCase, threads)
 	quitChannels := make([]chan bool, threads)
@@ -110,7 +114,6 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 		DpsValues:       make([]float64, threads),
 		HpsValues:       make([]float64, threads),
 		FinalResults:    make([]*proto.RaidSimResult, threads),
-		Debug:           request.SimOptions.Debug,
 	}
 
 	for i := 0; i < int(threads); i++ {
@@ -131,7 +134,7 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 		}
 	}()
 
-	for i, req := range splitRequests {
+	for i, req := range splitRes.Requests {
 		go RunSim(req, substituteChannels[i], quitChannels[i])
 		// Wait for first message to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
 		msg := <-substituteChannels[i]
@@ -188,7 +191,7 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 		log.Printf("All %d sims finished successfully.", csd.Concurrency)
 	}
 
-	result = concurrency.CombineConcurrentResults(splitRequests, csd.FinalResults)
+	result = concurrency.CombineConcurrentResults(csd.FinalResults, request.SimOptions.Debug)
 
 	if progress != nil {
 		pm := csd.MakeProgressMetrics()
