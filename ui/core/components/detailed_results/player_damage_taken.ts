@@ -53,9 +53,7 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 						},
 					});
 
-					const targets = this.resultData!.result.getTargets(this.resultData!.filter);
-					const targetActions = targets.map(target => target.getMeleeActions().concat(target.getSpellActions()).map(action => action.forTarget({ player: player.unitIndex }))).flat();
-					const playerDtps = sum(targetActions.map(action => action.dps))
+					const playerDtps = this.getPlayerDtps(player)
 					cellElem.innerHTML = `
 						<div class="player-damage-percent">
 							<span>${(playerDtps / this.raidDtps * 100).toFixed(2)}%</span>
@@ -74,23 +72,20 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 				tooltip: 'Damage Taken / Encounter Duration',
 				columnClass: 'dps-cell',
 				sort: ColumnSortType.Descending,
-				getValue: (player: UnitMetrics) => {
-					const targets = this.resultData!.result.getTargets(this.resultData!.filter);
-					const targetActions = targets.map(target => target.getMeleeActions().concat(target.getSpellActions()).map(action => action.forTarget({ player: player.unitIndex }))).flat();
-					const playerDtps = sum(targetActions.map(action => action.dps))
-					return playerDtps
-				},
-				getDisplayString: (player: UnitMetrics) => {
-					const targets = this.resultData!.result.getTargets(this.resultData!.filter);
-					const targetActions = targets.map(target => target.getMeleeActions().concat(target.getSpellActions()).map(action => action.forTarget({ player: player.unitIndex }))).flat();
-					const playerDtps = sum(targetActions.map(action => action.dps))
-					return playerDtps.toFixed(1)
-				},
+				getValue: (player: UnitMetrics) => this.getPlayerDtps(player),
+				getDisplayString: (player: UnitMetrics) => this.getPlayerDtps(player).toFixed(1),
 			},
 		]);
 		this.resultsFilter = resultsFilter;
 		this.raidDtps = 0;
 		this.maxDtps = 0;
+	}
+
+	private getPlayerDtps(player: UnitMetrics): number {
+		const targets = this.resultData!.result.getTargets(this.resultData!.filter);
+		const targetActions = targets.map(target => target.getPlayerAndPetActions().map(action => action.forTarget({ player: player.unitIndex }))).flat();
+		const playerDtps = sum(targetActions.map(action => action.dps))
+		return playerDtps
 	}
 
 	customizeRowElem(player: UnitMetrics, rowElem: HTMLElement) {
@@ -104,20 +99,16 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 		this.resultData = resultData;
 		const players = resultData.result.getPlayers(resultData.filter);
 
-		//this.raidDtps = sum(players.map(player => player.dtps.avg));
-		//const maxDpsIndex = maxIndex(players.map(player => player.dtps.avg))!;
-		//this.maxDtps = players[maxDpsIndex].dtps.avg;
-
 		const targets = resultData.result.getTargets(resultData.filter);
-		const targetActions = targets.map(target => target.getMeleeActions().concat(target.getSpellActions()).map(action => action.forTarget(resultData.filter))).flat();
+		const targetActions = targets.map(target => target.getPlayerAndPetActions().map(action => action.forTarget(resultData.filter))).flat();
 
 		this.raidDtps = sum(targetActions.map(action => action.dps));
 		const maxDpsIndex = maxIndex(players.map(player => {
-			const targetActions = targets.map(target => target.getMeleeActions().concat(target.getSpellActions()).map(action => action.forTarget({ player: player.unitIndex }))).flat();
+			const targetActions = targets.map(target => target.getPlayerAndPetActions().map(action => action.forTarget({ player: player.unitIndex }))).flat();
 			return sum(targetActions.map(action => action.dps))
 		}))!;
 
-		const maxDtpsTargetActions = targets.map(target => target.getMeleeActions().concat(target.getSpellActions()).map(action => action.forTarget({ player: players[maxDpsIndex].unitIndex }))).flat();
+		const maxDtpsTargetActions = targets.map(target => target.getPlayerAndPetActions().map(action => action.forTarget({ player: players[maxDpsIndex].unitIndex }))).flat();
 		this.maxDtps = sum(maxDtpsTargetActions.map(action => action.dps));
 
 		return players.map(player => [player]);
