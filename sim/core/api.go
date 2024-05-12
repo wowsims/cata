@@ -53,10 +53,12 @@ func RunRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.Progres
 	go RunSim(request, progress, nil)
 }
 
+// Threading does not work in WASM!
 func RunRaidSimConcurrent(request *proto.RaidSimRequest) *proto.RaidSimResult {
 	return runSimConcurrent(request, nil)
 }
 
+// Threading does not work in WASM!
 func RunRaidSimConcurrentAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
 	go runSimConcurrent(request, progress)
 }
