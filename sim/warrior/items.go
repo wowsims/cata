@@ -134,56 +134,56 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
-// 	Name: "Molten Giant Battleplate",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			character := agent.GetCharacter()
-// 			actionID := core.ActionID{SpellID: 99240}
+var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
+	Name: "Molten Giant Battleplate",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			actionID := core.ActionID{SpellID: 99240}
 
-// 			// TODO (4.2): Test if this rolls damage over like deep wounds or just resets it
-// 			var shieldSlamDamage float64 = 0.0
-// 			debuff := character.RegisterSpell(core.SpellConfig{
-// 				ActionID:    actionID,
-// 				SpellSchool: core.SpellSchoolFire,
-// 				ProcMask:    core.ProcMaskEmpty,
-// 				Flags:       core.SpellFlagIgnoreAttackerModifiers,
+			// TODO (4.2): Test if this rolls damage over like deep wounds or just resets it
+			var shieldSlamDamage float64 = 0.0
+			debuff := character.RegisterSpell(core.SpellConfig{
+				ActionID:    actionID,
+				SpellSchool: core.SpellSchoolFire,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagIgnoreAttackerModifiers,
 
-// 				Dot: core.DotConfig{
-// 					Aura: core.Aura{
-// 						Label: "Combust",
-// 					},
-// 					NumberOfTicks: 2,
-// 					TickLength:    2 * time.Second,
-// 					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-// 						dot.Snapshot(target, shieldSlamDamage/float64(dot.NumberOfTicks))
-// 					},
-// 					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-// 						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-// 					},
-// 				},
+				Dot: core.DotConfig{
+					Aura: core.Aura{
+						Label: "Combust",
+					},
+					NumberOfTicks: 2,
+					TickLength:    2 * time.Second,
+					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+						dot.Snapshot(target, shieldSlamDamage/float64(dot.NumberOfTicks))
+					},
+					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+					},
+				},
 
-// 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-// 					spell.Dot(target).Apply(sim)
-// 				},
-// 			})
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.Dot(target).Apply(sim)
+				},
+			})
 
-// 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-// 				Name:           "Combust Trigger",
-// 				ActionID:       actionID,
-// 				Callback:       core.CallbackOnSpellHitDealt,
-// 				ClassSpellMask: SpellMaskShieldSlam,
-// 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 					shieldSlamDamage = result.Damage
-// 					debuff.Cast(sim, result.Target)
-// 				},
-// 			})
-// 		},
-// 		4: func(agent core.Agent) {
-// 			panic("Not yet implemented pending a way to model 'trigger aura on expiration of another'")
-// 		},
-// 	},
-// })
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:           "Combust Trigger",
+				ActionID:       actionID,
+				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: SpellMaskShieldSlam,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					shieldSlamDamage = result.Damage
+					debuff.Cast(sim, result.Target)
+				},
+			})
+		},
+		4: func(agent core.Agent) {
+			// Implemented in Sheild_Block.go
+		},
+	},
+})
 
 var ItemSetColossalDragonplateBattlegear = core.NewItemSet(core.ItemSet{
 	Name: "Colossal Dragonplate Battlegear",

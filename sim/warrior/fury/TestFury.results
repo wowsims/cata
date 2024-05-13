@@ -801,6 +801,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-MoltenGiantBattleplate"
+ value: {
+  dps: 18159.4875
+  tps: 15252.86054
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-MoltenGiantWarplate"
  value: {
   dps: 20773.40608
