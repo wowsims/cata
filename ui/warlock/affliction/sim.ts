@@ -13,7 +13,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 	cssClass: 'affliction-warlock-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Warlock),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Drain Soul is currently disabled for APL rotations'],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
