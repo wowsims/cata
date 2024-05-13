@@ -1,4 +1,4 @@
-package encounters
+package default_ai
 
 import (
 	"time"

@@ -81,7 +81,7 @@ func (unit *Unit) UpdatePosition(sim *Simulation) {
 	// update auto attack state
 	if unit.AutoAttacks.mh.enabled != unit.AutoAttacks.mh.IsInRange() {
 		if unit.AutoAttacks.mh.IsInRange() {
-			unit.AutoAttacks.EnableAutoSwing(sim)
+			unit.AutoAttacks.EnableMeleeSwing(sim)
 		} else {
 			unit.AutoAttacks.CancelMeleeSwing(sim)
 		}
@@ -89,7 +89,7 @@ func (unit *Unit) UpdatePosition(sim *Simulation) {
 
 	if unit.AutoAttacks.ranged.enabled != unit.AutoAttacks.ranged.IsInRange() {
 		if unit.AutoAttacks.ranged.IsInRange() {
-			unit.AutoAttacks.EnableAutoSwing(sim)
+			unit.AutoAttacks.EnableRangedSwing(sim)
 		} else {
 			unit.AutoAttacks.CancelRangedSwing(sim)
 		}

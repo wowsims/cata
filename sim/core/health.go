@@ -107,15 +107,6 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 			character.Unit.Metrics.isTanking = true
 		}
 	}
-	if !character.Unit.Metrics.isTanking {
-		return
-	}
-
-	if healingModel == nil {
-		return
-	}
-
-	character.Unit.Metrics.tmiBin = healingModel.BurstWindow
 
 	character.RegisterAura(Aura{
 		Label:    ChanceOfDeathAuraLabel,
@@ -148,14 +139,32 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 				aura.Unit.RemoveHealth(sim, result.Damage)
 
 				if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
-					aura.Unit.Metrics.Died = true
-					if sim.Log != nil {
-						character.Log(sim, "Dead")
-					}
+					// Queue a pending action to let shield effects give health
+					StartDelayedAction(sim, DelayedActionOptions{
+						DoAt: sim.CurrentTime,
+						OnAction: func(s *Simulation) {
+							if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
+								aura.Unit.Metrics.Died = true
+								if sim.Log != nil {
+									character.Log(sim, "Dead")
+								}
+							}
+						},
+					})
 				}
 			}
 		},
 	})
+
+	if !character.Unit.Metrics.isTanking {
+		return
+	}
+
+	if healingModel == nil {
+		return
+	}
+
+	character.Unit.Metrics.tmiBin = healingModel.BurstWindow
 
 	if healingModel.Hps != 0 {
 		character.applyHealingModel(healingModel)
