@@ -34,8 +34,6 @@ func (target *Target) initialize(config *proto.Target) {
 			}
 		}
 		target.EnableAutoAttacks(target, aaOptions)
-		//if target.CurrentTarget != nil {
-		//}
 	}
 
 	if target.AI != nil {

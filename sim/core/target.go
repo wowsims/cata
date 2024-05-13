@@ -168,6 +168,8 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 
 func (target *Target) Reset(sim *Simulation) {
 	target.Unit.reset(sim, nil)
+	target.CurrentTarget = target.defaultTarget
+
 	target.SetGCDTimer(sim, 0)
 	if target.AI != nil {
 		target.AI.Reset(sim)

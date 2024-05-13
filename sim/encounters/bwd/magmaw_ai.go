@@ -196,7 +196,6 @@ func (ai *MagmawAI) Initialize(target *core.Target, config *proto.Target) {
 	// ai.impaleDelay = config.TargetInputs[2].NumberValue
 
 	ai.impaleDelay = config.TargetInputs[0].NumberValue
-
 	ai.registerSpells()
 }
 
@@ -234,7 +233,7 @@ func (ai *MagmawAI) ExecuteCustomRotation(sim *core.Simulation) {
 	// Magma Spit
 	if ai.magmaSpit.CanCast(sim, target) && sim.Proc(0.6, "Magma Spit Cast Roll") {
 		ai.magmaSpit.Cast(sim, target)
-		ai.Target.WaitUntil(sim, sim.CurrentTime+BossGCD)
+		ai.Target.ExtendGCDUntil(sim, sim.CurrentTime+BossGCD)
 		return
 	}
 
@@ -257,6 +256,10 @@ func (ai *MagmawAI) registerSpells() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 2
+
+			if sim.CurrentTime >= sim.Duration {
+				return
+			}
 
 			// TODO: Move this to an APL Action
 			if !isIndividualSim && ai.Target.Env.GetNumTargets() > 1 {
@@ -487,6 +490,10 @@ func (ai *MagmawAI) registerSpells() {
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					if sim.CurrentTime >= sim.Duration {
+						return
+					}
+
 					// Activate Expose
 					ai.pointOfVulnerability.Activate(sim)
 
@@ -509,6 +516,7 @@ func (ai *MagmawAI) registerSpells() {
 									// Set add target
 									addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
 									tankUnit.CurrentTarget = addTarget
+
 									addTarget.CurrentTarget = tankUnit
 									addTarget.AutoAttacks.EnableAutoSwing(sim)
 								} else {
