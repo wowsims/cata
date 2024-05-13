@@ -24,6 +24,8 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 			Cost: 35,
 		},
 		MissileSpeed: 40,
+		MinRange:     5,
+		MaxRange:     40,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
@@ -53,7 +55,7 @@ func (svHunter *SurvivalHunter) registerBlackArrowSpell(timer *core.Timer) {
 				rap := dot.Spell.RangedAttackPower(target)
 				percentageOfRAP := 0.0665
 				dot.SnapshotBaseDamage = baseDamage + (percentageOfRAP * rap)
-				// SnapshotBaseDamage calculation for the DoT, divided by 10 to spread across all ticks
+
 				attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex]
 				dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)

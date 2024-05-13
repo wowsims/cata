@@ -33,7 +33,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
-	epReferenceStat: Stat.StatAttackPower,
+	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		Stat.StatHealth,
@@ -54,17 +54,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatStrength]: 0.38,
+				[Stat.StatStrength]: 0.39,
 				[Stat.StatAgility]: 1.0,
 				[Stat.StatAttackPower]: 0.37,
-				[Stat.StatMeleeHit]: 0.43,
-				[Stat.StatExpertise]: 0.43,
-				[Stat.StatMeleeCrit]: 0.40,
-				[Stat.StatMeleeHaste]: 0.41,
-				[Stat.StatMastery]: 0.58,
+				[Stat.StatMeleeHit]: 0.33,
+				[Stat.StatExpertise]: 0.32,
+				[Stat.StatMeleeCrit]: 0.31,
+				[Stat.StatMeleeHaste]: 0.26,
+				[Stat.StatMastery]: 0.3,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 1.55,
+				[PseudoStat.PseudoStatMainHandDps]: 1.53,
 			},
 		),
 		other: Presets.OtherDefaults,

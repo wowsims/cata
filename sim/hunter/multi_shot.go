@@ -14,7 +14,9 @@ func (hunter *Hunter) registerMultiShotSpell() {
 		ProcMask:       core.ProcMaskRangedSpecial,
 		ClassSpellMask: HunterSpellMultiShot,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-
+		MissileSpeed:   40,
+		MinRange:       5,
+		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
 			Cost: 40,
 		},

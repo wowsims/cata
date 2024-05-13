@@ -530,6 +530,10 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 		return
 	}
 
+	if aa.mh.unit.CurrentTarget == nil {
+		return
+	}
+
 	if aa.anyEnabled() {
 		return
 	}
@@ -601,6 +605,10 @@ func (aa *AutoAttacks) EnableMeleeSwing(sim *Simulation) {
 		return
 	}
 
+	if aa.mh.unit.CurrentTarget == nil {
+		return
+	}
+
 	aa.mh.swingAt = max(aa.mh.swingAt, sim.CurrentTime, 0)
 	if aa.mh.IsInRange() && !aa.mh.enabled {
 		aa.mh.enabled = true
@@ -618,6 +626,10 @@ func (aa *AutoAttacks) EnableMeleeSwing(sim *Simulation) {
 
 func (aa *AutoAttacks) EnableRangedSwing(sim *Simulation) {
 	if !aa.AutoSwingRanged || aa.ranged.enabled {
+		return
+	}
+
+	if aa.ranged.unit.CurrentTarget == nil {
 		return
 	}
 
@@ -735,7 +747,7 @@ func (aa *AutoAttacks) StopRangedUntil(sim *Simulation, readyAt time.Duration) {
 	sim.rescheduleWeaponAttack(aa.ranged.swingAt)
 }
 
-// Delays all swing timers for the specified amount. Only used by Slam.
+// Delays all swing timers for the specified amount.
 func (aa *AutoAttacks) DelayMeleeBy(sim *Simulation, delay time.Duration) {
 	if delay <= 0 {
 		return

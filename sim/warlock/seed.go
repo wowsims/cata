@@ -53,7 +53,7 @@ func (warlock *Warlock) registerSeedSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2000,
+				CastTime: 2000 * time.Millisecond,
 			},
 		},
 
@@ -85,7 +85,7 @@ func (warlock *Warlock) registerSeedSpell() {
 			},
 
 			NumberOfTicks:    6,
-			TickLength:       time.Second * 3,
+			TickLength:       3 * time.Second,
 			BonusCoefficient: 0.30,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {

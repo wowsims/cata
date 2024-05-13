@@ -22,7 +22,7 @@ export class ToplineResults extends ResultComponent {
 
 		const noManaClasses = [DeathKnight, Rogue, Warrior, Hunter];
 
-		const players = resultData.result.getPlayers(resultData.filter);
+		const players = resultData.result.getRaidIndexedPlayers(resultData.filter);
 		if (players.length === 1 && !!players[0].spec && !noManaClasses.some(klass => PlayerSpecs.getPlayerClass(players[0].spec!) === klass)) {
 			const player = players[0];
 			const secondsOOM = player.secondsOomAvg;

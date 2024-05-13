@@ -12,9 +12,15 @@ var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			// 5% Crit on SS
+			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_BonusCrit_Rating,
+				ClassMask:  HunterSpellSerpentSting,
+				FloatValue: 5 * core.CritRatingPerCritChance,
+			})
 		},
 		4: func(agent core.Agent) {
 			// Cobra & Steady Shot < 0.2s cast time
+			// Cannot be spell modded for now
 		},
 	},
 })
@@ -39,7 +45,7 @@ var ItemSetBloodthirstyGladiatorsPursuit = core.NewItemSet(core.ItemSet{
 
 func (hunter *Hunter) addBloodthirstyGloves() {
 	switch hunter.Hands().ID {
-	case 64709: //Todo: Add more ids here when needed
+	case 64991, 64709, 60424, 65544, 70534, 70260, 70441, 72369, 73717, 73583:
 		hunter.AddStaticMod(core.SpellModConfig{
 			ClassMask: HunterSpellExplosiveTrap | HunterSpellBlackArrow,
 			Kind:      core.SpellMod_Cooldown_Flat,
