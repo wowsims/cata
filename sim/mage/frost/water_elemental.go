@@ -129,7 +129,7 @@ func (we *WaterElemental) registerWaterboltSpell() {
 		},
 
 		DamageMultiplier: 1,
-		CritMultiplier:   we.SpellCritMultiplier(1.33, 0),
+		CritMultiplier:   we.mageOwner.DefaultMageCritMultiplier(),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.833,
 
