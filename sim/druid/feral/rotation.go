@@ -564,7 +564,7 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	}
 
 	// Roar calcs
-	roarNow := curCp >= 1 && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim, isExecutePhase))
+	roarNow := (curCp >= 1) && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim, isExecutePhase)) && (ripDot.IsActive() || (curCp < 3) || (simTimeRemain < baseEndThresh))
 
 	// Ravage calc
 	ravageNow := cat.Ravage.CanCast(sim, cat.CurrentTarget) && !isClearcast && (curEnergy+2*regenRate < cat.MaximumEnergy())
