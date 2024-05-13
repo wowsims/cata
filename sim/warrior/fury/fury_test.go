@@ -3,7 +3,7 @@ package fury
 import (
 	_ "github.com/wowsims/cata/sim/common" // imported to get item effects included.
 
-	//"testing"
+	"testing"
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
@@ -13,32 +13,33 @@ func init() {
 	RegisterFuryWarrior()
 }
 
-// func TestFury(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-// 		Class:      proto.Class_ClassWarrior,
-// 		Race:       proto.Race_RaceOrc,
-// 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-// 		Talents:     FuryTalents,
-// 		Glyphs:      FuryGlyphs,
-// 		GearSet:     core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p1_fury_smf"),
-// 		Consumes:    FullConsumes,
-// 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFury},
-// 		Rotation:    core.GetAplRotation("../../../ui/warrior/fury/apls", "fury"),
+func TestFury(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
+		Class:      proto.Class_ClassWarrior,
+		Race:       proto.Race_RaceOrc,
+		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-// 		ItemFilter: core.ItemFilter{
-// 			ArmorType: proto.ArmorType_ArmorTypePlate,
+		Talents:     FuryTalents,
+		Glyphs:      FuryGlyphs,
+		GearSet:     core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p1_fury_smf"),
+		Consumes:    FullConsumes,
+		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFury},
+		Rotation:    core.GetAplRotation("../../../ui/warrior/fury/apls", "fury"),
 
-// 			WeaponTypes: []proto.WeaponType{
-// 				proto.WeaponType_WeaponTypeAxe,
-// 				proto.WeaponType_WeaponTypeSword,
-// 				proto.WeaponType_WeaponTypeMace,
-// 				proto.WeaponType_WeaponTypeDagger,
-// 				proto.WeaponType_WeaponTypeFist,
-// 			},
-// 		},
-// 	}))
-// }
+		ItemFilter: core.ItemFilter{
+			ArmorType: proto.ArmorType_ArmorTypePlate,
+
+			WeaponTypes: []proto.WeaponType{
+				proto.WeaponType_WeaponTypeAxe,
+				proto.WeaponType_WeaponTypeSword,
+				proto.WeaponType_WeaponTypeMace,
+				proto.WeaponType_WeaponTypeDagger,
+				proto.WeaponType_WeaponTypeFist,
+			},
+		},
+	}))
+}
 
 var ItemFilter = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypePlate,
