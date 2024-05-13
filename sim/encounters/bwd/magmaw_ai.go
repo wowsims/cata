@@ -244,6 +244,7 @@ func (ai *MagmawAI) registerSpells() {
 	// 0 - 10N, 1 - 25N, 2 - 10H, 3 - 25H
 	scalingIndex := core.TernaryInt(ai.raidSize == 10, core.TernaryInt(ai.isHeroic, 2, 0), core.TernaryInt(ai.isHeroic, 3, 1))
 	isIndividualSim := ai.Target.Env.Raid.Size() == 1
+	tankUnit := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
 
 	// Exposed Aura
 	ai.pointOfVulnerability = ai.Target.GetOrRegisterAura(core.Aura{
@@ -274,6 +275,35 @@ func (ai *MagmawAI) registerSpells() {
 
 					addTarget.CurrentTarget = bossTank
 					ai.Target.CurrentTarget = addTank
+				}
+			} else if isIndividualSim {
+				// Individual sim fake tank swaps
+				if tankUnit.Metrics.IsTanking() {
+					if ai.Target.Env.GetNumTargets() > 1 {
+						if !ai.individualTankSwap {
+							// Remove boss target
+							ai.individualTankSwap = true
+							ai.Target.CurrentTarget = nil
+
+							// Set add target
+							addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
+							tankUnit.CurrentTarget = addTarget
+
+							addTarget.CurrentTarget = tankUnit
+							addTarget.AutoAttacks.EnableAutoSwing(sim)
+						} else {
+							ai.individualTankSwap = false
+
+							// Set boss target
+							ai.Target.CurrentTarget = tankUnit
+							tankUnit.CurrentTarget = &ai.Target.Unit
+
+							// Remove add target
+							addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
+							addTarget.AutoAttacks.CancelAutoSwing(sim)
+							addTarget.CurrentTarget = nil
+						}
+					}
 				}
 			}
 
@@ -420,7 +450,7 @@ func (ai *MagmawAI) registerSpells() {
 					}
 				} else {
 					validTargets := make([]int32, 0)
-					for idx, _ := range sim.Raid.AllPlayerUnits {
+					for idx := range sim.Raid.AllPlayerUnits {
 						validTargets = append(validTargets, int32(idx))
 					}
 					hitTargets := make([]int32, 0)
@@ -475,19 +505,6 @@ func (ai *MagmawAI) registerSpells() {
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					ai.Target.AutoAttacks.CancelAutoSwing(sim)
 					ai.canAct = false
-
-					// Individual Sim tank swap
-					tankUnit := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
-					if isIndividualSim && tankUnit.Metrics.IsTanking() && ai.individualTankSwap && ai.Target.Env.GetNumTargets() > 1 {
-						// Set boss target
-						ai.Target.CurrentTarget = tankUnit
-						tankUnit.CurrentTarget = &ai.Target.Unit
-
-						// Remove add target
-						addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
-						addTarget.AutoAttacks.CancelAutoSwing(sim)
-						addTarget.CurrentTarget = nil
-					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					if sim.CurrentTime >= sim.Duration {
@@ -497,33 +514,8 @@ func (ai *MagmawAI) registerSpells() {
 					// Activate Expose
 					ai.pointOfVulnerability.Activate(sim)
 
-					if !isIndividualSim {
+					if !isIndividualSim || (!ai.individualTankSwap && tankUnit.Metrics.IsTanking()) {
 						ai.swelteringArmor.Get(ai.lastMangleTarget).Activate(sim)
-					} else {
-						// Individual sim fake tank swaps
-						tankUnit := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
-						if tankUnit.Metrics.IsTanking() {
-							if !ai.individualTankSwap {
-								ai.swelteringArmor.Get(ai.lastMangleTarget).Activate(sim)
-							}
-
-							if ai.Target.Env.GetNumTargets() > 1 {
-								if !ai.individualTankSwap {
-									// Remove boss target
-									ai.individualTankSwap = true
-									ai.Target.CurrentTarget = nil
-
-									// Set add target
-									addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
-									tankUnit.CurrentTarget = addTarget
-
-									addTarget.CurrentTarget = tankUnit
-									addTarget.AutoAttacks.EnableAutoSwing(sim)
-								} else {
-									ai.individualTankSwap = false
-								}
-							}
-						}
 					}
 				},
 			},
