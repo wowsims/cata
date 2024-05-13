@@ -29,12 +29,34 @@ export class EncounterPicker extends Component {
 		modEncounter.sim.waitForInit().then(() => {
 			const presetTargets = modEncounter.sim.db.getAllPresetTargets();
 
+			// new EnumPicker<Encounter>(this.rootElem, modEncounter, {
+			// 	extraCssClasses: ['damage-metrics', 'npc-picker'],
+			// 	label: 'NPC',
+			// 	labelTooltip: 'Selects a preset NPC configuration.',
+			// 	values: [{ name: 'Custom', value: -1 }].concat(
+			// 		presetTargets.map((pe, i) => {
+			// 			return {
+			// 				name: pe.path,
+			// 				value: i,
+			// 			};
+			// 		}),
+			// 	),
+			// 	changedEvent: (encounter: Encounter) => encounter.changeEmitter,
+			// 	getValue: (encounter: Encounter) => presetTargets.findIndex(pe => equalTargetsIgnoreInputs(encounter.primaryTarget, pe.target)),
+			// 	setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
+			// 		if (newValue != -1) {
+			// 			encounter.applyPresetTarget(eventID, presetTargets[newValue], 0);
+			// 		}
+			// 	},
+			// });
+
+			const presetEncounters = modEncounter.sim.db.getAllPresetEncounters();
 			new EnumPicker<Encounter>(this.rootElem, modEncounter, {
+				label: 'Encounter',
+				//extraCssClasses: ['encounter-picker', 'mb-0', 'pe-2', 'order-first'],
 				extraCssClasses: ['damage-metrics', 'npc-picker'],
-				label: 'NPC',
-				labelTooltip: 'Selects a preset NPC configuration.',
 				values: [{ name: 'Custom', value: -1 }].concat(
-					presetTargets.map((pe, i) => {
+					presetEncounters.map((pe, i) => {
 						return {
 							name: pe.path,
 							value: i,
@@ -42,10 +64,10 @@ export class EncounterPicker extends Component {
 					}),
 				),
 				changedEvent: (encounter: Encounter) => encounter.changeEmitter,
-				getValue: (encounter: Encounter) => presetTargets.findIndex(pe => equalTargetsIgnoreInputs(encounter.primaryTarget, pe.target)),
+				getValue: (encounter: Encounter) => presetEncounters.findIndex(pe => encounter.matchesPreset(pe)),
 				setValue: (eventID: EventID, encounter: Encounter, newValue: number) => {
 					if (newValue != -1) {
-						encounter.applyPresetTarget(eventID, presetTargets[newValue], 0);
+						encounter.applyPreset(eventID, presetEncounters[newValue]);
 					}
 				},
 			});

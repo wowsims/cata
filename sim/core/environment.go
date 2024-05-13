@@ -102,6 +102,7 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 					raidTarget := env.GetUnit(raidTargetProto, nil)
 					if raidTarget != nil {
 						target.CurrentTarget = raidTarget
+						raidTarget.CurrentTarget = &target.Unit
 					}
 				}
 			}
