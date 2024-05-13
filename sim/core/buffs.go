@@ -482,7 +482,7 @@ func PowerWordFortitudeAura(unit *Unit) *Aura {
 		"Power Word: Fortitude",
 		ActionID{SpellID: 21562},
 		[]StatConfig{
-			{stats.Stamina, 548.0, false},
+			{stats.Stamina, 584.0, false},
 		},
 	})
 }
@@ -493,7 +493,7 @@ func BloodPactAura(unit *Unit) *Aura {
 		"Blood Pact",
 		ActionID{SpellID: 6307},
 		[]StatConfig{
-			{stats.Stamina, 548.0, false},
+			{stats.Stamina, 584.0, false},
 		},
 	})
 }
@@ -504,7 +504,7 @@ func CommandingShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
 		"Commanding Shout",
 		ActionID{SpellID: 469},
 		[]StatConfig{
-			{stats.Stamina, 548.0, false},
+			{stats.Stamina, 584.0, false},
 		},
 	})
 
