@@ -609,7 +609,7 @@ func (shaman *Shaman) applySearingFlames() {
 	shaman.SearingFlames = shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 77657},
 		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
+		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagIgnoreModifiers | core.SpellFlagNoOnDamageDealt,
 
 		DamageMultiplierAdditive: 1,
@@ -651,8 +651,8 @@ func (shaman *Shaman) applySearingFlames() {
 				// recalc damage based on stacks, testing with searing totem seems to indicate the damage is updated dynamically on refesh
 				// instantly taking the bonus of any procs or buffs and applying it times the number of stacks
 				dot.SnapshotCritChance = spell.SpellCritChance(result.Target)
-				dot.SnapshotBaseDamage = float64(dot.GetStacks()) * result.Damage / float64(dot.NumberOfTicks)
-				dot.SnapshotAttackerMultiplier = shaman.SearingFlames.DamageMultiplier
+				dot.SnapshotBaseDamage = float64(dot.GetStacks()) * result.PreOutcomeDamage / float64(dot.NumberOfTicks)
+				dot.SnapshotAttackerMultiplier = 1
 				shaman.SearingFlames.Cast(sim, result.Target)
 			}
 		},
