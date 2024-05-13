@@ -20,7 +20,7 @@ func TestEnhancement(t *testing.T) {
 
 		//{"id":65367,"randomSuffix":-136,"reforging":151},
 		// The above line is the actual line for the ring but it is causing an error in the test
-		GearSet:     core.GetGearSet("../../../ui/shaman/enhancement/gear_sets", "p1"),
+		GearSet:     core.GetGearSet("../../../ui/shaman/enhancement/gear_sets", "p1draenei"),
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,
