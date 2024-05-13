@@ -18,7 +18,8 @@ import {
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import DefaultApl from './apls/default.apl.json';
-import P1Gear from './gear_sets/p1.gear.json';
+import P1OrcGear from './gear_sets/p1orc.gear.json';
+import P1DraeneiGear from './gear_sets/p1draenei.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -26,7 +27,8 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 // keep them in a separate file.
 
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
-export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
+export const P1ORC_PRESET = PresetUtils.makePresetGear('P1 Orc Preset', P1OrcGear);
+export const P1DRAENEI_PRESET = PresetUtils.makePresetGear('P1 Draenei Preset', P1DraeneiGear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
