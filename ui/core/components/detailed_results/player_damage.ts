@@ -29,7 +29,8 @@ export class PlayerDamageMetricsTable extends MetricsTable<UnitMetrics> {
 					const makeChart = () => {
 						const chartContainer = document.createElement('div');
 						rowElem.appendChild(chartContainer);
-						const sourceChart = new SourceChart(chartContainer, player.actions);
+						const playerActions = player.getPlayerAndPetActions().map(action => action.forTarget(this.resultsFilter.getFilter())).flat();
+						const sourceChart = new SourceChart(chartContainer, playerActions);
 						return chartContainer;
 					};
 
