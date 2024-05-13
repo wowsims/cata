@@ -41,15 +41,16 @@ func (mage *Mage) registerFrostfireBoltSpell() {
 				MaxStacks: 3,
 				Duration:  time.Second * 12,
 			},
-			NumberOfTicks:    4,
-			TickLength:       time.Second * 3,
-			BonusCoefficient: 0.00733,
+			NumberOfTicks:       4,
+			TickLength:          time.Second * 3,
+			AffectedByCastSpeed: true,
+			BonusCoefficient:    0.00733,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.Snapshot(target, 0.00712*mage.ClassSpellScaling)
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 

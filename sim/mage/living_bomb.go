@@ -32,7 +32,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		Flags:          core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           mage.DefaultSpellCritMultiplier(),
+		CritMultiplier:           mage.DefaultMageCritMultiplier(),
 		BonusCoefficient:         0.516,
 		ThreatMultiplier:         1,
 

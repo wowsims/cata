@@ -136,24 +136,31 @@ func (warlock *Warlock) registerMoltenCore() {
 			castTimeMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell == warlock.Incinerate {
+			if spell != warlock.Incinerate {
+				return
+			}
+
+			// if the incinerate cast started BEFORE we got the molten core buff, the incinerate benefits from it but
+			// does not consume a stack. Detect this and only remove a stack if that's not the case
+			if sim.CurrentTime-spell.CurCast.CastTime > aura.StartedAt() {
 				aura.RemoveStack(sim)
 			}
 		},
 	})
 
+	procChance := 0.02 * float64(warlock.Talents.MoltenCore)
+	onHit := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		if spell.ClassSpellMask&(WarlockSpellImmolate|WarlockSpellImmolateDot) > 0 && sim.Proc(procChance, "Molten Core") {
+			moltenCoreAura.Activate(sim)
+			moltenCoreAura.SetStacks(sim, 3)
+		}
+	}
+
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
-			Label: "Molten Core Hidden Aura",
-			//TODO: Can this occur on the initial Immolate damage?
-			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == warlock.ImmolateDot {
-					if sim.Proc(0.02*float64(warlock.Talents.MoltenCore), "Molten Core") {
-						moltenCoreAura.Activate(sim)
-						moltenCoreAura.SetStacks(sim, 3)
-					}
-				}
-			},
+			Label:                 "Molten Core Hidden Aura",
+			OnSpellHitDealt:       onHit,
+			OnPeriodicDamageDealt: onHit,
 		}))
 }
 

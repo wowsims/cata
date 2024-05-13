@@ -645,7 +645,7 @@ func (aa *AutoAttacks) CancelMeleeSwing(sim *Simulation) {
 		return
 	}
 
-	if aa.AutoSwingMelee && aa.mh.enabled {
+	if aa.mh.enabled {
 		sim.removeWeaponAttack(&aa.mh)
 		aa.mh.enabled = false
 	}
