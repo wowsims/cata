@@ -109,6 +109,15 @@ export class SimResult {
 		}
 	}
 
+	getRaidIndexedPlayers(filter?: SimResultFilter): Array<UnitMetrics> {
+		if (filter?.player || filter?.player === 0) {
+			const player = this.getPlayerWithRaidIndex(filter.player);
+			return player ? [player] : [];
+		} else {
+			return this.raidMetrics.parties.map(party => party.players).flat();
+		}
+	}
+
 	// Returns the first player, regardless of which party / raid slot its in.
 	getFirstPlayer(): UnitMetrics | null {
 		return this.getPlayers()[0] || null;
@@ -151,6 +160,14 @@ export class SimResult {
 	getActionMetrics(filter?: SimResultFilter): Array<ActionMetrics> {
 		return ActionMetrics.joinById(
 			this.getPlayers(filter)
+				.map(player => player.getPlayerAndPetActions().map(action => action.forTarget(filter)))
+				.flat(),
+		);
+	}
+
+	getRaidIndexedActionMetrics(filter?: SimResultFilter): Array<ActionMetrics> {
+		return ActionMetrics.joinById(
+			this.getRaidIndexedPlayers(filter)
 				.map(player => player.getPlayerAndPetActions().map(action => action.forTarget(filter)))
 				.flat(),
 		);

@@ -1,6 +1,7 @@
 package bwd
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -8,25 +9,30 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func addMagmaw(bossPrefix string) {
+func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool, npcId int32, health float64, minBaseDamage float64, addHealth float64, addMinBaseDamage float64) {
+	targetName := fmt.Sprintf("Magmaw %d", raidSize)
+	if isHeroic {
+		targetName = targetName + " H"
+	}
+	targetNameAdd := targetName + " Blazing Construct"
 	core.AddPresetTarget(&core.PresetTarget{
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
-			Id:        41570,
-			Name:      "Magmaw 10",
+			Id:        npcId,
+			Name:      targetName,
 			Level:     88,
 			MobType:   proto.MobType_MobTypeBeast,
 			TankIndex: 0,
 
 			Stats: stats.Stats{
-				stats.Health:      26_798_304,
+				stats.Health:      health,
 				stats.Armor:       11977,
 				stats.AttackPower: 650,
 			}.ToFloatArray(),
 
 			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
 			SwingSpeed:       2.5,
-			MinBaseDamage:    110000,
+			MinBaseDamage:    minBaseDamage,
 			DamageSpread:     0.4,
 			SuppressDodge:    false,
 			ParryHaste:       false,
@@ -60,132 +66,52 @@ func addMagmaw(bossPrefix string) {
 			},
 		},
 		AI: func() core.TargetAI {
-			return makeMagmawAI(10, false)
+			return makeMagmawAI(raidSize, isHeroic)
 		},
 	})
-	core.AddPresetEncounter("Magmaw 10", []string{
-		bossPrefix + "/Magmaw 10",
-	})
 
-	core.AddPresetTarget(&core.PresetTarget{
-		PathPrefix: bossPrefix,
-		Config: &proto.Target{
-			Id:        41571,
-			Name:      "Magmaw 25",
-			Level:     88,
-			MobType:   proto.MobType_MobTypeBeast,
-			TankIndex: 0,
+	if isHeroic {
+		core.AddPresetTarget(&core.PresetTarget{
+			PathPrefix: bossPrefix,
+			Config: &proto.Target{
+				Id:        npcId + 10, // TODO: Figure out what to do with Ids
+				Name:      targetNameAdd,
+				Level:     87,
+				MobType:   proto.MobType_MobTypeBeast,
+				TankIndex: 1,
 
-			Stats: stats.Stats{
-				stats.Health:      81_082_048,
-				stats.Armor:       11977,
-				stats.AttackPower: 650,
-			}.ToFloatArray(),
+				Stats: stats.Stats{
+					stats.Health:      addHealth,
+					stats.Armor:       11977,
+					stats.AttackPower: 650,
+				}.ToFloatArray(),
 
-			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
-			SwingSpeed:       2.5,
-			MinBaseDamage:    150000,
-			DamageSpread:     0.4,
-			SuppressDodge:    false,
-			ParryHaste:       false,
-			DualWield:        false,
-			DualWieldPenalty: false,
-			TargetInputs: []*proto.TargetInput{
-				{
-					Label:       "Impale Reaction Time",
-					Tooltip:     "How long will the Raid take to Impale Head in Seconds. (After the initial 10s)",
-					InputType:   proto.InputType_Number,
-					NumberValue: 5.0,
-				},
+				SpellSchool:   proto.SpellSchool_SpellSchoolPhysical,
+				SwingSpeed:    2.0,
+				MinBaseDamage: addMinBaseDamage,
+				DamageSpread:  0.5,
+				TargetInputs:  []*proto.TargetInput{},
 			},
-		},
-		AI: func() core.TargetAI {
-			return makeMagmawAI(25, false)
-		},
-	})
-	core.AddPresetEncounter("Magmaw 25", []string{
-		bossPrefix + "/Magmaw 25",
-	})
+			AI: nil,
+		})
+		core.AddPresetEncounter(targetName, []string{
+			bossPrefix + "/" + targetName,
+			bossPrefix + "/" + targetNameAdd,
+		})
+	} else {
+		core.AddPresetEncounter(targetName, []string{
+			bossPrefix + "/" + targetName,
+		})
+	}
 
-	core.AddPresetTarget(&core.PresetTarget{
-		PathPrefix: bossPrefix,
-		Config: &proto.Target{
-			Id:        41572,
-			Name:      "Magmaw 10 H",
-			Level:     88,
-			MobType:   proto.MobType_MobTypeBeast,
-			TankIndex: 0,
+}
 
-			Stats: stats.Stats{
-				stats.Health:      39_200_000,
-				stats.Armor:       11977,
-				stats.AttackPower: 650,
-			}.ToFloatArray(),
-
-			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
-			SwingSpeed:       2.5,
-			MinBaseDamage:    150000,
-			DamageSpread:     0.4,
-			SuppressDodge:    false,
-			ParryHaste:       false,
-			DualWield:        false,
-			DualWieldPenalty: false,
-			TargetInputs: []*proto.TargetInput{
-				{
-					Label:       "Impale Reaction Time",
-					Tooltip:     "How long will the Raid take to Impale Head in Seconds. (After the initial 10s)",
-					InputType:   proto.InputType_Number,
-					NumberValue: 5.0,
-				},
-			},
-		},
-		AI: func() core.TargetAI {
-			return makeMagmawAI(10, true)
-		},
-	})
-	core.AddPresetEncounter("Magmaw 10 H", []string{
-		bossPrefix + "/Magmaw 10 H",
-	})
-
-	core.AddPresetTarget(&core.PresetTarget{
-		PathPrefix: bossPrefix,
-		Config: &proto.Target{
-			Id:        41573,
-			Name:      "Magmaw 25 H",
-			Level:     88,
-			MobType:   proto.MobType_MobTypeBeast,
-			TankIndex: 0,
-
-			Stats: stats.Stats{
-				stats.Health:      120_016_403,
-				stats.Armor:       11977,
-				stats.AttackPower: 650,
-			}.ToFloatArray(),
-
-			SpellSchool:      proto.SpellSchool_SpellSchoolPhysical,
-			SwingSpeed:       2.5,
-			MinBaseDamage:    210000,
-			DamageSpread:     0.4,
-			SuppressDodge:    false,
-			ParryHaste:       false,
-			DualWield:        false,
-			DualWieldPenalty: false,
-			TargetInputs: []*proto.TargetInput{
-				{
-					Label:       "Impale Reaction Time",
-					Tooltip:     "How long will the Raid take to Impale Head in Seconds. (After the initial 10s)",
-					InputType:   proto.InputType_Number,
-					NumberValue: 5.0,
-				},
-			},
-		},
-		AI: func() core.TargetAI {
-			return makeMagmawAI(25, true)
-		},
-	})
-	core.AddPresetEncounter("Magmaw 25 H", []string{
-		bossPrefix + "/Magmaw 25 H",
-	})
+func addMagmaw(bossPrefix string) {
+	// size, heroic, boss hp, boss min damage, add hp, add min damage
+	createMagmawPreset(bossPrefix, 10, false, 41570, 26_798_304, 110000, 0, 0)
+	createMagmawPreset(bossPrefix, 25, false, 41571, 81_082_048, 150000, 0, 0)
+	createMagmawPreset(bossPrefix, 10, true, 41572, 39_200_000, 150000, 1_410_000, 44000)
+	createMagmawPreset(bossPrefix, 25, true, 41573, 120_016_403, 210000, 4_500_000, 80000)
 }
 
 func makeMagmawAI(raidSize int, isHeroic bool) core.TargetAI {
@@ -198,7 +124,10 @@ func makeMagmawAI(raidSize int, isHeroic bool) core.TargetAI {
 type MagmawAI struct {
 	Target *core.Target
 
-	canAct bool
+	canAct             bool
+	individualTankSwap bool
+
+	lastMangleTarget *core.Unit
 
 	raidSize    int
 	isHeroic    bool
@@ -236,6 +165,7 @@ func (ai *MagmawAI) Initialize(target *core.Target, config *proto.Target) {
 
 func (ai *MagmawAI) Reset(sim *core.Simulation) {
 	ai.canAct = true
+	ai.individualTankSwap = false
 }
 
 const BossGCD = time.Millisecond * 1620
@@ -290,6 +220,21 @@ func (ai *MagmawAI) registerSpells() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 2
+
+			if !isIndividualSim && ai.Target.Env.GetNumTargets() > 1 {
+				addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
+				if addTarget.CurrentTarget != nil {
+					// Swap Tanks
+					addTank := addTarget.CurrentTarget
+					bossTank := ai.Target.CurrentTarget
+
+					addTank.CurrentTarget = &ai.Target.Unit
+					bossTank.CurrentTarget = addTarget
+
+					addTarget.CurrentTarget = bossTank
+					ai.Target.CurrentTarget = addTank
+				}
+			}
 
 			ai.canAct = true
 			ai.Target.AutoAttacks.EnableAutoSwing(sim)
@@ -467,11 +412,11 @@ func (ai *MagmawAI) registerSpells() {
 	// 	25080,
 	// }[scalingIndex]
 
-	var lastMangleTarget *core.Unit
 	ai.mangle = ai.Target.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 89773},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagApplyArmorReduction,
 
 		DamageMultiplier: 1,
 
@@ -489,14 +434,46 @@ func (ai *MagmawAI) registerSpells() {
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					ai.Target.AutoAttacks.CancelAutoSwing(sim)
 					ai.canAct = false
+
+					// Individual Sim tank swap
+					tankUnit := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
+					if isIndividualSim && tankUnit.Metrics.IsTanking() && ai.individualTankSwap && ai.Target.Env.GetNumTargets() > 1 {
+						// Set boss target
+						ai.Target.CurrentTarget = tankUnit
+						tankUnit.CurrentTarget = &ai.Target.Unit
+
+						// Remove add target
+						addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
+						addTarget.AutoAttacks.CancelAutoSwing(sim)
+						addTarget.CurrentTarget = nil
+					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					// Activate Expose
 					ai.pointOfVulnerability.Activate(sim)
 
-					doDamage := !isIndividualSim || ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit.Metrics.IsTanking()
-					if doDamage {
-						ai.swelteringArmor.Get(lastMangleTarget).Activate(sim)
+					if !isIndividualSim {
+						ai.swelteringArmor.Get(ai.lastMangleTarget).Activate(sim)
+					} else {
+						// Individual sim fake tank swaps
+						tankUnit := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
+						if tankUnit.Metrics.IsTanking() && ai.Target.Env.GetNumTargets() > 1 {
+							if !ai.individualTankSwap {
+								ai.swelteringArmor.Get(ai.lastMangleTarget).Activate(sim)
+
+								// Remove boss target
+								ai.individualTankSwap = true
+								ai.Target.CurrentTarget = nil
+
+								// Set add target
+								addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
+								tankUnit.CurrentTarget = addTarget
+								addTarget.CurrentTarget = tankUnit
+								addTarget.AutoAttacks.EnableAutoSwing(sim)
+							} else {
+								ai.individualTankSwap = false
+							}
+						}
 					}
 				},
 			},
@@ -507,6 +484,9 @@ func (ai *MagmawAI) registerSpells() {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				doDamage := !isIndividualSim || ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit.Metrics.IsTanking()
 				if doDamage {
+					if isIndividualSim && ai.individualTankSwap {
+						return
+					}
 					baseDamage := mangleTick // + mangleVariance*sim.RandomFloat("Magmaw Mangle Tick")
 					dot.Spell.CalcAndDealPeriodicDamage(sim, target, baseDamage, dot.Spell.OutcomeAlwaysHit)
 				}
@@ -514,9 +494,9 @@ func (ai *MagmawAI) registerSpells() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			lastMangleTarget = target
+			ai.lastMangleTarget = target
 			doDamage := !isIndividualSim || ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit.Metrics.IsTanking()
-			if doDamage {
+			if doDamage && (!isIndividualSim || !ai.individualTankSwap) {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * 1.5
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
 			}

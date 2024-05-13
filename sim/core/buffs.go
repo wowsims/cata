@@ -287,30 +287,33 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 	if raidBuffs.RetributionAura {
 		RetributionAura(&character.Unit)
 	}
-	if raidBuffs.Bloodlust {
-		registerBloodlustCD(agent, 2825)
-	} else if raidBuffs.Heroism {
-		registerBloodlustCD(agent, 32182)
-	} else if raidBuffs.TimeWarp {
-		registerBloodlustCD(agent, 80353)
-	}
 
-	registerUnholyFrenzyCD(agent, individualBuffs.UnholyFrenzyCount)
-	registerTricksOfTheTradeCD(agent, individualBuffs.TricksOfTheTradeCount)
-	registerPowerInfusionCD(agent, individualBuffs.PowerInfusionCount)
-	registerManaTideTotemCD(agent, raidBuffs.ManaTideTotemCount)
-	registerInnervateCD(agent, individualBuffs.InnervateCount)
-	registerDivineGuardianCD(agent, individualBuffs.DivineGuardianCount)
-	registerHandOfSacrificeCD(agent, individualBuffs.HandOfSacrificeCount)
-	registerPainSuppressionCD(agent, individualBuffs.PainSuppressionCount)
-	registerGuardianSpiritCD(agent, individualBuffs.GuardianSpiritCount)
+	if len(character.Env.Raid.AllPlayerUnits) == 1 {
+		if raidBuffs.Bloodlust {
+			registerBloodlustCD(agent, 2825)
+		} else if raidBuffs.Heroism {
+			registerBloodlustCD(agent, 32182)
+		} else if raidBuffs.TimeWarp {
+			registerBloodlustCD(agent, 80353)
+		}
 
-	if individualBuffs.FocusMagic {
-		FocusMagicAura(nil, &character.Unit)
-	}
+		registerUnholyFrenzyCD(agent, individualBuffs.UnholyFrenzyCount)
+		registerTricksOfTheTradeCD(agent, individualBuffs.TricksOfTheTradeCount)
+		registerPowerInfusionCD(agent, individualBuffs.PowerInfusionCount)
+		registerManaTideTotemCD(agent, raidBuffs.ManaTideTotemCount)
+		registerInnervateCD(agent, individualBuffs.InnervateCount)
+		registerDivineGuardianCD(agent, individualBuffs.DivineGuardianCount)
+		registerHandOfSacrificeCD(agent, individualBuffs.HandOfSacrificeCount)
+		registerPainSuppressionCD(agent, individualBuffs.PainSuppressionCount)
+		registerGuardianSpiritCD(agent, individualBuffs.GuardianSpiritCount)
 
-	if individualBuffs.DarkIntent && character.Unit.Type == PlayerUnit {
-		MakePermanent(DarkIntentAura(&character.Unit, false))
+		if individualBuffs.FocusMagic {
+			FocusMagicAura(nil, &character.Unit)
+		}
+
+		if individualBuffs.DarkIntent && character.Unit.Type == PlayerUnit {
+			MakePermanent(DarkIntentAura(&character.Unit, false))
+		}
 	}
 }
 

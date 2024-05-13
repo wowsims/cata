@@ -40,8 +40,15 @@ func (hunter *Hunter) ApplySurvivalTalents() {
 	if hunter.Talents.Toxicology > 0 {
 		hunter.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_CritMultiplier_Pct,
-			ClassMask:  HunterSpellBlackArrow,
+			ClassMask:  HunterSpellBlackArrow | HunterSpellSerpentSting,
 			FloatValue: float64(hunter.Talents.Toxicology) * 0.5,
+		})
+	}
+	if hunter.Talents.ImprovedSerpentSting > 0 {
+		hunter.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusCrit_Rating,
+			ClassMask:  HunterSpellSerpentSting,
+			FloatValue: (float64(hunter.Talents.ImprovedSerpentSting) * 5) * core.CritRatingPerCritChance,
 		})
 	}
 
@@ -106,6 +113,12 @@ func (hunter *Hunter) applySniperTraining() {
 	})
 
 	core.ApplyFixedUptimeAura(stAura, uptime, time.Second*15, 1)
+
+	hunter.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Rating,
+		ClassMask:  HunterSpellKillShot,
+		FloatValue: (5.0 * float64(hunter.Talents.SniperTraining)) * core.CritRatingPerCritChance,
+	})
 }
 
 // Todo: Should we support precasting freezing/ice trap?

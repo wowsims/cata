@@ -88,7 +88,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Curse of Tongues",
 			ActionID: actionID,
-			Duration: time.Second * 30,
+			Duration: 30 * time.Second,
 		})
 	})
 
@@ -154,7 +154,7 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 				Label: "Bane of Agony",
 			},
 			NumberOfTicks:    12,
-			TickLength:       time.Second * 2,
+			TickLength:       2 * time.Second,
 			BonusCoefficient: 0.088,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, 0.5*baseTickDmg)
@@ -212,7 +212,7 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 				Label: "Bane of Doom",
 			},
 			NumberOfTicks:    4,
-			TickLength:       time.Second * 15,
+			TickLength:       15 * time.Second,
 			BonusCoefficient: 0.88,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, warlock.CalcScalingSpellDmg(Coefficient_BaneOfDoom))
@@ -221,7 +221,7 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 				//TODO: Can this crit?
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				if sim.Proc(0.2+ebonImpBonusSummon, "Ebon Imp") {
-					warlock.EbonImp.EnableWithTimeout(sim, warlock.EbonImp, time.Second*15)
+					warlock.EbonImp.EnableWithTimeout(sim, warlock.EbonImp, 15*time.Second)
 				}
 			},
 		},
