@@ -13,6 +13,7 @@ func init() {
 	RegisterFuryWarrior()
 }
 
+
 func TestFury(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
 		Class:      proto.Class_ClassWarrior,
