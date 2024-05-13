@@ -293,7 +293,6 @@ func (pet *WarlockPet) registerFelstormSpell() {
 
 func (pet *WarlockPet) registerLegionStrikeSpell() {
 	numberOfTargets := pet.Env.GetNumTargets()
-	results := make([]*core.SpellResult, numberOfTargets)
 
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30213},
@@ -302,10 +301,7 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage,
 		ClassSpellMask: WarlockSpellFelGuardLegionStrike,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.06,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.06},
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -322,21 +318,12 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 		CritMultiplier:   2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//TODO: Does this scale with melee attack power as well??
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			// This is the formula from the tooltip but... it multiplies by .5 and then by 2???? so it's just spell power???
-			baseDamage += ((spell.SpellPower()*0.50)*2*0.264 + 139) / float64(numberOfTargets)
+			baseDmg := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDmg += pet.Owner.CalcScalingSpellDmg(0.1439999938) + 0.264*spell.MeleeAttackPower()
+			baseDmg /= float64(numberOfTargets)
 
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numberOfTargets; hitIndex++ {
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
-			}
-
-			curTarget = target
-			for hitIndex := int32(0); hitIndex < numberOfTargets; hitIndex++ {
-				spell.DealDamage(sim, results[hitIndex])
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for _, target := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
 		},
 	}))
