@@ -46,6 +46,14 @@ func (mage *Mage) ApplyFireTalents() {
 		})
 	}
 
+	// Firestarter
+	if mage.Talents.Firestarter {
+		mage.AddStaticMod(core.SpellModConfig{
+			ClassMask: MageSpellScorch,
+			Kind:      core.SpellMod_AllowCastWhileMoving,
+		})
+	}
+
 	// Improved Flamestrike
 	if mage.Talents.ImprovedFlamestrike > 0 {
 		mage.AddStaticMod(core.SpellModConfig{

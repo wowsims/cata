@@ -7,14 +7,16 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/encounters/default_ai"
 )
 
 func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool, npcId int32, health float64, minBaseDamage float64, addHealth float64, addMinBaseDamage float64) {
 	targetName := fmt.Sprintf("Magmaw %d", raidSize)
+	targetNameAdd := fmt.Sprintf("Blazing Construct %d", raidSize)
 	if isHeroic {
 		targetName = targetName + " H"
+		targetNameAdd = targetNameAdd + " H"
 	}
-	targetNameAdd := targetName + " Blazing Construct"
 	core.AddPresetTarget(&core.PresetTarget{
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
@@ -92,7 +94,42 @@ func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool, npcId in
 				DamageSpread:  0.5,
 				TargetInputs:  []*proto.TargetInput{},
 			},
-			AI: nil,
+			AI: default_ai.NewDefaultAI([]default_ai.TargetAbility{
+				{
+					InitialCD:   time.Second * 5,
+					ChanceToUse: 0,
+					MakeSpell: func(target *core.Target) *core.Spell {
+						// Fiery Slash Next melee Spell
+						nextMeleeSpell := target.GetOrRegisterSpell(core.SpellConfig{
+							ActionID:    core.ActionID{SpellID: 92144},
+							SpellSchool: core.SpellSchoolFire,
+							ProcMask:    core.ProcMaskSpellDamage,
+
+							Cast: core.CastConfig{
+								CD: core.Cooldown{
+									Timer:    target.NewTimer(),
+									Duration: time.Second * 7,
+								},
+							},
+
+							DamageMultiplier: 0.75,
+
+							ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+								spell.CalcAndDealDamage(sim, target, spell.Unit.AutoAttacks.MH().EnemyWeaponDamage(sim, spell.MeleeAttackPower(), 0.5), spell.OutcomeEnemyMeleeWhite)
+							},
+						})
+
+						target.AutoAttacks.SetReplaceMHSwing(func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
+							if nextMeleeSpell.CanCast(sim, target.CurrentTarget) && sim.Proc(0.75, "Fiery Slash Cast") {
+								return nextMeleeSpell
+							}
+							return mhSwingSpell
+						})
+
+						return nextMeleeSpell
+					},
+				},
+			}),
 		})
 		core.AddPresetEncounter(targetName, []string{
 			bossPrefix + "/" + targetName,
@@ -221,6 +258,7 @@ func (ai *MagmawAI) registerSpells() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 2
 
+			// TODO: Move this to an APL Action
 			if !isIndividualSim && ai.Target.Env.GetNumTargets() > 1 {
 				addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
 				if addTarget.CurrentTarget != nil {
@@ -457,21 +495,25 @@ func (ai *MagmawAI) registerSpells() {
 					} else {
 						// Individual sim fake tank swaps
 						tankUnit := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
-						if tankUnit.Metrics.IsTanking() && ai.Target.Env.GetNumTargets() > 1 {
+						if tankUnit.Metrics.IsTanking() {
 							if !ai.individualTankSwap {
 								ai.swelteringArmor.Get(ai.lastMangleTarget).Activate(sim)
+							}
 
-								// Remove boss target
-								ai.individualTankSwap = true
-								ai.Target.CurrentTarget = nil
+							if ai.Target.Env.GetNumTargets() > 1 {
+								if !ai.individualTankSwap {
+									// Remove boss target
+									ai.individualTankSwap = true
+									ai.Target.CurrentTarget = nil
 
-								// Set add target
-								addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
-								tankUnit.CurrentTarget = addTarget
-								addTarget.CurrentTarget = tankUnit
-								addTarget.AutoAttacks.EnableAutoSwing(sim)
-							} else {
-								ai.individualTankSwap = false
+									// Set add target
+									addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
+									tankUnit.CurrentTarget = addTarget
+									addTarget.CurrentTarget = tankUnit
+									addTarget.AutoAttacks.EnableAutoSwing(sim)
+								} else {
+									ai.individualTankSwap = false
+								}
 							}
 						}
 					}
