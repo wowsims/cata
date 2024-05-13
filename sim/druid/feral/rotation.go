@@ -564,10 +564,10 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	}
 
 	// Roar calcs
-	roarNow := curCp >= 1 && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim, isExecutePhase))
+	roarNow := (curCp >= 1) && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim, isExecutePhase)) && (ripDot.IsActive() || (curCp < 3) || (simTimeRemain < baseEndThresh))
 
 	// Ravage calc
-	ravageNow := cat.Ravage.CanCast(sim, cat.CurrentTarget) && !isClearcast && (curEnergy+regenRate < cat.MaximumEnergy())
+	ravageNow := cat.Ravage.CanCast(sim, cat.CurrentTarget) && !isClearcast && (curEnergy+2*regenRate < cat.MaximumEnergy())
 
 	// Pooling calcs
 	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain-baseEndThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))

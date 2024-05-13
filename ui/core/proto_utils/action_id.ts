@@ -79,6 +79,10 @@ export class ActionId {
 					name += ' (Main Hand)';
 				} else if (tag == 2) {
 					name += ' (Off Hand)';
+				} else if (tag == 41570) {
+					name += ' (Magmaw)';
+				} else if (tag == 49416) {
+					name += ' (Blazing Bone Construct)';
 				}
 				break;
 			case OtherAction.OtherActionShoot:

@@ -312,23 +312,23 @@ func applyBuffEffects(agent Agent, raidBuffs *proto.RaidBuffs, _ *proto.PartyBuf
 		}
 
 		if individualBuffs.DarkIntent && character.Unit.Type == PlayerUnit {
-			MakePermanent(DarkIntentAura(&character.Unit, false))
+			MakePermanent(DarkIntentAura(&character.Unit, character.Class == proto.Class_ClassWarlock))
 		}
 	}
 }
 
-func DarkIntentAura(unit *Unit, selfBuff bool) *Aura {
-	var hasteEffect *ExclusiveEffect
+func DarkIntentAura(unit *Unit, isWarlock bool) *Aura {
+	var dotDmgEffect *ExclusiveEffect
 	procAura := unit.RegisterAura(Aura{
 		Label:     "Dark Intent Proc",
 		ActionID:  ActionID{SpellID: 85759},
-		Duration:  time.Second * 7,
+		Duration:  7 * time.Second,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
-			hasteEffect.SetPriority(sim, TernaryFloat64(selfBuff, 0.03, 0.01)*float64(newStacks))
+			dotDmgEffect.SetPriority(sim, TernaryFloat64(isWarlock, 0.03, 0.01)*float64(newStacks))
 		},
 	})
-	hasteEffect = procAura.NewExclusiveEffect("DarkIntent", false, ExclusiveEffect{
+	dotDmgEffect = procAura.NewExclusiveEffect("DarkIntent", false, ExclusiveEffect{
 		Priority: 0,
 		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
 			ee.Aura.Unit.PseudoStats.DotDamageMultiplierAdditive += ee.Priority
@@ -339,20 +339,18 @@ func DarkIntentAura(unit *Unit, selfBuff bool) *Aura {
 	})
 
 	// proc this based on the uptime configuration
-	if !selfBuff {
-		// We assume lock precasts dot so first tick might happen after 2 seconds already
-		ApplyFixedUptimeAura(procAura, unit.DarkIntentUptimePercent, time.Second*2, time.Second*2)
-	}
+	// We assume lock precasts dot so first tick might happen after 2 seconds already
+	ApplyFixedUptimeAura(procAura, unit.DarkIntentUptimePercent, time.Second*2, time.Second*2)
 
-	var periodicHandler OnPeriodicDamage
-	if selfBuff {
-		periodicHandler = func(_ *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if result.Outcome.Matches(OutcomeCrit) && spell.SchoolIndex > stats.SchoolIndexPhysical {
-				procAura.Activate(sim)
-				procAura.AddStack(sim)
-			}
-		}
-	}
+	// var periodicHandler OnPeriodicDamage
+	// if selfBuff {
+	// 	periodicHandler = func(_ *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+	// 		if result.Outcome.Matches(OutcomeCrit) && spell.SchoolIndex > stats.SchoolIndexPhysical {
+	// 			procAura.Activate(sim)
+	// 			procAura.AddStack(sim)
+	// 		}
+	// 	}
+	// }
 
 	return unit.RegisterAura(Aura{
 		Label:    "Dark Intent",
@@ -365,8 +363,8 @@ func DarkIntentAura(unit *Unit, selfBuff bool) *Aura {
 			aura.Unit.MultiplyCastSpeed(1 / 1.03)
 			aura.Unit.MultiplyAttackSpeed(sim, 1/1.03)
 		},
-		OnPeriodicDamageDealt: periodicHandler,
-		BuildPhase:            CharacterBuildPhaseBuffs,
+		// OnPeriodicDamageDealt: periodicHandler,
+		BuildPhase: CharacterBuildPhaseBuffs,
 	})
 }
 
