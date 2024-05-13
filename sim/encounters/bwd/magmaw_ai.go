@@ -10,7 +10,10 @@ import (
 	"github.com/wowsims/cata/sim/encounters/default_ai"
 )
 
-func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool, npcId int32, health float64, minBaseDamage float64, addHealth float64, addMinBaseDamage float64) {
+func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool,
+	npcId int32, health float64, minBaseDamage float64,
+	addNpcId int32, addHealth float64, addMinBaseDamage float64) {
+
 	targetName := fmt.Sprintf("Magmaw %d", raidSize)
 	targetNameAdd := fmt.Sprintf("Blazing Construct %d", raidSize)
 	if isHeroic {
@@ -76,7 +79,7 @@ func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool, npcId in
 		core.AddPresetTarget(&core.PresetTarget{
 			PathPrefix: bossPrefix,
 			Config: &proto.Target{
-				Id:        npcId + 10, // TODO: Figure out what to do with Ids
+				Id:        addNpcId,
 				Name:      targetNameAdd,
 				Level:     87,
 				MobType:   proto.MobType_MobTypeBeast,
@@ -126,6 +129,8 @@ func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool, npcId in
 							return mhSwingSpell
 						})
 
+						target.AutoAttacks.MHConfig().ActionID.Tag = 49416
+
 						return nextMeleeSpell
 					},
 				},
@@ -145,10 +150,10 @@ func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool, npcId in
 
 func addMagmaw(bossPrefix string) {
 	// size, heroic, boss hp, boss min damage, add hp, add min damage
-	createMagmawPreset(bossPrefix, 10, false, 41570, 26_798_304, 110000, 0, 0)
-	createMagmawPreset(bossPrefix, 25, false, 41571, 81_082_048, 150000, 0, 0)
-	createMagmawPreset(bossPrefix, 10, true, 41572, 39_200_000, 150000, 1_410_000, 44000)
-	createMagmawPreset(bossPrefix, 25, true, 41573, 120_016_403, 210000, 4_500_000, 80000)
+	createMagmawPreset(bossPrefix, 10, false, 41570, 26_798_304, 110000, 0, 0, 0)
+	createMagmawPreset(bossPrefix, 25, false, 41571, 81_082_048, 150000, 0, 0, 0)
+	createMagmawPreset(bossPrefix, 10, true, 41572, 39_200_000, 150000, 49416, 1_410_000, 44000)
+	createMagmawPreset(bossPrefix, 25, true, 41573, 120_016_403, 210000, 49417, 4_500_000, 80000)
 }
 
 func makeMagmawAI(raidSize int, isHeroic bool) core.TargetAI {
@@ -194,6 +199,8 @@ func (ai *MagmawAI) Initialize(target *core.Target, config *proto.Target) {
 
 	// ai.isHeroic = config.TargetInputs[1].BoolValue
 	// ai.impaleDelay = config.TargetInputs[2].NumberValue
+
+	ai.Target.AutoAttacks.MHConfig().ActionID.Tag = 41570
 
 	ai.impaleDelay = config.TargetInputs[0].NumberValue
 	ai.registerSpells()
