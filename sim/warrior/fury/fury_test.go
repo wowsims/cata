@@ -2,130 +2,85 @@ package fury
 
 import (
 	_ "github.com/wowsims/cata/sim/common" // imported to get item effects included.
+
+	"testing"
+
+	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/proto"
 )
 
 func init() {
 	RegisterFuryWarrior()
 }
 
-// func TestFury(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-// 		Class:      proto.Class_ClassWarrior,
-// 		Race:       proto.Race_RaceOrc,
-// 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
+func TestFury(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
+		Class:      proto.Class_ClassWarrior,
+		Race:       proto.Race_RaceOrc,
+		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-// 		Talents:     FuryTalents,
-// 		Glyphs:      FuryGlyphs,
-// 		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "p1_fury"),
-// 		Consumes:    FullConsumes,
-// 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFury},
-// 		Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "fury"),
+		Talents:     FuryTalents,
+		Glyphs:      FuryGlyphs,
+		GearSet:     core.GetGearSet("../../../ui/warrior/fury/gear_sets", "p1_fury_smf"),
+		Consumes:    FullConsumes,
+		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFury},
+		Rotation:    core.GetAplRotation("../../../ui/warrior/fury/apls", "fury"),
 
-// 		ItemFilter: core.ItemFilter{
-// 			ArmorType: proto.ArmorType_ArmorTypePlate,
+		ItemFilter: core.ItemFilter{
+			ArmorType: proto.ArmorType_ArmorTypePlate,
 
-// 			WeaponTypes: []proto.WeaponType{
-// 				proto.WeaponType_WeaponTypeAxe,
-// 				proto.WeaponType_WeaponTypeSword,
-// 				proto.WeaponType_WeaponTypeMace,
-// 				proto.WeaponType_WeaponTypeDagger,
-// 				proto.WeaponType_WeaponTypeFist,
-// 			},
-// 		},
-// 	}))
-// }
+			WeaponTypes: []proto.WeaponType{
+				proto.WeaponType_WeaponTypeAxe,
+				proto.WeaponType_WeaponTypeSword,
+				proto.WeaponType_WeaponTypeMace,
+				proto.WeaponType_WeaponTypeDagger,
+				proto.WeaponType_WeaponTypeFist,
+			},
+		},
+	}))
+}
 
-// func TestArms(t *testing.T) {
-// 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-// 		Class:      proto.Class_ClassWarrior,
-// 		Race:       proto.Race_RaceOrc,
-// 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
+var ItemFilter = core.ItemFilter{
+	ArmorType: proto.ArmorType_ArmorTypePlate,
 
-// 		Talents:     ArmsTalents,
-// 		Glyphs:      ArmsGlyphs,
-// 		GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "p1_arms"),
-// 		Consumes:    FullConsumes,
-// 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsArms},
-// 		Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "arms"),
+	WeaponTypes: []proto.WeaponType{
+		proto.WeaponType_WeaponTypeAxe,
+		proto.WeaponType_WeaponTypeSword,
+		proto.WeaponType_WeaponTypeMace,
+		proto.WeaponType_WeaponTypeDagger,
+		proto.WeaponType_WeaponTypeFist,
+	},
+}
 
-// 		ItemFilter: core.ItemFilter{
-// 			ArmorType: proto.ArmorType_ArmorTypePlate,
+var FuryTalents = "302203-032222031301101223201"
+var FuryGlyphs = &proto.Glyphs{
+	Prime1: int32(proto.WarriorPrimeGlyph_GlyphOfBloodthirst),
+	Prime2: int32(proto.WarriorPrimeGlyph_GlyphOfRagingBlow),
+	Prime3: int32(proto.WarriorPrimeGlyph_GlyphOfSlam),
+	Major1: int32(proto.WarriorMajorGlyph_GlyphOfColossusSmash),
+	Major2: int32(proto.WarriorMajorGlyph_GlyphOfCleaving),
+	Major3: int32(proto.WarriorMajorGlyph_GlyphOfDeathWish),
+	Minor1: int32(proto.WarriorMinorGlyph_GlyphOfBerserkerRage),
+	Minor2: int32(proto.WarriorMinorGlyph_GlyphOfBattle),
+	Minor3: int32(proto.WarriorMinorGlyph_GlyphOfCommand),
+}
 
-// 			WeaponTypes: []proto.WeaponType{
-// 				proto.WeaponType_WeaponTypeAxe,
-// 				proto.WeaponType_WeaponTypeSword,
-// 				proto.WeaponType_WeaponTypeMace,
-// 				proto.WeaponType_WeaponTypeDagger,
-// 				proto.WeaponType_WeaponTypeFist,
-// 			},
-// 		},
-// 	}))
-// }
+var PlayerOptionsFury = &proto.Player_FuryWarrior{
+	FuryWarrior: &proto.FuryWarrior{
+		Options: &proto.FuryWarrior_Options{
+			ClassOptions: &proto.WarriorOptions{
+				StartingRage:       50,
+				UseShatteringThrow: true,
+				Shout:              proto.WarriorShout_WarriorShoutBattle,
+			},
+			UseRecklessness: true,
+		},
+	},
+}
 
-// func BenchmarkSimulate(b *testing.B) {
-// 	rsr := &proto.RaidSimRequest{
-// 		Raid: core.SinglePlayerRaidProto(
-// 			&proto.Player{
-// 				Race:          proto.Race_RaceOrc,
-// 				Class:         proto.Class_ClassWarrior,
-// 				Equipment:     core.GetGearSet("../../../ui/warrior/gear_sets", "p1_fury").GearSet,
-// 				Consumes:      FullConsumes,
-// 				Spec:          PlayerOptionsFury,
-// 				TalentsString: FuryTalents,
-// 				Buffs:         core.FullIndividualBuffs,
-// 			},
-// 			core.FullPartyBuffs,
-// 			core.FullRaidBuffs,
-// 			core.FullDebuffs),
-// 		Encounter: &proto.Encounter{
-// 			Duration: 300,
-// 			Targets: []*proto.Target{
-// 				core.NewDefaultTarget(),
-// 			},
-// 		},
-// 		SimOptions: core.AverageDefaultSimTestOptions,
-// 	}
-
-// 	core.RaidBenchmark(b, rsr)
-// }
-
-// var FuryTalents = "302023102331-305053000520310053120500351"
-// var FuryGlyphs = &proto.Glyphs{
-// 	Major1: int32(proto.WarriorMajorGlyph_GlyphOfWhirlwind),
-// 	Major2: int32(proto.WarriorMajorGlyph_GlyphOfHeroicStrike),
-// 	Major3: int32(proto.WarriorMajorGlyph_GlyphOfRending),
-// 	Minor1: int32(proto.WarriorMinorGlyph_GlyphOfShatteringThrow),
-// }
-// var ArmsTalents = "3022032023335100102012213231251-305-2033"
-// var ArmsGlyphs = &proto.Glyphs{
-// 	Major1: int32(proto.WarriorMajorGlyph_GlyphOfRending),
-// 	Major2: int32(proto.WarriorMajorGlyph_GlyphOfMortalStrike),
-// 	Major3: int32(proto.WarriorMajorGlyph_GlyphOfExecution),
-// 	Minor1: int32(proto.WarriorMinorGlyph_GlyphOfShatteringThrow),
-// }
-
-// var PlayerOptionsArms = &proto.Player_Warrior{
-// 	Warrior: &proto.Warrior{
-// 		Options: warriorOptions,
-// 	},
-// }
-
-// var PlayerOptionsFury = &proto.Player_Warrior{
-// 	Warrior: &proto.Warrior{
-// 		Options: warriorOptions,
-// 	},
-// }
-
-// var warriorOptions = &proto.Warrior_Options{
-// 	StartingRage:       50,
-// 	UseRecklessness:    true,
-// 	UseShatteringThrow: true,
-// 	Shout:              proto.WarriorShout_WarriorShoutBattle,
-// }
-
-// var FullConsumes = &proto.Consumes{
-// 	Flask:         proto.Flask_FlaskOfEndlessRage,
-// 	DefaultPotion: proto.Potions_PotionOfSpeed,
-// 	PrepopPotion:  proto.Potions_PotionOfSpeed,
-// 	Food:          proto.Food_FoodFishFeast,
-// }
+var FullConsumes = &proto.Consumes{
+	Flask:         proto.Flask_FlaskOfTitanicStrength,
+	DefaultPotion: proto.Potions_GolembloodPotion,
+	PrepopPotion:  proto.Potions_GolembloodPotion,
+	Food:          proto.Food_FoodBeerBasedCrocolisk,
+}
