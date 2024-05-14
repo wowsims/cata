@@ -1,5 +1,3 @@
-@use 'sass:map';
-
 .sim-tab {
 	.tab-pane-content-container {
 		display: flex;
@@ -17,7 +15,7 @@
 		}
 
 		.tab-panel-right {
-			margin-left: $container-padding;
+			margin-left: var(--container-padding);
 			display: flex;
 			flex-direction: column;
 			flex: 1.25;
@@ -30,7 +28,7 @@
 			flex: 1;
 
 			&:not(:last-child) {
-				margin-right: $section-spacer;
+				margin-right: var(--section-spacer);
 			}
 		}
 
@@ -38,7 +36,7 @@
 			flex: 1;
 
 			&:not(:last-child) {
-				margin-right: $section-spacer;
+				margin-right: var(--section-spacer);
 			}
 		}
 	}
