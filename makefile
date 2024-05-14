@@ -102,11 +102,11 @@ ui/core/proto/api.ts: proto/*.proto node_modules
 ui/%/index.html: ui/index_template.html
 	cat ui/index_template.html | sed -e 's/@@CLASS@@/$(shell dirname $(@D) | xargs basename)/g' -e 's/@@SPEC@@/$(shell basename $(@D))/g' > $@
 
-package-lock.json:
-	npm install
+yarn.lock:
+	yarn install
 
-node_modules: package-lock.json
-	npm ci
+node_modules: yarn.lock
+	yarn install --frozen-lockfile
 
 # Generic rule for hosting any class directory
 .PHONY: host_%
@@ -251,7 +251,7 @@ tsfmt:
 		npx tsfmt -r --useTsfmt ./tsfmt.json --baseDir $$dir; \
 	done
 
-# one time setup to install pre-commit hook for gofmt and npm install needed packages
+# one time setup to install pre-commit hook for gofmt and yarn install needed packages
 setup:
 	cp pre-commit .git/hooks
 	chmod +x .git/hooks/pre-commit

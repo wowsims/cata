@@ -5,9 +5,13 @@ FROM golang:1.21
 WORKDIR /cata
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN yarn set version 3.2.4
 
 COPY . .
 COPY gitconfig /etc/gitconfig
+
+# install dependencies
+RUN yarn plugin import workspace-tools
 
 # Install all Go dependencies
 RUN apt-get update \

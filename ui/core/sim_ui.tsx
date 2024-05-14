@@ -1,3 +1,5 @@
+import { Expansion } from '@wowsims/constants/expansion';
+import { ExpansionSelector } from '@wowsims/ui/ExpansionSelector';
 import { element, fragment, ref } from 'tsx-vanilla';
 
 import { BaseModal } from './components/base_modal.jsx';
@@ -77,6 +79,7 @@ export abstract class SimUI extends Component {
 								<div className="sim-sidebar-results within-raid-sim-hide"></div>
 								<div className="sim-sidebar-stats"></div>
 								<div className="sim-sidebar-socials"></div>
+								<ExpansionSelector expansion={Expansion.CATA} />
 							</div>
 						</aside>
 						<div className="sim-content container-fluid"></div>

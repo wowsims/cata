@@ -1,5 +1,14 @@
-# nodejs modules
+# dependencies
 node_modules
+.pnp
+.pnp.js
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+*.tsbuildinfo
 
 ui/core/index.ts
 ui/*/*/index.html
