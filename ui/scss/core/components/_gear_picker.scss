@@ -1,5 +1,6 @@
 @import './filters_menu';
 :root {
+	--ilvl-cell-width: 3rem;
 	--source-cell-width: 16rem;
 	--ep-cell-width: 6rem;
 	--favorite-cell-width: 2rem;
@@ -110,11 +111,6 @@
 	height: 100%;
 	width: 100%;
 
-	@include media-breakpoint-down(lg) {
-		width: 3rem;
-		height: 3rem;
-	}
-
 	.item-picker-labels-container {
 		align-items: flex-start;
 		text-align: left;
@@ -129,6 +125,9 @@
 	align-items: flex-end;
 	margin-right: -1px;
 	z-index: 1;
+	@include media-breakpoint-down(sm) {
+		display: none;
+	}
 
 	.item-picker-icon-wrapper {
 		width: var(--icon-size-md);
@@ -194,7 +193,7 @@
 		padding: 0;
 
 		.selector-modal-filters {
-			margin-bottom: var(--spacer-4);
+			margin-bottom: var(--bs-modal-padding);
 			display: flex;
 			align-items: center;
 
@@ -235,22 +234,20 @@
 	margin-bottom: var(--spacer-2);
 	font-size: 1.125rem;
 	justify-content: space-between; // Ensures labels are evenly spaced
-
-	label {
-		font-weight: normal;
+	@include media-breakpoint-down(xl) {
+		margin-right: 0;
 	}
 
 	.item-label {
 		flex: 1;
 	}
-
+	.ilvl-label {
+		width: var(--ilvl-cell-width);
+		margin-left: var(--spacer-3);
+	}
 	.source-label {
 		width: var(--source-cell-width);
 		margin-left: var(--spacer-3);
-	}
-	.reforge-label {
-		flex-grow: 1; // Allows it to stay centered by taking more space
-		justify-content: center; // Centers the content inside the label
 	}
 	.ep-label {
 		width: var(--ep-cell-width);
@@ -357,11 +354,16 @@
 
 	.selector-modal-list-item-name {
 		font-size: 1.125rem;
-		margin-left: var(--spacer-3);
+		margin-left: var(--spacer-2);
 		letter-spacing: normal;
 		font-weight: normal;
 		cursor: pointer;
 	}
+}
+
+.selector-modal-list-item-ilvl-container {
+	margin-left: var(--spacer-3);
+	width: var(--ilvl-cell-width);
 }
 
 .selector-modal-list-item-source-container {

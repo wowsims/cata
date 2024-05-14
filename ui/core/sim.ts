@@ -624,7 +624,12 @@ export class Sim {
 
 			const filters = proto.filters || Sim.defaultFilters();
 			if (filters.armorTypes.length == 0) {
-				filters.armorTypes = Sim.ALL_ARMOR_TYPES.slice();
+				// TODO: Can we specify the time of sim so that we can do this without querying the DOM?
+				if (!!document.querySelector('.not-within-raid-sim')) {
+					filters.armorTypes = [this.raid.getActivePlayers()[0].getPlayerClass().armorTypes[0]];
+				} else {
+					filters.armorTypes = Sim.ALL_ARMOR_TYPES.slice();
+				}
 			}
 			if (filters.weaponTypes.length == 0) {
 				filters.weaponTypes = Sim.ALL_WEAPON_TYPES.slice();

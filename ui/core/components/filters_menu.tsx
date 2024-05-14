@@ -1,10 +1,13 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { element } from 'tsx-vanilla';
+
 import { Player } from '../player.js';
 import { ItemSlot } from '../proto/common.js';
 import { RaidFilterOption, SourceFilterOption, UIItem_FactionRestriction } from '../proto/ui.js';
 import { armorTypeNames, raidNames, rangedWeaponTypeNames, sourceNames, weaponTypeNames } from '../proto_utils/names.js';
 import { Sim } from '../sim.js';
 import { EventID } from '../typed_event.js';
-import { BaseModal } from './base_modal.js';
+import { BaseModal } from './base_modal.jsx';
 import { BooleanPicker } from './boolean_picker.js';
 import { EnumPicker } from './enum_picker.js';
 import { NumberPicker } from './number_picker.js';
@@ -19,7 +22,36 @@ export class FiltersMenu extends BaseModal {
 	constructor(rootElem: HTMLElement, player: Player<any>, slot: ItemSlot) {
 		super(rootElem, 'filters-menu', { size: 'md', title: 'Filters', disposeOnClose: false });
 
-		let section = this.newSection('Factions');
+		let section = this.newSection('General');
+
+		const ilvlFiltersContainer = <div className="ilvl-filters" />;
+		section.appendChild(ilvlFiltersContainer);
+
+		new NumberPicker(ilvlFiltersContainer as HTMLElement, player.sim, {
+			label: 'Min ILvl',
+			showZeroes: false,
+			changedEvent: sim => sim.filtersChangeEmitter,
+			getValue: (sim: Sim) => sim.getFilters().minIlvl,
+			setValue: (eventID: EventID, sim: Sim, newValue: number) => {
+				const newFilters = sim.getFilters();
+				newFilters.minIlvl = newValue;
+				sim.setFilters(eventID, newFilters);
+			},
+		});
+
+		ilvlFiltersContainer.appendChild(<span className="ilvl-filters-separator">-</span>);
+
+		new NumberPicker(ilvlFiltersContainer as HTMLElement, player.sim, {
+			label: 'Max ILvl',
+			showZeroes: false,
+			changedEvent: sim => sim.filtersChangeEmitter,
+			getValue: (sim: Sim) => sim.getFilters().maxIlvl,
+			setValue: (eventID: EventID, sim: Sim, newValue: number) => {
+				const newFilters = sim.getFilters();
+				newFilters.maxIlvl = newValue;
+				sim.setFilters(eventID, newFilters);
+			},
+		});
 
 		new EnumPicker(section, player.sim, {
 			label: 'Faction Restrictions',
