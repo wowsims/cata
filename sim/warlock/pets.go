@@ -229,9 +229,6 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 }
 
 func (pet *WarlockPet) registerFelstormSpell() {
-	numHits := pet.Env.GetNumTargets()
-	results := make([]*core.SpellResult, numHits)
-
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 89751},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -239,10 +236,7 @@ func (pet *WarlockPet) registerFelstormSpell() {
 		Flags:          core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage,
 		ClassSpellMask: WarlockSpellFelGuardFelstorm,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.02,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.02},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -265,21 +259,12 @@ func (pet *WarlockPet) registerFelstormSpell() {
 			NumberOfTicks: 6,
 			TickLength:    1 * time.Second,
 			OnTick: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot) {
-				target := pet.CurrentTarget
 				spell := dot.Spell
-				curTarget := target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					//TODO: Does this scale with melee attack power as well??
-					baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-					// This is the formula from the tooltip but... it multiplies by .5 and then by 2???? so it's just spell power???
-					baseDamage += (dot.Spell.SpellPower()*0.50)*2*0.33 + 130
-					results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
-				}
-				curTarget = target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					spell.DealDamage(sim, results[hitIndex])
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
+				baseDmg := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDmg += pet.Owner.CalcScalingSpellDmg(0.1155000031) + 0.231*spell.MeleeAttackPower()
+
+				for _, target := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				}
 			},
 		},
