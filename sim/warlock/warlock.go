@@ -232,7 +232,7 @@ const (
 		WarlockSpellShadowflameDot
 
 	WarlockBasicPetSpells = WarlockSpellFelGuardLegionStrike | WarlockSpellSuccubusLashOfPain |
-		WarlockSpellSuccubusLashOfPain | WarlockSpellFelHunterShadowBite
+		WarlockSpellSuccubusLashOfPain | WarlockSpellFelHunterShadowBite | WarlockSpellImpFireBolt
 )
 
 const (
@@ -244,7 +244,7 @@ const Coefficient_UnstableAffliction float64 = 0.231
 const Coefficient_BaneOfAgony float64 = 0.133
 const Coefficient_BaneOfDoom float64 = 2.024
 const Coefficient_Immolate float64 = 0.692
-const Coefficient_ImmolateDot float64 = 0.439
+const Coefficient_ImmolateDot float64 = 0.43900001049
 const Coefficient_SeedExplosion float64 = 2.113
 const Coefficient_SeedDot float64 = 0.3024
 const Coefficient_BurningEmbers_1 float64 = 0.0734

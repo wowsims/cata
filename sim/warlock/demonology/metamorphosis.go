@@ -17,7 +17,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 	metamorphosisAura := demonology.RegisterAura(core.Aura{
 		Label:    "Metamorphosis Aura",
 		ActionID: core.ActionID{SpellID: 59672},
-		Duration: time.Second * (30 + 6*core.TernaryDuration(demonology.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 1, 0)),
+		Duration: (30 + 6*core.TernaryDuration(demonology.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 1, 0)) * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			metaDmgMod = 1.2 + demonology.getMasteryBonus()
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= metaDmgMod
@@ -79,7 +79,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    demonology.NewTimer(),
-				Duration: time.Second * time.Duration(30),
+				Duration: 30 * time.Second,
 			},
 		},
 		ExtraCastCondition: func(_ *core.Simulation, _ *core.Unit) bool {
@@ -88,7 +88,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 
 		DamageMultiplierAdditive: 1,
 		ThreatMultiplier:         1,
-		BonusCoefficient:         0.53899997473,
+		BonusCoefficient:         0.10000000149,
 
 		Dot: core.DotConfig{
 			IsAOE: true,
@@ -96,7 +96,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 				Label: "Immolation Aura",
 			},
 			NumberOfTicks:       15,
-			TickLength:          time.Second * 1,
+			TickLength:          1 * time.Second,
 			AffectedByCastSpeed: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				baseDmg := demonology.CalcScalingSpellDmg(0.58899998665) * sim.Encounter.AOECapMultiplier()

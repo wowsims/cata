@@ -15,34 +15,35 @@ func (destruction *DestructionWarlock) registerConflagrateSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellConflagrate,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.16,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.16},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
 				Timer:    destruction.NewTimer(),
-				Duration: time.Second * 10,
+				Duration: 10 * time.Second,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return destruction.ImmolateDot.Dot(target).IsActive()
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           destruction.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1.0,
+		CritMultiplier:   destruction.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 0.17599999905,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//TODO: How does conflagrate work?
-			baseDamage := 471.0 + 0.6*destruction.ImmolateDot.Dot(target).Spell.SpellPower()
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			if !result.Landed() {
-				return
+			baseDamage := destruction.CalcScalingSpellDmg(warlock.Coefficient_ImmolateDot)
+			oldMult := spell.DamageMultiplier
+			immoDot := destruction.ImmolateDot.Dot(target)
+			if !immoDot.IsActive() {
+				panic("Casted conflagrate without active immolation on the target")
 			}
+			spell.DamageMultiplier *= float64(immoDot.NumberOfTicks) * 0.6
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.DamageMultiplier = oldMult
 		},
 	})
 }

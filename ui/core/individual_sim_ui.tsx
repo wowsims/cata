@@ -16,7 +16,6 @@ import { TalentsTab } from './components/individual_sim_ui/talents_tab';
 import * as InputHelpers from './components/input_helpers';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
-import { SocialLinks } from './components/social_links';
 import { addStatWeightsAction } from './components/stat_weights_action';
 import * as Tooltips from './constants/tooltips';
 import { getSpecLaunchStatus, LaunchStatus, simLaunchStatuses } from './launched_sims';
@@ -428,20 +427,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	private addDetailedResultsTab() {
-		this.addTab(
-			'Results',
-			'detailed-results-tab',
-			`
-			<div class="detailed-results">
-			</div>
-		`,
-		);
+		const detailedResults = (<div className="detailed-results"></div>) as HTMLElement;
+		this.addTab('Results', 'detailed-results-tab', detailedResults);
 
-		const _detailedResults = new EmbeddedDetailedResults(
-			this.rootElem.getElementsByClassName('detailed-results')[0] as HTMLElement,
-			this,
-			this.raidSimResultsManager!,
-		);
+		new EmbeddedDetailedResults(detailedResults, this, this.raidSimResultsManager!);
 	}
 
 	private addTopbarComponents() {

@@ -79,6 +79,10 @@ export class ActionId {
 					name += ' (Main Hand)';
 				} else if (tag == 2) {
 					name += ' (Off Hand)';
+				} else if (tag == 41570) {
+					name += ' (Magmaw)';
+				} else if (tag == 49416) {
+					name += ' (Blazing Bone Construct)';
 				}
 				break;
 			case OtherAction.OtherActionShoot:
@@ -555,7 +559,7 @@ export class ActionId {
 			iconUrl = ActionId.makeIconUrl(overrideTooltipData['icon']);
 		}
 
-		return new ActionId(this.itemId, this.spellId, this.otherId, this.tag, baseName, name, iconUrl, this.randomSuffixId);
+		return new ActionId(this.itemId, this.spellId, this.otherId, this.tag, baseName, name, iconUrl, this.randomSuffixId, this.reforgeId);
 	}
 
 	toString(): string {
@@ -604,7 +608,7 @@ export class ActionId {
 	}
 
 	withoutTag(): ActionId {
-		return new ActionId(this.itemId, this.spellId, this.otherId, 0, this.baseName, this.baseName, this.iconUrl, this.randomSuffixId);
+		return new ActionId(this.itemId, this.spellId, this.otherId, 0, this.baseName, this.baseName, this.iconUrl, this.randomSuffixId, this.reforgeId);
 	}
 
 	static fromEmpty(): ActionId {

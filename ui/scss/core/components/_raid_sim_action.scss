@@ -1,5 +1,3 @@
-@use "sass:map";
-
 .results-pending .loader {
     margin: auto;
   }
@@ -35,6 +33,9 @@
 	.results-sim-cod .topline-result-avg:after {
 		content: "% Chance of Death";
 	}
+	.results-sim-dur .topline-result-avg:after {
+		content: " Duration";
+	}
 
 	.results-sim-percent-oom .topline-result-avg:after {
 		content: " spent OOM";
@@ -47,18 +48,18 @@
 			font-size: 1.75rem;
 
 			&::after {
-				font-size: $content-font-size;
+				font-size: var(--content-font-size);
 				font-weight: normal;
 			}
 		}
 
 		.topline-result-stdev {
-			font-size: $content-font-size;
+			font-size: var(--content-font-size);
 			font-weight: normal;
 		}
 
 		.results-reference {
-			margin-bottom: map-get($spacers, 2);
+			margin-bottom: var(--spacer-2);
 			font-weight: normal;
 
 			.results-reference-diff {
@@ -68,7 +69,7 @@
 	}
 
 	.results-sim-reference {
-		margin-top: map-get($spacers, 2);
+		margin-top: var(--spacer-2);
 		font-weight: normal;
 
 		&.has-reference {

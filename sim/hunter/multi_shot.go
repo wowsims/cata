@@ -14,7 +14,9 @@ func (hunter *Hunter) registerMultiShotSpell() {
 		ProcMask:       core.ProcMaskRangedSpecial,
 		ClassSpellMask: HunterSpellMultiShot,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-
+		MissileSpeed:   40,
+		MinRange:       5,
+		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
 			Cost: 40,
 		},
@@ -41,7 +43,7 @@ func (hunter *Hunter) registerMultiShotSpell() {
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				currentTarget := hunter.Env.GetTargetUnit(hitIndex)
 				baseDamage := sharedDmg + 0.2*spell.RangedAttackPower(currentTarget)
-				baseDamageArray[hitIndex] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
+				baseDamageArray[hitIndex] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			}
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {

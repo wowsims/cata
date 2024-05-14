@@ -1,23 +1,25 @@
 import { default as pako } from 'pako';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { element } from 'tsx-vanilla';
 
-import { EmbeddedDetailedResults } from '../core/components/detailed_results.js';
-import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action.js';
-import { raidSimStatus } from '../core/launched_sims.js';
-import { Player } from '../core/player.js';
-import { Raid as RaidProto } from '../core/proto/api.js';
-import { Class, Encounter as EncounterProto } from '../core/proto/common.js';
-import { Blessings } from '../core/proto/paladin.js';
-import { BlessingsAssignments, RaidSimSettings } from '../core/proto/ui.js';
+import { EmbeddedDetailedResults } from '../core/components/detailed_results';
+import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action';
+import { raidSimStatus } from '../core/launched_sims';
+import { Player } from '../core/player';
+import { Raid as RaidProto, SimType } from '../core/proto/api';
+import { Class, Encounter as EncounterProto } from '../core/proto/common';
+import { Blessings } from '../core/proto/paladin';
+import { BlessingsAssignments, RaidSimSettings } from '../core/proto/ui';
 import { getPlayerSpecFromPlayer, makeDefaultBlessings } from '../core/proto_utils/utils';
-import { Sim } from '../core/sim.js';
-import { SimUI } from '../core/sim_ui.js';
-import { EventID, TypedEvent } from '../core/typed_event.js';
-import { BlessingsPicker } from './blessings_picker.js';
-import * as ImportExport from './import_export.js';
-import { implementedSpecs } from './presets.js';
-import { RaidPicker } from './raid_picker.js';
-import { RaidTab } from './raid_tab.js';
-import { SettingsTab } from './settings_tab.js';
+import { Sim } from '../core/sim';
+import { SimUI } from '../core/sim_ui';
+import { EventID, TypedEvent } from '../core/typed_event';
+import { BlessingsPicker } from './blessings_picker';
+import * as ImportExport from './import_export';
+import { implementedSpecs } from './presets';
+import { RaidPicker } from './raid_picker';
+import { RaidTab } from './raid_tab';
+import { SettingsTab } from './settings_tab';
 export interface RaidSimConfig {
 	knownIssues?: Array<string>;
 }
@@ -39,7 +41,7 @@ export class RaidSimUI extends SimUI {
 	readonly referenceChangeEmitter = new TypedEvent<void>();
 
 	constructor(parentElem: HTMLElement, config: RaidSimConfig) {
-		super(parentElem, new Sim(), {
+		super(parentElem, new Sim({ type: SimType.SimTypeRaid }), {
 			cssClass: 'raid-sim-ui',
 			cssScheme: 'raid',
 			spec: null,
@@ -112,16 +114,10 @@ export class RaidSimUI extends SimUI {
 	}
 
 	private addDetailedResultsTab() {
-		this.addTab(
-			'Results',
-			'detailed-results-tab',
-			`
-			<div class="detailed-results">
-			</div>
-		`,
-		);
+		const detailedResults = (<div className="detailed-results"></div>) as HTMLElement;
+		this.addTab('Results', 'detailed-results-tab', detailedResults);
 
-		new EmbeddedDetailedResults(this.rootElem.getElementsByClassName('detailed-results')[0] as HTMLElement, this, this.raidSimResultsManager!);
+		new EmbeddedDetailedResults(detailedResults, this, this.raidSimResultsManager!);
 	}
 
 	private recomputeSettingsLayout() {

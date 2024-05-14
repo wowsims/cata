@@ -35,46 +35,48 @@ type Druid struct {
 	MHAutoSpell       *core.Spell
 	ReplaceBearMHFunc core.ReplaceMHSwing
 
-	Barkskin             *DruidSpell
-	Berserk              *DruidSpell
-	CatCharge            *DruidSpell
-	DemoralizingRoar     *DruidSpell
-	Enrage               *DruidSpell
-	FaerieFire           *DruidSpell
-	FerociousBite        *DruidSpell
-	ForceOfNature        *DruidSpell
-	FrenziedRegeneration *DruidSpell
-	Hurricane            *DruidSpell
-	HurricaneTickSpell   *DruidSpell
-	InsectSwarm          *DruidSpell
-	GiftOfTheWild        *DruidSpell
-	Lacerate             *DruidSpell
-	Languish             *DruidSpell
-	MangleBear           *DruidSpell
-	MangleCat            *DruidSpell
-	Maul                 *DruidSpell
-	MaulQueueSpell       *DruidSpell
-	Moonfire             *DruidSpell
-	MoonfireDoT          *DruidSpell
-	Pulverize            *DruidSpell
-	Rebirth              *DruidSpell
-	Rake                 *DruidSpell
-	Ravage               *DruidSpell
-	Rip                  *DruidSpell
-	SavageRoar           *DruidSpell
-	Shred                *DruidSpell
-	Starfire             *DruidSpell
-	Starfall             *DruidSpell
-	Starsurge            *DruidSpell
-	Sunfire              *DruidSpell
-	SunfireDoT           *DruidSpell
-	SurvivalInstincts    *DruidSpell
-	SwipeBear            *DruidSpell
-	SwipeCat             *DruidSpell
-	TigersFury           *DruidSpell
-	Thrash               *DruidSpell
-	Typhoon              *DruidSpell
-	Wrath                *DruidSpell
+	Barkskin              *DruidSpell
+	Berserk               *DruidSpell
+	CatCharge             *DruidSpell
+	DemoralizingRoar      *DruidSpell
+	Enrage                *DruidSpell
+	FaerieFire            *DruidSpell
+	FerociousBite         *DruidSpell
+	ForceOfNature         *DruidSpell
+	FrenziedRegeneration  *DruidSpell
+	Hurricane             *DruidSpell
+	HurricaneTickSpell    *DruidSpell
+	InsectSwarm           *DruidSpell
+	GiftOfTheWild         *DruidSpell
+	Lacerate              *DruidSpell
+	Languish              *DruidSpell
+	MangleBear            *DruidSpell
+	MangleCat             *DruidSpell
+	Maul                  *DruidSpell
+	MaulQueueSpell        *DruidSpell
+	Moonfire              *DruidSpell
+	MoonfireDoT           *DruidSpell
+	Pulverize             *DruidSpell
+	Rebirth               *DruidSpell
+	Rake                  *DruidSpell
+	Ravage                *DruidSpell
+	Rip                   *DruidSpell
+	SavageRoar            *DruidSpell
+	Shred                 *DruidSpell
+	Starfire              *DruidSpell
+	Starfall              *DruidSpell
+	Starsurge             *DruidSpell
+	Sunfire               *DruidSpell
+	SunfireDoT            *DruidSpell
+	SurvivalInstincts     *DruidSpell
+	SwipeBear             *DruidSpell
+	SwipeCat              *DruidSpell
+	TigersFury            *DruidSpell
+	Thrash                *DruidSpell
+	Typhoon               *DruidSpell
+	Wrath                 *DruidSpell
+	WildMushrooms         *DruidSpell
+	WildMushroomsDetonate *DruidSpell
 
 	CatForm  *DruidSpell
 	BearForm *DruidSpell
@@ -115,11 +117,10 @@ type Druid struct {
 	ProcOoc func(sim *core.Simulation)
 
 	ExtendingMoonfireStacks int
-	LunarICD                core.Cooldown
-	SolarICD                core.Cooldown
-	// Treant1                 *TreantPet
-	// Treant2                 *TreantPet
-	// Treant3                 *TreantPet
+
+	Treant1 *TreantPet
+	Treant2 *TreantPet
+	Treant3 *TreantPet
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
@@ -165,7 +166,7 @@ const (
 	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
 	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
 	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellMoonfireDoT | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
-	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellMoonfireDoT | DruidSpellTyphoon | DruidSpellHurricane
+	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellSunfireDoT | DruidSpellTyphoon | DruidSpellHurricane
 	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
 	DruidDamagingSpells = DruidArcaneSpells | DruidNatureSpells
 )
@@ -272,7 +273,7 @@ func (druid *Druid) Initialize() {
 }
 
 func (druid *Druid) RegisterBalanceSpells() {
-	//druid.registerHurricaneSpell()
+	druid.registerHurricaneSpell()
 	druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
 	druid.registerSunfireSpell()
@@ -280,8 +281,9 @@ func (druid *Druid) RegisterBalanceSpells() {
 	druid.registerWrathSpell()
 	druid.registerStarfallSpell()
 	druid.registerTyphoonSpell()
-	//druid.registerForceOfNatureCD()
+	druid.registerForceOfNature()
 	druid.registerStarsurgeSpell()
+	druid.registerWildMushrooms()
 }
 
 func (druid *Druid) RegisterFeralCatSpells() {
@@ -360,11 +362,11 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	// Base dodge is unaffected by Diminishing Returns
 	druid.PseudoStats.BaseDodge += 0.056097 // TODO: Check if this is different in Cata
 
-	// 	// if druid.Talents.ForceOfNature {
-	// 	// 	druid.Treant1 = druid.NewTreant()
-	// 	// 	druid.Treant2 = druid.NewTreant()
-	// 	// 	druid.Treant3 = druid.NewTreant()
-	// 	// }
+	if druid.Talents.ForceOfNature {
+		druid.Treant1 = druid.NewTreant()
+		druid.Treant2 = druid.NewTreant()
+		druid.Treant3 = druid.NewTreant()
+	}
 
 	return druid
 }

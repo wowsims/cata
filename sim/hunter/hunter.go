@@ -92,9 +92,12 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	}
 
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
-
+	focusPerSecond := 4.0
+	if hunter.HasSetBonus(ItemSetBloodthirstyGladiatorsPursuit, 4) {
+		focusPerSecond *= 1.05
+	}
 	// Todo: Verify that is is actually 4 focus per second
-	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), 4.0, true, nil)
+	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), focusPerSecond, true, nil)
 
 	hunter.PseudoStats.CanParry = true
 
@@ -136,6 +139,8 @@ func (hunter *Hunter) Initialize() {
 
 	hunter.ApplyGlyphs()
 	hunter.RegisterSpells()
+
+	hunter.addBloodthirstyGloves()
 }
 
 func (hunter *Hunter) RegisterSpells() {
@@ -176,6 +181,10 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
 	if hunter.Options.PetType == proto.HunterOptions_Silithid {
 		raidBuffs.BloodPact = true
+	}
+
+	if hunter.Options.PetType == proto.HunterOptions_Cat {
+		raidBuffs.StrengthOfEarthTotem = true
 	}
 
 	if hunter.Options.PetType == proto.HunterOptions_ShaleSpider {
@@ -233,6 +242,10 @@ const (
 	HunterSpellBlackArrow
 	HunterSpellMultiShot
 	HunterSpellAimedShot
+	HunterSpellSerpentSting
+	HunterSpellKillShot
+	HunterSpellRapidFire
+	HunterSpellBestialWrath
 	HunterPetFocusDump
 )
 

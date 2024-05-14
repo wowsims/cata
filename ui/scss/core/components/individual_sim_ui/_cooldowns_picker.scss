@@ -1,11 +1,9 @@
-@use "sass:map";
-
 .cooldowns-picker-root {
 	display: flex;
 	flex-flow: column;
 
 	.cooldown-picker {
-		margin-bottom: $block-spacer;
+		margin-bottom: var(--block-spacer);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -18,7 +16,7 @@
 		}
 
 		&> :not(:last-child) {
-			margin-right: map-get($spacers, 2);
+			margin-right: var(--spacer-2);
 		}
 
 		.cooldown-picker-label {

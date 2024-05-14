@@ -28,7 +28,7 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 15,
+				Duration: 15 * time.Second,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

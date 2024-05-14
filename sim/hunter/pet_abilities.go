@@ -21,8 +21,8 @@ const (
 	Smack
 	Stampede
 	CorrosiveSpit
-	RoarOfCourage
 	TailSpin
+	FrostStormBreath
 )
 
 // These IDs are needed for certain talents.
@@ -39,11 +39,10 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 		return hp.newClaw()
 	case Smack:
 		return hp.newSmack()
+	case FrostStormBreath:
+		return hp.newFrostStormBreath()
 	case DemoralizingScreech:
 		return hp.newDemoralizingScreech()
-		//return nil
-	case RoarOfCourage: // Agi/Str Buff
-		return hp.newRoarOfCourage()
 		//return nil
 	case FireBreath: // 8% Spell Damage Taken
 		return hp.newPetDebuff(PetDebuffSpellConfig{
@@ -232,25 +231,75 @@ func (hp *HunterPet) newSpecialAbility(config PetSpecialAbilityConfig) *core.Spe
 	})
 }
 
-func (hp *HunterPet) newRoarOfCourage() *core.Spell {
-	actionID := core.ActionID{SpellID: 24604}
-	return hp.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
+func (hp *HunterPet) getFrostStormTickSpell() *core.Spell {
+	config := core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 92380},
+		SpellSchool: core.SpellSchoolNature | core.SpellSchoolFrost,
+		ProcMask:    core.ProcMaskSpellDamage,
+		FocusCost: core.FocusCostOptions{
+			Cost: 20,
+		},
+		BonusCoefficient:         0.288,
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		ThreatMultiplier:         1,
+		CritMultiplier:           hp.DefaultSpellCritMultiplier(),
+	}
+	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		damage := 206 + (spell.MeleeAttackPower() * 0.40)
+		spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+	}
+	return hp.RegisterSpell(config)
+}
+func (hp *HunterPet) newFrostStormBreath() *core.Spell {
+	frostStormTickSpell := hp.getFrostStormTickSpell()
+	hp.frostStormBreath = hp.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 92380},
+		SpellSchool: core.SpellSchoolNature | core.SpellSchoolFrost,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagChanneled | core.SpellFlagNoMetrics,
+		FocusCost: core.FocusCostOptions{
+			Cost: 20,
+		},
 
 		Cast: core.CastConfig{
-			CD: core.Cooldown{
-				Timer:    hp.NewTimer(),
-				Duration: hp.hunterOwner.applyLongevity(time.Second * 45),
+			DefaultCast: core.Cast{
+				GCD: PetGCD,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hp.IsEnabled()
+
+		DamageMultiplier:         1,
+		DamageMultiplierAdditive: 1,
+		ThreatMultiplier:         1,
+		CritMultiplier:           hp.DefaultSpellCritMultiplier(),
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "FrostStormBreath-" + hp.Label,
+			},
+			NumberOfTicks:       4,
+			TickLength:          time.Second * 2,
+			AffectedByCastSpeed: true,
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					frostStormTickSpell.Cast(sim, aoeTarget)
+				}
+			},
 		},
-		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, _ *core.Spell) {
-			core.RoarOfCourageAura(unit).Activate(sim)
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+			if result.Landed() {
+				spell.Dot(target).Apply(sim)
+				frostStormTickSpell.SpellMetrics[target.UnitIndex].Casts += 1
+			}
+		},
+		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
+			baseDamage := 206 + (spell.MeleeAttackPower() * 0.40)
+			return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicCrit)
 		},
 	})
+	return hp.frostStormBreath
 }
+
 func (hp *HunterPet) newDemoralizingScreech() *core.Spell {
 	debuffs := hp.NewEnemyAuraArray(core.DemoralizingScreechAura)
 

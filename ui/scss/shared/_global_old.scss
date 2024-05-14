@@ -1,11 +1,11 @@
 :root {
 	--theme-background-color: DarkSlateGrey;
-	--theme-background-image: linear-gradient(black, black);
+	--theme-background-image: linear-gradient(var(--bs-black), var(--bs-black));
 	--theme-background-opacity: 0.9;
 	--main-bg-color: DarkSlateGrey;
-	--main-secondary-color: Black;
-	--sidebar-text-color: White;
-	--sidebar-highlight-color: Blue;
+	--main-secondary-color: var(--bs-black);
+	--sidebar-text-color: var(--bs-white);
+	--sidebar-highlight-color: var(--bs-crit);
 }
 
 @font-face {
@@ -24,20 +24,22 @@
 	letter-spacing: 1px;
 }
 
-$sim-transitions: .2s ease-in;
-
 .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  animation: spin 1s linear infinite;
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid #3498db; /* Blue */
+	border-radius: 50%;
+	width: 120px;
+	height: 120px;
+	animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }
 
 .dropdown-root {
@@ -52,18 +54,18 @@ $sim-transitions: .2s ease-in;
 
 .dropdown-button {
 	cursor: pointer;
-	background-color: gray;
+	background-color: var(--bs-gray);
 }
 
 .dropdown-panel {
 	display: none;
 	position: absolute;
 	z-index: 1;
-	box-shadow: 2px 4px 20px 5px #000;
+	box-shadow: 2px 4px 20px 5px var(--bs-black);
 }
 
 .dropdown-option-container {
-	background-color: gray;
+	background-color: var(--bs-gray);
 }
 
 .dropdown-option {
@@ -76,28 +78,22 @@ $sim-transitions: .2s ease-in;
 	opacity: 0.7;
 }
 
+.safe,
 .positive {
-	color: $success !important;
+	color: var(--bs-success) !important;
 }
 
+.danger,
 .negative {
-	color: red !important;
-}
-
-.safe {
-	color: $success;
+	color: var(--bs-danger) !important;
 }
 
 .warning {
-	color: yellow;
+	color: var(--bs-partial);
 	text-shadow:
-    0 0 map-get($spacers, 2) $danger,
-    0 0 map-get($spacers, 2) $danger,
-    0 0 map-get($spacers, 2) $danger;
-}
-
-.danger {
-	color: red;
+		0 0 var(--spacer-2) var(--bs-danger),
+		0 0 var(--spacer-2) var(--bs-danger),
+		0 0 var(--spacer-2) var(--bs-danger);
 }
 
 .bold {

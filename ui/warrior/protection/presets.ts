@@ -58,8 +58,6 @@ export const DefaultConsumes = Consumes.create({
 	food: Food.FoodBeerBasedCrocolisk,
 	defaultPotion: Potions.EarthenPotion,
 	prepopPotion: Potions.EarthenPotion,
-	thermalSapper: false,
-	fillerExplosive: Explosive.ExplosiveUnknown,
 });
 
 export const OtherDefaults = {

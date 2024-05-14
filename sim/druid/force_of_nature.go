@@ -7,18 +7,19 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (druid *Druid) registerForceOfNatureCD() {
+func (druid *Druid) registerForceOfNature() {
 	if !druid.Talents.ForceOfNature {
 		return
 	}
 
 	forceOfNatureAura := druid.RegisterAura(core.Aura{
 		Label:    "Force of Nature",
-		ActionID: core.ActionID{SpellID: 65861},
+		ActionID: core.ActionID{SpellID: 33831},
 		Duration: time.Second * 30,
 	})
+
 	druid.ForceOfNature = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 65861},
+		ActionID: core.ActionID{SpellID: 33831},
 		Flags:    core.SpellFlagAPL,
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.12,
@@ -70,7 +71,7 @@ func (druid *Druid) NewTreant() *TreantPet {
 	treant.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	treant.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritRatingPerCritChance/83.3)
 
-	treant.PseudoStats.DamageDealtMultiplier = 1 + 0.05*float64(druid.Talents.Brambles)
+	treant.PseudoStats.DamageDealtMultiplier = 1
 	treant.EnableAutoAttacks(treant, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  252,

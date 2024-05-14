@@ -32,9 +32,9 @@ func (warlock *Warlock) registerImmolateSpell() {
 				},
 			},
 			NumberOfTicks:       5,
-			TickLength:          time.Second * 3,
+			TickLength:          3 * time.Second,
 			AffectedByCastSpeed: true,
-			BonusCoefficient:    0.176,
+			BonusCoefficient:    0.17599999905,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, warlock.CalcScalingSpellDmg(Coefficient_ImmolateDot))
 			},
@@ -62,7 +62,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2000,
+				CastTime: 2000 * time.Millisecond,
 			},
 		},
 

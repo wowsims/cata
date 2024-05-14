@@ -118,6 +118,7 @@ func (pet *Pet) reset(sim *Simulation, agent PetAgent) {
 }
 func (pet *Pet) doneIteration(sim *Simulation) {
 	pet.Character.doneIteration(sim)
+	pet.Disable(sim)
 	pet.isReset = false
 }
 
@@ -202,6 +203,7 @@ func (pet *Pet) EnableWithTimeout(sim *Simulation, petAgent PetAgent, petDuratio
 			pet.Disable(sim)
 		},
 	}
+
 	sim.AddPendingAction(pet.timeoutAction)
 }
 

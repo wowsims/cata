@@ -1,5 +1,3 @@
-@use 'sass:map';
-
 @import './consumes_picker';
 @import './cooldowns_picker';
 
@@ -31,6 +29,12 @@
 				}
 			}
 		}
+
+		.tab-panel-right {
+			@include media-breakpoint-down(xxl) {
+				margin-left: 0 !important;
+			}
+		}
 	}
 
 	.content-block {
@@ -45,7 +49,7 @@
 
 					&:not(:last-child) {
 						@include media-breakpoint-down(xl) {
-							margin-bottom: $block-spacer;
+							margin-bottom: var(--block-spacer);
 						}
 					}
 				}
@@ -83,10 +87,10 @@
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 
 			& > .icon-picker {
-				margin-bottom: map-get($spacers, 1) !important;
+				margin-bottom: var(--spacer-1) !important;
 
 				&:not(:nth-child(3n)) {
-					margin-right: map-get($spacers, 2);
+					margin-right: var(--spacer-2);
 				}
 
 				.form-label {

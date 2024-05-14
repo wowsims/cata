@@ -220,7 +220,7 @@ func (shaman *Shaman) applyRollingThunder() {
 				// 	if spell == allowedSpell {
 				if sim.RandomFloat("Rolling Thunder") < 0.3*float64(shaman.Talents.RollingThunder) {
 					shaman.AddMana(sim, 0.02*shaman.MaxMana(), manaMetrics)
-					shaman.LightningShieldAura.Refresh(sim)
+					shaman.LightningShieldAura.Activate(sim)
 					shaman.LightningShieldAura.AddStack(sim)
 				}
 				//  }
@@ -615,6 +615,7 @@ func (shaman *Shaman) applySearingFlames() {
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,
 		ThreatMultiplier:         1,
+		CritMultiplier:           shaman.DefaultSpellCritMultiplier(),
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -625,13 +626,12 @@ func (shaman *Shaman) applySearingFlames() {
 			NumberOfTicks: 5,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).Apply(sim)
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 		},
 	})
 
@@ -650,8 +650,9 @@ func (shaman *Shaman) applySearingFlames() {
 
 				// recalc damage based on stacks, testing with searing totem seems to indicate the damage is updated dynamically on refesh
 				// instantly taking the bonus of any procs or buffs and applying it times the number of stacks
-				dot.SnapshotBaseDamage = float64(dot.GetStacks()) * result.Damage / float64(dot.NumberOfTicks)
-				dot.SnapshotAttackerMultiplier = shaman.SearingFlames.DamageMultiplier
+				dot.SnapshotCritChance = spell.SpellCritChance(result.Target)
+				dot.SnapshotBaseDamage = float64(dot.GetStacks()) * result.PreOutcomeDamage / float64(dot.NumberOfTicks)
+				dot.SnapshotAttackerMultiplier = 1
 				shaman.SearingFlames.Cast(sim, result.Target)
 			}
 		},

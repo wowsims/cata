@@ -134,7 +134,7 @@ func (dk *DeathKnight) ghoulBaseStats() stats.Stats {
 }
 
 func (dk *DeathKnight) ghoulStatInheritance() core.PetStatInheritance {
-	glyphBonus := core.TernaryFloat64(dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfRaiseDead), 1.4, 0.0)
+	glyphBonus := core.TernaryFloat64(dk.HasPrimeGlyph(proto.DeathKnightPrimeGlyph_GlyphOfRaiseDead), 1.4, 1.0)
 
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{

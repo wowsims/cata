@@ -1,4 +1,4 @@
-package encounters
+package default_ai
 
 import (
 	"time"
@@ -62,9 +62,9 @@ func (ai *DefaultAI) ExecuteCustomRotation(sim *core.Simulation) {
 			continue
 		}
 
-		if sim.Proc(ability.ChanceToUse, "TargetAbility") {
+		if ability.Spell.CanCast(sim, ai.Target.CurrentTarget) && sim.Proc(ability.ChanceToUse, "TargetAbility") {
 			ability.Spell.Cast(sim, ai.Target.CurrentTarget)
-			return
 		}
 	}
+
 }

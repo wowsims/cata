@@ -44,7 +44,7 @@ func (warlock *Warlock) ApplyAfflictionTalents() {
 		warlock.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellBaneOfAgony | WarlockSpellBaneOfDoom | WarlockSpellCurseOfElements | WarlockSpellCurseOfWeakness | WarlockSpellCurseOfTongues,
 			Kind:      core.SpellMod_GlobalCooldown_Flat,
-			TimeValue: time.Millisecond * time.Duration(-250*warlock.Talents.Pandemic),
+			TimeValue: time.Duration(-250*warlock.Talents.Pandemic) * time.Millisecond,
 		})
 
 		warlock.registerPandemic()
@@ -60,7 +60,7 @@ func (warlock *Warlock) registerEradication() {
 	eradicationAura := warlock.RegisterAura(core.Aura{
 		Label:    "Eradication",
 		ActionID: core.ActionID{SpellID: 47197},
-		Duration: time.Second * 10,
+		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.MultiplyCastSpeed(castSpeedMultiplier)
 		},
@@ -118,7 +118,7 @@ func (warlock *Warlock) ShadowEmbraceDebuffAura(target *core.Unit) *core.Aura {
 	return target.GetOrRegisterAura(core.Aura{
 		Label:     "Shadow Embrace-" + warlock.Label,
 		ActionID:  core.ActionID{SpellID: 32392},
-		Duration:  time.Second * 12,
+		Duration:  12 * time.Second,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			warlock.AttackTables[aura.Unit.UnitIndex].HauntSEDamageTakenMultiplier /= 1.0 + shadowEmbraceBonus*float64(oldStacks)
@@ -212,14 +212,14 @@ func (warlock *Warlock) registerNightfall() {
 
 	icd := core.Cooldown{
 		Timer:    warlock.NewTimer(),
-		Duration: time.Second * 6,
+		Duration: 6 * time.Second,
 	}
 
 	nightfallProcAura := warlock.RegisterAura(core.Aura{
 		Icd:      &icd,
 		Label:    "Nightfall Shadow Trance",
 		ActionID: core.ActionID{SpellID: 17941},
-		Duration: time.Second * 10,
+		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.ShadowBolt.CastTimeMultiplier -= 1
 		},
