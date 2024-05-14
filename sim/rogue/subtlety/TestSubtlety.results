@@ -1104,6 +1104,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 22716.85215
+  tps: 16128.96503
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 22716.85215

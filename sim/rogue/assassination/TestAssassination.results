@@ -1102,6 +1102,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 29060.52976
+  tps: 20632.97613
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 29060.52976

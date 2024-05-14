@@ -1130,6 +1130,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestCombat-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 28791.49966
+  tps: 20441.96476
+ }
+}
+dps_results: {
  key: "TestCombat-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 28791.49966

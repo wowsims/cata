@@ -1158,6 +1158,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 19791.76039
+  tps: 16587.31641
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 19791.76039
