@@ -28,6 +28,10 @@
 }
 
 .advanced-encounter-picker-modal {
+	.modal-body {
+		overflow: auto;
+	}
+
 	.encounter-picker {
 		width: 33.33%;
 

@@ -164,7 +164,7 @@ class AdvancedEncounterModal extends BaseModal {
 	private readonly encounter: Encounter;
 
 	constructor(parent: HTMLElement, simUI: SimUI, encounter: Encounter) {
-		super(parent, 'advanced-encounter-picker-modal');
+		super(parent, 'advanced-encounter-picker-modal', { disposeOnClose: false });
 
 		this.encounter = encounter;
 
@@ -624,7 +624,9 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 			}
 			this.enumPicker = new EnumPicker<null>(this.rootElem, null, {
 				label: newValue.label,
-				values: newValue.enumOptions.map((option, index) => { return {value: index, name: option}} ),
+				values: newValue.enumOptions.map((option, index) => {
+					return { value: index, name: option };
+				}),
 				changedEvent: () => this.encounter.targetsChangeEmitter,
 				getValue: () => this.getTargetInput().enumValue,
 				setValue: (eventID: EventID, _: null, newValue: number) => {
