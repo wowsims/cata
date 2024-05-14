@@ -21,7 +21,7 @@ func (warlock *Warlock) registerShadowflame() {
 				Label: "Shadowflame (DoT)",
 			},
 			NumberOfTicks:       3,
-			TickLength:          time.Second * 2,
+			TickLength:          2 * time.Second,
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.20000000298,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -54,7 +54,7 @@ func (warlock *Warlock) registerShadowflame() {
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 12,
+				Duration: 12 * time.Second,
 			},
 		},
 

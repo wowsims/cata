@@ -9,7 +9,9 @@ import (
 
 func init() {
 	AddDefaultPresetEncounter()
+	addMovementAI()
 	bwd.Register()
+
 }
 
 func AddSingleTargetBossEncounter(presetTarget *core.PresetTarget) {

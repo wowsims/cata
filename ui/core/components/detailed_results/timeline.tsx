@@ -212,7 +212,7 @@ export class Timeline extends ResultComponent {
 			},
 		};
 
-		const players = this.resultData!.result.getPlayers(this.resultData!.filter);
+		const players = this.resultData!.result.getRaidIndexedPlayers(this.resultData!.filter);
 		if (players.length == 1) {
 			const player = players[0];
 
@@ -1142,7 +1142,8 @@ const DEFAULT_ACTION_CATEGORY = 3;
 
 // Hard-coded spell categories for controlling rotation ordering.
 const idToCategoryMap: Record<number, number> = {
-	[OtherAction.OtherActionAttack]: 0,
+	[OtherAction.OtherActionMove]: 0,
+	[OtherAction.OtherActionAttack]: 0.01,
 	[OtherAction.OtherActionShoot]: 0.5,
 
 	// Druid

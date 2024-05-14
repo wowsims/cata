@@ -25,7 +25,7 @@ func (warlock *Warlock) registerShadowBoltSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 3000,
+				CastTime: 3 * time.Second,
 			},
 		},
 

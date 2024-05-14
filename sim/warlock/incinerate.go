@@ -24,7 +24,7 @@ func (warlock *Warlock) registerIncinerateSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2500,
+				CastTime: 2500 * time.Millisecond,
 			},
 		},
 

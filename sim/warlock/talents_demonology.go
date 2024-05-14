@@ -13,25 +13,23 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 		warlock.MultiplyStat(stats.Stamina, []float64{1.0, 1.04, 1.07, 1.10}[warlock.Talents.DemonicEmbrace])
 	}
 
-	//Dark Arts
+	// Dark Arts
 	if warlock.Talents.DarkArts > 0 {
 		warlock.Imp.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellImpFireBolt,
 			Kind:      core.SpellMod_CastTime_Flat,
-			TimeValue: time.Millisecond * time.Duration(-250*warlock.Talents.DarkArts),
+			TimeValue: time.Duration(-250*warlock.Talents.DarkArts) * time.Millisecond,
 		})
 
-		//TODO: Add/Mult
 		warlock.Felguard.AddStaticMod(core.SpellModConfig{
 			ClassMask:  WarlockSpellFelGuardLegionStrike,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: .05 * float64(warlock.Talents.DarkArts),
 		})
 
-		//TODO: Add/Mult
 		warlock.Felhunter.AddStaticMod(core.SpellModConfig{
 			ClassMask:  WarlockSpellFelHunterShadowBite,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: .05 * float64(warlock.Talents.DarkArts),
 		})
 	}
@@ -99,7 +97,7 @@ func (warlock *Warlock) registerImpendingDoom() {
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell.ClassSpellMask&(WarlockSpellShadowBolt|WarlockSpellHandOfGuldan|WarlockSpellSoulFire|WarlockSpellIncinerate) > 0 {
 					if !warlock.Metamorphosis.CD.IsReady(sim) && sim.Proc(impendingDoomProcChance, "Impending Doom") {
-						warlock.Metamorphosis.CD.Reduce(time.Second * 15)
+						warlock.Metamorphosis.CD.Reduce(15 * time.Second)
 						warlock.UpdateMajorCooldowns()
 					}
 				}
@@ -112,55 +110,57 @@ func (warlock *Warlock) registerMoltenCore() {
 		return
 	}
 
-	castReduction := -0.06 * float64(warlock.Talents.MoltenCore)
-	moltenCoreDamageBonus := 0.06 * float64(warlock.Talents.MoltenCore)
-
 	damageMultiplierMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Flat,
 		ClassMask:  WarlockSpellIncinerate,
-		FloatValue: moltenCoreDamageBonus,
+		FloatValue: 0.06 * float64(warlock.Talents.MoltenCore),
 	})
 
 	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
 		ClassMask:  WarlockSpellIncinerate,
-		FloatValue: castReduction,
+		FloatValue: -0.1 * float64(warlock.Talents.MoltenCore),
 	})
 
 	moltenCoreAura := warlock.RegisterAura(core.Aura{
 		Label:     "Molten Core Proc Aura",
 		ActionID:  core.ActionID{SpellID: 71165},
-		Duration:  time.Second * 15,
+		Duration:  15 * time.Second,
 		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMultiplierMod.Activate()
 			castTimeMod.Activate()
-			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) * (1 - castReduction))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			damageMultiplierMod.Deactivate()
 			castTimeMod.Deactivate()
-			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) / (1 - castReduction))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell == warlock.Incinerate {
+			if spell != warlock.Incinerate {
+				return
+			}
+
+			// if the incinerate cast started BEFORE we got the molten core buff, the incinerate benefits from it but
+			// does not consume a stack. Detect this and only remove a stack if that's not the case
+			if sim.CurrentTime-spell.CurCast.CastTime > aura.StartedAt() {
 				aura.RemoveStack(sim)
 			}
 		},
 	})
 
+	procChance := 0.02 * float64(warlock.Talents.MoltenCore)
+	onHit := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		if spell.ClassSpellMask&(WarlockSpellImmolate|WarlockSpellImmolateDot) > 0 && sim.Proc(procChance, "Molten Core") {
+			moltenCoreAura.Activate(sim)
+			moltenCoreAura.SetStacks(sim, 3)
+		}
+	}
+
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
-			Label: "Molten Core Hidden Aura",
-			//TODO: Can this occur on the initial Immolate damage?
-			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == warlock.ImmolateDot {
-					if sim.Proc(0.02*float64(warlock.Talents.MoltenCore), "Molten Core") {
-						moltenCoreAura.Activate(sim)
-						moltenCoreAura.SetStacks(sim, 3)
-					}
-				}
-			},
+			Label:                 "Molten Core Hidden Aura",
+			OnSpellHitDealt:       onHit,
+			OnPeriodicDamageDealt: onHit,
 		}))
 }
 
@@ -173,14 +173,12 @@ func (warlock *Warlock) registerDecimation() {
 	decimationAura := warlock.RegisterAura(core.Aura{
 		Label:    "Decimation Proc Aura",
 		ActionID: core.ActionID{SpellID: 63167},
-		Duration: time.Second * 10,
+		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.SoulFire.CastTimeMultiplier -= decimationMod
-			warlock.SoulFire.DefaultCast.GCD = time.Duration(float64(warlock.SoulFire.DefaultCast.GCD) * (1 - decimationMod))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.SoulFire.CastTimeMultiplier += decimationMod
-			warlock.SoulFire.DefaultCast.GCD = time.Duration(float64(warlock.SoulFire.DefaultCast.GCD) / (1 - decimationMod))
 		},
 	})
 

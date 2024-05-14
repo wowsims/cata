@@ -22,7 +22,7 @@ func (destruction *DestructionWarlock) registerConflagrateSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    destruction.NewTimer(),
-				Duration: time.Second * 10,
+				Duration: 10 * time.Second,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

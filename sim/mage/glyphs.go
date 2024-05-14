@@ -59,7 +59,14 @@ func (mage *Mage) applyGlyphs() {
 		})
 	}
 
-	//Frostfire bolt handled inside spell due to changing behavior
+	//Frostfire bolt Dot handled inside spell due to changing behavior
+	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfFrostfire) {
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  MageSpellFrostfireBolt,
+			FloatValue: 0.15,
+		})
+	}
 
 	if mage.HasPrimeGlyph(proto.MagePrimeGlyph_GlyphOfIceLance) {
 		mage.AddStaticMod(core.SpellModConfig{

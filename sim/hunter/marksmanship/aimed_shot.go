@@ -4,22 +4,11 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/hunter"
 )
 
 func (mmHunter *MarksmanshipHunter) registerAimedShotSpell() {
-	if mmHunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfAimedShot) {
-		focusMetrics := mmHunter.NewFocusMetrics(core.ActionID{SpellID: 42897})
-		mmHunter.RegisterAura(core.Aura{
-			Label: "Glyph of Aimed Shot",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == mmHunter.AimedShot && result.DidCrit() {
-					mmHunter.AddFocus(sim, 5, focusMetrics)
-				}
-			},
-		})
-	}
+
 	mmHunter.AimedShot = mmHunter.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 19434},
 		SpellSchool:    core.SpellSchoolPhysical,

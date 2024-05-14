@@ -53,15 +53,16 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 						},
 					});
 
+					const playerDtps = this.getPlayerDtps(player)
 					cellElem.innerHTML = `
 						<div class="player-damage-percent">
-							<span>${(player.dtps.avg / this.raidDtps * 100).toFixed(2)}%</span>
+							<span>${(playerDtps / this.raidDtps * 100).toFixed(2)}%</span>
 						</div>
 						<div class="player-damage-bar-container">
-							<div class="player-damage-bar bg-${player.classColor}" style="width:${player.dtps.avg / this.maxDtps * 100}%"></div>
+							<div class="player-damage-bar bg-${player.classColor}" style="width:${playerDtps / this.maxDtps * 100}%"></div>
 						</div>
 						<div class="player-damage-total">
-							<span>${(player.totalDamageTaken / 1000).toFixed(1)}k</span>
+							<span>${(playerDtps * this.resultData!.result.duration / 1000).toFixed(1)}k</span>
 						</div>
 					`;
 				},
@@ -71,8 +72,8 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 				tooltip: 'Damage Taken / Encounter Duration',
 				columnClass: 'dps-cell',
 				sort: ColumnSortType.Descending,
-				getValue: (metric: UnitMetrics) => metric.dtps.avg,
-				getDisplayString: (metric: UnitMetrics) => metric.dtps.avg.toFixed(1),
+				getValue: (player: UnitMetrics) => this.getPlayerDtps(player),
+				getDisplayString: (player: UnitMetrics) => this.getPlayerDtps(player).toFixed(1),
 			},
 		]);
 		this.resultsFilter = resultsFilter;
@@ -80,10 +81,17 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 		this.maxDtps = 0;
 	}
 
+	private getPlayerDtps(player: UnitMetrics): number {
+		const targets = this.resultData!.result.getTargets(this.resultData!.filter);
+		const targetActions = targets.map(target => target.getPlayerAndPetActions().map(action => action.forTarget({ player: player.unitIndex }))).flat();
+		const playerDtps = sum(targetActions.map(action => action.dps))
+		return playerDtps
+	}
+
 	customizeRowElem(player: UnitMetrics, rowElem: HTMLElement) {
 		rowElem.classList.add('player-damage-row');
 		rowElem.addEventListener('click', event => {
-			this.resultsFilter.setPlayer(this.getLastSimResult().eventID, player.unitIndex);
+			this.resultsFilter.setPlayer(this.getLastSimResult().eventID, player.index);
 		});
 	}
 
@@ -91,9 +99,17 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 		this.resultData = resultData;
 		const players = resultData.result.getPlayers(resultData.filter);
 
-		this.raidDtps = sum(players.map(player => player.dtps.avg));
-		const maxDpsIndex = maxIndex(players.map(player => player.dtps.avg))!;
-		this.maxDtps = players[maxDpsIndex].dtps.avg;
+		const targets = resultData.result.getTargets(resultData.filter);
+		const targetActions = targets.map(target => target.getPlayerAndPetActions().map(action => action.forTarget(resultData.filter))).flat();
+
+		this.raidDtps = sum(targetActions.map(action => action.dps));
+		const maxDpsIndex = maxIndex(players.map(player => {
+			const targetActions = targets.map(target => target.getPlayerAndPetActions().map(action => action.forTarget({ player: player.unitIndex }))).flat();
+			return sum(targetActions.map(action => action.dps))
+		}))!;
+
+		const maxDtpsTargetActions = targets.map(target => target.getPlayerAndPetActions().map(action => action.forTarget({ player: players[maxDpsIndex].unitIndex }))).flat();
+		this.maxDtps = sum(maxDtpsTargetActions.map(action => action.dps));
 
 		return players.map(player => [player]);
 	}

@@ -33,13 +33,13 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask: WarlockSpellSoulFire,
 		Kind:      core.SpellMod_CastTime_Flat,
-		TimeValue: time.Millisecond * time.Duration(-500*warlock.Talents.Emberstorm),
+		TimeValue: time.Duration(-500*warlock.Talents.Emberstorm) * time.Millisecond,
 	})
 
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask: WarlockSpellIncinerate,
 		Kind:      core.SpellMod_CastTime_Flat,
-		TimeValue: time.Millisecond * time.Duration([]float64{0, -130, -250}[warlock.Talents.Emberstorm]),
+		TimeValue: time.Duration([]float64{0, -130, -250}[warlock.Talents.Emberstorm]) * time.Millisecond,
 	})
 
 	warlock.registerImprovedSearingPain()
@@ -103,30 +103,22 @@ func (warlock *Warlock) registerBackdraft() {
 		return
 	}
 
-	castReduction := -0.10 * float64(warlock.Talents.Backdraft)
-
 	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
 		ClassMask:  WarlockSpellShadowBolt | WarlockSpellIncinerate | WarlockSpellChaosBolt,
-		FloatValue: castReduction,
+		FloatValue: -0.10 * float64(warlock.Talents.Backdraft),
 	})
 
 	backdraft := warlock.RegisterAura(core.Aura{
 		Label:     "Backdraft",
-		ActionID:  core.ActionID{SpellID: 47260},
-		Duration:  time.Second * 15,
+		ActionID:  core.ActionID{SpellID: 54277},
+		Duration:  15 * time.Second,
 		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Activate()
-			warlock.ShadowBolt.DefaultCast.GCD = time.Duration(float64(warlock.ShadowBolt.DefaultCast.GCD) * (1 - castReduction))
-			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) * (1 - castReduction))
-			warlock.ChaosBolt.DefaultCast.GCD = time.Duration(float64(warlock.ChaosBolt.DefaultCast.GCD) * (1 - castReduction))
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Deactivate()
-			warlock.ShadowBolt.DefaultCast.GCD = time.Duration(float64(warlock.ShadowBolt.DefaultCast.GCD) / (1 - castReduction))
-			warlock.Incinerate.DefaultCast.GCD = time.Duration(float64(warlock.Incinerate.DefaultCast.GCD) / (1 - castReduction))
-			warlock.ChaosBolt.DefaultCast.GCD = time.Duration(float64(warlock.ChaosBolt.DefaultCast.GCD) / (1 - castReduction))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.ClassSpellMask&(WarlockSpellShadowBolt|WarlockSpellIncinerate|WarlockSpellChaosBolt) > 0 {
@@ -139,8 +131,8 @@ func (warlock *Warlock) registerBackdraft() {
 		warlock.RegisterAura(core.Aura{
 			Label:    "Backdraft Hidden Aura",
 			ActionID: core.ActionID{SpellID: 47260},
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.ClassSpellMask == WarlockSpellConflagrate {
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ClassSpellMask == WarlockSpellConflagrate && result.Landed() {
 					backdraft.Activate(sim)
 					backdraft.SetStacks(sim, 3)
 				}
@@ -175,7 +167,7 @@ func (warlock *Warlock) registerBurningEmbers() {
 				Label: "Burning Embers",
 			},
 			NumberOfTicks: burningEmberTicks,
-			TickLength:    time.Second * 1,
+			TickLength:    1 * time.Second,
 			//?AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -270,7 +262,7 @@ func (warlock *Warlock) registerEmpoweredImp() {
 	empoweredImpAura := warlock.RegisterAura(core.Aura{
 		Label:    "Empowered Imp",
 		ActionID: core.ActionID{SpellID: 47221},
-		Duration: time.Second * 8,
+		Duration: 8 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Activate()
 		},

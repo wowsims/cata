@@ -88,7 +88,7 @@ export class SpellMetricsTable extends MetricsTable<ActionMetrics> {
 	}
 
 	getGroupedMetrics(resultData: SimResultData): Array<Array<ActionMetrics>> {
-		const players = resultData.result.getPlayers(resultData.filter);
+		const players = resultData.result.getRaidIndexedPlayers(resultData.filter);
 		if (players.length != 1) {
 			return [];
 		}

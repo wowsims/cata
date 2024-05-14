@@ -90,7 +90,7 @@ func (demonology *DemonologyWarlock) registerSummonFelguardSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 6,
+				CastTime: 6 * time.Second,
 			},
 		},
 

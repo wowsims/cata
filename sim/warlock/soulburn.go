@@ -36,7 +36,7 @@ func (warlock *Warlock) registerSoulburnSpell() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 45,
+				Duration: 45 * time.Second,
 			},
 		},
 

@@ -10,7 +10,7 @@ import (
 )
 
 func (warlock *Warlock) registerSummonInfernalSpell(timer *core.Timer) {
-	duration := time.Second * time.Duration(45+10*warlock.Talents.AncientGrimoire)
+	duration := time.Duration(45+10*warlock.Talents.AncientGrimoire) * time.Second
 
 	summonInfernalAura := warlock.RegisterAura(core.Aura{
 		Label:    "Summon Infernal",
@@ -29,12 +29,12 @@ func (warlock *Warlock) registerSummonInfernalSpell(timer *core.Timer) {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				CastTime: time.Millisecond * 1500,
+				CastTime: 1500 * time.Millisecond,
 				GCD:      core.GCDDefault,
 			},
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Minute * 10,
+				Duration: 10 * time.Minute,
 			},
 		},
 
@@ -142,7 +142,7 @@ func (infernal *InfernalPet) Initialize() {
 				ActionID: core.ActionID{SpellID: 19483},
 			},
 			NumberOfTicks:       31,
-			TickLength:          time.Second * 2,
+			TickLength:          2 * time.Second,
 			AffectedByCastSpeed: false,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				// base formula is 25 + (lvl-50)*0.5 * Warlock_SP*0.2
