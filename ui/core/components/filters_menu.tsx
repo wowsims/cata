@@ -22,12 +22,12 @@ export class FiltersMenu extends BaseModal {
 	constructor(rootElem: HTMLElement, player: Player<any>, slot: ItemSlot) {
 		super(rootElem, 'filters-menu', { size: 'md', title: 'Filters', disposeOnClose: false });
 
-		let section = this.newSection('General');
+		const generalSection = this.newSection('General');
 
-		const ilvlFiltersContainer = <div className="ilvl-filters" />;
-		section.appendChild(ilvlFiltersContainer);
+		const ilvlFiltersContainer = (<div className="ilvl-filters" />) as HTMLElement;
+		generalSection.appendChild(ilvlFiltersContainer);
 
-		new NumberPicker(ilvlFiltersContainer as HTMLElement, player.sim, {
+		new NumberPicker(ilvlFiltersContainer, player.sim, {
 			label: 'Min ILvl',
 			showZeroes: false,
 			changedEvent: sim => sim.filtersChangeEmitter,
@@ -41,7 +41,7 @@ export class FiltersMenu extends BaseModal {
 
 		ilvlFiltersContainer.appendChild(<span className="ilvl-filters-separator">-</span>);
 
-		new NumberPicker(ilvlFiltersContainer as HTMLElement, player.sim, {
+		new NumberPicker(ilvlFiltersContainer, player.sim, {
 			label: 'Max ILvl',
 			showZeroes: false,
 			changedEvent: sim => sim.filtersChangeEmitter,
@@ -53,7 +53,7 @@ export class FiltersMenu extends BaseModal {
 			},
 		});
 
-		new EnumPicker(section, player.sim, {
+		new EnumPicker(generalSection, player.sim, {
 			label: 'Faction Restrictions',
 			values: [UIItem_FactionRestriction.UNSPECIFIED, UIItem_FactionRestriction.ALLIANCE_ONLY, UIItem_FactionRestriction.HORDE_ONLY].map(restriction => {
 				return {
@@ -70,11 +70,11 @@ export class FiltersMenu extends BaseModal {
 			},
 		});
 
-		section = this.newSection('Source');
-		section.classList.add('filters-menu-section-bool-list');
+		const sourceSection = this.newSection('Source');
+		sourceSection.classList.add('filters-menu-section-bool-list');
 		const sources = Sim.ALL_SOURCES.filter(s => s != SourceFilterOption.SourceUnknown);
 		sources.forEach(source => {
-			new BooleanPicker<Sim>(section, player.sim, {
+			new BooleanPicker<Sim>(sourceSection, player.sim, {
 				label: sourceNames.get(source),
 				inline: true,
 				changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
@@ -91,11 +91,11 @@ export class FiltersMenu extends BaseModal {
 			});
 		});
 
-		section = this.newSection('Raids');
-		section.classList.add('filters-menu-section-bool-list');
+		const raidsSection = this.newSection('Raids');
+		raidsSection.classList.add('filters-menu-section-bool-list');
 		const raids = Sim.ALL_RAIDS.filter(s => s != RaidFilterOption.RaidUnknown);
 		raids.forEach(raid => {
-			new BooleanPicker<Sim>(section, player.sim, {
+			new BooleanPicker<Sim>(raidsSection, player.sim, {
 				label: raidNames.get(raid),
 				inline: true,
 				changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
@@ -116,11 +116,11 @@ export class FiltersMenu extends BaseModal {
 			const armorTypes = player.getPlayerClass().armorTypes;
 
 			if (armorTypes.length > 1) {
-				const section = this.newSection('Armor Type');
-				section.classList.add('filters-menu-section-bool-list');
+				const armorTypesSection = this.newSection('Armor Type');
+				armorTypesSection.classList.add('filters-menu-section-bool-list');
 
 				armorTypes.forEach(armorType => {
-					new BooleanPicker<Sim>(section, player.sim, {
+					new BooleanPicker<Sim>(armorTypesSection, player.sim, {
 						label: armorTypeNames.get(armorType),
 						inline: true,
 						changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
