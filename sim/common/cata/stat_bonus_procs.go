@@ -822,7 +822,7 @@ func init() {
 		Name:       "Prestor's Talisman of Machination (Heroic)",
 		ID:         65026,
 		AuraID:     92349,
-		Bonus:      stats.Stats{stats.MeleeHaste: 1926, stats.SpellHaste: 1926},
+		Bonus:      stats.Stats{stats.MeleeHaste: 2178, stats.SpellHaste: 2178},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskMeleeOrRanged,
