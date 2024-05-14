@@ -107,7 +107,13 @@ async function runSims(requests: RaidSimRequest[], totalIterations: number, wp: 
 				if (pm.finalRaidResult.errorResult) {
 					console.error(`Worker ${idx} had an error!`);
 					errRes = pm.finalRaidResult;
-					// TODO wasm concurrency: handle worker error, stop other workers
+					// This sucks, but it's better than having long running workers forever.
+					if (requests[0].simOptions!.iterations > 1000) {
+						console.log("Terminating all workers to get going again.");
+						const num = wp.getNumWorkers()
+						wp.setNumWorkers(0);
+						wp.setNumWorkers(num);
+					}
 				}
 
 				running--;
