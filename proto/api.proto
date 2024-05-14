@@ -230,6 +230,7 @@ enum ResourceType {
 	ResourceTypeDeathRune = 11;
 	ResourceTypeSolarEnergy = 12;
 	ResourceTypeLunarEnergy = 13;
+	ResourceTypeHolyPower = 14;
 }
 
 message ResourceMetrics {

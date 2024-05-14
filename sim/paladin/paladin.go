@@ -10,14 +10,36 @@ const (
 	SpellFlagPrimaryJudgement   = core.SpellFlagAgentReserved2
 )
 
+const (
+	SpellMaskSpecialAttack int64 = 1 << iota
+
+	SpellMaskTemplarsVerdict
+	SpellMaskCrusaderStrike
+	SpellMaskDivineStorm
+	SpellMaskExorcism
+	SpellMaskHammerOfWrath
+	SpellMaskJudgement
+	SpellMaskHolyWrath
+	SpellMaskConsecration
+	SpellMaskHammerOfTheRighteous
+	SpellMaskHandOfReckoning
+	SpellMaskShieldOfRighteousness
+	SpellMaskAvengersShield
+	SpellMaskDivinePlea
+	SpellMaskDivineProtection
+)
+
 var TalentTreeSizes = [3]int{20, 20, 20}
 
 type Paladin struct {
 	core.Character
+	HolyPowerBar
 
 	PaladinAura proto.PaladinAura
 
 	Talents *proto.PaladinTalents
+
+	//HolyPowerBar *HolyPowerBar
 
 	CurrentSeal      *core.Aura
 	CurrentJudgement *core.Aura
@@ -121,7 +143,6 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 func (paladin *Paladin) Initialize() {
 	// // Update auto crit multipliers now that we have the targets.
 	// paladin.AutoAttacks.MHConfig().CritMultiplier = paladin.MeleeCritMultiplier()
-
 	// paladin.registerSealOfVengeanceSpellAndAura()
 	// paladin.registerSealOfRighteousnessSpellAndAura()
 	// paladin.registerSealOfCommandSpellAndAura()
@@ -131,6 +152,7 @@ func (paladin *Paladin) Initialize() {
 	// // paladin.setupSealOfRighteousness()
 	// // paladin.setupJudgementRefresh()
 
+	paladin.RegisterCrusaderStrike()
 	// paladin.registerCrusaderStrikeSpell()
 	// paladin.registerDivineStormSpell()
 	// paladin.registerConsecrationSpell()
@@ -161,6 +183,7 @@ func (paladin *Paladin) Initialize() {
 func (paladin *Paladin) Reset(_ *core.Simulation) {
 	paladin.CurrentSeal = nil
 	paladin.CurrentJudgement = nil
+	paladin.HolyPowerBar.Reset()
 }
 
 // maybe need to add stat dependencies
@@ -175,9 +198,11 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	// // This is used to cache its effect in talents.go
 	// paladin.HasTuralyonsOrLiadrinsBattlegear2Pc = paladin.HasSetBonus(ItemSetTuralyonsBattlegear, 2)
 
-	// paladin.PseudoStats.CanParry = true
+	paladin.PseudoStats.CanParry = true
 
-	// paladin.EnableManaBar()
+	paladin.EnableManaBar()
+	paladin.InitializeHolyPowerbar()
+
 	// paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2.0)
 	// paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
 

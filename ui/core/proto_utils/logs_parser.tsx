@@ -785,12 +785,12 @@ export class ResourceChangedLog extends SimLog {
 		);
 		if (match) {
 			const resourceType = stringToResourceType(match[4]);
-			const total = match[22] !== undefined ? parseFloat(match[22]) : 0;
-			return ActionId.fromLogString(match[18])
+			const total = match[23] !== undefined ? parseFloat(match[23]) : 0;
+			return ActionId.fromLogString(match[19])
 				.fill(params.source?.index)
 				.then(cause => {
 					params.actionId = cause;
-					return new ResourceChangedLog(params, resourceType, parseFloat(match[19]), parseFloat(match[20]), match[1] == 'Spent', total);
+					return new ResourceChangedLog(params, resourceType, parseFloat(match[20]), parseFloat(match[21]), match[1] == 'Spent', total);
 				});
 		} else {
 			return null;

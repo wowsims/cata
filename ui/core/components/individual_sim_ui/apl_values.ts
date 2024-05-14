@@ -24,6 +24,7 @@ import {
 	APLValueCurrentFocus,
 	APLValueCurrentHealth,
 	APLValueCurrentHealthPercent,
+	APLValueCurrentHolyPower,
 	APLValueCurrentLunarEnergy,
 	APLValueCurrentMana,
 	APLValueCurrentManaPercent,
@@ -673,6 +674,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueCurrentEclipsePhase.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
 		fields: [AplHelpers.eclipseTypeFieldConfig('eclipsePhase')],
+	}),
+	currentHolyPower: inputBuilder({
+		label: 'Holy Power',
+		submenu: ['Resources'],
+		shortDescription: 'Amount of currently available Holy Power.',
+		newValue: APLValueCurrentHolyPower.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassPaladin,
+		fields: [],
 	}),
 
 	// Resources Rune

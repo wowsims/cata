@@ -118,6 +118,7 @@ message APLValue {
         APLValueCurrentRunicPower current_runic_power = 25;
         APLValueCurrentSolarEnergy current_solar_energy = 68;
         APLValueCurrentLunarEnergy current_lunar_energy = 69;
+		APLValueCurrentHolyPower current_holy_power = 73;
 
 		// Unit values
 		APLValueUnitIsMoving unit_is_moving = 72;
@@ -411,6 +412,7 @@ message APLValueCurrentComboPoints {}
 message APLValueCurrentRunicPower {}
 message APLValueCurrentSolarEnergy {}
 message APLValueCurrentLunarEnergy {}
+message APLValueCurrentHolyPower {}
 
 enum APLValueRuneType {
     RuneUnknown = 0;

@@ -1,6 +1,8 @@
 package retribution
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -56,6 +58,7 @@ func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
 
 func (ret *RetributionPaladin) Initialize() {
 	ret.Paladin.Initialize()
+	ret.RegisterSpecializationEffects()
 	//ret.RegisterAvengingWrathCD()
 }
 
@@ -78,4 +81,94 @@ func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
 	// 	ret.CurrentSeal = ret.SealOfRighteousnessAura
 	// 	ret.SealOfRighteousnessAura.Activate(sim)
 	// }
+}
+
+func (ret *RetributionPaladin) RegisterSpecializationEffects() {
+	ret.RegisterMastery()
+
+	// Sheath of Light
+	ret.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.3)
+	ret.AddStat(stats.SpellHit, 0.08)
+
+	// Two-Handed Weapon Specialization
+	mhWeapon := ret.GetMHWeapon()
+	if mhWeapon != nil && mhWeapon.HandType == proto.HandType_HandTypeTwoHand {
+		ret.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.25
+	}
+
+	// Judgements of the Bold
+
+}
+
+func (ret *RetributionPaladin) RegisterMastery() {
+	actionId := core.ActionID{SpellID: 76672}
+
+	// Hand of Light
+	handOfLight := ret.RegisterSpell(core.SpellConfig{
+		ActionID:         actionId,
+		SpellSchool:      core.SpellSchoolHoly,
+		ProcMask:         core.ProcMaskMeleeMHSpecial,
+		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		DamageMultiplier: 1.0,
+		ThreatMultiplier: 1.0,
+		CritMultiplier:   ret.DefaultMeleeCritMultiplier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+
+			extraDamage := (16.8 + 2.1*ret.GetMasteryPoints()) / 100.0
+
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, baseDamage*extraDamage, spell.OutcomeMagicHitAndCrit)
+		},
+	})
+
+	core.MakeProcTriggerAura(&ret.Unit, core.ProcTrigger{
+		Name:           "Hand of Light",
+		ActionID:       actionId,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ProcMask:       core.ProcMaskMeleeSpecial,
+		ClassSpellMask: paladin.SpellMaskCrusaderStrike | paladin.SpellMaskDivineStorm | paladin.SpellMaskTemplarsVerdict,
+
+		ProcChance: 1.0,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			handOfLight.Cast(sim, result.Target)
+		},
+	})
+}
+
+func (ret *RetributionPaladin) ApplyJudymentOfTheBold() {
+	// Judgement of the Bold
+	actionID := core.ActionID{SpellID: 89901}
+	manaMetrics := ret.NewManaMetrics(actionID)
+	var manaPA *core.PendingAction
+
+	jotbAura := ret.RegisterAura(core.Aura{
+		Label:    "Judgement of the Bold",
+		ActionID: actionID,
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			manaPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period: time.Second * 2,
+				OnAction: func(sim *core.Simulation) {
+					ret.AddMana(sim, 0.25*ret.BaseMana, manaMetrics)
+				},
+			})
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			manaPA.Cancel(sim)
+		},
+	})
+
+	core.MakeProcTriggerAura(&ret.Unit, core.ProcTrigger{
+		Name:           "Judgement of the Bold",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: paladin.SpellMaskJudgement,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			jotbAura.Activate(sim)
+		},
+	})
 }
