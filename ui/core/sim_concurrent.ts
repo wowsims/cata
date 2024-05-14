@@ -28,7 +28,7 @@ class ConcurrentSimProgress {
 
 	getDpsAvg(): number {
 		let total = 0;
-		for (const done of this.dpsValues){
+		for (const done of this.dpsValues) {
 			total += done;
 		}
 		return total / this.concurrency;
@@ -36,38 +36,35 @@ class ConcurrentSimProgress {
 
 	getHpsAvg(): number {
 		let total = 0;
-		for (const done of this.hpsValues){
+		for (const done of this.hpsValues) {
 			total += done;
 		}
 		return total / this.concurrency;
 	}
 
-	updateProgress(idx: number, msg: ProgressMetrics): boolean {
+	updateProgress(idx: number, msg: ProgressMetrics) {
 		this.iterationsDone[idx] = msg.completedIterations;
 		this.dpsValues[idx] = msg.dps;
 		this.hpsValues[idx] = msg.hps;
 
 		if (msg.finalRaidResult) {
 			this.finalResults[idx] = msg.finalRaidResult;
-			return true;
 		}
-
-		return false;
 	}
 
 	makeProgressMetrics(): ProgressMetrics {
 		return ProgressMetrics.create({
-			totalIterations:     this.iterationsTotal,
+			totalIterations: this.iterationsTotal,
 			completedIterations: this.getIterationsDone(),
-			dps:                 this.getDpsAvg(),
-			hps:                 this.getHpsAvg(),
+			dps: this.getDpsAvg(),
+			hps: this.getHpsAvg(),
 		});
 	}
 }
 
 function makeAndSendErrorResult(err: string, onProgress: WorkerProgressCallback): RaidSimResult {
-	const errRes = RaidSimResult.create({errorResult: err});
-	onProgress(ProgressMetrics.create({finalRaidResult: errRes}));
+	const errRes = RaidSimResult.create({ errorResult: err });
+	onProgress(ProgressMetrics.create({ finalRaidResult: errRes }));
 	console.error(err);
 	return errRes;
 }
@@ -101,35 +98,35 @@ async function runSims(requests: RaidSimRequest[], totalIterations: number, wp: 
 	const progressHandler = async (idx: number, pm: ProgressMetrics) => {
 		if (!resolve) return;
 
-		if (csp.updateProgress(idx, pm)) {
-			if (pm.finalRaidResult) {
-				let errRes: RaidSimResult | undefined;
-				if (pm.finalRaidResult.errorResult) {
-					console.error(`Worker ${idx} had an error!`);
-					errRes = pm.finalRaidResult;
-					// This sucks, but it's better than having long running workers forever.
-					if (requests[0].simOptions!.iterations > 1000) {
-						console.log("Terminating all workers to get going again.");
-						const num = wp.getNumWorkers()
-						wp.setNumWorkers(0);
-						wp.setNumWorkers(num);
-					}
-				}
+		csp.updateProgress(idx, pm)
 
-				running--;
-				if (errRes || running == 0) {
-					resolve({
-						errorResult: errRes,
-						results: csp.finalResults,
-						progressMetricsFinal: csp.makeProgressMetrics(),
-					});
-					resolve = undefined;
+		if (pm.finalRaidResult) {
+			let errRes: RaidSimResult | undefined;
+			if (pm.finalRaidResult.errorResult) {
+				console.error(`Worker ${idx} had an error!`);
+				errRes = pm.finalRaidResult;
+				// This sucks, but it's better than having long running workers forever.
+				if (requests[0].simOptions!.iterations > 1000) {
+					console.log("Terminating all workers to get going again.");
+					const num = wp.getNumWorkers();
+					wp.setNumWorkers(0);
+					wp.setNumWorkers(num);
 				}
+			}
+
+			running--;
+			if (errRes || running == 0) {
+				resolve({
+					errorResult: errRes,
+					results: csp.finalResults,
+					progressMetricsFinal: csp.makeProgressMetrics(),
+				});
+				resolve = undefined;
 			}
 		}
 
 		progressCounter++;
-		if (progressCounter % csp.concurrency == 0) {
+		if (progressCounter % running == 0) {
 			onProgress(csp.makeProgressMetrics());
 		}
 	}
