@@ -1,8 +1,8 @@
 import { hasTouch } from '../shared/bootstrap_overrides';
-import { getBrowserLanguageCode, setLanguageCode } from './constants/lang.js';
-import * as OtherConstants from './constants/other.js';
-import { Encounter } from './encounter.js';
-import { Player, UnitMetadata } from './player.js';
+import { getBrowserLanguageCode, setLanguageCode } from './constants/lang';
+import * as OtherConstants from './constants/other';
+import { Encounter } from './encounter';
+import { Player, UnitMetadata } from './player';
 import {
 	BulkSettings,
 	BulkSimRequest,

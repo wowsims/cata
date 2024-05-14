@@ -1,16 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element } from 'tsx-vanilla';
 
-import { Player } from '../player.js';
-import { ItemSlot } from '../proto/common.js';
-import { RaidFilterOption, SourceFilterOption, UIItem_FactionRestriction } from '../proto/ui.js';
-import { armorTypeNames, raidNames, rangedWeaponTypeNames, sourceNames, weaponTypeNames } from '../proto_utils/names.js';
-import { Sim } from '../sim.js';
-import { EventID } from '../typed_event.js';
-import { BaseModal } from './base_modal.jsx';
-import { BooleanPicker } from './boolean_picker.js';
-import { EnumPicker } from './enum_picker.js';
-import { NumberPicker } from './number_picker.js';
+import { Player } from '../player';
+import { ItemSlot } from '../proto/common';
+import { RaidFilterOption, SourceFilterOption, UIItem_FactionRestriction } from '../proto/ui';
+import { armorTypeNames, raidNames, rangedWeaponTypeNames, sourceNames, weaponTypeNames } from '../proto_utils/names';
+import { Sim } from '../sim';
+import { EventID } from '../typed_event';
+import { BaseModal } from './base_modal';
+import { BooleanPicker } from './boolean_picker';
+import { EnumPicker } from './enum_picker';
+import { NumberPicker } from './number_picker';
 
 const factionRestrictionsToLabels: Record<UIItem_FactionRestriction, string> = {
 	[UIItem_FactionRestriction.UNSPECIFIED]: 'None',
