@@ -32,6 +32,7 @@ import { DatabaseFilters, RaidFilterOption, SimSettings as SimSettingsProto, Sou
 import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
+import { runConcurrentSim } from './sim_concurrent';
 import { EventID, TypedEvent } from './typed_event.js';
 import { getEnumValues, noop } from './utils.js';
 import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
@@ -70,6 +71,7 @@ export class Sim {
 	private showThreatMetrics = false;
 	private showHealingMetrics = false;
 	private showExperimental = false;
+	private useConcurrency = 0;
 	private showQuickSwap = false;
 	private showEPValues = false;
 	private language = '';
@@ -89,6 +91,7 @@ export class Sim {
 	readonly showThreatMetricsChangeEmitter = new TypedEvent<void>();
 	readonly showHealingMetricsChangeEmitter = new TypedEvent<void>();
 	readonly showExperimentalChangeEmitter = new TypedEvent<void>();
+	readonly useConcurencyChangeEmitter = new TypedEvent<void>();
 	readonly showQuickSwapChangeEmitter = new TypedEvent<void>();
 	readonly showEPValuesChangeEmitter = new TypedEvent<void>();
 	readonly languageChangeEmitter = new TypedEvent<void>();
@@ -119,6 +122,11 @@ export class Sim {
 
 	constructor() {
 		this.workerPool = new WorkerPool(1);
+		this.useConcurencyChangeEmitter.on(() => {
+			const nWorker = Math.max(1, Math.min(this.useConcurrency, navigator.hardwareConcurrency));
+			this.workerPool.setNumWorkers(nWorker);
+		});
+
 		this._initPromise = Database.get().then(db => {
 			this.db_ = db;
 		});
@@ -135,6 +143,7 @@ export class Sim {
 			this.showThreatMetricsChangeEmitter,
 			this.showHealingMetricsChangeEmitter,
 			this.showExperimentalChangeEmitter,
+			this.useConcurencyChangeEmitter,
 			this.showQuickSwapChangeEmitter,
 			this.showEPValuesChangeEmitter,
 			this.languageChangeEmitter,
@@ -265,7 +274,13 @@ export class Sim {
 
 			const request = this.makeRaidSimRequest(false);
 
-			const result = await this.workerPool.raidSimAsync(request, onProgress);
+			let result;
+			if (this.useConcurrency >= 2) {
+				result = await runConcurrentSim(request, this.workerPool, onProgress);
+			} else {
+				result = await this.workerPool.raidSimAsync(request, onProgress);
+			}
+
 			if (result.errorResult != '') {
 				throw new SimError(result.errorResult);
 			}
@@ -526,6 +541,16 @@ export class Sim {
 		}
 	}
 
+	getUseConcurrency(): number {
+		return this.useConcurrency;
+	}
+	setUseConcurrency(eventID: EventID, newUseConcurrency: number) {
+		if (newUseConcurrency != this.useConcurrency) {
+			this.useConcurrency = newUseConcurrency;
+			this.useConcurencyChangeEmitter.emit(eventID); // TODO wasm concurrency: change this?
+		}
+	}
+
 	getShowQuickSwap(): boolean {
 		return !hasTouch() && this.showQuickSwap;
 	}
@@ -600,6 +625,7 @@ export class Sim {
 			showThreatMetrics: this.getShowThreatMetrics(),
 			showHealingMetrics: this.getShowHealingMetrics(),
 			showExperimental: this.getShowExperimental(),
+			useConcurrency: this.getUseConcurrency(),
 			showQuickSwap: this.getShowQuickSwap(),
 			showEpValues: this.getShowEPValues(),
 			language: this.getLanguage(),
@@ -617,6 +643,7 @@ export class Sim {
 			this.setShowThreatMetrics(eventID, proto.showThreatMetrics);
 			this.setShowHealingMetrics(eventID, proto.showHealingMetrics);
 			this.setShowExperimental(eventID, proto.showExperimental);
+			this.setUseConcurrency(eventID, proto.useConcurrency);
 			this.setShowQuickSwap(eventID, proto.showQuickSwap);
 			this.setShowEPValues(eventID, proto.showEpValues);
 			this.setLanguage(eventID, proto.language);

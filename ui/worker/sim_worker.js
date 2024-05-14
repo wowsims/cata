@@ -19,15 +19,15 @@ WebAssembly.instantiateStreaming(fetch("lib.wasm"), go.importObject).then(
 
 var workerID = "";
 
-addEventListener('message', async (e) => {
+addEventListener('message', async e => {
 	const msg = e.data.msg;
 	const id = e.data.id;
 
 	let handled = false;
 
 	[
-		['bulkSimAsync', (data) => {
-			return bulkSimAsync(data, (result) => {
+		['bulkSimAsync', data => {
+			return bulkSimAsync(data, result => {
 				postMessage({
 					msg: "progress",
 					outputData: result,
@@ -39,8 +39,8 @@ addEventListener('message', async (e) => {
 		['computeStatsJson', computeStatsJson],
 		['raidSim', raidSim],
 		['raidSimJson', raidSimJson],
-		['raidSimAsync', (data) => {
-			return raidSimAsync(data, (result) => {
+		['raidSimAsync', data => {
+			return raidSimAsync(data, result => {
 				postMessage({
 					msg: "progress",
 					outputData: result,
@@ -48,9 +48,11 @@ addEventListener('message', async (e) => {
 				});
 			});
 		}],
+		['raidSimRequestSplit', raidSimRequestSplit],
+		['raidSimResultCombination', raidSimResultCombination],
 		['statWeights', statWeights],
-		['statWeightsAsync', (data) => {
-			return statWeightsAsync(data, (result) => {
+		['statWeightsAsync', data => {
+			return statWeightsAsync(data, result => {
 				postMessage({
 					msg: "progress",
 					outputData: result,
@@ -80,6 +82,9 @@ addEventListener('message', async (e) => {
 
 	if (msg == "setID") {
 		workerID = id;
-		postMessage({ msg: "idconfirm" })
+		postMessage({ msg: "idconfirm" });
+		return;
 	}
+
+	console.error(`Invalid request ${msg} sent to worker!`);
 }, false);

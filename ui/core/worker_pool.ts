@@ -6,7 +6,11 @@ import {
 	ComputeStatsResult,
 	ProgressMetrics,
 	RaidSimRequest,
+	RaidSimRequestSplitRequest,
+	RaidSimRequestSplitResult,
 	RaidSimResult,
+	RaidSimResultCombinationRequest,
+	RaidSimResultCombinationResult,
 	StatWeightsRequest,
 	StatWeightsResult,
 } from './proto/api.js';
@@ -21,9 +25,27 @@ export class WorkerPool {
 
 	constructor(numWorkers: number) {
 		this.workers = [];
-		for (let i = 0; i < numWorkers; i++) {
-			this.workers.push(new SimWorker());
+		this.setNumWorkers(numWorkers);
+	}
+
+	setNumWorkers(numWorkers: number) {
+		if (numWorkers < this.workers.length) {
+			for (let i = this.workers.length - 1; i >= numWorkers; i--) {
+				this.workers[i].destroy();
+			}
+			this.workers.length = numWorkers;
+			return;
 		}
+
+		for (let i = 0; i < numWorkers; i++) {
+			if (!this.workers[i]) {
+				this.workers[i] = new SimWorker(i);
+			}
+		}
+	}
+
+	getNumWorkers() {
+		return this.workers.length;
 	}
 
 	private getLeastBusyWorker(): SimWorker {
@@ -79,6 +101,8 @@ export class WorkerPool {
 		// Add handler for the progress events
 		worker.addPromiseFunc(this.getProgressName(id), this.newProgressHandler(id, worker, onProgress), noop);
 
+		console.log(`Running raid sim on worker ${worker.id}`);
+
 		// Now start the async sim
 		const resultData = await worker.doApiCall('raidSimAsync', RaidSimRequest.toBinary(request), id);
 		const result = ProgressMetrics.fromBinary(resultData);
@@ -88,6 +112,16 @@ export class WorkerPool {
 		delete resultJson!['logs'];
 		console.log('Raid sim result: ' + JSON.stringify(resultJson));
 		return result.finalRaidResult!;
+	}
+
+	async raidSimRequestSplit(request: RaidSimRequestSplitRequest): Promise<RaidSimRequestSplitResult> {
+		const result = await this.makeApiCall('raidSimRequestSplit', RaidSimRequestSplitRequest.toBinary(request));
+		return RaidSimRequestSplitResult.fromBinary(result);
+	}
+
+	async raidSimResultCombination(request: RaidSimResultCombinationRequest): Promise<RaidSimResultCombinationResult> {
+		const result = await this.makeApiCall('raidSimResultCombination', RaidSimResultCombinationRequest.toBinary(request));
+		return RaidSimResultCombinationResult.fromBinary(result);
 	}
 
 	newProgressHandler(id: string, worker: SimWorker, onProgress: WorkerProgressCallback): (progressData: any) => void {
@@ -105,14 +139,18 @@ export class WorkerPool {
 }
 
 class SimWorker {
+	readonly id: number;
 	numTasksRunning: number;
 	private taskIdsToPromiseFuncs: Record<string, [(result: any) => void, (error: any) => void]>;
+	private eventIdsToPromiseFuncs: Record<string, [(result: any) => void, (error: any) => void]>;
 	private worker: Worker;
 	private onReady: Promise<void>;
 
-	constructor() {
+	constructor(id: number) {
+		this.id = id;
 		this.numTasksRunning = 0;
 		this.taskIdsToPromiseFuncs = {};
+		this.eventIdsToPromiseFuncs = {};
 		this.worker = new window.Worker(SIM_WORKER_URL);
 
 		let resolveReady: (() => void) | null = null;
@@ -128,14 +166,24 @@ class SimWorker {
 				// Do nothing
 			} else {
 				const id = event.data.id;
-				if (!this.taskIdsToPromiseFuncs[id]) {
+				let promiseFuncs: [(result: any) => void, (error: any) => void] | undefined;
+
+				if (this.taskIdsToPromiseFuncs[id]) {
+					promiseFuncs = this.taskIdsToPromiseFuncs[id];
+					delete this.taskIdsToPromiseFuncs[id];
+					this.numTasksRunning--;
+					if (this.numTasksRunning < 0) {
+						alert(`Worker ${this.id} API response ${id} caused numTasksRunning to become negative!`);
+					}
+				} else if (this.eventIdsToPromiseFuncs[id]) {
+					promiseFuncs = this.eventIdsToPromiseFuncs[id];
+					delete this.eventIdsToPromiseFuncs[id];
+				}
+
+				if (!promiseFuncs) {
 					console.warn('Unrecognized result id: ' + id);
 					return;
 				}
-
-				const promiseFuncs = this.taskIdsToPromiseFuncs[id];
-				delete this.taskIdsToPromiseFuncs[id];
-				this.numTasksRunning--;
 
 				promiseFuncs[0](event.data.outputData);
 			}
@@ -143,7 +191,7 @@ class SimWorker {
 	}
 
 	addPromiseFunc(id: string, callback: (result: any) => void, onError: (error: any) => void) {
-		this.taskIdsToPromiseFuncs[id] = [callback, onError];
+		this.eventIdsToPromiseFuncs[id] = [callback, onError];
 	}
 
 	makeTaskId(): string {
@@ -172,5 +220,9 @@ class SimWorker {
 			});
 		});
 		return await taskPromise;
+	}
+
+	destroy() {
+		this.worker.terminate();
 	}
 }
