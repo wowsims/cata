@@ -1,42 +1,46 @@
-$dps-color: #ed5653;
-$threat-color: #b56d07;
+:root {
+	--timeline-tick-bg: maroon;
+	--timeline-cast-bg: rgb(229, 204, 128, 0.7);
+	--timeline-aura-bg: rgba(0, 0, 255, 0.52);
+	--timeline-travel-time-bg: rgb(249, 192, 255, 0.6);
+}
 
 .threat .series-color,
 .threat.series-color {
-	color: $threat-color;
+	color: var(--bs-threat);
 }
 .health .series-color,
 .health.series-color {
-	color: $health-color;
+	color: var(--bs-health);
 }
 .mana .series-color,
 .mana.series-color {
-	color: $mana-color;
+	color: var(--bs-mana);
 }
 .energy .series-color,
 .energy.series-color {
-	color: $energy-color;
+	color: var(--bs-energy);
 }
 .rage .series-color,
 .rage.series-color {
-	color: $rage-color;
+	color: var(--bs-rage);
 }
 .focus .series-color,
 .focus.series-color {
-	color: $focus-color;
+	color: var(--bs-focus);
 }
 .combo-points .series-color,
 .combo-points.series-color {
-	color: $combo-points-color;
+	color: var(--bs-combo-points);
 }
 .solar-energy .series-color,
 .solar-energy.series-color {
-	color: $solar-energy-color;
+	color: var(--bs-solar-energy);
 }
 
 .lunar-energy .series-color,
 .lunar-energy.series-color {
-	color: $lunar-energy-color;
+	color: var(--bs-lunar-energy);
 }
 
 .timeline-root {
@@ -56,7 +60,7 @@ $threat-color: #b56d07;
 }
 
 .timeline-warning {
-	margin-right: map-get($spacers, 2);
+	margin-right: var(--bs-spacer-2);
 }
 
 .timeline-plots-container {
@@ -83,7 +87,7 @@ $threat-color: #b56d07;
 }
 
 .timeline-tooltip-header {
-	border-bottom: 1px solid white;
+	border-bottom: 1px solid var(--bs-white);
 	margin-bottom: 5px;
 }
 
@@ -102,12 +106,12 @@ $threat-color: #b56d07;
 }
 
 .timeline-tooltip-auras {
-	border-top: 1px solid white;
+	border-top: 1px solid var(--bs-white);
 	margin-top: 5px;
 }
 
 .rotation-container {
-	color: white;
+	color: var(--bs-white);
 	display: flex;
 }
 .rotation-hidden-ids {
@@ -126,19 +130,19 @@ $threat-color: #b56d07;
 	font-weight: bold;
 	display: flex;
 	align-items: center;
-	color: white;
+	color: var(--bs-white);
 }
 .rotation-label .fas {
 	margin: 1px;
 	cursor: pointer;
-	color: #ffefd5;
+	color: var(--bs-white);
 }
 .rotation-label .fas:hover {
-	color: yellow;
+	color: var(--bs-link-danger);
 }
 .rotation-label-hidden {
 	display: inline-flex;
-	border: 1px solid white;
+	border: 1px solid var(--bs-white);
 	margin: 3px;
 }
 .rotation-label-icon {
@@ -160,13 +164,13 @@ $threat-color: #b56d07;
 }
 .rotation-timeline-row {
 	position: relative;
-	border-bottom: 1px solid grey;
+	border-bottom: 1px solid var(--bs-gray);
 }
 .rotation-timeline-resource {
 	position: absolute;
 	height: 100%;
-	border-left: 1px solid grey;
-	border-right: 1px solid grey;
+	border-left: 1px solid var(--bs-gray);
+	border-right: 1px solid var(--bs-gray);
 	display: flex;
 	align-items: center;
 	font-weight: bold;
@@ -178,46 +182,46 @@ $threat-color: #b56d07;
 	left: 0;
 	width: 10px;
 	&.focus {
-		background-color: #ff8040;
+		background-color: var(--bs-orange);
 	}
 
 	&.energy {
-		background-color: yellow;
+		background-color: var(--bs-partial);
 	}
 
 	&.lunar-energy {
-		background-color: $lunar-energy-color;
+		background-color: var(--bs-lunar-energy);
 		width: 24px;
 	}
 
 	&.solar-energy {
-		background-color: $solar-energy-color;
+		background-color: var(--bs-solar-energy);
 		top: 0;
 		width: 24px;
 	}
 }
 .rotation-timeline-cast {
 	position: absolute;
-	background-color: rgb(229, 204, 128, 0.7);
+	background-color: var(--timeline-cast-bg);
 	z-index: 1;
 	display: flex;
 }
 .rotation-timeline-travel-time {
 	position: absolute;
 	height: 24px;
-	background-color: rgb(249, 192, 255, 0.6);
+	background-color: var(--timeline-travel-time-bg);
 }
 .rotation-timeline-tick {
 	position: absolute;
 	width: 5px;
-	background-color: maroon;
+	background-color: var(--timeline-tick-bg);
 	height: 20px;
 	top: 2px;
 	z-index: 2;
 }
 .rotation-timeline-aura {
 	position: absolute;
-	background-color: rgba(0, 0, 255, 0.52);
+	background-color: var(--timeline-aura-bg);
 	opacity: 0.5;
 	height: 20px;
 	top: 2px;
@@ -227,8 +231,8 @@ $threat-color: #b56d07;
 	height: 20px;
 	background-color: transparent;
 
-	border-left: 1px solid grey;
-	border-right: 1px solid grey;
+	border-left: 1px solid var(--bs-gray);
+	border-right: 1px solid var(--bs-gray);
 	display: flex;
 	align-items: center;
 	font-weight: bold;
@@ -236,24 +240,24 @@ $threat-color: #b56d07;
 }
 .rotation-timeline-separator {
 	width: 100%;
-	border: 1px solid white;
+	border: 1px solid var(--bs-white);
 	margin: 10px 0;
 }
 .rotation-timeline-cast-icon {
 	@include wowhead-background-icon;
 	height: 24px;
 	width: 24px;
-	border-bottom: 3px solid grey;
+	border-bottom: 3px solid var(--bs-gray);
 }
 .rotation-timeline-cast.outcome-miss .rotation-timeline-cast-icon {
-	border-color: red;
+	border-color: var(--bs-miss);
 }
 .rotation-timeline-cast.outcome-partial .rotation-timeline-cast-icon {
-	border-color: yellow;
+	border-color: var(--bs-partial);
 }
 .rotation-timeline-cast.outcome-hit .rotation-timeline-cast-icon {
-	border-color: green;
+	border-color: var(--bs-hit);
 }
 .rotation-timeline-cast.outcome-crit .rotation-timeline-cast-icon {
-	border-color: blue;
+	border-color: var(--bs-crit);
 }

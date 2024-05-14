@@ -35,7 +35,7 @@ export class PlayerDamageTakenMetricsTable extends MetricsTable<UnitMetrics> {
 							const playerFilter = {
 								player: player.unitIndex,
 							}
-							const targetActions = targets.map(target => target.getMeleeActions().concat(target.getSpellActions()).map(action => action.forTarget(playerFilter))).flat();
+							const targetActions = targets.map(target => target.getPlayerAndPetActions().map(action => action.forTarget(playerFilter))).flat();
 							const sourceChart = new SourceChart(chartContainer, targetActions);
 						}
 						return chartContainer;
