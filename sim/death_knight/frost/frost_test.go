@@ -18,18 +18,18 @@ func TestFrost(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-		GearSet:     core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p1"),
+		GearSet:     core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p12h"),
 		Talents:     FrostTalents,
 		Glyphs:      FrostDefaultGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFrost},
-		Rotation:    core.GetAplRotation("../../../ui/death_knight/frost/apls", "st"),
+		Rotation:    core.GetAplRotation("../../../ui/death_knight/frost/apls", "2hst"),
 
 		ItemFilter: ItemFilter,
 	}))
 }
 
-var FrostTalents = "2032-20330022233112012301-003"
+var FrostTalents = "103-32030022233112012031-033"
 var FrostDefaultGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfFrostStrike),
 	Prime2: int32(proto.DeathKnightPrimeGlyph_GlyphOfObliterate),
