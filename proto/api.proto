@@ -306,11 +306,18 @@ message EncounterMetrics {
 	repeated UnitMetrics targets = 1;
 }
 
+enum SimType {
+	SimTypeUnknown = 0;
+	SimTypeIndividual = 1;
+	SimTypeRaid = 2;
+}
+
 // RPC RaidSim
 message RaidSimRequest {
 	Raid raid = 1;
 	Encounter encounter = 2;
 	SimOptions sim_options = 3;
+	SimType type = 4;
 }
 
 // Result from running the raid sim.
