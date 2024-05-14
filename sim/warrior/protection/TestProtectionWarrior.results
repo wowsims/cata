@@ -815,6 +815,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-MoltenGiantBattleplate"
+ value: {
+  dps: 5446.9946
+  tps: 30988.02552
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-MoltenGiantWarplate"
  value: {
   dps: 6088.00185
