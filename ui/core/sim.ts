@@ -565,7 +565,7 @@ export class Sim {
 	setUseConcurrency(eventID: EventID, newUseConcurrency: number) {
 		if (newUseConcurrency != this.useConcurrency) {
 			this.useConcurrency = newUseConcurrency;
-			this.useConcurencyChangeEmitter.emit(eventID); // TODO wasm concurrency: change this?
+			this.useConcurencyChangeEmitter.emit(eventID);
 		}
 	}
 
