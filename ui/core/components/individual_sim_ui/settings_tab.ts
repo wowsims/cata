@@ -104,6 +104,7 @@ export class SettingsTab extends SimTab {
 
 		const races = this.simUI.player.getPlayerClass().races;
 		const _racePicker = new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
+			id: 'simui-race',
 			label: 'Race',
 			values: races.map(race => {
 				return {
@@ -125,6 +126,7 @@ export class SettingsTab extends SimTab {
 
 		const professions = getEnumValues(Profession).filter(proff => proff != Profession.Archeology) as Array<Profession>;
 		const _profession1Picker = new EnumPicker(professionGroup, this.simUI.player, {
+			id: 'simui-profession1',
 			label: 'Profession 1',
 			values: professions.map(p => {
 				return {
@@ -138,6 +140,7 @@ export class SettingsTab extends SimTab {
 		});
 
 		const _profession2Picker = new EnumPicker(professionGroup, this.simUI.player, {
+			id: 'simui-profession2',
 			label: 'Profession 2',
 			values: professions.map(p => {
 				return {

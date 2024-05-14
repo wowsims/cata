@@ -138,6 +138,7 @@ export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 		IndividualLinkExporter.exportPickerConfigs.forEach(exportConfig => {
 			const category = exportConfig.category;
 			new BooleanPicker(pickersContainer, this, {
+				id: `link-exporter-${category}`,
 				label: exportConfig.label,
 				labelTooltip: exportConfig.labelTooltip,
 				inline: true,

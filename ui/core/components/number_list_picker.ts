@@ -1,13 +1,13 @@
 import { EventID, TypedEvent } from '../typed_event.js';
 import { arrayEquals } from '../utils.js';
-
 import { Input, InputConfig } from './input.js';
 
 /**
  * Data for creating a number list picker.
  */
 export interface NumberListPickerConfig<ModObject> extends InputConfig<ModObject, Array<number>> {
-	placeholder?: string,
+	id: string;
+	placeholder?: string;
 }
 
 // UI element for picking an arbitrary number list field.
@@ -18,6 +18,7 @@ export class NumberListPicker<ModObject> extends Input<ModObject, Array<number>>
 		super(parent, 'number-list-picker-root', modObject, config);
 
 		this.inputElem = document.createElement('input');
+		this.inputElem.id = config.id;
 		this.inputElem.type = 'text';
 		this.inputElem.placeholder = config.placeholder || '';
 		this.inputElem.classList.add('number-list-picker-input', 'form-control');
@@ -25,7 +26,7 @@ export class NumberListPicker<ModObject> extends Input<ModObject, Array<number>>
 
 		this.init();
 
-		this.inputElem.addEventListener('change', event => {
+		this.inputElem.addEventListener('change', () => {
 			this.inputChanged(TypedEvent.nextEventID());
 		});
 	}
@@ -40,7 +41,10 @@ export class NumberListPicker<ModObject> extends Input<ModObject, Array<number>>
 			return [];
 		}
 
-		return str.split(',').map(parseFloat).filter(val => !isNaN(val));
+		return str
+			.split(',')
+			.map(parseFloat)
+			.filter(val => !isNaN(val));
 	}
 
 	setInputValue(newValue: Array<number>) {

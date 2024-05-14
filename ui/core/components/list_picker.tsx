@@ -14,7 +14,7 @@ export interface ListPickerActionsConfig {
 	};
 }
 
-export interface ListPickerConfig<ModObject, ItemType> extends InputConfig<ModObject, Array<ItemType>> {
+export interface ListPickerConfig<ModObject, ItemType> extends Omit<InputConfig<ModObject, Array<ItemType>>, 'id'> {
 	itemLabel: string;
 	newItem: () => ItemType;
 	copyItem: (oldItem: ItemType) => ItemType;
