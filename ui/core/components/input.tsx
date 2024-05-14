@@ -1,5 +1,6 @@
 import tippy from 'tippy.js';
 import { element, fragment } from 'tsx-vanilla';
+import { v4 as uuidv4 } from 'uuid';
 
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
@@ -43,11 +44,12 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	readonly modObject: ModObject;
 
 	protected enabled = true;
-
+	readonly uuid: string;
 	readonly changeEmitter = new TypedEvent<void>();
 
 	constructor(parent: HTMLElement | null, cssClass: string, modObject: ModObject, config: InputConfig<ModObject, T, V>) {
 		super(parent, 'input-root', config.rootElem);
+		this.uuid = uuidv4();
 		this.inputConfig = config;
 		this.modObject = modObject;
 		this.rootElem.classList.add(cssClass);
@@ -63,9 +65,11 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	}
 
 	private buildLabel(config: InputConfig<ModObject, T, V>): JSX.Element {
-		const dataset = {};
-
-		const label = <label className="form-label">{config.label}</label>;
+		const label = (
+			<label htmlFor={this.uuid} className="form-label" title={config.label}>
+				{config.label}
+			</label>
+		);
 
 		if (config.labelTooltip)
 			tippy(label, {

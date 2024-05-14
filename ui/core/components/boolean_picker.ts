@@ -19,6 +19,7 @@ export class BooleanPicker<ModObject> extends Input<ModObject, boolean> {
 
 		this.inputElem = document.createElement('input');
 		this.inputElem.type = 'checkbox';
+		this.inputElem.id = this.uuid;
 		this.inputElem.classList.add('boolean-picker-input', 'form-check-input');
 
 		if (config.reverse) {

@@ -269,9 +269,9 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 			<div class="target-picker-section target-picker-section3 threat-metrics"></div>
 		`;
 
-		const section1 = this.rootElem.querySelector('.target-picker-section1') as HTMLElement;
-		const section2 = this.rootElem.querySelector('.target-picker-section2') as HTMLElement;
-		const section3 = this.rootElem.querySelector('.target-picker-section3') as HTMLElement;
+		const section1 = this.rootElem.querySelector<HTMLElement>('.target-picker-section1')!;
+		const section2 = this.rootElem.querySelector<HTMLElement>('.target-picker-section2')!;
+		const section3 = this.rootElem.querySelector<HTMLElement>('.target-picker-section3')!;
 
 		const presetTargets = encounter.sim.db.getAllPresetTargets();
 		new EnumPicker<null>(section1, null, {

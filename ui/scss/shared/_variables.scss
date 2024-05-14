@@ -170,7 +170,11 @@ $theme-colors: map-merge($theme-colors, $table-colors);
 	--container-padding-lg: 3rem;
 	--container-padding-xxl: 4rem;
 	--container-padding: var(--gap-width-sm);
-	--section-spacer: calc(var(--container-padding) / 2);
+
+	--section-spacer-sm: 2rem;
+	--section-spacer-lg: calc(var(--container-padding) / 2);
+	--section-spacer-xxl: calc(var(--container-padding) / 2);
+	--section-spacer: var(--section-spacer-sm);
 
 	--block-spacer: 0.75rem;
 	--gap-width: 1.5rem;

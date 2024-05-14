@@ -417,7 +417,7 @@ export class BulkTab extends SimTab {
 			header: { title: 'Items' },
 		});
 
-		itemsBlock.bodyElement.classList.add('gear-picker-root');
+		itemsBlock.bodyElement.classList.add('gear-picker-root', 'gear-picker-root-bulk');
 
 		const noticeWorkInProgress = document.createElement('div');
 		noticeWorkInProgress.classList.add('bulk-items-text-line');
@@ -456,7 +456,7 @@ export class BulkTab extends SimTab {
 		});
 
 		resultsBlock.rootElem.hidden = true;
-		resultsBlock.bodyElement.classList.add('gear-picker-root', 'tab-panel-col');
+		resultsBlock.bodyElement.classList.add('gear-picker-root', 'gear-picker-root-bulk', 'tab-panel-col');
 
 		this.simUI.sim.bulkSimStartEmitter.on(() => {
 			resultsBlock.rootElem.hidden = true;
@@ -561,6 +561,7 @@ export class BulkTab extends SimTab {
 
 		const searchResults = document.createElement('ul');
 		searchResults.classList.add('batch-search-results');
+		searchResults.classList.add('hide');
 
 		let allItems = Array<UIItem>();
 
@@ -643,11 +644,13 @@ export class BulkTab extends SimTab {
 					return canEquipItem(item, this.simUI.player.getPlayerSpec(), undefined);
 				});
 				searchText.style.display = 'block';
+				searchResults.classList.remove('hide');
 				searchText.focus();
 			} else {
 				searchButton.innerHTML = baseSearchHTML;
 				searchText.style.display = 'none';
 				searchResults.innerHTML = '';
+				searchResults.classList.add('hide');
 			}
 		});
 		settingsBlock.bodyElement.appendChild(searchButton);
