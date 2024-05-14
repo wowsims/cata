@@ -109,14 +109,18 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 			actionID := core.ActionID{SpellID: 99237}
 
 			fieryAttack := character.RegisterSpell(core.SpellConfig{
-				ActionID:       actionID,
-				SpellSchool:    core.SpellSchoolFire,
-				ProcMask:       core.ProcMaskEmpty, // TODO (4.2) Test this
-				Flags:          core.SpellFlagMeleeMetrics,
-				CritMultiplier: character.DefaultMeleeCritMultiplier(),
+				ActionID:    actionID,
+				SpellSchool: core.SpellSchoolFire,
+				ProcMask:    core.ProcMaskEmpty, // TODO (4.2) Test this
+				Flags:       core.SpellFlagMeleeMetrics,
+
+				CritMultiplier:   character.DefaultMeleeCritMultiplier(),
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					baseDamage := 0.5 * spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly) // TODO (4.1) Test hit table
+					baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit) // TODO (4.1) Test hit table
 				},
 			})
 
@@ -126,6 +130,7 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskMortalStrike | SpellMaskRagingBlow,
 				ProcChance:     0.3,
+				Outcome:        core.OutcomeLanded,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					fieryAttack.Cast(sim, result.Target)
 				},
@@ -147,7 +152,9 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 				ActionID:    actionID,
 				SpellSchool: core.SpellSchoolFire,
 				ProcMask:    core.ProcMaskEmpty,
-				Flags:       core.SpellFlagIgnoreAttackerModifiers,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
 
 				Dot: core.DotConfig{
 					Aura: core.Aura{
@@ -173,14 +180,29 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 				ActionID:       actionID,
 				Callback:       core.CallbackOnSpellHitDealt,
 				ClassSpellMask: SpellMaskShieldSlam,
+				Outcome:        core.OutcomeLanded,
+
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					shieldSlamDamage = result.Damage
+					shieldSlamDamage = result.Damage * 0.2
 					debuff.Cast(sim, result.Target)
 				},
 			})
 		},
 		4: func(agent core.Agent) {
-			// Implemented in Sheild_Block.go
+			character := agent.GetCharacter()
+
+			character.RegisterAura(core.Aura{
+				Label:    "T12 4P Bonus",
+				ActionID: core.ActionID{SpellID: 99242},
+				Duration: 10 * time.Second,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					character.AddStatDynamic(sim, stats.Parry, 6*core.ParryRatingPerParryChance)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					character.AddStatDynamic(sim, stats.Parry, -6*core.ParryRatingPerParryChance)
+				},
+			})
+
 		},
 	},
 })

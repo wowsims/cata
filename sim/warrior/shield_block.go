@@ -10,23 +10,16 @@ import (
 func (warrior *Warrior) RegisterShieldBlockCD() {
 	actionID := core.ActionID{SpellID: 2565}
 
-	T12_4P_bonus := warrior.RegisterAura(core.Aura{
-		Label:    "T12 4P Bonus",
-		ActionID: core.ActionID{SpellID: 99242},
-		Duration: 10 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.Parry, 6*core.ParryRatingPerParryChance)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.Parry, -6*core.ParryRatingPerParryChance)
-		},
-	})
-
 	// extra avoidance to crit block effect seems to be based on basic level+3 target
 	atkTableAttacker := &core.Unit{Level: warrior.Level + 3, Type: core.EnemyUnit}
 	atkTable := core.NewAttackTable(atkTableAttacker, &warrior.Unit)
 
 	hasT12_4P_bonus := warrior.HasSetBonus(ItemSetMoltenGiantBattleplate, 4)
+	var T12_4P_bonus *core.Aura
+
+	if hasT12_4P_bonus {
+		T12_4P_bonus = warrior.GetAuraByID(core.ActionID{SpellID: 99242})
+	}
 
 	extraAvoidance := 0.0
 	warrior.ShieldBlockAura = warrior.RegisterAura(core.Aura{
@@ -51,7 +44,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 				warrior.CriticalBlockChance -= extraAvoidance
 			}
 
-			if hasT12_4P_bonus && sim.CurrentTime != sim.Duration {
+			if sim.CurrentTime != sim.Duration && hasT12_4P_bonus {
 				T12_4P_bonus.Activate(sim)
 			}
 		},
