@@ -209,6 +209,7 @@ export class Sim {
 		// TODO: remove any replenishment from sim request here? probably makes more sense to do it inside the sim to protect against accidents
 
 		return RaidSimRequest.create({
+			type: this.type,
 			raid: raid,
 			encounter: encounter,
 			simOptions: SimOptions.create({
