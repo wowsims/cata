@@ -71,7 +71,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.SingleTargetTalents.data,
+		talents: Presets.TwohTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -101,7 +101,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		{
-			return Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.Twoh_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 
@@ -145,7 +145,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFrostDeathKnight,
-			talents: Presets.SingleTargetTalents.data,
+			talents: Presets.DWTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
