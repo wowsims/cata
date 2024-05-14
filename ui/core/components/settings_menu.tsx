@@ -26,6 +26,7 @@ export class SettingsMenu extends BaseModal {
 		const showThreatMetrics = ref<HTMLDivElement>();
 		const showExperimental = ref<HTMLDivElement>();
 		const showQuickSwap = ref<HTMLDivElement>();
+		const useConcurrentWorkersWrap = ref<HTMLDivElement>()
 		const useConcurrentWorkers = ref<HTMLDivElement>();
 
 		const body = (
@@ -45,7 +46,7 @@ export class SettingsMenu extends BaseModal {
 				<div ref={showThreatMetrics} className="show-threat-metrics-picker w-50 pe-2"></div>
 				<div ref={showExperimental} className="show-experimental-picker w-50 pe-2"></div>
 				<div ref={showQuickSwap} className="show-quick-swap-picker w-50 pe-2"></div>
-				<div className="use-concurrency-container w-50 pe-2">
+				<div ref={useConcurrentWorkersWrap} className="use-concurrency-container w-50 pe-2">
 					<div ref={useConcurrentWorkers} className="use-concurrent-workers-picker"></div>
 					<div className="form-text">
 						<span>Note: This can cause significant memory usage when using high core counts! If sim doesn't finish due to RAM running out use a lower number.</span>
@@ -160,19 +161,29 @@ export class SettingsMenu extends BaseModal {
 				},
 			});
 
-		if (useConcurrentWorkers.value) {
+		if (useConcurrentWorkersWrap.value && useConcurrentWorkers.value) {
 			const values: EnumValueConfig[] = [{value: 0, name: "Off"}];
 			for (let i = 2; i < navigator.hardwareConcurrency + 1; i++) {
 				values.push({value: i, name: i.toString()});
 			}
 
-			new EnumPicker<Sim>(useConcurrentWorkers.value, this.simUI.sim, {
+			const workerPicker = new EnumPicker<Sim>(useConcurrentWorkers.value, this.simUI.sim, {
 				label: 'Use Multiple CPU Cores',
 				labelTooltip: 'Use web workers to spread sim workload over multiple CPU cores.',
 				changedEvent: (sim: Sim) => sim.useConcurencyChangeEmitter,
 				getValue: (sim: Sim) => sim.getUseConcurrency(),
 				setValue: (eventID, sim, newValue) => sim.setUseConcurrency(eventID, newValue),
 				values: values,
+			});
+
+			// Hide if not running wasm. Local sim has native threading.
+			this.simUI.sim.isWasm().then(isWasm => {
+				if (!isWasm) {
+					if (this.simUI.sim.getUseConcurrency()) {
+						this.simUI.sim.setUseConcurrency(TypedEvent.nextEventID(), 0);
+					}
+					useConcurrentWorkersWrap.value!.hidden = true;
+				}
 			});
 		}
 	}

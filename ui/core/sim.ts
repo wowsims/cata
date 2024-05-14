@@ -122,9 +122,12 @@ export class Sim {
 
 	constructor() {
 		this.workerPool = new WorkerPool(1);
-		this.useConcurencyChangeEmitter.on(() => {
-			const nWorker = Math.max(1, Math.min(this.useConcurrency, navigator.hardwareConcurrency));
-			this.workerPool.setNumWorkers(nWorker);
+		this.useConcurencyChangeEmitter.on(async () => {
+			// Prevent using worker concurrency when not running wasm. Local sim has native threading.
+			if (await this.workerPool.isWasm()) {
+				const nWorker = Math.max(1, Math.min(this.useConcurrency, navigator.hardwareConcurrency));
+				this.workerPool.setNumWorkers(nWorker);
+			}
 		});
 
 		this._initPromise = Database.get().then(db => {
@@ -156,6 +159,10 @@ export class Sim {
 
 	waitForInit(): Promise<void> {
 		return this._initPromise;
+	}
+
+	isWasm() {
+		return this.workerPool.isWasm();
 	}
 
 	get db(): Database {
@@ -275,7 +282,8 @@ export class Sim {
 			const request = this.makeRaidSimRequest(false);
 
 			let result;
-			if (this.useConcurrency >= 2) {
+			// Only use worker concurrency when running wasm. Local sim has native threading.
+			if (this.workerPool.getNumWorkers() >= 2 && await this.workerPool.isWasm()) {
 				result = await runConcurrentSim(request, this.workerPool, onProgress);
 			} else {
 				result = await this.workerPool.raidSimAsync(request, onProgress);

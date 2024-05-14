@@ -124,6 +124,10 @@ export class WorkerPool {
 		return RaidSimResultCombinationResult.fromBinary(result);
 	}
 
+	async isWasm() {
+		return await this.workers[0].isWasmWorker();
+	}
+
 	newProgressHandler(id: string, worker: SimWorker, onProgress: WorkerProgressCallback): (progressData: any) => void {
 		return (progressData: any) => {
 			const progress = ProgressMetrics.fromBinary(progressData);
@@ -145,6 +149,7 @@ class SimWorker {
 	private eventIdsToPromiseFuncs: Record<string, [(result: any) => void, (error: any) => void]>;
 	private worker: Worker;
 	private onReady: Promise<void>;
+	private wasmWorker: boolean;
 
 	constructor(id: number) {
 		this.id = id;
@@ -152,6 +157,7 @@ class SimWorker {
 		this.taskIdsToPromiseFuncs = {};
 		this.eventIdsToPromiseFuncs = {};
 		this.worker = new window.Worker(SIM_WORKER_URL);
+		this.wasmWorker = false;
 
 		let resolveReady: (() => void) | null = null;
 		this.onReady = new Promise((_resolve, _reject) => {
@@ -160,6 +166,7 @@ class SimWorker {
 
 		this.worker.onmessage = event => {
 			if (event.data.msg == 'ready') {
+				this.wasmWorker = event.data.isWasm;
 				this.worker.postMessage({ msg: 'setID', id: '1' });
 				resolveReady!();
 			} else if (event.data.msg == 'idconfirm') {
@@ -181,13 +188,18 @@ class SimWorker {
 				}
 
 				if (!promiseFuncs) {
-					console.warn('Unrecognized result id: ' + id);
+					console.warn(`Unrecognized result id ${id} for msg ${event.data.msg}`);
 					return;
 				}
 
 				promiseFuncs[0](event.data.outputData);
 			}
 		};
+	}
+
+	async isWasmWorker() {
+		await this.onReady;
+		return this.wasmWorker;
 	}
 
 	addPromiseFunc(id: string, callback: (result: any) => void, onError: (error: any) => void) {

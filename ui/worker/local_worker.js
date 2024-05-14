@@ -9,6 +9,7 @@ addEventListener('message', async e => {
 		postMessage({ msg: "idconfirm" })
 		return;
 	}
+
 	var url = "http://localhost:3333/" + msg;
 	let response = await fetch(url, {
 		method: 'POST',
@@ -59,5 +60,6 @@ addEventListener('message', async e => {
 
 // Let UI know worker is ready.
 postMessage({
-	msg: "ready"
+	msg: "ready",
+	isWasm: false,
 });

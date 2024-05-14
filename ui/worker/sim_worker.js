@@ -1,7 +1,8 @@
 // Wasm binary calls this function when its done loading.
 function wasmready() {
 	postMessage({
-		msg: "ready"
+		msg: "ready",
+		isWasm: true,
 	});
 }
 
