@@ -1,34 +1,32 @@
-@use 'sass:map';
-
 .character-stats-root {
 	width: 100%;
 
 	.character-stats-label {
-		margin-bottom: map-get($spacers, 2);
+		margin-bottom: var(--spacer-2);
 	}
 
 	.character-stats-table {
 		width: 100%;
 
 		.character-stats-table-row {
-			border-top: $border-default;
-			font-size: $content-font-size;
+			border-top: var(--border-default);
+			font-size: var(--content-font-size);
 
 			.character-stats-table-label,
 			.character-stats-table-value {
 				width: 50%;
-				padding-top: map-get($spacers, 2);
-				padding-bottom: map-get($spacers, 2);
+				padding-top: var(--spacer-2);
+				padding-bottom: var(--spacer-2);
 				line-height: 20px;
 			}
 
 			.character-stats-table-label {
-				padding-right: map-get($spacers, 2);
+				padding-right: var(--spacer-2);
 				text-align: left;
 			}
 
 			.character-stats-table-value {
-				padding-left: map-get($spacers, 2);
+				padding-left: var(--spacer-2);
 				font-weight: bold;
 				text-align: right;
 
@@ -58,6 +56,6 @@
 	justify-content: space-between;
 
 	span:first-child {
-		margin-right: map-get($spacers, 2);
+		margin-right: var(--spacer-2);
 	}
 }

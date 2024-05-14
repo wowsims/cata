@@ -247,7 +247,7 @@ enum RaidFilterOption {
 	RaidDragonSoul = 8;
 }
 
-// Next tag: 20.
+// NextIndex: 22
 message DatabaseFilters {
 	repeated ArmorType armor_types = 1;
 	repeated WeaponType weapon_types = 2;
@@ -255,6 +255,8 @@ message DatabaseFilters {
 	repeated SourceFilterOption sources = 17;
 	repeated RaidFilterOption raids = 18;
 	UIItem.FactionRestriction faction_restriction = 19;
+	int32 min_ilvl = 20;
+	int32 max_ilvl = 21;
 
 	double min_mh_weapon_speed = 4;
 	double max_mh_weapon_speed = 5;

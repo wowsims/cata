@@ -1,7 +1,7 @@
 .log-runner-root {
 	.log-runner-actions {
 		display: flex;
-		margin-bottom: map-get($spacers, 3);
+		margin-bottom: var(--spacer-3);
 
 		#log-search-input {
 			width: 25vw;
@@ -10,11 +10,11 @@
 		.show-debug-picker {
 			width: unset;
 			margin-bottom: 0;
-			margin-right: $block-spacer;
+			margin-right: var(--block-spacer);
 			margin-left: auto;
 
 			label {
-				margin-left: map-get($spacers, 1);
+				margin-left: var(--spacer-1);
 			}
 		}
 	}
@@ -33,7 +33,7 @@
 		table-layout: fixed;
 
 		th {
-			padding: map-get($spacers, 2);
+			padding: var(--spacer-2);
 			vertical-align: bottom;
 
 			&:first-child {
@@ -48,17 +48,17 @@
 			tr {
 				&:not(:last-child) {
 					td {
-						border-bottom: 1px solid $border-color;
+						border-bottom: 1px solid var(--bs-border-color);
 					}
 				}
 
 				td {
-					padding-top: map-get($spacers, 2);
-					padding-bottom: map-get($spacers, 2);
+					padding-top: var(--spacer-2);
+					padding-bottom: var(--spacer-2);
 				}
 
 				.log-timestamp {
-					padding-right: map-get($spacers, 2);
+					padding-right: var(--spacer-2);
 					text-align: right;
 					vertical-align: top;
 					font-variant-numeric: tabular-nums;
@@ -73,7 +73,7 @@
 					}
 
 					.log-action {
-						color: $brand;
+						color: var(--bs-brand);
 					}
 				}
 			}

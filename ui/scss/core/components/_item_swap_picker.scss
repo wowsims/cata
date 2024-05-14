@@ -1,5 +1,3 @@
-@use "sass:map";
-
 .item-swap-picker-root {
   .picker-group {
     align-items: center;
@@ -15,6 +13,6 @@
   }
 
   .input-root:not(:last-child) {
-    margin-right: map-get($spacers, 1);
+    margin-right: var(--spacer-1);
   }
 }

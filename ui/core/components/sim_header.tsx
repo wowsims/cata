@@ -240,7 +240,7 @@ export class SimHeader extends Component {
 			<header className="sim-header">
 				<div className="sim-header-container">
 					<ul className="sim-tabs nav nav-tabs" attributes={{ role: 'tablist' }}></ul>
-					<div className="import-export within-raid-sim-hide">
+					<div className="import-export nav within-raid-sim-hide">
 						<div className="dropdown sim-dropdown-menu import-dropdown">
 							<a
 								href="javascript:void(0)"
@@ -262,7 +262,7 @@ export class SimHeader extends Component {
 							<ul className="dropdown-menu"></ul>
 						</div>
 					</div>
-					<div className="sim-toolbar"></div>
+					<div className="sim-toolbar nav"></div>
 				</div>
 			</header>
 		) as HTMLElement;
