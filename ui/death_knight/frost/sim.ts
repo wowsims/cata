@@ -132,6 +132,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 
 	presets: {
 		talents: [
+			Presets.DWTalents,
 			Presets.TwohTalents,
 		],
 		rotations: [
