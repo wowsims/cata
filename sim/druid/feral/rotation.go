@@ -201,7 +201,7 @@ func (cat *FeralDruid) tfExpectedBefore(sim *core.Simulation, futureTime time.Du
 }
 
 func (cat *FeralDruid) calcTfEnergyThresh(leewayTime time.Duration) float64 {
-	delayTime := leewayTime + core.TernaryDuration(cat.ClearcastingAura.IsActive(), time.Second, 0) + core.TernaryDuration(cat.StampedeCatAura.IsActive(), time.Second, 0)
+	delayTime := leewayTime + core.TernaryDuration(cat.ClearcastingAura.IsActive(), time.Second, 0) + core.TernaryDuration(cat.StampedeCatAura.IsActive() && (cat.Rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget), time.Second, 0)
 	return 40.0 - delayTime.Seconds()*cat.EnergyRegenPerSecond()
 }
 
