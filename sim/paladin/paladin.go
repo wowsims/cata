@@ -27,6 +27,14 @@ const (
 	SpellMaskAvengersShield
 	SpellMaskDivinePlea
 	SpellMaskDivineProtection
+
+	SpellMaskHolyShock
+	SpellMaskWordOfGlory
+
+	SpellMaskSealOfTruth
+	SpellMaskSealOfInsight
+	SpellMaskSealOfRighteousness
+	SpellmaskSealofJustice
 )
 
 var TalentTreeSizes = [3]int{20, 20, 20}
