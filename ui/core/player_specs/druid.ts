@@ -76,7 +76,7 @@ export class FeralDruid extends PlayerSpec<Spec.SpecFeralDruid> {
 }
 
 export class GuardianDruid extends PlayerSpec<Spec.SpecGuardianDruid> {
-	static specIndex = 2;
+	static specIndex = 1;
 	static specID = Spec.SpecGuardianDruid as Spec.SpecGuardianDruid;
 	static classID = Class.ClassDruid as Class.ClassDruid;
 	static friendlyName = 'Guardian';
@@ -112,7 +112,7 @@ export class GuardianDruid extends PlayerSpec<Spec.SpecGuardianDruid> {
 }
 
 export class RestorationDruid extends PlayerSpec<Spec.SpecRestorationDruid> {
-	static specIndex = 3;
+	static specIndex = 2;
 	static specID = Spec.SpecRestorationDruid as Spec.SpecRestorationDruid;
 	static classID = Class.ClassDruid as Class.ClassDruid;
 	static friendlyName = 'Restoration';
