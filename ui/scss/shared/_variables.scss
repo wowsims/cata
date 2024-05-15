@@ -109,6 +109,7 @@ $focus-color: #cd853f;
 $combo-points-color: #ffa07a;
 $lunar-energy-color: #4a8aff;
 $solar-energy-color: #d2952b;
+$holy-power-color: #eed98a;
 
 $resource-colors: (
 	combo-points: $combo-points-color,
@@ -117,6 +118,7 @@ $resource-colors: (
 	health: $health-color,
 	mana: $mana-color,
 	rage: $rage-color,
+	holy-power: $holy-power-color,
 );
 $theme-colors: map-merge($theme-colors, $resource-colors);
 
