@@ -52,8 +52,6 @@ export const FeralDruidRotationConfig = {
 			fieldName: 'bearWeave',
 			label: 'Enable bear-weaving',
 			labelTooltip: 'Weave into Bear Form while pooling Energy',
-			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
-				player.getSimpleRotation().rotationType == AplType.SingleTarget,
 		}),
 		InputHelpers.makeRotationBooleanInput<Spec.SpecFeralDruid>({
 			fieldName: 'snekWeave',
@@ -73,6 +71,8 @@ export const FeralDruidRotationConfig = {
 			fieldName: 'manualParams',
 			label: 'Manual Advanced Parameters',
 			labelTooltip: 'Manually specify advanced parameters, otherwise will use preset defaults',
+			showWhen: (player: Player<Spec.SpecFeralDruid>) =>
+				player.getSimpleRotation().rotationType == AplType.SingleTarget,
 		}),
 		InputHelpers.makeRotationNumberInput<Spec.SpecFeralDruid>({
 			fieldName: 'minRoarOffset',
