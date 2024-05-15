@@ -1116,6 +1116,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestUnholy-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 31893.67802
+  tps: 23093.79923
+ }
+}
+dps_results: {
  key: "TestUnholy-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 31893.67802

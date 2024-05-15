@@ -1165,6 +1165,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestProtectionWarrior-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 5059.53106
+  tps: 28905.3099
+ }
+}
+dps_results: {
  key: "TestProtectionWarrior-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 5059.53106

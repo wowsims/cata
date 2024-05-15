@@ -1137,6 +1137,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 26079.53738
+  tps: 437.08111
+ }
+}
+dps_results: {
  key: "TestElemental-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 26079.53738

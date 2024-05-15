@@ -1277,6 +1277,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBlood-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 14558.5703
+  tps: 71046.95711
+  hps: 4701.5286
+ }
+}
+dps_results: {
  key: "TestBlood-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 14558.5703

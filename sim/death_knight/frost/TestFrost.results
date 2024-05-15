@@ -1116,6 +1116,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFrost-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 28674.5718
+  tps: 26436.98224
+ }
+}
+dps_results: {
  key: "TestFrost-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 28674.5718

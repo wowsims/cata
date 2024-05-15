@@ -1144,6 +1144,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBM-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 20398.57774
+  tps: 17199.77026
+ }
+}
+dps_results: {
  key: "TestBM-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 20398.57774

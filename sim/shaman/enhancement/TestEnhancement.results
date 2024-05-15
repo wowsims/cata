@@ -1137,6 +1137,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestEnhancement-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 28919.19159
+  tps: 19097.50154
+ }
+}
+dps_results: {
  key: "TestEnhancement-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 28919.19159
