@@ -313,7 +313,7 @@ func (mage *Mage) applyIgnite() {
 			}
 			// EJ post says combustion crits do not proc ignite
 			// https://web.archive.org/web/20120219014159/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/#post1824829
-			if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellCombustion) == 0 && result.DidCrit() {
+			if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellCombustion|MageSpellLivingBomb) == 0 && result.DidCrit() {
 				mage.procIgnite(sim, result)
 			}
 		},
