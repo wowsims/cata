@@ -67,7 +67,6 @@ export default defineConfig(({ command, mode }) => {
 	return {
 		...baseConfig,
 		plugins: [serveExternalAssets()],
-
 		esbuild: {
 			jsxFactory: 'element',
 			jsxFragment: 'fragment',

@@ -1,6 +1,6 @@
 import { Expansion } from '@wowsims/constants/expansion';
 import { ExpansionSelector } from '@wowsims/ui/ExpansionSelector';
-
+import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from './components/base_modal.jsx';
 import { Component } from './components/component.js';

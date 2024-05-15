@@ -1,4 +1,5 @@
 import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { SortDirection } from '../../constants/other';
 import { setItemQualityCssClass } from '../../css_utils';

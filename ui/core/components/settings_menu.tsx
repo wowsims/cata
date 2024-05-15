@@ -1,4 +1,5 @@
 import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { wowheadSupportedLanguages } from '../constants/lang.js';
 import { Sim } from '../sim.js';

@@ -1,5 +1,7 @@
 
 
+import { ref } from 'tsx-vanilla';
+
 import { ActionId } from '../proto_utils/action_id.js';
 import { TypedEvent } from '../typed_event.js';
 import { isRightClick } from '../utils.js';

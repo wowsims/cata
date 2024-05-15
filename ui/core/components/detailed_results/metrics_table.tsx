@@ -1,4 +1,5 @@
 import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { ActionId } from '../../proto_utils/action_id.js';
 import { UnitMetrics } from '../../proto_utils/sim_result';

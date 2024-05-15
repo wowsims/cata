@@ -1,4 +1,5 @@
 import tippy, { inlinePositioning, Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { Component } from '../components/component.js';
 import { TypedEvent } from '../typed_event.js';

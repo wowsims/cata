@@ -1,4 +1,5 @@
 import tippy, { hideAll, Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { setItemQualityCssClass } from '../css_utils';
 import { UIEnchant as Enchant, UIGem as Gem } from '../proto/ui.js';

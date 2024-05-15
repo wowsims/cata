@@ -1,4 +1,4 @@
-
+import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from '../components/base_modal.js';
 import { Component } from '../components/component.js';

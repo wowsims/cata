@@ -1,4 +1,5 @@
 import { Modal } from 'bootstrap';
+import { ref } from 'tsx-vanilla';
 
 import { Component } from './component';
 

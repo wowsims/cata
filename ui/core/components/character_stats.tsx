@@ -1,4 +1,5 @@
 import tippy, { Instance as TippyInstance } from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';

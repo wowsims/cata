@@ -1,4 +1,5 @@
 import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { ResourceType } from '../../proto/api.js';
 import { OtherAction } from '../../proto/common.js';

@@ -1,4 +1,5 @@
 import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { Component } from './component';
 

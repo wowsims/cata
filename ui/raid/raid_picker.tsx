@@ -1,5 +1,5 @@
 import tippy, { Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
-
+import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from '../core/components/base_modal.jsx';
 import { Component } from '../core/components/component.js';

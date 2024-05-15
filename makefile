@@ -49,7 +49,7 @@ $(OUT_DIR)/.dirstamp: \
 $(OUT_DIR)/bundle/.dirstamp: \
   $(UI_SRC) \
   $(PAGE_INDECES) \
-  vite.config.js \
+  vite.config.mts \
   node_modules \
   tsconfig.json \
   ui/core/index.ts \

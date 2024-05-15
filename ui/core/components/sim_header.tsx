@@ -1,4 +1,5 @@
 import tippy, { ReferenceElement as TippyReferenceElement } from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { SimUI } from '../sim_ui';
 import { isLocal,noop  } from '../utils';
