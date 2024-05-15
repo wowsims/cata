@@ -88,10 +88,8 @@ var TotemsFireElemental = &proto.ShamanTotems{
 		Fire:  proto.FireTotem_SearingTotem,
 	},
 	Ancestors: &proto.TotemSet{
-		Earth: proto.EarthTotem_TremorTotem,
-		Air:   proto.AirTotem_WrathOfAirTotem,
-		Water: proto.WaterTotem_ManaSpringTotem,
-		Fire:  proto.FireTotem_SearingTotem,
+		Earth: proto.EarthTotem_EarthElementalTotem,
+		Fire:  proto.FireTotem_FireElementalTotem,
 	},
 	Spirits: &proto.TotemSet{
 		Earth: proto.EarthTotem_TremorTotem,
