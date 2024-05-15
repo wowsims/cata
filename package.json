@@ -44,6 +44,7 @@
 		"@protobuf-ts/protoc": "2.9.1",
 		"@protobuf-ts/runtime": "2.9.1",
 		"@types/bootstrap": "^5.2.0",
+		"@types/glob": "^8.1.0",
 		"@types/node": "^18.16.1",
 		"@typescript-eslint/eslint-plugin": "^5.62.0",
 		"@typescript-eslint/parser": "^5.62.0",
