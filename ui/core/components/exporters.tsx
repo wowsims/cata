@@ -1,4 +1,5 @@
 import { default as pako } from 'pako';
+import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics';
 import { IndividualSimUI } from '../individual_sim_ui';
