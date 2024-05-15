@@ -95,7 +95,7 @@ func (druid *Druid) ShouldFaerieFire(sim *core.Simulation, target *core.Unit) bo
 		return false
 	}
 
-	if !druid.FaerieFire.IsReady(sim) {
+	if !druid.FaerieFire.CanCastOrQueue(sim, target) {
 		return false
 	}
 
