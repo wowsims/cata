@@ -49,7 +49,8 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 type RetributionPaladin struct {
 	*paladin.Paladin
 
-	Seal proto.PaladinSeal
+	Seal      proto.PaladinSeal
+	HoLDamage float64
 }
 
 func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
@@ -114,11 +115,10 @@ func (ret *RetributionPaladin) RegisterMastery() {
 		CritMultiplier:   ret.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
-			extraDamage := (16.8 + 2.1*ret.GetMasteryPoints()) / 100.0
-
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage*extraDamage, spell.OutcomeMagicHitAndCrit)
+			new_result := spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHit)
+			new_result.Damage = ret.HoLDamage
+			new_result.Threat = spell.ThreatFromDamage(new_result.Outcome, new_result.Damage)
+			spell.DealDamage(sim, new_result)
 		},
 	})
 
@@ -133,6 +133,7 @@ func (ret *RetributionPaladin) RegisterMastery() {
 		ProcChance: 1.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			ret.HoLDamage = (16.8 + 2.1*ret.GetMasteryPoints()) / 100.0 * result.Damage
 			handOfLight.Cast(sim, result.Target)
 		},
 	})
