@@ -88,7 +88,7 @@ func (ret *RetributionPaladin) RegisterSpecializationEffects() {
 
 	// Sheath of Light
 	ret.AddStatDependency(stats.AttackPower, stats.SpellPower, 0.3)
-	ret.AddStat(stats.SpellHit, 0.08)
+	ret.AddStat(stats.SpellHit, core.SpellHitRatingPerHitChance*8)
 
 	// Two-Handed Weapon Specialization
 	mhWeapon := ret.GetMHWeapon()
