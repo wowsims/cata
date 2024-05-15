@@ -75,8 +75,44 @@ export class FeralDruid extends PlayerSpec<Spec.SpecFeralDruid> {
 	};
 }
 
-export class RestorationDruid extends PlayerSpec<Spec.SpecRestorationDruid> {
+export class GuardianDruid extends PlayerSpec<Spec.SpecGuardianDruid> {
 	static specIndex = 2;
+	static specID = Spec.SpecGuardianDruid as Spec.SpecGuardianDruid;
+	static classID = Class.ClassDruid as Class.ClassDruid;
+	static friendlyName = 'Guardian';
+	static simLink = getSpecSiteUrl('druid', 'guardian');
+
+	static isTankSpec = true;
+	static isHealingSpec = false;
+	static isRangedDpsSpec = false;
+	static isMeleeDpsSpec = true;
+
+	static canDualWield = false;
+
+	readonly specIndex = GuardianDruid.specIndex;
+	readonly specID = GuardianDruid.specID;
+	readonly classID = GuardianDruid.classID;
+	readonly friendlyName = GuardianDruid.friendlyName;
+	readonly simLink = GuardianDruid.simLink;
+
+	readonly isTankSpec = GuardianDruid.isTankSpec;
+	readonly isHealingSpec = GuardianDruid.isHealingSpec;
+	readonly isRangedDpsSpec = GuardianDruid.isRangedDpsSpec;
+	readonly isMeleeDpsSpec = GuardianDruid.isMeleeDpsSpec;
+
+	readonly canDualWield = GuardianDruid.canDualWield;
+
+	static getIcon = (size: IconSize): string => {
+		return `https://wow.zamimg.com/images/wow/icons/${size}/ability_racial_bearform.jpg`;
+	};
+
+	getIcon = (size: IconSize): string => {
+		return GuardianDruid.getIcon(size);
+	};
+}
+
+export class RestorationDruid extends PlayerSpec<Spec.SpecRestorationDruid> {
+	static specIndex = 3;
 	static specID = Spec.SpecRestorationDruid as Spec.SpecRestorationDruid;
 	static classID = Class.ClassDruid as Class.ClassDruid;
 	static friendlyName = 'Restoration';

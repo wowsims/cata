@@ -12,6 +12,7 @@ enum Spec {
 
 	SpecBalanceDruid = 4;
 	SpecFeralDruid = 5;
+	SpecGuardianDruid = 31;
 	SpecRestorationDruid = 6;
 
 	SpecBeastMasteryHunter = 7;

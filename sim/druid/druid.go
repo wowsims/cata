@@ -308,23 +308,21 @@ func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerTigersFurySpell()
 }
 
-// func (druid *Druid) RegisterFeralTankSpells() {
-// 	druid.registerBarkskinCD()
-// 	druid.registerBerserkCD()
-// 	druid.registerBearFormSpell()
-// 	druid.registerDemoralizingRoarSpell()
-// 	druid.registerEnrageSpell()
-// 	druid.registerFrenziedRegenerationCD()
-// 	druid.registerMangleBearSpell()
-// 	druid.registerMaulSpell()
-// 	druid.registerLacerateSpell()
-// 	druid.registerRakeSpell()
-// 	druid.registerRipSpell()
-// 	druid.registerSavageDefensePassive()
-// 	druid.registerSurvivalInstinctsCD()
-// 	druid.registerSwipeBearSpell()
-//  druid.registerThrashBearSpell()
-// }
+func (druid *Druid) RegisterFeralTankSpells() {
+	//druid.registerBarkskinCD()
+	druid.registerBerserkCD()
+	druid.registerBearFormSpell()
+	//druid.registerDemoralizingRoarSpell()
+	druid.registerEnrageSpell()
+	//druid.registerFrenziedRegenerationCD()
+	druid.registerMangleBearSpell()
+	druid.registerMaulSpell()
+	druid.registerLacerateSpell()
+	//druid.registerSavageDefensePassive()
+	//druid.registerSurvivalInstinctsCD()
+	druid.registerSwipeBearSpell()
+	druid.registerThrashBearSpell()
+}
 
 func (druid *Druid) Reset(_ *core.Simulation) {
 
