@@ -1240,6 +1240,13 @@ export class Player<SpecType extends Spec> {
 			return itemData.filter(itemElem => filterFunc(getItemFunc(itemElem)));
 		};
 
+		if (filters.minIlvl != 0) {
+			itemData = filterItems(itemData, item => item.ilvl >= filters.minIlvl);
+		}
+		if (filters.maxIlvl != 0) {
+			itemData = filterItems(itemData, item => item.ilvl <= filters.maxIlvl);
+		}
+
 		if (filters.factionRestriction != UIItem_FactionRestriction.UNSPECIFIED) {
 			itemData = filterItems(
 				itemData,
@@ -1284,12 +1291,6 @@ export class Player<SpecType extends Spec> {
 			}
 		}
 
-		// if (!filters.raids.includes(RaidFilterOption.RaidVanilla)) {
-		// 	itemData = filterItems(itemData, item => item.expansion != Expansion.ExpansionVanilla);
-		// }
-		// if (!filters.raids.includes(RaidFilterOption.RaidTbc)) {
-		// 	itemData = filterItems(itemData, item => item.expansion != Expansion.ExpansionTbc);
-		// }
 		for (const [raidOptionStr, zoneId] of Object.entries(Player.RAID_IDS)) {
 			const raidOption = parseInt(raidOptionStr) as RaidFilterOption;
 			if (!filters.raids.includes(raidOption)) {

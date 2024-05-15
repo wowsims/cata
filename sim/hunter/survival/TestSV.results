@@ -866,8 +866,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 24508.65913
-  tps: 22267.92877
+  dps: 24385.13993
+  tps: 22125.12006
  }
 }
 dps_results: {
@@ -1144,6 +1144,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 24616.89847
+  tps: 22399.52002
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 24636.71182
@@ -1314,8 +1321,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
  value: {
-  dps: 317027.87752
-  tps: 170814.4256
+  dps: 312953.80751
+  tps: 166892.49093
  }
 }
 dps_results: {
@@ -1335,8 +1342,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
  value: {
-  dps: 222109.91944
-  tps: 122468.19744
+  dps: 222082.69769
+  tps: 122440.97568
  }
 }
 dps_results: {
@@ -1398,8 +1405,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Dwarf-preraid_sv-Basic-sv_advanced-FullBuffs-5.1yards-LongMultiTarget"
  value: {
-  dps: 29173.648
-  tps: 26361.03617
+  dps: 29140.14955
+  tps: 26330.57968
  }
 }
 dps_results: {
@@ -1440,8 +1447,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-FullBuffs-5.1yards-LongMultiTarget"
  value: {
-  dps: 320179.94552
-  tps: 172419.31003
+  dps: 316073.65766
+  tps: 168466.2999
  }
 }
 dps_results: {
@@ -1461,8 +1468,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-NoBuffs-5.1yards-LongMultiTarget"
  value: {
-  dps: 224570.27982
-  tps: 123753.56265
+  dps: 224541.34361
+  tps: 123724.62645
  }
 }
 dps_results: {
@@ -1524,8 +1531,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Orc-preraid_sv-Basic-sv_advanced-FullBuffs-5.1yards-LongMultiTarget"
  value: {
-  dps: 29670.28875
-  tps: 26728.82749
+  dps: 29635.76203
+  tps: 26697.52752
  }
 }
 dps_results: {

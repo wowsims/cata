@@ -1130,6 +1130,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestShadow-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 27175.1412
+  tps: 25835.38248
+ }
+}
+dps_results: {
  key: "TestShadow-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 27175.1412

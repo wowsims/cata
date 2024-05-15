@@ -1,16 +1,14 @@
-@use "sass:map";
-
 .blessings-picker-root {
 	.blessings-picker-row {
 		display: flex;
 		justify-content: space-between;
 
 		&:not(:last-child) {
-			margin-bottom: map-get($spacers, 1);
+			margin-bottom: var(--spacer-1);
 		}
 
 		.blessings-picker-spec {
-			margin-right: $block-spacer * 2;
+			margin-right: calc(var(--block-spacer) * 2);
 
 			.blessings-spec-icon {
 				@extend .icon-md;
@@ -20,7 +18,7 @@
 		.blessings-picker-container {
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
-			grid-column-gap: map-get($spacers, 1);
+			grid-column-gap: var(--spacer-1);
 
 			.blessing-picker {
 				&:not(.disabled) .icon-picker-button {

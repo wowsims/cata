@@ -787,10 +787,17 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArms-AllItems-MoltenGiantBattleplate"
+ value: {
+  dps: 23772.30848
+  tps: 16494.93135
+ }
+}
+dps_results: {
  key: "TestArms-AllItems-MoltenGiantWarplate"
  value: {
-  dps: 28069.73005
-  tps: 19300.9744
+  dps: 28529.01336
+  tps: 19916.46571
  }
 }
 dps_results: {
@@ -852,8 +859,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 25736.67784
-  tps: 17554.4847
+  dps: 25445.01534
+  tps: 17361.13708
  }
 }
 dps_results: {
@@ -1134,6 +1141,13 @@ dps_results: {
  value: {
   dps: 24870.11347
   tps: 16905.83468
+ }
+}
+dps_results: {
+ key: "TestArms-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 25477.62004
+  tps: 17496.15794
  }
 }
 dps_results: {

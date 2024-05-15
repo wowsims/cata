@@ -1,21 +1,18 @@
-@use 'sass:map';
-@use 'sass:math';
-
 .sim-header {
 	position: sticky;
 	top: -1px;
 	height: var(--sim-header-height);
-	padding-top: $gap-width;
-	padding-left: $container-padding;
-	padding-right: $container-padding;
-	margin-left: calc(-1 * $container-padding);
-	margin-right: calc(-1 * $container-padding);
+	padding-top: var(--gap-width);
+	padding-left: var(--container-padding);
+	padding-right: var(--container-padding);
+	margin-left: calc(-1 * var(--container-padding));
+	margin-right: calc(-1 * var(--container-padding));
 	white-space: nowrap;
 	transition: background-color 0.15s ease-in-out;
-	z-index: $header-z-index;
+	z-index: var(--header-z-index);
 
 	@include media-breakpoint-down(lg) {
-		padding-top: $gap-width-sm;
+		padding-top: var(--gap-width-sm);
 	}
 
 	&::after {
@@ -24,16 +21,16 @@
 		bottom: -1px;
 		left: 0;
 		right: 0;
-		width: calc(100% - 2 * $container-padding);
+		width: calc(100% - 2 * var(--container-padding));
 		height: 1px;
 		margin-left: auto;
 		margin-right: auto;
-		background-color: $border-color;
+		background-color: var(--bs-border-color);
 		transition: width 0.15s ease-in-out;
 	}
 
 	&.stuck {
-		background: $body-bg;
+		background: var(--bs-body-bg);
 
 		&::after {
 			width: 100%;
@@ -72,47 +69,43 @@
 	.import-export {
 		.import-link,
 		.export-link {
-			padding: $nav-link-padding-y $nav-link-padding-x;
-			font-size: $nav-link-font-size;
-			transition: $nav-link-transition;
+			padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+			font-size: var(--bs-nav-link-font-size);
+			transition: var(--nav-link-transition);
 
 			&.show {
-				color: white;
+				color: var(--bs-white);
 			}
 		}
 	}
 
 	.sim-toolbar {
 		margin-left: auto;
-		font-size: $content-font-size;
+		font-size: var(--content-font-size);
 
 		.sim-toolbar-item,
 		.sim-toolbar-socials {
-			margin-left: map-get($spacers, 3);
+			margin-left: var(--spacer-3);
 			display: flex;
 
 			a {
-				margin-top: $nav-link-padding-y;
-				margin-bottom: $nav-link-padding-y;
+				margin-top: var(--bs-nav-link-padding-y);
+				margin-bottom: var(--bs-nav-link-padding-y);
 			}
 		}
 
 		.sim-toolbar-item {
-			transition: $link-transition;
-
-			.known-issues {
-				color: #ef9eaa;
-			}
+			transition: var(--link-transition);
 		}
 
 		.sim-toolbar-socials {
-			margin-top: math.div($nav-link-padding-y, 2);
-			margin-bottom: math.div($nav-link-padding-y, 2);
-			border-left: $border-default;
+			margin-top: calc(var(--bs-nav-link-padding-y) / 2);
+			margin-bottom: calc(var(--bs-nav-link-padding-y) / 2);
+			border-left: var(--border-default);
 
 			a {
-				margin-top: math.div($nav-link-padding-y, 2);
-				margin-bottom: math.div($nav-link-padding-y, 2);
+				margin-top: calc(var(--bs-nav-link-padding-y) / 2);
+				margin-bottom: calc(var(--bs-nav-link-padding-y) / 2);
 			}
 		}
 	}

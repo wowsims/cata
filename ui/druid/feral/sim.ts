@@ -116,7 +116,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents, Presets.HybridTalents],
-		rotations: [Presets.SIMPLE_ROTATION_DEFAULT],
+		rotations: [Presets.SIMPLE_ROTATION_DEFAULT, Presets.AOE_ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
 	},
@@ -178,7 +178,7 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFeralDruid>) {
 		super(parentElem, player, SPEC_CONFIG);
 
-		const _gemOptimizer = new FeralGemOptimizer(this);
+		//const _gemOptimizer = new FeralGemOptimizer(this);
 	}
 }
 

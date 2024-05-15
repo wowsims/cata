@@ -1095,6 +1095,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestArcane-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 26603.52961
+  tps: 26699.93049
+ }
+}
+dps_results: {
  key: "TestArcane-AllItems-UnsolvableRiddle-62468"
  value: {
   dps: 26603.52961

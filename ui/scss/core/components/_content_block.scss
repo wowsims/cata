@@ -1,17 +1,15 @@
-@use 'sass:map';
-
 .content-block {
 	display: flex;
 	flex-direction: column;
 
 	&:not(:last-child) {
-		margin-bottom: $section-spacer;
+		margin-bottom: var(--section-spacer);
 	}
 }
 
 .content-block-header {
-	border-bottom: $border-default;
-	margin-bottom: $block-spacer;
+	border-bottom: var(--border-default);
+	margin-bottom: var(--block-spacer);
 	display: flex;
 	align-items: baseline;
 }

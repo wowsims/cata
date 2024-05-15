@@ -6,12 +6,12 @@ body {
 	background-color: transparent;
 	overflow: auto;
 	max-height: 100vh;
-	color: white;
+	color: var(--bs-white);
 }
 
 body.new-tab {
 	.dr-root {
-		padding: $gap-width $container-padding;
+		padding: var(--gap-width) var(--container-padding);
 
 		.dr-toolbar {
 			top: -1px;
