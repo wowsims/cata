@@ -1312,6 +1312,48 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestElemental-Settings-Orc-p1-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 70409.31107
+  tps: 35252.70516
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 9223.413
+  tps: 234.18213
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 20497.77738
+  tps: 563.15319
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 54857.2857
+  tps: 33084.68932
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 5321.00044
+  tps: 116.72023
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Orc-p1-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 11802.23599
+  tps: 320.91998
+ }
+}
+dps_results: {
  key: "TestElemental-Settings-Orc-p1-Standard-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
   dps: 51978.19211
@@ -1351,6 +1393,48 @@ dps_results: {
  value: {
   dps: 28048.18805
   tps: 559.3127
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-Standard-aoe-FullBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 68576.05915
+  tps: 35616.06173
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-Standard-aoe-FullBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 8955.30395
+  tps: 235.50777
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-Standard-aoe-FullBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 19655.67592
+  tps: 557.13973
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-Standard-aoe-NoBuffs-0.0yards-LongMultiTarget"
+ value: {
+  dps: 53293.61992
+  tps: 33225.83532
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-Standard-aoe-NoBuffs-0.0yards-LongSingleTarget"
+ value: {
+  dps: 5017.30358
+  tps: 115.38343
+ }
+}
+dps_results: {
+ key: "TestElemental-Settings-Troll-p1-Standard-aoe-NoBuffs-0.0yards-ShortSingleTarget"
+ value: {
+  dps: 11213.08753
+  tps: 320.42789
  }
 }
 dps_results: {

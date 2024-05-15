@@ -24,6 +24,9 @@ func TestElemental(t *testing.T) {
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Standard", SpecOptions: PlayerOptionsFireElemental},
 		Rotation:    core.GetAplRotation("../../../ui/shaman/elemental/apls", "default"),
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/shaman/elemental/apls", "aoe"),
+		},
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
