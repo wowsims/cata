@@ -781,16 +781,16 @@ export class ResourceChangedLog extends SimLog {
 
 	static parse(params: SimLogParams): Promise<ResourceChangedLog> | null {
 		const match = params.raw.match(
-			/((Gained)|(Spent)) \d+\.?\d* ((health)|(mana)|(energy)|(focus)|(rage)|(combo points)|(runic power)|(blood rune)|(frost rune)|(unholy rune)|(death rune)|(solar energy)|(lunar energy)) from (.*) \((\d+\.?\d*) --> (\d+\.?\d*)\)( of (\d+\.?\d*) total)?/,
+			/(Gained|Spent) (\d+\.?\d*) (health|mana|energy|focus|rage|combo points|runic power|blood rune|frost rune|unholy rune|death rune|solar energy|lunar energy|holy power) from (.*?) \((\d+\.?\d*) --> (\d+\.?\d*)\)( of (\d+\.?\d*) total)?/,
 		);
 		if (match) {
-			const resourceType = stringToResourceType(match[4]);
-			const total = match[23] !== undefined ? parseFloat(match[23]) : 0;
-			return ActionId.fromLogString(match[19])
+			const resourceType = stringToResourceType(match[3]);
+			const total = match[8] !== undefined ? parseFloat(match[8]) : 0;
+			return ActionId.fromLogString(match[4])
 				.fill(params.source?.index)
 				.then(cause => {
 					params.actionId = cause;
-					return new ResourceChangedLog(params, resourceType, parseFloat(match[20]), parseFloat(match[21]), match[1] == 'Spent', total);
+					return new ResourceChangedLog(params, resourceType, parseFloat(match[5]), parseFloat(match[6]), match[1] == 'Spent', total);
 				});
 		} else {
 			return null;
