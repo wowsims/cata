@@ -178,7 +178,7 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFeralDruid>) {
 		super(parentElem, player, SPEC_CONFIG);
 
-		const _gemOptimizer = new FeralGemOptimizer(this);
+		//const _gemOptimizer = new FeralGemOptimizer(this);
 	}
 }
 
