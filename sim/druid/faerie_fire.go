@@ -85,7 +85,7 @@ func (druid *Druid) TryApplyFaerieFireEffect(sim *core.Simulation, target *core.
 		aura.Activate(sim)
 
 		if aura.IsActive() {
-			aura.SetStacks(sim, aura.GetStacks() + 1 + druid.Talents.FeralAggression)
+			aura.SetStacks(sim, aura.GetStacks()+1+druid.Talents.FeralAggression)
 		}
 	}
 }
