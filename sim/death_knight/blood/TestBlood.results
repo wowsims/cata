@@ -959,9 +959,9 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 14884.92788
-  tps: 72851.15593
-  hps: 4812.06517
+  dps: 14955.27843
+  tps: 73259.7919
+  hps: 4814.17353
  }
 }
 dps_results: {
@@ -1279,17 +1279,9 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-UnsolvableRiddle-62463"
  value: {
-  dps: 14558.5703
-  tps: 71046.95711
-  hps: 4701.5286
- }
-}
-dps_results: {
- key: "TestBlood-AllItems-UnsolvableRiddle-62463"
- value: {
-  dps: 14558.5703
-  tps: 71046.95711
-  hps: 4701.5286
+  dps: 14639.99178
+  tps: 71522.92968
+  hps: 4703.58845
  }
 }
 dps_results: {

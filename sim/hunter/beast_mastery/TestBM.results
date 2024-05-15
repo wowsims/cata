@@ -866,8 +866,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 20536.79485
-  tps: 17287.00805
+  dps: 20576.20582
+  tps: 17321.69934
  }
 }
 dps_results: {
@@ -1146,8 +1146,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-UnsolvableRiddle-62463"
  value: {
-  dps: 20398.57774
-  tps: 17199.77026
+  dps: 20442.75399
+  tps: 17235.9472
  }
 }
 dps_results: {
