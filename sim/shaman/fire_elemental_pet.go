@@ -32,17 +32,16 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 	}
 	fireElemental.EnableManaBar()
 	fireElemental.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
-	fireElemental.AddStatDependency(stats.Intellect, stats.AttackPower, 1.0)
+	fireElemental.AddStatDependency(stats.Intellect, stats.AttackPower, 7.0) // 1.0 * 7
 	fireElemental.AddStat(stats.SpellPower, -10)
-	fireElemental.AddStat(stats.AttackPower, -10)
+	fireElemental.AddStat(stats.AttackPower, -70) // -10 * 7
 	fireElemental.EnableAutoAttacks(fireElemental, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:     429, //Estimated from beta testing
-			BaseDamageMax:     463, //Estimated from beta testing
-			SwingSpeed:        2,
-			CritMultiplier:    2.66, //Estimated from beta testing
-			AttackPowerPerDPS: 2,
-			SpellSchool:       core.SpellSchoolFire,
+			BaseDamageMin:  429, //Estimated from beta testing
+			BaseDamageMax:  463, //Estimated from beta testing
+			SwingSpeed:     2,
+			CritMultiplier: 2.66, //Estimated from beta testing
+			SpellSchool:    core.SpellSchoolFire,
 		},
 		AutoSwingMelee: true,
 	})
@@ -50,7 +49,7 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 
 	if bonusSpellPower > 0 {
 		fireElemental.AddStat(stats.SpellPower, float64(bonusSpellPower)*0.5883)
-		fireElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*0.7)
+		fireElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*4.9) // 0.7*7
 	}
 
 	if shaman.Race == proto.Race_RaceDraenei {
@@ -165,7 +164,7 @@ func (shaman *Shaman) fireElementalStatInheritance() core.PetStatInheritance {
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,      //Estimated from beta testing
 			stats.Intellect:   ownerStats[stats.Intellect] * 0.3198,  //Estimated from beta testing
 			stats.SpellPower:  ownerStats[stats.SpellPower] * 0.5883, //Estimated from beta testing
-			stats.AttackPower: ownerStats[stats.SpellPower] * 0.7,    //Estimated from beta testing
+			stats.AttackPower: ownerStats[stats.SpellPower] * 4.9,    // 0.7*7 Estimated from beta testing
 
 			stats.MeleeHit: meleeHitRatingFromOwner,
 			stats.SpellHit: spellHitRatingFromOwner,
