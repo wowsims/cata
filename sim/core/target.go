@@ -168,6 +168,8 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 
 func (target *Target) Reset(sim *Simulation) {
 	target.Unit.reset(sim, nil)
+	target.CurrentTarget = target.defaultTarget
+
 	target.SetGCDTimer(sim, 0)
 	if target.AI != nil {
 		target.AI.Reset(sim)
@@ -211,7 +213,6 @@ type AttackTable struct {
 
 	DamageDealtMultiplier        float64 // attacker buff, applied in applyAttackerModifiers()
 	DamageTakenMultiplier        float64 // defender debuff, applied in applyTargetModifiers()
-	NatureDamageTakenMultiplier  float64
 	HauntSEDamageTakenMultiplier float64
 	HealingDealtMultiplier       float64
 	IgnoreArmor                  bool    // Ignore defender's armor for specifically this attacker's attacks
@@ -233,7 +234,6 @@ func NewAttackTable(attacker *Unit, defender *Unit) *AttackTable {
 
 		DamageDealtMultiplier:        1,
 		DamageTakenMultiplier:        1,
-		NatureDamageTakenMultiplier:  1,
 		HauntSEDamageTakenMultiplier: 1,
 		HealingDealtMultiplier:       1,
 	}

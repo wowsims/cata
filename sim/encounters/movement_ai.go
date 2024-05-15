@@ -62,7 +62,7 @@ func addMovementAI() {
 
 type MovementAI struct {
 	Target       *core.Target
-	LastMoveTime time.Duration
+	NextMoveTime time.Duration
 	MoveInterval time.Duration // How often moves happen
 	ReactionTime time.Duration // Time available to react before area should be cleared
 	MoveYards    float64       // Duration of the move
@@ -97,10 +97,16 @@ func (ai *MovementAI) Initialize(target *core.Target, config *proto.Target) {
 }
 
 func (ai *MovementAI) Reset(sim *core.Simulation) {
-	ai.LastMoveTime = 0
+	ai.NextMoveTime = 0
 }
 
 func (ai *MovementAI) ExecuteCustomRotation(sim *core.Simulation) {
+	// This can be called from auto attacks and not only gcd
+	// so we return if thats the case
+	if sim.CurrentTime < ai.NextMoveTime {
+		return
+	}
+
 	players := sim.Raid.AllPlayerUnits
 
 	for i := 0; i < len(players); i++ {
@@ -126,7 +132,8 @@ func (ai *MovementAI) ExecuteCustomRotation(sim *core.Simulation) {
 		}
 	}
 
-	ai.Target.WaitUntil(sim, sim.CurrentTime+ai.MoveInterval)
+	ai.NextMoveTime = sim.CurrentTime + ai.MoveInterval
+	ai.Target.WaitUntil(sim, ai.NextMoveTime)
 }
 func (ai *MovementAI) TimeToMove(distance float64, unit *core.Unit) time.Duration {
 	return core.DurationFromSeconds(distance / unit.GetMovementSpeed())

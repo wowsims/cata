@@ -92,6 +92,7 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 		}
 	}
 
+	tankTargetSet := map[*Unit]bool{}
 	// Assign target or target using Tanks field.
 	for _, target := range env.Encounter.Targets {
 		if target.Index < int32(len(encounterProto.Targets)) {
@@ -102,6 +103,12 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 					raidTarget := env.GetUnit(raidTargetProto, nil)
 					if raidTarget != nil {
 						target.CurrentTarget = raidTarget
+
+						// Set the tanks target to the first unit tanked
+						if !tankTargetSet[raidTarget] {
+							tankTargetSet[raidTarget] = true
+							raidTarget.CurrentTarget = &target.Unit
+						}
 					}
 				}
 			}

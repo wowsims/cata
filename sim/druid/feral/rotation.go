@@ -230,7 +230,8 @@ func (cat *FeralDruid) TryBerserk(sim *core.Simulation) {
 	// come off cooldown. The latter exception is necessary for
 	// Lacerateweave rotation since TF timings can drift over time.
 	simTimeRemain := sim.GetRemainingDuration()
-	waitForTf := cat.Talents.Berserk && (cat.TigersFury.ReadyAt() <= cat.BerserkAura.Duration) && (cat.TigersFury.ReadyAt()+cat.ReactionTime < simTimeRemain-cat.BerserkAura.Duration)
+	tfCdRemain := cat.TigersFury.TimeToReady(sim)
+	waitForTf := cat.Talents.Berserk && (tfCdRemain <= cat.BerserkAura.Duration) && (tfCdRemain+cat.ReactionTime < simTimeRemain-cat.BerserkAura.Duration)
 	isClearcast := cat.ClearcastingAura.IsActive()
 	berserkNow := cat.Rotation.UseBerserk && cat.Berserk.IsReady(sim) && !waitForTf && !isClearcast
 
@@ -564,10 +565,10 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 	}
 
 	// Roar calcs
-	roarNow := curCp >= 1 && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim, isExecutePhase))
+	roarNow := (curCp >= 1) && (!cat.SavageRoarAura.IsActive() || cat.clipRoar(sim, isExecutePhase)) && (ripDot.IsActive() || (curCp < 3) || (simTimeRemain < baseEndThresh))
 
 	// Ravage calc
-	ravageNow := cat.Ravage.CanCast(sim, cat.CurrentTarget) && !isClearcast && (curEnergy+regenRate < cat.MaximumEnergy())
+	ravageNow := cat.Ravage.CanCast(sim, cat.CurrentTarget) && !isClearcast && (curEnergy+2*regenRate < cat.MaximumEnergy())
 
 	// Pooling calcs
 	ripRefreshPending := ripDot.IsActive() && (ripDot.RemainingDuration(sim) < simTimeRemain-baseEndThresh) && (curCp >= core.TernaryInt32(isExecutePhase, 1, rotation.MinCombosForRip))

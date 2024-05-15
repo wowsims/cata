@@ -13,7 +13,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	cssClass: 'destruction-warlock-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Warlock),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Drain Soul is currently disabled for APL rotations'],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -97,7 +97,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	petConsumeInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [WarlockInputs.DetonateSeed(), OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment, OtherInputs.ChannelClipDelay],
+		inputs: [WarlockInputs.DetonateSeed(), OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.DarkIntentUptime, OtherInputs.TankAssignment, OtherInputs.ChannelClipDelay],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
 	encounterPicker: {

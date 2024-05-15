@@ -1,4 +1,3 @@
-@use 'sass:map';
 :root {
 	--sim-header-height: 4.5rem;
 
@@ -16,7 +15,7 @@ th {
 	// Allow for styled scrolling
 	max-height: 100vh;
 	overflow-y: auto;
-	scrollbar-color: var(--bs-primary) $body-bg;
+	scrollbar-color: var(--bs-primary) var(--bs-body-bg);
 	scrollbar-width: thin;
 
 	&::-webkit-scrollbar {
@@ -24,7 +23,7 @@ th {
 	}
 
 	&::-webkit-scrollbar-track {
-		background-color: $body-bg;
+		background-color: var(--bs-body-bg);
 	}
 
 	&::-webkit-scrollbar-thumb {
@@ -60,8 +59,8 @@ th {
 			}
 		}
 		.sim-content {
-			padding-left: $container-padding;
-			padding-right: $container-padding;
+			padding-left: var(--container-padding);
+			padding-right: var(--container-padding);
 			flex: 4;
 			z-index: 1;
 		}
@@ -79,7 +78,7 @@ th {
 
 .sim-ui-unlaunched-container {
 	i {
-		color: #dc3545;
+		color: var(--bs-danger);
 	}
 }
 
@@ -87,9 +86,9 @@ th {
 	position: fixed;
 	bottom: 0;
 	right: 0;
-	z-index: $toast-z-index;
+	z-index: var(--toast-z-index);
 	display: grid;
-	grid-gap: map-get($spacers, 2);
+	grid-gap: var(--spacer-2);
 }
 
 .sim-bg {

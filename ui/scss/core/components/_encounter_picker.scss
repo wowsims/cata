@@ -1,5 +1,3 @@
-@use 'sass:map';
-
 @import './enum_picker';
 @import './list_picker';
 @import './number_picker';
@@ -75,7 +73,7 @@
 			}
 
 			&:not(:last-child) {
-				margin-right: map-get($spacers, 3);
+				margin-right: var(--spacer-3);
 			}
 
 			&.target-picker-section2 {

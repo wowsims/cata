@@ -7,14 +7,19 @@ import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/encounters/default_ai"
 )
 
-func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool, npcId int32, health float64, minBaseDamage float64, addHealth float64, addMinBaseDamage float64) {
+func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool,
+	npcId int32, health float64, minBaseDamage float64,
+	addNpcId int32, addHealth float64, addMinBaseDamage float64) {
+
 	targetName := fmt.Sprintf("Magmaw %d", raidSize)
+	targetNameAdd := fmt.Sprintf("Blazing Construct %d", raidSize)
 	if isHeroic {
 		targetName = targetName + " H"
+		targetNameAdd = targetNameAdd + " H"
 	}
-	targetNameAdd := targetName + " Blazing Construct"
 	core.AddPresetTarget(&core.PresetTarget{
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
@@ -74,7 +79,7 @@ func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool, npcId in
 		core.AddPresetTarget(&core.PresetTarget{
 			PathPrefix: bossPrefix,
 			Config: &proto.Target{
-				Id:        npcId + 10, // TODO: Figure out what to do with Ids
+				Id:        addNpcId,
 				Name:      targetNameAdd,
 				Level:     87,
 				MobType:   proto.MobType_MobTypeBeast,
@@ -92,7 +97,44 @@ func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool, npcId in
 				DamageSpread:  0.5,
 				TargetInputs:  []*proto.TargetInput{},
 			},
-			AI: nil,
+			AI: default_ai.NewDefaultAI([]default_ai.TargetAbility{
+				{
+					InitialCD:   time.Second * 5,
+					ChanceToUse: 0,
+					MakeSpell: func(target *core.Target) *core.Spell {
+						// Fiery Slash Next melee Spell
+						nextMeleeSpell := target.GetOrRegisterSpell(core.SpellConfig{
+							ActionID:    core.ActionID{SpellID: 92144},
+							SpellSchool: core.SpellSchoolFire,
+							ProcMask:    core.ProcMaskSpellDamage,
+
+							Cast: core.CastConfig{
+								CD: core.Cooldown{
+									Timer:    target.NewTimer(),
+									Duration: time.Second * 7,
+								},
+							},
+
+							DamageMultiplier: 0.75,
+
+							ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+								spell.CalcAndDealDamage(sim, target, spell.Unit.AutoAttacks.MH().EnemyWeaponDamage(sim, spell.MeleeAttackPower(), 0.5), spell.OutcomeEnemyMeleeWhite)
+							},
+						})
+
+						target.AutoAttacks.SetReplaceMHSwing(func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
+							if nextMeleeSpell.CanCast(sim, target.CurrentTarget) && sim.Proc(0.75, "Fiery Slash Cast") {
+								return nextMeleeSpell
+							}
+							return mhSwingSpell
+						})
+
+						target.AutoAttacks.MHConfig().ActionID.Tag = 49416
+
+						return nextMeleeSpell
+					},
+				},
+			}),
 		})
 		core.AddPresetEncounter(targetName, []string{
 			bossPrefix + "/" + targetName,
@@ -108,10 +150,10 @@ func createMagmawPreset(bossPrefix string, raidSize int, isHeroic bool, npcId in
 
 func addMagmaw(bossPrefix string) {
 	// size, heroic, boss hp, boss min damage, add hp, add min damage
-	createMagmawPreset(bossPrefix, 10, false, 41570, 26_798_304, 110000, 0, 0)
-	createMagmawPreset(bossPrefix, 25, false, 41571, 81_082_048, 150000, 0, 0)
-	createMagmawPreset(bossPrefix, 10, true, 41572, 39_200_000, 150000, 1_410_000, 44000)
-	createMagmawPreset(bossPrefix, 25, true, 41573, 120_016_403, 210000, 4_500_000, 80000)
+	createMagmawPreset(bossPrefix, 10, false, 41570, 26_798_304, 110000, 0, 0, 0)
+	createMagmawPreset(bossPrefix, 25, false, 41571, 81_082_048, 150000, 0, 0, 0)
+	createMagmawPreset(bossPrefix, 10, true, 41572, 39_200_000, 150000, 49416, 1_410_000, 44000)
+	createMagmawPreset(bossPrefix, 25, true, 41573, 120_016_403, 210000, 49417, 4_500_000, 80000)
 }
 
 func makeMagmawAI(raidSize int, isHeroic bool) core.TargetAI {
@@ -158,8 +200,9 @@ func (ai *MagmawAI) Initialize(target *core.Target, config *proto.Target) {
 	// ai.isHeroic = config.TargetInputs[1].BoolValue
 	// ai.impaleDelay = config.TargetInputs[2].NumberValue
 
-	ai.impaleDelay = config.TargetInputs[0].NumberValue
+	ai.Target.AutoAttacks.MHConfig().ActionID.Tag = 41570
 
+	ai.impaleDelay = config.TargetInputs[0].NumberValue
 	ai.registerSpells()
 }
 
@@ -197,7 +240,7 @@ func (ai *MagmawAI) ExecuteCustomRotation(sim *core.Simulation) {
 	// Magma Spit
 	if ai.magmaSpit.CanCast(sim, target) && sim.Proc(0.6, "Magma Spit Cast Roll") {
 		ai.magmaSpit.Cast(sim, target)
-		ai.Target.WaitUntil(sim, sim.CurrentTime+BossGCD)
+		ai.Target.ExtendGCDUntil(sim, sim.CurrentTime+BossGCD)
 		return
 	}
 
@@ -208,6 +251,7 @@ func (ai *MagmawAI) registerSpells() {
 	// 0 - 10N, 1 - 25N, 2 - 10H, 3 - 25H
 	scalingIndex := core.TernaryInt(ai.raidSize == 10, core.TernaryInt(ai.isHeroic, 2, 0), core.TernaryInt(ai.isHeroic, 3, 1))
 	isIndividualSim := ai.Target.Env.Raid.Size() == 1
+	tankUnit := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
 
 	// Exposed Aura
 	ai.pointOfVulnerability = ai.Target.GetOrRegisterAura(core.Aura{
@@ -221,6 +265,11 @@ func (ai *MagmawAI) registerSpells() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageTakenMultiplier /= 2
 
+			if sim.CurrentTime >= sim.Duration {
+				return
+			}
+
+			// TODO: Move this to an APL Action
 			if !isIndividualSim && ai.Target.Env.GetNumTargets() > 1 {
 				addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
 				if addTarget.CurrentTarget != nil {
@@ -233,6 +282,35 @@ func (ai *MagmawAI) registerSpells() {
 
 					addTarget.CurrentTarget = bossTank
 					ai.Target.CurrentTarget = addTank
+				}
+			} else if isIndividualSim {
+				// Individual sim fake tank swaps
+				if tankUnit.Metrics.IsTanking() {
+					if ai.Target.Env.GetNumTargets() > 1 {
+						if !ai.individualTankSwap {
+							// Remove boss target
+							ai.individualTankSwap = true
+							ai.Target.CurrentTarget = nil
+
+							// Set add target
+							addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
+							tankUnit.CurrentTarget = addTarget
+
+							addTarget.CurrentTarget = tankUnit
+							addTarget.AutoAttacks.EnableAutoSwing(sim)
+						} else {
+							ai.individualTankSwap = false
+
+							// Set boss target
+							ai.Target.CurrentTarget = tankUnit
+							tankUnit.CurrentTarget = &ai.Target.Unit
+
+							// Remove add target
+							addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
+							addTarget.AutoAttacks.CancelAutoSwing(sim)
+							addTarget.CurrentTarget = nil
+						}
+					}
 				}
 			}
 
@@ -379,7 +457,7 @@ func (ai *MagmawAI) registerSpells() {
 					}
 				} else {
 					validTargets := make([]int32, 0)
-					for idx, _ := range sim.Raid.AllPlayerUnits {
+					for idx := range sim.Raid.AllPlayerUnits {
 						validTargets = append(validTargets, int32(idx))
 					}
 					hitTargets := make([]int32, 0)
@@ -434,46 +512,17 @@ func (ai *MagmawAI) registerSpells() {
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					ai.Target.AutoAttacks.CancelAutoSwing(sim)
 					ai.canAct = false
-
-					// Individual Sim tank swap
-					tankUnit := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
-					if isIndividualSim && tankUnit.Metrics.IsTanking() && ai.individualTankSwap && ai.Target.Env.GetNumTargets() > 1 {
-						// Set boss target
-						ai.Target.CurrentTarget = tankUnit
-						tankUnit.CurrentTarget = &ai.Target.Unit
-
-						// Remove add target
-						addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
-						addTarget.AutoAttacks.CancelAutoSwing(sim)
-						addTarget.CurrentTarget = nil
-					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					if sim.CurrentTime >= sim.Duration {
+						return
+					}
+
 					// Activate Expose
 					ai.pointOfVulnerability.Activate(sim)
 
-					if !isIndividualSim {
+					if !isIndividualSim || (!ai.individualTankSwap && tankUnit.Metrics.IsTanking()) {
 						ai.swelteringArmor.Get(ai.lastMangleTarget).Activate(sim)
-					} else {
-						// Individual sim fake tank swaps
-						tankUnit := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
-						if tankUnit.Metrics.IsTanking() && ai.Target.Env.GetNumTargets() > 1 {
-							if !ai.individualTankSwap {
-								ai.swelteringArmor.Get(ai.lastMangleTarget).Activate(sim)
-
-								// Remove boss target
-								ai.individualTankSwap = true
-								ai.Target.CurrentTarget = nil
-
-								// Set add target
-								addTarget := ai.Target.Env.NextTargetUnit(&ai.Target.Unit)
-								tankUnit.CurrentTarget = addTarget
-								addTarget.CurrentTarget = tankUnit
-								addTarget.AutoAttacks.EnableAutoSwing(sim)
-							} else {
-								ai.individualTankSwap = false
-							}
-						}
 					}
 				},
 			},

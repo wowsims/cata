@@ -831,8 +831,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 32209.81059
-  tps: 23196.82005
+  dps: 32116.86879
+  tps: 23037.3612
  }
 }
 dps_results: {
@@ -1113,6 +1113,13 @@ dps_results: {
  value: {
   dps: 31210.48678
   tps: 22461.39426
+ }
+}
+dps_results: {
+ key: "TestUnholy-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 31893.67802
+  tps: 23093.79923
  }
 }
 dps_results: {
