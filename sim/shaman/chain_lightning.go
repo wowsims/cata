@@ -39,19 +39,22 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 		bounceReduction := 0.7
 		curTarget := target
 
+		// Damage calculation and DealDamage are in separate loops so that e.g. a spell power proc
+		// can't proc on the first target and apply to the second
+		results := make([]*core.SpellResult, numHits)
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-			result := shaman.calcDamageStormstrikeCritChance(sim, curTarget, baseDamage, spell)
-			spell.DealDamage(sim, result)
-
-			if !isElementalOverload && result.Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
-				shaman.ChainLightningOverloads[hitIndex].Cast(sim, result.Target)
-			}
+			results[hitIndex] = shaman.calcDamageStormstrikeCritChance(sim, curTarget, baseDamage, spell)
 
 			curTarget = sim.Environment.NextTargetUnit(curTarget)
 			spell.DamageMultiplier *= bounceReduction
 		}
 
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+			if !isElementalOverload && results[hitIndex].Landed() && sim.Proc(shaman.GetOverloadChance()/3, "Chain Lightning Elemental Overload") {
+				shaman.ChainLightningOverloads[hitIndex].Cast(sim, results[hitIndex].Target)
+			}
+
+			spell.DealDamage(sim, results[hitIndex])
 			spell.DamageMultiplier /= bounceReduction
 		}
 	}
