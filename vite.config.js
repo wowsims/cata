@@ -80,6 +80,11 @@ export default defineConfig(({ command, mode }) => ({
 	plugins: [serveExternalAssets()],
 	base: '/cata/',
 	root: path.join(__dirname, 'ui'),
+	esbuild: {
+		jsxFactory: 'element',
+		jsxFragment: 'fragment',
+		jsxInject: "import { element, fragment, ref } from 'tsx-vanilla';",
+	},
 	build: {
 		outDir: path.join(__dirname, 'dist', 'cata'),
 		minify: mode === 'development' ? false : 'terser',

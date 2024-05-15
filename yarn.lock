@@ -1394,30 +1394,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wowsims/assets@file:../wowsims-mono/packages/assets::locator=cata%40workspace%3A.":
-  version: 1.0.0
-  resolution: "@wowsims/assets@file:../wowsims-mono/packages/assets#../wowsims-mono/packages/assets::hash=4bb54a&locator=cata%40workspace%3A."
-  checksum: 6e9d7b384c102beb2d64fa0cabb34a31e97f70fc61e72e30c36012d14aa329aaafa3f8b518e1183203ceaf5a38983c21333b2fbdb2ed5d2bd55b738dc0fe60e3
+"@wowsims/assets@portal:../wowsims-mono/packages/assets::locator=cata%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@wowsims/assets@portal:../wowsims-mono/packages/assets::locator=cata%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@wowsims/config@file:../wowsims-mono/packages/config::locator=cata%40workspace%3A.":
-  version: 1.0.0
-  resolution: "@wowsims/config@file:../wowsims-mono/packages/config#../wowsims-mono/packages/config::hash=ed4e2b&locator=cata%40workspace%3A."
-  checksum: 9064066417c3b78ade5608d7b7bc62abf70bc33240b747b5aa7610c0166cea89e0e1fce59a57394f5d1ffdb215b2fb9d92461cbc1730a8d6c0ec3c202c06bdf7
+"@wowsims/config@portal:../wowsims-mono/packages/config::locator=cata%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@wowsims/config@portal:../wowsims-mono/packages/config::locator=cata%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@wowsims/constants@file:../wowsims-mono/packages/constants::locator=cata%40workspace%3A.":
-  version: 1.0.0
-  resolution: "@wowsims/constants@file:../wowsims-mono/packages/constants#../wowsims-mono/packages/constants::hash=0c9402&locator=cata%40workspace%3A."
-  checksum: 1d9eef6ed7bad35304dc1def531d8d0b52ed8ae45fb3d5b4e46fc4444d0c3a74ee2fe5e302fc0fbfd202c0903dc9fbfdb2410b914fa52be6b9f731452606463e
+"@wowsims/constants@portal:../wowsims-mono/packages/constants::locator=cata%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@wowsims/constants@portal:../wowsims-mono/packages/constants::locator=cata%40workspace%3A."
   languageName: node
-  linkType: hard
+  linkType: soft
 
-"@wowsims/ui@file:../wowsims-mono/packages/ui::locator=cata%40workspace%3A.":
-  version: 1.0.0
-  resolution: "@wowsims/ui@file:../wowsims-mono/packages/ui#../wowsims-mono/packages/ui::hash=2b8925&locator=cata%40workspace%3A."
+"@wowsims/ui@portal:../wowsims-mono/packages/ui::locator=cata%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@wowsims/ui@portal:../wowsims-mono/packages/ui::locator=cata%40workspace%3A."
   dependencies:
     "@storybook/html": ^8.1.0
     "@storybook/test": ^8.1.0
@@ -1426,9 +1423,8 @@ __metadata:
     bootstrap: ^5.3.3
     clsx: ^2.1.1
     tsx-vanilla: ^1.0.0
-  checksum: 7f03b99dd7660b1cff28b9b8d0c7715c31fec379604215a217f025ca2e4b61ea632fdea98d2141fa63894e3e0d486041e3423a66daf70dc5ba6fa300b07fcce2
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@yarnpkg/fslib@npm:2.10.3":
   version: 2.10.3

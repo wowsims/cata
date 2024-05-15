@@ -4,6 +4,7 @@ import * as Popper from '@popperjs/core';
 import { Dropdown, Modal, Tab } from 'bootstrap';
 import tippy from 'tippy.js';
 
+
 declare global {
 	interface Window {
 		Popper: any;

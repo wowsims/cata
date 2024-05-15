@@ -1,5 +1,5 @@
 import tippy from 'tippy.js';
-import { element, fragment, ref } from 'tsx-vanilla';
+
 
 import { Component } from '../core/components/component.js';
 import { Player } from '../core/player.js';

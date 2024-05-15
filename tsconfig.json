@@ -15,7 +15,7 @@
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "baseUrl": ".",
-        "jsx": "react",
+        "jsx": "preserve",
         "jsxFactory": "element",
         "jsxFragmentFactory": "fragment",
     },

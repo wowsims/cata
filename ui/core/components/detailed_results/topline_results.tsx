@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element } from 'tsx-vanilla';
+
 
 import { DeathKnight } from '../../player_classes/death_knight.js';
 import { Hunter } from '../../player_classes/hunter.js';

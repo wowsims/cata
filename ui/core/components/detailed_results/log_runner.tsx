@@ -1,7 +1,5 @@
 // @ts-expect-error
 import debounce from 'lodash/debounce';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment } from 'tsx-vanilla';
 
 import { SimLog } from '../../proto_utils/logs_parser';
 import { TypedEvent } from '../../typed_event.js';

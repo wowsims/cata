@@ -1,6 +1,4 @@
 import tippy, { ReferenceElement as TippyReferenceElement } from 'tippy.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, ref } from 'tsx-vanilla';
 
 import { SimUI } from '../sim_ui';
 import { isLocal,noop  } from '../utils';

@@ -1,5 +1,3 @@
-import { element, fragment, ref } from 'tsx-vanilla';
-
 import { REPO_NAME } from '../constants/other';
 import { DetailedResultsUpdate, SimRun, SimRunData } from '../proto/ui';
 import { SimResult } from '../proto_utils/sim_result';

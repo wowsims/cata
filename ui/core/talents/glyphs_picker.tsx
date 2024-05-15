@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
+
 
 import { BaseModal } from '../components/base_modal.js';
 import { Component } from '../components/component.js';

@@ -1,6 +1,4 @@
 import tippy from 'tippy.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
 
 import { ActionId } from '../../proto_utils/action_id.js';
 import { UnitMetrics } from '../../proto_utils/sim_result';

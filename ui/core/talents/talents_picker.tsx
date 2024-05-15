@@ -1,6 +1,4 @@
 import tippy from 'tippy.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
 
 import { Component } from '../components/component.js';
 import { CopyButton } from '../components/copy_button.js';
