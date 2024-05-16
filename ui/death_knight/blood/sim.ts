@@ -14,7 +14,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	cssClass: 'blood-death-knight-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.DeathKnight),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['<p>Defensive CDs use is very basic and wip.</p>'],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -155,7 +155,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	presets: {
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			Presets.BLOOD_P1_ROTATION_PRESET_DEFAULT
+			Presets.BLOOD_SIMPLE_ROTATION_PRESET_DEFAULT,
+			Presets.BLOOD_DEFENSIVE_ROTATION_PRESET_DEFAULT,
 		],
 		// Preset talents that the user can quickly select.
 		talents: [
@@ -163,12 +164,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			Presets.PRERAID_BLOOD_PRESET,
 			Presets.P1_BLOOD_PRESET
 		],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBloodDeathKnight>): APLRotation => {
-		return Presets.BLOOD_P1_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		return Presets.BLOOD_SIMPLE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	raidSimPresets: [
