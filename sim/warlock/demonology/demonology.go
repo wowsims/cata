@@ -1,7 +1,6 @@
 package demonology
 
 import (
-	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -30,7 +29,8 @@ func NewDemonologyWarlock(character *core.Character, options *proto.Player) *Dem
 	demoOptions := options.GetDemonologyWarlock().Options
 
 	demonology := &DemonologyWarlock{
-		Warlock: warlock.NewWarlock(character, options, demoOptions.ClassOptions),
+		Warlock:        warlock.NewWarlock(character, options, demoOptions.ClassOptions),
+		prepullMastery: demoOptions.ClassOptions.PrepullMastery,
 	}
 
 	return demonology
@@ -38,10 +38,8 @@ func NewDemonologyWarlock(character *core.Character, options *proto.Player) *Dem
 
 type DemonologyWarlock struct {
 	*warlock.Warlock
-}
 
-func (demonology DemonologyWarlock) getMasteryBonus() float64 {
-	return math.Floor((18.4 + 2.3*demonology.GetMasteryPoints())) / 100.0
+	prepullMastery int32
 }
 
 func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
