@@ -23,7 +23,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 726
+  final_stats: 3668.67718
   final_stats: 0
   final_stats: 0
   final_stats: 193623.84652
@@ -1266,8 +1266,8 @@ dps_results: {
  key: "TestGuardian-Average-Default"
  value: {
   dps: 3383.29649
-  tps: 15842.8664
-  dtps: 573.42222
+  tps: 15843.0236
+  dtps: 469.05636
  }
 }
 dps_results: {
@@ -1316,7 +1316,7 @@ dps_results: {
  key: "TestGuardian-SwitchInFrontOfTarget-Default"
  value: {
   dps: 3718.64029
-  tps: 17507.35225
-  dtps: 548.63893
+  tps: 17507.50196
+  dtps: 457.97699
  }
 }
