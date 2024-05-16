@@ -3,11 +3,11 @@ import { SimRequest, SimRequestSync, WorkerReceiveMessage } from './types';
 
 // Wasm binary calls this function when its done loading.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function wasmready() {
+globalThis.wasmready = function () {
 	workerPostMessage({
 		msg: 'ready',
 	});
-}
+};
 
 const go = new Go();
 let inst: WebAssembly.Instance | null = null;

@@ -37,7 +37,6 @@ const buildWorkers = async () => {
 						if (id.includes('sim_worker.ts')) {
 							code = wasmFile + code;
 						}
-
 						return code;
 					},
 				},

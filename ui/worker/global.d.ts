@@ -2,6 +2,7 @@ import type { SimRequestAsync, SimRequestSync } from './types';
 
 declare global {
 	let workerID: string;
+	function wasmready(): void;
 	const bulkSimAsync: SimRequestAsync;
 	const computeStats: SimRequestSync;
 	const computeStatsJson: SimRequestSync;
