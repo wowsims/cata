@@ -189,7 +189,7 @@ export class ItemRenderer extends Component {
 		}
 
 		if (newItem.reforge) {
-			const reforgeData = this.player.getReforgeData(newItem.item, newItem.reforge);
+			const reforgeData = this.player.getReforgeData(newItem, newItem.reforge);
 			const fromText = shortSecondaryStatNames.get(newItem.reforge?.fromStat[0]);
 			const toText = shortSecondaryStatNames.get(newItem.reforge?.toStat[0]);
 			this.reforgeElem.innerText = `Reforged ${Math.abs(reforgeData.fromAmount)} ${fromText} → ${reforgeData.toAmount} ${toText}`;
@@ -556,7 +556,7 @@ export class SelectorModal extends BaseModal {
 
 		const eligibleItems = this.player.getItems(selectedSlot);
 		const eligibleEnchants = this.player.getEnchants(selectedSlot);
-		const eligibleReforges = equippedItem?.item ? this.player.getAvailableReforgings(equippedItem.item) : [];
+		const eligibleReforges = equippedItem?.item ? this.player.getAvailableReforgings(equippedItem.getWithRandomSuffixStats()) : [];
 
 		// If the enchant tab is selected but the item has no eligible enchants, default to items
 		// If the reforge tab is selected but the item has no eligible reforges, default to items
@@ -833,7 +833,7 @@ export class SelectorModal extends BaseModal {
 		this.addTab<ReforgeData>({
 			label: SelectorModalTabs.Reforging,
 			gearData,
-			itemData: this.player.getAvailableReforgings(itemProto).map(reforgeData => {
+			itemData: this.player.getAvailableReforgings(equippedItem).map(reforgeData => {
 				return {
 					item: reforgeData,
 					id: reforgeData.id,
@@ -861,7 +861,7 @@ export class SelectorModal extends BaseModal {
 			}),
 			computeEP: (reforge: ReforgeData) => this.player.computeReforgingEP(reforge),
 			equippedToItemFn: (equippedItem: EquippedItem | null) =>
-				equippedItem?.reforge ? this.player.getReforgeData(equippedItem.item, equippedItem.reforge) : null,
+				equippedItem?.reforge ? this.player.getReforgeData(equippedItem, equippedItem.reforge) : null,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
 				if (equippedItem) gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item));

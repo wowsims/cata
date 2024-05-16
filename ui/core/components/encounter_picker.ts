@@ -597,7 +597,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 				this.enumPicker.rootElem.remove();
 				this.enumPicker = null;
 			}
-			console.log(this, newValue);
+
 			this.numberPicker = new NumberPicker(this.rootElem, null, {
 				id: randomUUID(),
 				label: newValue.label,
