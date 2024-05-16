@@ -821,11 +821,7 @@ export class SelectorModal extends BaseModal {
 		if (!equippedItem || (equippedItem.hasRandomSuffixOptions() && !equippedItem.randomSuffix)) {
 			return;
 		}
-		if (equippedItem.randomSuffix !== null) {
-			equippedItem._item.stats = equippedItem.randomSuffix.stats.map(stat =>
-				stat > 0 ? Math.floor((stat * equippedItem._item.randPropPoints) / 10000) : stat,
-			);
-		}
+
 		const itemProto = equippedItem.item;
 
 		this.addTab<ReforgeData>({
