@@ -144,8 +144,8 @@ export class ItemRenderer extends Component {
 				</div>
 				<div className="item-picker-labels-container">
 					<a ref={nameElem} className="item-picker-name" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<a ref={enchantElem} className="item-picker-enchant" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<a ref={reforgeElem} className="item-picker-reforge" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<a ref={enchantElem} className="item-picker-enchant hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<a ref={reforgeElem} className="item-picker-reforge hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
 				</div>
 			</>,
 		);
@@ -164,7 +164,8 @@ export class ItemRenderer extends Component {
 		this.iconElem.removeAttribute('href');
 		this.enchantElem.removeAttribute('data-wowhead');
 		this.enchantElem.removeAttribute('href');
-		this.iconElem.removeAttribute('href');
+		this.enchantElem.classList.add('hide');
+		this.reforgeElem.classList.add('hide');
 
 		this.iconElem.style.backgroundImage = '';
 		this.enchantElem.innerText = '';
@@ -192,8 +193,10 @@ export class ItemRenderer extends Component {
 			const fromText = shortSecondaryStatNames.get(newItem.reforge?.fromStat[0]);
 			const toText = shortSecondaryStatNames.get(newItem.reforge?.toStat[0]);
 			this.reforgeElem.innerText = `Reforged ${Math.abs(reforgeData.fromAmount)} ${fromText} → ${reforgeData.toAmount} ${toText}`;
+			this.reforgeElem.classList.remove('hide');
 		} else {
 			this.reforgeElem.innerText = '';
+			this.reforgeElem.classList.add('hide');
 		}
 
 		setItemQualityCssClass(this.nameElem, newItem.item.quality);
@@ -226,6 +229,9 @@ export class ItemRenderer extends Component {
 				});
 			}
 			this.enchantElem.dataset.whtticon = 'false';
+			this.enchantElem.classList.remove('hide');
+		} else {
+			this.enchantElem.classList.add('hide');
 		}
 
 		newItem.allSocketColors().forEach((socketColor, gemIdx) => {
@@ -821,11 +827,7 @@ export class SelectorModal extends BaseModal {
 		if (!equippedItem || (equippedItem.hasRandomSuffixOptions() && !equippedItem.randomSuffix)) {
 			return;
 		}
-		if (equippedItem.randomSuffix !== null) {
-			equippedItem._item.stats = equippedItem.randomSuffix.stats.map(stat =>
-				stat > 0 ? Math.floor((stat * equippedItem._item.randPropPoints) / 10000) : stat,
-			);
-		}
+
 		const itemProto = equippedItem.item;
 
 		this.addTab<ReforgeData>({

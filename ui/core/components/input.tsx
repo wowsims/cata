@@ -12,6 +12,7 @@ export interface InputConfig<ModObject, T, V = T> {
 	label?: string;
 	labelTooltip?: string;
 	inline?: boolean;
+	id?: string;
 	extraCssClasses?: Array<string>;
 
 	defaultValue?: T;
@@ -44,7 +45,6 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	readonly modObject: ModObject;
 
 	protected enabled = true;
-
 	readonly changeEmitter = new TypedEvent<void>();
 
 	constructor(parent: HTMLElement | null, cssClass: string, modObject: ModObject, config: InputConfig<ModObject, T, V>) {
@@ -64,9 +64,11 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	}
 
 	private buildLabel(config: InputConfig<ModObject, T, V>): JSX.Element {
-		const dataset = {};
-
-		const label = <label className="form-label">{config.label}</label>;
+		const label = (
+			<label htmlFor={config.id || undefined} className="form-label" title={config.label}>
+				{config.label}
+			</label>
+		);
 
 		if (config.labelTooltip)
 			tippy(label, {
