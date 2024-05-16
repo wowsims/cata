@@ -15,36 +15,34 @@ type WarlockPet struct {
 	AutoCastAbilities []*core.Spell
 }
 
-func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
-	return func(ownerStats stats.Stats) stats.Stats {
-		const petExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
-		const scalingFactor = 0.53153153153153 // TODO: changes from 80 (where it's 0.5) -> 85, clearly there's more to it..
+func (warlock *Warlock) petStatInheritance(ownerStats stats.Stats) stats.Stats {
+	const petExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
+	const scalingFactor = 0.53153153153153 // TODO: changes from 80 (where it's 0.5) -> 85, clearly there's more to it..
 
-		return stats.Stats{
-			stats.Mana:  ownerStats[stats.Mana] / scalingFactor,
-			stats.Armor: ownerStats[stats.Armor],
+	return stats.Stats{
+		stats.Mana:  ownerStats[stats.Mana] / scalingFactor,
+		stats.Armor: ownerStats[stats.Armor],
 
-			stats.SpellPower:  ownerStats[stats.SpellPower] * scalingFactor,
-			stats.AttackPower: ownerStats[stats.SpellPower] * scalingFactor * 2, // might also simply be pet SP * 2
+		stats.SpellPower:  ownerStats[stats.SpellPower] * scalingFactor,
+		stats.AttackPower: ownerStats[stats.SpellPower] * scalingFactor * 2, // might also simply be pet SP * 2
 
-			// almost certainly wrong, needs more testing
-			stats.SpellCrit: ownerStats[stats.SpellCrit],
-			stats.MeleeCrit: ownerStats[stats.SpellCrit],
+		// almost certainly wrong, needs more testing
+		stats.SpellCrit: ownerStats[stats.SpellCrit],
+		stats.MeleeCrit: ownerStats[stats.SpellCrit],
 
-			// pets inherit haste rating directly, evidenced by:
-			// 1. haste staying the same if the warlock has windfury totem while the pet doesn't
-			// 2. haste staying the same if warlock benefits from wrath of air (pet doesn't get this buff regardless)
-			stats.SpellHaste: ownerStats[stats.SpellHaste],
-			stats.MeleeHaste: ownerStats[stats.SpellHaste],
+		// pets inherit haste rating directly, evidenced by:
+		// 1. haste staying the same if the warlock has windfury totem while the pet doesn't
+		// 2. haste staying the same if warlock benefits from wrath of air (pet doesn't get this buff regardless)
+		stats.SpellHaste: ownerStats[stats.SpellHaste],
+		stats.MeleeHaste: ownerStats[stats.SpellHaste],
 
-			// unclear what exactly the scaling is here, but at hit cap they should definitely all be capped
-			stats.SpellHit:  ownerStats[stats.SpellHit],
-			stats.MeleeHit:  ownerStats[stats.SpellHit],
-			stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * petExpertiseScale,
+		// unclear what exactly the scaling is here, but at hit cap they should definitely all be capped
+		stats.SpellHit:  ownerStats[stats.SpellHit],
+		stats.MeleeHit:  ownerStats[stats.SpellHit],
+		stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * petExpertiseScale,
 
-			// for master demonologist
-			stats.Mastery: ownerStats[stats.Mastery],
-		}
+		// for master demonologist
+		stats.Mastery: ownerStats[stats.Mastery],
 	}
 }
 
@@ -119,8 +117,7 @@ func (warlock *Warlock) registerPets() {
 		stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
 	}
 
-	inheritance := warlock.MakeStatInheritance()
-
+	inheritance := warlock.petStatInheritance
 	warlock.Felhunter = warlock.makePet(proto.WarlockOptions_Felhunter, baseStats, 0.8, 0.77, aaOptions, inheritance)
 	warlock.Felguard = warlock.makePet(proto.WarlockOptions_Felguard, baseStats, 1.0, 0.77, aaOptions, inheritance)
 	warlock.Imp = warlock.makePet(proto.WarlockOptions_Imp, impBaseStats, 1.0, 1.0, nil, inheritance)
