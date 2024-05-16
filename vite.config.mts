@@ -1,9 +1,10 @@
 /** @type {import('vite').UserConfig} */
 import glob from 'glob';
 import path from 'path';
-import { ConfigEnv, defineConfig, PluginOption, UserConfigExport } from 'vite';
+import copy from 'rollup-plugin-copy';
+import { ConfigEnv, defineConfig, UserConfigExport } from 'vite';
 
-import { modifyServeFilePath, serveFile } from './node_modules/@wowsims/assets/helpers';
+import { serveExternalAssets, serveFile } from './node_modules/@wowsims/assets/helpers/assets';
 
 export const BASE_PATH = path.resolve(__dirname, 'ui');
 export const OUT_DIR = path.join(__dirname, 'dist', 'cata');
@@ -19,41 +20,13 @@ const replacePaths = [
 		replacePath: '/cata/assets',
 		sourcePath: path.resolve(__dirname, './assets'),
 	},
-	{
-		replacePath: '@wowsims/assets',
-		sourcePath: path.resolve(__dirname, './node_modules/@wowsims/assets'),
-	},
 ];
-
-const serveExternalAssets = () =>
-	({
-		name: 'serve-external-assets',
-		configureServer(server) {
-			server.middlewares.use((req, res, next) => {
-				const url = req.url!;
-				if (Object.keys(workerMappings).includes(url)) {
-					const targetPath = workerMappings[url as keyof typeof workerMappings];
-					const assetsPath = path.resolve(__dirname, './dist/cata');
-					const requestedPath = path.join(assetsPath, targetPath.replace('/cata/', ''));
-					serveFile(res, requestedPath);
-					return;
-				}
-
-				const replaceAsset = replacePaths.find(replacePath => url.includes(replacePath.replacePath));
-				if (replaceAsset) {
-					modifyServeFilePath(res, url, replaceAsset.sourcePath, replaceAsset.replacePath);
-					return;
-				} else {
-					next();
-				}
-			});
-		},
-	}) satisfies PluginOption;
 
 export const getBaseConfig = ({ command, mode }: ConfigEnv) =>
 	({
 		base: '/cata/',
 		root: path.join(__dirname, 'ui'),
+		publicDir: false,
 		build: {
 			outDir: OUT_DIR,
 			minify: mode === 'development' ? false : 'terser',
@@ -66,7 +39,40 @@ export default defineConfig(({ command, mode }) => {
 	const baseConfig = getBaseConfig({ command, mode });
 	return {
 		...baseConfig,
-		plugins: [serveExternalAssets()],
+		plugins: [
+			serveExternalAssets({
+				assets: replacePaths,
+				additionalMiddlewareHook: (req, res) => {
+					const url = req.url!;
+				if (Object.keys(workerMappings).includes(url)) {
+						const targetPath = workerMappings[url as keyof typeof workerMappings];
+						const assetsPath = path.resolve(__dirname, './dist/cata');
+						const requestedPath = path.join(assetsPath, targetPath.replace('/cata/', ''));
+						serveFile(res, requestedPath);
+						return true;
+					}
+					return false;
+				},
+				transform(code) {
+					// Replace all wowsims repo assets to local assets
+					if (code.match(/\@wowsims\/assets/g)) {
+						code = code.replace(/\@wowsims\/assets/g, '/cata/assets/@wowsims');
+					}
+					return code;
+				},
+			}),
+			copy({
+				copyOnce: mode === 'development',
+				recursive: true,
+				targets: [
+					{
+						src: `node_modules/@wowsims/assets/public/*`,
+						dest: 'assets/@wowsims',
+					},
+				],
+				hook: 'buildEnd',
+			}),
+		],
 		esbuild: {
 			jsxFactory: 'element',
 			jsxFragment: 'fragment',
