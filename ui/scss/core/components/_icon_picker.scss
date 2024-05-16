@@ -91,20 +91,8 @@
 
 .picker-group {
 	&.icon-group {
-		display: flex;
-		flex-wrap: wrap;
-
-		& > :not(:last-child) {
-			margin-right: var(--spacer-1);
-		}
-
 		& > * {
-			margin-bottom: var(--block-spacer);
 			flex: 0;
-
-			&:not(:last-child) {
-				margin-right: var(--block-spacer);
-			}
 		}
 	}
 }

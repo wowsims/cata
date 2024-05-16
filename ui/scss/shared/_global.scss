@@ -16,10 +16,12 @@
 	}
 
 	@include media-breakpoint-up(lg) {
+		--section-spacer: var(--section-spacer-lg) !important;
 		--container-padding: var(--container-padding-lg) !important;
 	}
 
 	@include media-breakpoint-up(xxl) {
+		--section-spacer: var(--section-spacer-xxl) !important;
 		--container-padding: var(--container-padding-xxl) !important;
 	}
 }
@@ -93,6 +95,11 @@ kbd {
 
 .dragto:not(.dragfrom) {
 	filter: brightness(0.75);
+}
+
+.interactive {
+	cursor: pointer;
+	user-select: none;
 }
 
 .hide {

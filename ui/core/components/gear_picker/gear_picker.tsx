@@ -2,6 +2,7 @@ import tippy from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { element, fragment, ref } from 'tsx-vanilla';
 
+import { SortDirection } from '../../constants/other';
 import { setItemQualityCssClass } from '../../css_utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player, ReforgeData } from '../../player';
@@ -143,8 +144,8 @@ export class ItemRenderer extends Component {
 				</div>
 				<div className="item-picker-labels-container">
 					<a ref={nameElem} className="item-picker-name" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<a ref={enchantElem} className="item-picker-enchant" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<a ref={reforgeElem} className="item-picker-reforge" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<a ref={enchantElem} className="item-picker-enchant hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<a ref={reforgeElem} className="item-picker-reforge hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
 				</div>
 			</>,
 		);
@@ -163,7 +164,8 @@ export class ItemRenderer extends Component {
 		this.iconElem.removeAttribute('href');
 		this.enchantElem.removeAttribute('data-wowhead');
 		this.enchantElem.removeAttribute('href');
-		this.iconElem.removeAttribute('href');
+		this.enchantElem.classList.add('hide');
+		this.reforgeElem.classList.add('hide');
 
 		this.iconElem.style.backgroundImage = '';
 		this.enchantElem.innerText = '';
@@ -187,11 +189,14 @@ export class ItemRenderer extends Component {
 		}
 
 		if (newItem.reforge) {
+			const reforgeData = this.player.getReforgeData(newItem.item, newItem.reforge);
 			const fromText = shortSecondaryStatNames.get(newItem.reforge?.fromStat[0]);
 			const toText = shortSecondaryStatNames.get(newItem.reforge?.toStat[0]);
-			this.reforgeElem.innerText = `Reforged ${fromText} > ${toText}`;
+			this.reforgeElem.innerText = `Reforged ${Math.abs(reforgeData.fromAmount)} ${fromText} → ${reforgeData.toAmount} ${toText}`;
+			this.reforgeElem.classList.remove('hide');
 		} else {
 			this.reforgeElem.innerText = '';
+			this.reforgeElem.classList.add('hide');
 		}
 
 		setItemQualityCssClass(this.nameElem, newItem.item.quality);
@@ -224,6 +229,9 @@ export class ItemRenderer extends Component {
 				});
 			}
 			this.enchantElem.dataset.whtticon = 'false';
+			this.enchantElem.classList.remove('hide');
+		} else {
+			this.enchantElem.classList.add('hide');
 		}
 
 		newItem.allSocketColors().forEach((socketColor, gemIdx) => {
@@ -480,10 +488,9 @@ export class SelectorModal extends BaseModal {
 
 	private currentSlot: ItemSlot = ItemSlot.ItemSlotHead;
 	private currentTab: SelectorModalTabs = SelectorModalTabs.Items;
-	private gearData: GearData | undefined;
 
 	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, gearPicker?: GearPicker) {
-		super(parent, 'selector-modal', { disposeOnClose: false });
+		super(parent, 'selector-modal', { disposeOnClose: false, size: 'xl' });
 
 		this.simUI = simUI;
 		this.player = player;
@@ -565,7 +572,6 @@ export class SelectorModal extends BaseModal {
 
 		this.currentTab = selectedTab;
 		this.currentSlot = selectedSlot;
-		this.gearData = gearData;
 
 		this.addTab<Item>({
 			label: SelectorModalTabs.Items,
@@ -821,11 +827,7 @@ export class SelectorModal extends BaseModal {
 		if (!equippedItem || (equippedItem.hasRandomSuffixOptions() && !equippedItem.randomSuffix)) {
 			return;
 		}
-		if (equippedItem.randomSuffix !== null) {
-			equippedItem._item.stats = equippedItem.randomSuffix.stats.map(stat =>
-				stat > 0 ? Math.floor((stat * equippedItem._item.randPropPoints) / 10000) : stat,
-			);
-		}
+
 		const itemProto = equippedItem.item;
 
 		this.addTab<ReforgeData>({
@@ -1048,6 +1050,10 @@ export function getEmptySlotIconUrl(slot: ItemSlot): string {
 }
 
 type ItemListType = Item | Enchant | Gem | ReforgeData | ItemRandomSuffix;
+enum ItemListSortBy {
+	EP,
+	ILVL,
+}
 
 export class ItemList<T extends ItemListType> {
 	private listElem: HTMLElement;
@@ -1065,6 +1071,9 @@ export class ItemList<T extends ItemListType> {
 	private tabContent: Element;
 	private onItemClick: (itemData: ItemData<T>) => void;
 	private scroller: Clusterize;
+
+	private sortBy = ItemListSortBy.ILVL;
+	private sortDirection = SortDirection.DESC;
 
 	constructor(
 		parent: HTMLElement,
@@ -1097,7 +1106,16 @@ export class ItemList<T extends ItemListType> {
 		const selected = label === currentTab;
 		const itemLabel = label == SelectorModalTabs.Reforging ? 'Reforge' : 'Item';
 
-		const epButton = ref<HTMLButtonElement>();
+		const sortByIlvl = (event: MouseEvent) => {
+			event.preventDefault();
+			this.sort(ItemListSortBy.ILVL);
+		};
+		const sortByEP = (event: MouseEvent) => {
+			event.preventDefault();
+			this.sort(ItemListSortBy.EP);
+		};
+
+		const epButtonRef = ref<HTMLButtonElement>();
 		this.tabContent = (
 			<div id={tabContentId} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
 				<div className="selector-modal-filters">
@@ -1116,14 +1134,19 @@ export class ItemList<T extends ItemListType> {
 						<small>{itemLabel}</small>
 					</label>
 					{label == SelectorModalTabs.Items && (
-						<label className="source-label">
-							<small>Source</small>
-						</label>
+						<>
+							<label className="source-label">
+								<small>Source</small>
+							</label>
+							<label className="ilvl-label interactive" onclick={sortByIlvl}>
+								<small>ILvl</small>
+							</label>
+						</>
 					)}
-					<label className="ep-label">
+					<label className="ep-label interactive" onclick={sortByEP}>
 						<small>EP</small>
 						<i className="fa-solid fa-plus-minus fa-2xs"></i>
-						<button ref={epButton} className="btn btn-link p-0 ms-1">
+						<button ref={epButtonRef} className="btn btn-link p-0 ms-1">
 							<i className="far fa-question-circle fa-lg"></i>
 						</button>
 					</label>
@@ -1135,7 +1158,7 @@ export class ItemList<T extends ItemListType> {
 
 		parent.appendChild(this.tabContent);
 
-		tippy(epButton.value!, {
+		tippy(epButtonRef.value!, {
 			content: EP_TOOLTIP,
 		});
 
@@ -1373,20 +1396,52 @@ export class ItemList<T extends ItemListType> {
 			return true;
 		});
 
-		let sortFn: (itemA: T, itemB: T) => number;
 		if (this.slot == ItemSlot.ItemSlotTrinket1 || this.slot == ItemSlot.ItemSlotTrinket2) {
 			// Trinket EP is weird so just sort by ilvl instead.
-			sortFn = (itemA, itemB) => (itemB as unknown as Item).ilvl - (itemA as unknown as Item).ilvl;
+			this.sortBy = ItemListSortBy.ILVL;
 		} else {
-			sortFn = (itemA, itemB) => {
-				const diff = this.computeEP(itemB) - this.computeEP(itemA);
-				// if EP is same, sort by ilvl
-				if (Math.abs(diff) < 0.01) return (itemB as unknown as Item).ilvl - (itemA as unknown as Item).ilvl;
-				return diff;
-			};
+			this.sortBy = ItemListSortBy.EP;
 		}
 
-		itemIdxs = itemIdxs.sort((dataA, dataB) => {
+		itemIdxs = this.sortIdxs(itemIdxs);
+
+		this.itemsToDisplay = itemIdxs;
+		this.scroller.update();
+
+		this.hideOrShowEPValues();
+	}
+
+	public sort(sortBy: ItemListSortBy) {
+		if (this.sortBy == sortBy) {
+			this.sortDirection = 1 - this.sortDirection;
+		} else {
+			this.sortDirection = SortDirection.DESC;
+		}
+		this.sortBy = sortBy;
+		this.itemsToDisplay = this.sortIdxs(this.itemsToDisplay);
+		this.scroller.update();
+	}
+
+	private sortIdxs(itemIdxs: Array<number>): number[] {
+		let sortFn = (itemA: T, itemB: T) => {
+			const first = this.sortDirection == SortDirection.DESC ? itemB : itemA;
+			const second = this.sortDirection == SortDirection.DESC ? itemA : itemB;
+			const diff = this.computeEP(first) - this.computeEP(second);
+			// if EP is same, sort by ilvl
+			if (Math.abs(diff) < 0.01) return (first as unknown as Item).ilvl - (second as unknown as Item).ilvl;
+			return diff;
+		};
+		switch (this.sortBy) {
+			case ItemListSortBy.ILVL:
+				sortFn = (itemA: T, itemB: T) => {
+					const first = this.sortDirection == SortDirection.DESC ? itemB : itemA;
+					const second = this.sortDirection == SortDirection.DESC ? itemA : itemB;
+					return (first as unknown as Item).ilvl - (second as unknown as Item).ilvl;
+				};
+				break;
+		}
+
+		return itemIdxs.sort((dataA, dataB) => {
 			const itemA = this.itemData[dataA];
 			const itemB = this.itemData[dataB];
 			if (this.isItemFavorited(itemA) && !this.isItemFavorited(itemB)) return -1;
@@ -1394,11 +1449,6 @@ export class ItemList<T extends ItemListType> {
 
 			return sortFn(itemA.item, itemB.item);
 		});
-
-		this.itemsToDisplay = itemIdxs;
-		this.scroller.update();
-
-		this.hideOrShowEPValues();
 	}
 
 	public hideOrShowEPValues() {
@@ -1451,6 +1501,7 @@ export class ItemList<T extends ItemListType> {
 			listItemElem.appendChild(
 				<div className="selector-modal-list-item-source-container">{this.getSourceInfo(itemData.item as unknown as Item, this.player.sim)}</div>,
 			);
+			listItemElem.appendChild(<div className="selector-modal-list-item-ilvl-container">{(itemData.item as unknown as Item).ilvl}</div>);
 		}
 
 		if (this.slot != ItemSlot.ItemSlotTrinket1 && this.slot != ItemSlot.ItemSlotTrinket2) {
@@ -1466,7 +1517,7 @@ export class ItemList<T extends ItemListType> {
 
 		const favoriteElem = ref<HTMLButtonElement>();
 		listItemElem.appendChild(
-			<div>
+			<div className="selector-modal-list-item-favorite-container">
 				<button
 					className="selector-modal-list-item-favorite btn btn-link p-0"
 					ref={favoriteElem}

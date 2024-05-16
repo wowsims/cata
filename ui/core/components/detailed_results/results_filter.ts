@@ -1,4 +1,4 @@
-import { UnitPicker, UnitValue,UnitValueConfig } from '../../components/unit_picker.js';
+import { UnitPicker, UnitValue, UnitValueConfig } from '../../components/unit_picker.js';
 import { UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
 import { SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
@@ -7,9 +7,9 @@ import { ResultComponent, ResultComponentConfig, SimResultData } from './result_
 const ALL_UNITS = -1;
 
 interface FilterData {
-	player: number,
-	target: number,
-};
+	player: number;
+	target: number;
+}
 
 export class ResultsFilter extends ResultComponent {
 	private readonly currentFilter: FilterData;
@@ -29,28 +29,24 @@ export class ResultsFilter extends ResultComponent {
 		this.changeEmitter = new TypedEvent<void>();
 
 		this.playerFilter = new UnitPicker(this.rootElem, this.currentFilter, {
-			extraCssClasses: [
-				'player-filter-root',
-				'd-none',
-			],
+			id: 'results-filter-player-filter',
+			extraCssClasses: ['player-filter-root', 'd-none'],
 			changedEvent: (_filterData: FilterData) => this.changeEmitter,
-			sourceToValue: (src: UnitReference|undefined) => this.refToValue(src),
+			sourceToValue: (src: UnitReference | undefined) => this.refToValue(src),
 			valueToSource: (val: UnitValue) => val.value,
 			getValue: (filterData: FilterData) => this.numToRef(filterData.player, true),
-			setValue: (eventID: EventID, filterData: FilterData, newValue: UnitReference|undefined) => this.setPlayer(eventID, this.refToNum(newValue)),
+			setValue: (eventID: EventID, filterData: FilterData, newValue: UnitReference | undefined) => this.setPlayer(eventID, this.refToNum(newValue)),
 			values: [],
 		});
 
 		this.targetFilter = new UnitPicker(this.rootElem, this.currentFilter, {
-			extraCssClasses: [
-				'target-filter-root',
-				'd-none',
-			],
+			id: 'results-filter-target-filter',
+			extraCssClasses: ['target-filter-root', 'd-none'],
 			changedEvent: (_filterData: FilterData) => this.changeEmitter,
-			sourceToValue: (src: UnitReference|undefined) => this.refToValue(src),
+			sourceToValue: (src: UnitReference | undefined) => this.refToValue(src),
 			valueToSource: (val: UnitValue) => val.value,
 			getValue: (filterData: FilterData) => this.numToRef(filterData.target, false),
-			setValue: (eventID: EventID, filterData: FilterData, newValue: UnitReference|undefined) => this.setTarget(eventID, this.refToNum(newValue)),
+			setValue: (eventID: EventID, filterData: FilterData, newValue: UnitReference | undefined) => this.setTarget(eventID, this.refToNum(newValue)),
 			values: [],
 		});
 	}
@@ -70,16 +66,16 @@ export class ResultsFilter extends ResultComponent {
 	}
 
 	setPlayer(eventID: EventID, newPlayer: number | null) {
-		this.currentFilter.player = (newPlayer === null) ? ALL_UNITS : newPlayer;
+		this.currentFilter.player = newPlayer === null ? ALL_UNITS : newPlayer;
 		this.changeEmitter.emit(eventID);
 	}
 
 	setTarget(eventID: EventID, newTarget: number | null) {
-		this.currentFilter.target = (newTarget === null) ? ALL_UNITS : newTarget;
+		this.currentFilter.target = newTarget === null ? ALL_UNITS : newTarget;
 		this.changeEmitter.emit(eventID);
 	}
 
-	private refToValue(ref: UnitReference|undefined): UnitValue {
+	private refToValue(ref: UnitReference | undefined): UnitValue {
 		if (!ref || ref.type == UnitType.Unknown) {
 			return {
 				value: ref,
@@ -98,9 +94,10 @@ export class ResultsFilter extends ResultComponent {
 			};
 		} else if (this.hasLastSimResult()) {
 			const simResult = this.getLastSimResult();
-			const unit = ref.type == UnitType.Player
-				? simResult.result.getPlayerWithRaidIndex(ref.index)
-				: ref.type == UnitType.Target
+			const unit =
+				ref.type == UnitType.Player
+					? simResult.result.getPlayerWithRaidIndex(ref.index)
+					: ref.type == UnitType.Target
 					? simResult.result.getTargetWithEncounterIndex(ref.index)
 					: null;
 
@@ -119,27 +116,24 @@ export class ResultsFilter extends ResultComponent {
 		};
 	}
 
-	private refToNum(ref: UnitReference|undefined): number {
-		return (!ref || ref.type == UnitType.AllPlayers || ref.type == UnitType.AllTargets) ? ALL_UNITS : ref.index;
+	private refToNum(ref: UnitReference | undefined): number {
+		return !ref || ref.type == UnitType.AllPlayers || ref.type == UnitType.AllTargets ? ALL_UNITS : ref.index;
 	}
 
 	private numToRef(idx: number, isPlayer: boolean): UnitReference {
 		if (isPlayer) {
-			return idx == ALL_UNITS
-				? UnitReference.create({type: UnitType.AllPlayers})
-				: UnitReference.create({type: UnitType.Player, index: idx});
+			return idx == ALL_UNITS ? UnitReference.create({ type: UnitType.AllPlayers }) : UnitReference.create({ type: UnitType.Player, index: idx });
 		} else {
-			return idx == ALL_UNITS
-				? UnitReference.create({type: UnitType.AllTargets})
-				: UnitReference.create({type: UnitType.Target, index: idx});
+			return idx == ALL_UNITS ? UnitReference.create({ type: UnitType.AllTargets }) : UnitReference.create({ type: UnitType.Target, index: idx });
 		}
 	}
 
 	private getUnitOptions(eventID: EventID, simResult: SimResult, isPlayer: boolean): Array<UnitValueConfig> {
-		const allUnitsOption = UnitReference.create({type: isPlayer ? UnitType.AllPlayers : UnitType.AllTargets});
+		const allUnitsOption = UnitReference.create({ type: isPlayer ? UnitType.AllPlayers : UnitType.AllTargets });
 
-		const unitOptions = (isPlayer ? simResult.getPlayers() : simResult.getTargets())
-			.map(unit => UnitReference.create({type: isPlayer ? UnitType.Player : UnitType.Target, index: unit.index}));
+		const unitOptions = (isPlayer ? simResult.getPlayers() : simResult.getTargets()).map(unit =>
+			UnitReference.create({ type: isPlayer ? UnitType.Player : UnitType.Target, index: unit.index }),
+		);
 
 		const options = [allUnitsOption].concat(unitOptions);
 

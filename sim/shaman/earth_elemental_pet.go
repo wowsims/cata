@@ -22,18 +22,17 @@ func (shaman *Shaman) NewEarthElemental(bonusSpellPower float64) *EarthElemental
 	earthElemental.EnableManaBar()
 	earthElemental.EnableAutoAttacks(earthElemental, core.AutoAttackOptions{
 		MainHand: core.Weapon{
-			BaseDamageMin:     354, //Estimated from beta testing
-			BaseDamageMax:     396, //Estimated from beta testing
-			SwingSpeed:        2,
-			AttackPowerPerDPS: 2, //No idea how melee works, so i'm adding this to balance the swing speed multiplier
-			CritMultiplier:    2, //Estimated from beta testing
-			SpellSchool:       core.SpellSchoolPhysical,
+			BaseDamageMin:  354, //Estimated from beta testing
+			BaseDamageMax:  396, //Estimated from beta testing
+			SwingSpeed:     2,
+			CritMultiplier: 2, //Estimated from beta testing
+			SpellSchool:    core.SpellSchoolPhysical,
 		},
 		AutoSwingMelee: true,
 	})
 
 	if bonusSpellPower > 0 {
-		earthElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*0.107)
+		earthElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*0.749) // 0.107 * 7
 	}
 
 	if shaman.Race == proto.Race_RaceDraenei {
@@ -90,7 +89,7 @@ func (shaman *Shaman) earthElementalStatInheritance() core.PetStatInheritance {
 
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 1.06,     //TODO need to be more accurate
-			stats.AttackPower: ownerStats[stats.SpellPower] * 0.107, //TODO need to be more accurate
+			stats.AttackPower: ownerStats[stats.SpellPower] * 0.749, // 0.107 * 7 TODO need to be more accurate
 
 			stats.MeleeHit: spellHitRatingFromOwner,
 

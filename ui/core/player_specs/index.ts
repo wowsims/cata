@@ -24,6 +24,7 @@ const specToPlayerSpec: Record<Spec, PlayerSpec<any> | undefined> = {
 	// Druid
 	[Spec.SpecBalanceDruid]: DruidSpecs.BalanceDruid,
 	[Spec.SpecFeralDruid]: DruidSpecs.FeralDruid,
+	[Spec.SpecGuardianDruid]: DruidSpecs.GuardianDruid,
 	[Spec.SpecRestorationDruid]: DruidSpecs.RestorationDruid,
 	// Hunter
 	[Spec.SpecBeastMasteryHunter]: HunterSpecs.BeastMasteryHunter,

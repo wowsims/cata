@@ -1,40 +1,36 @@
-package tank
+package guardian
 
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 	"github.com/wowsims/cata/sim/druid"
 )
 
-func RegisterFeralTankDruid() {
+func RegisterGuardianDruid() {
 	core.RegisterAgentFactory(
-		proto.Player_FeralTankDruid{},
-		proto.Spec_SpecFeralTankDruid,
+		proto.Player_GuardianDruid{},
+		proto.Spec_SpecGuardianDruid,
 		func(character *core.Character, options *proto.Player) core.Agent {
-			return NewFeralTankDruid(character, options)
+			return NewGuardianDruid(character, options)
 		},
 		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_FeralTankDruid)
+			playerSpec, ok := spec.(*proto.Player_GuardianDruid)
 			if !ok {
-				panic("Invalid spec value for Feral Tank Druid!")
+				panic("Invalid spec value for Guardian Druid!")
 			}
 			player.Spec = playerSpec
 		},
 	)
 }
 
-func NewFeralTankDruid(character *core.Character, options *proto.Player) *FeralTankDruid {
-	tankOptions := options.GetFeralTankDruid()
+func NewGuardianDruid(character *core.Character, options *proto.Player) *GuardianDruid {
+	tankOptions := options.GetGuardianDruid()
 	selfBuffs := druid.SelfBuffs{}
 
-	bear := &FeralTankDruid{
+	bear := &GuardianDruid{
 		Druid:   druid.New(character, druid.Bear, selfBuffs, options.TalentsString),
 		Options: tankOptions.Options,
-	}
-
-	bear.SelfBuffs.InnervateTarget = &proto.UnitReference{}
-	if tankOptions.Options.InnervateTarget != nil {
-		bear.SelfBuffs.InnervateTarget = tankOptions.Options.InnervateTarget
 	}
 
 	bear.EnableRageBar(core.RageBarOptions{
@@ -46,36 +42,39 @@ func NewFeralTankDruid(character *core.Character, options *proto.Player) *FeralT
 		// Base paw weapon.
 		MainHand:       bear.GetBearWeapon(),
 		AutoSwingMelee: true,
-		ReplaceMHSwing: bear.TryMaul,
 	})
-	bear.ReplaceBearMHFunc = bear.TryMaul
 
 	healingModel := options.HealingModel
 	if healingModel != nil {
 		if healingModel.InspirationUptime > 0.0 {
-			core.ApplyInspiration(bear.GetCharacter(), healingModel.InspirationUptime)
+			core.ApplyInspiration(&bear.Unit, healingModel.InspirationUptime)
 		}
 	}
 
 	return bear
 }
 
-type FeralTankDruid struct {
+type GuardianDruid struct {
 	*druid.Druid
 
-	Options *proto.FeralTankDruid_Options
+	Options *proto.GuardianDruid_Options
 }
 
-func (bear *FeralTankDruid) GetDruid() *druid.Druid {
+func (bear *GuardianDruid) GetDruid() *druid.Druid {
 	return bear.Druid
 }
 
-func (bear *FeralTankDruid) Initialize() {
+func (bear *GuardianDruid) Initialize() {
 	bear.Druid.Initialize()
 	bear.RegisterFeralTankSpells()
 }
 
-func (bear *FeralTankDruid) Reset(sim *core.Simulation) {
+func (bear *GuardianDruid) ApplyTalents() {
+	bear.Druid.ApplyTalents()
+	bear.MultiplyStat(stats.AttackPower, 1.25) // Aggression passive
+}
+
+func (bear *GuardianDruid) Reset(sim *core.Simulation) {
 	bear.Druid.Reset(sim)
 	bear.Druid.ClearForm(sim)
 	bear.BearFormAura.Activate(sim)

@@ -14,7 +14,7 @@ export interface ListPickerActionsConfig {
 	};
 }
 
-export interface ListPickerConfig<ModObject, ItemType> extends InputConfig<ModObject, Array<ItemType>> {
+export interface ListPickerConfig<ModObject, ItemType> extends Omit<InputConfig<ModObject, Array<ItemType>>, 'id'> {
 	itemLabel: string;
 	newItem: () => ItemType;
 	copyItem: (oldItem: ItemType) => ItemType;
@@ -68,7 +68,6 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 	private itemPickerPairs: Array<ItemPickerPair<ItemType>>;
 
 	constructor(parent: HTMLElement, modObject: ModObject, config: ListPickerConfig<ModObject, ItemType>) {
-
 		if (config.isCompact) config.extraCssClasses = [...(config.extraCssClasses || []), 'list-picker-compact'];
 
 		super(parent, 'list-picker-root', modObject, config);
@@ -273,7 +272,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		}
 
 		if (this.actionEnabled('delete')) {
-			if (!this.config.minimumItems || index < this.config.minimumItems) {
+			if (!this.config.minimumItems || index + 1 > this.config.minimumItems) {
 				const deleteButton = ListPicker.makeActionElem('list-picker-item-delete', 'fa-times');
 				deleteButton.classList.add('link-danger');
 				itemHeader.appendChild(deleteButton);

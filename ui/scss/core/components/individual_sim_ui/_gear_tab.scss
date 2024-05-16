@@ -1,7 +1,7 @@
 #gear-tab {
-  .tab-pane-content-container {
-    .gear-tab-left {
-      flex-direction: column;
-    }
-  }
+	.tab-pane-content-container {
+		.gear-tab-left {
+			grid-template-columns: auto;
+		}
+	}
 }
