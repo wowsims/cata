@@ -1,17 +1,46 @@
 .bulk-settings-button {
-	margin-top: var(--spacer-3);
+}
+
+.bulk-results-header {
+	margin-bottom: 0;
+}
+
+.bulk-results {
+	& > .content-block-body {
+		gap: var(--spacer-3);
+	}
 }
 
 .bulk-result {
-	margin-bottom: 0.5rem;
+	padding-top: var(--spacer-3);
+	margin-bottom: 0 !important;
 
-	.bulk-equipit {
-		height: 40px;
-		flex: 1;
+	&:not(:first-child):not(:only-child) {
+		border-top: var(--border-default);
+	}
+
+	.content-block-header {
+		display: none;
 	}
 
 	.bulk-results-body {
+		display: flex;
+		gap: var(--spacer-3);
 		flex-direction: row;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	.bulk-equipit {
+		flex-shrink: 0;
+		min-width: 140px;
+	}
+
+	.results-sim {
+		flex: 1;
+	}
+	.bulk-gear-combo {
+		flex: 0.8;
 	}
 }
 
@@ -58,20 +87,12 @@
 
 .bulk-gear-combo {
 	display: grid;
-	grid-template-columns: repeat(3, 32%);
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 	grid-template-rows: auto;
-	flex: 5;
-
-	@media (max-width: 1899px) {
-		grid-template-columns: repeat(2, 48%);
-	}
-
-	@media (max-width: 1399px) {
-		grid-template-columns: repeat(1, 96%);
-	}
+	gap: var(--spacer-3);
 
 	.item-picker-root {
-		padding: 2px;
+		margin-bottom: 0;
 	}
 }
 
@@ -107,6 +128,12 @@
 		visibility: hidden;
 	}
 
+	.bulk-tab-right {
+		.content-block-body {
+			gap: var(--spacer-3);
+		}
+	}
+
 	.bulk-settings {
 		.selector-modal-tab-pane {
 			position: absolute;
@@ -115,12 +142,11 @@
 		.input-root {
 			flex-direction: row;
 			align-items: center;
-			margin-top: 5px;
-			border-bottom: 1px solid var(--bs-white);
-			padding: 3px;
+			padding-bottom: var(--block-spacer);
+			border-bottom: var(--border-default);
 
 			label {
-				flex: 1;
+				flex-grow: 1;
 			}
 		}
 
@@ -128,7 +154,7 @@
 			width: 100%;
 			height: 40px;
 			padding: 5px;
-			margin-top: 15px;
+			// margin-top: 15px;
 			display: flex;
 		}
 	}
@@ -155,7 +181,7 @@
 		display: flex;
 		flex-direction: column;
 		border-bottom: 1px solid var(--bs-white);
-		padding-bottom: 5px;
+		// padding-bottom: 5px;
 
 		.talents-container {
 			display: flex;
@@ -183,9 +209,5 @@
 			display: flex;
 			flex-direction: row;
 		}
-	}
-
-	.results-sim {
-		margin-right: var(--spacer-3);
 	}
 }
