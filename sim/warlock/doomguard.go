@@ -60,7 +60,7 @@ func (warlock *Warlock) NewDoomguardPet() *DoomguardPet {
 	}
 
 	pet := &DoomguardPet{
-		Pet: core.NewPet("Doomguard", &warlock.Character, baseStats, warlock.MakeStatInheritance(), false, true),
+		Pet: core.NewPet("Doomguard", &warlock.Character, baseStats, warlock.petStatInheritance, false, true),
 	}
 	warlock.setPetOptions(pet, 1.0, 0.77, nil)
 

@@ -395,10 +395,10 @@ func BlessingOfKingsAura(unit *Unit) *Aura {
 func MarkOfTheWildAura(unit *Unit) *Aura {
 	aura := makeExclusiveAllStatPercentBuff(unit, "Mark of the Wild", ActionID{SpellID: 1126}, 1.05)
 	registerExlusiveEffects(aura, []StatConfig{
-		{stats.FireResistance, 42, false},
-		{stats.FrostResistance, 42, false},
-		{stats.ShadowResistance, 42, false},
-		{stats.NatureResistance, 42, false},
+		{stats.FireResistance, 97, false},
+		{stats.FrostResistance, 97, false},
+		{stats.ShadowResistance, 97, false},
+		{stats.NatureResistance, 97, false},
 	})
 	return aura
 }
@@ -431,9 +431,9 @@ func ElementalResistanceTotemAura(unit *Unit) *Aura {
 		"Elemental Resistance Totem",
 		ActionID{SpellID: 8184},
 		[]StatConfig{
-			{stats.FireResistance, 85, false},
-			{stats.FrostResistance, 85, false},
-			{stats.NatureResistance, 85, false},
+			{stats.FireResistance, 195, false},
+			{stats.FrostResistance, 195, false},
+			{stats.NatureResistance, 195, false},
 		},
 	})
 }
@@ -443,9 +443,9 @@ func ResistanceAura(unit *Unit) *Aura {
 		"Resistance Aura",
 		ActionID{SpellID: 19891},
 		[]StatConfig{
-			{stats.FireResistance, 85, false},
-			{stats.FrostResistance, 85, false},
-			{stats.ShadowResistance, 85, false},
+			{stats.FireResistance, 195, false},
+			{stats.FrostResistance, 195, false},
+			{stats.ShadowResistance, 195, false},
 		},
 	})
 }
@@ -455,7 +455,7 @@ func ShadowProtectionAura(unit *Unit) *Aura {
 		"Shadow Protection",
 		ActionID{SpellID: 27683},
 		[]StatConfig{
-			{stats.ShadowResistance, 85, false},
+			{stats.ShadowResistance, 195, false},
 		},
 	})
 }
@@ -465,7 +465,7 @@ func AspectOfTheWildAura(unit *Unit) *Aura {
 		"Aspect of the Wild",
 		ActionID{SpellID: 20043},
 		[]StatConfig{
-			{stats.ShadowResistance, 85, false},
+			{stats.ShadowResistance, 97, false},
 		},
 	})
 }
@@ -480,7 +480,7 @@ func PowerWordFortitudeAura(unit *Unit) *Aura {
 		"Power Word: Fortitude",
 		ActionID{SpellID: 21562},
 		[]StatConfig{
-			{stats.Stamina, 584.0, false},
+			{stats.Stamina, 585.0, false},
 		},
 	})
 }
@@ -491,7 +491,7 @@ func BloodPactAura(unit *Unit) *Aura {
 		"Blood Pact",
 		ActionID{SpellID: 6307},
 		[]StatConfig{
-			{stats.Stamina, 584.0, false},
+			{stats.Stamina, 585.0, false},
 		},
 	})
 }
@@ -502,7 +502,7 @@ func CommandingShoutAura(unit *Unit, asExternal bool, withGlyph bool) *Aura {
 		"Commanding Shout",
 		ActionID{SpellID: 469},
 		[]StatConfig{
-			{stats.Stamina, 584.0, false},
+			{stats.Stamina, 585.0, false},
 		},
 	})
 
