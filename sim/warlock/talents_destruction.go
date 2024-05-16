@@ -121,7 +121,7 @@ func (warlock *Warlock) registerBackdraft() {
 			castTimeMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&(WarlockSpellShadowBolt|WarlockSpellIncinerate|WarlockSpellChaosBolt) > 0 {
+			if spell.Matches(WarlockSpellShadowBolt | WarlockSpellIncinerate | WarlockSpellChaosBolt) {
 				aura.RemoveStack(sim)
 			}
 		},
@@ -132,7 +132,7 @@ func (warlock *Warlock) registerBackdraft() {
 			Label:    "Backdraft Hidden Aura",
 			ActionID: core.ActionID{SpellID: 47260},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ClassSpellMask == WarlockSpellConflagrate && result.Landed() {
+				if spell.Matches(WarlockSpellConflagrate) && result.Landed() {
 					backdraft.Activate(sim)
 					backdraft.SetStacks(sim, 3)
 				}
@@ -210,7 +210,7 @@ func (warlock *Warlock) registerSoulLeech() {
 			Label:    "Soul Leech Hidden Aura",
 			ActionID: actionID,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ClassSpellMask&(WarlockSpellShadowBurn|WarlockSpellSoulFire|WarlockSpellChaosBolt) > 0 {
+				if spell.Matches(WarlockSpellShadowBurn | WarlockSpellSoulFire | WarlockSpellChaosBolt) {
 					warlock.AddMana(sim, restore*warlock.MaxMana(), manaMetrics)
 					// also restores health but probably NA
 				}
@@ -243,7 +243,7 @@ func (warlock *Warlock) registerEmpoweredImp() {
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// if the soul fire cast started BEFORE we got the empowered imp buff, it does not get consumed
-			if spell == warlock.SoulFire && sim.CurrentTime-spell.CurCast.CastTime > aura.StartedAt() {
+			if spell.Matches(WarlockSpellSoulFire) && sim.CurrentTime-spell.CurCast.CastTime > aura.StartedAt() {
 				aura.Deactivate(sim)
 			}
 		},
@@ -254,7 +254,7 @@ func (warlock *Warlock) registerEmpoweredImp() {
 			Label: "Empowered Imp Hidden Aura",
 
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ClassSpellMask == WarlockSpellImpFireBolt && sim.Proc(procChance, "Empowered Imp") {
+				if spell.Matches(WarlockSpellImpFireBolt) && sim.Proc(procChance, "Empowered Imp") {
 					empoweredImpAura.Activate(sim)
 				}
 			},

@@ -14,11 +14,14 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 		return
 	}
 
+	var immolationAura *core.Spell
 	metaDmgMod := 0.0
+	glyphBonus := core.TernaryDuration(demonology.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 6, 0)
+
 	metamorphosisAura := demonology.RegisterAura(core.Aura{
 		Label:    "Metamorphosis Aura",
 		ActionID: core.ActionID{SpellID: 59672},
-		Duration: (30 + 6*core.TernaryDuration(demonology.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 1, 0)) * time.Second,
+		Duration: (30 + glyphBonus) * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			metaDmgMod = 1.2 + math.Floor(18.4+2.3*demonology.GetMasteryPoints())/100.0
 			if sim.CurrentTime <= 0 && demonology.prepullMastery > 0 {
@@ -33,7 +36,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier /= metaDmgMod
-			demonology.ImmolationAura.AOEDot().Deactivate(sim)
+			immolationAura.AOEDot().Deactivate(sim)
 		},
 	})
 
@@ -68,7 +71,7 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 		},
 	})
 
-	demonology.ImmolationAura = demonology.RegisterSpell(core.SpellConfig{
+	immolationAura = demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 50589},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,

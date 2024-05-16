@@ -214,7 +214,7 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 
 			activeDots := 0
 			for _, spell := range pet.Owner.Spellbook {
-				if spell.ClassSpellMask&WarlockDoT > 0 && spell.Dot(target).IsActive() {
+				if spell.Matches(WarlockDoT) && spell.Dot(target).IsActive() {
 					activeDots++
 				}
 			}

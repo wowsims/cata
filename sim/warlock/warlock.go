@@ -6,38 +6,26 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-var TalentTreeSizes = [3]int{18, 19, 19}
-
 type Warlock struct {
 	core.Character
 	Talents *proto.WarlockTalents
 	Options *proto.WarlockOptions
 
-	ShadowBolt           *core.Spell
-	Incinerate           *core.Spell
-	ImmolateDot          *core.Spell
-	Immolate             *core.Spell
-	UnstableAffliction   *core.Spell
-	Corruption           *core.Spell
-	Haunt                *core.Spell
-	ChaosBolt            *core.Spell
-	SoulFire             *core.Spell
-	DrainSoul            *core.Spell
-	Shadowburn           *core.Spell
-	CurseOfElementsAuras core.AuraArray
-	CurseOfWeaknessAuras core.AuraArray
-	CurseOfTonguesAuras  core.AuraArray
 	BaneOfAgony          *core.Spell
 	BaneOfDoom           *core.Spell
-	Seed                 *core.Spell
-	SeedDamageTracker    []float64
-	FelFlame             *core.Spell
 	BurningEmbers        *core.Spell
-
-	ShadowEmbraceAuras core.AuraArray
-	Metamorphosis      *core.Spell
-	ImmolationAura     *core.Spell
-	HauntDebuffAuras   core.AuraArray
+	Corruption           *core.Spell
+	CurseOfElementsAuras core.AuraArray
+	CurseOfTonguesAuras  core.AuraArray
+	CurseOfWeaknessAuras core.AuraArray
+	HauntDebuffAuras     core.AuraArray
+	Immolate             *core.Spell
+	ImmolateDot          *core.Spell
+	Metamorphosis        *core.Spell
+	Seed                 *core.Spell
+	ShadowEmbraceAuras   core.AuraArray
+	Shadowburn           *core.Spell
+	UnstableAffliction   *core.Spell
 
 	Felhunter *WarlockPet
 	Felguard  *WarlockPet
@@ -47,8 +35,6 @@ type Warlock struct {
 	Doomguard *DoomguardPet
 	Infernal  *InfernalPet
 	EbonImp   *EbonImpPet
-
-	SummonGuardianTimer *core.Timer
 
 	SoulShards   int32
 	SoulBurnAura *core.Aura
@@ -73,7 +59,7 @@ func (warlock *Warlock) ApplyTalents() {
 }
 
 func (warlock *Warlock) Initialize() {
-	warlock.SummonGuardianTimer = warlock.NewTimer()
+	doomguardInfernalTimer := warlock.NewTimer()
 
 	warlock.registerIncinerateSpell()
 	warlock.registerShadowBoltSpell()
@@ -89,8 +75,8 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSoulFireSpell()
 	warlock.registerDrainSoulSpell()
 	warlock.registerSearingPainSpell()
-	warlock.registerSummonInfernalSpell(warlock.SummonGuardianTimer)
-	warlock.registerSummonDoomguardSpell(warlock.SummonGuardianTimer)
+	warlock.registerSummonInfernalSpell(doomguardInfernalTimer)
+	warlock.registerSummonDoomguardSpell(doomguardInfernalTimer)
 	warlock.registerSummonImpSpell()
 	warlock.registerSummonFelHunterSpell()
 	warlock.registerSummonSuccubusSpell()
@@ -144,7 +130,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 		Talents:   &proto.WarlockTalents{},
 		Options:   warlockOptions,
 	}
-	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, [3]int{18, 19, 19})
 	warlock.EnableManaBar()
 
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)

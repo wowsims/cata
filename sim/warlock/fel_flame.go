@@ -5,7 +5,7 @@ import (
 )
 
 func (warlock *Warlock) registerFelFlameSpell() {
-	warlock.FelFlame = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 77799},
 		SpellSchool:    core.SpellSchoolShadow | core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,

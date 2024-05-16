@@ -73,7 +73,7 @@ func (warlock *Warlock) registerEradication() {
 		warlock.RegisterAura(core.Aura{
 			Label: "Eradication Talent",
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ClassSpellMask&(WarlockSpellCorruption) > 0 && sim.Proc(0.06, "Eradication") {
+				if spell.Matches(WarlockSpellCorruption) && sim.Proc(0.06, "Eradication") {
 					eradicationAura.Activate(sim)
 				}
 			},
@@ -138,7 +138,7 @@ func (warlock *Warlock) registerShadowEmbrace() {
 		warlock.RegisterAura(core.Aura{
 			Label: "Shadow Embrace Talent Hidden Aura",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if (spell == warlock.ShadowBolt || spell == warlock.Haunt) && result.Landed() {
+				if spell.Matches(WarlockSpellShadowBolt|WarlockSpellHaunt) && result.Landed() {
 					aura := warlock.ShadowEmbraceAuras.Get(result.Target)
 					aura.Activate(sim)
 					aura.AddStack(sim)
@@ -154,7 +154,7 @@ func (warlock *Warlock) registerEverlastingAffliction() {
 		warlock.RegisterAura(core.Aura{
 			Label: "EverlastingAffliction Talent",
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ClassSpellMask != WarlockSpellDrainSoul {
+				if !spell.Matches(WarlockSpellDrainSoul) {
 					return
 				}
 
@@ -163,7 +163,7 @@ func (warlock *Warlock) registerEverlastingAffliction() {
 				}
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ClassSpellMask == WarlockSpellHaunt && result.Landed() {
+				if spell.Matches(WarlockSpellHaunt) && result.Landed() {
 					if warlock.Corruption.Dot(result.Target).IsActive() && sim.Proc(procChance, "EverlastingAffliction") {
 						warlock.Corruption.Dot(result.Target).Apply(sim)
 					}
@@ -183,7 +183,7 @@ func (warlock *Warlock) registerPandemic() {
 		Label:    "Pandemic Talent",
 		Duration: core.NeverExpires,
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != warlock.DrainSoul {
+			if !spell.Matches(WarlockSpellDrainSoul) {
 				return
 			}
 
@@ -215,20 +215,26 @@ func (warlock *Warlock) registerNightfall() {
 		Duration: 6 * time.Second,
 	}
 
+	procMod := warlock.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  WarlockSpellShadowBolt,
+		FloatValue: -1,
+	})
+
 	nightfallProcAura := warlock.RegisterAura(core.Aura{
 		Icd:      &icd,
 		Label:    "Nightfall Shadow Trance",
 		ActionID: core.ActionID{SpellID: 17941},
 		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.ShadowBolt.CastTimeMultiplier -= 1
+			procMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.ShadowBolt.CastTimeMultiplier += 1
+			procMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Check if the shadowbolt was instant cast and not a normal one
-			if spell.ClassSpellMask&(WarlockSpellShadowBolt) > 0 && spell.CurCast.CastTime == 0 {
+			if spell.Matches(WarlockSpellShadowBolt) && spell.CurCast.CastTime == 0 {
 				aura.Deactivate(sim)
 			}
 		},

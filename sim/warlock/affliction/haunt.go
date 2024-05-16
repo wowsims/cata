@@ -30,7 +30,7 @@ func (affliction *AfflictionWarlock) registerHauntSpell() {
 		})
 	})
 
-	affliction.Haunt = affliction.RegisterSpell(core.SpellConfig{
+	affliction.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -69,5 +69,6 @@ func (affliction *AfflictionWarlock) registerHauntSpell() {
 			})
 
 		},
+		RelatedAuras: []core.AuraArray{affliction.HauntDebuffAuras},
 	})
 }

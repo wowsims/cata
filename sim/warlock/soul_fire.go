@@ -29,7 +29,7 @@ func (warlock *Warlock) registerSoulFireSpell() {
 		})
 	}
 
-	warlock.SoulFire = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 6353},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,

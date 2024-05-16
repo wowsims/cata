@@ -39,7 +39,7 @@ var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 					dmgMod.Deactivate()
 				},
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell == warlock.FelFlame && result.Landed() {
+					if spell.Matches(WarlockSpellFelFlame) && result.Landed() {
 						aura.RemoveStack(sim)
 					}
 				},

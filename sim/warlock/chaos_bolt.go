@@ -7,7 +7,7 @@ import (
 )
 
 func (warlock *Warlock) registerChaosBoltSpell() {
-	warlock.ChaosBolt = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 50796},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,

@@ -29,10 +29,10 @@ func (warlock *Warlock) registerSeedSpell() {
 		},
 	})
 
-	warlock.SeedDamageTracker = make([]float64, len(warlock.Env.AllUnits))
+	seedDamageTracker := make([]float64, len(warlock.Env.AllUnits))
 	trySeedPop := func(sim *core.Simulation, target *core.Unit, dmg float64) {
-		warlock.SeedDamageTracker[target.UnitIndex] += dmg
-		if warlock.SeedDamageTracker[target.UnitIndex] > 2378 {
+		seedDamageTracker[target.UnitIndex] += dmg
+		if seedDamageTracker[target.UnitIndex] > 2378 {
 			warlock.Seed.Dot(target).Deactivate(sim)
 			seedExplosion.Cast(sim, target)
 		}
@@ -77,10 +77,10 @@ func (warlock *Warlock) registerSeedSpell() {
 					trySeedPop(sim, aura.Unit, result.Damage)
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					warlock.SeedDamageTracker[aura.Unit.UnitIndex] = 0
+					seedDamageTracker[aura.Unit.UnitIndex] = 0
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					warlock.SeedDamageTracker[aura.Unit.UnitIndex] = 0
+					seedDamageTracker[aura.Unit.UnitIndex] = 0
 				},
 			},
 

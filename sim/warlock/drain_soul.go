@@ -11,30 +11,24 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 	soulSiphonMultiplier := 0.03 * float64(warlock.Talents.SoulSiphon)
 
 	calcSoulSiphonMult := func(target *core.Unit) float64 {
-		auras := []*core.Aura{
-			warlock.UnstableAffliction.Dot(target).Aura,
-			warlock.Corruption.Dot(target).Aura,
-			warlock.Seed.Dot(target).Aura,
-			warlock.BaneOfAgony.Dot(target).Aura,
-			warlock.BaneOfDoom.Dot(target).Aura,
-			warlock.CurseOfElementsAuras.Get(target),
-			warlock.CurseOfWeaknessAuras.Get(target),
-			warlock.CurseOfTonguesAuras.Get(target),
-			// missing: death coil
-		}
-		if warlock.HauntDebuffAuras != nil {
-			auras = append(auras, warlock.HauntDebuffAuras.Get(target))
-		}
+		// missing: death coil
+		afflictionDots := WarlockSpellUnstableAffliction | WarlockSpellCorruption |
+			WarlockSpellSeedOfCorruption | WarlockSpellBaneOfAgony | WarlockSpellBaneOfDoom
+
+		afflictionAuras := WarlockSpellHaunt | WarlockSpellCurseOfElements | WarlockSpellCurseOfWeakness |
+			WarlockSpellCurseOfTongues
+
 		numActive := 0
-		for _, aura := range auras {
-			if aura.IsActive() {
+		for _, spell := range warlock.Spellbook {
+			if (spell.Matches(afflictionDots) && spell.Dot(target).IsActive()) ||
+				(spell.Matches(afflictionAuras) && spell.RelatedAuras[0].Get(target).IsActive()) {
 				numActive++
 			}
 		}
 		return 1.0 + float64(min(3, numActive))*soulSiphonMultiplier
 	}
 
-	warlock.DrainSoul = warlock.RegisterSpell(core.SpellConfig{
+	ds := warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1120},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -93,10 +87,10 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 		ActionID: core.ActionID{SpellID: 1120},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.DrainSoul.DamageMultiplier *= 2.0
+			ds.DamageMultiplier *= 2.0
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.DrainSoul.DamageMultiplier /= 2.0
+			ds.DamageMultiplier /= 2.0
 		},
 	})
 
