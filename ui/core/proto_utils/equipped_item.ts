@@ -195,7 +195,11 @@ export class EquippedItem {
 
 	getWithRandomSuffixStats() {
 		const item = this.item;
-		if (this._randomSuffix) item.stats = this._randomSuffix.stats.map(stat => (stat > 0 ? Math.floor((stat * item.randPropPoints) / 10000) : stat));
+		if (this._randomSuffix)
+			item.stats = item.stats.map((stat, index) =>
+				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * item.randPropPoints) / 10000) : stat,
+			);
+
 		return new EquippedItem(item, this._enchant, this._gems, this._randomSuffix, this._reforge);
 	}
 
