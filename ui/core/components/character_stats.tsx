@@ -304,14 +304,11 @@ export class CharacterStats extends Component {
 			// in-game character sheet tooltips will still display the truncated values, but it has been tested to behave
 			// continuously in reality since the patch.
 			displayStr += ` (${(rawValue / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4).toFixed(2)}%)`;
-		} else if (stat == Stat.StatDefense) {
-			displayStr += ` (${(Mechanics.CHARACTER_LEVEL * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)})`;
 		} else if (stat == Stat.StatBlock) {
 			// TODO: Figure out how to display these differently for the components than the final value
 			//displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%)`;
 			displayStr += ` (${(
 				rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE +
-				Mechanics.MISS_DODGE_PARRY_BLOCK_CRIT_CHANCE_PER_DEFENSE * Math.floor(stats.getStat(Stat.StatDefense) / Mechanics.DEFENSE_RATING_PER_DEFENSE) +
 				5.0
 			).toFixed(2)}%)`;
 		} else if (stat == Stat.StatDodge) {

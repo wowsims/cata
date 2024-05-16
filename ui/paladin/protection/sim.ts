@@ -34,7 +34,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatSpellPower,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
-		Stat.StatDefense,
 		Stat.StatBlock,
 		Stat.StatDodge,
 		Stat.StatParry,
@@ -62,7 +61,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatExpertise,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
-		Stat.StatDefense,
 		Stat.StatBlock,
 		Stat.StatDodge,
 		Stat.StatParry,
@@ -108,7 +106,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 				[Stat.StatBlock]: 0.52,
 				[Stat.StatDodge]: 0.46,
 				[Stat.StatParry]: 0.61,
-				[Stat.StatDefense]: 0.54,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 3.33,

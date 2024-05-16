@@ -202,7 +202,7 @@ func applyConsumeEffects(agent Agent) {
 			})
 		case proto.GuardianElixir_ElixirOfMightyDefense:
 			character.AddStats(stats.Stats{
-				stats.Defense: 45,
+				stats.Armor: 180,
 			})
 		case proto.GuardianElixir_ElixirOfMightyFortitude:
 			character.AddStats(stats.Stats{

@@ -31,12 +31,10 @@ const (
 	MeleeHit
 	MeleeCrit
 	MeleeHaste
-	ArmorPenetration
 	Expertise
 	Mana
 	Armor
 	RangedAttackPower
-	Defense
 	Block
 	Dodge
 	Parry
@@ -121,8 +119,6 @@ func (s Stat) StatName() string {
 		return "MeleeCrit"
 	case Expertise:
 		return "Expertise"
-	case ArmorPenetration:
-		return "ArmorPenetration"
 	case Mana:
 		return "Mana"
 	case Armor:
@@ -131,8 +127,6 @@ func (s Stat) StatName() string {
 		return "BonusArmor"
 	case RangedAttackPower:
 		return "RangedAttackPower"
-	case Defense:
-		return "Defense"
 	case Block:
 		return "Block"
 	case Dodge:
