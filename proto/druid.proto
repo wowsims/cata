@@ -185,12 +185,12 @@ message FeralDruid {
   Options options = 3;
 }
 
-message FeralTankDruid {
+message GuardianDruid {
   message Rotation {
 		// Minimum rage to queue HS or Cleave.
 		int32 maul_rage_threshold = 1;
 		bool maintain_demoralizing_roar = 2;
-		double lacerate_time = 3;
+		double pulverize_time = 3;
   }
 
   message Options {

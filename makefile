@@ -11,6 +11,7 @@ PAGE_INDECES := ui/death_knight/blood/index.html \
 				ui/death_knight/unholy/index.html \
 				ui/druid/balance/index.html \
 				ui/druid/feral/index.html \
+				ui/druid/guardian/index.html \
 				ui/druid/restoration/index.html \
 				ui/hunter/beast_mastery/index.html \
 				ui/hunter/marksmanship/index.html \

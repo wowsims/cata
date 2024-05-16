@@ -201,7 +201,7 @@ func (cat *FeralDruid) tfExpectedBefore(sim *core.Simulation, futureTime time.Du
 }
 
 func (cat *FeralDruid) calcTfEnergyThresh(leewayTime time.Duration) float64 {
-	delayTime := leewayTime + core.TernaryDuration(cat.ClearcastingAura.IsActive(), time.Second, 0) + core.TernaryDuration(cat.StampedeCatAura.IsActive(), time.Second, 0)
+	delayTime := leewayTime + core.TernaryDuration(cat.ClearcastingAura.IsActive(), time.Second, 0) + core.TernaryDuration(cat.StampedeCatAura.IsActive() && (cat.Rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget), time.Second, 0)
 	return 40.0 - delayTime.Seconds()*cat.EnergyRegenPerSecond()
 }
 
@@ -230,7 +230,8 @@ func (cat *FeralDruid) TryBerserk(sim *core.Simulation) {
 	// come off cooldown. The latter exception is necessary for
 	// Lacerateweave rotation since TF timings can drift over time.
 	simTimeRemain := sim.GetRemainingDuration()
-	waitForTf := cat.Talents.Berserk && (cat.TigersFury.ReadyAt() <= cat.BerserkAura.Duration) && (cat.TigersFury.ReadyAt()+cat.ReactionTime < simTimeRemain-cat.BerserkAura.Duration)
+	tfCdRemain := cat.TigersFury.TimeToReady(sim)
+	waitForTf := cat.Talents.Berserk && (tfCdRemain <= cat.BerserkAura.Duration) && (tfCdRemain+cat.ReactionTime < simTimeRemain-cat.BerserkAura.Duration)
 	isClearcast := cat.ClearcastingAura.IsActive()
 	berserkNow := cat.Rotation.UseBerserk && cat.Berserk.IsReady(sim) && !waitForTf && !isClearcast
 
@@ -382,7 +383,7 @@ func (cat *FeralDruid) canMeleeWeave(sim *core.Simulation, regenRate float64, cu
 }
 
 func (cat *FeralDruid) canBearWeave(sim *core.Simulation, furorCap float64, regenRate float64, currentEnergy float64, upcomingTimers *PoolingActions, shiftCost float64) bool {
-	if !cat.Rotation.BearWeave || cat.ClearcastingAura.IsActive() || cat.BerserkAura.IsActive() || cat.StampedeCatAura.IsActive() {
+	if !cat.Rotation.BearWeave || cat.ClearcastingAura.IsActive() || cat.BerserkAura.IsActive() || (cat.StampedeCatAura.IsActive() && (cat.Rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget)) {
 		return false
 	}
 
@@ -760,7 +761,7 @@ func (cat *FeralDruid) setupRotation(rotation *proto.FeralDruid_Rotation) {
 		SnekWeave:          rotation.SnekWeave,
 		RakeDpeCheck:       true,
 		UseBerserk:         cat.Talents.Berserk && ((rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget) || rotation.AllowAoeBerserk),
-		MeleeWeave:         rotation.MeleeWeave && (cat.Talents.Stampede > 0),
+		MeleeWeave:         rotation.MeleeWeave && (cat.Talents.Stampede > 0) && (rotation.RotationType == proto.FeralDruid_Rotation_SingleTarget),
 	}
 
 	// Use automatic values unless specified

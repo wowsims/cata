@@ -96,7 +96,7 @@ func getTestPlayerBloodDk() *proto.Player {
 		Race:           proto.Race_RaceWorgen,
 		Class:          proto.Class_ClassDeathKnight,
 		Equipment:      core.GetGearSet("../../ui/death_knight/blood/gear_sets", "p1").GearSet,
-		Rotation:       core.GetAplRotation("../../ui/death_knight/blood/apls", "p1").Rotation,
+		Rotation:       core.GetAplRotation("../../ui/death_knight/blood/apls", "simple").Rotation,
 		Consumes:       FullConsumes,
 		Spec:           PlayerOptionsUnholy,
 		Glyphs:         BloodDefaultGlyphs,

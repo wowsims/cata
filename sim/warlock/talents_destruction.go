@@ -270,7 +270,8 @@ func (warlock *Warlock) registerEmpoweredImp() {
 			castTimeMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell == warlock.SoulFire {
+			// if the soul fire cast started BEFORE we got the empowered imp buff, it does not get consumed
+			if spell == warlock.SoulFire && sim.CurrentTime-spell.CurCast.CastTime > aura.StartedAt() {
 				aura.Deactivate(sim)
 			}
 		},

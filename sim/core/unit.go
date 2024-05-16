@@ -310,7 +310,9 @@ func (unit *Unit) AddStatsDynamic(sim *Simulation, bonus stats.Stats) {
 
 	unit.statsWithoutDeps.AddInplace(&bonus)
 
-	bonus = unit.ApplyStatDependencies(bonus)
+	if !unit.Env.MeasuringStats || unit.Env.State == Finalized {
+		bonus = unit.ApplyStatDependencies(bonus)
+	}
 
 	if sim.Log != nil {
 		unit.Log(sim, "Dynamic stat change: %s", bonus.FlatString())
