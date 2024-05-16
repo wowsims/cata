@@ -33,11 +33,6 @@ export class EquippedItem {
 
 		this.numPossibleSockets = this.numSockets(true);
 
-		// Add stats to the item from the random suffix to allow reforging
-		if (!!this.randomSuffix) {
-			this._item.stats = this.randomSuffix.stats.map(stat => (stat > 0 ? Math.floor((stat * this._item.randPropPoints) / 10000) : stat));
-		}
-
 		// Fill gems with null so we always have the same number of gems as gem slots.
 		if (this._gems.length < this.numPossibleSockets) {
 			this._gems = this._gems.concat(new Array(this.numPossibleSockets - this._gems.length).fill(null));
@@ -196,6 +191,16 @@ export class EquippedItem {
 
 	withRandomSuffix(randomSuffix: ItemRandomSuffix | null): EquippedItem {
 		return new EquippedItem(this._item, this._enchant, this._gems, randomSuffix, this._reforge);
+	}
+
+	getWithRandomSuffixStats() {
+		const item = this.item;
+		if (this._randomSuffix)
+			item.stats = item.stats.map((stat, index) =>
+				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * item.randPropPoints) / 10000) : stat,
+			);
+
+		return new EquippedItem(item, this._enchant, this._gems, this._randomSuffix, this._reforge);
 	}
 
 	asActionId(): ActionId {
