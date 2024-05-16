@@ -38,14 +38,15 @@ func (shaman *Shaman) newChainLightningSpell(isElementalOverload bool) *core.Spe
 	spellConfig.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		bounceReduction := 0.7
 		curTarget := target
+
+		// Damage calculation and DealDamage are in separate loops so that e.g. a spell power proc
+		// can't proc on the first target and apply to the second
 		results := make([]*core.SpellResult, numHits)
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-
-			spell.DamageMultiplier *= bounceReduction
-
 			results[hitIndex] = shaman.calcDamageStormstrikeCritChance(sim, curTarget, baseDamage, spell)
-			curTarget = sim.Environment.NextTargetUnit(curTarget)
 
+			curTarget = sim.Environment.NextTargetUnit(curTarget)
+			spell.DamageMultiplier *= bounceReduction
 		}
 
 		for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {

@@ -18,12 +18,22 @@ func TestElemental(t *testing.T) {
 		Race:       proto.Race_RaceTroll,
 		OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		GearSet:     core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p1"),
-		Talents:     TalentsTotemDuration,
-		Glyphs:      StandardGlyphs,
+		GearSet: core.GetGearSet("../../../ui/shaman/elemental/gear_sets", "p1"),
+		Talents: TalentsTotemDuration,
+		Glyphs:  StandardGlyphs,
+		OtherTalentSets: []core.TalentsCombo{
+			{
+				Label:   "TalentsImprovedShields",
+				Talents: TalentsImprovedShields,
+				Glyphs:  AlternateGlyphs,
+			},
+		},
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Standard", SpecOptions: PlayerOptionsFireElemental},
 		Rotation:    core.GetAplRotation("../../../ui/shaman/elemental/apls", "default"),
+		OtherRotations: []core.RotationCombo{
+			core.GetAplRotation("../../../ui/shaman/elemental/apls", "aoe"),
+		},
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
@@ -49,6 +59,17 @@ var StandardGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.ShamanPrimeGlyph_GlyphOfFlameShock),
 	Prime2: int32(proto.ShamanPrimeGlyph_GlyphOfLavaBurst),
 	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfLightningBolt),
+	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
+	Major2: int32(proto.ShamanMajorGlyph_GlyphOfThunder),
+	Major3: int32(proto.ShamanMajorGlyph_GlyphOfFireNova),
+}
+var AlternateGlyphs = &proto.Glyphs{
+	Prime1: int32(proto.FireTotem_FireElementalTotem),
+	Prime2: int32(proto.ShamanImbue_FlametongueWeapon),
+	Prime3: int32(proto.ShamanPrimeGlyph_GlyphOfUnleashedLightning),
+	Major1: int32(proto.ShamanMajorGlyph_GlyphOfLightningShield),
+	Major2: int32(proto.ShamanMajorGlyph_GlyphOfThunder),
+	Major3: int32(proto.ShamanMajorGlyph_GlyphOfChainLightning),
 }
 
 var NoTotems = &proto.ShamanTotems{}
@@ -67,10 +88,8 @@ var TotemsFireElemental = &proto.ShamanTotems{
 		Fire:  proto.FireTotem_SearingTotem,
 	},
 	Ancestors: &proto.TotemSet{
-		Earth: proto.EarthTotem_TremorTotem,
-		Air:   proto.AirTotem_WrathOfAirTotem,
-		Water: proto.WaterTotem_ManaSpringTotem,
-		Fire:  proto.FireTotem_SearingTotem,
+		Earth: proto.EarthTotem_EarthElementalTotem,
+		Fire:  proto.FireTotem_FireElementalTotem,
 	},
 	Spirits: &proto.TotemSet{
 		Earth: proto.EarthTotem_TremorTotem,
