@@ -129,15 +129,14 @@ enum PaladinAura {
 }
 
 enum PaladinSeal {
-	Vengeance = 0;
-	Command = 1;
-	Righteousness = 2;
+	Truth = 0;
+	Justice = 1;
+	Insight = 2;
 }
 
 enum PaladinJudgement {
-	JudgementOfWisdom = 0;
-	JudgementOfLight = 1;
-	NoJudgement = 2;
+	Judgement = 0;
+	NoJudgement = 1;
 }
 
 message PaladinOptions {
