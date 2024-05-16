@@ -1266,7 +1266,7 @@ dps_results: {
  key: "TestGuardian-Average-Default"
  value: {
   dps: 3383.29649
-  tps: 15843.0236
+  tps: 15843.12915
   dtps: 469.05636
  }
 }
@@ -1316,7 +1316,7 @@ dps_results: {
  key: "TestGuardian-SwitchInFrontOfTarget-Default"
  value: {
   dps: 3718.64029
-  tps: 17507.50196
+  tps: 17507.64297
   dtps: 457.97699
  }
 }
