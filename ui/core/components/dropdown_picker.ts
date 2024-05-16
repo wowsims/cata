@@ -12,6 +12,7 @@ export interface DropdownValueConfig<V> {
 }
 
 export interface DropdownPickerConfig<ModObject, T, V = T> extends InputConfig<ModObject, T, V> {
+	id: string;
 	values: Array<DropdownValueConfig<V>>;
 	equals: (a: V | undefined, b: V | undefined) => boolean;
 	setOptionContent: (button: HTMLButtonElement, valueConfig: DropdownValueConfig<V>, isSelectButton: boolean) => void;
@@ -50,6 +51,7 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		this.buttonElem.setAttribute('data-bs-toggle', 'dropdown');
 		this.buttonElem.setAttribute('aria-expanded', 'false');
 		this.buttonElem.setAttribute('role', 'button');
+		this.buttonElem.id = config.id;
 		this.buttonElem.textContent = config.defaultLabel;
 		this.rootElem.appendChild(this.buttonElem);
 

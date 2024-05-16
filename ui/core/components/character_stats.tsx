@@ -354,6 +354,7 @@ export class CharacterStats extends Component {
 		let popover: TippyInstance | null = null;
 
 		const picker = new NumberPicker(null, this.player, {
+			id: `character-bonus-stat-${stat}`,
 			label: `Bonus ${statName}`,
 			extraCssClasses: ['mb-0'],
 			changedEvent: (player: Player<any>) => player.bonusStatsChangeEmitter,

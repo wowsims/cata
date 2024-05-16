@@ -1,11 +1,9 @@
-// Styles for the player editor modal
-:root {
-	--player-editor-modal-width: 95vw;
-	--player-editor-modal-height: calc(100vh - (2 * var(--bs-modal-dialog-margin-y-sm-up)));
-}
-
 // We're using direct child selectors to avoid affecting modals within the individual sims
 .player-editor-modal {
+	// Styles for the player editor modal
+	--player-editor-modal-width: 95vw;
+	--player-editor-modal-height: calc(100vh - (2 * var(--bs-modal-margin)));
+
 	max-width: var(--player-editor-modal-width) !important;
 	width: var(--player-editor-modal-width) !important;
 
@@ -16,6 +14,12 @@
 		& > .modal-body {
 			padding: 0;
 		}
+	}
+
+	.player-editor,
+	.modal-body,
+	.sim-ui {
+		max-height: 100%;
 	}
 
 	.sim-ui {
@@ -34,9 +38,4 @@
 		z-index: 0 !important;
 	}
 
-	.settings-tab {
-		.tab-panel-col {
-			flex: 1 !important;
-		}
-	}
 }
