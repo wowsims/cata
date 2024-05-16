@@ -83,7 +83,7 @@ type Warrior struct {
 	// Current state
 	Stance                 Stance
 	EnrageEffectMultiplier float64
-	CriticalBlockChance    float64 // Can be gained as non-prot via certain talents and spells
+	CriticalBlockChance    []float64 // Can be gained as non-prot via certain talents and spells
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
@@ -195,7 +195,7 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	// Base dodge unaffected by Diminishing Returns
 	warrior.PseudoStats.BaseDodge += 0.03664
 	warrior.PseudoStats.BaseParry += 0.05
-
+	warrior.CriticalBlockChance = append(warrior.CriticalBlockChance, 0.0, 0.0)
 	return warrior
 }
 
@@ -219,6 +219,10 @@ func (warrior *Warrior) IntensifyRageCooldown(baseCd time.Duration) time.Duratio
 // Shared cooldown for Deadly Calm and Recklessness Activation
 func (warrior *Warrior) RecklessnessDeadlyCalmLock() *core.Timer {
 	return warrior.Character.GetOrInitTimer(&warrior.recklessnessDeadlyCalmCD)
+}
+
+func (warrior *Warrior) GetCriticalBlockChance() float64 {
+	return warrior.CriticalBlockChance[0] + warrior.CriticalBlockChance[1]
 }
 
 // Agent is a generic way to access underlying warrior on any of the agents.
