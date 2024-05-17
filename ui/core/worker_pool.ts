@@ -132,7 +132,7 @@ class SimWorker {
 					break;
 				default:
 					if (!this.taskIdsToPromiseFuncs[id]) {
-						console.warn('Unrecognized result id: ' + id);
+						console.warn('Unrecognized result id: ', id);
 						return;
 					}
 					const promiseFuncs = this.taskIdsToPromiseFuncs[id];

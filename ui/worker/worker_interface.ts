@@ -26,16 +26,17 @@ export class WorkerInterface {
 			const handlerFunc = this.handlers?.[msg];
 
 			if (!handlerFunc) {
-				console.error(`Request msg: ${msg}, id: ${this.workerId}, is not handled!`);
+				console.error(`Request msg: ${msg}, id: ${id}, is not handled!`);
 				return;
 			}
 
-			const progressCallback: HandlerProgressCallback = prog =>
+			const progressCallback: HandlerProgressCallback = prog => {
 				this.postMessage({
 					msg: 'progress',
-					id: `${this.workerId}progress`,
+					id: `${id}progress`,
 					outputData: prog,
 				});
+			};
 
 			const outputData = await handlerFunc(inputData, progressCallback, msg);
 			this.postMessage({ msg, id, outputData });
