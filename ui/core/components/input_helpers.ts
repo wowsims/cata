@@ -3,6 +3,7 @@ import { Spec } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';
 import { ClassOptions, SpecOptions, SpecRotation } from '../proto_utils/utils.js';
 import { EventID, TypedEvent } from '../typed_event.js';
+import { randomUUID } from '../utils';
 import { BooleanPickerConfig } from './boolean_picker.js';
 import { EnumPickerConfig, EnumValueConfig } from './enum_picker.js';
 import { IconEnumPickerConfig, IconEnumValueConfig } from './icon_enum_picker.js';
@@ -47,6 +48,7 @@ function makeWrappedBooleanInput<SpecType extends Spec, ModObject>(
 ): TypedBooleanPickerConfig<Player<SpecType>> {
 	const getModObject = config.getModObject;
 	return {
+		id: config.id,
 		type: 'boolean',
 		label: config.label,
 		labelTooltip: config.labelTooltip,
@@ -69,6 +71,7 @@ export function makeClassOptionsBooleanInput<SpecType extends Spec>(
 	config: PlayerBooleanInputConfig<SpecType, ClassOptions<SpecType>>,
 ): TypedBooleanPickerConfig<Player<SpecType>> {
 	return makeWrappedBooleanInput<SpecType, Player<SpecType>>({
+		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
 		getModObject: (player: Player<SpecType>) => player,
@@ -90,6 +93,7 @@ export function makeSpecOptionsBooleanInput<SpecType extends Spec>(
 	config: PlayerBooleanInputConfig<SpecType, SpecOptions<SpecType>>,
 ): TypedBooleanPickerConfig<Player<SpecType>> {
 	return makeWrappedBooleanInput<SpecType, Player<SpecType>>({
+		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
 		getModObject: (player: Player<SpecType>) => player,
@@ -111,6 +115,7 @@ export function makeRotationBooleanInput<SpecType extends Spec>(
 	config: PlayerBooleanInputConfig<SpecType, SpecRotation<SpecType>>,
 ): TypedBooleanPickerConfig<Player<SpecType>> {
 	return makeWrappedBooleanInput<SpecType, Player<SpecType>>({
+		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
 		getModObject: (player: Player<SpecType>) => player,
@@ -144,6 +149,7 @@ function makeWrappedNumberInput<SpecType extends Spec, ModObject>(
 ): TypedNumberPickerConfig<Player<SpecType>> {
 	const getModObject = config.getModObject;
 	return {
+		id: config.id,
 		type: 'number',
 		label: config.label,
 		labelTooltip: config.labelTooltip,
@@ -172,6 +178,7 @@ export function makeClassOptionsNumberInput<SpecType extends Spec>(
 	config: PlayerNumberInputConfig<SpecType, ClassOptions<SpecType>>,
 ): TypedNumberPickerConfig<Player<SpecType>> {
 	const internalConfig = {
+		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
 		float: config.float,
@@ -202,6 +209,7 @@ export function makeSpecOptionsNumberInput<SpecType extends Spec>(
 	config: PlayerNumberInputConfig<SpecType, SpecOptions<SpecType>>,
 ): TypedNumberPickerConfig<Player<SpecType>> {
 	const internalConfig = {
+		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
 		float: config.float,
@@ -232,6 +240,7 @@ export function makeRotationNumberInput<SpecType extends Spec>(
 	config: PlayerNumberInputConfig<SpecType, SpecRotation<SpecType>>,
 ): TypedNumberPickerConfig<Player<SpecType>> {
 	const internalConfig = {
+		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
 		float: config.float,
@@ -272,6 +281,7 @@ interface WrappedEnumInputConfig<SpecType extends Spec, ModObject> extends EnumP
 function makeWrappedEnumInput<SpecType extends Spec, ModObject>(config: WrappedEnumInputConfig<SpecType, ModObject>): TypedEnumPickerConfig<Player<SpecType>> {
 	const getModObject = config.getModObject;
 	return {
+		id: config.id,
 		type: 'enum',
 		label: config.label,
 		labelTooltip: config.labelTooltip,
@@ -300,6 +310,7 @@ export function makeClassOptionsEnumInput<SpecType extends Spec, _T>(
 	config: PlayerEnumInputConfig<SpecType, ClassOptions<SpecType>>,
 ): TypedEnumPickerConfig<Player<SpecType>> {
 	return makeWrappedEnumInput<SpecType, Player<SpecType>>({
+		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
 		values: config.values,
@@ -322,6 +333,7 @@ export function makeSpecOptionsEnumInput<SpecType extends Spec, _T>(
 	config: PlayerEnumInputConfig<SpecType, SpecOptions<SpecType>>,
 ): TypedEnumPickerConfig<Player<SpecType>> {
 	return makeWrappedEnumInput<SpecType, Player<SpecType>>({
+		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
 		values: config.values,
@@ -344,6 +356,7 @@ export function makeRotationEnumInput<SpecType extends Spec, _T>(
 	config: PlayerEnumInputConfig<SpecType, SpecRotation<SpecType>>,
 ): TypedEnumPickerConfig<Player<SpecType>> {
 	return makeWrappedEnumInput<SpecType, Player<SpecType>>({
+		id: `${String(config.fieldName) || randomUUID()}`,
 		label: config.label,
 		labelTooltip: config.labelTooltip,
 		values: config.values,

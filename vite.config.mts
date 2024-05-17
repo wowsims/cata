@@ -5,6 +5,7 @@ import glob from 'glob';
 import { IncomingMessage, ServerResponse } from 'http';
 import path from 'path';
 import { ConfigEnv, defineConfig, PluginOption, UserConfigExport } from 'vite';
+import { checker } from 'vite-plugin-checker';
 
 export const BASE_PATH = path.resolve(__dirname, 'ui');
 export const OUT_DIR = path.join(__dirname, 'dist', 'cata');
@@ -100,7 +101,14 @@ export default defineConfig(({ command, mode }) => {
 	const baseConfig = getBaseConfig({ command, mode });
 	return {
 		...baseConfig,
-		plugins: [serveExternalAssets()],
+		plugins: [
+			serveExternalAssets(),
+			checker({
+				root: path.resolve(__dirname, 'ui'),
+				typescript: true,
+				enableBuild: true,
+			}),
+		],
 		build: {
 			...baseConfig.build,
 			rollupOptions: {

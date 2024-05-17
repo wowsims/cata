@@ -32,7 +32,7 @@ func (druid *Druid) registerMaulSpell() {
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  424, // TODO: Measure for Cata
+		FlatThreatBonus:  30,
 		BonusCoefficient: 1,
 		MaxRange:         core.MaxMeleeRange,
 

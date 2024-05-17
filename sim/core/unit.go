@@ -438,10 +438,6 @@ func (unit *Unit) BlockDamageReduction() float64 {
 	return unit.PseudoStats.BlockDamageReduction
 }
 
-func (unit *Unit) ArmorPenetrationPercentage(armorPenRating float64) float64 {
-	return max(min(armorPenRating/ArmorPenPerPercentArmor, 100.0)*0.01, 0.0)
-}
-
 func (unit *Unit) RangedSwingSpeed() float64 {
 	return unit.PseudoStats.RangedSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100)))
 }
@@ -685,8 +681,7 @@ func (unit *Unit) GetTotalChanceToBeMissedAsDefender(atkTable *AttackTable) floa
 
 func (unit *Unit) GetTotalBlockChanceAsDefender(atkTable *AttackTable) float64 {
 	chance := atkTable.BaseBlockChance +
-		unit.GetStat(stats.Block)/BlockRatingPerBlockChance/100 +
-		unit.GetStat(stats.Defense)*DefenseRatingToChanceReduction
+		unit.GetStat(stats.Block)/BlockRatingPerBlockChance/100
 	return math.Max(chance, 0.0)
 }
 

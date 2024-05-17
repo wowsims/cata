@@ -101,7 +101,7 @@ enum Profession {
 }
 
 // Keep in sync with sim/core/stats/stats.go.
-// NextIndex: 33;
+// NextIndex: 31;
 enum Stat {
 	StatStrength = 0;
 	StatAgility = 1;
@@ -118,24 +118,22 @@ enum Stat {
 	StatMeleeHit = 12;
 	StatMeleeCrit = 13;
 	StatMeleeHaste = 14;
-	StatArmorPenetration = 15;
-	StatExpertise = 16;
-	StatMana = 17;
-	StatArmor = 18;
-	StatRangedAttackPower = 19;
-	StatDefense = 20;
-	StatBlock = 21;
-	StatDodge = 22;
-	StatParry = 23;
-	StatResilience = 24;
-	StatHealth = 25;
-	StatArcaneResistance = 26;
-	StatFireResistance = 27;
-	StatFrostResistance = 28;
-	StatNatureResistance = 29;
-	StatShadowResistance = 30;
-	StatBonusArmor = 31;
-	StatMastery = 32;
+	StatExpertise = 15;
+	StatMana = 16;
+	StatArmor = 17;
+	StatRangedAttackPower = 18;
+	StatBlock = 19;
+	StatDodge = 20;
+	StatParry = 21;
+	StatResilience = 22;
+	StatHealth = 23;
+	StatArcaneResistance = 24;
+	StatFireResistance = 25;
+	StatFrostResistance = 26;
+	StatNatureResistance = 27;
+	StatShadowResistance = 28;
+	StatBonusArmor = 29;
+	StatMastery = 30;
 
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.

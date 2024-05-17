@@ -72,6 +72,7 @@ export class RotationTab extends SimTab {
 		this.leftPanel.appendChild(header);
 
 		new EnumPicker(header, this.simUI.player, {
+			id: 'rotation-tab-rotation-type',
 			label: 'Rotation Type',
 			labelTooltip: 'Which set of options to use for specifying the rotation.',
 			inline: true,

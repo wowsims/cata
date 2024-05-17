@@ -30,6 +30,7 @@ func (druid *Druid) applyOmenOfClarity() {
 				druid.MangleBear,
 				druid.MangleCat,
 				druid.Maul,
+				druid.Pulverize,
 				druid.Rake,
 				druid.Rip,
 				druid.Shred,

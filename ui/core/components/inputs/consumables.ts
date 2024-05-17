@@ -408,7 +408,7 @@ export const GUARDIAN_ELIXIRS_CONFIG = [
 		config: PrismaticElixir,
 		stats: [Stat.StatArcaneResistance, Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatNatureResistance, Stat.StatShadowResistance],
 	},
-	{ config: ElixirOfMightyDefense, stats: [Stat.StatDefense] },
+	{ config: ElixirOfMightyDefense, stats: [Stat.StatArmor] },
 	{ config: ElixirOfMightyFortitude, stats: [Stat.StatStamina] },
 	{ config: ElixirOfMightyMageblood, stats: [Stat.StatMP5] },
 	{ config: ElixirOfMightyThoughts, stats: [Stat.StatIntellect] },
