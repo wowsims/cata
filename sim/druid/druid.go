@@ -318,7 +318,7 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	druid.registerMangleBearSpell()
 	druid.registerMaulSpell()
 	druid.registerLacerateSpell()
-	//druid.registerSavageDefensePassive()
+	druid.registerSavageDefensePassive()
 	//druid.registerSurvivalInstinctsCD()
 	druid.registerSwipeBearSpell()
 	druid.registerThrashBearSpell()
