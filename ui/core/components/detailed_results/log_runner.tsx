@@ -99,7 +99,7 @@ export class LogRunner extends ResultComponent {
 		this.virtualScroll = new CustomVirtualScroll({
 			scrollContainer: this.ui.scrollContainer,
 			contentContainer: this.ui.contentContainer,
-			itemHeight: 30,
+			itemHeight: 32,
 		});
 	}
 
@@ -141,15 +141,19 @@ export class LogRunner extends ResultComponent {
 		const validLogs = resultData.result.logs.filter(log => !log.isCastCompleted());
 		this.cacheOutput.cacheKey = resultData?.eventID;
 		this.cacheOutput.logs = validLogs;
-		this.cacheOutput.logsAsHTML = validLogs.map(log => (
+		this.cacheOutput.logsAsHTML = validLogs.map(log => this.renderItem(log));
+		this.cacheOutput.logsAsText = this.cacheOutput.logsAsHTML.map(element => fragmentToString(element).trim().toLowerCase());
+
+		return this.cacheOutput.logsAsHTML;
+	}
+
+	renderItem(log: SimLog) {
+		return (
 			<tr>
 				<td className="log-timestamp">{log.formattedTimestamp()}</td>
 				<td className="log-evdsfent">{log.toHTML(false)}</td>
 			</tr>
-		));
-		this.cacheOutput.logsAsText = this.cacheOutput.logsAsHTML.map(element => fragmentToString(element).trim().toLowerCase());
-
-		return this.cacheOutput.logsAsHTML;
+		) as HTMLTableRowElement;
 	}
 }
 
@@ -210,17 +214,17 @@ class CustomVirtualScroll {
 	private updateVisibleItems(): void {
 		const endIndex = this.startIndex + this.visibleItemsCount;
 		const visibleItems = this.items.slice(this.startIndex, endIndex);
+		const remainingItems = this.items.length - endIndex;
 
 		// Reset content and adjust placeholders
 		this.contentContainer.innerHTML = '';
-		this.contentContainer.appendChild(this.placeholderTop);
+		// Update the height of the placeholders before it's placed in the dom to prevent rerender
 		this.placeholderTop.style.height = `${this.startIndex * this.itemHeight}px`;
-		const fragment = document.createDocumentFragment();
-		visibleItems.forEach(item => fragment.appendChild(item));
-		this.contentContainer.appendChild(fragment);
-
-		this.contentContainer.appendChild(this.placeholderBottom);
-		const remainingItems = this.items.length - endIndex;
 		this.placeholderBottom.style.height = `${remainingItems * this.itemHeight}px`;
+		const fragment = document.createDocumentFragment();
+		fragment.appendChild(this.placeholderTop);
+		visibleItems.forEach(item => fragment.appendChild(item));
+		fragment.appendChild(this.placeholderBottom);
+		this.contentContainer.appendChild(fragment);
 	}
 }
