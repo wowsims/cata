@@ -31,3 +31,11 @@ export const DetonateSeed = <SpecType extends WarlockSpecs>() =>
 		label: 'Detonate Seed on Cast',
 		labelTooltip: 'Simulates raid doing damage to targets such that seed detonates immediately on cast.',
 	});
+
+// Demo only
+export const PrepullMastery =
+	InputHelpers.makeClassOptionsNumberInput<Spec.SpecDemonologyWarlock>({
+	fieldName: 'prepullMastery',
+	label: 'Prepull Mastery',
+	labelTooltip: 'Mastery in the prepull set equipped at the start. Only applies if it\'s value is > 0 and only before combat.',
+});
