@@ -57,7 +57,7 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 }
 
 func (warlock *Warlock) registerManaFeed() {
-	if warlock.Talents.ManaFeed <= 0 {
+	if warlock.Talents.ManaFeed <= 0 && !warlock.Talents.Metamorphosis {
 		return
 	}
 
