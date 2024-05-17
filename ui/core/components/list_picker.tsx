@@ -1,5 +1,5 @@
 import tippy, { Instance as TippyInstance } from 'tippy.js';
-import { element, fragment } from 'tsx-vanilla';
+
 
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Input, InputConfig } from './input.js';

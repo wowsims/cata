@@ -88,6 +88,9 @@ export default defineConfig(({ command, mode }) => ({
 	],
 	base: '/cata/',
 	root: path.join(__dirname, 'ui'),
+	esbuild: {
+		jsxInject: "import { element, fragment } from 'tsx-vanilla';",
+	},
 	build: {
 		outDir: path.join(__dirname, 'dist', 'cata'),
 		minify: mode === 'development' ? false : 'terser',

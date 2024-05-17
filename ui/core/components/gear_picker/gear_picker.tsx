@@ -1,6 +1,5 @@
 import tippy from 'tippy.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { SortDirection } from '../../constants/other';
 import { setItemQualityCssClass } from '../../css_utils';

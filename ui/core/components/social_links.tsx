@@ -1,6 +1,5 @@
 import tippy from 'tippy.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element } from 'tsx-vanilla';
+
 
 import { Component } from './component';
 
