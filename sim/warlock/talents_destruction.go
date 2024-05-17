@@ -60,10 +60,6 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 	warlock.registerEmpoweredImp()
 
 	// TODO: BANE OF HAVOC
-
-	if warlock.Talents.ChaosBolt {
-		warlock.registerChaosBolt()
-	}
 }
 
 func (warlock *Warlock) registerImprovedSearingPain() {
