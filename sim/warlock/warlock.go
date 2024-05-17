@@ -66,6 +66,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerCurseOfTongues()
 	warlock.registerCurseOfWeakness()
 	warlock.registerDemonSoul()
+	warlock.registerDrainLife()
 	warlock.registerDrainSoul()
 	warlock.registerFelFlame()
 	warlock.registerImmolate()

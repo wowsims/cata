@@ -14,15 +14,23 @@ func (warlock *Warlock) registerSoulburn() {
 		FloatValue: -1.0,
 	})
 
+	drainLifeCastMod := warlock.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  WarlockSpellDrainLife,
+		FloatValue: -0.5,
+	})
+
 	warlock.SoulBurnAura = warlock.RegisterAura(core.Aura{
 		Label:    "Soulburn",
 		ActionID: core.ActionID{SpellID: 74434},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Activate()
+			drainLifeCastMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Deactivate()
+			drainLifeCastMod.Deactivate()
 		},
 	})
 
