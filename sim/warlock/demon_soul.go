@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerDemonSoulSpell() {
+func (warlock *Warlock) registerDemonSoul() {
 
 	impMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusCrit_Rating,

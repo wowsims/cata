@@ -7,7 +7,7 @@ import (
 )
 
 // TODO: Check damage and coefficients
-func (warlock *Warlock) registerDrainSoulSpell() {
+func (warlock *Warlock) registerDrainSoul() {
 	soulSiphonMultiplier := 0.03 * float64(warlock.Talents.SoulSiphon)
 
 	calcSoulSiphonMult := func(target *core.Unit) float64 {

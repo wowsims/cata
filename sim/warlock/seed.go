@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerSeedSpell() {
+func (warlock *Warlock) registerSeed() {
 	actionID := core.ActionID{SpellID: 27243}
 
 	seedExplosion := warlock.RegisterSpell(core.SpellConfig{

@@ -16,7 +16,7 @@ func (warlock *Warlock) ChangeActivePet(sim *core.Simulation, newPet *WarlockPet
 	newPet.Enable(sim, newPet)
 }
 
-func (warlock *Warlock) registerSummonFelHunterSpell() {
+func (warlock *Warlock) registerSummonFelHunter() {
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 691},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -42,7 +42,7 @@ func (warlock *Warlock) registerSummonFelHunterSpell() {
 	})
 }
 
-func (warlock *Warlock) registerSummonImpSpell() {
+func (warlock *Warlock) registerSummonImp() {
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 688},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -68,7 +68,7 @@ func (warlock *Warlock) registerSummonImpSpell() {
 	})
 }
 
-func (warlock *Warlock) registerSummonSuccubusSpell() {
+func (warlock *Warlock) registerSummonSuccubus() {
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 712},
 		SpellSchool:    core.SpellSchoolShadow,

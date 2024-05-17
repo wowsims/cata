@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerImmolateSpell() {
+func (warlock *Warlock) registerImmolate() {
 	fireAndBrimstoneMod := warlock.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  WarlockSpellIncinerate | WarlockSpellChaosBolt,
 		Kind:       core.SpellMod_DamageDone_Flat,

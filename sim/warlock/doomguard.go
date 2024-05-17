@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (warlock *Warlock) registerSummonDoomguardSpell(timer *core.Timer) {
+func (warlock *Warlock) registerSummonDoomguard(timer *core.Timer) {
 	duration := time.Duration(45+10*warlock.Talents.AncientGrimoire) * time.Second
 
 	summonDoomguardAura := warlock.RegisterAura(core.Aura{

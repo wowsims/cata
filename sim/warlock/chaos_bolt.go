@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerChaosBoltSpell() {
+func (warlock *Warlock) registerChaosBolt() {
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 50796},
 		SpellSchool:    core.SpellSchoolFire,

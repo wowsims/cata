@@ -9,7 +9,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (warlock *Warlock) registerSummonInfernalSpell(timer *core.Timer) {
+func (warlock *Warlock) registerSummonInfernal(timer *core.Timer) {
 	duration := time.Duration(45+10*warlock.Talents.AncientGrimoire) * time.Second
 
 	summonInfernalAura := warlock.RegisterAura(core.Aura{

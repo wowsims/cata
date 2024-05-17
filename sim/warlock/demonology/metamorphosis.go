@@ -9,7 +9,7 @@ import (
 	"github.com/wowsims/cata/sim/warlock"
 )
 
-func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
+func (demonology *DemonologyWarlock) registerMetamorphosis() {
 	if !demonology.Talents.Metamorphosis {
 		return
 	}

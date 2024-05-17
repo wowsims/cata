@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/warlock"
 )
 
-func (destruction *DestructionWarlock) registerConflagrateSpell() {
+func (destruction *DestructionWarlock) registerConflagrate() {
 	destruction.Conflagrate = destruction.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 17962},
 		SpellSchool:    core.SpellSchoolFire,

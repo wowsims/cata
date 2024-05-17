@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerSearingPainSpell() {
+func (warlock *Warlock) registerSearingPain() {
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 5676},
 		SpellSchool:    core.SpellSchoolFire,

@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/warlock"
 )
 
-func (affliction *AfflictionWarlock) registerUnstableAfflictionSpell() {
+func (affliction *AfflictionWarlock) registerUnstableAffliction() {
 	affliction.UnstableAffliction = affliction.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30108},
 		SpellSchool:    core.SpellSchoolShadow,

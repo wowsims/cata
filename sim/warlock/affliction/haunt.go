@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/cata/sim/warlock"
 )
 
-func (affliction *AfflictionWarlock) registerHauntSpell() {
+func (affliction *AfflictionWarlock) registerHaunt() {
 	if !affliction.Talents.Haunt {
 		return
 	}

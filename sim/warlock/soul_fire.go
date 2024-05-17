@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (warlock *Warlock) registerSoulFireSpell() {
+func (warlock *Warlock) registerSoulFire() {
 	var improvedSoulFire *core.Aura = nil
 	if warlock.Talents.ImprovedSoulFire > 0 {
 		damageBonus := 1 + .04*float64(warlock.Talents.ImprovedSoulFire)

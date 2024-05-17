@@ -4,7 +4,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerFelFlameSpell() {
+func (warlock *Warlock) registerFelFlame() {
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 77799},
 		SpellSchool:    core.SpellSchoolShadow | core.SpellSchoolFire,

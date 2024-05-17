@@ -62,7 +62,7 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 	// TODO: BANE OF HAVOC
 
 	if warlock.Talents.ChaosBolt {
-		warlock.registerChaosBoltSpell()
+		warlock.registerChaosBolt()
 	}
 }
 
