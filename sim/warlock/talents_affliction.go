@@ -91,22 +91,11 @@ func (warlock *Warlock) registerDeathsEmbrace() {
 		FloatValue: 0.04 * float64(warlock.Talents.DeathsEmbrace),
 	})
 
-	deathsEmbraceAura := warlock.RegisterAura(core.Aura{
-		Label:    "Deaths Embrace",
-		ActionID: core.ActionID{SpellID: 1120},
-		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			deathsEmbraceMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			deathsEmbraceMod.Deactivate()
-		},
-	})
-
 	warlock.RegisterResetEffect(func(sim *core.Simulation) {
+		deathsEmbraceMod.Deactivate()
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 25 {
-				deathsEmbraceAura.Activate(sim)
+				deathsEmbraceMod.Activate()
 			}
 		})
 	})
