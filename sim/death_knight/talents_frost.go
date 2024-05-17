@@ -103,15 +103,14 @@ func (dk *DeathKnight) applyMercilessCombat() {
 		return aura
 	})
 
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
-		Name:           "Merciless Combat Proc",
-		Callback:       core.CallbackOnApplyEffects,
-		ClassSpellMask: DeathKnightSpellMercilessCombat,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if sim.IsExecutePhase35() {
-				debuffs.Get(result.Target).Activate(sim)
+	dk.RegisterResetEffect(func(sim *core.Simulation) {
+		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
+			if isExecute == 35 {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					debuffs.Get(aoeTarget).Activate(sim)
+				}
 			}
-		},
+		})
 	})
 }
 

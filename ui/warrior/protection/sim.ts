@@ -109,7 +109,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			trueshotAura: true,
 			wrathOfAirTotem: true,
 			demonicPact: true,
-			blessingOfKings: true,
 			blessingOfMight: true,
 			communion: true,
 			devotionAura: true,

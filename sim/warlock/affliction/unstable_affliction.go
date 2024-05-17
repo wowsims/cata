@@ -22,7 +22,7 @@ func (affliction *AfflictionWarlock) registerUnstableAfflictionSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 1500,
+				CastTime: 1500 * time.Millisecond,
 			},
 		},
 
@@ -35,10 +35,10 @@ func (affliction *AfflictionWarlock) registerUnstableAfflictionSpell() {
 				Label: "UnstableAffliction",
 			},
 			NumberOfTicks:    5,
-			TickLength:       time.Second * 3,
+			TickLength:       3 * time.Second,
 			BonusCoefficient: 0.2,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
-				baseDamage := affliction.ScalingBaseDamage * warlock.Coefficient_UnstableAffliction / 5
+				baseDamage := affliction.CalcScalingSpellDmg(warlock.Coefficient_UnstableAffliction) / 5
 				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

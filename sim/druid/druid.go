@@ -35,46 +35,48 @@ type Druid struct {
 	MHAutoSpell       *core.Spell
 	ReplaceBearMHFunc core.ReplaceMHSwing
 
-	Barkskin             *DruidSpell
-	Berserk              *DruidSpell
-	CatCharge            *DruidSpell
-	DemoralizingRoar     *DruidSpell
-	Enrage               *DruidSpell
-	FaerieFire           *DruidSpell
-	FerociousBite        *DruidSpell
-	ForceOfNature        *DruidSpell
-	FrenziedRegeneration *DruidSpell
-	Hurricane            *DruidSpell
-	HurricaneTickSpell   *DruidSpell
-	InsectSwarm          *DruidSpell
-	GiftOfTheWild        *DruidSpell
-	Lacerate             *DruidSpell
-	Languish             *DruidSpell
-	MangleBear           *DruidSpell
-	MangleCat            *DruidSpell
-	Maul                 *DruidSpell
-	MaulQueueSpell       *DruidSpell
-	Moonfire             *DruidSpell
-	MoonfireDoT          *DruidSpell
-	Pulverize            *DruidSpell
-	Rebirth              *DruidSpell
-	Rake                 *DruidSpell
-	Ravage               *DruidSpell
-	Rip                  *DruidSpell
-	SavageRoar           *DruidSpell
-	Shred                *DruidSpell
-	Starfire             *DruidSpell
-	Starfall             *DruidSpell
-	Starsurge            *DruidSpell
-	Sunfire              *DruidSpell
-	SunfireDoT           *DruidSpell
-	SurvivalInstincts    *DruidSpell
-	SwipeBear            *DruidSpell
-	SwipeCat             *DruidSpell
-	TigersFury           *DruidSpell
-	Thrash               *DruidSpell
-	Typhoon              *DruidSpell
-	Wrath                *DruidSpell
+	Barkskin              *DruidSpell
+	Berserk               *DruidSpell
+	CatCharge             *DruidSpell
+	DemoralizingRoar      *DruidSpell
+	Enrage                *DruidSpell
+	FaerieFire            *DruidSpell
+	FerociousBite         *DruidSpell
+	ForceOfNature         *DruidSpell
+	FrenziedRegeneration  *DruidSpell
+	Hurricane             *DruidSpell
+	HurricaneTickSpell    *DruidSpell
+	InsectSwarm           *DruidSpell
+	GiftOfTheWild         *DruidSpell
+	Lacerate              *DruidSpell
+	Languish              *DruidSpell
+	MangleBear            *DruidSpell
+	MangleCat             *DruidSpell
+	Maul                  *DruidSpell
+	MaulQueueSpell        *DruidSpell
+	Moonfire              *DruidSpell
+	MoonfireDoT           *DruidSpell
+	Pulverize             *DruidSpell
+	Rebirth               *DruidSpell
+	Rake                  *DruidSpell
+	Ravage                *DruidSpell
+	Rip                   *DruidSpell
+	SavageRoar            *DruidSpell
+	Shred                 *DruidSpell
+	Starfire              *DruidSpell
+	Starfall              *DruidSpell
+	Starsurge             *DruidSpell
+	Sunfire               *DruidSpell
+	SunfireDoT            *DruidSpell
+	SurvivalInstincts     *DruidSpell
+	SwipeBear             *DruidSpell
+	SwipeCat              *DruidSpell
+	TigersFury            *DruidSpell
+	Thrash                *DruidSpell
+	Typhoon               *DruidSpell
+	Wrath                 *DruidSpell
+	WildMushrooms         *DruidSpell
+	WildMushroomsDetonate *DruidSpell
 
 	CatForm  *DruidSpell
 	BearForm *DruidSpell
@@ -115,11 +117,10 @@ type Druid struct {
 	ProcOoc func(sim *core.Simulation)
 
 	ExtendingMoonfireStacks int
-	LunarICD                core.Cooldown
-	SolarICD                core.Cooldown
-	// Treant1                 *TreantPet
-	// Treant2                 *TreantPet
-	// Treant3                 *TreantPet
+
+	Treant1 *TreantPet
+	Treant2 *TreantPet
+	Treant3 *TreantPet
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
@@ -165,7 +166,7 @@ const (
 	DruidSpellHoT       = DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellRegrowth | DruidSpellWildGrowth
 	DruidSpellInstant   = DruidSpellBarkskin | DruidSpellInsectSwarm | DruidSpellMoonfire | DruidSpellStarfall | DruidSpellSunfire | DruidSpellFearieFire | DruidSpellBarkskin
 	DruidArcaneSpells   = DruidSpellMoonfire | DruidSpellMoonfireDoT | DruidSpellStarfire | DruidSpellStarsurge | DruidSpellStarfall
-	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellMoonfireDoT | DruidSpellTyphoon | DruidSpellHurricane
+	DruidNatureSpells   = DruidSpellInsectSwarm | DruidSpellStarsurge | DruidSpellSunfire | DruidSpellSunfireDoT | DruidSpellTyphoon | DruidSpellHurricane
 	DruidHealingSpells  = DruidSpellHealingTouch | DruidSpellRegrowth | DruidSpellRejuvenation | DruidSpellLifebloom | DruidSpellNourish | DruidSpellSwiftmend
 	DruidDamagingSpells = DruidArcaneSpells | DruidNatureSpells
 )
@@ -272,7 +273,7 @@ func (druid *Druid) Initialize() {
 }
 
 func (druid *Druid) RegisterBalanceSpells() {
-	//druid.registerHurricaneSpell()
+	druid.registerHurricaneSpell()
 	druid.registerInsectSwarmSpell()
 	druid.registerMoonfireSpell()
 	druid.registerSunfireSpell()
@@ -280,58 +281,59 @@ func (druid *Druid) RegisterBalanceSpells() {
 	druid.registerWrathSpell()
 	druid.registerStarfallSpell()
 	druid.registerTyphoonSpell()
-	//druid.registerForceOfNatureCD()
+	druid.registerForceOfNature()
 	druid.registerStarsurgeSpell()
+	druid.registerWildMushrooms()
 }
 
 func (druid *Druid) RegisterFeralCatSpells() {
+	druid.registerBearFormSpell()
 	druid.registerBerserkCD()
 	druid.registerCatCharge()
 	druid.registerCatFormSpell()
-
-	// 	druid.registerBearFormSpell()
-	// 	druid.registerEnrageSpell()
+	druid.registerEnrageSpell()
 	druid.registerFerociousBiteSpell()
 	druid.registerLacerateSpell()
-	// 	druid.registerMangleBearSpell()
+	druid.registerMangleBearSpell()
 	druid.registerMangleCatSpell()
-	// 	druid.registerMaulSpell()
+	druid.registerMaulSpell()
 	druid.registerRakeSpell()
 	druid.registerRavageSpell()
 	druid.registerRipSpell()
 	druid.registerSavageRoarSpell()
 	druid.registerShredSpell()
-	// 	druid.registerSwipeBearSpell()
+	druid.registerSwipeBearSpell()
 	druid.registerSwipeCatSpell()
 	druid.registerThrashBearSpell()
 	druid.registerTigersFurySpell()
 }
 
-// func (druid *Druid) RegisterFeralTankSpells() {
-// 	druid.registerBarkskinCD()
-// 	druid.registerBerserkCD()
-// 	druid.registerBearFormSpell()
-// 	druid.registerDemoralizingRoarSpell()
-// 	druid.registerEnrageSpell()
-// 	druid.registerFrenziedRegenerationCD()
-// 	druid.registerMangleBearSpell()
-// 	druid.registerMaulSpell()
-// 	druid.registerLacerateSpell()
-// 	druid.registerRakeSpell()
-// 	druid.registerRipSpell()
-// 	druid.registerSavageDefensePassive()
-// 	druid.registerSurvivalInstinctsCD()
-// 	druid.registerSwipeBearSpell()
-//  druid.registerThrashBearSpell()
-// }
+func (druid *Druid) RegisterFeralTankSpells() {
+	//druid.registerBarkskinCD()
+	druid.registerBerserkCD()
+	druid.registerBearFormSpell()
+	druid.registerDemoralizingRoarSpell()
+	druid.registerEnrageSpell()
+	//druid.registerFrenziedRegenerationCD()
+	druid.registerMangleBearSpell()
+	druid.registerMaulSpell()
+	druid.registerLacerateSpell()
+	druid.registerPulverizeSpell()
+	druid.registerRakeSpell()
+	druid.registerRipSpell()
+	druid.registerSavageDefensePassive()
+	//druid.registerSurvivalInstinctsCD()
+	druid.registerSwipeBearSpell()
+	druid.registerThrashBearSpell()
+}
 
 func (druid *Druid) Reset(_ *core.Simulation) {
 
 	druid.eclipseEnergyBar.reset()
-	// druid.BleedsActive = 0
-	// druid.form = druid.StartingForm
-	// druid.disabledMCDs = []*core.MajorCooldown{}
-	// druid.RebirthUsed = false
+	druid.BleedsActive = 0
+	druid.form = druid.StartingForm
+	druid.disabledMCDs = []*core.MajorCooldown{}
+	druid.RebirthUsed = false
 	// druid.LunarICD.Timer.Reset()
 	// druid.SolarICD.Timer.Reset()
 }
@@ -352,20 +354,17 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	druid.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 	druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[char.Class]*core.CritRatingPerCritChance)
-	// 	// // Druid get 0.0209 dodge per agi (before dr), roughly 1 per 47.846
-	// 	// druid.AddStatDependency(stats.Agility, stats.Dodge, (0.0209)*core.DodgeRatingPerDodgeChance)
-
-	// 	// // Druids get extra melee haste
-	// 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
+	// Druids get 0.0041 dodge per agi (before dr), roughly 1% per 244
+	druid.AddStatDependency(stats.Agility, stats.Dodge, 0.00410000 * core.DodgeRatingPerDodgeChance)
 
 	// Base dodge is unaffected by Diminishing Returns
-	druid.PseudoStats.BaseDodge += 0.056097 // TODO: Check if this is different in Cata
+	druid.PseudoStats.BaseDodge += 0.04951
 
-	// 	// if druid.Talents.ForceOfNature {
-	// 	// 	druid.Treant1 = druid.NewTreant()
-	// 	// 	druid.Treant2 = druid.NewTreant()
-	// 	// 	druid.Treant3 = druid.NewTreant()
-	// 	// }
+	if druid.Talents.ForceOfNature {
+		druid.Treant1 = druid.NewTreant()
+		druid.Treant2 = druid.NewTreant()
+		druid.Treant3 = druid.NewTreant()
+	}
 
 	return druid
 }

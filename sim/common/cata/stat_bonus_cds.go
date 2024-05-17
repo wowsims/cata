@@ -8,9 +8,9 @@ import (
 )
 
 func init() {
-
 	// HASTE
-	shared.NewHasteActive(67152, 617, time.Second*20, time.Minute*2) // Lady La-La's Singing Shell
+	shared.NewHasteActive(67152, 617, time.Second*20, time.Minute*2)  // Lady La-La's Singing Shell
+	shared.NewHasteActive(60233, 1935, time.Second*10, time.Minute*1) // Shard of Woe
 
 	// CRIT
 	shared.NewCritActive(66879, 512, time.Second*20, time.Minute*2) // Bottled Lightning
@@ -35,8 +35,9 @@ func init() {
 	shared.NewAgilityActive(63843, 1095, time.Second*15, time.Second*90) // Blood-Soaked Ale Mug
 	shared.NewAgilityActive(52199, 1425, time.Second*20, time.Second*90) // Figurine - Demon Panther
 	shared.NewAgilityActive(64687, 1520, time.Second*20, time.Second*90) // Bloodthirsty Gladiator's Badge of Conquest
-	shared.NewAgilityActive(68709, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (Alliance)
-	shared.NewAgilityActive(62468, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (Horde)
+	shared.NewAgilityActive(62468, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (Alliance)
+	shared.NewAgilityActive(62463, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (Horde)
+	shared.NewAgilityActive(68709, 1605, time.Second*20, time.Minute*2)  // Unsolvable Riddle (No Faction)
 	shared.NewAgilityActive(61033, 1605, time.Second*20, time.Minute*2)  // Vicious Gladiator's Badge of Conquest
 
 	// SPIRIT

@@ -1,18 +1,16 @@
-@use 'sass:map';
-
 .list-picker-root {
 	flex-direction: column;
 	align-items: center;
 
 	&:not(:last-child) {
-		margin-bottom: $section-spacer;
+		margin-bottom: var(--block-spacer);
 	}
 
 	.list-picker-title {
 		width: 100%;
-		padding-bottom: map-get($spacers, 2);
-		border-bottom: $border-default;
-		margin-bottom: $block-spacer;
+		padding-bottom: var(--spacer-2);
+		border-bottom: var(--border-default);
+		margin-bottom: var(--block-spacer);
 		font-size: 1rem;
 		font-weight: bold;
 	}
@@ -21,8 +19,11 @@
 		width: 100%;
 
 		.list-picker-item-container {
-			margin-bottom: map-get($spacers, 3);
-			border: $border-default;
+			border: var(--border-default);
+
+			&:not(:last-child) {
+				margin-bottom: var(--spacer-3);
+			}
 
 			&.inline {
 				display: flex;
@@ -36,7 +37,7 @@
 			}
 
 			&:not(.inline) {
-				padding: map-get($spacers, 3) map-get($spacers, 3) 0 map-get($spacers, 3);
+				padding: var(--spacer-3) var(--spacer-3) 0 var(--spacer-3);
 
 				.list-picker-item-header {
 					.list-picker-item-action:first-of-type {
@@ -46,9 +47,9 @@
 			}
 
 			.list-picker-item-header {
-				padding-bottom: $block-spacer;
-				border-bottom: $border-default;
-				margin-bottom: $block-spacer;
+				padding-bottom: var(--block-spacer);
+				border-bottom: var(--border-default);
+				margin-bottom: var(--block-spacer);
 				display: flex;
 				align-items: center;
 				flex: 1;
@@ -58,26 +59,39 @@
 				}
 
 				.list-picker-item-action {
-					margin-left: map-get($spacers, 2);
+					margin-left: var(--spacer-2);
 				}
 			}
 		}
 	}
 
 	.list-picker-new-button {
-		margin-left: auto;
-		margin-right: auto;
-		width: 33.33%;
+		width: 100%;
+		margin-top: var(--spacer-3);
 	}
-}
 
-.list-picker-root.horizontal {
-	flex-direction: row;
-	align-items: center;
-
-	.list-picker-items {
-		display: flex;
-		flex-wrap: wrap;
+	&.horizontal {
+		flex-direction: row;
 		align-items: center;
+
+		.list-picker-items {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+		}
+	}
+
+	&.list-picker-compact {
+		.list-picker-item-container {
+			border: 0;
+			padding: 0 !important;
+		}
+		.list-picker-item-header {
+			display: none !important;
+		}
+
+		&:not(:has(.list-picker-items > *)) {
+			display: none;
+		}
 	}
 }

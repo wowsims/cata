@@ -8,7 +8,7 @@ import (
 )
 
 func (druid *Druid) registerStarfireSpell() {
-	solarMetric := druid.NewSolarEnergyMetric(core.ActionID{SpellID: 2912})
+	solarMetric := druid.NewSolarEnergyMetrics(core.ActionID{SpellID: 2912})
 
 	hasStarfireGlyph := druid.HasMajorGlyph(proto.DruidMajorGlyph(proto.DruidPrimeGlyph_GlyphOfStarfire))
 

@@ -32,11 +32,11 @@ func (warlock *Warlock) registerImmolateSpell() {
 				},
 			},
 			NumberOfTicks:       5,
-			TickLength:          time.Second * 3,
+			TickLength:          3 * time.Second,
 			AffectedByCastSpeed: true,
-			BonusCoefficient:    0.176,
+			BonusCoefficient:    0.17599999905,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.ScalingBaseDamage*Coefficient_ImmolateDot)
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(Coefficient_ImmolateDot))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -62,7 +62,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2000,
+				CastTime: 2000 * time.Millisecond,
 			},
 		},
 
@@ -72,7 +72,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 		BonusCoefficient: 0.212,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcDamage(sim, target, warlock.ScalingBaseDamage*Coefficient_Immolate, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, warlock.CalcScalingSpellDmg(Coefficient_Immolate), spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				warlock.ImmolateDot.Cast(sim, target)
 			}

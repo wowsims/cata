@@ -40,6 +40,9 @@ import {
 	FeralDruid,
 	FeralDruid_Options,
 	FeralDruid_Rotation,
+	GuardianDruid,
+	GuardianDruid_Options,
+	GuardianDruid_Rotation,
 	RestorationDruid,
 	RestorationDruid_Options,
 	RestorationDruid_Rotation,
@@ -214,7 +217,7 @@ class UnknownSpecOptions {
 }
 
 export type DeathKnightSpecs = Spec.SpecBloodDeathKnight | Spec.SpecFrostDeathKnight | Spec.SpecUnholyDeathKnight;
-export type DruidSpecs = Spec.SpecBalanceDruid | Spec.SpecFeralDruid | Spec.SpecRestorationDruid;
+export type DruidSpecs = Spec.SpecBalanceDruid | Spec.SpecFeralDruid | Spec.SpecGuardianDruid | Spec.SpecRestorationDruid;
 export type HunterSpecs = Spec.SpecBeastMasteryHunter | Spec.SpecMarksmanshipHunter | Spec.SpecSurvivalHunter;
 export type MageSpecs = Spec.SpecArcaneMage | Spec.SpecFireMage | Spec.SpecFrostMage;
 export type PaladinSpecs = Spec.SpecHolyPaladin | Spec.SpecRetributionPaladin | Spec.SpecProtectionPaladin;
@@ -292,6 +295,8 @@ export type SpecRotation<T extends Spec> =
 		? BalanceDruid_Rotation
 		: T extends Spec.SpecFeralDruid
 		? FeralDruid_Rotation
+		: T extends Spec.SpecGuardianDruid
+		? GuardianDruid_Rotation
 		: T extends Spec.SpecRestorationDruid
 		? RestorationDruid_Rotation
 		: // Hunter
@@ -434,6 +439,8 @@ export type SpecOptions<T extends Spec> =
 		? BalanceDruid_Options
 		: T extends Spec.SpecFeralDruid
 		? FeralDruid_Options
+		: T extends Spec.SpecGuardianDruid
+		? GuardianDruid_Options
 		: T extends Spec.SpecRestorationDruid
 		? RestorationDruid_Options
 		: // Hunter
@@ -508,6 +515,8 @@ export type SpecType<T extends Spec> =
 		? BalanceDruid
 		: T extends Spec.SpecFeralDruid
 		? FeralDruid
+		: T extends Spec.SpecGuardianDruid
+		? GuardianDruid
 		: T extends Spec.SpecRestorationDruid
 		? RestorationDruid
 		: // Hunter
@@ -728,6 +737,29 @@ export const specTypeFunctions: Record<Spec, SpecTypeFunctions<any>> = {
 			player.spec.oneofKind == 'feralDruid'
 				? player.spec.feralDruid.options || FeralDruid_Options.create()
 				: FeralDruid_Options.create({ classOptions: {} }),
+	},
+	[Spec.SpecGuardianDruid]: {
+		rotationCreate: () => GuardianDruid_Rotation.create(),
+		rotationEquals: (a, b) => GuardianDruid_Rotation.equals(a as GuardianDruid_Rotation, b as GuardianDruid_Rotation),
+		rotationCopy: a => GuardianDruid_Rotation.clone(a as GuardianDruid_Rotation),
+		rotationToJson: a => GuardianDruid_Rotation.toJson(a as GuardianDruid_Rotation),
+		rotationFromJson: obj => GuardianDruid_Rotation.fromJson(obj),
+
+		talentsCreate: () => DruidTalents.create(),
+		talentsEquals: (a, b) => DruidTalents.equals(a as DruidTalents, b as DruidTalents),
+		talentsCopy: a => DruidTalents.clone(a as DruidTalents),
+		talentsToJson: a => DruidTalents.toJson(a as DruidTalents),
+		talentsFromJson: obj => DruidTalents.fromJson(obj),
+
+		optionsCreate: () => GuardianDruid_Options.create({ classOptions: {} }),
+		optionsEquals: (a, b) => GuardianDruid_Options.equals(a as GuardianDruid_Options, b as GuardianDruid_Options),
+		optionsCopy: a => GuardianDruid_Options.clone(a as GuardianDruid_Options),
+		optionsToJson: a => GuardianDruid_Options.toJson(a as GuardianDruid_Options),
+		optionsFromJson: obj => GuardianDruid_Options.fromJson(obj),
+		optionsFromPlayer: player =>
+			player.spec.oneofKind == 'guardianDruid'
+				? player.spec.guardianDruid.options || GuardianDruid_Options.create()
+				: GuardianDruid_Options.create({ classOptions: {} }),
 	},
 	[Spec.SpecRestorationDruid]: {
 		rotationCreate: () => RestorationDruid_Rotation.create(),
@@ -1375,6 +1407,14 @@ export function withSpec<SpecType extends Spec>(spec: Spec, player: Player, spec
 				}),
 			};
 			return copy;
+		case Spec.SpecGuardianDruid:
+			copy.spec = {
+				oneofKind: 'guardianDruid',
+				guardianDruid: GuardianDruid.create({
+					options: specOptions as GuardianDruid_Options,
+				}),
+			};
+			return copy;
 		case Spec.SpecRestorationDruid:
 			copy.spec = {
 				oneofKind: 'restorationDruid',
@@ -1666,6 +1706,21 @@ export function canEquipItem<SpecType extends Spec>(item: Item, playerSpec: Play
 	// At this point, we know the item is an armor piece (feet, chest, legs, etc).
 	return playerClass.armorTypes[0] >= item.armorType;
 }
+
+const pvpSeasonFromName: Record<string, string> = {
+	Wrathful: 'Season 8',
+	Bloodthirsty: 'Season 8.5',
+	Vicious: 'Season 9',
+	Ruthless: 'Season 10',
+	Cataclysmic: 'Season 11',
+};
+
+export const isPVPItem = (item: Item) => item?.name?.includes('Gladiator') || false;
+
+export const getPVPSeasonFromItem = (item: Item) => {
+	const seasonName = item.name.substring(0, item.name.indexOf(' '));
+	return pvpSeasonFromName[seasonName] || undefined;
+};
 
 const itemTypeToSlotsMap: Partial<Record<ItemType, Array<ItemSlot>>> = {
 	[ItemType.ItemTypeUnknown]: [],

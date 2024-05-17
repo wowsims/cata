@@ -1,17 +1,17 @@
 .assigned-buff-picker-root {
 	&:not(:last-child) {
-		margin-bottom: $block-spacer * 2;
+		margin-bottom: calc(var(--block-spacer) * 2);
 	}
 
 	.assigned-buff-player {
 		display: flex;
 
 		&:not(:last-child) {
-			margin-bottom: $block-spacer;
+			margin-bottom: var(--block-spacer);
 		}
 	}
 
 	.assigned-buff-arrow {
-		margin: 0 $block-spacer;
+		margin: 0 var(--block-spacer);
 	}
 }

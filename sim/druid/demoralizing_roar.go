@@ -1,8 +1,6 @@
 package druid
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 )
 
@@ -12,7 +10,7 @@ func (druid *Druid) registerDemoralizingRoarSpell() {
 	})
 
 	druid.DemoralizingRoar = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48560},
+		ActionID:    core.ActionID{SpellID: 99},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagAPL,
@@ -28,7 +26,7 @@ func (druid *Druid) registerDemoralizingRoarSpell() {
 		},
 
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  62 * 2,
+		FlatThreatBonus:  62 * 2, // TODO: Measure for Cata
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
@@ -41,23 +39,4 @@ func (druid *Druid) registerDemoralizingRoarSpell() {
 
 		RelatedAuras: []core.AuraArray{druid.DemoralizingRoarAuras},
 	})
-}
-
-func (druid *Druid) ShouldDemoralizingRoar(sim *core.Simulation, filler bool, maintainOnly bool) bool {
-	if !druid.DemoralizingRoar.CanCast(sim, druid.CurrentTarget) {
-		return false
-	}
-
-	if filler {
-		return true
-	}
-
-	refreshWindow := time.Second * 2
-
-	if (druid.MangleBear != nil) && (!druid.MangleBear.IsReady(sim)) {
-		refreshWindow = druid.MangleBear.ReadyAt() - sim.CurrentTime + core.GCDDefault
-	}
-
-	return maintainOnly &&
-		druid.DemoralizingRoarAuras.Get(druid.CurrentTarget).ShouldRefreshExclusiveEffects(sim, refreshWindow)
 }

@@ -367,6 +367,9 @@ func (unitMetrics *UnitMetrics) MarkOOM(sim *Simulation) {
 		unitMetrics.FirstOOMTimestamp = sim.CurrentTime
 	}
 }
+func (unitMetrics *UnitMetrics) IsTanking() bool {
+	return unitMetrics.isTanking
+}
 
 func (unitMetrics *UnitMetrics) reset() {
 	unitMetrics.dps.reset()

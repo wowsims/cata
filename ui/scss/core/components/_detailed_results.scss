@@ -17,10 +17,10 @@
 
 .detailed-results-controls-div {
 	display: flex;
-	margin-bottom: $block-spacer;
+	margin-bottom: var(--block-spacer);
 
 	.detailed-results-new-tab-button {
-		margin-right: $block-spacer;
+		margin-right: var(--block-spacer);
 	}
 }
 
@@ -74,14 +74,14 @@
 .dr-toolbar {
 	position: sticky;
 	top: var(--sim-header-height);
-	padding-left: $container-padding;
-	padding-right: $container-padding;
-	margin-left: calc(-1 * $container-padding);
-	margin-right: calc(-1 * $container-padding);
+	padding-left: var(--container-padding);
+	padding-right: var(--container-padding);
+	margin-left: calc(-1 * var(--container-padding));
+	margin-right: calc(-1 * var(--container-padding));
 	display: flex;
 	transition: background-color 0.15s ease-in-out;
-	// This needs to be less than $header-z-index otherwise the toolbar overlaps the import/export dropdowns
-	z-index: $header-z-index - 1;
+	// This needs to be less than var(--header-z-index) otherwise the toolbar overlaps the import/export dropdowns
+	z-index: calc(var(--header-z-index) - 1);
 
 	&::after {
 		content: ' ';
@@ -89,11 +89,11 @@
 		bottom: -1px;
 		left: 0;
 		right: 0;
-		width: calc(100% - 2 * $container-padding);
+		width: calc(100% - 2 * var(--container-padding));
 		height: 1px;
 		margin-left: auto;
 		margin-right: auto;
-		background-color: $border-color;
+		background-color: var(--bs-border-color);
 		transition: width 0.15s ease-in-out;
 	}
 
@@ -122,7 +122,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: calc(map-get($spacers, 3) * 2);
+	padding: calc(var(--spacer-3) * 2);
 	font-size: 1rem;
 }
 
@@ -149,7 +149,7 @@
 }
 
 .metrics-table-header-row {
-	border-bottom: 2px solid white;
+	border-bottom: 2px solid var(--bs-white);
 }
 
 .metrics-table-header-cell {
@@ -158,11 +158,11 @@
 }
 
 .metrics-table-body tr {
-	border-bottom: $border-default;
+	border-bottom: var(--border-default);
 }
 
 .metrics-table-body tr:hover {
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: var(--bs-black-alpha-50);
 }
 
 .metrics-table-body td {

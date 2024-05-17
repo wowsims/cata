@@ -1,9 +1,8 @@
 import { hasTouch } from '../shared/bootstrap_overrides';
-import Toast from './components/toast';
-import { getBrowserLanguageCode, setLanguageCode } from './constants/lang.js';
-import * as OtherConstants from './constants/other.js';
-import { Encounter } from './encounter.js';
-import { Player, UnitMetadata } from './player.js';
+import { getBrowserLanguageCode, setLanguageCode } from './constants/lang';
+import * as OtherConstants from './constants/other';
+import { Encounter } from './encounter';
+import { Player, UnitMetadata } from './player';
 import {
 	BulkSettings,
 	BulkSimRequest,
@@ -13,6 +12,7 @@ import {
 	RaidSimRequest,
 	RaidSimResult,
 	SimOptions,
+	SimType,
 	StatWeightsRequest,
 	StatWeightsResult,
 } from './proto/api.js';
@@ -34,7 +34,7 @@ import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
 import { EventID, TypedEvent } from './typed_event.js';
-import { getEnumValues } from './utils.js';
+import { getEnumValues, noop } from './utils.js';
 import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
@@ -58,6 +58,11 @@ export enum SimSettingCategories {
 	UISettings, // # iterations, EP weights, filters, etc
 }
 
+interface SimProps {
+	// The type of sim. Default `SimType.SimTypeIndividual`
+	type?: SimType;
+}
+
 // Core Sim module which deals only with api types, no UI-related stuff.
 export class Sim {
 	private readonly workerPool: WorkerPool;
@@ -75,6 +80,7 @@ export class Sim {
 	private showEPValues = false;
 	private language = '';
 
+	readonly type: SimType;
 	readonly raid: Raid;
 	readonly encounter: Encounter;
 
@@ -116,9 +122,11 @@ export class Sim {
 	private lastUsedRngSeed = 0;
 
 	// These callbacks are needed so we can apply BuffBot modifications automatically before sending requests.
-	private modifyRaidProto: (raidProto: RaidProto) => void = () => {};
+	private modifyRaidProto: (raidProto: RaidProto) => void = noop;
 
-	constructor() {
+	constructor({ type }: SimProps = {}) {
+		this.type = type ?? SimType.SimTypeIndividual;
+
 		this.workerPool = new WorkerPool(1);
 		this._initPromise = Database.get().then(db => {
 			this.db_ = db;
@@ -201,6 +209,7 @@ export class Sim {
 		// TODO: remove any replenishment from sim request here? probably makes more sense to do it inside the sim to protect against accidents
 
 		return RaidSimRequest.create({
+			type: this.type,
 			raid: raid,
 			encounter: encounter,
 			simOptions: SimOptions.create({
@@ -289,7 +298,7 @@ export class Sim {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(true);
-			const result = await this.workerPool.raidSimAsync(request, () => {});
+			const result = await this.workerPool.raidSimAsync(request, noop);
 			if (result.errorResult != '') {
 				throw new SimError(result.errorResult);
 			}
@@ -625,7 +634,12 @@ export class Sim {
 
 			const filters = proto.filters || Sim.defaultFilters();
 			if (filters.armorTypes.length == 0) {
-				filters.armorTypes = Sim.ALL_ARMOR_TYPES.slice();
+				if (this.type == SimType.SimTypeIndividual) {
+					// For Individual sims, by default only show the class's default armor type because of armor specialization
+					filters.armorTypes = [this.raid.getActivePlayers()[0].getPlayerClass().armorTypes[0]];
+				} else {
+					filters.armorTypes = Sim.ALL_ARMOR_TYPES.slice();
+				}
 			}
 			if (filters.weaponTypes.length == 0) {
 				filters.weaponTypes = Sim.ALL_WEAPON_TYPES.slice();

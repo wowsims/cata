@@ -20,7 +20,7 @@ func (affliction *AfflictionWarlock) registerHauntSpell() {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Haunt-" + affliction.Label,
 			ActionID: actionID,
-			Duration: time.Second * 12,
+			Duration: 12 * time.Second,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				affliction.AttackTables[aura.Unit.UnitIndex].HauntSEDamageTakenMultiplier *= debuffMult
 			},
@@ -45,11 +45,11 @@ func (affliction *AfflictionWarlock) registerHauntSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 1500,
+				CastTime: 1500 * time.Millisecond,
 			},
 			CD: core.Cooldown{
 				Timer:    affliction.NewTimer(),
-				Duration: time.Second * 8,
+				Duration: 8 * time.Second,
 			},
 		},
 
@@ -59,7 +59,7 @@ func (affliction *AfflictionWarlock) registerHauntSpell() {
 		BonusCoefficient:         0.5577 * 1.25,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := affliction.ScalingBaseDamage * warlock.Coefficient_Haunt
+			baseDamage := affliction.CalcScalingSpellDmg(warlock.Coefficient_Haunt)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

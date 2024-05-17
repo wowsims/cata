@@ -188,6 +188,16 @@ func CalcScalingSpellEffectVarianceMinMax(class proto.Class, spellEffectCoeffici
 	return ApplyVarianceMinMax(avgEffect, spellEffectVariance)
 }
 
+// spellEffectCoefficient is the value in the "Coefficient" column of the SpellEffect DB2 table
+func (char *Character) CalcScalingSpellDmg(spellEffectCoefficient float64) float64 {
+	return GetClassSpellScalingCoefficient(char.Class) * spellEffectCoefficient
+}
+
+func (char *Character) CalcAndRollDamageRange(sim *Simulation, coefficient float64, variance float64) float64 {
+	baseDamage := char.CalcScalingSpellDmg(coefficient)
+	return sim.Roll(ApplyVarianceMinMax(baseDamage, variance))
+}
+
 func ApplyVarianceMinMax(avgEffect float64, variance float64) (float64, float64) {
 	min := avgEffect * (1 - variance/2.0)
 	max := avgEffect * (1 + variance/2.0)

@@ -7,9 +7,9 @@ import (
 )
 
 func (mage *Mage) registerBlastWaveSpell() {
-	/* 	if !mage.Talents.BlastWave {
+	if !mage.Talents.BlastWave {
 		return
-	} */
+	}
 
 	mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11113},
@@ -22,8 +22,10 @@ func (mage *Mage) registerBlastWaveSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+				GCD:    time.Millisecond * 500,
+				GCDMin: time.Millisecond * 500,
 			},
+			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
 				Duration: time.Second * 30,

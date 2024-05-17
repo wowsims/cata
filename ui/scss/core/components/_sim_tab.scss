@@ -1,45 +1,30 @@
-@use 'sass:map';
+.tab-pane-content-container {
+	display: flex;
+	gap: var(--container-padding);
+	flex-wrap: wrap;
 
-.sim-tab {
-	.tab-pane-content-container {
+	@include media-breakpoint-down(xl) {
+		flex-direction: column;
+	}
+
+	.tab-panel-left,
+	.tab-panel-right {
+		width: 100%;
+	}
+
+	.tab-panel-left {
+		flex: 4;
+		&:has(.tab-panel-col) {
+			display: grid;
+			gap: var(--section-spacer);
+			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		}
+	}
+
+	.tab-panel-right {
+		flex: 1.25;
 		display: flex;
-		@include media-breakpoint-down(xl) {
-			flex-direction: column;
-		}
-
-		.tab-panel-left {
-			display: flex;
-			flex: 4;
-
-			@include media-breakpoint-down(md) {
-				flex-direction: column;
-			}
-		}
-
-		.tab-panel-right {
-			margin-left: $container-padding;
-			display: flex;
-			flex-direction: column;
-			flex: 1.25;
-			@include media-breakpoint-down(xl) {
-				margin-left: 0;
-			}
-		}
-
-		.tab-panel-col {
-			flex: 1;
-
-			&:not(:last-child) {
-				margin-right: $section-spacer;
-			}
-		}
-
-		.tab-panel-col {
-			flex: 1;
-
-			&:not(:last-child) {
-				margin-right: $section-spacer;
-			}
-		}
+		flex-direction: column;
+		min-width: 200px;
 	}
 }

@@ -118,6 +118,7 @@ func (pet *Pet) reset(sim *Simulation, agent PetAgent) {
 }
 func (pet *Pet) doneIteration(sim *Simulation) {
 	pet.Character.doneIteration(sim)
+	pet.Disable(sim)
 	pet.isReset = false
 }
 
@@ -202,6 +203,7 @@ func (pet *Pet) EnableWithTimeout(sim *Simulation, petAgent PetAgent, petDuratio
 			pet.Disable(sim)
 		},
 	}
+
 	sim.AddPendingAction(pet.timeoutAction)
 }
 
@@ -235,11 +237,8 @@ func (pet *Pet) Disable(sim *Simulation) {
 		return
 	}
 
-	// Remove inherited stats on dismiss if not permanent
-	if pet.isGuardian || pet.timeoutAction != nil {
-		pet.AddStatsDynamic(sim, pet.inheritedStats.Invert())
-		pet.inheritedStats = stats.Stats{}
-	}
+	pet.AddStatsDynamic(sim, pet.inheritedStats.Invert())
+	pet.inheritedStats = stats.Stats{}
 
 	if pet.dynamicStatInheritance != nil {
 		if idx := slices.Index(pet.Owner.DynamicStatsPets, pet); idx != -1 {

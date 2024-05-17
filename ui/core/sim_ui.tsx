@@ -1,4 +1,4 @@
-import { element, fragment } from 'tsx-vanilla';
+import { element, fragment, ref } from 'tsx-vanilla';
 
 import { BaseModal } from './components/base_modal.jsx';
 import { Component } from './components/component.js';
@@ -14,6 +14,7 @@ import { PlayerSpec } from './player_spec.js';
 import { ActionId } from './proto_utils/action_id.js';
 import { Sim, SimError } from './sim.js';
 import { EventID, TypedEvent } from './typed_event.js';
+import { WorkerProgressCallback } from './worker_pool';
 
 const URLMAXLEN = 2048;
 const globalKnownIssues: Array<string> = [];
@@ -159,6 +160,7 @@ export abstract class SimUI extends Component {
 
 		this.simActionsContainer = this.rootElem.querySelector('.sim-sidebar-actions') as HTMLElement;
 		this.iterationsPicker = new NumberPicker(this.simActionsContainer, this.sim, {
+			id: 'simui-iterations',
 			label: 'Iterations',
 			extraCssClasses: ['iterations-picker', 'within-raid-sim-hide'],
 			changedEvent: (sim: Sim) => sim.iterationsChangeEmitter,
@@ -188,27 +190,25 @@ export abstract class SimUI extends Component {
 	}
 
 	addAction(name: string, cssClass: string, actFn: () => void) {
-		const button = document.createElement('button');
-		button.classList.add('btn', 'btn-primary', 'w-100', cssClass);
-		button.textContent = name;
-		button.addEventListener('click', actFn);
-		this.simActionsContainer.appendChild(button);
+		const buttonRef = ref<HTMLButtonElement>();
+		this.simActionsContainer.appendChild(
+			<button ref={buttonRef} className={`btn btn-primary w-100 ${cssClass || ''}`}>
+				{name}
+			</button>,
+		);
+		buttonRef.value?.addEventListener('click', actFn);
 	}
 
-	addTab(title: string, cssClass: string, innerHTML: string) {
+	addTab(title: string, cssClass: string, content: HTMLElement | Element) {
 		const contentId = cssClass.replace(/\s+/g, '-') + '-tab';
 		const isFirstTab = this.simTabContentsContainer.children.length == 0;
 
 		this.simHeader.addTab(title, contentId);
-
-		const tabContentFragment = document.createElement('fragment');
-		tabContentFragment.innerHTML = `
-			<div
-				id="${contentId}"
-				class="tab-pane fade ${isFirstTab ? 'active show' : ''}"
-			>${innerHTML}</div>
-		`;
-		this.simTabContentsContainer.appendChild(tabContentFragment.children[0] as HTMLElement);
+		this.simTabContentsContainer.appendChild(
+			<div id={contentId} className={`tab-pane fade ${isFirstTab ? 'active show' : ''}`}>
+				{content}
+			</div>,
+		);
 	}
 
 	addSimTab(tab: SimTab) {
@@ -221,20 +221,23 @@ export abstract class SimUI extends Component {
 
 	private addKnownIssues(config: SimUIConfig) {
 		let statusStr = '';
-		if (config.simStatus.status == LaunchStatus.Unlaunched) {
-			statusStr = 'This sim is a WORK IN PROGRESS. It is not fully developed and should not be used for general purposes.';
-		} else if (config.simStatus.status == LaunchStatus.Alpha) {
-			statusStr = 'This sim is in ALPHA. Bugs are expected; please let us know if you find one!';
-		} else if (config.simStatus.status == LaunchStatus.Beta) {
-			statusStr = 'This sim is in BETA. There may still be a few bugs; please let us know if you find one!';
+		switch (config.simStatus.status) {
+			case LaunchStatus.Unlaunched:
+				statusStr = 'This sim is a WORK IN PROGRESS. It is not fully developed and should not be used for general purposes.';
+				break;
+			case LaunchStatus.Alpha:
+				statusStr = 'This sim is in ALPHA. Bugs are expected; please let us know if you find one!';
+				break;
+			case LaunchStatus.Beta:
+				statusStr = 'This sim is in BETA. There may still be a few bugs; please let us know if you find one!';
+				break;
 		}
+
 		if (statusStr) {
 			config.knownIssues = [statusStr].concat(config.knownIssues || []);
 		}
-		if (config.knownIssues && config.knownIssues.length) {
-			config.knownIssues.forEach(issue => this.simHeader.addKnownIssue(issue));
-		}
-		globalKnownIssues.forEach(issue => this.simHeader.addKnownIssue(issue));
+		config.knownIssues?.forEach(issue => this.simHeader.addKnownIssue(issue));
+		globalKnownIssues?.forEach(issue => this.simHeader.addKnownIssue(issue));
 	}
 
 	// Returns a key suitable for the browser's localStorage feature.
@@ -254,7 +257,7 @@ export abstract class SimUI extends Component {
 		return this.rootElem.classList.contains('individual-sim-ui');
 	}
 
-	async runSim(onProgress: (_?: any) => void) {
+	async runSim(onProgress: WorkerProgressCallback) {
 		this.resultsViewer.setPending();
 		try {
 			await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
@@ -311,13 +314,16 @@ export abstract class SimUI extends Component {
 						if (issues.total_count > 0) {
 							window.open(issues.items[0].html_url, '_blank');
 						} else {
-							const base_url = 'https://github.com/wowsims/cata/issues/new?assignees=&labels=&title=Crash%20Report%20';
-							const base = `${base_url}${hash}&body=`;
-							const maxBodyLength = URLMAXLEN - base.length;
-							let issueBody = encodeURIComponent(`Link:\n${link}\n\nRNG Seed: ${rngSeed}\n\n${errorStr}`);
+							const url = new URL('https://github.com/wowsims/cata/issues/new');
+							url.searchParams.append('title', `Crash Report ${hash}`);
+							url.searchParams.append('assignees', '');
+							url.searchParams.append('labels', '');
+
+							const maxBodyLength = URLMAXLEN - url.toString().length;
+							let issueBody = `Link:\n${link}\n\nRNG Seed: ${rngSeed}\n\n${errorStr}`;
 							if (link.includes('/raid/')) {
 								// Move the actual error before the link, as it will likely get truncated.
-								issueBody = encodeURIComponent(`${errorStr}\nRNG Seed: ${rngSeed}\nLink:\n${link}`);
+								issueBody = `${errorStr}\nRNG Seed: ${rngSeed}\nLink:\n${link}`;
 							}
 							let truncated = false;
 							while (issueBody.length > maxBodyLength - (truncated ? 3 : 0)) {
@@ -330,7 +336,9 @@ export abstract class SimUI extends Component {
 								// Prompt the user to add more information to the issue.
 								new CrashModal(this.rootElem, link).open();
 							}
-							window.open(base + issueBody, '_blank');
+							url.searchParams.append('body', issueBody);
+
+							window.open(url.toString(), '_blank');
 						}
 					});
 				})
@@ -357,13 +365,13 @@ export abstract class SimUI extends Component {
 class CrashModal extends BaseModal {
 	constructor(parent: HTMLElement, link: string) {
 		super(parent, 'crash', { title: 'Extra Crash Information' });
-		this.body.innerHTML = `
-			<div class="sim-crash-report">
-				<h3 class="sim-crash-report-header">Please append the following complete link to the issue you just created. This will simplify debugging the issue.</h3>
-				<textarea class="sim-crash-report-text form-control"></textarea>
-			</div>
-		`;
-		const text = document.createTextNode(link);
-		this.body.querySelector('textarea')?.appendChild(text);
+		this.body.appendChild(
+			<div className="sim-crash-report">
+				<h3 className="sim-crash-report-header">
+					Please append the following complete link to the issue you just created. This will simplify debugging the issue.
+				</h3>
+				<textarea className="sim-crash-report-text form-control">{link}</textarea>
+			</div>,
+		);
 	}
 }

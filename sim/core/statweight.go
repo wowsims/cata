@@ -179,7 +179,7 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 		stat.AddToStatsProto(simRequest.Raid.Parties[0].Players[0].BonusStats, value)
 
 		reporter := make(chan *proto.ProgressMetrics, 10)
-		go RunSim(simRequest, reporter) // RunRaidSim(simRequest)
+		go RunSim(simRequest, reporter, nil) // RunRaidSim(simRequest)
 
 		var localIterations int32
 		var errorStr string
@@ -218,7 +218,7 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 		tickets <- struct{}{}
 	}
 
-	const defaultStatMod = 20.0
+	const defaultStatMod = 40.0 // match to the impact of a single gem
 	statModsLow := make([]float64, stats.UnitStatsLen)
 	statModsHigh := make([]float64, stats.UnitStatsLen)
 
@@ -230,9 +230,7 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 	for _, s := range statsToWeigh {
 		stat := stats.UnitStatFromStat(s)
 		statMod := defaultStatMod
-		if stat.EqualsStat(stats.Expertise) {
-			statMod = ExpertisePerQuarterPercentReduction
-		} else if stat.EqualsStat(stats.Armor) || stat.EqualsStat(stats.BonusArmor) {
+		if stat.EqualsStat(stats.Armor) || stat.EqualsStat(stats.BonusArmor) {
 			statMod = defaultStatMod * 10
 		}
 		statModsHigh[stat] = statMod
@@ -240,7 +238,7 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 	}
 	for _, s := range swr.PseudoStatsToWeigh {
 		stat := stats.UnitStatFromPseudoStat(s)
-		statMod := 3.0
+		statMod := defaultStatMod * 0.5
 		statModsHigh[stat] = statMod
 		statModsLow[stat] = -statMod
 	}

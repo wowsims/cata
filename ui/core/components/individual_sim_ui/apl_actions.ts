@@ -14,6 +14,7 @@ import {
 	APLActionItemSwap,
 	APLActionItemSwap_SwapSet as ItemSwapSet,
 	APLActionMove,
+	APLActionMoveDuration,
 	APLActionMultidot,
 	APLActionMultishield,
 	APLActionResetSequence,
@@ -24,11 +25,11 @@ import {
 	APLActionWait,
 	APLActionWaitUntil,
 	APLValue,
-	APLActionMoveDuration,
 } from '../../proto/apl.js';
 import { Spec } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
 import { EventID } from '../../typed_event.js';
+import { randomUUID } from '../../utils';
 import { TextDropdownPicker } from '../dropdown_picker.js';
 import { Input, InputConfig } from '../input.js';
 import { ListItemPickerConfig, ListPicker } from '../list_picker.js';
@@ -55,7 +56,6 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 
 	constructor(parent: HTMLElement, player: Player<any>, config: APLActionPickerConfig) {
 		super(parent, 'apl-action-picker-root', player, config);
-
 		this.conditionPicker = new AplValues.APLValuePicker(this.rootElem, this.modObject, {
 			label: 'If:',
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
@@ -88,6 +88,7 @@ export class APLActionPicker extends Input<Player<any>, APLAction> {
 		);
 
 		this.kindPicker = new TextDropdownPicker(this.actionDiv, player, {
+			id: randomUUID(),
 			defaultLabel: 'Action',
 			values: allActionKinds.map(actionKind => {
 				const factory = actionKindFactories[actionKind];
@@ -256,6 +257,7 @@ function itemSwapSetFieldConfig(field: string): AplHelpers.APLPickerBuilderField
 		newValue: () => ItemSwapSet.Swap1,
 		factory: (parent, player, config) =>
 			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
 				equals: (a, b) => a == b,
@@ -334,19 +336,13 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		label: 'Cast',
 		shortDescription: 'Casts the spell if possible, i.e. resource/cooldown/GCD/etc requirements are all met.',
 		newValue: APLActionCastSpell.create,
-		fields: [
-			AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', ''),
-			AplHelpers.unitFieldConfig('target', 'targets')
-		],
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', ''), AplHelpers.unitFieldConfig('target', 'targets')],
 	}),
 	['castFriendlySpell']: inputBuilder({
 		label: 'Cast at Player',
 		shortDescription: 'Casts a friendly spell if possible, i.e. resource/cooldown/GCD/etc requirements are all met.',
 		newValue: APLActionCastFriendlySpell.create,
-		fields: [
-			AplHelpers.actionIdFieldConfig('spellId', 'friendly_spells', ''),
-			AplHelpers.unitFieldConfig('target', 'players')
-		],
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'friendly_spells', ''), AplHelpers.unitFieldConfig('target', 'players')],
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getRaid()!.size() > 1,
 	}),
 	['multidot']: inputBuilder({
@@ -596,8 +592,8 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			AplValues.valueFieldConfig('duration', {
 				label: 'Duration',
 				labelTooltip: 'Amount of time the character should move.',
-			})
-		]
+			}),
+		],
 	}),
 	['customRotation']: inputBuilder({
 		label: 'Custom Rotation',
@@ -619,22 +615,30 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				rotationType: FeralDruid_Rotation_AplType.SingleTarget,
 				maintainFaerieFire: true,
 				manualParams: true,
-				minRoarOffset: 12.0,
-				ripLeeway: 4,
+				minRoarOffset: 29.0,
+				ripLeeway: 1,
 				useRake: true,
 				useBite: true,
-				biteTime: 10.0,
+				biteTime: 11.0,
 				biteDuringExecute: true,
 				allowAoeBerserk: false,
 				meleeWeave: true,
+				bearWeave: true,
+				snekWeave: true,
 			}),
 		fields: [
 			AplHelpers.rotationTypeFieldConfig('rotationType'),
 			AplHelpers.booleanFieldConfig('maintainFaerieFire', 'Maintain Faerie Fire', {
 				labelTooltip: 'Maintain Faerie Fire debuff. Overwrites any external Sunder effects specified in settings.',
 			}),
-			AplHelpers.booleanFieldConfig('meleeWeave', 'Enable melee-weaving', {
+			AplHelpers.booleanFieldConfig('meleeWeave', 'Enable leave-weaving', {
 				labelTooltip: 'Weave out of melee range for Stampede procs. Ignored for AoE rotation or if Stampede is not talented.',
+			}),
+			AplHelpers.booleanFieldConfig('bearWeave', 'Enable bear-weaving', {
+				labelTooltip: 'Weave into Bear Form while pooling Energy. Ignored for AoE rotation.',
+			}),
+			AplHelpers.booleanFieldConfig('snekWeave', 'Use Albino Snake', {
+				labelTooltip: 'Reset swing timer at the end of bear-weaves using Albino Snake pet. Ignored if not bear-weaving.',
 			}),
 			AplHelpers.booleanFieldConfig('allowAoeBerserk', 'Allow AoE Berserk', {
 				labelTooltip: 'Allow Berserk usage in AoE rotation. Ignored for single target rotation.',
@@ -662,7 +666,8 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				labelTooltip: 'Min seconds remaining on Rip/Roar to allow a Bite. Ignored if not Biting during rotation.',
 			}),
 			AplHelpers.booleanFieldConfig('biteDuringExecute', 'Bite during Execute phase', {
-				labelTooltip: 'Bite aggressively during Execute phase. Ignored if Blood in the Water is not talented, or if not using manual advanced parameters.',
+				labelTooltip:
+					'Bite aggressively during Execute phase. Ignored if Blood in the Water is not talented, or if not using manual advanced parameters.',
 			}),
 		],
 	}),

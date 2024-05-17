@@ -16,6 +16,7 @@ const TotemRefreshTime5M = time.Second * 295
 // Damage Done By Caster setup
 const (
 	DDBC_T12P2 int = iota
+	DDBC_FrostbranWeapon
 
 	DDBC_Total
 )
@@ -193,7 +194,7 @@ func (shaman *Shaman) HasMinorGlyph(glyph proto.ShamanMinorGlyph) bool {
 
 func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
-	if shaman.Totems.Fire != proto.FireTotem_NoFireTotem {
+	if shaman.Totems.Fire != proto.FireTotem_NoFireTotem && shaman.Talents.TotemicWrath {
 		raidBuffs.TotemicWrath = true
 	}
 

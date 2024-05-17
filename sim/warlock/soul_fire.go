@@ -15,7 +15,7 @@ func (warlock *Warlock) registerSoulFireSpell() {
 		improvedSoulFire = warlock.RegisterAura(core.Aura{
 			Label:    "Improved Soul Fire",
 			ActionID: core.ActionID{SpellID: 18120},
-			Duration: time.Second * 20,
+			Duration: 20 * time.Second,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				//TODO: Add or mult?
 				warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= damageBonus
@@ -44,17 +44,19 @@ func (warlock *Warlock) registerSoulFireSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 4,
+				CastTime: 4 * time.Second,
 			},
 		},
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
-		BonusCoefficient:         0.726,
+		BonusCoefficient:         0.72600001097,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := warlock.CalcAndRollDamageRange(sim, 2.54299998283, 0.22499999404)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
 			warlock.SoulBurnAura.Deactivate(sim)
-			result := spell.CalcDamage(sim, target, 2862, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() && improvedSoulFire != nil {
 				improvedSoulFire.Activate(sim)
 			}

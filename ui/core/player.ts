@@ -37,7 +37,6 @@ import {
 } from './proto/common';
 import {
 	DungeonDifficulty,
-	Expansion,
 	RaidFilterOption,
 	SourceFilterOption,
 	UIEnchant as Enchant,
@@ -62,6 +61,7 @@ import {
 	getMetaGemEffectEP,
 	getTalentTree,
 	getTalentTreePoints,
+	isPVPItem,
 	newUnitReference,
 	raceToFaction,
 	SpecClasses,
@@ -77,7 +77,6 @@ import { Sim, SimSettingCategories } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
 import { stringComparator, sum } from './utils';
-import { buildWowheadTooltipDataset } from './wowhead';
 
 export interface AuraStats {
 	data: AuraStatsProto;
@@ -447,9 +446,10 @@ export class Player<SpecType extends Spec> {
 	}
 
 	// Returns all reforgings that are valid with a given item
-	getAvailableReforgings(item: Item): Array<ReforgeData> {
-		return this.sim.db.getAvailableReforges(item).map(reforge => {
-			return this.getReforgeData(item, reforge);
+	getAvailableReforgings(equippedItem: EquippedItem): Array<ReforgeData> {
+		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
+		return this.sim.db.getAvailableReforges(withRandomSuffixStats.item).map(reforge => {
+			return this.getReforgeData(equippedItem, reforge);
 		});
 	}
 
@@ -458,10 +458,11 @@ export class Player<SpecType extends Spec> {
 		return this.sim.db.getReforgeById(id);
 	}
 
-	getReforgeData(item: Item, reforge: ReforgeStat): ReforgeData {
+	getReforgeData(equippedItem: EquippedItem, reforge: ReforgeStat): ReforgeData {
+		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
+		const item = withRandomSuffixStats.item;
 		const fromAmount = Math.ceil(-item.stats[reforge.fromStat[0]] * reforge.multiplier);
 		const toAmount = Math.floor(item.stats[reforge.fromStat[0]] * reforge.multiplier);
-
 		return {
 			id: reforge.id,
 			reforge: reforge,
@@ -1213,10 +1214,8 @@ export class Player<SpecType extends Spec> {
 	static readonly DIFFICULTY_SRCS: Partial<Record<SourceFilterOption, DungeonDifficulty>> = {
 		[SourceFilterOption.SourceDungeon]: DungeonDifficulty.DifficultyNormal,
 		[SourceFilterOption.SourceDungeonH]: DungeonDifficulty.DifficultyHeroic,
-		[SourceFilterOption.SourceRaid10]: DungeonDifficulty.DifficultyRaid10,
-		[SourceFilterOption.SourceRaid10H]: DungeonDifficulty.DifficultyRaid10H,
-		[SourceFilterOption.SourceRaid25]: DungeonDifficulty.DifficultyRaid25,
-		[SourceFilterOption.SourceRaid25H]: DungeonDifficulty.DifficultyRaid25H,
+		[SourceFilterOption.SourceRaid]: DungeonDifficulty.DifficultyRaid25,
+		[SourceFilterOption.SourceRaidH]: DungeonDifficulty.DifficultyRaid25H,
 	};
 
 	static readonly HEROIC_TO_NORMAL: Partial<Record<DungeonDifficulty, DungeonDifficulty>> = {
@@ -1226,15 +1225,14 @@ export class Player<SpecType extends Spec> {
 	};
 
 	static readonly RAID_IDS: Partial<Record<RaidFilterOption, number>> = {
-		[RaidFilterOption.RaidNaxxramas]: 3456,
-		[RaidFilterOption.RaidEyeOfEternity]: 4500,
-		[RaidFilterOption.RaidObsidianSanctum]: 4493,
-		[RaidFilterOption.RaidVaultOfArchavon]: 4603,
-		[RaidFilterOption.RaidUlduar]: 4273,
-		[RaidFilterOption.RaidTrialOfTheCrusader]: 4722,
-		[RaidFilterOption.RaidOnyxiasLair]: 2159,
 		[RaidFilterOption.RaidIcecrownCitadel]: 4812,
 		[RaidFilterOption.RaidRubySanctum]: 4987,
+		[RaidFilterOption.RaidBlackwingDescent]: 5094,
+		[RaidFilterOption.RaidTheBastionOfTwilight]: 5334,
+		[RaidFilterOption.RaidBaradinHold]: 5600,
+		[RaidFilterOption.RaidThroneOfTheFourWinds]: 5638,
+		[RaidFilterOption.RaidFirelands]: 5723,
+		[RaidFilterOption.RaidDragonSoul]: 5892,
 	};
 
 	filterItemData<T>(itemData: Array<T>, getItemFunc: (val: T) => Item, slot: ItemSlot): Array<T> {
@@ -1243,6 +1241,13 @@ export class Player<SpecType extends Spec> {
 		const filterItems = (itemData: Array<T>, filterFunc: (item: Item) => boolean) => {
 			return itemData.filter(itemElem => filterFunc(getItemFunc(itemElem)));
 		};
+
+		if (filters.minIlvl != 0) {
+			itemData = filterItems(itemData, item => item.ilvl >= filters.minIlvl);
+		}
+		if (filters.maxIlvl != 0) {
+			itemData = filterItems(itemData, item => item.ilvl <= filters.maxIlvl);
+		}
 
 		if (filters.factionRestriction != UIItem_FactionRestriction.UNSPECIFIED) {
 			itemData = filterItems(
@@ -1256,6 +1261,12 @@ export class Player<SpecType extends Spec> {
 		}
 		if (!filters.sources.includes(SourceFilterOption.SourceQuest)) {
 			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'quest'));
+		}
+		if (!filters.sources.includes(SourceFilterOption.SourceReputation)) {
+			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'rep'));
+		}
+		if (!filters.sources.includes(SourceFilterOption.SourcePvp)) {
+			itemData = filterItems(itemData, item => !isPVPItem(item));
 		}
 
 		for (const [srcOptionStr, difficulty] of Object.entries(Player.DIFFICULTY_SRCS)) {
@@ -1282,12 +1293,6 @@ export class Player<SpecType extends Spec> {
 			}
 		}
 
-		if (!filters.raids.includes(RaidFilterOption.RaidVanilla)) {
-			itemData = filterItems(itemData, item => item.expansion != Expansion.ExpansionVanilla);
-		}
-		if (!filters.raids.includes(RaidFilterOption.RaidTbc)) {
-			itemData = filterItems(itemData, item => item.expansion != Expansion.ExpansionTbc);
-		}
 		for (const [raidOptionStr, zoneId] of Object.entries(Player.RAID_IDS)) {
 			const raidOption = parseInt(raidOptionStr) as RaidFilterOption;
 			if (!filters.raids.includes(raidOption)) {

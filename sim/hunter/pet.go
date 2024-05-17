@@ -20,8 +20,11 @@ type HunterPet struct {
 
 	specialAbility *core.Spell
 	focusDump      *core.Spell
+	exoticAbility  *core.Spell
 
 	uptimePercent    float64
+	wolverineBite    *core.Spell
+	frostStormBreath *core.Spell
 	hasOwnerCooldown bool
 }
 
@@ -78,8 +81,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		MainHand: core.Weapon{
 			BaseDamageMin:  73,
 			BaseDamageMax:  110,
-			SwingSpeed:     atkSpd,
 			CritMultiplier: 2,
+			SwingSpeed:     atkSpd,
 		},
 		AutoSwingMelee: true,
 	})
@@ -115,6 +118,7 @@ func (hp *HunterPet) Talents() *proto.HunterPetTalents {
 func (hp *HunterPet) Initialize() {
 	hp.specialAbility = hp.NewPetAbility(hp.config.SpecialAbility, true)
 	hp.focusDump = hp.NewPetAbility(hp.config.FocusDump, false)
+	hp.exoticAbility = hp.NewPetAbility(hp.config.ExoticAbility, false)
 }
 
 func (hp *HunterPet) Reset(_ *core.Simulation) {
@@ -135,6 +139,14 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	}
 
 	target := hp.CurrentTarget
+
+	if hp.frostStormBreath != nil && hp.frostStormBreath.CanCast(sim, target) && len(sim.Encounter.TargetUnits) > 4 {
+		hp.frostStormBreath.Cast(sim, target)
+	}
+
+	if hp.wolverineBite.CanCast(sim, target) {
+		hp.wolverineBite.Cast(sim, target)
+	}
 
 	if hp.focusDump == nil {
 		hp.specialAbility.Cast(sim, target)
@@ -198,6 +210,7 @@ type PetConfig struct {
 
 	SpecialAbility PetAbilityType
 	FocusDump      PetAbilityType
+	ExoticAbility  PetAbilityType
 
 	// Randomly select between abilities instead of using a prio.
 	RandomSelection bool
@@ -211,16 +224,19 @@ var PetConfigs = map[proto.HunterOptions_PetType]PetConfig{
 		FocusDump: Claw,
 	},
 	proto.HunterOptions_Bear: {
-		Name:      "Bear",
-		FocusDump: Claw,
+		Name:           "Bear",
+		FocusDump:      Claw,
+		SpecialAbility: DemoralizingScreech,
 	},
 	proto.HunterOptions_BirdOfPrey: {
-		Name:      "Bird of Prey",
-		FocusDump: Claw,
+		Name:           "Bird of Prey",
+		FocusDump:      Claw,
+		SpecialAbility: DemoralizingScreech,
 	},
 	proto.HunterOptions_Boar: {
-		Name:      "Boar",
-		FocusDump: Bite,
+		Name:           "Boar",
+		FocusDump:      Bite,
+		SpecialAbility: Stampede,
 	},
 	proto.HunterOptions_CarrionBird: {
 		Name:      "Carrion Bird",
@@ -231,8 +247,9 @@ var PetConfigs = map[proto.HunterOptions_PetType]PetConfig{
 		FocusDump: Claw,
 	},
 	proto.HunterOptions_Chimaera: {
-		Name:      "Chimaera",
-		FocusDump: Bite,
+		Name:          "Chimaera",
+		FocusDump:     Bite,
+		ExoticAbility: FrostStormBreath,
 	},
 	proto.HunterOptions_CoreHound: {
 		Name:      "Core Hound",
@@ -251,9 +268,18 @@ var PetConfigs = map[proto.HunterOptions_PetType]PetConfig{
 		Name:      "Devilsaur",
 		FocusDump: Bite,
 	},
-	proto.HunterOptions_Dragonhawk: {
-		Name:      "Dragonhawk",
+	proto.HunterOptions_Fox: {
+		Name:      "Fox",
+		FocusDump: Claw,
+	},
+	proto.HunterOptions_ShaleSpider: {
+		Name:      "Shale Spider",
 		FocusDump: Bite,
+	},
+	proto.HunterOptions_Dragonhawk: {
+		Name:           "Dragonhawk",
+		FocusDump:      Bite,
+		SpecialAbility: FireBreath,
 	},
 	proto.HunterOptions_Gorilla: {
 		Name: "Gorilla",
@@ -262,12 +288,11 @@ var PetConfigs = map[proto.HunterOptions_PetType]PetConfig{
 	},
 	proto.HunterOptions_Hyena: {
 		Name:           "Hyena",
-		SpecialAbility: TendonRip,
+		SpecialAbility: Stampede,
 		FocusDump:      Bite,
 	},
 	proto.HunterOptions_Moth: {
-		Name: "Moth",
-		//SpecialAbility:   SerentiyDust,
+		Name:      "Moth",
 		FocusDump: Smack,
 	},
 	proto.HunterOptions_NetherRay: {
@@ -275,24 +300,28 @@ var PetConfigs = map[proto.HunterOptions_PetType]PetConfig{
 		FocusDump: Bite,
 	},
 	proto.HunterOptions_Raptor: {
-		Name:      "Raptor",
-		FocusDump: Claw,
+		Name:           "Raptor",
+		FocusDump:      Claw,
+		SpecialAbility: CorrosiveSpit,
 	},
 	proto.HunterOptions_Ravager: {
-		Name:      "Ravager",
-		FocusDump: Bite,
+		Name:           "Ravager",
+		FocusDump:      Bite,
+		SpecialAbility: AcidSpit,
 	},
 	proto.HunterOptions_Rhino: {
-		Name:      "Rhino",
-		FocusDump: Bite,
+		Name:           "Rhino",
+		FocusDump:      Bite,
+		SpecialAbility: Stampede,
 	},
 	proto.HunterOptions_Scorpid: {
 		Name:      "Scorpid",
 		FocusDump: Bite,
 	},
 	proto.HunterOptions_Serpent: {
-		Name:      "Serpent",
-		FocusDump: Bite,
+		Name:           "Serpent",
+		FocusDump:      Bite,
+		SpecialAbility: CorrosiveSpit,
 	},
 	proto.HunterOptions_Silithid: {
 		Name:      "Silithid",
@@ -331,16 +360,17 @@ var PetConfigs = map[proto.HunterOptions_PetType]PetConfig{
 		FocusDump: Smack,
 	},
 	proto.HunterOptions_WindSerpent: {
-		Name:      "Wind Serpent",
-		FocusDump: Bite,
+		Name:           "Wind Serpent",
+		FocusDump:      Bite,
+		SpecialAbility: FireBreath,
 	},
 	proto.HunterOptions_Wolf: {
-		Name:           "Wolf",
-		SpecialAbility: FuriousHowl,
-		FocusDump:      Bite,
+		Name:      "Wolf",
+		FocusDump: Bite,
 	},
 	proto.HunterOptions_Worm: {
-		Name:      "Worm",
-		FocusDump: Bite,
+		Name:           "Worm",
+		FocusDump:      Bite,
+		SpecialAbility: AcidSpit,
 	},
 }

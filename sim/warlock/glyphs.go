@@ -12,7 +12,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 		warlock.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellConflagrate,
 			Kind:      core.SpellMod_Cooldown_Flat,
-			TimeValue: time.Second * -2,
+			TimeValue: -2 * time.Second,
 		})
 	}
 
@@ -20,7 +20,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 		warlock.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellChaosBolt,
 			Kind:      core.SpellMod_Cooldown_Flat,
-			TimeValue: time.Second * -2,
+			TimeValue: -2 * time.Second,
 		})
 	}
 
@@ -34,7 +34,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfImmolate) {
 		warlock.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellImmolateDot,
+			ClassMask:  WarlockSpellImmolateDot | WarlockSpellConflagrate,
 			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.10,
 		})
@@ -68,14 +68,14 @@ func (warlock *Warlock) ApplyGlyphs() {
 		warlock.AddStaticMod(core.SpellModConfig{
 			ClassMask: WarlockSpellUnstableAffliction,
 			Kind:      core.SpellMod_CastTime_Flat,
-			TimeValue: time.Millisecond * 200,
+			TimeValue: 200 * time.Millisecond,
 		})
 	}
 
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfLashOfPain) {
 		warlock.Succubus.AddStaticMod(core.SpellModConfig{
 			ClassMask:  WarlockSpellSuccubusLashOfPain,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.25,
 		})
 	}
@@ -83,7 +83,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfFelguard) {
 		warlock.Felguard.AddStaticMod(core.SpellModConfig{
 			ClassMask:  WarlockSpellFelGuardLegionStrike,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.05,
 		})
 	}
@@ -91,7 +91,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 	if warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfImp) {
 		warlock.Imp.AddStaticMod(core.SpellModConfig{
 			ClassMask:  WarlockSpellImpFireBolt,
-			Kind:       core.SpellMod_DamageDone_Pct,
+			Kind:       core.SpellMod_DamageDone_Flat,
 			FloatValue: 0.20,
 		})
 	}
@@ -102,7 +102,7 @@ func (warlock *Warlock) ApplyGlyphs() {
 
 			Icd: &core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 6,
+				Duration: 6 * time.Second,
 			},
 
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

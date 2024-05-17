@@ -11,6 +11,7 @@ PAGE_INDECES := ui/death_knight/blood/index.html \
 				ui/death_knight/unholy/index.html \
 				ui/druid/balance/index.html \
 				ui/druid/feral/index.html \
+				ui/druid/guardian/index.html \
 				ui/druid/restoration/index.html \
 				ui/hunter/beast_mastery/index.html \
 				ui/hunter/marksmanship/index.html \
@@ -270,7 +271,7 @@ endif
 
 devmode: air devserver
 ifeq ($(WATCH), 1)
-	npx vite serve &
+	npx vite serve --host &
 	air -tmp_dir "/tmp" -build.include_ext "go,proto" -build.args_bin "--usefs=true --launch=false --wasm=false" -build.bin "./wowsimcata" -build.cmd "make devserver" -build.exclude_dir "assets,dist,node_modules,ui,tools"
 else
 	./wowsimcata --usefs=true --launch=false --host=":3333"

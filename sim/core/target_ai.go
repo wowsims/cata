@@ -17,25 +17,23 @@ func (target *Target) initialize(config *proto.Target) {
 		return
 	}
 
-	if target.CurrentTarget != nil {
-		if config.SwingSpeed > 0 {
-			aaOptions := AutoAttackOptions{
-				MainHand: Weapon{
-					BaseDamageMin:  config.MinBaseDamage,
-					SwingSpeed:     config.SwingSpeed,
-					CritMultiplier: 2,
-					SpellSchool:    SpellSchoolFromProto(config.SpellSchool),
-				},
-				AutoSwingMelee: true,
-			}
-			if config.DualWield {
-				aaOptions.OffHand = aaOptions.MainHand
-				if !config.DualWieldPenalty {
-					target.PseudoStats.DisableDWMissPenalty = true
-				}
-			}
-			target.EnableAutoAttacks(target, aaOptions)
+	if config.SwingSpeed > 0 {
+		aaOptions := AutoAttackOptions{
+			MainHand: Weapon{
+				BaseDamageMin:  config.MinBaseDamage,
+				SwingSpeed:     config.SwingSpeed,
+				CritMultiplier: 2,
+				SpellSchool:    SpellSchoolFromProto(config.SpellSchool),
+			},
+			AutoSwingMelee: true,
 		}
+		if config.DualWield {
+			aaOptions.OffHand = aaOptions.MainHand
+			if !config.DualWieldPenalty {
+				target.PseudoStats.DisableDWMissPenalty = true
+			}
+		}
+		target.EnableAutoAttacks(target, aaOptions)
 	}
 
 	if target.AI != nil {

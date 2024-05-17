@@ -28,7 +28,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1,
-		CritMultiplier:           fire.DefaultSpellCritMultiplier(),
+		CritMultiplier:           fire.DefaultMageCritMultiplier(),
 		BonusCoefficient:         1.545,
 		ThreatMultiplier:         1,
 
@@ -49,6 +49,7 @@ func (fire *FireMage) registerPyroblastSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: mage.MageSpellPyroblastDot,
+		Flags:          core.SpellFlagNoOnCastComplete,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

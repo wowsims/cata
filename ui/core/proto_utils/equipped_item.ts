@@ -1,4 +1,4 @@
-import { GemColor, ItemRandomSuffix, ItemSpec, ItemType, Profession, ReforgeStat, Stat } from '../proto/common.js';
+import { GemColor, ItemRandomSuffix, ItemSpec, ItemType, Profession, ReforgeStat } from '../proto/common.js';
 import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../proto/ui.js';
 import { distinct } from '../utils.js';
 import { ActionId } from './action_id.js';
@@ -193,6 +193,16 @@ export class EquippedItem {
 		return new EquippedItem(this._item, this._enchant, this._gems, randomSuffix, this._reforge);
 	}
 
+	getWithRandomSuffixStats() {
+		const item = this.item;
+		if (this._randomSuffix)
+			item.stats = item.stats.map((stat, index) =>
+				this._randomSuffix!.stats[index] > 0 ? Math.floor((this._randomSuffix!.stats[index] * item.randPropPoints) / 10000) : stat,
+			);
+
+		return new EquippedItem(item, this._enchant, this._gems, this._randomSuffix, this._reforge);
+	}
+
 	asActionId(): ActionId {
 		if (this._randomSuffix) return ActionId.fromRandomSuffix(this._item, this._randomSuffix);
 
@@ -248,6 +258,10 @@ export class EquippedItem {
 		}
 
 		return numSockets;
+	}
+
+	hasRandomSuffixOptions() {
+		return !!this._item.randomSuffixOptions.length;
 	}
 
 	hasExtraGem(): boolean {

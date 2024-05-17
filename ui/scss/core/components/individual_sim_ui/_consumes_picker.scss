@@ -1,19 +1,12 @@
-@use 'sass:map';
-
 .consumes-picker-root {
 	display: grid;
 	flex-wrap: wrap;
-
-	@include media-breakpoint-between(sm, xl) {
-		column-gap: $block-spacer;
-		grid-template-columns: repeat(2, 1fr);
-	}
 
 	.consumes-row {
 		.consumes-row-inputs {
 			display: grid;
 			grid-auto-flow: column;
-			gap: map-get($spacers, 1);
+			gap: var(--spacer-1);
 			align-items: center;
 
 			& > * {
@@ -27,7 +20,7 @@
 	}
 
 	.elixir-space {
-		width: $icon-size-md;
+		width: var(--icon-size-md);
 		text-align: center;
 	}
 }

@@ -18,19 +18,30 @@ func TestFrost(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-		GearSet:     core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p1"),
-		Talents:     FrostTalents,
+		GearSet:     core.GetGearSet("../../../ui/death_knight/frost/gear_sets", "p12h"),
+		Talents:     TwohFrostTalents,
 		Glyphs:      FrostDefaultGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsFrost},
-		Rotation:    core.GetAplRotation("../../../ui/death_knight/frost/apls", "st"),
+		Rotation:    core.GetAplRotation("../../../ui/death_knight/frost/apls", "2hst"),
 
 		ItemFilter: ItemFilter,
 	}))
 }
 
-var FrostTalents = "2032-20330022233112012301-003"
+var DWFrostTalents = "103-32030022233112012031-033"
 var FrostDefaultGlyphs = &proto.Glyphs{
+	Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfFrostStrike),
+	Prime2: int32(proto.DeathKnightPrimeGlyph_GlyphOfObliterate),
+	Prime3: int32(proto.DeathKnightPrimeGlyph_GlyphOfHowlingBlast),
+	Major1: int32(proto.DeathKnightMajorGlyph_GlyphOfPestilence),
+	Major2: int32(proto.DeathKnightMajorGlyph_GlyphOfBloodBoil),
+	Major3: int32(proto.DeathKnightMajorGlyph_GlyphOfDarkSuccor),
+	// No interesting minor glyphs.
+}
+
+var TwohFrostTalents = "103-32030022233112012031-033"
+var TwohFrostDefaultGlyphs = &proto.Glyphs{
 	Prime1: int32(proto.DeathKnightPrimeGlyph_GlyphOfFrostStrike),
 	Prime2: int32(proto.DeathKnightPrimeGlyph_GlyphOfObliterate),
 	Prime3: int32(proto.DeathKnightPrimeGlyph_GlyphOfHowlingBlast),

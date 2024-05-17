@@ -148,6 +148,7 @@ class GlyphPicker extends Input<Player<any>, number> {
 
 	constructor(parent: HTMLElement, { player, selectorModal, glyphOptions, glyphField }: GlyphPickerConfig) {
 		super(parent, 'glyph-picker-root', player, {
+			id: `glyph-picker-glyph-${glyphField}`,
 			inline: true,
 			changedEvent: (player: Player<any>) => player.glyphsChangeEmitter,
 			getValue: (player: Player<any>) => player.getGlyphs()[glyphField] as number,
@@ -232,7 +233,7 @@ class GlyphSelectorModal extends BaseModal {
 	glyphOptions: GlyphData[] = [];
 	glyphPicker: GlyphPicker | null = null;
 	constructor(parent: HTMLElement) {
-		super(parent, 'glyph-modal', { title: 'Glyphs' });
+		super(parent, 'glyph-modal', { title: 'Glyphs', disposeOnClose: false });
 
 		const list = ref<HTMLUListElement>();
 		const search = ref<HTMLInputElement>();

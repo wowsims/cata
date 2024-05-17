@@ -3,6 +3,6 @@
       "priorityList": [
         {"action":{"autocastOtherCooldowns":{}}},
         {"action":{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}},
-        {"action":{"catOptimalRotationAction":{"rotationType":"Aoe","manualParams":false,"maintainFaerieFire":true}}}
+        {"action":{"catOptimalRotationAction":{"rotationType":"Aoe","manualParams":false,"maintainFaerieFire":false,"bearWeave":true,"snekWeave":true}}}
       ]
 }

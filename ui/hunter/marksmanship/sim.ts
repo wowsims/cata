@@ -25,7 +25,6 @@ import { Stats } from '../../core/proto_utils/stats';
 import * as HunterInputs from '../inputs';
 import * as MMInputs from './inputs';
 import * as Presets from './presets';
-
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	cssClass: 'marksmanship-hunter-sim-ui',
 	cssScheme: 'hunter',
@@ -162,7 +161,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.MarksmanTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_MM, Presets.ROTATION_PRESET_MM_ADVANCED],
+		rotations: [Presets.ROTATION_PRESET_SIMPLE_DEFAULT, Presets.ROTATION_PRESET_MM, Presets.ROTATION_PRESET_MM_ADVANCED, Presets.ROTATION_PRESET_AOE],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.MM_PRERAID_PRESET, Presets.MM_P1_PRESET],
 	},
@@ -249,16 +248,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceNightElf,
-				[Faction.Horde]: Race.RaceOrc,
+				[Faction.Alliance]: Race.RaceWorgen,
+				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.MM_P1_PRESET.gear,
+					1: Presets.MM_PRERAID_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.MM_P1_PRESET.gear,
+					1: Presets.MM_PRERAID_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

@@ -12,6 +12,7 @@ enum Spec {
 
 	SpecBalanceDruid = 4;
 	SpecFeralDruid = 5;
+	SpecGuardianDruid = 31;
 	SpecRestorationDruid = 6;
 
 	SpecBeastMasteryHunter = 7;
@@ -96,10 +97,11 @@ enum Profession {
 	Mining = 9;
 	Skinning = 10;
 	Tailoring = 11;
+	Archeology = 12;
 }
 
 // Keep in sync with sim/core/stats/stats.go.
-// NextIndex: 33;
+// NextIndex: 31;
 enum Stat {
 	StatStrength = 0;
 	StatAgility = 1;
@@ -116,24 +118,22 @@ enum Stat {
 	StatMeleeHit = 12;
 	StatMeleeCrit = 13;
 	StatMeleeHaste = 14;
-	StatArmorPenetration = 15;
-	StatExpertise = 16;
-	StatMana = 17;
-	StatArmor = 18;
-	StatRangedAttackPower = 19;
-	StatDefense = 20;
-	StatBlock = 21;
-	StatDodge = 22;
-	StatParry = 23;
-	StatResilience = 24;
-	StatHealth = 25;
-	StatArcaneResistance = 26;
-	StatFireResistance = 27;
-	StatFrostResistance = 28;
-	StatNatureResistance = 29;
-	StatShadowResistance = 30;
-	StatBonusArmor = 31;
-	StatMastery = 32;
+	StatExpertise = 15;
+	StatMana = 16;
+	StatArmor = 17;
+	StatRangedAttackPower = 18;
+	StatBlock = 19;
+	StatDodge = 20;
+	StatParry = 21;
+	StatResilience = 22;
+	StatHealth = 23;
+	StatArcaneResistance = 24;
+	StatFireResistance = 25;
+	StatFrostResistance = 26;
+	StatNatureResistance = 27;
+	StatShadowResistance = 28;
+	StatBonusArmor = 29;
+	StatMastery = 30;
 
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
@@ -312,12 +312,12 @@ enum Potions {
 	MightyRagePotion = 11;
 	RunicManaInjector = 12;
 	RunicHealingInjector = 13;
+	FlameCap = 14;
 }
 
 enum Conjured {
 	ConjuredUnknown = 0;
 	ConjuredDarkRune = 1;
-	ConjuredFlameCap = 2;
 	ConjuredHealthstone = 5;
 	ConjuredRogueThistleTea = 4;
 }
@@ -599,9 +599,9 @@ message Consumes {
 	Potions prepop_potion = 11;
 	Conjured default_conjured = 12;
 
-	bool thermal_sapper = 15;
-	bool explosive_decoy = 16;
-	Explosive filler_explosive = 17;
+	bool explosive_big_daddy = 15;
+	bool highpowered_bolt_gun = 16;
+	reserved 17; // deprecated old explosive
 
 	TinkerHands tinker_hands = 18;
 }
@@ -621,6 +621,7 @@ enum MobType {
 enum InputType {
 	Bool = 0;
 	Number = 1;
+	Enum = 2;
 }
 
 message TargetInput {
@@ -630,6 +631,9 @@ message TargetInput {
 
 	bool bool_value = 3;
 	double number_value = 4;
+
+	int32 enum_value = 6;
+	repeated string enum_options = 7;
 }
 
 message Target {

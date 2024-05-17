@@ -17,3 +17,8 @@ const repoPartIdx = pathnameParts.findIndex(part => part == REPO_NAME);
 export const SPEC_DIRECTORY = repoPartIdx == -1 ? '' : pathnameParts[repoPartIdx + 1];
 
 export const LOCAL_STORAGE_PREFIX = '__cata';
+
+export enum SortDirection {
+	ASC,
+	DESC,
+}

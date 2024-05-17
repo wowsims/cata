@@ -25,7 +25,6 @@ var safeDepsOrder = []Stat{
 	MP5,
 	SpellCrit,
 	MeleeCrit,
-	Defense,
 	Block,
 	Dodge,
 	Parry,

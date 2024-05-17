@@ -166,6 +166,7 @@ type WowheadItemStats struct {
 }
 type WowheadItemSource struct {
 	C        int32  `json:"c"`
+	S        int32  `json:"s"`
 	Name     string `json:"n"`    // Name of crafting spell
 	Icon     string `json:"icon"` // Icon corresponding to the named entity
 	EntityID int32  `json:"ti"`   // Crafting Spell ID / NPC ID / ?? / Quest ID
@@ -177,14 +178,17 @@ func (wi WowheadItem) ToProto() *proto.UIItem {
 	for i, details := range wi.SourceDetails {
 		switch wi.SourceTypes[i] {
 		case 1: // Crafted
-			// We'll get this from AtlasLoot instead because it can also tell us the profession.
-			//sources = append(sources, &proto.UIItemSource{
-			//	Source: &proto.UIItemSource_Crafted{
-			//		Crafted: &proto.CraftedSource{
-			//			SpellId: details.EntityID,
-			//		},
-			//	},
-			//})
+			profession, ok := wowheadProfessionIds[details.S]
+			if ok {
+				sources = append(sources, &proto.UIItemSource{
+					Source: &proto.UIItemSource_Crafted{
+						Crafted: &proto.CraftedSource{
+							SpellId:    details.EntityID,
+							Profession: profession,
+						},
+					},
+				})
+			}
 		case 2: // Dropped by
 			// Do nothing, we'll get this from AtlasLoot.
 		case 3: // Sold by zone vendor? barely used
@@ -221,6 +225,21 @@ func (wi WowheadItem) ToProto() *proto.UIItem {
 		Sources:             sources,
 		RandomSuffixOptions: wi.RandomSuffixOptions,
 	}
+}
+
+var wowheadProfessionIds = map[int32]proto.Profession{
+	//"FirstAid": proto.Profession_FirstAid,
+	//"Cooking":        proto.Profession_Cooking,
+	164: proto.Profession_Blacksmithing,
+	165: proto.Profession_Leatherworking,
+	171: proto.Profession_Alchemy,
+	186: proto.Profession_Mining,
+	197: proto.Profession_Tailoring,
+	202: proto.Profession_Engineering,
+	333: proto.Profession_Enchanting,
+	755: proto.Profession_Jewelcrafting,
+	773: proto.Profession_Inscription,
+	794: proto.Profession_Archeology,
 }
 
 func (wi WowheadItem) getFactionRstriction() proto.UIItem_FactionRestriction {

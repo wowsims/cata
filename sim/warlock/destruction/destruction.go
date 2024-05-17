@@ -37,7 +37,7 @@ type DestructionWarlock struct {
 }
 
 func (destruction DestructionWarlock) getMasteryBonus() float64 {
-	return 0.11 + 0.0135*destruction.GetMasteryPoints()
+	return 0.108 + 0.0135*destruction.GetMasteryPoints()
 }
 
 func (destruction *DestructionWarlock) GetWarlock() *warlock.Warlock {
