@@ -45,6 +45,10 @@ func (warlock *Warlock) registerImmolate() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).Apply(sim)
+			ua := warlock.UnstableAffliction
+			if ua != nil {
+				ua.Dot(target).Deactivate(sim)
+			}
 		},
 	})
 
