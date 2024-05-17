@@ -4,10 +4,10 @@ import { TankGemOptimizer } from '../../core/components/suggest_gems_action.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation , APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
+import { APLAction, APLListItem, APLPrepullAction, APLRotation , APLRotation_Type as APLRotationType, SimpleRotation } from '../../core/proto/apl.js';
 import {
 	Class,
-	Cooldowns,
+Cooldowns,
 	Debuffs,
 	Faction,
 	IndividualBuffs,
@@ -183,31 +183,42 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 	simpleRotation: (player: Player<Spec.SpecGuardianDruid>, simple: DruidRotation, cooldowns: Cooldowns): APLRotation => {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
+		const emergencyPulverize = APLAction.fromJsonString(`{"condition":{"and":{"vals":[{"dotIsActive":{"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"spellId":{"spellId":33745}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(1)}s"}}}}]}},"castSpell":{"spellId":{"spellId":80313}}}`);
 		const faerieFireMaintain = APLAction.fromJsonString(`{"condition":{"or":{"vals":[{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":770}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":770}}},"rhs":{"const":{"val":"6s"}}}}]}},"castSpell":{"spellId":{"spellId":16857}}}`);
-		const demoRoar = APLAction.fromJsonString(`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":99},"maxOverlap":{"const":{"val":"3s"}}}},"castSpell":{"spellId":{"spellId":99}}}`);
-		const pulverize = APLAction.fromJsonString(`{"condition":{"and":{"vals":[{"dotIsActive":{"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"or":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":80951}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":80951}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(1)}s"}}}}]}}]}},"castSpell":{"spellId":{"spellId":80313}}}`);
+		const demoRoar = APLAction.fromJsonString(`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":99},"maxOverlap":{"const":{"val":"${simple.demoTime.toFixed(1)}s"}}}},"castSpell":{"spellId":{"spellId":99}}}`);
+		const berserk = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":50334}}}`);
+		const enrage = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":5229}}}`);
+		const synapseSprings = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":82174}}}`);
+		const lacerateForProcs = APLAction.fromJsonString(`{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"spellId":{"spellId":33745}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":50334}}}}}]}},"castSpell":{"spellId":{"spellId":33745}}}`);
 		const mangle = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":33878}}}`);
 		const thrash = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":77758}}}`);
-		const lacerateForProcs = APLAction.fromJsonString(`{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":33745}}}}},"castSpell":{"spellId":{"spellId":33745}}}`);
 		const faerieFireFiller = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":16857}}}`);
+		const pulverize = APLAction.fromJsonString(`{"condition":{"and":{"vals":[{"dotIsActive":{"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"or":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":80951}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":80951}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(1)}s"}}}}]}}]}},"castSpell":{"spellId":{"spellId":80313}}}`);
 		const lacerateBuild = APLAction.fromJsonString(`{"condition":{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},"castSpell":{"spellId":{"spellId":33745}}}`);
-		const swipe = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":779}}}`);
-		const maul = APLAction.fromJsonString(`{"condition":{"cmp":{"op":"OpGe","lhs":{"currentRage":{}},"rhs":{"const":{"val":"${simple.maulRageThreshold.toFixed(0)}"}}}},"castSpell":{"spellId":{"spellId":6807}}}`);
+		const maul = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":6807}}}`);
 
 		actions.push(...[
-			faerieFireMaintain,
+			emergencyPulverize,
+			simple.maintainFaerieFire ? faerieFireMaintain : null,
 			simple.maintainDemoralizingRoar ? demoRoar : null,
-			pulverize,
+			berserk,
+			enrage,
+			synapseSprings,
+			lacerateForProcs,
 			mangle,
 			thrash,
-			lacerateForProcs,
 			faerieFireFiller,
+			pulverize,
 			lacerateBuild,
-			swipe,
 			maul,
 		].filter(a => a) as Array<APLAction>)
 
 		return APLRotation.create({
+			simple: SimpleRotation.create({
+				cooldowns: Cooldowns.create({
+					hpPercentForDefensives: cooldowns.hpPercentForDefensives,
+				}),
+			}),
 			prepullActions: prepullActions,
 			priorityList: actions.map(action => APLListItem.create({
 				action: action,
