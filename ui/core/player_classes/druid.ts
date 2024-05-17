@@ -1,6 +1,6 @@
 import { EligibleWeaponType, IconSize, PlayerClass } from '../player_class';
 import { PlayerSpec } from '../player_spec';
-import { BalanceDruid, FeralDruid, RestorationDruid } from '../player_specs/druid';
+import { BalanceDruid, FeralDruid, GuardianDruid, RestorationDruid } from '../player_specs/druid';
 import { ArmorType, Class, Race, RangedWeaponType, WeaponType } from '../proto/common';
 import { DruidSpecs } from '../proto_utils/utils';
 
@@ -11,6 +11,7 @@ export class Druid extends PlayerClass<Class.ClassDruid> {
 	static specs: Record<string, PlayerSpec<DruidSpecs>> = {
 		[BalanceDruid.friendlyName]: BalanceDruid,
 		[FeralDruid.friendlyName]: FeralDruid,
+		[GuardianDruid.friendlyName]: GuardianDruid,
 		[RestorationDruid.friendlyName]: RestorationDruid,
 	};
 
