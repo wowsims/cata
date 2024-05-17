@@ -53,10 +53,6 @@ export class WorkerInterface {
 
 	/** Tell UI that the worker is ready. */
 	ready() {
-		if (!this.handlers) {
-			console.error('WorkerInterface.ready() used but handlers not set!');
-			return;
-		}
 		this.postMessage({ msg: 'ready' });
 	}
 }
