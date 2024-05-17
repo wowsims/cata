@@ -29,8 +29,9 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 	selfBuffs := druid.SelfBuffs{}
 
 	bear := &GuardianDruid{
-		Druid:   druid.New(character, druid.Bear, selfBuffs, options.TalentsString),
-		Options: tankOptions.Options,
+		Druid:     druid.New(character, druid.Bear, selfBuffs, options.TalentsString),
+		Options:   tankOptions.Options,
+		vengeance: &core.VengeanceTracker{},
 	}
 
 	bear.EnableRageBar(core.RageBarOptions{
@@ -57,7 +58,8 @@ func NewGuardianDruid(character *core.Character, options *proto.Player) *Guardia
 type GuardianDruid struct {
 	*druid.Druid
 
-	Options *proto.GuardianDruid_Options
+	Options   *proto.GuardianDruid_Options
+	vengeance *core.VengeanceTracker
 }
 
 func (bear *GuardianDruid) GetDruid() *druid.Druid {
@@ -72,6 +74,7 @@ func (bear *GuardianDruid) Initialize() {
 func (bear *GuardianDruid) ApplyTalents() {
 	bear.Druid.ApplyTalents()
 	bear.MultiplyStat(stats.AttackPower, 1.25) // Aggression passive
+	core.ApplyVengeanceEffect(&bear.Character, bear.vengeance, 84840)
 }
 
 func (bear *GuardianDruid) Reset(sim *core.Simulation) {
