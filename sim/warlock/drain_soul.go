@@ -42,16 +42,8 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 		Flags:          core.SpellFlagChanneled | core.SpellFlagHauntSE | core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellDrainSoul,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.14,
-			Multiplier: 1,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-				// ChannelTime: channelTime,
-			},
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.14},
+		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		DamageMultiplierAdditive: 1,
 		DamageMultiplier:         1,
@@ -69,6 +61,7 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				baseDmg := 385/5 + 0.378*dot.Spell.SpellPower()
 				dot.SnapshotBaseDamage = baseDmg * calcSoulSiphonMult(target)
+				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
