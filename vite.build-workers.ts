@@ -50,8 +50,9 @@ const buildWorkers = async () => {
 					entry: { [name]: sourcePath },
 					name: `${name}.js`,
 					formats: ['cjs'],
-				},
+
 			},
+
 		});
 	});
 };

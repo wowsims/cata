@@ -36,7 +36,7 @@ export type WorkerReceiveMessage = WorkerReceiveMessageSetId | WorkerReceiveMess
 /**
  * What the Worker sends to the UI
  */
-export type WorkerSendMessageType = 'ready' | 'idconfirm' | 'progress' | keyof typeof SimRequest;
+export type WorkerSendMessageType = 'ready' | 'idConfirm' | 'progress' | keyof typeof SimRequest;
 
 export interface WorkerSendMessageBodyBase {
 	id?: string;
@@ -45,7 +45,7 @@ export interface WorkerSendMessageBodyBase {
 }
 
 export interface WorkerSendMessageIdConfirm extends WorkerSendMessageBodyBase {
-	msg: 'idconfirm';
+	msg: 'idConfirm';
 }
 
 export interface WorkerSendMessageReady extends WorkerSendMessageBodyBase {

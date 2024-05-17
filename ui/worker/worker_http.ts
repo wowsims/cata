@@ -1,6 +1,5 @@
-import { sleep } from '../core/utils';
-import { type SimRequest } from './types';
-import { WorkerInterface } from './worker_interface';
+import { noop, sleep } from '../core/utils';
+import { HandlerFunction, WorkerInterface } from './worker_interface';
 
 const defaultRequestOptions = {
 	method: 'POST',
@@ -9,48 +8,46 @@ const defaultRequestOptions = {
 	},
 };
 
-export function setupHttpWorker(baseURL: string) {
-
-	function makeHttpApiRequest(endPoint: string, inputData: Uint8Array) {
-		return fetch(`${baseURL}/${endPoint}`, {
+export const setupHttpWorker = (baseURL: string) => {
+	const makeHttpApiRequest = (endPoint: string, inputData: Uint8Array) =>
+		fetch(`${baseURL}/${endPoint}`, {
 			...defaultRequestOptions,
 			body: inputData,
 		});
-	}
 
-	async function syncHandler(inputData: Uint8Array, _: any, msg: SimRequest) {
+	const syncHandler: HandlerFunction = async (inputData, _, msg) => {
 		const response = await makeHttpApiRequest(msg, inputData);
 		const ab = await response.arrayBuffer();
 		return new Uint8Array(ab);
-	}
+	};
 
-	async function asyncHandler(inputData: Uint8Array, progress: (outputData: Uint8Array) => void, msg: SimRequest) {
-		const asyncApiResult = await syncHandler(inputData, null, msg);
+	const asyncHandler: HandlerFunction = async (inputData, progress, msg) => {
+		const asyncApiResult = await syncHandler(inputData, noop, msg);
 		let outputData = new Uint8Array();
 		while (true) {
-			const progressResponse = await makeHttpApiRequest("asyncProgress", asyncApiResult);
+			const progressResponse = await makeHttpApiRequest('asyncProgress', asyncApiResult);
 
 			// If no new data available, stop querying.
-			if (progressResponse.status === 204) {
+			if ([204, 404].includes(progressResponse.status)) {
 				break;
 			}
 
 			const ab = await progressResponse.arrayBuffer();
 			outputData = new Uint8Array(ab);
-			progress(outputData);
+			progress?.(outputData);
 			await sleep(500);
 		}
-		return outputData
-	}
+		return outputData;
+	};
 
 	new WorkerInterface({
-		"bulkSimAsync": asyncHandler,
-		"computeStats": syncHandler,
-		"computeStatsJson": syncHandler,
-		"raidSim": syncHandler,
-		"raidSimJson": syncHandler,
-		"raidSimAsync": asyncHandler,
-		"statWeights": syncHandler,
-		"statWeightsAsync": asyncHandler,
+		bulkSimAsync: asyncHandler,
+		computeStats: syncHandler,
+		computeStatsJson: syncHandler,
+		raidSim: syncHandler,
+		raidSimJson: syncHandler,
+		raidSimAsync: asyncHandler,
+		statWeights: syncHandler,
+		statWeightsAsync: asyncHandler,
 	}).ready();
-}
+};

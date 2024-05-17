@@ -20,14 +20,14 @@ declare global {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 globalThis.wasmready = function () {
 	new WorkerInterface({
-		"bulkSimAsync": (data, progress) => bulkSimAsync(data, progress),
-		"computeStats": computeStats,
-		"computeStatsJson": computeStatsJson,
-		"raidSim": raidSim,
-		"raidSimJson": raidSimJson,
-		"raidSimAsync": (data, progress) => raidSimAsync(data, progress),
-		"statWeights": statWeights,
-		"statWeightsAsync": (data, progress) => statWeightsAsync(data, progress),
+		bulkSimAsync: (data, progress) => bulkSimAsync(data, progress),
+		computeStats: computeStats,
+		computeStatsJson: computeStatsJson,
+		raidSim: raidSim,
+		raidSimJson: raidSimJson,
+		raidSimAsync: (data, progress) => raidSimAsync(data, progress),
+		statWeights: statWeights,
+		statWeightsAsync: (data, progress) => statWeightsAsync(data, progress),
 	}).ready();
 };
 

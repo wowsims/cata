@@ -128,7 +128,7 @@ class SimWorker {
 					resolveReady!();
 					break;
 				// Do nothing
-				case 'idconfirm':
+				case 'idConfirm':
 					break;
 				default:
 					if (!this.taskIdsToPromiseFuncs[id]) {

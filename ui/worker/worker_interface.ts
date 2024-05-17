@@ -1,40 +1,41 @@
 import type { SimRequest, WorkerReceiveMessage, WorkerSendMessage } from './types';
 
-export type HandlerProgressCb = (outputData: Uint8Array) => void
-export type HandlerFunc = (data: Uint8Array, progress: HandlerProgressCb, msg: SimRequest) => Uint8Array | Promise<Uint8Array>
-export type HandlerDefs = Record<SimRequest, HandlerFunc>
+export type HandlerProgressCallback = (outputData: Uint8Array) => void;
+export type HandlerFunction = (data: Uint8Array, progress: HandlerProgressCallback, msg: SimRequest) => Uint8Array | Promise<Uint8Array>;
+export type Handlers = Record<SimRequest, HandlerFunction>;
 
 /**
  * Communication with the UI.
  */
 export class WorkerInterface {
-	private workerId = "";
-	private readonly handlers: HandlerDefs;
+	private _workerId = '';
+	private readonly handlers: Handlers;
 
-	constructor(handlers: HandlerDefs) {
+	constructor(handlers: Handlers) {
 		this.handlers = handlers;
 
-		addEventListener("message", async ({ data }: MessageEvent<WorkerReceiveMessage>) => {
+		addEventListener('message', async ({ data }: MessageEvent<WorkerReceiveMessage>) => {
 			const { id, msg, inputData } = data;
 
-			if (msg === "setID") {
-				this.workerId = id;
-				this.postMessage({ msg: "idconfirm" });
+			if (msg === 'setID') {
+				this._workerId = id;
+				this.postMessage({ msg: 'idConfirm' });
 				return;
 			}
 
 			const handlerFunc = this.handlers?.[msg];
 
 			if (!handlerFunc) {
-				console.error(`Request msg: ${msg}, id: ${id}, is not handled!`);
+				console.error(`Request msg: ${msg}, id: ${this.workerId}, is not handled!`);
 				return;
 			}
 
-			const progressCallback: HandlerProgressCb = prog => this.postMessage({
-				msg: "progress",
-				id: `${id}progress`,
-				outputData: prog,
-			});
+			const progressCallback: HandlerProgressCallback = prog =>
+				this.postMessage({
+					msg: 'progress',
+					id: `${this.workerId}progress`,
+					outputData: prog,
+				});
 
 			const outputData = await handlerFunc(inputData, progressCallback, msg);
 			this.postMessage({ msg, id, outputData });
@@ -45,16 +46,16 @@ export class WorkerInterface {
 		postMessage(m);
 	}
 
-	getWorkerId() {
-		return this.workerId;
+	get workerId() {
+		return this._workerId;
 	}
 
 	/** Tell UI that the worker is ready. */
 	ready() {
 		if (!this.handlers) {
-			console.error("WorkerInterface.ready() used but handlers not set!");
+			console.error('WorkerInterface.ready() used but handlers not set!');
 			return;
 		}
-		this.postMessage({msg: "ready"});
+		this.postMessage({ msg: 'ready' });
 	}
 }
