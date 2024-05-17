@@ -1,12 +1,34 @@
-import { buildProgressId, workerPostMessage } from './shared';
-import { SimRequest, SimRequestSync, WorkerReceiveMessage } from './types';
+import { WorkerInterface } from './worker_interface';
+
+type SimRequestAsync = (data: Uint8Array, progress: (result: Uint8Array) => void) => Uint8Array;
+type SimRequestSync = (data: Uint8Array) => Uint8Array;
+
+// Functions provided or used by the wasm lib.
+declare global {
+	function wasmready(): void;
+	const bulkSimAsync: SimRequestAsync;
+	const computeStats: SimRequestSync;
+	const computeStatsJson: SimRequestSync;
+	const raidSim: SimRequestSync;
+	const raidSimJson: SimRequestSync;
+	const raidSimAsync: SimRequestAsync;
+	const statWeights: SimRequestSync;
+	const statWeightsAsync: SimRequestAsync;
+}
 
 // Wasm binary calls this function when its done loading.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 globalThis.wasmready = function () {
-	workerPostMessage({
-		msg: 'ready',
-	});
+	new WorkerInterface({
+		"bulkSimAsync": (data, progress) => bulkSimAsync(data, progress),
+		"computeStats": computeStats,
+		"computeStatsJson": computeStatsJson,
+		"raidSim": raidSim,
+		"raidSimJson": raidSimJson,
+		"raidSimAsync": (data, progress) => raidSimAsync(data, progress),
+		"statWeights": statWeights,
+		"statWeightsAsync": (data, progress) => statWeightsAsync(data, progress),
+	}).ready();
 };
 
 const go = new Go();
@@ -17,79 +39,5 @@ WebAssembly.instantiateStreaming(fetch('lib.wasm'), go.importObject).then(async 
 	// console.log("loading wasm...")
 	await go.run(inst);
 });
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-let workerID = '';
-
-addEventListener(
-	'message',
-	async ({ data }: MessageEvent<WorkerReceiveMessage>) => {
-		const { id, msg, inputData } = data;
-
-		let handled = false;
-
-		const requests: [SimRequest, SimRequestSync][] = [
-			[
-				SimRequest.bulkSimAsync,
-				data =>
-					bulkSimAsync(data, result => {
-						workerPostMessage({
-							id: buildProgressId(id),
-							msg: 'progress',
-							outputData: result,
-						});
-					}),
-			],
-			[SimRequest.computeStats, computeStats],
-			[SimRequest.computeStatsJson, computeStatsJson],
-			[SimRequest.raidSim, raidSim],
-			[SimRequest.raidSimJson, raidSimJson],
-			[
-				SimRequest.raidSimAsync,
-				data =>
-					raidSimAsync(data, result => {
-						workerPostMessage({
-							id: buildProgressId(id),
-							msg: 'progress',
-							outputData: result,
-						});
-					}),
-			],
-			[
-				SimRequest.statWeightsAsync,
-				data =>
-					statWeightsAsync(data, result => {
-						workerPostMessage({
-							id: buildProgressId(id),
-							msg: 'progress',
-							outputData: result,
-						});
-					}),
-			],
-		];
-		requests.forEach(([funcName, func]) => {
-			if (msg === funcName) {
-				const outputData = func(inputData);
-
-				workerPostMessage({
-					id: id,
-					msg: funcName,
-					outputData: outputData,
-				});
-				handled = true;
-			}
-		});
-
-		if (handled) {
-			return;
-		}
-
-		if (msg === 'setID') {
-			workerID = id;
-			workerPostMessage({ msg: 'idconfirm' });
-		}
-	},
-	false,
-);
 
 export {};

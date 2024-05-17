@@ -1,5 +1,5 @@
 /**
- * What the Worker receives from the UI
+ * API endpoints and exposed wasm function names. Also used as request identifier.
  */
 export enum SimRequest {
 	bulkSimAsync = 'bulkSimAsync',
@@ -12,6 +12,9 @@ export enum SimRequest {
 	statWeightsAsync = 'statWeightsAsync',
 }
 
+/**
+ * What the Worker receives from the UI
+ */
 export type WorkerReceiveMessageType = keyof typeof SimRequest | 'setID';
 
 export interface WorkerReceiveMessageBodyBase {
@@ -58,6 +61,3 @@ export interface WorkerSendMessageSimRequest extends Required<WorkerSendMessageB
 }
 
 export type WorkerSendMessage = WorkerSendMessageReady | WorkerSendMessageIdConfirm | WorkerSendMessageProgress | WorkerSendMessageSimRequest;
-
-export type SimRequestAsync = (data: Uint8Array, progress: (result: Uint8Array) => void) => Uint8Array;
-export type SimRequestSync = (data: Uint8Array) => Uint8Array;
