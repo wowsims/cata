@@ -20,7 +20,6 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 			warlock.CurseOfElementsAuras.Get(target),
 			warlock.CurseOfWeaknessAuras.Get(target),
 			warlock.CurseOfTonguesAuras.Get(target),
-			warlock.ShadowEmbraceDebuffAura(target),
 			// missing: death coil
 		}
 		if warlock.HauntDebuffAuras != nil {
