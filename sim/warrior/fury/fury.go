@@ -77,6 +77,8 @@ func (war *FuryWarrior) RegisterSpecializationEffects() {
 
 	// Precision
 	war.AddStat(stats.MeleeHit, 3*core.MeleeHitRatingPerHitChance)
+	war.AutoAttacks.MHConfig().DamageMultiplier *= 1.4
+	war.AutoAttacks.OHConfig().DamageMultiplier *= 1.4
 }
 
 func (war *FuryWarrior) GetMasteryBonusMultiplier() float64 {
@@ -95,4 +97,20 @@ func (war *FuryWarrior) Initialize() {
 
 func (war *FuryWarrior) Reset(sim *core.Simulation) {
 	war.Warrior.Reset(sim)
+}
+
+func (war *FuryWarrior) ApplySyncType(syncType proto.WarriorSyncType) {
+	if syncType == proto.WarriorSyncType_WarriorSyncMainhandOffhandSwings {
+		war.AutoAttacks.SetReplaceMHSwing(func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
+			aa := &war.AutoAttacks
+			if nextMHSwingAt := sim.CurrentTime + aa.MainhandSwingSpeed(); nextMHSwingAt > aa.OffhandSwingAt() {
+				aa.SetOffhandSwingAt(nextMHSwingAt)
+			}
+
+			return mhSwingSpell
+		})
+
+	} else {
+		war.AutoAttacks.SetReplaceMHSwing(nil)
+	}
 }
