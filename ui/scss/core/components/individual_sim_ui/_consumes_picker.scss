@@ -2,11 +2,6 @@
 	display: grid;
 	flex-wrap: wrap;
 
-	@include media-breakpoint-between(sm, xl) {
-		column-gap: var(--block-spacer);
-		grid-template-columns: repeat(2, 1fr);
-	}
-
 	.consumes-row {
 		.consumes-row-inputs {
 			display: grid;

@@ -147,6 +147,7 @@ class GlyphPicker extends Input<Player<any>, number> {
 
 	constructor(parent: HTMLElement, { player, selectorModal, glyphOptions, glyphField }: GlyphPickerConfig) {
 		super(parent, 'glyph-picker-root', player, {
+			id: `glyph-picker-glyph-${glyphField}`,
 			inline: true,
 			changedEvent: (player: Player<any>) => player.glyphsChangeEmitter,
 			getValue: (player: Player<any>) => player.getGlyphs()[glyphField] as number,

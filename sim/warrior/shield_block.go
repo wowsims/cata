@@ -32,7 +32,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 			avoidance := warrior.GetTotalAvoidanceChance(atkTable)
 			if avoidance > core.CombatTableCoverageCap {
 				extraAvoidance = avoidance - core.CombatTableCoverageCap
-				warrior.CriticalBlockChance += extraAvoidance
+				warrior.CriticalBlockChance[1] += extraAvoidance
 			} else {
 				extraAvoidance = 0.0
 			}
@@ -41,7 +41,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 			warrior.AddStatDynamic(sim, stats.Block, -25*core.BlockRatingPerBlockChance)
 
 			if extraAvoidance > 0.0 {
-				warrior.CriticalBlockChance -= extraAvoidance
+				warrior.CriticalBlockChance[1] -= extraAvoidance
 			}
 
 			if sim.CurrentTime != sim.Duration && hasT12_4P_bonus {

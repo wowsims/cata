@@ -50,6 +50,7 @@ export class LogRunner extends ResultComponent {
 			this.virtualScroll?.scrollToTop();
 		});
 		new BooleanPicker<LogRunner>(this.rootElem.querySelector('.log-runner-actions')!, this, {
+			id: 'log-runner-show-debug',
 			extraCssClasses: ['show-debug-picker'],
 			label: 'Show Debug Statements',
 			inline: true,

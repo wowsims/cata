@@ -27,6 +27,7 @@ export class FiltersMenu extends BaseModal {
 		generalSection.appendChild(ilvlFiltersContainer);
 
 		new NumberPicker(ilvlFiltersContainer, player.sim, {
+			id: 'filters-min-ilvl',
 			label: 'Min ILvl',
 			showZeroes: false,
 			changedEvent: sim => sim.filtersChangeEmitter,
@@ -41,6 +42,7 @@ export class FiltersMenu extends BaseModal {
 		ilvlFiltersContainer.appendChild(<span className="ilvl-filters-separator">-</span>);
 
 		new NumberPicker(ilvlFiltersContainer, player.sim, {
+			id: 'filters-max-ilvl',
 			label: 'Max ILvl',
 			showZeroes: false,
 			changedEvent: sim => sim.filtersChangeEmitter,
@@ -53,6 +55,7 @@ export class FiltersMenu extends BaseModal {
 		});
 
 		new EnumPicker(generalSection, player.sim, {
+			id: 'filters-faction-restriction',
 			label: 'Faction Restrictions',
 			values: [UIItem_FactionRestriction.UNSPECIFIED, UIItem_FactionRestriction.ALLIANCE_ONLY, UIItem_FactionRestriction.HORDE_ONLY].map(restriction => {
 				return {
@@ -74,6 +77,7 @@ export class FiltersMenu extends BaseModal {
 		const sources = Sim.ALL_SOURCES.filter(s => s != SourceFilterOption.SourceUnknown);
 		sources.forEach(source => {
 			new BooleanPicker<Sim>(sourceSection, player.sim, {
+				id: `filters-source-${source}`,
 				label: sourceNames.get(source),
 				inline: true,
 				changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
@@ -95,6 +99,7 @@ export class FiltersMenu extends BaseModal {
 		const raids = Sim.ALL_RAIDS.filter(s => s != RaidFilterOption.RaidUnknown);
 		raids.forEach(raid => {
 			new BooleanPicker<Sim>(raidsSection, player.sim, {
+				id: `filters-raid-${raid}`,
 				label: raidNames.get(raid),
 				inline: true,
 				changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
@@ -120,6 +125,7 @@ export class FiltersMenu extends BaseModal {
 
 				armorTypes.forEach(armorType => {
 					new BooleanPicker<Sim>(armorTypesSection, player.sim, {
+						id: `filters-armor-type-${armorType}`,
 						label: armorTypeNames.get(armorType),
 						inline: true,
 						changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
@@ -143,6 +149,7 @@ export class FiltersMenu extends BaseModal {
 
 			weaponTypes.forEach(weaponType => {
 				new BooleanPicker<Sim>(weaponTypeSection, player.sim, {
+					id: `filters-weapon-type-${weaponType}`,
 					label: weaponTypeNames.get(weaponType),
 					inline: true,
 					changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
@@ -162,6 +169,7 @@ export class FiltersMenu extends BaseModal {
 			const weaponSpeedSection = this.newSection('Weapon Speed');
 			weaponSpeedSection.classList.add('filters-menu-section-number-list');
 			new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
+				id: 'filters-min-weapon-speed',
 				label: 'Min MH Speed',
 				//labelTooltip: 'Maximum speed for the mainhand weapon. If 0, no maximum value is applied.',
 				float: true,
@@ -175,6 +183,7 @@ export class FiltersMenu extends BaseModal {
 				},
 			});
 			new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
+				id: 'filters-max-weapon-speed',
 				label: 'Max MH Speed',
 				//labelTooltip: 'Maximum speed for the mainhand weapon. If 0, no maximum value is applied.',
 				float: true,
@@ -189,6 +198,7 @@ export class FiltersMenu extends BaseModal {
 			});
 			if (player.getSpec().canDualWield) {
 				new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
+					id: 'filters-min-oh-weapon-speed',
 					label: 'Min OH Speed',
 					//labelTooltip: 'Minimum speed for the offhand weapon. If 0, no minimum value is applied.',
 					float: true,
@@ -202,6 +212,7 @@ export class FiltersMenu extends BaseModal {
 					},
 				});
 				new NumberPicker<Sim>(weaponSpeedSection, player.sim, {
+					id: 'filters-max-oh-weapon-speed',
 					label: 'Max OH Speed',
 					//labelTooltip: 'Maximum speed for the offhand weapon. If 0, no maximum value is applied.',
 					float: true,
@@ -225,6 +236,7 @@ export class FiltersMenu extends BaseModal {
 
 			rangedweapontypes.forEach(rangedWeaponType => {
 				new BooleanPicker<Sim>(rangedWeaponTypeSection, player.sim, {
+					id: `filter-ranged-weapon-type-${rangedWeaponType}`,
 					label: rangedWeaponTypeNames.get(rangedWeaponType),
 					inline: true,
 					changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
@@ -244,6 +256,7 @@ export class FiltersMenu extends BaseModal {
 			const rangedWeaponSpeedSection = this.newSection('Ranged Weapon Speed');
 			rangedWeaponSpeedSection.classList.add('filters-menu-section-number-list');
 			new NumberPicker<Sim>(rangedWeaponSpeedSection, player.sim, {
+				id: 'filters-min-ranged-weapon-speed',
 				label: 'Min Ranged Speed',
 				//labelTooltip: 'Maximum speed for the ranged weapon. If 0, no maximum value is applied.',
 				float: true,
@@ -257,6 +270,7 @@ export class FiltersMenu extends BaseModal {
 				},
 			});
 			new NumberPicker<Sim>(rangedWeaponSpeedSection, player.sim, {
+				id: 'filters-max-ranged-weapon-speed',
 				label: 'Max Ranged Speed',
 				//labelTooltip: 'Maximum speed for the ranged weapon. If 0, no maximum value is applied.',
 				float: true,

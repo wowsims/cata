@@ -586,16 +586,12 @@ func (result *SpellResult) applyEnemyAttackTableCrit(spell *Spell, _ *AttackTabl
 
 	critRating := spell.Unit.stats[stats.MeleeCrit] + spell.BonusCritRating
 	critChance := critRating / (CritRatingPerCritChance * 100)
-	critChance -= result.Target.stats[stats.Defense] * DefenseRatingToChanceReduction
-	critChance -= result.Target.stats[stats.Resilience] / ResilienceRatingPerCritReductionChance / 100
 	critChance -= result.Target.PseudoStats.ReducedCritTakenChance
 	*chance += max(0, critChance)
 
 	if roll < *chance {
 		result.Outcome = OutcomeCrit
 		spell.SpellMetrics[result.Target.UnitIndex].Crits++
-		// Assume PvE enemies do not use damage reduction multiplier component in WotLK
-		//resilCritMultiplier := 1 - result.Target.stats[stats.Resilience]/ResilienceRatingPerCritDamageReductionPercent/100
 		result.Damage *= 2
 		return true
 	}

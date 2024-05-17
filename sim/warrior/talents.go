@@ -333,11 +333,11 @@ func (warrior *Warrior) applyHoldTheLine() {
 		ActionID: core.ActionID{SpellID: 84621},
 		Duration: 5 * time.Second * time.Duration(warrior.Talents.HoldTheLine),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.CriticalBlockChance += 0.1
+			warrior.CriticalBlockChance[1] += 0.1
 			warrior.AddStatDynamic(sim, stats.Block, 10*core.BlockRatingPerBlockChance)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.CriticalBlockChance -= 0.1
+			warrior.CriticalBlockChance[1] -= 0.1
 			warrior.AddStatDynamic(sim, stats.Block, -10*core.BlockRatingPerBlockChance)
 		},
 	})

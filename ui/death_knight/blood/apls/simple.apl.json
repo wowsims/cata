@@ -1,8 +1,9 @@
 {
     "type": "TypeAPL",
 	"prepullActions": [
+	  {"action":{"castSpell":{"spellId":{"spellId":48263}}},"doAtValue":{"const":{"val":"-60s"}}},
 	  {"action":{"castSpell":{"spellId":{"spellId":49222}}},"doAtValue":{"const":{"val":"-60s"}}},
-	  {"action":{"castSpell":{"spellId":{"spellId":48263}}},"doAtValue":{"const":{"val":"-20s"}}}
+	  {"action":{"castSpell":{"spellId":{"spellId":42650}}},"doAtValue":{"const":{"val":"-10s"}}}
 	],
 	"priorityList": [
 	  {"action":{"autocastOtherCooldowns":{}}},
