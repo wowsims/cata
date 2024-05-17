@@ -99,7 +99,7 @@ func (war *ProtectionWarrior) RegisterMastery() {
 		}
 
 		if result.Outcome.Matches(core.OutcomeBlock) && !result.Outcome.Matches(core.OutcomeMiss) && !result.Outcome.Matches(core.OutcomeParry) && !result.Outcome.Matches(core.OutcomeDodge) {
-			procChance := war.CriticalBlockChance
+			procChance := war.GetCriticalBlockChance()
 			if sim.Proc(procChance, "Critical Block Roll") {
 				result.Damage = result.Damage * (1 - war.BlockDamageReduction()*2)
 				dummyCriticalBlockSpell.Cast(sim, spell.Unit)
@@ -111,8 +111,8 @@ func (war *ProtectionWarrior) RegisterMastery() {
 
 	// Crit block mastery also applies an equal amount to regular block
 	// set initial block rating from stats
-	war.CriticalBlockChance = war.GetCriticalBlockChance()
-	war.AddStat(stats.Block, (war.CriticalBlockChance*100.0)*core.BlockRatingPerBlockChance)
+	war.CriticalBlockChance[0] = war.CalculateCriticalBlockChance()
+	war.AddStat(stats.Block, (war.CriticalBlockChance[0]*100.0)*core.BlockRatingPerBlockChance)
 
 	// and keep it updated when mastery changes
 	war.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery, newMastery float64) {
@@ -120,7 +120,7 @@ func (war *ProtectionWarrior) RegisterMastery() {
 		newBlockRating := (1.5 * core.MasteryRatingToMasteryPoints(newMastery)) * core.BlockRatingPerBlockChance
 
 		war.AddStatDynamic(sim, stats.Block, -oldBlockRating+newBlockRating)
-		war.CriticalBlockChance = war.GetCriticalBlockChance()
+		war.CriticalBlockChance[0] = war.CalculateCriticalBlockChance()
 	})
 
 }
@@ -129,7 +129,7 @@ func CalcMasteryPercent(points float64) float64 {
 	return 12.0 + 1.5*points
 }
 
-func (war *ProtectionWarrior) GetCriticalBlockChance() float64 {
+func (war *ProtectionWarrior) CalculateCriticalBlockChance() float64 {
 	return CalcMasteryPercent(war.GetMasteryPoints()) / 100.0
 }
 

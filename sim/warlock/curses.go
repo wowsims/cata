@@ -126,7 +126,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 }
 
 func (warlock *Warlock) registerBaneOfAgonySpell() {
-	baseTickDmg := warlock.CalcScalingSpellDmg(Coefficient_BaneOfAgony) / 12.0
+	baseTickDmg := warlock.CalcScalingSpellDmg(0.13300000131)
 
 	warlock.BaneOfAgony = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 980},
@@ -135,10 +135,7 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellBaneOfAgony,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.1,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.1},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -155,7 +152,7 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 			},
 			NumberOfTicks:    12,
 			TickLength:       2 * time.Second,
-			BonusCoefficient: 0.088,
+			BonusCoefficient: 0.08799999952,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, 0.5*baseTickDmg)
 			},

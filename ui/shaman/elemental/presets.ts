@@ -34,7 +34,7 @@ export const TalentsTotemDuration = {
 	name: 'Totem Duration',
 	data: SavedTalents.create({
 		talentsString: '303202321223110132-201-20302',
-		glyphs: Glyphs.create({			
+		glyphs: Glyphs.create({
 			prime1: ShamanPrimeGlyph.GlyphOfFlameShock,
 			prime2: ShamanPrimeGlyph.GlyphOfLavaBurst,
 			prime3: ShamanPrimeGlyph.GlyphOfLightningBolt,
@@ -52,7 +52,7 @@ export const TalentsImprovedShields = {
 	name: 'Improved Shields',
 	data: SavedTalents.create({
 		talentsString: '3032023212231101321-2030022',
-		glyphs: Glyphs.create({			
+		glyphs: Glyphs.create({
 			prime1: ShamanPrimeGlyph.GlyphOfFlameShock,
 			prime2: ShamanPrimeGlyph.GlyphOfLavaBurst,
 			prime3: ShamanPrimeGlyph.GlyphOfLightningBolt,
@@ -78,10 +78,8 @@ export const DefaultOptions = ElementalShamanOptions.create({
 				water: WaterTotem.ManaSpringTotem,
 			}),
 			ancestors: TotemSet.create({
-				earth: EarthTotem.StrengthOfEarthTotem,
-				air: AirTotem.WrathOfAirTotem,
-				fire: FireTotem.SearingTotem,
-				water: WaterTotem.ManaSpringTotem,
+				earth: EarthTotem.EarthElementalTotem,
+				fire: FireTotem.FireElementalTotem,
 			}),
 			spirits: TotemSet.create({
 				earth: EarthTotem.StrengthOfEarthTotem,

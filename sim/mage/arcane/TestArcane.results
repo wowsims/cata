@@ -1,9 +1,9 @@
 character_stats_results: {
  key: "TestArcane-CharacterStats-Default"
  value: {
-  final_stats: 666.1725
-  final_stats: 676.6725
-  final_stats: 6933.43476
+  final_stats: 637.35
+  final_stats: 647.85
+  final_stats: 6943.51476
   final_stats: 5668.57784
   final_stats: 211
   final_stats: 8721.43562
@@ -17,7 +17,6 @@ character_stats_results: {
   final_stats: 2402.63346
   final_stats: 3315.5716
   final_stats: 0
-  final_stats: 0
   final_stats: 104292.66757
   final_stats: 8410
   final_stats: 0
@@ -25,8 +24,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
-  final_stats: 133921.08664
+  final_stats: 134062.20664
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -1092,6 +1090,13 @@ dps_results: {
  value: {
   dps: 26200.61023
   tps: 26305.68705
+ }
+}
+dps_results: {
+ key: "TestArcane-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 26603.52961
+  tps: 26699.93049
  }
 }
 dps_results: {

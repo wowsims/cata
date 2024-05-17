@@ -1,14 +1,14 @@
 .tippy-box {
 	opacity: 0.9;
-	font-size: 0.875rem;
-	max-width: $tooltip-max-width;
+	font-size: var(--btn-font-size);
+	max-width: var(--bs-tooltip-max-width);
 
 	@include media-breakpoint-down(xl) {
-		max-width: $tooltip-max-width-lg;
+		--bs-tooltip-max-width: var(--bs-tooltip-max-width-lg);
 	}
 
 	@include media-breakpoint-down(md) {
-		max-width: $tooltip-max-width-sm;
+		--bs-tooltip-max-width: var(--bs-tooltip-max-width-sm);
 	}
 }
 .tippy-tooltip {
@@ -22,8 +22,8 @@
 }
 
 .tippy-content {
-	background-color: $tooltip-bg;
-	border: $tooltip-border 1px solid;
-	color: $tooltip-body-color;
-	padding: $tooltip-body-padding-y $tooltip-body-padding-x;
+	background-color: var(--bs-tooltip-bg);
+	border: var(--bs-tooltip-border) 1px solid;
+	color: var(--bs-tooltip-body-color);
+	padding: var(--bs-tooltip-body-padding-y) var(--bs-tooltip-body-padding-x);
 }

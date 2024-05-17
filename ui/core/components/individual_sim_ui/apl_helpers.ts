@@ -4,7 +4,7 @@ import { ActionID, OtherAction, UnitReference, UnitReference_Type as UnitType } 
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
 import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
-import { bucket } from '../../utils.js';
+import { bucket, randomUUID } from '../../utils.js';
 import { BooleanPicker } from '../boolean_picker.js';
 import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../dropdown_picker.js';
 import { Input, InputConfig } from '../input.js';
@@ -507,6 +507,7 @@ export class APLPickerBuilder<T> extends Input<Player<any>, T> {
 			{
 				label: fieldConfig.label,
 				labelTooltip: fieldConfig.labelTooltip,
+				id: randomUUID(),
 				changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
 				getValue: () => {
 					const source = builder.getSourceValue();
@@ -564,6 +565,7 @@ export function actionIdFieldConfig(
 		newValue: () => ActionID.create(),
 		factory: (parent, player, config, getParentValue) =>
 			new APLActionIDPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				actionIdSet: actionIdSet,
 				getUnitRef: () => (unitRefField ? getParentValue()[unitRefField] : UnitReference.create()),
@@ -583,6 +585,7 @@ export function unitFieldConfig(
 		newValue: () => undefined,
 		factory: (parent, player, config) =>
 			new APLUnitPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				unitSet: unitSet,
 			}),
@@ -600,7 +603,7 @@ export function booleanFieldConfig(
 		newValue: () => false,
 		factory: (parent, player, config) => {
 			config.extraCssClasses = ['input-inline'].concat(config.extraCssClasses || []);
-			return new BooleanPicker(parent, player, config);
+			return new BooleanPicker(parent, player, { id: randomUUID(), ...config });
 		},
 		...(options || {}),
 		label: label,
@@ -631,7 +634,7 @@ export function stringFieldConfig(field: string, options?: Partial<APLPickerBuil
 		newValue: () => '',
 		factory: (parent, player, config) => {
 			config.extraCssClasses = ['input-inline'].concat(config.extraCssClasses || []);
-			return new AdaptiveStringPicker(parent, player, config);
+			return new AdaptiveStringPicker(parent, player, { id: randomUUID(), ...config });
 		},
 		...(options || {}),
 	};
@@ -649,6 +652,7 @@ export function eclipseTypeFieldConfig(field: string): APLPickerBuilderFieldConf
 		newValue: () => APLValueRuneType.RuneBlood,
 		factory: (parent, player, config) =>
 			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				defaultLabel: 'Lunar',
 				equals: (a, b) => a == b,
@@ -673,6 +677,7 @@ export function runeTypeFieldConfig(field: string, includeDeath: boolean): APLPi
 		newValue: () => APLValueRuneType.RuneBlood,
 		factory: (parent, player, config) =>
 			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
 				equals: (a, b) => a == b,
@@ -687,6 +692,7 @@ export function runeSlotFieldConfig(field: string): APLPickerBuilderFieldConfig<
 		newValue: () => APLValueRuneSlot.SlotLeftBlood,
 		factory: (parent, player, config) =>
 			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
 				equals: (a, b) => a == b,
@@ -714,6 +720,7 @@ export function rotationTypeFieldConfig(field: string): APLPickerBuilderFieldCon
 		newValue: () => FeralDruid_Rotation_AplType.SingleTarget,
 		factory: (parent, player, config) =>
 			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				defaultLabel: 'Single Target',
 				equals: (a, b) => a == b,

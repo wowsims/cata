@@ -3,8 +3,8 @@
 	position: sticky;
 	top: -1px;
 	height: calc(var(--sim-header-height) + 1px);
-	border-bottom: $border-default;
-	z-index: $sidebar-z-index + 1;
+	border-bottom: var(--border-default);
+	z-index: calc(var(--sidebar-z-index) + 1);
 
 	.sim-title-dropdown-root {
 		height: calc(var(--sim-header-height) - 1px);
@@ -19,7 +19,7 @@
 	}
 
 	.dropdown-menu {
-		background: $dropdown-bg;
+		background: var(--dropdown-bg);
 		border: none;
 		z-index: 1500;
 
@@ -29,19 +29,19 @@
 	}
 
 	.sim-link {
-		background: $dropdown-bg;
+		background: var(--dropdown-bg);
 		height: 100%;
 
 		&:hover,
 		&:focus,
 		&.active,
 		&.show {
-			background: $dropdown-link-hover-bg;
+			background: var(--dropdown-link-hover-bg);
 		}
 
 		.sim-link-content {
-			padding-left: $gap-width;
-			padding-right: $gap-width;
+			padding-left: var(--gap-width);
+			padding-right: var(--gap-width);
 		}
 	}
 }

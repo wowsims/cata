@@ -6,7 +6,7 @@ import { EmbeddedDetailedResults } from '../core/components/detailed_results';
 import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action';
 import { raidSimStatus } from '../core/launched_sims';
 import { Player } from '../core/player';
-import { Raid as RaidProto } from '../core/proto/api';
+import { Raid as RaidProto, SimType } from '../core/proto/api';
 import { Class, Encounter as EncounterProto } from '../core/proto/common';
 import { Blessings } from '../core/proto/paladin';
 import { BlessingsAssignments, RaidSimSettings } from '../core/proto/ui';
@@ -41,7 +41,7 @@ export class RaidSimUI extends SimUI {
 	readonly referenceChangeEmitter = new TypedEvent<void>();
 
 	constructor(parentElem: HTMLElement, config: RaidSimConfig) {
-		super(parentElem, new Sim(), {
+		super(parentElem, new Sim({ type: SimType.SimTypeRaid }), {
 			cssClass: 'raid-sim-ui',
 			cssScheme: 'raid',
 			spec: null,

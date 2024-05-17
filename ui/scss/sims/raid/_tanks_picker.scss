@@ -1,9 +1,9 @@
 .tanks-picker-root {
 	.tank-picker-row {
 		display: flex;
-	
+
 		&:not(:last-child) {
-			margin-bottom: $block-spacer;
+			margin-bottom: var(--block-spacer);
 		}
 
 		.tank-picker {

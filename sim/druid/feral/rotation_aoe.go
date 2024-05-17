@@ -15,6 +15,30 @@ func (cat *FeralDruid) calcExpectedSwipeDamage(sim *core.Simulation) (float64, f
 	return expectedSwipeDamage, swipeDPE
 }
 
+func (cat *FeralDruid) doAoeBearRotation(sim *core.Simulation, isClearcast bool, curEnergy float64, furorCap float64, regenRate float64) (bool, time.Duration) {
+	// First determine what we want to do with the next GCD.
+	if cat.terminateBearWeave(sim, isClearcast, curEnergy, furorCap, regenRate, &PoolingActions{}) {
+		cat.readyToShift = true
+	} else if cat.Thrash.CanCast(sim, cat.CurrentTarget) {
+		cat.Thrash.Cast(sim, cat.CurrentTarget)
+	} else if cat.SwipeBear.CanCast(sim, cat.CurrentTarget) {
+		cat.SwipeBear.Cast(sim, cat.CurrentTarget)
+	} else {
+		cat.readyToShift = true
+	}
+
+	// Then Maul if we still have Rage leftover.
+	if cat.Maul.CanCast(sim, cat.CurrentTarget) && !isClearcast {
+		cat.Maul.Cast(sim, cat.CurrentTarget)
+	}
+
+	if cat.readyToShift {
+		return true, sim.CurrentTime
+	}
+
+	return false, 0
+}
+
 func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration) {
 	// Store state variables for re-use
 	curEnergy := cat.CurrentEnergy()
@@ -22,6 +46,12 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 	isClearcast := cat.ClearcastingAura.IsActive()
 	simTimeRemain := sim.GetRemainingDuration()
 	regenRate := cat.EnergyRegenPerSecond()
+	furorCap := min(float64(100*cat.Talents.Furor)/3.0, 100.0-1.5*regenRate)
+
+	// Bypass expensive checks below if in the middle of a bear-weave
+	if !cat.CatFormAura.IsActive() {
+		return cat.doAoeBearRotation(sim, isClearcast, curEnergy, furorCap, regenRate)
+	}
 
 	// Roar check
 	roarNow := (curCp >= 1) && !cat.SavageRoarAura.IsActive()
@@ -131,6 +161,12 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 			return false, 0
 		}
 		timeToNextAction = core.DurationFromSeconds((cat.CurrentSwipeCatCost() - curEnergy) / regenRate)
+	}
+
+	// If we couldn't cast a Cat Form ability, check if we can bear-weave while pooling
+	if cat.canBearWeave(sim, furorCap, regenRate, curEnergy, &PoolingActions{}, cat.CatForm.DefaultCast.Cost) {
+		cat.readyToShift = true
+		timeToNextAction = 0
 	}
 
 	// Schedule next action based on any upcoming timers

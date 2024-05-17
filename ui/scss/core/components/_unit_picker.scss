@@ -2,13 +2,13 @@
 	.unit-filter-option {
 		height: 30px;
 	}
-	
+
 	.unit-picker-item-icon {
-		width: $icon-size-sm;
-		height: $icon-size-sm;
-		margin-right: map-get($spacers, 1);
+		width: var(--icon-size-sm);
+		height: var(--icon-size-sm);
+		margin-right: var(--spacer-1);
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	}	
+	}
 }

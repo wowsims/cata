@@ -1,8 +1,8 @@
 .apl-actionid-item-icon {
   display: inline-block;
-  width: $icon-size-sm;
-  height: $icon-size-sm;
-  margin-right: map-get($spacers, 1);
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  margin-right: var(--spacer-1);
   background-size: cover;
 }
 

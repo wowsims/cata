@@ -48,7 +48,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_GEAR_PRESET.gear,
+		gear: Presets.P12h_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -64,14 +64,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 3.1,
-				[PseudoStat.PseudoStatOffHandDps]: 1.79,
+				//[PseudoStat.PseudoStatOffHandDps]: 1.79,
 			},
 		),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.SingleTargetTalents.data,
+		talents: Presets.TwohTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -100,10 +100,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
-		if (numTargets > 1) {
-			return Presets.AOE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		} else {
-			return Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		{
+			return Presets.Twoh_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 
@@ -134,25 +132,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 
 	presets: {
 		talents: [
-			Presets.SingleTargetTalents,
-			//Presets.AoeTalents,
+			Presets.DWTalents,
+			Presets.TwohTalents,
 		],
 		rotations: [
 			Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT,
-			//Presets.AOE_ROTATION_PRESET_DEFAULT,
+			Presets.Twoh_ROTATION_PRESET_DEFAULT,
 		],
-		gear: [Presets.P1_GEAR_PRESET],
+		gear: [Presets.P1_GEAR_PRESET,
+			   Presets.P12h_GEAR_PRESET]
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFrostDeathKnight,
-			talents: Presets.SingleTargetTalents.data,
+			talents: Presets.DWTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceWorgen,
+				[Faction.Alliance]: Race.RaceHuman,
 				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
