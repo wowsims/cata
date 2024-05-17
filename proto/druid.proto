@@ -187,10 +187,10 @@ message FeralDruid {
 
 message GuardianDruid {
   message Rotation {
-		// Minimum rage to queue HS or Cleave.
-		int32 maul_rage_threshold = 1;
+		bool maintain_faerie_fire = 1;
 		bool maintain_demoralizing_roar = 2;
-		double pulverize_time = 3;
+		double demo_time = 3;
+		double pulverize_time = 4;
   }
 
   message Options {
