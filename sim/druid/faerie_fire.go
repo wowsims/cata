@@ -14,7 +14,7 @@ func (druid *Druid) registerFaerieFireSpell() {
 	gcd := core.GCDDefault
 	ignoreHaste := false
 	cd := core.Cooldown{}
-	flatThreatBonus := 66. * 2.
+	flatThreatBonus := 48.
 	flags := SpellFlagOmenTrigger
 	formMask := Humanoid | Moonkin
 
@@ -29,7 +29,6 @@ func (druid *Druid) registerFaerieFireSpell() {
 			Timer:    druid.NewTimer(),
 			Duration: time.Second * 6,
 		}
-		flatThreatBonus = 632. // TODO: Measure Cata value
 	}
 	flags |= core.SpellFlagAPL
 
