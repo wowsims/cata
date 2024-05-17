@@ -51,6 +51,8 @@ func NewFuryWarrior(character *core.Character, options *proto.Player) *FuryWarri
 		rbo.OHSwingSpeed = oh.SwingSpeed
 	}
 
+	war.PrecisionKnown = true
+
 	war.EnableRageBar(rbo)
 	war.EnableAutoAttacks(war, core.AutoAttackOptions{
 		MainHand:       war.WeaponFromMainHand(war.DefaultMeleeCritMultiplier()),

@@ -84,6 +84,7 @@ type Warrior struct {
 	Stance                 Stance
 	EnrageEffectMultiplier float64
 	CriticalBlockChance    []float64 // Can be gained as non-prot via certain talents and spells
+	PrecisionKnown         bool
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
@@ -184,6 +185,7 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	core.FillTalentsProto(warrior.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
 	warrior.PseudoStats.CanParry = true
+	warrior.PrecisionKnown = false
 
 	warrior.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
 	// Dodge no longer granted from agility
