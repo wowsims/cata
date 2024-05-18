@@ -35,6 +35,7 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 	}
 
 	warlock.registerManaFeed()
+	warlock.registerMasterSummoner()
 	warlock.registerImpendingDoom()
 	warlock.registerMoltenCore()
 
@@ -80,6 +81,24 @@ func (warlock *Warlock) registerManaFeed() {
 			core.MakePermanent(pet.RegisterAura(aura))
 		}
 	}
+}
+
+func (warlock *Warlock) registerMasterSummoner() {
+	if warlock.Talents.MasterSummoner <= 0 {
+		return
+	}
+
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Flat,
+		ClassMask:  WarlockSummonSpells,
+		FloatValue: float64(-500*warlock.Talents.MasterSummoner) * float64(time.Millisecond),
+	})
+
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  WarlockSummonSpells,
+		FloatValue: -0.5 * float64(warlock.Talents.MasterSummoner),
+	})
 }
 
 func (warlock *Warlock) registerImpendingDoom() {

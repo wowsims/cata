@@ -24,10 +24,7 @@ func (warlock *Warlock) registerSummonFelHunter() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonFelhunter,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.80,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.80},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -50,10 +47,7 @@ func (warlock *Warlock) registerSummonImp() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonImp,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.64,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.64},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -76,10 +70,7 @@ func (warlock *Warlock) registerSummonSuccubus() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonSuccubus,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.80,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.80},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
