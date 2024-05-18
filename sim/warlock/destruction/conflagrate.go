@@ -36,14 +36,13 @@ func (destruction *DestructionWarlock) registerConflagrateSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := destruction.CalcScalingSpellDmg(warlock.Coefficient_ImmolateDot)
-			oldMult := spell.DamageMultiplier
 			immoDot := destruction.ImmolateDot.Dot(target)
 			if !immoDot.IsActive() {
 				panic("Casted conflagrate without active immolation on the target")
 			}
 			spell.DamageMultiplier *= float64(immoDot.NumberOfTicks) * 0.6
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier = oldMult
+			spell.DamageMultiplier /= float64(immoDot.NumberOfTicks) * 0.6
 		},
 	})
 }
