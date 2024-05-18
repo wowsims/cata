@@ -43,7 +43,7 @@ export class ResultsViewer extends Component {
 					<div className="loader"></div>
 				</div>
 				<div ref={contentElemRef} className="results-content"></div>
-				<div ref={warningElemRef} className="warning-zone" style="text-align: center"></div>
+				<div ref={warningElemRef} className="warning-zone text-center"></div>
 			</>,
 		);
 		this.pendingElem = pendingElemRef.value!;
@@ -61,7 +61,7 @@ export class ResultsViewer extends Component {
 			<div className="sim-toolbar-item">
 				<a href={args.href ? args.href : 'javascript:void(0)'} target={args.href ? '_blank' : '_self'} className={args.classes}>
 					{args.icon && <i className={args.icon}></i>}
-					{args.text ? args.text : ''}
+					{args.text || ''}
 				</a>
 			</div>
 		) as HTMLElement;
@@ -114,13 +114,13 @@ export class ResultsViewer extends Component {
 	}
 
 	hideAll() {
-		this.contentElem.style.display = 'none';
-		this.pendingElem.style.display = 'none';
+		this.contentElem.classList.add('hide');
+		this.pendingElem.classList.add('hide');
 	}
 
 	setPending() {
-		this.contentElem.style.display = 'none';
-		this.pendingElem.style.display = 'block';
+		this.contentElem.classList.add('hide');
+		this.pendingElem.classList.remove('hide');
 	}
 
 	setContent(html: Element | HTMLElement | string) {
@@ -130,7 +130,7 @@ export class ResultsViewer extends Component {
 			this.contentElem.innerHTML = '';
 			this.contentElem.appendChild(html);
 		}
-		this.contentElem.style.display = 'block';
-		this.pendingElem.style.display = 'none';
+		this.contentElem.classList.remove('hide');
+		this.pendingElem.classList.add('hide');
 	}
 }

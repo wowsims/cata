@@ -1,3 +1,4 @@
+import { Button, Icon } from '@wowsims/ui';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -1119,14 +1120,22 @@ export class ItemList<T extends ItemListType> {
 			<div id={tabContentId} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
 				<div className="selector-modal-filters">
 					<input className="selector-modal-search form-control" type="text" placeholder="Search..." />
-					{label == SelectorModalTabs.Items && <button className="selector-modal-filters-button btn btn-primary">Filters</button>}
+					{label == SelectorModalTabs.Items && (
+						<Button variant="primary" className="selector-modal-filters-button">
+							Filters
+						</Button>
+					)}
 					<div className="selector-modal-phase-selector"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-matching-gems"></div>
 					<div className="sim-input selector-modal-boolean-option selector-modal-show-ep-values"></div>
-					<button className="selector-modal-simall-button btn btn-warning">Add to Batch Sim</button>
-					<button className="selector-modal-remove-button btn btn-danger">Unequip Item</button>
+					<Button variant="warning" className="selector-modal-simall-button">
+						Add to Batch Sim
+					</Button>
+					<Button variant="danger" className="selector-modal-remove-button">
+						Unequip Item
+					</Button>
 				</div>
 				<div className="selector-modal-list-labels">
 					<label className="item-label">
@@ -1144,10 +1153,8 @@ export class ItemList<T extends ItemListType> {
 					)}
 					<label className="ep-label interactive" onclick={sortByEP}>
 						<small>EP</small>
-						<i className="fa-solid fa-plus-minus fa-2xs"></i>
-						<button ref={epButtonRef} className="btn btn-link p-0 ms-1">
-							<i className="far fa-question-circle fa-lg"></i>
-						</button>
+						<Icon icon="plus-minus" size="2xs" />
+						<Button ref={epButtonRef} variant="link" className="p-0 ms-1" iconLeft={{ icon: 'question-circle', size: 'lg' }} />
 					</label>
 					<label className="favorite-label"></label>
 				</div>
@@ -1517,12 +1524,13 @@ export class ItemList<T extends ItemListType> {
 		const favoriteElem = ref<HTMLButtonElement>();
 		listItemElem.appendChild(
 			<div className="selector-modal-list-item-favorite-container">
-				<button
-					className="selector-modal-list-item-favorite btn btn-link p-0"
+				<Button
 					ref={favoriteElem}
+					variant="link"
+					className="selector-modal-list-item-favorite p-0"
 					onclick={() => setFavorite(listItemElem.dataset.fav == 'false')}>
 					<i className="fa-star fa-xl"></i>
-				</button>
+				</Button>
 			</div>,
 		);
 

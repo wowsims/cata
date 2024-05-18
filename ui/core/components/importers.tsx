@@ -1,5 +1,7 @@
 import { JsonObject } from '@protobuf-ts/runtime';
+import { Button, Link } from '@wowsims/ui';
 import { default as pako } from 'pako';
+import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Class, EquipmentSpec, Glyphs, ItemSlot, ItemSpec, Profession, Race, Spec } from '../proto/common';
@@ -26,40 +28,45 @@ export abstract class Importer extends BaseModal {
 		this.includeFile = includeFile;
 		const uploadInputId = 'upload-input-' + title.toLowerCase().replaceAll(' ', '-');
 
-		this.body.innerHTML = `
-			<div class="import-description"></div>
-			<textarea spellCheck="false" class="importer-textarea form-control"></textarea>
-		`;
-		this.footer!.innerHTML = `
-			${
-				this.includeFile
-					? `
-				<label for="${uploadInputId}" class="importer-button btn btn-primary upload-button me-2">
-					<i class="fas fa-file-arrow-up"></i>
-					Upload File
-				</label>
-				<input type="file" id="${uploadInputId}" class="importer-upload-input d-none" hidden>
-			`
-					: ''
-			}
-			<button class="importer-button btn btn-primary import-button">
-				<i class="fa fa-download"></i>
-				Import
-			</button>
-		`;
+		const descriptionElemRef = ref<HTMLDivElement>();
+		const textElemRef = ref<HTMLTextAreaElement>();
+		const importButtonRef = ref<HTMLButtonElement>();
+		const uploadInputRef = ref<HTMLInputElement>();
 
-		this.textElem = this.rootElem.getElementsByClassName('importer-textarea')[0] as HTMLTextAreaElement;
-		this.descriptionElem = this.rootElem.getElementsByClassName('import-description')[0] as HTMLElement;
+		this.body.appendChild(
+			<>
+				<div ref={descriptionElemRef} className="import-description"></div>
+				<textarea ref={textElemRef} className="importer-textarea form-control" attributes={{ spellcheck: false }}></textarea>
+			</>,
+		);
 
-		if (this.includeFile) {
-			const uploadInput = this.rootElem.getElementsByClassName('importer-upload-input')[0] as HTMLButtonElement;
-			uploadInput.addEventListener('change', async event => {
-				const data: string = await (event as any).target.files[0].text();
-				this.textElem.textContent = data;
+		this.footer!.appendChild(
+			<>
+				{this.includeFile && (
+					<>
+						<label htmlFor={uploadInputId} className="importer-button btn btn-primary upload-button me-2">
+							<i className="fas fa-file-arrow-up" />
+							Upload File
+						</label>
+						<input ref={uploadInputRef} type="file" id={uploadInputId} className="importer-upload-input d-none" hidden />
+					</>
+				)}
+				<Button ref={importButtonRef} variant="primary" className="importer-button import-button" iconLeft={{ icon: 'download' }}>
+					Import
+				</Button>
+			</>,
+		);
+
+		this.descriptionElem = descriptionElemRef.value!;
+		this.textElem = textElemRef.value!;
+
+		if (this.includeFile && uploadInputRef.value) {
+			uploadInputRef.value.addEventListener('change', async event => {
+				this.textElem.textContent = await (event as any).target.files[0].text();
 			});
 		}
 
-		this.importButton = this.rootElem.getElementsByClassName('import-button')[0] as HTMLButtonElement;
+		this.importButton = importButtonRef.value!;
 		this.importButton.addEventListener('click', async _event => {
 			try {
 				await this.onImport(this.textElem.value || '');
@@ -193,10 +200,12 @@ export class IndividualJsonImporter<SpecType extends Spec> extends Importer {
 		super(parent, simUI, 'JSON Import', true);
 		this.simUI = simUI;
 
-		this.descriptionElem.innerHTML = `
-			<p>Import settings from a JSON file, which can be created using the JSON Export feature.</p>
-			<p>To import, upload the file or paste the text below, then click, 'Import'.</p>
-		`;
+		this.descriptionElem.appendChild(
+			<>
+				<p>Import settings from a JSON file, which can be created using the JSON Export feature.</p>
+				<p>To import, upload the file or paste the text below, then click, 'Import'.</p>
+			</>,
+		);
 	}
 
 	async onImport(data: string) {
@@ -226,17 +235,19 @@ export class Individual80UImporter<SpecType extends Spec> extends Importer {
 		super(parent, simUI, '80 Upgrades Import', true);
 		this.simUI = simUI;
 
-		this.descriptionElem.innerHTML = `
-			<p>
-				Import settings from <a href="https://eightyupgrades.com" target="_blank">Eighty Upgrades</a>.
-			</p>
-			<p>
-				This feature imports gear, race, and (optionally) talents. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.
-			</p>
-			<p>
-				To import, paste the output from the site's export option below and click, 'Import'.
-			</p>
-		`;
+		this.descriptionElem.appendChild(
+			<>
+				<p>
+					Import settings from
+					<Link href="https://eightyupgrades.com" target="_blank">
+						Eighty Upgrades
+					</Link>
+					.
+				</p>
+				<p>This feature imports gear, race, and (optionally) talents. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.</p>
+				<p>To import, paste the output from the site's export option below and click, 'Import'.</p>
+			</>,
+		);
 	}
 
 	async onImport(data: string) {
@@ -289,17 +300,19 @@ export class IndividualWowheadGearPlannerImporter<SpecType extends Spec> extends
 		super(parent, simUI, 'Wowhead Import', true);
 		this.simUI = simUI;
 
-		this.descriptionElem.innerHTML = `
-			<p>
-				Import settings from <a href="https://www.wowhead.com/cata/gear-planner" target="_blank">Wowhead Gear Planner</a>.
-			</p>
-			<p>
-				This feature imports gear, race, and (optionally) talents. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.
-			</p>
-			<p>
-				To import, paste the gear planner link below and click, 'Import'.
-			</p>
-		`;
+		this.descriptionElem.appendChild(
+			<>
+				<p>
+					Import settings from{' '}
+					<Link href="https://www.wowhead.com/cata/gear-planner" target="_blank">
+						Wowhead Gear Planner
+					</Link>
+					.
+				</p>
+				<p>This feature imports gear, race, and (optionally) talents. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.</p>
+				<p>To import, paste the gear planner link below and click, 'Import'.</p>
+			</>,
+		);
 	}
 
 	async onImport(url: string) {
@@ -474,18 +487,21 @@ export class IndividualAddonImporter<SpecType extends Spec> extends Importer {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, 'Addon Import', true);
 		this.simUI = simUI;
-
-		this.descriptionElem.innerHTML = `
-			<p>
-				Import settings from the <a href="https://www.curseforge.com/wow/addons/wowsimsexporter" target="_blank">WoWSims Importer In-Game Addon</a>.
-			</p>
-			<p>
-				This feature imports gear, race, talents, glyphs, and professions. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.
-			</p>
-			<p>
-				To import, paste the output from the addon below and click, 'Import'.
-			</p>
-		`;
+		this.descriptionElem.appendChild(
+			<>
+				<p>
+					Import settings from the{' '}
+					<Link href="https://www.curseforge.com/wow/addons/wowsimsexporter" target="_blank">
+						WoWSims Importer In-Game Addon
+					</Link>
+					.
+				</p>
+				<p>
+					This feature imports gear, race, talents, glyphs, and professions. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.
+				</p>
+				<p>To import, paste the output from the addon below and click, 'Import'.</p>
+			</>,
+		);
 	}
 
 	async onImport(data: string) {

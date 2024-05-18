@@ -2,7 +2,7 @@
 import glob from 'glob';
 import path from 'path';
 import copy from 'rollup-plugin-copy';
-import { ConfigEnv, defineConfig, UserConfigExport } from 'vite';
+import { ConfigEnv, defineConfig, UserConfig, UserConfigExport } from 'vite';
 
 import { serveExternalAssets, serveFile } from './node_modules/@wowsims/assets/helpers/assets';
 
@@ -44,7 +44,7 @@ export default defineConfig(({ command, mode }) => {
 				assets: replacePaths,
 				additionalMiddlewareHook: (req, res) => {
 					const url = req.url!;
-				if (Object.keys(workerMappings).includes(url)) {
+					if (Object.keys(workerMappings).includes(url)) {
 						const targetPath = workerMappings[url as keyof typeof workerMappings];
 						const assetsPath = path.resolve(__dirname, './dist/cata');
 						const requestedPath = path.join(assetsPath, targetPath.replace('/cata/', ''));
@@ -95,10 +95,10 @@ export default defineConfig(({ command, mode }) => {
 					chunkFileNames: () => 'bundle/[name]-[hash].chunk.js',
 				},
 			},
-			server: {
-				origin: 'http://localhost:3000',
-				// Adding custom middleware to serve 'dist' directory in development
-			},
+		},
+		server: {
+			origin: 'http://localhost:3000',
+			// Adding custom middleware to serve 'dist' directory in development
 		},
 	};
 });

@@ -1,3 +1,5 @@
+import { Button } from '@wowsims/ui';
+
 import { REPO_NAME } from '../constants/other';
 import { DetailedResultsUpdate, SimRun, SimRunData } from '../proto/ui';
 import { SimResult } from '../proto_utils/sim_result';
@@ -397,8 +399,12 @@ export class EmbeddedDetailedResults extends DetailedResults {
 
 		const newTabBtn = (
 			<div className="detailed-results-controls-div">
-				<button className="detailed-results-new-tab-button btn btn-primary">View in Separate Tab</button>
-				<button className="detailed-results-1-iteration-button btn btn-primary">Sim 1 Iteration</button>
+				<Button variant="primary" className="detailed-results-new-tab-button">
+					View in Separate Tab
+				</Button>
+				<Button variant="primary" className="detailed-results-1-iteration-button">
+					Sim 1 Iteration
+				</Button>
 			</div>
 		);
 

@@ -4,7 +4,8 @@
 @import 'bootstrap/scss/variables-dark';
 
 // Custom Bootstrap variable overrides
-@import 'shared/variables';
+@import '@wowsims/ui/global/variables';
+@import '@wowsims/ui/global/root';
 
 // Bootstrap configuration
 @import 'bootstrap/scss/maps';

@@ -1,3 +1,4 @@
+import { Button } from '@wowsims/ui';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -26,7 +27,7 @@ export class SettingsMenu extends BaseModal {
 		const showExperimental = ref<HTMLDivElement>();
 		const showQuickSwap = ref<HTMLDivElement>();
 
-		const body = (
+		this.body.appendChild(
 			<div>
 				<div className="picker-group">
 					<div className="fixed-rng-seed-container">
@@ -43,21 +44,14 @@ export class SettingsMenu extends BaseModal {
 				<div ref={showThreatMetrics} className="show-threat-metrics-picker w-50 pe-2"></div>
 				<div ref={showExperimental} className="show-experimental-picker w-50 pe-2"></div>
 				<div ref={showQuickSwap} className="show-quick-swap-picker w-50 pe-2"></div>
-			</div>
+			</div>,
 		);
 
-		this.body.innerHTML = '';
-		this.body.appendChild(body);
-
-		const footer = (
-			<button ref={restoreDefaultsButton} className="restore-defaults-button btn btn-primary">
+		this.footer?.appendChild(
+			<Button variant="primary" ref={restoreDefaultsButton} className="restore-defaults-button">
 				Restore Defaults
-			</button>
+			</Button>,
 		);
-		if (this.footer) {
-			this.footer.innerHTML = '';
-			this.footer.appendChild(footer);
-		}
 
 		if (restoreDefaultsButton.value) {
 			tippy(restoreDefaultsButton.value, {

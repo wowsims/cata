@@ -1,5 +1,7 @@
 import { Expansion } from '@wowsims/constants/expansion';
+import { Button } from '@wowsims/ui';
 import { ExpansionSelector } from '@wowsims/ui/ExpansionSelector';
+import clsx from 'clsx';
 import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from './components/base_modal.jsx';
@@ -195,9 +197,9 @@ export abstract class SimUI extends Component {
 	addAction(name: string, cssClass: string, actFn: () => void) {
 		const buttonRef = ref<HTMLButtonElement>();
 		this.simActionsContainer.appendChild(
-			<button ref={buttonRef} className={`btn btn-primary w-100 ${cssClass || ''}`}>
+			<Button variant="primary" ref={buttonRef} className={clsx('w-100', cssClass)}>
 				{name}
-			</button>,
+			</Button>,
 		);
 		buttonRef.value?.addEventListener('click', actFn);
 	}

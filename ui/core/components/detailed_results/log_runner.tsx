@@ -1,5 +1,7 @@
 // @ts-expect-error
+import { Button } from '@wowsims/ui';
 import debounce from 'lodash/debounce';
+import { ref } from 'tsx-vanilla';
 
 import { SimLog } from '../../proto_utils/logs_parser';
 import { TypedEvent } from '../../typed_event.js';
@@ -9,6 +11,13 @@ export class LogRunner extends ResultComponent {
 	private virtualScroll: CustomVirtualScroll | null = null;
 	readonly showDebugChangeEmitter = new TypedEvent<void>('Show Debug');
 	private showDebug = false;
+	private ui: {
+		search: HTMLInputElement;
+		actions: HTMLDivElement;
+		buttonToTop: HTMLButtonElement;
+		scrollContainer: HTMLDivElement;
+		contentContainer: HTMLTableSectionElement;
+	};
 	cacheOutput: {
 		cacheKey: number | null;
 		logs: SimLog[] | null;
@@ -20,36 +29,53 @@ export class LogRunner extends ResultComponent {
 		config.rootCssClass = 'log-runner-root';
 		super(config);
 
-		// Existing setup code for the component...
-		this.rootElem.innerHTML += `
-			<div class="log-runner-actions">
-				<input type="text" id="log-search-input" class="form-control" placeholder="Filter logs">
-				<button id="log-runner-scroll-to-top-btn" class="btn btn-primary order-last">Top</button>
-			</div>
-			<div id="log-runner-logs-scroll" class="log-runner-scroll">
-				<table class="metrics-table log-runner-table">
-					<thead>
-						<tr class="metrics-table-header-row">
-							<th>Time</th>
-							<th><div class="d-flex align-items-end">Event</div></th>
-						</tr>
-					</thead>
-					<tbody id="log-runner-logs" class="log-runner-logs"></tbody>
-				</table>
-			</div>
-		`;
-		const searchInput = this.rootElem.querySelector('#log-search-input') as HTMLInputElement;
+		const searchRef = ref<HTMLInputElement>();
+		const actionsRef = ref<HTMLDivElement>();
+		const buttonToTopRef = ref<HTMLButtonElement>();
+		const scrollContainerRef = ref<HTMLDivElement>();
+		const contentContainerRef = ref<HTMLTableSectionElement>();
+
+		this.rootElem.appendChild(
+			<>
+				<div ref={actionsRef} className="log-runner-actions">
+					<input ref={searchRef} type="text" className="form-control log-search-input" placeholder="Filter logs" />
+					<Button variant="primary" ref={buttonToTopRef} className="order-last log-runner-scroll-to-top-btn">
+						Top
+					</Button>
+				</div>
+				<div ref={scrollContainerRef} className="log-runner-scroll">
+					<table className="metrics-table log-runner-table">
+						<thead>
+							<tr className="metrics-table-header-row">
+								<th>Time</th>
+								<th>
+									<div className="d-flex align-items-end">Event</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody ref={contentContainerRef} className="log-runner-logs"></tbody>
+					</table>
+				</div>
+			</>,
+		);
+
+		this.ui = {
+			search: searchRef.value!,
+			actions: actionsRef.value!,
+			buttonToTop: buttonToTopRef.value!,
+			scrollContainer: scrollContainerRef.value!,
+			contentContainer: contentContainerRef.value!,
+		};
 
 		// Use the 'input' event to trigger search as the user types
 		const onSearchHandler = () => {
-			this.searchLogs(searchInput.value);
+			this.searchLogs(this.ui.search.value);
 		};
-		searchInput.addEventListener('input', debounce(onSearchHandler, 150));
-		const scrollToTopBtn = this.rootElem.querySelector('#log-runner-scroll-to-top-btn');
-		scrollToTopBtn?.addEventListener('click', () => {
+		this.ui.search?.addEventListener('input', debounce(onSearchHandler, 150));
+		this.ui.buttonToTop?.addEventListener('click', () => {
 			this.virtualScroll?.scrollToTop();
 		});
-		new BooleanPicker<LogRunner>(this.rootElem.querySelector('.log-runner-actions')!, this, {
+		new BooleanPicker<LogRunner>(this.ui.actions, this, {
 			id: 'log-runner-show-debug',
 			extraCssClasses: ['show-debug-picker'],
 			label: 'Show Debug Statements',
@@ -71,13 +97,10 @@ export class LogRunner extends ResultComponent {
 	}
 
 	private initializeClusterize(): void {
-		const scrollElem = this.rootElem.querySelector('#log-runner-logs-scroll') as HTMLElement;
-		const contentElem = this.rootElem.querySelector('#log-runner-logs') as HTMLElement;
-
 		this.virtualScroll = new CustomVirtualScroll({
-			scrollContainer: scrollElem,
-			contentContainer: contentElem,
-			itemHeight: 30,
+			scrollContainer: this.ui.scrollContainer,
+			contentContainer: this.ui.contentContainer,
+			itemHeight: 32,
 		});
 	}
 
@@ -119,15 +142,19 @@ export class LogRunner extends ResultComponent {
 		const validLogs = resultData.result.logs.filter(log => !log.isCastCompleted());
 		this.cacheOutput.cacheKey = resultData?.eventID;
 		this.cacheOutput.logs = validLogs;
-		this.cacheOutput.logsAsHTML = validLogs.map(log => (
+		this.cacheOutput.logsAsHTML = validLogs.map(log => this.renderItem(log));
+		this.cacheOutput.logsAsText = this.cacheOutput.logsAsHTML.map(element => fragmentToString(element).trim().toLowerCase());
+
+		return this.cacheOutput.logsAsHTML;
+	}
+
+	renderItem(log: SimLog) {
+		return (
 			<tr>
 				<td className="log-timestamp">{log.formattedTimestamp()}</td>
 				<td className="log-evdsfent">{log.toHTML(false)}</td>
 			</tr>
-		));
-		this.cacheOutput.logsAsText = this.cacheOutput.logsAsHTML.map(element => fragmentToString(element).trim().toLowerCase());
-
-		return this.cacheOutput.logsAsHTML;
+		) as HTMLTableRowElement;
 	}
 }
 
@@ -188,17 +215,17 @@ class CustomVirtualScroll {
 	private updateVisibleItems(): void {
 		const endIndex = this.startIndex + this.visibleItemsCount;
 		const visibleItems = this.items.slice(this.startIndex, endIndex);
+		const remainingItems = this.items.length - endIndex;
 
 		// Reset content and adjust placeholders
 		this.contentContainer.innerHTML = '';
-		this.contentContainer.appendChild(this.placeholderTop);
+		// Update the height of the placeholders before it's placed in the dom to prevent rerender
 		this.placeholderTop.style.height = `${this.startIndex * this.itemHeight}px`;
-		const fragment = document.createDocumentFragment();
-		visibleItems.forEach(item => fragment.appendChild(item));
-		this.contentContainer.appendChild(fragment);
-
-		this.contentContainer.appendChild(this.placeholderBottom);
-		const remainingItems = this.items.length - endIndex;
 		this.placeholderBottom.style.height = `${remainingItems * this.itemHeight}px`;
+		const fragment = document.createDocumentFragment();
+		fragment.appendChild(this.placeholderTop);
+		visibleItems.forEach(item => fragment.appendChild(item));
+		fragment.appendChild(this.placeholderBottom);
+		this.contentContainer.appendChild(fragment);
 	}
 }

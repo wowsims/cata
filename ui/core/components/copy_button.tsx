@@ -1,3 +1,4 @@
+import { Button } from '@wowsims/ui';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -16,10 +17,9 @@ export class CopyButton extends Component {
 	constructor(parent: HTMLElement, config: CopyButtonConfig) {
 		const btnRef = ref<HTMLButtonElement>();
 		const buttonElem = (
-			<button className={`btn ${config.extraCssClasses?.join(' ') ?? ''}`} ref={btnRef}>
-				<i className="fas fa-copy me-1" />
+			<Button ref={btnRef} className={`btn ${config.extraCssClasses?.join(' ') ?? ''}`} iconLeft={{ icon: 'copy', className: 'me-1' }}>
 				{config.text ?? 'Copy to Clipboard'}
-			</button>
+			</Button>
 		);
 
 		super(parent, 'copy-button', buttonElem as HTMLElement);

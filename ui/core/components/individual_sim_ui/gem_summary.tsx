@@ -1,4 +1,4 @@
-
+import { Button } from '@wowsims/ui';
 
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
@@ -84,14 +84,16 @@ export class GemSummary extends Component {
 			if (!this.container.headerElement) return;
 			const existingResetButton = this.container.headerElement.querySelector('.summary-table-reset-button');
 			const resetButton = (
-				<button
-					className="btn btn-sm btn-reset summary-table-reset-button"
+				<Button
+					variant="reset"
+					size="sm"
+					className="summary-table-reset-button"
+					iconRight={{ icon: 'close', className: 'ms-1' }}
 					onclick={() => {
 						this.player.setGear(TypedEvent.nextEventID(), this.player.getGear().withoutGems());
 					}}>
 					Reset gems
-					<i className="fas fa-close ms-1"></i>
-				</button>
+				</Button>
 			);
 
 			if (existingResetButton) {

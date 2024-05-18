@@ -1,3 +1,4 @@
+import { Button } from '@wowsims/ui';
 import { default as pako } from 'pako';
 import { ref } from 'tsx-vanilla';
 
@@ -6,7 +7,7 @@ import { IndividualSimUI } from '../individual_sim_ui';
 import { RaidSimRequest } from '../proto/api';
 import { PseudoStat, Spec, Stat } from '../proto/common';
 import { IndividualSimSettings } from '../proto/ui';
-import { raceNames } from '../proto_utils/names';
+import { classNames, raceNames } from '../proto_utils/names';
 import { UnitStat } from '../proto_utils/stats';
 import { SimSettingCategories } from '../sim';
 import { SimUI } from '../sim_ui';
@@ -45,10 +46,9 @@ export abstract class Exporter extends BaseModal {
 		if (options.allowDownload) {
 			const downloadBtnRef = ref<HTMLButtonElement>();
 			this.footer!.appendChild(
-				<button className="exporter-button btn btn-primary download-button" ref={downloadBtnRef}>
-					<i className="fa fa-download me-1"></i>
+				<Button ref={downloadBtnRef} variant="primary" className="exporter-button download-button" iconLeft={{ icon: 'download', className: 'me-1' }}>
 					Download
-				</button>,
+				</Button>,
 			);
 
 			const downloadButton = downloadBtnRef.value!;

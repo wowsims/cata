@@ -1,3 +1,4 @@
+import { Button } from '@wowsims/ui';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -80,14 +81,14 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 				</div>
 				<div id="talents-carousel" className="carousel slide">
 					<div className="carousel-inner" ref={carouselContainerRef}></div>
-					<button className="carousel-control-prev" type="button" ref={carouselPrevBtnRef}>
+					<Button className="carousel-control-prev" ref={carouselPrevBtnRef}>
 						<span className="carousel-control-prev-icon" attributes={{ 'aria-hidden': true }}></span>
 						<span className="visually-hidden">Previous</span>
-					</button>
-					<button className="carousel-control-next" type="button" ref={carouselNextBtnRef}>
+					</Button>
+					<Button className="carousel-control-next" ref={carouselNextBtnRef}>
 						<span className="carousel-control-next-icon" attributes={{ 'aria-hidden': true }}></span>
 						<span className="visually-hidden">Next</span>
-					</button>
+					</Button>
 				</div>
 			</div>,
 		);
@@ -247,9 +248,7 @@ class TalentTreePicker<TalentsProto> extends Component {
 					<img src={this.getTreeIcon(klass, specNumber)} className="talent-tree-icon" />
 					<span className="talent-tree-title"></span>
 					<span className="talent-tree-points"></span>
-					<button className="talent-tree-reset btn btn-link link-danger">
-						<i className="fa fa-times"></i>
-					</button>
+					<Button variant="link" className="talent-tree-reset link-danger" iconLeft={{ icon: 'times' }} />
 				</div>
 				<div className="talent-tree-background"></div>
 				<div className="talent-tree-main"></div>

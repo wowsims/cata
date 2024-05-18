@@ -1,4 +1,6 @@
+import { Button } from '@wowsims/ui';
 import { Modal } from 'bootstrap';
+import clsx from 'clsx';
 import { ref } from 'tsx-vanilla';
 
 import { Component } from './component';
@@ -63,13 +65,14 @@ export class BaseModal extends Component {
 				<div className="modal-content">
 					<div className={`modal-header ${this.modalConfig.header || this.modalConfig.title ? '' : 'p-0 border-0'}`} ref={headerRef}>
 						{this.modalConfig.title && <h5 className="modal-title">{this.modalConfig.title}</h5>}
-						<button
+						<Button
+							variant="close"
 							type="button"
-							className={`btn-close ${this.modalConfig.closeButton?.fixed ? 'position-fixed' : ''}`}
+							className={clsx(this.modalConfig.closeButton?.fixed && 'position-fixed')}
 							onclick={() => this.close()}
 							attributes={{ 'aria-label': 'Close' }}>
 							<i className="fas fa-times fa-2xl"></i>
-						</button>
+						</Button>
 					</div>
 					<div className="modal-body" ref={bodyRef} />
 					{this.modalConfig.footer && <div className="modal-footer" ref={footerRef} />}
