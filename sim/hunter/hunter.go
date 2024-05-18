@@ -93,10 +93,11 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 	focusPerSecond := 4.0
-	if hunter.HasSetBonus(ItemSetBloodthirstyGladiatorsPursuit, 4) {
+
+	if hunter.HasSetBonus(ItemSetBloodthirstyGladiatorsPursuit, 4) || hunter.HasSetBonus(ItemSetViciousGladiatorsPursuit, 4) {
 		focusPerSecond *= 1.05
 	}
-	// Todo: Verify that is is actually 4 focus per second
+
 	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), focusPerSecond, true, nil)
 
 	hunter.PseudoStats.CanParry = true
@@ -113,6 +114,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		Ranged:   rangedWeapon,
 		//ReplaceMHSwing:  hunter.TryRaptorStrike, //Todo: Might be weaving
 		AutoSwingRanged: true,
+		AutoSwingMelee:  true,
 	})
 
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
