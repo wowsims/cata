@@ -28,7 +28,7 @@ func (warlock *Warlock) registerDrainSoul() {
 		return 1.0 + float64(min(3, numActive))*soulSiphonMultiplier
 	}
 
-	ds := warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1120},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -82,22 +82,17 @@ func (warlock *Warlock) registerDrainSoul() {
 		},
 	})
 
-	drainSoulExecuteAura := warlock.RegisterAura(core.Aura{
-		Label:    "Drain Soul Execute",
-		ActionID: core.ActionID{SpellID: 1120},
-		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			ds.DamageMultiplier *= 2.0
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			ds.DamageMultiplier /= 2.0
-		},
+	executeMod := warlock.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  WarlockSpellDrainSoul,
+		FloatValue: 1.0,
 	})
 
 	warlock.RegisterResetEffect(func(sim *core.Simulation) {
+		executeMod.Deactivate()
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 25 {
-				drainSoulExecuteAura.Activate(sim)
+				executeMod.Activate()
 			}
 		})
 	})
