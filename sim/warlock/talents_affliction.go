@@ -8,7 +8,6 @@ import (
 )
 
 func (warlock *Warlock) ApplyAfflictionTalents() {
-
 	if warlock.Talents.ImprovedCorruption > 0 {
 		warlock.AddStaticMod(core.SpellModConfig{
 			ClassMask:  WarlockSpellCorruption,
@@ -29,26 +28,8 @@ func (warlock *Warlock) ApplyAfflictionTalents() {
 	warlock.registerShadowEmbrace()
 	warlock.registerDeathsEmbrace()
 	warlock.registerNightfall()
-
-	if warlock.Talents.EverlastingAffliction > 0 {
-		warlock.AddStaticMod(core.SpellModConfig{
-			ClassMask:  WarlockSpellCorruption | WarlockSpellSeedOfCorruption | WarlockSpellSeedOfCorruptionExposion | WarlockSpellUnstableAffliction,
-			Kind:       core.SpellMod_BonusCrit_Rating,
-			FloatValue: 5.0 * float64(warlock.Talents.EverlastingAffliction) * core.CritRatingPerCritChance,
-		})
-
-		warlock.registerEverlastingAffliction()
-	}
-
-	if warlock.Talents.Pandemic > 0 {
-		warlock.AddStaticMod(core.SpellModConfig{
-			ClassMask: WarlockSpellBaneOfAgony | WarlockSpellBaneOfDoom | WarlockSpellCurseOfElements | WarlockSpellCurseOfWeakness | WarlockSpellCurseOfTongues,
-			Kind:      core.SpellMod_GlobalCooldown_Flat,
-			TimeValue: time.Duration(-250*warlock.Talents.Pandemic) * time.Millisecond,
-		})
-
-		warlock.registerPandemic()
-	}
+	warlock.registerEverlastingAffliction()
+	warlock.registerPandemic()
 }
 
 func (warlock *Warlock) registerEradication() {
@@ -69,15 +50,14 @@ func (warlock *Warlock) registerEradication() {
 		},
 	})
 
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label: "Eradication Talent",
-			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Matches(WarlockSpellCorruption) && sim.Proc(0.06, "Eradication") {
-					eradicationAura.Activate(sim)
-				}
-			},
-		}))
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Eradication Talent",
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			if spell.Matches(WarlockSpellCorruption) && sim.Proc(0.06, "Eradication") {
+				eradicationAura.Activate(sim)
+			}
+		},
+	}))
 }
 
 func (warlock *Warlock) registerDeathsEmbrace() {
@@ -123,48 +103,64 @@ func (warlock *Warlock) registerShadowEmbrace() {
 
 	warlock.ShadowEmbraceAuras = warlock.NewEnemyAuraArray(warlock.ShadowEmbraceDebuffAura)
 
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label: "Shadow Embrace Talent Hidden Aura",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Matches(WarlockSpellShadowBolt|WarlockSpellHaunt) && result.Landed() {
-					aura := warlock.ShadowEmbraceAuras.Get(result.Target)
-					aura.Activate(sim)
-					aura.AddStack(sim)
-				}
-			},
-		}))
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Shadow Embrace Talent Hidden Aura",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(WarlockSpellShadowBolt|WarlockSpellHaunt) && result.Landed() {
+				aura := warlock.ShadowEmbraceAuras.Get(result.Target)
+				aura.Activate(sim)
+				aura.AddStack(sim)
+			}
+		},
+	}))
 }
 
 func (warlock *Warlock) registerEverlastingAffliction() {
+	if warlock.Talents.EverlastingAffliction <= 0 {
+		return
+	}
+
+	warlock.AddStaticMod(core.SpellModConfig{
+		ClassMask: WarlockSpellCorruption | WarlockSpellSeedOfCorruption | WarlockSpellSeedOfCorruptionExposion |
+			WarlockSpellUnstableAffliction,
+		Kind:       core.SpellMod_BonusCrit_Rating,
+		FloatValue: 5.0 * float64(warlock.Talents.EverlastingAffliction) * core.CritRatingPerCritChance,
+	})
+
 	procChance := []float64{0, 0.33, 0.66, 1.0}[warlock.Talents.EverlastingAffliction]
 
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label: "EverlastingAffliction Talent",
-			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !spell.Matches(WarlockSpellDrainSoul) {
-					return
-				}
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "EverlastingAffliction Talent",
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.Matches(WarlockSpellDrainSoul) {
+				return
+			}
 
+			if warlock.Corruption.Dot(result.Target).IsActive() && sim.Proc(procChance, "EverlastingAffliction") {
+				warlock.Corruption.Dot(result.Target).Apply(sim)
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(WarlockSpellHaunt) && result.Landed() {
 				if warlock.Corruption.Dot(result.Target).IsActive() && sim.Proc(procChance, "EverlastingAffliction") {
 					warlock.Corruption.Dot(result.Target).Apply(sim)
 				}
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Matches(WarlockSpellHaunt) && result.Landed() {
-					if warlock.Corruption.Dot(result.Target).IsActive() && sim.Proc(procChance, "EverlastingAffliction") {
-						warlock.Corruption.Dot(result.Target).Apply(sim)
-					}
-				}
-			},
-		}))
+			}
+		},
+	}))
 }
 
 func (warlock *Warlock) registerPandemic() {
 	if warlock.Talents.Pandemic <= 0 {
 		return
 	}
+
+	warlock.AddStaticMod(core.SpellModConfig{
+		ClassMask: WarlockSpellBaneOfAgony | WarlockSpellBaneOfDoom | WarlockSpellCurseOfElements |
+			WarlockSpellCurseOfWeakness | WarlockSpellCurseOfTongues,
+		Kind:      core.SpellMod_GlobalCooldown_Flat,
+		TimeValue: time.Duration(-250*warlock.Talents.Pandemic) * time.Millisecond,
+	})
 
 	procChance := []float64{0, 0.5, 1.0}[warlock.Talents.Pandemic]
 
@@ -199,11 +195,6 @@ func (warlock *Warlock) registerNightfall() {
 	nightfallProcChance := 0.02*float64(warlock.Talents.Nightfall) +
 		0.04*core.TernaryFloat64(warlock.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfCorruption), 1, 0)
 
-	icd := core.Cooldown{
-		Timer:    warlock.NewTimer(),
-		Duration: 6 * time.Second,
-	}
-
 	procMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
 		ClassMask:  WarlockSpellShadowBolt,
@@ -211,7 +202,10 @@ func (warlock *Warlock) registerNightfall() {
 	})
 
 	nightfallProcAura := warlock.RegisterAura(core.Aura{
-		Icd:      &icd,
+		Icd: &core.Cooldown{
+			Timer:    warlock.NewTimer(),
+			Duration: 6 * time.Second,
+		},
 		Label:    "Nightfall Shadow Trance",
 		ActionID: core.ActionID{SpellID: 17941},
 		Duration: 10 * time.Second,
@@ -229,15 +223,14 @@ func (warlock *Warlock) registerNightfall() {
 		},
 	})
 
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label: "Nightfall Hidden Aura",
-			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == warlock.Corruption {
-					if sim.Proc(nightfallProcChance, "Nightfall") {
-						nightfallProcAura.Activate(sim)
-					}
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Nightfall Hidden Aura",
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			if spell == warlock.Corruption {
+				if sim.Proc(nightfallProcChance, "Nightfall") {
+					nightfallProcAura.Activate(sim)
 				}
-			},
-		}))
+			}
+		},
+	}))
 }

@@ -152,12 +152,11 @@ func (warlock *Warlock) registerMoltenCore() {
 		}
 	}
 
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label:                 "Molten Core Hidden Aura",
-			OnSpellHitDealt:       onHit,
-			OnPeriodicDamageDealt: onHit,
-		}))
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label:                 "Molten Core Hidden Aura",
+		OnSpellHitDealt:       onHit,
+		OnPeriodicDamageDealt: onHit,
+	}))
 }
 
 func (warlock *Warlock) registerDecimation() {
@@ -209,15 +208,14 @@ func (warlock *Warlock) registerCremation() {
 
 	procChance := []float64{0.0, 0.5, 1.0}[warlock.Talents.Cremation]
 
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label: "Cremation Talent",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Matches(WarlockSpellHandOfGuldan) {
-					if warlock.ImmolateDot.Dot(result.Target).IsActive() && sim.Proc(procChance, "Cremation") {
-						warlock.ImmolateDot.Dot(result.Target).Apply(sim)
-					}
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Cremation Talent",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(WarlockSpellHandOfGuldan) {
+				if warlock.ImmolateDot.Dot(result.Target).IsActive() && sim.Proc(procChance, "Cremation") {
+					warlock.ImmolateDot.Dot(result.Target).Apply(sim)
 				}
-			},
-		}))
+			}
+		},
+	}))
 }

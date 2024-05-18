@@ -8,7 +8,7 @@ import (
 )
 
 func (warlock *Warlock) ApplyDestructionTalents() {
-	//Bane
+	// Bane
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask: WarlockSpellShadowBolt | WarlockSpellChaosBolt | WarlockSpellImmolate,
 		Kind:      core.SpellMod_CastTime_Flat,
@@ -35,7 +35,6 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 		Kind:      core.SpellMod_CastTime_Flat,
 		TimeValue: time.Duration(-500*warlock.Talents.Emberstorm) * time.Millisecond,
 	})
-
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask: WarlockSpellIncinerate,
 		Kind:      core.SpellMod_CastTime_Flat,
@@ -45,12 +44,10 @@ func (warlock *Warlock) ApplyDestructionTalents() {
 	warlock.registerImprovedSearingPain()
 	warlock.registerBackdraft()
 	warlock.registerShadowBurnSpell()
-
 	warlock.registerBurningEmbers()
-
 	warlock.registerSoulLeech()
 
-	//FireAndBrimstoneDamage mod is in Immolate
+	// FireAndBrimstoneDamage mod is in Immolate
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask:  WarlockSpellConflagrate,
 		Kind:       core.SpellMod_BonusCrit_Rating,
@@ -123,17 +120,16 @@ func (warlock *Warlock) registerBackdraft() {
 		},
 	})
 
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label:    "Backdraft Hidden Aura",
-			ActionID: core.ActionID{SpellID: 47260},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Matches(WarlockSpellConflagrate) && result.Landed() {
-					backdraft.Activate(sim)
-					backdraft.SetStacks(sim, 3)
-				}
-			},
-		}))
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label:    "Backdraft Hidden Aura",
+		ActionID: core.ActionID{SpellID: 47260},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(WarlockSpellConflagrate) && result.Landed() {
+				backdraft.Activate(sim)
+				backdraft.SetStacks(sim, 3)
+			}
+		},
+	}))
 }
 
 // burning embers triggers before the spell lands for imp, when it lands for soul fire
@@ -201,17 +197,16 @@ func (warlock *Warlock) registerSoulLeech() {
 	restore := 0.02 * float64(warlock.Talents.SoulLeech)
 	manaMetrics := warlock.NewManaMetrics(actionID)
 
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label:    "Soul Leech Hidden Aura",
-			ActionID: actionID,
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Matches(WarlockSpellShadowBurn | WarlockSpellSoulFire | WarlockSpellChaosBolt) {
-					warlock.AddMana(sim, restore*warlock.MaxMana(), manaMetrics)
-					// also restores health but probably NA
-				}
-			},
-		}))
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label:    "Soul Leech Hidden Aura",
+		ActionID: actionID,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(WarlockSpellShadowBurn | WarlockSpellSoulFire | WarlockSpellChaosBolt) {
+				warlock.AddMana(sim, restore*warlock.MaxMana(), manaMetrics)
+				// also restores health but probably NA
+			}
+		},
+	}))
 }
 
 func (warlock *Warlock) registerEmpoweredImp() {
@@ -245,14 +240,13 @@ func (warlock *Warlock) registerEmpoweredImp() {
 		},
 	})
 
-	core.MakePermanent(
-		warlock.Imp.RegisterAura(core.Aura{
-			Label: "Empowered Imp Hidden Aura",
+	core.MakePermanent(warlock.Imp.RegisterAura(core.Aura{
+		Label: "Empowered Imp Hidden Aura",
 
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Matches(WarlockSpellImpFireBolt) && sim.Proc(procChance, "Empowered Imp") {
-					empoweredImpAura.Activate(sim)
-				}
-			},
-		}))
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(WarlockSpellImpFireBolt) && sim.Proc(procChance, "Empowered Imp") {
+				empoweredImpAura.Activate(sim)
+			}
+		},
+	}))
 }
