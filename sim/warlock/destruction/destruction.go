@@ -66,17 +66,8 @@ func (destruction *DestructionWarlock) ApplyTalents() {
 		masteryMod.UpdateFloatValue(destruction.getMasteryBonus())
 	})
 
-	core.MakePermanent(destruction.GetOrRegisterAura(core.Aura{
-		Label:    "Mastery: Fiery Apocalypse",
-		ActionID: core.ActionID{SpellID: 77220},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.UpdateFloatValue(destruction.getMasteryBonus())
-			masteryMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.Deactivate()
-		},
-	}))
+	masteryMod.UpdateFloatValue(destruction.getMasteryBonus())
+	masteryMod.Activate()
 
 	// Cataclysm
 	destruction.AddStaticMod(core.SpellModConfig{

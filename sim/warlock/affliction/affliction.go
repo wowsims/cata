@@ -64,17 +64,8 @@ func (affliction *AfflictionWarlock) ApplyTalents() {
 		masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
 	})
 
-	core.MakePermanent(affliction.GetOrRegisterAura(core.Aura{
-		Label:    "Mastery: Potent Afflictions",
-		ActionID: core.ActionID{SpellID: 77215},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
-			masteryMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.Deactivate()
-		},
-	}))
+	masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
+	masteryMod.Activate()
 
 	// Shadow Mastery
 	affliction.AddStaticMod(core.SpellModConfig{
