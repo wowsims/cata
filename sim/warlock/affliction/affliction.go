@@ -37,7 +37,7 @@ type AfflictionWarlock struct {
 }
 
 func (affliction AfflictionWarlock) getMasteryBonus() float64 {
-	return 0.13 + 0.0163*affliction.GetMasteryPoints()
+	return 0.1304 + 0.0163*affliction.GetMasteryPoints()
 }
 
 func (affliction *AfflictionWarlock) GetWarlock() *warlock.Warlock {
