@@ -76,7 +76,7 @@ export const ConjuredDarkRune = {
 	value: Conjured.ConjuredDarkRune,
 };
 export const ConjuredHealthstone = {
-	actionId: ActionId.fromItemId(22105),
+	actionId: ActionId.fromItemId(5512),
 	value: Conjured.ConjuredHealthstone,
 };
 export const ConjuredRogueThistleTea = {
