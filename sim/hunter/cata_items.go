@@ -42,6 +42,24 @@ var ItemSetBloodthirstyGladiatorsPursuit = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+var ItemSetViciousGladiatorsPursuit = core.NewItemSet(core.ItemSet{
+	Name: "Vicious Gladiator's Pursuit",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			hunter.AddStats(stats.Stats{
+				stats.Agility: 70,
+			})
+		},
+		4: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			// Multiply focus regen 1.05
+			hunter.AddStats(stats.Stats{
+				stats.Agility: 90,
+			})
+		},
+	},
+})
 
 func (hunter *Hunter) addBloodthirstyGloves() {
 	switch hunter.Hands().ID {

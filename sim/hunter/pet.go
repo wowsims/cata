@@ -48,7 +48,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	//Todo: Verify this
 	// base_focus_regen_per_second  = ( 24.5 / 4.0 );
 	// base_focus_regen_per_second *= 1.0 + o -> talents.bestial_discipline -> effect1().percent();
-	baseFocusPerSecond := 24.5 / 4.0
+	baseFocusPerSecond := 5.0 // As observed on logs
 	baseFocusPerSecond *= 1.0 + (0.10 * float64(hunter.Talents.BestialDiscipline))
 
 	WHFocusIncreaseMod := hp.AddDynamicMod(core.SpellModConfig{
@@ -182,10 +182,6 @@ const PetExpertiseScale = 3.25
 func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 
 	return func(ownerStats stats.Stats) stats.Stats {
-		// EJ posts claim this value is passed through math.Floor, but in-game testing
-		// shows pets benefit from each point of owner hit rating in WotLK Classic.
-		// https://web.archive.org/web/20120112003252/http://elitistjerks.com/f80/t100099-demonology_releasing_demon_you
-
 		return stats.Stats{
 			stats.Stamina:           ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:             ownerStats[stats.Armor] * 0.35,
@@ -216,8 +212,6 @@ type PetConfig struct {
 	RandomSelection bool
 }
 
-// Abilities reference: https://wotlk.wowhead.com/hunter-pets
-// https://wotlk.wowhead.com/guides/hunter-dps-best-pets-taming-loyalty-burning-crusade-classic
 var PetConfigs = map[proto.HunterOptions_PetType]PetConfig{
 	proto.HunterOptions_Bat: {
 		Name:      "Bat",
