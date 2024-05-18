@@ -70,22 +70,11 @@ func (warlock *Warlock) registerImprovedSearingPain() {
 		FloatValue: 20 * float64(warlock.Talents.ImprovedSearingPain) * core.CritRatingPerCritChance,
 	})
 
-	improvedSearingPainAura := warlock.RegisterAura(core.Aura{
-		Label:    "Improved Searing Pain",
-		ActionID: core.ActionID{SpellID: 17927},
-		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			improvedSearingPain.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			improvedSearingPain.Deactivate()
-		},
-	})
-
 	warlock.RegisterResetEffect(func(sim *core.Simulation) {
+		improvedSearingPain.Deactivate()
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 25 {
-				improvedSearingPainAura.Activate(sim)
+				improvedSearingPain.Activate()
 			}
 		})
 	})
