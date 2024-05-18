@@ -233,7 +233,6 @@ const (
 	PetExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
 )
 
-const Coefficient_Haunt float64 = 0.9581
 const Coefficient_UnstableAffliction float64 = 0.231
 const Coefficient_BaneOfDoom float64 = 2.024
 const Coefficient_Immolate float64 = 0.692

@@ -38,10 +38,7 @@ func (affliction *AfflictionWarlock) registerHaunt() {
 		ClassSpellMask: warlock.WarlockSpellHaunt,
 		MissileSpeed:   20,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.12,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.12},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -53,13 +50,13 @@ func (affliction *AfflictionWarlock) registerHaunt() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		CritMultiplier:           affliction.DefaultSpellCritMultiplier(),
-		ThreatMultiplier:         1,
-		BonusCoefficient:         0.5577 * 1.25,
+		DamageMultiplier: 1,
+		CritMultiplier:   affliction.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
+		BonusCoefficient: 0.5577,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := affliction.CalcScalingSpellDmg(warlock.Coefficient_Haunt)
+			baseDamage := affliction.CalcScalingSpellDmg(0.95810002089)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
@@ -67,7 +64,6 @@ func (affliction *AfflictionWarlock) registerHaunt() {
 					affliction.HauntDebuffAuras.Get(result.Target).Activate(sim)
 				}
 			})
-
 		},
 		RelatedAuras: []core.AuraArray{affliction.HauntDebuffAuras},
 	})
