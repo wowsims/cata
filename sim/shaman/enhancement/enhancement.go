@@ -188,7 +188,7 @@ func (enh *EnhancementShaman) ApplySyncType(syncType proto.ShamanSyncType) {
 	case proto.ShamanSyncType_SyncMainhandOffhandSwings:
 		enh.AutoAttacks.SetReplaceMHSwing(func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
 			if aa := &enh.AutoAttacks; aa.OffhandSwingAt()-sim.CurrentTime > FlurryICD {
-				if nextMHSwingAt := sim.CurrentTime + aa.MainhandSwingSpeed(); nextMHSwingAt > aa.OffhandSwingAt() {
+				if nextMHSwingAt := sim.CurrentTime + aa.MainhandSwingSpeed(); nextMHSwingAt != aa.OffhandSwingAt() {
 					aa.SetOffhandSwingAt(nextMHSwingAt)
 				}
 			}
