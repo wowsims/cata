@@ -48,7 +48,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P12h_GEAR_PRESET.gear,
+		gear: Presets.P1_2H_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -71,7 +71,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.TwohTalents.data,
+		talents: Presets.TwoHandTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -101,7 +101,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
 		const numTargets = player.sim.encounter.targets.length;
 		{
-			return Presets.Twoh_ROTATION_PRESET_DEFAULT.rotation.rotation!;
+			return Presets.TWO_HAND_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		}
 	},
 
@@ -132,21 +132,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 
 	presets: {
 		talents: [
-			Presets.DWTalents,
-			Presets.TwohTalents,
+			Presets.DualWieldTalents,
+			Presets.TwoHandTalents,
+			Presets.MasterfrostTalents,
 		],
 		rotations: [
-			Presets.SINGLE_TARGET_ROTATION_PRESET_DEFAULT,
-			Presets.Twoh_ROTATION_PRESET_DEFAULT,
+			Presets.DUAL_WIELD_ROTATION_RESET_DEFAULT,
+			Presets.TWO_HAND_ROTATION_PRESET_DEFAULT,
+			Presets.MASTERFROST_ROTATION_PRESET_DEFAULT,
 		],
-		gear: [Presets.P1_GEAR_PRESET,
-			   Presets.P12h_GEAR_PRESET]
+		gear: [
+			Presets.P1_DW_GEAR_PRESET,
+			Presets.P1_2H_GEAR_PRESET,
+			Presets.P1_MASTERFROST_GEAR_PRESET,
+		]
 	},
 
 	raidSimPresets: [
 		{
 			spec: Spec.SpecFrostDeathKnight,
-			talents: Presets.DWTalents.data,
+			talents: Presets.DualWieldTalents.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -157,16 +162,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_GEAR_PRESET.gear,
-					2: Presets.P1_GEAR_PRESET.gear,
-					3: Presets.P1_GEAR_PRESET.gear,
-					4: Presets.P1_GEAR_PRESET.gear,
+					1: Presets.P1_DW_GEAR_PRESET.gear,
+					2: Presets.P1_DW_GEAR_PRESET.gear,
+					3: Presets.P1_DW_GEAR_PRESET.gear,
+					4: Presets.P1_DW_GEAR_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_GEAR_PRESET.gear,
-					2: Presets.P1_GEAR_PRESET.gear,
-					3: Presets.P1_GEAR_PRESET.gear,
-					4: Presets.P1_GEAR_PRESET.gear,
+					1: Presets.P1_DW_GEAR_PRESET.gear,
+					2: Presets.P1_DW_GEAR_PRESET.gear,
+					3: Presets.P1_DW_GEAR_PRESET.gear,
+					4: Presets.P1_DW_GEAR_PRESET.gear,
 				},
 			},
 			otherDefaults: Presets.OtherDefaults,

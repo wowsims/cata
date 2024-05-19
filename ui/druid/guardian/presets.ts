@@ -26,9 +26,10 @@ import P4Gear from './gear_sets/p4.gear.json';
 export const P4_PRESET = PresetUtils.makePresetGear('P4', P4Gear);
 
 export const DefaultSimpleRotation = DruidRotation.create({
-	maulRageThreshold: 55,
+	maintainFaerieFire: true,
 	maintainDemoralizingRoar: true,
-	pulverizeTime: 1.5,
+	demoTime: 4.0,
+	pulverizeTime: 4.0,
 });
 
 import DefaultApl from './apls/default.apl.json';

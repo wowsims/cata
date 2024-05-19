@@ -234,15 +234,12 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 	// If one of the stat bonuses is a health bonus, then set up healing metrics for the associated
 	// heal, since all temporary max health bonuses also instantaneously heal the player.
 	var healthMetrics *ResourceMetrics
-	var amountHealed float64
-	includesHealthBuff := false
+	amountHealed := buffs[stats.Health]
+	includesHealthBuff := amountHealed > 0
 
-	for statIdx, increment := range buffs {
-		if stats.Stat(statIdx) == stats.Health && increment > 0 {
-			includesHealthBuff = true
-			amountHealed = increment
-			healthMetrics = character.NewHealthMetrics(actionID)
-		}
+	if includesHealthBuff {
+		healthMetrics = character.NewHealthMetrics(actionID)
+		buffs[stats.Health] = 0
 	}
 
 	config := Aura{
@@ -256,7 +253,7 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 			character.AddStatsDynamic(sim, buffs)
 
 			if includesHealthBuff {
-				character.GainHealth(sim, amountHealed, healthMetrics)
+				character.UpdateMaxHealth(sim, amountHealed, healthMetrics)
 			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
@@ -264,6 +261,10 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 				character.Log(sim, "Lost %s from fading %s.", buffs.FlatString(), actionID)
 			}
 			character.AddStatsDynamic(sim, buffs.Invert())
+
+			if includesHealthBuff {
+				character.UpdateMaxHealth(sim, -amountHealed, healthMetrics)
+			}
 		},
 	}
 

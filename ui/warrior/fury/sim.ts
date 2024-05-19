@@ -7,6 +7,7 @@ import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
 import * as WarriorInputs from '../inputs';
+import * as FuryInputs from './inputs';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
@@ -121,6 +122,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			FuryInputs.SyncTypeInput,
 			WarriorInputs.StartingRage(),
 			WarriorInputs.StanceSnapshot(),
 			WarriorInputs.DisableExpertiseGemming(),
