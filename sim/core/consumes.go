@@ -806,7 +806,7 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 			},
 		})
 	} else if conjuredType == proto.Conjured_ConjuredHealthstone {
-		actionID := ActionID{ItemID: 36892}
+		actionID := ActionID{ItemID: 5512}
 		healthMetrics := character.NewHealthMetrics(actionID)
 
 		spell := character.RegisterSpell(SpellConfig{
@@ -819,7 +819,7 @@ func registerConjuredCD(agent Agent, consumes *proto.Consumes) {
 				},
 			},
 			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
-				character.GainHealth(sim, 4280*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
+				character.GainHealth(sim, 0.45*character.baseStats[stats.Health], healthMetrics)
 			},
 		})
 		character.AddMajorCooldown(MajorCooldown{

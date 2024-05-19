@@ -1,6 +1,7 @@
 package demonology
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -19,7 +20,11 @@ func (demonology *DemonologyWarlock) registerMetamorphosisSpell() {
 		ActionID: core.ActionID{SpellID: 59672},
 		Duration: (30 + 6*core.TernaryDuration(demonology.HasPrimeGlyph(proto.WarlockPrimeGlyph_GlyphOfMetamorphosis), 1, 0)) * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			metaDmgMod = 1.2 + demonology.getMasteryBonus()
+			metaDmgMod = 1.2 + math.Floor(18.4+2.3*demonology.GetMasteryPoints())/100.0
+			if sim.CurrentTime <= 0 && demonology.prepullMastery > 0 {
+				masteryPoints := core.MasteryRatingToMasteryPoints(float64(demonology.prepullMastery))
+				metaDmgMod = 1.2 + math.Floor(18.4+2.3*masteryPoints)/100.0
+			}
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= metaDmgMod
 
 			if sim.Log != nil {

@@ -1377,17 +1377,11 @@ export class ItemList<T extends ItemListType> {
 		const newItem = this.equippedToItemFn(currentEquippedItem);
 		const type = this.getUpdateType(newItem);
 
-		switch (type) {
-			case 'item':
-				itemIdxs = this.player.filterItemData(itemIdxs, i => this.itemData[i].item as unknown as Item, this.slot);
-				break;
-			case 'enchant':
-				itemIdxs = this.player.filterEnchantData(itemIdxs, i => this.itemData[i].item as unknown as Enchant, this.slot, currentEquippedItem);
-				break;
-			case 'gem':
-				itemIdxs = this.player.filterGemData(itemIdxs, i => this.itemData[i].item as unknown as Gem, this.slot, this.socketColor);
-				break;
-		}
+		if (type === 'item' || this.label === SelectorModalTabs.Items)
+			itemIdxs = this.player.filterItemData(itemIdxs, i => this.itemData[i].item as unknown as Item, this.slot);
+		else if (type === 'enchant' || this.label === SelectorModalTabs.Enchants)
+			itemIdxs = this.player.filterEnchantData(itemIdxs, i => this.itemData[i].item as unknown as Enchant, this.slot, currentEquippedItem);
+		else if (type === 'gem') itemIdxs = this.player.filterGemData(itemIdxs, i => this.itemData[i].item as unknown as Gem, this.slot, this.socketColor);
 
 		itemIdxs = itemIdxs.filter(i => {
 			const listItemData = this.itemData[i];

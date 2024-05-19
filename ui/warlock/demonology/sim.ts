@@ -94,7 +94,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	petConsumeInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [WarlockInputs.DetonateSeed(), OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.DarkIntentUptime, OtherInputs.TankAssignment, OtherInputs.ChannelClipDelay],
+		inputs: [
+			WarlockInputs.DetonateSeed(),
+			WarlockInputs.PrepullMastery,
+			OtherInputs.InputDelay,
+			OtherInputs.DistanceFromTarget,
+			OtherInputs.DarkIntentUptime,
+			OtherInputs.TankAssignment,
+			OtherInputs.ChannelClipDelay
+		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
 	encounterPicker: {

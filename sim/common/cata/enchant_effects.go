@@ -307,7 +307,7 @@ func init() {
 			Callback: core.CallbackOnSpellHitDealt,
 			ProcMask: procMask,
 			Outcome:  core.OutcomeLanded,
-			PPM:      2.5,
+			PPM:      1, // based on old Wowhead comments, TODO: measure in Classic
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				statAura.Activate(sim)
 			},
