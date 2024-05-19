@@ -138,7 +138,7 @@ func (hp *HunterPet) newFocusDump(pat PetAbilityType, spellID int32) *core.Spell
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
-				Duration: time.Millisecond * 3320,
+				Duration: time.Millisecond * 3200,
 				Timer:    hp.NewTimer(),
 			},
 			DefaultCast: core.Cast{

@@ -309,12 +309,12 @@ func (druid *Druid) RegisterFeralCatSpells() {
 }
 
 func (druid *Druid) RegisterFeralTankSpells() {
-	//druid.registerBarkskinCD()
+	druid.registerBarkskinCD()
 	druid.registerBerserkCD()
 	druid.registerBearFormSpell()
 	druid.registerDemoralizingRoarSpell()
 	druid.registerEnrageSpell()
-	//druid.registerFrenziedRegenerationCD()
+	druid.registerFrenziedRegenerationCD()
 	druid.registerMangleBearSpell()
 	druid.registerMaulSpell()
 	druid.registerLacerateSpell()
@@ -322,7 +322,7 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	druid.registerRakeSpell()
 	druid.registerRipSpell()
 	druid.registerSavageDefensePassive()
-	//druid.registerSurvivalInstinctsCD()
+	druid.registerSurvivalInstinctsCD()
 	druid.registerSwipeBearSpell()
 	druid.registerThrashBearSpell()
 }

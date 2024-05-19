@@ -85,8 +85,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-BedrockTalisman-58182"
  value: {
-  dps: 13546.59836
-  tps: 64719.42035
+  dps: 13571.8526
+  tps: 64858.76353
   hps: 4787.91291
  }
 }
@@ -605,16 +605,16 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-HeartofThunder-55845"
  value: {
-  dps: 13546.59836
-  tps: 64719.42035
+  dps: 13563.51968
+  tps: 64812.7857
   hps: 4830.47259
  }
 }
 dps_results: {
  key: "TestBlood-AllItems-HeartofThunder-56370"
  value: {
-  dps: 13546.59836
-  tps: 64719.42035
+  dps: 13568.98324
+  tps: 64842.93154
   hps: 4844.32923
  }
 }
@@ -901,8 +901,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-PetrifiedTwilightScale-54591"
  value: {
-  dps: 13546.59836
-  tps: 64719.42035
+  dps: 13561.06304
+  tps: 64799.23092
   hps: 4787.91291
  }
 }

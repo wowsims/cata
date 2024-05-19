@@ -75,6 +75,8 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	distanceFromTarget: 24,
+	duration: 240,
+	durationVariation: 20,
 	profession1: Profession.Engineering,
-	profession2: Profession.Alchemy,
+	profession2: Profession.Jewelcrafting,
 };
