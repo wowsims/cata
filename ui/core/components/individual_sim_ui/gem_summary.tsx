@@ -1,4 +1,3 @@
-
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
 import { UIGem as Gem } from '../../proto/ui.js';

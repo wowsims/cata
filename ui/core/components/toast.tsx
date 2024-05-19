@@ -1,6 +1,5 @@
 import { Toast as BootstrapToast } from 'bootstrap';
 
-
 type ToastOptions = {
 	title?: string;
 	variant: 'info' | 'success' | 'error';

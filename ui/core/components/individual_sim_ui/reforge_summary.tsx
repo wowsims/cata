@@ -1,5 +1,3 @@
-
-
 import { Player } from '../../player.js';
 import { Stat } from '../../proto/common.js';
 import { shortSecondaryStatNames } from '../../proto_utils/names.js';
