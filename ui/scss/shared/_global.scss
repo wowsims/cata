@@ -51,21 +51,6 @@ body {
 	}
 }
 
-a {
-	outline: none;
-	transition: color 0.15s ease-in-out;
-
-	&.link-alt {
-		color: var(--bs-white);
-
-		&:hover,
-		&:focus,
-		&.active {
-			color: var(--bs-brand);
-		}
-	}
-}
-
 hr {
 	border-top: 1px solid;
 	border-bottom: 1px solid;

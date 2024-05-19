@@ -13,7 +13,7 @@ import * as Gems from '../proto_utils/gems.js';
 import { getClassStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
-import { combinationsWithDups, permutations, stDevToConf90, sum } from '../utils.js';
+import { cloneChildren, combinationsWithDups, permutations, stDevToConf90, sum } from '../utils.js';
 import { BaseModal } from './base_modal.jsx';
 import { BooleanPicker } from './boolean_picker.js';
 import { NumberPicker } from './number_picker.js';
@@ -268,22 +268,32 @@ class EpWeightsMenu extends BaseModal {
 				),
 			});
 			optimizeGemsButton.addEventListener('click', async () => {
-				const previousContents = optimizeGemsButton.innerHTML;
+				const defaultState = cloneChildren(optimizeGemsButton);
 				optimizeGemsButton.classList.add('disabled');
 				optimizeGemsButton.style.width = `${optimizeGemsButton.getBoundingClientRect().width.toFixed(3)}px`;
-				optimizeGemsButton.innerHTML = `<i class="fa fa-spinner fa-spin"></i>&nbsp;Running`;
+				optimizeGemsButton.replaceChildren(
+					<>
+						<Icon icon="spinner" className="fa-spin me-1" />
+						Running
+					</>,
+				);
 				await this.optimizeGems(TypedEvent.nextEventID());
-				optimizeGemsButton.innerHTML = previousContents;
+				optimizeGemsButton.replaceChildren(...defaultState);
 				optimizeGemsButton.classList.remove('disabled');
 			});
 		}
 
 		const calcButton = calcWeightsButtonRef.value;
 		calcButton?.addEventListener('click', async () => {
-			const previousContents = calcButton.innerHTML;
+			const defaultState = cloneChildren(calcButton);
 			calcButton.classList.add('disabled');
 			calcButton.style.width = `${calcButton.getBoundingClientRect().width.toFixed(3)}px`;
-			calcButton.innerHTML = `<i class="fa fa-spinner fa-spin"></i>&nbsp;Running`;
+			calcButton.replaceChildren(
+				<>
+					<Icon icon="spinner" className="fa-spin me-1" />
+					Running
+				</>,
+			);
 			this.container.scrollTo({ top: 0 });
 			this.container.classList.add('pending');
 			this.resultsViewer.setPending();
@@ -299,7 +309,7 @@ class EpWeightsMenu extends BaseModal {
 			);
 			this.container.classList.remove('pending');
 			this.resultsViewer.hideAll();
-			calcButton.innerHTML = previousContents;
+			calcButton.replaceChildren(...defaultState);
 			calcButton.classList.remove('disabled');
 			if (!result) return;
 			this.simUI.prevEpIterations = iterations;

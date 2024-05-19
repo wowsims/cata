@@ -229,7 +229,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 				<label className="form-label">{this.config.label} Name</label>
 				<input className="saved-data-save-input form-control" type="text" placeholder="Name" />
 				<Button ref={saveButtonRef} variant="primary" className="saved-data-save-button">
-					Save ${this.config.label}
+					Save {this.config.label}
 				</Button>
 			</div>,
 		);

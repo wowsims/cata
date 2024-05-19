@@ -1,4 +1,4 @@
-import { Button } from '@wowsims/ui';
+import { Button, Icon } from '@wowsims/ui';
 import { Modal } from 'bootstrap';
 import clsx from 'clsx';
 import { ref } from 'tsx-vanilla';
@@ -57,22 +57,21 @@ export class BaseModal extends Component {
 		const bodyRef = ref<HTMLDivElement>();
 		const footerRef = ref<HTMLDivElement>();
 
-		const modalSizeKlass = this.modalConfig.size && this.modalConfig.size != 'md' ? `modal-${this.modalConfig.size}` : '';
+		const modalSizeClass = this.modalConfig.size && this.modalConfig.size != 'md' ? `modal-${this.modalConfig.size}` : '';
 
 		this.rootElem.classList.add('fade');
 		this.rootElem.appendChild(
-			<div className={`modal-dialog ${cssClass} ${modalSizeKlass} ${this.modalConfig.scrollContents ? 'modal-overflow-scroll' : ''}`} ref={dialogRef}>
+			<div className={clsx('modal-dialog', cssClass, modalSizeClass, this.modalConfig.scrollContents && 'modal-overflow-scroll')} ref={dialogRef}>
 				<div className="modal-content">
-					<div className={`modal-header ${this.modalConfig.header || this.modalConfig.title ? '' : 'p-0 border-0'}`} ref={headerRef}>
+					<div className={clsx('modal-header', this.modalConfig.header || this.modalConfig.title ? '' : 'p-0 border-0')} ref={headerRef}>
 						{this.modalConfig.title && <h5 className="modal-title">{this.modalConfig.title}</h5>}
 						<Button
 							variant="close"
-							type="button"
 							className={clsx(this.modalConfig.closeButton?.fixed && 'position-fixed')}
 							onclick={() => this.close()}
-							attributes={{ 'aria-label': 'Close' }}>
-							<i className="fas fa-times fa-2xl"></i>
-						</Button>
+							iconLeft={<Icon icon="times" size="2x" />}
+							attributes={{ 'aria-label': 'Close' }}
+						/>
 					</div>
 					<div className="modal-body" ref={bodyRef} />
 					{this.modalConfig.footer && <div className="modal-footer" ref={footerRef} />}

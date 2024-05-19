@@ -1,5 +1,5 @@
 import { JsonObject } from '@protobuf-ts/runtime';
-import { Button, Link } from '@wowsims/ui';
+import { Button, Icon, Link } from '@wowsims/ui';
 import { default as pako } from 'pako';
 import { ref } from 'tsx-vanilla';
 
@@ -45,7 +45,7 @@ export abstract class Importer extends BaseModal {
 				{this.includeFile && (
 					<>
 						<label htmlFor={uploadInputId} className="importer-button btn btn-primary upload-button me-2">
-							<i className="fas fa-file-arrow-up" />
+							<Icon icon="file-arrow-up" />
 							Upload File
 						</label>
 						<input ref={uploadInputRef} type="file" id={uploadInputId} className="importer-upload-input d-none" hidden />

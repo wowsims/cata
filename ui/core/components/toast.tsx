@@ -1,3 +1,4 @@
+import { Icon, IconProps, Link } from '@wowsims/ui';
 import { Toast as BootstrapToast } from 'bootstrap';
 
 type ToastOptions = {
@@ -50,14 +51,14 @@ class Toast {
 		this.instance.hide();
 	}
 
-	getVariantIcon() {
+	getVariantIcon(): IconProps['icon'] {
 		switch (this.variant) {
 			case 'info':
-				return 'fa-info-circle';
+				return 'info-circle';
 			case 'success':
-				return 'fa-check-circle';
+				return 'check-circle';
 			case 'error':
-				return 'fa-exclamation-circle';
+				return 'exclamation-circle';
 		}
 	}
 
@@ -71,21 +72,19 @@ class Toast {
 					'aria-atomic': 'true',
 				}}>
 				<div className="toast-header">
-					<i className={`d-block fas fa-2xl me-2 ${this.getVariantIcon()}`}></i>
+					<Icon icon={this.getVariantIcon()} size="2xl" className="d-block me-2" />
 					<strong className="me-auto">{this.title}</strong>
-					<a
-						href="javascript:void(0);"
+					<Link
+						as="button"
 						className="btn-close"
 						attributes={{
-							role: 'button',
 							'aria-label': 'Close',
 						}}
 						dataset={{
 							bsDismiss: 'toast',
 						}}
-						aria-label="Close">
-						<i className={`fas fa-times fa-1xl ${this.getVariantIcon()}`}></i>
-					</a>
+						iconLeft={<Icon icon={this.getVariantIcon()} size="xl" />}
+					/>
 				</div>
 				<div className="toast-body">{this.body}</div>
 			</div>

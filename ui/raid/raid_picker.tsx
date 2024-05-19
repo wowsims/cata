@@ -1,3 +1,5 @@
+import { convertToLegacy, Icon, Link } from '@wowsims/ui';
+import clsx from 'clsx';
 import tippy, { Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -502,58 +504,62 @@ export class PlayerPicker extends Component {
 			const classCssClass = PlayerClasses.getCssClass(this.player.getPlayerClass());
 
 			this.rootElem.className = `player-picker-root player bg-${classCssClass}-dampened`;
-			this.rootElem.innerHTML = `
-				<div class="player-label">
-					<img class="player-icon" src="${this.player.getSpecIcon()}" draggable="true" />
-					<div class="player-details">
-						<input
-							class="player-name text-${classCssClass}"
-							type="text"
-							value="${this.player.getName()}"
-							spellcheck="false"
-							maxlength="15"
-						/>
-						<div class="player-results hide">
-							<span class="player-results-dps"></span>
-							<span class="player-results-reference-delta"></span>
+			this.rootElem.innerHTML = convertToLegacy(
+				<>
+					<div className="player-label">
+						<img className="player-icon" src={this.player.getSpecIcon()} draggable={true} />
+						<div className="player-details">
+							<input
+								className={clsx('player-name', `text-${classCssClass}`)}
+								type="text"
+								defaultValue={this.player.getName()}
+								spellcheck={false}
+								maxLength={15}
+							/>
+							<div className="player-results hide">
+								<span className="player-results-dps"></span>
+								<span className="player-results-reference-delta"></span>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="player-options">
-					<a
-						href="javascript:void(0)"
-						class="player-edit"
-						role="button"
-						data-tippy-content="Click to Edit"
-					>
-						<i class="fa fa-edit fa-lg"></i>
-					</a>
-					<a
-						href="javascript:void(0)"
-						class="player-copy link-warning"
-						role="button"
-						draggable="true"
-						data-tippy-content="Drag to Copy"
-					>
-						<i class="fa fa-copy fa-lg"></i>
-					</a>
-					<a
-						href="javascript:void(0)"
-						class="player-delete link-danger"
-						role="button"
-						data-tippy-content="Click to Delete"
-					>
-						<i class="fa fa-times fa-lg"></i>
-					</a>
-				</div>
-			`;
+					<div className="player-options">
+						<Link
+							as="button"
+							className="player-edit"
+							dataset={{
+								tippyContent: 'Click to Edit',
+							}}
+							iconLeft={<Icon icon="edit" size="lg" />}
+						/>
+						<Link
+							as="button"
+							variant="warning"
+							className="player-copy"
+							draggable={true}
+							dataset={{
+								tippyContent: 'Drag to Copy',
+							}}
+							iconLeft={<Icon icon="copy" size="lg" />}
+						/>
+						<Link
+							as="button"
+							variant="danger"
+							className="player-delete"
+							dataset={{
+								tippyContent: 'Click to Delete',
+							}}
+							iconLeft={<Icon icon="times" size="lg" />}
+						/>
+					</div>
+				</>,
+			);
 
-			this.labelElem = this.rootElem.querySelector('.player-label') as HTMLElement;
-			this.iconElem = this.rootElem.querySelector('.player-icon') as HTMLImageElement;
-			this.nameElem = this.rootElem.querySelector('.player-name') as HTMLInputElement;
-			this.resultsElem = this.rootElem.querySelector('.player-results') as HTMLElement;
-			this.dpsResultElem = this.rootElem.querySelector('.player-results-dps') as HTMLElement;
-			this.referenceDeltaElem = this.rootElem.querySelector('.player-results-reference-delta') as HTMLElement;
+			this.labelElem = this.rootElem.querySelector<HTMLElement>('.player-label')!;
+			this.iconElem = this.rootElem.querySelector<HTMLImageElement>('.player-icon')!;
+			this.nameElem = this.rootElem.querySelector<HTMLInputElement>('.player-name')!;
+			this.resultsElem = this.rootElem.querySelector<HTMLElement>('.player-results')!;
+			this.dpsResultElem = this.rootElem.querySelector<HTMLElement>('.player-results-dps')!;
+			this.referenceDeltaElem = this.rootElem.querySelector<HTMLElement>('.player-results-reference-delta')!;
 
 			this.bindPlayerEvents();
 		}
@@ -704,18 +710,17 @@ class NewPlayerPicker extends Component {
 
 			matchingPresets.forEach(matchingPreset => {
 				const playerSpec = PlayerSpecs.fromProto(matchingPreset.spec);
-				const presetElemFragment = document.createElement('fragment');
-				presetElemFragment.innerHTML = `
-					<a
-						href="javascript:void(0)"
-						role="button"
-						draggable="true"
-						data-tippy-content="${matchingPreset.tooltip ?? PlayerSpecs.getFullSpecName(playerSpec)}"
-					>
-						<img class="preset-picker-icon player-icon" src="${playerSpec.getIcon('medium')}"/>
-					</a>
-				`;
-				const presetElem = presetElemFragment.children[0] as HTMLElement;
+				const presetElem = (
+					<Link
+						as="button"
+						draggable={true}
+						dataset={{
+							tippyContent: `${matchingPreset.tooltip ?? PlayerSpecs.getFullSpecName(playerSpec)}`,
+						}}>
+						<img className="preset-picker-icon player-icon" src={playerSpec.getIcon('medium')} />
+					</Link>
+				);
+
 				classPresetsContainer.appendChild(presetElem);
 
 				tippy(presetElem);

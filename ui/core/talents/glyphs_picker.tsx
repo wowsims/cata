@@ -1,3 +1,4 @@
+import { Link } from '@wowsims/ui';
 import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from '../components/base_modal.js';
@@ -168,12 +169,12 @@ class GlyphPicker extends Input<Player<any>, number> {
 		const nameElemRef = ref<HTMLSpanElement>();
 
 		this.rootElem.appendChild(
-			<a ref={anchorElemRef} attributes={{ role: 'button' }} className="d-flex w-100">
+			<Link as="button" ref={anchorElemRef} className="d-flex w-100">
 				<img ref={iconElemRef} className="item-picker-icon" />
 				<div className="item-picker-labels-container">
 					<span ref={nameElemRef} className="item-picker-name" />
 				</div>
-			</a>,
+			</Link>,
 		);
 
 		this.anchorElem = anchorElemRef.value!;
@@ -275,13 +276,13 @@ class GlyphSelectorModal extends BaseModal {
 					dataset={{
 						idx: String(glyphIdx),
 					}}>
-					<a ref={anchorElem} className="selector-modal-list-item-link">
+					<Link ref={anchorElem} className="selector-modal-list-item-link">
 						<img ref={iconElem} className="selector-modal-list-item-icon" />
 						<label ref={nameElem} className="selector-modal-list-item-name">
 							{glyphData.name}
 						</label>
 						<span className="selector-modal-list-item-description">{glyphData.description}</span>
-					</a>
+					</Link>
 				</li>
 			);
 

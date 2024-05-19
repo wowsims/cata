@@ -1,13 +1,15 @@
+import { Icon, Link } from '@wowsims/ui';
 import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
-import { Player } from '../player.js';
-import { ItemSlot, Spec } from '../proto/common.js';
-import { SimUI } from '../sim_ui.js';
-import { EventID, TypedEvent } from '../typed_event.js';
-import { BooleanPicker } from './boolean_picker.js';
-import { Component } from './component.js';
-import { IconItemSwapPicker } from './gear_picker/gear_picker.jsx';
-import { Input } from './input.jsx';
+import { Player } from '../player';
+import { ItemSlot, Spec } from '../proto/common';
+import { SimUI } from '../sim_ui';
+import { EventID, TypedEvent } from '../typed_event';
+import { BooleanPicker } from './boolean_picker';
+import { Component } from './component';
+import { IconItemSwapPicker } from './gear_picker/gear_picker';
+import { PickerGroup } from './input';
 
 export interface ItemSwapConfig {
 	itemSlots: Array<ItemSlot>;
@@ -35,8 +37,18 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 			changedEvent: (player: Player<SpecType>) => player.itemSwapChangeEmitter,
 		});
 
-		const swapPickerContainer = document.createElement('div');
-		swapPickerContainer.classList.add('input-root', 'input-inline');
+		const swapButtonRef = ref<HTMLAnchorElement>();
+		const itemSwapContainerRef = ref<HTMLDivElement>();
+		const swapPickerContainer = (
+			<div className="input-root input-inline">
+				<label className="form-label">Item Swap</label>
+				<PickerGroup ref={itemSwapContainerRef} className="icon-group">
+					<Link ref={swapButtonRef} as="button" className="gear-swap-icon">
+						<Icon icon="arrows-rotate" className="me-1" />
+					</Link>
+				</PickerGroup>
+			</div>
+		);
 		this.rootElem.appendChild(swapPickerContainer);
 
 		let noteElem: Element;
@@ -56,30 +68,13 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 		player.itemSwapChangeEmitter.on(toggleEnabled);
 		toggleEnabled();
 
-		const label = document.createElement('label');
-		label.classList.add('form-label');
-		label.textContent = 'Item Swap';
-		swapPickerContainer.appendChild(label);
+		swapButtonRef.value!.addEventListener('click', () => this.swapWithGear(TypedEvent.nextEventID(), player));
 
-		const itemSwapContainer = Input.newGroupContainer();
-		itemSwapContainer.classList.add('icon-group');
-		swapPickerContainer.appendChild(itemSwapContainer);
-
-		const swapButton = (
-			<a href="javascript:void(0)" className="gear-swap-icon" attributes={{ role: 'button' }}>
-				<i className="fas fa-arrows-rotate me-1"></i>
-			</a>
-		);
-		swapButton.addEventListener('click', _event => this.swapWithGear(TypedEvent.nextEventID(), player));
-		itemSwapContainer.appendChild(swapButton);
-
-		tippy(swapButton, {
+		tippy(swapButtonRef.value!, {
 			content: 'Swap with equipped items',
 		});
 
-		this.itemSlots.forEach(itemSlot => {
-			new IconItemSwapPicker(itemSwapContainer, simUI, player, itemSlot);
-		});
+		this.itemSlots.forEach(itemSlot => new IconItemSwapPicker(itemSwapContainerRef.value!, simUI, player, itemSlot));
 	}
 
 	swapWithGear(eventID: EventID, player: Player<SpecType>) {

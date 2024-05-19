@@ -1,3 +1,4 @@
+import { Link } from '@wowsims/ui';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -87,10 +88,10 @@ class RaidStatsCategory extends Component {
 		const counterElemRef = ref<HTMLElement>();
 		const categoryElemRef = ref<HTMLAnchorElement>();
 		this.rootElem.appendChild(
-			<a ref={categoryElemRef} href="javascript:void(0)" className="raid-stats-category" attributes={{ role: 'button' }}>
+			<Link as="button" ref={categoryElemRef} className="raid-stats-category">
 				<span ref={counterElemRef} className="raid-stats-category-counter"></span>
 				<span className="raid-stats-category-label">{options.label}</span>
-			</a>,
+			</Link>,
 		);
 
 		this.counterElem = counterElemRef.value!;

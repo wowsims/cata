@@ -66,7 +66,7 @@ export default defineConfig(({ command, mode }) => {
 				recursive: true,
 				targets: [
 					{
-						src: `node_modules/@wowsims/assets/public/*`,
+						src: `node_modules/@wowsims/assets/public/**/*`,
 						dest: 'assets/@wowsims',
 					},
 				],

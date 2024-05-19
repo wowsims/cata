@@ -80,6 +80,7 @@ export class ReforgeSummary extends Component {
 					variant="reset"
 					size="sm"
 					className="summary-table-reset-button"
+					iconRight="close"
 					onclick={() => {
 						gear.getItemSlots().forEach(itemSlot => {
 							const item = gear.getEquippedItem(itemSlot);
@@ -88,7 +89,6 @@ export class ReforgeSummary extends Component {
 						this.player.setGear(TypedEvent.nextEventID(), gear);
 					}}>
 					Reset reforges
-					<i className="fas fa-close ms-1"></i>
 				</Button>
 			);
 

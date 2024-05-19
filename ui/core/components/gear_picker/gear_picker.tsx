@@ -1,4 +1,4 @@
-import { Button, Icon } from '@wowsims/ui';
+import { Button, Icon, Link } from '@wowsims/ui';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -55,10 +55,10 @@ const createGemContainer = (socketColor: GemColor, gem: Gem | null, index: numbe
 	const gemIconElem = ref<HTMLImageElement>();
 	const gemContainerElem = ref<HTMLAnchorElement>();
 	const gemContainer = (
-		<a ref={gemContainerElem} className="gem-socket-container" href="javascript:void(0)" attributes={{ role: 'button' }} dataset={{ socketIdx: index }}>
+		<Link as="button" ref={gemContainerElem} className="gem-socket-container" dataset={{ socketIdx: index }}>
 			<img ref={gemIconElem} className={`gem-icon ${gem == null ? 'hide' : ''}`} />
 			<img className="socket-icon" src={getEmptyGemSocketIconUrl(socketColor)} />
-		</a>
+		</Link>
 	);
 
 	if (gem != null) {
@@ -139,13 +139,13 @@ export class ItemRenderer extends Component {
 		this.rootElem.appendChild(
 			<>
 				<div className="item-picker-icon-wrapper">
-					<a ref={iconElem} className="item-picker-icon" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<Link ref={iconElem} className="item-picker-icon" />
 					<div ref={sce} className="item-picker-sockets-container"></div>
 				</div>
 				<div className="item-picker-labels-container">
-					<a ref={nameElem} className="item-picker-name" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<a ref={enchantElem} className="item-picker-enchant hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<a ref={reforgeElem} className="item-picker-reforge hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<Link ref={nameElem} className="item-picker-name" />
+					<Link ref={enchantElem} className="item-picker-enchant hide" />
+					<Link ref={reforgeElem} className="item-picker-reforge hide" />
 				</div>
 			</>,
 		);
@@ -514,12 +514,12 @@ export class SelectorModal extends BaseModal {
 
 		this.body.appendChild(
 			<div className="d-flex align-items-center form-text mt-3">
-				<i className="fas fa-circle-exclamation fa-xl me-2"></i>
+				<Icon icon="circle-exclamation" size="xl" className="me-2" />
 				<span>
 					If gear is missing, check the selected phase and your gear filters.
 					<br />
 					If the problem persists, save any un-saved data, click the
-					<i className="fas fa-cog mx-1"></i>
+					<Icon icon="cog" className="mx-1" />
 					to open your sim options, then click the "Restore Defaults".
 				</span>
 			</div>,
@@ -1492,13 +1492,13 @@ export class ItemList<T extends ItemListType> {
 		const listItemElem = (
 			<li className={`selector-modal-list-item ${equippedItemID == itemData.id ? 'active' : ''}`} dataset={{ idx: item.idx.toString() }}>
 				<div className="selector-modal-list-label-cell">
-					<a className="selector-modal-list-item-link" ref={anchorElem} dataset={{ whtticon: 'false' }}>
+					<Link className="selector-modal-list-item-link" ref={anchorElem} dataset={{ whtticon: 'false' }}>
 						<img className="selector-modal-list-item-icon" ref={iconElem}></img>
 						<label className="selector-modal-list-item-name" ref={nameElem}>
 							{itemData.name}
 							{itemData.heroic && createHeroicLabel()}
 						</label>
-					</a>
+					</Link>
 				</div>
 			</li>
 		);
@@ -1528,9 +1528,9 @@ export class ItemList<T extends ItemListType> {
 					ref={favoriteElem}
 					variant="link"
 					className="selector-modal-list-item-favorite p-0"
-					onclick={() => setFavorite(listItemElem.dataset.fav == 'false')}>
-					<i className="fa-star fa-xl"></i>
-				</Button>
+					onclick={() => setFavorite(listItemElem.dataset.fav == 'false')}
+					iconLeft={<Icon icon="star" size="xl" />}
+				/>
 			</div>,
 		);
 
@@ -1618,9 +1618,9 @@ export class ItemList<T extends ItemListType> {
 	private getSourceInfo(item: Item, sim: Sim): JSX.Element {
 		const makeAnchor = (href: string, inner: string | JSX.Element) => {
 			return (
-				<a href={href} target="_blank" dataset={{ whtticon: 'false' }}>
+				<Link href={href} target="_blank" dataset={{ whtticon: 'false' }}>
 					<small>{inner}</small>
-				</a>
+				</Link>
 			);
 		};
 

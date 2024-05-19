@@ -1,10 +1,14 @@
-import { Input, InputConfig } from '../components/input.js';
+import { Link } from '@wowsims/ui';
+import clsx from 'clsx';
+import { ref } from 'tsx-vanilla';
+
 import { Player } from '../player.js';
-import { PlayerClasses } from '../player_classes';
+import { PlayerClasses } from '../player_classes/index.js';
 import { UnitReference } from '../proto/common.js';
 import { emptyUnitReference } from '../proto_utils/utils.js';
 import { Raid } from '../raid.js';
 import { EventID, TypedEvent } from '../typed_event.js';
+import { Input, InputConfig } from './input.jsx';
 
 export interface UnitReferencePickerConfig<ModObject> extends InputConfig<ModObject, UnitReference> {
 	noTargetLabel: string;
@@ -37,18 +41,18 @@ export class UnitReferencePicker<ModObject> extends Input<ModObject, UnitReferen
 		this.curPlayer = this.raid.getPlayerFromUnitReference(config.getValue(modObj));
 		this.curUnitReference = this.getInputValue();
 
-		this.rootElem.innerHTML = `
-			<a
-				class="raid-target-picker-button"
-				href="javascript:void(0)"
-				role="button"
-				data-bs-toggle="dropdown"
-			></a>
-			<div class="dropdown-menu"></div>
-    `;
+		const buttonRef = ref<HTMLAnchorElement>();
+		const dropdownRef = ref<HTMLDivElement>();
 
-		this.buttonElem = this.rootElem.querySelector('.raid-target-picker-button') as HTMLElement;
-		this.dropdownElem = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
+		this.rootElem.appendChild(
+			<>
+				<Link ref={buttonRef} as="button" className="raid-target-picker-button" data-bs-toggle="dropdown" />
+				<div ref={dropdownRef} className="dropdown-menu" />
+			</>,
+		);
+
+		this.buttonElem = buttonRef.value!;
+		this.dropdownElem = dropdownRef.value!;
 
 		this.buttonElem.addEventListener('click', event => event.preventDefault());
 
@@ -74,8 +78,7 @@ export class UnitReferencePicker<ModObject> extends Input<ModObject, UnitReferen
 	private updateOptions(eventID: EventID) {
 		this.currentOptions = this.makeTargetOptions();
 
-		this.dropdownElem.innerHTML = '';
-		this.currentOptions.forEach(option => this.dropdownElem.appendChild(this.makeOption(option)));
+		this.dropdownElem.replaceChildren(...this.currentOptions.map(option => this.makeOption(option)));
 
 		const prevUnitReference = this.curUnitReference;
 		this.curUnitReference = this.getInputValue();
@@ -86,7 +89,7 @@ export class UnitReferencePicker<ModObject> extends Input<ModObject, UnitReferen
 		}
 	}
 
-	private makeOption(data: OptionElemOptions): HTMLElement {
+	private makeOption(data: OptionElemOptions) {
 		const option = UnitReferencePicker.makeOptionElem(data);
 
 		option.addEventListener('click', event => {
@@ -120,29 +123,28 @@ export class UnitReferencePicker<ModObject> extends Input<ModObject, UnitReferen
 		if (optionData) this.buttonElem.innerHTML = UnitReferencePicker.makeOptionElem({ player: optionData.player }).outerHTML;
 	}
 
-	static makeOptionElem(data: OptionElemOptions): HTMLElement {
+	static makeOptionElem(data: OptionElemOptions) {
 		const classCssClass = data.player ? PlayerClasses.getCssClass(data.player.getPlayerClass()) : '';
-		const playerFragment = document.createElement('fragment');
-
-		playerFragment.innerHTML = `
-			<div class="player ${classCssClass ? `bg-${classCssClass}-dampened` : ''}">
-				<div class="player-label">
-					${data.player ? `<img class="player-icon" src="${data.player.getSpecIcon()}" draggable="false"/>` : ''}
-					<div class="player-details">
-						<span class="player-name ${classCssClass ? `text-${classCssClass}` : ''}">
-							${data.player ? data.player.getName() : 'Unassigned'}
+		console.log(data.player ? data.player.getName() : 'Unassigned')
+		const player = (
+			<div className={clsx('player', classCssClass && `bg-${classCssClass}-dampened`)}>
+				<div className="player-label">
+					{!!data.player && <img className="player-icon" src={data.player.getSpecIcon()} draggable={false} />}
+					<div className="player-details">
+						<span className={clsx('player-name', classCssClass && `text-${classCssClass}`)}>
+							{data.player ? data.player.getName() : 'Unassigned'}
 						</span>
 					</div>
 				</div>
 			</div>
-		`;
+		);
 
-		if (data.isDropdown) {
-			playerFragment.innerHTML = `
-				<a class="dropdown-option" href="javascript:void(0) role="button">${playerFragment.innerHTML}</a>
-			`;
-		}
-
-		return playerFragment.children[0] as HTMLElement;
+		return data.isDropdown ? (
+			<Link as="button" className="dropdown-option">
+				{player}
+			</Link>
+		) : (
+			player
+		);
 	}
 }

@@ -1,4 +1,4 @@
-
+import { Link } from '@wowsims/ui';
 
 import { RaidSimResult, ResourceType } from '../proto/api.js';
 import { bucket, getEnumValues, stringComparator, sum } from '../utils.js';
@@ -177,11 +177,11 @@ export class SimLog {
 	protected newActionIdLink(isAura?: boolean) {
 		const iconElem = <span className="icon icon-sm"></span>;
 		const actionAnchor = (
-			<a className="log-action" target="_blank">
+			<Link className="log-action" target="_blank">
 				<span>
 					{iconElem} {this.actionId!.name}
 				</span>
-			</a>
+			</Link>
 		);
 		this.actionId?.setBackground(iconElem as HTMLAnchorElement);
 		this.actionId?.setWowheadHref(actionAnchor as HTMLAnchorElement);

@@ -1,3 +1,5 @@
+import { Icon, Link } from '@wowsims/ui';
+import clsx from 'clsx';
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -154,16 +156,15 @@ export class CharacterStats extends Component {
 
 			const valueElem = (
 				<div className="stat-value-link-container">
-					<a href="javascript:void(0)" className={`stat-value-link ${contextualClass}`} attributes={{ role: 'button' }} ref={statLinkElemRef}>
-						{`${this.statDisplayString(finalStats, finalStats, stat, true)} `}
-					</a>
+					<Link as="button" className={clsx('stat-value-link', contextualClass)} ref={statLinkElemRef}>
+						{this.statDisplayString(finalStats, finalStats, stat, true)}
+					</Link>
 					{stat == Stat.StatMastery && (
-						<a
+						<Link
 							href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
-							className={`stat-value-link-mastery ${contextualClass}`}
-							attributes={{ role: 'button' }}>
-							{`${(masteryPoints * this.player.getMasteryPerPointModifier()).toFixed(2)}%`}
-						</a>
+							className={clsx('stat-value-link-mastery', contextualClass)}>
+							{(masteryPoints * this.player.getMasteryPerPointModifier()).toFixed(2)}%
+						</Link>
 					)}
 				</div>
 			);
@@ -222,9 +223,9 @@ export class CharacterStats extends Component {
 			const meleeCritCapInfo = player.getMeleeCritCapInfo();
 
 			const valueElem = (
-				<a href="javascript:void(0)" className="stat-value-link" attributes={{ role: 'button' }}>
+				<Link as="button" className="stat-value-link">
 					{`${this.meleeCritCapDisplayString(player, finalStats)} `}
-				</a>
+				</Link>
 			);
 
 			const capDelta = meleeCritCapInfo.playerCritCapDelta;
@@ -243,34 +244,34 @@ export class CharacterStats extends Component {
 				<div>
 					<div className="character-stats-tooltip-row">
 						<span>Glancing:</span>
-						<span>{`${meleeCritCapInfo.glancing.toFixed(2)}%`}</span>
+						<span>{meleeCritCapInfo.glancing.toFixed(2)}%</span>
 					</div>
 					<div className="character-stats-tooltip-row">
 						<span>Suppression:</span>
-						<span>{`${meleeCritCapInfo.suppression.toFixed(2)}%`}</span>
+						<span>{meleeCritCapInfo.suppression.toFixed(2)}%</span>
 					</div>
 					<div className="character-stats-tooltip-row">
 						<span>To Hit Cap:</span>
-						<span>{`${meleeCritCapInfo.remainingMeleeHitCap.toFixed(2)}%`}</span>
+						<span>{meleeCritCapInfo.remainingMeleeHitCap.toFixed(2)}%</span>
 					</div>
 					<div className="character-stats-tooltip-row">
 						<span>To Exp Cap:</span>
-						<span>{`${meleeCritCapInfo.remainingExpertiseCap.toFixed(2)}%`}</span>
+						<span>{meleeCritCapInfo.remainingExpertiseCap.toFixed(2)}%</span>
 					</div>
 					{meleeCritCapInfo.specSpecificOffset != 0 && (
 						<div className="character-stats-tooltip-row">
 							<span>Spec Offsets:</span>
-							<span>{`${meleeCritCapInfo.specSpecificOffset.toFixed(2)}%`}</span>
+							<span>{meleeCritCapInfo.specSpecificOffset.toFixed(2)}%</span>
 						</div>
 					)}
 					<div className="character-stats-tooltip-row">
 						<span>Final Crit Cap:</span>
-						<span>{`${meleeCritCapInfo.baseCritCap.toFixed(2)}%`}</span>
+						<span>{meleeCritCapInfo.baseCritCap.toFixed(2)}%</span>
 					</div>
 					<hr />
 					<div className="character-stats-tooltip-row">
 						<span>Can Raise By:</span>
-						<span>{`${(meleeCritCapInfo.remainingExpertiseCap + meleeCritCapInfo.remainingMeleeHitCap).toFixed(2)}%`}</span>
+						<span>{(meleeCritCapInfo.remainingExpertiseCap + meleeCritCapInfo.remainingMeleeHitCap).toFixed(2)}%</span>
 					</div>
 				</div>
 			);
@@ -284,7 +285,7 @@ export class CharacterStats extends Component {
 	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat, includeBase?: boolean): string {
 		let rawValue = deltaStats.getStat(stat);
 
-		rawValue *=  1;
+		rawValue *= 1;
 
 		let displayStr = String(Math.round(rawValue));
 
@@ -306,10 +307,7 @@ export class CharacterStats extends Component {
 		} else if (stat == Stat.StatBlock) {
 			// TODO: Figure out how to display these differently for the components than the final value
 			//displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${(
-				rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE +
-				5.0
-			).toFixed(2)}%)`;
+			displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + 5.0).toFixed(2)}%)`;
 		} else if (stat == Stat.StatDodge) {
 			//displayStr += ` (${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%)`;
 			displayStr += ` (${(stats.getPseudoStat(PseudoStat.PseudoStatDodge) * 100).toFixed(2)}%)`;
@@ -339,11 +337,7 @@ export class CharacterStats extends Component {
 	private bonusStatsLink(stat: Stat): HTMLElement {
 		const statName = getClassStatName(stat, this.player.getClass());
 
-		const link = (
-			<a href="javascript:void(0)" className="add-bonus-stats text-white ms-2" dataset={{ bsToggle: 'popover' }} attributes={{ role: 'button' }}>
-				<i className="fas fa-plus-minus"></i>
-			</a>
-		);
+		const link = <Link as="button" className="add-bonus-stats text-white ms-2" dataset={{ bsToggle: 'popover' }} iconLeft="plus-minus" />;
 
 		tippy(link.children[0], { content: `Bonus ${statName}` });
 

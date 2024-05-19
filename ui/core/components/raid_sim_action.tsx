@@ -1,3 +1,5 @@
+import { Icon, Link } from '@wowsims/ui';
+import clsx from 'clsx';
 import tippy from 'tippy.js';
 
 import { DistributionMetrics as DistributionMetricsProto, ProgressMetrics, Raid as RaidProto } from '../proto/api.js';
@@ -137,16 +139,19 @@ export class RaidSimResultsManager {
 			<div className="results-sim">
 				{RaidSimResultsManager.makeToplineResultsContent(simResult)}
 				<div className="results-sim-reference">
-					<a href="javascript:void(0)" className="results-sim-set-reference" attributes={{ role: 'button' }}>
-						<i className={`fa fa-map-pin fa-lg text-${this.simUI.cssScheme} me-2`}></i>Save as Reference
-					</a>
+					<Link
+						as="button"
+						className="results-sim-set-reference"
+						iconLeft={<Icon icon="map-pin" size="lg" className={clsx(`text-${this.simUI.cssScheme}`, 'me-1')} />}>
+						Save as Reference
+					</Link>
 					<div className="results-sim-reference-bar">
-						<a href="javascript:void(0)" className="results-sim-reference-swap me-3" attributes={{ role: 'button' }}>
-							<i className="fas fa-arrows-rotate me-1"></i>Swap
-						</a>
-						<a href="javascript:void(0)" className="results-sim-reference-delete" attributes={{ role: 'button' }}>
-							<i className="fa fa-times fa-lg me-1"></i>Cancel
-						</a>
+						<Link as="button" className="results-sim-reference-swap me-3" iconLeft={<Icon icon="arrows-rotate" className="me-1" />}>
+							Swap
+						</Link>
+						<Link as="button" className="results-sim-reference-delete" iconLeft={<Icon icon="times" size="lg" className="me-1" />}>
+							Cancel
+						</Link>
 					</div>
 				</div>
 			</div>,
@@ -285,7 +290,7 @@ export class RaidSimResultsManager {
 		} else {
 			this.formatToplineResult(
 				`.${RaidSimResultsManager.resultMetricClasses['dtps']} .results-reference-diff`,
-				res => sum(res.getPlayers()!.map(player => player.dtps.avg))/res.getPlayers().length,
+				res => sum(res.getPlayers()!.map(player => player.dtps.avg)) / res.getPlayers().length,
 				2,
 				true,
 			);
@@ -468,7 +473,11 @@ export class RaidSimResultsManager {
 					);
 				}
 
-				const targetActions = simResult.getTargets(filter).map(target => target.actions).flat().map(action => action.forTarget({player: playerMetrics.unitIndex}));
+				const targetActions = simResult
+					.getTargets(filter)
+					.map(target => target.actions)
+					.flat()
+					.map(action => action.forTarget({ player: playerMetrics.unitIndex }));
 				if (!!targetActions.length) {
 					const mergedTargetActions = ActionMetrics.merge(targetActions);
 					content.appendChild(
@@ -516,7 +525,11 @@ export class RaidSimResultsManager {
 				}),
 			);
 
-			const targetActions = simResult.getTargets(filter).map(target => target.actions).flat().map(action => action.forTarget(filter));
+			const targetActions = simResult
+				.getTargets(filter)
+				.map(target => target.actions)
+				.flat()
+				.map(action => action.forTarget(filter));
 			if (!!targetActions.length) {
 				const mergedTargetActions = ActionMetrics.merge(targetActions);
 				content.appendChild(
@@ -562,7 +575,7 @@ export class RaidSimResultsManager {
 				<span className="topline-result-avg">{args.average.toFixed(2)}</span>
 				{args.stdev && (
 					<span className="topline-result-stdev">
-						(<i className="fas fa-plus-minus fa-xs"></i>
+						<Icon icon="plus-minus" size="xs" />
 						{args.stdev.toFixed()})
 					</span>
 				)}

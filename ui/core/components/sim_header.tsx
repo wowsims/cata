@@ -1,8 +1,9 @@
+import { Icon, Link, LinkIcon } from '@wowsims/ui';
 import tippy, { ReferenceElement as TippyReferenceElement } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { SimUI } from '../sim_ui';
-import { isLocal,noop  } from '../utils';
+import { isLocal, noop } from '../utils';
 import { Component } from './component';
 import { Exporter } from './exporters';
 import { Importer } from './importers';
@@ -14,7 +15,7 @@ interface ToolbarLinkArgs {
 	parent: HTMLElement;
 	href?: string;
 	text?: string;
-	icon?: string;
+	icon?: LinkIcon;
 	tooltip?: string | HTMLElement;
 	classes?: string;
 	onclick?: () => void;
@@ -119,10 +120,15 @@ export class SimHeader extends Component {
 
 		args.parent.appendChild(
 			<div className="sim-toolbar-item">
-				<a ref={linkRef} href={args.href ? args.href : 'javascript:void(0)'} className={args.classes || ''} target={args.href ? '_blank' : '_self'}>
-					{args.icon && <i className={args.icon}></i>}
-					{args.text ? ` ${args.text} ` : ''}
-				</a>
+				<Link
+					ref={linkRef}
+					as={args.href ? undefined : 'button'}
+					href={args.href ? args.href : undefined}
+					target={args.href ? '_blank' : '_self'}
+					className={args.classes}
+					iconRight={args.icon}>
+					{args.text || ''}
+				</Link>
 			</div>,
 		);
 
@@ -161,14 +167,14 @@ export class SimHeader extends Component {
 		this.addToolbarLink({
 			href: 'https://github.com/wowsims/cata/issues/new/choose',
 			parent: this.simToolbar,
-			icon: 'fas fa-bug fa-lg',
-			tooltip: 'Report a bug or<br>Request a feature',
+			icon: <Icon icon="bug" size="lg" />,
+			tooltip: 'Report a bug or<br/>Request a feature',
 		});
 	}
 
 	private addDownloadBinaryLink() {
 		const href = 'https://github.com/wowsims/cata/releases';
-		const icon = 'fas fa-gauge-high fa-lg';
+		const icon = <Icon icon="gauge-high" size="lg" />;
 		const parent = this.simToolbar;
 
 		if (isLocal()) {
@@ -206,7 +212,7 @@ export class SimHeader extends Component {
 		const settingsMenu = new SettingsMenu(this.simUI.rootElem, this.simUI);
 		this.addToolbarLink({
 			parent: this.simToolbar,
-			icon: 'fas fa-cog fa-lg',
+			icon: <Icon icon="cog" size="lg" />,
 			tooltip: 'Show Sim Options',
 			classes: 'sim-options',
 			onclick: () => settingsMenu.open(),
@@ -214,24 +220,13 @@ export class SimHeader extends Component {
 	}
 
 	private addSocialLinks() {
-		const container = (<div className="sim-toolbar-socials" />) as HTMLElement;
-		this.simToolbar.appendChild(container);
-
-		this.addDiscordLink(container);
-		this.addGitHubLink(container);
-		this.addPatreonLink(container);
-	}
-
-	private addDiscordLink(container: HTMLElement) {
-		container.appendChild(<div className="sim-toolbar-item">{SocialLinks.buildDiscordLink()}</div>);
-	}
-
-	private addGitHubLink(container: HTMLElement) {
-		container.appendChild(<div className="sim-toolbar-item">{SocialLinks.buildGitHubLink()}</div>);
-	}
-
-	private addPatreonLink(container: HTMLElement) {
-		container.appendChild(<div className="sim-toolbar-item">{SocialLinks.buildPatreonLink()}</div>);
+		this.simToolbar.appendChild(
+			<div className="sim-toolbar-socials">
+				{[<SocialLinks.buildDiscordLink />, <SocialLinks.buildGitHubLink />, <SocialLinks.buildPatreonLink />].map(link => (
+					<div className="sim-toolbar-item">{link}</div>
+				))}
+			</div>,
+		);
 	}
 
 	protected customRootElement(): HTMLElement {
@@ -241,23 +236,25 @@ export class SimHeader extends Component {
 					<ul className="sim-tabs nav nav-tabs" attributes={{ role: 'tablist' }}></ul>
 					<div className="import-export nav within-raid-sim-hide">
 						<div className="dropdown sim-dropdown-menu import-dropdown">
-							<a
-								href="javascript:void(0)"
+							<Link
+								as="button"
 								className="import-link"
-								attributes={{ role: 'button', 'aria-expanded': 'false' }}
-								dataset={{ bsToggle: 'dropdown', bsDisplay: 'dynamic' }}>
-								<i className="fa fa-download"></i> Import
-							</a>
+								attributes={{ 'aria-expanded': 'false' }}
+								dataset={{ bsToggle: 'dropdown', bsDisplay: 'dynamic' }}
+								iconLeft="download">
+								Import
+							</Link>
 							<ul className="dropdown-menu"></ul>
 						</div>
 						<div className="dropdown sim-dropdown-menu export-dropdown">
-							<a
-								href="javascript:void(0)"
+							<Link
+								as="button"
 								className="export-link"
-								attributes={{ role: 'button', 'aria-expanded': 'false' }}
-								dataset={{ bsToggle: 'dropdown', bsDisplay: 'dynamic' }}>
-								<i className="fa fa-right-from-bracket"></i> Export
-							</a>
+								attributes={{ 'aria-expanded': 'false' }}
+								dataset={{ bsToggle: 'dropdown', bsDisplay: 'dynamic' }}
+								iconLeft="right-from-bracket">
+								Export
+							</Link>
 							<ul className="dropdown-menu"></ul>
 						</div>
 					</div>

@@ -1,3 +1,4 @@
+import { Icon, Link, LinkIcon } from '@wowsims/ui';
 import tippy, { inlinePositioning, Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -14,7 +15,7 @@ interface WarningLinkArgs {
 	parent: HTMLElement;
 	href?: string;
 	text?: string;
-	icon?: string;
+	icon?: LinkIcon;
 	tooltip?: HTMLElement | Element;
 	classes?: string;
 }
@@ -59,10 +60,14 @@ export class ResultsViewer extends Component {
 	private addWarningLink(args: WarningLinkArgs): HTMLElement {
 		const item = (
 			<div className="sim-toolbar-item">
-				<a href={args.href ? args.href : 'javascript:void(0)'} target={args.href ? '_blank' : '_self'} className={args.classes}>
-					{args.icon && <i className={args.icon}></i>}
+				<Link
+					as={args.href ? undefined : 'button'}
+					href={args.href ? args.href : undefined}
+					target={args.href ? '_blank' : '_self'}
+					className={args.classes}
+					iconRight={args.icon}>
 					{args.text || ''}
-				</a>
+				</Link>
 			</div>
 		) as HTMLElement;
 
@@ -84,7 +89,7 @@ export class ResultsViewer extends Component {
 	private addWarningsLink() {
 		return this.addWarningLink({
 			parent: this.warningElem,
-			icon: 'fas fa-exclamation-triangle fa-3x',
+			icon: <Icon icon="exclamation-triangle" size="3x" />,
 			tooltip: TOOLTIP_HTML_BASE,
 			classes: 'warning link-warning',
 		}) as HTMLElement;

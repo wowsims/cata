@@ -7,6 +7,7 @@ import { FrostDeathKnightSimUI } from '../death_knight/frost/sim';
 import { UnholyDeathKnightSimUI } from '../death_knight/unholy/sim';
 import { BalanceDruidSimUI } from '../druid/balance/sim.js';
 import { FeralDruidSimUI } from '../druid/feral/sim.js';
+import { GuardianDruidSimUI } from '../druid/guardian/sim';
 import { RestorationDruidSimUI } from '../druid/restoration/sim.js';
 import { BeastMasteryHunterSimUI } from '../hunter/beast_mastery/sim';
 import { MarksmanshipHunterSimUI } from '../hunter/marksmanship/sim';
@@ -41,6 +42,7 @@ export const specSimFactories: Partial<Record<Spec, (parentElem: HTMLElement, pl
 	// Druid
 	[Spec.SpecBalanceDruid]: (parentElem: HTMLElement, player: Player<any>) => new BalanceDruidSimUI(parentElem, player),
 	[Spec.SpecFeralDruid]: (parentElem: HTMLElement, player: Player<any>) => new FeralDruidSimUI(parentElem, player),
+	[Spec.SpecGuardianDruid]: (parentElem: HTMLElement, player: Player<any>) => new GuardianDruidSimUI(parentElem, player),
 	[Spec.SpecRestorationDruid]: (parentElem: HTMLElement, player: Player<any>) => new RestorationDruidSimUI(parentElem, player),
 	// Hunter
 	[Spec.SpecBeastMasteryHunter]: (parentElem: HTMLElement, player: Player<any>) => new BeastMasteryHunterSimUI(parentElem, player),
@@ -76,10 +78,14 @@ export const specSimFactories: Partial<Record<Spec, (parentElem: HTMLElement, pl
 	[Spec.SpecProtectionWarrior]: (parentElem: HTMLElement, player: Player<any>) => new ProtectionWarriorSimUI(parentElem, player),
 };
 
-export const playerPresets: Array<RaidSimPreset<any>> = PlayerClasses.naturalOrder
+export const playerPresets: RaidSimPreset<any>[] = PlayerClasses.naturalOrder
 	.map(playerClass => Object.values(playerClass.specs))
 	.flat()
-	.map(playerSpec => getSpecConfig(playerSpec.specID))
+	.map(playerSpec => {
+		console.log(playerSpec);
+		console.log(getSpecConfig(playerSpec.specID));
+		return getSpecConfig(playerSpec.specID);
+	})
 	.map(config => {
 		const indSimUiConfig = config as IndividualSimUIConfig<any>;
 		return indSimUiConfig.raidSimPresets;

@@ -1,3 +1,5 @@
+import { Icon, Link } from '@wowsims/ui';
+import clsx from 'clsx';
 import tippy from 'tippy.js';
 
 import { Player } from '../../player.js';
@@ -5,7 +7,7 @@ import { ActionID as ActionIdProto, Cooldown } from '../../proto/common.js';
 import { ActionId } from '../../proto_utils/action_id.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
 import { Component } from '../component.js';
-import { IconEnumPicker, IconEnumValueConfig } from '../icon_enum_picker.js';
+import { IconEnumPicker, IconEnumValueConfig } from '../icon_enum_picker.jsx';
 import { NumberListPicker } from '../number_list_picker.js';
 
 export class CooldownsPicker extends Component {
@@ -18,7 +20,7 @@ export class CooldownsPicker extends Component {
 		this.player = player;
 		this.cooldownPickers = [];
 
-		TypedEvent.onAny([this.player.rotationChangeEmitter, this.player.sim.unitMetadataEmitter]).on(eventID => {
+		TypedEvent.onAny([this.player.rotationChangeEmitter, this.player.sim.unitMetadataEmitter]).on(() => {
 			this.update();
 		});
 		this.update();
@@ -32,17 +34,12 @@ export class CooldownsPicker extends Component {
 		for (let i = 0; i < cooldowns.length + 1; i++) {
 			const cooldown = cooldowns[i];
 
-			const row = document.createElement('div');
-			row.classList.add('cooldown-picker');
-			if (i == cooldowns.length) {
-				row.classList.add('add-cooldown-picker');
-			}
+			const row = (<div className={clsx('cooldown-picker', i === cooldowns.length && 'add-cooldown-picker')} />) as HTMLElement;
 			this.rootElem.appendChild(row);
 
-			const actionPicker = this.makeActionPicker(row, i);
+			this.makeActionPicker(row, i);
 
-			const label = document.createElement('label');
-			label.classList.add('cooldown-picker-label', 'form-label');
+			const label = <label className="cooldown-picker-label form-label"></label>;
 			if (cooldown && cooldown.id) {
 				ActionId.fromProto(cooldown.id)
 					.fill(this.player.getRaidIndex())
@@ -50,21 +47,15 @@ export class CooldownsPicker extends Component {
 			}
 			row.appendChild(label);
 
-			const timingsPicker = this.makeTimingsPicker(row, i);
+			this.makeTimingsPicker(row, i);
 
-			const deleteButtonFragment = document.createElement('fragment');
-			deleteButtonFragment.innerHTML = `
-				<a
-					href="javascript:void(0)"
-					class="delete-cooldown link-danger"
-					role="button"
-				>
-					<i class="fa fa-times fa-xl"></i>
-				</a>
-			`;
-			const deleteButton = deleteButtonFragment.children[0] as HTMLElement;
+			const deleteButton = (
+				<Link variant="danger" className="delete-cooldown" role="button">
+					<Icon icon="times" size="xl" />
+				</Link>
+			);
 			const deleteButtonTooltip = tippy(deleteButton, { content: 'Delete Cooldown' });
-			deleteButton.addEventListener('click', event => {
+			deleteButton.addEventListener('click', () => {
 				const newCooldowns = this.player.getSimpleCooldowns();
 				newCooldowns.cooldowns.splice(i, 1);
 				this.player.setSimpleCooldowns(TypedEvent.nextEventID(), newCooldowns);

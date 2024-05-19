@@ -1,4 +1,4 @@
-
+import { Icon, Link } from '@wowsims/ui';
 
 import { CharacterStats, StatMods, StatWrites } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
@@ -388,14 +388,14 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.rootElem.classList.add('sim-ui--is-unlaunched');
 		this.simActionsContainer?.appendChild(
 			<div className="sim-ui-unlaunched-container d-flex flex-column align-items-center text-center mt-5">
-				<i className="fas fa-ban fa-3x"></i>
+				<Icon icon="ban" size="3x" />
 				<p className="mt-4">
 					This sim is currently unlaunched.
 					<br />
 					We are working hard to get all sims working. Want to contribute? Make sure to join our{' '}
-					<a href="https://discord.gg/p3DgvmnDCS" target="_blank">
+					<Link href="https://discord.gg/p3DgvmnDCS" target="_blank">
 						Discord
-					</a>
+					</Link>
 					!
 				</p>
 			</div>,

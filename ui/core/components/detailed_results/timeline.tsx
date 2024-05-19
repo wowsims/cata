@@ -1,3 +1,4 @@
+import { Icon, Link } from '@wowsims/ui';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -49,7 +50,7 @@ export class Timeline extends ResultComponent {
 			<div className="timeline-disclaimer">
 				<div className="d-flex flex-column">
 					<p>
-						<i className="warning fa fa-exclamation-triangle fa-xl me-2"></i>
+						<Icon icon="exclamation-triangle" size="xl" className="warning me-2" />
 						Timeline data visualizes only 1 sim iteration.
 					</p>
 					<p>
@@ -610,7 +611,7 @@ export class Timeline extends ResultComponent {
 		const labelElem = (
 			<div className={`rotation-label rotation-row ${isHiddenLabel ? 'rotation-label-hidden' : ''}`}>
 				<span ref={hideElem} className={`fas fa-eye${isHiddenLabel ? '' : '-slash'}`}></span>
-				<a ref={labelIcon} className="rotation-label-icon"></a>
+				<Link ref={labelIcon} className="rotation-label-icon" />
 				<span className="rotation-label-text">{labelText}</span>
 			</div>
 		);
@@ -677,7 +678,7 @@ export class Timeline extends ResultComponent {
 			const labelIcon = ref<HTMLAnchorElement>();
 			const labelElem = (
 				<div className="rotation-label rotation-row">
-					<a ref={labelIcon} className="rotation-label-icon"></a>
+					<Link ref={labelIcon} className="rotation-label-icon" />
 					<span className="rotation-label-text">{labelText}</span>
 				</div>
 			);
@@ -811,7 +812,7 @@ export class Timeline extends ResultComponent {
 				}
 			}
 
-			const iconElem = (<a className="rotation-timeline-cast-icon" />) as HTMLAnchorElement;
+			const iconElem = (<Link className="rotation-timeline-cast-icon" />) as HTMLAnchorElement;
 			actionId.setBackground(iconElem);
 			castElem.appendChild(iconElem);
 

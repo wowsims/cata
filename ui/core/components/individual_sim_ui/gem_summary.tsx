@@ -1,4 +1,4 @@
-import { Button, Icon } from '@wowsims/ui';
+import { Button, Icon, Link } from '@wowsims/ui';
 
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
@@ -56,10 +56,10 @@ export class GemSummary extends Component {
 				const gemData = gemCounts[gemName];
 				const row = (
 					<div className="summary-table-row d-flex align-items-center">
-						<a className="summary-table-link" data-whtticon="false" target="_blank">
+						<Link className="summary-table-link" data-whtticon="false" target="_blank">
 							<img className="gem-icon" />
 							<div>{gemName}</div>
-						</a>
+						</Link>
 						<div>{gemData.count.toFixed(0)}</div>
 					</div>
 				);
@@ -88,7 +88,7 @@ export class GemSummary extends Component {
 					variant="reset"
 					size="sm"
 					className="summary-table-reset-button"
-					iconRight={<Icon icon="close" className="ms-1" />}
+					iconRight={<Icon icon="close" />}
 					onclick={() => {
 						this.player.setGear(TypedEvent.nextEventID(), this.player.getGear().withoutGems());
 					}}>

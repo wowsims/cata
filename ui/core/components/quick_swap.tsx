@@ -1,3 +1,5 @@
+import { Button, Link } from '@wowsims/ui';
+import clsx from 'clsx';
 import tippy, { hideAll, Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -82,15 +84,14 @@ const buildList = <T extends QuickSwapAllowedItem>(data: QuickSwapListConfig<T>)
 						const labelElem = ref<HTMLSpanElement>();
 						const listItem = (
 							<li className="tooltip-quick-swap__list-item">
-								<a
-									href="javascript:void(0)"
-									className={`tooltip-quick-swap__anchor d-flex align-items-center ${item.active ? ' active' : ''}`}
+								<Button
+									className={clsx('tooltip-quick-swap__anchor d-flex align-items-center', item.active && 'active')}
 									onclick={() => data.onItemClick(item.item)}>
 									<img ref={iconElem} alt={item.item.name} className="tooltip-quick-swap__icon gem-icon flex-shrink-0" />
 									<span ref={labelElem} className="tooltip-quick-swap__label text-start">
 										{item.item.name}
 									</span>
-								</a>
+								</Button>
 							</li>
 						);
 						if (labelElem.value) setItemQualityCssClass(labelElem.value, item.item.quality);
@@ -106,9 +107,9 @@ const buildList = <T extends QuickSwapAllowedItem>(data: QuickSwapListConfig<T>)
 			)}
 			{data.footerButton && (
 				<div className="tooltip-quick-swap__footer d-flex justify-content-center">
-					<a onclick={data.footerButton.onClick} href="javascript:void(0)" className="btn btn-sm btn-primary" attributes={{ role: 'button' }}>
+					<Button variant="primary" size="sm" onclick={data.footerButton.onClick}>
 						{data.footerButton.label}
-					</a>
+					</Button>
 				</div>
 			)}
 		</>

@@ -1,3 +1,4 @@
+import { Link } from '@wowsims/ui';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -200,7 +201,7 @@ export abstract class MetricsTable<T> extends ResultComponent {
 				const iconElem = ref<HTMLAnchorElement>();
 				cellElem.appendChild(
 					<>
-						<a ref={iconElem} className="metrics-action-icon"></a>
+						<Link ref={iconElem} className="metrics-action-icon" />
 						<span className="metrics-action-name">{data.name}</span>
 						<span className="expand-toggle fa fa-caret-down"></span>
 						<span className="expand-toggle fa fa-caret-right"></span>

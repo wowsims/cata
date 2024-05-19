@@ -2,6 +2,7 @@ import { Button, Icon } from '@wowsims/ui';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
+import { cloneChildren } from '../utils';
 import { Component } from './component';
 
 export interface CopyButtonConfig {
@@ -17,7 +18,7 @@ export class CopyButton extends Component {
 	constructor(parent: HTMLElement, config: CopyButtonConfig) {
 		const btnRef = ref<HTMLButtonElement>();
 		const buttonElem = (
-			<Button ref={btnRef} className={`btn ${config.extraCssClasses?.join(' ') ?? ''}`} iconLeft={<Icon icon="copy" className="me-1" />}>
+			<Button ref={btnRef} className={`btn ${config.extraCssClasses?.join(' ') ?? ''}`} iconLeft="copy">
 				{config.text ?? 'Copy to Clipboard'}
 			</Button>
 		);
@@ -26,21 +27,25 @@ export class CopyButton extends Component {
 		this.config = config;
 
 		const button = btnRef.value!;
-		let clicked = false;
-		button.addEventListener('click', _event => {
-			if (clicked) return;
+		button.addEventListener('click', () => {
+			if (button.disabled) return;
 
 			const data = this.config.getContent();
-			if (navigator.clipboard == undefined) {
+			if (!navigator.clipboard) {
 				alert(data);
 			} else {
-				clicked = true;
 				navigator.clipboard.writeText(data);
-				const originalContent = button.innerHTML;
-				button.innerHTML = '<i class="fas fa-check me-1"></i>Copied';
+				const defaultState = cloneChildren(button);
+				button.disabled = true;
+				button.replaceChildren(
+					<>
+						<Icon icon="check" className="me-1" />
+						Copied
+					</>,
+				);
 				setTimeout(() => {
-					button.innerHTML = originalContent;
-					clicked = false;
+					button.replaceChildren(...defaultState);
+					button.disabled = false;
 				}, 1500);
 			}
 		});
