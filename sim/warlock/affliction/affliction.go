@@ -1,6 +1,8 @@
 package affliction
 
 import (
+	"math"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/warlock"
@@ -37,7 +39,7 @@ type AfflictionWarlock struct {
 }
 
 func (affliction AfflictionWarlock) getMasteryBonus() float64 {
-	return 0.1304 + 0.0163*affliction.GetMasteryPoints()
+	return math.Floor(13.04+1.63*affliction.GetMasteryPoints()) / 100.0
 }
 
 func (affliction *AfflictionWarlock) GetWarlock() *warlock.Warlock {
