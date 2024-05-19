@@ -1154,7 +1154,7 @@ export class ItemList<T extends ItemListType> {
 					<label className="ep-label interactive" onclick={sortByEP}>
 						<small>EP</small>
 						<Icon icon="plus-minus" size="2xs" />
-						<Button ref={epButtonRef} variant="link" className="p-0 ms-1" iconLeft={{ icon: 'question-circle', size: 'lg' }} />
+						<Button ref={epButtonRef} variant="link" className="p-0 ms-1" iconLeft={<Icon icon="question-circle" size="lg" />} />
 					</label>
 					<label className="favorite-label"></label>
 				</div>

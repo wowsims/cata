@@ -51,7 +51,7 @@ export abstract class Importer extends BaseModal {
 						<input ref={uploadInputRef} type="file" id={uploadInputId} className="importer-upload-input d-none" hidden />
 					</>
 				)}
-				<Button ref={importButtonRef} variant="primary" className="importer-button import-button" iconLeft={{ icon: 'download' }}>
+				<Button ref={importButtonRef} variant="primary" className="importer-button import-button" iconLeft="download">
 					Import
 				</Button>
 			</>,

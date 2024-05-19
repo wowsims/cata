@@ -1,4 +1,4 @@
-import { Button } from '@wowsims/ui';
+import { Button, Icon } from '@wowsims/ui';
 import { default as pako } from 'pako';
 import { ref } from 'tsx-vanilla';
 
@@ -46,7 +46,7 @@ export abstract class Exporter extends BaseModal {
 		if (options.allowDownload) {
 			const downloadBtnRef = ref<HTMLButtonElement>();
 			this.footer!.appendChild(
-				<Button ref={downloadBtnRef} variant="primary" className="exporter-button download-button" iconLeft={{ icon: 'download', className: 'me-1' }}>
+				<Button ref={downloadBtnRef} variant="primary" className="exporter-button download-button" iconLeft={<Icon icon="download" className="me-1" />}>
 					Download
 				</Button>,
 			);

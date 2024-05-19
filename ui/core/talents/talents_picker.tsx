@@ -248,7 +248,7 @@ class TalentTreePicker<TalentsProto> extends Component {
 					<img src={this.getTreeIcon(klass, specNumber)} className="talent-tree-icon" />
 					<span className="talent-tree-title"></span>
 					<span className="talent-tree-points"></span>
-					<Button variant="link" className="talent-tree-reset link-danger" iconLeft={{ icon: 'times' }} />
+					<Button variant="link" className="talent-tree-reset link-danger" iconLeft="times" />
 				</div>
 				<div className="talent-tree-background"></div>
 				<div className="talent-tree-main"></div>

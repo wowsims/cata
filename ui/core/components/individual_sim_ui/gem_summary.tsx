@@ -1,4 +1,4 @@
-import { Button } from '@wowsims/ui';
+import { Button, Icon } from '@wowsims/ui';
 
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
@@ -88,7 +88,7 @@ export class GemSummary extends Component {
 					variant="reset"
 					size="sm"
 					className="summary-table-reset-button"
-					iconRight={{ icon: 'close', className: 'ms-1' }}
+					iconRight={<Icon icon="close" className="ms-1" />}
 					onclick={() => {
 						this.player.setGear(TypedEvent.nextEventID(), this.player.getGear().withoutGems());
 					}}>

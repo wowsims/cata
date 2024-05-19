@@ -167,7 +167,7 @@ class EpWeightsMenu extends BaseModal {
 										/>
 									))}
 								<td className="text-center align-middle">
-									<Button ref={computeEpRef} variant="primary" className="compute-ep" iconLeft={{ icon: 'calculator' }}>
+									<Button ref={computeEpRef} variant="primary" className="compute-ep" iconLeft="calculator">
 										<span className="not-tiny">Update </span>EP
 									</Button>
 								</td>
@@ -184,7 +184,7 @@ class EpWeightsMenu extends BaseModal {
 				<Button ref={optimizeGemsButtonRef} variant="primary" className="optimize-gems experimental me-2">
 					Optimize Gems
 				</Button>
-				<Button ref={calcWeightsButtonRef} variant="primary" className="calc-weights" iconLeft={{ icon: 'calculator' }}>
+				<Button ref={calcWeightsButtonRef} variant="primary" className="calc-weights" iconLeft="calculator">
 					Calculate
 				</Button>
 			</>,
