@@ -10,6 +10,7 @@ import (
 
 var EnchantOverrides = []*proto.UIEnchant{
 	// HANDS
+	{EffectId: 3260, SpellId: 44769, Name: "Glove Reinforcements", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.BonusArmor: 240}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 4061, SpellId: 74132, Name: "Enchant Gloves - Mastery", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Mastery: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 4068, SpellId: 74198, Name: "Enchant Gloves - Haste", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MeleeHaste: 50, stats.SpellHaste: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 4075, SpellId: 74212, Name: "Enchant Gloves - Exceptional Strength", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Strength: 35}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},

@@ -26,6 +26,7 @@ import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
 	Class,
 	Consumes,
+	Cooldowns,
 	Debuffs,
 	Encounter as EncounterProto,
 	EquipmentSpec,
@@ -464,6 +465,12 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 			const defaultSimpleRotation = this.individualConfig.defaults.simpleRotation || this.player.specTypeFunctions.rotationCreate();
 			this.player.setSimpleRotation(eventID, defaultSimpleRotation);
+			this.player.setSimpleCooldowns(
+				eventID,
+				Cooldowns.create({
+					hpPercentForDefensives: this.player.playerSpec.isTankSpec ? 0.4 : 0,
+				}),
+			);
 		});
 	}
 
