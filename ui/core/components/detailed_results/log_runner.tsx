@@ -221,10 +221,12 @@ class CustomVirtualScroll {
 		// Update the height of the placeholders before it's placed in the dom to prevent rerender
 		this.placeholderTop.style.height = `${this.startIndex * this.itemHeight}px`;
 		this.placeholderBottom.style.height = `${remainingItems * this.itemHeight}px`;
-		const fragment = document.createDocumentFragment();
-		fragment.appendChild(this.placeholderTop);
-		visibleItems.forEach(item => fragment.appendChild(item));
-		fragment.appendChild(this.placeholderBottom);
-		this.contentContainer.appendChild(fragment);
+		this.contentContainer.appendChild(
+			<>
+				{this.placeholderTop}
+				{visibleItems.map(item => item)}
+				{this.placeholderBottom}
+			</>,
+		);
 	}
 }
