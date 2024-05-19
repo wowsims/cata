@@ -1,6 +1,5 @@
 import tippy from 'tippy.js';
 
-
 import { Component } from './component';
 
 export class SocialLinks extends Component {

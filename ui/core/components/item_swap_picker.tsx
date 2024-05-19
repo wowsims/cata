@@ -1,6 +1,5 @@
 import tippy from 'tippy.js';
 
-
 import { Player } from '../player.js';
 import { ItemSlot, Spec } from '../proto/common.js';
 import { SimUI } from '../sim_ui.js';

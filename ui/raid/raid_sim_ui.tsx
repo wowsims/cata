@@ -1,6 +1,5 @@
 import { default as pako } from 'pako';
 
-
 import { EmbeddedDetailedResults } from '../core/components/detailed_results';
 import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action';
 import { raidSimStatus } from '../core/launched_sims';

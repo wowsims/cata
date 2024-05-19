@@ -3,7 +3,6 @@ import { ActionId } from '../proto_utils/action_id.js';
 import { SimUI } from '../sim_ui.js';
 import { TypedEvent } from '../typed_event.js';
 import { isRightClick } from '../utils.js';
-
 import { Component } from './component.js';
 import { IconPicker, IconPickerConfig } from './icon_picker.js';
 
@@ -111,7 +110,7 @@ export class MultiIconPicker<ModObject> extends Component {
 
 	private clearPicker() {
 		TypedEvent.freezeAllAndDo(() => {
-			this.pickers.forEach((picker) => {
+			this.pickers.forEach(picker => {
 				picker.setInputValue(null)
 				picker.inputChanged(TypedEvent.nextEventID());
 			});

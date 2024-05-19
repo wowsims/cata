@@ -1,6 +1,5 @@
 import tippy from 'tippy.js';
 
-
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
 

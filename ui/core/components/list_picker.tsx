@@ -1,6 +1,5 @@
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 
-
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Input, InputConfig } from './input.js';
 

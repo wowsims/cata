@@ -1,6 +1,5 @@
 import tippy from 'tippy.js';
 
-
 import { ActionId } from '../proto_utils/action_id.js';
 import { TypedEvent } from '../typed_event.js';
 import { Input, InputConfig } from './input.js';

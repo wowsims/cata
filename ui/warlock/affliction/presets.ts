@@ -15,10 +15,10 @@ import {
 import { SavedTalents } from '../../core/proto/ui';
 import {
 	AfflictionWarlock_Options as WarlockOptions,
-	WarlockPrimeGlyph as PrimeGlyph,
 	WarlockMajorGlyph as MajorGlyph,
 	WarlockMinorGlyph as MinorGlyph,
 	WarlockOptions_Summon as Summon,	
+	WarlockPrimeGlyph as PrimeGlyph,
 } from '../../core/proto/warlock';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
