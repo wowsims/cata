@@ -2,1319 +2,1319 @@ character_stats_results: {
  key: "TestGuardian-CharacterStats-Default"
  value: {
   final_stats: 682.5
-  final_stats: 4061.4
-  final_stats: 10885.27356
+  final_stats: 4053
+  final_stats: 11018.49966
   final_stats: 169.176
   final_stats: 175
   final_stats: 175.0936
   final_stats: 1257.75
-  final_stats: 418
-  final_stats: 1897.83201
-  final_stats: 1002.5358
+  final_stats: 182
+  final_stats: 2968.83201
+  final_stats: 965.7858
   final_stats: 0
-  final_stats: 13545.45
-  final_stats: 418
-  final_stats: 5117.8048
-  final_stats: 1660.0716
-  final_stats: 248
+  final_stats: 13520.25
+  final_stats: 182
+  final_stats: 6184.13635
+  final_stats: 1621.5716
+  final_stats: 83
   final_stats: 26471.436
-  final_stats: 43972.22615
+  final_stats: 46177.25153
   final_stats: 0
   final_stats: 0
-  final_stats: 3668.67718
+  final_stats: 4012.59098
   final_stats: 0
-  final_stats: 0
-  final_stats: 193643.47984
+  final_stats: 158
+  final_stats: 195508.64524
   final_stats: 0
   final_stats: 97
   final_stats: 97
   final_stats: 97
   final_stats: 97
-  final_stats: 250
-  final_stats: 2079
+  final_stats: 1629
+  final_stats: 730
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 7387.57662
-  tps: 37001.89312
+  dps: 7379.7956
+  tps: 36963.67572
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Althor'sAbacus-50366"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7228.80626
+  tps: 36208.30068
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Anhuur'sHymnal-55889"
  value: {
-  dps: 7502.62804
-  tps: 37578.58809
+  dps: 7472.36241
+  tps: 37428.55807
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Anhuur'sHymnal-56407"
  value: {
-  dps: 7532.09259
-  tps: 37725.84669
+  dps: 7490.89634
+  tps: 37521.13151
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-AustereShadowspiritDiamond"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BaubleofTrueBlood-50726"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
-  hps: 85.03772
+  dps: 7233.49047
+  tps: 36231.75923
+  hps: 89.78046
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BedrockTalisman-58182"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BellofEnragingResonance-59326"
  value: {
-  dps: 7322.50633
-  tps: 36677.22833
+  dps: 7350.82561
+  tps: 36820.11702
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BellofEnragingResonance-65053"
  value: {
-  dps: 7365.60465
-  tps: 36892.52993
+  dps: 7337.61098
+  tps: 36754.20446
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BindingPromise-67037"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Blood-SoakedAleMug-63843"
  value: {
-  dps: 7539.06464
-  tps: 37759.3307
+  dps: 7496.42124
+  tps: 37546.58039
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BloodofIsiset-55995"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BloodofIsiset-56414"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 7712.54812
-  tps: 38626.78895
+  dps: 7695.83163
+  tps: 38543.81335
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BloodthirstyGladiator'sBadgeofDominance-64688"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BloodthirstyGladiator'sBadgeofVictory-64689"
  value: {
-  dps: 7390.59802
-  tps: 37016.98675
+  dps: 7376.0868
+  tps: 36944.74089
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740"
  value: {
-  dps: 7322.05969
-  tps: 36675.11096
+  dps: 7362.49489
+  tps: 36877.93174
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BloodthirstyGladiator'sInsigniaofConquest-64761"
  value: {
-  dps: 7503.08986
-  tps: 37580.50553
+  dps: 7521.04228
+  tps: 37670.5191
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763"
  value: {
-  dps: 7370.69092
-  tps: 36917.45127
+  dps: 7346.5531
+  tps: 36797.0724
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BottledLightning-66879"
  value: {
-  dps: 7337.80534
-  tps: 36753.51587
+  dps: 7297.88551
+  tps: 36553.97213
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BracingShadowspiritDiamond"
  value: {
-  dps: 7251.0272
-  tps: 35592.95483
+  dps: 7232.33651
+  tps: 35501.73994
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 7348.15011
-  tps: 36804.74721
+  dps: 7347.02045
+  tps: 36799.43827
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 7349.8254
-  tps: 36813.11115
+  dps: 7375.00302
+  tps: 36939.49634
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-CoreofRipeness-58184"
  value: {
-  dps: 7251.43627
-  tps: 36321.1822
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-CorpseTongueCoin-50349"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-CrushingWeight-59506"
  value: {
-  dps: 7582.30671
-  tps: 37976.5544
+  dps: 7452.86208
+  tps: 37329.96102
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-CrushingWeight-65118"
  value: {
-  dps: 7507.03536
-  tps: 37600.2962
+  dps: 7482.42816
+  tps: 37478.67248
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-DarkmoonCard:Hurricane-62049"
  value: {
-  dps: 7619.04001
-  tps: 38159.2134
+  dps: 7662.719
+  tps: 38377.95685
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-DarkmoonCard:Hurricane-62051"
  value: {
-  dps: 7838.2522
-  tps: 39255.84685
+  dps: 7822.50312
+  tps: 39177.75996
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-DarkmoonCard:Tsunami-62050"
  value: {
-  dps: 7251.43627
-  tps: 36321.1822
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-DarkmoonCard:Volcano-62047"
  value: {
-  dps: 7284.1031
-  tps: 36533.79596
+  dps: 7211.81208
+  tps: 36172.49482
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Deathbringer'sWill-50363"
  value: {
-  dps: 7397.94609
-  tps: 37055.06877
+  dps: 7398.878
+  tps: 37059.29395
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-DestructiveShadowspiritDiamond"
  value: {
-  dps: 7252.9875
-  tps: 36328.92165
+  dps: 7258.71558
+  tps: 36358.05917
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-DislodgedForeignObject-50348"
  value: {
-  dps: 7321.31118
-  tps: 36671.03819
+  dps: 7202.95153
+  tps: 36080.26721
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EffulgentShadowspiritDiamond"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ElectrosparkHeartstarter-67118"
  value: {
-  dps: 7244.39556
-  tps: 36314.81758
+  dps: 7233.49047
+  tps: 36261.2348
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EmberShadowspiritDiamond"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7232.33651
+  tps: 36226.01859
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EnigmaticShadowspiritDiamond"
  value: {
-  dps: 7252.9875
-  tps: 36328.92165
+  dps: 7258.71558
+  tps: 36358.05917
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EssenceoftheCyclone-59473"
  value: {
-  dps: 7754.96003
-  tps: 38839.22683
+  dps: 7699.13951
+  tps: 38561.64586
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EssenceoftheCyclone-65140"
  value: {
-  dps: 7785.74779
-  tps: 38994.43977
+  dps: 7725.59714
+  tps: 38694.40468
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-EternalShadowspiritDiamond"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-FallofMortality-59500"
  value: {
-  dps: 7251.43627
-  tps: 36321.1822
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-FallofMortality-65124"
  value: {
-  dps: 7244.5648
-  tps: 36286.8065
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Figurine-DemonPanther-52199"
  value: {
-  dps: 7946.59894
-  tps: 39799.69076
+  dps: 7937.22215
+  tps: 39753.18681
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Figurine-DreamOwl-52354"
  value: {
-  dps: 7251.43627
-  tps: 36321.1822
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Figurine-EarthenGuardian-52352"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Figurine-JeweledSerpent-52353"
  value: {
-  dps: 7251.43627
-  tps: 36321.1822
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Figurine-KingofBoars-52351"
  value: {
-  dps: 7381.87484
-  tps: 36973.37087
+  dps: 7367.17453
+  tps: 36900.17954
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-FleetShadowspiritDiamond"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-FluidDeath-58181"
  value: {
-  dps: 7974.00349
-  tps: 39937.5264
+  dps: 7911.76814
+  tps: 39625.66715
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ForlornShadowspiritDiamond"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7232.33651
+  tps: 36226.01859
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-FuryofAngerforge-59461"
  value: {
-  dps: 7471.7695
-  tps: 37423.54416
+  dps: 7500.77813
+  tps: 37569.87962
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-GaleofShadows-56138"
  value: {
-  dps: 7281.90809
-  tps: 36473.99211
+  dps: 7249.5681
+  tps: 36312.91008
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-GaleofShadows-56462"
  value: {
-  dps: 7320.49338
-  tps: 36667.59107
+  dps: 7224.20711
+  tps: 36186.52242
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-GearDetector-61462"
  value: {
-  dps: 7484.72951
-  tps: 37488.1163
+  dps: 7400.18493
+  tps: 37065.66173
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-GlowingTwilightScale-54589"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7228.80626
+  tps: 36208.30068
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-GraceoftheHerald-55266"
  value: {
-  dps: 7481.6182
-  tps: 37472.58433
+  dps: 7401.88575
+  tps: 37075.10335
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-GraceoftheHerald-56295"
  value: {
-  dps: 7621.17555
-  tps: 38171.0065
+  dps: 7564.8543
+  tps: 37889.19168
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-HarmlightToken-63839"
  value: {
-  dps: 7353.33825
-  tps: 36830.68791
+  dps: 7320.99864
+  tps: 36669.20423
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Harrison'sInsigniaofPanache-65803"
  value: {
-  dps: 7343.32188
-  tps: 36780.60605
+  dps: 7326.06052
+  tps: 36694.6095
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-HeartofIgnacious-59514"
  value: {
-  dps: 7340.42155
-  tps: 36767.49942
+  dps: 7283.61526
+  tps: 36484.08069
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-HeartofIgnacious-65110"
  value: {
-  dps: 7397.98032
-  tps: 37054.72307
+  dps: 7294.96464
+  tps: 36540.10464
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-HeartofRage-59224"
  value: {
-  dps: 7877.10894
-  tps: 39449.47052
+  dps: 7854.80198
+  tps: 39339.88699
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-HeartofRage-65072"
  value: {
-  dps: 7960.49692
-  tps: 39867.28542
+  dps: 7921.94592
+  tps: 39675.58421
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-HeartofSolace-55868"
  value: {
-  dps: 7366.27199
-  tps: 36895.81161
+  dps: 7344.16561
+  tps: 36785.89762
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-HeartofSolace-56393"
  value: {
-  dps: 7465.30788
-  tps: 37391.66356
+  dps: 7363.24083
+  tps: 36881.691
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-HeartofThunder-55845"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
- }
-}
-dps_results: {
- key: "TestGuardian-AllItems-HeartofThunder-56370"
- value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-HeartoftheVile-66969"
  value: {
-  dps: 7492.85853
-  tps: 37529.12014
+  dps: 7556.20937
+  tps: 37845.60395
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Heartpierce-50641"
  value: {
-  dps: 7347.94027
-  tps: 36806.55553
+  dps: 7356.50817
+  tps: 36850.28379
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ImpassiveShadowspiritDiamond"
  value: {
-  dps: 7252.9875
-  tps: 36328.92165
+  dps: 7258.71558
+  tps: 36358.05917
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ImpatienceofYouth-62464"
  value: {
-  dps: 7398.40296
-  tps: 37056.01148
+  dps: 7384.06094
+  tps: 36984.61158
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ImpatienceofYouth-62469"
  value: {
-  dps: 7398.40296
-  tps: 37056.01148
+  dps: 7384.06094
+  tps: 36984.61158
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-InsigniaofDiplomacy-61433"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-InsigniaoftheEarthenLord-61429"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-JarofAncientRemedies-59354"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-JarofAncientRemedies-65029"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-JujuofNimbleness-63840"
  value: {
-  dps: 7539.06464
-  tps: 37759.3307
+  dps: 7496.42124
+  tps: 37546.58039
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-KeytotheEndlessChamber-55795"
  value: {
-  dps: 7814.58269
-  tps: 39138.24742
+  dps: 7676.93434
+  tps: 38450.64272
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-KeytotheEndlessChamber-56328"
  value: {
-  dps: 7874.0101
-  tps: 39436.13131
+  dps: 7833.15073
+  tps: 39232.7572
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-KvaldirBattleStandard-59685"
  value: {
-  dps: 7385.43366
-  tps: 36991.51578
+  dps: 7265.15585
+  tps: 36390.96485
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-KvaldirBattleStandard-59689"
  value: {
-  dps: 7385.43366
-  tps: 36991.51578
+  dps: 7265.15585
+  tps: 36390.96485
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-LadyLa-La'sSingingShell-67152"
  value: {
-  dps: 7342.81861
-  tps: 36778.14783
+  dps: 7227.16448
+  tps: 36201.70075
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-LastWord-50708"
  value: {
-  dps: 7295.12135
-  tps: 36539.60342
+  dps: 7277.39185
+  tps: 36451.26611
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-LeadenDespair-55816"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-LeftEyeofRajh-56102"
  value: {
-  dps: 7972.43694
-  tps: 39927.05802
+  dps: 7942.32423
+  tps: 39777.51366
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-LeftEyeofRajh-56427"
  value: {
-  dps: 8025.31905
-  tps: 40191.10067
+  dps: 7961.23942
+  tps: 39872.46461
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-LicensetoSlay-58180"
  value: {
-  dps: 7719.24678
-  tps: 38662.21224
+  dps: 7657.73041
+  tps: 38355.83706
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-MagnetiteMirror-55814"
  value: {
-  dps: 7680.68917
-  tps: 38468.37812
+  dps: 7609.35267
+  tps: 38111.81545
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-MagnetiteMirror-56345"
  value: {
-  dps: 7807.37762
-  tps: 39101.07727
+  dps: 7730.23727
+  tps: 38716.86841
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-MandalaofStirringPatterns-62467"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-MandalaofStirringPatterns-62472"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-MarkofKhardros-56132"
  value: {
-  dps: 7350.42147
-  tps: 36816.104
+  dps: 7333.1813
+  tps: 36730.21336
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-MarkofKhardros-56458"
  value: {
-  dps: 7363.43738
-  tps: 36881.18358
+  dps: 7346.23605
+  tps: 36795.48712
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-MightoftheOcean-55251"
  value: {
-  dps: 7526.92766
-  tps: 37699.76999
+  dps: 7503.07179
+  tps: 37581.29022
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-MightoftheOcean-56285"
  value: {
-  dps: 7665.67036
-  tps: 38393.73557
+  dps: 7624.42016
+  tps: 38188.75057
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-MirrorofBrokenImages-62466"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
+ }
+}
+dps_results: {
+ key: "TestGuardian-AllItems-MirrorofBrokenImages-62471"
+ value: {
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-MoonwellChalice-70142"
  value: {
-  dps: 7251.19644
-  tps: 36319.95384
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Oremantle'sFavor-61448"
  value: {
-  dps: 7457.7203
-  tps: 37353.26564
+  dps: 7400.10663
+  tps: 37065.50191
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-PetrifiedTwilightScale-54591"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-PhylacteryoftheNamelessLich-50365"
  value: {
-  dps: 7304.18136
-  tps: 36585.75514
+  dps: 7325.71092
+  tps: 36693.51502
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-PorcelainCrab-55237"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-PorcelainCrab-56280"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-PowerfulShadowspiritDiamond"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Prestor'sTalismanofMachination-59441"
  value: {
-  dps: 7690.03973
-  tps: 38516.40554
+  dps: 7608.66424
+  tps: 38109.18892
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 7732.23176
-  tps: 38727.56255
+  dps: 7663.93776
+  tps: 38386.12319
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Rainsong-55854"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Rainsong-56377"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ReverberatingShadowspiritDiamond"
  value: {
-  dps: 7369.73957
-  tps: 36912.69452
+  dps: 7369.87804
+  tps: 36913.69709
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-RevitalizingShadowspiritDiamond"
  value: {
-  dps: 7348.15011
-  tps: 36804.74721
+  dps: 7348.1645
+  tps: 36805.12936
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-RightEyeofRajh-56100"
  value: {
-  dps: 7623.73248
-  tps: 38184.11033
+  dps: 7593.10185
+  tps: 38032.2553
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-RightEyeofRajh-56431"
  value: {
-  dps: 7664.10551
-  tps: 38385.91131
+  dps: 7628.15973
+  tps: 38207.44845
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
-  dps: 7464.76754
-  tps: 37388.5852
+  dps: 7483.55347
+  tps: 37482.48693
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-SeaStar-55256"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-SeaStar-56290"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ShardofWoe-60233"
  value: {
-  dps: 7306.22934
-  tps: 36595.96316
+  dps: 7315.93349
+  tps: 36645.18619
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Shrine-CleansingPurifier-63838"
  value: {
-  dps: 7433.6059
-  tps: 37232.65136
+  dps: 7387.07534
+  tps: 37000.31772
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Sindragosa'sFlawlessFang-50364"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Skardyn'sGrace-56115"
  value: {
-  dps: 7484.50296
-  tps: 37487.48313
+  dps: 7510.57242
+  tps: 37617.58834
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Skardyn'sGrace-56440"
  value: {
-  dps: 7526.7028
-  tps: 37698.33314
+  dps: 7549.36948
+  tps: 37811.84529
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Sorrowsong-55879"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Sorrowsong-56400"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Soul'sAnguish-66994"
  value: {
-  dps: 7574.54201
-  tps: 37938.15796
+  dps: 7545.80496
+  tps: 37795.77084
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-SoulCasket-58183"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Stonemother'sKiss-61411"
  value: {
-  dps: 7287.3469
-  tps: 36501.40449
+  dps: 7243.58429
+  tps: 36283.44333
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Stormrider'sBattlegarb"
  value: {
-  dps: 8053.73873
-  tps: 40338.56657
+  dps: 7984.72666
+  tps: 39992.56415
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-StumpofTime-62465"
  value: {
-  dps: 7566.22264
-  tps: 37897.09153
+  dps: 7505.09809
+  tps: 37592.67546
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-StumpofTime-62470"
  value: {
-  dps: 7566.22264
-  tps: 37897.09153
+  dps: 7505.09809
+  tps: 37592.67546
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-SymbioticWorm-59332"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-SymbioticWorm-65048"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-TalismanofSinisterOrder-65804"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Tank-CommanderInsignia-63841"
  value: {
-  dps: 7439.0411
-  tps: 37260.14947
+  dps: 7364.21116
+  tps: 36887.01537
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-TearofBlood-55819"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-TearofBlood-56351"
  value: {
-  dps: 7251.43627
-  tps: 36321.1822
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-TendrilsofBurrowingDark-55810"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-TendrilsofBurrowingDark-56339"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Theralion'sMirror-59519"
  value: {
-  dps: 7251.43627
-  tps: 36321.1822
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Theralion'sMirror-65105"
  value: {
-  dps: 7244.5648
-  tps: 36286.8065
+  dps: 7218.64711
+  tps: 36157.44657
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Throngus'sFinger-56121"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Throngus'sFinger-56449"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Tia'sGrace-55874"
  value: {
-  dps: 7523.68097
-  tps: 37683.41566
+  dps: 7537.14964
+  tps: 37750.66447
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Tia'sGrace-56394"
  value: {
-  dps: 7545.23079
-  tps: 37791.27728
+  dps: 7560.46231
+  tps: 37867.27365
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-TinyAbominationinaJar-50706"
  value: {
-  dps: 7443.35516
-  tps: 37282.08828
+  dps: 7393.13221
+  tps: 37031.40481
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 7255.84495
-  tps: 36343.33392
+  dps: 7227.19422
+  tps: 36200.61337
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-UnheededWarning-59520"
  value: {
-  dps: 7691.58647
-  tps: 38522.95984
+  dps: 7704.16585
+  tps: 38585.81052
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-UnquenchableFlame-67101"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-UnsolvableRiddle-62463"
  value: {
-  dps: 7692.21709
-  tps: 38525.77963
+  dps: 7665.38613
+  tps: 38391.39775
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-UnsolvableRiddle-62468"
  value: {
-  dps: 7692.21709
-  tps: 38525.77963
+  dps: 7665.38613
+  tps: 38391.39775
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-UnsolvableRiddle-68709"
  value: {
-  dps: 7692.21709
-  tps: 38525.77963
+  dps: 7665.38613
+  tps: 38391.39775
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 6019.8361
-  tps: 30161.25802
+  dps: 6135.81496
+  tps: 30742.24044
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-VialofStolenMemories-59515"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-VialofStolenMemories-65109"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sBadgeofConquest-61033"
  value: {
-  dps: 7692.21709
-  tps: 38525.77963
+  dps: 7665.38613
+  tps: 38391.39775
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sBadgeofDominance-61035"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sBadgeofVictory-61034"
  value: {
-  dps: 7398.40296
-  tps: 37056.01148
+  dps: 7384.06094
+  tps: 36984.61158
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
  value: {
-  dps: 7604.11267
-  tps: 38087.0025
+  dps: 7524.26826
+  tps: 37688.80087
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 7326.18583
-  tps: 36696.88748
+  dps: 7304.626
+  tps: 36589.02876
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
  value: {
-  dps: 7350.13926
-  tps: 36814.90879
+  dps: 7354.14905
+  tps: 36837.0417
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
  value: {
-  dps: 7753.00503
-  tps: 38829.49849
+  dps: 7754.67058
+  tps: 38839.07414
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sEmblemofProwess-61029"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
  value: {
-  dps: 7594.23435
-  tps: 38035.6876
+  dps: 7584.96757
+  tps: 37989.7047
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
  value: {
-  dps: 7386.41007
-  tps: 36996.04703
+  dps: 7374.13778
+  tps: 36934.99578
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-WitchingHourglass-55787"
  value: {
-  dps: 7241.16359
-  tps: 36270.47797
+  dps: 7189.23809
+  tps: 36010.83754
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-WitchingHourglass-56320"
  value: {
-  dps: 7275.83267
-  tps: 36444.32773
+  dps: 7231.51532
+  tps: 36222.08099
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-World-QuellerFocus-63842"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Za'brox'sLuckyTooth-63742"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-AllItems-Za'brox'sLuckyTooth-63745"
  value: {
-  dps: 7251.0272
-  tps: 36319.13265
+  dps: 7233.49047
+  tps: 36231.75923
  }
 }
 dps_results: {
  key: "TestGuardian-Average-Default"
  value: {
-  dps: 12582.6571
-  tps: 62994.23353
-  dtps: 6726.56967
+  dps: 12262.58037
+  tps: 61392.17752
+  dtps: 6468.96098
  }
 }
 dps_results: {
  key: "TestGuardian-Settings-Tauren-preraid-Default-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 17884.42386
-  tps: 90034.28762
+  dps: 18610.81814
+  tps: 93736.22653
  }
 }
 dps_results: {
  key: "TestGuardian-Settings-Tauren-preraid-Default-default-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 8383.73493
-  tps: 41984.2988
+  dps: 8472.44698
+  tps: 42429.86909
  }
 }
 dps_results: {
  key: "TestGuardian-Settings-Tauren-preraid-Default-default-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 9351.69984
-  tps: 46830.13668
+  dps: 9455.5318
+  tps: 47352.98814
  }
 }
 dps_results: {
  key: "TestGuardian-Settings-Tauren-preraid-Default-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 12178.65364
-  tps: 61875.0557
+  dps: 12328.32614
+  tps: 62694.14402
  }
 }
 dps_results: {
  key: "TestGuardian-Settings-Tauren-preraid-Default-default-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 5792.88496
-  tps: 29039.80147
+  dps: 5793.9065
+  tps: 29045.37335
  }
 }
 dps_results: {
  key: "TestGuardian-Settings-Tauren-preraid-Default-default-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 5540.65166
-  tps: 27786.69579
+  dps: 5717.62551
+  tps: 28669.91089
  }
 }
 dps_results: {
  key: "TestGuardian-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 13987.55522
-  tps: 70024.14547
-  dtps: 6025.57019
+  dps: 13894.76637
+  tps: 69559.69505
+  dtps: 5748.87495
  }
 }

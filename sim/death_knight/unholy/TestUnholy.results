@@ -80,8 +80,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-BedrockTalisman-58182"
  value: {
-  dps: 31304.47988
-  tps: 22604.04271
+  dps: 31342.02415
+  tps: 22641.39605
  }
 }
 dps_results: {
@@ -528,15 +528,15 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-HeartofThunder-55845"
  value: {
-  dps: 31304.47988
-  tps: 22604.04271
+  dps: 31329.636
+  tps: 22629.0709
  }
 }
 dps_results: {
  key: "TestUnholy-AllItems-HeartofThunder-56370"
  value: {
-  dps: 31304.47988
-  tps: 22604.04271
+  dps: 31337.75842
+  tps: 22637.15202
  }
 }
 dps_results: {
@@ -787,8 +787,8 @@ dps_results: {
 dps_results: {
  key: "TestUnholy-AllItems-PetrifiedTwilightScale-54591"
  value: {
-  dps: 31304.47988
-  tps: 22604.04271
+  dps: 31325.98383
+  tps: 22625.43731
  }
 }
 dps_results: {
