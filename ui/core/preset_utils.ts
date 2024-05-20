@@ -3,7 +3,8 @@ import {
 	APLRotation_Type as APLRotationType,
 } from './proto/apl';
 import {
-	EquipmentSpec,
+    Cooldowns,
+    EquipmentSpec,
     Faction,
     Spec,
 } from './proto/common';
@@ -84,11 +85,15 @@ export function makePresetAPLRotation(name: string, rotationJson: any, options?:
 }
 
 export function makePresetSimpleRotation<SpecType extends Spec>(name: string, spec: SpecType, simpleRotation: SpecRotation<SpecType>, options?: PresetRotationOptions): PresetRotation {
+    const isTankSpec = (spec == Spec.SpecBloodDeathKnight) || (spec == Spec.SpecGuardianDruid) || (spec == Spec.SpecProtectionPaladin) || (spec == Spec.SpecProtectionWarrior);
     const rotation = SavedRotation.create({
 		rotation: {
 			type: APLRotationType.TypeSimple,
 			simple: {
 				specRotationJson: JSON.stringify(specTypeFunctions[spec].rotationToJson(simpleRotation)),
+				cooldowns: Cooldowns.create({
+					hpPercentForDefensives: isTankSpec ? 0.4 : 0,
+				}),
 			},
 		},
     });

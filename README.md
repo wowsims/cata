@@ -135,6 +135,13 @@ WATCH=1 make devmode
 # This is just the same as rundevserver currently
 make devmode
 
+# This command recompiles the workers in the /ui/worker folder for easier debugging/development
+# Can be used with or without WATCH command
+make webworkers
+
+# With file watch enabled
+WATCH=1 make webworkers
+
 # Creates the 'wowsimcata' binary that can host the UI and run simulations natively (instead of with wasm).
 # Builds the UI and the compiles it into the binary so that you can host the sim as a server instead of wasm on the client.
 # It does this by first doing make dist/cata and then copying all those files to binary_dist/cata and loading all the files in that directory into its binary on compile.

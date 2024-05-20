@@ -1532,7 +1532,7 @@ export class Player<SpecType extends Spec> {
 			this.setSimpleCooldowns(
 				eventID,
 				Cooldowns.create({
-					hpPercentForDefensives: this.playerSpec.isTankSpec ? 0.35 : 0,
+					hpPercentForDefensives: this.playerSpec.isTankSpec ? 0.4 : 0,
 				}),
 			);
 			this.setBonusStats(eventID, new Stats());

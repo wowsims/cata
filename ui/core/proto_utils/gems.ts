@@ -165,7 +165,7 @@ export const REVERBERATING_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors
 export const BURNING_SHADOWSPIRIT_DIAMOND = MetaGemCondition.fromMinColors(68780, 'Requires at least 3 Red Gems.', 3, 0, 0);
 
 // WOTLK GEMS
-export const CHAOTIC_SKYFLARE_DIAMOND = MetaGemCondition.fromMinColors(41285, 'Requires at least 2 Blue Gems.', 0, 0, 2);
+export const CHAOTIC_SKYFLARE_DIAMOND = MetaGemCondition.fromMinColors(41285, 'Requires at least 3 Red Gems.', 3, 0, 0);
 export const DESTRUCTIVE_SKYFLARE_DIAMOND = MetaGemCondition.fromMinColors(41307, 'Requires at least 1 Red Gem, at least 1 Yellow Gem, and at least 1 Blue Gem.', 1, 1, 1);
 export const EMBER_SKYFLARE_DIAMOND = MetaGemCondition.fromMinColors(41333, 'Requires at least 3 Red Gems.', 3, 0, 0);
 export const ENIGMATIC_SKYFLARE_DIAMOND = MetaGemCondition.fromMinColors(41335, 'Requires at least 2 Red Gems and at least 1 Yellow Gem.', 2, 1, 0);
@@ -184,7 +184,7 @@ export const BEAMING_EARTHSIEGE_DIAMOND = MetaGemCondition.fromMinColors(41389, 
 export const BRACING_EARTHSIEGE_DIAMOND = MetaGemCondition.fromMinColors(41395, 'Requires at least 2 Red Gems and at least 1 Blue Gem.', 2, 0, 1);
 export const ETERNAL_EARTHSIEGE_DIAMOND = MetaGemCondition.fromMinColors(41396, 'Requires at least 2 Red Gems and at least 1 Blue Gem.', 2, 0, 1);
 export const POWERFUL_EARTHSIEGE_DIAMOND = MetaGemCondition.fromMinColors(41397, 'Requires at least 3 Blue Gems.', 0, 0, 3);
-export const RELENTLESS_EARTHSIEGE_DIAMOND = MetaGemCondition.fromMinColors(41398, 'Requires at least 1 Red Gem, at least 1 Yellow Gem, and at least 1 Blue Gem.', 1, 1, 1);
+export const RELENTLESS_EARTHSIEGE_DIAMOND = MetaGemCondition.fromMinColors(41398, 'Requires at least 3 Red Gems.', 3, 0, 0);
 export const THUNDERING_SKYFLARE_DIAMOND = MetaGemCondition.fromMinColors(41400, 'Requires at least 1 Red Gem, at least 1 Yellow Gem, and at least 1 Blue Gem.', 1, 1, 1);
 export const INSIGHTFUL_EARTHSIEGE_DIAMOND = MetaGemCondition.fromMinColors(41401, 'Requires at least 1 Red Gem, at least 1 Yellow Gem, and at least 1 Blue Gem.', 1, 1, 1);
 export const SWIFT_STARFLARE_DIAMOND = MetaGemCondition.fromMinColors(44076, 'Requires at least 2 Yellow Gems and at least 1 Red Gem.', 1, 2, 0);

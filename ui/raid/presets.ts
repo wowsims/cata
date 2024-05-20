@@ -7,6 +7,7 @@ import { FrostDeathKnightSimUI } from '../death_knight/frost/sim';
 import { UnholyDeathKnightSimUI } from '../death_knight/unholy/sim';
 import { BalanceDruidSimUI } from '../druid/balance/sim.js';
 import { FeralDruidSimUI } from '../druid/feral/sim.js';
+import { GuardianDruidSimUI } from '../druid/guardian/sim';
 import { RestorationDruidSimUI } from '../druid/restoration/sim.js';
 import { BeastMasteryHunterSimUI } from '../hunter/beast_mastery/sim';
 import { MarksmanshipHunterSimUI } from '../hunter/marksmanship/sim';
@@ -42,6 +43,7 @@ export const specSimFactories: Partial<Record<Spec, (parentElem: HTMLElement, pl
 	[Spec.SpecBalanceDruid]: (parentElem: HTMLElement, player: Player<any>) => new BalanceDruidSimUI(parentElem, player),
 	[Spec.SpecFeralDruid]: (parentElem: HTMLElement, player: Player<any>) => new FeralDruidSimUI(parentElem, player),
 	[Spec.SpecRestorationDruid]: (parentElem: HTMLElement, player: Player<any>) => new RestorationDruidSimUI(parentElem, player),
+	[Spec.SpecGuardianDruid]: (parentElem: HTMLElement, player: Player<any>) => new GuardianDruidSimUI(parentElem, player),
 	// Hunter
 	[Spec.SpecBeastMasteryHunter]: (parentElem: HTMLElement, player: Player<any>) => new BeastMasteryHunterSimUI(parentElem, player),
 	[Spec.SpecMarksmanshipHunter]: (parentElem: HTMLElement, player: Player<any>) => new MarksmanshipHunterSimUI(parentElem, player),

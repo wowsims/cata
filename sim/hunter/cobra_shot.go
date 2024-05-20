@@ -47,12 +47,13 @@ func (hunter *Hunter) registerCobraShotSpell() {
 				focus = float64(hunter.Talents.Termination) * 3
 			}
 			hunter.AddFocus(sim, focus, csMetrics)
-			if hunter.SerpentSting.Dot(target).IsActive() {
-				hunter.SerpentSting.Dot(target).Apply(sim) // Refresh to cause new total snapshot
-			}
+
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				if hunter.SerpentSting.Dot(target).IsActive() {
+					hunter.SerpentSting.Dot(target).Apply(sim) // Refresh to cause new total snapshot
+				}
 				spell.DealDamage(sim, result)
 			})
 

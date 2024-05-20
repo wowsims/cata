@@ -214,6 +214,7 @@ var frostResistanceRegex = regexp.MustCompile(`\+([0-9]+) Frost Resistance`)
 var natureResistanceRegex = regexp.MustCompile(`\+([0-9]+) Nature Resistance`)
 var shadowResistanceRegex = regexp.MustCompile(`\+([0-9]+) Shadow Resistance`)
 var bonusArmorRegex = regexp.MustCompile(`Has ([0-9]+) bonus armor`)
+var bonusArmorRegex2 = regexp.MustCompile(`([\d,\.]+) Bonus Armor`)
 
 func (item WowheadItemResponse) GetStats() Stats {
 	sp := float64(item.GetIntValue(spellPowerRegex)) + float64(item.GetIntValue(spellPowerRegex2))
@@ -356,11 +357,13 @@ func (item WowheadItemResponse) IsScalableArmorSlot() bool {
 
 func (item WowheadItemResponse) GetArmorValues() (int, int) {
 	armorValue := item.GetIntValue(armorRegex)
-	bonusArmorValue := item.GetIntValue(bonusArmorRegex)
+	bonusArmorValue1 := item.GetIntValue(bonusArmorRegex)
+	bonusArmorValue2 := item.GetIntValue(bonusArmorRegex2)
+	bonusArmorValue := bonusArmorValue1 + bonusArmorValue2
 
 	if item.IsScalableArmorSlot() {
-		armorValue = armorValue - bonusArmorValue
-	} else {
+		armorValue -= bonusArmorValue1
+	} else if bonusArmorValue2 == 0 {
 		bonusArmorValue = armorValue
 		armorValue = 0
 	}
