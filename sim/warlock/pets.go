@@ -131,7 +131,7 @@ func (warlock *Warlock) registerPetAbilities() {
 	warlock.Felguard.registerLegionStrikeSpell()
 	warlock.Felguard.registerFelstormSpell()
 
-	warlock.Imp.registerFireboltSpell()
+	warlock.Imp.registerFireboltSpell(warlock)
 
 	warlock.Succubus.registerLashOfPainSpell()
 }
@@ -311,7 +311,7 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 	}))
 }
 
-func (pet *WarlockPet) registerFireboltSpell() {
+func (pet *WarlockPet) registerFireboltSpell(warlock *Warlock) {
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 3110},
 		SpellSchool:    core.SpellSchoolFire,
@@ -343,6 +343,11 @@ func (pet *WarlockPet) registerFireboltSpell() {
 			baseDamage += 0.657 * spell.SpellPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if warlock.Talents.BurningEmbers > 0 && result.Landed() {
+				dot := warlock.BurningEmbers.Dot(result.Target)
+				dot.SnapshotBaseDamage += result.Damage * 0.25 * float64(warlock.Talents.BurningEmbers)
+				dot.Apply(sim)
+			}
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 			})

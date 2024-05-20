@@ -31,6 +31,7 @@ type Warlock struct {
 	Seed                 *core.Spell
 	SeedDamageTracker    []float64
 	FelFlame             *core.Spell
+	BurningEmbers        *core.Spell
 
 	ShadowEmbraceAuras core.AuraArray
 	Metamorphosis      *core.Spell
@@ -197,7 +198,6 @@ const (
 	WarlockSpellHandOfGuldan
 	WarlockSpellImmolationAura
 	WarlockSpellSearingPain
-	WarlockSpellBurningEmbers
 	WarlockSpellSummonDoomguard
 	WarlockSpellDoomguardDoomBolt
 	WarlockSpellSummonFelguard
@@ -246,8 +246,6 @@ const Coefficient_Immolate float64 = 0.692
 const Coefficient_ImmolateDot float64 = 0.43900001049
 const Coefficient_SeedExplosion float64 = 2.113
 const Coefficient_SeedDot float64 = 0.3024
-const Coefficient_BurningEmbers_1 float64 = 0.0734
-const Coefficient_BurningEmbers_2 float64 = 0.147
 const Coefficient_ChaosBolt float64 = 1.547
 const Coefficient_Infernal float64 = 0.485
 const Coefficient_ShadowBolt float64 = 0.62

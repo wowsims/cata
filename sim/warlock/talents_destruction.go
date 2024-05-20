@@ -140,88 +140,60 @@ func (warlock *Warlock) registerBackdraft() {
 		}))
 }
 
+// burning embers triggers before the spell lands for imp, when it lands for soul fire
+// not affected by improved soul fire
 func (warlock *Warlock) registerBurningEmbers() {
 	if warlock.Talents.BurningEmbers <= 0 {
 		return
 	}
 
-	damageGainPerHit := 0.25 * float64(warlock.Talents.BurningEmbers)
-	spellPowerMultiplier := 0.7 * float64(warlock.Talents.BurningEmbers)
-	additionalDamage := warlock.CalcScalingSpellDmg(
-		[]float64{0.0, Coefficient_BurningEmbers_1, Coefficient_BurningEmbers_2}[warlock.Talents.BurningEmbers])
+	ticks := int32(7)
+	spMult := (0.7 * float64(warlock.Talents.BurningEmbers)) / float64(ticks)
+	baseDmg := warlock.CalcScalingSpellDmg(0.07349999994*float64(warlock.Talents.BurningEmbers)) / float64(ticks)
 
-	var burningEmberTicks int32 = 7
-
-	burningEmbers := warlock.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 85112},
-		SpellSchool:    core.SpellSchoolFire,
-		ProcMask:       core.ProcMaskSpellDamage,
-		ClassSpellMask: WarlockSpellBurningEmbers,
+	warlock.BurningEmbers = warlock.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 85421},
+		SpellSchool: core.SpellSchoolFire,
+		ProcMask:    core.ProcMaskSpellDamage, // TODO: even the imp hits can proc some trinkets, though not most
+		Flags:       core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1,
-		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Burning Embers",
-			},
-			NumberOfTicks: burningEmberTicks,
+			Aura:          core.Aura{Label: "Burning Embers"},
+			NumberOfTicks: ticks,
 			TickLength:    1 * time.Second,
-			//?AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				if !dot.IsActive() {
+					dot.SnapshotBaseDamage = 0.0 // ensure we don't use old dot data
+				}
+
+				// damage is capped to a limit that depends on SP; the spell will not "remember" the damage from
+				// previous hits even if our SP increases so it's safe to do this here
+				dot.SnapshotBaseDamage = min(baseDmg+spMult*dot.Spell.SpellPower(), dot.SnapshotBaseDamage)
 			},
+
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Apply(sim)
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
-		},
 	})
 
-	//TODO: Can't find a good way to duplicate this effect across two units, warlock and imp
-	core.MakeProcTriggerAura(&warlock.Imp.Unit, core.ProcTrigger{
-		Name:           "Burning Embers",
-		Callback:       core.CallbackOnSpellHitDealt,
-		ClassSpellMask: WarlockSpellImpFireBolt,
-		Outcome:        core.OutcomeLanded,
-
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			dot := burningEmbers.Dot(result.Target)
-			// Max damage is based on the formula which changes per talent point where x is based off of:
-			//1: [(Spell power * 0.7 + x) / 7]
-			//2: [(Spell power * 1.4 + x) / 7]
-			maxDamagePerTick := ((dot.Spell.SpellPower() * spellPowerMultiplier) + additionalDamage) / float64(burningEmberTicks)
-
-			// The damage per tick gain is then based off the damage of the Imp Firebolt or Soulfire that just hit
-			dot.SnapshotBaseDamage = min(dot.SnapshotBaseDamage+result.Damage/float64(burningEmberTicks)*damageGainPerHit, maxDamagePerTick)
-			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[result.Target.UnitIndex], true)
-			burningEmbers.Cast(sim, result.Target)
+	// we don't do imp's firebolt portion of this here, because it applies _before_ the spell actually hits, and
+	// unfortunately the OnCastComplete hook does not provide the result of the cast
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label:    "Burning Embers Hidden Aura",
+		ActionID: core.ActionID{SpellID: 85112},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ClassSpellMask == WarlockSpellSoulFire && result.Landed() {
+				dot := warlock.BurningEmbers.Dot(result.Target)
+				dot.SnapshotBaseDamage += result.Damage * 0.25 * float64(warlock.Talents.BurningEmbers)
+				dot.Apply(sim)
+			}
 		},
-	})
-
-	core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
-		Name:           "Burning Embers",
-		Callback:       core.CallbackOnSpellHitDealt,
-		ClassSpellMask: WarlockSpellSoulFire,
-		Outcome:        core.OutcomeLanded,
-
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			dot := burningEmbers.Dot(result.Target)
-			// Max damage is based on the formula which changes per talent point where x is based off of:
-			//1: [(Spell power * 0.7 + x) / 7]
-			//2: [(Spell power * 1.4 + x) / 7]
-			maxDamagePerTick := ((dot.Spell.SpellPower() * spellPowerMultiplier) + additionalDamage) / 7
-
-			// The damage per tick gain is then based off the damage of the Imp Firebolt or Soulfire that just hit
-			dot.SnapshotBaseDamage = min(dot.SnapshotBaseDamage+result.Damage*damageGainPerHit, maxDamagePerTick)
-			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[result.Target.UnitIndex], true)
-			burningEmbers.Cast(sim, result.Target)
-		},
-	})
+	}))
 }
 
 func (warlock *Warlock) registerSoulLeech() {
