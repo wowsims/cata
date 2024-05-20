@@ -1,0 +1,7 @@
+{
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"lib": ["es2021", "webworker"],
+		"typeRoots": ["../../node_modules/@types", "."]
+	}
+}
