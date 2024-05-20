@@ -10,6 +10,8 @@ export enum SimRequest {
 	raidSimAsync = 'raidSimAsync',
 	statWeights = 'statWeights',
 	statWeightsAsync = 'statWeightsAsync',
+	raidSimRequestSplit = 'raidSimRequestSplit',
+	raidSimResultCombination = 'raidSimResultCombination',
 }
 
 /**

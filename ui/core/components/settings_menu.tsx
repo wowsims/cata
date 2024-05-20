@@ -28,6 +28,7 @@ export class SettingsMenu extends BaseModal {
 		const showQuickSwap = ref<HTMLDivElement>();
 		const useConcurrentWorkersWrap = ref<HTMLDivElement>()
 		const useConcurrentWorkers = ref<HTMLDivElement>();
+		const useConcurrentWorkersNote = ref<HTMLDivElement>();
 
 		const body = (
 			<div>
@@ -48,9 +49,7 @@ export class SettingsMenu extends BaseModal {
 				<div ref={showQuickSwap} className="show-quick-swap-picker w-50 pe-2"></div>
 				<div ref={useConcurrentWorkersWrap} className="use-concurrency-container w-50 pe-2">
 					<div ref={useConcurrentWorkers} className="use-concurrent-workers-picker"></div>
-					<div className="form-text">
-						<span>Note: This can cause significant memory usage when using high core counts! If sim doesn't finish due to RAM running out use a lower number.</span>
-					</div>
+					<div ref={useConcurrentWorkersNote} className="form-text" hidden></div>
 				</div>
 			</div>
 		);
@@ -172,7 +171,8 @@ export class SettingsMenu extends BaseModal {
 				values.push({value: i, name: i.toString()});
 			}
 
-			const workerPicker = new EnumPicker<Sim>(useConcurrentWorkers.value, this.simUI.sim, {
+			new EnumPicker<Sim>(useConcurrentWorkers.value, this.simUI.sim, {
+				id: 'simui-concurrent-workers-picker',
 				label: 'Use Multiple CPU Cores',
 				labelTooltip: 'Use web workers to spread sim workload over multiple CPU cores.',
 				changedEvent: (sim: Sim) => sim.useConcurencyChangeEmitter,
@@ -180,6 +180,12 @@ export class SettingsMenu extends BaseModal {
 				setValue: (eventID, sim, newValue) => sim.setUseConcurrency(eventID, newValue),
 				values: values,
 			});
+
+			if (useConcurrentWorkersNote.value && navigator.userAgent.toLowerCase().includes('firefox')) {
+				const el = useConcurrentWorkersNote.value;
+				el.hidden = false;
+				el.textContent = `Too many workers can cause significant memory usage! If sim doesn't finish due to RAM running out use a lower number.`;
+			}
 
 			// Hide if not running wasm. Local sim has native threading.
 			this.simUI.sim.isWasm().then(isWasm => {

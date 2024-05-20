@@ -101,7 +101,7 @@ export class WorkerPool {
 		// Add handler for the progress events
 		worker.addPromiseFunc(this.getProgressName(id), this.newProgressHandler(id, worker, onProgress), noop);
 
-		console.log(`Running raid sim on worker ${worker.id}`);
+		console.log(`Running raid sim on worker ${worker.workerId}`);
 
 		// Now start the async sim
 		const resultData = await worker.doApiCall(SimRequest.raidSimAsync, RaidSimRequest.toBinary(request), id);
@@ -115,12 +115,12 @@ export class WorkerPool {
 	}
 
 	async raidSimRequestSplit(request: RaidSimRequestSplitRequest): Promise<RaidSimRequestSplitResult> {
-		const result = await this.makeApiCall('raidSimRequestSplit', RaidSimRequestSplitRequest.toBinary(request));
+		const result = await this.makeApiCall(SimRequest.raidSimRequestSplit, RaidSimRequestSplitRequest.toBinary(request));
 		return RaidSimRequestSplitResult.fromBinary(result);
 	}
 
 	async raidSimResultCombination(request: RaidSimResultCombinationRequest): Promise<RaidSimResultCombinationResult> {
-		const result = await this.makeApiCall('raidSimResultCombination', RaidSimResultCombinationRequest.toBinary(request));
+		const result = await this.makeApiCall(SimRequest.raidSimResultCombination, RaidSimResultCombinationRequest.toBinary(request));
 		return RaidSimResultCombinationResult.fromBinary(result);
 	}
 
@@ -143,7 +143,7 @@ export class WorkerPool {
 }
 
 class SimWorker {
-	readonly id: number;
+	readonly workerId: number;
 	numTasksRunning: number;
 	private taskIdsToPromiseFuncs: Record<string, [(result: any) => void, (error: any) => void]>;
 	private eventIdsToPromiseFuncs: Record<string, [(result: any) => void, (error: any) => void]>;
@@ -152,7 +152,7 @@ class SimWorker {
 	private wasmWorker: boolean;
 
 	constructor(id: number) {
-		this.id = id;
+		this.workerId = id;
 		this.numTasksRunning = 0;
 		this.taskIdsToPromiseFuncs = {};
 		this.eventIdsToPromiseFuncs = {};
@@ -168,19 +168,33 @@ class SimWorker {
 			const { id, msg, outputData } = data;
 			switch (msg) {
 				case 'ready':
-					this.postMessage({ msg: 'setID', id: '1' });
+					this.wasmWorker = !!outputData && !!outputData[0];
+					this.postMessage({ msg: 'setID', id: this.workerId.toString() });
 					resolveReady!();
 					break;
 				case 'idConfirm':
 					break;
 				default:
-					if (!this.taskIdsToPromiseFuncs[id]) {
-						console.warn('Unrecognized result id: ', id);
+					let promiseFuncs: [(result: any) => void, (error: any) => void] | undefined;
+
+					if (this.taskIdsToPromiseFuncs[id]) {
+						promiseFuncs = this.taskIdsToPromiseFuncs[id];
+						delete this.taskIdsToPromiseFuncs[id];
+						this.numTasksRunning--;
+						if (this.numTasksRunning < 0) {
+							this.numTasksRunning = 0;
+							console.error(`Worker ${this.workerId} API response ${id}:${msg} caused numTasksRunning to become negative!`);
+						}
+					} else if (this.eventIdsToPromiseFuncs[id]) {
+						promiseFuncs = this.eventIdsToPromiseFuncs[id];
+						delete this.eventIdsToPromiseFuncs[id];
+					}
+
+					if (!promiseFuncs) {
+						console.warn(`Unrecognized result id ${id} for msg ${msg}`);
 						return;
 					}
-					const promiseFuncs = this.taskIdsToPromiseFuncs[id];
-					delete this.taskIdsToPromiseFuncs[id];
-					this.numTasksRunning--;
+
 					promiseFuncs[0](outputData);
 			}
 		});
