@@ -417,7 +417,7 @@ export class BulkTab extends SimTab {
 			header: { title: 'Items' },
 		});
 
-		itemsBlock.bodyElement.classList.add('gear-picker-root');
+		itemsBlock.bodyElement.classList.add('gear-picker-root', 'gear-picker-root-bulk');
 
 		const noticeWorkInProgress = document.createElement('div');
 		noticeWorkInProgress.classList.add('bulk-items-text-line');
@@ -456,7 +456,7 @@ export class BulkTab extends SimTab {
 		});
 
 		resultsBlock.rootElem.hidden = true;
-		resultsBlock.bodyElement.classList.add('gear-picker-root', 'tab-panel-col');
+		resultsBlock.bodyElement.classList.add('gear-picker-root', 'gear-picker-root-bulk', 'tab-panel-col');
 
 		this.simUI.sim.bulkSimStartEmitter.on(() => {
 			resultsBlock.rootElem.hidden = true;
@@ -561,6 +561,7 @@ export class BulkTab extends SimTab {
 
 		const searchResults = document.createElement('ul');
 		searchResults.classList.add('batch-search-results');
+		searchResults.classList.add('hide');
 
 		let allItems = Array<UIItem>();
 
@@ -643,11 +644,13 @@ export class BulkTab extends SimTab {
 					return canEquipItem(item, this.simUI.player.getPlayerSpec(), undefined);
 				});
 				searchText.style.display = 'block';
+				searchResults.classList.remove('hide');
 				searchText.focus();
 			} else {
 				searchButton.innerHTML = baseSearchHTML;
 				searchText.style.display = 'none';
 				searchResults.innerHTML = '';
+				searchResults.classList.add('hide');
 			}
 		});
 		settingsBlock.bodyElement.appendChild(searchButton);
@@ -802,6 +805,7 @@ export class BulkTab extends SimTab {
 		defaultGemDiv.appendChild(gemSocketsDiv);
 
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
+			id: 'bulk-fast-mode',
 			label: 'Fast Mode',
 			labelTooltip: 'Fast mode reduces accuracy but will run faster.',
 			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
@@ -811,6 +815,7 @@ export class BulkTab extends SimTab {
 			},
 		});
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
+			id: 'bulk-combinations',
 			label: 'Combinations',
 			labelTooltip:
 				'When checked bulk simulator will create all possible combinations of the items. When disabled trinkets and rings will still run all combinations becausee they have two slots to fill each.',
@@ -821,6 +826,7 @@ export class BulkTab extends SimTab {
 			},
 		});
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
+			id: 'bulk-auto-enchant',
 			label: 'Auto Enchant',
 			labelTooltip: 'When checked bulk simulator apply the current enchant for a slot to each replacement item it can.',
 			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
@@ -835,6 +841,7 @@ export class BulkTab extends SimTab {
 			},
 		});
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
+			id: 'bulk-auto-gem',
 			label: 'Auto Gem',
 			labelTooltip: 'When checked bulk simulator will fill any un-filled gem sockets with default gems.',
 			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
@@ -850,6 +857,7 @@ export class BulkTab extends SimTab {
 		});
 
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
+			id: 'bulk-sim-talents',
 			label: 'Sim Talents',
 			labelTooltip: 'When checked bulk simulator will sim chosen talent setups. Warning, it might cause the bulk sim to run for a lot longer',
 			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
@@ -901,7 +909,7 @@ class GemSelectorModal extends BaseModal {
 	private onSelect: (itemData: ItemData<UIGem>) => void;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, socketColor: GemColor, onSelect: (itemData: ItemData<UIGem>) => void) {
-		super(parent, 'selector-modal', {});
+		super(parent, 'selector-modal', { disposeOnClose: false });
 
 		this.simUI = simUI;
 		this.onSelect = onSelect;

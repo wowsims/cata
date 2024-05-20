@@ -36,14 +36,14 @@ var DefaultTargetProto = &proto.Target{
 	Level: CharacterLevel + 3,
 	Stats: stats.Stats{
 		stats.Armor:       11977,
-		stats.AttackPower: 320,
+		stats.AttackPower: 805,
 	}.ToFloatArray(),
-	MobType: proto.MobType_MobTypeDemon,
+	MobType: proto.MobType_MobTypeGiant,
 
-	SwingSpeed:    2,
-	MinBaseDamage: 4192.05,
+	SwingSpeed:    1.5,
+	MinBaseDamage: 65000,
 	ParryHaste:    true,
-	DamageSpread:  0.3333,
+	DamageSpread:  0,
 }
 
 var FullRaidBuffs = &proto.RaidBuffs{

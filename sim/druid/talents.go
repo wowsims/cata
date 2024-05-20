@@ -55,8 +55,11 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyNaturesMajesty()
 	druid.applyMoonglow()
 	druid.applyGenesis()
+	druid.applyEuphoria()
+	druid.applyShootingStars()
 	druid.applyGaleWinds()
 	druid.applyEarthAndMoon()
+	druid.applyMoonkinForm()
 	// if druid.Talents.PrimalPrecision > 0 {
 	// 	druid.AddStat(stats.Expertise, 5.0*float64(druid.Talents.PrimalPrecision)*core.ExpertisePerQuarterPercentReduction)
 	// }
@@ -181,7 +184,7 @@ func (druid *Druid) applyMoonglow() {
 func (druid *Druid) applyGenesis() {
 	if druid.Talents.Genesis > 0 {
 		druid.AddStaticMod(core.SpellModConfig{
-			ClassMask: DruidSpellMoonfire | DruidSpellSunfire | DruidSpellInsectSwarm,
+			ClassMask: DruidSpellMoonfireDoT | DruidSpellSunfireDoT | DruidSpellInsectSwarm,
 			IntValue:  int64(1 * druid.Talents.Genesis),
 			Kind:      core.SpellMod_DotNumberOfTicks_Flat,
 		})
@@ -189,6 +192,108 @@ func (druid *Druid) applyGenesis() {
 		// TODO: periodic healing spells
 		// TODO: swiftmend
 	}
+}
+
+func (druid *Druid) applyEuphoria() {
+	if druid.Talents.Euphoria == 0 {
+		return
+	}
+
+	euphoriaSpellId := []int32{0, 81061, 81062}[druid.Talents.Euphoria]
+	euphoriaProcChancePct := []float64{0, 0.12, 0.24}[druid.Talents.Euphoria]
+	euphoriaManaGainPct := []float64{0, 0.08, 0.16}[druid.Talents.Euphoria]
+
+	// Mana return
+	manaMetrics := druid.NewManaMetrics(core.ActionID{
+		SpellID: euphoriaSpellId,
+	})
+
+	if druid.HasEclipseBar() {
+		druid.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
+			if gained {
+				druid.AddMana(sim, druid.MaxMana()*euphoriaManaGainPct, manaMetrics)
+			}
+		})
+	}
+
+	// Double eclipse energy
+	euphoriaDummyAura := druid.GetOrRegisterAura(core.Aura{
+		Label:    "Euphoria Dummy Aura",
+		ActionID: core.ActionID{SpellID: euphoriaSpellId},
+		Duration: core.NeverExpires,
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+
+			aura.Deactivate(sim)
+		},
+	})
+
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:           "Euphoria",
+		Callback:       core.CallbackOnApplyEffects,
+		ProcChance:     euphoriaProcChancePct,
+		ClassSpellMask: DruidSpellWrath | DruidSpellStarfire,
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			euphoriaDummyAura.Activate(sim)
+		},
+	})
+}
+
+func (druid *Druid) applyMoonkinForm() {
+	if druid.Talents.MoonkinForm {
+		druid.AddStaticMod(core.SpellModConfig{
+			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
+			ClassMask:  DruidSpellsAll,
+			FloatValue: 0.1,
+			Kind:       core.SpellMod_DamageDone_Pct,
+		})
+	}
+}
+
+func (druid *Druid) applyShootingStars() {
+	if druid.Talents.ShootingStars == 0 {
+		return
+	}
+
+	ssCastTimeMod := druid.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  DruidSpellStarsurge,
+		Kind:       core.SpellMod_CastTime_Pct,
+		FloatValue: -1,
+	})
+
+	ssAuraSpellId := []int32{0, 93398, 93399}[druid.Talents.ShootingStars]
+
+	ssAura := druid.RegisterAura(core.Aura{
+		Label:    "Shooting Stars Proc",
+		ActionID: core.ActionID{SpellID: ssAuraSpellId},
+		Duration: time.Second * 12,
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask != DruidSpellStarsurge {
+				return
+			}
+
+			ssCastTimeMod.Deactivate()
+			aura.Deactivate(sim)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			ssCastTimeMod.Activate()
+			druid.Starsurge.CD.Reset()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			ssCastTimeMod.Deactivate()
+		},
+	})
+
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:           "Shooting Stars (Talent)",
+		Callback:       core.CallbackOnPeriodicDamageDealt,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     0.02 * float64(druid.Talents.ShootingStars),
+		ICD:            time.Second * 6,
+		ClassSpellMask: DruidSpellInsectSwarm | DruidSpellMoonfireDoT,
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			ssAura.Activate(sim)
+		},
+	})
 }
 
 func (druid *Druid) applyGaleWinds() {
@@ -419,18 +524,18 @@ func (druid *Druid) applyStampede() {
 		return
 	}
 
-	bearHasteMod := 1.0 + 0.15 * float64(druid.Talents.Stampede)
+	bearHasteMod := 1.0 + 0.15*float64(druid.Talents.Stampede)
 
 	druid.StampedeBearAura = druid.RegisterAura(core.Aura{
 		Label:    "Stampede (Bear)",
 		ActionID: core.ActionID{SpellID: 81015 + druid.Talents.Stampede},
-		Duration: time.Second*8,
+		Duration: time.Second * 8,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.MultiplyAttackSpeed(sim, bearHasteMod)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.MultiplyAttackSpeed(sim, 1.0 / bearHasteMod)
+			druid.MultiplyAttackSpeed(sim, 1.0/bearHasteMod)
 		},
 	})
 
@@ -443,7 +548,7 @@ func (druid *Druid) applyStampede() {
 	druid.StampedeCatAura = druid.RegisterAura(core.Aura{
 		Label:    "Stampede (Cat)",
 		ActionID: core.ActionID{SpellID: 81020 + druid.Talents.Stampede},
-		Duration: time.Second*10,
+		Duration: time.Second * 10,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.Ravage.CostMultiplier -= ravageCostMod
@@ -602,7 +707,7 @@ func (druid *Druid) applyLotp() {
 	manaMetrics := druid.NewManaMetrics(actionID)
 	healthMetrics := druid.NewHealthMetrics(actionID)
 	manaRestore := 0.08
-	healthRestore := 0.05
+	healthRestore := 0.04 // Tooltip says 5%, but only healing for 4% in-game
 
 	icd := core.Cooldown{
 		Timer:    druid.NewTimer(),

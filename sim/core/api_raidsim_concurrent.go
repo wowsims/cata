@@ -14,7 +14,8 @@ import (
 )
 
 type raidSimResultCombiner struct {
-	combined *proto.RaidSimResult
+	Debug    bool
+	Combined *proto.RaidSimResult
 }
 
 func (rsrc *raidSimResultCombiner) newDistMetrics() *proto.DistributionMetrics {
@@ -214,11 +215,11 @@ func (rsrc *raidSimResultCombiner) combineUnitMetrics(base *proto.UnitMetrics, a
 }
 
 func (rsrc *raidSimResultCombiner) addResult(result *proto.RaidSimResult, isLast bool, weight float64) {
-	rsrc.combineDistMetrics(rsrc.combined.RaidMetrics.Dps, result.RaidMetrics.Dps, isLast, weight)
-	rsrc.combineDistMetrics(rsrc.combined.RaidMetrics.Hps, result.RaidMetrics.Hps, isLast, weight)
+	rsrc.combineDistMetrics(rsrc.Combined.RaidMetrics.Dps, result.RaidMetrics.Dps, isLast, weight)
+	rsrc.combineDistMetrics(rsrc.Combined.RaidMetrics.Hps, result.RaidMetrics.Hps, isLast, weight)
 
 	for partyIdx, party := range result.RaidMetrics.Parties {
-		baseParty := rsrc.combined.RaidMetrics.Parties[partyIdx]
+		baseParty := rsrc.Combined.RaidMetrics.Parties[partyIdx]
 		rsrc.combineDistMetrics(baseParty.Dps, party.Dps, isLast, weight)
 		rsrc.combineDistMetrics(baseParty.Hps, party.Hps, isLast, weight)
 		for playerIdx, player := range party.Players {
@@ -227,10 +228,14 @@ func (rsrc *raidSimResultCombiner) addResult(result *proto.RaidSimResult, isLast
 	}
 
 	for i, tar := range result.EncounterMetrics.Targets {
-		rsrc.combineUnitMetrics(rsrc.combined.EncounterMetrics.Targets[i], tar, isLast, weight)
+		rsrc.combineUnitMetrics(rsrc.Combined.EncounterMetrics.Targets[i], tar, isLast, weight)
 	}
 
-	rsrc.combined.AvgIterationDuration += result.AvgIterationDuration * weight
+	rsrc.Combined.AvgIterationDuration += result.AvgIterationDuration * weight
+
+	if rsrc.Debug {
+		rsrc.Combined.Logs += "-SIMSTART-\n" + result.Logs
+	}
 }
 
 func (rsrc *raidSimResultCombiner) setBaseResult(baseRsr *proto.RaidSimResult) {
@@ -243,8 +248,11 @@ func (rsrc *raidSimResultCombiner) setBaseResult(baseRsr *proto.RaidSimResult) {
 		EncounterMetrics: &proto.EncounterMetrics{
 			Targets: make([]*proto.UnitMetrics, len(baseRsr.EncounterMetrics.Targets)),
 		},
-		Logs:                   baseRsr.Logs,
 		FirstIterationDuration: baseRsr.FirstIterationDuration,
+	}
+
+	if !rsrc.Debug {
+		newRsr.Logs = baseRsr.Logs
 	}
 
 	for i, party := range baseRsr.RaidMetrics.Parties {
@@ -255,7 +263,7 @@ func (rsrc *raidSimResultCombiner) setBaseResult(baseRsr *proto.RaidSimResult) {
 		newRsr.EncounterMetrics.Targets[i] = rsrc.newUnitMetrics(tar)
 	}
 
-	rsrc.combined = newRsr
+	rsrc.Combined = newRsr
 }
 
 type concurrentSimData struct {
@@ -267,6 +275,8 @@ type concurrentSimData struct {
 	HpsValues []float64
 
 	FinalResults []*proto.RaidSimResult
+
+	Debug bool
 }
 
 func (csd *concurrentSimData) GetIterationsDone() int32 {
@@ -311,14 +321,14 @@ func (csd *concurrentSimData) GetCombinedFinalResult() *proto.RaidSimResult {
 		return csd.FinalResults[0]
 	}
 
-	rsrc := raidSimResultCombiner{}
+	rsrc := raidSimResultCombiner{Debug: csd.Debug}
 	rsrc.setBaseResult(csd.FinalResults[0])
 	for i, result := range csd.FinalResults {
 		resultWeight := float64(csd.IterationsDone[i]) / float64(csd.IterationsTotal)
 		rsrc.addResult(result, i == len(csd.FinalResults)-1, resultWeight)
 	}
 
-	return rsrc.combined
+	return rsrc.Combined
 }
 
 // Run sim on multiple threads concurrently by splitting interations over multiple sims, transparently combining results into the progress channel.
@@ -341,6 +351,7 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 
 	substituteChannels := make([]chan *proto.ProgressMetrics, concurrency)
 	substituteCases := make([]reflect.SelectCase, concurrency)
+	quitChannels := make([]chan bool, concurrency)
 	running := concurrency
 	csd := concurrentSimData{
 		Concurrency:     int32(concurrency),
@@ -349,11 +360,13 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 		DpsValues:       make([]float64, concurrency),
 		HpsValues:       make([]float64, concurrency),
 		FinalResults:    make([]*proto.RaidSimResult, concurrency),
+		Debug:           request.SimOptions.Debug,
 	}
 
 	for i := 0; i < concurrency; i++ {
 		substituteChannels[i] = make(chan *proto.ProgressMetrics, cap(progress))
 		substituteCases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(substituteChannels[i])}
+		quitChannels[i] = make(chan bool)
 	}
 
 	if !request.SimOptions.IsTest {
@@ -363,6 +376,11 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 	go func() {
 		defer func() {
 			close(progress)
+			// Send quit signals to threads in case we returned due to an error.
+			for _, quitChan := range quitChannels {
+				quitChan <- true
+				close(quitChan)
+			}
 		}()
 
 		nextStartSeed := request.SimOptions.RandomSeed // Sims increment their seed each iteration.
@@ -380,13 +398,14 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 			requestCopy.SimOptions.RandomSeed = nextStartSeed
 			nextStartSeed += int64(requestCopy.SimOptions.Iterations)
 
-			go RunSim(requestCopy, substituteChannels[i])
+			go RunSim(requestCopy, substituteChannels[i], quitChannels[i])
 
 			// Wait for first message to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
 			msg := <-substituteChannels[i]
 			// First message may be due to an immediate error, otherwise it can be ignored.
 			if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
 				progress <- msg
+				log.Printf("Thread %d had an error. Cancelling all sims!", i)
 				return
 			}
 		}
@@ -404,7 +423,7 @@ func RunConcurrentRaidSimAsync(request *proto.RaidSimRequest, progress chan *pro
 			if csd.UpdateProgress(i, msg) {
 				if msg.FinalRaidResult != nil && msg.FinalRaidResult.ErrorResult != "" {
 					progress <- msg
-					// TODO: cancel still running routines on error?
+					log.Printf("Thread %d had an error. Cancelling all sims!", i)
 					return
 				}
 				substituteCases[i].Chan = reflect.ValueOf(nil)

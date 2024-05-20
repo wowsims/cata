@@ -103,18 +103,18 @@ type EncounterCombo struct {
 	Encounter *proto.Encounter
 }
 type SettingsCombos struct {
-	Class              proto.Class
-	Races              []proto.Race
-	GearSets           []GearSetCombo
-	TalentSets         []TalentsCombo
-	SpecOptions        []SpecOptionsCombo
-	Rotations          []RotationCombo
-	Buffs              []BuffsCombo
-	Encounters         []EncounterCombo
-	SimOptions         *proto.SimOptions
-	IsHealer           bool
-	StartingDistances  []float64
-	Cooldowns          *proto.Cooldowns
+	Class             proto.Class
+	Races             []proto.Race
+	GearSets          []GearSetCombo
+	TalentSets        []TalentsCombo
+	SpecOptions       []SpecOptionsCombo
+	Rotations         []RotationCombo
+	Buffs             []BuffsCombo
+	Encounters        []EncounterCombo
+	SimOptions        *proto.SimOptions
+	IsHealer          bool
+	StartingDistances []float64
+	Cooldowns         *proto.Cooldowns
 }
 
 func (combos *SettingsCombos) NumTests() int {
@@ -457,7 +457,7 @@ type CharacterSuiteConfig struct {
 	StatsToWeigh    []proto.Stat
 	EPReferenceStat proto.Stat
 
-	Cooldowns          *proto.Cooldowns
+	Cooldowns *proto.Cooldowns
 }
 
 func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator {
@@ -533,11 +533,11 @@ func FullCharacterTestSuiteGenerator(config CharacterSuiteConfig) TestGenerator 
 							Consumes: config.Consumes,
 						},
 					},
-					IsHealer:           config.IsHealer,
-					Encounters:         MakeDefaultEncounterCombos(),
-					SimOptions:         DefaultSimTestOptions,
-					Cooldowns:          config.Cooldowns,
-					StartingDistances:  allStartingDistances,
+					IsHealer:          config.IsHealer,
+					Encounters:        MakeDefaultEncounterCombos(),
+					SimOptions:        DefaultSimTestOptions,
+					Cooldowns:         config.Cooldowns,
+					StartingDistances: allStartingDistances,
 				},
 			},
 			{

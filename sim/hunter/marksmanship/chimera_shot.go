@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/hunter"
 )
 
@@ -32,7 +31,7 @@ func (mmHunter *MarksmanshipHunter) registerChimeraShotSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    mmHunter.NewTimer(),
-				Duration: time.Second*10 - core.TernaryDuration(mmHunter.HasPrimeGlyph(proto.HunterPrimeGlyph_GlyphOfChimeraShot), time.Second*1, 0),
+				Duration: time.Second * 10,
 			},
 		},
 

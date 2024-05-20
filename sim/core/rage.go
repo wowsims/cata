@@ -7,7 +7,6 @@ import (
 )
 
 const MaxRage = 100.0
-const RageFactor = 453.3
 const ThreatPerRageGained = 5
 
 type OnRageGainCB func(sim *Simulation, spell *Spell, result *SpellResult, rage float64) float64
@@ -103,8 +102,14 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 				return
 			}
 
-			// TODO: Figure out the new health-based damage taken rage formula
-			generatedRage := result.Damage * 2.5 / RageFactor
+			// Formula taken from simc and verified using in-game
+			// measurements. The in-game measurements agree closely for
+			// incoming melee attacks but not for spells, so more work is
+			// required to determine whether spells use a different formula or
+			// whether Beta is simply bugged for spell Rage calculations. Note
+			// that the below formula delivers full Rage even on missed
+			// attacks! This is intentional and matches in-game behavior.
+			generatedRage := result.PreOutcomeDamage / result.ResistanceMultiplier * 18.92 / unit.MaxHealth()
 
 			if options.OnHitTakenRageGain != nil {
 				generatedRage = options.OnHitTakenRageGain(sim, spell, result, generatedRage)
@@ -192,7 +197,7 @@ func (rb *rageBar) doneIteration() {
 		if resourceMetrics.ActionID.SameActionIgnoreTag(ActionID{OtherID: proto.OtherAction_OtherActionRefund}) {
 			continue
 		}
-		if resourceMetrics.ActualGain <= 0 {
+		if resourceMetrics.ActualGainForCurrentIteration() <= 0 {
 			continue
 		}
 

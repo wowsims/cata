@@ -33,7 +33,7 @@ export const APL_ROTATION_AOE = PresetUtils.makePresetAPLRotation('APL AoE', Aoe
 
 export const DefaultRotation = FeralDruidRotation.create({
 	rotationType: FeralDruid_Rotation_AplType.SingleTarget,
-	bearWeaveType: FeralDruid_Rotation_BearweaveType.None,
+	bearWeave: true,
 	minCombosForRip: 5,
 	minCombosForBite: 5,
 	useRake: true,
@@ -41,18 +41,27 @@ export const DefaultRotation = FeralDruidRotation.create({
 	mangleSpam: false,
 	biteModeType: FeralDruid_Rotation_BiteModeType.Emperical,
 	biteTime: 11.0,
-	powerbear: false,
 	minRoarOffset: 29.0,
 	ripLeeway: 1.0,
 	maintainFaerieFire: true,
-	snekWeave: false,
-	manualParams: true,
+	snekWeave: true,
+	manualParams: false,
 	biteDuringExecute: true,
 	allowAoeBerserk: false,
 	meleeWeave: true,
 });
 
-export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFeralDruid, DefaultRotation);
+export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Single Target Default', Spec.SpecFeralDruid, DefaultRotation);
+
+export const AoeRotation = FeralDruidRotation.create({
+	rotationType: FeralDruid_Rotation_AplType.Aoe,
+	bearWeave: true,
+	maintainFaerieFire: false,
+	snekWeave: true,
+	allowAoeBerserk: false,
+});
+
+export const AOE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('AoE Default', Spec.SpecFeralDruid, AoeRotation);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
@@ -106,5 +115,7 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	distanceFromTarget: 25,
+	duration: 240,
+	durationVariation: 15,
 	highHpThreshold: 0.8,
 }

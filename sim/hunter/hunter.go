@@ -92,9 +92,15 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	}
 
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	focusPerSecond := 4.0
 
-	// Todo: Verify that is is actually 4 focus per second
-	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), 4.0, true, nil)
+	if hunter.HasSetBonus(ItemSetBloodthirstyGladiatorsPursuit, 4) ||
+		hunter.HasSetBonus(ItemSetViciousGladiatorsPursuit, 4) ||
+		hunter.HasSetBonus(ItemSetRuthlessGladiatorsPursuit, 4) {
+		focusPerSecond *= 1.05
+	}
+
+	hunter.EnableFocusBar(100+(float64(hunter.Talents.KindredSpirits)*5), focusPerSecond, true, nil)
 
 	hunter.PseudoStats.CanParry = true
 
@@ -110,6 +116,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 		Ranged:   rangedWeapon,
 		//ReplaceMHSwing:  hunter.TryRaptorStrike, //Todo: Might be weaving
 		AutoSwingRanged: true,
+		AutoSwingMelee:  true,
 	})
 
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -136,6 +143,8 @@ func (hunter *Hunter) Initialize() {
 
 	hunter.ApplyGlyphs()
 	hunter.RegisterSpells()
+
+	hunter.addBloodthirstyGloves()
 }
 
 func (hunter *Hunter) RegisterSpells() {
@@ -168,6 +177,26 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	}
 	if hunter.Talents.FerociousInspiration && hunter.Options.PetType != proto.HunterOptions_PetNone {
 		raidBuffs.FerociousInspiration = true
+	}
+
+	if hunter.Options.PetType == proto.HunterOptions_CoreHound {
+		raidBuffs.Bloodlust = true
+	}
+
+	if hunter.Options.PetType == proto.HunterOptions_Silithid {
+		raidBuffs.BloodPact = true
+	}
+
+	if hunter.Options.PetType == proto.HunterOptions_Cat {
+		raidBuffs.StrengthOfEarthTotem = true
+	}
+
+	if hunter.Options.PetType == proto.HunterOptions_ShaleSpider {
+		raidBuffs.BlessingOfKings = true
+	}
+
+	if hunter.Options.PetType == proto.HunterOptions_Wolf || hunter.Options.PetType == proto.HunterOptions_Devilsaur {
+		raidBuffs.FuriousHowl = true
 	}
 
 	if hunter.Talents.HuntingParty {
@@ -215,7 +244,12 @@ const (
 	HunterSpellExplosiveShot
 	HunterSpellExplosiveTrap
 	HunterSpellBlackArrow
+	HunterSpellMultiShot
 	HunterSpellAimedShot
+	HunterSpellSerpentSting
+	HunterSpellKillShot
+	HunterSpellRapidFire
+	HunterSpellBestialWrath
 	HunterPetFocusDump
 )
 

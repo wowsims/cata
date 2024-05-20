@@ -1,3 +1,4 @@
+import { SimRequest, WorkerReceiveMessage, WorkerSendMessage } from '../worker/types';
 import { REPO_NAME } from './constants/other.js';
 import {
 	BulkSimRequest,
@@ -10,9 +11,9 @@ import {
 	StatWeightsRequest,
 	StatWeightsResult,
 } from './proto/api.js';
+import { noop } from './utils';
 
 const SIM_WORKER_URL = `/${REPO_NAME}/sim_worker.js`;
-
 export type WorkerProgressCallback = (progressMetrics: ProgressMetrics) => void;
 
 export class WorkerPool {
@@ -29,13 +30,17 @@ export class WorkerPool {
 		return this.workers.reduce((curMinWorker, nextWorker) => (curMinWorker.numTasksRunning < nextWorker.numTasksRunning ? curMinWorker : nextWorker));
 	}
 
-	async makeApiCall(requestName: string, request: Uint8Array): Promise<Uint8Array> {
+	async makeApiCall(requestName: SimRequest, request: Uint8Array): Promise<Uint8Array> {
 		return await this.getLeastBusyWorker().doApiCall(requestName, request, '');
 	}
 
 	async computeStats(request: ComputeStatsRequest): Promise<ComputeStatsResult> {
-		const result = await this.makeApiCall('computeStats', ComputeStatsRequest.toBinary(request));
+		const result = await this.makeApiCall(SimRequest.computeStats, ComputeStatsRequest.toBinary(request));
 		return ComputeStatsResult.fromBinary(result);
+	}
+
+	private getProgressName(id: string) {
+		return `${id}progress`;
 	}
 
 	async statWeightsAsync(request: StatWeightsRequest, onProgress: WorkerProgressCallback): Promise<StatWeightsResult> {
@@ -43,10 +48,10 @@ export class WorkerPool {
 		const worker = this.getLeastBusyWorker();
 		const id = worker.makeTaskId();
 		// Add handler for the progress events
-		worker.addPromiseFunc(id + 'progress', this.newProgressHandler(id, worker, onProgress), () => {});
+		worker.addPromiseFunc(this.getProgressName(id), this.newProgressHandler(id, worker, onProgress), noop);
 
 		// Now start the async sim
-		const resultData = await worker.doApiCall('statWeightsAsync', StatWeightsRequest.toBinary(request), id);
+		const resultData = await worker.doApiCall(SimRequest.statWeightsAsync, StatWeightsRequest.toBinary(request), id);
 		const result = ProgressMetrics.fromBinary(resultData);
 		console.log('Stat weights result: ' + StatWeightsResult.toJsonString(result.finalWeightResult!));
 		return result.finalWeightResult!;
@@ -57,10 +62,10 @@ export class WorkerPool {
 		const worker = this.getLeastBusyWorker();
 		const id = worker.makeTaskId();
 		// Add handler for the progress events
-		worker.addPromiseFunc(id + 'progress', this.newProgressHandler(id, worker, onProgress), () => {});
+		worker.addPromiseFunc(this.getProgressName(id), this.newProgressHandler(id, worker, onProgress), noop);
 
 		// Now start the async sim
-		const resultData = await worker.doApiCall('bulkSimAsync', BulkSimRequest.toBinary(request), id);
+		const resultData = await worker.doApiCall(SimRequest.bulkSimAsync, BulkSimRequest.toBinary(request), id);
 		const result = ProgressMetrics.fromBinary(resultData);
 		const resultJson = BulkSimResult.toJson(result.finalBulkResult!) as any;
 		console.log('bulk sim result: ' + JSON.stringify(resultJson));
@@ -72,10 +77,10 @@ export class WorkerPool {
 		const worker = this.getLeastBusyWorker();
 		const id = worker.makeTaskId();
 		// Add handler for the progress events
-		worker.addPromiseFunc(id + 'progress', this.newProgressHandler(id, worker, onProgress), () => {});
+		worker.addPromiseFunc(this.getProgressName(id), this.newProgressHandler(id, worker, onProgress), noop);
 
 		// Now start the async sim
-		const resultData = await worker.doApiCall('raidSimAsync', RaidSimRequest.toBinary(request), id);
+		const resultData = await worker.doApiCall(SimRequest.raidSimAsync, RaidSimRequest.toBinary(request), id);
 		const result = ProgressMetrics.fromBinary(resultData);
 
 		// Don't print the logs because it just clogs the console.
@@ -94,7 +99,7 @@ export class WorkerPool {
 				return;
 			}
 
-			worker.addPromiseFunc(id + 'progress', this.newProgressHandler(id, worker, onProgress), () => {});
+			worker.addPromiseFunc(this.getProgressName(id), this.newProgressHandler(id, worker, onProgress), noop);
 		};
 	}
 }
@@ -115,26 +120,27 @@ class SimWorker {
 			resolveReady = _resolve;
 		});
 
-		this.worker.onmessage = event => {
-			if (event.data.msg == 'ready') {
-				this.worker.postMessage({ msg: 'setID', id: '1' });
-				resolveReady!();
-			} else if (event.data.msg == 'idconfirm') {
+		this.worker.addEventListener('message', ({ data }: MessageEvent<WorkerSendMessage>) => {
+			const { id, msg, outputData } = data;
+			switch (msg) {
+				case 'ready':
+					this.postMessage({ msg: 'setID', id: '1' });
+					resolveReady!();
+					break;
 				// Do nothing
-			} else {
-				const id = event.data.id;
-				if (!this.taskIdsToPromiseFuncs[id]) {
-					console.warn('Unrecognized result id: ' + id);
-					return;
-				}
-
-				const promiseFuncs = this.taskIdsToPromiseFuncs[id];
-				delete this.taskIdsToPromiseFuncs[id];
-				this.numTasksRunning--;
-
-				promiseFuncs[0](event.data.outputData);
+				case 'idConfirm':
+					break;
+				default:
+					if (!this.taskIdsToPromiseFuncs[id]) {
+						console.warn('Unrecognized result id: ', id);
+						return;
+					}
+					const promiseFuncs = this.taskIdsToPromiseFuncs[id];
+					delete this.taskIdsToPromiseFuncs[id];
+					this.numTasksRunning--;
+					promiseFuncs[0](outputData);
 			}
-		};
+		});
 	}
 
 	addPromiseFunc(id: string, callback: (result: any) => void, onError: (error: any) => void) {
@@ -150,7 +156,7 @@ class SimWorker {
 		return id;
 	}
 
-	async doApiCall(requestName: string, request: Uint8Array, id: string): Promise<Uint8Array> {
+	async doApiCall(requestName: SimRequest, request: Uint8Array, id: string): Promise<Uint8Array> {
 		this.numTasksRunning++;
 		await this.onReady;
 
@@ -160,12 +166,16 @@ class SimWorker {
 			}
 			this.taskIdsToPromiseFuncs[id] = [resolve, reject];
 
-			this.worker.postMessage({
+			this.postMessage({
 				msg: requestName,
-				id: id,
+				id,
 				inputData: request,
 			});
 		});
 		return await taskPromise;
+	}
+
+	postMessage(message: WorkerReceiveMessage) {
+		this.worker.postMessage(message);
 	}
 }

@@ -40,19 +40,19 @@ func (hunter *Hunter) registerRapidFireCD() {
 	})
 
 	hunter.RapidFire = hunter.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-
+		ActionID:       actionID,
+		ClassSpellMask: HunterSpellRapidFire,
 		FocusCost: core.FocusCostOptions{
 			Cost: 0,
 		},
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: 0,
-			},
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Minute*5 - time.Minute*time.Duration(hunter.Talents.Posthaste),
+				Duration: time.Minute * 5,
 			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return hunter.GCD.IsReady(sim)
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			hunter.RapidFireAura.Activate(sim)

@@ -5,6 +5,7 @@ import { Input, InputConfig } from './input.js';
  * Data for creating a boolean picker (checkbox).
  */
 export interface BooleanPickerConfig<ModObject> extends InputConfig<ModObject, boolean> {
+	id: string;
 	reverse?: boolean;
 }
 
@@ -19,6 +20,7 @@ export class BooleanPicker<ModObject> extends Input<ModObject, boolean> {
 
 		this.inputElem = document.createElement('input');
 		this.inputElem.type = 'checkbox';
+		this.inputElem.id = config.id;
 		this.inputElem.classList.add('boolean-picker-input', 'form-check-input');
 
 		if (config.reverse) {

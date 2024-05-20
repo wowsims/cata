@@ -1,6 +1,6 @@
-import { ConjuredHealthstone } from '../../core/components/inputs/consumables';
+import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, RotationType, Spec } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, RotationType, Spec } from '../../core/proto/common';
 import {
 	BeastMasteryHunter_Options as BeastMasteryOptions,
 	BeastMasteryHunter_Rotation as BeastMasteryRotation,
@@ -48,6 +48,8 @@ export const BeastMasteryTalents = {
 			prime2: PrimeGlyph.GlyphOfKillCommand,
 			prime3: PrimeGlyph.GlyphOfKillShot,
 			major1: MajorGlyph.GlyphOfBestialWrath,
+			major2: MajorGlyph.GlyphOfRaptorStrike,
+			major3: MajorGlyph.GlyphOfTrapLauncher,
 		}),
 	}),
 };
@@ -60,8 +62,9 @@ export const BMDefaultOptions = BeastMasteryOptions.create({
 		petTalents: {
 			serpentSwiftness: 2,
 			dash: true,
-			bloodthirsty: 2,
+			bloodthirsty: 1,
 			spikedCollar: 3,
+			boarsSpeed: true,
 			cullingTheHerd: 3,
 			charge: true,
 			spidersBite: 3,
@@ -78,9 +81,14 @@ export const DefaultConsumes = Consumes.create({
 	prepopPotion: Potions.PotionOfTheTolvir,
 	flask: Flask.FlaskOfTheWinds,
 	defaultConjured: ConjuredHealthstone.value,
-	food: Food.FoodFishFeast,
+	food: Food.FoodSeafoodFeast,
+	tinkerHands: TinkerHandsSynapseSprings.value,
 });
 
 export const OtherDefaults = {
 	distanceFromTarget: 24,
+	duration: 240,
+	durationVariation: 20,
+	profession1: Profession.Engineering,
+	profession2: Profession.Jewelcrafting,
 };

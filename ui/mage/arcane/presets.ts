@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, UnitReference} from '../../core/proto/common';
+import { Conjured, Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, TinkerHands, UnitReference} from '../../core/proto/common';
 import {
 	ArcaneMage_Options as MageOptions,
 	MageMajorGlyph as MajorGlyph,
@@ -33,10 +33,12 @@ export const ArcaneTalents = {
 	data: SavedTalents.create({
 		talentsString: '303322021230122210121-23-03',
 		glyphs: Glyphs.create({
-			prime1: PrimeGlyph.GlyphOfArcaneBarrage,
+			prime1: PrimeGlyph.GlyphOfArcaneMissiles,
 			prime2: PrimeGlyph.GlyphOfArcaneBlast,
 			prime3: PrimeGlyph.GlyphOfMageArmor,
 			major1: MajorGlyph.GlyphOfEvocation,
+			major2: MajorGlyph.GlyphOfArcanePower,
+			major3: MajorGlyph.GlyphOfManaShield,
 		}),
 	}),
 };
@@ -70,6 +72,7 @@ export const DefaultArcaneConsumes = Consumes.create({
 	food: Food.FoodSeafoodFeast,
 	defaultPotion: Potions.VolcanicPotion,
 	prepopPotion: Potions.VolcanicPotion,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
 
 export const DefaultDebuffs = Debuffs.create({

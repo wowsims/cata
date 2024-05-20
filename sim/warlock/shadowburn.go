@@ -28,7 +28,7 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 15,
+				Duration: 15 * time.Second,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
@@ -41,7 +41,7 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 		BonusCoefficient:         1.056,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := warlock.CalcBaseDamageWithVariance(sim, Coefficient_Shadowburn, Variance_Shadowburn)
+			baseDamage := warlock.CalcAndRollDamageRange(sim, Coefficient_Shadowburn, Variance_Shadowburn)
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},

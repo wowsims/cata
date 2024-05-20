@@ -1,55 +1,10 @@
-@use 'sass:map';
-
 @import './consumes_picker';
 @import './cooldowns_picker';
 
 .settings-tab {
-	.tab-pane-content-container {
-		@include media-breakpoint-down(xxl) {
-			flex-direction: column;
-		}
-
-		.tab-panel-left {
-			@include media-breakpoint-down(xxl) {
-				margin-right: 0 !important;
-			}
-
-			@include media-breakpoint-down(xl) {
-				flex-wrap: wrap;
-			}
-
-			.tab-panel-col {
-				flex: 2;
-
-				@include media-breakpoint-down(xl) {
-					flex-basis: 100%;
-					margin-right: 0 !important;
-				}
-
-				&:last-child {
-					flex: 3;
-				}
-			}
-		}
-	}
-
-	.content-block {
-		.content-block-body {
-			& > .input-root:last-child {
-				margin-bottom: 0;
-			}
-
-			& > .picker-group:last-child {
-				& > .input-root {
-					margin-bottom: 0;
-
-					&:not(:last-child) {
-						@include media-breakpoint-down(xl) {
-							margin-bottom: $block-spacer;
-						}
-					}
-				}
-			}
+	.tab-panel-left {
+		@include media-breakpoint-up(xl) {
+			grid-template-columns: 1fr 1fr 1.25fr;
 		}
 	}
 
@@ -83,10 +38,10 @@
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 
 			& > .icon-picker {
-				margin-bottom: map-get($spacers, 1) !important;
+				margin-bottom: var(--spacer-1) !important;
 
 				&:not(:nth-child(3n)) {
-					margin-right: map-get($spacers, 2);
+					margin-right: var(--spacer-2);
 				}
 
 				.form-label {

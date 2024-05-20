@@ -1,22 +1,20 @@
-@use 'sass:map';
-
 .sim-link {
 	display: flex;
 
 	&:hover,
 	&.show {
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: var(--bs-black-alpha-50);
 	}
 
 	.sim-link-content {
-		padding: map-get($spacers, 2);
+		padding: var(--spacer-2);
 		display: flex;
 		align-items: center;
 
 		.sim-link-icon {
 			width: 3rem;
 			height: 3rem;
-			margin-right: map-get($spacers, 2);
+			margin-right: var(--spacer-2);
 			border-width: 2px;
 			border-style: solid;
 			border-radius: 100%;
@@ -39,7 +37,7 @@
 
 .sim-link-dropdown {
 	.dropdown-menu {
-		background: rgba(0, 0, 0, 0.5);
+		background: var(--bs-black-alpha-50);
 		@include media-breakpoint-down(lg) {
 			position: relative !important;
 			inset: 0 !important;

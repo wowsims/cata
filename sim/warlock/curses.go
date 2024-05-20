@@ -88,7 +88,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Curse of Tongues",
 			ActionID: actionID,
-			Duration: time.Second * 30,
+			Duration: 30 * time.Second,
 		})
 	})
 
@@ -126,7 +126,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 }
 
 func (warlock *Warlock) registerBaneOfAgonySpell() {
-	baseTickDmg := warlock.ScalingBaseDamage * Coefficient_BaneOfAgony / 12.0
+	baseTickDmg := warlock.CalcScalingSpellDmg(0.13300000131)
 
 	warlock.BaneOfAgony = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 980},
@@ -135,10 +135,7 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellBaneOfAgony,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.1,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.1},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -154,8 +151,8 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 				Label: "Bane of Agony",
 			},
 			NumberOfTicks:    12,
-			TickLength:       time.Second * 2,
-			BonusCoefficient: 0.088,
+			TickLength:       2 * time.Second,
+			BonusCoefficient: 0.08799999952,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, 0.5*baseTickDmg)
 			},
@@ -212,16 +209,16 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 				Label: "Bane of Doom",
 			},
 			NumberOfTicks:    4,
-			TickLength:       time.Second * 15,
+			TickLength:       15 * time.Second,
 			BonusCoefficient: 0.88,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.ScalingBaseDamage*Coefficient_BaneOfDoom)
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(Coefficient_BaneOfDoom))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				//TODO: Can this crit?
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				if sim.Proc(0.2+ebonImpBonusSummon, "Ebon Imp") {
-					warlock.EbonImp.EnableWithTimeout(sim, warlock.EbonImp, time.Second*15)
+					warlock.EbonImp.EnableWithTimeout(sim, warlock.EbonImp, 15*time.Second)
 				}
 			},
 		},

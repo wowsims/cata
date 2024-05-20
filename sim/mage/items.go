@@ -12,7 +12,7 @@ var ItemSetFirelordsVestments = core.NewItemSet(core.ItemSet{
 			// Increases the critical strike chance of your Death Coil and Frost Strike abilities by 5%.
 			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_BonusCrit_Rating,
-				ClassMask:  MageSpellArcaneMissilesTick | MageSpellIceLance | MageSpellPyroblast,
+				ClassMask:  MageSpellArcaneMissilesTick | MageSpellIceLance | MageSpellPyroblast | MageSpellPyroblastDot,
 				FloatValue: 5 * core.CritRatingPerCritChance,
 			})
 		},

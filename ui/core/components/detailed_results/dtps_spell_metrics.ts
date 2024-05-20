@@ -60,14 +60,14 @@ export class DtpsSpellMetricsTable extends MetricsTable<ActionMetrics> {
 	}
 
 	getGroupedMetrics(resultData: SimResultData): Array<Array<ActionMetrics>> {
-		const players = resultData.result.getPlayers(resultData.filter);
+		const players = resultData.result.getRaidIndexedPlayers(resultData.filter);
 		if (players.length != 1) {
 			return [];
 		}
 		const player = players[0];
 
 		const targets = resultData.result.getTargets(resultData.filter);
-		const targetActions = targets.map(target => target.getSpellActions().map(action => action.forTarget(resultData.filter))).flat();
+		const targetActions = targets.map(target => target.getSpellActions().map(action => action.forTarget({player: player.unitIndex}))).flat();
 		const actionGroups = ActionMetrics.groupById(targetActions);
 
 		return actionGroups;

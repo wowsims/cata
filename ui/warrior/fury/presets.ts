@@ -34,7 +34,7 @@ export const FurySMFTalents = {
 			major2: WarriorMajorGlyph.GlyphOfDeathWish,
 			major3: WarriorMajorGlyph.GlyphOfColossusSmash,
 			minor1: WarriorMinorGlyph.GlyphOfCommand,
-			minor2: WarriorMinorGlyph.GlyphOfShatteringThrow,
+			minor2: WarriorMinorGlyph.GlyphOfBattle,
 			minor3: WarriorMinorGlyph.GlyphOfBerserkerRage,
 		}),
 	}),
@@ -52,7 +52,7 @@ export const FuryTGTalents = {
 			major2: WarriorMajorGlyph.GlyphOfDeathWish,
 			major3: WarriorMajorGlyph.GlyphOfColossusSmash,
 			minor1: WarriorMinorGlyph.GlyphOfCommand,
-			minor2: WarriorMinorGlyph.GlyphOfShatteringThrow,
+			minor2: WarriorMinorGlyph.GlyphOfBattle,
 			minor3: WarriorMinorGlyph.GlyphOfBerserkerRage,
 		}),
 	}),
@@ -66,6 +66,7 @@ export const DefaultOptions = WarriorOptions.create({
 	},
 	useRecklessness: true,
 	disableExpertiseGemming: false,
+	syncType: 0,
 });
 
 export const DefaultConsumes = Consumes.create({

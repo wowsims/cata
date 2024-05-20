@@ -114,12 +114,13 @@ func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, co
 		BiteTime:           config.BiteTime,
 		BiteDuringExecute:  config.BiteDuringExecute,
 		MangleSpam:         false,
-		Powerbear:          false,
 		MinRoarOffset:      config.MinRoarOffset,
 		RipLeeway:          config.RipLeeway,
 		ManualParams:       config.ManualParams,
 		AllowAoeBerserk:    config.AllowAoeBerserk,
 		MeleeWeave:         config.MeleeWeave,
+		BearWeave:          config.BearWeave,
+		SnekWeave:          config.SnekWeave,
 	}
 
 	cat.setupRotation(rotationOptions)
@@ -154,7 +155,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	if cat.Rotation.MaintainFaerieFire {
 		for _, aoeTarget := range sim.Encounter.TargetUnits {
 			if cat.ShouldFaerieFire(sim, aoeTarget) {
-				cat.FaerieFire.Cast(sim, aoeTarget)
+				cat.FaerieFire.CastOrQueue(sim, aoeTarget)
 			}
 		}
 	}
@@ -168,7 +169,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 		if cat.CatCharge.CanCast(sim, cat.CurrentTarget) {
 			cat.CatCharge.Cast(sim, cat.CurrentTarget)
 		} else {
-			cat.MoveTo(core.MaxMeleeRange - 1, sim) // movement aura is discretized in 1 yard intervals, so need to overshoot to guarantee melee range
+			cat.MoveTo(core.MaxMeleeRange-1, sim) // movement aura is discretized in 1 yard intervals, so need to overshoot to guarantee melee range
 			return
 		}
 	}

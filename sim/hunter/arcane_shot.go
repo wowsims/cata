@@ -14,9 +14,10 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		MissileSpeed:   40,
-
+		MinRange:       5,
+		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
-			Cost: 25 - float64(hunter.Talents.Efficiency),
+			Cost: 25,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -82,7 +82,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_PRESET.gear,
+		gear: Presets.P1ORC_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -144,7 +144,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.PRERAID_PRESET,
-			Presets.P1_PRESET,
+			Presets.P1ORC_PRESET,
+			Presets.P1DRAENEI_PRESET
 		],
 	},
 
@@ -159,18 +160,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceDraenei,
 				[Faction.Horde]: Race.RaceOrc,
+				[Faction.Unknown]: Race.RaceUnknown,
+
 			},
 			defaultGear: {
-				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PRESET.gear,
+					1: Presets.P1DRAENEI_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PRESET.gear,
+					1: Presets.P1ORC_PRESET.gear,
 				},
+				[Faction.Unknown]: {},
+
 			},
 			otherDefaults: Presets.OtherDefaults,
 		},

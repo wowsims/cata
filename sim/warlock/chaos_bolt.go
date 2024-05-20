@@ -21,11 +21,11 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2500,
+				CastTime: 2500 * time.Millisecond,
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 12,
+				Duration: 12 * time.Second,
 			},
 		},
 
@@ -34,7 +34,7 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 		ThreatMultiplier:         1,
 		BonusCoefficient:         0.628,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := warlock.CalcBaseDamageWithVariance(sim, Coefficient_ChaosBolt, Variance_ChaosBolt)
+			baseDamage := warlock.CalcAndRollDamageRange(sim, Coefficient_ChaosBolt, Variance_ChaosBolt)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

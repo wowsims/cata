@@ -34,12 +34,9 @@ func (warlock *Warlock) registerSoulburnSpell() {
 		ClassSpellMask: WarlockSpellSoulBurn,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: 0,
-			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 45,
+				Duration: 45 * time.Second,
 			},
 		},
 

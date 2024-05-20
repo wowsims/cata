@@ -1,112 +1,98 @@
-@use "sass:map";
-
 .icon-picker {
-  width: unset !important;
-  margin-bottom: 0;
-  flex-direction: row !important;
-  align-items: center !important;
+	width: unset !important;
+	margin-bottom: 0;
+	flex-direction: row !important;
+	align-items: center !important;
 
-  .icon-picker-button,
-  .icon-dropdown-option {
-	@extend .icon-md;
+	.icon-picker-button,
+	.icon-dropdown-option {
+		@extend .icon-md;
 
-	border: $border-default;
-    transition: border-color .15s ease-in-out;
-    position: relative;
-    display: block;
-    background-color: grey;
-    filter: grayscale(1);
+		border: var(--border-default);
+		transition: border-color 0.15s ease-in-out;
+		position: relative;
+		display: block;
+		background-color: grey;
+		filter: grayscale(1);
 
-    &.active {
-      border-color: $success;
-      filter: none;
-    }
-  }
+		&.active {
+			border-color: var(--bs-success);
+			filter: none;
+		}
+	}
 
-  .icon-picker-button,
-  .icon-dropdown-option {
-    position: relative;
-    display: block;
-    background-color: grey;
+	.icon-picker-button,
+	.icon-dropdown-option {
+		position: relative;
+		display: block;
+		background-color: grey;
 
-    .icon-picker-label {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      text-align: center;
-      background: rgba(0,0,0,.3);
-      color: $success;
-      font-size: .625rem;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-  }
+		.icon-picker-label {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			text-align: center;
+			background: var(--black-alpha-30);
+			color: var(--bs-success);
+			font-size: 0.625rem;
+			font-weight: bold;
+			white-space: nowrap;
+		}
+	}
 
-  .icon-input-level-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    margin: 1px;
+	.icon-input-level-container {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		margin: 1px;
 
-    .icon-input-improved {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      min-width: 1.25rem;
-      width: 1.25rem;
-      height: 1.25rem;
+		.icon-input-improved {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			min-width: 1.25rem;
+			width: 1.25rem;
+			height: 1.25rem;
 
-      &:not([href]) {
-        display: none;
-      }
-    }
-  }
+			&:not([href]) {
+				display: none;
+			}
+		}
+	}
 
-  label {
-    margin-left: map-get($spacers, 2);
-  }
+	label {
+		margin-left: var(--spacer-2);
+	}
 
-  .dropdown-menu {
-    min-width: unset;
-    background: grey;
-    border: none;
+	.dropdown-menu {
+		min-width: unset;
+		background: grey;
+		border: none;
 
-    &.show {
-      display: grid;
-    }
+		&.show {
+			display: grid;
+		}
 
-    .icon-dropdown-option {
-      padding: 0;
-      filter: opacity(.7);
+		.icon-dropdown-option {
+			padding: 0;
+			filter: opacity(0.7);
 
-      &:hover {
-        filter: none;
-      }
+			&:hover {
+				filter: none;
+			}
 
-      .icon-picker-button {
-        margin: -1px;
-      }
-    }
-  }
+			.icon-picker-button {
+				margin: -1px;
+			}
+		}
+	}
 }
 
 .picker-group {
-  &.icon-group {
-    display: flex;
-    flex-wrap: wrap;
-
-    &> :not(:last-child) {
-      margin-right: map-get($spacers, 1);
-    }
-
-    &> * {
-      margin-bottom: $block-spacer;
-      flex: 0;
-
-      &:not(:last-child) {
-        margin-right: $block-spacer;
-      }
-    }
-  }
+	&.icon-group {
+		& > * {
+			flex: 0;
+		}
+	}
 }

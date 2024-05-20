@@ -1,16 +1,6 @@
-@use 'sass:map';
-
 :root {
 	--bs-body-font-size: 14px;
-	--container-padding: #{$gap-width-sm};
 	font-size: var(--bs-body-font-size);
-	@include media-breakpoint-up(lg) {
-		--container-padding: 3rem;
-	}
-
-	@include media-breakpoint-up(xxl) {
-		--container-padding: 4rem;
-	}
 
 	@include media-breakpoint-up(1080p) {
 		--bs-body-font-size: 16px;
@@ -23,6 +13,16 @@
 
 	@include media-breakpoint-up(4k) {
 		--bs-body-font-size: 32px;
+	}
+
+	@include media-breakpoint-up(lg) {
+		--section-spacer: var(--section-spacer-lg) !important;
+		--container-padding: var(--container-padding-lg) !important;
+	}
+
+	@include media-breakpoint-up(xxl) {
+		--section-spacer: var(--section-spacer-xxl) !important;
+		--container-padding: var(--container-padding-xxl) !important;
 	}
 }
 
@@ -56,12 +56,12 @@ a {
 	transition: color 0.15s ease-in-out;
 
 	&.link-alt {
-		color: white;
+		color: var(--bs-white);
 
 		&:hover,
 		&:focus,
 		&.active {
-			color: $brand;
+			color: var(--bs-brand);
 		}
 	}
 }
@@ -85,16 +85,21 @@ h6 {
 }
 
 p {
-	margin-bottom: $block-spacer;
+	margin-bottom: var(--block-spacer);
 }
 
 kbd {
-	background: $body-bg;
-	color: white;
+	background: var(--bs-body-bg);
+	color: var(--bs-white);
 }
 
 .dragto:not(.dragfrom) {
 	filter: brightness(0.75);
+}
+
+.interactive {
+	cursor: pointer;
+	user-select: none;
 }
 
 .hide {
@@ -103,29 +108,34 @@ kbd {
 
 .icon-sm {
 	display: inline-block;
-	min-width: $icon-size-sm;
-	width: $icon-size-sm;
-	height: $icon-size-sm;
+	min-width: var(--icon-size-sm);
+	width: var(--icon-size-sm);
+	height: var(--icon-size-sm);
 	background-size: cover;
 }
 
 .icon-md {
 	display: inline-block;
-	min-width: $icon-size-md;
-	width: $icon-size-md;
-	height: $icon-size-md;
+	min-width: var(--icon-size-md);
+	width: var(--icon-size-md);
+	height: var(--icon-size-md);
 	background-size: cover;
 }
 
-@each $label, $value in $item-qualities {
+@each $label, $value in $item-quality-colors {
 	.item-quality-#{$label} {
-		color: $value !important;
+		color: var(--bs-#{$label}) !important;
 	}
 }
 
 @each $label, $value in $resource-colors {
 	.resource-#{$label} {
-		color: $value !important;
+		color: var(--bs-#{$label}) !important;
+	}
+}
+@each $label, $value in $damage-colors {
+	.damage-#{$label} {
+		color: var(--bs-#{$label}) !important;
 	}
 }
 
@@ -141,5 +151,5 @@ kbd {
 
 .notices-banner {
 	width: 100%;
-	background: lighten($body-bg, 5);
+	background: color-mix(in srgb, var(--bs-body-bg), var(--bs-white) 5%);
 }

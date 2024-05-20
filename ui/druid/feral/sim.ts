@@ -33,7 +33,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
-	epReferenceStat: Stat.StatAttackPower,
+	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		Stat.StatHealth,
@@ -54,17 +54,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatStrength]: 0.38,
+				[Stat.StatStrength]: 0.39,
 				[Stat.StatAgility]: 1.0,
 				[Stat.StatAttackPower]: 0.37,
-				[Stat.StatMeleeHit]: 0.43,
-				[Stat.StatExpertise]: 0.43,
-				[Stat.StatMeleeCrit]: 0.40,
-				[Stat.StatMeleeHaste]: 0.41,
-				[Stat.StatMastery]: 0.58,
+				[Stat.StatMeleeHit]: 0.33,
+				[Stat.StatExpertise]: 0.32,
+				[Stat.StatMeleeCrit]: 0.31,
+				[Stat.StatMeleeHaste]: 0.26,
+				[Stat.StatMastery]: 0.3,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 1.55,
+				[PseudoStat.PseudoStatMainHandDps]: 1.53,
 			},
 		),
 		other: Presets.OtherDefaults,
@@ -116,7 +116,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents, Presets.HybridTalents],
-		rotations: [Presets.SIMPLE_ROTATION_DEFAULT],
+		rotations: [Presets.SIMPLE_ROTATION_DEFAULT, Presets.AOE_ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
 		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
 	},
@@ -129,7 +129,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
 		const blockZerk = APLAction.fromJsonString(`{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}`);
-		const doRotation = APLAction.fromJsonString(`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maintainFaerieFire":${simple.maintainFaerieFire},"allowAoeBerserk":${simple.allowAoeBerserk},"meleeWeave":${simple.meleeWeave},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${simple.useBite},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)}}}`);
+		const doRotation = APLAction.fromJsonString(`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maintainFaerieFire":${simple.maintainFaerieFire},"allowAoeBerserk":${simple.allowAoeBerserk},"meleeWeave":${simple.meleeWeave},"bearWeave":${simple.bearWeave},"snekWeave":${simple.snekWeave},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${simple.useBite},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)}}}`);
 
 		actions.push(...([blockZerk, doRotation].filter(a => a) as Array<APLAction>));
 
@@ -178,7 +178,7 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFeralDruid>) {
 		super(parentElem, player, SPEC_CONFIG);
 
-		const _gemOptimizer = new FeralGemOptimizer(this);
+		//const _gemOptimizer = new FeralGemOptimizer(this);
 	}
 }
 

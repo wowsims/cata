@@ -75,12 +75,8 @@ export const ConjuredDarkRune = {
 	actionId: ActionId.fromItemId(12662),
 	value: Conjured.ConjuredDarkRune,
 };
-export const ConjuredFlameCap = {
-	actionId: ActionId.fromItemId(22788),
-	value: Conjured.ConjuredFlameCap,
-};
 export const ConjuredHealthstone = {
-	actionId: ActionId.fromItemId(22105),
+	actionId: ActionId.fromItemId(5512),
 	value: Conjured.ConjuredHealthstone,
 };
 export const ConjuredRogueThistleTea = {
@@ -93,7 +89,6 @@ export const CONJURED_CONFIG = [
 	{ config: ConjuredRogueThistleTea, stats: [] },
 	{ config: ConjuredHealthstone, stats: [Stat.StatStamina] },
 	{ config: ConjuredDarkRune, stats: [Stat.StatIntellect] },
-	{ config: ConjuredFlameCap, stats: [] },
 ] as ConsumableStatOption<Conjured>[];
 
 export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'defaultConjured' });
@@ -102,33 +97,45 @@ export const makeConjuredInput = makeConsumeInputFactory({ consumesFieldName: 'd
 //                                 EXPLOSIVES
 ///////////////////////////////////////////////////////////////////////////
 
-export const ExplosiveSaroniteBomb = {
-	actionId: ActionId.fromItemId(41119),
-	value: Explosive.ExplosiveSaroniteBomb,
-};
-export const ExplosiveCobaltFragBomb = {
-	actionId: ActionId.fromItemId(40771),
-	value: Explosive.ExplosiveCobaltFragBomb,
-};
+// WOTLK BOMBS
+// export const ExplosiveSaroniteBomb = {
+// 	actionId: ActionId.fromItemId(41119),
+// 	value: Explosive.ExplosiveSaroniteBomb,
+// };
+// export const ExplosiveCobaltFragBomb = {
+// 	actionId: ActionId.fromItemId(40771),
+// 	value: Explosive.ExplosiveCobaltFragBomb,
+// };
 
-export const EXPLOSIVES_CONFIG = [
-	{ config: ExplosiveSaroniteBomb, stats: [] },
-	{ config: ExplosiveCobaltFragBomb, stats: [] },
-] as ConsumableStatOption<Explosive>[];
+// export const EXPLOSIVES_CONFIG = [
+// 	{ config: ExplosiveSaroniteBomb, stats: [] },
+// 	{ config: ExplosiveCobaltFragBomb, stats: [] },
+// ] as ConsumableStatOption<Explosive>[];
 
-export const makeExplosivesInput = makeConsumeInputFactory({
-	consumesFieldName: 'fillerExplosive',
+// export const makeExplosivesInput = makeConsumeInputFactory({
+// 	consumesFieldName: 'fillerExplosive',
+// 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
+// });
+
+// export const ThermalSapper = makeBooleanConsumeInput({
+// 	actionId: ActionId.fromItemId(42641),
+// 	fieldName: 'thermalSapper',
+// 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
+// });
+// export const ExplosiveDecoy = makeBooleanConsumeInput({
+// 	actionId: ActionId.fromItemId(40536),
+// 	fieldName: 'explosiveDecoy',
+// 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
+// });
+
+export const ExplosiveBigDaddy = makeBooleanConsumeInput({
+	actionId: ActionId.fromItemId(63396),
+	fieldName: 'explosiveBigDaddy',
 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
-
-export const ThermalSapper = makeBooleanConsumeInput({
-	actionId: ActionId.fromItemId(42641),
-	fieldName: 'thermalSapper',
-	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
-});
-export const ExplosiveDecoy = makeBooleanConsumeInput({
-	actionId: ActionId.fromItemId(40536),
-	fieldName: 'explosiveDecoy',
+export const HighpoweredBoltGun = makeBooleanConsumeInput({
+	actionId: ActionId.fromItemId(60223),
+	fieldName: 'highpoweredBoltGun',
 	showWhen: (player: Player<any>) => player.hasProfession(Profession.Engineering),
 });
 
@@ -367,7 +374,7 @@ export const ElixirOfDeepEarth = {
 	value: GuardianElixir.ElixirOfDeepEarth,
 };
 export const PrismaticElixir = {
-	actionId: ActionId.fromItemId(80492),
+	actionId: ActionId.fromItemId(58143),
 	value: GuardianElixir.PrismaticElixir,
 };
 export const ElixirOfMightyDefense = {
@@ -401,7 +408,7 @@ export const GUARDIAN_ELIXIRS_CONFIG = [
 		config: PrismaticElixir,
 		stats: [Stat.StatArcaneResistance, Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatNatureResistance, Stat.StatShadowResistance],
 	},
-	{ config: ElixirOfMightyDefense, stats: [Stat.StatDefense] },
+	{ config: ElixirOfMightyDefense, stats: [Stat.StatArmor] },
 	{ config: ElixirOfMightyFortitude, stats: [Stat.StatStamina] },
 	{ config: ElixirOfMightyMageblood, stats: [Stat.StatMP5] },
 	{ config: ElixirOfMightyThoughts, stats: [Stat.StatIntellect] },
@@ -652,6 +659,10 @@ export const MightyRagePotion = {
 	actionId: ActionId.fromItemId(13442),
 	value: Potions.MightyRagePotion,
 };
+export const FlameCap = {
+	actionId: ActionId.fromItemId(22788),
+	value: Potions.FlameCap,
+};
 
 export const POTIONS_CONFIG = [
 	{ config: GolembloodPotion, stats: [Stat.StatStrength] },
@@ -663,6 +674,7 @@ export const POTIONS_CONFIG = [
 	{ config: MythicalHealingPotion, stats: [Stat.StatHealth] },
 	{ config: MythicalManaPotion, stats: [Stat.StatIntellect] },
 	{ config: PotionOfSpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
+	{ config: FlameCap, stats: [] },
 ] as ConsumableStatOption<Potions>[];
 
 export const PRE_POTIONS_CONFIG = [
@@ -671,6 +683,7 @@ export const PRE_POTIONS_CONFIG = [
 	{ config: VolcanicPotion, stats: [Stat.StatIntellect] },
 	{ config: EarthenPotion, stats: [Stat.StatArmor] },
 	{ config: PotionOfSpeed, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
+	{ config: FlameCap, stats: [] },
 ] as ConsumableStatOption<Potions>[];
 
 export const makePotionsInput = makeConsumeInputFactory({ consumesFieldName: 'defaultPotion' });

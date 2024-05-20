@@ -59,7 +59,7 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return mage.ArcaneMissilesProcAura.IsActive()
+			return mage.arcaneMissilesProcAura.IsActive()
 		},
 
 		Dot: core.DotConfig{

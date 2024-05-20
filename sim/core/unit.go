@@ -310,7 +310,9 @@ func (unit *Unit) AddStatsDynamic(sim *Simulation, bonus stats.Stats) {
 
 	unit.statsWithoutDeps.AddInplace(&bonus)
 
-	bonus = unit.ApplyStatDependencies(bonus)
+	if !unit.Env.MeasuringStats || unit.Env.State == Finalized {
+		bonus = unit.ApplyStatDependencies(bonus)
+	}
 
 	if sim.Log != nil {
 		unit.Log(sim, "Dynamic stat change: %s", bonus.FlatString())
@@ -434,10 +436,6 @@ func (unit *Unit) Armor() float64 {
 
 func (unit *Unit) BlockDamageReduction() float64 {
 	return unit.PseudoStats.BlockDamageReduction
-}
-
-func (unit *Unit) ArmorPenetrationPercentage(armorPenRating float64) float64 {
-	return max(min(armorPenRating/ArmorPenPerPercentArmor, 100.0)*0.01, 0.0)
 }
 
 func (unit *Unit) RangedSwingSpeed() float64 {
@@ -683,8 +681,7 @@ func (unit *Unit) GetTotalChanceToBeMissedAsDefender(atkTable *AttackTable) floa
 
 func (unit *Unit) GetTotalBlockChanceAsDefender(atkTable *AttackTable) float64 {
 	chance := atkTable.BaseBlockChance +
-		unit.GetStat(stats.Block)/BlockRatingPerBlockChance/100 +
-		unit.GetStat(stats.Defense)*DefenseRatingToChanceReduction
+		unit.GetStat(stats.Block)/BlockRatingPerBlockChance/100
 	return math.Max(chance, 0.0)
 }
 

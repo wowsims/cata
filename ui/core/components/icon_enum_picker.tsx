@@ -63,10 +63,10 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 		this.config.changedEvent(this.modObject).on(_ => {
 			if (this.showWhen()) {
 				this.restoreValue();
-				parent.classList.remove('hide');
+				this.rootElem.classList.remove('hide');
 			} else {
 				this.storeValue();
-				parent.classList.add('hide');
+				this.rootElem.classList.add('hide');
 			}
 		});
 

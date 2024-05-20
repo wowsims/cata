@@ -158,7 +158,7 @@ message FeralDruid {
       Analytical = 1;
     }
 
-    BearweaveType bear_weave_type = 1;
+	bool bear_weave = 1;
 	bool maintain_faerie_fire = 2;
 	int32 min_combos_for_rip = 3;
 	bool use_rake = 4;
@@ -168,7 +168,6 @@ message FeralDruid {
 	int32 min_combos_for_bite = 8;
 	bool bite_during_execute = 13;
 	int32 rip_leeway = 19;
-	bool powerbear = 10;
 	float min_roar_offset = 11;
 	BiteModeType bite_mode_type = 12;
 	bool snek_weave = 14;
@@ -186,12 +185,12 @@ message FeralDruid {
   Options options = 3;
 }
 
-message FeralTankDruid {
+message GuardianDruid {
   message Rotation {
-		// Minimum rage to queue HS or Cleave.
-		int32 maul_rage_threshold = 1;
+		bool maintain_faerie_fire = 1;
 		bool maintain_demoralizing_roar = 2;
-		double lacerate_time = 3;
+		double demo_time = 3;
+		double pulverize_time = 4;
   }
 
   message Options {

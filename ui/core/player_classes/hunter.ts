@@ -15,11 +15,12 @@ export class Hunter extends PlayerClass<Class.ClassHunter> {
 	};
 	static races: Race[] = [
 		// [A]
+
+		Race.RaceWorgen,
 		Race.RaceHuman,
 		Race.RaceDwarf,
 		Race.RaceNightElf,
 		Race.RaceDraenei,
-		Race.RaceWorgen,
 		// [H]
 		Race.RaceOrc,
 		Race.RaceUndead,
@@ -28,7 +29,7 @@ export class Hunter extends PlayerClass<Class.ClassHunter> {
 		Race.RaceBloodElf,
 		Race.RaceGoblin,
 	];
-	static armorTypes: ArmorType[] = [ArmorType.ArmorTypeMail, ArmorType.ArmorTypeLeather, ArmorType.ArmorTypeCloth];
+	static armorTypes: ArmorType[] = [ArmorType.ArmorTypeMail];
 	static weaponTypes: EligibleWeaponType[] = [
 		{ weaponType: WeaponType.WeaponTypeAxe, canUseTwoHand: true },
 		{ weaponType: WeaponType.WeaponTypeDagger },
@@ -50,6 +51,7 @@ export class Hunter extends PlayerClass<Class.ClassHunter> {
 	readonly specs = Hunter.specs;
 	readonly races = Hunter.races;
 	readonly armorTypes = Hunter.armorTypes;
+
 	readonly weaponTypes = Hunter.weaponTypes;
 	readonly rangedWeaponTypes = Hunter.rangedWeaponTypes;
 

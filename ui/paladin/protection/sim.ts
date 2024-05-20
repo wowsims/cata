@@ -34,7 +34,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatSpellPower,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
-		Stat.StatDefense,
 		Stat.StatBlock,
 		Stat.StatDodge,
 		Stat.StatParry,
@@ -62,7 +61,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatExpertise,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
-		Stat.StatDefense,
 		Stat.StatBlock,
 		Stat.StatDodge,
 		Stat.StatParry,
@@ -90,25 +88,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	// },
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P3_PRESET.gear,
+		gear: Presets.PRERAID_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
+		// Values for now are pre-Cata initial WAG
 		epWeights: Stats.fromMap(
 			{
 				[Stat.StatArmor]: 0.07,
 				[Stat.StatBonusArmor]: 0.06,
 				[Stat.StatStamina]: 1.14,
+				[Stat.StatMastery]: 1.00,
 				[Stat.StatStrength]: 1.0,
-				[Stat.StatAgility]: 0.62,
+				[Stat.StatAgility]: 0,
 				[Stat.StatAttackPower]: 0.26,
-				[Stat.StatExpertise]: 0.69,
-				[Stat.StatMeleeHit]: 0.79,
+				[Stat.StatExpertise]: 0.5,
+				[Stat.StatMeleeHit]: 0.5,
 				[Stat.StatMeleeCrit]: 0.3,
 				[Stat.StatMeleeHaste]: 0.17,
-				[Stat.StatSpellPower]: 0.13,
-				[Stat.StatBlock]: 0.52,
-				[Stat.StatDodge]: 0.46,
-				[Stat.StatParry]: 0.61,
-				[Stat.StatDefense]: 0.54,
+				[Stat.StatSpellPower]: 0,
+				[Stat.StatDodge]: 0.6,
+				[Stat.StatParry]: 0.6,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 3.33,
@@ -189,7 +187,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_PRESET, Presets.P4_PRERAID_PRESET, Presets.P1_PRESET, Presets.P2_PRESET, Presets.P3_PRESET, Presets.P4_PRESET],
+		gear: [Presets.PRERAID_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionPaladin>): APLRotation => {
@@ -215,13 +213,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		);
 		const consecration = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":48819}}}`);
 		const holyShield = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":48952}}}`);
-		const judgementOfWisdom = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":53408}}}`);
+		const judgement = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":20271}}}`);
 		const waitSecondary = APLAction.fromJsonString(
 			`{"condition":{"and":{"vals":[{"gcdIsReady":{}},{"not":{"val":{"spellIsReady":{"spellId":{"spellId":61411}}}}},{"not":{"val":{"spellIsReady":{"spellId":{"spellId":53595}}}}},{"not":{"val":{"spellIsReady":{"spellId":{"spellId":48819}}}}},{"not":{"val":{"spellIsReady":{"spellId":{"spellId":48952}}}}},{"not":{"val":{"spellIsReady":{"spellId":{"spellId":53408}}}}}]}},"wait":{"duration":{"min":{"vals":[{"spellTimeToReady":{"spellId":{"spellId":61411}}},{"spellTimeToReady":{"spellId":{"spellId":53595}}},{"spellTimeToReady":{"spellId":{"spellId":48819}}},{"spellTimeToReady":{"spellId":{"spellId":48952}}},{"spellTimeToReady":{"spellId":{"spellId":53408}}}]}}}}`,
 		);
 
 		actions.push(
-			...([shieldOfRighteousness, hammerOfRighteousness, hammerOfWrath, waitPrimary, consecration, holyShield, judgementOfWisdom, waitSecondary].filter(
+			...([shieldOfRighteousness, hammerOfRighteousness, hammerOfWrath, waitPrimary, consecration, holyShield, judgement, waitSecondary].filter(
 				a => a,
 			) as Array<APLAction>),
 		);
@@ -250,16 +248,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
-					4: Presets.P4_PRESET.gear,
+					1: Presets.PRERAID_PRESET.gear,
 				},
 				[Faction.Horde]: {
-					1: Presets.P1_PRESET.gear,
-					2: Presets.P2_PRESET.gear,
-					3: Presets.P3_PRESET.gear,
-					4: Presets.P4_PRESET.gear,
+					1: Presets.PRERAID_PRESET.gear,
 				},
 			},
 		},

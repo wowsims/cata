@@ -83,7 +83,8 @@ type Warrior struct {
 	// Current state
 	Stance                 Stance
 	EnrageEffectMultiplier float64
-	CriticalBlockChance    float64 // Can be gained as non-prot via certain talents and spells
+	CriticalBlockChance    []float64 // Can be gained as non-prot via certain talents and spells
+	PrecisionKnown         bool
 
 	BattleShout     *core.Spell
 	CommandingShout *core.Spell
@@ -184,18 +185,19 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 	core.FillTalentsProto(warrior.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
 	warrior.PseudoStats.CanParry = true
+	warrior.PrecisionKnown = false
 
 	warrior.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
 	// Dodge no longer granted from agility
-	//warrior.AddStatDependency(stats.Agility, stats.Dodge, core.DodgeRatingPerDodgeChance/84.746)
 	warrior.AddStatDependency(stats.Strength, stats.AttackPower, 2)
-	warrior.AddStatDependency(stats.Strength, stats.Parry, 0.25) // Change from block to pary in cata
+	warrior.AddStat(stats.Parry, -warrior.GetBaseStats()[stats.Strength]*0.27) // Does not apply to base Strength
+	warrior.AddStatDependency(stats.Strength, stats.Parry, 0.27)               // Change from block to pary in cata (4.2 Changed from 25->27 percent)
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	// Base dodge unaffected by Diminishing Returns
 	warrior.PseudoStats.BaseDodge += 0.03664
 	warrior.PseudoStats.BaseParry += 0.05
-
+	warrior.CriticalBlockChance = append(warrior.CriticalBlockChance, 0.0, 0.0)
 	return warrior
 }
 
@@ -219,6 +221,10 @@ func (warrior *Warrior) IntensifyRageCooldown(baseCd time.Duration) time.Duratio
 // Shared cooldown for Deadly Calm and Recklessness Activation
 func (warrior *Warrior) RecklessnessDeadlyCalmLock() *core.Timer {
 	return warrior.Character.GetOrInitTimer(&warrior.recklessnessDeadlyCalmCD)
+}
+
+func (warrior *Warrior) GetCriticalBlockChance() float64 {
+	return warrior.CriticalBlockChance[0] + warrior.CriticalBlockChance[1]
 }
 
 // Agent is a generic way to access underlying warrior on any of the agents.

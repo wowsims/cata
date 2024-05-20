@@ -17,7 +17,7 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 	demonSoulImp := warlock.RegisterAura(core.Aura{
 		Label:    "Demon Soul: Imp",
 		ActionID: core.ActionID{SpellID: 79459},
-		Duration: time.Second * 20,
+		Duration: 20 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			impMod.Activate()
 		},
@@ -35,7 +35,7 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 	demonSoulFelhunter := warlock.RegisterAura(core.Aura{
 		Label:    "Demon Soul: Felhunter",
 		ActionID: core.ActionID{SpellID: 79460},
-		Duration: time.Second * 20,
+		Duration: 20 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			felhunterMod.Activate()
 		},
@@ -59,7 +59,7 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 	demonSoulFelguard := warlock.RegisterAura(core.Aura{
 		Label:    "Demon Soul: Felguard",
 		ActionID: core.ActionID{SpellID: 79462},
-		Duration: time.Second * 20,
+		Duration: 20 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			felguardHasteMod.Activate()
 			felguardDamageMod.Activate()
@@ -79,7 +79,7 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 	demonSoulSuccubus := warlock.RegisterAura(core.Aura{
 		Label:    "Demon Soul: Succubus",
 		ActionID: core.ActionID{SpellID: 79463},
-		Duration: time.Second * 20,
+		Duration: 20 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			succubusDamageMod.Activate()
 		},
@@ -99,26 +99,25 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 			BaseCost:   0.15,
 			Multiplier: 1,
 		},
+
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2500,
-			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Minute * 2,
+				Duration: 2 * time.Minute,
+			},
+			DefaultCast: core.Cast{
+				NonEmpty: true,
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			switch warlock.ActivePet {
-			case PetFelguard:
+			if warlock.Felguard.IsActive() {
 				demonSoulFelguard.Activate(sim)
-			case PetFelhunter:
+			} else if warlock.Felhunter.IsActive() {
 				demonSoulFelhunter.Activate(sim)
-			case PetImp:
+			} else if warlock.Imp.IsActive() {
 				demonSoulImp.Activate(sim)
-			case PetSuccubus:
+			} else if warlock.Succubus.IsActive() {
 				demonSoulSuccubus.Activate(sim)
 			}
 		},

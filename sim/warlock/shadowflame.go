@@ -21,11 +21,11 @@ func (warlock *Warlock) registerShadowflame() {
 				Label: "Shadowflame (DoT)",
 			},
 			NumberOfTicks:       3,
-			TickLength:          time.Second * 2,
+			TickLength:          2 * time.Second,
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.20000000298,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.ScalingBaseDamage*Coefficient_ShadowflameDot)
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(Coefficient_ShadowflameDot))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -54,7 +54,7 @@ func (warlock *Warlock) registerShadowflame() {
 			},
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
-				Duration: time.Second * 12,
+				Duration: 12 * time.Second,
 			},
 		},
 
@@ -64,7 +64,7 @@ func (warlock *Warlock) registerShadowflame() {
 		BonusCoefficient: 0.10199999809,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := warlock.CalcBaseDamageWithVariance(sim, Coefficient_Shadowflame, Variance_Shadowflame)
+			baseDamage := warlock.CalcAndRollDamageRange(sim, Coefficient_Shadowburn, Variance_Shadowburn)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {

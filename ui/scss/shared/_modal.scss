@@ -1,9 +1,20 @@
-@use 'sass:math';
-
 .modal {
 	.modal-dialog {
 		max-height: calc(100vh - (2 * var(--bs-modal-margin)));
 		display: flex;
+		@include media-breakpoint-down(lg) {
+			max-width: calc(100vw - (2 * var(--bs-modal-margin)));
+		}
+
+		&.modal-overflow-scroll {
+			.modal-content {
+				max-height: calc(100vh - (2 * var(--bs-modal-margin)));
+			}
+
+			.modal-body {
+				overflow: auto;
+			}
+		}
 	}
 
 	.modal-scroll-table {
@@ -13,7 +24,7 @@
 		th {
 			position: sticky;
 			top: 0;
-			background: $body-bg;
+			background: var(--bs-body-bg);
 		}
 	}
 }

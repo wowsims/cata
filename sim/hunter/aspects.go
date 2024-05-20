@@ -35,11 +35,12 @@ func (hunter *Hunter) registerAspectOfTheHawkSpell() {
 }
 func (hunter *Hunter) registerAspectOfTheFoxSpell() {
 	actionID := core.ActionID{SpellID: 82661}
-	// restoreFocus := 2
+	restoreFocus := 2.0
+	focusMetric := hunter.NewFocusMetrics(actionID)
 
-	// if hunter.Talents.OneWithNature > 0 {
-	// 	restoreFocus += 1 * float64(hunter.Talents.OneWithNature)
-	// }
+	if hunter.Talents.OneWithNature > 0 {
+		restoreFocus += 1 * float64(hunter.Talents.OneWithNature)
+	}
 
 	foxMod := hunter.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_AllowCastWhileMoving,
@@ -54,6 +55,11 @@ func (hunter *Hunter) registerAspectOfTheFoxSpell() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			foxMod.Deactivate()
 		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if aura.IsActive() {
+				hunter.AddFocus(sim, restoreFocus, focusMetric)
+			}
+		},
 	}))
 
 	hunter.applySharedAspectConfig(true, hunter.AspectOfTheFoxAura)
@@ -67,8 +73,6 @@ func (hunter *Hunter) registerAspectOfTheFoxSpell() {
 		},
 	})
 }
-
-// Todo: Implement Aspect of the Fox?
 
 func (hunter *Hunter) applySharedAspectConfig(isHawk bool, aura *core.Aura) {
 	aura.Duration = core.NeverExpires

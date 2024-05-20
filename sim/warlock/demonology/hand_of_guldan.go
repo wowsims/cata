@@ -8,41 +8,31 @@ import (
 )
 
 func (demonology *DemonologyWarlock) CurseOfGuldanDebuffAura(target *core.Unit) *core.Aura {
+	// TODO: the talent tooltip says this applies to "any Warlock demons". It's unclear if this means
+	// any warlock pet or just the ones belonging to the caster
 	return target.GetOrRegisterAura(core.Aura{
-		Label:    "CurseOfGuldan-" + demonology.Label,
+		Label:    "Curse of Guldan-" + demonology.Label,
 		ActionID: core.ActionID{SpellID: 86000},
-		Duration: time.Second * 15,
+		Duration: 15 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			//TODO: Implement Crit rating for pet vs this target only
+			for _, pet := range demonology.Pets {
+				pet.AttackTables[aura.Unit.UnitIndex].BonusCritRating += 0.1
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			//TODO: Implement Crit rating for pet vs this target only
+			for _, pet := range demonology.Pets {
+				pet.AttackTables[aura.Unit.UnitIndex].BonusCritRating -= 0.1
+			}
 		},
 	})
 }
 
-// TODO: Curse
 func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
 	if !demonology.Talents.HandOfGuldan {
 		return
 	}
 
-	// TODO: If you switch pets or summon a new one they won't have the attack tables do not switch when I think curse of guldan would apply to any active and future pets
-	// When the curse expires will it be taken away from the current active pet or the pet we originally assigned it to?
-	// demonology.ActivePet.CurseOfGuldanDebuffs = demonology.ActivePet.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-	// 	return target.GetOrRegisterAura(core.Aura{
-	// 		Label:    "Curse of Guldan",
-	// 		ActionID: core.ActionID{SpellID: 86000},
-	// 		Duration: time.Second * 15,
-	// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-	// 			demonology.ActivePet.AttackTables[aura.Unit.UnitIndex].BonusCritRating += 10.0 * core.CritRatingPerCritChance
-	// 		},
-	// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-	// 			demonology.ActivePet.AttackTables[aura.Unit.UnitIndex].BonusCritRating -= 10.0 * core.CritRatingPerCritChance
-	// 		},
-	// 	})
-	// })
-
+	curseOfGuldanAuras := demonology.NewEnemyAuraArray(demonology.CurseOfGuldanDebuffAura)
 	demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 71521},
 		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolShadow,
@@ -50,18 +40,15 @@ func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellHandOfGuldan,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.07,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.07},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Second * 2,
+				CastTime: 2 * time.Second,
 			},
 			CD: core.Cooldown{
 				Timer:    demonology.NewTimer(),
-				Duration: time.Second * 12,
+				Duration: 12 * time.Second,
 			},
 		},
 
@@ -71,14 +58,12 @@ func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
 		BonusCoefficient: 0.968,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := demonology.CalcBaseDamageWithVariance(sim, warlock.Coefficient_HandOfGuldan, warlock.Variance_HandOfGuldan)
+			baseDamage := demonology.CalcAndRollDamageRange(sim, warlock.Coefficient_HandOfGuldan, warlock.Variance_HandOfGuldan)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
-
-				//for _, aoeTarget := range sim.Encounter.TargetUnits {
-				//aura := demonology.ActivePet.CurseOfGuldanDebuffs.Get(target)
-				//aura.Activate(sim)
-				//}
+				for _, target := range sim.Encounter.TargetUnits {
+					curseOfGuldanAuras.Get(target).Activate(sim)
+				}
 			}
 		},
 	})

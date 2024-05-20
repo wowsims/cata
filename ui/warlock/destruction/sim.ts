@@ -13,10 +13,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	cssClass: 'destruction-warlock-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Warlock),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: ['Drain Soul is currently disabled for APL rotations'],
+	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery, Stat.StatStamina],
+	epStats: [
+		Stat.StatIntellect,
+		Stat.StatSpellPower,
+		Stat.StatSpellHit,
+		Stat.StatSpellCrit,
+		Stat.StatSpellHaste,
+		Stat.StatMastery,
+	],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -25,14 +32,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
-		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMastery,
 		Stat.StatMP5,
-		Stat.StatStamina,
 	],
 
 	defaults: {
@@ -42,12 +47,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
 			[Stat.StatIntellect]: 0.18,
-			[Stat.StatSpirit]: 0.54,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellHit]: 0.93,
 			[Stat.StatSpellCrit]: 0.53,
 			[Stat.StatSpellHaste]: 0.81,
-			[Stat.StatStamina]: 0.01,
+			[Stat.StatMastery]: 1.0,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -71,7 +75,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
-		WarlockInputs.PetInput(), 
+		WarlockInputs.PetInput(),
 	],
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
@@ -90,7 +94,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 	petConsumeInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [WarlockInputs.DetonateSeed(), OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment, OtherInputs.ChannelClipDelay],
+		inputs: [WarlockInputs.DetonateSeed(), OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.DarkIntentUptime, OtherInputs.TankAssignment, OtherInputs.ChannelClipDelay],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
 	encounterPicker: {

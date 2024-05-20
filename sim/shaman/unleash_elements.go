@@ -99,7 +99,7 @@ func (shaman *Shaman) registerUnleashWind() {
 		DamageMultiplier: 1.75,
 		CritMultiplier:   shaman.DefaultMeleeCritMultiplier(),
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			damage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
 			unleashWindAura.Activate(sim)
 		},

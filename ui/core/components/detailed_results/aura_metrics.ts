@@ -46,7 +46,7 @@ export class AuraMetricsTable extends MetricsTable<AuraMetrics> {
 		if (this.useDebuffs) {
 			return AuraMetrics.groupById(resultData.result.getDebuffMetrics(resultData.filter));
 		} else {
-			const players = resultData.result.getPlayers(resultData.filter);
+			const players = resultData.result.getRaidIndexedPlayers(resultData.filter);
 			if (players.length != 1) {
 				return [];
 			}

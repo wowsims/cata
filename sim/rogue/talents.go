@@ -1,8 +1,6 @@
 package rogue
 
 import (
-	"math"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -54,11 +52,11 @@ func (rogue *Rogue) makeFinishingMoveEffectApplier() func(sim *core.Simulation, 
 }
 
 func (rogue *Rogue) makeGeneratorCostModifier() func(baseCost float64) float64 {
-	if rogue.HasSetBonus(Tier7, 4) {
-		return func(baseCost float64) float64 {
-			return math.RoundToEven(0.95 * baseCost)
-		}
-	}
+	// if rogue.HasSetBonus(Tier7, 4) {
+	// 	return func(baseCost float64) float64 {
+	// 		return math.RoundToEven(0.95 * baseCost)
+	// 	}
+	// }
 	return func(baseCost float64) float64 {
 		return baseCost
 	}

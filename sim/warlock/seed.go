@@ -22,7 +22,7 @@ func (warlock *Warlock) registerSeedSpell() {
 		BonusCoefficient:         0.1716,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDmg := warlock.ScalingBaseDamage * Coefficient_SeedExplosion * sim.Encounter.AOECapMultiplier()
+			baseDmg := warlock.CalcScalingSpellDmg(Coefficient_SeedExplosion) * sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, spell.OutcomeMagicHitAndCrit)
 			}
@@ -53,7 +53,7 @@ func (warlock *Warlock) registerSeedSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 2000,
+				CastTime: 2000 * time.Millisecond,
 			},
 		},
 
@@ -85,11 +85,11 @@ func (warlock *Warlock) registerSeedSpell() {
 			},
 
 			NumberOfTicks:    6,
-			TickLength:       time.Second * 3,
+			TickLength:       3 * time.Second,
 			BonusCoefficient: 0.30,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDamage := warlock.ScalingBaseDamage * Coefficient_SeedDot / 6
+				baseDamage := warlock.CalcScalingSpellDmg(Coefficient_SeedDot) / 6
 				dot.Snapshot(target, baseDamage)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

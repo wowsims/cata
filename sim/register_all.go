@@ -6,8 +6,8 @@ import (
 	frostDeathKnight "github.com/wowsims/cata/sim/death_knight/frost"
 	"github.com/wowsims/cata/sim/death_knight/unholy"
 	"github.com/wowsims/cata/sim/druid/balance"
-
 	"github.com/wowsims/cata/sim/druid/feral"
+	"github.com/wowsims/cata/sim/druid/guardian"
 	restoDruid "github.com/wowsims/cata/sim/druid/restoration"
 	_ "github.com/wowsims/cata/sim/encounters"
 	"github.com/wowsims/cata/sim/hunter/beast_mastery"
@@ -50,7 +50,7 @@ func RegisterAll() {
 
 	balance.RegisterBalanceDruid()
 	feral.RegisterFeralDruid()
-	// feralTank.RegisterFeralTankDruid()
+	guardian.RegisterGuardianDruid()
 	restoDruid.RegisterRestorationDruid()
 
 	beast_mastery.RegisterBeastMasteryHunter()
