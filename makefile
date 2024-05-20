@@ -51,26 +51,15 @@ $(OUT_DIR)/bundle/.dirstamp: \
   $(UI_SRC) \
   $(PAGE_INDECES) \
   vite.config.mts \
+  vite.build-workers.ts \
   node_modules \
   tsconfig.json \
   ui/core/index.ts \
-  ui/core/proto/api.ts \
-  $(OUT_DIR)/net_worker.js \
-  $(OUT_DIR)/sim_worker.js \
-  $(OUT_DIR)/local_worker.js
+  ui/core/proto/api.ts
 	npx tsc --noEmit
+	npx tsx vite.build-workers.ts
 	npx vite build
 	touch $@
-
-$(OUT_DIR)/sim_worker.js: ui/worker/sim_worker.js
-	cat '$(GOROOT)/misc/wasm/wasm_exec.js' > $(OUT_DIR)/sim_worker.js
-	cat ui/worker/sim_worker.js >> $(OUT_DIR)/sim_worker.js
-
-$(OUT_DIR)/net_worker.js: ui/worker/net_worker.js
-	cp ui/worker/net_worker.js $(OUT_DIR)
-
-$(OUT_DIR)/local_worker.js: ui/worker/local_worker.js
-	cp ui/worker/local_worker.js $(OUT_DIR)
 
 ui/core/index.ts: $(TS_CORE_SRC)
 	find ui/core -name '*.ts' | \
@@ -181,7 +170,7 @@ endif
 
 rundevserver: air devserver
 ifeq ($(WATCH), 1)
-	npx vite build -m development --watch &
+	npx tsx vite.build-workers.ts & npx vite build -m development --watch &
 	ulimit -n 10240 && air -tmp_dir "/tmp" -build.include_ext "go,proto" -build.args_bin "--usefs=true --launch=false" -build.bin "./wowsimcata" -build.cmd "make devserver" -build.exclude_dir "assets,dist,node_modules,ui,tools"
 else
 	./wowsimcata --usefs=true --launch=false --host=":3333"
@@ -271,8 +260,11 @@ endif
 
 devmode: air devserver
 ifeq ($(WATCH), 1)
-	npx vite serve --host &
+	npx tsx vite.build-workers.ts & npx vite serve --host &
 	air -tmp_dir "/tmp" -build.include_ext "go,proto" -build.args_bin "--usefs=true --launch=false --wasm=false" -build.bin "./wowsimcata" -build.cmd "make devserver" -build.exclude_dir "assets,dist,node_modules,ui,tools"
 else
 	./wowsimcata --usefs=true --launch=false --host=":3333"
 endif
+
+webworkers:
+	npx tsx vite.build-workers.ts --watch=$(if $(WATCH),true,false)

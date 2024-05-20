@@ -1143,6 +1143,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/golang-wasm-exec@npm:^1.15.2":
+  version: 1.15.2
+  resolution: "@types/golang-wasm-exec@npm:1.15.2"
+  checksum: faa40e6f6f128ccff7cf583587af764b8fa4b14ff94b1bf35cf62e92e604eb6f1e2c28b96634ce00858536ec8566b1904409c358eda7dda01dcce976650aab57
+  languageName: node
+  linkType: hard
+
 "@types/http-errors@npm:*":
   version: 2.0.4
   resolution: "@types/http-errors@npm:2.0.4"
@@ -1953,6 +1960,7 @@ __metadata:
     "@types/bootstrap": ^5.2.0
     "@types/eslint": ^8.56.10
     "@types/glob": ^8.1.0
+    "@types/golang-wasm-exec": ^1.15.2
     "@types/node": ^18.16.1
     "@types/pako": ^2.0.0
     "@types/uuid": ^9.0.8

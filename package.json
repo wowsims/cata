@@ -28,6 +28,7 @@
 	},
 	"dependencies": {
 		"@popperjs/core": "^2.11.6",
+		"@types/golang-wasm-exec": "^1.15.2",
 		"@types/pako": "^2.0.0",
 		"@wowsims/assets": "https://github.com/wowsims/wowsims.git",
 		"@wowsims/config": "https://github.com/wowsims/wowsims.git",

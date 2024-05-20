@@ -2,7 +2,8 @@
 import glob from 'glob';
 import path from 'path';
 import copy from 'rollup-plugin-copy';
-import { ConfigEnv, defineConfig, UserConfig, UserConfigExport } from 'vite';
+import { ConfigEnv, defineConfig, UserConfigExport } from 'vite';
+import { checker } from 'vite-plugin-checker';
 
 import { serveExternalAssets, serveFile } from './node_modules/@wowsims/assets/helpers/assets';
 
@@ -71,6 +72,11 @@ export default defineConfig(({ command, mode }) => {
 					},
 				],
 				hook: 'buildEnd',
+			}),
+			checker({
+				root: path.resolve(__dirname, 'ui'),
+				typescript: true,
+				enableBuild: true,
 			}),
 		],
 		esbuild: {
