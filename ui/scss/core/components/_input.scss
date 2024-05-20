@@ -12,6 +12,9 @@
 	&:not(.input-inline) {
 		label {
 			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			max-width: 100%;
 		}
 	}
 }
@@ -33,24 +36,12 @@
 
 .picker-group {
 	width: 100%;
-	display: flex;
+	display: grid;
+	gap: var(--spacer-3);
+	grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+	margin-bottom: var(--spacer-3);
 
-	@include media-breakpoint-down(xl) {
-		width: 100%;
-		flex-wrap: wrap;
-	}
-
-	& > * {
-		flex: 1;
-
-		&:nth-child(2n) {
-			@include media-breakpoint-down(xl) {
-				margin-right: 0 !important;
-			}
-		}
-
-		&:not(:last-child) {
-			margin-right: var(--spacer-3);
-		}
+	.input-root {
+		margin-bottom: 0;
 	}
 }

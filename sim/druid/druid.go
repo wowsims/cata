@@ -308,23 +308,24 @@ func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerTigersFurySpell()
 }
 
-// func (druid *Druid) RegisterFeralTankSpells() {
-// 	druid.registerBarkskinCD()
-// 	druid.registerBerserkCD()
-// 	druid.registerBearFormSpell()
-// 	druid.registerDemoralizingRoarSpell()
-// 	druid.registerEnrageSpell()
-// 	druid.registerFrenziedRegenerationCD()
-// 	druid.registerMangleBearSpell()
-// 	druid.registerMaulSpell()
-// 	druid.registerLacerateSpell()
-// 	druid.registerRakeSpell()
-// 	druid.registerRipSpell()
-// 	druid.registerSavageDefensePassive()
-// 	druid.registerSurvivalInstinctsCD()
-// 	druid.registerSwipeBearSpell()
-//  druid.registerThrashBearSpell()
-// }
+func (druid *Druid) RegisterFeralTankSpells() {
+	druid.registerBarkskinCD()
+	druid.registerBerserkCD()
+	druid.registerBearFormSpell()
+	druid.registerDemoralizingRoarSpell()
+	druid.registerEnrageSpell()
+	druid.registerFrenziedRegenerationCD()
+	druid.registerMangleBearSpell()
+	druid.registerMaulSpell()
+	druid.registerLacerateSpell()
+	druid.registerPulverizeSpell()
+	druid.registerRakeSpell()
+	druid.registerRipSpell()
+	druid.registerSavageDefensePassive()
+	druid.registerSurvivalInstinctsCD()
+	druid.registerSwipeBearSpell()
+	druid.registerThrashBearSpell()
+}
 
 func (druid *Druid) Reset(_ *core.Simulation) {
 
@@ -353,14 +354,11 @@ func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents stri
 	druid.AddStatDependency(stats.Strength, stats.AttackPower, 1)
 	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 	druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[char.Class]*core.CritRatingPerCritChance)
-	// 	// // Druid get 0.0209 dodge per agi (before dr), roughly 1 per 47.846
-	// 	// druid.AddStatDependency(stats.Agility, stats.Dodge, (0.0209)*core.DodgeRatingPerDodgeChance)
-
-	// 	// // Druids get extra melee haste
-	// 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
+	// Druids get 0.0041 dodge per agi (before dr), roughly 1% per 244
+	druid.AddStatDependency(stats.Agility, stats.Dodge, 0.00410000 * core.DodgeRatingPerDodgeChance)
 
 	// Base dodge is unaffected by Diminishing Returns
-	druid.PseudoStats.BaseDodge += 0.056097 // TODO: Check if this is different in Cata
+	druid.PseudoStats.BaseDodge += 0.04951
 
 	if druid.Talents.ForceOfNature {
 		druid.Treant1 = druid.NewTreant()

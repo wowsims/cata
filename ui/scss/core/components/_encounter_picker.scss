@@ -28,6 +28,10 @@
 }
 
 .advanced-encounter-picker-modal {
+	.modal-body {
+		overflow: auto;
+	}
+
 	.encounter-picker {
 		width: 33.33%;
 
@@ -40,45 +44,17 @@
 		flex-direction: row;
 	}
 
-	.encounter-header {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: flex-start;
-
-		.picker-group {
-			@include media-breakpoint-down(xl) {
-				width: 100% !important;
-			}
-
-			&:first-child {
-				width: 66%;
-			}
-
-			&:last-child {
-				width: 100%;
-			}
-		}
-	}
-
 	.target-picker-root {
-		display: flex;
-		flex-direction: row;
+		display: grid;
+		gap: var(--spacer-3);
+		grid-template-columns: 1fr;
+		@include media-breakpoint-up(xl) {
+			grid-template-columns: 1fr 1fr 1fr;
+		}
 
-		.target-picker-section {
-			width: 33.33%;
-
-			@include media-breakpoint-down(xl) {
-				width: 100%;
-				margin-right: 0;
-			}
-
-			&:not(:last-child) {
-				margin-right: var(--spacer-3);
-			}
-
-			&.target-picker-section2 {
-				padding-top: 1.2rem;
-			}
+		.input-root:is(:only-child),
+		.input-root:is(:last-child) {
+			margin-bottom: 0;
 		}
 	}
 }

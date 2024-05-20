@@ -5,6 +5,7 @@ import { Input, InputConfig } from './input';
  * Data for creating a number picker.
  */
 export interface NumberPickerConfig<ModObject> extends InputConfig<ModObject, number> {
+	id: string;
 	// Whether the picker represents a float value. Default `false`
 	float?: boolean;
 	// Whether to only allow positive values. Default `false`
@@ -27,11 +28,12 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 		this.showZeroes = config.showZeroes ?? true;
 
 		this.inputElem = document.createElement('input');
+		this.inputElem.id = config.id;
 		this.inputElem.type = 'text';
 		this.inputElem.classList.add('form-control', 'number-picker-input');
 
 		if (this.positive) {
-			this.inputElem.onchange = _ => {
+			this.inputElem.onchange = () => {
 				if (this.float) {
 					this.inputElem.value = Math.abs(parseFloat(this.inputElem.value)).toFixed(2);
 				} else {
@@ -43,11 +45,11 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 		this.rootElem.appendChild(this.inputElem);
 		this.init();
 
-		this.inputElem.addEventListener('change', _ => {
+		this.inputElem.addEventListener('change', () => {
 			this.inputChanged(TypedEvent.nextEventID());
 		});
 
-		this.inputElem.addEventListener('input', _ => {
+		this.inputElem.addEventListener('input', () => {
 			this.updateSize();
 		});
 		this.updateSize();

@@ -7,15 +7,10 @@ import (
 )
 
 func (druid *Druid) registerSwipeBearSpell() {
-	flatBaseDamage := 108.0
-	if druid.Ranged().ID == 23198 { // Idol of Brutality
-		flatBaseDamage += 10
-	} else if druid.Ranged().ID == 38365 { // Idol of Perspicacious Attacks
-		flatBaseDamage += 24
-	}
+	flatBaseDamage := 0.94199997187 * druid.ClassSpellScaling // ~929
 
 	druid.SwipeBear = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48562},
+		ActionID:    core.ActionID{SpellID: 779},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
@@ -28,14 +23,19 @@ func (druid *Druid) registerSwipeBearSpell() {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    druid.NewTimer(),
+				Duration: time.Second * 3,
+			},
 		},
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
+		MaxRange:         8,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := flatBaseDamage + 0.063*spell.MeleeAttackPower()
+			baseDamage := flatBaseDamage + 0.123*spell.MeleeAttackPower()
 			baseDamage *= sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

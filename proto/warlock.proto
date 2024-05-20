@@ -124,6 +124,7 @@ message WarlockOptions {
 
 	Summon summon = 1;
 	bool detonate_seed = 2;
+	int32 prepull_mastery = 3;
 }
 
 message AfflictionWarlock {

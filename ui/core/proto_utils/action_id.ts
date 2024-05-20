@@ -735,6 +735,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Mirror Image': ActionId.fromSpellId(55342),
 	'Water Elemental': ActionId.fromSpellId(31687),
 	'Greater Fire Elemental': ActionId.fromSpellId(2894),
+	'Greater Earth Elemental': ActionId.fromSpellId(2062),
 	Shadowfiend: ActionId.fromSpellId(34433),
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),

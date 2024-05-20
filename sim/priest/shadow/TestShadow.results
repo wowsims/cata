@@ -1,9 +1,9 @@
 character_stats_results: {
  key: "TestShadow-CharacterStats-Default"
  value: {
-  final_stats: 675.6225
-  final_stats: 685.0725
-  final_stats: 6982.8192
+  final_stats: 646.8
+  final_stats: 656.25
+  final_stats: 6992.8992
   final_stats: 5593.14832
   final_stats: 1873.0784
   final_stats: 9153.26315
@@ -17,7 +17,6 @@ character_stats_results: {
   final_stats: 2129.88325
   final_stats: 4267.15784
   final_stats: 0
-  final_stats: 0
   final_stats: 106333.22474
   final_stats: 13603.2
   final_stats: 0
@@ -25,8 +24,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
-  final_stats: 140784.4688
+  final_stats: 140925.5888
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -145,21 +143,21 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740"
  value: {
-  dps: 27136.0115
+  dps: 27129.24519
   tps: 25767.11783
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741"
  value: {
-  dps: 26691.05004
+  dps: 26683.45316
   tps: 25351.30566
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742"
  value: {
-  dps: 26691.05004
+  dps: 26683.45316
   tps: 25351.30566
  }
 }
@@ -257,7 +255,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-DarkmoonCard:Earthquake-62048"
  value: {
-  dps: 26691.05004
+  dps: 26683.45316
   tps: 25351.30566
  }
 }
@@ -544,14 +542,14 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-HeartofThunder-55845"
  value: {
-  dps: 26691.80623
+  dps: 26684.79793
   tps: 25351.38883
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-HeartofThunder-56370"
  value: {
-  dps: 26691.80623
+  dps: 26684.79793
   tps: 25351.38883
  }
 }
@@ -607,7 +605,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-InsigniaofDiplomacy-61433"
  value: {
-  dps: 26691.80623
+  dps: 26684.79793
   tps: 25351.38883
  }
 }
@@ -1195,42 +1193,42 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
  value: {
-  dps: 26691.05004
+  dps: 26683.45316
   tps: 25351.30566
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 27343.01989
+  dps: 27335.80597
   tps: 26001.3889
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
  value: {
-  dps: 27251.69364
+  dps: 27244.9082
   tps: 25878.13901
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
  value: {
-  dps: 26691.05004
+  dps: 26683.45316
   tps: 25351.30566
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-ViciousGladiator'sEmblemofProwess-61029"
  value: {
-  dps: 27203.77937
+  dps: 27196.1825
   tps: 25864.035
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
  value: {
-  dps: 26691.05004
+  dps: 26683.45316
   tps: 25351.30566
  }
 }
