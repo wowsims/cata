@@ -1,5 +1,8 @@
 .raid-tab {
-  .raid-tab-left {
-    flex-direction: column;
-  }
+	.tab-pane-content-container {
+		.raid-tab-left {
+			grid-template-columns: auto;
+			width: 100%;
+		}
+	}
 }

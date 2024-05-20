@@ -59,6 +59,7 @@ export const DefaultOptions = WarlockOptions.create({
 	classOptions: {
 		summon: Summon.Felguard,
 		detonateSeed: true,
+		prepullMastery: 0,
 	},
 });
 

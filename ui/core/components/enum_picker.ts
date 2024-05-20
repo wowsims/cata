@@ -1,14 +1,14 @@
 import { EventID, TypedEvent } from '../typed_event.js';
-
 import { Input, InputConfig } from './input.js';
 
 export interface EnumValueConfig {
-	name: string,
-	value: number,
-	tooltip?: string,
+	name: string;
+	value: number;
+	tooltip?: string;
 }
 
 export interface EnumPickerConfig<ModObject> extends InputConfig<ModObject, number> {
+	id: string;
 	values: Array<EnumValueConfig>;
 }
 
@@ -19,9 +19,10 @@ export class EnumPicker<ModObject> extends Input<ModObject, number> {
 		super(parent, 'enum-picker-root', modObject, config);
 
 		this.selectElem = document.createElement('select');
+		this.selectElem.id = config.id;
 		this.selectElem.classList.add('enum-picker-selector', 'form-select');
 
-		config.values.forEach((value) => {
+		config.values.forEach(value => {
 			const option = document.createElement('option');
 			option.value = String(value.value);
 			option.textContent = value.name;
@@ -35,7 +36,7 @@ export class EnumPicker<ModObject> extends Input<ModObject, number> {
 
 		this.init();
 
-		this.selectElem.addEventListener('change', event => {
+		this.selectElem.addEventListener('change', () => {
 			this.inputChanged(TypedEvent.nextEventID());
 		});
 	}

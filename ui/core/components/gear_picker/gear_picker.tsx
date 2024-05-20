@@ -144,8 +144,8 @@ export class ItemRenderer extends Component {
 				</div>
 				<div className="item-picker-labels-container">
 					<a ref={nameElem} className="item-picker-name" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<a ref={enchantElem} className="item-picker-enchant" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
-					<a ref={reforgeElem} className="item-picker-reforge" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<a ref={enchantElem} className="item-picker-enchant hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<a ref={reforgeElem} className="item-picker-reforge hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
 				</div>
 			</>,
 		);
@@ -164,7 +164,8 @@ export class ItemRenderer extends Component {
 		this.iconElem.removeAttribute('href');
 		this.enchantElem.removeAttribute('data-wowhead');
 		this.enchantElem.removeAttribute('href');
-		this.iconElem.removeAttribute('href');
+		this.enchantElem.classList.add('hide');
+		this.reforgeElem.classList.add('hide');
 
 		this.iconElem.style.backgroundImage = '';
 		this.enchantElem.innerText = '';
@@ -188,12 +189,14 @@ export class ItemRenderer extends Component {
 		}
 
 		if (newItem.reforge) {
-			const reforgeData = this.player.getReforgeData(newItem.item, newItem.reforge);
+			const reforgeData = this.player.getReforgeData(newItem, newItem.reforge);
 			const fromText = shortSecondaryStatNames.get(newItem.reforge?.fromStat[0]);
 			const toText = shortSecondaryStatNames.get(newItem.reforge?.toStat[0]);
 			this.reforgeElem.innerText = `Reforged ${Math.abs(reforgeData.fromAmount)} ${fromText} → ${reforgeData.toAmount} ${toText}`;
+			this.reforgeElem.classList.remove('hide');
 		} else {
 			this.reforgeElem.innerText = '';
+			this.reforgeElem.classList.add('hide');
 		}
 
 		setItemQualityCssClass(this.nameElem, newItem.item.quality);
@@ -226,6 +229,9 @@ export class ItemRenderer extends Component {
 				});
 			}
 			this.enchantElem.dataset.whtticon = 'false';
+			this.enchantElem.classList.remove('hide');
+		} else {
+			this.enchantElem.classList.add('hide');
 		}
 
 		newItem.allSocketColors().forEach((socketColor, gemIdx) => {
@@ -550,7 +556,7 @@ export class SelectorModal extends BaseModal {
 
 		const eligibleItems = this.player.getItems(selectedSlot);
 		const eligibleEnchants = this.player.getEnchants(selectedSlot);
-		const eligibleReforges = equippedItem?.item ? this.player.getAvailableReforgings(equippedItem.item) : [];
+		const eligibleReforges = equippedItem?.item ? this.player.getAvailableReforgings(equippedItem.getWithRandomSuffixStats()) : [];
 
 		// If the enchant tab is selected but the item has no eligible enchants, default to items
 		// If the reforge tab is selected but the item has no eligible reforges, default to items
@@ -821,17 +827,13 @@ export class SelectorModal extends BaseModal {
 		if (!equippedItem || (equippedItem.hasRandomSuffixOptions() && !equippedItem.randomSuffix)) {
 			return;
 		}
-		if (equippedItem.randomSuffix !== null) {
-			equippedItem._item.stats = equippedItem.randomSuffix.stats.map(stat =>
-				stat > 0 ? Math.floor((stat * equippedItem._item.randPropPoints) / 10000) : stat,
-			);
-		}
+
 		const itemProto = equippedItem.item;
 
 		this.addTab<ReforgeData>({
 			label: SelectorModalTabs.Reforging,
 			gearData,
-			itemData: this.player.getAvailableReforgings(itemProto).map(reforgeData => {
+			itemData: this.player.getAvailableReforgings(equippedItem).map(reforgeData => {
 				return {
 					item: reforgeData,
 					id: reforgeData.id,
@@ -859,7 +861,7 @@ export class SelectorModal extends BaseModal {
 			}),
 			computeEP: (reforge: ReforgeData) => this.player.computeReforgingEP(reforge),
 			equippedToItemFn: (equippedItem: EquippedItem | null) =>
-				equippedItem?.reforge ? this.player.getReforgeData(equippedItem.item, equippedItem.reforge) : null,
+				equippedItem?.reforge ? this.player.getReforgeData(equippedItem, equippedItem.reforge) : null,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
 				if (equippedItem) gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item));
@@ -1357,17 +1359,11 @@ export class ItemList<T extends ItemListType> {
 		const newItem = this.equippedToItemFn(currentEquippedItem);
 		const type = this.getUpdateType(newItem);
 
-		switch (type) {
-			case 'item':
-				itemIdxs = this.player.filterItemData(itemIdxs, i => this.itemData[i].item as unknown as Item, this.slot);
-				break;
-			case 'enchant':
-				itemIdxs = this.player.filterEnchantData(itemIdxs, i => this.itemData[i].item as unknown as Enchant, this.slot, currentEquippedItem);
-				break;
-			case 'gem':
-				itemIdxs = this.player.filterGemData(itemIdxs, i => this.itemData[i].item as unknown as Gem, this.slot, this.socketColor);
-				break;
-		}
+		if (type === 'item' || this.label === SelectorModalTabs.Items)
+			itemIdxs = this.player.filterItemData(itemIdxs, i => this.itemData[i].item as unknown as Item, this.slot);
+		else if (type === 'enchant' || this.label === SelectorModalTabs.Enchants)
+			itemIdxs = this.player.filterEnchantData(itemIdxs, i => this.itemData[i].item as unknown as Enchant, this.slot, currentEquippedItem);
+		else if (type === 'gem') itemIdxs = this.player.filterGemData(itemIdxs, i => this.itemData[i].item as unknown as Gem, this.slot, this.socketColor);
 
 		itemIdxs = itemIdxs.filter(i => {
 			const listItemData = this.itemData[i];

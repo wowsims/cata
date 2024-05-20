@@ -14,7 +14,7 @@ func (warlock *Warlock) registerFelFlameSpell() {
 		MissileSpeed:   38,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.6,
+			BaseCost: 0.06,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

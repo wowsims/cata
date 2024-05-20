@@ -446,9 +446,10 @@ export class Player<SpecType extends Spec> {
 	}
 
 	// Returns all reforgings that are valid with a given item
-	getAvailableReforgings(item: Item): Array<ReforgeData> {
-		return this.sim.db.getAvailableReforges(item).map(reforge => {
-			return this.getReforgeData(item, reforge);
+	getAvailableReforgings(equippedItem: EquippedItem): Array<ReforgeData> {
+		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
+		return this.sim.db.getAvailableReforges(withRandomSuffixStats.item).map(reforge => {
+			return this.getReforgeData(equippedItem, reforge);
 		});
 	}
 
@@ -457,10 +458,11 @@ export class Player<SpecType extends Spec> {
 		return this.sim.db.getReforgeById(id);
 	}
 
-	getReforgeData(item: Item, reforge: ReforgeStat): ReforgeData {
+	getReforgeData(equippedItem: EquippedItem, reforge: ReforgeStat): ReforgeData {
+		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
+		const item = withRandomSuffixStats.item;
 		const fromAmount = Math.ceil(-item.stats[reforge.fromStat[0]] * reforge.multiplier);
 		const toAmount = Math.floor(item.stats[reforge.fromStat[0]] * reforge.multiplier);
-
 		return {
 			id: reforge.id,
 			reforge: reforge,
@@ -1530,7 +1532,7 @@ export class Player<SpecType extends Spec> {
 			this.setSimpleCooldowns(
 				eventID,
 				Cooldowns.create({
-					hpPercentForDefensives: this.playerSpec.isTankSpec ? 0.35 : 0,
+					hpPercentForDefensives: this.playerSpec.isTankSpec ? 0.4 : 0,
 				}),
 			);
 			this.setBonusStats(eventID, new Stats());

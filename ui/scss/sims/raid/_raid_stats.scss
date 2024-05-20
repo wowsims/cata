@@ -1,5 +1,5 @@
-:root{
-	--raid-stats-bg: var(--bs-gray-800-alpha-50)
+:root {
+	--raid-stats-bg: var(--bs-gray-800-alpha-50);
 }
 .raid-stats {
 	.raid-stats-section {
@@ -14,13 +14,18 @@
 			border: var(--border-default);
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
+			gap: var(--block-spacer);
 			background-color: var(--raid-stats-bg);
 
-			.raid-stats-category-root {
-				&:not(:nth-last-child(-n + 4)) {
-					margin-bottom: var(--block-spacer);
-				}
+			@include media-breakpoint-down(md) {
+				grid-template-columns: repeat(3, 1fr);
+			}
 
+			@include media-breakpoint-down(sm) {
+				grid-template-columns: repeat(2, 1fr);
+			}
+
+			.raid-stats-category-root {
 				.raid-stats-category {
 					display: inline-flex;
 					color: var(--bs-white);

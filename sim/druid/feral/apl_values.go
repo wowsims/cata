@@ -155,7 +155,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	if cat.Rotation.MaintainFaerieFire {
 		for _, aoeTarget := range sim.Encounter.TargetUnits {
 			if cat.ShouldFaerieFire(sim, aoeTarget) {
-				cat.FaerieFire.Cast(sim, aoeTarget)
+				cat.FaerieFire.CastOrQueue(sim, aoeTarget)
 			}
 		}
 	}

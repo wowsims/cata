@@ -148,9 +148,15 @@ message FuryWarrior {
 		bool use_recklessness = 2;
 		bool stance_snapshot = 3;
 		bool disable_expertise_gemming = 4;
+		WarriorSyncType sync_type = 5;
 	}
 	Options options = 1;
 }
+
+enum WarriorSyncType {
+	WarriorNoSync = 0;
+	WarriorSyncMainhandOffhandSwings = 1;
+  }
 
 message ProtectionWarrior {
 	message Rotation {}

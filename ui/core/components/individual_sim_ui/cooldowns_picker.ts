@@ -115,6 +115,7 @@ export class CooldownsPicker extends Component {
 
 	private makeTimingsPicker(parentElem: HTMLElement, cooldownIndex: number): NumberListPicker<Player<any>> {
 		const actionPicker = new NumberListPicker(parentElem, this.player, {
+			id: `cooldown-timings-${cooldownIndex}`,
 			extraCssClasses: ['cooldown-timings-picker'],
 			placeholder: '20, 40, ...',
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,

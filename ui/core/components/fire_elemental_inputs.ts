@@ -43,6 +43,7 @@ export function FireElementalSection(parentElem: HTMLElement, simUI: IndividualS
 	new IconPicker(fireElementalIconContainer, simUI.player, fireElementalBooleanIconInput);
 
 	new NumberPicker(contentBlock.bodyElement, simUI.player, {
+		id: 'fire-elemental-bonus-spellpower',
 		positive: true,
 		label: 'Bonus spell power',
 		labelTooltip: 'Bonus spell power to snapshot Fire Elemental with. Will prioritize dropping Fire Elemental if greater then 0',
@@ -61,6 +62,7 @@ export function FireElementalSection(parentElem: HTMLElement, simUI: IndividualS
 	});
 
 	new BooleanPicker(contentBlock.bodyElement, simUI.player, {
+		id: 'fire-elemental-use-tier-ten',
 		label: 'Use Tier 10 (4pc)',
 		labelTooltip: 'Will use Tier 10 (4pc) to snapshot Fire Elemental.',
 		inline: true,

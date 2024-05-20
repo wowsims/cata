@@ -17,7 +17,7 @@ func (hunter *Hunter) registerArcaneShotSpell() {
 		MinRange:       5,
 		MaxRange:       40,
 		FocusCost: core.FocusCostOptions{
-			Cost: 25 - float64(hunter.Talents.Efficiency),
+			Cost: 25,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

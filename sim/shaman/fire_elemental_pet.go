@@ -32,7 +32,9 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 	}
 	fireElemental.EnableManaBar()
 	fireElemental.AddStatDependency(stats.Intellect, stats.SpellPower, 1.0)
+	fireElemental.AddStatDependency(stats.Intellect, stats.AttackPower, 7.0) // 1.0 * 7
 	fireElemental.AddStat(stats.SpellPower, -10)
+	fireElemental.AddStat(stats.AttackPower, -70) // -10 * 7
 	fireElemental.EnableAutoAttacks(fireElemental, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin:  429, //Estimated from beta testing
@@ -43,10 +45,11 @@ func (shaman *Shaman) NewFireElemental(bonusSpellPower float64) *FireElemental {
 		},
 		AutoSwingMelee: true,
 	})
+	fireElemental.AutoAttacks.MHConfig().BonusCoefficient = 0
 
 	if bonusSpellPower > 0 {
 		fireElemental.AddStat(stats.SpellPower, float64(bonusSpellPower)*0.5883)
-		fireElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*0.7)
+		fireElemental.AddStat(stats.AttackPower, float64(bonusSpellPower)*4.9) // 0.7*7
 	}
 
 	if shaman.Race == proto.Race_RaceDraenei {
@@ -146,23 +149,24 @@ var fireElementalPetBaseStats = stats.Stats{
 	stats.SpellPower:  0, //Estimated
 	stats.AttackPower: 0, //Estimated
 
-	// TODO : Log digging and my own samples this seems to be around the 5% mark.
+	// TODO : Log digging shows ~2% melee crit chance, and ~2% spell hit chance + 5% spell crit debuff
 	stats.MeleeCrit: (5 + 1.8) * core.CritRatingPerCritChance,
-	stats.SpellCrit: 2.61 * core.CritRatingPerCritChance,
+	stats.SpellCrit: (5 + 1.8) * core.CritRatingPerCritChance,
 }
 
 func (shaman *Shaman) fireElementalStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
-		ownerSpellHitChance := math.Floor(ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance)
+		ownerSpellHitChance := ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance
 		spellHitRatingFromOwner := ownerSpellHitChance * core.SpellHitRatingPerHitChance
+		meleeHitRatingFromOwner := ownerSpellHitChance / 17 * 8 * core.MeleeHitRatingPerHitChance
 
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.80,      //Estimated from beta testing
 			stats.Intellect:   ownerStats[stats.Intellect] * 0.3198,  //Estimated from beta testing
 			stats.SpellPower:  ownerStats[stats.SpellPower] * 0.5883, //Estimated from beta testing
-			stats.AttackPower: ownerStats[stats.SpellPower] * 0.7,    //Estimated from beta testing
+			stats.AttackPower: ownerStats[stats.SpellPower] * 4.9,    // 0.7*7 Estimated from beta testing
 
-			stats.MeleeHit: spellHitRatingFromOwner,
+			stats.MeleeHit: meleeHitRatingFromOwner,
 			stats.SpellHit: spellHitRatingFromOwner,
 
 			/*

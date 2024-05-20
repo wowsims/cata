@@ -194,7 +194,7 @@ func (shaman *Shaman) HasMinorGlyph(glyph proto.ShamanMinorGlyph) bool {
 
 func (shaman *Shaman) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
-	if shaman.Totems.Fire != proto.FireTotem_NoFireTotem {
+	if shaman.Totems.Fire != proto.FireTotem_NoFireTotem && shaman.Talents.TotemicWrath {
 		raidBuffs.TotemicWrath = true
 	}
 
