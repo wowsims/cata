@@ -270,11 +270,7 @@ export class ActionId {
 				break;
 			case 'Fireball':
 			case 'Flamestrike':
-				if (this.tag == 8) {
-					name += ' (Rank 8)';
-				} else if (this.tag == 9) {
-					name += ' (Rank 9)';
-				}
+				if (this.tag == 1)	name += ' (Blast Wave)';
 				break;
 			case 'Pyroblast':
 			case 'Combustion':
