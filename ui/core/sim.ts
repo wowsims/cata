@@ -77,7 +77,7 @@ export class Sim {
 	private showThreatMetrics = false;
 	private showHealingMetrics = false;
 	private showExperimental = false;
-	private useConcurrency = 0;
+	private wasmConcurrency = 0;
 	private showQuickSwap = false;
 	private showEPValues = false;
 	private language = '';
@@ -98,7 +98,7 @@ export class Sim {
 	readonly showThreatMetricsChangeEmitter = new TypedEvent<void>();
 	readonly showHealingMetricsChangeEmitter = new TypedEvent<void>();
 	readonly showExperimentalChangeEmitter = new TypedEvent<void>();
-	readonly useConcurencyChangeEmitter = new TypedEvent<void>();
+	readonly wasmConcurrencyChangeEmitter = new TypedEvent<void>();
 	readonly showQuickSwapChangeEmitter = new TypedEvent<void>();
 	readonly showEPValuesChangeEmitter = new TypedEvent<void>();
 	readonly languageChangeEmitter = new TypedEvent<void>();
@@ -131,10 +131,10 @@ export class Sim {
 		this.type = type ?? SimType.SimTypeIndividual;
 
 		this.workerPool = new WorkerPool(1);
-		this.useConcurencyChangeEmitter.on(async () => {
+		this.wasmConcurrencyChangeEmitter.on(async () => {
 			// Prevent using worker concurrency when not running wasm. Local sim has native threading.
 			if (await this.workerPool.isWasm()) {
-				const nWorker = Math.max(1, Math.min(this.useConcurrency, navigator.hardwareConcurrency));
+				const nWorker = Math.max(1, Math.min(this.wasmConcurrency, navigator.hardwareConcurrency));
 				this.workerPool.setNumWorkers(nWorker);
 			}
 		});
@@ -155,7 +155,7 @@ export class Sim {
 			this.showThreatMetricsChangeEmitter,
 			this.showHealingMetricsChangeEmitter,
 			this.showExperimentalChangeEmitter,
-			this.useConcurencyChangeEmitter,
+			this.wasmConcurrencyChangeEmitter,
 			this.showQuickSwapChangeEmitter,
 			this.showEPValuesChangeEmitter,
 			this.languageChangeEmitter,
@@ -292,8 +292,8 @@ export class Sim {
 			const request = this.makeRaidSimRequest(false);
 
 			let result;
-			// Only use worker concurrency when running wasm. Local sim has native threading.
-			if (this.workerPool.getNumWorkers() >= 2 && await this.workerPool.isWasm()) {
+			// Only use worker base concurrency when running wasm. Local sim has native threading.
+			if (await this.isWasm() && this.getWasmConcurrency() >= 2) {
 				result = await runConcurrentSim(request, this.workerPool, onProgress);
 			} else {
 				result = await this.workerPool.raidSimAsync(request, onProgress);
@@ -559,13 +559,13 @@ export class Sim {
 		}
 	}
 
-	getUseConcurrency(): number {
-		return this.useConcurrency;
+	getWasmConcurrency(): number {
+		return this.wasmConcurrency;
 	}
-	setUseConcurrency(eventID: EventID, newUseConcurrency: number) {
-		if (newUseConcurrency != this.useConcurrency) {
-			this.useConcurrency = newUseConcurrency;
-			this.useConcurencyChangeEmitter.emit(eventID);
+	setWasmConcurrency(eventID: EventID, newWasmConcurrency: number) {
+		if (newWasmConcurrency != this.wasmConcurrency) {
+			this.wasmConcurrency = newWasmConcurrency;
+			this.wasmConcurrencyChangeEmitter.emit(eventID);
 		}
 	}
 
@@ -643,7 +643,7 @@ export class Sim {
 			showThreatMetrics: this.getShowThreatMetrics(),
 			showHealingMetrics: this.getShowHealingMetrics(),
 			showExperimental: this.getShowExperimental(),
-			useConcurrency: this.getUseConcurrency(),
+			wasmConcurrency: this.getWasmConcurrency(),
 			showQuickSwap: this.getShowQuickSwap(),
 			showEpValues: this.getShowEPValues(),
 			language: this.getLanguage(),
@@ -661,7 +661,7 @@ export class Sim {
 			this.setShowThreatMetrics(eventID, proto.showThreatMetrics);
 			this.setShowHealingMetrics(eventID, proto.showHealingMetrics);
 			this.setShowExperimental(eventID, proto.showExperimental);
-			this.setUseConcurrency(eventID, proto.useConcurrency);
+			this.setWasmConcurrency(eventID, proto.wasmConcurrency);
 			this.setShowQuickSwap(eventID, proto.showQuickSwap);
 			this.setShowEPValues(eventID, proto.showEpValues);
 			this.setLanguage(eventID, proto.language);

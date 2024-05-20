@@ -175,9 +175,9 @@ export class SettingsMenu extends BaseModal {
 				id: 'simui-concurrent-workers-picker',
 				label: 'Use Multiple CPU Cores',
 				labelTooltip: 'Use web workers to spread sim workload over multiple CPU cores.',
-				changedEvent: (sim: Sim) => sim.useConcurencyChangeEmitter,
-				getValue: (sim: Sim) => sim.getUseConcurrency(),
-				setValue: (eventID, sim, newValue) => sim.setUseConcurrency(eventID, newValue),
+				changedEvent: (sim: Sim) => sim.wasmConcurrencyChangeEmitter,
+				getValue: (sim: Sim) => sim.getWasmConcurrency(),
+				setValue: (eventID, sim, newValue) => sim.setWasmConcurrency(eventID, newValue),
 				values: values,
 			});
 
@@ -190,8 +190,8 @@ export class SettingsMenu extends BaseModal {
 			// Hide if not running wasm. Local sim has native threading.
 			this.simUI.sim.isWasm().then(isWasm => {
 				if (!isWasm) {
-					if (this.simUI.sim.getUseConcurrency()) {
-						this.simUI.sim.setUseConcurrency(TypedEvent.nextEventID(), 0);
+					if (this.simUI.sim.getWasmConcurrency()) {
+						this.simUI.sim.setWasmConcurrency(TypedEvent.nextEventID(), 0);
 					}
 					useConcurrentWorkersWrap.value!.hidden = true;
 				}
