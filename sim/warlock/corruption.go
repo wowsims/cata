@@ -14,15 +14,8 @@ func (warlock *Warlock) registerCorruption() {
 		Flags:          core.SpellFlagHauntSE | core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellCorruption,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.06,
-			Multiplier: 1,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.06},
+		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
@@ -35,10 +28,10 @@ func (warlock *Warlock) registerCorruption() {
 			NumberOfTicks:       6,
 			TickLength:          3 * time.Second,
 			AffectedByCastSpeed: true,
-			BonusCoefficient:    0.176,
+			BonusCoefficient:    0.17599999905,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, 1033/6)
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(0.15299999714))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
