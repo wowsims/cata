@@ -1,4 +1,4 @@
-import { ProgressMetrics, RaidSimRequest, RaidSimRequestSplitRequest, RaidSimRequestSplitResult, RaidSimResult, RaidSimResultCombinationRequest, RaidSimResultCombinationResult } from "./proto/api";
+import { ProgressMetrics, RaidSimRequest, RaidSimRequestSplitRequest, RaidSimResult, RaidSimResultCombinationRequest } from "./proto/api";
 import { WorkerPool, WorkerProgressCallback } from "./worker_pool";
 
 class ConcurrentSimProgress {
@@ -62,6 +62,62 @@ class ConcurrentSimProgress {
 	}
 }
 
+interface SimRunResult {
+	errorResult?: RaidSimResult;
+	results: RaidSimResult[];
+	progressMetricsFinal: ProgressMetrics;
+}
+
+function runSims(requests: RaidSimRequest[], totalIterations: number, wp: WorkerPool, onProgress: WorkerProgressCallback): Promise<SimRunResult> {
+	return new Promise(resolve => {
+		const csp = new ConcurrentSimProgress(requests.length, totalIterations);
+		let progressCounter = 0;
+		let running = requests.length;
+
+		const progressHandler = (idx: number, pm: ProgressMetrics) => {
+			if (!running) return;
+
+			csp.updateProgress(idx, pm);
+
+			progressCounter++;
+			if (progressCounter % running == 0) {
+				onProgress(csp.makeProgressMetrics());
+			}
+
+			if (pm.finalRaidResult) {
+				running--;
+				let errRes: RaidSimResult | undefined;
+
+				if (pm.finalRaidResult.errorResult) {
+					console.error(`Worker ${idx} had an error!`);
+					errRes = pm.finalRaidResult;
+					// This sucks, but it's better than having long running workers forever.
+					if (requests[0].simOptions!.iterations > 1000) {
+						console.log("Terminating all workers to get going again.");
+						const num = wp.getNumWorkers();
+						wp.setNumWorkers(0);
+						wp.setNumWorkers(num);
+					}
+				}
+
+				if (errRes || running == 0) {
+					running = 0;
+					resolve({
+						errorResult: errRes,
+						results: csp.finalResults,
+						progressMetricsFinal: csp.makeProgressMetrics(),
+					});
+					return;
+				}
+			}
+		}
+
+		for (let i = 0; i < requests.length; i++) {
+			wp.raidSimAsync(requests[i], pm => progressHandler(i, pm));
+		}
+	});
+}
+
 function makeAndSendErrorResult(err: string, onProgress: WorkerProgressCallback): RaidSimResult {
 	const errRes = RaidSimResult.create({ errorResult: err });
 	onProgress(ProgressMetrics.create({ finalRaidResult: errRes }));
@@ -69,99 +125,43 @@ function makeAndSendErrorResult(err: string, onProgress: WorkerProgressCallback)
 	return errRes;
 }
 
-function splitRequest(request: RaidSimRequest, wp: WorkerPool): Promise<RaidSimRequestSplitResult> {
-	return wp.raidSimRequestSplit(RaidSimRequestSplitRequest.create({
-		splitCount: wp.getNumWorkers(),
-		request: request,
-	}));
-}
-
-function combineResults(results: RaidSimResult[], wp: WorkerPool): Promise<RaidSimResultCombinationResult> {
-	return wp.raidSimResultCombination(RaidSimResultCombinationRequest.create({
-		results: results,
-	}));
-}
-
-interface SimRunResult {
-	errorResult?: RaidSimResult;
-	results: RaidSimResult[];
-	progressMetricsFinal: ProgressMetrics;
-}
-
-async function runSims(requests: RaidSimRequest[], totalIterations: number, wp: WorkerPool, onProgress: WorkerProgressCallback): Promise<SimRunResult> {
-	let resolve: ((r: SimRunResult) => void) | undefined = undefined;
-
-	const csp = new ConcurrentSimProgress(requests.length, totalIterations);
-	let progressCounter = 0;
-	let running = requests.length;
-
-	const progressHandler = async (idx: number, pm: ProgressMetrics) => {
-		if (!resolve) return;
-
-		csp.updateProgress(idx, pm)
-
-		if (pm.finalRaidResult) {
-			let errRes: RaidSimResult | undefined;
-			if (pm.finalRaidResult.errorResult) {
-				console.error(`Worker ${idx} had an error!`);
-				errRes = pm.finalRaidResult;
-				// This sucks, but it's better than having long running workers forever.
-				if (requests[0].simOptions!.iterations > 1000) {
-					console.log("Terminating all workers to get going again.");
-					const num = wp.getNumWorkers();
-					wp.setNumWorkers(0);
-					wp.setNumWorkers(num);
-				}
-			}
-
-			running--;
-			if (errRes || running == 0) {
-				resolve({
-					errorResult: errRes,
-					results: csp.finalResults,
-					progressMetricsFinal: csp.makeProgressMetrics(),
-				});
-				resolve = undefined;
-			}
-		}
-
-		progressCounter++;
-		if (progressCounter % running == 0) {
-			onProgress(csp.makeProgressMetrics());
-		}
-	}
-
-	for (let i = 0; i < requests.length; i++) {
-		wp.raidSimAsync(requests[i], pm => { progressHandler(i, pm) });
-	}
-
-	return new Promise(res => {
-		resolve = res;
-	});
-}
-
 export async function runConcurrentSim(request: RaidSimRequest, workerPool: WorkerPool, onProgress: WorkerProgressCallback): Promise<RaidSimResult> {
 	console.log(`Sending requests split for ${workerPool.getNumWorkers()} splits.`);
-	const splitRes = await splitRequest(request, workerPool);
-	if (splitRes.errorResult) return makeAndSendErrorResult(splitRes.errorResult, onProgress);
-	console.log(`Got ${splitRes.splitsDone} splits.`);
 
-	console.log(`Running ${request.simOptions?.iterations} iterations on ${splitRes.splitsDone} concurrent sims...`);
-	const simRes = await runSims(splitRes.requests, request.simOptions!.iterations, workerPool, onProgress);
+	const splitResult = await workerPool.raidSimRequestSplit(RaidSimRequestSplitRequest.create({
+		splitCount: workerPool.getNumWorkers(),
+		request: request,
+	}));
+
+	if (splitResult.errorResult) {
+		return makeAndSendErrorResult(splitResult.errorResult, onProgress);
+	}
+
+	console.log(`Running ${request.simOptions!.iterations} iterations on ${splitResult.splitsDone} concurrent sims...`);
+
+	const simRes = await runSims(splitResult.requests, request.simOptions!.iterations, workerPool, onProgress);
+
 	if (simRes.errorResult) {
 		console.error(simRes.errorResult.errorResult);
 		return simRes.errorResult;
 	}
-	console.log(`All ${splitRes.splitsDone} sims finished successfully.`);
+
+	console.log(`All ${splitResult.splitsDone} sims finished successfully. Combining ${simRes.results.length} results.`);
+
+	const combiResult = await workerPool.raidSimResultCombination(RaidSimResultCombinationRequest.create({
+		results: simRes.results,
+	}));
+
+	if (combiResult.errorResult) {
+		return makeAndSendErrorResult(combiResult.errorResult, onProgress);
+	}
+
+	if (!combiResult.combinedResult) {
+		return makeAndSendErrorResult("Could not get combined result!", onProgress);
+	}
+
+	simRes.progressMetricsFinal.finalRaidResult = combiResult.combinedResult;
 	onProgress(simRes.progressMetricsFinal);
 
-	console.log(`Combining ${simRes.results.length} results.`);
-	const combinationResult = await combineResults(simRes.results, workerPool);
-	if (combinationResult.errorResult) makeAndSendErrorResult(combinationResult.errorResult, onProgress);
-	if (!combinationResult.combinedResult) return makeAndSendErrorResult("Could not get combined result!", onProgress);
-	console.log("Combination successfull!");
-
-	simRes.progressMetricsFinal.finalRaidResult = combinationResult.combinedResult;
-	onProgress(simRes.progressMetricsFinal);
-	return combinationResult.combinedResult;
+	return combiResult.combinedResult;
 }

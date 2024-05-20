@@ -167,7 +167,7 @@ export class SettingsMenu extends BaseModal {
 
 		if (useConcurrentWorkersWrap.value && useConcurrentWorkers.value) {
 			const values: EnumValueConfig[] = [{value: 0, name: "Off"}];
-			for (let i = 2; i < navigator.hardwareConcurrency + 1; i++) {
+			for (let i = 2; i <= navigator.hardwareConcurrency; i++) {
 				values.push({value: i, name: i.toString()});
 			}
 

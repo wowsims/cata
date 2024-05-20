@@ -171,6 +171,7 @@ class SimWorker {
 					this.wasmWorker = !!outputData && !!outputData[0];
 					this.postMessage({ msg: 'setID', id: this.workerId.toString() });
 					resolveReady!();
+					console.log(`SimWorker ${this.workerId} ready, isWasm: ${this.wasmWorker}`);
 					break;
 				case 'idConfirm':
 					break;
