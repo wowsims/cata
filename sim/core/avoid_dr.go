@@ -22,7 +22,7 @@ const Diminish_kCp = (Diminish_k_Nondruid * Diminish_Cp)
 func (unit *Unit) GetDiminishedDodgeChance() float64 {
 	// undiminished Dodge % = D
 	// diminished Dodge % = (D * Cd)/((k*Cd) + D)
-	dodgeChance := unit.stats[stats.Dodge]/DodgeRatingPerDodgeChance/100
+	dodgeChance := unit.stats[stats.Dodge] / DodgeRatingPerDodgeChance / 100
 
 	if unit.PseudoStats.CanParry {
 		return (dodgeChance * Diminish_Cd_Nondruid) / (Diminish_kCd_Nondruid + dodgeChance)
@@ -34,7 +34,7 @@ func (unit *Unit) GetDiminishedDodgeChance() float64 {
 func (unit *Unit) GetDiminishedParryChance() float64 {
 	// undiminished Parry % = P
 	// diminished Parry % = (P * Cp)/((k*Cp) + P)
-	parryChance := unit.stats[stats.Parry]/ParryRatingPerParryChance/100
+	parryChance := unit.stats[stats.Parry] / ParryRatingPerParryChance / 100
 	return (parryChance * Diminish_Cp) / (Diminish_kCp + parryChance)
 }
 

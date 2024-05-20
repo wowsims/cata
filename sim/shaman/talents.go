@@ -208,6 +208,18 @@ func (shaman *Shaman) applyRollingThunder() {
 	// allowedSpells = append(allowedSpells, shaman.LightningBolt, shaman.LightningBoltOverload, shaman.ChainLightning)
 	// allowedSpells = append(allowedSpells, shaman.ChainLightningOverloads...)
 
+	wastedLSChargeAura := shaman.RegisterAura(core.Aura{
+		Label:    "Wasted Lightning Shield Charge",
+		Duration: core.NeverExpires,
+		ActionID: core.ActionID{
+			SpellID: 324,
+			Tag:     1,
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Deactivate(sim)
+		},
+	})
+
 	shaman.RegisterAura(core.Aura{
 		Label:    "Rolling Thunder",
 		Duration: core.NeverExpires,
@@ -220,6 +232,10 @@ func (shaman *Shaman) applyRollingThunder() {
 				// 	if spell == allowedSpell {
 				if sim.RandomFloat("Rolling Thunder") < 0.3*float64(shaman.Talents.RollingThunder) {
 					shaman.AddMana(sim, 0.02*shaman.MaxMana(), manaMetrics)
+					if shaman.LightningShieldAura.GetStacks() == 9 {
+						//TODO maybe make it show on the timeline
+						wastedLSChargeAura.Activate(sim)
+					}
 					shaman.LightningShieldAura.Activate(sim)
 					shaman.LightningShieldAura.AddStack(sim)
 				}
