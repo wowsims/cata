@@ -80,10 +80,17 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 			TickLength:       time.Second * 2,
 			BonusCoefficient: 0.08,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				baseDamage := shaman.ClassSpellScaling * 0.26699998975 * sim.Encounter.AOECapMultiplier()
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.Spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
+				results := make([]*core.SpellResult, shaman.Env.GetNumTargets())
+				baseDamage := shaman.ClassSpellScaling * 0.26699998975
+				aoeMult := sim.Encounter.AOECapMultiplier()
+				dot.Spell.DamageMultiplier *= aoeMult
+				for i, aoeTarget := range sim.Encounter.TargetUnits {
+					results[i] = dot.Spell.CalcDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 				}
+				for i, _ := range sim.Encounter.TargetUnits {
+					dot.Spell.DealDamage(sim, results[i])
+				}
+				dot.Spell.DamageMultiplier /= aoeMult
 			},
 		},
 
