@@ -383,3 +383,30 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		}
 	}
 }
+
+func (dot *Dot) CopyDotAndApply(sim *Simulation, originaldot *Dot) {
+	dot.TakeSnapshot(sim, false)
+	dot.SnapshotBaseDamage = originaldot.SnapshotBaseDamage
+
+	dot.tickPeriod = originaldot.tickPeriod
+	dot.NumberOfTicks = originaldot.NumTicksRemaining(sim) // originaldot.NumberOfTicks
+	dot.TickCount = 0                                      // originaldot.TickCount
+
+	// must be set before Activate
+	dot.Aura.Duration = originaldot.ExpiresAt() - sim.CurrentTime // originaldot.Aura.Duration
+	dot.UpdateExpires(originaldot.ExpiresAt())
+
+	dot.Aura.Activate(sim)
+
+	dot.lastTickTime = originaldot.lastTickTime // must be set after Activate
+
+	// Copied from RescheduleNextTick without the RecomputeAuraDuration
+	dot.tickAction.Cancel(sim) // remove old PA ticker
+
+	// recreate with new period, resetting the next tick.
+	periodicOptions := dot.basePeriodicOptions()
+	periodicOptions.Period = dot.tickPeriod
+	dot.tickAction = NewPeriodicAction(sim, periodicOptions)
+	dot.tickAction.NextActionAt = dot.lastTickTime + dot.tickPeriod
+	sim.AddPendingAction(dot.tickAction)
+}
