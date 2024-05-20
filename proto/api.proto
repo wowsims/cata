@@ -345,6 +345,7 @@ message AuraStats {
 	int32 max_stacks = 2;
 	bool has_icd = 3;
 	bool has_exclusive_effect = 4;
+	bool should_show_in_apl = 5;
 }
 message SpellStats {
 	ActionID id = 1;

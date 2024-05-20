@@ -35,7 +35,9 @@ const actionIdSets: Record<
 	auras: {
 		defaultLabel: 'Aura',
 		getActionIDs: async metadata => {
-			return metadata.getAuras().map(actionId => {
+			return metadata.getAuras()
+			.filter(aura => aura.data.shouldShowInApl)
+			.map(actionId => {
 				return {
 					value: actionId.id,
 				};
@@ -47,6 +49,7 @@ const actionIdSets: Record<
 		getActionIDs: async metadata => {
 			return metadata
 				.getAuras()
+				.filter(aura => aura.data.shouldShowInApl)
 				.filter(aura => aura.data.maxStacks > 0)
 				.map(actionId => {
 					return {
@@ -60,6 +63,7 @@ const actionIdSets: Record<
 		getActionIDs: async metadata => {
 			return metadata
 				.getAuras()
+				.filter(aura => aura.data.shouldShowInApl)
 				.filter(aura => aura.data.hasIcd)
 				.map(actionId => {
 					return {
@@ -73,6 +77,7 @@ const actionIdSets: Record<
 		getActionIDs: async metadata => {
 			return metadata
 				.getAuras()
+				.filter(aura => aura.data.shouldShowInApl)
 				.filter(aura => aura.data.hasExclusiveEffect)
 				.map(actionId => {
 					return {

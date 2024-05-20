@@ -648,6 +648,7 @@ func (unit *Unit) GetMetadata() *proto.UnitMetadata {
 			MaxStacks:          aura.MaxStacks,
 			HasIcd:             aura.Icd != nil,
 			HasExclusiveEffect: len(aura.ExclusiveEffects) > 0,
+			ShouldShowInApl:    !aura.Flags.Matches(AuraFlagNoAPL),
 		}
 	})
 

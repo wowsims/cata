@@ -168,6 +168,17 @@ func (ho HitOutcome) PartialResistString() string {
 	}
 }
 
+type AuraFlag uint32
+
+func (af AuraFlag) Matches(other AuraFlag) bool {
+	return (af & other) != 0
+}
+
+const (
+	AuraFlagNone  AuraFlag = 0
+	AuraFlagNoAPL AuraFlag = 1 << iota //make the aura not show in the apl
+)
+
 // Other flags
 type SpellFlag uint32
 

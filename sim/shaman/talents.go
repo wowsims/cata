@@ -211,6 +211,7 @@ func (shaman *Shaman) applyRollingThunder() {
 	wastedLSChargeAura := shaman.RegisterAura(core.Aura{
 		Label:    "Wasted Lightning Shield Charge",
 		Duration: core.NeverExpires,
+		Flags:    core.AuraFlagNoAPL,
 		ActionID: core.ActionID{
 			SpellID: 324,
 			Tag:     1,

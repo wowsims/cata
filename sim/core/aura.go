@@ -101,6 +101,9 @@ type Aura struct {
 	// included in Character Stats in the UI.
 	BuildPhase CharacterBuildPhase
 
+	// Flags
+	Flags AuraFlag
+
 	// Metrics for this aura.
 	metrics AuraMetrics
 
@@ -370,6 +373,7 @@ func (at *auraTracker) registerAura(unit *Unit, aura Aura) *Aura {
 	newAura.Unit = unit
 	newAura.Icd = aura.Icd
 	newAura.metrics.ID = aura.ActionID
+	newAura.Flags = aura.Flags
 	newAura.activeIndex = Inactive
 	newAura.onApplyEffectsIndex = Inactive
 	newAura.onCastCompleteIndex = Inactive
