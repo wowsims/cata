@@ -317,6 +317,7 @@ func (pet *WarlockPet) registerFireboltSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellImpFireBolt,
+		MissileSpeed:   16,
 
 		ManaCost: core.ManaCostOptions{BaseCost: 0.02},
 		Cast: core.CastConfig{
@@ -341,7 +342,10 @@ func (pet *WarlockPet) registerFireboltSpell() {
 			baseDamage := 182.5 + pet.Owner.CalcAndRollDamageRange(sim, 0.1230000034, 0.1099999994)
 			baseDamage += 0.657 * spell.SpellPower()
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	}))
 }
