@@ -55,10 +55,11 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 	})
 
 	subRogue.Rogue.Hemorrhage = subRogue.RegisterSpell(core.SpellConfig{
-		ActionID:    hemoActionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.SpellFlagBuilder | core.SpellFlagAPL,
+		ActionID:       hemoActionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.SpellFlagBuilder | core.SpellFlagAPL,
+		ClassSpellMask: rogue.RogueSpellHemorrhage,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   subRogue.GetGeneratorCostModifier(35 - 2*float64(subRogue.Talents.SlaughterFromTheShadows)),

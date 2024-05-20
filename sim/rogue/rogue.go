@@ -290,3 +290,46 @@ func (rogue *Rogue) IsStealthed() bool {
 type RogueAgent interface {
 	GetRogue() *Rogue
 }
+
+const (
+	RogueSpellFlagNone int64 = 0
+	RogueSpellAmbush   int64 = 1 << iota
+	RogueSpellBackstab
+	RogueSpellEnvenom
+	RogueSpellEviscerate
+	RogueSpellExposeArmor
+	RogueSpellFanOfKnives
+	RogueSpellFeint
+	RogueSpellGarrote
+	RogueSpellGouge
+	RogueSpellRecuperate
+	RogueSpellRupture
+	RogueSpellShiv
+	RogueSpellSinisterStrike
+	RogueSpellSliceAndDice
+	RogueSpellStealth
+	RogueSpellTricksOfTheTrade
+	RogueSpellVanish
+	RogueSpellHemorrhage
+	RogueSpellPremeditation
+	RogueSpellPreparation
+	RogueSpellShadowDance
+	RogueSpellShadowstep
+	RogueSpellAdrenalineRush
+	RogueSpellBladeFlurry
+	RogueSpellKillingSpree
+	RogueSpellMainGauche
+	RogueSpellRevealingStrike
+	RogueSpellColdBlood
+	RogueSpellMutilate
+	RogueSpellVendetta
+	RogueSpellVenomousWounds
+	RogueSpellWoundPoison
+	RogueSpellInstantPoison
+	RogueSpellDeadlyPoison
+
+	RogueSpellLast
+	RogueSpellsAll = RogueSpellLast<<1 - 1
+
+	RogueSpellPoisons = RogueSpellVenomousWounds | RogueSpellWoundPoison | RogueSpellInstantPoison | RogueSpellDeadlyPoison
+)
