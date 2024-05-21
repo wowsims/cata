@@ -74,7 +74,7 @@ func (mage *Mage) registerCombustionSpell() {
 							combustionDotDamage += dps / dot.TickLength.Seconds()
 						} else {
 							//Ignite's Contribution. Multiply by mastery again.
-							combustionDotDamage += dot.SnapshotBaseDamage / 2 * (1.224 + 0.028*mage.GetMasteryPoints())
+							combustionDotDamage += dot.SnapshotBaseDamage / 2
 						}
 					}
 				}
