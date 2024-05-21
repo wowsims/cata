@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerCurseOfElementsSpell() {
+func (warlock *Warlock) registerCurseOfElements() {
 	warlock.CurseOfElementsAuras = warlock.NewEnemyAuraArray(core.CurseOfElementsAura)
 
 	warlock.RegisterSpell(core.SpellConfig{
@@ -42,7 +42,7 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 	})
 }
 
-func (warlock *Warlock) registerCurseOfWeaknessSpell() {
+func (warlock *Warlock) registerCurseOfWeakness() {
 	warlock.CurseOfWeaknessAuras = warlock.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return core.CurseOfWeaknessAura(target)
 	})
@@ -80,7 +80,7 @@ func (warlock *Warlock) registerCurseOfWeaknessSpell() {
 	})
 }
 
-func (warlock *Warlock) registerCurseOfTonguesSpell() {
+func (warlock *Warlock) registerCurseOfTongues() {
 	actionID := core.ActionID{SpellID: 1714}
 
 	// Empty aura so we can simulate cost/time to keep tongues up
@@ -125,7 +125,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 	})
 }
 
-func (warlock *Warlock) registerBaneOfAgonySpell() {
+func (warlock *Warlock) registerBaneOfAgony() {
 	baseTickDmg := warlock.CalcScalingSpellDmg(0.13300000131)
 
 	warlock.BaneOfAgony = warlock.RegisterSpell(core.SpellConfig{
@@ -178,7 +178,7 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 }
 
 // TODO: Does this benefit from haunt?
-func (warlock *Warlock) registerBaneOfDoomSpell() {
+func (warlock *Warlock) registerBaneOfDoom() {
 
 	ebonImpBonusSummon := 0.1 * float64(warlock.Talents.ImpendingDoom)
 

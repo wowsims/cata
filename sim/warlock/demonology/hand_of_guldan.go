@@ -27,7 +27,7 @@ func (demonology *DemonologyWarlock) CurseOfGuldanDebuffAura(target *core.Unit) 
 	})
 }
 
-func (demonology *DemonologyWarlock) registerHandOfGuldanSpell() {
+func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 	if !demonology.Talents.HandOfGuldan {
 		return
 	}

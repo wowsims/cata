@@ -7,8 +7,8 @@ import (
 	"github.com/wowsims/cata/sim/warlock"
 )
 
-func (destruction *DestructionWarlock) registerConflagrateSpell() {
-	destruction.RegisterSpell(core.SpellConfig{
+func (destruction *DestructionWarlock) registerConflagrate() {
+	destruction.Conflagrate = destruction.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 17962},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -36,14 +36,13 @@ func (destruction *DestructionWarlock) registerConflagrateSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := destruction.CalcScalingSpellDmg(warlock.Coefficient_ImmolateDot)
-			oldMult := spell.DamageMultiplier
 			immoDot := destruction.ImmolateDot.Dot(target)
 			if !immoDot.IsActive() {
 				panic("Casted conflagrate without active immolation on the target")
 			}
 			spell.DamageMultiplier *= float64(immoDot.NumberOfTicks) * 0.6
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier = oldMult
+			spell.DamageMultiplier /= float64(immoDot.NumberOfTicks) * 0.6
 		},
 	})
 }

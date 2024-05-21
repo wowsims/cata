@@ -6,36 +6,29 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-// TODO: Check damage and coefficients
-func (warlock *Warlock) registerDrainSoulSpell() {
+func (warlock *Warlock) calcSoulSiphonMult(target *core.Unit) float64 {
 	soulSiphonMultiplier := 0.03 * float64(warlock.Talents.SoulSiphon)
 
-	calcSoulSiphonMult := func(target *core.Unit) float64 {
-		auras := []*core.Aura{
-			warlock.UnstableAffliction.Dot(target).Aura,
-			warlock.Corruption.Dot(target).Aura,
-			warlock.Seed.Dot(target).Aura,
-			warlock.BaneOfAgony.Dot(target).Aura,
-			warlock.BaneOfDoom.Dot(target).Aura,
-			warlock.CurseOfElementsAuras.Get(target),
-			warlock.CurseOfWeaknessAuras.Get(target),
-			warlock.CurseOfTonguesAuras.Get(target),
-			warlock.ShadowEmbraceDebuffAura(target),
-			// missing: death coil
-		}
-		if warlock.HauntDebuffAuras != nil {
-			auras = append(auras, warlock.HauntDebuffAuras.Get(target))
-		}
-		numActive := 0
-		for _, aura := range auras {
-			if aura.IsActive() {
-				numActive++
-			}
-		}
-		return 1.0 + float64(min(3, numActive))*soulSiphonMultiplier
-	}
+	// missing: death coil
+	afflictionDots := WarlockSpellUnstableAffliction | WarlockSpellCorruption |
+		WarlockSpellSeedOfCorruption | WarlockSpellBaneOfAgony | WarlockSpellBaneOfDoom
 
-	warlock.DrainSoul = warlock.RegisterSpell(core.SpellConfig{
+	afflictionAuras := WarlockSpellHaunt | WarlockSpellCurseOfElements | WarlockSpellCurseOfWeakness |
+		WarlockSpellCurseOfTongues
+
+	numActive := 0
+	for _, spell := range warlock.Spellbook {
+		if (spell.Matches(afflictionDots) && spell.Dot(target).IsActive()) ||
+			(spell.Matches(afflictionAuras) && spell.RelatedAuras[0].Get(target).IsActive()) {
+			numActive++
+		}
+	}
+	return 1.0 + float64(min(3, numActive))*soulSiphonMultiplier
+}
+
+// TODO: Check damage and coefficients
+func (warlock *Warlock) registerDrainSoul() {
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1120},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -59,8 +52,8 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 			AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDmg := 385/5 + 0.378*dot.Spell.SpellPower()
-				dot.SnapshotBaseDamage = baseDmg * calcSoulSiphonMult(target)
+				baseDmg := warlock.CalcScalingSpellDmg(0.07999999821) + 0.37799999118*dot.Spell.SpellPower()
+				dot.SnapshotBaseDamage = baseDmg * warlock.calcSoulSiphonMult(target)
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
 			},
@@ -83,28 +76,26 @@ func (warlock *Warlock) registerDrainSoulSpell() {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, spell.OutcomeExpectedMagicCrit)
 			} else {
-				baseDmg := (385/5 + 0.378*spell.SpellPower()) * calcSoulSiphonMult(target)
+				baseDmg := warlock.CalcScalingSpellDmg(0.07999999821) + 0.37799999118*spell.SpellPower()
+				baseDmg *= warlock.calcSoulSiphonMult(target)
 				return spell.CalcPeriodicDamage(sim, target, baseDmg, spell.OutcomeExpectedMagicCrit)
 			}
 		},
 	})
 
-	drainSoulExecuteAura := warlock.RegisterAura(core.Aura{
-		Label:    "Drain Soul Execute",
-		ActionID: core.ActionID{SpellID: 1120},
-		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.DrainSoul.DamageMultiplier *= 2.0
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.DrainSoul.DamageMultiplier /= 2.0
-		},
+	executeMod := warlock.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Pct,
+		ClassMask: WarlockSpellDrainSoul,
+		// we have to correct for death's embrace here, since they stack additively together,
+		// but multiplicatively with everything else
+		FloatValue: 1.0 / (1 + 0.04*float64(warlock.Talents.DeathsEmbrace)),
 	})
 
 	warlock.RegisterResetEffect(func(sim *core.Simulation) {
+		executeMod.Deactivate()
 		sim.RegisterExecutePhaseCallback(func(sim *core.Simulation, isExecute int32) {
 			if isExecute == 25 {
-				drainSoulExecuteAura.Activate(sim)
+				executeMod.Activate()
 			}
 		})
 	})

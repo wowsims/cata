@@ -6,36 +6,26 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-var TalentTreeSizes = [3]int{18, 19, 19}
-
 type Warlock struct {
 	core.Character
 	Talents *proto.WarlockTalents
 	Options *proto.WarlockOptions
 
-	ShadowBolt           *core.Spell
-	Incinerate           *core.Spell
-	ImmolateDot          *core.Spell
-	UnstableAffliction   *core.Spell
-	Corruption           *core.Spell
-	Haunt                *core.Spell
-	ChaosBolt            *core.Spell
-	SoulFire             *core.Spell
-	DrainSoul            *core.Spell
-	Shadowburn           *core.Spell
-	CurseOfElementsAuras core.AuraArray
-	CurseOfWeaknessAuras core.AuraArray
-	CurseOfTonguesAuras  core.AuraArray
 	BaneOfAgony          *core.Spell
 	BaneOfDoom           *core.Spell
+	BurningEmbers        *core.Spell
+	Corruption           *core.Spell
+	CurseOfElementsAuras core.AuraArray
+	CurseOfTonguesAuras  core.AuraArray
+	CurseOfWeaknessAuras core.AuraArray
+	HauntDebuffAuras     core.AuraArray
+	Immolate             *core.Spell
+	ImmolateDot          *core.Spell
+	Metamorphosis        *core.Spell
 	Seed                 *core.Spell
-	SeedDamageTracker    []float64
-	FelFlame             *core.Spell
-
-	ShadowEmbraceAuras core.AuraArray
-	Metamorphosis      *core.Spell
-	ImmolationAura     *core.Spell
-	HauntDebuffAuras   core.AuraArray
+	ShadowEmbraceAuras   core.AuraArray
+	Shadowburn           *core.Spell
+	UnstableAffliction   *core.Spell
 
 	Felhunter *WarlockPet
 	Felguard  *WarlockPet
@@ -45,8 +35,6 @@ type Warlock struct {
 	Doomguard *DoomguardPet
 	Infernal  *InfernalPet
 	EbonImp   *EbonImpPet
-
-	SummonGuardianTimer *core.Timer
 
 	SoulShards   int32
 	SoulBurnAura *core.Aura
@@ -71,31 +59,38 @@ func (warlock *Warlock) ApplyTalents() {
 }
 
 func (warlock *Warlock) Initialize() {
-	warlock.SummonGuardianTimer = warlock.NewTimer()
-
-	warlock.registerIncinerateSpell()
-	warlock.registerShadowBoltSpell()
-	warlock.registerImmolateSpell()
-	warlock.registerCorruptionSpell()
-	warlock.registerCurseOfElementsSpell()
-	warlock.registerCurseOfWeaknessSpell()
-	warlock.registerCurseOfTonguesSpell()
-	warlock.registerBaneOfAgonySpell()
-	warlock.registerBaneOfDoomSpell()
-	warlock.registerLifeTapSpell()
-	warlock.registerSeedSpell()
-	warlock.registerSoulFireSpell()
-	warlock.registerDrainSoulSpell()
-	warlock.registerSearingPainSpell()
-	warlock.registerSummonInfernalSpell(warlock.SummonGuardianTimer)
-	warlock.registerSummonDoomguardSpell(warlock.SummonGuardianTimer)
-	warlock.registerSummonImpSpell()
-	warlock.registerSummonFelHunterSpell()
-	warlock.registerSummonSuccubusSpell()
-	warlock.registerDemonSoulSpell()
+	warlock.registerBaneOfAgony()
+	warlock.registerBaneOfDoom()
+	warlock.registerCorruption()
+	warlock.registerCurseOfElements()
+	warlock.registerCurseOfTongues()
+	warlock.registerCurseOfWeakness()
+	warlock.registerDemonSoul()
+	warlock.registerDrainLife()
+	warlock.registerDrainSoul()
+	warlock.registerFelFlame()
+	warlock.registerImmolate()
+	warlock.registerIncinerate()
+	warlock.registerLifeTap()
+	warlock.registerSearingPain()
+	warlock.registerSeed()
+	warlock.registerShadowBolt()
 	warlock.registerShadowflame()
-	warlock.registerSoulburnSpell()
-	warlock.registerFelFlameSpell()
+	warlock.registerSoulFire()
+	warlock.registerSoulburn()
+	warlock.registerSummonFelHunter()
+	warlock.registerSummonImp()
+	warlock.registerSummonSuccubus()
+
+	doomguardInfernalTimer := warlock.NewTimer()
+	warlock.registerSummonDoomguard(doomguardInfernalTimer)
+	warlock.registerSummonInfernal(doomguardInfernalTimer)
+
+	// TODO: vile hack to make the APLs work for now ...
+	warlock.GetOrRegisterAura(core.Aura{
+		Label:    "Fel Spark",
+		ActionID: core.ActionID{SpellID: 89937},
+	})
 
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
@@ -136,7 +131,7 @@ func NewWarlock(character *core.Character, options *proto.Player, warlockOptions
 		Talents:   &proto.WarlockTalents{},
 		Options:   warlockOptions,
 	}
-	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
+	core.FillTalentsProto(warlock.Talents.ProtoReflect(), options.TalentsString, [3]int{18, 19, 19})
 	warlock.EnableManaBar()
 
 	warlock.AddStatDependency(stats.Strength, stats.AttackPower, 1)
@@ -197,7 +192,6 @@ const (
 	WarlockSpellHandOfGuldan
 	WarlockSpellImmolationAura
 	WarlockSpellSearingPain
-	WarlockSpellBurningEmbers
 	WarlockSpellSummonDoomguard
 	WarlockSpellDoomguardDoomBolt
 	WarlockSpellSummonFelguard
@@ -214,6 +208,7 @@ const (
 	WarlockSpellShadowflameDot
 	WarlockSpellSoulBurn
 	WarlockSpellFelFlame
+	WarlockSpellBurningEmbers
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
 		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony |
@@ -229,25 +224,25 @@ const (
 
 	WarlockDoT = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
 		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot |
-		WarlockSpellShadowflameDot
+		WarlockSpellShadowflameDot | WarlockSpellBurningEmbers
 
 	WarlockBasicPetSpells = WarlockSpellFelGuardLegionStrike | WarlockSpellSuccubusLashOfPain |
 		WarlockSpellSuccubusLashOfPain | WarlockSpellFelHunterShadowBite | WarlockSpellImpFireBolt
+
+	WarlockSummonSpells = WarlockSpellSummonImp | WarlockSpellSummonSuccubus | WarlockSpellSummonFelhunter |
+		WarlockSpellSummonFelguard
 )
 
 const (
 	PetExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
 )
 
-const Coefficient_Haunt float64 = 0.9581
 const Coefficient_UnstableAffliction float64 = 0.231
 const Coefficient_BaneOfDoom float64 = 2.024
 const Coefficient_Immolate float64 = 0.692
 const Coefficient_ImmolateDot float64 = 0.43900001049
 const Coefficient_SeedExplosion float64 = 2.113
 const Coefficient_SeedDot float64 = 0.3024
-const Coefficient_BurningEmbers_1 float64 = 0.0734
-const Coefficient_BurningEmbers_2 float64 = 0.147
 const Coefficient_ChaosBolt float64 = 1.547
 const Coefficient_Infernal float64 = 0.485
 const Coefficient_ShadowBolt float64 = 0.62
