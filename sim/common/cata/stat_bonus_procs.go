@@ -330,7 +330,7 @@ func init() {
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask:   core.ProcMaskSpellDamage,
 		Outcome:    core.OutcomeLanded,
-		ProcChance: 0.1,
+		ProcChance: 1.0,
 		ICD:        time.Second * 20,
 	}, func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) bool {
 		return sim.IsExecutePhase35()
@@ -345,7 +345,7 @@ func init() {
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		ProcMask:   core.ProcMaskSpellDamage,
 		Outcome:    core.OutcomeLanded,
-		ProcChance: 0.1,
+		ProcChance: 1.0,
 		ICD:        time.Second * 20,
 	}, func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) bool {
 		return sim.IsExecutePhase35()

@@ -8,7 +8,7 @@ import (
 )
 
 func (druid *Druid) registerLacerateSpell() {
-	tickDamage := 0.0700000003 * druid.ClassSpellScaling // ~69
+	tickDamage := 0.0700000003 * druid.ClassSpellScaling     // ~69
 	initialDamage := 3.65700006485 * druid.ClassSpellScaling // ~3608
 
 	initialDamageMul := 1.0
@@ -31,7 +31,7 @@ func (druid *Druid) registerLacerateSpell() {
 			IgnoreHaste: true,
 		},
 
-		BonusCritRating:  core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfLacerate), 5.0 * core.CritRatingPerCritChance, 0),
+		BonusCritRating:  core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfLacerate), 5.0*core.CritRatingPerCritChance, 0),
 		DamageMultiplier: initialDamageMul,
 		CritMultiplier:   druid.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1, // Changed in Cata
@@ -61,7 +61,7 @@ func (druid *Druid) registerLacerateSpell() {
 
 				if (druid.BerserkProcAura != nil) && sim.Proc(0.5, "Berserk") {
 					druid.BerserkProcAura.Activate(sim)
-					druid.WaitUntil(sim, sim.CurrentTime + druid.ReactionTime)
+					druid.WaitUntil(sim, sim.CurrentTime+druid.ReactionTime)
 				}
 			},
 		},

@@ -45,7 +45,7 @@ func (druid *Druid) registerSavageDefensePassive() {
 		ProcChance: 0.5,
 		Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
 			druid.SavageDefenseAura.Activate(sim)
-			shieldStrength = 0.35 * druid.GetStat(stats.AttackPower) * (1.32 + 0.04 * core.MasteryRatingToMasteryPoints(druid.GetStat(stats.Mastery)))
+			shieldStrength = 0.35 * druid.GetStat(stats.AttackPower) * (1.32 + 0.04*core.MasteryRatingToMasteryPoints(druid.GetStat(stats.Mastery)))
 
 			if sim.Log != nil {
 				druid.Log(sim, "Savage Defense Shield Strength: %.1f", shieldStrength)
