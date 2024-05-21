@@ -133,10 +133,11 @@ func (warlock *Warlock) registerBurningEmbers() {
 	baseDmg := warlock.CalcScalingSpellDmg(0.07349999994*float64(warlock.Talents.BurningEmbers)) / float64(ticks)
 
 	warlock.BurningEmbers = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 85421},
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage, // TODO: even the imp hits can proc some trinkets, though not most
-		Flags:       core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
+		ActionID:       core.ActionID{SpellID: 85421},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage, // TODO: even the imp hits can proc some trinkets, though not most
+		Flags:          core.SpellFlagIgnoreModifiers | core.SpellFlagNoSpellMods | core.SpellFlagNoOnCastComplete,
+		ClassSpellMask: WarlockSpellBurningEmbers,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

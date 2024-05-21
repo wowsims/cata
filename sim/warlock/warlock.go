@@ -208,6 +208,7 @@ const (
 	WarlockSpellShadowflameDot
 	WarlockSpellSoulBurn
 	WarlockSpellFelFlame
+	WarlockSpellBurningEmbers
 
 	WarlockShadowDamage = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellHaunt |
 		WarlockSpellDrainSoul | WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony |
@@ -223,7 +224,7 @@ const (
 
 	WarlockDoT = WarlockSpellCorruption | WarlockSpellUnstableAffliction | WarlockSpellDrainSoul |
 		WarlockSpellDrainLife | WarlockSpellBaneOfDoom | WarlockSpellBaneOfAgony | WarlockSpellImmolateDot |
-		WarlockSpellShadowflameDot
+		WarlockSpellShadowflameDot | WarlockSpellBurningEmbers
 
 	WarlockBasicPetSpells = WarlockSpellFelGuardLegionStrike | WarlockSpellSuccubusLashOfPain |
 		WarlockSpellSuccubusLashOfPain | WarlockSpellFelHunterShadowBite | WarlockSpellImpFireBolt
