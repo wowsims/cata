@@ -58,7 +58,7 @@ func (affliction *AfflictionWarlock) ApplyTalents() {
 
 	// Mastery: Potent Afflictions
 	masteryMod := affliction.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Pct,
+		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: warlock.WarlockPeriodicShadowDamage,
 	})
 
