@@ -52,7 +52,7 @@ func (warlock *Warlock) registerDrainSoul() {
 			AffectedByCastSpeed: true,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDmg := 385/5 + 0.378*dot.Spell.SpellPower()
+				baseDmg := warlock.CalcScalingSpellDmg(0.07999999821) + 0.37799999118*dot.Spell.SpellPower()
 				dot.SnapshotBaseDamage = baseDmg * warlock.calcSoulSiphonMult(target)
 				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
@@ -76,7 +76,8 @@ func (warlock *Warlock) registerDrainSoul() {
 				dot := spell.Dot(target)
 				return dot.CalcSnapshotDamage(sim, target, spell.OutcomeExpectedMagicCrit)
 			} else {
-				baseDmg := (385/5 + 0.378*spell.SpellPower()) * warlock.calcSoulSiphonMult(target)
+				baseDmg := warlock.CalcScalingSpellDmg(0.07999999821) + 0.37799999118*spell.SpellPower()
+				baseDmg *= warlock.calcSoulSiphonMult(target)
 				return spell.CalcPeriodicDamage(sim, target, baseDmg, spell.OutcomeExpectedMagicCrit)
 			}
 		},
