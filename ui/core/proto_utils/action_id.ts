@@ -386,6 +386,12 @@ export class ActionId {
 				break;
 			case 'Fulmination':
 				name += ` (${this.tag + 3})`;
+				break;
+			case 'Lightning Shield':
+				if (this.tag == 1) {
+					name += ' (Wasted)'
+				}
+				break;
 			case 'Moonfire':
 			case 'Sunfire':
 				if (this.tag == 1) {
