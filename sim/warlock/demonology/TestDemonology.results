@@ -51,15 +51,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-BracingShadowspiritDiamond"
  value: {
-  dps: 25172.19862
-  tps: 13022.34915
+  dps: 25173.37838
+  tps: 13023.5289
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 25344.01643
-  tps: 13154.90554
+  dps: 25345.21189
+  tps: 13156.10101
  }
 }
 dps_results: {
@@ -86,8 +86,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-EmberShadowspiritDiamond"
  value: {
-  dps: 25172.19862
-  tps: 13022.34915
+  dps: 25173.37838
+  tps: 13023.5289
  }
 }
 dps_results: {
@@ -114,8 +114,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-ForlornShadowspiritDiamond"
  value: {
-  dps: 25172.19862
-  tps: 13022.34915
+  dps: 25173.37838
+  tps: 13023.5289
  }
 }
 dps_results: {
@@ -149,15 +149,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-AllItems-ShadowflameRegalia"
  value: {
-  dps: 22939.0097
-  tps: 11768.72624
+  dps: 22941.26128
+  tps: 11770.97782
  }
 }
 dps_results: {
  key: "TestDemonology-Average-Default"
  value: {
-  dps: 25579.79974
-  tps: 13237.9184
+  dps: 25580.09568
+  tps: 13238.21084
  }
 }
 dps_results: {
@@ -205,8 +205,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Settings-Human-p1-Demonology Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 44027.98997
-  tps: 33151.56755
+  dps: 44028.98393
+  tps: 33152.56151
  }
 }
 dps_results: {
@@ -247,15 +247,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Settings-Orc-p1-Demonology Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 45483.60766
-  tps: 33823.26348
+  dps: 45484.60127
+  tps: 33824.25708
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p1-Demonology Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 25344.01643
-  tps: 13154.90554
+  dps: 25345.21189
+  tps: 13156.10101
  }
 }
 dps_results: {
@@ -331,7 +331,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 25115.44123
-  tps: 13154.90554
+  dps: 25116.63669
+  tps: 13156.10101
  }
 }

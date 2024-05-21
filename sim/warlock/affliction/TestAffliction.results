@@ -283,8 +283,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-DislodgedForeignObject-50348"
  value: {
-  dps: 25397.71213
-  tps: 18796.5797
+  dps: 25398.13473
+  tps: 18797.0023
  }
 }
 dps_results: {
@@ -570,8 +570,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-InsigniaofDiplomacy-61433"
  value: {
-  dps: 24607.55582
-  tps: 18110.19795
+  dps: 24607.69118
+  tps: 18110.33332
  }
 }
 dps_results: {
@@ -619,15 +619,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-KvaldirBattleStandard-59685"
  value: {
-  dps: 24862.78367
-  tps: 18397.09716
+  dps: 24863.21584
+  tps: 18397.52933
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-KvaldirBattleStandard-59689"
  value: {
-  dps: 24862.78367
-  tps: 18397.09716
+  dps: 24863.21584
+  tps: 18397.52933
  }
 }
 dps_results: {
@@ -1242,8 +1242,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Average-Default"
  value: {
-  dps: 26840.47318
-  tps: 19849.12752
+  dps: 26840.47764
+  tps: 19849.13198
  }
 }
 dps_results: {
@@ -1396,15 +1396,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 17459.57753
-  tps: 20752.95447
+  dps: 17459.80568
+  tps: 20753.18262
  }
 }
 dps_results: {
  key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 17459.57753
-  tps: 13021.09192
+  dps: 17459.80568
+  tps: 13021.32007
  }
 }
 dps_results: {
