@@ -84,9 +84,11 @@ func (warlock *Warlock) registerDrainSoul() {
 	})
 
 	executeMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  WarlockSpellDrainSoul,
-		FloatValue: 1.0,
+		Kind:      core.SpellMod_DamageDone_Pct,
+		ClassMask: WarlockSpellDrainSoul,
+		// we have to correct for death's embrace here, since they stack additively together,
+		// but multiplicatively with everything else
+		FloatValue: 1.0 / (1 + 0.04*float64(warlock.Talents.DeathsEmbrace)),
 	})
 
 	warlock.RegisterResetEffect(func(sim *core.Simulation) {
