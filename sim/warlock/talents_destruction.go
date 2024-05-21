@@ -154,6 +154,7 @@ func (warlock *Warlock) registerBurningEmbers() {
 
 				// damage is capped to a limit that depends on SP; the spell will not "remember" the damage from
 				// previous hits even if our SP increases so it's safe to do this here
+				dot.SnapshotAttackerMultiplier = 1
 				dot.SnapshotBaseDamage = min(baseDmg+spMult*dot.Spell.SpellPower(), dot.SnapshotBaseDamage)
 			},
 
@@ -169,7 +170,7 @@ func (warlock *Warlock) registerBurningEmbers() {
 		Label:    "Burning Embers Hidden Aura",
 		ActionID: core.ActionID{SpellID: 85112},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask == WarlockSpellSoulFire && result.Landed() {
+			if spell.Matches(WarlockSpellSoulFire) && result.Landed() {
 				dot := warlock.BurningEmbers.Dot(result.Target)
 				dot.SnapshotBaseDamage += result.Damage * 0.25 * float64(warlock.Talents.BurningEmbers)
 				dot.Apply(sim)
