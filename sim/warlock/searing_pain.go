@@ -14,10 +14,7 @@ func (warlock *Warlock) registerSearingPain() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSearingPain,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.12,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.12},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -25,13 +22,14 @@ func (warlock *Warlock) registerSearingPain() {
 			},
 		},
 
-		BonusCoefficient:         0.37799999118,
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
+		BonusCoefficient:         0.37799999118,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, sim.Roll(347, 410), spell.OutcomeMagicHitAndCrit)
+			baseDmg := warlock.CalcAndRollDamageRange(sim, 0.3219999969, 0.17000000179)
+			spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }

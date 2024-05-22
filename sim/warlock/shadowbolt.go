@@ -18,10 +18,7 @@ func (warlock *Warlock) registerShadowBolt() {
 		ClassSpellMask: WarlockSpellShadowBolt,
 		MissileSpeed:   20,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.10,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.10},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -32,10 +29,10 @@ func (warlock *Warlock) registerShadowBolt() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
-		BonusCoefficient:         0.754,
+		BonusCoefficient:         0.75400000811,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := warlock.CalcAndRollDamageRange(sim, Coefficient_ShadowBolt, Variance_ShadowBolt)
+			baseDamage := warlock.CalcAndRollDamageRange(sim, 0.62000000477, 0.1099999994)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

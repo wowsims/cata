@@ -14,10 +14,11 @@ func (warlock *Warlock) registerImmolate() {
 	})
 
 	warlock.ImmolateDot = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 348}.WithTag(1),
-		SpellSchool:      core.SpellSchoolFire,
-		ProcMask:         core.ProcMaskSpellDamage,
-		ClassSpellMask:   WarlockSpellImmolateDot,
+		ActionID:       core.ActionID{SpellID: 348}.WithTag(1),
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: WarlockSpellImmolateDot,
+
 		DamageMultiplier: 1,
 		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
 
@@ -36,7 +37,7 @@ func (warlock *Warlock) registerImmolate() {
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.17599999905,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.CalcScalingSpellDmg(Coefficient_ImmolateDot))
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(0.43900001049))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -59,10 +60,7 @@ func (warlock *Warlock) registerImmolate() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellImmolate,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.08,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.08},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
