@@ -389,8 +389,8 @@ func (dot *Dot) CopyDotAndApply(sim *Simulation, originaldot *Dot) {
 	dot.SnapshotBaseDamage = originaldot.SnapshotBaseDamage
 
 	dot.tickPeriod = originaldot.tickPeriod
-	dot.TickCount = originaldot.TickCount // originaldot.NumberOfTicks
-	dot.TickCount = 0                     // originaldot.TickCount
+	//dot.NumberOfTicks = originaldot.NumTicksRemaining(sim) // originaldot.NumberOfTicks
+	dot.TickCount = 0 // originaldot.TickCount
 
 	// must be set before Activate
 	dot.Aura.Duration = originaldot.ExpiresAt() - sim.CurrentTime // originaldot.Aura.Duration
