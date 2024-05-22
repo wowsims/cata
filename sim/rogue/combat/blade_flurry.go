@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/rogue"
 )
 
 var BladeFlurryActionID = core.ActionID{SpellID: 13877}
@@ -60,8 +61,9 @@ func (comRogue *CombatRogue) registerBladeFlurry() {
 	})
 
 	comRogue.BladeFlurry = comRogue.RegisterSpell(core.SpellConfig{
-		ActionID: BladeFlurryActionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       BladeFlurryActionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: rogue.RogueSpellBladeFlurry,
 
 		Cast: core.CastConfig{
 			IgnoreHaste: true,

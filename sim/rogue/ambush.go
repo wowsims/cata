@@ -17,7 +17,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		ClassSpellMask: RogueSpellAmbush,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.GetGeneratorCostModifier(60 - []float64{0, 7, 14, 20}[rogue.Talents.SlaughterFromTheShadows]),
+			Cost:   60 - []float64{0, 7, 14, 20}[rogue.Talents.SlaughterFromTheShadows],
 			Refund: 0,
 		},
 		Cast: core.CastConfig{

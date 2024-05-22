@@ -10,13 +10,14 @@ func (rogue *Rogue) registerGarrote() {
 	numTicks := int32(6)
 
 	rogue.Garrote = rogue.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 703},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | SpellFlagBuilder | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 703},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagBuilder | core.SpellFlagAPL,
+		ClassSpellMask: RogueSpellGarrote,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.GetGeneratorCostModifier(45),
+			Cost:   45,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

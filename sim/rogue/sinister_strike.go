@@ -13,13 +13,14 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 	t11Bonus := core.TernaryFloat64(rogue.HasSetBonus(Tier11, 2), 5*core.CritRatingPerCritChance, 0)
 
 	rogue.SinisterStrike = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1752},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 1752},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		ClassSpellMask: RogueSpellSinisterStrike,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.GetGeneratorCostModifier(45 - 2*float64(rogue.Talents.ImprovedSinisterStrike)),
+			Cost:   45 - 2*float64(rogue.Talents.ImprovedSinisterStrike),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

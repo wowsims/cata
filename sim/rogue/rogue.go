@@ -101,8 +101,8 @@ type Rogue struct {
 	SavageCombatDebuffAuras   core.AuraArray
 	WoundPoisonDebuffAuras    core.AuraArray
 
-	generatorCostModifier      func(float64) float64
-	finishingMoveEffectApplier func(sim *core.Simulation, numPoints int32)
+	ruthlessnessMetrics      *core.ResourceMetrics
+	relentlessStrikesMetrics *core.ResourceMetrics
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -120,7 +120,19 @@ func (rogue *Rogue) AddPartyBuffs(_ *proto.PartyBuffs) {}
 func (rogue *Rogue) ApplyFinisher(sim *core.Simulation, spell *core.Spell) {
 	numPoints := rogue.ComboPoints()
 	rogue.SpendComboPoints(sim, spell.ComboPointMetrics())
-	rogue.finishingMoveEffectApplier(sim, numPoints)
+
+	if rogue.Talents.Ruthlessness > 0 && (spell.ClassSpellMask&RogueSpellProcRuthlessness != 0) {
+		procChance := 0.2 * float64(rogue.Talents.Ruthlessness)
+		if sim.Proc(procChance, "Ruthlessness") {
+			rogue.AddComboPoints(sim, 1, rogue.ruthlessnessMetrics)
+		}
+	}
+	if rogue.Talents.RelentlessStrikes > 0 {
+		procChance := []float64{0.0, 0.07, 0.14, 0.2}[rogue.Talents.RelentlessStrikes] * float64(numPoints)
+		if sim.Proc(procChance, "Relentless Strikes") {
+			rogue.AddEnergy(sim, 25, rogue.relentlessStrikesMetrics)
+		}
+	}
 }
 
 func (rogue *Rogue) HasPrimeGlyph(glyph proto.RoguePrimeGlyph) bool {
@@ -135,17 +147,11 @@ func (rogue *Rogue) HasMinorGlyph(glyph proto.RogueMinorGlyph) bool {
 	return rogue.HasGlyph(int32(glyph))
 }
 
-func (rogue *Rogue) GetGeneratorCostModifier(cost float64) float64 {
-	return rogue.generatorCostModifier(cost)
-}
-
 func (rogue *Rogue) Initialize() {
 	// Update auto crit multipliers now that we have the targets.
 	rogue.AutoAttacks.MHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
 	rogue.AutoAttacks.OHConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
 	rogue.AutoAttacks.RangedConfig().CritMultiplier = rogue.MeleeCritMultiplier(false)
-
-	rogue.generatorCostModifier = rogue.makeGeneratorCostModifier()
 
 	rogue.registerStealthAura()
 	rogue.registerVanishSpell()
@@ -169,8 +175,6 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerShivSpell()
 	rogue.registerThistleTeaCD()
 	rogue.registerGougeSpell()
-
-	rogue.finishingMoveEffectApplier = rogue.makeFinishingMoveEffectApplier()
 
 	rogue.SliceAndDiceBonus = 0.4
 }
@@ -331,5 +335,6 @@ const (
 	RogueSpellLast
 	RogueSpellsAll = RogueSpellLast<<1 - 1
 
-	RogueSpellPoisons = RogueSpellVenomousWounds | RogueSpellWoundPoison | RogueSpellInstantPoison | RogueSpellDeadlyPoison
+	RogueSpellPoisons          = RogueSpellVenomousWounds | RogueSpellWoundPoison | RogueSpellInstantPoison | RogueSpellDeadlyPoison
+	RogueSpellProcRuthlessness = RogueSpellEnvenom | RogueSpellEviscerate | RogueSpellRupture
 )
