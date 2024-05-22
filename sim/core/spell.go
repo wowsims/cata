@@ -625,6 +625,11 @@ func (spell *Spell) TravelTime() time.Duration {
 	}
 }
 
+// Returns true if the given mask matches the spell mask
+func (spell *Spell) Matches(mask int64) bool {
+	return spell.ClassSpellMask&mask > 0
+}
+
 // Handles computing the cost of spells and checking whether the Unit
 // meets them.
 type SpellCost interface {

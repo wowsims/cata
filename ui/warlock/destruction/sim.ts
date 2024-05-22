@@ -42,7 +42,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDestructionWarlock, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P4_WOTLK_PRESET.gear,
+		gear: Presets.P1_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({

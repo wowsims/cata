@@ -16,7 +16,7 @@ func (warlock *Warlock) ChangeActivePet(sim *core.Simulation, newPet *WarlockPet
 	newPet.Enable(sim, newPet)
 }
 
-func (warlock *Warlock) registerSummonFelHunterSpell() {
+func (warlock *Warlock) registerSummonFelHunter() {
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 691},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -24,10 +24,7 @@ func (warlock *Warlock) registerSummonFelHunterSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonFelhunter,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.80,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.80},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -42,7 +39,7 @@ func (warlock *Warlock) registerSummonFelHunterSpell() {
 	})
 }
 
-func (warlock *Warlock) registerSummonImpSpell() {
+func (warlock *Warlock) registerSummonImp() {
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 688},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -50,10 +47,7 @@ func (warlock *Warlock) registerSummonImpSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonImp,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.64,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.64},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -68,7 +62,7 @@ func (warlock *Warlock) registerSummonImpSpell() {
 	})
 }
 
-func (warlock *Warlock) registerSummonSuccubusSpell() {
+func (warlock *Warlock) registerSummonSuccubus() {
 	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 712},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -76,10 +70,7 @@ func (warlock *Warlock) registerSummonSuccubusSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellSummonSuccubus,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.80,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.80},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,

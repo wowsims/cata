@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/warlock"
 )
 
-func (affliction *AfflictionWarlock) registerUnstableAfflictionSpell() {
+func (affliction *AfflictionWarlock) registerUnstableAffliction() {
 	affliction.UnstableAffliction = affliction.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30108},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -51,6 +51,7 @@ func (affliction *AfflictionWarlock) registerUnstableAfflictionSpell() {
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
 				spell.Dot(target).Apply(sim)
+				affliction.ImmolateDot.Dot(target).Deactivate(sim)
 			}
 			spell.DealOutcome(sim, result)
 		},

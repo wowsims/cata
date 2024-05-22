@@ -2,7 +2,6 @@ import * as PresetUtils from '../../core/preset_utils';
 import {
 	Consumes,
 	Debuffs,
-	Faction,
 	Flask,
 	Food,
 	Glyphs,
@@ -10,15 +9,15 @@ import {
 	Potions,
 	Profession,
 	RaidBuffs,
-	TristateEffect,
+	TinkerHands,
 } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import {
 	DestructionWarlock_Options as WarlockOptions,
-	WarlockPrimeGlyph as PrimeGlyph,
 	WarlockMajorGlyph as MajorGlyph,
 	WarlockMinorGlyph as MinorGlyph,
-	WarlockOptions_Summon as Summon,	
+	WarlockOptions_Summon as Summon,
+	WarlockPrimeGlyph as PrimeGlyph,
 } from '../../core/proto/warlock';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
@@ -37,28 +36,28 @@ export const P4_WOTLK_PRESET = PresetUtils.makePresetGear('P4 Wrath', P4WrathGea
 
 export const APL_Default = PresetUtils.makePresetAPLRotation('Destro', DefaultApl);
 
-// Default talents. Uses the wowhead calculator format, make the talents on
-// https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
-
 export const DestructionTalents = {
 	name: 'Destruction',
 	data: SavedTalents.create({
-		// talentsString: '-03310030003-05203205210331051335230351',
-		// glyphs: Glyphs.create({
-		// 	major1: MajorGlyph.GlyphOfConflagrate,
-		// 	major2: MajorGlyph.GlyphOfLifeTap,
-		// 	major3: MajorGlyph.GlyphOfIncinerate,
-		// 	minor1: MinorGlyph.GlyphOfSouls,
-		// 	minor2: MinorGlyph.GlyphOfDrainSoul,
-		// 	minor3: MinorGlyph.GlyphOfSubjugateDemon,
-		// }),
+		talentsString: '003-03202-3320202312201312211',
+		glyphs: Glyphs.create({
+			prime1: PrimeGlyph.GlyphOfConflagrate,
+			prime2: PrimeGlyph.GlyphOfImmolate,
+			prime3: PrimeGlyph.GlyphOfImp,
+			major1: MajorGlyph.GlyphOfLifeTap,
+			major2: MajorGlyph.GlyphOfSoulLink,
+			major3: MajorGlyph.GlyphOfHealthstone,
+			minor1: MinorGlyph.GlyphOfDrainSoul,
+			minor2: MinorGlyph.GlyphOfRitualOfSouls,
+			minor3: MinorGlyph.GlyphOfUnendingBreath,
+		}),
 	}),
 };
 
 export const DefaultOptions = WarlockOptions.create({
 	classOptions: {
 		summon: Summon.Imp,
-		detonateSeed: true,
+		detonateSeed: false,
 	},
 });
 
@@ -67,6 +66,8 @@ export const DefaultConsumes = Consumes.create({
 	prepopPotion: Potions.VolcanicPotion,
 	flask: Flask.FlaskOfTheDraconicMind,
 	food: Food.FoodSeafoodFeast,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+	explosiveBigDaddy: false,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -88,6 +89,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	vampiricTouch: true,
+	darkIntent: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
@@ -95,7 +97,7 @@ export const DefaultDebuffs = Debuffs.create({
 	sunderArmor: true,
 	ebonPlaguebringer: true,
 	mangle: true,
-	criticalMass: true,
+	criticalMass: false,
 	demoralizingShout: true,
 	frostFever: true,
 	judgement: true,
@@ -106,4 +108,7 @@ export const OtherDefaults = {
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
 	channelClipDelay: 150,
+	duration: 180,
+	durationVariation: 30,
+	darkIntentUptime: 90,
 };

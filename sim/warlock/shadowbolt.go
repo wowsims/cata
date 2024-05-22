@@ -6,11 +6,11 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerShadowBoltSpell() {
+func (warlock *Warlock) registerShadowBolt() {
 	shadowAndFlameProcChance := []float64{0.0, 0.33, 0.66, 1.0}[warlock.Talents.ShadowAndFlame]
 	shadowAndFlameAuras := warlock.NewEnemyAuraArray(core.ShadowAndFlameAura)
 
-	warlock.ShadowBolt = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 686},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,

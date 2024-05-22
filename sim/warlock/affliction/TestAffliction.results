@@ -1,0 +1,1423 @@
+character_stats_results: {
+ key: "TestAffliction-CharacterStats-Default"
+ value: {
+  final_stats: 666.75
+  final_stats: 668.85
+  final_stats: 7080.62985
+  final_stats: 5560.20187
+  final_stats: 183
+  final_stats: 9234.72205
+  final_stats: 1353.65
+  final_stats: 1742.178
+  final_stats: 3568.42609
+  final_stats: 2636.3358
+  final_stats: 0
+  final_stats: 788.1
+  final_stats: 1742.178
+  final_stats: 2238.47246
+  final_stats: 3371.6716
+  final_stats: 0
+  final_stats: 105802.02801
+  final_stats: 8479
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 137052.8179
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1431.178
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-AgileShadowspiritDiamond"
+ value: {
+  dps: 26342.785
+  tps: 19432.80718
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Althor'sAbacus-50366"
+ value: {
+  dps: 25140.08307
+  tps: 18505.15233
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Anhuur'sHymnal-55889"
+ value: {
+  dps: 25388.27382
+  tps: 18691.20398
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Anhuur'sHymnal-56407"
+ value: {
+  dps: 25414.3538
+  tps: 18706.02663
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-AustereShadowspiritDiamond"
+ value: {
+  dps: 26071.56309
+  tps: 19192.95988
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BaubleofTrueBlood-50726"
+ value: {
+  dps: 24621.01682
+  tps: 18166.80423
+  hps: 89.81303
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BedrockTalisman-58182"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BellofEnragingResonance-59326"
+ value: {
+  dps: 25974.94118
+  tps: 19055.20284
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BindingPromise-67037"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Blood-SoakedAleMug-63843"
+ value: {
+  dps: 24743.69406
+  tps: 18270.32282
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BloodofIsiset-55995"
+ value: {
+  dps: 24771.47144
+  tps: 18285.52246
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BloodofIsiset-56414"
+ value: {
+  dps: 24771.47144
+  tps: 18285.52246
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
+ value: {
+  dps: 24569.95351
+  tps: 18096.58226
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BloodthirstyGladiator'sBadgeofDominance-64688"
+ value: {
+  dps: 25440.21948
+  tps: 18708.70047
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BloodthirstyGladiator'sBadgeofVictory-64689"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740"
+ value: {
+  dps: 24924.62559
+  tps: 18352.84823
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BloodthirstyGladiator'sEmblemofMeditation-64741"
+ value: {
+  dps: 24615.6289
+  tps: 18140.88598
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BloodthirstyGladiator'sEmblemofTenacity-64742"
+ value: {
+  dps: 24615.6289
+  tps: 18140.88598
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BloodthirstyGladiator'sInsigniaofConquest-64761"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BloodthirstyGladiator'sInsigniaofDominance-64762"
+ value: {
+  dps: 25343.49864
+  tps: 18643.97653
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BloodthirstyGladiator'sInsigniaofVictory-64763"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BottledLightning-66879"
+ value: {
+  dps: 25273.91954
+  tps: 18593.4094
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BracingShadowspiritDiamond"
+ value: {
+  dps: 26233.90981
+  tps: 18908.52742
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-BurningShadowspiritDiamond"
+ value: {
+  dps: 26498.56749
+  tps: 19544.49121
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ChaoticShadowspiritDiamond"
+ value: {
+  dps: 26403.97034
+  tps: 19478.39507
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-CoreofRipeness-58184"
+ value: {
+  dps: 25566.41217
+  tps: 18831.80669
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-CorpseTongueCoin-50349"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-CrushingWeight-59506"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-CrushingWeight-65118"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-DarkmoonCard:Earthquake-62048"
+ value: {
+  dps: 24615.6289
+  tps: 18140.91262
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-DarkmoonCard:Hurricane-62049"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-DarkmoonCard:Hurricane-62051"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-DarkmoonCard:Tsunami-62050"
+ value: {
+  dps: 25566.41217
+  tps: 18831.80669
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Deathbringer'sWill-50363"
+ value: {
+  dps: 24785.01739
+  tps: 18241.34523
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-DestructiveShadowspiritDiamond"
+ value: {
+  dps: 26139.02756
+  tps: 19221.88085
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-DislodgedForeignObject-50348"
+ value: {
+  dps: 25397.71213
+  tps: 18796.5797
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-EffulgentShadowspiritDiamond"
+ value: {
+  dps: 26071.56309
+  tps: 19192.95988
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ElectrosparkHeartstarter-67118"
+ value: {
+  dps: 24967.23678
+  tps: 18398.15146
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-EmberShadowspiritDiamond"
+ value: {
+  dps: 26191.90135
+  tps: 19202.58287
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-EnigmaticShadowspiritDiamond"
+ value: {
+  dps: 26139.02756
+  tps: 19221.88085
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-EssenceoftheCyclone-59473"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-EssenceoftheCyclone-65140"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-EternalShadowspiritDiamond"
+ value: {
+  dps: 26071.56309
+  tps: 19192.95988
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-FallofMortality-59500"
+ value: {
+  dps: 25566.41217
+  tps: 18831.80669
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-FallofMortality-65124"
+ value: {
+  dps: 25692.19248
+  tps: 18899.71527
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Figurine-DemonPanther-52199"
+ value: {
+  dps: 24860.69489
+  tps: 18337.36769
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Figurine-DreamOwl-52354"
+ value: {
+  dps: 25442.29896
+  tps: 18754.34024
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Figurine-EarthenGuardian-52352"
+ value: {
+  dps: 24602.21319
+  tps: 18132.0414
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Figurine-JeweledSerpent-52353"
+ value: {
+  dps: 26233.70573
+  tps: 19314.31095
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Figurine-KingofBoars-52351"
+ value: {
+  dps: 24771.47144
+  tps: 18285.52246
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-FleetShadowspiritDiamond"
+ value: {
+  dps: 26080.45942
+  tps: 19178.82687
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-FluidDeath-58181"
+ value: {
+  dps: 24857.48741
+  tps: 18326.87277
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ForlornShadowspiritDiamond"
+ value: {
+  dps: 26233.90981
+  tps: 19288.22318
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-FuryofAngerforge-59461"
+ value: {
+  dps: 24960.72954
+  tps: 18363.76877
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-GaleofShadows-56138"
+ value: {
+  dps: 25527.14567
+  tps: 18981.41581
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-GaleofShadows-56462"
+ value: {
+  dps: 25634.59784
+  tps: 19022.88118
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-GearDetector-61462"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-GlowingTwilightScale-54589"
+ value: {
+  dps: 25194.1187
+  tps: 18590.85521
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-GraceoftheHerald-55266"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-GraceoftheHerald-56295"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-HarmlightToken-63839"
+ value: {
+  dps: 25441.80962
+  tps: 18820.2079
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Harrison'sInsigniaofPanache-65803"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-HeartofIgnacious-59514"
+ value: {
+  dps: 25705.58981
+  tps: 19075.65762
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-HeartofIgnacious-65110"
+ value: {
+  dps: 25878.04741
+  tps: 19209.12549
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-HeartofRage-59224"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-HeartofRage-65072"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-HeartofSolace-55868"
+ value: {
+  dps: 24878.58322
+  tps: 18491.95926
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-HeartofSolace-56393"
+ value: {
+  dps: 24898.47814
+  tps: 18468.14325
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-HeartofThunder-55845"
+ value: {
+  dps: 24628.40559
+  tps: 18130.00355
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-HeartofThunder-56370"
+ value: {
+  dps: 24590.39155
+  tps: 18093.0432
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-HeartoftheVile-66969"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ImpassiveShadowspiritDiamond"
+ value: {
+  dps: 26139.02756
+  tps: 19221.88085
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ImpatienceofYouth-62464"
+ value: {
+  dps: 24858.63501
+  tps: 18372.68604
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ImpatienceofYouth-62469"
+ value: {
+  dps: 24858.63501
+  tps: 18372.68604
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ImpetuousQuery-55881"
+ value: {
+  dps: 24771.47144
+  tps: 18285.52246
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ImpetuousQuery-56406"
+ value: {
+  dps: 24771.47144
+  tps: 18285.52246
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-InsigniaofDiplomacy-61433"
+ value: {
+  dps: 24607.55582
+  tps: 18110.19795
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-InsigniaoftheEarthenLord-61429"
+ value: {
+  dps: 25243.00576
+  tps: 18620.11035
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-JarofAncientRemedies-59354"
+ value: {
+  dps: 24664.4395
+  tps: 18221.94726
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-JarofAncientRemedies-65029"
+ value: {
+  dps: 24675.60526
+  tps: 18231.59734
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-JujuofNimbleness-63840"
+ value: {
+  dps: 24743.69406
+  tps: 18270.32282
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-KeytotheEndlessChamber-55795"
+ value: {
+  dps: 24857.48741
+  tps: 18326.87277
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-KeytotheEndlessChamber-56328"
+ value: {
+  dps: 24857.48741
+  tps: 18326.87277
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-KvaldirBattleStandard-59685"
+ value: {
+  dps: 24862.78367
+  tps: 18397.09716
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-KvaldirBattleStandard-59689"
+ value: {
+  dps: 24862.78367
+  tps: 18397.09716
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-LadyLa-La'sSingingShell-67152"
+ value: {
+  dps: 24806.85555
+  tps: 18345.83209
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-LeadenDespair-55816"
+ value: {
+  dps: 24655.28124
+  tps: 18180.27772
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-LeadenDespair-56347"
+ value: {
+  dps: 24602.21319
+  tps: 18132.0414
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-LeftEyeofRajh-56102"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-LeftEyeofRajh-56427"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-LicensetoSlay-58180"
+ value: {
+  dps: 24857.48741
+  tps: 18326.87277
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-MagnetiteMirror-55814"
+ value: {
+  dps: 24569.95351
+  tps: 18096.58226
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-MagnetiteMirror-56345"
+ value: {
+  dps: 24569.95351
+  tps: 18096.58226
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-MandalaofStirringPatterns-62467"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-MandalaofStirringPatterns-62472"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-MarkofKhardros-56132"
+ value: {
+  dps: 24777.189
+  tps: 18303.81775
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-MarkofKhardros-56458"
+ value: {
+  dps: 24814.86818
+  tps: 18341.49693
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-MightoftheOcean-55251"
+ value: {
+  dps: 24860.69489
+  tps: 18337.36769
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-MightoftheOcean-56285"
+ value: {
+  dps: 24860.69489
+  tps: 18337.36769
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-MirrorofBrokenImages-62466"
+ value: {
+  dps: 24858.63501
+  tps: 18372.68604
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-MirrorofBrokenImages-62471"
+ value: {
+  dps: 24858.63501
+  tps: 18372.68604
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-MoonwellChalice-70142"
+ value: {
+  dps: 25975.07401
+  tps: 19213.25763
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Oremantle'sFavor-61448"
+ value: {
+  dps: 24821.81226
+  tps: 18253.41239
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-PetrifiedTwilightScale-54591"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-PhylacteryoftheNamelessLich-50365"
+ value: {
+  dps: 25369.72557
+  tps: 18656.3901
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-PorcelainCrab-55237"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-PorcelainCrab-56280"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-PowerfulShadowspiritDiamond"
+ value: {
+  dps: 26071.56309
+  tps: 19192.95988
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Prestor'sTalismanofMachination-59441"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Prestor'sTalismanofMachination-65026"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Rainsong-55854"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Rainsong-56377"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ReverberatingShadowspiritDiamond"
+ value: {
+  dps: 26342.785
+  tps: 19432.80718
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-RevitalizingShadowspiritDiamond"
+ value: {
+  dps: 26342.785
+  tps: 19432.80718
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-RightEyeofRajh-56100"
+ value: {
+  dps: 24857.48741
+  tps: 18326.87277
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-RightEyeofRajh-56431"
+ value: {
+  dps: 24857.48741
+  tps: 18326.87277
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Schnottz'sMedallionofCommand-65805"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-SeaStar-55256"
+ value: {
+  dps: 25021.45515
+  tps: 18411.91337
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-SeaStar-56290"
+ value: {
+  dps: 25387.52728
+  tps: 18671.3564
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ShadowflameRegalia"
+ value: {
+  dps: 23986.35871
+  tps: 17782.25383
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ShardofWoe-60233"
+ value: {
+  dps: 25112.89754
+  tps: 18459.09225
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Shrine-CleansingPurifier-63838"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Sindragosa'sFlawlessFang-50364"
+ value: {
+  dps: 24653.27397
+  tps: 18160.91
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Skardyn'sGrace-56115"
+ value: {
+  dps: 24837.16254
+  tps: 18351.21356
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Skardyn'sGrace-56440"
+ value: {
+  dps: 24880.80222
+  tps: 18394.85325
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Sorrowsong-55879"
+ value: {
+  dps: 25369.63279
+  tps: 18730.3899
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Sorrowsong-56400"
+ value: {
+  dps: 25447.96345
+  tps: 18788.64635
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Soul'sAnguish-66994"
+ value: {
+  dps: 24860.69489
+  tps: 18337.36769
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-SoulCasket-58183"
+ value: {
+  dps: 25938.277
+  tps: 19141.16495
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Stonemother'sKiss-61411"
+ value: {
+  dps: 25444.76471
+  tps: 18787.58912
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-StumpofTime-62465"
+ value: {
+  dps: 25562.04273
+  tps: 18834.20854
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-StumpofTime-62470"
+ value: {
+  dps: 25603.53981
+  tps: 18848.09323
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-SymbioticWorm-59332"
+ value: {
+  dps: 24605.95696
+  tps: 18099.37449
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-SymbioticWorm-65048"
+ value: {
+  dps: 24668.17862
+  tps: 18165.59502
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-TalismanofSinisterOrder-65804"
+ value: {
+  dps: 25462.5026
+  tps: 18808.68883
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Tank-CommanderInsignia-63841"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-TearofBlood-55819"
+ value: {
+  dps: 25213.5367
+  tps: 18589.79758
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-TearofBlood-56351"
+ value: {
+  dps: 25442.29896
+  tps: 18754.34024
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-TendrilsofBurrowingDark-55810"
+ value: {
+  dps: 25245.30072
+  tps: 18614.91926
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-TendrilsofBurrowingDark-56339"
+ value: {
+  dps: 25363.26357
+  tps: 18685.9725
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Theralion'sMirror-59519"
+ value: {
+  dps: 25835.09809
+  tps: 19100.49262
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Theralion'sMirror-65105"
+ value: {
+  dps: 26041.51739
+  tps: 19249.04018
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Throngus'sFinger-56121"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Throngus'sFinger-56449"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Tia'sGrace-55874"
+ value: {
+  dps: 24771.47144
+  tps: 18285.52246
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Tia'sGrace-56394"
+ value: {
+  dps: 24771.47144
+  tps: 18285.52246
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-TinyAbominationinaJar-50706"
+ value: {
+  dps: 24728.13208
+  tps: 18202.7205
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Tyrande'sFavoriteDoll-64645"
+ value: {
+  dps: 25722.17403
+  tps: 19019.14234
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-UnheededWarning-59520"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-UnquenchableFlame-67101"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-UnsolvableRiddle-62463"
+ value: {
+  dps: 24858.63501
+  tps: 18372.68604
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-UnsolvableRiddle-62468"
+ value: {
+  dps: 24858.63501
+  tps: 18372.68604
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-UnsolvableRiddle-68709"
+ value: {
+  dps: 24858.63501
+  tps: 18372.68604
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-VialofStolenMemories-59515"
+ value: {
+  dps: 24605.95696
+  tps: 18099.37449
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-VialofStolenMemories-65109"
+ value: {
+  dps: 24668.17862
+  tps: 18165.59502
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sBadgeofConquest-61033"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sBadgeofDominance-61035"
+ value: {
+  dps: 25487.36513
+  tps: 18742.11359
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sBadgeofVictory-61034"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sEmblemofAccuracy-61027"
+ value: {
+  dps: 24879.52568
+  tps: 18356.62775
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
+ value: {
+  dps: 24965.62656
+  tps: 18509.25657
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sEmblemofCruelty-61026"
+ value: {
+  dps: 24969.75749
+  tps: 18383.95483
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sEmblemofProficiency-61030"
+ value: {
+  dps: 24615.6289
+  tps: 18141.01284
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sEmblemofProwess-61029"
+ value: {
+  dps: 24877.89499
+  tps: 18403.27893
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sEmblemofTenacity-61032"
+ value: {
+  dps: 24615.6289
+  tps: 18141.01284
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sInsigniaofConquest-61047"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sInsigniaofDominance-61045"
+ value: {
+  dps: 25297.51754
+  tps: 18596.05139
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-ViciousGladiator'sInsigniaofVictory-61046"
+ value: {
+  dps: 24597.14429
+  tps: 18111.19531
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-WitchingHourglass-55787"
+ value: {
+  dps: 25417.60018
+  tps: 18823.6578
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-WitchingHourglass-56320"
+ value: {
+  dps: 25716.47018
+  tps: 18992.50816
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-World-QuellerFocus-63842"
+ value: {
+  dps: 24771.47144
+  tps: 18285.52246
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Za'brox'sLuckyTooth-63742"
+ value: {
+  dps: 24819.92992
+  tps: 18340.99539
+ }
+}
+dps_results: {
+ key: "TestAffliction-AllItems-Za'brox'sLuckyTooth-63745"
+ value: {
+  dps: 24819.92992
+  tps: 18340.99539
+ }
+}
+dps_results: {
+ key: "TestAffliction-Average-Default"
+ value: {
+  dps: 26840.47318
+  tps: 19849.12752
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
+ value: {
+  dps: 27095.94511
+  tps: 26486.91802
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
+ value: {
+  dps: 26187.50093
+  tps: 19571.80799
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
+ value: {
+  dps: 33404.31807
+  tps: 22242.54206
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
+ value: {
+  dps: 17478.88722
+  tps: 20909.11909
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
+ value: {
+  dps: 17478.88722
+  tps: 13051.19357
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Goblin-p1-Affliction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
+ value: {
+  dps: 20102.89203
+  tps: 12429.86941
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
+ value: {
+  dps: 26891.59945
+  tps: 26049.63628
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
+ value: {
+  dps: 25951.13236
+  tps: 19369.01757
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
+ value: {
+  dps: 33022.9822
+  tps: 21859.25807
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
+ value: {
+  dps: 17368.32608
+  tps: 20653.03267
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
+ value: {
+  dps: 17368.32608
+  tps: 12921.17012
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Human-p1-Affliction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
+ value: {
+  dps: 20008.40948
+  tps: 12349.93271
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
+ value: {
+  dps: 27430.14922
+  tps: 26266.9655
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
+ value: {
+  dps: 26498.56749
+  tps: 19544.49121
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
+ value: {
+  dps: 32789.92398
+  tps: 22276.0093
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
+ value: {
+  dps: 17765.76338
+  tps: 20773.26369
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
+ value: {
+  dps: 17765.76338
+  tps: 13040.52015
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Orc-p1-Affliction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
+ value: {
+  dps: 19612.52374
+  tps: 12467.3495
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
+ value: {
+  dps: 27153.02921
+  tps: 26467.88361
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
+ value: {
+  dps: 26202.57873
+  tps: 19553.8725
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
+ value: {
+  dps: 33685.90633
+  tps: 22299.22565
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
+ value: {
+  dps: 17459.57753
+  tps: 20752.95447
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
+ value: {
+  dps: 17459.57753
+  tps: 13021.09192
+ }
+}
+dps_results: {
+ key: "TestAffliction-Settings-Troll-p1-Affliction Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
+ value: {
+  dps: 20484.92377
+  tps: 12864.82205
+ }
+}
+dps_results: {
+ key: "TestAffliction-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 26388.70427
+  tps: 19544.49121
+ }
+}
