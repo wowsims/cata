@@ -9,23 +9,22 @@ import (
 func (warlock *Warlock) registerShadowflame() {
 
 	shadowflameDot := warlock.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 47960},
-		SpellSchool:      core.SpellSchoolFire,
-		ProcMask:         core.ProcMaskSpellDamage,
-		ClassSpellMask:   WarlockSpellShadowflameDot,
+		ActionID:       core.ActionID{SpellID: 47960},
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: WarlockSpellShadowflameDot,
+
 		DamageMultiplier: 1,
 		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
 
 		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Shadowflame (DoT)",
-			},
+			Aura:                core.Aura{Label: "Shadowflame (DoT)"},
 			NumberOfTicks:       3,
 			TickLength:          2 * time.Second,
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.20000000298,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.CalcScalingSpellDmg(Coefficient_ShadowflameDot))
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(0.16899999976))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)

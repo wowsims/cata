@@ -37,301 +37,301 @@ character_stats_results: {
 dps_results: {
  key: "TestDemonology-AllItems-AgileShadowspiritDiamond"
  value: {
-  dps: 25177.6435
-  tps: 13039.68147
+  dps: 25177.64353
+  tps: 13039.6815
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-AustereShadowspiritDiamond"
  value: {
-  dps: 25049.91349
-  tps: 12928.51176
+  dps: 25049.91352
+  tps: 12928.51178
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BracingShadowspiritDiamond"
  value: {
-  dps: 25175.15083
-  tps: 13015.06136
+  dps: 25175.15086
+  tps: 13015.06139
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-BurningShadowspiritDiamond"
  value: {
-  dps: 25347.00536
-  tps: 13147.65447
+  dps: 25347.00539
+  tps: 13147.6545
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ChaoticShadowspiritDiamond"
  value: {
-  dps: 25231.86274
-  tps: 13072.33716
+  dps: 25231.86277
+  tps: 13072.33719
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-DestructiveShadowspiritDiamond"
  value: {
-  dps: 25061.87205
-  tps: 12941.4652
+  dps: 25061.87208
+  tps: 12941.46523
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EffulgentShadowspiritDiamond"
  value: {
-  dps: 25049.91349
-  tps: 12928.51176
+  dps: 25049.91352
+  tps: 12928.51178
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EmberShadowspiritDiamond"
  value: {
-  dps: 25175.15083
-  tps: 13015.06136
+  dps: 25175.15086
+  tps: 13015.06139
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EnigmaticShadowspiritDiamond"
  value: {
-  dps: 25061.87205
-  tps: 12941.4652
+  dps: 25061.87208
+  tps: 12941.46523
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-EternalShadowspiritDiamond"
  value: {
-  dps: 25049.91349
-  tps: 12928.51176
+  dps: 25049.91352
+  tps: 12928.51178
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-FleetShadowspiritDiamond"
  value: {
-  dps: 25009.98381
-  tps: 12910.64278
+  dps: 25009.98384
+  tps: 12910.64281
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ForlornShadowspiritDiamond"
  value: {
-  dps: 25175.15083
-  tps: 13015.06136
+  dps: 25175.15086
+  tps: 13015.06139
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ImpassiveShadowspiritDiamond"
  value: {
-  dps: 25061.87205
-  tps: 12941.4652
+  dps: 25061.87208
+  tps: 12941.46523
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-PowerfulShadowspiritDiamond"
  value: {
-  dps: 25049.91349
-  tps: 12928.51176
+  dps: 25049.91352
+  tps: 12928.51178
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ReverberatingShadowspiritDiamond"
  value: {
-  dps: 25177.6435
-  tps: 13039.68147
+  dps: 25177.64353
+  tps: 13039.6815
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-RevitalizingShadowspiritDiamond"
  value: {
-  dps: 25186.34196
-  tps: 13035.19397
+  dps: 25186.34199
+  tps: 13035.19399
  }
 }
 dps_results: {
  key: "TestDemonology-AllItems-ShadowflameRegalia"
  value: {
-  dps: 22942.97103
-  tps: 11762.46758
+  dps: 22942.97106
+  tps: 11762.4676
  }
 }
 dps_results: {
  key: "TestDemonology-Average-Default"
  value: {
-  dps: 25581.87624
-  tps: 13229.8073
+  dps: 25581.87627
+  tps: 13229.80732
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p1-Demonology Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 44015.56661
-  tps: 33345.56131
+  dps: 44015.56664
+  tps: 33345.56134
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p1-Demonology Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 24756.10798
-  tps: 13024.11712
+  dps: 24756.10801
+  tps: 13024.11715
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p1-Demonology Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 37302.76714
-  tps: 18138.24696
+  dps: 37302.7672
+  tps: 18138.24703
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p1-Demonology Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 32310.90021
-  tps: 26103.53148
+  dps: 32310.90023
+  tps: 26103.53149
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p1-Demonology Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 17570.53128
-  tps: 9111.62377
+  dps: 17570.5313
+  tps: 9111.62379
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Goblin-p1-Demonology Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 22983.59095
-  tps: 9995.71091
+  dps: 22983.59098
+  tps: 9995.71094
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p1-Demonology Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 44030.68268
-  tps: 33144.04026
+  dps: 44030.68271
+  tps: 33144.04029
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p1-Demonology Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 24605.77954
-  tps: 12980.90209
+  dps: 24605.77957
+  tps: 12980.90212
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p1-Demonology Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 37353.46505
-  tps: 18244.70924
+  dps: 37353.46511
+  tps: 18244.7093
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p1-Demonology Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 32106.93863
-  tps: 25971.6091
+  dps: 32106.93864
+  tps: 25971.60912
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p1-Demonology Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 17410.36432
-  tps: 9029.63526
+  dps: 17410.36434
+  tps: 9029.63528
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Human-p1-Demonology Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 22809.43023
-  tps: 9959.00522
+  dps: 22809.43025
+  tps: 9959.00524
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p1-Demonology Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 45486.27747
-  tps: 33815.73328
+  dps: 45486.2775
+  tps: 33815.73331
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p1-Demonology Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 25347.00536
-  tps: 13147.65447
+  dps: 25347.00539
+  tps: 13147.6545
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p1-Demonology Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 38901.24064
-  tps: 18621.93079
+  dps: 38901.2407
+  tps: 18621.93085
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p1-Demonology Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 33296.89587
-  tps: 26314.63106
+  dps: 33296.89589
+  tps: 26314.63107
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p1-Demonology Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 18001.15114
-  tps: 9146.54309
+  dps: 18001.15116
+  tps: 9146.5431
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Orc-p1-Demonology Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 23953.47165
-  tps: 10185.37973
+  dps: 23953.47168
+  tps: 10185.37976
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p1-Demonology Warlock-default-FullBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 45367.205
-  tps: 34459.08696
+  dps: 45367.20503
+  tps: 34459.08698
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p1-Demonology Warlock-default-FullBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 25051.17724
-  tps: 13211.62849
+  dps: 25051.17727
+  tps: 13211.62852
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p1-Demonology Warlock-default-FullBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 38422.92712
-  tps: 18968.37137
+  dps: 38422.92719
+  tps: 18968.37144
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p1-Demonology Warlock-default-NoBuffs-25.0yards-LongMultiTarget"
  value: {
-  dps: 32861.45432
-  tps: 26826.49857
+  dps: 32861.45433
+  tps: 26826.49859
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p1-Demonology Warlock-default-NoBuffs-25.0yards-LongSingleTarget"
  value: {
-  dps: 17740.05041
-  tps: 9152.92342
+  dps: 17740.05043
+  tps: 9152.92343
  }
 }
 dps_results: {
  key: "TestDemonology-Settings-Troll-p1-Demonology Warlock-default-NoBuffs-25.0yards-ShortSingleTarget"
  value: {
-  dps: 24209.21786
-  tps: 10681.2192
+  dps: 24209.21789
+  tps: 10681.21923
  }
 }
 dps_results: {
  key: "TestDemonology-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 25118.43016
-  tps: 13147.65447
+  dps: 25118.43019
+  tps: 13147.6545
  }
 }

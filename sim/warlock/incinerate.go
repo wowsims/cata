@@ -17,10 +17,7 @@ func (warlock *Warlock) registerIncinerate() {
 		MissileSpeed:   24,
 		ClassSpellMask: WarlockSpellIncinerate,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.14,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.14},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -34,7 +31,7 @@ func (warlock *Warlock) registerIncinerate() {
 		BonusCoefficient:         0.53899997473,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := warlock.CalcAndRollDamageRange(sim, Coefficient_Incinerate, Variance_Incinerate)
+			baseDamage := warlock.CalcAndRollDamageRange(sim, 0.57300001383, 0.15000000596)
 
 			if warlock.ImmolateDot.Dot(target).IsActive() {
 				baseDamage += baseDamage / 6

@@ -55,10 +55,10 @@ func (demonology *DemonologyWarlock) registerHandOfGuldan() {
 		DamageMultiplier: 1,
 		CritMultiplier:   demonology.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.968,
+		BonusCoefficient: 0.96799999475,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := demonology.CalcAndRollDamageRange(sim, warlock.Coefficient_HandOfGuldan, warlock.Variance_HandOfGuldan)
+			baseDamage := demonology.CalcAndRollDamageRange(sim, 1.59300005436, 0.16599999368)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				for _, target := range sim.Encounter.TargetUnits {

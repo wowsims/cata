@@ -176,9 +176,9 @@ func (warlock *Warlock) registerBaneOfDoom() {
 			},
 			NumberOfTicks:    4,
 			TickLength:       15 * time.Second,
-			BonusCoefficient: 0.88,
+			BonusCoefficient: 0.87999999523,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.CalcScalingSpellDmg(Coefficient_BaneOfDoom))
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(2.02399992943))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
