@@ -87,10 +87,12 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSummonInfernal(doomguardInfernalTimer)
 
 	// TODO: vile hack to make the APLs work for now ...
-	warlock.GetOrRegisterAura(core.Aura{
-		Label:    "Fel Spark",
-		ActionID: core.ActionID{SpellID: 89937},
-	})
+	if !warlock.HasSetBonus(ItemSetMaleficRaiment, 4) {
+		warlock.RegisterAura(core.Aura{
+			Label:    "Fel Spark",
+			ActionID: core.ActionID{SpellID: 89937},
+		})
+	}
 
 	core.MakePermanent(
 		warlock.RegisterAura(core.Aura{
