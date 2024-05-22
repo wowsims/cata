@@ -27,7 +27,7 @@ var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 				FloatValue: 3.0,
 			})
 
-			aura := warlock.GetOrRegisterAura(core.Aura{
+			aura := warlock.RegisterAura(core.Aura{
 				Label:     "Fel Spark",
 				ActionID:  core.ActionID{SpellID: 89937},
 				Duration:  15 * time.Second,
