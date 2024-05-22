@@ -121,8 +121,7 @@ func (warlock *Warlock) registerPets() {
 	warlock.Felhunter = warlock.makePet(proto.WarlockOptions_Felhunter, baseStats, 0.8, 0.77, aaOptions, inheritance)
 	warlock.Felguard = warlock.makePet(proto.WarlockOptions_Felguard, baseStats, 1.0, 0.77, aaOptions, inheritance)
 	warlock.Imp = warlock.makePet(proto.WarlockOptions_Imp, impBaseStats, 1.0, 1.0, nil, inheritance)
-	// TODO: using the modifier for incubus for now, maybe the 1.025 from succubus is the correct one
-	warlock.Succubus = warlock.makePet(proto.WarlockOptions_Succubus, baseStats, 1.05, 0.77, aaOptions, inheritance)
+	warlock.Succubus = warlock.makePet(proto.WarlockOptions_Succubus, baseStats, 1.025, 0.77, aaOptions, inheritance)
 }
 
 func (warlock *Warlock) registerPetAbilities() {
