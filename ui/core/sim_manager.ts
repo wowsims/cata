@@ -79,7 +79,7 @@ export class SimManager {
 	 */
 	async abortAll(type: RequestType) {
 		for (const [id, cfg] of this.running) {
-			if (cfg.type != type) continue;
+			if ((cfg.type & type) == 0) continue;
 			if (cfg.signals) {
 				cfg.signals.abort.trigger();
 			} else {
