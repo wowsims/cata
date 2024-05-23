@@ -20,17 +20,20 @@ const SIM_WORKER_URL = `/${REPO_NAME}/sim_worker.js`;
 export type WorkerProgressCallback = (progressMetrics: ProgressMetrics) => void;
 
 export class WorkerPool {
-	private workers: Array<SimWorker>;
+	private readonly workers: Array<SimWorker>;
+	private readonly workersDisabled: Array<SimWorker>;
 
 	constructor(numWorkers: number) {
 		this.workers = [];
+		this.workersDisabled = [];
 		this.setNumWorkers(numWorkers);
 	}
 
 	setNumWorkers(numWorkers: number) {
 		if (numWorkers < this.workers.length) {
 			for (let i = this.workers.length - 1; i >= numWorkers; i--) {
-				this.workers[i].destroy();
+				this.workers[i].disable();
+				this.workersDisabled[i] = this.workers[i];
 			}
 			this.workers.length = numWorkers;
 			return;
@@ -38,7 +41,13 @@ export class WorkerPool {
 
 		for (let i = 0; i < numWorkers; i++) {
 			if (!this.workers[i]) {
-				this.workers[i] = new SimWorker(i);
+				if (this.workersDisabled[i]) {
+					this.workers[i] = this.workersDisabled[i];
+					delete this.workersDisabled[i];
+					this.workers[i].enable();
+				} else {
+					this.workers[i] = new SimWorker(i);
+				}
 			}
 		}
 	}
@@ -48,8 +57,6 @@ export class WorkerPool {
 	}
 
 	private getLeastBusyWorker(): SimWorker {
-		// We only care for sim workload here (RaidSim, StatWeights, BulkSim)
-		// other requests are trivial and shouldn't be considered for balancing.
 		return this.workers.reduce((curMinWorker, nextWorker) => (curMinWorker.getSimTaskWorkAmount() < nextWorker.getSimTaskWorkAmount() ? curMinWorker : nextWorker));
 	}
 
@@ -167,21 +174,33 @@ class SimWorker {
 	readonly workerId: number;
 	private readonly simTasksRunning: Record<string, {workLeft: number}>;
 	private taskIdsToPromiseFuncs: Record<string, [(result: any) => void, (error: any) => void]>;
-	private worker: Worker;
-	private onReady: Promise<void>;
+	private worker: Worker | undefined;
+	private onReady: Promise<void> | undefined;
+	private resolveReady: (() => void) | undefined;
 	private wasmWorker: boolean;
+	private shouldDestroy: boolean;
 
 	constructor(id: number) {
 		this.workerId = id;
 		this.simTasksRunning = {};
 		this.taskIdsToPromiseFuncs = {};
-		this.worker = new window.Worker(SIM_WORKER_URL);
 		this.wasmWorker = false;
-
-		let resolveReady: (() => void) | null = null;
+		this.shouldDestroy = false;
 		this.onReady = new Promise((_resolve, _reject) => {
-			resolveReady = _resolve;
+			this.resolveReady = _resolve;
 		});
+		this.setupWorker();
+		this.log('Created.');
+	}
+
+	private setupWorker() {
+		this.setTaskActive('setup', true); // Make it prefer ready workers.
+
+		this.onReady = new Promise((_resolve, _reject) => {
+			this.resolveReady = _resolve;
+		});
+
+		this.worker = new window.Worker(SIM_WORKER_URL);
 
 		this.worker.addEventListener('message', ({ data }: MessageEvent<WorkerSendMessage>) => {
 			const { id, msg, outputData } = data;
@@ -189,7 +208,8 @@ class SimWorker {
 				case 'ready':
 					this.wasmWorker = !!outputData && !!outputData[0];
 					this.postMessage({ msg: 'setID', id: this.workerId.toString() });
-					resolveReady!();
+					this.resolveReady!();
+					this.setTaskActive('setup', false);
 					this.log(`Ready, isWasm: ${this.wasmWorker}`);
 					break;
 				case 'idConfirm':
@@ -200,6 +220,7 @@ class SimWorker {
 						console.warn(`Unrecognized result id ${id} for msg ${msg}`);
 						return;
 					}
+					if (!id.includes('progress')) this.setTaskActive(id, false);
 					delete this.taskIdsToPromiseFuncs[id];
 					promiseFuncs[0](outputData);
 			}
@@ -209,13 +230,17 @@ class SimWorker {
 	/** Add sim work amount (iterations) used for load balancing. */
 	addSimTaskRunning(id: string, workLeft: number) {
 		this.simTasksRunning[id] = {workLeft};
-		this.log(`Added work, current work amount: ${this.getSimTaskWorkAmount()}`);
+		this.log(`Added work ${id}, current work amount: ${this.getSimTaskWorkAmount()}`);
 	}
 
 	/** Update sim work amount (iterations left) used for load balancing. */
 	updateSimTask(id: string, workLeft: number) {
 		if (workLeft <= 0) {
 			delete this.simTasksRunning[id];
+			this.log(`Work ${id} done, current work amount: ${this.getSimTaskWorkAmount()}`);
+			if (this.shouldDestroy && this.getSimTaskWorkAmount() == 0) {
+				this.disable(true);
+			}
 			return;
 		}
 		this.simTasksRunning[id].workLeft = workLeft;
@@ -230,7 +255,16 @@ class SimWorker {
 		return work;
 	}
 
+	private setTaskActive(id: string, active: boolean) {
+		if (active) {
+			this.addSimTaskRunning(id + 'task', 1); // Add 1 work to track pending tasks
+		} else {
+			this.updateSimTask(id + 'task', 0);
+		}
+	}
+
 	async isWasmWorker() {
+		if (!this.onReady || this.shouldDestroy) throw new Error('Disabled worker was used!');
 		await this.onReady;
 		return this.wasmWorker;
 	}
@@ -249,12 +283,12 @@ class SimWorker {
 	}
 
 	async doApiCall(requestName: SimRequest, request: Uint8Array, id: string): Promise<Uint8Array> {
+		if (!this.onReady || this.shouldDestroy) throw new Error('Disabled worker was used!');
+		if (!id) id = this.makeTaskId();
+		this.setTaskActive(id, true);
 		await this.onReady;
 
 		const taskPromise = new Promise<Uint8Array>((resolve, reject) => {
-			if (!id) {
-				id = this.makeTaskId();
-			}
 			this.taskIdsToPromiseFuncs[id] = [resolve, reject];
 
 			this.postMessage({
@@ -267,11 +301,25 @@ class SimWorker {
 	}
 
 	postMessage(message: WorkerReceiveMessage) {
+		if (!this.worker) throw new Error(`Worker ${this.workerId} postMessage while disabled!`);
 		this.worker.postMessage(message);
 	}
 
-	destroy() {
+	disable(force = false) {
+		this.shouldDestroy = true;
+		if (!this.worker || (!force && this.getSimTaskWorkAmount())) return;
 		this.worker.terminate();
+		delete this.worker;
+		delete this.onReady;
+		delete this.resolveReady;
+		this.log('Disabled.');
+	}
+
+	enable() {
+		this.shouldDestroy = false;
+		if (this.worker) return;
+		this.setupWorker();
+		this.log('Enabled.')
 	}
 
 	log(s: string) {
