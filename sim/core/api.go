@@ -89,3 +89,13 @@ func RunBulkSim(request *proto.BulkSimRequest) *proto.BulkSimResult {
 func RunBulkSimAsync(ctx context.Context, request *proto.BulkSimRequest, progress chan *proto.ProgressMetrics) {
 	go BulkSim(ctx, request, progress)
 }
+
+var runningInWasm = false
+
+func SetRunningInWasm() {
+	runningInWasm = true
+}
+
+func IsRunningInWasm() bool {
+	return runningInWasm
+}

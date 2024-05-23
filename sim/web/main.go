@@ -25,6 +25,7 @@ import (
 	"github.com/wowsims/cata/sim"
 	"github.com/wowsims/cata/sim/core"
 	proto "github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 
 	googleProto "google.golang.org/protobuf/proto"
 )
@@ -99,6 +100,11 @@ var handlers = map[string]apiHandler{
 	}},
 	"/computeStats": {msg: func() googleProto.Message { return &proto.ComputeStatsRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
 		return core.ComputeStats(msg.(*proto.ComputeStatsRequest))
+	}},
+	"/abortById": {msg: func() googleProto.Message { return &proto.AbortRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
+		id := msg.(*proto.AbortRequest).Id
+		triggered := simsignals.AbortById(id)
+		return &proto.AbortResponse{Id: id, WasTriggered: triggered}
 	}},
 }
 

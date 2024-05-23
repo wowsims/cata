@@ -12,11 +12,13 @@ import (
 	"github.com/wowsims/cata/sim"
 	"github.com/wowsims/cata/sim/core"
 	proto "github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	protojson "google.golang.org/protobuf/encoding/protojson"
 	googleProto "google.golang.org/protobuf/proto"
 )
 
 func init() {
+	core.SetRunningInWasm()
 	sim.RegisterAll()
 }
 
@@ -33,6 +35,7 @@ func main() {
 	js.Global().Set("statWeights", js.FuncOf(statWeights))
 	js.Global().Set("statWeightsAsync", js.FuncOf(statWeightsAsync))
 	js.Global().Set("bulkSimAsync", js.FuncOf(bulkSimAsync))
+	js.Global().Set("abortById", js.FuncOf(abortById))
 	js.Global().Call("wasmready")
 	<-c
 }
@@ -168,7 +171,8 @@ func raidSimAsync(this js.Value, args []js.Value) interface{} {
 	reporter := make(chan *proto.ProgressMetrics, 100)
 
 	go core.RunRaidSimAsync(rsr, reporter)
-	return processAsyncProgress(args[1], reporter)
+	go processAsyncProgress(args[1], reporter)
+	return js.Undefined()
 }
 
 func statWeights(this js.Value, args []js.Value) interface{} {
@@ -198,10 +202,9 @@ func statWeightsAsync(this js.Value, args []js.Value) interface{} {
 		return nil
 	}
 	reporter := make(chan *proto.ProgressMetrics, 100)
-	core.StatWeightsAsync(rsr, reporter)
-
-	result := processAsyncProgress(args[1], reporter)
-	return result
+	go core.StatWeightsAsync(rsr, reporter)
+	go processAsyncProgress(args[1], reporter)
+	return js.Undefined()
 }
 
 func bulkSimAsync(this js.Value, args []js.Value) interface{} {
@@ -213,10 +216,9 @@ func bulkSimAsync(this js.Value, args []js.Value) interface{} {
 	reporter := make(chan *proto.ProgressMetrics, 100)
 	// for now just use context.Background() until we can figure out the best way to handle
 	// allowing front end to cancel.
-	core.RunBulkSimAsync(context.Background(), rsr, reporter)
-
-	result := processAsyncProgress(args[1], reporter)
-	return result
+	go core.RunBulkSimAsync(context.Background(), rsr, reporter)
+	go processAsyncProgress(args[1], reporter)
+	return js.Undefined()
 }
 
 func raidSimRequestSplit(this js.Value, args []js.Value) interface{} {
@@ -274,6 +276,29 @@ func raidSimResultCombination(this js.Value, args []js.Value) interface{} {
 	return outArray
 }
 
+func abortById(this js.Value, args []js.Value) interface{} {
+	abortRequest := &proto.AbortRequest{}
+	if err := googleProto.Unmarshal(getArgsBinary(args[0]), abortRequest); err != nil {
+		log.Printf("Failed to parse AbortRequest: %s", err)
+		return nil
+	}
+
+	success := simsignals.AbortById(abortRequest.Id)
+
+	outbytes, err := googleProto.Marshal(&proto.AbortResponse{
+		Id:           abortRequest.Id,
+		WasTriggered: success,
+	})
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal AbortResponse: %s", err.Error())
+		return nil
+	}
+	outArray := js.Global().Get("Uint8Array").New(len(outbytes))
+	js.CopyBytesToJS(outArray, outbytes)
+
+	return outArray
+}
+
 // Assumes args[0] is a Uint8Array
 func getArgsBinary(value js.Value) []byte {
 	data := make([]byte, value.Get("length").Int())
@@ -286,19 +311,17 @@ func getArgsJson(value js.Value) []byte {
 	return []byte(str)
 }
 
-func processAsyncProgress(progFunc js.Value, reporter chan *proto.ProgressMetrics) js.Value {
-reader:
+func processAsyncProgress(progFunc js.Value, reporter chan *proto.ProgressMetrics) {
 	for {
-		// TODO: cleanup so we dont collect these
 		select {
 		case progMetric, ok := <-reporter:
 			if !ok {
-				break reader
+				return
 			}
 			outbytes, err := googleProto.Marshal(progMetric)
 			if err != nil {
 				log.Printf("[ERROR] Failed to marshal result: %s", err.Error())
-				return js.Undefined()
+				return
 			}
 
 			outArray := js.Global().Get("Uint8Array").New(len(outbytes))
@@ -306,10 +329,8 @@ reader:
 			progFunc.Invoke(outArray)
 
 			if progMetric.FinalWeightResult != nil || progMetric.FinalRaidResult != nil || progMetric.FinalBulkResult != nil {
-				return outArray
+				return
 			}
 		}
 	}
-
-	return js.Undefined()
 }

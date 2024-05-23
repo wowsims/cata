@@ -355,6 +355,15 @@ message RaidSimResultCombinationRequest {
 	repeated RaidSimResult results = 1;
 }
 
+message AbortRequest {
+	string id = 1;
+}
+
+message AbortResponse {
+	string id = 1;
+	bool was_triggered = 2; // Id was known and abort signal was triggered.
+}
+
 // RPC ComputeStats
 message ComputeStatsRequest {
 	Raid raid = 1;
