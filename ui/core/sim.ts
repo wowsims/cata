@@ -34,6 +34,7 @@ import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
 import { runConcurrentSim } from './sim_concurrent';
+import { RequestType, SimManager } from './sim_manager';
 import { EventID, TypedEvent } from './typed_event.js';
 import { generateSimId, getEnumValues, noop } from './utils.js';
 import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
@@ -127,6 +128,8 @@ export class Sim {
 	// These callbacks are needed so we can apply BuffBot modifications automatically before sending requests.
 	private modifyRaidProto: (raidProto: RaidProto) => void = noop;
 
+	readonly simManager: SimManager;
+
 	constructor({ type }: SimProps = {}) {
 		this.type = type ?? SimType.SimTypeIndividual;
 
@@ -138,6 +141,8 @@ export class Sim {
 				this.workerPool.setNumWorkers(nWorker);
 			}
 		});
+
+		this.simManager = new SimManager(this.workerPool);
 
 		this._initPromise = Database.get().then(db => {
 			this.db_ = db;
@@ -225,7 +230,7 @@ export class Sim {
 		// TODO: remove any replenishment from sim request here? probably makes more sense to do it inside the sim to protect against accidents
 
 		return RaidSimRequest.create({
-			id: generateSimId(), // TODO: abort
+			id: generateSimId(),
 			type: this.type,
 			raid: raid,
 			encounter: encounter,
@@ -287,16 +292,20 @@ export class Sim {
 		} else if (this.encounter.targets.length < 1) {
 			throw new Error('Encounter has no targets! Try adding some targets first.');
 		}
+		let simId = '';
 		try {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(false);
+			simId = request.id;
 
 			let result;
 			// Only use worker base concurrency when running wasm. Local sim has native threading.
 			if (await this.isWasm() && this.getWasmConcurrency() >= 2) {
-				result = await runConcurrentSim(request, this.workerPool, onProgress);
+				const sig = this.simManager.registerRunning(request.id, RequestType.RaidSim, true);
+				result = await runConcurrentSim(request, this.workerPool, onProgress, sig);
 			} else {
+				this.simManager.registerRunning(request.id, RequestType.RaidSim, false);
 				result = await this.workerPool.raidSimAsync(request, onProgress);
 			}
 
@@ -309,6 +318,8 @@ export class Sim {
 		} catch (error) {
 			if (error instanceof SimError) throw error;
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
+		} finally {
+			this.simManager.unregisterRunning(simId);
 		}
 	}
 
