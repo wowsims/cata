@@ -246,7 +246,7 @@ func raidSimResultCombination(this js.Value, args []js.Value) interface{} {
 		return nil
 	}
 
-	combineRes := func() (res *proto.RaidSimResultCombinationResult) {
+	combineRes := func() (res *proto.RaidSimResult) {
 		defer func() {
 			if err := recover(); err != nil {
 				errStr := ""
@@ -257,15 +257,15 @@ func raidSimResultCombination(this js.Value, args []js.Value) interface{} {
 					errStr = errt.Error()
 				}
 				errStr += "\nStack Trace:\n" + string(debug.Stack())
-				res = &proto.RaidSimResultCombinationResult{ErrorResult: errStr}
+				res = &proto.RaidSimResult{ErrorResult: errStr}
 			}
 		}()
-		return &proto.RaidSimResultCombinationResult{CombinedResult: core.CombineConcurrentSimResults(combRequest.Results, false)}
+		return core.CombineConcurrentSimResults(combRequest.Results, false)
 	}()
 
 	outbytes, err := googleProto.Marshal(combineRes)
 	if err != nil {
-		log.Printf("[ERROR] Failed to marshal RaidSimResultCombinationResult: %s", err.Error())
+		log.Printf("[ERROR] Failed to marshal RaidSimResult: %s", err.Error())
 		return nil
 	}
 	outArray := js.Global().Get("Uint8Array").New(len(outbytes))

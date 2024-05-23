@@ -353,11 +353,6 @@ message RaidSimResultCombinationRequest {
 	repeated RaidSimResult results = 1;
 }
 
-message RaidSimResultCombinationResult {
-	RaidSimResult combined_result = 1;
-	string error_result = 2;
-}
-
 // RPC ComputeStats
 message ComputeStatsRequest {
 	Raid raid = 1;
