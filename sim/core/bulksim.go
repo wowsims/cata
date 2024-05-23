@@ -381,7 +381,7 @@ func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []sin
 				sub.req.SimOptions.Iterations = int32(iterations)
 				results <- &itemSubstitutionSimResult{
 					Request:      sub.req,
-					Result:       b.SingleRaidSimRunner(sub.req, singleSimProgress, false, simsignals.Signals{}),
+					Result:       b.SingleRaidSimRunner(sub.req, singleSimProgress, false, simsignals.CreateSignals()),
 					Substitution: sub.eq,
 					ChangeLog:    sub.cl,
 				}
