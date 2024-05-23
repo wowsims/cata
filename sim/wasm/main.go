@@ -11,7 +11,6 @@ import (
 
 	"github.com/wowsims/cata/sim"
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/concurrency"
 	proto "github.com/wowsims/cata/sim/core/proto"
 	protojson "google.golang.org/protobuf/encoding/protojson"
 	googleProto "google.golang.org/protobuf/proto"
@@ -227,7 +226,7 @@ func raidSimRequestSplit(this js.Value, args []js.Value) interface{} {
 		return nil
 	}
 
-	splitRes := concurrency.SplitRequestForConcurrency(splitRequest.Request, splitRequest.SplitCount)
+	splitRes := core.SplitSimRequestForConcurrency(splitRequest.Request, splitRequest.SplitCount)
 
 	outbytes, err := googleProto.Marshal(splitRes)
 	if err != nil {
@@ -247,7 +246,22 @@ func raidSimResultCombination(this js.Value, args []js.Value) interface{} {
 		return nil
 	}
 
-	combineRes := concurrency.CombineConcurrentResultsAsProto(combRequest.Results, false)
+	combineRes := func() (res *proto.RaidSimResultCombinationResult) {
+		defer func() {
+			if err := recover(); err != nil {
+				errStr := ""
+				switch errt := err.(type) {
+				case string:
+					errStr = errt
+				case error:
+					errStr = errt.Error()
+				}
+				errStr += "\nStack Trace:\n" + string(debug.Stack())
+				res = &proto.RaidSimResultCombinationResult{ErrorResult: errStr}
+			}
+		}()
+		return &proto.RaidSimResultCombinationResult{CombinedResult: core.CombineConcurrentSimResults(combRequest.Results, false)}
+	}()
 
 	outbytes, err := googleProto.Marshal(combineRes)
 	if err != nil {
