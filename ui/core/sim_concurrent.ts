@@ -156,12 +156,8 @@ export async function runConcurrentSim(request: RaidSimRequest, workerPool: Work
 		return makeAndSendErrorResult(combiResult.errorResult, onProgress);
 	}
 
-	if (!combiResult.combinedResult) {
-		return makeAndSendErrorResult("Could not get combined result!", onProgress);
-	}
-
-	simRes.progressMetricsFinal.finalRaidResult = combiResult.combinedResult;
+	simRes.progressMetricsFinal.finalRaidResult = combiResult;
 	onProgress(simRes.progressMetricsFinal);
 
-	return combiResult.combinedResult;
+	return combiResult;
 }
