@@ -36,6 +36,7 @@ type Mage struct {
 	FireBlast            *core.Spell
 	FlameOrbExplode      *core.Spell
 	Flamestrike          *core.Spell
+	FlamestrikeBW        *core.Spell
 	FrostfireOrb         *core.Spell
 	PyroblastDot         *core.Spell
 	PyroblastImpact      *core.Spell

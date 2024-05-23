@@ -6,7 +6,7 @@ import (
 )
 
 // TODO: Pet Mana
-func (warlock *Warlock) registerLifeTapSpell() {
+func (warlock *Warlock) registerLifeTap() {
 	actionID := core.ActionID{SpellID: 1454}
 	impLifetap := 1.0 + 0.1*float64(warlock.Talents.ImprovedLifeTap)
 	manaMetrics := warlock.NewManaMetrics(actionID)

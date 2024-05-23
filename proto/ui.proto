@@ -107,6 +107,7 @@ enum DungeonDifficulty {
 	DifficultyRaid10H = 4;
 	DifficultyRaid25 = 5;
 	DifficultyRaid25H = 6;
+	DifficultyRaid25RF = 9;
 }
 
 enum RepLevel {
@@ -233,6 +234,7 @@ enum SourceFilterOption {
 	SourceDungeonH = 6;
 	SourceRaid = 7;
 	SourceRaidH = 8;
+	SourceRaidRF = 9;
 }
 
 enum RaidFilterOption {

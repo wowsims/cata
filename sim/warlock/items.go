@@ -27,7 +27,7 @@ var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 				FloatValue: 3.0,
 			})
 
-			aura := warlock.GetOrRegisterAura(core.Aura{
+			aura := warlock.RegisterAura(core.Aura{
 				Label:     "Fel Spark",
 				ActionID:  core.ActionID{SpellID: 89937},
 				Duration:  15 * time.Second,
@@ -39,7 +39,7 @@ var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 					dmgMod.Deactivate()
 				},
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell == warlock.FelFlame && result.Landed() {
+					if spell.Matches(WarlockSpellFelFlame) && result.Landed() {
 						aura.RemoveStack(sim)
 					}
 				},
@@ -49,8 +49,9 @@ var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 				Label:           "Item - Warlock T11 4P Bonus",
 				ActionID:        core.ActionID{SpellID: 89935},
 				ActionIDForProc: aura.ActionID,
-				OnPeriodicDamageDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell == warlock.ImmolateDot && sim.Proc(0.02, "Warlock 4pT11") {
+				OnPeriodicDamageDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+					if spell.Matches(WarlockSpellImmolateDot|WarlockSpellUnstableAffliction) &&
+						sim.Proc(0.02, "Warlock 4pT11") {
 						aura.Activate(sim)
 						aura.SetStacks(sim, 2)
 					}
