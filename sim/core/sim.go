@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 )
 
 type Task interface {
@@ -38,7 +39,7 @@ type Simulation struct {
 	NeedsInput     bool          // Sim is in interactive mode and needs input
 
 	ProgressReport func(*proto.ProgressMetrics)
-	QuitChannel    chan bool
+	Signals        simsignals.Signals
 
 	Log func(string, ...interface{})
 
@@ -105,11 +106,11 @@ func (sim *Simulation) RemoveTask(task Task) {
 	}
 }
 
-func RunSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, quitSignal chan bool) *proto.RaidSimResult {
-	return runSim(rsr, progress, false, quitSignal)
+func RunSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, signals simsignals.Signals) *proto.RaidSimResult {
+	return runSim(rsr, progress, false, signals)
 }
 
-func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, quitSignal chan bool) (result *proto.RaidSimResult) {
+func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, signals simsignals.Signals) (result *proto.RaidSimResult) {
 	if !rsr.SimOptions.IsTest {
 		defer func() {
 			if err := recover(); err != nil {
@@ -137,11 +138,7 @@ func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, ski
 		}()
 	}
 
-	sim := NewSim(rsr)
-
-	if quitSignal != nil {
-		sim.QuitChannel = quitSignal
-	}
+	sim := NewSim(rsr, signals)
 
 	if !skipPresim {
 		if progress != nil {
@@ -185,12 +182,12 @@ func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, ski
 	return result
 }
 
-func NewSim(rsr *proto.RaidSimRequest) *Simulation {
+func NewSim(rsr *proto.RaidSimRequest, signals simsignals.Signals) *Simulation {
 	env, _, _ := NewEnvironment(rsr.Raid, rsr.Encounter, false)
-	return newSimWithEnv(env, rsr.SimOptions)
+	return newSimWithEnv(env, rsr.SimOptions, signals)
 }
 
-func newSimWithEnv(env *Environment, simOptions *proto.SimOptions) *Simulation {
+func newSimWithEnv(env *Environment, simOptions *proto.SimOptions, signals simsignals.Signals) *Simulation {
 	rseed := simOptions.RandomSeed
 	if rseed == 0 {
 		rseed = time.Now().UnixNano()
@@ -205,6 +202,8 @@ func newSimWithEnv(env *Environment, simOptions *proto.SimOptions) *Simulation {
 
 		isTest:    simOptions.IsTest,
 		testRands: make(map[string]Rand),
+
+		Signals: signals,
 	}
 }
 
@@ -310,18 +309,12 @@ func (sim *Simulation) run() *proto.RaidSimResult {
 
 	var st time.Time
 	for i := int32(1); i < sim.Options.Iterations; i++ {
-		if sim.QuitChannel != nil {
-			select {
-			case <-sim.QuitChannel:
-				quitResult := &proto.RaidSimResult{
-					ErrorResult: "Canceled due to quit signal!",
-				}
-				if sim.ProgressReport != nil {
-					sim.ProgressReport(&proto.ProgressMetrics{FinalRaidResult: quitResult})
-				}
-				return quitResult
-			default:
+		if sim.Signals.Abort.IsTriggered() {
+			quitResult := &proto.RaidSimResult{ErrorResult: "aborted"}
+			if sim.ProgressReport != nil {
+				sim.ProgressReport(&proto.ProgressMetrics{FinalRaidResult: quitResult})
 			}
+			return quitResult
 		}
 
 		// fmt.Printf("Iteration: %d\n", i)

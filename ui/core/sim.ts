@@ -35,7 +35,7 @@ import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
 import { runConcurrentSim } from './sim_concurrent';
 import { EventID, TypedEvent } from './typed_event.js';
-import { getEnumValues, noop } from './utils.js';
+import { generateSimId, getEnumValues, noop } from './utils.js';
 import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
@@ -225,6 +225,7 @@ export class Sim {
 		// TODO: remove any replenishment from sim request here? probably makes more sense to do it inside the sim to protect against accidents
 
 		return RaidSimRequest.create({
+			id: generateSimId(), // TODO: abort
 			type: this.type,
 			raid: raid,
 			encounter: encounter,

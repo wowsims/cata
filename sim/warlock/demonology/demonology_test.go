@@ -7,6 +7,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -51,7 +52,7 @@ func setupFakeSim(lockStats stats.Stats, glyphs *proto.Glyphs) *core.Simulation 
 			},
 			Duration: 10,
 		},
-	})
+	}, simsignals.CreateSignals())
 
 	sim.Options.Debug = true
 	sim.Log = func(message string, vals ...interface{}) {

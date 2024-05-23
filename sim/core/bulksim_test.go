@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
@@ -91,7 +92,7 @@ func createEquipmentFromItems(items ...*itemWithSlot) *proto.EquipmentSpec {
 func TestBulkSim(t *testing.T) {
 	t.Skip("TODO: Implement")
 
-	fakeRunSim := func(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, quitChan chan bool) *proto.RaidSimResult {
+	fakeRunSim := func(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, signals simsignals.Signals) *proto.RaidSimResult {
 		return &proto.RaidSimResult{}
 	}
 

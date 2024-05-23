@@ -5,6 +5,7 @@ import (
 	"context"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -46,21 +47,39 @@ func StatWeightsAsync(request *proto.StatWeightsRequest, progress chan *proto.Pr
  * Runs multiple iterations of the sim with a full raid.
  */
 func RunRaidSim(request *proto.RaidSimRequest) *proto.RaidSimResult {
-	return RunSim(request, nil, nil)
+	return RunSim(request, nil, simsignals.CreateSignals())
 }
 
 func RunRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
-	go RunSim(request, progress, nil)
+	simId := request.Id
+	signals, err := simsignals.RegisterWithId(request.Id)
+	if err != nil {
+		progress <- &proto.ProgressMetrics{FinalRaidResult: &proto.RaidSimResult{ErrorResult: "Couldn't register for signal API: " + err.Error()}}
+		return
+	}
+	go func() {
+		defer simsignals.UnregisterId(simId)
+		RunSim(request, progress, signals)
+	}()
 }
 
 // Threading does not work in WASM!
 func RunRaidSimConcurrent(request *proto.RaidSimRequest) *proto.RaidSimResult {
-	return runSimConcurrent(request, nil)
+	return runSimConcurrent(request, nil, simsignals.CreateSignals())
 }
 
 // Threading does not work in WASM!
 func RunRaidSimConcurrentAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
-	go runSimConcurrent(request, progress)
+	simId := request.Id
+	signals, err := simsignals.RegisterWithId(request.Id)
+	if err != nil {
+		progress <- &proto.ProgressMetrics{FinalRaidResult: &proto.RaidSimResult{ErrorResult: "Couldn't register for signal API: " + err.Error()}}
+		return
+	}
+	go func() {
+		defer simsignals.UnregisterId(simId)
+		runSimConcurrent(request, progress, signals)
+	}()
 }
 
 func RunBulkSim(request *proto.BulkSimRequest) *proto.BulkSimResult {

@@ -245,6 +245,10 @@ export function randomString(len?: number): string {
 	return str;
 }
 
+export function generateSimId() {
+	return Date.now()%1000000 + randomString(8)
+}
+
 // Allows replacement of stringified objects based on the key and path.
 // If handler returns a string, that string is used. Otherwise, the normal JSON.stringify result is returned.
 export function jsonStringifyCustom(value: any, indent: number, handler: (value: any, path: Array<string>) => string | undefined | void): string {

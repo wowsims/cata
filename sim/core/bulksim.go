@@ -15,6 +15,7 @@ import (
 	goproto "google.golang.org/protobuf/proto"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 )
 
 const (
@@ -22,7 +23,7 @@ const (
 )
 
 // raidSimRunner runs a standard raid simulation.
-type raidSimRunner func(*proto.RaidSimRequest, chan *proto.ProgressMetrics, bool, chan bool) *proto.RaidSimResult
+type raidSimRunner func(*proto.RaidSimRequest, chan *proto.ProgressMetrics, bool, simsignals.Signals) *proto.RaidSimResult
 
 // bulkSimRunner runs a bulk simulation.
 type bulkSimRunner struct {
@@ -380,7 +381,7 @@ func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []sin
 				sub.req.SimOptions.Iterations = int32(iterations)
 				results <- &itemSubstitutionSimResult{
 					Request:      sub.req,
-					Result:       b.SingleRaidSimRunner(sub.req, singleSimProgress, false, nil),
+					Result:       b.SingleRaidSimRunner(sub.req, singleSimProgress, false, simsignals.Signals{}),
 					Substitution: sub.eq,
 					ChangeLog:    sub.cl,
 				}

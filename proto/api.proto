@@ -318,6 +318,8 @@ message RaidSimRequest {
 	Encounter encounter = 2;
 	SimOptions sim_options = 3;
 	SimType type = 4;
+	// A unique id. Used to e.g. abort async sim requests.
+	string id = 5;
 }
 
 // Result from running the raid sim.

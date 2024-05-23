@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	"github.com/wowsims/cata/sim/core/stats"
 	googleProto "google.golang.org/protobuf/proto"
 )
@@ -179,7 +180,7 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 		stat.AddToStatsProto(simRequest.Raid.Parties[0].Players[0].BonusStats, value)
 
 		reporter := make(chan *proto.ProgressMetrics, 10)
-		go RunSim(simRequest, reporter, nil) // RunRaidSim(simRequest)
+		go RunSim(simRequest, reporter, simsignals.CreateSignals()) // RunRaidSim(simRequest)
 
 		var localIterations int32
 		var errorStr string
