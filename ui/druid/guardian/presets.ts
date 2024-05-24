@@ -30,6 +30,7 @@ export const DefaultSimpleRotation = DruidRotation.create({
 	maintainDemoralizingRoar: true,
 	demoTime: 4.0,
 	pulverizeTime: 4.0,
+	prepullStampede: true,
 });
 
 import DefaultApl from './apls/default.apl.json';
