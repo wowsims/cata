@@ -488,6 +488,7 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatSpellPenetration]: 'SpellPen',
 		[Stat.StatAttackPower]: 'Ap',
 		[Stat.StatMeleeHit]: 'HitRating',
+		[Stat.StatMastery]: 'MasteryRating',
 		[Stat.StatMeleeCrit]: 'CritRating',
 		[Stat.StatMeleeHaste]: 'HasteRating',
 		[Stat.StatExpertise]: 'ExpertiseRating',
@@ -505,7 +506,6 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatNatureResistance]: 'NatureResistance',
 		[Stat.StatShadowResistance]: 'ShadowResistance',
 		[Stat.StatBonusArmor]: 'Armor2',
-		[Stat.StatMastery]: 'mastery',
 	};
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
 		[PseudoStat.PseudoStatMainHandDps]: 'MeleeDps',
