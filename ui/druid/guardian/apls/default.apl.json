@@ -8,7 +8,8 @@
         }
       },
       "prepullActions": [
-        {"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-1s"}}}
+        {"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-1s"}}},
+        {"action":{"activateAura":{"auraId":{"spellId":81017}}},"doAtValue":{"const":{"val":"-0.1s"}}}
       ],
       "priorityList": [
         {"action":{"autocastOtherCooldowns":{}}},
