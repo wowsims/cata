@@ -1214,6 +1214,7 @@ export class Player<SpecType extends Spec> {
 	static readonly DIFFICULTY_SRCS: Partial<Record<SourceFilterOption, DungeonDifficulty>> = {
 		[SourceFilterOption.SourceDungeon]: DungeonDifficulty.DifficultyNormal,
 		[SourceFilterOption.SourceDungeonH]: DungeonDifficulty.DifficultyHeroic,
+		[SourceFilterOption.SourceRaidRF]: DungeonDifficulty.DifficultyRaid25RF,
 		[SourceFilterOption.SourceRaid]: DungeonDifficulty.DifficultyRaid25,
 		[SourceFilterOption.SourceRaidH]: DungeonDifficulty.DifficultyRaid25H,
 	};

@@ -34,6 +34,8 @@ func NewDestructionWarlock(character *core.Character, options *proto.Player) *De
 
 type DestructionWarlock struct {
 	*warlock.Warlock
+
+	Conflagrate *core.Spell
 }
 
 func (destruction DestructionWarlock) getMasteryBonus() float64 {
@@ -47,7 +49,8 @@ func (destruction *DestructionWarlock) GetWarlock() *warlock.Warlock {
 func (destruction *DestructionWarlock) Initialize() {
 	destruction.Warlock.Initialize()
 
-	destruction.registerConflagrateSpell()
+	destruction.registerChaosBolt()
+	destruction.registerConflagrate()
 }
 
 func (destruction *DestructionWarlock) ApplyTalents() {
@@ -63,17 +66,8 @@ func (destruction *DestructionWarlock) ApplyTalents() {
 		masteryMod.UpdateFloatValue(destruction.getMasteryBonus())
 	})
 
-	core.MakePermanent(destruction.GetOrRegisterAura(core.Aura{
-		Label:    "Mastery: Fiery Apocalypse",
-		ActionID: core.ActionID{SpellID: 77220},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.UpdateFloatValue(destruction.getMasteryBonus())
-			masteryMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.Deactivate()
-		},
-	}))
+	masteryMod.UpdateFloatValue(destruction.getMasteryBonus())
+	masteryMod.Activate()
 
 	// Cataclysm
 	destruction.AddStaticMod(core.SpellModConfig{

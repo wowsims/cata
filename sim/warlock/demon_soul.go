@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerDemonSoulSpell() {
+func (warlock *Warlock) registerDemonSoul() {
 
 	impMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusCrit_Rating,
@@ -27,7 +27,7 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 	})
 
 	felhunterMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		ClassMask:  WarlockPeriodicShadowDamage,
 		FloatValue: 0.2,
 	})
@@ -88,7 +88,7 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 		},
 	})
 
-	warlock.RegisterSpell(core.SpellConfig{
+	demonSoul := warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 77801},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
@@ -120,6 +120,14 @@ func (warlock *Warlock) registerDemonSoulSpell() {
 			} else if warlock.Succubus.IsActive() {
 				demonSoulSuccubus.Activate(sim)
 			}
+		},
+	})
+
+	warlock.AddMajorCooldown(core.MajorCooldown{
+		Spell: demonSoul,
+		Type:  core.CooldownTypeDPS,
+		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+			return true
 		},
 	})
 }

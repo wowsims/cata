@@ -49,9 +49,9 @@ func (demonology *DemonologyWarlock) GetWarlock() *warlock.Warlock {
 func (demonology *DemonologyWarlock) Initialize() {
 	demonology.Warlock.Initialize()
 
-	demonology.registerHandOfGuldanSpell()
-	demonology.registerMetamorphosisSpell()
-	demonology.registerSummonFelguardSpell()
+	demonology.registerHandOfGuldan()
+	demonology.registerMetamorphosis()
+	demonology.registerSummonFelguard()
 }
 
 func (demonology *DemonologyWarlock) ApplyTalents() {
@@ -73,7 +73,7 @@ func (demonology *DemonologyWarlock) Reset(sim *core.Simulation) {
 	demonology.Warlock.Reset(sim)
 }
 
-func (demonology *DemonologyWarlock) registerSummonFelguardSpell() {
+func (demonology *DemonologyWarlock) registerSummonFelguard() {
 	demonology.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30146},
 		SpellSchool:    core.SpellSchoolShadow,

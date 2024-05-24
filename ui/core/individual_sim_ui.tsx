@@ -195,7 +195,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			spec: player.getPlayerSpec(),
 			knownIssues: config.knownIssues,
 			simStatus: simLaunchStatuses[player.getSpec()],
-			noticeText: 'WoWSims - Cataclysm is still in the very early stages of development and all sims are considered non-functional at this time.',
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;

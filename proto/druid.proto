@@ -191,6 +191,7 @@ message GuardianDruid {
 		bool maintain_demoralizing_roar = 2;
 		double demo_time = 3;
 		double pulverize_time = 4;
+		bool prepull_stampede = 5;
   }
 
   message Options {
