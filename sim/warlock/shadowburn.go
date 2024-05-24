@@ -18,10 +18,7 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellShadowBurn,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.15,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.15},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -38,11 +35,10 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
-		BonusCoefficient:         1.056,
+		BonusCoefficient:         1.05599999428,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := warlock.CalcAndRollDamageRange(sim, Coefficient_Shadowburn, Variance_Shadowburn)
-
+			baseDamage := warlock.CalcAndRollDamageRange(sim, 0.71399998665, 0.1099999994)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

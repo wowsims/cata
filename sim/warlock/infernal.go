@@ -24,9 +24,7 @@ func (warlock *Warlock) registerSummonInfernal(timer *core.Timer) {
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagAPL,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.8,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.8},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				CastTime: 1500 * time.Millisecond,
@@ -41,11 +39,12 @@ func (warlock *Warlock) registerSummonInfernal(timer *core.Timer) {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
-		BonusCoefficient: 0.765,
+		BonusCoefficient: 0.76499998569,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := sim.Encounter.AOECapMultiplier() *
-					warlock.CalcAndRollDamageRange(sim, Coefficient_Infernal, Variance_Infernal)
+					warlock.CalcAndRollDamageRange(sim, 0.48500001431, 0.11999999732)
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 

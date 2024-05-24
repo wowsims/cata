@@ -19,10 +19,7 @@ func (destro *DestructionWarlock) registerChaosBolt() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: warlock.WarlockSpellChaosBolt,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.07,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.07},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -37,9 +34,10 @@ func (destro *DestructionWarlock) registerChaosBolt() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           destro.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
-		BonusCoefficient:         0.628,
+		BonusCoefficient:         0.62800002098,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := destro.CalcAndRollDamageRange(sim, warlock.Coefficient_ChaosBolt, warlock.Variance_ChaosBolt)
+			baseDamage := destro.CalcAndRollDamageRange(sim, 1.54700005054, 0.23800000548)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

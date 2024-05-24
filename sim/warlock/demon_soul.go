@@ -88,7 +88,7 @@ func (warlock *Warlock) registerDemonSoul() {
 		},
 	})
 
-	warlock.RegisterSpell(core.SpellConfig{
+	demonSoul := warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 77801},
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskEmpty,
@@ -120,6 +120,14 @@ func (warlock *Warlock) registerDemonSoul() {
 			} else if warlock.Succubus.IsActive() {
 				demonSoulSuccubus.Activate(sim)
 			}
+		},
+	})
+
+	warlock.AddMajorCooldown(core.MajorCooldown{
+		Spell: demonSoul,
+		Type:  core.CooldownTypeDPS,
+		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
+			return true
 		},
 	})
 }
