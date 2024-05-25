@@ -115,14 +115,6 @@ func (mage *Mage) applyGlyphs() {
 		})
 	}
 
-	if mage.HasMajorGlyph(proto.MageMajorGlyph_GlyphOfDragonSBreath) {
-		mage.AddStaticMod(core.SpellModConfig{
-			Kind:      core.SpellMod_Cooldown_Flat,
-			ClassMask: MageSpellDragonsBreath,
-			TimeValue: -3 * time.Second,
-		})
-	}
-
 	// Minors
 
 	// Mirror Images added inside pet's rotation

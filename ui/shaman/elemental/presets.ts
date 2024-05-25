@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession } from '../../core/proto/common.js';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common.js';
 import {
 	AirTotem,
 	CallTotem,
@@ -107,4 +107,5 @@ export const DefaultConsumes = Consumes.create({
 	prepopPotion: Potions.VolcanicPotion,
 	flask: Flask.FlaskOfTheDraconicMind,
 	food: Food.FoodSeafoodFeast,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
