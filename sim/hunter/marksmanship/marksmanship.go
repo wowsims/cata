@@ -28,7 +28,7 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 	wqSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskRangedSpecial,
+		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 0.8, // Wowwiki says it remains 80%
@@ -50,7 +50,7 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell == wqSpell {
+			if spell.ProcMask != core.ProcMaskRangedSpecial && spell != hunter.AutoAttacks.RangedAuto() {
 				return
 			}
 			procChance := (hunter.CalculateMasteryPoints() + 8) * 0.021
