@@ -65,6 +65,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		if (player.getRace() == Race.RaceTroll && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeBow) {
 			stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
 		}
+		if (player.getTalents().pathing) {
+			stats = stats.addStat(Stat.StatMeleeHaste, player.getTalents().pathing * Mechanics.HASTE_RATING_PER_HASTE_PERCENT);
+		}
 
 		return {
 			talents: stats,
