@@ -53,7 +53,7 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 			if spell != hunter.AutoAttacks.RangedAuto() && spell.ProcMask != core.ProcMaskRangedSpecial {
 				return
 			}
-			procChance := 0.168 + (hunter.CalculateMasteryPoints() * 0.021) // Todo: Is this right scaling?
+			procChance := hunter.CalculateMasteryPoints() * 0.021
 			if sim.RandomFloat("Wild Quiver") < procChance {
 				wqSpell.Cast(sim, result.Target)
 			}
