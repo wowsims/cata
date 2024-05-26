@@ -50,7 +50,7 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != hunter.AutoAttacks.RangedAuto() && spell.ProcMask != core.ProcMaskRangedSpecial {
+			if spell == wqSpell {
 				return
 			}
 			procChance := (hunter.CalculateMasteryPoints() + 8) * 0.021
