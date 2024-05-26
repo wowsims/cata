@@ -5,6 +5,7 @@ import { APLAction, APLListItem, APLPrepullAction, APLValue } from '../../proto/
 import { ActionId } from '../../proto_utils/action_id';
 import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
+import { randomUUID } from '../../utils';
 import { Component } from '../component';
 import { Input, InputConfig } from '../input';
 import { ListItemPickerConfig, ListPicker } from '../list_picker';
@@ -107,6 +108,7 @@ class APLPrepullActionPicker extends Input<Player<any>, APLPrepullAction> {
 		});
 
 		this.doAtPicker = new AdaptiveStringPicker(this.rootElem, this.player, {
+			id: randomUUID(),
 			label: 'Do At',
 			labelTooltip: "Time before pull to do the action. Should be negative, and formatted like, '-1s' or '-2500ms'.",
 			extraCssClasses: ['apl-prepull-actions-doat'],

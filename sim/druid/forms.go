@@ -269,11 +269,10 @@ func (druid *Druid) registerBearFormSpell() {
 			if leatherSpecDep != nil {
 				druid.EnableDynamicStatDep(sim, leatherSpecDep)
 			}
-			druid.GainHealth(sim, healthFrac*druid.MaxHealth()-druid.CurrentHealth(), healthMetrics)
 
 			if !druid.Env.MeasuringStats {
+				druid.GainHealth(sim, healthFrac*druid.MaxHealth()-druid.CurrentHealth(), healthMetrics)
 				druid.AutoAttacks.EnableAutoSwing(sim)
-
 				druid.UpdateManaRegenRates()
 			}
 		},
@@ -299,9 +298,9 @@ func (druid *Druid) registerBearFormSpell() {
 			if leatherSpecDep != nil {
 				druid.DisableDynamicStatDep(sim, leatherSpecDep)
 			}
-			druid.RemoveHealth(sim, druid.CurrentHealth()-healthFrac*druid.MaxHealth())
 
 			if !druid.Env.MeasuringStats {
+				druid.RemoveHealth(sim, druid.CurrentHealth()-healthFrac*druid.MaxHealth())
 				druid.AutoAttacks.EnableAutoSwing(sim)
 				druid.UpdateManaRegenRates()
 				druid.EnrageAura.Deactivate(sim)

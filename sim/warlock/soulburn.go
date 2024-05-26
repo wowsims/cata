@@ -6,12 +6,18 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerSoulburnSpell() {
+func (warlock *Warlock) registerSoulburn() {
 
 	castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
 		ClassMask:  WarlockSpellSummonFelguard | WarlockSpellSummonImp | WarlockSpellSummonSuccubus | WarlockSpellSummonFelhunter | WarlockSpellSoulFire,
 		FloatValue: -1.0,
+	})
+
+	drainLifeCastMod := warlock.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  WarlockSpellDrainLife,
+		FloatValue: -0.5,
 	})
 
 	warlock.SoulBurnAura = warlock.RegisterAura(core.Aura{
@@ -20,9 +26,11 @@ func (warlock *Warlock) registerSoulburnSpell() {
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Activate()
+			drainLifeCastMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Deactivate()
+			drainLifeCastMod.Deactivate()
 		},
 	})
 

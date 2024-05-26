@@ -10,7 +10,7 @@ func (druid *Druid) registerPulverizeSpell() {
 		return
 	}
 
-	statBonusPerStack := stats.Stats{stats.MeleeCrit: 3.0 * core.CritRatingPerCritChance}
+	statBonusPerStack := stats.Stats{stats.MeleeCrit: 3.0 * core.CritRatingPerCritChance, stats.SpellCrit: 3.0 * core.CritRatingPerCritChance}
 
 	druid.PulverizeAura = druid.RegisterAura(core.Aura{
 		Label:     "Pulverize",
@@ -51,7 +51,7 @@ func (druid *Druid) registerPulverizeSpell() {
 			lacerateStacksConsumed := core.TernaryInt32(lacerateDot.IsActive(), lacerateDot.GetStacks(), 0)
 			flatDamage := 1623.6 * float64(lacerateStacksConsumed)
 			baseDamage := flatDamage/0.6 + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
 				lacerateDot.Cancel(sim)

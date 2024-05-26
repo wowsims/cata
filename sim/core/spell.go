@@ -40,7 +40,6 @@ type SpellConfig struct {
 	BonusCritRating      float64
 	BonusSpellPower      float64
 	BonusExpertiseRating float64
-	BonusArmorPenRating  float64
 
 	DamageMultiplier         float64
 	DamageMultiplierAdditive float64
@@ -127,7 +126,6 @@ type Spell struct {
 	BonusCritRating          float64
 	BonusSpellPower          float64
 	BonusExpertiseRating     float64
-	BonusArmorPenRating      float64
 	CastTimeMultiplier       float64
 	CostMultiplier           float64
 	CdMultiplier             float64
@@ -222,7 +220,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		BonusCritRating:          config.BonusCritRating,
 		BonusSpellPower:          config.BonusSpellPower,
 		BonusExpertiseRating:     config.BonusExpertiseRating,
-		BonusArmorPenRating:      config.BonusArmorPenRating,
 		CastTimeMultiplier:       1,
 		CostMultiplier:           1,
 		CdMultiplier:             1,
@@ -626,6 +623,11 @@ func (spell *Spell) TravelTime() time.Duration {
 	} else {
 		return time.Duration(float64(time.Second) * spell.Unit.DistanceFromTarget / spell.MissileSpeed)
 	}
+}
+
+// Returns true if the given mask matches the spell mask
+func (spell *Spell) Matches(mask int64) bool {
+	return spell.ClassSpellMask&mask > 0
 }
 
 // Handles computing the cost of spells and checking whether the Unit

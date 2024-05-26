@@ -446,9 +446,10 @@ export class Player<SpecType extends Spec> {
 	}
 
 	// Returns all reforgings that are valid with a given item
-	getAvailableReforgings(item: Item): Array<ReforgeData> {
-		return this.sim.db.getAvailableReforges(item).map(reforge => {
-			return this.getReforgeData(item, reforge);
+	getAvailableReforgings(equippedItem: EquippedItem): Array<ReforgeData> {
+		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
+		return this.sim.db.getAvailableReforges(withRandomSuffixStats.item).map(reforge => {
+			return this.getReforgeData(equippedItem, reforge);
 		});
 	}
 
@@ -457,10 +458,11 @@ export class Player<SpecType extends Spec> {
 		return this.sim.db.getReforgeById(id);
 	}
 
-	getReforgeData(item: Item, reforge: ReforgeStat): ReforgeData {
+	getReforgeData(equippedItem: EquippedItem, reforge: ReforgeStat): ReforgeData {
+		const withRandomSuffixStats = equippedItem.getWithRandomSuffixStats();
+		const item = withRandomSuffixStats.item;
 		const fromAmount = Math.ceil(-item.stats[reforge.fromStat[0]] * reforge.multiplier);
 		const toAmount = Math.floor(item.stats[reforge.fromStat[0]] * reforge.multiplier);
-
 		return {
 			id: reforge.id,
 			reforge: reforge,
@@ -1212,6 +1214,7 @@ export class Player<SpecType extends Spec> {
 	static readonly DIFFICULTY_SRCS: Partial<Record<SourceFilterOption, DungeonDifficulty>> = {
 		[SourceFilterOption.SourceDungeon]: DungeonDifficulty.DifficultyNormal,
 		[SourceFilterOption.SourceDungeonH]: DungeonDifficulty.DifficultyHeroic,
+		[SourceFilterOption.SourceRaidRF]: DungeonDifficulty.DifficultyRaid25RF,
 		[SourceFilterOption.SourceRaid]: DungeonDifficulty.DifficultyRaid25,
 		[SourceFilterOption.SourceRaidH]: DungeonDifficulty.DifficultyRaid25H,
 	};
@@ -1239,6 +1242,13 @@ export class Player<SpecType extends Spec> {
 		const filterItems = (itemData: Array<T>, filterFunc: (item: Item) => boolean) => {
 			return itemData.filter(itemElem => filterFunc(getItemFunc(itemElem)));
 		};
+
+		if (filters.minIlvl != 0) {
+			itemData = filterItems(itemData, item => item.ilvl >= filters.minIlvl);
+		}
+		if (filters.maxIlvl != 0) {
+			itemData = filterItems(itemData, item => item.ilvl <= filters.maxIlvl);
+		}
 
 		if (filters.factionRestriction != UIItem_FactionRestriction.UNSPECIFIED) {
 			itemData = filterItems(
@@ -1284,12 +1294,6 @@ export class Player<SpecType extends Spec> {
 			}
 		}
 
-		// if (!filters.raids.includes(RaidFilterOption.RaidVanilla)) {
-		// 	itemData = filterItems(itemData, item => item.expansion != Expansion.ExpansionVanilla);
-		// }
-		// if (!filters.raids.includes(RaidFilterOption.RaidTbc)) {
-		// 	itemData = filterItems(itemData, item => item.expansion != Expansion.ExpansionTbc);
-		// }
 		for (const [raidOptionStr, zoneId] of Object.entries(Player.RAID_IDS)) {
 			const raidOption = parseInt(raidOptionStr) as RaidFilterOption;
 			if (!filters.raids.includes(raidOption)) {
@@ -1529,7 +1533,7 @@ export class Player<SpecType extends Spec> {
 			this.setSimpleCooldowns(
 				eventID,
 				Cooldowns.create({
-					hpPercentForDefensives: this.playerSpec.isTankSpec ? 0.35 : 0,
+					hpPercentForDefensives: this.playerSpec.isTankSpec ? 0.4 : 0,
 				}),
 			);
 			this.setBonusStats(eventID, new Stats());

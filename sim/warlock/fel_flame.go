@@ -4,8 +4,8 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerFelFlameSpell() {
-	warlock.FelFlame = warlock.RegisterSpell(core.SpellConfig{
+func (warlock *Warlock) registerFelFlame() {
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 77799},
 		SpellSchool:    core.SpellSchoolShadow | core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -14,7 +14,7 @@ func (warlock *Warlock) registerFelFlameSpell() {
 		MissileSpeed:   38,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.6,
+			BaseCost: 0.06,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

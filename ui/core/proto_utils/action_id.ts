@@ -270,11 +270,7 @@ export class ActionId {
 				break;
 			case 'Fireball':
 			case 'Flamestrike':
-				if (this.tag == 8) {
-					name += ' (Rank 8)';
-				} else if (this.tag == 9) {
-					name += ' (Rank 9)';
-				}
+				if (this.tag == 1)	name += ' (Blast Wave)';
 				break;
 			case 'Pyroblast':
 			case 'Combustion':
@@ -390,6 +386,12 @@ export class ActionId {
 				break;
 			case 'Fulmination':
 				name += ` (${this.tag + 3})`;
+				break;
+			case 'Lightning Shield':
+				if (this.tag == 1) {
+					name += ' (Wasted)'
+				}
+				break;
 			case 'Moonfire':
 			case 'Sunfire':
 				if (this.tag == 1) {
@@ -735,6 +737,7 @@ const petNameToActionId: Record<string, ActionId> = {
 	'Mirror Image': ActionId.fromSpellId(55342),
 	'Water Elemental': ActionId.fromSpellId(31687),
 	'Greater Fire Elemental': ActionId.fromSpellId(2894),
+	'Greater Earth Elemental': ActionId.fromSpellId(2062),
 	Shadowfiend: ActionId.fromSpellId(34433),
 	'Spirit Wolf 1': ActionId.fromSpellId(51533),
 	'Spirit Wolf 2': ActionId.fromSpellId(51533),
@@ -763,6 +766,8 @@ const petNameToIcon: Record<string, string> = {
 	Felguard: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
 	Felhunter: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
+	Doomguard: 'https://wow.zamimg.com/images/wow/icons/large/warlock_summon_doomguard.jpg',
+	'Ebon Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell-nature-removecurse.jpg',
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
 	Imp: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',

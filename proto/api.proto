@@ -16,7 +16,7 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
-// NextIndex: 53
+// NextIndex: 54
 message Player {
 	// Label used for logging.
 	string name = 51;
@@ -40,6 +40,7 @@ message Player {
 
 		BalanceDruid balance_druid = 12;
 		FeralDruid feral_druid = 13;
+		GuardianDruid guardian_druid = 53;
 		RestorationDruid restoration_druid = 14;
 
 		BeastMasteryHunter beast_mastery_hunter = 15;
@@ -305,11 +306,18 @@ message EncounterMetrics {
 	repeated UnitMetrics targets = 1;
 }
 
+enum SimType {
+	SimTypeUnknown = 0;
+	SimTypeIndividual = 1;
+	SimTypeRaid = 2;
+}
+
 // RPC RaidSim
 message RaidSimRequest {
 	Raid raid = 1;
 	Encounter encounter = 2;
 	SimOptions sim_options = 3;
+	SimType type = 4;
 }
 
 // Result from running the raid sim.

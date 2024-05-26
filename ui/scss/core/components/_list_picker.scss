@@ -1,18 +1,16 @@
-@use 'sass:map';
-
 .list-picker-root {
 	flex-direction: column;
 	align-items: center;
 
 	&:not(:last-child) {
-		margin-bottom: $block-spacer;
+		margin-bottom: var(--block-spacer);
 	}
 
 	.list-picker-title {
 		width: 100%;
-		padding-bottom: map-get($spacers, 2);
-		border-bottom: $border-default;
-		margin-bottom: $block-spacer;
+		padding-bottom: var(--spacer-2);
+		border-bottom: var(--border-default);
+		margin-bottom: var(--block-spacer);
 		font-size: 1rem;
 		font-weight: bold;
 	}
@@ -21,10 +19,10 @@
 		width: 100%;
 
 		.list-picker-item-container {
-			border: $border-default;
+			border: var(--border-default);
 
 			&:not(:last-child) {
-				margin-bottom: map-get($spacers, 3);
+				margin-bottom: var(--spacer-3);
 			}
 
 			&.inline {
@@ -39,7 +37,7 @@
 			}
 
 			&:not(.inline) {
-				padding: map-get($spacers, 3) map-get($spacers, 3) 0 map-get($spacers, 3);
+				padding: var(--spacer-3) var(--spacer-3) 0 var(--spacer-3);
 
 				.list-picker-item-header {
 					.list-picker-item-action:first-of-type {
@@ -49,9 +47,9 @@
 			}
 
 			.list-picker-item-header {
-				padding-bottom: $block-spacer;
-				border-bottom: $border-default;
-				margin-bottom: $block-spacer;
+				padding-bottom: var(--block-spacer);
+				border-bottom: var(--border-default);
+				margin-bottom: var(--block-spacer);
 				display: flex;
 				align-items: center;
 				flex: 1;
@@ -61,7 +59,7 @@
 				}
 
 				.list-picker-item-action {
-					margin-left: map-get($spacers, 2);
+					margin-left: var(--spacer-2);
 				}
 			}
 		}
@@ -69,6 +67,7 @@
 
 	.list-picker-new-button {
 		width: 100%;
+		margin-top: var(--spacer-3);
 	}
 
 	&.horizontal {

@@ -138,6 +138,7 @@ export class IndividualLinkExporter<SpecType extends Spec> extends Exporter {
 		IndividualLinkExporter.exportPickerConfigs.forEach(exportConfig => {
 			const category = exportConfig.category;
 			new BooleanPicker(pickersContainer, this, {
+				id: `link-exporter-${category}`,
 				label: exportConfig.label,
 				labelTooltip: exportConfig.labelTooltip,
 				inline: true,
@@ -399,12 +400,10 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatMeleeHit]: 'hitRating',
 		[Stat.StatMeleeCrit]: 'critRating',
 		[Stat.StatMeleeHaste]: 'hasteRating',
-		[Stat.StatArmorPenetration]: 'armorPenRating',
 		[Stat.StatExpertise]: 'expertiseRating',
 		[Stat.StatMana]: 'mana',
 		[Stat.StatArmor]: 'armor',
 		[Stat.StatRangedAttackPower]: 'attackPower',
-		[Stat.StatDefense]: 'defenseRating',
 		[Stat.StatBlock]: 'blockRating',
 		[Stat.StatDodge]: 'dodgeRating',
 		[Stat.StatParry]: 'parryRating',
@@ -489,14 +488,13 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatSpellPenetration]: 'SpellPen',
 		[Stat.StatAttackPower]: 'Ap',
 		[Stat.StatMeleeHit]: 'HitRating',
+		[Stat.StatMastery]: 'MasteryRating',
 		[Stat.StatMeleeCrit]: 'CritRating',
 		[Stat.StatMeleeHaste]: 'HasteRating',
-		[Stat.StatArmorPenetration]: 'ArmorPenetration',
 		[Stat.StatExpertise]: 'ExpertiseRating',
 		[Stat.StatMana]: 'Mana',
 		[Stat.StatArmor]: 'Armor',
 		[Stat.StatRangedAttackPower]: 'Ap',
-		[Stat.StatDefense]: 'DefenseRating',
 		[Stat.StatBlock]: 'BlockRating',
 		[Stat.StatDodge]: 'DodgeRating',
 		[Stat.StatParry]: 'ParryRating',
@@ -508,7 +506,6 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatNatureResistance]: 'NatureResistance',
 		[Stat.StatShadowResistance]: 'ShadowResistance',
 		[Stat.StatBonusArmor]: 'Armor2',
-		[Stat.StatMastery]: 'mastery',
 	};
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
 		[PseudoStat.PseudoStatMainHandDps]: 'MeleeDps',

@@ -5,13 +5,13 @@
 	flex-direction: column;
 
 	.content-block {
-		margin-bottom: $section-spacer;
+		margin-bottom: var(--section-spacer);
 
 		.content-block-body {
-			padding: map-get($spacers, 3);
-			border: $border-default;
+			padding: var(--spacer-3);
+			border: var(--border-default);
 			flex-direction: row;
-			background-color: $body-bg;
+			background-color: var(--bs-body-bg);
 		}
 	}
 }
@@ -25,11 +25,11 @@
 		@include wowhead-background-icon;
 		width: 3rem;
 		height: 3rem;
-		border: $border-default;
+		border: var(--border-default);
 	}
 
 	.item-picker-labels-container {
-		padding: 0 map-get($spacers, 3) 0 map-get($spacers, 2);
+		padding: 0 var(--spacer-3) 0 var(--spacer-2);
 		justify-content: center;
 
 		.item-picker-name {
@@ -50,7 +50,7 @@
 	.selector-modal-list-item-description {
 		margin-left: 1rem;
 		letter-spacing: normal;
-		color: $item-quality-junk;
+		color: var(--bs-junk);
 		flex: 3;
 	}
 }

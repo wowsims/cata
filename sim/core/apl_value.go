@@ -151,6 +151,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueAutoTimeToNext(config.GetAutoTimeToNext())
 
 	// Spells
+	case *proto.APLValue_SpellIsKnown:
+		return rot.newValueSpellIsKnown(config.GetSpellIsKnown())
 	case *proto.APLValue_SpellCanCast:
 		return rot.newValueSpellCanCast(config.GetSpellCanCast())
 	case *proto.APLValue_SpellIsReady:
@@ -167,8 +169,12 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueSpellIsChanneling(config.GetSpellIsChanneling())
 	case *proto.APLValue_SpellChanneledTicks:
 		return rot.newValueSpellChanneledTicks(config.GetSpellChanneledTicks())
+	case *proto.APLValue_SpellCurrentCost:
+		return rot.newValueSpellCurrentCost(config.GetSpellCurrentCost())
 
 	// Auras
+	case *proto.APLValue_AuraIsKnown:
+		return rot.newValueAuraIsKnown(config.GetAuraIsKnown())
 	case *proto.APLValue_AuraIsActive:
 		return rot.newValueAuraIsActive(config.GetAuraIsActive())
 	case *proto.APLValue_AuraIsActiveWithReactionTime:

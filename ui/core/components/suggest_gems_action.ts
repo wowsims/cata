@@ -330,7 +330,7 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 		 * For specs that gem ArP, determine whether the current gear
 		 * configuration will optimally hard stack Fractured gems or not.
 		 */
-		this.passiveArp = passiveStats.getStat(Stat.StatArmorPenetration);
+		this.passiveArp = 0;
 		this.arpStackDetected = this.detectArpStackConfiguration(ungemmedGear);
 
 		/*
@@ -338,7 +338,7 @@ export class PhysicalDPSGemOptimizer extends GemOptimizer {
 		 * to reduce the number of missed yellow socket bonuses.
 		 */
 		const arpSlop = this.arpStackDetected ? 4 : this.arpSlop;
-		const arpCap = new Stats().withStat(Stat.StatArmorPenetration, this.arpTarget + arpSlop);
+		const arpCap = new Stats();
 
 		// Update red gem priority
 		const redGemCaps = new Array<GemCapsData>();

@@ -1,16 +1,15 @@
-$talent-tree-header-padding-x: $block-spacer;
-$talent-tree-header-padding-y: $block-spacer;
-$talent-tree-header-icon-size: 2rem;
-$talent-tree-header-size: calc($talent-tree-header-icon-size + 2 * $talent-tree-header-padding-y);
+:root {
+	--talent-tree-header-padding-x: var(--block-spacer);
+	--talent-tree-header-padding-y: var(--block-spacer);
+	--talent-tree-header-icon-size: 2rem;
+	--talent-tree-header-size: calc(var(--talent-tree-header-icon-size) + 2 * var(--talent-tree-header-padding-y));
 
-$talent-icon-size: 2.5rem;
-
-$talent-partial-color: #40bf40;
-$talent-full-color: #ffd100;
+	--talent-icon-size: 2.5rem;
+}
 
 .talents-picker-root {
 	width: unset;
-	margin-right: $block-spacer;
+	margin-right: var(--block-spacer);
 	display: flex;
 	flex-direction: column;
 
@@ -21,11 +20,9 @@ $talent-full-color: #ffd100;
 		margin-right: 0;
 	}
 
-	// DOkawODKAWODKAW
-
 	.talents-picker-header {
 		width: 100%;
-		margin-bottom: map-get($spacers, 1);
+		margin-bottom: var(--spacer-1);
 		display: flex;
 		align-items: center;
 
@@ -37,59 +34,65 @@ $talent-full-color: #ffd100;
 			}
 		}
 	}
-
-	#talents-carousel {
-		flex: 1;
-		margin-bottom: $section-spacer;
+	.talents-picker-inner {
 		@include media-breakpoint-down(lg) {
-			width: calc(100vw - 2 * $container-padding);
-			display: flex;
-			justify-content: center;
-			overflow-x: hidden;
+			width: 100%;
 		}
+	}
+}
 
-		.carousel-inner {
-			display: flex;
-			overflow: unset;
-			transform: unset;
-			@include media-breakpoint-down(lg) {
-				width: unset;
-				min-width: unset;
-				transition: transform 0.15s ease-in-out;
-			}
-		}
+#talents-carousel {
+	flex: 1;
+	margin-bottom: var(--section-spacer);
+	@include media-breakpoint-down(lg) {
+		display: flex;
+		justify-content: center;
+		overflow-x: hidden;
+		margin-left: calc(-1 * var(--container-padding));
+		margin-right: calc(-1 * var(--container-padding));
+	}
 
-		.carousel-item {
-			display: block;
+	.carousel-inner {
+		display: flex;
+		overflow: unset;
+		transform: unset;
+		@include media-breakpoint-down(lg) {
 			width: unset;
-			margin-right: unset;
-			float: unset;
-			@include media-breakpoint-down(xxxl) {
-				flex: 1;
-			}
+			min-width: unset;
+			transition: transform 0.15s ease-in-out;
+		}
+	}
 
+	.carousel-item {
+		display: block;
+		width: unset;
+		margin-right: unset;
+		float: unset;
+		@include media-breakpoint-down(xxxl) {
+			flex: 1;
+		}
+
+		@include media-breakpoint-down(lg) {
+			opacity: 0.5;
+			transition: opacity 0.15s ease-in-out;
+		}
+
+		&.active {
 			@include media-breakpoint-down(lg) {
-				opacity: 0.5;
-				transition: opacity 0.15s ease-in-out;
-			}
-
-			&.active {
-				@include media-breakpoint-down(lg) {
-					opacity: 1;
-				}
-			}
-
-			// Offset to keep the border sizes consistent
-			&:not(:first-child) {
-				margin-left: -1px;
+				opacity: 1;
 			}
 		}
 
-		.carousel-control-prev,
-		.carousel-control-next {
-			@include media-breakpoint-up(lg) {
-				display: none;
-			}
+		// Offset to keep the border sizes consistent
+		&:not(:first-child) {
+			margin-left: -1px;
+		}
+	}
+
+	.carousel-control-prev,
+	.carousel-control-next {
+		@include media-breakpoint-up(lg) {
+			display: none;
 		}
 	}
 }
@@ -101,7 +104,7 @@ $talent-full-color: #ffd100;
 
 .talent-tree-picker-root {
 	position: relative;
-	border: $border-default;
+	border: var(--border-default);
 	display: flex;
 	flex-direction: column;
 	flex: 1;
@@ -115,23 +118,23 @@ $talent-full-color: #ffd100;
 	}
 
 	.talent-tree-header {
-		padding: $talent-tree-header-padding-y $talent-tree-header-padding-x;
+		padding: var(--talent-tree-header-padding-y) var(--talent-tree-header-padding-x);
 		display: flex;
 		align-items: center;
-		color: white;
-		background: black;
+		color: var(--bs-white);
+		background: var(--bs-black);
 		font-size: 1rem;
 		z-index: 1;
 
 		.talent-tree-icon {
-			width: $talent-tree-header-icon-size;
-			height: $talent-tree-header-icon-size;
-			margin-right: $talent-tree-header-padding-x;
+			width: var(--talent-tree-header-icon-size);
+			height: var(--talent-tree-header-icon-size);
+			margin-right: var(--talent-tree-header-padding-x);
 			border-radius: 100%;
 		}
 
 		.talent-tree-title {
-			margin-right: $talent-tree-header-padding-x;
+			margin-right: var(--talent-tree-header-padding-x);
 			flex: 1;
 			font-weight: bold;
 			white-space: nowrap;
@@ -139,39 +142,39 @@ $talent-full-color: #ffd100;
 
 		.talent-tree-reset {
 			line-height: 1;
-			margin-right: calc(-1 * $btn-padding-x);
+			margin-right: calc(-1 * var(--btn-padding-x));
 		}
 	}
 
 	.talent-tree-background {
 		position: absolute;
-		inset: $talent-tree-header-size 0 0 0;
+		inset: var(--talent-tree-header-size) 0 0 0;
 		background-repeat: no-repeat;
 		background-size: 100% 100%;
-		box-shadow: inset 0 0 $talent-tree-header-size 1rem #000;
+		box-shadow: inset 0 0 var(--talent-tree-header-size) 1rem var(--bs-black);
 		z-index: 0;
 	}
 
 	.talent-tree-main {
 		display: grid;
-		margin: $block-spacer 2vw;
+		margin: var(--block-spacer) 2vw;
 		z-index: 1;
 
 		@include media-breakpoint-down(xxxl) {
-			margin: $block-spacer auto;
+			margin: var(--block-spacer) auto;
 		}
 		@include media-breakpoint-down(lg) {
-			margin: $block-spacer $talent-icon-size;
+			margin: var(--block-spacer) var(--talent-icon-size);
 		}
 	}
 }
 
 .talent-picker-root {
 	@include wowhead-background-icon;
-	width: $talent-icon-size;
-	height: $talent-icon-size;
-	margin: calc($talent-icon-size / 5);
-	border: 1px solid $talent-partial-color;
+	width: var(--talent-icon-size);
+	height: var(--talent-icon-size);
+	margin: calc(var(--talent-icon-size) / 5);
+	border: 1px solid var(--bs-talent-partial);
 	border-radius: 4px;
 
 	&[data-points='0']:not(.talent-picker-can-add) {
@@ -183,17 +186,17 @@ $talent-full-color: #ffd100;
 	}
 
 	&.talent-full {
-		border-color: $talent-full-color;
+		border-color: var(--talent-full);
 		.talent-picker-points {
-			color: $talent-full-color;
+			color: var(--talent-full);
 		}
 	}
 }
 
 .talent-picker-points {
 	margin: 0;
-	color: $talent-partial-color;
-	background-color: black;
+	color: var(--bs-talent-partial);
+	background-color: var(--bs-black);
 	position: absolute;
 	bottom: -8px;
 	right: -8px;
@@ -206,7 +209,7 @@ $talent-full-color: #ffd100;
 	}
 
 	.talent-picker-root.talent-full & {
-		color: $talent-full-color;
+		color: var(--talent-full);
 	}
 
 	.talents-picker-root.talents-full .talent-picker-root[data-points='0'] & {
@@ -217,7 +220,7 @@ $talent-full-color: #ffd100;
 .icon-input:not(.active),
 .icon-input-improved:not(.active),
 .icon-input-counter:not(.active) {
-	border-color: dimgray;
+	border-color: var(--bs-gray);
 }
 
 .talent-picker-req-arrow {

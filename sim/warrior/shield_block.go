@@ -13,6 +13,14 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 	// extra avoidance to crit block effect seems to be based on basic level+3 target
 	atkTableAttacker := &core.Unit{Level: warrior.Level + 3, Type: core.EnemyUnit}
 	atkTable := core.NewAttackTable(atkTableAttacker, &warrior.Unit)
+
+	hasT12_4P_bonus := warrior.HasSetBonus(ItemSetMoltenGiantBattleplate, 4)
+	var T12_4P_bonus *core.Aura
+
+	if hasT12_4P_bonus {
+		T12_4P_bonus = warrior.GetAuraByID(core.ActionID{SpellID: 99242})
+	}
+
 	extraAvoidance := 0.0
 	warrior.ShieldBlockAura = warrior.RegisterAura(core.Aura{
 		Label:    "Shield Block",
@@ -24,7 +32,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 			avoidance := warrior.GetTotalAvoidanceChance(atkTable)
 			if avoidance > core.CombatTableCoverageCap {
 				extraAvoidance = avoidance - core.CombatTableCoverageCap
-				warrior.CriticalBlockChance += extraAvoidance
+				warrior.CriticalBlockChance[1] += extraAvoidance
 			} else {
 				extraAvoidance = 0.0
 			}
@@ -33,7 +41,11 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 			warrior.AddStatDynamic(sim, stats.Block, -25*core.BlockRatingPerBlockChance)
 
 			if extraAvoidance > 0.0 {
-				warrior.CriticalBlockChance -= extraAvoidance
+				warrior.CriticalBlockChance[1] -= extraAvoidance
+			}
+
+			if sim.CurrentTime != sim.Duration && hasT12_4P_bonus {
+				T12_4P_bonus.Activate(sim)
 			}
 		},
 	})
@@ -69,4 +81,5 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 		Spell: warrior.ShieldBlock,
 		Type:  core.CooldownTypeDPS,
 	})
+
 }

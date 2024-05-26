@@ -24,7 +24,7 @@ func TestBlood(t *testing.T) {
 		Consumes: FullConsumes,
 
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsUnholy},
-		Rotation:    core.GetAplRotation("../../../ui/death_knight/blood/apls", "p1"),
+		Rotation:    core.GetAplRotation("../../../ui/death_knight/blood/apls", "simple"),
 
 		ItemFilter: ItemFilter,
 	}))

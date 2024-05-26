@@ -27,6 +27,7 @@ import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
 	Class,
 	Consumes,
+	Cooldowns,
 	Debuffs,
 	Encounter as EncounterProto,
 	EquipmentSpec,
@@ -75,6 +76,8 @@ export interface OtherDefaults {
 	distanceFromTarget?: number;
 	channelClipDelay?: number;
 	darkIntentUptime?: number;
+	duration?: number;
+	durationVariation?: number;
 	highHpThreshold?: number;
 }
 
@@ -192,7 +195,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			spec: player.getPlayerSpec(),
 			knownIssues: config.knownIssues,
 			simStatus: simLaunchStatuses[player.getSpec()],
-			noticeText: 'WoWSims - Cataclysm is still in the very early stages of development and all sims are considered non-functional at this time.',
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;
@@ -463,6 +465,12 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 			const defaultSimpleRotation = this.individualConfig.defaults.simpleRotation || this.player.specTypeFunctions.rotationCreate();
 			this.player.setSimpleRotation(eventID, defaultSimpleRotation);
+			this.player.setSimpleCooldowns(
+				eventID,
+				Cooldowns.create({
+					hpPercentForDefensives: this.player.playerSpec.isTankSpec ? 0.4 : 0,
+				}),
+			);
 		});
 	}
 
@@ -496,6 +504,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			} else {
 				this.sim.raid.setTargetDummies(eventID, healingSpec ? 9 : 0);
 				this.sim.encounter.applyDefaults(eventID);
+				this.sim.encounter.setDuration(eventID, this.individualConfig.defaults.other?.duration || 180);
+				this.sim.encounter.setDurationVariation(eventID, this.individualConfig.defaults.other?.durationVariation || 5);
 				this.sim.encounter.setExecuteProportion90(eventID, this.individualConfig.defaults.other?.highHpThreshold || 0.9);
 				this.sim.raid.setDebuffs(eventID, this.individualConfig.defaults.debuffs);
 				this.sim.applyDefaults(eventID, tankSpec, healingSpec);

@@ -15,36 +15,34 @@ type WarlockPet struct {
 	AutoCastAbilities []*core.Spell
 }
 
-func (warlock *Warlock) MakeStatInheritance() core.PetStatInheritance {
-	return func(ownerStats stats.Stats) stats.Stats {
-		const petExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
-		const scalingFactor = 0.53153153153153 // TODO: changes from 80 (where it's 0.5) -> 85, clearly there's more to it..
+func (warlock *Warlock) petStatInheritance(ownerStats stats.Stats) stats.Stats {
+	const petExpertiseScale = 1.53 * core.ExpertisePerQuarterPercentReduction
+	const scalingFactor = 0.53153153153153 // TODO: changes from 80 (where it's 0.5) -> 85, clearly there's more to it..
 
-		return stats.Stats{
-			stats.Mana:  ownerStats[stats.Mana] / scalingFactor,
-			stats.Armor: ownerStats[stats.Armor],
+	return stats.Stats{
+		stats.Mana:  ownerStats[stats.Mana] / scalingFactor,
+		stats.Armor: ownerStats[stats.Armor],
 
-			stats.SpellPower:  ownerStats[stats.SpellPower] * scalingFactor,
-			stats.AttackPower: ownerStats[stats.SpellPower] * scalingFactor * 2, // might also simply be pet SP * 2
+		stats.SpellPower:  ownerStats[stats.SpellPower] * scalingFactor,
+		stats.AttackPower: ownerStats[stats.SpellPower] * scalingFactor * 2, // might also simply be pet SP * 2
 
-			// almost certainly wrong, needs more testing
-			stats.SpellCrit: ownerStats[stats.SpellCrit],
-			stats.MeleeCrit: ownerStats[stats.SpellCrit],
+		// almost certainly wrong, needs more testing
+		stats.SpellCrit: ownerStats[stats.SpellCrit],
+		stats.MeleeCrit: ownerStats[stats.SpellCrit],
 
-			// pets inherit haste rating directly, evidenced by:
-			// 1. haste staying the same if the warlock has windfury totem while the pet doesn't
-			// 2. haste staying the same if warlock benefits from wrath of air (pet doesn't get this buff regardless)
-			stats.SpellHaste: ownerStats[stats.SpellHaste],
-			stats.MeleeHaste: ownerStats[stats.SpellHaste],
+		// pets inherit haste rating directly, evidenced by:
+		// 1. haste staying the same if the warlock has windfury totem while the pet doesn't
+		// 2. haste staying the same if warlock benefits from wrath of air (pet doesn't get this buff regardless)
+		stats.SpellHaste: ownerStats[stats.SpellHaste],
+		stats.MeleeHaste: ownerStats[stats.SpellHaste],
 
-			// unclear what exactly the scaling is here, but at hit cap they should definitely all be capped
-			stats.SpellHit:  ownerStats[stats.SpellHit],
-			stats.MeleeHit:  ownerStats[stats.SpellHit],
-			stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * petExpertiseScale,
+		// unclear what exactly the scaling is here, but at hit cap they should definitely all be capped
+		stats.SpellHit:  ownerStats[stats.SpellHit],
+		stats.MeleeHit:  ownerStats[stats.SpellHit],
+		stats.Expertise: (ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance) * petExpertiseScale,
 
-			// for master demonologist
-			stats.Mastery: ownerStats[stats.Mastery],
-		}
+		// for master demonologist
+		stats.Mastery: ownerStats[stats.Mastery],
 	}
 }
 
@@ -119,13 +117,11 @@ func (warlock *Warlock) registerPets() {
 		stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
 	}
 
-	inheritance := warlock.MakeStatInheritance()
-
+	inheritance := warlock.petStatInheritance
 	warlock.Felhunter = warlock.makePet(proto.WarlockOptions_Felhunter, baseStats, 0.8, 0.77, aaOptions, inheritance)
 	warlock.Felguard = warlock.makePet(proto.WarlockOptions_Felguard, baseStats, 1.0, 0.77, aaOptions, inheritance)
 	warlock.Imp = warlock.makePet(proto.WarlockOptions_Imp, impBaseStats, 1.0, 1.0, nil, inheritance)
-	// TODO: using the modifier for incubus for now, maybe the 1.025 from succubus is the correct one
-	warlock.Succubus = warlock.makePet(proto.WarlockOptions_Succubus, baseStats, 1.05, 0.77, aaOptions, inheritance)
+	warlock.Succubus = warlock.makePet(proto.WarlockOptions_Succubus, baseStats, 1.025, 0.77, aaOptions, inheritance)
 }
 
 func (warlock *Warlock) registerPetAbilities() {
@@ -134,7 +130,7 @@ func (warlock *Warlock) registerPetAbilities() {
 	warlock.Felguard.registerLegionStrikeSpell()
 	warlock.Felguard.registerFelstormSpell()
 
-	warlock.Imp.registerFireboltSpell()
+	warlock.Imp.registerFireboltSpell(warlock)
 
 	warlock.Succubus.registerLashOfPainSpell()
 }
@@ -217,7 +213,7 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 
 			activeDots := 0
 			for _, spell := range pet.Owner.Spellbook {
-				if spell.ClassSpellMask&WarlockDoT > 0 && spell.Dot(target).IsActive() {
+				if spell.Matches(WarlockDoT) && spell.Dot(target).IsActive() {
 					activeDots++
 				}
 			}
@@ -229,9 +225,6 @@ func (pet *WarlockPet) registerShadowBiteSpell() {
 }
 
 func (pet *WarlockPet) registerFelstormSpell() {
-	numHits := pet.Env.GetNumTargets()
-	results := make([]*core.SpellResult, numHits)
-
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 89751},
 		SpellSchool:    core.SpellSchoolPhysical,
@@ -239,10 +232,7 @@ func (pet *WarlockPet) registerFelstormSpell() {
 		Flags:          core.SpellFlagChanneled | core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage,
 		ClassSpellMask: WarlockSpellFelGuardFelstorm,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.02,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.02},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -265,21 +255,12 @@ func (pet *WarlockPet) registerFelstormSpell() {
 			NumberOfTicks: 6,
 			TickLength:    1 * time.Second,
 			OnTick: func(sim *core.Simulation, _ *core.Unit, dot *core.Dot) {
-				target := pet.CurrentTarget
 				spell := dot.Spell
-				curTarget := target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					//TODO: Does this scale with melee attack power as well??
-					baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-					// This is the formula from the tooltip but... it multiplies by .5 and then by 2???? so it's just spell power???
-					baseDamage += (dot.Spell.SpellPower()*0.50)*2*0.33 + 130
-					results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
-				}
-				curTarget = target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					spell.DealDamage(sim, results[hitIndex])
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
+				baseDmg := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+				baseDmg += pet.Owner.CalcScalingSpellDmg(0.1155000031) + 0.231*spell.MeleeAttackPower()
+
+				for _, target := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				}
 			},
 		},
@@ -293,7 +274,6 @@ func (pet *WarlockPet) registerFelstormSpell() {
 
 func (pet *WarlockPet) registerLegionStrikeSpell() {
 	numberOfTargets := pet.Env.GetNumTargets()
-	results := make([]*core.SpellResult, numberOfTargets)
 
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 30213},
@@ -302,10 +282,7 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIncludeTargetBonusDamage,
 		ClassSpellMask: WarlockSpellFelGuardLegionStrike,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.06,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.06},
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -322,32 +299,24 @@ func (pet *WarlockPet) registerLegionStrikeSpell() {
 		CritMultiplier:   2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			//TODO: Does this scale with melee attack power as well??
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			// This is the formula from the tooltip but... it multiplies by .5 and then by 2???? so it's just spell power???
-			baseDamage += ((spell.SpellPower()*0.50)*2*0.264 + 139) / float64(numberOfTargets)
+			baseDmg := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDmg += pet.Owner.CalcScalingSpellDmg(0.1439999938) + 0.264*spell.MeleeAttackPower()
+			baseDmg /= float64(numberOfTargets)
 
-			curTarget := target
-			for hitIndex := int32(0); hitIndex < numberOfTargets; hitIndex++ {
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
-			}
-
-			curTarget = target
-			for hitIndex := int32(0); hitIndex < numberOfTargets; hitIndex++ {
-				spell.DealDamage(sim, results[hitIndex])
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			for _, target := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, target, baseDmg, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			}
 		},
 	}))
 }
 
-func (pet *WarlockPet) registerFireboltSpell() {
+func (pet *WarlockPet) registerFireboltSpell(warlock *Warlock) {
 	pet.AutoCastAbilities = append(pet.AutoCastAbilities, pet.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 3110},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: WarlockSpellImpFireBolt,
+		MissileSpeed:   16,
 
 		ManaCost: core.ManaCostOptions{BaseCost: 0.02},
 		Cast: core.CastConfig{
@@ -372,7 +341,15 @@ func (pet *WarlockPet) registerFireboltSpell() {
 			baseDamage := 182.5 + pet.Owner.CalcAndRollDamageRange(sim, 0.1230000034, 0.1099999994)
 			baseDamage += 0.657 * spell.SpellPower()
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if warlock.Talents.BurningEmbers > 0 && result.Landed() {
+				dot := warlock.BurningEmbers.Dot(result.Target)
+				dot.SnapshotBaseDamage += result.Damage * 0.25 * float64(warlock.Talents.BurningEmbers)
+				dot.Apply(sim)
+			}
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	}))
 }

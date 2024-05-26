@@ -65,10 +65,16 @@ func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, 
 	var awd float64
 	if isOh {
 		adm := warrior.AutoAttacks.OHAuto().AttackerDamageMultiplier(attackTable, false)
+		if warrior.PrecisionKnown {
+			adm /= 1.4
+		}
 		tdm := warrior.AutoAttacks.OHAuto().TargetDamageMultiplier(sim, attackTable, false)
 		awd = (warrior.AutoAttacks.OH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) * 0.5) * adm * tdm
 	} else { // MH, Ranged (e.g. Thunder Clap)
 		adm := warrior.AutoAttacks.MHAuto().AttackerDamageMultiplier(attackTable, false)
+		if warrior.PrecisionKnown {
+			adm /= 1.4
+		}
 		tdm := warrior.AutoAttacks.MHAuto().TargetDamageMultiplier(sim, attackTable, false)
 		awd = (warrior.AutoAttacks.MH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower())) * adm * tdm
 	}
