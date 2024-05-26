@@ -103,7 +103,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		talents: [Presets.StandardTalents],
 		rotations: [Presets.PresetRotationDefault],
 		// Preset gear configurations that the user can quickly select.
-		gear: [ Presets.PreraidPresetGear]
+		gear: [ Presets.PreraidPresetGear, Presets.T11PresetGear]
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {
