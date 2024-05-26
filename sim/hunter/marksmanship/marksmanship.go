@@ -53,7 +53,7 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 			if spell != hunter.AutoAttacks.RangedAuto() && spell.ProcMask != core.ProcMaskRangedSpecial {
 				return
 			}
-			procChance := hunter.CalculateMasteryPoints() * 0.021
+			procChance := (hunter.CalculateMasteryPoints() + 8) * 0.021
 			if sim.RandomFloat("Wild Quiver") < procChance {
 				wqSpell.Cast(sim, result.Target)
 			}
