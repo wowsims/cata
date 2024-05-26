@@ -3,6 +3,7 @@ import tippy from 'tippy.js';
 import { element, fragment } from 'tsx-vanilla';
 
 import { EventID, TypedEvent } from '../typed_event.js';
+import { existsInDOM } from '../utils';
 import { Component } from './component.js';
 
 /**
@@ -45,7 +46,7 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	readonly modObject: ModObject;
 
 	protected enabled = true;
-	readonly changeEmitter = new TypedEvent<void>();
+	readonly changeEmitter = new TypedEvent<void>('input-change');
 
 	constructor(parent: HTMLElement | null, cssClass: string, modObject: ModObject, config: InputConfig<ModObject, T, V>) {
 		super(parent, 'input-root', config.rootElem);
@@ -57,9 +58,21 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 		if (config.extraCssClasses) this.rootElem.classList.add(...config.extraCssClasses);
 		if (config.label) this.rootElem.appendChild(this.buildLabel(config));
 
-		config.changedEvent(this.modObject).on(() => {
+		const event = config.changedEvent(this.modObject).on(() => {
+			const element = this.getInputElem();
+			if (!existsInDOM(element) || !existsInDOM(this.rootElem)) {
+				this.dispose();
+				return;
+			}
 			this.setInputValue(this.getSourceValue());
 			this.update();
+		});
+
+		this.addOnDisposeCallback(() => {
+			console.log('disposing input', config.id);
+			event.dispose();
+			this.getInputElem()?.remove();
+			this.rootElem.remove();
 		});
 	}
 
@@ -70,10 +83,14 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 			</label>
 		);
 
-		if (config.labelTooltip)
-			tippy(label, {
-				content: config.labelTooltip,
+		if (config.labelTooltip) {
+			const tippyInstance = tippy(label, {
+				onShow: instance => {
+					if (config.labelTooltip) instance.setContent(config.labelTooltip);
+				},
 			});
+			this.addOnDisposeCallback(() => tippyInstance.destroy());
+		}
 
 		return label;
 	}
@@ -128,6 +145,7 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 
 	// Child classes should call this method when the value in the input element changes.
 	inputChanged(eventID: EventID) {
+		console.log('input changed', this.inputConfig.id);
 		this.setSourceValue(eventID, this.getInputValue());
 		this.changeEmitter.emit(eventID);
 	}

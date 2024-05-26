@@ -90,7 +90,12 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		}
 
 		if (this.config.titleTooltip) {
-			tippy(this.rootElem.querySelector('.list-picker-title') as HTMLElement, { content: this.config.titleTooltip });
+			const titleTooltip = tippy(this.rootElem.querySelector('.list-picker-title') as HTMLElement, {
+				onShow: instance => {
+					if (this.config.titleTooltip) instance.setContent(this.config.titleTooltip);
+				},
+			});
+			this.addOnDisposeCallback(() => titleTooltip?.destroy());
 		}
 
 		this.itemsDiv = this.rootElem.getElementsByClassName('list-picker-items')[0] as HTMLElement;
@@ -100,7 +105,12 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			let newButtonTooltip: TippyInstance | null = null;
 			if (this.config.actions?.create?.useIcon) {
 				newItemButton = ListPicker.makeActionElem('link-success', 'fa-plus');
-				newButtonTooltip = tippy(newItemButton, { content: `New ${config.itemLabel}` });
+				newButtonTooltip = tippy(newItemButton, {
+					onShow: instance => {
+						instance.setContent(`New ${config.itemLabel}`);
+					},
+				});
+				this.addOnDisposeCallback(() => newButtonTooltip?.destroy());
 			} else {
 				newItemButton = document.createElement('button');
 				newItemButton.classList.add('btn', 'btn-primary');
@@ -194,7 +204,15 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 			const moveButton = ListPicker.makeActionElem('list-picker-item-move', 'fa-arrows-up-down');
 			itemHeader.appendChild(moveButton);
 
-			const moveButtonTooltip = tippy(moveButton, { content: 'Move (Drag+Drop)' });
+			const moveButtonTooltip = tippy(moveButton, {
+				onShow: instance => {
+					instance.setContent('Move (Drag+Drop)');
+				},
+			});
+			this.addOnDisposeCallback(() => {
+				moveButtonTooltip?.destroy();
+			});
+
 			moveButton.addEventListener('click', () => {
 				moveButtonTooltip.hide();
 			});
@@ -261,7 +279,12 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		if (this.actionEnabled('copy')) {
 			const copyButton = ListPicker.makeActionElem('list-picker-item-copy', 'fa-copy');
 			itemHeader.appendChild(copyButton);
-			const copyButtonTooltip = tippy(copyButton, { content: `Copy to New ${this.config.itemLabel}` });
+			const copyButtonTooltip = tippy(copyButton, {
+				onShow: instance => {
+					instance.setContent(`Copy to New ${this.config.itemLabel}`);
+				},
+			});
+			this.addOnDisposeCallback(() => copyButtonTooltip?.destroy());
 
 			copyButton.addEventListener('click', () => {
 				const newList = this.config.getValue(this.modObject).slice();
@@ -277,7 +300,13 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 				deleteButton.classList.add('link-danger');
 				itemHeader.appendChild(deleteButton);
 
-				const deleteButtonTooltip = tippy(deleteButton, { content: `Delete ${this.config.itemLabel}` });
+				const deleteButtonTooltip = tippy(deleteButton, {
+					onShow: instance => {
+						instance.setContent(`Delete ${this.config.itemLabel}`);
+					},
+				});
+				this.addOnDisposeCallback(() => deleteButtonTooltip?.destroy());
+
 				deleteButton.addEventListener('click', () => {
 					const newList = this.config.getValue(this.modObject);
 					newList.splice(index, 1);

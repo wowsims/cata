@@ -1,27 +1,31 @@
-import tippy from 'tippy.js';
+import { Dropdown } from 'bootstrap';
+import clsx from 'clsx';
+import tippy, { Instance as TippyInstance } from 'tippy.js';
+import { element, fragment, ref } from 'tsx-vanilla';
 
 import { TypedEvent } from '../typed_event.js';
+import { existsInDOM } from '../utils';
 import { Input, InputConfig } from './input.js';
 
 export interface DropdownValueConfig<V> {
 	value: V;
-	submenu?: Array<string | V>;
+	submenu?: (string | V)[];
 	headerText?: string;
 	tooltip?: string;
-	extraCssClasses?: Array<string>;
+	extraCssClasses?: string[];
 }
 
 export interface DropdownPickerConfig<ModObject, T, V = T> extends InputConfig<ModObject, T, V> {
 	id: string;
-	values: Array<DropdownValueConfig<V>>;
+	values: DropdownValueConfig<V>[];
 	equals: (a: V | undefined, b: V | undefined) => boolean;
-	setOptionContent: (button: HTMLButtonElement, valueConfig: DropdownValueConfig<V>, isSelectButton: boolean) => void;
+	setOptionContent: (button: HTMLButtonElement, valueConfig: DropdownValueConfig<V>, isSelectButton?: boolean) => void;
 	createMissingValue?: (val: V) => Promise<DropdownValueConfig<V>>;
 	defaultLabel: string;
 }
 
 interface DropdownSubmenu<V> {
-	path: Array<string | V>;
+	path: (string | V)[];
 
 	listElem: HTMLUListElement;
 }
@@ -29,10 +33,11 @@ interface DropdownSubmenu<V> {
 /** UI Input that uses a dropdown menu. */
 export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> {
 	private readonly config: DropdownPickerConfig<ModObject, T, V>;
-	private valueConfigs: Array<DropdownValueConfig<V>>;
+	private valueConfigs: DropdownValueConfig<V>[];
 
 	private readonly buttonElem: HTMLButtonElement;
 	private readonly listElem: HTMLUListElement;
+	private tooltip: TippyInstance | null = null;
 
 	private currentSelection: DropdownValueConfig<V> | null;
 	private submenus: Array<DropdownSubmenu<V>>;
@@ -46,71 +51,93 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 
 		this.rootElem.classList.add('dropdown');
 
-		this.buttonElem = document.createElement('button');
-		this.buttonElem.classList.add('dropdown-picker-button', 'btn', 'dropdown-toggle', 'open-on-click');
-		this.buttonElem.setAttribute('data-bs-toggle', 'dropdown');
-		this.buttonElem.setAttribute('aria-expanded', 'false');
-		this.buttonElem.setAttribute('role', 'button');
-		this.buttonElem.id = config.id;
-		this.buttonElem.textContent = config.defaultLabel;
-		this.rootElem.appendChild(this.buttonElem);
+		const buttonRef = ref<HTMLButtonElement>();
+		const listRef = ref<HTMLUListElement>();
+		this.rootElem.appendChild(
+			<>
+				<button
+					ref={buttonRef}
+					id={config.id}
+					type="button"
+					className="dropdown-picker-button btn dropdown-toggle open-on-click"
+					dataset={{ bsToggle: 'dropdown' }}
+					attributes={{ 'aria-expanded': 'false' }}>
+					{config.defaultLabel}
+				</button>
+				<ul ref={listRef} className="dropdown-picker-list dropdown-menu"></ul>
+			</>,
+		);
 
-		this.listElem = document.createElement('ul');
-		this.listElem.classList.add('dropdown-picker-list', 'dropdown-menu');
-		this.rootElem.appendChild(this.listElem);
+		this.buttonElem = buttonRef.value!;
+		this.listElem = listRef.value!;
 
 		this.buildDropdown(this.valueConfigs);
 		this.init();
+
+		this.addOnDisposeCallback(() => {
+			this.listElem.querySelectorAll('[data-bs-toggle=dropdown]').forEach(elem => Dropdown.getOrCreateInstance(elem).dispose());
+			this.listElem.remove();
+			Dropdown.getOrCreateInstance(this.buttonElem).dispose();
+			this.buttonElem.remove();
+			this.tooltip?.destroy();
+		});
 	}
 
-	setOptions(newValueConfigs: Array<DropdownValueConfig<V>>) {
+	setOptions(newValueConfigs: DropdownValueConfig<V>[]) {
+		const roomExistsInDOM = existsInDOM(this.rootElem);
+		const listExistsInDOM = existsInDOM(this.listElem);
+		const buttonExistsInDOM = existsInDOM(this.buttonElem);
+		this.submenus.forEach(submenu => submenu.listElem?.remove());
+
+		if (!roomExistsInDOM || !buttonExistsInDOM || !listExistsInDOM) {
+			this.dispose();
+			return;
+		}
+
 		this.buildDropdown(newValueConfigs);
 		this.valueConfigs = newValueConfigs.filter(vc => !vc.headerText);
 		this.setInputValue(this.getSourceValue());
+		return;
 	}
 
-	private buildDropdown(valueConfigs: Array<DropdownValueConfig<V>>) {
-		this.listElem.innerHTML = '';
+	private buildDropdown(valueConfigs: DropdownValueConfig<V>[]) {
+		this.listElem.replaceChildren(<></>);
 		this.submenus = [];
 		valueConfigs.forEach(valueConfig => {
-			const itemElem = document.createElement('li');
 			const containsSubmenuChildren = valueConfigs.some(vc => vc.submenu?.some(e => !(typeof e == 'string') && this.config.equals(e, valueConfig.value)));
-			if (valueConfig.extraCssClasses) {
-				itemElem.classList.add(...valueConfig.extraCssClasses);
-			}
-			if (valueConfig.headerText) {
-				itemElem.classList.add('dropdown-picker-header');
+			const buttonRef = ref<HTMLButtonElement>();
+			const listItemRef = ref<HTMLLIElement>();
+			const itemElem = (
+				<li ref={listItemRef} className={clsx(valueConfig.extraCssClasses, valueConfig.headerText ? 'dropdown-picker-header' : 'dropdown-picker-item')}>
+					{valueConfig.headerText && <h6 className="dropdown-header">{valueConfig.headerText}</h6>}
+				</li>
+			);
 
-				const headerElem = document.createElement('h6');
-				headerElem.classList.add('dropdown-header');
-				headerElem.textContent = valueConfig.headerText;
-				itemElem.appendChild(headerElem);
-			} else {
-				itemElem.classList.add('dropdown-picker-item');
-
-				const buttonElem = document.createElement('button');
-				buttonElem.classList.add('dropdown-item');
-				buttonElem.type = 'button';
-				this.config.setOptionContent(buttonElem, valueConfig, false);
+			if (!valueConfig.headerText) {
+				const buttonElem = <DropdownButton className="dropdown-item" ref={buttonRef} />;
+				this.config.setOptionContent(buttonRef.value!, valueConfig);
 
 				if (valueConfig.tooltip) {
-					tippy(buttonElem, {
-						// animation: false,
-						// placement: 'right',
-						// fallbackPlacements: ['left', 'bottom'],
-						// offset: [0, 10],
+					this.tooltip = tippy(buttonRef.value!, {
+						animation: false,
 						theme: 'dropdown-tooltip',
-						content: valueConfig.tooltip,
+						onShow: instance => {
+							if (valueConfig.tooltip) instance.setContent(valueConfig.tooltip);
+						},
 					});
+					this.addOnDisposeCallback(() => this.tooltip?.destroy());
 				}
 
-				buttonElem.addEventListener('click', () => {
+				const onButtonClickHandler = () => {
 					this.updateValue(valueConfig);
 					this.inputChanged(TypedEvent.nextEventID());
-				});
+				};
+
+				buttonRef.value!.addEventListener('click', onButtonClickHandler);
+				this.addOnDisposeCallback(() => buttonRef.value?.removeEventListener('click', onButtonClickHandler));
 
 				if (containsSubmenuChildren) {
-					this.createSubmenu((valueConfig.submenu || []).concat([valueConfig.value]), buttonElem, itemElem);
+					this.createSubmenu((valueConfig.submenu || []).concat([valueConfig.value]), buttonRef.value!, listItemRef.value!);
 				} else {
 					itemElem.appendChild(buttonElem);
 				}
@@ -130,64 +157,45 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		});
 	}
 
-	private getSubmenu(path: Array<string | V> | undefined): DropdownSubmenu<V> | null {
+	private getSubmenu(path: (string | V)[] | undefined): DropdownSubmenu<V> | null {
 		if (!path) {
 			return null;
 		}
 		return this.submenus.find(submenu => this.equalPaths(submenu.path, path)) || null;
 	}
 
-	private createSubmenu(path: Array<string | V>, buttonElem?: HTMLButtonElement, itemElem?: HTMLLIElement): DropdownSubmenu<V> {
+	private createSubmenu(path: (string | V)[], buttonElem?: HTMLButtonElement, itemElem?: HTMLLIElement): DropdownSubmenu<V> {
 		const submenu = this.getSubmenu(path);
-		if (submenu) {
-			return submenu;
-		}
+		if (submenu) return submenu;
 
 		let parent: DropdownSubmenu<V> | null = null;
-		if (path.length > 1) {
-			parent = this.createSubmenu(path.slice(0, path.length - 1));
-		}
+		if (path.length > 1) parent = this.createSubmenu(path.slice(0, path.length - 1));
 
-		if (!itemElem) {
-			itemElem = document.createElement('li');
-		}
-		itemElem.classList.add('dropdown-picker-item');
+		if (!itemElem) itemElem = (<li className="dropdown-picker-item" />) as HTMLLIElement;
 
-		const containerElem = document.createElement('div');
-		containerElem.classList.add('dropend');
-		itemElem.appendChild(containerElem);
+		if (!buttonElem) buttonElem = (<DropdownButton className="dropdown-item" />) as HTMLButtonElement;
+		if (!buttonElem.childNodes.length) buttonElem.replaceChildren(path[path.length - 1] + ' \u00bb');
 
-		if (!buttonElem) {
-			buttonElem = document.createElement('button');
-		}
-		buttonElem.classList.add('dropdown-item');
-		buttonElem.setAttribute('data-bs-toggle', 'dropdown');
-		buttonElem.setAttribute('role', 'button');
-		buttonElem.setAttribute('aria-expanded', 'false');
-		if (buttonElem.childNodes.length == 0) {
-			buttonElem.textContent = path[path.length - 1] + ' \u00bb';
-		}
-		containerElem.appendChild(buttonElem);
+		const listRef = ref<HTMLUListElement>();
 
-		const listElem = document.createElement('ul');
-		listElem.classList.add('dropdown-submenu', 'dropdown-menu');
-		containerElem.appendChild(listElem);
+		itemElem.appendChild(
+			<div className="dropend">
+				{buttonElem}
+				<ul ref={listRef} className="dropdown-submenu dropdown-menu"></ul>
+			</div>,
+		);
 
-		if (parent) {
-			parent.listElem.appendChild(itemElem);
-		} else {
-			this.listElem.appendChild(itemElem);
-		}
+		(parent?.listElem || this.listElem).appendChild(itemElem);
 
 		const newSubmenu = {
 			path: path,
-			listElem: listElem,
+			listElem: listRef.value!,
 		};
 		this.submenus.push(newSubmenu);
 		return newSubmenu;
 	}
 
-	private equalPaths(a: Array<string | V> | null | undefined, b: Array<string | V> | null | undefined): boolean {
+	private equalPaths(a: (string | V)[] | null | undefined, b: (string | V)[] | null | undefined): boolean {
 		return (
 			(a?.length || 0) == (b?.length || 0) &&
 			(a || []).every((aVal, i) => (typeof aVal == 'string' ? aVal == (b![i] as string) : this.config.equals(aVal, b![i] as V)))
@@ -247,3 +255,7 @@ export class TextDropdownPicker<ModObject, T> extends DropdownPicker<ModObject, 
 		});
 	}
 }
+
+const DropdownButton = ({ dataset, attributes, ...props }: Partial<JSX.HTMLElementProps<'button'>>) => (
+	<button type="button" dataset={{ bsToggle: 'dropdown', ...dataset }} attributes={{ 'aria-expanded': false, ...attributes }} {...props} />
+);

@@ -5,7 +5,7 @@ import { APLAction, APLListItem, APLPrepullAction, APLValue } from '../../proto/
 import { ActionId } from '../../proto_utils/action_id';
 import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
-import { randomUUID } from '../../utils';
+import { existsInDOM, randomUUID } from '../../utils';
 import { Component } from '../component';
 import { Input, InputConfig } from '../input';
 import { ListItemPickerConfig, ListPicker } from '../list_picker';
@@ -251,9 +251,15 @@ function makeListItemWarnings(itemHeaderElem: HTMLElement, player: Player<any>, 
 	itemHeaderElem.appendChild(warningsElem);
 
 	const updateWarnings = async () => {
+		if (!existsInDOM(warningsElem)) {
+			warningsElem?.remove();
+			warningsTooltip?.destroy();
+			player.currentStatsEmitter.off(updateWarnings);
+			return;
+		}
 		warningsTooltip.setContent('');
 		const warnings = getWarnings(player);
-		if (warnings.length == 0) {
+		if (!warnings.length) {
 			warningsElem.style.visibility = 'hidden';
 		} else {
 			warningsElem.style.visibility = 'visible';
