@@ -28,7 +28,7 @@ export class CopyButton extends Component {
 
 		const button = btnRef.value!;
 		let clicked = false;
-		button.addEventListener('click', _event => {
+		button.addEventListener('click', () => {
 			if (clicked) return;
 
 			const data = this.config.getContent();

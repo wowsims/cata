@@ -1,6 +1,7 @@
+import clsx from 'clsx';
 import tippy from 'tippy.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment } from 'tsx-vanilla';
+import { element, fragment, ref } from 'tsx-vanilla';
 
 import { ActionId } from '../proto_utils/action_id.js';
 import { TypedEvent } from '../typed_event.js';
@@ -60,7 +61,7 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 		this.config = config;
 		this.currentValue = this.config.zeroValue;
 
-		this.config.changedEvent(this.modObject).on(_ => {
+		const event = this.config.changedEvent(this.modObject).on(() => {
 			if (this.showWhen()) {
 				this.restoreValue();
 				this.rootElem.classList.remove('hide');
@@ -70,15 +71,22 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			}
 		});
 
+		this.addOnDisposeCallback(() => event.dispose());
+
 		if (config.tooltip) {
-			tippy(this.rootElem, {
+			const tooltip = tippy(this.rootElem, {
 				content: config.tooltip,
 			});
+			this.addOnDisposeCallback(() => tooltip.destroy());
 		}
 
+		const buttonRef = ref<HTMLAnchorElement>();
+		const dropdownRef = ref<HTMLUListElement>();
+		const labelRef = ref<HTMLLabelElement>();
 		this.rootElem.appendChild(
 			<>
 				<a
+					ref={buttonRef}
 					href="javascript:void(0)"
 					className="icon-picker-button"
 					attributes={{
@@ -90,20 +98,22 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 						whtticon: 'false',
 						disableWowheadTouchTooltip: 'true',
 					}}></a>
-				<ul className="dropdown-menu"></ul>
-				<label className="form-label"></label>
+				<ul
+					ref={dropdownRef}
+					className={'dropdown-menu'}
+					style={{
+						gridTemplateColumns: this.config.numColumns ? `repeat(${this.config.numColumns}, 1fr)` : undefined,
+						gridAutoFlow: this.config.direction == IconEnumPickerDirection.Horizontal ? 'column' : undefined,
+					}}></ul>
+				<label ref={labelRef} className="form-label"></label>
 			</>,
 		);
 
-		this.buttonElem = this.rootElem.querySelector('.icon-picker-button') as HTMLAnchorElement;
-		this.buttonText = this.rootElem.querySelector('label') as HTMLElement;
-		const dropdownMenu = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
+		this.buttonElem = buttonRef.value!;
+		this.buttonText = labelRef.value!;
+		const dropdownMenu = dropdownRef.value!;
 
-		if (this.config.numColumns) dropdownMenu.style.gridTemplateColumns = `repeat(${this.config.numColumns}, 1fr)`;
-
-		if (this.config.direction == IconEnumPickerDirection.Horizontal) dropdownMenu.style.gridAutoFlow = 'column';
-
-		this.config.values.forEach((valueConfig, _) => {
+		this.config.values.forEach(valueConfig => {
 			const optionContainer = document.createElement('li');
 			optionContainer.classList.add('icon-dropdown-option', 'dropdown-option');
 			dropdownMenu.appendChild(optionContainer);
@@ -128,20 +138,26 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 				}
 			};
 
-			this.config.changedEvent(this.modObject).on(updateOption);
+			const event = this.config.changedEvent(this.modObject).on(updateOption);
 			updateOption();
 
-			option.addEventListener('click', event => {
-				event.preventDefault();
-				this.currentValue = valueConfig.value;
-				this.storedValue = undefined;
-				this.inputChanged(TypedEvent.nextEventID());
-			});
+			option.addEventListener(
+				'click',
+				event => {
+					event.preventDefault();
+					this.currentValue = valueConfig.value;
+					this.storedValue = undefined;
+					this.inputChanged(TypedEvent.nextEventID());
+				},
+				{ signal: this.signal },
+			);
+			this.addOnDisposeCallback(() => event.dispose());
 
 			if (valueConfig.tooltip) {
-				tippy(option, {
+				const tooltip = tippy(option, {
 					content: valueConfig.tooltip,
 				});
+				this.addOnDisposeCallback(() => tooltip.destroy());
 			}
 		});
 

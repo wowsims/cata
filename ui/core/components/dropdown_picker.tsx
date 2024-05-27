@@ -75,19 +75,21 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		this.init();
 
 		this.addOnDisposeCallback(() => {
-			this.listElem.querySelectorAll('[data-bs-toggle=dropdown]').forEach(elem => Dropdown.getOrCreateInstance(elem).dispose());
-			this.listElem.remove();
-			Dropdown.getOrCreateInstance(this.buttonElem).dispose();
-			this.buttonElem.remove();
 			this.tooltip?.destroy();
+			this.clearDropdownInstances();
+			Dropdown.getOrCreateInstance(this.buttonElem).dispose();
 		});
+	}
+
+	clearDropdownInstances() {
+		this.listElem.querySelectorAll('[data-bs-toggle=dropdown]').forEach(elem => Dropdown.getOrCreateInstance(elem).dispose());
 	}
 
 	setOptions(newValueConfigs: DropdownValueConfig<V>[]) {
 		const roomExistsInDOM = existsInDOM(this.rootElem);
 		const listExistsInDOM = existsInDOM(this.listElem);
 		const buttonExistsInDOM = existsInDOM(this.buttonElem);
-		this.submenus.forEach(submenu => submenu.listElem?.remove());
+		this.clearDropdownInstances();
 
 		if (!roomExistsInDOM || !buttonExistsInDOM || !listExistsInDOM) {
 			this.dispose();
@@ -101,7 +103,7 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 	}
 
 	private buildDropdown(valueConfigs: DropdownValueConfig<V>[]) {
-		this.listElem.replaceChildren(<></>);
+		this.listElem.replaceChildren();
 		this.submenus = [];
 		valueConfigs.forEach(valueConfig => {
 			const containsSubmenuChildren = valueConfigs.some(vc => vc.submenu?.some(e => !(typeof e == 'string') && this.config.equals(e, valueConfig.value)));
@@ -121,20 +123,23 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 					this.tooltip = tippy(buttonRef.value!, {
 						animation: false,
 						theme: 'dropdown-tooltip',
-						onShow: instance => {
-							if (valueConfig.tooltip) instance.setContent(valueConfig.tooltip);
-						},
+						content: valueConfig.tooltip,
 					});
 					this.addOnDisposeCallback(() => this.tooltip?.destroy());
 				}
 
-				const onButtonClickHandler = () => {
-					this.updateValue(valueConfig);
-					this.inputChanged(TypedEvent.nextEventID());
-				};
-
-				buttonRef.value!.addEventListener('click', onButtonClickHandler);
-				this.addOnDisposeCallback(() => buttonRef.value?.removeEventListener('click', onButtonClickHandler));
+				buttonRef.value!.addEventListener(
+					'click',
+					() => {
+						this.updateValue(valueConfig);
+						this.inputChanged(TypedEvent.nextEventID());
+					},
+					{ signal: this.signal },
+				);
+				this.addOnDisposeCallback(() => {
+					buttonRef.value?.remove();
+					itemElem.remove();
+				});
 
 				if (containsSubmenuChildren) {
 					this.createSubmenu((valueConfig.submenu || []).concat([valueConfig.value]), buttonRef.value!, listItemRef.value!);

@@ -252,8 +252,8 @@ function makeListItemWarnings(itemHeaderElem: HTMLElement, player: Player<any>, 
 
 	const updateWarnings = async () => {
 		if (!existsInDOM(warningsElem)) {
-			warningsElem?.remove();
 			warningsTooltip?.destroy();
+			warningsElem?.remove();
 			player.currentStatsEmitter.off(updateWarnings);
 			return;
 		}
@@ -293,10 +293,14 @@ class HidePicker extends Input<Player<any>, boolean> {
 
 		this.init();
 
-		this.inputElem.addEventListener('click', () => {
-			this.setInputValue(!this.getInputValue());
-			this.inputChanged(TypedEvent.nextEventID());
-		});
+		this.inputElem.addEventListener(
+			'change',
+			() => {
+				this.setInputValue(!this.getInputValue());
+				this.inputChanged(TypedEvent.nextEventID());
+			},
+			{ signal: this.signal },
+		);
 	}
 
 	getInputElem(): HTMLElement {

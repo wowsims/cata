@@ -2,19 +2,17 @@ import { Player } from '../player.js';
 import { ActionId } from '../proto_utils/action_id.js';
 import { SimUI } from '../sim_ui.js';
 import { TypedEvent } from '../typed_event.js';
-import { isRightClick } from '../utils.js';
-
+import { existsInDOM, isRightClick } from '../utils.js';
 import { Component } from './component.js';
 import { IconPicker, IconPickerConfig } from './icon_picker.js';
 
-export interface MultiIconPickerItemConfig<ModObject> extends IconPickerConfig<ModObject, any> {
-}
+export interface MultiIconPickerItemConfig<ModObject> extends IconPickerConfig<ModObject, any> {}
 
 export interface MultiIconPickerConfig<ModObject> {
-	inputs: Array<MultiIconPickerItemConfig<ModObject>>,
-	label?: string,
-	categoryId?: ActionId,
-	showWhen?: (obj: Player<any>) => boolean,
+	inputs: Array<MultiIconPickerItemConfig<ModObject>>;
+	label?: string;
+	categoryId?: ActionId;
+	showWhen?: (obj: Player<any>) => boolean;
 }
 
 // Icon-based UI for a dropdown with multiple icon pickers.
@@ -29,9 +27,16 @@ export class MultiIconPicker<ModObject> extends Component {
 
 	private readonly pickers: Array<IconPicker<ModObject, any>>;
 
+	// Can be used to remove any events in addEventListener
+	// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#add_an_abortable_listener
+	public abortController: AbortController;
+	public signal: AbortSignal;
+
 	constructor(parent: HTMLElement, modObj: ModObject, config: MultiIconPickerConfig<ModObject>, simUI: SimUI) {
 		super(parent, 'multi-icon-picker-root');
 		this.rootElem.classList.add('icon-picker');
+		this.abortController = new AbortController();
+		this.signal = this.abortController.signal;
 		this.config = config;
 		this.currentValue = null;
 
@@ -60,22 +65,33 @@ export class MultiIconPicker<ModObject> extends Component {
 		this.buttonElem = this.rootElem.querySelector('.icon-picker-button') as HTMLAnchorElement;
 		this.dropdownMenu = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
 
-		this.buttonElem.addEventListener('hide.bs.dropdown', event => {
-			if (event.hasOwnProperty('clickEvent'))
+		this.buttonElem.addEventListener(
+			'hide.bs.dropdown',
+			(event: Event) => {
+				if (event.hasOwnProperty('clickEvent')) event.preventDefault();
+			},
+			{ signal: this.signal },
+		);
+
+		this.buttonElem.addEventListener(
+			'contextmenu',
+			(event: MouseEvent) => {
 				event.preventDefault();
-		})
+			},
+			{ signal: this.signal },
+		);
 
-		this.buttonElem.addEventListener('contextmenu', event => {
-			event.preventDefault();
-		});
+		this.buttonElem.addEventListener(
+			'mousedown',
+			event => {
+				const rightClick = isRightClick(event);
 
-		this.buttonElem.addEventListener('mousedown', event => {
-			const rightClick = isRightClick(event);
-
-			if (rightClick) {
-				this.clearPicker();
-			}
-		});
+				if (rightClick) {
+					this.clearPicker();
+				}
+			},
+			{ signal: this.signal },
+		);
 
 		this.buildBlankOption();
 
@@ -87,15 +103,21 @@ export class MultiIconPicker<ModObject> extends Component {
 			return new IconPicker(optionContainer, modObj, pickerConfig);
 		});
 		simUI.sim.waitForInit().then(() => this.updateButtonImage());
-		simUI.changeEmitter.on(() => this.updateButtonImage());
-		simUI.changeEmitter.on(() => {
+		const event = simUI.changeEmitter.on(() => {
+			if (!existsInDOM(this.rootElem) || !existsInDOM(this.dropdownMenu) || !existsInDOM(this.buttonElem)) {
+				this.dispose();
+				return;
+			}
+			this.updateButtonImage();
+
 			const show = !this.config.showWhen || this.config.showWhen(simUI.sim.raid.getPlayer(0)!);
 			if (show) {
 				this.rootElem.classList.remove('hide');
 			} else {
 				this.rootElem.classList.add('hide');
 			}
-		})
+		});
+		this.addOnDisposeCallback(() => event.dispose());
 	}
 
 	private buildBlankOption() {
@@ -106,17 +128,19 @@ export class MultiIconPicker<ModObject> extends Component {
 		option.classList.add('icon-dropdown-option', 'dropdown-option');
 		listItem.appendChild(option);
 
-		option.addEventListener('click', () => this.clearPicker());
+		const onClearPickerHandler = () => this.clearPicker();
+		option.addEventListener('click', onClearPickerHandler);
+		this.addOnDisposeCallback(() => option.removeEventListener('click', onClearPickerHandler));
 	}
 
 	private clearPicker() {
 		TypedEvent.freezeAllAndDo(() => {
-			this.pickers.forEach((picker) => {
-				picker.setInputValue(null)
+			this.pickers.forEach(picker => {
+				picker.setInputValue(null);
 				picker.inputChanged(TypedEvent.nextEventID());
 			});
 			this.updateButtonImage();
-		})
+		});
 	}
 
 	private updateButtonImage() {
@@ -136,7 +160,7 @@ export class MultiIconPicker<ModObject> extends Component {
 			} else {
 				this.buttonElem.style.backgroundImage = '';
 			}
-			this.buttonElem.removeAttribute("href");
+			this.buttonElem.removeAttribute('href');
 		}
 	}
 

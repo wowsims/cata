@@ -47,9 +47,15 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 
 	protected enabled = true;
 	readonly changeEmitter = new TypedEvent<void>('input-change');
+	// Can be used to remove any events in addEventListener
+	// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#add_an_abortable_listener
+	public abortController: AbortController;
+	public signal: AbortSignal;
 
 	constructor(parent: HTMLElement | null, cssClass: string, modObject: ModObject, config: InputConfig<ModObject, T, V>) {
 		super(parent, 'input-root', config.rootElem);
+		this.abortController = new AbortController();
+		this.signal = this.abortController.signal;
 		this.inputConfig = config;
 		this.modObject = modObject;
 		this.rootElem.classList.add(cssClass);
@@ -69,10 +75,11 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 		});
 
 		this.addOnDisposeCallback(() => {
-			console.log('disposing input', config.id);
+			// console.log('disposing input', config.id);
+			this.abortController?.abort();
 			event.dispose();
-			this.getInputElem()?.remove();
-			this.rootElem.remove();
+			// this.getInputElem()?.remove();
+			// this.rootElem.remove();
 		});
 	}
 
@@ -85,9 +92,7 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 
 		if (config.labelTooltip) {
 			const tippyInstance = tippy(label, {
-				onShow: instance => {
-					if (config.labelTooltip) instance.setContent(config.labelTooltip);
-				},
+				content: config.labelTooltip,
 			});
 			this.addOnDisposeCallback(() => tippyInstance.destroy());
 		}

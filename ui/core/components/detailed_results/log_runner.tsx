@@ -192,7 +192,7 @@ class CustomVirtualScroll {
 		const visibleItems = this.items.slice(this.startIndex, endIndex);
 
 		// Reset content and adjust placeholders
-		this.contentContainer.innerHTML = '';
+		this.contentContainer.replaceChildren();
 		this.contentContainer.appendChild(this.placeholderTop);
 		this.placeholderTop.style.height = `${this.startIndex * this.itemHeight}px`;
 		const fragment = document.createDocumentFragment();
