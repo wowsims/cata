@@ -23,6 +23,7 @@ func (hunter *Hunter) registerTrapLauncher() {
 
 	hunter.TrapLauncher = hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
+		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 20 - core.TernaryFloat64(hunter.HasMajorGlyph(proto.HunterMajorGlyph_GlyphOfTrapLauncher), 10, 0),
@@ -38,7 +39,7 @@ func (hunter *Hunter) registerTrapLauncher() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			hunter.RapidFireAura.Activate(sim)
+			hunter.TrapLauncherAura.Activate(sim)
 		},
 	})
 }
