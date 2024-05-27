@@ -26,7 +26,6 @@ export interface DropdownPickerConfig<ModObject, T, V = T> extends InputConfig<M
 
 interface DropdownSubmenu<V> {
 	path: (string | V)[];
-
 	listElem: HTMLUListElement;
 }
 
@@ -58,10 +57,9 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 				<button
 					ref={buttonRef}
 					id={config.id}
-					type="button"
 					className="dropdown-picker-button btn dropdown-toggle open-on-click"
 					dataset={{ bsToggle: 'dropdown' }}
-					attributes={{ 'aria-expanded': 'false' }}>
+					attributes={{ 'aria-expanded': false }}>
 					{config.defaultLabel}
 				</button>
 				<ul ref={listRef} className="dropdown-picker-list dropdown-menu"></ul>
@@ -71,7 +69,22 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		this.buttonElem = buttonRef.value!;
 		this.listElem = listRef.value!;
 
-		this.buildDropdown(this.valueConfigs);
+		this.buttonElem.addEventListener(
+			'show.bs.dropdown',
+			() => {
+				this.buildDropdown(this.valueConfigs);
+			},
+			{ signal: this.signal },
+		);
+		this.buttonElem.addEventListener(
+			'hidden.bs.dropdown',
+			() => {
+				this.clearDropdownInstances();
+				this.listElem.replaceChildren(<></>);
+			},
+			{ signal: this.signal },
+		);
+
 		this.init();
 
 		this.addOnDisposeCallback(() => {
@@ -97,7 +110,6 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 			return;
 		}
 
-		this.buildDropdown(newValueConfigs);
 		this.valueConfigs = newValueConfigs.filter(vc => !vc.headerText);
 		this.setInputValue(this.getSourceValue());
 		return;
@@ -117,7 +129,7 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 			);
 
 			if (!valueConfig.headerText) {
-				const buttonElem = <DropdownButton className="dropdown-item" ref={buttonRef} />;
+				const buttonElem = <button ref={buttonRef} className="dropdown-item" />;
 				this.config.setOptionContent(buttonRef.value!, valueConfig);
 
 				if (valueConfig.tooltip) {
@@ -179,7 +191,7 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 
 		if (!itemElem) itemElem = (<li className="dropdown-picker-item" />) as HTMLLIElement;
 
-		if (!buttonElem) buttonElem = (<DropdownButton className="dropdown-item" />) as HTMLButtonElement;
+		if (!buttonElem) buttonElem = (<button className="dropdown-item" dataset={{ bsToggle: 'dropdown' }} attributes={{ 'aria-expanded': false }} />) as HTMLButtonElement;
 		if (!buttonElem.childNodes.length) buttonElem.replaceChildren(path[path.length - 1] + ' \u00bb');
 
 		const listRef = ref<HTMLUListElement>();
@@ -261,7 +273,3 @@ export class TextDropdownPicker<ModObject, T> extends DropdownPicker<ModObject, 
 		});
 	}
 }
-
-const DropdownButton = ({ dataset, attributes, ...props }: Partial<JSX.HTMLElementProps<'button'>>) => (
-	<button type="button" dataset={{ bsToggle: 'dropdown', ...dataset }} attributes={{ 'aria-expanded': false, ...attributes }} {...props} />
-);
