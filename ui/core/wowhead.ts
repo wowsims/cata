@@ -129,5 +129,5 @@ export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemPara
 		}
 	}
 
-	return params.toString();
+	return decodeURIComponent(params.toString());
 };
