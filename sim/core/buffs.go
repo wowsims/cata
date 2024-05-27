@@ -1670,7 +1670,7 @@ func registerInnervateCD(agent Agent, numInnervates int32) {
 	character := agent.GetCharacter()
 	character.Env.RegisterPostFinalizeEffect(func() {
 		innervateThreshold = InnervateManaThreshold(character)
-		innervateAura = InnervateAura(character, -1, false)
+		innervateAura = InnervateAura(character, -1, 0.05)
 	})
 
 	registerExternalConsecutiveCDApproximation(
@@ -1693,7 +1693,7 @@ func registerInnervateCD(agent Agent, numInnervates int32) {
 		numInnervates)
 }
 
-func InnervateAura(character *Character, actionTag int32, isSelfCast bool) *Aura {
+func InnervateAura(character *Character, actionTag int32, reg float64) *Aura {
 	actionID := ActionID{SpellID: 29166, Tag: actionTag}
 	manaMetrics := character.NewManaMetrics(actionID)
 	return character.GetOrRegisterAura(Aura{
@@ -1702,7 +1702,6 @@ func InnervateAura(character *Character, actionTag int32, isSelfCast bool) *Aura
 		ActionID: actionID,
 		Duration: InnervateDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			reg := TernaryFloat64(isSelfCast, 0.2, 0.05)
 			manaPerTick := aura.Unit.MaxMana() * reg / 10.0
 			StartPeriodicAction(sim, PeriodicActionOptions{
 				Period:   InnervateDuration / 10,

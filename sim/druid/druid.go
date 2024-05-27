@@ -267,7 +267,7 @@ func (druid *Druid) Initialize() {
 	// }
 	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
-	// druid.registerInnervateCD()
+	druid.registerInnervateCD()
 	// druid.registerFakeGotw()
 	druid.applyOmenOfClarity()
 }
