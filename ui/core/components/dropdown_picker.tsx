@@ -1,6 +1,6 @@
 import { Dropdown } from 'bootstrap';
 import clsx from 'clsx';
-import tippy, { Instance as TippyInstance } from 'tippy.js';
+import tippy from 'tippy.js';
 import { element, fragment, ref } from 'tsx-vanilla';
 
 import { TypedEvent } from '../typed_event.js';
@@ -36,10 +36,11 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 
 	private readonly buttonElem: HTMLButtonElement;
 	private readonly listElem: HTMLUListElement;
-	private tooltip: TippyInstance | null = null;
 
 	private currentSelection: DropdownValueConfig<V> | null;
 	private submenus: Array<DropdownSubmenu<V>>;
+
+	private resetCallbacks: (() => void)[] = [];
 
 	constructor(parent: HTMLElement, modObject: ModObject, config: DropdownPickerConfig<ModObject, T, V>) {
 		super(parent, 'dropdown-picker-root', modObject, config);
@@ -72,15 +73,14 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		this.buttonElem.addEventListener(
 			'show.bs.dropdown',
 			() => {
-				this.buildDropdown(this.valueConfigs);
+				this.renderDropdown(this.valueConfigs);
 			},
 			{ signal: this.signal },
 		);
 		this.buttonElem.addEventListener(
 			'hidden.bs.dropdown',
 			() => {
-				this.clearDropdownInstances();
-				this.listElem.replaceChildren(<></>);
+				this.resetDropdown();
 			},
 			{ signal: this.signal },
 		);
@@ -88,22 +88,17 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		this.init();
 
 		this.addOnDisposeCallback(() => {
-			this.clearDropdownInstances();
+			this.resetDropdown();
 			this.listElem.remove();
 			Dropdown.getOrCreateInstance(this.buttonElem).dispose();
 			this.buttonElem.remove();
 		});
 	}
 
-	clearDropdownInstances() {
-		this.listElem.querySelectorAll('[data-bs-toggle=dropdown]').forEach(elem => Dropdown.getOrCreateInstance(elem).dispose());
-	}
-
 	setOptions(newValueConfigs: DropdownValueConfig<V>[]) {
 		const roomExistsInDOM = existsInDOM(this.rootElem);
 		const listExistsInDOM = existsInDOM(this.listElem);
 		const buttonExistsInDOM = existsInDOM(this.buttonElem);
-		this.clearDropdownInstances();
 
 		if (!roomExistsInDOM || !buttonExistsInDOM || !listExistsInDOM) {
 			this.dispose();
@@ -115,7 +110,13 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		return;
 	}
 
-	private buildDropdown(valueConfigs: DropdownValueConfig<V>[]) {
+	resetDropdown() {
+		this.listElem.querySelectorAll('[data-bs-toggle=dropdown]').forEach(elem => Dropdown.getOrCreateInstance(elem).dispose());
+		this.resetCallbacks.forEach(callback => callback());
+		this.listElem.replaceChildren(<></>);
+	}
+
+	private renderDropdown(valueConfigs: DropdownValueConfig<V>[]) {
 		this.listElem.replaceChildren();
 		this.submenus = [];
 		valueConfigs.forEach(valueConfig => {
@@ -138,18 +139,15 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 						theme: 'dropdown-tooltip',
 						content: valueConfig.tooltip,
 					});
-					this.addOnDisposeCallback(() => tooltip?.destroy());
+					this.addOnResetCallback(() => tooltip?.destroy());
 				}
-
-				buttonRef.value!.addEventListener(
-					'click',
-					() => {
-						this.updateValue(valueConfig);
-						this.inputChanged(TypedEvent.nextEventID());
-					},
-					{ signal: this.signal },
-				);
-				this.addOnDisposeCallback(() => {
+				const onButtonClick = () => {
+					this.updateValue(valueConfig);
+					this.inputChanged(TypedEvent.nextEventID());
+				};
+				buttonRef.value!.addEventListener('click', onButtonClick);
+				this.addOnResetCallback(() => {
+					buttonRef.value?.removeEventListener('click', onButtonClick);
 					buttonRef.value?.remove();
 					itemElem.remove();
 				});
@@ -191,7 +189,8 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 
 		if (!itemElem) itemElem = (<li className="dropdown-picker-item" />) as HTMLLIElement;
 
-		if (!buttonElem) buttonElem = (<button className="dropdown-item" dataset={{ bsToggle: 'dropdown' }} attributes={{ 'aria-expanded': false }} />) as HTMLButtonElement;
+		if (!buttonElem)
+			buttonElem = (<button className="dropdown-item" dataset={{ bsToggle: 'dropdown' }} attributes={{ 'aria-expanded': false }} />) as HTMLButtonElement;
 		if (!buttonElem.childNodes.length) buttonElem.replaceChildren(path[path.length - 1] + ' \u00bb');
 
 		const listRef = ref<HTMLUListElement>();
@@ -252,6 +251,10 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		} else {
 			this.buttonElem.textContent = this.config.defaultLabel;
 		}
+	}
+
+	addOnResetCallback(callback: () => void) {
+		this.resetCallbacks.push(callback);
 	}
 }
 
