@@ -38,7 +38,7 @@ func (hunter *Hunter) registerTrapLauncher() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			hunter.RapidFireAura.Activate(sim)
+			hunter.TrapLauncherAura.Activate(sim)
 		},
 	})
 }
