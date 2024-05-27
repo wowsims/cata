@@ -140,11 +140,11 @@ $theme-colors: map-merge($theme-colors, $damage-colors);
 
 // Talents
 $talent-colors: (
-	talent-full: #40bf40,
-	talent-partial: #ffd100,
+	talent-full: #ffd100,
+	talent-partial: #40bf40,
 );
-
 $theme-colors: map-merge($theme-colors, $talent-colors);
+
 // Links
 $link-colors: (
 	link-danger: #ef9eaa,
