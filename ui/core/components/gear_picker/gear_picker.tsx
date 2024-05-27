@@ -539,8 +539,11 @@ export class SelectorModal extends BaseModal {
 			const switchToPreviousItemSlotTab = this.switchToPreviousItemSlotTab.bind(this);
 			const switchToNextItemSlotTab = this.switchToNextItemSlotTab.bind(this);
 
-			document.addEventListener('keydown', switchToPreviousItemSlotTab, { signal: this.signal });
-			document.addEventListener('keydown', switchToNextItemSlotTab, { signal: this.signal });
+			document.addEventListener('keydown', switchToPreviousItemSlotTab);
+			document.addEventListener('keydown', switchToNextItemSlotTab);
+
+			this.addOnHideCallback(() => document.removeEventListener('keydown', switchToPreviousItemSlotTab));
+			this.addOnHideCallback(() => document.removeEventListener('keydown', switchToNextItemSlotTab));
 		}
 	}
 

@@ -47,17 +47,9 @@ export class BaseModal extends Component {
 	readonly body: HTMLElement;
 	readonly footer: HTMLElement | undefined;
 
-	// Can be used to remove any events in addEventListener
-	// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#add_an_abortable_listener
-	public abortController: AbortController;
-	public signal: AbortSignal;
-
 	constructor(parent: HTMLElement, cssClass: string, config: BaseModalConfig = { disposeOnClose: true }) {
 		super(parent, 'modal');
 		this.modalConfig = { ...DEFAULT_CONFIG, ...config };
-
-		this.abortController = new AbortController();
-		this.signal = this.abortController.signal;
 
 		const dialogRef = ref<HTMLDivElement>();
 		const headerRef = ref<HTMLDivElement>();
@@ -94,10 +86,14 @@ export class BaseModal extends Component {
 		this.modal = new Modal(this.rootElem);
 
 		if (this.modalConfig.disposeOnClose) {
-			this.rootElem.addEventListener('hidden.bs.modal', _ => {
-				this.rootElem.remove();
-				this.dispose();
-			});
+			this.rootElem.addEventListener(
+				'hidden.bs.modal',
+				() => {
+					this.rootElem.remove();
+					this.dispose();
+				},
+				{ once: true },
+			);
 		}
 	}
 
@@ -107,10 +103,15 @@ export class BaseModal extends Component {
 		const hideBSFn = this.hideBSFn.bind(this);
 		const hiddenBSFn = this.hiddenBSFn.bind(this);
 
-		document.addEventListener('keydown', closeModalOnEscKey, { signal: this.signal });
-		this.rootElem.addEventListener('show.bs.modal', showBSFn, { signal: this.signal });
-		this.rootElem.addEventListener('hide.bs.modal', hideBSFn, { signal: this.signal });
-		this.rootElem.addEventListener('hidden.bs.modal', hiddenBSFn, { signal: this.signal });
+		document.addEventListener('keydown', closeModalOnEscKey);
+		this.rootElem.addEventListener('show.bs.modal', showBSFn);
+		this.rootElem.addEventListener('hide.bs.modal', hideBSFn);
+		this.rootElem.addEventListener('hidden.bs.modal', hiddenBSFn);
+
+		this.addOnHideCallback(() => document.removeEventListener('keydown', closeModalOnEscKey));
+		this.addOnHideCallback(() => this.rootElem.removeEventListener('show.bs.modal', showBSFn));
+		this.addOnHideCallback(() => this.rootElem.removeEventListener('hide.bs.modal', hideBSFn));
+		this.addOnHideCallback(() => this.rootElem.removeEventListener('hidden.bs.modal', hiddenBSFn));
 
 		this.modal.show();
 		this.isOpen = true;
