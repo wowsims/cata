@@ -216,12 +216,10 @@ class CustomVirtualScroll {
 		const visibleItems = this.items.slice(this.startIndex, endIndex);
 		const remainingItems = this.items.length - endIndex;
 
-		// Reset content and adjust placeholders
-		this.contentContainer.innerHTML = '';
 		// Update the height of the placeholders before it's placed in the dom to prevent rerender
 		this.placeholderTop.style.height = `${this.startIndex * this.itemHeight}px`;
 		this.placeholderBottom.style.height = `${remainingItems * this.itemHeight}px`;
-		this.contentContainer.appendChild(
+		this.contentContainer.replaceChildren(
 			<>
 				{this.placeholderTop}
 				{visibleItems.map(item => item)}
