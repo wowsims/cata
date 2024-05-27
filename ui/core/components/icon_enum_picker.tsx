@@ -1,7 +1,5 @@
-import clsx from 'clsx';
 import tippy from 'tippy.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { ActionId } from '../proto_utils/action_id.js';
 import { TypedEvent } from '../typed_event.js';

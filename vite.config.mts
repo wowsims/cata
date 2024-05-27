@@ -109,6 +109,9 @@ export default defineConfig(({ command, mode }) => {
 				enableBuild: true,
 			}),
 		],
+		esbuild: {
+			jsxInject: "import { element, fragment } from 'tsx-vanilla';",
+		},
 		build: {
 			...baseConfig.build,
 			rollupOptions: {

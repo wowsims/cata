@@ -1,5 +1,5 @@
-import tippy, { Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
-import { element, ref } from 'tsx-vanilla';
+import tippy  from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from '../core/components/base_modal.jsx';
 import { Component } from '../core/components/component.js';
@@ -13,7 +13,7 @@ import { Class, Faction, Glyphs, Profession, Spec } from '../core/proto/common.j
 import { UnholyDeathKnight_Options } from '../core/proto/death_knight.js';
 import { BalanceDruid_Options as BalanceDruidOptions } from '../core/proto/druid.js';
 import { ArcaneMage_Options } from '../core/proto/mage.js';
-import { getPlayerSpecFromPlayer, newUnitReference, SpecClasses, SpecType } from '../core/proto_utils/utils.js';
+import { getPlayerSpecFromPlayer, newUnitReference } from '../core/proto_utils/utils.js';
 import { Raid } from '../core/raid.js';
 import { EventID, TypedEvent } from '../core/typed_event.js';
 import { formatDeltaTextElem, getEnumValues } from '../core/utils.js';

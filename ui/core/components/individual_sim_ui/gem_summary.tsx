@@ -1,4 +1,4 @@
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
