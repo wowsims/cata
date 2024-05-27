@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { element } from 'tsx-vanilla';
 
 import { UnitReference } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id.js';

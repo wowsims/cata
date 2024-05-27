@@ -1,11 +1,11 @@
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { Player, UnitMetadata } from '../../player.js';
 import { APLValueEclipsePhase, APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
 import { ActionID, OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
 import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
-import { EventID, TypedEvent } from '../../typed_event.js';
+import { EventID } from '../../typed_event.js';
 import { bucket, randomUUID } from '../../utils.js';
 import { BooleanPicker } from '../boolean_picker.js';
 import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../dropdown_picker.jsx';

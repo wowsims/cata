@@ -1,7 +1,7 @@
 import { Dropdown } from 'bootstrap';
 import clsx from 'clsx';
 import tippy from 'tippy.js';
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { TypedEvent } from '../typed_event.js';
 import { existsInDOM } from '../utils';

@@ -1,5 +1,4 @@
-import clsx from 'clsx';
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
