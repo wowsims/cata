@@ -1,6 +1,5 @@
 import { default as pako } from 'pako';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics';
 import { IndividualSimUI } from '../individual_sim_ui';

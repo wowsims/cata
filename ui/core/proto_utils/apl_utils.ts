@@ -1,12 +1,11 @@
 import {
-    ActionID as ActionIdProto,
-    Cooldowns,
-} from '../proto/common.js';
-
-import {
 	APLAction,
 	APLPrepullAction,
 } from '../proto/apl.js';
+import {
+    ActionID as ActionIdProto,
+    Cooldowns,
+} from '../proto/common.js';
 
 export function prepullPotionAction(doAt?: string): APLPrepullAction {
 	return APLPrepullAction.fromJsonString(`{"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"${doAt || '-1s'}"}}}`);

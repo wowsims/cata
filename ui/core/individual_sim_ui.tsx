@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element } from 'tsx-vanilla';
+
 
 import { CharacterStats, StatMods, StatWrites } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
