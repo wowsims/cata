@@ -129,8 +129,7 @@ export class MultiIconPicker<ModObject> extends Component {
 		listItem.appendChild(option);
 
 		const onClearPickerHandler = () => this.clearPicker();
-		option.addEventListener('click', onClearPickerHandler);
-		this.addOnDisposeCallback(() => option.removeEventListener('click', onClearPickerHandler));
+		option.addEventListener('click', onClearPickerHandler, { signal: this.signal });
 	}
 
 	private clearPicker() {

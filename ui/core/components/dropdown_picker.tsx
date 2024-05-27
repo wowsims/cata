@@ -75,9 +75,10 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 		this.init();
 
 		this.addOnDisposeCallback(() => {
-			this.tooltip?.destroy();
 			this.clearDropdownInstances();
+			this.listElem.remove();
 			Dropdown.getOrCreateInstance(this.buttonElem).dispose();
+			this.buttonElem.remove();
 		});
 	}
 
@@ -120,12 +121,12 @@ export class DropdownPicker<ModObject, T, V = T> extends Input<ModObject, T, V> 
 				this.config.setOptionContent(buttonRef.value!, valueConfig);
 
 				if (valueConfig.tooltip) {
-					this.tooltip = tippy(buttonRef.value!, {
+					const tooltip = tippy(buttonRef.value!, {
 						animation: false,
 						theme: 'dropdown-tooltip',
 						content: valueConfig.tooltip,
 					});
-					this.addOnDisposeCallback(() => this.tooltip?.destroy());
+					this.addOnDisposeCallback(() => tooltip?.destroy());
 				}
 
 				buttonRef.value!.addEventListener(

@@ -75,11 +75,8 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 		});
 
 		this.addOnDisposeCallback(() => {
-			// console.log('disposing input', config.id);
 			this.abortController?.abort();
 			event.dispose();
-			// this.getInputElem()?.remove();
-			// this.rootElem.remove();
 		});
 	}
 
@@ -150,7 +147,6 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 
 	// Child classes should call this method when the value in the input element changes.
 	inputChanged(eventID: EventID) {
-		console.log('input changed', this.inputConfig.id);
 		this.setSourceValue(eventID, this.getInputValue());
 		this.changeEmitter.emit(eventID);
 	}
