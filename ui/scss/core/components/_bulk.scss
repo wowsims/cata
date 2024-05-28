@@ -29,18 +29,23 @@
 		flex-direction: row;
 		align-items: center;
 		flex-wrap: wrap;
+		justify-content: flex-start;
+	}
+
+	.results-sim,
+	.bulk-equipit {
+		flex-shrink: 0;
 	}
 
 	.bulk-equipit {
-		flex-shrink: 0;
 		min-width: 140px;
 	}
 
-	.results-sim {
-		flex: 1;
-	}
 	.bulk-gear-combo {
-		flex: 0.8;
+		flex: 1;
+		display: grid;
+		grid-template-rows: max-content;
+		justify-items: flex-start;
 	}
 }
 
@@ -181,7 +186,6 @@
 		display: flex;
 		flex-direction: column;
 		border-bottom: 1px solid var(--bs-white);
-		// padding-bottom: 5px;
 
 		.talents-container {
 			display: flex;
@@ -197,17 +201,18 @@
 		.gem-socket-container {
 			height: 40px;
 			width: 40px;
-			margin-right: 3px;
 		}
 
 		.gem-icon {
+			top: 0;
+			left: 0;
 			height: 100%;
 			width: 100%;
 		}
 
 		.sockets-container {
 			display: flex;
-			flex-direction: row;
+			gap: 3px;
 		}
 	}
 }

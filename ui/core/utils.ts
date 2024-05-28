@@ -9,6 +9,8 @@ export const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
 export const existsInDOM = (element: HTMLElement | null) => document.body.contains(element);
 
+export const cloneChildren = (element: HTMLElement) => [...(element.childNodes || [])].map(child => child.cloneNode(true));
+
 // Returns if the two items are equal, or if both are null / undefined.
 export function equalsOrBothNull<T>(a: T, b: T, comparator?: (_a: NonNullable<T>, _b: NonNullable<T>) => boolean): boolean {
 	if (a == null && b == null) return true;
