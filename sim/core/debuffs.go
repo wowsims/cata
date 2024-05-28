@@ -41,6 +41,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	// +4% Phsyical Damage
 	if debuffs.BloodFrenzy && targetIdx < 4 {
 		MakePermanent(BloodFrenzyAura(target, 2))
+		MakePermanent(TraumaAura(target, 2))
 	}
 
 	if debuffs.SavageCombat {
@@ -323,9 +324,7 @@ func spellDamageEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
 }
 
 func BloodFrenzyAura(target *Unit, points int32) *Aura {
-	baseAura := bloodFrenzySavageCombatAura(target, "Blood Frenzy", ActionID{SpellID: 29859}, points)
-	bleedDamageEffect(baseAura, 1.3)
-	return baseAura
+	return bloodFrenzySavageCombatAura(target, "Blood Frenzy", ActionID{SpellID: 29859}, points)
 }
 func SavageCombatAura(target *Unit, points int32) *Aura {
 	return bloodFrenzySavageCombatAura(target, "Savage Combat", ActionID{SpellID: 58413}, points)

@@ -36,9 +36,13 @@ export class EnumPicker<ModObject> extends Input<ModObject, number> {
 
 		this.init();
 
-		this.selectElem.addEventListener('change', () => {
-			this.inputChanged(TypedEvent.nextEventID());
-		});
+		this.selectElem.addEventListener(
+			'change',
+			() => {
+				this.inputChanged(TypedEvent.nextEventID());
+			},
+			{ signal: this.signal },
+		);
 	}
 
 	getInputElem(): HTMLElement {

@@ -34,9 +34,9 @@ func (war *ArmsWarrior) applyBloodFrenzy() {
 			war.AddRage(sim, 20, bfRageMetrics)
 		},
 	})
-	aura := core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
+	core.MakeProcTriggerAura(&war.Unit, core.ProcTrigger{
 		Name:       "Blood Frenzy/Trauma Debuff Trigger",
-		Callback:   core.CallbackOnSpellHitDealt,
+		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		SpellFlags: warrior.SpellFlagBleed,
 		Outcome:    core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -44,22 +44,16 @@ func (war *ArmsWarrior) applyBloodFrenzy() {
 
 			// Apply Blood Frenzy, it lasts as long as the dot is on the target
 			bf := bfAuras.Get(result.Target)
+
+			//leave the duration field in its original state but apply the aura with the modified duration
+			oldDuration := bf.Duration
 			bf.Duration = dot.TickLength * time.Duration(dot.NumberOfTicks)
 			bf.Activate(sim)
+			bf.Duration = oldDuration
 
 			// Apply Trauma, has fixed duration regardless of bleeds
 			trauma := traumaAuras.Get(result.Target)
 			trauma.Activate(sim)
 		},
 	})
-	aura.OnReset = func(aura *core.Aura, sim *core.Simulation) {
-		bfAuras = war.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-			return core.BloodFrenzyAura(target, war.Talents.BloodFrenzy)
-		})
-
-		// Trauma is also applied by the Blood Frenzy talent in Cata
-		traumaAuras = war.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-			return core.TraumaAura(target, war.Talents.BloodFrenzy)
-		})
-	}
 }

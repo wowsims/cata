@@ -32,9 +32,13 @@ export class BooleanPicker<ModObject> extends Input<ModObject, boolean> {
 
 		this.init();
 
-		this.inputElem.addEventListener('change', () => {
-			this.inputChanged(TypedEvent.nextEventID());
-		});
+		this.inputElem.addEventListener(
+			'change',
+			() => {
+				this.inputChanged(TypedEvent.nextEventID());
+			},
+			{ signal: this.signal },
+		);
 	}
 
 	getInputElem(): HTMLElement {

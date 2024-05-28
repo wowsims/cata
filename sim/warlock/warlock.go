@@ -77,6 +77,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerShadowBolt()
 	warlock.registerShadowflame()
 	warlock.registerSoulFire()
+	warlock.registerSoulHarvest()
 	warlock.registerSoulburn()
 	warlock.registerSummonFelHunter()
 	warlock.registerSummonImp()
@@ -124,7 +125,7 @@ func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
-	warlock.SoulShards = 4
+	warlock.SoulShards = 3
 }
 
 func NewWarlock(character *core.Character, options *proto.Player, warlockOptions *proto.WarlockOptions) *Warlock {

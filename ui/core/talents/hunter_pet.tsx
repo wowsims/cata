@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element } from 'tsx-vanilla';
-
 import { Component } from '../components/component.js';
 import { IconEnumPicker } from '../components/icon_enum_picker';
 import * as InputHelpers from '../components/input_helpers.js';

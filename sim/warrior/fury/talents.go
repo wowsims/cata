@@ -32,7 +32,7 @@ func (war *FuryWarrior) applyFlurry() {
 		return
 	}
 
-	atkSpeedBonus := 1.0 - []float64{0.0, 0.08, 0.16, 0.25}[war.Talents.Flurry]
+	atkSpeedBonus := 1.0 + []float64{0.0, 0.08, 0.16, 0.25}[war.Talents.Flurry]
 	actionID := core.ActionID{SpellID: 12968}
 	flurryAura := war.RegisterAura(core.Aura{
 		Label:     "Flurry",

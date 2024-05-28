@@ -1,6 +1,5 @@
 import tippy from 'tippy.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { wowheadSupportedLanguages } from '../constants/lang.js';
 import { Sim } from '../sim.js';

@@ -1,10 +1,25 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/other_inputs';
+import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLAction, APLListItem, APLRotation } from '../../core/proto/apl';
-import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, RotationType, Spec, Stat } from '../../core/proto/common';
+import {
+	Cooldowns,
+	Debuffs,
+	Faction,
+	IndividualBuffs,
+	ItemSlot,
+	PartyBuffs,
+	PseudoStat,
+	Race,
+	RaidBuffs,
+	RangedWeaponType,
+	RotationType,
+	Spec,
+	Stat,
+} from '../../core/proto/common';
 import { BeastMasteryHunter_Rotation, HunterStingType } from '../../core/proto/hunter';
 import * as AplUtils from '../../core/proto_utils/apl_utils';
 import { Stats } from '../../core/proto_utils/stats';
@@ -45,6 +60,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 		Stat.StatMeleeHaste,
 		Stat.StatMastery,
 	],
+	modifyDisplayStats: (player: Player<Spec.SpecBeastMasteryHunter>) => {
+		let stats = new Stats();
+		//stats = stats.addStat(Stat.StatMeleeCrit, player.getTalents().lethalShots * 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
+
+		const rangedWeapon = player.getEquippedItem(ItemSlot.ItemSlotRanged);
+		if (rangedWeapon?.enchant?.effectId == 3608) {
+			stats = stats.addStat(Stat.StatMeleeCrit, 40);
+		}
+		if (player.getRace() == Race.RaceDwarf && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeGun) {
+			stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
+		}
+		if (player.getRace() == Race.RaceTroll && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeBow) {
+			stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
+		}
+		if (player.getTalents().pathing) {
+			stats = stats.addStat(Stat.StatMeleeHaste, player.getTalents().pathing * Mechanics.HASTE_RATING_PER_HASTE_PERCENT);
+		}
+		return {
+			talents: stats,
+		};
+	},
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.BM_P1_PRESET.gear,
