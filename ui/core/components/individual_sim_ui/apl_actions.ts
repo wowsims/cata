@@ -363,7 +363,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 				},
 			}),
 		fields: [
-			AplHelpers.actionIdFieldConfig('spellId', 'dot_spells', ''),
+			AplHelpers.actionIdFieldConfig('spellId', 'castable_dot_spells', ''),
 			AplHelpers.numberFieldConfig('maxDots', false, {
 				label: 'Max Dots',
 				labelTooltip: 'Maximum number of DoTs to simultaneously apply.',

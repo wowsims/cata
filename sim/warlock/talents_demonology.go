@@ -231,8 +231,8 @@ func (warlock *Warlock) registerCremation() {
 		Label: "Cremation Talent",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(WarlockSpellHandOfGuldan) {
-				if warlock.ImmolateDot.Dot(result.Target).IsActive() && sim.Proc(procChance, "Cremation") {
-					warlock.ImmolateDot.Dot(result.Target).Apply(sim)
+				if warlock.Immolate.Dot(result.Target).IsActive() && sim.Proc(procChance, "Cremation") {
+					warlock.Immolate.Dot(result.Target).Apply(sim)
 				}
 			}
 		},

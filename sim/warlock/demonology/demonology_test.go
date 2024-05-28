@@ -149,7 +149,7 @@ func TestImmolateDoTBase(t *testing.T) {
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 
 	attackTable := lock.AttackTables[lock.CurrentTarget.UnitIndex]
-	checkDotTick(t, sim, lock.ImmolateDot.CurDot(), attackTable, 2166.0618, 1.4076)
+	checkDotTick(t, sim, lock.Immolate.CurDot(), attackTable, 2166.0618, 1.4076)
 }
 
 func TestImmolateDoTGlyphed(t *testing.T) {
@@ -157,7 +157,7 @@ func TestImmolateDoTGlyphed(t *testing.T) {
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 
 	attackTable := lock.AttackTables[lock.CurrentTarget.UnitIndex]
-	checkDotTick(t, sim, lock.ImmolateDot.CurDot(), attackTable, 2346.5670, 1.5249)
+	checkDotTick(t, sim, lock.Immolate.CurDot(), attackTable, 2346.5670, 1.5249)
 }
 
 func TestImmolateNonPeriodic(t *testing.T) {

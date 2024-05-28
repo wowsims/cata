@@ -35,7 +35,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 			results := make([][]*core.SpellResult, shaman.Env.GetNumTargets())
 			baseDamage := shaman.ClassSpellScaling * 0.78500002623
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
-				if shaman.FlameShockDot.Dot(aoeTarget).IsActive() {
+				if shaman.FlameShock.Dot(aoeTarget).IsActive() {
 					results[i] = make([]*core.SpellResult, shaman.Env.GetNumTargets())
 					for j, newTarget := range sim.Encounter.TargetUnits {
 						if newTarget != aoeTarget {
@@ -45,7 +45,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 				}
 			}
 			for i, aoeTarget := range sim.Encounter.TargetUnits {
-				if shaman.FlameShockDot.Dot(aoeTarget).IsActive() {
+				if shaman.FlameShock.Dot(aoeTarget).IsActive() {
 					for j, newTarget := range sim.Encounter.TargetUnits {
 						if newTarget != aoeTarget {
 							spell.DealDamage(sim, results[i][j])
@@ -56,7 +56,7 @@ func (shaman *Shaman) registerFireNovaSpell() {
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				if shaman.FlameShockDot.Dot(aoeTarget).IsActive() {
+				if shaman.FlameShock.Dot(aoeTarget).IsActive() {
 					return true
 				}
 			}

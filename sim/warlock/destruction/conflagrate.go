@@ -26,7 +26,7 @@ func (destruction *DestructionWarlock) registerConflagrate() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return destruction.ImmolateDot.Dot(target).IsActive()
+			return destruction.Immolate.Dot(target).IsActive()
 		},
 
 		DamageMultiplier: 1.0,
@@ -36,7 +36,7 @@ func (destruction *DestructionWarlock) registerConflagrate() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := destruction.CalcScalingSpellDmg(0.43900001049)
-			immoDot := destruction.ImmolateDot.Dot(target)
+			immoDot := destruction.Immolate.Dot(target)
 			if !immoDot.IsActive() {
 				panic("Casted conflagrate without active immolation on the target")
 			}

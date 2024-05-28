@@ -45,7 +45,7 @@ func (affliction *AfflictionWarlock) registerUnstableAffliction() {
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
 				spell.Dot(target).Apply(sim)
-				affliction.ImmolateDot.Dot(target).Deactivate(sim)
+				affliction.Immolate.Dot(target).Deactivate(sim)
 			}
 			spell.DealOutcome(sim, result)
 		},

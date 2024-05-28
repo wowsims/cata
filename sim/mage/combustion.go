@@ -11,7 +11,7 @@ func (mage *Mage) registerCombustionSpell() {
 		return
 	}
 
-	mage.CombustionImpact = mage.RegisterSpell(core.SpellConfig{
+	mage.Combustion = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11129},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage, // need to check proc mask for impact damage
@@ -34,7 +34,7 @@ func (mage *Mage) registerCombustionSpell() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				spell.DealDamage(sim, result)
-				mage.Combustion.Cast(sim, target)
+				spell.RelatedDotSpell.Cast(sim, target)
 			}
 		},
 	})
@@ -43,7 +43,8 @@ func (mage *Mage) registerCombustionSpell() {
 		MageSpellLivingBombDot: 0.25 * mage.ClassSpellScaling,
 		MageSpellPyroblastDot:  0.175 * mage.ClassSpellScaling,
 	}
-	mage.Combustion = mage.RegisterSpell(core.SpellConfig{
+
+	mage.Combustion.RelatedDotSpell = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 11129}.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskEmpty,
@@ -64,7 +65,7 @@ func (mage *Mage) registerCombustionSpell() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				combustionDotDamage := 0.0
-				dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.PyroblastDot}
+				dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.Pyroblast.RelatedDotSpell}
 				for _, spell := range dotSpells {
 					dot := spell.Dot(target)
 					if dot.IsActive() {
@@ -90,7 +91,7 @@ func (mage *Mage) registerCombustionSpell() {
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: mage.CombustionImpact,
+		Spell: mage.Combustion,
 		Type:  core.CooldownTypeDPS,
 	})
 }
