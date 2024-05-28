@@ -1,0 +1,8 @@
+// Set color variables which control the site theme.
+.guardian-druid-sim-ui {
+	@include theme-color(
+		$druid,
+		.95,
+		'/cata/assets/img/feral_druid_tank_background.jpg'
+	);
+}

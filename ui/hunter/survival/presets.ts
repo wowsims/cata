@@ -42,7 +42,7 @@ export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeA
 export const SurvivalTalents = {
 	name: 'Survival',
 	data: SavedTalents.create({
-		talentsString: '03-2302-03203023023022121311',
+		talentsString: '03-2302-23203003023022121311',
 		glyphs: Glyphs.create({
 			prime1: PrimeGlyph.GlyphOfExplosiveShot,
 			prime2: PrimeGlyph.GlyphOfKillShot,
@@ -75,6 +75,8 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	distanceFromTarget: 24,
+	duration: 240,
+	durationVariation: 20,
 	profession1: Profession.Engineering,
-	profession2: Profession.Alchemy,
+	profession2: Profession.Jewelcrafting,
 };

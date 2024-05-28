@@ -1,5 +1,3 @@
-import { element, fragment } from 'tsx-vanilla';
-
 import { Player } from '../../player.js';
 import { Stat } from '../../proto/common.js';
 import { shortSecondaryStatNames } from '../../proto_utils/names.js';
@@ -32,18 +30,17 @@ export class ReforgeSummary extends Component {
 	}
 
 	private updateTable() {
-		this.container.bodyElement.innerHTML = ``;
+		const body = <></>;
 		let gear = this.player.getGear();
 		const totals: ReforgeSummaryTotal = {};
 		gear.getItemSlots().forEach(itemSlot => {
 			const item = gear.getEquippedItem(itemSlot);
 			if (item?.reforge && item.reforge?.id !== 0) {
-				const reforge = this.player.getReforge(item.reforge.id);
+				const reforge = this.player.getReforgeData(item, item.reforge);
 				if (reforge) {
+					const { fromAmount, toAmount } = reforge;
 					const fromStat = reforge.fromStat[0];
 					const toStat = reforge.toStat[0];
-					const fromAmount = Math.ceil(-item.item.stats[fromStat] * reforge.multiplier);
-					const toAmount = Math.floor(item.item.stats[fromStat] * reforge.multiplier);
 
 					if (typeof totals[fromStat] !== 'number') {
 						totals[fromStat] = 0;
@@ -66,13 +63,15 @@ export class ReforgeSummary extends Component {
 				const value = totals[stat];
 				if (!value) return;
 
-				this.container.bodyElement.appendChild(
+				body.appendChild(
 					<div className="summary-table-row d-flex align-items-center">
 						<div>{shortSecondaryStatNames.get(stat)}</div>
 						<div className={`${value === 0 ? '' : value > 0 ? 'positive' : 'negative'}`}>{value}</div>
 					</div>,
 				);
 			});
+
+			this.container.bodyElement.replaceChildren(body);
 
 			if (!this.container.headerElement) return;
 			const existingResetButton = this.container.headerElement.querySelector('.summary-table-reset-button');

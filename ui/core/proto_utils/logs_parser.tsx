@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment } from 'tsx-vanilla';
+
 
 import { RaidSimResult, ResourceType } from '../proto/api.js';
 import { bucket, getEnumValues, stringComparator, sum } from '../utils.js';

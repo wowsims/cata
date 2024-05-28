@@ -21,6 +21,7 @@
 		}
 		@include media-breakpoint-down(lg) {
 			padding: calc(var(--gap-width-sm) * 2) var(--gap-width-sm);
+			min-height: 0;
 		}
 
 		& > *:not(:last-child) {
@@ -64,6 +65,9 @@
 
 		.sim-sidebar-stats {
 			margin-top: auto;
+			@include media-breakpoint-down(lg) {
+				margin-top: 0;
+			}
 		}
 
 		.sim-sidebar-socials {

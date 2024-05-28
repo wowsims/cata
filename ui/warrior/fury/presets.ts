@@ -66,6 +66,7 @@ export const DefaultOptions = WarriorOptions.create({
 	},
 	useRecklessness: true,
 	disableExpertiseGemming: false,
+	syncType: 0,
 });
 
 export const DefaultConsumes = Consumes.create({

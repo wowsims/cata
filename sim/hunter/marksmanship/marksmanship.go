@@ -28,7 +28,7 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 	wqSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskRangedSpecial,
+		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 0.8, // Wowwiki says it remains 80%
@@ -50,10 +50,10 @@ func (hunter *MarksmanshipHunter) applyMastery() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell != hunter.AutoAttacks.RangedAuto() && spell.ProcMask != core.ProcMaskRangedSpecial {
+			if spell.ProcMask != core.ProcMaskRangedSpecial && spell != hunter.AutoAttacks.RangedAuto() {
 				return
 			}
-			procChance := 0.168 + (hunter.CalculateMasteryPoints() * 0.021) // Todo: Is this right scaling?
+			procChance := (hunter.CalculateMasteryPoints() + 8) * 0.021
 			if sim.RandomFloat("Wild Quiver") < procChance {
 				wqSpell.Cast(sim, result.Target)
 			}

@@ -32,6 +32,7 @@ export const masteryPercentPerPoint: Map<Spec, number> = new Map([
 	[Spec.SpecUnholyDeathKnight, 2.5],
 	[Spec.SpecBalanceDruid, 2.0],
 	[Spec.SpecFeralDruid, 3.125],
+	[Spec.SpecGuardianDruid, 4.0],
 	[Spec.SpecRestorationDruid, 1.25],
 	[Spec.SpecHolyPaladin, 1.5],
 	[Spec.SpecProtectionPaladin, 2.25],
@@ -51,13 +52,7 @@ export const masteryPercentPerPoint: Map<Spec, number> = new Map([
 	[Spec.SpecDisciplinePriest, 2.5],
 	[Spec.SpecHolyPriest, 1.25],
 	[Spec.SpecShadowPriest, 1.45],
-	[Spec.SpecAfflictionWarlock, 1.625],
+	[Spec.SpecAfflictionWarlock, 1.63],
 	[Spec.SpecDemonologyWarlock, 2.3],
 	[Spec.SpecDestructionWarlock, 1.35],
 ]);
-
-// Pending split of Feral to Cat/Bear specifically
-export const MASTERY_DRUID_BEAR_PER_POINT = 4.0;
-export const MASTERY_DRUID_CAT_PER_POINT = 3.125;
-
-

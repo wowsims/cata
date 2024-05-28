@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerImmolateSpell() {
+func (warlock *Warlock) registerImmolate() {
 	fireAndBrimstoneMod := warlock.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  WarlockSpellIncinerate | WarlockSpellChaosBolt,
 		Kind:       core.SpellMod_DamageDone_Flat,
@@ -14,10 +14,11 @@ func (warlock *Warlock) registerImmolateSpell() {
 	})
 
 	warlock.ImmolateDot = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: 348}.WithTag(1),
-		SpellSchool:      core.SpellSchoolFire,
-		ProcMask:         core.ProcMaskSpellDamage,
-		ClassSpellMask:   WarlockSpellImmolateDot,
+		ActionID:       core.ActionID{SpellID: 348}.WithTag(1),
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: WarlockSpellImmolateDot,
+
 		DamageMultiplier: 1,
 		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
 
@@ -36,7 +37,7 @@ func (warlock *Warlock) registerImmolateSpell() {
 			AffectedByCastSpeed: true,
 			BonusCoefficient:    0.17599999905,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.CalcScalingSpellDmg(Coefficient_ImmolateDot))
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(0.43900001049))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
@@ -45,20 +46,21 @@ func (warlock *Warlock) registerImmolateSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).Apply(sim)
+			ua := warlock.UnstableAffliction
+			if ua != nil {
+				ua.Dot(target).Deactivate(sim)
+			}
 		},
 	})
 
-	warlock.RegisterSpell(core.SpellConfig{
+	warlock.Immolate = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 348},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellImmolate,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.08,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.08},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -69,10 +71,10 @@ func (warlock *Warlock) registerImmolateSpell() {
 		DamageMultiplier: 1,
 		CritMultiplier:   warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
-		BonusCoefficient: 0.212,
+		BonusCoefficient: 0.21999999881,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcDamage(sim, target, warlock.CalcScalingSpellDmg(Coefficient_Immolate), spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, warlock.CalcScalingSpellDmg(0.69199997187), spell.OutcomeMagicHitAndCrit)
 			if result.Landed() {
 				warlock.ImmolateDot.Cast(sim, target)
 			}

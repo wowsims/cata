@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from '../components/base_modal.js';
 import { Component } from '../components/component.js';
@@ -148,6 +147,7 @@ class GlyphPicker extends Input<Player<any>, number> {
 
 	constructor(parent: HTMLElement, { player, selectorModal, glyphOptions, glyphField }: GlyphPickerConfig) {
 		super(parent, 'glyph-picker-root', player, {
+			id: `glyph-picker-glyph-${glyphField}`,
 			inline: true,
 			changedEvent: (player: Player<any>) => player.glyphsChangeEmitter,
 			getValue: (player: Player<any>) => player.getGlyphs()[glyphField] as number,
@@ -180,13 +180,14 @@ class GlyphPicker extends Input<Player<any>, number> {
 		this.iconElem = iconElemRef.value!;
 		this.nameElem = nameElemRef.value!;
 
-		const openGlyphSelectorModal = (event: Event) => {
-			event.preventDefault();
-			selectorModal.openTab(this, glyphOptions);
-		};
-
-		this.anchorElem.addEventListener('click', openGlyphSelectorModal);
-		this.addOnDisposeCallback(() => this.anchorElem.removeEventListener('click', openGlyphSelectorModal));
+		this.anchorElem.addEventListener(
+			'click',
+			event => {
+				event.preventDefault();
+				selectorModal.openTab(this, glyphOptions);
+			},
+			{ signal: this.signal },
+		);
 
 		this.init();
 	}

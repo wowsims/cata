@@ -8,7 +8,7 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (warlock *Warlock) registerSummonDoomguardSpell(timer *core.Timer) {
+func (warlock *Warlock) registerSummonDoomguard(timer *core.Timer) {
 	duration := time.Duration(45+10*warlock.Talents.AncientGrimoire) * time.Second
 
 	summonDoomguardAura := warlock.RegisterAura(core.Aura{
@@ -60,7 +60,7 @@ func (warlock *Warlock) NewDoomguardPet() *DoomguardPet {
 	}
 
 	pet := &DoomguardPet{
-		Pet: core.NewPet("Doomguard", &warlock.Character, baseStats, warlock.MakeStatInheritance(), false, true),
+		Pet: core.NewPet("Doomguard", &warlock.Character, baseStats, warlock.petStatInheritance, false, true),
 	}
 	warlock.setPetOptions(pet, 1.0, 0.77, nil)
 

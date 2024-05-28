@@ -1,4 +1,4 @@
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from './components/base_modal.jsx';
 import { Component } from './components/component.js';
@@ -160,6 +160,7 @@ export abstract class SimUI extends Component {
 
 		this.simActionsContainer = this.rootElem.querySelector('.sim-sidebar-actions') as HTMLElement;
 		this.iterationsPicker = new NumberPicker(this.simActionsContainer, this.sim, {
+			id: 'simui-iterations',
 			label: 'Iterations',
 			extraCssClasses: ['iterations-picker', 'within-raid-sim-hide'],
 			changedEvent: (sim: Sim) => sim.iterationsChangeEmitter,

@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (druid *Druid) registerFrenziedRegenerationCD() {
@@ -25,12 +26,20 @@ func (druid *Druid) registerFrenziedRegenerationCD() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.HealingTakenMultiplier *= healingMulti
 			bonusHealth = druid.MaxHealth() * 0.3
-			druid.UpdateMaxHealth(sim, bonusHealth, healthMetrics)
+			druid.AddStatsDynamic(sim, stats.Stats{stats.Health: bonusHealth})
+
+			if druid.CurrentHealth() < bonusHealth {
+				druid.GainHealth(sim, bonusHealth - druid.CurrentHealth(), healthMetrics)
+			}
 		},
 
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.PseudoStats.HealingTakenMultiplier /= healingMulti
-			druid.UpdateMaxHealth(sim, -bonusHealth, healthMetrics)
+			druid.AddStatsDynamic(sim, stats.Stats{stats.Health: -bonusHealth})
+
+			if druid.CurrentHealth() > druid.MaxHealth() {
+				druid.RemoveHealth(sim, druid.CurrentHealth() - druid.MaxHealth())
+			}
 		},
 	})
 

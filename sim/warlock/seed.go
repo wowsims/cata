@@ -6,11 +6,11 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerSeedSpell() {
+func (warlock *Warlock) registerSeed() {
 	actionID := core.ActionID{SpellID: 27243}
 
 	seedExplosion := warlock.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID.WithTag(1), // actually 47834
+		ActionID:       actionID.WithTag(1), // actually 27285
 		SpellSchool:    core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagHauntSE | core.SpellFlagNoLogs,
@@ -19,20 +19,21 @@ func (warlock *Warlock) registerSeedSpell() {
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
-		BonusCoefficient:         0.1716,
+		BonusCoefficient:         0.22920000553,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDmg := warlock.CalcScalingSpellDmg(Coefficient_SeedExplosion) * sim.Encounter.AOECapMultiplier()
+			baseDmg := warlock.CalcAndRollDamageRange(sim, 0.76560002565, 0.15000000596) * sim.Encounter.AOECapMultiplier()
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDmg, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})
 
-	warlock.SeedDamageTracker = make([]float64, len(warlock.Env.AllUnits))
+	seedDamageTracker := make([]float64, len(warlock.Env.AllUnits))
 	trySeedPop := func(sim *core.Simulation, target *core.Unit, dmg float64) {
-		warlock.SeedDamageTracker[target.UnitIndex] += dmg
-		if warlock.SeedDamageTracker[target.UnitIndex] > 2378 {
+		seedDamageTracker[target.UnitIndex] += dmg
+		// TODO: this is probably calculated by 0.17159999907*SP + warlock.CalcScalingSpellDmg(2.11299991608)
+		if seedDamageTracker[target.UnitIndex] > 2378 {
 			warlock.Seed.Dot(target).Deactivate(sim)
 			seedExplosion.Cast(sim, target)
 		}
@@ -46,10 +47,7 @@ func (warlock *Warlock) registerSeedSpell() {
 		MissileSpeed:   28,
 		ClassSpellMask: WarlockSpellSeedOfCorruption,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.34,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.34},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -77,20 +75,19 @@ func (warlock *Warlock) registerSeedSpell() {
 					trySeedPop(sim, aura.Unit, result.Damage)
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					warlock.SeedDamageTracker[aura.Unit.UnitIndex] = 0
+					seedDamageTracker[aura.Unit.UnitIndex] = 0
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					warlock.SeedDamageTracker[aura.Unit.UnitIndex] = 0
+					seedDamageTracker[aura.Unit.UnitIndex] = 0
 				},
 			},
 
 			NumberOfTicks:    6,
 			TickLength:       3 * time.Second,
-			BonusCoefficient: 0.30,
+			BonusCoefficient: 0.30000001192,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDamage := warlock.CalcScalingSpellDmg(Coefficient_SeedDot) / 6
-				dot.Snapshot(target, baseDamage)
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(0.30239999294))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

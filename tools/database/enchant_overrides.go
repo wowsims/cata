@@ -10,6 +10,7 @@ import (
 
 var EnchantOverrides = []*proto.UIEnchant{
 	// HANDS
+	{EffectId: 3260, SpellId: 44769, Name: "Glove Reinforcements", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.BonusArmor: 240}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 4061, SpellId: 74132, Name: "Enchant Gloves - Mastery", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Mastery: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 4068, SpellId: 74198, Name: "Enchant Gloves - Haste", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MeleeHaste: 50, stats.SpellHaste: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	{EffectId: 4075, SpellId: 74212, Name: "Enchant Gloves - Exceptional Strength", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Strength: 35}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
@@ -44,7 +45,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 4064, SpellId: 74192, Name: "Enchant Cloak - Greater Spell Piercing", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.SpellPenetration: 70}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 4072, SpellId: 74202, Name: "Enchant Cloak - Intellect", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Intellect: 30}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 4087, SpellId: 74230, Name: "Enchant Cloak - Critical Strike", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MeleeCrit: 50, stats.SpellCrit: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
-	{EffectId: 4090, SpellId: 74234, Name: "Enchant Cloak - Protection", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Armor: 250}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
+	{EffectId: 4090, SpellId: 74234, Name: "Enchant Cloak - Protection", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.BonusArmor: 250}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 4096, SpellId: 74240, Name: "Enchant Cloak - Greater Intellect", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Intellect: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 4100, SpellId: 74247, Name: "Enchant Cloak - Greater Critical Strike", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MeleeCrit: 65, stats.SpellCrit: 65}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 4115, SpellId: 75172, Name: "Lightweave Embroidery", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack, RequiredProfession: proto.Profession_Tailoring},
@@ -170,7 +171,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3816, ItemId: 44141, SpellId: 59948, Name: "Arcanum of the Flame's Soul", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.Stamina: 30, stats.FireResistance: 25}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead},
 	{EffectId: 3819, ItemId: 44876, SpellId: 59960, Name: "Arcanum of Blissful Mending", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.SpellPower: 30, stats.MP5: 10}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead},
 	{EffectId: 3820, ItemId: 44877, SpellId: 59970, Name: "Arcanum of Burning Mysteries", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.SpellPower: 30, stats.MeleeCrit: 20, stats.SpellCrit: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead},
-	{EffectId: 3818, ItemId: 44878, SpellId: 59955, Name: "Arcanum of the Stalwart Protector", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.Stamina: 37, stats.Defense: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead},
+	{EffectId: 3818, ItemId: 44878, SpellId: 59955, Name: "Arcanum of the Stalwart Protector", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.Stamina: 37, stats.Dodge: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead},
 	{EffectId: 3817, ItemId: 44879, SpellId: 59954, Name: "Arcanum of Torment", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.AttackPower: 50, stats.RangedAttackPower: 50, stats.MeleeCrit: 20, stats.SpellCrit: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead},
 	{EffectId: 4222, SpellId: 67839, Name: "Mind Amplification Dish", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Stamina: 45}.ToFloatArray(), Type: proto.ItemType_ItemTypeHead, RequiredProfession: proto.Profession_Engineering},
 
@@ -182,15 +183,15 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3806, ItemId: 44129, SpellId: 59927, Name: "Lesser Inscription of the Storm", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.SpellPower: 18, stats.MeleeCrit: 10, stats.SpellCrit: 10}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	{EffectId: 3807, ItemId: 44130, SpellId: 59928, Name: "Lesser Inscription of the Crag", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.SpellPower: 18, stats.MP5: 5}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	{EffectId: 3875, ItemId: 44131, SpellId: 59929, Name: "Lesser Inscription of the Axe", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.AttackPower: 30, stats.RangedAttackPower: 30, stats.MeleeCrit: 10, stats.SpellCrit: 10}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
-	{EffectId: 3876, ItemId: 44132, SpellId: 59932, Name: "Lesser Inscription of the Pinnacle", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.Dodge: 15, stats.Defense: 10}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
+	{EffectId: 3876, ItemId: 44132, SpellId: 59932, Name: "Lesser Inscription of the Pinnacle", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.Dodge: 15, stats.Parry: 10}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	{EffectId: 3810, ItemId: 44874, SpellId: 59937, Name: "Greater Inscription of the Storm", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{stats.SpellPower: 24, stats.MeleeCrit: 15, stats.SpellCrit: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	{EffectId: 3809, ItemId: 44872, SpellId: 59936, Name: "Greater Inscription of the Crag", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{stats.SpellPower: 24, stats.MP5: 8}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	{EffectId: 3808, ItemId: 44871, SpellId: 59934, Name: "Greater Inscription of the Axe", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{stats.AttackPower: 40, stats.RangedAttackPower: 40, stats.MeleeCrit: 15, stats.SpellCrit: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
-	{EffectId: 3811, ItemId: 44873, SpellId: 59941, Name: "Greater Inscription of the Pinnacle", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{stats.Dodge: 20, stats.Defense: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
+	{EffectId: 3811, ItemId: 44873, SpellId: 59941, Name: "Greater Inscription of the Pinnacle", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{stats.Dodge: 20, stats.Stamina: 22}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder},
 	{EffectId: 3838, SpellId: 61120, Name: "Master's Inscription of the Storm", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.SpellPower: 70, stats.MeleeCrit: 15, stats.SpellCrit: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder, RequiredProfession: proto.Profession_Inscription},
 	{EffectId: 3836, SpellId: 61118, Name: "Master's Inscription of the Crag", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.SpellPower: 70, stats.MP5: 8}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder, RequiredProfession: proto.Profession_Inscription},
 	{EffectId: 3835, SpellId: 61117, Name: "Master's Inscription of the Axe", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.AttackPower: 120, stats.RangedAttackPower: 120, stats.MeleeCrit: 15, stats.SpellCrit: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder, RequiredProfession: proto.Profession_Inscription},
-	{EffectId: 3837, SpellId: 61119, Name: "Master's Inscription of the Pinnacle", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Dodge: 60, stats.Defense: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder, RequiredProfession: proto.Profession_Inscription},
+	{EffectId: 3837, SpellId: 61119, Name: "Master's Inscription of the Pinnacle", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Dodge: 60, stats.Parry: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeShoulder, RequiredProfession: proto.Profession_Inscription},
 
 	// Back
 	{EffectId: 1262, ItemId: 37330, SpellId: 44596, Name: "Superior Arcane Resistance", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.ArcaneResistance: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
@@ -198,7 +199,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3230, SpellId: 44483, Name: "Superior Frost Resistance", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.FrostResistance: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 1400, SpellId: 44494, Name: "Superior Nature Resistance", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.NatureResistance: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 1446, SpellId: 44590, Name: "Superior Shadow Resistance", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.ShadowResistance: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
-	{EffectId: 1951, ItemId: 37347, SpellId: 44591, Name: "Titanweave", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Defense: 16}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
+	{EffectId: 1951, ItemId: 37347, SpellId: 44591, Name: "Superior Dodge", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Dodge: 18}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 3256, ItemId: 37349, SpellId: 44631, Name: "Shadow Armor", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Agility: 10}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 3294, ItemId: 44471, SpellId: 47672, Name: "Mighty Armor", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.BonusArmor: 225}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 3831, ItemId: 44472, SpellId: 47898, Name: "Greater Speed", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.MeleeHaste: 23, stats.SpellHaste: 23}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
@@ -207,7 +208,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3825, SpellId: 60609, Name: "Speed", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MeleeHaste: 15, stats.SpellHaste: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 983, SpellId: 44500, Name: "Superior Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 16}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
 	{EffectId: 1099, SpellId: 60663, Name: "Major Agility", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 22}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack},
-	{EffectId: 3605, SpellId: 55002, Name: "Flexweave Underlay", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Agility: 23}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack, RequiredProfession: proto.Profession_Engineering},
+	{EffectId: 3605, SpellId: 55002, Name: "Flexweave Underlay", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack, RequiredProfession: proto.Profession_Engineering},
 	{EffectId: 3722, SpellId: 55642, Name: "Lightweave Embroidery", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack, RequiredProfession: proto.Profession_Tailoring},
 	{EffectId: 3728, SpellId: 55769, Name: "Darkglow Embroidery", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack, RequiredProfession: proto.Profession_Tailoring},
 	{EffectId: 3730, SpellId: 55777, Name: "Swordguard Embroidery", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeBack, RequiredProfession: proto.Profession_Tailoring},
@@ -221,7 +222,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3236, SpellId: 44492, Name: "Mighty Health", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Health: 200}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
 	{EffectId: 3297, SpellId: 47900, Name: "Super Health", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Health: 275}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
 	{EffectId: 2381, SpellId: 44509, Name: "Greater Mana Restoration", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MP5: 10}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
-	{EffectId: 1953, SpellId: 47766, Name: "Greater Defense", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Defense: 22}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
+	{EffectId: 1953, SpellId: 47766, Name: "Greater Dodge", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Dodge: 22}.ToFloatArray(), Type: proto.ItemType_ItemTypeChest},
 
 	// Wrist
 	{EffectId: 3845, ItemId: 44484, SpellId: 44575, Name: "Greater Assault", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.AttackPower: 50, stats.RangedAttackPower: 50}.ToFloatArray(), Type: proto.ItemType_ItemTypeWrist},
@@ -318,7 +319,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 3847, SpellId: 62158, Name: "Rune of the Stoneskin Gargoyle", Phase: 1, Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, ClassAllowlist: []proto.Class{proto.Class_ClassDeathKnight}},
 
 	// Shield
-	{EffectId: 1952, SpellId: 44489, Name: "Defense", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Defense: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
+	{EffectId: 1952, SpellId: 44489, Name: "Dodge", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Dodge: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
 	{EffectId: 1128, SpellId: 60653, Name: "Greater Intellect", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Intellect: 25}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
 	{EffectId: 3748, ItemId: 42500, SpellId: 56353, Name: "Titanium Shield Spike", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},
 	{EffectId: 3849, ItemId: 44936, SpellId: 62201, Name: "Titanium Plating", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.Parry: 26}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeShield},

@@ -1,6 +1,5 @@
 import tippy from 'tippy.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { wowheadSupportedLanguages } from '../constants/lang.js';
 import { Sim } from '../sim.js';
@@ -75,6 +74,7 @@ export class SettingsMenu extends BaseModal {
 
 		if (fixedRngSeed.value)
 			new NumberPicker(fixedRngSeed.value, this.simUI.sim, {
+				id: 'simui-fixed-rng-seed',
 				label: 'Fixed RNG Seed',
 				labelTooltip:
 					'Seed value for the random number generator used during sims, or 0 to use different randomness each run. Use this to share exact sim results or for debugging.',
@@ -97,6 +97,7 @@ export class SettingsMenu extends BaseModal {
 			const langs = Object.keys(wowheadSupportedLanguages);
 			const defaultLang = langs.indexOf('en');
 			const languagePicker = new EnumPicker(language.value, this.simUI.sim, {
+				id: 'simui-language-picker',
 				label: 'Language',
 				labelTooltip: 'Controls the language for Wowhead tooltips.',
 				values: langs.map((lang, i) => {
@@ -120,6 +121,7 @@ export class SettingsMenu extends BaseModal {
 
 		if (showThreatMetrics.value)
 			new BooleanPicker(showThreatMetrics.value, this.simUI.sim, {
+				id: 'simui-show-threat-metrics',
 				label: 'Show Threat/Tank Options',
 				labelTooltip: 'Shows all options and metrics relevant to tanks, like TPS/DTPS.',
 				inline: true,
@@ -132,6 +134,7 @@ export class SettingsMenu extends BaseModal {
 
 		if (showExperimental.value)
 			new BooleanPicker(showExperimental.value, this.simUI.sim, {
+				id: 'simui-show-experimental',
 				label: 'Show Experimental',
 				labelTooltip: 'Shows experimental options, if there are any active experiments.',
 				inline: true,
@@ -143,6 +146,7 @@ export class SettingsMenu extends BaseModal {
 			});
 		if (showQuickSwap.value)
 			new BooleanPicker(showQuickSwap.value, this.simUI.sim, {
+				id: 'simui-show-quick-swap',
 				label: 'Show quick swap interface',
 				labelTooltip: 'Allows you to quickly swap between Gems/Enchants through your favorites. (Disabled on touch devices)',
 				inline: true,

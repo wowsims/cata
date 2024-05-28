@@ -65,7 +65,7 @@ func (fireElemental *FireElemental) registerFireNova() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(1370, 1574) * sim.Encounter.AOECapMultiplier() //Estimated from beta testing
+				baseDamage := sim.Roll(453, 537) * sim.Encounter.AOECapMultiplier() //Estimated from beta testing
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},

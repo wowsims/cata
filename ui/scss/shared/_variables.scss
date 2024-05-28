@@ -142,11 +142,11 @@ $theme-colors: map-merge($theme-colors, $damage-colors);
 
 // Talents
 $talent-colors: (
-	talent-full: #40bf40,
-	talent-partial: #ffd100,
+	talent-full: #ffd100,
+	talent-partial: #40bf40,
 );
-
 $theme-colors: map-merge($theme-colors, $talent-colors);
+
 // Links
 $link-colors: (
 	link-danger: #ef9eaa,
@@ -172,7 +172,11 @@ $theme-colors: map-merge($theme-colors, $table-colors);
 	--container-padding-lg: 3rem;
 	--container-padding-xxl: 4rem;
 	--container-padding: var(--gap-width-sm);
-	--section-spacer: calc(var(--container-padding) / 2);
+
+	--section-spacer-sm: 2rem;
+	--section-spacer-lg: calc(var(--container-padding) / 2);
+	--section-spacer-xxl: calc(var(--container-padding) / 2);
+	--section-spacer: var(--section-spacer-sm);
 
 	--block-spacer: 0.75rem;
 	--gap-width: 1.5rem;

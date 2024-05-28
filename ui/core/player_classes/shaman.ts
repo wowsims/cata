@@ -14,14 +14,14 @@ export class Shaman extends PlayerClass<Class.ClassShaman> {
 		[RestorationShaman.friendlyName]: RestorationShaman,
 	};
 	static races: Race[] = [
-		// [A]
-		Race.RaceDwarf,
-		Race.RaceDraenei,
 		// [H]
 		Race.RaceOrc,
 		Race.RaceTauren,
 		Race.RaceTroll,
 		Race.RaceGoblin,
+		// [A]
+		Race.RaceDwarf,
+		Race.RaceDraenei,
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypeMail, ArmorType.ArmorTypeLeather, ArmorType.ArmorTypeCloth];
 	static weaponTypes: EligibleWeaponType[] = [

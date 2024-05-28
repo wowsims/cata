@@ -1,6 +1,4 @@
 import tippy from 'tippy.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment } from 'tsx-vanilla';
 
 import { Player } from '../player.js';
 import { ItemSlot, Spec } from '../proto/common.js';
@@ -25,6 +23,7 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 		this.itemSlots = config.itemSlots;
 
 		this.enableItemSwapPicker = new BooleanPicker(this.rootElem, player, {
+			id: 'enable-item-swap',
 			reverse: true,
 			label: 'Enable Item Swapping',
 			labelTooltip: 'Allows configuring an Item Swap Set which is used with the <b>Item Swap</b> APL action.',

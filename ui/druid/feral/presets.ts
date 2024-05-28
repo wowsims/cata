@@ -51,7 +51,17 @@ export const DefaultRotation = FeralDruidRotation.create({
 	meleeWeave: true,
 });
 
-export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecFeralDruid, DefaultRotation);
+export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Single Target Default', Spec.SpecFeralDruid, DefaultRotation);
+
+export const AoeRotation = FeralDruidRotation.create({
+	rotationType: FeralDruid_Rotation_AplType.Aoe,
+	bearWeave: true,
+	maintainFaerieFire: false,
+	snekWeave: true,
+	allowAoeBerserk: false,
+});
+
+export const AOE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('AoE Default', Spec.SpecFeralDruid, AoeRotation);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.

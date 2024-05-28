@@ -1,8 +1,7 @@
 import tippy from 'tippy.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment } from 'tsx-vanilla';
 
 import { EventID, TypedEvent } from '../typed_event.js';
+import { existsInDOM } from '../utils';
 import { Component } from './component.js';
 
 /**
@@ -12,6 +11,7 @@ export interface InputConfig<ModObject, T, V = T> {
 	label?: string;
 	labelTooltip?: string;
 	inline?: boolean;
+	id?: string;
 	extraCssClasses?: Array<string>;
 
 	defaultValue?: T;
@@ -44,11 +44,16 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	readonly modObject: ModObject;
 
 	protected enabled = true;
-
-	readonly changeEmitter = new TypedEvent<void>();
+	readonly changeEmitter = new TypedEvent<void>('input-change');
+	// Can be used to remove any events in addEventListener
+	// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#add_an_abortable_listener
+	public abortController: AbortController;
+	public signal: AbortSignal;
 
 	constructor(parent: HTMLElement | null, cssClass: string, modObject: ModObject, config: InputConfig<ModObject, T, V>) {
 		super(parent, 'input-root', config.rootElem);
+		this.abortController = new AbortController();
+		this.signal = this.abortController.signal;
 		this.inputConfig = config;
 		this.modObject = modObject;
 		this.rootElem.classList.add(cssClass);
@@ -57,21 +62,35 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 		if (config.extraCssClasses) this.rootElem.classList.add(...config.extraCssClasses);
 		if (config.label) this.rootElem.appendChild(this.buildLabel(config));
 
-		config.changedEvent(this.modObject).on(() => {
+		const event = config.changedEvent(this.modObject).on(() => {
+			const element = this.getInputElem();
+			if (!existsInDOM(element) || !existsInDOM(this.rootElem)) {
+				this.dispose();
+				return;
+			}
 			this.setInputValue(this.getSourceValue());
 			this.update();
+		});
+
+		this.addOnDisposeCallback(() => {
+			this.abortController?.abort();
+			event.dispose();
 		});
 	}
 
 	private buildLabel(config: InputConfig<ModObject, T, V>): JSX.Element {
-		const dataset = {};
+		const label = (
+			<label htmlFor={config.id || undefined} className="form-label" title={config.label}>
+				{config.label}
+			</label>
+		);
 
-		const label = <label className="form-label">{config.label}</label>;
-
-		if (config.labelTooltip)
-			tippy(label, {
+		if (config.labelTooltip) {
+			const tippyInstance = tippy(label, {
 				content: config.labelTooltip,
 			});
+			this.addOnDisposeCallback(() => tippyInstance.destroy());
+		}
 
 		return label;
 	}

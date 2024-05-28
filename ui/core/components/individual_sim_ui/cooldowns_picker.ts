@@ -4,6 +4,7 @@ import { Player } from '../../player.js';
 import { ActionID as ActionIdProto, Cooldown } from '../../proto/common.js';
 import { ActionId } from '../../proto_utils/action_id.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
+import { existsInDOM } from '../../utils';
 import { Component } from '../component.js';
 import { IconEnumPicker, IconEnumValueConfig } from '../icon_enum_picker.js';
 import { NumberListPicker } from '../number_list_picker.js';
@@ -18,8 +19,17 @@ export class CooldownsPicker extends Component {
 		this.player = player;
 		this.cooldownPickers = [];
 
-		TypedEvent.onAny([this.player.rotationChangeEmitter, this.player.sim.unitMetadataEmitter]).on(eventID => {
+		const events = TypedEvent.onAny([this.player.rotationChangeEmitter, this.player.sim.unitMetadataEmitter]).on(() => {
+			if (!existsInDOM(this.rootElem)) {
+				this.dispose();
+				return;
+			}
 			this.update();
+		});
+		this.addOnDisposeCallback(() => {
+			this.rootElem.remove();
+			this.cooldownPickers.forEach(picker => picker.remove());
+			events.dispose();
 		});
 		this.update();
 	}
@@ -115,6 +125,7 @@ export class CooldownsPicker extends Component {
 
 	private makeTimingsPicker(parentElem: HTMLElement, cooldownIndex: number): NumberListPicker<Player<any>> {
 		const actionPicker = new NumberListPicker(parentElem, this.player, {
+			id: `cooldown-timings-${cooldownIndex}`,
 			extraCssClasses: ['cooldown-timings-picker'],
 			placeholder: '20, 40, ...',
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,

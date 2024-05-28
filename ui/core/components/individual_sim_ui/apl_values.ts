@@ -6,6 +6,7 @@ import {
 	APLValueAuraInternalCooldown,
 	APLValueAuraIsActive,
 	APLValueAuraIsActiveWithReactionTime,
+	APLValueAuraIsKnown,
 	APLValueAuraNumStacks,
 	APLValueAuraRemainingTime,
 	APLValueAuraShouldRefresh,
@@ -67,6 +68,7 @@ import {
 	APLValueSpellCPM,
 	APLValueSpellCurrentCost,
 	APLValueSpellIsChanneling,
+	APLValueSpellIsKnown,
 	APLValueSpellIsReady,
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
@@ -78,6 +80,7 @@ import {
 import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
 import { EventID } from '../../typed_event.js';
+import { randomUUID } from '../../utils';
 import { TextDropdownPicker, TextDropdownValueConfig } from '../dropdown_picker.js';
 import { Input, InputConfig } from '../input.js';
 import { ListItemPickerConfig, ListPicker } from '../list_picker.js';
@@ -109,6 +112,7 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 
 		this.kindPicker = new TextDropdownPicker(this.rootElem, player, {
 			defaultLabel: 'No Condition',
+			id: randomUUID(),
 			values: [
 				{
 					value: undefined,
@@ -268,6 +272,7 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 
 		const factory = valueKindFactories[newKind];
 		this.valuePicker = factory.factory(this.rootElem, this.modObject, {
+			id: randomUUID(),
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
 			getValue: () => {
 				const sourceVal = this.getSourceValue();
@@ -300,6 +305,7 @@ function comparisonOperatorFieldConfig(field: string): AplHelpers.APLPickerBuild
 		newValue: () => ComparisonOperator.OpEq,
 		factory: (parent, player, config) =>
 			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
 				equals: (a, b) => a == b,
@@ -321,6 +327,7 @@ function mathOperatorFieldConfig(field: string): AplHelpers.APLPickerBuilderFiel
 		newValue: () => MathOperator.OpAdd,
 		factory: (parent, player, config) =>
 			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
 				equals: (a, b) => a == b,
@@ -340,6 +347,7 @@ function executePhaseThresholdFieldConfig(field: string): AplHelpers.APLPickerBu
 		newValue: () => ExecutePhaseThreshold.E20,
 		factory: (parent, player, config) =>
 			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
 				equals: (a, b) => a == b,
@@ -359,6 +367,7 @@ function totemTypeFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldCo
 		newValue: () => TotemType.Water,
 		factory: (parent, player, config) =>
 			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
 				equals: (a, b) => a == b,
@@ -768,6 +777,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 
 	// Spells
+	spellIsKnown: inputBuilder({
+		label: 'Spell Known',
+		submenu: ['Spell'],
+		shortDescription: '<b>True</b> if the spell is currently known, otherwise <b>False</b>.',
+		newValue: APLValueSpellIsKnown.create,
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', '')],
+	}),
 	spellCurrentCost: inputBuilder({
 		label: 'Current Cost',
 		submenu: ['Spell'],
@@ -850,6 +866,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 
 	// Auras
+	auraIsKnown: inputBuilder({
+		label: 'Aura Known',
+		submenu: ['Aura'],
+		shortDescription: '<b>True</b> if the aura is currently known, otherwise <b>False</b>.',
+		newValue: APLValueAuraIsKnown.create,
+		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources'), AplHelpers.actionIdFieldConfig('auraId', 'auras', 'sourceUnit')],
+	}),
 	auraIsActive: inputBuilder({
 		label: 'Aura Active',
 		submenu: ['Aura'],

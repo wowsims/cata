@@ -707,7 +707,7 @@ func (druid *Druid) applyLotp() {
 	manaMetrics := druid.NewManaMetrics(actionID)
 	healthMetrics := druid.NewHealthMetrics(actionID)
 	manaRestore := 0.08
-	healthRestore := 0.05
+	healthRestore := 0.04 // Tooltip says 5%, but only healing for 4% in-game
 
 	icd := core.Cooldown{
 		Timer:    druid.NewTimer(),

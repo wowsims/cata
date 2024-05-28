@@ -16,7 +16,7 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
-// NextIndex: 53
+// NextIndex: 54
 message Player {
 	// Label used for logging.
 	string name = 51;
@@ -40,6 +40,7 @@ message Player {
 
 		BalanceDruid balance_druid = 12;
 		FeralDruid feral_druid = 13;
+		GuardianDruid guardian_druid = 53;
 		RestorationDruid restoration_druid = 14;
 
 		BeastMasteryHunter beast_mastery_hunter = 15;

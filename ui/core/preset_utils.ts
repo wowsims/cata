@@ -1,23 +1,22 @@
+import * as Tooltips from './constants/tooltips.js';
+import { Player } from './player';
 import {
 	APLRotation,
 	APLRotation_Type as APLRotationType,
 } from './proto/apl';
 import {
-	EquipmentSpec,
+    Cooldowns,
+    EquipmentSpec,
     Faction,
     Spec,
 } from './proto/common';
 import {
     SavedRotation,
 } from './proto/ui';
-
-import { Player } from './player';
 import {
     SpecRotation,
 	specTypeFunctions,
 } from './proto_utils/utils';
-
-import * as Tooltips from './constants/tooltips.js';
 
 export interface PresetGear {
 	name: string;
@@ -52,7 +51,7 @@ export function makePresetGear(name: string, gearJson: any, options?: PresetGear
 }
 
 function makePresetGearHelper(name: string, gear: EquipmentSpec, options: PresetGearOptions): PresetGear {
-    let conditions: Array<(player: Player<any>) => boolean> = [];
+    const conditions: Array<(player: Player<any>) => boolean> = [];
     if (options.talentTree != undefined) {
         conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
     }
@@ -84,11 +83,15 @@ export function makePresetAPLRotation(name: string, rotationJson: any, options?:
 }
 
 export function makePresetSimpleRotation<SpecType extends Spec>(name: string, spec: SpecType, simpleRotation: SpecRotation<SpecType>, options?: PresetRotationOptions): PresetRotation {
+    const isTankSpec = (spec == Spec.SpecBloodDeathKnight) || (spec == Spec.SpecGuardianDruid) || (spec == Spec.SpecProtectionPaladin) || (spec == Spec.SpecProtectionWarrior);
     const rotation = SavedRotation.create({
 		rotation: {
 			type: APLRotationType.TypeSimple,
 			simple: {
 				specRotationJson: JSON.stringify(specTypeFunctions[spec].rotationToJson(simpleRotation)),
+				cooldowns: Cooldowns.create({
+					hpPercentForDefensives: isTankSpec ? 0.4 : 0,
+				}),
 			},
 		},
     });
@@ -96,7 +99,7 @@ export function makePresetSimpleRotation<SpecType extends Spec>(name: string, sp
 }
 
 function makePresetRotationHelper(name: string, rotation: SavedRotation, options?: PresetRotationOptions): PresetRotation {
-    let conditions: Array<(player: Player<any>) => boolean> = [];
+    const conditions: Array<(player: Player<any>) => boolean> = [];
     if (options?.talentTree != undefined) {
         conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
     }

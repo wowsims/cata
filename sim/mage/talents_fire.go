@@ -321,7 +321,7 @@ func (mage *Mage) applyIgnite() {
 			}
 			// EJ post says combustion crits do not proc ignite
 			// https://web.archive.org/web/20120219014159/http://elitistjerks.com/f75/t110187-cataclysm_mage_simulators_formulators/p3/#post1824829
-			if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellCombustion) == 0 && result.DidCrit() {
+			if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellCombustion|MageSpellLivingBomb) == 0 && result.DidCrit() {
 				mage.procIgnite(sim, result)
 			}
 		},
@@ -391,33 +391,34 @@ func (mage *Mage) applyImpact() {
 		return
 	}
 
-	// TODO make this work :)
-	// Currently casts a fresh set of DoTs
-	// afaik it should spread exact copies of the DoTs
 	impactAura := mage.RegisterAura(core.Aura{
 		Label:    "Impact",
 		ActionID: core.ActionID{SpellID: 64343},
 		Duration: time.Second * 10,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-
 			if spell.ClassSpellMask == MageSpellFireBlast {
-				// TODO:
-				// originalTarget := mage.CurrentTarget
-				// duplicatableDots := map[*core.Spell]float64{
-				// 	mage.LivingBombImpact:   mage.LivingBomb.Dot(originalTarget).SnapshotBaseDamage,
-				// 	mage.PyroblastDotImpact: mage.PyroblastDot.Dot(originalTarget).SnapshotBaseDamage,
-				// 	mage.Ignite:             mage.Ignite.Dot(originalTarget).SnapshotBaseDamage,
-				// 	mage.Combustion:         mage.Combustion.Dot(originalTarget).SnapshotBaseDamage,
-				// }
-				// for _, aoeTarget := range sim.Encounter.TargetUnits {
-				// 	if aoeTarget == originalTarget {
-				// 		continue
-				// 	}
-				// 	for spell, damage := range duplicatableDots {
-				// 		spell.Dot(aoeTarget).Snapshot(aoeTarget, damage)
-				// 		spell.Dot(aoeTarget).Apply(sim)
-				// 	}
-				// }
+
+				originalTarget := mage.CurrentTarget
+				duplicatableDots := []*core.Spell{mage.LivingBomb, mage.PyroblastDot, mage.Ignite, mage.Combustion}
+
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					if aoeTarget == originalTarget {
+						continue
+					}
+					for _, spell := range duplicatableDots {
+						originaldot := spell.Dot(originalTarget)
+						if !originaldot.IsActive() {
+							continue
+						}
+
+						newdot := spell.Dot(aoeTarget)
+						if spell != mage.Ignite {
+							newdot.CopyDotAndApply(sim, originaldot) // See attached .go file
+						} else {
+							// TODO Impact Ignite
+						}
+					}
+				}
 				aura.Deactivate(sim)
 			}
 		},

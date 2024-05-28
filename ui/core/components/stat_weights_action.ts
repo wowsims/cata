@@ -461,6 +461,7 @@ class EpWeightsMenu extends BaseModal {
 
 		const showAllStatsContainer = this.rootElem.getElementsByClassName('show-all-stats-container')[0] as HTMLElement;
 		new BooleanPicker(showAllStatsContainer, this, {
+			id: 'ep-show-all-stats',
 			label: 'Show All Stats',
 			inline: true,
 			changedEvent: () => new TypedEvent(),
@@ -475,6 +476,7 @@ class EpWeightsMenu extends BaseModal {
 
 		const makeEpRatioCell = (cell: HTMLElement, idx: number) => {
 			new NumberPicker(cell, this.simUI.player, {
+				id: `ep-ratio-${idx}`,
 				float: true,
 				changedEvent: player => player.epRatiosChangeEmitter,
 				getValue: () => this.simUI.player.getEpRatios()[idx],
@@ -573,6 +575,7 @@ class EpWeightsMenu extends BaseModal {
 
 		const currentEpCell = row.querySelector('.current-ep') as HTMLElement;
 		new NumberPicker(currentEpCell, this.simUI.player, {
+			id: `ep-weight-stat-${stat}`,
 			float: true,
 			changedEvent: (player: Player<any>) => player.epWeightsChangeEmitter,
 			getValue: () => this.simUI.player.getEpWeights().getUnitStat(stat),
