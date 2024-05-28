@@ -69,7 +69,10 @@ func (dot *Dot) TickPeriod() time.Duration {
 }
 
 func (dot *Dot) NextTickAt() time.Duration {
-	return dot.lastTickTime + dot.tickPeriod
+	if !dot.IsActive() {
+		return 0
+	}
+	return dot.tickAction.NextActionAt
 }
 
 func (dot *Dot) TimeUntilNextTick(sim *Simulation) time.Duration {
