@@ -288,19 +288,21 @@ class HidePicker extends Input<Player<any>, boolean> {
 
 		this.inputElem = ListPicker.makeActionElem('hide-picker-button', 'fa-eye');
 		this.iconElem = this.inputElem.childNodes[0] as HTMLElement;
-		this.rootElem.appendChild(this.inputElem);
-		this.tooltip = tippy(this.inputElem, { content: 'Enable/Disable' });
-
-		this.init();
 
 		this.inputElem.addEventListener(
-			'change',
+			'click',
 			() => {
 				this.setInputValue(!this.getInputValue());
 				this.inputChanged(TypedEvent.nextEventID());
 			},
 			{ signal: this.signal },
 		);
+
+		this.rootElem.appendChild(this.inputElem);
+		this.tooltip = tippy(this.inputElem, { content: 'Enable/Disable' });
+		this.addOnDisposeCallback(() => this.tooltip.destroy());
+
+		this.init();
 	}
 
 	getInputElem(): HTMLElement {
