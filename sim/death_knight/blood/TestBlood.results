@@ -541,8 +541,8 @@ dps_results: {
 dps_results: {
  key: "TestBlood-AllItems-HarmlightToken-63839"
  value: {
-  dps: 13626.70067
-  tps: 65147.18721
+  dps: 13624.93751
+  tps: 65141.11291
   hps: 4787.91291
  }
 }
