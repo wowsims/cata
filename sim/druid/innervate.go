@@ -7,15 +7,25 @@ import (
 // Returns the time to wait before the next action, or 0 if innervate is on CD
 // or disabled.
 func (druid *Druid) registerInnervateCD() {
+	innervateTarget := druid.GetUnit(druid.SelfBuffs.InnervateTarget)
+	if innervateTarget == nil {
+		return
+	}
+	innervateTargetChar := druid.Env.Raid.GetPlayerFromUnit(innervateTarget).GetCharacter()
+
 	actionID := core.ActionID{SpellID: 29166, Tag: druid.Index}
 	var innervateSpell *DruidSpell
 
 	innervateCD := core.InnervateCD
 
-	amount := 0.2 + float64(druid.Talents.Dreamstate) * 0.15
+	amount := 0.05
+	if innervateTarget == &druid.Unit {
+		amount = 0.2 + float64(druid.Talents.Dreamstate) * 0.15
+	}
 
 	var innervateAura *core.Aura
-	innervateAura = core.InnervateAura(druid.GetCharacter(), actionID.Tag, amount)
+	innervateAura = core.InnervateAura(innervateTargetChar, actionID.Tag, amount)
+	innervateManaThreshold := core.InnervateManaThreshold(innervateTargetChar)
 
 	innervateSpell = druid.RegisterSpell(Humanoid|Moonkin|Tree, core.SpellConfig{
 		ActionID: actionID,
@@ -30,7 +40,7 @@ func (druid *Druid) registerInnervateCD() {
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			// If target already has another innervate, don't cast.
-			return !druid.HasActiveAuraWithTag(core.InnervateAuraTag)
+			return !innervateTarget.HasActiveAuraWithTag(core.InnervateAuraTag)
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			innervateAura.Activate(sim)
@@ -45,7 +55,7 @@ func (druid *Druid) registerInnervateCD() {
 			// innervate gives so much mana that it can cause Super Mana Potion or Dark Rune usages
 			// to be delayed, if they come off CD soon after innervate. This delay is minimized by
 			// activating innervate from the smallest amount of mana possible.
-			return druid.CurrentMana() <= 5000
+			return innervateTarget.CurrentMana() <= innervateManaThreshold
 		},
 	})
 }
