@@ -43,7 +43,7 @@ export const GenericAoeTalents = {
 export const DefaultOptions = ProtectionPaladinOptions.create({
 	classOptions: {
 		aura: PaladinAura.RetributionAura,
-		judgement: PaladinJudgement.JudgementOfWisdom,
+		judgement: PaladinJudgement.Judgement,
 	},
 });
 
