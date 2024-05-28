@@ -32,7 +32,7 @@ export class ConsumesPicker extends Component {
 
 		const row = this.rootElem.appendChild(
 			<ConsumeRow label="Potions">
-				<div className="consumes-row-inputs consumes-potions"></div>
+				<div ref={potionsRef} className="consumes-row-inputs consumes-potions"></div>
 			</ConsumeRow>,
 		);
 		const potionsElem = potionsRef.value!;
@@ -97,7 +97,7 @@ export class ConsumesPicker extends Component {
 		const engiConsumesRef = ref<HTMLDivElement>();
 		const row = this.rootElem.appendChild(
 			<ConsumeRow label="Engineering">
-				<div className="consumes-row-inputs consumes-engi"></div>
+				<div ref={engiConsumesRef} className="consumes-row-inputs consumes-engi"></div>
 			</ConsumeRow>,
 		);
 		const engiConsumesElem = engiConsumesRef.value!;
