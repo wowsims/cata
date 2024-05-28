@@ -79,7 +79,7 @@ func init() {
 					Label: "Vengful Wisp - 2",
 				},
 				NumberOfTicks:       5,
-				TickLength:          3,
+				TickLength:          3 * time.Second,
 				AffectedByCastSpeed: false,
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 					dot.Snapshot(target, 1176)
@@ -119,7 +119,7 @@ func init() {
 					Label: "Vengful Wisp - 1",
 				},
 				NumberOfTicks:       5,
-				TickLength:          3,
+				TickLength:          3 * time.Second,
 				AffectedByCastSpeed: false,
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 					dot.Snapshot(target, 1176)
