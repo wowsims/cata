@@ -6,6 +6,7 @@ import {
 	APLValueAuraInternalCooldown,
 	APLValueAuraIsActive,
 	APLValueAuraIsActiveWithReactionTime,
+	APLValueAuraIsKnown,
 	APLValueAuraNumStacks,
 	APLValueAuraRemainingTime,
 	APLValueAuraShouldRefresh,
@@ -24,6 +25,7 @@ import {
 	APLValueCurrentFocus,
 	APLValueCurrentHealth,
 	APLValueCurrentHealthPercent,
+	APLValueCurrentHolyPower,
 	APLValueCurrentLunarEnergy,
 	APLValueCurrentMana,
 	APLValueCurrentManaPercent,
@@ -66,6 +68,7 @@ import {
 	APLValueSpellCPM,
 	APLValueSpellCurrentCost,
 	APLValueSpellIsChanneling,
+	APLValueSpellIsKnown,
 	APLValueSpellIsReady,
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
@@ -681,6 +684,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
 		fields: [AplHelpers.eclipseTypeFieldConfig('eclipsePhase')],
 	}),
+	currentHolyPower: inputBuilder({
+		label: 'Holy Power',
+		submenu: ['Resources'],
+		shortDescription: 'Amount of currently available Holy Power.',
+		newValue: APLValueCurrentHolyPower.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassPaladin,
+		fields: [],
+	}),
 
 	// Resources Rune
 	currentRuneCount: inputBuilder({
@@ -766,6 +777,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 
 	// Spells
+	spellIsKnown: inputBuilder({
+		label: 'Spell Known',
+		submenu: ['Spell'],
+		shortDescription: '<b>True</b> if the spell is currently known, otherwise <b>False</b>.',
+		newValue: APLValueSpellIsKnown.create,
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', '')],
+	}),
 	spellCurrentCost: inputBuilder({
 		label: 'Current Cost',
 		submenu: ['Spell'],
@@ -848,6 +866,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 
 	// Auras
+	auraIsKnown: inputBuilder({
+		label: 'Aura Known',
+		submenu: ['Aura'],
+		shortDescription: '<b>True</b> if the aura is currently known, otherwise <b>False</b>.',
+		newValue: APLValueAuraIsKnown.create,
+		fields: [AplHelpers.unitFieldConfig('sourceUnit', 'aura_sources'), AplHelpers.actionIdFieldConfig('auraId', 'auras', 'sourceUnit')],
+	}),
 	auraIsActive: inputBuilder({
 		label: 'Aura Active',
 		submenu: ['Aura'],

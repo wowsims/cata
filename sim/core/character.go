@@ -404,7 +404,7 @@ func (character *Character) MeleeCritMultiplier(primaryModifiers float64, second
 	return character.calculateCritMultiplier(2.0, primaryModifiers, secondaryModifiers)
 }
 func (character *Character) HealingCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
-	return character.calculateHealingCritMultiplier(1.5, primaryModifiers, secondaryModifiers)
+	return character.calculateHealingCritMultiplier(2.0, primaryModifiers, secondaryModifiers)
 }
 func (character *Character) DefaultSpellCritMultiplier() float64 {
 	return character.SpellCritMultiplier(1, 0)

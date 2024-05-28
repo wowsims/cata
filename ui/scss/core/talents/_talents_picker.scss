@@ -186,9 +186,9 @@
 	}
 
 	&.talent-full {
-		border-color: var(--talent-full);
+		border-color: var(--bs-talent-full);
 		.talent-picker-points {
-			color: var(--talent-full);
+			color: var(--bs-talent-full);
 		}
 	}
 }
@@ -209,7 +209,7 @@
 	}
 
 	.talent-picker-root.talent-full & {
-		color: var(--talent-full);
+		color: var(--bs-talent-full);
 	}
 
 	.talents-picker-root.talents-full .talent-picker-root[data-points='0'] & {

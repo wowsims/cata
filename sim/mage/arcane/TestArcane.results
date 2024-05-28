@@ -74,7 +74,7 @@ dps_results: {
  value: {
   dps: 25927.14324
   tps: 26047.55507
-  hps: 90.11969
+  hps: 99.81156
  }
 }
 dps_results: {
@@ -479,8 +479,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-HarmlightToken-63839"
  value: {
-  dps: 26868.99121
-  tps: 26965.13073
+  dps: 26875.13744
+  tps: 26971.29614
  }
 }
 dps_results: {

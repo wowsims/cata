@@ -1,5 +1,5 @@
 import tippy, { inlinePositioning, Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { Component } from '../components/component.js';
 import { TypedEvent } from '../typed_event.js';
@@ -104,11 +104,8 @@ export class ResultsViewer extends Component {
 
 		const list = ((this.warningsTooltip?.props.content as Element)?.cloneNode(true) || <></>) as HTMLElement;
 		if (list) list.innerHTML = '';
+		list.appendChild(<>{activeWarnings?.map(warning => <li>{warning}</li>)}</>);
 
-		const fragment = document.createDocumentFragment();
-
-		activeWarnings?.forEach(warning => fragment.appendChild(<li>{warning}</li>));
-		list?.appendChild(fragment);
 		this.warningsLink.parentElement?.classList?.[activeWarnings.length ? 'remove' : 'add']('hide');
 		this.warningsTooltip?.setContent(list);
 	}

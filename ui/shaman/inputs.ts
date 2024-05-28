@@ -102,7 +102,7 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
 		getValue: (player: Player<ShamanSpecs>) => {
 			const newOptions = player.getSpecOptions();
-			var value = EarthTotem.NoEarthTotem
+			let value = EarthTotem.NoEarthTotem
 			switch(newOptions.classOptions?.call){
 				case CallTotem.Elements: {
 					value = player.getSpecOptions().classOptions?.totems?.elements?.earth || EarthTotem.NoEarthTotem;
@@ -157,7 +157,7 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
 		getValue: (player: Player<ShamanSpecs>) => {
 			const newOptions = player.getSpecOptions();
-			var value = WaterTotem.NoWaterTotem
+			let value = WaterTotem.NoWaterTotem
 			switch(newOptions.classOptions?.call){
 				case CallTotem.Elements: {
 					value = player.getSpecOptions().classOptions?.totems?.elements?.water || WaterTotem.NoWaterTotem;
@@ -214,7 +214,7 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
 		getValue: (player: Player<ShamanSpecs>) => {
 			const newOptions = player.getSpecOptions();
-			var value = FireTotem.NoFireTotem
+			let value = FireTotem.NoFireTotem
 			switch(newOptions.classOptions?.call){
 				case CallTotem.Elements: {
 					value = player.getSpecOptions().classOptions?.totems?.elements?.fire || FireTotem.NoFireTotem;
@@ -269,7 +269,7 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
 		getValue: (player: Player<ShamanSpecs>) => {
 			const newOptions = player.getSpecOptions();
-			var value = AirTotem.NoAirTotem
+			let value = AirTotem.NoAirTotem
 			switch(newOptions.classOptions?.call){
 				case CallTotem.Elements: {
 					value = player.getSpecOptions().classOptions?.totems?.elements?.air || AirTotem.NoAirTotem;
