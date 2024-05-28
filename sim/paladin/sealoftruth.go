@@ -9,6 +9,8 @@ import (
 )
 
 func (paladin *Paladin) RegisterSealOfTruth() {
+
+	// Censure DoT
 	censureSpell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 31803, Tag: 2},
 		SpellSchool: core.SpellSchoolHoly,
@@ -20,7 +22,7 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label:     "Holy Vengeance (DoT)",
+				Label:     "Censure (DoT)",
 				MaxStacks: 5,
 			},
 			NumberOfTicks:        5,
@@ -40,10 +42,9 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 		},
 	})
 
-	// Judegment of truth cast on Judgement
-
+	// Judegment of Truth cast on Judgement
 	judgementDmg := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 31804}, // Judgement of Vengeance.
+		ActionID:    core.ActionID{SpellID: 31804},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskMeleeSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
@@ -63,8 +64,9 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 	})
 	paladin.CurrentJudgement = judgementDmg
 
+	// Seal of Truth on-hit proc
 	onSpecialOrSwingProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 42463}, // Seal of Vengeance damage bonus.
+		ActionID:    core.ActionID{SpellID: 42463},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskProc, // does proc certain spell damage-based items, e.g. Black Magic, Pendulum of Telluric Currents
 		Flags:       core.SpellFlagMeleeMetrics,
@@ -132,9 +134,10 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 		},
 	})
 
+	// Seal of Truth self-buff.
 	aura := paladin.SealOfTruthAura
 	paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 31801}, // Seal of Command self buff.
+		ActionID:    core.ActionID{SpellID: 31801},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagAPL,

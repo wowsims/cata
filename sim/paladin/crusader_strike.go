@@ -1,8 +1,6 @@
 package paladin
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 )
 
@@ -26,14 +24,11 @@ func (paladin *Paladin) RegisterCrusaderStrike() {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
-			CD: core.Cooldown{
-				Timer:    paladin.NewTimer(),
-				Duration: time.Millisecond * 4500,
-			},
+			CD:          *paladin.sharedBuilderCooldown,
 		},
 
 		DamageMultiplier: 1.35,
-		CritMultiplier:   paladin.DefaultHealingCritMultiplier(),
+		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

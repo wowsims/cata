@@ -1,8 +1,11 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 const (
@@ -49,7 +52,7 @@ type Paladin struct {
 
 	Talents *proto.PaladinTalents
 
-	//HolyPowerBar *HolyPowerBar
+	sharedBuilderCooldown *core.Cooldown // Used for CS/DS
 
 	CurrentSeal      *core.Aura
 	CurrentJudgement *core.Spell
@@ -160,8 +163,8 @@ func (paladin *Paladin) Initialize() {
 	// // paladin.setupJudgementRefresh()
 
 	paladin.RegisterCrusaderStrike()
-	// paladin.registerCrusaderStrikeSpell()
-	// paladin.registerDivineStormSpell()
+	paladin.registerDivineStorm()
+
 	// paladin.registerConsecrationSpell()
 	// paladin.registerHammerOfWrathSpell()
 	// paladin.registerHolyWrathSpell()
@@ -193,14 +196,13 @@ func (paladin *Paladin) Reset(_ *core.Simulation) {
 	paladin.HolyPowerBar.Reset()
 }
 
-// maybe need to add stat dependencies
 func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	paladin := &Paladin{
 		Character: *character,
 		Talents:   &proto.PaladinTalents{},
 	}
 
-	// core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
+	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
 
 	// // This is used to cache its effect in talents.go
 	// paladin.HasTuralyonsOrLiadrinsBattlegear2Pc = paladin.HasSetBonus(ItemSetTuralyonsBattlegear, 2)
@@ -210,21 +212,27 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	paladin.EnableManaBar()
 	paladin.InitializeHolyPowerbar()
 
-	// paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2.0)
-	// paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+	paladin.sharedBuilderCooldown = &core.Cooldown{
+		// TODO: needs to interrogate ret talents for Sanctity of Battle
+		// and have this cooldown conditionally be reduced based on haste rating
+		Timer:    paladin.NewTimer(),
+		Duration: time.Millisecond * 4500,
+	}
 
+	paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+
+	// TODO: figure out the exact tanking stat dependencies for prot pala
 	// // Paladins get 0.0167 dodge per agi. ~1% per 59.88
 	// paladin.AddStatDependency(stats.Agility, stats.Dodge, (1.0/59.88)*core.DodgeRatingPerDodgeChance)
-
 	// // Paladins get more melee haste from haste than other classes
 	// paladin.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
-
-	// // Bonus Armor and Armor are treated identically for Paladins
-	// paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-
 	// // Base dodge is unaffected by Diminishing Returns
 	// paladin.PseudoStats.BaseDodge += 0.034943
 	// paladin.PseudoStats.BaseParry += 0.05
+
+	// Bonus Armor and Armor are treated identically for Paladins
+	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	return paladin
 }

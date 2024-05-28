@@ -116,6 +116,8 @@ func (ret *RetributionPaladin) RegisterMastery() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			new_result := spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHit)
+			// TODO: this damage needs to be manually boosted by inquisition when it's implemented, and also needs to be
+			// boosted by any 8% magic damage taken debuff present on the target.
 			new_result.Damage = ret.HoLDamage
 			new_result.Threat = spell.ThreatFromDamage(new_result.Outcome, new_result.Damage)
 			spell.DealDamage(sim, new_result)
