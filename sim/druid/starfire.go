@@ -17,12 +17,11 @@ func (druid *Druid) registerStarfireSpell() {
 		ProcMask: core.ProcMaskSuppressedProc,
 		Flags:    core.SpellFlagNoLogs,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			moonfireDot := druid.Moonfire.Dot(target)
+			moonfireDot := druid.MoonfireDoT.Dot(target)
+			sunfireDot := druid.SunfireDoT.Dot(target)
 
-			if moonfireDot.IsActive() && druid.ExtendingMoonfireStacks > 0 {
-				druid.ExtendingMoonfireStacks -= 1
-				moonfireDot.UpdateExpires(moonfireDot.ExpiresAt() + time.Second*3)
-			}
+			tryExtendDot(moonfireDot, &druid.ExtendingMoonfireStacks)
+			tryExtendDot(sunfireDot, &druid.ExtendingMoonfireStacks)
 		},
 	})
 
@@ -71,4 +70,11 @@ func (druid *Druid) registerStarfireSpell() {
 			}
 		},
 	})
+}
+
+func tryExtendDot(dot *core.Dot, extendingStacks *int) {
+	if dot.IsActive() && *extendingStacks > 0 {
+		*extendingStacks -= 1
+		dot.UpdateExpires(dot.ExpiresAt() + time.Second*3)
+	}
 }
