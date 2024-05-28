@@ -98,7 +98,7 @@ func (ret *RetributionPaladin) RegisterSpecializationEffects() {
 	}
 
 	// Judgements of the Bold
-
+	ret.ApplyJudgmentsOfTheBold()
 }
 
 func (ret *RetributionPaladin) RegisterMastery() {
@@ -131,8 +131,7 @@ func (ret *RetributionPaladin) RegisterMastery() {
 		Outcome:        core.OutcomeLanded,
 		ProcMask:       core.ProcMaskMeleeSpecial,
 		ClassSpellMask: paladin.SpellMaskCrusaderStrike | paladin.SpellMaskDivineStorm | paladin.SpellMaskTemplarsVerdict,
-
-		ProcChance: 1.0,
+		ProcChance:     1.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			ret.HoLDamage = (16.8 + 2.1*ret.GetMasteryPoints()) / 100.0 * result.Damage
@@ -141,18 +140,17 @@ func (ret *RetributionPaladin) RegisterMastery() {
 	})
 }
 
-func (ret *RetributionPaladin) ApplyJudymentOfTheBold() {
-	// Judgement of the Bold
+func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 	actionID := core.ActionID{SpellID: 89901}
 	manaMetrics := ret.NewManaMetrics(actionID)
-	var manaPA *core.PendingAction
+	var pa *core.PendingAction
 
 	jotbAura := ret.RegisterAura(core.Aura{
-		Label:    "Judgement of the Bold",
+		Label:    "Judgements of the Bold",
 		ActionID: actionID,
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			manaPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+			pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 				Period: time.Second * 2,
 				OnAction: func(sim *core.Simulation) {
 					ret.AddMana(sim, 0.25*ret.BaseMana, manaMetrics)
@@ -160,15 +158,18 @@ func (ret *RetributionPaladin) ApplyJudymentOfTheBold() {
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			manaPA.Cancel(sim)
+			pa.Cancel(sim)
 		},
 	})
 
 	core.MakeProcTriggerAura(&ret.Unit, core.ProcTrigger{
-		Name:           "Judgement of the Bold",
+		Name:           "Judgements of the Bold Trigger",
 		ActionID:       actionID,
-		Callback:       core.CallbackOnCastComplete,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ProcMask:       core.ProcMaskMeleeSpecial,
 		ClassSpellMask: paladin.SpellMaskJudgement,
+		ProcChance:     1.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			jotbAura.Activate(sim)

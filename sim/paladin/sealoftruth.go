@@ -44,10 +44,11 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 
 	// Judegment of Truth cast on Judgement
 	judgementDmg := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 31804},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskMeleeSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
+		ActionID:       core.ActionID{SpellID: 31804},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskMeleeSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
+		ClassSpellMask: SpellMaskJudgement | SpellMaskSpecialAttack,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
