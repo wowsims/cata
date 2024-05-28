@@ -77,6 +77,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerShadowBolt()
 	warlock.registerShadowflame()
 	warlock.registerSoulFire()
+	warlock.registerSoulHarvest()
 	warlock.registerSoulburn()
 	warlock.registerSummonFelHunter()
 	warlock.registerSummonImp()
