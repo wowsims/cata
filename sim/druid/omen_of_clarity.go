@@ -15,13 +15,12 @@ func (druid *Druid) applyOmenOfClarity() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice([]*DruidSpell{
 				// Balance
-				druid.Hurricane,
-				druid.InsectSwarm,
-				druid.Moonfire,
-				// TODO druid.Starfall, not sure how the proc chance is affected.
 				druid.Starfire,
-				druid.Typhoon,
 				druid.Wrath,
+				druid.Hurricane,
+				druid.WildMushrooms,
+				druid.ForceOfNature,
+				druid.Starsurge,
 
 				// Feral
 				druid.DemoralizingRoar,
@@ -58,7 +57,7 @@ func (druid *Druid) applyOmenOfClarity() {
 
 			for _, as := range affectedSpells {
 				// Mangle (Bear) handled separately in mangle.go in order to preferentially consume Berserk procs over Clearcasting procs
-				if as.IsEqual(spell) && (as != druid.MangleBear) {
+				if as.IsEqual(spell) && (as != druid.MangleBear) && (as != druid.WildMushrooms) {
 					aura.Deactivate(sim)
 					break
 				}
@@ -107,6 +106,10 @@ func (druid *Druid) applyOmenOfClarity() {
 					chanceToProc *= 0.25
 				} else if druid.Moonfire.IsEqual(spell) { // Add Moonfire
 					chanceToProc *= 0.076
+				} else if druid.WildMushroomsDetonate.IsEqual(spell) {
+					// Wild Mushroom: Detonate seems to have an 'almost' guaranteed chance to proc
+					// setting to 0.5 to be safe
+					chanceToProc = 0.5
 				} else {
 					chanceToProc *= 0.666
 				}

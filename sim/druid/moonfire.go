@@ -18,7 +18,7 @@ func (druid *Druid) registerMoonfireDoTSpell() {
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellMoonfireDoT,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.BalanceCritMultiplier(),
@@ -59,7 +59,7 @@ func (druid *Druid) registerMoonfireImpactSpell() {
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellMoonfire,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.09,

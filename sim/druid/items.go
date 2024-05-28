@@ -19,7 +19,7 @@ var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 			var apDepByStackCount = map[int32]*stats.StatDependency{}
 
 			for i := 1; i <= 3; i++ {
-				apDepByStackCount[int32(i)] = druid.NewDynamicMultiplyStat(stats.AttackPower, 1.0 + 0.01*float64(i))
+				apDepByStackCount[int32(i)] = druid.NewDynamicMultiplyStat(stats.AttackPower, 1.0+0.01*float64(i))
 			}
 
 			druid.StrengthOfThePantherAura = druid.RegisterAura(core.Aura{
@@ -38,6 +38,24 @@ var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 					}
 				},
 			})
+		},
+	},
+})
+
+// T11 Balance
+var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
+	Name: "Stormrider's Regalia",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_BonusCrit_Rating,
+				FloatValue: 5 * core.CritRatingPerCritChance,
+				ClassMask:  DruidSpellDoT | DruidSpellMoonfire | DruidSpellSunfire,
+			})
+		},
+		4: func(agent core.Agent) {
+
 		},
 	},
 })

@@ -967,6 +967,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-Stormrider'sRegalia"
+ value: {
+  dps: 18467.60585
+  tps: 24890.62341
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-StumpofTime-62465"
  value: {
   dps: 24016.49314

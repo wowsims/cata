@@ -960,6 +960,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-Stormrider'sRegalia"
+ value: {
+  dps: 6059.51374
+  tps: 30362.02285
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-StumpofTime-62465"
  value: {
   dps: 7850.87561
