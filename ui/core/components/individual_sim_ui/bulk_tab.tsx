@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { ref } from 'tsx-vanilla';
 
+import { setItemQualityCssClass } from '../../css_utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { BulkComboResult, BulkSettings, ItemSpecWithSlot, ProgressMetrics, TalentLoadout } from '../../proto/api';
 import { EquipmentSpec, GemColor, ItemSlot, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
@@ -300,7 +301,10 @@ export class BulkTab extends SimTab {
 				ActionId.fromItemId(gem.id)
 					.fill()
 					.then(filledId => {
-						this.gemIconElements[idx].src = filledId.iconUrl;
+						if (gem.id) {
+							this.gemIconElements[idx].src = filledId.iconUrl;
+							this.gemIconElements[idx].classList.remove('hide');
+						}
 					});
 			});
 		}
@@ -615,14 +619,16 @@ export class BulkTab extends SimTab {
 
 				if (matched) {
 					const itemRef = ref<HTMLLIElement>();
+					const itemNameRef = ref<HTMLSpanElement>();
 					items.appendChild(
 						<li ref={itemRef} dataset={{ itemId: item.id.toString() }}>
-							<span>{item.name}</span>
+							<span ref={itemNameRef}>{item.name}</span>
 							{item.heroic && <span className="item-quality-uncommon">[H]</span>}
 							{item.factionRestriction === UIItem_FactionRestriction.HORDE_ONLY && <span className="faction-horde">(H)</span>}
 							{item.factionRestriction === UIItem_FactionRestriction.ALLIANCE_ONLY && <span className="faction-alliance">(A)</span>}
 						</li>,
 					);
+					setItemQualityCssClass(itemNameRef.value!, item.quality);
 					itemRef.value?.addEventListener('click', () => {
 						this.addItems(Array<ItemSpec>(ItemSpec.create({ id: item.id })));
 					});
@@ -749,7 +755,7 @@ export class BulkTab extends SimTab {
 
 			socketsContainerRef.value!.appendChild(
 				<div ref={gemContainerRef} className="gem-socket-container">
-					<img ref={gemIconRef} className="gem-icon" />
+					<img ref={gemIconRef} className="gem-icon hide" />
 					<img ref={socketIconRef} className="socket-icon" />
 				</div>,
 			);
@@ -765,13 +771,24 @@ export class BulkTab extends SimTab {
 				ActionId.fromItemId(itemData.id)
 					.fill()
 					.then(filledId => {
-						this.gemIconElements[socketIndex].src = filledId.iconUrl;
+						if (itemData.id) {
+							this.gemIconElements[socketIndex].src = filledId.iconUrl;
+							this.gemIconElements[socketIndex].classList.remove('hide');
+						}
 					});
 				selector.close();
 			};
 
+			const onRemoveHandler = () => {
+				this.defaultGems[socketIndex] = UIGem.create();
+				this.storeSettings();
+				this.gemIconElements[socketIndex].classList.add('hide');
+				this.gemIconElements[socketIndex].src = '';
+				selector.close();
+			};
+
 			const openGemSelector = () => {
-				if (!selector) selector = new GemSelectorModal(this.simUI.rootElem, this.simUI, socketColor, onSelectHandler);
+				if (!selector) selector = new GemSelectorModal(this.simUI.rootElem, this.simUI, socketColor, onSelectHandler, onRemoveHandler);
 				selector.show();
 			};
 
@@ -885,18 +902,20 @@ class GemSelectorModal extends BaseModal {
 	private ilist: ItemList<UIGem> | null;
 	private socketColor: GemColor;
 	private onSelect: (itemData: ItemData<UIGem>) => void;
+	private onRemove: () => void;
 
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, socketColor: GemColor, onSelect: (itemData: ItemData<UIGem>) => void) {
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, socketColor: GemColor, onSelect: (itemData: ItemData<UIGem>) => void, onRemove: () => void) {
 		super(parent, 'selector-modal', { disposeOnClose: false });
 
 		this.simUI = simUI;
 		this.onSelect = onSelect;
+		this.onRemove = onRemove;
 		this.socketColor = socketColor;
 		this.ilist = null;
 
 		window.scrollTo({ top: 0 });
 
-		this.header!.insertAdjacentElement('afterbegin', <span>Choose Default Gem</span>);
+		this.header!.insertAdjacentElement('afterbegin', <h6 className="selector-modal-title mb-3">Choose Default Gem</h6>);
 		const contentRef = ref<HTMLDivElement>();
 		this.body.appendChild(<div ref={contentRef} className="tab-content selector-modal-tab-content"></div>);
 		this.contentElem = contentRef.value!;
@@ -941,17 +960,17 @@ class GemSelectorModal extends BaseModal {
 				() => {
 					return null;
 				},
-				() => {
-					return;
-				},
+				this.onRemove,
 				this.onSelect,
 			);
 
 			this.ilist.sizeRefresh();
 
 			const applyFilter = () => this.ilist?.applyFilters();
+
 			const phaseChangeEvent = this.simUI.sim.phaseChangeEmitter.on(applyFilter);
 			const filtersChangeChangeEvent = this.simUI.sim.filtersChangeEmitter.on(applyFilter);
+
 			this.addOnDisposeCallback(() => {
 				phaseChangeEvent.dispose();
 				filtersChangeChangeEvent.dispose();
