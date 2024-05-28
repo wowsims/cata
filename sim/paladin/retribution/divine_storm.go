@@ -1,7 +1,8 @@
-package paladin
+package retribution
 
 import (
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/paladin"
 )
 
 // Divine Storm is a non-ap normalised instant attack that has a weapon damage % modifier with a 1.0 coefficient.
@@ -10,20 +11,20 @@ import (
 // The heal has threat implications, but given prot paladin cannot get enough talent
 // points to take DS, we'll ignore it for now.
 
-func (paladin *Paladin) registerDivineStorm() {
-	if !paladin.Talents.DivineStorm {
+func (retPaladin *RetributionPaladin) RegisterDivineStorm() {
+	if !retPaladin.Talents.DivineStorm {
 		return
 	}
-	results := make([]*core.SpellResult, paladin.Env.GetNumTargets())
+	results := make([]*core.SpellResult, retPaladin.Env.GetNumTargets())
 	actionId := core.ActionID{SpellID: 53385}
-	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
+	hpMetrics := retPaladin.NewHolyPowerMetrics(actionId)
 
-	paladin.RegisterSpell(core.SpellConfig{
+	retPaladin.DivineStorm = retPaladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionId,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskDivineStorm | SpellMaskSpecialAttack,
+		ClassSpellMask: paladin.SpellMaskDivineStorm | paladin.SpellMaskSpecialAttack,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.05,
@@ -33,12 +34,12 @@ func (paladin *Paladin) registerDivineStorm() {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
-			CD:          *paladin.sharedBuilderCooldown,
+			CD:          *retPaladin.SharedBuilderCooldown,
 		},
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   retPaladin.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			numHits := 0
@@ -54,7 +55,7 @@ func (paladin *Paladin) registerDivineStorm() {
 				spell.DealDamage(sim, result)
 			}
 			if numHits >= 4 {
-				paladin.GainHolyPower(sim, 1, hpMetrics)
+				retPaladin.GainHolyPower(sim, 1, hpMetrics)
 			}
 		},
 	})

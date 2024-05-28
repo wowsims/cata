@@ -24,7 +24,7 @@ func (paladin *Paladin) RegisterCrusaderStrike() {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
-			CD:          *paladin.sharedBuilderCooldown,
+			CD:          *paladin.SharedBuilderCooldown,
 		},
 
 		DamageMultiplier: 1.35,

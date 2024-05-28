@@ -30,6 +30,9 @@ const (
 	SpellMaskAvengersShield
 	SpellMaskDivinePlea
 	SpellMaskDivineProtection
+	SpellMaskAvengingWrath
+	SpellMaskCensure
+	SpellMaskInquisition
 
 	SpellMaskHolyShock
 	SpellMaskWordOfGlory
@@ -37,7 +40,7 @@ const (
 	SpellMaskSealOfTruth
 	SpellMaskSealOfInsight
 	SpellMaskSealOfRighteousness
-	SpellmaskSealofJustice
+	SpellMaskSealOfJustice
 )
 
 const SpellMaskSingleTarget = SpellMaskCrusaderStrike | SpellMaskTemplarsVerdict
@@ -52,7 +55,7 @@ type Paladin struct {
 
 	Talents *proto.PaladinTalents
 
-	sharedBuilderCooldown *core.Cooldown // Used for CS/DS
+	SharedBuilderCooldown *core.Cooldown // Used for CS/DS
 
 	CurrentSeal      *core.Aura
 	CurrentJudgement *core.Spell
@@ -71,23 +74,26 @@ type Paladin struct {
 	HammerOfWrath         *core.Spell
 	AvengingWrath         *core.Spell
 	DivineProtection      *core.Spell
+	TemplarsVerdict       *core.Spell
+	Zealotry              *core.Spell
+	Inquisition           *core.Spell
 
 	SealOfTruth *core.Spell
 
 	HolyShieldAura          *core.Aura
 	RighteousFuryAura       *core.Aura
 	DivinePleaAura          *core.Aura
-	JudgementOfWisdomAura   *core.Aura
-	JudgementOfLightAura    *core.Aura
 	SealOfTruthAura         *core.Aura
-	SealOfCommandAura       *core.Aura
 	SealOfRighteousnessAura *core.Aura
 	AvengingWrathAura       *core.Aura
 	DivineProtectionAura    *core.Aura
 	ForbearanceAura         *core.Aura
 	VengeanceAura           *core.Aura
+	ZealotryAura            *core.Aura
+	InquisitionAura         *core.Aura
 
 	ArtOfWarInstantCast *core.Aura
+	DivinePurposeProc   *core.Aura
 
 	SpiritualAttunementMetrics *core.ResourceMetrics
 
@@ -163,13 +169,12 @@ func (paladin *Paladin) Initialize() {
 	// // paladin.setupJudgementRefresh()
 
 	paladin.RegisterCrusaderStrike()
-	paladin.registerDivineStorm()
 
 	// paladin.registerConsecrationSpell()
 	// paladin.registerHammerOfWrathSpell()
 	// paladin.registerHolyWrathSpell()
 
-	// paladin.registerExorcismSpell()
+	paladin.RegisterExorcism()
 	// paladin.registerHolyShieldSpell()
 	// paladin.registerHammerOfTheRighteousSpell()
 	// paladin.registerHandOfReckoningSpell()
@@ -210,9 +215,9 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	paladin.PseudoStats.CanParry = true
 
 	paladin.EnableManaBar()
-	paladin.InitializeHolyPowerbar()
+	paladin.InitializeHolyPowerBar()
 
-	paladin.sharedBuilderCooldown = &core.Cooldown{
+	paladin.SharedBuilderCooldown = &core.Cooldown{
 		// TODO: needs to interrogate ret talents for Sanctity of Battle
 		// and have this cooldown conditionally be reduced based on haste rating
 		Timer:    paladin.NewTimer(),

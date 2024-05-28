@@ -4,18 +4,17 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
 func (paladin *Paladin) RegisterSealOfTruth() {
 
 	// Censure DoT
 	censureSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 31803, Tag: 2},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagMeleeMetrics,
+		ActionID:       core.ActionID{SpellID: 31803, Tag: 2},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagMeleeMetrics,
+		ClassSpellMask: SpellMaskCensure,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -89,21 +88,21 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 31801},
 		Duration: time.Minute * 30,
+		/*
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth) {
+					expertise := core.ExpertisePerQuarterPercentReduction * 10
+					paladin.AddStatDynamic(sim, stats.Expertise, expertise)
+				}
+			},
 
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth) {
-				expertise := core.ExpertisePerQuarterPercentReduction * 10
-				paladin.AddStatDynamic(sim, stats.Expertise, expertise)
-			}
-		},
-
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth) {
-				expertise := core.ExpertisePerQuarterPercentReduction * 10
-				paladin.AddStatDynamic(sim, stats.Expertise, -expertise)
-			}
-		},
-
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth) {
+					expertise := core.ExpertisePerQuarterPercentReduction * 10
+					paladin.AddStatDynamic(sim, stats.Expertise, -expertise)
+				}
+			},
+		*/
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Don't proc on misses or our own procs.
 			if !result.Landed() || spell == censureSpell || spell == judgementDmg || spell == onSpecialOrSwingProc {
@@ -138,10 +137,11 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 	// Seal of Truth self-buff.
 	aura := paladin.SealOfTruthAura
 	paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 31801},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 31801},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskSealOfTruth,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.14,

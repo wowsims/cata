@@ -29,10 +29,8 @@ func RegisterRetributionPaladin() {
 func NewRetributionPaladin(character *core.Character, options *proto.Player) *RetributionPaladin {
 	retOptions := options.GetRetributionPaladin()
 
-	pal := paladin.NewPaladin(character, options.TalentsString)
-
 	ret := &RetributionPaladin{
-		Paladin: pal,
+		Paladin: paladin.NewPaladin(character, options.TalentsString),
 		Seal:    retOptions.Options.ClassOptions.Seal,
 	}
 
@@ -60,7 +58,8 @@ func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
 func (ret *RetributionPaladin) Initialize() {
 	ret.Paladin.Initialize()
 	ret.RegisterSpecializationEffects()
-	//ret.RegisterAvengingWrathCD()
+	ret.RegisterTemplarsVerdict()
+	ret.RegisterDivineStorm()
 }
 
 func (ret *RetributionPaladin) ApplyTalents() {
@@ -70,18 +69,6 @@ func (ret *RetributionPaladin) ApplyTalents() {
 
 func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
 	ret.Paladin.Reset(sim)
-
-	// switch ret.Seal {
-	// case proto.PaladinSeal_Vengeance:
-	// 	ret.CurrentSeal = ret.SealOfVengeanceAura
-	// 	ret.SealOfVengeanceAura.Activate(sim)
-	// case proto.PaladinSeal_Command:
-	// 	ret.CurrentSeal = ret.SealOfCommandAura
-	// 	ret.SealOfCommandAura.Activate(sim)
-	// case proto.PaladinSeal_Righteousness:
-	// 	ret.CurrentSeal = ret.SealOfRighteousnessAura
-	// 	ret.SealOfRighteousnessAura.Activate(sim)
-	// }
 }
 
 func (ret *RetributionPaladin) RegisterSpecializationEffects() {

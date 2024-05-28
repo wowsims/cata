@@ -6,15 +6,20 @@ import (
 )
 
 type HolyPowerBar struct {
-	paladin   *Paladin
-	holyPower int32
+	paladin *Paladin
+
+	DivinePurpose bool
+	holyPower     int32
 }
 
 func (paladin *Paladin) CurrentHolyPower() int32 {
+	if paladin.DivinePurpose {
+		return 3
+	}
 	return paladin.holyPower
 }
 
-func (paladin *Paladin) InitializeHolyPowerbar() {
+func (paladin *Paladin) InitializeHolyPowerBar() {
 	paladin.HolyPowerBar = HolyPowerBar{
 		paladin:   paladin,
 		holyPower: 0,
@@ -50,6 +55,11 @@ func (pb *HolyPowerBar) GainHolyPower(sim *core.Simulation, amountToAdd int32, m
 
 func (pb *HolyPowerBar) SpendHolyPower(sim *core.Simulation, metrics *core.ResourceMetrics) {
 	if pb.paladin == nil {
+		return
+	}
+
+	if pb.DivinePurpose {
+		pb.paladin.Log(sim, "Consumed Divine Purpose")
 		return
 	}
 
