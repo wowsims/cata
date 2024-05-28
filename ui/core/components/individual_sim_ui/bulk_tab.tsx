@@ -563,15 +563,21 @@ export class BulkTab extends SimTab {
 			this.addItems(items);
 		});
 
-		const searchInput = (<input type="text" placeholder="Search..." className="hide" />) as HTMLInputElement;
-		const searchResults = (<ul className="batch-search-results hide"></ul>) as HTMLUListElement;
+		const searchInputRef = ref<HTMLInputElement>();
+		const searchResultsRef = ref<HTMLUListElement>();
+		const searchWrapper = (
+			<div className="search-wrapper">
+				<input ref={searchInputRef} type="text" placeholder="Search..." className="batch-search-input form-control hide" />
+				<ul ref={searchResultsRef} className="batch-search-results hide"></ul>
+			</div>
+		);
 
 		let allItems = Array<UIItem>();
 
-		searchInput.addEventListener('keyup', event => {
+		searchInputRef.value?.addEventListener('keyup', event => {
 			if (event.key == 'Enter') {
 				const toAdd = Array<ItemSpec>();
-				searchResults.childNodes.forEach(node => {
+				searchResultsRef.value?.childNodes.forEach(node => {
 					const strID = (node as HTMLElement).getAttribute('data-item-id');
 					if (strID != null) {
 						toAdd.push(ItemSpec.create({ id: Number.parseInt(strID) }));
@@ -581,16 +587,19 @@ export class BulkTab extends SimTab {
 			}
 		});
 
-		searchInput.addEventListener('input', _event => {
-			const searchString = searchInput.value;
-			searchResults.replaceChildren();
+		searchInputRef.value?.addEventListener('input', _event => {
+			const searchString = searchInputRef.value?.value || '';
+
 			if (!searchString.length) {
+				searchResultsRef.value?.replaceChildren();
+				searchResultsRef.value?.classList.add('hide');
 				return;
 			}
-			const pieces = searchString.split(' ');
 
-			let displayCount = 0;
-			allItems.every(item => {
+			const pieces = searchString.split(' ');
+			const items = <></>;
+
+			allItems.forEach(item => {
 				let matched = true;
 				const lcName = item.name.toLowerCase();
 				const lcSetName = item.setName.toLowerCase();
@@ -606,7 +615,7 @@ export class BulkTab extends SimTab {
 
 				if (matched) {
 					const itemRef = ref<HTMLLIElement>();
-					searchResults.append(
+					items.appendChild(
 						<li ref={itemRef} dataset={{ itemId: item.id.toString() }}>
 							<span>{item.name}</span>
 							{item.heroic && <span className="item-quality-uncommon">[H]</span>}
@@ -617,11 +626,10 @@ export class BulkTab extends SimTab {
 					itemRef.value?.addEventListener('click', () => {
 						this.addItems(Array<ItemSpec>(ItemSpec.create({ id: item.id })));
 					});
-					displayCount++;
 				}
-
-				return displayCount < 10;
 			});
+			searchResultsRef.value?.replaceChildren(items);
+			searchResultsRef.value?.classList.remove('hide');
 		});
 
 		const searchButtonContents = (
@@ -632,17 +640,17 @@ export class BulkTab extends SimTab {
 
 		const searchButton = <button className="btn btn-secondary w-100 bulk-settings-button">{searchButtonContents.cloneNode(true)}</button>;
 		searchButton.addEventListener('click', () => {
-			if (searchInput.classList.contains('hide')) {
+			if (searchInputRef.value?.classList.contains('hide')) {
 				searchButton.replaceChildren(<>Close Search Results</>);
 				allItems = this.simUI.sim.db.getAllItems().filter(item => canEquipItem(item, this.simUI.player.getPlayerSpec(), undefined));
-				searchInput.classList.remove('hide');
-				searchResults.classList.remove('hide');
-				searchInput.focus();
+				searchInputRef.value?.classList.remove('hide');
+				if (searchInputRef.value?.value) searchResultsRef.value?.classList.remove('hide');
+				searchInputRef.value?.focus();
 			} else {
 				searchButton.replaceChildren(searchButtonContents.cloneNode(true));
-				searchInput.classList.add('hide');
-				searchResults.replaceChildren();
-				searchResults.classList.add('hide');
+				searchInputRef.value?.classList.add('hide');
+				searchResultsRef.value?.replaceChildren();
+				searchResultsRef.value?.classList.add('hide');
 			}
 		});
 
@@ -777,8 +785,7 @@ export class BulkTab extends SimTab {
 				{importButton}
 				{importFavsButton}
 				{searchButton}
-				{searchInput}
-				{searchResults}
+				{searchWrapper}
 				{clearButton}
 				{defaultGemDiv}
 				{talentsToSimDiv}
