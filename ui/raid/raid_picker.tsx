@@ -340,9 +340,15 @@ export class PlayerPicker extends Component {
 	private resultsElem: HTMLElement | null;
 	private dpsResultElem: HTMLElement | null;
 	private referenceDeltaElem: HTMLElement | null;
+	// Can be used to remove any events in addEventListener
+	// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#add_an_abortable_listener
+	public abortController: AbortController;
+	public signal: AbortSignal;
 
 	constructor(parent: HTMLElement, partyPicker: PartyPicker, index: number) {
 		super(parent, 'player-picker-root');
+		this.abortController = new AbortController();
+		this.signal = this.abortController.signal;
 		this.index = index;
 		this.raidIndex = partyPicker.index * MAX_PARTY_SIZE + index;
 		this.player = null;
@@ -563,17 +569,17 @@ export class PlayerPicker extends Component {
 		const onNameSetHandler = () => {
 			this.player?.setName(TypedEvent.nextEventID(), this.nameElem?.value || '');
 		};
-		this.nameElem?.addEventListener('input', onNameSetHandler);
+		this.nameElem?.addEventListener('input', onNameSetHandler, { signal: this.signal });
 
 		const onNameMouseDownHandler = () => {
 			this.partyPicker.rootElem.setAttribute('draggable', 'false');
 		};
-		this.nameElem?.addEventListener('mousedown', onNameMouseDownHandler);
+		this.nameElem?.addEventListener('mousedown', onNameMouseDownHandler, { signal: this.signal });
 
 		const onNameMouseUpHandler = () => {
 			this.partyPicker.rootElem.setAttribute('draggable', 'true');
 		};
-		this.nameElem?.addEventListener('mouseup', onNameMouseUpHandler);
+		this.nameElem?.addEventListener('mouseup', onNameMouseUpHandler, { signal: this.signal });
 
 		const onNameFocusOutHandler = () => {
 			if (this.nameElem && !this.nameElem.value) {
@@ -581,7 +587,7 @@ export class PlayerPicker extends Component {
 				this.player?.setName(TypedEvent.nextEventID(), this.nameElem.value);
 			}
 		};
-		this.nameElem?.addEventListener('focusout', onNameFocusOutHandler);
+		this.nameElem?.addEventListener('focusout', onNameFocusOutHandler, { signal: this.signal });
 
 		const dragStart = (event: DragEvent, type: DragType) => {
 			if (this.player == null) {
@@ -612,36 +618,26 @@ export class PlayerPicker extends Component {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
 			dragStart(event, DragType.Swap);
 		};
-		this.iconElem?.addEventListener('dragstart', onIconDragStartHandler);
+		this.iconElem?.addEventListener('dragstart', onIconDragStartHandler, { signal: this.signal });
 
 		const onEditClickHandler = () => {
 			if (this.player) this.raidPicker.playerEditorModal.openEditor(this.player);
 		};
-		editElem.addEventListener('click', onEditClickHandler);
+		editElem.addEventListener('click', onEditClickHandler, { signal: this.signal });
 
 		const onCopyDragStartHandler = (event: DragEvent) => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
 			dragStart(event, DragType.Copy);
 		};
-		copyElem.addEventListener('dragstart', onCopyDragStartHandler);
+		copyElem.addEventListener('dragstart', onCopyDragStartHandler, { signal: this.signal });
 
 		const onDeleteClickHandler = () => {
 			this.setPlayer(TypedEvent.nextEventID(), null, DragType.None);
 			this.dispose();
 		};
-		deleteElem.addEventListener('click', onDeleteClickHandler);
+		deleteElem.addEventListener('click', onDeleteClickHandler, { signal: this.signal });
 
 		this.addOnDisposeCallback(() => {
-			this.nameElem?.removeEventListener('input', onNameSetHandler);
-			this.nameElem?.removeEventListener('mousedown', onNameMouseDownHandler);
-			this.nameElem?.removeEventListener('mouseup', onNameMouseUpHandler);
-			this.nameElem?.removeEventListener('focusout', onNameFocusOutHandler);
-
-			this.iconElem?.removeEventListener('dragstart', onIconDragStartHandler);
-			editElem?.removeEventListener('click', onEditClickHandler);
-			copyElem?.removeEventListener('dragstart', onCopyDragStartHandler);
-			deleteElem?.removeEventListener('click', onDeleteClickHandler);
-
 			editTooltip?.destroy();
 			copyTooltip?.destroy();
 			deleteTooltip?.destroy();

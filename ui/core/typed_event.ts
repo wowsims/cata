@@ -14,13 +14,13 @@ export interface Listener<T> {
 }
 
 interface FiredEventData {
-	eventID: EventID,
-	error: Error,
+	eventID: EventID;
+	error: Error;
 }
 
 interface FrozenEventData<T> {
-	eventID: EventID,
-	event: T,
+	eventID: EventID;
+	event: T;
 }
 
 /** Provides a type-safe event interface. */
@@ -54,6 +54,8 @@ export class TypedEvent<T> {
 		const idx = this.listeners.indexOf(listener);
 		if (idx != -1) {
 			this.listeners.splice(idx, 1);
+		} else {
+			console.warn(`Attempted to remove non-existent listener (${this.label}):`, idx);
 		}
 	}
 

@@ -1,3 +1,5 @@
+import { ref } from 'tsx-vanilla';
+
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
 import { UIGem as Gem } from '../../proto/ui.js';
@@ -31,7 +33,7 @@ export class GemSummary extends Component {
 	}
 
 	private updateTable() {
-		this.container.bodyElement.innerHTML = ``;
+		const body = <></>;
 		const fullGemList = this.player.getGear().getAllGems(this.player.isBlacksmithing());
 		const hasGems = !!fullGemList.length;
 		this.rootElem.classList[!hasGems ? 'add' : 'remove']('hide');
@@ -52,20 +54,21 @@ export class GemSummary extends Component {
 
 			for (const gemName of Object.keys(gemCounts)) {
 				const gemData = gemCounts[gemName];
+				const linkRef = ref<HTMLAnchorElement>();
+				const iconRef = ref<HTMLImageElement>();
 				const row = (
 					<div className="summary-table-row d-flex align-items-center">
-						<a className="summary-table-link" data-whtticon="false" target="_blank">
-							<img className="gem-icon" />
+						<a ref={linkRef} className="summary-table-link" data-whtticon="false" target="_blank">
+							<img ref={iconRef} className="gem-icon" />
 							<div>{gemName}</div>
 						</a>
 						<div>{gemData.count.toFixed(0)}</div>
 					</div>
 				);
+				body.appendChild(row);
 
-				this.container.bodyElement.appendChild(row);
-
-				const itemLinkElem = row.querySelector('.summary-table-link') as HTMLAnchorElement;
-				const iconElem = row.querySelector('.gem-icon') as HTMLImageElement;
+				const itemLinkElem = linkRef.value!;
+				const iconElem = iconRef.value!;
 
 				setItemQualityCssClass(itemLinkElem, gemData.gem.quality);
 
@@ -75,9 +78,9 @@ export class GemSummary extends Component {
 						iconElem.src = filledId.iconUrl;
 						filledId.setWowheadHref(itemLinkElem);
 					});
-
-				this.container.bodyElement.appendChild(row);
 			}
+
+			this.container.bodyElement.replaceChildren(body);
 
 			if (!this.container.headerElement) return;
 			const existingResetButton = this.container.headerElement.querySelector('.summary-table-reset-button');

@@ -37,6 +37,8 @@ export class Timeline extends ResultComponent {
 	private hiddenIds: Array<ActionId>;
 	private hiddenIdsChangeEmitter;
 
+	private resetCallbacks: (() => void)[] = [];
+
 	constructor(config: ResultComponentConfig) {
 		config.rootCssClass = 'timeline-root';
 		super(config);
@@ -127,29 +129,29 @@ export class Timeline extends ResultComponent {
 		let isMouseDown = false;
 		let startX = 0;
 		let scrollLeft = 0;
-		this.rotationTimeline.ondragstart = event => {
+		this.rotationTimeline.addEventListener('dragstart', event => {
 			event.preventDefault();
-		};
-		this.rotationTimeline.onmousedown = event => {
+		});
+		this.rotationTimeline.addEventListener('mousedown', event => {
 			isMouseDown = true;
 			startX = event.pageX - this.rotationTimeline.offsetLeft;
 			scrollLeft = this.rotationTimeline.scrollLeft;
-		};
-		this.rotationTimeline.onmouseleave = () => {
+		});
+		this.rotationTimeline.addEventListener('mouseleave', () => {
 			isMouseDown = false;
 			this.rotationTimeline.classList.remove('active');
-		};
-		this.rotationTimeline.onmouseup = () => {
+		});
+		this.rotationTimeline.addEventListener('mouseup', () => {
 			isMouseDown = false;
 			this.rotationTimeline.classList.remove('active');
-		};
-		this.rotationTimeline.onmousemove = e => {
+		});
+		this.rotationTimeline.addEventListener('mousemove', event => {
 			if (!isMouseDown) return;
-			e.preventDefault();
-			const x = e.pageX - this.rotationTimeline.offsetLeft;
+			event.preventDefault();
+			const x = event.pageX - this.rotationTimeline.offsetLeft;
 			const walk = (x - startX) * 3; //scroll-fast
 			this.rotationTimeline.scrollLeft = scrollLeft - walk;
-		};
+		});
 	}
 
 	onSimResult(resultData: SimResultData) {
@@ -614,7 +616,7 @@ export class Timeline extends ResultComponent {
 				<span className="rotation-label-text">{labelText}</span>
 			</div>
 		);
-		hideElem.value!.addEventListener('click', () => {
+		const onClickHandler = () => {
 			if (isHiddenLabel) {
 				const index = this.hiddenIds.findIndex(hiddenId => hiddenId.equals(actionId));
 				if (index != -1) {
@@ -624,12 +626,14 @@ export class Timeline extends ResultComponent {
 				this.hiddenIds.push(actionId);
 			}
 			this.hiddenIdsChangeEmitter.emit(TypedEvent.nextEventID());
-		});
-		tippy(hideElem.value!, {
+		};
+		hideElem.value!.addEventListener('click', onClickHandler);
+		const tooltip = tippy(hideElem.value!, {
 			theme: 'timeline-tooltip',
 			placement: 'bottom',
 			content: isHiddenLabel ? 'Show Row' : 'Hide Row',
 		});
+
 		const updateHidden = () => {
 			if (isHiddenLabel == Boolean(this.hiddenIds.find(hiddenId => hiddenId.equals(actionId)))) {
 				labelElem.classList.remove('hide');
@@ -637,10 +641,17 @@ export class Timeline extends ResultComponent {
 				labelElem.classList.add('hide');
 			}
 		};
-		this.hiddenIdsChangeEmitter.on(updateHidden);
+		const event = this.hiddenIdsChangeEmitter.on(updateHidden);
 		updateHidden();
 		actionId.setBackgroundAndHref(labelIcon.value!);
 		actionId.setWowheadDataset(labelIcon.value!, { useBuffAura: isAura });
+
+		this.addOnResetCallback(() => {
+			hideElem.value?.removeEventListener('click', onClickHandler);
+			tooltip.destroy();
+			event.dispose();
+		});
+
 		return labelElem;
 	}
 
@@ -660,8 +671,9 @@ export class Timeline extends ResultComponent {
 				rowElem.classList.remove('hide');
 			}
 		};
-		this.hiddenIdsChangeEmitter.on(updateHidden);
+		const event = this.hiddenIdsChangeEmitter.on(updateHidden);
 		updateHidden();
+		this.addOnResetCallback(() => event.dispose());
 		return rowElem;
 	}
 
@@ -758,10 +770,11 @@ export class Timeline extends ResultComponent {
 			}
 			rowElem.appendChild(resourceElem);
 
-			tippy(resourceElem, {
+			const tooltip = tippy(resourceElem, {
 				placement: 'bottom',
 				content: this.resourceTooltipElem(resourceLogGroup, startValue(resourceLogGroup), false),
 			});
+			this.addOnResetCallback(() => tooltip.destroy());
 		});
 		this.rotationTimeline.appendChild(rowElem);
 	}
@@ -919,10 +932,11 @@ export class Timeline extends ResultComponent {
 				</div>
 			);
 
-			tippy(auraElem, {
+			const tooltip = tippy(auraElem, {
 				placement: 'bottom',
 				content: tt,
 			});
+			this.addOnResetCallback(() => tooltip.destroy());
 
 			aul.stacksChange.forEach((scl, i) => {
 				if (scl.timestamp == aul.fadedAt) {
@@ -1007,7 +1021,7 @@ export class Timeline extends ResultComponent {
 						<>
 							<img className="timeline-tooltip-icon" src="${player.iconUrl}" />
 							<span className="" style="color: ${colorOverride}">
-								${player.label}
+								{player.label}
 							</span>
 							<span> - </span>
 						</>
@@ -1050,7 +1064,7 @@ export class Timeline extends ResultComponent {
 						<span className="series-color">After: {log.threatAfter.toFixed(1)}</span>
 					</div>
 				</div>
-				${includeAuras ? this.tooltipAurasSection(log) : null}
+				{includeAuras ? this.tooltipAurasSection(log) : null}
 			</div>
 		);
 	}
@@ -1129,9 +1143,19 @@ export class Timeline extends ResultComponent {
 	}
 
 	render() {
+		this.reset();
 		this.dpsResourcesPlot.render();
 		this.rendered = true;
 		this.updatePlot();
+	}
+
+	addOnResetCallback(callback: () => void) {
+		this.resetCallbacks.push(callback);
+	}
+
+	reset() {
+		this.resetCallbacks.forEach(callback => callback());
+		this.resetCallbacks = [];
 	}
 }
 

@@ -180,13 +180,14 @@ class GlyphPicker extends Input<Player<any>, number> {
 		this.iconElem = iconElemRef.value!;
 		this.nameElem = nameElemRef.value!;
 
-		const openGlyphSelectorModal = (event: Event) => {
-			event.preventDefault();
-			selectorModal.openTab(this, glyphOptions);
-		};
-
-		this.anchorElem.addEventListener('click', openGlyphSelectorModal);
-		this.addOnDisposeCallback(() => this.anchorElem.removeEventListener('click', openGlyphSelectorModal));
+		this.anchorElem.addEventListener(
+			'click',
+			event => {
+				event.preventDefault();
+				selectorModal.openTab(this, glyphOptions);
+			},
+			{ signal: this.signal },
+		);
 
 		this.init();
 	}
