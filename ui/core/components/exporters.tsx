@@ -337,7 +337,7 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 	private readonly simUI: IndividualSimUI<SpecType>;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, { title: '80Upgrades EP Export', allowDownload: true });
+		super(parent, simUI, { title: '85Upgrades EP Export', allowDownload: true });
 		this.simUI = simUI;
 	}
 
@@ -368,7 +368,7 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 		});
 
 		return (
-			`https://eightyupgrades.com/ep/import?name=${encodeURIComponent(`${player.getPlayerSpec().friendlyName} WoWSims Weights`)}` +
+			`https://sixtyupgrades.com/cata/ep/import?name=${encodeURIComponent(`${player.getPlayerSpec().friendlyName} WoWSims Weights`)}` +
 			Object.keys(namesToWeights)
 				.map(statName => `&${statName}=${namesToWeights[statName].toFixed(3)}`)
 				.join('')
