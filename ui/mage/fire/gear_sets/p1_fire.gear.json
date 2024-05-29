@@ -1,4 +1,4 @@
-{   "items": [
+{   "items":  [
 	{"id":60237,"enchant":4207,"gems":[52291,52217],"reforging":151},
 	{"id":69882,"randomSuffix":-129},
 	{"id":65213,"enchant":4200,"gems":[52207]},
@@ -14,7 +14,7 @@
 	{"id":65105},
 	{"id":62047,"reforging":165},
 	{"id":68132,"randomSuffix":-129,"enchant":4097,"reforging":145},
-	{"id":65133},
+	{"id":65133,"enchant":4091},
 	{"id":59460,"reforging":166}
   ]
 }
