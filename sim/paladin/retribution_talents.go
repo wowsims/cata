@@ -121,6 +121,8 @@ func (paladin *Paladin) ApplyArtOfWar() {
 		},
 	})
 
+	artOfWarChance := []float64{0, 0.07, 0.14, 0.20}[paladin.Talents.TheArtOfWar]
+
 	paladin.RegisterAura(core.Aura{
 		Label:    "The Art of War",
 		Duration: core.NeverExpires,
@@ -132,7 +134,7 @@ func (paladin *Paladin) ApplyArtOfWar() {
 				return
 			}
 
-			if sim.RandomFloat("Art of War Proc") < 0.2 {
+			if sim.RandomFloat("Art of War Proc") < artOfWarChance {
 				paladin.ArtOfWarInstantCast.Activate(sim)
 			}
 		},
@@ -196,4 +198,6 @@ func (paladin *Paladin) ApplyInquiryOfFaith() {
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.1 * float64(paladin.Talents.InquiryOfFaith),
 	})
+
+	// Inquisition duration is handled in inquisition.go
 }
