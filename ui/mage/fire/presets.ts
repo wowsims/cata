@@ -33,7 +33,7 @@ export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('F
 export const FireTalents = {
 	name: 'Fire',
 	data: SavedTalents.create({
-		talentsString: '203-230330221120121213031-03',
+		talentsString:  '003-230330221120121213231-03',
 		glyphs: Glyphs.create({
 			prime1: PrimeGlyph.GlyphOfFireball,
 			prime2: PrimeGlyph.GlyphOfPyroblast,

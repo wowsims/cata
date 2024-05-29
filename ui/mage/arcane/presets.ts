@@ -32,7 +32,7 @@ export const ARCANE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation(
 export const ArcaneTalents = {
 	name: 'Arcane',
 	data: SavedTalents.create({
-		talentsString: '303322021230122210121-23-03',
+		talentsString: '303302221230122210121-23-03',
 		glyphs: Glyphs.create({
 			prime1: PrimeGlyph.GlyphOfArcaneMissiles,
 			prime2: PrimeGlyph.GlyphOfArcaneBlast,
