@@ -12,10 +12,12 @@ type HolyPowerBar struct {
 	holyPower     int32
 }
 
+// CurrentHolyPower returns the actual amount of holy power the paladin has, not counting the Divine Purpose proc.
 func (paladin *Paladin) CurrentHolyPower() int32 {
 	return paladin.holyPower
 }
 
+// GetHolyPowerValue returns the amount of holy power used for calculating the damage done by Templar's Verdict and duration of Inquisition.
 func (paladin *Paladin) GetHolyPowerValue() int32 {
 	if paladin.DivinePurpose {
 		return 3

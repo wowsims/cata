@@ -35,6 +35,7 @@ func (paladin *Paladin) ApplyGlyphs() {
 			FloatValue: 10 * core.ExpertisePerQuarterPercentReduction,
 		})
 	}
+
 	// Major Glyphs
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfHammerOfWrath) {
 		paladin.AddStaticMod(core.SpellModConfig{
