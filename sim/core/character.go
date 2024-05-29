@@ -597,7 +597,13 @@ func (character *Character) GetProcMaskForItem(itemID int32) ProcMask {
 
 func (character *Character) GetProcMaskForTypes(weaponTypes ...proto.WeaponType) ProcMask {
 	return character.getProcMaskFor(func(weapon *Item) bool {
-		return weapon == nil || slices.Contains(weaponTypes, weapon.WeaponType)
+		return weapon != nil && slices.Contains(weaponTypes, weapon.WeaponType)
+	})
+}
+
+func (character *Character) GetProcMaskForTypesAndHand(twohand bool, weaponTypes ...proto.WeaponType) ProcMask {
+	return character.getProcMaskFor(func(weapon *Item) bool {
+		return weapon != nil && (weapon.HandType == proto.HandType_HandTypeTwoHand) == twohand && slices.Contains(weaponTypes, weapon.WeaponType)
 	})
 }
 
