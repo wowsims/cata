@@ -109,11 +109,5 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 		Spell:    comRogue.KillingSpree,
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityDefault,
-		ShouldActivate: func(sim *core.Simulation, c *core.Character) bool {
-			if comRogue.CurrentEnergy() > 40 || comRogue.AdrenalineRushAura.IsActive() {
-				return false
-			}
-			return true
-		},
 	})
 }
