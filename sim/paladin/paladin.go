@@ -225,6 +225,11 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 		Duration: time.Millisecond * 4500,
 	}
 
+	paladin.EnableAutoAttacks(paladin, core.AutoAttackOptions{
+		MainHand:       paladin.WeaponFromMainHand(paladin.DefaultMeleeCritMultiplier()),
+		AutoSwingMelee: true,
+	})
+
 	paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
 
