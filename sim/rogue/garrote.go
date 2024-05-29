@@ -10,13 +10,14 @@ func (rogue *Rogue) registerGarrote() {
 	numTicks := int32(6)
 
 	rogue.Garrote = rogue.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 703},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | SpellFlagBuilder | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 703},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagBuilder | core.SpellFlagAPL,
+		ClassSpellMask: RogueSpellGarrote,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.GetGeneratorCostModifier(45),
+			Cost:   45,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -51,7 +52,7 @@ func (rogue *Rogue) registerGarrote() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCrit)
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 				spell.Dot(target).Apply(sim)

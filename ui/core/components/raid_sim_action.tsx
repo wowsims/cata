@@ -1,5 +1,4 @@
 import tippy from 'tippy.js';
-import { element, fragment, ref } from 'tsx-vanilla';
 
 import { DistributionMetrics as DistributionMetricsProto, ProgressMetrics, Raid as RaidProto } from '../proto/api.js';
 import { Encounter as EncounterProto, Spec } from '../proto/common.js';

@@ -251,6 +251,7 @@ export const resourceNames: Map<ResourceType, string> = new Map([
 	[ResourceType.ResourceTypeDeathRune, 'Death Rune'],
 	[ResourceType.ResourceTypeSolarEnergy, 'Solar Energy'],
 	[ResourceType.ResourceTypeLunarEnergy, 'Lunar Energy'],
+	[ResourceType.ResourceTypeHolyPower, 'Holy Power'],
 ]);
 
 export const resourceColors: Map<ResourceType, string> = new Map([
@@ -268,6 +269,7 @@ export const resourceColors: Map<ResourceType, string> = new Map([
 	[ResourceType.ResourceTypeDeathRune, '#8b008b'],
 	[ResourceType.ResourceTypeSolarEnergy, '#d2952b'],
 	[ResourceType.ResourceTypeLunarEnergy, '#2c4f8f'],
+	[ResourceType.ResourceTypeHolyPower, '#ffa07b'],
 ]);
 
 export function stringToResourceType(str: string): ResourceType {
@@ -289,6 +291,7 @@ export const sourceNames: Map<SourceFilterOption, string> = new Map([
 	[SourceFilterOption.SourceDungeonH, 'Dungeon (H)'],
 	[SourceFilterOption.SourceRaid, 'Raid'],
 	[SourceFilterOption.SourceRaidH, 'Raid (H)'],
+	[SourceFilterOption.SourceRaidRF, 'Raid (RF)'],
 ]);
 export const raidNames: Map<RaidFilterOption, string> = new Map([
 	[RaidFilterOption.RaidUnknown, 'Unknown'],
@@ -310,6 +313,7 @@ export const difficultyNames: Map<DungeonDifficulty, string> = new Map([
 	[DungeonDifficulty.DifficultyTitanRuneBeta, 'TRB'],
 	[DungeonDifficulty.DifficultyRaid10, '10N'],
 	[DungeonDifficulty.DifficultyRaid10H, '10H'],
+	[DungeonDifficulty.DifficultyRaid25RF, 'RF'],
 	[DungeonDifficulty.DifficultyRaid25, 'RN'],
 	[DungeonDifficulty.DifficultyRaid25H, 'RH'],
 ]);

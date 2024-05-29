@@ -2,6 +2,7 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession,RaidBuffs, TinkerHands } from '../../core/proto/common.js';
 import {
 	AirTotem,
+	CallTotem,
 	EarthTotem,
 	EnhancementShaman_Options as EnhancementShamanOptions,
 	FireTotem,
@@ -12,14 +13,13 @@ import {
 	ShamanShield,
 	ShamanSyncType,
 	ShamanTotems,
-	WaterTotem,
 	TotemSet,
-	CallTotem,
+	WaterTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import DefaultApl from './apls/default.apl.json';
-import P1OrcGear from './gear_sets/p1orc.gear.json';
 import P1DraeneiGear from './gear_sets/p1draenei.gear.json';
+import P1OrcGear from './gear_sets/p1orc.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.

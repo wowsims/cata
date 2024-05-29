@@ -74,7 +74,7 @@ dps_results: {
  value: {
   dps: 26707.24711
   tps: 25358.84921
-  hps: 89.19301
+  hps: 97.40647
  }
 }
 dps_results: {
@@ -367,8 +367,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-Figurine-DemonPanther-52199"
  value: {
-  dps: 26669.90148
-  tps: 25339.14684
+  dps: 26691.06438
+  tps: 25351.30566
  }
 }
 dps_results: {
@@ -486,8 +486,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-HarmlightToken-63839"
  value: {
-  dps: 27584.98036
-  tps: 26226.37838
+  dps: 27582.25225
+  tps: 26211.91696
  }
 }
 dps_results: {
@@ -955,15 +955,15 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-Sorrowsong-55879"
  value: {
-  dps: 27628.50603
-  tps: 26248.6525
+  dps: 27736.12427
+  tps: 26350.05089
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-Sorrowsong-56400"
  value: {
-  dps: 27764.27455
-  tps: 26372.86984
+  dps: 27873.71095
+  tps: 26482.09196
  }
 }
 dps_results: {

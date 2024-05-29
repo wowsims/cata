@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerCurseOfElementsSpell() {
+func (warlock *Warlock) registerCurseOfElements() {
 	warlock.CurseOfElementsAuras = warlock.NewEnemyAuraArray(core.CurseOfElementsAura)
 
 	warlock.RegisterSpell(core.SpellConfig{
@@ -16,18 +16,11 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellCurseOfElements,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.1,
-			Multiplier: 1,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.1},
+		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  156,
+		FlatThreatBonus:  104,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
@@ -42,7 +35,7 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 	})
 }
 
-func (warlock *Warlock) registerCurseOfWeaknessSpell() {
+func (warlock *Warlock) registerCurseOfWeakness() {
 	warlock.CurseOfWeaknessAuras = warlock.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return core.CurseOfWeaknessAura(target)
 	})
@@ -54,18 +47,11 @@ func (warlock *Warlock) registerCurseOfWeaknessSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellCurseOfWeakness,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.1,
-			Multiplier: 1,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.1},
+		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  142,
+		FlatThreatBonus:  32,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
@@ -80,7 +66,7 @@ func (warlock *Warlock) registerCurseOfWeaknessSpell() {
 	})
 }
 
-func (warlock *Warlock) registerCurseOfTonguesSpell() {
+func (warlock *Warlock) registerCurseOfTongues() {
 	actionID := core.ActionID{SpellID: 1714}
 
 	// Empty aura so we can simulate cost/time to keep tongues up
@@ -99,18 +85,11 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellCurseOfTongues,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.04,
-			Multiplier: 1,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.04},
+		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		ThreatMultiplier: 1,
-		FlatThreatBonus:  100,
+		FlatThreatBonus:  52,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
@@ -125,7 +104,7 @@ func (warlock *Warlock) registerCurseOfTonguesSpell() {
 	})
 }
 
-func (warlock *Warlock) registerBaneOfAgonySpell() {
+func (warlock *Warlock) registerBaneOfAgony() {
 	baseTickDmg := warlock.CalcScalingSpellDmg(0.13300000131)
 
 	warlock.BaneOfAgony = warlock.RegisterSpell(core.SpellConfig{
@@ -136,11 +115,7 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 		ClassSpellMask: WarlockSpellBaneOfAgony,
 
 		ManaCost: core.ManaCostOptions{BaseCost: 0.1},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-		},
+		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
@@ -177,9 +152,7 @@ func (warlock *Warlock) registerBaneOfAgonySpell() {
 	})
 }
 
-// TODO: Does this benefit from haunt?
-func (warlock *Warlock) registerBaneOfDoomSpell() {
-
+func (warlock *Warlock) registerBaneOfDoom() {
 	ebonImpBonusSummon := 0.1 * float64(warlock.Talents.ImpendingDoom)
 
 	warlock.BaneOfDoom = warlock.RegisterSpell(core.SpellConfig{
@@ -189,20 +162,13 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 		Flags:          core.SpellFlagHauntSE | core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellBaneOfDoom,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.15,
-			Multiplier: 1,
-		},
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
-			},
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.15},
+		Cast:     core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}},
 
 		DamageMultiplierAdditive: 1,
 		CritMultiplier:           warlock.DefaultSpellCritMultiplier(),
 		ThreatMultiplier:         1,
-		FlatThreatBonus:          160,
+		FlatThreatBonus:          40,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -210,12 +176,11 @@ func (warlock *Warlock) registerBaneOfDoomSpell() {
 			},
 			NumberOfTicks:    4,
 			TickLength:       15 * time.Second,
-			BonusCoefficient: 0.88,
+			BonusCoefficient: 0.87999999523,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, warlock.CalcScalingSpellDmg(Coefficient_BaneOfDoom))
+				dot.Snapshot(target, warlock.CalcScalingSpellDmg(2.02399992943))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				//TODO: Can this crit?
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				if sim.Proc(0.2+ebonImpBonusSummon, "Ebon Imp") {
 					warlock.EbonImp.EnableWithTimeout(sim, warlock.EbonImp, 15*time.Second)

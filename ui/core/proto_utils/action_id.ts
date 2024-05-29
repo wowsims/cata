@@ -386,6 +386,12 @@ export class ActionId {
 				break;
 			case 'Fulmination':
 				name += ` (${this.tag + 3})`;
+				break;
+			case 'Lightning Shield':
+				if (this.tag == 1) {
+					name += ' (Wasted)'
+				}
+				break;
 			case 'Moonfire':
 			case 'Sunfire':
 				if (this.tag == 1) {
@@ -760,6 +766,8 @@ const petNameToIcon: Record<string, string> = {
 	Felguard: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
 	Felhunter: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
+	Doomguard: 'https://wow.zamimg.com/images/wow/icons/large/warlock_summon_doomguard.jpg',
+	'Ebon Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell-nature-removecurse.jpg',
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
 	Imp: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',
@@ -807,6 +815,7 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeDeathRune]: '/cata/assets/img/death_rune.png',
 	[ResourceType.ResourceTypeSolarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipseorange.jpg',
 	[ResourceType.ResourceTypeLunarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipse.jpg',
+	[ResourceType.ResourceTypeHolyPower]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_testoffaith.jpg',
 };
 
 // Use this to connect a buff row to a cast row in the timeline view

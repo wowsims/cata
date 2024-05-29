@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/rogue"
 )
 
 var AdrenalineRushActionID = core.ActionID{SpellID: 13750}
@@ -32,7 +33,8 @@ func (comRogue *CombatRogue) registerAdrenalineRushCD() {
 	})
 
 	comRogue.AdrenalineRush = comRogue.RegisterSpell(core.SpellConfig{
-		ActionID: AdrenalineRushActionID,
+		ActionID:       AdrenalineRushActionID,
+		ClassSpellMask: rogue.RogueSpellAdrenalineRush,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -1,6 +1,8 @@
 package affliction
 
 import (
+	"math"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/warlock"
@@ -37,7 +39,7 @@ type AfflictionWarlock struct {
 }
 
 func (affliction AfflictionWarlock) getMasteryBonus() float64 {
-	return 0.13 + 0.0163*affliction.GetMasteryPoints()
+	return math.Floor(13.04+1.63*affliction.GetMasteryPoints()) / 100.0
 }
 
 func (affliction *AfflictionWarlock) GetWarlock() *warlock.Warlock {
@@ -47,8 +49,8 @@ func (affliction *AfflictionWarlock) GetWarlock() *warlock.Warlock {
 func (affliction *AfflictionWarlock) Initialize() {
 	affliction.Warlock.Initialize()
 
-	affliction.registerHauntSpell()
-	affliction.registerUnstableAfflictionSpell()
+	affliction.registerHaunt()
+	affliction.registerUnstableAffliction()
 }
 
 func (affliction *AfflictionWarlock) ApplyTalents() {
@@ -56,7 +58,7 @@ func (affliction *AfflictionWarlock) ApplyTalents() {
 
 	// Mastery: Potent Afflictions
 	masteryMod := affliction.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Pct,
+		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: warlock.WarlockPeriodicShadowDamage,
 	})
 
@@ -64,17 +66,8 @@ func (affliction *AfflictionWarlock) ApplyTalents() {
 		masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
 	})
 
-	core.MakePermanent(affliction.GetOrRegisterAura(core.Aura{
-		Label:    "Mastery: Potent Afflictions",
-		ActionID: core.ActionID{SpellID: 77215},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
-			masteryMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			masteryMod.Deactivate()
-		},
-	}))
+	masteryMod.UpdateFloatValue(affliction.getMasteryBonus())
+	masteryMod.Activate()
 
 	// Shadow Mastery
 	affliction.AddStaticMod(core.SpellModConfig{

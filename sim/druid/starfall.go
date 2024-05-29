@@ -20,6 +20,7 @@ func (druid *Druid) registerStarfallSpell() {
 		SpellSchool:    core.SpellSchoolArcane,
 		ProcMask:       core.ProcMaskSuppressedProc,
 		ClassSpellMask: DruidSpellStarfall,
+		Flags:          SpellFlagOmenTrigger,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.BalanceCritMultiplier(),

@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/rogue"
 
 	"github.com/wowsims/cata/sim/core"
 )
@@ -29,8 +30,9 @@ func (subRogue *SubtletyRogue) registerShadowDanceCD() {
 	})
 
 	subRogue.ShadowDance = subRogue.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: rogue.RogueSpellShadowDance,
 
 		Cast: core.CastConfig{
 			IgnoreHaste: true,

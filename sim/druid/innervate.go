@@ -18,32 +18,17 @@ func (druid *Druid) registerInnervateCD() {
 
 	innervateCD := core.InnervateCD
 
+	amount := 0.05
+	if innervateTarget == &druid.Unit {
+		amount = 0.2 + float64(druid.Talents.Dreamstate) * 0.15
+	}
+
 	var innervateAura *core.Aura
-	var innervateManaThreshold float64
-	druid.RegisterResetEffect(func(sim *core.Simulation) {
-		if innervateTarget == &druid.Unit {
-			if druid.StartingForm.Matches(Cat) {
-				// double shift + innervate cost.
-				// Prevents not having enough mana to shift back into form if more powershift are executed
-				innervateManaThreshold = druid.CatForm.DefaultCast.Cost*2 + innervateSpell.DefaultCast.Cost
-			} else {
-				// Threshold can be lower when casting on self because its never mid-cast.
-				innervateManaThreshold = 500
-			}
-		} else {
-			innervateManaThreshold = core.InnervateManaThreshold(innervateTargetChar)
-		}
-		innervateAura = core.InnervateAura(innervateTargetChar, actionID.Tag)
-	})
+	innervateAura = core.InnervateAura(innervateTargetChar, actionID.Tag, amount)
+	innervateManaThreshold := core.InnervateManaThreshold(innervateTargetChar)
 
 	innervateSpell = druid.RegisterSpell(Humanoid|Moonkin|Tree, core.SpellConfig{
 		ActionID: actionID,
-		Flags:    SpellFlagOmenTrigger,
-
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.04,
-			Multiplier: 1,
-		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -53,12 +38,10 @@ func (druid *Druid) registerInnervateCD() {
 				Duration: innervateCD,
 			},
 		},
-
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			// If target already has another innervate, don't cast.
-			return innervateTarget.HasActiveAuraWithTag(core.InnervateAuraTag)
+			return !innervateTarget.HasActiveAuraWithTag(core.InnervateAuraTag)
 		},
-
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			innervateAura.Activate(sim)
 		},

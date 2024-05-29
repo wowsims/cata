@@ -17,7 +17,11 @@ func TestGuardian(t *testing.T) {
 		Class: proto.Class_ClassDruid,
 		Race:  proto.Race_RaceTauren,
 
-		GearSet:     core.GetGearSet("../../../ui/druid/guardian/gear_sets", "preraid"),
+		GearSet: core.GetGearSet("../../../ui/druid/guardian/gear_sets", "preraid"),
+		OtherGearSets: []core.GearSetCombo{
+			core.GetGearSet("../../../ui/druid/guardian/gear_sets", "p1"),
+		},
+
 		Talents:     StandardTalents,
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,
@@ -84,7 +88,7 @@ var StandardGlyphs = &proto.Glyphs{
 var PlayerOptionsDefault = &proto.Player_GuardianDruid{
 	GuardianDruid: &proto.GuardianDruid{
 		Options: &proto.GuardianDruid_Options{
-			StartingRage:    15,
+			StartingRage: 15,
 		},
 	},
 }

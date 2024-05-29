@@ -45,13 +45,21 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 		this.rootElem.appendChild(this.inputElem);
 		this.init();
 
-		this.inputElem.addEventListener('change', () => {
-			this.inputChanged(TypedEvent.nextEventID());
-		});
+		this.inputElem.addEventListener(
+			'change',
+			() => {
+				this.inputChanged(TypedEvent.nextEventID());
+			},
+			{ signal: this.signal },
+		);
 
-		this.inputElem.addEventListener('input', () => {
-			this.updateSize();
-		});
+		this.inputElem.addEventListener(
+			'input',
+			() => {
+				this.updateSize();
+			},
+			{ signal: this.signal },
+		);
 		this.updateSize();
 	}
 

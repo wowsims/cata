@@ -1,18 +1,18 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession } from '../../core/proto/common.js';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common.js';
 import {
 	AirTotem,
+	CallTotem,
 	EarthTotem,
 	ElementalShaman_Options as ElementalShamanOptions,
 	FireTotem,
-	ShamanPrimeGlyph,
 	ShamanMajorGlyph,
 	ShamanMinorGlyph,
+	ShamanPrimeGlyph,
 	ShamanShield,
 	ShamanTotems,
-	WaterTotem,
 	TotemSet,
-	CallTotem,
+	WaterTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import DefaultApl from './apls/default.apl.json';
@@ -99,6 +99,7 @@ export const OtherDefaults = {
 	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
+	duration: 300,
 };
 
 export const DefaultConsumes = Consumes.create({
@@ -106,4 +107,5 @@ export const DefaultConsumes = Consumes.create({
 	prepopPotion: Potions.VolcanicPotion,
 	flask: Flask.FlaskOfTheDraconicMind,
 	food: Food.FoodSeafoodFeast,
+	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
 });
