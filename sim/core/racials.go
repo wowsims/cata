@@ -118,6 +118,8 @@ func applyRaceEffects(agent Agent) {
 	case proto.Race_RaceGnome:
 		character.PseudoStats.ReducedArcaneHitTakenChance += 0.02
 		character.MultiplyStat(stats.Mana, 1.05)
+		applyOneHandWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
+			proto.WeaponType_WeaponTypeSword, proto.WeaponType_WeaponTypeDagger)
 	case proto.Race_RaceHuman:
 		character.MultiplyStat(stats.Spirit, 1.03)
 		applyWeaponSpecialization(character, 3*ExpertisePerQuarterPercentReduction,
@@ -238,6 +240,20 @@ func applyRaceEffects(agent Agent) {
 
 func applyWeaponSpecialization(character *Character, expertiseBonus float64, weaponTypes ...proto.WeaponType) {
 	mask := character.GetProcMaskForTypes(weaponTypes...)
+
+	if mask == ProcMaskMelee || (mask == ProcMaskMeleeMH && !character.HasOHWeapon()) {
+		character.AddStat(stats.Expertise, expertiseBonus)
+	} else {
+		character.OnSpellRegistered(func(spell *Spell) {
+			if spell.ProcMask.Matches(mask) {
+				spell.BonusExpertiseRating += expertiseBonus
+			}
+		})
+	}
+}
+
+func applyOneHandWeaponSpecialization(character *Character, expertiseBonus float64, weaponTypes ...proto.WeaponType) {
+	mask := character.GetProcMaskForTypesAndHand(false, weaponTypes...)
 
 	if mask == ProcMaskMelee || (mask == ProcMaskMeleeMH && !character.HasOHWeapon()) {
 		character.AddStat(stats.Expertise, expertiseBonus)
