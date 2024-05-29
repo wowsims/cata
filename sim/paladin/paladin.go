@@ -129,26 +129,18 @@ func (paladin *Paladin) GetPaladin() *Paladin {
 }
 
 func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// raidBuffs.DevotionAura = max(raidBuffs.DevotionAura, core.MakeTristateValue(
-	// 	paladin.PaladinAura == proto.PaladinAura_DevotionAura,
-	// 	paladin.Talents.ImprovedDevotionAura == 5))
-
-	// if paladin.PaladinAura == proto.PaladinAura_RetributionAura {
-	// 	raidBuffs.RetributionAura = true
-	// }
-
-	// if paladin.Talents.SanctifiedRetribution {
-	// 	raidBuffs.SanctifiedRetribution = true
-	// }
-
-	// if paladin.Talents.SwiftRetribution == 3 {
-	// 	raidBuffs.SwiftRetribution = paladin.Talents.SwiftRetribution == 3 // TODO: Fix-- though having something between 0/3 and 3/3 is unlikely
-	// }
-
-	// TODO: Figure out a way to just start with 1 DG cooldown available without making a redundant Spell
-	//if paladin.Talents.DivineGuardian == 2 {
-	//	raidBuffs.divineGuardians++
-	//}
+	if paladin.PaladinAura == proto.PaladinAura_DevotionAura {
+		raidBuffs.DevotionAura = true
+	}
+	if paladin.PaladinAura == proto.PaladinAura_RetributionAura {
+		raidBuffs.RetributionAura = true
+	}
+	if paladin.PaladinAura == proto.PaladinAura_ResistanceAura {
+		raidBuffs.ResistanceAura = true
+	}
+	if paladin.Talents.Communion {
+		raidBuffs.Communion = true
+	}
 }
 
 func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
