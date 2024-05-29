@@ -155,6 +155,7 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
+	paladin.ApplyGlyphs()
 	paladin.RegisterJudgement()
 	paladin.RegisterSealOfTruth()
 	// // Update auto crit multipliers now that we have the targets.
