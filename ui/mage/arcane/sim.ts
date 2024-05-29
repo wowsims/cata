@@ -109,6 +109,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.ARCANE_P1_PRESET,
+			Presets.ARCANE_P1_PREBIS_PRESET,
 		],
 	},
 
@@ -206,9 +207,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.ARCANE_P1_PRESET.gear,
+					2: Presets.ARCANE_P1_PREBIS_PRESET.gear
 				},
 				[Faction.Horde]: {
 					1: Presets.ARCANE_P1_PRESET.gear,
+					2: Presets.ARCANE_P1_PREBIS_PRESET.gear
 				},
 			},
 		},

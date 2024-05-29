@@ -335,7 +335,7 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 	druid.RebirthUsed = false
 }
 
-func (druid *Druid) ForceSolarEclipse(sim *core.Simulation, mastery float64){
+func (druid *Druid) ForceSolarEclipse(sim *core.Simulation, mastery float64) {
 	mastery -= druid.GetStat(stats.Mastery)
 	if mastery > 0 {
 		druid.AddStatDynamic(sim, stats.Mastery, mastery)
