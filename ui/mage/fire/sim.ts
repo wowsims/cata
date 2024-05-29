@@ -56,13 +56,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		gear: Presets.FIRE_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.48,
-			[Stat.StatSpirit]: 0.42,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellHit]: 0.38,
-			[Stat.StatSpellCrit]: 0.58,
-			[Stat.StatSpellHaste]: 0.94,
-			[Stat.StatMastery]: 0.8
+			[Stat.StatIntellect]: 1.00,
+			[Stat.StatSpirit]: 0.02,
+			[Stat.StatSpellPower]: 0.67,
+			[Stat.StatSpellHit]: 0.77,
+			[Stat.StatSpellCrit]: 0.4,
+			[Stat.StatSpellHaste]: 0.68,
+			[Stat.StatMastery]: 0.35
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
@@ -110,7 +110,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
-			Presets.FIRE_P1_PRESET],
+			Presets.FIRE_P1_PRESET,
+			Presets.FIRE_P1_PREBIS
+		],
 	},
 
 	autoRotation: (player: Player<Spec.SpecFireMage>): APLRotation => {
@@ -139,9 +141,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.FIRE_P1_PRESET.gear,
+					2: Presets.FIRE_P1_PREBIS.gear
 				},
 				[Faction.Horde]: {
 					1: Presets.FIRE_P1_PRESET.gear,
+					2: Presets.FIRE_P1_PREBIS.gear
 				},
 			},
 		},
