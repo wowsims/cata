@@ -22,14 +22,24 @@ func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
 			},
 			IgnoreHaste: true,
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool { return retPaladin.CurrentHolyPower() >= 3 },
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool { return retPaladin.GetHolyPowerValue() > 0 },
 
-		DamageMultiplier: 1.9,
+		DamageMultiplier: 1,
 		CritMultiplier:   retPaladin.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			holyPower := retPaladin.GetHolyPowerValue()
+
+			if holyPower == 0 {
+				return
+			}
+
+			multiplier := 1.0 + 0.3*float64(holyPower)
+
+			spell.DamageMultiplier += multiplier
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.DamageMultiplier -= multiplier
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 

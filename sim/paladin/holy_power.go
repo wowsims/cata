@@ -13,10 +13,15 @@ type HolyPowerBar struct {
 }
 
 func (paladin *Paladin) CurrentHolyPower() int32 {
+	return paladin.holyPower
+}
+
+func (paladin *Paladin) GetHolyPowerValue() int32 {
 	if paladin.DivinePurpose {
 		return 3
 	}
-	return paladin.holyPower
+
+	return paladin.CurrentHolyPower()
 }
 
 func (paladin *Paladin) InitializeHolyPowerBar() {
