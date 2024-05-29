@@ -148,44 +148,14 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 
 func (paladin *Paladin) Initialize() {
 	paladin.ApplyGlyphs()
+	paladin.RegisterSpells()
+}
+
+func (paladin *Paladin) RegisterSpells() {
+	paladin.RegisterCrusaderStrike()
+	paladin.RegisterExorcism()
 	paladin.RegisterJudgement()
 	paladin.RegisterSealOfTruth()
-	// // Update auto crit multipliers now that we have the targets.
-	// paladin.AutoAttacks.MHConfig().CritMultiplier = paladin.MeleeCritMultiplier()
-	// paladin.registerSealOfVengeanceSpellAndAura()
-	// paladin.registerSealOfRighteousnessSpellAndAura()
-	// paladin.registerSealOfCommandSpellAndAura()
-	// // paladin.setupSealOfTheCrusader()
-	// // paladin.setupSealOfWisdom()
-	// // paladin.setupSealOfLight()
-	// // paladin.setupSealOfRighteousness()
-	// // paladin.setupJudgementRefresh()
-
-	paladin.RegisterCrusaderStrike()
-
-	// paladin.registerConsecrationSpell()
-	// paladin.registerHammerOfWrathSpell()
-	// paladin.registerHolyWrathSpell()
-
-	paladin.RegisterExorcism()
-	// paladin.registerHolyShieldSpell()
-	// paladin.registerHammerOfTheRighteousSpell()
-	// paladin.registerHandOfReckoningSpell()
-	// paladin.registerShieldOfRighteousnessSpell()
-	// paladin.registerAvengersShieldSpell()
-	// paladin.registerJudgements()
-
-	// paladin.registerSpiritualAttunement()
-	// paladin.registerDivinePleaSpell()
-	// paladin.registerDivineProtectionSpell()
-	// paladin.registerForbearanceDebuff()
-
-	// for i := int32(0); i < paladin.Env.GetNumTargets(); i++ {
-	// 	unit := paladin.Env.GetTargetUnit(i)
-	// 	if unit.MobType == proto.MobType_MobTypeDemon || unit.MobType == proto.MobType_MobTypeUndead {
-	// 		paladin.DemonAndUndeadTargetCount += 1
-	// 	}
-	// }
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
