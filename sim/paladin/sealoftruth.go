@@ -66,10 +66,11 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 
 	// Seal of Truth on-hit proc
 	onSpecialOrSwingProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 42463},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskProc, // does proc certain spell damage-based items, e.g. Black Magic, Pendulum of Telluric Currents
-		Flags:       core.SpellFlagMeleeMetrics,
+		ActionID:       core.ActionID{SpellID: 42463},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskProc, // does proc certain spell damage-based items, e.g. Black Magic, Pendulum of Telluric Currents
+		Flags:          core.SpellFlagMeleeMetrics,
+		ClassSpellMask: SpellMaskSealOfTruth,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
@@ -88,21 +89,6 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 31801},
 		Duration: time.Minute * 30,
-		/*
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth) {
-					expertise := core.ExpertisePerQuarterPercentReduction * 10
-					paladin.AddStatDynamic(sim, stats.Expertise, expertise)
-				}
-			},
-
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth) {
-					expertise := core.ExpertisePerQuarterPercentReduction * 10
-					paladin.AddStatDynamic(sim, stats.Expertise, -expertise)
-				}
-			},
-		*/
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Don't proc on misses or our own procs.
 			if !result.Landed() || spell == censureSpell || spell == judgementDmg || spell == onSpecialOrSwingProc {
@@ -136,11 +122,10 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 	// Seal of Truth self-buff.
 	aura := paladin.SealOfTruthAura
 	paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 31801},
-		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskSealOfTruth,
+		ActionID:    core.ActionID{SpellID: 31801},
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.14,

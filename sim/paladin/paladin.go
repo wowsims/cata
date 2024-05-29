@@ -33,6 +33,7 @@ const (
 	SpellMaskAvengingWrath
 	SpellMaskCensure
 	SpellMaskInquisition
+	SpellMaskHandOfLight
 
 	SpellMaskHolyShock
 	SpellMaskWordOfGlory
@@ -44,6 +45,15 @@ const (
 )
 
 const SpellMaskSingleTarget = SpellMaskCrusaderStrike | SpellMaskTemplarsVerdict
+
+const SpellMaskModifiedByInquisition = SpellMaskHammerOfWrath |
+	SpellMaskConsecration |
+	SpellMaskExorcism |
+	SpellMaskJudgement |
+	SpellMaskSealOfTruth |
+	SpellMaskCensure |
+	SpellMaskHandOfLight |
+	SpellMaskHolyWrath
 
 var TalentTreeSizes = [3]int{20, 20, 20}
 
@@ -79,6 +89,7 @@ type Paladin struct {
 	Inquisition           *core.Spell
 	SealsOfCommand        *core.Spell
 	SealOfTruth           *core.Spell
+	HandOfLight           *core.Spell
 
 	HolyShieldAura          *core.Aura
 	RighteousFuryAura       *core.Aura
@@ -156,6 +167,7 @@ func (paladin *Paladin) RegisterSpells() {
 	paladin.RegisterExorcism()
 	paladin.RegisterJudgement()
 	paladin.RegisterSealOfTruth()
+	paladin.RegisterInquisition()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {

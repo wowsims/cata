@@ -87,22 +87,23 @@ func (ret *RetributionPaladin) RegisterMastery() {
 	actionId := core.ActionID{SpellID: 76672}
 
 	// Hand of Light
-	handOfLight := ret.RegisterSpell(core.SpellConfig{
-		ActionID:         actionId,
-		SpellSchool:      core.SpellSchoolHoly,
-		ProcMask:         core.ProcMaskMeleeMHSpecial,
-		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+	ret.HandOfLight = ret.RegisterSpell(core.SpellConfig{
+		ActionID:       actionId,
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		ClassSpellMask: paladin.SpellMaskHandOfLight,
+
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
 		CritMultiplier:   ret.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			new_result := spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHit)
-			// TODO: this damage needs to be manually boosted by inquisition when it's implemented, and also needs to be
-			// boosted by any 8% magic damage taken debuff present on the target.
-			new_result.Damage = ret.HoLDamage
-			new_result.Threat = spell.ThreatFromDamage(new_result.Outcome, new_result.Damage)
-			spell.DealDamage(sim, new_result)
+			newResult := spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHit)
+			// TODO: this damage needs to be manually boosted by any 8% magic damage taken debuff present on the target.
+			newResult.Damage = ret.HoLDamage
+			newResult.Threat = spell.ThreatFromDamage(newResult.Outcome, newResult.Damage)
+			spell.DealDamage(sim, newResult)
 		},
 	})
 
@@ -117,7 +118,7 @@ func (ret *RetributionPaladin) RegisterMastery() {
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			ret.HoLDamage = (16.8 + 2.1*ret.GetMasteryPoints()) / 100.0 * result.Damage
-			handOfLight.Cast(sim, result.Target)
+			ret.HandOfLight.Cast(sim, result.Target)
 		},
 	})
 }
