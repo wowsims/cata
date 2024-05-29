@@ -156,6 +156,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		// Preset gear configurations that the user can quickly select.
 		gear: [
 			Presets.P1_PRESET_ASSASSINATION,
+			Presets.P1_PRESET_ASN_EXPERTISE
 		],
 	},
 

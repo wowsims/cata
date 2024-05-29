@@ -9,10 +9,11 @@ import (
 
 func (rogue *Rogue) registerFeintSpell() {
 	rogue.Feint = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1966},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 1966},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: RogueSpellFeint,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: core.TernaryFloat64(rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfFeint), 0, 20),

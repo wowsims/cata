@@ -10,13 +10,14 @@ func (rogue *Rogue) registerAmbushSpell() {
 	baseDamage := rogue.ClassSpellScaling * 0.32699999213
 
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 8676},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 8676},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		ClassSpellMask: RogueSpellAmbush,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.GetGeneratorCostModifier(60 - []float64{0, 7, 14, 20}[rogue.Talents.SlaughterFromTheShadows]),
+			Cost:   60 - []float64{0, 7, 14, 20}[rogue.Talents.SlaughterFromTheShadows],
 			Refund: 0,
 		},
 		Cast: core.CastConfig{
@@ -53,5 +54,10 @@ func (rogue *Rogue) registerAmbushSpell() {
 				spell.IssueRefund(sim)
 			}
 		},
+	})
+
+	rogue.RegisterOnItemSwap(func(s *core.Simulation) {
+		// Recalculate Ambush's multiplier in case the MH weapon changed.
+		rogue.Ambush.DamageMultiplier = core.TernaryFloat64(rogue.HasDagger(core.MainHand), 2.86, 1.97)
 	})
 }
