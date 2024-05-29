@@ -8,6 +8,7 @@ import (
 func (paladin *Paladin) ApplyRetributionTalents() {
 	paladin.ApplyCrusade()
 	paladin.ApplyRuleOfLaw()
+	paladin.ApplySealsOfCommand()
 	paladin.ApplySanctifiedWrath()
 	paladin.ApplyArtOfWar()
 	paladin.ApplyDivinePurpose()
@@ -35,6 +36,46 @@ func (paladin *Paladin) ApplyRuleOfLaw() {
 		ClassMask:  SpellMaskCrusaderStrike | SpellMaskWordOfGlory | SpellMaskHammerOfTheRighteous,
 		Kind:       core.SpellMod_BonusCrit_Rating,
 		FloatValue: 5 * float64(paladin.Talents.RuleOfLaw) * core.CritRatingPerCritChance,
+	})
+}
+
+func (paladin *Paladin) ApplySealsOfCommand() {
+	if !paladin.Talents.SealsOfCommand {
+		return
+	}
+
+	actionId := core.ActionID{SpellID: 20424}
+
+	// Seals of Command
+	paladin.SealsOfCommand = paladin.RegisterSpell(core.SpellConfig{
+		ActionID:    actionId,
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+
+		DamageMultiplier: 1.0,
+		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+		ThreatMultiplier: 1.0,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := .07 * spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+		},
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:       "Seals of Command",
+		ActionID:   actionId,
+		Callback:   core.CallbackOnSpellHitDealt,
+		Outcome:    core.OutcomeLanded,
+		ProcMask:   core.ProcMaskMeleeSpecial | core.ProcMaskMeleeWhiteHit,
+		ProcChance: 1.0,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.IsMelee() {
+				paladin.SealsOfCommand.Cast(sim, result.Target)
+			}
+		},
 	})
 }
 

@@ -77,8 +77,8 @@ type Paladin struct {
 	TemplarsVerdict       *core.Spell
 	Zealotry              *core.Spell
 	Inquisition           *core.Spell
-
-	SealOfTruth *core.Spell
+	SealsOfCommand        *core.Spell
+	SealOfTruth           *core.Spell
 
 	HolyShieldAura          *core.Aura
 	RighteousFuryAura       *core.Aura
