@@ -47,10 +47,9 @@ func (warrior *Warrior) RegisterRendSpell() {
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				weaponMH := warrior.AutoAttacks.MH()
-				avgMHDamage := weaponMH.AverageDamage()
+				avgMHDamage := weaponMH.CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower())
 
-				ap := dot.Spell.MeleeAttackPower() / 14.0
-				dot.Snapshot(target, (529+(0.25*6*(avgMHDamage+ap*weaponMH.SwingSpeed)))/float64(dot.NumberOfTicks))
+				dot.Snapshot(target, (529+(0.25*6*(avgMHDamage)))/float64(dot.NumberOfTicks))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalCrit)
