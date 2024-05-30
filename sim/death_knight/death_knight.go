@@ -147,7 +147,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
-	maxRunicPower := 100.0 + 15.0*float64(dk.Talents.RunicPowerMastery)
+	maxRunicPower := 100.0 + 10.0*float64(dk.Talents.RunicPowerMastery)
 	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)
 
 	dk.EnableRunicPowerBar(
