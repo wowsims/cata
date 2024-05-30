@@ -6,10 +6,10 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (warlock *Warlock) registerIncinerateSpell() {
+func (warlock *Warlock) registerIncinerate() {
 	shadowAndFlameProcChance := []float64{0.0, 0.33, 0.66, 1.0}[warlock.Talents.ShadowAndFlame]
 
-	warlock.Incinerate = warlock.RegisterSpell(core.SpellConfig{
+	warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 29722},
 		SpellSchool:    core.SpellSchoolFire,
 		ProcMask:       core.ProcMaskSpellDamage,
@@ -17,10 +17,7 @@ func (warlock *Warlock) registerIncinerateSpell() {
 		MissileSpeed:   24,
 		ClassSpellMask: WarlockSpellIncinerate,
 
-		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.14,
-			Multiplier: 1,
-		},
+		ManaCost: core.ManaCostOptions{BaseCost: 0.14},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -34,7 +31,7 @@ func (warlock *Warlock) registerIncinerateSpell() {
 		BonusCoefficient:         0.53899997473,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := warlock.CalcAndRollDamageRange(sim, Coefficient_Incinerate, Variance_Incinerate)
+			baseDamage := warlock.CalcAndRollDamageRange(sim, 0.57300001383, 0.15000000596)
 
 			if warlock.ImmolateDot.Dot(target).IsActive() {
 				baseDamage += baseDamage / 6

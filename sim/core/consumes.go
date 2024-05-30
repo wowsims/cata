@@ -967,6 +967,10 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 					Timer:    character.NewTimer(),
 					Duration: time.Second * 60,
 				},
+				SharedCD: Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: time.Second * 10,
+				},
 			},
 
 			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {

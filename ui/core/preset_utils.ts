@@ -1,3 +1,5 @@
+import * as Tooltips from './constants/tooltips.js';
+import { Player } from './player';
 import {
 	APLRotation,
 	APLRotation_Type as APLRotationType,
@@ -11,14 +13,10 @@ import {
 import {
     SavedRotation,
 } from './proto/ui';
-
-import { Player } from './player';
 import {
     SpecRotation,
 	specTypeFunctions,
 } from './proto_utils/utils';
-
-import * as Tooltips from './constants/tooltips.js';
 
 export interface PresetGear {
 	name: string;
@@ -53,7 +51,7 @@ export function makePresetGear(name: string, gearJson: any, options?: PresetGear
 }
 
 function makePresetGearHelper(name: string, gear: EquipmentSpec, options: PresetGearOptions): PresetGear {
-    let conditions: Array<(player: Player<any>) => boolean> = [];
+    const conditions: Array<(player: Player<any>) => boolean> = [];
     if (options.talentTree != undefined) {
         conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
     }
@@ -101,7 +99,7 @@ export function makePresetSimpleRotation<SpecType extends Spec>(name: string, sp
 }
 
 function makePresetRotationHelper(name: string, rotation: SavedRotation, options?: PresetRotationOptions): PresetRotation {
-    let conditions: Array<(player: Player<any>) => boolean> = [];
+    const conditions: Array<(player: Player<any>) => boolean> = [];
     if (options?.talentTree != undefined) {
         conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
     }

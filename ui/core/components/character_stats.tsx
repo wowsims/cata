@@ -159,7 +159,7 @@ export class CharacterStats extends Component {
 					<Link as="button" className={clsx('stat-value-link', contextualClass)} ref={statLinkElemRef}>
 						{this.statDisplayString(finalStats, finalStats, stat, true)}
 					</Link>
-					{stat == Stat.StatMastery && (
+					{stat === Stat.StatMastery && (
 						<Link
 							href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
 							className={clsx('stat-value-link-mastery', contextualClass)}>
@@ -214,6 +214,7 @@ export class CharacterStats extends Component {
 					</div>
 				</div>
 			);
+
 			tippy(statLinkElem, {
 				content: tooltipContent,
 			});
@@ -336,32 +337,40 @@ export class CharacterStats extends Component {
 
 	private bonusStatsLink(stat: Stat): HTMLElement {
 		const statName = getClassStatName(stat, this.player.getClass());
+		const linkRef = ref<HTMLAnchorElement>();
+		const iconRef = ref<HTMLDivElement>();
 
-		const link = <Link as="button" className="add-bonus-stats text-white ms-2" dataset={{ bsToggle: 'popover' }} iconLeft="plus-minus" />;
+		const link = (
+			<Link
+				ref={linkRef}
+				as="button"
+				className="add-bonus-stats text-white ms-2"
+				dataset={{ bsToggle: 'popover' }}
+				iconLeft={<Icon ref={iconRef} icon="plus-minus" />}
+			/>
+		);
 
-		tippy(link.children[0], { content: `Bonus ${statName}` });
-
-		let popover: TippyInstance | null = null;
-
-		const picker = new NumberPicker(null, this.player, {
-			id: `character-bonus-stat-${stat}`,
-			label: `Bonus ${statName}`,
-			extraCssClasses: ['mb-0'],
-			changedEvent: (player: Player<any>) => player.bonusStatsChangeEmitter,
-			getValue: (player: Player<any>) => player.getBonusStats().getStat(stat),
-			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
-				const bonusStats = player.getBonusStats().withStat(stat, newValue);
-				player.setBonusStats(eventID, bonusStats);
-				popover?.hide();
-			},
-		});
-
-		popover = tippy(link, {
+		tippy(iconRef.value!, { content: `Bonus ${statName}` });
+		tippy(linkRef.value!, {
 			interactive: true,
 			trigger: 'click',
 			theme: 'bonus-stats-popover',
 			placement: 'right',
-			content: picker.rootElem,
+			onShow: instance => {
+				const picker = new NumberPicker(null, this.player, {
+					id: `character-bonus-stat-${stat}`,
+					label: `Bonus ${statName}`,
+					extraCssClasses: ['mb-0'],
+					changedEvent: (player: Player<any>) => player.bonusStatsChangeEmitter,
+					getValue: (player: Player<any>) => player.getBonusStats().getStat(stat),
+					setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+						const bonusStats = player.getBonusStats().withStat(stat, newValue);
+						player.setBonusStats(eventID, bonusStats);
+						instance?.hide();
+					},
+				});
+				instance.setContent(picker.rootElem);
+			},
 		});
 
 		return link as HTMLElement;

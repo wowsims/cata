@@ -1,13 +1,15 @@
+import { ref } from 'tsx-vanilla';
+
 import { Player, UnitMetadata } from '../../player.js';
 import { APLValueEclipsePhase, APLValueRuneSlot, APLValueRuneType } from '../../proto/apl.js';
 import { ActionID, OtherAction, UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
 import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
-import { EventID, TypedEvent } from '../../typed_event.js';
+import { EventID } from '../../typed_event.js';
 import { bucket, randomUUID } from '../../utils.js';
 import { BooleanPicker } from '../boolean_picker.js';
-import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../dropdown_picker.js';
-import { Input, InputConfig } from '../input.js';
+import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../dropdown_picker.jsx';
+import { Input, InputConfig } from '../input.jsx';
 import { NumberPicker, NumberPickerConfig } from '../number_picker.js';
 import { AdaptiveStringPicker } from '../string_picker.js';
 import { UnitPicker, UnitPickerConfig, UnitValue } from '../unit_picker.js';
@@ -248,17 +250,23 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 			equals: (a, b) => (a == null) == (b == null) && (!a || a.equals(b!)),
 			setOptionContent: (button, valueConfig) => {
 				const actionId = valueConfig.value;
-				const iconElem = document.createElement('a');
+				const iconRef = ref<HTMLAnchorElement>();
 				const isAuraType = ['auras', 'stackable_auras', 'icd_auras', 'exclusive_effect_auras'].includes(config.actionIdSet);
-				iconElem.classList.add('apl-actionid-item-icon');
-				iconElem.dataset.whtticon = 'false';
+				button.appendChild(
+					<>
+						<a
+							ref={iconRef}
+							className="apl-actionid-item-icon"
+							dataset={{
+								whtticon: false,
+							}}
+						/>
+						{actionId.name}
+					</>,
+				);
 
-				actionId.setBackgroundAndHref(iconElem);
-				actionId.setWowheadDataset(iconElem, { useBuffAura: isAuraType });
-				button.appendChild(iconElem);
-
-				const textElem = document.createTextNode(actionId.name);
-				button.appendChild(textElem);
+				actionId.setBackgroundAndHref(iconRef.value!);
+				actionId.setWowheadDataset(iconRef.value!, { useBuffAura: isAuraType });
 			},
 			createMissingValue: value => {
 				if (value.anyId() == 0) {
@@ -287,7 +295,12 @@ export class APLActionIDPicker extends DropdownPicker<Player<any>, ActionID, Act
 			}
 		};
 		updateValues();
-		TypedEvent.onAny([player.sim.unitMetadataEmitter, player.rotationChangeEmitter]).on(updateValues);
+		const unitMetaEvent = player.sim.unitMetadataEmitter.on(updateValues);
+		const rotationChangeEvent = player.rotationChangeEmitter.on(updateValues);
+		this.addOnDisposeCallback(() => {
+			unitMetaEvent.dispose();
+			rotationChangeEvent.dispose();
+		});
 	}
 }
 
@@ -372,7 +385,10 @@ export class APLUnitPicker extends UnitPicker<Player<any>> {
 		this.rootElem.classList.add('apl-unit-picker');
 
 		this.updateValues();
-		player.sim.unitMetadataEmitter.on(() => this.updateValues());
+		const event = player.sim.unitMetadataEmitter.on(() => this.updateValues());
+		this.addOnDisposeCallback(() => {
+			event.dispose();
+		});
 	}
 
 	private static refToValue(ref: UnitReference | undefined, thisPlayer: Player<any>, targetUI: boolean | undefined): UnitValue {

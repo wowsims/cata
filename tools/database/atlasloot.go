@@ -157,7 +157,7 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 						}
 					} else { // item ID
 						itemID, _ := strconv.Atoi(idStr)
-						//fmt.Printf("Item: %d\n", itemID)
+						fmt.Printf("Item: %d\n", itemID)
 						dropSource := &proto.DropSource{
 							Difficulty: difficulty,
 							ZoneId:     int32(zoneID),
@@ -364,16 +364,18 @@ var AtlasLootRepLevel = map[string]proto.RepLevel{
 	"Friendly": proto.RepLevel_RepLevelFriendly,
 }
 var AtlasLootDifficulties = map[string]proto.DungeonDifficulty{
-	"NORMAL_DIFF":  proto.DungeonDifficulty_DifficultyNormal,
-	"HEROIC_DIFF":  proto.DungeonDifficulty_DifficultyHeroic,
-	"ALPHA_DIFF":   proto.DungeonDifficulty_DifficultyTitanRuneAlpha,
-	"BETA_DIFF":    proto.DungeonDifficulty_DifficultyTitanRuneBeta,
-	"RAID10_DIFF":  proto.DungeonDifficulty_DifficultyRaid10,
-	"RAID10H_DIFF": proto.DungeonDifficulty_DifficultyRaid10H,
-	"RAID25_DIFF":  proto.DungeonDifficulty_DifficultyRaid25,
-	"RAID25H_DIFF": proto.DungeonDifficulty_DifficultyRaid25H,
+	"NORMAL_DIFF":   proto.DungeonDifficulty_DifficultyNormal,
+	"HEROIC_DIFF":   proto.DungeonDifficulty_DifficultyHeroic,
+	"ALPHA_DIFF":    proto.DungeonDifficulty_DifficultyTitanRuneAlpha,
+	"BETA_DIFF":     proto.DungeonDifficulty_DifficultyTitanRuneBeta,
+	"RAID10_DIFF":   proto.DungeonDifficulty_DifficultyRaid10,
+	"RAID10H_DIFF":  proto.DungeonDifficulty_DifficultyRaid10H,
+	"RAID25RF_DIFF": proto.DungeonDifficulty_DifficultyRaid25RF,
+	"RAID25_DIFF":   proto.DungeonDifficulty_DifficultyRaid25,
+	"RAID25H_DIFF":  proto.DungeonDifficulty_DifficultyRaid25H,
 }
 var AtlasLootDungeonToRaidDifficulty = map[string]string{
+	"RF_DIFF":     "RAID25RF_DIFF",
 	"NORMAL_DIFF": "RAID25_DIFF",
 	"HEROIC_DIFF": "RAID25H_DIFF",
 }

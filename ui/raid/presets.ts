@@ -44,7 +44,6 @@ export const specSimFactories: Partial<Record<Spec, (parentElem: HTMLElement, pl
 	[Spec.SpecFeralDruid]: (parentElem: HTMLElement, player: Player<any>) => new FeralDruidSimUI(parentElem, player),
 	[Spec.SpecGuardianDruid]: (parentElem: HTMLElement, player: Player<any>) => new GuardianDruidSimUI(parentElem, player),
 	[Spec.SpecRestorationDruid]: (parentElem: HTMLElement, player: Player<any>) => new RestorationDruidSimUI(parentElem, player),
-	[Spec.SpecGuardianDruid]: (parentElem: HTMLElement, player: Player<any>) => new GuardianDruidSimUI(parentElem, player),
 	// Hunter
 	[Spec.SpecBeastMasteryHunter]: (parentElem: HTMLElement, player: Player<any>) => new BeastMasteryHunterSimUI(parentElem, player),
 	[Spec.SpecMarksmanshipHunter]: (parentElem: HTMLElement, player: Player<any>) => new MarksmanshipHunterSimUI(parentElem, player),

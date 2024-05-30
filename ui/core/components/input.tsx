@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import tippy from 'tippy.js';
 
 import { EventID, TypedEvent } from '../typed_event.js';
+import { existsInDOM } from '../utils';
 import { Component } from './component.js';
 
 /**
@@ -44,10 +45,16 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	readonly modObject: ModObject;
 
 	protected enabled = true;
-	readonly changeEmitter = new TypedEvent<void>();
+	readonly changeEmitter = new TypedEvent<void>('input-change');
+	// Can be used to remove any events in addEventListener
+	// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#add_an_abortable_listener
+	public abortController: AbortController;
+	public signal: AbortSignal;
 
 	constructor(parent: HTMLElement | null, cssClass: string, modObject: ModObject, config: InputConfig<ModObject, T, V>) {
 		super(parent, 'input-root', config.rootElem);
+		this.abortController = new AbortController();
+		this.signal = this.abortController.signal;
 		this.inputConfig = config;
 		this.modObject = modObject;
 		this.rootElem.classList.add(cssClass);
@@ -56,9 +63,19 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 		if (config.extraCssClasses) this.rootElem.classList.add(...config.extraCssClasses);
 		if (config.label) this.rootElem.appendChild(this.buildLabel(config));
 
-		config.changedEvent(this.modObject).on(() => {
+		const event = config.changedEvent(this.modObject).on(() => {
+			const element = this.getInputElem();
+			if (!existsInDOM(element) || !existsInDOM(this.rootElem)) {
+				this.dispose();
+				return;
+			}
 			this.setInputValue(this.getSourceValue());
 			this.update();
+		});
+
+		this.addOnDisposeCallback(() => {
+			this.abortController?.abort();
+			event.dispose();
 		});
 	}
 
@@ -69,10 +86,12 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 			</label>
 		);
 
-		if (config.labelTooltip)
-			tippy(label, {
+		if (config.labelTooltip) {
+			const tippyInstance = tippy(label, {
 				content: config.labelTooltip,
 			});
+			this.addOnDisposeCallback(() => tippyInstance.destroy());
+		}
 
 		return label;
 	}
@@ -136,10 +155,10 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 		this.inputConfig.setValue(eventID, this.modObject, newValue);
 	}
 
-	static newGroupContainer(props: typeof PickerGroup) {
-		return <PickerGroup {...props} />;
+	static newGroupContainer(props?: typeof PickerGroup): HTMLElement {
+		return (<PickerGroup {...props} />) as HTMLElement;
 	}
 }
 
-export const PickerGroup = ({ className, ...props }: JSX.HTMLElementProps<'div'>) =>
+export const PickerGroup = ({ className, ...props }: JSX.HTMLElementProps<'div'>): HTMLElement =>
 	(<div className={clsx('picker-group', className)} {...props} />) as HTMLElement;

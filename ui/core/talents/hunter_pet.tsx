@@ -1,5 +1,3 @@
-
-
 import { Component } from '../components/component.js';
 import { IconEnumPicker } from '../components/icon_enum_picker';
 import * as InputHelpers from '../components/input_helpers.js';

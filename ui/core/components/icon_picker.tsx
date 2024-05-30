@@ -1,5 +1,3 @@
-
-
 import { ref } from 'tsx-vanilla';
 
 import { ActionId } from '../proto_utils/action_id.js';
@@ -94,7 +92,7 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 			this.config.improvedId2.fillAndSet(this.improvedAnchor2, true, true);
 		}
 
-		this.config.changedEvent(this.modObject).on(_ => {
+		const event = this.config.changedEvent(this.modObject).on(() => {
 			this.config.actionId.fillAndSet(this.rootAnchor, true, true);
 
 			if (this.showWhen()) {
@@ -108,22 +106,37 @@ export class IconPicker<ModObject, ValueType> extends Input<ModObject, ValueType
 
 		this.init();
 
-		this.rootAnchor.addEventListener('click', event => {
-			event.preventDefault();
-			this.handleLeftClick();
-		});
-
-		this.rootAnchor.addEventListener('contextmenu', event => {
-			event.preventDefault();
-		});
-		this.rootAnchor.addEventListener('mousedown', event => {
-			const rightClick = isRightClick(event);
-
-			if (rightClick) {
+		this.rootAnchor.addEventListener(
+			'click',
+			event => {
 				event.preventDefault();
-				this.handleRightClick();
-			}
-		});
+				this.handleLeftClick();
+			},
+			{ signal: this.signal },
+		);
+
+		this.rootAnchor.addEventListener(
+			'contextmenu',
+			event => {
+				event.preventDefault();
+			},
+			{ signal: this.signal },
+		);
+
+		this.rootAnchor.addEventListener(
+			'mousedown',
+			event => {
+				const rightClick = isRightClick(event);
+
+				if (rightClick) {
+					event.preventDefault();
+					this.handleRightClick();
+				}
+			},
+			{ signal: this.signal },
+		);
+
+		this.addOnDisposeCallback(() => event.dispose());
 	}
 
 	handleLeftClick() {

@@ -404,7 +404,7 @@ func (character *Character) MeleeCritMultiplier(primaryModifiers float64, second
 	return character.calculateCritMultiplier(2.0, primaryModifiers, secondaryModifiers)
 }
 func (character *Character) HealingCritMultiplier(primaryModifiers float64, secondaryModifiers float64) float64 {
-	return character.calculateHealingCritMultiplier(1.5, primaryModifiers, secondaryModifiers)
+	return character.calculateHealingCritMultiplier(2.0, primaryModifiers, secondaryModifiers)
 }
 func (character *Character) DefaultSpellCritMultiplier() float64 {
 	return character.SpellCritMultiplier(1, 0)
@@ -597,7 +597,13 @@ func (character *Character) GetProcMaskForItem(itemID int32) ProcMask {
 
 func (character *Character) GetProcMaskForTypes(weaponTypes ...proto.WeaponType) ProcMask {
 	return character.getProcMaskFor(func(weapon *Item) bool {
-		return weapon == nil || slices.Contains(weaponTypes, weapon.WeaponType)
+		return weapon != nil && slices.Contains(weaponTypes, weapon.WeaponType)
+	})
+}
+
+func (character *Character) GetProcMaskForTypesAndHand(twohand bool, weaponTypes ...proto.WeaponType) ProcMask {
+	return character.getProcMaskFor(func(weapon *Item) bool {
+		return weapon != nil && (weapon.HandType == proto.HandType_HandTypeTwoHand) == twohand && slices.Contains(weaponTypes, weapon.WeaponType)
 	})
 }
 

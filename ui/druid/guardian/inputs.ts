@@ -1,6 +1,7 @@
 import * as InputHelpers from '../../core/components/input_helpers.js';
 import { Player } from '../../core/player.js';
 import { Spec } from '../../core/proto/common.js';
+import { TypedEvent } from '../../core/typed_event.js';
 
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
@@ -34,6 +35,14 @@ export const GuardianDruidRotationConfig = {
 			fieldName: 'pulverizeTime',
 			label: 'Pulverize refresh leeway',
 			labelTooltip: 'Refresh Pulverize when remaining duration is less than this value (in seconds). Note that Mangle, Thrash, and Faerie Fire usage on cooldown takes priority over this rule, unless Lacerate itself is about to fall off.',
+		}),
+		InputHelpers.makeRotationBooleanInput<Spec.SpecGuardianDruid>({
+			fieldName: 'prepullStampede',
+			label: 'Assume pre-pull Stampede',
+			labelTooltip: 'Activate Stampede Haste buff at the start of each pull. Models the effects of initiating the pull with Feral Charge.',
+			showWhen: (player: Player<Spec.SpecGuardianDruid>) =>
+				player.getTalents().stampede > 0,
+			changeEmitter: (player: Player<Spec.SpecGuardianDruid>) => TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter]),
 		}),
 	],
 };

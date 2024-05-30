@@ -1,5 +1,3 @@
-
-
 import { DeathKnight } from '../../player_classes/death_knight.js';
 import { Hunter } from '../../player_classes/hunter.js';
 import { Rogue } from '../../player_classes/rogue.js';
@@ -35,7 +33,6 @@ export class ToplineResults extends ResultComponent {
 			);
 		}
 
-		this.rootElem.innerHTML = '';
-		this.rootElem.appendChild(content);
+		this.rootElem.replaceChildren(content);
 	}
 }

@@ -267,7 +267,7 @@ func (druid *Druid) Initialize() {
 	// }
 	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
-	// druid.registerInnervateCD()
+	druid.registerInnervateCD()
 	// druid.registerFakeGotw()
 	druid.applyOmenOfClarity()
 }
@@ -328,14 +328,22 @@ func (druid *Druid) RegisterFeralTankSpells() {
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
-
 	druid.eclipseEnergyBar.reset()
 	druid.BleedsActive = 0
 	druid.form = druid.StartingForm
 	druid.disabledMCDs = []*core.MajorCooldown{}
 	druid.RebirthUsed = false
-	// druid.LunarICD.Timer.Reset()
-	// druid.SolarICD.Timer.Reset()
+}
+
+func (druid *Druid) ForceSolarEclipse(sim *core.Simulation, mastery float64) {
+	mastery -= druid.GetStat(stats.Mastery)
+	if mastery > 0 {
+		druid.AddStatDynamic(sim, stats.Mastery, mastery)
+	}
+	druid.eclipseEnergyBar.ForceEclipse(SolarEclipse, sim)
+	if mastery > 0 {
+		druid.AddStatDynamic(sim, stats.Mastery, -mastery)
+	}
 }
 
 func New(char *core.Character, form DruidForm, selfBuffs SelfBuffs, talents string) *Druid {

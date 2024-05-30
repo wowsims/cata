@@ -58,8 +58,9 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 	})
 
 	rogue.TricksOfTheTrade = rogue.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL | core.SpellFlagHelpful,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL | core.SpellFlagHelpful,
+		ClassSpellMask: RogueSpellTricksOfTheTrade,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: energyCost,

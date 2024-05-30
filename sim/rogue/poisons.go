@@ -31,9 +31,10 @@ func (rogue *Rogue) registerPoisonAuras() {
 
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	rogue.DeadlyPoison = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 96648},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskWeaponProc,
+		ActionID:       core.ActionID{SpellID: 96648},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskWeaponProc,
+		ClassSpellMask: RogueSpellDeadlyPoison,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),
@@ -213,9 +214,10 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 	isShivProc := procSource == ShivProc
 	ipBaseDamage := 0.31299999356 * rogue.ClassSpellScaling
 	return rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 8680, Tag: int32(procSource)},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskWeaponProc,
+		ActionID:       core.ActionID{SpellID: 8680, Tag: int32(procSource)},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskWeaponProc,
+		ClassSpellMask: RogueSpellInstantPoison,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),
@@ -237,9 +239,10 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 	isShivProc := procSource == ShivProc
 	wpBaseDamage := 0.24500000477 * rogue.ClassSpellScaling
 	return rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 13218, Tag: int32(procSource)},
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskWeaponProc,
+		ActionID:       core.ActionID{SpellID: 13218, Tag: int32(procSource)},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskWeaponProc,
+		ClassSpellMask: RogueSpellWoundPoison,
 
 		DamageMultiplier:         1,
 		DamageMultiplierAdditive: 1 + 0.12*float64(rogue.Talents.VilePoisons),

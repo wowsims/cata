@@ -35,6 +35,7 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 	}
 
 	warlock.registerManaFeed()
+	warlock.registerMasterSummoner()
 	warlock.registerImpendingDoom()
 	warlock.registerMoltenCore()
 
@@ -57,7 +58,7 @@ func (warlock *Warlock) ApplyDemonologyTalents() {
 }
 
 func (warlock *Warlock) registerManaFeed() {
-	if warlock.Talents.ManaFeed <= 0 {
+	if warlock.Talents.ManaFeed <= 0 && !warlock.Talents.Metamorphosis {
 		return
 	}
 
@@ -69,7 +70,7 @@ func (warlock *Warlock) registerManaFeed() {
 		Label:    "Mana Feed",
 		ActionID: actionID,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() && spell.ClassSpellMask&WarlockBasicPetSpells > 0 {
+			if result.DidCrit() && spell.Matches(WarlockBasicPetSpells) {
 				warlock.AddMana(sim, manaReturn*warlock.MaxMana(), manaMetrics)
 			}
 		},
@@ -80,6 +81,24 @@ func (warlock *Warlock) registerManaFeed() {
 			core.MakePermanent(pet.RegisterAura(aura))
 		}
 	}
+}
+
+func (warlock *Warlock) registerMasterSummoner() {
+	if warlock.Talents.MasterSummoner <= 0 {
+		return
+	}
+
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Flat,
+		ClassMask:  WarlockSummonSpells,
+		FloatValue: float64(-500*warlock.Talents.MasterSummoner) * float64(time.Millisecond),
+	})
+
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  WarlockSummonSpells,
+		FloatValue: -0.5 * float64(warlock.Talents.MasterSummoner),
+	})
 }
 
 func (warlock *Warlock) registerImpendingDoom() {
@@ -95,7 +114,7 @@ func (warlock *Warlock) registerImpendingDoom() {
 			ActionID: core.ActionID{SpellID: 85107},
 			//TODO: Do they need to hit?
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.ClassSpellMask&(WarlockSpellShadowBolt|WarlockSpellHandOfGuldan|WarlockSpellSoulFire|WarlockSpellIncinerate) > 0 {
+				if spell.Matches(WarlockSpellShadowBolt | WarlockSpellHandOfGuldan | WarlockSpellSoulFire | WarlockSpellIncinerate) {
 					if !warlock.Metamorphosis.CD.IsReady(sim) && sim.Proc(impendingDoomProcChance, "Impending Doom") {
 						warlock.Metamorphosis.CD.Reduce(15 * time.Second)
 						warlock.UpdateMajorCooldowns()
@@ -110,7 +129,7 @@ func (warlock *Warlock) registerMoltenCore() {
 		return
 	}
 
-	damageMultiplierMod := warlock.AddDynamicMod(core.SpellModConfig{
+	damageMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Flat,
 		ClassMask:  WarlockSpellIncinerate,
 		FloatValue: 0.06 * float64(warlock.Talents.MoltenCore),
@@ -128,21 +147,17 @@ func (warlock *Warlock) registerMoltenCore() {
 		Duration:  15 * time.Second,
 		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			damageMultiplierMod.Activate()
+			damageMod.Activate()
 			castTimeMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			damageMultiplierMod.Deactivate()
+			damageMod.Deactivate()
 			castTimeMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell != warlock.Incinerate {
-				return
-			}
-
 			// if the incinerate cast started BEFORE we got the molten core buff, the incinerate benefits from it but
 			// does not consume a stack. Detect this and only remove a stack if that's not the case
-			if sim.CurrentTime-spell.CurCast.CastTime > aura.StartedAt() {
+			if spell.Matches(WarlockSpellIncinerate) && sim.CurrentTime-spell.CurCast.CastTime > aura.StartedAt() {
 				aura.RemoveStack(sim)
 			}
 		},
@@ -150,18 +165,17 @@ func (warlock *Warlock) registerMoltenCore() {
 
 	procChance := 0.02 * float64(warlock.Talents.MoltenCore)
 	onHit := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if spell.ClassSpellMask&(WarlockSpellImmolate|WarlockSpellImmolateDot) > 0 && sim.Proc(procChance, "Molten Core") {
+		if spell.Matches(WarlockSpellImmolate|WarlockSpellImmolateDot) && sim.Proc(procChance, "Molten Core") {
 			moltenCoreAura.Activate(sim)
 			moltenCoreAura.SetStacks(sim, 3)
 		}
 	}
 
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label:                 "Molten Core Hidden Aura",
-			OnSpellHitDealt:       onHit,
-			OnPeriodicDamageDealt: onHit,
-		}))
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label:                 "Molten Core Hidden Aura",
+		OnSpellHitDealt:       onHit,
+		OnPeriodicDamageDealt: onHit,
+	}))
 }
 
 func (warlock *Warlock) registerDecimation() {
@@ -169,16 +183,21 @@ func (warlock *Warlock) registerDecimation() {
 		return
 	}
 
-	decimationMod := 0.2 * float64(warlock.Talents.Decimation)
+	decimationMod := warlock.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  WarlockSpellSoulFire,
+		FloatValue: -0.2 * float64(warlock.Talents.Decimation),
+	})
+
 	decimationAura := warlock.RegisterAura(core.Aura{
 		Label:    "Decimation Proc Aura",
 		ActionID: core.ActionID{SpellID: 63167},
 		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.SoulFire.CastTimeMultiplier -= decimationMod
+			decimationMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.SoulFire.CastTimeMultiplier += decimationMod
+			decimationMod.Deactivate()
 		},
 	})
 
@@ -186,7 +205,7 @@ func (warlock *Warlock) registerDecimation() {
 		Label:    "Decimation Talent Hidden Aura",
 		Duration: core.NeverExpires,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.ClassSpellMask&(WarlockSpellShadowBolt|WarlockSpellIncinerate|WarlockSpellSoulFire) > 0 {
+			if result.Landed() && spell.Matches(WarlockSpellShadowBolt|WarlockSpellIncinerate|WarlockSpellSoulFire) {
 				decimationAura.Activate(sim)
 			}
 		},
@@ -208,15 +227,14 @@ func (warlock *Warlock) registerCremation() {
 
 	procChance := []float64{0.0, 0.5, 1.0}[warlock.Talents.Cremation]
 
-	core.MakePermanent(
-		warlock.RegisterAura(core.Aura{
-			Label: "Cremation Talent",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ClassSpellMask == WarlockSpellHandOfGuldan {
-					if warlock.ImmolateDot.Dot(result.Target).IsActive() && sim.Proc(procChance, "Cremation") {
-						warlock.ImmolateDot.Dot(result.Target).Apply(sim)
-					}
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Cremation Talent",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(WarlockSpellHandOfGuldan) {
+				if warlock.ImmolateDot.Dot(result.Target).IsActive() && sim.Proc(procChance, "Cremation") {
+					warlock.ImmolateDot.Dot(result.Target).Apply(sim)
 				}
-			},
-		}))
+			}
+		},
+	}))
 }

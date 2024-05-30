@@ -1,5 +1,5 @@
-// @ts-expect-error
 import { Button } from '@wowsims/ui';
+// @ts-expect-error
 import debounce from 'lodash/debounce';
 import { ref } from 'tsx-vanilla';
 
@@ -217,15 +217,15 @@ class CustomVirtualScroll {
 		const visibleItems = this.items.slice(this.startIndex, endIndex);
 		const remainingItems = this.items.length - endIndex;
 
-		// Reset content and adjust placeholders
-		this.contentContainer.innerHTML = '';
 		// Update the height of the placeholders before it's placed in the dom to prevent rerender
 		this.placeholderTop.style.height = `${this.startIndex * this.itemHeight}px`;
 		this.placeholderBottom.style.height = `${remainingItems * this.itemHeight}px`;
-		const fragment = document.createDocumentFragment();
-		fragment.appendChild(this.placeholderTop);
-		visibleItems.forEach(item => fragment.appendChild(item));
-		fragment.appendChild(this.placeholderBottom);
-		this.contentContainer.appendChild(fragment);
+		this.contentContainer.replaceChildren(
+			<>
+				{this.placeholderTop}
+				{visibleItems.map(item => item)}
+				{this.placeholderBottom}
+			</>,
+		);
 	}
 }

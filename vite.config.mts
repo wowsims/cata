@@ -80,8 +80,6 @@ export default defineConfig(({ command, mode }) => {
 			}),
 		],
 		esbuild: {
-			jsxFactory: 'element',
-			jsxFragment: 'fragment',
 			jsxInject: "import { element, fragment } from 'tsx-vanilla';",
 		},
 		build: {

@@ -1,4 +1,4 @@
-import { EventID, TypedEvent } from '../typed_event.js';
+import { TypedEvent } from '../typed_event.js';
 import { arrayEquals } from '../utils.js';
 import { Input, InputConfig } from './input.js';
 
@@ -26,9 +26,13 @@ export class NumberListPicker<ModObject> extends Input<ModObject, Array<number>>
 
 		this.init();
 
-		this.inputElem.addEventListener('change', () => {
-			this.inputChanged(TypedEvent.nextEventID());
-		});
+		this.inputElem.addEventListener(
+			'change',
+			() => {
+				this.inputChanged(TypedEvent.nextEventID());
+			},
+			{ signal: this.signal },
+		);
 	}
 
 	getInputElem(): HTMLElement {
