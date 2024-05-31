@@ -1,9 +1,9 @@
 { "type": "TypeAPL",
 	"prepullActions": [
 		{"action":{"castSpell":{"spellId":{"spellId":74434}}},"doAtValue":{"const":{"val":"-8.0s"}}},
-		{"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-2.0s"}}},
-		{"action":{"castSpell":{"spellId":{"spellId":29722}}},"doAtValue":{"const":{"val":"-2.0s"}}},
-		{"action":{"castSpell":{"spellId":{"spellId":6353}}},"doAtValue":{"const":{"val":"-0s"}}}
+		{"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-2.5s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":29722}}},"doAtValue":{"const":{"val":"-2.5s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":6353}}},"doAtValue":{"const":{"val":"-0.5s"}}}
 	],
 	"priorityList": [
 		{"action":{"autocastOtherCooldowns":{}}},
@@ -15,6 +15,7 @@
 		{"action":{"condition":{"or":{"vals":[{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"dotRemainingTime":{"spellId":{"spellId":348,"tag":1}}},"rhs":{"math":{"op":"OpAdd","lhs":{"spellCastTime":{"spellId":{"spellId":348}}},"rhs":{"dotTickFrequency":{"spellId":{"spellId":348,"tag":1}}}}}}},{"cmp":{"op":"OpGt","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"5s"}}}}]}},{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"spellId":2825,"tag":-1}}},"rhs":{"const":{"val":"2s"}}}},{"cmp":{"op":"OpLt","lhs":{"dotRemainingTime":{"spellId":{"spellId":348,"tag":1}}},"rhs":{"const":{"val":"12s"}}}},{"auraIsActive":{"auraId":{"spellId":2825,"tag":-1}}}]}}]}},"castSpell":{"spellId":{"spellId":348}}}},
 		{"action":{"condition":{"spellCanCast":{"spellId":{"spellId":17962}}},"castSpell":{"spellId":{"spellId":17962}}}},
 		{"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"dotRemainingTime":{"spellId":{"spellId":172}}},"rhs":{"dotTickFrequency":{"spellId":{"spellId":172}}}}},"castSpell":{"spellId":{"spellId":172}}}},
+		{"action":{"condition":{"spellIsReady":{"spellId":{"spellId":50796}}},"castSpell":{"spellId":{"spellId":50796}}}},
 		{"action":{"condition":{"spellCanCast":{"spellId":{"spellId":47897}}},"castSpell":{"spellId":{"spellId":47897}}}},
 		{"action":{"condition":{"and":{"vals":[{"isExecutePhase":{"threshold":"E20"}},{"spellCanCast":{"spellId":{"spellId":17877}}}]}},"castSpell":{"spellId":{"spellId":17877}}}},
 		{"action":{"castSpell":{"spellId":{"spellId":29722}}}},
