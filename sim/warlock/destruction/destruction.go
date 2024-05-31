@@ -58,8 +58,8 @@ func (destruction *DestructionWarlock) ApplyTalents() {
 
 	// Mastery: Fiery Apocalypse
 	masteryMod := destruction.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Pct,
-		ClassMask: warlock.WarlockFireDamage,
+		Kind:   core.SpellMod_DamageDone_Pct,
+		School: core.SpellSchoolFire,
 	})
 
 	destruction.AddOnMasteryStatChanged(func(sim *core.Simulation, oldMastery float64, newMastery float64) {
