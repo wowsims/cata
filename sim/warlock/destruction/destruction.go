@@ -72,7 +72,7 @@ func (destruction *DestructionWarlock) ApplyTalents() {
 	// Cataclysm
 	destruction.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  warlock.WarlockFireDamage,
+		School:     core.SpellSchoolFire,
 		FloatValue: 0.25,
 	})
 }

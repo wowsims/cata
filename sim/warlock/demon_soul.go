@@ -52,7 +52,7 @@ func (warlock *Warlock) registerDemonSoul() {
 
 	felguardDamageMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  WarlockFireDamage | WarlockShadowDamage,
+		School:     core.SpellSchoolShadow | core.SpellSchoolFire,
 		FloatValue: 0.1,
 	})
 
