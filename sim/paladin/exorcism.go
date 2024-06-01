@@ -7,6 +7,9 @@ import (
 )
 
 func (paladin *Paladin) RegisterExorcism() {
+	exorcismMinDamage, exorcismMaxDamage :=
+		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 2.663, 0.11)
+
 	paladin.Exorcism = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 48801},
 		SpellSchool:    core.SpellSchoolHoly,
@@ -33,8 +36,8 @@ func (paladin *Paladin) RegisterExorcism() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(2483, 2771) +
-				0.34*max(spell.SpellPower(), spell.MeleeAttackPower())
+			baseDamage := sim.Roll(exorcismMinDamage, exorcismMaxDamage) +
+				0.344*max(spell.SpellPower(), spell.MeleeAttackPower())
 
 			bonusCrit := core.TernaryFloat64(
 				target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead,
