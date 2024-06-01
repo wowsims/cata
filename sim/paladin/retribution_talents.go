@@ -10,6 +10,7 @@ func (paladin *Paladin) ApplyRetributionTalents() {
 	paladin.ApplyRuleOfLaw()
 	paladin.ApplySealsOfCommand()
 	paladin.ApplySanctifiedWrath()
+	paladin.ApplyCommunion()
 	paladin.ApplyArtOfWar()
 	paladin.ApplyDivinePurpose()
 	paladin.ApplyInquiryOfFaith()
@@ -93,6 +94,14 @@ func (paladin *Paladin) ApplySanctifiedWrath() {
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: time.Second * 20 * time.Duration(paladin.Talents.SanctifiedWrath),
 	})
+}
+
+func (paladin *Paladin) ApplyCommunion() {
+	if !paladin.Talents.Communion {
+		return
+	}
+
+	paladin.PseudoStats.DamageDealtMultiplier *= 1.02
 }
 
 func (paladin *Paladin) ApplyArtOfWar() {
