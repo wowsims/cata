@@ -31,6 +31,12 @@ func applyRaceEffects(agent Agent) {
 			} else if character.HasManaBar() {
 				actionID = ActionID{SpellID: 28730}
 				resourceMetrics = character.NewManaMetrics(actionID)
+			} else if character.HasRageBar() {
+				actionID = ActionID{SpellID: 69179}
+				resourceMetrics = character.NewRageMetrics(actionID)
+			} else if character.HasFocusBar() {
+				actionID = ActionID{SpellID: 80483}
+				resourceMetrics = character.NewFocusMetrics(actionID)
 			}
 		}
 
@@ -50,6 +56,10 @@ func applyRaceEffects(agent Agent) {
 					spell.Unit.AddEnergy(sim, 15.0, resourceMetrics)
 				} else if spell.Unit.HasManaBar() {
 					spell.Unit.AddMana(sim, spell.Unit.MaxMana()*0.06, resourceMetrics)
+				} else if spell.Unit.HasRageBar() {
+					spell.Unit.AddRage(sim, 15.0, resourceMetrics)
+				} else if spell.Unit.HasFocusBar() {
+					spell.Unit.AddFocus(sim, 15.0, resourceMetrics)
 				}
 			},
 		})
@@ -63,6 +73,10 @@ func applyRaceEffects(agent Agent) {
 					return character.CurrentRunicPower() <= character.maxRunicPower-15
 				} else if spell.Unit.HasEnergyBar() {
 					return character.CurrentEnergy() <= character.maxEnergy-15
+				} else if spell.Unit.HasRageBar() {
+					return character.CurrentRage() <= MaxRage-15
+				} else if spell.Unit.HasFocusBar() {
+					return character.CurrentFocus() <= character.maxFocus-15
 				}
 				return true
 			},
