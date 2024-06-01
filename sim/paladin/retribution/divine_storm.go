@@ -3,6 +3,7 @@ package retribution
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/paladin"
+	"time"
 )
 
 // Divine Storm is a non-ap normalised instant attack that has a weapon damage % modifier with a 1.0 coefficient.
@@ -15,6 +16,7 @@ func (retPaladin *RetributionPaladin) RegisterDivineStorm() {
 	if !retPaladin.Talents.DivineStorm {
 		return
 	}
+
 	results := make([]*core.SpellResult, retPaladin.Env.GetNumTargets())
 	actionId := core.ActionID{SpellID: 53385}
 	hpMetrics := retPaladin.NewHolyPowerMetrics(actionId)
@@ -34,7 +36,10 @@ func (retPaladin *RetributionPaladin) RegisterDivineStorm() {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
-			CD:          *retPaladin.SharedBuilderCooldown,
+			CD: core.Cooldown{
+				Timer:    retPaladin.NewTimer(),
+				Duration: 4500 * time.Millisecond,
+			},
 		},
 
 		DamageMultiplier: 1,

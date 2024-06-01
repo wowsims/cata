@@ -2,6 +2,7 @@ package paladin
 
 import (
 	"github.com/wowsims/cata/sim/core"
+	"time"
 )
 
 func (paladin *Paladin) RegisterCrusaderStrike() {
@@ -24,7 +25,10 @@ func (paladin *Paladin) RegisterCrusaderStrike() {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
-			CD:          *paladin.SharedBuilderCooldown,
+			CD: core.Cooldown{
+				Timer:    paladin.NewTimer(),
+				Duration: 4500 * time.Millisecond,
+			},
 		},
 
 		DamageMultiplier: 1.35,

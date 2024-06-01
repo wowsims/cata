@@ -37,8 +37,6 @@ func (paladin *Paladin) RegisterInquisition() {
 	// Inquisition self-buff.
 	paladin.Inquisition = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionId,
-		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskEmpty,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskInquisition,
 

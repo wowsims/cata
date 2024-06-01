@@ -1,8 +1,6 @@
 package paladin
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -73,8 +71,6 @@ type Paladin struct {
 	PaladinAura proto.PaladinAura
 
 	Talents *proto.PaladinTalents
-
-	SharedBuilderCooldown *core.Cooldown // Used for CS/DS
 
 	CurrentSeal      *core.Aura
 	CurrentJudgement *core.Spell
@@ -200,13 +196,6 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 
 	paladin.EnableManaBar()
 	paladin.InitializeHolyPowerBar()
-
-	paladin.SharedBuilderCooldown = &core.Cooldown{
-		// TODO: needs to interrogate ret talents for Sanctity of Battle
-		// and have this cooldown conditionally be reduced based on haste rating
-		Timer:    paladin.NewTimer(),
-		Duration: time.Millisecond * 4500,
-	}
 
 	paladin.EnableAutoAttacks(paladin, core.AutoAttackOptions{
 		MainHand:       paladin.WeaponFromMainHand(paladin.DefaultMeleeCritMultiplier()),

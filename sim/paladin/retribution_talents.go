@@ -8,6 +8,7 @@ import (
 func (paladin *Paladin) ApplyRetributionTalents() {
 	paladin.ApplyCrusade()
 	paladin.ApplyRuleOfLaw()
+	paladin.ApplySanctityOfBattle()
 	paladin.ApplySealsOfCommand()
 	paladin.ApplySanctifiedWrath()
 	paladin.ApplyCommunion()
@@ -20,24 +21,54 @@ func (paladin *Paladin) ApplyCrusade() {
 	if paladin.Talents.Crusade == 0 {
 		return
 	}
+
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskCrusaderStrike | SpellMaskDivineStorm | SpellMaskTemplarsVerdict | SpellMaskHolyShock,
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.1 * float64(paladin.Talents.Crusade),
 	})
 
-	// TODO: Add Healing Mod for Holy Shock
+	// TODO: Add Healing Mod for Holy Shock if healing sim gets implemented
 }
 
 func (paladin *Paladin) ApplyRuleOfLaw() {
 	if paladin.Talents.RuleOfLaw == 0 {
 		return
 	}
+
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskCrusaderStrike | SpellMaskWordOfGlory | SpellMaskHammerOfTheRighteous,
 		Kind:       core.SpellMod_BonusCrit_Rating,
 		FloatValue: 5 * float64(paladin.Talents.RuleOfLaw) * core.CritRatingPerCritChance,
 	})
+}
+
+func (paladin *Paladin) ApplySanctityOfBattle() {
+	if !paladin.Talents.SanctityOfBattle {
+		return
+	}
+
+	spenderCooldownMod := paladin.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: SpellMaskCrusaderStrike | SpellMaskDivineStorm,
+	})
+
+	paladin.AddOnCastSpeedChanged(func(_ float64, castSpeed float64) {
+		spenderCooldownMod.UpdateTimeValue(-(4500*time.Millisecond - time.Duration(4500*castSpeed)))
+	})
+
+	core.MakePermanent(paladin.GetOrRegisterAura(core.Aura{
+		Label:      "Sanctity of Battle",
+		ActionID:   core.ActionID{SpellID: 25956},
+		BuildPhase: core.CharacterBuildPhaseAll,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			spenderCooldownMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			spenderCooldownMod.Deactivate()
+		},
+	}))
 }
 
 func (paladin *Paladin) ApplySealsOfCommand() {
@@ -80,6 +111,7 @@ func (paladin *Paladin) ApplySanctifiedWrath() {
 	if paladin.Talents.SanctifiedWrath == 0 {
 		return
 	}
+
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskHammerOfWrath,
 		Kind:       core.SpellMod_BonusCrit_Rating,
@@ -90,6 +122,8 @@ func (paladin *Paladin) ApplySanctifiedWrath() {
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: time.Second * 20 * time.Duration(paladin.Talents.SanctifiedWrath),
 	})
+
+	// TODO: Hammer of Wrath execute restriction removal
 }
 
 func (paladin *Paladin) ApplyCommunion() {
@@ -192,6 +226,7 @@ func (paladin *Paladin) ApplyInquiryOfFaith() {
 	if paladin.Talents.InquiryOfFaith == 0 {
 		return
 	}
+
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskCensure,
 		Kind:       core.SpellMod_DamageDone_Flat,
