@@ -37,8 +37,8 @@ func (paladin *Paladin) RegisterCrusaderStrike() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				// TODO: Handle Zealotry
-				paladin.GainHolyPower(sim, 1, hpMetrics)
+				holyPowerGain := core.TernaryInt32(paladin.ZealotryAura.IsActive(), 3, 1)
+				paladin.GainHolyPower(sim, holyPowerGain, hpMetrics)
 			}
 		},
 	})

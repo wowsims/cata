@@ -55,6 +55,7 @@ func (ret *RetributionPaladin) Initialize() {
 	ret.RegisterSpecializationEffects()
 	ret.RegisterTemplarsVerdict()
 	ret.RegisterDivineStorm()
+	ret.RegisterZealotry()
 }
 
 func (ret *RetributionPaladin) ApplyTalents() {

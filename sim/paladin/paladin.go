@@ -34,6 +34,7 @@ const (
 	SpellMaskCensure
 	SpellMaskInquisition
 	SpellMaskHandOfLight
+	SpellMaskZealotry
 
 	SpellMaskHolyShock
 	SpellMaskWordOfGlory
