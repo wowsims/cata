@@ -55,13 +55,14 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 	})
 
 	subRogue.Rogue.Hemorrhage = subRogue.RegisterSpell(core.SpellConfig{
-		ActionID:    hemoActionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.SpellFlagBuilder | core.SpellFlagAPL,
+		ActionID:       hemoActionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | rogue.SpellFlagBuilder | core.SpellFlagAPL,
+		ClassSpellMask: rogue.RogueSpellHemorrhage,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   subRogue.GetGeneratorCostModifier(35 - 2*float64(subRogue.Talents.SlaughterFromTheShadows)),
+			Cost:   35 - 2*float64(subRogue.Talents.SlaughterFromTheShadows),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -97,5 +98,10 @@ func (subRogue *SubtletyRogue) registerHemorrhageSpell() {
 		},
 
 		RelatedAuras: []core.AuraArray{hemoAuras},
+	})
+
+	subRogue.RegisterOnItemSwap(func(s *core.Simulation) {
+		// Recalculate Hemorrhage's multiplier in case the MH weapon changed.
+		subRogue.Hemorrhage.DamageMultiplier = core.TernaryFloat64(subRogue.HasDagger(core.MainHand), 3.25, 2.24)
 	})
 }

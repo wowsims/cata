@@ -33,17 +33,18 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 		this.inputElem.classList.add('form-control', 'number-picker-input');
 
 		if (this.positive) {
-			this.inputElem.onchange = () => {
-				if (this.float) {
-					this.inputElem.value = Math.abs(parseFloat(this.inputElem.value)).toFixed(2);
-				} else {
-					this.inputElem.value = Math.abs(parseInt(this.inputElem.value)).toString();
-				}
-			};
+			this.inputElem.addEventListener(
+				'change',
+				() => {
+					if (this.float) {
+						this.inputElem.value = Math.abs(parseFloat(this.inputElem.value)).toFixed(2);
+					} else {
+						this.inputElem.value = Math.abs(parseInt(this.inputElem.value)).toString();
+					}
+				},
+				{ signal: this.signal },
+			);
 		}
-
-		this.rootElem.appendChild(this.inputElem);
-		this.init();
 
 		this.inputElem.addEventListener(
 			'change',
@@ -60,6 +61,10 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 			},
 			{ signal: this.signal },
 		);
+
+		this.rootElem.appendChild(this.inputElem);
+
+		this.init();
 		this.updateSize();
 	}
 

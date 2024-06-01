@@ -15,14 +15,14 @@ func (rogue *Rogue) registerEviscerate() {
 	avgBaseDamage := coefficient * rogue.ClassSpellScaling
 	damagePerComboPoint := resourceCoefficient * rogue.ClassSpellScaling
 	baseMinDamage := avgBaseDamage * 0.5
-	baseMaxDamage := avgBaseDamage * 1.5
 
 	rogue.Eviscerate = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 2098},
-		SpellSchool:  core.SpellSchoolPhysical,
-		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagFinisher | SpellFlagColdBlooded | core.SpellFlagAPL,
-		MetricSplits: 6,
+		ActionID:       core.ActionID{SpellID: 2098},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagFinisher | SpellFlagColdBlooded | core.SpellFlagAPL,
+		MetricSplits:   6,
+		ClassSpellMask: RogueSpellEviscerate,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:          35,
@@ -58,7 +58,7 @@ func (rogue *Rogue) registerEviscerate() {
 
 			comboPoints := float64(rogue.ComboPoints())
 			baseDamage := baseMinDamage +
-				sim.RandomFloat("Eviscerate")*baseMaxDamage +
+				sim.RandomFloat("Eviscerate")*avgBaseDamage +
 				damagePerComboPoint*comboPoints +
 				apScalingPerComboPoint*comboPoints*spell.MeleeAttackPower()
 

@@ -1137,7 +1137,7 @@ export class Player<SpecType extends Spec> {
 		let maxSuffixEP = 0;
 
 		if (item.randomSuffixOptions.length > 0) {
-			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)!));
+			const suffixEPs = item.randomSuffixOptions.map(id => this.computeRandomSuffixEP(this.sim.db.getRandomSuffixById(id)! || 0));
 			maxSuffixEP = (Math.max(...suffixEPs) * item.randPropPoints) / 10000;
 		}
 

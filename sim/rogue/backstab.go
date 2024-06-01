@@ -15,13 +15,14 @@ func (rogue *Rogue) registerBackstabSpell() {
 	t11Bonus := core.TernaryFloat64(rogue.HasSetBonus(Tier11, 2), 5*core.CritRatingPerCritChance, 0)
 
 	rogue.Backstab = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 53},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 53},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		ClassSpellMask: RogueSpellBackstab,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.GetGeneratorCostModifier(60 - []float64{0, 7, 14, 20}[rogue.Talents.SlaughterFromTheShadows]),
+			Cost:   60 - []float64{0, 7, 14, 20}[rogue.Talents.SlaughterFromTheShadows],
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
