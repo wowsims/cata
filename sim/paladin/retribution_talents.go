@@ -123,7 +123,7 @@ func (paladin *Paladin) ApplySanctifiedWrath() {
 		TimeValue: time.Second * 20 * time.Duration(paladin.Talents.SanctifiedWrath),
 	})
 
-	// TODO: Hammer of Wrath execute restriction removal
+	// Hammer of Wrath execute restriction removal is handled in hammer_of_wrath.go
 }
 
 func (paladin *Paladin) ApplyCommunion() {

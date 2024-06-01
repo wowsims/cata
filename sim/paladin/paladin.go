@@ -173,6 +173,7 @@ func (paladin *Paladin) RegisterSpells() {
 	paladin.RegisterJudgement()
 	paladin.RegisterSealOfTruth()
 	paladin.RegisterInquisition()
+	paladin.RegisterHammerOfWrathSpell()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
