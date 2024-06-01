@@ -18,6 +18,7 @@ func (paladin *Paladin) ApplyArbiterOfTheLight() {
 	if paladin.Talents.ArbiterOfTheLight == 0 {
 		return
 	}
+
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskJudgement,
 		Kind:       core.SpellMod_BonusCrit_Rating,
@@ -37,26 +38,25 @@ func (paladin *Paladin) ApplyJudgementsOfThePure() {
 	if paladin.Talents.JudgementsOfThePure == 0 {
 		return
 	}
+
 	actionId := core.ActionID{SpellID: 53657}
 
 	hasteAmount := 3 * float64(paladin.Talents.JudgementsOfThePure) * core.HasteRatingPerHastePercent
+	spiritRegenAmount := 0.1 * float64(paladin.Talents.JudgementsOfThePure)
 
 	jotpAura := paladin.GetOrRegisterAura(core.Aura{
 		Label:    "Judgements of the Pure",
 		ActionID: actionId,
 		Duration: 60 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-
 			paladin.AddStatDynamic(sim, stats.SpellHaste, hasteAmount)
 			paladin.AddStatDynamic(sim, stats.MeleeHaste, hasteAmount)
-
-			// TODO: Add Spirit Mod
+			paladin.PseudoStats.SpiritRegenRateCombat += spiritRegenAmount
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			paladin.AddStatDynamic(sim, stats.SpellHaste, -hasteAmount)
 			paladin.AddStatDynamic(sim, stats.MeleeHaste, -hasteAmount)
-
-			// Todo: Remove Spirit Mod
+			paladin.PseudoStats.SpiritRegenRateCombat -= spiritRegenAmount
 		},
 	})
 
