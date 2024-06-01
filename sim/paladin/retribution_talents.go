@@ -105,43 +105,53 @@ func (paladin *Paladin) ApplyArtOfWar() {
 		return
 	}
 
-	paladin.ArtOfWarInstantCast = paladin.RegisterAura(core.Aura{
+	exorcismCastTimeMod := paladin.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  SpellMaskExorcism,
+		FloatValue: -1.0,
+	})
+
+	exorcismCostMod := paladin.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		ClassMask:  SpellMaskExorcism,
+		FloatValue: -1.0,
+	})
+
+	exorcismDamageMod := paladin.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  SpellMaskExorcism,
+		FloatValue: 1.0,
+	})
+
+	artOfWarInstantCast := paladin.RegisterAura(core.Aura{
 		Label:    "Art Of War",
-		ActionID: core.ActionID{SpellID: 53488},
+		ActionID: core.ActionID{SpellID: 59578},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.Exorcism.CastTimeMultiplier -= 1.0
-			paladin.Exorcism.CostMultiplier -= 1.0
-			paladin.Exorcism.DamageMultiplierAdditive += 1.0
+			exorcismCastTimeMod.Activate()
+			exorcismCostMod.Activate()
+			exorcismDamageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.Exorcism.CastTimeMultiplier += 1.0
-			paladin.Exorcism.CostMultiplier += 1.0
-			paladin.Exorcism.DamageMultiplierAdditive -= 1.0
+			exorcismCastTimeMod.Deactivate()
+			exorcismCostMod.Deactivate()
+			exorcismDamageMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell == paladin.Exorcism {
+			if spell.ClassSpellMask&SpellMaskExorcism != 0 {
 				aura.Deactivate(sim)
 			}
 		},
 	})
 
-	artOfWarChance := []float64{0, 0.07, 0.14, 0.20}[paladin.Talents.TheArtOfWar]
-
-	paladin.RegisterAura(core.Aura{
-		Label:    "The Art of War",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
-				return
-			}
-
-			if sim.RandomFloat("Art of War Proc") < artOfWarChance {
-				paladin.ArtOfWarInstantCast.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:       "The Art of War",
+		ActionID:   core.ActionID{SpellID: 87138},
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		ProcChance: []float64{0, 0.07, 0.14, 0.20}[paladin.Talents.TheArtOfWar],
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			artOfWarInstantCast.Activate(sim)
 		},
 	})
 }
