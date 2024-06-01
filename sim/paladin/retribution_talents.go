@@ -45,37 +45,33 @@ func (paladin *Paladin) ApplySealsOfCommand() {
 		return
 	}
 
-	actionId := core.ActionID{SpellID: 20424}
-
 	// Seals of Command
-	paladin.SealsOfCommand = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    actionId,
+	sealsOfCommandProc := paladin.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 20424},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: 1.0,
+		DamageMultiplier: 0.07,
 		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
 		ThreatMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := .07 * spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:       "Seals of Command",
-		ActionID:   actionId,
-		Callback:   core.CallbackOnSpellHitDealt,
-		Outcome:    core.OutcomeLanded,
-		ProcMask:   core.ProcMaskMeleeSpecial | core.ProcMaskMeleeWhiteHit,
-		ProcChance: 1.0,
+		Name:           "Seals of Command",
+		ActionID:       core.ActionID{SpellID: 85126},
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: SpellMaskSealOfTruth | SpellMaskSealOfRighteousness | SpellMaskSealOfJustice,
+		ProcChance:     1.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.IsMelee() {
-				paladin.SealsOfCommand.Cast(sim, result.Target)
-			}
+			sealsOfCommandProc.Cast(sim, result.Target)
 		},
 	})
 }
