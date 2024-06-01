@@ -8,8 +8,7 @@ import (
 type HolyPowerBar struct {
 	paladin *Paladin
 
-	DivinePurpose bool
-	holyPower     int32
+	holyPower int32
 }
 
 // CurrentHolyPower returns the actual amount of holy power the paladin has, not counting the Divine Purpose proc.
@@ -19,7 +18,7 @@ func (paladin *Paladin) CurrentHolyPower() int32 {
 
 // GetHolyPowerValue returns the amount of holy power used for calculating the damage done by Templar's Verdict and duration of Inquisition.
 func (paladin *Paladin) GetHolyPowerValue() int32 {
-	if paladin.DivinePurpose {
+	if paladin.DivinePurposeAura.IsActive() {
 		return 3
 	}
 
@@ -65,7 +64,7 @@ func (pb *HolyPowerBar) SpendHolyPower(sim *core.Simulation, metrics *core.Resou
 		return
 	}
 
-	if pb.DivinePurpose {
+	if pb.paladin.DivinePurposeAura.IsActive() {
 		pb.paladin.Log(sim, "Consumed Divine Purpose")
 		return
 	}

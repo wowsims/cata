@@ -56,6 +56,14 @@ const SpellMaskModifiedByInquisition = SpellMaskHammerOfWrath |
 	SpellMaskHandOfLight |
 	SpellMaskHolyWrath
 
+const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
+	SpellMaskExorcism |
+	SpellMaskJudgement |
+	SpellMaskHolyWrath |
+	SpellMaskTemplarsVerdict |
+	SpellMaskDivineStorm |
+	SpellMaskInquisition
+
 var TalentTreeSizes = [3]int{20, 20, 20}
 
 type Paladin struct {
@@ -103,9 +111,9 @@ type Paladin struct {
 	VengeanceAura           *core.Aura
 	ZealotryAura            *core.Aura
 	InquisitionAura         *core.Aura
+	DivinePurposeAura       *core.Aura
 
 	ArtOfWarInstantCast *core.Aura
-	DivinePurposeProc   *core.Aura
 
 	SpiritualAttunementMetrics *core.ResourceMetrics
 

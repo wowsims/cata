@@ -146,45 +146,29 @@ func (paladin *Paladin) ApplyDivinePurpose() {
 		return
 	}
 
-	paladin.DivinePurposeProc = paladin.RegisterAura(core.Aura{
-		Label:    "Divine Purpose Proc",
-		ActionID: core.ActionID{SpellID: 86172},
+	paladin.DivinePurposeAura = paladin.RegisterAura(core.Aura{
+		Label:    "Divine Purpose",
+		ActionID: core.ActionID{SpellID: 90174},
 		Duration: time.Second * 8,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.HolyPowerBar.DivinePurpose = true
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.HolyPowerBar.DivinePurpose = false
-		},
+
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell == paladin.TemplarsVerdict || spell == paladin.Inquisition || spell == paladin.Zealotry {
+			if spell.ClassSpellMask&SpellMaskTemplarsVerdict != 0 ||
+				spell.ClassSpellMask&SpellMaskInquisition != 0 ||
+				spell.ClassSpellMask&SpellMaskZealotry != 0 {
 				aura.Deactivate(sim)
 			}
 		},
 	})
 
-	divinePurposeChance := core.TernaryFloat64(paladin.Talents.DivinePurpose == 1, 0.07, 0.15)
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Divine Purpose",
+		ActionID:       core.ActionID{SpellID: 86172},
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: SpellMaskCanTriggerDivinePurpose,
+		ProcChance:     core.TernaryFloat64(paladin.Talents.DivinePurpose == 1, 0.07, 0.15),
 
-	paladin.RegisterAura(core.Aura{
-		Label:    "Divine Purpose",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ClassSpellMask&SpellMaskJudgement == 0 &&
-				spell.ClassSpellMask&SpellMaskExorcism == 0 &&
-				spell.ClassSpellMask&SpellMaskTemplarsVerdict == 0 &&
-				spell.ClassSpellMask&SpellMaskDivineStorm == 0 &&
-				spell.ClassSpellMask&SpellMaskInquisition == 0 &&
-				spell.ClassSpellMask&SpellMaskHolyWrath == 0 &&
-				spell.ClassSpellMask&SpellMaskHammerOfWrath == 0 {
-				return
-			}
-
-			if sim.RandomFloat("Divine Purpose Proc") < divinePurposeChance {
-				paladin.DivinePurposeProc.Activate(sim)
-			}
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.DivinePurposeAura.Activate(sim)
 		},
 	})
 }
