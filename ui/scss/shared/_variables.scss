@@ -109,6 +109,7 @@ $focus-color: #cd853f;
 $combo-points-color: #ffa07a;
 $lunar-energy-color: #4a8aff;
 $solar-energy-color: #d2952b;
+$holy-power-color: #eed98a;
 
 $resource-colors: (
 	combo-points: $combo-points-color,
@@ -117,6 +118,7 @@ $resource-colors: (
 	health: $health-color,
 	mana: $mana-color,
 	rage: $rage-color,
+	holy-power: $holy-power-color,
 );
 $theme-colors: map-merge($theme-colors, $resource-colors);
 
@@ -140,11 +142,11 @@ $theme-colors: map-merge($theme-colors, $damage-colors);
 
 // Talents
 $talent-colors: (
-	talent-full: #40bf40,
-	talent-partial: #ffd100,
+	talent-full: #ffd100,
+	talent-partial: #40bf40,
 );
-
 $theme-colors: map-merge($theme-colors, $talent-colors);
+
 // Links
 $link-colors: (
 	link-danger: #ef9eaa,

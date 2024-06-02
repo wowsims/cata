@@ -1,6 +1,4 @@
 import { default as pako } from 'pako';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element } from 'tsx-vanilla';
 
 import { EmbeddedDetailedResults } from '../core/components/detailed_results';
 import { addRaidSimAction, RaidSimResultsManager, ReferenceData } from '../core/components/raid_sim_action';

@@ -1,16 +1,13 @@
+import * as PresetUtils from '../../core/preset_utils.js';
 import { Conjured, Consumes, Flask, Food, Glyphs, Potions, Spec, TinkerHands } from '../../core/proto/common';
-import { SavedTalents } from '../../core/proto/ui.js';
-
 import {
-	GuardianDruid_Rotation as DruidRotation,
-	GuardianDruid_Options as DruidOptions,
-	DruidPrimeGlyph,
 	DruidMajorGlyph,
 	DruidMinorGlyph,
+	DruidPrimeGlyph,
+	GuardianDruid_Options as DruidOptions,
+	GuardianDruid_Rotation as DruidRotation,
 } from '../../core/proto/druid.js';
-
-import * as PresetUtils from '../../core/preset_utils.js';
-
+import { SavedTalents } from '../../core/proto/ui.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.

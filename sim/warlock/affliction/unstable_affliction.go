@@ -28,10 +28,12 @@ func (affliction *AfflictionWarlock) registerUnstableAffliction() {
 		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
-			Aura:             core.Aura{Label: "UnstableAffliction"},
-			NumberOfTicks:    5,
-			TickLength:       3 * time.Second,
-			BonusCoefficient: 0.20000000298,
+			Aura:                core.Aura{Label: "UnstableAffliction"},
+			NumberOfTicks:       5,
+			TickLength:          3 * time.Second,
+			AffectedByCastSpeed: true,
+			BonusCoefficient:    0.20000000298,
+
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				dot.Snapshot(target, affliction.CalcScalingSpellDmg(0.23199999332))
 			},

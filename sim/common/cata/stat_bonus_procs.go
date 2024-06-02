@@ -555,7 +555,7 @@ func init() {
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
 		Name:       "Stump of Time (Aliance)",
 		ID:         62470,
-		AuraID:     91048,
+		AuraID:     91047,
 		Bonus:      stats.Stats{stats.SpellPower: 1926},
 		Duration:   time.Second * 15,
 		Callback:   core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,

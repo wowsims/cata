@@ -1,6 +1,5 @@
 import tippy, { Instance as TippyInstance } from 'tippy.js';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, fragment, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
@@ -158,7 +157,7 @@ export class CharacterStats extends Component {
 					<a href="javascript:void(0)" className={`stat-value-link ${contextualClass}`} attributes={{ role: 'button' }} ref={statLinkElemRef}>
 						{`${this.statDisplayString(finalStats, finalStats, stat, true)} `}
 					</a>
-					{stat == Stat.StatMastery && (
+					{stat === Stat.StatMastery && (
 						<a
 							href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
 							className={`stat-value-link-mastery ${contextualClass}`}
@@ -214,6 +213,7 @@ export class CharacterStats extends Component {
 					</div>
 				</div>
 			);
+
 			tippy(statLinkElem, {
 				content: tooltipContent,
 			});
@@ -285,7 +285,7 @@ export class CharacterStats extends Component {
 	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat, includeBase?: boolean): string {
 		let rawValue = deltaStats.getStat(stat);
 
-		rawValue *=  1;
+		rawValue *= 1;
 
 		let displayStr = String(Math.round(rawValue));
 
@@ -307,10 +307,7 @@ export class CharacterStats extends Component {
 		} else if (stat == Stat.StatBlock) {
 			// TODO: Figure out how to display these differently for the components than the final value
 			//displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${(
-				rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE +
-				5.0
-			).toFixed(2)}%)`;
+			displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + 5.0).toFixed(2)}%)`;
 		} else if (stat == Stat.StatDodge) {
 			//displayStr += ` (${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%)`;
 			displayStr += ` (${(stats.getPseudoStat(PseudoStat.PseudoStatDodge) * 100).toFixed(2)}%)`;
@@ -339,36 +336,41 @@ export class CharacterStats extends Component {
 
 	private bonusStatsLink(stat: Stat): HTMLElement {
 		const statName = getClassStatName(stat, this.player.getClass());
+		const linkRef = ref<HTMLAnchorElement>();
+		const iconRef = ref<HTMLDivElement>();
 
 		const link = (
-			<a href="javascript:void(0)" className="add-bonus-stats text-white ms-2" dataset={{ bsToggle: 'popover' }} attributes={{ role: 'button' }}>
-				<i className="fas fa-plus-minus"></i>
+			<a
+				ref={linkRef}
+				href="javascript:void(0)"
+				className="add-bonus-stats text-white ms-2"
+				dataset={{ bsToggle: 'popover' }}
+				attributes={{ role: 'button' }}>
+				<i ref={iconRef} className="fas fa-plus-minus"></i>
 			</a>
 		);
 
-		tippy(link.children[0], { content: `Bonus ${statName}` });
-
-		let popover: TippyInstance | null = null;
-
-		const picker = new NumberPicker(null, this.player, {
-			id: `character-bonus-stat-${stat}`,
-			label: `Bonus ${statName}`,
-			extraCssClasses: ['mb-0'],
-			changedEvent: (player: Player<any>) => player.bonusStatsChangeEmitter,
-			getValue: (player: Player<any>) => player.getBonusStats().getStat(stat),
-			setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
-				const bonusStats = player.getBonusStats().withStat(stat, newValue);
-				player.setBonusStats(eventID, bonusStats);
-				popover?.hide();
-			},
-		});
-
-		popover = tippy(link, {
+		tippy(iconRef.value!, { content: `Bonus ${statName}` });
+		tippy(linkRef.value!, {
 			interactive: true,
 			trigger: 'click',
 			theme: 'bonus-stats-popover',
 			placement: 'right',
-			content: picker.rootElem,
+			onShow: instance => {
+				const picker = new NumberPicker(null, this.player, {
+					id: `character-bonus-stat-${stat}`,
+					label: `Bonus ${statName}`,
+					extraCssClasses: ['mb-0'],
+					changedEvent: (player: Player<any>) => player.bonusStatsChangeEmitter,
+					getValue: (player: Player<any>) => player.getBonusStats().getStat(stat),
+					setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+						const bonusStats = player.getBonusStats().withStat(stat, newValue);
+						player.setBonusStats(eventID, bonusStats);
+						instance?.hide();
+					},
+				});
+				instance.setContent(picker.rootElem);
+			},
 		});
 
 		return link as HTMLElement;

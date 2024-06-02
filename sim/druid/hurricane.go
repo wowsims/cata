@@ -47,7 +47,7 @@ func (druid *Druid) registerHurricaneSpell() {
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
-				Label: "Hurricane",
+				Label: "Hurricane (Aura)",
 			},
 			NumberOfTicks:       10,
 			TickLength:          time.Second * 1,

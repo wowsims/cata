@@ -13,7 +13,7 @@ func (warlock *Warlock) registerShadowBurnSpell() {
 
 	warlock.Shadowburn = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 17877},
-		SpellSchool:    core.SpellSchoolShadow,
+		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolShadow,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: WarlockSpellShadowBurn,
