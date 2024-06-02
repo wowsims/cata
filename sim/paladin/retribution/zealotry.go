@@ -25,10 +25,10 @@ func (retPaladin *RetributionPaladin) RegisterZealotry() {
 		ClassSpellMask: paladin.SpellMaskZealotry,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: core.GCDDefault,
+			CD: core.Cooldown{
+				Timer:    retPaladin.NewTimer(),
+				Duration: 2 * time.Minute,
 			},
-			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return retPaladin.GetHolyPowerValue() >= 3
