@@ -22,6 +22,8 @@ func (paladin *Paladin) RegisterConsecrationSpell() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskConsecration,
 
+		MaxRange: 8,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.55,
 		},

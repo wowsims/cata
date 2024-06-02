@@ -18,6 +18,9 @@ func (paladin *Paladin) RegisterHammerOfWrathSpell() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskHammerOfWrath,
 
+		MissileSpeed: 20,
+		MaxRange:     30,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.12,
 			Multiplier: 1,

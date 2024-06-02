@@ -28,6 +28,8 @@ func (retPaladin *RetributionPaladin) RegisterDivineStorm() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		ClassSpellMask: paladin.SpellMaskDivineStorm | paladin.SpellMaskSpecialAttack,
 
+		MaxRange: 8,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.05,
 		},

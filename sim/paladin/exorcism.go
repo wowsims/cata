@@ -17,6 +17,8 @@ func (paladin *Paladin) RegisterExorcism() {
 		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskExorcism,
 
+		MaxRange: 30,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.3,
 		},
