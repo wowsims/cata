@@ -176,6 +176,7 @@ func (paladin *Paladin) RegisterSpells() {
 	paladin.RegisterSealOfTruth()
 	paladin.RegisterInquisition()
 	paladin.RegisterHammerOfWrathSpell()
+	paladin.RegisterAvengingWrath()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
@@ -221,9 +222,4 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	return paladin
-}
-
-// Shared 30sec cooldown for Divine Protection and Avenging Wrath
-func (paladin *Paladin) GetMutualLockoutDPAW() *core.Timer {
-	return paladin.Character.GetOrInitTimer(&paladin.mutualLockoutDPAW)
 }
