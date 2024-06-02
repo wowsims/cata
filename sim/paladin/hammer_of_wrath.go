@@ -1,12 +1,16 @@
 package paladin
 
 import (
+	"github.com/wowsims/cata/sim/core/proto"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
 )
 
 func (paladin *Paladin) RegisterHammerOfWrathSpell() {
+	howMinDamage, howMaxDamage :=
+		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 3.9, 0.1)
+
 	paladin.HammerOfWrath = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 24275},
 		SpellSchool:    core.SpellSchoolHoly,
@@ -37,7 +41,7 @@ func (paladin *Paladin) RegisterHammerOfWrathSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(3815, 4215) +
+			baseDamage := sim.Roll(howMinDamage, howMaxDamage) +
 				0.117*spell.SpellPower() +
 				0.39*spell.MeleeAttackPower()
 
