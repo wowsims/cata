@@ -3,6 +3,7 @@ package paladin
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"time"
 )
 
 func (paladin *Paladin) ApplyGlyphs() {
@@ -35,6 +36,9 @@ func (paladin *Paladin) ApplyGlyphs() {
 			FloatValue: 10 * core.ExpertisePerQuarterPercentReduction,
 		})
 	}
+	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfExorcism) {
+		RegisterGlyphOfExorcism(paladin)
+	}
 
 	// Major Glyphs
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfHammerOfWrath) {
@@ -63,4 +67,60 @@ func (paladin *Paladin) ApplyGlyphs() {
 			FloatValue: -0.3,
 		})
 	}
+}
+
+func RegisterGlyphOfExorcism(paladin *Paladin) {
+	exorcismAverageDamage :=
+		core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 2.663)
+
+	glyphOfExorcismDot := paladin.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 54934},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ClassSpellMask: SpellMaskGlyphOfExorcism,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Exorcism (DoT)",
+			},
+			NumberOfTicks:        3,
+			HasteAffectsDuration: false,
+			TickLength:           2 * time.Second,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				baseDamage := exorcismAverageDamage +
+					0.344*max(dot.Spell.SpellPower(), dot.Spell.MeleeAttackPower())
+
+				// Total damage is 20% of an average hit
+				baseDamage *= 0.2
+
+				// Damage is spread over 3 ticks
+				dot.SnapshotBaseDamage = baseDamage / 3
+				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
+			},
+
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+			},
+		},
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Glyph of Exorcism",
+		ActionID:       core.ActionID{SpellID: 54934},
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: SpellMaskExorcism,
+
+		ProcChance: 1,
+
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() {
+				glyphOfExorcismDot.Dot(result.Target).ApplyOrReset(sim)
+			}
+		},
+	})
 }

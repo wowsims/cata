@@ -18,6 +18,7 @@ const (
 	SpellMaskCrusaderStrike
 	SpellMaskDivineStorm
 	SpellMaskExorcism
+	SpellMaskGlyphOfExorcism
 	SpellMaskHammerOfWrath
 	SpellMaskJudgement
 	SpellMaskHolyWrath
@@ -48,6 +49,7 @@ const SpellMaskSingleTarget = SpellMaskCrusaderStrike | SpellMaskTemplarsVerdict
 const SpellMaskModifiedByInquisition = SpellMaskHammerOfWrath |
 	SpellMaskConsecration |
 	SpellMaskExorcism |
+	SpellMaskGlyphOfExorcism |
 	SpellMaskJudgement |
 	SpellMaskSealOfTruth |
 	SpellMaskCensure |
