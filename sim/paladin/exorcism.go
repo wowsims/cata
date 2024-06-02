@@ -11,7 +11,7 @@ func (paladin *Paladin) RegisterExorcism() {
 		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 2.663, 0.11)
 
 	paladin.Exorcism = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 48801},
+		ActionID:       core.ActionID{SpellID: 879},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
@@ -34,6 +34,10 @@ func (paladin *Paladin) RegisterExorcism() {
 				}
 			},
 		},
+
+		DamageMultiplier: 1,
+		CritMultiplier:   paladin.DefaultSpellCritMultiplier(),
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(exorcismMinDamage, exorcismMaxDamage) +
