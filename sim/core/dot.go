@@ -86,6 +86,9 @@ func (dot *Dot) MaxTicksRemaining() int32 {
 func (dot *Dot) NumTicksRemaining(sim *Simulation) int32 {
 	maxTicksRemaining := dot.MaxTicksRemaining()
 	finalTickAt := dot.lastTickTime + dot.tickPeriod*time.Duration(maxTicksRemaining)
+	if sim.CurrentTime == dot.lastTickTime {
+		return max(0, int32((dot.tickPeriod*time.Duration(maxTicksRemaining))/dot.tickPeriod))
+	}
 	return max(0, int32((finalTickAt-sim.CurrentTime)/dot.tickPeriod)+1)
 }
 

@@ -1067,8 +1067,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-AllItems-TinyAbominationinaJar-50706"
  value: {
-  dps: 28596.4935
-  tps: 28008.70912
+  dps: 28592.31987
+  tps: 28004.53549
  }
 }
 dps_results: {
@@ -1249,15 +1249,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Average-Default"
  value: {
-  dps: 31605.45327
-  tps: 30968.9723
+  dps: 31604.43713
+  tps: 30967.95616
  }
 }
 dps_results: {
  key: "TestFire-Settings-Troll-p1_fire-Fire-fire-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 49336.07983
-  tps: 50594.13787
+  dps: 49308.6854
+  tps: 50566.74344
  }
 }
 dps_results: {
@@ -1277,8 +1277,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Settings-Troll-p1_fire-Fire-fire-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 35122.32591
-  tps: 38696.19469
+  dps: 35117.03156
+  tps: 38690.90035
  }
 }
 dps_results: {
