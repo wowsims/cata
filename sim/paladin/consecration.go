@@ -56,7 +56,6 @@ func (paladin *Paladin) RegisterConsecrationSpell() {
 					.027*dot.Spell.MeleeAttackPower() +
 					.027*dot.Spell.SpellPower()
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					dot.Spell.SpellMetrics[aoeTarget.UnitIndex].Casts++
 					dot.Spell.CalcAndDealPeriodicDamage(sim, aoeTarget, baseDamage, dot.Spell.OutcomeMagicHitAndCrit)
 				}
 			},
