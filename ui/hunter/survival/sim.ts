@@ -68,7 +68,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		if (player.getTalents().pathing) {
 			stats = stats.addStat(Stat.StatMeleeHaste, player.getTalents().pathing * Mechanics.HASTE_RATING_PER_HASTE_PERCENT);
 		}
-
 		return {
 			talents: stats,
 		};
