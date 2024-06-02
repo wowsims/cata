@@ -179,6 +179,7 @@ func (paladin *Paladin) RegisterSpells() {
 	paladin.RegisterAvengingWrath()
 	paladin.RegisterDivinePleaSpell()
 	paladin.RegisterConsecrationSpell()
+	paladin.RegisterHolyWrath()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
