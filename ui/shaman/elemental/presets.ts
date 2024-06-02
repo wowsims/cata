@@ -2,17 +2,17 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import { Consumes, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common.js';
 import {
 	AirTotem,
+	CallTotem,
 	EarthTotem,
 	ElementalShaman_Options as ElementalShamanOptions,
 	FireTotem,
-	ShamanPrimeGlyph,
 	ShamanMajorGlyph,
 	ShamanMinorGlyph,
+	ShamanPrimeGlyph,
 	ShamanShield,
 	ShamanTotems,
-	WaterTotem,
 	TotemSet,
-	CallTotem,
+	WaterTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import DefaultApl from './apls/default.apl.json';
@@ -39,8 +39,8 @@ export const TalentsTotemDuration = {
 			prime2: ShamanPrimeGlyph.GlyphOfLavaBurst,
 			prime3: ShamanPrimeGlyph.GlyphOfLightningBolt,
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
-			major2: ShamanMajorGlyph.GlyphOfThunder,
-			major3: ShamanMajorGlyph.GlyphOfFireNova,
+			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
+			major3: ShamanMajorGlyph.GlyphOfStoneclawTotem,
 			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
 			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
 			minor3: ShamanMinorGlyph.GlyphOfTheArcticWolf,
@@ -57,8 +57,8 @@ export const TalentsImprovedShields = {
 			prime2: ShamanPrimeGlyph.GlyphOfLavaBurst,
 			prime3: ShamanPrimeGlyph.GlyphOfLightningBolt,
 			major1: ShamanMajorGlyph.GlyphOfLightningShield,
-			major2: ShamanMajorGlyph.GlyphOfThunder,
-			major3: ShamanMajorGlyph.GlyphOfFireNova,
+			major2: ShamanMajorGlyph.GlyphOfHealingStreamTotem,
+			major3: ShamanMajorGlyph.GlyphOfStoneclawTotem,
 			minor1: ShamanMinorGlyph.GlyphOfThunderstorm,
 			minor2: ShamanMinorGlyph.GlyphOfRenewedLife,
 			minor3: ShamanMinorGlyph.GlyphOfTheArcticWolf,
