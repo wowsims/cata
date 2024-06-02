@@ -152,7 +152,7 @@ func (paladin *Paladin) ApplyArtOfWar() {
 	})
 
 	exorcismDamageMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
+		Kind:       core.SpellMod_DamageDone_Flat,
 		ClassMask:  SpellMaskExorcism | SpellMaskGlyphOfExorcism,
 		FloatValue: 1.0,
 	})
