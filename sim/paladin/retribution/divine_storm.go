@@ -17,7 +17,7 @@ func (retPaladin *RetributionPaladin) RegisterDivineStorm() {
 		return
 	}
 
-	results := make([]*core.SpellResult, retPaladin.Env.GetNumTargets())
+	numTargets := retPaladin.Env.GetNumTargets()
 	actionId := core.ActionID{SpellID: 53385}
 	hpMetrics := retPaladin.NewHolyPowerMetrics(actionId)
 
@@ -48,17 +48,16 @@ func (retPaladin *RetributionPaladin) RegisterDivineStorm() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			numHits := 0
-			for idx := range results {
+
+			for idx := int32(0); idx < numTargets; idx++ {
+				currentTarget := sim.Environment.GetTargetUnit(idx)
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				if results[idx].Landed() {
+				result := spell.CalcAndDealDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				if result.Landed() {
 					numHits += 1
 				}
-				target = sim.Environment.NextTargetUnit(target)
 			}
-			for _, result := range results {
-				spell.DealDamage(sim, result)
-			}
+
 			if numHits >= 4 {
 				retPaladin.GainHolyPower(sim, 1, hpMetrics)
 			}
