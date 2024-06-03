@@ -13,8 +13,10 @@ func (paladin *Paladin) applyRetributionTalents() {
 	paladin.applySanctifiedWrath()
 	paladin.applyCommunion()
 	paladin.applyArtOfWar()
+	paladin.applyDivineStorm()
 	paladin.applyDivinePurpose()
 	paladin.applyInquiryOfFaith()
+	paladin.applyZealotry()
 }
 
 func (paladin *Paladin) applyCrusade() {
@@ -194,6 +196,72 @@ func (paladin *Paladin) applyArtOfWar() {
 	})
 }
 
+// Divine Storm is a non-ap normalised instant attack that has a weapon damage % modifier with a 1.0 coefficient.
+// It does this damage to all targets in range.
+// DS also heals up to 3 party or raid members for 25% of the total damage caused.
+// The heal has threat implications, but given prot paladin cannot get enough talent
+// points to take DS, we'll ignore it for now.
+func (paladin *Paladin) applyDivineStorm() {
+	if !paladin.Talents.DivineStorm {
+		return
+	}
+
+	numTargets := paladin.Env.GetNumTargets()
+	actionId := core.ActionID{SpellID: 53385}
+	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
+
+	paladin.DivineStorm = paladin.RegisterSpell(core.SpellConfig{
+		ActionID:       actionId,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskDivineStorm | SpellMaskSpecialAttack,
+
+		MaxRange: 8,
+
+		ManaCost: core.ManaCostOptions{
+			BaseCost: 0.05,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+			CD: core.Cooldown{
+				Timer:    paladin.NewTimer(),
+				Duration: 4500 * time.Millisecond,
+			},
+		},
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			numHits := 0
+			results := make([]*core.SpellResult, numTargets)
+
+			for idx := int32(0); idx < numTargets; idx++ {
+				currentTarget := sim.Environment.GetTargetUnit(idx)
+				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+				result := spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				if result.Landed() {
+					numHits += 1
+				}
+				results[idx] = result
+			}
+
+			for idx := int32(0); idx < numTargets; idx++ {
+				spell.DealDamage(sim, results[idx])
+			}
+
+			if numHits >= 4 {
+				paladin.GainHolyPower(sim, 1, hpMetrics)
+			}
+		},
+	})
+}
+
 func (paladin *Paladin) applyDivinePurpose() {
 	if paladin.Talents.DivinePurpose == 0 {
 		return
@@ -238,4 +306,40 @@ func (paladin *Paladin) applyInquiryOfFaith() {
 	})
 
 	// Inquisition duration is handled in inquisition.go
+}
+
+func (paladin *Paladin) applyZealotry() {
+	if !paladin.Talents.Zealotry {
+		return
+	}
+
+	actionId := core.ActionID{SpellID: 85696}
+
+	paladin.ZealotryAura = paladin.RegisterAura(core.Aura{
+		Label:    "Zealotry",
+		ActionID: actionId,
+		Duration: 20 * time.Second,
+	})
+
+	paladin.Zealotry = paladin.RegisterSpell(core.SpellConfig{
+		ActionID:       actionId,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskZealotry,
+
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    paladin.NewTimer(),
+				Duration: 2 * time.Minute,
+			},
+		},
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return paladin.GetHolyPowerValue() >= 3
+		},
+
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			paladin.ZealotryAura.Activate(sim)
+		},
+	})
 }
