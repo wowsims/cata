@@ -147,13 +147,12 @@ func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 	})
 
 	core.MakeProcTriggerAura(&ret.Unit, core.ProcTrigger{
-		Name:           "Judgements of the Bold Trigger",
-		ActionID:       actionID,
-		Callback:       core.CallbackOnSpellHitDealt,
-		Outcome:        core.OutcomeLanded,
-		ProcMask:       core.ProcMaskMeleeSpecial,
-		ClassSpellMask: paladin.SpellMaskJudgement,
-		ProcChance:     1.0,
+		Name:       "Judgements of the Bold Trigger",
+		ActionID:   actionID,
+		Callback:   core.CallbackOnSpellHitDealt,
+		Outcome:    core.OutcomeLanded,
+		ProcMask:   core.ProcMaskMeleeSpecial,
+		ProcChance: 1.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			jotbAura.Activate(sim)
