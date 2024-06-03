@@ -13,7 +13,7 @@ func (paladin *Paladin) registerInquisition() {
 
 	actionId := core.ActionID{SpellID: 84963}
 	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
-	inquisitionDuration := 4 * time.Second * time.Duration([]float64{0, 1.66, 2.33, 3.0}[paladin.Talents.InquiryOfFaith])
+	inquisitionDuration := time.Millisecond * time.Duration(4000*[]float64{0, 1.66, 2.33, 3.0}[paladin.Talents.InquiryOfFaith])
 
 	hasT11_4pc := paladin.HasSetBonus(ItemSetReinforcedSapphiriumBattleplate, 4)
 
