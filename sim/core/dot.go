@@ -213,10 +213,7 @@ func (dot *Dot) RecomputeAuraDuration() {
 	if dot.AffectedByCastSpeed {
 		dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.TickLength, dot.Spell)
 
-		// cata haste logic here for dots
-		// channels seem not to be affected by the same logic
-		// see: https://youtu.be/Rr4YyKaU7Ik?si=Isuce7Z1bQWMWpMi&t=53
-		if !dot.isChanneled && !dot.HasteAffectsDuration {
+		if !dot.HasteAffectsDuration {
 			dot.NumberOfTicks = int32(round(float64(dot.GetBaseDuration()) / float64(dot.tickPeriod)))
 		}
 
