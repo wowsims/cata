@@ -50,14 +50,20 @@ func (retPaladin *RetributionPaladin) RegisterDivineStorm() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			numHits := 0
+			results := make([]*core.SpellResult, numTargets)
 
 			for idx := int32(0); idx < numTargets; idx++ {
 				currentTarget := sim.Environment.GetTargetUnit(idx)
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-				result := spell.CalcAndDealDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				result := spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				if result.Landed() {
 					numHits += 1
 				}
+				results[idx] = result
+			}
+
+			for idx := int32(0); idx < numTargets; idx++ {
+				spell.DealDamage(sim, results[idx])
 			}
 
 			if numHits >= 4 {

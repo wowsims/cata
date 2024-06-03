@@ -9,7 +9,7 @@ import (
 
 func (paladin *Paladin) registerHolyWrath() {
 	hwAvgDamage := core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 2.33299994469)
-	numTargets := float64(paladin.Env.GetNumTargets())
+	numTargets := paladin.Env.GetNumTargets()
 
 	paladin.HolyWrath = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 2812},
@@ -38,13 +38,19 @@ func (paladin *Paladin) registerHolyWrath() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			results := make([]*core.SpellResult, numTargets)
 			baseDamage := hwAvgDamage + .61*spell.SpellPower()
 
 			// Damage is split between all mobs, each hit rolls for hit/crit separately
-			baseDamage /= numTargets
+			baseDamage /= float64(numTargets)
 
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			for idx := int32(0); idx < numTargets; idx++ {
+				currentTarget := sim.Environment.GetTargetUnit(idx)
+				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			}
+
+			for idx := int32(0); idx < numTargets; idx++ {
+				spell.DealDamage(sim, results[idx])
 			}
 		},
 	})
