@@ -53,16 +53,20 @@ func (paladin *Paladin) applySanctityOfBattle() {
 		ClassMask: SpellMaskCrusaderStrike | SpellMaskDivineStorm,
 	})
 
-	paladin.AddOnCastSpeedChanged(func(_ float64, castSpeed float64) {
+	updateTimeValue := func(castSpeed float64) {
 		spenderCooldownMod.UpdateTimeValue(-(4500*time.Millisecond - time.Duration(4500*castSpeed)))
+	}
+
+	paladin.AddOnCastSpeedChanged(func(_ float64, castSpeed float64) {
+		updateTimeValue(castSpeed)
 	})
 
 	core.MakePermanent(paladin.GetOrRegisterAura(core.Aura{
-		Label:      "Sanctity of Battle",
-		ActionID:   core.ActionID{SpellID: 25956},
-		BuildPhase: core.CharacterBuildPhaseAll,
+		Label:    "Sanctity of Battle",
+		ActionID: core.ActionID{SpellID: 25956},
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			updateTimeValue(paladin.CastSpeed)
 			spenderCooldownMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -115,12 +119,12 @@ func (paladin *Paladin) applySanctifiedWrath() {
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskHammerOfWrath,
 		Kind:       core.SpellMod_BonusCrit_Rating,
-		FloatValue: 0.02 * float64(paladin.Talents.SanctifiedWrath) * core.CritRatingPerCritChance,
+		FloatValue: 2 * float64(paladin.Talents.SanctifiedWrath) * core.CritRatingPerCritChance,
 	})
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask: SpellMaskAvengingWrath,
 		Kind:      core.SpellMod_Cooldown_Flat,
-		TimeValue: time.Second * 20 * time.Duration(paladin.Talents.SanctifiedWrath),
+		TimeValue: -(time.Second * 20 * time.Duration(paladin.Talents.SanctifiedWrath)),
 	})
 
 	// Hammer of Wrath execute restriction removal is handled in hammer_of_wrath.go
