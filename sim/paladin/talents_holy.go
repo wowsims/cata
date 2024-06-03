@@ -95,6 +95,6 @@ func (paladin *Paladin) applyDenounce() {
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskExorcism,
 		Kind:       core.SpellMod_PowerCost_Pct,
-		FloatValue: -core.TernaryFloat64(paladin.Talents.Denounce == 1, 0.38, 0.75),
+		FloatValue: -([]float64{0, 0.38, 0.75}[paladin.Talents.Denounce]),
 	})
 }

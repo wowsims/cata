@@ -214,7 +214,7 @@ func (paladin *Paladin) applyDivinePurpose() {
 		ActionID:       core.ActionID{SpellID: 86172},
 		Callback:       core.CallbackOnCastComplete,
 		ClassSpellMask: SpellMaskCanTriggerDivinePurpose,
-		ProcChance:     core.TernaryFloat64(paladin.Talents.DivinePurpose == 1, 0.07, 0.15),
+		ProcChance:     []float64{0, 0.07, 0.15}[paladin.Talents.DivinePurpose],
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			paladin.DivinePurposeAura.Activate(sim)
