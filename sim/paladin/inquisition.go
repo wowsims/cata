@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (paladin *Paladin) RegisterInquisition() {
+func (paladin *Paladin) registerInquisition() {
 	if paladin.Talents.InquiryOfFaith == 0 {
 		return
 	}

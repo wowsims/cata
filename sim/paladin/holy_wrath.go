@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (paladin *Paladin) RegisterHolyWrath() {
+func (paladin *Paladin) registerHolyWrath() {
 	hwAvgDamage := core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 2.33299994469)
 	numTargets := float64(paladin.Env.GetNumTargets())
 

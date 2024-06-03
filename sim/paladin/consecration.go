@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (paladin *Paladin) RegisterConsecrationSpell() {
+func (paladin *Paladin) registerConsecrationSpell() {
 	numTicks := int32(10)
 	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfConsecration) {
 		numTicks += 2

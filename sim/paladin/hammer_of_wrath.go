@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (paladin *Paladin) RegisterHammerOfWrathSpell() {
+func (paladin *Paladin) registerHammerOfWrathSpell() {
 	howMinDamage, howMaxDamage :=
 		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 3.9, 0.1)
 

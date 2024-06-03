@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (paladin *Paladin) RegisterSealOfTruth() {
+func (paladin *Paladin) registerSealOfTruth() {
 
 	// Censure DoT
 	censureSpell := paladin.RegisterSpell(core.SpellConfig{
@@ -41,7 +41,7 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 		},
 	})
 
-	// Judegment of Truth cast on Judgement
+	// Judgement of Truth cast on Judgement
 	judgementDmg := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 31804},
 		SpellSchool:    core.SpellSchoolHoly,

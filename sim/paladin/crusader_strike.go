@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func (paladin *Paladin) RegisterCrusaderStrike() {
+func (paladin *Paladin) registerCrusaderStrike() {
 	actionId := core.ActionID{SpellID: 35395}
 	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
 

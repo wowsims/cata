@@ -6,15 +6,15 @@ import (
 	"time"
 )
 
-func (paladin *Paladin) ApplyHolyTalents() {
-	paladin.ApplyArbiterOfTheLight()
-	paladin.ApplyProtectorOfTheInnocent()
-	paladin.ApplyJudgementsOfThePure()
-	paladin.ApplyBlazingLight()
-	paladin.ApplyDenounce()
+func (paladin *Paladin) applyHolyTalents() {
+	paladin.applyArbiterOfTheLight()
+	paladin.applyProtectorOfTheInnocent()
+	paladin.applyJudgementsOfThePure()
+	paladin.applyBlazingLight()
+	paladin.applyDenounce()
 }
 
-func (paladin *Paladin) ApplyArbiterOfTheLight() {
+func (paladin *Paladin) applyArbiterOfTheLight() {
 	if paladin.Talents.ArbiterOfTheLight == 0 {
 		return
 	}
@@ -26,15 +26,16 @@ func (paladin *Paladin) ApplyArbiterOfTheLight() {
 	})
 }
 
-func (paladin *Paladin) ApplyProtectorOfTheInnocent() {
+func (paladin *Paladin) applyProtectorOfTheInnocent() {
 	if paladin.Talents.ProtectorOfTheInnocent == 0 {
 		return
 	}
+
 	// TODO: Implement as a aura
 }
 
 // Might need Rework
-func (paladin *Paladin) ApplyJudgementsOfThePure() {
+func (paladin *Paladin) applyJudgementsOfThePure() {
 	if paladin.Talents.JudgementsOfThePure == 0 {
 		return
 	}
@@ -74,10 +75,11 @@ func (paladin *Paladin) ApplyJudgementsOfThePure() {
 	})
 }
 
-func (paladin *Paladin) ApplyBlazingLight() {
+func (paladin *Paladin) applyBlazingLight() {
 	if paladin.Talents.BlazingLight == 0 {
 		return
 	}
+
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskExorcism | SpellMaskHolyShock,
 		Kind:       core.SpellMod_DamageDone_Flat,
@@ -85,10 +87,11 @@ func (paladin *Paladin) ApplyBlazingLight() {
 	})
 }
 
-func (paladin *Paladin) ApplyDenounce() {
+func (paladin *Paladin) applyDenounce() {
 	if paladin.Talents.Denounce == 0 {
 		return
 	}
+
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask:  SpellMaskExorcism,
 		Kind:       core.SpellMod_PowerCost_Pct,

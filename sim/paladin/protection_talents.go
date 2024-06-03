@@ -2,11 +2,11 @@ package paladin
 
 import "github.com/wowsims/cata/sim/core"
 
-func (paladin *Paladin) ApplyProtectionTalents() {
-	paladin.ApplySealsOfThePure()
+func (paladin *Paladin) applyProtectionTalents() {
+	paladin.applySealsOfThePure()
 }
 
-func (paladin *Paladin) ApplySealsOfThePure() {
+func (paladin *Paladin) applySealsOfThePure() {
 	if paladin.Talents.SealsOfThePure == 0 {
 		return
 	}

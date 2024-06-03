@@ -1,7 +1,7 @@
 package paladin
 
 func (paladin *Paladin) ApplyTalents() {
-	paladin.ApplyRetributionTalents()
-	paladin.ApplyProtectionTalents()
-	paladin.ApplyHolyTalents()
+	paladin.applyRetributionTalents()
+	paladin.applyProtectionTalents()
+	paladin.applyHolyTalents()
 }

@@ -25,7 +25,7 @@ func (paladin *Paladin) GetHolyPowerValue() int32 {
 	return paladin.CurrentHolyPower()
 }
 
-func (paladin *Paladin) InitializeHolyPowerBar() {
+func (paladin *Paladin) initializeHolyPowerBar() {
 	paladin.HolyPowerBar = HolyPowerBar{
 		paladin:   paladin,
 		holyPower: 0,

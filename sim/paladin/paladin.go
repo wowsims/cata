@@ -114,12 +114,6 @@ type Paladin struct {
 	ArtOfWarInstantCast *core.Aura
 
 	SpiritualAttunementMetrics *core.ResourceMetrics
-
-	HasTuralyonsOrLiadrinsBattlegear2Pc bool
-
-	DemonAndUndeadTargetCount int32
-
-	mutualLockoutDPAW *core.Timer
 }
 
 // Implemented by each Paladin spec.
@@ -165,22 +159,22 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
-	paladin.ApplyGlyphs()
-	paladin.RegisterSpells()
+	paladin.applyGlyphs()
+	paladin.registerSpells()
 	paladin.registerPvpSets()
 }
 
-func (paladin *Paladin) RegisterSpells() {
-	paladin.RegisterCrusaderStrike()
-	paladin.RegisterExorcism()
-	paladin.RegisterJudgement()
-	paladin.RegisterSealOfTruth()
-	paladin.RegisterInquisition()
-	paladin.RegisterHammerOfWrathSpell()
-	paladin.RegisterAvengingWrath()
-	paladin.RegisterDivinePleaSpell()
-	paladin.RegisterConsecrationSpell()
-	paladin.RegisterHolyWrath()
+func (paladin *Paladin) registerSpells() {
+	paladin.registerCrusaderStrike()
+	paladin.registerExorcism()
+	paladin.registerJudgement()
+	paladin.registerSealOfTruth()
+	paladin.registerInquisition()
+	paladin.registerHammerOfWrathSpell()
+	paladin.registerAvengingWrath()
+	paladin.registerDivinePleaSpell()
+	paladin.registerConsecrationSpell()
+	paladin.registerHolyWrath()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
@@ -197,13 +191,10 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 
 	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
 
-	// // This is used to cache its effect in talents.go
-	// paladin.HasTuralyonsOrLiadrinsBattlegear2Pc = paladin.HasSetBonus(ItemSetTuralyonsBattlegear, 2)
-
 	paladin.PseudoStats.CanParry = true
 
 	paladin.EnableManaBar()
-	paladin.InitializeHolyPowerBar()
+	paladin.initializeHolyPowerBar()
 
 	paladin.EnableAutoAttacks(paladin, core.AutoAttackOptions{
 		MainHand:       paladin.WeaponFromMainHand(paladin.DefaultMeleeCritMultiplier()),

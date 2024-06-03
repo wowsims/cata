@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func (paladin *Paladin) ApplyGlyphs() {
+func (paladin *Paladin) applyGlyphs() {
 	// Prime Glyphs
 	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfCrusaderStrike) {
 		paladin.AddStaticMod(core.SpellModConfig{
@@ -37,7 +37,7 @@ func (paladin *Paladin) ApplyGlyphs() {
 		})
 	}
 	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfExorcism) {
-		RegisterGlyphOfExorcism(paladin)
+		registerGlyphOfExorcism(paladin)
 	}
 
 	// Major Glyphs
@@ -69,7 +69,7 @@ func (paladin *Paladin) ApplyGlyphs() {
 	}
 }
 
-func RegisterGlyphOfExorcism(paladin *Paladin) {
+func registerGlyphOfExorcism(paladin *Paladin) {
 	exorcismAverageDamage :=
 		core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 2.663)
 

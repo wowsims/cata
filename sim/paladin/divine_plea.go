@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/cata/sim/core/proto"
 )
 
-func (paladin *Paladin) RegisterDivinePleaSpell() {
+func (paladin *Paladin) registerDivinePleaSpell() {
 	actionID := core.ActionID{SpellID: 54428}
 	manaMetrics := paladin.NewManaMetrics(actionID)
 

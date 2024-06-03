@@ -5,19 +5,19 @@ import (
 	"time"
 )
 
-func (paladin *Paladin) ApplyRetributionTalents() {
-	paladin.ApplyCrusade()
-	paladin.ApplyRuleOfLaw()
-	paladin.ApplySanctityOfBattle()
-	paladin.ApplySealsOfCommand()
-	paladin.ApplySanctifiedWrath()
-	paladin.ApplyCommunion()
-	paladin.ApplyArtOfWar()
-	paladin.ApplyDivinePurpose()
-	paladin.ApplyInquiryOfFaith()
+func (paladin *Paladin) applyRetributionTalents() {
+	paladin.applyCrusade()
+	paladin.applyRuleOfLaw()
+	paladin.applySanctityOfBattle()
+	paladin.applySealsOfCommand()
+	paladin.applySanctifiedWrath()
+	paladin.applyCommunion()
+	paladin.applyArtOfWar()
+	paladin.applyDivinePurpose()
+	paladin.applyInquiryOfFaith()
 }
 
-func (paladin *Paladin) ApplyCrusade() {
+func (paladin *Paladin) applyCrusade() {
 	if paladin.Talents.Crusade == 0 {
 		return
 	}
@@ -31,7 +31,7 @@ func (paladin *Paladin) ApplyCrusade() {
 	// TODO: Add Healing Mod for Holy Shock if healing sim gets implemented
 }
 
-func (paladin *Paladin) ApplyRuleOfLaw() {
+func (paladin *Paladin) applyRuleOfLaw() {
 	if paladin.Talents.RuleOfLaw == 0 {
 		return
 	}
@@ -43,7 +43,7 @@ func (paladin *Paladin) ApplyRuleOfLaw() {
 	})
 }
 
-func (paladin *Paladin) ApplySanctityOfBattle() {
+func (paladin *Paladin) applySanctityOfBattle() {
 	if !paladin.Talents.SanctityOfBattle {
 		return
 	}
@@ -71,7 +71,7 @@ func (paladin *Paladin) ApplySanctityOfBattle() {
 	}))
 }
 
-func (paladin *Paladin) ApplySealsOfCommand() {
+func (paladin *Paladin) applySealsOfCommand() {
 	if !paladin.Talents.SealsOfCommand {
 		return
 	}
@@ -107,7 +107,7 @@ func (paladin *Paladin) ApplySealsOfCommand() {
 	})
 }
 
-func (paladin *Paladin) ApplySanctifiedWrath() {
+func (paladin *Paladin) applySanctifiedWrath() {
 	if paladin.Talents.SanctifiedWrath == 0 {
 		return
 	}
@@ -126,7 +126,7 @@ func (paladin *Paladin) ApplySanctifiedWrath() {
 	// Hammer of Wrath execute restriction removal is handled in hammer_of_wrath.go
 }
 
-func (paladin *Paladin) ApplyCommunion() {
+func (paladin *Paladin) applyCommunion() {
 	if !paladin.Talents.Communion {
 		return
 	}
@@ -134,7 +134,7 @@ func (paladin *Paladin) ApplyCommunion() {
 	paladin.PseudoStats.DamageDealtMultiplier *= 1.02
 }
 
-func (paladin *Paladin) ApplyArtOfWar() {
+func (paladin *Paladin) applyArtOfWar() {
 	if paladin.Talents.TheArtOfWar == 0 {
 		return
 	}
@@ -190,7 +190,7 @@ func (paladin *Paladin) ApplyArtOfWar() {
 	})
 }
 
-func (paladin *Paladin) ApplyDivinePurpose() {
+func (paladin *Paladin) applyDivinePurpose() {
 	if paladin.Talents.DivinePurpose == 0 {
 		return
 	}
@@ -222,7 +222,7 @@ func (paladin *Paladin) ApplyDivinePurpose() {
 	})
 }
 
-func (paladin *Paladin) ApplyInquiryOfFaith() {
+func (paladin *Paladin) applyInquiryOfFaith() {
 	if paladin.Talents.InquiryOfFaith == 0 {
 		return
 	}

@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (paladin *Paladin) RegisterAvengingWrath() {
+func (paladin *Paladin) registerAvengingWrath() {
 	actionID := core.ActionID{SpellID: 31884}
 
 	paladin.AvengingWrathAura = paladin.RegisterAura(core.Aura{

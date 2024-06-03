@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func (paladin *Paladin) RegisterExorcism() {
+func (paladin *Paladin) registerExorcism() {
 	exorcismMinDamage, exorcismMaxDamage :=
 		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 2.663, 0.11)
 
