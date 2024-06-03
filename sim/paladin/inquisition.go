@@ -13,7 +13,9 @@ func (paladin *Paladin) RegisterInquisition() {
 
 	actionId := core.ActionID{SpellID: 84963}
 	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
-	inquisitionDuration := time.Second * 4 * time.Duration([]float64{0, 1.66, 2.33, 3.0}[paladin.Talents.InquiryOfFaith])
+	inquisitionDuration := 4 * time.Second * time.Duration([]float64{0, 1.66, 2.33, 3.0}[paladin.Talents.InquiryOfFaith])
+
+	hasT11_4pc := paladin.HasSetBonus(ItemSetReinforcedSapphiriumBattleplate, 4)
 
 	inquisitionMod := paladin.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
@@ -59,7 +61,9 @@ func (paladin *Paladin) RegisterInquisition() {
 				return
 			}
 
-			// TODO: Add extra holy power if 4pc T11 is active
+			if hasT11_4pc {
+				holyPower += 1
+			}
 
 			paladin.InquisitionAura.Duration = inquisitionDuration * time.Duration(holyPower)
 			paladin.InquisitionAura.Activate(sim)

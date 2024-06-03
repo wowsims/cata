@@ -167,6 +167,7 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 func (paladin *Paladin) Initialize() {
 	paladin.ApplyGlyphs()
 	paladin.RegisterSpells()
+	paladin.registerPvpSets()
 }
 
 func (paladin *Paladin) RegisterSpells() {
