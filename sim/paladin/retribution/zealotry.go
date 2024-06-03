@@ -37,12 +37,6 @@ func (retPaladin *RetributionPaladin) RegisterZealotry() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			holyPower := retPaladin.GetHolyPowerValue()
-
-			if holyPower == 0 {
-				return
-			}
-
 			retPaladin.ZealotryAura.Activate(sim)
 		},
 	})

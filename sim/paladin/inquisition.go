@@ -57,10 +57,6 @@ func (paladin *Paladin) registerInquisition() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			holyPower := paladin.GetHolyPowerValue()
 
-			if holyPower == 0 {
-				return
-			}
-
 			if hasT11_4pc {
 				holyPower += 1
 			}

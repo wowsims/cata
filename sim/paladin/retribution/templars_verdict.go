@@ -22,7 +22,9 @@ func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
 			},
 			IgnoreHaste: true,
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool { return retPaladin.GetHolyPowerValue() > 0 },
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return retPaladin.GetHolyPowerValue() > 0
+		},
 
 		DamageMultiplier: 1,
 		CritMultiplier:   retPaladin.DefaultMeleeCritMultiplier(),
@@ -30,10 +32,6 @@ func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			holyPower := retPaladin.GetHolyPowerValue()
-
-			if holyPower == 0 {
-				return
-			}
 
 			multiplier := 1.0 + 0.3*float64(holyPower)
 
