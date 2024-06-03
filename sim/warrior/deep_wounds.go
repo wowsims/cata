@@ -34,7 +34,7 @@ func (warrior *Warrior) RegisterDeepWounds() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).ApplyOrReset(sim)
+			spell.Dot(target).Apply(sim)
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 		},
 	})
@@ -80,7 +80,8 @@ func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, 
 	}
 	newDamage := awd * 0.16 * float64(warrior.Talents.DeepWounds)
 
-	dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(dot.NumberOfTicks)
+	ticks := float64(dot.NumberOfTicks + core.TernaryInt32(dot.IsActive(), 1, 0))
+	dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / ticks
 	dot.SnapshotAttackerMultiplier = 1
 	warrior.DeepWounds.Cast(sim, target)
 }
