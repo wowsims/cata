@@ -338,8 +338,8 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-AllItems-EarthenWarplate"
  value: {
-  dps: 5143.94611
-  tps: 31144.20247
+  dps: 5144.08021
+  tps: 31144.87296
  }
 }
 dps_results: {
@@ -1325,8 +1325,8 @@ dps_results: {
 dps_results: {
  key: "TestProtectionWarrior-Average-Default"
  value: {
-  dps: 12419.74568
-  tps: 72270.63927
+  dps: 12419.76238
+  tps: 72270.72274
   dtps: 8028.45683
  }
 }

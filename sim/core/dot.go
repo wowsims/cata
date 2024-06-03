@@ -192,7 +192,6 @@ func (dot *Dot) ApplyOrReset(sim *Simulation) {
 	dot.TickCount = 0
 
 	oldTickAction := dot.tickAction
-	dot.tickAction = nil      // prevent tickAction.CleanUp() from adding an extra tick
 	oldTickAction.Cancel(sim) // remove old PA ticker
 
 	// recreate with new period, resetting the next tick.
@@ -288,17 +287,6 @@ func (dot *Dot) basePeriodicOptions() PeriodicActionOptions {
 				dot.TickOnce(sim)
 			}
 		},
-		CleanUp: func(sim *Simulation) {
-			// In certain cases, the last tick and the dot aura expiration can happen in
-			// different orders, so we might need to apply the last tick.
-			if dot.tickAction != nil && dot.tickAction.NextActionAt == sim.CurrentTime {
-				if dot.lastTickTime != sim.CurrentTime {
-					dot.TickCount++
-					dot.lastTickTime = sim.CurrentTime
-					dot.TickOnce(sim)
-				}
-			}
-		},
 	}
 }
 
@@ -321,6 +309,15 @@ func newDot(config Dot) *Dot {
 	})
 	dot.Aura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
 		if dot.tickAction != nil {
+			// In certain cases, the last tick and the dot aura expiration can happen in
+			// different orders, so we might need to apply the last tick.
+			if dot.tickAction.NextActionAt == sim.CurrentTime {
+				if dot.lastTickTime != sim.CurrentTime {
+					dot.TickCount++
+					dot.lastTickTime = sim.CurrentTime
+					dot.TickOnce(sim)
+				}
+			}
 			dot.tickAction.Cancel(sim)
 			dot.tickAction = nil
 		}

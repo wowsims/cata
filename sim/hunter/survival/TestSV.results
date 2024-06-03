@@ -1319,15 +1319,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
  value: {
-  dps: 22642.17881
-  tps: 18392.31005
+  dps: 22649.93271
+  tps: 18388.29405
  }
 }
 dps_results: {
  key: "TestSV-Settings-Dwarf-preraid_sv-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
-  dps: 28750.36874
-  tps: 22793.58777
+  dps: 28789.13825
+  tps: 22773.50776
  }
 }
 dps_results: {
@@ -1445,15 +1445,15 @@ dps_results: {
 dps_results: {
  key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-FullBuffs-5.1yards-LongSingleTarget"
  value: {
-  dps: 22837.71181
-  tps: 18449.25498
+  dps: 22845.73977
+  tps: 18445.09605
  }
 }
 dps_results: {
  key: "TestSV-Settings-Orc-preraid_sv-Basic-aoe-FullBuffs-5.1yards-ShortSingleTarget"
  value: {
-  dps: 29180.8573
-  tps: 22990.71921
+  dps: 29220.9971
+  tps: 22969.92456
  }
 }
 dps_results: {

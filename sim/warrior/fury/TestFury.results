@@ -157,8 +157,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-BloodthirstyGladiator'sEmblemofCruelty-64740"
  value: {
-  dps: 26953.52205
-  tps: 23026.28049
+  dps: 26953.75724
+  tps: 23026.51568
  }
 }
 dps_results: {
@@ -500,15 +500,15 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-GraceoftheHerald-55266"
  value: {
-  dps: 26689.77022
-  tps: 22679.69874
+  dps: 26690.01701
+  tps: 22679.94553
  }
 }
 dps_results: {
  key: "TestFury-AllItems-GraceoftheHerald-56295"
  value: {
-  dps: 26857.34339
-  tps: 22955.27145
+  dps: 26857.59018
+  tps: 22955.51824
  }
 }
 dps_results: {
@@ -577,8 +577,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-HeartoftheVile-66969"
  value: {
-  dps: 26759.90059
-  tps: 22811.36392
+  dps: 26760.14738
+  tps: 22811.61071
  }
 }
 dps_results: {
@@ -843,8 +843,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-PhylacteryoftheNamelessLich-50365"
  value: {
-  dps: 26636.84418
-  tps: 22718.45606
+  dps: 26636.88151
+  tps: 22718.49339
  }
 }
 dps_results: {
@@ -927,8 +927,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
-  dps: 26957.10135
-  tps: 22859.13983
+  dps: 26957.13868
+  tps: 22859.17716
  }
 }
 dps_results: {
@@ -955,8 +955,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-ShardofWoe-60233"
  value: {
-  dps: 26724.3903
-  tps: 22848.224
+  dps: 26724.80299
+  tps: 22848.63669
  }
 }
 dps_results: {
@@ -1151,8 +1151,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-UnheededWarning-59520"
  value: {
-  dps: 27403.42666
-  tps: 23432.48227
+  dps: 27403.66185
+  tps: 23432.71746
  }
 }
 dps_results: {
@@ -1326,8 +1326,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-Average-Default"
  value: {
-  dps: 28192.36363
-  tps: 24245.68015
+  dps: 28192.38278
+  tps: 24245.69931
  }
 }
 dps_results: {
