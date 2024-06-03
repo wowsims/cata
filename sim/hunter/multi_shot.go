@@ -52,6 +52,8 @@ func (hunter *Hunter) registerMultiShotSpell() {
 					spell.DealDamage(sim, baseDamageArray[hitIndex])
 					if hunter.Talents.SerpentSpread > 0 {
 						ss := hunter.SerpentSting.Dot(curTarget)
+
+						hunter.SerpentSting.SpellMetrics[target.UnitIndex].Hits--
 						ss.NumberOfTicks = (3 + (hunter.Talents.SerpentSpread * 3)) / 2
 						ss.Apply(sim)
 						hunter.ImprovedSerpentSting.Cast(sim, curTarget)
@@ -59,7 +61,6 @@ func (hunter *Hunter) registerMultiShotSpell() {
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			})
-
 		},
 	})
 }
