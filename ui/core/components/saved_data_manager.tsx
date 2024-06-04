@@ -1,7 +1,8 @@
 import tippy from 'tippy.js';
+import { ref } from 'tsx-vanilla';
 
-import { Component } from '../components/component.js';
-import { EventID, TypedEvent } from '../typed_event.js';
+import { EventID, TypedEvent } from '../typed_event';
+import { Component } from './component';
 import { ContentBlock, ContentBlockHeaderConfig } from './content_block';
 
 export type SavedDataManagerConfig<ModObject, T> = {
@@ -44,7 +45,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 	private readonly savedDataDiv: HTMLElement;
 	private readonly presetDataDiv: HTMLElement;
 	private readonly customDataDiv: HTMLElement;
-	private readonly saveInput?: HTMLInputElement;
+	private saveInput?: HTMLInputElement;
 
 	private frozen: boolean;
 
@@ -59,19 +60,22 @@ export class SavedDataManager<ModObject, T> extends Component {
 
 		const contentBlock = new ContentBlock(this.rootElem, 'saved-data', { header: config.header });
 
-		contentBlock.bodyElement.innerHTML = `
-			<div class="saved-data-container hide">
-				<div class="saved-data-presets"></div>
-				<div class="saved-data-custom"></div>
-			</div>
-		`;
-		this.savedDataDiv = contentBlock.bodyElement.querySelector('.saved-data-container') as HTMLElement;
-		this.presetDataDiv = contentBlock.bodyElement.querySelector('.saved-data-presets') as HTMLElement;
-		this.customDataDiv = contentBlock.bodyElement.querySelector('.saved-data-custom') as HTMLElement;
+		const savedDataRef = ref<HTMLDivElement>();
+		const presetDataRef = ref<HTMLDivElement>();
+		const customDataRef = ref<HTMLDivElement>();
+		contentBlock.bodyElement.replaceChildren(
+			<div ref={savedDataRef} className="saved-data-container hide">
+				<div ref={presetDataRef} className="saved-data-presets" />
+				<div ref={customDataRef} className="saved-data-custom" />
+			</div>,
+		);
+
+		this.savedDataDiv = savedDataRef.value!;
+		this.presetDataDiv = presetDataRef.value!;
+		this.customDataDiv = customDataRef.value!;
 
 		if (!config.presetsOnly) {
 			contentBlock.bodyElement.appendChild(this.buildCreateContainer());
-			this.saveInput = contentBlock.bodyElement.querySelector('.saved-data-save-input') as HTMLInputElement;
 		}
 	}
 
@@ -96,38 +100,29 @@ export class SavedDataManager<ModObject, T> extends Component {
 	}
 
 	private makeSavedData(config: SavedDataConfig<ModObject, T>): SavedData<ModObject, T> {
-		const dataElemFragment = document.createElement('fragment');
-		dataElemFragment.innerHTML = `
-			<div class="saved-data-set-chip badge rounded-pill">
-				<a href="javascript:void(0)" class="saved-data-set-name" role="button">${config.name}</a>
+		const deleteButtonRef = ref<HTMLAnchorElement>();
+		const dataElem = (
+			<div className="saved-data-set-chip badge rounded-pill">
+				<a href="javascript:void(0)" className="saved-data-set-name" attributes={{ role: 'button' }}>
+					{config.name}
+				</a>
+				{!config.isPreset && (
+					<a ref={deleteButtonRef} href="javascript:void(0)" className="saved-data-set-delete" attributes={{ role: 'button' }}>
+						<i className="fa fa-times fa-lg"></i>
+					</a>
+				)}
 			</div>
-		`;
+		) as HTMLElement;
 
-		const dataElem = dataElemFragment.children[0] as HTMLElement;
 		dataElem.addEventListener('click', () => {
 			this.config.setData(TypedEvent.nextEventID(), this.modObject, config.data);
 
 			if (this.saveInput) this.saveInput.value = config.name;
 		});
 
-		if (!config.isPreset) {
-			const deleteFragment = document.createElement('fragment');
-			deleteFragment.innerHTML = `
-				<a
-					href="javascript:void(0)"
-					class="saved-data-set-delete"
-					role="button"
-				>
-					<i class="fa fa-times fa-lg"></i>
-				</a>
-			`;
-
-			const deleteButton = deleteFragment.children[0] as HTMLElement;
-			dataElem.appendChild(deleteButton);
-
-			const tooltip = tippy(deleteButton, { content: `Delete saved ${this.config.label}` });
-
-			deleteButton.addEventListener('click', event => {
+		if (!config.isPreset && deleteButtonRef.value) {
+			const tooltip = tippy(deleteButtonRef.value, { content: `Delete saved ${this.config.label}` });
+			deleteButtonRef.value.addEventListener('click', event => {
 				event.stopPropagation();
 				const shouldDelete = confirm(`Delete saved ${this.config.label} '${config.name}'?`);
 				if (!shouldDelete) return;
@@ -216,18 +211,20 @@ export class SavedDataManager<ModObject, T> extends Component {
 	}
 
 	private buildCreateContainer(): HTMLElement {
-		const savedDataCreateFragment = document.createElement('fragment');
-		savedDataCreateFragment.innerHTML = `
-			<div class="saved-data-create-container">
-				<label class="form-label">${this.config.label} Name</label>
-				<input class="saved-data-save-input form-control" type="text" placeholder="Name">
-				<button class="saved-data-save-button btn btn-primary">Save ${this.config.label}</button>
+		const saveButtonRef = ref<HTMLButtonElement>();
+		const saveInputRef = ref<HTMLInputElement>();
+		const savedDataCreateFragment = (
+			<div className="saved-data-create-container">
+				<label className="form-label">{this.config.label} Name</label>
+				<input ref={saveInputRef} className="saved-data-save-input form-control" type="text" placeholder="Name" />
+				<button ref={saveButtonRef} className="saved-data-save-button btn btn-primary">
+					Save {this.config.label}
+				</button>
 			</div>
-		`;
+		) as HTMLElement;
 
-		const saveButton = savedDataCreateFragment.querySelector('.saved-data-save-button') as HTMLButtonElement;
-
-		saveButton.addEventListener('click', () => {
+		this.saveInput = saveInputRef.value!;
+		saveButtonRef.value?.addEventListener('click', () => {
 			if (this.frozen) return;
 
 			const newName = this.saveInput?.value;
@@ -240,7 +237,6 @@ export class SavedDataManager<ModObject, T> extends Component {
 				alert(`${this.config.label} with name ${newName} already exists.`);
 				return;
 			}
-
 			this.addSavedData({
 				name: newName,
 				data: this.config.getData(this.modObject),
@@ -248,6 +244,6 @@ export class SavedDataManager<ModObject, T> extends Component {
 			this.saveUserData();
 		});
 
-		return savedDataCreateFragment.children[0] as HTMLElement;
+		return savedDataCreateFragment;
 	}
 }
