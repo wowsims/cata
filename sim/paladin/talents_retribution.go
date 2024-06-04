@@ -324,9 +324,14 @@ func (paladin *Paladin) applyZealotry() {
 	paladin.Zealotry = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionId,
 		Flags:          core.SpellFlagAPL,
+		ProcMask:       core.ProcMaskEmpty,
+		SpellSchool:    core.SpellSchoolHoly,
 		ClassSpellMask: SpellMaskZealotry,
 
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
 				Duration: 2 * time.Minute,

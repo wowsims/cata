@@ -40,6 +40,8 @@ func (paladin *Paladin) registerInquisition() {
 	paladin.Inquisition = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionId,
 		Flags:          core.SpellFlagAPL,
+		ProcMask:       core.ProcMaskEmpty,
+		SpellSchool:    core.SpellSchoolHoly,
 		ClassSpellMask: SpellMaskInquisition,
 
 		Cast: core.CastConfig{

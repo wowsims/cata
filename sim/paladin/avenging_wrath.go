@@ -32,6 +32,9 @@ func (paladin *Paladin) registerAvengingWrath() {
 			BaseCost: 0.08,
 		},
 		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				NonEmpty: true,
+			},
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
 				Duration: 3 * time.Minute,
