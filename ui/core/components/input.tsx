@@ -155,8 +155,6 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 	}
 
 	static newGroupContainer(): HTMLElement {
-		const group = document.createElement('div');
-		group.classList.add('picker-group');
-		return group;
+		return (<div className="picker-group" />) as HTMLElement;
 	}
 }
