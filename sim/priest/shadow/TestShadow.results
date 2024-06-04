@@ -745,15 +745,15 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-MarkofKhardros-56132"
  value: {
-  dps: 27353.38194
-  tps: 26024.1221
+  dps: 27155.06983
+  tps: 25825.81
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-MarkofKhardros-56458"
  value: {
-  dps: 27443.08108
-  tps: 26113.82124
+  dps: 27218.79953
+  tps: 25889.53969
  }
 }
 dps_results: {
@@ -794,8 +794,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-MoonwellChalice-70142"
  value: {
-  dps: 28675.0199
-  tps: 27269.53011
+  dps: 28384.22498
+  tps: 26978.73519
  }
 }
 dps_results: {
@@ -941,15 +941,15 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-Skardyn'sGrace-56115"
  value: {
-  dps: 27338.45023
-  tps: 25998.69151
+  dps: 27126.49277
+  tps: 25786.73405
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-Skardyn'sGrace-56440"
  value: {
-  dps: 27423.22695
-  tps: 26083.46823
+  dps: 27183.51315
+  tps: 25843.75443
  }
 }
 dps_results: {
@@ -1018,8 +1018,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-TalismanofSinisterOrder-65804"
  value: {
-  dps: 27917.31231
-  tps: 26531.99291
+  dps: 27803.87305
+  tps: 26418.55366
  }
 }
 dps_results: {
@@ -1060,15 +1060,15 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-Theralion'sMirror-59519"
  value: {
-  dps: 28238.07958
-  tps: 26833.9829
+  dps: 28350.27762
+  tps: 26946.18094
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-Theralion'sMirror-65105"
  value: {
-  dps: 28543.74188
-  tps: 27131.51355
+  dps: 28530.59206
+  tps: 27118.36372
  }
 }
 dps_results: {
@@ -1277,15 +1277,15 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-Za'brox'sLuckyTooth-63742"
  value: {
-  dps: 27263.6828
-  tps: 25934.42296
+  dps: 27091.34014
+  tps: 25762.0803
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-Za'brox'sLuckyTooth-63745"
  value: {
-  dps: 27263.6828
-  tps: 25934.42296
+  dps: 27091.34014
+  tps: 25762.0803
  }
 }
 dps_results: {
