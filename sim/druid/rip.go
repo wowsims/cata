@@ -75,7 +75,7 @@ func (druid *Druid) registerRipSpell() {
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = RipBaseNumTicks
+				dot.BaseTickCount = RipBaseNumTicks
 				comboPointSnapshot = druid.ComboPoints()
 				dot.Apply(sim)
 				druid.SpendComboPoints(sim, spell.ComboPointMetrics())
@@ -114,9 +114,8 @@ func (druid *Druid) CurrentRipCost() float64 {
 func (druid *Druid) ApplyBloodletting(target *core.Unit) {
 	ripDot := druid.Rip.Dot(target)
 
-	if ripDot.IsActive() && (ripDot.NumberOfTicks < RipBaseNumTicks+3) {
-		ripDot.NumberOfTicks += 1
-		ripDot.RecomputeAuraDuration()
+	if ripDot.IsActive() && (ripDot.BaseTickCount < RipBaseNumTicks+3) {
+		ripDot.BaseTickCount += 1
 		ripDot.UpdateExpires(ripDot.ExpiresAt() + time.Second*2)
 	}
 }

@@ -35,7 +35,7 @@ func (priest *Priest) newMindFlaySpell() *core.Spell {
 			NumberOfTicks:        3,
 			TickLength:           time.Second * 1,
 			AffectedByCastSpeed:  true,
-			HasteAffectsDuration: true,
+			HasteReducesDuration: true,
 			BonusCoefficient:     0.288,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, 187.147)

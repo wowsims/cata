@@ -207,8 +207,8 @@ func TestDrainLife3SEHauntSiphonSoul(t *testing.T) {
 	lock.ShadowEmbraceDebuffAura(lock.CurrentTarget).Activate(sim)
 	lock.ShadowEmbraceDebuffAura(lock.CurrentTarget).SetStacks(sim, 3)
 	lock.HauntDebuffAuras[lock.CurrentTarget.UnitIndex].Activate(sim)
-	lock.Corruption.CurDot().Activate(sim)
-	lock.BaneOfDoom.CurDot().Activate(sim)
+	lock.Corruption.CurDot().Apply(sim)
+	lock.BaneOfDoom.CurDot().Apply(sim)
 
 	attackTable := lock.AttackTables[lock.CurrentTarget.UnitIndex]
 	// true multiplier is 2.647208, but siphon soul is not accounted for
@@ -222,8 +222,8 @@ func TestDrainLife3SEHauntSiphonSoulDemonSoul(t *testing.T) {
 	lock.ShadowEmbraceDebuffAura(lock.CurrentTarget).Activate(sim)
 	lock.ShadowEmbraceDebuffAura(lock.CurrentTarget).SetStacks(sim, 3)
 	lock.HauntDebuffAuras[lock.CurrentTarget.UnitIndex].Activate(sim)
-	lock.Corruption.CurDot().Activate(sim)
-	lock.BaneOfDoom.CurDot().Activate(sim)
+	lock.Corruption.CurDot().Apply(sim)
+	lock.BaneOfDoom.CurDot().Apply(sim)
 	lock.GetAura("Demon Soul: Felhunter").Activate(sim)
 
 	attackTable := lock.AttackTables[lock.CurrentTarget.UnitIndex]
@@ -284,8 +284,8 @@ func TestDrainSoul3SEHauntSiphonSoul(t *testing.T) {
 	lock.ShadowEmbraceDebuffAura(lock.CurrentTarget).Activate(sim)
 	lock.ShadowEmbraceDebuffAura(lock.CurrentTarget).SetStacks(sim, 3)
 	lock.HauntDebuffAuras[lock.CurrentTarget.UnitIndex].Activate(sim)
-	lock.Corruption.CurDot().Activate(sim)
-	lock.BaneOfDoom.CurDot().Activate(sim)
+	lock.Corruption.CurDot().Apply(sim)
+	lock.BaneOfDoom.CurDot().Apply(sim)
 
 	attackTable := lock.AttackTables[lock.CurrentTarget.UnitIndex]
 	// true multiplier is 2.647208, but siphon soul is not accounted for
@@ -300,8 +300,8 @@ func TestDrainSoulExecute3SEHauntSiphonSoul(t *testing.T) {
 	lock.ShadowEmbraceDebuffAura(lock.CurrentTarget).Activate(sim)
 	lock.ShadowEmbraceDebuffAura(lock.CurrentTarget).SetStacks(sim, 3)
 	lock.HauntDebuffAuras[lock.CurrentTarget.UnitIndex].Activate(sim)
-	lock.Corruption.CurDot().Activate(sim)
-	lock.BaneOfDoom.CurDot().Activate(sim)
+	lock.Corruption.CurDot().Apply(sim)
+	lock.BaneOfDoom.CurDot().Apply(sim)
 
 	attackTable := lock.AttackTables[lock.CurrentTarget.UnitIndex]
 	// true multiplier is 5.612082, but siphon soul is not accounted for
@@ -316,8 +316,8 @@ func TestDrainSoulExecute3SEHauntSiphonSoulDemonSoul(t *testing.T) {
 	lock.ShadowEmbraceDebuffAura(lock.CurrentTarget).Activate(sim)
 	lock.ShadowEmbraceDebuffAura(lock.CurrentTarget).SetStacks(sim, 3)
 	lock.HauntDebuffAuras[lock.CurrentTarget.UnitIndex].Activate(sim)
-	lock.Corruption.CurDot().Activate(sim)
-	lock.BaneOfDoom.CurDot().Activate(sim)
+	lock.Corruption.CurDot().Apply(sim)
+	lock.BaneOfDoom.CurDot().Apply(sim)
 	lock.GetAura("Demon Soul: Felhunter").Activate(sim)
 
 	attackTable := lock.AttackTables[lock.CurrentTarget.UnitIndex]

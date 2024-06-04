@@ -376,8 +376,7 @@ func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
 	// 1st ignite application = 4s, split into 2 ticks (2s, 0s)
 	// Ignite refreshes: Duration = 4s + MODULO(remaining duration, 2), max 6s. Split damage over 3 ticks at 4s, 2s, 0s.
 	if dot.IsActive() {
-		outstandingDamage := dot.SnapshotBaseDamage * float64(dot.NumTicksRemaining(sim))
-		dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(IgniteTicksRefresh)
+		dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / float64(IgniteTicksRefresh)
 	} else {
 		dot.SnapshotBaseDamage = newDamage / IgniteTicksFresh
 	}

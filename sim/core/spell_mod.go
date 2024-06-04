@@ -447,12 +447,12 @@ func applyDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.AddTicks(int32(mod.intValue))
+				dot.BaseTickCount += int32(mod.intValue)
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.AddTicks(int32(mod.intValue))
+		spell.aoeDot.BaseTickCount += int32(mod.intValue)
 	}
 }
 
@@ -460,12 +460,12 @@ func removeDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.AddTicks(-int32(mod.intValue))
+				dot.BaseTickCount -= int32(mod.intValue)
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.AddTicks(-int32(mod.intValue))
+		spell.aoeDot.BaseTickCount -= int32(mod.intValue)
 	}
 }
 
@@ -481,12 +481,12 @@ func applyDotTickLengthFlat(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.TickLength += mod.timeValue
+				dot.BaseTickLength += mod.timeValue
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.TickLength += mod.timeValue
+		spell.aoeDot.BaseTickLength += mod.timeValue
 	}
 }
 
@@ -494,12 +494,12 @@ func removeDotTickLengthFlat(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.TickLength -= mod.timeValue
+				dot.BaseTickLength -= mod.timeValue
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.TickLength -= mod.timeValue
+		spell.aoeDot.BaseTickLength -= mod.timeValue
 	}
 }
 
