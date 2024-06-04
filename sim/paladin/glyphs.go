@@ -119,7 +119,7 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() {
-				glyphOfExorcismDot.Dot(result.Target).ApplyOrReset(sim)
+				glyphOfExorcismDot.Dot(result.Target).Apply(sim)
 			}
 		},
 	})
