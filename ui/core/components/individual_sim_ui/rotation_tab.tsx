@@ -163,6 +163,7 @@ export class RotationTab extends SimTab {
 
 	private configureInputSection(sectionElem: HTMLElement, sectionConfig: InputSection) {
 		sectionConfig.inputs.forEach(inputConfig => {
+			inputConfig.extraCssClasses = [...(inputConfig.extraCssClasses || []), 'input-inline'];
 			if (inputConfig.type == 'number') {
 				new NumberPicker(sectionElem, this.simUI.player, { ...inputConfig, inline: true });
 			} else if (inputConfig.type == 'boolean') {
