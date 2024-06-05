@@ -125,7 +125,7 @@ export class WorkerPool {
 	async raidSimAsync(request: RaidSimRequest, onProgress: WorkerProgressCallback): Promise<RaidSimResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('Raid sim request: ' + RaidSimRequest.toJsonString(request));
-		const id = worker.makeTaskId();
+		const id = request.requestId || worker.makeTaskId();
 
 		try {
 			worker.addSimTaskRunning(id, request.simOptions?.iterations ?? 3000);
@@ -158,13 +158,26 @@ export class WorkerPool {
 		return RaidSimResult.fromBinary(result);
 	}
 
-	// TODO: target specific workers?
+	/**
+	 * Send abort request. Will send request to all workers if requestId can't be matched to a specific worker.
+	 * @param requestId The id of the request to abort.
+	 * @returns The AbortResponse.
+	 */
 	async abortById(requestId: string): Promise<AbortResponse> {
-		const wait: Promise<Uint8Array>[] = [];
+		const abortReqBinary = AbortRequest.toBinary(AbortRequest.create({requestId}));
+
+		// Only send request to worker with that request running if possible.
 		for (const worker of this.workers) {
-			wait.push(worker.doApiCall(SimRequest.abortById, AbortRequest.toBinary(AbortRequest.create({requestId})), ''))
+			if (worker.hasTaskId(requestId)) {
+				const result = await worker.doApiCall(SimRequest.abortById, abortReqBinary, '');
+				return AbortResponse.fromBinary(result);
+			}
 		}
-		const results = await Promise.all(wait);
+
+		// Fallback: Send to all workers.
+		const results = await Promise.all(this.workers.map(worker =>
+			worker.doApiCall(SimRequest.abortById, abortReqBinary, '')
+		));
 
 		// Try to find a result that was valid and return that one.
 		let result = AbortResponse.fromBinary(results[0]);
@@ -177,7 +190,7 @@ export class WorkerPool {
 				}
 			}
 		}
-		return result
+		return result;
 	}
 
 	async isWasm() {
@@ -283,6 +296,11 @@ class SimWorker {
 			work += t.workLeft;
 		}
 		return work;
+	}
+
+	/** Check if worker has a running task with id. */
+	hasTaskId(id: string) {
+		return !!this.simTasksRunning[id];
 	}
 
 	private setTaskActive(id: string, active: boolean) {
