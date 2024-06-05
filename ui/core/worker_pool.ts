@@ -59,7 +59,9 @@ export class WorkerPool {
 	}
 
 	private getLeastBusyWorker(): SimWorker {
-		return this.workers.reduce((curMinWorker, nextWorker) => (curMinWorker.getSimTaskWorkAmount() < nextWorker.getSimTaskWorkAmount() ? curMinWorker : nextWorker));
+		return this.workers.reduce((curMinWorker, nextWorker) =>
+			curMinWorker.getSimTaskWorkAmount() < nextWorker.getSimTaskWorkAmount() ? curMinWorker : nextWorker,
+		);
 	}
 
 	async makeApiCall(requestName: SimRequest, request: Uint8Array): Promise<Uint8Array> {
@@ -78,7 +80,7 @@ export class WorkerPool {
 	async statWeightsAsync(request: StatWeightsRequest, onProgress: WorkerProgressCallback): Promise<StatWeightsResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('Stat weights request: ' + StatWeightsRequest.toJsonString(request));
-		const id = worker.makeTaskId();
+		const id = request.requestId || worker.makeTaskId();
 
 		const iterations = request.simOptions ? request.simOptions.iterations * request.statsToWeigh.length : 30000;
 		const result = await this.doAsyncRequest(SimRequest.statWeightsAsync, StatWeightsRequest.toBinary(request), id, worker, onProgress, iterations);
@@ -90,7 +92,7 @@ export class WorkerPool {
 	async bulkSimAsync(request: BulkSimRequest, onProgress: WorkerProgressCallback): Promise<BulkSimResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('bulk sim request: ' + BulkSimRequest.toJsonString(request, { enumAsInteger: true }));
-		const id = worker.makeTaskId();
+		const id = request.requestId || worker.makeTaskId();
 
 		const iterations = request.baseSettings?.simOptions?.iterations ?? 30000;
 		const result = await this.doAsyncRequest(SimRequest.bulkSimAsync, BulkSimRequest.toBinary(request), id, worker, onProgress, iterations);
@@ -131,7 +133,7 @@ export class WorkerPool {
 	 * @returns The AbortResponse.
 	 */
 	async abortById(requestId: string): Promise<AbortResponse> {
-		const abortReqBinary = AbortRequest.toBinary(AbortRequest.create({requestId}));
+		const abortReqBinary = AbortRequest.toBinary(AbortRequest.create({ requestId }));
 
 		// Only send request to worker with that request running if possible.
 		for (const worker of this.workers) {
@@ -142,9 +144,7 @@ export class WorkerPool {
 		}
 
 		// Fallback: Send to all workers.
-		const results = await Promise.all(this.workers.map(worker =>
-			worker.doApiCall(SimRequest.abortById, abortReqBinary, '')
-		));
+		const results = await Promise.all(this.workers.map(worker => worker.doApiCall(SimRequest.abortById, abortReqBinary, '')));
 
 		// Try to find a result that was valid and return that one.
 		let result = AbortResponse.fromBinary(results[0]);
@@ -180,14 +180,18 @@ export class WorkerPool {
 		id: string,
 		worker: SimWorker,
 		onProgress: WorkerProgressCallback,
-		totalIterations: number
+		totalIterations: number,
 	): Promise<ProgressMetrics> {
 		try {
 			worker.addSimTaskRunning(id, totalIterations);
 			worker.doApiCall(requestName, request, id);
 			const finalProgress: Promise<ProgressMetrics> = new Promise(resolve => {
 				// Add handler for the progress events
-				worker.addPromiseFunc(this.getProgressName(id), this.newProgressHandler(id, worker, onProgress, pm => resolve(pm)), noop);
+				worker.addPromiseFunc(
+					this.getProgressName(id),
+					this.newProgressHandler(id, worker, onProgress, pm => resolve(pm)),
+					noop,
+				);
 			});
 			return await finalProgress;
 		} finally {
@@ -195,7 +199,12 @@ export class WorkerPool {
 		}
 	}
 
-	private newProgressHandler(id: string, worker: SimWorker, onProgress: WorkerProgressCallback, onFinal: (pm: ProgressMetrics) => void): (progressData: Uint8Array) => void {
+	private newProgressHandler(
+		id: string,
+		worker: SimWorker,
+		onProgress: WorkerProgressCallback,
+		onFinal: (pm: ProgressMetrics) => void,
+	): (progressData: Uint8Array) => void {
 		return (progressData: any) => {
 			const progress = ProgressMetrics.fromBinary(progressData);
 			onProgress(progress);
@@ -213,7 +222,7 @@ export class WorkerPool {
 
 class SimWorker {
 	readonly workerId: number;
-	private readonly simTasksRunning: Record<string, {workLeft: number}>;
+	private readonly simTasksRunning: Record<string, { workLeft: number }>;
 	private taskIdsToPromiseFuncs: Record<string, [(result: any) => void, (error: any) => void]>;
 	private worker: Worker | undefined;
 	private onReady: Promise<void> | undefined;
@@ -270,7 +279,7 @@ class SimWorker {
 
 	/** Add sim work amount (iterations) used for load balancing. */
 	addSimTaskRunning(id: string, workLeft: number) {
-		this.simTasksRunning[id] = {workLeft};
+		this.simTasksRunning[id] = { workLeft };
 		this.log(`Added work ${id}, current work amount: ${this.getSimTaskWorkAmount()}`);
 	}
 
@@ -369,7 +378,7 @@ class SimWorker {
 		this.shouldDestroy = false;
 		if (this.worker) return;
 		this.setupWorker();
-		this.log('Enabled.')
+		this.log('Enabled.');
 	}
 
 	log(s: string) {

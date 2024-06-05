@@ -1,11 +1,11 @@
-import { AbortResponse } from "./proto/api";
-import { WorkerPool } from "./worker_pool";
+import { AbortResponse } from './proto/api';
+import { WorkerPool } from './worker_pool';
 
 export const enum RequestTypes {
 	RaidSim = 0x1,
 	StatWeights = 0x2,
 	BulkSim = 0x4,
-	All = 0xF,
+	All = 0xf,
 }
 
 class TriggerSignal {
@@ -32,17 +32,17 @@ class TriggerSignal {
 
 export type SimSignals = {
 	abort: TriggerSignal;
-}
+};
 
 function newSignals(): SimSignals {
 	return {
 		abort: new TriggerSignal(),
-	}
+	};
 }
 
-export function generateRequestId(type: RequestTypes) {
+export function generateRequestId(type: Exclude<RequestTypes, RequestTypes.All>) {
 	let id: string;
-	switch(type) {
+	switch (type) {
 		case RequestTypes.RaidSim:
 			id = 'raidsim';
 			break;
@@ -52,20 +52,18 @@ export function generateRequestId(type: RequestTypes) {
 		case RequestTypes.BulkSim:
 			id = 'bulksim';
 			break;
-		default:
-			id = '???????';
 	}
-	const chars = Array.from(Array(4)).map(() => Math.floor(Math.random()*0x10000).toString(16));
+	const chars = Array.from(Array(4)).map(() => Math.floor(Math.random() * 0x10000).toString(16));
 	return id + '-' + chars.join('');
 }
 
 export class SimSignalManager {
 	private readonly workerPool: WorkerPool;
-	private readonly running: Map<string, {type: RequestTypes, signals?: SimSignals}>;
+	private readonly running: Map<string, { type: RequestTypes; signals?: SimSignals }>;
 
 	constructor(wp: WorkerPool) {
 		this.workerPool = wp;
-		this.running = new Map<string, {type: RequestTypes, signals?: SimSignals}>();
+		this.running = new Map<string, { type: RequestTypes; signals?: SimSignals }>();
 	}
 
 	/**
@@ -74,18 +72,18 @@ export class SimSignalManager {
 	 * @param isManagedInJs Set true if immediate request is managed by JS and not in wasm or net workers.
 	 * @returns Signal object to be used in managing functions if isManagedInJs is true.
 	 */
-	registerRunning(id: string, type: RequestTypes, isManagedInJs: false): void
-	registerRunning(id: string, type: RequestTypes, isManagedInJs: true): SimSignals
+	registerRunning(id: string, type: RequestTypes, isManagedInJs: false): void;
+	registerRunning(id: string, type: RequestTypes, isManagedInJs: true): SimSignals;
 	registerRunning(id: string, type: RequestTypes, isManagedInJs: boolean): SimSignals | void {
-		if (this.running.has(id)) throw new Error("Tried to add already existing id!");
+		if (this.running.has(id)) throw new Error('Tried to add already existing id!');
 
 		if (isManagedInJs) {
 			const sigObj = newSignals();
-			this.running.set(id, {type, signals: sigObj});
+			this.running.set(id, { type, signals: sigObj });
 			return sigObj;
 		}
 
-		this.running.set(id, {type});
+		this.running.set(id, { type });
 	}
 
 	unregisterRunning(id: string) {
@@ -117,11 +115,11 @@ export class SimSignalManager {
 		if (cfg) {
 			if (cfg.signals) {
 				await cfg.signals.abort.trigger();
-				return AbortResponse.create({requestId, wasTriggered: true});
+				return AbortResponse.create({ requestId, wasTriggered: true });
 			} else {
 				return this.workerPool.abortById(requestId);
 			}
 		}
-		return AbortResponse.create({requestId, wasTriggered: false});
+		return AbortResponse.create({ requestId, wasTriggered: false });
 	}
 }
