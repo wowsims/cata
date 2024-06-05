@@ -36,12 +36,14 @@ func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
 			multiplier := 0.3 * float64(holyPower)
 
 			spell.DamageMultiplierAdditive += multiplier
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.DamageMultiplierAdditive -= multiplier
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			retPaladin.SpendHolyPower(sim, hpMetrics)
+			if result.Landed() {
+				retPaladin.SpendHolyPower(sim, hpMetrics)
+			}
 		},
 	})
 }
