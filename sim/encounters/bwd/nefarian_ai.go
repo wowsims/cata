@@ -185,7 +185,7 @@ func (ai *NefarianAddAI) registerSpells() {
 		ActionID:         core.ActionID{SpellID: 81272},
 		SpellSchool:      core.SpellSchoolNature,
 		ProcMask:         core.ProcMaskSpellDamage,
-		Flags:            core.SpellFlagIgnoreAttackerModifiers,
+		Flags:            core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagAPL,
 		DamageMultiplier: 1,
 
 		Cast: core.CastConfig{
