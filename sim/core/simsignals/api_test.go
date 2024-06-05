@@ -13,7 +13,7 @@ import (
 func getTestRsr() *proto.RaidSimRequest {
 	arms.RegisterArmsWarrior()
 	return &proto.RaidSimRequest{
-		Id: "uniqueidlol",
+		RequestId: "uniqueidlol",
 		Raid: core.SinglePlayerRaidProto(
 			&proto.Player{
 				Race:      proto.Race_RaceOrc,
@@ -59,9 +59,9 @@ func TestAbort(t *testing.T) {
 	t.Run("RunRaidSimAsync", func(t *testing.T) {
 		progress := make(chan *proto.ProgressMetrics, 10)
 		core.RunRaidSimAsync(rsr, progress)
-		simsignals.AbortById(rsr.Id)
-		simsignals.AbortById(rsr.Id)
-		simsignals.AbortById(rsr.Id)
+		simsignals.AbortById(rsr.RequestId)
+		simsignals.AbortById(rsr.RequestId)
+		simsignals.AbortById(rsr.RequestId)
 		for {
 			msg := <-progress
 			if msg.FinalRaidResult != nil {
@@ -74,14 +74,14 @@ func TestAbort(t *testing.T) {
 	})
 
 	t.Run("RunRaidSimAsyncMultiManual", func(t *testing.T) {
-		rsr.Id += "x"
+		rsr.RequestId += "x"
 		var conc int32 = 2
 		progress := make([]chan *proto.ProgressMetrics, conc)
 		rsrSplits := core.SplitSimRequestForConcurrency(rsr, conc)
 		for i, rsrSplit := range rsrSplits.Requests {
 			progress[i] = make(chan *proto.ProgressMetrics, 10)
 			core.RunRaidSimAsync(rsrSplit, progress[i])
-			simsignals.AbortById(rsrSplit.Id)
+			simsignals.AbortById(rsrSplit.RequestId)
 		}
 
 		running := conc
@@ -103,10 +103,10 @@ func TestAbort(t *testing.T) {
 	})
 
 	t.Run("RunRaidSimConcurrentAsync", func(t *testing.T) {
-		rsr.Id += "x"
+		rsr.RequestId += "x"
 		progress := make(chan *proto.ProgressMetrics, 10)
 		core.RunRaidSimConcurrentAsync(rsr, progress)
-		simsignals.AbortById(rsr.Id)
+		simsignals.AbortById(rsr.RequestId)
 		for {
 			msg := <-progress
 			if msg.FinalRaidResult != nil {
@@ -119,12 +119,12 @@ func TestAbort(t *testing.T) {
 	})
 
 	t.Run("RunRaidSimConcurrentAsync-Delayed", func(t *testing.T) {
-		rsr.Id += "x"
+		rsr.RequestId += "x"
 		progress := make(chan *proto.ProgressMetrics, 10)
 		core.RunRaidSimConcurrentAsync(rsr, progress)
 		go func() {
 			time.Sleep(time.Second)
-			simsignals.AbortById(rsr.Id)
+			simsignals.AbortById(rsr.RequestId)
 		}()
 		for {
 			msg := <-progress
