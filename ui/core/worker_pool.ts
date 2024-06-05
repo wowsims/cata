@@ -21,6 +21,16 @@ import { noop } from './utils';
 const SIM_WORKER_URL = `/${REPO_NAME}/sim_worker.js`;
 export type WorkerProgressCallback = (progressMetrics: ProgressMetrics) => void;
 
+/**
+ * Create random id for requests.
+ * @param type The request type to prepend.
+ * @returns Random id in the format type-randomhex
+ */
+export function generateRequestId(type: SimRequest) {
+	const chars = Array.from(Array(4)).map(() => Math.floor(Math.random() * 0x10000).toString(16));
+	return type + '-' + chars.join('');
+}
+
 export class WorkerPool {
 	private readonly workers: Array<SimWorker>;
 	private readonly workersDisabled: Array<SimWorker>;
@@ -65,7 +75,7 @@ export class WorkerPool {
 	}
 
 	async makeApiCall(requestName: SimRequest, request: Uint8Array): Promise<Uint8Array> {
-		return await this.getLeastBusyWorker().doApiCall(requestName, request, '');
+		return await this.getLeastBusyWorker().doApiCall(requestName, request, generateRequestId(requestName));
 	}
 
 	async computeStats(request: ComputeStatsRequest): Promise<ComputeStatsResult> {
@@ -80,7 +90,7 @@ export class WorkerPool {
 	async statWeightsAsync(request: StatWeightsRequest, onProgress: WorkerProgressCallback): Promise<StatWeightsResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('Stat weights request: ' + StatWeightsRequest.toJsonString(request));
-		const id = request.requestId || worker.makeTaskId();
+		const id = request.requestId || generateRequestId(SimRequest.statWeightsAsync);
 
 		const iterations = request.simOptions ? request.simOptions.iterations * request.statsToWeigh.length : 30000;
 		const result = await this.doAsyncRequest(SimRequest.statWeightsAsync, StatWeightsRequest.toBinary(request), id, worker, onProgress, iterations);
@@ -92,7 +102,7 @@ export class WorkerPool {
 	async bulkSimAsync(request: BulkSimRequest, onProgress: WorkerProgressCallback): Promise<BulkSimResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('bulk sim request: ' + BulkSimRequest.toJsonString(request, { enumAsInteger: true }));
-		const id = request.requestId || worker.makeTaskId();
+		const id = request.requestId || generateRequestId(SimRequest.bulkSimAsync);
 
 		const iterations = request.baseSettings?.simOptions?.iterations ?? 30000;
 		const result = await this.doAsyncRequest(SimRequest.bulkSimAsync, BulkSimRequest.toBinary(request), id, worker, onProgress, iterations);
@@ -105,7 +115,7 @@ export class WorkerPool {
 	async raidSimAsync(request: RaidSimRequest, onProgress: WorkerProgressCallback): Promise<RaidSimResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('Raid sim request: ' + RaidSimRequest.toJsonString(request));
-		const id = request.requestId || worker.makeTaskId();
+		const id = request.requestId || generateRequestId(SimRequest.raidSimAsync);
 
 		const iterations = request.simOptions?.iterations ?? 3000;
 		const result = await this.doAsyncRequest(SimRequest.raidSimAsync, RaidSimRequest.toBinary(request), id, worker, onProgress, iterations);
@@ -134,17 +144,17 @@ export class WorkerPool {
 	 */
 	async abortById(requestId: string): Promise<AbortResponse> {
 		const abortReqBinary = AbortRequest.toBinary(AbortRequest.create({ requestId }));
-
+		const rid = generateRequestId(SimRequest.abortById);
 		// Only send request to worker with that request running if possible.
 		for (const worker of this.workers) {
 			if (worker.hasTaskId(requestId)) {
-				const result = await worker.doApiCall(SimRequest.abortById, abortReqBinary, '');
+				const result = await worker.doApiCall(SimRequest.abortById, abortReqBinary, rid);
 				return AbortResponse.fromBinary(result);
 			}
 		}
 
 		// Fallback: Send to all workers.
-		const results = await Promise.all(this.workers.map(worker => worker.doApiCall(SimRequest.abortById, abortReqBinary, '')));
+		const results = await Promise.all(this.workers.map(worker => worker.doApiCall(SimRequest.abortById, abortReqBinary, rid)));
 
 		// Try to find a result that was valid and return that one.
 		let result = AbortResponse.fromBinary(results[0]);
@@ -332,18 +342,9 @@ class SimWorker {
 		this.taskIdsToPromiseFuncs[id] = [callback, onError];
 	}
 
-	makeTaskId(): string {
-		let id = '';
-		const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		for (let i = 0; i < 16; i++) {
-			id += characters.charAt(Math.floor(Math.random() * characters.length));
-		}
-		return id;
-	}
-
 	async doApiCall(requestName: SimRequest, request: Uint8Array, id: string): Promise<Uint8Array> {
 		if (!this.onReady || this.shouldDestroy) throw new Error('Disabled worker was used!');
-		if (!id) id = this.makeTaskId();
+		if (!id) throw new Error('ApiCall with empty id!');
 		this.setTaskActive(id, true);
 		await this.onReady;
 

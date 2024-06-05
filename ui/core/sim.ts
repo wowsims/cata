@@ -1,4 +1,5 @@
 import { hasTouch } from '../shared/bootstrap_overrides';
+import { SimRequest } from '../worker/types';
 import { getBrowserLanguageCode, setLanguageCode } from './constants/lang';
 import * as OtherConstants from './constants/other';
 import { Encounter } from './encounter';
@@ -34,10 +35,10 @@ import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
 import { runConcurrentSim } from './sim_concurrent';
-import { generateRequestId, RequestTypes, SimSignalManager } from './sim_signal_manager';
+import { RequestTypes, SimSignalManager } from './sim_signal_manager';
 import { EventID, TypedEvent } from './typed_event.js';
 import { getEnumValues, noop } from './utils.js';
-import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
+import { generateRequestId,WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
 	request: RaidSimRequest;
@@ -230,7 +231,7 @@ export class Sim {
 		// TODO: remove any replenishment from sim request here? probably makes more sense to do it inside the sim to protect against accidents
 
 		return RaidSimRequest.create({
-			requestId: generateRequestId(RequestTypes.RaidSim),
+			requestId: generateRequestId(SimRequest.raidSim),
 			type: this.type,
 			raid: raid,
 			encounter: encounter,
@@ -252,7 +253,7 @@ export class Sim {
 		await this.waitForInit();
 
 		const request = BulkSimRequest.create({
-			requestId: generateRequestId(RequestTypes.BulkSim),
+			requestId: generateRequestId(SimRequest.bulkSimAsync),
 			baseSettings: this.makeRaidSimRequest(false),
 			bulkSettings: bulkSettings,
 		});
@@ -435,7 +436,7 @@ export class Sim {
 				? [UnitReference.create({ type: UnitType.Player, index: 0 })]
 				: [];
 			const request = StatWeightsRequest.create({
-				requestId: generateRequestId(RequestTypes.StatWeights),
+				requestId: generateRequestId(SimRequest.statWeightsAsync),
 				player: player.toProto(false, true),
 				raidBuffs: this.raid.getBuffs(),
 				partyBuffs: player.getParty()!.getBuffs(),

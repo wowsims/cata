@@ -40,23 +40,6 @@ function newSignals(): SimSignals {
 	};
 }
 
-export function generateRequestId(type: Exclude<RequestTypes, RequestTypes.All>) {
-	let id: string;
-	switch (type) {
-		case RequestTypes.RaidSim:
-			id = 'raidsim';
-			break;
-		case RequestTypes.StatWeights:
-			id = 'statsim';
-			break;
-		case RequestTypes.BulkSim:
-			id = 'bulksim';
-			break;
-	}
-	const chars = Array.from(Array(4)).map(() => Math.floor(Math.random() * 0x10000).toString(16));
-	return id + '-' + chars.join('');
-}
-
 export class SimSignalManager {
 	private readonly workerPool: WorkerPool;
 	private readonly running: Map<string, { type: RequestTypes; signals?: SimSignals }>;
