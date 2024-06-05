@@ -78,7 +78,7 @@ func (character *Character) HasSetBonus(set *ItemSet, numItems int32) bool {
 		if item.SetName == "" {
 			continue
 		}
-		if item.SetName == set.Name || item.SetName == set.AlternativeName || item.SetID == set.ID {
+		if item.SetName == set.Name || item.SetName == set.AlternativeName || (set.ID > 0 && item.SetID > 0 && item.SetID == set.ID) {
 			count++
 			if count >= numItems {
 				return true
@@ -113,7 +113,7 @@ func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
 		var foundSet *ItemSet = nil
 		// Try finding by ID first to make sure sets with different names but share id all point to the same count.
 		for _, set := range sets {
-			if set.ID == item.SetID {
+			if set.ID > 0 && item.SetID > 0 && set.ID == item.SetID {
 				foundSet = set
 				break
 			}
