@@ -513,7 +513,13 @@ export class IndividualAddonImporter<SpecType extends Spec> extends Importer {
 		if (warningRef.value)
 			new Toast({
 				title: 'Reforging issues',
-				body: 'There are known issues with Reforging when using the WSE addon. Always make sure to double check your reforges.',
+				body: (
+					<>
+						There are known issues with Reforging when using the WSE addon.
+						<br />
+						Always make sure to double check your reforges after importing.
+					</>
+				),
 				additionalClasses: ['toast-import-warning'],
 				container: warningRef.value,
 				variant: 'warning',
