@@ -310,6 +310,10 @@ export class Sim {
 			}
 
 			if (result.errorResult != '') {
+				if (result.errorResult == 'aborted') {
+					// TODO: Abort feedback?
+					return null;
+				}
 				throw new SimError(result.errorResult);
 			}
 			const simResult = await SimResult.makeNew(request, result);

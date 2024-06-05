@@ -9,14 +9,14 @@ export const enum RequestTypes {
 }
 
 class TriggerSignal {
-	private readonly callbacks: (() => void)[] = [];
+	private readonly callbacks: (() => Promise<void>)[] = [];
 	private triggered = false;
 
-	trigger() {
+	async trigger() {
 		if (this.triggered) return;
 		this.triggered = true;
 		for (const cb of this.callbacks) {
-			cb();
+			await cb();
 		}
 	}
 
@@ -24,7 +24,7 @@ class TriggerSignal {
 		return this.triggered;
 	}
 
-	onTrigger(cb: () => void) {
+	onTrigger(cb: () => Promise<void>) {
 		this.callbacks.push(cb);
 		if (this.triggered) cb();
 	}
@@ -100,7 +100,7 @@ export class SimManager {
 		for (const [id, cfg] of this.running) {
 			if (!(cfg.type & typeMask)) continue;
 			if (cfg.signals) {
-				cfg.signals.abort.trigger();
+				await cfg.signals.abort.trigger();
 			} else {
 				await this.workerPool.abortById(id);
 			}
@@ -116,7 +116,7 @@ export class SimManager {
 		const cfg = this.running.get(requestId);
 		if (cfg) {
 			if (cfg.signals) {
-				cfg.signals.abort.trigger();
+				await cfg.signals.abort.trigger();
 				return AbortResponse.create({requestId, wasTriggered: true});
 			} else {
 				return this.workerPool.abortById(requestId);

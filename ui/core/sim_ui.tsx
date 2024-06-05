@@ -190,14 +190,14 @@ export abstract class SimUI extends Component {
 		}
 	}
 
-	addAction(name: string, cssClass: string, actFn: () => void) {
+	addAction(name: string, cssClass: string, actFn: (btn: HTMLButtonElement) => void) {
 		const buttonRef = ref<HTMLButtonElement>();
 		this.simActionsContainer.appendChild(
 			<button ref={buttonRef} className={`btn btn-primary w-100 ${cssClass || ''}`}>
 				{name}
 			</button>,
 		);
-		buttonRef.value?.addEventListener('click', actFn);
+		buttonRef.value?.addEventListener('click', () => actFn(buttonRef.value!));
 	}
 
 	addTab(title: string, cssClass: string, content: HTMLElement | Element) {
@@ -260,7 +260,7 @@ export abstract class SimUI extends Component {
 
 	async runSim(onProgress: WorkerProgressCallback) {
 		this.resultsViewer.setPending();
-		this.sim.simManager.abortAll(RequestTypes.RaidSim);
+		await this.sim.simManager.abortAll(RequestTypes.RaidSim);
 		try {
 			await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
 		} catch (e) {

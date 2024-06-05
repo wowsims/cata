@@ -9,11 +9,17 @@ import { EventID, TypedEvent } from '../typed_event.js';
 import { formatDeltaTextElem, sum } from '../utils.js';
 
 export function addRaidSimAction(simUI: SimUI): RaidSimResultsManager {
-	simUI.addAction('Simulate', 'dps-action', async () =>
+	let lastButtonPressNum = 0;
+	simUI.addAction('Simulate', 'dps-action', async button => {
+		const thisButtonPressNum = ++lastButtonPressNum;
+		button.disabled = true;
 		simUI.runSim((progress: ProgressMetrics) => {
+			if (button.disabled && thisButtonPressNum == lastButtonPressNum) {
+				button.disabled = false;
+			}
 			resultsManager.setSimProgress(progress);
-		}),
-	);
+		});
+	});
 
 	const resultsManager = new RaidSimResultsManager(simUI);
 	simUI.sim.simResultEmitter.on((eventID, simResult) => {

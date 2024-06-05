@@ -113,9 +113,9 @@ function runSims(requests: RaidSimRequest[], totalIterations: number, wp: Worker
 			wp.raidSimAsync(requests[i], pm => progressHandler(i, pm));
 		}
 
-		signals.abort.onTrigger(() => {
+		signals.abort.onTrigger(async () => {
 			for (const req of requests) {
-				wp.abortById(req.requestId);
+				await wp.abortById(req.requestId);
 			}
 		});
 	});
