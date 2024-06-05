@@ -465,7 +465,7 @@ func AspectOfTheWildAura(unit *Unit) *Aura {
 		"Aspect of the Wild",
 		ActionID{SpellID: 20043},
 		[]StatConfig{
-			{stats.ShadowResistance, 97, false},
+			{stats.NatureResistance, 195, false},
 		},
 	})
 }
