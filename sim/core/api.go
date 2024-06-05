@@ -51,14 +51,14 @@ func RunRaidSim(request *proto.RaidSimRequest) *proto.RaidSimResult {
 }
 
 func RunRaidSimAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
-	simId := request.Id
-	signals, err := simsignals.RegisterWithId(request.Id)
+	requestId := request.RequestId
+	signals, err := simsignals.RegisterWithId(requestId)
 	if err != nil {
 		progress <- &proto.ProgressMetrics{FinalRaidResult: &proto.RaidSimResult{ErrorResult: "Couldn't register for signal API: " + err.Error()}}
 		return
 	}
 	go func() {
-		defer simsignals.UnregisterId(simId)
+		defer simsignals.UnregisterId(requestId)
 		RunSim(request, progress, signals)
 	}()
 }
@@ -70,14 +70,14 @@ func RunRaidSimConcurrent(request *proto.RaidSimRequest) *proto.RaidSimResult {
 
 // Threading does not work in WASM!
 func RunRaidSimConcurrentAsync(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) {
-	simId := request.Id
-	signals, err := simsignals.RegisterWithId(request.Id)
+	requestId := request.RequestId
+	signals, err := simsignals.RegisterWithId(requestId)
 	if err != nil {
 		progress <- &proto.ProgressMetrics{FinalRaidResult: &proto.RaidSimResult{ErrorResult: "Couldn't register for signal API: " + err.Error()}}
 		return
 	}
 	go func() {
-		defer simsignals.UnregisterId(simId)
+		defer simsignals.UnregisterId(requestId)
 		runSimConcurrent(request, progress, signals)
 	}()
 }

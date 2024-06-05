@@ -93,7 +93,7 @@ function runSims(requests: RaidSimRequest[], totalIterations: number, wp: Worker
 					console.error(`Worker ${idx} had an error!`);
 					errRes = pm.finalRaidResult;
 					for (const req of requests) {
-						wp.abortById(req.id);
+						wp.abortById(req.requestId);
 					}
 				}
 
@@ -115,7 +115,7 @@ function runSims(requests: RaidSimRequest[], totalIterations: number, wp: Worker
 
 		signals.abort.onTrigger(() => {
 			for (const req of requests) {
-				wp.abortById(req.id);
+				wp.abortById(req.requestId);
 			}
 		});
 	});

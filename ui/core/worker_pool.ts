@@ -159,10 +159,10 @@ export class WorkerPool {
 	}
 
 	// TODO: target specific workers?
-	async abortById(id: string): Promise<AbortResponse> {
+	async abortById(requestId: string): Promise<AbortResponse> {
 		const wait: Promise<Uint8Array>[] = [];
 		for (const worker of this.workers) {
-			wait.push(worker.doApiCall(SimRequest.abortById, AbortRequest.toBinary(AbortRequest.create({id})), ''))
+			wait.push(worker.doApiCall(SimRequest.abortById, AbortRequest.toBinary(AbortRequest.create({requestId})), ''))
 		}
 		const results = await Promise.all(wait);
 

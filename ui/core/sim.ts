@@ -34,9 +34,9 @@ import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
 import { runConcurrentSim } from './sim_concurrent';
-import { RequestType, SimManager } from './sim_manager';
+import { generateRequestId, RequestTypes, SimManager } from './sim_manager';
 import { EventID, TypedEvent } from './typed_event.js';
-import { generateSimId, getEnumValues, noop } from './utils.js';
+import { getEnumValues, noop } from './utils.js';
 import { WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
@@ -230,7 +230,7 @@ export class Sim {
 		// TODO: remove any replenishment from sim request here? probably makes more sense to do it inside the sim to protect against accidents
 
 		return RaidSimRequest.create({
-			id: generateSimId(),
+			requestId: generateRequestId(RequestTypes.RaidSim),
 			type: this.type,
 			raid: raid,
 			encounter: encounter,
@@ -297,15 +297,15 @@ export class Sim {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(false);
-			simId = request.id;
+			simId = request.requestId;
 
 			let result;
 			// Only use worker base concurrency when running wasm. Local sim has native threading.
 			if (await this.isWasm() && this.getWasmConcurrency() >= 2) {
-				const sig = this.simManager.registerRunning(request.id, RequestType.RaidSim, true);
+				const sig = this.simManager.registerRunning(request.requestId, RequestTypes.RaidSim, true);
 				result = await runConcurrentSim(request, this.workerPool, onProgress, sig);
 			} else {
-				this.simManager.registerRunning(request.id, RequestType.RaidSim, false);
+				this.simManager.registerRunning(request.requestId, RequestTypes.RaidSim, false);
 				result = await this.workerPool.raidSimAsync(request, onProgress);
 			}
 

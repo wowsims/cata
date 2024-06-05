@@ -13,7 +13,7 @@ import { LaunchStatus, SimStatus } from './launched_sims.js';
 import { PlayerSpec } from './player_spec.js';
 import { ActionId } from './proto_utils/action_id.js';
 import { Sim, SimError } from './sim.js';
-import { RequestType } from './sim_manager';
+import { RequestTypes } from './sim_manager';
 import { EventID, TypedEvent } from './typed_event.js';
 import { WorkerProgressCallback } from './worker_pool';
 
@@ -260,7 +260,7 @@ export abstract class SimUI extends Component {
 
 	async runSim(onProgress: WorkerProgressCallback) {
 		this.resultsViewer.setPending();
-		this.sim.simManager.abortAll(RequestType.RaidSim);
+		this.sim.simManager.abortAll(RequestTypes.RaidSim);
 		try {
 			await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
 		} catch (e) {

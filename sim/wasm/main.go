@@ -283,10 +283,10 @@ func abortById(this js.Value, args []js.Value) interface{} {
 		return nil
 	}
 
-	success := simsignals.AbortById(abortRequest.Id)
+	success := simsignals.AbortById(abortRequest.RequestId)
 
 	outbytes, err := googleProto.Marshal(&proto.AbortResponse{
-		Id:           abortRequest.Id,
+		RequestId:    abortRequest.RequestId,
 		WasTriggered: success,
 	})
 	if err != nil {
