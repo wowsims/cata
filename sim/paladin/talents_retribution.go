@@ -94,7 +94,7 @@ func (paladin *Paladin) applySealsOfCommand() {
 		ThreatMultiplier: 1.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	})
