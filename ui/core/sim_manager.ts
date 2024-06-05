@@ -55,8 +55,8 @@ export function generateRequestId(type: RequestTypes) {
 		default:
 			id = '???????';
 	}
-	const chars = Array(4).map(() => {Math.floor(Math.random()*0x10000).toString(16)});
-	return id + '-' + chars.join();
+	const chars = Array.from(Array(4)).map(() => Math.floor(Math.random()*0x10000).toString(16));
+	return id + '-' + chars.join('');
 }
 
 export class SimManager {
