@@ -97,15 +97,6 @@ func (dot *Dot) recomputeAuraDuration(sim *Simulation) {
 	if dot.IsActive() {
 		dot.Duration += nextTick
 		dot.remainingTicks++
-
-		// update tick action to work with new tick rate, but set next tick to still occur
-		pa := &PendingAction{
-			NextActionAt: dot.tickAction.NextActionAt,
-			OnAction:     dot.tickAction.OnAction,
-		}
-		dot.tickAction.Cancel(sim)
-		dot.tickAction = pa
-		sim.AddPendingAction(dot.tickAction)
 	}
 }
 

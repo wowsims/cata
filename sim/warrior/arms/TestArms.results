@@ -682,8 +682,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-LadyLa-La'sSingingShell-67152"
  value: {
-  dps: 25849.33764
-  tps: 17232.22335
+  dps: 25847.81688
+  tps: 17232.12988
  }
 }
 dps_results: {
@@ -794,8 +794,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-AllItems-MoltenGiantBattleplate"
  value: {
-  dps: 24667.05854
-  tps: 16950.08553
+  dps: 24666.99227
+  tps: 16950.01926
  }
 }
 dps_results: {
@@ -1312,8 +1312,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Average-Default"
  value: {
-  dps: 27394.36806
-  tps: 18404.75123
+  dps: 27394.38282
+  tps: 18404.75016
  }
 }
 dps_results: {
@@ -1340,8 +1340,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Orc-preraid_arms-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 40411.64578
-  tps: 20621.35502
+  dps: 40375.58401
+  tps: 20591.84736
  }
 }
 dps_results: {
@@ -1382,8 +1382,8 @@ dps_results: {
 dps_results: {
  key: "TestArms-Settings-Worgen-preraid_arms-Basic-arms-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 40567.17611
-  tps: 20571.39634
+  dps: 40495.13502
+  tps: 20537.46863
  }
 }
 dps_results: {
