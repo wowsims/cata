@@ -252,6 +252,7 @@ export class Sim {
 		await this.waitForInit();
 
 		const request = BulkSimRequest.create({
+			requestId: generateRequestId(RequestTypes.BulkSim),
 			baseSettings: this.makeRaidSimRequest(false),
 			bulkSettings: bulkSettings,
 		});
@@ -273,8 +274,13 @@ export class Sim {
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
 		try {
+			this.signalManager.registerRunning(request.requestId, RequestTypes.BulkSim, false);
 			const result = await this.workerPool.bulkSimAsync(request, onProgress);
 			if (result.errorResult != '') {
+				if (result.errorResult.includes('aborted')) {
+					// TODO: Abort feedback?
+					return null;
+				}
 				throw new SimError(result.errorResult);
 			}
 
@@ -283,6 +289,8 @@ export class Sim {
 		} catch (error) {
 			if (error instanceof SimError) throw error;
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
+		} finally {
+			this.signalManager.unregisterRunning(request.requestId);
 		}
 	}
 

@@ -2,8 +2,6 @@
 package core
 
 import (
-	"context"
-
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/simsignals"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -89,11 +87,20 @@ func RunRaidSimConcurrentAsync(request *proto.RaidSimRequest, progress chan *pro
 }
 
 func RunBulkSim(request *proto.BulkSimRequest) *proto.BulkSimResult {
-	return BulkSim(context.Background(), request, nil)
+	return BulkSim(simsignals.CreateSignals(), request, nil)
 }
 
-func RunBulkSimAsync(ctx context.Context, request *proto.BulkSimRequest, progress chan *proto.ProgressMetrics) {
-	go BulkSim(ctx, request, progress)
+func RunBulkSimAsync(request *proto.BulkSimRequest, progress chan *proto.ProgressMetrics) {
+	requestId := request.RequestId
+	signals, err := simsignals.RegisterWithId(requestId)
+	if err != nil {
+		progress <- &proto.ProgressMetrics{FinalBulkResult: &proto.BulkSimResult{ErrorResult: "Couldn't register for signal API: " + err.Error()}}
+		return
+	}
+	go func() {
+		defer simsignals.UnregisterId(requestId)
+		BulkSim(signals, request, progress)
+	}()
 }
 
 var runningInWasm = false

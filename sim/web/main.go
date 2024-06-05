@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -116,9 +115,7 @@ var asyncAPIHandlers = map[string]asyncAPIHandler{
 		core.StatWeightsAsync(msg.(*proto.StatWeightsRequest), reporter)
 	}},
 	"/bulkSimAsync": {msg: func() googleProto.Message { return &proto.BulkSimRequest{} }, handle: func(msg googleProto.Message, reporter chan *proto.ProgressMetrics) {
-		// TODO: we can use context's to cancel stuff.
-		// We should have all the async APIs take in context and let it be cancelled via its async ID.
-		core.RunBulkSimAsync(context.Background(), msg.(*proto.BulkSimRequest), reporter)
+		core.RunBulkSimAsync(msg.(*proto.BulkSimRequest), reporter)
 	}},
 }
 

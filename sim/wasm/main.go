@@ -4,7 +4,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"runtime/debug"
 	"syscall/js"
@@ -214,9 +213,7 @@ func bulkSimAsync(this js.Value, args []js.Value) interface{} {
 		return nil
 	}
 	reporter := make(chan *proto.ProgressMetrics, 100)
-	// for now just use context.Background() until we can figure out the best way to handle
-	// allowing front end to cancel.
-	go core.RunBulkSimAsync(context.Background(), rsr, reporter)
+	go core.RunBulkSimAsync(rsr, reporter)
 	go processAsyncProgress(args[1], reporter)
 	return js.Undefined()
 }

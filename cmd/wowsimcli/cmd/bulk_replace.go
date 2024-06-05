@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -98,7 +97,7 @@ func BulkSim(input *proto.RaidSimRequest, replaceFile string, verbose bool) stri
 		},
 	}
 	progress := make(chan *proto.ProgressMetrics, 100)
-	core.RunBulkSimAsync(context.Background(), bsr, progress)
+	core.RunBulkSimAsync(bsr, progress)
 
 	startTime := time.Now()
 

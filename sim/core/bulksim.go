@@ -1,7 +1,6 @@
 package core
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"math"
@@ -33,13 +32,13 @@ type bulkSimRunner struct {
 	Request *proto.BulkSimRequest
 }
 
-func BulkSim(ctx context.Context, request *proto.BulkSimRequest, progress chan *proto.ProgressMetrics) *proto.BulkSimResult {
+func BulkSim(signals simsignals.Signals, request *proto.BulkSimRequest, progress chan *proto.ProgressMetrics) *proto.BulkSimResult {
 	bulk := &bulkSimRunner{
 		SingleRaidSimRunner: runSim,
 		Request:             request,
 	}
 
-	result, err := bulk.Run(ctx, progress)
+	result, err := bulk.Run(signals, progress)
 	if err != nil {
 		result = &proto.BulkSimResult{
 			ErrorResult: err.Error(),
@@ -62,15 +61,14 @@ type singleBulkSim struct {
 	eq  *equipmentSubstitution
 }
 
-func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressMetrics) (result *proto.BulkSimResult, resultErr error) {
-	ctx, cancel := context.WithCancel(pctx)
+func (b *bulkSimRunner) Run(signals simsignals.Signals, progress chan *proto.ProgressMetrics) (result *proto.BulkSimResult, resultErr error) {
 	defer func() {
 		if err := recover(); err != nil {
 			result = &proto.BulkSimResult{
 				ErrorResult: fmt.Sprintf("%v\nStack Trace:\n%s", err, string(debug.Stack())),
 			}
 		}
-		cancel()
+		signals.Abort.Trigger()
 	}()
 
 	// Bulk simming is only supported for the single-player use (i.e. not whole raid-wide simming).
@@ -175,7 +173,7 @@ func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressM
 	}
 	baseItems := player.Equipment.Items
 
-	allCombos := generateAllEquipmentSubstitutions(ctx, baseItems, b.Request.BulkSettings.Combinations, distinctItemSlotCombos)
+	allCombos := generateAllEquipmentSubstitutions(signals, baseItems, b.Request.BulkSettings.Combinations, distinctItemSlotCombos)
 
 	var validCombos []singleBulkSim
 	count := 0
@@ -239,7 +237,7 @@ func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressM
 		var tempBase *itemSubstitutionSimResult
 		var err error
 		// TODO: we could theoretically make getRankedResults accept a channel of validCombos that stream in to it and launches sims as it gets them...
-		rankedResults, tempBase, err = b.getRankedResults(ctx, validCombos, newIters, progress)
+		rankedResults, tempBase, err = b.getRankedResults(signals, validCombos, newIters, progress)
 
 		if err != nil {
 			return nil, err
@@ -315,7 +313,7 @@ func (b *bulkSimRunner) Run(pctx context.Context, progress chan *proto.ProgressM
 	return result, nil
 }
 
-func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []singleBulkSim, iterations int64, progress chan *proto.ProgressMetrics) ([]*itemSubstitutionSimResult, *itemSubstitutionSimResult, error) {
+func (b *bulkSimRunner) getRankedResults(signals simsignals.Signals, validCombos []singleBulkSim, iterations int64, progress chan *proto.ProgressMetrics) ([]*itemSubstitutionSimResult, *itemSubstitutionSimResult, error) {
 	concurrency := runtime.NumCPU() + 1
 	if concurrency <= 0 {
 		concurrency = 2
@@ -334,10 +332,9 @@ func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []sin
 	var totalCompletedIterations int32
 	var totalCompletedSims int32
 
-	ctx, cancel := context.WithCancel(pctx)
 	// reporter for all sims combined.
 	go func() {
-		for ctx.Err() == nil {
+		for !signals.Abort.IsTriggered() {
 			complIters := atomic.LoadInt32(&totalCompletedIterations)
 			complSims := atomic.LoadInt32(&totalCompletedSims)
 
@@ -381,7 +378,7 @@ func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []sin
 				sub.req.SimOptions.Iterations = int32(iterations)
 				results <- &itemSubstitutionSimResult{
 					Request:      sub.req,
-					Result:       b.SingleRaidSimRunner(sub.req, singleSimProgress, false, simsignals.CreateSignals()),
+					Result:       b.SingleRaidSimRunner(sub.req, singleSimProgress, false, signals),
 					Substitution: sub.eq,
 					ChangeLog:    sub.cl,
 				}
@@ -397,7 +394,7 @@ func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []sin
 	for i := range rankedResults {
 		result := <-results
 		if result.Result == nil || result.Result.ErrorResult != "" {
-			cancel() // cancel reporter
+			signals.Abort.Trigger() // cancel reporter
 			return nil, nil, errors.New("simulation failed: " + result.Result.ErrorResult)
 		}
 		if !result.Substitution.HasItemReplacements() && result.ChangeLog.TalentLoadout == nil {
@@ -405,7 +402,7 @@ func (b *bulkSimRunner) getRankedResults(pctx context.Context, validCombos []sin
 		}
 		rankedResults[i] = result
 	}
-	cancel() // cancel reporter
+	signals.Abort.Trigger() // cancel reporter
 
 	sort.Slice(rankedResults, func(i, j int) bool {
 		return rankedResults[i].Score() > rankedResults[j].Score()
@@ -523,7 +520,7 @@ func isValidEquipment(equipment *proto.EquipmentSpec) bool {
 // given bulk sim request. Also returns the unchanged equipment ("base equipment set") set as the
 // first result. This ensures that simming over all possible equipment substitutions includes the
 // base case as well.
-func generateAllEquipmentSubstitutions(_ context.Context, baseItems []*proto.ItemSpec, combinations bool, distinctItemSlotCombos []*itemWithSlot) chan *equipmentSubstitution {
+func generateAllEquipmentSubstitutions(signals simsignals.Signals, baseItems []*proto.ItemSpec, combinations bool, distinctItemSlotCombos []*itemWithSlot) chan *equipmentSubstitution {
 	results := make(chan *equipmentSubstitution)
 	go func() {
 		defer close(results)

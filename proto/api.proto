@@ -498,6 +498,8 @@ message ProgressMetrics {
 message BulkSimRequest {
     RaidSimRequest base_settings = 1;
     BulkSettings bulk_settings = 2;
+	// A unique id. Used to e.g. abort async sim requests.
+	string request_id = 3;
 }
 
 message TalentLoadout {

@@ -7,6 +7,7 @@ import { Database } from '../../proto_utils/database';
 import { EquippedItem } from '../../proto_utils/equipped_item';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { canEquipItem, getEligibleItemSlots } from '../../proto_utils/utils';
+import { RequestTypes } from '../../sim_signal_manager';
 import { TypedEvent } from '../../typed_event';
 import { EventID } from '../../typed_event.js';
 import { WorkerProgressCallback } from '../../worker_pool';
@@ -482,7 +483,7 @@ export class BulkTab extends SimTab {
 		const bulkSimButton = document.createElement('button');
 		bulkSimButton.classList.add('btn', 'btn-primary', 'w-100', 'bulk-settings-button');
 		bulkSimButton.textContent = 'Simulate Batch';
-		bulkSimButton.addEventListener('click', () => {
+		bulkSimButton.addEventListener('click', async () => {
 			this.pendingDiv.style.display = 'flex';
 			this.leftPanel.classList.add('blurred');
 			this.rightPanel.classList.add('blurred');
@@ -497,6 +498,8 @@ export class BulkTab extends SimTab {
 			let rounds = 0;
 			let currentRound = 0;
 			let combinations = 0;
+
+			await this.simUI.sim.signalManager.abortAll(RequestTypes.All)
 
 			this.runBulkSim((progressMetrics: ProgressMetrics) => {
 				const msSinceStart = new Date().getTime() - simStart;
