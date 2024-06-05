@@ -3,6 +3,7 @@ package combat
 import (
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/stats"
+	"github.com/wowsims/cata/sim/rogue"
 )
 
 const masteryChancePerPoint = .02
@@ -11,10 +12,11 @@ const masteryBaseEffect = 0.16
 func (comRogue *CombatRogue) applyMastery() {
 
 	comRogue.mainGauche = comRogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 86392},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial, // TODO Thebackstabi 3/20/2024 -- Validate if MG can proc things
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ActionID:       core.ActionID{SpellID: 86392},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial, // TODO Thebackstabi 3/20/2024 -- Validate if MG can proc things
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage,
+		ClassSpellMask: rogue.RogueSpellMainGauche,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   comRogue.MeleeCritMultiplier(false),

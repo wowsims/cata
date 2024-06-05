@@ -176,7 +176,7 @@ func (dk *DeathKnight) applyUnholyBlight() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).ApplyOrReset(sim)
+			spell.Dot(target).Apply(sim)
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 		},
 	})
@@ -193,8 +193,9 @@ func (dk *DeathKnight) applyUnholyBlight() {
 			newDamage := result.Damage * 0.10
 			outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
+			ticks := float64(dot.NumberOfTicks + core.TernaryInt32(dot.IsActive(), 1, 0))
 			dot.SnapshotAttackerMultiplier = unholyBlight.DamageMultiplier
-			dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(dot.NumberOfTicks)
+			dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / ticks
 
 			unholyBlight.Cast(sim, result.Target)
 		},

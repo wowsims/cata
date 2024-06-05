@@ -361,13 +361,12 @@ func TestAffliction(t *testing.T) {
 		TinkerHands:       proto.TinkerHands_TinkerHandsSynapseSprings,
 	}
 
-	var afflictionTalents = "223222003013321321-03-33"
 	var afflictionGlyphs = &proto.Glyphs{
 		Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfHaunt),
 		Prime2: int32(proto.WarlockPrimeGlyph_GlyphOfUnstableAffliction),
 		Prime3: int32(proto.WarlockPrimeGlyph_GlyphOfCorruption),
-		Major2: int32(proto.WarlockMajorGlyph_GlyphOfShadowBolt),
 		Major1: int32(proto.WarlockMajorGlyph_GlyphOfLifeTap),
+		Major2: int32(proto.WarlockMajorGlyph_GlyphOfShadowBolt),
 		Major3: int32(proto.WarlockMajorGlyph_GlyphOfSoulSwap),
 	}
 

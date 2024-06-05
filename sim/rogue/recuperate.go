@@ -13,9 +13,10 @@ func (rogue *Rogue) registerRecuperate() {
 	energeticRecoveryMetrics := rogue.NewEnergyMetrics(energeticRecoveryAction)
 
 	rogue.Recuperate = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:     actionID,
-		Flags:        SpellFlagFinisher | core.SpellFlagAPL,
-		MetricSplits: 6,
+		ActionID:       actionID,
+		Flags:          SpellFlagFinisher | core.SpellFlagAPL,
+		MetricSplits:   6,
+		ClassSpellMask: RogueSpellRecuperate,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 30,

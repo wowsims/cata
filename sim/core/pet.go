@@ -176,7 +176,11 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	} else {
 		sim.AddPendingAction(&PendingAction{
 			NextActionAt: 0,
-			OnAction:     pet.AutoAttacks.EnableAutoSwing,
+			OnAction: func(sim *Simulation) {
+				if pet.enabled {
+					pet.AutoAttacks.EnableAutoSwing(sim)
+				}
+			},
 		})
 	}
 

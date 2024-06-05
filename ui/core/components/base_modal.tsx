@@ -1,6 +1,5 @@
 import { Modal } from 'bootstrap';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element, ref } from 'tsx-vanilla';
+import { ref } from 'tsx-vanilla';
 
 import { Component } from './component';
 
@@ -86,10 +85,14 @@ export class BaseModal extends Component {
 		this.modal = new Modal(this.rootElem);
 
 		if (this.modalConfig.disposeOnClose) {
-			this.rootElem.addEventListener('hidden.bs.modal', _ => {
-				this.rootElem.remove();
-				this.dispose();
-			});
+			this.rootElem.addEventListener(
+				'hidden.bs.modal',
+				() => {
+					this.rootElem.remove();
+					this.dispose();
+				},
+				{ once: true },
+			);
 		}
 	}
 

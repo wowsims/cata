@@ -1907,6 +1907,7 @@ export const orderedResourceTypes: Array<ResourceType> = [
 	ResourceType.ResourceTypeDeathRune,
 	ResourceType.ResourceTypeLunarEnergy,
 	ResourceType.ResourceTypeSolarEnergy,
+	ResourceType.ResourceTypeHolyPower,
 ];
 
 export const AL_CATEGORY_HARD_MODE = 'Hard Mode';

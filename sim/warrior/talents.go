@@ -83,6 +83,8 @@ func (warrior *Warrior) applyBattleTrance() {
 		FloatValue: -1.0,
 	})
 
+	triggerSpellMask := SpellMaskBloodthirst | SpellMaskMortalStrike | SpellMaskShieldSlam
+
 	actionID := core.ActionID{SpellID: 12964}
 	btAura := warrior.RegisterAura(core.Aura{
 		Label:    "Battle Trance",
@@ -94,7 +96,11 @@ func (warrior *Warrior) applyBattleTrance() {
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Battle Trance affects the spells that proc it, so make sure we don't eat the proc with the same attack
 			// that just proced it
-			if (spell.ClassSpellMask&battleTranceAffectedSpellsMask) != 0 && aura.TimeActive(sim) != 0 {
+			if (spell.ClassSpellMask&triggerSpellMask) != 0 && aura.TimeActive(sim) == 0 {
+				return
+			}
+
+			if (spell.ClassSpellMask & battleTranceAffectedSpellsMask) != 0 {
 				aura.Deactivate(sim)
 			}
 		},
@@ -104,7 +110,6 @@ func (warrior *Warrior) applyBattleTrance() {
 	})
 
 	procChance := 0.05 * float64(warrior.Talents.BattleTrance)
-	triggerSpellMask := SpellMaskBloodthirst | SpellMaskMortalStrike | SpellMaskShieldSlam
 
 	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
 		Name:           "Battle Trance Trigger",

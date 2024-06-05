@@ -68,9 +68,11 @@ func (at *AttackTable) GetArmorDamageModifier(spell *Spell) float64 {
 		return 1.0
 	}
 
+	ignoreArmorFactor := Clamp(at.ArmorIgnoreFactor, 0.0, 1.0)
+
 	// Assume target > 80
 	armorConstant := float64(at.Attacker.Level)*2167.5 - 158167.5
-	defenderArmor := at.Defender.Armor()
+	defenderArmor := at.Defender.Armor() - (at.Defender.Armor() * ignoreArmorFactor)
 	return 1 - defenderArmor/(defenderArmor+armorConstant)
 }
 

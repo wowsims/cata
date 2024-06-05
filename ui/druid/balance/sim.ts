@@ -82,16 +82,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	playerIconInputs: [DruidInputs.SelfInnervate()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
-		BuffDebuffInputs.MeleeHasteBuff,
+		BuffDebuffInputs.ReplenishmentBuff,
 		BuffDebuffInputs.CritBuff,
+		BuffDebuffInputs.MP5Buff,
 		BuffDebuffInputs.AttackPowerPercentBuff,
-		BuffDebuffInputs.MajorArmorDebuff,
-		BuffDebuffInputs.PhysicalDamageDebuff,
+		BuffDebuffInputs.StaminaBuff,
+		BuffDebuffInputs.ManaBuff,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [BalanceInputs.OkfUptime, OtherInputs.TankAssignment, OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.DarkIntentUptime],
+		inputs: [BalanceInputs.OkfUptime, BalanceInputs.StartInSolar, BalanceInputs.MasterySnapshot, OtherInputs.TankAssignment,
+			     OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.DarkIntentUptime],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -103,7 +105,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		talents: [Presets.StandardTalents],
 		rotations: [Presets.PresetRotationDefault],
 		// Preset gear configurations that the user can quickly select.
-		gear: [ Presets.PreraidPresetGear]
+		gear: [ Presets.PreraidPresetGear, Presets.T11PresetGear]
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {

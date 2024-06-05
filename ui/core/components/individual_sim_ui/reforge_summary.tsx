@@ -1,5 +1,3 @@
-import { element, fragment } from 'tsx-vanilla';
-
 import { Player } from '../../player.js';
 import { Stat } from '../../proto/common.js';
 import { shortSecondaryStatNames } from '../../proto_utils/names.js';
@@ -32,7 +30,7 @@ export class ReforgeSummary extends Component {
 	}
 
 	private updateTable() {
-		this.container.bodyElement.innerHTML = ``;
+		const body = <></>;
 		let gear = this.player.getGear();
 		const totals: ReforgeSummaryTotal = {};
 		gear.getItemSlots().forEach(itemSlot => {
@@ -65,13 +63,15 @@ export class ReforgeSummary extends Component {
 				const value = totals[stat];
 				if (!value) return;
 
-				this.container.bodyElement.appendChild(
+				body.appendChild(
 					<div className="summary-table-row d-flex align-items-center">
 						<div>{shortSecondaryStatNames.get(stat)}</div>
 						<div className={`${value === 0 ? '' : value > 0 ? 'positive' : 'negative'}`}>{value}</div>
 					</div>,
 				);
 			});
+
+			this.container.bodyElement.replaceChildren(body);
 
 			if (!this.container.headerElement) return;
 			const existingResetButton = this.container.headerElement.querySelector('.summary-table-reset-button');

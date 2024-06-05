@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	_ "github.com/wowsims/cata/sim/common"
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/simsignals"

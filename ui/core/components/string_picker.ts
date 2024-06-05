@@ -23,9 +23,13 @@ export class StringPicker<ModObject> extends Input<ModObject, string> {
 
 		this.init();
 
-		this.inputElem.addEventListener('input', () => {
-			this.inputChanged(TypedEvent.nextEventID());
-		});
+		this.inputElem.addEventListener(
+			'input',
+			() => {
+				this.inputChanged(TypedEvent.nextEventID());
+			},
+			{ signal: this.signal },
+		);
 	}
 
 	getInputElem(): HTMLElement {
@@ -59,12 +63,20 @@ export class AdaptiveStringPicker<ModObject> extends Input<ModObject, string> {
 
 		this.init();
 
-		this.inputElem.addEventListener('change', () => {
-			this.inputChanged(TypedEvent.nextEventID());
-		});
-		this.inputElem.addEventListener('input', () => {
-			this.updateSize();
-		});
+		this.inputElem.addEventListener(
+			'change',
+			() => {
+				this.inputChanged(TypedEvent.nextEventID());
+			},
+			{ signal: this.signal },
+		);
+		this.inputElem.addEventListener(
+			'input',
+			() => {
+				this.updateSize();
+			},
+			{ signal: this.signal },
+		);
 		this.updateSize();
 	}
 
