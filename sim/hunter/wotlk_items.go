@@ -9,26 +9,26 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
-var ItemSetGladiatorsPursuit = core.NewItemSet(core.ItemSet{
-	Name: "Gladiator's Pursuit",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			hunter.AddStats(stats.Stats{
-				stats.AttackPower:       50,
-				stats.RangedAttackPower: 50,
-				stats.Resilience:        50,
-			})
-		},
-		4: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			hunter.AddStats(stats.Stats{
-				stats.AttackPower:       150,
-				stats.RangedAttackPower: 150,
-			})
-		},
-	},
-})
+// var ItemSetGladiatorsPursuit = core.NewItemSet(core.ItemSet{
+// 	Name: "Gladiator's Pursuit",
+// 	Bonuses: map[int32]core.ApplyEffect{
+// 		2: func(agent core.Agent) {
+// 			hunter := agent.(HunterAgent).GetHunter()
+// 			hunter.AddStats(stats.Stats{
+// 				stats.AttackPower:       50,
+// 				stats.RangedAttackPower: 50,
+// 				stats.Resilience:        50,
+// 			})
+// 		},
+// 		4: func(agent core.Agent) {
+// 			hunter := agent.(HunterAgent).GetHunter()
+// 			hunter.AddStats(stats.Stats{
+// 				stats.AttackPower:       150,
+// 				stats.RangedAttackPower: 150,
+// 			})
+// 		},
+// 	},
+// })
 
 // var ItemSetCryptstalkerBattlegear = core.NewItemSet(core.ItemSet{
 // 	Name: "Cryptstalker Battlegear",

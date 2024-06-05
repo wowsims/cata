@@ -6,6 +6,7 @@ import (
 )
 
 type ItemSet struct {
+	ID              int32
 	Name            string
 	AlternativeName string
 
@@ -77,7 +78,7 @@ func (character *Character) HasSetBonus(set *ItemSet, numItems int32) bool {
 		if item.SetName == "" {
 			continue
 		}
-		if item.SetName == set.Name || item.SetName == set.AlternativeName {
+		if item.SetName == set.Name || item.SetName == set.AlternativeName || item.SetID == set.ID {
 			count++
 			if count >= numItems {
 				return true
@@ -108,17 +109,33 @@ func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
 		if item.SetName == "" {
 			continue
 		}
+
+		var foundSet *ItemSet = nil
+		// Try finding by ID first to make sure sets with different names but share id all point to the same count.
 		for _, set := range sets {
-			if set.Name == item.SetName || set.AlternativeName == item.SetName {
-				setItemCount[set]++
-				if bonusEffect, ok := set.Bonuses[setItemCount[set]]; ok {
-					activeBonuses = append(activeBonuses, ActiveSetBonus{
-						Name:        set.Name,
-						NumPieces:   setItemCount[set],
-						BonusEffect: bonusEffect,
-					})
-				}
+			if set.ID == item.SetID {
+				foundSet = set
 				break
+			}
+		}
+
+		if foundSet == nil {
+			for _, set := range sets {
+				if set.Name == item.SetName || set.AlternativeName == item.SetName {
+					foundSet = set
+					break
+				}
+			}
+		}
+
+		if foundSet != nil {
+			setItemCount[foundSet]++
+			if bonusEffect, ok := foundSet.Bonuses[setItemCount[foundSet]]; ok {
+				activeBonuses = append(activeBonuses, ActiveSetBonus{
+					Name:        foundSet.Name,
+					NumPieces:   setItemCount[foundSet],
+					BonusEffect: bonusEffect,
+				})
 			}
 		}
 	}

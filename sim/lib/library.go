@@ -119,6 +119,7 @@ func getDatabase(itemIds *int32, numItems int32, enchantIds *int32, numEnchants 
 			WeaponDamageMax:  item.WeaponDamageMax,
 			WeaponSpeed:      item.SwingSpeed,
 			SetName:          item.SetName,
+			SetId:            item.SetID,
 		}
 	}
 	for i, enchantId := range eids {
