@@ -1,5 +1,5 @@
 import { ProgressMetrics, RaidSimRequest, RaidSimRequestSplitRequest, RaidSimResult, RaidSimResultCombinationRequest } from "./proto/api";
-import { SimSignals } from "./sim_manager";
+import { SimSignals } from "./sim_signal_manager";
 import { WorkerPool, WorkerProgressCallback } from "./worker_pool";
 
 class ConcurrentSimProgress {

@@ -59,7 +59,7 @@ export function generateRequestId(type: RequestTypes) {
 	return id + '-' + chars.join('');
 }
 
-export class SimManager {
+export class SimSignalManager {
 	private readonly workerPool: WorkerPool;
 	private readonly running: Map<string, {type: RequestTypes, signals?: SimSignals}>;
 
