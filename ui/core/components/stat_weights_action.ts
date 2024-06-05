@@ -326,11 +326,20 @@ class EpWeightsMenu extends BaseModal {
 			calcButton.classList.add('disabled');
 			calcButton.style.width = `${calcButton.getBoundingClientRect().width.toFixed(3)}px`;
 			calcButton.innerHTML = `<i class="fa fa-spinner fa-spin"></i>&nbsp;Running`;
+
+			try {
+				await this.simUI.sim.signalManager.abortAll(RequestTypes.All);
+			} catch (error) {
+				console.error(error);
+				calcButton.innerHTML = previousContents;
+				calcButton.classList.remove('disabled');
+				return;
+			}
+
 			this.container.scrollTo({ top: 0 });
 			this.container.classList.add('pending');
 			this.resultsViewer.setPending();
 			const iterations = this.simUI.sim.getIterations();
-			await this.simUI.sim.signalManager.abortAll(RequestTypes.All);
 			const result = await this.simUI.player.computeStatWeights(
 				TypedEvent.nextEventID(),
 				this.epStats,
@@ -351,7 +360,7 @@ class EpWeightsMenu extends BaseModal {
 		});
 
 		this.addOnHideCallback(() => {
-			this.simUI.sim.signalManager.abortAll(RequestTypes.StatWeights);
+			this.simUI.sim.signalManager.abortAll(RequestTypes.StatWeights).catch(console.error);
 		});
 
 		const colActionButtons = Array.from(this.rootElem.getElementsByClassName('col-action')) as Array<HTMLSelectElement>;

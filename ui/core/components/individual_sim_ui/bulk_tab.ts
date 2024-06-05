@@ -499,41 +499,43 @@ export class BulkTab extends SimTab {
 			let currentRound = 0;
 			let combinations = 0;
 
-			await this.simUI.sim.signalManager.abortAll(RequestTypes.All)
+			try {
+				await this.simUI.sim.signalManager.abortAll(RequestTypes.All)
 
-			this.runBulkSim((progressMetrics: ProgressMetrics) => {
-				const msSinceStart = new Date().getTime() - simStart;
-				const iterPerSecond = progressMetrics.completedIterations / (msSinceStart / 1000);
+				await this.runBulkSim((progressMetrics: ProgressMetrics) => {
+					const msSinceStart = new Date().getTime() - simStart;
+					const iterPerSecond = progressMetrics.completedIterations / (msSinceStart / 1000);
 
-				if (combinations == 0) {
-					combinations = progressMetrics.totalSims;
-				}
-				if (this.fastMode) {
-					if (rounds == 0 && progressMetrics.totalSims > 0) {
-						rounds = Math.ceil(Math.log(progressMetrics.totalSims / 20) / Math.log(2)) + 1;
-						currentRound = 1;
+					if (combinations == 0) {
+						combinations = progressMetrics.totalSims;
 					}
-					if (progressMetrics.totalSims < lastTotal) {
-						currentRound += 1;
-						simStart = new Date().getTime();
+					if (this.fastMode) {
+						if (rounds == 0 && progressMetrics.totalSims > 0) {
+							rounds = Math.ceil(Math.log(progressMetrics.totalSims / 20) / Math.log(2)) + 1;
+							currentRound = 1;
+						}
+						if (progressMetrics.totalSims < lastTotal) {
+							currentRound += 1;
+							simStart = new Date().getTime();
+						}
 					}
-				}
 
-				this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
-				lastTotal = progressMetrics.totalSims;
+					this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
+					lastTotal = progressMetrics.totalSims;
+				});
+			} catch (error) {
+				console.error(error);
+			} finally {
+				// reset state
+				this.pendingDiv.style.display = 'none';
+				this.leftPanel.classList.remove('blurred');
+				this.rightPanel.classList.remove('blurred');
 
-				if (progressMetrics.finalBulkResult != null) {
-					// reset state
-					this.pendingDiv.style.display = 'none';
-					this.leftPanel.classList.remove('blurred');
-					this.rightPanel.classList.remove('blurred');
-
-					this.pendingResults.hideAll();
-					bulkSimButton.disabled = false;
-					bulkSimButton.classList.remove('.disabled');
-					bulkSimButton.innerHTML = previousContents;
-				}
-			});
+				this.pendingResults.hideAll();
+				bulkSimButton.disabled = false;
+				bulkSimButton.classList.remove('.disabled');
+				bulkSimButton.innerHTML = previousContents;
+			}
 		});
 
 		settingsBlock.bodyElement.appendChild(bulkSimButton);
