@@ -471,6 +471,17 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		});
 	}
 
+	applyEmptyAplRotation(eventID: EventID) {
+		TypedEvent.freezeAllAndDo(() => {
+			this.player.setAplRotation(
+				eventID,
+				APLRotation.create({
+					type: APLRotationType.TypeAPL,
+				}),
+			);
+		});
+	}
+
 	applyDefaults(eventID: EventID) {
 		TypedEvent.freezeAllAndDo(() => {
 			const tankSpec = this.player.getPlayerSpec().isTankSpec;

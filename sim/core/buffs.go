@@ -1655,7 +1655,7 @@ func InnervateManaThreshold(character *Character) float64 {
 		// Mages burn mana really fast so they need a higher threshold.
 		return character.MaxMana() * 0.7
 	} else {
-		return 5000
+		return character.MaxMana() * 0.45
 	}
 }
 
