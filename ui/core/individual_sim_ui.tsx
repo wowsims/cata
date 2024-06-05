@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element } from 'tsx-vanilla';
-
 import { CharacterStats, StatMods, StatWrites } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
 import { EmbeddedDetailedResults } from './components/detailed_results';
@@ -437,14 +434,14 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private addTopbarComponents() {
 		this.simHeader.addImportLink('JSON', new Importers.IndividualJsonImporter(this.rootElem, this), true);
-		this.simHeader.addImportLink('80U', new Importers.Individual80UImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('85U', new Importers.Individual80UImporter(this.rootElem, this), true);
 		this.simHeader.addImportLink('WoWHead', new Importers.IndividualWowheadGearPlannerImporter(this.rootElem, this), false);
 		this.simHeader.addImportLink('Addon', new Importers.IndividualAddonImporter(this.rootElem, this), true);
 
 		this.simHeader.addExportLink('Link', new Exporters.IndividualLinkExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('JSON', new Exporters.IndividualJsonExporter(this.rootElem, this), true);
 		this.simHeader.addExportLink('WoWHead', new Exporters.IndividualWowheadGearPlannerExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('80U EP', new Exporters.Individual80UEPExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('85U EP', new Exporters.Individual80UEPExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('Pawn EP', new Exporters.IndividualPawnEPExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('CLI', new Exporters.IndividualCLIExporter(this.rootElem, this), true);
 	}

@@ -122,6 +122,7 @@ func (spriest *ShadowPriest) ApplyTalents() {
 				return
 			}
 
+			spriest.empoweredShadowAura.Deactivate(sim)
 			spriest.empoweredShadowAura.Activate(sim)
 			aura.Deactivate(sim)
 		},

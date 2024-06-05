@@ -1,8 +1,11 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 const (
@@ -10,17 +13,49 @@ const (
 	SpellFlagPrimaryJudgement   = core.SpellFlagAgentReserved2
 )
 
+const (
+	SpellMaskSpecialAttack int64 = 1 << iota
+
+	SpellMaskTemplarsVerdict
+	SpellMaskCrusaderStrike
+	SpellMaskDivineStorm
+	SpellMaskExorcism
+	SpellMaskHammerOfWrath
+	SpellMaskJudgement
+	SpellMaskHolyWrath
+	SpellMaskConsecration
+	SpellMaskHammerOfTheRighteous
+	SpellMaskHandOfReckoning
+	SpellMaskShieldOfRighteousness
+	SpellMaskAvengersShield
+	SpellMaskDivinePlea
+	SpellMaskDivineProtection
+
+	SpellMaskHolyShock
+	SpellMaskWordOfGlory
+
+	SpellMaskSealOfTruth
+	SpellMaskSealOfInsight
+	SpellMaskSealOfRighteousness
+	SpellmaskSealofJustice
+)
+
+const SpellMaskSingleTarget = SpellMaskCrusaderStrike | SpellMaskTemplarsVerdict
+
 var TalentTreeSizes = [3]int{20, 20, 20}
 
 type Paladin struct {
 	core.Character
+	HolyPowerBar
 
 	PaladinAura proto.PaladinAura
 
 	Talents *proto.PaladinTalents
 
+	sharedBuilderCooldown *core.Cooldown // Used for CS/DS
+
 	CurrentSeal      *core.Aura
-	CurrentJudgement *core.Aura
+	CurrentJudgement *core.Spell
 
 	DivinePlea            *core.Spell
 	DivineStorm           *core.Spell
@@ -33,33 +68,24 @@ type Paladin struct {
 	HandOfReckoning       *core.Spell
 	ShieldOfRighteousness *core.Spell
 	AvengersShield        *core.Spell
-	JudgementOfWisdom     *core.Spell
-	JudgementOfLight      *core.Spell
 	HammerOfWrath         *core.Spell
-	SealOfVengeance       *core.Spell
-	SealOfRighteousness   *core.Spell
-	SealOfCommand         *core.Spell
 	AvengingWrath         *core.Spell
 	DivineProtection      *core.Spell
-	SovDotSpell           *core.Spell
-	// SealOfWisdom        *core.Spell
-	// SealOfLight         *core.Spell
+
+	SealOfTruth *core.Spell
 
 	HolyShieldAura          *core.Aura
 	RighteousFuryAura       *core.Aura
 	DivinePleaAura          *core.Aura
 	JudgementOfWisdomAura   *core.Aura
 	JudgementOfLightAura    *core.Aura
-	SealOfVengeanceAura     *core.Aura
+	SealOfTruthAura         *core.Aura
 	SealOfCommandAura       *core.Aura
 	SealOfRighteousnessAura *core.Aura
 	AvengingWrathAura       *core.Aura
 	DivineProtectionAura    *core.Aura
 	ForbearanceAura         *core.Aura
 	VengeanceAura           *core.Aura
-
-	// SealOfWisdomAura        *core.Aura
-	// SealOfLightAura         *core.Aura
 
 	ArtOfWarInstantCast *core.Aura
 
@@ -79,6 +105,10 @@ type PaladinAgent interface {
 
 func (paladin *Paladin) GetCharacter() *core.Character {
 	return &paladin.Character
+}
+
+func (paladin *Paladin) HasPrimeGlyph(glyph proto.PaladinPrimeGlyph) bool {
+	return paladin.HasGlyph(int32(glyph))
 }
 
 func (paladin *Paladin) HasMajorGlyph(glyph proto.PaladinMajorGlyph) bool {
@@ -119,9 +149,10 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
+	paladin.RegisterJudgement()
+	paladin.RegisterSealOfTruth()
 	// // Update auto crit multipliers now that we have the targets.
 	// paladin.AutoAttacks.MHConfig().CritMultiplier = paladin.MeleeCritMultiplier()
-
 	// paladin.registerSealOfVengeanceSpellAndAura()
 	// paladin.registerSealOfRighteousnessSpellAndAura()
 	// paladin.registerSealOfCommandSpellAndAura()
@@ -131,8 +162,9 @@ func (paladin *Paladin) Initialize() {
 	// // paladin.setupSealOfRighteousness()
 	// // paladin.setupJudgementRefresh()
 
-	// paladin.registerCrusaderStrikeSpell()
-	// paladin.registerDivineStormSpell()
+	paladin.RegisterCrusaderStrike()
+	paladin.registerDivineStorm()
+
 	// paladin.registerConsecrationSpell()
 	// paladin.registerHammerOfWrathSpell()
 	// paladin.registerHolyWrathSpell()
@@ -161,38 +193,46 @@ func (paladin *Paladin) Initialize() {
 func (paladin *Paladin) Reset(_ *core.Simulation) {
 	paladin.CurrentSeal = nil
 	paladin.CurrentJudgement = nil
+	paladin.HolyPowerBar.Reset()
 }
 
-// maybe need to add stat dependencies
 func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	paladin := &Paladin{
 		Character: *character,
 		Talents:   &proto.PaladinTalents{},
 	}
 
-	// core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
+	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
 
 	// // This is used to cache its effect in talents.go
 	// paladin.HasTuralyonsOrLiadrinsBattlegear2Pc = paladin.HasSetBonus(ItemSetTuralyonsBattlegear, 2)
 
-	// paladin.PseudoStats.CanParry = true
+	paladin.PseudoStats.CanParry = true
 
-	// paladin.EnableManaBar()
-	// paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2.0)
-	// paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+	paladin.EnableManaBar()
+	paladin.InitializeHolyPowerbar()
 
+	paladin.sharedBuilderCooldown = &core.Cooldown{
+		// TODO: needs to interrogate ret talents for Sanctity of Battle
+		// and have this cooldown conditionally be reduced based on haste rating
+		Timer:    paladin.NewTimer(),
+		Duration: time.Millisecond * 4500,
+	}
+
+	paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2)
+	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
+
+	// TODO: figure out the exact tanking stat dependencies for prot pala
 	// // Paladins get 0.0167 dodge per agi. ~1% per 59.88
 	// paladin.AddStatDependency(stats.Agility, stats.Dodge, (1.0/59.88)*core.DodgeRatingPerDodgeChance)
-
 	// // Paladins get more melee haste from haste than other classes
 	// paladin.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
-
-	// // Bonus Armor and Armor are treated identically for Paladins
-	// paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
-
 	// // Base dodge is unaffected by Diminishing Returns
 	// paladin.PseudoStats.BaseDodge += 0.034943
 	// paladin.PseudoStats.BaseParry += 0.05
+
+	// Bonus Armor and Armor are treated identically for Paladins
+	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	return paladin
 }

@@ -1,16 +1,16 @@
 import * as PresetUtils from '../../core/preset_utils.js';
 import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profession, RaidBuffs, TinkerHands, TristateEffect } from '../../core/proto/common.js';
 import {
-	PriestPrimeGlyph as PrimeGlyph,
 	PriestMajorGlyph as MajorGlyph,
 	PriestMinorGlyph as MinorGlyph,
 	PriestOptions_Armor,
+	PriestPrimeGlyph as PrimeGlyph,
 	ShadowPriest_Options as Options,
 } from '../../core/proto/priest.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import DefaultApl from './apls/default.apl.json';
-import PreRaidGear from './gear_sets/preraid.gear.json';
 import P1Gear from './gear_sets/p1.gear.json';
+import PreRaidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to

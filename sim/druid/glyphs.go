@@ -50,4 +50,21 @@ func (druid *Druid) ApplyGlyphs() {
 
 		// range mod?
 	}
+
+	if druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfStarsurge) {
+		druid.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 62971},
+			Label:    "Glyph of Starsurge",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ClassSpellMask == DruidSpellStarsurge && !druid.Starfall.CD.IsReady(sim) {
+					druid.Starfall.CD.Reduce(time.Second * 5)
+				}
+			},
+		})
+	}
 }

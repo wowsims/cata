@@ -20,7 +20,7 @@ func (druid *Druid) registerTyphoonSpell() {
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellTyphoon,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.16,

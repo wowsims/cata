@@ -5,7 +5,7 @@ import { APLAction, APLListItem, APLPrepullAction, APLValue } from '../../proto/
 import { ActionId } from '../../proto_utils/action_id';
 import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
-import { randomUUID } from '../../utils';
+import { existsInDOM, randomUUID } from '../../utils';
 import { Component } from '../component';
 import { Input, InputConfig } from '../input';
 import { ListItemPickerConfig, ListPicker } from '../list_picker';
@@ -251,9 +251,15 @@ function makeListItemWarnings(itemHeaderElem: HTMLElement, player: Player<any>, 
 	itemHeaderElem.appendChild(warningsElem);
 
 	const updateWarnings = async () => {
+		if (!existsInDOM(warningsElem)) {
+			warningsTooltip?.destroy();
+			warningsElem?.remove();
+			player.currentStatsEmitter.off(updateWarnings);
+			return;
+		}
 		warningsTooltip.setContent('');
 		const warnings = getWarnings(player);
-		if (warnings.length == 0) {
+		if (!warnings.length) {
 			warningsElem.style.visibility = 'hidden';
 		} else {
 			warningsElem.style.visibility = 'visible';
@@ -282,15 +288,21 @@ class HidePicker extends Input<Player<any>, boolean> {
 
 		this.inputElem = ListPicker.makeActionElem('hide-picker-button', 'fa-eye');
 		this.iconElem = this.inputElem.childNodes[0] as HTMLElement;
+
+		this.inputElem.addEventListener(
+			'click',
+			() => {
+				this.setInputValue(!this.getInputValue());
+				this.inputChanged(TypedEvent.nextEventID());
+			},
+			{ signal: this.signal },
+		);
+
 		this.rootElem.appendChild(this.inputElem);
 		this.tooltip = tippy(this.inputElem, { content: 'Enable/Disable' });
+		this.addOnDisposeCallback(() => this.tooltip.destroy());
 
 		this.init();
-
-		this.inputElem.addEventListener('click', () => {
-			this.setInputValue(!this.getInputValue());
-			this.inputChanged(TypedEvent.nextEventID());
-		});
 	}
 
 	getInputElem(): HTMLElement {

@@ -12,13 +12,14 @@ func (rogue *Rogue) registerGougeSpell() {
 	baseDamage := rogue.ClassSpellScaling * 0.10400000215
 
 	rogue.Gouge = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1776},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 1776},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | SpellFlagBuilder | SpellFlagColdBlooded | core.SpellFlagAPL,
+		ClassSpellMask: RogueSpellGouge,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   rogue.GetGeneratorCostModifier(45 - 15*float64(rogue.Talents.ImprovedGouge)),
+			Cost:   45 - 15*float64(rogue.Talents.ImprovedGouge),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

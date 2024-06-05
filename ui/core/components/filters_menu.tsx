@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { element } from 'tsx-vanilla';
-
 import { Player } from '../player';
 import { ItemSlot } from '../proto/common';
 import { RaidFilterOption, SourceFilterOption, UIItem_FactionRestriction } from '../proto/ui';

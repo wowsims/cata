@@ -93,7 +93,6 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 						hunter.ImprovedSerpentSting.Cast(sim, target)
 					}
 				}
-
 				spell.DealOutcome(sim, result)
 			})
 		},

@@ -6,6 +6,7 @@ import {
 	PaladinMajorGlyph,
 	PaladinMinorGlyph,
 	PaladinPrimeGlyph,
+	PaladinSeal,
 	RetributionPaladin_Options as RetributionPaladinOptions,
 } from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
@@ -47,7 +48,8 @@ export const RetTalents = {
 export const DefaultOptions = RetributionPaladinOptions.create({
 	classOptions: {
 		aura: PaladinAura.RetributionAura,
-		judgement: PaladinJudgement.JudgementOfWisdom,
+		judgement: PaladinJudgement.Judgement,
+		seal: PaladinSeal.Truth,
 	},
 });
 

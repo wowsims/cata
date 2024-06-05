@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/rogue"
 )
 
 func (subRogue *SubtletyRogue) registerPremeditation() {
@@ -14,8 +15,9 @@ func (subRogue *SubtletyRogue) registerPremeditation() {
 	comboMetrics := subRogue.NewComboPointMetrics(core.ActionID{SpellID: 14183})
 
 	subRogue.Premeditation = subRogue.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 14183},
-		Flags:    core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 14183},
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: rogue.RogueSpellPremeditation,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

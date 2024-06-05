@@ -77,8 +77,6 @@ func (unit *Unit) AddStaticMod(config SpellModConfig) {
 	mod.Activate()
 }
 
-// Never use dynamic mods for Auras that have ExpireNever and activate on reset
-// Those mods will be overwritten potentilly during sim reset
 func (unit *Unit) AddDynamicMod(config SpellModConfig) *SpellMod {
 	return buildMod(unit, config)
 }

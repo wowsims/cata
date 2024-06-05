@@ -83,6 +83,8 @@ export class ActionId {
 					name += ' (Magmaw)';
 				} else if (tag == 49416) {
 					name += ' (Blazing Bone Construct)';
+				} else if (tag > 4191800) {
+					name += ` (Animated Bone Warrior ${(tag - 4191800).toFixed(0)})`;
 				}
 				break;
 			case OtherAction.OtherActionShoot:
@@ -815,6 +817,7 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeDeathRune]: '/cata/assets/img/death_rune.png',
 	[ResourceType.ResourceTypeSolarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipseorange.jpg',
 	[ResourceType.ResourceTypeLunarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipse.jpg',
+	[ResourceType.ResourceTypeHolyPower]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_testoffaith.jpg',
 };
 
 // Use this to connect a buff row to a cast row in the timeline view
