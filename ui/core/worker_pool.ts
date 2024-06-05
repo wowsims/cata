@@ -199,7 +199,7 @@ export class WorkerPool {
 		return (progressData: any) => {
 			const progress = ProgressMetrics.fromBinary(progressData);
 			onProgress(progress);
-			worker.updateSimTask(id, progress.totalIterations - progress.completedIterations);
+			worker.updateSimTask(id, Math.max(1, progress.totalIterations - progress.completedIterations));
 			// If we are done, stop adding the handler.
 			if (progress.finalRaidResult != null || progress.finalWeightResult != null || progress.finalBulkResult != null) {
 				onFinal(progress);

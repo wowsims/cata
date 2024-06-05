@@ -11,6 +11,7 @@ import { Gear } from '../proto_utils/gear.js';
 import * as Gems from '../proto_utils/gems.js';
 import { getClassStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
+import { RequestTypes } from '../sim_signal_manager';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { combinationsWithDups, permutations, stDevToConf90, sum } from '../utils.js';
 import { BaseModal } from './base_modal.js';
@@ -329,6 +330,7 @@ class EpWeightsMenu extends BaseModal {
 			this.container.classList.add('pending');
 			this.resultsViewer.setPending();
 			const iterations = this.simUI.sim.getIterations();
+			await this.simUI.sim.signalManager.abortAll(RequestTypes.All);
 			const result = await this.simUI.player.computeStatWeights(
 				TypedEvent.nextEventID(),
 				this.epStats,
@@ -346,6 +348,10 @@ class EpWeightsMenu extends BaseModal {
 			this.simUI.prevEpIterations = iterations;
 			this.simUI.prevEpSimResult = this.calculateEp(result);
 			this.updateTable();
+		});
+
+		this.addOnHideCallback(() => {
+			this.simUI.sim.signalManager.abortAll(RequestTypes.StatWeights);
 		});
 
 		const colActionButtons = Array.from(this.rootElem.getElementsByClassName('col-action')) as Array<HTMLSelectElement>;

@@ -540,6 +540,8 @@ export class Player<SpecType extends Spec> {
 			const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
 			return result;
 		} catch (error: any) {
+			// TODO: Show crash report like for raid sim?
+			console.error(error);
 			new Toast({
 				variant: 'error',
 				body: error?.message || 'Something went wrong calculating your stat weights. Reload the page and try again.',

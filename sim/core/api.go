@@ -30,15 +30,21 @@ func ComputeStats(csr *proto.ComputeStatsRequest) *proto.ComputeStatsResult {
  * Returns stat weights and EP values, with standard deviations, for all stats.
  */
 func StatWeights(request *proto.StatWeightsRequest) *proto.StatWeightsResult {
-	result := CalcStatWeight(request, stats.Stat(request.EpReferenceStat), nil)
-	return result.ToProto()
+	return CalcStatWeight(request, stats.Stat(request.EpReferenceStat), nil, simsignals.CreateSignals())
 }
 
 func StatWeightsAsync(request *proto.StatWeightsRequest, progress chan *proto.ProgressMetrics) {
+	requestId := request.RequestId
+	signals, err := simsignals.RegisterWithId(requestId)
+	if err != nil {
+		progress <- &proto.ProgressMetrics{FinalWeightResult: &proto.StatWeightsResult{ErrorResult: "Couldn't register for signal API: " + err.Error()}}
+		return
+	}
 	go func() {
-		result := CalcStatWeight(request, stats.Stat(request.EpReferenceStat), progress)
+		defer simsignals.UnregisterId(requestId)
+		result := CalcStatWeight(request, stats.Stat(request.EpReferenceStat), progress, signals)
 		progress <- &proto.ProgressMetrics{
-			FinalWeightResult: result.ToProto(),
+			FinalWeightResult: result,
 		}
 	}()
 }

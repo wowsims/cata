@@ -427,6 +427,7 @@ export class Sim {
 				? [UnitReference.create({ type: UnitType.Player, index: 0 })]
 				: [];
 			const request = StatWeightsRequest.create({
+				requestId: generateRequestId(RequestTypes.StatWeights),
 				player: player.toProto(false, true),
 				raidBuffs: this.raid.getBuffs(),
 				partyBuffs: player.getParty()!.getBuffs(),
@@ -444,10 +445,21 @@ export class Sim {
 				epReferenceStat: epReferenceStat,
 			});
 			try {
+				this.signalManager.registerRunning(request.requestId, RequestTypes.StatWeights, false);
 				const result = await this.workerPool.statWeightsAsync(request, onProgress);
+				if (result.errorResult != '') {
+					if (result.errorResult == 'aborted') {
+						// TODO: Abort feedback?
+						return null;
+					}
+					throw new SimError(result.errorResult);
+				}
 				return result;
-			} catch {
+			} catch(error) {
+				if (error instanceof SimError) throw error;
 				throw new Error('Something went wrong calculating your stat weights. Reload the page and try again.');
+			} finally {
+				this.signalManager.unregisterRunning(request.requestId);
 			}
 		}
 	}
