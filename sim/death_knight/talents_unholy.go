@@ -271,11 +271,11 @@ func (dk *DeathKnight) applySuddenDoom() {
 		},
 	})
 
-	ppm := 1.0 * float64(dk.Talents.SuddenDoom) // TODO: Find correct PPM
+	ppm := 1.0 * float64(dk.Talents.SuddenDoom)
 	triggerAura := core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:     "Sudden Doom",
 		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMH,
+		ProcMask: core.ProcMaskMeleeMHAuto,
 		Outcome:  core.OutcomeLanded,
 		PPM:      ppm,
 

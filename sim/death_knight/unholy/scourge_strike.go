@@ -7,7 +7,6 @@ import (
 
 var scourgeStrikeActionID = core.ActionID{SpellID: 55090}
 
-// this is just a simple spell because it has no rune costs and is really just a wrapper.
 func (dk *UnholyDeathKnight) registerScourgeStrikeShadowDamageSpell() *core.Spell {
 	return dk.Unit.RegisterSpell(core.SpellConfig{
 		ActionID:       scourgeStrikeActionID.WithTag(2),
