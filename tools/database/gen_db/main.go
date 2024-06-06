@@ -74,7 +74,7 @@ func main() {
 	spellTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Read()
 	wowheadDB := database.ParseWowheadDB(tools.ReadFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir)))
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
-	factionRestrictions := database.ParseItemFactionRestrictionsFromWagoDB(tools.ReadFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir)))
+	wagoItems := database.ParseWagoDB(tools.ReadFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir)))
 
 	// Todo: https://web.archive.org/web/20120201045249js_/http://www.wowhead.com/data=item-scaling
 	reforgeStats := database.ParseWowheadReforgeStats(tools.ReadFile(fmt.Sprintf("%s/wowhead_reforge_stats.json", inputsDir)))
@@ -113,7 +113,8 @@ func main() {
 	db.MergeGems(database.GemOverrides)
 	db.MergeEnchants(database.EnchantOverrides)
 	ApplyGlobalFilters(db)
-	AttachFactionInformation(db, factionRestrictions)
+	AttachFactionInformation(db, wagoItems)
+	AttachItemSetIDs(db, wagoItems)
 
 	leftovers := db.Clone()
 	ApplyNonSimmableFilters(leftovers)
@@ -276,11 +277,18 @@ func ApplyGlobalFilters(db *database.WowDatabase) {
 }
 
 // AttachFactionInformation attaches faction information (faction restrictions) to the DB items.
-func AttachFactionInformation(db *database.WowDatabase, factionRestrictions map[int32]proto.UIItem_FactionRestriction) {
+func AttachFactionInformation(db *database.WowDatabase, factionRestrictions map[int32]database.WagoDbItem) {
 	for _, item := range db.Items {
 		if item.FactionRestriction == proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED {
-			item.FactionRestriction = factionRestrictions[item.Id]
+			item.FactionRestriction = factionRestrictions[item.Id].FactionRestriction
 		}
+	}
+}
+
+// AttachItemSetIDs attaches item set ids to the DB items.
+func AttachItemSetIDs(db *database.WowDatabase, wagoItems map[int32]database.WagoDbItem) {
+	for _, item := range db.Items {
+		item.SetId = wagoItems[item.Id].ItemSetID
 	}
 }
 
