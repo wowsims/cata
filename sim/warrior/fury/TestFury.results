@@ -484,6 +484,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-Gladiator'sBattlegear"
+ value: {
+  dps: 22774.58348
+  tps: 19380.34714
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-GlowingTwilightScale-54589"
  value: {
   dps: 26147.13353
