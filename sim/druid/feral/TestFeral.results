@@ -449,6 +449,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFeral-AllItems-Gladiator'sSanctuary"
+ value: {
+  dps: 22407.42335
+  tps: 29848.76626
+ }
+}
+dps_results: {
  key: "TestFeral-AllItems-GlowingTwilightScale-54589"
  value: {
   dps: 23740.59418

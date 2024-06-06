@@ -449,6 +449,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-Gladiator'sSanctuary"
+ value: {
+  dps: 7419.94906
+  tps: 37163.80175
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-GlowingTwilightScale-54589"
  value: {
   dps: 7537.14209
