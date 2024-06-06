@@ -126,12 +126,14 @@ enum PaladinAura {
 	NoPaladinAura = 0;
 	DevotionAura = 2;
 	RetributionAura = 3;
+	ResistanceAura = 4;
 }
 
 enum PaladinSeal {
 	Truth = 0;
 	Justice = 1;
 	Insight = 2;
+	Righteousness = 3;
 }
 
 enum PaladinJudgement {

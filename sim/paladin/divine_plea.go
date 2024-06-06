@@ -9,37 +9,35 @@ import (
 
 func (paladin *Paladin) registerDivinePleaSpell() {
 	actionID := core.ActionID{SpellID: 54428}
-	hasGlyph := paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDivinePlea)
 	manaMetrics := paladin.NewManaMetrics(actionID)
-	var manaPA *core.PendingAction
+
+	manaReturn := 0.12
+	if paladin.HasMajorGlyph(proto.PaladinMajorGlyph_GlyphOfDivinePlea) {
+		manaReturn += 0.06
+	}
+	manaReturn /= 3
 
 	paladin.DivinePleaAura = paladin.RegisterAura(core.Aura{
 		Label:    "Divine Plea",
 		ActionID: actionID,
-		Duration: time.Second*15 + 1, // Add 1 to make sure the last tick takes effect
+		Duration: 9 * time.Second,
+
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			manaPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 3,
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period:   3 * time.Second,
+				NumTicks: 3,
+
 				OnAction: func(sim *core.Simulation) {
-					paladin.AddMana(sim, 0.05*paladin.MaxMana(), manaMetrics)
+					paladin.AddMana(sim, manaReturn*paladin.MaxMana(), manaMetrics)
 				},
 			})
-			if hasGlyph {
-				aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.97
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			manaPA.Cancel(sim)
-			if hasGlyph {
-				aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.97
-			}
 		},
 	})
 
 	paladin.DivinePlea = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolHoly,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskDivinePlea,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -47,7 +45,7 @@ func (paladin *Paladin) registerDivinePleaSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    paladin.NewTimer(),
-				Duration: time.Minute * 1,
+				Duration: 2 * time.Minute,
 			},
 		},
 
