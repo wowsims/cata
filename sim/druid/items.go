@@ -55,7 +55,42 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 			})
 		},
 		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
 
+			tierSet4pMod := druid.AddDynamicMod(core.SpellModConfig{
+				School: core.SpellSchoolArcane | core.SpellSchoolNature,
+				Kind:   core.SpellMod_BonusCrit_Rating,
+			})
+
+			tierSet4pAura := druid.RegisterAura(core.Aura{
+				ActionID:  core.ActionID{SpellID: 90163},
+				Label:     "Druid T11 Balance 4P Bonus",
+				Duration:  time.Second * 8,
+				MaxStacks: 3,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.SetStacks(sim, aura.MaxStacks)
+
+					tierSet4pMod.UpdateFloatValue(float64(aura.GetStacks()) * 5 * core.CritRatingPerCritChance)
+					tierSet4pMod.Activate()
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					tierSet4pMod.Deactivate()
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.DidCrit() && aura.GetStacks() > 0 {
+						aura.RemoveStack(sim)
+						tierSet4pMod.UpdateFloatValue(float64(aura.GetStacks()) * 5 * core.CritRatingPerCritChance)
+					}
+				},
+			})
+
+			druid.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
+				if gained {
+					tierSet4pAura.Activate(sim)
+				} else {
+					tierSet4pAura.Deactivate(sim)
+				}
+			})
 		},
 	},
 })

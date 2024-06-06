@@ -24,6 +24,8 @@ func (dk *DeathKnight) registerObliterateSpell() {
 			baseDamage := dk.ClassSpellScaling*0.28900000453 +
 				spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
+			baseDamage *= dk.GetDiseaseMulti(target, 1.0, 0.125)
+
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})

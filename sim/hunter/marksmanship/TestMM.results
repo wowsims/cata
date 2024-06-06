@@ -204,13 +204,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestMM-AllItems-BloodthirstyGladiator'sPursuit"
- value: {
-  dps: 19650.43408
-  tps: 17593.26029
- }
-}
-dps_results: {
  key: "TestMM-AllItems-BottledLightning-66879"
  value: {
   dps: 21034.50309
@@ -479,8 +472,8 @@ dps_results: {
 dps_results: {
  key: "TestMM-AllItems-Gladiator'sPursuit"
  value: {
-  dps: 19337.23939
-  tps: 17301.15438
+  dps: 19650.43408
+  tps: 17593.26029
  }
 }
 dps_results: {
@@ -911,13 +904,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestMM-AllItems-RuthlessGladiator'sPursuit"
- value: {
-  dps: 21591.06649
-  tps: 19294.6407
- }
-}
-dps_results: {
  key: "TestMM-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 21583.94605
@@ -1272,13 +1258,6 @@ dps_results: {
  value: {
   dps: 20944.84714
   tps: 18787.68644
- }
-}
-dps_results: {
- key: "TestMM-AllItems-ViciousGladiator'sPursuit"
- value: {
-  dps: 20489.64998
-  tps: 18317.86288
  }
 }
 dps_results: {

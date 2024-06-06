@@ -262,9 +262,11 @@ func (druid *Druid) Initialize() {
 		druid.MHAutoSpell = druid.AutoAttacks.MHAuto()
 	})
 
-	// if druid.Talents.PrimalPrecision > 0 {
-	// 	druid.PrimalPrecisionRecoveryMetrics = druid.NewEnergyMetrics(core.ActionID{SpellID: 48410})
-	// }
+	// Leather spec would always provide 5% intellect regardless of the Druid spec or form
+	if druid.LeatherSpecActive {
+		druid.MultiplyStat(stats.Intellect, 1.05)
+	}
+
 	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	druid.registerInnervateCD()
