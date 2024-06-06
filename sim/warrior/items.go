@@ -7,6 +7,23 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+var ItemSetGladiatorsBattlegear = core.NewItemSet(core.ItemSet{
+	ID:   909,
+	Name: "Gladiator's Battlegear",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			agent.GetCharacter().AddStats(stats.Stats{
+				stats.Strength: 70,
+			})
+		},
+		4: func(agent core.Agent) {
+			agent.GetCharacter().AddStats(stats.Stats{
+				stats.Strength: 90,
+			})
+		},
+	},
+})
+
 var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 	Name: "Earthen Warplate",
 	Bonuses: map[int32]core.ApplyEffect{
