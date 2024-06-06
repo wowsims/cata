@@ -69,15 +69,15 @@ export const DamagePercentBuff = InputHelpers.makeMultiIconInput(
 );
 
 // TODO: Look at these, what we want and how to structure them for multiple available
-// export const DefensiveCooldownBuff = InputHelpers.makeMultiIconInput(
-// 	[
+export const DefensiveCooldownBuff = InputHelpers.makeMultiIconInput(
+	[
 // 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(6940), numStates: 11, fieldName: 'handOfSacrifices' }),
 // 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(53530), numStates: 11, fieldName: 'divineGuardians' }),
-// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(33206), numStates: 11, fieldName: 'painSuppressions' }),
+		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(33206), numStates: 11, fieldName: 'painSuppressionCount' }),
 // 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(47788), numStates: 11, fieldName: 'guardianSpirits' }),
-// 	],
-// 	'Defensive CDs',
-// );
+	],
+	'Defensive CDs',
+);
 
 export const SpellHasteBuff = InputHelpers.makeMultiIconInput(
 	[
@@ -343,6 +343,11 @@ export const RAID_BUFFS_CONFIG = [
 		config: Bloodlust,
 		picker: MultiIconPicker,
 		stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste],
+	},
+	{
+		config: DefensiveCooldownBuff,
+		picker: MultiIconPicker,
+		stats: [Stat.StatStamina],
 	},
 ] as PickerStatOptions[];
 
