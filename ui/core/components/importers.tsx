@@ -232,15 +232,15 @@ export class IndividualJsonImporter<SpecType extends Spec> extends Importer {
 export class Individual80UImporter<SpecType extends Spec> extends Importer {
 	private readonly simUI: IndividualSimUI<SpecType>;
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, '80 Upgrades Import', true);
+		super(parent, simUI, '60 Upgrades Cataclysm Import', true);
 		this.simUI = simUI;
 
 		this.descriptionElem.appendChild(
 			<>
 				<p>
 					Import settings from
-					<Link href="https://eightyupgrades.com" target="_blank">
-						Eighty Upgrades
+					<Link href="https://sixtyupgrades.com/cata" target="_blank">
+						60 Upgrades
 					</Link>
 					.
 				</p>

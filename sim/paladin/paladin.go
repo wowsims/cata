@@ -1,8 +1,6 @@
 package paladin
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -20,6 +18,7 @@ const (
 	SpellMaskCrusaderStrike
 	SpellMaskDivineStorm
 	SpellMaskExorcism
+	SpellMaskGlyphOfExorcism
 	SpellMaskHammerOfWrath
 	SpellMaskJudgement
 	SpellMaskHolyWrath
@@ -30,6 +29,11 @@ const (
 	SpellMaskAvengersShield
 	SpellMaskDivinePlea
 	SpellMaskDivineProtection
+	SpellMaskAvengingWrath
+	SpellMaskCensure
+	SpellMaskInquisition
+	SpellMaskHandOfLight
+	SpellMaskZealotry
 
 	SpellMaskHolyShock
 	SpellMaskWordOfGlory
@@ -37,10 +41,28 @@ const (
 	SpellMaskSealOfTruth
 	SpellMaskSealOfInsight
 	SpellMaskSealOfRighteousness
-	SpellmaskSealofJustice
+	SpellMaskSealOfJustice
 )
 
 const SpellMaskSingleTarget = SpellMaskCrusaderStrike | SpellMaskTemplarsVerdict
+
+const SpellMaskModifiedByInquisition = SpellMaskHammerOfWrath |
+	SpellMaskConsecration |
+	SpellMaskExorcism |
+	SpellMaskGlyphOfExorcism |
+	SpellMaskJudgement |
+	SpellMaskSealOfTruth |
+	SpellMaskCensure |
+	SpellMaskHandOfLight |
+	SpellMaskHolyWrath
+
+const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
+	SpellMaskExorcism |
+	SpellMaskJudgement |
+	SpellMaskHolyWrath |
+	SpellMaskTemplarsVerdict |
+	SpellMaskDivineStorm |
+	SpellMaskInquisition
 
 var TalentTreeSizes = [3]int{20, 20, 20}
 
@@ -51,8 +73,6 @@ type Paladin struct {
 	PaladinAura proto.PaladinAura
 
 	Talents *proto.PaladinTalents
-
-	sharedBuilderCooldown *core.Cooldown // Used for CS/DS
 
 	CurrentSeal      *core.Aura
 	CurrentJudgement *core.Spell
@@ -71,31 +91,29 @@ type Paladin struct {
 	HammerOfWrath         *core.Spell
 	AvengingWrath         *core.Spell
 	DivineProtection      *core.Spell
-
-	SealOfTruth *core.Spell
+	TemplarsVerdict       *core.Spell
+	Zealotry              *core.Spell
+	Inquisition           *core.Spell
+	SealsOfCommand        *core.Spell
+	SealOfTruth           *core.Spell
+	HandOfLight           *core.Spell
 
 	HolyShieldAura          *core.Aura
 	RighteousFuryAura       *core.Aura
 	DivinePleaAura          *core.Aura
-	JudgementOfWisdomAura   *core.Aura
-	JudgementOfLightAura    *core.Aura
 	SealOfTruthAura         *core.Aura
-	SealOfCommandAura       *core.Aura
 	SealOfRighteousnessAura *core.Aura
 	AvengingWrathAura       *core.Aura
 	DivineProtectionAura    *core.Aura
 	ForbearanceAura         *core.Aura
 	VengeanceAura           *core.Aura
+	ZealotryAura            *core.Aura
+	InquisitionAura         *core.Aura
+	DivinePurposeAura       *core.Aura
 
 	ArtOfWarInstantCast *core.Aura
 
 	SpiritualAttunementMetrics *core.ResourceMetrics
-
-	HasTuralyonsOrLiadrinsBattlegear2Pc bool
-
-	DemonAndUndeadTargetCount int32
-
-	mutualLockoutDPAW *core.Timer
 }
 
 // Implemented by each Paladin spec.
@@ -123,71 +141,40 @@ func (paladin *Paladin) GetPaladin() *Paladin {
 }
 
 func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// raidBuffs.DevotionAura = max(raidBuffs.DevotionAura, core.MakeTristateValue(
-	// 	paladin.PaladinAura == proto.PaladinAura_DevotionAura,
-	// 	paladin.Talents.ImprovedDevotionAura == 5))
-
-	// if paladin.PaladinAura == proto.PaladinAura_RetributionAura {
-	// 	raidBuffs.RetributionAura = true
-	// }
-
-	// if paladin.Talents.SanctifiedRetribution {
-	// 	raidBuffs.SanctifiedRetribution = true
-	// }
-
-	// if paladin.Talents.SwiftRetribution == 3 {
-	// 	raidBuffs.SwiftRetribution = paladin.Talents.SwiftRetribution == 3 // TODO: Fix-- though having something between 0/3 and 3/3 is unlikely
-	// }
-
-	// TODO: Figure out a way to just start with 1 DG cooldown available without making a redundant Spell
-	//if paladin.Talents.DivineGuardian == 2 {
-	//	raidBuffs.divineGuardians++
-	//}
+	if paladin.PaladinAura == proto.PaladinAura_DevotionAura {
+		raidBuffs.DevotionAura = true
+	}
+	if paladin.PaladinAura == proto.PaladinAura_RetributionAura {
+		raidBuffs.RetributionAura = true
+	}
+	if paladin.PaladinAura == proto.PaladinAura_ResistanceAura {
+		raidBuffs.ResistanceAura = true
+	}
+	if paladin.Talents.Communion {
+		raidBuffs.Communion = true
+	}
 }
 
 func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
-	paladin.RegisterJudgement()
-	paladin.RegisterSealOfTruth()
-	// // Update auto crit multipliers now that we have the targets.
-	// paladin.AutoAttacks.MHConfig().CritMultiplier = paladin.MeleeCritMultiplier()
-	// paladin.registerSealOfVengeanceSpellAndAura()
-	// paladin.registerSealOfRighteousnessSpellAndAura()
-	// paladin.registerSealOfCommandSpellAndAura()
-	// // paladin.setupSealOfTheCrusader()
-	// // paladin.setupSealOfWisdom()
-	// // paladin.setupSealOfLight()
-	// // paladin.setupSealOfRighteousness()
-	// // paladin.setupJudgementRefresh()
+	paladin.applyGlyphs()
+	paladin.registerSpells()
+	paladin.addBloodthirstyGloves()
+}
 
-	paladin.RegisterCrusaderStrike()
-	paladin.registerDivineStorm()
-
-	// paladin.registerConsecrationSpell()
-	// paladin.registerHammerOfWrathSpell()
-	// paladin.registerHolyWrathSpell()
-
-	// paladin.registerExorcismSpell()
-	// paladin.registerHolyShieldSpell()
-	// paladin.registerHammerOfTheRighteousSpell()
-	// paladin.registerHandOfReckoningSpell()
-	// paladin.registerShieldOfRighteousnessSpell()
-	// paladin.registerAvengersShieldSpell()
-	// paladin.registerJudgements()
-
-	// paladin.registerSpiritualAttunement()
-	// paladin.registerDivinePleaSpell()
-	// paladin.registerDivineProtectionSpell()
-	// paladin.registerForbearanceDebuff()
-
-	// for i := int32(0); i < paladin.Env.GetNumTargets(); i++ {
-	// 	unit := paladin.Env.GetTargetUnit(i)
-	// 	if unit.MobType == proto.MobType_MobTypeDemon || unit.MobType == proto.MobType_MobTypeUndead {
-	// 		paladin.DemonAndUndeadTargetCount += 1
-	// 	}
-	// }
+func (paladin *Paladin) registerSpells() {
+	paladin.registerCrusaderStrike()
+	paladin.registerExorcism()
+	paladin.registerJudgement()
+	paladin.registerSealOfTruth()
+	paladin.registerInquisition()
+	paladin.registerHammerOfWrathSpell()
+	paladin.registerAvengingWrath()
+	paladin.registerDivinePleaSpell()
+	paladin.registerConsecrationSpell()
+	paladin.registerHolyWrath()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
@@ -204,20 +191,15 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 
 	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)
 
-	// // This is used to cache its effect in talents.go
-	// paladin.HasTuralyonsOrLiadrinsBattlegear2Pc = paladin.HasSetBonus(ItemSetTuralyonsBattlegear, 2)
-
 	paladin.PseudoStats.CanParry = true
 
 	paladin.EnableManaBar()
-	paladin.InitializeHolyPowerbar()
+	paladin.initializeHolyPowerBar()
 
-	paladin.sharedBuilderCooldown = &core.Cooldown{
-		// TODO: needs to interrogate ret talents for Sanctity of Battle
-		// and have this cooldown conditionally be reduced based on haste rating
-		Timer:    paladin.NewTimer(),
-		Duration: time.Millisecond * 4500,
-	}
+	paladin.EnableAutoAttacks(paladin, core.AutoAttackOptions{
+		MainHand:       paladin.WeaponFromMainHand(paladin.DefaultMeleeCritMultiplier()),
+		AutoSwingMelee: true,
+	})
 
 	paladin.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiMaxLevel[character.Class]*core.CritRatingPerCritChance)
@@ -235,9 +217,4 @@ func NewPaladin(character *core.Character, talentsStr string) *Paladin {
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	return paladin
-}
-
-// Shared 30sec cooldown for Divine Protection and Avenging Wrath
-func (paladin *Paladin) GetMutualLockoutDPAW() *core.Timer {
-	return paladin.Character.GetOrInitTimer(&paladin.mutualLockoutDPAW)
 }

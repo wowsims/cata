@@ -747,6 +747,7 @@ message SimItem {
 
 	string set_name = 14;
 	int32 rand_prop_points = 15;
+	int32 set_id = 16;
 }
 
 // Extra enum for describing which items are eligible for an enchant, when

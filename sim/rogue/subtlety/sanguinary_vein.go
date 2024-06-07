@@ -76,7 +76,7 @@ func (subRogue *SubtletyRogue) registerSanguinaryVein() {
 			if spell == subRogue.Rupture {
 				aura := svDebuffArray.Get(result.Target)
 				dot := spell.Dot(result.Target)
-				aura.Duration = dot.TickLength * time.Duration(dot.NumberOfTicks)
+				aura.Duration = dot.BaseTickLength * time.Duration(dot.BaseTickCount)
 				aura.Activate(sim)
 			} else if spell == subRogue.Hemorrhage && hasGlyph {
 				aura := svDebuffArray.Get(result.Target)

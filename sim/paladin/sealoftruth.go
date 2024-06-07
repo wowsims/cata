@@ -4,18 +4,17 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
-	"github.com/wowsims/cata/sim/core/stats"
 )
 
-func (paladin *Paladin) RegisterSealOfTruth() {
+func (paladin *Paladin) registerSealOfTruth() {
 
 	// Censure DoT
 	censureSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 31803, Tag: 2},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagMeleeMetrics,
+		ActionID:       core.ActionID{SpellID: 31803, Tag: 2},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagMeleeMetrics,
+		ClassSpellMask: SpellMaskCensure,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -26,7 +25,7 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 				MaxStacks: 5,
 			},
 			NumberOfTicks:        5,
-			HasteAffectsDuration: true,
+			HasteReducesDuration: true,
 			TickLength:           time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				tickValue := 0 +
@@ -42,7 +41,7 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 		},
 	})
 
-	// Judegment of Truth cast on Judgement
+	// Judgement of Truth cast on Judgement
 	judgementDmg := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 31804},
 		SpellSchool:    core.SpellSchoolHoly,
@@ -67,10 +66,11 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 
 	// Seal of Truth on-hit proc
 	onSpecialOrSwingProc := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 42463},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskProc, // does proc certain spell damage-based items, e.g. Black Magic, Pendulum of Telluric Currents
-		Flags:       core.SpellFlagMeleeMetrics,
+		ActionID:       core.ActionID{SpellID: 42463},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskProc, // does proc certain spell damage-based items, e.g. Black Magic, Pendulum of Telluric Currents
+		Flags:          core.SpellFlagMeleeMetrics,
+		ClassSpellMask: SpellMaskSealOfTruth,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),
@@ -89,21 +89,6 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 31801},
 		Duration: time.Minute * 30,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth) {
-				expertise := core.ExpertisePerQuarterPercentReduction * 10
-				paladin.AddStatDynamic(sim, stats.Expertise, expertise)
-			}
-		},
-
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth) {
-				expertise := core.ExpertisePerQuarterPercentReduction * 10
-				paladin.AddStatDynamic(sim, stats.Expertise, -expertise)
-			}
-		},
-
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Don't proc on misses or our own procs.
 			if !result.Landed() || spell == censureSpell || spell == judgementDmg || spell == onSpecialOrSwingProc {
@@ -130,7 +115,6 @@ func (paladin *Paladin) RegisterSealOfTruth() {
 				dot.AddStack(sim)
 				dot.TakeSnapshot(sim, false)
 				dot.Activate(sim)
-
 			}
 		},
 	})

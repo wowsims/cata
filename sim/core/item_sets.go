@@ -6,6 +6,7 @@ import (
 )
 
 type ItemSet struct {
+	ID              int32
 	Name            string
 	AlternativeName string
 
@@ -37,12 +38,14 @@ var sets []*ItemSet
 
 // Registers a new ItemSet with item IDs populated.
 func NewItemSet(set ItemSet) *ItemSet {
+	foundID := set.ID == 0
 	foundName := false
 	foundAlternativeName := set.AlternativeName == ""
 	for _, item := range ItemsByID {
 		if item.SetName == "" {
 			continue
 		}
+		foundID = foundID || (item.SetID > 0 && item.SetID == set.ID)
 		foundName = foundName || item.SetName == set.Name
 		foundAlternativeName = foundAlternativeName || item.SetName == set.AlternativeName
 		if foundName && foundAlternativeName {
@@ -51,6 +54,9 @@ func NewItemSet(set ItemSet) *ItemSet {
 	}
 
 	if WITH_DB {
+		if !foundID {
+			panic(fmt.Sprintf("No items found for set id %d", set.ID))
+		}
 		if !foundName {
 			panic("No items found for set " + set.Name)
 		}
@@ -77,7 +83,7 @@ func (character *Character) HasSetBonus(set *ItemSet, numItems int32) bool {
 		if item.SetName == "" {
 			continue
 		}
-		if item.SetName == set.Name || item.SetName == set.AlternativeName {
+		if item.SetName == set.Name || item.SetName == set.AlternativeName || (item.SetID > 0 && item.SetID == set.ID) {
 			count++
 			if count >= numItems {
 				return true
@@ -108,17 +114,36 @@ func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
 		if item.SetName == "" {
 			continue
 		}
-		for _, set := range sets {
-			if set.Name == item.SetName || set.AlternativeName == item.SetName {
-				setItemCount[set]++
-				if bonusEffect, ok := set.Bonuses[setItemCount[set]]; ok {
-					activeBonuses = append(activeBonuses, ActiveSetBonus{
-						Name:        set.Name,
-						NumPieces:   setItemCount[set],
-						BonusEffect: bonusEffect,
-					})
+
+		var foundSet *ItemSet = nil
+
+		if item.SetID > 0 {
+			// Try finding by ID first to make sure sets with different names but share id all point to the same count.
+			for _, set := range sets {
+				if set.ID == item.SetID {
+					foundSet = set
+					break
 				}
-				break
+			}
+		}
+
+		if foundSet == nil {
+			for _, set := range sets {
+				if set.Name == item.SetName || set.AlternativeName == item.SetName {
+					foundSet = set
+					break
+				}
+			}
+		}
+
+		if foundSet != nil {
+			setItemCount[foundSet]++
+			if bonusEffect, ok := foundSet.Bonuses[setItemCount[foundSet]]; ok {
+				activeBonuses = append(activeBonuses, ActiveSetBonus{
+					Name:        foundSet.Name,
+					NumPieces:   setItemCount[foundSet],
+					BonusEffect: bonusEffect,
+				})
 			}
 		}
 	}

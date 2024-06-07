@@ -2,9 +2,9 @@ import { Button, Icon, Link } from '@wowsims/ui';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
-import { EventID, TypedEvent } from '../typed_event.js';
-import { Component } from './component.js';
-import { ContentBlock, ContentBlockHeaderConfig } from './content_block.jsx';
+import { EventID, TypedEvent } from '../typed_event';
+import { Component } from './component';
+import { ContentBlock, ContentBlockHeaderConfig } from './content_block';
 
 export type SavedDataManagerConfig<ModObject, T> = {
 	label: string;
@@ -46,7 +46,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 	private readonly savedDataDiv: HTMLElement;
 	private readonly presetDataDiv: HTMLElement;
 	private readonly customDataDiv: HTMLElement;
-	private readonly saveInput?: HTMLInputElement;
+	private saveInput?: HTMLInputElement;
 
 	private frozen: boolean;
 
@@ -64,11 +64,10 @@ export class SavedDataManager<ModObject, T> extends Component {
 		const savedDataRef = ref<HTMLDivElement>();
 		const presetDataRef = ref<HTMLDivElement>();
 		const customDataRef = ref<HTMLDivElement>();
-
-		contentBlock.bodyElement.appendChild(
+		contentBlock.bodyElement.replaceChildren(
 			<div ref={savedDataRef} className="saved-data-container hide">
-				<div ref={presetDataRef} className="saved-data-presets"></div>
-				<div ref={customDataRef} className="saved-data-custom"></div>
+				<div ref={presetDataRef} className="saved-data-presets" />
+				<div ref={customDataRef} className="saved-data-custom" />
 			</div>,
 		);
 
@@ -78,7 +77,6 @@ export class SavedDataManager<ModObject, T> extends Component {
 
 		if (!config.presetsOnly) {
 			contentBlock.bodyElement.appendChild(this.buildCreateContainer());
-			this.saveInput = contentBlock.bodyElement.querySelector('.saved-data-save-input') as HTMLInputElement;
 		}
 	}
 
@@ -103,48 +101,40 @@ export class SavedDataManager<ModObject, T> extends Component {
 	}
 
 	private makeSavedData(config: SavedDataConfig<ModObject, T>): SavedData<ModObject, T> {
-		const dataElemFragment = document.createElement('fragment');
-		dataElemFragment.appendChild(
+		const deleteButtonRef = ref<HTMLAnchorElement>();
+		const dataElem = (
 			<div className="saved-data-set-chip badge rounded-pill">
 				<Link as="button" className="saved-data-set-name">
 					{config.name}
 				</Link>
-			</div>,
-		);
+				{!config.isPreset && (
+					<Link ref={deleteButtonRef} as="button" className="saved-data-set-delete">
+						<Icon icon="times" size="lg" />
+					</Link>
+				)}
+			</div>
+		) as HTMLElement;
 
-		const dataElem = dataElemFragment.children[0] as HTMLElement;
 		dataElem.addEventListener('click', () => {
 			this.config.setData(TypedEvent.nextEventID(), this.modObject, config.data);
 
 			if (this.saveInput) this.saveInput.value = config.name;
 		});
 
-		if (!config.isPreset) {
-			const deleteFragment = document.createElement('fragment');
-			const deleteButtonRef = ref<HTMLAnchorElement>();
-			deleteFragment.appendChild(
-				<Link as="button" className="saved-data-set-delete">
-					<Icon icon="times" size="lg" />
-				</Link>,
-			);
+		if (!config.isPreset && deleteButtonRef.value) {
+			const tooltip = tippy(deleteButtonRef.value, { content: `Delete saved ${this.config.label}` });
+			deleteButtonRef.value.addEventListener('click', event => {
+				event.stopPropagation();
+				const shouldDelete = confirm(`Delete saved ${this.config.label} '${config.name}'?`);
+				if (!shouldDelete) return;
 
-			dataElem.appendChild(deleteFragment);
-			if (deleteButtonRef.value) {
-				const tooltip = tippy(deleteButtonRef.value, { content: `Delete saved ${this.config.label}` });
+				tooltip.destroy();
 
-				deleteButtonRef.value.addEventListener('click', event => {
-					event.stopPropagation();
-					const shouldDelete = confirm(`Delete saved ${this.config.label} '${config.name}'?`);
-					if (!shouldDelete) return;
-
-					tooltip.destroy();
-
-					const idx = this.userData.findIndex(data => data.name == config.name);
-					this.userData[idx].elem.remove();
-					this.userData.splice(idx, 1);
-					this.saveUserData();
-				});
-			}
+				const idx = this.userData.findIndex(data => data.name == config.name);
+				this.userData[idx].elem.remove();
+				this.userData.splice(idx, 1);
+				this.saveUserData();
+			});
 		}
 
 		if (config.tooltip) {
@@ -221,19 +211,20 @@ export class SavedDataManager<ModObject, T> extends Component {
 		this.rootElem.classList.add('frozen');
 	}
 
-	private buildCreateContainer() {
-		const savedDataCreateFragment = document.createElement('fragment');
+	private buildCreateContainer(): HTMLElement {
 		const saveButtonRef = ref<HTMLButtonElement>();
-		savedDataCreateFragment.appendChild(
+		const saveInputRef = ref<HTMLInputElement>();
+		const savedDataCreateFragment = (
 			<div className="saved-data-create-container">
 				<label className="form-label">{this.config.label} Name</label>
-				<input className="saved-data-save-input form-control" type="text" placeholder="Name" />
-				<Button ref={saveButtonRef} variant="primary" className="saved-data-save-button">
+				<input ref={saveInputRef} className="saved-data-save-input form-control" type="text" placeholder="Name" />
+				<button ref={saveButtonRef} className="saved-data-save-button btn btn-primary">
 					Save {this.config.label}
-				</Button>
-			</div>,
-		);
+				</button>
+			</div>
+		) as HTMLElement;
 
+		this.saveInput = saveInputRef.value!;
 		saveButtonRef.value?.addEventListener('click', () => {
 			if (this.frozen) return;
 
@@ -247,7 +238,6 @@ export class SavedDataManager<ModObject, T> extends Component {
 				alert(`${this.config.label} with name ${newName} already exists.`);
 				return;
 			}
-
 			this.addSavedData({
 				name: newName,
 				data: this.config.getData(this.modObject),
@@ -255,6 +245,6 @@ export class SavedDataManager<ModObject, T> extends Component {
 			this.saveUserData();
 		});
 
-		return savedDataCreateFragment.firstElementChild as HTMLElement;
+		return savedDataCreateFragment;
 	}
 }

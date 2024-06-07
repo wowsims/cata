@@ -1,31 +1,31 @@
 package paladin
 
 import (
-	"time"
-
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"time"
 )
 
-func (paladin *Paladin) registerExorcismSpell() {
+func (paladin *Paladin) registerExorcism() {
+	exorcismMinDamage, exorcismMaxDamage :=
+		core.CalcScalingSpellEffectVarianceMinMax(proto.Class_ClassPaladin, 2.663, 0.11)
+
 	paladin.Exorcism = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48801},
-		SpellSchool: core.SpellSchoolHoly,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 879},
+		SpellSchool:    core.SpellSchoolHoly,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskExorcism,
+
+		MaxRange: 30,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.08,
-			Multiplier: 1 - 0.02*float64(paladin.Talents.Benediction),
+			BaseCost: 0.3,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
 				CastTime: time.Millisecond * 1500,
-			},
-			CD: core.Cooldown{
-				Timer:    paladin.NewTimer(),
-				Duration: time.Second * 15,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				if paladin.CurrentMana() >= cast.Cost {
@@ -37,18 +37,13 @@ func (paladin *Paladin) registerExorcismSpell() {
 			},
 		},
 
-		DamageMultiplierAdditive: 1 +
-			paladin.getTalentSanctityOfBattleBonus() +
-			paladin.getMajorGlyphOfExorcismBonus() +
-			paladin.getItemSetAegisBattlegearBonus2(),
 		DamageMultiplier: 1,
+		CritMultiplier:   paladin.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
-		CritMultiplier:   paladin.SpellCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(1028, 1146) +
-				.15*spell.SpellPower() +
-				.15*spell.MeleeAttackPower()
+			baseDamage := sim.Roll(exorcismMinDamage, exorcismMaxDamage) +
+				0.344*max(spell.SpellPower(), spell.MeleeAttackPower())
 
 			bonusCrit := core.TernaryFloat64(
 				target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead,

@@ -176,7 +176,7 @@ func (dk *DeathKnight) applyUnholyBlight() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).ApplyOrReset(sim)
+			spell.Dot(target).Apply(sim)
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 		},
 	})
@@ -191,10 +191,9 @@ func (dk *DeathKnight) applyUnholyBlight() {
 			dot := unholyBlight.Dot(result.Target)
 
 			newDamage := result.Damage * 0.10
-			outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
-
+			ticks := float64(dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0))
 			dot.SnapshotAttackerMultiplier = unholyBlight.DamageMultiplier
-			dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(dot.NumberOfTicks)
+			dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / ticks
 
 			unholyBlight.Cast(sim, result.Target)
 		},
@@ -270,11 +269,11 @@ func (dk *DeathKnight) applySuddenDoom() {
 		},
 	})
 
-	ppm := 1.0 * float64(dk.Talents.SuddenDoom) // TODO: Find correct PPM
+	ppm := 1.0 * float64(dk.Talents.SuddenDoom)
 	triggerAura := core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
 		Name:     "Sudden Doom",
 		Callback: core.CallbackOnSpellHitDealt,
-		ProcMask: core.ProcMaskMeleeMH,
+		ProcMask: core.ProcMaskMeleeMHAuto,
 		Outcome:  core.OutcomeLanded,
 		PPM:      ppm,
 

@@ -218,7 +218,7 @@ func (value *APLValueSpellChanneledTicks) GetInt(_ *Simulation) int32 {
 	if channeledDot == nil {
 		return 0
 	} else {
-		return channeledDot.TickCount
+		return channeledDot.TickCount()
 	}
 }
 func (value *APLValueSpellChanneledTicks) String() string {
