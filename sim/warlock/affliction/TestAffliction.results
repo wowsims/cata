@@ -435,6 +435,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAffliction-AllItems-Gladiator'sFelshroud"
+ value: {
+  dps: 22867.3223
+  tps: 17101.91706
+ }
+}
+dps_results: {
  key: "TestAffliction-AllItems-GlowingTwilightScale-54589"
  value: {
   dps: 26334.05234

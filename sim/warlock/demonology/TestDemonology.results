@@ -435,6 +435,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-AllItems-Gladiator'sFelshroud"
+ value: {
+  dps: 23960.33113
+  tps: 12406.43643
+ }
+}
+dps_results: {
  key: "TestDemonology-AllItems-GlowingTwilightScale-54589"
  value: {
   dps: 27479.26844
