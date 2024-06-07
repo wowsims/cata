@@ -44,7 +44,7 @@ func (paladin *Paladin) registerConsecrationSpell() {
 		Dot: core.DotConfig{
 			IsAOE: true,
 			Aura: core.Aura{
-				ActionID: core.ActionID{SpellID: 81297},
+				ActionID: core.ActionID{SpellID: 26573},
 				Label:    "Consecration",
 			},
 			NumberOfTicks: numTicks,
