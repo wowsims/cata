@@ -38,7 +38,7 @@ type Dot struct {
 	onTick     OnTick
 	tickAction *PendingAction
 
-	tickPeriod     time.Duration
+	tickPeriod     time.Duration // hasted time between each tick, rounded to full ms
 	BaseTickLength time.Duration // time between each tick
 
 	SnapshotBaseDamage         float64
@@ -81,7 +81,10 @@ func (dot *Dot) recomputeAuraDuration(sim *Simulation) {
 
 	dot.remainingTicks = dot.BaseTickCount
 	if dot.affectedByCastSpeed {
-		dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell)
+		// round the tickPeriod to the nearest full ms, same as ingame. This can best be seen ingame in how haste caps
+		// work. For example shadowflame should take 1009 haste rating with the 5%/3% haste buffs without rounding, but
+		// because of the rounding it already applies at 1007 haste rating.
+		dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell).Round(time.Millisecond)
 
 		if !dot.hasteReducesDuration {
 			dot.remainingTicks = dot.HastedTickCount()
@@ -173,7 +176,7 @@ func (dot *Dot) DurationExtendSnapshot(sim *Simulation, extendBy time.Duration) 
 	dot.TakeSnapshot(sim, false)
 
 	previousTick := dot.tickAction.NextActionAt - dot.tickPeriod
-	dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell)
+	dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell).Round(time.Millisecond)
 
 	// ensure the tick is at least scheduled for the future ..
 	nextTick := max(previousTick+dot.tickPeriod, sim.CurrentTime+1*time.Millisecond)

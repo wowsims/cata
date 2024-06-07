@@ -289,6 +289,13 @@ func TestDecimationCastTime(t *testing.T) {
 	}
 }
 
+func checkTicks(t *testing.T, dot *core.Dot, msg string, expected int32) {
+	if dot.RemainingTicks() != expected {
+		t.Helper()
+		t.Fatalf("%s: Expected: %v, Actual: %v", msg, expected, dot.RemainingTicks())
+	}
+}
+
 func waitUntilTime(sim *core.Simulation, time time.Duration) {
 	for {
 		sim.Step()
@@ -305,34 +312,89 @@ func TestFelFlameExtension(t *testing.T) {
 	immoDot.Apply(sim)
 	felflame := lock.GetSpell(core.ActionID{SpellID: 77799})
 
-	if immoDot.RemainingTicks() != 7 {
-		t.Fatalf("Baseline immolate ticks are wrong?")
-	}
+	checkTicks(t, immoDot, "Baseline immolate ticks are wrong?", 7)
 
 	felflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	sim.Step()
-	if immoDot.RemainingTicks() != 7 {
-		t.Fatalf("Incorrect tick count after fel flame extension: Expected: %v, Actual: %v", 7, immoDot.RemainingTicks())
-	}
+	checkTicks(t, immoDot, "Incorrect tick count after fel flame extension", 7)
 
 	// applying it again shouldn't change ticks since we're at the cap
 	felflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	sim.Step()
-	if immoDot.RemainingTicks() != 7 {
-		t.Fatalf("Incorrect tick count after fel flame extension: Expected: %v, Actual: %v", 7, immoDot.RemainingTicks())
-	}
+	checkTicks(t, immoDot, "Incorrect tick count after fel flame extension", 7)
 
 	waitUntilTime(sim, 12500*time.Millisecond)
-
-	if immoDot.RemainingTicks() != 3 {
-		t.Fatalf("Incorrect tick count after waiting 9s: Expected: %v, Actual: %v", 3, immoDot.RemainingTicks())
-	}
+	checkTicks(t, immoDot, "Incorrect tick count after waiting 9s", 3)
 
 	felflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	sim.Step()
-	if immoDot.RemainingTicks() != 5 {
-		t.Fatalf("Incorrect tick count after fel flame extension: Expected: %v, Actual: %v", 5, immoDot.RemainingTicks())
-	}
+	checkTicks(t, immoDot, "Incorrect tick count after fel flame extension", 5)
+}
+
+func TestShadowflameHasteCap(t *testing.T) {
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
+	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
+	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1006,
+	})
+	shadowflame := lock.GetSpell(core.ActionID{SpellID: 47897})
+	shadowflameDot := lock.GetSpell(core.ActionID{SpellID: 47960}).CurDot()
+
+	shadowflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, shadowflameDot, "Incorrect tick count for shadowflame at 1006 haste", 3)
+	shadowflameDot.Deactivate(sim)
+
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1,
+	})
+	shadowflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, shadowflameDot, "Incorrect tick count for shadowflame at 1007 haste", 4)
+}
+
+func TestImmolateHasteCap(t *testing.T) {
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
+	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
+	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1572,
+	})
+	immolate := lock.Immolate
+	immolateDot := lock.ImmolateDot.CurDot()
+
+	immolate.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, immolateDot, "Incorrect tick count for immolate at 1572 haste", 8)
+	immolateDot.Deactivate(sim)
+
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1,
+	})
+	immolate.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, immolateDot, "Incorrect tick count for immolate at 1573 haste", 9)
+}
+
+func TestCorruptionHasteCap(t *testing.T) {
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
+	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
+	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1992,
+	})
+	corruption := lock.Corruption
+	corruptionDot := corruption.CurDot()
+
+	corruption.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, corruptionDot, "Incorrect tick count for corruption at 1992 haste", 7)
+	corruptionDot.Deactivate(sim)
+
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1,
+	})
+	corruption.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, corruptionDot, "Incorrect tick count for corruption at 1993 haste", 8)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

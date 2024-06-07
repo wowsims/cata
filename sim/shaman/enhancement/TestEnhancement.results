@@ -255,8 +255,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-CrushingWeight-59506"
  value: {
-  dps: 28611.60269
-  tps: 19048.14539
+  dps: 28611.48914
+  tps: 19048.0211
  }
 }
 dps_results: {
@@ -298,7 +298,7 @@ dps_results: {
  key: "TestEnhancement-AllItems-DarkmoonCard:Volcano-62047"
  value: {
   dps: 28382.30185
-  tps: 18949.56785
+  tps: 18949.71139
  }
 }
 dps_results: {
@@ -493,8 +493,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-HeartofIgnacious-59514"
  value: {
-  dps: 28150.30584
-  tps: 18842.28503
+  dps: 28150.1897
+  tps: 18842.16888
  }
 }
 dps_results: {
@@ -661,8 +661,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-LadyLa-La'sSingingShell-67152"
  value: {
-  dps: 27939.9726
-  tps: 18623.79239
+  dps: 27938.57488
+  tps: 18623.36181
  }
 }
 dps_results: {
@@ -836,8 +836,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-Prestor'sTalismanofMachination-65026"
  value: {
-  dps: 29438.94156
-  tps: 19624.45976
+  dps: 29438.27042
+  tps: 19623.70985
  }
 }
 dps_results: {
@@ -1025,15 +1025,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-TalismanofSinisterOrder-65804"
  value: {
-  dps: 28156.39534
+  dps: 28156.87108
   tps: 18721.92618
  }
 }
 dps_results: {
  key: "TestEnhancement-AllItems-Tank-CommanderInsignia-63841"
  value: {
-  dps: 28473.53673
-  tps: 18986.72368
+  dps: 28473.41781
+  tps: 18986.77271
  }
 }
 dps_results: {
@@ -1158,8 +1158,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-Val'anyr,HammerofAncientKings-46017"
  value: {
-  dps: 25062.28486
-  tps: 16494.3235
+  dps: 25048.92704
+  tps: 16481.95456
  }
 }
 dps_results: {
@@ -1207,8 +1207,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-AllItems-ViciousGladiator'sEmblemofAlacrity-61028"
  value: {
-  dps: 28047.47514
-  tps: 18727.35324
+  dps: 28071.95763
+  tps: 18725.35378
  }
 }
 dps_results: {
@@ -1305,8 +1305,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Average-Default"
  value: {
-  dps: 29803.6261
-  tps: 19841.86941
+  dps: 29803.70313
+  tps: 19841.71871
  }
 }
 dps_results: {
@@ -1333,8 +1333,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Settings-Draenei-p1draenei-Standard-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 22943.27525
-  tps: 19452.36576
+  dps: 22943.13249
+  tps: 19451.92066
  }
 }
 dps_results: {
