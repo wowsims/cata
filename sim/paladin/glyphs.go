@@ -33,7 +33,6 @@ func (paladin *Paladin) applyGlyphs() {
 	if paladin.HasPrimeGlyph(proto.PaladinPrimeGlyph_GlyphOfSealOfTruth) {
 		paladin.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_BonusExpertise_Rating,
-			ClassMask:  SpellMaskSealOfTruth,
 			FloatValue: 10 * core.ExpertisePerQuarterPercentReduction,
 		})
 	}
