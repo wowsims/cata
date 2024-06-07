@@ -54,7 +54,7 @@ const createGemContainer = (socketColor: GemColor, gem: Gem | null, index: numbe
 	const gemIconElem = ref<HTMLImageElement>();
 	const gemContainerElem = ref<HTMLAnchorElement>();
 	const gemContainer = (
-		<a ref={gemContainerElem} className="gem-socket-container" href="javascript:void(0)" attributes={{ role: 'button' }} dataset={{ socketIdx: index }}>
+		<a ref={gemContainerElem} className="gem-socket-container" href="javascript:void(0)" dataset={{ socketIdx: index }}>
 			<img ref={gemIconElem} className={`gem-icon ${!gem ? 'hide' : ''}`} />
 			<img className="socket-icon" src={getEmptyGemSocketIconUrl(socketColor)} />
 		</a>

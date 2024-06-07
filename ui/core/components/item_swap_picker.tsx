@@ -66,9 +66,9 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 		swapPickerContainer.appendChild(itemSwapContainer);
 
 		const swapButton = (
-			<a href="javascript:void(0)" className="gear-swap-icon" attributes={{ role: 'button' }}>
+			<button className="gear-swap-icon">
 				<i className="fas fa-arrows-rotate me-1"></i>
-			</a>
+			</button>
 		);
 		swapButton.addEventListener('click', _event => this.swapWithGear(TypedEvent.nextEventID(), player));
 		itemSwapContainer.appendChild(swapButton);

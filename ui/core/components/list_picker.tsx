@@ -354,7 +354,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 	static makeActionElem(cssClass: string, iconCssClass: string): HTMLAnchorElement {
 		return (
 			<a href="javascript:void(0)" className={clsx('list-picker-item-action', cssClass)} attributes={{ role: 'button' }}>
-				<i className={clsx('fa', 'fa-xl', iconCssClass)}></i>
+				<i className={clsx('fa', 'fa-xl', iconCssClass)} />
 			</a>
 		) as HTMLAnchorElement;
 	}

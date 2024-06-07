@@ -81,22 +81,20 @@ class Toast {
 					'aria-atomic': 'true',
 				}}>
 				<div className="toast-header">
-					<i className={`d-block fas fa-2xl me-2 ${this.getVariantIcon()}`}></i>
+					<i className={clsx('d-block fas fa-2xl me-2', this.getVariantIcon())}></i>
 					<strong className="me-auto">{this.title}</strong>
 					{this.canClose && (
-						<a
-							href="javascript:void(0);"
+						<button
 							className="btn-close"
 							attributes={{
-								role: 'button',
 								'aria-label': 'Close',
 							}}
 							dataset={{
 								bsDismiss: 'toast',
 							}}
 							aria-label="Close">
-							<i className={`fas fa-times fa-1xl ${this.getVariantIcon()}`}></i>
-						</a>
+							<i className={clsx('fas fa-times fa-1xl', this.getVariantIcon())}></i>
+						</button>
 					)}
 				</div>
 				<div className="toast-body">{this.body}</div>

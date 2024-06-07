@@ -671,8 +671,8 @@ export class BulkTab extends SimTab {
 		const talentsContainerRef = ref<HTMLDivElement>();
 		const talentsToSimDiv = (
 			<div className={clsx('talents-picker-container', !this.simTalents && 'hide')}>
-				<label>Pick talents to sim (will increase time to sim)</label>
-				<div className="talents-container"></div>
+				<p>Pick talents to sim (will increase time to sim)</p>
+				<div ref={talentsContainerRef} className="talents-container"></div>
 			</div>
 		);
 
@@ -687,10 +687,8 @@ export class BulkTab extends SimTab {
 			console.warn('Invalid json for local storage value: ' + dataStr);
 		}
 
-		const handleToggle = (frag: HTMLElement, load: TalentLoadout) => {
-			const chipDiv = frag.querySelector('.saved-data-set-chip');
+		const handleToggle = (element: HTMLElement, load: TalentLoadout) => {
 			const exists = this.savedTalents.some(talent => talent.name === load.name); // Replace 'id' with your unique identifier
-
 			// console.log('Exists:', exists);
 			// console.log('Load Object:', load);
 			// console.log('Saved Talents Before Update:', this.savedTalents);
@@ -699,15 +697,16 @@ export class BulkTab extends SimTab {
 				// If the object exists, find its index and remove it
 				const indexToRemove = this.savedTalents.findIndex(talent => talent.name === load.name);
 				this.savedTalents.splice(indexToRemove, 1);
-				chipDiv?.classList.remove('active');
+				element?.classList.remove('active');
 			} else {
 				// If the object does not exist, add it
 				this.savedTalents.push(load);
-				chipDiv?.classList.add('active');
+				element?.classList.add('active');
 			}
 
 			// console.log('Updated savedTalents:', this.savedTalents);
 		};
+
 		for (const name in jsonData) {
 			try {
 				const savedTalentLoadout = SavedTalents.fromJson(jsonData[name]);
@@ -718,18 +717,18 @@ export class BulkTab extends SimTab {
 				};
 
 				const index = this.savedTalents.findIndex(talent => JSON.stringify(talent) === JSON.stringify(loadout));
-				const talentFragment = (
-					<div className={clsx('saved-data-set-chip badge rounded-pill', index !== -1 && 'active')}>
-						<a href="javascript:void(0)" className="saved-data-set-name" attributes={{ role: 'button' }}>
-							{name}
-						</a>
-					</div>
-				) as HTMLDivElement;
+				const talentChipRef = ref<HTMLDivElement>();
+				const talentButtonRef = ref<HTMLButtonElement>();
 
 				// console.log('Adding event for loadout', loadout);
-
-				talentsContainerRef.value!.appendChild(talentFragment);
-				talentFragment.addEventListener('click', () => handleToggle(talentFragment, loadout));
+				talentsContainerRef.value!.appendChild(
+					<div ref={talentChipRef} className={clsx('saved-data-set-chip badge rounded-pill', index !== -1 && 'active')}>
+						<button ref={talentButtonRef} className="saved-data-set-name">
+							{name}
+						</button>
+					</div>,
+				);
+				talentButtonRef.value!.addEventListener('click', () => handleToggle(talentChipRef.value!, loadout));
 			} catch (e) {
 				console.log(e);
 				console.warn('Failed parsing saved data: ' + jsonData[name]);

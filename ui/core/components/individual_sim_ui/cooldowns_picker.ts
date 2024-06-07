@@ -64,13 +64,9 @@ export class CooldownsPicker extends Component {
 
 			const deleteButtonFragment = document.createElement('fragment');
 			deleteButtonFragment.innerHTML = `
-				<a
-					href="javascript:void(0)"
-					class="delete-cooldown link-danger"
-					role="button"
-				>
+				<button class="delete-cooldown link-danger">
 					<i class="fa fa-times fa-xl"></i>
-				</a>
+				</button>
 			`;
 			const deleteButton = deleteButtonFragment.children[0] as HTMLElement;
 			const deleteButtonTooltip = tippy(deleteButton, { content: 'Delete Cooldown' });
