@@ -1515,17 +1515,18 @@ export class ItemList<T extends ItemListType> {
 						</span>
 						<span
 							className="selector-modal-list-item-ep-delta"
-							ref={e => itemData.item && equippedItemEP !== itemEP && formatDeltaTextElem(e, equippedItemEP, itemEP, 0)}></span>
+							ref={e => itemData.item && equippedItemEP !== itemEP && formatDeltaTextElem(e, equippedItemEP, itemEP, 0)}
+						/>
 					</div>
 				)}
 				<div className="selector-modal-list-item-favorite-container">
 					<button className="selector-modal-list-item-favorite btn btn-link p-0" ref={favoriteElem}>
-						<i ref={favoriteIconElem} className="fas fa-star fa-xl"></i>
+						<i ref={favoriteIconElem} className="far fa-star fa-xl" />
 					</button>
 				</div>
 				<div ref={compareContainer} className="selector-modal-list-item-compare-container hide">
 					<button className="selector-modal-list-item-compare btn btn-link p-0" ref={compareButton}>
-						<i className="fas fa-arrow-right-arrow-left fa-xl"></i>
+						<i className="fas fa-arrow-right-arrow-left fa-xl" />
 					</button>
 				</div>
 			</li>
@@ -1616,8 +1617,9 @@ export class ItemList<T extends ItemListType> {
 					}
 				}
 			}
-			favoriteIconElem.value?.classList.toggle('fas');
-			favoriteIconElem.value?.classList.toggle('far');
+			favoriteElem.value!.classList.toggle('text-brand');
+			favoriteIconElem.value!.classList.toggle('fas');
+			favoriteIconElem.value!.classList.toggle('far');
 			listItemElem.dataset.fav = isFavorite.toString();
 
 			this.player.sim.setFilters(TypedEvent.nextEventID(), filters);
@@ -1626,6 +1628,7 @@ export class ItemList<T extends ItemListType> {
 		const isFavorite = this.isItemFavorited(itemData);
 
 		if (isFavorite) {
+			favoriteElem.value!.classList.add('text-brand');
 			favoriteIconElem.value?.classList.add('fas');
 			listItemElem.dataset.fav = 'true';
 		} else {
