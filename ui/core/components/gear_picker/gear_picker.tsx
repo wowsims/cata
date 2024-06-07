@@ -487,13 +487,15 @@ export class SelectorModal extends BaseModal {
 
 	private currentSlot: ItemSlot = ItemSlot.ItemSlotHead;
 	private currentTab: SelectorModalTabs = SelectorModalTabs.Items;
+	private disabledTabs: SelectorModalTabs[] = [];
 
-	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, gearPicker?: GearPicker) {
+	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, gearPicker?: GearPicker, disabledTabs?: SelectorModalTabs[]) {
 		super(parent, 'selector-modal', { disposeOnClose: false, size: 'xl' });
 
 		this.simUI = simUI;
 		this.player = player;
 		this.gearPicker = gearPicker;
+		this.disabledTabs = disabledTabs || [];
 
 		this.addItemSlotTabs();
 
@@ -556,7 +558,6 @@ export class SelectorModal extends BaseModal {
 		const eligibleItems = this.player.getItems(selectedSlot);
 		const eligibleEnchants = this.player.getEnchants(selectedSlot);
 		const eligibleReforges = equippedItem?.item ? this.player.getAvailableReforgings(equippedItem.getWithRandomSuffixStats()) : [];
-
 		// If the enchant tab is selected but the item has no eligible enchants, default to items
 		// If the reforge tab is selected but the item has no eligible reforges, default to items
 		// If a gem tab is selected but the item has no eligible sockets, default to items
@@ -572,70 +573,77 @@ export class SelectorModal extends BaseModal {
 		this.currentTab = selectedTab;
 		this.currentSlot = selectedSlot;
 
-		this.addTab<Item>({
-			label: SelectorModalTabs.Items,
-			gearData,
-			itemData: eligibleItems.map(item => {
-				return {
-					item: item,
-					id: item.id,
-					actionId: ActionId.fromItem(item),
-					name: item.name,
-					quality: item.quality,
-					heroic: item.heroic,
-					phase: item.phase,
-					baseEP: this.player.computeItemEP(item, selectedSlot),
-					ignoreEPFilter: false,
-					onEquip: (eventID, item) => {
-						const equippedItem = gearData.getEquippedItem();
-						if (equippedItem) {
-							gearData.equipItem(eventID, equippedItem.withItem(item));
-						} else {
-							gearData.equipItem(eventID, new EquippedItem(item));
-						}
-					},
-				};
-			}),
-			computeEP: (item: Item) => this.player.computeItemEP(item, selectedSlot),
-			equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.item,
-			onRemove: (eventID: number) => {
-				gearData.equipItem(eventID, null);
-				this.removeTabs('Gem');
-				this.removeTabs(SelectorModalTabs.RandomSuffixes);
-			},
-		});
+		const hasItemTab = !this.disabledTabs?.includes(SelectorModalTabs.Items);
+		if (hasItemTab)
+			this.addTab<Item>({
+				label: SelectorModalTabs.Items,
+				gearData,
+				itemData: eligibleItems.map(item => {
+					return {
+						item: item,
+						id: item.id,
+						actionId: ActionId.fromItem(item),
+						name: item.name,
+						quality: item.quality,
+						heroic: item.heroic,
+						phase: item.phase,
+						baseEP: this.player.computeItemEP(item, selectedSlot),
+						ignoreEPFilter: false,
+						onEquip: (eventID, item) => {
+							const equippedItem = gearData.getEquippedItem();
+							if (equippedItem) {
+								gearData.equipItem(eventID, equippedItem.withItem(item));
+							} else {
+								gearData.equipItem(eventID, new EquippedItem(item));
+							}
+						},
+					};
+				}),
+				computeEP: (item: Item) => this.player.computeItemEP(item, selectedSlot),
+				equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.item,
+				onRemove: (eventID: number) => {
+					gearData.equipItem(eventID, null);
+					this.removeTabs('Gem');
+					this.removeTabs(SelectorModalTabs.RandomSuffixes);
+				},
+			});
 
-		this.addTab<Enchant>({
-			label: SelectorModalTabs.Enchants,
-			gearData,
-			itemData: eligibleEnchants.map(enchant => {
-				return {
-					item: enchant,
-					id: enchant.effectId,
-					actionId: enchant.itemId ? ActionId.fromItemId(enchant.itemId) : ActionId.fromSpellId(enchant.spellId),
-					name: enchant.name,
-					quality: enchant.quality,
-					phase: enchant.phase || 1,
-					baseEP: this.player.computeStatsEP(new Stats(enchant.stats)),
-					ignoreEPFilter: true,
-					heroic: false,
-					onEquip: (eventID, enchant) => {
-						const equippedItem = gearData.getEquippedItem();
-						if (equippedItem) gearData.equipItem(eventID, equippedItem.withEnchant(enchant));
-					},
-				};
-			}),
-			computeEP: (enchant: Enchant) => this.player.computeEnchantEP(enchant),
-			equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.enchant,
-			onRemove: (eventID: number) => {
-				const equippedItem = gearData.getEquippedItem();
-				if (equippedItem) gearData.equipItem(eventID, equippedItem.withEnchant(null));
-			},
-		});
+		const hasEnchantTab = !this.disabledTabs?.includes(SelectorModalTabs.Enchants);
+		if (hasEnchantTab)
+			this.addTab<Enchant>({
+				label: SelectorModalTabs.Enchants,
+				gearData,
+				itemData: eligibleEnchants.map(enchant => {
+					return {
+						item: enchant,
+						id: enchant.effectId,
+						actionId: enchant.itemId ? ActionId.fromItemId(enchant.itemId) : ActionId.fromSpellId(enchant.spellId),
+						name: enchant.name,
+						quality: enchant.quality,
+						phase: enchant.phase || 1,
+						baseEP: this.player.computeStatsEP(new Stats(enchant.stats)),
+						ignoreEPFilter: true,
+						heroic: false,
+						onEquip: (eventID, enchant) => {
+							const equippedItem = gearData.getEquippedItem();
+							if (equippedItem) gearData.equipItem(eventID, equippedItem.withEnchant(enchant));
+						},
+					};
+				}),
+				computeEP: (enchant: Enchant) => this.player.computeEnchantEP(enchant),
+				equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.enchant,
+				onRemove: (eventID: number) => {
+					const equippedItem = gearData.getEquippedItem();
+					if (equippedItem) gearData.equipItem(eventID, equippedItem.withEnchant(null));
+				},
+			});
 
-		this.addRandomSuffixTab(equippedItem, gearData);
-		this.addReforgingTab(equippedItem, gearData);
-		this.addGemTabs(selectedSlot, equippedItem, gearData);
+		const hasRandomSuffixTab = !this.disabledTabs?.includes(SelectorModalTabs.RandomSuffixes);
+		if (hasRandomSuffixTab) this.addRandomSuffixTab(equippedItem, gearData);
+		const hasReforgingTab = !this.disabledTabs?.includes(SelectorModalTabs.Reforging);
+		if (hasReforgingTab) this.addReforgingTab(equippedItem, gearData);
+		const hasGemsTab = ![SelectorModalTabs.Gem1, SelectorModalTabs.Gem2, SelectorModalTabs.Gem3].some(gem => this.disabledTabs?.includes(gem));
+		if (hasGemsTab) this.addGemTabs(selectedSlot, equippedItem, gearData);
 
 		this.ilists.find(list => selectedTab === list.label)?.sizeRefresh();
 	}

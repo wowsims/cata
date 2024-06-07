@@ -140,6 +140,13 @@ $damage-colors: (
 );
 $theme-colors: map-merge($theme-colors, $damage-colors);
 
+// Factions
+$faction-colors: (
+	horde: red,
+	alliance: blue,
+);
+$theme-colors: map-merge($theme-colors, $faction-colors);
+
 // Talents
 $talent-colors: (
 	talent-full: #ffd100,
