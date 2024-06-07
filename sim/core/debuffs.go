@@ -294,10 +294,10 @@ func EbonPlaguebringerAura(caster *Character, target *Unit, epidemicPoints int32
 
 const SpellDamageEffectAuraTag = "SpellDamageAuraTag"
 
-func spellDamageEffectAura(aura Aura, target *Unit, multiplier float64) *Aura {
-	aura.Tag = SpellDamageEffectAuraTag
-	spellDamageAura := target.GetOrRegisterAura(aura)
-	spellDamageAura.NewExclusiveEffect("SpellDamageTaken%", false, ExclusiveEffect{
+func spellDamageEffectAura(auraConfig Aura, target *Unit, multiplier float64) *Aura {
+	auraConfig.Tag = SpellDamageEffectAuraTag
+	aura := target.GetOrRegisterAura(auraConfig)
+	aura.NewExclusiveEffect("SpellDamageTaken%", false, ExclusiveEffect{
 		Priority: multiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= multiplier
@@ -316,7 +316,7 @@ func spellDamageEffectAura(aura Aura, target *Unit, multiplier float64) *Aura {
 			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] /= multiplier
 		},
 	})
-	return spellDamageAura
+	return aura
 }
 
 func BloodFrenzyAura(target *Unit, points int32) *Aura {
