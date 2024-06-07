@@ -686,7 +686,7 @@ export class SelectorModal extends BaseModal {
 						</div>
 					) as HTMLElement;
 
-					picker.onUpdate(() => {
+					const setItemData = () => {
 						if (picker.item) {
 							this.player.setWowheadData(picker.item, anchorRef.value!);
 							picker.item
@@ -698,7 +698,9 @@ export class SelectorModal extends BaseModal {
 						} else {
 							anchorRef.value!.style.backgroundImage = `url('${getEmptySlotIconUrl(picker.slot)}')`;
 						}
-					});
+					};
+					setItemData();
+					picker.onUpdate(() => setItemData());
 					tippy(anchorRef.value!, {
 						content: `Edit ${slotNames.get(picker.slot)}`,
 						placement: 'left',

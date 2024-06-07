@@ -582,7 +582,7 @@ export class BulkTab extends SimTab {
 		const searchInputRef = ref<HTMLInputElement>();
 		const searchResultsRef = ref<HTMLUListElement>();
 		const searchWrapper = (
-			<div className="search-wrapper">
+			<div className="search-wrapper hide">
 				<input ref={searchInputRef} type="text" placeholder="Search..." className="batch-search-input form-control hide" />
 				<ul ref={searchResultsRef} className="batch-search-results hide"></ul>
 			</div>
@@ -659,6 +659,7 @@ export class BulkTab extends SimTab {
 		const searchButton = <button className="btn btn-secondary w-100 bulk-settings-button">{searchButtonContents.cloneNode(true)}</button>;
 		searchButton.addEventListener('click', () => {
 			if (searchInputRef.value?.classList.contains('hide')) {
+				searchWrapper?.classList.remove('hide');
 				searchButton.replaceChildren(<>Close Search Results</>);
 				allItems = this.simUI.sim.db.getAllItems().filter(item => canEquipItem(item, this.simUI.player.getPlayerSpec(), undefined));
 				searchInputRef.value?.classList.remove('hide');
@@ -666,6 +667,7 @@ export class BulkTab extends SimTab {
 				searchInputRef.value?.focus();
 			} else {
 				searchButton.replaceChildren(searchButtonContents.cloneNode(true));
+				searchWrapper?.classList.add('hide');
 				searchInputRef.value?.classList.add('hide');
 				searchResultsRef.value?.replaceChildren();
 				searchResultsRef.value?.classList.add('hide');
@@ -683,8 +685,8 @@ export class BulkTab extends SimTab {
 		const talentsContainerRef = ref<HTMLDivElement>();
 		const talentsToSimDiv = (
 			<div className={clsx('talents-picker-container', !this.simTalents && 'hide')}>
-				<label>Pick talents to sim (will increase time to sim)</label>
-				<div className="talents-container"></div>
+				<label className="mb-2">Pick talents to sim (will increase time to sim)</label>
+				<div ref={talentsContainerRef} className="talents-container"></div>
 			</div>
 		);
 
@@ -755,7 +757,7 @@ export class BulkTab extends SimTab {
 		const socketsContainerRef = ref<HTMLDivElement>();
 		const defaultGemDiv = (
 			<div className={clsx('default-gem-container', !this.autoGem && 'hide')}>
-				<label>Defaults for Auto Gem</label>
+				<label className="mb-2">Defaults for Auto Gem</label>
 				<div ref={socketsContainerRef} className="sockets-container"></div>
 			</div>
 		);
