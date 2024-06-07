@@ -56,7 +56,7 @@ func (paladin *Paladin) applySanctityOfBattle() {
 	})
 
 	updateTimeValue := func(castSpeed float64) {
-		spenderCooldownMod.UpdateTimeValue(-(4500*time.Millisecond - time.Duration(4500*castSpeed)))
+		spenderCooldownMod.UpdateTimeValue(-time.Duration(4500 - 4500*castSpeed))
 	}
 
 	paladin.AddOnCastSpeedChanged(func(_ float64, castSpeed float64) {
