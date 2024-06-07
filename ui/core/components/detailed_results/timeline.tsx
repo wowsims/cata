@@ -1230,7 +1230,6 @@ const idToCategoryMap: Record<number, number> = {
 	[66233]: SPELL_ACTION_CATEGORY + 0.91, // Ardent Defender
 	[31884]: SPELL_ACTION_CATEGORY + 0.92, // Avenging Wrath
 	[85696]: SPELL_ACTION_CATEGORY + 0.93, // Zealotry
-	[88675]: SPELL_ACTION_CATEGORY + 0.94, // Divine Purpose
 
 	// Priest
 	[48300]: SPELL_ACTION_CATEGORY + 0.11, // Devouring Plague

@@ -65,7 +65,7 @@ func (pb *HolyPowerBar) SpendHolyPower(sim *core.Simulation, metrics *core.Resou
 	}
 
 	if pb.paladin.DivinePurposeAura.IsActive() {
-		pb.paladin.Log(sim, "Consumed Divine Purpose")
+		// Aura deactivation handled in talents_retribution.go:applyDivinePurpose()
 		return
 	}
 

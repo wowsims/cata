@@ -164,7 +164,7 @@ func (paladin *Paladin) applyArtOfWar() {
 	})
 
 	artOfWarInstantCast := paladin.RegisterAura(core.Aura{
-		Label:    "Art Of War",
+		Label:    "The Art Of War",
 		ActionID: core.ActionID{SpellID: 59578},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -189,6 +189,7 @@ func (paladin *Paladin) applyArtOfWar() {
 		ActionID:   core.ActionID{SpellID: 87138},
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		Outcome:    core.OutcomeLanded,
 		ProcChance: []float64{0, 0.07, 0.14, 0.20}[paladin.Talents.TheArtOfWar],
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			artOfWarInstantCast.Activate(sim)
@@ -273,22 +274,25 @@ func (paladin *Paladin) applyDivinePurpose() {
 		Duration: time.Second * 8,
 
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ClassSpellMask&SpellMaskTemplarsVerdict != 0 ||
-				spell.ClassSpellMask&SpellMaskInquisition != 0 ||
-				spell.ClassSpellMask&SpellMaskZealotry != 0 {
+			if spell.ClassSpellMask&SpellMaskCanConsumeDivinePurpose != 0 {
 				aura.Deactivate(sim)
 			}
 		},
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:           "Divine Purpose",
-		ActionID:       core.ActionID{SpellID: 86172},
-		Callback:       core.CallbackOnCastComplete,
+		Name:           "Divine Purpose (proc)",
+		ActionID:       core.ActionID{SpellID: 90174},
+		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnCastComplete,
+		Outcome:        core.OutcomeLanded,
 		ClassSpellMask: SpellMaskCanTriggerDivinePurpose,
 		ProcChance:     []float64{0, 0.07, 0.15}[paladin.Talents.DivinePurpose],
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result == nil && spell.ClassSpellMask&SpellMaskInquisition == 0 {
+				return
+			}
+
 			paladin.DivinePurposeAura.Activate(sim)
 		},
 	})

@@ -68,6 +68,10 @@ const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
 	SpellMaskDivineStorm |
 	SpellMaskInquisition
 
+const SpellMaskCanConsumeDivinePurpose = SpellMaskInquisition |
+	SpellMaskTemplarsVerdict |
+	SpellMaskZealotry
+
 var TalentTreeSizes = [3]int{20, 20, 20}
 
 type Paladin struct {
