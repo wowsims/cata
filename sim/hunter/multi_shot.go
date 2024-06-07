@@ -54,7 +54,7 @@ func (hunter *Hunter) registerMultiShotSpell() {
 						ss := hunter.SerpentSting.Dot(curTarget)
 
 						hunter.SerpentSting.SpellMetrics[target.UnitIndex].Hits--
-						ss.NumberOfTicks = (3 + (hunter.Talents.SerpentSpread * 3)) / 2
+						ss.BaseTickCount = (3 + (hunter.Talents.SerpentSpread * 3)) / 2
 						ss.Apply(sim)
 						hunter.ImprovedSerpentSting.Cast(sim, curTarget)
 					}

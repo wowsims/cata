@@ -20,9 +20,8 @@ func CopySpellMultipliers(sourceSpell *core.Spell, targetSpell *core.Spell, targ
 		sourceDot := sourceSpell.Dot(target)
 		targetDot := targetSpell.Dot(target)
 
-		targetDot.NumberOfTicks = sourceDot.NumberOfTicks
 		targetDot.BaseTickCount = sourceDot.BaseTickCount
-		targetDot.TickLength = sourceDot.TickLength
+		targetDot.BaseTickLength = sourceDot.BaseTickLength
 	}
 }
 
