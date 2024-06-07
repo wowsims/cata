@@ -74,7 +74,7 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 		core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 2.663)
 
 	glyphOfExorcismDot := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 879},
+		ActionID:       core.ActionID{SpellID: 54934},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: SpellMaskGlyphOfExorcism,
@@ -85,29 +85,29 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				ActionID: core.ActionID{SpellID: 879},
+				ActionID: core.ActionID{SpellID: 54934},
 				Label:    "Glyph of Exorcism",
 			},
-			NumberOfTicks:        3,
-			HasteReducesDuration: false,
-			TickLength:           2 * time.Second,
+			NumberOfTicks:       3,
+			AffectedByCastSpeed: false,
+			TickLength:          2 * time.Second,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDamage := exorcismAverageDamage +
-					0.344*max(dot.Spell.SpellPower(), dot.Spell.MeleeAttackPower())
+				// Total damage is 20% of an average hit spread over 3 ticks
+				baseDamage := (exorcismAverageDamage +
+					0.344*max(dot.Spell.SpellPower(), dot.Spell.MeleeAttackPower())) *
+					0.2 / 3
 
-				// Total damage is 20% of an average hit
-				baseDamage *= 0.2
-
-				// Damage is spread over 3 ticks
-				dot.SnapshotBaseDamage = baseDamage / 3
-				dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
+				dot.Snapshot(target, baseDamage)
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.Dot(target).Apply(sim)
 		},
 	})
 
@@ -121,7 +121,7 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() {
-				glyphOfExorcismDot.Dot(result.Target).Apply(sim)
+				glyphOfExorcismDot.Cast(sim, result.Target)
 			}
 		},
 	})
