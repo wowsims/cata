@@ -224,14 +224,26 @@ func (dk *DeathKnight) applyEbonPlaguebringer() {
 		dk.BloodPlagueSpell.RelatedAuras = append(dk.BloodPlagueSpell.RelatedAuras, dk.EbonPlagueAura)
 	})
 
-	core.MakeProcTriggerAura(&dk.Unit, core.ProcTrigger{
-		Name:           "Ebon Plague Activate",
-		Callback:       core.CallbackOnApplyEffects,
-		ClassSpellMask: DeathKnightSpellDisease,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			dk.EbonPlagueAura.Get(result.Target).Activate(sim)
+	var lastDiseaseTarget *core.Unit = nil
+
+	core.MakePermanent(dk.GetOrRegisterAura(core.Aura{
+		Label: "Ebon Plague Triggers",
+		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if spell.ClassSpellMask&DeathKnightSpellDisease == 0 {
+				return
+			}
+
+			lastDiseaseTarget = target
+			dk.EbonPlagueAura.Get(target).Activate(sim)
 		},
-	})
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.ClassSpellMask&DeathKnightSpellDisease == 0 {
+				return
+			}
+
+			dk.EbonPlagueAura.Get(lastDiseaseTarget).UpdateExpires(spell.Dot(lastDiseaseTarget).ExpiresAt())
+		},
+	}))
 }
 
 func (dk *DeathKnight) applySuddenDoom() {

@@ -206,7 +206,7 @@ func JudgementOfLightAura(target *Unit) *Aura {
 }
 
 func CurseOfElementsAura(target *Unit) *Aura {
-	aura := target.GetOrRegisterAura(Aura{
+	aura := Aura{
 		Label:    "Curse of Elements",
 		ActionID: ActionID{SpellID: 1490},
 		Duration: time.Minute * 5,
@@ -216,49 +216,44 @@ func CurseOfElementsAura(target *Unit) *Aura {
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.ArcaneResistance: 215, stats.FireResistance: 215, stats.FrostResistance: 215, stats.ShadowResistance: 215, stats.NatureResistance: 215})
 		},
-	})
-	spellDamageEffect(aura, 1.08)
-	return aura
+	}
+	return spellDamageEffectAura(aura, target, 1.08)
 }
 
 func EarthAndMoonAura(target *Unit) *Aura {
-	aura := target.GetOrRegisterAura(Aura{
+	aura := Aura{
 		Label:    "Earth And Moon",
 		ActionID: ActionID{SpellID: 60433},
 		Duration: time.Second * 12,
-	})
-	spellDamageEffect(aura, 1.08)
-	return aura
+	}
+	return spellDamageEffectAura(aura, target, 1.08)
 }
 
 func MasterPoisonerDebuff(target *Unit) *Aura {
-	aura := target.GetOrRegisterAura(Aura{
+	aura := Aura{
 		Label:    "Master Poisoner",
 		ActionID: ActionID{SpellID: 58410},
 		Duration: time.Second * 15,
-	})
-	spellDamageEffect(aura, 1.08)
-	return aura
+	}
+	return spellDamageEffectAura(aura, target, 1.08)
 }
 
 func FireBreathDebuff(target *Unit) *Aura {
-	aura := target.GetOrRegisterAura(Aura{
+	aura := Aura{
 		Label:    "Fire Breath",
 		ActionID: ActionID{SpellID: 34889},
 		Duration: time.Second * 45,
-	})
-	spellDamageEffect(aura, 1.08)
-	return aura
+	}
+	return spellDamageEffectAura(aura, target, 1.08)
 }
 
 func LightningBreath(target *Unit) *Aura {
-	aura := target.GetOrRegisterAura(Aura{
+	aura := Aura{
 		Label:    "Lightning Breath",
 		ActionID: ActionID{SpellID: 24844},
 		Duration: time.Second * 45,
-	})
-	spellDamageEffect(aura, 1.08)
-	return aura
+	}
+	return spellDamageEffectAura(aura, target, 1.08)
 }
 
 func EbonPlaguebringerAura(caster *Character, target *Unit, epidemicPoints int32, ebonPlaguebringerPoints int32) *Aura {
@@ -283,9 +278,8 @@ func EbonPlaguebringerAura(caster *Character, target *Unit, epidemicPoints int32
 		})
 	}
 
-	aura := target.GetOrRegisterAura(Aura{
+	aura := Aura{
 		Label:    "EbonPlaguebringer" + label, // Support multiple DKs having their EP up
-		Tag:      "EbonPlaguebringer",
 		ActionID: ActionID{SpellID: 65142},
 		Duration: time.Second * (21 + []time.Duration{0, 4, 8, 12}[epidemicPoints]),
 		OnGain: func(aura *Aura, sim *Simulation) {
@@ -293,16 +287,17 @@ func EbonPlaguebringerAura(caster *Character, target *Unit, epidemicPoints int32
 				ghostSpell.Cast(sim, aura.Unit)
 			}
 		},
-	})
-
-	if ebonPlaguebringerPoints > 0 {
-		spellDamageEffect(aura, 1.08)
 	}
-	return aura
+
+	return spellDamageEffectAura(aura, target, 1.08)
 }
 
-func spellDamageEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
-	return aura.NewExclusiveEffect("SpellDamageTaken%", false, ExclusiveEffect{
+const SpellDamageEffectAuraTag = "SpellDamageAuraTag"
+
+func spellDamageEffectAura(auraConfig Aura, target *Unit, multiplier float64) *Aura {
+	auraConfig.Tag = SpellDamageEffectAuraTag
+	aura := target.GetOrRegisterAura(auraConfig)
+	aura.NewExclusiveEffect("SpellDamageTaken%", false, ExclusiveEffect{
 		Priority: multiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= multiplier
@@ -321,6 +316,7 @@ func spellDamageEffect(aura *Aura, multiplier float64) *ExclusiveEffect {
 			ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexHoly] /= multiplier
 		},
 	})
+	return aura
 }
 
 func BloodFrenzyAura(target *Unit, points int32) *Aura {
