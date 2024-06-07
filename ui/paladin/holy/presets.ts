@@ -38,7 +38,7 @@ export const StandardTalents = {
 
 export const DefaultOptions = HolyPaladinOptions.create({
 	classOptions: {
-		aura: PaladinAura.DevotionAura,
+		aura: PaladinAura.Devotion,
 	},
 });
 

@@ -75,6 +75,7 @@ type Paladin struct {
 	HolyPowerBar
 
 	PaladinAura proto.PaladinAura
+	Seal        proto.PaladinSeal
 
 	Talents *proto.PaladinTalents
 
@@ -99,13 +100,13 @@ type Paladin struct {
 	Zealotry              *core.Spell
 	Inquisition           *core.Spell
 	SealsOfCommand        *core.Spell
-	SealOfTruth           *core.Spell
 	HandOfLight           *core.Spell
 
 	HolyShieldAura          *core.Aura
 	RighteousFuryAura       *core.Aura
 	DivinePleaAura          *core.Aura
 	SealOfTruthAura         *core.Aura
+	SealOfInsightAura       *core.Aura
 	SealOfRighteousnessAura *core.Aura
 	AvengingWrathAura       *core.Aura
 	DivineProtectionAura    *core.Aura
@@ -145,13 +146,13 @@ func (paladin *Paladin) GetPaladin() *Paladin {
 }
 
 func (paladin *Paladin) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if paladin.PaladinAura == proto.PaladinAura_DevotionAura {
+	if paladin.PaladinAura == proto.PaladinAura_Devotion {
 		raidBuffs.DevotionAura = true
 	}
-	if paladin.PaladinAura == proto.PaladinAura_RetributionAura {
+	if paladin.PaladinAura == proto.PaladinAura_Retribution {
 		raidBuffs.RetributionAura = true
 	}
-	if paladin.PaladinAura == proto.PaladinAura_ResistanceAura {
+	if paladin.PaladinAura == proto.PaladinAura_Resistance {
 		raidBuffs.ResistanceAura = true
 	}
 	if paladin.Talents.Communion {
@@ -181,16 +182,28 @@ func (paladin *Paladin) registerSpells() {
 	paladin.registerHolyWrath()
 }
 
-func (paladin *Paladin) Reset(_ *core.Simulation) {
-	paladin.CurrentSeal = nil
-	paladin.CurrentJudgement = nil
+func (paladin *Paladin) Reset(sim *core.Simulation) {
+	switch paladin.Seal {
+	case proto.PaladinSeal_Truth:
+		paladin.CurrentSeal = paladin.SealOfTruthAura
+		paladin.SealOfTruthAura.Activate(sim)
+	case proto.PaladinSeal_Insight:
+		paladin.CurrentSeal = paladin.SealOfInsightAura
+		paladin.SealOfInsightAura.Activate(sim)
+	case proto.PaladinSeal_Righteousness:
+		paladin.CurrentSeal = paladin.SealOfRighteousnessAura
+		paladin.SealOfRighteousnessAura.Activate(sim)
+	}
+
 	paladin.HolyPowerBar.Reset()
 }
 
-func NewPaladin(character *core.Character, talentsStr string) *Paladin {
+func NewPaladin(character *core.Character, talentsStr string, options *proto.PaladinOptions) *Paladin {
 	paladin := &Paladin{
-		Character: *character,
-		Talents:   &proto.PaladinTalents{},
+		Character:   *character,
+		Talents:     &proto.PaladinTalents{},
+		Seal:        options.Seal,
+		PaladinAura: options.Aura,
 	}
 
 	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)

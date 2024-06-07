@@ -11,9 +11,9 @@ export const AuraSelection = <SpecType extends PaladinSpecs>() =>
 	InputHelpers.makeClassOptionsEnumIconInput<SpecType, PaladinAura>({
 		fieldName: 'aura',
 		values: [
-			{ actionId: ActionId.fromSpellId(465), value: PaladinAura.DevotionAura },
-			{ actionId: ActionId.fromSpellId(7294), value: PaladinAura.RetributionAura },
-			{ actionId: ActionId.fromSpellId(19891), value: PaladinAura.ResistanceAura },
+			{ actionId: ActionId.fromSpellId(465), value: PaladinAura.Devotion },
+			{ actionId: ActionId.fromSpellId(7294), value: PaladinAura.Retribution },
+			{ actionId: ActionId.fromSpellId(19891), value: PaladinAura.Resistance },
 		],
 	});
 

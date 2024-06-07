@@ -46,7 +46,7 @@ export const RetTalents = {
 
 export const DefaultOptions = RetributionPaladinOptions.create({
 	classOptions: {
-		aura: PaladinAura.RetributionAura,
+		aura: PaladinAura.Retribution,
 		seal: PaladinSeal.Truth,
 	},
 });

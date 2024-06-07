@@ -42,7 +42,7 @@ export const GenericAoeTalents = {
 
 export const DefaultOptions = ProtectionPaladinOptions.create({
 	classOptions: {
-		aura: PaladinAura.RetributionAura,
+		aura: PaladinAura.Retribution,
 		seal: PaladinSeal.Truth,
 	},
 });
