@@ -191,11 +191,9 @@ func (dk *DeathKnight) applyUnholyBlight() {
 			dot := unholyBlight.Dot(result.Target)
 
 			newDamage := result.Damage * 0.10
-			outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
-
-			ticks := float64(dot.NumberOfTicks + core.TernaryInt32(dot.IsActive(), 1, 0))
+			ticks := float64(dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0))
 			dot.SnapshotAttackerMultiplier = unholyBlight.DamageMultiplier
-			dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / ticks
+			dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / ticks
 
 			unholyBlight.Cast(sim, result.Target)
 		},

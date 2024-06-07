@@ -25,7 +25,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 				MaxStacks: 5,
 			},
 			NumberOfTicks:        5,
-			HasteAffectsDuration: true,
+			HasteReducesDuration: true,
 			TickLength:           time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				tickValue := 0 +

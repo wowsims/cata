@@ -42,7 +42,7 @@ func (shaman *Shaman) registerSearingTotemSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			shaman.MagmaTotem.AOEDot().Cancel(sim)
+			shaman.MagmaTotem.AOEDot().Deactivate(sim)
 			shaman.FireElemental.Disable(sim)
 			spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
 			duration := 60 * (1.0 + 0.20*float64(shaman.Talents.TotemicFocus))
@@ -95,7 +95,7 @@ func (shaman *Shaman) registerMagmaTotemSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			shaman.SearingTotem.Dot(shaman.CurrentTarget).Cancel(sim)
+			shaman.SearingTotem.Dot(shaman.CurrentTarget).Deactivate(sim)
 			shaman.FireElemental.Disable(sim)
 			spell.AOEDot().Apply(sim)
 

@@ -36,7 +36,7 @@ func (warlock *Warlock) registerFelFlame() {
 					if warlock.ImmolateDot != nil {
 						immoDot := warlock.ImmolateDot.Dot(target)
 						if immoDot.IsActive() {
-							immoDot.TickCount = max(0, immoDot.TickCount-2)
+							// immoDot.TickCount = max(0, immoDot.TickCount-2)
 							immoDot.TakeSnapshot(sim, false)
 						}
 					}
@@ -44,7 +44,7 @@ func (warlock *Warlock) registerFelFlame() {
 					if warlock.UnstableAffliction != nil {
 						unstableAff := warlock.UnstableAffliction.Dot(target)
 						if unstableAff != nil && unstableAff.IsActive() {
-							unstableAff.TickCount = max(0, unstableAff.TickCount-2)
+							// unstableAff.TickCount = max(0, unstableAff.TickCount-2)
 							unstableAff.TakeSnapshot(sim, false)
 						}
 					}
