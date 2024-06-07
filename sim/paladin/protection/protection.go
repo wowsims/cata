@@ -57,8 +57,6 @@ type ProtectionPaladin struct {
 
 	Options *proto.ProtectionPaladin_Options
 
-	Judgement proto.PaladinJudgement
-
 	Seal proto.PaladinSeal
 
 	HasGlyphAS bool
