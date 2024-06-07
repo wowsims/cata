@@ -74,7 +74,7 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 		core.CalcScalingSpellAverageEffect(proto.Class_ClassPaladin, 2.663)
 
 	glyphOfExorcismDot := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 54934},
+		ActionID:       core.ActionID{SpellID: 879},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: SpellMaskGlyphOfExorcism,
@@ -85,7 +85,8 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Exorcism (DoT)",
+				ActionID: core.ActionID{SpellID: 879},
+				Label:    "Glyph of Exorcism",
 			},
 			NumberOfTicks:        3,
 			HasteReducesDuration: false,
