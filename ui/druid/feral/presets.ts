@@ -111,6 +111,7 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.PotionOfTheTolvir,
 	prepopPotion: Potions.PotionOfTheTolvir,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+	explosiveBigDaddy: true,
 });
 
 export const OtherDefaults = {
