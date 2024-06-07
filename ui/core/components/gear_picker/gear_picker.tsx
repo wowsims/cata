@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -25,7 +26,7 @@ import { getPVPSeasonFromItem, isPVPItem } from '../../proto_utils/utils';
 import { Sim } from '../../sim';
 import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
-import { formatDeltaTextElem, mod } from '../../utils';
+import { formatDeltaTextElem, mod, randomUUID } from '../../utils';
 import { BaseModal } from '../base_modal';
 import { Component } from '../component';
 import { FiltersMenu } from '../filters_menu';
@@ -37,6 +38,7 @@ import {
 	makeShowMatchingGemsSelector,
 } from '../other_inputs';
 import QuickSwapList from '../quick_swap';
+import Toast from '../toast';
 import { Clusterize } from '../virtual_scroll/clusterize';
 import { addQuickEnchantPopover } from './quick_enchant_popover';
 import { addQuickGemPopover } from './quick_gem_popover';
@@ -112,7 +114,7 @@ export class GearPicker extends Component {
 
 		this.itemPickers = leftItemPickers.concat(rightItemPickers).sort((a, b) => a.slot - b.slot);
 
-		this.selectorModal = new SelectorModal(simUI.rootElem, simUI, player, this);
+		this.selectorModal = new SelectorModal(simUI.rootElem, simUI, player, this, { id: 'gear-picker-selector-modal' });
 	}
 }
 
@@ -474,6 +476,12 @@ export enum SelectorModalTabs {
 	Gem3 = 'Gem3',
 }
 
+type SelectorModalOptions = {
+	// This will add a unique ID to the modal, allowing multiple of the same modals to exist
+	id: string;
+	// Prevents rendering of certail tabs
+	disabledTabs?: SelectorModalTabs[];
+};
 export class SelectorModal extends BaseModal {
 	private readonly simUI: SimUI;
 	private player: Player<any>;
@@ -488,14 +496,16 @@ export class SelectorModal extends BaseModal {
 	private currentSlot: ItemSlot = ItemSlot.ItemSlotHead;
 	private currentTab: SelectorModalTabs = SelectorModalTabs.Items;
 	private disabledTabs: SelectorModalTabs[] = [];
+	private options: SelectorModalOptions;
 
-	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, gearPicker?: GearPicker, disabledTabs?: SelectorModalTabs[]) {
+	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, gearPicker?: GearPicker, options?: Partial<SelectorModalOptions>) {
 		super(parent, 'selector-modal', { disposeOnClose: false, size: 'xl' });
 
 		this.simUI = simUI;
 		this.player = player;
 		this.gearPicker = gearPicker;
-		this.disabledTabs = disabledTabs || [];
+		this.options = { id: randomUUID(), ...options };
+		this.disabledTabs = this.options.disabledTabs || [];
 
 		this.addItemSlotTabs();
 
@@ -576,6 +586,7 @@ export class SelectorModal extends BaseModal {
 		const hasItemTab = !this.disabledTabs?.includes(SelectorModalTabs.Items);
 		if (hasItemTab)
 			this.addTab<Item>({
+				id: `${this.options.id}-${SelectorModalTabs.Items}`,
 				label: SelectorModalTabs.Items,
 				gearData,
 				itemData: eligibleItems.map(item => {
@@ -611,6 +622,7 @@ export class SelectorModal extends BaseModal {
 		const hasEnchantTab = !this.disabledTabs?.includes(SelectorModalTabs.Enchants);
 		if (hasEnchantTab)
 			this.addTab<Enchant>({
+				id: `${this.options.id}-${SelectorModalTabs.Enchants}`,
 				label: SelectorModalTabs.Enchants,
 				gearData,
 				itemData: eligibleEnchants.map(enchant => {
@@ -731,8 +743,10 @@ export class SelectorModal extends BaseModal {
 
 		const socketBonusEP = this.player.computeStatsEP(new Stats(equippedItem.item.socketBonus)) / (equippedItem.item.gemSockets.length || 1);
 		equippedItem.curSocketColors(this.player.isBlacksmithing()).forEach((socketColor, socketIdx) => {
+			const label = SelectorModalTabs[`Gem${socketIdx + 1}` as keyof typeof SelectorModalTabs];
 			this.addTab<Gem>({
-				label: SelectorModalTabs[`Gem${socketIdx + 1}` as keyof typeof SelectorModalTabs],
+				id: `${this.options.id}-${label}`,
+				label,
 				gearData,
 				itemData: this.player.getGems(socketColor).map((gem: Gem) => {
 					return {
@@ -805,6 +819,7 @@ export class SelectorModal extends BaseModal {
 		const itemProto = equippedItem.item;
 
 		this.addTab<ItemRandomSuffix>({
+			id: `${this.options.id}-${SelectorModalTabs.RandomSuffixes}`,
 			label: SelectorModalTabs.RandomSuffixes,
 			gearData,
 			itemData: this.player.getRandomSuffixes(itemProto).map((randomSuffix: ItemRandomSuffix) => {
@@ -841,6 +856,7 @@ export class SelectorModal extends BaseModal {
 		const itemProto = equippedItem.item;
 
 		this.addTab<ReforgeData>({
+			id: `${this.options.id}-${SelectorModalTabs.Reforging}`,
 			label: SelectorModalTabs.Reforging,
 			gearData,
 			itemData: this.player.getAvailableReforgings(equippedItem).map(reforgeData => {
@@ -886,6 +902,7 @@ export class SelectorModal extends BaseModal {
 	 * similar so this function uses extra functions to do it generically.
 	 */
 	private addTab<T extends ItemListType>({
+		id,
 		label,
 		gearData,
 		itemData,
@@ -895,6 +912,7 @@ export class SelectorModal extends BaseModal {
 		setTabContent,
 		socketColor,
 	}: {
+		id: string;
 		label: SelectorModalTabs;
 		gearData: GearData;
 		itemData: ItemData<T>[];
@@ -908,7 +926,6 @@ export class SelectorModal extends BaseModal {
 			return;
 		}
 
-		const tabContentId = (label + '-tab').split(' ').join('');
 		const selected = label === this.currentTab;
 
 		const tabAnchor = ref<HTMLAnchorElement>();
@@ -916,18 +933,16 @@ export class SelectorModal extends BaseModal {
 			<li className="nav-item">
 				<a
 					ref={tabAnchor}
-					className={`nav-link selector-modal-item-tab ${selected ? 'active' : ''}`}
+					className={clsx('nav-link selector-modal-item-tab', selected && 'active')}
 					dataset={{
-						label: label,
-						contentId: tabContentId,
+						label,
 						bsToggle: 'tab',
-						bsTarget: `#${tabContentId}`,
+						bsTarget: `#${id}`,
 					}}
 					attributes={{
 						role: 'tab',
 						'aria-selected': selected,
-					}}
-					type="button"></a>
+					}}></a>
 			</li>,
 		);
 
@@ -938,6 +953,7 @@ export class SelectorModal extends BaseModal {
 		}
 
 		const ilist = new ItemList(
+			id,
 			this.contentElem,
 			this.simUI,
 			this.currentSlot,
@@ -1068,6 +1084,7 @@ enum ItemListSortBy {
 export class ItemList<T extends ItemListType> {
 	private listElem: HTMLElement;
 	private readonly player: Player<any>;
+	public id: string;
 	public label: string;
 	private slot: ItemSlot;
 	private itemData: Array<ItemData<T>>;
@@ -1086,6 +1103,7 @@ export class ItemList<T extends ItemListType> {
 	private sortDirection = SortDirection.DESC;
 
 	constructor(
+		id: string,
 		parent: HTMLElement,
 		simUI: SimUI,
 		currentSlot: ItemSlot,
@@ -1100,6 +1118,7 @@ export class ItemList<T extends ItemListType> {
 		onRemove: (eventID: EventID) => void,
 		onItemClick: (itemData: ItemData<T>) => void,
 	) {
+		this.id = id;
 		this.label = label;
 		this.player = player;
 		this.itemData = itemData;
@@ -1112,7 +1131,6 @@ export class ItemList<T extends ItemListType> {
 		this.gearData = gearData;
 		this.currentFilters = this.player.sim.getFilters();
 
-		const tabContentId = (label + '-tab').split(' ').join('');
 		const selected = label === currentTab;
 		const itemLabel = label === SelectorModalTabs.Reforging ? 'Reforge' : 'Item';
 
@@ -1138,7 +1156,7 @@ export class ItemList<T extends ItemListType> {
 		const removeButtonRef = ref<HTMLButtonElement>();
 
 		this.tabContent = (
-			<div id={tabContentId} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
+			<div id={this.id} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
 				<div className="selector-modal-filters">
 					<input ref={searchRef} className="selector-modal-search form-control" type="text" placeholder="Search..." />
 					{label === SelectorModalTabs.Items && (
@@ -1302,6 +1320,11 @@ export class ItemList<T extends ItemListType> {
 							}
 						}
 						simUI.bt.addItems(itemSpecs);
+
+						new Toast({
+							variant: 'success',
+							body: "The items were successfully added to the batch sim. You can now run the batch sim from the 'Batch' tab.",
+						});
 						// TODO: should we open the bulk sim UI or should we run in the background showing progress, and then sort the items in the picker?
 					}
 				});

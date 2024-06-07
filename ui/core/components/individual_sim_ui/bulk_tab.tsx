@@ -248,7 +248,10 @@ export class BulkTab extends SimTab {
 		this.pendingDiv = (<div className="results-pending-overlay d-flex hide" />) as HTMLDivElement;
 		this.pendingResults = new ResultsViewer(this.pendingDiv);
 		this.pendingResults.hideAll();
-		this.selectorModal = new SelectorModal(this.simUI.rootElem, this.simUI, this.simUI.player, undefined, [SelectorModalTabs.Items]);
+		this.selectorModal = new SelectorModal(this.simUI.rootElem, this.simUI, this.simUI.player, undefined, {
+			id: 'bulk-selector-modal',
+			disabledTabs: [SelectorModalTabs.Items],
+		});
 
 		this.contentContainer.appendChild(
 			<>
@@ -924,8 +927,9 @@ class GemSelectorModal extends BaseModal {
 	show() {
 		// construct item list the first time its opened.
 		// This makes startup faster and also means we are sure to have item database loaded.
-		if (this.ilist == null) {
+		if (!this.ilist) {
 			this.ilist = new ItemList<UIGem>(
+				'bulk-tab-gem-selector',
 				this.contentElem,
 				this.simUI,
 				ItemSlot.ItemSlotHead,
