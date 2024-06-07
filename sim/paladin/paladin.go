@@ -44,7 +44,11 @@ const (
 	SpellMaskSealOfJustice
 )
 
-const SpellMaskSingleTarget = SpellMaskCrusaderStrike | SpellMaskTemplarsVerdict
+const SpellMaskSingleTarget = SpellMaskCrusaderStrike |
+	SpellMaskTemplarsVerdict |
+	SpellMaskExorcism |
+	SpellMaskHammerOfWrath |
+	SpellMaskJudgement
 
 const SpellMaskModifiedByInquisition = SpellMaskHammerOfWrath |
 	SpellMaskConsecration |

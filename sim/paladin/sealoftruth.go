@@ -10,10 +10,9 @@ func (paladin *Paladin) registerSealOfTruth() {
 
 	// Censure DoT
 	censureSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 31803, Tag: 2},
+		ActionID:       core.ActionID{SpellID: 31803},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagMeleeMetrics,
 		ClassSpellMask: SpellMaskCensure,
 
 		DamageMultiplier: 1,
@@ -21,23 +20,43 @@ func (paladin *Paladin) registerSealOfTruth() {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label:     "Censure (DoT)",
+				ActionID:  core.ActionID{SpellID: 31803},
+				Label:     "Censure",
 				MaxStacks: 5,
 			},
-			NumberOfTicks:        5,
-			HasteReducesDuration: true,
-			TickLength:           time.Second * 3,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				tickValue := 0 +
-					.014*dot.Spell.SpellPower() +
-					.027*dot.Spell.MeleeAttackPower()
-				dot.SnapshotBaseDamage = tickValue * float64(dot.GetStacks())
 
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex], true)
+			NumberOfTicks:       5,
+			AffectedByCastSpeed: true,
+			TickLength:          time.Second * 3,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				tickValue := float64(dot.GetStacks()) * (0 +
+					.014*dot.Spell.SpellPower() +
+					.027*dot.Spell.MeleeAttackPower())
+
+				dot.Snapshot(target, tickValue)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
 			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			dotResult := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+			spell.SpellMetrics[target.UnitIndex].Hits--
+
+			if dotResult.Landed() {
+				dot := spell.Dot(target)
+				if dot.IsActive() {
+					dot.AddStack(sim)
+					dot.TakeSnapshot(sim, false)
+					dot.Refresh(sim)
+				} else {
+					dot.Apply(sim)
+					dot.SetStacks(sim, 1)
+					dot.TakeSnapshot(sim, false)
+				}
+			}
 		},
 	})
 
@@ -89,33 +108,22 @@ func (paladin *Paladin) registerSealOfTruth() {
 		Tag:      "Seal",
 		ActionID: core.ActionID{SpellID: 31801},
 		Duration: time.Minute * 30,
+
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Don't proc on misses or our own procs.
-			if !result.Landed() || spell == censureSpell || spell == judgementDmg || spell == onSpecialOrSwingProc {
+			if !result.Landed() || spell == censureSpell || spell == onSpecialOrSwingProc {
 				return
 			}
 
-			if spell.IsMelee() {
-				if censureSpell.Dot(result.Target).GetStacks() == 5 {
-					onSpecialOrSwingProc.Cast(sim, result.Target)
-				}
-			}
-
-			if spell.ClassSpellMask&SpellMaskSingleTarget == 0 {
+			if spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 && spell.ClassSpellMask&SpellMaskSingleTarget == 0 {
 				return
 			}
 
-			dotResult := censureSpell.CalcOutcome(sim, result.Target, spell.OutcomeMeleeSpecialHit)
-
-			if dotResult.Landed() {
-				dot := censureSpell.Dot(result.Target)
-				if !dot.IsActive() {
-					dot.Apply(sim)
-				}
-				dot.AddStack(sim)
-				dot.TakeSnapshot(sim, false)
-				dot.Activate(sim)
+			if censureSpell.Dot(result.Target).GetStacks() == 5 {
+				onSpecialOrSwingProc.Cast(sim, result.Target)
 			}
+
+			censureSpell.Cast(sim, result.Target)
 		},
 	})
 
