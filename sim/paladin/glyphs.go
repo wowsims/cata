@@ -1,9 +1,10 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
-	"time"
 )
 
 func (paladin *Paladin) applyGlyphs() {
@@ -87,7 +88,7 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 				Label: "Exorcism (DoT)",
 			},
 			NumberOfTicks:        3,
-			HasteAffectsDuration: false,
+			HasteReducesDuration: false,
 			TickLength:           2 * time.Second,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {

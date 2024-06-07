@@ -180,7 +180,7 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 					NumberOfTicks: 2,
 					TickLength:    2 * time.Second,
 					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-						dot.Snapshot(target, shieldSlamDamage/float64(dot.NumberOfTicks))
+						dot.Snapshot(target, shieldSlamDamage/float64(dot.BaseTickCount))
 					},
 					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
