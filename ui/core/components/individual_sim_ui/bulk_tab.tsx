@@ -367,23 +367,32 @@ export class BulkTab extends SimTab {
 		return itemsDb;
 	}
 
-	addItems(items: Array<ItemSpec>) {
-		if (this.items.length == 0) {
-			this.items = items;
-		} else {
-			this.items = this.items.concat(items);
-		}
+	addItem(item: ItemSpec) {
+		this.addItems([item]);
+	}
+	addItems(items: ItemSpec[]) {
+		this.items = [...(this.items || []), ...items];
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
-	setItems(items: Array<ItemSpec>) {
+	setItems(items: ItemSpec[]) {
 		this.items = items;
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
+	removeItem(item: ItemSpec) {
+		const indexToRemove = this.items.findIndex(i => ItemSpec.equals(i, item));
+		if (indexToRemove === -1) return;
+		this.items.splice(indexToRemove, 1);
+		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
+	}
 	clearItems() {
 		this.items = new Array<ItemSpec>();
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
+	}
+
+	hasItem(item: ItemSpec) {
+		return this.items.some(i => ItemSpec.equals(i, item));
 	}
 
 	getItems(): Array<ItemSpec> {

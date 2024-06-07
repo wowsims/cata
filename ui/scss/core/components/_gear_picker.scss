@@ -3,7 +3,7 @@
 	--ilvl-cell-width: 3rem;
 	--source-cell-width: 16rem;
 	--ep-cell-width: 6rem;
-	--favorite-cell-width: 2rem;
+	--icon-cell-width: 2rem;
 }
 
 .gear-picker-root {
@@ -233,37 +233,37 @@
 
 .selector-modal-list-labels {
 	display: flex;
-	padding-right: var(--spacer-2);
+	padding-right: 0.5rem;
 	margin-right: var(--spacer-3);
 	margin-bottom: var(--spacer-2);
 	font-size: 1.125rem;
 	justify-content: space-between; // Ensures labels are evenly spaced
+	gap: var(--spacer-3);
+
 	@include media-breakpoint-down(xl) {
 		margin-right: 0;
 	}
 
 	.item-label {
 		flex: 1;
+		margin-right: 0.5rem;
 	}
 	.ilvl-label {
 		width: var(--ilvl-cell-width);
-		margin-left: var(--spacer-3);
 	}
 	.source-label {
 		width: var(--source-cell-width);
-		margin-left: var(--spacer-3);
 	}
 	.ep-label {
 		width: var(--ep-cell-width);
-		margin-left: var(--spacer-3);
 		display: flex;
 		align-items: center;
 		float: right;
 	}
 
-	.favorite-label {
-		width: var(--favorite-cell-width);
-		margin-left: var(--spacer-3);
+	.favorite-label,
+	.compare-label {
+		width: var(--icon-cell-width);
 	}
 }
 
@@ -288,6 +288,7 @@
 	display: flex;
 	align-items: center;
 	background-color: var(--bs-gray-900);
+	gap: var(--spacer-3);
 
 	&:nth-child(2n) {
 		background: var(--bs-table-row-even-bg);
@@ -366,29 +367,30 @@
 }
 
 .selector-modal-list-item-ilvl-container {
-	margin-left: var(--spacer-3);
 	width: var(--ilvl-cell-width);
 }
 
 .selector-modal-list-item-source-container {
-	margin-left: var(--spacer-3);
 	width: var(--source-cell-width);
 }
 
-.selector-modal-list-item-favorite {
-	margin-left: var(--spacer-3);
-	color: var(--bs-brand);
+.selector-modal-list-item-favorite,
+.selector-modal-list-item-compare {
+	width: var(--icon-cell-width);
 }
 
-.selector-modal-list-item-favorite:hover {
-	text-shadow:
-		0 0 10px var(--bs-white),
-		0 0 10px var(--bs-white);
+.selector-modal-list-item-favorite {
+	color: var(--bs-brand);
+
+	&:hover {
+		text-shadow:
+			0 0 10px var(--bs-white),
+			0 0 10px var(--bs-white);
+	}
 }
 
 .selector-modal-list-item-ep {
 	width: var(--ep-cell-width);
-	margin-left: var(--spacer-3);
 	display: flex;
 	align-items: center;
 

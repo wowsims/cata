@@ -1083,6 +1083,7 @@ enum ItemListSortBy {
 
 export class ItemList<T extends ItemListType> {
 	private listElem: HTMLElement;
+	private readonly simUI: SimUI;
 	private readonly player: Player<any>;
 	public id: string;
 	public label: string;
@@ -1120,6 +1121,7 @@ export class ItemList<T extends ItemListType> {
 	) {
 		this.id = id;
 		this.label = label;
+		this.simUI = simUI;
 		this.player = player;
 		this.itemData = itemData;
 		this.socketColor = socketColor;
@@ -1152,8 +1154,8 @@ export class ItemList<T extends ItemListType> {
 		const show1hWeaponRef = ref<HTMLDivElement>();
 		const show2hWeaponRef = ref<HTMLDivElement>();
 		const modalListRef = ref<HTMLUListElement>();
-		const simAllButtonRef = ref<HTMLButtonElement>();
 		const removeButtonRef = ref<HTMLButtonElement>();
+		const compareLabelRef = ref<HTMLElement>();
 
 		this.tabContent = (
 			<div id={this.id} className={`selector-modal-tab-pane tab-pane fade ${selected ? 'active show' : ''}`}>
@@ -1169,17 +1171,14 @@ export class ItemList<T extends ItemListType> {
 					<div ref={show2hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons"></div>
 					<div ref={matchingGemsRef} className="sim-input selector-modal-boolean-option selector-modal-show-matching-gems"></div>
 					<div ref={showEpValuesRef} className="sim-input selector-modal-boolean-option selector-modal-show-ep-values"></div>
-					<button ref={simAllButtonRef} className="selector-modal-simall-button btn btn-warning">
-						Add to Batch Sim
-					</button>
 					<button ref={removeButtonRef} className="selector-modal-remove-button btn btn-danger">
 						Unequip Item
 					</button>
 				</div>
 				<div className="selector-modal-list-labels">
-					<label className="item-label">
+					<span className="item-label">
 						<small>{itemLabel}</small>
-					</label>
+					</span>
 					{label === SelectorModalTabs.Items && (
 						<>
 							<label className="source-label">
@@ -1190,20 +1189,25 @@ export class ItemList<T extends ItemListType> {
 							</label>
 						</>
 					)}
-					<label className="ep-label interactive" onclick={sortByEP}>
+					<span className="ep-label interactive" onclick={sortByEP}>
 						<small>EP</small>
 						<i className="fa-solid fa-plus-minus fa-2xs"></i>
 						<button ref={epButtonRef} className="btn btn-link p-0 ms-1">
 							<i className="far fa-question-circle fa-lg"></i>
 						</button>
-					</label>
-					<label className="favorite-label"></label>
+					</span>
+					<span className="favorite-label"></span>
+					<span ref={compareLabelRef} className="compare-label hide"></span>
 				</div>
 				<ul ref={modalListRef} className="selector-modal-list"></ul>
 			</div>
 		);
 
 		parent.appendChild(this.tabContent);
+
+		if (this.label === SelectorModalTabs.Items) {
+			this.bindToggleCompare(compareLabelRef.value!);
+		}
 
 		tippy(epButtonRef.value!, {
 			content: EP_TOOLTIP,
@@ -1288,51 +1292,6 @@ export class ItemList<T extends ItemListType> {
 
 		this.searchInput = searchRef.value!;
 		this.searchInput.addEventListener('input', () => this.applyFilters());
-
-		const simAllButton = simAllButtonRef.value;
-		if (simAllButton) {
-			if (label === SelectorModalTabs.Items) {
-				simAllButton.hidden = !player.sim.getShowExperimental();
-				player.sim.showExperimentalChangeEmitter.on(() => {
-					simAllButton.hidden = !player.sim.getShowExperimental();
-				});
-				simAllButton.addEventListener('click', _event => {
-					if (simUI instanceof IndividualSimUI) {
-						const itemSpecs = Array<ItemSpec>();
-						const isRangedOrTrinket =
-							this.slot === ItemSlot.ItemSlotRanged || this.slot === ItemSlot.ItemSlotTrinket1 || this.slot === ItemSlot.ItemSlotTrinket2;
-
-						const curItem = this.equippedToItemFn(this.player.getEquippedItem(this.slot));
-						let curEP = 0;
-						if (!!curItem) {
-							curEP = this.computeEP(curItem);
-						}
-
-						for (const i of this.itemsToDisplay) {
-							const idata = this.itemData[i];
-							if (!isRangedOrTrinket && curEP > 0 && idata.baseEP < curEP / 2) {
-								continue; // If we have EPs on current item, dont sim items with less than half the EP.
-							}
-
-							// Add any item that is either >0 EP or a trinket/ranged item.
-							if (idata.baseEP > 0 || isRangedOrTrinket) {
-								itemSpecs.push(ItemSpec.create({ id: idata.id }));
-							}
-						}
-						simUI.bt.addItems(itemSpecs);
-
-						new Toast({
-							variant: 'success',
-							body: "The items were successfully added to the batch sim. You can now run the batch sim from the 'Batch' tab.",
-						});
-						// TODO: should we open the bulk sim UI or should we run in the background showing progress, and then sort the items in the picker?
-					}
-				});
-			} else {
-				// always hide non-items from being added to batch.
-				simAllButton.hidden = true;
-			}
-		}
 	}
 
 	public sizeRefresh() {
@@ -1527,6 +1486,8 @@ export class ItemList<T extends ItemListType> {
 		const iconElem = ref<HTMLImageElement>();
 		const favoriteElem = ref<HTMLButtonElement>();
 		const favoriteIconElem = ref<HTMLElement>();
+		const compareContainer = ref<HTMLDivElement>();
+		const compareButton = ref<HTMLButtonElement>();
 
 		const listItemElem = (
 			<li className={`selector-modal-list-item ${equippedItemID === itemData.id ? 'active' : ''}`} dataset={{ idx: item.idx.toString() }}>
@@ -1556,15 +1517,56 @@ export class ItemList<T extends ItemListType> {
 					</div>
 				)}
 				<div className="selector-modal-list-item-favorite-container">
-					<button
-						className="selector-modal-list-item-favorite btn btn-link p-0"
-						ref={favoriteElem}
-						onclick={() => setFavorite(listItemElem.dataset.fav === 'false')}>
-						<i ref={favoriteIconElem} className="fa-star fa-xl"></i>
+					<button className="selector-modal-list-item-favorite btn btn-link p-0" ref={favoriteElem}>
+						<i ref={favoriteIconElem} className="fas fa-star fa-xl"></i>
+					</button>
+				</div>
+				<div ref={compareContainer} className="selector-modal-list-item-compare-container hide">
+					<button className="selector-modal-list-item-compare btn btn-link p-0" ref={compareButton}>
+						<i className="fas fa-arrow-right-arrow-left fa-xl"></i>
 					</button>
 				</div>
 			</li>
 		);
+
+		favoriteElem.value!.addEventListener('click', () => setFavorite(listItemElem.dataset.fav === 'false'));
+		tippy(favoriteElem.value!, {
+			content: 'Add to favorites',
+		});
+
+		if (this.label === SelectorModalTabs.Items) {
+			this.bindToggleCompare(compareContainer.value!);
+			const simUI = this.simUI instanceof IndividualSimUI ? this.simUI : null;
+			if (simUI) {
+				const checkHasItem = () => simUI.bt.hasItem(ItemSpec.create({ id: itemData.id }));
+				const setCompareButtonState = () => compareButton.value!.classList[checkHasItem() ? 'add' : 'remove']('text-brand');
+
+				setCompareButtonState();
+				simUI.bt.itemsChangedEmitter.on(() => {
+					setCompareButtonState();
+				});
+
+				compareButton.value!.addEventListener('click', () => {
+					const hasItem = checkHasItem();
+					simUI.bt[hasItem ? 'removeItem' : 'addItem'](ItemSpec.create({ id: itemData.id }));
+
+					new Toast({
+						delay: 1000,
+						variant: 'success',
+						body: (
+							<>
+								<strong>{itemData.name}</strong> was {hasItem ? <>removed from the batch</> : <>added to the batch</>}.
+							</>
+						),
+					});
+					// TODO: should we open the bulk sim UI or should we run in the background showing progress, and then sort the items in the picker?
+				});
+			}
+
+			tippy(compareButton.value!, {
+				content: 'Add to Batch sim',
+			});
+		}
 
 		anchorElem.value!.addEventListener('click', (event: Event) => {
 			event.preventDefault();
@@ -1578,10 +1580,6 @@ export class ItemList<T extends ItemListType> {
 		});
 
 		setItemQualityCssClass(nameElem.value!, itemData.quality);
-
-		tippy(favoriteElem.value!, {
-			content: 'Add to favorites',
-		});
 
 		const setFavorite = (isFavorite: boolean) => {
 			const filters = this.player.sim.getFilters();
@@ -1778,5 +1776,13 @@ export class ItemList<T extends ItemListType> {
 			);
 		}
 		return <></>;
+	}
+
+	private bindToggleCompare(element: Element) {
+		const toggleCompare = () => element.classList[!this.player.sim.getShowExperimental() ? 'add' : 'remove']('hide');
+		toggleCompare();
+		this.player.sim.showExperimentalChangeEmitter.on(() => {
+			toggleCompare();
+		});
 	}
 }
