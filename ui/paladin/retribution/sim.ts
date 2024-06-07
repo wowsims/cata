@@ -11,6 +11,7 @@ import { TypedEvent } from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
 // import * as RetInputs from './inputs.js';
 import * as Presets from './presets.js';
+import {PaladinPrimeGlyph} from "../../core/proto/paladin";
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssClass: 'retribution-paladin-sim-ui',
@@ -57,22 +58,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatHealth,
 		Stat.StatMastery,
 	],
-	// modifyDisplayStats: (player: Player<Spec.SpecRetributionPaladin>) => {
-	// 	let stats = new Stats();
+	modifyDisplayStats: (player: Player<Spec.SpecRetributionPaladin>) => {
+		let stats = new Stats();
 
-	// 	TypedEvent.freezeAllAndDo(() => {
-	// 		if (
-	// 			player.getMajorGlyphs().includes(PaladinMajorGlyph.GlyphOfSealOfVengeance) &&
-	// 			player.getSpecOptions().classOptions?.seal == PaladinSeal.Vengeance
-	// 		) {
-	// 			stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-	// 		}
-	// 	});
+		TypedEvent.freezeAllAndDo(() => {
+			if (
+				player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth)
+			) {
+				stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			}
+		});
 
-	// 	return {
-	// 		talents: stats,
-	// 	};
-	// },
+		return {
+			talents: stats,
+		};
+	},
 
 	defaults: {
 		// Default equipped gear.
@@ -80,19 +80,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatStrength]: 2.53,
-				[Stat.StatAgility]: 1.13,
-				[Stat.StatIntellect]: 0.15,
-				[Stat.StatSpellPower]: 0.32,
-				[Stat.StatSpellHit]: 0.41,
-				[Stat.StatSpellCrit]: 0.01,
-				[Stat.StatSpellHaste]: 0.12,
-				[Stat.StatMP5]: 0.05,
+				[Stat.StatStrength]: 2.9436,
+				[Stat.StatSpellHit]: 3.2672,
+				[Stat.StatSpellCrit]: 1.3908,
+				[Stat.StatSpellHaste]: 1.0356,
 				[Stat.StatAttackPower]: 1,
-				[Stat.StatMeleeHit]: 1.96,
-				[Stat.StatMeleeCrit]: 1.16,
-				[Stat.StatMeleeHaste]: 1.44,
-				[Stat.StatExpertise]: 1.8,
+				[Stat.StatMeleeHit]: 3.2672,
+				[Stat.StatMeleeCrit]: 1.3908,
+				[Stat.StatMeleeHaste]: 1.0356,
+				[Stat.StatExpertise]: 2.5455,
+				[Stat.StatMastery]: 1.5395,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 7.33,
@@ -104,6 +101,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		talents: Presets.RetTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
+		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: RaidBuffs.create({
 			arcaneBrilliance: true,
