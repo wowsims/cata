@@ -1168,11 +1168,11 @@ export class ItemList<T extends ItemListType> {
 							Filters
 						</button>
 					)}
-					<div ref={phaseSelectorRef} className="selector-modal-phase-selector"></div>
-					<div ref={show1hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons"></div>
-					<div ref={show2hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons"></div>
-					<div ref={matchingGemsRef} className="sim-input selector-modal-boolean-option selector-modal-show-matching-gems"></div>
-					<div ref={showEpValuesRef} className="sim-input selector-modal-boolean-option selector-modal-show-ep-values"></div>
+					<div ref={phaseSelectorRef} className="selector-modal-phase-selector" />
+					<div ref={show1hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons hide" />
+					<div ref={show2hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons hide" />
+					<div ref={matchingGemsRef} className="sim-input selector-modal-boolean-option selector-modal-show-matching-gems" />
+					<div ref={showEpValuesRef} className="sim-input selector-modal-boolean-option selector-modal-show-ep-values" />
 					<button ref={removeButtonRef} className="selector-modal-remove-button btn btn-danger">
 						Unequip Item
 					</button>
