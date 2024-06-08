@@ -149,6 +149,7 @@
 			align-items: center;
 			padding-bottom: var(--block-spacer);
 			border-bottom: var(--border-default);
+			margin-bottom: 0;
 
 			label {
 				flex-grow: 1;
@@ -211,7 +212,7 @@
 	.talents-picker-container {
 		display: flex;
 		flex-direction: column;
-		border-bottom: 1px solid var(--bs-white);
+		border-bottom: var(--border-default);
 
 		.talents-container {
 			display: flex;
@@ -221,12 +222,12 @@
 	.default-gem-container {
 		display: flex;
 		flex-direction: column;
-		border-bottom: 1px solid var(--bs-white);
-		padding-bottom: 5px;
+		border-bottom: var(--border-default);
+		padding-bottom: var(--spacer-2);
 
 		.gem-socket-container {
-			height: 40px;
-			width: 40px;
+			height: 30px;
+			width: 30px;
 		}
 
 		.gem-icon {
