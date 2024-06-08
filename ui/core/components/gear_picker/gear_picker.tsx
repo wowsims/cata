@@ -1531,21 +1531,31 @@ export class ItemList<T extends ItemListType> {
 			</li>
 		);
 
-		favoriteElem.value!.addEventListener('click', () => setFavorite(listItemElem.dataset.fav === 'false'));
-		tippy(favoriteElem.value!, {
-			content: 'Add to favorites',
+		const favoriteTooltip = tippy(favoriteElem.value!);
+		const toggleFavoriteTooltipContent = (isFavorited: boolean) => favoriteTooltip.setContent(isFavorited ? 'Remove from favorites' : 'Add to favorites');
+		toggleFavoriteTooltipContent(this.isItemFavorited(itemData));
+		favoriteElem.value!.addEventListener('click', () => {
+			const isFavorited = this.isItemFavorited(itemData);
+			toggleFavoriteTooltipContent(isFavorited);
+			toggleFavorite(isFavorited);
 		});
 
 		if (this.label === SelectorModalTabs.Items) {
+			const batchSimTooltip = tippy(compareButton.value!);
+
 			this.bindToggleCompare(compareContainer.value!);
 			const simUI = this.simUI instanceof IndividualSimUI ? this.simUI : null;
 			if (simUI) {
 				const checkHasItem = () => simUI.bt.hasItem(ItemSpec.create({ id: itemData.id }));
-				const setCompareButtonState = () => compareButton.value!.classList[checkHasItem() ? 'add' : 'remove']('text-brand');
+				const toggleCompareButtonState = () => {
+					const hasItem = checkHasItem();
+					batchSimTooltip.setContent(hasItem ? 'Remove from Batch sim' : 'Add to Batch sim');
+					compareButton.value!.classList[hasItem ? 'add' : 'remove']('text-brand');
+				};
 
-				setCompareButtonState();
+				toggleCompareButtonState();
 				simUI.bt.itemsChangedEmitter.on(() => {
-					setCompareButtonState();
+					toggleCompareButtonState();
 				});
 
 				compareButton.value!.addEventListener('click', () => {
@@ -1564,10 +1574,6 @@ export class ItemList<T extends ItemListType> {
 					// TODO: should we open the bulk sim UI or should we run in the background showing progress, and then sort the items in the picker?
 				});
 			}
-
-			tippy(compareButton.value!, {
-				content: 'Add to Batch sim',
-			});
 		}
 
 		anchorElem.value!.addEventListener('click', (event: Event) => {
@@ -1583,7 +1589,7 @@ export class ItemList<T extends ItemListType> {
 
 		setItemQualityCssClass(nameElem.value!, itemData.quality);
 
-		const setFavorite = (isFavorite: boolean) => {
+		const toggleFavorite = (isFavorite: boolean) => {
 			const filters = this.player.sim.getFilters();
 			if (this.label === SelectorModalTabs.Items) {
 				const favId = itemData.id;
@@ -1595,7 +1601,7 @@ export class ItemList<T extends ItemListType> {
 						filters.favoriteItems.splice(favIdx, 1);
 					}
 				}
-			} else if (this.label === 'Enchants') {
+			} else if (this.label === SelectorModalTabs.Items) {
 				const favId = getUniqueEnchantString(itemData.item as unknown as Enchant);
 				if (isFavorite) {
 					filters.favoriteEnchants.push(favId);
