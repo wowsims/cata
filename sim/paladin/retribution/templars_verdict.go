@@ -14,7 +14,7 @@ func (retPaladin *RetributionPaladin) RegisterTemplarsVerdict() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: paladin.SpellMaskTemplarsVerdict | paladin.SpellMaskSpecialAttack,
+		ClassSpellMask: paladin.SpellMaskTemplarsVerdict,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

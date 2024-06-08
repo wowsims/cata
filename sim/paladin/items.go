@@ -2,6 +2,8 @@ package paladin
 
 import (
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/stats"
+	"time"
 )
 
 // Tier 11 ret
@@ -19,6 +21,29 @@ var ItemSetReinforcedSapphiriumBattleplate = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent) {
 			// Handled in inquisition.go
+		},
+	},
+})
+
+// PvP set
+var ItemSetGladiatorsVindication = core.NewItemSet(core.ItemSet{
+	ID:   917,
+	Name: "Gladiator's Vindication",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+
+			paladin.AddStat(stats.Strength, 70)
+		},
+		4: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+
+			paladin.AddStat(stats.Strength, 90)
+			paladin.AddStaticMod(core.SpellModConfig{
+				Kind:      core.SpellMod_Cooldown_Flat,
+				ClassMask: SpellMaskJudgementBase,
+				TimeValue: -1 * time.Second,
+			})
 		},
 	},
 })

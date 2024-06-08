@@ -80,7 +80,6 @@ export const DefaultFireConsumes = Consumes.create({
 export const DefaultDebuffs = Debuffs.create({
     ebonPlaguebringer: true,
     shadowAndFlame: true,
-    judgement: true,
 });
 
 export const OtherDefaults = {

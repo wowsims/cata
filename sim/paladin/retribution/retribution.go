@@ -30,11 +30,8 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 	retOptions := options.GetRetributionPaladin()
 
 	ret := &RetributionPaladin{
-		Paladin: paladin.NewPaladin(character, options.TalentsString),
-		Seal:    retOptions.Options.ClassOptions.Seal,
+		Paladin: paladin.NewPaladin(character, options.TalentsString, retOptions.Options.ClassOptions),
 	}
-
-	ret.PaladinAura = retOptions.Options.ClassOptions.Aura
 
 	return ret
 }
@@ -42,7 +39,6 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 type RetributionPaladin struct {
 	*paladin.Paladin
 
-	Seal      proto.PaladinSeal
 	HoLDamage float64
 }
 

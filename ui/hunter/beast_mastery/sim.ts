@@ -129,7 +129,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 		}),
 		debuffs: Debuffs.create({
 			sunderArmor: true,
-			judgement: true,
 			curseOfElements: true,
 			savageCombat: true,
 			bloodFrenzy: true,

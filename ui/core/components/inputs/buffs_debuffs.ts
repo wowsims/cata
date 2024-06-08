@@ -261,8 +261,6 @@ export const SpellDamageDebuff = InputHelpers.makeMultiIconInput(
 	'Spell Dmg',
 );
 
-export const JudgementOfLight = makeBooleanDebuffInput({ actionId: ActionId.fromSpellId(20271), fieldName: 'judgement' });
-
 ///////////////////////////////////////////////////////////////////////////
 //                                 CONFIGS
 ///////////////////////////////////////////////////////////////////////////
@@ -433,9 +431,4 @@ export const DEBUFFS_CONFIG = [
 ] as PickerStatOptions[];
 
 export const DEBUFFS_MISC_CONFIG = [
-	{
-		config: JudgementOfLight,
-		picker: IconPicker,
-		stats: [Stat.StatStamina],
-	},
 ] as IconPickerStatOption[];
