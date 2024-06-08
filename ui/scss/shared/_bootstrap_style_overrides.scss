@@ -1,20 +1,4 @@
-@font-face {
-	font-family: SimDefaultFont;
-	src: url(/cata/assets/fonts/PlusJakartaSans-Regular.woff2);
-}
-
-@font-face {
-	font-family: SimDefaultFont;
-	src: url(/cata/assets/fonts/PlusJakartaSans-Bold.woff2);
-	font-weight: bold;
-}
-
 $gray-800: #323232;
-
-:root {
-	--bs-body-font-family: SimDefaultFont;
-	--bs-body-line-height: 1.25;
-}
 
 .btn-close {
 	background: none;

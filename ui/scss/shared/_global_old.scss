@@ -8,17 +8,6 @@
 	--sidebar-highlight-color: var(--bs-crit);
 }
 
-@font-face {
-	font-family: SimDefaultFont;
-	src: url(/cata/assets/fonts/PlusJakartaSans-Regular.woff2);
-}
-
-@font-face {
-	font-family: SimDefaultFont;
-	src: url(/cata/assets/fonts/PlusJakartaSans-Bold.woff2);
-	font-weight: bold;
-}
-
 * {
 	font-family: SimDefaultFont;
 	letter-spacing: 1px;
