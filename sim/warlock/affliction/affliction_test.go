@@ -325,6 +325,35 @@ func TestDrainSoulExecute3SEHauntSiphonSoulDemonSoul(t *testing.T) {
 	checkDotTick(t, sim, drainSoul.CurDot(), attackTable, 14739.9005, 5.535674)
 }
 
+func checkTicks(t *testing.T, dot *core.Dot, msg string, expected int32) {
+	if dot.RemainingTicks() != expected {
+		t.Helper()
+		t.Fatalf("%s: Expected: %v, Actual: %v", msg, expected, dot.RemainingTicks())
+	}
+}
+
+func TestCorruptionHasteCap(t *testing.T) {
+	sim := setupFakeSim(defStats, afflictionTalents, &proto.Glyphs{})
+	lock := sim.Raid.Parties[0].Players[0].(*AfflictionWarlock)
+	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 2588,
+	})
+	unstableAff := lock.UnstableAffliction
+	unstableAffDot := unstableAff.CurDot()
+
+	unstableAff.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, unstableAffDot, "Incorrect tick count for UA at 2588 haste", 6)
+	unstableAffDot.Deactivate(sim)
+
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1,
+	})
+	unstableAff.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, unstableAffDot, "Incorrect tick count for UA at 2589 haste", 7)
+}
+
 func TestAffliction(t *testing.T) {
 	var defaultAfflictionWarlock = &proto.Player_AfflictionWarlock{
 		AfflictionWarlock: &proto.AfflictionWarlock{

@@ -151,11 +151,18 @@ export class BulkItemPicker extends Component {
 			this.setItem(item);
 			const slot = getEligibleItemSlots(this.item.item)[0];
 			const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
+			const eligibleReforges = this.item?.item ? this.simUI.player.getAvailableReforgings(this.item.getWithRandomSuffixStats()) : [];
+			const eligibleRandomSuffixes = this.item.item.randomSuffixOptions;
+
 			const openEnchantGemSelector = (event: Event) => {
 				event.preventDefault();
 
 				if (!!eligibleEnchants.length) {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Enchants, this.createGearData());
+				} else if (!!eligibleRandomSuffixes.length) {
+					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.RandomSuffixes, this.createGearData());
+				} else if (!!eligibleReforges.length) {
+					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Reforging, this.createGearData());
 				} else if (!!this.item._gems.length) {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Gem1, this.createGearData());
 				}
@@ -248,7 +255,10 @@ export class BulkTab extends SimTab {
 		this.pendingDiv = (<div className="results-pending-overlay d-flex hide" />) as HTMLDivElement;
 		this.pendingResults = new ResultsViewer(this.pendingDiv);
 		this.pendingResults.hideAll();
-		this.selectorModal = new SelectorModal(this.simUI.rootElem, this.simUI, this.simUI.player, undefined, [SelectorModalTabs.Items]);
+		this.selectorModal = new SelectorModal(this.simUI.rootElem, this.simUI, this.simUI.player, undefined, {
+			id: 'bulk-selector-modal',
+			disabledTabs: [SelectorModalTabs.Items],
+		});
 
 		this.contentContainer.appendChild(
 			<>
@@ -364,23 +374,32 @@ export class BulkTab extends SimTab {
 		return itemsDb;
 	}
 
-	addItems(items: Array<ItemSpec>) {
-		if (this.items.length == 0) {
-			this.items = items;
-		} else {
-			this.items = this.items.concat(items);
-		}
+	addItem(item: ItemSpec) {
+		this.addItems([item]);
+	}
+	addItems(items: ItemSpec[]) {
+		this.items = [...(this.items || []), ...items];
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
-	setItems(items: Array<ItemSpec>) {
+	setItems(items: ItemSpec[]) {
 		this.items = items;
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
+	removeItem(item: ItemSpec) {
+		const indexToRemove = this.items.findIndex(i => ItemSpec.equals(i, item));
+		if (indexToRemove === -1) return;
+		this.items.splice(indexToRemove, 1);
+		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
+	}
 	clearItems() {
 		this.items = new Array<ItemSpec>();
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
+	}
+
+	hasItem(item: ItemSpec) {
+		return this.items.some(i => ItemSpec.equals(i, item));
 	}
 
 	getItems(): Array<ItemSpec> {
@@ -417,15 +436,6 @@ export class BulkTab extends SimTab {
 		});
 		itemsBlock.bodyElement.classList.add('gear-picker-root', 'gear-picker-root-bulk');
 
-		const noticeWorkInProgress = (
-			<div className="bulk-items-text-line">
-				<i>
-					Notice: This is under very early but active development and experimental. You may also need to update your WoW AddOn if you want to import
-					your bags.
-				</i>
-			</div>
-		);
-
 		const itemTextIntro = (
 			<div className="bulk-items-text-line">
 				<i>
@@ -452,7 +462,6 @@ export class BulkTab extends SimTab {
 
 		itemsBlock.bodyElement.appendChild(
 			<>
-				{noticeWorkInProgress}
 				{itemTextIntro}
 				{itemList}
 			</>,
@@ -570,7 +579,7 @@ export class BulkTab extends SimTab {
 		const searchInputRef = ref<HTMLInputElement>();
 		const searchResultsRef = ref<HTMLUListElement>();
 		const searchWrapper = (
-			<div className="search-wrapper">
+			<div className="search-wrapper hide">
 				<input ref={searchInputRef} type="text" placeholder="Search..." className="batch-search-input form-control hide" />
 				<ul ref={searchResultsRef} className="batch-search-results hide"></ul>
 			</div>
@@ -647,6 +656,7 @@ export class BulkTab extends SimTab {
 		const searchButton = <button className="btn btn-secondary w-100 bulk-settings-button">{searchButtonContents.cloneNode(true)}</button>;
 		searchButton.addEventListener('click', () => {
 			if (searchInputRef.value?.classList.contains('hide')) {
+				searchWrapper?.classList.remove('hide');
 				searchButton.replaceChildren(<>Close Search Results</>);
 				allItems = this.simUI.sim.db.getAllItems().filter(item => canEquipItem(item, this.simUI.player.getPlayerSpec(), undefined));
 				searchInputRef.value?.classList.remove('hide');
@@ -654,6 +664,7 @@ export class BulkTab extends SimTab {
 				searchInputRef.value?.focus();
 			} else {
 				searchButton.replaceChildren(searchButtonContents.cloneNode(true));
+				searchWrapper?.classList.add('hide');
 				searchInputRef.value?.classList.add('hide');
 				searchResultsRef.value?.replaceChildren();
 				searchResultsRef.value?.classList.add('hide');
@@ -671,7 +682,7 @@ export class BulkTab extends SimTab {
 		const talentsContainerRef = ref<HTMLDivElement>();
 		const talentsToSimDiv = (
 			<div className={clsx('talents-picker-container', !this.simTalents && 'hide')}>
-				<p>Pick talents to sim (will increase time to sim)</p>
+				<label className="mb-2">Pick talents to sim (will increase time to sim)</label>
 				<div ref={talentsContainerRef} className="talents-container"></div>
 			</div>
 		);
@@ -742,7 +753,7 @@ export class BulkTab extends SimTab {
 		const socketsContainerRef = ref<HTMLDivElement>();
 		const defaultGemDiv = (
 			<div className={clsx('default-gem-container', !this.autoGem && 'hide')}>
-				<label>Defaults for Auto Gem</label>
+				<label className="mb-2">Defaults for Auto Gem</label>
 				<div ref={socketsContainerRef} className="sockets-container"></div>
 			</div>
 		);
@@ -923,8 +934,9 @@ class GemSelectorModal extends BaseModal {
 	show() {
 		// construct item list the first time its opened.
 		// This makes startup faster and also means we are sure to have item database loaded.
-		if (this.ilist == null) {
+		if (!this.ilist) {
 			this.ilist = new ItemList<UIGem>(
+				'bulk-tab-gem-selector',
 				this.contentElem,
 				this.simUI,
 				ItemSlot.ItemSlotHead,
