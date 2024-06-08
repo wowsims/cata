@@ -62,9 +62,10 @@ func (paladin *Paladin) applyJudgementsOfThePure() {
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:           "Judgements of the Pure",
+		Name:           "Judgements of the Pure (Proc)",
 		ActionID:       actionId,
-		Callback:       core.CallbackOnCastComplete,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
 		ClassSpellMask: SpellMaskJudgement,
 
 		ProcChance: 1.0,

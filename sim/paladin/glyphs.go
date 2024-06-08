@@ -86,7 +86,7 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				ActionID: core.ActionID{SpellID: 54934},
-				Label:    "Glyph of Exorcism",
+				Label:    "Glyph of Exorcism (DoT)",
 			},
 			NumberOfTicks:       3,
 			AffectedByCastSpeed: false,

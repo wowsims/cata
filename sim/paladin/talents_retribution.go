@@ -185,7 +185,7 @@ func (paladin *Paladin) applyArtOfWar() {
 	})
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:       "The Art of War",
+		Name:       "Art of War",
 		ActionID:   core.ActionID{SpellID: 87138},
 		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskMeleeWhiteHit,
@@ -216,7 +216,7 @@ func (paladin *Paladin) applyDivineStorm() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskDivineStorm | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskDivineStorm,
 
 		MaxRange: 8,
 
