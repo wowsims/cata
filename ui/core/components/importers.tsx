@@ -33,7 +33,7 @@ export abstract class Importer extends BaseModal {
 		const importButtonRef = ref<HTMLButtonElement>();
 		const uploadInputRef = ref<HTMLInputElement>();
 
-		this.body.appendChild(
+		this.body.replaceChildren(
 			<>
 				<div ref={descriptionElemRef} className="import-description"></div>
 				<textarea ref={textElemRef} className="importer-textarea form-control" attributes={{ spellcheck: false }}></textarea>
@@ -45,7 +45,7 @@ export abstract class Importer extends BaseModal {
 				{this.includeFile && (
 					<>
 						<label htmlFor={uploadInputId} className="importer-button btn btn-primary upload-button me-2">
-							<Icon icon="file-arrow-up" />
+							<Icon icon="file-arrow-up" className="me-1" />
 							Upload File
 						</label>
 						<input ref={uploadInputRef} type="file" id={uploadInputId} className="importer-upload-input d-none" hidden />
@@ -229,7 +229,7 @@ export class IndividualJsonImporter<SpecType extends Spec> extends Importer {
 	}
 }
 
-export class Individual80UImporter<SpecType extends Spec> extends Importer {
+export class Individual60UImporter<SpecType extends Spec> extends Importer {
 	private readonly simUI: IndividualSimUI<SpecType>;
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, '60 Upgrades Cataclysm Import', true);
@@ -238,7 +238,7 @@ export class Individual80UImporter<SpecType extends Spec> extends Importer {
 		this.descriptionElem.appendChild(
 			<>
 				<p>
-					Import settings from
+					Import settings from{' '}
 					<Link href="https://sixtyupgrades.com/cata" target="_blank">
 						60 Upgrades
 					</Link>
@@ -255,7 +255,7 @@ export class Individual80UImporter<SpecType extends Spec> extends Importer {
 		try {
 			importJson = JSON.parse(data);
 		} catch {
-			throw new Error('Please use a valid 80U export.');
+			throw new Error('Please use a valid 60U export.');
 		}
 
 		// Parse all the settings.
@@ -285,6 +285,10 @@ export class Individual80UImporter<SpecType extends Spec> extends Importer {
 			if (itemJson.gems) {
 				itemSpec.gems = (itemJson.gems as Array<any>).filter(gemJson => gemJson?.id).map(gemJson => gemJson.id);
 			}
+			if (itemJson.reforge?.id) {
+				itemSpec.reforging = itemJson.reforge.id;
+			}
+
 			equipmentSpec.items.push(itemSpec);
 		});
 
@@ -487,6 +491,8 @@ export class IndividualAddonImporter<SpecType extends Spec> extends Importer {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, 'Addon Import', true);
 		this.simUI = simUI;
+
+		const warningRef = ref<HTMLDivElement>();
 		this.descriptionElem.appendChild(
 			<>
 				<p>
@@ -500,8 +506,27 @@ export class IndividualAddonImporter<SpecType extends Spec> extends Importer {
 					This feature imports gear, race, talents, glyphs, and professions. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.
 				</p>
 				<p>To import, paste the output from the addon below and click, 'Import'.</p>
+				<div ref={warningRef} />
 			</>,
 		);
+
+		if (warningRef.value)
+			new Toast({
+				title: 'Reforging issues',
+				body: (
+					<>
+						There are known issues with Reforging when using the WSE addon.
+						<br />
+						Always make sure to double check your reforges after importing.
+					</>
+				),
+				additionalClasses: ['toast-import-warning'],
+				container: warningRef.value,
+				variant: 'warning',
+				canClose: false,
+				autoShow: true,
+				autohide: false,
+			});
 	}
 
 	async onImport(data: string) {

@@ -38,7 +38,7 @@ type Dot struct {
 	onTick     OnTick
 	tickAction *PendingAction
 
-	tickPeriod     time.Duration
+	tickPeriod     time.Duration // hasted time between each tick, rounded to full ms
 	BaseTickLength time.Duration // time between each tick
 
 	SnapshotBaseDamage         float64
@@ -81,7 +81,10 @@ func (dot *Dot) recomputeAuraDuration(sim *Simulation) {
 
 	dot.remainingTicks = dot.BaseTickCount
 	if dot.affectedByCastSpeed {
-		dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell)
+		// round the tickPeriod to the nearest full ms, same as ingame. This can best be seen ingame in how haste caps
+		// work. For example shadowflame should take 1009 haste rating with the 5%/3% haste buffs without rounding, but
+		// because of the rounding it already applies at 1007 haste rating.
+		dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell).Round(time.Millisecond)
 
 		if !dot.hasteReducesDuration {
 			dot.remainingTicks = dot.HastedTickCount()
@@ -157,6 +160,42 @@ func (dot *Dot) CopyDotAndApply(sim *Simulation, originaldot *Dot) {
 	}
 	dot.tickAction = pa
 	sim.AddPendingAction(dot.tickAction)
+}
+
+// This is the incredibly cursed way fel flame uses to increase dot duration, don't use unless you know what you're
+// doing. It extends the duration, immediately recalculates the next tick and then fits as many ticks into the rest of
+// the aura duration as it can. This will cause aura duration and dot ticks to desync ingame, so the aura will fall off
+// prematurely to what is shown.
+//
+// Sometimes the game also decides to tick one last time anyway, even though the time since the last tick is absurdly
+// low, though this isn't implemented until someone figures out the conditions.
+func (dot *Dot) DurationExtendSnapshot(sim *Simulation, extendBy time.Duration) {
+	if !dot.IsActive() {
+		panic("Can't extend a non-active dot")
+	}
+	dot.TakeSnapshot(sim, false)
+
+	previousTick := dot.tickAction.NextActionAt - dot.tickPeriod
+	dot.tickPeriod = dot.Spell.Unit.ApplyCastSpeedForSpell(dot.BaseTickLength, dot.Spell).Round(time.Millisecond)
+
+	// ensure the tick is at least scheduled for the future ..
+	nextTick := max(previousTick+dot.tickPeriod, sim.CurrentTime+1*time.Millisecond)
+
+	dot.tickAction.Cancel(sim)
+	dot.tickAction = &PendingAction{
+		NextActionAt: nextTick,
+		// Priority:     ActionPriorityDOT,
+		OnAction: dot.periodicTick,
+	}
+
+	// cap the total duration to the amount of hasted ticks a new dot would have
+	extendDuration := min(dot.RemainingDuration(sim)+extendBy,
+		dot.tickPeriod*time.Duration(dot.HastedTickCount()-1)+(nextTick-sim.CurrentTime))
+	dot.remainingTicks = int32((extendDuration-(nextTick-sim.CurrentTime))/dot.tickPeriod) + 1
+
+	dot.Duration = nextTick - sim.CurrentTime + time.Duration(dot.remainingTicks-1)*dot.tickPeriod
+	sim.AddPendingAction(dot.tickAction)
+	dot.Refresh(sim)
 }
 
 // Forces an instant tick. Does not reset the tick timer or aura duration,

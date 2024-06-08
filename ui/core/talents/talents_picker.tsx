@@ -71,13 +71,13 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 		this.rootElem.appendChild(
 			<div className="talents-picker-inner" ref={containerElemRef}>
 				<div className="talents-picker-header">
-					<div>
-						<label>Points Remaining:</label>
-						<span className="talent-tree-points" ref={pointsRemainingElemRef}>
-							{getPointsRemaining()}
-						</span>
+					<div className="d-flex">
+						<label>
+							Points Remaining:
+							<span ref={pointsRemainingElemRef}>{getPointsRemaining()}</span>
+						</label>
 					</div>
-					<div className="talents-picker-actions" ref={actionsContainerRef}></div>
+					<div className="talents-picker-actions" ref={actionsContainerRef} />
 				</div>
 				<div id="talents-carousel" className="carousel slide">
 					<div className="carousel-inner" ref={carouselContainerRef}></div>
@@ -250,8 +250,8 @@ class TalentTreePicker<TalentsProto> extends Component {
 					<span className="talent-tree-points"></span>
 					<Button variant="link" className="talent-tree-reset link-danger" iconLeft="times" />
 				</div>
-				<div className="talent-tree-background"></div>
-				<div className="talent-tree-main"></div>
+				<div className="talent-tree-background" />
+				<div className="talent-tree-main" />
 			</>,
 		);
 
@@ -373,7 +373,7 @@ class TalentReqArrow extends Component {
 				this.rootElem.dataset.reqArrowRowSize = String(Math.abs(parentLoc.rowIdx - childLoc.rowIdx));
 				rowEnd += 1;
 				colEnd = this.dir == 'rightdown' ? colEnd + 1 : colEnd - 1;
-				this.rootElem.appendChild(<div></div>);
+				this.rootElem.appendChild(<div />);
 			}
 		}
 

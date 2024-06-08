@@ -2,6 +2,7 @@ import { Button, convertToLegacy, Icon, Link } from '@wowsims/ui';
 import clsx from 'clsx';
 import { ref } from 'tsx-vanilla';
 
+import { setItemQualityCssClass } from '../../css_utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { BulkComboResult, BulkSettings, ItemSpecWithSlot, ProgressMetrics, TalentLoadout } from '../../proto/api';
 import { EquipmentSpec, GemColor, ItemSlot, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
@@ -10,10 +11,11 @@ import { ActionId } from '../../proto_utils/action_id';
 import { Database } from '../../proto_utils/database';
 import { EquippedItem } from '../../proto_utils/equipped_item';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
+import { Stats } from '../../proto_utils/stats';
 import { canEquipItem, getEligibleItemSlots } from '../../proto_utils/utils';
 import { TypedEvent } from '../../typed_event';
 import { EventID } from '../../typed_event.js';
-import { cloneChildren } from '../../utils';
+import { cloneChildren, noop } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
 import { BaseModal } from '../base_modal';
 import { BooleanPicker } from '../boolean_picker';
@@ -59,69 +61,61 @@ export class BulkGearJsonImporter extends Importer {
 
 class BulkSimResultRenderer {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, result: BulkComboResult, baseResult: BulkComboResult) {
-		const dpsDivParent = document.createElement('div');
-		dpsDivParent.classList.add('results-sim');
-
-		const dpsDiv = document.createElement('div');
-		dpsDiv.classList.add('bulk-result-body-dps', 'bulk-items-text-line', 'results-sim-dps', 'damage-metrics');
-		dpsDivParent.appendChild(dpsDiv);
-
-		const dpsNumber = document.createElement('span');
-		dpsNumber.textContent = this.formatDps(result.unitMetrics!.dps!.avg);
-		dpsNumber.classList.add('topline-result-avg');
-		dpsDiv.appendChild(dpsNumber);
-
 		const dpsDelta = result.unitMetrics!.dps!.avg! - baseResult.unitMetrics!.dps!.avg;
-		const dpsDeltaSpan = document.createElement('span');
-		dpsDeltaSpan.textContent = `${this.formatDpsDelta(dpsDelta)}`;
-		dpsDeltaSpan.classList.add(dpsDelta >= 0 ? 'bulk-result-header-positive' : 'bulk-result-header-negative');
-		dpsDiv.appendChild(dpsDeltaSpan);
 
-		const itemsContainer = document.createElement('div');
-		itemsContainer.classList.add('bulk-gear-combo');
-		parent.appendChild(itemsContainer);
-		parent.appendChild(dpsDivParent);
+		const equipButtonRef = ref<HTMLButtonElement>();
+		const dpsDeltaRef = ref<HTMLDivElement>();
+		const itemsContainerRef = ref<HTMLDivElement>();
+		parent.appendChild(
+			<>
+				<div className="results-sim">
+					<div className="bulk-result-body-dps bulk-items-text-line results-sim-dps damage-metrics">
+						<span className="topline-result-avg">{this.formatDps(result.unitMetrics!.dps!.avg)}</span>
 
-		const talentText = document.createElement('p');
-		talentText.classList.add('talent-loadout-text');
-		if (result.talentLoadout && typeof result.talentLoadout === 'object') {
-			if (typeof result.talentLoadout.name === 'string') {
-				talentText.textContent = 'Talent loadout used: ' + result.talentLoadout.name;
-			}
-		} else {
-			talentText.textContent = 'Current talents';
-		}
+						<span ref={dpsDeltaRef} className={clsx(dpsDelta >= 0 ? 'bulk-result-header-positive' : 'bulk-result-header-negative')}>
+							{this.formatDpsDelta(dpsDelta)}
+						</span>
 
-		dpsDiv.appendChild(talentText);
-		if (result.itemsAdded && result.itemsAdded.length > 0) {
-			const equipBtn = document.createElement('button');
-			equipBtn.textContent = 'Equip';
-			equipBtn.classList.add('btn', 'btn-primary', 'bulk-equipit');
-			equipBtn.onclick = () => {
+						<p className="talent-loadout-text">
+							{result.talentLoadout && typeof result.talentLoadout === 'object' ? (
+								typeof result.talentLoadout.name === 'string' && <>Talent loadout used: {result.talentLoadout.name}</>
+							) : (
+								<>Current talents</>
+							)}
+						</p>
+					</div>
+				</div>
+				<div ref={itemsContainerRef} className="bulk-gear-combo"></div>
+				{!!result.itemsAdded?.length && (
+					<button ref={equipButtonRef} className="btn btn-primary bulk-equipit">
+						Equip
+					</button>
+				)}
+			</>,
+		);
+
+		if (!!result.itemsAdded?.length) {
+			equipButtonRef.value?.addEventListener('click', () => {
 				result.itemsAdded.forEach(itemAdded => {
 					const item = simUI.sim.db.lookupItemSpec(itemAdded.item!);
 					simUI.player.equipItem(TypedEvent.nextEventID(), itemAdded.slot, item);
 					simUI.simHeader.activateTab('gear-tab');
 				});
-			};
+			});
 
-			parent.appendChild(equipBtn);
-
+			const items = (<></>) as HTMLElement;
 			for (const is of result.itemsAdded) {
+				const itemContainer = (<div className="bulk-result-item" />) as HTMLElement;
 				const item = simUI.sim.db.lookupItemSpec(is.item!);
-				const renderer = new ItemRenderer(parent, itemsContainer, simUI.player);
+				const renderer = new ItemRenderer(items, itemContainer, simUI.player);
 				renderer.update(item!);
-
-				const p = document.createElement('a');
-				p.classList.add('bulk-result-item-slot');
-				p.textContent = this.itemSlotName(is);
-				renderer.nameElem.appendChild(p);
+				renderer.nameElem.appendChild(<a className="bulk-result-item-slot">{this.itemSlotName(is)}</a>);
+				items.appendChild(itemContainer);
 			}
+			itemsContainerRef.value?.appendChild(items);
 		} else if (!result.talentLoadout || typeof result.talentLoadout !== 'object') {
-			const p = document.createElement('p');
-			p.textContent = 'No changes - this is your currently equipped gear!';
-			parent.appendChild(p);
-			dpsDeltaSpan.textContent = '';
+			dpsDeltaRef.value?.classList.add('hide');
+			parent.appendChild(<p>No changes - this is your currently equipped gear!</p>);
 		}
 	}
 
@@ -140,8 +134,6 @@ class BulkSimResultRenderer {
 
 export class BulkItemPicker extends Component {
 	private readonly itemElem: ItemRenderer;
-	private readonly selectorModal: SelectorModal;
-
 	readonly simUI: IndividualSimUI<any>;
 	readonly bulkUI: BulkTab;
 	readonly index: number;
@@ -155,7 +147,6 @@ export class BulkItemPicker extends Component {
 		this.index = index;
 		this.item = item;
 		this.itemElem = new ItemRenderer(parent, this.rootElem, simUI.player);
-		this.selectorModal = new SelectorModal(this.simUI.rootElem, this.simUI, this.simUI.player);
 
 		this.simUI.sim.waitForInit().then(() => {
 			this.setItem(item);
@@ -165,25 +156,23 @@ export class BulkItemPicker extends Component {
 				event.preventDefault();
 
 				if (!!eligibleEnchants.length) {
-					this.selectorModal.openTab(slot, SelectorModalTabs.Enchants, this.createGearData());
+					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Enchants, this.createGearData());
 				} else if (!!this.item._gems.length) {
-					this.selectorModal.openTab(slot, SelectorModalTabs.Gem1, this.createGearData());
+					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Gem1, this.createGearData());
 				}
 
-				const destroyItemButton = document.createElement('button');
-				destroyItemButton.textContent = 'Remove from Batch';
-				destroyItemButton.classList.add('btn', 'btn-danger');
-				destroyItemButton.onclick = () => {
+				const destroyItemButton = <button className="btn btn-danger">Remove from Batch</button>;
+				destroyItemButton.addEventListener('click', () => {
 					bulkUI.setItems(
 						bulkUI.getItems().filter((_, idx) => {
-							return idx !== this.index;
+							return idx != this.index;
 						}),
 					);
-					this.selectorModal.close();
-				};
-				const closeX = this.selectorModal.header?.querySelector('.close-button');
+					this.bulkUI.selectorModal.close();
+				});
+				const closeX = this.bulkUI.selectorModal.header?.querySelector('.close-button');
 				if (!!closeX) {
-					this.selectorModal.header?.insertBefore(destroyItemButton, closeX);
+					this.bulkUI.selectorModal.header?.insertBefore(destroyItemButton, closeX);
 				}
 			};
 
@@ -195,7 +184,7 @@ export class BulkItemPicker extends Component {
 
 	setItem(newItem: EquippedItem | null) {
 		this.itemElem.clear();
-		if (newItem != null) {
+		if (!!newItem) {
 			this.itemElem.update(newItem);
 			this.item = newItem;
 		} else {
@@ -209,7 +198,7 @@ export class BulkItemPicker extends Component {
 	private createGearData(): GearData {
 		const changeEvent = new TypedEvent<void>();
 		return {
-			equipItem: (_, equippedItem) => {
+			equipItem: (_, equippedItem: EquippedItem | null) => {
 				if (equippedItem) {
 					const allItems = this.bulkUI.getItems();
 					allItems[this.index] = equippedItem.asSpec();
@@ -248,6 +237,7 @@ export class BulkTab extends SimTab {
 	private defaultGems: SimGem[];
 	private savedTalents: TalentLoadout[];
 	private gemIconElements: HTMLImageElement[];
+	readonly selectorModal: SelectorModal;
 
 	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<any>) {
 		super(parentElem, simUI, { identifier: 'bulk-tab', title: 'Batch' });
@@ -259,10 +249,18 @@ export class BulkTab extends SimTab {
 		this.pendingDiv = (<div className="results-pending-overlay d-flex hide" />) as HTMLDivElement;
 		this.pendingResults = new ResultsViewer(this.pendingDiv);
 		this.pendingResults.hideAll();
+		this.selectorModal = new SelectorModal(this.simUI.rootElem, this.simUI, this.simUI.player, undefined, {
+			id: 'bulk-selector-modal',
+			disabledTabs: [SelectorModalTabs.Items],
+		});
 
-		this.contentContainer.appendChild(this.leftPanel);
-		this.contentContainer.appendChild(this.rightPanel);
-		this.contentContainer.appendChild(this.pendingDiv);
+		this.contentContainer.appendChild(
+			<>
+				{this.leftPanel}
+				{this.rightPanel}
+				{this.pendingDiv}
+			</>,
+		);
 
 		this.doCombos = true;
 		this.fastMode = true;
@@ -307,7 +305,10 @@ export class BulkTab extends SimTab {
 				ActionId.fromItemId(gem.id)
 					.fill()
 					.then(filledId => {
-						this.gemIconElements[idx].src = filledId.iconUrl;
+						if (gem.id) {
+							this.gemIconElements[idx].src = filledId.iconUrl;
+							this.gemIconElements[idx].classList.remove('hide');
+						}
 					});
 			});
 		}
@@ -367,23 +368,32 @@ export class BulkTab extends SimTab {
 		return itemsDb;
 	}
 
-	addItems(items: Array<ItemSpec>) {
-		if (this.items.length == 0) {
-			this.items = items;
-		} else {
-			this.items = this.items.concat(items);
-		}
+	addItem(item: ItemSpec) {
+		this.addItems([item]);
+	}
+	addItems(items: ItemSpec[]) {
+		this.items = [...(this.items || []), ...items];
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
-	setItems(items: Array<ItemSpec>) {
+	setItems(items: ItemSpec[]) {
 		this.items = items;
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
+	removeItem(item: ItemSpec) {
+		const indexToRemove = this.items.findIndex(i => ItemSpec.equals(i, item));
+		if (indexToRemove === -1) return;
+		this.items.splice(indexToRemove, 1);
+		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
+	}
 	clearItems() {
 		this.items = new Array<ItemSpec>();
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
+	}
+
+	hasItem(item: ItemSpec) {
+		return this.items.some(i => ItemSpec.equals(i, item));
 	}
 
 	getItems(): Array<ItemSpec> {
@@ -428,7 +438,6 @@ export class BulkTab extends SimTab {
 				</i>
 			</div>
 		);
-		itemsBlock.bodyElement.appendChild(noticeWorkInProgress);
 
 		const itemTextIntro = (
 			<div className="bulk-items-text-line">
@@ -440,20 +449,28 @@ export class BulkTab extends SimTab {
 		);
 		itemsBlock.bodyElement.appendChild(itemTextIntro);
 
-		const itemList = (<div className="tab-panel-colbulk-gear-combo" />) as HTMLElement;
-		itemsBlock.bodyElement.appendChild(itemList);
+		const itemList = (<div className="tab-panel-col bulk-gear-combo" />) as HTMLElement;
 
 		this.itemsChangedEmitter.on(() => {
-			itemList.innerHTML = '';
-			if (this.items.length > 0) {
+			const items = (<></>) as HTMLElement;
+			if (!!this.items.length) {
 				itemTextIntro.textContent = 'The following items will be simmed together with your equipped gear.';
 				for (let i = 0; i < this.items.length; ++i) {
 					const spec = this.items[i];
 					const item = this.simUI.sim.db.lookupItemSpec(spec);
-					new BulkItemPicker(itemList, this.simUI, this, item!, i);
+					new BulkItemPicker(items, this.simUI, this, item!, i);
 				}
 			}
+			itemList.replaceChildren(items);
 		});
+
+		itemsBlock.bodyElement.appendChild(
+			<>
+				{noticeWorkInProgress}
+				{itemTextIntro}
+				{itemList}
+			</>,
+		);
 
 		this.clearItems();
 
@@ -473,7 +490,7 @@ export class BulkTab extends SimTab {
 
 		this.simUI.sim.bulkSimResultEmitter.on((_, bulkSimResult) => {
 			resultsBlock.rootElem.hidden = bulkSimResult.results.length == 0;
-			resultsBlock.bodyElement.innerHTML = '';
+			resultsBlock.bodyElement.replaceChildren();
 
 			for (const r of bulkSimResult.results) {
 				const resultBlock = new ContentBlock(resultsBlock.bodyElement, 'bulk-result', {
@@ -493,13 +510,12 @@ export class BulkTab extends SimTab {
 				Simulate Batch
 			</Button>
 		) as HTMLButtonElement;
-		settingsBlock.bodyElement.appendChild(bulkSimButton);
+
 		bulkSimButton.addEventListener('click', () => {
 			this.pendingDiv.classList.remove('hide');
 			this.leftPanel.classList.add('blurred');
 			this.rightPanel.classList.add('blurred');
 			const defaultState = cloneChildren(bulkSimButton);
-
 			bulkSimButton.disabled = true;
 			bulkSimButton.classList.add('disabled');
 			bulkSimButton.replaceChildren(
@@ -518,11 +534,11 @@ export class BulkTab extends SimTab {
 				const msSinceStart = new Date().getTime() - simStart;
 				const iterPerSecond = progressMetrics.completedIterations / (msSinceStart / 1000);
 
-				if (combinations == 0) {
+				if (combinations === 0) {
 					combinations = progressMetrics.totalSims;
 				}
 				if (this.fastMode) {
-					if (rounds == 0 && progressMetrics.totalSims > 0) {
+					if (rounds === 0 && progressMetrics.totalSims > 0) {
 						rounds = Math.ceil(Math.log(progressMetrics.totalSims / 20) / Math.log(2)) + 1;
 						currentRound = 1;
 					}
@@ -535,7 +551,7 @@ export class BulkTab extends SimTab {
 				this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
 				lastTotal = progressMetrics.totalSims;
 
-				if (progressMetrics.finalBulkResult != null) {
+				if (!!progressMetrics.finalBulkResult) {
 					// reset state
 					this.pendingDiv.classList.add('hide');
 					this.leftPanel.classList.remove('blurred');
@@ -554,15 +570,13 @@ export class BulkTab extends SimTab {
 				Import From Bags
 			</Button>
 		);
-		settingsBlock.bodyElement.appendChild(importButton);
 		importButton.addEventListener('click', () => new BulkGearJsonImporter(this.simUI.rootElem, this.simUI, this));
 
 		const importFavsButton = (
-			<Button variant="secondary" className={clsx('bulk-settings-button', 'w-100')}>
+			<Button variant="secondary" className={clsx('bulk-settings-button', 'w-100')} iconLeft="download">
 				Import Favorites
 			</Button>
 		);
-		settingsBlock.bodyElement.appendChild(importFavsButton);
 		importFavsButton.addEventListener('click', () => {
 			const filters = this.simUI.player.sim.getFilters();
 			const items = filters.favoriteItems.map(itemID => {
@@ -571,24 +585,24 @@ export class BulkTab extends SimTab {
 			this.addItems(items);
 		});
 
-		const searchButton = (
-			<Button variant="secondary" className={clsx('bulk-settings-button', 'w-100')} iconLeft="search">
-				Add Item
-			</Button>
-		) as HTMLButtonElement;
-		settingsBlock.bodyElement.appendChild(searchButton);
 
-		const searchText = (<input type="text" placeholder="search..." className="hide" />) as HTMLInputElement;
-		settingsBlock.bodyElement.appendChild(searchText);
+		const searchInputRef = ref<HTMLInputElement>();
+		const searchResultsRef = ref<HTMLUListElement>();
+		const searchWrapper = (
+			<div className="search-wrapper hide">
+				<input ref={searchInputRef} type="text" placeholder="Search..." className="batch-search-input form-control hide" />
+				<ul ref={searchResultsRef} className="batch-search-results hide"></ul>
+			</div>
+		);
 
 		const searchResults = (<ul className="batch-search-results hide" />) as HTMLUListElement;
 		settingsBlock.bodyElement.appendChild(searchResults);
 		let allItems = Array<UIItem>();
 
-		searchText.addEventListener('keyup', event => {
+		searchInputRef.value?.addEventListener('keyup', event => {
 			if (event.key == 'Enter') {
 				const toAdd = Array<ItemSpec>();
-				searchResults.childNodes.forEach(node => {
+				searchResultsRef.value?.childNodes.forEach(node => {
 					const strID = (node as HTMLElement).getAttribute('data-item-id');
 					if (strID != null) {
 						toAdd.push(ItemSpec.create({ id: Number.parseInt(strID) }));
@@ -598,16 +612,19 @@ export class BulkTab extends SimTab {
 			}
 		});
 
-		searchText.addEventListener('input', _event => {
-			const searchString = searchText.value;
-			searchResults.innerHTML = '';
-			if (searchString.length == 0) {
+		searchInputRef.value?.addEventListener('input', _event => {
+			const searchString = searchInputRef.value?.value || '';
+
+			if (!searchString.length) {
+				searchResultsRef.value?.replaceChildren();
+				searchResultsRef.value?.classList.add('hide');
 				return;
 			}
-			const pieces = searchString.split(' ');
 
-			let displayCount = 0;
-			allItems.every(item => {
+			const pieces = searchString.split(' ');
+			const items = <></>;
+
+			allItems.forEach(item => {
 				let matched = true;
 				const lcName = item.name.toLowerCase();
 				const lcSetName = item.setName.toLowerCase();
@@ -622,52 +639,52 @@ export class BulkTab extends SimTab {
 				});
 
 				if (matched) {
-					const itemElement = document.createElement('li');
-					itemElement.innerHTML = `<span>${item.name}</span>`;
-					itemElement.setAttribute('data-item-id', item.id.toString());
-					itemElement.addEventListener('click', _ev => {
+					const itemRef = ref<HTMLLIElement>();
+					const itemNameRef = ref<HTMLSpanElement>();
+					items.appendChild(
+						<li ref={itemRef} dataset={{ itemId: item.id.toString() }}>
+							<span ref={itemNameRef}>{item.name}</span>
+							{item.heroic && <span className="item-quality-uncommon">[H]</span>}
+							{item.factionRestriction === UIItem_FactionRestriction.HORDE_ONLY && <span className="faction-horde">(H)</span>}
+							{item.factionRestriction === UIItem_FactionRestriction.ALLIANCE_ONLY && <span className="faction-alliance">(A)</span>}
+						</li>,
+					);
+					setItemQualityCssClass(itemNameRef.value!, item.quality);
+					itemRef.value?.addEventListener('click', () => {
 						this.addItems(Array<ItemSpec>(ItemSpec.create({ id: item.id })));
 					});
-					if (item.heroic) {
-						const htxt = document.createElement('span');
-						htxt.style.color = 'green';
-						htxt.innerText = '[H]';
-						itemElement.appendChild(htxt);
-					}
-					if (item.factionRestriction == UIItem_FactionRestriction.HORDE_ONLY) {
-						const ftxt = document.createElement('span');
-						ftxt.style.color = 'red';
-						ftxt.innerText = '(H)';
-						itemElement.appendChild(ftxt);
-					}
-					if (item.factionRestriction == UIItem_FactionRestriction.ALLIANCE_ONLY) {
-						const ftxt = document.createElement('span');
-						ftxt.style.color = 'blue';
-						ftxt.innerText = '(A)';
-						itemElement.appendChild(ftxt);
-					}
-					searchResults.append(itemElement);
-					displayCount++;
 				}
-
-				return displayCount < 10;
 			});
+			searchResultsRef.value?.replaceChildren(items);
+			searchResultsRef.value?.classList.remove('hide');
 		});
 
-		const baseSearchHTML = `${convertToLegacy(<Icon icon="search" />)} Add Item`;
-		searchButton.innerHTML = baseSearchHTML;
+		const searchButtonContents = (
+			<>
+				<i className="fa fa-search" /> Add Item
+			</>
+		);
+
+		const searchButton = (
+			<Button variant="secondary" className={clsx('bulk-settings-button', 'w-100')}>
+				{searchButtonContents.cloneNode(true)}
+			</Button>
+		) as HTMLButtonElement;
+
 		searchButton.addEventListener('click', () => {
-			if (searchText.classList.contains('hide')) {
-				searchButton.innerHTML = 'Close Search Results';
+			if (searchInputRef.value?.classList.contains('hide')) {
+				searchWrapper?.classList.remove('hide');
+				searchButton.replaceChildren(<>Close Search Results</>);
 				allItems = this.simUI.sim.db.getAllItems().filter(item => canEquipItem(item, this.simUI.player.getPlayerSpec(), undefined));
-				searchText.classList.remove('hide');
-				searchResults.classList.remove('hide');
-				searchText.focus();
+				searchInputRef.value?.classList.remove('hide');
+				if (searchInputRef.value?.value) searchResultsRef.value?.classList.remove('hide');
+				searchInputRef.value?.focus();
 			} else {
-				searchButton.innerHTML = baseSearchHTML;
-				searchText.classList.add('hide');
-				searchResults.innerHTML = '';
-				searchResults.classList.add('hide');
+				searchButton.replaceChildren(searchButtonContents.cloneNode(true));
+				searchWrapper?.classList.add('hide');
+				searchInputRef.value?.classList.add('hide');
+				searchResultsRef.value?.replaceChildren();
+				searchResultsRef.value?.classList.add('hide');
 			}
 		});
 
@@ -676,18 +693,17 @@ export class BulkTab extends SimTab {
 				Clear All
 			</Button>
 		) as HTMLButtonElement;
-		settingsBlock.bodyElement.appendChild(clearButton);
 		clearButton.addEventListener('click', () => {
 			this.clearItems();
 			resultsBlock.rootElem.hidden = true;
-			resultsBlock.bodyElement.innerHTML = '';
+			resultsBlock.bodyElement.replaceChildren();
 		});
 
-		const talentsContainerRef = ref<HTMLDivElement>();
 		// Talents to sim
+		const talentsContainerRef = ref<HTMLDivElement>();
 		const talentsToSimDiv = (
-			<div className={clsx('talents-picker-container', 'd-flex', !this.simTalents && 'hide')}>
-				<label>Pick talents to sim (will increase time to sim)</label>
+			<div className={clsx('talents-picker-container', !this.simTalents && 'hide')}>
+				<label className="mb-2">Pick talents to sim (will increase time to sim)</label>
 				<div ref={talentsContainerRef} className="talents-container"></div>
 			</div>
 		);
@@ -702,13 +718,14 @@ export class BulkTab extends SimTab {
 		} catch (e) {
 			console.warn('Invalid json for local storage value: ' + dataStr);
 		}
+
 		const handleToggle = (frag: HTMLElement, load: TalentLoadout) => {
 			const chipDiv = frag.querySelector('.saved-data-set-chip');
 			const exists = this.savedTalents.some(talent => talent.name === load.name); // Replace 'id' with your unique identifier
 
-			console.log('Exists:', exists);
-			console.log('Load Object:', load);
-			console.log('Saved Talents Before Update:', this.savedTalents);
+			// console.log('Exists:', exists);
+			// console.log('Load Object:', load);
+			// console.log('Saved Talents Before Update:', this.savedTalents);
 
 			if (exists) {
 				// If the object exists, find its index and remove it
@@ -721,11 +738,10 @@ export class BulkTab extends SimTab {
 				chipDiv?.classList.add('active');
 			}
 
-			console.log('Updated savedTalents:', this.savedTalents);
+			// console.log('Updated savedTalents:', this.savedTalents);
 		};
 		for (const name in jsonData) {
 			try {
-				console.log(name, jsonData[name]);
 				const savedTalentLoadout = SavedTalents.fromJson(jsonData[name]);
 				const loadout = {
 					talentsString: savedTalentLoadout.talentsString,
@@ -734,22 +750,14 @@ export class BulkTab extends SimTab {
 				};
 
 				const index = this.savedTalents.findIndex(talent => JSON.stringify(talent) === JSON.stringify(loadout));
-				const talentFragment = document.createElement('fragment');
-				talentFragment.appendChild(
-					<div className={clsx('saved-data-set-chip badge rounded-pill', index !== -1 && 'active')}>
-						<Link as="button" className="saved-data-set-name">
+				const talentFragment = <div className={clsx('saved-data-set-chip badge rounded-pill', index !== -1 && 'active')}>
+						<Button className="saved-data-set-name">
 							{name}
-						</Link>
-					</div>,
-				);
+						</Button>
+					</div> as HTMLDivElement
 
-				console.log('Adding event for loadout', loadout);
-				// Wrap the event listener addition in an IIFE
-				((talentFragment, loadout) => {
-					talentFragment.addEventListener('click', () => handleToggle(talentFragment, loadout));
-				})(talentFragment, loadout);
-
-				talentsContainerRef.value?.appendChild(talentFragment);
+				talentsContainerRef.value!.appendChild(talentFragment);
+				talentFragment.addEventListener('click', () => handleToggle(talentFragment, loadout));
 			} catch (e) {
 				console.log(e);
 				console.warn('Failed parsing saved data: ' + jsonData[name]);
@@ -760,15 +768,17 @@ export class BulkTab extends SimTab {
 		////////////////////////////////////
 
 		// Default Gem Options
+		const socketsContainerRef = ref<HTMLDivElement>();
 		const defaultGemDiv = (
 			<div className={clsx('default-gem-container', 'd-flex', !this.autoGem && 'hide')}>
 				<label>Defaults for Auto Gem</label>
-				<div className="sockets-container">
+				<div ref={socketsContainerRef} className="sockets-container">
 					{[GemColor.GemColorRed, GemColor.GemColorYellow, GemColor.GemColorBlue, GemColor.GemColorMeta].map((socketColor, socketIndex) => {
+						const gemContainerRef = ref<HTMLDivElement>();
 						const iconRef = ref<HTMLImageElement>();
 						const socketRef = ref<HTMLImageElement>();
 						const gemContainer = (
-							<div className="gem-socket-container">
+							<div ref={gemContainerRef} className="gem-socket-container">
 								<img ref={iconRef} className="gem-icon" />
 								<img ref={socketRef} className="socket-icon" />
 							</div>
@@ -777,29 +787,53 @@ export class BulkTab extends SimTab {
 						socketRef.value!.src = getEmptyGemSocketIconUrl(socketColor);
 
 						let selector: GemSelectorModal;
-						const handleChoose = (itemData: ItemData<UIGem>) => {
+						const onSelectHandler = (itemData: ItemData<UIGem>) => {
 							this.defaultGems[socketIndex] = itemData.item;
 							this.storeSettings();
 							ActionId.fromItemId(itemData.id)
 								.fill()
 								.then(filledId => {
-									this.gemIconElements[socketIndex].src = filledId.iconUrl;
+									if (itemData.id) {
+										this.gemIconElements[socketIndex].src = filledId.iconUrl;
+										this.gemIconElements[socketIndex].classList.remove('hide');
+									}
 								});
 							selector.close();
 						};
 
-						const openGemSelector = (_color: GemColor, _socketIndex: number) => {
-							if (!selector) selector = new GemSelectorModal(this.simUI.rootElem, this.simUI, socketColor, handleChoose);
+						const onRemoveHandler = () => {
+							this.defaultGems[socketIndex] = UIGem.create();
+							this.storeSettings();
+							this.gemIconElements[socketIndex].classList.add('hide');
+							this.gemIconElements[socketIndex].src = '';
+							selector.close();
+						};
+
+						const openGemSelector = () => {
+							if (!selector) selector = new GemSelectorModal(this.simUI.rootElem, this.simUI, socketColor, onSelectHandler, onRemoveHandler);
 							selector.show();
 						};
 
-						this.gemIconElements[socketIndex].addEventListener('click', () => openGemSelector(socketColor, socketIndex));
-						gemContainer.addEventListener('click', () => openGemSelector(socketColor, socketIndex));
+						this.gemIconElements[socketIndex].addEventListener('click', openGemSelector);
+						gemContainerRef.value?.addEventListener('click', openGemSelector);
 
 						return gemContainer;
 					})}
 				</div>
 			</div>
+		);
+
+		settingsBlock.bodyElement.appendChild(
+			<>
+				{bulkSimButton}
+				{importButton}
+				{importFavsButton}
+				{searchButton}
+				{searchWrapper}
+				{clearButton}
+				{defaultGemDiv}
+				{talentsToSimDiv}
+			</>,
 		);
 
 		new BooleanPicker<BulkTab>(settingsBlock.bodyElement, this, {
@@ -857,9 +891,6 @@ export class BulkTab extends SimTab {
 				defaultGemDiv.classList[!value ? 'add' : 'remove']('hide');
 			},
 		});
-
-		settingsBlock.bodyElement.appendChild(defaultGemDiv);
-		settingsBlock.bodyElement.appendChild(talentsToSimDiv);
 	}
 
 	private setSimProgress(progress: ProgressMetrics, iterPerSecond: number, currentRound: number, rounds: number, combinations: number) {
@@ -868,7 +899,13 @@ export class BulkTab extends SimTab {
 		this.pendingResults.setContent(
 			<div className="results-sim">
 				<div>{combinations} total combinations.</div>
-				<div>{rounds > 0 ? `${currentRound} / ${rounds} refining rounds` : ''}</div>
+				<div>
+					{rounds > 0 && (
+						<>
+							{currentRound} / {rounds} refining rounds
+						</>
+					)}
+				</div>
 				<div>
 					{progress.completedSims} / {progress.totalSims}
 					<br />
@@ -892,33 +929,37 @@ class GemSelectorModal extends BaseModal {
 	private ilist: ItemList<UIGem> | null;
 	private socketColor: GemColor;
 	private onSelect: (itemData: ItemData<UIGem>) => void;
+	private onRemove: () => void;
 
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, socketColor: GemColor, onSelect: (itemData: ItemData<UIGem>) => void) {
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, socketColor: GemColor, onSelect: (itemData: ItemData<UIGem>) => void, onRemove: () => void) {
 		super(parent, 'selector-modal', { disposeOnClose: false });
 
 		this.simUI = simUI;
 		this.onSelect = onSelect;
+		this.onRemove = onRemove;
 		this.socketColor = socketColor;
 		this.ilist = null;
 
 		window.scrollTo({ top: 0 });
 
-		this.header!.insertAdjacentHTML('afterbegin', `<span>Choose Default Gem</span>`);
-		this.body.innerHTML = `<div class="tab-content selector-modal-tab-content"></div>`;
-		this.contentElem = this.rootElem.querySelector('.selector-modal-tab-content') as HTMLElement;
+		this.header!.insertAdjacentElement('afterbegin', <h6 className="selector-modal-title mb-3">Choose Default Gem</h6>);
+		const contentRef = ref<HTMLDivElement>();
+		this.body.appendChild(<div ref={contentRef} className="tab-content selector-modal-tab-content"></div>);
+		this.contentElem = contentRef.value!;
 	}
 
 	show() {
 		// construct item list the first time its opened.
 		// This makes startup faster and also means we are sure to have item database loaded.
-		if (this.ilist == null) {
+		if (!this.ilist) {
 			this.ilist = new ItemList<UIGem>(
-				this.body,
+				'bulk-tab-gem-selector',
+				this.contentElem,
 				this.simUI,
 				ItemSlot.ItemSlotHead,
 				SelectorModalTabs.Gem1,
 				this.simUI.player,
-				'Gem1',
+				SelectorModalTabs.Gem1,
 				{
 					equipItem: (_eventID: EventID, _equippedItem: EquippedItem | null) => {
 						return;
@@ -935,11 +976,9 @@ class GemSelectorModal extends BaseModal {
 						quality: gem.quality,
 						phase: gem.phase,
 						heroic: false,
-						baseEP: 0,
+						baseEP: this.simUI.player.computeStatsEP(new Stats(gem.stats)),
 						ignoreEPFilter: true,
-						onEquip: (_eventID, _gem: UIGem) => {
-							return;
-						},
+						onEquip: noop,
 					};
 				}),
 				this.socketColor,
@@ -949,24 +988,22 @@ class GemSelectorModal extends BaseModal {
 				() => {
 					return null;
 				},
-				() => {
-					return;
-				},
+				this.onRemove,
 				this.onSelect,
 			);
 
-			// let invokeUpdate = () => {this.ilist?.updateSelected()}
-			const applyFilter = () => {
-				this.ilist?.applyFilters();
-			};
-			// Add event handlers
-			// this.itemsChangedEmitter.on(invokeUpdate);
+			this.ilist.sizeRefresh();
 
-			this.addOnDisposeCallback(() => this.ilist?.dispose());
+			const applyFilter = () => this.ilist?.applyFilters();
 
-			this.simUI.sim.phaseChangeEmitter.on(applyFilter);
-			this.simUI.sim.filtersChangeEmitter.on(applyFilter);
-			// gearData.changeEvent.on(applyFilter);
+			const phaseChangeEvent = this.simUI.sim.phaseChangeEmitter.on(applyFilter);
+			const filtersChangeChangeEvent = this.simUI.sim.filtersChangeEmitter.on(applyFilter);
+
+			this.addOnDisposeCallback(() => {
+				phaseChangeEvent.dispose();
+				filtersChangeChangeEvent.dispose();
+				this.ilist?.dispose();
+			});
 		}
 
 		this.open();

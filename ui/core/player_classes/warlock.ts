@@ -14,17 +14,17 @@ export class Warlock extends PlayerClass<Class.ClassWarlock> {
 		[DestructionWarlock.friendlyName]: DestructionWarlock,
 	};
 	static races: Race[] = [
-		// [A]
-		Race.RaceHuman,
-		Race.RaceDwarf,
-		Race.RaceGnome,
-		Race.RaceWorgen,
 		// [H]
 		Race.RaceOrc,
 		Race.RaceUndead,
 		Race.RaceTroll,
 		Race.RaceBloodElf,
 		Race.RaceGoblin,
+		// [A]
+		Race.RaceHuman,
+		Race.RaceDwarf,
+		Race.RaceGnome,
+		Race.RaceWorgen,
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypeCloth];
 	static weaponTypes: EligibleWeaponType[] = [

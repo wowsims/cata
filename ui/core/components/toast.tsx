@@ -1,27 +1,35 @@
-import { Icon, IconProps, Link } from '@wowsims/ui';
+import { Button, Icon, IconProps } from '@wowsims/ui';
 import { Toast as BootstrapToast } from 'bootstrap';
+import clsx from 'clsx';
 
 type ToastOptions = {
 	title?: string;
-	variant: 'info' | 'success' | 'error';
+	variant: 'info' | 'success' | 'error' | 'warning';
 	body: string | Element;
 	autoShow?: boolean;
+	canClose?: boolean;
+	container?: Element;
+	additionalClasses?: string[];
 } & Partial<BootstrapToast.Options>;
 
 class Toast {
-	private element: HTMLElement;
-	private container: HTMLElement;
+	readonly element: HTMLElement;
+	private container: Element;
 	private title: ToastOptions['title'];
 	private body: ToastOptions['body'];
 	private variant: ToastOptions['variant'];
+	private canClose: ToastOptions['canClose'];
+	private additionalClasses: ToastOptions['additionalClasses'];
 
 	public instance;
 	constructor(options: ToastOptions) {
-		const { title, variant, autoShow = true, body, ...bootstrapOptions } = options || {};
-		this.container = document.getElementById('toastContainer')!;
+		const { title, variant, autoShow = true, canClose = true, body, additionalClasses, container, ...bootstrapOptions } = options || {};
+		this.container = container || document.getElementById('toastContainer')!;
+		this.additionalClasses = additionalClasses;
 		this.title = title || 'WowSims';
 		this.variant = variant || 'info';
 		this.body = body;
+		this.canClose = canClose;
 
 		this.element = this.template();
 		this.container.appendChild(this.element);
@@ -59,13 +67,15 @@ class Toast {
 				return 'check-circle';
 			case 'error':
 				return 'exclamation-circle';
+			case 'warning':
+				return 'triangle-exclamation';
 		}
 	}
 
 	template() {
 		return (
 			<div
-				className={`toast position-relative bottom-0 end-0 toast--${this.variant}`}
+				className={clsx('toast position-relative bottom-0 end-0', `toast--${this.variant}`, this.additionalClasses)}
 				attributes={{
 					role: 'alert',
 					'aria-live': 'assertive',
@@ -74,17 +84,18 @@ class Toast {
 				<div className="toast-header">
 					<Icon icon={this.getVariantIcon()} size="2xl" className="d-block me-2" />
 					<strong className="me-auto">{this.title}</strong>
-					<Link
-						as="button"
-						className="btn-close"
-						attributes={{
-							'aria-label': 'Close',
-						}}
-						dataset={{
-							bsDismiss: 'toast',
-						}}
-						iconLeft={<Icon icon={this.getVariantIcon()} size="xl" />}
-					/>
+					{this.canClose && (
+						<Button
+							variant="close"
+							attributes={{
+								'aria-label': 'Close',
+							}}
+							dataset={{
+								bsDismiss: 'toast',
+							}}
+							iconLeft={<Icon icon={this.getVariantIcon()} size="xl" />}
+						/>
+					)}
 				</div>
 				<div className="toast-body">{this.body}</div>
 			</div>

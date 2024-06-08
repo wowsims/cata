@@ -123,6 +123,11 @@ kbd {
 		color: var(--bs-#{$label}) !important;
 	}
 }
+@each $label, $value in $faction-colors {
+	.faction-#{$label} {
+		color: var(--bs-#{$label}) !important;
+	}
+}
 
 [contenteditable='true']:active,
 [contenteditable='true']:focus {
