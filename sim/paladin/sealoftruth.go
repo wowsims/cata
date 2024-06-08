@@ -66,7 +66,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | SpellFlagSecondaryJudgement,
-		ClassSpellMask: SpellMaskJudgement | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskJudgementOfTruth,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   paladin.DefaultMeleeCritMultiplier(),

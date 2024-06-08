@@ -41,7 +41,7 @@ var ItemSetGladiatorsVindication = core.NewItemSet(core.ItemSet{
 			paladin.AddStat(stats.Strength, 90)
 			paladin.AddStaticMod(core.SpellModConfig{
 				Kind:      core.SpellMod_Cooldown_Flat,
-				ClassMask: SpellMaskJudgement,
+				ClassMask: SpellMaskJudgementBase,
 				TimeValue: -1 * time.Second,
 			})
 		},

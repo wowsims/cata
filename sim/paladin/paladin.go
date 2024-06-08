@@ -12,15 +12,17 @@ const (
 )
 
 const (
-	SpellMaskSpecialAttack int64 = 1 << iota
-
-	SpellMaskTemplarsVerdict
+	SpellMaskTemplarsVerdict int64 = 1 << iota
 	SpellMaskCrusaderStrike
 	SpellMaskDivineStorm
 	SpellMaskExorcism
 	SpellMaskGlyphOfExorcism
 	SpellMaskHammerOfWrath
-	SpellMaskJudgement
+	SpellMaskJudgementBase
+	SpellMaskJudgementOfTruth
+	SpellMaskJudgementOfInsight
+	SpellMaskJudgementOfRighteousness
+	SpellMaskJudgementOfJustice
 	SpellMaskHolyWrath
 	SpellMaskConsecration
 	SpellMaskHammerOfTheRighteous
@@ -43,6 +45,11 @@ const (
 	SpellMaskSealOfRighteousness
 	SpellMaskSealOfJustice
 )
+
+const SpellMaskJudgement = SpellMaskJudgementOfTruth |
+	SpellMaskJudgementOfInsight |
+	SpellMaskJudgementOfRighteousness |
+	SpellMaskJudgementOfJustice
 
 const SpellMaskSingleTarget = SpellMaskCrusaderStrike |
 	SpellMaskTemplarsVerdict |

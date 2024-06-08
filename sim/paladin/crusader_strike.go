@@ -14,7 +14,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskCrusaderStrike | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskCrusaderStrike,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.1,
