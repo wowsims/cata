@@ -151,11 +151,19 @@ export class BulkItemPicker extends Component {
 			this.setItem(item);
 			const slot = getEligibleItemSlots(this.item.item)[0];
 			const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
+			const eligibleReforges = this.item?.item ? this.simUI.player.getAvailableReforgings(this.item.getWithRandomSuffixStats()) : [];
+			const eligibleRandomSuffixes = this.item.item.randomSuffixOptions;
+
 			const openEnchantGemSelector = (event: Event) => {
 				event.preventDefault();
+				console.log('Click', item);
 
 				if (!!eligibleEnchants.length) {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Enchants, this.createGearData());
+				} else if (!!eligibleRandomSuffixes.length) {
+					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.RandomSuffixes, this.createGearData());
+				} else if (!!eligibleReforges.length) {
+					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Reforging, this.createGearData());
 				} else if (!!this.item._gems.length) {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Gem1, this.createGearData());
 				}
