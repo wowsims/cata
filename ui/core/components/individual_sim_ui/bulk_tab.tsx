@@ -151,11 +151,18 @@ export class BulkItemPicker extends Component {
 			this.setItem(item);
 			const slot = getEligibleItemSlots(this.item.item)[0];
 			const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
+			const eligibleReforges = this.item?.item ? this.simUI.player.getAvailableReforgings(this.item.getWithRandomSuffixStats()) : [];
+			const eligibleRandomSuffixes = this.item.item.randomSuffixOptions;
+
 			const openEnchantGemSelector = (event: Event) => {
 				event.preventDefault();
 
 				if (!!eligibleEnchants.length) {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Enchants, this.createGearData());
+				} else if (!!eligibleRandomSuffixes.length) {
+					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.RandomSuffixes, this.createGearData());
+				} else if (!!eligibleReforges.length) {
+					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Reforging, this.createGearData());
 				} else if (!!this.item._gems.length) {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Gem1, this.createGearData());
 				}
@@ -429,15 +436,6 @@ export class BulkTab extends SimTab {
 		});
 		itemsBlock.bodyElement.classList.add('gear-picker-root', 'gear-picker-root-bulk');
 
-		const noticeWorkInProgress = (
-			<div className="bulk-items-text-line">
-				<i>
-					Notice: This is under very early but active development and experimental. You may also need to update your WoW AddOn if you want to import
-					your bags.
-				</i>
-			</div>
-		);
-
 		const itemTextIntro = (
 			<div className="bulk-items-text-line">
 				<i>
@@ -464,7 +462,6 @@ export class BulkTab extends SimTab {
 
 		itemsBlock.bodyElement.appendChild(
 			<>
-				{noticeWorkInProgress}
 				{itemTextIntro}
 				{itemList}
 			</>,

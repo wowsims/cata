@@ -26,7 +26,7 @@ import { getPVPSeasonFromItem, isPVPItem } from '../../proto_utils/utils';
 import { Sim } from '../../sim';
 import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
-import { formatDeltaTextElem, mod, randomUUID } from '../../utils';
+import { formatDeltaTextElem, mod, randomUUID, sanitizeId } from '../../utils';
 import { BaseModal } from '../base_modal';
 import { Component } from '../component';
 import { FiltersMenu } from '../filters_menu';
@@ -586,7 +586,7 @@ export class SelectorModal extends BaseModal {
 		const hasItemTab = !this.disabledTabs?.includes(SelectorModalTabs.Items);
 		if (hasItemTab)
 			this.addTab<Item>({
-				id: `${this.options.id}-${SelectorModalTabs.Items}`,
+				id: sanitizeId(`${this.options.id}-${SelectorModalTabs.Items}`),
 				label: SelectorModalTabs.Items,
 				gearData,
 				itemData: eligibleItems.map(item => {
@@ -622,7 +622,7 @@ export class SelectorModal extends BaseModal {
 		const hasEnchantTab = !this.disabledTabs?.includes(SelectorModalTabs.Enchants);
 		if (hasEnchantTab)
 			this.addTab<Enchant>({
-				id: `${this.options.id}-${SelectorModalTabs.Enchants}`,
+				id: sanitizeId(`${this.options.id}-${SelectorModalTabs.Enchants}`),
 				label: SelectorModalTabs.Enchants,
 				gearData,
 				itemData: eligibleEnchants.map(enchant => {
@@ -747,7 +747,7 @@ export class SelectorModal extends BaseModal {
 		equippedItem.curSocketColors(this.player.isBlacksmithing()).forEach((socketColor, socketIdx) => {
 			const label = SelectorModalTabs[`Gem${socketIdx + 1}` as keyof typeof SelectorModalTabs];
 			this.addTab<Gem>({
-				id: `${this.options.id}-${label}`,
+				id: sanitizeId(`${this.options.id}-${label}`),
 				label,
 				gearData,
 				itemData: this.player.getGems(socketColor).map((gem: Gem) => {
@@ -821,7 +821,7 @@ export class SelectorModal extends BaseModal {
 		const itemProto = equippedItem.item;
 
 		this.addTab<ItemRandomSuffix>({
-			id: `${this.options.id}-${SelectorModalTabs.RandomSuffixes}`,
+			id: sanitizeId(`${this.options.id}-${SelectorModalTabs.RandomSuffixes}`),
 			label: SelectorModalTabs.RandomSuffixes,
 			gearData,
 			itemData: this.player.getRandomSuffixes(itemProto).map((randomSuffix: ItemRandomSuffix) => {
@@ -858,7 +858,7 @@ export class SelectorModal extends BaseModal {
 		const itemProto = equippedItem.item;
 
 		this.addTab<ReforgeData>({
-			id: `${this.options.id}-${SelectorModalTabs.Reforging}`,
+			id: sanitizeId(`${this.options.id}-${SelectorModalTabs.Reforging}`),
 			label: SelectorModalTabs.Reforging,
 			gearData,
 			itemData: this.player.getAvailableReforgings(equippedItem).map(reforgeData => {
@@ -927,9 +927,7 @@ export class SelectorModal extends BaseModal {
 		if (!itemData.length) {
 			return;
 		}
-
 		const selected = label === this.currentTab;
-
 		const tabAnchor = ref<HTMLAnchorElement>();
 		this.tabsElem.appendChild(
 			<li className="nav-item">
@@ -1025,13 +1023,12 @@ export class SelectorModal extends BaseModal {
 	}
 
 	private removeTabs(labelSubstring: string) {
-		const tabElems = Array.prototype.slice
-			.call(this.tabsElem.getElementsByClassName('selector-modal-item-tab'))
-			.filter(tab => tab.dataset.label.includes(labelSubstring));
+		const tabElems = [...this.tabsElem.querySelectorAll<HTMLElement>('.selector-modal-item-tab')].filter(
+			tab => tab.dataset?.label?.includes(labelSubstring),
+		);
 
-		const contentElems = tabElems.map(tabElem => document.getElementById(tabElem.dataset.contentId!)).filter(tabElem => Boolean(tabElem));
-
-		tabElems.forEach(elem => elem.parentElement.remove());
+		const contentElems = tabElems.map(tabElem => document.querySelector(tabElem.dataset.bsTarget!)).filter(tabElem => Boolean(tabElem));
+		tabElems.forEach(elem => elem.parentElement?.remove());
 		contentElems.forEach(elem => elem!.remove());
 	}
 }
