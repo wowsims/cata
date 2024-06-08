@@ -270,7 +270,7 @@
 .selector-modal-list {
 	width: 100%;
 	max-height: 60vh;
-	overflow-y: auto;
+	overflow-y: scroll;
 	overflow-x: hidden;
 	padding: 0;
 	margin-bottom: 0;
@@ -377,16 +377,6 @@
 .selector-modal-list-item-favorite,
 .selector-modal-list-item-compare {
 	width: var(--icon-cell-width);
-}
-
-.selector-modal-list-item-favorite {
-	color: var(--bs-brand);
-
-	&:hover {
-		text-shadow:
-			0 0 10px var(--bs-white),
-			0 0 10px var(--bs-white);
-	}
 }
 
 .selector-modal-list-item-ep {

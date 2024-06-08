@@ -1168,11 +1168,11 @@ export class ItemList<T extends ItemListType> {
 							Filters
 						</button>
 					)}
-					<div ref={phaseSelectorRef} className="selector-modal-phase-selector"></div>
-					<div ref={show1hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons"></div>
-					<div ref={show2hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons"></div>
-					<div ref={matchingGemsRef} className="sim-input selector-modal-boolean-option selector-modal-show-matching-gems"></div>
-					<div ref={showEpValuesRef} className="sim-input selector-modal-boolean-option selector-modal-show-ep-values"></div>
+					<div ref={phaseSelectorRef} className="selector-modal-phase-selector" />
+					<div ref={show1hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-1h-weapons hide" />
+					<div ref={show2hWeaponRef} className="sim-input selector-modal-boolean-option selector-modal-show-2h-weapons hide" />
+					<div ref={matchingGemsRef} className="sim-input selector-modal-boolean-option selector-modal-show-matching-gems" />
+					<div ref={showEpValuesRef} className="sim-input selector-modal-boolean-option selector-modal-show-ep-values" />
 					<button ref={removeButtonRef} className="selector-modal-remove-button btn btn-danger">
 						Unequip Item
 					</button>
@@ -1515,17 +1515,18 @@ export class ItemList<T extends ItemListType> {
 						</span>
 						<span
 							className="selector-modal-list-item-ep-delta"
-							ref={e => itemData.item && equippedItemEP !== itemEP && formatDeltaTextElem(e, equippedItemEP, itemEP, 0)}></span>
+							ref={e => itemData.item && equippedItemEP !== itemEP && formatDeltaTextElem(e, equippedItemEP, itemEP, 0)}
+						/>
 					</div>
 				)}
 				<div className="selector-modal-list-item-favorite-container">
 					<button className="selector-modal-list-item-favorite btn btn-link p-0" ref={favoriteElem}>
-						<i ref={favoriteIconElem} className="fas fa-star fa-xl"></i>
+						<i ref={favoriteIconElem} className="far fa-star fa-xl" />
 					</button>
 				</div>
 				<div ref={compareContainer} className="selector-modal-list-item-compare-container hide">
 					<button className="selector-modal-list-item-compare btn btn-link p-0" ref={compareButton}>
-						<i className="fas fa-arrow-right-arrow-left fa-xl"></i>
+						<i className="fas fa-arrow-right-arrow-left fa-xl" />
 					</button>
 				</div>
 			</li>
@@ -1622,8 +1623,9 @@ export class ItemList<T extends ItemListType> {
 					}
 				}
 			}
-			favoriteIconElem.value?.classList.toggle('fas');
-			favoriteIconElem.value?.classList.toggle('far');
+			favoriteElem.value!.classList.toggle('text-brand');
+			favoriteIconElem.value!.classList.toggle('fas');
+			favoriteIconElem.value!.classList.toggle('far');
 			listItemElem.dataset.fav = isFavorite.toString();
 
 			this.player.sim.setFilters(TypedEvent.nextEventID(), filters);
@@ -1632,6 +1634,7 @@ export class ItemList<T extends ItemListType> {
 		const isFavorite = this.isItemFavorited(itemData);
 
 		if (isFavorite) {
+			favoriteElem.value!.classList.add('text-brand');
 			favoriteIconElem.value?.classList.add('fas');
 			listItemElem.dataset.fav = 'true';
 		} else {
