@@ -406,14 +406,16 @@ export class IconItemSwapPicker extends Component {
 		this.player = player;
 		this.slot = slot;
 
-		this.iconAnchor = document.createElement('a');
-		this.iconAnchor.classList.add('icon-picker-button');
-		this.iconAnchor.target = '_blank';
-		this.rootElem.prepend(this.iconAnchor);
+		const socketsContainerRef = ref<HTMLDivElement>();
+		const iconRef = ref<HTMLAnchorElement>();
+		this.rootElem.prepend(
+			<a ref={iconRef} className="icon-picker-button" target="_blank">
+				<div ref={socketsContainerRef} className="item-picker-sockets-container"></div>
+			</a>,
+		);
 
-		this.socketsContainerElem = document.createElement('div');
-		this.socketsContainerElem.classList.add('item-picker-sockets-container');
-		this.iconAnchor.appendChild(this.socketsContainerElem);
+		this.iconAnchor = iconRef.value!;
+		this.socketsContainerElem = socketsContainerRef.value!;
 
 		const selectorModal = new SelectorModal(simUI.rootElem, simUI, this.player);
 
@@ -779,7 +781,7 @@ export class SelectorModal extends BaseModal {
 					const equippedItem = gearData.getEquippedItem();
 					if (equippedItem) gearData.equipItem(eventID, equippedItem.withGem(null, socketIdx));
 				},
-				setTabContent: (tabAnchor: HTMLAnchorElement) => {
+				setTabContent: tabAnchor => {
 					const gemContainer = createGemContainer(socketColor, null, socketIdx);
 					tabAnchor.appendChild(gemContainer);
 					tabAnchor.classList.add('selector-modal-tab-gem');
@@ -921,18 +923,19 @@ export class SelectorModal extends BaseModal {
 		computeEP: (item: T) => number;
 		equippedToItemFn: (equippedItem: EquippedItem | null) => T | null | undefined;
 		onRemove: (eventID: EventID) => void;
-		setTabContent?: (tabElem: HTMLAnchorElement) => void;
+		setTabContent?: (tabElem: HTMLButtonElement) => void;
 		socketColor?: GemColor;
 	}) {
 		if (!itemData.length) {
 			return;
 		}
 		const selected = label === this.currentTab;
-		const tabAnchor = ref<HTMLAnchorElement>();
+		const tabAnchor = ref<HTMLButtonElement>();
 		this.tabsElem.appendChild(
 			<li className="nav-item">
-				<a
+				<button
 					ref={tabAnchor}
+					type="button"
 					className={clsx('nav-link selector-modal-item-tab', selected && 'active')}
 					dataset={{
 						label,
@@ -942,7 +945,7 @@ export class SelectorModal extends BaseModal {
 					attributes={{
 						role: 'tab',
 						'aria-selected': selected,
-					}}></a>
+					}}></button>
 			</li>,
 		);
 

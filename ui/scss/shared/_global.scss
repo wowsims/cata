@@ -68,7 +68,7 @@ button {
 }
 
 a,
-button[class*='link'] {
+button[class^='link'] {
 	cursor: pointer;
 	border: 0;
 	padding: 0;

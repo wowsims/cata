@@ -61,8 +61,9 @@ export class SimHeader extends Component {
 					// @ts-expect-error
 					'aria-controls': contentId,
 				}}>
-				<a
+				<button
 					className={`nav-link ${isFirstTab && 'active'}`}
+					type="button"
 					dataset={{
 						bsToggle: 'tab',
 						bsTarget: `#${contentId}`,
@@ -70,10 +71,9 @@ export class SimHeader extends Component {
 					attributes={{
 						role: 'tab',
 						'aria-selected': isFirstTab,
-					}}
-					type="button">
+					}}>
 					{title}
-				</a>
+				</button>
 			</li>,
 		);
 	}

@@ -351,12 +351,12 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		this.itemPickerPairs.push(item);
 	}
 
-	static makeActionElem(cssClass: string, iconCssClass: string): HTMLAnchorElement {
+	static makeActionElem(cssClass: string, iconCssClass: string): HTMLButtonElement {
 		return (
-			<a href="javascript:void(0)" className={clsx('list-picker-item-action', cssClass)} attributes={{ role: 'button' }}>
+			<button type="button" className={clsx('list-picker-item-action', cssClass)}>
 				<i className={clsx('fa', 'fa-xl', iconCssClass)} />
-			</a>
-		) as HTMLAnchorElement;
+			</button>
+		) as HTMLButtonElement;
 	}
 
 	static getItemHeaderElem(itemPicker: Input<any, any>): HTMLElement {
