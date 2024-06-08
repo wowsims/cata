@@ -35,6 +35,7 @@ func (druid *Druid) registerCatCharge() {
 			travelTime := core.DurationFromSeconds(druid.DistanceFromTarget / 80)
 			druid.ExtendGCDUntil(sim, max(druid.NextGCDAt(), sim.CurrentTime+travelTime))
 			druid.DistanceFromTarget = 0
+			druid.MoveDuration(travelTime, sim)
 
 			// Measurements from boЯsch indicate that while travel speed (and
 			// therefore special ability delays) is fairly consistent, there

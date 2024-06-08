@@ -92,6 +92,7 @@ type Item struct {
 	Stats            stats.Stats // Stats applied to wearer
 	Quality          proto.ItemQuality
 	SetName          string // Empty string if not part of a set.
+	SetID            int32  // 0 if not part of a set.
 	RandomPropPoints int32  // Used to rescale random suffix stats
 
 	GemSockets  []proto.GemColor
@@ -123,6 +124,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		GemSockets:       pData.GemSockets,
 		SocketBonus:      stats.FromFloatArray(pData.SocketBonus),
 		SetName:          pData.SetName,
+		SetID:            pData.SetId,
 		RandomPropPoints: pData.RandPropPoints,
 	}
 }

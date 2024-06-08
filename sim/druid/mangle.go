@@ -10,6 +10,7 @@ import (
 func (druid *Druid) registerMangleBearSpell() {
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
 	glyphBonus := core.TernaryFloat64(druid.HasPrimeGlyph(proto.DruidPrimeGlyph_GlyphOfMangle), 1.1, 1.0)
+	maxHits := min(druid.Env.GetNumTargets(), 3)
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 33878},
@@ -39,15 +40,20 @@ func (druid *Druid) registerMangleBearSpell() {
 		MaxRange:         core.MaxMeleeRange,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 3306.0/1.9 +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			numHits := core.TernaryInt32(druid.BerserkAura.IsActive(), maxHits, 1)
+			curTarget := target
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+				baseDamage := 3306.0/1.9 + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+				result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
-			if result.Landed() {
-				mangleAuras.Get(target).Activate(sim)
-			} else {
-				spell.IssueRefund(sim)
+				if result.Landed() {
+					mangleAuras.Get(curTarget).Activate(sim)
+				} else {
+					spell.IssueRefund(sim)
+				}
+
+				curTarget = sim.Environment.NextTargetUnit(curTarget)
 			}
 
 			if druid.BerserkAura.IsActive() {

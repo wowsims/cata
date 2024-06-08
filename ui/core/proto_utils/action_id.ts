@@ -83,6 +83,8 @@ export class ActionId {
 					name += ' (Magmaw)';
 				} else if (tag == 49416) {
 					name += ' (Blazing Bone Construct)';
+				} else if (tag > 4191800) {
+					name += ` (Animated Bone Warrior ${(tag - 4191800).toFixed(0)})`;
 				}
 				break;
 			case OtherAction.OtherActionShoot:

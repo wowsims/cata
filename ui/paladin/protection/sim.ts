@@ -140,7 +140,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			judgement: true,
 			ebonPlaguebringer: true,
 			shadowAndFlame: true,
 			bloodFrenzy: true,
@@ -155,8 +154,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [
 		PaladinInputs.AuraSelection(),
-		PaladinInputs.JudgementSelection(),
-		//PaladinInputs.StartingSealSelection()
+		PaladinInputs.StartingSealSelection()
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [],
@@ -172,7 +170,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			OtherInputs.BurstWindow,
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
-			PaladinInputs.UseAvengingWrath(),
 			OtherInputs.InFrontOfTarget,
 		],
 	},

@@ -1,4 +1,3 @@
-import { JudgementOfLight } from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
@@ -73,14 +72,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			judgement: true,
 			ebonPlaguebringer: true,
 			shadowAndFlame: true,
 		}),
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.JudgementSelection()],
+	playerIconInputs: [PaladinInputs.AuraSelection()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],

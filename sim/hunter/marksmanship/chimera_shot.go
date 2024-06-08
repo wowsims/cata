@@ -48,7 +48,7 @@ func (mmHunter *MarksmanshipHunter) registerChimeraShotSpell() {
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				if result.Landed() {
 					if mmHunter.SerpentSting.Dot(target).IsActive() {
-						mmHunter.SerpentSting.Dot(target).Rollover(sim)
+						mmHunter.SerpentSting.Dot(target).Apply(sim)
 					}
 				}
 				spell.DealDamage(sim, result)

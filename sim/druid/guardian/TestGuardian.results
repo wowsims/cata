@@ -449,6 +449,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestGuardian-AllItems-Gladiator'sSanctuary"
+ value: {
+  dps: 7419.94906
+  tps: 37163.80175
+ }
+}
+dps_results: {
  key: "TestGuardian-AllItems-GlowingTwilightScale-54589"
  value: {
   dps: 7537.14209
@@ -472,8 +479,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-AllItems-HarmlightToken-63839"
  value: {
-  dps: 7634.13061
-  tps: 38235.69304
+  dps: 7634.01723
+  tps: 38235.12616
  }
 }
 dps_results: {
@@ -1278,8 +1285,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-Settings-Tauren-p1-Default-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 21626.04755
-  tps: 108891.16694
+  dps: 24724.47476
+  tps: 124419.4863
  }
 }
 dps_results: {
@@ -1299,8 +1306,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-Settings-Tauren-p1-Default-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 14448.7163
-  tps: 73362.39898
+  dps: 16975.0736
+  tps: 86060.90714
  }
 }
 dps_results: {
@@ -1320,8 +1327,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-Settings-Tauren-preraid-Default-default-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 19090.33785
-  tps: 96143.92425
+  dps: 21449.62867
+  tps: 107978.63835
  }
 }
 dps_results: {
@@ -1341,8 +1348,8 @@ dps_results: {
 dps_results: {
  key: "TestGuardian-Settings-Tauren-preraid-Default-default-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 12573.81632
-  tps: 63923.43912
+  dps: 14343.43893
+  tps: 72816.56132
  }
 }
 dps_results: {

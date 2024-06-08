@@ -100,7 +100,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 			focusMagic: true,
 		}),
 		debuffs: Debuffs.create({
-			judgement: true,
 			ebonPlaguebringer: true,
 			shadowAndFlame: true,
 		}),
