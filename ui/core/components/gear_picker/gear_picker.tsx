@@ -927,9 +927,7 @@ export class SelectorModal extends BaseModal {
 		if (!itemData.length) {
 			return;
 		}
-
 		const selected = label === this.currentTab;
-
 		const tabAnchor = ref<HTMLAnchorElement>();
 		this.tabsElem.appendChild(
 			<li className="nav-item">
@@ -1025,13 +1023,12 @@ export class SelectorModal extends BaseModal {
 	}
 
 	private removeTabs(labelSubstring: string) {
-		const tabElems = Array.prototype.slice
-			.call(this.tabsElem.getElementsByClassName('selector-modal-item-tab'))
-			.filter(tab => tab.dataset.label.includes(labelSubstring));
+		const tabElems = [...this.tabsElem.querySelectorAll<HTMLElement>('.selector-modal-item-tab')].filter(
+			tab => tab.dataset?.label?.includes(labelSubstring),
+		);
 
-		const contentElems = tabElems.map(tabElem => document.getElementById(tabElem.dataset.contentId!)).filter(tabElem => Boolean(tabElem));
-
-		tabElems.forEach(elem => elem.parentElement.remove());
+		const contentElems = tabElems.map(tabElem => document.querySelector(tabElem.dataset.bsTarget!)).filter(tabElem => Boolean(tabElem));
+		tabElems.forEach(elem => elem.parentElement?.remove());
 		contentElems.forEach(elem => elem!.remove());
 	}
 }
