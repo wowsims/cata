@@ -429,15 +429,6 @@ export class BulkTab extends SimTab {
 		});
 		itemsBlock.bodyElement.classList.add('gear-picker-root', 'gear-picker-root-bulk');
 
-		const noticeWorkInProgress = (
-			<div className="bulk-items-text-line">
-				<i>
-					Notice: This is under very early but active development and experimental. You may also need to update your WoW AddOn if you want to import
-					your bags.
-				</i>
-			</div>
-		);
-
 		const itemTextIntro = (
 			<div className="bulk-items-text-line">
 				<i>
@@ -464,7 +455,6 @@ export class BulkTab extends SimTab {
 
 		itemsBlock.bodyElement.appendChild(
 			<>
-				{noticeWorkInProgress}
 				{itemTextIntro}
 				{itemList}
 			</>,
