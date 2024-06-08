@@ -1534,12 +1534,61 @@ export class ItemList<T extends ItemListType> {
 
 		const favoriteTooltip = tippy(favoriteElem.value!);
 		const toggleFavoriteTooltipContent = (isFavorited: boolean) => favoriteTooltip.setContent(isFavorited ? 'Remove from favorites' : 'Add to favorites');
-		toggleFavoriteTooltipContent(this.isItemFavorited(itemData));
-		favoriteElem.value!.addEventListener('click', () => {
-			const isFavorited = this.isItemFavorited(itemData);
-			toggleFavoriteTooltipContent(isFavorited);
-			toggleFavorite(isFavorited);
-		});
+
+		const toggleFavorite = (isFavorite: boolean) => {
+			const filters = this.player.sim.getFilters();
+			if (this.label === SelectorModalTabs.Items) {
+				const favId = itemData.id;
+				if (isFavorite) {
+					filters.favoriteItems.push(favId);
+				} else {
+					const favIdx = filters.favoriteItems.indexOf(favId);
+					if (favIdx !== -1) {
+						filters.favoriteItems.splice(favIdx, 1);
+					}
+				}
+			} else if (this.label === SelectorModalTabs.Items) {
+				const favId = getUniqueEnchantString(itemData.item as unknown as Enchant);
+				if (isFavorite) {
+					filters.favoriteEnchants.push(favId);
+				} else {
+					const favIdx = filters.favoriteEnchants.indexOf(favId);
+					if (favIdx !== -1) {
+						filters.favoriteEnchants.splice(favIdx, 1);
+					}
+				}
+			} else if (this.label.startsWith('Gem')) {
+				const favId = itemData.id;
+				if (isFavorite) {
+					filters.favoriteGems.push(favId);
+				} else {
+					const favIdx = filters.favoriteGems.indexOf(favId);
+					if (favIdx !== -1) {
+						filters.favoriteGems.splice(favIdx, 1);
+					}
+				}
+			}
+			favoriteElem.value!.classList.toggle('text-brand');
+			favoriteIconElem.value!.classList.toggle('fas');
+			favoriteIconElem.value!.classList.toggle('far');
+			listItemElem.dataset.fav = isFavorite.toString();
+			this.player.sim.setFilters(TypedEvent.nextEventID(), filters);
+		};
+
+		favoriteElem.value!.addEventListener('click', () => toggleFavorite(listItemElem.dataset.fav === 'false'));
+
+		const isFavorite = this.isItemFavorited(itemData);
+
+		if (isFavorite) {
+			favoriteElem.value!.classList.add('text-brand');
+			favoriteIconElem.value?.classList.add('fas');
+			listItemElem.dataset.fav = 'true';
+		} else {
+			favoriteIconElem.value?.classList.add('far');
+			listItemElem.dataset.fav = 'false';
+		}
+
+		toggleFavoriteTooltipContent(listItemElem.dataset.fav === 'true');
 
 		if (this.label === SelectorModalTabs.Items) {
 			const batchSimTooltip = tippy(compareButton.value!);
@@ -1589,58 +1638,6 @@ export class ItemList<T extends ItemListType> {
 		});
 
 		setItemQualityCssClass(nameElem.value!, itemData.quality);
-
-		const toggleFavorite = (isFavorite: boolean) => {
-			const filters = this.player.sim.getFilters();
-			if (this.label === SelectorModalTabs.Items) {
-				const favId = itemData.id;
-				if (isFavorite) {
-					filters.favoriteItems.push(favId);
-				} else {
-					const favIdx = filters.favoriteItems.indexOf(favId);
-					if (favIdx !== -1) {
-						filters.favoriteItems.splice(favIdx, 1);
-					}
-				}
-			} else if (this.label === SelectorModalTabs.Items) {
-				const favId = getUniqueEnchantString(itemData.item as unknown as Enchant);
-				if (isFavorite) {
-					filters.favoriteEnchants.push(favId);
-				} else {
-					const favIdx = filters.favoriteEnchants.indexOf(favId);
-					if (favIdx !== -1) {
-						filters.favoriteEnchants.splice(favIdx, 1);
-					}
-				}
-			} else if (this.label.startsWith('Gem')) {
-				const favId = itemData.id;
-				if (isFavorite) {
-					filters.favoriteGems.push(favId);
-				} else {
-					const favIdx = filters.favoriteGems.indexOf(favId);
-					if (favIdx !== -1) {
-						filters.favoriteGems.splice(favIdx, 1);
-					}
-				}
-			}
-			favoriteElem.value!.classList.toggle('text-brand');
-			favoriteIconElem.value!.classList.toggle('fas');
-			favoriteIconElem.value!.classList.toggle('far');
-			listItemElem.dataset.fav = isFavorite.toString();
-
-			this.player.sim.setFilters(TypedEvent.nextEventID(), filters);
-		};
-
-		const isFavorite = this.isItemFavorited(itemData);
-
-		if (isFavorite) {
-			favoriteElem.value!.classList.add('text-brand');
-			favoriteIconElem.value?.classList.add('fas');
-			listItemElem.dataset.fav = 'true';
-		} else {
-			favoriteIconElem.value?.classList.add('far');
-			listItemElem.dataset.fav = 'false';
-		}
 
 		return listItemElem;
 	}
