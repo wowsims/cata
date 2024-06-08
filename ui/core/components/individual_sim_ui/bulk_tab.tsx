@@ -156,7 +156,6 @@ export class BulkItemPicker extends Component {
 
 			const openEnchantGemSelector = (event: Event) => {
 				event.preventDefault();
-				console.log('Click', item);
 
 				if (!!eligibleEnchants.length) {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Enchants, this.createGearData());
