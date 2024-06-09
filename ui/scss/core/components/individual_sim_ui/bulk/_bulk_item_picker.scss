@@ -1,0 +1,19 @@
+.bulk-item-picker.item-picker-root {
+	padding: var(--spacer-2);
+	border: var(--border-default);
+	margin-bottom: 0 !important;
+
+	.item-picker-labels-container {
+		padding-top: 0;
+	}
+
+	.remove-batch-item-btn {
+		@extend .btn;
+		@extend .btn-sm;
+		@extend .btn-reset;
+
+		margin-right: calc(-1 * var(--spacer-2));
+		margin-top: calc(-1 * var(--spacer-2));
+		align-self: flex-start;
+	}
+}

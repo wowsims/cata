@@ -189,6 +189,14 @@
 				}
 			}
 		}
+
+		.btn-danger {
+			margin: calc(-0.5 * var(--bs-modal-header-padding-y)) var(--spacer-3) calc(-0.5 * var(--bs-modal-header-padding-y)) auto;
+
+			& + .btn-close {
+				margin-left: 0;
+			}
+		}
 	}
 }
 
