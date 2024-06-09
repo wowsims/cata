@@ -1,0 +1,175 @@
+.gear-picker-root {
+	&:not(.gear-picker-root-bulk) {
+		display: grid;
+		gap: var(--section-spacer);
+		grid-template-columns: 1fr 1fr;
+
+		@include media-breakpoint-down(sm) {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.gear-picker-left {
+		.item-picker-root {
+			flex-direction: row;
+			text-align: left;
+
+			// Add space to separate weapon categories
+			&:nth-child(6) {
+				margin-bottom: calc(var(--spacer-3) * 2);
+			}
+		}
+	}
+
+	.gear-picker-right {
+		.item-picker-root {
+			flex-direction: row-reverse;
+			@include media-breakpoint-down(md) {
+				flex-direction: row;
+			}
+
+			.item-picker-ilvl {
+				right: 0;
+				@include media-breakpoint-down(md) {
+					left: 0;
+				}
+			}
+
+			.item-picker-labels-container {
+				align-items: flex-end;
+				text-align: right;
+				@include media-breakpoint-down(md) {
+					align-items: flex-start;
+				}
+			}
+		}
+	}
+}
+
+.item-picker-root {
+	display: flex;
+
+	&:not(:last-child) {
+		margin-bottom: var(--block-spacer);
+	}
+
+	.item-picker-sockets-container {
+		@include vertical-bottom;
+		@include horizontal-center;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+
+	.item-picker-ilvl {
+		position: absolute;
+		padding-left: 1px;
+		background: var(--bs-black-alpha-50);
+		font-size: var(--content-font-size);
+		z-index: 1;
+	}
+
+	.item-picker-labels-container {
+		padding: var(--spacer-2);
+		padding-bottom: 0;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+
+		.item-picker-name,
+		.item-picker-reforge,
+		.item-picker-enchant {
+			letter-spacing: normal;
+
+			.gear-picker-right & {
+				text-align: right;
+				@include media-breakpoint-down(md) {
+					text-align: left;
+				}
+			}
+		}
+
+		.item-picker-name {
+			color: var(--bs-white);
+			font-size: var(--h6-font-size);
+		}
+		.item-picker-reforge {
+			color: var(--bs-uncommon);
+			font-size: var(--content-font-size);
+		}
+		.item-picker-enchant {
+			color: var(--bs-uncommon);
+			font-size: var(--content-font-size);
+		}
+	}
+}
+
+.item-picker-icon-wrapper {
+	position: relative;
+	width: 4rem;
+	height: 4rem;
+	border: var(--border-default);
+
+	@include media-breakpoint-down(lg) {
+		width: 3rem;
+		height: 3rem;
+	}
+}
+
+.item-picker-icon {
+	@include wowhead-background-icon;
+	height: 100%;
+	width: 100%;
+
+	.item-picker-labels-container {
+		align-items: flex-start;
+		text-align: left;
+	}
+}
+
+.gear-picker-modal-slots {
+	// Without this the slots are not clickable
+	pointer-events: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	margin-right: -1px;
+	z-index: 1;
+	@include media-breakpoint-down(sm) {
+		display: none;
+	}
+
+	.item-picker-icon-wrapper {
+		width: var(--icon-size-md);
+		height: var(--icon-size-md);
+		border-color: var(--bs-modal-border-color);
+
+		&.active {
+			width: calc(var(--icon-size-md) + var(--spacer-2));
+			height: calc(var(--icon-size-md) + var(--spacer-2));
+			border-width: 2px;
+			border-right: 0;
+		}
+
+		&:nth-child(6),
+		&:nth-child(14) {
+			// Spacing between ragdoll sections
+			margin-bottom: var(--spacer-3);
+		}
+
+		&:not(:first-child) {
+			margin-top: -1px;
+		}
+	}
+}
+
+.heroic-label {
+	margin-left: var(--spacer-1);
+	color: var(--bs-uncommon);
+}
+
+.reforge-value {
+	display: inline-block;
+	width: 10rem;
+}

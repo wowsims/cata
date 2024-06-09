@@ -68,6 +68,7 @@ export class ItemRenderer extends Component {
 
 	readonly iconElem: HTMLAnchorElement;
 	readonly nameElem: HTMLAnchorElement;
+	readonly ilvlElem: HTMLSpanElement;
 	readonly enchantElem: HTMLAnchorElement;
 	readonly reforgeElem: HTMLAnchorElement;
 	readonly socketsContainerElem: HTMLElement;
@@ -79,12 +80,14 @@ export class ItemRenderer extends Component {
 
 		const iconElem = ref<HTMLAnchorElement>();
 		const nameElem = ref<HTMLAnchorElement>();
+		const ilvlElem = ref<HTMLSpanElement>();
 		const enchantElem = ref<HTMLAnchorElement>();
 		const reforgeElem = ref<HTMLAnchorElement>();
 		const sce = ref<HTMLDivElement>();
 		this.rootElem.appendChild(
 			<>
 				<div className="item-picker-icon-wrapper">
+					<span className="item-picker-ilvl" ref={ilvlElem} />
 					<a ref={iconElem} className="item-picker-icon" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
 					<div ref={sce} className="item-picker-sockets-container"></div>
 				</div>
@@ -98,6 +101,7 @@ export class ItemRenderer extends Component {
 
 		this.iconElem = iconElem.value!;
 		this.nameElem = nameElem.value!;
+		this.ilvlElem = ilvlElem.value!;
 		this.reforgeElem = reforgeElem.value!;
 		this.enchantElem = enchantElem.value!;
 		this.socketsContainerElem = sce.value!;
@@ -114,15 +118,19 @@ export class ItemRenderer extends Component {
 		this.reforgeElem.classList.add('hide');
 
 		this.iconElem.style.backgroundImage = '';
+
 		this.enchantElem.innerText = '';
 		this.reforgeElem.innerText = '';
 		this.socketsContainerElem.innerText = '';
-		this.socketsElem = [];
 		this.nameElem.textContent = '';
+		this.ilvlElem.textContent = '';
+
+		this.socketsElem = [];
 	}
 
 	update(newItem: EquippedItem) {
 		this.nameElem.textContent = newItem.item.name;
+		this.ilvlElem.textContent = newItem.item.ilvl.toString();
 
 		if (newItem.randomSuffix) {
 			this.nameElem.textContent += ' ' + newItem.randomSuffix.name;
