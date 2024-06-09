@@ -845,7 +845,8 @@ export class SelectorModal extends BaseModal {
 			equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.randomSuffix,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
-				if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(null));
+				if (equippedItem) gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item).withRandomSuffix(null));
+				this.removeTabs(SelectorModalTabs.Reforging);
 			},
 		});
 	}
@@ -892,7 +893,7 @@ export class SelectorModal extends BaseModal {
 				equippedItem?.reforge ? this.player.getReforgeData(equippedItem, equippedItem.reforge) : null,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
-				if (equippedItem) gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item));
+				if (equippedItem) gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item).withRandomSuffix(equippedItem._randomSuffix));
 			},
 		});
 	}
@@ -1278,6 +1279,9 @@ export class ItemList<T extends ItemListType> {
 					break;
 				case SelectorModalTabs.Reforging:
 					removeButton.textContent = 'Remove Reforge';
+					break;
+				case SelectorModalTabs.RandomSuffixes:
+					removeButton.textContent = 'Remove Random Suffix';
 					break;
 				case SelectorModalTabs.Gem1:
 				case SelectorModalTabs.Gem2:
