@@ -5,6 +5,22 @@
 	--icon-cell-width: 2rem;
 }
 
+.selector-modal-search {
+	max-width: 12rem;
+}
+
+.selector-modal-phase-selector {
+	min-width: 7rem;
+
+	.phase-selector {
+		margin-bottom: 0;
+	}
+}
+
+.selector-modal-remove-button {
+	margin-left: auto;
+}
+
 .selector-modal-list-labels {
 	display: flex;
 	padding-right: 0.5rem;
@@ -168,20 +184,4 @@
 		margin-left: var(--spacer-1);
 		font-size: 0.8rem;
 	}
-}
-
-.selector-modal-search {
-	max-width: 12rem;
-}
-
-.selector-modal-phase-selector {
-	min-width: 7rem;
-
-	.phase-selector {
-		margin-bottom: 0;
-	}
-}
-
-.selector-modal-remove-button {
-	margin-left: auto;
 }
