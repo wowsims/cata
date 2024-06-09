@@ -2,7 +2,6 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import { Consumes, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
-	PaladinJudgement as PaladinJudgement,
 	PaladinMajorGlyph,
 	PaladinMinorGlyph,
 	PaladinPrimeGlyph,
@@ -47,8 +46,7 @@ export const RetTalents = {
 
 export const DefaultOptions = RetributionPaladinOptions.create({
 	classOptions: {
-		aura: PaladinAura.RetributionAura,
-		judgement: PaladinJudgement.Judgement,
+		aura: PaladinAura.Retribution,
 		seal: PaladinSeal.Truth,
 	},
 });
@@ -63,6 +61,6 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
-	profession2: Profession.Jewelcrafting,
+	profession2: Profession.Tailoring,
 	distanceFromTarget: 5,
 };

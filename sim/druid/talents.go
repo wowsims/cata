@@ -38,11 +38,6 @@ func (druid *Druid) ApplyTalents() {
 	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
 	druid.PseudoStats.ReducedCritTakenChance += 0.02 * float64(druid.Talents.ThickHide)
 
-	// if druid.Talents.Dreamstate > 0 {
-	// 	bonus := 0.04 * float64(druid.Talents.Dreamstate)
-	// 	druid.AddStatDependency(stats.Intellect, stats.MP5, bonus)
-	// }
-
 	if druid.Talents.HeartOfTheWild > 0 {
 		bonus := 0.02 * float64(druid.Talents.HeartOfTheWild)
 		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
@@ -79,12 +74,8 @@ func (druid *Druid) ApplyTalents() {
 		druid.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= multiplier
 	}
 
-	// druid.setupNaturesGrace()
 	// druid.registerNaturesSwiftnessCD()
-	// druid.applyEarthAndMoon()
-	// druid.applyMoonkinForm()
 	druid.applyPrimalFury()
-	// druid.applyEclipse()
 	druid.applyLotp()
 	// druid.applyPredatoryInstincts()
 	druid.applyNaturalReaction()
@@ -244,6 +235,14 @@ func (druid *Druid) applyMoonkinForm() {
 			School:     core.SpellSchoolArcane | core.SpellSchoolNature,
 			ClassMask:  DruidSpellsAll,
 			FloatValue: 0.1,
+			Kind:       core.SpellMod_DamageDone_Pct,
+		})
+	}
+
+	if druid.Talents.MasterShapeshifter {
+		druid.AddStaticMod(core.SpellModConfig{
+			School:     core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolHoly | core.SpellSchoolNature | core.SpellSchoolShadow,
+			FloatValue: 0.04,
 			Kind:       core.SpellMod_DamageDone_Pct,
 		})
 	}

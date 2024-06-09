@@ -11,6 +11,7 @@ import (
 type UnitType int
 type SpellRegisteredHandler func(spell *Spell)
 type OnMasteryStatChanged func(sim *Simulation, oldMastery float64, newMastery float64)
+type OnCastSpeedChanged func(oldSpeed float64, newSpeed float64)
 
 const (
 	PlayerUnit UnitType = iota
@@ -177,6 +178,9 @@ type Unit struct {
 	// Used for reacting to mastery stat changes if a spec needs it
 	OnMasteryStatChanged []OnMasteryStatChanged
 
+	// Used for reacting to cast speed changes if a spec needs it (e.g. for cds reduced by haste)
+	OnCastSpeedChanged []OnCastSpeedChanged
+
 	GetSpellPowerValue GetSpellpowerValue
 }
 
@@ -301,6 +305,13 @@ func (unit *Unit) AddOnMasteryStatChanged(omsc OnMasteryStatChanged) {
 	unit.OnMasteryStatChanged = append(unit.OnMasteryStatChanged, omsc)
 }
 
+func (unit *Unit) AddOnCastSpeedChanged(ocsc OnCastSpeedChanged) {
+	if unit.Env != nil && unit.Env.IsFinalized() {
+		panic("Already finalized, cannot add on casting speed changed callback!")
+	}
+	unit.OnCastSpeedChanged = append(unit.OnCastSpeedChanged, ocsc)
+}
+
 func (unit *Unit) AddStatsDynamic(sim *Simulation, bonus stats.Stats) {
 	if unit.Env == nil {
 		panic("Environment not constructed.")
@@ -412,7 +423,13 @@ func (unit *Unit) SpellGCD() time.Duration {
 }
 
 func (unit *Unit) updateCastSpeed() {
+	oldCastSpeed := unit.CastSpeed
 	unit.CastSpeed = 1 / (unit.PseudoStats.CastSpeedMultiplier * (1 + (unit.stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))))
+	newCastSpeed := unit.CastSpeed
+
+	for i := range unit.OnCastSpeedChanged {
+		unit.OnCastSpeedChanged[i](oldCastSpeed, newCastSpeed)
+	}
 }
 func (unit *Unit) MultiplyCastSpeed(amount float64) {
 	unit.PseudoStats.CastSpeedMultiplier *= amount

@@ -24,63 +24,10 @@ var ItemSetLightningChargedBattleGear = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
-var ItemSetBloodthirstyGladiatorsPursuit = core.NewItemSet(core.ItemSet{
-	Name: "Bloodthirsty Gladiator's Pursuit",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			hunter.AddStats(stats.Stats{
-				stats.Agility: 70,
-			})
-		},
-		4: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			// Multiply focus regen 1.05
-			hunter.AddStats(stats.Stats{
-				stats.Agility: 90,
-			})
-		},
-	},
-})
-var ItemSetViciousGladiatorsPursuit = core.NewItemSet(core.ItemSet{
-	Name: "Vicious Gladiator's Pursuit",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			hunter.AddStats(stats.Stats{
-				stats.Agility: 70,
-			})
-		},
-		4: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			// Multiply focus regen 1.05
-			hunter.AddStats(stats.Stats{
-				stats.Agility: 90,
-			})
-		},
-	},
-})
 
-//	var ItemSetBloodiedGladiatorsPursuit = core.NewItemSet(core.ItemSet{
-//		Name: "Bloodied Gladiator's Pursuit",
-//		Bonuses: map[int32]core.ApplyEffect{
-//			2: func(agent core.Agent) {
-//				hunter := agent.(HunterAgent).GetHunter()
-//				hunter.AddStats(stats.Stats{
-//					stats.Agility: 70,
-//				})
-//			},
-//			4: func(agent core.Agent) {
-//				hunter := agent.(HunterAgent).GetHunter()
-//				// Multiply focus regen 1.05
-//				hunter.AddStats(stats.Stats{
-//					stats.Agility: 90,
-//				})
-//			},
-//		},
-//	})
-var ItemSetRuthlessGladiatorsPursuit = core.NewItemSet(core.ItemSet{
-	Name: "Ruthless Gladiator's Pursuit",
+var ItemSetGladiatorsPursuit = core.NewItemSet(core.ItemSet{
+	ID:   920,
+	Name: "Gladiator's Pursuit",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()

@@ -50,8 +50,9 @@ func (eb *eclipseEnergyBar) reset() {
 
 func (druid *Druid) EnableEclipseBar() {
 	druid.eclipseEnergyBar = eclipseEnergyBar{
-		druid:    druid,
-		gainMask: SolarEnergy | LunarEnergy,
+		druid:            druid,
+		gainMask:         SolarEnergy | LunarEnergy,
+		eclipseCallbacks: druid.eclipseEnergyBar.eclipseCallbacks,
 	}
 }
 

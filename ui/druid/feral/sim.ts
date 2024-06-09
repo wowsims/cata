@@ -130,8 +130,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 
 		const blockZerk = APLAction.fromJsonString(`{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}`);
 		const doRotation = APLAction.fromJsonString(`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maintainFaerieFire":${simple.maintainFaerieFire},"allowAoeBerserk":${simple.allowAoeBerserk},"meleeWeave":${simple.meleeWeave},"bearWeave":${simple.bearWeave},"snekWeave":${simple.snekWeave},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${simple.useBite},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)}}}`);
+		const autocasts = APLAction.fromJsonString(`{"autocastOtherCooldowns":{}}`);
 
-		actions.push(...([blockZerk, doRotation].filter(a => a) as Array<APLAction>));
+		actions.push(...([blockZerk, doRotation, autocasts].filter(a => a) as Array<APLAction>));
 
 		return APLRotation.create({
 			prepullActions: prepullActions,

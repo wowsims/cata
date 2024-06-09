@@ -49,6 +49,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		Stat.StatExpertise,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
+		Stat.StatNatureResistance,
 	],
 	epPseudoStats: [
 		PseudoStat.PseudoStatMainHandDps,
@@ -72,6 +73,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		Stat.StatMeleeHaste,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
+		Stat.StatNatureResistance,
 	],
 
 	defaults: {

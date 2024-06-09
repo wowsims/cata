@@ -4,10 +4,10 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/core/stats"
 )
 
 // T11
-// TODO: untested, since it's currently not working ingame
 var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 	Name: "Shadowflame Regalia",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -57,6 +57,32 @@ var ItemSetMaleficRaiment = core.NewItemSet(core.ItemSet{
 					}
 				},
 			}))
+		},
+	},
+})
+
+var ItemSetGladiatorsFelshroud = core.NewItemSet(core.ItemSet{
+	ID:   910,
+	Name: "Gladiator's Felshroud",
+
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			agent.(WarlockAgent).GetWarlock().AddStats(stats.Stats{
+				stats.Intellect: 70,
+			})
+		},
+		4: func(agent core.Agent) {
+			lock := agent.(WarlockAgent).GetWarlock()
+			lock.AddStats(stats.Stats{
+				stats.Intellect: 90,
+			})
+
+			// TODO: enable if we ever implement death coil
+			// lock.AddStaticMod(core.SpellModConfig{
+			// 	Kind:       core.SpellMod_Cooldown_Flat,
+			// 	ClassMask:  WarlockSpellDeathCoil,
+			// 	FloatValue: -30 * time.Second,
+			// })
 		},
 	},
 })

@@ -121,7 +121,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			mangle: true,
 			vindication: true,
 			bloodFrenzy: true,
-			judgement: true,
 			frostFever: true,
 		}),
 	},

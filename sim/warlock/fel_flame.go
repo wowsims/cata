@@ -1,6 +1,8 @@
 package warlock
 
 import (
+	"time"
+
 	"github.com/wowsims/cata/sim/core"
 )
 
@@ -36,16 +38,14 @@ func (warlock *Warlock) registerFelFlame() {
 					if warlock.ImmolateDot != nil {
 						immoDot := warlock.ImmolateDot.Dot(target)
 						if immoDot.IsActive() {
-							immoDot.TickCount = max(0, immoDot.TickCount-2)
-							immoDot.TakeSnapshot(sim, false)
+							immoDot.DurationExtendSnapshot(sim, 6*time.Second)
 						}
 					}
 
 					if warlock.UnstableAffliction != nil {
 						unstableAff := warlock.UnstableAffliction.Dot(target)
 						if unstableAff != nil && unstableAff.IsActive() {
-							unstableAff.TickCount = max(0, unstableAff.TickCount-2)
-							unstableAff.TakeSnapshot(sim, false)
+							unstableAff.DurationExtendSnapshot(sim, 6*time.Second)
 						}
 					}
 				}

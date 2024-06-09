@@ -465,7 +465,7 @@ func AspectOfTheWildAura(unit *Unit) *Aura {
 		"Aspect of the Wild",
 		ActionID{SpellID: 20043},
 		[]StatConfig{
-			{stats.ShadowResistance, 97, false},
+			{stats.NatureResistance, 195, false},
 		},
 	})
 }
@@ -1656,7 +1656,7 @@ func InnervateManaThreshold(character *Character) float64 {
 		// Mages burn mana really fast so they need a higher threshold.
 		return character.MaxMana() * 0.7
 	} else {
-		return 5000
+		return character.MaxMana() * 0.45
 	}
 }
 

@@ -434,14 +434,14 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private addTopbarComponents() {
 		this.simHeader.addImportLink('JSON', new Importers.IndividualJsonImporter(this.rootElem, this), true);
-		this.simHeader.addImportLink('85U', new Importers.Individual80UImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('60U Cata', new Importers.Individual60UImporter(this.rootElem, this), true);
 		this.simHeader.addImportLink('WoWHead', new Importers.IndividualWowheadGearPlannerImporter(this.rootElem, this), false);
 		this.simHeader.addImportLink('Addon', new Importers.IndividualAddonImporter(this.rootElem, this), true);
 
 		this.simHeader.addExportLink('Link', new Exporters.IndividualLinkExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('JSON', new Exporters.IndividualJsonExporter(this.rootElem, this), true);
 		this.simHeader.addExportLink('WoWHead', new Exporters.IndividualWowheadGearPlannerExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('85U EP', new Exporters.Individual80UEPExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('60U Cata EP', new Exporters.Individual60UEPExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('Pawn EP', new Exporters.IndividualPawnEPExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('CLI', new Exporters.IndividualCLIExporter(this.rootElem, this), true);
 	}
@@ -466,6 +466,17 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				eventID,
 				Cooldowns.create({
 					hpPercentForDefensives: this.player.playerSpec.isTankSpec ? 0.4 : 0,
+				}),
+			);
+		});
+	}
+
+	applyEmptyAplRotation(eventID: EventID) {
+		TypedEvent.freezeAllAndDo(() => {
+			this.player.setAplRotation(
+				eventID,
+				APLRotation.create({
+					type: APLRotationType.TypeAPL,
 				}),
 			);
 		});
