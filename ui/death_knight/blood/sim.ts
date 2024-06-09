@@ -115,7 +115,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			criticalMass: true,
 			vindication: true,
 			frostFever: true,
-			judgement: true,
 		}),
 	},
 

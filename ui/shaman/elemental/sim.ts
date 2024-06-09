@@ -103,7 +103,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			judgement: true,
 			curseOfElements: true,
 			shadowAndFlame: true,
 		}),

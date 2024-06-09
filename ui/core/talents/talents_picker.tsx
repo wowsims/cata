@@ -70,22 +70,22 @@ export class TalentsPicker<ModObject extends Player<any> | HunterPet<any>, Talen
 		this.rootElem.appendChild(
 			<div className="talents-picker-inner" ref={containerElemRef}>
 				<div className="talents-picker-header">
-					<div>
-						<label>Points Remaining:</label>
-						<span className="talent-tree-points" ref={pointsRemainingElemRef}>
-							{getPointsRemaining()}
-						</span>
+					<div className="d-flex">
+						<label>
+							Points Remaining:
+							<span ref={pointsRemainingElemRef}>{getPointsRemaining()}</span>
+						</label>
 					</div>
-					<div className="talents-picker-actions" ref={actionsContainerRef}></div>
+					<div className="talents-picker-actions" ref={actionsContainerRef} />
 				</div>
 				<div id="talents-carousel" className="carousel slide">
 					<div className="carousel-inner" ref={carouselContainerRef}></div>
 					<button className="carousel-control-prev" type="button" ref={carouselPrevBtnRef}>
-						<span className="carousel-control-prev-icon" attributes={{ 'aria-hidden': true }}></span>
+						<span className="carousel-control-prev-icon" attributes={{ 'aria-hidden': true }} />
 						<span className="visually-hidden">Previous</span>
 					</button>
 					<button className="carousel-control-next" type="button" ref={carouselNextBtnRef}>
-						<span className="carousel-control-next-icon" attributes={{ 'aria-hidden': true }}></span>
+						<span className="carousel-control-next-icon" attributes={{ 'aria-hidden': true }} />
 						<span className="visually-hidden">Next</span>
 					</button>
 				</div>
@@ -245,14 +245,14 @@ class TalentTreePicker<TalentsProto> extends Component {
 			<>
 				<div className="talent-tree-header">
 					<img src={this.getTreeIcon(klass, specNumber)} className="talent-tree-icon" />
-					<span className="talent-tree-title"></span>
-					<span className="talent-tree-points"></span>
+					<span className="talent-tree-title" />
+					<label className="talent-tree-points" />
 					<button className="talent-tree-reset btn btn-link link-danger">
 						<i className="fa fa-times"></i>
 					</button>
 				</div>
-				<div className="talent-tree-background"></div>
-				<div className="talent-tree-main"></div>
+				<div className="talent-tree-background" />
+				<div className="talent-tree-main" />
 			</>,
 		);
 
@@ -374,7 +374,7 @@ class TalentReqArrow extends Component {
 				this.rootElem.dataset.reqArrowRowSize = String(Math.abs(parentLoc.rowIdx - childLoc.rowIdx));
 				rowEnd += 1;
 				colEnd = this.dir == 'rightdown' ? colEnd + 1 : colEnd - 1;
-				this.rootElem.appendChild(<div></div>);
+				this.rootElem.appendChild(<div />);
 			}
 		}
 

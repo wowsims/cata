@@ -11,12 +11,18 @@ import (
 )
 
 const (
-	itemIDHeader = "ID"
-	flags1Header = "Flags_1"
+	itemIDHeader  = "ID"
+	flags1Header  = "Flags_1"
+	itemSetHeader = "ItemSet"
 
 	flag1AllianceOnly = 0x6002
 	flag1HordeOnly    = 0x6001
 )
+
+type WagoDbItem struct {
+	FactionRestriction proto.UIItem_FactionRestriction
+	ItemSetID          int32
+}
 
 func flags1ToFactionRestriction(flags1 int) proto.UIItem_FactionRestriction {
 	switch flags1 {
@@ -29,7 +35,7 @@ func flags1ToFactionRestriction(flags1 int) proto.UIItem_FactionRestriction {
 	}
 }
 
-func ParseItemFactionRestrictionsFromWagoDB(dbContents string) map[int32]proto.UIItem_FactionRestriction {
+func ParseWagoDB(dbContents string) map[int32]WagoDbItem {
 	r := csv.NewReader(strings.NewReader(dbContents))
 	rawHeaders, err := r.Read()
 	if err != nil {
@@ -47,8 +53,11 @@ func ParseItemFactionRestrictionsFromWagoDB(dbContents string) map[int32]proto.U
 	if _, ok := headerMap[flags1Header]; !ok {
 		log.Fatalf("The wago csv does not have a Flags_1 header column. All columns: %#v", headerMap)
 	}
+	if _, ok := headerMap[itemSetHeader]; !ok {
+		log.Fatalf("The wago csv does not have a ItemSet header column. All columns: %#v", headerMap)
+	}
 
-	result := map[int32]proto.UIItem_FactionRestriction{}
+	result := map[int32]WagoDbItem{}
 	for {
 		row, err := r.Read()
 		if err == io.EOF {
@@ -68,7 +77,15 @@ func ParseItemFactionRestrictionsFromWagoDB(dbContents string) map[int32]proto.U
 			log.Fatalf("Cannot parse Flags_1 from row %v: %v", row, err)
 		}
 
-		result[int32(itemID)] = flags1ToFactionRestriction(flags1)
+		itemSet, err := strconv.Atoi(row[headerMap[itemSetHeader]])
+		if err != nil {
+			log.Fatalf("Cannot parse ItemSet from row %v: %v", row, err)
+		}
+
+		result[int32(itemID)] = WagoDbItem{
+			FactionRestriction: flags1ToFactionRestriction(flags1),
+			ItemSetID:          int32(itemSet),
+		}
 	}
 
 	return result

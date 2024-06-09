@@ -20,11 +20,10 @@ func (druid *Druid) registerInnervateCD() {
 
 	amount := 0.05
 	if innervateTarget == &druid.Unit {
-		amount = 0.2 + float64(druid.Talents.Dreamstate) * 0.15
+		amount = 0.2 + float64(druid.Talents.Dreamstate)*0.15
 	}
 
-	var innervateAura *core.Aura
-	innervateAura = core.InnervateAura(innervateTargetChar, actionID.Tag, amount)
+	var innervateAura = core.InnervateAura(innervateTargetChar, actionID.Tag, amount)
 	innervateManaThreshold := core.InnervateManaThreshold(innervateTargetChar)
 
 	innervateSpell = druid.RegisterSpell(Humanoid|Moonkin|Tree, core.SpellConfig{

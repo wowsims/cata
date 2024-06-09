@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (paladin *Paladin) RegisterJudgement() {
+func (paladin *Paladin) registerJudgement() {
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 20271},
 		SpellSchool: core.SpellSchoolHoly,

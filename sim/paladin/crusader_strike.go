@@ -2,9 +2,10 @@ package paladin
 
 import (
 	"github.com/wowsims/cata/sim/core"
+	"time"
 )
 
-func (paladin *Paladin) RegisterCrusaderStrike() {
+func (paladin *Paladin) registerCrusaderStrike() {
 	actionId := core.ActionID{SpellID: 35395}
 	hpMetrics := paladin.NewHolyPowerMetrics(actionId)
 
@@ -13,7 +14,7 @@ func (paladin *Paladin) RegisterCrusaderStrike() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
-		ClassSpellMask: SpellMaskCrusaderStrike | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskCrusaderStrike,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.1,
@@ -24,7 +25,10 @@ func (paladin *Paladin) RegisterCrusaderStrike() {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
-			CD:          *paladin.sharedBuilderCooldown,
+			CD: core.Cooldown{
+				Timer:    paladin.NewTimer(),
+				Duration: 4500 * time.Millisecond,
+			},
 		},
 
 		DamageMultiplier: 1.35,
@@ -37,7 +41,8 @@ func (paladin *Paladin) RegisterCrusaderStrike() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				paladin.GainHolyPower(sim, 1, hpMetrics)
+				holyPowerGain := core.TernaryInt32(paladin.ZealotryAura.IsActive(), 3, 1)
+				paladin.GainHolyPower(sim, holyPowerGain, hpMetrics)
 			}
 		},
 	})

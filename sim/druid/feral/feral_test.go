@@ -159,8 +159,9 @@ var PlayerOptionsMonoCatNoBleed = &proto.Player_FeralDruid{
 // }
 
 var FullConsumes = &proto.Consumes{
-	Flask:         proto.Flask_FlaskOfTheWinds,
-	Food:          proto.Food_FoodSkeweredEel,
-	DefaultPotion: proto.Potions_PotionOfTheTolvir,
-	PrepopPotion:  proto.Potions_PotionOfTheTolvir,
+	Flask:             proto.Flask_FlaskOfTheWinds,
+	Food:              proto.Food_FoodSkeweredEel,
+	DefaultPotion:     proto.Potions_PotionOfTheTolvir,
+	PrepopPotion:      proto.Potions_PotionOfTheTolvir,
+	ExplosiveBigDaddy: true,
 }

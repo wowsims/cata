@@ -339,8 +339,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-EarthenWarplate"
  value: {
-  dps: 25706.62502
-  tps: 21929.14167
+  dps: 25706.62165
+  tps: 21929.1383
  }
 }
 dps_results: {
@@ -481,6 +481,13 @@ dps_results: {
  value: {
   dps: 26976.0112
   tps: 23069.66056
+ }
+}
+dps_results: {
+ key: "TestFury-AllItems-Gladiator'sBattlegear"
+ value: {
+  dps: 22774.58348
+  tps: 19380.34714
  }
 }
 dps_results: {
@@ -710,8 +717,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-LeftEyeofRajh-56102"
  value: {
-  dps: 26744.33216
-  tps: 22850.68727
+  dps: 26744.32805
+  tps: 22850.68316
  }
 }
 dps_results: {
@@ -802,7 +809,7 @@ dps_results: {
  key: "TestFury-AllItems-MoltenGiantBattleplate"
  value: {
   dps: 23904.41678
-  tps: 20134.4462
+  tps: 20134.44619
  }
 }
 dps_results: {
@@ -836,8 +843,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-PhylacteryoftheNamelessLich-50365"
  value: {
-  dps: 26636.84418
-  tps: 22718.45606
+  dps: 26636.88151
+  tps: 22718.49339
  }
 }
 dps_results: {
@@ -920,8 +927,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
-  dps: 26957.10135
-  tps: 22859.13983
+  dps: 26957.13868
+  tps: 22859.17716
  }
 }
 dps_results: {
@@ -1319,8 +1326,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-Average-Default"
  value: {
-  dps: 28192.38255
-  tps: 24245.69907
+  dps: 28192.37353
+  tps: 24245.69005
  }
 }
 dps_results: {
