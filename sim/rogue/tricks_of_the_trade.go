@@ -9,11 +9,8 @@ import (
 
 func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 	hasGlyph := rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfTricksOfTheTrade)
-
+	damageMult := core.TernaryFloat64(hasGlyph, 1.15, 1.10)
 	actionID := core.ActionID{SpellID: 57934}
-	energyMetrics := rogue.NewEnergyMetrics(actionID)
-	hasShadowblades := rogue.HasSetBonus(Tier10, 2)
-	energyCost := core.TernaryFloat64(hasGlyph || hasShadowblades, 0, 15)
 
 	var tottTarget *core.Unit
 	if rogue.Options.TricksOfTheTradeTarget != nil {
@@ -23,14 +20,14 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 	tricksOfTheTradeThreatTransferAura := rogue.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 59628},
 		Label:    "TricksOfTheTradeThreatTransfer",
-		Duration: core.TernaryDuration(hasGlyph, time.Second*10, time.Second*6),
+		Duration: time.Second * 6,
 	})
 
 	tricksOfTheTradeDamageAura := rogue.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
 		if unit.Type == core.PetUnit {
 			return nil
 		}
-		return core.TricksOfTheTradeAura(unit, rogue.Index, hasGlyph)
+		return core.TricksOfTheTradeAura(unit, rogue.Index, damageMult)
 	})
 
 	var castTarget *core.Unit
@@ -63,7 +60,7 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 		ClassSpellMask: RogueSpellTricksOfTheTrade,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: energyCost,
+			Cost: 15,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -82,9 +79,6 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 				castTarget = target
 			}
 			tricksOfTheTradeApplicationAura.Activate(sim)
-			if hasShadowblades {
-				rogue.AddEnergy(sim, 15, energyMetrics)
-			}
 		},
 	})
 

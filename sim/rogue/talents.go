@@ -23,10 +23,21 @@ func (rogue *Rogue) ApplyTalents() {
 	if rogue.Talents.RelentlessStrikes > 0 {
 		rogue.relentlessStrikesMetrics = rogue.NewEnergyMetrics(core.ActionID{SpellID: 14179})
 	}
+
+	rogue.applyGlyphOfTricks()
 }
 
 // DWSMultiplier returns the offhand damage multiplier
 func (rogue *Rogue) DWSMultiplier() float64 {
 	// DWS (Now named Ambidexterity) is now a Combat rogue passive
 	return core.TernaryFloat64(rogue.Spec == proto.Spec_SpecCombatRogue, 1.75, 1)
+}
+func (rogue *Rogue) applyGlyphOfTricks() {
+	if rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfTricksOfTheTrade) {
+		rogue.AddDynamicMod(core.SpellModConfig{
+			Kind:       core.SpellMod_PowerCost_Flat,
+			FloatValue: -15,
+			ClassMask:  RogueSpellTricksOfTheTrade,
+		})
+	}
 }
