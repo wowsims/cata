@@ -1,11 +1,3 @@
-@import './filters_menu';
-:root {
-	--ilvl-cell-width: 3rem;
-	--source-cell-width: 16rem;
-	--ep-cell-width: 6rem;
-	--icon-cell-width: 2rem;
-}
-
 .gear-picker-root {
 	&:not(.gear-picker-root-bulk) {
 		display: grid;
