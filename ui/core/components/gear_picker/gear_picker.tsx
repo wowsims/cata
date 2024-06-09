@@ -123,7 +123,7 @@ export class ItemRenderer extends Component {
 		this.reforgeElem.innerText = '';
 		this.socketsContainerElem.innerText = '';
 		this.nameElem.textContent = '';
-		this.ilvlElem.innerText = '';
+		this.ilvlElem.textContent = '';
 
 		this.socketsElem = [];
 	}
