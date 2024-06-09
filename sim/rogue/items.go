@@ -12,7 +12,11 @@ var Tier11 = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			// +5% Crit to Backstab, Mutilate, and Sinister Strike
-			// Handled in each spell
+			agent.GetCharacter().AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_BonusCrit_Rating,
+				FloatValue: 5 * core.CritRatingPerCritChance,
+				ClassMask:  RogueSpellBackstab | RogueSpellMutilate | RogueSpellSinisterStrike,
+			})
 		},
 		4: func(agent core.Agent) {
 			// 1% Chance on Auto Attack to increase crit of next Evis or Envenom by +100% for 15 seconds
@@ -52,16 +56,23 @@ var Tier11 = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var Arena = core.NewItemSet(core.ItemSet{
-	// TODO (TheBackstabi) - Revist when method of combining PvP sets exists
-	Name: "Gladiator's Vestments",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			agent.GetCharacter().AddStat(stats.Agility, 70)
+func MakeArenaSet(setName string) *core.ItemSet {
+	return core.NewItemSet(core.ItemSet{
+		Name: setName,
+
+		Bonuses: map[int32]core.ApplyEffect{
+			2: func(agent core.Agent) {
+				agent.GetCharacter().AddStat(stats.Agility, 70)
+			},
+			4: func(agent core.Agent) {
+				agent.GetCharacter().AddStat(stats.Agility, 90)
+				// 10 maximum energy added in rogue.go
+			},
 		},
-		4: func(agent core.Agent) {
-			agent.GetCharacter().AddStat(stats.Agility, 90)
-			// 10 maximum energy added in rogue.go
-		},
-	},
-})
+	})
+}
+
+var CataArenaS0 = MakeArenaSet("Bloodthirsty Gladiator's Vestments")
+var CataArenaS1 = MakeArenaSet("Vicious Gladiator's Vestments")
+var CataArenaS2 = MakeArenaSet("Ruthless Gladiator's Vestments")
+var CataArenaS3 = MakeArenaSet("Cataclysmic Gladiator's Vestments")

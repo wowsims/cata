@@ -241,7 +241,10 @@ func NewRogue(character *core.Character, options *proto.RogueOptions, talents st
 	rogue.PseudoStats.CanParry = true
 
 	maxEnergy := 100.0
-	if rogue.HasSetBonus(Arena, 4) {
+	if rogue.HasSetBonus(CataArenaS0, 4) ||
+		rogue.HasSetBonus(CataArenaS1, 4) ||
+		rogue.HasSetBonus(CataArenaS2, 4) ||
+		rogue.HasSetBonus(CataArenaS3, 4) {
 		maxEnergy += 10
 	}
 	if rogue.Spec == proto.Spec_SpecAssassinationRogue &&

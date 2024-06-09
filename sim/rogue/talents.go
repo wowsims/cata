@@ -34,7 +34,7 @@ func (rogue *Rogue) DWSMultiplier() float64 {
 }
 func (rogue *Rogue) applyGlyphOfTricks() {
 	if rogue.HasMajorGlyph(proto.RogueMajorGlyph_GlyphOfTricksOfTheTrade) {
-		rogue.AddDynamicMod(core.SpellModConfig{
+		rogue.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_PowerCost_Flat,
 			FloatValue: -15,
 			ClassMask:  RogueSpellTricksOfTheTrade,
