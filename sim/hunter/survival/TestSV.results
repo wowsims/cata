@@ -42,6 +42,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-AllItems-AgonyandTorment"
+ value: {
+  dps: 25102.15701
+  tps: 22661.00877
+ }
+}
+dps_results: {
  key: "TestSV-AllItems-Ahn'KaharBloodHunter'sBattlegear"
  value: {
   dps: 22020.36687

@@ -42,6 +42,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestFury-AllItems-AgonyandTorment"
+ value: {
+  dps: 26422.01877
+  tps: 22774.8801
+ }
+}
+dps_results: {
  key: "TestFury-AllItems-Althor'sAbacus-50366"
  value: {
   dps: 26147.13353
