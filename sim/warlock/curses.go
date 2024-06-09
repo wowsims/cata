@@ -125,9 +125,10 @@ func (warlock *Warlock) registerBaneOfAgony() {
 			Aura: core.Aura{
 				Label: "Bane of Agony",
 			},
-			NumberOfTicks:    12,
-			TickLength:       2 * time.Second,
-			BonusCoefficient: 0.08799999952,
+			NumberOfTicks:       12,
+			TickLength:          2 * time.Second,
+			AffectedByCastSpeed: true,
+			BonusCoefficient:    0.08799999952,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, 0.5*baseTickDmg)
 			},
