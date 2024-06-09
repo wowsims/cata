@@ -83,22 +83,23 @@ func (ret *RetributionPaladin) RegisterMastery() {
 
 	// Hand of Light
 	ret.HandOfLight = ret.RegisterSpell(core.SpellConfig{
-		ActionID:       actionId,
-		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		ActionID:    actionId,
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags: core.SpellFlagMeleeMetrics |
+			// This flag makes sure 8% magic damage on target gets included as a multiplier
+			core.SpellFlagIncludeTargetBonusDamage |
+			core.SpellFlagNoOnCastComplete |
+			// This flag makes sure only Inquisition gets included as a multiplier
+			core.SpellFlagIgnoreAttackerModifiers,
 		ClassSpellMask: paladin.SpellMaskHandOfLight,
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   ret.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   0.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			newResult := spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHit)
-			// TODO: this damage needs to be manually boosted by any 8% magic damage taken debuff present on the target.
-			newResult.Damage = ret.HoLDamage
-			newResult.Threat = spell.ThreatFromDamage(newResult.Outcome, newResult.Damage)
-			spell.DealDamage(sim, newResult)
+			spell.CalcAndDealDamage(sim, target, ret.HoLDamage, spell.OutcomeAlwaysHit)
 		},
 	})
 
@@ -112,7 +113,7 @@ func (ret *RetributionPaladin) RegisterMastery() {
 		ProcChance:     1.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			ret.HoLDamage = (16.8 + 2.1*ret.GetMasteryPoints()) / 100.0 * result.Damage
+			ret.HoLDamage = ((16.8 + 2.1*ret.GetMasteryPoints()) / 100.0) * result.Damage
 			ret.HandOfLight.Cast(sim, result.Target)
 		},
 	})
