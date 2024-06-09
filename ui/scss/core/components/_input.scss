@@ -28,7 +28,7 @@
 		margin-right: var(--spacer-2);
 	}
 
-	input,
+	input:not(.form-check-input),
 	select {
 		width: 5rem;
 	}
