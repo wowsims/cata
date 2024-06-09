@@ -154,7 +154,6 @@ export class BulkItemPicker extends Component {
 			const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
 			const eligibleReforges = this.item?.item ? this.simUI.player.getAvailableReforgings(this.item.getWithRandomSuffixStats()) : [];
 			const eligibleRandomSuffixes = this.item.item.randomSuffixOptions;
-			const removeItemButton = this.bulkUI.selectorModal.header?.querySelector('.btn-danger');
 			const removeItem = () => {
 				this.bulkUI.removeItemByIndex(this.index);
 				this.bulkUI.selectorModal.close();
@@ -173,10 +172,10 @@ export class BulkItemPicker extends Component {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Gem1, this.createGearData());
 				}
 
-				removeItemButton?.addEventListener('click', removeItem);
+				this.bulkUI.selectorModal.removeButton?.addEventListener('click', removeItem);
 			};
 
-			this.bulkUI.selectorModal.addOnHideCallback(() => removeItemButton?.removeEventListener('click', removeItem));
+			this.bulkUI.selectorModal.addOnHideCallback(() => this.bulkUI.selectorModal.removeButton?.removeEventListener('click', removeItem));
 			this.itemElem.iconElem.addEventListener('click', openEnchantGemSelector);
 			this.itemElem.nameElem.addEventListener('click', openEnchantGemSelector);
 			this.itemElem.enchantElem.addEventListener('click', openEnchantGemSelector);
@@ -253,12 +252,8 @@ export class BulkTab extends SimTab {
 		this.selectorModal = new SelectorModal(this.simUI.rootElem, this.simUI, this.simUI.player, undefined, {
 			id: 'bulk-selector-modal',
 			disabledTabs: [SelectorModalTabs.Items],
+			removeButtonText: 'Remove from Batch',
 		});
-
-		const closeX = this.selectorModal.header?.querySelector('.btn-close');
-		if (!!closeX) {
-			this.selectorModal.header?.insertBefore(<button className="btn btn-danger">Remove from Batch</button>, closeX);
-		}
 
 		this.contentContainer.appendChild(
 			<>
