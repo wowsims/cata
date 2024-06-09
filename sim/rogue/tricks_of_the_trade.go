@@ -23,6 +23,12 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 		Duration: time.Second * 6,
 	})
 
+	// Bogus Tricks threat "cast" for hooking T12/T13 set bonuses
+	totThreatTransferSpell := rogue.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 59628},
+		ClassSpellMask: RogueSpellTricksOfTheTradeThreat,
+	})
+
 	tricksOfTheTradeDamageAura := rogue.NewAllyAuraArray(func(unit *core.Unit) *core.Aura {
 		if unit.Type == core.PetUnit {
 			return nil
@@ -40,6 +46,9 @@ func (rogue *Rogue) registerTricksOfTheTradeSpell() {
 				tricksOfTheTradeThreatTransferAura.Activate(sim)
 				if castTarget != nil {
 					tricksOfTheTradeDamageAura.Get(castTarget).Activate(sim)
+					totThreatTransferSpell.Cast(sim, castTarget)
+				} else {
+					totThreatTransferSpell.Cast(sim, &rogue.Unit)
 				}
 				aura.Deactivate(sim)
 			}

@@ -337,6 +337,7 @@ const (
 	RogueSpellSliceAndDice
 	RogueSpellStealth
 	RogueSpellTricksOfTheTrade
+	RogueSpellTricksOfTheTradeThreat
 	RogueSpellVanish
 	RogueSpellHemorrhage
 	RogueSpellPremeditation
