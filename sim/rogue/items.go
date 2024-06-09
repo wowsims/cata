@@ -169,11 +169,8 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 						lastStat = randomStat
 						auraArray[lastStat].Activate(sim)
 					} else { // cannot re-roll same
-						randomStat := int(math.Mod(sim.RandomFloat("Rogue T12 4P Bonus")*10, 2))
-						if randomStat == lastStat {
-							randomStat += 1
-						}
-						lastStat = randomStat
+						randomStat := int(math.Mod(sim.RandomFloat("Rogue T12 4P Bonus")*10, 1)) + 1
+						lastStat = (lastStat + randomStat) % 3
 						auraArray[lastStat].Activate(sim)
 					}
 				},
