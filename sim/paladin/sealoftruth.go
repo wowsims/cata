@@ -16,6 +16,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ClassSpellMask: SpellMaskCensure,
 
 		DamageMultiplier: 1,
+		CritMultiplier:   paladin.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -37,7 +38,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 				dot.Snapshot(target, tickValue)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
