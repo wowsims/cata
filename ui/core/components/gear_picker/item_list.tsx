@@ -7,7 +7,7 @@ import { setItemQualityCssClass } from '../../css_utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player, ReforgeData } from '../../player';
 import { Class, GemColor, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec } from '../../proto/common';
-import { DatabaseFilters, RepFaction, UIEnchant, UIGem, UIItem, UIItem_FactionRestriction } from '../../proto/ui';
+import { DatabaseFilters, RepFaction, UIEnchant as Enchant, UIGem as Gem, UIItem as Item, UIItem_FactionRestriction } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getUniqueEnchantString } from '../../proto_utils/enchants';
 import { EquippedItem } from '../../proto_utils/equipped_item';
@@ -27,8 +27,8 @@ import {
 } from '../other_inputs';
 import Toast from '../toast';
 import { Clusterize } from '../virtual_scroll/clusterize';
-import { createHeroicLabel } from './gear_picker';
 import { SelectorModalTabs } from './selector_modal';
+import { createHeroicLabel } from './utils';
 
 export interface ItemData<T extends ItemListType> {
 	item: T;
@@ -54,13 +54,13 @@ export interface GearData {
 	changeEvent: TypedEvent<any>;
 }
 
-export type ItemListType = UIItem | UIEnchant | UIGem | ReforgeData | ItemRandomSuffix;
+export type ItemListType = Item | Enchant | Gem | ReforgeData | ItemRandomSuffix;
 enum ItemListSortBy {
 	EP,
 	ILVL,
 }
 
-export class ItemList<T extends ItemListType> {
+export default class ItemList<T extends ItemListType> {
 	private listElem: HTMLElement;
 	private readonly simUI: SimUI;
 	private readonly player: Player<any>;
@@ -196,22 +196,20 @@ export class ItemList<T extends ItemListType> {
 			label === SelectorModalTabs.Items &&
 			(currentSlot === ItemSlot.ItemSlotMainHand || (currentSlot === ItemSlot.ItemSlotOffHand && player.getClass() === Class.ClassWarrior))
 		) {
-			if (show1hWeaponRef.value) {
-				makeShow1hWeaponsSelector(show1hWeaponRef.value, player.sim);
-			}
-			if (show2hWeaponRef.value) {
-				makeShow2hWeaponsSelector(show2hWeaponRef.value, player.sim);
+			if (show1hWeaponRef.value) makeShow1hWeaponsSelector(show1hWeaponRef.value, player.sim);
+			if (show2hWeaponRef.value) makeShow2hWeaponsSelector(show2hWeaponRef.value, player.sim);
+		}
+
+		if (showEpValuesRef.value) makeShowEPValuesSelector(showEpValuesRef.value, player.sim);
+
+		if (matchingGemsRef.value) {
+			makeShowMatchingGemsSelector(matchingGemsRef.value, player.sim);
+			if (!label.startsWith('Gem')) {
+				matchingGemsRef.value?.classList.add('hide');
 			}
 		}
 
-		makeShowEPValuesSelector(showEpValuesRef.value!, player.sim);
-
-		makeShowMatchingGemsSelector(matchingGemsRef.value!, player.sim);
-		if (!label.startsWith('Gem')) {
-			matchingGemsRef.value?.classList.add('hide');
-		}
-
-		makePhaseSelector(phaseSelectorRef.value!, player.sim);
+		if (phaseSelectorRef.value) makePhaseSelector(phaseSelectorRef.value, player.sim);
 
 		if (label === SelectorModalTabs.Items) {
 			const filtersMenu = new FiltersMenu(parent, player, currentSlot);
@@ -261,6 +259,9 @@ export class ItemList<T extends ItemListType> {
 				case SelectorModalTabs.Reforging:
 					removeButton.textContent = 'Remove Reforge';
 					break;
+				case SelectorModalTabs.RandomSuffixes:
+					removeButton.textContent = 'Remove Random Suffix';
+					break;
 				case SelectorModalTabs.Gem1:
 				case SelectorModalTabs.Gem2:
 				case SelectorModalTabs.Gem3:
@@ -284,28 +285,19 @@ export class ItemList<T extends ItemListType> {
 		this.scroller.dispose();
 	}
 
-	private getUpdateType(item: ItemListType | null | undefined) {
+	private getItemIdByItemType(item: ItemListType | null | undefined) {
 		if (!item) return null;
-		const itemProperties = Object.keys(item);
-		if ('reforge' in item && !!item.reforge) return 'reforge';
-		else if ('enchantType' in item) return 'enchant';
-		else if ('color' in item) return 'gem';
-		else if (itemProperties.length === 3 && 'name' in item && item.id && item.name && item.stats) return 'randomSuffix';
-		else return 'item';
-	}
-
-	private getItemIdByUpdateType(item: ItemListType | null | undefined) {
-		if (!item) return null;
-		const updateType = this.getUpdateType(item);
-		switch (updateType) {
-			case 'reforge':
+		switch (this.label) {
+			case SelectorModalTabs.Enchants:
+				return (item as Enchant).effectId;
+			case SelectorModalTabs.Reforging:
 				return (item as ReforgeData).reforge!.id;
-			case 'enchant':
-				return (item as UIEnchant).effectId;
-			case 'item':
-			case 'gem':
-			case 'randomSuffix':
-				return (item as UIItem | UIGem | ItemRandomSuffix).id;
+			case SelectorModalTabs.Items:
+			case SelectorModalTabs.Gem1:
+			case SelectorModalTabs.Gem2:
+			case SelectorModalTabs.Gem3:
+			case SelectorModalTabs.RandomSuffixes:
+				return (item as Item | Gem | ItemRandomSuffix).id;
 			default:
 				return null;
 		}
@@ -314,7 +306,7 @@ export class ItemList<T extends ItemListType> {
 	public updateSelected() {
 		const newEquippedItem = this.gearData.getEquippedItem();
 		const newItem = this.equippedToItemFn(newEquippedItem);
-		const newItemId = this.getItemIdByUpdateType(newItem);
+		const newItemId = this.getItemIdByItemType(newItem);
 		const newEP = newItem ? this.computeEP(newItem) : 0;
 
 		this.scroller.elementUpdate(item => {
@@ -345,14 +337,14 @@ export class ItemList<T extends ItemListType> {
 		}
 
 		const currentEquippedItem = this.player.getEquippedItem(this.slot);
-		const newItem = this.equippedToItemFn(currentEquippedItem);
-		const type = this.getUpdateType(newItem);
 
-		if (type === 'item' || this.label === SelectorModalTabs.Items)
-			itemIdxs = this.player.filterItemData(itemIdxs, i => this.itemData[i].item as unknown as UIItem, this.slot);
-		else if (type === 'enchant' || this.label === SelectorModalTabs.Enchants)
-			itemIdxs = this.player.filterEnchantData(itemIdxs, i => this.itemData[i].item as unknown as UIEnchant, this.slot, currentEquippedItem);
-		else if (type === 'gem') itemIdxs = this.player.filterGemData(itemIdxs, i => this.itemData[i].item as unknown as UIGem, this.slot, this.socketColor);
+		if (this.label === SelectorModalTabs.Items) {
+			itemIdxs = this.player.filterItemData(itemIdxs, i => this.itemData[i].item as unknown as Item, this.slot);
+		} else if (this.label === SelectorModalTabs.Enchants) {
+			itemIdxs = this.player.filterEnchantData(itemIdxs, i => this.itemData[i].item as unknown as Enchant, this.slot, currentEquippedItem);
+		} else if (this.label === SelectorModalTabs.Gem1 || this.label === SelectorModalTabs.Gem2 || this.label === SelectorModalTabs.Gem3) {
+			itemIdxs = this.player.filterGemData(itemIdxs, i => this.itemData[i].item as unknown as Gem, this.slot, this.socketColor);
+		}
 
 		itemIdxs = itemIdxs.filter(i => {
 			const listItemData = this.itemData[i];
@@ -411,7 +403,7 @@ export class ItemList<T extends ItemListType> {
 			const second = this.sortDirection === SortDirection.DESC ? itemA : itemB;
 			const diff = this.computeEP(first) - this.computeEP(second);
 			// if EP is same, sort by ilvl
-			if (Math.abs(diff) < 0.01) return (first as unknown as UIItem).ilvl - (second as unknown as UIItem).ilvl;
+			if (Math.abs(diff) < 0.01) return (first as unknown as Item).ilvl - (second as unknown as Item).ilvl;
 			return diff;
 		};
 		switch (this.sortBy) {
@@ -419,7 +411,7 @@ export class ItemList<T extends ItemListType> {
 				sortFn = (itemA: T, itemB: T) => {
 					const first = this.sortDirection === SortDirection.DESC ? itemB : itemA;
 					const second = this.sortDirection === SortDirection.DESC ? itemA : itemB;
-					return (first as unknown as UIItem).ilvl - (second as unknown as UIItem).ilvl;
+					return (first as unknown as Item).ilvl - (second as unknown as Item).ilvl;
 				};
 				break;
 		}
@@ -455,11 +447,7 @@ export class ItemList<T extends ItemListType> {
 		const itemEP = this.computeEP(itemData.item);
 
 		const equippedItem = this.equippedToItemFn(this.gearData.getEquippedItem());
-		const equippedItemID = equippedItem
-			? this.label === 'Enchants'
-				? (equippedItem as unknown as UIEnchant).effectId
-				: (equippedItem as unknown as UIItem).id
-			: 0;
+		const equippedItemID = this.getItemIdByItemType(equippedItem);
 		const equippedItemEP = equippedItem ? this.computeEP(equippedItem) : 0;
 
 		const nameElem = ref<HTMLLabelElement>();
@@ -483,10 +471,8 @@ export class ItemList<T extends ItemListType> {
 				</div>
 				{this.label === SelectorModalTabs.Items && (
 					<>
-						<div className="selector-modal-list-item-source-container">
-							{this.getSourceInfo(itemData.item as unknown as UIItem, this.player.sim)}
-						</div>
-						<div className="selector-modal-list-item-ilvl-container">{(itemData.item as unknown as UIItem).ilvl}</div>
+						<div className="selector-modal-list-item-source-container">{this.getSourceInfo(itemData.item as unknown as Item, this.player.sim)}</div>
+						<div className="selector-modal-list-item-ilvl-container">{(itemData.item as unknown as Item).ilvl}</div>
 					</>
 				)}
 				{![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(this.slot) && (
@@ -513,53 +499,56 @@ export class ItemList<T extends ItemListType> {
 			</li>
 		);
 
-		const favoriteTooltip = tippy(favoriteElem.value!);
-		const toggleFavoriteTooltipContent = (isFavorited: boolean) => favoriteTooltip.setContent(isFavorited ? 'Remove from favorites' : 'Add to favorites');
-
 		const toggleFavorite = (isFavorite: boolean) => {
 			const filters = this.player.sim.getFilters();
-			if (this.label === SelectorModalTabs.Items) {
-				const favId = itemData.id;
-				if (isFavorite) {
-					filters.favoriteItems.push(favId);
-				} else {
-					const favIdx = filters.favoriteItems.indexOf(favId);
-					if (favIdx !== -1) {
-						filters.favoriteItems.splice(favIdx, 1);
-					}
-				}
-			} else if (this.label === SelectorModalTabs.Items) {
-				const favId = getUniqueEnchantString(itemData.item as unknown as UIEnchant);
-				if (isFavorite) {
-					filters.favoriteEnchants.push(favId);
-				} else {
-					const favIdx = filters.favoriteEnchants.indexOf(favId);
-					if (favIdx !== -1) {
-						filters.favoriteEnchants.splice(favIdx, 1);
-					}
-				}
-			} else if (this.label.startsWith('Gem')) {
-				const favId = itemData.id;
-				if (isFavorite) {
-					filters.favoriteGems.push(favId);
-				} else {
-					const favIdx = filters.favoriteGems.indexOf(favId);
-					if (favIdx !== -1) {
-						filters.favoriteGems.splice(favIdx, 1);
-					}
+
+			let favMethodName: keyof DatabaseFilters;
+			let favId;
+			switch (this.label) {
+				case SelectorModalTabs.Items:
+					favMethodName = 'favoriteItems';
+					favId = itemData.id;
+					break;
+				case SelectorModalTabs.Enchants:
+					favMethodName = 'favoriteEnchants';
+					favId = getUniqueEnchantString(itemData.item as unknown as Enchant);
+					break;
+				case SelectorModalTabs.Gem1:
+				case SelectorModalTabs.Gem2:
+				case SelectorModalTabs.Gem3:
+					favMethodName = 'favoriteGems';
+					favId = itemData.id;
+					break;
+				case SelectorModalTabs.RandomSuffixes:
+					favMethodName = 'favoriteRandomSuffixes';
+					favId = itemData.id;
+					break;
+				case SelectorModalTabs.Reforging:
+					favMethodName = 'favoriteReforges';
+					favId = itemData.id;
+					break;
+				default:
+					return;
+			}
+
+			if (isFavorite) {
+				filters[favMethodName].push(favId as never);
+			} else {
+				const favIdx = filters[favMethodName].indexOf(favId as never);
+				if (favIdx !== -1) {
+					filters[favMethodName].splice(favIdx, 1);
 				}
 			}
+
 			favoriteElem.value!.classList.toggle('text-brand');
 			favoriteIconElem.value!.classList.toggle('fas');
 			favoriteIconElem.value!.classList.toggle('far');
 			listItemElem.dataset.fav = isFavorite.toString();
 			this.player.sim.setFilters(TypedEvent.nextEventID(), filters);
 		};
-
 		favoriteElem.value!.addEventListener('click', () => toggleFavorite(listItemElem.dataset.fav === 'false'));
 
 		const isFavorite = this.isItemFavorited(itemData);
-
 		if (isFavorite) {
 			favoriteElem.value!.classList.add('text-brand');
 			favoriteIconElem.value?.classList.add('fas');
@@ -569,6 +558,8 @@ export class ItemList<T extends ItemListType> {
 			listItemElem.dataset.fav = 'false';
 		}
 
+		const favoriteTooltip = tippy(favoriteElem.value!);
+		const toggleFavoriteTooltipContent = (isFavorited: boolean) => favoriteTooltip.setContent(isFavorited ? 'Remove from favorites' : 'Add to favorites');
 		toggleFavoriteTooltipContent(listItemElem.dataset.fav === 'true');
 
 		if (this.label === SelectorModalTabs.Items) {
@@ -626,15 +617,19 @@ export class ItemList<T extends ItemListType> {
 	private isItemFavorited(itemData: ItemData<T>): boolean {
 		if (this.label === SelectorModalTabs.Items) {
 			return this.currentFilters.favoriteItems.includes(itemData.id);
-		} else if (this.label === 'Enchants') {
-			return this.currentFilters.favoriteEnchants.includes(getUniqueEnchantString(itemData.item as unknown as UIEnchant));
+		} else if (this.label === SelectorModalTabs.Enchants) {
+			return this.currentFilters.favoriteEnchants.includes(getUniqueEnchantString(itemData.item as unknown as Enchant));
 		} else if (this.label.startsWith('Gem')) {
 			return this.currentFilters.favoriteGems.includes(itemData.id);
+		} else if (this.label === SelectorModalTabs.RandomSuffixes) {
+			return this.currentFilters.favoriteRandomSuffixes.includes(itemData.id);
+		} else if (this.label === SelectorModalTabs.Reforging) {
+			return this.currentFilters.favoriteReforges.includes(itemData.id);
 		}
 		return false;
 	}
 
-	private getSourceInfo(item: UIItem, sim: Sim): JSX.Element {
+	private getSourceInfo(item: Item, sim: Sim): JSX.Element {
 		const makeAnchor = (href: string, inner: string | JSX.Element) => {
 			return (
 				<a href={href} target="_blank" dataset={{ whtticon: 'false' }}>

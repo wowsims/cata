@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import { Player, ReforgeData } from '../../player';
 import { GemColor, ItemQuality, ItemRandomSuffix, ItemSlot } from '../../proto/common';
-import { UIEnchant, UIGem, UIItem } from '../../proto/ui';
+import { UIEnchant as Enchant, UIGem as Gem, UIItem as Item } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { EquippedItem } from '../../proto_utils/equipped_item';
 import { gemMatchesSocket, getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
@@ -14,8 +14,9 @@ import { SimUI } from '../../sim_ui';
 import { EventID, TypedEvent } from '../../typed_event';
 import { mod, randomUUID, sanitizeId } from '../../utils';
 import { BaseModal } from '../base_modal';
-import { createGemContainer, GearPicker, getEmptySlotIconUrl } from './gear_picker';
-import { GearData, ItemData, ItemList, ItemListType } from './item_list';
+import GearPicker from './gear_picker';
+import ItemList, { GearData, ItemData, ItemListType } from './item_list';
+import { createGemContainer, getEmptySlotIconUrl } from './utils';
 
 export enum SelectorModalTabs {
 	Items = 'Items',
@@ -32,8 +33,6 @@ type SelectorModalOptions = {
 	id: string;
 	// Prevents rendering of certail tabs
 	disabledTabs?: SelectorModalTabs[];
-	// If defined will render a remove button in the header
-	removeButtonText?: string;
 };
 export default class SelectorModal extends BaseModal {
 	private readonly simUI: SimUI;
@@ -45,7 +44,6 @@ export default class SelectorModal extends BaseModal {
 	private readonly titleElem: HTMLElement;
 	private readonly tabsElem: HTMLElement;
 	private readonly contentElem: HTMLElement;
-	public readonly removeButton?: HTMLButtonElement;
 
 	private currentSlot: ItemSlot = ItemSlot.ItemSlotHead;
 	private currentTab: SelectorModalTabs = SelectorModalTabs.Items;
@@ -70,20 +68,6 @@ export default class SelectorModal extends BaseModal {
 				<ul className="nav nav-tabs selector-modal-tabs"></ul>
 			</div>,
 		);
-
-		if (this.options.removeButtonText) {
-			const closeX = this.header?.querySelector('.btn-close');
-			if (!!closeX) {
-				const removeButtonRef = ref<HTMLButtonElement>();
-				this.header?.insertBefore(
-					<button ref={removeButtonRef} className="btn btn-danger">
-						{this.options.removeButtonText}
-					</button>,
-					closeX,
-				);
-				if (removeButtonRef.value) this.removeButton = removeButtonRef.value;
-			}
-		}
 
 		this.body.appendChild(<div className="tab-content selector-modal-tab-content"></div>);
 
@@ -153,7 +137,7 @@ export default class SelectorModal extends BaseModal {
 
 		const hasItemTab = !this.disabledTabs?.includes(SelectorModalTabs.Items);
 		if (hasItemTab)
-			this.addTab<UIItem>({
+			this.addTab<Item>({
 				id: sanitizeId(`${this.options.id}-${SelectorModalTabs.Items}`),
 				label: SelectorModalTabs.Items,
 				gearData,
@@ -178,7 +162,7 @@ export default class SelectorModal extends BaseModal {
 						},
 					};
 				}),
-				computeEP: (item: UIItem) => this.player.computeItemEP(item, selectedSlot),
+				computeEP: (item: Item) => this.player.computeItemEP(item, selectedSlot),
 				equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.item,
 				onRemove: (eventID: number) => {
 					gearData.equipItem(eventID, null);
@@ -189,7 +173,7 @@ export default class SelectorModal extends BaseModal {
 
 		const hasEnchantTab = !this.disabledTabs?.includes(SelectorModalTabs.Enchants);
 		if (hasEnchantTab)
-			this.addTab<UIEnchant>({
+			this.addTab<Enchant>({
 				id: sanitizeId(`${this.options.id}-${SelectorModalTabs.Enchants}`),
 				label: SelectorModalTabs.Enchants,
 				gearData,
@@ -210,7 +194,7 @@ export default class SelectorModal extends BaseModal {
 						},
 					};
 				}),
-				computeEP: (enchant: UIEnchant) => this.player.computeEnchantEP(enchant),
+				computeEP: (enchant: Enchant) => this.player.computeEnchantEP(enchant),
 				equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.enchant,
 				onRemove: (eventID: number) => {
 					const equippedItem = gearData.getEquippedItem();
@@ -314,11 +298,11 @@ export default class SelectorModal extends BaseModal {
 		const socketBonusEP = this.player.computeStatsEP(new Stats(equippedItem.item.socketBonus)) / (equippedItem.item.gemSockets.length || 1);
 		equippedItem.curSocketColors(this.player.isBlacksmithing()).forEach((socketColor, socketIdx) => {
 			const label = SelectorModalTabs[`Gem${socketIdx + 1}` as keyof typeof SelectorModalTabs];
-			this.addTab<UIGem>({
+			this.addTab<Gem>({
 				id: sanitizeId(`${this.options.id}-${label}`),
 				label,
 				gearData,
-				itemData: this.player.getGems(socketColor).map((gem: UIGem) => {
+				itemData: this.player.getGems(socketColor).map((gem: Gem) => {
 					return {
 						item: gem,
 						id: gem.id,
@@ -335,7 +319,7 @@ export default class SelectorModal extends BaseModal {
 						},
 					};
 				}),
-				computeEP: (gem: UIGem) => {
+				computeEP: (gem: Gem) => {
 					let gemEP = this.player.computeGemEP(gem);
 					if (gemMatchesSocket(gem, socketColor)) {
 						gemEP += socketBonusEP;
@@ -347,12 +331,12 @@ export default class SelectorModal extends BaseModal {
 					const equippedItem = gearData.getEquippedItem();
 					if (equippedItem) gearData.equipItem(eventID, equippedItem.withGem(null, socketIdx));
 				},
-				setTabContent: (tabAnchor: HTMLAnchorElement) => {
+				setTabContent: (tabButton: HTMLButtonElement) => {
 					const gemContainer = createGemContainer(socketColor, null, socketIdx);
-					tabAnchor.appendChild(gemContainer);
-					tabAnchor.classList.add('selector-modal-tab-gem');
+					tabButton.appendChild(gemContainer);
+					tabButton.classList.add('selector-modal-tab-gem');
 
-					const gemElem = tabAnchor.querySelector<HTMLElement>('.gem-icon')!;
+					const gemElem = tabButton.querySelector<HTMLElement>('.gem-icon')!;
 					const emptySocketUrl = getEmptyGemSocketIconUrl(socketColor);
 
 					const updateGemIcon = () => {
@@ -405,7 +389,9 @@ export default class SelectorModal extends BaseModal {
 					ignoreEPFilter: true,
 					onEquip: (eventID, randomSuffix) => {
 						const equippedItem = gearData.getEquippedItem();
-						if (equippedItem) gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item).withRandomSuffix(randomSuffix));
+						if (equippedItem) {
+							gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item).withRandomSuffix(randomSuffix));
+						}
 					},
 				};
 			}),
@@ -413,7 +399,10 @@ export default class SelectorModal extends BaseModal {
 			equippedToItemFn: (equippedItem: EquippedItem | null) => equippedItem?.randomSuffix,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
-				if (equippedItem) gearData.equipItem(eventID, equippedItem.withRandomSuffix(null));
+				if (equippedItem) {
+					gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item).withRandomSuffix(null));
+				}
+				this.removeTabs(SelectorModalTabs.Reforging);
 			},
 		});
 	}
@@ -451,7 +440,9 @@ export default class SelectorModal extends BaseModal {
 					ignoreEPFilter: true,
 					onEquip: (eventID, reforgeData) => {
 						const equippedItem = gearData.getEquippedItem();
-						if (equippedItem) gearData.equipItem(eventID, equippedItem.withReforge(reforgeData.reforge));
+						if (equippedItem) {
+							gearData.equipItem(eventID, equippedItem.withReforge(reforgeData.reforge));
+						}
 					},
 				};
 			}),
@@ -460,7 +451,9 @@ export default class SelectorModal extends BaseModal {
 				equippedItem?.reforge ? this.player.getReforgeData(equippedItem, equippedItem.reforge) : null,
 			onRemove: (eventID: number) => {
 				const equippedItem = gearData.getEquippedItem();
-				if (equippedItem) gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item));
+				if (equippedItem) {
+					gearData.equipItem(eventID, equippedItem.withItem(equippedItem.item).withRandomSuffix(equippedItem._randomSuffix));
+				}
 			},
 		});
 	}
@@ -489,18 +482,18 @@ export default class SelectorModal extends BaseModal {
 		computeEP: (item: T) => number;
 		equippedToItemFn: (equippedItem: EquippedItem | null) => T | null | undefined;
 		onRemove: (eventID: EventID) => void;
-		setTabContent?: (tabElem: HTMLAnchorElement) => void;
+		setTabContent?: (tabElem: HTMLButtonElement) => void;
 		socketColor?: GemColor;
 	}) {
 		if (!itemData.length) {
 			return;
 		}
 		const selected = label === this.currentTab;
-		const tabAnchor = ref<HTMLAnchorElement>();
+		const tabButton = ref<HTMLButtonElement>();
 		this.tabsElem.appendChild(
 			<li className="nav-item">
-				<a
-					ref={tabAnchor}
+				<button
+					ref={tabButton}
 					className={clsx('nav-link selector-modal-item-tab', selected && 'active')}
 					dataset={{
 						label,
@@ -510,14 +503,15 @@ export default class SelectorModal extends BaseModal {
 					attributes={{
 						role: 'tab',
 						'aria-selected': selected,
-					}}></a>
+					}}
+				/>
 			</li>,
 		);
 
 		if (setTabContent) {
-			setTabContent(tabAnchor.value!);
+			setTabContent(tabButton.value!);
 		} else {
-			tabAnchor.value!.textContent = label;
+			tabButton.value!.textContent = label;
 		}
 
 		const ilist = new ItemList(
@@ -538,7 +532,7 @@ export default class SelectorModal extends BaseModal {
 				const item = itemData;
 				itemData.onEquip(TypedEvent.nextEventID(), item.item);
 
-				const isItemChange = UIItem.is(item.item);
+				const isItemChange = Item.is(item.item);
 				const isRandomSuffixChange = !!item.actionId.randomSuffixId;
 				// If the item changes, then gem slots and random suffix options will also change, so remove and recreate these tabs.
 				if (isItemChange || isRandomSuffixChange) {
@@ -580,10 +574,10 @@ export default class SelectorModal extends BaseModal {
 			ilist.dispose();
 		});
 
-		tabAnchor.value!.addEventListener('click', _event => {
+		tabButton.value!.addEventListener('click', _event => {
 			this.currentTab = label;
 		});
-		tabAnchor.value!.addEventListener('shown.bs.tab', _event => {
+		tabButton.value!.addEventListener('shown.bs.tab', _event => {
 			ilist.sizeRefresh();
 		});
 

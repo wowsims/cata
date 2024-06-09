@@ -2,12 +2,11 @@ import { ref } from 'tsx-vanilla';
 
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
-import { GemColor, ItemSlot, ItemType } from '../../proto/common';
+import { ItemSlot, ItemType } from '../../proto/common';
 import { UIEnchant as Enchant, UIGem as Gem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEnchantDescription } from '../../proto_utils/enchants';
 import { EquippedItem } from '../../proto_utils/equipped_item';
-import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { shortSecondaryStatNames, slotNames } from '../../proto_utils/names';
 import { SimUI } from '../../sim_ui';
 import { EventID } from '../../typed_event';
@@ -17,56 +16,9 @@ import { GearData } from './item_list';
 import { addQuickEnchantPopover } from './quick_enchant_popover';
 import { addQuickGemPopover } from './quick_gem_popover';
 import SelectorModal, { SelectorModalTabs } from './selector_modal';
+import { createGemContainer, createHeroicLabel, getEmptySlotIconUrl } from './utils';
 
-const emptySlotIcons: Record<ItemSlot, string> = {
-	[ItemSlot.ItemSlotHead]: '/cata/assets/item_slots/head.jpg',
-	[ItemSlot.ItemSlotNeck]: '/cata/assets/item_slots/neck.jpg',
-	[ItemSlot.ItemSlotShoulder]: '/cata/assets/item_slots/shoulders.jpg',
-	[ItemSlot.ItemSlotBack]: '/cata/assets/item_slots/shirt.jpg',
-	[ItemSlot.ItemSlotChest]: '/cata/assets/item_slots/chest.jpg',
-	[ItemSlot.ItemSlotWrist]: '/cata/assets/item_slots/wrists.jpg',
-	[ItemSlot.ItemSlotHands]: '/cata/assets/item_slots/hands.jpg',
-	[ItemSlot.ItemSlotWaist]: '/cata/assets/item_slots/waist.jpg',
-	[ItemSlot.ItemSlotLegs]: '/cata/assets/item_slots/legs.jpg',
-	[ItemSlot.ItemSlotFeet]: '/cata/assets/item_slots/feet.jpg',
-	[ItemSlot.ItemSlotFinger1]: '/cata/assets/item_slots/finger.jpg',
-	[ItemSlot.ItemSlotFinger2]: '/cata/assets/item_slots/finger.jpg',
-	[ItemSlot.ItemSlotTrinket1]: '/cata/assets/item_slots/trinket.jpg',
-	[ItemSlot.ItemSlotTrinket2]: '/cata/assets/item_slots/trinket.jpg',
-	[ItemSlot.ItemSlotMainHand]: '/cata/assets/item_slots/mainhand.jpg',
-	[ItemSlot.ItemSlotOffHand]: '/cata/assets/item_slots/offhand.jpg',
-	[ItemSlot.ItemSlotRanged]: '/cata/assets/item_slots/ranged.jpg',
-};
-export function getEmptySlotIconUrl(slot: ItemSlot): string {
-	return emptySlotIcons[slot];
-}
-
-export const createHeroicLabel = () => {
-	return <span className="heroic-label">[H]</span>;
-};
-
-export const createGemContainer = (socketColor: GemColor, gem: Gem | null, index: number) => {
-	const gemIconElem = ref<HTMLImageElement>();
-	const gemContainerElem = ref<HTMLAnchorElement>();
-	const gemContainer = (
-		<a ref={gemContainerElem} className="gem-socket-container" href="javascript:void(0)" attributes={{ role: 'button' }} dataset={{ socketIdx: index }}>
-			<img ref={gemIconElem} className={`gem-icon ${!gem ? 'hide' : ''}`} />
-			<img className="socket-icon" src={getEmptyGemSocketIconUrl(socketColor)} />
-		</a>
-	);
-
-	if (!!gem) {
-		ActionId.fromItemId(gem.id)
-			.fill()
-			.then(filledId => {
-				filledId.setWowheadHref(gemContainerElem.value!);
-				gemIconElem.value!.src = filledId.iconUrl;
-			});
-	}
-	return gemContainer as HTMLAnchorElement;
-};
-
-export class GearPicker extends Component {
+export default class GearPicker extends Component {
 	// ItemSlot is used as the index
 	readonly itemPickers: Array<ItemPicker>;
 	readonly selectorModal: SelectorModal;
@@ -384,71 +336,5 @@ export class ItemPicker extends Component {
 		});
 		this.quickSwapEnchantPopover = addQuickEnchantPopover(this.player, this.itemElem.enchantElem, this._equippedItem, this.slot, openEnchantSelector);
 		if (!this.player.sim.getShowQuickSwap()) this.quickSwapEnchantPopover.tooltip?.disable();
-	}
-}
-
-export class IconItemSwapPicker extends Component {
-	private readonly iconAnchor: HTMLAnchorElement;
-	private readonly socketsContainerElem: HTMLElement;
-	private readonly player: Player<any>;
-	private readonly slot: ItemSlot;
-
-	constructor(parent: HTMLElement, simUI: SimUI, player: Player<any>, slot: ItemSlot) {
-		super(parent, 'icon-picker-root');
-		this.rootElem.classList.add('icon-picker');
-		this.player = player;
-		this.slot = slot;
-
-		this.iconAnchor = document.createElement('a');
-		this.iconAnchor.classList.add('icon-picker-button');
-		this.iconAnchor.target = '_blank';
-		this.rootElem.prepend(this.iconAnchor);
-
-		this.socketsContainerElem = document.createElement('div');
-		this.socketsContainerElem.classList.add('item-picker-sockets-container');
-		this.iconAnchor.appendChild(this.socketsContainerElem);
-
-		const selectorModal = new SelectorModal(simUI.rootElem, simUI, this.player);
-
-		player.sim.waitForInit().then(() => {
-			this.iconAnchor.addEventListener('click', (event: Event) => {
-				event.preventDefault();
-				selectorModal.openTab(this.slot, SelectorModalTabs.Items, this.createGearData());
-			});
-		});
-
-		player.itemSwapChangeEmitter.on(() => {
-			this.update(player.getItemSwapGear().getEquippedItem(slot));
-		});
-	}
-
-	update(newItem: EquippedItem | null) {
-		this.iconAnchor.style.backgroundImage = `url('${getEmptySlotIconUrl(this.slot)}')`;
-		this.iconAnchor.removeAttribute('data-wowhead');
-		this.iconAnchor.href = '#';
-		this.socketsContainerElem.innerText = '';
-
-		if (newItem) {
-			this.iconAnchor.classList.add('active');
-
-			newItem.asActionId().fillAndSet(this.iconAnchor, true, true);
-			this.player.setWowheadData(newItem, this.iconAnchor);
-
-			newItem.allSocketColors().forEach((socketColor, gemIdx) => {
-				this.socketsContainerElem.appendChild(createGemContainer(socketColor, newItem.gems[gemIdx], gemIdx));
-			});
-		} else {
-			this.iconAnchor.classList.remove('active');
-		}
-	}
-
-	private createGearData(): GearData {
-		return {
-			equipItem: (eventID: EventID, newItem: EquippedItem | null) => {
-				this.player.equipItemSwapitem(eventID, this.slot, newItem);
-			},
-			getEquippedItem: () => this.player.getItemSwapItem(this.slot),
-			changeEvent: this.player.itemSwapChangeEmitter,
-		};
 	}
 }
