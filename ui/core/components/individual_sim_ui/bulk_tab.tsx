@@ -561,7 +561,7 @@ export class BulkTab extends SimTab {
 				<i className="fa fa-download" /> Import From Bags
 			</button>
 		) as HTMLButtonElement;
-		importButton.addEventListener('click', () => new BulkGearJsonImporter(this.simUI.rootElem, this.simUI, this));
+		importButton.addEventListener('click', () => new BulkGearJsonImporter(this.simUI.rootElem, this.simUI, this).open());
 
 		const importFavsButton = (
 			<button className="btn btn-secondary w-100 bulk-settings-button">

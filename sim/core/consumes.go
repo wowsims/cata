@@ -1037,6 +1037,10 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 				},
 			},
 
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
+
 			ApplyEffects: func(sim *Simulation, unit *Unit, spell *Spell) {
 				// Benerfits from enhancement mastery
 				// Ele crit dmg multi
