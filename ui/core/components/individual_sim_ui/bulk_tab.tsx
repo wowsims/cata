@@ -24,6 +24,7 @@ import { GearData, ItemData, ItemList, ItemRenderer, SelectorModal, SelectorModa
 import { Importer } from '../importers';
 import { ResultsViewer } from '../results_viewer';
 import { SimTab } from '../sim_tab';
+import Toast from '../toast';
 
 export class BulkGearJsonImporter extends Importer {
 	private readonly simUI: IndividualSimUI<any>;
@@ -153,6 +154,11 @@ export class BulkItemPicker extends Component {
 			const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
 			const eligibleReforges = this.item?.item ? this.simUI.player.getAvailableReforgings(this.item.getWithRandomSuffixStats()) : [];
 			const eligibleRandomSuffixes = this.item.item.randomSuffixOptions;
+			const removeItemButton = this.bulkUI.selectorModal.header?.querySelector('.btn-danger');
+			const removeItem = () => {
+				this.bulkUI.removeItemByIndex(this.index);
+				this.bulkUI.selectorModal.close();
+			};
 
 			const openEnchantGemSelector = (event: Event) => {
 				event.preventDefault();
@@ -167,21 +173,10 @@ export class BulkItemPicker extends Component {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Gem1, this.createGearData());
 				}
 
-				const destroyItemButton = <button className="btn btn-danger">Remove from Batch</button>;
-				destroyItemButton.addEventListener('click', () => {
-					bulkUI.setItems(
-						bulkUI.getItems().filter((_, idx) => {
-							return idx != this.index;
-						}),
-					);
-					this.bulkUI.selectorModal.close();
-				});
-				const closeX = this.bulkUI.selectorModal.header?.querySelector('.close-button');
-				if (!!closeX) {
-					this.bulkUI.selectorModal.header?.insertBefore(destroyItemButton, closeX);
-				}
+				removeItemButton?.addEventListener('click', removeItem);
 			};
 
+			this.bulkUI.selectorModal.addOnHideCallback(() => removeItemButton?.removeEventListener('click', removeItem));
 			this.itemElem.iconElem.addEventListener('click', openEnchantGemSelector);
 			this.itemElem.nameElem.addEventListener('click', openEnchantGemSelector);
 			this.itemElem.enchantElem.addEventListener('click', openEnchantGemSelector);
@@ -259,6 +254,11 @@ export class BulkTab extends SimTab {
 			id: 'bulk-selector-modal',
 			disabledTabs: [SelectorModalTabs.Items],
 		});
+
+		const closeX = this.selectorModal.header?.querySelector('.btn-close');
+		if (!!closeX) {
+			this.selectorModal.header?.insertBefore(<button className="btn btn-danger">Remove from Batch</button>, closeX);
+		}
 
 		this.contentContainer.appendChild(
 			<>
@@ -393,6 +393,19 @@ export class BulkTab extends SimTab {
 		this.items.splice(indexToRemove, 1);
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
+
+	removeItemByIndex(index: number) {
+		if (this.items.length < index) {
+			new Toast({
+				variant: 'error',
+				body: 'Failed to remove item, please report this issue.',
+			});
+			return;
+		}
+		this.items.splice(index, 1);
+		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
+	}
+
 	clearItems() {
 		this.items = new Array<ItemSpec>();
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
@@ -570,9 +583,7 @@ export class BulkTab extends SimTab {
 		);
 		importFavsButton.addEventListener('click', () => {
 			const filters = this.simUI.player.sim.getFilters();
-			const items = filters.favoriteItems.map(itemID => {
-				return ItemSpec.create({ id: itemID });
-			});
+			const items = filters.favoriteItems.map(itemID => ItemSpec.create({ id: itemID }));
 			this.addItems(items);
 		});
 
@@ -638,9 +649,7 @@ export class BulkTab extends SimTab {
 						</li>,
 					);
 					setItemQualityCssClass(itemNameRef.value!, item.quality);
-					itemRef.value?.addEventListener('click', () => {
-						this.addItems(Array<ItemSpec>(ItemSpec.create({ id: item.id })));
-					});
+					itemRef.value?.addEventListener('click', () => this.addItem(ItemSpec.create({ id: item.id })));
 				}
 			});
 			searchResultsRef.value?.replaceChildren(items);
