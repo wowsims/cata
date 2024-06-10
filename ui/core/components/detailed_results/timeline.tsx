@@ -71,6 +71,7 @@ export class Timeline extends ResultComponent {
 				</select>
 			</div>,
 		);
+
 		this.rootElem.appendChild(
 			<div className="timeline-plots-container">
 				<div className="timeline-plot dps-resources-plot hide"></div>
