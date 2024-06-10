@@ -82,6 +82,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 				[PseudoStat.PseudoStatOffHandDps]: 1.28,
 			},
 		),
+		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -188,6 +189,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 					1: Presets.P1_PRESET_COMBAT.gear,
 				},
 			},
+			otherDefaults: Presets.OtherDefaults,
 		},
 	],
 });
