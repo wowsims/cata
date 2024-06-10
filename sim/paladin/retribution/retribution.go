@@ -133,7 +133,7 @@ func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 
 	jotb := ret.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagHelpful,
+		Flags:    core.SpellFlagHelpful | core.SpellFlagNoMetrics | core.SpellFlagNoLogs,
 
 		Hot: core.DotConfig{
 			SelfOnly: true,
@@ -165,7 +165,6 @@ func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			jotb.Cast(sim, &ret.Unit)
-			spell.SpellMetrics[result.Target.UnitIndex].Hits--
 		},
 	})
 }

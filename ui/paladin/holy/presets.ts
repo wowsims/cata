@@ -1,7 +1,7 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Potions } from '../../core/proto/common.js';
-import { HolyPaladin_Options as HolyPaladinOptions, PaladinAura, PaladinMajorGlyph, PaladinMinorGlyph } from '../../core/proto/paladin.js';
-import { SavedTalents } from '../../core/proto/ui.js';
+import {Consumes, Flask, Food, Potions} from '../../core/proto/common.js';
+import {HolyPaladin_Options as HolyPaladinOptions, PaladinAura, PaladinSeal} from '../../core/proto/paladin.js';
+import {SavedTalents} from '../../core/proto/ui.js';
 import P1Gear from './gear_sets/p1.gear.json';
 import P2Gear from './gear_sets/p2.gear.json';
 import P3Gear from './gear_sets/p3.gear.json';
@@ -39,6 +39,7 @@ export const StandardTalents = {
 export const DefaultOptions = HolyPaladinOptions.create({
 	classOptions: {
 		aura: PaladinAura.Devotion,
+		seal: PaladinSeal.Insight,
 	},
 });
 

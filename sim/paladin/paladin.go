@@ -51,7 +51,16 @@ const SpellMaskJudgement = SpellMaskJudgementOfTruth |
 	SpellMaskJudgementOfRighteousness |
 	SpellMaskJudgementOfJustice
 
-const SpellMaskSingleTarget = SpellMaskCrusaderStrike |
+const SpellMaskCanTriggerSealOfJustice = SpellMaskCrusaderStrike |
+	SpellMaskTemplarsVerdict |
+	SpellMaskHammerOfWrath
+
+const SpellMaskCanTriggerSealOfInsight = SpellMaskCanTriggerSealOfJustice
+
+const SpellMaskCanTriggerSealOfRighteousness = SpellMaskCanTriggerSealOfJustice |
+	SpellMaskDivineStorm
+
+const SpellMaskCanTriggerSealOfTruth = SpellMaskCrusaderStrike |
 	SpellMaskTemplarsVerdict |
 	SpellMaskExorcism |
 	SpellMaskHammerOfWrath |
@@ -93,25 +102,28 @@ type Paladin struct {
 	CurrentSeal      *core.Aura
 	CurrentJudgement *core.Spell
 
-	DivinePlea            *core.Spell
-	DivineStorm           *core.Spell
-	HolyWrath             *core.Spell
-	Consecration          *core.Spell
-	CrusaderStrike        *core.Spell
-	Exorcism              *core.Spell
-	HolyShield            *core.Spell
-	HammerOfTheRighteous  *core.Spell
-	HandOfReckoning       *core.Spell
-	ShieldOfRighteousness *core.Spell
-	AvengersShield        *core.Spell
-	HammerOfWrath         *core.Spell
-	AvengingWrath         *core.Spell
-	DivineProtection      *core.Spell
-	TemplarsVerdict       *core.Spell
-	Zealotry              *core.Spell
-	Inquisition           *core.Spell
-	SealsOfCommand        *core.Spell
-	HandOfLight           *core.Spell
+	DivinePlea               *core.Spell
+	DivineStorm              *core.Spell
+	HolyWrath                *core.Spell
+	Consecration             *core.Spell
+	CrusaderStrike           *core.Spell
+	Exorcism                 *core.Spell
+	HolyShield               *core.Spell
+	HammerOfTheRighteous     *core.Spell
+	HandOfReckoning          *core.Spell
+	ShieldOfRighteousness    *core.Spell
+	AvengersShield           *core.Spell
+	HammerOfWrath            *core.Spell
+	AvengingWrath            *core.Spell
+	DivineProtection         *core.Spell
+	TemplarsVerdict          *core.Spell
+	Zealotry                 *core.Spell
+	Inquisition              *core.Spell
+	HandOfLight              *core.Spell
+	JudgementOfTruth         *core.Spell
+	JudgementOfInsight       *core.Spell
+	JudgementOfRighteousness *core.Spell
+	JudgementOfJustice       *core.Spell
 
 	HolyShieldAura          *core.Aura
 	RighteousFuryAura       *core.Aura
@@ -119,6 +131,7 @@ type Paladin struct {
 	SealOfTruthAura         *core.Aura
 	SealOfInsightAura       *core.Aura
 	SealOfRighteousnessAura *core.Aura
+	SealOfJusticeAura       *core.Aura
 	AvengingWrathAura       *core.Aura
 	DivineProtectionAura    *core.Aura
 	ForbearanceAura         *core.Aura
@@ -185,6 +198,9 @@ func (paladin *Paladin) registerSpells() {
 	paladin.registerExorcism()
 	paladin.registerJudgement()
 	paladin.registerSealOfTruth()
+	paladin.registerSealOfInsight()
+	paladin.registerSealOfRighteousness()
+	paladin.registerSealOfJustice()
 	paladin.registerInquisition()
 	paladin.registerHammerOfWrathSpell()
 	paladin.registerAvengingWrath()
@@ -196,14 +212,21 @@ func (paladin *Paladin) registerSpells() {
 func (paladin *Paladin) Reset(sim *core.Simulation) {
 	switch paladin.Seal {
 	case proto.PaladinSeal_Truth:
+		paladin.CurrentJudgement = paladin.JudgementOfTruth
 		paladin.CurrentSeal = paladin.SealOfTruthAura
 		paladin.SealOfTruthAura.Activate(sim)
 	case proto.PaladinSeal_Insight:
+		paladin.CurrentJudgement = paladin.JudgementOfInsight
 		paladin.CurrentSeal = paladin.SealOfInsightAura
 		paladin.SealOfInsightAura.Activate(sim)
 	case proto.PaladinSeal_Righteousness:
+		paladin.CurrentJudgement = paladin.JudgementOfRighteousness
 		paladin.CurrentSeal = paladin.SealOfRighteousnessAura
 		paladin.SealOfRighteousnessAura.Activate(sim)
+	case proto.PaladinSeal_Justice:
+		paladin.CurrentJudgement = paladin.JudgementOfJustice
+		paladin.CurrentSeal = paladin.SealOfJusticeAura
+		paladin.SealOfJusticeAura.Activate(sim)
 	}
 
 	paladin.HolyPowerBar.Reset()

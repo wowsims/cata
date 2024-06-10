@@ -22,6 +22,9 @@ export const StartingSealSelection = <SpecType extends PaladinSpecs>() =>
 		fieldName: 'seal',
 		values: [
 			{ actionId: ActionId.fromSpellId(31801), value: PaladinSeal.Truth },
+			{ actionId: ActionId.fromSpellId(20154), value: PaladinSeal.Righteousness },
+			{ actionId: ActionId.fromSpellId(20165), value: PaladinSeal.Insight },
+			{ actionId: ActionId.fromSpellId(20164), value: PaladinSeal.Justice },
 		],
 		changeEmitter: (player: Player<SpecType>) => player.changeEmitter,
 	});
