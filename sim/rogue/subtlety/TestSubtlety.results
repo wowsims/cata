@@ -191,6 +191,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-BloodthirstyGladiator'sVestments"
+ value: {
+  dps: 19223.94309
+  tps: 13648.9996
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-BottledLightning-66879"
  value: {
   dps: 22099.67116
@@ -209,6 +216,13 @@ dps_results: {
  value: {
   dps: 23664.96769
   tps: 16802.12706
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-CataclysmicGladiator'sVestments"
+ value: {
+  dps: 22632.17046
+  tps: 16068.84103
  }
 }
 dps_results: {
@@ -440,13 +454,6 @@ dps_results: {
  value: {
   dps: 22877.84081
   tps: 16243.26697
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-Gladiator'sVestments"
- value: {
-  dps: 18857.68348
-  tps: 13388.95527
  }
 }
 dps_results: {
@@ -864,6 +871,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-RuthlessGladiator'sVestments"
+ value: {
+  dps: 21588.46092
+  tps: 15327.80725
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 22889.06269
@@ -882,13 +896,6 @@ dps_results: {
  value: {
   dps: 21999.84837
   tps: 15619.89234
- }
-}
-dps_results: {
- key: "TestSubtlety-AllItems-Shadowblade'sBattlegear"
- value: {
-  dps: 17662.90856
-  tps: 12540.66508
  }
 }
 dps_results: {
@@ -1123,6 +1130,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSubtlety-AllItems-VestmentsoftheDarkPhoenix"
+ value: {
+  dps: 23390.52053
+  tps: 16607.26958
+ }
+}
+dps_results: {
  key: "TestSubtlety-AllItems-VialofStolenMemories-59515"
  value: {
   dps: 21999.84837
@@ -1218,6 +1232,13 @@ dps_results: {
  value: {
   dps: 22366.91818
   tps: 15880.51191
+ }
+}
+dps_results: {
+ key: "TestSubtlety-AllItems-ViciousGladiator'sVestments"
+ value: {
+  dps: 20228.20968
+  tps: 14362.02887
  }
 }
 dps_results: {

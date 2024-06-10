@@ -190,6 +190,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-BloodthirstyGladiator'sVestments"
+ value: {
+  dps: 24312.79169
+  tps: 17262.0821
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-BottledLightning-66879"
  value: {
   dps: 28048.04285
@@ -208,6 +215,13 @@ dps_results: {
  value: {
   dps: 30189.29336
   tps: 21434.39829
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-CataclysmicGladiator'sVestments"
+ value: {
+  dps: 28308.98511
+  tps: 20099.37943
  }
 }
 dps_results: {
@@ -439,13 +453,6 @@ dps_results: {
  value: {
   dps: 28994.95919
   tps: 20586.42102
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Gladiator'sVestments"
- value: {
-  dps: 24055.49908
-  tps: 17079.40434
  }
 }
 dps_results: {
@@ -862,6 +869,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-RuthlessGladiator'sVestments"
+ value: {
+  dps: 27063.77391
+  tps: 19215.27947
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 29141.41696
@@ -880,13 +894,6 @@ dps_results: {
  value: {
   dps: 27915.19812
   tps: 19819.79067
- }
-}
-dps_results: {
- key: "TestAssassination-AllItems-Shadowblade'sBattlegear"
- value: {
-  dps: 22266.55573
-  tps: 15809.25457
  }
 }
 dps_results: {
@@ -1121,6 +1128,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestAssassination-AllItems-VestmentsoftheDarkPhoenix"
+ value: {
+  dps: 29171.76376
+  tps: 20711.95227
+ }
+}
+dps_results: {
  key: "TestAssassination-AllItems-VialofStolenMemories-59515"
  value: {
   dps: 27915.19812
@@ -1216,6 +1230,13 @@ dps_results: {
  value: {
   dps: 28462.83432
   tps: 20208.61237
+ }
+}
+dps_results: {
+ key: "TestAssassination-AllItems-ViciousGladiator'sVestments"
+ value: {
+  dps: 25558.13357
+  tps: 18146.27484
  }
 }
 dps_results: {
