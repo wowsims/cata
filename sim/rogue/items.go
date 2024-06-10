@@ -179,23 +179,16 @@ var Tier12 = core.NewItemSet(core.ItemSet{
 	},
 })
 
-func MakeArenaSet(setName string) *core.ItemSet {
-	return core.NewItemSet(core.ItemSet{
-		Name: setName,
-
-		Bonuses: map[int32]core.ApplyEffect{
-			2: func(agent core.Agent) {
-				agent.GetCharacter().AddStat(stats.Agility, 70)
-			},
-			4: func(agent core.Agent) {
-				agent.GetCharacter().AddStat(stats.Agility, 90)
-				// 10 maximum energy added in rogue.go
-			},
+var CataPVPSet = core.NewItemSet(core.ItemSet{
+	Name: "Gladiator's Vestments",
+	ID:   914,
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			agent.GetCharacter().AddStat(stats.Agility, 70)
 		},
-	})
-}
-
-var CataArenaS0 = MakeArenaSet("Bloodthirsty Gladiator's Vestments")
-var CataArenaS1 = MakeArenaSet("Vicious Gladiator's Vestments")
-var CataArenaS2 = MakeArenaSet("Ruthless Gladiator's Vestments")
-var CataArenaS3 = MakeArenaSet("Cataclysmic Gladiator's Vestments")
+		4: func(agent core.Agent) {
+			agent.GetCharacter().AddStat(stats.Agility, 90)
+			// 10 maximum energy added in rogue.go
+		},
+	},
+})
