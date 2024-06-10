@@ -4,6 +4,8 @@
 	margin-bottom: 0 !important;
 
 	.item-picker-icon-wrapper {
+		min-width: 3rem;
+		min-height: 3rem;
 		width: 3rem;
 		height: 3rem;
 	}
@@ -14,6 +16,18 @@
 
 	.item-picker-labels-container {
 		padding-top: 0;
+		overflow: hidden;
+
+		.item-picker-name-container {
+			max-width: 100%;
+			display: flex;
+
+			.item-picker-name {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
 	}
 
 	.remove-batch-item-btn {

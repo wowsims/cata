@@ -326,6 +326,8 @@ export class BulkTab extends SimTab {
 				this.items.forEach(spec => {
 					const item = this.simUI.sim.db.lookupItemSpec(spec);
 					getEligibleItemSlots(item!.item).forEach(slot => {
+						// Avoid duplicating rings/trinkets. Maybe a better way to do it?
+						if (slot === ItemSlot.ItemSlotFinger2 || slot === ItemSlot.ItemSlotTrinket2) return;
 						new BulkItemPicker(this.itemGroups[itemSlotToBulkSimItemSlot.get(slot) as BulkSimItemSlot], this.simUI, this, item!);
 					});
 				});

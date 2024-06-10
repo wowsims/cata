@@ -41,6 +41,10 @@
 				@include media-breakpoint-down(md) {
 					align-items: flex-start;
 				}
+				@include media-breakpoint-up(sm) {
+					padding-left: 0;
+					padding-right: var(--spacer-2);
+				}
 			}
 		}
 	}
@@ -71,14 +75,14 @@
 	}
 
 	.item-picker-labels-container {
-		padding: var(--spacer-2);
-		padding-bottom: 0;
+		padding-top: var(--spacer-2);
+		padding-left: var(--spacer-2);
 		flex: 1;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 
-		.item-picker-name,
+		.item-picker-name-container,
 		.item-picker-reforge,
 		.item-picker-enchant {
 			letter-spacing: normal;
@@ -91,7 +95,7 @@
 			}
 		}
 
-		.item-picker-name {
+		.item-picker-name-container {
 			color: var(--bs-white);
 			font-size: var(--h6-font-size);
 		}

@@ -3,15 +3,20 @@
 .bulk-tab {
 	.bulk-gear-combo {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 		grid-template-rows: auto;
 		gap: var(--gap-width);
 
 		[class*='bulk-gear-list-'] {
 			margin-bottom: 0;
+
 			.content-block-header {
 				border-bottom: 0;
 				margin-bottom: 0;
+			}
+
+			.content-block-body {
+				gap: var(--block-spacer);
 			}
 		}
 	}
