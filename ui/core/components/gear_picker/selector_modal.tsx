@@ -331,7 +331,7 @@ export default class SelectorModal extends BaseModal {
 					const equippedItem = gearData.getEquippedItem();
 					if (equippedItem) gearData.equipItem(eventID, equippedItem.withGem(null, socketIdx));
 				},
-				setTabContent: (tabButton: HTMLButtonElement) => {
+				setTabContent: tabButton => {
 					const gemContainer = createGemContainer(socketColor, null, socketIdx);
 					tabButton.appendChild(gemContainer);
 					tabButton.classList.add('selector-modal-tab-gem');

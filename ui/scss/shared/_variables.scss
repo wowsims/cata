@@ -298,7 +298,7 @@ $form-check-input-focus-border: $input-focus-border-color;
 $form-check-input-focus-box-shadow: 0 0 0.25rem $primary;
 $form-check-input-checked-bg-color: $primary;
 $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{color-contrast($primary)}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>");
-$form-check-input-checked-border-color: $primary;
+$form-check-input-checked-border-color: var(--bs-primary);
 $form-check-padding-start: $form-check-input-width;
 
 $form-label-margin-bottom: 0.25rem;
@@ -313,6 +313,9 @@ $form-select-focus-border-color: $input-focus-border-color;
 $form-select-focus-box-shadow: 0 0 0.25rem color-mix(in srgb, $body-bg, $white 20%);
 $form-select-font-size: var(--content-font-size);
 $form-select-indicator: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>");
+
+$form-text-color: $gray-600;
+$form-text-font-size: var(--content-font-size);
 
 // Modal
 $modal-content-bg: $body-bg;

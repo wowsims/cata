@@ -95,14 +95,16 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 						bsToggle: 'dropdown',
 						whtticon: 'false',
 						disableWowheadTouchTooltip: 'true',
-					}}></a>
+					}}
+				/>
 				<ul
 					ref={dropdownRef}
 					className={'dropdown-menu'}
 					style={{
 						gridTemplateColumns: this.config.numColumns ? `repeat(${this.config.numColumns}, 1fr)` : undefined,
 						gridAutoFlow: this.config.direction == IconEnumPickerDirection.Horizontal ? 'column' : undefined,
-					}}></ul>
+					}}
+				/>
 				<label ref={labelRef} className="form-label"></label>
 			</>,
 		);

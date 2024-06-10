@@ -87,9 +87,7 @@ export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemPara
 	params.set('domain', `${langPrefix}cata`);
 	params.set('dataEnv', String(WOWHEAD_EXPANSION_ENV));
 
-	if (options.level) {
-		params.set('lvl', String(options.level || CHARACTER_LEVEL));
-	}
+	params.set('lvl', String(options.level || CHARACTER_LEVEL));
 
 	if ('spellId' in options) {
 		if (options.spellId) {

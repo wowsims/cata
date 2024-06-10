@@ -67,6 +67,7 @@
 		background: var(--bs-black-alpha-50);
 		font-size: var(--content-font-size);
 		z-index: 1;
+		pointer-events: none;
 	}
 
 	.item-picker-labels-container {
