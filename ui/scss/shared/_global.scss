@@ -51,8 +51,29 @@ body {
 	}
 }
 
-a {
+button {
+	display: inline-block;
+	border: 0;
+	background-color: transparent;
+	padding: 0;
+	color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+	text-decoration: none;
+	width: auto;
+	text-align: inherit;
+	font-weight: inherit;
+
+	&:hover {
+		--bs-link-color-rgb: var(--bs-link-hover-color-rgb);
+	}
+}
+
+a,
+button[class^='link'] {
+	cursor: pointer;
+	border: 0;
+	padding: 0;
 	outline: none;
+	background-color: transparent;
 	transition: color 0.15s ease-in-out;
 
 	&.link-alt {
