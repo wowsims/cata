@@ -204,13 +204,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestCombat-AllItems-BloodthirstyGladiator'sVestments"
- value: {
-  dps: 23616.7296
-  tps: 16767.87802
- }
-}
-dps_results: {
  key: "TestCombat-AllItems-BottledLightning-66879"
  value: {
   dps: 27310.83032
@@ -236,13 +229,6 @@ dps_results: {
  value: {
   dps: 29000.91396
   tps: 20590.64891
- }
-}
-dps_results: {
- key: "TestCombat-AllItems-CataclysmicGladiator'sVestments"
- value: {
-  dps: 27618.82911
-  tps: 19609.36867
  }
 }
 dps_results: {
@@ -474,6 +460,13 @@ dps_results: {
  value: {
   dps: 28157.47592
   tps: 19991.8079
+ }
+}
+dps_results: {
+ key: "TestCombat-AllItems-Gladiator'sVestments"
+ value: {
+  dps: 23616.7296
+  tps: 16767.87802
  }
 }
 dps_results: {
@@ -897,13 +890,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestCombat-AllItems-RuthlessGladiator'sVestments"
- value: {
-  dps: 26540.36349
-  tps: 18843.65808
- }
-}
-dps_results: {
  key: "TestCombat-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 28450.3147
@@ -1272,13 +1258,6 @@ dps_results: {
  value: {
   dps: 27763.44583
   tps: 19712.04654
- }
-}
-dps_results: {
- key: "TestCombat-AllItems-ViciousGladiator'sVestments"
- value: {
-  dps: 24855.3157
-  tps: 17647.27415
  }
 }
 dps_results: {
