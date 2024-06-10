@@ -1,8 +1,9 @@
-import tippy, { inlinePositioning, Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
+import tippy, { inlinePositioning, Instance as TippyInstance } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { Component } from '../components/component.js';
 import { TypedEvent } from '../typed_event.js';
+import { SimToolbarItem } from './header/sim_toolbar_item';
 
 // Config for displaying a warning to the user whenever a condition is met.
 interface SimWarning {
@@ -56,29 +57,25 @@ export class ResultsViewer extends Component {
 		this.hideAll();
 	}
 
-	private addWarningLink(args: WarningLinkArgs): HTMLElement {
-		const item = (
-			<div className="sim-toolbar-item">
-				<a href={args.href ? args.href : 'javascript:void(0)'} target={args.href ? '_blank' : '_self'} className={args.classes}>
-					{args.icon && <i className={args.icon}></i>}
-					{args.text ? args.text : ''}
-				</a>
-			</div>
-		) as HTMLElement;
+	private addWarningLink({ parent, tooltip, classes, text, ...itemArgs }: WarningLinkArgs): HTMLElement {
+		const itemRef = ref<HTMLButtonElement>();
+		parent.appendChild(
+			<SimToolbarItem linkRef={itemRef} buttonClassName={classes} {...itemArgs}>
+				{text}
+			</SimToolbarItem>,
+		);
 
-		args.parent.appendChild(item);
-
-		if (args.tooltip) {
-			this.warningsTooltip = tippy(item, {
+		if (tooltip) {
+			this.warningsTooltip = tippy(itemRef.value!, {
 				appendTo: 'parent',
-				content: args.tooltip,
+				content: tooltip,
 				placement: 'bottom',
 				inlinePositioning: true,
 				plugins: [inlinePositioning],
 			});
 		}
 
-		return item;
+		return itemRef.value!;
 	}
 
 	private addWarningsLink() {

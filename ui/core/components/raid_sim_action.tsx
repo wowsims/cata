@@ -137,16 +137,19 @@ export class RaidSimResultsManager {
 			<div className="results-sim">
 				{RaidSimResultsManager.makeToplineResultsContent(simResult)}
 				<div className="results-sim-reference">
-					<a href="javascript:void(0)" className="results-sim-set-reference" attributes={{ role: 'button' }}>
-						<i className={`fa fa-map-pin fa-lg text-${this.simUI.cssScheme} me-2`}></i>Save as Reference
-					</a>
+					<button className="results-sim-set-reference">
+						<i className={`fa fa-map-pin fa-lg text-${this.simUI.cssScheme} me-2`} />
+						Save as Reference
+					</button>
 					<div className="results-sim-reference-bar">
-						<a href="javascript:void(0)" className="results-sim-reference-swap me-3" attributes={{ role: 'button' }}>
-							<i className="fas fa-arrows-rotate me-1"></i>Swap
-						</a>
-						<a href="javascript:void(0)" className="results-sim-reference-delete" attributes={{ role: 'button' }}>
-							<i className="fa fa-times fa-lg me-1"></i>Cancel
-						</a>
+						<button className="results-sim-reference-swap me-3">
+							<i className="fas fa-arrows-rotate me-1" />
+							Swap
+						</button>
+						<button className="results-sim-reference-delete">
+							<i className="fa fa-times fa-lg me-1" />
+							Cancel
+						</button>
 					</div>
 				</div>
 			</div>,
@@ -285,7 +288,7 @@ export class RaidSimResultsManager {
 		} else {
 			this.formatToplineResult(
 				`.${RaidSimResultsManager.resultMetricClasses['dtps']} .results-reference-diff`,
-				res => sum(res.getPlayers()!.map(player => player.dtps.avg))/res.getPlayers().length,
+				res => sum(res.getPlayers()!.map(player => player.dtps.avg)) / res.getPlayers().length,
 				2,
 				true,
 			);
@@ -468,7 +471,11 @@ export class RaidSimResultsManager {
 					);
 				}
 
-				const targetActions = simResult.getTargets(filter).map(target => target.actions).flat().map(action => action.forTarget({player: playerMetrics.unitIndex}));
+				const targetActions = simResult
+					.getTargets(filter)
+					.map(target => target.actions)
+					.flat()
+					.map(action => action.forTarget({ player: playerMetrics.unitIndex }));
 				if (!!targetActions.length) {
 					const mergedTargetActions = ActionMetrics.merge(targetActions);
 					content.appendChild(
@@ -516,7 +523,11 @@ export class RaidSimResultsManager {
 				}),
 			);
 
-			const targetActions = simResult.getTargets(filter).map(target => target.actions).flat().map(action => action.forTarget(filter));
+			const targetActions = simResult
+				.getTargets(filter)
+				.map(target => target.actions)
+				.flat()
+				.map(action => action.forTarget(filter));
 			if (!!targetActions.length) {
 				const mergedTargetActions = ActionMetrics.merge(targetActions);
 				content.appendChild(

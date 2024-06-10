@@ -84,7 +84,7 @@ const layoutHTML = (
 			<ul className="nav nav-tabs" attributes={{ role: 'tablist' }}>
 				{tabs.map(({ label, targetId, isActive, classes }) => (
 					<li className={`nav-item dr-tab-tab ${classes?.join(' ') || ''}`} attributes={{ role: 'presentation' }}>
-						<a
+						<button
 							className={`nav-link${isActive ? ' active' : ''}`}
 							type="button"
 							attributes={{
@@ -98,7 +98,7 @@ const layoutHTML = (
 								bsTarget: `#${targetId}`,
 							}}>
 							{label}
-						</a>
+						</button>
 					</li>
 				))}
 			</ul>
