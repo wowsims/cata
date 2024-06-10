@@ -81,7 +81,7 @@ class Toast {
 					'aria-atomic': 'true',
 				}}>
 				<div className="toast-header">
-					<i className={clsx('d-block fas fa-2xl me-2', this.getVariantIcon())}></i>
+					<i className={clsx('d-block fas fa-2xl me-2', this.getVariantIcon())} />
 					<strong className="me-auto">{this.title}</strong>
 					{this.canClose && (
 						<button
@@ -93,7 +93,7 @@ class Toast {
 								bsDismiss: 'toast',
 							}}
 							aria-label="Close">
-							<i className={clsx('fas fa-times fa-1xl', this.getVariantIcon())}></i>
+							<i className={clsx('fas fa-times fa-1xl', this.getVariantIcon())} />
 						</button>
 					)}
 				</div>

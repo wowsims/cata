@@ -1,4 +1,4 @@
-import tippy, { inlinePositioning, Instance as TippyInstance, Props as TippyProps } from 'tippy.js';
+import tippy, { inlinePositioning, Instance as TippyInstance } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { Component } from '../components/component.js';
@@ -58,9 +58,9 @@ export class ResultsViewer extends Component {
 	}
 
 	private addWarningLink({ parent, tooltip, classes, text, ...itemArgs }: WarningLinkArgs): HTMLElement {
-		const itemRef = ref<HTMLDivElement>();
+		const itemRef = ref<HTMLButtonElement>();
 		parent.appendChild(
-			<SimToolbarItem ref={itemRef} buttonClassName={classes} {...itemArgs}>
+			<SimToolbarItem linkRef={itemRef} buttonClassName={classes} {...itemArgs}>
 				{text}
 			</SimToolbarItem>,
 		);

@@ -5,8 +5,4 @@
 		align-items: center;
 		justify-content: flex-end;
 	}
-
-	.input-root:not(:last-child) {
-		margin-right: var(--spacer-1);
-	}
 }

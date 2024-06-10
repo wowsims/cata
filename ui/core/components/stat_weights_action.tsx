@@ -163,7 +163,7 @@ class EpWeightsMenu extends BaseModal {
 									))}
 								<td className="text-center align-middle">
 									<button ref={computeEpRef} className="btn btn-primary compute-ep">
-										<i className="fas fa-calculator"></i>
+										<i className="fas fa-calculator" />
 										<span className="not-tiny">Update </span>EP
 									</button>
 								</td>
@@ -181,7 +181,7 @@ class EpWeightsMenu extends BaseModal {
 					Optimize Gems
 				</button>
 				<button ref={calcWeightsButtonRef} className="btn btn-primary calc-weights">
-					<i className="fas fa-calculator"></i>
+					<i className="fas fa-calculator me-1" />
 					Calculate
 				</button>
 			</>,
