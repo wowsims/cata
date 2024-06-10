@@ -1,6 +1,21 @@
 @import './bulk';
 
 .bulk-tab {
+	.bulk-gear-combo {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-template-rows: auto;
+		gap: var(--gap-width);
+
+		[class*='bulk-gear-list-'] {
+			margin-bottom: 0;
+			.content-block-header {
+				border-bottom: 0;
+				margin-bottom: 0;
+			}
+		}
+	}
+
 	.bulk-tab-right {
 		.content-block-body {
 			gap: var(--spacer-3);
@@ -89,13 +104,6 @@
 
 	.bulk-items-text-line {
 		margin-bottom: 1rem;
-	}
-
-	.bulk-gear-combo {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		grid-template-rows: auto;
-		gap: var(--spacer-3);
 	}
 
 	.default-gem-container {

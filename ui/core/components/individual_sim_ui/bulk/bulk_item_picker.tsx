@@ -14,15 +14,13 @@ export class BulkItemPicker extends Component {
 	private readonly itemElem: ItemRenderer;
 	readonly simUI: IndividualSimUI<any>;
 	readonly bulkUI: BulkTab;
-	readonly index: number;
 
 	protected item: EquippedItem;
 
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab, item: EquippedItem, index: number) {
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab, item: EquippedItem) {
 		super(parent, 'bulk-item-picker');
 		this.simUI = simUI;
 		this.bulkUI = bulkUI;
-		this.index = index;
 		this.item = item;
 		this.itemElem = new ItemRenderer(parent, this.rootElem, simUI.player);
 
@@ -32,7 +30,7 @@ export class BulkItemPicker extends Component {
 				<i className="fas fa-times" />
 			</button>,
 		);
-		const removeItem = () => this.bulkUI.removeItemByIndex(this.index);
+		const removeItem = () => this.bulkUI.removeItem(this.item.asSpec());
 		removeBtn.value!.addEventListener('click', removeItem);
 		this.addOnDisposeCallback(() => removeBtn.value!.removeEventListener('click', removeItem));
 
@@ -81,10 +79,9 @@ export class BulkItemPicker extends Component {
 		return {
 			equipItem: (_, equippedItem: EquippedItem | null) => {
 				if (equippedItem) {
-					const allItems = this.bulkUI.getItems();
-					allItems[this.index] = equippedItem.asSpec();
+					this.bulkUI.removeItem(this.item.asSpec());
+					this.bulkUI.addItem(equippedItem.asSpec());
 					this.item = equippedItem;
-					this.bulkUI.setItems(allItems);
 					changeEvent.emit(TypedEvent.nextEventID());
 				}
 			},

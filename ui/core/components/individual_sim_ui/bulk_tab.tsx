@@ -4,62 +4,84 @@ import { ref } from 'tsx-vanilla';
 import { setItemQualityCssClass } from '../../css_utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { BulkSettings, ProgressMetrics, TalentLoadout } from '../../proto/api';
-import { EquipmentSpec, GemColor, ItemSlot, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
+import { GemColor, ItemSlot, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIGem, UIItem, UIItem_FactionRestriction } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
-import { Database } from '../../proto_utils/database';
 import { EquippedItem } from '../../proto_utils/equipped_item';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { Stats } from '../../proto_utils/stats';
-import { canEquipItem } from '../../proto_utils/utils';
+import { canEquipItem, getEligibleItemSlots } from '../../proto_utils/utils';
 import { TypedEvent } from '../../typed_event';
 import { EventID } from '../../typed_event.js';
-import { cloneChildren, noop } from '../../utils';
+import { cloneChildren, getEnumValues, noop } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
 import { BaseModal } from '../base_modal';
 import { BooleanPicker } from '../boolean_picker';
 import { ContentBlock } from '../content_block';
 import ItemList, { ItemData } from '../gear_picker/item_list';
 import SelectorModal, { SelectorModalTabs } from '../gear_picker/selector_modal';
-import { Importer } from '../importers';
+import { BulkGearJsonImporter } from '../importers/bulk_gear_json_importer';
 import { ResultsViewer } from '../results_viewer';
 import { SimTab } from '../sim_tab';
-import Toast from '../toast';
 import { BulkItemPicker } from './bulk/bulk_item_picker';
 import BulkSimResultRenderer from './bulk/bulk_sim_results_renderer';
 
-export class BulkGearJsonImporter extends Importer {
-	private readonly simUI: IndividualSimUI<any>;
-	private readonly bulkUI: BulkTab;
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab) {
-		super(parent, simUI, 'Bag Item Import', true);
-		this.simUI = simUI;
-		this.bulkUI = bulkUI;
-		this.descriptionElem.appendChild(
-			<>
-				<p>Import bag items from a JSON file, which can be created by the WowSimsExporter in-game AddOn.</p>
-				<p>To import, upload the file or paste the text below, then click, 'Import'.</p>
-			</>,
-		);
-	}
-
-	async onImport(data: string) {
-		try {
-			const equipment = EquipmentSpec.fromJsonString(data, { ignoreUnknownFields: true });
-			if (equipment?.items?.length > 0) {
-				const db = await Database.loadLeftoversIfNecessary(equipment);
-				const items = equipment.items.filter(spec => spec.id > 0 && db.lookupItemSpec(spec));
-				if (items.length > 0) {
-					this.bulkUI.addItems(items);
-				}
-			}
-			this.close();
-		} catch (e: any) {
-			console.warn(e);
-			alert(e.toString());
-		}
-	}
+// Combines Fingers 1 and 2 and Trinket 1 and 2 into single groups
+enum BulkSimItemSlot {
+	ItemSlotHead,
+	ItemSlotNeck,
+	ItemSlotShoulder,
+	ItemSlotBack,
+	ItemSlotChest,
+	ItemSlotWrist,
+	ItemSlotHands,
+	ItemSlotWaist,
+	ItemSlotLegs,
+	ItemSlotFeet,
+	ItemSlotFinger,
+	ItemSlotTrinket,
+	ItemSlotMainHand,
+	ItemSlotOffHand,
+	ItemSlotRanged,
 }
+
+export const bulkSimSlotNames: Map<BulkSimItemSlot, string> = new Map([
+	[BulkSimItemSlot.ItemSlotHead, 'Head'],
+	[BulkSimItemSlot.ItemSlotNeck, 'Neck'],
+	[BulkSimItemSlot.ItemSlotShoulder, 'Shoulders'],
+	[BulkSimItemSlot.ItemSlotBack, 'Back'],
+	[BulkSimItemSlot.ItemSlotChest, 'Chest'],
+	[BulkSimItemSlot.ItemSlotWrist, 'Wrist'],
+	[BulkSimItemSlot.ItemSlotHands, 'Hands'],
+	[BulkSimItemSlot.ItemSlotWaist, 'Waist'],
+	[BulkSimItemSlot.ItemSlotLegs, 'Legs'],
+	[BulkSimItemSlot.ItemSlotFeet, 'Feet'],
+	[BulkSimItemSlot.ItemSlotFinger, 'Rings'],
+	[BulkSimItemSlot.ItemSlotTrinket, 'Trinkets'],
+	[BulkSimItemSlot.ItemSlotMainHand, 'Main Hand'],
+	[BulkSimItemSlot.ItemSlotOffHand, 'Off Hand'],
+	[BulkSimItemSlot.ItemSlotRanged, 'Ranged'],
+]);
+
+export const itemSlotToBulkSimItemSlot: Map<ItemSlot, BulkSimItemSlot> = new Map([
+	[ItemSlot.ItemSlotHead, BulkSimItemSlot.ItemSlotHead],
+	[ItemSlot.ItemSlotNeck, BulkSimItemSlot.ItemSlotNeck],
+	[ItemSlot.ItemSlotShoulder, BulkSimItemSlot.ItemSlotShoulder],
+	[ItemSlot.ItemSlotBack, BulkSimItemSlot.ItemSlotBack],
+	[ItemSlot.ItemSlotChest, BulkSimItemSlot.ItemSlotChest],
+	[ItemSlot.ItemSlotWrist, BulkSimItemSlot.ItemSlotWrist],
+	[ItemSlot.ItemSlotHands, BulkSimItemSlot.ItemSlotHands],
+	[ItemSlot.ItemSlotWaist, BulkSimItemSlot.ItemSlotWaist],
+	[ItemSlot.ItemSlotLegs, BulkSimItemSlot.ItemSlotLegs],
+	[ItemSlot.ItemSlotFeet, BulkSimItemSlot.ItemSlotFeet],
+	[ItemSlot.ItemSlotFinger1, BulkSimItemSlot.ItemSlotFinger],
+	[ItemSlot.ItemSlotFinger2, BulkSimItemSlot.ItemSlotFinger],
+	[ItemSlot.ItemSlotTrinket1, BulkSimItemSlot.ItemSlotTrinket],
+	[ItemSlot.ItemSlotTrinket2, BulkSimItemSlot.ItemSlotTrinket],
+	[ItemSlot.ItemSlotMainHand, BulkSimItemSlot.ItemSlotMainHand],
+	[ItemSlot.ItemSlotOffHand, BulkSimItemSlot.ItemSlotOffHand],
+	[ItemSlot.ItemSlotRanged, BulkSimItemSlot.ItemSlotRanged],
+]);
 
 export class BulkTab extends SimTab {
 	readonly simUI: IndividualSimUI<any>;
@@ -71,7 +93,8 @@ export class BulkTab extends SimTab {
 
 	readonly column1: HTMLElement = this.buildColumn(1, 'raid-settings-col');
 
-	protected items: Array<ItemSpec> = new Array<ItemSpec>();
+	protected items: Map<number, ItemSpec> = new Map<number, ItemSpec>();
+	private itemGroups: Array<HTMLElement> = new Array<HTMLElement>();
 
 	private pendingResults: ResultsViewer;
 	private pendingDiv: HTMLDivElement;
@@ -118,10 +141,12 @@ export class BulkTab extends SimTab {
 		this.simTalents = false;
 		this.defaultGems = [UIGem.create(), UIGem.create(), UIGem.create(), UIGem.create()];
 		this.gemIconElements = [];
+
 		this.buildTabContent();
 
 		this.simUI.sim.waitForInit().then(() => {
 			this.loadSettings();
+			this.setItems(this.simUI.player.getGear().asSpec().items);
 		});
 	}
 
@@ -170,7 +195,7 @@ export class BulkTab extends SimTab {
 
 	protected createBulkSettings(): BulkSettings {
 		return BulkSettings.create({
-			items: this.items,
+			items: this.getItems(),
 			// TODO(Riotdog-GehennasEU): Make all of these configurable.
 			// For now, it's always constant iteration combinations mode for "sim my bags".
 			combinations: this.doCombos,
@@ -189,7 +214,7 @@ export class BulkTab extends SimTab {
 
 	protected createBulkItemsDatabase(): SimDatabase {
 		const itemsDb = SimDatabase.create();
-		for (const is of this.items) {
+		for (const is of this.items.values()) {
 			const item = this.simUI.sim.db.lookupItemSpec(is);
 			if (!item) {
 				throw new Error(`item with ID ${is.id} not found in database`);
@@ -220,47 +245,34 @@ export class BulkTab extends SimTab {
 		this.addItems([item]);
 	}
 	addItems(items: ItemSpec[]) {
-		this.items = [...(this.items || []), ...items];
+		items.forEach(item => this.items.set(item.id, item));
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
 	setItems(items: ItemSpec[]) {
-		this.items = items;
+		this.items = new Map<number, ItemSpec>();
+		items.forEach(item => this.items.set(item.id, item));
 		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
 	removeItem(item: ItemSpec) {
-		const indexToRemove = this.items.findIndex(i => ItemSpec.equals(i, item));
-		if (indexToRemove === -1) return;
-		this.items.splice(indexToRemove, 1);
-		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
-	}
-
-	removeItemByIndex(index: number) {
-		if (this.items.length < index) {
-			new Toast({
-				variant: 'error',
-				body: 'Failed to remove item, please report this issue.',
-			});
-			return;
+		if (this.items.delete(item.id)) {
+			this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 		}
-		this.items.splice(index, 1);
-		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
 	}
 
 	clearItems() {
-		this.items = new Array<ItemSpec>();
-		this.itemsChangedEmitter.emit(TypedEvent.nextEventID());
+		this.setItems([]);
 	}
 
 	hasItem(item: ItemSpec) {
-		return this.items.some(i => ItemSpec.equals(i, item));
+		return !!this.items.get(item.id);
 	}
 
 	getItems(): Array<ItemSpec> {
 		const result = new Array<ItemSpec>();
-		this.items.forEach(spec => {
-			result.push(ItemSpec.clone(spec));
+		this.items.forEach(item => {
+			result.push(ItemSpec.clone(item));
 		});
 		return result;
 	}
@@ -286,9 +298,7 @@ export class BulkTab extends SimTab {
 	}
 
 	protected buildTabContent() {
-		const itemsBlock = new ContentBlock(this.column1, 'bulk-items', {
-			header: { title: 'Items' },
-		});
+		const itemsBlock = new ContentBlock(this.column1, 'bulk-items', {});
 		itemsBlock.bodyElement.classList.add('gear-picker-root', 'gear-picker-root-bulk');
 
 		const itemTextIntro = (
@@ -301,18 +311,25 @@ export class BulkTab extends SimTab {
 		);
 
 		const itemList = (<div className="tab-panel-col bulk-gear-combo" />) as HTMLElement;
+		getEnumValues<BulkSimItemSlot>(BulkSimItemSlot).forEach(slot => {
+			const slotName = bulkSimSlotNames.get(slot) as string;
+			const contentBlock = new ContentBlock(itemList, `bulk-gear-list-${slotName.split(' ').join('-')}`, {
+				header: { title: slotName },
+			});
+			this.itemGroups.push(contentBlock.bodyElement);
+		});
 
 		this.itemsChangedEmitter.on(() => {
-			const items = (<></>) as HTMLElement;
-			if (!!this.items.length) {
+			this.itemGroups.forEach(group => group.replaceChildren(<></>));
+			if (!!this.items.size) {
 				itemTextIntro.textContent = 'The following items will be simmed together with your equipped gear.';
-				for (let i = 0; i < this.items.length; ++i) {
-					const spec = this.items[i];
+				this.items.forEach(spec => {
 					const item = this.simUI.sim.db.lookupItemSpec(spec);
-					new BulkItemPicker(items, this.simUI, this, item!, i);
-				}
+					getEligibleItemSlots(item!.item).forEach(slot => {
+						new BulkItemPicker(this.itemGroups[itemSlotToBulkSimItemSlot.get(slot) as BulkSimItemSlot], this.simUI, this, item!);
+					});
+				});
 			}
-			itemList.replaceChildren(items);
 		});
 
 		itemsBlock.bodyElement.appendChild(
