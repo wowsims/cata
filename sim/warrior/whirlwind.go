@@ -21,7 +21,7 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 			ProcMask:    core.ProcMaskEmpty, // whirlwind offhand hits usually don't proc auras
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
-			DamageMultiplier: 1.0,
+			DamageMultiplier: 1.0 * warrior.DualWieldSpecialization(),
 			ThreatMultiplier: 1.25,
 			CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
