@@ -263,11 +263,13 @@ export class BeastMasteryHunterSimUI extends IndividualSimUI<Spec.SpecBeastMaste
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBeastMasteryHunter>) {
 		super(parentElem, player, SPEC_CONFIG);
 		// Auto-Reforge configuration
-		const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
-		const statWeightsConfig = {
-			statCaps: hitCap,
-			preCapEPs: this.individualConfig.defaults.epWeights,
-		};
-		const reforgeOptimizer = new ReforgeOptimizer(this, statWeightsConfig);
+		player.sim.waitForInit().then(() => {
+			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+			const statWeightsConfig = {
+				statCaps: hitCap,
+				preCapEPs: this.individualConfig.defaults.epWeights,
+			};
+			new ReforgeOptimizer(this, statWeightsConfig);
+		});
 	}
 }
