@@ -188,6 +188,16 @@ export class Stats {
 		return true;
 	}
 
+	computeStatCapsDelta(statCaps: Stats): Stats {
+		return new Stats(this.stats.map((value, stat) => {
+			if (statCaps.stats[stat] > 0) {
+				return statCaps.stats[stat] - value;
+			}
+
+			return 0;
+		}));
+	}
+
 	asArray(): Array<number> {
 		return this.stats.slice();
 	}

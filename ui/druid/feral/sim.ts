@@ -1,6 +1,6 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
 import * as OtherInputs from '../../core/components/other_inputs.js';
-import { PhysicalDPSGemOptimizer } from '../../core/components/suggest_gems_action.js';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
@@ -12,6 +12,7 @@ import { Gear } from '../../core/proto_utils/gear.js';
 import { Stats } from '../../core/proto_utils/stats.js';
 import * as FeralInputs from './inputs.js';
 import * as Presets from './presets.js';
+import * as Mechanics from '../../core/constants/mechanics.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	cssClass: 'feral-druid-sim-ui',
@@ -179,39 +180,13 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFeralDruid>) {
 		super(parentElem, player, SPEC_CONFIG);
 
-		//const _gemOptimizer = new FeralGemOptimizer(this);
-	}
-}
-
-class FeralGemOptimizer extends PhysicalDPSGemOptimizer {
-	constructor(simUI: IndividualSimUI<Spec.SpecFeralDruid>) {
-		super(simUI, true, true, true, true);
-	}
-
-	calcCritCap(gear: Gear): Stats {
-		const baseCritCapPercentage = 77.8; // includes 3% Crit debuff
-		let agiProcs = 0;
-
-		if (gear.hasRelic(47668)) {
-			agiProcs += 200;
-		}
-
-		if (gear.hasRelic(50456)) {
-			agiProcs += 44 * 5;
-		}
-
-		if (gear.hasTrinket(47131) || gear.hasTrinket(47464)) {
-			agiProcs += 510;
-		}
-
-		if (gear.hasTrinket(47115) || gear.hasTrinket(47303)) {
-			agiProcs += 450;
-		}
-
-		if (gear.hasTrinket(44253) || gear.hasTrinket(42987)) {
-			agiProcs += 300;
-		}
-
-		return new Stats().withStat(Stat.StatMeleeCrit, (baseCritCapPercentage - (agiProcs * 1.1 * 1.06 * 1.02) / 83.33) * 45.91);
+		// Auto-Reforge configuration
+		const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+		const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+		const statWeightsConfig = {
+			statCaps: hitCap.add(expCap),
+			preCapEPs: this.individualConfig.defaults.epWeights,
+		};
+		const reforgeOptimizer = new ReforgeOptimizer(this, statWeightsConfig);
 	}
 }
