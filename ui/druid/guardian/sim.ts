@@ -270,11 +270,11 @@ export class GuardianDruidSimUI extends IndividualSimUI<Spec.SpecGuardianDruid> 
 			const meleeHitCap = new Stats().withStat(Stat.StatMeleeHit, 5 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
 			const spellHitCap = new Stats().withStat(Stat.StatSpellHit, 4 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
 			const expCap = new Stats().withStat(Stat.StatExpertise, 5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			const statWeightsConfig = {
+			const reforgeOptimizerDefaults = {
 				statCaps: meleeHitCap.add(spellHitCap).add(expCap),
-				preCapEPs: player.getEpWeights(),
+				preCapEPs: this.individualConfig.defaults.epWeights,
 			};
-			new ReforgeOptimizer(this, statWeightsConfig);
+			new ReforgeOptimizer(this, reforgeOptimizerDefaults);
 		});
 	}
 }

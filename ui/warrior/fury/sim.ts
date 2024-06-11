@@ -65,7 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 				[Stat.StatStrength]: 2.2,
 				[Stat.StatAgility]: 1.18,
 				[Stat.StatAttackPower]: 1,
-				[Stat.StatExpertise]: 1.60,
+				[Stat.StatExpertise]: 1.6,
 				[Stat.StatMeleeHit]: 1.24,
 				[Stat.StatMeleeCrit]: 1.54,
 				[Stat.StatMeleeHaste]: 1.01,
@@ -188,11 +188,11 @@ export class FuryWarriorSimUI extends IndividualSimUI<Spec.SpecFuryWarrior> {
 			// Auto-Reforge configuration
 			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
 			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			const statWeightsConfig = {
+			const reforgeOptimizerDefaults = {
 				statCaps: hitCap.add(expCap),
-				preCapEPs: player.getEpWeights(),
+				preCapEPs: this.individualConfig.defaults.epWeights,
 			};
-			new ReforgeOptimizer(this, statWeightsConfig);
+			new ReforgeOptimizer(this, reforgeOptimizerDefaults);
 		});
 	}
 }

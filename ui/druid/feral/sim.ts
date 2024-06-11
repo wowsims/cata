@@ -195,11 +195,11 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 			// Auto-Reforge configuration
 			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
 			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			const statWeightsConfig = {
+			const reforgeOptimizerDefaults = {
 				statCaps: hitCap.add(expCap),
-				preCapEPs: player.getEpWeights(),
+				preCapEPs: this.individualConfig.defaults.epWeights,
 			};
-			new ReforgeOptimizer(this, statWeightsConfig);
+			new ReforgeOptimizer(this, reforgeOptimizerDefaults);
 		});
 	}
 }
