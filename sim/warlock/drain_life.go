@@ -23,10 +23,11 @@ func (warlock *Warlock) registerDrainLife() {
 		BonusCoefficient:         0.53899997473,
 
 		Dot: core.DotConfig{
-			Aura:                core.Aura{Label: "Drain Life"},
-			NumberOfTicks:       3,
-			TickLength:          1 * time.Second,
-			AffectedByCastSpeed: true,
+			Aura:                 core.Aura{Label: "Drain Life"},
+			NumberOfTicks:        3,
+			TickLength:           1 * time.Second,
+			AffectedByCastSpeed:  true,
+			HasteReducesDuration: true,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, _ bool) {
 				baseDmg := warlock.CalcScalingSpellDmg(0.08550000191) + 0.12899999321*dot.Spell.SpellPower()
 				dot.SnapshotBaseDamage = baseDmg * warlock.calcSoulSiphonMult(target)
