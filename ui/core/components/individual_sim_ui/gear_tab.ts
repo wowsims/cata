@@ -4,7 +4,7 @@ import { EquipmentSpec, UnitStats } from '../../proto/common';
 import { SavedGearSet } from '../../proto/ui';
 import { Stats } from '../../proto_utils/stats';
 import { EventID, TypedEvent } from '../../typed_event';
-import { GearPicker } from '../gear_picker/gear_picker';
+import GearPicker from '../gear_picker/gear_picker';
 import { SavedDataManager } from '../saved_data_manager';
 import { SimTab } from '../sim_tab';
 import { GemSummary } from './gem_summary';

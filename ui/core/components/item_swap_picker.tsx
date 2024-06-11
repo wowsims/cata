@@ -6,7 +6,7 @@ import { SimUI } from '../sim_ui.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { BooleanPicker } from './boolean_picker.js';
 import { Component } from './component.js';
-import { IconItemSwapPicker } from './gear_picker/gear_picker.jsx';
+import IconItemSwapPicker from './gear_picker/icon_item_swap_picker';
 import { Input } from './input.jsx';
 
 export interface ItemSwapConfig {
@@ -66,9 +66,9 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 		swapPickerContainer.appendChild(itemSwapContainer);
 
 		const swapButton = (
-			<a href="javascript:void(0)" className="gear-swap-icon" attributes={{ role: 'button' }}>
+			<button className="gear-swap-icon">
 				<i className="fas fa-arrows-rotate me-1"></i>
-			</a>
+			</button>
 		);
 		swapButton.addEventListener('click', _event => this.swapWithGear(TypedEvent.nextEventID(), player));
 		itemSwapContainer.appendChild(swapButton);

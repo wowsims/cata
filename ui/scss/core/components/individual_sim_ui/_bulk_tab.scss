@@ -1,0 +1,124 @@
+@import './bulk';
+
+.bulk-tab {
+	.bulk-tab-right {
+		.content-block-body {
+			gap: var(--spacer-3);
+		}
+	}
+
+	.bulk-settings {
+		.selector-modal-tab-pane {
+			position: absolute;
+		}
+
+		.input-root {
+			flex-direction: row;
+			align-items: center;
+			padding-bottom: var(--block-spacer);
+			border-bottom: var(--border-default);
+			margin-bottom: 0;
+
+			label {
+				flex-grow: 1;
+			}
+		}
+
+		.bulk-check-input {
+			width: 100%;
+			height: 40px;
+			padding: 5px;
+			// margin-top: 15px;
+			display: flex;
+		}
+	}
+
+	.batch-search-input {
+		width: 100%;
+		border: var(--border-default);
+		font-size: var(--btn-font-size);
+	}
+
+	.batch-search-results {
+		list-style: none;
+		background-color: var(--bs-table-row-even-bg);
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		border: var(--border-default);
+		max-height: 30vh;
+		overflow: auto;
+
+		li {
+			cursor: pointer;
+			padding-top: 2px;
+			padding-bottom: 2px;
+			padding-left: var(--spacer-2);
+			padding-right: var(--spacer-2);
+			background-color: var(--bs-table-row-even-bg);
+			transition: var(--link-transition);
+			border: 1px solid transparent;
+			transition-property: background-color, color, border;
+
+			&:nth-child(odd) {
+				background-color: var(--bs-table-row-odd-bg);
+			}
+
+			@media (pointer: fine) {
+				&:hover {
+					background-color: hsla(var(--bs-table-row-even-bg-hsl), 0.9) !important;
+				}
+			}
+		}
+	}
+
+	.talent-loadout-text {
+		font-size: smaller;
+	}
+
+	.talents-picker-container {
+		display: flex;
+		flex-direction: column;
+		border-bottom: var(--border-default);
+
+		.talents-container {
+			display: flex;
+		}
+	}
+
+	.bulk-items-text-line {
+		margin-bottom: 1rem;
+	}
+
+	.bulk-gear-combo {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		grid-template-rows: auto;
+		gap: var(--spacer-3);
+	}
+
+	.default-gem-container {
+		display: flex;
+		flex-direction: column;
+		border-bottom: var(--border-default);
+		padding-bottom: var(--spacer-2);
+
+		.gem-socket-container {
+			height: 30px;
+			width: 30px;
+		}
+
+		.gem-icon {
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+		}
+
+		.sockets-container {
+			display: flex;
+			gap: 3px;
+		}
+	}
+}
