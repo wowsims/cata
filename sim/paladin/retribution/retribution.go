@@ -30,11 +30,8 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 	retOptions := options.GetRetributionPaladin()
 
 	ret := &RetributionPaladin{
-		Paladin: paladin.NewPaladin(character, options.TalentsString),
-		Seal:    retOptions.Options.ClassOptions.Seal,
+		Paladin: paladin.NewPaladin(character, options.TalentsString, retOptions.Options.ClassOptions),
 	}
-
-	ret.PaladinAura = retOptions.Options.ClassOptions.Aura
 
 	return ret
 }
@@ -42,7 +39,6 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 type RetributionPaladin struct {
 	*paladin.Paladin
 
-	Seal      proto.PaladinSeal
 	HoLDamage float64
 }
 
@@ -125,35 +121,45 @@ func (ret *RetributionPaladin) RegisterMastery() {
 func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 	actionID := core.ActionID{SpellID: 89901}
 	manaMetrics := ret.NewManaMetrics(actionID)
-	var pa *core.PendingAction
 
-	jotbAura := ret.RegisterAura(core.Aura{
-		Label:    "Judgements of the Bold",
+	// It's 25% of base mana over 10 seconds, with haste adding ticks.
+	manaPerTick := 0.025 * ret.BaseMana
+
+	jotb := ret.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 2,
-				OnAction: func(sim *core.Simulation) {
-					ret.AddMana(sim, 0.25*ret.BaseMana, manaMetrics)
-				},
-			})
+		Flags:    core.SpellFlagHelpful,
+
+		Hot: core.DotConfig{
+			SelfOnly: true,
+			Aura: core.Aura{
+				Label: "Judgements of the Bold",
+			},
+			NumberOfTicks:        10,
+			TickLength:           time.Second * 1,
+			AffectedByCastSpeed:  true,
+			HasteReducesDuration: false,
+
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				ret.AddMana(sim, manaPerTick, manaMetrics)
+			},
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			pa.Cancel(sim)
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.SelfHot().Apply(sim)
 		},
 	})
 
 	core.MakeProcTriggerAura(&ret.Unit, core.ProcTrigger{
-		Name:       "Judgements of the Bold Trigger",
-		ActionID:   actionID,
-		Callback:   core.CallbackOnSpellHitDealt,
-		Outcome:    core.OutcomeLanded,
-		ProcMask:   core.ProcMaskMeleeSpecial,
-		ProcChance: 1.0,
+		Name:           "Judgements of the Bold Trigger",
+		ActionID:       actionID,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: paladin.SpellMaskJudgement,
+		ProcChance:     1.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			jotbAura.Activate(sim)
+			jotb.Cast(sim, &ret.Unit)
+			spell.SpellMetrics[result.Target.UnitIndex].Hits--
 		},
 	})
 }

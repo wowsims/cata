@@ -9,10 +9,6 @@ import (
 )
 
 func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, raid *proto.Raid) {
-	if debuffs.Judgement && targetIdx == 0 {
-		MakePermanent(JudgementOfLightAura(target))
-	}
-
 	// +8% Spell DMG
 	if debuffs.CurseOfElements && targetIdx == 0 {
 		MakePermanent(CurseOfElementsAura(target))
@@ -186,23 +182,6 @@ func ScheduledMajorArmorAura(aura *Aura, options PeriodicActionOptions, raid *pr
 		aura.Duration = NeverExpires
 		StartPeriodicAction(sim, options)
 	}
-}
-
-var JudgementOfLightAuraLabel = "Judgement of Light"
-
-func JudgementOfLightAura(target *Unit) *Aura {
-	actionID := ActionID{SpellID: 20271}
-
-	return target.GetOrRegisterAura(Aura{
-		Label:    JudgementOfLightAuraLabel,
-		ActionID: actionID,
-		Duration: time.Second * 20,
-		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if !spell.ProcMask.Matches(ProcMaskMelee) || !result.Landed() {
-				return
-			}
-		},
-	})
 }
 
 func CurseOfElementsAura(target *Unit) *Aura {

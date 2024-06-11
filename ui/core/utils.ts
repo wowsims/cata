@@ -11,6 +11,8 @@ export const existsInDOM = (element: HTMLElement | null) => document.body.contai
 
 export const cloneChildren = (element: HTMLElement) => [...(element.childNodes || [])].map(child => child.cloneNode(true));
 
+export const sanitizeId = (id: string) => id.split(' ').join('');
+
 // Returns if the two items are equal, or if both are null / undefined.
 export function equalsOrBothNull<T>(a: T, b: T, comparator?: (_a: NonNullable<T>, _b: NonNullable<T>) => boolean): boolean {
 	if (a == null && b == null) return true;
