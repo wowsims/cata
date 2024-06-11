@@ -13,7 +13,7 @@ func (hunter *Hunter) ApplySurvivalTalents() {
 		core.MakePermanent(hunter.RegisterAura(core.Aura{
 			BuildPhase: core.CharacterBuildPhaseBase,
 			Label:      "Pathing",
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				hunter.PseudoStats.RangedSpeedMultiplier /= 1 + bonus
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
