@@ -190,17 +190,38 @@ export abstract class SimUI extends Component {
 		}
 	}
 
-	addAction(name: string, cssClass: string, actFn: (event: MouseEvent) => void): HTMLButtonElement {
+	addAction(label: string, cssClass: string, onClick: (event: MouseEvent) => void): HTMLButtonElement {
 		const buttonRef = ref<HTMLButtonElement>();
 		this.simActionsContainer.appendChild(
-			<button ref={buttonRef} className={clsx('sim-sidebar-action-button btn btn-primary w-100', cssClass)}>
-				{name}
-				<span className="sim-sidebar-action-button-loading-icon"><i className="fas fa-spinner fa-spin"></i></span>
+			<button ref={buttonRef} className={clsx('sim-sidebar-action-button btn btn-primary w-100', cssClass)} onclick={onClick}>
+				{label}
+				<span className="sim-sidebar-action-button-loading-icon">
+					<i className="fas fa-spinner fa-spin"></i>
+				</span>
 			</button>,
 		);
-		buttonRef.value?.addEventListener('click', actFn);
 
 		return buttonRef.value!;
+	}
+
+	addActionGroup(groups: ActionGroupItem[], groupOptions: { cssClass?: string } = {}) {
+		const refs: HTMLButtonElement[] = [];
+		const { cssClass } = groupOptions;
+		this.simActionsContainer.appendChild(
+			<div className={clsx('d-flex btn-group w-100', cssClass)} attributes={{ role: 'group' }}>
+				{groups.map(({ label, cssClass, children, onClick }) => (
+					<button ref={ref => refs.push(ref)} onclick={onClick} className={clsx('sim-sidebar-action-button btn btn-primary', cssClass)}>
+						{label}
+						{children}
+						<span className="sim-sidebar-action-button-loading-icon">
+							<i className="fas fa-spinner fa-spin"></i>
+						</span>
+					</button>
+				))}
+			</div>,
+		);
+
+		return refs;
 	}
 
 	addTab(title: string, cssClass: string, content: HTMLElement | Element) {
@@ -379,3 +400,5 @@ class CrashModal extends BaseModal {
 		);
 	}
 }
+
+export type ActionGroupItem = { label?: string; children?: Element; cssClass?: string; onClick?: (event: MouseEvent) => void };

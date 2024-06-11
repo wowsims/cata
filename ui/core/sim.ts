@@ -78,6 +78,7 @@ export class Sim {
 	private showExperimental = false;
 	private showQuickSwap = false;
 	private showEPValues = false;
+	private useCustomEPValues = false;
 	private language = '';
 
 	readonly type: SimType;
@@ -98,6 +99,7 @@ export class Sim {
 	readonly showExperimentalChangeEmitter = new TypedEvent<void>();
 	readonly showQuickSwapChangeEmitter = new TypedEvent<void>();
 	readonly showEPValuesChangeEmitter = new TypedEvent<void>();
+	readonly useCustomEPValuesChangeEmitter = new TypedEvent<void>();
 	readonly languageChangeEmitter = new TypedEvent<void>();
 	readonly crashEmitter = new TypedEvent<SimError>();
 
@@ -146,6 +148,7 @@ export class Sim {
 			this.showExperimentalChangeEmitter,
 			this.showQuickSwapChangeEmitter,
 			this.showEPValuesChangeEmitter,
+			this.useCustomEPValuesChangeEmitter,
 			this.languageChangeEmitter,
 		]);
 
@@ -556,6 +559,16 @@ export class Sim {
 		}
 	}
 
+	getUseCustomEPValues(): boolean {
+		return this.useCustomEPValues;
+	}
+	setUseCustomEPValues(eventID: EventID, newUseCustomEPValues: boolean) {
+		if (newUseCustomEPValues !== this.useCustomEPValues) {
+			this.useCustomEPValues = newUseCustomEPValues;
+			this.useCustomEPValuesChangeEmitter.emit(eventID);
+		}
+	}
+
 	getLanguage(): string {
 		return this.language;
 	}
@@ -612,6 +625,7 @@ export class Sim {
 			showExperimental: this.getShowExperimental(),
 			showQuickSwap: this.getShowQuickSwap(),
 			showEpValues: this.getShowEPValues(),
+			useCustomEpValues: this.getUseCustomEPValues(),
 			language: this.getLanguage(),
 			faction: this.getFaction(),
 			filters: filters,
@@ -629,6 +643,7 @@ export class Sim {
 			this.setShowExperimental(eventID, proto.showExperimental);
 			this.setShowQuickSwap(eventID, proto.showQuickSwap);
 			this.setShowEPValues(eventID, proto.showEpValues);
+			this.setUseCustomEPValues(eventID, proto.useCustomEpValues);
 			this.setLanguage(eventID, proto.language);
 			this.setFaction(eventID, proto.faction || Faction.Alliance);
 
