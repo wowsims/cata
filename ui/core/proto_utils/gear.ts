@@ -309,7 +309,7 @@ export class Gear extends BaseGear {
 			const item = this.getEquippedItem(slot);
 
 			if (item) {
-				curGear = curGear.withEquippedItem(slot, item.withItem(item.item), canDualWield2H);
+				curGear = curGear.withEquippedItem(slot, item.withItem(item.item).withRandomSuffix(item._randomSuffix), canDualWield2H);
 			}
 		}
 
