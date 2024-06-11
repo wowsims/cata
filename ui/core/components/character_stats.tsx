@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -49,38 +50,39 @@ export class CharacterStats extends Component {
 		this.valueElems = [];
 		this.stats.forEach(stat => {
 			const statName = getClassStatName(stat, player.getClass());
-
+			const valueRef = ref<HTMLTableCellElement>();
 			const row = (
 				<tr className="character-stats-table-row">
 					<td className="character-stats-table-label">
 						{statName}
-						{stat == Stat.StatMastery && (
+						{stat === Stat.StatMastery && (
 							<>
 								<br />
 								{masterySpellNames.get(this.player.getSpec())}
 							</>
 						)}
 					</td>
-					<td className="character-stats-table-value">{this.bonusStatsLink(stat)}</td>
+					<td ref={valueRef} className="character-stats-table-value">
+						{this.bonusStatsLink(stat)}
+					</td>
 				</tr>
 			);
 
 			table.appendChild(row);
-
-			const valueElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
-			this.valueElems.push(valueElem);
+			this.valueElems.push(valueRef.value!);
 		});
 
 		if (this.shouldShowMeleeCritCap(player)) {
+			const valueRef = ref<HTMLTableCellElement>();
 			const row = (
 				<tr className="character-stats-table-row">
 					<td className="character-stats-table-label">Melee Crit Cap</td>
-					<td className="character-stats-table-value"></td>
+					<td ref={valueRef} className="character-stats-table-value"></td>
 				</tr>
 			);
 
 			table.appendChild(row);
-			this.meleeCritCapValueElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
+			this.meleeCritCapValueElem = valueRef.value!;
 		} else {
 			this.meleeCritCapValueElem = undefined;
 		}
@@ -150,18 +152,18 @@ export class CharacterStats extends Component {
 				contextualClass = 'text-danger';
 			}
 
-			const statLinkElemRef = ref<HTMLAnchorElement>();
+			const statLinkElemRef = ref<HTMLButtonElement>();
 
 			const valueElem = (
 				<div className="stat-value-link-container">
-					<a href="javascript:void(0)" className={`stat-value-link ${contextualClass}`} attributes={{ role: 'button' }} ref={statLinkElemRef}>
+					<button ref={statLinkElemRef} className={clsx('stat-value-link', contextualClass)}>
 						{`${this.statDisplayString(finalStats, finalStats, stat, true)} `}
-					</a>
+					</button>
 					{stat === Stat.StatMastery && (
 						<a
 							href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
-							className={`stat-value-link-mastery ${contextualClass}`}
-							attributes={{ role: 'button' }}>
+							className={clsx('stat-value-link-mastery', contextualClass)}
+							target="_blank">
 							{`${(masteryPoints * this.player.getMasteryPerPointModifier()).toFixed(2)}%`}
 						</a>
 					)}
@@ -201,7 +203,7 @@ export class CharacterStats extends Component {
 							<span>{this.statDisplayString(debuffStats, debuffStats, stat)}</span>
 						</div>
 					)}
-					{bonusStatValue != 0 && (
+					{bonusStatValue !== 0 && (
 						<div className="character-stats-tooltip-row">
 							<span>Bonus:</span>
 							<span>{this.statDisplayString(bonusStats, bonusStats, stat)}</span>
@@ -222,11 +224,7 @@ export class CharacterStats extends Component {
 		if (this.meleeCritCapValueElem) {
 			const meleeCritCapInfo = player.getMeleeCritCapInfo();
 
-			const valueElem = (
-				<a href="javascript:void(0)" className="stat-value-link" attributes={{ role: 'button' }}>
-					{`${this.meleeCritCapDisplayString(player, finalStats)} `}
-				</a>
-			);
+			const valueElem = <button className="stat-value-link">{this.meleeCritCapDisplayString(player, finalStats)} </button>;
 
 			const capDelta = meleeCritCapInfo.playerCritCapDelta;
 			if (capDelta == 0) {
@@ -336,18 +334,13 @@ export class CharacterStats extends Component {
 
 	private bonusStatsLink(stat: Stat): HTMLElement {
 		const statName = getClassStatName(stat, this.player.getClass());
-		const linkRef = ref<HTMLAnchorElement>();
+		const linkRef = ref<HTMLButtonElement>();
 		const iconRef = ref<HTMLDivElement>();
 
 		const link = (
-			<a
-				ref={linkRef}
-				href="javascript:void(0)"
-				className="add-bonus-stats text-white ms-2"
-				dataset={{ bsToggle: 'popover' }}
-				attributes={{ role: 'button' }}>
+			<button ref={linkRef} className="add-bonus-stats text-white ms-2" dataset={{ bsToggle: 'popover' }}>
 				<i ref={iconRef} className="fas fa-plus-minus"></i>
-			</a>
+			</button>
 		);
 
 		tippy(iconRef.value!, { content: `Bonus ${statName}` });

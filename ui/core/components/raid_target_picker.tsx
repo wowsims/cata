@@ -1,10 +1,12 @@
-import { Input, InputConfig } from '../components/input.js';
+import clsx from 'clsx';
+
 import { Player } from '../player.js';
-import { PlayerClasses } from '../player_classes';
+import { PlayerClasses } from '../player_classes/index.js';
 import { UnitReference } from '../proto/common.js';
 import { emptyUnitReference } from '../proto_utils/utils.js';
 import { Raid } from '../raid.js';
 import { EventID, TypedEvent } from '../typed_event.js';
+import { Input, InputConfig } from './input.jsx';
 
 export interface UnitReferencePickerConfig<ModObject> extends InputConfig<ModObject, UnitReference> {
 	noTargetLabel: string;
@@ -38,12 +40,7 @@ export class UnitReferencePicker<ModObject> extends Input<ModObject, UnitReferen
 		this.curUnitReference = this.getInputValue();
 
 		this.rootElem.innerHTML = `
-			<a
-				class="raid-target-picker-button"
-				href="javascript:void(0)"
-				role="button"
-				data-bs-toggle="dropdown"
-			></a>
+			<button class="raid-target-picker-button" data-bs-toggle="dropdown"></button>
 			<div class="dropdown-menu"></div>
     `;
 
@@ -121,28 +118,24 @@ export class UnitReferencePicker<ModObject> extends Input<ModObject, UnitReferen
 	}
 
 	static makeOptionElem(data: OptionElemOptions): HTMLElement {
-		const classCssClass = data.player ? PlayerClasses.getCssClass(data.player.getPlayerClass()) : '';
-		const playerFragment = document.createElement('fragment');
-
-		playerFragment.innerHTML = `
-			<div class="player ${classCssClass ? `bg-${classCssClass}-dampened` : ''}">
-				<div class="player-label">
-					${data.player ? `<img class="player-icon" src="${data.player.getSpecIcon()}" draggable="false"/>` : ''}
-					<div class="player-details">
-						<span class="player-name ${classCssClass ? `text-${classCssClass}` : ''}">
-							${data.player ? data.player.getName() : 'Unassigned'}
+		const classCssClass = data.player ? PlayerClasses.getCssClass(data.player.getPlayerClass()) : undefined;
+		let playerFragment = (
+			<div className={clsx('player', classCssClass && `bg-${classCssClass}-dampened`)}>
+				<div className="player-label">
+					{data.player && <img className="player-icon" src="${data.player.getSpecIcon()}" draggable={false} />}
+					<div className="player-details">
+						<span className={clsx('player-name', classCssClass && `text-${classCssClass}`)}>
+							{data.player ? data.player.getName() : 'Unassigned'}
 						</span>
 					</div>
 				</div>
 			</div>
-		`;
+		);
 
 		if (data.isDropdown) {
-			playerFragment.innerHTML = `
-				<a class="dropdown-option" href="javascript:void(0) role="button">${playerFragment.innerHTML}</a>
-			`;
+			playerFragment = <button className="dropdown-option">{playerFragment}</button>;
 		}
 
-		return playerFragment.children[0] as HTMLElement;
+		return playerFragment as HTMLElement;
 	}
 }

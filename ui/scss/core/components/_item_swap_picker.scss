@@ -1,18 +1,8 @@
 .item-swap-picker-root {
-  .picker-group {
-    align-items: center;
-    justify-content: flex-end;
-
-    &> * {
-      margin-bottom: 0 !important;
-    }
-
-    &> :last-child {
-      margin-right: 0;
-    }
-  }
-
-  .input-root:not(:last-child) {
-    margin-right: var(--spacer-1);
-  }
+	.picker-group {
+		grid-template-columns: none;
+		grid-auto-flow: column;
+		align-items: center;
+		justify-content: flex-end;
+	}
 }

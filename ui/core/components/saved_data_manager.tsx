@@ -100,16 +100,14 @@ export class SavedDataManager<ModObject, T> extends Component {
 	}
 
 	private makeSavedData(config: SavedDataConfig<ModObject, T>): SavedData<ModObject, T> {
-		const deleteButtonRef = ref<HTMLAnchorElement>();
+		const deleteButtonRef = ref<HTMLButtonElement>();
 		const dataElem = (
 			<div className="saved-data-set-chip badge rounded-pill">
-				<a href="javascript:void(0)" className="saved-data-set-name" attributes={{ role: 'button' }}>
-					{config.name}
-				</a>
+				<button className="saved-data-set-name">{config.name}</button>
 				{!config.isPreset && (
-					<a ref={deleteButtonRef} href="javascript:void(0)" className="saved-data-set-delete" attributes={{ role: 'button' }}>
+					<button ref={deleteButtonRef} className="saved-data-set-delete">
 						<i className="fa fa-times fa-lg"></i>
-					</a>
+					</button>
 				)}
 			</div>
 		) as HTMLElement;
