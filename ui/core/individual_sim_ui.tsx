@@ -312,7 +312,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			});
 		}
 
-		// this.initializeRaidSimResultsManager();
 		this.addSidebarComponents();
 		this.addGearTab();
 		this.bt = this.addBulkTab();
@@ -363,17 +362,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			});
 		});
 	}
-
-	// Did this to get rid of the TypeError of the Manager getting passed as null, but this abomination would probably break more things than fix :P
-	// private initializeRaidSimResultsManager() {
-	// 	try {
-	// 		this.raidSimResultsManager = new RaidSimResultsManager(this);
-	// 		console.log('raidSimResultsManager initialized:', this.raidSimResultsManager);
-	// 	} catch (error) {
-	// 		console.error('Failed to initialize raidSimResultsManager:', error);
-	// 		this.raidSimResultsManager = null;
-	// 	}
-	// }
 
 	private addSidebarComponents() {
 		// Disable SIM buttons for Unlaunched sims
@@ -441,11 +429,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		const detailedResults = (<div className="detailed-results"></div>) as HTMLElement;
 		this.addTab('Results', 'detailed-results-tab', detailedResults);
 
-		if (this.raidSimResultsManager) {
-			new EmbeddedDetailedResults(detailedResults, this, this.raidSimResultsManager);
-		} else {
-			console.error('raidSimResultsManager is null');
-		}
+		new EmbeddedDetailedResults(detailedResults, this, this.raidSimResultsManager!);
 	}
 
 	private addTopbarComponents() {
