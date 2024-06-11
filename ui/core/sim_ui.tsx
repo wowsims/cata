@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from './components/base_modal.jsx';
@@ -189,14 +190,17 @@ export abstract class SimUI extends Component {
 		}
 	}
 
-	addAction(name: string, cssClass: string, actFn: () => void) {
+	addAction(name: string, cssClass: string, actFn: (event: MouseEvent) => void): HTMLButtonElement {
 		const buttonRef = ref<HTMLButtonElement>();
 		this.simActionsContainer.appendChild(
-			<button ref={buttonRef} className={`btn btn-primary w-100 ${cssClass || ''}`}>
+			<button ref={buttonRef} className={clsx('sim-sidebar-action-button btn btn-primary w-100', cssClass)}>
 				{name}
+				<span className="sim-sidebar-action-button-loading-icon"><i className="fas fa-spinner fa-spin"></i></span>
 			</button>,
 		);
 		buttonRef.value?.addEventListener('click', actFn);
+
+		return buttonRef.value!;
 	}
 
 	addTab(title: string, cssClass: string, content: HTMLElement | Element) {
@@ -205,7 +209,7 @@ export abstract class SimUI extends Component {
 
 		this.simHeader.addTab(title, contentId);
 		this.simTabContentsContainer.appendChild(
-			<div id={contentId} className={`tab-pane fade ${isFirstTab ? 'active show' : ''}`}>
+			<div id={contentId} className={clsx('tab-pane fade', isFirstTab && 'active show')}>
 				{content}
 			</div>,
 		);

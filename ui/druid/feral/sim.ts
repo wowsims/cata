@@ -1,18 +1,17 @@
-import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
-import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action.js';
-import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
-import { Player } from '../../core/player.js';
+import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
+import * as OtherInputs from '../../core/components/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics';
+import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
+import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation , APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
-import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
-import { FeralDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
-import * as AplUtils from '../../core/proto_utils/apl_utils.js';
-import { Gear } from '../../core/proto_utils/gear.js';
-import { Stats } from '../../core/proto_utils/stats.js';
-import * as FeralInputs from './inputs.js';
-import * as Presets from './presets.js';
-import * as Mechanics from '../../core/constants/mechanics.js';
+import { APLAction, APLListItem, APLRotation, APLRotation_Type as APLRotationType } from '../../core/proto/apl';
+import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { FeralDruid_Rotation as DruidRotation } from '../../core/proto/druid';
+import * as AplUtils from '../../core/proto_utils/apl_utils';
+import { Stats } from '../../core/proto_utils/stats';
+import * as FeralInputs from './inputs';
+import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	cssClass: 'feral-druid-sim-ui',
@@ -89,10 +88,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			arcaneBrilliance: true,
 			manaSpringTotem: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			bloodFrenzy: true,
 		}),
@@ -107,7 +104,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [FeralInputs.AssumeBleedActive, OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget, OtherInputs.DarkIntentUptime],
+		inputs: [
+			FeralInputs.AssumeBleedActive,
+			OtherInputs.InputDelay,
+			OtherInputs.DistanceFromTarget,
+			OtherInputs.TankAssignment,
+			OtherInputs.InFrontOfTarget,
+			OtherInputs.DarkIntentUptime,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -130,7 +134,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
 		const blockZerk = APLAction.fromJsonString(`{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}`);
-		const doRotation = APLAction.fromJsonString(`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maintainFaerieFire":${simple.maintainFaerieFire},"allowAoeBerserk":${simple.allowAoeBerserk},"meleeWeave":${simple.meleeWeave},"bearWeave":${simple.bearWeave},"snekWeave":${simple.snekWeave},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${simple.useBite},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)}}}`);
+		const doRotation = APLAction.fromJsonString(
+			`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maintainFaerieFire":${
+				simple.maintainFaerieFire
+			},"allowAoeBerserk":${simple.allowAoeBerserk},"meleeWeave":${simple.meleeWeave},"bearWeave":${simple.bearWeave},"snekWeave":${
+				simple.snekWeave
+			},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${
+				simple.useBite
+			},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)}}}`,
+		);
 		const autocasts = APLAction.fromJsonString(`{"autocastOtherCooldowns":{}}`);
 
 		actions.push(...([blockZerk, doRotation, autocasts].filter(a => a) as Array<APLAction>));
@@ -179,14 +191,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFeralDruid>) {
 		super(parentElem, player, SPEC_CONFIG);
-
-		// Auto-Reforge configuration
-		const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
-		const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-		const statWeightsConfig = {
-			statCaps: hitCap.add(expCap),
-			preCapEPs: this.individualConfig.defaults.epWeights,
-		};
-		const reforgeOptimizer = new ReforgeOptimizer(this, statWeightsConfig);
+		player.sim.waitForInit().then(() => {
+			// Auto-Reforge configuration
+			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			const statWeightsConfig = {
+				statCaps: hitCap.add(expCap),
+				preCapEPs: player.getEpWeights(),
+			};
+			new ReforgeOptimizer(this, statWeightsConfig);
+		});
 	}
 }

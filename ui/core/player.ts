@@ -77,6 +77,7 @@ import { Sim, SimSettingCategories } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
 import { stringComparator, sum } from './utils';
+import { WorkerProgressCallback } from './worker_pool';
 
 export interface AuraStats {
 	data: AuraStatsProto;
@@ -530,11 +531,11 @@ export class Player<SpecType extends Spec> {
 	}
 
 	async computeStatWeights(
-		eventID: EventID,
+		_eventID: EventID,
 		epStats: Array<Stat>,
 		epPseudoStats: Array<PseudoStat>,
 		epReferenceStat: Stat,
-		onProgress: (_: any) => void,
+		onProgress: WorkerProgressCallback,
 	): Promise<StatWeightsResult | null> {
 		try {
 			const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);

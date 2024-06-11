@@ -1,13 +1,14 @@
-import { solve } from "yalps"
-import { lessEq, equalTo, greaterEq, inRange } from "yalps"
-import { Model, Constraint, Coefficients, OptimizationDirection, Options, Solution } from "yalps"
-import { Player } from '../player.js';
-import { Sim } from '../sim.js';
-import { IndividualSimUI } from '../individual_sim_ui.js';
-import { Stats } from '../proto_utils/stats.js';
-import { TypedEvent } from '../typed_event.js';
-import { Gear } from '../proto_utils/gear.js';
-import { ItemSlot, Stat } from '../proto/common.js';
+import { Constraint, greaterEq, lessEq, Model, Solution, solve } from 'yalps';
+
+import { IndividualSimUI } from '../individual_sim_ui';
+import { Player } from '../player';
+import { ItemSlot, Stat } from '../proto/common';
+import { Gear } from '../proto_utils/gear';
+import { Stats } from '../proto_utils/stats';
+import { Sim } from '../sim';
+import { TypedEvent } from '../typed_event';
+import { isDevMode, sleep } from '../utils';
+import Toast from './toast';
 
 interface StatWeightsConfig {
 	statCaps: Stats;
@@ -17,10 +18,6 @@ interface StatWeightsConfig {
 type YalpsCoefficients = Map<string, number>;
 type YalpsVariables = Map<string, YalpsCoefficients>;
 type YalpsConstraints = Map<string, Constraint>;
-
-export const sleep = async (waitTime: number) =>
-  new Promise(resolve =>
-    setTimeout(resolve, waitTime));
 
 export class ReforgeOptimizer {
 	protected readonly player: Player<any>;
@@ -34,24 +31,55 @@ export class ReforgeOptimizer {
 		this.statCaps = config.statCaps;
 		this.preCapEPs = config.preCapEPs;
 
-		simUI.addAction('Suggest Reforges', 'suggest-reforges-action', async () => {
-			this.optimizeReforges();
+		simUI.addAction('Suggest Reforges', 'suggest-reforges-action', async ({ currentTarget }) => {
+			const button = currentTarget as HTMLButtonElement;
+			if (button) {
+				button.classList.add('loading');
+				button.disabled = true;
+			}
+			try {
+				performance.mark('reforge-optimization-start');
+				await this.optimizeReforges();
+				new Toast({
+					variant: 'success',
+					body: 'Reforge optimization complete!',
+				});
+			} catch {
+				new Toast({
+					variant: 'error',
+					body: 'Reforge optimization failed. Please try again, or report the issue if it persists.',
+				});
+			} finally {
+				performance.mark('reforge-optimization-end');
+				if (isDevMode())
+					console.log(
+						'Reforge optimization took:',
+						`${performance
+							.measure('reforge-optimization-measure', 'reforge-optimization-start', 'reforge-optimization-end')
+							.duration.toFixed(2)}ms`,
+					);
+				if (button) {
+					button.classList.remove('loading');
+					button.disabled = false;
+				}
+			}
 		});
 	}
 
 	async optimizeReforges() {
-		console.log("Starting Reforge optimization...");
+		if (isDevMode()) console.log('Starting Reforge optimization...');
 
 		// First, clear all existing Reforges
-		console.log("Clearing existing Reforges...");
+		if (isDevMode()) console.log('Clearing existing Reforges...');
 		const baseGear = this.player.getGear().withoutReforges(this.player.canDualWield2H());
 		const baseStats = await this.updateGear(baseGear);
 
 		// Compute effective stat caps for just the Reforge contribution
 		const reforgeCaps = baseStats.computeStatCapsDelta(this.statCaps);
-		console.log("Stat caps for Reforge contribution:");
-		console.log(reforgeCaps);
-
+		if (isDevMode()) {
+			console.log('Stat caps for Reforge contribution:');
+			console.log(reforgeCaps);
+		}
 		// Set up YALPS model
 		const variables = this.buildYalpsVariables(baseGear);
 		const constraints = this.buildYalpsConstraints(baseGear);
@@ -84,7 +112,7 @@ export class ReforgeOptimizer {
 				for (const fromStat of reforgeData.fromStat) {
 					coefficients.set(Stat[fromStat], reforgeData.fromAmount);
 				}
-				
+
 				for (const toStat of reforgeData.toStat) {
 					coefficients.set(Stat[toStat], reforgeData.toAmount);
 				}
@@ -109,22 +137,25 @@ export class ReforgeOptimizer {
 	async solveModel(gear: Gear, reforgeCaps: Stats, variables: YalpsVariables, constraints: YalpsConstraints) {
 		// Calculate EP scores for each Reforge option
 		const updatedVariables = this.updateReforgeScores(variables, constraints);
-		console.log("Optimization variables and constraints for this iteration:");
-		console.log(updatedVariables);
-		console.log(constraints);
+		if (isDevMode()) {
+			console.log('Optimization variables and constraints for this iteration:');
+			console.log(updatedVariables);
+			console.log(constraints);
+		}
 
 		// Set up and solve YALPS model
 		const model: Model = {
-			direction: "maximize",
-			objective: "score",
+			direction: 'maximize',
+			objective: 'score',
 			constraints: constraints,
 			variables: updatedVariables,
-			binaries: true
+			binaries: true,
 		};
 		const solution = solve(model);
-		console.log("LP solution for this iteration:");
-		console.log(solution);
-
+		if (isDevMode()) {
+			console.log('LP solution for this iteration:');
+			console.log(solution);
+		}
 		// Apply the current solution
 		await this.applyLPSolution(gear, solution);
 
@@ -134,9 +165,9 @@ export class ReforgeOptimizer {
 		const [anyCapsExceeded, updatedConstraints] = this.checkCaps(solution, reforgeCaps, updatedVariables, constraints);
 
 		if (!anyCapsExceeded) {
-			console.log("Reforge optimization has converged!");
+			if (isDevMode()) console.log('Reforge optimization has finished!');
 		} else {
-			console.log("One or more stat caps were exceeded, starting constrained iteration...");
+			if (isDevMode()) console.log('One or more stat caps were exceeded, starting constrained iteration...');
 			await sleep(100);
 			await this.solveModel(gear, reforgeCaps, updatedVariables, updatedConstraints);
 		}
@@ -152,7 +183,7 @@ export class ReforgeOptimizer {
 			for (const [coefficientKey, value] of coefficients.entries()) {
 				updatedCoefficients.set(coefficientKey, value);
 
-				// Determine whether the key corresponds to a stat change.	
+				// Determine whether the key corresponds to a stat change.
 				// If so, check whether the stat has already been constrained to be capped in a previous iteration.
 				// Apply stored EP only for unconstrained stats.
 				if (coefficientKey.includes('Stat') && !constraints.has(coefficientKey)) {
@@ -161,7 +192,7 @@ export class ReforgeOptimizer {
 				}
 			}
 
-			updatedCoefficients.set("score", score);
+			updatedCoefficients.set('score', score);
 			updatedVariables.set(variableKey, updatedCoefficients);
 		}
 
@@ -172,13 +203,17 @@ export class ReforgeOptimizer {
 		let updatedGear = gear.withoutReforges(this.player.canDualWield2H());
 
 		for (const [variableKey, _coefficient] of solution.variables) {
-			const splitKey = variableKey.split("_");
+			const splitKey = variableKey.split('_');
 			const slot = parseInt(splitKey[0]) as ItemSlot;
 			const reforgeId = parseInt(splitKey[1]);
 			const equippedItem = gear.getEquippedItem(slot);
 
 			if (equippedItem) {
-				updatedGear = updatedGear.withEquippedItem(slot, equippedItem.withReforge(this.sim.db.getReforgeById(reforgeId)!), this.player.canDualWield2H());
+				updatedGear = updatedGear.withEquippedItem(
+					slot,
+					equippedItem.withReforge(this.sim.db.getReforgeById(reforgeId)!),
+					this.player.canDualWield2H(),
+				);
 			}
 		}
 
@@ -198,8 +233,10 @@ export class ReforgeOptimizer {
 			}
 		}
 
-		console.log("Total stat contribution from Reforging:");
-		console.log(reforgeStatContribution);
+		if (isDevMode()) {
+			console.log('Total stat contribution from Reforging:');
+			console.log(reforgeStatContribution);
+		}
 
 		// Then check whether any unconstrained stats exceed their cap
 		let anyCapsExceeded = false;
@@ -208,11 +245,11 @@ export class ReforgeOptimizer {
 		for (const [statKey, value] of reforgeStatContribution.asArray().entries()) {
 			const cap = reforgeCaps.getStat(statKey);
 			const statName = Stat[statKey];
-			
-			if ((cap != 0) && (value > cap) && !constraints.has(statName)) {
+
+			if (cap !== 0 && value > cap && !constraints.has(statName)) {
 				updatedConstraints.set(statName, greaterEq(cap));
 				anyCapsExceeded = true;
-				console.log("Cap exceeded for: %s", statName); 
+				if (isDevMode()) console.log('Cap exceeded for: %s', statName);
 			}
 		}
 

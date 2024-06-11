@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import './shared/bootstrap_overrides';
 
 import * as Popper from '@popperjs/core';
