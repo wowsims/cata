@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import tippy from 'tippy.js';
 import { type Instance as TippyInstance } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
-import { Constraint, greaterEq, lessEq, Model, Solution, solve } from 'yalps';
+import { Constraint, greaterEq, lessEq, Model, Options, Solution, solve } from 'yalps';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { IndividualSimUI } from '../individual_sim_ui';
@@ -329,7 +329,12 @@ export class ReforgeOptimizer {
 			variables: updatedVariables,
 			binaries: true,
 		};
-		const solution = solve(model);
+		const options: Options = {
+			timeout: 15000,
+			maxIterations: Infinity,
+			tolerance: 0.01,
+		};
+		const solution = solve(model, options);
 		if (isDevMode()) {
 			console.log('LP solution for this iteration:');
 			console.log(solution);
