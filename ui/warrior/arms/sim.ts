@@ -1,5 +1,7 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -60,21 +62,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		epWeights: Stats.fromMap(
 			{
 				[Stat.StatStrength]: 2.21,
-				[Stat.StatAgility]: 0.88,
+				[Stat.StatAgility]: 1.12,
 				[Stat.StatAttackPower]: 1,
-				[Stat.StatExpertise]: 1.08,
-				[Stat.StatMeleeHit]: 0,
-				[Stat.StatMeleeCrit]: 1.13,
-				[Stat.StatMeleeHaste]: 0.53,
-				// @todo: Calculate actual weights
-				// This probably applies for all weights
-				[Stat.StatMastery]: 0.53,
+				[Stat.StatExpertise]: 1.75,
+				[Stat.StatMeleeHit]: 2.77,
+				[Stat.StatMeleeCrit]: 1.45,
+				[Stat.StatMeleeHaste]: 0.68,
+				[Stat.StatMastery]: 0.89,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 9.27,
+				[PseudoStat.PseudoStatMainHandDps]: 9.22,
 				[PseudoStat.PseudoStatOffHandDps]: 0,
 			},
 		),
+		// Default stat caps for the Reforge Optimizer
+		statCaps: (() => {
+			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+
+			return hitCap.add(expCap);
+		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -140,10 +147,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_ARMS],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_ARMS_PRESET,
-			Presets.P1_ARMS_PRESET,
-		],
+		gear: [Presets.PRERAID_ARMS_PRESET, Presets.P1_ARMS_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecArmsWarrior>): APLRotation => {
@@ -178,5 +182,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 export class ArmsWarriorSimUI extends IndividualSimUI<Spec.SpecArmsWarrior> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecArmsWarrior>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }

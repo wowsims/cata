@@ -10,7 +10,16 @@ import (
 func (hunter *Hunter) ApplySurvivalTalents() {
 	if hunter.Talents.Pathing > 0 {
 		bonus := 0.01 * float64(hunter.Talents.Pathing)
-		hunter.PseudoStats.RangedSpeedMultiplier *= 1 + bonus
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			BuildPhase: core.CharacterBuildPhaseBase,
+			Label:      "Pathing",
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.PseudoStats.RangedSpeedMultiplier /= 1 + bonus
+			},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.PseudoStats.RangedSpeedMultiplier *= 1 + bonus
+			},
+		}))
 	}
 
 	if hunter.Talents.HunterVsWild > 0 {
@@ -78,7 +87,6 @@ func (hunter *Hunter) applyThrillOfTheHunt() {
 					hunter.AddFocus(sim, spell.CurCast.Cost*0.4, focusMetrics)
 				}
 			}
-
 		},
 	})
 }

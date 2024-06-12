@@ -81,7 +81,8 @@ export class NumberPicker<ModObject> extends Input<ModObject, number> {
 	}
 
 	setInputValue(newValue: number) {
-		if (newValue == 0 && !this.showZeroes) {
+		if (newValue === 0 && !this.showZeroes) {
+			this.inputElem.value = '';
 			return;
 		}
 
