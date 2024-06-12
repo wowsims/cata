@@ -75,13 +75,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArmsWarrior, {
 				[PseudoStat.PseudoStatOffHandDps]: 0,
 			},
 		),
-		// For breakpoints add additional entries to the array.
-		// Used for Reforge Optimizer
+		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
 			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 
-			return [hitCap.add(expCap)];
+			return hitCap.add(expCap);
 		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.

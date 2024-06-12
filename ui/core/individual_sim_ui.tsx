@@ -112,7 +112,8 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	defaults: {
 		gear: EquipmentSpec;
 		epWeights: Stats;
-		statCaps?: Stats[];
+		// Used for Reforge Optimizer
+		statCaps?: Stats;
 		consumes: Consumes;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
@@ -582,7 +583,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				settings: this.sim.toProto(),
 				epWeightsStats: this.player.getEpWeights().toProto(),
 				epRatios: this.player.getEpRatios(),
-				statCaps: this.player.getStatCaps().map(stat => stat.toProto()),
+				statCaps: this.player.getStatCaps().toProto(),
 				dpsRefStat: this.dpsRefStat,
 				healRefStat: this.healRefStat,
 				tankRefStat: this.tankRefStat,
@@ -640,10 +641,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				}
 
 				if (settings.statCaps) {
-					this.player.setStatCaps(
-						eventID,
-						settings.statCaps.map(stat => Stats.fromProto(stat)),
-					);
+					this.player.setStatCaps(eventID, Stats.fromProto(settings.statCaps));
 				}
 
 				if (settings.dpsRefStat) {

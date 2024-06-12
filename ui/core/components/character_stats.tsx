@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import tippy, { Instance as TippyInstance } from 'tippy.js';
+import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
-import { PseudoStat, Stat } from '../proto/common.js';
+import { Stat } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getClassStatName, masterySpellIDs, masterySpellNames, statOrder } from '../proto_utils/names.js';
 import { Stats, statToPercentageOrPoints } from '../proto_utils/stats.js';

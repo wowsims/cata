@@ -275,7 +275,7 @@ export class Player<SpecType extends Spec> {
 	private static readonly numEpRatios = 6;
 	private epRatios: Array<number> = new Array<number>(Player.numEpRatios).fill(0);
 	private epWeights: Stats = new Stats();
-	private statCaps: Stats[] = [new Stats()];
+	private statCaps: Stats = new Stats();
 	private currentStats: PlayerStats = PlayerStats.create();
 	private metadata: UnitMetadata = new UnitMetadata();
 	private petMetadatas: UnitMetadataList = new UnitMetadataList();
@@ -504,11 +504,11 @@ export class Player<SpecType extends Spec> {
 		}
 	}
 
-	getStatCaps(): Stats[] {
+	getStatCaps(): Stats {
 		return this.statCaps;
 	}
 
-	setStatCaps(eventID: EventID, newStatCaps: Stats[]) {
+	setStatCaps(eventID: EventID, newStatCaps: Stats) {
 		this.statCaps = newStatCaps;
 		this.statCapsChangeEmitter.emit(eventID);
 	}
