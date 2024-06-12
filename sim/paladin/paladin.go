@@ -36,6 +36,8 @@ const (
 	SpellMaskInquisition
 	SpellMaskHandOfLight
 	SpellMaskZealotry
+	SpellMaskGuardianOfAncientKings
+	SpellMaskAncientFury
 
 	SpellMaskHolyShock
 	SpellMaskWordOfGlory
@@ -66,6 +68,9 @@ const SpellMaskCanTriggerSealOfTruth = SpellMaskCrusaderStrike |
 	SpellMaskHammerOfWrath |
 	SpellMaskJudgement
 
+const SpellMaskCanTriggerAncientPower = SpellMaskCanTriggerSealOfTruth |
+	SpellMaskHolyWrath
+
 const SpellMaskModifiedByInquisition = SpellMaskHammerOfWrath |
 	SpellMaskConsecration |
 	SpellMaskExorcism |
@@ -74,7 +79,8 @@ const SpellMaskModifiedByInquisition = SpellMaskHammerOfWrath |
 	SpellMaskSealOfTruth |
 	SpellMaskCensure |
 	SpellMaskHandOfLight |
-	SpellMaskHolyWrath
+	SpellMaskHolyWrath |
+	SpellMaskAncientFury
 
 const SpellMaskCanTriggerDivinePurpose = SpellMaskHammerOfWrath |
 	SpellMaskExorcism |
@@ -101,6 +107,9 @@ type Paladin struct {
 
 	CurrentSeal      *core.Aura
 	CurrentJudgement *core.Spell
+
+	// Pets
+	AncientGuardian *AncientGuardianPet
 
 	DivinePlea               *core.Spell
 	DivineStorm              *core.Spell
@@ -207,6 +216,7 @@ func (paladin *Paladin) registerSpells() {
 	paladin.registerDivinePleaSpell()
 	paladin.registerConsecrationSpell()
 	paladin.registerHolyWrath()
+	paladin.registerGuardianOfAncientKings()
 }
 
 func (paladin *Paladin) Reset(sim *core.Simulation) {
@@ -246,6 +256,11 @@ func NewPaladin(character *core.Character, talentsStr string, options *proto.Pal
 
 	paladin.EnableManaBar()
 	paladin.initializeHolyPowerBar()
+
+	// Only retribution and holy are actually pets performing some kind of action
+	if paladin.Spec != proto.Spec_SpecProtectionPaladin {
+		paladin.AncientGuardian = paladin.NewAncientGuardian()
+	}
 
 	paladin.EnableAutoAttacks(paladin, core.AutoAttackOptions{
 		MainHand:       paladin.WeaponFromMainHand(paladin.DefaultMeleeCritMultiplier()),
