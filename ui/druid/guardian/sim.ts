@@ -85,6 +85,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 				[PseudoStat.PseudoStatMainHandDps]: 0.0,
 			},
 		),
+		// For breakpoints add additional entries to the array.
+		// Used for Reforge Optimizer
+		statCaps: (() => {
+			const meleeHitCap = new Stats().withStat(Stat.StatMeleeHit, 5 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+			const spellHitCap = new Stats().withStat(Stat.StatSpellHit, 4 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+			const expCap = new Stats().withStat(Stat.StatExpertise, 5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+
+			return [meleeHitCap.add(spellHitCap).add(expCap)];
+		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default rotation settings.
@@ -266,15 +275,7 @@ export class GuardianDruidSimUI extends IndividualSimUI<Spec.SpecGuardianDruid> 
 		super(parentElem, player, SPEC_CONFIG);
 
 		player.sim.waitForInit().then(() => {
-			// Auto-Reforge configuration (optimized for level 85 adds)
-			const meleeHitCap = new Stats().withStat(Stat.StatMeleeHit, 5 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
-			const spellHitCap = new Stats().withStat(Stat.StatSpellHit, 4 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
-			const expCap = new Stats().withStat(Stat.StatExpertise, 5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			const reforgeOptimizerDefaults = {
-				statCaps: meleeHitCap.add(spellHitCap).add(expCap),
-				preCapEPs: this.individualConfig.defaults.epWeights,
-			};
-			new ReforgeOptimizer(this, reforgeOptimizerDefaults);
+			new ReforgeOptimizer(this);
 		});
 	}
 }

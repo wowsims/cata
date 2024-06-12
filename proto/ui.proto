@@ -316,6 +316,7 @@ message IndividualSimSettings {
 	Stat dps_ref_stat = 12;
 	Stat heal_ref_stat = 13;
 	Stat tank_ref_stat = 14;
+	repeated UnitStats stat_caps = 15;
 }
 
 // Local storage data for gear settings.

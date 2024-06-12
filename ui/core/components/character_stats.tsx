@@ -7,7 +7,7 @@ import { Player } from '../player.js';
 import { PseudoStat, Stat } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getClassStatName, masterySpellIDs, masterySpellNames, statOrder } from '../proto_utils/names.js';
-import { Stats } from '../proto_utils/stats.js';
+import { Stats, statToPercentageOrPoints } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
 import { NumberPicker } from './number_picker';
@@ -286,36 +286,37 @@ export class CharacterStats extends Component {
 		rawValue *= 1;
 
 		let displayStr = String(Math.round(rawValue));
+		const statAsPercentageOrPoint = statToPercentageOrPoints(stat, rawValue, stats);
 
 		if (stat == Stat.StatMeleeHit) {
-			displayStr += ` (${(rawValue / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatSpellHit) {
-			displayStr += ` (${(rawValue / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatMeleeCrit || stat == Stat.StatSpellCrit) {
-			displayStr += ` (${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatMeleeHaste) {
-			displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatSpellHaste) {
-			displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatExpertise) {
 			// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter percent intervals. Note that
 			// in-game character sheet tooltips will still display the truncated values, but it has been tested to behave
 			// continuously in reality since the patch.
-			displayStr += ` (${(rawValue / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatBlock) {
 			// TODO: Figure out how to display these differently for the components than the final value
 			//displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + 5.0).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatDodge) {
 			//displayStr += ` (${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${(stats.getPseudoStat(PseudoStat.PseudoStatDodge) * 100).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatParry) {
 			//displayStr += ` (${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${(stats.getPseudoStat(PseudoStat.PseudoStatParry) * 100).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatResilience) {
-			displayStr += ` (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatMastery) {
-			displayStr += ` (${(rawValue / Mechanics.MASTERY_RATING_PER_MASTERY_POINT + (includeBase ? this.player.getBaseMastery() : 0)).toFixed(2)} Points)`;
+			displayStr += ` (${(statAsPercentageOrPoint + (includeBase ? this.player.getBaseMastery() : 0)).toFixed(2)} Points)`;
 		}
 
 		return displayStr;

@@ -275,6 +275,7 @@ export class Player<SpecType extends Spec> {
 	private static readonly numEpRatios = 6;
 	private epRatios: Array<number> = new Array<number>(Player.numEpRatios).fill(0);
 	private epWeights: Stats = new Stats();
+	private statCaps: Stats[] = [new Stats()];
 	private currentStats: PlayerStats = PlayerStats.create();
 	private metadata: UnitMetadata = new UnitMetadata();
 	private petMetadatas: UnitMetadataList = new UnitMetadataList();
@@ -295,6 +296,7 @@ export class Player<SpecType extends Spec> {
 	readonly distanceFromTargetChangeEmitter = new TypedEvent<void>('PlayerDistanceFromTarget');
 	readonly healingModelChangeEmitter = new TypedEvent<void>('PlayerHealingModel');
 	readonly epWeightsChangeEmitter = new TypedEvent<void>('PlayerEpWeights');
+	readonly statCapsChangeEmitter = new TypedEvent<void>('StatCaps');
 	readonly miscOptionsChangeEmitter = new TypedEvent<void>('PlayerMiscOptions');
 
 	readonly currentStatsEmitter = new TypedEvent<void>('PlayerCurrentStats');
@@ -352,6 +354,7 @@ export class Player<SpecType extends Spec> {
 				this.epWeightsChangeEmitter,
 				this.epRatiosChangeEmitter,
 				this.epRefStatChangeEmitter,
+				this.statCapsChangeEmitter,
 			],
 			'PlayerChange',
 		);
@@ -499,6 +502,15 @@ export class Player<SpecType extends Spec> {
 		for (let i = 0; i < ItemSlot.ItemSlotRanged + 1; ++i) {
 			this.itemEPCache[i] = new Map();
 		}
+	}
+
+	getStatCaps(): Stats[] {
+		return this.statCaps;
+	}
+
+	setStatCaps(eventID: EventID, newStatCaps: Stats[]) {
+		this.statCaps = newStatCaps;
+		this.statCapsChangeEmitter.emit(eventID);
 	}
 
 	getDefaultEpRatios(isTankSpec: boolean, isHealingSpec: boolean): Array<number> {

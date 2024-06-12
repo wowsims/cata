@@ -1,49 +1,57 @@
 import clsx from 'clsx';
-import tippy, { Instance as TippyInstance } from 'tippy.js';
+import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 import { Constraint, greaterEq, lessEq, Model, Solution, solve } from 'yalps';
 
-import * as Mechanics from '../constants/mechanics.js';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Player } from '../player';
-import { ItemSlot, PseudoStat, Stat } from '../proto/common';
+import { ItemSlot, Stat } from '../proto/common';
 import { Gear } from '../proto_utils/gear';
 import { getClassStatName } from '../proto_utils/names';
-import { Stats } from '../proto_utils/stats';
+import { statPercentageOrPointsToNumber, Stats, statToPercentageOrPoints } from '../proto_utils/stats';
 import { Sim } from '../sim';
 import { ActionGroupItem } from '../sim_ui';
 import { TypedEvent } from '../typed_event';
-import { isDevMode, noop, sleep } from '../utils';
+import { isDevMode, sleep } from '../utils';
 import { BooleanPicker } from './boolean_picker';
 import { NumberPicker } from './number_picker';
 import Toast from './toast';
-
-interface StatWeightsDefaults {
-	statCaps: Stats;
-	preCapEPs: Stats;
-}
 
 type YalpsCoefficients = Map<string, number>;
 type YalpsVariables = Map<string, YalpsCoefficients>;
 type YalpsConstraints = Map<string, Constraint>;
 
+const EXCLUDED_STATS = [
+	Stat.StatStamina,
+	Stat.StatHealth,
+	Stat.StatStrength,
+	Stat.StatAgility,
+	Stat.StatAttackPower,
+	Stat.StatRangedAttackPower,
+	Stat.StatIntellect,
+	Stat.StatSpellPower,
+	Stat.StatSpellPenetration,
+	Stat.StatSpirit,
+	Stat.StatMana,
+];
+
 export class ReforgeOptimizer {
 	protected readonly simUI: IndividualSimUI<any>;
 	protected readonly player: Player<any>;
 	protected readonly sim: Sim;
-	protected readonly defaults: StatWeightsDefaults;
-	protected _statCaps: Stats;
+	protected readonly defaults: IndividualSimUI<any>['individualConfig']['defaults'];
+	protected _statCaps: Stats[];
 
-	constructor(simUI: IndividualSimUI<any>, defaults: StatWeightsDefaults) {
+	constructor(simUI: IndividualSimUI<any>) {
 		this.simUI = simUI;
 		this.player = simUI.player;
 		this.sim = simUI.sim;
-		this.defaults = defaults;
-		this._statCaps = this.defaults.statCaps;
-
+		this.defaults = simUI.individualConfig.defaults;
+		// For now only gets the first entry because of breakpoints support
+		this._statCaps = this.statCaps;
 		const startReforgeOptimizationEntry: ActionGroupItem = {
 			label: 'Suggest Reforges',
-			cssClass: 'flex-grow-1 suggest-reforges-action',
+			cssClass: 'suggest-reforges-action-button flex-grow-1',
 			onClick: async ({ currentTarget }) => {
 				const button = currentTarget as HTMLButtonElement;
 				if (button) {
@@ -80,7 +88,7 @@ export class ReforgeOptimizer {
 		};
 
 		const contextMenuEntry: ActionGroupItem = {
-			cssClass: '',
+			cssClass: 'suggest-reforges-button-settings',
 			children: (
 				<>
 					<i className="fas fa-cog" />
@@ -89,22 +97,25 @@ export class ReforgeOptimizer {
 		};
 
 		const [_startReforgeOptimizationButton, contextMenuButton] = simUI.addActionGroup([startReforgeOptimizationEntry, contextMenuEntry], {
-			cssClass: 'd-flex',
+			cssClass: 'suggest-reforges-settings-group d-flex',
 		});
 
 		this.buildContextMenu(contextMenuButton);
 	}
 
-	get statCaps(): Stats {
-		return this.sim.getUseCustomEPValues() ? this._statCaps : this.defaults.statCaps;
+	get statCaps() {
+		return this.sim.getUseCustomEPValues() ? this.player.getStatCaps() : this.defaults.statCaps || [new Stats()];
 	}
-	setStatCap(stat: Stat, value: number): Stats {
-		this._statCaps = this._statCaps.withStat(stat, value);
+	setStatCap(stat: Stat, value: number, statsIndex: number) {
+		this._statCaps[statsIndex] = this._statCaps[statsIndex]?.withStat(stat, value);
+		if (this.sim.getUseCustomEPValues()) {
+			this.player.setStatCaps(TypedEvent.nextEventID(), this._statCaps);
+		}
 		return this.statCaps;
 	}
 
 	get preCapEPs(): Stats {
-		return this.sim.getUseCustomEPValues() ? this.player.getEpWeights() : this.defaults.preCapEPs;
+		return this.sim.getUseCustomEPValues() ? this.player.getEpWeights() : this.defaults.epWeights;
 	}
 
 	buildContextMenu(button: HTMLButtonElement) {
@@ -117,36 +128,35 @@ export class ReforgeOptimizer {
 			trigger: 'click',
 			theme: 'reforge-optimiser-popover',
 			placement: 'right-start',
-			onShow: instance => {
-				const content = (<></>) as HTMLElement;
-
-				const useCustomEPValuesInput = new BooleanPicker(content, this.player, {
+			content: () => {
+				const useCustomEPValuesInput = new BooleanPicker(null, this.player, {
 					id: 'reforge-optimizer-enable-custom-ep-weights',
 					label: 'Enable custom EP Weights',
 					inline: true,
 					changedEvent: player => player.epWeightsChangeEmitter,
 					getValue: () => this.sim.getUseCustomEPValues(),
 					setValue: (eventID, _player, newValue) => {
-						console.log('Setting useCustomEPValues to', newValue);
 						this.sim.setUseCustomEPValues(eventID, newValue);
 					},
 				});
 
 				const descriptionRef = ref<HTMLParagraphElement>();
-				content.appendChild(
-					<p ref={descriptionRef} className={clsx('fst-italic mb-0', this.sim.getUseCustomEPValues() && 'hide')}>
-						This will enable modication to the default EP weights and set custom stat caps. Ep weights can be modified in the Stat Weights editor.
-					</p>,
+
+				return (
+					<>
+						{useCustomEPValuesInput.rootElem}
+						<p ref={descriptionRef} className={clsx('fst-italic mb-0', this.sim.getUseCustomEPValues() && 'hide')}>
+							This will enable modication to the default EP weights and set custom stat caps. Ep weights can be modified in the Stat Weights
+							editor.
+						</p>
+						{this.buildCapsList({ input: useCustomEPValuesInput, description: descriptionRef.value! })}
+					</>
 				);
-
-				content.appendChild(this.buildCapsList({ instance, input: useCustomEPValuesInput, description: descriptionRef.value! }));
-
-				instance.setContent(content);
 			},
 		});
 	}
 
-	buildCapsList({ instance, input, description }: { instance: TippyInstance; input: BooleanPicker<Player<any>>; description: HTMLElement }) {
+	buildCapsList({ input, description }: { input: BooleanPicker<Player<any>>; description: HTMLElement }) {
 		const tableRef = ref<HTMLUListElement>();
 		const statCapTooltipRef = ref<HTMLButtonElement>();
 
@@ -158,7 +168,6 @@ export class ReforgeOptimizer {
 
 		input.addOnDisposeCallback(() => event.dispose());
 
-		const statCaps = this.statCaps;
 		const stats = new Stats(this.simUI.individualConfig.displayStats);
 
 		const content = (
@@ -170,7 +179,7 @@ export class ReforgeOptimizer {
 					</button>
 				</li>
 				{this.simUI.individualConfig.displayStats.map(stat => {
-					if (stat === Stat.StatHealth) return;
+					if (EXCLUDED_STATS.includes(stat)) return;
 
 					const listElementRef = ref<HTMLLIElement>();
 					const statName = getClassStatName(stat, this.player.getClass());
@@ -178,89 +187,14 @@ export class ReforgeOptimizer {
 					const picker = new NumberPicker(null, this.player, {
 						id: `character-bonus-stat-${stat}`,
 						inline: true,
+						float: true,
+						showZeroes: false,
 						label: `${statName} ${stat === Stat.StatMastery ? 'Points' : '%'}`,
 						extraCssClasses: ['mb-0'],
-						changedEvent: _ => this.sim.useCustomEPValuesChangeEmitter,
-						getValue: () => {
-							const currentStat = statCaps.getStat(stat);
-							let statInPercentage = 0;
-							switch (stat) {
-								case Stat.StatMeleeHit:
-									statInPercentage = currentStat / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE;
-									break;
-								case Stat.StatSpellHit:
-									statInPercentage = currentStat / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE;
-									break;
-								case Stat.StatMeleeCrit:
-								case Stat.StatSpellCrit:
-									statInPercentage = currentStat / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE;
-									break;
-								case Stat.StatMeleeHaste:
-									statInPercentage = currentStat / Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-									break;
-								case Stat.StatSpellHaste:
-									statInPercentage = currentStat / Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-									break;
-								case Stat.StatExpertise:
-									statInPercentage = currentStat / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4;
-									break;
-								case Stat.StatBlock:
-									statInPercentage = currentStat / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + 5.0;
-									break;
-								case Stat.StatDodge:
-									statInPercentage = stats.getPseudoStat(PseudoStat.PseudoStatDodge) / 100;
-									break;
-								case Stat.StatParry:
-									statInPercentage = stats.getPseudoStat(PseudoStat.PseudoStatParry) / 100;
-									break;
-								case Stat.StatResilience:
-									statInPercentage = currentStat / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE;
-									break;
-								case Stat.StatMastery:
-									statInPercentage = currentStat / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
-									break;
-							}
-							return statInPercentage;
-						},
+						changedEvent: _ => this.player.statCapsChangeEmitter,
+						getValue: () => statToPercentageOrPoints(stat, this.statCaps[0].getStat(stat), stats),
 						setValue: (_eventID, _player, newValue) => {
-							let statInPoints = 0;
-							switch (stat) {
-								case Stat.StatMeleeHit:
-									statInPoints = newValue * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE;
-									break;
-								case Stat.StatSpellHit:
-									statInPoints = newValue * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE;
-									break;
-								case Stat.StatMeleeCrit:
-								case Stat.StatSpellCrit:
-									statInPoints = newValue * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE;
-									break;
-								case Stat.StatMeleeHaste:
-									statInPoints = newValue * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-									break;
-								case Stat.StatSpellHaste:
-									statInPoints = newValue * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
-									break;
-								case Stat.StatExpertise:
-									statInPoints = newValue * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION * 4;
-									break;
-								case Stat.StatBlock:
-									statInPoints = newValue * Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE - 5.0;
-									break;
-								case Stat.StatDodge:
-									statInPoints = stats.getPseudoStat(PseudoStat.PseudoStatDodge) * 100;
-									break;
-								case Stat.StatParry:
-									statInPoints = stats.getPseudoStat(PseudoStat.PseudoStatParry) * 100;
-									break;
-								case Stat.StatResilience:
-									statInPoints = newValue * Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE;
-									break;
-								case Stat.StatMastery:
-									statInPoints = newValue * Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
-									break;
-							}
-							this.setStatCap(stat, statInPoints);
+							this.setStatCap(stat, statPercentageOrPointsToNumber(stat, newValue, stats), 0);
 						},
 					});
 
@@ -292,7 +226,7 @@ export class ReforgeOptimizer {
 		const baseStats = await this.updateGear(baseGear);
 
 		// Compute effective stat caps for just the Reforge contribution
-		const reforgeCaps = baseStats.computeStatCapsDelta(this.statCaps);
+		const reforgeCaps = baseStats.computeStatCapsDelta(this.statCaps[0]);
 		if (isDevMode()) {
 			console.log('Stat caps for Reforge contribution:');
 			console.log(reforgeCaps);
@@ -308,6 +242,7 @@ export class ReforgeOptimizer {
 	async updateGear(gear: Gear): Promise<Stats> {
 		this.player.setGear(TypedEvent.nextEventID(), gear);
 		await this.sim.updateCharacterStats(TypedEvent.nextEventID());
+		await sleep(50);
 		return Stats.fromProto(this.player.getCurrentStats().finalStats);
 	}
 

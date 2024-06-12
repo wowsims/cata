@@ -67,6 +67,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				[PseudoStat.PseudoStatMainHandDps]: 1.53,
 			},
 		),
+		// For breakpoints add additional entries to the array.
+		// Used for Reforge Optimizer
+		statCaps: (() => {
+			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+
+			return [hitCap.add(expCap)];
+		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -192,14 +200,7 @@ export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFeralDruid>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			// Auto-Reforge configuration
-			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
-			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
-			const reforgeOptimizerDefaults = {
-				statCaps: hitCap.add(expCap),
-				preCapEPs: this.individualConfig.defaults.epWeights,
-			};
-			new ReforgeOptimizer(this, reforgeOptimizerDefaults);
+			new ReforgeOptimizer(this);
 		});
 	}
 }
