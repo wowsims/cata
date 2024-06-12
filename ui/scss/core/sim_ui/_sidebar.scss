@@ -86,3 +86,23 @@
 		}
 	}
 }
+
+.sim-sidebar-action-button {
+	position: relative;
+	&.loading {
+		transition: none;
+		color: var(--bs-btn-disabled-bg);
+		.sim-sidebar-action-button-loading-icon {
+			display: block;
+		}
+	}
+}
+
+.sim-sidebar-action-button-loading-icon {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: var(--bs-btn-disabled-color);
+}

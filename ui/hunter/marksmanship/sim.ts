@@ -96,6 +96,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 				[PseudoStat.PseudoStatRangedDps]: 6.32,
 			},
 		),
+		// Default stat caps for the Reforge Optimizer
+		statCaps: (() => {
+			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+			return hitCap;
+		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -268,13 +273,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 export class MarksmanshipHunterSimUI extends IndividualSimUI<Spec.SpecMarksmanshipHunter> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecMarksmanshipHunter>) {
 		super(parentElem, player, SPEC_CONFIG);
+
 		player.sim.waitForInit().then(() => {
-			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
-			const statWeightsConfig = {
-				statCaps: hitCap,
-				preCapEPs: this.individualConfig.defaults.epWeights,
-			};
-			new ReforgeOptimizer(this, statWeightsConfig);
+			new ReforgeOptimizer(this);
 		});
 	}
 }
