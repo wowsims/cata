@@ -97,6 +97,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 				[PseudoStat.PseudoStatRangedDps]: 6.32,
 			},
 		),
+		// For breakpoints add additional entries to the array.
+		// Used for Reforge Optimizer
+		statCaps: (() => {
+			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+			return [hitCap];
+		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -262,14 +268,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBeastMasteryHunter, {
 export class BeastMasteryHunterSimUI extends IndividualSimUI<Spec.SpecBeastMasteryHunter> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecBeastMasteryHunter>) {
 		super(parentElem, player, SPEC_CONFIG);
-		// Auto-Reforge configuration
+
 		player.sim.waitForInit().then(() => {
-			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
-			const statWeightsConfig = {
-				statCaps: hitCap,
-				preCapEPs: this.individualConfig.defaults.epWeights,
-			};
-			new ReforgeOptimizer(this, statWeightsConfig);
+			new ReforgeOptimizer(this);
 		});
 	}
 }
