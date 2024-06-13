@@ -22,7 +22,7 @@ export default class GemSelectorModal extends BaseModal {
 	private onRemove: () => void;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, socketColor: GemColor, onSelect: (itemData: ItemData<UIGem>) => void, onRemove: () => void) {
-		super(parent, 'selector-modal', { disposeOnClose: false });
+		super(parent, 'selector-modal', { disposeOnClose: false, size: 'xl' });
 
 		this.simUI = simUI;
 		this.onSelect = onSelect;
