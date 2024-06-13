@@ -3,10 +3,10 @@
 	"version": "0.1.0",
 	"private": true,
 	"engines": {
-		"node": ">=18"
+		"node": ">=20"
 	},
 	"volta": {
-		"node": ">=18"
+		"node": "20.13.1"
 	},
 	"scripts": {
 		"build": "bazel build //...",
