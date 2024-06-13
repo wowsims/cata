@@ -487,6 +487,7 @@ export class BulkTab extends SimTab {
 
 		const combinationsElem = combinationsElemRef.value!;
 		const bulkSimButton = bulkSimBtnRef.value!;
+		const settingsContainer = settingsContainerRef.value!;
 		const booleanSettingsContainer = booleanSettingsContainerRef.value!;
 
 		TypedEvent.onAny([this.itemsChangedEmitter, this.settingsChangedEmitter, this.simUI.sim.iterationsChangeEmitter]).on(() => {
@@ -605,6 +606,13 @@ export class BulkTab extends SimTab {
 				{autoEnchantCheckbox.rootElem}
 				{autoGemCheckbox.rootElem}
 				{simTalentsCheckbox.rootElem}
+			</>,
+		);
+
+		settingsContainer.appendChild(
+			<>
+				{defaultGemDiv}
+				{talentsToSimDiv}
 			</>,
 		);
 
