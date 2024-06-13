@@ -1,6 +1,7 @@
 package retribution
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -129,7 +130,7 @@ func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 	manaMetrics := ret.NewManaMetrics(actionID)
 
 	// It's 25% of base mana over 10 seconds, with haste adding ticks.
-	manaPerTick := 0.025 * ret.BaseMana
+	manaPerTick := math.Round(0.025 * ret.BaseMana)
 
 	jotb := ret.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,

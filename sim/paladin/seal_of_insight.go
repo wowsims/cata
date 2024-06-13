@@ -1,6 +1,7 @@
 package paladin
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -32,7 +33,7 @@ func (paladin *Paladin) registerSealOfInsight() {
 	healthMetrics := paladin.NewHealthMetrics(actionID)
 	manaMetrics := paladin.NewManaMetrics(actionID)
 	// It's 4% of base mana per tick.
-	manaPerTick := 0.04 * paladin.BaseMana
+	manaPerTick := math.Round(0.04 * paladin.BaseMana)
 
 	// Seal of Insight on-hit proc
 	onSpecialOrSwingProc := paladin.RegisterSpell(core.SpellConfig{
