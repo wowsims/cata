@@ -410,6 +410,13 @@ export class BulkTab extends SimTab {
 					that allows you to select multiple items and sim them find the best combinations.
 					<br />
 					This is an <span className="text-brand">Alpha</span> feature, so if you find a bug please report it!
+					<br />
+					<br />
+					<span className="text-warning d-flex align-items-center">
+						<i className="fas fa-exclamation-triangle fa-3x me-2" />
+						Warning: Simming over 100k iterations in the web sim may take a long time. For larger batch sims we recommend using Fast Mode or
+						downloading the executable version.
+					</span>
 				</p>
 				<div className="bulk-gear-actions">
 					<button className="btn btn-secondary" ref={bagImportBtnRef}>
