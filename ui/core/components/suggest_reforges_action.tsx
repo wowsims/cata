@@ -6,10 +6,11 @@ import { Constraint, greaterEq, lessEq, Model, Options, Solution, solve } from '
 import * as Mechanics from '../constants/mechanics.js';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Player } from '../player';
-import { ItemSlot, Stat } from '../proto/common';
+import { ItemSlot, Stat, Spec } from '../proto/common';
 import { Gear } from '../proto_utils/gear';
 import { getClassStatName } from '../proto_utils/names';
 import { statPercentageOrPointsToNumber, Stats, statToPercentageOrPoints } from '../proto_utils/stats';
+import { SpecTalents } from '../proto_utils/utils';
 import { Sim } from '../sim';
 import { ActionGroupItem } from '../sim_ui';
 import { TypedEvent } from '../typed_event';
@@ -266,8 +267,8 @@ export class ReforgeOptimizer {
 	async updateGear(gear: Gear): Promise<Stats> {
 		this.player.setGear(TypedEvent.nextEventID(), gear);
 		await this.sim.updateCharacterStats(TypedEvent.nextEventID());
-		const baseStats = Stats.fromProto(this.player.getCurrentStats().finalStats);
-		baseStats.addStat(Stat.StatMastery, this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+		let baseStats = Stats.fromProto(this.player.getCurrentStats().finalStats);
+		baseStats = baseStats.addStat(Stat.StatMastery, this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 		return baseStats;
 	}
 
@@ -287,11 +288,11 @@ export class ReforgeOptimizer {
 				coefficients.set(ItemSlot[slot], 1);
 
 				for (const fromStat of reforgeData.fromStat) {
-					coefficients.set(Stat[fromStat], reforgeData.fromAmount);
+					this.applyReforgeStat(coefficients, fromStat, reforgeData.fromAmount);
 				}
 
 				for (const toStat of reforgeData.toStat) {
-					coefficients.set(Stat[toStat], reforgeData.toAmount);
+					this.applyReforgeStat(coefficients, toStat, reforgeData.toAmount);
 				}
 
 				variables.set(variableKey, coefficients);
@@ -299,6 +300,32 @@ export class ReforgeOptimizer {
 		}
 
 		return variables;
+	}
+
+	applyReforgeStat(coefficients: YalpsCoefficients, stat: Stat, amount: number) {
+		// Apply Spirit to Spell Hit conversion for hybrid casters before setting optimization coefficients
+		let appliedStat = stat;
+		let appliedAmount = amount;
+
+		if (appliedStat == Stat.StatSpirit) {
+			switch (this.player.getSpec()) {
+				case Spec.SpecBalanceDruid:
+					appliedStat = Stat.StatSpellHit;
+					appliedAmount *= 0.5 * (this.player.getTalents() as SpecTalents<Spec.SpecBalanceDruid>).balanceOfPower;
+					break;
+				case Spec.SpecShadowPriest:
+					appliedStat = Stat.StatSpellHit;
+					appliedAmount *= 0.5 * (this.player.getTalents() as SpecTalents<Spec.SpecShadowPriest>).twistedFaith;
+					break;
+				case Spec.SpecElementalShaman:
+					appliedStat = Stat.StatSpellHit;
+					appliedAmount *= [0, 0.33, 0.66, 1][(this.player.getTalents() as SpecTalents<Spec.SpecElementalShaman>).elementalPrecision];
+					break;
+			}
+		}
+
+		const currentValue = coefficients.get(Stat[appliedStat]) || 0;
+		coefficients.set(Stat[appliedStat], currentValue + appliedAmount);
 	}
 
 	buildYalpsConstraints(gear: Gear): YalpsConstraints {
