@@ -17,19 +17,6 @@
 	.results-ep-table-container {
 		position: relative;
 
-		&.pending {
-			overflow: hidden;
-			margin: 0;
-
-			.results-ep-table {
-				filter: blur(2px);
-			}
-
-			.results-pending-overlay {
-				display: flex;
-			}
-		}
-
 		.results-ep-table {
 			width: 100%;
 
