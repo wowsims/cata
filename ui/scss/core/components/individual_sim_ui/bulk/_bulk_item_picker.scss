@@ -1,37 +1,8 @@
 .bulk-item-picker.item-picker-root {
-	padding: var(--spacer-2);
 	border: var(--border-default);
-	margin-bottom: 0 !important;
 
 	&.bulk-item-picker-equipped {
 		border-color: var(--bs-brand);
-	}
-
-	.item-picker-icon-wrapper {
-		min-width: 3rem;
-		min-height: 3rem;
-		width: 3rem;
-		height: 3rem;
-	}
-
-	.gem-socket-container {
-		--gem-width: 1rem;
-	}
-
-	.item-picker-labels-container {
-		padding-top: 0;
-		overflow: hidden;
-
-		.item-picker-name-container {
-			max-width: 100%;
-			display: flex;
-
-			.item-picker-name {
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-		}
 	}
 
 	.item-picker-actions-container {

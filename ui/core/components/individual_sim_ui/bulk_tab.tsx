@@ -10,7 +10,7 @@ import { ActionId } from '../../proto_utils/action_id';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { canEquipItem, getEligibleItemSlots, isSecondaryItemSlot } from '../../proto_utils/utils';
 import { TypedEvent } from '../../typed_event';
-import { cloneChildren, getEnumValues } from '../../utils';
+import { getEnumValues } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
 import { ItemData } from '../gear_picker/item_list';
 import SelectorModal from '../gear_picker/selector_modal';
