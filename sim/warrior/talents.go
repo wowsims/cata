@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
@@ -369,8 +368,4 @@ func (warrior *Warrior) applyGagOrder() {
 		TimeValue: time.Duration(-15*warrior.Talents.GagOrder) * time.Second,
 	})
 
-}
-
-func (warrior *Warrior) DualWieldSpecialization() float64 {
-	return core.TernaryFloat64(warrior.Spec == proto.Spec_SpecFuryWarrior, 1.25, 1)
 }

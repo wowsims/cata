@@ -15,10 +15,10 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 		ActionID:       ragingBlowActionID.WithTag(2),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskEmpty,
-		ClassSpellMask: warrior.SpellMaskRagingBlow | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskRagingBlow | warrior.SpellMaskSpecialAttack | warrior.SpellDualWieldSpecMask,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: 1.0 * war.DualWieldSpecialization(),
+		DamageMultiplier: 1.0,
 		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -23,10 +23,10 @@ func (warrior *Warrior) RegisterSlamSpell() {
 		ActionID:       slamActionID.WithTag(2),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskEmpty,
-		ClassSpellMask: SpellMaskSlam | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskSlam | SpellMaskSpecialAttack | SpellDualWieldSpecMask,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
-		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct() * warrior.DualWieldSpecialization(),
+		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
 		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
