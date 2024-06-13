@@ -2,7 +2,7 @@ import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from './components/base_modal.jsx';
 import { Component } from './components/component.js';
-import { NumberPicker } from './components/number_picker.js';
+import { NumberPicker } from './components/pickers/number_picker.js';
 import { ResultsViewer } from './components/results_viewer.jsx';
 import { SimHeader } from './components/sim_header.jsx';
 import { SimTab } from './components/sim_tab.js';

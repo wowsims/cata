@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
-import { TypedEvent } from '../typed_event.js';
-import { existsInDOM } from '../utils';
-import { Input, InputConfig } from './input.js';
+import { TypedEvent } from '../../typed_event.js';
+import { existsInDOM } from '../../utils.js';
+import { Input, InputConfig } from '../input.js';
 
 export interface DropdownValueConfig<V> {
 	value: V;

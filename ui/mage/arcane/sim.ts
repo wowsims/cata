@@ -1,4 +1,4 @@
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -17,14 +17,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMastery,
-	],	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery], // Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
@@ -62,7 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 			[Stat.StatSpellHit]: 0.38,
 			[Stat.StatSpellCrit]: 0.58,
 			[Stat.StatSpellHaste]: 0.94,
-			[Stat.StatMastery]: 0.8
+			[Stat.StatMastery]: 0.8,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultArcaneConsumes,
@@ -107,20 +100,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.ArcaneTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.ARCANE_P1_PRESET,
-			Presets.ARCANE_P1_PREBIS_PRESET,
-		],
+		gear: [Presets.ARCANE_P1_PRESET, Presets.ARCANE_P1_PREBIS_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecArcaneMage>): APLRotation => {
-/* 		const numTargets = player.sim.encounter.targets.length;
+		/* 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 3) {
 			return Presets.ARCANE_ROTATION_PRESET_AOE.rotation.rotation!;
 		} else {
 			return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		} */
-		return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!
+		return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	/* simpleRotation: (player: Player<Spec.SpecArcaneMage>, simple: ArcaneMage_Rotation, cooldowns: Cooldowns): APLRotation => {
@@ -207,11 +197,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.ARCANE_P1_PRESET.gear,
-					2: Presets.ARCANE_P1_PREBIS_PRESET.gear
+					2: Presets.ARCANE_P1_PREBIS_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.ARCANE_P1_PRESET.gear,
-					2: Presets.ARCANE_P1_PREBIS_PRESET.gear
+					2: Presets.ARCANE_P1_PREBIS_PRESET.gear,
 				},
 			},
 		},

@@ -1,5 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -60,13 +60,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatStrength]: 2.20,
+				[Stat.StatStrength]: 2.2,
 				[Stat.StatAgility]: 0.59,
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatExpertise]: 0,
-				[Stat.StatMeleeHit]: 1.30,
+				[Stat.StatMeleeHit]: 1.3,
 				[Stat.StatMeleeCrit]: 0.71,
-				[Stat.StatMeleeHaste]: 0.70,
+				[Stat.StatMeleeHaste]: 0.7,
 				// @todo: Calculate actual weights
 				// This probably applies for all weights
 				[Stat.StatMastery]: 0.86,
@@ -142,12 +142,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_FURY],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_FURY_SMF_PRESET,
-			Presets.PRERAID_FURY_TG_PRESET,
-			Presets.P1_FURY_SMF_PRESET,
-			Presets.P1_FURY_TG_PRESET,
-		],
+		gear: [Presets.PRERAID_FURY_SMF_PRESET, Presets.PRERAID_FURY_TG_PRESET, Presets.P1_FURY_SMF_PRESET, Presets.P1_FURY_TG_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecFuryWarrior>): APLRotation => {

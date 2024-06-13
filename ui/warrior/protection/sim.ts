@@ -1,5 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
+import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
@@ -126,7 +126,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [ProtectionWarriorInputs.ShoutPicker(), ProtectionWarriorInputs.ShatteringThrow(),ProtectionWarriorInputs.Recklessness()],
+	playerIconInputs: [ProtectionWarriorInputs.ShoutPicker(), ProtectionWarriorInputs.ShatteringThrow(), ProtectionWarriorInputs.Recklessness()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff],
 	excludeBuffDebuffInputs: [],
@@ -156,10 +156,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_DEFAULT, Presets.ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_BALANCED_PRESET,
-			Presets.P1_BALANCED_PRESET,
-		],
+		gear: [Presets.PRERAID_BALANCED_PRESET, Presets.P1_BALANCED_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionWarrior>): APLRotation => {

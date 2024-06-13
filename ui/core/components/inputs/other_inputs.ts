@@ -1,10 +1,10 @@
-import { BooleanPicker } from '../components/boolean_picker.js';
-import { EnumPicker } from '../components/enum_picker.js';
-import { Player } from '../player.js';
-import { UnitReference } from '../proto/common.js';
-import { emptyUnitReference } from '../proto_utils/utils.js';
-import { Sim } from '../sim.js';
-import { EventID, TypedEvent } from '../typed_event.js';
+import { Player } from '../../player.js';
+import { UnitReference } from '../../proto/common.js';
+import { emptyUnitReference } from '../../proto_utils/utils.js';
+import { Sim } from '../../sim.js';
+import { EventID, TypedEvent } from '../../typed_event.js';
+import { BooleanPicker } from '../pickers/boolean_picker.js';
+import { EnumPicker } from '../pickers/enum_picker.js';
 
 export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): BooleanPicker<Sim> {
 	parent.classList.remove('hide');

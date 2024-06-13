@@ -1,5 +1,5 @@
-import { EventID, TypedEvent } from '../typed_event.js';
-import { Input, InputConfig } from './input.js';
+import { TypedEvent } from '../../typed_event.js';
+import { Input, InputConfig } from '../input.js';
 
 export interface EnumValueConfig {
 	name: string;

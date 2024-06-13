@@ -1,5 +1,5 @@
-import { TypedEvent } from '../typed_event.js';
-import { Input, InputConfig } from './input.js';
+import { TypedEvent } from '../../typed_event.js';
+import { Input, InputConfig } from '../input.js';
 
 /**
  * Data for creating a boolean picker (checkbox).

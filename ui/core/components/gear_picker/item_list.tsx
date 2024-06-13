@@ -23,7 +23,7 @@ import {
 	makeShow2hWeaponsSelector,
 	makeShowEPValuesSelector,
 	makeShowMatchingGemsSelector,
-} from '../other_inputs';
+} from '../inputs/other_inputs';
 import Toast from '../toast';
 import { Clusterize } from '../virtual_scroll/clusterize';
 import { FiltersMenu } from './filters_menu';

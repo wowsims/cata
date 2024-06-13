@@ -1,13 +1,13 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
+import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import { TankGemOptimizer } from '../../core/components/suggest_gems_action.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation , APLRotation_Type as APLRotationType, SimpleRotation } from '../../core/proto/apl.js';
+import { APLAction, APLListItem, APLPrepullAction, APLRotation, APLRotation_Type as APLRotationType, SimpleRotation } from '../../core/proto/apl.js';
 import {
 	Class,
-Cooldowns,
+	Cooldowns,
 	Debuffs,
 	Faction,
 	IndividualBuffs,
@@ -19,9 +19,7 @@ Cooldowns,
 	Stat,
 	TristateEffect,
 } from '../../core/proto/common.js';
-import {
-	GuardianDruid_Rotation as DruidRotation,
-} from '../../core/proto/druid.js';
+import { GuardianDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
 import { Stats } from '../../core/proto_utils/stats.js';
 import * as DruidInputs from './inputs.js';
@@ -51,9 +49,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		Stat.StatMeleeHaste,
 		Stat.StatNatureResistance,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -80,23 +76,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		// Default equipped gear.
 		gear: Presets.PRERAID_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatHealth]: 0.07,
-			[Stat.StatStamina]: 1.73,
-			[Stat.StatAgility]: 1.0,
-			[Stat.StatArmor]: 1.52,
-			[Stat.StatBonusArmor]: 0.35,
-			[Stat.StatDodge]: 0.54,
-			[Stat.StatMastery]: 0.37,
-			[Stat.StatStrength]: 0.13,
-			[Stat.StatAttackPower]: 0.12,
-			[Stat.StatMeleeHit]: 0.25,
-			[Stat.StatExpertise]: 0.48,
-			[Stat.StatMeleeCrit]: 0.53,
-			[Stat.StatMeleeHaste]: 0.07,
-		}, {
-			[PseudoStat.PseudoStatMainHandDps]: 0.0,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatHealth]: 0.07,
+				[Stat.StatStamina]: 1.73,
+				[Stat.StatAgility]: 1.0,
+				[Stat.StatArmor]: 1.52,
+				[Stat.StatBonusArmor]: 0.35,
+				[Stat.StatDodge]: 0.54,
+				[Stat.StatMastery]: 0.37,
+				[Stat.StatStrength]: 0.13,
+				[Stat.StatAttackPower]: 0.12,
+				[Stat.StatMeleeHit]: 0.25,
+				[Stat.StatExpertise]: 0.48,
+				[Stat.StatMeleeCrit]: 0.53,
+				[Stat.StatMeleeHaste]: 0.07,
+			},
+			{
+				[PseudoStat.PseudoStatMainHandDps]: 0.0,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default rotation settings.
@@ -117,10 +116,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 			communion: true,
 			devotionAura: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			ebonPlaguebringer: true,
 			criticalMass: true,
@@ -130,17 +127,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-	],
+	playerIconInputs: [],
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: DruidInputs.GuardianDruidRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellCritDebuff,
-		BuffDebuffInputs.SpellDamageDebuff,
-	],
-	excludeBuffDebuffInputs: [
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellCritDebuff, BuffDebuffInputs.SpellDamageDebuff],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -163,19 +155,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.StandardTalents,
-		],
+		talents: [Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_PRESET_SIMPLE,
-			Presets.ROTATION_DEFAULT,
-		],
+		rotations: [Presets.ROTATION_PRESET_SIMPLE, Presets.ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_PRESET,
-			Presets.P1_PRESET,
-		],
+		gear: [Presets.PRERAID_PRESET, Presets.P1_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecGuardianDruid>): APLRotation => {
@@ -185,43 +169,63 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 	simpleRotation: (player: Player<Spec.SpecGuardianDruid>, simple: DruidRotation, cooldowns: Cooldowns): APLRotation => {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
-		const stampedeSpellId = player.getTalents().stampede == 1 ? 81016: 81017;
-		const preStampede = APLPrepullAction.fromJsonString(`{"action":{"activateAura":{"auraId":{"spellId":${stampedeSpellId.toFixed(0)}}}},"doAtValue":{"const":{"val":"-0.1s"}}}`);
+		const stampedeSpellId = player.getTalents().stampede == 1 ? 81016 : 81017;
+		const preStampede = APLPrepullAction.fromJsonString(
+			`{"action":{"activateAura":{"auraId":{"spellId":${stampedeSpellId.toFixed(0)}}}},"doAtValue":{"const":{"val":"-0.1s"}}}`,
+		);
 
-		const emergencySpellId = player.getTalents().pulverize ? 80313: 33745;
-		const emergencyPulverize = APLAction.fromJsonString(`{"condition":{"and":{"vals":[{"dotIsActive":{"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"spellId":{"spellId":33745}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(1)}s"}}}}]}},"castSpell":{"spellId":{"spellId":${emergencySpellId.toFixed(0)}}}}`);
-		const faerieFireMaintain = APLAction.fromJsonString(`{"condition":{"or":{"vals":[{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":770}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":770}}},"rhs":{"const":{"val":"6s"}}}}]}},"castSpell":{"spellId":{"spellId":16857}}}`);
-		const demoRoar = APLAction.fromJsonString(`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":99},"maxOverlap":{"const":{"val":"${simple.demoTime.toFixed(1)}s"}}}},"castSpell":{"spellId":{"spellId":99}}}`);
+		const emergencySpellId = player.getTalents().pulverize ? 80313 : 33745;
+		const emergencyPulverize = APLAction.fromJsonString(
+			`{"condition":{"and":{"vals":[{"dotIsActive":{"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"spellId":{"spellId":33745}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(
+				1,
+			)}s"}}}}]}},"castSpell":{"spellId":{"spellId":${emergencySpellId.toFixed(0)}}}}`,
+		);
+		const faerieFireMaintain = APLAction.fromJsonString(
+			`{"condition":{"or":{"vals":[{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":770}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":770}}},"rhs":{"const":{"val":"6s"}}}}]}},"castSpell":{"spellId":{"spellId":16857}}}`,
+		);
+		const demoRoar = APLAction.fromJsonString(
+			`{"condition":{"auraShouldRefresh":{"auraId":{"spellId":99},"maxOverlap":{"const":{"val":"${simple.demoTime.toFixed(
+				1,
+			)}s"}}}},"castSpell":{"spellId":{"spellId":99}}}`,
+		);
 		const berserk = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":50334}}}`);
 		const enrage = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":5229}}}`);
 		const synapseSprings = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":82174}}}`);
-		const lacerateForProcs = APLAction.fromJsonString(`{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"spellId":{"spellId":33745}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":50334}}}}}]}},"castSpell":{"spellId":{"spellId":33745}}}`);
+		const lacerateForProcs = APLAction.fromJsonString(
+			`{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"spellId":{"spellId":33745}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":50334}}}}}]}},"castSpell":{"spellId":{"spellId":33745}}}`,
+		);
 		const mangle = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":33878}}}`);
 		const thrash = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":77758}}}`);
 		const faerieFireFiller = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":16857}}}`);
-		const pulverize = APLAction.fromJsonString(`{"condition":{"and":{"vals":[{"dotIsActive":{"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"or":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":80951}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":80951}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(1)}s"}}}}]}}]}},"castSpell":{"spellId":{"spellId":80313}}}`);
-		const lacerateBuild = APLAction.fromJsonString(`{"condition":{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},"castSpell":{"spellId":{"spellId":33745}}}`);
+		const pulverize = APLAction.fromJsonString(
+			`{"condition":{"and":{"vals":[{"dotIsActive":{"spellId":{"spellId":33745}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},{"or":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":80951}}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":80951}}},"rhs":{"const":{"val":"${simple.pulverizeTime.toFixed(
+				1,
+			)}s"}}}}]}}]}},"castSpell":{"spellId":{"spellId":80313}}}`,
+		);
+		const lacerateBuild = APLAction.fromJsonString(
+			`{"condition":{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":33745}}},"rhs":{"const":{"val":"3"}}}},"castSpell":{"spellId":{"spellId":33745}}}`,
+		);
 		const maul = APLAction.fromJsonString(`{"castSpell":{"spellId":{"spellId":6807}}}`);
 
-		prepullActions.push(...[
-			simple.prepullStampede ? preStampede: null,
-		].filter(a => a) as Array<APLPrepullAction>)
+		prepullActions.push(...([simple.prepullStampede ? preStampede : null].filter(a => a) as Array<APLPrepullAction>));
 
-		actions.push(...[
-			emergencyPulverize,
-			simple.maintainFaerieFire ? faerieFireMaintain : null,
-			simple.maintainDemoralizingRoar ? demoRoar : null,
-			berserk,
-			enrage,
-			synapseSprings,
-			lacerateForProcs,
-			mangle,
-			thrash,
-			faerieFireFiller,
-			pulverize,
-			lacerateBuild,
-			maul,
-		].filter(a => a) as Array<APLAction>)
+		actions.push(
+			...([
+				emergencyPulverize,
+				simple.maintainFaerieFire ? faerieFireMaintain : null,
+				simple.maintainDemoralizingRoar ? demoRoar : null,
+				berserk,
+				enrage,
+				synapseSprings,
+				lacerateForProcs,
+				mangle,
+				thrash,
+				faerieFireFiller,
+				pulverize,
+				lacerateBuild,
+				maul,
+			].filter(a => a) as Array<APLAction>),
+		);
 
 		return APLRotation.create({
 			simple: SimpleRotation.create({
@@ -230,9 +234,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 				}),
 			}),
 			prepullActions: prepullActions,
-			priorityList: actions.map(action => APLListItem.create({
-				action: action,
-			}))
+			priorityList: actions.map(action =>
+				APLListItem.create({
+					action: action,
+				}),
+			),
 		});
 	},
 

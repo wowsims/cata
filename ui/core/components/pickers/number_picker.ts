@@ -1,5 +1,5 @@
-import { TypedEvent } from '../typed_event';
-import { Input, InputConfig } from './input';
+import { TypedEvent } from '../../typed_event';
+import { Input, InputConfig } from '../input';
 
 /**
  * Data for creating a number picker.

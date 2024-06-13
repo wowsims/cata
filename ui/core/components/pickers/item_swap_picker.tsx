@@ -1,13 +1,13 @@
 import tippy from 'tippy.js';
 
-import { Player } from '../player.js';
-import { ItemSlot, Spec } from '../proto/common.js';
-import { SimUI } from '../sim_ui.js';
-import { EventID, TypedEvent } from '../typed_event.js';
+import { Player } from '../../player.js';
+import { ItemSlot, Spec } from '../../proto/common.js';
+import { SimUI } from '../../sim_ui.js';
+import { EventID, TypedEvent } from '../../typed_event.js';
+import { Component } from '../component.js';
+import IconItemSwapPicker from '../gear_picker/icon_item_swap_picker.js';
+import { Input } from '../input.js';
 import { BooleanPicker } from './boolean_picker.js';
-import { Component } from './component.js';
-import IconItemSwapPicker from './gear_picker/icon_item_swap_picker';
-import { Input } from './input.jsx';
 
 export interface ItemSwapConfig {
 	itemSlots: Array<ItemSlot>;

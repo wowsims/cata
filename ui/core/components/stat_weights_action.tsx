@@ -14,8 +14,8 @@ import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { cloneChildren, combinationsWithDups, permutations, stDevToConf90, sum } from '../utils.js';
 import { BaseModal } from './base_modal.jsx';
-import { BooleanPicker } from './boolean_picker.js';
-import { NumberPicker } from './number_picker.js';
+import { BooleanPicker } from './pickers/boolean_picker.js';
+import { NumberPicker } from './pickers/number_picker.js';
 import { ResultsViewer } from './results_viewer.jsx';
 
 export function addStatWeightsAction(simUI: IndividualSimUI<any>, epStats: Stat[], epPseudoStats: PseudoStat[] | undefined, epReferenceStat: Stat) {

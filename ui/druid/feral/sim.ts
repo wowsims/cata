@@ -1,10 +1,10 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
+import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import { PhysicalDPSGemOptimizer } from '../../core/components/suggest_gems_action.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation , APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
+import { APLAction, APLListItem, APLPrepullAction, APLRotation, APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
 import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
 import { FeralDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
@@ -88,10 +88,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			arcaneBrilliance: true,
 			manaSpringTotem: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			bloodFrenzy: true,
 		}),
@@ -106,7 +104,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [FeralInputs.AssumeBleedActive, OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget, OtherInputs.DarkIntentUptime],
+		inputs: [
+			FeralInputs.AssumeBleedActive,
+			OtherInputs.InputDelay,
+			OtherInputs.DistanceFromTarget,
+			OtherInputs.TankAssignment,
+			OtherInputs.InFrontOfTarget,
+			OtherInputs.DarkIntentUptime,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -129,7 +134,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
 		const blockZerk = APLAction.fromJsonString(`{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}`);
-		const doRotation = APLAction.fromJsonString(`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maintainFaerieFire":${simple.maintainFaerieFire},"allowAoeBerserk":${simple.allowAoeBerserk},"meleeWeave":${simple.meleeWeave},"bearWeave":${simple.bearWeave},"snekWeave":${simple.snekWeave},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${simple.useBite},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)}}}`);
+		const doRotation = APLAction.fromJsonString(
+			`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maintainFaerieFire":${
+				simple.maintainFaerieFire
+			},"allowAoeBerserk":${simple.allowAoeBerserk},"meleeWeave":${simple.meleeWeave},"bearWeave":${simple.bearWeave},"snekWeave":${
+				simple.snekWeave
+			},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${
+				simple.useBite
+			},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)}}}`,
+		);
 		const autocasts = APLAction.fromJsonString(`{"autocastOtherCooldowns":{}}`);
 
 		actions.push(...([blockZerk, doRotation, autocasts].filter(a => a) as Array<APLAction>));

@@ -15,9 +15,9 @@ import {
 	makeTristateRaidBuffInput,
 	withLabel,
 } from '../icon_inputs';
-import { IconPicker } from '../icon_picker';
 import * as InputHelpers from '../input_helpers';
-import { MultiIconPicker } from '../multi_icon_picker';
+import { IconPicker } from '../pickers/icon_picker';
+import { MultiIconPicker } from '../pickers/multi_icon_picker';
 import { IconPickerStatOption, PickerStatOptions } from './stat_options';
 
 ///////////////////////////////////////////////////////////////////////////
@@ -71,10 +71,10 @@ export const DamagePercentBuff = InputHelpers.makeMultiIconInput(
 // TODO: Look at these, what we want and how to structure them for multiple available
 export const DefensiveCooldownBuff = InputHelpers.makeMultiIconInput(
 	[
-// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(6940), numStates: 11, fieldName: 'handOfSacrifices' }),
-// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(53530), numStates: 11, fieldName: 'divineGuardians' }),
+		// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(6940), numStates: 11, fieldName: 'handOfSacrifices' }),
+		// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(53530), numStates: 11, fieldName: 'divineGuardians' }),
 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(33206), numStates: 11, fieldName: 'painSuppressionCount' }),
-// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(47788), numStates: 11, fieldName: 'guardianSpirits' }),
+		// 		makeMultistateIndividualBuffInput({ actionId: ActionId.fromSpellId(47788), numStates: 11, fieldName: 'guardianSpirits' }),
 	],
 	'Defensive CDs',
 );
@@ -430,5 +430,4 @@ export const DEBUFFS_CONFIG = [
 	},
 ] as PickerStatOptions[];
 
-export const DEBUFFS_MISC_CONFIG = [
-] as IconPickerStatOption[];
+export const DEBUFFS_MISC_CONFIG = [] as IconPickerStatOption[];
