@@ -10,7 +10,7 @@ import { getClassStatName, masterySpellIDs, masterySpellNames, statOrder } from 
 import { Stats, statToPercentageOrPoints } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
-import { NumberPicker } from './number_picker';
+import { NumberPicker } from './pickers/number_picker.js';
 
 export type StatMods = { base?: Stats; gear?: Stats; talents?: Stats; buffs?: Stats; consumes?: Stats; final?: Stats; stats?: Array<Stat> };
 export type StatWrites = { base: Stats; gear: Stats; talents: Stats; buffs: Stats; consumes: Stats; final: Stats; stats: Array<Stat> };

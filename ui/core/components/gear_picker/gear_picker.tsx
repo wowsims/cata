@@ -92,7 +92,7 @@ export class ItemRenderer extends Component {
 					<div ref={sce} className="item-picker-sockets-container"></div>
 				</div>
 				<div className="item-picker-labels-container">
-					<a ref={nameElem} className="item-picker-name" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
+					<a ref={nameElem} className="item-picker-name-container" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
 					<a ref={enchantElem} className="item-picker-enchant hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
 					<a ref={reforgeElem} className="item-picker-reforge hide" href="javascript:void(0)" attributes={{ role: 'button' }}></a>
 				</div>
@@ -129,7 +129,7 @@ export class ItemRenderer extends Component {
 	}
 
 	update(newItem: EquippedItem) {
-		this.nameElem.textContent = newItem.item.name;
+		this.nameElem.replaceChildren(<span className="item-picker-name">{newItem.item.name}</span>);
 		this.ilvlElem.textContent = newItem.item.ilvl.toString();
 
 		if (newItem.randomSuffix) {

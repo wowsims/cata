@@ -4,44 +4,52 @@ import { ref } from 'tsx-vanilla';
 import { IndividualSimUI } from '../../../individual_sim_ui';
 import { BulkComboResult, ItemSpecWithSlot } from '../../../proto/api';
 import { TypedEvent } from '../../../typed_event';
+import { formatDeltaTextElem } from '../../../utils';
 import { Component } from '../../component';
 import { ItemRenderer } from '../../gear_picker/gear_picker';
+import Toast from '../../toast';
+import { BulkTab } from '../bulk_tab';
 
 export default class BulkSimResultRenderer extends Component {
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, result: BulkComboResult, baseResult: BulkComboResult) {
-		super(parent, '.bulk-sim-results');
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkSimUI: BulkTab, result: BulkComboResult, baseResult: BulkComboResult) {
+		super(parent, 'bulk-sim-result-root');
+
+		if (!bulkSimUI.simTalents) {
+			this.rootElem.classList.add('bulk-sim-result-no-talents');
+		}
+
 		const dpsDelta = result.unitMetrics!.dps!.avg! - baseResult.unitMetrics!.dps!.avg;
 
 		const equipButtonRef = ref<HTMLButtonElement>();
 		const dpsDeltaRef = ref<HTMLDivElement>();
 		const itemsContainerRef = ref<HTMLDivElement>();
-		parent.appendChild(
+		this.rootElem.appendChild(
 			<>
 				<div className="results-sim">
-					<div className="bulk-result-body-dps bulk-items-text-line results-sim-dps damage-metrics">
+					<div className="results-sim-dps damage-metrics">
 						<span className="topline-result-avg">{this.formatDps(result.unitMetrics!.dps!.avg)}</span>
-
-						<span ref={dpsDeltaRef} className={clsx(dpsDelta >= 0 ? 'bulk-result-header-positive' : 'bulk-result-header-negative')}>
-							{this.formatDpsDelta(dpsDelta)}
-						</span>
-
-						<p className="talent-loadout-text">
-							{result.talentLoadout && typeof result.talentLoadout === 'object' ? (
-								typeof result.talentLoadout.name === 'string' && <>Talent loadout used: {result.talentLoadout.name}</>
-							) : (
-								<>Current talents</>
-							)}
-						</p>
+						<div className="results-reference">
+							<span ref={dpsDeltaRef} className={clsx('results-reference-diff', dpsDelta >= 0 ? 'positive' : 'negative')} />
+						</div>
 					</div>
 				</div>
-				<div ref={itemsContainerRef} className="bulk-gear-combo"></div>
-				{!!result.itemsAdded?.length && (
-					<button ref={equipButtonRef} className="btn btn-primary bulk-equipit">
+				<div ref={itemsContainerRef} className="bulk-gear-combo" />
+				{bulkSimUI.simTalents && (
+					<div className="bulk-talent-loadout">
+						<span>
+							{result.talentLoadout && typeof result.talentLoadout === 'object' ? `Talents: ${result.talentLoadout.name}` : 'Current Talents'}
+						</span>
+					</div>
+				)}
+				<div className="bulk-results-actions">
+					<button ref={equipButtonRef} className={clsx('btn btn-primary bulk-equip-btn', !result.itemsAdded?.length && 'd-none')}>
 						Equip
 					</button>
-				)}
+				</div>
 			</>,
 		);
+
+		formatDeltaTextElem(dpsDeltaRef.value!, baseResult.unitMetrics!.dps!.avg, result.unitMetrics!.dps!.avg!, 2);
 
 		if (!!result.itemsAdded?.length) {
 			equipButtonRef.value?.addEventListener('click', () => {
@@ -49,6 +57,10 @@ export default class BulkSimResultRenderer extends Component {
 					const item = simUI.sim.db.lookupItemSpec(itemAdded.item!);
 					simUI.player.equipItem(TypedEvent.nextEventID(), itemAdded.slot, item);
 					simUI.simHeader.activateTab('gear-tab');
+				});
+				new Toast({
+					variant: 'success',
+					body: 'Batch gear equipped!',
 				});
 			});
 
@@ -58,13 +70,12 @@ export default class BulkSimResultRenderer extends Component {
 				const item = simUI.sim.db.lookupItemSpec(is.item!);
 				const renderer = new ItemRenderer(items, itemContainer, simUI.player);
 				renderer.update(item!);
-				renderer.nameElem.appendChild(<a className="bulk-result-item-slot">{this.itemSlotName(is)}</a>);
 				items.appendChild(itemContainer);
 			}
-			itemsContainerRef.value?.appendChild(items);
+			itemsContainerRef.value!.appendChild(items);
 		} else if (!result.talentLoadout || typeof result.talentLoadout !== 'object') {
 			dpsDeltaRef.value?.classList.add('hide');
-			parent.appendChild(<p>No changes - this is your currently equipped gear!</p>);
+			itemsContainerRef.value!.appendChild(<p className="mb-0">Equipped</p>);
 		}
 	}
 

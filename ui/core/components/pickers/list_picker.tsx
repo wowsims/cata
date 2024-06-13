@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 
-import { EventID, TypedEvent } from '../typed_event.js';
-import { Input, InputConfig } from './input.js';
+import { EventID, TypedEvent } from '../../typed_event.js';
+import { Input, InputConfig } from '../input.js';
 
 export type ListItemAction = 'create' | 'delete' | 'move' | 'copy';
 

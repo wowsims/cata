@@ -252,20 +252,33 @@ $btn-padding-y: 0.5rem;
 }
 
 // Input
+$input-bg: #1e2633;
+$input-border-color: #373d57;
+$input-color: $white;
+$input-disabled-bg: color-mix(in srgb, $body-bg, $white 20%);
+$input-focus-bg: $input-bg;
+$input-focus-border-color: color-mix(in srgb, $input-border-color, $white 20%);
+$input-focus-box-shadow: 0 0 0.25rem color-mix(in srgb, $body-bg, $white 20%);
+$input-focus-color: $white;
+$input-font-size: var(--content-font-size);
+$input-placeholder-color: $border-color;
+
+// Input
 :root {
 	--input-padding-y: #{$input-padding-y};
 	--input-padding-x: #{$input-padding-x};
 }
 
 // Dropdown
-$dropdown-bg: $body-bg;
-$dropdown-border-width: 0;
+$dropdown-bg: color-mix(in srgb, $body-bg, $white 5%);
+$dropdown-border-color: $input-border-color;
 $dropdown-color: $white;
 $dropdown-link-active-bg: $dropdown-bg;
 $dropdown-link-color: $white;
 $dropdown-link-hover-color: $white;
 $dropdown-link-hover-bg: color-mix(in srgb, $body-bg, $black 30%);
 $dropdown-padding-y: 0;
+
 :root {
 	// Add custom variable to reuse outside dropdowns
 	--dropdown-bg: #{$dropdown-bg};
@@ -277,18 +290,6 @@ $dropdown-padding-y: 0;
 	--dropdown-link-hover-bg: #{$dropdown-link-hover-bg};
 	--dropdown-padding-y: #{$dropdown-padding-y};
 }
-
-// Input
-$input-bg: #1e2633;
-$input-border-color: #373d57;
-$input-color: $white;
-$input-disabled-bg: color-mix(in srgb, $body-bg, $white 20%);
-$input-focus-bg: $input-bg;
-$input-focus-border-color: color-mix(in srgb, $input-border-color, $white 20%);
-$input-focus-box-shadow: 0 0 0.25rem color-mix(in srgb, $body-bg, $white 20%);
-$input-focus-color: $white;
-$input-font-size: var(--content-font-size);
-$input-placeholder-color: $border-color;
 
 // Form
 $form-check-input-bg: $input-bg;

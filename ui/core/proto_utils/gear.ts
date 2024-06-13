@@ -31,6 +31,10 @@ abstract class BaseGear {
 		return this.gear[slot] || null;
 	}
 
+	getEquippedItems(): Array<EquippedItem | null> {
+		return Object.values(this.gear);
+	}
+
 	asArray(): Array<EquippedItem | null> {
 		return Object.values(this.gear);
 	}

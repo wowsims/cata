@@ -77,13 +77,13 @@ export class ReforgeSummary extends Component {
 			const existingResetButton = this.container.headerElement.querySelector('.summary-table-reset-button');
 			const resetButton = (
 				<button
-					className="btn btn-sm btn-reset summary-table-reset-button"
+					className="btn btn-sm btn-link btn-reset summary-table-reset-button"
 					onclick={() => {
 						gear = gear.withoutReforges(this.player.canDualWield2H());
 						this.player.setGear(TypedEvent.nextEventID(), gear);
 					}}>
-					Reset reforges
-					<i className="fas fa-close ms-1"></i>
+					<i className="fas fa-times me-1"></i>
+					Reset Reforges
 				</button>
 			);
 

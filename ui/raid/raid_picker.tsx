@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from '../core/components/base_modal.jsx';
 import { Component } from '../core/components/component.js';
-import { EnumPicker } from '../core/components/enum_picker.js';
+import { EnumPicker } from '../core/components/pickers/enum_picker.js';
 import { MAX_PARTY_SIZE, Party } from '../core/party.js';
 import { Player } from '../core/player.js';
 import { PlayerClasses } from '../core/player_classes/index.js';

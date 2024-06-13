@@ -1,9 +1,9 @@
-import { Player } from '../player.js';
-import { ActionId } from '../proto_utils/action_id.js';
-import { SimUI } from '../sim_ui.js';
-import { TypedEvent } from '../typed_event.js';
-import { existsInDOM, isRightClick } from '../utils.js';
-import { Component } from './component.js';
+import { Player } from '../../player.js';
+import { ActionId } from '../../proto_utils/action_id.js';
+import { SimUI } from '../../sim_ui.js';
+import { TypedEvent } from '../../typed_event.js';
+import { existsInDOM, isRightClick } from '../../utils.js';
+import { Component } from '../component.js';
 import { IconPicker, IconPickerConfig } from './icon_picker.js';
 
 export interface MultiIconPickerItemConfig<ModObject> extends IconPickerConfig<ModObject, any> {}
