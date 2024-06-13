@@ -112,6 +112,8 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	defaults: {
 		gear: EquipmentSpec;
 		epWeights: Stats;
+		// Used for Reforge Optimizer
+		statCaps?: Stats;
 		consumes: Consumes;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
@@ -501,6 +503,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.setEpWeights(eventID, this.individualConfig.defaults.epWeights);
 			const defaultRatios = this.player.getDefaultEpRatios(tankSpec, healingSpec);
 			this.player.setEpRatios(eventID, defaultRatios);
+			if (this.individualConfig.defaults.statCaps) this.player.setStatCaps(eventID, this.individualConfig.defaults.statCaps);
 			this.player.setProfession1(eventID, this.individualConfig.defaults.other?.profession1 || Profession.Engineering);
 			this.player.setProfession2(eventID, this.individualConfig.defaults.other?.profession2 || Profession.Jewelcrafting);
 			this.player.setDistanceFromTarget(eventID, this.individualConfig.defaults.other?.distanceFromTarget || 0);
@@ -580,6 +583,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				settings: this.sim.toProto(),
 				epWeightsStats: this.player.getEpWeights().toProto(),
 				epRatios: this.player.getEpRatios(),
+				statCaps: this.player.getStatCaps().toProto(),
 				dpsRefStat: this.dpsRefStat,
 				healRefStat: this.healRefStat,
 				tankRefStat: this.tankRefStat,
@@ -634,6 +638,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 					this.player.setEpRatios(eventID, settings.epRatios.concat(missingRatios));
 				} else {
 					this.player.setEpRatios(eventID, defaultRatios);
+				}
+
+				if (settings.statCaps) {
+					this.player.setStatCaps(eventID, Stats.fromProto(settings.statCaps));
 				}
 
 				if (settings.dpsRefStat) {
