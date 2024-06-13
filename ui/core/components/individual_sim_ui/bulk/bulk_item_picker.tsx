@@ -37,6 +37,7 @@ export default class BulkItemPicker extends Component {
 
 		if (!this.isEditable()) {
 			this.rootElem.classList.add('bulk-item-picker-equipped');
+			parent.insertAdjacentElement('afterbegin', this.rootElem);
 		}
 
 		this.addActions();
