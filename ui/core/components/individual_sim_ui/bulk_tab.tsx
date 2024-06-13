@@ -531,7 +531,7 @@ export class BulkTab extends SimTab {
 			id: 'bulk-fast-mode',
 			label: 'Fast Mode',
 			labelTooltip: 'Fast mode reduces accuracy but will run faster.',
-			changedEvent: _modObj => this.itemsChangedEmitter,
+			changedEvent: _modObj => this.settingsChangedEmitter,
 			getValue: _modObj => this.fastMode,
 			setValue: (_, _modObj, newValue: boolean) => {
 				this.setFastMode(newValue);
@@ -542,7 +542,7 @@ export class BulkTab extends SimTab {
 			label: 'Combinations',
 			labelTooltip:
 				'When checked bulk simulator will create all possible combinations of the items. When disabled trinkets and rings will still run all combinations becausee they have two slots to fill each.',
-			changedEvent: _modObj => this.itemsChangedEmitter,
+			changedEvent: _modObj => this.settingsChangedEmitter,
 			getValue: _modObj => this.doCombos,
 			setValue: (_, _modObj, newValue: boolean) => {
 				this.setCombinations(newValue);
@@ -552,7 +552,7 @@ export class BulkTab extends SimTab {
 			id: 'bulk-auto-enchant',
 			label: 'Auto Enchant',
 			labelTooltip: 'When checked bulk simulator apply the current enchant for a slot to each replacement item it can.',
-			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
+			changedEvent: (_obj: BulkTab) => this.settingsChangedEmitter,
 			getValue: _obj => this.autoEnchant,
 			setValue: (_, obj: BulkTab, value: boolean) => {
 				obj.autoEnchant = value;
@@ -579,7 +579,7 @@ export class BulkTab extends SimTab {
 			id: 'bulk-auto-gem',
 			label: 'Auto Gem',
 			labelTooltip: 'When checked bulk simulator will fill any un-filled gem sockets with default gems.',
-			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
+			changedEvent: (_obj: BulkTab) => this.settingsChangedEmitter,
 			getValue: _obj => this.autoGem,
 			setValue: (_, obj: BulkTab, value: boolean) => {
 				obj.autoGem = value;
@@ -591,7 +591,7 @@ export class BulkTab extends SimTab {
 			id: 'bulk-sim-talents',
 			label: 'Sim Talents',
 			labelTooltip: 'When checked bulk simulator will sim chosen talent setups. Warning, it might cause the bulk sim to run for a lot longer',
-			changedEvent: (_obj: BulkTab) => this.itemsChangedEmitter,
+			changedEvent: (_obj: BulkTab) => this.settingsChangedEmitter,
 			getValue: _obj => this.simTalents,
 			setValue: (_, obj: BulkTab, value: boolean) => {
 				obj.simTalents = value;
