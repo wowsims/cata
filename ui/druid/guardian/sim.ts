@@ -1,24 +1,12 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
 import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
-import { TankGemOptimizer } from '../../core/components/suggest_gems_action.js';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action.js';
+import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLAction, APLListItem, APLPrepullAction, APLRotation, APLRotation_Type as APLRotationType, SimpleRotation } from '../../core/proto/apl.js';
-import {
-	Class,
-	Cooldowns,
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat,
-	TristateEffect,
-} from '../../core/proto/common.js';
+import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
 import { GuardianDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
 import * as AplUtils from '../../core/proto_utils/apl_utils.js';
 import { Stats } from '../../core/proto_utils/stats.js';
@@ -78,24 +66,33 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatHealth]: 0.07,
-				[Stat.StatStamina]: 1.73,
+				[Stat.StatHealth]: 0.04,
+				[Stat.StatStamina]: 0.99,
 				[Stat.StatAgility]: 1.0,
-				[Stat.StatArmor]: 1.52,
-				[Stat.StatBonusArmor]: 0.35,
-				[Stat.StatDodge]: 0.54,
-				[Stat.StatMastery]: 0.37,
-				[Stat.StatStrength]: 0.13,
-				[Stat.StatAttackPower]: 0.12,
-				[Stat.StatMeleeHit]: 0.25,
-				[Stat.StatExpertise]: 0.48,
-				[Stat.StatMeleeCrit]: 0.53,
-				[Stat.StatMeleeHaste]: 0.07,
+				[Stat.StatArmor]: 1.02,
+				[Stat.StatBonusArmor]: 0.23,
+				[Stat.StatDodge]: 0.97,
+				[Stat.StatMastery]: 0.35,
+				[Stat.StatStrength]: 0.11,
+				[Stat.StatAttackPower]: 0.1,
+				[Stat.StatMeleeHit]: 0.075,
+				[Stat.StatSpellHit]: 0.195,
+				[Stat.StatExpertise]: 0.15,
+				[Stat.StatMeleeCrit]: 0.11,
+				[Stat.StatMeleeHaste]: 0.0,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 0.0,
 			},
 		),
+		// Default stat caps for the Reforge Optimizer
+		statCaps: (() => {
+			const meleeHitCap = new Stats().withStat(Stat.StatMeleeHit, 5 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+			const spellHitCap = new Stats().withStat(Stat.StatSpellHit, 4 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+			const expCap = new Stats().withStat(Stat.StatExpertise, 5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+
+			return meleeHitCap.add(spellHitCap).add(expCap);
+		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default rotation settings.
@@ -275,6 +272,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 export class GuardianDruidSimUI extends IndividualSimUI<Spec.SpecGuardianDruid> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecGuardianDruid>) {
 		super(parentElem, player, SPEC_CONFIG);
-		//const _gemOptimizer = new TankGemOptimizer(this);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }

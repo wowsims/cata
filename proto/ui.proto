@@ -295,6 +295,7 @@ message SimSettings {
 	bool show_experimental = 5;
 	bool show_quick_swap = 12;
 	bool show_ep_values = 11;
+	bool use_custom_ep_values = 13;
 	string language = 9;
 	Faction faction = 6;
 	DatabaseFilters filters = 10;
@@ -315,6 +316,7 @@ message IndividualSimSettings {
 	Stat dps_ref_stat = 12;
 	Stat heal_ref_stat = 13;
 	Stat tank_ref_stat = 14;
+	UnitStats stat_caps = 15;
 }
 
 // Local storage data for gear settings.

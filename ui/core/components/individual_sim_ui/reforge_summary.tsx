@@ -79,10 +79,7 @@ export class ReforgeSummary extends Component {
 				<button
 					className="btn btn-sm btn-link btn-reset summary-table-reset-button"
 					onclick={() => {
-						gear.getItemSlots().forEach(itemSlot => {
-							const item = gear.getEquippedItem(itemSlot);
-							if (item) gear = gear.withEquippedItem(itemSlot, item.withItem(item.item), this.player.canDualWield2H());
-						});
+						gear = gear.withoutReforges(this.player.canDualWield2H());
 						this.player.setGear(TypedEvent.nextEventID(), gear);
 					}}>
 					<i className="fas fa-times me-1"></i>

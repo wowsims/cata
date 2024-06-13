@@ -1,5 +1,10 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
+<<<<<<< HEAD
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
+=======
+import * as OtherInputs from '../../core/components/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+>>>>>>> cf25bfdbdd83ba10bf25ace3056ebfe28346134f
 import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
@@ -65,9 +70,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		if (player.getRace() == Race.RaceTroll && rangedWeapon?.item.rangedWeaponType == RangedWeaponType.RangedWeaponTypeBow) {
 			stats = stats.addStat(Stat.StatMeleeCrit, 1 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
 		}
-		if (player.getTalents().pathing) {
-			stats = stats.addStat(Stat.StatMeleeHaste, player.getTalents().pathing * Mechanics.HASTE_RATING_PER_HASTE_PERCENT);
-		}
 		return {
 			talents: stats,
 		};
@@ -80,18 +82,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		epWeights: Stats.fromMap(
 			{
 				[Stat.StatStamina]: 0.5,
-				[Stat.StatAgility]: 2.65,
+				[Stat.StatAgility]: 3.27,
 				[Stat.StatIntellect]: 1.1,
 				[Stat.StatRangedAttackPower]: 1.0,
-				[Stat.StatMeleeHit]: 2,
-				[Stat.StatMeleeCrit]: 1.5,
-				[Stat.StatMeleeHaste]: 1.39,
-				[Stat.StatMastery]: 1.32,
+				[Stat.StatMeleeHit]: 2.16,
+				[Stat.StatMeleeCrit]: 1.17,
+				[Stat.StatMeleeHaste]: 0.89,
+				[Stat.StatMastery]: 0.88,
 			},
 			{
-				[PseudoStat.PseudoStatRangedDps]: 6.32,
+				[PseudoStat.PseudoStatRangedDps]: 3.75,
 			},
 		),
+		// Default stat caps for the Reforge Optimizer
+		statCaps: (() => {
+			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+			return hitCap;
+		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -265,5 +272,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 export class SurvivalHunterSimUI extends IndividualSimUI<Spec.SpecSurvivalHunter> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecSurvivalHunter>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }

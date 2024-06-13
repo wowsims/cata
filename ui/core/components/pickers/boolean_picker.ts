@@ -13,7 +13,7 @@ export interface BooleanPickerConfig<ModObject> extends InputConfig<ModObject, b
 export class BooleanPicker<ModObject> extends Input<ModObject, boolean> {
 	private readonly inputElem: HTMLInputElement;
 
-	constructor(parent: HTMLElement, modObject: ModObject, config: BooleanPickerConfig<ModObject>) {
+	constructor(parent: HTMLElement | null, modObject: ModObject, config: BooleanPickerConfig<ModObject>) {
 		super(parent, 'boolean-picker-root', modObject, config);
 
 		this.rootElem.classList.add('form-check');

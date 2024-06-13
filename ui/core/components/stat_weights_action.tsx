@@ -300,7 +300,7 @@ class EpWeightsMenu extends BaseModal {
 				this.epStats,
 				this.epPseudoStats,
 				this.epReferenceStat,
-				(progress: ProgressMetrics) => {
+				progress => {
 					this.setSimProgress(progress);
 				},
 			);
