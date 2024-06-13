@@ -185,8 +185,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	healRefStat?: Stat;
 	tankRefStat?: Stat;
 
-	readonly bt: BulkTab;
-
 	constructor(parentElem: HTMLElement, player: Player<SpecType>, config: IndividualSimUIConfig<SpecType>) {
 		super(parentElem, player.sim, {
 			cssClass: config.cssClass,
@@ -316,7 +314,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 		this.addSidebarComponents();
 		this.addGearTab();
-		this.bt = this.addBulkTab();
+		this.addBulkTab();
 		this.addSettingsTab();
 		this.addTalentsTab();
 		this.addRotationTab();
@@ -406,13 +404,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		gearTab.rootElem.classList.add('active', 'show');
 	}
 
-	private addBulkTab(): BulkTab {
-		const bulkTab = new BulkTab(this.simTabContentsContainer, this);
-		bulkTab.navLink.hidden = !this.sim.getShowExperimental();
-		this.sim.showExperimentalChangeEmitter.on(() => {
-			bulkTab.navLink.hidden = !this.sim.getShowExperimental();
-		});
-		return bulkTab;
+	private addBulkTab() {
+		new BulkTab(this.simTabContentsContainer, this);
 	}
 
 	private addSettingsTab() {
