@@ -205,3 +205,9 @@ kbd {
 	width: 100%;
 	background: color-mix(in srgb, var(--bs-body-bg), var(--bs-white) 5%);
 }
+
+.blurred {
+	filter: blur(2px);
+	overflow: hidden;
+	pointer-events: none;
+}

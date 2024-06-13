@@ -74,7 +74,6 @@ export class BulkTab extends SimTab {
 		const setupTabRef = ref<HTMLDivElement>();
 		const resultsTabBtnRef = ref<HTMLButtonElement>();
 		const resultsTabRef = ref<HTMLDivElement>();
-		const pendingDivRef = ref<HTMLDivElement>();
 		this.contentContainer.appendChild(
 			<>
 				<div className="bulk-tab-left tab-panel-left" ref={leftPanelRef}>
@@ -126,7 +125,6 @@ export class BulkTab extends SimTab {
 					</div>
 				</div>
 				<div className="bulk-tab-right tab-panel-right" ref={rightPanelRef} />
-				<div className="results-pending-overlay d-flex hide" ref={pendingDivRef} />
 			</>,
 		);
 
@@ -134,7 +132,7 @@ export class BulkTab extends SimTab {
 		this.rightPanel = rightPanelRef.value!;
 		this.setupTabElem = setupTabRef.value!;
 		this.resultsTabElem = resultsTabRef.value!;
-		this.pendingDiv = pendingDivRef.value!;
+		this.pendingDiv = (<div className="results-pending-overlay" />) as HTMLDivElement;
 
 		this.setupTab = new Tab(setupTabBtnRef.value!);
 		this.resultsTab = new Tab(resultsTabBtnRef.value!);
@@ -505,8 +503,8 @@ export class BulkTab extends SimTab {
 		});
 
 		bulkSimButton.addEventListener('click', () => {
-			this.pendingDiv.classList.remove('hide');
-			// this.simUI.rootElem.classList.add('blurred');
+			this.simUI.rootElem.classList.add('blurred');
+			this.simUI.rootElem.insertAdjacentElement('afterend', this.pendingDiv);
 
 			const defaultState = cloneChildren(bulkSimButton);
 			bulkSimButton.disabled = true;
@@ -545,9 +543,8 @@ export class BulkTab extends SimTab {
 				lastTotal = progressMetrics.totalSims;
 
 				if (!!progressMetrics.finalBulkResult) {
-					// reset state
-					this.pendingDiv.classList.add('hide');
 					this.simUI.rootElem.classList.remove('blurred');
+					this.pendingDiv.remove();
 
 					this.pendingResults.hideAll();
 					bulkSimButton.disabled = false;
