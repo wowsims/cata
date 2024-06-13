@@ -5,9 +5,9 @@ import { armorTypeNames, raidNames, rangedWeaponTypeNames, sourceNames, weaponTy
 import { Sim } from '../../sim';
 import { EventID } from '../../typed_event';
 import { BaseModal } from '../base_modal';
-import { BooleanPicker } from '../boolean_picker';
-import { EnumPicker } from '../enum_picker';
-import { NumberPicker } from '../number_picker';
+import { BooleanPicker } from '../pickers/boolean_picker';
+import { EnumPicker } from '../pickers/enum_picker';
+import { NumberPicker } from '../pickers/number_picker';
 
 const factionRestrictionsToLabels: Record<UIItem_FactionRestriction, string> = {
 	[UIItem_FactionRestriction.UNSPECIFIED]: 'None',

@@ -1,19 +1,26 @@
 .bulk-item-picker.item-picker-root {
-	padding: var(--spacer-2);
 	border: var(--border-default);
-	margin-bottom: 0 !important;
 
-	.item-picker-labels-container {
-		padding-top: 0;
+	&.bulk-item-picker-equipped {
+		border-color: var(--bs-brand);
 	}
 
-	.remove-batch-item-btn {
-		@extend .btn;
-		@extend .btn-sm;
-		@extend .btn-reset;
+	.item-picker-actions-container {
+		margin-left: var(--spacer-2);
+		gap: var(--spacer-1);
+		display: grid;
+		grid-auto-flow: column;
+		align-items: start;
 
-		margin-right: calc(-1 * var(--spacer-2));
-		margin-top: calc(-1 * var(--spacer-2));
-		align-self: flex-start;
+		.item-picker-actions-btn {
+			line-height: 1;
+		}
+
+		.dropdown-menu {
+			i {
+				width: 1rem;
+				margin-right: var(--spacer-1);
+			}
+		}
 	}
 }

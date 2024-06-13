@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 
-import { Player } from '../player.js';
-import { PlayerClasses } from '../player_classes/index.js';
-import { UnitReference } from '../proto/common.js';
-import { emptyUnitReference } from '../proto_utils/utils.js';
-import { Raid } from '../raid.js';
-import { EventID, TypedEvent } from '../typed_event.js';
-import { Input, InputConfig } from './input.jsx';
+import { Player } from '../../player.js';
+import { PlayerClasses } from '../../player_classes/index.js';
+import { UnitReference } from '../../proto/common.js';
+import { emptyUnitReference } from '../../proto_utils/utils.js';
+import { Raid } from '../../raid.js';
+import { EventID, TypedEvent } from '../../typed_event.js';
+import { Input, InputConfig } from '../input.js';
 
 export interface UnitReferencePickerConfig<ModObject> extends InputConfig<ModObject, UnitReference> {
 	noTargetLabel: string;

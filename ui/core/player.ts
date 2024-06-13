@@ -690,6 +690,10 @@ export class Player<SpecType extends Spec> {
 		return this.gear.getEquippedItem(slot);
 	}
 
+	getEquippedItems(): Array<EquippedItem | null> {
+		return this.gear.getEquippedItems();
+	}
+
 	getGear(): Gear {
 		return this.gear;
 	}

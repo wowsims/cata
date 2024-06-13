@@ -1,5 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
+import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';

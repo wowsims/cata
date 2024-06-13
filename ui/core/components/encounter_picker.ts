@@ -1,7 +1,3 @@
-import { BooleanPicker } from '../components/boolean_picker.js';
-import { EnumPicker } from '../components/enum_picker.js';
-import { ListItemPickerConfig, ListPicker } from '../components/list_picker.js';
-import { NumberPicker } from '../components/number_picker.js';
 import { Encounter } from '../encounter.js';
 import { IndividualSimUI } from '../individual_sim_ui.js';
 import { InputType, MobType, SpellSchool, Stat, Target, Target as TargetProto, TargetInput } from '../proto/common.js';
@@ -13,8 +9,12 @@ import { EventID, TypedEvent } from '../typed_event.js';
 import { randomUUID } from '../utils';
 import { BaseModal } from './base_modal.js';
 import { Component } from './component.js';
-import { TextDropdownPicker, TextDropdownValueConfig } from './dropdown_picker';
 import { Input } from './input.js';
+import { BooleanPicker } from './pickers/boolean_picker.js';
+import { TextDropdownPicker, TextDropdownValueConfig } from './pickers/dropdown_picker.jsx';
+import { EnumPicker } from './pickers/enum_picker.js';
+import { ListItemPickerConfig, ListPicker } from './pickers/list_picker.jsx';
+import { NumberPicker } from './pickers/number_picker.js';
 
 export interface EncounterPickerConfig {
 	showExecuteProportion: boolean;

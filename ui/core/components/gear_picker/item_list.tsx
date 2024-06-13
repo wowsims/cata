@@ -23,7 +23,7 @@ import {
 	makeShow2hWeaponsSelector,
 	makeShowEPValuesSelector,
 	makeShowMatchingGemsSelector,
-} from '../other_inputs';
+} from '../inputs/other_inputs';
 import Toast from '../toast';
 import { Clusterize } from '../virtual_scroll/clusterize';
 import { FiltersMenu } from './filters_menu';
@@ -491,7 +491,7 @@ export default class ItemList<T extends ItemListType> {
 						<i ref={favoriteIconElem} className="far fa-star fa-xl" />
 					</button>
 				</div>
-				<div ref={compareContainer} className="selector-modal-list-item-compare-container hide">
+				<div ref={compareContainer} className="selector-modal-list-item-compare-container">
 					<button className="selector-modal-list-item-compare btn btn-link p-0" ref={compareButton}>
 						<i className="fas fa-arrow-right-arrow-left fa-xl" />
 					</button>
@@ -571,7 +571,7 @@ export default class ItemList<T extends ItemListType> {
 				const checkHasItem = () => simUI.bt.hasItem(ItemSpec.create({ id: itemData.id }));
 				const toggleCompareButtonState = () => {
 					const hasItem = checkHasItem();
-					batchSimTooltip.setContent(hasItem ? 'Remove from Batch sim' : 'Add to Batch sim');
+					batchSimTooltip.setContent(hasItem ? 'Remove from Batch Sim' : 'Add to Batch Sim');
 					compareButton.value!.classList[hasItem ? 'add' : 'remove']('text-brand');
 				};
 

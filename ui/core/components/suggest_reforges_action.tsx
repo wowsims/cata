@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import tippy from 'tippy.js';
-import { type Instance as TippyInstance } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 import { Constraint, greaterEq, lessEq, Model, Options, Solution, solve } from 'yalps';
 
@@ -16,8 +15,8 @@ import { Sim } from '../sim';
 import { ActionGroupItem } from '../sim_ui';
 import { TypedEvent } from '../typed_event';
 import { isDevMode, sleep } from '../utils';
-import { BooleanPicker } from './boolean_picker';
-import { NumberPicker } from './number_picker';
+import { BooleanPicker } from './pickers/boolean_picker';
+import { NumberPicker } from './pickers/number_picker';
 import Toast from './toast';
 
 type YalpsCoefficients = Map<string, number>;

@@ -67,7 +67,8 @@ interface SimProps {
 export class Sim {
 	private readonly workerPool: WorkerPool;
 
-	private iterations = 3000;
+	iterations = 3000;
+
 	private phase: number = OtherConstants.CURRENT_PHASE;
 	private faction: Faction = Faction.Alliance;
 	private fixedRngSeed = 0;
@@ -246,10 +247,10 @@ export class Sim {
 		}
 
 		// Attach the extra database to the player.
-		const playerDatabase = request.baseSettings.raid.parties[0].players[0].database;
-		playerDatabase?.items.push(...bulkItemsDb.items);
-		playerDatabase?.enchants.push(...bulkItemsDb.enchants);
-		playerDatabase?.gems.push(...bulkItemsDb.gems);
+		const playerDatabase = request.baseSettings.raid.parties[0].players[0].database!;
+		playerDatabase.items.push(...bulkItemsDb.items);
+		playerDatabase.enchants.push(...bulkItemsDb.enchants);
+		playerDatabase.gems.push(...bulkItemsDb.gems);
 
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 

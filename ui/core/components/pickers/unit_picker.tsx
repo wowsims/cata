@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 
-import { UnitReference } from '../proto/common.js';
-import { ActionId } from '../proto_utils/action_id.js';
-import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig } from './dropdown_picker.jsx';
+import { UnitReference } from '../../proto/common';
+import { ActionId } from '../../proto_utils/action_id';
+import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig } from './dropdown_picker';
 
 export interface UnitValue {
 	value: UnitReference | undefined;

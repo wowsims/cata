@@ -1,9 +1,9 @@
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
-import { ActionId } from '../proto_utils/action_id.js';
-import { TypedEvent } from '../typed_event.js';
-import { Input, InputConfig } from './input.js';
+import { ActionId } from '../../proto_utils/action_id.js';
+import { TypedEvent } from '../../typed_event.js';
+import { Input, InputConfig } from '../input.js';
 
 export enum IconEnumPickerDirection {
 	Vertical = 'vertical',

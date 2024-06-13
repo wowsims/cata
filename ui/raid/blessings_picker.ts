@@ -1,7 +1,7 @@
 import tippy from 'tippy.js';
 
 import { Component } from '../core/components/component';
-import { IconEnumPicker } from '../core/components/icon_enum_picker';
+import { IconEnumPicker } from '../core/components/pickers/icon_enum_picker';
 import { PlayerClasses } from '../core/player_classes';
 import { Paladin } from '../core/player_classes/paladin';
 import { PlayerSpec } from '../core/player_spec';

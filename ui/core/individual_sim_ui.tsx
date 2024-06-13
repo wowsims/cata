@@ -407,12 +407,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	private addBulkTab(): BulkTab {
-		const bulkTab = new BulkTab(this.simTabContentsContainer, this);
-		bulkTab.navLink.hidden = !this.sim.getShowExperimental();
-		this.sim.showExperimentalChangeEmitter.on(() => {
-			bulkTab.navLink.hidden = !this.sim.getShowExperimental();
-		});
-		return bulkTab;
+		return new BulkTab(this.simTabContentsContainer, this);
 	}
 
 	private addSettingsTab() {
