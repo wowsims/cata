@@ -11,7 +11,7 @@ import { TypedEvent } from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
 // import * as RetInputs from './inputs.js';
 import * as Presets from './presets.js';
-import { PaladinPrimeGlyph } from '../../core/proto/paladin';
+import { PaladinPrimeGlyph, PaladinSeal } from '../../core/proto/paladin';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssClass: 'retribution-paladin-sim-ui',
@@ -62,7 +62,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		let stats = new Stats();
 
 		TypedEvent.freezeAllAndDo(() => {
-			if (player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth)) {
+			const currentSeal = player.getSpecOptions().classOptions?.seal;
+			if (player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth) &&
+				(currentSeal === PaladinSeal.Truth || currentSeal === PaladinSeal.Righteousness)) {
 				stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			}
 		});
