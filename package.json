@@ -54,7 +54,7 @@
 		"eslint-plugin-prettier": "^5.0.0",
 		"eslint-plugin-simple-import-sort": "^10.0.0",
 		"eslint-plugin-unused-imports": "^2.0.0",
-		"glob": "^10.4.1",
+		"glob": "^8.1.0",
 		"http-server": "13.0.1",
 		"postcss-scss": "^4.0.9",
 		"prettier": "3.0.3",
