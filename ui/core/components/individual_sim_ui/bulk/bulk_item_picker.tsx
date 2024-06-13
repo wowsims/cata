@@ -43,10 +43,7 @@ export default class BulkItemPicker extends Component {
 
 		this.simUI.sim.waitForInit().then(() => this.setItem(item));
 
-		this.addOnDisposeCallback(() => {
-			this.rootElem.remove();
-			this.rootElem.innerHTML = '';
-		});
+		this.addOnDisposeCallback(() => this.rootElem.remove());
 	}
 
 	setItem(newItem: EquippedItem) {

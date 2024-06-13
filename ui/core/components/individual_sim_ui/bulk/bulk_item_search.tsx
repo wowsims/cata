@@ -217,16 +217,16 @@ export default class BulkItemSearch extends ContentBlock {
 			}
 		});
 
-		this.searchResultElem.replaceChildren(items);
-
-		if (matchCount > MAX_SEARCH_RESULTS) {
-			console.log(matchCount);
-			this.searchResultElem.appendChild(
-				<li className="bulk-item-search-item bulk-item-search-more-items-note">
-					Showing {MAX_SEARCH_RESULTS} of {matchCount} total matches.
-				</li>,
-			);
-		}
+		this.searchResultElem.replaceChildren(
+			<>
+				{items}
+				{matchCount > MAX_SEARCH_RESULTS && (
+					<li className="bulk-item-search-item bulk-item-search-more-items-note">
+						Showing {MAX_SEARCH_RESULTS} of {matchCount} total matches.
+					</li>
+				)}
+			</>,
+		);
 
 		this.searchResultElem.classList.add('show');
 		this.cancelSearchElem.classList.remove('hide');

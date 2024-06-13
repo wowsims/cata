@@ -4,11 +4,11 @@ import { ref } from 'tsx-vanilla';
 
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { BulkSettings, ProgressMetrics, TalentLoadout } from '../../proto/api';
-import { GemColor, ItemSlot, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
+import { GemColor, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIGem, UIItem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
-import { canEquipItem, getEligibleItemSlots } from '../../proto_utils/utils';
+import { canEquipItem, getEligibleItemSlots, isSecondaryItemSlot } from '../../proto_utils/utils';
 import { TypedEvent } from '../../typed_event';
 import { cloneChildren, getEnumValues } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
@@ -162,16 +162,11 @@ export class BulkTab extends SimTab {
 					if (!!equippedItem) {
 						getEligibleItemSlots(equippedItem.item).forEach(eligibleSlot => {
 							// Avoid duplicating rings/trinkets
-							if (
-								eligibleSlot === ItemSlot.ItemSlotFinger2 ||
-								eligibleSlot === ItemSlot.ItemSlotTrinket2 ||
-								!canEquipItem(equippedItem.item, this.simUI.player.getPlayerSpec(), eligibleSlot)
-							)
-								return;
+							if (isSecondaryItemSlot(slot) || !canEquipItem(equippedItem.item, this.simUI.player.getPlayerSpec(), eligibleSlot)) return;
 
 							const bulkSlot = itemSlotToBulkSimItemSlot.get(eligibleSlot)!;
 							const group = this.pickerGroups[bulkSlot];
-							const idx = slot === ItemSlot.ItemSlotFinger2 || slot === ItemSlot.ItemSlotTrinket2 ? -2 : -1;
+							const idx = isSecondaryItemSlot(slot) ? -2 : -1;
 
 							group.add(idx, equippedItem);
 						});
@@ -287,12 +282,7 @@ export class BulkTab extends SimTab {
 
 				getEligibleItemSlots(equippedItem.item).forEach(slot => {
 					// Avoid duplicating rings/trinkets
-					if (
-						slot === ItemSlot.ItemSlotFinger2 ||
-						slot === ItemSlot.ItemSlotTrinket2 ||
-						!canEquipItem(equippedItem.item, this.simUI.player.getPlayerSpec(), slot)
-					)
-						return;
+					if (isSecondaryItemSlot(slot) || !canEquipItem(equippedItem.item, this.simUI.player.getPlayerSpec(), slot)) return;
 
 					const bulkSlot = itemSlotToBulkSimItemSlot.get(slot)!;
 					const group = this.pickerGroups[bulkSlot];
@@ -312,7 +302,7 @@ export class BulkTab extends SimTab {
 
 			getEligibleItemSlots(equippedItem.item).forEach(slot => {
 				// Avoid duplicating rings/trinkets
-				if (slot === ItemSlot.ItemSlotFinger2 || slot === ItemSlot.ItemSlotTrinket2) return;
+				if (isSecondaryItemSlot(slot)) return;
 
 				const bulkSlot = itemSlotToBulkSimItemSlot.get(slot)!;
 				const group = this.pickerGroups[bulkSlot];
@@ -345,12 +335,7 @@ export class BulkTab extends SimTab {
 
 			getEligibleItemSlots(equippedItem.item).forEach(slot => {
 				// Avoid duplicating rings/trinkets
-				if (
-					slot === ItemSlot.ItemSlotFinger2 ||
-					slot === ItemSlot.ItemSlotTrinket2 ||
-					!canEquipItem(equippedItem.item, this.simUI.player.getPlayerSpec(), slot)
-				)
-					return;
+				if (isSecondaryItemSlot(slot) || !canEquipItem(equippedItem.item, this.simUI.player.getPlayerSpec(), slot)) return;
 
 				const bulkSlot = itemSlotToBulkSimItemSlot.get(slot)!;
 				const group = this.pickerGroups[bulkSlot];
@@ -448,11 +433,7 @@ export class BulkTab extends SimTab {
 			this.addItems(items);
 		});
 
-		clearButton.addEventListener('click', () => {
-			this.clearItems();
-			// resultsBlock.rootElem.hidden = true;
-			// resultsBlock.bodyElement.replaceChildren();
-		});
+		clearButton.addEventListener('click', this.clearItems);
 
 		new BulkItemSearch(this.setupTabElem, this.simUI, this);
 
@@ -471,6 +452,12 @@ export class BulkTab extends SimTab {
 			for (const r of bulkSimResult.results) {
 				new BulkSimResultRenderer(this.resultsTabElem, this.simUI, this, r, bulkSimResult.equippedGearResult!);
 			}
+
+			this.simUI.rootElem.classList.remove('blurred');
+			this.pendingDiv.remove();
+			this.pendingResults.hideAll();
+
+			this.resultsTab.show();
 		});
 	}
 
@@ -493,7 +480,6 @@ export class BulkTab extends SimTab {
 			</div>,
 		);
 
-		const settingsContainer = settingsContainerRef.value!;
 		const combinationsElem = combinationsElemRef.value!;
 		const bulkSimButton = bulkSimBtnRef.value!;
 		const booleanSettingsContainer = booleanSettingsContainerRef.value!;
@@ -505,15 +491,6 @@ export class BulkTab extends SimTab {
 		bulkSimButton.addEventListener('click', () => {
 			this.simUI.rootElem.classList.add('blurred');
 			this.simUI.rootElem.insertAdjacentElement('afterend', this.pendingDiv);
-
-			const defaultState = cloneChildren(bulkSimButton);
-			bulkSimButton.disabled = true;
-			bulkSimButton.classList.add('disabled');
-			bulkSimButton.replaceChildren(
-				<>
-					<i className="fa fa-spinner fa-spin" /> Running
-				</>,
-			);
 
 			let simStart = new Date().getTime();
 			let lastTotal = 0;
@@ -541,22 +518,10 @@ export class BulkTab extends SimTab {
 
 				this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
 				lastTotal = progressMetrics.totalSims;
-
-				if (!!progressMetrics.finalBulkResult) {
-					this.simUI.rootElem.classList.remove('blurred');
-					this.pendingDiv.remove();
-
-					this.pendingResults.hideAll();
-					bulkSimButton.disabled = false;
-					bulkSimButton.classList.remove('disabled');
-					bulkSimButton.replaceChildren(...defaultState);
-					this.resultsTab.show();
-					window.scrollTo({ top: 0, behavior: 'smooth' });
-				}
 			});
 		});
 
-		new BooleanPicker<BulkTab>(booleanSettingsContainer, this, {
+		const fastModeCheckbox = new BooleanPicker<BulkTab>(null, this, {
 			id: 'bulk-fast-mode',
 			label: 'Fast Mode',
 			labelTooltip: 'Fast mode reduces accuracy but will run faster.',
@@ -566,7 +531,7 @@ export class BulkTab extends SimTab {
 				this.setFastMode(newValue);
 			},
 		});
-		new BooleanPicker<BulkTab>(booleanSettingsContainer, this, {
+		const combinationsCheckbox = new BooleanPicker<BulkTab>(null, this, {
 			id: 'bulk-combinations',
 			label: 'Combinations',
 			labelTooltip:
@@ -577,7 +542,7 @@ export class BulkTab extends SimTab {
 				this.setCombinations(newValue);
 			},
 		});
-		new BooleanPicker<BulkTab>(booleanSettingsContainer, this, {
+		const autoEnchantCheckbox = new BooleanPicker<BulkTab>(null, this, {
 			id: 'bulk-auto-enchant',
 			label: 'Auto Enchant',
 			labelTooltip: 'When checked bulk simulator apply the current enchant for a slot to each replacement item it can.',
@@ -604,7 +569,7 @@ export class BulkTab extends SimTab {
 			</div>
 		);
 
-		new BooleanPicker<BulkTab>(booleanSettingsContainer, this, {
+		const autoGemCheckbox = new BooleanPicker<BulkTab>(null, this, {
 			id: 'bulk-auto-gem',
 			label: 'Auto Gem',
 			labelTooltip: 'When checked bulk simulator will fill any un-filled gem sockets with default gems.',
@@ -616,7 +581,7 @@ export class BulkTab extends SimTab {
 			},
 		});
 
-		new BooleanPicker<BulkTab>(booleanSettingsContainer, this, {
+		const simTalentsCheckbox = new BooleanPicker<BulkTab>(null, this, {
 			id: 'bulk-sim-talents',
 			label: 'Sim Talents',
 			labelTooltip: 'When checked bulk simulator will sim chosen talent setups. Warning, it might cause the bulk sim to run for a lot longer',
@@ -628,8 +593,15 @@ export class BulkTab extends SimTab {
 			},
 		});
 
-		settingsContainer.appendChild(defaultGemDiv);
-		settingsContainer.appendChild(talentsToSimDiv);
+		booleanSettingsContainer.appendChild(
+			<>
+				{fastModeCheckbox.rootElem}
+				{combinationsCheckbox.rootElem}
+				{autoEnchantCheckbox.rootElem}
+				{autoGemCheckbox.rootElem}
+				{simTalentsCheckbox.rootElem}
+			</>,
+		);
 
 		Array<GemColor>(GemColor.GemColorRed, GemColor.GemColorYellow, GemColor.GemColorBlue, GemColor.GemColorMeta).forEach((socketColor, socketIndex) => {
 			const gemContainerRef = ref<HTMLDivElement>();
@@ -738,14 +710,12 @@ export class BulkTab extends SimTab {
 	}
 
 	private getCombinationsCount(): Element {
-		let itemCount = 0;
 		let comboCount = 1;
 		this.itemsBySlot.forEach((items, _) => {
 			if (items.size != 0) {
-				itemCount += items.size;
-
 				if (this.doCombos) {
-					comboCount *= items.size + 1;
+					const uniqueItemCount = new Set([...items.values()].map(item => item.id)).size;
+					comboCount *= uniqueItemCount + 1;
 				} else {
 					comboCount += items.size;
 				}
@@ -753,17 +723,18 @@ export class BulkTab extends SimTab {
 		});
 		if (this.simTalents) comboCount *= this.savedTalents.length;
 
-		const baseNumIterations = this.fastMode ? 100 : this.simUI.sim.iterations;
+		const baseNumIterations = this.fastMode ? 50 : this.simUI.sim.iterations;
 
-		let multiplier = 0;
-		if (this.doCombos) {
-			multiplier = Math.pow(2, this.fastMode ? itemCount - 1 : itemCount);
-		} else {
-			multiplier = itemCount + 1;
-			if (this.fastMode) multiplier /= 2;
-		}
+		// let multiplier = 0;
+		// if (this.doCombos) {
+		// 	multiplier = Math.pow(2, itemCount);
+		// } else {
+		// 	multiplier = itemCount + 1;
+		// }
 
-		const iterationCount = baseNumIterations * multiplier;
+		// if (this.fastMode) multiplier /= 2;
+
+		const iterationCount = baseNumIterations * comboCount;
 
 		return (
 			<>
@@ -775,7 +746,8 @@ export class BulkTab extends SimTab {
 	}
 
 	private setSimProgress(progress: ProgressMetrics, iterPerSecond: number, currentRound: number, rounds: number, combinations: number) {
-		const secondsRemain = ((progress.totalIterations - progress.completedIterations) / iterPerSecond).toFixed();
+		const secondsRemaining = ((progress.totalIterations - progress.completedIterations) / iterPerSecond).toFixed();
+		if (isNaN(Number(secondsRemaining))) return;
 
 		this.pendingResults.setContent(
 			<div className="results-sim">
@@ -797,7 +769,7 @@ export class BulkTab extends SimTab {
 					<br />
 					iterations complete
 				</div>
-				<div>{secondsRemain} seconds remaining.</div>
+				<div>{secondsRemaining} seconds remaining.</div>
 			</div>,
 		);
 	}
