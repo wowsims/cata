@@ -60,7 +60,7 @@ export class BulkTab extends SimTab {
 	gemIconElements: HTMLImageElement[];
 
 	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<any>) {
-		super(parentElem, simUI, { identifier: 'bulk-tab', title: 'Batch' });
+		super(parentElem, simUI, { identifier: 'bulk-tab', title: 'Batch (<span class="text-success">New</span>)' });
 
 		this.simUI = simUI;
 
@@ -403,8 +403,13 @@ export class BulkTab extends SimTab {
 			<>
 				{/* // TODO: Remove once we're more comfortable with the state of Batch sim */}
 				<p className="mb-0">
-					Notice: This is under very early but active development and experimental. You may also need to update your WoWSims Exporter addon if you
-					want to import your bags.
+					<span className="bold">Batch Simming</span> is a new feature akin to the <span className="bold">Top Gear</span> sim on{' '}
+					<a href="https://raidbots.com" target="_blank">
+						Raidbots.com
+					</a>{' '}
+					that allows you to select multiple items and sim them find the best combinations.
+					<br />
+					This is an <span className="text-brand">Alpha</span> feature, so if you find a bug please report it!
 				</p>
 				<div className="bulk-gear-actions">
 					<button className="btn btn-secondary" ref={bagImportBtnRef}>
