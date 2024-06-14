@@ -39,12 +39,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.18,
-			[Stat.StatSpellPower]: 1,
+			[Stat.StatIntellect]: 1.26,
+			[Stat.StatSpellPower]: 1.0,
 			[Stat.StatSpellHit]: 0.93,
-			[Stat.StatSpellCrit]: 0.53,
-			[Stat.StatSpellHaste]: 0.81,
-			[Stat.StatMastery]: 1.0,
+			[Stat.StatSpellCrit]: 0.52,
+			[Stat.StatSpellHaste]: 0.58,
+			[Stat.StatMastery]: 0.38,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
