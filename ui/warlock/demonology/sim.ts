@@ -52,6 +52,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 		statCaps: (() => {
 			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
 		})(),
+		// Default soft caps for the Reforge optimizer
+		softCapBreakpoints: (() => {
+			// Set up Mastery breakpoints for integer % damage increments.
+			// These should be removed once the bugfix to make Mastery
+			// continuous goes live!
+			const masteryRatingBreakpoints = [];
+
+			for (let masteryPercent = 19; masteryPercent <= 200; masteryPercent++) {
+				masteryRatingBreakpoints.push((masteryPercent / 2.3) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+			}
+
+			const masterySoftCapConfig = { stat: Stat.StatMastery, breakpoints: masteryRatingBreakpoints };
+			return [masterySoftCapConfig];
+		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 
@@ -154,17 +168,7 @@ export class DemonologyWarlockSimUI extends IndividualSimUI<Spec.SpecDemonologyW
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecDemonologyWarlock>) {
 		super(parentElem, player, SPEC_CONFIG);
 		player.sim.waitForInit().then(() => {
-			// Set up Mastery breakpoints for integer % damage increments.
-			// These should be removed once the bugfix to make Mastery
-			// continuous goes live!
-			const masteryRatingBreakpoints = [];
-
-			for (let masteryPercent = 19; masteryPercent <= 200; masteryPercent++) {
-				masteryRatingBreakpoints.push(masteryPercent / 2.3 * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
-			}
-
-			const masterySoftCapConfig = {stat: Stat.StatMastery, breakpoints: masteryRatingBreakpoints};
-			new ReforgeOptimizer(this, {softCapsConfig: [masterySoftCapConfig]});
+			new ReforgeOptimizer(this);
 		});
 	}
 }

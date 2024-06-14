@@ -41,7 +41,7 @@ import {
 	Spec,
 	Stat,
 } from './proto/common';
-import { IndividualSimSettings, SavedTalents } from './proto/ui';
+import { IndividualSimSettings, SavedTalents, SoftCapBreakpoints } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
 import { Stats } from './proto_utils/stats';
@@ -114,6 +114,22 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		epWeights: Stats;
 		// Used for Reforge Optimizer
 		statCaps?: Stats;
+		/**
+		 * Allows specification of soft cap breakpoints for one or more stats.
+		 *
+		 * @remarks
+		 * These function differently from the hard caps taken from the sim UI in a few ways:
+		 *
+		 * Firstly, the specified breakpoints are lower priority than hard caps, and
+		 * evaluated only after the hard cap constraints have been solved first.
+		 *
+		 * Secondly, these constraints are evaluated in the order specified by the configuration
+		 * Array rather than all at once. So once the hard caps have been respected, the
+		 * closest breakpoint for the *first* listed soft capped stat is optimized against
+		 * while ignoring any others. Then the solution is used to identify the closest
+		 * breakpoint for the second listed stat (if present), etc.
+		 */
+		softCapBreakpoints?: SoftCapBreakpoints[];
 		consumes: Consumes;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
@@ -499,6 +515,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			const defaultRatios = this.player.getDefaultEpRatios(tankSpec, healingSpec);
 			this.player.setEpRatios(eventID, defaultRatios);
 			if (this.individualConfig.defaults.statCaps) this.player.setStatCaps(eventID, this.individualConfig.defaults.statCaps);
+			if (this.individualConfig.defaults.softCapBreakpoints)
+				this.player.setSoftCapBreakpoints(eventID, this.individualConfig.defaults.softCapBreakpoints);
 			this.player.setProfession1(eventID, this.individualConfig.defaults.other?.profession1 || Profession.Engineering);
 			this.player.setProfession2(eventID, this.individualConfig.defaults.other?.profession2 || Profession.Jewelcrafting);
 			this.player.setDistanceFromTarget(eventID, this.individualConfig.defaults.other?.distanceFromTarget || 0);
@@ -637,6 +655,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 				if (settings.statCaps) {
 					this.player.setStatCaps(eventID, Stats.fromProto(settings.statCaps));
+				}
+
+				if (!!settings.softCapBreakpoints.length) {
+					this.player.setSoftCapBreakpoints(eventID, settings.softCapBreakpoints);
 				}
 
 				if (settings.dpsRefStat) {
