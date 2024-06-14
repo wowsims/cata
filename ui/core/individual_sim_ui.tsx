@@ -53,6 +53,7 @@ import { EventID, TypedEvent } from './typed_event';
 import { isDevMode } from './utils';
 
 const SAVED_GEAR_STORAGE_KEY = '__savedGear__';
+const SAVED_EP_WEIGHTS_STORAGE_KEY = '__savedEPWeights__';
 const SAVED_ROTATION_STORAGE_KEY = '__savedRotation__';
 const SAVED_SETTINGS_STORAGE_KEY = '__savedSettings__';
 const SAVED_TALENTS_STORAGE_KEY = '__savedTalents__';
@@ -390,7 +391,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private addSidebarComponents() {
 		this.raidSimResultsManager = addRaidSimAction(this);
-		addStatWeightsAction(this, this.individualConfig.epStats, this.individualConfig.epPseudoStats, this.individualConfig.epReferenceStat);
+		addStatWeightsAction(this);
 
 		new CharacterStats(
 			this.rootElem.querySelector('.sim-sidebar-stats') as HTMLElement,
@@ -550,6 +551,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	getSavedGearStorageKey(): string {
 		return this.getStorageKey(SAVED_GEAR_STORAGE_KEY);
+	}
+
+	getSavedEPWeightsStorageKey(): string {
+		return this.getStorageKey(SAVED_EP_WEIGHTS_STORAGE_KEY);
 	}
 
 	getSavedRotationStorageKey(): string {

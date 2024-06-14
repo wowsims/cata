@@ -104,6 +104,14 @@
 	}
 }
 
+.ep-weights-sidebar {
+	min-width: 170px;
+
+	.saved-data-create-container {
+		max-width: 200px;
+	}
+}
+
 .unused-ep {
 	color: var(--bs-gray-500) !important;
 }

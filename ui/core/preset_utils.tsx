@@ -1,3 +1,4 @@
+import Toast, { ToastOptions } from './components/toast';
 import * as Tooltips from './constants/tooltips.js';
 import { Player } from './player';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
@@ -10,9 +11,10 @@ interface PresetBase {
 	name: string;
 	tooltip?: string;
 	enableWhen?: (obj: Player<any>) => boolean;
+	onLoad?: (player: Player<any>) => void;
 }
 
-interface PresetOptionsBase {
+interface PresetOptionsBase extends Pick<PresetBase, 'onLoad'> {
 	customCondition?: (player: Player<any>) => boolean;
 }
 
@@ -36,7 +38,7 @@ export interface PresetRotation extends PresetBase {
 	rotation: SavedRotation;
 }
 
-export interface PresetRotationOptions {
+export interface PresetRotationOptions extends Pick<PresetOptionsBase, 'onLoad'> {
 	talentTree?: number;
 }
 
@@ -65,6 +67,7 @@ function makePresetGearHelper(name: string, gear: EquipmentSpec, options: Preset
 		tooltip: options.tooltip || Tooltips.BASIC_BIS_DISCLAIMER,
 		gear,
 		enableWhen: !!conditions.length ? (player: Player<any>) => conditions.every(cond => cond(player)) : undefined,
+		onLoad: options?.onLoad,
 	};
 }
 
@@ -82,6 +85,7 @@ function makePresetEpWeightHelper(name: string, epWeights: Stats, options?: Pres
 		name,
 		epWeights,
 		enableWhen: !!conditions.length ? (player: Player<any>) => conditions.every(cond => cond(player)) : undefined,
+		onLoad: options?.onLoad,
 	};
 }
 
@@ -89,6 +93,7 @@ export function makePresetAPLRotation(name: string, rotationJson: any, options?:
 	const rotation = SavedRotation.create({
 		rotation: APLRotation.fromJson(rotationJson),
 	});
+
 	return makePresetRotationHelper(name, rotation, options);
 }
 
@@ -111,6 +116,7 @@ export function makePresetSimpleRotation<SpecType extends Spec>(
 			},
 		},
 	});
+
 	return makePresetRotationHelper(name, rotation, options);
 }
 
@@ -119,10 +125,32 @@ function makePresetRotationHelper(name: string, rotation: SavedRotation, options
 	if (options?.talentTree != undefined) {
 		conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
 	}
-
 	return {
 		name,
 		rotation,
 		enableWhen: !!conditions.length ? (player: Player<any>) => conditions.every(cond => cond(player)) : undefined,
+		onLoad: options?.onLoad,
 	};
 }
+
+export type SpecCheckWarning = {
+	condition: (player: Player<any>) => boolean;
+	message: string;
+};
+
+export const makeSpecChangeWarningToast = (checks: SpecCheckWarning[], player: Player<any>, options?: Partial<ToastOptions>) => {
+	const messages: string[] = checks.map(({ condition, message }) => condition(player) && message).filter((m): m is string => !!m);
+	if (messages.length)
+		new Toast({
+			variant: 'warning',
+			body: (
+				<>
+					{messages.map(message => (
+						<p>{message}</p>
+					))}
+				</>
+			),
+			delay: 5000,
+			...options,
+		});
+};

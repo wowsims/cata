@@ -6,6 +6,7 @@ import { IndividualSimUI } from '../individual_sim_ui.jsx';
 import { Player } from '../player.js';
 import { ProgressMetrics, StatWeightsResult, StatWeightValues } from '../proto/api.js';
 import { PseudoStat, Stat, UnitStats } from '../proto/common.js';
+import { SavedEPWeights } from '../proto/ui';
 import { getClassStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
@@ -14,26 +15,27 @@ import { BaseModal } from './base_modal.jsx';
 import { BooleanPicker } from './pickers/boolean_picker.js';
 import { NumberPicker } from './pickers/number_picker.js';
 import { ResultsViewer } from './results_viewer.jsx';
+import { SavedDataManager } from './saved_data_manager';
 
-export function addStatWeightsAction(simUI: IndividualSimUI<any>, epStats: Stat[], epPseudoStats: PseudoStat[] | undefined, epReferenceStat: Stat) {
+export const addStatWeightsAction = (simUI: IndividualSimUI<any>) => {
 	simUI.addAction('Stat Weights', 'ep-weights-action', () => {
 		// TODO: Make this so we can initialize the menu once outside of this function
-		new EpWeightsMenu(simUI, epStats, epPseudoStats || [], epReferenceStat).open();
+		new EpWeightsMenu(simUI).open();
 	});
-}
+};
 
 // Create the config for modal in separate function, as constructor cannot
 // contain any logic before `super' call. Use modal-xl to accommodate the extra
 // TMI & p(death) EP in the UI.
-function getModalConfig(simUI: IndividualSimUI<any>) {
+const getModalConfig = (simUI: IndividualSimUI<any>) => {
 	const baseConfig = { footer: true, scrollContents: true };
 	if (simUI.sim.getShowThreatMetrics() && simUI.sim.getShowExperimental()) {
 		return { size: 'xl' as const, ...baseConfig };
 	}
 	return baseConfig;
-}
+};
 
-function scaledEpValue(stat: UnitStat, epRatios: number[], result: StatWeightsResult | null): number {
+export const scaledEpValue = (stat: UnitStat, epRatios: number[], result: StatWeightsResult | null): number => {
 	if (!result) return 0;
 
 	return (
@@ -44,11 +46,12 @@ function scaledEpValue(stat: UnitStat, epRatios: number[], result: StatWeightsRe
 		(result.tmi?.epValues ? epRatios[4] * stat.getProtoValue(result.tmi.epValues) : 0) +
 		(result.pDeath?.epValues ? epRatios[5] * stat.getProtoValue(result.pDeath.epValues) : 0)
 	);
-}
+};
 
 class EpWeightsMenu extends BaseModal {
 	private readonly simUI: IndividualSimUI<any>;
 	private readonly container: HTMLElement;
+	private readonly sidebar: HTMLElement;
 	private readonly table: HTMLElement;
 	private readonly tableBody: HTMLElement;
 	private readonly resultsViewer: ResultsViewer;
@@ -59,18 +62,19 @@ class EpWeightsMenu extends BaseModal {
 	private epReferenceStat: Stat;
 	private showAllStats = false;
 
-	constructor(simUI: IndividualSimUI<any>, epStats: Stat[], epPseudoStats: PseudoStat[], epReferenceStat: Stat) {
+	constructor(simUI: IndividualSimUI<any>) {
 		super(simUI.rootElem, 'ep-weights-menu', { ...getModalConfig(simUI), disposeOnClose: false });
 		this.header?.insertAdjacentElement('afterbegin', <h5 className="modal-title">Calculate Stat Weights</h5>);
 
 		this.simUI = simUI;
 		this.statsType = 'ep';
-		this.epStats = epStats;
-		this.epPseudoStats = epPseudoStats;
-		this.epReferenceStat = epReferenceStat;
+		this.epStats = this.simUI.individualConfig.epStats;
+		this.epPseudoStats = this.simUI.individualConfig.epPseudoStats || [];
+		this.epReferenceStat = this.simUI.individualConfig.epReferenceStat;
 
 		const statsTable = this.buildStatsTable();
 		const containerRef = ref<HTMLDivElement>();
+		const sidebarRef = ref<HTMLDivElement>();
 		const tableRef = ref<HTMLTableElement>();
 		const tableBodyRef = ref<HTMLTableSectionElement>();
 		const damageMetricsSelectRef = ref<HTMLSelectElement>();
@@ -92,81 +96,84 @@ class EpWeightsMenu extends BaseModal {
 		);
 
 		this.body.appendChild(
-			<>
-				<div className="ep-weights-options row">
-					<div className="col col-sm-3">
-						<select ref={typeSelectRef} className="ep-type-select form-select">
-							<option value="ep">EP</option>
-							<option value="weight">Weights</option>
-						</select>
+			<div className="d-flex flex-column flex-lg-row align-items-lg-start gap-3">
+				<div className="ep-weights-content order-1 order-lg-0">
+					<div className="ep-weights-options row">
+						<div className="col col-sm-3">
+							<select ref={typeSelectRef} className="ep-type-select form-select">
+								<option value="ep">EP</option>
+								<option value="weight">Weights</option>
+							</select>
+						</div>
+						<div ref={allStatsContainerRef} className="show-all-stats-container col col-sm-3"></div>
 					</div>
-					<div ref={allStatsContainerRef} className="show-all-stats-container col col-sm-3"></div>
+					<div className="ep-reference-options row experimental">
+						<div className="col col-sm-4 damage-metrics">
+							<span>DPS/TPS reference:</span>
+							<select ref={damageMetricsSelectRef} className="ref-stat-select form-select damage-metrics">
+								{epRefSelectOptions.cloneNode(true)}
+							</select>
+						</div>
+						<div className="col col-sm-4 healing-metrics">
+							<span>Healing reference:</span>
+							<select ref={healingMetricsSelectRef} className="ref-stat-select form-select healing-metrics">
+								{epRefSelectOptions.cloneNode(true)}
+							</select>
+						</div>
+						<div className="col col-sm-4 threat-metrics">
+							<span>Mitigation reference:</span>
+							<select ref={threatMetricsSelectRef} className="ref-stat-select form-select threat-metrics">
+								{epRefSelectOptions.cloneNode(true)}
+							</select>
+						</div>
+						<p>The above stat selectors control which reference stat is used for EP normalisation for the different EP columns.</p>
+					</div>
+					<p>
+						The 'Current EP' column displays the values currently used by the item pickers to sort items.
+						<br />
+						Use the <button className="fa fa-copy" /> icon above the EPs to use newly calculated EPs.
+					</p>
+					<div ref={containerRef} className="results-ep-table-container modal-scroll-table">
+						<table ref={tableRef} className="results-ep-table">
+							<thead>
+								<tr>
+									<th>Stat</th>
+									{statsTable.map(({ metric, type, label, metricRef }) => {
+										const isAction = type === 'action';
+										return (
+											<th className={clsx(metric && `${metric}-metrics`, isAction ? 'text-center' : `type-${type}`)}>
+												<span>{label}</span>
+												<button ref={metricRef} className="col-action">
+													<i className={clsx('fas', isAction ? 'fa-arrows-rotate' : 'fa-copy')} />
+												</button>
+											</th>
+										);
+									})}
+								</tr>
+								<tr className="ep-ratios">
+									<td>EP Ratio</td>
+									{statsTable
+										.filter(({ type }) => type !== 'action')
+										.map(({ metric, type, experimental, ratioRef }) => (
+											<td
+												ref={ratioRef}
+												className={clsx('type-ratio', `${metric}-metrics`, `type-${type}`, experimental && 'experimental')}
+											/>
+										))}
+									<td className="text-center align-middle">
+										<button ref={computeEpRef} className="btn btn-primary compute-ep">
+											<i className="fas fa-calculator" />
+											<span className="not-tiny">Update </span>EP
+										</button>
+									</td>
+								</tr>
+							</thead>
+							<tbody ref={tableBodyRef}></tbody>
+						</table>
+					</div>
 				</div>
-				<div className="ep-reference-options row experimental">
-					<div className="col col-sm-4 damage-metrics">
-						<span>DPS/TPS reference:</span>
-						<select ref={damageMetricsSelectRef} className="ref-stat-select form-select damage-metrics">
-							{epRefSelectOptions.cloneNode(true)}
-						</select>
-					</div>
-					<div className="col col-sm-4 healing-metrics">
-						<span>Healing reference:</span>
-						<select ref={healingMetricsSelectRef} className="ref-stat-select form-select healing-metrics">
-							{epRefSelectOptions.cloneNode(true)}
-						</select>
-					</div>
-					<div className="col col-sm-4 threat-metrics">
-						<span>Mitigation reference:</span>
-						<select ref={threatMetricsSelectRef} className="ref-stat-select form-select threat-metrics">
-							{epRefSelectOptions.cloneNode(true)}
-						</select>
-					</div>
-					<p>The above stat selectors control which reference stat is used for EP normalisation for the different EP columns.</p>
-				</div>
-				<p>
-					The 'Current EP' column displays the values currently used by the item pickers to sort items.
-					<br />
-					Use the <button className="fa fa-copy" /> icon above the EPs to use newly calculated EPs.
-				</p>
-				<div ref={containerRef} className="results-ep-table-container modal-scroll-table">
-					<table ref={tableRef} className="results-ep-table">
-						<thead>
-							<tr>
-								<th>Stat</th>
-								{statsTable.map(({ metric, type, label, metricRef }) => {
-									const isAction = type === 'action';
-									return (
-										<th className={clsx(metric && `${metric}-metrics`, isAction ? 'text-center' : `type-${type}`)}>
-											<span>{label}</span>
-											<button ref={metricRef} className="col-action">
-												<i className={clsx('fas', isAction ? 'fa-arrows-rotate' : 'fa-copy')} />
-											</button>
-										</th>
-									);
-								})}
-							</tr>
-							<tr className="ep-ratios">
-								<td>EP Ratio</td>
-								{statsTable
-									.filter(({ type }) => type !== 'action')
-									.map(({ metric, type, experimental, ratioRef }) => (
-										<td
-											ref={ratioRef}
-											className={clsx('type-ratio', `${metric}-metrics`, `type-${type}`, experimental && 'experimental')}
-										/>
-									))}
-								<td className="text-center align-middle">
-									<button ref={computeEpRef} className="btn btn-primary compute-ep">
-										<i className="fas fa-calculator" />
-										<span className="not-tiny">Update </span>EP
-									</button>
-								</td>
-							</tr>
-						</thead>
-						<tbody ref={tableBodyRef}></tbody>
-					</table>
-				</div>
-			</>,
+				<div ref={sidebarRef} className="ep-weights-sidebar sticky-lg-top order-0 order-lg-1" />
+			</div>,
 		);
 
 		this.footer!.appendChild(
@@ -179,6 +186,7 @@ class EpWeightsMenu extends BaseModal {
 		);
 
 		this.container = containerRef.value!;
+		this.sidebar = sidebarRef.value!;
 		this.table = tableRef.value!;
 		this.tableBody = tableBodyRef.value!;
 
@@ -362,6 +370,8 @@ class EpWeightsMenu extends BaseModal {
 			}
 			this.updateTable();
 		});
+
+		this.buildSavedEPWeightsPicker();
 	}
 
 	private setSimProgress(progress: ProgressMetrics) {
@@ -716,6 +726,42 @@ class EpWeightsMenu extends BaseModal {
 				...createRefs(),
 			},
 		];
+	}
+
+	private buildSavedEPWeightsPicker() {
+		const savedEPWeightsManager = new SavedDataManager<Player<any>, SavedEPWeights>(this.sidebar, this.simUI.player, {
+			label: 'EP Weights',
+			header: { title: 'Saved EP weights' },
+			storageKey: this.simUI.getSavedEPWeightsStorageKey(),
+			getData: (player: Player<any>) =>
+				SavedEPWeights.create({
+					epWeights: player.getEpWeights().toProto(),
+				}),
+			setData: (eventID: EventID, player: Player<any>, newEPWeights: SavedEPWeights) => {
+				TypedEvent.freezeAllAndDo(() => {
+					player.setEpWeights(eventID, Stats.fromProto(newEPWeights.epWeights));
+				});
+			},
+			changeEmitters: [this.simUI.player.epWeightsChangeEmitter],
+			equals: (a: SavedEPWeights, b: SavedEPWeights) => SavedEPWeights.equals(a, b),
+			toJson: (a: SavedEPWeights) => SavedEPWeights.toJson(a),
+			fromJson: (obj: any) => SavedEPWeights.fromJson(obj),
+		});
+
+		this.simUI.sim.waitForInit().then(() => {
+			savedEPWeightsManager.loadUserData();
+			this.simUI.individualConfig.presets.epWeights.forEach(({ name, epWeights, enableWhen, onLoad }) => {
+				savedEPWeightsManager.addSavedData({
+					name: name,
+					isPreset: true,
+					data: SavedEPWeights.create({
+						epWeights: epWeights.toProto(),
+					}),
+					enableWhen,
+					onLoad,
+				});
+			});
+		});
 	}
 }
 

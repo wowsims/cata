@@ -4,10 +4,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
-import { Stats } from '../../core/proto_utils/stats';
-import * as DeathKnightInputs from '../inputs';
-import * as FrostInputs from './inputs';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
@@ -83,10 +80,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
-		const numTargets = player.sim.encounter.targets.length;
-		{
-			return Presets.TWO_HAND_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		}
+		const _numTargets = player.sim.encounter.targets.length;
+		return Presets.MASTERFROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.

@@ -361,6 +361,10 @@ message SavedRotation {
 	APLRotation rotation = 1;
 }
 
+message SavedEPWeights {
+	UnitStats ep_weights = 1;
+}
+
 message BlessingsAssignment {
 	// Index corresponds to Spec that the blessing should be applied to.
 	repeated Blessings blessings = 1;
