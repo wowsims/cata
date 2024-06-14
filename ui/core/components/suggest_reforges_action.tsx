@@ -119,7 +119,7 @@ export class ReforgeOptimizer {
 			tippy(_startReforgeOptimizationButton, {
 				content: this.buildReforgeButtonTooltip(),
 				placement: 'bottom',
-				maxWidth: 270,
+				maxWidth: 310,
 			});
 
 		tippy(contextMenuButton, {
@@ -160,8 +160,8 @@ export class ReforgeOptimizer {
 	buildReforgeButtonTooltip() {
 		return (
 			<>
-				The following soft caps/breakpoints have been implemented for this spec:
-				<ul className="mb-0">{this.softCapsConfig?.map(({ stat }) => <li>{getClassStatName(stat, this.player.getClass())}</li>)}</ul>
+				The following soft caps / breakpoints have been implemented for this spec:
+				<ul className="mt-1 mb-0">{this.softCapsConfig?.map(({ stat }) => <li>{getClassStatName(stat, this.player.getClass())}</li>)}</ul>
 			</>
 		);
 	}
