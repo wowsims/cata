@@ -1,13 +1,13 @@
-import * as OtherInputs from '../../core/components/other_inputs';
-import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
-import { Player } from '../../core/player';
+import * as OtherInputs from '../../core/components/other_inputs.js';
+import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
+import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLRotation } from '../../core/proto/apl';
-import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
-import { Stats } from '../../core/proto_utils/stats';
-import * as HolyInputs from '../../paladin/holy/inputs';
-import * as PaladinInputs from '../inputs';
-import * as Presets from './presets';
+import { APLRotation } from '../../core/proto/apl.js';
+import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common.js';
+import { Stats } from '../../core/proto_utils/stats.js';
+import * as HolyInputs from '../../paladin/holy/inputs.js';
+import * as PaladinInputs from '../inputs.js';
+import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 	cssClass: 'holy-paladin-sim-ui',

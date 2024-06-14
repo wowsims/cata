@@ -1,13 +1,14 @@
-import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec } from '../../core/proto/common';
+import * as PresetUtils from '../../core/preset_utils.js';
+import { Conjured, Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec } from '../../core/proto/common.js';
 import {
 	HolyPaladin_Options as Paladin_Options,
 	PaladinAura,
+	PaladinSeal,
+	PaladinPrimeGlyph as PrimeGlyph,
 	PaladinMajorGlyph as MajorGlyph,
 	PaladinMinorGlyph as MinorGlyph,
-	PaladinPrimeGlyph as PrimeGlyph,
-} from '../../core/proto/paladin';
-import { SavedTalents } from '../../core/proto/ui';
+} from '../../core/proto/paladin.js';
+import { SavedTalents } from '../../core/proto/ui.js';
 import P1Gear from './gear_sets/p1.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
@@ -44,7 +45,8 @@ export const StandardTalents = {
 
 export const DefaultOptions = Paladin_Options.create({
 	classOptions: {
-		aura: PaladinAura.Resistance,
+		aura: PaladinAura.Devotion,
+		seal: PaladinSeal.Insight,
 	},
 });
 
