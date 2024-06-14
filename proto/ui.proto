@@ -317,7 +317,14 @@ message IndividualSimSettings {
 	Stat heal_ref_stat = 13;
 	Stat tank_ref_stat = 14;
 	UnitStats stat_caps = 15;
+	repeated SoftCapBreakpoints soft_cap_breakpoints = 16;
 }
+
+message SoftCapBreakpoints {
+	Stat stat = 1;
+	repeated double breakpoints = 2;
+}
+
 
 // Local storage data for gear settings.
 message SavedGearSet {

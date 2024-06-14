@@ -7,6 +7,7 @@ import * as Mechanics from '../constants/mechanics.js';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Player } from '../player';
 import { ItemSlot, Spec, Stat } from '../proto/common';
+import { SoftCapBreakpoints } from '../proto/ui';
 import { Gear } from '../proto_utils/gear';
 import { getClassStatName } from '../proto_utils/names';
 import { statPercentageOrPointsToNumber, Stats, statToPercentageOrPoints } from '../proto_utils/stats';
@@ -37,26 +38,10 @@ const EXCLUDED_STATS = [
 	Stat.StatMana,
 ];
 
-interface SoftCapBreakpoints {
-	stat: Stat;
-	breakpoints: number[];
-}
-
 export type ReforgeOptimizerOptions = {
 	// Allows you to modify the stats before they are returned for the calculations
 	// For example: Adding class specific Glyphs/Talents that are not added by the backend
 	updateGearStatsModifier?: (baseStats: Stats) => Stats;
-
-	// Allows specification of soft cap breakpoints for one or more stats. These
-	// function differently from the hard caps taken from the sim UI in a few ways:
-	// Firstly, the specified breakpoints are lower priority than hard caps, and
-	// evaluated only after the hard cap constraints have been solved first. Secondly,
-	// these constraints are evaluated in the order specified by the configuration
-	// Array rather than all at once. So once the hard caps have been respected, the
-	// closest breakpoint for the *first* listed soft capped stat is optimized against
-	// while ignoring any others. Then the solution is used to identify the closest
-	// breakpoint for the second listed stat (if present), etc.
-	softCapsConfig?: SoftCapBreakpoints[];
 };
 
 export class ReforgeOptimizer {
@@ -67,7 +52,7 @@ export class ReforgeOptimizer {
 	protected readonly defaults: IndividualSimUI<any>['individualConfig']['defaults'];
 	protected _statCaps: Stats;
 	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
-	protected softCapsConfig: ReforgeOptimizerOptions['softCapsConfig'];
+	protected softCapsConfig: SoftCapBreakpoints[];
 
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
@@ -76,9 +61,9 @@ export class ReforgeOptimizer {
 		this.sim = simUI.sim;
 		this.defaults = simUI.individualConfig.defaults;
 		this.updateGearStatsModifier = options?.updateGearStatsModifier;
-		this.softCapsConfig = options?.softCapsConfig;
-		// For now only gets the first entry because of breakpoints support
+		this.softCapsConfig = this.defaults.softCapBreakpoints || [];
 		this._statCaps = this.statCaps;
+
 		const startReforgeOptimizationEntry: ActionGroupItem = {
 			label: 'Suggest Reforges',
 			cssClass: 'suggest-reforges-action-button flex-grow-1',
@@ -130,7 +115,15 @@ export class ReforgeOptimizer {
 			cssClass: 'suggest-reforges-settings-group d-flex',
 		});
 
+		if (!!this.softCapsConfig?.length)
+			tippy(_startReforgeOptimizationButton, {
+				content: this.buildReforgeButtonTooltip(),
+				placement: 'bottom',
+				maxWidth: 310,
+			});
+
 		tippy(contextMenuButton, {
+			placement: 'bottom',
 			content: 'Change Reforge Optimizer settings',
 		});
 
@@ -162,6 +155,15 @@ export class ReforgeOptimizer {
 		}
 
 		return weights;
+	}
+
+	buildReforgeButtonTooltip() {
+		return (
+			<>
+				The following soft caps / breakpoints have been implemented for this spec:
+				<ul className="mt-1 mb-0">{this.softCapsConfig?.map(({ stat }) => <li>{getClassStatName(stat, this.player.getClass())}</li>)}</ul>
+			</>
+		);
 	}
 
 	buildContextMenu(button: HTMLButtonElement) {
@@ -316,18 +318,21 @@ export class ReforgeOptimizer {
 		const reforgeSoftCaps: SoftCapBreakpoints[] = [];
 
 		if (this.softCapsConfig) {
-			this.softCapsConfig.slice().reverse().forEach((config) => {
-				const relativeBreakpoints = [];
+			this.softCapsConfig
+				.slice()
+				.reverse()
+				.forEach(config => {
+					const relativeBreakpoints = [];
 
-				for (const breakpoint of config.breakpoints) {
-					relativeBreakpoints.push(breakpoint - baseStats.getStat(config.stat));
-				}
+					for (const breakpoint of config.breakpoints) {
+						relativeBreakpoints.push(breakpoint - baseStats.getStat(config.stat));
+					}
 
-				reforgeSoftCaps.push({
-					stat: config.stat,
-					breakpoints: relativeBreakpoints.sort((a, b) => b - a),
+					reforgeSoftCaps.push({
+						stat: config.stat,
+						breakpoints: relativeBreakpoints.sort((a, b) => b - a),
+					});
 				});
-			});
 		}
 
 		return reforgeSoftCaps;
@@ -368,7 +373,7 @@ export class ReforgeOptimizer {
 		let appliedStat = stat;
 		let appliedAmount = amount;
 
-		if ((stat == Stat.StatSpirit) && this.isHybridCaster) {
+		if (stat == Stat.StatSpirit && this.isHybridCaster) {
 			appliedStat = Stat.StatSpellHit;
 
 			switch (this.player.getSpec()) {
@@ -492,7 +497,13 @@ export class ReforgeOptimizer {
 		await this.updateGear(updatedGear);
 	}
 
-	checkCaps(solution: Solution, reforgeCaps: Stats, reforgeSoftCaps: SoftCapBreakpoints[], variables: YalpsVariables, constraints: YalpsConstraints): [boolean, YalpsConstraints] {
+	checkCaps(
+		solution: Solution,
+		reforgeCaps: Stats,
+		reforgeSoftCaps: SoftCapBreakpoints[],
+		variables: YalpsVariables,
+		constraints: YalpsConstraints,
+	): [boolean, YalpsConstraints] {
 		// First add up the total stat changes from the solution
 		let reforgeStatContribution = new Stats();
 
@@ -526,7 +537,7 @@ export class ReforgeOptimizer {
 		}
 
 		// If hard caps are all taken care of, then deal with any remaining soft cap breakpoints
-		if (!anyCapsExceeded && (reforgeSoftCaps.length > 0)) {
+		if (!anyCapsExceeded && reforgeSoftCaps.length > 0) {
 			const nextSoftCap = reforgeSoftCaps.pop()!;
 			const statName = Stat[nextSoftCap.stat];
 			const currentValue = reforgeStatContribution.getStat(nextSoftCap.stat);
