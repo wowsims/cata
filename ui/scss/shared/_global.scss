@@ -62,6 +62,7 @@ button {
 	width: auto;
 	text-align: inherit;
 	font-weight: inherit;
+	transition: $btn-transition;
 
 	&:hover {
 		--bs-link-color-rgb: var(--bs-link-hover-color-rgb);
