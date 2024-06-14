@@ -2,8 +2,9 @@
 	"type": "TypeAPL",
 	"prepullActions": [
 		{"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-0.1s"}}},
-		{"action":{"castSpell":{"spellId":{"spellId":2825,"tag":-1}}},"doAtValue":{"const":{"val":"-0.1s"}}},
-		{"action":{"castSpell":{"spellId":{"spellId":86150}}},"doAtValue":{"const":{"val":"-0.1s"}}}
+		{"action":{"castSpell":{"spellId":{"spellId":86150}}},"doAtValue":{"const":{"val":"-0.1s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":2825,"tag":-1}}},"doAtValue":{"const":{"val":"-0s"}}},
+		{"action":{"castSpell":{"spellId":{"spellId":20271}}},"doAtValue":{"const":{"val":"-0s"}}}
 	],
 	"priorityList": [
 		{"action":{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":53657}}}}},"castSpell":{"spellId":{"spellId":20271}}}},
