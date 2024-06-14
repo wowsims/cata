@@ -316,7 +316,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 		this.addSidebarComponents();
 		this.addGearTab();
-		this.bt = this.addBulkTab();
 		this.addSettingsTab();
 		this.addTalentsTab();
 		this.addRotationTab();
@@ -324,6 +323,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		if (!this.isWithinRaidSim) {
 			this.addDetailedResultsTab();
 		}
+
+		this.bt = this.addBulkTab();
 
 		this.addTopbarComponents();
 	}
