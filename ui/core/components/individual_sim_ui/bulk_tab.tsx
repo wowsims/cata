@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
+import { REPO_RELEASES_URL } from '../../constants/other';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { BulkSettings, ProgressMetrics, TalentLoadout } from '../../proto/api';
 import { GemColor, Glyphs, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
@@ -427,7 +428,7 @@ export class BulkTab extends SimTab {
 				</p>
 				{isExternal() && (
 					<p className="mb-0">
-						<a href="https://github.com/wowsims/cata/releases" target="_blank">
+						<a href={REPO_RELEASES_URL} target="_blank">
 							<i className="fas fa-gauge-high me-1" />
 							Download the local sim for faster results.
 						</a>
