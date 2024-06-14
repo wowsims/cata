@@ -962,15 +962,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-AllItems-StumpofTime-62465"
  value: {
-  dps: 29000.97708
-  tps: 29119.5943
+  dps: 29118.63735
+  tps: 29239.06709
  }
 }
 dps_results: {
  key: "TestArcane-AllItems-StumpofTime-62470"
  value: {
-  dps: 28999.45088
-  tps: 29123.69328
+  dps: 29175.31561
+  tps: 29292.05804
  }
 }
 dps_results: {

@@ -955,15 +955,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-StumpofTime-62465"
  value: {
-  dps: 26636.20701
-  tps: 19894.84769
+  dps: 26884.11523
+  tps: 20091.29122
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-StumpofTime-62470"
  value: {
-  dps: 26665.22228
-  tps: 19888.54165
+  dps: 26909.79929
+  tps: 20080.13089
  }
 }
 dps_results: {

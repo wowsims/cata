@@ -955,15 +955,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-AllItems-StumpofTime-62465"
  value: {
-  dps: 27306.15768
-  tps: 18215.29679
+  dps: 27527.12951
+  tps: 18354.87416
  }
 }
 dps_results: {
  key: "TestDestruction-AllItems-StumpofTime-62470"
  value: {
-  dps: 27322.18712
-  tps: 18209.01427
+  dps: 27558.05145
+  tps: 18365.88373
  }
 }
 dps_results: {
