@@ -272,7 +272,7 @@ export class ActionId {
 				break;
 			case 'Fireball':
 			case 'Flamestrike':
-				if (this.tag == 1)	name += ' (Blast Wave)';
+				if (this.tag == 1) name += ' (Blast Wave)';
 				break;
 			case 'Pyroblast':
 			case 'Combustion':
@@ -391,7 +391,7 @@ export class ActionId {
 				break;
 			case 'Lightning Shield':
 				if (this.tag == 1) {
-					name += ' (Wasted)'
+					name += ' (Wasted)';
 				}
 				break;
 			case 'Moonfire':
@@ -437,6 +437,13 @@ export class ActionId {
 					name += ' (raid)';
 				}
 				break;
+			case 'Elemental Mastery':
+				if (this.spellId === 64701) {
+					name = `${name} (Buff)`;
+				} else {
+					name = `${name} (Instant)`;
+				}
+				break;
 			case 'Darkmoon Card: Crusade':
 				if (this.tag == 1) {
 					name += ' (Melee)';
@@ -474,6 +481,8 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+			case 'Raging Blow':
+			case 'Slam':
 			case 'Frost Strike':
 			case 'Plague Strike':
 			case 'Blood Strike':

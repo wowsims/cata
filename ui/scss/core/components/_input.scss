@@ -26,9 +26,10 @@
 
 	label {
 		margin-right: var(--spacer-2);
+		margin-bottom: 0;
 	}
 
-	input,
+	input:not(.form-check-input),
 	select {
 		width: 5rem;
 	}
@@ -37,7 +38,7 @@
 .picker-group {
 	width: 100%;
 	display: grid;
-	gap: var(--spacer-3);
+	gap: var(--spacer-1);
 	grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
 	margin-bottom: var(--spacer-3);
 

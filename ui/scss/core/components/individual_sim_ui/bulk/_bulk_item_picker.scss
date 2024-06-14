@@ -1,0 +1,26 @@
+.bulk-item-picker.item-picker-root {
+	border: var(--border-default);
+
+	&.bulk-item-picker-equipped {
+		border-color: var(--bs-brand);
+	}
+
+	.item-picker-actions-container {
+		margin-left: var(--spacer-2);
+		gap: var(--spacer-1);
+		display: grid;
+		grid-auto-flow: column;
+		align-items: start;
+
+		.item-picker-actions-btn {
+			line-height: 1;
+		}
+
+		.dropdown-menu {
+			i {
+				width: 1rem;
+				margin-right: var(--spacer-1);
+			}
+		}
+	}
+}

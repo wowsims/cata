@@ -67,7 +67,8 @@ interface SimProps {
 export class Sim {
 	private readonly workerPool: WorkerPool;
 
-	private iterations = 3000;
+	iterations = 3000;
+
 	private phase: number = OtherConstants.CURRENT_PHASE;
 	private faction: Faction = Faction.Alliance;
 	private fixedRngSeed = 0;
@@ -78,6 +79,7 @@ export class Sim {
 	private showExperimental = false;
 	private showQuickSwap = false;
 	private showEPValues = false;
+	private useCustomEPValues = false;
 	private language = '';
 
 	readonly type: SimType;
@@ -98,6 +100,7 @@ export class Sim {
 	readonly showExperimentalChangeEmitter = new TypedEvent<void>();
 	readonly showQuickSwapChangeEmitter = new TypedEvent<void>();
 	readonly showEPValuesChangeEmitter = new TypedEvent<void>();
+	readonly useCustomEPValuesChangeEmitter = new TypedEvent<void>();
 	readonly languageChangeEmitter = new TypedEvent<void>();
 	readonly crashEmitter = new TypedEvent<SimError>();
 
@@ -146,6 +149,7 @@ export class Sim {
 			this.showExperimentalChangeEmitter,
 			this.showQuickSwapChangeEmitter,
 			this.showEPValuesChangeEmitter,
+			this.useCustomEPValuesChangeEmitter,
 			this.languageChangeEmitter,
 		]);
 
@@ -243,10 +247,10 @@ export class Sim {
 		}
 
 		// Attach the extra database to the player.
-		const playerDatabase = request.baseSettings.raid.parties[0].players[0].database;
-		playerDatabase?.items.push(...bulkItemsDb.items);
-		playerDatabase?.enchants.push(...bulkItemsDb.enchants);
-		playerDatabase?.gems.push(...bulkItemsDb.gems);
+		const playerDatabase = request.baseSettings.raid.parties[0].players[0].database!;
+		playerDatabase.items.push(...bulkItemsDb.items);
+		playerDatabase.enchants.push(...bulkItemsDb.enchants);
+		playerDatabase.gems.push(...bulkItemsDb.gems);
 
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
@@ -556,6 +560,16 @@ export class Sim {
 		}
 	}
 
+	getUseCustomEPValues(): boolean {
+		return this.useCustomEPValues;
+	}
+	setUseCustomEPValues(eventID: EventID, newUseCustomEPValues: boolean) {
+		if (newUseCustomEPValues !== this.useCustomEPValues) {
+			this.useCustomEPValues = newUseCustomEPValues;
+			this.useCustomEPValuesChangeEmitter.emit(eventID);
+		}
+	}
+
 	getLanguage(): string {
 		return this.language;
 	}
@@ -612,6 +626,7 @@ export class Sim {
 			showExperimental: this.getShowExperimental(),
 			showQuickSwap: this.getShowQuickSwap(),
 			showEpValues: this.getShowEPValues(),
+			useCustomEpValues: this.getUseCustomEPValues(),
 			language: this.getLanguage(),
 			faction: this.getFaction(),
 			filters: filters,
@@ -629,6 +644,7 @@ export class Sim {
 			this.setShowExperimental(eventID, proto.showExperimental);
 			this.setShowQuickSwap(eventID, proto.showQuickSwap);
 			this.setShowEPValues(eventID, proto.showEpValues);
+			this.setUseCustomEPValues(eventID, proto.useCustomEpValues);
 			this.setLanguage(eventID, proto.language);
 			this.setFaction(eventID, proto.faction || Faction.Alliance);
 

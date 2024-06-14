@@ -48,7 +48,10 @@ func (paladin *Paladin) registerHammerOfWrathSpell() {
 				0.117*spell.SpellPower() +
 				0.39*spell.MeleeAttackPower()
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+			spell.WaitTravelTime(sim, func(simulation *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }

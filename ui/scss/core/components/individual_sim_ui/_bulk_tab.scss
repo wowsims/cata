@@ -1,0 +1,132 @@
+@import './bulk';
+
+#bulk-tab {
+	padding: 0;
+
+	.tab-pane-content-container {
+		.bulk-tab-left {
+			padding-top: calc(var(--gap-width) - $nav-link-padding-y);
+			grid-template-columns: auto;
+		}
+	}
+
+	#bulkSetupTab {
+		gap: var(--gap-width);
+
+		&.active {
+			display: grid;
+		}
+
+		.bulk-gear-actions {
+			display: flex;
+			grid-auto-flow: column;
+			gap: var(--block-spacer);
+		}
+
+		.bulk-gear-combo {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-rows: auto;
+			gap: calc(2 * var(--gap-width)) var(--gap-width);
+		}
+	}
+
+	.bulk-settings-outer-container {
+		position: sticky;
+		top: var(--sim-header-height);
+		padding-top: var(--gap-width);
+
+		.bulk-settings-container {
+			padding: var(--spacer-3);
+			border: var(--border-default);
+			display: grid;
+			gap: var(--gap-width);
+			background: var(--bs-body-bg);
+
+			.bulk-combinations-count {
+				margin-bottom: 0;
+				display: flex;
+				align-items: center;
+
+				small {
+					font-size: var(--bs-body-font-size);
+				}
+			}
+
+			.bulk-boolean-settings-container {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: var(--block-spacer);
+
+				.boolean-picker-root {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+
+	.talents-picker-container {
+		display: flex;
+		flex-direction: column;
+
+		.talents-container {
+			display: flex;
+			flex-wrap: wrap;
+			gap: var(--block-spacer);
+		}
+	}
+
+	.default-gem-container {
+		display: flex;
+		flex-direction: column;
+
+		.gem-socket-container {
+			height: 30px;
+			width: 30px;
+		}
+
+		.gem-icon {
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+		}
+
+		.sockets-container {
+			display: flex;
+			gap: 3px;
+		}
+	}
+
+	.item-picker-root {
+		padding: var(--spacer-2);
+		margin-bottom: 0 !important;
+
+		.item-picker-icon-wrapper {
+			min-width: 3.5rem;
+			min-height: 3.5rem;
+			width: 3.5rem;
+			height: 3.5rem;
+		}
+
+		.gem-socket-container {
+			--gem-width: 1rem;
+		}
+
+		.item-picker-labels-container {
+			padding-top: 0;
+			overflow: hidden;
+
+			.item-picker-name-container {
+				max-width: 100%;
+				display: flex;
+
+				.item-picker-name {
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+			}
+		}
+	}
+}

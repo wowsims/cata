@@ -2,9 +2,9 @@ import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
 import { Faction, Stat } from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
-import { IconEnumPicker, IconEnumPickerConfig } from '../icon_enum_picker';
-import { IconPicker, IconPickerConfig } from '../icon_picker';
-import { MultiIconPicker, MultiIconPickerConfig } from '../multi_icon_picker';
+import { IconEnumPicker, IconEnumPickerConfig } from '../pickers/icon_enum_picker';
+import { IconPicker, IconPickerConfig } from '../pickers/icon_picker';
+import { MultiIconPicker, MultiIconPickerConfig } from '../pickers/multi_icon_picker';
 
 export interface ActionInputConfig<T> {
 	actionId: ActionId;

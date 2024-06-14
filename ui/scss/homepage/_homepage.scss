@@ -127,6 +127,7 @@
 
 				.sim-link,
 				.sim-link-dropdown {
+					width: 100%;
 					@include media-breakpoint-down(lg) {
 						max-width: 50%;
 						flex: 1 50%;
@@ -135,6 +136,12 @@
 
 					@include media-breakpoint-down(md) {
 						flex: 1 100% !important;
+					}
+				}
+
+				.sim-link {
+					@include media-breakpoint-down(md) {
+						max-width: none;
 					}
 				}
 

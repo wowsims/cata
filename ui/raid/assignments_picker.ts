@@ -1,5 +1,5 @@
 import { Component } from '../core/components/component';
-import { UnitReferencePicker } from '../core/components/raid_target_picker';
+import { UnitReferencePicker } from '../core/components/pickers/raid_target_picker';
 import { Player } from '../core/player';
 import { Class, Spec, UnitReference } from '../core/proto/common';
 import { DeathKnightTalents } from '../core/proto/death_knight';

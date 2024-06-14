@@ -17,8 +17,27 @@ func (warrior *Warrior) RegisterSlamSpell() {
 		ClassSpellScaling: warrior.ClassSpellScaling,
 	}
 
+	slamActionID := core.ActionID{SpellID: 1464}
+
+	ohSlam := warrior.RegisterSpell(core.SpellConfig{
+		ActionID:       slamActionID.WithTag(2),
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskEmpty,
+		ClassSpellMask: SpellMaskSlam | SpellMaskSpecialAttack | SpellDualWieldSpecMask,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+
+		DamageMultiplier: weaponDamageConfig.CalcSpellDamagePct(),
+		CritMultiplier:   warrior.DefaultMeleeCritMultiplier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			ohBaseDamage := weaponDamageConfig.CalcAddedSpellDamage() + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+
+			spell.CalcAndDealDamage(sim, target, ohBaseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+		},
+	})
+
 	warrior.Slam = warrior.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 1464},
+		ActionID:       slamActionID,
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
@@ -52,20 +71,19 @@ func (warrior *Warrior) RegisterSlamSpell() {
 
 		BonusCoefficient: 1,
 
-		// TODO: check if the OH SMF hit is on a separate attack table roll
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := weaponDamageConfig.CalcAddedSpellDamage() + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+
+			//OH SMF hit is on a separate attack table roll, so we continue if the main hand hit didn't land.
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 			}
 
 			// SMF adds an OH hit to slam
 			if warrior.Talents.SingleMindedFury {
-				baseDamage := weaponDamageConfig.CalcAddedSpellDamage() + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+				ohSlam.Cast(sim, target)
 			}
 		},
 	})

@@ -1,5 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -131,21 +131,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	},
 
 	presets: {
-		talents: [
-			Presets.DualWieldTalents,
-			Presets.TwoHandTalents,
-			Presets.MasterfrostTalents,
-		],
-		rotations: [
-			Presets.DUAL_WIELD_ROTATION_RESET_DEFAULT,
-			Presets.TWO_HAND_ROTATION_PRESET_DEFAULT,
-			Presets.MASTERFROST_ROTATION_PRESET_DEFAULT,
-		],
-		gear: [
-			Presets.P1_DW_GEAR_PRESET,
-			Presets.P1_2H_GEAR_PRESET,
-			Presets.P1_MASTERFROST_GEAR_PRESET,
-		]
+		talents: [Presets.DualWieldTalents, Presets.TwoHandTalents, Presets.MasterfrostTalents],
+		rotations: [Presets.DUAL_WIELD_ROTATION_RESET_DEFAULT, Presets.TWO_HAND_ROTATION_PRESET_DEFAULT, Presets.MASTERFROST_ROTATION_PRESET_DEFAULT],
+		gear: [Presets.P1_DW_GEAR_PRESET, Presets.P1_2H_GEAR_PRESET, Presets.P1_MASTERFROST_GEAR_PRESET],
 	},
 
 	raidSimPresets: [

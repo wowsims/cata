@@ -75,7 +75,7 @@ var ItemSetReinforcedSapphiriumBattlearmor = core.NewItemSet(core.ItemSet{
 			})
 		},
 		4: func(agent core.Agent) {
-			// TODO: Handle in guardian_of_ancient_kings.go
+			// Handled in guardian_of_ancient_kings.go
 		},
 	},
 })

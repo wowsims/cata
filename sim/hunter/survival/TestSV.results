@@ -15,7 +15,7 @@ character_stats_results: {
   final_stats: 15418.31347
   final_stats: 962
   final_stats: 6001.68224
-  final_stats: 2162.7716
+  final_stats: 2611.82623
   final_stats: 0
   final_stats: 0
   final_stats: 14342
@@ -39,6 +39,13 @@ dps_results: {
  value: {
   dps: 26098.46465
   tps: 23577.08712
+ }
+}
+dps_results: {
+ key: "TestSV-AllItems-AgonyandTorment"
+ value: {
+  dps: 25102.15701
+  tps: 22661.00877
  }
 }
 dps_results: {

@@ -1,6 +1,6 @@
 import { FireElementalSection } from '../../core/components/fire_elemental_inputs.js';
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
+import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
@@ -23,7 +23,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 		const statMod = (current: UnitStats, previous?: UnitStats) => {
 			return new Stats().withStat(Stat.StatSpellPower, Stats.fromProto(current).subtract(Stats.fromProto(previous)).getStat(Stat.StatAttackPower) * 0.55);
-		}
+		};
 
 		const base = statMod(playerStats.baseStats!);
 		const gear = statMod(playerStats.gearStats!, playerStats.baseStats);
@@ -142,15 +142,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_PRESET,
-			Presets.P1ORC_PRESET,
-			Presets.P1DRAENEI_PRESET
-		],
+		gear: [Presets.PRERAID_PRESET, Presets.P1ORC_PRESET, Presets.P1DRAENEI_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
-			return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -163,7 +159,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 				[Faction.Alliance]: Race.RaceDraenei,
 				[Faction.Horde]: Race.RaceOrc,
 				[Faction.Unknown]: Race.RaceUnknown,
-
 			},
 			defaultGear: {
 				[Faction.Alliance]: {
@@ -173,7 +168,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 					1: Presets.P1ORC_PRESET.gear,
 				},
 				[Faction.Unknown]: {},
-
 			},
 			otherDefaults: Presets.OtherDefaults,
 		},

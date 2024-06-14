@@ -1,0 +1,79 @@
+.bulk-item-search-root {
+	margin-bottom: 0 !important;
+
+	.content-block-header {
+		border-bottom: 0;
+		margin-bottom: 0;
+
+		#bulkGearSearch {
+			max-width: 25%;
+		}
+	}
+
+	.bulk-gear-search-container {
+		display: grid;
+		padding: var(--spacer-3);
+		border: var(--border-default);
+		background: var(--bs-body-bg);
+		grid-template-columns: 1fr 1fr 2fr;
+		gap: var(--gap-width);
+		position: relative;
+
+		.cancel-bulk-gear-search-btn {
+			padding: $input-padding-y $input-padding-x;
+			display: flex;
+			align-items: center;
+			background-color: $input-bg;
+			border: 1px solid $input-border-color;
+		}
+
+		.bulk-gear-search-results {
+			top: 100%;
+			padding: var(--spacer-2);
+
+			&.show {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: var(--spacer-2);
+			}
+
+			.bulk-item-search-item {
+				display: flex;
+				padding: var(--spacer-2);
+				border: var(--border-default);
+
+				.bulk-item-search-item-icon-wrapper {
+					width: var(--icon-size-md);
+					height: var(--icon-size-md);
+					border: var(--border-default);
+
+					.bulk-item-search-item-icon {
+						@include wowhead-background-icon;
+						width: 100%;
+						height: 100%;
+					}
+				}
+			}
+
+			.bulk-item-search-more-items-note {
+				border: none;
+				grid-column: 1 / 4;
+			}
+		}
+
+		.bulk-gear-search-ilvl-filters {
+			display: flex;
+			align-items: center;
+
+			.number-picker-root {
+				margin-bottom: 0;
+			}
+
+			.ilvl-filters-separator {
+				margin-left: var(--block-spacer);
+				margin-right: var(--block-spacer);
+				margin-top: var(--block-spacer);
+			}
+		}
+	}
+}

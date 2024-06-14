@@ -1,6 +1,6 @@
 import { ContentBlock } from '../core/components/content_block';
 import { EncounterPicker } from '../core/components/encounter_picker';
-import { IconPicker } from '../core/components/icon_picker';
+import { IconPicker } from '../core/components/pickers/icon_picker';
 import { SavedDataManager } from '../core/components/saved_data_manager';
 import { SimTab } from '../core/components/sim_tab';
 import * as Tooltips from '../core/constants/tooltips.js';

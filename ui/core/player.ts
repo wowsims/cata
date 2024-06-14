@@ -77,6 +77,7 @@ import { Sim, SimSettingCategories } from './sim';
 import { playerTalentStringToProto } from './talents/factory';
 import { EventID, TypedEvent } from './typed_event';
 import { stringComparator, sum } from './utils';
+import { WorkerProgressCallback } from './worker_pool';
 
 export interface AuraStats {
 	data: AuraStatsProto;
@@ -274,6 +275,7 @@ export class Player<SpecType extends Spec> {
 	private static readonly numEpRatios = 6;
 	private epRatios: Array<number> = new Array<number>(Player.numEpRatios).fill(0);
 	private epWeights: Stats = new Stats();
+	private statCaps: Stats = new Stats();
 	private currentStats: PlayerStats = PlayerStats.create();
 	private metadata: UnitMetadata = new UnitMetadata();
 	private petMetadatas: UnitMetadataList = new UnitMetadataList();
@@ -294,6 +296,7 @@ export class Player<SpecType extends Spec> {
 	readonly distanceFromTargetChangeEmitter = new TypedEvent<void>('PlayerDistanceFromTarget');
 	readonly healingModelChangeEmitter = new TypedEvent<void>('PlayerHealingModel');
 	readonly epWeightsChangeEmitter = new TypedEvent<void>('PlayerEpWeights');
+	readonly statCapsChangeEmitter = new TypedEvent<void>('StatCaps');
 	readonly miscOptionsChangeEmitter = new TypedEvent<void>('PlayerMiscOptions');
 
 	readonly currentStatsEmitter = new TypedEvent<void>('PlayerCurrentStats');
@@ -351,6 +354,7 @@ export class Player<SpecType extends Spec> {
 				this.epWeightsChangeEmitter,
 				this.epRatiosChangeEmitter,
 				this.epRefStatChangeEmitter,
+				this.statCapsChangeEmitter,
 			],
 			'PlayerChange',
 		);
@@ -500,6 +504,15 @@ export class Player<SpecType extends Spec> {
 		}
 	}
 
+	getStatCaps(): Stats {
+		return this.statCaps;
+	}
+
+	setStatCaps(eventID: EventID, newStatCaps: Stats) {
+		this.statCaps = newStatCaps;
+		this.statCapsChangeEmitter.emit(eventID);
+	}
+
 	getDefaultEpRatios(isTankSpec: boolean, isHealingSpec: boolean): Array<number> {
 		const defaultRatios = new Array(Player.numEpRatios).fill(0);
 		if (isHealingSpec) {
@@ -530,11 +543,11 @@ export class Player<SpecType extends Spec> {
 	}
 
 	async computeStatWeights(
-		eventID: EventID,
+		_eventID: EventID,
 		epStats: Array<Stat>,
 		epPseudoStats: Array<PseudoStat>,
 		epReferenceStat: Stat,
-		onProgress: (_: any) => void,
+		onProgress: WorkerProgressCallback,
 	): Promise<StatWeightsResult | null> {
 		try {
 			const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
@@ -675,6 +688,10 @@ export class Player<SpecType extends Spec> {
 
 	getEquippedItem(slot: ItemSlot): EquippedItem | null {
 		return this.gear.getEquippedItem(slot);
+	}
+
+	getEquippedItems(): Array<EquippedItem | null> {
+		return this.gear.getEquippedItems();
 	}
 
 	getGear(): Gear {

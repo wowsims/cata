@@ -13,7 +13,7 @@ import { SimUI } from '../sim_ui';
 import { EventID, TypedEvent } from '../typed_event';
 import { arrayEquals, downloadString, getEnumValues, jsonStringifyWithFlattenedPaths } from '../utils';
 import { BaseModal } from './base_modal';
-import { BooleanPicker } from './boolean_picker';
+import { BooleanPicker } from './pickers/boolean_picker';
 import { CopyButton } from './copy_button';
 import { IndividualLinkImporter, IndividualWowheadGearPlannerImporter } from './importers';
 

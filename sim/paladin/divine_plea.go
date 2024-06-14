@@ -1,6 +1,7 @@
 package paladin
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -28,7 +29,7 @@ func (paladin *Paladin) registerDivinePleaSpell() {
 				NumTicks: 3,
 
 				OnAction: func(sim *core.Simulation) {
-					paladin.AddMana(sim, manaReturn*paladin.MaxMana(), manaMetrics)
+					paladin.AddMana(sim, math.Round(manaReturn*paladin.MaxMana()), manaMetrics)
 				},
 			})
 		},

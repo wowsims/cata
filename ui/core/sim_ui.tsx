@@ -1,8 +1,9 @@
+import clsx from 'clsx';
 import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from './components/base_modal.jsx';
 import { Component } from './components/component.js';
-import { NumberPicker } from './components/number_picker.js';
+import { NumberPicker } from './components/pickers/number_picker.js';
 import { ResultsViewer } from './components/results_viewer.jsx';
 import { SimHeader } from './components/sim_header.jsx';
 import { SimTab } from './components/sim_tab.js';
@@ -189,14 +190,38 @@ export abstract class SimUI extends Component {
 		}
 	}
 
-	addAction(name: string, cssClass: string, actFn: () => void) {
+	addAction(label: string, cssClass: string, onClick: (event: MouseEvent) => void): HTMLButtonElement {
 		const buttonRef = ref<HTMLButtonElement>();
 		this.simActionsContainer.appendChild(
-			<button ref={buttonRef} className={`btn btn-primary w-100 ${cssClass || ''}`}>
-				{name}
+			<button ref={buttonRef} className={clsx('sim-sidebar-action-button btn btn-primary w-100', cssClass)} onclick={onClick}>
+				{label}
+				<span className="sim-sidebar-action-button-loading-icon">
+					<i className="fas fa-spinner fa-spin"></i>
+				</span>
 			</button>,
 		);
-		buttonRef.value?.addEventListener('click', actFn);
+
+		return buttonRef.value!;
+	}
+
+	addActionGroup(groups: ActionGroupItem[], groupOptions: { cssClass?: string } = {}) {
+		const refs: HTMLButtonElement[] = [];
+		const { cssClass } = groupOptions;
+		this.simActionsContainer.appendChild(
+			<div className={clsx('d-flex btn-group w-100', cssClass)} attributes={{ role: 'group' }}>
+				{groups.map(({ label, cssClass, children, onClick }) => (
+					<button ref={ref => refs.push(ref)} onclick={onClick} className={clsx('sim-sidebar-action-button btn btn-primary', cssClass)}>
+						{label}
+						{children}
+						<span className="sim-sidebar-action-button-loading-icon">
+							<i className="fas fa-spinner fa-spin"></i>
+						</span>
+					</button>
+				))}
+			</div>,
+		);
+
+		return refs;
 	}
 
 	addTab(title: string, cssClass: string, content: HTMLElement | Element) {
@@ -205,7 +230,7 @@ export abstract class SimUI extends Component {
 
 		this.simHeader.addTab(title, contentId);
 		this.simTabContentsContainer.appendChild(
-			<div id={contentId} className={`tab-pane fade ${isFirstTab ? 'active show' : ''}`}>
+			<div id={contentId} className={clsx('tab-pane fade', isFirstTab && 'active show')}>
 				{content}
 			</div>,
 		);
@@ -375,3 +400,5 @@ class CrashModal extends BaseModal {
 		);
 	}
 }
+
+export type ActionGroupItem = { label?: string; children?: Element; cssClass?: string; onClick?: (event: MouseEvent) => void };

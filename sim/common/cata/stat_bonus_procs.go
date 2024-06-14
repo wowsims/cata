@@ -870,3 +870,39 @@ func init() {
 		ICD:        time.Second * 55,
 	})
 }
+
+var ItemSetAgonyAndTorment = core.NewItemSet(core.ItemSet{
+	Name: "Agony and Torment",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			procAura := character.NewTemporaryStatsAura(
+				"Agony and Torment Proc",
+				core.ActionID{SpellID: 95762},
+				stats.Stats{stats.MeleeHaste: 1000, stats.SpellHaste: 1000},
+				time.Second*10,
+			)
+
+			icd := core.Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Second * 45,
+			}
+			procAura.Icd = &icd
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:     "Agony and Torment Trigger",
+				Callback: core.CallbackOnSpellHitDealt,
+				ProcMask: core.ProcMaskMeleeOrRanged,
+				ActionID: core.ActionID{SpellID: 95763},
+				Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+					// This set uses raw chance, NOT PPM
+					if icd.IsReady(sim) && sim.Proc(.10, "Agony and Torment Proc") {
+						icd.Use(sim)
+						procAura.Activate(sim)
+					}
+				},
+			})
+		},
+	},
+})

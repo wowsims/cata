@@ -251,7 +251,7 @@ enum RaidFilterOption {
 	RaidDragonSoul = 8;
 }
 
-// NextIndex: 22
+// NextIndex: 24
 message DatabaseFilters {
 	repeated ArmorType armor_types = 1;
 	repeated WeaponType weapon_types = 2;
@@ -277,6 +277,10 @@ message DatabaseFilters {
 	repeated int32 favorite_items = 11;
 	// Item IDs for favorited gems.
 	repeated int32 favorite_gems = 12;
+	// Item IDs for favorited random suffixes.
+	repeated int32 favorite_random_suffixes = 22;
+	// Item IDs for favorited reforges.
+	repeated int32 favorite_reforges = 23;
 	// Uniquely-identifying strings for favorited enchants.
 	repeated string favorite_enchants = 13;
 }
@@ -291,6 +295,7 @@ message SimSettings {
 	bool show_experimental = 5;
 	bool show_quick_swap = 12;
 	bool show_ep_values = 11;
+	bool use_custom_ep_values = 13;
 	string language = 9;
 	Faction faction = 6;
 	DatabaseFilters filters = 10;
@@ -311,6 +316,7 @@ message IndividualSimSettings {
 	Stat dps_ref_stat = 12;
 	Stat heal_ref_stat = 13;
 	Stat tank_ref_stat = 14;
+	UnitStats stat_caps = 15;
 }
 
 // Local storage data for gear settings.

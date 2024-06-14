@@ -44,7 +44,7 @@ body.addEventListener(
 			if (relatedTarget == null || (!isDescendant(relatedTarget, dropdownMenu) && !isDescendant(relatedTarget, toggle))) dropdown.hide();
 		}
 
-		const dropdownMenu = target.closest('.dropdown-menu') as HTMLElement;
+		const dropdownMenu = target.closest('.dropdown-menu:not(.no-hover)') as HTMLElement;
 		// Hide dropdowns when hovering off of the menu, so long as the new target is not part of the dropdown as well
 		if (dropdownMenu) {
 			const toggle = dropdownMenu.previousElementSibling as HTMLElement;

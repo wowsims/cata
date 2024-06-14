@@ -78,6 +78,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	vampiricTouch: true,
+	darkIntent: true,
 });
 
 export const DefaultPartyBuffs = PartyBuffs.create({
@@ -94,7 +95,8 @@ export const DefaultDebuffs = Debuffs.create({
 });
 
 export const OtherDefaults = {
-	distanceFromTarget: 18,
+	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
+	darkIntentUptime: 100,
 };

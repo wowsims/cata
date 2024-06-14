@@ -325,3 +325,4 @@ export const getEnvironment = (): Environments => {
 
 export const isLocal = () => getEnvironment() === 'local';
 export const isExternal = () => getEnvironment() === 'external';
+export const isDevMode = () => import.meta.env.DEV;

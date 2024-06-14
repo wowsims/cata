@@ -1760,6 +1760,8 @@ export function getEligibleItemSlots(item: Item): Array<ItemSlot> {
 	throw new Error('Could not find item slots for item: ' + Item.toJsonString(item));
 }
 
+export const isSecondaryItemSlot = (slot: ItemSlot) => slot === ItemSlot.ItemSlotFinger2 || slot === ItemSlot.ItemSlotTrinket2;
+
 // Returns whether the given main-hand and off-hand items can be worn at the
 // same time.
 export function validWeaponCombo(mainHand: Item | null | undefined, offHand: Item | null | undefined, canDW2h: boolean): boolean {
