@@ -796,7 +796,7 @@ export class BulkTab extends SimTab {
 	}
 
 	private showIterationsWarning(): boolean {
-		return !isExternal() && this.iterations > WEB_ITERATIONS_LIMIT;
+		return isExternal() && this.iterations > WEB_ITERATIONS_LIMIT;
 	}
 
 	private setSimProgress(progress: ProgressMetrics, iterPerSecond: number, currentRound: number, rounds: number, combinations: number) {
