@@ -99,10 +99,14 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 99233}
+
+			warrior := agent.(WarriorAgent).GetWarrior()
+			talentReduction := time.Duration(warrior.Talents.BoomingVoice*3) * time.Second
+
 			buff := character.RegisterAura(core.Aura{
 				Label:    "Burning Rage",
 				ActionID: actionID,
-				Duration: 12 * time.Second,
+				Duration: 12*time.Second - talentReduction,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
 				},
@@ -114,8 +118,8 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:           "Burning Rage Trigger",
 				ActionID:       actionID,
-				ClassSpellMask: SpellMaskColossusSmash,
-				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: SpellMaskCommandingShout | SpellMaskBattleShout,
+				Callback:       core.CallbackOnCastComplete,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					buff.Activate(sim)
 				},
