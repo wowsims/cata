@@ -1,12 +1,12 @@
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
-import * as MageInputs from '../inputs';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
 
@@ -56,6 +56,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 			[Stat.StatSpellHaste]: 0.64,
 			[Stat.StatMastery]: 0.47,
 		}),
+		// Default stat caps for the Reforge Optimizer
+		statCaps: (() => {
+			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
 		// Default talents.
