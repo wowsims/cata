@@ -116,7 +116,7 @@ export class RestorationDruid extends PlayerSpec<Spec.SpecRestorationDruid> {
 	static specID = Spec.SpecRestorationDruid as Spec.SpecRestorationDruid;
 	static classID = Class.ClassDruid as Class.ClassDruid;
 	static friendlyName = 'Restoration';
-	static simLink = getSpecSiteUrl('druid', 'Restoration');
+	static simLink = getSpecSiteUrl('druid', 'restoration');
 
 	static isTankSpec = false;
 	static isHealingSpec = true;
