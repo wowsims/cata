@@ -144,7 +144,6 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 		ActionID:       core.ActionID{SpellID: 86704},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
 		ClassSpellMask: SpellMaskAncientFury,
 
 		MaxRange: 10,
@@ -219,7 +218,7 @@ func (paladin *Paladin) registerRetributionGuardian(duration time.Duration) *cor
 
 		ApplyEffects: func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
 			goakAura.Activate(sim)
-			paladin.AncientGuardian.EnableWithTimeout(sim, paladin.AncientGuardian, duration)
+			paladin.AncientGuardian.Enable(sim, paladin.AncientGuardian)
 			paladin.AncientGuardian.CancelGCDTimer(sim)
 		},
 	})

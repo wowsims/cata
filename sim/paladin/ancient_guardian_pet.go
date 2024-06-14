@@ -40,10 +40,6 @@ func (paladin *Paladin) NewAncientGuardian() *AncientGuardianPet {
 
 	ancientGuardian.PseudoStats.DamageTakenMultiplier = 0
 
-	// Guardians are not affected by raid buffs
-	ancientGuardian.PseudoStats.MeleeSpeedMultiplier = 1
-	ancientGuardian.PseudoStats.CastSpeedMultiplier = 1
-
 	paladin.AddPet(ancientGuardian)
 
 	return ancientGuardian

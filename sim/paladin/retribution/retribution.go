@@ -93,11 +93,8 @@ func (ret *RetributionPaladin) RegisterMastery() {
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags: core.SpellFlagMeleeMetrics |
-			// This flag makes sure 8% magic damage on target gets included as a multiplier
-			core.SpellFlagIncludeTargetBonusDamage |
-			core.SpellFlagNoOnCastComplete |
-			// This flag makes sure only Inquisition gets included as a multiplier
-			core.SpellFlagIgnoreAttackerModifiers,
+			core.SpellFlagIgnoreModifiers |
+			core.SpellFlagNoOnCastComplete,
 		ClassSpellMask: paladin.SpellMaskHandOfLight,
 
 		DamageMultiplier: 1.0,
@@ -105,7 +102,11 @@ func (ret *RetributionPaladin) RegisterMastery() {
 		CritMultiplier:   0.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, ret.HoLDamage, spell.OutcomeAlwaysHit)
+			baseDamage := ret.HoLDamage
+			if target.HasActiveAuraWithTag(core.SpellDamageEffectAuraTag) {
+				baseDamage *= 1.08
+			}
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
 		},
 	})
 
