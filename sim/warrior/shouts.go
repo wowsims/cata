@@ -13,7 +13,7 @@ func (warrior *Warrior) MakeShoutSpellHelper(actionID core.ActionID, spellMask i
 
 	shoutMetrics := warrior.NewRageMetrics(actionID)
 	rageGen := 20.0 + 5.0*float64(warrior.Talents.BoomingVoice)
-	cdReduction := time.Duration(warrior.Talents.BoomingVoice*15) * time.Second
+	talentReduction := time.Duration(warrior.Talents.BoomingVoice*15) * time.Second
 
 	return warrior.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -27,7 +27,7 @@ func (warrior *Warrior) MakeShoutSpellHelper(actionID core.ActionID, spellMask i
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.shoutsCD,
-				Duration: time.Minute - cdReduction,
+				Duration: time.Minute - talentReduction,
 			},
 		},
 
