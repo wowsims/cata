@@ -98,6 +98,10 @@ func registerGlyphOfExorcism(paladin *Paladin) {
 					0.344*max(dot.Spell.SpellPower(), dot.Spell.MeleeAttackPower())) *
 					0.2 / 3
 
+				if target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead {
+					dot.SnapshotCritChance = 100 * core.CritRatingPerCritChance
+				}
+
 				dot.Snapshot(target, baseDamage)
 			},
 
