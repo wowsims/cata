@@ -37,10 +37,26 @@ const EXCLUDED_STATS = [
 	Stat.StatMana,
 ];
 
+interface SoftCapBreakpoints {
+	stat: Stat;
+	breakpoints: number[];
+}
+
 export type ReforgeOptimizerOptions = {
 	// Allows you to modify the stats before they are returned for the calculations
 	// For example: Adding class specific Glyphs/Talents that are not added by the backend
 	updateGearStatsModifier?: (baseStats: Stats) => Stats;
+
+	// Allows specification of soft cap breakpoints for one or more stats. These
+	// function differently from the hard caps taken from the sim UI in a few ways:
+	// Firstly, the specified breakpoints are lower priority than hard caps, and
+	// evaluated only after the hard cap constraints have been solved first. Secondly,
+	// these constraints are evaluated in the order specified by the configuration
+	// Array rather than all at once. So once the hard caps have been respected, the
+	// closest breakpoint for the *first* listed soft capped stat is optimized against
+	// while ignoring any others. Then the solution is used to identify the closest
+	// breakpoint for the second listed stat (if present), etc.
+	softCapsConfig?: SoftCapBreakpoints[];
 };
 
 export class ReforgeOptimizer {
@@ -51,6 +67,7 @@ export class ReforgeOptimizer {
 	protected readonly defaults: IndividualSimUI<any>['individualConfig']['defaults'];
 	protected _statCaps: Stats;
 	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
+	protected softCapsConfig: ReforgeOptimizerOptions['softCapsConfig'];
 
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
@@ -59,6 +76,7 @@ export class ReforgeOptimizer {
 		this.sim = simUI.sim;
 		this.defaults = simUI.individualConfig.defaults;
 		this.updateGearStatsModifier = options?.updateGearStatsModifier;
+		this.softCapsConfig = options?.softCapsConfig;
 		// For now only gets the first entry because of breakpoints support
 		this._statCaps = this.statCaps;
 		const startReforgeOptimizationEntry: ActionGroupItem = {
@@ -273,12 +291,16 @@ export class ReforgeOptimizer {
 			console.log('Stat caps for Reforge contribution:');
 			console.log(reforgeCaps);
 		}
+
+		// Do the same for any soft cap breakpoints that were configured
+		const reforgeSoftCaps = this.computeReforgeSoftCaps(baseStats);
+
 		// Set up YALPS model
 		const variables = this.buildYalpsVariables(baseGear);
 		const constraints = this.buildYalpsConstraints(baseGear);
 
 		// Solve in multiple passes to enforce caps
-		await this.solveModel(baseGear, reforgeCaps, variables, constraints);
+		await this.solveModel(baseGear, reforgeCaps, reforgeSoftCaps, variables, constraints);
 	}
 
 	async updateGear(gear: Gear): Promise<Stats> {
@@ -288,6 +310,27 @@ export class ReforgeOptimizer {
 		baseStats = baseStats.addStat(Stat.StatMastery, this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 		if (this.updateGearStatsModifier) baseStats = this.updateGearStatsModifier(baseStats);
 		return baseStats;
+	}
+
+	computeReforgeSoftCaps(baseStats: Stats): SoftCapBreakpoints[] {
+		const reforgeSoftCaps: SoftCapBreakpoints[] = [];
+
+		if (this.softCapsConfig) {
+			this.softCapsConfig.slice().reverse().forEach((config) => {
+				const relativeBreakpoints = [];
+
+				for (const breakpoint of config.breakpoints) {
+					relativeBreakpoints.push(breakpoint - baseStats.getStat(config.stat));
+				}
+
+				reforgeSoftCaps.push({
+					stat: config.stat,
+					breakpoints: relativeBreakpoints.sort((a, b) => b - a),
+				});
+			});
+		}
+
+		return reforgeSoftCaps;
 	}
 
 	buildYalpsVariables(gear: Gear): YalpsVariables {
@@ -358,7 +401,7 @@ export class ReforgeOptimizer {
 		return constraints;
 	}
 
-	async solveModel(gear: Gear, reforgeCaps: Stats, variables: YalpsVariables, constraints: YalpsConstraints) {
+	async solveModel(gear: Gear, reforgeCaps: Stats, reforgeSoftCaps: SoftCapBreakpoints[], variables: YalpsVariables, constraints: YalpsConstraints) {
 		// Calculate EP scores for each Reforge option
 		const updatedVariables = this.updateReforgeScores(variables, constraints);
 		if (isDevMode()) {
@@ -391,14 +434,14 @@ export class ReforgeOptimizer {
 		// Check if any unconstrained stats exceeded their specified cap.
 		// If so, add these stats to the constraint list and re-run the solver.
 		// If no unconstrained caps were exceeded, then we're done.
-		const [anyCapsExceeded, updatedConstraints] = this.checkCaps(solution, reforgeCaps, updatedVariables, constraints);
+		const [anyCapsExceeded, updatedConstraints] = this.checkCaps(solution, reforgeCaps, reforgeSoftCaps, updatedVariables, constraints);
 
 		if (!anyCapsExceeded) {
 			if (isDevMode()) console.log('Reforge optimization has finished!');
 		} else {
 			if (isDevMode()) console.log('One or more stat caps were exceeded, starting constrained iteration...');
 			await sleep(100);
-			await this.solveModel(gear, reforgeCaps, updatedVariables, updatedConstraints);
+			await this.solveModel(gear, reforgeCaps, reforgeSoftCaps, updatedVariables, updatedConstraints);
 		}
 	}
 
@@ -449,7 +492,7 @@ export class ReforgeOptimizer {
 		await this.updateGear(updatedGear);
 	}
 
-	checkCaps(solution: Solution, reforgeCaps: Stats, variables: YalpsVariables, constraints: YalpsConstraints): [boolean, YalpsConstraints] {
+	checkCaps(solution: Solution, reforgeCaps: Stats, reforgeSoftCaps: SoftCapBreakpoints[], variables: YalpsVariables, constraints: YalpsConstraints): [boolean, YalpsConstraints] {
 		// First add up the total stat changes from the solution
 		let reforgeStatContribution = new Stats();
 
@@ -479,6 +522,22 @@ export class ReforgeOptimizer {
 				updatedConstraints.set(statName, greaterEq(cap));
 				anyCapsExceeded = true;
 				if (isDevMode()) console.log('Cap exceeded for: %s', statName);
+			}
+		}
+
+		// If hard caps are all taken care of, then deal with any remaining soft cap breakpoints
+		if (!anyCapsExceeded && (reforgeSoftCaps.length > 0)) {
+			const nextSoftCap = reforgeSoftCaps.pop()!;
+			const statName = Stat[nextSoftCap.stat];
+			const currentValue = reforgeStatContribution.getStat(nextSoftCap.stat);
+
+			for (const breakpoint of nextSoftCap.breakpoints) {
+				if (currentValue > breakpoint) {
+					updatedConstraints.set(statName, greaterEq(breakpoint));
+					anyCapsExceeded = true;
+					if (isDevMode()) console.log('Breakpoint exceeded for: %s', statName);
+					break;
+				}
 			}
 		}
 
