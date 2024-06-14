@@ -64,7 +64,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 			}
 
 			const masterySoftCapConfig = { stat: Stat.StatMastery, breakpoints: masteryRatingBreakpoints };
-			return [masterySoftCapConfig];
+
+			const hasteSoftCapConfig = { stat: Stat.StatSpellHaste, breakpoints: [1007, 1993] };
+			return [masterySoftCapConfig, hasteSoftCapConfig];
 		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

@@ -1,5 +1,7 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -46,6 +48,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 			[Stat.StatSpellHaste]: 0.58,
 			[Stat.StatMastery]: 0.38,
 		}),
+		// Default stat caps for the Reforge optimizer
+		statCaps: (() => {
+			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		})(),
+		// Default soft caps for the Reforge optimizer
+		softCapBreakpoints: (() => {
+			// Set up Mastery breakpoints for integer % damage increments.
+			// These should be removed once the bugfix to make Mastery
+			// continuous goes live!
+			const masteryRatingBreakpoints = [];
+
+			for (let masteryPercent = 14; masteryPercent <= 200; masteryPercent++) {
+				masteryRatingBreakpoints.push((masteryPercent / 1.63) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+			}
+
+			const masterySoftCapConfig = { stat: Stat.StatMastery, breakpoints: masteryRatingBreakpoints };
+
+			return [masterySoftCapConfig];
+		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 
@@ -146,5 +167,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 export class AfflictionWarlockSimUI extends IndividualSimUI<Spec.SpecAfflictionWarlock> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecAfflictionWarlock>) {
 		super(parentElem, player, SPEC_CONFIG);
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }
