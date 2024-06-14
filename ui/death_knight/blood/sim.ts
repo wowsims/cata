@@ -65,26 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		// Default equipped gear.
 		gear: Presets.P1_BLOOD_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatArmor]: 0.05,
-				[Stat.StatBonusArmor]: 0.03,
-				[Stat.StatStamina]: 1,
-				[Stat.StatStrength]: 0.33,
-				[Stat.StatAgility]: 0.6,
-				[Stat.StatAttackPower]: 0.06,
-				[Stat.StatExpertise]: 0.67,
-				[Stat.StatMeleeHit]: 0.67,
-				[Stat.StatMeleeCrit]: 0.28,
-				[Stat.StatMeleeHaste]: 0.21,
-				[Stat.StatDodge]: 0.7,
-				[Stat.StatParry]: 0.58,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.1,
-				[PseudoStat.PseudoStatOffHandDps]: 0.0,
-			},
-		),
+		epWeights: Presets.P1_BLOOD_EP_PRESET.epWeights,
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -147,6 +128,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_BLOOD_EP_PRESET],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.BLOOD_SIMPLE_ROTATION_PRESET_DEFAULT, Presets.BLOOD_DEFENSIVE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.

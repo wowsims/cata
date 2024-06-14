@@ -69,20 +69,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Default equipped gear.
 		gear: Presets.PRERAID_RET_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatStrength]: 2.9436,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatMeleeHit]: 3.2672,
-				[Stat.StatMeleeCrit]: 1.3908,
-				[Stat.StatMeleeHaste]: 1.0356,
-				[Stat.StatExpertise]: 2.5455,
-				[Stat.StatMastery]: 1.5395,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 7.33,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
@@ -140,6 +127,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.RetTalents],

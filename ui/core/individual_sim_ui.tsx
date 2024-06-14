@@ -18,7 +18,7 @@ import * as Tooltips from './constants/tooltips';
 import { getSpecLaunchStatus, LaunchStatus, simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
 import { PlayerSpecs } from './player_specs';
-import { PresetGear, PresetRotation } from './preset_utils';
+import { PresetEpWeights, PresetGear, PresetRotation } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
@@ -164,6 +164,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	encounterPicker: EncounterPickerConfig;
 
 	presets: {
+		epWeights: Array<PresetEpWeights>;
 		gear: Array<PresetGear>;
 		talents: Array<SavedDataConfig<Player<SpecType>, SavedTalents>>;
 		rotations: Array<PresetRotation>;
@@ -312,7 +313,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 				if (
 					!this.player.canDualWield2H() &&
 					((this.player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType == HandType.HandTypeTwoHand &&
-							this.player.getEquippedItem(ItemSlot.ItemSlotOffHand) != null) ||
+						this.player.getEquippedItem(ItemSlot.ItemSlotOffHand) != null) ||
 						this.player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.handType == HandType.HandTypeTwoHand)
 				) {
 					return "Dual wielding two-handed weapon(s) without Titan's Grip spec.";

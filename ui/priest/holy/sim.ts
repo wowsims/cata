@@ -56,15 +56,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPriest, {
 		// Default equipped gear.
 		gear: Presets.P4_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.11,
-			[Stat.StatSpirit]: 0.47,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellHit]: 0.87,
-			[Stat.StatSpellCrit]: 0.74,
-			[Stat.StatSpellHaste]: 1.65,
-			[Stat.StatMP5]: 0.0,
-		}),
+		epWeights: Presets.P1_EP_WEIGHTS.epWeights,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -105,6 +97,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPriest, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_WEIGHTS],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents, Presets.EnlightenmentTalents],
 		rotations: [Presets.ROTATION_PRESET_DEFAULT, Presets.ROTATION_PRESET_AOE24, Presets.ROTATION_PRESET_AOE4PLUS],

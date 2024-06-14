@@ -1,90 +1,106 @@
 import * as Tooltips from './constants/tooltips.js';
 import { Player } from './player';
-import {
-	APLRotation,
-	APLRotation_Type as APLRotationType,
-} from './proto/apl';
-import {
-    Cooldowns,
-    EquipmentSpec,
-    Faction,
-    Spec,
-} from './proto/common';
-import {
-    SavedRotation,
-} from './proto/ui';
-import {
-    SpecRotation,
-	specTypeFunctions,
-} from './proto_utils/utils';
+import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
+import { Cooldowns, EquipmentSpec, Faction, Spec } from './proto/common';
+import { SavedRotation } from './proto/ui';
+import { Stats } from './proto_utils/stats';
+import { SpecRotation, specTypeFunctions } from './proto_utils/utils';
 
-export interface PresetGear {
+interface PresetBase {
 	name: string;
+	tooltip?: string;
+	enableWhen?: (obj: Player<any>) => boolean;
+}
+
+interface PresetOptionsBase {
+	customCondition?: (player: Player<any>) => boolean;
+}
+
+export interface PresetGear extends PresetBase {
 	gear: EquipmentSpec;
-	tooltip?: string;
-	enableWhen?: (obj: Player<any>) => boolean;
 }
 
-export interface PresetRotation {
-	name: string;
+export interface PresetGearOptions extends PresetOptionsBase, Pick<PresetBase, 'tooltip'> {
+	talentTree?: number;
+	talentTrees?: Array<number>;
+	faction?: Faction;
+}
+
+export interface PresetEpWeights extends PresetBase {
+	epWeights: Stats;
+}
+
+export interface PresetEpWeightsOptions extends PresetOptionsBase {}
+
+export interface PresetRotation extends PresetBase {
 	rotation: SavedRotation;
-	tooltip?: string;
-	enableWhen?: (obj: Player<any>) => boolean;
-}
-
-export interface PresetGearOptions {
-    talentTree?: number,
-    talentTrees?: Array<number>,
-    faction?: Faction,
-    customCondition?: (player: Player<any>) => boolean,
-
-    tooltip?: string,
 }
 
 export interface PresetRotationOptions {
-    talentTree?: number,
+	talentTree?: number;
 }
 
 export function makePresetGear(name: string, gearJson: any, options?: PresetGearOptions): PresetGear {
-    const gear = EquipmentSpec.fromJson(gearJson);
-    return makePresetGearHelper(name, gear, options || {});
+	const gear = EquipmentSpec.fromJson(gearJson);
+	return makePresetGearHelper(name, gear, options || {});
 }
 
 function makePresetGearHelper(name: string, gear: EquipmentSpec, options: PresetGearOptions): PresetGear {
-    const conditions: Array<(player: Player<any>) => boolean> = [];
-    if (options.talentTree != undefined) {
-        conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
-    }
-    if (options.talentTrees != undefined) {
-        conditions.push((player: Player<any>) => (options.talentTrees || []).includes(player.getTalentTree()));
-    }
-    if (options.faction != undefined) {
-        conditions.push((player: Player<any>) => player.getFaction() == options.faction);
-    }
-    if (options.customCondition != undefined) {
-        conditions.push(options.customCondition);
-    }
+	const conditions: Array<(player: Player<any>) => boolean> = [];
+	if (options.talentTree !== undefined) {
+		conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
+	}
+	if (options.talentTrees !== undefined) {
+		conditions.push((player: Player<any>) => (options.talentTrees || []).includes(player.getTalentTree()));
+	}
+	if (options.faction !== undefined) {
+		conditions.push((player: Player<any>) => player.getFaction() == options.faction);
+	}
+	if (options.customCondition !== undefined) {
+		conditions.push(options.customCondition);
+	}
 
-    return {
-        name: name,
-        tooltip: options.tooltip || Tooltips.BASIC_BIS_DISCLAIMER,
-        gear: gear,
-        enableWhen: conditions.length > 0
-            ? (player: Player<any>) => conditions.every(cond => cond(player))
-            : undefined,
-    };
+	return {
+		name,
+		tooltip: options.tooltip || Tooltips.BASIC_BIS_DISCLAIMER,
+		gear,
+		enableWhen: !!conditions.length ? (player: Player<any>) => conditions.every(cond => cond(player)) : undefined,
+	};
+}
+
+export function makePresetEpWeights(name: string, epWeights: Stats, options?: PresetEpWeightsOptions): PresetEpWeights {
+	return makePresetEpWeightHelper(name, epWeights, options || {});
+}
+
+function makePresetEpWeightHelper(name: string, epWeights: Stats, options?: PresetEpWeightsOptions): PresetEpWeights {
+	const conditions: Array<(player: Player<any>) => boolean> = [];
+	if (options?.customCondition !== undefined) {
+		conditions.push(options.customCondition);
+	}
+
+	return {
+		name,
+		epWeights,
+		enableWhen: !!conditions.length ? (player: Player<any>) => conditions.every(cond => cond(player)) : undefined,
+	};
 }
 
 export function makePresetAPLRotation(name: string, rotationJson: any, options?: PresetRotationOptions): PresetRotation {
-    const rotation = SavedRotation.create({
-        rotation: APLRotation.fromJson(rotationJson),
-    });
-    return makePresetRotationHelper(name, rotation, options);
+	const rotation = SavedRotation.create({
+		rotation: APLRotation.fromJson(rotationJson),
+	});
+	return makePresetRotationHelper(name, rotation, options);
 }
 
-export function makePresetSimpleRotation<SpecType extends Spec>(name: string, spec: SpecType, simpleRotation: SpecRotation<SpecType>, options?: PresetRotationOptions): PresetRotation {
-    const isTankSpec = (spec == Spec.SpecBloodDeathKnight) || (spec == Spec.SpecGuardianDruid) || (spec == Spec.SpecProtectionPaladin) || (spec == Spec.SpecProtectionWarrior);
-    const rotation = SavedRotation.create({
+export function makePresetSimpleRotation<SpecType extends Spec>(
+	name: string,
+	spec: SpecType,
+	simpleRotation: SpecRotation<SpecType>,
+	options?: PresetRotationOptions,
+): PresetRotation {
+	const isTankSpec =
+		spec == Spec.SpecBloodDeathKnight || spec == Spec.SpecGuardianDruid || spec == Spec.SpecProtectionPaladin || spec == Spec.SpecProtectionWarrior;
+	const rotation = SavedRotation.create({
 		rotation: {
 			type: APLRotationType.TypeSimple,
 			simple: {
@@ -94,21 +110,19 @@ export function makePresetSimpleRotation<SpecType extends Spec>(name: string, sp
 				}),
 			},
 		},
-    });
-    return makePresetRotationHelper(name, rotation, options);
+	});
+	return makePresetRotationHelper(name, rotation, options);
 }
 
 function makePresetRotationHelper(name: string, rotation: SavedRotation, options?: PresetRotationOptions): PresetRotation {
-    const conditions: Array<(player: Player<any>) => boolean> = [];
-    if (options?.talentTree != undefined) {
-        conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
-    }
+	const conditions: Array<(player: Player<any>) => boolean> = [];
+	if (options?.talentTree != undefined) {
+		conditions.push((player: Player<any>) => player.getTalentTree() == options.talentTree);
+	}
 
-    return {
-        name: name,
-        rotation: rotation,
-        enableWhen: conditions.length > 0
-            ? (player: Player<any>) => conditions.every(cond => cond(player))
-            : undefined,
-    };
+	return {
+		name,
+		rotation,
+		enableWhen: !!conditions.length ? (player: Player<any>) => conditions.every(cond => cond(player)) : undefined,
+	};
 }

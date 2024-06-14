@@ -1,16 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import {
-	Consumes,
-	Debuffs,
-	Flask,
-	Food,
-	Glyphs,
-	IndividualBuffs,
-	Potions,
-	Profession,
-	RaidBuffs,
-	TinkerHands,
-} from '../../core/proto/common';
+import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profession, RaidBuffs, Stat, TinkerHands } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
 import {
 	DestructionWarlock_Options as WarlockOptions,
@@ -19,6 +8,7 @@ import {
 	WarlockOptions_Summon as Summon,
 	WarlockPrimeGlyph as PrimeGlyph,
 } from '../../core/proto/warlock';
+import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import P4WrathGear from './gear_sets/p4_wrath.gear.json';
@@ -31,10 +21,26 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 export const BIS_TOOLTIP = "This gear preset is inspired from Zephan's Affliction guide: https://www.warcrafttavern.com/wotlk/guides/pve-affliction-warlock/";
 
 export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', PreraidGear);
-export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear,);
+export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
 export const P4_WOTLK_PRESET = PresetUtils.makePresetGear('P4 Wrath', P4WrathGear, { tooltip: BIS_TOOLTIP });
 
 export const APL_Default = PresetUtils.makePresetAPLRotation('Destro', DefaultApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 0.18,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatSpellHit]: 0.93,
+		[Stat.StatSpellCrit]: 0.53,
+		[Stat.StatSpellHaste]: 0.81,
+		[Stat.StatMastery]: 1.0,
+	}),
+);
+
+// Default talents. Uses the wowhead calculator format, make the talents on
+// https://wotlk.wowhead.com/talent-calc and copy the numbers in the url.
 
 export const DestructionTalents = {
 	name: 'Destruction',

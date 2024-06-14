@@ -53,24 +53,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		// Default equipped gear.
 		gear: Presets.P1_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatAgility]: 2.67,
-				[Stat.StatStrength]: 1.05,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatSpellCrit]: 0.08,
-				[Stat.StatSpellHit]: 0.4,
-				[Stat.StatMeleeHit]: 0.83,
-				[Stat.StatMeleeCrit]: 0.75,
-				[Stat.StatMeleeHaste]: 1.14,
-				[Stat.StatMastery]: 1.21,
-				[Stat.StatExpertise]: 1.3,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.95,
-				[PseudoStat.PseudoStatOffHandDps]: 1.28,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -135,6 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.

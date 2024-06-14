@@ -5,14 +5,11 @@ import { ref } from 'tsx-vanilla';
 import { IndividualSimUI } from '../individual_sim_ui.jsx';
 import { Player } from '../player.js';
 import { ProgressMetrics, StatWeightsResult, StatWeightValues } from '../proto/api.js';
-import { GemColor, ItemSlot, Profession, PseudoStat, Stat, UnitStats } from '../proto/common.js';
-import { UIGem as Gem } from '../proto/ui.js';
-import { Gear } from '../proto_utils/gear.js';
-import * as Gems from '../proto_utils/gems.js';
+import { PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { getClassStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
-import { cloneChildren, combinationsWithDups, permutations, stDevToConf90, sum } from '../utils.js';
+import { stDevToConf90 } from '../utils.js';
 import { BaseModal } from './base_modal.jsx';
 import { BooleanPicker } from './pickers/boolean_picker.js';
 import { NumberPicker } from './pickers/number_picker.js';
@@ -81,7 +78,6 @@ class EpWeightsMenu extends BaseModal {
 		const threatMetricsSelectRef = ref<HTMLSelectElement>();
 		const typeSelectRef = ref<HTMLSelectElement>();
 		const computeEpRef = ref<HTMLButtonElement>();
-		const optimizeGemsButtonRef = ref<HTMLButtonElement>();
 		const calcWeightsButtonRef = ref<HTMLButtonElement>();
 		const allStatsContainerRef = ref<HTMLDivElement>();
 
@@ -175,9 +171,6 @@ class EpWeightsMenu extends BaseModal {
 
 		this.footer!.appendChild(
 			<>
-				<button ref={optimizeGemsButtonRef} className="btn btn-primary optimize-gems experimental me-2">
-					Optimize Gems
-				</button>
 				<button ref={calcWeightsButtonRef} className="btn btn-primary calc-weights">
 					<i className="fas fa-calculator me-1" />
 					Calculate
@@ -240,43 +233,6 @@ class EpWeightsMenu extends BaseModal {
 				updateEpRefStat();
 			});
 			threatMetricsSelect.value = getNameFromStat(this.getTankEpRefStat());
-		}
-
-		const optimizeGemsButton = optimizeGemsButtonRef.value;
-		if (optimizeGemsButton) {
-			tippy(optimizeGemsButton, {
-				content: (
-					<>
-						<p>
-							<span className="warning link-warning">
-								<i className="fa fa-exclamation-triangle"></i> WARNING
-							</span>{' '}
-							This feature is experimental, and will not always produce the most optimal gems especially when interacting with soft/hard stat
-							caps.
-						</p>
-						<p>
-							Optimizes equipped gems to maximize EP, based on the values in <b>Current EP</b>.
-						</p>
-						<p className="mb-0">
-							Does not change the meta gem, but ensures that its condition is met. Uses JC gems if Jewelcrafting is a selected profession.
-						</p>
-					</>
-				),
-			});
-			optimizeGemsButton.addEventListener('click', async () => {
-				const defaultState = cloneChildren(optimizeGemsButton);
-				optimizeGemsButton.classList.add('disabled');
-				optimizeGemsButton.style.width = `${optimizeGemsButton.getBoundingClientRect().width.toFixed(3)}px`;
-				optimizeGemsButton.replaceChildren(
-					<>
-						<i className=" fa fa-spinner fa-spin me-1" />
-						Running
-					</>,
-				);
-				await this.optimizeGems(TypedEvent.nextEventID());
-				optimizeGemsButton.replaceChildren(...defaultState);
-				optimizeGemsButton.classList.remove('disabled');
-			});
 		}
 
 		const calcButton = calcWeightsButtonRef.value;
@@ -618,266 +574,6 @@ class EpWeightsMenu extends BaseModal {
 		);
 	}
 
-	private async optimizeGems(eventID: EventID) {
-		// Replace 0 weights with a very tiny value, so we always prefer to take free stats even if the user gave a 0 weight.
-		let epWeights = this.simUI.player.getEpWeights();
-		epWeights = new Stats(epWeights.asArray().map(w => (w === 0 ? 1e-8 : w)));
-
-		const gear = this.simUI.player.getGear();
-		const allGems = this.simUI.sim.db.getGems();
-		const phase = this.simUI.sim.getPhase();
-		const isBlacksmithing = this.simUI.player.isBlacksmithing();
-		const isJewelcrafting = this.simUI.player.hasProfession(Profession.Jewelcrafting);
-
-		const optimizedGear = EpWeightsMenu.optimizeGemsForWeights(epWeights, gear, allGems, phase, isBlacksmithing, isJewelcrafting);
-		this.simUI.player.setGear(eventID, optimizedGear);
-	}
-
-	private static optimizeGemsForWeights(
-		epWeights: Stats,
-		gear: Gear,
-		allGems: Gem[],
-		phase: number,
-		isBlacksmithing: boolean,
-		isJewelcrafting: boolean,
-	): Gear {
-		const unrestrictedGems = allGems.filter(gem => Gems.isUnrestrictedGem(gem, phase));
-
-		const {
-			bestGemForColor: bestGemForColor,
-			bestGemForColorEP: _bestGemForColorEP,
-			bestGemForSocket: bestGemForSocket,
-			bestGemForSocketEP: bestGemForSocketEP,
-			bestGem: bestGem,
-			bestGemEP: bestGemEP,
-		} = EpWeightsMenu.findBestGems(unrestrictedGems, epWeights);
-
-		const items = gear.asMap();
-		const socketBonusEPs = Object.values(items).map(item => (!!item ? new Stats(item.item.socketBonus).computeEP(epWeights) : 0));
-
-		// Start by optimally filling all items, ignoring meta condition.
-		Object.entries(items).forEach(([itemSlot, equippedItem], i) => {
-			if (!equippedItem) return;
-
-			//const item = equippedItem.item;
-			const socketColors = equippedItem.curSocketColors(isBlacksmithing);
-
-			// Compare whether its better to match sockets + get socket bonus, or just use best gems.
-			const bestGemEPNotMatchingSockets = sum(socketColors.map(socketColor => (socketColor === GemColor.GemColorMeta ? 0 : bestGemEP)));
-			const bestGemEPMatchingSockets =
-				socketBonusEPs[i] + sum(socketColors.map(socketColor => (socketColor === GemColor.GemColorMeta ? 0 : bestGemForSocketEP[socketColor])));
-
-			if (bestGemEPNotMatchingSockets > bestGemEPMatchingSockets) {
-				socketColors.forEach((socketColor, i) => {
-					if (socketColor !== GemColor.GemColorMeta) {
-						equippedItem = equippedItem!.withGem(bestGem, i);
-					}
-				});
-			} else {
-				socketColors.forEach((socketColor, i) => {
-					if (socketColor !== GemColor.GemColorMeta) {
-						equippedItem = equippedItem!.withGem(bestGemForSocket[socketColor], i);
-					}
-				});
-			}
-
-			items[Number(itemSlot) as ItemSlot] = equippedItem;
-		});
-		gear = new Gear(items);
-
-		const allSockets: { itemSlot: ItemSlot; socketIdx: number }[] = Object.keys(items)
-			.map(itemSlotStr => {
-				const itemSlot: ItemSlot = parseInt(itemSlotStr);
-				const item = items[itemSlot];
-				if (!item) {
-					return [];
-				}
-
-				const numSockets = item.numSockets(isBlacksmithing);
-				return [...Array(numSockets).keys()]
-					.filter(socketIdx => item.item.gemSockets[socketIdx] !== GemColor.GemColorMeta)
-					.map(socketIdx => ({
-						itemSlot,
-						socketIdx,
-					}));
-			})
-			.flat();
-		const threeSocketCombos = permutations(allSockets, 3);
-		const calculateGearGemsEP = (gear: Gear): number => gear.statsFromGems(isBlacksmithing).computeEP(epWeights);
-
-		// Now make adjustments to satisfy meta condition.
-		// Use a wrapper function so we can return for readability.
-		gear = ((gear: Gear): Gear => {
-			const metaGem = gear.getMetaGem();
-			if (!metaGem) {
-				return gear;
-			}
-
-			const condition = Gems.getMetaGemCondition(metaGem.id);
-			// Only TBC gems use compare color conditions, so just ignore them.
-			if (!condition || condition.isCompareColorCondition()) {
-				return gear;
-			}
-
-			// If there are very few non-meta gem slots, just skip because it's annoying to deal with.
-			if (gear.getAllGems(isBlacksmithing).length - 1 < 3) {
-				return gear;
-			}
-
-			// In wrath, all meta gems use min colors condition (numRed >= r && numYellow >= y && numBlue >= b)
-			// All conditions require 3 gems, e.g. 3 of a single color, 2 of one color and 1 of another, or 1 of each.
-			// So the maximum number of gems that ever need to change is 3.
-
-			const colorCombos = EpWeightsMenu.getColorCombosToSatisfyCondition(condition);
-
-			let bestGear = gear;
-			let bestGearEP = calculateGearGemsEP(gear);
-
-			// Use brute-force to try every possibility.
-			colorCombos.forEach(colorCombo => {
-				threeSocketCombos.forEach(socketCombo => {
-					const curItems = gear.asMap();
-					for (let i = 0; i < colorCombo.length; i++) {
-						const gemColor = colorCombo[i];
-						const { itemSlot, socketIdx } = socketCombo[i];
-						curItems[itemSlot] = curItems[itemSlot]!.withGem(bestGemForColor[gemColor], socketIdx);
-					}
-					const curGear = new Gear(curItems);
-					if (curGear.hasActiveMetaGem(isBlacksmithing)) {
-						const curGearEP = calculateGearGemsEP(curGear);
-						if (curGearEP > bestGearEP) {
-							bestGear = curGear;
-							bestGearEP = curGearEP;
-						}
-					}
-				});
-			});
-
-			return bestGear;
-		})(gear);
-
-		// Now insert 3 JC gems, if Jewelcrafting is selected.
-		// Use a wrapper function so we can return for readability.
-		gear = ((gear: Gear): Gear => {
-			if (!isJewelcrafting) {
-				return gear;
-			}
-
-			const jcGems = allGems.filter(gem => gem.requiredProfession === Profession.Jewelcrafting);
-
-			const {
-				bestGemForColor: bestJcGemForColor,
-				bestGemForColorEP: _bestJcGemForColorEP,
-				bestGemForSocket: _bestJcGemForSocket,
-				bestGemForSocketEP: _bestJcGemForSocketEP,
-				bestGem: _bestJcGem,
-				bestGemEP: _bestJcGemEP,
-			} = EpWeightsMenu.findBestGems(jcGems, epWeights);
-
-			let bestGear = gear;
-			let bestGearEP = calculateGearGemsEP(gear);
-
-			threeSocketCombos.forEach(socketCombo => {
-				const curItems = gear.asMap();
-				for (let i = 0; i < socketCombo.length; i++) {
-					const { itemSlot, socketIdx } = socketCombo[i];
-					const ei = curItems[itemSlot]!;
-					const gemColor = ei.gems[socketIdx]!.color;
-					curItems[itemSlot] = ei.withGem(bestJcGemForColor[gemColor], socketIdx);
-				}
-
-				const curGear = new Gear(curItems);
-				if (curGear.hasActiveMetaGem(isBlacksmithing)) {
-					const curGearEP = calculateGearGemsEP(curGear);
-					if (curGearEP > bestGearEP) {
-						bestGear = curGear;
-						bestGearEP = curGearEP;
-					}
-				}
-			});
-
-			return bestGear;
-		})(gear);
-
-		return gear;
-	}
-
-	// Returns every possible way we could satisfy the gem condition.
-	private static getColorCombosToSatisfyCondition(condition: Gems.MetaGemCondition): GemColor[][] {
-		if (condition.isOneOfEach()) {
-			return [Gems.PRIMARY_COLORS, [GemColor.GemColorPrismatic]].concat(
-				Gems.SECONDARY_COLORS.map((secondaryColor, i) => {
-					const remainingColor = Gems.PRIMARY_COLORS[i];
-					return Gems.socketToMatchingColors.get(remainingColor)!.map(matchingColor => [matchingColor, secondaryColor]);
-				}).flat(),
-			);
-		} else if (condition.isTwoAndOne()) {
-			const oneColor = Gems.PRIMARY_COLORS[[condition.minRed, condition.minYellow, condition.minBlue].indexOf(1)];
-			const twoColor = Gems.PRIMARY_COLORS[[condition.minRed, condition.minYellow, condition.minBlue].indexOf(2)];
-			const secondaryColor = Gems.SECONDARY_COLORS.find(
-				color => Gems.gemColorMatchesSocket(color, oneColor) && Gems.gemColorMatchesSocket(color, twoColor),
-			)!;
-
-			return [
-				// All the ways to get 1 point in both colors. These are partial combos,
-				// which still need 1 more gem in the 2-color.
-				[GemColor.GemColorPrismatic],
-				[secondaryColor],
-				[oneColor, twoColor],
-			]
-				.map(partialCombo => {
-					return Gems.socketToMatchingColors.get(twoColor)!.map(matchingColor => partialCombo.concat([matchingColor]));
-				})
-				.flat();
-		} else if (condition.isThreeOfAColor()) {
-			const threeColor = Gems.PRIMARY_COLORS[[condition.minRed, condition.minYellow, condition.minBlue].indexOf(3)];
-			const matchingColors = Gems.socketToMatchingColors.get(threeColor)!;
-			return combinationsWithDups(matchingColors, 3);
-		} else {
-			return [];
-		}
-	}
-
-	private static findBestGems(gemList: Gem[], epWeights: Stats): BestGemsResult {
-		// Best gem when we need a gem of a specific color.
-		const bestGemForColor: Gem[] = new Array(Gems.GEM_COLORS.length).fill(undefined);
-		const bestGemForColorEP: number[] = new Array(Gems.GEM_COLORS.length).fill(0);
-		// Best gem when we need to match a socket to activate a bonus.
-		const bestGemForSocket: Gem[] = bestGemForColor.slice();
-		const bestGemForSocketEP: number[] = bestGemForColorEP.slice();
-		// The single best gem, when color doesn't matter.
-		let bestGem = gemList[0];
-		let bestGemEP = 0;
-		gemList.forEach(gem => {
-			const gemEP = new Stats(gem.stats).computeEP(epWeights);
-			if (gemEP > bestGemForColorEP[gem.color]) {
-				bestGemForColorEP[gem.color] = gemEP;
-				bestGemForColor[gem.color] = gem;
-
-				if (gem.color !== GemColor.GemColorMeta && gemEP > bestGemEP) {
-					bestGemEP = gemEP;
-					bestGem = gem;
-				}
-			}
-
-			Gems.GEM_COLORS.forEach(socketColor => {
-				if (Gems.gemMatchesSocket(gem, socketColor) && gemEP > bestGemForSocketEP[socketColor]) {
-					bestGemForSocketEP[socketColor] = gemEP;
-					bestGemForSocket[socketColor] = gem;
-				}
-			});
-		});
-
-		return {
-			bestGemForColor: bestGemForColor,
-			bestGemForColorEP: bestGemForColorEP,
-			bestGemForSocket: bestGemForSocket,
-			bestGemForSocketEP: bestGemForSocketEP,
-			bestGem: bestGem,
-			bestGemEP: bestGemEP,
-		};
-	}
-
 	private static epUnitStats: UnitStat[] = UnitStat.getAll().filter(stat => {
 		if (stat.isStat()) {
 			return true;
@@ -1034,13 +730,4 @@ type StatsTableEntry = {
 	getEpRefStat?: () => Stat;
 	metricRef: ReturnType<typeof ref<HTMLButtonElement>>;
 	ratioRef: ReturnType<typeof ref<HTMLTableCellElement>>;
-};
-
-type BestGemsResult = {
-	bestGemForColor: Gem[];
-	bestGemForColorEP: number[];
-	bestGemForSocket: Gem[];
-	bestGemForSocketEP: number[];
-	bestGem: Gem;
-	bestGemEP: number;
 };

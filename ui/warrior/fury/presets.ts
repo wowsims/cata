@@ -1,7 +1,8 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Faction, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common';
+import { Consumes, Faction, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
-import { FuryWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph,WarriorPrimeGlyph, WarriorShout } from '../../core/proto/warrior';
+import { FuryWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph, WarriorShout } from '../../core/proto/warrior';
+import { Stats } from '../../core/proto_utils/stats';
 import FuryApl from './apls/fury.apl.json';
 import P1FurySMFGear from './gear_sets/p1_fury_smf.gear.json';
 import P1FuryTGGear from './gear_sets/p1_fury_tg.gear.json';
@@ -18,6 +19,27 @@ export const P1_FURY_SMF_PRESET = PresetUtils.makePresetGear('P1 Fury SMF', P1Fu
 export const P1_FURY_TG_PRESET = PresetUtils.makePresetGear('P1 Fury TG', P1FuryTGGear);
 
 export const ROTATION_FURY = PresetUtils.makePresetAPLRotation('Fury', FuryApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 2.2,
+			[Stat.StatAgility]: 1.18,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatExpertise]: 1.6,
+			[Stat.StatMeleeHit]: 1.24,
+			[Stat.StatMeleeCrit]: 1.54,
+			[Stat.StatMeleeHaste]: 1.01,
+			[Stat.StatMastery]: 0.92,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 3.63,
+			[PseudoStat.PseudoStatOffHandDps]: 1.4,
+		},
+	),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.

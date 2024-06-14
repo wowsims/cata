@@ -84,26 +84,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Default equipped gear.
 		gear: Presets.P1ORC_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatIntellect]: 1.48,
-				[Stat.StatAgility]: 1.59,
-				[Stat.StatStrength]: 1.1,
-				[Stat.StatSpellPower]: 1.13,
-				[Stat.StatSpellHit]: 0, //default EP assumes cap
-				[Stat.StatSpellCrit]: 0.91,
-				[Stat.StatSpellHaste]: 0.37,
-				[Stat.StatAttackPower]: 1.0,
-				[Stat.StatMeleeHit]: 1.38,
-				[Stat.StatMeleeCrit]: 0.81,
-				[Stat.StatMeleeHaste]: 1.61, //haste is complicated
-				[Stat.StatExpertise]: 0, //default EP assumes cap
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 5.21,
-				[PseudoStat.PseudoStatOffHandDps]: 2.21,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -137,6 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.

@@ -40,14 +40,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 		gear: Presets.P1_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.18,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellHit]: 0.93,
-			[Stat.StatSpellCrit]: 0.53,
-			[Stat.StatSpellHaste]: 0.81,
-			[Stat.StatMastery]: 1.0,
-		}),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge optimizer
 		statCaps: (() => {
 			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
@@ -122,6 +115,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DemonologyTalents],
 		// Preset rotations that the user can quickly select.
