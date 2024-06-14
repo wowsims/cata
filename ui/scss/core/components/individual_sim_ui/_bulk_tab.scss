@@ -45,6 +45,8 @@
 
 			.bulk-combinations-count {
 				margin-bottom: 0;
+				display: flex;
+				align-items: center;
 
 				small {
 					font-size: var(--bs-body-font-size);
@@ -69,6 +71,7 @@
 
 		.talents-container {
 			display: flex;
+			flex-wrap: wrap;
 			gap: var(--block-spacer);
 		}
 	}
