@@ -96,7 +96,8 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := .15 * paladin.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := 0.15 * paladin.MHWeaponDamage(sim, spell.MeleeAttackPower()) *
+				(0.2 * float64(censureSpell.Dot(target).GetStacks()))
 
 			// can't miss if melee swing landed, but can crit
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
@@ -121,11 +122,8 @@ func (paladin *Paladin) registerSealOfTruth() {
 				return
 			}
 
-			if censureSpell.Dot(result.Target).GetStacks() == 5 {
-				onSpecialOrSwingProc.Cast(sim, result.Target)
-			}
-
 			censureSpell.Cast(sim, result.Target)
+			onSpecialOrSwingProc.Cast(sim, result.Target)
 		},
 	})
 

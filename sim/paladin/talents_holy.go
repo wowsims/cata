@@ -20,7 +20,7 @@ func (paladin *Paladin) applyArbiterOfTheLight() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskJudgement,
+		ClassMask:  SpellMaskJudgement | SpellMaskTemplarsVerdict,
 		Kind:       core.SpellMod_BonusCrit_Rating,
 		FloatValue: 6 * float64(paladin.Talents.ArbiterOfTheLight) * core.CritRatingPerCritChance,
 	})
