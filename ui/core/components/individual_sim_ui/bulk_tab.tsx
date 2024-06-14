@@ -11,7 +11,7 @@ import { ActionId } from '../../proto_utils/action_id';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { canEquipItem, getEligibleItemSlots, isSecondaryItemSlot } from '../../proto_utils/utils';
 import { TypedEvent } from '../../typed_event';
-import { getEnumValues, isExternal } from '../../utils';
+import { getEnumValues, isExternal, isLocal } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
 import { ItemData } from '../gear_picker/item_list';
 import SelectorModal from '../gear_picker/selector_modal';
@@ -26,9 +26,9 @@ import BulkSimResultRenderer from './bulk/bulk_sim_results_renderer';
 import GemSelectorModal from './bulk/gem_selector_modal';
 import { BulkSimItemSlot, itemSlotToBulkSimItemSlot } from './bulk/utils';
 
-const ITERATIONS_PER_COMBO = 1000;
-const ITERATIONS_PER_COMBO_FAST_MODE = 50;
+const WEB_DEFAULT_ITERATIONS = 1000;
 const WEB_ITERATIONS_LIMIT = 50_000;
+const LOCAL_ITERATIONS_LIMIT = 1_000_000;
 
 export class BulkTab extends SimTab {
 	readonly simUI: IndividualSimUI<any>;
@@ -244,8 +244,14 @@ export class BulkTab extends SimTab {
 			defaultYellowGem: this.defaultGems[1].id,
 			defaultBlueGem: this.defaultGems[2].id,
 			defaultMetaGem: this.defaultGems[3].id,
-			iterationsPerCombo: ITERATIONS_PER_COMBO, // TODO(Riotdog-GehennasEU): Define a new UI element for the iteration setting.
+			iterationsPerCombo: this.getDefaultIterationsCount(),
 		});
+	}
+
+	private getDefaultIterationsCount(): number {
+		if (isExternal()) return WEB_DEFAULT_ITERATIONS;
+
+		return this.simUI.sim.getIterations() / (this.fastMode ? 10 : 1);
 	}
 
 	protected createBulkItemsDatabase(): SimDatabase {
@@ -419,6 +425,14 @@ export class BulkTab extends SimTab {
 					<br />
 					This is an <span className="text-brand">Alpha</span> feature, so if you have feedback or find a bug, please report it!
 				</p>
+				{isExternal() && (
+					<p className="mb-0">
+						<a href="https://github.com/wowsims/cata/releases" target="_blank">
+							<i className="fas fa-gauge-high me-1" />
+							Download the local sim for faster results.
+						</a>
+					</p>
+				)}
 				<div className="bulk-gear-actions">
 					<button className="btn btn-secondary" ref={bagImportBtnRef}>
 						<i className="fa fa-download me-1" /> Import From Bags
@@ -498,7 +512,9 @@ export class BulkTab extends SimTab {
 		const settingsContainer = settingsContainerRef.value!;
 		const booleanSettingsContainer = booleanSettingsContainerRef.value!;
 
-		TypedEvent.onAny([this.itemsChangedEmitter, this.settingsChangedEmitter]).on(() => {
+		const updateComboCountEmitters = [this.itemsChangedEmitter, this.settingsChangedEmitter];
+		if (isLocal()) updateComboCountEmitters.push(this.simUI.sim.iterationsChangeEmitter);
+		TypedEvent.onAny(updateComboCountEmitters).on(() => {
 			combinationsElem.replaceChildren(this.getCombinationsCount());
 		});
 
@@ -535,6 +551,7 @@ export class BulkTab extends SimTab {
 			});
 		});
 
+		// Disabled temporarily because for the web sim 50 iterations was far too few for reliable results
 		const fastModeCheckbox = new BooleanPicker<BulkTab>(null, this, {
 			id: 'bulk-fast-mode',
 			label: 'Fast Mode',
@@ -609,7 +626,7 @@ export class BulkTab extends SimTab {
 
 		booleanSettingsContainer.appendChild(
 			<>
-				{fastModeCheckbox.rootElem}
+				{!isExternal() && fastModeCheckbox.rootElem}
 				{combinationsCheckbox.rootElem}
 				{autoEnchantCheckbox.rootElem}
 				{autoGemCheckbox.rootElem}
@@ -762,7 +779,7 @@ export class BulkTab extends SimTab {
 			comboCount *= uniqueLoadouts.length;
 		}
 
-		const baseNumIterations = this.fastMode ? ITERATIONS_PER_COMBO_FAST_MODE : ITERATIONS_PER_COMBO;
+		const baseNumIterations = this.getDefaultIterationsCount();
 		const iterationCount = baseNumIterations * comboCount;
 
 		this.combinations = comboCount;
@@ -796,7 +813,11 @@ export class BulkTab extends SimTab {
 	}
 
 	private showIterationsWarning(): boolean {
-		return isExternal() && this.iterations > WEB_ITERATIONS_LIMIT;
+		return this.iterations > this.getIterationsLimit();
+	}
+
+	private getIterationsLimit(): number {
+		return isExternal() ? WEB_ITERATIONS_LIMIT : LOCAL_ITERATIONS_LIMIT;
 	}
 
 	private setSimProgress(progress: ProgressMetrics, iterPerSecond: number, currentRound: number, rounds: number, combinations: number) {

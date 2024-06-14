@@ -481,6 +481,8 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+			case 'Raging Blow':
+			case 'Slam':
 			case 'Frost Strike':
 			case 'Plague Strike':
 			case 'Blood Strike':

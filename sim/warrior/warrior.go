@@ -66,6 +66,9 @@ const (
 	SpellMaskMortalStrike
 	SpellMaskBladestorm
 	SpellMaskHeroicLeap
+
+	// Spec specific talents
+	SpellDualWieldSpecMask
 )
 
 const EnableOverpowerTag = "EnableOverpower"
