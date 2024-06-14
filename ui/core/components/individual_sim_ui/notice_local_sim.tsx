@@ -45,7 +45,7 @@ export class NoticeLocalSim extends Component {
 			body: (
 				<>
 					<p>You can download our local sim to speed up your simulations significantly?</p>
-					<a href={REPO_RELEASES_URL} className="btn btn-outline-light" target="_blank">
+					<a href={REPO_RELEASES_URL} className="btn btn-outline-light" target="_blank" onclick={() => this.setHasSeenNotice()}>
 						Download
 					</a>
 				</>
