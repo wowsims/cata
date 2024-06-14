@@ -118,7 +118,7 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:           "Burning Rage Trigger",
 				ActionID:       actionID,
-				ClassSpellMask: SpellMaskCommandingShout | SpellMaskBattleShout,
+				ClassSpellMask: SpellMaskShouts,
 				Callback:       core.CallbackOnCastComplete,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					buff.Activate(sim)

@@ -69,6 +69,8 @@ const (
 
 	// Spec specific talents
 	SpellDualWieldSpecMask
+
+	SpellMaskShouts = SpellMaskCommandingShout | SpellMaskBattleShout
 )
 
 const EnableOverpowerTag = "EnableOverpower"
