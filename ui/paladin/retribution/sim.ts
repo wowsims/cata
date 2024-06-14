@@ -1,5 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
+import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
@@ -11,7 +11,7 @@ import { TypedEvent } from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
 // import * as RetInputs from './inputs.js';
 import * as Presets from './presets.js';
-import {PaladinPrimeGlyph} from "../../core/proto/paladin";
+import { PaladinPrimeGlyph } from '../../core/proto/paladin';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssClass: 'retribution-paladin-sim-ui',
@@ -62,9 +62,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		let stats = new Stats();
 
 		TypedEvent.freezeAllAndDo(() => {
-			if (
-				player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth)
-			) {
+			if (player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth)) {
 				stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			}
 		});
@@ -131,10 +129,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		PaladinInputs.AuraSelection(),
-		PaladinInputs.StartingSealSelection()
-	],
+	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.StartingSealSelection()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.ReplenishmentBuff],
 	excludeBuffDebuffInputs: [],
@@ -152,11 +147,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.RetTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_RET_PRESET,
-			Presets.P1_NONHC_RET_PRESET,
-			Presets.P1_BIS_RET_PRESET,
-		],
+		gear: [Presets.PRERAID_RET_PRESET, Presets.P1_NONHC_RET_PRESET, Presets.P1_BIS_RET_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecRetributionPaladin>): APLRotation => {

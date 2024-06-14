@@ -15,8 +15,8 @@ import { Sim } from '../sim';
 import { ActionGroupItem } from '../sim_ui';
 import { TypedEvent } from '../typed_event';
 import { isDevMode, sleep } from '../utils';
-import { BooleanPicker } from './boolean_picker';
-import { NumberPicker } from './number_picker';
+import { BooleanPicker } from './pickers/boolean_picker';
+import { NumberPicker } from './pickers/number_picker';
 import Toast from './toast';
 
 type YalpsCoefficients = Map<string, number>;
@@ -46,6 +46,7 @@ export type ReforgeOptimizerOptions = {
 export class ReforgeOptimizer {
 	protected readonly simUI: IndividualSimUI<any>;
 	protected readonly player: Player<any>;
+	protected readonly isHybridCaster: boolean;
 	protected readonly sim: Sim;
 	protected readonly defaults: IndividualSimUI<any>['individualConfig']['defaults'];
 	protected _statCaps: Stats;
@@ -54,6 +55,7 @@ export class ReforgeOptimizer {
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
 		this.player = simUI.player;
+		this.isHybridCaster = [Spec.SpecBalanceDruid, Spec.SpecShadowPriest, Spec.SpecElementalShaman].includes(this.player.getSpec());
 		this.sim = simUI.sim;
 		this.defaults = simUI.individualConfig.defaults;
 		this.updateGearStatsModifier = options?.updateGearStatsModifier;
@@ -134,7 +136,14 @@ export class ReforgeOptimizer {
 	}
 
 	get preCapEPs(): Stats {
-		return this.sim.getUseCustomEPValues() ? this.player.getEpWeights() : this.defaults.epWeights;
+		let weights = this.sim.getUseCustomEPValues() ? this.player.getEpWeights() : this.defaults.epWeights;
+
+		// Replace Spirit EP for hybrid casters with a small value in order to break ties between Spirit and Hit Reforges
+		if (this.isHybridCaster) {
+			weights = weights.withStat(Stat.StatSpirit, 0.01);
+		}
+
+		return weights;
 	}
 
 	buildContextMenu(button: HTMLButtonElement) {
@@ -316,21 +325,23 @@ export class ReforgeOptimizer {
 		let appliedStat = stat;
 		let appliedAmount = amount;
 
-		if (appliedStat == Stat.StatSpirit) {
+		if ((stat == Stat.StatSpirit) && this.isHybridCaster) {
+			appliedStat = Stat.StatSpellHit;
+
 			switch (this.player.getSpec()) {
 				case Spec.SpecBalanceDruid:
-					appliedStat = Stat.StatSpellHit;
 					appliedAmount *= 0.5 * (this.player.getTalents() as SpecTalents<Spec.SpecBalanceDruid>).balanceOfPower;
 					break;
 				case Spec.SpecShadowPriest:
-					appliedStat = Stat.StatSpellHit;
 					appliedAmount *= 0.5 * (this.player.getTalents() as SpecTalents<Spec.SpecShadowPriest>).twistedFaith;
 					break;
 				case Spec.SpecElementalShaman:
-					appliedStat = Stat.StatSpellHit;
 					appliedAmount *= [0, 0.33, 0.66, 1][(this.player.getTalents() as SpecTalents<Spec.SpecElementalShaman>).elementalPrecision];
 					break;
 			}
+
+			// Also set the Spirit coefficient directly in order to break ties between Hit and Spirit Reforges
+			coefficients.set(Stat[stat], amount);
 		}
 
 		const currentValue = coefficients.get(Stat[appliedStat]) || 0;

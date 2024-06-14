@@ -1,6 +1,6 @@
-import { TypedEvent } from '../typed_event.js';
-import { arrayEquals } from '../utils.js';
-import { Input, InputConfig } from './input.js';
+import { TypedEvent } from '../../typed_event.js';
+import { arrayEquals } from '../../utils.js';
+import { Input, InputConfig } from '../input.js';
 
 /**
  * Data for creating a number list picker.

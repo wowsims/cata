@@ -14,8 +14,8 @@ import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { cloneChildren, combinationsWithDups, permutations, stDevToConf90, sum } from '../utils.js';
 import { BaseModal } from './base_modal.jsx';
-import { BooleanPicker } from './boolean_picker.js';
-import { NumberPicker } from './number_picker.js';
+import { BooleanPicker } from './pickers/boolean_picker.js';
+import { NumberPicker } from './pickers/number_picker.js';
 import { ResultsViewer } from './results_viewer.jsx';
 
 export function addStatWeightsAction(simUI: IndividualSimUI<any>, epStats: Stat[], epPseudoStats: PseudoStat[] | undefined, epReferenceStat: Stat) {
@@ -76,7 +76,6 @@ class EpWeightsMenu extends BaseModal {
 		const containerRef = ref<HTMLDivElement>();
 		const tableRef = ref<HTMLTableElement>();
 		const tableBodyRef = ref<HTMLTableSectionElement>();
-		const resultsRef = ref<HTMLDivElement>();
 		const damageMetricsSelectRef = ref<HTMLSelectElement>();
 		const healingMetricsSelectRef = ref<HTMLSelectElement>();
 		const threatMetricsSelectRef = ref<HTMLSelectElement>();
@@ -134,7 +133,6 @@ class EpWeightsMenu extends BaseModal {
 					Use the <button className="fa fa-copy" /> icon above the EPs to use newly calculated EPs.
 				</p>
 				<div ref={containerRef} className="results-ep-table-container modal-scroll-table">
-					<div ref={resultsRef} className="results-pending-overlay"></div>
 					<table ref={tableRef} className="results-ep-table">
 						<thead>
 							<tr>
@@ -191,7 +189,8 @@ class EpWeightsMenu extends BaseModal {
 		this.table = tableRef.value!;
 		this.tableBody = tableBodyRef.value!;
 
-		this.resultsViewer = new ResultsViewer(resultsRef.value!);
+		const pendingDiv = (<div className="results-pending-overlay" />) as HTMLDivElement;
+		this.resultsViewer = new ResultsViewer(pendingDiv);
 
 		const updateType = () => {
 			if (this.statsType === 'ep') {
@@ -282,15 +281,9 @@ class EpWeightsMenu extends BaseModal {
 
 		const calcButton = calcWeightsButtonRef.value;
 		calcButton?.addEventListener('click', async () => {
-			const defaultState = cloneChildren(calcButton);
-			calcButton.classList.add('disabled');
-			calcButton.style.width = `${calcButton.getBoundingClientRect().width.toFixed(3)}px`;
-			calcButton.replaceChildren(
-				<>
-					<i className=" fa fa-spinner fa-spin me-1" />
-					Running
-				</>,
-			);
+			this.simUI.rootElem.classList.add('blurred');
+			this.simUI.rootElem.insertAdjacentElement('afterend', pendingDiv);
+
 			this.container.scrollTo({ top: 0 });
 			this.container.classList.add('pending');
 			this.resultsViewer.setPending();
@@ -304,10 +297,10 @@ class EpWeightsMenu extends BaseModal {
 					this.setSimProgress(progress);
 				},
 			);
+			this.simUI.rootElem.classList.remove('blurred');
+			pendingDiv.remove();
 			this.container.classList.remove('pending');
 			this.resultsViewer.hideAll();
-			calcButton.replaceChildren(...defaultState);
-			calcButton.classList.remove('disabled');
 			if (!result) return;
 			this.simUI.prevEpIterations = iterations;
 			this.simUI.prevEpSimResult = this.calculateEp(result);

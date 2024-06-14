@@ -1,21 +1,10 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../../core/components/other_inputs.js';
+import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import {
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	ItemSlot,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat,
-} from '../../core/proto/common';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { Stats } from '../../core/proto_utils/stats';
 import * as RogueInputs from '../inputs';
@@ -71,9 +60,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatSpellCrit]: 0.26,
 				[Stat.StatSpellHit]: 1.31,
-				[Stat.StatMeleeHit]: 0.70,
+				[Stat.StatMeleeHit]: 0.7,
 				[Stat.StatMeleeCrit]: 0.62,
-				[Stat.StatMeleeHaste]: 1.10,
+				[Stat.StatMeleeHaste]: 1.1,
 				[Stat.StatMastery]: 1.23,
 				[Stat.StatExpertise]: 1.04,
 			},
@@ -106,8 +95,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			mangle: true,
 			sunderArmor: true,
@@ -150,14 +138,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.AssassinationTalentsDefault],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_PRESET_MUTILATE,
-		],
+		rotations: [Presets.ROTATION_PRESET_MUTILATE],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.P1_PRESET_ASSASSINATION,
-			Presets.P1_PRESET_ASN_EXPERTISE
-		],
+		gear: [Presets.P1_PRESET_ASSASSINATION, Presets.P1_PRESET_ASN_EXPERTISE],
 	},
 
 	autoRotation: (player: Player<Spec.SpecAssassinationRogue>): APLRotation => {

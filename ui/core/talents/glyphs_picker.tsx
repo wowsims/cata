@@ -171,7 +171,7 @@ class GlyphPicker extends Input<Player<any>, number> {
 			<a ref={anchorElemRef} attributes={{ role: 'button' }} className="d-flex w-100">
 				<img ref={iconElemRef} className="item-picker-icon" />
 				<div className="item-picker-labels-container">
-					<span ref={nameElemRef} className="item-picker-name" />
+					<span ref={nameElemRef} className="item-picker-name-container" />
 				</div>
 			</a>,
 		);

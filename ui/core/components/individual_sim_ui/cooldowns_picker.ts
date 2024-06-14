@@ -6,8 +6,8 @@ import { ActionId } from '../../proto_utils/action_id.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
 import { existsInDOM } from '../../utils';
 import { Component } from '../component.js';
-import { IconEnumPicker, IconEnumValueConfig } from '../icon_enum_picker.js';
-import { NumberListPicker } from '../number_list_picker.js';
+import { IconEnumPicker, IconEnumValueConfig } from '../pickers/icon_enum_picker.jsx';
+import { NumberListPicker } from '../pickers/number_list_picker.js';
 
 export class CooldownsPicker extends Component {
 	readonly player: Player<any>;
