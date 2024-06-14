@@ -1,4 +1,5 @@
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -17,7 +18,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery], // Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
+	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery], // Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
@@ -25,7 +26,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
-		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
@@ -49,13 +49,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		gear: Presets.ARCANE_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.48,
-			[Stat.StatSpirit]: 0.42,
+			[Stat.StatIntellect]: 1.74,
 			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellHit]: 0.38,
-			[Stat.StatSpellCrit]: 0.58,
-			[Stat.StatSpellHaste]: 0.94,
-			[Stat.StatMastery]: 0.8,
+			[Stat.StatSpellHit]: 1.27,
+			[Stat.StatSpellCrit]: 0.5,
+			[Stat.StatSpellHaste]: 0.25,
+			[Stat.StatMastery]: 0.56,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultArcaneConsumes,
@@ -211,5 +210,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 export class ArcaneMageSimUI extends IndividualSimUI<Spec.SpecArcaneMage> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecArcaneMage>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }

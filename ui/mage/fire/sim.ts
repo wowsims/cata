@@ -1,4 +1,5 @@
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -16,7 +17,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery],
+	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -25,7 +26,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
-		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
@@ -49,13 +49,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		gear: Presets.FIRE_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 1.0,
-			[Stat.StatSpirit]: 0.02,
-			[Stat.StatSpellPower]: 0.67,
-			[Stat.StatSpellHit]: 0.77,
-			[Stat.StatSpellCrit]: 0.4,
-			[Stat.StatSpellHaste]: 0.68,
-			[Stat.StatMastery]: 0.35,
+			[Stat.StatIntellect]: 1.32,
+			[Stat.StatSpellPower]: 1.0,
+			[Stat.StatSpellHit]: 1.05,
+			[Stat.StatSpellCrit]: 0.56,
+			[Stat.StatSpellHaste]: 0.64,
+			[Stat.StatMastery]: 0.47,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
@@ -144,5 +143,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFireMage>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }

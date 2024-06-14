@@ -6,7 +6,7 @@ import { Constraint, greaterEq, lessEq, Model, Options, Solution, solve } from '
 import * as Mechanics from '../constants/mechanics.js';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Player } from '../player';
-import { ItemSlot, Stat, Spec } from '../proto/common';
+import { ItemSlot, Spec, Stat } from '../proto/common';
 import { Gear } from '../proto_utils/gear';
 import { getClassStatName } from '../proto_utils/names';
 import { statPercentageOrPointsToNumber, Stats, statToPercentageOrPoints } from '../proto_utils/stats';
@@ -37,6 +37,12 @@ const EXCLUDED_STATS = [
 	Stat.StatMana,
 ];
 
+export type ReforgeOptimizerOptions = {
+	// Allows you to modify the stats before they are returned for the calculations
+	// For example: Adding class specific Glyphs/Talents that are not added by the backend
+	updateGearStatsModifier?: (baseStats: Stats) => Stats;
+};
+
 export class ReforgeOptimizer {
 	protected readonly simUI: IndividualSimUI<any>;
 	protected readonly player: Player<any>;
@@ -44,13 +50,15 @@ export class ReforgeOptimizer {
 	protected readonly sim: Sim;
 	protected readonly defaults: IndividualSimUI<any>['individualConfig']['defaults'];
 	protected _statCaps: Stats;
+	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
 
-	constructor(simUI: IndividualSimUI<any>) {
+	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
 		this.player = simUI.player;
 		this.isHybridCaster = [Spec.SpecBalanceDruid, Spec.SpecShadowPriest, Spec.SpecElementalShaman].includes(this.player.getSpec());
 		this.sim = simUI.sim;
 		this.defaults = simUI.individualConfig.defaults;
+		this.updateGearStatsModifier = options?.updateGearStatsModifier;
 		// For now only gets the first entry because of breakpoints support
 		this._statCaps = this.statCaps;
 		const startReforgeOptimizationEntry: ActionGroupItem = {
@@ -278,6 +286,7 @@ export class ReforgeOptimizer {
 		await this.sim.updateCharacterStats(TypedEvent.nextEventID());
 		let baseStats = Stats.fromProto(this.player.getCurrentStats().finalStats);
 		baseStats = baseStats.addStat(Stat.StatMastery, this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+		if (this.updateGearStatsModifier) baseStats = this.updateGearStatsModifier(baseStats);
 		return baseStats;
 	}
 
