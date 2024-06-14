@@ -776,7 +776,7 @@ export class BulkTab extends SimTab {
 					uniqueLoadouts.push(loadout);
 				}
 			});
-			comboCount *= uniqueLoadouts.length;
+			comboCount *= Math.max(uniqueLoadouts.length, 1);
 		}
 
 		const baseNumIterations = this.getDefaultIterationsCount();
