@@ -1,4 +1,5 @@
 import { LOCAL_STORAGE_PREFIX, REPO_RELEASES_URL } from '../../constants/other';
+import { isDevMode, isLocal } from '../../utils';
 import { Component } from '../component';
 import Toast from '../toast';
 
@@ -9,7 +10,7 @@ export class NoticeLocalSim extends Component {
 		super(null);
 		this.container = parent;
 
-		if (this.hasSeenNotice) return;
+		if (this.hasSeenNotice || isLocal() || isDevMode()) return;
 
 		this.render();
 
