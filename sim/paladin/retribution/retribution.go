@@ -1,6 +1,7 @@
 package retribution
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -72,6 +73,11 @@ func (ret *RetributionPaladin) RegisterSpecializationEffects() {
 	mhWeapon := ret.GetMHWeapon()
 	if mhWeapon != nil && mhWeapon.HandType == proto.HandType_HandTypeTwoHand {
 		ret.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.25
+		ret.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  paladin.SpellMaskJudgement,
+			FloatValue: 0.25,
+		})
 	}
 
 	// Judgements of the Bold
@@ -83,22 +89,24 @@ func (ret *RetributionPaladin) RegisterMastery() {
 
 	// Hand of Light
 	ret.HandOfLight = ret.RegisterSpell(core.SpellConfig{
-		ActionID:       actionId,
-		SpellSchool:    core.SpellSchoolHoly,
-		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		ActionID:    actionId,
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags: core.SpellFlagMeleeMetrics |
+			core.SpellFlagIgnoreModifiers |
+			core.SpellFlagNoOnCastComplete,
 		ClassSpellMask: paladin.SpellMaskHandOfLight,
 
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   ret.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   0.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			newResult := spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHit)
-			// TODO: this damage needs to be manually boosted by any 8% magic damage taken debuff present on the target.
-			newResult.Damage = ret.HoLDamage
-			newResult.Threat = spell.ThreatFromDamage(newResult.Outcome, newResult.Damage)
-			spell.DealDamage(sim, newResult)
+			baseDamage := ret.HoLDamage
+			if target.HasActiveAuraWithTag(core.SpellDamageEffectAuraTag) {
+				baseDamage *= 1.08
+			}
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
 		},
 	})
 
@@ -112,7 +120,7 @@ func (ret *RetributionPaladin) RegisterMastery() {
 		ProcChance:     1.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			ret.HoLDamage = (16.8 + 2.1*ret.GetMasteryPoints()) / 100.0 * result.Damage
+			ret.HoLDamage = ((16.8 + 2.1*ret.GetMasteryPoints()) / 100.0) * result.Damage
 			ret.HandOfLight.Cast(sim, result.Target)
 		},
 	})
@@ -123,11 +131,11 @@ func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 	manaMetrics := ret.NewManaMetrics(actionID)
 
 	// It's 25% of base mana over 10 seconds, with haste adding ticks.
-	manaPerTick := 0.025 * ret.BaseMana
+	manaPerTick := math.Round(0.025 * ret.BaseMana)
 
 	jotb := ret.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagHelpful,
+		Flags:    core.SpellFlagHelpful | core.SpellFlagNoMetrics | core.SpellFlagNoLogs,
 
 		Hot: core.DotConfig{
 			SelfOnly: true,
@@ -159,7 +167,6 @@ func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			jotb.Cast(sim, &ret.Unit)
-			spell.SpellMetrics[result.Target.UnitIndex].Hits--
 		},
 	})
 }

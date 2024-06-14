@@ -49,9 +49,11 @@ func (paladin *Paladin) registerHolyWrath() {
 				results[idx] = spell.CalcDamage(sim, currentTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 
-			for idx := int32(0); idx < numTargets; idx++ {
-				spell.DealDamage(sim, results[idx])
-			}
+			spell.WaitTravelTime(sim, func(simulation *core.Simulation) {
+				for idx := int32(0); idx < numTargets; idx++ {
+					spell.DealDamage(sim, results[idx])
+				}
+			})
 		},
 	})
 }

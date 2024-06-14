@@ -25,8 +25,9 @@ func (paladin *Paladin) registerAvengingWrath() {
 	core.RegisterPercentDamageModifierEffect(paladin.AvengingWrathAura, 1.2)
 
 	paladin.AvengingWrath = paladin.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		ClassSpellMask: SpellMaskAvengingWrath,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.08,
