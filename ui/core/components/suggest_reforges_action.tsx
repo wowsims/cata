@@ -321,6 +321,7 @@ export class ReforgeOptimizer {
 			this.softCapsConfig
 				.slice()
 				.reverse()
+				.filter((config) => this.statCaps.getStat(config.stat) == 0)
 				.forEach(config => {
 					const relativeBreakpoints = [];
 
