@@ -258,6 +258,10 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 			signals.Abort.Trigger()
 			return &proto.StatWeightsResult{ErrorResult: metrics.FinalRaidResult.ErrorResult}
 		}
+
+		if atomic.LoadInt32(&simsCompleted) == atomic.LoadInt32(&simsTotal) {
+			break
+		}
 	}
 
 	// Wait for thread results.
