@@ -150,7 +150,7 @@ export const makeSpecChangeWarningToast = (checks: SpecCheckWarning[], player: P
 					))}
 				</>
 			),
-			delay: 5000,
+			delay: 5000 * messages.length,
 			...options,
 		});
 };
