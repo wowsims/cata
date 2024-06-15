@@ -18,7 +18,7 @@ func (druid *Druid) registerSunfireDoTSpell() {
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellSunfireDoT,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
 
 		DamageMultiplier: 1,
 		CritMultiplier:   druid.BalanceCritMultiplier(),
@@ -59,7 +59,7 @@ func (druid *Druid) registerSunfireImpactSpell() {
 		SpellSchool:    core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellSunfire,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.09,
@@ -85,6 +85,7 @@ func (druid *Druid) registerSunfireImpactSpell() {
 			if result.Landed() {
 				druid.MoonfireDoT.Dot(target).Deactivate(sim)
 
+				druid.ExtendingMoonfireStacks = 3
 				druid.SunfireDoT.Cast(sim, target)
 			}
 

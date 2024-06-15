@@ -42,7 +42,7 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 				baseDamage = mutBaseDamage + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			}
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialBlockAndCrit)
 		},
 	})
 }
@@ -52,13 +52,14 @@ func (sinRogue *AssassinationRogue) registerMutilateSpell() {
 	sinRogue.MutilateOH = sinRogue.newMutilateHitSpell(false)
 
 	sinRogue.Mutilate = sinRogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: MutilateSpellID, Tag: 0},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: MutilateSpellID, Tag: 0},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: rogue.RogueSpellMutilate,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   sinRogue.GetGeneratorCostModifier(60 - core.TernaryFloat64(sinRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfMutilate), 5, 0)),
+			Cost:   60 - core.TernaryFloat64(sinRogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfMutilate), 5, 0),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

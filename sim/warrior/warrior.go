@@ -66,6 +66,11 @@ const (
 	SpellMaskMortalStrike
 	SpellMaskBladestorm
 	SpellMaskHeroicLeap
+
+	// Spec specific talents
+	SpellDualWieldSpecMask
+
+	SpellMaskShouts = SpellMaskCommandingShout | SpellMaskBattleShout
 )
 
 const EnableOverpowerTag = "EnableOverpower"
@@ -107,6 +112,7 @@ type Warrior struct {
 	DeepWounds        *core.Spell
 	Charge            *core.Spell
 
+	shoutsCD                 *core.Timer
 	recklessnessDeadlyCalmCD *core.Timer
 	hsCleaveCD               *core.Timer
 	HeroicStrike             *core.Spell
@@ -146,6 +152,7 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerStances()
 	warrior.EnrageEffectMultiplier = 1.0
 	warrior.hsCleaveCD = warrior.NewTimer()
+	warrior.shoutsCD = warrior.NewTimer()
 
 	warrior.RegisterBerserkerRageSpell()
 	warrior.RegisterColossusSmash()

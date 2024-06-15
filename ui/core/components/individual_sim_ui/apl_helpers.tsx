@@ -7,12 +7,12 @@ import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
 import { ActionId, defaultTargetIcon, getPetIconFromName } from '../../proto_utils/action_id.js';
 import { EventID } from '../../typed_event.js';
 import { bucket, randomUUID } from '../../utils.js';
-import { BooleanPicker } from '../boolean_picker.js';
-import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../dropdown_picker.jsx';
 import { Input, InputConfig } from '../input.jsx';
-import { NumberPicker, NumberPickerConfig } from '../number_picker.js';
-import { AdaptiveStringPicker } from '../string_picker.js';
-import { UnitPicker, UnitPickerConfig, UnitValue } from '../unit_picker.js';
+import { BooleanPicker } from '../pickers/boolean_picker.js';
+import { DropdownPicker, DropdownPickerConfig, DropdownValueConfig, TextDropdownPicker } from '../pickers/dropdown_picker.jsx';
+import { NumberPicker, NumberPickerConfig } from '../pickers/number_picker.js';
+import { AdaptiveStringPicker } from '../pickers/string_picker.js';
+import { UnitPicker, UnitPickerConfig, UnitValue } from '../pickers/unit_picker.jsx';
 
 export type ACTION_ID_SET =
 	| 'auras'

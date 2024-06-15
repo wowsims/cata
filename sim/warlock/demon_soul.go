@@ -9,8 +9,9 @@ import (
 func (warlock *Warlock) registerDemonSoul() {
 
 	impMod := warlock.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BonusCrit_Rating,
-		ClassMask:  WarlockSpellShadowBolt | WarlockSpellIncinerate | WarlockSpellSoulFire | WarlockSpellChaosBolt,
+		Kind: core.SpellMod_BonusCrit_Rating,
+		ClassMask: WarlockSpellShadowBolt | WarlockSpellIncinerate | WarlockSpellSoulFire | WarlockSpellChaosBolt |
+			WarlockSpellImmolate | WarlockSpellImmolateDot,
 		FloatValue: 30 * core.CritRatingPerCritChance,
 	})
 
@@ -52,7 +53,7 @@ func (warlock *Warlock) registerDemonSoul() {
 
 	felguardDamageMod := warlock.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  WarlockFireDamage | WarlockShadowDamage,
+		School:     core.SpellSchoolShadow | core.SpellSchoolFire,
 		FloatValue: 0.1,
 	})
 

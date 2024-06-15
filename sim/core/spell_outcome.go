@@ -34,8 +34,10 @@ func (dot *Dot) OutcomeTickPhysicalCrit(sim *Simulation, result *SpellResult, at
 	if dot.Spell.PhysicalCritCheck(sim, attackTable) {
 		result.Outcome = OutcomeCrit
 		result.Damage *= dot.Spell.CritMultiplier
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Crits++
 	} else {
 		result.Outcome = OutcomeHit
+		dot.Spell.SpellMetrics[result.Target.UnitIndex].Hits++
 	}
 }
 
@@ -274,6 +276,22 @@ func (spell *Spell) OutcomeMeleeSpecialNoBlockDodgeParryNoCrit(sim *Simulation, 
 func (spell *Spell) OutcomeMeleeSpecialCritOnly(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	if !result.applyAttackTableCritSeparateRoll(sim, spell, attackTable) {
 		result.applyAttackTableHit(spell)
+	}
+}
+
+func (spell *Spell) OutcomeMeleeSpecialBlockAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if spell.Unit.PseudoStats.InFrontOfTarget {
+		roll := sim.RandomFloat("White Hit Table")
+		chance := 0.0
+
+		if !result.applyAttackTableBlock(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableCritSeparateRoll(sim, spell, attackTable) {
+			result.applyAttackTableHit(spell)
+		}
+	} else {
+		if !result.applyAttackTableCritSeparateRoll(sim, spell, attackTable) {
+			result.applyAttackTableHit(spell)
+		}
 	}
 }
 

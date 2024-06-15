@@ -9,20 +9,27 @@ import (
 
 func (war *FuryWarrior) RegisterRagingBlow() {
 
-	actionID := core.ActionID{SpellID: 85288, Tag: 0}
-	rbOffhand := war.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID.WithTag(1),
+	ragingBlowActionID := core.ActionID{SpellID: 85288}
+
+	ohRagingBlow := war.RegisterSpell(core.SpellConfig{
+		ActionID:       ragingBlowActionID.WithTag(2),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskEmpty,
-		ClassSpellMask: warrior.SpellMaskRagingBlow | warrior.SpellMaskSpecialAttack,
+		ClassSpellMask: warrior.SpellMaskRagingBlow | warrior.SpellMaskSpecialAttack | warrior.SpellDualWieldSpecMask,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1.0,
 		CritMultiplier:   war.DefaultMeleeCritMultiplier(),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			ohBaseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+
+			spell.CalcAndDealDamage(sim, target, ohBaseDamage*war.EnrageEffectMultiplier, spell.OutcomeMeleeSpecialBlockAndCrit)
+		},
 	})
 
 	war.RegisterSpell(core.SpellConfig{
-		ActionID:       actionID,
+		ActionID:       ragingBlowActionID.WithTag(1),
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
@@ -53,22 +60,20 @@ func (war *FuryWarrior) RegisterRagingBlow() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 				return
 			}
+			//remove hit metric from the no damage hit roll
+			spell.SpellMetrics[target.UnitIndex].Hits--
 
 			// 1 hit roll then 2 damage events
 			mhBaseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, mhBaseDamage*war.EnrageEffectMultiplier, spell.OutcomeMeleeSpecialCritOnly)
+			spell.CalcAndDealDamage(sim, target, mhBaseDamage*war.EnrageEffectMultiplier, spell.OutcomeMeleeSpecialBlockAndCrit)
 
-			// TODO: Check if this OH hit still gets 50% damage reduction once there's more data
-			ohBaseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			rbOffhand.CalcAndDealDamage(sim, target, ohBaseDamage*war.EnrageEffectMultiplier, rbOffhand.OutcomeMeleeSpecialCritOnly)
-
-			spell.SpellMetrics[target.UnitIndex].Hits--
+			ohRagingBlow.Cast(sim, result.Target)
 		},
 	})
 }

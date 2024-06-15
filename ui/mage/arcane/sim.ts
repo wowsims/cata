@@ -1,4 +1,6 @@
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -6,7 +8,6 @@ import { Mage } from '../../core/player_classes/mage';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
-import * as MageInputs from '../inputs';
 import * as ArcaneInputs from './inputs';
 import * as Presets from './presets';
 
@@ -17,14 +18,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMastery,
-	],	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
+	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery], // Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
@@ -32,7 +26,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
-		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
@@ -56,14 +49,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		gear: Presets.ARCANE_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.48,
-			[Stat.StatSpirit]: 0.42,
+			[Stat.StatIntellect]: 1.74,
 			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellHit]: 0.38,
-			[Stat.StatSpellCrit]: 0.58,
-			[Stat.StatSpellHaste]: 0.94,
-			[Stat.StatMastery]: 0.8
+			[Stat.StatSpellHit]: 1.27,
+			[Stat.StatSpellCrit]: 0.5,
+			[Stat.StatSpellHaste]: 0.25,
+			[Stat.StatMastery]: 0.56,
 		}),
+		// Default stat caps for the Reforge Optimizer
+		statCaps: (() => {
+			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultArcaneConsumes,
 		// Default talents.
@@ -107,19 +103,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.ArcaneTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.ARCANE_P1_PRESET,
-		],
+		gear: [Presets.ARCANE_P1_PRESET, Presets.ARCANE_P1_PREBIS_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecArcaneMage>): APLRotation => {
-/* 		const numTargets = player.sim.encounter.targets.length;
+		/* 		const numTargets = player.sim.encounter.targets.length;
 		if (numTargets > 3) {
 			return Presets.ARCANE_ROTATION_PRESET_AOE.rotation.rotation!;
 		} else {
 			return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 		} */
-		return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!
+		return Presets.ARCANE_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	/* simpleRotation: (player: Player<Spec.SpecArcaneMage>, simple: ArcaneMage_Rotation, cooldowns: Cooldowns): APLRotation => {
@@ -206,9 +200,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.ARCANE_P1_PRESET.gear,
+					2: Presets.ARCANE_P1_PREBIS_PRESET.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.ARCANE_P1_PRESET.gear,
+					2: Presets.ARCANE_P1_PREBIS_PRESET.gear,
 				},
 			},
 		},
@@ -218,5 +214,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 export class ArcaneMageSimUI extends IndividualSimUI<Spec.SpecArcaneMage> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecArcaneMage>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }

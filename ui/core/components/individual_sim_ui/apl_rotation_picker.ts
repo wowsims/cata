@@ -8,8 +8,8 @@ import { EventID, TypedEvent } from '../../typed_event';
 import { existsInDOM, randomUUID } from '../../utils';
 import { Component } from '../component';
 import { Input, InputConfig } from '../input';
-import { ListItemPickerConfig, ListPicker } from '../list_picker';
-import { AdaptiveStringPicker } from '../string_picker';
+import { ListItemPickerConfig, ListPicker } from '../pickers/list_picker';
+import { AdaptiveStringPicker } from '../pickers/string_picker';
 import { APLActionPicker } from './apl_actions';
 import { APLValueImplStruct } from './apl_values';
 

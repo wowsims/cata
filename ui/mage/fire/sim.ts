@@ -1,11 +1,12 @@
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, IndividualBuffs, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
-import * as MageInputs from '../inputs';
 import * as FireInputs from './inputs';
 import * as Presets from './presets';
 
@@ -16,14 +17,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect,
-			  Stat.StatSpirit,
-			  Stat.StatSpellPower,
-			  Stat.StatSpellHit,
-			  Stat.StatSpellCrit,
-			  Stat.StatSpellHaste,
-			  Stat.StatMastery,
-	],
+	epStats: [Stat.StatIntellect, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -32,7 +26,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,
-		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
@@ -56,14 +49,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		gear: Presets.FIRE_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.48,
-			[Stat.StatSpirit]: 0.42,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellHit]: 0.38,
-			[Stat.StatSpellCrit]: 0.58,
-			[Stat.StatSpellHaste]: 0.94,
-			[Stat.StatMastery]: 0.8
+			[Stat.StatIntellect]: 1.32,
+			[Stat.StatSpellPower]: 1.0,
+			[Stat.StatSpellHit]: 1.05,
+			[Stat.StatSpellCrit]: 0.56,
+			[Stat.StatSpellHaste]: 0.64,
+			[Stat.StatMastery]: 0.47,
 		}),
+		// Default stat caps for the Reforge Optimizer
+		statCaps: (() => {
+			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultFireConsumes,
 		// Default talents.
@@ -80,7 +76,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		individualBuffs: IndividualBuffs.create({
 			innervateCount: 0,
 			vampiricTouch: true,
-			focusMagic: true,
 		}),
 		debuffs: Presets.DefaultDebuffs,
 	},
@@ -109,8 +104,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FireTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.FIRE_P1_PRESET],
+		gear: [Presets.FIRE_P1_PRESET, Presets.FIRE_P1_PREBIS],
 	},
 
 	autoRotation: (player: Player<Spec.SpecFireMage>): APLRotation => {
@@ -139,9 +133,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.FIRE_P1_PRESET.gear,
+					2: Presets.FIRE_P1_PREBIS.gear,
 				},
 				[Faction.Horde]: {
 					1: Presets.FIRE_P1_PRESET.gear,
+					2: Presets.FIRE_P1_PREBIS.gear,
 				},
 			},
 		},
@@ -151,5 +147,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFireMage, {
 export class FireMageSimUI extends IndividualSimUI<Spec.SpecFireMage> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFireMage>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }

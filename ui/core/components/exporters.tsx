@@ -13,7 +13,7 @@ import { SimUI } from '../sim_ui';
 import { EventID, TypedEvent } from '../typed_event';
 import { arrayEquals, downloadString, getEnumValues, jsonStringifyWithFlattenedPaths } from '../utils';
 import { BaseModal } from './base_modal';
-import { BooleanPicker } from './boolean_picker';
+import { BooleanPicker } from './pickers/boolean_picker';
 import { CopyButton } from './copy_button';
 import { IndividualLinkImporter, IndividualWowheadGearPlannerImporter } from './importers';
 
@@ -333,11 +333,11 @@ export class IndividualWowheadGearPlannerExporter<SpecType extends Spec> extends
 	}
 }
 
-export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
+export class Individual60UEPExporter<SpecType extends Spec> extends Exporter {
 	private readonly simUI: IndividualSimUI<SpecType>;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, { title: '80Upgrades EP Export', allowDownload: true });
+		super(parent, simUI, { title: '60Upgrades Cataclysm EP Export', allowDownload: true });
 		this.simUI = simUI;
 	}
 
@@ -353,7 +353,7 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 
 		const namesToWeights: Record<string, number> = {};
 		allUnitStats.forEach(stat => {
-			const statName = Individual80UEPExporter.getName(stat);
+			const statName = Individual60UEPExporter.getName(stat);
 			const weight = epValues.getUnitStat(stat);
 			if (weight == 0 || statName == '') {
 				return;
@@ -368,7 +368,7 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 		});
 
 		return (
-			`https://eightyupgrades.com/ep/import?name=${encodeURIComponent(`${player.getPlayerSpec().friendlyName} WoWSims Weights`)}` +
+			`https://sixtyupgrades.com/cata/ep/import?name=${encodeURIComponent(`${player.getPlayerSpec().friendlyName} WoWSims Weights`)}` +
 			Object.keys(namesToWeights)
 				.map(statName => `&${statName}=${namesToWeights[statName].toFixed(3)}`)
 				.join('')
@@ -377,9 +377,9 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 
 	static getName(stat: UnitStat): string {
 		if (stat.isStat()) {
-			return Individual80UEPExporter.statNames[stat.getStat()];
+			return Individual60UEPExporter.statNames[stat.getStat()];
 		} else {
-			return Individual80UEPExporter.pseudoStatNames[stat.getPseudoStat()] || '';
+			return Individual60UEPExporter.pseudoStatNames[stat.getPseudoStat()] || '';
 		}
 	}
 
@@ -399,6 +399,7 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatMeleeHit]: 'hitRating',
 		[Stat.StatMeleeCrit]: 'critRating',
 		[Stat.StatMeleeHaste]: 'hasteRating',
+		[Stat.StatMastery]: 'masteryRating',
 		[Stat.StatExpertise]: 'expertiseRating',
 		[Stat.StatMana]: 'mana',
 		[Stat.StatArmor]: 'armor',
@@ -414,7 +415,6 @@ export class Individual80UEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatNatureResistance]: 'natureResistance',
 		[Stat.StatShadowResistance]: 'shadowResistance',
 		[Stat.StatBonusArmor]: 'armorBonus',
-		[Stat.StatMastery]: 'mastery',
 	};
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
 		[PseudoStat.PseudoStatMainHandDps]: 'dps',

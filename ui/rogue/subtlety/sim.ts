@@ -1,21 +1,10 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import {
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	ItemSlot,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat,
-} from '../../core/proto/common';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { Stats } from '../../core/proto_utils/stats';
 import * as RogueInputs from '../inputs';
@@ -66,7 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatAgility]: 3.70,
+				[Stat.StatAgility]: 3.7,
 				[Stat.StatStrength]: 1.05,
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatSpellCrit]: 0.06,
@@ -78,8 +67,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 				[Stat.StatExpertise]: 1.33,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 7.00,
-				[PseudoStat.PseudoStatOffHandDps]: 1.00,
+				[PseudoStat.PseudoStatMainHandDps]: 7.0,
+				[PseudoStat.PseudoStatOffHandDps]: 1.0,
 			},
 		),
 		// Default consumes settings.
@@ -106,8 +95,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			mangle: true,
 			sunderArmor: true,

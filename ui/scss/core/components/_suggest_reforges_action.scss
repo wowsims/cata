@@ -1,0 +1,22 @@
+.tippy-box[data-theme='reforge-optimiser-popover'] {
+	min-width: 200px;
+}
+.suggest-reforges-settings-group {
+	--settings-button-width: 36px;
+	position: relative;
+}
+
+.suggest-reforges-action-button {
+	padding-left: calc(var(--btn-padding-x) + var(--settings-button-width));
+	padding-right: calc(var(--btn-padding-x) + var(--settings-button-width));
+}
+
+.suggest-reforges-button-settings {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: transparent;
+	border-color: transparent;
+	width: var(--settings-button-width);
+}

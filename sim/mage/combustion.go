@@ -72,7 +72,7 @@ func (mage *Mage) registerCombustionSpell() {
 						if spell.ClassSpellMask&(MageSpellLivingBombDot|MageSpellPyroblastDot) != 0 {
 							dps := dotBase[spell.ClassSpellMask] + dot.BonusCoefficient*dot.Spell.SpellPower()
 							dps *= spell.DamageMultiplier * spell.DamageMultiplierAdditive
-							combustionDotDamage += dps / dot.TickLength.Seconds()
+							combustionDotDamage += dps / dot.BaseTickLength.Seconds()
 						} else {
 							combustionDotDamage += dot.SnapshotBaseDamage / 2
 						}

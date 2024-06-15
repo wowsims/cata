@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/rogue"
 )
 
 func (sinRogue *AssassinationRogue) registerVendetta() {
@@ -31,9 +32,10 @@ func (sinRogue *AssassinationRogue) registerVendetta() {
 	})
 
 	sinRogue.Vendetta = sinRogue.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagAPL | core.SpellFlagMCD,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMCD,
+		ClassSpellMask: rogue.RogueSpellVendetta,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,

@@ -1,11 +1,10 @@
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
-import * as MageInputs from '../inputs';
 import * as FrostInputs from './inputs';
 import * as Presets from './presets';
 
@@ -100,7 +99,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 			focusMagic: true,
 		}),
 		debuffs: Debuffs.create({
-			judgement: true,
 			ebonPlaguebringer: true,
 			shadowAndFlame: true,
 		}),

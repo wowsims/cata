@@ -4,11 +4,11 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/rogue"
 )
 
 func (subRogue *SubtletyRogue) registerShadowstepCD() {
 	actionID := core.ActionID{SpellID: 36554}
-	baseCost := 0.0
 	var affectedSpells []*core.Spell
 
 	subRogue.ShadowstepAura = subRogue.RegisterAura(core.Aura{
@@ -40,18 +40,11 @@ func (subRogue *SubtletyRogue) registerShadowstepCD() {
 	})
 
 	subRogue.Shadowstep = subRogue.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
-		EnergyCost: core.EnergyCostOptions{
-			Cost:   baseCost,
-			Refund: 0,
-		},
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: rogue.RogueSpellShadowstep,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				Cost: baseCost,
-				GCD:  0,
-			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    subRogue.NewTimer(),

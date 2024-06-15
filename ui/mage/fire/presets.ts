@@ -9,14 +9,16 @@ import {
 import { SavedTalents } from '../../core/proto/ui';
 import FireApl from './apls/fire.apl.json';
 //import FireAoeApl from './apls/fire_aoe.apl.json';
-import P1FireGear from './gear_sets/p1_fire.gear.json';
+import P1FireBisGear from './gear_sets/p1_fire.gear.json';
+import P1FirePrebisGear from './gear_sets/p1_fire_prebis_gear.json';
 
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
 
-export const FIRE_P1_PRESET = PresetUtils.makePresetGear('Fire P1 Preset', P1FireGear, { talentTree: 1 });
+export const FIRE_P1_PRESET = PresetUtils.makePresetGear('Fire P1 Preset', P1FireBisGear, { talentTree: 1 });
+export const FIRE_P1_PREBIS = PresetUtils.makePresetGear('Fire P1 Pre-raid', P1FirePrebisGear, { talentTree: 1 });
 
 /* export const DefaultSimpleRotation = MageRotation.create({
 	primaryFireSpell: PrimaryFireSpell.Fireball,
@@ -31,7 +33,7 @@ export const FIRE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('F
 export const FireTalents = {
 	name: 'Fire',
 	data: SavedTalents.create({
-		talentsString: '203-230330221120121213031-03',
+		talentsString:  '003-230330221120121213231-03',
 		glyphs: Glyphs.create({
 			prime1: PrimeGlyph.GlyphOfFireball,
 			prime2: PrimeGlyph.GlyphOfPyroblast,
@@ -78,7 +80,6 @@ export const DefaultFireConsumes = Consumes.create({
 export const DefaultDebuffs = Debuffs.create({
     ebonPlaguebringer: true,
     shadowAndFlame: true,
-    judgement: true,
 });
 
 export const OtherDefaults = {

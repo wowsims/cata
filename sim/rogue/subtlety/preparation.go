@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
+	"github.com/wowsims/cata/sim/rogue"
 )
 
 func (subRogue *SubtletyRogue) registerPreparationCD() {
@@ -12,8 +13,9 @@ func (subRogue *SubtletyRogue) registerPreparationCD() {
 	}
 
 	subRogue.Preparation = subRogue.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 14185},
-		Flags:    core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 14185},
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: rogue.RogueSpellPreparation,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,

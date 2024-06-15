@@ -70,8 +70,13 @@ func (warlock *Warlock) registerManaFeed() {
 		Label:    "Mana Feed",
 		ActionID: actionID,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() && spell.Matches(WarlockBasicPetSpells) {
-				warlock.AddMana(sim, manaReturn*warlock.MaxMana(), manaMetrics)
+			if result.DidCrit() {
+				if spell.Matches(WarlockSpellSuccubusLashOfPain | WarlockSpellImpFireBolt) {
+					warlock.AddMana(sim, manaReturn*warlock.MaxMana(), manaMetrics)
+				} else if spell.Matches(WarlockSpellFelGuardLegionStrike | WarlockSpellFelHunterShadowBite) {
+					// felguard and felhunter gain 4x the mana
+					warlock.AddMana(sim, 4*manaReturn*warlock.MaxMana(), manaMetrics)
+				}
 			}
 		},
 	}

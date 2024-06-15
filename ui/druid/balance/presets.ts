@@ -19,8 +19,10 @@ import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph, DruidMino
 import { SavedTalents } from '../../core/proto/ui.js';
 import DefaultApl from './apls/default.apl.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
+import T11Gear from './gear_sets/t11.gear.json'
 
 export const PreraidPresetGear = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
+export const T11PresetGear = PresetUtils.makePresetGear('T11', T11Gear);
 
 export const PresetRotationDefault = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
@@ -76,6 +78,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
 	vampiricTouch: true,
+	darkIntent: true,
 });
 
 export const DefaultPartyBuffs = PartyBuffs.create({
@@ -89,11 +92,11 @@ export const DefaultDebuffs = Debuffs.create({
 	criticalMass: true,
 	demoralizingShout: true,
 	frostFever: true,
-	judgement: true,
 });
 
 export const OtherDefaults = {
-	distanceFromTarget: 18,
+	distanceFromTarget: 20,
 	profession1: Profession.Engineering,
 	profession2: Profession.Tailoring,
+	darkIntentUptime: 100,
 };

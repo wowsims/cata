@@ -22,11 +22,12 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 	}
 
 	rogue.ExposeArmor = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 8647},
-		SpellSchool:  core.SpellSchoolPhysical,
-		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | SpellFlagFinisher | core.SpellFlagAPL,
-		MetricSplits: 6,
+		ActionID:       core.ActionID{SpellID: 8647},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagFinisher | core.SpellFlagAPL,
+		MetricSplits:   6,
+		ClassSpellMask: RogueSpellExposeArmor,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:          25.0,
@@ -57,7 +58,7 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 				debuffAura.Activate(sim)
 				rogue.ApplyFinisher(sim, spell)
 				if rogue.Talents.ImprovedExposeArmor > 0 {
-					procChance := 0.5*float64(rogue.Talents.ImprovedExposeArmor)
+					procChance := 0.5 * float64(rogue.Talents.ImprovedExposeArmor)
 					if sim.Proc(procChance, "Improved Expose Armor") {
 						rogue.AddComboPoints(sim, 5, spell.ComboPointMetrics())
 					}

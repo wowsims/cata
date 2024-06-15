@@ -147,7 +147,7 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 	}
 	core.FillTalentsProto(dk.Talents.ProtoReflect(), talents, TalentTreeSizes)
 
-	maxRunicPower := 100.0 + 15.0*float64(dk.Talents.RunicPowerMastery)
+	maxRunicPower := 100.0 + 10.0*float64(dk.Talents.RunicPowerMastery)
 	currentRunicPower := math.Min(maxRunicPower, dk.Inputs.StartingRunicPower)
 
 	dk.EnableRunicPowerBar(
@@ -159,12 +159,12 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 				return
 			}
 			if changeType.Matches(core.ConvertToDeath) {
-				spell := dk.GetOrRegisterSpell(core.SpellConfig{
+				deathConvertSpell := dk.GetOrRegisterSpell(core.SpellConfig{
 					ActionID:       core.ActionID{SpellID: deathRuneConvertSpellId},
 					Flags:          core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
 					ClassSpellMask: DeathKnightSpellConvertToDeathRune,
 				})
-				spell.Cast(sim, nil)
+				deathConvertSpell.Cast(sim, nil)
 			}
 		},
 		nil,

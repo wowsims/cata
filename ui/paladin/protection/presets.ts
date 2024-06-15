@@ -2,9 +2,9 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import { Consumes, Flask, Food, Potions } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
-	PaladinJudgement as PaladinJudgement,
 	PaladinMajorGlyph,
 	PaladinMinorGlyph,
+	PaladinSeal,
 	ProtectionPaladin_Options as ProtectionPaladinOptions,
 } from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
@@ -42,8 +42,8 @@ export const GenericAoeTalents = {
 
 export const DefaultOptions = ProtectionPaladinOptions.create({
 	classOptions: {
-		aura: PaladinAura.RetributionAura,
-		judgement: PaladinJudgement.JudgementOfWisdom,
+		aura: PaladinAura.Retribution,
+		seal: PaladinSeal.Truth,
 	},
 });
 

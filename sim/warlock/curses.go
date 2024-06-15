@@ -125,15 +125,16 @@ func (warlock *Warlock) registerBaneOfAgony() {
 			Aura: core.Aura{
 				Label: "Bane of Agony",
 			},
-			NumberOfTicks:    12,
-			TickLength:       2 * time.Second,
-			BonusCoefficient: 0.08799999952,
+			NumberOfTicks:       12,
+			TickLength:          2 * time.Second,
+			AffectedByCastSpeed: true,
+			BonusCoefficient:    0.08799999952,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, 0.5*baseTickDmg)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				if dot.TickCount%4 == 0 { // CoA ramp up
+				if dot.TickCount()%4 == 0 { // CoA ramp up
 					dot.SnapshotBaseDamage += 0.5 * baseTickDmg
 				}
 			},
@@ -143,7 +144,7 @@ func (warlock *Warlock) registerBaneOfAgony() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
 				spell.SpellMetrics[target.UnitIndex].Hits--
-				warlock.BaneOfDoom.Dot(target).Cancel(sim)
+				warlock.BaneOfDoom.Dot(target).Deactivate(sim)
 				//TODO: Cancel BaneOfHavoc
 				spell.Dot(target).Apply(sim)
 			}
@@ -191,7 +192,7 @@ func (warlock *Warlock) registerBaneOfDoom() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			if result.Landed() {
-				warlock.BaneOfAgony.Dot(target).Cancel(sim)
+				warlock.BaneOfAgony.Dot(target).Deactivate(sim)
 				//TODO: Cancel BaneOfHavoc
 				spell.Dot(target).Apply(sim)
 			}

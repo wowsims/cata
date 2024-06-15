@@ -161,7 +161,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	}
 
 	// Handle movement before any rotation logic
-	if cat.Moving {
+	if cat.Moving || (cat.Hardcast.Expires > sim.CurrentTime) {
 		return
 	}
 	if cat.DistanceFromTarget > core.MaxMeleeRange {

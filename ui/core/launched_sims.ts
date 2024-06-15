@@ -31,15 +31,15 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	// Death Knight
 	[Spec.SpecBloodDeathKnight]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecFrostDeathKnight]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecUnholyDeathKnight]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Beta,
 	},
 	// Druid
 	[Spec.SpecBalanceDruid]: {
@@ -95,7 +95,7 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	},
 	[Spec.SpecRetributionPaladin]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Unlaunched,
+		status: LaunchStatus.Alpha,
 	},
 	// Priest
 	[Spec.SpecDisciplinePriest]: {
@@ -139,15 +139,15 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 	// Warlock
 	[Spec.SpecAfflictionWarlock]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecDemonologyWarlock]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Beta,
 	},
 	[Spec.SpecDestructionWarlock]: {
 		phase: Phase.Phase1,
-		status: LaunchStatus.Alpha,
+		status: LaunchStatus.Beta,
 	},
 	// Warrior
 	[Spec.SpecArmsWarrior]: {

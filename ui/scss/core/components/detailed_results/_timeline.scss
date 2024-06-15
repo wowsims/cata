@@ -43,6 +43,12 @@
 	color: var(--bs-lunar-energy);
 }
 
+.holy-power .series-color,
+.holy-power.series-color {
+	color: var(--bs-holy-power);
+}
+
+
 .timeline-root {
 	display: flex;
 	height: 100%;
@@ -199,6 +205,12 @@
 		top: 0;
 		width: 24px;
 	}
+
+	&.holy-power {
+		background-color: var(--bs-holy-power);
+		width: 24px;
+	}
+
 }
 .rotation-timeline-cast {
 	position: absolute;

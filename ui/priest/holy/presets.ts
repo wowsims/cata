@@ -99,7 +99,6 @@ export const DefaultDebuffs = Debuffs.create({
 	criticalMass: true,
 	demoralizingShout: true,
 	frostFever: true,
-	judgement: true,
 });
 
 export const OtherDefaults = {

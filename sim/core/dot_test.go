@@ -143,9 +143,6 @@ func TestDotSnapshot(t *testing.T) {
 
 	fa.Dot.Apply(sim)
 	expectDotTickDamage(t, sim, fa.Dot, 150) // (100) * 1.5
-
-	fa.Dot.Rollover(sim)
-	expectDotTickDamage(t, sim, fa.Dot, 150) // (100) * 1.5
 }
 
 func TestDotSnapshotSpellPower(t *testing.T) {
@@ -171,8 +168,5 @@ func TestDotSnapshotSpellMultiplier(t *testing.T) {
 	spell.DamageMultiplier *= 2
 
 	fa.Dot.Apply(sim)
-	expectDotTickDamage(t, sim, fa.Dot, 300) // (100) * 1.5 * 2
-
-	fa.Dot.Rollover(sim)
 	expectDotTickDamage(t, sim, fa.Dot, 300) // (100) * 1.5 * 2
 }

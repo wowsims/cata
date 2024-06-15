@@ -6,6 +6,7 @@ import (
 
 	"github.com/wowsims/cata/sim/core"
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/rogue"
 )
 
 func (comRogue *CombatRogue) registerKillingSpreeCD() {
@@ -83,8 +84,9 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 		},
 	})
 	comRogue.KillingSpree = comRogue.RegisterSpell(core.SpellConfig{
-		ActionID: core.ActionID{SpellID: 51690},
-		Flags:    core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 51690},
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: rogue.RogueSpellKillingSpree,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -107,11 +109,5 @@ func (comRogue *CombatRogue) registerKillingSpreeCD() {
 		Spell:    comRogue.KillingSpree,
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityDefault,
-		ShouldActivate: func(sim *core.Simulation, c *core.Character) bool {
-			if comRogue.CurrentEnergy() > 40 || comRogue.AdrenalineRushAura.IsActive() {
-				return false
-			}
-			return true
-		},
 	})
 }

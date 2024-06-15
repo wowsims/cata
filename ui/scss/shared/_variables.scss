@@ -109,6 +109,7 @@ $focus-color: #cd853f;
 $combo-points-color: #ffa07a;
 $lunar-energy-color: #4a8aff;
 $solar-energy-color: #d2952b;
+$holy-power-color: #eed98a;
 
 $resource-colors: (
 	combo-points: $combo-points-color,
@@ -117,6 +118,7 @@ $resource-colors: (
 	health: $health-color,
 	mana: $mana-color,
 	rage: $rage-color,
+	holy-power: $holy-power-color,
 );
 $theme-colors: map-merge($theme-colors, $resource-colors);
 
@@ -138,6 +140,13 @@ $damage-colors: (
 );
 $theme-colors: map-merge($theme-colors, $damage-colors);
 
+// Factions
+$faction-colors: (
+	horde: red,
+	alliance: blue,
+);
+$theme-colors: map-merge($theme-colors, $faction-colors);
+
 // Talents
 $talent-colors: (
 	talent-full: #ffd100,
@@ -155,8 +164,8 @@ $theme-colors: map-merge($theme-colors, $link-colors);
 
 // Tables
 $table-colors: (
-	table-row-even-bg: #202128,
-	table-row-odd-bg: #2d2f35,
+	table-row-even-bg: #18191e,
+	table-row-odd-bg: #222328,
 );
 
 $theme-colors: map-merge($theme-colors, $table-colors);
@@ -243,20 +252,33 @@ $btn-padding-y: 0.5rem;
 }
 
 // Input
+$input-bg: #1e2633;
+$input-border-color: #373d57;
+$input-color: $white;
+$input-disabled-bg: color-mix(in srgb, $body-bg, $white 20%);
+$input-focus-bg: $input-bg;
+$input-focus-border-color: color-mix(in srgb, $input-border-color, $white 20%);
+$input-focus-box-shadow: 0 0 0.25rem color-mix(in srgb, $body-bg, $white 20%);
+$input-focus-color: $white;
+$input-font-size: var(--content-font-size);
+$input-placeholder-color: $border-color;
+
+// Input
 :root {
 	--input-padding-y: #{$input-padding-y};
 	--input-padding-x: #{$input-padding-x};
 }
 
 // Dropdown
-$dropdown-bg: $body-bg;
-$dropdown-border-width: 0;
+$dropdown-bg: color-mix(in srgb, $body-bg, $white 5%);
+$dropdown-border-color: $input-border-color;
 $dropdown-color: $white;
 $dropdown-link-active-bg: $dropdown-bg;
 $dropdown-link-color: $white;
 $dropdown-link-hover-color: $white;
 $dropdown-link-hover-bg: color-mix(in srgb, $body-bg, $black 30%);
 $dropdown-padding-y: 0;
+
 :root {
 	// Add custom variable to reuse outside dropdowns
 	--dropdown-bg: #{$dropdown-bg};
@@ -270,24 +292,25 @@ $dropdown-padding-y: 0;
 }
 
 // Form
-$form-check-input-bg: $link-color;
-$form-check-input-border: 1px solid color-mix(in srgb, $body-bg, $white 20%);
+$form-check-input-bg: $input-bg;
+$form-check-input-border: 1px solid $input-border-color;
 $form-check-input-width: 2rem;
-$form-check-input-focus-border: color-mix(in srgb, $body-bg, $white 20%);
+$form-check-input-focus-border: $input-focus-border-color;
 $form-check-input-focus-box-shadow: 0 0 0.25rem $primary;
 $form-check-input-checked-bg-color: $primary;
 $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{color-contrast($primary)}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>");
-$form-check-input-checked-border-color: color-mix(in srgb, $body-bg, $white 20%);
+$form-check-input-checked-border-color: var(--bs-primary);
+$form-check-padding-start: $form-check-input-width;
 
 $form-label-margin-bottom: 0.25rem;
 $form-label-font-size: var(--content-font-size);
 $form-label-font-weight: normal;
 
-$form-select-bg: color-mix(in srgb, $body-bg, $white 10%);
-$form-select-border-color: color-mix(in srgb, $body-bg, $white 20%);
+$form-select-bg: $input-bg;
+$form-select-border-color: $input-border-color;
 $form-select-color: $white;
 $form-select-disabled-bg: color-mix(in srgb, $body-bg, $white 20%);
-$form-select-focus-border-color: color-mix(in srgb, $body-bg, $white 20%);
+$form-select-focus-border-color: $input-focus-border-color;
 $form-select-focus-box-shadow: 0 0 0.25rem color-mix(in srgb, $body-bg, $white 20%);
 $form-select-font-size: var(--content-font-size);
 $form-select-indicator: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>");
@@ -295,27 +318,15 @@ $form-select-indicator: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/20
 $form-text-color: $gray-600;
 $form-text-font-size: var(--content-font-size);
 
-// Input
-$input-bg: color-mix(in srgb, $body-bg, $white 10%);
-$input-border-color: color-mix(in srgb, $body-bg, $white 20%);
-$input-color: $white;
-$input-disabled-bg: color-mix(in srgb, $body-bg, $white 20%);
-$input-focus-bg: color-mix(in srgb, $body-bg, $white 10%);
-$input-focus-border-color: color-mix(in srgb, $body-bg, $white 20%);
-$input-focus-box-shadow: 0 0 0.25rem color-mix(in srgb, $body-bg, $white 20%);
-$input-focus-color: $white;
-$input-font-size: var(--content-font-size);
-$input-placeholder-color: $link-color;
-
 // Modal
 $modal-content-bg: $body-bg;
-$modal-content-border-color: $border-color;
+$modal-content-border-color: $input-border-color;
 $modal-footer-margin-between: 0px;
 $modal-header-border-color: $border-color;
 $modal-header-padding: 1.25rem;
 $modal-inner-padding: 1.25rem;
 
-// Nab
+// Nav
 $nav-link-font-size: 0.875rem;
 $nav-link-padding-y: var(--spacer-3);
 $nav-link-transition: var(--link-transition);
@@ -325,9 +336,9 @@ $nav-tabs-link-active-bg: transparent;
 $nav-tabs-link-active-color: $white;
 
 // Tooltip
-$tooltip-bg: $gray-800;
-$tooltip-border: $link-color;
-$tooltip-body-color: $white;
+$tooltip-bg: color-mix(in srgb, $body-bg, $white 5%);
+$tooltip-border: $input-border-color;
+$tooltip-body-color: $body-color;
 $tooltip-max-width: 15vw;
 $tooltip-max-width-lg: 25vw;
 $tooltip-max-width-sm: 75vw;
@@ -344,3 +355,13 @@ $tooltip-body-padding-y: var(--spacer-2);
 	--bs-tooltip-body-padding-x: #{$tooltip-body-padding-x};
 	--bs-tooltip-body-padding-y: #{$tooltip-body-padding-y};
 }
+
+// Toast
+$toast-background-color: $tooltip-bg;
+$toast-border-color: $input-border-color;
+$toast-border-radius: 0;
+$toast-color: $body-color;
+$toast-header-color: $toast-color;
+$toast-header-background-color: $toast-background-color;
+$toast-padding-x: var(--spacer-3);
+$toast-padding-y: var(--spacer-3);

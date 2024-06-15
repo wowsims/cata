@@ -1,6 +1,6 @@
 import * as InputHelpers from '../core/components/input_helpers';
 import { Player } from '../core/player';
-import { PaladinAura, PaladinJudgement, PaladinSeal } from '../core/proto/paladin';
+import { PaladinAura, PaladinSeal } from '../core/proto/paladin';
 import { ActionId } from '../core/proto_utils/action_id';
 import { PaladinSpecs } from '../core/proto_utils/utils';
 
@@ -11,37 +11,20 @@ export const AuraSelection = <SpecType extends PaladinSpecs>() =>
 	InputHelpers.makeClassOptionsEnumIconInput<SpecType, PaladinAura>({
 		fieldName: 'aura',
 		values: [
-			{ value: PaladinAura.NoPaladinAura, tooltip: 'No Aura' },
-			{ actionId: ActionId.fromSpellId(7294), value: PaladinAura.RetributionAura },
+			{ actionId: ActionId.fromSpellId(465), value: PaladinAura.Devotion },
+			{ actionId: ActionId.fromSpellId(7294), value: PaladinAura.Retribution },
+			{ actionId: ActionId.fromSpellId(19891), value: PaladinAura.Resistance },
 		],
 	});
 
-// export const StartingSealSelection = <SpecType extends PaladinSpecs>() =>
-// 	InputHelpers.makeClassOptionsEnumIconInput<SpecType, PaladinSeal>({
-// 		fieldName: 'seal',
-// 		values: [
-// 			{ actionId: ActionId.fromSpellId(42463), value: PaladinSeal.Vengeance },
-// 			{ actionId: ActionId.fromSpellId(20154), value: PaladinSeal.Righteousness },
-// 			{
-// 				actionId: ActionId.fromSpellId(20424),
-// 				value: PaladinSeal.Command,
-// 				showWhen: (player: Player<SpecType>) => player.getTalents().sealOfCommand,
-// 			},
-// 		],
-// 		changeEmitter: (player: Player<SpecType>) => player.changeEmitter,
-// 	});
-
-export const JudgementSelection = <SpecType extends PaladinSpecs>() =>
-	InputHelpers.makeClassOptionsEnumIconInput<SpecType, PaladinJudgement>({
-		fieldName: 'judgement',
+export const StartingSealSelection = <SpecType extends PaladinSpecs>() =>
+	InputHelpers.makeClassOptionsEnumIconInput<SpecType, PaladinSeal>({
+		fieldName: 'seal',
 		values: [
-			{ actionId: ActionId.fromSpellId(53408), value: PaladinJudgement.JudgementOfWisdom },
-			{ actionId: ActionId.fromSpellId(20271), value: PaladinJudgement.JudgementOfLight },
+			{ actionId: ActionId.fromSpellId(31801), value: PaladinSeal.Truth },
+			{ actionId: ActionId.fromSpellId(20154), value: PaladinSeal.Righteousness },
+			{ actionId: ActionId.fromSpellId(20165), value: PaladinSeal.Insight },
+			{ actionId: ActionId.fromSpellId(20164), value: PaladinSeal.Justice },
 		],
-	});
-
-export const UseAvengingWrath = <SpecType extends PaladinSpecs>() =>
-	InputHelpers.makeClassOptionsBooleanInput<SpecType>({
-		fieldName: 'useAvengingWrath',
-		label: 'Use Avenging Wrath',
+		changeEmitter: (player: Player<SpecType>) => player.changeEmitter,
 	});

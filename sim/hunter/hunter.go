@@ -94,9 +94,7 @@ func NewHunter(character *core.Character, options *proto.Player, hunterOptions *
 	core.FillTalentsProto(hunter.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 	focusPerSecond := 4.0
 
-	if hunter.HasSetBonus(ItemSetBloodthirstyGladiatorsPursuit, 4) ||
-		hunter.HasSetBonus(ItemSetViciousGladiatorsPursuit, 4) ||
-		hunter.HasSetBonus(ItemSetRuthlessGladiatorsPursuit, 4) {
+	if hunter.HasSetBonus(ItemSetGladiatorsPursuit, 4) {
 		focusPerSecond *= 1.05
 	}
 

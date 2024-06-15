@@ -20,11 +20,12 @@ func (rogue *Rogue) registerRupture() {
 	glyphTicks := core.TernaryInt32(rogue.HasPrimeGlyph(proto.RoguePrimeGlyph_GlyphOfRupture), 2, 0)
 
 	rogue.Rupture = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: RuptureSpellID},
-		SpellSchool:  core.SpellSchoolPhysical,
-		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | SpellFlagFinisher | core.SpellFlagAPL,
-		MetricSplits: 6,
+		ActionID:       core.ActionID{SpellID: RuptureSpellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagFinisher | core.SpellFlagAPL,
+		MetricSplits:   6,
+		ClassSpellMask: RogueSpellRupture,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:          RuptureEnergyCost,
@@ -69,7 +70,7 @@ func (rogue *Rogue) registerRupture() {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = 3 + rogue.ComboPoints() + glyphTicks
+				dot.BaseTickCount = 3 + rogue.ComboPoints() + glyphTicks
 				dot.Apply(sim)
 				// DealOutcome must come before ApplyFinisher, or it breaks calculations based on spent combo points.
 				spell.DealOutcome(sim, result)

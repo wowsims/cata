@@ -72,7 +72,7 @@ func (affliction *AfflictionWarlock) ApplyTalents() {
 	// Shadow Mastery
 	affliction.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  warlock.WarlockShadowDamage,
+		School:     core.SpellSchoolShadow,
 		FloatValue: 0.30,
 	})
 }

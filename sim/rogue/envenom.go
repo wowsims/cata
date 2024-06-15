@@ -28,11 +28,12 @@ func (rogue *Rogue) registerEnvenom() {
 	chanceToRetainStacks := core.TernaryFloat64(rogue.Talents.MasterPoisoner, 1, 0)
 
 	rogue.Envenom = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: 32645},
-		SpellSchool:  core.SpellSchoolNature,
-		ProcMask:     core.ProcMaskMeleeMHSpecial, // not core.ProcMaskSpellDamage
-		Flags:        core.SpellFlagMeleeMetrics | SpellFlagFinisher | SpellFlagColdBlooded | core.SpellFlagAPL,
-		MetricSplits: 6,
+		ActionID:       core.ActionID{SpellID: 32645},
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskMeleeMHSpecial, // not core.ProcMaskSpellDamage
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagFinisher | SpellFlagColdBlooded | core.SpellFlagAPL,
+		MetricSplits:   6,
+		ClassSpellMask: RogueSpellEnvenom,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:          35,
@@ -84,7 +85,7 @@ func (rogue *Rogue) registerEnvenom() {
 					if newStacks := dp.GetStacks() - comboPoints; newStacks > 0 {
 						dp.SetStacks(sim, newStacks)
 					} else {
-						dp.Cancel(sim)
+						dp.Deactivate(sim)
 					}
 				}
 			} else {

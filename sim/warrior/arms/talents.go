@@ -122,7 +122,8 @@ func (war *ArmsWarrior) TriggerSlaughter(sim *core.Simulation, target *core.Unit
 
 	rend := war.Rend.Dot(target)
 	if rend != nil && rend.IsActive() {
-		rend.Refresh(sim)
+		rend.Apply(sim)
+		rend.TickOnce(sim)
 	}
 
 	if !war.slaughter.IsActive() {

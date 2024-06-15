@@ -19,7 +19,7 @@
 	}
 
 	.dropdown-menu {
-		background: var(--dropdown-bg);
+		background: var(--bs-body-bg);
 		border: none;
 		z-index: 1500;
 
@@ -29,8 +29,9 @@
 	}
 
 	.sim-link {
-		background: var(--dropdown-bg);
+		background: var(--bs-body-bg);
 		height: 100%;
+		width: 100%;
 
 		&:hover,
 		&:focus,

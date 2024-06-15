@@ -1,6 +1,6 @@
 import { Component } from '../components/component.js';
-import { IconEnumPicker } from '../components/icon_enum_picker';
 import * as InputHelpers from '../components/input_helpers.js';
+import { IconEnumPicker } from '../components/pickers/icon_enum_picker.jsx';
 import { SavedDataManager } from '../components/saved_data_manager.js';
 import { Player } from '../player.js';
 import { BeastMasteryHunter } from '../player_specs/hunter';

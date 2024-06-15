@@ -150,7 +150,7 @@ func (dk *DeathKnight) applyRime() {
 		ProcMask:       core.ProcMaskMeleeMH,
 		ClassSpellMask: DeathKnightSpellObliterate,
 		Outcome:        core.OutcomeLanded,
-		ProcChance:     0.45,
+		ProcChance:     0.15 * float64(dk.Talents.Rime),
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			freezingFogAura.Activate(sim)
 		},

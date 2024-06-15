@@ -4,9 +4,9 @@ import { Consumes, Debuffs, Faction, IndividualBuffs, PartyBuffs, RaidBuffs, Spe
 import { ActionId } from '../proto_utils/action_id.js';
 import { Raid } from '../raid';
 import { EventID, TypedEvent } from '../typed_event';
-import { IconEnumPicker } from './icon_enum_picker';
-import { IconPicker } from './icon_picker';
 import * as InputHelpers from './input_helpers';
+import { IconEnumPicker } from './pickers/icon_enum_picker.jsx';
+import { IconPicker } from './pickers/icon_picker.jsx';
 
 // Component Functions
 

@@ -141,7 +141,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 
 		if effectiveTime := spell.CurCast.EffectiveTime(); effectiveTime != 0 {
 			spell.SpellMetrics[target.UnitIndex].TotalCastTime += effectiveTime
-			spell.Unit.SetGCDTimer(sim, sim.CurrentTime+effectiveTime)
+			spell.Unit.SetGCDTimer(sim, max(sim.CurrentTime+effectiveTime, spell.Unit.NextGCDAt()))
 		}
 
 		if (spell.Flags&SpellFlagCanCastWhileMoving == 0) && (spell.CurCast.CastTime > 0) && spell.Unit.Moving {

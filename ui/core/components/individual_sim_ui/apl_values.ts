@@ -25,6 +25,7 @@ import {
 	APLValueCurrentFocus,
 	APLValueCurrentHealth,
 	APLValueCurrentHealthPercent,
+	APLValueCurrentHolyPower,
 	APLValueCurrentLunarEnergy,
 	APLValueCurrentMana,
 	APLValueCurrentManaPercent,
@@ -80,9 +81,9 @@ import { Class, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
 import { EventID } from '../../typed_event.js';
 import { randomUUID } from '../../utils';
-import { TextDropdownPicker, TextDropdownValueConfig } from '../dropdown_picker.js';
 import { Input, InputConfig } from '../input.js';
-import { ListItemPickerConfig, ListPicker } from '../list_picker.js';
+import { TextDropdownPicker, TextDropdownValueConfig } from '../pickers/dropdown_picker.jsx';
+import { ListItemPickerConfig, ListPicker } from '../pickers/list_picker.jsx';
 import * as AplHelpers from './apl_helpers.js';
 
 export interface APLValuePickerConfig extends InputConfig<Player<any>, APLValue | undefined> {}
@@ -682,6 +683,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueCurrentEclipsePhase.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getSpec() == Spec.SpecBalanceDruid,
 		fields: [AplHelpers.eclipseTypeFieldConfig('eclipsePhase')],
+	}),
+	currentHolyPower: inputBuilder({
+		label: 'Holy Power',
+		submenu: ['Resources'],
+		shortDescription: 'Amount of currently available Holy Power.',
+		newValue: APLValueCurrentHolyPower.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassPaladin,
+		fields: [],
 	}),
 
 	// Resources Rune

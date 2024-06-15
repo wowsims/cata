@@ -78,11 +78,13 @@ const buildList = <T extends QuickSwapAllowedItem>(data: QuickSwapListConfig<T>)
 			{items.length ? (
 				<ul className="tooltip-quick-swap__list">
 					{items.map(item => {
+						const anchorElem = ref<HTMLAnchorElement>();
 						const iconElem = ref<HTMLImageElement>();
 						const labelElem = ref<HTMLSpanElement>();
 						const listItem = (
 							<li className="tooltip-quick-swap__list-item">
 								<a
+									ref={anchorElem}
 									href="javascript:void(0)"
 									className={`tooltip-quick-swap__anchor d-flex align-items-center ${item.active ? ' active' : ''}`}
 									onclick={() => data.onItemClick(item.item)}>
@@ -95,6 +97,7 @@ const buildList = <T extends QuickSwapAllowedItem>(data: QuickSwapListConfig<T>)
 						);
 						if (labelElem.value) setItemQualityCssClass(labelElem.value, item.item.quality);
 						('spellId' in item.item ? ActionId.fromSpellId(item.item.spellId) : ActionId.fromItemId(item.item.id)).fill().then(filledId => {
+							filledId.setWowheadHref(anchorElem.value!);
 							iconElem.value!.src = filledId.iconUrl;
 						});
 
@@ -106,9 +109,9 @@ const buildList = <T extends QuickSwapAllowedItem>(data: QuickSwapListConfig<T>)
 			)}
 			{data.footerButton && (
 				<div className="tooltip-quick-swap__footer d-flex justify-content-center">
-					<a onclick={data.footerButton.onClick} href="javascript:void(0)" className="btn btn-sm btn-primary" attributes={{ role: 'button' }}>
+					<button onclick={data.footerButton.onClick} className="btn btn-sm btn-primary">
 						{data.footerButton.label}
-					</a>
+					</button>
 				</div>
 			)}
 		</>

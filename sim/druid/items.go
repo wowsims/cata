@@ -19,7 +19,7 @@ var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 			var apDepByStackCount = map[int32]*stats.StatDependency{}
 
 			for i := 1; i <= 3; i++ {
-				apDepByStackCount[int32(i)] = druid.NewDynamicMultiplyStat(stats.AttackPower, 1.0 + 0.01*float64(i))
+				apDepByStackCount[int32(i)] = druid.NewDynamicMultiplyStat(stats.AttackPower, 1.0+0.01*float64(i))
 			}
 
 			druid.StrengthOfThePantherAura = druid.RegisterAura(core.Aura{
@@ -37,6 +37,80 @@ var ItemSetStormridersBattlegarb = core.NewItemSet(core.ItemSet{
 						druid.EnableDynamicStatDep(sim, apDepByStackCount[newStacks])
 					}
 				},
+			})
+		},
+	},
+})
+
+// T11 Balance
+var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
+	Name: "Stormrider's Regalia",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+			character.AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_BonusCrit_Rating,
+				FloatValue: 5 * core.CritRatingPerCritChance,
+				ClassMask:  DruidSpellDoT | DruidSpellMoonfire | DruidSpellSunfire,
+			})
+		},
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			tierSet4pMod := druid.AddDynamicMod(core.SpellModConfig{
+				School: core.SpellSchoolArcane | core.SpellSchoolNature,
+				Kind:   core.SpellMod_BonusCrit_Rating,
+			})
+
+			tierSet4pAura := druid.RegisterAura(core.Aura{
+				ActionID:  core.ActionID{SpellID: 90163},
+				Label:     "Druid T11 Balance 4P Bonus",
+				Duration:  time.Second * 8,
+				MaxStacks: 3,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.SetStacks(sim, aura.MaxStacks)
+
+					tierSet4pMod.UpdateFloatValue(float64(aura.GetStacks()) * 5 * core.CritRatingPerCritChance)
+					tierSet4pMod.Activate()
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					tierSet4pMod.Deactivate()
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.DidCrit() && aura.GetStacks() > 0 {
+						aura.RemoveStack(sim)
+						tierSet4pMod.UpdateFloatValue(float64(aura.GetStacks()) * 5 * core.CritRatingPerCritChance)
+					}
+				},
+			})
+
+			druid.AddEclipseCallback(func(_ Eclipse, gained bool, sim *core.Simulation) {
+				if gained {
+					tierSet4pAura.Activate(sim)
+				} else {
+					tierSet4pAura.Deactivate(sim)
+				}
+			})
+		},
+	},
+})
+
+// PvP Feral
+var ItemSetGladiatorsSanctuary = core.NewItemSet(core.ItemSet{
+	ID:   922,
+	Name: "Gladiator's Sanctuary",
+
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.AddStats(stats.Stats{
+				stats.Agility: 70,
+			})
+		},
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.AddStats(stats.Stats{
+				stats.Agility: 90,
 			})
 		},
 	},

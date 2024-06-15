@@ -15,7 +15,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagAPL | core.SpellFlagMeleeMetrics | SpellFlagBleed,
-		ClassSpellMask: SpellMaskRend | SpellMaskSpecialAttack,
+		ClassSpellMask: SpellMaskRend,
 
 		RageCost: core.RageCostOptions{
 			Cost:   10,
@@ -49,8 +49,7 @@ func (warrior *Warrior) RegisterRendSpell() {
 				weaponMH := warrior.AutoAttacks.MH()
 				avgMHDamage := weaponMH.CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower())
 
-				ap := dot.Spell.MeleeAttackPower() / 14.0
-				dot.Snapshot(target, (529+(0.25*6*(avgMHDamage+ap*weaponMH.SwingSpeed)))/float64(dot.NumberOfTicks))
+				dot.Snapshot(target, (529+(0.25*6*(avgMHDamage)))/float64(dot.BaseTickCount))
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalCrit)

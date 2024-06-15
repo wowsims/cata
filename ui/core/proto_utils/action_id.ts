@@ -83,6 +83,8 @@ export class ActionId {
 					name += ' (Magmaw)';
 				} else if (tag == 49416) {
 					name += ' (Blazing Bone Construct)';
+				} else if (tag > 4191800) {
+					name += ` (Animated Bone Warrior ${(tag - 4191800).toFixed(0)})`;
 				}
 				break;
 			case OtherAction.OtherActionShoot:
@@ -270,7 +272,7 @@ export class ActionId {
 				break;
 			case 'Fireball':
 			case 'Flamestrike':
-				if (this.tag == 1)	name += ' (Blast Wave)';
+				if (this.tag == 1) name += ' (Blast Wave)';
 				break;
 			case 'Pyroblast':
 			case 'Combustion':
@@ -389,7 +391,7 @@ export class ActionId {
 				break;
 			case 'Lightning Shield':
 				if (this.tag == 1) {
-					name += ' (Wasted)'
+					name += ' (Wasted)';
 				}
 				break;
 			case 'Moonfire':
@@ -435,6 +437,13 @@ export class ActionId {
 					name += ' (raid)';
 				}
 				break;
+			case 'Elemental Mastery':
+				if (this.spellId === 64701) {
+					name = `${name} (Buff)`;
+				} else {
+					name = `${name} (Instant)`;
+				}
+				break;
 			case 'Darkmoon Card: Crusade':
 				if (this.tag == 1) {
 					name += ' (Melee)';
@@ -472,6 +481,8 @@ export class ActionId {
 					name += ' (Off Hand)';
 				}
 				break;
+			case 'Raging Blow':
+			case 'Slam':
 			case 'Frost Strike':
 			case 'Plague Strike':
 			case 'Blood Strike':
@@ -815,6 +826,7 @@ export const resourceTypeToIcon: Record<ResourceType, string> = {
 	[ResourceType.ResourceTypeDeathRune]: '/cata/assets/img/death_rune.png',
 	[ResourceType.ResourceTypeSolarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipseorange.jpg',
 	[ResourceType.ResourceTypeLunarEnergy]: 'https://wow.zamimg.com/images/wow/icons/large/ability_druid_eclipse.jpg',
+	[ResourceType.ResourceTypeHolyPower]: 'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_testoffaith.jpg',
 };
 
 // Use this to connect a buff row to a cast row in the timeline view
