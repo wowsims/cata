@@ -34,7 +34,7 @@ import { DatabaseFilters, RaidFilterOption, SimSettings as SimSettingsProto, Sou
 import { Database } from './proto_utils/database.js';
 import { SimResult } from './proto_utils/sim_result.js';
 import { Raid } from './raid.js';
-import { runConcurrentSim } from './sim_concurrent';
+import { runConcurrentSim, runConcurrentStatWeights } from './sim_concurrent';
 import { RequestTypes, SimSignalManager } from './sim_signal_manager';
 import { EventID, TypedEvent } from './typed_event.js';
 import { getEnumValues, noop } from './utils.js';
@@ -458,8 +458,14 @@ export class Sim {
 				epReferenceStat: epReferenceStat,
 			});
 			try {
+				let result: StatWeightsResult;
 				const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.StatWeights);
-				const result = await this.workerPool.statWeightsAsync(request, onProgress, signals);
+				// Only use worker based concurrency when running wasm.
+				if ((await this.isWasm()) && this.getWasmConcurrency() >= 2) {
+					result = await runConcurrentStatWeights(request, this.workerPool, onProgress, signals);
+				} else {
+					result = await this.workerPool.statWeightsAsync(request, onProgress, signals);
+				}
 				if (result.errorResult != '') {
 					if (result.errorResult == 'aborted') {
 						// TODO: Abort feedback?

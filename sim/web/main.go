@@ -97,6 +97,12 @@ var handlers = map[string]apiHandler{
 	"/statWeights": {msg: func() googleProto.Message { return &proto.StatWeightsRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
 		return core.StatWeights(msg.(*proto.StatWeightsRequest))
 	}},
+	"/statWeightRequests": {msg: func() googleProto.Message { return &proto.StatWeightsRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
+		return core.StatWeightRequests(msg.(*proto.StatWeightsRequest))
+	}},
+	"/statWeightCompute": {msg: func() googleProto.Message { return &proto.StatWeightsCalcRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
+		return core.StatWeightCompute(msg.(*proto.StatWeightsCalcRequest))
+	}},
 	"/computeStats": {msg: func() googleProto.Message { return &proto.ComputeStatsRequest{} }, handle: func(msg googleProto.Message) googleProto.Message {
 		return core.ComputeStats(msg.(*proto.ComputeStatsRequest))
 	}},

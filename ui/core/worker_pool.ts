@@ -13,6 +13,8 @@ import {
 	RaidSimRequestSplitResult,
 	RaidSimResult,
 	RaidSimResultCombinationRequest,
+	StatWeightRequestsData,
+	StatWeightsCalcRequest,
 	StatWeightsRequest,
 	StatWeightsResult,
 } from './proto/api.js';
@@ -148,6 +150,16 @@ export class WorkerPool {
 	async raidSimResultCombination(request: RaidSimResultCombinationRequest): Promise<RaidSimResult> {
 		const result = await this.makeApiCall(SimRequest.raidSimResultCombination, RaidSimResultCombinationRequest.toBinary(request));
 		return RaidSimResult.fromBinary(result);
+	}
+
+	async statWeightRequests(request: StatWeightsRequest): Promise<StatWeightRequestsData> {
+		const result = await this.makeApiCall(SimRequest.statWeightRequests, StatWeightsRequest.toBinary(request));
+		return StatWeightRequestsData.fromBinary(result);
+	}
+
+	async statWeightCompute(request: StatWeightsCalcRequest): Promise<StatWeightsResult> {
+		const result = await this.makeApiCall(SimRequest.statWeightCompute, StatWeightsCalcRequest.toBinary(request));
+		return StatWeightsResult.fromBinary(result);
 	}
 
 	async isWasm() {

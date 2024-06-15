@@ -14,6 +14,8 @@ declare global {
 	const raidSimAsync: SimRequestAsync;
 	const statWeights: SimRequestSync;
 	const statWeightsAsync: SimRequestAsync;
+	const statWeightRequests: SimRequestSync;
+	const statWeightCompute: SimRequestSync;
 	const raidSimResultCombination: SimRequestSync;
 	const raidSimRequestSplit: SimRequestSync;
 	const abortById: SimRequestSync;
@@ -31,6 +33,8 @@ globalThis.wasmready = function () {
 		raidSimAsync: (data, progress) => raidSimAsync(data, progress),
 		statWeights: statWeights,
 		statWeightsAsync: (data, progress) => statWeightsAsync(data, progress),
+		statWeightRequests: statWeightRequests,
+		statWeightCompute: statWeightCompute,
 		raidSimRequestSplit: raidSimRequestSplit,
 		raidSimResultCombination: raidSimResultCombination,
 		abortById: abortById,
