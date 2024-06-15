@@ -11,6 +11,7 @@ import { SavedTalents, UIEnchant, UIGem, UIItem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { canEquipItem, getEligibleItemSlots, isSecondaryItemSlot } from '../../proto_utils/utils';
+import { RequestTypes } from '../../sim_signal_manager';
 import { TypedEvent } from '../../typed_event';
 import { getEnumValues, isExternal, isLocal } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
@@ -480,11 +481,6 @@ export class BulkTab extends SimTab {
 			for (const r of bulkSimResult.results) {
 				new BulkSimResultRenderer(this.resultsTabElem, this.simUI, this, r, bulkSimResult.equippedGearResult!);
 			}
-
-			this.simUI.rootElem.classList.remove('blurred');
-			this.pendingDiv.remove();
-			this.pendingResults.hideAll();
-
 			this.resultsTab.show();
 		});
 	}
@@ -519,7 +515,12 @@ export class BulkTab extends SimTab {
 			combinationsElem.replaceChildren(this.getCombinationsCount());
 		});
 
-		bulkSimButton.addEventListener('click', () => {
+		let isRunning = false;
+		bulkSimButton.addEventListener('click', async () => {
+			if (isRunning) return;
+			isRunning = true;
+			bulkSimButton.disabled = true;
+
 			this.simUI.rootElem.classList.add('blurred');
 			this.simUI.rootElem.insertAdjacentElement('afterend', this.pendingDiv);
 
@@ -529,7 +530,29 @@ export class BulkTab extends SimTab {
 			let currentRound = 0;
 			let combinations = 0;
 
-			this.runBulkSim((progressMetrics: ProgressMetrics) => {
+			try {
+				await this.simUI.sim.signalManager.abortType(RequestTypes.All);
+			} catch (error) {
+				console.error(error);
+				return;
+			}
+
+			let waitAbort = false;
+			this.pendingResults.addAbortButton(async () => {
+				if (waitAbort) return;
+				try {
+					waitAbort = true;
+					await this.simUI.sim.signalManager.abortType(RequestTypes.BulkSim);
+				} catch (error) {
+					console.error('Error on bulk sim abort!');
+					console.error(error);
+				} finally {
+					waitAbort = false;
+					if (!isRunning) bulkSimButton.disabled = false;
+				}
+			});
+
+			await this.runBulkSim((progressMetrics: ProgressMetrics) => {
 				const msSinceStart = new Date().getTime() - simStart;
 				const iterPerSecond = progressMetrics.completedIterations / (msSinceStart / 1000);
 
@@ -550,6 +573,13 @@ export class BulkTab extends SimTab {
 				this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
 				lastTotal = progressMetrics.totalSims;
 			});
+
+			isRunning = false;
+			if (!waitAbort) bulkSimButton.disabled = false;
+
+			this.simUI.rootElem.classList.remove('blurred');
+			this.pendingDiv.remove();
+			this.pendingResults.hideAll();
 		});
 
 		// Disabled temporarily because for the web sim 50 iterations was far too few for reliable results

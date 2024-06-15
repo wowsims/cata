@@ -10,6 +10,7 @@ import { EventID, TypedEvent } from '../typed_event.js';
 import { formatDeltaTextElem, sum } from '../utils.js';
 
 export function addRaidSimAction(simUI: SimUI): RaidSimResultsManager {
+	const resultsViewer = simUI.resultsViewer
 	let isRunning = false;
 	let waitAbort = false;
 	simUI.addAction('Simulate', 'dps-action', async ev => {
@@ -17,20 +18,28 @@ export function addRaidSimAction(simUI: SimUI): RaidSimResultsManager {
 		button.disabled = true;
 		if (!isRunning) {
 			isRunning = true;
-			button.innerText = 'Stop Simulation';
-			button.classList.add('is-running');
+
+			resultsViewer.addAbortButton(async () => {
+				if (waitAbort) return;
+				try {
+					waitAbort = true;
+					await simUI.sim.signalManager.abortType(RequestTypes.RaidSim);
+				} catch (error) {
+					console.error('Error on sim abort!');
+					console.error(error);
+				} finally {
+					waitAbort = false;
+					if (!isRunning) button.disabled = false;
+				}
+			});
+
 			await simUI.runSim((progress: ProgressMetrics) => {
-				if (!waitAbort) button.disabled = false;
 				resultsManager.setSimProgress(progress);
 			});
+
+			resultsViewer.removeAbortButton();
+			if (!waitAbort) button.disabled = false;
 			isRunning = false;
-			button.innerText = 'Simulate';
-			button.classList.remove('is-running');
-		} else {
-			waitAbort = true;
-			await simUI.sim.signalManager.abortType(RequestTypes.RaidSim);
-			waitAbort = false;
-			if (!isRunning) button.disabled = false;
 		}
 	});
 
