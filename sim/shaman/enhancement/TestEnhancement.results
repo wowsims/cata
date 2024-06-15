@@ -1445,7 +1445,7 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 27720.0949
-  tps: 18024.69906
+  dps: 27776.96449
+  tps: 18068.9874
  }
 }

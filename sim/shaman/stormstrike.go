@@ -78,7 +78,7 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 			} else {
 				baseDamage = spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
 			}
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialBlockAndCrit)
 			spell.SpellMetrics[target.UnitIndex].Casts--
 		},
 	})

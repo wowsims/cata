@@ -30,12 +30,12 @@ export const APL_Default = PresetUtils.makePresetAPLRotation('Demo', DefaultApl)
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 0.18,
-		[Stat.StatSpellPower]: 1,
-		[Stat.StatSpellHit]: 0.93,
-		[Stat.StatSpellCrit]: 0.53,
-		[Stat.StatSpellHaste]: 0.81,
-		[Stat.StatMastery]: 1.0,
+		[Stat.StatIntellect]: 1.28,
+		[Stat.StatSpellPower]: 1.0,
+		[Stat.StatSpellHit]: 0.9,
+		[Stat.StatSpellCrit]: 0.57,
+		[Stat.StatSpellHaste]: 0.74,
+		[Stat.StatMastery]: 0.79,
 	}),
 );
 

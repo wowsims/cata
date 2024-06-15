@@ -30,16 +30,16 @@ export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
 	Stats.fromMap(
 		{
-			[Stat.StatStrength]: 2.9436,
+			[Stat.StatStrength]: 2.27,
 			[Stat.StatAttackPower]: 1,
-			[Stat.StatMeleeHit]: 3.2672,
-			[Stat.StatMeleeCrit]: 1.3908,
-			[Stat.StatMeleeHaste]: 1.0356,
-			[Stat.StatExpertise]: 2.5455,
-			[Stat.StatMastery]: 1.5395,
+			[Stat.StatMeleeHit]: 3.27,
+			[Stat.StatMeleeCrit]: 0.94,
+			[Stat.StatMeleeHaste]: 0.27,
+			[Stat.StatExpertise]: 2.55,
+			[Stat.StatMastery]: 1.34,
 		},
 		{
-			[PseudoStat.PseudoStatMainHandDps]: 7.33,
+			[PseudoStat.PseudoStatMainHandDps]: 8.07,
 		},
 	),
 );

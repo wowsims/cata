@@ -15,13 +15,13 @@ export class Paladin extends PlayerClass<Class.ClassPaladin> {
 		[RetributionPaladin.friendlyName]: RetributionPaladin,
 	};
 	static races: Race[] = [
+		// [H]
+		Race.RaceBloodElf,
+		Race.RaceTauren,
 		// [A]
 		Race.RaceHuman,
 		Race.RaceDwarf,
 		Race.RaceDraenei,
-		// [H]
-		Race.RaceTauren,
-		Race.RaceBloodElf,
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypePlate, ArmorType.ArmorTypeMail, ArmorType.ArmorTypeLeather, ArmorType.ArmorTypeCloth];
 	static weaponTypes: EligibleWeaponType[] = [

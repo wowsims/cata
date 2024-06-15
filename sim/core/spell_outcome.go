@@ -279,6 +279,22 @@ func (spell *Spell) OutcomeMeleeSpecialCritOnly(sim *Simulation, result *SpellRe
 	}
 }
 
+func (spell *Spell) OutcomeMeleeSpecialBlockAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+	if spell.Unit.PseudoStats.InFrontOfTarget {
+		roll := sim.RandomFloat("White Hit Table")
+		chance := 0.0
+
+		if !result.applyAttackTableBlock(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableCritSeparateRoll(sim, spell, attackTable) {
+			result.applyAttackTableHit(spell)
+		}
+	} else {
+		if !result.applyAttackTableCritSeparateRoll(sim, spell, attackTable) {
+			result.applyAttackTableHit(spell)
+		}
+	}
+}
+
 func (spell *Spell) OutcomeRangedHit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
 	roll := sim.RandomFloat("White Hit Table")
 	chance := 0.0

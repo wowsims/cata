@@ -25,7 +25,7 @@ func (paladin *Paladin) applyCrusade() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskCrusaderStrike | SpellMaskDivineStorm | SpellMaskTemplarsVerdict | SpellMaskHolyShock,
+		ClassMask:  SpellMaskCrusaderStrike | SpellMaskHammerOfTheRighteous | SpellMaskTemplarsVerdict | SpellMaskHolyShock,
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.1 * float64(paladin.Talents.Crusade),
 	})

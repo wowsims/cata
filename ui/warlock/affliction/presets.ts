@@ -30,12 +30,12 @@ export const APL_Default = PresetUtils.makePresetAPLRotation('Affliction', Defau
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
 	'P1',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 0.18,
-		[Stat.StatSpellPower]: 1,
+		[Stat.StatIntellect]: 1.26,
+		[Stat.StatSpellPower]: 1.0,
 		[Stat.StatSpellHit]: 0.93,
-		[Stat.StatSpellCrit]: 0.53,
-		[Stat.StatSpellHaste]: 0.81,
-		[Stat.StatMastery]: 1.0,
+		[Stat.StatSpellCrit]: 0.52,
+		[Stat.StatSpellHaste]: 0.58,
+		[Stat.StatMastery]: 0.38,
 	}),
 );
 
