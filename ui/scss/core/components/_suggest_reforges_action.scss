@@ -1,5 +1,9 @@
 .tippy-box[data-theme='reforge-optimiser-popover'] {
 	min-width: 200px;
+
+	.saved-data-manager-root {
+		margin-bottom: 0;
+	}
 }
 .suggest-reforges-settings-group {
 	--settings-button-width: 36px;
