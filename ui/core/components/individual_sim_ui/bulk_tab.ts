@@ -500,7 +500,7 @@ export class BulkTab extends SimTab {
 			let combinations = 0;
 
 			try {
-				await this.simUI.sim.signalManager.abortAll(RequestTypes.All)
+				await this.simUI.sim.signalManager.abortType(RequestTypes.All)
 
 				await this.runBulkSim((progressMetrics: ProgressMetrics) => {
 					const msSinceStart = new Date().getTime() - simStart;

@@ -38,7 +38,7 @@ import { runConcurrentSim } from './sim_concurrent';
 import { RequestTypes, SimSignalManager } from './sim_signal_manager';
 import { EventID, TypedEvent } from './typed_event.js';
 import { getEnumValues, noop } from './utils.js';
-import { generateRequestId,WorkerPool, WorkerProgressCallback } from './worker_pool.js';
+import { generateRequestId, WorkerPool, WorkerProgressCallback } from './worker_pool.js';
 
 export type RaidSimData = {
 	request: RaidSimRequest;
@@ -143,7 +143,7 @@ export class Sim {
 			}
 		});
 
-		this.signalManager = new SimSignalManager(this.workerPool);
+		this.signalManager = new SimSignalManager();
 
 		this._initPromise = Database.get().then(db => {
 			this.db_ = db;
@@ -275,8 +275,8 @@ export class Sim {
 		this.bulkSimStartEmitter.emit(TypedEvent.nextEventID(), request);
 
 		try {
-			this.signalManager.registerRunning(request.requestId, RequestTypes.BulkSim, false);
-			const result = await this.workerPool.bulkSimAsync(request, onProgress);
+			const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.BulkSim);
+			const result = await this.workerPool.bulkSimAsync(request, onProgress, signals);
 			if (result.errorResult != '') {
 				if (result.errorResult.includes('aborted')) {
 					// TODO: Abort feedback?
@@ -309,13 +309,12 @@ export class Sim {
 			simId = request.requestId;
 
 			let result;
+			const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.RaidSim);
 			// Only use worker base concurrency when running wasm. Local sim has native threading.
-			if (await this.isWasm() && this.getWasmConcurrency() >= 2) {
-				const sig = this.signalManager.registerRunning(request.requestId, RequestTypes.RaidSim, true);
-				result = await runConcurrentSim(request, this.workerPool, onProgress, sig);
+			if ((await this.isWasm()) && this.getWasmConcurrency() >= 2) {
+				result = await runConcurrentSim(request, this.workerPool, onProgress, signals);
 			} else {
-				this.signalManager.registerRunning(request.requestId, RequestTypes.RaidSim, false);
-				result = await this.workerPool.raidSimAsync(request, onProgress);
+				result = await this.workerPool.raidSimAsync(request, onProgress, signals);
 			}
 
 			if (result.errorResult != '') {
@@ -346,7 +345,8 @@ export class Sim {
 			await this.waitForInit();
 
 			const request = this.makeRaidSimRequest(true);
-			const result = await this.workerPool.raidSimAsync(request, noop);
+			const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.RaidSim);
+			const result = await this.workerPool.raidSimAsync(request, noop, signals);
 			if (result.errorResult != '') {
 				throw new SimError(result.errorResult);
 			}
@@ -454,8 +454,8 @@ export class Sim {
 				epReferenceStat: epReferenceStat,
 			});
 			try {
-				this.signalManager.registerRunning(request.requestId, RequestTypes.StatWeights, false);
-				const result = await this.workerPool.statWeightsAsync(request, onProgress);
+				const signals = this.signalManager.registerRunning(request.requestId, RequestTypes.StatWeights);
+				const result = await this.workerPool.statWeightsAsync(request, onProgress, signals);
 				if (result.errorResult != '') {
 					if (result.errorResult == 'aborted') {
 						// TODO: Abort feedback?
@@ -464,7 +464,7 @@ export class Sim {
 					throw new SimError(result.errorResult);
 				}
 				return result;
-			} catch(error) {
+			} catch (error) {
 				if (error instanceof SimError) throw error;
 				throw new Error('Something went wrong calculating your stat weights. Reload the page and try again.');
 			} finally {

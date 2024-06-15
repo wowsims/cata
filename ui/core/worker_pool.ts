@@ -16,6 +16,7 @@ import {
 	StatWeightsRequest,
 	StatWeightsResult,
 } from './proto/api.js';
+import { SimSignals } from './sim_signal_manager';
 import { noop } from './utils';
 
 const SIM_WORKER_URL = `/${REPO_NAME}/sim_worker.js`;
@@ -87,10 +88,14 @@ export class WorkerPool {
 		return `${id}progress`;
 	}
 
-	async statWeightsAsync(request: StatWeightsRequest, onProgress: WorkerProgressCallback): Promise<StatWeightsResult> {
+	async statWeightsAsync(request: StatWeightsRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<StatWeightsResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('Stat weights request: ' + StatWeightsRequest.toJsonString(request));
 		const id = request.requestId || generateRequestId(SimRequest.statWeightsAsync);
+
+		signals.abort.onTrigger(async () => {
+			await worker.sendAbortById(id);
+		});
 
 		const iterations = request.simOptions ? request.simOptions.iterations * request.statsToWeigh.length : 30000;
 		const result = await this.doAsyncRequest(SimRequest.statWeightsAsync, StatWeightsRequest.toBinary(request), id, worker, onProgress, iterations);
@@ -99,10 +104,14 @@ export class WorkerPool {
 		return result.finalWeightResult!;
 	}
 
-	async bulkSimAsync(request: BulkSimRequest, onProgress: WorkerProgressCallback): Promise<BulkSimResult> {
+	async bulkSimAsync(request: BulkSimRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<BulkSimResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('bulk sim request: ' + BulkSimRequest.toJsonString(request, { enumAsInteger: true }));
 		const id = request.requestId || generateRequestId(SimRequest.bulkSimAsync);
+
+		signals.abort.onTrigger(async () => {
+			await worker.sendAbortById(id);
+		});
 
 		const iterations = request.baseSettings?.simOptions?.iterations ?? 30000;
 		const result = await this.doAsyncRequest(SimRequest.bulkSimAsync, BulkSimRequest.toBinary(request), id, worker, onProgress, iterations);
@@ -112,10 +121,14 @@ export class WorkerPool {
 		return result.finalBulkResult!;
 	}
 
-	async raidSimAsync(request: RaidSimRequest, onProgress: WorkerProgressCallback): Promise<RaidSimResult> {
+	async raidSimAsync(request: RaidSimRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<RaidSimResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('Raid sim request: ' + RaidSimRequest.toJsonString(request));
 		const id = request.requestId || generateRequestId(SimRequest.raidSimAsync);
+
+		signals.abort.onTrigger(async () => {
+			await worker.sendAbortById(id);
+		});
 
 		const iterations = request.simOptions?.iterations ?? 3000;
 		const result = await this.doAsyncRequest(SimRequest.raidSimAsync, RaidSimRequest.toBinary(request), id, worker, onProgress, iterations);
@@ -135,39 +148,6 @@ export class WorkerPool {
 	async raidSimResultCombination(request: RaidSimResultCombinationRequest): Promise<RaidSimResult> {
 		const result = await this.makeApiCall(SimRequest.raidSimResultCombination, RaidSimResultCombinationRequest.toBinary(request));
 		return RaidSimResult.fromBinary(result);
-	}
-
-	/**
-	 * Send abort request. Will send request to all workers if requestId can't be matched to a specific worker.
-	 * @param requestId The id of the request to abort.
-	 * @returns The AbortResponse.
-	 */
-	async abortById(requestId: string): Promise<AbortResponse> {
-		const abortReqBinary = AbortRequest.toBinary(AbortRequest.create({ requestId }));
-		const rid = generateRequestId(SimRequest.abortById);
-		// Only send request to worker with that request running if possible.
-		for (const worker of this.workers) {
-			if (worker.hasTaskId(requestId)) {
-				const result = await worker.doApiCall(SimRequest.abortById, abortReqBinary, rid);
-				return AbortResponse.fromBinary(result);
-			}
-		}
-
-		// Fallback: Send to all workers.
-		const results = await Promise.all(this.workers.map(worker => worker.doApiCall(SimRequest.abortById, abortReqBinary, rid)));
-
-		// Try to find a result that was valid and return that one.
-		let result = AbortResponse.fromBinary(results[0]);
-		if (!result.wasTriggered) {
-			for (let i = 1; i < results.length; i++) {
-				const ar = AbortResponse.fromBinary(results[i]);
-				if (ar.wasTriggered) {
-					result = ar;
-					break;
-				}
-			}
-		}
-		return result;
 	}
 
 	async isWasm() {
@@ -384,5 +364,12 @@ class SimWorker {
 
 	log(s: string) {
 		console.log(`Worker ${this.workerId}: ${s}`);
+	}
+
+	async sendAbortById(requestId: string) {
+		const abortReqBinary = AbortRequest.toBinary(AbortRequest.create({ requestId }));
+		const rid = generateRequestId(SimRequest.abortById);
+		const result = await this.doApiCall(SimRequest.abortById, abortReqBinary, rid);
+		return AbortResponse.fromBinary(result);
 	}
 }

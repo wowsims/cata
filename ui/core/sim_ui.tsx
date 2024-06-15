@@ -261,7 +261,7 @@ export abstract class SimUI extends Component {
 	async runSim(onProgress: WorkerProgressCallback) {
 		this.resultsViewer.setPending();
 		try {
-			await this.sim.signalManager.abortAll(RequestTypes.All);
+			await this.sim.signalManager.abortType(RequestTypes.All);
 			await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
 		} catch (e) {
 			this.resultsViewer.hideAll();

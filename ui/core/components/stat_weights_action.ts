@@ -11,7 +11,7 @@ import { Gear } from '../proto_utils/gear.js';
 import * as Gems from '../proto_utils/gems.js';
 import { getClassStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
-import { RequestTypes } from '../sim_signal_manager';
+import { RequestTypes } from '../sim_signal_manager.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { combinationsWithDups, permutations, stDevToConf90, sum } from '../utils.js';
 import { BaseModal } from './base_modal.js';
@@ -328,7 +328,7 @@ class EpWeightsMenu extends BaseModal {
 			calcButton.innerHTML = `<i class="fa fa-spinner fa-spin"></i>&nbsp;Running`;
 
 			try {
-				await this.simUI.sim.signalManager.abortAll(RequestTypes.All);
+				await this.simUI.sim.signalManager.abortType(RequestTypes.All);
 			} catch (error) {
 				console.error(error);
 				calcButton.innerHTML = previousContents;
@@ -360,7 +360,7 @@ class EpWeightsMenu extends BaseModal {
 		});
 
 		this.addOnHideCallback(() => {
-			this.simUI.sim.signalManager.abortAll(RequestTypes.StatWeights).catch(console.error);
+			this.simUI.sim.signalManager.abortType(RequestTypes.StatWeights).catch(console.error);
 		});
 
 		const colActionButtons = Array.from(this.rootElem.getElementsByClassName('col-action')) as Array<HTMLSelectElement>;
