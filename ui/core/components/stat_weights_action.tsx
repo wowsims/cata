@@ -6,7 +6,6 @@ import { IndividualSimUI } from '../individual_sim_ui.jsx';
 import { Player } from '../player.js';
 import { ProgressMetrics, StatWeightsResult, StatWeightValues } from '../proto/api.js';
 import { PseudoStat, Stat, UnitStats } from '../proto/common.js';
-import { SavedEPWeights } from '../proto/ui';
 import { getClassStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
@@ -15,7 +14,7 @@ import { BaseModal } from './base_modal.jsx';
 import { BooleanPicker } from './pickers/boolean_picker.js';
 import { NumberPicker } from './pickers/number_picker.js';
 import { ResultsViewer } from './results_viewer.jsx';
-import { SavedDataManager } from './saved_data_manager';
+import { renderSavedEPWeights } from './saved_data_managers/ep_weights';
 
 export const addStatWeightsAction = (simUI: IndividualSimUI<any>) => {
 	simUI.addAction('Stat Weights', 'ep-weights-action', () => {
@@ -592,6 +591,10 @@ class EpWeightsMenu extends BaseModal {
 		}
 	});
 
+	private buildSavedEPWeightsPicker() {
+		renderSavedEPWeights(this.sidebar, this.simUI);
+	}
+
 	private buildStatsTable(): StatsTableEntry[] {
 		const copyToCurrentEpText = 'Copy to Current EP';
 		const createRefs = () => ({
@@ -726,42 +729,6 @@ class EpWeightsMenu extends BaseModal {
 				...createRefs(),
 			},
 		];
-	}
-
-	private buildSavedEPWeightsPicker() {
-		const savedEPWeightsManager = new SavedDataManager<Player<any>, SavedEPWeights>(this.sidebar, this.simUI.player, {
-			label: 'EP Weights',
-			header: { title: 'Saved EP weights' },
-			storageKey: this.simUI.getSavedEPWeightsStorageKey(),
-			getData: (player: Player<any>) =>
-				SavedEPWeights.create({
-					epWeights: player.getEpWeights().toProto(),
-				}),
-			setData: (eventID: EventID, player: Player<any>, newEPWeights: SavedEPWeights) => {
-				TypedEvent.freezeAllAndDo(() => {
-					player.setEpWeights(eventID, Stats.fromProto(newEPWeights.epWeights));
-				});
-			},
-			changeEmitters: [this.simUI.player.epWeightsChangeEmitter],
-			equals: (a: SavedEPWeights, b: SavedEPWeights) => SavedEPWeights.equals(a, b),
-			toJson: (a: SavedEPWeights) => SavedEPWeights.toJson(a),
-			fromJson: (obj: any) => SavedEPWeights.fromJson(obj),
-		});
-
-		this.simUI.sim.waitForInit().then(() => {
-			savedEPWeightsManager.loadUserData();
-			this.simUI.individualConfig.presets.epWeights.forEach(({ name, epWeights, enableWhen, onLoad }) => {
-				savedEPWeightsManager.addSavedData({
-					name: name,
-					isPreset: true,
-					data: SavedEPWeights.create({
-						epWeights: epWeights.toProto(),
-					}),
-					enableWhen,
-					onLoad,
-				});
-			});
-		});
 	}
 }
 

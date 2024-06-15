@@ -18,6 +18,7 @@ import { TypedEvent } from '../typed_event';
 import { isDevMode, sleep } from '../utils';
 import { BooleanPicker } from './pickers/boolean_picker';
 import { NumberPicker } from './pickers/number_picker';
+import { renderSavedEPWeights } from './saved_data_managers/ep_weights';
 import Toast from './toast';
 
 type YalpsCoefficients = Map<string, number>;
@@ -185,7 +186,6 @@ export class ReforgeOptimizer {
 				});
 
 				const descriptionRef = ref<HTMLParagraphElement>();
-
 				instance.setContent(
 					<>
 						{useCustomEPValuesInput.rootElem}
@@ -194,7 +194,11 @@ export class ReforgeOptimizer {
 							<p>Ep weights can be modified in the Stat Weights editor.</p>
 							<p className="mb-0">If you want to hard cap a stat make sure to put the EP for that stat higher.</p>
 						</div>
-						{this.buildCapsList({ input: useCustomEPValuesInput, description: descriptionRef.value! })}
+						{this.buildCapsList({
+							input: useCustomEPValuesInput,
+							description: descriptionRef.value!,
+						})}
+						{this.buildEPWeightsToggle({ input: useCustomEPValuesInput })}
 					</>,
 				);
 			},
@@ -214,7 +218,7 @@ export class ReforgeOptimizer {
 		const content = (
 			<ul ref={tableRef} className={clsx('reforge-optimizer-stat-cap-list list-reset d-grid gap-2', !this.sim.getUseCustomEPValues() && 'hide')}>
 				<li className="d-flex">
-					<label className="me-1">Edit stat caps</label>
+					<h6 className="content-block-title mb-0 me-1">Edit stat caps</h6>
 					<button ref={statCapTooltipRef} className="d-inline">
 						<i className="fa-regular fa-circle-question" />
 					</button>
@@ -279,6 +283,24 @@ export class ReforgeOptimizer {
 		return content;
 	}
 
+	buildEPWeightsToggle({ input }: { input: BooleanPicker<Player<any>> }) {
+		const extraCssClasses = ['mt-3'];
+		if (!this.sim.getUseCustomEPValues()) extraCssClasses.push('hide');
+		const savedEpWeights = renderSavedEPWeights(null, this.simUI, { extraCssClasses, loadOnly: true });
+		const event = this.sim.useCustomEPValuesChangeEmitter.on(() => {
+			const isUsingCustomEPValues = this.sim.getUseCustomEPValues();
+			savedEpWeights.rootElem?.classList[isUsingCustomEPValues ? 'remove' : 'add']('hide');
+		});
+
+		input.addOnDisposeCallback(() => {
+			savedEpWeights.dispose();
+			savedEpWeights.rootElem.remove();
+			event.dispose();
+		});
+
+		return savedEpWeights.rootElem;
+	}
+
 	async optimizeReforges() {
 		if (isDevMode()) console.log('Starting Reforge optimization...');
 
@@ -321,7 +343,7 @@ export class ReforgeOptimizer {
 			this.softCapsConfig
 				.slice()
 				.reverse()
-				.filter((config) => this.statCaps.getStat(config.stat) == 0)
+				.filter(config => this.statCaps.getStat(config.stat) == 0)
 				.forEach(config => {
 					const relativeBreakpoints = [];
 
