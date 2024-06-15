@@ -53,25 +53,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 		// Default equipped gear.
 		gear: Presets.P1_PRESET_ASSASSINATION.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatAgility]: 2.58,
-				[Stat.StatStrength]: 1.05,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatSpellCrit]: 0.26,
-				[Stat.StatSpellHit]: 1.31,
-				[Stat.StatMeleeHit]: 0.7,
-				[Stat.StatMeleeCrit]: 0.62,
-				[Stat.StatMeleeHaste]: 1.1,
-				[Stat.StatMastery]: 1.23,
-				[Stat.StatExpertise]: 1.04,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 2.49,
-				[PseudoStat.PseudoStatOffHandDps]: 1.0,
-			},
-		),
-		other: Presets.OtherDefaults,
+		epWeights: Presets.P1_EP_PRESET.epWeights,
+
+    other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -137,6 +121,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAssassinationRogue, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.AssassinationTalentsDefault],
 		// Preset rotations that the user can quickly select.

@@ -68,6 +68,9 @@ th {
 }
 
 .sim-ui--is-unlaunched {
+	.import-export {
+		display: none !important;
+	}
 	.sim-sidebar {
 		.sim-sidebar-actions > *:not(.sim-ui-unlaunched-container),
 		.sim-sidebar-results {
@@ -77,6 +80,8 @@ th {
 }
 
 .sim-ui-unlaunched-container {
+	max-width: 400px;
+
 	i {
 		color: var(--bs-danger);
 	}

@@ -74,21 +74,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 		// Default equipped gear.
 		gear: Presets.SV_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatStamina]: 0.5,
-				[Stat.StatAgility]: 3.27,
-				[Stat.StatIntellect]: 1.1,
-				[Stat.StatRangedAttackPower]: 1.0,
-				[Stat.StatMeleeHit]: 2.16,
-				[Stat.StatMeleeCrit]: 1.17,
-				[Stat.StatMeleeHaste]: 0.89,
-				[Stat.StatMastery]: 0.88,
-			},
-			{
-				[PseudoStat.PseudoStatRangedDps]: 3.75,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
@@ -156,6 +142,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSurvivalHunter, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.SurvivalTalents],
 		// Preset rotations that the user can quickly select.

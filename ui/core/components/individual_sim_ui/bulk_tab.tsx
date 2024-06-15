@@ -1,16 +1,18 @@
 import { Tab } from 'bootstrap';
 import clsx from 'clsx';
+import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
+import { REPO_RELEASES_URL } from '../../constants/other';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { BulkSettings, ProgressMetrics, TalentLoadout } from '../../proto/api';
-import { GemColor, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
+import { GemColor, Glyphs, ItemSpec, SimDatabase, SimEnchant, SimGem, SimItem } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIGem, UIItem } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getEmptyGemSocketIconUrl } from '../../proto_utils/gems';
 import { canEquipItem, getEligibleItemSlots, isSecondaryItemSlot } from '../../proto_utils/utils';
 import { TypedEvent } from '../../typed_event';
-import { getEnumValues } from '../../utils';
+import { getEnumValues, isExternal, isLocal } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
 import { ItemData } from '../gear_picker/item_list';
 import SelectorModal from '../gear_picker/selector_modal';
@@ -24,6 +26,10 @@ import BulkItemSearch from './bulk/bulk_item_search';
 import BulkSimResultRenderer from './bulk/bulk_sim_results_renderer';
 import GemSelectorModal from './bulk/gem_selector_modal';
 import { BulkSimItemSlot, itemSlotToBulkSimItemSlot } from './bulk/utils';
+
+const WEB_DEFAULT_ITERATIONS = 1000;
+const WEB_ITERATIONS_LIMIT = 50_000;
+const LOCAL_ITERATIONS_LIMIT = 1_000_000;
 
 export class BulkTab extends SimTab {
 	readonly simUI: IndividualSimUI<any>;
@@ -48,6 +54,9 @@ export class BulkTab extends SimTab {
 	// Separate Map used to store items broken down by item slot, specifically for combination generation
 	protected itemsBySlot: Map<BulkSimItemSlot, Map<number, ItemSpec>> = new Map();
 	protected pickerGroups: Array<BulkItemPickerGroup> = new Array<BulkItemPickerGroup>();
+
+	protected combinations = 0;
+	protected iterations = 0;
 
 	// TODO: Make a real options probably
 	doCombos: boolean;
@@ -236,8 +245,14 @@ export class BulkTab extends SimTab {
 			defaultYellowGem: this.defaultGems[1].id,
 			defaultBlueGem: this.defaultGems[2].id,
 			defaultMetaGem: this.defaultGems[3].id,
-			iterationsPerCombo: this.simUI.sim.getIterations(), // TODO(Riotdog-GehennasEU): Define a new UI element for the iteration setting.
+			iterationsPerCombo: this.getDefaultIterationsCount(),
 		});
+	}
+
+	private getDefaultIterationsCount(): number {
+		if (isExternal()) return WEB_DEFAULT_ITERATIONS;
+
+		return this.simUI.sim.getIterations() / (this.fastMode ? 10 : 1);
 	}
 
 	protected createBulkItemsDatabase(): SimDatabase {
@@ -409,15 +424,16 @@ export class BulkTab extends SimTab {
 					</a>{' '}
 					that allows you to select multiple items and sim them find the best combinations.
 					<br />
-					This is an <span className="text-brand">Alpha</span> feature, so if you find a bug please report it!
-					<br />
-					<br />
-					<span className="text-warning d-flex align-items-center">
-						<i className="fas fa-exclamation-triangle fa-3x me-2" />
-						Warning: Simming over 100k iterations in the web sim may take a long time. For larger batch sims we recommend using Fast Mode or
-						downloading the executable version.
-					</span>
+					This is an <span className="text-brand">Alpha</span> feature, so if you have feedback or find a bug, please report it!
 				</p>
+				{isExternal() && (
+					<p className="mb-0">
+						<a href={REPO_RELEASES_URL} target="_blank">
+							<i className="fas fa-gauge-high me-1" />
+							Download the local sim for faster results.
+						</a>
+					</p>
+				)}
 				<div className="bulk-gear-actions">
 					<button className="btn btn-secondary" ref={bagImportBtnRef}>
 						<i className="fa fa-download me-1" /> Import From Bags
@@ -445,7 +461,7 @@ export class BulkTab extends SimTab {
 			this.addItems(items);
 		});
 
-		clearButton.addEventListener('click', this.clearItems);
+		clearButton.addEventListener('click', () => this.clearItems());
 
 		new BulkItemSearch(this.setupTabElem, this.simUI, this);
 
@@ -481,9 +497,9 @@ export class BulkTab extends SimTab {
 		this.rightPanel.append(
 			<div className="bulk-settings-outer-container">
 				<div className="bulk-settings-container" ref={settingsContainerRef}>
-					<h4 className="bulk-combinations-count" ref={combinationsElemRef}>
+					<div className="bulk-combinations-count h4" ref={combinationsElemRef}>
 						{this.getCombinationsCount()}
-					</h4>
+					</div>
 					<button className="btn btn-primary bulk-settings-btn" ref={bulkSimBtnRef}>
 						Simulate Batch
 					</button>
@@ -497,7 +513,9 @@ export class BulkTab extends SimTab {
 		const settingsContainer = settingsContainerRef.value!;
 		const booleanSettingsContainer = booleanSettingsContainerRef.value!;
 
-		TypedEvent.onAny([this.itemsChangedEmitter, this.settingsChangedEmitter, this.simUI.sim.iterationsChangeEmitter]).on(() => {
+		const updateComboCountEmitters = [this.itemsChangedEmitter, this.settingsChangedEmitter];
+		if (isLocal()) updateComboCountEmitters.push(this.simUI.sim.iterationsChangeEmitter);
+		TypedEvent.onAny(updateComboCountEmitters).on(() => {
 			combinationsElem.replaceChildren(this.getCombinationsCount());
 		});
 
@@ -534,6 +552,7 @@ export class BulkTab extends SimTab {
 			});
 		});
 
+		// Disabled temporarily because for the web sim 50 iterations was far too few for reliable results
 		const fastModeCheckbox = new BooleanPicker<BulkTab>(null, this, {
 			id: 'bulk-fast-mode',
 			label: 'Fast Mode',
@@ -608,7 +627,7 @@ export class BulkTab extends SimTab {
 
 		booleanSettingsContainer.appendChild(
 			<>
-				{fastModeCheckbox.rootElem}
+				{!isExternal() && fastModeCheckbox.rootElem}
 				{combinationsCheckbox.rootElem}
 				{autoEnchantCheckbox.rootElem}
 				{autoGemCheckbox.rootElem}
@@ -684,9 +703,6 @@ export class BulkTab extends SimTab {
 
 		const handleToggle = (element: HTMLElement, load: TalentLoadout) => {
 			const exists = this.savedTalents.some(talent => talent.name === load.name); // Replace 'id' with your unique identifier
-			// console.log('Exists:', exists);
-			// console.log('Load Object:', load);
-			// console.log('Saved Talents Before Update:', this.savedTalents);
 
 			if (exists) {
 				// If the object exists, find its index and remove it
@@ -698,41 +714,52 @@ export class BulkTab extends SimTab {
 				this.savedTalents.push(load);
 				element?.classList.add('active');
 			}
+
+			this.settingsChangedEmitter.emit(TypedEvent.nextEventID());
 		};
+
+		const talentSelections = this.simUI.individualConfig.presets.talents.map(preset => {
+			return {
+				talentsString: preset.data.talentsString,
+				glyphs: preset.data.glyphs,
+				name: preset.name,
+			};
+		});
 
 		for (const name in jsonData) {
 			try {
 				const savedTalentLoadout = SavedTalents.fromJson(jsonData[name]);
-				const loadout = {
+				talentSelections.push({
 					talentsString: savedTalentLoadout.talentsString,
 					glyphs: savedTalentLoadout.glyphs,
 					name: name,
-				};
-
-				const index = this.savedTalents.findIndex(talent => JSON.stringify(talent) === JSON.stringify(loadout));
-				const talentChipRef = ref<HTMLDivElement>();
-				const talentButtonRef = ref<HTMLButtonElement>();
-
-				// console.log('Adding event for loadout', loadout);
-				talentsContainerRef.value!.appendChild(
-					<div ref={talentChipRef} className={clsx('saved-data-set-chip badge rounded-pill', index !== -1 && 'active')}>
-						<button ref={talentButtonRef} className="saved-data-set-name">
-							{name}
-						</button>
-					</div>,
-				);
-				talentButtonRef.value!.addEventListener('click', () => handleToggle(talentChipRef.value!, loadout));
+				});
 			} catch (e) {
 				console.log(e);
 				console.warn('Failed parsing saved data: ' + jsonData[name]);
 			}
 		}
+
+		talentSelections.forEach(selection => {
+			const index = this.savedTalents.findIndex(talent => JSON.stringify(talent) === JSON.stringify(selection));
+			const talentChipRef = ref<HTMLDivElement>();
+			const talentButtonRef = ref<HTMLButtonElement>();
+
+			talentsContainerRef.value!.appendChild(
+				<div ref={talentChipRef} className={clsx('saved-data-set-chip badge rounded-pill', index !== -1 && 'active')}>
+					<button ref={talentButtonRef} className="saved-data-set-name">
+						{selection.name}
+					</button>
+				</div>,
+			);
+			talentButtonRef.value!.addEventListener('click', () => handleToggle(talentChipRef.value!, selection));
+		});
 	}
 
 	private getCombinationsCount(): Element {
 		let comboCount = 1;
 		this.itemsBySlot.forEach((items, _) => {
-			if (items.size != 0) {
+			if (!!items.size) {
 				if (this.doCombos) {
 					const uniqueItemCount = new Set([...items.values()].map(item => item.id)).size;
 					comboCount *= uniqueItemCount + 1;
@@ -741,28 +768,57 @@ export class BulkTab extends SimTab {
 				}
 			}
 		});
-		if (this.simTalents) comboCount *= this.savedTalents.length;
 
-		const baseNumIterations = this.fastMode ? 50 : this.simUI.sim.iterations;
+		if (this.simTalents) {
+			const uniqueLoadouts: Array<TalentLoadout> = [];
+			this.savedTalents.forEach(loadout => {
+				// Compare each loadout's talent string and glyphs to find the unique selected loadouts
+				if (!uniqueLoadouts.some(l => l.talentsString === loadout.talentsString && Glyphs.equals(l.glyphs, loadout.glyphs))) {
+					uniqueLoadouts.push(loadout);
+				}
+			});
+			comboCount *= Math.max(uniqueLoadouts.length, 1);
+		}
 
-		// let multiplier = 0;
-		// if (this.doCombos) {
-		// 	multiplier = Math.pow(2, itemCount);
-		// } else {
-		// 	multiplier = itemCount + 1;
-		// }
-
-		// if (this.fastMode) multiplier /= 2;
-
+		const baseNumIterations = this.getDefaultIterationsCount();
 		const iterationCount = baseNumIterations * comboCount;
 
-		return (
+		this.combinations = comboCount;
+		this.iterations = iterationCount;
+
+		const warningRef = ref<HTMLButtonElement>();
+		const rtn = (
 			<>
-				{comboCount === 1 ? '1 Combination' : `${comboCount} Combinations`}
-				<br />
-				<small>{iterationCount} Iterations</small>
+				<span className={clsx(this.showIterationsWarning() && 'text-danger')}>
+					{comboCount === 1 ? '1 Combination' : `${comboCount} Combinations`}
+					<br />
+					<small>{iterationCount} Iterations</small>
+				</span>
+				{this.showIterationsWarning() && (
+					<button className="warning link-warning" ref={warningRef}>
+						<i className="fas fa-exclamation-triangle fa-2x ms-2" />
+					</button>
+				)}
 			</>
 		);
+
+		if (!!warningRef.value) {
+			tippy(warningRef.value, {
+				content: `Simming over ${WEB_ITERATIONS_LIMIT} iterations in the web sim will take a long time or may not run at all.
+					For larger batch sims we recommend using Fast Mode or downloading the executable and running on your machine.`,
+				placement: 'left',
+			});
+		}
+
+		return rtn;
+	}
+
+	private showIterationsWarning(): boolean {
+		return this.iterations > this.getIterationsLimit();
+	}
+
+	private getIterationsLimit(): number {
+		return isExternal() ? WEB_ITERATIONS_LIMIT : LOCAL_ITERATIONS_LIMIT;
 	}
 
 	private setSimProgress(progress: ProgressMetrics, iterPerSecond: number, currentRound: number, rounds: number, combinations: number) {

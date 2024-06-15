@@ -1,16 +1,16 @@
 import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, RotationType, Spec } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
 import {
 	BeastMasteryHunter_Options as HunterOptions,
 	BeastMasteryHunter_Rotation as HunterRotation,
 	HunterMajorGlyph as MajorGlyph,
-	HunterOptions_Ammo as Ammo,
 	HunterOptions_PetType as PetType,
 	HunterPrimeGlyph as PrimeGlyph,
 	HunterStingType,
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
+import { Stats } from '../../core/proto_utils/stats';
 import { ferocityDefault } from '../../core/talents/hunter_pet';
 import AoeApl from './apls/aoe.apl.json';
 import MmApl from './apls/mm.apl.json';
@@ -37,6 +37,25 @@ export const ROTATION_PRESET_SIMPLE_DEFAULT = PresetUtils.makePresetSimpleRotati
 export const ROTATION_PRESET_MM = PresetUtils.makePresetAPLRotation('MM', MmApl);
 export const ROTATION_PRESET_MM_ADVANCED = PresetUtils.makePresetAPLRotation('MM (Advanced)', MmAdvApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'MM P1',
+	Stats.fromMap(
+		{
+			[Stat.StatStamina]: 0.5,
+			[Stat.StatAgility]: 3.05,
+			[Stat.StatRangedAttackPower]: 1.0,
+			[Stat.StatMeleeHit]: 2.25,
+			[Stat.StatMeleeCrit]: 1.39,
+			[Stat.StatMeleeHaste]: 1.33,
+			[Stat.StatMastery]: 1.15,
+		},
+		{
+			[PseudoStat.PseudoStatRangedDps]: 6.32,
+		},
+	),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.

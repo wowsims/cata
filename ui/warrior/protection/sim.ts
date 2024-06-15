@@ -66,29 +66,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		// Default equipped gear.
 		gear: Presets.P1_BALANCED_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatArmor]: 0.174,
-				[Stat.StatBonusArmor]: 0.155,
-				[Stat.StatStamina]: 2.336,
-				[Stat.StatStrength]: 1.555,
-				[Stat.StatAgility]: 2.771,
-				[Stat.StatAttackPower]: 0.32,
-				[Stat.StatExpertise]: 1.44,
-				[Stat.StatMeleeHit]: 1.432,
-				[Stat.StatMeleeCrit]: 0.925,
-				[Stat.StatMeleeHaste]: 0.431,
-				[Stat.StatBlock]: 1.32,
-				[Stat.StatDodge]: 2.606,
-				[Stat.StatParry]: 2.649,
-				// @todo: Calculate actual weights
-				// This probably applies for all weights
-				[Stat.StatMastery]: 0,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 6.081,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -151,6 +129,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents, Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.

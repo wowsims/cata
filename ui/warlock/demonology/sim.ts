@@ -1,5 +1,7 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../../core/components/inputs/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -38,14 +40,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 		gear: Presets.P1_PRESET.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.18,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellHit]: 0.93,
-			[Stat.StatSpellCrit]: 0.53,
-			[Stat.StatSpellHaste]: 0.81,
-			[Stat.StatMastery]: 1.0,
-		}),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
+		// Default stat caps for the Reforge optimizer
+		statCaps: (() => {
+			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		})(),
+		// Default soft caps for the Reforge optimizer
+		softCapBreakpoints: (() => {
+			// Set up Mastery breakpoints for integer % damage increments.
+			// These should be removed once the bugfix to make Mastery
+			// continuous goes live!
+			const masteryRatingBreakpoints = [];
+
+			for (let masteryPercent = 19; masteryPercent <= 200; masteryPercent++) {
+				masteryRatingBreakpoints.push((masteryPercent / 2.3) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
+			}
+
+			const masterySoftCapConfig = { stat: Stat.StatMastery, breakpoints: masteryRatingBreakpoints };
+
+			const hasteSoftCapConfig = { stat: Stat.StatSpellHaste, breakpoints: [1007, 1993] };
+			return [masterySoftCapConfig, hasteSoftCapConfig];
+		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 
@@ -102,6 +117,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.DemonologyTalents],
 		// Preset rotations that the user can quickly select.
@@ -147,5 +163,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecDemonologyWarlock, {
 export class DemonologyWarlockSimUI extends IndividualSimUI<Spec.SpecDemonologyWarlock> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecDemonologyWarlock>) {
 		super(parentElem, player, SPEC_CONFIG);
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }

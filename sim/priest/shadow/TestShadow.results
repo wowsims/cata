@@ -990,15 +990,15 @@ dps_results: {
 dps_results: {
  key: "TestShadow-AllItems-StumpofTime-62465"
  value: {
-  dps: 27632.21168
-  tps: 26169.60036
+  dps: 27804.53485
+  tps: 26365.17607
  }
 }
 dps_results: {
  key: "TestShadow-AllItems-StumpofTime-62470"
  value: {
-  dps: 27652.04171
-  tps: 26161.92822
+  dps: 27803.35301
+  tps: 26379.18522
  }
 }
 dps_results: {

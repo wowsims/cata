@@ -1,17 +1,35 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
 import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
+import {ReforgeOptimizer} from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics.js';
-import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
-import { Player } from '../../core/player.js';
-import { PlayerClasses } from '../../core/player_classes';
-import { APLRotation } from '../../core/proto/apl.js';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
-import { Stats } from '../../core/proto_utils/stats.js';
-import { TypedEvent } from '../../core/typed_event.js';
+import {IndividualSimUI, registerSpecConfig} from '../../core/individual_sim_ui.js';
+import {Player} from '../../core/player.js';
+import {PlayerClasses} from '../../core/player_classes';
+import {APLRotation, APLRotation_Type} from '../../core/proto/apl.js';
+import {
+	Debuffs,
+	Faction,
+	IndividualBuffs,
+	PartyBuffs,
+	PseudoStat,
+	Race,
+	RaidBuffs,
+	Spec,
+	Stat
+} from '../../core/proto/common.js';
+import {PaladinPrimeGlyph, PaladinSeal} from '../../core/proto/paladin';
+import {Stats} from '../../core/proto_utils/stats.js';
+import {TypedEvent} from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
-// import * as RetInputs from './inputs.js';
 import * as Presets from './presets.js';
-import { PaladinPrimeGlyph } from '../../core/proto/paladin';
+
+const isGlyphOfSealOfTruthActive = (player: Player<Spec.SpecRetributionPaladin>): boolean => {
+	const currentSeal = player.getSpecOptions().classOptions?.seal;
+	return (
+		player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth) &&
+		(currentSeal === PaladinSeal.Truth || currentSeal === PaladinSeal.Righteousness)
+	);
+};
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssClass: 'retribution-paladin-sim-ui',
@@ -22,19 +40,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatStrength,
-		Stat.StatAgility,
-		Stat.StatIntellect,
-		Stat.StatMP5,
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
-		Stat.StatSpellPower,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHit,
-		Stat.StatSpellHaste,
-		Stat.StatMastery,
+		Stat.StatMastery
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -62,8 +73,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		let stats = new Stats();
 
 		TypedEvent.freezeAllAndDo(() => {
-			if (player.getPrimeGlyps().includes(PaladinPrimeGlyph.GlyphOfSealOfTruth)) {
-				stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+			if (isGlyphOfSealOfTruthActive(player)) {
+				stats = stats.addStat(Stat.StatExpertise, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
 			}
 		});
 
@@ -74,25 +85,16 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.PRERAID_RET_PRESET.gear,
+		gear: Presets.P1_BIS_RET_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatStrength]: 2.9436,
-				[Stat.StatSpellHit]: 3.2672,
-				[Stat.StatSpellCrit]: 1.3908,
-				[Stat.StatSpellHaste]: 1.0356,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatMeleeHit]: 3.2672,
-				[Stat.StatMeleeCrit]: 1.3908,
-				[Stat.StatMeleeHaste]: 1.0356,
-				[Stat.StatExpertise]: 2.5455,
-				[Stat.StatMastery]: 1.5395,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 7.33,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
+		// Default stat caps for the Reforge Optimizer
+		statCaps: (() => {
+			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+
+			return hitCap.add(expCap);
+		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -126,13 +128,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			ebonPlaguebringer: true,
 			criticalMass: true,
 		}),
+		rotationType: APLRotation_Type.TypeSimple,
+		simpleRotation: Presets.ROTATION_PRESET_DEFAULT,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.StartingSealSelection()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.ReplenishmentBuff],
-	excludeBuffDebuffInputs: [],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff, BuffDebuffInputs.ManaBuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [OtherInputs.InputDelay, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
@@ -143,14 +147,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.RetTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [Presets.PRERAID_RET_PRESET, Presets.P1_NONHC_RET_PRESET, Presets.P1_BIS_RET_PRESET],
+		gear: [Presets.P1_BIS_RET_PRESET, Presets.PRERAID_RET_PRESET, Presets.P1_NONHC_RET_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
+		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+	},
+
+	simpleRotation: (_player: Player<Spec.SpecRetributionPaladin>): APLRotation => {
 		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
@@ -181,5 +190,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 export class RetributionPaladinSimUI extends IndividualSimUI<Spec.SpecRetributionPaladin> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecRetributionPaladin>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this, {
+				updateGearStatsModifier: (baseStats: Stats) => {
+					if (isGlyphOfSealOfTruthActive(player)) {
+						return baseStats.addStat(Stat.StatExpertise, 2.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+					} else {
+						return baseStats;
+					}
+				},
+			});
+		});
 	}
 }

@@ -1,9 +1,10 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Flask, Food, Glyphs, Potions } from '../../core/proto/common';
-import { RogueMajorGlyph, RogueOptions_PoisonImbue, RoguePrimeGlyph,SubtletyRogue_Options as RogueOptions } from '../../core/proto/rogue';
+import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Stat } from '../../core/proto/common';
+import { RogueMajorGlyph, RogueOptions_PoisonImbue, RoguePrimeGlyph, SubtletyRogue_Options as RogueOptions } from '../../core/proto/rogue';
 import { SavedTalents } from '../../core/proto/ui';
-import SubtletyApl from './apls/subtlety.apl.json'
-import P1SubtletyGear from './gear_sets/p1_subtlety.gear.json'
+import { Stats } from '../../core/proto_utils/stats';
+import SubtletyApl from './apls/subtlety.apl.json';
+import P1SubtletyGear from './gear_sets/p1_subtlety.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -12,6 +13,29 @@ import P1SubtletyGear from './gear_sets/p1_subtlety.gear.json'
 export const P1_PRESET_SUB = PresetUtils.makePresetGear('P1 Sub', P1SubtletyGear);
 
 export const ROTATION_PRESET_SUBTLETY = PresetUtils.makePresetAPLRotation('Subtlety', SubtletyApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 3.7,
+			[Stat.StatStrength]: 1.05,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatSpellCrit]: 0.06,
+			[Stat.StatSpellHit]: 0.36,
+			[Stat.StatMeleeHit]: 0.77,
+			[Stat.StatMeleeCrit]: 1.04,
+			[Stat.StatMeleeHaste]: 1.27,
+			[Stat.StatMastery]: 0.79,
+			[Stat.StatExpertise]: 1.33,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 7.0,
+			[PseudoStat.PseudoStatOffHandDps]: 1.0,
+		},
+	),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.

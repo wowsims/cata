@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession,RaidBuffs, TinkerHands } from '../../core/proto/common.js';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RaidBuffs, Stat, TinkerHands } from '../../core/proto/common.js';
 import {
 	AirTotem,
 	CallTotem,
@@ -17,6 +17,7 @@ import {
 	WaterTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
+import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import P1DraeneiGear from './gear_sets/p1draenei.gear.json';
 import P1OrcGear from './gear_sets/p1orc.gear.json';
@@ -31,6 +32,31 @@ export const P1ORC_PRESET = PresetUtils.makePresetGear('P1 Orc Preset', P1OrcGea
 export const P1DRAENEI_PRESET = PresetUtils.makePresetGear('P1 Draenei Preset', P1DraeneiGear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap(
+		{
+			[Stat.StatIntellect]: 1.48,
+			[Stat.StatAgility]: 1.59,
+			[Stat.StatStrength]: 1.1,
+			[Stat.StatSpellPower]: 1.13,
+			[Stat.StatSpellHit]: 0, //default EP assumes cap
+			[Stat.StatSpellCrit]: 0.91,
+			[Stat.StatSpellHaste]: 0.37,
+			[Stat.StatAttackPower]: 1.0,
+			[Stat.StatMeleeHit]: 1.38,
+			[Stat.StatMeleeCrit]: 0.81,
+			[Stat.StatMeleeHaste]: 1.61, //haste is complicated
+			[Stat.StatExpertise]: 0, //default EP assumes cap
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 5.21,
+			[PseudoStat.PseudoStatOffHandDps]: 2.21,
+		},
+	),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.

@@ -41,7 +41,7 @@ func (sinRogue *AssassinationRogue) newMutilateHitSpell(isMH bool) *core.Spell {
 				baseDamage = mutBaseDamage + spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			}
 
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialBlockAndCrit)
 		},
 	})
 }

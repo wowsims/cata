@@ -25,7 +25,7 @@ func (paladin *Paladin) applyCrusade() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		ClassMask:  SpellMaskCrusaderStrike | SpellMaskDivineStorm | SpellMaskTemplarsVerdict | SpellMaskHolyShock,
+		ClassMask:  SpellMaskCrusaderStrike | SpellMaskHammerOfTheRighteous | SpellMaskTemplarsVerdict | SpellMaskHolyShock,
 		Kind:       core.SpellMod_DamageDone_Flat,
 		FloatValue: 0.1 * float64(paladin.Talents.Crusade),
 	})
@@ -126,7 +126,7 @@ func (paladin *Paladin) applySanctifiedWrath() {
 	paladin.AddStaticMod(core.SpellModConfig{
 		ClassMask: SpellMaskAvengingWrath,
 		Kind:      core.SpellMod_Cooldown_Flat,
-		TimeValue: -(time.Second * 20 * time.Duration(paladin.Talents.SanctifiedWrath)),
+		TimeValue: -(time.Second * time.Duration(20*paladin.Talents.SanctifiedWrath)),
 	})
 
 	// Hammer of Wrath execute restriction removal is handled in hammer_of_wrath.go

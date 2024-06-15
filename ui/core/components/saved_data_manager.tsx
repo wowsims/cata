@@ -8,9 +8,11 @@ import { ContentBlock, ContentBlockHeaderConfig } from './content_block';
 export type SavedDataManagerConfig<ModObject, T> = {
 	label: string;
 	header?: ContentBlockHeaderConfig;
+	extraCssClasses?: string[];
 	presetsOnly?: boolean;
+	loadOnly?: boolean;
 	storageKey: string;
-	changeEmitters: Array<TypedEvent<any>>;
+	changeEmitters: TypedEvent<any>[];
 	equals: (a: T, b: T) => boolean;
 	getData: (modObject: ModObject) => T;
 	setData: (eventID: EventID, modObject: ModObject, data: T) => void;
@@ -23,17 +25,17 @@ export type SavedDataConfig<ModObject, T> = {
 	data: T;
 	tooltip?: string;
 	isPreset?: boolean;
-
 	// If set, will automatically hide the saved data when this evaluates to false.
 	enableWhen?: (obj: ModObject) => boolean;
+	// Will execute when the saved data is loaded.
+	onLoad?: (obj: ModObject) => void;
 };
 
 type SavedData<ModObject, T> = {
 	name: string;
 	data: T;
 	elem: HTMLElement;
-	enableWhen?: (obj: ModObject) => boolean;
-};
+} & Pick<SavedDataConfig<ModObject, T>, 'enableWhen' | 'onLoad'>;
 
 export class SavedDataManager<ModObject, T> extends Component {
 	private readonly modObject: ModObject;
@@ -49,7 +51,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 
 	private frozen: boolean;
 
-	constructor(parent: HTMLElement, modObject: ModObject, config: SavedDataManagerConfig<ModObject, T>) {
+	constructor(parent: HTMLElement | null, modObject: ModObject, config: SavedDataManagerConfig<ModObject, T>) {
 		super(parent, 'saved-data-manager-root');
 		this.modObject = modObject;
 		this.config = config;
@@ -57,6 +59,8 @@ export class SavedDataManager<ModObject, T> extends Component {
 		this.userData = [];
 		this.presets = [];
 		this.frozen = false;
+
+		if (config.extraCssClasses) this.rootElem.classList.add(...config.extraCssClasses);
 
 		const contentBlock = new ContentBlock(this.rootElem, 'saved-data', { header: config.header });
 
@@ -74,7 +78,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 		this.presetDataDiv = presetDataRef.value!;
 		this.customDataDiv = customDataRef.value!;
 
-		if (!config.presetsOnly) {
+		if (!config.presetsOnly && !this.config.loadOnly) {
 			contentBlock.bodyElement.appendChild(this.buildCreateContainer());
 		}
 	}
@@ -104,7 +108,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 		const dataElem = (
 			<div className="saved-data-set-chip badge rounded-pill">
 				<button className="saved-data-set-name">{config.name}</button>
-				{!config.isPreset && (
+				{!this.config.loadOnly && !config.isPreset && (
 					<button ref={deleteButtonRef} className="saved-data-set-delete">
 						<i className="fa fa-times fa-lg"></i>
 					</button>
@@ -112,13 +116,13 @@ export class SavedDataManager<ModObject, T> extends Component {
 			</div>
 		) as HTMLElement;
 
-		dataElem.addEventListener('click', () => {
+		dataElem?.addEventListener('click', () => {
 			this.config.setData(TypedEvent.nextEventID(), this.modObject, config.data);
-
+			config.onLoad?.(this.modObject);
 			if (this.saveInput) this.saveInput.value = config.name;
 		});
 
-		if (!config.isPreset && deleteButtonRef.value) {
+		if (!this.config.loadOnly && !config.isPreset && deleteButtonRef.value) {
 			const tooltip = tippy(deleteButtonRef.value, { content: `Delete saved ${this.config.label}` });
 			deleteButtonRef.value.addEventListener('click', event => {
 				event.stopPropagation();
@@ -144,6 +148,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 		const checkActive = () => {
 			if (this.config.equals(config.data, this.config.getData(this.modObject))) {
 				dataElem.classList.add('active');
+				if (this.saveInput) this.saveInput.value = config.name;
 			} else {
 				dataElem.classList.remove('active');
 			}
@@ -156,13 +161,15 @@ export class SavedDataManager<ModObject, T> extends Component {
 		};
 
 		checkActive();
-		this.config.changeEmitters.forEach(emitter => emitter.on(checkActive));
+		const emitters = this.config.changeEmitters.map(emitter => emitter.on(checkActive));
+		this.addOnDisposeCallback(() => emitters.map(emitter => emitter.dispose()));
 
 		return {
 			name: config.name,
 			data: config.data,
 			elem: dataElem,
 			enableWhen: config.enableWhen,
+			onLoad: config.onLoad,
 		};
 	}
 

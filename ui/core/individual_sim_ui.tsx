@@ -18,7 +18,7 @@ import * as Tooltips from './constants/tooltips';
 import { getSpecLaunchStatus, LaunchStatus, simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
 import { PlayerSpecs } from './player_specs';
-import { PresetGear, PresetRotation } from './preset_utils';
+import { PresetEpWeights, PresetGear, PresetRotation } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
@@ -41,7 +41,7 @@ import {
 	Spec,
 	Stat,
 } from './proto/common';
-import { IndividualSimSettings, SavedTalents } from './proto/ui';
+import { IndividualSimSettings, SavedTalents, SoftCapBreakpoints } from './proto/ui';
 import { getMetaGemConditionDescription } from './proto_utils/gems';
 import { armorTypeNames, professionNames } from './proto_utils/names';
 import { Stats } from './proto_utils/stats';
@@ -50,9 +50,10 @@ import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
 import { MAX_POINTS_PLAYER } from './talents/talents_picker';
 import { EventID, TypedEvent } from './typed_event';
-import { isExternal } from './utils';
+import { isDevMode } from './utils';
 
 const SAVED_GEAR_STORAGE_KEY = '__savedGear__';
+const SAVED_EP_WEIGHTS_STORAGE_KEY = '__savedEPWeights__';
 const SAVED_ROTATION_STORAGE_KEY = '__savedRotation__';
 const SAVED_SETTINGS_STORAGE_KEY = '__savedSettings__';
 const SAVED_TALENTS_STORAGE_KEY = '__savedTalents__';
@@ -114,6 +115,22 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		epWeights: Stats;
 		// Used for Reforge Optimizer
 		statCaps?: Stats;
+		/**
+		 * Allows specification of soft cap breakpoints for one or more stats.
+		 *
+		 * @remarks
+		 * These function differently from the hard caps taken from the sim UI in a few ways:
+		 *
+		 * Firstly, the specified breakpoints are lower priority than hard caps, and
+		 * evaluated only after the hard cap constraints have been solved first.
+		 *
+		 * Secondly, these constraints are evaluated in the order specified by the configuration
+		 * Array rather than all at once. So once the hard caps have been respected, the
+		 * closest breakpoint for the *first* listed soft capped stat is optimized against
+		 * while ignoring any others. Then the solution is used to identify the closest
+		 * breakpoint for the second listed stat (if present), etc.
+		 */
+		softCapBreakpoints?: SoftCapBreakpoints[];
 		consumes: Consumes;
 		talents: SavedTalents;
 		specOptions: SpecOptions<SpecType>;
@@ -148,6 +165,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	encounterPicker: EncounterPickerConfig;
 
 	presets: {
+		epWeights: Array<PresetEpWeights>;
 		gear: Array<PresetGear>;
 		talents: Array<SavedDataConfig<Player<SpecType>, SavedTalents>>;
 		rotations: Array<PresetRotation>;
@@ -185,7 +203,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	healRefStat?: Stat;
 	tankRefStat?: Stat;
 
-	readonly bt: BulkTab;
+	readonly bt: BulkTab | null = null;
 
 	constructor(parentElem: HTMLElement, player: Player<SpecType>, config: IndividualSimUIConfig<SpecType>) {
 		super(parentElem, player.sim, {
@@ -201,6 +219,11 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.raidSimResultsManager = null;
 		this.prevEpIterations = 0;
 		this.prevEpSimResult = null;
+
+		if (!isDevMode() && getSpecLaunchStatus(this.player) === LaunchStatus.Unlaunched) {
+			this.handleSimUnlaunched();
+			return;
+		}
 
 		if ((config.itemSwapSlots || []).length > 0 && !itemSwapEnabledSpecs.includes(player.getSpec())) {
 			itemSwapEnabledSpecs.push(player.getSpec());
@@ -316,7 +339,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 		this.addSidebarComponents();
 		this.addGearTab();
-		this.bt = this.addBulkTab();
 		this.addSettingsTab();
 		this.addTalentsTab();
 		this.addRotationTab();
@@ -324,6 +346,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		if (!this.isWithinRaidSim) {
 			this.addDetailedResultsTab();
 		}
+
+		this.bt = this.addBulkTab();
 
 		this.addTopbarComponents();
 	}
@@ -366,13 +390,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	private addSidebarComponents() {
-		// Disable SIM buttons for Unlaunched sims
-		if (!(isExternal() && getSpecLaunchStatus(this.player) === LaunchStatus.Unlaunched)) {
-			this.raidSimResultsManager = addRaidSimAction(this);
-			addStatWeightsAction(this, this.individualConfig.epStats, this.individualConfig.epPseudoStats, this.individualConfig.epReferenceStat);
-		} else {
-			this.handleSimUnlaunched();
-		}
+		this.raidSimResultsManager = addRaidSimAction(this);
+		addStatWeightsAction(this);
 
 		new CharacterStats(
 			this.rootElem.querySelector('.sim-sidebar-stats') as HTMLElement,
@@ -385,17 +404,20 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private handleSimUnlaunched() {
 		this.rootElem.classList.add('sim-ui--is-unlaunched');
-		this.simActionsContainer?.appendChild(
-			<div className="sim-ui-unlaunched-container d-flex flex-column align-items-center text-center mt-5">
+		this.simMain?.replaceChildren(
+			<div className="sim-ui-unlaunched-container d-flex flex-column align-items-center text-center mt-auto mb-auto ms-auto me-auto">
 				<i className="fas fa-ban fa-3x"></i>
 				<p className="mt-4">
-					This sim is currently unlaunched.
+					This sim is currently not supported.
 					<br />
-					We are working hard to get all sims working. Want to contribute? Make sure to join our{' '}
+					Want to contribute? Make sure to join our{' '}
 					<a href="https://discord.gg/p3DgvmnDCS" target="_blank">
 						Discord
 					</a>
 					!
+				</p>
+				<p>
+					You can check out our other sims <a href="/cata/">here</a>
 				</p>
 			</div>,
 		);
@@ -499,6 +521,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			const defaultRatios = this.player.getDefaultEpRatios(tankSpec, healingSpec);
 			this.player.setEpRatios(eventID, defaultRatios);
 			if (this.individualConfig.defaults.statCaps) this.player.setStatCaps(eventID, this.individualConfig.defaults.statCaps);
+			if (this.individualConfig.defaults.softCapBreakpoints)
+				this.player.setSoftCapBreakpoints(eventID, this.individualConfig.defaults.softCapBreakpoints);
 			this.player.setProfession1(eventID, this.individualConfig.defaults.other?.profession1 || Profession.Engineering);
 			this.player.setProfession2(eventID, this.individualConfig.defaults.other?.profession2 || Profession.Jewelcrafting);
 			this.player.setDistanceFromTarget(eventID, this.individualConfig.defaults.other?.distanceFromTarget || 0);
@@ -527,6 +551,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	getSavedGearStorageKey(): string {
 		return this.getStorageKey(SAVED_GEAR_STORAGE_KEY);
+	}
+
+	getSavedEPWeightsStorageKey(): string {
+		return this.getStorageKey(SAVED_EP_WEIGHTS_STORAGE_KEY);
 	}
 
 	getSavedRotationStorageKey(): string {
@@ -637,6 +665,10 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 				if (settings.statCaps) {
 					this.player.setStatCaps(eventID, Stats.fromProto(settings.statCaps));
+				}
+
+				if (!!settings.softCapBreakpoints.length) {
+					this.player.setSoftCapBreakpoints(eventID, settings.softCapBreakpoints);
 				}
 
 				if (settings.dpsRefStat) {

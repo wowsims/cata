@@ -1,8 +1,9 @@
 import { Rogue } from '../../core/player_classes/rogue';
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Flask, Food, Glyphs, Potions } from '../../core/proto/common';
+import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Stat } from '../../core/proto/common';
 import { CombatRogue_Options as RogueOptions, RogueMajorGlyph, RogueOptions_PoisonImbue, RoguePrimeGlyph } from '../../core/proto/rogue';
 import { SavedTalents } from '../../core/proto/ui';
+import { Stats } from '../../core/proto_utils/stats';
 import CombatApl from './apls/combat.apl.json';
 import P1CombatGear from './gear_sets/p1_combat.gear.json';
 
@@ -13,6 +14,29 @@ import P1CombatGear from './gear_sets/p1_combat.gear.json';
 export const P1_PRESET_COMBAT = PresetUtils.makePresetGear('P1 Combat', P1CombatGear);
 
 export const ROTATION_PRESET_COMBAT = PresetUtils.makePresetAPLRotation('Combat', CombatApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap(
+		{
+			[Stat.StatAgility]: 2.67,
+			[Stat.StatStrength]: 1.05,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatSpellCrit]: 0.08,
+			[Stat.StatSpellHit]: 0.4,
+			[Stat.StatMeleeHit]: 0.83,
+			[Stat.StatMeleeCrit]: 0.75,
+			[Stat.StatMeleeHaste]: 1.14,
+			[Stat.StatMastery]: 1.21,
+			[Stat.StatExpertise]: 1.3,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 3.95,
+			[PseudoStat.PseudoStatOffHandDps]: 1.28,
+		},
+	),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.

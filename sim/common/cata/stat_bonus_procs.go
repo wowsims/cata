@@ -549,7 +549,7 @@ func init() {
 		ProcMask:   core.ProcMaskSpellDamage,
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 0.10,
-		ICD:        time.Second * 100,
+		ICD:        time.Second * 75,
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{
@@ -562,7 +562,7 @@ func init() {
 		ProcMask:   core.ProcMaskSpellDamage,
 		Outcome:    core.OutcomeLanded,
 		ProcChance: 0.10,
-		ICD:        time.Second * 100,
+		ICD:        time.Second * 75,
 	})
 
 	shared.NewProcStatBonusEffect(shared.ProcStatBonusEffect{

@@ -3,6 +3,7 @@ import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from './components/base_modal.jsx';
 import { Component } from './components/component.js';
+import { NoticeLocalSim } from './components/individual_sim_ui/notice_local_sim.jsx';
 import { NumberPicker } from './components/pickers/number_picker.js';
 import { ResultsViewer } from './components/results_viewer.jsx';
 import { SimHeader } from './components/sim_header.jsx';
@@ -10,6 +11,7 @@ import { SimTab } from './components/sim_tab.js';
 import { SimTitleDropdown } from './components/sim_title_dropdown.js';
 import { SocialLinks } from './components/social_links.jsx';
 import Toast from './components/toast';
+import { REPO_NEW_ISSUE_URL } from './constants/other';
 import { LaunchStatus, SimStatus } from './launched_sims.js';
 import { PlayerSpec } from './player_spec.js';
 import { ActionId } from './proto_utils/action_id.js';
@@ -160,6 +162,8 @@ export abstract class SimUI extends Component {
 		new SimTitleDropdown(titleElem, config.spec, { noDropdown: this.isWithinRaidSim });
 
 		this.simActionsContainer = this.rootElem.querySelector('.sim-sidebar-actions') as HTMLElement;
+		this.addNoticeForLocalSim()
+
 		this.iterationsPicker = new NumberPicker(this.simActionsContainer, this.sim, {
 			id: 'simui-iterations',
 			label: 'Iterations',
@@ -188,6 +192,10 @@ export abstract class SimUI extends Component {
 				}
 			});
 		}
+	}
+
+	addNoticeForLocalSim() {
+		new NoticeLocalSim(this.simActionsContainer);
 	}
 
 	addAction(label: string, cssClass: string, onClick: (event: MouseEvent) => void): HTMLButtonElement {
@@ -339,7 +347,7 @@ export abstract class SimUI extends Component {
 						if (issues.total_count > 0) {
 							window.open(issues.items[0].html_url, '_blank');
 						} else {
-							const url = new URL('https://github.com/wowsims/cata/issues/new');
+							const url = new URL(REPO_NEW_ISSUE_URL);
 							url.searchParams.append('title', `Crash Report ${hash}`);
 							url.searchParams.append('assignees', '');
 							url.searchParams.append('labels', '');

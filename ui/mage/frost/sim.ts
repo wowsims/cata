@@ -5,7 +5,6 @@ import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { Stats } from '../../core/proto_utils/stats';
-import * as MageInputs from '../inputs';
 import * as FrostInputs from './inputs';
 import * as Presets from './presets';
 
@@ -58,15 +57,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 		// Default equipped gear.
 		gear: Presets.FROST_P3_PRESET_HORDE.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.48,
-			[Stat.StatSpirit]: 0.42,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellHit]: 0.38,
-			[Stat.StatSpellCrit]: 0.58,
-			[Stat.StatSpellHaste]: 0.94,
-			[Stat.StatMP5]: 0.09,
-		}),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
 		consumes: Presets.DefaultFrostConsumes,
 		// Default talents.
@@ -129,6 +120,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostMage, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.FROST_ROTATION_PRESET_DEFAULT, Presets.FROST_ROTATION_PRESET_AOE],
 		// Preset talents that the user can quickly select.

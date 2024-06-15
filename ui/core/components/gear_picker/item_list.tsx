@@ -568,7 +568,7 @@ export default class ItemList<T extends ItemListType> {
 			this.bindToggleCompare(compareContainer.value!);
 			const simUI = this.simUI instanceof IndividualSimUI ? this.simUI : null;
 			if (simUI) {
-				const checkHasItem = () => simUI.bt.hasItem(ItemSpec.create({ id: itemData.id }));
+				const checkHasItem = () => simUI.bt?.hasItem(ItemSpec.create({ id: itemData.id }));
 				const toggleCompareButtonState = () => {
 					const hasItem = checkHasItem();
 					batchSimTooltip.setContent(hasItem ? 'Remove from Batch Sim' : 'Add to Batch Sim');
@@ -576,13 +576,13 @@ export default class ItemList<T extends ItemListType> {
 				};
 
 				toggleCompareButtonState();
-				simUI.bt.itemsChangedEmitter.on(() => {
+				simUI.bt?.itemsChangedEmitter.on(() => {
 					toggleCompareButtonState();
 				});
 
 				compareButton.value!.addEventListener('click', () => {
 					const hasItem = checkHasItem();
-					simUI.bt[hasItem ? 'removeItem' : 'addItem'](ItemSpec.create({ id: itemData.id }));
+					simUI.bt?.[hasItem ? 'removeItem' : 'addItem'](ItemSpec.create({ id: itemData.id }));
 
 					new Toast({
 						delay: 1000,

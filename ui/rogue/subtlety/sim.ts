@@ -53,25 +53,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 		// Default equipped gear.
 		gear: Presets.P1_PRESET_SUB.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatAgility]: 3.7,
-				[Stat.StatStrength]: 1.05,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatSpellCrit]: 0.06,
-				[Stat.StatSpellHit]: 0.36,
-				[Stat.StatMeleeHit]: 0.77,
-				[Stat.StatMeleeCrit]: 1.04,
-				[Stat.StatMeleeHaste]: 1.27,
-				[Stat.StatMastery]: 0.79,
-				[Stat.StatExpertise]: 1.33,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 7.0,
-				[PseudoStat.PseudoStatOffHandDps]: 1.0,
-			},
-		),
-		other: Presets.OtherDefaults,
+		epWeights: Presets.P1_EP_PRESET.epWeights,
+
+    other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -138,6 +122,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecSubtletyRogue, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.SubtletyTalents],
 		// Preset rotations that the user can quickly select.

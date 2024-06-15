@@ -16,6 +16,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ClassSpellMask: SpellMaskCensure,
 
 		DamageMultiplier: 1,
+		CritMultiplier:   paladin.DefaultSpellCritMultiplier(),
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -37,7 +38,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 				dot.Snapshot(target, tickValue)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
@@ -61,7 +62,7 @@ func (paladin *Paladin) registerSealOfTruth() {
 	})
 
 	// Judgement of Truth cast on Judgement
-	judgementDmg := paladin.RegisterSpell(core.SpellConfig{
+	paladin.JudgementOfTruth = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 31804},
 		SpellSchool:    core.SpellSchoolHoly,
 		ProcMask:       core.ProcMaskMeleeSpecial,
@@ -81,7 +82,6 @@ func (paladin *Paladin) registerSealOfTruth() {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 		},
 	})
-	paladin.CurrentJudgement = judgementDmg
 
 	// Seal of Truth on-hit proc
 	onSpecialOrSwingProc := paladin.RegisterSpell(core.SpellConfig{
@@ -96,7 +96,8 @@ func (paladin *Paladin) registerSealOfTruth() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := .15 * paladin.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := 0.15 * paladin.MHWeaponDamage(sim, spell.MeleeAttackPower()) *
+				(0.2 * float64(censureSpell.Dot(target).GetStacks()))
 
 			// can't miss if melee swing landed, but can crit
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
@@ -110,20 +111,19 @@ func (paladin *Paladin) registerSealOfTruth() {
 		Duration: time.Minute * 30,
 
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Don't proc on misses or our own procs.
-			if !result.Landed() || spell == censureSpell || spell == onSpecialOrSwingProc {
+			// Don't proc on misses.
+			if !result.Landed() {
 				return
 			}
 
-			if spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 && spell.ClassSpellMask&SpellMaskSingleTarget == 0 {
+			// SoT only procs on white hits, CS, TV, Exo, Judge and HoW
+			if spell.ProcMask&core.ProcMaskMeleeWhiteHit == 0 &&
+				spell.ClassSpellMask&SpellMaskCanTriggerSealOfTruth == 0 {
 				return
-			}
-
-			if censureSpell.Dot(result.Target).GetStacks() == 5 {
-				onSpecialOrSwingProc.Cast(sim, result.Target)
 			}
 
 			censureSpell.Cast(sim, result.Target)
+			onSpecialOrSwingProc.Cast(sim, result.Target)
 		},
 	})
 
@@ -145,14 +145,14 @@ func (paladin *Paladin) registerSealOfTruth() {
 			},
 		},
 
-		ThreatMultiplier: 1,
+		ThreatMultiplier: 0,
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			if paladin.CurrentSeal != nil {
 				paladin.CurrentSeal.Deactivate(sim)
 			}
 			paladin.CurrentSeal = aura
-			paladin.CurrentJudgement = judgementDmg
+			paladin.CurrentJudgement = paladin.JudgementOfTruth
 			paladin.CurrentSeal.Activate(sim)
 		},
 	})

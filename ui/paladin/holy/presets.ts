@@ -1,11 +1,16 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Potions } from '../../core/proto/common.js';
-import { HolyPaladin_Options as HolyPaladinOptions, PaladinAura, PaladinMajorGlyph, PaladinMinorGlyph } from '../../core/proto/paladin.js';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
+import {
+	HolyPaladin_Options as Paladin_Options,
+	PaladinAura,
+	PaladinMajorGlyph as MajorGlyph,
+	PaladinMinorGlyph as MinorGlyph,
+	PaladinPrimeGlyph as PrimeGlyph,
+	PaladinSeal,
+} from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
+import { Stats } from '../../core/proto_utils/stats';
 import P1Gear from './gear_sets/p1.gear.json';
-import P2Gear from './gear_sets/p2.gear.json';
-import P3Gear from './gear_sets/p3.gear.json';
-import P4Gear from './gear_sets/p4.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
 // Preset options for this spec.
@@ -14,9 +19,22 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 
 export const PRERAID_PRESET = PresetUtils.makePresetGear('PreRaid', PreraidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
-export const P2_PRESET = PresetUtils.makePresetGear('P2 Preset', P2Gear);
-export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
-export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
+// export const P2_PRESET = PresetUtils.makePresetGear('P2 Preset', P2Gear);
+// export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
+// export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 1.375,
+		[Stat.StatSpirit]: 1.125,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatSpellCrit]: 0.75,
+		[Stat.StatSpellHaste]: 0.85,
+		[Stat.StatMastery]: 0.5,
+	}),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
@@ -24,26 +42,63 @@ export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		// talentsString: '50350151020013053100515221-50023131203',
-		// glyphs: {
-		// 	major1: PaladinMajorGlyph.GlyphOfHolyLight,
-		// 	major2: PaladinMajorGlyph.GlyphOfSealOfWisdom,
-		// 	major3: PaladinMajorGlyph.GlyphOfBeaconOfLight,
-		// 	minor2: PaladinMinorGlyph.GlyphOfLayOnHands,
-		// 	minor1: PaladinMinorGlyph.GlyphOfSenseUndead,
-		// 	minor3: PaladinMinorGlyph.GlyphOfBlessingOfKings,
-		// },
+		talentsString: '03331001221131312301-3-032002',
+		glyphs: Glyphs.create({
+			prime1: PrimeGlyph.GlyphOfHolyShock,
+			prime2: PrimeGlyph.GlyphOfSealOfInsight,
+			prime3: PrimeGlyph.GlyphOfDivineFavor,
+			major1: MajorGlyph.GlyphOfDivinePlea,
+			major2: MajorGlyph.GlyphOfDivinity,
+			major3: MajorGlyph.GlyphOfTheAsceticCrusader,
+			minor1: MinorGlyph.GlyphOfInsight,
+			minor2: MinorGlyph.GlyphOfBlessingOfKings,
+			minor3: MinorGlyph.GlyphOfBlessingOfMight,
+		}),
 	}),
 };
 
-export const DefaultOptions = HolyPaladinOptions.create({
+export const DefaultOptions = Paladin_Options.create({
 	classOptions: {
 		aura: PaladinAura.Devotion,
+		seal: PaladinSeal.Insight,
 	},
 });
 
-export const DefaultConsumes = Consumes.create({
-	defaultPotion: Potions.MythicalManaPotion,
-	flask: Flask.FlaskOfTheFrostWyrm,
-	food: Food.FoodFishFeast,
+export const DefaultRaidBuffs = RaidBuffs.create({
+	arcaneBrilliance: true,
+	bloodlust: true,
+	markOfTheWild: true,
+	icyTalons: true,
+	moonkinForm: true,
+	leaderOfThePack: true,
+	powerWordFortitude: true,
+	strengthOfEarthTotem: true,
+	trueshotAura: true,
+	wrathOfAirTotem: true,
+	demonicPact: true,
+	blessingOfKings: true,
+	blessingOfMight: true,
+	communion: true,
 });
+
+export const DefaultConsumes = Consumes.create({
+	defaultPotion: Potions.VolcanicPotion,
+	flask: Flask.FlaskOfTheDraconicMind,
+	food: Food.FoodSeafoodFeast,
+});
+
+export const DefaultDebuffs = Debuffs.create({
+	bloodFrenzy: true,
+	sunderArmor: true,
+	ebonPlaguebringer: true,
+	mangle: true,
+	criticalMass: true,
+	demoralizingShout: true,
+	frostFever: true,
+});
+
+export const OtherDefaults = {
+	distanceFromTarget: 40,
+	profession1: Profession.Engineering,
+	profession2: Profession.Jewelcrafting,
+};
