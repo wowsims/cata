@@ -461,7 +461,7 @@ export class BulkTab extends SimTab {
 			this.addItems(items);
 		});
 
-		clearButton.addEventListener('click', this.clearItems);
+		clearButton.addEventListener('click', () => this.clearItems());
 
 		new BulkItemSearch(this.setupTabElem, this.simUI, this);
 
