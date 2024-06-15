@@ -26,14 +26,15 @@ export const T11PresetGear = PresetUtils.makePresetGear('T11', T11Gear);
 export const PresetRotationDefault = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 
 export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
-	'P1',
+	'T11',
 	Stats.fromMap({
-		[Stat.StatIntellect]: 0.43,
-		[Stat.StatSpirit]: 0.34,
+		[Stat.StatIntellect]: 1.3,
+		[Stat.StatSpirit]: 1.27,
 		[Stat.StatSpellPower]: 1,
-		[Stat.StatSpellCrit]: 0.82,
+		[Stat.StatSpellHit]: 1.27,
+		[Stat.StatSpellCrit]: 0.41,
 		[Stat.StatSpellHaste]: 0.8,
-		[Stat.StatMastery]: 0.0,
+		[Stat.StatMastery]: 0.56,
 	}),
 );
 
