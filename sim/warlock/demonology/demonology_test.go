@@ -308,7 +308,7 @@ func waitUntilTime(sim *core.Simulation, time time.Duration) {
 func TestFelFlameExtension(t *testing.T) {
 	sim := setupFakeSim(defStats, &proto.Glyphs{}, 30)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
-	immoDot := lock.ImmolateDot.CurDot()
+	immoDot := lock.Immolate.CurDot()
 	immoDot.Apply(sim)
 	felflame := lock.GetSpell(core.ActionID{SpellID: 77799})
 
@@ -362,7 +362,7 @@ func TestImmolateHasteCap(t *testing.T) {
 		stats.SpellHaste: 1572,
 	})
 	immolate := lock.Immolate
-	immolateDot := lock.ImmolateDot.CurDot()
+	immolateDot := lock.Immolate.CurDot()
 
 	immolate.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	checkTicks(t, immolateDot, "Incorrect tick count for immolate at 1572 haste", 8)

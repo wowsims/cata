@@ -277,7 +277,7 @@ func TestImmolateHasteCap(t *testing.T) {
 		stats.SpellHaste: 2588,
 	})
 	immolate := lock.Immolate
-	immolateDot := lock.ImmolateDot.CurDot()
+	immolateDot := lock.Immolate.CurDot()
 
 	immolate.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	checkTicks(t, immolateDot, "Incorrect tick count for immolate at 2588 haste", 6)
