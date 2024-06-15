@@ -12,9 +12,7 @@ class TriggerSignal {
 	async trigger() {
 		if (this.triggered) return;
 		this.triggered = true;
-		for (const cb of this.callbacks) {
-			await cb();
-		}
+		return await Promise.all(this.callbacks.map(cb => cb()));
 	}
 
 	isTriggered() {

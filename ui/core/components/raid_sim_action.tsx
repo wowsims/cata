@@ -4,21 +4,33 @@ import { DistributionMetrics as DistributionMetricsProto, ProgressMetrics, Raid 
 import { Encounter as EncounterProto, Spec } from '../proto/common.js';
 import { SimRunData } from '../proto/ui.js';
 import { ActionMetrics, SimResult, SimResultFilter } from '../proto_utils/sim_result.js';
+import { RequestTypes } from '../sim_signal_manager';
 import { SimUI } from '../sim_ui.jsx';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { formatDeltaTextElem, sum } from '../utils.js';
 
 export function addRaidSimAction(simUI: SimUI): RaidSimResultsManager {
-	let lastButtonPressNum = 0;
+	let isRunning = false;
+	let waitAbort = false;
 	simUI.addAction('Simulate', 'dps-action', async button => {
-		const thisButtonPressNum = ++lastButtonPressNum;
 		button.disabled = true;
-		simUI.runSim((progress: ProgressMetrics) => {
-			if (button.disabled && thisButtonPressNum == lastButtonPressNum) {
-				button.disabled = false;
-			}
-			resultsManager.setSimProgress(progress);
-		});
+		if (!isRunning) {
+			isRunning = true;
+			button.innerText = 'Stop Simulation';
+			button.classList.add('is-running');
+			await simUI.runSim((progress: ProgressMetrics) => {
+				if (!waitAbort) button.disabled = false;
+				resultsManager.setSimProgress(progress);
+			});
+			isRunning = false;
+			button.innerText = 'Simulate';
+			button.classList.remove('is-running');
+		} else {
+			waitAbort = true;
+			await simUI.sim.signalManager.abortType(RequestTypes.RaidSim);
+			waitAbort = false;
+			if (!isRunning) button.disabled = false;
+		}
 	});
 
 	const resultsManager = new RaidSimResultsManager(simUI);
@@ -108,6 +120,10 @@ export class RaidSimResultsManager {
 	}
 
 	setSimProgress(progress: ProgressMetrics) {
+		if (progress.finalRaidResult && progress.finalRaidResult.errorResult) {
+			this.simUI.resultsViewer.hideAll();
+			return;
+		}
 		this.simUI.resultsViewer.setContent(
 			<div className="results-sim">
 				<div className="results-sim-dps damage-metrics">

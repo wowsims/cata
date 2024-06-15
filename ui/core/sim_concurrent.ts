@@ -87,20 +87,23 @@ function runSims(requests: RaidSimRequest[], totalIterations: number, wp: Worker
 
 			if (pm.finalRaidResult) {
 				running--;
-				let errRes: RaidSimResult | undefined;
+				let errorResult: RaidSimResult | undefined;
 
 				if (pm.finalRaidResult.errorResult) {
 					console.error(`Worker ${idx} had an error!`);
-					errRes = pm.finalRaidResult;
+					errorResult = pm.finalRaidResult;
 					signals.abort.trigger();
 				}
 
-				if (errRes || running == 0) {
+				if (errorResult || running == 0) {
 					running = 0;
+					const finalProgressMetrics = csp.makeProgressMetrics();
+					finalProgressMetrics.finalRaidResult = errorResult;
+					onProgress(finalProgressMetrics);
 					resolve({
-						errorResult: errRes,
+						errorResult: errorResult,
 						results: csp.finalResults,
-						progressMetricsFinal: csp.makeProgressMetrics(),
+						progressMetricsFinal: finalProgressMetrics,
 					});
 					return;
 				}
