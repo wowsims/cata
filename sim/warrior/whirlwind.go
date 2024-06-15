@@ -18,8 +18,8 @@ func (warrior *Warrior) RegisterWhirlwindSpell() {
 		whirlwindOH = warrior.RegisterSpell(core.SpellConfig{
 			ActionID:       actionID.WithTag(1),
 			SpellSchool:    core.SpellSchoolPhysical,
-			ProcMask:       core.ProcMaskEmpty, // whirlwind offhand hits usually don't proc auras
-			ClassSpellMask: SpellDualWieldSpecMask,
+			ProcMask:       core.ProcMaskMeleeOHSpecial, //TODO: needs testing to check if it procs auras, according to pre-cata it didn't
+			ClassSpellMask: SpellMaskWhirlwind,
 			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
 
 			DamageMultiplier: 1.0,
