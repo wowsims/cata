@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"math"
+	"sync"
 
 	"github.com/wowsims/cata/sim/core/proto"
 	"github.com/wowsims/cata/sim/core/stats"
@@ -16,8 +17,14 @@ var GemsByID = map[int32]Gem{}
 var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
 var ReforgeStatsByID = map[int32]ReforgeStat{}
+var mutex = &sync.Mutex{}
 
 func addToDatabase(newDB *proto.SimDatabase) {
+	// create mutex lock here and lock it
+	// defer unlock it
+	mutex.Lock()
+	defer mutex.Unlock()
+
 	for _, v := range newDB.Items {
 		if _, ok := ItemsByID[v.Id]; !ok {
 			ItemsByID[v.Id] = ItemFromProto(v)
@@ -92,6 +99,7 @@ type Item struct {
 	Stats            stats.Stats // Stats applied to wearer
 	Quality          proto.ItemQuality
 	SetName          string // Empty string if not part of a set.
+	SetID            int32  // 0 if not part of a set.
 	RandomPropPoints int32  // Used to rescale random suffix stats
 
 	GemSockets  []proto.GemColor
@@ -123,6 +131,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		GemSockets:       pData.GemSockets,
 		SocketBonus:      stats.FromFloatArray(pData.SocketBonus),
 		SetName:          pData.SetName,
+		SetID:            pData.SetId,
 		RandomPropPoints: pData.RandPropPoints,
 	}
 }

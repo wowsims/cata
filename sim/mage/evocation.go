@@ -34,7 +34,7 @@ func (mage *Mage) registerEvocation() {
 			NumberOfTicks:        3,
 			TickLength:           time.Second * 2,
 			AffectedByCastSpeed:  true,
-			HasteAffectsDuration: true,
+			HasteReducesDuration: true,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				mage.AddMana(sim, manaPerTick, manaMetrics)

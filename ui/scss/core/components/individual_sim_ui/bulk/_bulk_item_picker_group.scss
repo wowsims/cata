@@ -1,0 +1,12 @@
+.bulk-item-picker-group-root {
+	margin-bottom: 0 !important;
+
+	.content-block-header {
+		border-bottom: 0;
+		margin-bottom: 0;
+	}
+
+	.content-block-body {
+		gap: var(--block-spacer);
+	}
+}

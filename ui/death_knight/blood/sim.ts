@@ -1,5 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -65,26 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 		// Default equipped gear.
 		gear: Presets.P1_BLOOD_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatArmor]: 0.05,
-				[Stat.StatBonusArmor]: 0.03,
-				[Stat.StatStamina]: 1,
-				[Stat.StatStrength]: 0.33,
-				[Stat.StatAgility]: 0.6,
-				[Stat.StatAttackPower]: 0.06,
-				[Stat.StatExpertise]: 0.67,
-				[Stat.StatMeleeHit]: 0.67,
-				[Stat.StatMeleeCrit]: 0.28,
-				[Stat.StatMeleeHaste]: 0.21,
-				[Stat.StatDodge]: 0.7,
-				[Stat.StatParry]: 0.58,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.1,
-				[PseudoStat.PseudoStatOffHandDps]: 0.0,
-			},
-		),
+		epWeights: Presets.P1_BLOOD_EP_PRESET.epWeights,
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -115,7 +96,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			criticalMass: true,
 			vindication: true,
 			frostFever: true,
-			judgement: true,
 		}),
 	},
 
@@ -124,13 +104,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	// Inputs to include in the 'Rotation' section on the settings tab.
 	rotationInputs: BloodInputs.BloodDeathKnightRotationConfig,
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellDamageDebuff
-	],
-	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellHasteBuff,
-		BuffDebuffInputs.BleedDebuff,
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.SpellHasteBuff, BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -144,7 +119,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
 			DeathKnightInputs.StartingRunicPower(),
-			OtherInputs.DarkIntentUptime
+			OtherInputs.DarkIntentUptime,
 		],
 	},
 	encounterPicker: {
@@ -153,20 +128,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBloodDeathKnight, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_BLOOD_EP_PRESET],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.BLOOD_SIMPLE_ROTATION_PRESET_DEFAULT,
-			Presets.BLOOD_DEFENSIVE_ROTATION_PRESET_DEFAULT,
-		],
+		rotations: [Presets.BLOOD_SIMPLE_ROTATION_PRESET_DEFAULT, Presets.BLOOD_DEFENSIVE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.BloodTalents
-		],
+		talents: [Presets.BloodTalents],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_BLOOD_PRESET,
-			Presets.P1_BLOOD_PRESET
-		],
+		gear: [Presets.PRERAID_BLOOD_PRESET, Presets.P1_BLOOD_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBloodDeathKnight>): APLRotation => {

@@ -1,5 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import * as Mechanics from '../../core/constants/mechanics';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
@@ -18,15 +18,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellHit,
-		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
-		Stat.StatMastery,
-	],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMastery],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -56,14 +48,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		// Default equipped gear.
 		gear: Presets.PreraidPresetGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.43,
-			[Stat.StatSpirit]: 0.34,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellCrit]: 0.82,
-			[Stat.StatSpellHaste]: 0.8,
-			[Stat.StatMastery]: 0.0,
-		}),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -92,8 +77,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [BalanceInputs.OkfUptime, BalanceInputs.StartInSolar, BalanceInputs.MasterySnapshot, OtherInputs.TankAssignment,
-			     OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.DarkIntentUptime],
+		inputs: [
+			BalanceInputs.OkfUptime,
+			BalanceInputs.StartInSolar,
+			BalanceInputs.MasterySnapshot,
+			OtherInputs.TankAssignment,
+			OtherInputs.InputDelay,
+			OtherInputs.DistanceFromTarget,
+			OtherInputs.DarkIntentUptime,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -101,11 +93,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
 		rotations: [Presets.PresetRotationDefault],
 		// Preset gear configurations that the user can quickly select.
-		gear: [ Presets.PreraidPresetGear, Presets.T11PresetGear]
+		gear: [Presets.PreraidPresetGear, Presets.T11PresetGear],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecBalanceDruid>): APLRotation => {
@@ -121,8 +114,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 			otherDefaults: Presets.OtherDefaults,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceNightElf,
-				[Faction.Horde]: Race.RaceTauren,
+				[Faction.Alliance]: Race.RaceWorgen,
+				[Faction.Horde]: Race.RaceTroll,
 			},
 			defaultGear: {
 				[Faction.Unknown]: {},

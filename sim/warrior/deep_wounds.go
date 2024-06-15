@@ -59,8 +59,6 @@ func (warrior *Warrior) RegisterDeepWounds() {
 func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, isOh bool) {
 	dot := warrior.DeepWounds.Dot(target)
 
-	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
-
 	attackTable := warrior.AttackTables[target.UnitIndex]
 	var awd float64
 	if isOh {
@@ -80,8 +78,8 @@ func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, 
 	}
 	newDamage := awd * 0.16 * float64(warrior.Talents.DeepWounds)
 
-	ticks := float64(dot.NumberOfTicks + core.TernaryInt32(dot.IsActive(), 1, 0))
-	dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / ticks
+	ticks := float64(dot.BaseTickCount + core.TernaryInt32(dot.IsActive(), 1, 0))
+	dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / ticks
 	dot.SnapshotAttackerMultiplier = 1
 	warrior.DeepWounds.Cast(sim, target)
 }

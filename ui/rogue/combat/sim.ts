@@ -1,21 +1,10 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import {
-	Debuffs,
-	Faction,
-	IndividualBuffs,
-	ItemSlot,
-	PartyBuffs,
-	PseudoStat,
-	Race,
-	RaidBuffs,
-	Spec,
-	Stat,
-} from '../../core/proto/common';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import { RogueOptions_PoisonImbue } from '../../core/proto/rogue';
 import { Stats } from '../../core/proto_utils/stats';
 import * as RogueInputs from '../inputs';
@@ -64,24 +53,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 		// Default equipped gear.
 		gear: Presets.P1_PRESET_COMBAT.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatAgility]: 2.67,
-				[Stat.StatStrength]: 1.05,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatSpellCrit]: 0.08,
-				[Stat.StatSpellHit]: 0.40,
-				[Stat.StatMeleeHit]: 0.83,
-				[Stat.StatMeleeCrit]: 0.75,
-				[Stat.StatMeleeHaste]: 1.14,
-				[Stat.StatMastery]: 1.21,
-				[Stat.StatExpertise]: 1.3,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.95,
-				[PseudoStat.PseudoStatOffHandDps]: 1.28,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -106,8 +78,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 			communion: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			mangle: true,
 			sunderArmor: true,
@@ -147,16 +118,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecCombatRogue, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CombatTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_PRESET_COMBAT,
-		],
+		rotations: [Presets.ROTATION_PRESET_COMBAT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.P1_PRESET_COMBAT,
-		],
+		gear: [Presets.P1_PRESET_COMBAT],
 	},
 
 	autoRotation: (player: Player<Spec.SpecCombatRogue>): APLRotation => {

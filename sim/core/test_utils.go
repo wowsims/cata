@@ -80,7 +80,6 @@ var FullDebuffs = &proto.Debuffs{
 	EbonPlaguebringer: true,
 	ExposeArmor:       true,
 	FaerieFire:        true,
-	Judgement:         true,
 	Mangle:            true,
 	SunderArmor:       true,
 	ThunderClap:       true,

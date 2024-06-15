@@ -86,12 +86,12 @@ export class GemSummary extends Component {
 			const existingResetButton = this.container.headerElement.querySelector('.summary-table-reset-button');
 			const resetButton = (
 				<button
-					className="btn btn-sm btn-reset summary-table-reset-button"
+					className="btn btn-sm btn-link btn-reset summary-table-reset-button"
 					onclick={() => {
 						this.player.setGear(TypedEvent.nextEventID(), this.player.getGear().withoutGems());
 					}}>
+					<i className="fas fa-times me-1"></i>
 					Reset gems
-					<i className="fas fa-close ms-1"></i>
 				</button>
 			);
 

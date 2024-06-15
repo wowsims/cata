@@ -31,6 +31,10 @@ abstract class BaseGear {
 		return this.gear[slot] || null;
 	}
 
+	getEquippedItems(): Array<EquippedItem | null> {
+		return Object.values(this.gear);
+	}
+
 	asArray(): Array<EquippedItem | null> {
 		return Object.values(this.gear);
 	}
@@ -296,6 +300,20 @@ export class Gear extends BaseGear {
 
 			if (item) {
 				curGear = curGear.withEquippedItem(slot, item.removeAllGems(), true);
+			}
+		}
+
+		return curGear;
+	}
+
+	withoutReforges(canDualWield2H: boolean): Gear {
+		let curGear: Gear = this;
+
+		for (const slot of this.getItemSlots()) {
+			const item = this.getEquippedItem(slot);
+
+			if (item) {
+				curGear = curGear.withEquippedItem(slot, item.withItem(item.item).withRandomSuffix(item._randomSuffix), canDualWield2H);
 			}
 		}
 

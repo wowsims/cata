@@ -1,4 +1,4 @@
-import { UnitPicker, UnitValue, UnitValueConfig } from '../../components/unit_picker.js';
+import { UnitPicker, UnitValue, UnitValueConfig } from '../pickers/unit_picker.jsx';
 import { UnitReference, UnitReference_Type as UnitType } from '../../proto/common.js';
 import { SimResult, SimResultFilter } from '../../proto_utils/sim_result.js';
 import { EventID, TypedEvent } from '../../typed_event.js';

@@ -95,5 +95,26 @@ var ItemSetStormridersRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// PvP Feral
+var ItemSetGladiatorsSanctuary = core.NewItemSet(core.ItemSet{
+	ID:   922,
+	Name: "Gladiator's Sanctuary",
+
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.AddStats(stats.Stats{
+				stats.Agility: 70,
+			})
+		},
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.AddStats(stats.Stats{
+				stats.Agility: 90,
+			})
+		},
+	},
+})
+
 func init() {
 }

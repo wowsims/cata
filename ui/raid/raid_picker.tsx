@@ -1,9 +1,10 @@
-import tippy  from 'tippy.js';
+import clsx from 'clsx';
+import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import { BaseModal } from '../core/components/base_modal.jsx';
 import { Component } from '../core/components/component.js';
-import { EnumPicker } from '../core/components/enum_picker.js';
+import { EnumPicker } from '../core/components/pickers/enum_picker.js';
 import { MAX_PARTY_SIZE, Party } from '../core/party.js';
 import { Player } from '../core/player.js';
 import { PlayerClasses } from '../core/player_classes/index.js';
@@ -213,24 +214,29 @@ export class PartyPicker extends Component {
 		this.index = index;
 		this.raidPicker = raidPicker;
 
-		this.rootElem.setAttribute('draggable', 'true');
-		this.rootElem.innerHTML = `
-			<div class="party-header">
-				<label class="party-label form-label">Group ${index + 1}</label>
-				<div class="party-results">
-					<span class="party-results-dps"></span>
-					<span class="party-results-reference-delta"></span>
-				</div>
-			</div>
-			<div class="players-container">
-			</div>
-		`;
+		const playersContainerRef = ref<HTMLDivElement>();
+		const dpsResultRef = ref<HTMLDivElement>();
+		const referenceDeltaRef = ref<HTMLDivElement>();
 
-		const playersContainer = this.rootElem.getElementsByClassName('players-container')[0] as HTMLDivElement;
+		this.rootElem.setAttribute('draggable', 'true');
+		this.rootElem.replaceChildren(
+			<>
+				<div className="party-header">
+					<label className="party-label form-label">Group {index + 1}</label>
+					<div className="party-results">
+						<span ref={dpsResultRef} className="party-results-dps"></span>
+						<span ref={referenceDeltaRef} className="party-results-reference-delta"></span>
+					</div>
+				</div>
+				<div ref={playersContainerRef} className="players-container"></div>
+			</>,
+		);
+
+		const playersContainer = playersContainerRef.value!;
 		this.playerPickers = [...Array(MAX_PARTY_SIZE).keys()].map(i => new PlayerPicker(playersContainer, this, i));
 
-		const dpsResultElem = this.rootElem.getElementsByClassName('party-results-dps')[0] as HTMLElement;
-		const referenceDeltaElem = this.rootElem.getElementsByClassName('party-results-reference-delta')[0] as HTMLElement;
+		const dpsResultElem = dpsResultRef.value!;
+		const referenceDeltaElem = referenceDeltaRef.value!;
 
 		this.raidPicker.raidSimUI.referenceChangeEmitter.on(() => {
 			const currentData = this.raidPicker.raidSimUI.getCurrentData();
@@ -334,12 +340,16 @@ export class PlayerPicker extends Component {
 	readonly partyPicker: PartyPicker;
 	readonly raidPicker: RaidPicker;
 
-	private labelElem: HTMLElement | null;
-	private iconElem: HTMLImageElement | null;
-	private nameElem: HTMLInputElement | null;
-	private resultsElem: HTMLElement | null;
-	private dpsResultElem: HTMLElement | null;
-	private referenceDeltaElem: HTMLElement | null;
+	private labelElem: HTMLElement | null = null;
+	private iconElem: HTMLImageElement | null = null;
+	private nameElem: HTMLInputElement | null = null;
+	private resultsElem: HTMLElement | null = null;
+	private dpsResultElem: HTMLElement | null = null;
+	private referenceDeltaElem: HTMLElement | null = null;
+
+	private editButton: HTMLButtonElement | null = null;
+	private copyButton: HTMLButtonElement | null = null;
+	private deleteButton: HTMLButtonElement | null = null;
 	// Can be used to remove any events in addEventListener
 	// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#add_an_abortable_listener
 	public abortController: AbortController;
@@ -354,13 +364,6 @@ export class PlayerPicker extends Component {
 		this.player = null;
 		this.partyPicker = partyPicker;
 		this.raidPicker = partyPicker.raidPicker;
-
-		this.labelElem = null;
-		this.iconElem = null;
-		this.nameElem = null;
-		this.resultsElem = null;
-		this.dpsResultElem = null;
-		this.referenceDeltaElem = null;
 
 		this.rootElem.classList.add('player');
 
@@ -507,59 +510,60 @@ export class PlayerPicker extends Component {
 		} else {
 			const classCssClass = PlayerClasses.getCssClass(this.player.getPlayerClass());
 
+			const labelRef = ref<HTMLDivElement>();
+			const iconRef = ref<HTMLImageElement>();
+			const nameRef = ref<HTMLInputElement>();
+			const resultsRef = ref<HTMLDivElement>();
+			const dpsResultRef = ref<HTMLDivElement>();
+			const referenceDeltaRef = ref<HTMLDivElement>();
+			const editRef = ref<HTMLButtonElement>();
+			const copyRef = ref<HTMLButtonElement>();
+			const deleteRef = ref<HTMLButtonElement>();
+
 			this.rootElem.className = `player-picker-root player bg-${classCssClass}-dampened`;
-			this.rootElem.innerHTML = `
-				<div class="player-label">
-					<img class="player-icon" src="${this.player.getSpecIcon()}" draggable="true" />
-					<div class="player-details">
-						<input
-							class="player-name text-${classCssClass}"
-							type="text"
-							value="${this.player.getName()}"
-							spellcheck="false"
-							maxlength="15"
-						/>
-						<div class="player-results hide">
-							<span class="player-results-dps"></span>
-							<span class="player-results-reference-delta"></span>
+			this.rootElem.replaceChildren(
+				<>
+					<div ref={labelRef} className="player-label">
+						<img ref={iconRef} className="player-icon" src={this.player.getSpecIcon()} draggable={true} />
+						<div className="player-details">
+							<input
+								ref={nameRef}
+								className={clsx('player-name', `text-${classCssClass}`)}
+								type="text"
+								value={this.player.getName()}
+								spellcheck={false}
+								maxLength={15}
+							/>
+							<div ref={resultsRef} className="player-results hide">
+								<span ref={dpsResultRef} className="player-results-dps"></span>
+								<span ref={referenceDeltaRef} className="player-results-reference-delta"></span>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="player-options">
-					<a
-						href="javascript:void(0)"
-						class="player-edit"
-						role="button"
-						data-tippy-content="Click to Edit"
-					>
-						<i class="fa fa-edit fa-lg"></i>
-					</a>
-					<a
-						href="javascript:void(0)"
-						class="player-copy link-warning"
-						role="button"
-						draggable="true"
-						data-tippy-content="Drag to Copy"
-					>
-						<i class="fa fa-copy fa-lg"></i>
-					</a>
-					<a
-						href="javascript:void(0)"
-						class="player-delete link-danger"
-						role="button"
-						data-tippy-content="Click to Delete"
-					>
-						<i class="fa fa-times fa-lg"></i>
-					</a>
-				</div>
-			`;
+					<div className="player-options">
+						<button ref={editRef} className="player-edit" dataset={{ tippyContent: 'Click to Edit' }}>
+							<i className="fa fa-edit fa-lg"></i>
+						</button>
+						<button ref={copyRef} className="player-copy link-warning" draggable={true} dataset={{ tippyContent: 'Drag to Copy' }}>
+							<i className="fa fa-copy fa-lg"></i>
+						</button>
+						<button ref={deleteRef} className="player-delete link-danger" dataset={{ tippyContent: 'Click to Delete' }}>
+							<i className="fa fa-times fa-lg"></i>
+						</button>
+					</div>
+				</>,
+			);
 
-			this.labelElem = this.rootElem.querySelector('.player-label') as HTMLElement;
-			this.iconElem = this.rootElem.querySelector('.player-icon') as HTMLImageElement;
-			this.nameElem = this.rootElem.querySelector('.player-name') as HTMLInputElement;
-			this.resultsElem = this.rootElem.querySelector('.player-results') as HTMLElement;
-			this.dpsResultElem = this.rootElem.querySelector('.player-results-dps') as HTMLElement;
-			this.referenceDeltaElem = this.rootElem.querySelector('.player-results-reference-delta') as HTMLElement;
+			this.labelElem = labelRef.value!;
+			this.iconElem = iconRef.value!;
+			this.nameElem = nameRef.value!;
+			this.resultsElem = resultsRef.value!;
+			this.dpsResultElem = dpsResultRef.value!;
+			this.referenceDeltaElem = referenceDeltaRef.value!;
+
+			this.editButton = editRef.value!;
+			this.copyButton = copyRef.value!;
+			this.deleteButton = deleteRef.value!;
 
 			this.bindPlayerEvents();
 		}
@@ -590,7 +594,7 @@ export class PlayerPicker extends Component {
 		this.nameElem?.addEventListener('focusout', onNameFocusOutHandler, { signal: this.signal });
 
 		const dragStart = (event: DragEvent, type: DragType) => {
-			if (this.player == null) {
+			if (this.player === null) {
 				event.preventDefault();
 				return;
 			}
@@ -606,13 +610,9 @@ export class PlayerPicker extends Component {
 			this.raidPicker.setDragPlayer(this.player, this.raidIndex, type);
 		};
 
-		const editElem = this.rootElem.querySelector<HTMLElement>('.player-edit')!;
-		const copyElem = this.rootElem.querySelector<HTMLElement>('.player-copy')!;
-		const deleteElem = this.rootElem.querySelector<HTMLElement>('.player-delete')!;
-
-		const editTooltip = tippy(editElem);
-		const copyTooltip = tippy(copyElem);
-		const deleteTooltip = tippy(deleteElem);
+		const editTooltip = tippy(this.editButton!);
+		const copyTooltip = tippy(this.copyButton!);
+		const deleteTooltip = tippy(this.deleteButton!);
 
 		const onIconDragStartHandler = (event: DragEvent) => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
@@ -623,19 +623,19 @@ export class PlayerPicker extends Component {
 		const onEditClickHandler = () => {
 			if (this.player) this.raidPicker.playerEditorModal.openEditor(this.player);
 		};
-		editElem.addEventListener('click', onEditClickHandler, { signal: this.signal });
+		this.editButton?.addEventListener('click', onEditClickHandler, { signal: this.signal });
 
 		const onCopyDragStartHandler = (event: DragEvent) => {
 			event.dataTransfer!.setDragImage(this.rootElem, 20, 20);
 			dragStart(event, DragType.Copy);
 		};
-		copyElem.addEventListener('dragstart', onCopyDragStartHandler, { signal: this.signal });
+		this.copyButton?.addEventListener('dragstart', onCopyDragStartHandler, { signal: this.signal });
 
 		const onDeleteClickHandler = () => {
 			this.setPlayer(TypedEvent.nextEventID(), null, DragType.None);
 			this.dispose();
 		};
-		deleteElem.addEventListener('click', onDeleteClickHandler, { signal: this.signal });
+		this.deleteButton?.addEventListener('click', onDeleteClickHandler, { signal: this.signal });
 
 		this.addOnDisposeCallback(() => {
 			editTooltip?.destroy();
@@ -691,64 +691,63 @@ class NewPlayerPicker extends Component {
 				return;
 			}
 
-			const classPresetsContainer = document.createElement('div');
-			classPresetsContainer.classList.add(
-				'class-presets-container',
-				`bg-${PlayerClasses.getCssClass(PlayerClasses.fromProto(wowClass as Class))}-dampened`,
+			const classPresetsContainerRef = ref<HTMLDivElement>();
+			this.rootElem.appendChild(
+				<div className={clsx('class-presets-container', `bg-${PlayerClasses.getCssClass(PlayerClasses.fromProto(wowClass as Class))}-dampened`)}>
+					{matchingPresets.map(matchingPreset => {
+						const playerSpec = PlayerSpecs.fromProto(matchingPreset.spec);
+						const presetRef = ref<HTMLButtonElement>();
+
+						const presetButton = (
+							<button
+								ref={presetRef}
+								draggable={true}
+								dataset={{ tippyContent: matchingPreset.tooltip ?? PlayerSpecs.getFullSpecName(playerSpec) }}>
+								<img className="preset-picker-icon player-icon" src={playerSpec.getIcon('medium')} />
+							</button>
+						);
+
+						if (presetRef.value) {
+							tippy(presetRef.value);
+
+							presetRef.value.ondragstart = event => {
+								const eventID = TypedEvent.nextEventID();
+								TypedEvent.freezeAllAndDo(() => {
+									const dragImage = new Image();
+									dragImage.src = matchingPreset.iconUrl ?? playerSpec.getIcon('medium');
+									event.dataTransfer!.setDragImage(dragImage, 30, 30);
+									event.dataTransfer!.setData('text/plain', '');
+									event.dataTransfer!.dropEffect = 'copy';
+
+									const newPlayer = new Player(playerSpec, this.raidPicker.raid.sim);
+
+									newPlayer.applySharedDefaults(eventID);
+									newPlayer.setRace(eventID, matchingPreset.defaultFactionRaces[this.raidPicker.getCurrentFaction()]);
+									newPlayer.setTalentsString(eventID, matchingPreset.talents.talentsString);
+									newPlayer.setGlyphs(eventID, matchingPreset.talents.glyphs || Glyphs.create());
+									newPlayer.setSpecOptions(eventID, matchingPreset.specOptions);
+									newPlayer.setConsumes(eventID, matchingPreset.consumes);
+									newPlayer.setName(eventID, matchingPreset.defaultName ?? playerSpec.friendlyName);
+									newPlayer.setProfession1(eventID, matchingPreset.otherDefaults?.profession1 || Profession.Engineering);
+									newPlayer.setProfession2(eventID, matchingPreset.otherDefaults?.profession2 || Profession.Jewelcrafting);
+									newPlayer.setDistanceFromTarget(eventID, matchingPreset.otherDefaults?.distanceFromTarget || 0);
+
+									// Need to wait because the gear might not be loaded yet.
+									this.raidPicker.raid.sim.waitForInit().then(() => {
+										const phase = Math.min(this.raidPicker.getCurrentPhase(), LATEST_PHASE_WITH_ALL_PRESETS);
+										const gearSet = matchingPreset.defaultGear[this.raidPicker.getCurrentFaction()][phase];
+										newPlayer.setGear(eventID, this.raidPicker.raid.sim.db.lookupEquipmentSpec(gearSet));
+									});
+
+									this.raidPicker.setDragPlayer(newPlayer, NEW_PLAYER, DragType.New);
+								});
+							};
+						}
+
+						return presetRef.value;
+					})}
+				</div>,
 			);
-			this.rootElem.appendChild(classPresetsContainer);
-
-			matchingPresets.forEach(matchingPreset => {
-				const playerSpec = PlayerSpecs.fromProto(matchingPreset.spec);
-				const presetElemFragment = document.createElement('fragment');
-				presetElemFragment.innerHTML = `
-					<a
-						href="javascript:void(0)"
-						role="button"
-						draggable="true"
-						data-tippy-content="${matchingPreset.tooltip ?? PlayerSpecs.getFullSpecName(playerSpec)}"
-					>
-						<img class="preset-picker-icon player-icon" src="${playerSpec.getIcon('medium')}"/>
-					</a>
-				`;
-				const presetElem = presetElemFragment.children[0] as HTMLElement;
-				classPresetsContainer.appendChild(presetElem);
-
-				tippy(presetElem);
-
-				presetElem.ondragstart = event => {
-					const eventID = TypedEvent.nextEventID();
-					TypedEvent.freezeAllAndDo(() => {
-						const dragImage = new Image();
-						dragImage.src = matchingPreset.iconUrl ?? playerSpec.getIcon('medium');
-						event.dataTransfer!.setDragImage(dragImage, 30, 30);
-						event.dataTransfer!.setData('text/plain', '');
-						event.dataTransfer!.dropEffect = 'copy';
-
-						const newPlayer = new Player(playerSpec, this.raidPicker.raid.sim);
-
-						newPlayer.applySharedDefaults(eventID);
-						newPlayer.setRace(eventID, matchingPreset.defaultFactionRaces[this.raidPicker.getCurrentFaction()]);
-						newPlayer.setTalentsString(eventID, matchingPreset.talents.talentsString);
-						newPlayer.setGlyphs(eventID, matchingPreset.talents.glyphs || Glyphs.create());
-						newPlayer.setSpecOptions(eventID, matchingPreset.specOptions);
-						newPlayer.setConsumes(eventID, matchingPreset.consumes);
-						newPlayer.setName(eventID, matchingPreset.defaultName ?? playerSpec.friendlyName);
-						newPlayer.setProfession1(eventID, matchingPreset.otherDefaults?.profession1 || Profession.Engineering);
-						newPlayer.setProfession2(eventID, matchingPreset.otherDefaults?.profession2 || Profession.Jewelcrafting);
-						newPlayer.setDistanceFromTarget(eventID, matchingPreset.otherDefaults?.distanceFromTarget || 0);
-
-						// Need to wait because the gear might not be loaded yet.
-						this.raidPicker.raid.sim.waitForInit().then(() => {
-							const phase = Math.min(this.raidPicker.getCurrentPhase(), LATEST_PHASE_WITH_ALL_PRESETS);
-							const gearSet = matchingPreset.defaultGear[this.raidPicker.getCurrentFaction()][phase];
-							newPlayer.setGear(eventID, this.raidPicker.raid.sim.db.lookupEquipmentSpec(gearSet));
-						});
-
-						this.raidPicker.setDragPlayer(newPlayer, NEW_PLAYER, DragType.New);
-					});
-				};
-			});
 		});
 	}
 }

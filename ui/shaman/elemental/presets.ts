@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common.js';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, Stat, TinkerHands } from '../../core/proto/common.js';
 import {
 	AirTotem,
 	CallTotem,
@@ -15,6 +15,7 @@ import {
 	WaterTotem,
 } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
+import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
@@ -27,6 +28,20 @@ export const PRERAID_PRESET = PresetUtils.makePresetGear('Pre-raid Preset', Prer
 export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 1.24,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatSpellCrit]: 0.34,
+		[Stat.StatSpellHaste]: 0.57,
+		[Stat.StatSpellHit]: 0.59,
+		[Stat.StatSpirit]: 0.59,
+		[Stat.StatMastery]: 0.49,
+	}),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.

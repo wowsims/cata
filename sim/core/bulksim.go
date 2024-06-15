@@ -601,7 +601,6 @@ func shouldSkipCombo(baseItems []*proto.ItemSpec, item *proto.ItemSpec, slot pro
 	case proto.ItemSlot_ItemSlotFinger1, proto.ItemSlot_ItemSlotTrinket1:
 		return comboChecker.HasCombo(item.Id, baseItems[slot+1].Id)
 	case proto.ItemSlot_ItemSlotFinger2, proto.ItemSlot_ItemSlotTrinket2:
-
 		for _, repl := range replacements.Items {
 			if slot == proto.ItemSlot_ItemSlotFinger2 && repl.Slot == proto.ItemSlot_ItemSlotFinger1 ||
 				slot == proto.ItemSlot_ItemSlotTrinket2 && repl.Slot == proto.ItemSlot_ItemSlotTrinket1 {

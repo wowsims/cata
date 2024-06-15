@@ -1,5 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
+import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
@@ -91,27 +91,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		gear: Presets.PRERAID_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		// Values for now are pre-Cata initial WAG
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatArmor]: 0.07,
-				[Stat.StatBonusArmor]: 0.06,
-				[Stat.StatStamina]: 1.14,
-				[Stat.StatMastery]: 1.00,
-				[Stat.StatStrength]: 1.0,
-				[Stat.StatAgility]: 0,
-				[Stat.StatAttackPower]: 0.26,
-				[Stat.StatExpertise]: 0.5,
-				[Stat.StatMeleeHit]: 0.5,
-				[Stat.StatMeleeCrit]: 0.3,
-				[Stat.StatMeleeHaste]: 0.17,
-				[Stat.StatSpellPower]: 0,
-				[Stat.StatDodge]: 0.6,
-				[Stat.StatParry]: 0.6,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.33,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -140,7 +120,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			judgement: true,
 			ebonPlaguebringer: true,
 			shadowAndFlame: true,
 			bloodFrenzy: true,
@@ -153,11 +132,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		PaladinInputs.AuraSelection(),
-		PaladinInputs.JudgementSelection(),
-		//PaladinInputs.StartingSealSelection()
-	],
+	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.StartingSealSelection()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
@@ -172,7 +147,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			OtherInputs.BurstWindow,
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
-			PaladinInputs.UseAvengingWrath(),
 			OtherInputs.InFrontOfTarget,
 		],
 	},
@@ -182,6 +156,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.GenericAoeTalents],
 		// Preset rotations that the user can quickly select.

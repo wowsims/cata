@@ -47,7 +47,7 @@ func (war *ArmsWarrior) applyBloodFrenzy() {
 
 			//leave the duration field in its original state but apply the aura with the modified duration
 			oldDuration := bf.Duration
-			bf.Duration = dot.TickLength * time.Duration(dot.NumberOfTicks)
+			bf.Duration = dot.BaseTickLength * time.Duration(dot.BaseTickCount)
 			bf.Activate(sim)
 			bf.Duration = oldDuration
 

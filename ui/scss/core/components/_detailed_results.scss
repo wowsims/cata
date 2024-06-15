@@ -61,7 +61,7 @@
 
 	> {
 		.tab-content {
-			padding-top: 1rem;
+			padding-top: var(--gap-width);
 		}
 
 		.tab-content > .tab-pane.dr-tab-content {
@@ -122,7 +122,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: calc(var(--spacer-3) * 2);
+	padding: var(--gap-width);
 	font-size: 1rem;
 }
 

@@ -1,3 +1,4 @@
+import * as Mechanics from '../constants/mechanics.js';
 import { Class, PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { getEnumValues } from '../utils.js';
 import { getClassStatName, pseudoStatNames } from './names.js';
@@ -188,6 +189,18 @@ export class Stats {
 		return true;
 	}
 
+	computeStatCapsDelta(statCaps: Stats): Stats {
+		return new Stats(
+			this.stats.map((value, stat) => {
+				if (statCaps.stats[stat] > 0) {
+					return statCaps.stats[stat] - value;
+				}
+
+				return 0;
+			}),
+		);
+	}
+
 	asArray(): Array<number> {
 		return this.stats.slice();
 	}
@@ -233,3 +246,91 @@ export class Stats {
 		}
 	}
 }
+
+export const statToPercentageOrPoints = (stat: Stat, value: number, stats: Stats) => {
+	let statInPercentage: number | null = null;
+	switch (stat) {
+		case Stat.StatMeleeHit:
+			statInPercentage = value / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE;
+			break;
+		case Stat.StatSpellHit:
+			statInPercentage = value / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE;
+			break;
+		case Stat.StatMeleeCrit:
+		case Stat.StatSpellCrit:
+			statInPercentage = value / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE;
+			break;
+		case Stat.StatMeleeHaste:
+			statInPercentage = value / Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
+			break;
+		case Stat.StatSpellHaste:
+			statInPercentage = value / Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
+			break;
+		case Stat.StatExpertise:
+			statInPercentage = value / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4;
+			break;
+		case Stat.StatBlock:
+			statInPercentage = value / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + 5.0;
+			break;
+		case Stat.StatDodge:
+			statInPercentage = stats.getPseudoStat(PseudoStat.PseudoStatDodge) / 100;
+			break;
+		case Stat.StatParry:
+			statInPercentage = stats.getPseudoStat(PseudoStat.PseudoStatParry) / 100;
+			break;
+		case Stat.StatResilience:
+			statInPercentage = value / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE;
+			break;
+		case Stat.StatMastery:
+			statInPercentage = value / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
+			break;
+		default:
+			statInPercentage = value;
+			break;
+	}
+	return Number(statInPercentage.toFixed(2));
+};
+
+export const statPercentageOrPointsToNumber = (stat: Stat, value: number, stats: Stats) => {
+	let statInPoints: number | null = null;
+	switch (stat) {
+		case Stat.StatMeleeHit:
+			statInPoints = value * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE;
+			break;
+		case Stat.StatSpellHit:
+			statInPoints = value * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE;
+			break;
+		case Stat.StatMeleeCrit:
+		case Stat.StatSpellCrit:
+			statInPoints = value * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE;
+			break;
+		case Stat.StatMeleeHaste:
+			statInPoints = value * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
+			break;
+		case Stat.StatSpellHaste:
+			statInPoints = value * Mechanics.HASTE_RATING_PER_HASTE_PERCENT;
+			break;
+		case Stat.StatExpertise:
+			statInPoints = value * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION * 4;
+			break;
+		case Stat.StatBlock:
+			statInPoints = value * Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE - 5.0;
+			break;
+		case Stat.StatDodge:
+			statInPoints = stats.getPseudoStat(PseudoStat.PseudoStatDodge) * 100;
+			break;
+		case Stat.StatParry:
+			statInPoints = stats.getPseudoStat(PseudoStat.PseudoStatParry) * 100;
+			break;
+		case Stat.StatResilience:
+			statInPoints = value * Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE;
+			break;
+		case Stat.StatMastery:
+			statInPoints = value * Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
+			break;
+		default:
+			statInPoints = value;
+			break;
+	}
+	return statInPoints;
+};

@@ -1,11 +1,12 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../../core/components/other_inputs.js';
+import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import * as Mechanics from '../../core/constants/mechanics.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl.js';
-import { Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
 import { Stats } from '../../core/proto_utils/stats.js';
 import { TypedEvent } from '../../core/typed_event.js';
 import * as ShamanInputs from '../inputs.js';
@@ -65,15 +66,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		// Default equipped gear.
 		gear: Presets.P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 1.24,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellCrit]: 0.34,
-			[Stat.StatSpellHaste]: 0.57,
-			[Stat.StatSpellHit]: 0.59,
-			[Stat.StatSpirit]: 0.59,
-			[Stat.StatMastery]: 0.49,
-		}),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
+		// Default stat caps for the Reforge optimizer
+		statCaps: (() => {
+			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+		})(),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -103,7 +100,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			vampiricTouch: true,
 		}),
 		debuffs: Debuffs.create({
-			judgement: true,
 			curseOfElements: true,
 			shadowAndFlame: true,
 		}),
@@ -124,6 +120,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.TalentsTotemDuration, Presets.TalentsImprovedShields],
 		// Preset rotations that the user can quickly select.
@@ -164,5 +161,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 export class ElementalShamanSimUI extends IndividualSimUI<Spec.SpecElementalShaman> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecElementalShaman>) {
 		super(parentElem, player, SPEC_CONFIG);
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }

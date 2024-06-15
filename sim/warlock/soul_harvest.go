@@ -25,9 +25,8 @@ func (warlock *Warlock) registerSoulHarvest() {
 			AffectedByCastSpeed: true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				warlock.SoulShards = min(warlock.SoulShards+1, 3)
-				if warlock.SoulShards >= 3 {
-					// cancel since we only ever use it to fill up soul shards
-					dot.Deactivate(sim)
+				if sim.Log != nil {
+					warlock.Log(sim, "Gained 1 soul shard (%v -> %v)", warlock.SoulShards-1, warlock.SoulShards)
 				}
 			},
 		},

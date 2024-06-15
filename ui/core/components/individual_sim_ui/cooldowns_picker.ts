@@ -6,8 +6,8 @@ import { ActionId } from '../../proto_utils/action_id.js';
 import { EventID, TypedEvent } from '../../typed_event.js';
 import { existsInDOM } from '../../utils';
 import { Component } from '../component.js';
-import { IconEnumPicker, IconEnumValueConfig } from '../icon_enum_picker.js';
-import { NumberListPicker } from '../number_list_picker.js';
+import { IconEnumPicker, IconEnumValueConfig } from '../pickers/icon_enum_picker.jsx';
+import { NumberListPicker } from '../pickers/number_list_picker.js';
 
 export class CooldownsPicker extends Component {
 	readonly player: Player<any>;
@@ -64,13 +64,9 @@ export class CooldownsPicker extends Component {
 
 			const deleteButtonFragment = document.createElement('fragment');
 			deleteButtonFragment.innerHTML = `
-				<a
-					href="javascript:void(0)"
-					class="delete-cooldown link-danger"
-					role="button"
-				>
+				<button class="delete-cooldown link-danger">
 					<i class="fa fa-times fa-xl"></i>
-				</a>
+				</button>
 			`;
 			const deleteButton = deleteButtonFragment.children[0] as HTMLElement;
 			const deleteButtonTooltip = tippy(deleteButton, { content: 'Delete Cooldown' });

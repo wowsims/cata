@@ -76,12 +76,12 @@ $gray-800: #323232;
 
 	.form-label {
 		margin-left: var(--spacer-2);
+		margin-bottom: 0;
 	}
 }
 
 .form-check-input {
-	width: $form-check-input-width !important;
-	height: $form-check-input-width !important;
+	margin-top: 0;
 
 	&:focus {
 		box-shadow: 0 0 0.25rem var(--bs-primary);
@@ -204,6 +204,7 @@ $gray-800: #323232;
 			align-items: center;
 			font-weight: bold;
 			white-space: nowrap;
+			cursor: pointer;
 
 			&.active {
 				position: relative;
@@ -231,19 +232,6 @@ $gray-800: #323232;
 
 .toast {
 	--icon-color: var(--bs-warning);
-	--bs-toast-padding-x: var(--spacer-3);
-	--bs-toast-padding-y: var(--spacer-3);
-	// --bs-toast-spacing: default;
-	// --bs-toast-max-width: default;
-	--bs-toast-color: var(--bs-body-color);
-	--bs-toast-bg: var(--bs-body-bg);
-	--bs-toast-border-color: color-mix(in srgb, var(--bs-body-bg), white 20%);
-	// --bs-toast-border-width: default;
-	--bs-toast-border-radius: 0;
-	// --bs-toast-box-shadow: default;
-	--bs-toast-header-color: var(--bs-toast-color);
-	--bs-toast-header-bg: var(--bs-toast-bg);
-	--bs-toast-header-border-color: transparent;
 
 	i {
 		line-height: 1;

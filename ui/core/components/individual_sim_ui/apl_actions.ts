@@ -30,9 +30,9 @@ import { Spec } from '../../proto/common.js';
 import { FeralDruid_Rotation_AplType } from '../../proto/druid.js';
 import { EventID } from '../../typed_event.js';
 import { randomUUID } from '../../utils';
-import { TextDropdownPicker } from '../dropdown_picker.js';
 import { Input, InputConfig } from '../input.js';
-import { ListItemPickerConfig, ListPicker } from '../list_picker.js';
+import { TextDropdownPicker } from '../pickers/dropdown_picker.jsx';
+import { ListItemPickerConfig, ListPicker } from '../pickers/list_picker.jsx';
 import * as AplHelpers from './apl_helpers.js';
 import * as AplValues from './apl_values.js';
 

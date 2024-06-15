@@ -849,6 +849,15 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 					Timer:    character.NewTimer(),
 					Duration: time.Minute,
 				},
+
+				DefaultCast: Cast{
+					CastTime: time.Millisecond * 500,
+				},
+
+				ModifyCast: func(sim *Simulation, spell *Spell, cast *Cast) {
+					spell.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
+					spell.Unit.AutoAttacks.StopRangedUntil(sim, sim.CurrentTime)
+				},
 			},
 
 			// Explosives always have 1% resist chance, so just give them hit cap.
@@ -1027,6 +1036,10 @@ func registerTinkerHandsCD(agent Agent, consumes *proto.Consumes) {
 					Duration: time.Second * 120,
 				},
 			},
+
+			DamageMultiplier: 1,
+			CritMultiplier:   character.DefaultSpellCritMultiplier(),
+			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *Simulation, unit *Unit, spell *Spell) {
 				// Benerfits from enhancement mastery

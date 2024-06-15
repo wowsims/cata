@@ -48,6 +48,11 @@ func (dk *DeathKnight) ApplyFrostTalents() {
 		dk.PseudoStats.MeleeSpeedMultiplier *= 1.05
 	}
 
+	// Brittle Bones
+	if dk.Talents.BrittleBones > 0 {
+		dk.MultiplyStat(stats.Strength, 1.0+0.02*float64(dk.Talents.BrittleBones))
+	}
+
 	// Might of the Frozen Wastes
 	dk.applyMightOfTheFrozenWastes()
 }
@@ -150,7 +155,7 @@ func (dk *DeathKnight) applyRime() {
 		ProcMask:       core.ProcMaskMeleeMH,
 		ClassSpellMask: DeathKnightSpellObliterate,
 		Outcome:        core.OutcomeLanded,
-		ProcChance:     0.45,
+		ProcChance:     0.15 * float64(dk.Talents.Rime),
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			freezingFogAura.Activate(sim)
 		},

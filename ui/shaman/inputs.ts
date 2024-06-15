@@ -1,8 +1,8 @@
 import { ContentBlock } from '../core/components/content_block';
-import { IconEnumPicker } from '../core/components/icon_enum_picker';
-import { IconPicker } from '../core/components/icon_picker';
 import { Input } from '../core/components/input';
 import * as InputHelpers from '../core/components/input_helpers';
+import { IconEnumPicker } from '../core/components/pickers/icon_enum_picker';
+import { IconPicker } from '../core/components/pickers/icon_picker';
 import { IndividualSimUI } from '../core/individual_sim_ui';
 import { Player } from '../core/player';
 import { Spec } from '../core/proto/common';
@@ -59,30 +59,30 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		getValue: (player: Player<ShamanSpecs>) => player.getSpecOptions().classOptions?.call || CallTotem.Elements,
 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
 			const newOptions = player.getSpecOptions();
-			switch(newValue){
+			switch (newValue) {
 				case CallTotem.Elements: {
-					_earthTotemPicker.setInputValue(newOptions.classOptions?.totems?.elements?.earth || EarthTotem.NoEarthTotem)
-					_waterTotemPicker.setInputValue(newOptions.classOptions?.totems?.elements?.water || WaterTotem.NoWaterTotem)
-					_fireTotemPicker.setInputValue(newOptions.classOptions?.totems?.elements?.fire || FireTotem.NoFireTotem)
-					_airTotemPicker.setInputValue(newOptions.classOptions?.totems?.elements?.air || AirTotem.NoAirTotem)
+					_earthTotemPicker.setInputValue(newOptions.classOptions?.totems?.elements?.earth || EarthTotem.NoEarthTotem);
+					_waterTotemPicker.setInputValue(newOptions.classOptions?.totems?.elements?.water || WaterTotem.NoWaterTotem);
+					_fireTotemPicker.setInputValue(newOptions.classOptions?.totems?.elements?.fire || FireTotem.NoFireTotem);
+					_airTotemPicker.setInputValue(newOptions.classOptions?.totems?.elements?.air || AirTotem.NoAirTotem);
 					break;
 				}
 				case CallTotem.Ancestors: {
-					_earthTotemPicker.setInputValue(newOptions.classOptions?.totems?.ancestors?.earth || EarthTotem.NoEarthTotem)
-					_waterTotemPicker.setInputValue(newOptions.classOptions?.totems?.ancestors?.water || WaterTotem.NoWaterTotem)
-					_fireTotemPicker.setInputValue(newOptions.classOptions?.totems?.ancestors?.fire || FireTotem.NoFireTotem)
-					_airTotemPicker.setInputValue(newOptions.classOptions?.totems?.ancestors?.air || AirTotem.NoAirTotem)
+					_earthTotemPicker.setInputValue(newOptions.classOptions?.totems?.ancestors?.earth || EarthTotem.NoEarthTotem);
+					_waterTotemPicker.setInputValue(newOptions.classOptions?.totems?.ancestors?.water || WaterTotem.NoWaterTotem);
+					_fireTotemPicker.setInputValue(newOptions.classOptions?.totems?.ancestors?.fire || FireTotem.NoFireTotem);
+					_airTotemPicker.setInputValue(newOptions.classOptions?.totems?.ancestors?.air || AirTotem.NoAirTotem);
 					break;
 				}
 				case CallTotem.Spirits: {
-					_earthTotemPicker.setInputValue(newOptions.classOptions?.totems?.spirits?.earth || EarthTotem.NoEarthTotem)
-					_waterTotemPicker.setInputValue(newOptions.classOptions?.totems?.spirits?.water || WaterTotem.NoWaterTotem)
-					_fireTotemPicker.setInputValue(newOptions.classOptions?.totems?.spirits?.fire || FireTotem.NoFireTotem)
-					_airTotemPicker.setInputValue(newOptions.classOptions?.totems?.spirits?.air || AirTotem.NoAirTotem)
+					_earthTotemPicker.setInputValue(newOptions.classOptions?.totems?.spirits?.earth || EarthTotem.NoEarthTotem);
+					_waterTotemPicker.setInputValue(newOptions.classOptions?.totems?.spirits?.water || WaterTotem.NoWaterTotem);
+					_fireTotemPicker.setInputValue(newOptions.classOptions?.totems?.spirits?.fire || FireTotem.NoFireTotem);
+					_airTotemPicker.setInputValue(newOptions.classOptions?.totems?.spirits?.air || AirTotem.NoAirTotem);
 					break;
 				}
 			}
-			newOptions.classOptions!.call = newValue
+			newOptions.classOptions!.call = newValue;
 			player.setSpecOptions(eventID, newOptions);
 		},
 	});
@@ -95,15 +95,15 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 			{ actionId: ActionId.fromSpellId(8075), value: EarthTotem.StrengthOfEarthTotem },
 			{ actionId: ActionId.fromSpellId(8071), value: EarthTotem.StoneskinTotem },
 			{ actionId: ActionId.fromSpellId(8143), value: EarthTotem.TremorTotem },
-			{ actionId: ActionId.fromSpellId(2062), value: EarthTotem.EarthElementalTotem},
+			{ actionId: ActionId.fromSpellId(2062), value: EarthTotem.EarthElementalTotem },
 		],
 		equals: (a: EarthTotem, b: EarthTotem) => a == b,
 		zeroValue: EarthTotem.NoEarthTotem,
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
 		getValue: (player: Player<ShamanSpecs>) => {
 			const newOptions = player.getSpecOptions();
-			let value = EarthTotem.NoEarthTotem
-			switch(newOptions.classOptions?.call){
+			let value = EarthTotem.NoEarthTotem;
+			switch (newOptions.classOptions?.call) {
 				case CallTotem.Elements: {
 					value = player.getSpecOptions().classOptions?.totems?.elements?.earth || EarthTotem.NoEarthTotem;
 					break;
@@ -122,21 +122,21 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
 			const newOptions = player.getSpecOptions();
 			if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
-			switch(newOptions.classOptions?.call){
+			switch (newOptions.classOptions?.call) {
 				case CallTotem.Elements: {
 					newOptions.classOptions!.totems.earth = newValue;
 					if (!newOptions.classOptions?.totems.elements) newOptions.classOptions.totems.elements = TotemSet.create();
-					newOptions.classOptions.totems.elements!.earth = newValue
+					newOptions.classOptions.totems.elements!.earth = newValue;
 					break;
 				}
 				case CallTotem.Ancestors: {
 					if (!newOptions.classOptions?.totems.ancestors) newOptions.classOptions.totems.ancestors = TotemSet.create();
-					newOptions.classOptions.totems.ancestors!.earth = newValue
+					newOptions.classOptions.totems.ancestors!.earth = newValue;
 					break;
 				}
 				case CallTotem.Spirits: {
 					if (!newOptions.classOptions?.totems.spirits) newOptions.classOptions.totems.spirits = TotemSet.create();
-					newOptions.classOptions.totems.spirits!.earth = newValue
+					newOptions.classOptions.totems.spirits!.earth = newValue;
 					break;
 				}
 			}
@@ -157,8 +157,8 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
 		getValue: (player: Player<ShamanSpecs>) => {
 			const newOptions = player.getSpecOptions();
-			let value = WaterTotem.NoWaterTotem
-			switch(newOptions.classOptions?.call){
+			let value = WaterTotem.NoWaterTotem;
+			switch (newOptions.classOptions?.call) {
 				case CallTotem.Elements: {
 					value = player.getSpecOptions().classOptions?.totems?.elements?.water || WaterTotem.NoWaterTotem;
 					break;
@@ -177,21 +177,21 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
 			const newOptions = player.getSpecOptions();
 			if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
-			switch(newOptions.classOptions?.call){
+			switch (newOptions.classOptions?.call) {
 				case CallTotem.Elements: {
 					newOptions.classOptions!.totems.water = newValue;
 					if (!newOptions.classOptions?.totems.elements) newOptions.classOptions.totems.elements = TotemSet.create();
-					newOptions.classOptions.totems.elements!.water = newValue
+					newOptions.classOptions.totems.elements!.water = newValue;
 					break;
 				}
 				case CallTotem.Ancestors: {
 					if (!newOptions.classOptions?.totems.ancestors) newOptions.classOptions.totems.ancestors = TotemSet.create();
-					newOptions.classOptions.totems.ancestors!.water = newValue
+					newOptions.classOptions.totems.ancestors!.water = newValue;
 					break;
 				}
 				case CallTotem.Spirits: {
 					if (!newOptions.classOptions?.totems.spirits) newOptions.classOptions.totems.spirits = TotemSet.create();
-					newOptions.classOptions.totems.spirits!.water = newValue
+					newOptions.classOptions.totems.spirits!.water = newValue;
 					break;
 				}
 			}
@@ -207,15 +207,15 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 			{ actionId: ActionId.fromSpellId(78770), value: FireTotem.MagmaTotem },
 			{ actionId: ActionId.fromSpellId(3599), value: FireTotem.SearingTotem },
 			{ actionId: ActionId.fromSpellId(8227), value: FireTotem.FlametongueTotem },
-			{ actionId: ActionId.fromSpellId(2894), value: FireTotem.FireElementalTotem},
+			{ actionId: ActionId.fromSpellId(2894), value: FireTotem.FireElementalTotem },
 		],
 		equals: (a: FireTotem, b: FireTotem) => a == b,
 		zeroValue: FireTotem.NoFireTotem,
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
 		getValue: (player: Player<ShamanSpecs>) => {
 			const newOptions = player.getSpecOptions();
-			let value = FireTotem.NoFireTotem
-			switch(newOptions.classOptions?.call){
+			let value = FireTotem.NoFireTotem;
+			switch (newOptions.classOptions?.call) {
 				case CallTotem.Elements: {
 					value = player.getSpecOptions().classOptions?.totems?.elements?.fire || FireTotem.NoFireTotem;
 					break;
@@ -234,21 +234,21 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
 			const newOptions = player.getSpecOptions();
 			if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
-			switch(newOptions.classOptions?.call){
+			switch (newOptions.classOptions?.call) {
 				case CallTotem.Elements: {
 					newOptions.classOptions!.totems.fire = newValue;
 					if (!newOptions.classOptions?.totems.elements) newOptions.classOptions.totems.elements = TotemSet.create();
-					newOptions.classOptions.totems.elements!.fire = newValue
+					newOptions.classOptions.totems.elements!.fire = newValue;
 					break;
 				}
 				case CallTotem.Ancestors: {
 					if (!newOptions.classOptions?.totems.ancestors) newOptions.classOptions.totems.ancestors = TotemSet.create();
-					newOptions.classOptions.totems.ancestors!.fire = newValue
+					newOptions.classOptions.totems.ancestors!.fire = newValue;
 					break;
 				}
 				case CallTotem.Spirits: {
 					if (!newOptions.classOptions?.totems.spirits) newOptions.classOptions.totems.spirits = TotemSet.create();
-					newOptions.classOptions.totems.spirits!.fire = newValue
+					newOptions.classOptions.totems.spirits!.fire = newValue;
 					break;
 				}
 			}
@@ -269,8 +269,8 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		changedEvent: (player: Player<ShamanSpecs>) => player.specOptionsChangeEmitter,
 		getValue: (player: Player<ShamanSpecs>) => {
 			const newOptions = player.getSpecOptions();
-			let value = AirTotem.NoAirTotem
-			switch(newOptions.classOptions?.call){
+			let value = AirTotem.NoAirTotem;
+			switch (newOptions.classOptions?.call) {
 				case CallTotem.Elements: {
 					value = player.getSpecOptions().classOptions?.totems?.elements?.air || AirTotem.NoAirTotem;
 					break;
@@ -289,21 +289,21 @@ export function TotemsSection(parentElem: HTMLElement, simUI: IndividualSimUI<an
 		setValue: (eventID: EventID, player: Player<ShamanSpecs>, newValue: number) => {
 			const newOptions = player.getSpecOptions();
 			if (!newOptions.classOptions?.totems) newOptions.classOptions!.totems = ShamanTotems.create();
-			switch(newOptions.classOptions?.call){
+			switch (newOptions.classOptions?.call) {
 				case CallTotem.Elements: {
 					newOptions.classOptions!.totems.air = newValue;
 					if (!newOptions.classOptions?.totems.elements) newOptions.classOptions.totems.elements = TotemSet.create();
-					newOptions.classOptions.totems.elements!.air = newValue
+					newOptions.classOptions.totems.elements!.air = newValue;
 					break;
 				}
 				case CallTotem.Ancestors: {
 					if (!newOptions.classOptions?.totems.ancestors) newOptions.classOptions.totems.ancestors = TotemSet.create();
-					newOptions.classOptions.totems.ancestors!.air = newValue
+					newOptions.classOptions.totems.ancestors!.air = newValue;
 					break;
 				}
 				case CallTotem.Spirits: {
 					if (!newOptions.classOptions?.totems.spirits) newOptions.classOptions.totems.spirits = TotemSet.create();
-					newOptions.classOptions.totems.spirits!.air = newValue
+					newOptions.classOptions.totems.spirits!.air = newValue;
 					break;
 				}
 			}

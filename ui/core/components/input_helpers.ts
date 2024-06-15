@@ -4,12 +4,12 @@ import { ActionId } from '../proto_utils/action_id.js';
 import { ClassOptions, SpecOptions, SpecRotation } from '../proto_utils/utils.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { randomUUID } from '../utils';
-import { BooleanPickerConfig } from './boolean_picker.js';
-import { EnumPickerConfig, EnumValueConfig } from './enum_picker.js';
-import { IconEnumPickerConfig, IconEnumValueConfig } from './icon_enum_picker.js';
-import { IconPickerConfig } from './icon_picker.js';
-import { MultiIconPickerConfig } from './multi_icon_picker.js';
-import { NumberPickerConfig } from './number_picker.js';
+import { BooleanPickerConfig } from './pickers/boolean_picker.js';
+import { EnumPickerConfig, EnumValueConfig } from './pickers/enum_picker.js';
+import { IconEnumPickerConfig, IconEnumValueConfig } from './pickers/icon_enum_picker.jsx';
+import { IconPickerConfig } from './pickers/icon_picker.jsx';
+import { MultiIconPickerConfig } from './pickers/multi_icon_picker.js';
+import { NumberPickerConfig } from './pickers/number_picker.js';
 
 export function makeMultiIconInput<ModObject>(
 	inputs: Array<IconPickerConfig<ModObject, any>>,

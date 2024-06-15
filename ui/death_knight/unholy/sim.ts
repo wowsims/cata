@@ -1,5 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
-import * as OtherInputs from '../../core/components/other_inputs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
@@ -63,23 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		// Default equipped gear.
 		gear: Presets.P1_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatStrength]: 3.22,
-				[Stat.StatArmor]: 0.01,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatExpertise]: 1.13,
-				[Stat.StatMeleeHaste]: 1.85,
-				[Stat.StatMeleeHit]: 1.92,
-				[Stat.StatMeleeCrit]: 0.76,
-				[Stat.StatSpellHit]: 0.8,
-				[Stat.StatSpellCrit]: 0.34,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.1,
-				[PseudoStat.PseudoStatOffHandDps]: 1.79,
-			},
-		),
+		epWeights: Presets.P1_UNHOLY_EP_PRESET.epWeights,
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -100,13 +84,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			arcaneTactics: true,
 		}),
 		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			sunderArmor: true,
 			brittleBones: true,
 			ebonPlaguebringer: true,
-			shadowAndFlame: true
+			shadowAndFlame: true,
 		}),
 	},
 
@@ -123,14 +106,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	playerIconInputs: [],
 	petConsumeInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellDamageDebuff
-	],
-	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.DamageReduction,
-		BuffDebuffInputs.MeleeAttackSpeedDebuff,
-		BuffDebuffInputs.BleedDebuff
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellDamageDebuff],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.DamageReduction, BuffDebuffInputs.MeleeAttackSpeedDebuff, BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
@@ -143,7 +120,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			// OtherInputs.TankAssignment,
 			// OtherInputs.InFrontOfTarget,
 			OtherInputs.InputDelay,
-			OtherInputs.DarkIntentUptime
+			OtherInputs.DarkIntentUptime,
 		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
@@ -153,6 +130,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_UNHOLY_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [
 			Presets.SingleTargetTalents,
@@ -164,9 +142,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 			//Presets.AOE_ROTATION_PRESET_DEFAULT,
 		],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.P1_GEAR_PRESET,
-		],
+		gear: [Presets.P1_GEAR_PRESET],
 	},
 
 	raidSimPresets: [

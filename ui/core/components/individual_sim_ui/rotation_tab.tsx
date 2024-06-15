@@ -6,12 +6,12 @@ import { Player } from '../../player';
 import { APLRotation, APLRotation_Type as APLRotationType } from '../../proto/apl';
 import { SavedRotation } from '../../proto/ui';
 import { EventID, TypedEvent } from '../../typed_event';
-import { BooleanPicker } from '../boolean_picker';
 import { ContentBlock } from '../content_block';
-import { EnumPicker } from '../enum_picker';
 import * as IconInputs from '../icon_inputs';
 import { Input } from '../input';
-import { NumberPicker } from '../number_picker';
+import { BooleanPicker } from '../pickers/boolean_picker';
+import { EnumPicker } from '../pickers/enum_picker';
+import { NumberPicker } from '../pickers/number_picker';
 import { SavedDataManager } from '../saved_data_manager';
 import { SimTab } from '../sim_tab';
 import { APLRotationPicker } from './apl_rotation_picker';
@@ -77,9 +77,9 @@ export class RotationTab extends SimTab {
 		this.leftPanel.appendChild(
 			<div ref={headerRef} className="rotation-tab-header d-flex justify-content-between align-items-baseline">
 				<div ref={rotationTypeSelectRef} />
-				<button ref={resetButtonRef} className="btn btn-sm btn-reset summary-table-reset-button">
+				<button ref={resetButtonRef} className="btn btn-sm btn-link btn-reset summary-table-reset-button">
+					<i className="fas fa-times me-1"></i>
 					Reset APL
-					<i className="fas fa-close ms-1"></i>
 				</button>
 			</div>,
 		);
@@ -223,6 +223,7 @@ export class RotationTab extends SimTab {
 					isPreset: true,
 					data: rotData,
 					enableWhen: presetRotation.enableWhen,
+					onLoad: presetRotation.onLoad,
 				});
 			});
 		});

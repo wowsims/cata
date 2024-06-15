@@ -180,25 +180,12 @@ func (druid *Druid) GetCharacter() *core.Character {
 }
 
 func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	// raidBuffs.GiftOfTheWild = max(raidBuffs.GiftOfTheWild, proto.TristateEffect_TristateEffectRegular)
-	// if druid.Talents.ImprovedMarkOfTheWild == 2 { // probably could work on actually calculating the fraction effect later if we care.
-	// 	raidBuffs.GiftOfTheWild = proto.TristateEffect_TristateEffectImproved
-	// }
-
-	// raidBuffs.Thorns = max(raidBuffs.Thorns, proto.TristateEffect_TristateEffectRegular)
-	// if druid.Talents.Brambles == 3 {
-	// 	raidBuffs.Thorns = proto.TristateEffect_TristateEffectImproved
-	// }
-
-	// if druid.InForm(Moonkin) && druid.Talents.MoonkinForm {
-	// 	raidBuffs.MoonkinAura = max(raidBuffs.MoonkinAura, proto.TristateEffect_TristateEffectRegular)
-	// 	if druid.Talents.ImprovedMoonkinForm > 0 {
-	// 		// For now, we assume Improved Moonkin Form is maxed-out
-	// 		raidBuffs.MoonkinAura = proto.TristateEffect_TristateEffectImproved
-	// 	}
-	// }
 	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
 		raidBuffs.LeaderOfThePack = true
+	}
+
+	if druid.InForm(Moonkin) {
+		raidBuffs.MoonkinForm = true
 	}
 
 	raidBuffs.MarkOfTheWild = true
@@ -270,7 +257,6 @@ func (druid *Druid) Initialize() {
 	druid.registerFaerieFireSpell()
 	// druid.registerRebirthSpell()
 	druid.registerInnervateCD()
-	// druid.registerFakeGotw()
 	druid.applyOmenOfClarity()
 }
 

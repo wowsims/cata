@@ -88,7 +88,8 @@
 			margin-left: var(--spacer-3);
 			display: flex;
 
-			a {
+			a,
+			button {
 				margin-top: var(--bs-nav-link-padding-y);
 				margin-bottom: var(--bs-nav-link-padding-y);
 			}
@@ -103,7 +104,8 @@
 			margin-bottom: calc(var(--bs-nav-link-padding-y) / 2);
 			border-left: var(--border-default);
 
-			a {
+			a,
+			button {
 				margin-top: calc(var(--bs-nav-link-padding-y) / 2);
 				margin-bottom: calc(var(--bs-nav-link-padding-y) / 2);
 			}

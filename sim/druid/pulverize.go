@@ -54,7 +54,7 @@ func (druid *Druid) registerPulverizeSpell() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
-				lacerateDot.Cancel(sim)
+				lacerateDot.Deactivate(sim)
 				druid.PulverizeAura.Activate(sim)
 				druid.PulverizeAura.SetStacks(sim, lacerateStacksConsumed)
 			} else {

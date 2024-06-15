@@ -1,5 +1,5 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
+import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
@@ -66,29 +66,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 		// Default equipped gear.
 		gear: Presets.P1_BALANCED_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatArmor]: 0.174,
-				[Stat.StatBonusArmor]: 0.155,
-				[Stat.StatStamina]: 2.336,
-				[Stat.StatStrength]: 1.555,
-				[Stat.StatAgility]: 2.771,
-				[Stat.StatAttackPower]: 0.32,
-				[Stat.StatExpertise]: 1.44,
-				[Stat.StatMeleeHit]: 1.432,
-				[Stat.StatMeleeCrit]: 0.925,
-				[Stat.StatMeleeHaste]: 0.431,
-				[Stat.StatBlock]: 1.32,
-				[Stat.StatDodge]: 2.606,
-				[Stat.StatParry]: 2.649,
-				// @todo: Calculate actual weights
-				// This probably applies for all weights
-				[Stat.StatMastery]: 0,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 6.081,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -121,13 +99,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 			mangle: true,
 			vindication: true,
 			bloodFrenzy: true,
-			judgement: true,
 			frostFever: true,
 		}),
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [ProtectionWarriorInputs.ShoutPicker(), ProtectionWarriorInputs.ShatteringThrow(),ProtectionWarriorInputs.Recklessness()],
+	playerIconInputs: [ProtectionWarriorInputs.ShoutPicker(), ProtectionWarriorInputs.ShatteringThrow(), ProtectionWarriorInputs.Recklessness()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.StaminaBuff],
 	excludeBuffDebuffInputs: [],
@@ -152,15 +129,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents, Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_DEFAULT, Presets.ROTATION_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_BALANCED_PRESET,
-			Presets.P1_BALANCED_PRESET,
-		],
+		gear: [Presets.PRERAID_BALANCED_PRESET, Presets.P1_BALANCED_PRESET],
 	},
 
 	autoRotation: (_player: Player<Spec.SpecProtectionWarrior>): APLRotation => {

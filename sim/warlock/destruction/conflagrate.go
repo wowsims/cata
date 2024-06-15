@@ -40,9 +40,9 @@ func (destruction *DestructionWarlock) registerConflagrate() {
 			if !immoDot.IsActive() {
 				panic("Casted conflagrate without active immolation on the target")
 			}
-			spell.DamageMultiplier *= float64(immoDot.NumberOfTicks) * 0.6
+			spell.DamageMultiplier *= float64(immoDot.HastedTickCount()) * 0.6
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier /= float64(immoDot.NumberOfTicks) * 0.6
+			spell.DamageMultiplier /= float64(immoDot.HastedTickCount()) * 0.6
 		},
 	})
 }

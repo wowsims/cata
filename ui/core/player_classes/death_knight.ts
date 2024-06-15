@@ -14,18 +14,18 @@ export class DeathKnight extends PlayerClass<Class.ClassDeathKnight> {
 		[UnholyDeathKnight.friendlyName]: UnholyDeathKnight,
 	};
 	static races: Race[] = [
-		Race.RaceBloodElf,
-		Race.RaceDraenei,
-		Race.RaceDwarf,
-		Race.RaceHuman,
-		Race.RaceGnome,
-		Race.RaceGoblin,
-		Race.RaceNightElf,
 		Race.RaceOrc,
-		Race.RaceTauren,
 		Race.RaceTroll,
+		Race.RaceGoblin,
+		Race.RaceBloodElf,
 		Race.RaceUndead,
+		Race.RaceTauren,
 		Race.RaceWorgen,
+		Race.RaceDraenei,
+		Race.RaceHuman,
+		Race.RaceDwarf,
+		Race.RaceNightElf,
+		Race.RaceGnome,
 	];
 	static armorTypes: ArmorType[] = [ArmorType.ArmorTypePlate, ArmorType.ArmorTypeMail, ArmorType.ArmorTypeLeather, ArmorType.ArmorTypeCloth];
 	static weaponTypes: EligibleWeaponType[] = [

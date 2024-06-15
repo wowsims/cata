@@ -58,7 +58,7 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
       <div class="hunter-talents-pickers-container tab-content">
         <ul class="nav nav-tabs" role="tablist">
           <li class="nav-item" role="presentation">
-            <a
+            <button
               class="nav-link active"
               type="button"
               role="tab"
@@ -68,10 +68,10 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
               aria-selected="true"
             >
               Player
-            </a>
+            </button>
           </li>
           <li class="nav-item" role="presentation">
-            <a
+            <button
               class="nav-link"
               type="button"
               role="tab"
@@ -80,7 +80,7 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
               aria-controls="#pet-talents-tab"
               aria-selected="false"
             >
-              Pet</a
+              Pet</button
             >
           </li>
         </ul>
@@ -134,6 +134,7 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 					name: config.name,
 					isPreset: true,
 					data: config.data,
+					onLoad: config.onLoad,
 				});
 			});
 		});

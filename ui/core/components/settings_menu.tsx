@@ -6,9 +6,9 @@ import { Sim } from '../sim.js';
 import { SimUI } from '../sim_ui.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { BaseModal } from './base_modal.jsx';
-import { BooleanPicker } from './boolean_picker.js';
-import { EnumPicker, EnumValueConfig } from './enum_picker.js';
-import { NumberPicker } from './number_picker.js';
+import { BooleanPicker } from './pickers/boolean_picker.js';
+import { EnumPicker, EnumValueConfig } from './pickers/enum_picker.js';
+import { NumberPicker } from './pickers/number_picker.js';
 import Toast from './toast';
 
 export class SettingsMenu extends BaseModal {

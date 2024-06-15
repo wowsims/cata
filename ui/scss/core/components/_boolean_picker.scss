@@ -1,10 +1,6 @@
 @import './input';
 
-.boolean-picker-root {
-	&.input-root {
-		@include media-breakpoint-down(xl) {
-			flex-direction: row;
-			justify-content: space-between;
-		}
-	}
+.input-root.boolean-picker-root {
+	flex-direction: row;
+	align-items: center;
 }

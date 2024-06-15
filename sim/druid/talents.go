@@ -112,7 +112,7 @@ func (druid *Druid) applyNaturesGrace() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Outcome:        core.OutcomeLanded,
-		ClassSpellMask: DruidSpellMoonfire | DruidSpellInsectSwarm,
+		ClassSpellMask: DruidSpellMoonfire | DruidSpellSunfire | DruidSpellInsectSwarm,
 		ICD:            time.Second * 60,
 		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 			ngAura.Activate(sim)

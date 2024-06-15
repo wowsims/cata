@@ -10,7 +10,7 @@ import (
 func (druid *Druid) registerInsectSwarmSpell() {
 	druid.InsectSwarm = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 5570},
-		SpellSchool:    core.SpellSchoolNature,
+		SpellSchool:    core.SpellSchoolArcane | core.SpellSchoolNature,
 		ProcMask:       core.ProcMaskSpellDamage,
 		ClassSpellMask: DruidSpellInsectSwarm,
 		Flags:          core.SpellFlagAPL | SpellFlagOmenTrigger,
