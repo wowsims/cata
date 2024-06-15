@@ -4,10 +4,7 @@ import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_u
 import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
-import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common';
-import { Stats } from '../../core/proto_utils/stats';
-import * as DeathKnightInputs from '../inputs';
-import * as FrostInputs from './inputs';
+import { Debuffs, Faction, IndividualBuffs, ItemSlot, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
 import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
@@ -48,30 +45,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	],
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.P1_2H_GEAR_PRESET.gear,
+		gear: Presets.P1_MASTERFROST_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatStrength]: 3.22,
-				[Stat.StatArmor]: 0.01,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatExpertise]: 1.13,
-				[Stat.StatMeleeHaste]: 1.85,
-				[Stat.StatMeleeHit]: 1.92,
-				[Stat.StatMeleeCrit]: 0.76,
-				[Stat.StatSpellHit]: 0.8,
-				[Stat.StatSpellCrit]: 0.34,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.1,
-				//[PseudoStat.PseudoStatOffHandDps]: 1.79,
-			},
-		),
+		epWeights: Presets.P1_MASTERFROST_EP_PRESET.epWeights,
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
-		talents: Presets.TwoHandTalents.data,
+		talents: Presets.MasterfrostTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
 		// Default raid/party buffs settings.
@@ -99,10 +80,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	},
 
 	autoRotation: (player: Player<Spec.SpecFrostDeathKnight>): APLRotation => {
-		const numTargets = player.sim.encounter.targets.length;
-		{
-			return Presets.TWO_HAND_ROTATION_PRESET_DEFAULT.rotation.rotation!;
-		}
+		const _numTargets = player.sim.encounter.targets.length;
+		return Presets.MASTERFROST_ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -131,6 +110,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFrostDeathKnight, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_MASTERFROST_EP_PRESET],
 		talents: [Presets.DualWieldTalents, Presets.TwoHandTalents, Presets.MasterfrostTalents],
 		rotations: [Presets.DUAL_WIELD_ROTATION_RESET_DEFAULT, Presets.TWO_HAND_ROTATION_PRESET_DEFAULT, Presets.MASTERFROST_ROTATION_PRESET_DEFAULT],
 		gear: [Presets.P1_DW_GEAR_PRESET, Presets.P1_2H_GEAR_PRESET, Presets.P1_MASTERFROST_GEAR_PRESET],

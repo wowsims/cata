@@ -91,27 +91,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		gear: Presets.PRERAID_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		// Values for now are pre-Cata initial WAG
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatArmor]: 0.07,
-				[Stat.StatBonusArmor]: 0.06,
-				[Stat.StatStamina]: 1.14,
-				[Stat.StatMastery]: 1.0,
-				[Stat.StatStrength]: 1.0,
-				[Stat.StatAgility]: 0,
-				[Stat.StatAttackPower]: 0.26,
-				[Stat.StatExpertise]: 0.5,
-				[Stat.StatMeleeHit]: 0.5,
-				[Stat.StatMeleeCrit]: 0.3,
-				[Stat.StatMeleeHaste]: 0.17,
-				[Stat.StatSpellPower]: 0,
-				[Stat.StatDodge]: 0.6,
-				[Stat.StatParry]: 0.6,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.33,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -176,6 +156,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.GenericAoeTalents],
 		// Preset rotations that the user can quickly select.

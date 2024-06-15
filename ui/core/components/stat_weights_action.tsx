@@ -5,38 +5,37 @@ import { ref } from 'tsx-vanilla';
 import { IndividualSimUI } from '../individual_sim_ui.jsx';
 import { Player } from '../player.js';
 import { ProgressMetrics, StatWeightsResult, StatWeightValues } from '../proto/api.js';
-import { GemColor, ItemSlot, Profession, PseudoStat, Stat, UnitStats } from '../proto/common.js';
-import { UIGem as Gem } from '../proto/ui.js';
-import { Gear } from '../proto_utils/gear.js';
-import * as Gems from '../proto_utils/gems.js';
+import { PseudoStat, Stat, UnitStats } from '../proto/common.js';
+import { SavedEPWeights } from '../proto/ui';
 import { getClassStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
-import { cloneChildren, combinationsWithDups, permutations, stDevToConf90, sum } from '../utils.js';
+import { stDevToConf90 } from '../utils.js';
 import { BaseModal } from './base_modal.jsx';
 import { BooleanPicker } from './pickers/boolean_picker.js';
 import { NumberPicker } from './pickers/number_picker.js';
 import { ResultsViewer } from './results_viewer.jsx';
+import { SavedDataManager } from './saved_data_manager';
 
-export function addStatWeightsAction(simUI: IndividualSimUI<any>, epStats: Stat[], epPseudoStats: PseudoStat[] | undefined, epReferenceStat: Stat) {
+export const addStatWeightsAction = (simUI: IndividualSimUI<any>) => {
 	simUI.addAction('Stat Weights', 'ep-weights-action', () => {
 		// TODO: Make this so we can initialize the menu once outside of this function
-		new EpWeightsMenu(simUI, epStats, epPseudoStats || [], epReferenceStat).open();
+		new EpWeightsMenu(simUI).open();
 	});
-}
+};
 
 // Create the config for modal in separate function, as constructor cannot
 // contain any logic before `super' call. Use modal-xl to accommodate the extra
 // TMI & p(death) EP in the UI.
-function getModalConfig(simUI: IndividualSimUI<any>) {
+const getModalConfig = (simUI: IndividualSimUI<any>) => {
 	const baseConfig = { footer: true, scrollContents: true };
 	if (simUI.sim.getShowThreatMetrics() && simUI.sim.getShowExperimental()) {
 		return { size: 'xl' as const, ...baseConfig };
 	}
 	return baseConfig;
-}
+};
 
-function scaledEpValue(stat: UnitStat, epRatios: number[], result: StatWeightsResult | null): number {
+export const scaledEpValue = (stat: UnitStat, epRatios: number[], result: StatWeightsResult | null): number => {
 	if (!result) return 0;
 
 	return (
@@ -47,11 +46,12 @@ function scaledEpValue(stat: UnitStat, epRatios: number[], result: StatWeightsRe
 		(result.tmi?.epValues ? epRatios[4] * stat.getProtoValue(result.tmi.epValues) : 0) +
 		(result.pDeath?.epValues ? epRatios[5] * stat.getProtoValue(result.pDeath.epValues) : 0)
 	);
-}
+};
 
 class EpWeightsMenu extends BaseModal {
 	private readonly simUI: IndividualSimUI<any>;
 	private readonly container: HTMLElement;
+	private readonly sidebar: HTMLElement;
 	private readonly table: HTMLElement;
 	private readonly tableBody: HTMLElement;
 	private readonly resultsViewer: ResultsViewer;
@@ -62,18 +62,19 @@ class EpWeightsMenu extends BaseModal {
 	private epReferenceStat: Stat;
 	private showAllStats = false;
 
-	constructor(simUI: IndividualSimUI<any>, epStats: Stat[], epPseudoStats: PseudoStat[], epReferenceStat: Stat) {
+	constructor(simUI: IndividualSimUI<any>) {
 		super(simUI.rootElem, 'ep-weights-menu', { ...getModalConfig(simUI), disposeOnClose: false });
 		this.header?.insertAdjacentElement('afterbegin', <h5 className="modal-title">Calculate Stat Weights</h5>);
 
 		this.simUI = simUI;
 		this.statsType = 'ep';
-		this.epStats = epStats;
-		this.epPseudoStats = epPseudoStats;
-		this.epReferenceStat = epReferenceStat;
+		this.epStats = this.simUI.individualConfig.epStats;
+		this.epPseudoStats = this.simUI.individualConfig.epPseudoStats || [];
+		this.epReferenceStat = this.simUI.individualConfig.epReferenceStat;
 
 		const statsTable = this.buildStatsTable();
 		const containerRef = ref<HTMLDivElement>();
+		const sidebarRef = ref<HTMLDivElement>();
 		const tableRef = ref<HTMLTableElement>();
 		const tableBodyRef = ref<HTMLTableSectionElement>();
 		const damageMetricsSelectRef = ref<HTMLSelectElement>();
@@ -81,7 +82,6 @@ class EpWeightsMenu extends BaseModal {
 		const threatMetricsSelectRef = ref<HTMLSelectElement>();
 		const typeSelectRef = ref<HTMLSelectElement>();
 		const computeEpRef = ref<HTMLButtonElement>();
-		const optimizeGemsButtonRef = ref<HTMLButtonElement>();
 		const calcWeightsButtonRef = ref<HTMLButtonElement>();
 		const allStatsContainerRef = ref<HTMLDivElement>();
 
@@ -96,88 +96,88 @@ class EpWeightsMenu extends BaseModal {
 		);
 
 		this.body.appendChild(
-			<>
-				<div className="ep-weights-options row">
-					<div className="col col-sm-3">
-						<select ref={typeSelectRef} className="ep-type-select form-select">
-							<option value="ep">EP</option>
-							<option value="weight">Weights</option>
-						</select>
+			<div className="d-flex flex-column flex-lg-row align-items-lg-start gap-3">
+				<div className="ep-weights-content order-1 order-lg-0">
+					<div className="ep-weights-options row">
+						<div className="col col-sm-3">
+							<select ref={typeSelectRef} className="ep-type-select form-select">
+								<option value="ep">EP</option>
+								<option value="weight">Weights</option>
+							</select>
+						</div>
+						<div ref={allStatsContainerRef} className="show-all-stats-container col col-sm-3"></div>
 					</div>
-					<div ref={allStatsContainerRef} className="show-all-stats-container col col-sm-3"></div>
+					<div className="ep-reference-options row experimental">
+						<div className="col col-sm-4 damage-metrics">
+							<span>DPS/TPS reference:</span>
+							<select ref={damageMetricsSelectRef} className="ref-stat-select form-select damage-metrics">
+								{epRefSelectOptions.cloneNode(true)}
+							</select>
+						</div>
+						<div className="col col-sm-4 healing-metrics">
+							<span>Healing reference:</span>
+							<select ref={healingMetricsSelectRef} className="ref-stat-select form-select healing-metrics">
+								{epRefSelectOptions.cloneNode(true)}
+							</select>
+						</div>
+						<div className="col col-sm-4 threat-metrics">
+							<span>Mitigation reference:</span>
+							<select ref={threatMetricsSelectRef} className="ref-stat-select form-select threat-metrics">
+								{epRefSelectOptions.cloneNode(true)}
+							</select>
+						</div>
+						<p>The above stat selectors control which reference stat is used for EP normalisation for the different EP columns.</p>
+					</div>
+					<p>
+						The 'Current EP' column displays the values currently used by the item pickers to sort items.
+						<br />
+						Use the <button className="fa fa-copy" /> icon above the EPs to use newly calculated EPs.
+					</p>
+					<div ref={containerRef} className="results-ep-table-container modal-scroll-table">
+						<table ref={tableRef} className="results-ep-table">
+							<thead>
+								<tr>
+									<th>Stat</th>
+									{statsTable.map(({ metric, type, label, metricRef }) => {
+										const isAction = type === 'action';
+										return (
+											<th className={clsx(metric && `${metric}-metrics`, isAction ? 'text-center' : `type-${type}`)}>
+												<span>{label}</span>
+												<button ref={metricRef} className="col-action">
+													<i className={clsx('fas', isAction ? 'fa-arrows-rotate' : 'fa-copy')} />
+												</button>
+											</th>
+										);
+									})}
+								</tr>
+								<tr className="ep-ratios">
+									<td>EP Ratio</td>
+									{statsTable
+										.filter(({ type }) => type !== 'action')
+										.map(({ metric, type, experimental, ratioRef }) => (
+											<td
+												ref={ratioRef}
+												className={clsx('type-ratio', `${metric}-metrics`, `type-${type}`, experimental && 'experimental')}
+											/>
+										))}
+									<td className="text-center align-middle">
+										<button ref={computeEpRef} className="btn btn-primary compute-ep">
+											<i className="fas fa-calculator" />
+											<span className="not-tiny">Update </span>EP
+										</button>
+									</td>
+								</tr>
+							</thead>
+							<tbody ref={tableBodyRef}></tbody>
+						</table>
+					</div>
 				</div>
-				<div className="ep-reference-options row experimental">
-					<div className="col col-sm-4 damage-metrics">
-						<span>DPS/TPS reference:</span>
-						<select ref={damageMetricsSelectRef} className="ref-stat-select form-select damage-metrics">
-							{epRefSelectOptions.cloneNode(true)}
-						</select>
-					</div>
-					<div className="col col-sm-4 healing-metrics">
-						<span>Healing reference:</span>
-						<select ref={healingMetricsSelectRef} className="ref-stat-select form-select healing-metrics">
-							{epRefSelectOptions.cloneNode(true)}
-						</select>
-					</div>
-					<div className="col col-sm-4 threat-metrics">
-						<span>Mitigation reference:</span>
-						<select ref={threatMetricsSelectRef} className="ref-stat-select form-select threat-metrics">
-							{epRefSelectOptions.cloneNode(true)}
-						</select>
-					</div>
-					<p>The above stat selectors control which reference stat is used for EP normalisation for the different EP columns.</p>
-				</div>
-				<p>
-					The 'Current EP' column displays the values currently used by the item pickers to sort items.
-					<br />
-					Use the <button className="fa fa-copy" /> icon above the EPs to use newly calculated EPs.
-				</p>
-				<div ref={containerRef} className="results-ep-table-container modal-scroll-table">
-					<table ref={tableRef} className="results-ep-table">
-						<thead>
-							<tr>
-								<th>Stat</th>
-								{statsTable.map(({ metric, type, label, metricRef }) => {
-									const isAction = type === 'action';
-									return (
-										<th className={clsx(metric && `${metric}-metrics`, isAction ? 'text-center' : `type-${type}`)}>
-											<span>{label}</span>
-											<button ref={metricRef} className="col-action">
-												<i className={clsx('fas', isAction ? 'fa-arrows-rotate' : 'fa-copy')} />
-											</button>
-										</th>
-									);
-								})}
-							</tr>
-							<tr className="ep-ratios">
-								<td>EP Ratio</td>
-								{statsTable
-									.filter(({ type }) => type !== 'action')
-									.map(({ metric, type, experimental, ratioRef }) => (
-										<td
-											ref={ratioRef}
-											className={clsx('type-ratio', `${metric}-metrics`, `type-${type}`, experimental && 'experimental')}
-										/>
-									))}
-								<td className="text-center align-middle">
-									<button ref={computeEpRef} className="btn btn-primary compute-ep">
-										<i className="fas fa-calculator" />
-										<span className="not-tiny">Update </span>EP
-									</button>
-								</td>
-							</tr>
-						</thead>
-						<tbody ref={tableBodyRef}></tbody>
-					</table>
-				</div>
-			</>,
+				<div ref={sidebarRef} className="ep-weights-sidebar sticky-lg-top order-0 order-lg-1" />
+			</div>,
 		);
 
 		this.footer!.appendChild(
 			<>
-				<button ref={optimizeGemsButtonRef} className="btn btn-primary optimize-gems experimental me-2">
-					Optimize Gems
-				</button>
 				<button ref={calcWeightsButtonRef} className="btn btn-primary calc-weights">
 					<i className="fas fa-calculator me-1" />
 					Calculate
@@ -186,6 +186,7 @@ class EpWeightsMenu extends BaseModal {
 		);
 
 		this.container = containerRef.value!;
+		this.sidebar = sidebarRef.value!;
 		this.table = tableRef.value!;
 		this.tableBody = tableBodyRef.value!;
 
@@ -240,43 +241,6 @@ class EpWeightsMenu extends BaseModal {
 				updateEpRefStat();
 			});
 			threatMetricsSelect.value = getNameFromStat(this.getTankEpRefStat());
-		}
-
-		const optimizeGemsButton = optimizeGemsButtonRef.value;
-		if (optimizeGemsButton) {
-			tippy(optimizeGemsButton, {
-				content: (
-					<>
-						<p>
-							<span className="warning link-warning">
-								<i className="fa fa-exclamation-triangle"></i> WARNING
-							</span>{' '}
-							This feature is experimental, and will not always produce the most optimal gems especially when interacting with soft/hard stat
-							caps.
-						</p>
-						<p>
-							Optimizes equipped gems to maximize EP, based on the values in <b>Current EP</b>.
-						</p>
-						<p className="mb-0">
-							Does not change the meta gem, but ensures that its condition is met. Uses JC gems if Jewelcrafting is a selected profession.
-						</p>
-					</>
-				),
-			});
-			optimizeGemsButton.addEventListener('click', async () => {
-				const defaultState = cloneChildren(optimizeGemsButton);
-				optimizeGemsButton.classList.add('disabled');
-				optimizeGemsButton.style.width = `${optimizeGemsButton.getBoundingClientRect().width.toFixed(3)}px`;
-				optimizeGemsButton.replaceChildren(
-					<>
-						<i className=" fa fa-spinner fa-spin me-1" />
-						Running
-					</>,
-				);
-				await this.optimizeGems(TypedEvent.nextEventID());
-				optimizeGemsButton.replaceChildren(...defaultState);
-				optimizeGemsButton.classList.remove('disabled');
-			});
 		}
 
 		const calcButton = calcWeightsButtonRef.value;
@@ -406,6 +370,8 @@ class EpWeightsMenu extends BaseModal {
 			}
 			this.updateTable();
 		});
+
+		this.buildSavedEPWeightsPicker();
 	}
 
 	private setSimProgress(progress: ProgressMetrics) {
@@ -618,266 +584,6 @@ class EpWeightsMenu extends BaseModal {
 		);
 	}
 
-	private async optimizeGems(eventID: EventID) {
-		// Replace 0 weights with a very tiny value, so we always prefer to take free stats even if the user gave a 0 weight.
-		let epWeights = this.simUI.player.getEpWeights();
-		epWeights = new Stats(epWeights.asArray().map(w => (w === 0 ? 1e-8 : w)));
-
-		const gear = this.simUI.player.getGear();
-		const allGems = this.simUI.sim.db.getGems();
-		const phase = this.simUI.sim.getPhase();
-		const isBlacksmithing = this.simUI.player.isBlacksmithing();
-		const isJewelcrafting = this.simUI.player.hasProfession(Profession.Jewelcrafting);
-
-		const optimizedGear = EpWeightsMenu.optimizeGemsForWeights(epWeights, gear, allGems, phase, isBlacksmithing, isJewelcrafting);
-		this.simUI.player.setGear(eventID, optimizedGear);
-	}
-
-	private static optimizeGemsForWeights(
-		epWeights: Stats,
-		gear: Gear,
-		allGems: Gem[],
-		phase: number,
-		isBlacksmithing: boolean,
-		isJewelcrafting: boolean,
-	): Gear {
-		const unrestrictedGems = allGems.filter(gem => Gems.isUnrestrictedGem(gem, phase));
-
-		const {
-			bestGemForColor: bestGemForColor,
-			bestGemForColorEP: _bestGemForColorEP,
-			bestGemForSocket: bestGemForSocket,
-			bestGemForSocketEP: bestGemForSocketEP,
-			bestGem: bestGem,
-			bestGemEP: bestGemEP,
-		} = EpWeightsMenu.findBestGems(unrestrictedGems, epWeights);
-
-		const items = gear.asMap();
-		const socketBonusEPs = Object.values(items).map(item => (!!item ? new Stats(item.item.socketBonus).computeEP(epWeights) : 0));
-
-		// Start by optimally filling all items, ignoring meta condition.
-		Object.entries(items).forEach(([itemSlot, equippedItem], i) => {
-			if (!equippedItem) return;
-
-			//const item = equippedItem.item;
-			const socketColors = equippedItem.curSocketColors(isBlacksmithing);
-
-			// Compare whether its better to match sockets + get socket bonus, or just use best gems.
-			const bestGemEPNotMatchingSockets = sum(socketColors.map(socketColor => (socketColor === GemColor.GemColorMeta ? 0 : bestGemEP)));
-			const bestGemEPMatchingSockets =
-				socketBonusEPs[i] + sum(socketColors.map(socketColor => (socketColor === GemColor.GemColorMeta ? 0 : bestGemForSocketEP[socketColor])));
-
-			if (bestGemEPNotMatchingSockets > bestGemEPMatchingSockets) {
-				socketColors.forEach((socketColor, i) => {
-					if (socketColor !== GemColor.GemColorMeta) {
-						equippedItem = equippedItem!.withGem(bestGem, i);
-					}
-				});
-			} else {
-				socketColors.forEach((socketColor, i) => {
-					if (socketColor !== GemColor.GemColorMeta) {
-						equippedItem = equippedItem!.withGem(bestGemForSocket[socketColor], i);
-					}
-				});
-			}
-
-			items[Number(itemSlot) as ItemSlot] = equippedItem;
-		});
-		gear = new Gear(items);
-
-		const allSockets: { itemSlot: ItemSlot; socketIdx: number }[] = Object.keys(items)
-			.map(itemSlotStr => {
-				const itemSlot: ItemSlot = parseInt(itemSlotStr);
-				const item = items[itemSlot];
-				if (!item) {
-					return [];
-				}
-
-				const numSockets = item.numSockets(isBlacksmithing);
-				return [...Array(numSockets).keys()]
-					.filter(socketIdx => item.item.gemSockets[socketIdx] !== GemColor.GemColorMeta)
-					.map(socketIdx => ({
-						itemSlot,
-						socketIdx,
-					}));
-			})
-			.flat();
-		const threeSocketCombos = permutations(allSockets, 3);
-		const calculateGearGemsEP = (gear: Gear): number => gear.statsFromGems(isBlacksmithing).computeEP(epWeights);
-
-		// Now make adjustments to satisfy meta condition.
-		// Use a wrapper function so we can return for readability.
-		gear = ((gear: Gear): Gear => {
-			const metaGem = gear.getMetaGem();
-			if (!metaGem) {
-				return gear;
-			}
-
-			const condition = Gems.getMetaGemCondition(metaGem.id);
-			// Only TBC gems use compare color conditions, so just ignore them.
-			if (!condition || condition.isCompareColorCondition()) {
-				return gear;
-			}
-
-			// If there are very few non-meta gem slots, just skip because it's annoying to deal with.
-			if (gear.getAllGems(isBlacksmithing).length - 1 < 3) {
-				return gear;
-			}
-
-			// In wrath, all meta gems use min colors condition (numRed >= r && numYellow >= y && numBlue >= b)
-			// All conditions require 3 gems, e.g. 3 of a single color, 2 of one color and 1 of another, or 1 of each.
-			// So the maximum number of gems that ever need to change is 3.
-
-			const colorCombos = EpWeightsMenu.getColorCombosToSatisfyCondition(condition);
-
-			let bestGear = gear;
-			let bestGearEP = calculateGearGemsEP(gear);
-
-			// Use brute-force to try every possibility.
-			colorCombos.forEach(colorCombo => {
-				threeSocketCombos.forEach(socketCombo => {
-					const curItems = gear.asMap();
-					for (let i = 0; i < colorCombo.length; i++) {
-						const gemColor = colorCombo[i];
-						const { itemSlot, socketIdx } = socketCombo[i];
-						curItems[itemSlot] = curItems[itemSlot]!.withGem(bestGemForColor[gemColor], socketIdx);
-					}
-					const curGear = new Gear(curItems);
-					if (curGear.hasActiveMetaGem(isBlacksmithing)) {
-						const curGearEP = calculateGearGemsEP(curGear);
-						if (curGearEP > bestGearEP) {
-							bestGear = curGear;
-							bestGearEP = curGearEP;
-						}
-					}
-				});
-			});
-
-			return bestGear;
-		})(gear);
-
-		// Now insert 3 JC gems, if Jewelcrafting is selected.
-		// Use a wrapper function so we can return for readability.
-		gear = ((gear: Gear): Gear => {
-			if (!isJewelcrafting) {
-				return gear;
-			}
-
-			const jcGems = allGems.filter(gem => gem.requiredProfession === Profession.Jewelcrafting);
-
-			const {
-				bestGemForColor: bestJcGemForColor,
-				bestGemForColorEP: _bestJcGemForColorEP,
-				bestGemForSocket: _bestJcGemForSocket,
-				bestGemForSocketEP: _bestJcGemForSocketEP,
-				bestGem: _bestJcGem,
-				bestGemEP: _bestJcGemEP,
-			} = EpWeightsMenu.findBestGems(jcGems, epWeights);
-
-			let bestGear = gear;
-			let bestGearEP = calculateGearGemsEP(gear);
-
-			threeSocketCombos.forEach(socketCombo => {
-				const curItems = gear.asMap();
-				for (let i = 0; i < socketCombo.length; i++) {
-					const { itemSlot, socketIdx } = socketCombo[i];
-					const ei = curItems[itemSlot]!;
-					const gemColor = ei.gems[socketIdx]!.color;
-					curItems[itemSlot] = ei.withGem(bestJcGemForColor[gemColor], socketIdx);
-				}
-
-				const curGear = new Gear(curItems);
-				if (curGear.hasActiveMetaGem(isBlacksmithing)) {
-					const curGearEP = calculateGearGemsEP(curGear);
-					if (curGearEP > bestGearEP) {
-						bestGear = curGear;
-						bestGearEP = curGearEP;
-					}
-				}
-			});
-
-			return bestGear;
-		})(gear);
-
-		return gear;
-	}
-
-	// Returns every possible way we could satisfy the gem condition.
-	private static getColorCombosToSatisfyCondition(condition: Gems.MetaGemCondition): GemColor[][] {
-		if (condition.isOneOfEach()) {
-			return [Gems.PRIMARY_COLORS, [GemColor.GemColorPrismatic]].concat(
-				Gems.SECONDARY_COLORS.map((secondaryColor, i) => {
-					const remainingColor = Gems.PRIMARY_COLORS[i];
-					return Gems.socketToMatchingColors.get(remainingColor)!.map(matchingColor => [matchingColor, secondaryColor]);
-				}).flat(),
-			);
-		} else if (condition.isTwoAndOne()) {
-			const oneColor = Gems.PRIMARY_COLORS[[condition.minRed, condition.minYellow, condition.minBlue].indexOf(1)];
-			const twoColor = Gems.PRIMARY_COLORS[[condition.minRed, condition.minYellow, condition.minBlue].indexOf(2)];
-			const secondaryColor = Gems.SECONDARY_COLORS.find(
-				color => Gems.gemColorMatchesSocket(color, oneColor) && Gems.gemColorMatchesSocket(color, twoColor),
-			)!;
-
-			return [
-				// All the ways to get 1 point in both colors. These are partial combos,
-				// which still need 1 more gem in the 2-color.
-				[GemColor.GemColorPrismatic],
-				[secondaryColor],
-				[oneColor, twoColor],
-			]
-				.map(partialCombo => {
-					return Gems.socketToMatchingColors.get(twoColor)!.map(matchingColor => partialCombo.concat([matchingColor]));
-				})
-				.flat();
-		} else if (condition.isThreeOfAColor()) {
-			const threeColor = Gems.PRIMARY_COLORS[[condition.minRed, condition.minYellow, condition.minBlue].indexOf(3)];
-			const matchingColors = Gems.socketToMatchingColors.get(threeColor)!;
-			return combinationsWithDups(matchingColors, 3);
-		} else {
-			return [];
-		}
-	}
-
-	private static findBestGems(gemList: Gem[], epWeights: Stats): BestGemsResult {
-		// Best gem when we need a gem of a specific color.
-		const bestGemForColor: Gem[] = new Array(Gems.GEM_COLORS.length).fill(undefined);
-		const bestGemForColorEP: number[] = new Array(Gems.GEM_COLORS.length).fill(0);
-		// Best gem when we need to match a socket to activate a bonus.
-		const bestGemForSocket: Gem[] = bestGemForColor.slice();
-		const bestGemForSocketEP: number[] = bestGemForColorEP.slice();
-		// The single best gem, when color doesn't matter.
-		let bestGem = gemList[0];
-		let bestGemEP = 0;
-		gemList.forEach(gem => {
-			const gemEP = new Stats(gem.stats).computeEP(epWeights);
-			if (gemEP > bestGemForColorEP[gem.color]) {
-				bestGemForColorEP[gem.color] = gemEP;
-				bestGemForColor[gem.color] = gem;
-
-				if (gem.color !== GemColor.GemColorMeta && gemEP > bestGemEP) {
-					bestGemEP = gemEP;
-					bestGem = gem;
-				}
-			}
-
-			Gems.GEM_COLORS.forEach(socketColor => {
-				if (Gems.gemMatchesSocket(gem, socketColor) && gemEP > bestGemForSocketEP[socketColor]) {
-					bestGemForSocketEP[socketColor] = gemEP;
-					bestGemForSocket[socketColor] = gem;
-				}
-			});
-		});
-
-		return {
-			bestGemForColor: bestGemForColor,
-			bestGemForColorEP: bestGemForColorEP,
-			bestGemForSocket: bestGemForSocket,
-			bestGemForSocketEP: bestGemForSocketEP,
-			bestGem: bestGem,
-			bestGemEP: bestGemEP,
-		};
-	}
-
 	private static epUnitStats: UnitStat[] = UnitStat.getAll().filter(stat => {
 		if (stat.isStat()) {
 			return true;
@@ -1021,6 +727,42 @@ class EpWeightsMenu extends BaseModal {
 			},
 		];
 	}
+
+	private buildSavedEPWeightsPicker() {
+		const savedEPWeightsManager = new SavedDataManager<Player<any>, SavedEPWeights>(this.sidebar, this.simUI.player, {
+			label: 'EP Weights',
+			header: { title: 'Saved EP weights' },
+			storageKey: this.simUI.getSavedEPWeightsStorageKey(),
+			getData: (player: Player<any>) =>
+				SavedEPWeights.create({
+					epWeights: player.getEpWeights().toProto(),
+				}),
+			setData: (eventID: EventID, player: Player<any>, newEPWeights: SavedEPWeights) => {
+				TypedEvent.freezeAllAndDo(() => {
+					player.setEpWeights(eventID, Stats.fromProto(newEPWeights.epWeights));
+				});
+			},
+			changeEmitters: [this.simUI.player.epWeightsChangeEmitter],
+			equals: (a: SavedEPWeights, b: SavedEPWeights) => SavedEPWeights.equals(a, b),
+			toJson: (a: SavedEPWeights) => SavedEPWeights.toJson(a),
+			fromJson: (obj: any) => SavedEPWeights.fromJson(obj),
+		});
+
+		this.simUI.sim.waitForInit().then(() => {
+			savedEPWeightsManager.loadUserData();
+			this.simUI.individualConfig.presets.epWeights.forEach(({ name, epWeights, enableWhen, onLoad }) => {
+				savedEPWeightsManager.addSavedData({
+					name: name,
+					isPreset: true,
+					data: SavedEPWeights.create({
+						epWeights: epWeights.toProto(),
+					}),
+					enableWhen,
+					onLoad,
+				});
+			});
+		});
+	}
 }
 
 type StatsTableEntry = {
@@ -1034,13 +776,4 @@ type StatsTableEntry = {
 	getEpRefStat?: () => Stat;
 	metricRef: ReturnType<typeof ref<HTMLButtonElement>>;
 	ratioRef: ReturnType<typeof ref<HTMLTableCellElement>>;
-};
-
-type BestGemsResult = {
-	bestGemForColor: Gem[];
-	bestGemForColorEP: number[];
-	bestGemForSocket: Gem[];
-	bestGemForSocketEP: number[];
-	bestGem: Gem;
-	bestGemEP: number;
 };

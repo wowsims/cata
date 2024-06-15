@@ -82,20 +82,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 		// Default equipped gear.
 		gear: Presets.MM_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatStamina]: 0.5,
-				[Stat.StatAgility]: 3.05,
-				[Stat.StatRangedAttackPower]: 1.0,
-				[Stat.StatMeleeHit]: 2.25,
-				[Stat.StatMeleeCrit]: 1.39,
-				[Stat.StatMeleeHaste]: 1.33,
-				[Stat.StatMastery]: 1.15,
-			},
-			{
-				[PseudoStat.PseudoStatRangedDps]: 6.32,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
@@ -163,6 +150,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMarksmanshipHunter, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.MarksmanTalents],
 		// Preset rotations that the user can quickly select.

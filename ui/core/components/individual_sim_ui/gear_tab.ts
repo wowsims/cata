@@ -87,6 +87,7 @@ export class GearTab extends SimTab {
 						bonusStatsStats: new Stats().toProto(),
 					}),
 					enableWhen: presetGear.enableWhen,
+					onLoad: presetGear.onLoad,
 				});
 			});
 		});

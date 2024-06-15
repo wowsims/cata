@@ -1,7 +1,7 @@
 import { Toast as BootstrapToast } from 'bootstrap';
 import clsx from 'clsx';
 
-type ToastOptions = {
+export type ToastOptions = {
 	title?: string;
 	variant: 'info' | 'success' | 'error' | 'warning';
 	body: string | Element;

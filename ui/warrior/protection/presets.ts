@@ -1,5 +1,18 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { BattleElixir, Consumes, Explosive, Flask, Food, Glyphs, GuardianElixir, Potions, Profession, Spec } from '../../core/proto/common.js';
+import {
+	BattleElixir,
+	Consumes,
+	Explosive,
+	Flask,
+	Food,
+	Glyphs,
+	GuardianElixir,
+	Potions,
+	Profession,
+	PseudoStat,
+	Spec,
+	Stat,
+} from '../../core/proto/common.js';
 import { SavedTalents } from '../../core/proto/ui.js';
 import {
 	ProtectionWarrior_Options as ProtectionWarriorOptions,
@@ -9,6 +22,7 @@ import {
 	WarriorPrimeGlyph,
 	WarriorShout,
 } from '../../core/proto/warrior.js';
+import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import P1BISGear from './gear_sets/p1_bis.gear.json';
 import PreraidBISGear from './gear_sets/preraid.gear.json';
@@ -20,8 +34,35 @@ import PreraidBISGear from './gear_sets/preraid.gear.json';
 export const PRERAID_BALANCED_PRESET = PresetUtils.makePresetGear('P1 PreRaid Preset', PreraidBISGear);
 export const P1_BALANCED_PRESET = PresetUtils.makePresetGear('P1 BIS Preset', P1BISGear);
 
-
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('Default APL', DefaultApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap(
+		{
+			[Stat.StatArmor]: 0.174,
+			[Stat.StatBonusArmor]: 0.155,
+			[Stat.StatStamina]: 2.336,
+			[Stat.StatStrength]: 1.555,
+			[Stat.StatAgility]: 2.771,
+			[Stat.StatAttackPower]: 0.32,
+			[Stat.StatExpertise]: 1.44,
+			[Stat.StatMeleeHit]: 1.432,
+			[Stat.StatMeleeCrit]: 0.925,
+			[Stat.StatMeleeHaste]: 0.431,
+			[Stat.StatBlock]: 1.32,
+			[Stat.StatDodge]: 2.606,
+			[Stat.StatParry]: 2.649,
+			// @todo: Calculate actual weights
+			// This probably applies for all weights
+			[Stat.StatMastery]: 0,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 6.081,
+		},
+	),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.

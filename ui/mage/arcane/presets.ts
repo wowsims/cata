@@ -1,5 +1,19 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, TinkerHands, UnitReference} from '../../core/proto/common';
+import {
+	Conjured,
+	Consumes,
+	Debuffs,
+	Flask,
+	Food,
+	Glyphs,
+	Potions,
+	Profession,
+	RaidBuffs,
+	Spec,
+	Stat,
+	TinkerHands,
+	UnitReference,
+} from '../../core/proto/common';
 import {
 	ArcaneMage_Options as MageOptions,
 	MageMajorGlyph as MajorGlyph,
@@ -7,6 +21,7 @@ import {
 	MagePrimeGlyph as PrimeGlyph,
 } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
+import { Stats } from '../../core/proto_utils/stats';
 import ArcaneApl from './apls/arcane.apl.json';
 import P1ArcaneBisGear from './gear_sets/p1_arcane.gear.json';
 import P1ArcanePrebisGear from './gear_sets/P1_arcane_prebis_gear.json';
@@ -27,6 +42,19 @@ export const ARCANE_P1_PREBIS_PRESET = PresetUtils.makePresetGear('Arcane P1 Pre
 export const ARCANE_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Arcane', ArcaneApl, { talentTree: 0 });
 //export const ARCANE_ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Arcane AOE', ArcaneAoeApl, { talentTree: 0 });
 
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Arcane P1',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 1.74,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatSpellHit]: 1.27,
+		[Stat.StatSpellCrit]: 0.5,
+		[Stat.StatSpellHaste]: 0.25,
+		[Stat.StatMastery]: 0.56,
+	}),
+);
+
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
 export const ArcaneTalents = {
@@ -45,8 +73,7 @@ export const ArcaneTalents = {
 };
 
 export const DefaultArcaneOptions = MageOptions.create({
-	classOptions: {
-	},
+	classOptions: {},
 	focusMagicPercentUptime: 99,
 	focusMagicTarget: UnitReference.create(),
 });
@@ -77,8 +104,8 @@ export const DefaultArcaneConsumes = Consumes.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-    ebonPlaguebringer: true,
-    shadowAndFlame: true,
+	ebonPlaguebringer: true,
+	shadowAndFlame: true,
 });
 
 export const OtherDefaults = {

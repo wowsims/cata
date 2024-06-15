@@ -63,23 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 		// Default equipped gear.
 		gear: Presets.P1_GEAR_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatStrength]: 3.22,
-				[Stat.StatArmor]: 0.01,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatExpertise]: 1.13,
-				[Stat.StatMeleeHaste]: 1.85,
-				[Stat.StatMeleeHit]: 1.92,
-				[Stat.StatMeleeCrit]: 0.76,
-				[Stat.StatSpellHit]: 0.8,
-				[Stat.StatSpellCrit]: 0.34,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.1,
-				[PseudoStat.PseudoStatOffHandDps]: 1.79,
-			},
-		),
+		epWeights: Presets.P1_UNHOLY_EP_PRESET.epWeights,
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -146,6 +130,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecUnholyDeathKnight, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_UNHOLY_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [
 			Presets.SingleTargetTalents,

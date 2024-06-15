@@ -46,14 +46,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 		// Default equipped gear.
 		gear: Presets.P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.22,
-			[Stat.StatSpirit]: 0.05,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellCrit]: 0.67,
-			[Stat.StatSpellHaste]: 1.29,
-			[Stat.StatMP5]: 0.08,
-		}),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -106,6 +99,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.RaidHealingTalents, Presets.TankHealingTalents],
 		rotations: [],

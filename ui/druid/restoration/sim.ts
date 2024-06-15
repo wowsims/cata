@@ -37,14 +37,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationDruid, {
 		// Default equipped gear.
 		gear: Presets.P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.38,
-			[Stat.StatSpirit]: 0.34,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellCrit]: 0.69,
-			[Stat.StatSpellHaste]: 0.77,
-			[Stat.StatMP5]: 0.0,
-		}),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -78,6 +71,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationDruid, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.CelestialFocusTalents, Presets.ThiccRestoTalents],
 		rotations: [],

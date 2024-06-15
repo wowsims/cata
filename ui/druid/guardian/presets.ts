@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Conjured, Consumes, Flask, Food, Glyphs, Potions, Spec, TinkerHands } from '../../core/proto/common';
+import { Conjured, Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
@@ -30,10 +30,37 @@ export const DefaultSimpleRotation = DruidRotation.create({
 	prepullStampede: true,
 });
 
+import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
 
 export const ROTATION_PRESET_SIMPLE = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecGuardianDruid, DefaultSimpleRotation);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap(
+		{
+			[Stat.StatHealth]: 0.04,
+			[Stat.StatStamina]: 0.99,
+			[Stat.StatAgility]: 1.0,
+			[Stat.StatArmor]: 1.02,
+			[Stat.StatBonusArmor]: 0.23,
+			[Stat.StatDodge]: 0.97,
+			[Stat.StatMastery]: 0.35,
+			[Stat.StatStrength]: 0.11,
+			[Stat.StatAttackPower]: 0.1,
+			[Stat.StatMeleeHit]: 0.075,
+			[Stat.StatSpellHit]: 0.195,
+			[Stat.StatExpertise]: 0.15,
+			[Stat.StatMeleeCrit]: 0.11,
+			[Stat.StatMeleeHaste]: 0.0,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 0.0,
+		},
+	),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
