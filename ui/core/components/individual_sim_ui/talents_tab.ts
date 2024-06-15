@@ -134,6 +134,7 @@ export class TalentsTab<SpecType extends Spec> extends SimTab {
 					name: config.name,
 					isPreset: true,
 					data: config.data,
+					onLoad: config.onLoad,
 				});
 			});
 		});

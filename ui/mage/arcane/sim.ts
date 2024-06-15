@@ -48,14 +48,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 		// Default equipped gear.
 		gear: Presets.ARCANE_P1_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 1.74,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellHit]: 1.27,
-			[Stat.StatSpellCrit]: 0.5,
-			[Stat.StatSpellHaste]: 0.25,
-			[Stat.StatMastery]: 0.56,
-		}),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			return new Stats().withStat(Stat.StatSpellHit, 17 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
@@ -98,6 +91,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecArcaneMage, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ARCANE_ROTATION_PRESET_DEFAULT],
 		// Preset talents that the user can quickly select.

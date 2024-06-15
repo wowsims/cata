@@ -48,6 +48,11 @@ func (dk *DeathKnight) ApplyFrostTalents() {
 		dk.PseudoStats.MeleeSpeedMultiplier *= 1.05
 	}
 
+	// Brittle Bones
+	if dk.Talents.BrittleBones > 0 {
+		dk.MultiplyStat(stats.Strength, 1.0+0.02*float64(dk.Talents.BrittleBones))
+	}
+
 	// Might of the Frozen Wastes
 	dk.applyMightOfTheFrozenWastes()
 }

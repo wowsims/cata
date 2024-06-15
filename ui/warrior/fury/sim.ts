@@ -60,22 +60,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 		// Default equipped gear.
 		gear: Presets.P1_FURY_SMF_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatStrength]: 2.2,
-				[Stat.StatAgility]: 1.18,
-				[Stat.StatAttackPower]: 1,
-				[Stat.StatExpertise]: 1.6,
-				[Stat.StatMeleeHit]: 1.24,
-				[Stat.StatMeleeCrit]: 1.54,
-				[Stat.StatMeleeHaste]: 1.01,
-				[Stat.StatMastery]: 0.92,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.63,
-				[PseudoStat.PseudoStatOffHandDps]: 1.4,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
@@ -144,6 +129,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFuryWarrior, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.FurySMFTalents, Presets.FuryTGTalents],
 		// Preset rotations that the user can quickly select.

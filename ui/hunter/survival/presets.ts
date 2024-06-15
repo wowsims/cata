@@ -1,6 +1,6 @@
 import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, RotationType, Spec } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
 import {
 	HunterMajorGlyph as MajorGlyph,
 	HunterMinorGlyph as MinorGlyph,
@@ -12,6 +12,7 @@ import {
 	SurvivalHunter_Rotation as HunterRotation,
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
+import { Stats } from '../../core/proto_utils/stats';
 import { ferocityDefault } from '../../core/talents/hunter_pet';
 import AoeApl from './apls/aoe.apl.json';
 import SvApl from './apls/sv.apl.json';
@@ -35,6 +36,26 @@ export const ROTATION_PRESET_SIMPLE_DEFAULT = PresetUtils.makePresetSimpleRotati
 export const ROTATION_PRESET_SV = PresetUtils.makePresetAPLRotation('SV', SvApl);
 export const ROTATION_PRESET_SV_ADVANCED = PresetUtils.makePresetAPLRotation('SV (Advanced)', SvAdvApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'SV P1',
+	Stats.fromMap(
+		{
+			[Stat.StatStamina]: 0.5,
+			[Stat.StatAgility]: 3.27,
+			[Stat.StatIntellect]: 1.1,
+			[Stat.StatRangedAttackPower]: 1.0,
+			[Stat.StatMeleeHit]: 2.16,
+			[Stat.StatMeleeCrit]: 1.17,
+			[Stat.StatMeleeHaste]: 0.89,
+			[Stat.StatMastery]: 0.88,
+		},
+		{
+			[PseudoStat.PseudoStatRangedDps]: 3.75,
+		},
+	),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.

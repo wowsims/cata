@@ -2,8 +2,6 @@ import * as PresetUtils from '../../core/preset_utils.js';
 import {
 	Consumes,
 	Debuffs,
-	Explosive,
-	Faction,
 	Flask,
 	Food,
 	Glyphs,
@@ -12,19 +10,32 @@ import {
 	Potions,
 	Profession,
 	RaidBuffs,
-	TristateEffect,
+	Stat,
 	UnitReference,
 } from '../../core/proto/common.js';
 import { BalanceDruid_Options as BalanceDruidOptions, DruidMajorGlyph, DruidMinorGlyph, DruidPrimeGlyph } from '../../core/proto/druid.js';
 import { SavedTalents } from '../../core/proto/ui.js';
+import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
-import T11Gear from './gear_sets/t11.gear.json'
+import T11Gear from './gear_sets/t11.gear.json';
 
 export const PreraidPresetGear = PresetUtils.makePresetGear('Pre-raid', PreraidGear);
 export const T11PresetGear = PresetUtils.makePresetGear('T11', T11Gear);
 
 export const PresetRotationDefault = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 0.43,
+		[Stat.StatSpirit]: 0.34,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatSpellCrit]: 0.82,
+		[Stat.StatSpellHaste]: 0.8,
+		[Stat.StatMastery]: 0.0,
+	}),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
@@ -81,8 +92,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	darkIntent: true,
 });
 
-export const DefaultPartyBuffs = PartyBuffs.create({
-});
+export const DefaultPartyBuffs = PartyBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
 	bloodFrenzy: true,

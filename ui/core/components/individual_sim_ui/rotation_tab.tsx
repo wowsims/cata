@@ -223,6 +223,7 @@ export class RotationTab extends SimTab {
 					isPreset: true,
 					data: rotData,
 					enableWhen: presetRotation.enableWhen,
+					onLoad: presetRotation.onLoad,
 				});
 			});
 		});

@@ -1,14 +1,15 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec } from '../../core/proto/common.js';
+import { Consumes, Debuffs, Flask, Food, Glyphs, Potions, Profession, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
 import {
 	HolyPaladin_Options as Paladin_Options,
 	PaladinAura,
-	PaladinSeal,
-	PaladinPrimeGlyph as PrimeGlyph,
 	PaladinMajorGlyph as MajorGlyph,
 	PaladinMinorGlyph as MinorGlyph,
+	PaladinPrimeGlyph as PrimeGlyph,
+	PaladinSeal,
 } from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
+import { Stats } from '../../core/proto_utils/stats';
 import P1Gear from './gear_sets/p1.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
 
@@ -21,6 +22,19 @@ export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
 // export const P2_PRESET = PresetUtils.makePresetGear('P2 Preset', P2Gear);
 // export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
 // export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 1.375,
+		[Stat.StatSpirit]: 1.125,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatSpellCrit]: 0.75,
+		[Stat.StatSpellHaste]: 0.85,
+		[Stat.StatMastery]: 0.5,
+	}),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.

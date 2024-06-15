@@ -1,7 +1,8 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profession, RaidBuffs, TristateEffect } from '../../core/proto/common.js';
+import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profession, RaidBuffs, Stat, TristateEffect } from '../../core/proto/common.js';
 import { HolyPriest_Options as Options, PriestMajorGlyph as MajorGlyph, PriestMinorGlyph as MinorGlyph, PriestOptions_Armor } from '../../core/proto/priest.js';
 import { SavedTalents } from '../../core/proto/ui.js';
+import { Stats } from '../../core/proto_utils/stats';
 import AOE24Apl from './apls/aoe_2_4.apl.json';
 import AOE4PlusApl from './apls/aoe_4_plus.apl.json';
 import DefaultApl from './apls/default.apl.json';
@@ -24,6 +25,20 @@ export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
 export const ROTATION_PRESET_AOE24 = PresetUtils.makePresetAPLRotation('AOE (2 to 4 targets)', AOE24Apl);
 export const ROTATION_PRESET_AOE4PLUS = PresetUtils.makePresetAPLRotation('AOE (4+ targets)', AOE4PlusApl);
+
+// Preset options for EP weights
+export const P1_EP_WEIGHTS = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 0.11,
+		[Stat.StatSpirit]: 0.47,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatSpellHit]: 0.87,
+		[Stat.StatSpellCrit]: 0.74,
+		[Stat.StatSpellHaste]: 1.65,
+		[Stat.StatMP5]: 0.0,
+	}),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.

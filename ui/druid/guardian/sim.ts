@@ -64,27 +64,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 		// Default equipped gear.
 		gear: Presets.PRERAID_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatHealth]: 0.04,
-				[Stat.StatStamina]: 0.99,
-				[Stat.StatAgility]: 1.0,
-				[Stat.StatArmor]: 1.02,
-				[Stat.StatBonusArmor]: 0.23,
-				[Stat.StatDodge]: 0.97,
-				[Stat.StatMastery]: 0.35,
-				[Stat.StatStrength]: 0.11,
-				[Stat.StatAttackPower]: 0.1,
-				[Stat.StatMeleeHit]: 0.075,
-				[Stat.StatSpellHit]: 0.195,
-				[Stat.StatExpertise]: 0.15,
-				[Stat.StatMeleeCrit]: 0.11,
-				[Stat.StatMeleeHaste]: 0.0,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 0.0,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		// Default stat caps for the Reforge Optimizer
 		statCaps: (() => {
 			const meleeHitCap = new Stats().withStat(Stat.StatMeleeHit, 5 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
@@ -151,6 +131,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecGuardianDruid, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.
