@@ -22,9 +22,13 @@ const FURY_SMF_PRESET_OPTIONS = {
 			[
 				{
 					condition: (player: Player<Spec.SpecFuryWarrior>) =>
+						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand,
+					message: 'Check your gear: You have a two-handed weapon equipped, but the selected option is for one-handed weapons.',
+				},
+				{
+					condition: (player: Player<Spec.SpecFuryWarrior>) =>
 						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand || !player.getTalents().singleMindedFury,
-					message:
-						'You are using a two-handed weapon, but the selected option is for Single-Minded Fury. Please double check your EP Weights, Gear, Talents and Rotation.',
+					message: "Check your talents: You have selected a two-handed spec but don't have [Single-Minded Fury] talented.",
 				},
 			],
 			player,
@@ -37,9 +41,12 @@ const FURY_TG_PRESET_OPTIONS = {
 			[
 				{
 					condition: (player: Player<Spec.SpecFuryWarrior>) =>
-						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand || !player.getTalents().titansGrip,
-					message:
-						"You are using a one-handed weapon, but the selected option is for Titan's Grip. Please double check your EP Weights, Gear, Talents and Rotation.",
+						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand,
+					message: 'Check your gear: You have a one-handed weapon equipped, but the selected option is for two-handed weapons.',
+				},
+				{
+					condition: (player: Player<Spec.SpecFuryWarrior>) => !player.getTalents().titansGrip,
+					message: "Check your talents: You have selected a one-handed spec but don't have [Titan's Grip] talented.",
 				},
 			],
 			player,

@@ -23,10 +23,12 @@ const DW_PRESET_OPTIONS = {
 			[
 				{
 					condition: (player: Player<Spec.SpecFrostDeathKnight>) =>
-						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand ||
-						!player.getTalents().mightOfTheFrozenWastes,
-					message:
-						'You are wearing a two-handed weapon, but the selected option is for dual wield. Please double check your EP Weights,Gear, Talents and Rotation.',
+						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand,
+					message: "Check your gear: You have a two-handed weapon equipped, but the selected option is for dual wield.",
+				},
+				{
+					condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().threatOfThassarian,
+					message: "Check your talents: You have selected a dual-wield spec but don't have [Threat Of Thassarian] talented.",
 				},
 			],
 			player,
@@ -40,10 +42,12 @@ const TWOHAND_PRESET_OPTIONS = {
 			[
 				{
 					condition: (player: Player<Spec.SpecFrostDeathKnight>) =>
-						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand ||
-						!player.getTalents().threatOfThassarian,
-					message:
-						'You are wearing a one-handed weapon, but the selected option is for two-handers. Please double check your EP Weights,Gear, Talents and Rotation.',
+						player.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeOneHand,
+					message: "Check your gear: You have a one-handed weapon equipped, but the selected option is for dual wield",
+				},
+				{
+					condition: (player: Player<Spec.SpecFrostDeathKnight>) => !player.getTalents().mightOfTheFrozenWastes,
+					message: "Check your talents: You have selected a two-handed spec but don't have [Might of the Frozen Wastes] talented",
 				},
 			],
 			player,
