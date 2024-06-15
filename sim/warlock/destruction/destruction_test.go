@@ -262,6 +262,35 @@ func TestBackdraftCastTime(t *testing.T) {
 	}
 }
 
+func checkTicks(t *testing.T, dot *core.Dot, msg string, expected int32) {
+	if dot.RemainingTicks() != expected {
+		t.Helper()
+		t.Fatalf("%s: Expected: %v, Actual: %v", msg, expected, dot.RemainingTicks())
+	}
+}
+
+func TestImmolateHasteCap(t *testing.T) {
+	sim := setupFakeSim(defStats, destroTalents, &immoGlyph)
+	lock := sim.Raid.Parties[0].Players[0].(*DestructionWarlock)
+	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 2588,
+	})
+	immolate := lock.Immolate
+	immolateDot := lock.ImmolateDot.CurDot()
+
+	immolate.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, immolateDot, "Incorrect tick count for immolate at 2588 haste", 6)
+	immolateDot.Deactivate(sim)
+
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1,
+	})
+	immolate.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, immolateDot, "Incorrect tick count for immolate at 2589 haste", 7)
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func TestDestruction(t *testing.T) {

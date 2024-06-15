@@ -10,6 +10,10 @@ export const CURRENT_PHASE = Phase.Phase1;
 
 // Github pages serves our site under the /cata directory (because the repo name is cata)
 export const REPO_NAME = 'cata';
+export const REPO_URL = `https://github.com/wowsims/${REPO_NAME}`;
+export const REPO_RELEASES_URL = `${REPO_URL}/releases`;
+export const REPO_NEW_ISSUE_URL = `${REPO_URL}/issues/new`;
+export const REPO_CHOOSE_NEW_ISSUE_URL = `${REPO_NEW_ISSUE_URL}/choose`;
 
 // Get 'elemental_shaman', the pathname part after the repo name
 const pathnameParts = window.location.pathname.split('/');

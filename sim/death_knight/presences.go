@@ -51,9 +51,6 @@ func (dk *DeathKnight) registerBloodPresenceAura(timer *core.Timer) {
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
-		RuneCost: core.RuneCostOptions{
-			BloodRuneCost: 1,
-		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
@@ -94,9 +91,6 @@ func (dk *DeathKnight) registerFrostPresenceAura(timer *core.Timer) {
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
-		RuneCost: core.RuneCostOptions{
-			FrostRuneCost: 1,
-		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
@@ -146,9 +140,6 @@ func (dk *DeathKnight) registerUnholyPresenceAura(timer *core.Timer) {
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
-		RuneCost: core.RuneCostOptions{
-			UnholyRuneCost: 1,
-		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,

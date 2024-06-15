@@ -15,7 +15,7 @@ character_stats_results: {
   final_stats: 17922.0288
   final_stats: 962
   final_stats: 5623.72809
-  final_stats: 2162.7716
+  final_stats: 2611.82623
   final_stats: 0
   final_stats: 0
   final_stats: 14342
@@ -39,6 +39,13 @@ dps_results: {
  value: {
   dps: 21795.26851
   tps: 18339.99025
+ }
+}
+dps_results: {
+ key: "TestBM-AllItems-AgonyandTorment"
+ value: {
+  dps: 21125.62213
+  tps: 17762.50035
  }
 }
 dps_results: {
@@ -201,13 +208,6 @@ dps_results: {
  value: {
   dps: 20397.33057
   tps: 17164.01401
- }
-}
-dps_results: {
- key: "TestBM-AllItems-BloodthirstyGladiator'sPursuit"
- value: {
-  dps: 19223.40214
-  tps: 16164.89145
  }
 }
 dps_results: {
@@ -479,8 +479,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-AllItems-Gladiator'sPursuit"
  value: {
-  dps: 18862.08982
-  tps: 15839.52658
+  dps: 19223.40214
+  tps: 16164.89145
  }
 }
 dps_results: {
@@ -911,13 +911,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBM-AllItems-RuthlessGladiator'sPursuit"
- value: {
-  dps: 21167.64427
-  tps: 17755.17449
- }
-}
-dps_results: {
  key: "TestBM-AllItems-Schnottz'sMedallionofCommand-65805"
  value: {
   dps: 21028.46667
@@ -1275,13 +1268,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestBM-AllItems-ViciousGladiator'sPursuit"
- value: {
-  dps: 19932.88417
-  tps: 16726.72874
- }
-}
-dps_results: {
  key: "TestBM-AllItems-WitchingHourglass-55787"
  value: {
   dps: 20397.33057
@@ -1326,8 +1312,8 @@ dps_results: {
 dps_results: {
  key: "TestBM-Average-Default"
  value: {
-  dps: 21670.52248
-  tps: 18241.31589
+  dps: 21670.46638
+  tps: 18241.25979
  }
 }
 dps_results: {

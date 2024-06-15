@@ -16,7 +16,7 @@ func init() {
 	RegisterDemonologyWarlock()
 }
 
-func setupFakeSim(lockStats stats.Stats, glyphs *proto.Glyphs) *core.Simulation {
+func setupFakeSim(lockStats stats.Stats, glyphs *proto.Glyphs, duration float64) *core.Simulation {
 	var specOptions = &proto.Player_DemonologyWarlock{
 		DemonologyWarlock: &proto.DemonologyWarlock{
 			Options: &proto.DemonologyWarlock_Options{
@@ -51,7 +51,7 @@ func setupFakeSim(lockStats stats.Stats, glyphs *proto.Glyphs) *core.Simulation 
 			Targets: []*proto.Target{
 				{Name: "target", Level: 83, MobType: proto.MobType_MobTypeDemon},
 			},
-			Duration: 10,
+			Duration: duration,
 		},
 	}, simsignals.CreateSignals())
 
@@ -146,7 +146,7 @@ func checkDotTick(t *testing.T, sim *core.Simulation, dot *core.Dot, attackTable
 }
 
 func TestImmolateDoTBase(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{})
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 
 	attackTable := lock.AttackTables[lock.CurrentTarget.UnitIndex]
@@ -154,7 +154,7 @@ func TestImmolateDoTBase(t *testing.T) {
 }
 
 func TestImmolateDoTGlyphed(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfImmolate)})
+	sim := setupFakeSim(defStats, &proto.Glyphs{Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfImmolate)}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 
 	attackTable := lock.AttackTables[lock.CurrentTarget.UnitIndex]
@@ -162,14 +162,14 @@ func TestImmolateDoTGlyphed(t *testing.T) {
 }
 
 func TestImmolateNonPeriodic(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{})
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 
 	lock.checkSpell(t, sim, lock.Immolate, 2901.6213, 1.4076)
 }
 
 func TestIncinerateBase(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{})
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 	incinerate := lock.GetSpell(core.ActionID{SpellID: 29722})
 
@@ -177,7 +177,7 @@ func TestIncinerateBase(t *testing.T) {
 }
 
 func TestIncinerateMoltenCore(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{})
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 	lock.GetAura("Molten Core Proc Aura").Activate(sim)
 	incinerate := lock.GetSpell(core.ActionID{SpellID: 29722})
@@ -186,7 +186,7 @@ func TestIncinerateMoltenCore(t *testing.T) {
 }
 
 func TestIncinerateGlyphed(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfIncinerate)})
+	sim := setupFakeSim(defStats, &proto.Glyphs{Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfIncinerate)}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 	incinerate := lock.GetSpell(core.ActionID{SpellID: 29722})
 
@@ -194,7 +194,7 @@ func TestIncinerateGlyphed(t *testing.T) {
 }
 
 func TestIncinerateGlyphedMoltenCore(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfIncinerate)})
+	sim := setupFakeSim(defStats, &proto.Glyphs{Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfIncinerate)}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 	lock.GetAura("Molten Core Proc Aura").Activate(sim)
 	incinerate := lock.GetSpell(core.ActionID{SpellID: 29722})
@@ -203,7 +203,7 @@ func TestIncinerateGlyphedMoltenCore(t *testing.T) {
 }
 
 func TestIncinerateGlyphedMoltenCoreMeta(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfIncinerate)})
+	sim := setupFakeSim(defStats, &proto.Glyphs{Prime1: int32(proto.WarlockPrimeGlyph_GlyphOfIncinerate)}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 	lock.Metamorphosis.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 	lock.GetAura("Molten Core Proc Aura").Activate(sim)
@@ -213,7 +213,7 @@ func TestIncinerateGlyphedMoltenCoreMeta(t *testing.T) {
 }
 
 func TestImmolationAura(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{})
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 	lock.Metamorphosis.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
 
@@ -223,7 +223,7 @@ func TestImmolationAura(t *testing.T) {
 }
 
 func TestMoltenCoreCastTime(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{})
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 	lock.GetAura("Molten Core Proc Aura").Activate(sim)
 	incinerate := lock.GetSpell(core.ActionID{SpellID: 29722})
@@ -240,7 +240,7 @@ func TestMoltenCoreCastTime(t *testing.T) {
 }
 
 func TestMoltenCoreAfterCast(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{})
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 	incinerate := lock.GetSpell(core.ActionID{SpellID: 29722})
 
@@ -274,7 +274,7 @@ func TestMoltenCoreAfterCast(t *testing.T) {
 }
 
 func TestDecimationCastTime(t *testing.T) {
-	sim := setupFakeSim(defStats, &proto.Glyphs{})
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
 	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
 	lock.GetAura("Decimation Proc Aura").Activate(sim)
 	soulfire := lock.GetSpell(core.ActionID{SpellID: 6353})
@@ -288,6 +288,114 @@ func TestDecimationCastTime(t *testing.T) {
 	if soulfire.DefaultCast.GCD != expectedGCD {
 		t.Fatalf("Incorrect GCD: Expected: %v, Actual: %v", expectedGCD, soulfire.DefaultCast.GCD)
 	}
+}
+
+func checkTicks(t *testing.T, dot *core.Dot, msg string, expected int32) {
+	if dot.RemainingTicks() != expected {
+		t.Helper()
+		t.Fatalf("%s: Expected: %v, Actual: %v", msg, expected, dot.RemainingTicks())
+	}
+}
+
+func waitUntilTime(sim *core.Simulation, time time.Duration) {
+	for {
+		sim.Step()
+		if sim.CurrentTime >= time {
+			break
+		}
+	}
+}
+
+func TestFelFlameExtension(t *testing.T) {
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 30)
+	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
+	immoDot := lock.ImmolateDot.CurDot()
+	immoDot.Apply(sim)
+	felflame := lock.GetSpell(core.ActionID{SpellID: 77799})
+
+	checkTicks(t, immoDot, "Baseline immolate ticks are wrong?", 7)
+
+	felflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	sim.Step()
+	checkTicks(t, immoDot, "Incorrect tick count after fel flame extension", 7)
+
+	// applying it again shouldn't change ticks since we're at the cap
+	felflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	sim.Step()
+	checkTicks(t, immoDot, "Incorrect tick count after fel flame extension", 7)
+
+	waitUntilTime(sim, 12500*time.Millisecond)
+	checkTicks(t, immoDot, "Incorrect tick count after waiting 9s", 3)
+
+	felflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	sim.Step()
+	checkTicks(t, immoDot, "Incorrect tick count after fel flame extension", 5)
+}
+
+func TestShadowflameHasteCap(t *testing.T) {
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
+	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
+	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1006,
+	})
+	shadowflame := lock.GetSpell(core.ActionID{SpellID: 47897})
+	shadowflameDot := lock.GetSpell(core.ActionID{SpellID: 47960}).CurDot()
+
+	shadowflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, shadowflameDot, "Incorrect tick count for shadowflame at 1006 haste", 3)
+	shadowflameDot.Deactivate(sim)
+
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1,
+	})
+	shadowflame.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, shadowflameDot, "Incorrect tick count for shadowflame at 1007 haste", 4)
+}
+
+func TestImmolateHasteCap(t *testing.T) {
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
+	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
+	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1572,
+	})
+	immolate := lock.Immolate
+	immolateDot := lock.ImmolateDot.CurDot()
+
+	immolate.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, immolateDot, "Incorrect tick count for immolate at 1572 haste", 8)
+	immolateDot.Deactivate(sim)
+
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1,
+	})
+	immolate.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, immolateDot, "Incorrect tick count for immolate at 1573 haste", 9)
+}
+
+func TestCorruptionHasteCap(t *testing.T) {
+	sim := setupFakeSim(defStats, &proto.Glyphs{}, 10)
+	lock := sim.Raid.Parties[0].Players[0].(*DemonologyWarlock)
+	lock.Unit.MultiplyCastSpeed(1 + 0.05) // 5% haste buff
+	lock.Unit.MultiplyCastSpeed(1 + 0.03) // dark intent
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1992,
+	})
+	corruption := lock.Corruption
+	corruptionDot := corruption.CurDot()
+
+	corruption.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, corruptionDot, "Incorrect tick count for corruption at 1992 haste", 7)
+	corruptionDot.Deactivate(sim)
+
+	lock.AddStatsDynamic(sim, stats.Stats{
+		stats.SpellHaste: 1,
+	})
+	corruption.SkipCastAndApplyEffects(sim, lock.CurrentTarget)
+	checkTicks(t, corruptionDot, "Incorrect tick count for corruption at 1993 haste", 8)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

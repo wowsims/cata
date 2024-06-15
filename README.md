@@ -20,7 +20,7 @@ Then unzip the downloaded file, then open the unzipped file to open the sim in y
 Alternatively, you can choose from a specific relase on the [Releases](https://github.com/wowsims/cata/releases) page and click the suitable link under "Assets"
 # Local Dev Installation
 
-This project has dependencies on Go >=1.21, protobuf-compiler and the corresponding Go plugins, and node >= 14.0.
+This project has dependencies on Go >=1.21, protobuf-compiler and the corresponding Go plugins, and node >= 20.
 
 ## Ubuntu
 Do not use apt to install any dependencies, the versions they install are all too old.

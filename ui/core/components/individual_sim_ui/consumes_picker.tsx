@@ -4,11 +4,11 @@ import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
-import { IconEnumPicker } from '../icon_enum_picker';
 import { buildIconInput } from '../icon_inputs';
-import { IconPicker } from '../icon_picker';
 import * as ConsumablesInputs from '../inputs/consumables';
 import { relevantStatOptions } from '../inputs/stat_options';
+import { IconEnumPicker } from '../pickers/icon_enum_picker';
+import { IconPicker } from '../pickers/icon_picker';
 import { SettingsTab } from './settings_tab';
 
 export class ConsumesPicker extends Component {

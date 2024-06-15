@@ -78,7 +78,7 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 
 	for _, aoeTarget := range sim.Encounter.TargetUnits {
 		rakeDot = cat.Rake.Dot(aoeTarget)
-		canRakeTarget := !rakeDot.IsActive() || ((rakeDot.RemainingDuration(sim) < rakeDot.TickLength) && (!isClearcast || (rakeDot.RemainingDuration(sim) < time.Second)))
+		canRakeTarget := !rakeDot.IsActive() || ((rakeDot.RemainingDuration(sim) < rakeDot.BaseTickLength) && (!isClearcast || (rakeDot.RemainingDuration(sim) < time.Second)))
 
 		if canRakeTarget {
 			rakeNow = true
@@ -89,7 +89,7 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 
 	if rakeNow && !roarNow {
 		// Compare DPE versus Swipe to see if it's worth casting
-		potentialRakeTicks := min(rakeDot.NumberOfTicks, int32(simTimeRemain/rakeDot.TickLength))
+		potentialRakeTicks := min(rakeDot.BaseTickCount, int32(simTimeRemain/rakeDot.BaseTickLength))
 		expectedRakeDamage := cat.Rake.ExpectedInitialDamage(sim, rakeTarget) + cat.Rake.ExpectedTickDamage(sim, rakeTarget)*float64(potentialRakeTicks)
 		rakeDPE := expectedRakeDamage / cat.Rake.DefaultCast.Cost
 		expectedSwipeDamage, swipeDPE := cat.calcExpectedSwipeDamage(sim)
@@ -120,9 +120,9 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 
 	if mangleNow && !roarNow && !rakeNow {
 		// Compare Swipe damage to 30% of the max Rake ticks possible on this target before it dies
-		currentRakeTicksRemaining := min(rakeDot.NumTicksRemaining(sim), int32(simTimeRemain/rakeDot.TickLength))
+		currentRakeTicksRemaining := min(rakeDot.RemainingTicks(), int32(simTimeRemain/rakeDot.BaseTickLength))
 		newRakesPossible := max(0, int32((simTimeRemain-rakeDot.RemainingDuration(sim))/rakeDot.Duration))
-		mangleRakeContribution := 0.3 * cat.Rake.ExpectedTickDamage(sim, mangleTarget) * float64(currentRakeTicksRemaining+newRakesPossible*(rakeDot.NumberOfTicks+1))
+		mangleRakeContribution := 0.3 * cat.Rake.ExpectedTickDamage(sim, mangleTarget) * float64(currentRakeTicksRemaining+newRakesPossible*(rakeDot.BaseTickCount+1))
 		rawMangleDamage := cat.MangleCat.ExpectedInitialDamage(sim, mangleTarget)
 		expectedMangleDamage := rawMangleDamage + mangleRakeContribution
 		mangleDPE := expectedMangleDamage / cat.MangleCat.DefaultCast.Cost
@@ -179,10 +179,10 @@ func (cat *FeralDruid) doAoeRotation(sim *core.Simulation) (bool, time.Duration)
 
 	for _, aoeTarget := range sim.Encounter.TargetUnits {
 		rakeDot = cat.Rake.Dot(aoeTarget)
-		rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.TickLength)
+		rakeRefreshPending := rakeDot.IsActive() && (rakeDot.RemainingDuration(sim) < simTimeRemain-rakeDot.BaseTickLength)
 
-		if rakeRefreshPending && (rakeDot.RemainingDuration(sim) > rakeDot.TickLength) {
-			nextAction = min(nextAction, rakeDot.ExpiresAt()-rakeDot.TickLength)
+		if rakeRefreshPending && (rakeDot.RemainingDuration(sim) > rakeDot.BaseTickLength) {
+			nextAction = min(nextAction, rakeDot.ExpiresAt()-rakeDot.BaseTickLength)
 			bleedAura = aoeTarget.GetExclusiveEffectCategory(core.BleedEffectCategory).GetActiveAura()
 
 			if bleedAura.IsActive() && (bleedAura.RemainingDuration(sim) < simTimeRemain-time.Second) {

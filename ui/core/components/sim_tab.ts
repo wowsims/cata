@@ -41,14 +41,14 @@ export abstract class SimTab extends Component {
 		const tabFragment = document.createElement('fragment');
 		tabFragment.innerHTML = `
 			<li class="${this.config.identifier} nav-item" role="presentation">
-				<a
+				<button
 					class="nav-link"
+					type="button"
 					data-bs-toggle="tab"
 					data-bs-target="#${this.config.identifier}"
-					type="button"
 					role="tab"
 					aria-controls="${this.config.identifier}"
-				>${this.config.title}</a>
+				>${this.config.title}</button>
 			</li>
 		`;
 

@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import { SimLog } from '../../proto_utils/logs_parser';
 import { TypedEvent } from '../../typed_event.js';
-import { BooleanPicker } from '../boolean_picker.js';
+import { BooleanPicker } from '../pickers/boolean_picker.js';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
 export class LogRunner extends ResultComponent {
 	private virtualScroll: CustomVirtualScroll | null = null;

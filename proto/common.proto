@@ -579,9 +579,6 @@ message Debuffs {
 	bool judgements_of_the_just = 29;
 	bool dust_cloud = 30;
 	bool earth_shock = 31;
-
-	// health on hit
-	bool judgement = 32;
 }
 
 message Consumes {
@@ -747,6 +744,7 @@ message SimItem {
 
 	string set_name = 14;
 	int32 rand_prop_points = 15;
+	int32 set_id = 16;
 }
 
 // Extra enum for describing which items are eligible for an enchant, when

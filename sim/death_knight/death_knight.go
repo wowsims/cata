@@ -159,12 +159,12 @@ func NewDeathKnight(character *core.Character, inputs DeathKnightInputs, talents
 				return
 			}
 			if changeType.Matches(core.ConvertToDeath) {
-				spell := dk.GetOrRegisterSpell(core.SpellConfig{
+				deathConvertSpell := dk.GetOrRegisterSpell(core.SpellConfig{
 					ActionID:       core.ActionID{SpellID: deathRuneConvertSpellId},
 					Flags:          core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
 					ClassSpellMask: DeathKnightSpellConvertToDeathRune,
 				})
-				spell.Cast(sim, nil)
+				deathConvertSpell.Cast(sim, nil)
 			}
 		},
 		nil,

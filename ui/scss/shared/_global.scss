@@ -51,8 +51,31 @@ body {
 	}
 }
 
-a {
+button {
+	display: inline-block;
+	border: 0;
+	background-color: transparent;
+	padding: 0;
+	color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+	text-decoration: none;
 	outline: none;
+	width: auto;
+	text-align: inherit;
+	font-weight: inherit;
+	transition: $btn-transition;
+
+	&:hover {
+		--bs-link-color-rgb: var(--bs-link-hover-color-rgb);
+	}
+}
+
+a,
+button[class*='btn-link'] {
+	cursor: pointer;
+	border: 0;
+	padding: 0;
+	outline: none;
+	background-color: transparent;
 	transition: color 0.15s ease-in-out;
 
 	&.link-alt {
@@ -93,6 +116,12 @@ kbd {
 	color: var(--bs-white);
 }
 
+.list-reset {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
 .dragto:not(.dragfrom) {
 	filter: brightness(0.75);
 }
@@ -122,6 +151,31 @@ kbd {
 	background-size: cover;
 }
 
+.p-gap {
+	@extend .px-gap;
+	@extend .py-gap;
+}
+.pl-gap {
+	padding-left: var(--gap-width);
+}
+.pr-gap {
+	padding-right: var(--gap-width);
+}
+.pt-gap {
+	padding-top: var(--gap-width);
+}
+.pb-gap {
+	padding-bottom: var(--gap-width);
+}
+.px-gap {
+	@extend .pl-gap;
+	@extend .pr-gap;
+}
+.py-gap {
+	@extend .pt-gap;
+	@extend .pb-gap;
+}
+
 @each $label, $value in $item-quality-colors {
 	.item-quality-#{$label} {
 		color: var(--bs-#{$label}) !important;
@@ -135,6 +189,11 @@ kbd {
 }
 @each $label, $value in $damage-colors {
 	.damage-#{$label} {
+		color: var(--bs-#{$label}) !important;
+	}
+}
+@each $label, $value in $faction-colors {
+	.faction-#{$label} {
 		color: var(--bs-#{$label}) !important;
 	}
 }
@@ -152,4 +211,10 @@ kbd {
 .notices-banner {
 	width: 100%;
 	background: color-mix(in srgb, var(--bs-body-bg), var(--bs-white) 5%);
+}
+
+.blurred {
+	filter: blur(2px);
+	overflow: hidden;
+	pointer-events: none;
 }

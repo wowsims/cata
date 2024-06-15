@@ -1,10 +1,24 @@
 import { Player } from '../../player';
-import { BattleElixir, Class, Conjured, Consumes, Explosive, Flask, Food, GuardianElixir, Potions, Profession, Spec, Stat, TinkerHands } from '../../proto/common';
+import {
+	BattleElixir,
+	Class,
+	Conjured,
+	Consumes,
+	Explosive,
+	Flask,
+	Food,
+	GuardianElixir,
+	Potions,
+	Profession,
+	Spec,
+	Stat,
+	TinkerHands,
+} from '../../proto/common';
 import { ActionId } from '../../proto_utils/action_id';
 import { EventID, TypedEvent } from '../../typed_event';
-import { IconEnumValueConfig } from '../icon_enum_picker';
 import { makeBooleanConsumeInput } from '../icon_inputs';
 import * as InputHelpers from '../input_helpers';
+import { IconEnumValueConfig } from '../pickers/icon_enum_picker';
 import { ActionInputConfig, ItemStatOption } from './stat_options';
 
 export interface ConsumableInputConfig<T> extends ActionInputConfig<T> {

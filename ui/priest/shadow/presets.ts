@@ -1,5 +1,18 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Debuffs, Flask, Food, Glyphs, IndividualBuffs, Potions, Profession, RaidBuffs, TinkerHands, TristateEffect } from '../../core/proto/common.js';
+import {
+	Consumes,
+	Debuffs,
+	Flask,
+	Food,
+	Glyphs,
+	IndividualBuffs,
+	Potions,
+	Profession,
+	RaidBuffs,
+	Stat,
+	TinkerHands,
+	TristateEffect,
+} from '../../core/proto/common.js';
 import {
 	PriestMajorGlyph as MajorGlyph,
 	PriestMinorGlyph as MinorGlyph,
@@ -8,6 +21,7 @@ import {
 	ShadowPriest_Options as Options,
 } from '../../core/proto/priest.js';
 import { SavedTalents } from '../../core/proto/ui.js';
+import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import P1Gear from './gear_sets/p1.gear.json';
 import PreRaidGear from './gear_sets/preraid.gear.json';
@@ -19,6 +33,20 @@ export const PRE_RAID = PresetUtils.makePresetGear('Pre Raid', PreRaidGear);
 export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 1.0,
+		[Stat.StatSpirit]: 0.47,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatSpellHit]: 0.87,
+		[Stat.StatSpellCrit]: 0.74,
+		[Stat.StatSpellHaste]: 0.87,
+		[Stat.StatMastery]: 0.58,
+	}),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://www.wowhead.com/cata/talent-calc/priest and copy the numbers in the url.
@@ -84,7 +112,6 @@ export const DefaultDebuffs = Debuffs.create({
 	criticalMass: true,
 	demoralizingShout: true,
 	frostFever: true,
-	judgement: true,
 });
 
 export const OtherDefaults = {

@@ -1,17 +1,16 @@
 import { ConjuredHealthstone, TinkerHandsSynapseSprings } from '../../core/components/inputs/consumables';
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, RotationType, Spec } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, RotationType, Spec, Stat } from '../../core/proto/common';
 import {
 	BeastMasteryHunter_Options as BeastMasteryOptions,
 	BeastMasteryHunter_Rotation as BeastMasteryRotation,
 	HunterMajorGlyph as MajorGlyph,
-	HunterOptions_Ammo as Ammo,
 	HunterOptions_PetType as PetType,
 	HunterPrimeGlyph as PrimeGlyph,
 	HunterStingType as StingType,
 } from '../../core/proto/hunter';
 import { SavedTalents } from '../../core/proto/ui';
-import { ferocityBMDefault } from '../../core/talents/hunter_pet';
+import { Stats } from '../../core/proto_utils/stats';
 import AoeApl from './apls/aoe.apl.json';
 import BmApl from './apls/bm.apl.json';
 import P1BMGear from './gear_sets/p1_bm.gear.json';
@@ -35,6 +34,25 @@ export const DefaultSimpleRotation = BeastMasteryRotation.create({
 export const ROTATION_PRESET_SIMPLE_DEFAULT = PresetUtils.makePresetSimpleRotation('Simple Default', Spec.SpecBeastMasteryHunter, DefaultSimpleRotation);
 export const ROTATION_PRESET_BM = PresetUtils.makePresetAPLRotation('BM', BmApl);
 export const ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('AOE', AoeApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'BM P1',
+	Stats.fromMap(
+		{
+			[Stat.StatStamina]: 0.5,
+			[Stat.StatAgility]: 2.65,
+			[Stat.StatRangedAttackPower]: 1.0,
+			[Stat.StatMeleeHit]: 2.12,
+			[Stat.StatMeleeCrit]: 1.19,
+			[Stat.StatMeleeHaste]: 0.97,
+			[Stat.StatMastery]: 0.55,
+		},
+		{
+			[PseudoStat.PseudoStatRangedDps]: 6.32,
+		},
+	),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.

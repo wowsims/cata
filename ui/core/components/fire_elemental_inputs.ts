@@ -5,11 +5,11 @@ import { ShamanTotems } from '../proto/shaman';
 import { ActionId } from '../proto_utils/action_id.js';
 import { ShamanSpecs } from '../proto_utils/utils';
 import { EventID } from '../typed_event';
-import { BooleanPicker } from './boolean_picker';
 import { ContentBlock } from './content_block';
-import { IconPicker } from './icon_picker';
 import { Input } from './input';
-import { NumberPicker } from './number_picker';
+import { BooleanPicker } from './pickers/boolean_picker.js';
+import { IconPicker } from './pickers/icon_picker.jsx';
+import { NumberPicker } from './pickers/number_picker.js';
 
 export function FireElementalSection(parentElem: HTMLElement, simUI: IndividualSimUI<any>): ContentBlock {
 	const contentBlock = new ContentBlock(parentElem, 'fire-elemental-settings', {

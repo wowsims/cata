@@ -241,6 +241,10 @@ const (
 	// Add/subtract bonus spell power
 	// Uses: FloatValue
 	SpellMod_BonusSpellPower_Flat
+
+	// Add/subtract bonus expertise rating
+	// Uses: FloatValue
+	SpellMod_BonusExpertise_Rating
 )
 
 var spellModMap = map[SpellModType]*SpellModFunctions{
@@ -331,6 +335,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_BonusSpellPower_Flat: {
 		Apply:  applyBonusSpellPowerFlat,
 		Remove: removeBonusSpellPowerFlat,
+	},
+
+	SpellMod_BonusExpertise_Rating: {
+		Apply:  applyBonusExpertiseRating,
+		Remove: removeBonusExpertiseRating,
 	},
 }
 
@@ -438,12 +447,12 @@ func applyDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.AddTicks(int32(mod.intValue))
+				dot.BaseTickCount += int32(mod.intValue)
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.AddTicks(int32(mod.intValue))
+		spell.aoeDot.BaseTickCount += int32(mod.intValue)
 	}
 }
 
@@ -451,12 +460,12 @@ func removeDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.AddTicks(-int32(mod.intValue))
+				dot.BaseTickCount -= int32(mod.intValue)
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.AddTicks(-int32(mod.intValue))
+		spell.aoeDot.BaseTickCount -= int32(mod.intValue)
 	}
 }
 
@@ -472,12 +481,12 @@ func applyDotTickLengthFlat(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.TickLength += mod.timeValue
+				dot.BaseTickLength += mod.timeValue
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.TickLength += mod.timeValue
+		spell.aoeDot.BaseTickLength += mod.timeValue
 	}
 }
 
@@ -485,12 +494,12 @@ func removeDotTickLengthFlat(mod *SpellMod, spell *Spell) {
 	if spell.dots != nil {
 		for _, dot := range spell.dots {
 			if dot != nil {
-				dot.TickLength -= mod.timeValue
+				dot.BaseTickLength -= mod.timeValue
 			}
 		}
 	}
 	if spell.aoeDot != nil {
-		spell.aoeDot.TickLength -= mod.timeValue
+		spell.aoeDot.BaseTickLength -= mod.timeValue
 	}
 }
 
@@ -516,4 +525,12 @@ func applyBonusSpellPowerFlat(mod *SpellMod, spell *Spell) {
 
 func removeBonusSpellPowerFlat(mod *SpellMod, spell *Spell) {
 	spell.BonusSpellPower -= mod.floatValue
+}
+
+func applyBonusExpertiseRating(mod *SpellMod, spell *Spell) {
+	spell.BonusExpertiseRating += mod.floatValue
+}
+
+func removeBonusExpertiseRating(mod *SpellMod, spell *Spell) {
+	spell.BonusExpertiseRating -= mod.floatValue
 }

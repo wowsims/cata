@@ -85,12 +85,12 @@ class RaidStatsCategory extends Component {
 		this.options = options;
 
 		const counterElemRef = ref<HTMLElement>();
-		const categoryElemRef = ref<HTMLAnchorElement>();
+		const categoryElemRef = ref<HTMLButtonElement>();
 		this.rootElem.appendChild(
-			<a ref={categoryElemRef} href="javascript:void(0)" className="raid-stats-category" attributes={{ role: 'button' }}>
+			<button ref={categoryElemRef} className="raid-stats-category">
 				<span ref={counterElemRef} className="raid-stats-category-counter"></span>
 				<span className="raid-stats-category-label">{options.label}</span>
-			</a>,
+			</button>,
 		);
 
 		this.counterElem = counterElemRef.value!;
@@ -121,12 +121,7 @@ class RaidStatsCategory extends Component {
 		this.counterElem.textContent = String(total);
 
 		const statsLink = this.rootElem.querySelector<HTMLElement>('.raid-stats-category')!;
-
-		if (total == 0) {
-			statsLink?.classList.remove('active');
-		} else {
-			statsLink?.classList.add('active');
-		}
+		statsLink?.classList[total === 0 ? 'remove' : 'add']('active');
 	}
 }
 

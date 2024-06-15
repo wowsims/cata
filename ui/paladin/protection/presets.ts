@@ -1,13 +1,14 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Potions } from '../../core/proto/common.js';
+import { Consumes, Flask, Food, Potions, PseudoStat, Stat } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
-	PaladinJudgement as PaladinJudgement,
 	PaladinMajorGlyph,
 	PaladinMinorGlyph,
+	PaladinSeal,
 	ProtectionPaladin_Options as ProtectionPaladinOptions,
 } from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
+import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 //import P1Gear from './gear_sets/p1.gear.json';
 import PreraidGear from './gear_sets/preraid.gear.json';
@@ -19,8 +20,33 @@ import PreraidGear from './gear_sets/preraid.gear.json';
 export const PRERAID_PRESET = PresetUtils.makePresetGear('P1 PreRaid Preset', PreraidGear);
 //export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
 
-
 export const ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap(
+		{
+			[Stat.StatArmor]: 0.07,
+			[Stat.StatBonusArmor]: 0.06,
+			[Stat.StatStamina]: 1.14,
+			[Stat.StatMastery]: 1.0,
+			[Stat.StatStrength]: 1.0,
+			[Stat.StatAgility]: 0,
+			[Stat.StatAttackPower]: 0.26,
+			[Stat.StatExpertise]: 0.5,
+			[Stat.StatMeleeHit]: 0.5,
+			[Stat.StatMeleeCrit]: 0.3,
+			[Stat.StatMeleeHaste]: 0.17,
+			[Stat.StatSpellPower]: 0,
+			[Stat.StatDodge]: 0.6,
+			[Stat.StatParry]: 0.6,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 3.33,
+		},
+	),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
@@ -42,8 +68,8 @@ export const GenericAoeTalents = {
 
 export const DefaultOptions = ProtectionPaladinOptions.create({
 	classOptions: {
-		aura: PaladinAura.RetributionAura,
-		judgement: PaladinJudgement.Judgement,
+		aura: PaladinAura.Retribution,
+		seal: PaladinSeal.Truth,
 	},
 });
 

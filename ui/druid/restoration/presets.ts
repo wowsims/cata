@@ -9,6 +9,7 @@ import {
 	PartyBuffs,
 	Potions,
 	RaidBuffs,
+	Stat,
 	TristateEffect,
 	UnitReference,
 } from '../../core/proto/common';
@@ -25,8 +26,21 @@ import P2Gear from './gear_sets/p2.gear.json';
 export const P2_PRESET = PresetUtils.makePresetGear('P2 Preset', P2Gear);
 import P3Gear from './gear_sets/p3.gear.json';
 export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
+import { Stats } from '../../core/proto_utils/stats';
 import P4Gear from './gear_sets/p4.gear.json';
 export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
+
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 0.38,
+		[Stat.StatSpirit]: 0.34,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatSpellCrit]: 0.69,
+		[Stat.StatSpellHaste]: 0.77,
+		[Stat.StatMP5]: 0.0,
+	}),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
@@ -92,8 +106,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	vampiricTouch: true,
 });
 
-export const DefaultPartyBuffs = PartyBuffs.create({
-});
+export const DefaultPartyBuffs = PartyBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
 	bloodFrenzy: true,
@@ -103,7 +116,6 @@ export const DefaultDebuffs = Debuffs.create({
 	criticalMass: true,
 	demoralizingShout: true,
 	frostFever: true,
-	judgement: true,
 });
 
 export const OtherDefaults = {

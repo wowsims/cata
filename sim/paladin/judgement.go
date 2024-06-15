@@ -6,12 +6,12 @@ import (
 	"github.com/wowsims/cata/sim/core"
 )
 
-func (paladin *Paladin) RegisterJudgement() {
+func (paladin *Paladin) registerJudgement() {
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 20271},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskProc,
-		Flags:       SpellFlagPrimaryJudgement | core.SpellFlagAPL,
+		Flags:       SpellFlagPrimaryJudgement | core.SpellFlagAPL | core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.05,
@@ -31,11 +31,6 @@ func (paladin *Paladin) RegisterJudgement() {
 			if paladin.CurrentSeal == nil {
 				return
 			}
-			// if paladin.CurrentSeal.IsActive() {
-			// 	paladin.CurrentSeal.Refresh(sim)
-			// } else {
-			// 	paladin.CurrentSeal.Activate(sim)
-			// }
 
 			paladin.CurrentJudgement.Cast(sim, target)
 		},

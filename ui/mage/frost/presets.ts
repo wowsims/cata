@@ -1,11 +1,8 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Conjured, Consumes, Faction, Flask, Food, Glyphs, Potions, Profession, Spec } from '../../core/proto/common';
-import {
-	FrostMage_Options as MageOptions,
-	MageMajorGlyph,
-	MageMinorGlyph,
-} from '../../core/proto/mage';
+import { Conjured, Consumes, Faction, Flask, Food, Glyphs, Potions, Profession, Spec, Stat } from '../../core/proto/common';
+import { FrostMage_Options as MageOptions, MageMajorGlyph, MageMinorGlyph } from '../../core/proto/mage';
 import { SavedTalents } from '../../core/proto/ui';
+import { Stats } from '../../core/proto_utils/stats';
 import FrostApl from './apls/frost.apl.json';
 import FrostAoeApl from './apls/frost_aoe.apl.json';
 import P1FrostGear from './gear_sets/p1_frost.gear.json';
@@ -23,6 +20,20 @@ export const FROST_P3_PRESET_HORDE = PresetUtils.makePresetGear('Frost P3 Preset
 
 export const FROST_ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Frost', FrostApl, { talentTree: 2 });
 export const FROST_ROTATION_PRESET_AOE = PresetUtils.makePresetAPLRotation('Frost AOE', FrostAoeApl, { talentTree: 2 });
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'Frost P1',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 0.48,
+		[Stat.StatSpirit]: 0.42,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatSpellHit]: 0.38,
+		[Stat.StatSpellCrit]: 0.58,
+		[Stat.StatSpellHaste]: 0.94,
+		[Stat.StatMP5]: 0.09,
+	}),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
@@ -43,8 +54,7 @@ export const FrostTalents = {
 };
 
 export const DefaultFrostOptions = MageOptions.create({
-	classOptions: {
-	},
+	classOptions: {},
 	waterElementalDisobeyChance: 0.1,
 });
 

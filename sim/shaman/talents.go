@@ -667,7 +667,7 @@ func (shaman *Shaman) applySearingFlames() {
 				// recalc damage based on stacks, testing with searing totem seems to indicate the damage is updated dynamically on refesh
 				// instantly taking the bonus of any procs or buffs and applying it times the number of stacks
 				dot.SnapshotCritChance = spell.SpellCritChance(result.Target)
-				dot.SnapshotBaseDamage = float64(dot.GetStacks()) * result.PreOutcomeDamage / float64(dot.NumberOfTicks)
+				dot.SnapshotBaseDamage = float64(dot.GetStacks()) * result.PreOutcomeDamage / float64(dot.BaseTickCount)
 				dot.SnapshotAttackerMultiplier = 1
 				shaman.SearingFlames.Cast(sim, result.Target)
 			}
@@ -710,7 +710,7 @@ func (shaman *Shaman) registerManaTideTotemCD() {
 			// If healing stream is active, cancel it while mana tide is up.
 			if shaman.HealingStreamTotem.Hot(&shaman.Unit).IsActive() {
 				for _, agent := range shaman.Party.Players {
-					shaman.HealingStreamTotem.Hot(&agent.GetCharacter().Unit).Cancel(sim)
+					shaman.HealingStreamTotem.Hot(&agent.GetCharacter().Unit).Deactivate(sim)
 				}
 			}
 

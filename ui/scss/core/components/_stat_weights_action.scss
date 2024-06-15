@@ -17,29 +17,6 @@
 	.results-ep-table-container {
 		position: relative;
 
-		&.pending {
-			overflow: hidden;
-			margin: 0;
-
-			.results-ep-table {
-				filter: blur(2px);
-			}
-
-			.results-pending-overlay {
-				display: flex;
-			}
-		}
-
-		.results-pending-overlay {
-			position: absolute;
-			inset: 0;
-			display: none;
-			align-items: center;
-			justify-content: center;
-			z-index: 1;
-			background: var(--bs-black-alpha-50);
-		}
-
 		.results-ep-table {
 			width: 100%;
 
@@ -127,6 +104,14 @@
 	}
 }
 
+.ep-weights-sidebar {
+	min-width: 170px;
+
+	.saved-data-create-container {
+		max-width: 200px;
+	}
+}
+
 .unused-ep {
 	color: var(--bs-gray-500) !important;
 }
@@ -211,4 +196,14 @@
 			}
 		}
 	}
+}
+
+.results-pending-overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10000;
+	background: var(--bs-black-alpha-50);
 }

@@ -7,6 +7,23 @@ import (
 	"github.com/wowsims/cata/sim/core/stats"
 )
 
+var ItemSetGladiatorsBattlegear = core.NewItemSet(core.ItemSet{
+	ID:   909,
+	Name: "Gladiator's Battlegear",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			agent.GetCharacter().AddStats(stats.Stats{
+				stats.Strength: 70,
+			})
+		},
+		4: func(agent core.Agent) {
+			agent.GetCharacter().AddStats(stats.Stats{
+				stats.Strength: 90,
+			})
+		},
+	},
+})
+
 var ItemSetEarthenWarplate = core.NewItemSet(core.ItemSet{
 	Name: "Earthen Warplate",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -82,10 +99,14 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			actionID := core.ActionID{SpellID: 99233}
+
+			warrior := agent.(WarriorAgent).GetWarrior()
+			talentReduction := time.Duration(warrior.Talents.BoomingVoice*3) * time.Second
+
 			buff := character.RegisterAura(core.Aura{
 				Label:    "Burning Rage",
 				ActionID: actionID,
-				Duration: 12 * time.Second,
+				Duration: 12*time.Second - talentReduction,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
 				},
@@ -97,8 +118,8 @@ var ItemSetMoltenGiantWarplate = core.NewItemSet(core.ItemSet{
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:           "Burning Rage Trigger",
 				ActionID:       actionID,
-				ClassSpellMask: SpellMaskColossusSmash,
-				Callback:       core.CallbackOnSpellHitDealt,
+				ClassSpellMask: SpellMaskShouts,
+				Callback:       core.CallbackOnCastComplete,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					buff.Activate(sim)
 				},
@@ -163,7 +184,7 @@ var ItemSetMoltenGiantBattleplate = core.NewItemSet(core.ItemSet{
 					NumberOfTicks: 2,
 					TickLength:    2 * time.Second,
 					OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-						dot.Snapshot(target, shieldSlamDamage/float64(dot.NumberOfTicks))
+						dot.Snapshot(target, shieldSlamDamage/float64(dot.BaseTickCount))
 					},
 					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

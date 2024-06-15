@@ -9,6 +9,10 @@ export const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
 export const existsInDOM = (element: HTMLElement | null) => document.body.contains(element);
 
+export const cloneChildren = (element: HTMLElement) => [...(element.childNodes || [])].map(child => child.cloneNode(true));
+
+export const sanitizeId = (id: string) => id.split(' ').join('');
+
 // Returns if the two items are equal, or if both are null / undefined.
 export function equalsOrBothNull<T>(a: T, b: T, comparator?: (_a: NonNullable<T>, _b: NonNullable<T>) => boolean): boolean {
 	if (a == null && b == null) return true;
@@ -321,3 +325,4 @@ export const getEnvironment = (): Environments => {
 
 export const isLocal = () => getEnvironment() === 'local';
 export const isExternal = () => getEnvironment() === 'external';
+export const isDevMode = () => import.meta.env.DEV;

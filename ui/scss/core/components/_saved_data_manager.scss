@@ -7,8 +7,10 @@
 
 		.saved-data-presets,
 		.saved-data-custom {
+			margin-bottom: var(--block-spacer);
 			display: flex;
 			flex-wrap: wrap;
+			gap: var(--block-spacer);
 		}
 	}
 
@@ -39,8 +41,6 @@
 
 .saved-data-set-chip {
 	padding: 0;
-	margin-bottom: var(--block-spacer);
-	margin-right: var(--block-spacer);
 	border: 1px solid var(--bs-primary);
 	display: flex;
 	font-size: var(--content-font-size);

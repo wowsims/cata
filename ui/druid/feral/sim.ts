@@ -1,17 +1,17 @@
-import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
-import { PhysicalDPSGemOptimizer } from '../../core/components/suggest_gems_action.js';
-import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
-import { Player } from '../../core/player.js';
+import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs';
+import * as OtherInputs from '../../core/components/inputs/other_inputs';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
+import * as Mechanics from '../../core/constants/mechanics';
+import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui';
+import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation , APLRotation_Type as APLRotationType } from '../../core/proto/apl.js';
-import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
-import { FeralDruid_Rotation as DruidRotation } from '../../core/proto/druid.js';
-import * as AplUtils from '../../core/proto_utils/apl_utils.js';
-import { Gear } from '../../core/proto_utils/gear.js';
-import { Stats } from '../../core/proto_utils/stats.js';
-import * as FeralInputs from './inputs.js';
-import * as Presets from './presets.js';
+import { APLAction, APLListItem, APLRotation, APLRotation_Type as APLRotationType } from '../../core/proto/apl';
+import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common';
+import { FeralDruid_Rotation as DruidRotation } from '../../core/proto/druid';
+import * as AplUtils from '../../core/proto_utils/apl_utils';
+import { Stats } from '../../core/proto_utils/stats';
+import * as FeralInputs from './inputs';
+import * as Presets from './presets';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	cssClass: 'feral-druid-sim-ui',
@@ -52,21 +52,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		// Default equipped gear.
 		gear: Presets.PRERAID_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatStrength]: 0.39,
-				[Stat.StatAgility]: 1.0,
-				[Stat.StatAttackPower]: 0.37,
-				[Stat.StatMeleeHit]: 0.33,
-				[Stat.StatExpertise]: 0.32,
-				[Stat.StatMeleeCrit]: 0.31,
-				[Stat.StatMeleeHaste]: 0.26,
-				[Stat.StatMastery]: 0.3,
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 1.53,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
+		// Default stat caps for the Reforge Optimizer
+		statCaps: (() => {
+			const hitCap = new Stats().withStat(Stat.StatMeleeHit, 8 * Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE);
+			const expCap = new Stats().withStat(Stat.StatExpertise, 6.5 * 4 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
+
+			return hitCap.add(expCap);
+		})(),
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -88,10 +81,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			arcaneBrilliance: true,
 			manaSpringTotem: true,
 		}),
-		partyBuffs: PartyBuffs.create({
-		}),
-		individualBuffs: IndividualBuffs.create({
-		}),
+		partyBuffs: PartyBuffs.create({}),
+		individualBuffs: IndividualBuffs.create({}),
 		debuffs: Debuffs.create({
 			bloodFrenzy: true,
 		}),
@@ -106,7 +97,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [FeralInputs.AssumeBleedActive, OtherInputs.InputDelay, OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget, OtherInputs.DarkIntentUptime],
+		inputs: [
+			FeralInputs.AssumeBleedActive,
+			OtherInputs.InputDelay,
+			OtherInputs.DistanceFromTarget,
+			OtherInputs.TankAssignment,
+			OtherInputs.InFrontOfTarget,
+			OtherInputs.DarkIntentUptime,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -114,6 +112,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents, Presets.HybridTalents],
 		rotations: [Presets.SIMPLE_ROTATION_DEFAULT, Presets.AOE_ROTATION_DEFAULT],
@@ -129,9 +128,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		const [prepullActions, actions] = AplUtils.standardCooldownDefaults(cooldowns);
 
 		const blockZerk = APLAction.fromJsonString(`{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":50334}}}`);
-		const doRotation = APLAction.fromJsonString(`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maintainFaerieFire":${simple.maintainFaerieFire},"allowAoeBerserk":${simple.allowAoeBerserk},"meleeWeave":${simple.meleeWeave},"bearWeave":${simple.bearWeave},"snekWeave":${simple.snekWeave},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${simple.useBite},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)}}}`);
+		const doRotation = APLAction.fromJsonString(
+			`{"catOptimalRotationAction":{"rotationType":${simple.rotationType},"manualParams":${simple.manualParams},"maintainFaerieFire":${
+				simple.maintainFaerieFire
+			},"allowAoeBerserk":${simple.allowAoeBerserk},"meleeWeave":${simple.meleeWeave},"bearWeave":${simple.bearWeave},"snekWeave":${
+				simple.snekWeave
+			},"minRoarOffset":${simple.minRoarOffset.toFixed(2)},"ripLeeway":${simple.ripLeeway.toFixed(0)},"useRake":${simple.useRake},"useBite":${
+				simple.useBite
+			},"biteDuringExecute":${simple.biteDuringExecute},"biteTime":${simple.biteTime.toFixed(2)}}}`,
+		);
+		const autocasts = APLAction.fromJsonString(`{"autocastOtherCooldowns":{}}`);
 
-		actions.push(...([blockZerk, doRotation].filter(a => a) as Array<APLAction>));
+		actions.push(...([blockZerk, doRotation, autocasts].filter(a => a) as Array<APLAction>));
 
 		return APLRotation.create({
 			prepullActions: prepullActions,
@@ -177,40 +185,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 export class FeralDruidSimUI extends IndividualSimUI<Spec.SpecFeralDruid> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecFeralDruid>) {
 		super(parentElem, player, SPEC_CONFIG);
-
-		//const _gemOptimizer = new FeralGemOptimizer(this);
-	}
-}
-
-class FeralGemOptimizer extends PhysicalDPSGemOptimizer {
-	constructor(simUI: IndividualSimUI<Spec.SpecFeralDruid>) {
-		super(simUI, true, true, true, true);
-	}
-
-	calcCritCap(gear: Gear): Stats {
-		const baseCritCapPercentage = 77.8; // includes 3% Crit debuff
-		let agiProcs = 0;
-
-		if (gear.hasRelic(47668)) {
-			agiProcs += 200;
-		}
-
-		if (gear.hasRelic(50456)) {
-			agiProcs += 44 * 5;
-		}
-
-		if (gear.hasTrinket(47131) || gear.hasTrinket(47464)) {
-			agiProcs += 510;
-		}
-
-		if (gear.hasTrinket(47115) || gear.hasTrinket(47303)) {
-			agiProcs += 450;
-		}
-
-		if (gear.hasTrinket(44253) || gear.hasTrinket(42987)) {
-			agiProcs += 300;
-		}
-
-		return new Stats().withStat(Stat.StatMeleeCrit, (baseCritCapPercentage - (agiProcs * 1.1 * 1.06 * 1.02) / 83.33) * 45.91);
+		player.sim.waitForInit().then(() => {
+			new ReforgeOptimizer(this);
+		});
 	}
 }

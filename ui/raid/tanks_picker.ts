@@ -1,5 +1,5 @@
 import { Component } from '../core/components/component';
-import { UnitReferencePicker } from '../core/components/raid_target_picker';
+import { UnitReferencePicker } from '../core/components/pickers/raid_target_picker';
 import { UnitReference } from '../core/proto/common';
 import { emptyUnitReference } from '../core/proto_utils/utils';
 import { Raid } from '../core/raid';

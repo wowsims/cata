@@ -1,0 +1,62 @@
+.bulk-sim-result-root {
+	display: flex;
+	align-items: center;
+
+	&:not(:last-child) {
+		padding-bottom: var(--gap-width);
+		border-bottom: var(--border-default);
+		margin-bottom: var(--gap-width);
+	}
+
+	&.bulk-sim-result-no-talents {
+		.bulk-gear-combo {
+			flex: 5;
+		}
+	}
+
+	.results-sim {
+		flex: 3;
+
+		.results-sim-dps {
+			display: grid;
+			grid-template-columns: 3fr 2fr;
+			text-align: left;
+			line-height: 1;
+
+			.results-reference {
+				margin-bottom: 0;
+				display: flex;
+				align-items: flex-end;
+
+				.topline-result-avg {
+					margin-right: var(--spacer-1);
+				}
+			}
+		}
+	}
+
+	.bulk-gear-combo {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--block-spacer);
+		flex: 3;
+
+		.item-picker-root {
+			padding: 0 !important;
+
+			.item-picker-labels-container {
+				display: none;
+			}
+		}
+	}
+
+	.bulk-talent-loadout {
+		flex: 2;
+	}
+
+	.bulk-results-actions {
+		display: flex;
+		justify-content: flex-end;
+		flex: 1;
+	}
+}

@@ -1,5 +1,5 @@
 import * as PresetUtils from '../../core/preset_utils';
-import { Consumes, Flask, Food, Glyphs, Potions, Spec, TinkerHands } from '../../core/proto/common';
+import { Consumes, Flask, Food, Glyphs, Potions, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import {
 	DruidMajorGlyph,
 	DruidMinorGlyph,
@@ -7,7 +7,6 @@ import {
 	FeralDruid_Options as FeralDruidOptions,
 	FeralDruid_Rotation as FeralDruidRotation,
 	FeralDruid_Rotation_AplType,
-	FeralDruid_Rotation_BearweaveType,
 	FeralDruid_Rotation_BiteModeType,
 } from '../../core/proto/druid';
 import { SavedTalents } from '../../core/proto/ui';
@@ -28,8 +27,29 @@ export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
 import DefaultApl from './apls/default.apl.json';
 export const APL_ROTATION_DEFAULT = PresetUtils.makePresetAPLRotation('APL Default', DefaultApl);
 
+import { Stats } from '../../core/proto_utils/stats';
 import AoeApl from './apls/aoe.apl.json';
 export const APL_ROTATION_AOE = PresetUtils.makePresetAPLRotation('APL AoE', AoeApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 0.39,
+			[Stat.StatAgility]: 1.0,
+			[Stat.StatAttackPower]: 0.37,
+			[Stat.StatMeleeHit]: 0.33,
+			[Stat.StatExpertise]: 0.32,
+			[Stat.StatMeleeCrit]: 0.31,
+			[Stat.StatMeleeHaste]: 0.26,
+			[Stat.StatMastery]: 0.3,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 1.53,
+		},
+	),
+);
 
 export const DefaultRotation = FeralDruidRotation.create({
 	rotationType: FeralDruid_Rotation_AplType.SingleTarget,
@@ -111,6 +131,7 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.PotionOfTheTolvir,
 	prepopPotion: Potions.PotionOfTheTolvir,
 	tinkerHands: TinkerHands.TinkerHandsSynapseSprings,
+	explosiveBigDaddy: true,
 });
 
 export const OtherDefaults = {
@@ -118,4 +139,4 @@ export const OtherDefaults = {
 	duration: 240,
 	durationVariation: 15,
 	highHpThreshold: 0.8,
-}
+};

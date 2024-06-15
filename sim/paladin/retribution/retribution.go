@@ -1,6 +1,7 @@
 package retribution
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/cata/sim/core"
@@ -29,19 +30,9 @@ func RegisterRetributionPaladin() {
 func NewRetributionPaladin(character *core.Character, options *proto.Player) *RetributionPaladin {
 	retOptions := options.GetRetributionPaladin()
 
-	pal := paladin.NewPaladin(character, options.TalentsString)
-
 	ret := &RetributionPaladin{
-		Paladin: pal,
-		Seal:    retOptions.Options.ClassOptions.Seal,
+		Paladin: paladin.NewPaladin(character, options.TalentsString, retOptions.Options.ClassOptions),
 	}
-
-	ret.PaladinAura = retOptions.Options.ClassOptions.Aura
-
-	ret.EnableAutoAttacks(ret, core.AutoAttackOptions{
-		MainHand:       ret.WeaponFromMainHand(ret.DefaultMeleeCritMultiplier()),
-		AutoSwingMelee: true,
-	})
 
 	return ret
 }
@@ -49,7 +40,6 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 type RetributionPaladin struct {
 	*paladin.Paladin
 
-	Seal      proto.PaladinSeal
 	HoLDamage float64
 }
 
@@ -60,7 +50,7 @@ func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
 func (ret *RetributionPaladin) Initialize() {
 	ret.Paladin.Initialize()
 	ret.RegisterSpecializationEffects()
-	//ret.RegisterAvengingWrathCD()
+	ret.RegisterTemplarsVerdict()
 }
 
 func (ret *RetributionPaladin) ApplyTalents() {
@@ -70,18 +60,6 @@ func (ret *RetributionPaladin) ApplyTalents() {
 
 func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
 	ret.Paladin.Reset(sim)
-
-	// switch ret.Seal {
-	// case proto.PaladinSeal_Vengeance:
-	// 	ret.CurrentSeal = ret.SealOfVengeanceAura
-	// 	ret.SealOfVengeanceAura.Activate(sim)
-	// case proto.PaladinSeal_Command:
-	// 	ret.CurrentSeal = ret.SealOfCommandAura
-	// 	ret.SealOfCommandAura.Activate(sim)
-	// case proto.PaladinSeal_Righteousness:
-	// 	ret.CurrentSeal = ret.SealOfRighteousnessAura
-	// 	ret.SealOfRighteousnessAura.Activate(sim)
-	// }
 }
 
 func (ret *RetributionPaladin) RegisterSpecializationEffects() {
@@ -95,6 +73,11 @@ func (ret *RetributionPaladin) RegisterSpecializationEffects() {
 	mhWeapon := ret.GetMHWeapon()
 	if mhWeapon != nil && mhWeapon.HandType == proto.HandType_HandTypeTwoHand {
 		ret.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.25
+		ret.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  paladin.SpellMaskJudgement,
+			FloatValue: 0.25,
+		})
 	}
 
 	// Judgements of the Bold
@@ -105,22 +88,25 @@ func (ret *RetributionPaladin) RegisterMastery() {
 	actionId := core.ActionID{SpellID: 76672}
 
 	// Hand of Light
-	handOfLight := ret.RegisterSpell(core.SpellConfig{
-		ActionID:         actionId,
-		SpellSchool:      core.SpellSchoolHoly,
-		ProcMask:         core.ProcMaskMeleeMHSpecial,
-		Flags:            core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+	ret.HandOfLight = ret.RegisterSpell(core.SpellConfig{
+		ActionID:    actionId,
+		SpellSchool: core.SpellSchoolHoly,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags: core.SpellFlagMeleeMetrics |
+			core.SpellFlagIgnoreModifiers |
+			core.SpellFlagNoOnCastComplete,
+		ClassSpellMask: paladin.SpellMaskHandOfLight,
+
 		DamageMultiplier: 1.0,
 		ThreatMultiplier: 1.0,
-		CritMultiplier:   ret.DefaultMeleeCritMultiplier(),
+		CritMultiplier:   0.0,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			new_result := spell.CalcOutcome(sim, target, spell.OutcomeAlwaysHit)
-			// TODO: this damage needs to be manually boosted by inquisition when it's implemented, and also needs to be
-			// boosted by any 8% magic damage taken debuff present on the target.
-			new_result.Damage = ret.HoLDamage
-			new_result.Threat = spell.ThreatFromDamage(new_result.Outcome, new_result.Damage)
-			spell.DealDamage(sim, new_result)
+			baseDamage := ret.HoLDamage
+			if target.HasActiveAuraWithTag(core.SpellDamageEffectAuraTag) {
+				baseDamage *= 1.08
+			}
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
 		},
 	})
 
@@ -134,8 +120,8 @@ func (ret *RetributionPaladin) RegisterMastery() {
 		ProcChance:     1.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			ret.HoLDamage = (16.8 + 2.1*ret.GetMasteryPoints()) / 100.0 * result.Damage
-			handOfLight.Cast(sim, result.Target)
+			ret.HoLDamage = ((16.8 + 2.1*ret.GetMasteryPoints()) / 100.0) * result.Damage
+			ret.HandOfLight.Cast(sim, result.Target)
 		},
 	})
 }
@@ -143,22 +129,31 @@ func (ret *RetributionPaladin) RegisterMastery() {
 func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 	actionID := core.ActionID{SpellID: 89901}
 	manaMetrics := ret.NewManaMetrics(actionID)
-	var pa *core.PendingAction
 
-	jotbAura := ret.RegisterAura(core.Aura{
-		Label:    "Judgements of the Bold",
+	// It's 25% of base mana over 10 seconds, with haste adding ticks.
+	manaPerTick := math.Round(0.025 * ret.BaseMana)
+
+	jotb := ret.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			pa = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 2,
-				OnAction: func(sim *core.Simulation) {
-					ret.AddMana(sim, 0.25*ret.BaseMana, manaMetrics)
-				},
-			})
+		Flags:    core.SpellFlagHelpful | core.SpellFlagNoMetrics | core.SpellFlagNoLogs,
+
+		Hot: core.DotConfig{
+			SelfOnly: true,
+			Aura: core.Aura{
+				Label: "Judgements of the Bold",
+			},
+			NumberOfTicks:        10,
+			TickLength:           time.Second * 1,
+			AffectedByCastSpeed:  true,
+			HasteReducesDuration: false,
+
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				ret.AddMana(sim, manaPerTick, manaMetrics)
+			},
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			pa.Cancel(sim)
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.SelfHot().Apply(sim)
 		},
 	})
 
@@ -167,12 +162,11 @@ func (ret *RetributionPaladin) ApplyJudgmentsOfTheBold() {
 		ActionID:       actionID,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
-		ProcMask:       core.ProcMaskMeleeSpecial,
 		ClassSpellMask: paladin.SpellMaskJudgement,
 		ProcChance:     1.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			jotbAura.Activate(sim)
+			jotb.Cast(sim, &ret.Unit)
 		},
 	})
 }

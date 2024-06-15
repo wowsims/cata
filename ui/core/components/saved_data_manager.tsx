@@ -23,17 +23,17 @@ export type SavedDataConfig<ModObject, T> = {
 	data: T;
 	tooltip?: string;
 	isPreset?: boolean;
-
 	// If set, will automatically hide the saved data when this evaluates to false.
 	enableWhen?: (obj: ModObject) => boolean;
+	// Will execute when the saved data is loaded.
+	onLoad?: (obj: ModObject) => void;
 };
 
 type SavedData<ModObject, T> = {
 	name: string;
 	data: T;
 	elem: HTMLElement;
-	enableWhen?: (obj: ModObject) => boolean;
-};
+} & Pick<SavedDataConfig<ModObject, T>, 'enableWhen' | 'onLoad'>;
 
 export class SavedDataManager<ModObject, T> extends Component {
 	private readonly modObject: ModObject;
@@ -64,9 +64,9 @@ export class SavedDataManager<ModObject, T> extends Component {
 		const presetDataRef = ref<HTMLDivElement>();
 		const customDataRef = ref<HTMLDivElement>();
 		contentBlock.bodyElement.replaceChildren(
-			<div ref={savedDataRef} className="saved-data-container hide">
-				<div ref={presetDataRef} className="saved-data-presets" />
-				<div ref={customDataRef} className="saved-data-custom" />
+			<div ref={savedDataRef} className="saved-data-container">
+				<div ref={presetDataRef} className="saved-data-presets hide" />
+				<div ref={customDataRef} className="saved-data-custom hide" />
 			</div>,
 		);
 
@@ -80,16 +80,16 @@ export class SavedDataManager<ModObject, T> extends Component {
 	}
 
 	addSavedData(config: SavedDataConfig<ModObject, T>) {
-		this.savedDataDiv.classList.remove('hide');
-
 		const newData = this.makeSavedData(config);
 		const dataArr = config.isPreset ? this.presets : this.userData;
-		const oldIdx = dataArr.findIndex(data => data.name == config.name);
+		const oldIdx = dataArr.findIndex(data => data.name === config.name);
 
-		if (oldIdx == -1) {
+		if (oldIdx === -1) {
 			if (config.isPreset) {
+				this.presetDataDiv.classList.remove('hide');
 				this.presetDataDiv.appendChild(newData.elem);
 			} else {
+				this.customDataDiv.classList.remove('hide');
 				this.customDataDiv.appendChild(newData.elem);
 			}
 			dataArr.push(newData);
@@ -100,23 +100,22 @@ export class SavedDataManager<ModObject, T> extends Component {
 	}
 
 	private makeSavedData(config: SavedDataConfig<ModObject, T>): SavedData<ModObject, T> {
-		const deleteButtonRef = ref<HTMLAnchorElement>();
+		const deleteButtonRef = ref<HTMLButtonElement>();
 		const dataElem = (
 			<div className="saved-data-set-chip badge rounded-pill">
-				<a href="javascript:void(0)" className="saved-data-set-name" attributes={{ role: 'button' }}>
-					{config.name}
-				</a>
+				<button className="saved-data-set-name">{config.name}</button>
 				{!config.isPreset && (
-					<a ref={deleteButtonRef} href="javascript:void(0)" className="saved-data-set-delete" attributes={{ role: 'button' }}>
+					<button ref={deleteButtonRef} className="saved-data-set-delete">
 						<i className="fa fa-times fa-lg"></i>
-					</a>
+					</button>
 				)}
 			</div>
 		) as HTMLElement;
 
 		dataElem.addEventListener('click', () => {
 			this.config.setData(TypedEvent.nextEventID(), this.modObject, config.data);
-
+			console.log(config)
+			config.onLoad?.(this.modObject);
 			if (this.saveInput) this.saveInput.value = config.name;
 		});
 
@@ -129,7 +128,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 
 				tooltip.destroy();
 
-				const idx = this.userData.findIndex(data => data.name == config.name);
+				const idx = this.userData.findIndex(data => data.name === config.name);
 				this.userData[idx].elem.remove();
 				this.userData.splice(idx, 1);
 				this.saveUserData();
@@ -146,6 +145,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 		const checkActive = () => {
 			if (this.config.equals(config.data, this.config.getData(this.modObject))) {
 				dataElem.classList.add('active');
+				if (this.saveInput) this.saveInput.value = config.name;
 			} else {
 				dataElem.classList.remove('active');
 			}
@@ -165,6 +165,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 			data: config.data,
 			elem: dataElem,
 			enableWhen: config.enableWhen,
+			onLoad: config.onLoad,
 		};
 	}
 
@@ -175,7 +176,12 @@ export class SavedDataManager<ModObject, T> extends Component {
 			userData[savedData.name] = this.config.toJson(savedData.data);
 		});
 
-		if (this.userData.length == 0 && this.presets.length == 0) this.savedDataDiv.classList.add('hide');
+		if (!this.presets.length) {
+			this.presetDataDiv.classList.add('hide');
+		}
+		if (!this.userData.length) {
+			this.customDataDiv.classList.add('hide');
+		}
 
 		window.localStorage.setItem(this.config.storageKey, JSON.stringify(userData));
 	}

@@ -1,10 +1,12 @@
 import tippy, { ReferenceElement as TippyReferenceElement } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
+import { REPO_CHOOSE_NEW_ISSUE_URL, REPO_NEW_ISSUE_URL, REPO_RELEASES_URL } from '../constants/other';
 import { SimUI } from '../sim_ui';
-import { isLocal,noop  } from '../utils';
+import { isLocal, noop } from '../utils';
 import { Component } from './component';
 import { Exporter } from './exporters';
+import { SimToolbarItem } from './header/sim_toolbar_item';
 import { Importer } from './importers';
 import { SettingsMenu } from './settings_menu';
 import { SimTab } from './sim_tab';
@@ -60,8 +62,9 @@ export class SimHeader extends Component {
 					// @ts-expect-error
 					'aria-controls': contentId,
 				}}>
-				<a
+				<button
 					className={`nav-link ${isFirstTab && 'active'}`}
+					type="button"
 					dataset={{
 						bsToggle: 'tab',
 						bsTarget: `#${contentId}`,
@@ -69,10 +72,9 @@ export class SimHeader extends Component {
 					attributes={{
 						role: 'tab',
 						'aria-selected': isFirstTab,
-					}}
-					type="button">
+					}}>
 					{title}
-				</a>
+				</button>
 			</li>,
 		);
 	}
@@ -96,46 +98,33 @@ export class SimHeader extends Component {
 	private addImportExportLink(cssClass: string, label: string, importerExporter: Importer | Exporter, _hideInRaidSim?: boolean) {
 		const dropdownElem = this.rootElem.querySelector<HTMLElement>(cssClass)!;
 		const menuElem = dropdownElem.querySelector<HTMLElement>('.dropdown-menu')!;
-		const linkRef = ref<HTMLAnchorElement>();
+		const linkRef = ref<HTMLButtonElement>();
 
 		menuElem.appendChild(
 			<li>
-				<a
-					ref={linkRef}
-					href="javascript:void(0)"
-					className="dropdown-item"
-					attributes={{
-						role: 'button',
-					}}>
+				<button ref={linkRef} className="dropdown-item">
 					{label}
-				</a>
+				</button>
 			</li>,
 		);
 		linkRef.value?.addEventListener('click', () => importerExporter.open());
 	}
 
-	private addToolbarLink(args: ToolbarLinkArgs): HTMLElement {
-		const linkRef = ref<HTMLAnchorElement>();
-
-		args.parent.appendChild(
-			<div className="sim-toolbar-item">
-				<a ref={linkRef} href={args.href ? args.href : 'javascript:void(0)'} className={args.classes || ''} target={args.href ? '_blank' : '_self'}>
-					{args.icon && <i className={args.icon}></i>}
-					{args.text ? ` ${args.text} ` : ''}
-				</a>
-			</div>,
+	private addToolbarLink({ parent, tooltip, classes, onclick, text, ...itemArgs }: ToolbarLinkArgs): HTMLElement {
+		const itemRef = ref<HTMLAnchorElement>();
+		parent.appendChild(
+			<SimToolbarItem linkRef={itemRef} buttonClassName={classes} {...itemArgs}>
+				{text}
+			</SimToolbarItem>,
 		);
 
-		if (linkRef.value) {
-			if (args.onclick) linkRef.value.addEventListener('click', args.onclick);
-
-			if (args.tooltip)
-				tippy(linkRef.value, {
-					content: args.tooltip,
-					placement: 'bottom',
-				});
-		}
-		return linkRef.value!;
+		if (onclick) itemRef.value!.addEventListener('click', onclick);
+		if (tooltip)
+			tippy(itemRef.value!, {
+				content: tooltip,
+				placement: 'bottom',
+			});
+		return itemRef.value!;
 	}
 
 	private addKnownIssuesLink() {
@@ -159,7 +148,7 @@ export class SimHeader extends Component {
 
 	private addBugReportLink() {
 		this.addToolbarLink({
-			href: 'https://github.com/wowsims/cata/issues/new/choose',
+			href: REPO_CHOOSE_NEW_ISSUE_URL,
 			parent: this.simToolbar,
 			icon: 'fas fa-bug fa-lg',
 			tooltip: 'Report a bug or<br>Request a feature',
@@ -167,7 +156,7 @@ export class SimHeader extends Component {
 	}
 
 	private addDownloadBinaryLink() {
-		const href = 'https://github.com/wowsims/cata/releases';
+		const href = REPO_RELEASES_URL;
 		const icon = 'fas fa-gauge-high fa-lg';
 		const parent = this.simToolbar;
 
@@ -223,15 +212,15 @@ export class SimHeader extends Component {
 	}
 
 	private addDiscordLink(container: HTMLElement) {
-		container.appendChild(<div className="sim-toolbar-item">{SocialLinks.buildDiscordLink()}</div>);
+		container.appendChild(<SimToolbarItem>{SocialLinks.buildDiscordLink()}</SimToolbarItem>);
 	}
 
 	private addGitHubLink(container: HTMLElement) {
-		container.appendChild(<div className="sim-toolbar-item">{SocialLinks.buildGitHubLink()}</div>);
+		container.appendChild(<SimToolbarItem>{SocialLinks.buildGitHubLink()}</SimToolbarItem>);
 	}
 
 	private addPatreonLink(container: HTMLElement) {
-		container.appendChild(<div className="sim-toolbar-item">{SocialLinks.buildPatreonLink()}</div>);
+		container.appendChild(<SimToolbarItem>{SocialLinks.buildPatreonLink()}</SimToolbarItem>);
 	}
 
 	protected customRootElement(): HTMLElement {
@@ -241,23 +230,15 @@ export class SimHeader extends Component {
 					<ul className="sim-tabs nav nav-tabs" attributes={{ role: 'tablist' }}></ul>
 					<div className="import-export nav within-raid-sim-hide">
 						<div className="dropdown sim-dropdown-menu import-dropdown">
-							<a
-								href="javascript:void(0)"
-								className="import-link"
-								attributes={{ role: 'button', 'aria-expanded': 'false' }}
-								dataset={{ bsToggle: 'dropdown', bsDisplay: 'dynamic' }}>
+							<button className="import-link" attributes={{ 'aria-expanded': 'false' }} dataset={{ bsToggle: 'dropdown', bsDisplay: 'dynamic' }}>
 								<i className="fa fa-download"></i> Import
-							</a>
+							</button>
 							<ul className="dropdown-menu"></ul>
 						</div>
 						<div className="dropdown sim-dropdown-menu export-dropdown">
-							<a
-								href="javascript:void(0)"
-								className="export-link"
-								attributes={{ role: 'button', 'aria-expanded': 'false' }}
-								dataset={{ bsToggle: 'dropdown', bsDisplay: 'dynamic' }}>
+							<button className="export-link" attributes={{ 'aria-expanded': 'false' }} dataset={{ bsToggle: 'dropdown', bsDisplay: 'dynamic' }}>
 								<i className="fa fa-right-from-bracket"></i> Export
-							</a>
+							</button>
 							<ul className="dropdown-menu"></ul>
 						</div>
 					</div>

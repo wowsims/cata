@@ -1,15 +1,16 @@
-import tippy, { Instance as TippyInstance } from 'tippy.js';
+import clsx from 'clsx';
+import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
-import { PseudoStat, Stat } from '../proto/common.js';
+import { Stat } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getClassStatName, masterySpellIDs, masterySpellNames, statOrder } from '../proto_utils/names.js';
-import { Stats } from '../proto_utils/stats.js';
+import { Stats, statToPercentageOrPoints } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
-import { NumberPicker } from './number_picker';
+import { NumberPicker } from './pickers/number_picker.js';
 
 export type StatMods = { base?: Stats; gear?: Stats; talents?: Stats; buffs?: Stats; consumes?: Stats; final?: Stats; stats?: Array<Stat> };
 export type StatWrites = { base: Stats; gear: Stats; talents: Stats; buffs: Stats; consumes: Stats; final: Stats; stats: Array<Stat> };
@@ -49,38 +50,39 @@ export class CharacterStats extends Component {
 		this.valueElems = [];
 		this.stats.forEach(stat => {
 			const statName = getClassStatName(stat, player.getClass());
-
+			const valueRef = ref<HTMLTableCellElement>();
 			const row = (
 				<tr className="character-stats-table-row">
 					<td className="character-stats-table-label">
 						{statName}
-						{stat == Stat.StatMastery && (
+						{stat === Stat.StatMastery && (
 							<>
 								<br />
 								{masterySpellNames.get(this.player.getSpec())}
 							</>
 						)}
 					</td>
-					<td className="character-stats-table-value">{this.bonusStatsLink(stat)}</td>
+					<td ref={valueRef} className="character-stats-table-value">
+						{this.bonusStatsLink(stat)}
+					</td>
 				</tr>
 			);
 
 			table.appendChild(row);
-
-			const valueElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
-			this.valueElems.push(valueElem);
+			this.valueElems.push(valueRef.value!);
 		});
 
 		if (this.shouldShowMeleeCritCap(player)) {
+			const valueRef = ref<HTMLTableCellElement>();
 			const row = (
 				<tr className="character-stats-table-row">
 					<td className="character-stats-table-label">Melee Crit Cap</td>
-					<td className="character-stats-table-value"></td>
+					<td ref={valueRef} className="character-stats-table-value"></td>
 				</tr>
 			);
 
 			table.appendChild(row);
-			this.meleeCritCapValueElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
+			this.meleeCritCapValueElem = valueRef.value!;
 		} else {
 			this.meleeCritCapValueElem = undefined;
 		}
@@ -150,18 +152,18 @@ export class CharacterStats extends Component {
 				contextualClass = 'text-danger';
 			}
 
-			const statLinkElemRef = ref<HTMLAnchorElement>();
+			const statLinkElemRef = ref<HTMLButtonElement>();
 
 			const valueElem = (
 				<div className="stat-value-link-container">
-					<a href="javascript:void(0)" className={`stat-value-link ${contextualClass}`} attributes={{ role: 'button' }} ref={statLinkElemRef}>
+					<button ref={statLinkElemRef} className={clsx('stat-value-link', contextualClass)}>
 						{`${this.statDisplayString(finalStats, finalStats, stat, true)} `}
-					</a>
+					</button>
 					{stat === Stat.StatMastery && (
 						<a
 							href={ActionId.makeSpellUrl(masterySpellIDs.get(this.player.getSpec()) || 0)}
-							className={`stat-value-link-mastery ${contextualClass}`}
-							attributes={{ role: 'button' }}>
+							className={clsx('stat-value-link-mastery', contextualClass)}
+							target="_blank">
 							{`${(masteryPoints * this.player.getMasteryPerPointModifier()).toFixed(2)}%`}
 						</a>
 					)}
@@ -201,7 +203,7 @@ export class CharacterStats extends Component {
 							<span>{this.statDisplayString(debuffStats, debuffStats, stat)}</span>
 						</div>
 					)}
-					{bonusStatValue != 0 && (
+					{bonusStatValue !== 0 && (
 						<div className="character-stats-tooltip-row">
 							<span>Bonus:</span>
 							<span>{this.statDisplayString(bonusStats, bonusStats, stat)}</span>
@@ -222,11 +224,7 @@ export class CharacterStats extends Component {
 		if (this.meleeCritCapValueElem) {
 			const meleeCritCapInfo = player.getMeleeCritCapInfo();
 
-			const valueElem = (
-				<a href="javascript:void(0)" className="stat-value-link" attributes={{ role: 'button' }}>
-					{`${this.meleeCritCapDisplayString(player, finalStats)} `}
-				</a>
-			);
+			const valueElem = <button className="stat-value-link">{this.meleeCritCapDisplayString(player, finalStats)} </button>;
 
 			const capDelta = meleeCritCapInfo.playerCritCapDelta;
 			if (capDelta == 0) {
@@ -288,36 +286,37 @@ export class CharacterStats extends Component {
 		rawValue *= 1;
 
 		let displayStr = String(Math.round(rawValue));
+		const statAsPercentageOrPoint = statToPercentageOrPoints(stat, rawValue, stats);
 
 		if (stat == Stat.StatMeleeHit) {
-			displayStr += ` (${(rawValue / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatSpellHit) {
-			displayStr += ` (${(rawValue / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatMeleeCrit || stat == Stat.StatSpellCrit) {
-			displayStr += ` (${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatMeleeHaste) {
-			displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatSpellHaste) {
-			displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatExpertise) {
 			// As of 06/20, Blizzard has changed Expertise to no longer truncate at quarter percent intervals. Note that
 			// in-game character sheet tooltips will still display the truncated values, but it has been tested to behave
 			// continuously in reality since the patch.
-			displayStr += ` (${(rawValue / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatBlock) {
 			// TODO: Figure out how to display these differently for the components than the final value
 			//displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + 5.0).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatDodge) {
 			//displayStr += ` (${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${(stats.getPseudoStat(PseudoStat.PseudoStatDodge) * 100).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatParry) {
 			//displayStr += ` (${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%)`;
-			displayStr += ` (${(stats.getPseudoStat(PseudoStat.PseudoStatParry) * 100).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatResilience) {
-			displayStr += ` (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
+			displayStr += ` (${statAsPercentageOrPoint.toFixed(2)}%)`;
 		} else if (stat == Stat.StatMastery) {
-			displayStr += ` (${(rawValue / Mechanics.MASTERY_RATING_PER_MASTERY_POINT + (includeBase ? this.player.getBaseMastery() : 0)).toFixed(2)} Points)`;
+			displayStr += ` (${(statAsPercentageOrPoint + (includeBase ? this.player.getBaseMastery() : 0)).toFixed(2)} Points)`;
 		}
 
 		return displayStr;
@@ -336,18 +335,13 @@ export class CharacterStats extends Component {
 
 	private bonusStatsLink(stat: Stat): HTMLElement {
 		const statName = getClassStatName(stat, this.player.getClass());
-		const linkRef = ref<HTMLAnchorElement>();
+		const linkRef = ref<HTMLButtonElement>();
 		const iconRef = ref<HTMLDivElement>();
 
 		const link = (
-			<a
-				ref={linkRef}
-				href="javascript:void(0)"
-				className="add-bonus-stats text-white ms-2"
-				dataset={{ bsToggle: 'popover' }}
-				attributes={{ role: 'button' }}>
+			<button ref={linkRef} className="add-bonus-stats text-white ms-2" dataset={{ bsToggle: 'popover' }}>
 				<i ref={iconRef} className="fas fa-plus-minus"></i>
-			</a>
+			</button>
 		);
 
 		tippy(iconRef.value!, { content: `Bonus ${statName}` });

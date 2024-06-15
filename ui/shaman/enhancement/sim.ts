@@ -1,6 +1,6 @@
 import { FireElementalSection } from '../../core/components/fire_elemental_inputs.js';
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
-import * as OtherInputs from '../../core/components/other_inputs.js';
+import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
@@ -23,7 +23,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 
 		const statMod = (current: UnitStats, previous?: UnitStats) => {
 			return new Stats().withStat(Stat.StatSpellPower, Stats.fromProto(current).subtract(Stats.fromProto(previous)).getStat(Stat.StatAttackPower) * 0.55);
-		}
+		};
 
 		const base = statMod(playerStats.baseStats!);
 		const gear = statMod(playerStats.gearStats!, playerStats.baseStats);
@@ -84,26 +84,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Default equipped gear.
 		gear: Presets.P1ORC_PRESET.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap(
-			{
-				[Stat.StatIntellect]: 1.48,
-				[Stat.StatAgility]: 1.59,
-				[Stat.StatStrength]: 1.1,
-				[Stat.StatSpellPower]: 1.13,
-				[Stat.StatSpellHit]: 0, //default EP assumes cap
-				[Stat.StatSpellCrit]: 0.91,
-				[Stat.StatSpellHaste]: 0.37,
-				[Stat.StatAttackPower]: 1.0,
-				[Stat.StatMeleeHit]: 1.38,
-				[Stat.StatMeleeCrit]: 0.81,
-				[Stat.StatMeleeHaste]: 1.61, //haste is complicated
-				[Stat.StatExpertise]: 0, //default EP assumes cap
-			},
-			{
-				[PseudoStat.PseudoStatMainHandDps]: 5.21,
-				[PseudoStat.PseudoStatOffHandDps]: 2.21,
-			},
-		),
+		epWeights: Presets.P1_EP_PRESET.epWeights,
 		other: Presets.OtherDefaults,
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
@@ -137,20 +118,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	},
 
 	presets: {
+		epWeights: [Presets.P1_EP_PRESET],
 		// Preset talents that the user can quickly select.
 		talents: [Presets.StandardTalents],
 		// Preset rotations that the user can quickly select.
 		rotations: [Presets.ROTATION_PRESET_DEFAULT],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.PRERAID_PRESET,
-			Presets.P1ORC_PRESET,
-			Presets.P1DRAENEI_PRESET
-		],
+		gear: [Presets.PRERAID_PRESET, Presets.P1ORC_PRESET, Presets.P1DRAENEI_PRESET],
 	},
 
 	autoRotation: (player: Player<Spec.SpecEnhancementShaman>): APLRotation => {
-			return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
+		return Presets.ROTATION_PRESET_DEFAULT.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -163,7 +141,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 				[Faction.Alliance]: Race.RaceDraenei,
 				[Faction.Horde]: Race.RaceOrc,
 				[Faction.Unknown]: Race.RaceUnknown,
-
 			},
 			defaultGear: {
 				[Faction.Alliance]: {
@@ -173,7 +150,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 					1: Presets.P1ORC_PRESET.gear,
 				},
 				[Faction.Unknown]: {},
-
 			},
 			otherDefaults: Presets.OtherDefaults,
 		},

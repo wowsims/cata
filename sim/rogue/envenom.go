@@ -85,7 +85,7 @@ func (rogue *Rogue) registerEnvenom() {
 					if newStacks := dp.GetStacks() - comboPoints; newStacks > 0 {
 						dp.SetStacks(sim, newStacks)
 					} else {
-						dp.Cancel(sim)
+						dp.Deactivate(sim)
 					}
 				}
 			} else {

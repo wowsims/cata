@@ -1,8 +1,7 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Glyphs, Potions, Profession, TinkerHands } from '../../core/proto/common.js';
+import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common.js';
 import {
 	PaladinAura as PaladinAura,
-	PaladinJudgement as PaladinJudgement,
 	PaladinMajorGlyph,
 	PaladinMinorGlyph,
 	PaladinPrimeGlyph,
@@ -10,6 +9,7 @@ import {
 	RetributionPaladin_Options as RetributionPaladinOptions,
 } from '../../core/proto/paladin.js';
 import { SavedTalents } from '../../core/proto/ui.js';
+import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
 import P1_BisRetGear from './gear_sets/p1_bis.gear.json';
 import P1_NonHcRetGear from './gear_sets/p1_nonhc.gear.json';
@@ -24,6 +24,25 @@ export const P1_NONHC_RET_PRESET = PresetUtils.makePresetGear('P1 non-Hc', P1_No
 export const P1_BIS_RET_PRESET = PresetUtils.makePresetGear('P1 BiS', P1_BisRetGear);
 
 export const ROTATION_PRESET_DEFAULT = PresetUtils.makePresetAPLRotation('Default', DefaultApl);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap(
+		{
+			[Stat.StatStrength]: 2.27,
+			[Stat.StatAttackPower]: 1,
+			[Stat.StatMeleeHit]: 3.27,
+			[Stat.StatMeleeCrit]: 0.94,
+			[Stat.StatMeleeHaste]: 0.27,
+			[Stat.StatExpertise]: 2.55,
+			[Stat.StatMastery]: 1.34,
+		},
+		{
+			[PseudoStat.PseudoStatMainHandDps]: 8.07,
+		},
+	),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
@@ -47,8 +66,7 @@ export const RetTalents = {
 
 export const DefaultOptions = RetributionPaladinOptions.create({
 	classOptions: {
-		aura: PaladinAura.RetributionAura,
-		judgement: PaladinJudgement.Judgement,
+		aura: PaladinAura.Retribution,
 		seal: PaladinSeal.Truth,
 	},
 });
@@ -63,6 +81,6 @@ export const DefaultConsumes = Consumes.create({
 
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
-	profession2: Profession.Jewelcrafting,
+	profession2: Profession.Tailoring,
 	distanceFromTarget: 5,
 };

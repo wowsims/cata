@@ -1,7 +1,8 @@
 import * as PresetUtils from '../../core/preset_utils.js';
-import { Consumes, Flask, Food, Glyphs, Potions } from '../../core/proto/common.js';
+import { Consumes, Flask, Food, Glyphs, Potions, Stat } from '../../core/proto/common.js';
 import { RestorationShaman_Options as RestorationShamanOptions, ShamanMajorGlyph, ShamanMinorGlyph, ShamanShield } from '../../core/proto/shaman.js';
 import { SavedTalents } from '../../core/proto/ui.js';
+import { Stats } from '../../core/proto_utils/stats';
 import P1Gear from './gear_sets/p1.gear.json';
 import P2Gear from './gear_sets/p2.gear.json';
 import P3Gear from './gear_sets/p3.gear.json';
@@ -17,6 +18,19 @@ export const P1_PRESET = PresetUtils.makePresetGear('P1 Preset', P1Gear);
 export const P2_PRESET = PresetUtils.makePresetGear('P2 Preset', P2Gear);
 export const P3_PRESET = PresetUtils.makePresetGear('P3 Preset', P3Gear);
 export const P4_PRESET = PresetUtils.makePresetGear('P4 Preset', P4Gear);
+
+// Preset options for EP weights
+export const P1_EP_PRESET = PresetUtils.makePresetEpWeights(
+	'P1',
+	Stats.fromMap({
+		[Stat.StatIntellect]: 0.22,
+		[Stat.StatSpirit]: 0.05,
+		[Stat.StatSpellPower]: 1,
+		[Stat.StatSpellCrit]: 0.67,
+		[Stat.StatSpellHaste]: 1.29,
+		[Stat.StatMP5]: 0.08,
+	}),
+);
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/cata/talent-calc and copy the numbers in the url.
