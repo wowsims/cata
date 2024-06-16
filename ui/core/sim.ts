@@ -701,6 +701,7 @@ export class Sim {
 				language: this.getLanguage(), // Don't change language.
 				filters: Sim.defaultFilters(),
 				showEpValues: false,
+				useSoftCapBreakpoints: true,
 			}),
 		);
 	}
