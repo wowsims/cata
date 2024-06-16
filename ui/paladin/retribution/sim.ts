@@ -41,6 +41,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	epStats: [
 		Stat.StatStrength,
 		Stat.StatAttackPower,
+		Stat.StatSpellHit,
+		Stat.StatSpellCrit,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
