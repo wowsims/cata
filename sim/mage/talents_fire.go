@@ -253,7 +253,7 @@ func (mage *Mage) applyPyromaniac() {
 			aura.Activate(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.PyroblastDot, mage.Combustion}
+			dotSpells := []*core.Spell{mage.LivingBomb, mage.Ignite, mage.Pyroblast, mage.Combustion}
 			activeDotTargets := 0
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				for _, spells := range dotSpells {
@@ -398,7 +398,7 @@ func (mage *Mage) applyImpact() {
 			if spell.ClassSpellMask == MageSpellFireBlast {
 
 				originalTarget := mage.CurrentTarget
-				duplicatableDots := []*core.Spell{mage.LivingBomb, mage.PyroblastDot, mage.Ignite, mage.Combustion}
+				duplicatableDots := []*core.Spell{mage.LivingBomb, mage.Pyroblast.RelatedDotSpell, mage.Ignite, mage.Combustion.RelatedDotSpell}
 
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					if aoeTarget == originalTarget {
