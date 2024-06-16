@@ -299,7 +299,7 @@ export class Player<SpecType extends Spec> {
 	readonly healingModelChangeEmitter = new TypedEvent<void>('PlayerHealingModel');
 	readonly epWeightsChangeEmitter = new TypedEvent<void>('PlayerEpWeights');
 	readonly statCapsChangeEmitter = new TypedEvent<void>('StatCaps');
-	readonly softCapBreakpointsChangeEmitter = new TypedEvent<void>('StatCaps');
+	readonly softCapBreakpointsChangeEmitter = new TypedEvent<void>('SoftCapBreakpoints');
 	readonly miscOptionsChangeEmitter = new TypedEvent<void>('PlayerMiscOptions');
 
 	readonly currentStatsEmitter = new TypedEvent<void>('PlayerCurrentStats');

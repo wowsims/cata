@@ -296,6 +296,7 @@ message SimSettings {
 	bool show_quick_swap = 12;
 	bool show_ep_values = 11;
 	bool use_custom_ep_values = 13;
+	bool use_soft_cap_breakpoints = 14;
 	string language = 9;
 	Faction faction = 6;
 	DatabaseFilters filters = 10;

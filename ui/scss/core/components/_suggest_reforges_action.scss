@@ -15,6 +15,48 @@
 	padding-right: calc(var(--btn-padding-x) + var(--settings-button-width));
 }
 
+.reforge-optimizer-stat-cap-table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	padding: 0;
+
+	tr {
+		td,
+		th {
+			padding-bottom: var(--spacer-1);
+		}
+	}
+
+	th,
+	td {
+		padding: 0;
+		&:not(:first-child):not(:only-child) {
+			padding-left: calc(var(--spacer-1) / 2);
+		}
+		&:not(:last-child):not(:only-child) {
+			padding-right: calc(var(--spacer-1) / 2);
+		}
+		&:first-child:not(:only-child) {
+			padding-right: var(--spacer-2);
+		}
+	}
+
+	tbody {
+		td:nth-child(2) {
+			width: 75px;
+		}
+		td:nth-child(3) {
+			width: 60px;
+		}
+	}
+
+	.form-control {
+		padding-left: var(--spacer-2);
+		padding-right: var(--spacer-2);
+		text-align: right;
+	}
+}
+
 .suggest-reforges-button-settings {
 	position: absolute;
 	top: 0;

@@ -17,7 +17,7 @@ import { ActionGroupItem } from '../sim_ui';
 import { TypedEvent } from '../typed_event';
 import { isDevMode, sleep } from '../utils';
 import { BooleanPicker } from './pickers/boolean_picker';
-import { NumberPicker } from './pickers/number_picker';
+import { NumberPicker, NumberPickerConfig } from './pickers/number_picker';
 import { renderSavedEPWeights } from './saved_data_managers/ep_weights';
 import Toast from './toast';
 
@@ -178,10 +178,21 @@ export class ReforgeOptimizer {
 					id: 'reforge-optimizer-enable-custom-ep-weights',
 					label: 'Enable custom EP Weights',
 					inline: true,
-					changedEvent: player => player.epWeightsChangeEmitter,
+					changedEvent: () => this.sim.useCustomEPValuesChangeEmitter,
 					getValue: () => this.sim.getUseCustomEPValues(),
 					setValue: (eventID, _player, newValue) => {
 						this.sim.setUseCustomEPValues(eventID, newValue);
+					},
+				});
+
+				const useSoftCapBreakpointsInput = new BooleanPicker(null, this.player, {
+					id: 'reforge-optimizer-enable-soft-cap-breakpoints',
+					label: 'Enable soft cap breakpoints',
+					inline: true,
+					changedEvent: () => this.sim.useSoftCapBreakpointsChangeEmitter,
+					getValue: () => this.sim.getUseSoftCapBreakpoints(),
+					setValue: (eventID, _player, newValue) => {
+						this.sim.setUseSoftCapBreakpoints(eventID, newValue);
 					},
 				});
 
@@ -192,13 +203,14 @@ export class ReforgeOptimizer {
 						<div ref={descriptionRef} className={clsx('mb-0', this.sim.getUseCustomEPValues() && 'hide')}>
 							<p>This will enable modification of the default EP weights and setting custom stat caps.</p>
 							<p>Ep weights can be modified in the Stat Weights editor.</p>
-							<p className="mb-0">If you want to hard cap a stat make sure to put the EP for that stat higher.</p>
+							<p>If you want to hard cap a stat make sure to put the EP for that stat higher.</p>
 						</div>
 						{this.buildCapsList({
-							input: useCustomEPValuesInput,
+							useCustomEPValuesInput: useCustomEPValuesInput,
 							description: descriptionRef.value!,
 						})}
-						{this.buildEPWeightsToggle({ input: useCustomEPValuesInput })}
+						{useSoftCapBreakpointsInput.rootElem}
+						{this.buildEPWeightsToggle({ useCustomEPValuesInput: useCustomEPValuesInput })}
 					</>,
 				);
 			},
@@ -208,51 +220,83 @@ export class ReforgeOptimizer {
 		});
 	}
 
-	buildCapsList({ input, description }: { input: BooleanPicker<Player<any>>; description: HTMLElement }) {
-		const tableRef = ref<HTMLUListElement>();
+	buildCapsList({ useCustomEPValuesInput, description }: { useCustomEPValuesInput: BooleanPicker<Player<any>>; description: HTMLElement }) {
+		const numberPickerSharedConfig: Pick<NumberPickerConfig<Player<any>>, 'float' | 'showZeroes' | 'extraCssClasses' | 'changedEvent'> = {
+			float: true,
+			showZeroes: false,
+			extraCssClasses: ['mb-0'],
+			changedEvent: _ => this.player.statCapsChangeEmitter,
+		};
+
+		const tableRef = ref<HTMLTableElement>();
 		const statCapTooltipRef = ref<HTMLButtonElement>();
 		const defaultStatCapsButtonRef = ref<HTMLButtonElement>();
 
 		const stats = new Stats(this.simUI.individualConfig.displayStats);
 
 		const content = (
-			<ul ref={tableRef} className={clsx('reforge-optimizer-stat-cap-list list-reset d-grid gap-2', !this.sim.getUseCustomEPValues() && 'hide')}>
-				<li className="d-flex">
-					<h6 className="content-block-title mb-0 me-1">Edit stat caps</h6>
-					<button ref={statCapTooltipRef} className="d-inline">
-						<i className="fa-regular fa-circle-question" />
-					</button>
-					<button ref={defaultStatCapsButtonRef} className="d-inline ms-auto" onclick={() => this.setDefaultStatCaps()}>
-						<i className="fas fa-arrow-rotate-left" />
-					</button>
-				</li>
-				{this.simUI.individualConfig.displayStats.map(stat => {
-					if (EXCLUDED_STATS.includes(stat)) return;
+			<table ref={tableRef} className={clsx('reforge-optimizer-stat-cap-table mb-2', !this.sim.getUseCustomEPValues() && 'hide')}>
+				<thead>
+					<tr>
+						<th colSpan={3} className="pb-3">
+							<div className="d-flex">
+								<h6 className="content-block-title mb-0 me-1">Edit stat caps</h6>
+								<button ref={statCapTooltipRef} className="d-inline">
+									<i className="fa-regular fa-circle-question" />
+								</button>
+								<button ref={defaultStatCapsButtonRef} className="d-inline ms-auto" onclick={() => this.setDefaultStatCaps()}>
+									<i className="fas fa-arrow-rotate-left" />
+								</button>
+							</div>
+						</th>
+					</tr>
+					<tr>
+						<th>Stat</th>
+						<th className="text-end">Rating</th>
+						<th className="text-end">%</th>
+					</tr>
+				</thead>
+				<tbody>
+					{this.simUI.individualConfig.displayStats.map(stat => {
+						if (EXCLUDED_STATS.includes(stat)) return;
 
-					const listElementRef = ref<HTMLLIElement>();
-					const statName = getClassStatName(stat, this.player.getClass());
+						const listElementRef = ref<HTMLTableRowElement>();
+						const statName = getClassStatName(stat, this.player.getClass());
+						const ratingPicker = new NumberPicker(null, this.player, {
+							...numberPickerSharedConfig,
+							id: `character-bonus-stat-${stat}-rating`,
+							getValue: () => this.statCaps.getStat(stat),
+							setValue: (_eventID, _player, newValue) => {
+								this.setStatCap(stat, newValue);
+							},
+						});
+						const percentagePicker = new NumberPicker(null, this.player, {
+							...numberPickerSharedConfig,
+							id: `character-bonus-stat-${stat}-percentage`,
+							getValue: () => {
+								let statInPercentageOrPoints = statToPercentageOrPoints(stat, this.statCaps.getStat(stat), stats);
+								if (stat === Stat.StatMastery) statInPercentageOrPoints *= this.player.getMasteryPerPointModifier();
+								return statInPercentageOrPoints;
+							},
+							setValue: (_eventID, _player, newValue) => {
+								let statInNumber = statPercentageOrPointsToNumber(stat, newValue, stats);
+								if (stat === Stat.StatMastery) statInNumber /= this.player.getMasteryPerPointModifier();
+								this.setStatCap(stat, statInNumber);
+							},
+						});
 
-					const picker = new NumberPicker(null, this.player, {
-						id: `character-bonus-stat-${stat}`,
-						inline: true,
-						float: true,
-						showZeroes: false,
-						label: `${statName} ${stat === Stat.StatMastery ? 'Points' : '%'}`,
-						extraCssClasses: ['mb-0'],
-						changedEvent: _ => this.player.statCapsChangeEmitter,
-						getValue: () => statToPercentageOrPoints(stat, this.statCaps.getStat(stat), stats),
-						setValue: (_eventID, _player, newValue) => {
-							this.setStatCap(stat, statPercentageOrPointsToNumber(stat, newValue, stats));
-						},
-					});
-
-					return (
-						<li ref={listElementRef} className="reforge-optimizer-stat-cap-item">
-							{picker.rootElem}
-						</li>
-					);
-				})}
-			</ul>
+						return (
+							<tr ref={listElementRef} className="reforge-optimizer-stat-cap-item">
+								<td>
+									<div className="reforge-optimizer-stat-cap-item-label">{statName}</div>
+								</td>
+								<td>{ratingPicker.rootElem}</td>
+								<td>{percentagePicker.rootElem}</td>
+							</tr>
+						);
+					})}
+				</tbody>
+			</table>
 		);
 
 		if (statCapTooltipRef.value) {
@@ -260,13 +304,13 @@ export class ReforgeOptimizer {
 				content:
 					'Stat caps are the maximum amount of a stat that can be gained from Reforging. If a stat exceeds its cap, the optimizer will attempt to reduce it to the cap value.',
 			});
-			input.addOnDisposeCallback(() => tooltip.destroy());
+			useCustomEPValuesInput.addOnDisposeCallback(() => tooltip.destroy());
 		}
 		if (defaultStatCapsButtonRef.value) {
 			const tooltip = tippy(defaultStatCapsButtonRef.value, {
 				content: 'Reset to stat cap defaults',
 			});
-			input.addOnDisposeCallback(() => tooltip.destroy());
+			useCustomEPValuesInput.addOnDisposeCallback(() => tooltip.destroy());
 		}
 
 		const event = this.sim.useCustomEPValuesChangeEmitter.on(() => {
@@ -275,7 +319,7 @@ export class ReforgeOptimizer {
 			description?.classList[!isUsingCustomEPValues ? 'remove' : 'add']('hide');
 		});
 
-		input.addOnDisposeCallback(() => {
+		useCustomEPValuesInput.addOnDisposeCallback(() => {
 			content.remove();
 			event.dispose();
 		});
@@ -283,7 +327,7 @@ export class ReforgeOptimizer {
 		return content;
 	}
 
-	buildEPWeightsToggle({ input }: { input: BooleanPicker<Player<any>> }) {
+	buildEPWeightsToggle({ useCustomEPValuesInput }: { useCustomEPValuesInput: BooleanPicker<Player<any>> }) {
 		const extraCssClasses = ['mt-3'];
 		if (!this.sim.getUseCustomEPValues()) extraCssClasses.push('hide');
 		const savedEpWeights = renderSavedEPWeights(null, this.simUI, { extraCssClasses, loadOnly: true });
@@ -292,7 +336,7 @@ export class ReforgeOptimizer {
 			savedEpWeights.rootElem?.classList[isUsingCustomEPValues ? 'remove' : 'add']('hide');
 		});
 
-		input.addOnDisposeCallback(() => {
+		useCustomEPValuesInput.addOnDisposeCallback(() => {
 			savedEpWeights.dispose();
 			savedEpWeights.rootElem.remove();
 			event.dispose();
