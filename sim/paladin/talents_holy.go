@@ -2,7 +2,6 @@ package paladin
 
 import (
 	"github.com/wowsims/cata/sim/core"
-	"github.com/wowsims/cata/sim/core/stats"
 	"time"
 )
 
@@ -42,7 +41,7 @@ func (paladin *Paladin) applyJudgementsOfThePure() {
 
 	actionId := core.ActionID{SpellID: 53657}
 
-	hasteAmount := 3 * float64(paladin.Talents.JudgementsOfThePure) * core.HasteRatingPerHastePercent
+	hasteMultiplier := 1 + 0.01*3*float64(paladin.Talents.JudgementsOfThePure)
 	spiritRegenAmount := 0.1 * float64(paladin.Talents.JudgementsOfThePure)
 
 	jotpAura := paladin.GetOrRegisterAura(core.Aura{
@@ -50,13 +49,13 @@ func (paladin *Paladin) applyJudgementsOfThePure() {
 		ActionID: actionId,
 		Duration: 60 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.AddStatDynamic(sim, stats.SpellHaste, hasteAmount)
-			paladin.AddStatDynamic(sim, stats.MeleeHaste, hasteAmount)
+			paladin.MultiplyCastSpeed(hasteMultiplier)
+			paladin.MultiplyMeleeSpeed(sim, hasteMultiplier)
 			paladin.PseudoStats.SpiritRegenRateCombat += spiritRegenAmount
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.AddStatDynamic(sim, stats.SpellHaste, -hasteAmount)
-			paladin.AddStatDynamic(sim, stats.MeleeHaste, -hasteAmount)
+			paladin.MultiplyCastSpeed(1 / hasteMultiplier)
+			paladin.MultiplyMeleeSpeed(sim, 1/hasteMultiplier)
 			paladin.PseudoStats.SpiritRegenRateCombat -= spiritRegenAmount
 		},
 	})
