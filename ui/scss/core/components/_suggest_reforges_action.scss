@@ -1,5 +1,5 @@
 .tippy-box[data-theme='reforge-optimiser-popover'] {
-	min-width: 200px;
+	min-width: 240px;
 
 	.saved-data-manager-root {
 		margin-bottom: 0;
@@ -55,6 +55,10 @@
 		padding-right: var(--spacer-2);
 		text-align: right;
 	}
+}
+
+.reforge-optimizer-stat-cap-item-label {
+	white-space: nowrap;
 }
 
 .suggest-reforges-button-settings {
