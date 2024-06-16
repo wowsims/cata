@@ -37,6 +37,7 @@ const EXCLUDED_STATS = [
 	Stat.StatSpellPenetration,
 	Stat.StatSpirit,
 	Stat.StatMana,
+	Stat.StatMP5,
 ];
 
 export type ReforgeOptimizerOptions = {
