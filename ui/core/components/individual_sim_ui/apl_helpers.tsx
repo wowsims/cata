@@ -207,6 +207,8 @@ const actionIdSets: Record<
 			return metadata
 				.getSpells()
 				.filter(spell => spell.data.hasDot)
+				// filter duplicate dot entries from RelatedDotSpell
+				.filter((value, index, self) => self.findIndex(v => v.id.anyId() === value.id.anyId()) === index)
 				.map(actionId => {
 					return {
 						value: actionId.id,
