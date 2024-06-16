@@ -185,17 +185,19 @@ export class ReforgeOptimizer {
 						this.sim.setUseCustomEPValues(eventID, newValue);
 					},
 				});
-
-				const useSoftCapBreakpointsInput = new BooleanPicker(null, this.player, {
-					id: 'reforge-optimizer-enable-soft-cap-breakpoints',
-					label: 'Enable soft cap breakpoints',
-					inline: true,
-					changedEvent: () => this.sim.useSoftCapBreakpointsChangeEmitter,
-					getValue: () => this.sim.getUseSoftCapBreakpoints(),
-					setValue: (eventID, _player, newValue) => {
-						this.sim.setUseSoftCapBreakpoints(eventID, newValue);
-					},
-				});
+				let useSoftCapBreakpointsInput: BooleanPicker<Player<any>> | null = null;
+				if (!!this.softCapsConfig?.length) {
+					useSoftCapBreakpointsInput = new BooleanPicker(null, this.player, {
+						id: 'reforge-optimizer-enable-soft-cap-breakpoints',
+						label: 'Enable soft cap breakpoints',
+						inline: true,
+						changedEvent: () => this.sim.useSoftCapBreakpointsChangeEmitter,
+						getValue: () => this.sim.getUseSoftCapBreakpoints(),
+						setValue: (eventID, _player, newValue) => {
+							this.sim.setUseSoftCapBreakpoints(eventID, newValue);
+						},
+					});
+				}
 
 				const descriptionRef = ref<HTMLParagraphElement>();
 				instance.setContent(
@@ -210,7 +212,7 @@ export class ReforgeOptimizer {
 							useCustomEPValuesInput: useCustomEPValuesInput,
 							description: descriptionRef.value!,
 						})}
-						{useSoftCapBreakpointsInput.rootElem}
+						{useSoftCapBreakpointsInput?.rootElem}
 						{this.buildEPWeightsToggle({ useCustomEPValuesInput: useCustomEPValuesInput })}
 					</>,
 				);
