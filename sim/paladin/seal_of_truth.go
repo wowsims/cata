@@ -48,15 +48,8 @@ func (paladin *Paladin) registerSealOfTruth() {
 
 			if dotResult.Landed() {
 				dot := spell.Dot(target)
-				if dot.IsActive() {
-					dot.AddStack(sim)
-					dot.TakeSnapshot(sim, false)
-					dot.Refresh(sim)
-				} else {
-					dot.Apply(sim)
-					dot.SetStacks(sim, 1)
-					dot.TakeSnapshot(sim, false)
-				}
+				dot.Apply(sim)
+				dot.AddStack(sim)
 			}
 		},
 	})
