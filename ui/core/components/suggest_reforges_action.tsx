@@ -383,7 +383,7 @@ export class ReforgeOptimizer {
 	computeReforgeSoftCaps(baseStats: Stats): SoftCapBreakpoints[] {
 		const reforgeSoftCaps: SoftCapBreakpoints[] = [];
 
-		if (this.softCapsConfig) {
+		if (this.sim.getUseSoftCapBreakpoints() && this.softCapsConfig) {
 			this.softCapsConfig
 				.slice()
 				.reverse()
