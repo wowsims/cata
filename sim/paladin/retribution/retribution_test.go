@@ -22,7 +22,13 @@ func TestRetribution(t *testing.T) {
 		Glyphs:      StandardGlyphs,
 		Consumes:    FullConsumes,
 		SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: DefaultOptions},
-		Rotation:    core.GetAplRotation("../../../ui/paladin/retribution/apls", "default"),
+		OtherSpecOptions: []core.SpecOptionsCombo{
+			{Label: "Snapshot Guardian", SpecOptions: OptionsWithSnapshotGuardian},
+			{Label: "Seal of Righteousness", SpecOptions: OptionsWithSealOfRighteousness},
+			{Label: "Seal of Justice", SpecOptions: OptionsWithSealOfJustice},
+			{Label: "Seal of Insight", SpecOptions: OptionsWithSealOfInsight},
+		},
+		Rotation: core.GetAplRotation("../../../ui/paladin/retribution/apls", "default"),
 
 		ItemFilter: core.ItemFilter{
 			WeaponTypes: []proto.WeaponType{
@@ -85,8 +91,57 @@ var DefaultOptions = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{
 		Options: &proto.RetributionPaladin_Options{
 			ClassOptions: &proto.PaladinOptions{
-				Seal: proto.PaladinSeal_Truth,
-				Aura: proto.PaladinAura_Retribution,
+				Seal:             proto.PaladinSeal_Truth,
+				Aura:             proto.PaladinAura_Retribution,
+				SnapshotGuardian: false,
+			},
+		},
+	},
+}
+
+var OptionsWithSnapshotGuardian = &proto.Player_RetributionPaladin{
+	RetributionPaladin: &proto.RetributionPaladin{
+		Options: &proto.RetributionPaladin_Options{
+			ClassOptions: &proto.PaladinOptions{
+				Seal:             proto.PaladinSeal_Truth,
+				Aura:             proto.PaladinAura_Retribution,
+				SnapshotGuardian: true,
+			},
+		},
+	},
+}
+
+var OptionsWithSealOfRighteousness = &proto.Player_RetributionPaladin{
+	RetributionPaladin: &proto.RetributionPaladin{
+		Options: &proto.RetributionPaladin_Options{
+			ClassOptions: &proto.PaladinOptions{
+				Seal:             proto.PaladinSeal_Righteousness,
+				Aura:             proto.PaladinAura_Retribution,
+				SnapshotGuardian: false,
+			},
+		},
+	},
+}
+
+var OptionsWithSealOfJustice = &proto.Player_RetributionPaladin{
+	RetributionPaladin: &proto.RetributionPaladin{
+		Options: &proto.RetributionPaladin_Options{
+			ClassOptions: &proto.PaladinOptions{
+				Seal:             proto.PaladinSeal_Justice,
+				Aura:             proto.PaladinAura_Retribution,
+				SnapshotGuardian: false,
+			},
+		},
+	},
+}
+
+var OptionsWithSealOfInsight = &proto.Player_RetributionPaladin{
+	RetributionPaladin: &proto.RetributionPaladin{
+		Options: &proto.RetributionPaladin_Options{
+			ClassOptions: &proto.PaladinOptions{
+				Seal:             proto.PaladinSeal_Insight,
+				Aura:             proto.PaladinAura_Retribution,
+				SnapshotGuardian: false,
 			},
 		},
 	},
