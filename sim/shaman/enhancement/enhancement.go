@@ -102,10 +102,7 @@ func (enh *EnhancementShaman) Initialize() {
 	enh.RegisterWindfuryImbue(enh.getImbueProcMask(proto.ShamanImbue_WindfuryWeapon))
 
 	if enh.ItemSwap.IsEnabled() {
-		mh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotMainHand)
-		enh.ApplyFlametongueImbueToItem(mh)
-		oh := enh.ItemSwap.GetItem(proto.ItemSlot_ItemSlotOffHand)
-		enh.ApplyFlametongueImbueToItem(oh)
+		enh.ApplyFlametongueImbueSwap(enh.getImbueProcMask(proto.ShamanImbue_FlametongueWeapon))
 		enh.RegisterOnItemSwap(func(_ *core.Simulation) {
 			enh.ApplySyncType(proto.ShamanSyncType_Auto)
 		})
