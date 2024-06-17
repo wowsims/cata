@@ -125,11 +125,16 @@ func (ghoulPet *GhoulPet) enable(sim *core.Simulation) {
 }
 
 func (dk *DeathKnight) ghoulBaseStats() stats.Stats {
+	nocsHit := -float64(dk.Talents.NervesOfColdSteel) * core.MeleeHitRatingPerHitChance
 	return stats.Stats{
 		stats.Stamina:     388,
 		stats.Agility:     3343 - 10, // We remove 10 to not mess with crit conversion
 		stats.Strength:    476,
 		stats.AttackPower: -20,
+
+		// Remove bonus hit that would be transfered from the DKs Nerves of Cold Steel
+		stats.MeleeHit:  nocsHit,
+		stats.Expertise: nocsHit * PetExpertiseScale,
 	}
 }
 
