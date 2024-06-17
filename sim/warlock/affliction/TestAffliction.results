@@ -122,8 +122,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-BloodthirstyGladiator'sBadgeofConquest-64687"
  value: {
-  dps: 25914.22027
-  tps: 19390.14469
+  dps: 25918.30355
+  tps: 19395.73566
  }
 }
 dps_results: {
@@ -479,15 +479,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-HeartofIgnacious-59514"
  value: {
-  dps: 27200.07841
-  tps: 20498.15627
+  dps: 27177.61033
+  tps: 20479.9094
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-HeartofIgnacious-65110"
  value: {
-  dps: 27320.69506
-  tps: 20645.01388
+  dps: 27305.16855
+  tps: 20628.98078
  }
 }
 dps_results: {
@@ -563,15 +563,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ImpetuousQuery-55881"
  value: {
-  dps: 26324.27921
-  tps: 19738.7472
+  dps: 26314.58636
+  tps: 19729.26281
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-ImpetuousQuery-56406"
  value: {
-  dps: 26324.27921
-  tps: 19738.7472
+  dps: 26314.58636
+  tps: 19729.26281
  }
 }
 dps_results: {
@@ -626,15 +626,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-KvaldirBattleStandard-59685"
  value: {
-  dps: 26137.55179
-  tps: 19598.058
+  dps: 26120.71755
+  tps: 19578.18211
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-KvaldirBattleStandard-59689"
  value: {
-  dps: 26137.55179
-  tps: 19598.058
+  dps: 26120.71755
+  tps: 19578.18211
  }
 }
 dps_results: {
@@ -738,15 +738,15 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-MirrorofBrokenImages-62466"
  value: {
-  dps: 26423.41533
-  tps: 19837.88332
+  dps: 26413.65892
+  tps: 19828.33538
  }
 }
 dps_results: {
  key: "TestAffliction-AllItems-MirrorofBrokenImages-62471"
  value: {
-  dps: 26423.41533
-  tps: 19837.88332
+  dps: 26413.65892
+  tps: 19828.33538
  }
 }
 dps_results: {
@@ -885,8 +885,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-ShardofWoe-60233"
  value: {
-  dps: 26551.18022
-  tps: 19919.18211
+  dps: 26558.6107
+  tps: 19913.7786
  }
 }
 dps_results: {
@@ -899,8 +899,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Sindragosa'sFlawlessFang-50364"
  value: {
-  dps: 26076.83109
-  tps: 19468.45006
+  dps: 26072.60621
+  tps: 19476.50365
  }
 }
 dps_results: {
@@ -1074,8 +1074,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-AllItems-Tyrande'sFavoriteDoll-64645"
  value: {
-  dps: 26794.9001
-  tps: 20059.3225
+  dps: 26803.32876
+  tps: 20063.20432
  }
 }
 dps_results: {
