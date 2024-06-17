@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
-import { Stat } from '../proto/common.js';
+import { Class, PseudoStat, Stat } from '../proto/common.js';
 import { ActionId } from '../proto_utils/action_id';
 import { getClassStatName, masterySpellIDs, masterySpellNames, statOrder } from '../proto_utils/names.js';
 import { Stats, statToPercentageOrPoints } from '../proto_utils/stats.js';
@@ -137,6 +137,14 @@ export class CharacterStats extends Component {
 				});
 			}
 		}
+
+		// Apply multiplicative Haste buffs to the final displayed value
+		const baseMeleeHasteMultiplier = 1 + finalStats.getStat(Stat.StatMeleeHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
+		const meleeHasteBuffsMultiplier = (this.player.getClass() == Class.ClassHunter) ? finalStats.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier) : finalStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier);
+		finalStats = finalStats.withStat(Stat.StatMeleeHaste, (baseMeleeHasteMultiplier * meleeHasteBuffsMultiplier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT);
+		const baseSpellHasteMultiplier = 1 + finalStats.getStat(Stat.StatSpellHaste) / (Mechanics.HASTE_RATING_PER_HASTE_PERCENT * 100);
+		const spellHasteBuffsMultiplier = finalStats.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier);
+		finalStats = finalStats.withStat(Stat.StatSpellHaste, (baseSpellHasteMultiplier * spellHasteBuffsMultiplier - 1) * 100 * Mechanics.HASTE_RATING_PER_HASTE_PERCENT);
 
 		const masteryPoints =
 			this.player.getBaseMastery() + (playerStats.finalStats?.stats[Stat.StatMastery] || 0) / Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
