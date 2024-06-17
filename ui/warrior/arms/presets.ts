@@ -1,7 +1,7 @@
 import * as PresetUtils from '../../core/preset_utils';
 import { Consumes, Flask, Food, Glyphs, Potions, Profession, PseudoStat, Stat, TinkerHands } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
-import { ArmsWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph, WarriorShout } from '../../core/proto/warrior';
+import { ArmsWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph } from '../../core/proto/warrior';
 import { Stats } from '../../core/proto_utils/stats';
 import ArmsApl from './apls/arms.apl.json';
 import P1ArmsBisGear from './gear_sets/p1_arms_bis.gear.json';
@@ -61,11 +61,7 @@ export const ArmsTalents = {
 export const DefaultOptions = WarriorOptions.create({
 	classOptions: {
 		startingRage: 0,
-		useShatteringThrow: true,
-		shout: WarriorShout.WarriorShoutCommanding,
 	},
-	useRecklessness: true,
-	disableExpertiseGemming: false,
 });
 
 export const DefaultConsumes = Consumes.create({

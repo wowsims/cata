@@ -116,16 +116,8 @@ enum WarriorMinorGlyph {
 	GlyphOfShatteringThrow = 206953;
 }
 
-enum WarriorShout {
-	WarriorShoutNone = 0;
-	WarriorShoutBattle = 1;
-	WarriorShoutCommanding = 2;
-}
-
 message WarriorOptions {
 	double starting_rage = 1;
-	WarriorShout shout = 2;
-	bool use_shattering_throw = 3;
 }
 
 message ArmsWarrior {
@@ -133,9 +125,7 @@ message ArmsWarrior {
 
 	message Options {
 		WarriorOptions class_options = 1;
-		bool use_recklessness = 2;
-		bool stance_snapshot = 3;
-		bool disable_expertise_gemming = 4;
+		bool stance_snapshot = 2;
 	}
 	Options options = 1;
 }
@@ -145,10 +135,8 @@ message FuryWarrior {
 
 	message Options {
 		WarriorOptions class_options = 1;
-		bool use_recklessness = 2;
-		bool stance_snapshot = 3;
-		bool disable_expertise_gemming = 4;
-		WarriorSyncType sync_type = 5;
+		bool stance_snapshot = 2;
+		WarriorSyncType sync_type = 3;
 	}
 	Options options = 1;
 }
@@ -163,7 +151,6 @@ message ProtectionWarrior {
 
 	message Options {
 		WarriorOptions class_options = 1;
-		bool use_recklessness = 2;
 	}
 	Options options = 1;
 }

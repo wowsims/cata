@@ -62,9 +62,7 @@ var PlayerOptionsBasic = &proto.Player_ProtectionWarrior{
 	ProtectionWarrior: &proto.ProtectionWarrior{
 		Options: &proto.ProtectionWarrior_Options{
 			ClassOptions: &proto.WarriorOptions{
-				StartingRage:       0,
-				Shout:              proto.WarriorShout_WarriorShoutCommanding,
-				UseShatteringThrow: false,
+				StartingRage: 0,
 			},
 		},
 	},

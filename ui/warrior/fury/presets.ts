@@ -2,7 +2,7 @@ import { Player } from '../../core/player';
 import * as PresetUtils from '../../core/preset_utils';
 import { Consumes, Faction, Flask, Food, Glyphs, HandType, ItemSlot, Potions, Profession, PseudoStat, Spec, Stat, TinkerHands } from '../../core/proto/common';
 import { SavedTalents } from '../../core/proto/ui';
-import { FuryWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph, WarriorShout } from '../../core/proto/warrior';
+import { FuryWarrior_Options as WarriorOptions, WarriorMajorGlyph, WarriorMinorGlyph, WarriorPrimeGlyph } from '../../core/proto/warrior';
 import { Stats } from '../../core/proto_utils/stats';
 import { SpecType } from '../../core/proto_utils/utils';
 import FuryApl from './apls/fury.apl.json';
@@ -126,11 +126,7 @@ export const FuryTGTalents = {
 export const DefaultOptions = WarriorOptions.create({
 	classOptions: {
 		startingRage: 0,
-		useShatteringThrow: true,
-		shout: WarriorShout.WarriorShoutCommanding,
 	},
-	useRecklessness: true,
-	disableExpertiseGemming: false,
 	syncType: 0,
 });
 
