@@ -40,6 +40,15 @@ const EXCLUDED_STATS = [
 	Stat.StatMP5,
 ];
 
+const STAT_TOOLTIP: { [key in Stat]?: Element | string } = {
+	[Stat.StatMastery]: (
+		<>
+			Rating: Excludes your base mastery
+			<br />%: includes base mastery
+		</>
+	),
+};
+
 export type ReforgeOptimizerOptions = {
 	// Allows you to modify the stats before they are returned for the calculations
 	// For example: Adding class specific Glyphs/Talents that are not added by the backend
@@ -224,9 +233,10 @@ export class ReforgeOptimizer {
 	}
 
 	buildCapsList({ useCustomEPValuesInput, description }: { useCustomEPValuesInput: BooleanPicker<Player<any>>; description: HTMLElement }) {
-		const numberPickerSharedConfig: Pick<NumberPickerConfig<Player<any>>, 'float' | 'showZeroes' | 'extraCssClasses' | 'changedEvent'> = {
+		const numberPickerSharedConfig: Pick<NumberPickerConfig<Player<any>>, 'float' | 'showZeroes' | 'positive' | 'extraCssClasses' | 'changedEvent'> = {
 			float: true,
 			showZeroes: false,
+			positive: true,
 			extraCssClasses: ['mb-0'],
 			changedEvent: _ => this.player.statCapsChangeEmitter,
 		};
@@ -268,35 +278,67 @@ export class ReforgeOptimizer {
 						const ratingPicker = new NumberPicker(null, this.player, {
 							...numberPickerSharedConfig,
 							id: `character-bonus-stat-${stat}-rating`,
-							getValue: () => this.statCaps.getStat(stat),
+							getValue: () => {
+								let statValue = this.statCaps.getStat(stat);
+								if (stat === Stat.StatMastery) statValue = this.toVisualBaseMasteryRating(statValue);
+
+								return statValue;
+							},
 							setValue: (_eventID, _player, newValue) => {
-								this.setStatCap(stat, newValue);
+								let statValue = newValue;
+								if (stat === Stat.StatMastery) statValue += this.baseMastery;
+
+								this.setStatCap(stat, statValue);
 							},
 						});
 						const percentagePicker = new NumberPicker(null, this.player, {
 							...numberPickerSharedConfig,
 							id: `character-bonus-stat-${stat}-percentage`,
 							getValue: () => {
-								let statInPercentageOrPoints = statToPercentageOrPoints(stat, this.statCaps.getStat(stat), stats);
-								if (stat === Stat.StatMastery) statInPercentageOrPoints *= this.player.getMasteryPerPointModifier();
+								const statValue = this.statCaps.getStat(stat);
+								let statInPercentageOrPoints = statToPercentageOrPoints(stat, statValue, stats);
+								if (stat === Stat.StatMastery)
+									statInPercentageOrPoints = this.toVisualTotalMasteryPercentage(statInPercentageOrPoints, statValue);
+
 								return statInPercentageOrPoints;
 							},
 							setValue: (_eventID, _player, newValue) => {
 								let statInNumber = statPercentageOrPointsToNumber(stat, newValue, stats);
 								if (stat === Stat.StatMastery) statInNumber /= this.player.getMasteryPerPointModifier();
+
 								this.setStatCap(stat, statInNumber);
 							},
 						});
 
-						return (
+						const tooltipText = STAT_TOOLTIP[stat];
+						const statTooltipRef = ref<HTMLButtonElement>();
+
+						const row = (
 							<tr ref={listElementRef} className="reforge-optimizer-stat-cap-item">
 								<td>
-									<div className="reforge-optimizer-stat-cap-item-label">{statName}</div>
+									<div className="reforge-optimizer-stat-cap-item-label">
+										{statName}{' '}
+										{tooltipText && (
+											<button ref={statTooltipRef} className="d-inline">
+												<i className="fa-regular fa-circle-question" />
+											</button>
+										)}
+									</div>
 								</td>
 								<td>{ratingPicker.rootElem}</td>
 								<td>{percentagePicker.rootElem}</td>
 							</tr>
 						);
+
+						const tooltip = tooltipText
+							? tippy(statTooltipRef.value!, {
+									content: tooltipText,
+							  })
+							: null;
+
+						useCustomEPValuesInput.addOnDisposeCallback(() => tooltip?.destroy());
+
+						return row;
 					})}
 				</tbody>
 			</table>
@@ -623,5 +665,33 @@ export class ReforgeOptimizer {
 		}
 
 		return [anyCapsExceeded, updatedConstraints];
+	}
+
+	private get baseMastery() {
+		return this.player.getBaseMastery() * Mechanics.MASTERY_RATING_PER_MASTERY_POINT;
+	}
+
+	private toVisualTotalMasteryPercentage(statPoints: number, statValue: number) {
+		// If the value is less than or equal to the base mastery, then set it to 0,
+		// because we assume you want to reset this stat cap.
+		if (statValue - this.baseMastery <= 0) {
+			statPoints = 0;
+		} else {
+			// When displaying the mastery percentage we want to include the base mastery
+			statPoints *= this.player.getMasteryPerPointModifier();
+		}
+		return statPoints;
+	}
+
+	private toVisualBaseMasteryRating(value: number) {
+		// If the value is less than or equal to the base mastery, then set it to 0,
+		// because we assume you want to reset this stat cap.
+		if (value <= this.baseMastery) {
+			value = 0;
+		} else {
+			// Visually we show the mastery rating without the base mastery included
+			value -= this.baseMastery;
+		}
+		return value;
 	}
 }
