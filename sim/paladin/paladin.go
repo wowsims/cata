@@ -107,6 +107,7 @@ type Paladin struct {
 
 	CurrentSeal      *core.Aura
 	CurrentJudgement *core.Spell
+	SnapshotGuardian bool
 
 	// Pets
 	AncientGuardian *AncientGuardianPet
@@ -149,8 +150,6 @@ type Paladin struct {
 	InquisitionAura         *core.Aura
 	DivinePurposeAura       *core.Aura
 	JudgementsOfThePureAura *core.Aura
-
-	ArtOfWarInstantCast *core.Aura
 
 	SpiritualAttunementMetrics *core.ResourceMetrics
 }
@@ -245,10 +244,11 @@ func (paladin *Paladin) Reset(sim *core.Simulation) {
 
 func NewPaladin(character *core.Character, talentsStr string, options *proto.PaladinOptions) *Paladin {
 	paladin := &Paladin{
-		Character:   *character,
-		Talents:     &proto.PaladinTalents{},
-		Seal:        options.Seal,
-		PaladinAura: options.Aura,
+		Character:        *character,
+		Talents:          &proto.PaladinTalents{},
+		Seal:             options.Seal,
+		PaladinAura:      options.Aura,
+		SnapshotGuardian: options.SnapshotGuardian,
 	}
 
 	core.FillTalentsProto(paladin.Talents.ProtoReflect(), talentsStr, TalentTreeSizes)

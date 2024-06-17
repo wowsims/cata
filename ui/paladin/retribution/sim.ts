@@ -22,6 +22,7 @@ import {Stats} from '../../core/proto_utils/stats.js';
 import {TypedEvent} from '../../core/typed_event.js';
 import * as PaladinInputs from '../inputs.js';
 import * as Presets from './presets.js';
+import * as RetributionInputs from './inputs.js';
 
 const isGlyphOfSealOfTruthActive = (player: Player<Spec.SpecRetributionPaladin>): boolean => {
 	const currentSeal = player.getSpecOptions().classOptions?.seal;
@@ -135,6 +136,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		simpleRotation: Presets.ROTATION_PRESET_DEFAULT,
 	},
 
+	playerInputs: {
+		inputs: [RetributionInputs.SnapshotGuardian()],
+	},
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [PaladinInputs.AuraSelection(), PaladinInputs.StartingSealSelection()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
