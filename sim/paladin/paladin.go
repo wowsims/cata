@@ -148,6 +148,7 @@ type Paladin struct {
 	ZealotryAura            *core.Aura
 	InquisitionAura         *core.Aura
 	DivinePurposeAura       *core.Aura
+	JudgementsOfThePureAura *core.Aura
 
 	ArtOfWarInstantCast *core.Aura
 
