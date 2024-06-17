@@ -1410,127 +1410,127 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-2h-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 74187.25847
-  tps: 72048.51296
+  dps: 74095.82125
+  tps: 72002.9819
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-2h-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30582.08252
-  tps: 28407.14532
+  dps: 30497.33474
+  tps: 28383.09781
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-2h-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40122.50772
-  tps: 34818.47805
+  dps: 39858.02811
+  tps: 34646.85516
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-2h-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 48992.28774
-  tps: 47266.25552
+  dps: 48955.67194
+  tps: 47273.68741
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-2h-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20953.46589
-  tps: 19253.39178
+  dps: 20922.62526
+  tps: 19268.45414
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-2h-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25829.46591
-  tps: 21202.05932
+  dps: 25620.47415
+  tps: 21109.10757
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-dw-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 73403.38046
-  tps: 71285.60496
+  dps: 73262.89228
+  tps: 71171.94288
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-dw-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30541.68734
-  tps: 28355.65141
+  dps: 30448.05141
+  tps: 28332.32586
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-dw-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40122.39822
-  tps: 34788.90352
+  dps: 39858.60777
+  tps: 34629.60248
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-dw-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 48376.68245
-  tps: 46657.72169
+  dps: 48402.12015
+  tps: 46745.36379
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-dw-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 20913.58118
-  tps: 19211.11685
+  dps: 20847.0309
+  tps: 19194.31945
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-dw-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25781.55399
-  tps: 21135.69622
+  dps: 25510.27412
+  tps: 20987.76718
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-masterfrost-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 106389.96033
-  tps: 104545.69087
+  dps: 106583.38244
+  tps: 104769.20746
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-masterfrost-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31787.31133
-  tps: 29537.90204
+  dps: 31629.59455
+  tps: 29443.47736
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-masterfrost-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40230.51674
-  tps: 33966.86282
+  dps: 39864.61664
+  tps: 33782.91668
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-masterfrost-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 70758.64494
-  tps: 69012.67205
+  dps: 70500.44434
+  tps: 68867.51266
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-masterfrost-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 21173.59097
-  tps: 19487.5898
+  dps: 21188.8168
+  tps: 19515.42848
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Human-p1.dw-Masterfrost-Basic-masterfrost-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25136.36281
-  tps: 20638.33848
+  dps: 24883.38437
+  tps: 20530.7826
  }
 }
 dps_results: {
@@ -1788,127 +1788,127 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-2h-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 74823.97714
-  tps: 72602.91381
+  dps: 74818.48639
+  tps: 72637.86399
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-2h-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30928.7793
-  tps: 28678.147
+  dps: 30660.24804
+  tps: 28471.79749
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-2h-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40353.87858
-  tps: 34900.94089
+  dps: 40111.41986
+  tps: 34744.76126
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-2h-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 49535.36652
-  tps: 47750.68046
+  dps: 49399.06927
+  tps: 47670.93482
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-2h-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 21087.60272
-  tps: 19330.23589
+  dps: 21132.23059
+  tps: 19413.83379
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-2h-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 26209.42416
-  tps: 21451.11785
+  dps: 26036.84662
+  tps: 21403.09072
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-dw-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 74251.51722
-  tps: 72043.81148
+  dps: 74116.97132
+  tps: 71942.31133
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-dw-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 30881.59435
-  tps: 28623.76126
+  dps: 30624.47863
+  tps: 28434.86178
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-dw-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40355.27617
-  tps: 34871.36078
+  dps: 40126.37915
+  tps: 34741.96352
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-dw-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 48831.64456
-  tps: 47047.47328
+  dps: 48763.22954
+  tps: 47068.84989
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-dw-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 21028.15644
-  tps: 19272.162
+  dps: 21069.76196
+  tps: 19341.81026
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-dw-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 26128.92273
-  tps: 21372.52217
+  dps: 25972.61242
+  tps: 21318.08595
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-masterfrost-FullBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 107317.44563
-  tps: 105444.97319
+  dps: 107162.4146
+  tps: 105311.19563
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-masterfrost-FullBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 31992.75018
-  tps: 29639.48457
+  dps: 31894.82049
+  tps: 29628.18612
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-masterfrost-FullBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 40714.27047
-  tps: 34305.81321
+  dps: 40387.19867
+  tps: 34117.73217
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-masterfrost-NoBuffs-0.0yards-LongMultiTarget"
  value: {
-  dps: 71090.83059
-  tps: 69284.38247
+  dps: 71088.58911
+  tps: 69351.71872
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-masterfrost-NoBuffs-0.0yards-LongSingleTarget"
  value: {
-  dps: 21322.20352
-  tps: 19553.01689
+  dps: 21283.20539
+  tps: 19556.7086
  }
 }
 dps_results: {
  key: "TestFrost-Settings-Orc-p1.dw-Masterfrost-Basic-masterfrost-NoBuffs-0.0yards-ShortSingleTarget"
  value: {
-  dps: 25201.57083
-  tps: 20587.93745
+  dps: 25197.36001
+  tps: 20729.42178
  }
 }
 dps_results: {
