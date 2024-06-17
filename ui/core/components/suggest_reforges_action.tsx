@@ -536,7 +536,7 @@ export class ReforgeOptimizer {
 			binaries: true,
 		};
 		const options: Options = {
-			timeout: 15000,
+			timeout: 60000,
 			maxIterations: Infinity,
 			tolerance: 0.01,
 		};
