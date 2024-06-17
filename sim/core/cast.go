@@ -110,8 +110,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		if !config.IgnoreHaste {
-			spell.CurCast.GCD = max(0, spell.Unit.ApplyCastSpeed(spell.CurCast.GCD)).Round(time.Millisecond)
-			spell.CurCast.CastTime = spell.Unit.ApplyCastSpeedForSpell(spell.CurCast.CastTime, spell).Round(time.Millisecond)
+			spell.CurCast.GCD = max(0, spell.Unit.ApplyCastSpeed(spell.CurCast.GCD))                  //.Round(time.Millisecond)
+			spell.CurCast.CastTime = spell.Unit.ApplyCastSpeedForSpell(spell.CurCast.CastTime, spell) //.Round(time.Millisecond)
 		}
 
 		if config.CD.Timer != nil {
