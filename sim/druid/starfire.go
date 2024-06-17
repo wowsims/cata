@@ -17,8 +17,8 @@ func (druid *Druid) registerStarfireSpell() {
 		ProcMask: core.ProcMaskSuppressedProc,
 		Flags:    core.SpellFlagNoLogs,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			moonfireDot := druid.MoonfireDoT.Dot(target)
-			sunfireDot := druid.SunfireDoT.Dot(target)
+			moonfireDot := druid.Moonfire.Dot(target)
+			sunfireDot := druid.Sunfire.Dot(target)
 
 			tryExtendDot(moonfireDot, &druid.ExtendingMoonfireStacks)
 			tryExtendDot(sunfireDot, &druid.ExtendingMoonfireStacks)
