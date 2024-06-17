@@ -44,7 +44,7 @@ func (paladin *Paladin) applyJudgementsOfThePure() {
 	hasteMultiplier := 1 + 0.01*3*float64(paladin.Talents.JudgementsOfThePure)
 	spiritRegenAmount := 0.1 * float64(paladin.Talents.JudgementsOfThePure)
 
-	jotpAura := paladin.GetOrRegisterAura(core.Aura{
+	paladin.JudgementsOfThePureAura = paladin.GetOrRegisterAura(core.Aura{
 		Label:    "Judgements of the Pure",
 		ActionID: actionId,
 		Duration: 60 * time.Second,
@@ -70,7 +70,7 @@ func (paladin *Paladin) applyJudgementsOfThePure() {
 		ProcChance: 1.0,
 
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			jotpAura.Activate(sim)
+			paladin.JudgementsOfThePureAura.Activate(sim)
 		},
 	})
 }
