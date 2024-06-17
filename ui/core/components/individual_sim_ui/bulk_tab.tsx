@@ -796,7 +796,7 @@ export class BulkTab extends SimTab {
 				</span>
 				{this.showIterationsWarning() && (
 					<button className="warning link-warning" ref={warningRef}>
-						<i className="fas fa-exclamation-triangle fa-2x ms-2" />
+						<i className="fas fa-exclamation-triangle fa-2x" />
 					</button>
 				)}
 			</>
@@ -807,6 +807,16 @@ export class BulkTab extends SimTab {
 				content: `Simming over ${WEB_ITERATIONS_LIMIT} iterations in the web sim will take a long time or may not run at all.
 					For larger batch sims we recommend using Fast Mode or downloading the executable and running on your machine.`,
 				placement: 'left',
+				popperOptions: {
+					modifiers: [
+						{
+							name: 'flip',
+							options: {
+								fallbackPlacements: ['auto'],
+							},
+						},
+					],
+				},
 			});
 		}
 

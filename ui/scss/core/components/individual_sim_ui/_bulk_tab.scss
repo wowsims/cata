@@ -10,58 +10,52 @@
 		}
 	}
 
-	#bulkSetupTab {
-		gap: var(--gap-width);
-
-		&.active {
-			display: grid;
-		}
-
-		.bulk-gear-actions {
-			display: flex;
-			grid-auto-flow: column;
-			gap: var(--block-spacer);
-		}
-
-		.bulk-gear-combo {
-			display: grid;
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-			grid-template-rows: auto;
-			gap: calc(2 * var(--gap-width)) var(--gap-width);
-		}
-	}
-
 	.bulk-settings-outer-container {
 		position: sticky;
 		top: var(--sim-header-height);
 		padding-top: var(--gap-width);
+	}
 
-		.bulk-settings-container {
-			padding: var(--spacer-3);
-			border: var(--border-default);
-			display: grid;
-			gap: var(--gap-width);
-			background: var(--bs-body-bg);
+	.bulk-settings-container {
+		padding: var(--spacer-3);
+		border: var(--border-default);
+		display: grid;
+		gap: var(--gap-width);
+		background: var(--bs-body-bg);
+	}
 
-			.bulk-combinations-count {
-				margin-bottom: 0;
-				display: flex;
-				align-items: center;
+	.bulk-combinations-count {
+		margin-bottom: 0;
+		display: flex;
+		align-items: center;
+		gap: var(--spacer-2);
 
-				small {
-					font-size: var(--bs-body-font-size);
-				}
+		@include media-breakpoint-between(xl, xxl) {
+			flex-wrap: wrap;
+		}
+
+		small {
+			font-size: var(--bs-body-font-size);
+		}
+
+		.warning {
+			@include media-breakpoint-between(xl, xxl) {
+				order: -1;
 			}
+		}
+	}
 
-			.bulk-boolean-settings-container {
-				display: grid;
-				grid-template-columns: repeat(2, 1fr);
-				gap: var(--block-spacer);
+	.bulk-boolean-settings-container {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--block-spacer);
 
-				.boolean-picker-root {
-					margin-bottom: 0;
-				}
-			}
+		@include media-breakpoint-between(xl, xxxl) {
+			grid-template-columns: 1fr;
+		}
+
+		.boolean-picker-root {
+			margin-bottom: 0;
 		}
 	}
 
@@ -127,6 +121,37 @@
 					text-overflow: ellipsis;
 				}
 			}
+		}
+	}
+}
+
+#bulkSetupTab {
+	gap: var(--gap-width);
+
+	&.active {
+		display: grid;
+	}
+
+	.bulk-gear-actions {
+		display: flex;
+		grid-auto-flow: column;
+		gap: var(--block-spacer);
+	}
+
+	.bulk-gear-combo {
+		--bulk-gear-combo-column-count: 1;
+		--bulk-gear-combo-gap-width: calc(var(--gap-width)) var(--gap-width);
+		display: grid;
+		gap: var(--bulk-gear-combo-gap-width);
+		grid-template-columns: repeat(var(--bulk-gear-combo-column-count), minmax(0, 1fr));
+		grid-template-rows: auto;
+
+		@include media-breakpoint-up(sm) {
+			--bulk-gear-combo-gap-width: calc(2 * var(--gap-width)) var(--gap-width);
+			--bulk-gear-combo-column-count: 2;
+		}
+		@include media-breakpoint-up(xl) {
+			--bulk-gear-combo-column-count: 3;
 		}
 	}
 }
