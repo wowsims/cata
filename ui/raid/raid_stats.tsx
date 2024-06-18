@@ -10,7 +10,6 @@ import { HunterOptions_PetType as HunterPetType } from '../core/proto/hunter.js'
 import { PaladinAura } from '../core/proto/paladin.js';
 import { AirTotem, EarthTotem, FireTotem, WaterTotem } from '../core/proto/shaman.js';
 import { WarlockOptions_Summon as WarlockSummon } from '../core/proto/warlock.js';
-import { WarriorShout } from '../core/proto/warrior.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { ClassSpecs, SpecTalents, textCssClassForClass } from '../core/proto_utils/utils.js';
 import { Raid } from '../core/raid.js';

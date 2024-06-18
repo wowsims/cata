@@ -20,7 +20,6 @@ import {
 	WarriorMajorGlyph,
 	WarriorMinorGlyph,
 	WarriorPrimeGlyph,
-	WarriorShout,
 } from '../../core/proto/warrior.js';
 import { Stats } from '../../core/proto_utils/stats';
 import DefaultApl from './apls/default.apl.json';
@@ -83,8 +82,6 @@ export const StandardTalents = {
 
 export const DefaultOptions = ProtectionWarriorOptions.create({
 	classOptions: {
-		shout: WarriorShout.WarriorShoutCommanding,
-		useShatteringThrow: false,
 		startingRage: 0,
 	},
 });
