@@ -414,6 +414,7 @@ export class BulkTab extends SimTab {
 		try {
 			await this.simUI.sim.runBulkSim(this.createBulkSettings(), this.createBulkItemsDatabase(), onProgress);
 		} catch (e) {
+			this.isPending = false;
 			this.simUI.handleCrash(e);
 		}
 	}
@@ -494,13 +495,20 @@ export class BulkTab extends SimTab {
 			for (const r of bulkSimResult.results) {
 				new BulkSimResultRenderer(this.resultsTabElem, this.simUI, this, r, bulkSimResult.equippedGearResult!);
 			}
+			this.isPending = false;
+			this.resultsTab.show();
+		});
+	}
 
+	private set isPending(value: boolean) {
+		if (value) {
+			this.simUI.rootElem.classList.add('blurred');
+			this.simUI.rootElem.insertAdjacentElement('afterend', this.pendingDiv);
+		} else {
 			this.simUI.rootElem.classList.remove('blurred');
 			this.pendingDiv.remove();
 			this.pendingResults.hideAll();
-
-			this.resultsTab.show();
-		});
+		}
 	}
 
 	protected buildBatchSettings() {
@@ -534,8 +542,7 @@ export class BulkTab extends SimTab {
 		});
 
 		bulkSimButton.addEventListener('click', () => {
-			this.simUI.rootElem.classList.add('blurred');
-			this.simUI.rootElem.insertAdjacentElement('afterend', this.pendingDiv);
+			this.isPending = true;
 
 			let simStart = new Date().getTime();
 			let lastTotal = 0;
