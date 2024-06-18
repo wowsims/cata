@@ -24,9 +24,7 @@ func TestAbort(t *testing.T) {
 			ArmsWarrior: &proto.ArmsWarrior{
 				Options: &proto.ArmsWarrior_Options{
 					ClassOptions: &proto.WarriorOptions{
-						StartingRage:       50,
-						UseShatteringThrow: true,
-						Shout:              proto.WarriorShout_WarriorShoutBattle,
+						StartingRage: 50,
 					},
 				},
 			},
