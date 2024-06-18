@@ -38,13 +38,21 @@ const EXCLUDED_STATS = [
 	Stat.StatSpirit,
 	Stat.StatMana,
 	Stat.StatMP5,
+	Stat.StatBlock,
+	Stat.StatBonusArmor,
+	Stat.StatArcaneResistance,
+	Stat.StatNatureResistance,
+	Stat.StatFireResistance,
+	Stat.StatFrostResistance,
+	Stat.StatShadowResistance,
 ];
 
-const STAT_TOOLTIP: { [key in Stat]?: Element | string } = {
-	[Stat.StatMastery]: (
+const STAT_TOOLTIP: { [key in Stat]?: () => Element | string } = {
+	[Stat.StatMastery]: () => (
 		<>
 			Rating: Excludes your base mastery
-			<br />%: includes base mastery
+			<br />
+			%: Includes base mastery
 		</>
 	),
 };
@@ -329,7 +337,7 @@ export class ReforgeOptimizer {
 								<td>{percentagePicker.rootElem}</td>
 							</tr>
 						);
-
+						console.log(tooltipText);
 						const tooltip = tooltipText
 							? tippy(statTooltipRef.value!, {
 									content: tooltipText,
@@ -530,7 +538,14 @@ export class ReforgeOptimizer {
 		return constraints;
 	}
 
-	async solveModel(gear: Gear, weights: Stats, reforgeCaps: Stats, reforgeSoftCaps: StatCapConfig[], variables: YalpsVariables, constraints: YalpsConstraints) {
+	async solveModel(
+		gear: Gear,
+		weights: Stats,
+		reforgeCaps: Stats,
+		reforgeSoftCaps: StatCapConfig[],
+		variables: YalpsVariables,
+		constraints: YalpsConstraints,
+	) {
 		// Calculate EP scores for each Reforge option
 		if (isDevMode()) {
 			console.log('Stat weights for this iteration:');
@@ -567,7 +582,14 @@ export class ReforgeOptimizer {
 		// Check if any unconstrained stats exceeded their specified cap.
 		// If so, add these stats to the constraint list and re-run the solver.
 		// If no unconstrained caps were exceeded, then we're done.
-		const [anyCapsExceeded, updatedConstraints, updatedWeights] = this.checkCaps(solution, reforgeCaps, reforgeSoftCaps, updatedVariables, constraints, weights);
+		const [anyCapsExceeded, updatedConstraints, updatedWeights] = this.checkCaps(
+			solution,
+			reforgeCaps,
+			reforgeSoftCaps,
+			updatedVariables,
+			constraints,
+			weights,
+		);
 
 		if (!anyCapsExceeded) {
 			if (isDevMode()) console.log('Reforge optimization has finished!');
@@ -701,7 +723,7 @@ export class ReforgeOptimizer {
 				nextSoftCap.postCapEPs = nextSoftCap.postCapEPs.slice(idx + 1);
 			}
 
-			if ((nextSoftCap.capType == StatCapType.TypeThreshold) || (nextSoftCap.breakpoints.length == 0)) {
+			if (nextSoftCap.capType == StatCapType.TypeThreshold || nextSoftCap.breakpoints.length == 0) {
 				reforgeSoftCaps.shift();
 			}
 		}

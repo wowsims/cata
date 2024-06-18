@@ -1,13 +1,11 @@
 import * as BuffDebuffInputs from '../../core/components/inputs/buffs_debuffs.js';
 import * as OtherInputs from '../../core/components/inputs/other_inputs.js';
+import { ReforgeOptimizer } from '../../core/components/suggest_reforges_action';
 import { IndividualSimUI, registerSpecConfig } from '../../core/individual_sim_ui.js';
 import { Player } from '../../core/player.js';
 import { PlayerClasses } from '../../core/player_classes';
-import { APLAction, APLListItem, APLPrepullAction, APLRotation } from '../../core/proto/apl.js';
-import { Cooldowns, Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat, TristateEffect } from '../../core/proto/common.js';
-import { ProtectionWarrior_Rotation as ProtectionWarriorRotation } from '../../core/proto/warrior.js';
-import * as AplUtils from '../../core/proto_utils/apl_utils.js';
-import { Stats } from '../../core/proto_utils/stats.js';
+import { APLRotation } from '../../core/proto/apl.js';
+import { Debuffs, Faction, IndividualBuffs, PartyBuffs, PseudoStat, Race, RaidBuffs, Spec, Stat } from '../../core/proto/common.js';
 import * as ProtectionWarriorInputs from '../inputs.js';
 import * as Presets from './presets.js';
 
@@ -15,7 +13,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 	cssClass: 'protection-warrior-sim-ui',
 	cssScheme: PlayerClasses.getCssClass(PlayerClasses.Warrior),
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [],
+	knownIssues: [
+		'When reforging stats make sure to balance parry/dodge afterwards to avoid diminishing returns. We currently do not support dynamic EP weights.',
+	],
 
 	// All stats for which EP should be calculated.
 	epStats: [
@@ -172,5 +172,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionWarrior, {
 export class ProtectionWarriorSimUI extends IndividualSimUI<Spec.SpecProtectionWarrior> {
 	constructor(parentElem: HTMLElement, player: Player<Spec.SpecProtectionWarrior>) {
 		super(parentElem, player, SPEC_CONFIG);
+
+		new ReforgeOptimizer(this);
 	}
 }
