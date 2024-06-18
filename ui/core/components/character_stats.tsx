@@ -145,10 +145,6 @@ export class CharacterStats extends Component {
 			.add(statMods.final || new Stats())
 			.add(debuffStats);
 
-		console.log(Stat.StatSpellHaste, {
-			playerStats,
-		});
-
 		if (this.overwriteDisplayStats) {
 			const statOverwrites = this.overwriteDisplayStats(this.player);
 			if (statOverwrites.stats) {

@@ -326,7 +326,7 @@ export class ReforgeOptimizer {
 								<td>{percentagePicker.rootElem}</td>
 							</tr>
 						);
-						console.log(tooltipText);
+
 						const tooltip = tooltipText
 							? tippy(statTooltipRef.value!, {
 									content: tooltipText,
