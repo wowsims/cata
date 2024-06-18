@@ -122,12 +122,12 @@ export class ReforgeOptimizer {
 			),
 		};
 
-		const [_startReforgeOptimizationButton, contextMenuButton] = simUI.addActionGroup([startReforgeOptimizationEntry, contextMenuEntry], {
+		const [startReforgeOptimizationButton, contextMenuButton] = simUI.addActionGroup([startReforgeOptimizationEntry, contextMenuEntry], {
 			cssClass: 'suggest-reforges-settings-group d-flex',
 		});
 
 		if (!!this.softCapsConfig?.length)
-			tippy(_startReforgeOptimizationButton, {
+			tippy(startReforgeOptimizationButton, {
 				content: this.buildReforgeButtonTooltip(),
 				placement: 'bottom',
 				maxWidth: 310,
@@ -199,6 +199,7 @@ export class ReforgeOptimizer {
 					useSoftCapBreakpointsInput = new BooleanPicker(null, this.player, {
 						id: 'reforge-optimizer-enable-soft-cap-breakpoints',
 						label: 'Enable soft cap breakpoints',
+						labelTooltip: this.buildReforgeButtonTooltip(),
 						inline: true,
 						changedEvent: () => this.sim.useSoftCapBreakpointsChangeEmitter,
 						getValue: () => this.sim.getUseSoftCapBreakpoints(),
