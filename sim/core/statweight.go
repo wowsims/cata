@@ -138,7 +138,7 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 			SimOptions: swr.SimOptions,
 		},
 		EpReferenceStat: swr.EpReferenceStat,
-		StatSimRequests: []*proto.StatWeightStatRequestData{},
+		StatSimRequests: []*proto.StatWeightsStatRequestData{},
 	}
 
 	// Do half the iterations with a positive, and half with a negative value for better accuracy.
@@ -179,12 +179,14 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 		highSimRequest := googleProto.Clone(swBaseResponse.BaseRequest).(*proto.RaidSimRequest)
 		stat.AddToStatsProto(highSimRequest.Raid.Parties[0].Players[0].BonusStats, statModsHigh[stat])
 
-		swBaseResponse.StatSimRequests = append(swBaseResponse.StatSimRequests, &proto.StatWeightStatRequestData{
-			UnitStat:    int32(stat),
+		swBaseResponse.StatSimRequests = append(swBaseResponse.StatSimRequests, &proto.StatWeightsStatRequestData{
+			StatData: &proto.StatWeightsStatData{
+				UnitStat: int32(stat),
+				ModLow:   statModsLow[stat],
+				ModHigh:  statModsHigh[stat],
+			},
 			RequestLow:  lowSimRequest,
 			RequestHigh: highSimRequest,
-			ModLow:      statModsLow[stat],
-			ModHigh:     statModsHigh[stat],
 		})
 	}
 
@@ -194,7 +196,7 @@ func buildStatWeightRequests(swr *proto.StatWeightsRequest) *proto.StatWeightReq
 func computeStatWeights(swcr *proto.StatWeightsCalcRequest) *proto.StatWeightsResult {
 	haveRefStat := false
 	for _, statResult := range swcr.StatSimResults {
-		if statResult.UnitStat == int32(swcr.EpReferenceStat) {
+		if statResult.StatData.UnitStat == int32(swcr.EpReferenceStat) {
 			haveRefStat = true
 			break
 		}
@@ -205,7 +207,7 @@ func computeStatWeights(swcr *proto.StatWeightsCalcRequest) *proto.StatWeightsRe
 
 	result := NewStatWeightsResult()
 	for _, statResult := range swcr.StatSimResults {
-		stat := stats.UnitStatFromIdx(int(statResult.UnitStat))
+		stat := stats.UnitStatFromIdx(int(statResult.StatData.UnitStat))
 
 		baselinePlayer := swcr.BaseResult.RaidMetrics.Parties[0].Players[0]
 		modPlayerLow := statResult.ResultLow.RaidMetrics.Parties[0].Players[0]
@@ -222,11 +224,11 @@ func computeStatWeights(swcr *proto.StatWeightsCalcRequest) *proto.StatWeightsRe
 			for i := 0; i < len(baselineMetrics.AllValues); i++ {
 				lo.add(modLowMetrics.AllValues[i] - baselineMetrics.AllValues[i])
 			}
-			lo.scale(1 / statResult.ModLow)
+			lo.scale(1 / statResult.StatData.ModLow)
 			for i := 0; i < len(baselineMetrics.AllValues); i++ {
 				hi.add(modHighMetrics.AllValues[i] - baselineMetrics.AllValues[i])
 			}
-			hi.scale(1 / statResult.ModHigh)
+			hi.scale(1 / statResult.StatData.ModHigh)
 
 			mean, stdev := lo.merge(&hi).meanAndStdDev()
 			weightResults.Weights.AddStat(stat, mean)
@@ -238,8 +240,8 @@ func computeStatWeights(swcr *proto.StatWeightsCalcRequest) *proto.StatWeightsRe
 		calcWeightResults(baselinePlayer.Threat, modPlayerLow.Threat, modPlayerHigh.Threat, &result.Tps)
 		calcWeightResults(baselinePlayer.Dtps, modPlayerLow.Dtps, modPlayerHigh.Dtps, &result.Dtps)
 		calcWeightResults(baselinePlayer.Tmi, modPlayerLow.Tmi, modPlayerHigh.Tmi, &result.Tmi)
-		meanLow := (modPlayerLow.ChanceOfDeath - baselinePlayer.ChanceOfDeath) / statResult.ModLow
-		meanHigh := (modPlayerHigh.ChanceOfDeath - baselinePlayer.ChanceOfDeath) / statResult.ModHigh
+		meanLow := (modPlayerLow.ChanceOfDeath - baselinePlayer.ChanceOfDeath) / statResult.StatData.ModLow
+		meanHigh := (modPlayerHigh.ChanceOfDeath - baselinePlayer.ChanceOfDeath) / statResult.StatData.ModHigh
 		result.PDeath.Weights.AddStat(stat, (meanLow+meanHigh)/2)
 		result.PDeath.WeightsStdev.AddStat(stat, 0)
 	}
@@ -248,7 +250,7 @@ func computeStatWeights(swcr *proto.StatWeightsCalcRequest) *proto.StatWeightsRe
 
 	// Compute EP results.
 	for _, statData := range swcr.StatSimResults {
-		stat := stats.UnitStatFromIdx(int(statData.UnitStat))
+		stat := stats.UnitStatFromIdx(int(statData.StatData.UnitStat))
 
 		calcEpResults := func(weightResults *StatWeightValues, refStat stats.Stat) {
 			if weightResults.Weights.Stats[refStat] == 0 {
@@ -310,6 +312,7 @@ func runStatWeights(request *proto.StatWeightsRequest, progress chan *proto.Prog
 	}
 
 	simFunc := runSimConcurrent
+	// Don't use go threads in wasm, it just adds more overhead and makes the worker more unresponsive.
 	if IsRunningInWasm() {
 		simFunc = RunSim
 	}
@@ -321,7 +324,7 @@ func runStatWeights(request *proto.StatWeightsRequest, progress chan *proto.Prog
 		return &proto.StatWeightsResult{ErrorResult: baselineResult.ErrorResult}
 	}
 
-	statResults := []*proto.StatWeightStatResultData{}
+	statResults := []*proto.StatWeightsStatResultData{}
 
 	for _, reqData := range requestData.StatSimRequests {
 		lowProgress := make(chan *proto.ProgressMetrics, 100)
@@ -338,12 +341,10 @@ func runStatWeights(request *proto.StatWeightsRequest, progress chan *proto.Prog
 			return &proto.StatWeightsResult{ErrorResult: highRes.ErrorResult}
 		}
 
-		statResults = append(statResults, &proto.StatWeightStatResultData{
-			UnitStat:   reqData.UnitStat,
+		statResults = append(statResults, &proto.StatWeightsStatResultData{
+			StatData:   reqData.StatData,
 			ResultLow:  lowRes,
 			ResultHigh: highRes,
-			ModLow:     reqData.ModLow,
-			ModHigh:    reqData.ModHigh,
 		})
 	}
 

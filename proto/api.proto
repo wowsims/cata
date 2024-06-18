@@ -458,30 +458,32 @@ message StatWeightsRequest {
 	string request_id = 11;
 }
 
-message StatWeightStatRequestData {
+message StatWeightsStatData {
 	int32 unit_stat = 1;
+	double mod_low = 2;
+	double mod_high = 3;
+}
+
+message StatWeightsStatRequestData {
+	StatWeightsStatData stat_data = 1;
 	RaidSimRequest request_low = 2;
 	RaidSimRequest request_high = 3;
-	double mod_low = 4;
-	double mod_high = 5;
 }
 message StatWeightRequestsData {
 	RaidSimRequest base_request = 1;
 	Stat ep_reference_stat = 2;
-	repeated StatWeightStatRequestData stat_sim_requests = 3;
+	repeated StatWeightsStatRequestData stat_sim_requests = 3;
 }
 
-message StatWeightStatResultData {
-	int32 unit_stat = 1;
+message StatWeightsStatResultData {
+	StatWeightsStatData stat_data = 1;
 	RaidSimResult result_low = 2;
 	RaidSimResult result_high = 3;
-	double mod_low = 4;
-	double mod_high = 5;
 }
 message StatWeightsCalcRequest {
 	RaidSimResult base_result = 1;
 	Stat ep_reference_stat = 2;
-	repeated StatWeightStatResultData stat_sim_results = 3;
+	repeated StatWeightsStatResultData stat_sim_results = 3;
 }
 
 message StatWeightsResult {

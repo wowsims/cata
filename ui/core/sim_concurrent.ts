@@ -7,7 +7,7 @@ import {
 	StatWeightsCalcRequest,
 	StatWeightsRequest,
 	StatWeightsResult,
-	StatWeightStatResultData,
+	StatWeightsStatResultData,
 } from './proto/api';
 import { SimSignals } from './sim_signal_manager';
 import { WorkerPool, WorkerProgressCallback } from './worker_pool';
@@ -132,7 +132,7 @@ function runSims(
 	});
 }
 
-function makeAndSendErrorResult(err: string, onProgress: WorkerProgressCallback): RaidSimResult {
+function makeAndSendRaidSimError(err: string, onProgress: WorkerProgressCallback): RaidSimResult {
 	const errRes = RaidSimResult.create({ errorResult: err });
 	onProgress(ProgressMetrics.create({ finalRaidResult: errRes }));
 	console.error(err);
@@ -155,11 +155,11 @@ export async function runConcurrentSim(
 	);
 
 	if (splitResult.errorResult) {
-		return makeAndSendErrorResult(splitResult.errorResult, onProgress);
+		return makeAndSendRaidSimError(splitResult.errorResult, onProgress);
 	}
 
 	if (signals.abort.isTriggered()) {
-		return makeAndSendErrorResult('aborted', onProgress);
+		return makeAndSendRaidSimError('aborted', onProgress);
 	}
 
 	console.log(`Running ${request.simOptions!.iterations} iterations on ${splitResult.splitsDone} concurrent sims...`);
@@ -172,7 +172,7 @@ export async function runConcurrentSim(
 	}
 
 	if (signals.abort.isTriggered()) {
-		return makeAndSendErrorResult('aborted', onProgress);
+		return makeAndSendRaidSimError('aborted', onProgress);
 	}
 
 	console.log(`All ${splitResult.splitsDone} sims finished successfully. Combining ${simRes.results.length} results.`);
@@ -184,7 +184,7 @@ export async function runConcurrentSim(
 	);
 
 	if (combiResult.errorResult) {
-		return makeAndSendErrorResult(combiResult.errorResult, onProgress);
+		return makeAndSendRaidSimError(combiResult.errorResult, onProgress);
 	}
 
 	simRes.progressMetricsFinal.finalRaidResult = combiResult;
@@ -263,12 +263,10 @@ export async function runConcurrentStatWeights(
 		if (highRes.errorResult) return makeAndSendWeightsError(highRes.errorResult, onProgress);
 
 		calcRequest.statSimResults.push(
-			StatWeightStatResultData.create({
-				unitStat: statReqData.unitStat,
+			StatWeightsStatResultData.create({
+				statData: statReqData.statData,
 				resultLow: lowRes,
 				resultHigh: highRes,
-				modLow: statReqData.modLow,
-				modHigh: statReqData.modHigh,
 			}),
 		);
 	}
