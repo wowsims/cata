@@ -293,6 +293,7 @@ export class Sim {
 			return result;
 		} catch (error) {
 			if (error instanceof SimError) throw error;
+			console.error(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		} finally {
 			this.signalManager.unregisterRunning(request.requestId);
@@ -333,6 +334,7 @@ export class Sim {
 			return simResult;
 		} catch (error) {
 			if (error instanceof SimError) throw error;
+			console.error(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		} finally {
 			this.signalManager.unregisterRunning(simId);
@@ -359,6 +361,7 @@ export class Sim {
 			return simResult;
 		} catch (error) {
 			if (error instanceof SimError) throw error;
+			console.error(error);
 			throw new Error('Something went wrong running your raid sim. Reload the page and try again.');
 		}
 	}
@@ -476,6 +479,7 @@ export class Sim {
 				return result;
 			} catch (error) {
 				if (error instanceof SimError) throw error;
+				console.error(error);
 				throw new Error('Something went wrong calculating your stat weights. Reload the page and try again.');
 			} finally {
 				this.signalManager.unregisterRunning(request.requestId);
