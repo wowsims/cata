@@ -25,26 +25,16 @@ type YalpsCoefficients = Map<string, number>;
 type YalpsVariables = Map<string, YalpsCoefficients>;
 type YalpsConstraints = Map<string, Constraint>;
 
-const EXCLUDED_STATS = [
-	Stat.StatStamina,
-	Stat.StatHealth,
-	Stat.StatStrength,
-	Stat.StatAgility,
-	Stat.StatAttackPower,
-	Stat.StatRangedAttackPower,
-	Stat.StatIntellect,
-	Stat.StatSpellPower,
-	Stat.StatSpellPenetration,
+const INCLUDED_STATS = [
+	Stat.StatMeleeCrit,
+	Stat.StatSpellCrit,
+	Stat.StatMeleeHaste,
+	Stat.StatSpellHaste,
+	Stat.StatExpertise,
+	Stat.StatMastery,
 	Stat.StatSpirit,
-	Stat.StatMana,
-	Stat.StatMP5,
-	Stat.StatBlock,
-	Stat.StatBonusArmor,
-	Stat.StatArcaneResistance,
-	Stat.StatNatureResistance,
-	Stat.StatFireResistance,
-	Stat.StatFrostResistance,
-	Stat.StatShadowResistance,
+	Stat.StatDodge,
+	Stat.StatParry,
 ];
 
 const STAT_TOOLTIP: { [key in Stat]?: () => Element | string } = {
@@ -279,7 +269,7 @@ export class ReforgeOptimizer {
 				</thead>
 				<tbody>
 					{this.simUI.individualConfig.displayStats.map(stat => {
-						if (EXCLUDED_STATS.includes(stat)) return;
+						if (!INCLUDED_STATS.includes(stat)) return;
 
 						const listElementRef = ref<HTMLTableRowElement>();
 						const statName = getClassStatName(stat, this.player.getClass());
@@ -337,7 +327,7 @@ export class ReforgeOptimizer {
 								<td>{percentagePicker.rootElem}</td>
 							</tr>
 						);
-						console.log(tooltipText);
+
 						const tooltip = tooltipText
 							? tippy(statTooltipRef.value!, {
 									content: tooltipText,
@@ -404,7 +394,9 @@ export class ReforgeOptimizer {
 						onclick={() => {
 							this.simUI.epWeightsModal?.open();
 							hideAll();
-						}}>Edit weights</button>
+						}}>
+						Edit weights
+					</button>
 				)}
 			</>
 		);

@@ -392,7 +392,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private addSidebarComponents() {
 		this.raidSimResultsManager = addRaidSimAction(this);
-		this.epWeightsModal = addStatWeightsAction(this);
+		this.sim.waitForInit().then(() => {
+			this.epWeightsModal = addStatWeightsAction(this);
+		});
 
 		new CharacterStats(
 			this.rootElem.querySelector('.sim-sidebar-stats') as HTMLElement,
