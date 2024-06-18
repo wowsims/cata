@@ -7,6 +7,7 @@ import { Player } from '../../core/player';
 import { PlayerClasses } from '../../core/player_classes';
 import { APLRotation } from '../../core/proto/apl';
 import { Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../../core/proto/common';
+import { StatCapType } from '../../core/proto/ui';
 import { Stats } from '../../core/proto_utils/stats';
 import * as WarlockInputs from '../inputs';
 import * as Presets from './presets';
@@ -56,7 +57,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecAfflictionWarlock, {
 				masteryRatingBreakpoints.push((masteryPercent / 1.63) * Mechanics.MASTERY_RATING_PER_MASTERY_POINT);
 			}
 
-			const masterySoftCapConfig = { stat: Stat.StatMastery, breakpoints: masteryRatingBreakpoints };
+			const masterySoftCapConfig = {
+				stat: Stat.StatMastery,
+				breakpoints: masteryRatingBreakpoints,
+				capType: StatCapType.TypeThreshold,
+				postCapEPs: Array(masteryRatingBreakpoints.length).fill(0),
+			};
 
 			return [masterySoftCapConfig];
 		})(),
