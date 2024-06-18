@@ -18,7 +18,7 @@ func TestArms(t *testing.T) {
 		Race:       proto.Race_RaceOrc,
 		OtherRaces: []proto.Race{proto.Race_RaceWorgen},
 
-		GearSet:     core.GetGearSet("../../../ui/warrior/arms/gear_sets", "preraid_arms"),
+		GearSet:     core.GetGearSet("../../../ui/warrior/arms/gear_sets", "p1_arms_bis"),
 		Talents:     ArmsTalents,
 		Glyphs:      ArmsDefaultGlyphs,
 		Consumes:    FullConsumes,
@@ -44,9 +44,7 @@ var PlayerOptionsArms = &proto.Player_ArmsWarrior{
 	ArmsWarrior: &proto.ArmsWarrior{
 		Options: &proto.ArmsWarrior_Options{
 			ClassOptions: &proto.WarriorOptions{
-				StartingRage:       50,
-				UseShatteringThrow: true,
-				Shout:              proto.WarriorShout_WarriorShoutBattle,
+				StartingRage: 0,
 			},
 		},
 	},

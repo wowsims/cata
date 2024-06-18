@@ -256,15 +256,6 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 			PseudoStats: character.GetPseudoStatsProto(),
 		}
 
-		meleeMulti := 1 + (base.Stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100))
-		spellMulti := 1 + (base.Stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))
-
-		if agent.GetCharacter().Class == proto.Class_ClassHunter {
-			base.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.RangedSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
-		} else {
-			base.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
-		}
-		base.Stats[stats.SpellHaste] = (spellMulti*character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
 		return base
 	}
 
@@ -480,16 +471,6 @@ func (character *Character) FillPlayerStats(playerStats *proto.PlayerStats) {
 		PseudoStats: character.GetPseudoStatsProto(),
 	}
 
-	meleeMulti := 1 + (playerStats.FinalStats.Stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100))
-	spellMulti := 1 + (playerStats.FinalStats.Stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100))
-	if character.Class == proto.Class_ClassHunter {
-		playerStats.FinalStats.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.RangedSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
-	} else {
-		playerStats.FinalStats.Stats[stats.MeleeHaste] = (meleeMulti*character.PseudoStats.MeleeSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
-	}
-
-	playerStats.FinalStats.Stats[stats.SpellHaste] = (spellMulti*character.PseudoStats.CastSpeedMultiplier - 1) * 100 * HasteRatingPerHastePercent
-
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
 	playerStats.Sets = character.GetActiveSetBonusNames()
 
@@ -644,6 +625,11 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		// Base values are modified by Enemy attackTables, but we display for LVL 80 enemy as paperdoll default
 		proto.PseudoStat_PseudoStatDodge: character.PseudoStats.BaseDodge + character.GetDiminishedDodgeChance(),
 		proto.PseudoStat_PseudoStatParry: character.PseudoStats.BaseParry + character.GetDiminishedParryChance(),
+
+		// Used by UI to incorporate multiplicative Haste buffs into final character stats display.
+		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: character.PseudoStats.RangedSpeedMultiplier,
+		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  character.PseudoStats.MeleeSpeedMultiplier,
+		proto.PseudoStat_PseudoStatCastSpeedMultiplier:   character.PseudoStats.CastSpeedMultiplier,
 	}
 }
 

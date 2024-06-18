@@ -7,7 +7,7 @@ import * as Mechanics from '../constants/mechanics.js';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Player } from '../player';
 import { ItemSlot, Spec, Stat } from '../proto/common';
-import { SoftCapBreakpoints } from '../proto/ui';
+import { StatCapConfig, StatCapType } from '../proto/ui';
 import { Gear } from '../proto_utils/gear';
 import { getClassStatName } from '../proto_utils/names';
 import { statPercentageOrPointsToNumber, Stats, statToPercentageOrPoints } from '../proto_utils/stats';
@@ -63,7 +63,7 @@ export class ReforgeOptimizer {
 	protected readonly defaults: IndividualSimUI<any>['individualConfig']['defaults'];
 	protected _statCaps: Stats;
 	protected updateGearStatsModifier: ReforgeOptimizerOptions['updateGearStatsModifier'];
-	protected softCapsConfig: SoftCapBreakpoints[];
+	protected softCapsConfig: StatCapConfig[];
 
 	constructor(simUI: IndividualSimUI<any>, options?: ReforgeOptimizerOptions) {
 		this.simUI = simUI;
@@ -413,7 +413,7 @@ export class ReforgeOptimizer {
 		const constraints = this.buildYalpsConstraints(baseGear);
 
 		// Solve in multiple passes to enforce caps
-		await this.solveModel(baseGear, reforgeCaps, reforgeSoftCaps, variables, constraints);
+		await this.solveModel(baseGear, this.preCapEPs, reforgeCaps, reforgeSoftCaps, variables, constraints);
 	}
 
 	async updateGear(gear: Gear): Promise<Stats> {
@@ -425,24 +425,36 @@ export class ReforgeOptimizer {
 		return baseStats;
 	}
 
-	computeReforgeSoftCaps(baseStats: Stats): SoftCapBreakpoints[] {
-		const reforgeSoftCaps: SoftCapBreakpoints[] = [];
+	computeReforgeSoftCaps(baseStats: Stats): StatCapConfig[] {
+		const reforgeSoftCaps: StatCapConfig[] = [];
 
 		if (this.sim.getUseSoftCapBreakpoints() && this.softCapsConfig) {
 			this.softCapsConfig
 				.slice()
-				.reverse()
 				.filter(config => this.statCaps.getStat(config.stat) == 0)
 				.forEach(config => {
+					let weights = config.postCapEPs.slice();
 					const relativeBreakpoints = [];
 
 					for (const breakpoint of config.breakpoints) {
 						relativeBreakpoints.push(breakpoint - baseStats.getStat(config.stat));
 					}
 
+					// For stats that are configured as thresholds rather than
+					// soft caps, reverse the order of evaluation of the
+					// breakpoints so that the largest relevant threshold is
+					// always targeted. Likewise, make sure that post-cap EPs
+					// are always 0 for these stats.
+					if (config.capType == StatCapType.TypeThreshold) {
+						relativeBreakpoints.reverse();
+						weights = Array(relativeBreakpoints.length).fill(0);
+					}
+
 					reforgeSoftCaps.push({
 						stat: config.stat,
-						breakpoints: relativeBreakpoints.sort((a, b) => b - a),
+						breakpoints: relativeBreakpoints,
+						capType: config.capType,
+						postCapEPs: weights,
 					});
 				});
 		}
@@ -518,9 +530,13 @@ export class ReforgeOptimizer {
 		return constraints;
 	}
 
-	async solveModel(gear: Gear, reforgeCaps: Stats, reforgeSoftCaps: SoftCapBreakpoints[], variables: YalpsVariables, constraints: YalpsConstraints) {
+	async solveModel(gear: Gear, weights: Stats, reforgeCaps: Stats, reforgeSoftCaps: StatCapConfig[], variables: YalpsVariables, constraints: YalpsConstraints) {
 		// Calculate EP scores for each Reforge option
-		const updatedVariables = this.updateReforgeScores(variables, constraints);
+		if (isDevMode()) {
+			console.log('Stat weights for this iteration:');
+			console.log(weights);
+		}
+		const updatedVariables = this.updateReforgeScores(variables, weights);
 		if (isDevMode()) {
 			console.log('Optimization variables and constraints for this iteration:');
 			console.log(updatedVariables);
@@ -536,7 +552,7 @@ export class ReforgeOptimizer {
 			binaries: true,
 		};
 		const options: Options = {
-			timeout: 15000,
+			timeout: 60000,
 			maxIterations: Infinity,
 			tolerance: 0.01,
 		};
@@ -551,18 +567,18 @@ export class ReforgeOptimizer {
 		// Check if any unconstrained stats exceeded their specified cap.
 		// If so, add these stats to the constraint list and re-run the solver.
 		// If no unconstrained caps were exceeded, then we're done.
-		const [anyCapsExceeded, updatedConstraints] = this.checkCaps(solution, reforgeCaps, reforgeSoftCaps, updatedVariables, constraints);
+		const [anyCapsExceeded, updatedConstraints, updatedWeights] = this.checkCaps(solution, reforgeCaps, reforgeSoftCaps, updatedVariables, constraints, weights);
 
 		if (!anyCapsExceeded) {
 			if (isDevMode()) console.log('Reforge optimization has finished!');
 		} else {
 			if (isDevMode()) console.log('One or more stat caps were exceeded, starting constrained iteration...');
 			await sleep(100);
-			await this.solveModel(gear, reforgeCaps, reforgeSoftCaps, updatedVariables, updatedConstraints);
+			await this.solveModel(gear, updatedWeights, reforgeCaps, reforgeSoftCaps, updatedVariables, updatedConstraints);
 		}
 	}
 
-	updateReforgeScores(variables: YalpsVariables, constraints: YalpsConstraints): YalpsVariables {
+	updateReforgeScores(variables: YalpsVariables, weights: Stats): YalpsVariables {
 		const updatedVariables = new Map<string, YalpsCoefficients>();
 
 		for (const [variableKey, coefficients] of variables.entries()) {
@@ -572,12 +588,14 @@ export class ReforgeOptimizer {
 			for (const [coefficientKey, value] of coefficients.entries()) {
 				updatedCoefficients.set(coefficientKey, value);
 
-				// Determine whether the key corresponds to a stat change.
-				// If so, check whether the stat has already been constrained to be capped in a previous iteration.
-				// Apply stored EP only for unconstrained stats.
-				if (coefficientKey.includes('Stat') && !constraints.has(coefficientKey)) {
+				// Determine whether the key corresponds to a stat change. If
+				// so, apply current EP for that stat. It is assumed that the
+				// supplied weights have already been updated to post-cap
+				// values for any stats that were constrained to be capped in
+				// a previous iteration.
+				if (coefficientKey.includes('Stat')) {
 					const statKey = (Stat as any)[coefficientKey] as Stat;
-					score += this.preCapEPs.getStat(statKey) * value;
+					score += weights.getStat(statKey) * value;
 				}
 			}
 
@@ -612,10 +630,11 @@ export class ReforgeOptimizer {
 	checkCaps(
 		solution: Solution,
 		reforgeCaps: Stats,
-		reforgeSoftCaps: SoftCapBreakpoints[],
+		reforgeSoftCaps: StatCapConfig[],
 		variables: YalpsVariables,
 		constraints: YalpsConstraints,
-	): [boolean, YalpsConstraints] {
+		currentWeights: Stats,
+	): [boolean, YalpsConstraints, Stats] {
 		// First add up the total stat changes from the solution
 		let reforgeStatContribution = new Stats();
 
@@ -636,6 +655,7 @@ export class ReforgeOptimizer {
 		// Then check whether any unconstrained stats exceed their cap
 		let anyCapsExceeded = false;
 		const updatedConstraints = new Map<string, Constraint>(constraints);
+		let updatedWeights = currentWeights;
 
 		for (const [statKey, value] of reforgeStatContribution.asArray().entries()) {
 			const cap = reforgeCaps.getStat(statKey);
@@ -645,26 +665,48 @@ export class ReforgeOptimizer {
 				updatedConstraints.set(statName, greaterEq(cap));
 				anyCapsExceeded = true;
 				if (isDevMode()) console.log('Cap exceeded for: %s', statName);
+
+				// Set EP to 0 for hard capped stats
+				updatedWeights = updatedWeights.withStat(statKey, 0);
 			}
 		}
 
 		// If hard caps are all taken care of, then deal with any remaining soft cap breakpoints
-		if (!anyCapsExceeded && reforgeSoftCaps.length > 0) {
-			const nextSoftCap = reforgeSoftCaps.pop()!;
-			const statName = Stat[nextSoftCap.stat];
-			const currentValue = reforgeStatContribution.getStat(nextSoftCap.stat);
+		while (!anyCapsExceeded && reforgeSoftCaps.length > 0) {
+			const nextSoftCap = reforgeSoftCaps[0];
+			const statKey = nextSoftCap.stat;
+			const statName = Stat[statKey];
+			const currentValue = reforgeStatContribution.getStat(statKey);
 
+			let idx = 0;
 			for (const breakpoint of nextSoftCap.breakpoints) {
 				if (currentValue > breakpoint) {
 					updatedConstraints.set(statName, greaterEq(breakpoint));
+					updatedWeights = updatedWeights.withStat(statKey, nextSoftCap.postCapEPs[idx]);
 					anyCapsExceeded = true;
 					if (isDevMode()) console.log('Breakpoint exceeded for: %s', statName);
 					break;
 				}
+
+				idx++;
+			}
+
+			// For true soft cap stats (evaluated in ascending order), remove any breakpoint that was
+			// exceeded from the configuration. If no breakpoints were exceeded or there are none
+			// remaining, then remove the entry completely from reforgeSoftCaps. In contrast, for threshold
+			// stats (evaluated in descending order), always remove the entry completely after the first
+			// pass.
+			if (nextSoftCap.capType == StatCapType.TypeSoftCap) {
+				nextSoftCap.breakpoints = nextSoftCap.breakpoints.slice(idx + 1);
+				nextSoftCap.postCapEPs = nextSoftCap.postCapEPs.slice(idx + 1);
+			}
+
+			if ((nextSoftCap.capType == StatCapType.TypeThreshold) || (nextSoftCap.breakpoints.length == 0)) {
+				reforgeSoftCaps.shift();
 			}
 		}
 
-		return [anyCapsExceeded, updatedConstraints];
+		return [anyCapsExceeded, updatedConstraints, updatedWeights];
 	}
 
 	private get baseMastery() {
