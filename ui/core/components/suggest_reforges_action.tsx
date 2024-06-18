@@ -238,7 +238,7 @@ export class ReforgeOptimizer {
 			showZeroes: false,
 			positive: true,
 			extraCssClasses: ['mb-0'],
-			changedEvent: _ => this.player.statCapsChangeEmitter,
+			changedEvent: _ => TypedEvent.onAny([this.sim.useSoftCapBreakpointsChangeEmitter, this.player.statCapsChangeEmitter]),
 		};
 
 		const tableRef = ref<HTMLTableElement>();
@@ -278,6 +278,7 @@ export class ReforgeOptimizer {
 						const ratingPicker = new NumberPicker(null, this.player, {
 							...numberPickerSharedConfig,
 							id: `character-bonus-stat-${stat}-rating`,
+							enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.stat === stat),
 							getValue: () => {
 								let statValue = this.statCaps.getStat(stat);
 								if (stat === Stat.StatMastery) statValue = this.toVisualBaseMasteryRating(statValue);
@@ -294,6 +295,7 @@ export class ReforgeOptimizer {
 						const percentagePicker = new NumberPicker(null, this.player, {
 							...numberPickerSharedConfig,
 							id: `character-bonus-stat-${stat}-percentage`,
+							enableWhen: () => this.isAllowedToOverrideStatCaps || !this.softCapsConfig.some(config => config.stat === stat),
 							getValue: () => {
 								const statValue = this.statCaps.getStat(stat);
 								let statInPercentageOrPoints = statToPercentageOrPoints(stat, statValue, stats);
@@ -404,6 +406,20 @@ export class ReforgeOptimizer {
 		);
 	}
 
+	get isAllowedToOverrideStatCaps() {
+		return !(this.sim.getUseSoftCapBreakpoints() && this.softCapsConfig);
+	}
+
+	get statsToCompute() {
+		let statCaps = this.statCaps;
+		if (!this.isAllowedToOverrideStatCaps)
+			this.softCapsConfig.forEach(({ stat }) => {
+				statCaps = statCaps.withStat(stat, 0);
+			});
+
+		return statCaps;
+	}
+
 	async optimizeReforges() {
 		if (isDevMode()) console.log('Starting Reforge optimization...');
 
@@ -411,9 +427,9 @@ export class ReforgeOptimizer {
 		if (isDevMode()) console.log('Clearing existing Reforges...');
 		const baseGear = this.player.getGear().withoutReforges(this.player.canDualWield2H());
 		const baseStats = await this.updateGear(baseGear);
-
+		const statsToCompute = this.statsToCompute;
 		// Compute effective stat caps for just the Reforge contribution
-		const reforgeCaps = baseStats.computeStatCapsDelta(this.statCaps);
+		const reforgeCaps = baseStats.computeStatCapsDelta(statsToCompute);
 		if (isDevMode()) {
 			console.log('Stat caps for Reforge contribution:');
 			console.log(reforgeCaps);
@@ -442,10 +458,10 @@ export class ReforgeOptimizer {
 	computeReforgeSoftCaps(baseStats: Stats): StatCapConfig[] {
 		const reforgeSoftCaps: StatCapConfig[] = [];
 
-		if (this.sim.getUseSoftCapBreakpoints() && this.softCapsConfig) {
+		if (!this.isAllowedToOverrideStatCaps) {
 			this.softCapsConfig
 				.slice()
-				.filter(config => this.statCaps.getStat(config.stat) == 0)
+				.filter(config => this.statsToCompute.getStat(config.stat) == 0)
 				.forEach(config => {
 					let weights = config.postCapEPs.slice();
 					const relativeBreakpoints = [];
