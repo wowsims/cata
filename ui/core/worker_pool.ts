@@ -106,6 +106,16 @@ export class WorkerPool {
 		return result.finalWeightResult!;
 	}
 
+	async statWeightRequests(request: StatWeightsRequest): Promise<StatWeightRequestsData> {
+		const result = await this.makeApiCall(SimRequest.statWeightRequests, StatWeightsRequest.toBinary(request));
+		return StatWeightRequestsData.fromBinary(result);
+	}
+
+	async statWeightCompute(request: StatWeightsCalcRequest): Promise<StatWeightsResult> {
+		const result = await this.makeApiCall(SimRequest.statWeightCompute, StatWeightsCalcRequest.toBinary(request));
+		return StatWeightsResult.fromBinary(result);
+	}
+
 	async bulkSimAsync(request: BulkSimRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<BulkSimResult> {
 		const worker = this.getLeastBusyWorker();
 		worker.log('bulk sim request: ' + BulkSimRequest.toJsonString(request, { enumAsInteger: true }));
@@ -152,18 +162,12 @@ export class WorkerPool {
 		return RaidSimResult.fromBinary(result);
 	}
 
-	async statWeightRequests(request: StatWeightsRequest): Promise<StatWeightRequestsData> {
-		const result = await this.makeApiCall(SimRequest.statWeightRequests, StatWeightsRequest.toBinary(request));
-		return StatWeightRequestsData.fromBinary(result);
-	}
-
-	async statWeightCompute(request: StatWeightsCalcRequest): Promise<StatWeightsResult> {
-		const result = await this.makeApiCall(SimRequest.statWeightCompute, StatWeightsCalcRequest.toBinary(request));
-		return StatWeightsResult.fromBinary(result);
-	}
-
-	async isWasm() {
-		return await this.workers[0].isWasmWorker();
+	/**
+	 * Check if workers are net workers or wasm workers.
+	 * @returns True if workers are running wasm.
+	 */
+	isWasm() {
+		return this.workers[0].isWasmWorker();
 	}
 
 	/**

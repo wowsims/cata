@@ -108,7 +108,9 @@ const runSims = (
 				let errorResult: RaidSimResult | undefined;
 
 				if (pm.finalRaidResult.error) {
-					console.error(`Worker ${idx} had an error!`);
+					if (pm.finalRaidResult.error.type == ErrorOutcomeType.ErrorOutcomeError) {
+						console.error(`Worker ${idx} had an error!`);
+					}
 					errorResult = pm.finalRaidResult;
 					signals.abort.trigger();
 				}
@@ -137,12 +139,13 @@ const runSims = (
 const makeAndSendRaidSimError = (err: string | ErrorOutcome, onProgress: WorkerProgressCallback): RaidSimResult => {
 	const errRes = RaidSimResult.create();
 	if (typeof err === 'string') {
+		console.error(err);
 		errRes.error = ErrorOutcome.create({ message: err });
 	} else {
+		if(err.message) console.error(err.message);
 		errRes.error = err;
 	}
 	onProgress(ProgressMetrics.create({ finalRaidResult: errRes }));
-	console.error(err);
 	return errRes;
 };
 
@@ -202,12 +205,13 @@ export const runConcurrentSim = async (
 const makeAndSendWeightsError = (err: string | ErrorOutcome, onProgress: WorkerProgressCallback): StatWeightsResult => {
 	const errRes = RaidSimResult.create();
 	if (typeof err === 'string') {
+		console.error(err);
 		errRes.error = ErrorOutcome.create({ message: err });
 	} else {
+		if (err.message) console.error(err.message);
 		errRes.error = err;
 	}
 	onProgress(ProgressMetrics.create({ finalWeightResult: errRes }));
-	console.error(err);
 	return errRes;
 };
 
