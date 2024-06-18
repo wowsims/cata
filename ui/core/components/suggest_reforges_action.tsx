@@ -32,6 +32,7 @@ const INCLUDED_STATS = [
 	Stat.StatSpellHaste,
 	Stat.StatExpertise,
 	Stat.StatMastery,
+	Stat.StatSpirit,
 	Stat.StatDodge,
 	Stat.StatParry,
 ];
@@ -393,7 +394,9 @@ export class ReforgeOptimizer {
 						onclick={() => {
 							this.simUI.epWeightsModal?.open();
 							hideAll();
-						}}>Edit weights</button>
+						}}>
+						Edit weights
+					</button>
 				)}
 			</>
 		);
