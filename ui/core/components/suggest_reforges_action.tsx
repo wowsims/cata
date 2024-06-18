@@ -26,6 +26,8 @@ type YalpsVariables = Map<string, YalpsCoefficients>;
 type YalpsConstraints = Map<string, Constraint>;
 
 const INCLUDED_STATS = [
+	Stat.StatMeleeHit,
+	Stat.StatSpellHit,
 	Stat.StatMeleeCrit,
 	Stat.StatSpellCrit,
 	Stat.StatMeleeHaste,
