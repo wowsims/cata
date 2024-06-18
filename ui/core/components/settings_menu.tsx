@@ -25,7 +25,7 @@ export class SettingsMenu extends BaseModal {
 		const showThreatMetrics = ref<HTMLDivElement>();
 		const showExperimental = ref<HTMLDivElement>();
 		const showQuickSwap = ref<HTMLDivElement>();
-		const useConcurrentWorkersWrap = ref<HTMLDivElement>()
+		const useConcurrentWorkersWrap = ref<HTMLDivElement>();
 		const useConcurrentWorkers = ref<HTMLDivElement>();
 		const useConcurrentWorkersNote = ref<HTMLDivElement>();
 
@@ -165,9 +165,9 @@ export class SettingsMenu extends BaseModal {
 			});
 
 		if (useConcurrentWorkersWrap.value && useConcurrentWorkers.value) {
-			const values: EnumValueConfig[] = [{value: 0, name: "Off"}];
+			const values: EnumValueConfig[] = [{ value: 0, name: 'Off' }];
 			for (let i = 2; i <= navigator.hardwareConcurrency; i++) {
-				values.push({value: i, name: i.toString()});
+				values.push({ value: i, name: i.toString() });
 			}
 
 			new EnumPicker<Sim>(useConcurrentWorkers.value, this.simUI.sim, {

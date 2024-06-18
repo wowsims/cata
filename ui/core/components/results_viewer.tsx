@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import tippy, { inlinePositioning, Instance as TippyInstance } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -47,8 +46,8 @@ export class ResultsViewer extends Component {
 					<div className="loader"></div>
 				</div>
 				<div ref={contentElemRef} className="results-content"></div>
-				<div ref={buttonElemRef} className="button-zone" style="text-align: center"></div>
-				<div ref={warningElemRef} className="warning-zone" style="text-align: center"></div>
+				<div ref={buttonElemRef} className="button-zone text-center"></div>
+				<div ref={warningElemRef} className="warning-zone text-center"></div>
 			</>,
 		);
 		this.pendingElem = pendingElemRef.value!;
@@ -135,18 +134,17 @@ export class ResultsViewer extends Component {
 	}
 
 	addAbortButton(abortClicked: (event: MouseEvent) => void) {
-		this.buttonElem.innerHTML = '';
-		this.buttonElem.style.display = 'block';
-		this.buttonElem.appendChild(
+		this.buttonElem.replaceChildren(
 			<button className="sim-abort-button" onclick={abortClicked}>
 				<i className="fa fa-times fa-lg me-1" />
 				Stop
 			</button>,
 		);
+		this.buttonElem.style.display = 'block';
 	}
 
 	removeAbortButton() {
-		this.buttonElem.innerHTML = '';
+		this.buttonElem.replaceChildren();
 		this.buttonElem.style.display = 'none';
 	}
 }
