@@ -130,7 +130,7 @@ export class RaidSimResultsManager {
 	}
 
 	setSimProgress(progress: ProgressMetrics) {
-		if (progress.finalRaidResult && progress.finalRaidResult.errorResult) {
+		if (progress.finalRaidResult && progress.finalRaidResult.error) {
 			this.simUI.resultsViewer.hideAll();
 			return;
 		}
