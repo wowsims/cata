@@ -170,29 +170,22 @@
 		}
 	}
 
-	// Avoid awkward line wrapping of table headers
-	@include media-breakpoint-down(lg) {
+	@include media-breakpoint-only(lg) {
 		.results-ep-table {
-			th[class*='type-'] {
-				text-align: center;
+			th {
+				padding-right: 0;
 			}
 		}
 	}
 
-	// Style overrides for the expanded/experimental EP UI in tank mode
-	&:not(.hide-experimental) {
-		@include media-breakpoint-down(lg) {
-			@include compact-button;
-			@include compact-table;
-			.results-ep-table {
-				@include compact-input;
-			}
-		}
-		@include media-breakpoint-only(lg) {
-			.results-ep-table {
-				th {
-					padding-right: 0;
-				}
+	// Avoid awkward line wrapping of table headers
+	@include media-breakpoint-down(lg) {
+		@include compact-button;
+		@include compact-table;
+		.results-ep-table {
+			@include compact-input;
+			th[class*='type-'] {
+				text-align: center;
 			}
 		}
 	}

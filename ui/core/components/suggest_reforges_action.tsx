@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import tippy from 'tippy.js';
+import tippy, { hideAll } from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 import { Constraint, greaterEq, lessEq, Model, Options, Solution, solve } from 'yalps';
 
@@ -44,7 +44,8 @@ const STAT_TOOLTIP: { [key in Stat]?: Element | string } = {
 	[Stat.StatMastery]: (
 		<>
 			Rating: Excludes your base mastery
-			<br />%: includes base mastery
+			<br />
+			%: Includes base mastery
 		</>
 	),
 };
@@ -387,7 +388,19 @@ export class ReforgeOptimizer {
 			event.dispose();
 		});
 
-		return savedEpWeights.rootElem;
+		return (
+			<>
+				{savedEpWeights.rootElem}
+				{this.simUI.epWeightsModal && (
+					<button
+						className="btn btn-outline-primary"
+						onclick={() => {
+							this.simUI.epWeightsModal?.open();
+							hideAll();
+						}}>Edit weights</button>
+				)}
+			</>
+		);
 	}
 
 	async optimizeReforges() {
@@ -530,7 +543,14 @@ export class ReforgeOptimizer {
 		return constraints;
 	}
 
-	async solveModel(gear: Gear, weights: Stats, reforgeCaps: Stats, reforgeSoftCaps: StatCapConfig[], variables: YalpsVariables, constraints: YalpsConstraints) {
+	async solveModel(
+		gear: Gear,
+		weights: Stats,
+		reforgeCaps: Stats,
+		reforgeSoftCaps: StatCapConfig[],
+		variables: YalpsVariables,
+		constraints: YalpsConstraints,
+	) {
 		// Calculate EP scores for each Reforge option
 		if (isDevMode()) {
 			console.log('Stat weights for this iteration:');
@@ -567,7 +587,14 @@ export class ReforgeOptimizer {
 		// Check if any unconstrained stats exceeded their specified cap.
 		// If so, add these stats to the constraint list and re-run the solver.
 		// If no unconstrained caps were exceeded, then we're done.
-		const [anyCapsExceeded, updatedConstraints, updatedWeights] = this.checkCaps(solution, reforgeCaps, reforgeSoftCaps, updatedVariables, constraints, weights);
+		const [anyCapsExceeded, updatedConstraints, updatedWeights] = this.checkCaps(
+			solution,
+			reforgeCaps,
+			reforgeSoftCaps,
+			updatedVariables,
+			constraints,
+			weights,
+		);
 
 		if (!anyCapsExceeded) {
 			if (isDevMode()) console.log('Reforge optimization has finished!');
@@ -701,7 +728,7 @@ export class ReforgeOptimizer {
 				nextSoftCap.postCapEPs = nextSoftCap.postCapEPs.slice(idx + 1);
 			}
 
-			if ((nextSoftCap.capType == StatCapType.TypeThreshold) || (nextSoftCap.breakpoints.length == 0)) {
+			if (nextSoftCap.capType == StatCapType.TypeThreshold || nextSoftCap.breakpoints.length == 0) {
 				reforgeSoftCaps.shift();
 			}
 		}
