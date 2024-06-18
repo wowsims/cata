@@ -9,6 +9,7 @@ import { PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { SavedEPWeights } from '../proto/ui';
 import { getClassStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
+import { RequestTypes } from '../sim_signal_manager';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { stDevToConf90 } from '../utils.js';
 import { BaseModal } from './base_modal.jsx';
@@ -244,7 +245,19 @@ class EpWeightsMenu extends BaseModal {
 		}
 
 		const calcButton = calcWeightsButtonRef.value;
+		let isRunning = false;
 		calcButton?.addEventListener('click', async () => {
+			if (isRunning) return;
+			isRunning = true;
+
+			try {
+				await this.simUI.sim.signalManager.abortType(RequestTypes.All);
+			} catch (error) {
+				console.error(error);
+				return;
+			}
+
+			calcButton.disabled = true;
 			this.simUI.rootElem.classList.add('blurred');
 			this.simUI.rootElem.insertAdjacentElement('afterend', pendingDiv);
 
@@ -252,6 +265,22 @@ class EpWeightsMenu extends BaseModal {
 			this.container.classList.add('pending');
 			this.resultsViewer.setPending();
 			const iterations = this.simUI.sim.getIterations();
+
+			let waitAbort = false;
+			this.resultsViewer.addAbortButton(async () => {
+				if (waitAbort) return;
+				try {
+					waitAbort = true;
+					await simUI.sim.signalManager.abortType(RequestTypes.StatWeights);
+				} catch (error) {
+					console.error('Error on stat weight abort!');
+					console.error(error);
+				} finally {
+					waitAbort = false;
+					if (!isRunning) calcButton.disabled = false;
+				}
+			});
+
 			const result = await this.simUI.player.computeStatWeights(
 				TypedEvent.nextEventID(),
 				this.epStats,
@@ -265,10 +294,17 @@ class EpWeightsMenu extends BaseModal {
 			pendingDiv.remove();
 			this.container.classList.remove('pending');
 			this.resultsViewer.hideAll();
+			isRunning = false;
+			if (!waitAbort) calcButton.disabled = false;
+
 			if (!result) return;
 			this.simUI.prevEpIterations = iterations;
 			this.simUI.prevEpSimResult = this.calculateEp(result);
 			this.updateTable();
+		});
+
+		this.addOnHideCallback(() => {
+			this.simUI.sim.signalManager.abortType(RequestTypes.StatWeights).catch(console.error);
 		});
 
 		const makeUpdateWeights = (

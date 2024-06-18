@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	"github.com/wowsims/cata/sim/core/stats"
 	googleProto "google.golang.org/protobuf/proto"
 )
@@ -102,7 +103,7 @@ func (swr *StatWeightsResult) ToProto() *proto.StatWeightsResult {
 	}
 }
 
-func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, progress chan *proto.ProgressMetrics) *StatWeightsResult {
+func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, progress chan *proto.ProgressMetrics, signals simsignals.Signals) *proto.StatWeightsResult {
 	if swr.Player.BonusStats == nil {
 		swr.Player.BonusStats = &proto.UnitStats{}
 	}
@@ -143,10 +144,9 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 		Encounter:  swr.Encounter,
 		SimOptions: simOptions,
 	}
-	baselineResult := RunRaidSim(baseSimRequest)
+	baselineResult := RunSim(baseSimRequest, nil, signals)
 	if baselineResult.ErrorResult != "" {
-		// TODO: get stack trace out.
-		return &StatWeightsResult{}
+		return &proto.StatWeightsResult{ErrorResult: baselineResult.ErrorResult}
 	}
 
 	var waitGroup sync.WaitGroup
@@ -170,6 +170,8 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 		tickets <- struct{}{}
 	}
 
+	outerProgress := make(chan *proto.ProgressMetrics, 50)
+
 	doStat := func(stat stats.UnitStat, value float64, isLow bool) {
 		defer waitGroup.Done()
 		// wait until we have CPU time available.
@@ -179,35 +181,20 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 		stat.AddToStatsProto(simRequest.Raid.Parties[0].Players[0].BonusStats, value)
 
 		reporter := make(chan *proto.ProgressMetrics, 10)
-		go RunSim(simRequest, reporter, nil) // RunRaidSim(simRequest)
+		go RunSim(simRequest, reporter, signals)
 
 		var localIterations int32
-		var errorStr string
 		var simResult *proto.RaidSimResult
 
 		for metrics := range reporter {
 			atomic.AddInt32(&iterationsDone, metrics.CompletedIterations-localIterations)
 			localIterations = metrics.CompletedIterations
+			outerProgress <- metrics
 			if metrics.FinalRaidResult != nil {
 				atomic.AddInt32(&simsCompleted, 1)
 				simResult = metrics.FinalRaidResult
-			}
-			if progress != nil {
-				progress <- &proto.ProgressMetrics{
-					TotalIterations:     atomic.LoadInt32(&iterationsTotal),
-					CompletedIterations: atomic.LoadInt32(&iterationsDone),
-					CompletedSims:       atomic.LoadInt32(&simsCompleted),
-					TotalSims:           atomic.LoadInt32(&simsTotal),
-				}
-			}
-			if metrics.FinalRaidResult != nil {
-				errorStr = metrics.FinalRaidResult.ErrorResult
 				break
 			}
-		}
-		// TODO: get stack trace out if final result error is set.
-		if errorStr != "" {
-			panic("Stat weights error: " + errorStr)
 		}
 
 		if isLow {
@@ -255,6 +242,26 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 
 		go doStat(stat, statModsLow[stat], true)
 		go doStat(stat, statModsHigh[stat], false)
+	}
+
+	for metrics := range outerProgress {
+		if progress != nil {
+			progress <- &proto.ProgressMetrics{
+				TotalIterations:     atomic.LoadInt32(&iterationsTotal),
+				CompletedIterations: atomic.LoadInt32(&iterationsDone),
+				CompletedSims:       atomic.LoadInt32(&simsCompleted),
+				TotalSims:           atomic.LoadInt32(&simsTotal),
+			}
+		}
+
+		if metrics.FinalRaidResult != nil && metrics.FinalRaidResult.ErrorResult != "" {
+			signals.Abort.Trigger()
+			return &proto.StatWeightsResult{ErrorResult: metrics.FinalRaidResult.ErrorResult}
+		}
+
+		if atomic.LoadInt32(&simsCompleted) == atomic.LoadInt32(&simsTotal) {
+			break
+		}
 	}
 
 	// Wait for thread results.
@@ -334,5 +341,5 @@ func CalcStatWeight(swr *proto.StatWeightsRequest, referenceStat stats.Stat, pro
 		calcEpResults(&result.PDeath, DTPSReferenceStat)
 	}
 
-	return result
+	return result.ToProto()
 }

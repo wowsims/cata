@@ -7,8 +7,10 @@ import (
 	"reflect"
 	"runtime"
 	"runtime/debug"
+	"time"
 
 	"github.com/wowsims/cata/sim/core/proto"
+	"github.com/wowsims/cata/sim/core/simsignals"
 	googleProto "google.golang.org/protobuf/proto"
 )
 
@@ -32,6 +34,7 @@ func SplitSimRequestForConcurrency(request *proto.RaidSimRequest, splitCount int
 	iterPerSplit := request.SimOptions.Iterations / splitCount
 
 	split[0] = googleProto.Clone(request).(*proto.RaidSimRequest)
+	split[0].RequestId += "split0"
 	split[0].SimOptions.Iterations = iterPerSplit + request.SimOptions.Iterations%splitCount
 
 	// Sims increment their seed each iteration. Offset starting seed of each split to emulate that.
@@ -39,6 +42,7 @@ func SplitSimRequestForConcurrency(request *proto.RaidSimRequest, splitCount int
 
 	for i := 1; i < int(splitCount); i++ {
 		split[i] = googleProto.Clone(request).(*proto.RaidSimRequest)
+		split[i].RequestId = fmt.Sprintf("%ssplit%d", split[i].RequestId, i)
 		split[i].SimOptions.Iterations = iterPerSplit
 		split[i].SimOptions.DebugFirstIteration = false // No logs
 		split[i].SimOptions.RandomSeed = nextStartSeed
@@ -388,7 +392,7 @@ func (csd *concurrentSimData) MakeProgressMetrics() *proto.ProgressMetrics {
 }
 
 // Run sim on multiple threads concurrently by splitting interations over multiple sims, transparently combining results into the progress channel.
-func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics) (result *proto.RaidSimResult) {
+func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, signals simsignals.Signals) (result *proto.RaidSimResult) {
 	defer func() {
 		if !request.SimOptions.IsTest {
 			if err := recover(); err != nil {
@@ -414,17 +418,20 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 		}
 	}()
 
-	threads := TernaryInt32(request.SimOptions.IsTest, 3, int32(runtime.NumCPU()))
+	// Make sure there's no collission when using RunRaidSimAsync if there's no Id set.
+	if request.RequestId == "" {
+		request.RequestId = fmt.Sprint(time.Now().UnixNano())
+	}
 
-	splitRes := SplitSimRequestForConcurrency(request, threads)
+	splitRes := SplitSimRequestForConcurrency(request, TernaryInt32(request.SimOptions.IsTest, 3, int32(runtime.NumCPU())))
+
 	if splitRes.ErrorResult != "" {
 		panic(splitRes.ErrorResult)
 	}
-	threads = splitRes.SplitsDone
 
+	threads := splitRes.SplitsDone
 	substituteChannels := make([]chan *proto.ProgressMetrics, threads)
 	substituteCases := make([]reflect.SelectCase, threads)
-	quitChannels := make([]chan bool, threads)
 	running := threads
 
 	csd := concurrentSimData{
@@ -439,7 +446,6 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 	for i := 0; i < int(threads); i++ {
 		substituteChannels[i] = make(chan *proto.ProgressMetrics, 20)
 		substituteCases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(substituteChannels[i])}
-		quitChannels[i] = make(chan bool, 1)
 	}
 
 	if !request.SimOptions.IsTest {
@@ -447,15 +453,14 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 	}
 
 	defer func() {
-		// Send quit signals to threads in case we returned due to an error.
-		for _, quitChan := range quitChannels {
-			quitChan <- true
-			close(quitChan)
+		// Try to signal threads to abort in case we returned due to an error.
+		for _, req := range splitRes.Requests {
+			simsignals.AbortById(req.RequestId)
 		}
 	}()
 
 	for i, req := range splitRes.Requests {
-		go RunSim(req, substituteChannels[i], quitChannels[i])
+		RunRaidSimAsync(req, substituteChannels[i])
 		// Wait for first message to make sure env was constructed. Otherwise concurrent map writes to simdb will happen.
 		msg := <-substituteChannels[i]
 		// First message may be due to an immediate error, otherwise it can be ignored.
@@ -472,6 +477,14 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 
 	for running > 0 {
 		i, val, ok := reflect.Select(substituteCases)
+
+		if signals.Abort.IsTriggered() {
+			quitResult := &proto.RaidSimResult{ErrorResult: "aborted"}
+			if progress != nil {
+				progress <- &proto.ProgressMetrics{FinalRaidResult: quitResult}
+			}
+			return quitResult
+		}
 
 		if !ok {
 			substituteCases[i].Chan = reflect.ValueOf(nil)

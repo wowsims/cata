@@ -319,6 +319,8 @@ message RaidSimRequest {
 	Encounter encounter = 2;
 	SimOptions sim_options = 3;
 	SimType type = 4;
+	// A unique id. Used to e.g. abort async sim requests.
+	string request_id = 5;
 }
 
 // Result from running the raid sim.
@@ -352,6 +354,15 @@ message RaidSimRequestSplitResult {
 
 message RaidSimResultCombinationRequest {
 	repeated RaidSimResult results = 1;
+}
+
+message AbortRequest {
+	string request_id = 1; // The request that should be aborted.
+}
+
+message AbortResponse {
+	string request_id = 1;
+	bool was_triggered = 2; // Id was known and abort signal was triggered.
 }
 
 // RPC ComputeStats
@@ -441,6 +452,9 @@ message StatWeightsRequest {
 	repeated Stat stats_to_weigh = 6;
 	repeated PseudoStat pseudo_stats_to_weigh = 10;
 	Stat ep_reference_stat = 7;
+
+	// A unique id. Used to e.g. abort async sim requests.
+	string request_id = 11;
 }
 message StatWeightsResult {
 	StatWeightValues dps = 1;
@@ -449,6 +463,7 @@ message StatWeightsResult {
 	StatWeightValues dtps = 3;
 	StatWeightValues tmi = 5;
 	StatWeightValues p_death = 6;
+	string error_result = 7;
 }
 message StatWeightValues {
 	UnitStats weights = 1;
@@ -483,6 +498,8 @@ message ProgressMetrics {
 message BulkSimRequest {
     RaidSimRequest base_settings = 1;
     BulkSettings bulk_settings = 2;
+	// A unique id. Used to e.g. abort async sim requests.
+	string request_id = 3;
 }
 
 message TalentLoadout {

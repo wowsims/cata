@@ -57,5 +57,6 @@ export const setupHttpWorker = (baseURL: string) => {
 		statWeightsAsync: asyncHandler,
 		raidSimRequestSplit: noWasmConcurrency,
 		raidSimResultCombination: noWasmConcurrency,
+		abortById: syncHandler
 	}).ready(false);
 };
